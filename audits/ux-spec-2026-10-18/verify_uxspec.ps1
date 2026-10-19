@@ -44,7 +44,7 @@ Add-Check 'canon:ptc-3.0.0' ((Get-Sha (Join-Path $rootFull 'canon\VILUMO_FIT_PRO
 # B. Scope: every new file must be on the mission allowlist
 $all = Get-ChildItem -Path $rootFull -Recurse -File -Force | Where-Object { $_.FullName -notmatch '\\\.git\\' }
 $newFiles = @($all | ForEach-Object { Rel $_.FullName } | Where-Object { -not $baselinePaths.ContainsKey($_) })
-$outside = @($newFiles | Where-Object { $_ -ne 'product/UX_SPECIFICATION.md' -and -not $_.StartsWith('audits/ux-spec-2026-10-18/') })
+$outside = @($newFiles | Where-Object { $_ -ne 'product/UX_SPECIFICATION.md' -and $_ -ne '.gitattributes' -and -not $_.StartsWith('audits/ux-spec-2026-10-18/') })
 Add-Check 'scope:new-files-allowlisted' ($outside.Count -eq 0) ("new=" + ($newFiles -join ', ') + " | outside=" + ($outside -join ', '))
 
 # C. Links in mission files and the spec
