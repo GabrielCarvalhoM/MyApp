@@ -1,0 +1,47 @@
+{
+  "gate": "PRODUCT_CONSTITUTION_READY",
+  "verdict": "PASS",
+  "artifact_revision": "VILUMO-PTC-2.2.0",
+  "reviewed_draft_sha256": "724834fbe39cd1467a5e61fd54d9aae3e025e4afffbcb0945a9db49027ae810e",
+  "published_sha256": "5c780fdc336166066edbc9ed62dfa0e947efdb5177898faf6c934346f6e35601",
+  "publication_diff": "Line 5 only: '**Estado:** DRAFT, não canônico' -> '**Estado:** Publicado (status vigente em `canon/CANONICAL_INDEX.md`)'. Verified by script; the rest of the content is byte-identical to the reviewed draft.",
+  "previous_revision": "VILUMO-PTC-2.1.0, sha256 4d4ccb65b341efc45b88bbf5aa173bb34c2f39452e5f6b85dd3beb6b8ee6dbd1, preserved byte-identical at governance/drafts/VILUMO-PTC-2.2.0/VILUMO_FIT_PRODUCT_THESIS_CONTRACT.2.1.0.snapshot.md",
+  "delta_record": "governance/drafts/VILUMO-PTC-2.2.0/DELTA_2.1.0_TO_2.2.0.md sha256 d86d8c93774651d80f0b9b20ffadfb2efeb40233a6606bfe2b0330ca29175878 (CH-01 to CH-26 + §14 correction round 1)",
+  "evidence_policy": "doctrine_audit",
+  "author_instance": "Fresh native product-constitution-governance worker (\"PCG Canon 2.2.0 editorial draft\"), Claude Chief session 07efc0a5-e1c7-44ef-828e-cbc759fc6a51",
+  "accepted_gate_refs": {
+    "draft": "Author checks 26/26; Chief independent checks: L001-L023 and C016-C023, D010, D011 lines identical; only the expected new IDs",
+    "audit": "audits/canon-2.2.0-reviews/DOCTRINE_EVIDENCE_REVIEWED_r1.md, round 2: PASS on 724834fb…, RA-01 closed",
+    "interpretability": "audits/canon-2.2.0-reviews/DOCTRINE_INTERPRETABLE_r1.md, round 2: PASS on 724834fb…"
+  },
+  "consolidator_instance": "Claude Chief main session 07efc0a5-e1c7-44ef-828e-cbc759fc6a51 (not author, auditor or reviewer)",
+  "independence": "Author, auditor (fresh research-evidence-strategist), reviewer (independent product-ux-architect) and consolidator are distinct instances. The reviewer disclosed that it re-reviews its own DI/DI2 findings and mitigated this by re-running scenarios against the draft text only.",
+  "routes_observed": {
+    "author": "claude-opus-5-5 / xhigh",
+    "auditor": "claude-opus-5-5 / xhigh",
+    "reviewer": "claude-opus-5-5 / max"
+  },
+  "founder_decision_refs": [
+    "audits/claude-canon-update-2026-10-10/shareability-founder-decision.md",
+    "audits/claude-canon-update-2026-10-10/sports-founder-decision.md",
+    "audits/phase-1-3-reviews/founder-gate-phase3-decisions.md (FG-2 Package A -> VFT-C025)"
+  ],
+  "history": [
+    {"round": 1, "draft_sha256": "7059b5f833e1c674cd8ed45e81462bc034c48d6a1391081032f4a85829c8f3e4", "DOCTRINE_EVIDENCE_REVIEWED": "PASS with condition RA-01", "DOCTRINE_INTERPRETABLE": "FAIL / REQUEST_CHANGES (DI2-01, DI2-02 blocking)", "resolution": "PCG correction round 1 (attempt 1 of 2) + PDR-0.4.1 recording (RA-01)"},
+    {"round": 2, "draft_sha256": "724834fbe39cd1467a5e61fd54d9aae3e025e4afffbcb0945a9db49027ae810e", "DOCTRINE_EVIDENCE_REVIEWED": "PASS", "DOCTRINE_INTERPRETABLE": "PASS"}
+  ],
+  "checks": [
+    "Both independent verdicts PASS on the same draft sha256",
+    "No blocking finding or open THESIS_CONFLICT",
+    "LOCKED invariants and Founder clause lines unchanged (author, auditor and Chief checks)",
+    "Reserved decisions traced to Founder authority records; O013 and O014 left open with a Founder owner (they block dependent solutions, not READY, per §32)",
+    "Publication changed only the status marker"
+  ],
+  "non_blocking_findings_deferred": [
+    {"ids": ["RA2-01", "RA2-02", "RA2-03", "RA2-04", "DI3-01", "DI3-02", "DI3-03"], "resolution": "DEFER", "owner": "PCG", "trigger": "Next Canon revision. Expected when the Release Priorities gate formalizes O013, O014 or DR-45; at the latest before Phase 6 Core Flows", "interim": "Ambiguous cases follow the contract's doubt rule (the Chief takes them to the Founder). DI3-01 (role-neutral creation conditions such as anti-abuse limits) is classified through that rule if Phase 4 proposes such a condition."}
+  ],
+  "open_questions_added": ["VFT-O013 (limited support representations below minimum credible coverage; owner Founder)", "VFT-O014 (who sets and verifies minimum-credible-coverage criteria within Release Scope; owner Founder)"],
+  "revalidation_rule": "Any Canon edit invalidates both reviews for the edited scope and requires new fidelity and interpretability checks before READY.",
+  "limitations": "READY does not validate market, efficacy or hypotheses and approves no product, UX, UI, Figma or app gate.",
+  "recorded_at_utc": "2026-10-10T19:36:00Z"
+}

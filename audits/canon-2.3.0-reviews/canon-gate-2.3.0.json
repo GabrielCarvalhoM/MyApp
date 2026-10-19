@@ -1,0 +1,37 @@
+{
+  "gate": "PRODUCT_CONSTITUTION_READY",
+  "verdict": "PASS",
+  "artifact_revision": "VILUMO-PTC-2.3.0",
+  "reviewed_draft_sha256": "13f3116d494b7885d2877118210312bf6af10cf942c8ce06cac288ac974fd65f",
+  "published_sha256": "dc0c5c53b2860af79633b9830b4d7f3890f0aedca5310aef810209246cecfd0b",
+  "publication_diff": "Line 5 only: '**Estado:** DRAFT, não canônico' -> '**Estado:** Publicado (status vigente em `canon/CANONICAL_INDEX.md`)'. Verified by script; the rest is byte-identical to the reviewed draft.",
+  "previous_revision": "VILUMO-PTC-2.2.0, sha256 5c780fdc336166066edbc9ed62dfa0e947efdb5177898faf6c934346f6e35601, preserved byte-identical at governance/drafts/VILUMO-PTC-2.3.0/VILUMO_FIT_PRODUCT_THESIS_CONTRACT.2.2.0.snapshot.md",
+  "delta_record": "governance/drafts/VILUMO-PTC-2.3.0/DELTA_2.2.0_TO_2.3.0.md sha256 74384a8053edd5ce4bdae888a64ed911aa90b338a2965c01002c6577b6e44177",
+  "evidence_policy": "doctrine_audit",
+  "author_instance": "The same native product-constitution-governance worker that authored 2.2.0 (Claude Chief session 07efc0a5-e1c7-44ef-828e-cbc759fc6a51)",
+  "accepted_gate_refs": {
+    "draft": "Author checks 30/30. Chief independent checks: L001-L023 and Founder lines C016-C025, D010, D011 identical; new IDs exactly C028-C037, H008, O015; none removed; Pierre not named",
+    "audit": "audits/canon-2.3.0-reviews/DOCTRINE_EVIDENCE_REVIEWED_r1.md: PASS, no condition",
+    "interpretability": "audits/canon-2.3.0-reviews/DOCTRINE_INTERPRETABLE_r1.md: PASS"
+  },
+  "consolidator_instance": "Claude Chief main session 07efc0a5-e1c7-44ef-828e-cbc759fc6a51 (not author, auditor or reviewer)",
+  "independence": "Author, auditor and reviewer are distinct instances. The auditor and reviewer each disclosed re-reviewing resolutions of their own earlier findings (RA2, DI3); the new §30.2 content was new to both.",
+  "routes_observed": {"author": "claude-opus-5-5 / xhigh", "auditor": "claude-opus-5-5 / xhigh", "reviewer": "claude-opus-5-5 / max"},
+  "founder_decision_refs": ["audits/founder-decisions/2026-10-11_hybrid-experience-founder-decision.md (sha256 1db720f2…)"],
+  "checks": [
+    "Both independent verdicts PASS on the same draft sha256",
+    "No blocking finding or open THESIS_CONFLICT",
+    "Protected lines unchanged (author, auditor, reviewer and Chief checks)",
+    "The Founder's incorporation instructions are met: principles separated from examples; no tabbar, screen count, destination names or new scope; invariants preserved",
+    "O015 left open with competent owners; H008 kept as a hypothesis",
+    "Publication changed only the status marker"
+  ],
+  "non_blocking_findings_deferred": [
+    {"ids": ["RA3-01", "RA3-02", "RA3-03", "RA3-04", "DI4-01", "DI4-03"], "resolution": "DEFER", "owner": "PCG", "trigger": "Next Canon revision, at the latest before the Phase 5 specification of agent behavior (O015) or the Release Priorities gate, whichever comes first", "interim": "RA3-01: the agent is bound by the existing contracts L007, L014 and C021 as well as by O015 for its specific rules. Downstream treats them as binding now. DI4-01: doubtful cases on whether an O015 proposal widens autonomy enough to affect identity or the engine's authority go to the Founder through the Chief (§2, §28)."},
+    {"ids": ["DI4-02", "DI4-04"], "resolution": "DEFER", "owner": "Product/UX (Phase 4 architecture gate), PCG only if the dispute becomes doctrinal", "trigger": "PRODUCT_ARCHITECTURE_APPROVED review of PA-0.1"}
+  ],
+  "founder_information": "RA3-01(c): the Founder's premise 'contratos existentes de confirmação e autonomia' is only partly met. Authority, consent and agency contracts exist (L007, L014, C021, R-DR-10); the agent-specific confirmation, undo and autonomy contract does not exist yet and is O015, specified by Product/UX with AI Systems and Security. Communicated to the Founder at publication, as information and not as a request for a decision.",
+  "revalidation_rule": "Any Canon edit invalidates both reviews for the edited scope.",
+  "limitations": "READY does not validate H008 or any hypothesis and approves no product, UX, UI, Figma or app gate.",
+  "recorded_at_utc": "2026-10-11T17:41:00Z"
+}

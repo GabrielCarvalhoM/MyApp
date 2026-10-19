@@ -1,0 +1,123 @@
+{
+  "tier": "T3",
+  "pr_risk": "R3",
+  "agents": [
+    "chief",
+    "product-ux-architect",
+    "engineering-systems-architect",
+    "security-privacy-abuse-architect",
+    "ai-systems-agent-experience-architect"
+  ],
+  "reasons": {
+    "product-ux-architect": [
+      "Product objects/ownership/journey/navigation/states change"
+    ],
+    "engineering-systems-architect": [
+      "Material technical boundary/contracts/impact analysis"
+    ],
+    "security-privacy-abuse-architect": [
+      "Mandatory Security for materially affected trust/security/privacy/abuse boundary"
+    ],
+    "ai-systems-agent-experience-architect": [
+      "Material AI behavior, model, tools or context affected"
+    ],
+    "chief": [
+      "Coordinate cross-domain dependencies and gate state, not domain review"
+    ]
+  },
+  "gates": [
+    "VISUAL_READY",
+    "ENGINEERING_ARCHITECTURE_READY",
+    "SECURITY_READY",
+    "AI_SYSTEM_READY"
+  ],
+  "checks": [
+    "applicable_local_checks"
+  ],
+  "independent_judges": [
+    {
+      "role": "product-ux-architect",
+      "instance": "fresh-independent",
+      "may_edit_author_artifact": false
+    },
+    {
+      "role": "engineering-systems-architect",
+      "instance": "fresh-independent",
+      "may_edit_author_artifact": false
+    },
+    {
+      "role": "security-privacy-abuse-architect",
+      "instance": "fresh-independent",
+      "may_edit_author_artifact": false
+    },
+    {
+      "role": "ai-systems-agent-experience-architect",
+      "instance": "fresh-independent",
+      "may_edit_author_artifact": false
+    }
+  ],
+  "spawn_agents": [
+    "chief",
+    "product-ux-architect",
+    "engineering-systems-architect",
+    "security-privacy-abuse-architect",
+    "ai-systems-agent-experience-architect"
+  ],
+  "founder_decision": false,
+  "policy_version": "1.4.0",
+  "execution_capabilities": [
+    "verify-before-completion"
+  ],
+  "capability_reasons": {
+    "verify-before-completion": [
+      "transversal objective evidence before success"
+    ]
+  },
+  "EXECUTION_LEVEL": "L3",
+  "RISK_PROFILE": {
+    "impact": "high",
+    "irreversibility": "low",
+    "uncertainty": "medium",
+    "dependencies": "high"
+  },
+  "OWNER": "chief",
+  "JUDGES": [
+    {
+      "role": "product-ux-architect",
+      "instance": "fresh-independent",
+      "may_edit_author_artifact": false
+    },
+    {
+      "role": "engineering-systems-architect",
+      "instance": "fresh-independent",
+      "may_edit_author_artifact": false
+    },
+    {
+      "role": "security-privacy-abuse-architect",
+      "instance": "fresh-independent",
+      "may_edit_author_artifact": false
+    },
+    {
+      "role": "ai-systems-agent-experience-architect",
+      "instance": "fresh-independent",
+      "may_edit_author_artifact": false
+    }
+  ],
+  "ARTIFACTS_REQUIRED": [
+    "product/ADAPTIVE_ENGINE_OPERATIONAL_SPEC.md",
+    "product/ADAPTIVE_ENGINE_SCENARIO_LAB.md"
+  ],
+  "STOP_WHEN": "Operational specification, Lab, objective checks and current competent documentary reviews complete, then final report/hard stop.",
+  "ESCALATE_IF": "Demonstrated material upstream conflict, authority/privacy expansion, dependency needed before its proof, or same material finding survives two corrections.",
+  "execution_mode": "productization",
+  "canonization_allowed": true,
+  "level_transition": "INITIAL",
+  "policy_decisions": {
+    "artifact": "CREATE_NECESSARY_ARTIFACT",
+    "quality": "PRESERVE_QUALITY_FLOOR_REDUCE_MACHINERY"
+  },
+  "execution_holds": [],
+  "execution_hold": false,
+  "contract_record_required": true,
+  "policy_scope_limit": "Declared input policy only; refs/authority need real verification; no native dispatch enforcement"
+}

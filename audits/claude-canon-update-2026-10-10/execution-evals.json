@@ -1,0 +1,1563 @@
+{
+  "package_version": "1.5.0",
+  "rubric_version": "1.3.0",
+  "verdict": "PASS",
+  "passed": 80,
+  "total": 80,
+  "results": [
+    {
+      "id": "trivial-no-brainstorm-or-plan",
+      "pass": true,
+      "observed": {
+        "tier": "T0",
+        "pr_risk": "R0",
+        "agents": [
+          "product-engineer"
+        ],
+        "reasons": {
+          "product-engineer": [
+            "Single domain task; no uncovered material risk"
+          ]
+        },
+        "gates": [],
+        "checks": [
+          "applicable_local_checks"
+        ],
+        "independent_judges": [],
+        "spawn_agents": [],
+        "founder_decision": false,
+        "policy_version": "1.5.0",
+        "execution_capabilities": [
+          "verify-before-completion",
+          "finish-development-branch"
+        ],
+        "capability_reasons": {
+          "verify-before-completion": [
+            "transversal objective evidence before success"
+          ],
+          "finish-development-branch": [
+            "git_delivery"
+          ]
+        },
+        "EXECUTION_LEVEL": "L0",
+        "RISK_PROFILE": {
+          "impact": "unspecified",
+          "irreversibility": "unspecified",
+          "uncertainty": "unspecified",
+          "dependencies": "unspecified"
+        },
+        "OWNER": "product-engineer",
+        "JUDGES": [],
+        "ARTIFACTS_REQUIRED": [],
+        "STOP_WHEN": null,
+        "ESCALATE_IF": null,
+        "execution_mode": "productization",
+        "canonization_allowed": true,
+        "level_transition": "INITIAL",
+        "policy_decisions": {},
+        "execution_holds": [],
+        "execution_hold": false,
+        "contract_record_required": false,
+        "policy_scope_limit": "Declared input policy only; refs/authority need real verification; no native dispatch enforcement",
+        "MODEL_ROUTE": "UNSPECIFIED",
+        "MODEL_ROUTE_REASON": "Legacy input; Chief must select before native dispatch",
+        "EFFORT": "UNSPECIFIED",
+        "model_route_required": true
+      }
+    },
+    {
+      "id": "trivial-zero-spawn",
+      "pass": true,
+      "observed": []
+    },
+    {
+      "id": "readme-no-tdd-or-isolation",
+      "pass": true,
+      "observed": {
+        "tier": "T0",
+        "pr_risk": "R0",
+        "agents": [
+          "product-engineer"
+        ],
+        "reasons": {
+          "product-engineer": [
+            "Single domain task; no uncovered material risk"
+          ]
+        },
+        "gates": [],
+        "checks": [
+          "applicable_local_checks"
+        ],
+        "independent_judges": [],
+        "spawn_agents": [],
+        "founder_decision": false,
+        "policy_version": "1.5.0",
+        "execution_capabilities": [
+          "verify-before-completion"
+        ],
+        "capability_reasons": {
+          "verify-before-completion": [
+            "transversal objective evidence before success"
+          ]
+        },
+        "EXECUTION_LEVEL": "L0",
+        "RISK_PROFILE": {
+          "impact": "unspecified",
+          "irreversibility": "unspecified",
+          "uncertainty": "unspecified",
+          "dependencies": "unspecified"
+        },
+        "OWNER": "product-engineer",
+        "JUDGES": [],
+        "ARTIFACTS_REQUIRED": [],
+        "STOP_WHEN": null,
+        "ESCALATE_IF": null,
+        "execution_mode": "productization",
+        "canonization_allowed": true,
+        "level_transition": "INITIAL",
+        "policy_decisions": {},
+        "execution_holds": [],
+        "execution_hold": false,
+        "contract_record_required": false,
+        "policy_scope_limit": "Declared input policy only; refs/authority need real verification; no native dispatch enforcement",
+        "MODEL_ROUTE": "UNSPECIFIED",
+        "MODEL_ROUTE_REASON": "Legacy input; Chief must select before native dispatch",
+        "EFFORT": "UNSPECIFIED",
+        "model_route_required": true
+      }
+    },
+    {
+      "id": "local-domain-bug",
+      "pass": true,
+      "observed": {
+        "tier": "T1",
+        "pr_risk": "R1",
+        "agents": [
+          "product-engineer"
+        ],
+        "reasons": {
+          "product-engineer": [
+            "Author of executable change; self-check is not approval"
+          ]
+        },
+        "gates": [
+          "IMPLEMENTATION_READY_FOR_REVIEW"
+        ],
+        "checks": [
+          "applicable_local_checks",
+          "required_ci"
+        ],
+        "independent_judges": [],
+        "spawn_agents": [
+          "product-engineer"
+        ],
+        "founder_decision": false,
+        "policy_version": "1.5.0",
+        "execution_capabilities": [
+          "test-driven-development",
+          "systematic-debugging",
+          "verify-before-completion"
+        ],
+        "capability_reasons": {
+          "test-driven-development": [
+            "reproducible_bug",
+            "domain_logic"
+          ],
+          "systematic-debugging": [
+            "reproducible_bug"
+          ],
+          "verify-before-completion": [
+            "transversal objective evidence before success"
+          ]
+        },
+        "EXECUTION_LEVEL": "L1",
+        "RISK_PROFILE": {
+          "impact": "unspecified",
+          "irreversibility": "unspecified",
+          "uncertainty": "unspecified",
+          "dependencies": "unspecified"
+        },
+        "OWNER": "product-engineer",
+        "JUDGES": [],
+        "ARTIFACTS_REQUIRED": [],
+        "STOP_WHEN": null,
+        "ESCALATE_IF": null,
+        "execution_mode": "productization",
+        "canonization_allowed": true,
+        "level_transition": "INITIAL",
+        "policy_decisions": {},
+        "execution_holds": [],
+        "execution_hold": false,
+        "contract_record_required": false,
+        "policy_scope_limit": "Declared input policy only; refs/authority need real verification; no native dispatch enforcement",
+        "MODEL_ROUTE": "UNSPECIFIED",
+        "MODEL_ROUTE_REASON": "Legacy input; Chief must select before native dispatch",
+        "EFFORT": "UNSPECIFIED",
+        "model_route_required": true
+      }
+    },
+    {
+      "id": "t1-not-promoted-to-t4",
+      "pass": true,
+      "observed": {
+        "tier": "T1",
+        "pr_risk": "R1",
+        "agents": [
+          "product-engineer"
+        ],
+        "reasons": {
+          "product-engineer": [
+            "Author of executable change; self-check is not approval"
+          ]
+        },
+        "gates": [
+          "IMPLEMENTATION_READY_FOR_REVIEW"
+        ],
+        "checks": [
+          "applicable_local_checks",
+          "required_ci"
+        ],
+        "independent_judges": [],
+        "spawn_agents": [
+          "product-engineer"
+        ],
+        "founder_decision": false,
+        "policy_version": "1.5.0",
+        "execution_capabilities": [
+          "test-driven-development",
+          "systematic-debugging",
+          "verify-before-completion"
+        ],
+        "capability_reasons": {
+          "test-driven-development": [
+            "reproducible_bug",
+            "domain_logic"
+          ],
+          "systematic-debugging": [
+            "reproducible_bug"
+          ],
+          "verify-before-completion": [
+            "transversal objective evidence before success"
+          ]
+        },
+        "EXECUTION_LEVEL": "L1",
+        "RISK_PROFILE": {
+          "impact": "unspecified",
+          "irreversibility": "unspecified",
+          "uncertainty": "unspecified",
+          "dependencies": "unspecified"
+        },
+        "OWNER": "product-engineer",
+        "JUDGES": [],
+        "ARTIFACTS_REQUIRED": [],
+        "STOP_WHEN": null,
+        "ESCALATE_IF": null,
+        "execution_mode": "productization",
+        "canonization_allowed": true,
+        "level_transition": "INITIAL",
+        "policy_decisions": {},
+        "execution_holds": [],
+        "execution_hold": false,
+        "contract_record_required": false,
+        "policy_scope_limit": "Declared input policy only; refs/authority need real verification; no native dispatch enforcement",
+        "MODEL_ROUTE": "UNSPECIFIED",
+        "MODEL_ROUTE_REASON": "Legacy input; Chief must select before native dispatch",
+        "EFFORT": "UNSPECIFIED",
+        "model_route_required": true
+      }
+    },
+    {
+      "id": "complex-feature-inspected-plan",
+      "pass": true,
+      "observed": {
+        "tier": "T2",
+        "pr_risk": "R2",
+        "agents": [
+          "product-engineer",
+          "quality-reliability-engineer"
+        ],
+        "reasons": {
+          "quality-reliability-engineer": [
+            "Executable behavior/reliability proof material"
+          ],
+          "product-engineer": [
+            "Author of executable change; self-check is not approval"
+          ]
+        },
+        "gates": [
+          "QUALITY_READY",
+          "IMPLEMENTATION_READY_FOR_REVIEW"
+        ],
+        "checks": [
+          "applicable_local_checks",
+          "required_ci",
+          "acceptance_evidence"
+        ],
+        "independent_judges": [
+          {
+            "role": "quality-reliability-engineer",
+            "instance": "fresh-independent",
+            "may_edit_author_artifact": false
+          }
+        ],
+        "spawn_agents": [
+          "product-engineer",
+          "quality-reliability-engineer"
+        ],
+        "founder_decision": false,
+        "policy_version": "1.5.0",
+        "execution_capabilities": [
+          "write-implementation-plan",
+          "execute-implementation-plan",
+          "request-code-review",
+          "verify-before-completion"
+        ],
+        "capability_reasons": {
+          "write-implementation-plan": [
+            "complex_implementation"
+          ],
+          "execute-implementation-plan": [
+            "accepted_plan"
+          ],
+          "request-code-review": [
+            "independent material judge required"
+          ],
+          "verify-before-completion": [
+            "transversal objective evidence before success"
+          ]
+        },
+        "EXECUTION_LEVEL": "L2",
+        "RISK_PROFILE": {
+          "impact": "unspecified",
+          "irreversibility": "unspecified",
+          "uncertainty": "unspecified",
+          "dependencies": "unspecified"
+        },
+        "OWNER": "product-engineer",
+        "JUDGES": [
+          {
+            "role": "quality-reliability-engineer",
+            "instance": "fresh-independent",
+            "may_edit_author_artifact": false
+          }
+        ],
+        "ARTIFACTS_REQUIRED": [],
+        "STOP_WHEN": null,
+        "ESCALATE_IF": null,
+        "execution_mode": "productization",
+        "canonization_allowed": true,
+        "level_transition": "INITIAL",
+        "policy_decisions": {},
+        "execution_holds": [],
+        "execution_hold": false,
+        "contract_record_required": true,
+        "policy_scope_limit": "Declared input policy only; refs/authority need real verification; no native dispatch enforcement",
+        "MODEL_ROUTE": "UNSPECIFIED",
+        "MODEL_ROUTE_REASON": "Legacy input; Chief must select before native dispatch",
+        "EFFORT": "UNSPECIFIED",
+        "model_route_required": true
+      }
+    },
+    {
+      "id": "open-material-decision",
+      "pass": true,
+      "observed": {
+        "tier": "T1",
+        "pr_risk": "R1",
+        "agents": [
+          "product-engineer"
+        ],
+        "reasons": {
+          "product-engineer": [
+            "Single domain task; no uncovered material risk"
+          ]
+        },
+        "gates": [],
+        "checks": [
+          "applicable_local_checks"
+        ],
+        "independent_judges": [],
+        "spawn_agents": [
+          "product-engineer"
+        ],
+        "founder_decision": false,
+        "policy_version": "1.5.0",
+        "execution_capabilities": [
+          "explore-solution-space",
+          "verify-before-completion"
+        ],
+        "capability_reasons": {
+          "explore-solution-space": [
+            "open_decision"
+          ],
+          "verify-before-completion": [
+            "transversal objective evidence before success"
+          ]
+        },
+        "EXECUTION_LEVEL": "L1",
+        "RISK_PROFILE": {
+          "impact": "unspecified",
+          "irreversibility": "unspecified",
+          "uncertainty": "unspecified",
+          "dependencies": "unspecified"
+        },
+        "OWNER": "product-engineer",
+        "JUDGES": [],
+        "ARTIFACTS_REQUIRED": [],
+        "STOP_WHEN": null,
+        "ESCALATE_IF": null,
+        "execution_mode": "productization",
+        "canonization_allowed": true,
+        "level_transition": "INITIAL",
+        "policy_decisions": {},
+        "execution_holds": [],
+        "execution_hold": false,
+        "contract_record_required": false,
+        "policy_scope_limit": "Declared input policy only; refs/authority need real verification; no native dispatch enforcement",
+        "MODEL_ROUTE": "UNSPECIFIED",
+        "MODEL_ROUTE_REASON": "Legacy input; Chief must select before native dispatch",
+        "EFFORT": "UNSPECIFIED",
+        "model_route_required": true
+      }
+    },
+    {
+      "id": "parallel-relevant-isolation",
+      "pass": true,
+      "observed": {
+        "tier": "T2",
+        "pr_risk": "R2",
+        "agents": [
+          "product-engineer",
+          "quality-reliability-engineer"
+        ],
+        "reasons": {
+          "product-engineer": [
+            "Author of executable change; self-check is not approval"
+          ],
+          "quality-reliability-engineer": [
+            "Independent material review when worker has no covered judge"
+          ]
+        },
+        "gates": [
+          "IMPLEMENTATION_READY_FOR_REVIEW",
+          "QUALITY_READY"
+        ],
+        "checks": [
+          "applicable_local_checks",
+          "required_ci",
+          "acceptance_evidence"
+        ],
+        "independent_judges": [
+          {
+            "role": "quality-reliability-engineer",
+            "instance": "fresh-independent",
+            "may_edit_author_artifact": false
+          }
+        ],
+        "spawn_agents": [
+          "product-engineer",
+          "quality-reliability-engineer"
+        ],
+        "founder_decision": false,
+        "policy_version": "1.5.0",
+        "execution_capabilities": [
+          "isolate-worktree",
+          "request-code-review",
+          "verify-before-completion"
+        ],
+        "capability_reasons": {
+          "isolate-worktree": [
+            "parallel_edits"
+          ],
+          "request-code-review": [
+            "independent material judge required"
+          ],
+          "verify-before-completion": [
+            "transversal objective evidence before success"
+          ]
+        },
+        "EXECUTION_LEVEL": "L2",
+        "RISK_PROFILE": {
+          "impact": "unspecified",
+          "irreversibility": "unspecified",
+          "uncertainty": "unspecified",
+          "dependencies": "unspecified"
+        },
+        "OWNER": "product-engineer",
+        "JUDGES": [
+          {
+            "role": "quality-reliability-engineer",
+            "instance": "fresh-independent",
+            "may_edit_author_artifact": false
+          }
+        ],
+        "ARTIFACTS_REQUIRED": [],
+        "STOP_WHEN": null,
+        "ESCALATE_IF": null,
+        "execution_mode": "productization",
+        "canonization_allowed": true,
+        "level_transition": "INITIAL",
+        "policy_decisions": {},
+        "execution_holds": [],
+        "execution_hold": false,
+        "contract_record_required": true,
+        "policy_scope_limit": "Declared input policy only; refs/authority need real verification; no native dispatch enforcement",
+        "MODEL_ROUTE": "UNSPECIFIED",
+        "MODEL_ROUTE_REASON": "Legacy input; Chief must select before native dispatch",
+        "EFFORT": "UNSPECIFIED",
+        "model_route_required": true
+      }
+    },
+    {
+      "id": "systemic-refactor",
+      "pass": true,
+      "observed": {
+        "tier": "T4",
+        "pr_risk": "R4",
+        "agents": [
+          "chief",
+          "engineering-systems-architect",
+          "product-engineer"
+        ],
+        "reasons": {
+          "engineering-systems-architect": [
+            "Material technical boundary/contracts/impact analysis"
+          ],
+          "product-engineer": [
+            "Author of executable change; self-check is not approval"
+          ],
+          "chief": [
+            "Coordinate cross-domain dependencies and gate state, not domain review"
+          ]
+        },
+        "gates": [
+          "ENGINEERING_ARCHITECTURE_READY",
+          "IMPLEMENTATION_READY_FOR_REVIEW"
+        ],
+        "checks": [
+          "applicable_local_checks",
+          "required_ci",
+          "acceptance_evidence",
+          "risk_controls",
+          "recovery_evidence"
+        ],
+        "independent_judges": [
+          {
+            "role": "engineering-systems-architect",
+            "instance": "fresh-independent",
+            "may_edit_author_artifact": false
+          }
+        ],
+        "spawn_agents": [
+          "chief",
+          "engineering-systems-architect",
+          "product-engineer"
+        ],
+        "founder_decision": false,
+        "policy_version": "1.5.0",
+        "execution_capabilities": [
+          "write-implementation-plan",
+          "isolate-worktree",
+          "request-code-review",
+          "verify-before-completion"
+        ],
+        "capability_reasons": {
+          "write-implementation-plan": [
+            "complex_implementation"
+          ],
+          "isolate-worktree": [
+            "isolation_required"
+          ],
+          "request-code-review": [
+            "independent material judge required"
+          ],
+          "verify-before-completion": [
+            "transversal objective evidence before success"
+          ]
+        },
+        "EXECUTION_LEVEL": "L3",
+        "RISK_PROFILE": {
+          "impact": "unspecified",
+          "irreversibility": "unspecified",
+          "uncertainty": "unspecified",
+          "dependencies": "unspecified"
+        },
+        "OWNER": "product-engineer",
+        "JUDGES": [
+          {
+            "role": "engineering-systems-architect",
+            "instance": "fresh-independent",
+            "may_edit_author_artifact": false
+          }
+        ],
+        "ARTIFACTS_REQUIRED": [],
+        "STOP_WHEN": null,
+        "ESCALATE_IF": null,
+        "execution_mode": "productization",
+        "canonization_allowed": true,
+        "level_transition": "INITIAL",
+        "policy_decisions": {},
+        "execution_holds": [],
+        "execution_hold": false,
+        "contract_record_required": true,
+        "policy_scope_limit": "Declared input policy only; refs/authority need real verification; no native dispatch enforcement",
+        "MODEL_ROUTE": "UNSPECIFIED",
+        "MODEL_ROUTE_REASON": "Legacy input; Chief must select before native dispatch",
+        "EFFORT": "UNSPECIFIED",
+        "model_route_required": true
+      }
+    },
+    {
+      "id": "systemic-engineering-owner",
+      "pass": true,
+      "observed": {
+        "tier": "T4",
+        "pr_risk": "R4",
+        "agents": [
+          "chief",
+          "engineering-systems-architect",
+          "product-engineer"
+        ],
+        "reasons": {
+          "engineering-systems-architect": [
+            "Material technical boundary/contracts/impact analysis"
+          ],
+          "product-engineer": [
+            "Author of executable change; self-check is not approval"
+          ],
+          "chief": [
+            "Coordinate cross-domain dependencies and gate state, not domain review"
+          ]
+        },
+        "gates": [
+          "ENGINEERING_ARCHITECTURE_READY",
+          "IMPLEMENTATION_READY_FOR_REVIEW"
+        ],
+        "checks": [
+          "applicable_local_checks",
+          "required_ci",
+          "acceptance_evidence",
+          "risk_controls",
+          "recovery_evidence"
+        ],
+        "independent_judges": [
+          {
+            "role": "engineering-systems-architect",
+            "instance": "fresh-independent",
+            "may_edit_author_artifact": false
+          }
+        ],
+        "spawn_agents": [
+          "chief",
+          "engineering-systems-architect",
+          "product-engineer"
+        ],
+        "founder_decision": false,
+        "policy_version": "1.5.0",
+        "execution_capabilities": [
+          "write-implementation-plan",
+          "isolate-worktree",
+          "request-code-review",
+          "verify-before-completion"
+        ],
+        "capability_reasons": {
+          "write-implementation-plan": [
+            "complex_implementation"
+          ],
+          "isolate-worktree": [
+            "isolation_required"
+          ],
+          "request-code-review": [
+            "independent material judge required"
+          ],
+          "verify-before-completion": [
+            "transversal objective evidence before success"
+          ]
+        },
+        "EXECUTION_LEVEL": "L3",
+        "RISK_PROFILE": {
+          "impact": "unspecified",
+          "irreversibility": "unspecified",
+          "uncertainty": "unspecified",
+          "dependencies": "unspecified"
+        },
+        "OWNER": "product-engineer",
+        "JUDGES": [
+          {
+            "role": "engineering-systems-architect",
+            "instance": "fresh-independent",
+            "may_edit_author_artifact": false
+          }
+        ],
+        "ARTIFACTS_REQUIRED": [],
+        "STOP_WHEN": null,
+        "ESCALATE_IF": null,
+        "execution_mode": "productization",
+        "canonization_allowed": true,
+        "level_transition": "INITIAL",
+        "policy_decisions": {},
+        "execution_holds": [],
+        "execution_hold": false,
+        "contract_record_required": true,
+        "policy_scope_limit": "Declared input policy only; refs/authority need real verification; no native dispatch enforcement",
+        "MODEL_ROUTE": "UNSPECIFIED",
+        "MODEL_ROUTE_REASON": "Legacy input; Chief must select before native dispatch",
+        "EFFORT": "UNSPECIFIED",
+        "model_route_required": true
+      }
+    },
+    {
+      "id": "review-feedback-only",
+      "pass": true,
+      "observed": {
+        "tier": "T1",
+        "pr_risk": "R1",
+        "agents": [
+          "product-engineer"
+        ],
+        "reasons": {
+          "product-engineer": [
+            "Single domain task; no uncovered material risk"
+          ]
+        },
+        "gates": [],
+        "checks": [
+          "applicable_local_checks"
+        ],
+        "independent_judges": [],
+        "spawn_agents": [
+          "product-engineer"
+        ],
+        "founder_decision": false,
+        "policy_version": "1.5.0",
+        "execution_capabilities": [
+          "receive-code-review",
+          "verify-before-completion"
+        ],
+        "capability_reasons": {
+          "receive-code-review": [
+            "review_feedback"
+          ],
+          "verify-before-completion": [
+            "transversal objective evidence before success"
+          ]
+        },
+        "EXECUTION_LEVEL": "L1",
+        "RISK_PROFILE": {
+          "impact": "unspecified",
+          "irreversibility": "unspecified",
+          "uncertainty": "unspecified",
+          "dependencies": "unspecified"
+        },
+        "OWNER": "product-engineer",
+        "JUDGES": [],
+        "ARTIFACTS_REQUIRED": [],
+        "STOP_WHEN": null,
+        "ESCALATE_IF": null,
+        "execution_mode": "productization",
+        "canonization_allowed": true,
+        "level_transition": "INITIAL",
+        "policy_decisions": {},
+        "execution_holds": [],
+        "execution_hold": false,
+        "contract_record_required": false,
+        "policy_scope_limit": "Declared input policy only; refs/authority need real verification; no native dispatch enforcement",
+        "MODEL_ROUTE": "UNSPECIFIED",
+        "MODEL_ROUTE_REASON": "Legacy input; Chief must select before native dispatch",
+        "EFFORT": "UNSPECIFIED",
+        "model_route_required": true
+      }
+    },
+    {
+      "id": "planning-quality-current",
+      "pass": true,
+      "observed": {
+        "verdict": "PASS",
+        "failures": [],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "plan-invented-file-rejected",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "UNINSPECTED_FILE:invented",
+          "UNPLANNED_STEP_FILE"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "plan-invalid-dependency-order",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "INVALID_STEP_ORDER"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "plan-missing-checkpoint",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "MISSING_STEP_FIELD:checkpoint"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "plan-command-without-inspection",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "UNINSPECTED_OR_UNVERIFIABLE_CHECK"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "plan-no-stop-conditions",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "MISSING_PLAN_FIELD:stop_conditions"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "plan-relevant-rollback-missing",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "MISSING_ROLLBACK"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "empty-plan-template-rejected",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "MISSING_PLAN_FIELD:accepted_direction_ref",
+          "MISSING_PLAN_FIELD:artifact_revision",
+          "MISSING_PLAN_FIELD:contract_revision",
+          "MISSING_PLAN_FIELD:inspection_ref",
+          "MISSING_PLAN_FIELD:objective",
+          "MISSING_PLAN_FIELD:plan_revision",
+          "MISSING_PLAN_FIELD:preconditions",
+          "MISSING_PLAN_FIELD:stop_conditions",
+          "NO_INSPECTED_FILES",
+          "NO_PLAN_FILES",
+          "NO_STEPS"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "verification-current-objective-proof",
+      "pass": true,
+      "observed": {
+        "verdict": "PASS",
+        "failures": [],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "fixed-without-evidence-rejected",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "NO_CURRENT_OBJECTIVE_PASS:behavior"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "self-report-is-not-proof",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "NO_CURRENT_OBJECTIVE_PASS:behavior"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "verification-stale-head-rejected",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "NO_CURRENT_OBJECTIVE_PASS:behavior"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "verification-stale-input-rejected",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "STALE_COMPLETION_INPUT:inputs_revision"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "verification-failed-test-rejected",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "NO_CURRENT_OBJECTIVE_PASS:behavior"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "verification-without-environment",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "NO_CURRENT_OBJECTIVE_PASS:behavior"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "verification-invalid-timestamp",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "NO_CURRENT_OBJECTIVE_PASS:behavior"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "extra-required-check-stale-contract",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "STALE_REQUIRED_CHECK_INPUT:contract_revision"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "git-string-cannot-bypass-current-target",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "INVALID_BOOLEAN:git"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "required-check-string-rejected",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "INVALID_BOOLEAN:required"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "empty-completion-template-rejected",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "MISSING_COMPLETION_FIELD:artifact_revision",
+          "MISSING_COMPLETION_FIELD:claim",
+          "MISSING_COMPLETION_FIELD:contract_revision",
+          "MISSING_COMPLETION_FIELD:inputs_revision",
+          "MISSING_COMPLETION_FIELD:required_criteria"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "debug-evidence-before-patch",
+      "pass": true,
+      "observed": {
+        "verdict": "PASS",
+        "failures": [],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "debug-early-guess-rejected",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "PATCH_BEFORE_EVIDENCE"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "two-failed-fixes-require-reassessment",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "FAILED_FIXES_WITHOUT_REASSESSMENT"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "reassessed-debug-can-proceed",
+      "pass": true,
+      "observed": {
+        "verdict": "PASS",
+        "failures": [],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "structural-failure-requires-engineering",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "STRUCTURAL_PATTERN_WITHOUT_ENGINEERING_HANDOFF"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "structural-failure-with-handoff",
+      "pass": true,
+      "observed": {
+        "verdict": "PASS",
+        "failures": [],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "reproduction-gap-needs-evidence",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "UNEXPLAINED_REPRODUCTION_GAP"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "bounded-reproduction-alternative",
+      "pass": true,
+      "observed": {
+        "verdict": "PASS",
+        "failures": [],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "domain-red-green-refactor",
+      "pass": true,
+      "observed": {
+        "verdict": "PASS",
+        "failures": [],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "red-config-failure-not-valid",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "RED_WRONG_REASON"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "red-must-precede-green",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "RED_NOT_BEFORE_GREEN"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "red-green-compare-real-offsets",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "RED_NOT_BEFORE_GREEN"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "readme-tdd-not-applicable",
+      "pass": true,
+      "observed": {
+        "verdict": "PASS",
+        "failures": [],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "tdd-string-applicability-rejected",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "INVALID_BOOLEAN:applicable"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "parallel-writers-isolated",
+      "pass": true,
+      "observed": {
+        "verdict": "PASS",
+        "failures": [],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "parallel-normalized-shared-directory-rejected",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "PARALLEL_SHARED_WORKING_DIRECTORY"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "parallel-overlapping-checkout-subdirectory",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "PARALLEL_OVERLAPPING_WORKING_DIRECTORIES"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "parallel-shared-writable-branch-rejected",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "PARALLEL_SHARED_BRANCH"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "parallel-canonical-ref-alias-rejected",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "PARALLEL_SHARED_BRANCH"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "windows-case-alias-rejected",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "PARALLEL_SHARED_WORKING_DIRECTORY"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "incorrect-review-challenged",
+      "pass": true,
+      "observed": {
+        "verdict": "PASS",
+        "failures": [],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "incorrect-review-obedience-rejected",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "OBEYED_INVALID_REVIEW"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "missing-claim-validity-cannot-pass",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "INVALID_CLAIM_VALIDITY"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "string-review-validity-rejected",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "INVALID_CLAIM_VALIDITY"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "valid-feedback-fixed-reverified",
+      "pass": true,
+      "observed": {
+        "verdict": "PASS",
+        "failures": [],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "recurring-review-needs-infrastructure",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "RECURRING_FINDING_WITHOUT_INFRASTRUCTURE_CANDIDATE"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "recurring-review-infrastructure-proposal",
+      "pass": true,
+      "observed": {
+        "verdict": "PASS",
+        "failures": [],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "material-feedback-change-needs-new-review",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "MATERIAL_CHANGE_WITHOUT_NEW_VERIFICATION_REVIEW"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "existing-current-independent-gate",
+      "pass": true,
+      "observed": {
+        "verdict": "PASS",
+        "status": "MERGE_READY",
+        "failures": [],
+        "policy_version": "1.5.0",
+        "note": "Local policy check only; provider branch protections and live CI remain authoritative"
+      }
+    },
+    {
+      "id": "engineer-self-approval-rejected",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "status": "RELEASE_BLOCKED",
+        "failures": [
+          "COAUTHOR_SELF_APPROVAL",
+          "SELF_APPROVAL"
+        ],
+        "policy_version": "1.5.0",
+        "note": "Local policy check only; provider branch protections and live CI remain authoritative"
+      }
+    },
+    {
+      "id": "gate-all-checks-stale-input-head-rejected",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "status": "RELEASE_BLOCKED",
+        "failures": [
+          "STALE_CHECK_INPUT:base_revision",
+          "STALE_CHECK_INPUT:contract_revision",
+          "STALE_CHECK_INPUT:head_revision",
+          "STALE_CHECK_INPUT:inputs_revision"
+        ],
+        "policy_version": "1.5.0",
+        "note": "Local policy check only; provider branch protections and live CI remain authoritative"
+      }
+    },
+    {
+      "id": "generic-coauthor-is-not-judge",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "status": "RELEASE_BLOCKED",
+        "failures": [
+          "COAUTHOR_IS_GATE_JUDGE:QUALITY_READY",
+          "COAUTHOR_SELF_APPROVAL"
+        ],
+        "policy_version": "1.5.0",
+        "note": "Local policy check only; provider branch protections and live CI remain authoritative"
+      }
+    },
+    {
+      "id": "finish-handoff-does-not-demand-merge",
+      "pass": true,
+      "observed": {
+        "verdict": "PASS",
+        "failures": [],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "finish-missing-status-rejected",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "INVALID_FINISH_STATUS"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "finish-merge-current-gates",
+      "pass": true,
+      "observed": {
+        "verdict": "PASS",
+        "failures": [],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "finish-completion-must-match-gate-inputs",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "FINISH_VERIFICATION_INPUT_STALE:inputs_revision"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "finish-readiness-not-issued-by-worker",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "WRONG_FINISH_STATUS_OWNER"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "finish-pending-quality-not-merge-ready",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "MISSING_OR_DUPLICATE_GATE:QUALITY_READY"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "finish-active-writer-cleanup-rejected",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "UNSAFE_WORKTREE_CLEANUP"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "cleanup-string-cannot-bypass-writer-check",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "INVALID_BOOLEAN:cleanup.requested"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "finish-merge-claim-needs-post-proof",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "NO_REAL_POST_INTEGRATION_EVIDENCE"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "empty-plan-rejected",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "MISSING_PLAN_FIELD:accepted_direction_ref",
+          "MISSING_PLAN_FIELD:artifact_revision",
+          "MISSING_PLAN_FIELD:contract_revision",
+          "MISSING_PLAN_FIELD:inspection_ref",
+          "MISSING_PLAN_FIELD:objective",
+          "MISSING_PLAN_FIELD:plan_revision",
+          "MISSING_PLAN_FIELD:preconditions",
+          "MISSING_PLAN_FIELD:stop_conditions",
+          "MISSING_PLAN_RISKS",
+          "NO_INSPECTED_FILES",
+          "NO_PLAN_FILES",
+          "NO_STEPS"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "empty-completion-rejected",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "MISSING_COMPLETION_FIELD:artifact_revision",
+          "MISSING_COMPLETION_FIELD:claim",
+          "MISSING_COMPLETION_FIELD:contract_revision",
+          "MISSING_COMPLETION_FIELD:inputs_revision",
+          "MISSING_COMPLETION_FIELD:required_criteria"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "empty-debug-rejected",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "DEBUG_STAGE_MISSING_OR_OUT_OF_ORDER:FIX",
+          "DEBUG_STAGE_MISSING_OR_OUT_OF_ORDER:LOCALIZE",
+          "DEBUG_STAGE_MISSING_OR_OUT_OF_ORDER:OBSERVE",
+          "DEBUG_STAGE_MISSING_OR_OUT_OF_ORDER:REGRESSION_TEST",
+          "DEBUG_STAGE_MISSING_OR_OUT_OF_ORDER:REPRODUCE",
+          "DEBUG_STAGE_MISSING_OR_OUT_OF_ORDER:ROOT_CAUSE_HYPOTHESIS",
+          "DEBUG_STAGE_MISSING_OR_OUT_OF_ORDER:TEST_HYPOTHESIS",
+          "DEBUG_STAGE_MISSING_OR_OUT_OF_ORDER:VERIFY"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "empty-tdd-rejected",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "NO_GREEN_EVIDENCE",
+          "NO_RED_EVIDENCE",
+          "NO_REFACTOR_EVIDENCE",
+          "RED_NOT_BEFORE_GREEN",
+          "RED_WRONG_REASON",
+          "REFACTOR_NOT_AFTER_GREEN"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "empty-isolation-rejected",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "NO_ISOLATION_LEASES"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "empty-feedback-rejected",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "NO_REVIEW_FEEDBACK"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "empty-finish-rejected",
+      "pass": true,
+      "observed": {
+        "verdict": "FAIL",
+        "failures": [
+          "COMMITS_UNKNOWN",
+          "INVALID_BOOLEAN:cleanup.requested",
+          "INVALID_FINISH_STATUS",
+          "MISSING_FINISH_FIELD:artifact_revision",
+          "MISSING_FINISH_FIELD:diff_inspection_ref",
+          "MISSING_FINISH_FIELD:handoff_ref",
+          "MISSING_FINISH_FIELD:outcome",
+          "MISSING_FINISH_FIELD:working_tree_ref",
+          "MISSING_FINISH_VERIFICATION",
+          "UNRELATED_FILES_NOT_IDENTIFIED"
+        ],
+        "scope_limit": "Declared structure/currentness only; inspect raw evidence and execute real checks independently."
+      }
+    },
+    {
+      "id": "missing-submission-structured-blocker",
+      "pass": true,
+      "observed": {
+        "verdict": "BLOCKED",
+        "reason": "[Errno 2] No such file or directory: 'C:\\\\Users\\\\carva\\\\.claude\\\\agent-system\\\\evals\\\\missing-synthetic-submission--fixture.json'"
+      }
+    }
+  ],
+  "scope_limit": "Synthetic policy regressions, not native model dispatch or project reliability."
+}

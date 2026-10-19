@@ -1,0 +1,22 @@
+# CURRENT_MISSION — Pre-UX dependency closure
+
+Revision **MISSION-PREUX-1.0**, 2026-10-15 America/Sao_Paulo. State **COMPLETE_DOCUMENTARY_CLOSURE**.
+IMPLEMENTATION_AUTHORIZED = NO · IMPLEMENTATION_STARTED = NO · FIGMA_AUTHORIZED_IN_THIS_MISSION = NO.
+
+The Founder explicitly authorized resolving as many pre-UX scientific, technical, professional and operational dependencies as possible. **Do not reopen rebaseline 3.0.0.** [Canonical Index](canon/CANONICAL_INDEX.md), PTC-3.0.0 and PTM-1.0 remain authority. The previous completed mission is preserved at [pre-amendment checkpoint](governance/snapshots/2026-10-15-pre-ux-closure/CURRENT_MISSION.md).
+
+Use AGENTS.md/CLAUDE.md and the installed global Chief architecture. Scope/routing/owners/judges/stop/escalation per workstream and the raw Founder request are in [MISSION_RECORD](audits/pre-ux-2026-10-15/MISSION_RECORD.md). Execution Proportionality applies. Actual evidence synthesis is required; fidelity-only review cannot substitute scientific/provider facts. No AI role constitutes a licensed professional or legal signoff.
+
+Authorized work: A training/concurrent adaptation evidence; B contextual Nutrition/professional boundaries in Brazil, supplements default OUT; C provider-neutral wearable capabilities and integration recommendation, not provider-shaped product domain; D provenance/confidence/trace/agency/LLM/idempotency/eventual-consistency/safety-hold contracts; E current pricing benchmarks and experiments without official price; F independent cross-audit of the 15 required questions. Update AEC/Domain/Architecture/Scope/Experience/Core Flows/PDR only where a real consumer requires. Evidence packs are supporting sources; no parallel doctrine or premature Technical Handoff.
+
+Hard boundaries: no screens, layout, wireframe, screen composition, visual direction, design system, Figma opening/editing, frontend/backend/API/database/app/scaffold/production code. Preserve Running × Strength, Engine core, contextual Nutrition, supported closed loop and Crew Lite. No automatic rebaseline or expanded social/sports/nutrition scope. No registration/partner application/spend/account access or implementation spike is authorized by documentary research.
+
+Completion: close all resolvable documentary questions; classify remaining exact decisions by external professional, Founder, legal, provider approval or implementation/spike, with evidence needed and impact on UX/Figma/implementation/release. Do not fabricate closure, universal thresholds or readiness scores. Explain HOLD and context/agency semantics sufficiently for later UX without prescribing visuals. Pricing does not block UX/Figma. Findings return to authors; independent review is version-bound. Existing canonical reviews apply to unchanged baseline, not new amendments.
+
+Resume exactly from the saved evidence/integration/review checkpoint under the Founder's follow-up request recorded in MISSION_RECORD. Do not rerun completed research, duplicate evidence or reopen 3.0.0. Complete pending independent reviews against finalized inputs, fix material findings and revalidate only affected revisions.
+
+Stop after updated authoritative documents, objective verification, independent competent reviews, publication/index/ledger and the short final report **A–M** requested on resumption (replaces the earlier A–P report format). Claude resumes Friday 2026-10-16 through the index, Scope/AEC/dependencies and then detailed UX under its next mission. Do not proceed to visual UX or Figma here.
+
+## Closure — VF-PREUX-20261015-001
+
+The bounded documentary mission is complete. Six consumers 1.1 and PDR-1.1 are published with current independent Research, Engineering r2, Security and Product/UX readiness reviews. ENG-PREUX-01 is resolved; r1 FAIL and exact inputs remain preserved. See the index and audits/pre-ux-2026-10-15/PUBLICATION_EVENT.json. PTC-3.0.0/PTM-1.0/AGENTS/CLAUDE are unchanged; ledger history is append-only. G01–G11 remain exact external/implementation/Founder decisions, not fabricated closure. No global product/documentary blocker to detailed UX; dependent prescriptive, clinical, privacy and provider-specific details await their stated evidence. Figma requires future detailed UX/structural review and authorisation; no design/code starts here. The A–M report ends this mission. HARD STOP: no further research, visual UX, Figma or implementation.
