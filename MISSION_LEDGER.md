@@ -632,3 +632,17 @@ Page 05 Flows/Prototype has five flows with 24 hotspots and 5 starting points:
 5. Two sessions in the same day.
 
 Tall frames scroll as whole frames in the prototype; fixed tab bars are not yet configured.
+
+## 2026-10-20 — Slice completed: onboarding, first value, strength completed, shareable / MISSION-VISUAL-1.0
+
+New components: Choice Card, Onboarding Progress, Effort Chip and Share Field Toggle.
+
+New screens on page 04:
+- **Onboarding · prioridade** (ONB-07). Balanced ("os dois a sério") is offered as a real option.
+- **Primeiro valor** (ONB-13/17/18). A proposed coordinated week with a summary, the rhythm, the sessions, the plan rule and an honest limit; adopting it comes before any offer.
+- **Força concluída**. Facts per exercise, an Observed comparison and an optional effort signal (ONB-19).
+- **Compartilhar · prévia** (SHR-04/06). Allowlisted fields only; heart rate, exact time, location and health data are never offered.
+
+Page 06 has the shareable card in Stories 1080×1920 and Square 1080×1080.
+
+Page 05 adds flows 6 (onboarding → first value → Hoje) and 7 (strength completed → share), for 7 flows in total. Onboarding steps 1–2 and 4–6, the paywall (FLOW-17) and light-mode validation are still open.
