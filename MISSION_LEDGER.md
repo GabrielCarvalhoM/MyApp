@@ -604,3 +604,16 @@ Page 02 Components: the Candidate A components moved to 07 Archive without delet
 ## 2026-10-20 — Type scale completed; V1 final screens assembled from components / MISSION-VISUAL-1.0
 
 The type scale now has 25 roles taken from the sizes S1.2 actually uses: Data/11–34, Label XS/L/XL, Overline/S, Tag, Nav, Control and Body Medium. With them, all 396 component texts are bound to a style. On page 04 V1 Final Screens, the six S1.2 screens (Hoje, Execução de Força, Semana, Activity Detail, Progresso, Deep Dive) are rebuilt from instances of the page 02 components, 75 instances in total, and are visually identical to S1.2. The Candidate A screens moved to 07 Archive without deletion. Still open: states (loading/empty/error/adapted) applied on screens, flows/prototype, light mode validation, and the sport variants not yet designed (easy/long run profiles, strength-day hero). No design-system freeze and no production code.
+
+## 2026-10-20 — Sport-scoped atmosphere; variants and states / MISSION-VISUAL-1.0
+
+Founder decision: the sport atmosphere gradient is scoped to the sport's context. It appears only on sport-dedicated screens or inside a card scoped to one sport, never in the background of Hoje, Semana or Progresso. The Founder removed those glows directly in Figma; the rule is persisted in VIS-11, in the paint style descriptions and in the Foundations specimen.
+
+New Figma components, all built from tokens:
+- Session Profile variants (Intervals, Easy, Long progression) and Session Structure · Strength.
+- Session Hero variants Run, Strength and Rest.
+- Week Rhythm variants by day.
+- Change Proposal (Presented, Applied, Stale), following CONF-01: scope, kept items, Observed fact, plan rule and trade-off, one explicit act.
+- Rest Timer, Status Banner (Offline, Sync error, Changed) and Skeleton.
+
+Page 04 V1 · Estados has seven state screens built from instances: Hoje on a strength day, on a rest day, with a pending proposal, offline and loading; Execução de Força during rest; and Progresso with limited data.
