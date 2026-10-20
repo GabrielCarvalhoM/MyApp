@@ -663,3 +663,20 @@ It is followed by first value and then the subscription screen (SURF-14 / ONB-18
 New components: Plan Option. Effort Chip was renamed Option Chip and its sizing fixed.
 
 Page 05 flow 6 is now the full path: onboarding → first value → subscription → Hoje. The prototype has 7 flows and 33 hotspots. Still open: paywall states (pending, error, active, restore), light-mode validation, and a fixed tab bar in the prototype.
+
+## 2026-10-20 — Subscription states, adoption order and WCAG contrast / MISSION-VISUAL-1.0
+
+Subscription states (SURF-14): confirming with the store (nothing is charged or activated before the store confirms), error ("nothing was charged"), active (the store confirmation date is shown and the week is not yet adopted), and unknown (treated as neither active nor cancelled; logging and history keep working; Restore is available).
+
+Adoption order fixed per ONB-13 / SURF-14: first value "Quero esta semana" → subscription → active → "Adotar minha semana" (a separate act) → Hoje. Prototype flow 6 is updated to match.
+
+WCAG AA audit of the semantic text-on-background pairs, both modes. Primitive changes:
+
+| Primitive | Old | New | Reason |
+|---|---|---|---|
+| neutral/400 (dark text/tertiary) | #6E737D | #82878F | was 3.6–4.1 on surfaces |
+| zone/1-dark | #59606E | #686E7B | was 2.9 on surface |
+| orange/700 (light run/accent) | #C94A12 | #B74310 | was 4.0–4.3 as text |
+| zone/4-light | #B7791F | #AE731D | low margin for graphics |
+
+Results after the change: text pairs ≥4.6 and graphics ≥3.3 in both modes. text/quaternary stays at about 2:1 and is documented as disabled/future content only (exempt under WCAG 1.4.3).
