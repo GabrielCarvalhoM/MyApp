@@ -646,3 +646,20 @@ New screens on page 04:
 Page 06 has the shareable card in Stories 1080×1920 and Square 1080×1080.
 
 Page 05 adds flows 6 (onboarding → first value → Hoje) and 7 (strength completed → share), for 7 flows in total. Onboarding steps 1–2 and 4–6, the paywall (FLOW-17) and light-mode validation are still open.
+
+## 2026-10-20 — Full onboarding and subscription screen / MISSION-VISUAL-1.0
+
+Page 04 now has the complete onboarding:
+1. Language and 18+ (ONB-02/03).
+2. Goals per modality, with "no goal" declared rather than inferred (ONB-06).
+3. Consent sheet, purpose-scoped to recommendation only; the final legal text is a slot (ONB-05, DEP-G07).
+4. Priority, including Balanced (ONB-07).
+5. Experience and recent practice in categories, with "não sei" (ONB-08).
+6. Availability windows and time zone (ONB-09).
+7. Equipment and a voluntary limitation question with no diagnosis (ONB-10/11).
+
+It is followed by first value and then the subscription screen (SURF-14 / ONB-18). The subscription screen comes after value, keeps prices and terms as testable slots, has no urgency, offers "Agora não", and states that subscribing does not adopt a plan.
+
+New components: Plan Option. Effort Chip was renamed Option Chip and its sizing fixed.
+
+Page 05 flow 6 is now the full path: onboarding → first value → subscription → Hoje. The prototype has 7 flows and 33 hotspots. Still open: paywall states (pending, error, active, restore), light-mode validation, and a fixed tab bar in the prototype.
