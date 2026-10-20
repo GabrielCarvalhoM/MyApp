@@ -1,7 +1,7 @@
 # Vilumo Fit — Product Decision Register
 
-Revisão: **PDR-1.1** · 2026-10-15 · Amendment pré-UX; estado de publicação e gates no índice. Owner: Chief (registro); cada decisão mantém seu decisor.
-Autoridade normativa: [Product Thesis Contract 3.0.0](../canon/VILUMO_FIT_PRODUCT_THESIS_CONTRACT.md). Fonte Founder desta revisão: [REBASELINE_RECORD](../audits/rebaseline-3.0.0/REBASELINE_RECORD.md). Este registro não substitui a tese nem transforma hipótese em fato.
+Revisão: **PDR-1.3** · 2026-10-19 · CANDIDATE_IN_ISOLATION / FREEZE-20261019-r1; baseline/amendment e estado no índice. Owner: Chief (registro); cada decisão mantém seu decisor.
+Autoridade normativa candidata: [Product Thesis Contract 3.2.1](../canon/VILUMO_FIT_PRODUCT_THESIS_CONTRACT.md). Fonte Founder do baseline: [REBASELINE_RECORD](../audits/rebaseline-3.0.0/REBASELINE_RECORD.md). Fonte do amendment atual: [freeze Founder](../audits/v1-freeze-2026-10-19/FOUNDER_REQUEST.txt) e [adendo training doctrine](../audits/v1-freeze-2026-10-19/TRAINING_ADDENDUM.md); FREEZE-20261019-r1, SIL como input preservado.
 
 ## 1. Leitura vigente e preservação
 
@@ -9,7 +9,7 @@ Autoridade normativa: [Product Thesis Contract 3.0.0](../canon/VILUMO_FIT_PRODUC
 
 Linhagem: PDR-0.1 → 0.2 → 0.3 → 0.4 → 0.4.1 → 0.5 → 0.6 → 1.0. O texto anterior também está no [snapshot integral](../governance/snapshots/2026-10-14-pre-3.0.0/product/PRODUCT_DECISION_REGISTER.md). DR-01 a DR-54, alternativas, rulings, findings e fontes humanas permanecem recuperáveis. Não houve reset de projeto nem exclusão de decisão histórica.
 
-O pedido direto do Founder de 2026-10-14 decide a nova direção estratégica. A tese a formaliza e os consumidores a traduzem. Decisões históricas incompatíveis foram **superadas**, não retroativamente corrigidas. Futuras alterações estratégicas exigem nova decisão do Founder; detalhes de produto/UX dentro dos limites são resolvidos pelo owner competente.
+O pedido de 2026-10-14 é o baseline; pedidos diretos de freeze/adendo de 2026-10-19 governam as supersessões atuais. A tese a formaliza e os consumidores a traduzem. Decisões históricas incompatíveis foram **superadas**, não retroativamente corrigidas. Futuras alterações estratégicas exigem nova decisão do Founder; detalhes de produto/UX dentro dos limites são resolvidos pelo owner competente.
 
 ## 2. Novas decisões
 
@@ -42,6 +42,38 @@ DR-66–71 consomem a missão de 2026-10-15 ([pedido e roteamento](../audits/pre
 | DR-70 | ASSUMED: estímulos/faixas e testes comerciais, separados de fatos observados. Nenhum preço oficial, WTP comprovada ou plano comercial deduzido dos modos M1/M2/M3. | Founder decide oferta/preço; Data desenha experimento; [COMMERCIAL_EVIDENCE_AND_TESTS](../audits/pre-ux-2026-10-15/COMMERCIAL_EVIDENCE_AND_TESTS.md) é suporte à decisão, não Product Truth. | Oferta/trial/free boundary, orçamento e prova de conversão/renovação/custo; G10. **Não bloqueia UX/Figma.** |
 | DR-71 | DECIDED: separar fechamento documental de validação profissional, acesso/provider, prova executável e decisão Founder. A estrutura de UX pode consumir limites/holds/estados já fechados; conteúdo/implementação dependentes não herdam prontidão. | Chief registra, judges independentes avaliam deltas; PTC/PTM/AGENTS/CLAUDE e histórico permanecem protegidos. Matriz única de decisões abertas em §5, consumida em RS §6. | Nenhum PASS documental equivale a UX Spec, Figma, algoritmo seguro, integração provada, clinical/legal signoff ou release. |
 
+### Amendment SIL — DR-72–75 (CANDIDATE_IN_ISOLATION)
+
+Fonte/autoridade: [pedido Founder 2026-10-19](../audits/specialist-layers-2026-10-19/FOUNDER_REQUEST.md); [impacto/estado](../audits/specialist-layers-2026-10-19/MISSION_RECORD.md). DR-55–71, G01–G11 e histórico permanecem. Este bloco não presume integração/publicação ou aceite de Claude.
+
+| ID | Decisão / classe | Autoridade / efeito |
+|---|---|---|
+| DR-72 | DECIDED / CURRENT: Specialist Parity + Cross-Sport Superiority é qualidade do núcleo decisório de cada modalidade e coordenação superior pretendida entre elas; não feature parity ou efeito comprovado. | Founder; PTC C045 + links C024/C042/C043. Amplia padrão de qualidade sem superar DR61/loop. Prova continua O014/O017/G01–G04/G09/G11. |
+| DR-73 | DECIDED / CURRENT: Run Intelligence e Strength Intelligence first-class sob Adaptive Engine / Orchestrator; Athlete Model compartilhado; Recovery/Load e Interference Engine internos; única prescrição final. | Founder; C046. PDM I11/I12, PA AR16/17, AEC e AEOS consomem SIS/RIL/STIL, sem serviços/IA/telas obrigatórios. |
+| DR-74 | DECIDED / arquitetura subordinada: contratos propositivos, validação conjunta/horizonte, exposição por fato/revisão sem dupla contagem, avaliações acíclicas e progressão versus redução deliberada distintas. | Pedido Founder requisitos 5–7 + detalhamento documental Codex. SIS e AEOS, preservando HC/B0/JEV SHADOW/guarda/agency/privacidade. Sem fórmulas ou coleta nova. |
+| DR-75 | DECIDED / execução: delta isolado porque repositório ativo tem main sem commits; não editar missão/UX/consumidores que sustentam gate do Claude. Patch preparado para depois do gate; visual continua sendo próximo trabalho quando autorizado. | Founder requisitos 2/8/10; fonte SIL. Não reinicia missão nem afirma autorização Figma antes do checkpoint exigido em CURRENT_MISSION. |
+
+Detalhamento de G01/G02/G03/G11 para estas camadas é consumido nas specs; owners, triggers e gates são os existentes em §5. Não inventar novo registry de dependências ou devolver pesquisa genérica ao Claude.
+
+### Freeze final — DR-76–85 (Founder decide direção; owners traduzem)
+
+Fonte: [missão completa](../audits/v1-freeze-2026-10-19/FOUNDER_REQUEST.txt); detalhes/subordinação no Canon e Scope. Fonte humana atual supersede apenas o delta abaixo; o restante dos registros continua válido. DR76–84 formalizam decisões expressas do pedido; DR85 explicita escolhas subordinadas de Product/UX/Engineering (ramo temporal/manual, métricas quando comprovadas e ausência de canal na primeira superfície), sem alegar que o Founder escolheu tecnologia ou testou sensores.
+
+| ID | Decisão / consumidores | Disposição e limite |
+|---|---|---|
+| DR-76 | Run+Strength wedge premium; Crew toda DEFERRED pós-validação; não rejeitar tese social. | C001/C004/C005/C038/C041/C047; supera obrigação V1 de DR59/65 e modes sociais, não L001/L010–12. |
+| DR-77 | Small Product Surface, Premium Execution + Anti-bloat. | C048; visual premium dark-first/light preservado; escopo removido vira qualidade. |
+| DR-78 | Goal hierarchy Run-first/Strength-first/Balanced + objetivo por modalidade; primeira semana coordenada como first value. | C049/C052, AEOS §6, UX §6; sem dose igual, peso oculto, plano fictício ou prioridade presumida. |
+| DR-79 | L024 stable-by-default, update≠mutation, plano semanal compromisso, necessidade/change cost, hysteresis/stickiness e minimum effective change. | C050, AEC §1.2/AEOS §10: Level0/adequacy primeiro; guards imediatos; supersede comparação que alteraria plano adequado só por melhora teórica. |
+| DR-80 | Progressive Depth três níveis com deep analytics Run/Strength/Overall acessíveis. | C051, UX/Scope; fatos/estimativas/indeterminado, sem dashboard no Hoje ou causalidade falsa. |
+| DR-81 | External Shareability V1 sem rede: eventos prioritários C054, artefato premium/identidade própria e destinos externos por cópia voluntária. | C016/C054, PA§7/UX§16; convites e coletivo adiam; sem dados privados de saúde/terceiros/rotas/metadados ocultos/auto-post. |
+| DR-82 | Subscription-first, value-before-hard-ask, plan preview→valor→paywall→treino; testar trial/anual/mensal/price/timing. | C053, UX§6/§24; resolve monetização fundamental de G10/O009; detalhes comerciais não bloqueiam visual. |
+| DR-83 | Ingest-first wearable; outbound elegível condicional, sem launch gate global; Nutrition só apoio leve, módulo completo diferido. | C006/C039/C040/C055; supera exigência outbound-global DR58/68/Scope anterior; não muda regras de fidelidade/consentimento da rota que entrar. |
+| DR-84 | Após gate corrente: sync→conflitos materiais novos→checks mínimos→Visual/UI; nenhuma nova missão documental/large judge cycle sem conflito material. | C056; pedido atual é instrução Founder para sequência. Não fecha gate Claude, não cria telas aqui, não autoriza código/release. |
+| DR-85 | Conversa/IA genérica e agentes visíveis OUT; naming/copy/price/template/provider testáveis. Telefone: execução tempo/manual e métricas medidas quando capability/finalidade provadas. | Define ramo de UI sem pendência estratégica; GPS/sensores não prometidos antes de prova. G06/G07/G09 continuam dependências de implementação, não discovery. |
+
+DR55–75 acima são registros datados. Onde DR59/65/Crew-V1, convite externo V1, obrigação outbound-launch, agente pendente ou monetização fundamental aberta conflitarem, valem DR76–85/C047–56/L024 por autoridade Founder atual. Não editar retroativamente o que foi decidido em outubro. Specialist Parity/contratos SIL, autoridade/agência/safety/privacidade/histórico permanecem.
+
 ## 3. Disposição das decisões históricas
 
 PRESERVADO = sentido vigente no escopo novo; REFORMULADO = sentido útil com limite novo; SUPERADO = substituído com histórico intacto; DIFERIDO = possível, sem obrigação V1; ABERTO = lacuna concreta com owner/trigger em §5. A aprovação vigente consta do índice, não desta tabela de autoria.
@@ -50,15 +82,15 @@ PRESERVADO = sentido vigente no escopo novo; REFORMULADO = sentido útil com lim
 |---|---|---|
 | DR-01 | PRESERVADO | Full Member versus Crew Member são modos de participação, não planos comerciais; rótulos finais são UX copy. |
 | DR-02 | REFORMULADO | Domínio integrado mais enxuto no PDM-1.0; Engine é ponto de decisão, sem obrigação dos sete subsistemas anteriores. |
-| DR-03 | PRESERVADO | Participação leve por intenção/desfecho próprio; não fabrica contexto nem adequação validada pelo motor. |
-| DR-04 | REFORMULADO | Consentimento por Crew e minimização; check-in voluntário não expõe dados privados ou ausência. |
-| DR-05 | PRESERVADO | Compromisso social não prescreve carga; descansar/adaptar pode ser legítimo. |
+| DR-03 | DEFERRED para V1 por DR76 | Interpretação anterior preservada no baseline; tese/controles sociais só na expansão autorizada pós-validação. |
+| DR-04 | DEFERRED para V1 por DR76 | Interpretação anterior preservada no baseline; tese/controles sociais só na expansão autorizada pós-validação. |
+| DR-05 | DEFERRED para V1 por DR76 | Interpretação anterior preservada no baseline; tese/controles sociais só na expansão autorizada pós-validação. |
 | DR-06 | DIFERIDO | Agregação/pontuação coletiva não é necessária ao Crew Lite; não há ranking físico universal. |
 | DR-07 | REFORMULADO | Esportes externos só contexto; sem catálogo que prometa suporte e sem dívida de prazo para ciclismo/natação. |
 | DR-08 | PRESERVADO / PARCIALMENTE FECHADO | Contrato qualitativo de confiança/proveniência fechado em DR-66/69; instrumentos/limiares reais em G02. |
 | DR-09 | PRESERVADO | Recuperação, desconhecido, interrupção e retorno distintos; ausência de dados não é falha. |
 | DR-10 | PRESERVADO | Engine recomenda; pessoa age; social só informa intenção/disponibilidade própria. |
-| DR-11 | REFORMULADO | Crew Lite mínimo em V1 Scope; ontologia social ampla deixa de ser backlog obrigatório. |
+| DR-11 | DEFERRED para V1 por DR76 | Interpretação anterior preservada no baseline; tese/controles sociais só na expansão autorizada pós-validação. |
 | DR-12 | PRESERVADO | Modo de participação não determina automaticamente preço/entitlement. |
 | DR-13 | REFORMULADO / PARCIALMENTE FECHADO | Matriz pública e contratos C/D fechados em DR-68/69; acesso, provider/device e prova real em G06/G09. |
 | DR-14 | PRESERVADO / ABERTO | Minimização/saída/revogação; retenção e prova técnica antes de persistência real. |
@@ -69,22 +101,22 @@ PRESERVADO = sentido vigente no escopo novo; REFORMULADO = sentido útil com lim
 | DR-19 | PRESERVADO / ABERTO | Efeitos sociais, performance, retenção, aquisição e moat são hipóteses. |
 | DR-20 | REFORMULADO / ABERTO | Critérios comportamentais de cobertura V1 Run×Strength; validação de domínio e implementação futura exigidas. |
 | DR-21 (FG-1) | SUPERADO | Quatro esportes obrigatórios → DR-56/60: dois em V1, demais possíveis expansões. |
-| DR-22 (FG-2) | PRESERVADO | Pacote A/C025: 3 Crews/~8; convite privado; criação em ambos modos. |
-| DR-23 (FG-3) | SUPERADO | Estratégia de lançamento decidida agora como Crew Lite; detalhes mínimos no Scope. |
+| DR-22 (FG-2) | DEFERRED para V1 por DR76 | Interpretação anterior preservada no baseline; tese/controles sociais só na expansão autorizada pós-validação. |
+| DR-23 (FG-3) | DEFERRED para V1 por DR76 | Interpretação anterior preservada no baseline; tese/controles sociais só na expansão autorizada pós-validação. |
 | DR-24 (FG-4) | ABERTO / INFORMADO | Benchmarks/hipóteses/testes DR-70; oferta/preço Founder em G10, sem bloquear UX/Figma. |
 | DR-25 | DIFERIDO | Métrica operacional antes de medir/incentivar; sem fórmula inventada na V1 documental. |
 | DR-26 | DIFERIDO | Tagline e marca em missão posterior. |
 | DR-27 | DIFERIDO | Spin-off não é direção atual nem dependência da V1. |
 | DR-28 | DIFERIDO | Competição fora de Crew Lite. |
 | DR-29 | REFORMULADO / DIFERIDO | Feedback útil sem gamificação punitiva; badges/streaks não obrigatórios. |
-| DR-30 | REFORMULADO | Apoio estruturado sem chat/texto livre como sistema social. |
+| DR-30 | DEFERRED para V1 por DR76 | Interpretação anterior preservada no baseline; tese/controles sociais só na expansão autorizada pós-validação. |
 | DR-31 | PRESERVADO | Recovery é contexto e decisão, não destino ou score obrigatório. |
 | DR-32 | PRESERVADO | Entrada progressiva, solo funcional, sem coleta desnecessária. |
-| DR-33 | PRESERVADO | Convite/saída/remoção/silenciar privados; detalhe da prova de acesso antes de implementar. |
-| DR-34 | PRESERVADO | Participação leve pode evoluir para motor sem reiniciar identidade/membership. |
+| DR-33 | DEFERRED para V1 por DR76 | Interpretação anterior preservada no baseline; tese/controles sociais só na expansão autorizada pós-validação. |
+| DR-34 | DEFERRED para V1 por DR76 | Interpretação anterior preservada no baseline; tese/controles sociais só na expansão autorizada pós-validação. |
 | DR-35 | REFORMULADO / ABERTO | Engine não exige LLM; agente opcional sem autoridade própria. Modelo/tools/evals só se selecionados. |
-| DR-36 | DIFERIDO | Social profiles/graph/memory fora de V1; sem coleta antecipada. |
-| DR-37 | DIFERIDO | Together/Moments e sessões coletivas não obrigatórios. |
+| DR-36 | DEFERRED para V1 por DR76 | Interpretação anterior preservada no baseline; tese/controles sociais só na expansão autorizada pós-validação. |
+| DR-37 | DEFERRED para V1 por DR76 | Interpretação anterior preservada no baseline; tese/controles sociais só na expansão autorizada pós-validação. |
 | DR-38 | REFORMULADO | Share model mínimo: própria pessoa/convite; coletivo externo diferido por risco de inferência. |
 | DR-39 | DIFERIDO | Shareable visual system após UX estrutural, em missão autorizada de design. |
 | DR-40 | PRESERVADO | Sem exposição/inferência de terceiros; membership não consente projeção externa. |
@@ -120,14 +152,16 @@ As classes, objetos e efeitos qualitativos foram fechados em DR-66–69; não de
 | **G03 Aderência** · DR-20; TR-G05 | Product/UX com profissional de treino fixa critérios por modalidade/sessão, parcial e tolerâncias; prova por casos incluindo correção, desvio admissível e ausência de sync. | Parcial/desconhecido/correção são estados fechados. Labels/juízo automático que dependem de limiar ficam provisórios. | Antes de classificar/usar aderência automaticamente. Sem score social ou mérito por excesso. |
 | **G04 Safety/retorno** · DR-17; TR-G04/G-SAFE-1 | Profissionais competentes (médico quando avaliação clínica) aprovam classes concretas, urgência/copy, elegibilidade, restrição, liberação e retorno; treino cobre retorno não clínico, Engineering falha operacional. Prova: regras e casos versionados, evidência de reavaliação e responsável real. | HOLD/contexto/contestação/retorno podem ser detalhados. Triagem, conselho específico, rótulo “seguro” e copy clínica não ficam finalizados. | Antes de coletar/classificar/atuar nesses casos, liberar hold ou prescrever retorno. Confirmação/score/LLM não dão clearance. |
 | **G05 Nutrition** · DR-18/67; NUT-G01/G-REG-1 | Nutricionista registrado e jurídico brasileiro revisam textos, lógica de seleção/personalização, públicos/restrições, modelo de serviço e responsabilidades/registro aplicáveis. Prova: revisão por asset/policy/versão. CFN 599/2018 vigente; a entrada da 856/2026 foi adiada pela 858/2026 para 23/01/2027 (REG-003); reconsultar vigência na ativação. | Phases/contexto/omissão/obsolescência e recusa podem avançar. Texto individualmente diretivo e orientação concreta não são aprovados por este documento. | Antes de publicar conteúdo/ativar regras afetadas. Quantidades individuais/clinical nutrition NUT-G02 permanecem fora do comportamento autorizado; não criar backlog de dieta ou suplementos. |
-| **G06 Integrações** · DR-13/58/68; WEA/CTRL | Engineering escolhe sequência técnica condicionada a acesso/entitlement, sem domínio provider-shaped; Founder decide orçamento/compromisso comercial. Prova real posterior: aprovação de produção, matriz alvo/dispositivo, neutral→adapter/loss report, envio/guiamento/retorno, update/delete/unknown e custo contratado. | Fallback/limites/status independem de vendor; nomes/promessas de compatibilidade não são suporte aprovado. | Bloqueia adapter/handoff dependente sem acesso/contrato e claim de relógio/closed loop sem spike em device. Pelo menos um caminho real é condição de launch. Direct vs Terra não é decisão de tese. |
+| **G06 Integrações** · DR-13/58/68; WEA/CTRL | Engineering escolhe sequência técnica condicionada a acesso/entitlement, sem domínio provider-shaped; Founder decide orçamento/compromisso comercial. Prova real posterior: aprovação de produção, matriz alvo/dispositivo, neutral→adapter/loss report, envio/guiamento/retorno, update/delete/unknown e custo contratado. | Fallback/limites/status independem de vendor; nomes/promessas de compatibilidade não são suporte aprovado. | Bloqueia adapter/handoff dependente sem acesso/contrato e claim de relógio/closed loop sem spike em device. Outbound não é mais condição global de launch (DR83); somente rota que entrar recebe prova completa. Direct vs Terra não é decisão de tese. |
 | **G07 Dados e modelo jurídico** · DR-14/52; G-PRIV-1 | Founder/jurídico com Security/Engineering classifica operações/campos/inferências, base legal, destinatários/transferência, prazos/exceções de retenção/deleção, direitos e registros profissionais. Prova: inventário de finalidade→dado→derivado e assessment operacional; consentimento sozinho não comprova adequação. | Consentir/recusar/revogar/direitos e privacidade no loop já têm contrato. Copy final depende dos propósitos/recipients reais; PT-BR/EN equivalentes. | Antes de coleta/transferência/persistência reais afetadas. Durações não arbitradas sem necessidade/base; cessar I10 secundário e derivados preservando propósito primário independente válido. |
-| **G08 Identidade e abuso** · DR-53; PB-F-02/03 preservados | Engineering/Security especificam e verificam método proporcional 18+, comprovação de canal, convites/filas/limites, remoção/reentrada e abuso; jurídico participa se coleta/terceiro exigir. Prova: dados mínimos/método, casos negativos e audiência/notificações em Crews de dois e sobrepostas. | Pode detalhar ingresso/negação neutra/audiência já contratados. Método que mudar jornada retorna a Product/UX; nenhuma suposição de anonimato absoluto. | Antes de implementar/coletar com o método escolhido e antes do gate técnico. Não ampliar contatos/discovery ou mudar Crew Lite. |
+| **G08 Identidade e abuso (V1 pessoal; social diferido)** · DR-53; PB-F-02/03 preservados | Engineering/Security especificam e verificam método proporcional 18+ e conta pessoal; convites/filas/limites/remoção/reentrada sociais ficam diferidos até expansão, com controles já preservados; jurídico participa se coleta/terceiro exigir. Prova V1: dados mínimos/método, casos negativos de conta/idade e privacidade em notificações. Provas de Crews pequenas/sobrepostas ficam apenas no trigger da expansão social. | Pode detalhar ingresso/negação neutra/audiência já contratados. Método que mudar jornada retorna a Product/UX; nenhuma suposição de anonimato absoluto. | Antes de implementar/coletar com o método escolhido e antes do gate técnico. Sem contatos/discovery; controles Crew continuam diferidos, não trabalho V1. |
 | **G09 Realização e IA condicional** · DR-35/51/69; G-IMPL-1 | Engineering implementa contratos; Quality/Security independentes verificam autorização/versão/filas/idempotência/reconciliação/undo/holds/derivados/cross-account/Crew. Se LLM selecionado: AI Systems+Security avaliam campos/recipients/retention/no-training/evals/adversarial. Prova executada na revisão real. | Sem bloqueio documental. Incapacidade técnica que mudar comportamento volta ao Architect. Nenhum caminho depende de conversa. | Bloqueia technical/security/release readiness; não todo trabalho futuro neutro. Autonomia ampliada não é gap a resolver implicitamente: exige autorização nova. |
-| **G10 Comercial** · DR-12/24/70 | Founder decide oferta/free/paid/trial/preço/orçamento após desenho Data e custos/acesso; teste futuro mede conversão/renovação e contribuição com denominadores válidos. Prova: oferta aprovada, termos/restrições atuais e observação; benchmark não é WTP. | **Não bloqueia UX/Figma**. M1/M2/M3 não são planos comerciais; paywall não é definido aqui. | Antes de billing, teste comercial real ou lançamento econômico comprometido. Sem compra/cadastro/spend nesta missão. |
+| **G10 Comercial** · DR-12/24/70 | Subscription-first e value-before-hard-ask estão decididos (DR82). Founder define apenas oferta/trial/preço/orçamento testáveis após custos/acesso; teste futuro mede conversão/renovação e contribuição com denominadores válidos. Prova: oferta aprovada, termos/restrições atuais e observação; benchmark não é WTP. | **Não bloqueia UX/Figma**. Modos sociais não são tiers; jornada preferencial paywall/value-first definida em C053/UX; oferta/preço exatos testáveis, sem bloquear UI. | Antes de billing, teste comercial real ou lançamento econômico comprometido. Sem compra/cadastro/spend nesta missão. |
 | **G11 Eficácia/valor** · DR-19/25; MEAS-G01 | Research/Data com autoridade profissional desenham avaliação proporcional ao claim, comparador, público/medidas/guardrails; Founder aloca investimento. Prova de efeito não vem de referências/entrevistas ou features de concorrente. | Sem bloqueio estrutural; não usar claims de segurança/resultado não demonstrados. | Antes de rollout avaliativo/claims dependentes; política aprovada e prova de segurança precedem exposição a treino adaptativo. Não cria escopo de pesquisa clínica agora. |
 
-Não estão abertas: o wedge Run×Strength, a ausência de Cycling/Swimming na V1, Nutrition insights, Crew Lite, o objetivo bidirecional wearable e a missão sem código/Figma. Não repedir essas decisões.
+Não estão abertas: wedge Run×Strength premium, Crew fora da V1, External Shareability dentro, subscription-first/value-first, prioridades/first-value e stable-by-default. Wearables ingest-first com outbound condicional; Nutrition só apoio leve. Preço/threshold/provider/template/copy exatos não bloqueiam Visual/UI. Não repedir essas decisões.
+
+Freeze: G02 inclui critérios profissionais versionados de adequação, necessidade/benefício material após Change Cost, hysteresis/stickiness e trade-offs Balanced; sem thresholds arbitrários. G06 inclui medição/execução em segundo plano no telefone e finalidade G07 antes de ativação; fallback UX é tempo/manual explícito, sem mapa/traçado V1. G09 inclui entitlement atual separado de consentimento/adoção, sem interromper registro/fechamento em curso ou direitos/histórico por expiração. Nenhum desses itens exige redescoberta antes de UI.
 
 ## 6. Findings carregados e handoff
 
@@ -136,6 +170,16 @@ RA3-01–04 e DI4-01–04: têm disposição por cláusula no Truth Map 1.0; nã
 O [audit trail 3.0.0](../audits/rebaseline-3.0.0/REBASELINE_RECORD.md) continua prova daquela revisão. O amendment pré-UX 1.1 recebe evidência e pareceres próprios em [PREUX-20261015](../audits/pre-ux-2026-10-15/MISSION_RECORD.md); estado e versões selecionadas no [Canonical Index](../canon/CANONICAL_INDEX.md). Aceite real pelo consumidor Product/UX será registrado com a revisão; nenhum aceite de Claude é presumido. Handoff: índice → Scope/AEC/dependências atualizadas → domínio/arquitetura/Experience/Flows → UX detalhada sob missão autorizada. Não reabrir produto nem iniciar Figma/código nesta missão.
 
 ## Registro histórico integral — PDR-0.6 (não operacional)
+
+### Adendo training doctrine — DR-86–90
+
+| ID | Decisão / racional | Efeito / autoridade |
+|---|---|---|
+| DR-86 | Evidence-informed training, not AI-generated novelty; hierarquia qualitativa de suporte/humildade. Run/Strength/concurrent training usam fundamentos, aplicabilidade, resposta individual e limites. | Founder S9/C057; SIS§1.1/RIL/STIL/AEC. Sem pesquisa nova, score rígido ou autoridade LLM. |
+| DR-87 | Continuous Learning ≠ Exceptional In-Cycle Adaptation ≠ Systematic Between-Cycle Progression. Dados/modelo atualizam sem mutação; evolução relevante prefere próximo ciclo. | Founder C058; AEC§1.3/AEOS§10.3/PDM. Não revoga finalidade I10, HC, necessidade ou adoção. |
+| DR-88 | Progression earned ≠ Programmed Variation com training purpose ≠ Reactive Adaptation material. Consistência pode servir boa programação e personalização não exige instabilidade. | Founder C058/C059; especialistas/trace/UX. Nenhum rótulo contorna L024/menor intervenção/hysteresis/CONF-16. |
+| DR-89 | Comunicação explica quê/por quê/evidência/princípio/objetivo; sem IA novelty como prova de inteligência, perfeição/validação clínica/ótimo garantido sem prova. | Founder C060; EXP/EM/claims G11. Zero claims empíricos validados nesta missão. |
+| DR-90 | Revisão humana de domínio desejável quando viável antes de specialist-grade comprovado/escala agressiva: NON-BLOCKING / POST-V1 VALIDATION GATE. | Founder C061; G11/PS08 existentes. Sem bloquear Visual/UI/V1 por contratação, nova missão ou pesquisa; preserva gates aplicáveis antes de prescrição real dependente. |
 
 <!-- HISTORICAL_RECORD_START: PDR-0.6 byte-identical; current authority is sections 1–6 above. -->
 

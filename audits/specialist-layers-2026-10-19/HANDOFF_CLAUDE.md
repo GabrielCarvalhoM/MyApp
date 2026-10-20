@@ -1,0 +1,15 @@
+# Claude — Run/Strength documentados; continue o gate e depois visual
+
+SIL-20261019-r1 · 2026-10-19 · **patch isolado; não aplicado no seu checkout**. Fonte: [pedido Founder](FOUNDER_REQUEST.md). Feche o gate UXSPEC atual sobre os inputs já revisados. **Assim que ele fechar, siga para telas/visual**, com aprovação da UX Spec e autorização visual/Figma no checkpoint já exigido por CURRENT_MISSION. Não recomece produto, pesquisa ou especificação do motor.
+
+**Leia apenas o delta útil:** [SIS §§1–7](../../product/SPORT_INTELLIGENCE_SPEC.md); consulte [Run](../../product/RUN_INTELLIGENCE_SPEC.md)/[Strength](../../product/STRENGTH_INTELLIGENCE_SPEC.md) só se o detalhe exigir. Não precisa reler todo o projeto. [Registro](MISSION_RECORD.md) contém impacto/checagens/pareceres e lista completa.
+
+**Novas decisões:** PTC C045/DR72 = Specialist Parity + Cross-Sport Superiority, competência decisória comparável e coordenação superior pretendida; C046/DR73 = especialistas first-class, Athlete Model compartilhado, Recovery/Load e Interference internos ao Orchestrator, única prescrição final. DR74: mesmos fatos de exposição, validação conjunta sem loops, alvo original/adaptado/executado distintos. Redução deliberada não é falha nem progressão conquistada. Nada cria catálogo obrigatório, IA, tela ou serviço por layer.
+
+**Preservado:** wedge Run × Strength; um atleta/plano; B0/JEV SHADOW/HC/policy gate/guarda; agência/confirm/undo; G01–G11; Nutrition contextual; Crew Lite; wearables neutros e Strength app-first; feature parity continua fora do objetivo; Cycling/Swimming fora da V1. Paridade/efeito não estão demonstrados: validação real segue os gaps existentes.
+
+**Arquivos do patch:** novos `product/SPORT_INTELLIGENCE_SPEC.md`, `RUN_INTELLIGENCE_SPEC.md`, `STRENGTH_INTELLIGENCE_SPEC.md`; amendments em `canon/VILUMO_FIT_PRODUCT_THESIS_CONTRACT.md`, `canon/CANONICAL_INDEX.md`, `product/PRODUCT_TRUTH_MAP.md`, `PRODUCT_DECISION_REGISTER.md`, `PRODUCT_DOMAIN_MODEL.md`, `PRODUCT_ARCHITECTURE.md`, `V1_RELEASE_SCOPE.md`, `ADAPTIVE_ENGINE_CONTRACT.md`, `ADAPTIVE_ENGINE_OPERATIONAL_SPEC.md`, `ADAPTIVE_ENGINE_SCENARIO_LAB.md`; evidência nesta pasta. Manifesto/versões no registro.
+
+**Você NÃO precisa refazer:** UX Spec r3, EM/CF, navegação, sessões/objetos existentes, pesquisa, rebaseline 3.0.0, reviews históricos ou cenários antigos. Nenhum arquivo seu foi editado; missão e ledger ficaram intactos. Layers não aparecem como agentes/módulos na UI. Início de sessão com proposta pendente foi explicitado no AEOS, sem novo fluxo; outros UPSTREAM-ISSUE/FD continuam com seus owners.
+
+**Integração curta depois do gate:** conferir patch contra arquivos correntes; aplicar apenas o delta compatível. Não trocar sua árvore pela cópia isolada, não fazer reset e não sobrescrever missão/UX. Reviews anteriores continuam prova dos inputs originais; só divergência material no delta pede review localizado. Registrar aceite/publicação do amendment quando integrado, sem presumir seu aceite. Repositório ativo não tinha commit/base: o commit entregue tem baseline independente; prefira o patch ao cherry-pick de histórico desconhecido.

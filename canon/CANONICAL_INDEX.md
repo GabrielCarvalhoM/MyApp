@@ -1,48 +1,39 @@
 # Vilumo Fit — Canonical Index
 
-Revisão **CI-3.0.1** · 2026-10-15 (America/Sao_Paulo).
-Estado: **PREUX_DOCUMENTARY_CLOSURE — PUBLICADO**. Canon 3.0.0 preservado; consumidores 1.1 aprovados no escopo documental para detalhamento de UX, com dependências externas e executáveis explícitas.
+Revisão **CI-3.2.1-freeze** · 2026-10-19 · **CANDIDATE_IN_ISOLATION**.
+Este índice seleciona a V1 congelada para Visual/UI **na cópia isolada**. A integração/publicação deste patch e aceite do Claude ainda não ocorreram; não transferir PASS históricos a novos hashes. [Pedido Founder](../audits/v1-freeze-2026-10-19/FOUNDER_REQUEST.txt), [registro/auditoria A–Y](../audits/v1-freeze-2026-10-19/MISSION_RECORD.md), [handoff curto](../audits/v1-freeze-2026-10-19/CLAUDE_HANDOFF.md).
 
-## Uma verdade por responsabilidade
+## Uma autoridade por responsabilidade
 
-O Rebaseline **3.0.0 permanece vigente e não foi reaberto**. A missão de 2026-10-15 fecha dependências pré-UX nos consumidores existentes. [Pedido e roteamento](../audits/pre-ux-2026-10-15/MISSION_RECORD.md) definem autoridade/limites. Pesquisa é evidência, nunca doutrina concorrente. O [checkpoint de 14 arquivos](../governance/snapshots/2026-10-15-pre-ux-closure/MANIFEST.json) preserva os consumidores aprovados antes do amendment; os paths abaixo selecionam os consumidores 1.1 publicados nesta missão.
-
-| Fonte | Revisão | Owner / autoridade |
+| Fonte | Revisão selecionada | Responsabilidade |
 |---|---|---|
-| [Product Thesis Contract](VILUMO_FIT_PRODUCT_THESIS_CONTRACT.md) | VILUMO-PTC-3.0.0 · inalterado | PCG; estratégia Founder. Identidade, invariantes, doutrina e design space. |
-| [Product Truth Map](../product/PRODUCT_TRUTH_MAP.md) | PTM-1.0 · inalterado | PCG. Tradução/traceability e migração dos 91 IDs; não redefine tese. |
-| [Product Decision Register](../product/PRODUCT_DECISION_REGISTER.md) | PDR-1.1 | Chief registra; decisor por item. Seções 1–6 operacionais; DR-55–65 preservados, DR-66–71 amendments. §5 G01–G11 dispõe decisões residuais; bloco PDR-0.6 é histórico. |
-| [V1 Release Scope](../product/V1_RELEASE_SCOPE.md) | RS-1.1 | Product/UX, prioridades Founder. Inclusão/cobertura/limites; §6 consome gaps do PDR sem duplicar registro. |
-| [Product Domain Model](../product/PRODUCT_DOMAIN_MODEL.md) | PDM-1.1 | Product/UX. Objetos, significado, relações e estados; não schema/API. |
-| [Adaptive Engine Contract](../product/ADAPTIVE_ENGINE_CONTRACT.md) | AEC-1.1 | Product/UX comportamento; Engineering/Security controles; autoridade profissional externa nas políticas reais. Contexto/ações/trace/hold/LLM/closed loop, não algoritmo validado. |
-| [Product Architecture](../product/PRODUCT_ARCHITECTURE.md) | PA-1.1 | Product/UX. Estrutura/owners/caminhos/fronteiras, sem composição de telas ou stack. |
-| [Experience Model](../product/EXPERIENCE_MODEL.md) | EM-1.1 | Product/UX. Agência, confiança, continuidade, consentimento e degradação. |
-| [Core Flows](../product/CORE_FLOWS.md) | CF-1.1 | Product/UX. Percursos/alternativas/recuperação; prova analítica, sem teste executável/visual. |
-| [Current Mission](../CURRENT_MISSION.md) | MISSION-PREUX-1.0 | Founder autoriza; Chief coordena. Fechar A–F e relatório; nenhum código/Figma/UX visual nesta missão. |
+| [Thesis](VILUMO_FIT_PRODUCT_THESIS_CONTRACT.md) | PTC-3.2.1 | Identidade/invariantes/direção Founder; C047–61/L024 freeze + training doctrine. |
+| [Truth Map](../product/PRODUCT_TRUTH_MAP.md) | PTM-1.2 | Rastreabilidade/supersessão, não segunda tese. |
+| [Decision Register](../product/PRODUCT_DECISION_REGISTER.md) | PDR-1.3 | DR76–90 e único inventário G01–G11; bloco PDR-0.6 histórico. |
+| [V1 Release Scope](../product/V1_RELEASE_SCOPE.md) | RS-1.3 | Seleção V1/roadmap deferred e critérios de profundidade, sem novos docs de scope. |
+| [Domain](../product/PRODUCT_DOMAIN_MODEL.md) | PDM-1.3 | Objetos/ownership/estados e fronteiras. |
+| [Adaptive Contract](../product/ADAPTIVE_ENGINE_CONTRACT.md) | AEC-1.3 | Autoridade comportamental/controle e estabilidade. |
+| [AEOS](../product/ADAPTIVE_ENGINE_OPERATIONAL_SPEC.md) / [Lab](../product/ADAPTIVE_ENGINE_SCENARIO_LAB.md) | AEOS-1.2-r2 / AESL-1.2-r2 | Necessity/adequacy/change-cost/priority + B0/HC/JEV/guardas e oráculos futuros. |
+| [Specialists](../product/SPORT_INTELLIGENCE_SPEC.md), [Run](../product/RUN_INTELLIGENCE_SPEC.md), [Strength](../product/STRENGTH_INTELLIGENCE_SPEC.md) | SIS-1.1-r2 / RIL-1.1-r1 / STIL-1.1-r1 | Fronteiras especialistas e núcleos decisórios, sem outro plano/policy. |
+| [Architecture](../product/PRODUCT_ARCHITECTURE.md) | PA-1.3 | Destinos/caminhos/share allowlist/entitlement, sem composição visual. |
+| [Experience](../product/EXPERIENCE_MODEL.md) / [Flows](../product/CORE_FLOWS.md) | EM-1.2 / CF-1.2 | Primeiro valor/semana/agência/estados/jornadas. |
+| [Detailed UX](../product/UX_SPECIFICATION.md) | UXS-1.1-FREEZE-r2 | Sync da UX r3 para scope congelado; controles preservados, social deferred. |
+| [Current Mission](../CURRENT_MISSION.md) / [Ledger](../MISSION_LEDGER.md) | MISSION-UXSPEC-1.0 / intactos | Gate original do Claude concluído durante o freeze, r3 sem mudança; SOURCE_PROGRESS.json registra fechamento. Patch não substitui missão/ledger ou reabre gate. |
 
-Autoridade: decisão explícita Founder → tese formalizada → Scope/doutrina aplicável → domínio/AEC → arquitetura → experiência/flows. Scope decide inclusão, AEC autoridade/controle, PDM objeto/owner, PA lugar/caminho. PDR registra com a autoridade indicada. Artigo, provider, relatório PASS ou existência de arquivo não amplia autonomia, Nutrition, esportes ou Crew.
+Autoridade: pedido explícito Founder atual → tese → scope/AEC/domínio → estrutura/experiência/UX. O pacote mantém um produto, plano e Athlete Model. Nenhuma existência de arquivo, report ou referência a concorrente prova eficácia/mercado/qualidade real.
 
-## Evidência de apoio e limite de fechamento
+## Freeze e escopo atual
 
-| Evidência (sem autoridade de produto) | Consumidor concreto |
-|---|---|
-| [Science](../audits/pre-ux-2026-10-15/SCIENCE_EVIDENCE.md), SCI-1.0, TR-001–015/NUT-001–010 | AEC/Scope/Domain/Flows: coordenação qualitativa e limites, sem receita ou eficácia provada. |
-| [Professional boundaries](../audits/pre-ux-2026-10-15/PROFESSIONAL_BOUNDARIES.md), PRO-BOUND-1.0 | Conteúdo/políticas/privacidade, vigência normativa e decisões externas; não parecer jurídico/certificação. |
-| [Wearables/controls](../audits/pre-ux-2026-10-15/WEARABLE_EVIDENCE.md), WEA-1.0 | AEC/PA/PDM/Scope/Flows: 32 itens, matriz pública por rota, adapter neutro e controles; não acesso privado/device test. |
-| [Commercial evidence/tests](../audits/pre-ux-2026-10-15/COMMERCIAL_EVIDENCE_AND_TESTS.md), COM-1.0-draft | Founder/experimento/custos: fatos regionais e estímulos ASSUMED; nenhum preço oficial/tier/WTP provada. Não bloqueia UX/Figma. |
+Run + Strength wedge premium. Crew inteira DEFERRED, NOT REJECTED, depois da validação; feed público/follower graph continuam proibidos pelos invariantes. External share próprio permanece V1 sem social network. Nutrition módulo completo deferred/apoio leve só quando elegível. Ingest-first; outbound condicional sem gate global de launch. Subscription-first/value-before-hard-ask. GoalHierarchy/primeira semana/progressive depth/deep analytics e stable-by-default/minimum effective change estão definidos. Sem novos módulos pelo escopo retirado.
 
-Fechamento documental não habilita prescrição. PDR §5 identifica prova, responsável, trigger e impacto: G01–G05 profissionais/políticas/conteúdo/safety; G06 acesso/hardware/contratação; G07–G09 classificação e controles reais; G10 Founder/comercial; G11 validação de efeito. UX/Figma estruturais podem consumir os estados; textos, números, métodos e promessas dependentes não são aprovados por placeholder.
+22 invariantes anteriores preservados; L024 é o único novo, pedido diretamente. Specialist Parity target C045/C046 e núcleos RIL/STIL preservados com adendo C057–61; dedupe/carga/antiloops, HC/safety/agency/guarda/JEV SHADOW/LLM sem soberania mantidos. B0 recebe guard de necessidade para não trocar plano adequado só por melhora teórica.
 
-## Publicação e gates por versão
+## História e limites da aprovação
 
-Baseline 3.0.0: [evento aprovado](../audits/rebaseline-3.0.0/PUBLICATION_EVENT.json), [verificação](../audits/rebaseline-3.0.0/FINAL_VERIFICATION.json), [registro](../audits/rebaseline-3.0.0/REBASELINE_RECORD.md). Fidelidade/interpretabilidade do Canon seguem vigentes porque PTC/PTM não mudaram. PASS Product/UX r2, Privacy r2 e Closed Loop 1.0 cobrem somente seus hashes. FAILs e demais pareceres históricos permanecem preservados.
+Inputs originais: snapshot Git 0bc196210686b72c4c72090d260bfe86289a6bc4 do MyApp, sem commits na origem. SIL revisado: 07a119b26f2008a9eaa2820d0300b98046952afe, preservado e consumido, não refeito. [Consolidação SIL](../audits/specialist-layers-2026-10-19/CONSOLIDATION.md). Publicações anteriores [rebaseline3.0](../audits/rebaseline-3.0.0/PUBLICATION_EVENT.json), [PREUX](../audits/pre-ux-2026-10-15/PUBLICATION_EVENT.json), [AEOS](../audits/adaptive-engine-2026-10-15/PUBLICATION_EVENT.json) e missão/reviews UXSPEC ficam intactos e válidos para seus hashes.
 
-Amendment PREUX-20261015-r1: **PASS documental** em [Research](../audits/pre-ux-2026-10-15/RESEARCH_REVIEW_r1.md), [Engineering r2](../audits/pre-ux-2026-10-15/ENGINEERING_REVIEW_r2.md), [Security](../audits/pre-ux-2026-10-15/SECURITY_REVIEW_r1.md) e [Product/UX + auditoria das 15 questões](../audits/pre-ux-2026-10-15/FINAL_READINESS_AUDIT.md). O [FAIL Engineering r1](../audits/pre-ux-2026-10-15/ENGINEERING_REVIEW_r1.md) e seus inputs continuam preservados; ENG-PREUX-01 foi corrigido somente em AEC/PDM/CF e revalidado no delta. Chief consolida os pareceres, sem julgar o próprio trabalho. [Publicação e hashes](../audits/pre-ux-2026-10-15/PUBLICATION_EVENT.json) vinculam checks, inputs revisados e metadados administrativos; [verificação final](../audits/pre-ux-2026-10-15/FINAL_VERIFICATION.json) confirma a entrega. Product/UX aceitou realmente os inputs e os consumidores documentais; nenhum aceite de Claude é presumido.
+Audits/evidence são apoio, não Product Truth. Valores/leis/providers de packs antigos não são revalidados neste freeze e não devem ser citados como fatos atuais sem checagem na ativação. G01–G11 continuam antes de prescrição/coleta/claims/release dependentes; detalhes numéricos/técnicos/comerciais não impedem exploração visual honesta da arquitetura. Nenhum cenário/harness/device/treino foi executado por documentar oráculos; nenhum aceite do Claude ou gatilho visual já cumprido é presumido.
 
-Este gate documental não é UX_SPEC_READY, FIGMA_READY_TO_DEV, UI_READY, TECHNICAL_HANDOFF_READY, ENGINEERING_ARCHITECTURE_READY, AI_SYSTEM_READY, RELEASE_READY nem eficácia/segurança demonstrada. Nenhuma implementação foi iniciada.
+## Próximo passo
 
-## Preservação e handoff
-
-PTC-2.3.0 e seus consumidores permanecem no [snapshot integral de 49 arquivos](../governance/snapshots/2026-10-14-pre-3.0.0/SNAPSHOT_MANIFEST.json). O [índice 3.0.0 preservado](../governance/snapshots/2026-10-15-pre-ux-closure/canon/CANONICAL_INDEX.md) mantém linhagem, drafts/eventos/gates anteriores. AGENTS/CLAUDE, ledger anterior, snapshots, fontes e reviews não são apagados. Não foi criada autorização de recuperar outros projetos/copiar referências visuais.
-
-Claude retoma sexta-feira **2026-10-16**: índice e CURRENT_MISSION → Scope/AEC → PDR §2/§5 (DR-66–71, G01–G11) → domínio/arquitetura/Experience/Flows → evidência apenas no detalhe dependente. Conferir publicação/pareceres desta missão. Depois, sob nova missão de UX autorizada, detalhar percursos/estados; não reabrir produto/refazer pesquisa concluída nem converter gaps profissionais em fórmulas próprias. Review estrutural precede design/Figma; implementação exige autorização/gates próprios. A missão atual termina no relatório A–M solicitado na retomada.
+Gate do Claude concluído observado (SOURCE_PROGRESS.json); sincronizar patch combinado (contém SIL se ainda ausente), comparar apenas conflitos materiais surgidos depois da captura, checks mínimos e **diretamente Visual/UI premium**. Pedido Founder C056 autoriza essa sequência; sem repetir decisões de produto ou criar missão documental/research/large judge cycle. Esta missão não cria telas ou código nem mexe no gate corrente. Estado final por hashes e consolidação em [registro freeze](../audits/v1-freeze-2026-10-19/MISSION_RECORD.md).

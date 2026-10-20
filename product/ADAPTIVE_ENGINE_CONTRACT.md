@@ -1,13 +1,16 @@
 # Vilumo Fit — Adaptive Engine Contract
 
-**Estado:** SPECIFICATION — amendment pré-UX; publicação/gates no índice.
+**Estado:** CANDIDATE_IN_ISOLATION — freeze/adendo posterior ao SIL; integração/publicação pendentes no checkout ativo.
+
+> **FREEZE-20261019-r1 / CANDIDATE_IN_ISOLATION.** Delta posterior ao SIL; fonte/impacto/reviews no [registro freeze](../audits/v1-freeze-2026-10-19/MISSION_RECORD.md). Nenhuma alteração no checkout ativo; gates históricos valem só para os respectivos inputs.
+
 
 | Campo | Valor |
 |---|---|
-| Revisão | **AEC-1.1** · 2026-10-15 |
+| Revisão | **AEC-1.3** · 2026-10-19 |
 | Owner / autoria | Product/UX Architect, worker; Engineering, Security e autoridade de treino consomem e detalham seus domínios. |
 | Estado de gate | Gate/publicação no [índice](../canon/CANONICAL_INDEX.md). Não é contrato técnico, algoritmo validado ou autorização de treino real. |
-| Autoridade | [PTC-3.0.0](../canon/VILUMO_FIT_PRODUCT_THESIS_CONTRACT.md), L003–L009, C012, C015, C023, C038–C044; [PDM-1.1](PRODUCT_DOMAIN_MODEL.md), I1–I3/I10 e W1–W3; decisões subordinadas DR-66–69 no [PDR-1.1](PRODUCT_DECISION_REGISTER.md). |
+| Autoridade | [PTC-3.2.1 candidate](../canon/VILUMO_FIT_PRODUCT_THESIS_CONTRACT.md), L003–L009/L024, C012/C015/C023/C038–C061; [PDM-1.3](PRODUCT_DOMAIN_MODEL.md), I1–I3/I10–I14 e W1–W3; decisões e inventário no [PDR-1.3](PRODUCT_DECISION_REGISTER.md). |
 | Necessidade / consumidores | [Release Scope](V1_RELEASE_SCOPE.md) precisa provar coordenação; [Experience Model](EXPERIENCE_MODEL.md) precisa fixar autoridade e revisões; [Core Flows](CORE_FLOWS.md) precisa tratar confirmação, exportação e reconciliação. Centraliza regras antes dispersas sem criar doutrina concorrente. |
 
 ## 1. Promessa e autoridade
@@ -19,6 +22,53 @@ Uma decisão pode manter, mover/reordenar, reduzir volume, reduzir intensidade, 
 Running e Strength first-class não significam dose igual, prioridade igual em toda janela ou maximização simultânea. Dentro da aplicabilidade/safety, preservar o objetivo primário declarado e tornar explícito o efeito no secundário. Se prioridade ou sacrifício aceitável forem decisivos e desconhecidos, pedir contexto; não trocar o objetivo silenciosamente. Base documental: [SCI-1.0](../audits/pre-ux-2026-10-15/SCIENCE_EVIDENCE.md), TR-001–006. Evidência sustenta esta estrutura qualitativa, não valida uma política prescritiva do Vilumo.
 
 A pessoa decide o que executar. Revisar o contexto ou o planejado não é consentir envio externo, publicação social ou uso secundário de dados. O histórico deve permitir distinguir a recomendação vigente, a versão executada e o realizado.
+
+### 1.1 Competência especialista e arbitragem (SIL)
+
+PTC atual C045/C046 (introduzidas em 3.1.0) formaliza **Specialist Parity + Cross-Sport Superiority**: Run e Strength propõem estímulos e interpretam performance com profundidade própria; Adaptive Engine / Orchestrator arbitra e emite a única prescrição final. Athlete Model = Athlete Context/AthleteState compartilhados. Recovery/Load e Interference Engine são responsabilidades do mesmo núcleo, sem prescrição ou verdade paralelas. [SIS](SPORT_INTELLIGENCE_SPEC.md) detalha contratos/precedência/antiloops, [Run](RUN_INTELLIGENCE_SPEC.md) e [Strength](STRENGTH_INTELLIGENCE_SPEC.md) detalham decisões de domínio. AEC conserva autoridade comportamental; AEOS conserva HC/B0/JEV SHADOW/gate/guarda.
+
+Especialista entrega intenção/estrutura/estímulo, alternativas, demanda/limites e evidência de progressão; não aplica plano, troca prioridade ou exporta. Composto precisa validação conjunta e do horizonte antes do ranking. Exposição é vinculada ao fato canônico/revisão ativa: previsto e realizado não somam, interpretações locais não criam atividade nova e interação não adiciona fadiga já contabilizada. Propostas não alimentam performance/recovery como fatos.
+
+Preservar alvo original, alvo adaptado aceito, revisão executada e realizado. Redução deliberada pelo motor não é tarefa original fracassada nem progressão conquistada; diferença observada contra alvo vigente exige critério/comparabilidade G03, sem causa ou julgamento moral inferidos. Paridade/benefício são objetivos ainda dependentes de prova; nenhum núcleo ganha autonomia ou policy fisiológica nova.
+
+### 1.2 Stable-by-default — contrato de necessidade (Freeze)
+
+PTC L024/C049/C050: **Athlete Model Update ≠ Plan Mutation**. Depois de sessão reconciliada, atualizar evidência/estado pertinente, avaliar o restante da semana e a adequação atual sob regras aprovadas. O resultado desejado pode ser “aprendi, sem motivo suficiente para mudar”. Atualização de projeção/validade não cria revisão do plano, sessão ou export. Aprendizado secundário continua opt-in; não há ML novo.
+
+Safety, identidade/finalidade/consentimento, integridade crítica, cobertura e autoridade vêm primeiro: invalidade/hold retém escopo imediatamente, nunca é suavizada por estabilidade. Para plano ainda válido, avaliar **Level 0 / learn-only / KEEP antes de adaptar**. Mudança só é elegível se regra/evidência sustentar necessidade e benefício material após custo de alteração; melhoria fisiológica teórica de um plano já adequado não passa. Incerteza decisiva segue ASK/HOLD/RECONCILE no escopo, sem default fisiológico ou preservação presumida de plano inválido.
+
+**Minimum Effective Change:** considerar microparâmetro → volume/intensidade → mover uma sessão → substituir → replanejar parte → replanejar significativamente somente se intervenção menor não restaurar qualidade suficiente. São graus de intervenção mapeados às classes existentes, não enum rígido/novos serviços. O efeito/horizonte completo importa mais que rótulo: vários microajustes podem custar mais que uma mudança coerente. Significant replanning é último recurso justificado, não evento recorrente após cada treino.
+
+**Plan Stability Cost** explicita quanto já foi visto/escolhido/confirmado/exportado, agenda/práticas, proximidade da sessão, quantidade/alcance de objetos e confiança comprometida. Sessão próxima — especialmente a próxima de amanhã — tem preferência maior por preservação. O limiar relevante/hysteresis depende de rule/policy G02, sem percentuais, número de noites/séries ou cutoff universal. Ruído de RPE/pace/FC/sono/uma série/performance não é evidência suficiente por si. Não há custo capaz de tornar opção proibida elegível.
+
+**Prioridade:** Run-first ou Strength-first protege o objetivo primário; Balanced/HYBRID protege coprioridades explicitamente declaradas, sem maximizar simultaneamente ou usar 50/50 oculto. Objetivo concreto por esporte é mantido; se trade-off decisivo estiver indefinido, ASK mínimo antes da arbitragem dependente.
+
+**Agência:** alteração material mostra o que/por quê/evidência/objetivo protegido, alcance e ato de aceitar, manter vigente quando ainda válido ou ver motivo. Recusa registra restrição de agência sobre a proposta/alcance efetivamente mostrado; não inferir preferência clínica/geral ou bloquear perguntas futuras indispensáveis. Buscar solução admissível dentro dela, sem reapresentar mesma mudança sem fato material novo. Safety/invalidade impede recomendar “manter” proibido; registro do que a pessoa decidiu fazer permanece veraz. Nenhum painel novo.
+
+AEOS §10 é a realização conceitual desse contrato: adequação/necessidade/change-cost precedem B1–B6. Não é fórmula validada. Um plano inicial usa base explícita sem plano e REPLAN/adoção; ausência de plano não dispara stickiness de plano inexistente. Continuação produz próximo horizonte com antecedência sob as mesmas guardas, sem trocar a semana vigente por calendário novo a cada observação.
+
+
+### 1.3 Training doctrine e cadência de adaptação
+
+Sob PTC C057–C061 e [SIS§1.1](SPORT_INTELLIGENCE_SPEC.md), prescrição e arbitragem são evidence-informed, não AI-generated novelty. “AI applies training science; it does not replace training science.” Regras/receitas/decisões conservam fundamento, aplicabilidade, suporte e limites por refs existentes, sem score rígido ou autoridade fisiológica de LLM/heurística. Concurrent training usa princípios defensáveis e resposta individual comparável; alternativa conservadora/reversível exige cobertura, nunca dose improvisada.
+
+| Processo | Momento / comportamento |
+|---|---|
+| CONTINUOUS LEARNING | Após cada sessão/fato pertinente, registrar/reconciliar/avaliar e atualizar Athlete Model quando apropriado sob finalidade própria. Sem obrigação de ML, nova coleta ou mudança de plano. KEEP/learn-only é resultado válido e frequente quando adequado. |
+| EXCEPTIONAL IN-CYCLE ADAPTATION | Dentro da semana/ciclo curto, alterar vigente somente por materialidade/necessidade sustentadas; stable-by-default, Change Cost, hysteresis e menor intervenção. Nova restrição/HC exige controle imediato, não espera próximo ciclo. |
+| SYSTEMATIC BETWEEN-CYCLE PROGRESSION | Próximo horizonte é o lugar padrão para evoluções mais relevantes: carga/volume/intensidade/reps/exercícios/dificuldade/estrutura/estímulo/distribuição/fase/objetivos intermediários. Preparar continuação com antecedência sob policy/resposta, sem mutar semana ainda adequada; calendário/conclusão não ganha aumento automático. |
+
+Modelo: PLAN → EXECUTE → RECORD → LEARN → CHECK WHETHER CURRENT PLAN IS STILL VALID → PRESERVE IF VALID AND ADEQUATE → PROGRESS NEXT CYCLE SYSTEMATICALLY. Preservar não significa manter prescrição inválida; fase executada já programada não é nova mutação. Continuação do próximo ciclo permanece proposta/adoção versionada sob AEOS§13.1.
+
+| Razão da mudança | Justificativa / limite |
+|---|---|
+| PROGRESSION | Evidência de evolução/adaptação comparável sustenta avanço de carga/reps/volume/densidade/duração/pace/longão/intervalos. Earned, não por tempo ou calendário; pode manter/regredir/rebasear quando critério não cumprido. |
+| PROGRAMMED VARIATION | Propósito de treinamento/periodização: fase/estímulo/especificidade/exercício/prova/deload/taper/bloco. Não é prova de ganho, nem exige trocar tudo. Se já contida no plano aceito, executar essa estrutura não o altera; se proposta nova, respeita o alcance, validade e confirmação. |
+| REACTIVE ADAPTATION | Fato novo material torna vigente inadequado: falta relevante, fadiga/carga/recuperação ou resposta materialmente inesperadas, dor/limitação, disponibilidade/evento. Avaliar Level0 primeiro; apenas menor intervenção suficiente. Nenhum exemplo é threshold automático. |
+
+Cadência e razão são eixos diferentes, não novas classes de efeito. Um delta pode ter componentes com motivos distintos, cada qual rastreado; a classificação não permite fugir do necessity gate ou reapresentar proposta recusada/STALE. Progressão/variação não é salvo-conduto para reescrever a semana adequada.
+
+PERSONALIZATION DOES NOT REQUIRE INSTABILITY; CONSISTENCY CAN BE A FEATURE OF GOOD PROGRAMMING. Repetição com propósito favorece comparar progressão, habilidade, estímulo e especificidade. Não variar para novidade, aparência de IA ou provar personalização. UX explica mudança material com quê/por quê/evidência/princípio/objetivo, e pode explicar preservação sob demanda. Claims e validação humana futura C060/C061/G11 não exigem nova pesquisa ou bloqueio de Visual/UI.
 
 ## 2. Inputs e outputs do ciclo
 
@@ -134,7 +184,7 @@ Antes do envio, comparar a revisão neutra com a representação efetiva e produ
 | Desconectada / permissão revogada | Cessar operações/pendências afetadas e impedir reativação por retry. Outra finalidade continua somente sob permissão atual e se sustentável pela rota (§5.1); senão desconectar. Desconexão completa cessa leitura/envio; dados/cópias já entregues têm limites explícitos. |
 | Atividade executada chega | Observação separada; reconciliar origem/versão/sessão sem duplicar. O atleta pode ter executado cópia antiga; preservar o fato e readaptar o futuro. |
 
-Se o destino não representa a estrutura ou prescrição de forma crível, não simplificar silenciosamente: mostrar diferença/limite e oferecer execução pelo app. Pode haver ingestão sem envio ou envio somente de Running; isso é limite daquela integração, não exclusão de Strength do produto. A matriz de viabilidade de launch deve escolher integração(s) com ao menos um caminho real de closed loop antes de anunciar a promessa (RS §6).
+Se o destino não representa a estrutura ou prescrição de forma crível, não simplificar silenciosamente: mostrar diferença/limite e oferecer execução pelo app. Pode haver ingestão sem envio ou envio somente de Running; isso é limite daquela integração, não exclusão de Strength do produto. A matriz V1 prioriza ingestão/reconciliação; outbound é condicional por rota/esforço/acesso/custo, sem gate global de launch. Não anunciar export/guiamento/device-ready sem a prova correspondente (RS §2/§6, PTC C055).
 
 Offline, execução/registro local continuam somente no limite preparado **ainda válido**, sem ignorar restrição/hold novo. Nova prescrição dependente de dado remoto indisponível não recebe precisão inventada. Reconexão revalida estado/autoridade, não reenvia tudo nem apaga registros. Enviada ≠ recebida; recebida ≠ executada; atividade recebida ≠ normalizada/associada ≠ adaptação aplicada. Outage/lag/backfill limitado são estados de integração, sem penalidade ou HOLD médico automático. Base: CTRL-008–011.
 

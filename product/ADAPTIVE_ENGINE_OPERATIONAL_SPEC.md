@@ -1,11 +1,13 @@
 # Adaptive Engine Operational Specification
 
-Revisão **AEOS-1.0-r2** · 2026-10-15 · Missão **VF-AEOS-20261015-001**.
-Estado: **SPECIFICATION**; gates documentais e publicação no registro da missão. Autoria: `/root`, sob coordenação do Chief. Publicação/pareceres por hash no [registro da missão](../audits/adaptive-engine-2026-10-15/MISSION_RECORD.md). Nenhum gate de execução, segurança clínica, eficácia ou release é emitido aqui.
+Revisão **AEOS-1.2-r2** · amendment 2026-10-19 (baseline 2026-10-15) · Contrato **FREEZE-20261019-r1** (baseline AEOS preservado no Git).
+Estado: **CANDIDATE_IN_ISOLATION**; evento AEOS anterior abaixo cobre somente seu baseline. Autoria: `/root`, sob coordenação do Chief. Publicação/pareceres deste delta por hash no [registro freeze](../audits/v1-freeze-2026-10-19/MISSION_RECORD.md); o [registro AEOS](../audits/adaptive-engine-2026-10-15/MISSION_RECORD.md) é histórico. Nenhum gate de execução, segurança clínica, eficácia ou release é emitido aqui.
+
+> **FREEZE-20261019-r1 / CANDIDATE_IN_ISOLATION.** Delta posterior ao SIL; fonte/impacto/reviews no [registro freeze](../audits/v1-freeze-2026-10-19/MISSION_RECORD.md). Nenhuma alteração no checkout ativo; gates históricos valem só para os respectivos inputs.
 
 ## 1. Autoridade, finalidade e leitura
 
-Este é o detalhamento operacional downstream do [AEC-1.1](ADAPTIVE_ENGINE_CONTRACT.md), sem substituir sua autoridade comportamental. [Canon 3.0.0](../canon/VILUMO_FIT_PRODUCT_THESIS_CONTRACT.md), [índice CI-3.0.1](../canon/CANONICAL_INDEX.md), [RS-1.1](V1_RELEASE_SCOPE.md), [PDM-1.1](PRODUCT_DOMAIN_MODEL.md), [PA-1.1](PRODUCT_ARCHITECTURE.md), [EM-1.1](EXPERIENCE_MODEL.md), [CF-1.1](CORE_FLOWS.md) e o pacote VF-PREUX-20261015-001 permanecem íntegros. [PDR §5 G01–G11](PRODUCT_DECISION_REGISTER.md) continua sendo o registro único de dependências/decisores. O estado desta nova missão é descoberto por [CURRENT_MISSION](../CURRENT_MISSION.md); a ausência de alteração do índice preserva seu evento publicado e não torna este documento uma nova tese.
+Este é o detalhamento operacional downstream do [AEC-1.3 candidate](ADAPTIVE_ENGINE_CONTRACT.md), sob [PTC-3.2.1 candidate](../canon/VILUMO_FIT_PRODUCT_THESIS_CONTRACT.md), [índice](../canon/CANONICAL_INDEX.md), [Scope](V1_RELEASE_SCOPE.md), [PDM](PRODUCT_DOMAIN_MODEL.md) e [PA](PRODUCT_ARCHITECTURE.md). [EM](EXPERIENCE_MODEL.md), [CF](CORE_FLOWS.md) e [UX candidata](UX_SPECIFICATION.md) foram sincronizados no freeze isolado, não no checkout do Claude. Baselines PREUX/AEOS/SIL e seus gates são recuperáveis no Git; não aprovam novos hashes. [PDR§5](PRODUCT_DECISION_REGISTER.md) mantém G01–G11. CURRENT_MISSION permanece missão ativa do Claude; o [registro freeze](../audits/v1-freeze-2026-10-19/MISSION_RECORD.md) controla somente este delta, incluindo o adendo de treinamento.
 
 Consumidores: Engineering implementará posteriormente estados/contratos; autoridade profissional preencherá somente os policy slots dependentes; AI Systems avaliará JEV/LLM; Quality consumirá o [Scenario Lab](ADAPTIVE_ENGINE_SCENARIO_LAB.md); Product/UX consumirá significado de decisão/agência sem composição visual. Uma casa separada é necessária porque AEC fixa comportamento, enquanto AEOS fixa representação, ordem de avaliação, precedência, fallback e oráculos verificáveis. O Lab tem consumidor próprio e referencia estes contratos, sem duplicar a policy.
 
@@ -15,7 +17,7 @@ JEV designa **um componente lógico de avaliação/ranking tipado**. Não pressu
 
 ## 2. Arquitetura operacional e responsabilidades
 
-Fluxo: **data → normalization/provenance → deterministic hard constraints → conflict detection → valid candidates → JEV ranking/confidence/routing → policy gate → decision → LLM explanation → preview/confirmation when required → executor later**.
+Fluxo: **data → normalization/provenance → deterministic hard constraints → conflict detection → adequacy/necessity (KEEP early) → valid change candidates → JEV ranking/confidence/routing → policy gate → decision → LLM explanation → preview/confirmation when required → executor later**.
 
 | Etapa | Entrada → saída / obrigação |
 |---|---|
@@ -23,6 +25,7 @@ Fluxo: **data → normalization/provenance → deterministic hard constraints �
 | Normalization | Fatos/revisões → sinais comparáveis e lineage; erro de unidade/método/identidade fica explícito. Deduplica fato, não soma fontes do mesmo fato; similaridade só propõe associação. |
 | Hard constraints de contexto | Snapshot + policy efetiva → elegibilidade/escopos retidos. Restrição, autoridade e dados críticos delimitam as operações possíveis antes do ranking. |
 | Conflict detection | Estado + intenções/demandas + prioridades → conflitos com evidência, escopo e incerteza; detecta relações, sem declarar causalidade fisiológica. |
+| Adequacy/necessity | Snapshot/plano/fatos + regras aprovadas → KEEP/learn-only se válido adequado; necessidade sustentada antes de candidatos de mudança. Base vazia gera plano inicial sob receita, sem plano fictício. |
 | Candidate generation/filter | Receitas/repertório aprovados → propostas completas e verificadas em conjunto. Testa novamente hard constraints por candidato, incluindo impacto no horizonte. Nenhum gerador LLM livre. |
 | Deterministic baseline | Candidatos válidos + comparadores versionados → preferência parcial/decisão ou ASK/HOLD. É a fonte oficial inicial. |
 | JEV | Mesmos candidatos permitidos e projeção mínima → ranking relativo, incerteza, routing e semantic check consultivos. Em SHADOW não escreve na decisão oficial. |
@@ -32,6 +35,16 @@ Fluxo: **data → normalization/provenance → deterministic hard constraints �
 | Executor futuro | Somente intenção autorizada e ainda vigente → efeito lógico uma vez. Inexistente nesta missão; sem envio, produção ou conexão. |
 
 Engine possui decisão/plano; Context possui fatos; capacidades Running/Strength possuem semântica de sessão e observação; policy registry possui regras/aprovações; permissões ficam fora de modelos. Não implica serviços separados. Agente opcional, Crew, wearable, JEV e LLM não possuem plano paralelo. Nutrition é seleção subordinada de conteúdo aprovado por demanda/revisão, nunca outro prescritor.
+
+### 2.1 Specialist layers (amendment SIL)
+
+Run Intelligence e Strength Intelligence concretizam a semântica e o gerador já previstos, sem pipeline concorrente. [SIS](SPORT_INTELLIGENCE_SPEC.md) detalha SpecialistRequest/Proposal/Assessment, ExposureContribution e InteractionAssessment; [RIL](RUN_INTELLIGENCE_SPEC.md)/[STIL](STRENGTH_INTELLIGENCE_SPEC.md) detalham receitas/progressão/programação/performance/recovery/analytics. São projeções de tipos deste AEOS, subordinadas ao AEC, não novas authorities/registry. Athlete Model = Athlete Context + AthleteState §4.
+
+No fluxo §2: Normalization fixa fatos/exposições uma vez; HC contextuais precedem solicitações; especialistas propõem sob mesmo snapshot/policy; Conflict detection/Interference Engine compõe e valida o horizonte e as alternativas afetadas com ambos. CandidateSet completo recebe HC antes de B0/JEV/gate. Especialistas não editam plano nem entram num diálogo recursivo de contrapropostas. Só Orchestrator emite prescrição final. JEV continua SHADOW, LLM explicador opcional e executor futuro com guarda §13.1.
+
+SIL-I1–I5 qualificam HC04/HC06/HC10: um fato/revisão/escopo de exposição, corrigido substitui anterior, previsto não soma com observado, modelos locais/relacionais referenciam os mesmos fatos sem criar carga nova. ProgressionAssessment liga original/adaptado/executado/realizado: retirada deliberada não é falha nem conquista original; ausência de critério continua UNCLASSIFIED (G03). Campos adicionais são refs/derivados necessários sob finalidades existentes, sem nova coleta ou autorização.
+
+Início de sessão com proposta pendente (extensão de StabilityState §14, conforme UX CONF-16): executar a revisão vigente somente enquanto válida não confirma proposta. APPLY_PLAN_CHANGE que inclui a sessão passa inteira a STALE, inclusive composto. Registrar o evento de agência no DecisionTrace e StabilityState, ligado à sessão/revisão executada, proposal/hash/razões de STALE e fronteira temporal/de fatos do início. Para o restante da execução iniciada, o resultado oficial não repropõe alteração ao restante sem fato material novo surgido depois do início; o próprio início, novo candidato/hash/conjunto, replay ou reavaliação das mesmas razões não são esse novo fato. A guarda §13.1 continua necessária e sozinha não cobre a não reapresentação. Outras sessões de composto recebem avaliação sucessora normal; a UX manifesta esse resultado conforme seu contrato existente, sem filtro de decisão. HOLD/restrição de safety é imediato, sem cooldown. Propostas/estimativas não viram performance observada. Entrada material nova permite sucessor dentro desses limites; delta já satisfeito não reaplica (§13/§14). [Lab §9](ADAPTIVE_ENGINE_SCENARIO_LAB.md) especifica o oráculo, preservando S01–47/Q01–09. UPSTREAM-ISSUE-04 recebe este detalhamento somente na cópia isolada; integração/aceite do owner não são presumidos.
 
 ## 3. Tipos comuns e normalização/provenance
 
@@ -53,7 +66,7 @@ Associação de atividade: `UNASSOCIATED → MATCH_PROPOSED → CONFIRMED`, ou `
 
 | Componente tipado | Conteúdo / uso |
 |---|---|
-| `identity_scope` | Pessoa pseudonimizada no processamento, modo M1/M2, 18+ e elegibilidade de cobertura por authority refs. M3 não ganha avaliação fisiológica por participar da Crew. |
+| `identity_scope` | Pessoa pseudonimizada no processamento, experiência pessoal V1 (M1), 18+ e elegibilidade de cobertura por authority refs. M2/M3 e perfis sociais são deferred, sem coleta/avaliação V1. |
 | `practice_context` | Experiência declarada por modalidade, equipamento, disponibilidade e timezone, restrições voluntárias pertinentes, cobertura recente conhecida/desconhecida. |
 | `goal_state: Ref<GoalPriorityModel>` | Prioridades explícitas, eventos e trade-offs autorizados; desconhecido não vira runner-first por default. |
 | `planned_exposure` | Sessões futuras por modalidade/intenção/revisão, janela e dependências. |
@@ -82,15 +95,14 @@ Toda mudança preserva ou declara perda do estímulo essencial e efeito futuro n
 
 ## 6. Goal Priority Model
 
-`GoalPriorityModel`: `goal_set_ref`, objetivos Running/Strength declarados com tipo e janela/evento, `primary_goal_ref: Option`, `secondary_goal_refs`, `priority_source: USER_CONFIRMED`, `effective_window`, `acceptable_tradeoff_refs`, `nonnegotiable_user_constraints`, `revision`, `unknowns`.
+GoalPriorityModel: objetivo concreto de Running e Strength, coverage/goal refs, priority_mode RUN_FIRST / STRENGTH_FIRST / BALANCED_HYBRID / UNKNOWN, primary_goal_ref quando unilateral, co_primary_goal_refs quando Balanced, secundários, eventos/janelas, trade-offs aceitos, constraints declaradas, origem USER_CONFIRMED e revisão. Unknown é permitido como estado de dados, nunca política secreta: arbitragem de conflito que depende de prioridade pede o mínimo antes de decidir. Onboarding busca a prioridade em linguagem natural, sem expor enum técnico.
 
-Regras operacionais:
-
-1. Safety/aplicabilidade/autoridade têm precedência sobre objetivo e sessão-chave. First-class exige profundidade de ambos, sem dose igual.
-2. Prioridade afeta seleção entre opções permitidas na mesma janela; não rebaixa modalidade a tracker. Não existe prioridade secreta por engagement, Crew, fornecedor ou baseline do produto.
-3. Se candidatos fazem sacrifícios distintos e a prioridade/trade-off decisivo falta, `ASK` pergunta o mínimo. Recusa/desconhecido conserva limite; não inventa ordem. Se o que falta é autoridade profissional, `HOLD/PROFESSIONAL_REVIEW`, sem pedir ao usuário para suprir aprovação.
-4. Alterar objetivo/prioridade exige edição confirmada sobre revisão atual. JEV pode apontar ambiguidade, nunca alterar goal refs. Evento com data incerta é incerto, sem calendário presumido.
-5. Comparação runner-first versus strength-first conserva todos os fatos e candidatos salvo elegibilidade dependente da prioridade. Trace MUST identificar exatamente o goal ref alterado e qual trade-off mudou; não obriga decisão diferente quando safety ou dominância tornam o resultado igual.
+1. Safety/aplicabilidade/autoridade precedem qualquer objetivo. First-class não exige dose igual.
+2. RUN_FIRST/STRENGTH_FIRST protegem primário e preservam secundário dentro do trade-off autorizado. BALANCED é coprioridade de ambos: comparar preservação de ambos por dominância/Pareto; sacrifício material sem preferência/regra explícita é INCOMPARABLE/ASK, sem weights ocultos, 50/50 ou desempate por ID.
+3. Mantém objetivo concreto por modalidade e eventos/prioridade temporal confirmados; calendário de prova não é autorização de trocar prioridade.
+4. Se faltar aprovação/receita, HOLD/review do owner; não perguntar ao usuário por clearance. Se só faltar preferência material, ASK mínimo com recusa/desconhecido e efeito claro.
+5. Alteração de prioridade/objetivo é ato confirmado, versionado. Recusa de adaptação gera AgencyConstraint com proposal/reason/scope, ato/revisão e limites de validade; não generaliza rejeição para preferência ilimitada. Buscar solução dentro da escolha enquanto admissível; motivo íntimo não é requerido.
+6. Contrafactuais conservam fatos/candidatos válidos e mudam só o goal ref/mode. Resultado só difere quando prioridade é decisiva; safety pode manter o mesmo HOLD. Não existe runner-first default por engagement/provider/Crew.
 
 ## 7. Conflict Taxonomy
 
@@ -153,30 +165,50 @@ Resultado de cada gate: `PASS / FAIL / UNRESOLVED / NOT_APPLICABLE` + constraint
 
 `HoldRecord`: `hold_id`, `cause_class` do AEC §7.1, `affected_scopes`, `private_evidence_refs`, `context_policy_refs`, `resolution_owner`, `next_step_ref`, `exit_evidence_requirements`, `state: ACTIVE / REVIEW_PENDING / REEVALUATION_REQUIRED / RELEASED / SUPERSEDED`, `supersession_ref`. Correção de erro factual pode remover causa incorreta após validação; restrição profissional requer autoridade pertinente. `RELEASED` exige registro de evidência aceito + reavaliação de todos os gates dependentes; não por score/tempo/silêncio/override/consentimento de risco. Outputs antigos afetados deixam de ser utilizáveis; histórico/registro/correção/direitos/funções independentes continuam. Não se promete recall remoto.
 
-## 10. Decision Policy / Multi-objective Ranking
+## 10. Decision Policy — adequação, necessidade e ranking
 
-`PolicyBundle` reúne revisões imutáveis: coverage, receitas/transformações, gates, interpretação de sinais/aderência, comparator, stability, routing, Nutrition-content eligibility e explicação aprovada. Cada módulo declara aplicabilidade, dependências, autoridade, evidências, vigência/revogação e casos aceitos/rejeitados. Módulo ausente não é rule default. Composição/versionamento não exige registry/service novo.
+PolicyBundle reúne coverage/receitas, gates, interpretação/aderência, comparator, stability, routing, conteúdo e explicação com revisões/aprovações/aplicabilidade/evidência. G02/PS02 deve preencher adequacy, materiality, hysteresis, stickiness e avaliação de benefício/custo por domínio/população; faltando regra necessária não criar limiar. G01–G04/HC continuam precedentes.
 
-**Baseline determinístico B0**, oficial na primeira implementação:
+### 10.1 Athlete Model update e Plan Adequacy
 
-1. Se interrompido/restrição/autoridade/dado crítico impede escopo, produzir controle correspondente com próximo passo; avaliar apenas partes independentes válidas.
-2. Gerar/filtrar candidatos, conservando rejeições por HC no trace. Se não há candidato válido, escolher ASK para fato/preferência que a pessoa pode fornecer; RECONCILE para integridade/associação; HOLD com owner para autoridade/safety. São escopos compatíveis, não uma ordem que deixa perguntar repetidamente em lugar de reter risco conhecido.
-3. Comparar somente opções válidas e comparáveis usando a ordem abaixo. O comparator é parcial: `BETTER / WORSE / EQUAL / INCOMPARABLE`, com razões. Unknown não é pior score ou empate inventado.
-4. Selecionar o máximo único quando sustentado. Se há equivalentes **semanticamente iguais em efeitos/limites** e sem preferência material faltante, reutilizar a proposta vigente válida; na primeira avaliação, desempatar pela identidade canônica do candidato para reprodutibilidade, registrando a equivalência. ID jamais decide sacrifício material entre opções diferentes.
-5. Se não existe máximo único por trade-off material/unknown, ASK mínimo ou HOLD/review conforme a lacuna. Nenhum weighted sum implícito força desempate.
+OutcomeObservation reconciliado atualiza AthleteState/contexto e derivados permitidos; não grava mudança de plano/sessão. Model update pode mudar o que se sabe mantendo a semana. Renovar avaliação de validade por referência não altera alvos, export ou revisão do conteúdo planejado. Mutação só existe se delta material for aceito/aplicado sob §13.1.
+
+PlanAdequacyAssessment: evaluation_ref, current_plan/remaining_horizon refs, safety/authority gates, goals/priority revision, evidence/frontier, approved adequacy_rule_ref, status ADEQUATE / INADEQUATE / UNDETERMINATE / NOT_APPLICABLE_INITIAL, reasons/scopes, confidence/limitations e validade. “Faixa aceitável” é qualitativa rule-bound, não intervalo fisiológico inventado. Nenhum HC FAIL/UNRESOLVED vira ADEQUATE por média, custo ou score.
+
+ChangeNecessityAssessment: plano-base, escopo/estímulo comprometido, fato material e comparabilidade, motivo pelo qual manter não é suficiente, adequacy refs, benefit_support/uncertainty, PlanStabilityCost, necessity_rule_ref e resultado REQUIRED / NOT_REQUIRED / UNDETERMINATE. Benefício material precisa superar custo/limiar aprovado para este caso; não basta ser BETTER em alguma feature. Counterfactual KEEP e menos intervenção têm razões explícitas de aceite/rejeição.
+
+PlanStabilityCost é vetor de consequências: conteúdo já visto/escolhido/confirmado, plano como compromisso, agenda, sessão próxima/em curso, export entregue ou pendente, alcance/quantidade de objetos, preferência declarada e confiança/certeza do benefício. Não soma unidades de fadiga ou pesos arbitrários. Proximidade aumenta exigência de benefício/evidência para mudança discricionária, sem criar cutoff universal. Safety/autoridade/revogação não pagam esse custo e não aguardam hysteresis.
+
+### 10.2 B0 oficial com Level 0 primeiro
+
+1. HC contextuais/escopados primeiro: interrupção/restrição/autoridade/dado crítico inválidos produzem controle correspondente, preservando funções independentes. Nunca KEEP última prescrição por default.
+2. Avaliar vigente/remaining horizon contra adequacy rule atual. Se válido e ADEQUATE, resultado oficial é KEEP/LEARN_ONLY sem change_set, sem APPLY_PLAN_CHANGE, export, aviso de adaptação ou nova revisão do plano. Melhora teórica alternativa não muda esse resultado. Templates podem explicar aprendizado sob demanda; telemetria/ML secundários continuam finalidade separada.
+3. Se INADEQUATE, avaliar necessidade e menor intervenção suficiente. Se informação/preferência decisiva faltar, ASK; integridade/associação, RECONCILE; autoridade/safety/regra crítica ausente, HOLD no escopo. UNDETERMINATE não é licença de adaptar ou certificar segurança: caminho independente de KEEP somente se policy explicitamente o sustentar, senão controle dependente. Não gerar dose conservadora substituta.
+4. Somente necessidade REQUIRED permite gerar e comparar candidatos de mudança, fechados e validados em conjunto/horizonte por HC01–10. Examinar learn-only/KEEP e rejeitá-lo com razão; avaliar intervenção menor antes da maior. Se menor mudança restaura adequação suficiente, não escolher replanejamento amplo por ótimo teórico marginal. Graus conceituais: 0 sem mudança; 1 microparâmetro; 2 volume/intensidade; 3 mover sessão; 4 substituir; 5 replanning parcial; 6 significativo. Mapeiam às action_class existentes, sem enum/API nova ou ordem cega: efeito conjunto e constraints decidem. Significativo exige motivo de insuficiência das menores opções.
+5. Para plano inicial: plan_base_ref = explicit NONE/no-plan, base do horizonte sem sessões, adequacy NOT_APPLICABLE_INITIAL, candidato REPLAN com scope INITIAL e APPLY_PLAN_CHANGE. Não inventar classe INITIAL, treino padrão ou estabilidade de plano inexistente. Continuação usa REPLAN para próximo horizonte, antecedência e ato atuais, sem refazer automaticamente semana adequada. §13.1 vale igualmente.
+6. Entre mudanças necessárias e minimamente eficazes, aplicar B1–B6 abaixo. Comparator parcial BETTER/WORSE/EQUAL/INCOMPARABLE, sem weighted sum oculto. Máximo único sustentado pode ser recomendado; equivalentes sem sacrifício material reutilizam proposta válida ou ID canônico apenas para reprodutibilidade. Trade-off material/unknown nunca desempata por ID.
+7. JEV continua SHADOW sobre candidatos permitidos; não cria necessidade, altera adequacy, remove custo ou escolhe limiar. Policy gate revalida todas as condições/agency. Proposta depende de aceitação e guarda do efeito; retorno consultivo nunca muda oficial.
 
 | Ordem de comparação B0 | Regra exata / dependência |
 |---|---|
-| B1 Preservação do objetivo primário | Comparar efeito no objetivo confirmado: `PRESERVED` precede `MODIFIED_WITHIN_APPROVED_INTENT`, que precede perda explicitamente aceita. Classificação depende de receita/policy; UNKNOWN não é ordenável. Sem prioridade decisiva, ASK. |
+| B1 Preservação do objetivo primário | Após o gate de necessidade, comparar efeito no objetivo confirmado; em BALANCED usar o conjunto de coprioridades e dominância, sem pesos ocultos: `PRESERVED` precede `MODIFIED_WITHIN_APPROVED_INTENT`, que precede perda explicitamente aceita. Classificação depende de receita/policy; UNKNOWN não é ordenável. Sem prioridade decisiva, ASK. |
 | B2 Estímulo essencial / criticality | Dentro de B1 equivalente, preservar estímulos de sessões-chave de alta criticality sustentada; considerar dependências de próximas sessões. Alta vs baixa não contorna restrição nem escolhe prioridade secreta. Se a hierarquia entre estímulos é material e não aprovada, ASK/review. |
 | B3 Objetivos secundários | Dentro de B1/B2 equivalentes, preferir preservação secundária admitida, sem exceder trade-off autorizado; vários secundários sem ordem usam dominância de Pareto, e trade-off não resolvido é incomparable. |
 | B4 Evidência para a comparação | Preferir efeitos sustentados sem dependência crítica desconhecida; não tratar score JEV/HRV favorável como safety. Quando incerteza impede B1–B3, não pular para B5. |
 | B5 Menor ruptura necessária | Entre opções até aqui equivalentes, preferir não trocar sessão em execução/escolhida/exportada e preservar preferência de agenda declarada; depois menor conjunto de objetos alterados. Se esses custos conflitam sem preferência aprovada, incomparable, sem pesos fabricados. |
 | B6 Estabilidade | Reutilizar candidato/proposta vigente ainda válida e sem desvantagem material; ver §14. Não estabilizar opção proibida ou ignorar fato novo. |
 
-Predições fisiológicas contrafactuais só entram como estimativa com policy/evidência/limites aprovados. Hoje o vetor usa efeitos previstos pela receita e logística; não estima lesão, adaptação muscular ou tempo de prova com precisão fabricada. Nenhum valor numérico/peso/calibração é inventado. Comparador e classificação fisiológica podem evoluir somente por revisão/eval correspondente, sem mudar os invariantes.
+Predições contrafactuais são estimativas apenas sob policy/evidência/limites; sem lesão/tempo de prova/fadiga causal exatos. DecisionOutcome permanece RECOMMEND(candidate_ref) / ASK / HOLD / RECONCILE, com escopos independentes. KEEP válido não muta plano. Não criar novos destinos/estados de saúde ou ação no LLM.
 
-`DecisionOutcome` é uma união discriminada: `RECOMMEND(candidate_ref) / ASK(question_refs, blocked_scopes) / HOLD(hold_refs) / RECONCILE(issue_refs)`, com `independent_scope_outcomes` quando escopos distintos convivem. KEEP é uma recomendação validada. ASK não reinicia bateria diária; cada pergunta tem informação material, opções desconhecido/recusa e efeito esperado, sem prometer liberação de hold. RECONCILE não inventa associação. Controle não se transforma em prescrição pelo LLM.
+### 10.3 Training process, purpose e fronteira de ciclo
+
+AEC§1.3/SIS§1.1 são o contrato comum: Continuous Learning atualiza fatos/assessments/modelo sob I10; Exceptional In-Cycle Adaptation altera vigente só por necessidade material; Systematic Between-Cycle Progression prepara evolução do próximo horizonte. Dimensões derivadas no trace: process/cadence + change_reason por componente (PROGRESSION / PROGRAMMED_VARIATION / REACTIVE_ADAPTATION), cycle/phase/horizon refs, TrainingDecisionBasis/evidence/policy refs, alvo/revisão/comparabilidade, razão de KEEP suficiente/insuficiente e efeitos conquistados versus programados. Sem novo effect enum, plano paralelo ou registry. LEARN_ONLY não possui delta nem reason de mutação; assessment de oportunidade não é ganho/aplicação.
+
+Na semana vigente válida/adequada, passo 10.2.2 termina em KEEP mesmo que haja oportunidade de progredir ou variar; guardar assessment pertinente para planejamento do próximo ciclo, sem fila autoaplicável. Progressão dentro da estrutura já aceita (ex.: sessões diferentes previstas) é execução do programado, não mudança por novo dado. Nova mutação intra-ciclo exige necessidade; chamar de periodização não a dispensa. Fato restritivo/HC invalida dependente imediatamente; não esperar fronteira de ciclo.
+
+Na continuação 10.2.5, avaliar resposta e fase/propósito para o próximo horizonte: pode progredir onde earned, manter consistência onde útil, variar por razão de treinamento ou rebasear sob contexto atual. Mudança de semana não comprova adaptação nem obriga aumento, e próximo ciclo não é micro-otimização repetida da mesma semana. Preparação antecipada, base/revisão/alcance/adoção e §13.1 permanecem. A primeira geração sem plano conserva REPLAN/INITIAL e não exige evidência de evolução inexistente para estabelecer baseline autorizado.
+
+PROGRESSION requer evidência comparável de evolução, PROGRAMMED_VARIATION requer training purpose/fase e efeitos preservados/perdidos; REACTIVE_ADAPTATION requer novo fato material/adequacy/necessity. Componentes distintos do composto conservam seus motivos. O motivo não seleciona efeito ou reduz a guarda: APPLY_PLAN_CHANGE e os HC são os mesmos. Model update ≠ mutation; materialidade/custo/hysteresis/Level0 e CONF-16 ficam íntegros. Heurística fraca, novidade, LLM ou frequência de mudanças não são justificativa; fundamento/limites da evidência acompanham trace e explicação. Não diagnosticar ou inferir causalidade por uma correlação.
 
 ## 11. Confidence Model
 
@@ -243,7 +275,7 @@ Não há ativação controladora autorizada, calendário ou meta arbitrária de 
 
 `DecisionRecord`: `decision_ref`, `evaluation_ref`, `snapshot_ref`, `candidate_set_ref`, `baseline_result_ref`, `jev_shadow_result_ref: Option`, `policy_gate_results`, `official_outcome`, `confidence_ref`, `validity_conditions`, `affected_scope_refs`, `confirmation_requirement`, `explanation_ref`, `prior_decision_ref: Option`, `lifecycle_state`.
 
-`DecisionTrace` MUST ligar: fatos/revisões conhecidos e ausências/conflitos; policy/rule/evidence/approval versions realmente usadas; candidatos gerados/admissíveis/rejeitados e HC/reason refs; vetor/comparações B0 e ambiguidades; JEV input projection/digest/evaluator/timeout e desacordo **separados do oficial**; ação/precondições/efeitos no horizonte; explicação/claims/template/model revision e validação; prévia/alcance/ato confirmado ou rejeitado; resultado lógico/erro/override/correção/successor. Não coletar pensamento interno do modelo. Referenciar fatos mínimos, sem replicar relato de saúde em logs/exports ou cada trace.
+`DecisionTrace` MUST ligar: fatos/revisões conhecidos e ausências/conflitos; policy/rule/evidence/approval versions realmente usadas; candidatos gerados/admissíveis/rejeitados e HC/reason refs; vetor/comparações B0 e ambiguidades; necessity/adequacy/change-cost e confirmação do objetivo protegido; JEV input projection/digest/evaluator/timeout e desacordo **separados do oficial**; ação/precondições/efeitos no horizonte; explicação/claims/template/model revision e validação; prévia/alcance/ato confirmado ou rejeitado; resultado lógico/erro/override/correção/successor. Não coletar pensamento interno do modelo. Referenciar fatos mínimos, sem replicar relato de saúde em logs/exports ou cada trace.
 
 | Estado/transição | Precondição / efeito lógico futuro |
 |---|---|
@@ -291,6 +323,13 @@ Regras obrigatórias:
 - Detectar ciclo de revisões sem melhoria material sob comparator/policy; suspender caminho automático afetado, conservar trace e encaminhar Engineering + domínio quando aplicável (AEC falha repetida). Quantidade/janela específica, se necessária ao comportamento fisiológico, precisa policy G02/G04; monitor operacional futuro deve ser validado sob G09, sem número arbitrário aqui.
 
 O oráculo de estabilidade é semântico: variações equivalentes preservam ação/delta/escopo, e uma alteração material justifica mudança por reason/policy ref. Não exige manter plano quando ficou inválido nem proíbe adaptação necessária. Taxa de oscilação e ruptura desnecessária serão medidas por sequências/counterfactuals no Lab.
+
+### 14.1 Freeze — hysteresis, stickiness e agência
+
+Materialidade exige regra/construto/protocolo comparável e benefício após Change Cost; uma oscilação de RPE, pace, FC, sono, sensação, série ou performance não dispara mudança só por existir. Hysteresis/decision inertia considera evidência suficiente e estado anterior sob regra aprovada, sem número de dias/leituras, TTL médico, percentual ou janela inventados. Próxima sessão já vista/escolhida é sticky; quanto mais próxima, maior a justificativa necessária para mudança discricionária. Segurança/restrição/permissão nova são imediatas, sem cooldown.
+
+DECLINED guarda AgencyConstraint do escopo mostrado e procura alternativa admissível dentro dela. “Manter plano atual” só é opção recomendável se ainda válido; recusa não libera HOLD nem impede registro da execução diferente. CONF-16 e SIS §7 permanecem integrais: início com proposta pendente é evento de agência no trace/StabilityState, composto inteiro STALE; nenhuma alteração ao restante sem fato material surgido depois do início. Mudar IDs/efeitos não contorna escolha. Demais sessões seguem avaliação sucessora normal; safety imediato.
+
 
 ## 15. Outcome Learning Contract
 

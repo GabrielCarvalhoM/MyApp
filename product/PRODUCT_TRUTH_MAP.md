@@ -2,12 +2,12 @@
 
 | Campo | Valor |
 |---|---|
-| Revisão | **PTM-1.0** · 2026-10-14 |
-| Estado | **CANONICAL — revisão documental publicada.** Estado de aprovação/publicação em `canon/CANONICAL_INDEX.md`. |
+| Revisão | **PTM-1.2** · 2026-10-19 |
+| Estado | **CANDIDATE_IN_ISOLATION**; publicação anterior preservada no baseline; este amendment tem reviews/handoff próprios. |
 | Owner / autor desta consolidação | Product Constitution & Governance / Codex PCG worker; Product/UX mantém as traduções estruturais downstream. |
-| Autoridade | Subordinado ao `canon/VILUMO_FIT_PRODUCT_THESIS_CONTRACT.md`, **VILUMO-PTC-3.0.0**. É índice normativo/de impacto: não cria doutrina, não substitui o contrato e não é segunda Product Truth. |
-| Previous revision | PTM-0.5.1 (2026-10-11), preservado em `governance/snapshots/2026-10-14-pre-3.0.0/product/PRODUCT_TRUTH_MAP.md`. Traduzia 2.2.0; o gap de ingestão de 2.3.0 é resolvido nesta consolidação. |
-| Task / inputs | RB-3.0.0-r1; fontes S0–S6 abaixo. evidence_policy=doctrine_audit. |
+| Autoridade | Subordinado ao `canon/VILUMO_FIT_PRODUCT_THESIS_CONTRACT.md`, **VILUMO-PTC-3.2.1** (candidate isolado). É índice normativo/de impacto: não cria doutrina, não substitui o contrato e não é segunda Product Truth. |
+| Previous revision | PTM-1.0 (2026-10-14), recuperável no baseline Git SIL; linhagem anterior PTM-0.5.1 (2026-10-11), preservado em `governance/snapshots/2026-10-14-pre-3.0.0/product/PRODUCT_TRUTH_MAP.md`. Traduzia 2.2.0; o gap de ingestão de 2.3.0 é resolvido nesta consolidação. |
+| Task / inputs | FREEZE-20261019-r1; fontes S0–S9 abaixo; SIL e RB-3.0.0-r1 como baselines preservados. evidence_policy=doctrine_audit. |
 | Consumidores | PDM; Product Architecture; PDR; V1 Release Scope; Experience Model/Core Flows; CURRENT_MISSION e handoff para Claude. |
 | Limite dos gates | PASS históricos referem-se somente a versões anteriores. Este mapa não declara gate de arquitetura, segurança implementada, UI, Figma, lançamento ou validação de mercado. |
 
@@ -22,32 +22,39 @@
 | S4 | [Hybrid Founder decision](../audits/founder-decisions/2026-10-11_hybrid-experience-founder-decision.md), 2026-10-11. | Founder texto bruto; grounding Chief não é doutrina. | Princípios híbridos preservados; quatro esportes e exemplo alimentar seguem limites de S6. Não autoriza copiar Pierre ou lançar toda capability. |
 | S5 | [RA3 review](../audits/canon-2.3.0-reviews/DOCTRINE_EVIDENCE_REVIEWED_r1.md) + [DI4 review](../audits/canon-2.3.0-reviews/DOCTRINE_INTERPRETABLE_r1.md), 2026-10-11. | Judges independentes históricos. | Findings de precisão informam correção; não concedem estratégia nem PASS nesta revisão. |
 | S6 | [REBASELINE_RECORD](../audits/rebaseline-3.0.0/REBASELINE_RECORD.md), pedido direto literal 2026-10-14. | Founder desta sessão; síntese/routing Chief identificados separadamente. | Autoridade atual do delta completo, preservação, missão documental, inovação/loop; preview de ChatGPT é contexto importado sem autoridade adicional. |
+| S7 | [Pedido direto Founder 2026-10-19](../audits/specialist-layers-2026-10-19/FOUNDER_REQUEST.md) + [registro SIL](../audits/specialist-layers-2026-10-19/MISSION_RECORD.md) | Founder decide; Codex formaliza em isolamento. | C045/C046 e links C024/C042/C043; conversa referenciada é contexto, não evidência de concorrentes nem autorização de UI agora. |
 
-Precedência: decisão humana atual explícita → contrato formalizado e publicado conforme gates → decisões não conflitantes já aceitas → tradução downstream. Referência, exemplo, hipótese, auditoria ou presença de arquivo não concede autoridade. Antes de publicação, S6 já governa o trabalho como decidido; o índice controla o estado do artefato.
+| S8 | [Pedido Founder de freeze](../audits/v1-freeze-2026-10-19/FOUNDER_REQUEST.txt), 2026-10-19. | Founder direto; Codex formaliza. | C047–56/L024 e supersessões V1, sem prova empírica. |
+| S9 | [Adendo Training Doctrine](../audits/v1-freeze-2026-10-19/TRAINING_ADDENDUM.md), mensagem direta posterior na mesma sessão. | Founder decide; registro estruturado, não transcrição científica. | C057–61/AEC/SIS/RIL/STIL: fundamentos/cadência/razões/consistência/claims, sem pesquisa nova/gate Visual. |
 
-- **L / LOCKED_INVARIANT:** DECIDED, Founder herdado de S0; nenhum novo L foi criado.
-- **C / CURRENT_PRODUCT_DECISION:** DECIDED, Founder por S0–S4 ou S6 conforme cada linha; vale no escopo atual, sem congelar para sempre a V1.
+Precedência: decisão humana atual explícita → contrato formalizado e publicado conforme gates → decisões não conflitantes já aceitas → tradução downstream. Referência, exemplo, hipótese, auditoria ou presença de arquivo não concede autoridade. Antes de publicação, S8/S9 governam o delta atual como decidido, preservando S0–S7 não conflitantes; o índice controla o estado do artefato.
+
+- **L / LOCKED_INVARIANT:** DECIDED: 22 anteriores herdados de S0; L024 novo explicitamente decidido por S8, sem mudar texto dos anteriores.
+- **C / CURRENT_PRODUCT_DECISION:** DECIDED, Founder por S0–S4/S6–S9 conforme cada linha; traduções subordinadas têm autoria distinta rastreada; vale no escopo atual, sem congelar para sempre a V1.
 - **D / DESIGN_SPACE:** DECIDED, permissão/limite aprovado; execução dentro dele segue owner competente, não feature obrigatória.
 - **H / HYPOTHESIS:** ASSUMED, confiança não validada; S0 ou S6 é origem da aposta, não evidência de efeito. Não há claims empíricos promovidos a invariantes.
 - **O / OPEN_QUESTION:** OBSERVED, lacuna documental/decisória verificada nos contratos locais, confiança alta quanto à ausência registrada, limitada ao repo consultado; não prova impossibilidade técnica. Resoluções O006/O012 são DECIDED. Contraevidência possível: futura decisão/contrato rastreável; só então atualizar o estado.
 
 As tabelas seguintes dão ID, destino/seção integral, fonte/autoridade, racional/alcance e dependentes para **cada um dos 91 IDs anteriores**. “Preservado” conserva significado; somente a comparação textual dos 22 L vigentes afirma texto definidor byte-identical. “Reformulado” inclui consolidação ou mudança de escopo explícita; “Superado” cessa obrigação; “Diferido” conserva possibilidade fora da V1. Classes/bases são as acima, salvo histórico superado, cuja antiga classificação aparece como proveniência.
 
+
 ## 2. Verdade operacional consolidada
 
-| Responsabilidade | Outcome vigente | Limite | Cláusulas / consumidor |
-|---|---|---|---|
-| Running × Strength | Coordenação de uma pessoa e dois domínios first-class, com linguagem/profundidade próprios. | Não dois planos isolados nem trackers superficiais; nenhum outro esporte first-class na V1. | L003/L004/L023/C023/C024/C031/C042 → PDM/PA/Scope/Flows |
-| Adaptive Engine | Núcleo de adequação e principal diferencial pretendido; Recovery integra decisões. | Não necessariamente IA/LLM; recomendação não é autorização de aplicação; eficácia não validada. | L005–L008/C038/C009/H004/H009/O003/O017 → PDM/PA/Scope |
-| Nutrition | Insights contextuais ligados a preparar/recuperar treino. | Sem logging, macros, dieta, meal planner, receitas ou produto alimentar; exemplo não dose. | C006/C039/D012/O003/O004 → PA/Experience/Flows |
-| Wearables | Observar atividades e preparar envio de structured workouts quando verificado como suportado. | Nenhum provider prometido; enviado não equivale a recebido/executado/concluído; degradação explícita. | C012/C034/C040/O016 → PDM/PA/Scope/Flows |
-| Crew Lite | Apoio, accountability apropriada, continuidade e distribuição; convite fechado, compromisso/contribuição consentidos. | Sem chat, discovery público, communities abertas, marketplace ou pilar equivalente; valor solo completo. | L009–L020/C025/C041 → PA/Scope/Experience/Flows |
-| Shareability | Representar/projetar valor produzido, com qualidade e consentimento. | Voluntário; não posting/alcance como valor primário; formatos não checklist. | C016–C027/D010 → PA/Scope; UI somente em missão futura |
-| Estratégia | Inovação real na coordenação; toda feature mostra outcome/coordenar ou contribuição clara ao loop. | Feature parity e product completeness não são meta; Pierre não é template/prova. | C043/C044 → PDR/Scope e revisões futuras |
+Fonte atual S8: [missão Founder de freeze](../audits/v1-freeze-2026-10-19/FOUNDER_REQUEST.txt), posterior ao SIL; DECIDED para direção de produto, ASSUMED para resultados/claims. C047–C056 e L024 são a formalização atual; DR76–85 e RS-1.3 selecionam V1. Run + Strength wedge premium; Crew DEFERRED; external share IN; analytics profundos via Progressive Depth; Nutrition completa DEFERRED/apoio leve opcional; ingest-first; subscription/value-before-hard-ask; prioridades e first-value definidos; semana compromisso e stable-by-default/minimum effective change. Nenhum efeito, paridade, retenção ou disposição a pagar está demonstrado por essa decisão.
 
-Loop: **Decide → Prepare → Execute → Observe → Adapt → Share → Repeat**. Descanso/adaptação podem ser execução apropriada; Share é opcional; Repeat admite retorno. Não corresponde automaticamente a sete telas ou um ritual obrigatório.
+| Delta | Autoridade / natureza | Dependentes |
+|---|---|---|
+| C001/C003/C004/C005/C038/C041 | DECIDED, Founder S8: Crew fora V1, tese preservada. | PDM/PA/RS/EM/CF/UX retiram destinos, modos, jornadas sociais. |
+| C006/C039/C040 | DECIDED: Nutrition módulo diferido, apoio leve condicional; wearable ingest-first, outbound sem gate global. | PDR G05/06, AEC/Scope/UX. |
+| C016/C036/C054 | DECIDED: external share próprio sem social network, eventos/privacidade/identidade. | PA I7/I9, CF F10, UX§16. |
+| C047/C048/C051 | DECIDED: posicionamento, qualidade premium/anti-bloat, profundidade progressiva. | Scope/PA/UX/Visual. |
+| C049/C050/C052/C053 | DECIDED: prioridades/semana/first value/subscription. | AEOS/AEC, onboarding, adoção/pagamento separados. |
+| L024 | LOCKED_INVARIANT / DECIDED explicitamente pelo Founder: estabilidade padrão. | AEOS necessity gate e custos; safety/autoridade nunca relaxadas. |
+| C055/C056 | DECIDED: integração proporcional e sync direto→visual após gate. | Handoff; não autoriza executar telas nesta entrega/código/release. |
 
-Parâmetros de mercado/plataforma preservados pertencem ao PDR: **Brasil, PT-BR e English, 18+, iOS e Android**. Parâmetros Crew preservados de S3/C025: **até 3 Crews** e **até cerca de 8 pessoas**, com criação em ambos os papéis e convite nominal; não são ótimos empiricamente validados.
+C057–C061/DR86–90 derivam de S9: treinamento evidence-informed e humildade, três processos/cadências, três tipos de mudança, consistência/personalização, confiança/claims e validação humana futura não bloqueante. AEC/SIS/AEOS e RIL/STIL recebem só esse delta; os núcleos especialistas e C045/C046 ficam preservados. Os 22 LOCKED anteriores ficam preservados. L001/L007/L010–12 governam a tese social futura, sem dívida V1; L024 é o único LOCKED novo. História/migrações §§3–11 seguintes descrevem revisões anteriores e não selecionam escopo atual contra esta seção. H009/O014/O017 continuam sem validação empírica.
+
+Conflitos resolvidos por supersessão autorizada: THESIS_CONFLICT-FZ-01 Crew-V1→deferred; FZ-02 outbound obrigatório→condicional; FZ-03 comparação fisiológica imediata→adequacy/necessity/change-cost; FZ-04 monetização aberta→subscription/value-first. Nenhum desses conflitos retorna ao Founder: ele já decidiu na fonte S8. Roadmap social pós-validação não remove invariantes sociais; feed público incompatível não se torna promessa futura.
 
 ## 3. Migração integral — invariantes anteriores (23/23)
 
@@ -190,6 +197,9 @@ O / OBSERVED registra ausência em fontes locais, não ausência global de solu�
 | VFT-H009 | HYPOTHESIS / ASSUMED / aposta não validada | S6/C038/C043, premissa de valor/diferenciação separada da direção decidida; nenhum dado de mercado novo. | PTC§11 → Research futura/claims/valor |
 | VFT-O016 | OPEN / OBSERVED / owner de domínio | S6 pede wearable bidirecional; providers/workouts/permissões não definidos. Confiança alta na lacuna local, não prova indisponibilidade de API. | PTC§13 → Engineering/Product/UX/Security antes de compromisso específico |
 | VFT-O017 | OPEN / OBSERVED / owner de domínio | S0 L023/O003/O014 + S6: não há evidência de qualidade/eficácia do núcleo liberado. Ausência local não prova impossibilidade. | PTC§13 → Safety/domínio/Engineering/Research antes de adaptação real ou claim |
+| VFT-C045 | CURRENT / DECIDED / Founder | S7: Specialist Parity + Cross-Sport Superiority; requisito de competência, não feature parity ou efeito validado. | PTC§2 → PDR DR72; Scope/AEC/SIS/RIL/STIL; O014/O017/G01–G04/G09/G11. |
+| VFT-C046 | CURRENT / DECIDED / Founder | S7: especialistas sob Orchestrator, Athlete Model compartilhado, arbitragem única, sem dupla contagem/loops ou UI por layer. | PTC§4 → PDR DR73/74; PDM/PA/AEC/AEOS/SIS. |
+
 
 Nenhum novo LOCKED. A extensão deriva somente dos limites/outcomes autorizados; hipótese do diferencial continua H009. Novas decisões do PDR DR55–DR64 são registros de decisão/handoff/execução, não conjunto de features adicionais.
 
@@ -216,6 +226,8 @@ Estes findings registram a resolução autorizada e sua história; não são gat
 | DI4-02 | Encaminhado ao consumidor apropriado: classes simples/frequentes com racional são Experience/Flows/agent scope. | PTC§10; Product/UX registra classificação sem mudar tese. |
 | DI4-03 | Corrigido: entrada contextual recorrente distinta de onboarding. | PTC§10 C029. |
 | DI4-04 | Clarificado: localização/rótulo de referências estáveis preservados sob personalização, sem escolher navegação. | PTC§10 C035; UX/UI futuros verificam. |
+
+Amendment SIL: **THESIS_CONFLICT-SIL-01 resolvido por explicitação autorizada.** S6/C043 e DR61 rejeitam feature parity; S7 exige paridade de competência no núcleo. C045 e links C024/C042/C043 distinguem os termos, preservam o teste de escopo e apertam o padrão de qualidade sem copiar catálogos. Detalhes/impacto em SIL, sem reescrever o passado.
 
 ## 10. Cenários de consistência e handoff
 

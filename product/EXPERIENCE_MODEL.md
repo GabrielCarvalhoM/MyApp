@@ -1,98 +1,50 @@
 # Vilumo Fit — Experience Model
 
-**Estado:** SPECIFICATION — amendment pré-UX; publicação/gates no índice.
-
-| Campo | Valor |
-|---|---|
-| Revisão | **EM-1.1** · 2026-10-15 |
-| Autoria | Product/UX Architect, worker |
-| Autoridade / inputs | [PTC-3.0.0](../canon/VILUMO_FIT_PRODUCT_THESIS_CONTRACT.md), C028–C044; [PDM-1.1](PRODUCT_DOMAIN_MODEL.md), [PA-1.1](PRODUCT_ARCHITECTURE.md), [RS-1.1](V1_RELEASE_SCOPE.md), [AEC-1.1](ADAPTIVE_ENGINE_CONTRACT.md). |
-| Necessidade / consumidor | Traduz o escopo decidido em comportamento comum do loop para [CF-1.1](CORE_FLOWS.md) e futura UX Spec, sem detalhar telas ou duplicar regras upstream. Gates/publicação no [índice](../canon/CANONICAL_INDEX.md). |
+Revisão **EM-1.2** · 2026-10-19 · **CANDIDATE_IN_ISOLATION / FREEZE-20261019-r1**.
+Consome [PTC-3.2.1](../canon/VILUMO_FIT_PRODUCT_THESIS_CONTRACT.md), [Scope](V1_RELEASE_SCOPE.md), [PDM](PRODUCT_DOMAIN_MODEL.md), [PA](PRODUCT_ARCHITECTURE.md), [AEC](ADAPTIVE_ENGINE_CONTRACT.md) e [AEOS](ADAPTIVE_ENGINE_OPERATIONAL_SPEC.md). Registro/pareceres: [freeze](../audits/v1-freeze-2026-10-19/MISSION_RECORD.md). Mesmo loop pessoal e controles já definidos, sem nova tela ou algoritmo.
 
 ## 1. Modelo de experiência
 
-O atleta encontra uma próxima ação contextual com referências previsíveis para voltar ao plano, sessão, histórico, contexto e Crew. Pode executar diretamente e acessar profundidade quando precisa entender ou corrigir. O produto acompanha o realizado e explica readaptação, sem apresentar cada modalidade, insight, integração ou interação social como outro produto.
+Decide→Prepare→Execute→Observe→Adapt→Share→Repeat é mapa de valor, não wizard. Share é opcional; descanso/adaptação legítimos; ausência de relógio mantém observação manual; retorno sem dívida de volume. O núcleo Run+Strength recebe qualidade premium, sem Crew/feed/canal de conversa na V1. Complexidade disponível, não imposta.
 
-O loop **Decide → Prepare → Execute → Observe → Adapt → Share → Repeat** é um mapa de valor, não um wizard obrigatório. Descanso pode honrar Execute sem treino; ausência de dispositivo não remove Observe manual; Share é voluntário; retorno pode reabrir Decide com rebaseamento. Nenhuma etapa exige conversa ou Crew. Eficácia e redução real de esforço continuam hipóteses até observação de uso.
+## 2. Primeira semana e valor
 
-Amendment PREUX-20261015-r1 preserva essa estrutura e consome AEC §2–7: confiança por decisão, conteúdo por função, HOLD escopado, perdas/recibos e permissões reais. [SCI-1.0](../audits/pre-ux-2026-10-15/SCIENCE_EVIDENCE.md), [PRO-BOUND-1.0](../audits/pre-ux-2026-10-15/PROFESSIONAL_BOUNDARIES.md) e [WEA-1.0](../audits/pre-ux-2026-10-15/WEARABLE_EVIDENCE.md) são apoio; regras de comportamento ficam no AEC e decisões residuais no PDR §5. Não introduz destinos, componentes ou tiers comerciais.
+Onboarding pergunta objetivos concretos, Run-first/Strength-first/Balanced, experiência, dias/janelas, equipamento e só restrições/dados pertinentes com finalidade. Não anamnese completa nem sensores obrigatórios. Gerar proposta de semana inicialmente coordenada, com razão legível da distribuição entre modalidades e limites/confiança. Não terminar só em boas-vindas. Fora da cobertura/regra: limite/próximo passo, sem “plano pronto” fictício.
 
-## 2. Experiência por etapa e por papel
-
-| Etapa | Full Member M1/M2 | Crew Member M3 | Regra de continuidade |
-|---|---|---|---|
-| Decide | Decisão coordenada Run × Strength, confiança e próxima ação; explicação sob demanda. | Declara intenção leve; nenhum plano/recovery/adequação fisiológica fictícios. | Uma referência da decisão/intenção; conteúdo muda, localização não. |
-| Prepare | Estrutura da sessão, equipamentos/contexto relevante, insight nutricional aplicável e envio opcional quando suportado. | Prepara a própria prática fora da promessa pessoal do motor; compromisso social opcional não prescreve. | Demandas/versões relevantes ficam legíveis; sem formulário alimentar. |
-| Execute | Iniciar, pausar, registrar/corrigir e concluir corrida/força diretamente; descanso/adaptação têm legitimidade. | Realiza o que declarou, sem avaliação pelo Vilumo. | Estado e dados persistem; conversa não é caminho obrigatório. |
-| Observe | Real reconciliado, declaração, parcial/ajuste ou descanso confirmado; dados desconhecidos explícitos. | Declaração mínima privada de continuidade, sem prova/verificação. | Sensor ausente não prova não realização; registro não depende de share. |
-| Adapt | Próxima decisão/revisão pelo contexto atual, com efeitos nas duas modalidades; retorno rebaseado. | Ajusta intenção própria, pausa/retoma continuidade sem motor. | Preservar passado e diferenciar sugestão de mudança aplicada. |
-| Share | Pode preparar progresso próprio ou check-in privado para pessoa de Crew; sem dados sensíveis/terceiros. | Pode check-in/retorno próprios e convite sob os mesmos limites. | Cancelar/pular não reduz mérito, participação ou valor. |
-| Repeat | Reencontra plano/próxima ação/histórico e continua ou retorna. | Reencontra compromisso/interações próprias e pode adotar motor voluntariamente. | Sem restaurar streak/volume ou exigir upgrade por participar socialmente. |
-
-M1 não tem “falta de Crew” como pendência. M2 acrescenta somente a própria parte relevante e interações consentidas. M3 pede muito menos contexto do que a experiência pessoal; modo nunca aparece para outras pessoas e não é plano de preço.
+Value before hard ask: apresentar personalização/semana e valor antes do paywall preferencial; trial/mensal/anual/price/timing testáveis. Oferta transparente quando real; protótipo usa slots. Compra confirma escolha comercial, adoção confirma plano; são atos distintos. Treinar sob entitlement aplicável depois da escolha; direitos/histórico e registro em curso não são hostage da assinatura.
 
 ## 3. Contrato de interação e agência
 
-| Classe | Comportamento | Persistência / confirmação |
-|---|---|---|
-| Ler/explicar | Decisão, por quê, limites, histórico e alternativas admissíveis. | Leitura não altera estado ou consentimento. |
-| Registrar/corrigir fato próprio | Série/carga/intervalo, conclusão/parcial, atividade não planejada, contexto ou descanso. | Ação direta clara registra no objeto correspondente; correção preserva origem/revisão e readapta derivados. Não exige confirmação extra a cada série. |
-| Aplicar ajuste de contexto/plano | Mudança relevante mostra alcance e efeito em sessões/insights/exports. | Confirmar sobre versão corrente; cancelar sem efeito; conflito de versão invalida a proposta. |
-| Iniciar/trocar execução | Pessoa inicia versão selecionada; ajuste da parte ainda não feita é mostrado. | Não alterar silenciosamente treino iniciado; observações anteriores permanecem. |
-| Enviar workout | Destino/capacidade, revisão e perdas/preflight visíveis. | Consentimento separado + ação explícita; recusar export com perda de prescrição. Transporte/sistema/device/executada são provas distintas; unknown sem retry cego (AEC §5). |
-| Corrigir / contestar HOLD | Causa privada mínima, alcance afetado, próximo passo e owner de saída no objeto da decisão. | Recusa/override registra agência e real sem limpar safety ou autorizar export proibido. Correção e reavaliação competentes liberam apenas o que sua evidência permitir; registro/direitos não dependentes continuam. |
-| Adotar/pausar/sair Crew | Consentimento/visibilidade/alcance por Crew; prática pessoal independente. | Pausar/sair sem justificativa ou penalidade. Revogação pode minimizar/encerrar a finalidade, sem apagar histórico pessoal. |
-| Check-in/apoio | Mensagem estruturada privada para destinatário ativo escolhido na Crew. | Envio explícito, sem publicação por base de membership ou por ter concluído treino. |
-| Share externo | Objeto próprio/convite, prévia exata, destino e aviso de cópia externa. | Confirmar; cancelar nada projeta; revogar interrompe futuro sem prometer recolher passado. |
+Ler/explicar não muta. Registrar/corrigir fatos mantém origem/revisão e atualiza modelo/derivados. Aplicar alteração material de plano/contexto/restante de execução exige prévia de alcance e confirmação atual; versão stale não sobrescreve. A pessoa pode aceitar, manter vigente quando ainda válido ou ver motivo. Recusa cria constraint no escopo efetivamente apresentado, sem causa/motivo íntimo ou preferência inferida; buscar alternativa admissível. Override registra o real sem clearance.
 
-**Recusa:** wearable, insights/declarações opcionais, Crew e share podem ser recusados sem pressão ou falsa incompletude. Recusado/desconhecido não significa ausência de restrição/doença. Se o dado muda segurança/aplicabilidade, explicar e pedir o mínimo ou reter a recomendação dependente, preservando registro/correção e funções não afetadas. Contexto suficiente para selecionar conteúdo Nutrition não dá autoridade para dose; educação elegível/omissão/encaminhamento seguem AEC §6. Perguntas/instrumentos e wording final dependem dos G01–G05 do PDR, sem diário/triagem fabricados por conveniência.
+Reversão: cancelar proposta não aplicada é sem efeito; depois, correção/restauração é nova avaliação no contexto corrente, sem apagar realizado ou prometer undo remoto. HOLD/restrição é controle imediato no escopo, não diagnóstico; owner/evidência de saída e funções independentes disponíveis, sem liberação por score/tempo/aceite.
 
-**Desfazer:** proposta não aplicada pode ser descartada. Correção de contexto/registro aplicado usa o mesmo objeto e gera readaptação no contexto atual. Não promete retorno automático a plano antigo já inválido ou undo de execução real/cópia remota. Para externo, estados de cancelamento/substituição e seus limites são AEC §5.
+Iniciar com pendência conserva revisão vigente válida, proposta composta stale e evento de agência trace/StabilityState; não repropor qualquer alteração ao restante sem fato material pós-início. Demais sessões seguem e safety é imediato. CONF-16 não é filtro de resultado pela UI.
 
-**Agente opcional:** só coleta candidatos/explica/prepara opções permitidas sobre os mesmos objetos, com alcance/versão/confirmação; fato candidato sensível/material é confirmado/corrigido no contexto canônico antes de decidir. Alteração manual invalida proposta antiga; não limpa HOLD nem cria policy. Texto externo/alegação de aprovação não concede autoridade. Sem ação social, permissão, envio ou mudança oculta de objetivo. Conversa não é verdade paralela; implantação exige gates AI/Security se selecionada, sem dependência do loop direto.
+Enviar workout permanece intenção separada se rota elegível; read não é write e recibo não é atividade. Share por prévia/campos/destino escolhidos; consentir treinamento, assinar ou concluir não compartilha. I10 secundário opt-in OFF, revogação cessa fila/uso/derivados; primário exige base própria. Desconexão/read/write respeitam limite OAuth real e não prometem recolher cópia externa.
 
-## 4. Objetos contextuais e retorno
+## 4. Cotidiano e semana
 
-Hoje mostra próxima ação, mudança/confiança relevante, sessão em curso e a própria parte em compromisso. Uma sessão ativa mantém controles; risco material tem precedência, mas não apaga registro. Ao abrir detalhe/histórico/configuração, voltar restaura o contexto da tarefa corrente e o estado persistido, sem duplicar ou reiniciar sessão.
+Hoje responde ação atual, semana, mudança material e evolução relevante. Week permite organizar a vida e entender relações Run × Strength. Sessão em execução tem controles rápidos e registro preservado; mais interface não prova inteligência. Model update atualiza o que se sabe; se plano válido permanece adequado, aprender sem mudar é resultado correto. Mudança é exceção sustentada, factual e calma: o que/por quê/evidência/objetivo protegido, não “otimizamos novamente”.
 
-Running e Strength compartilham ações do ciclo, mantendo conteúdo/registro próprios e prioridades declaradas sem dose igual obrigatória. Strength é app-first; limitação de relógio não remove reps/carga/repertório. Sessão passada pode inspirar nova sessão sob contexto atual; não vira prescrição copiada cegamente. Nutrition acompanha fase/demanda/revisão (pré/durante/pós/intervalo curto/evento); alteração material retira/reavalia o insight e explica limite quando pertinente. Sem inferir consumo, prescrever dose pessoal, logging, meal planner ou suplementos.
+Minimum Effective Change e Change Cost/hysteresis/stickiness pertencem ao motor; UI manifesta KEEP sem ruído ou menor proposta eficaz quando necessária. Pequena oscilação não é aviso; safety/invalidade não aguardam estabilidade. Rejeitar não pune. Interromper/retomar rebaseia contexto, sem restaurar volume/streak e sem ação social.
 
-Interromper é declaração pessoal que encerra planejamento ativo de treino. Não implica vínculo pausado ou aviso social; pode oferecer pausar Crew por Crew com “não alterar” como padrão. Retomar não reativa vínculos automaticamente. Retorno usa contexto atual, sem compensar o perdido, exigir motivo ou restaurar volume/streak. Compartilhar retorno é decisão privada por destinatário ou progresso próprio externo elegível.
+### Training doctrine na experiência
 
-## 5. Estados obrigatórios e recuperação
+PTC C057–C061/AEC§1.3: personalização não exige instabilidade; consistência pode refletir boa programação. Aprendizado contínuo não gera aviso de adaptação ou promessa de ganho. Mudança reativa intra-ciclo é excepcional/material; evolução significativa prefere próxima semana/ciclo, com progression earned distinta de variação programada com propósito. Quando material, explicar o que mudou, por quê, evidência e princípio/objetivo protegido, conforme trace; quando KEEP, pode explicar que o plano continua adequado sob demanda. Não vender novidade/frequência como IA inteligente nem prometer perfeição/validação clínica/ótimo garantido. Validação humana futura de claims/escala não bloqueia Visual/UI; não pedir pesquisa científica ao Claude.
 
-| Estado | O que a pessoa deve entender / conseguir fazer |
-|---|---|
-| Primeiro uso / vazio pessoal | Caminho solo ou social leve, 18+, contexto mínimo pertinente; sem obrigatório wearable/Crew/conversa. Não chamar ausência de histórico de falha. |
-| Contexto parcial/desatualizado/conflitante/ausente | Confiança para a decisão específica, fonte/limite pertinente e pergunta mínima acessíveis; sem dose/score universal. Ausência de HRV não é falha; sinal favorável não anula restrição. |
-| HOLD / correção-review / reavaliação | Entender qual recomendação/efeito está retido, próximo passo/owner e limite do app sem diagnóstico. Registrar/corrigir/contestar e usar funções não afetadas; sem promessa de liberação por score/tempo/aceite ou de prescrição antiga segura. Saída conforme AEC §7 e regra profissional aplicável. |
-| Decisão atual/substituída/expirada | Qual está vigente, o que mudou e a referência de revisão; confirmação velha não aplica mudança. |
-| Sessão pronta/em curso/pausada/parcial/concluída | Controles diretos, registros persistidos, correção e fechamento sem perder o que já aconteceu. |
-| Descanso honrado/desconhecido | Confirmar quando quiser; sem treino não é falha. Confirmação tardia atualiza pessoal, sem envio social automático. |
-| Offline / sync pendente/erro | Registro local preservado, limite de dado remoto visível; reconectar/reconciliar sem duplicar. Sem spinner de “sucesso” sem prova. |
-| Wearable sem leitura ou sem envio | Finalidade/capacidade e limite real da rota, com execução no app. Outra finalidade só continua após recusa/revogação se tecnicamente/juridicamente sustentável; senão desconectar e explicar. Vazio opaco não prova permissão negada ou zero. |
-| Export pendente/enviada/confirmada/falha/desconhecida/obsoleta/discrepante | Versão e nível de prova sistema/device claros; confirmação não é execução. Perda muda prescrição → recusa/app. Timeout incerto → sem retry automático cego; update/delete composto admite falha parcial. Cópia antiga pode permanecer, inclusive após HOLD, sem recall prometido. |
-| Observação tardia/duplicada/corrigida/ambígua | Fato/revisão e efeito futuro; conflito pede resolução privada, sem associação inventada. |
-| Sem dados/interrompido/retornando | Estados distintos, sem abandono inferido, culpa ou exposição. Recomeçar é parte do produto. |
-| Crew formação/ativa/sem compromisso | Reencontrar pessoas já relacionadas, optar por adesão, criar/aceitar convite; sem pressão de participação. |
-| Convite pendente/indisponível | Não é vínculo; encaminhado/projetado aguarda confirmação. Razão sensível não aparece ao convidante. |
-| Vínculo pausado/saiu/removido | Prática pessoal independente; acesso e mensagens sociais encerrados/minimizados conforme propósito. Novo convite para reentrada. |
-| Check-in/apoio privado | Destinatário e Crew claros; ninguém recebe lista de cumprimento, origem ou motivo. Pode retirar/silenciar conforme política. |
-| Consentimento negado/revogado | Finalidade/recipients/alcance e persistência de dados/cópias compreensíveis. I10 secundário revogado cessa fila/uso/serviço de derivados; primário necessita base/finalidade independente válida. Leitura/envio locais separados não prometem scopes OAuth iguais; revalidar antes de efeito/retry e desconectar quando não sustentável (PDM I6/I10). Audiência e inferência residual legítima em Crews pequenas/sobrepostas integram consentimento, sem correlação ou anonimato total prometidos (PA §6). |
-| Share cancelado/erro/projetado | Objeto de origem intacto; cancelar não penaliza; depois de projetar não prometer recolhimento externo. |
+## 5. Progressive Depth e analytics
 
-Limiar de confidence, retenção, atraso, tolerância, convite/remoção e safety não são inventados aqui. O inventário único [PDR §5 G01–G11](PRODUCT_DECISION_REGISTER.md) tem owner/prova/trigger; [RS §6](V1_RELEASE_SCOPE.md) aponta seu consumo por etapa. Isso preserva detalhamento estrutural sem finalizar conteúdo/regra/claim ainda dependentes.
+L1 Orientation: poucos sinais sustentados para “estou evoluindo?” e insight principal quando relevante, sem todo o dashboard. L2 Progress: Running/Strength/Overall, tendências/comparações pertinentes. L3 Deep Dive: métricas/fatos e derivados listados no Scope/SIS/RIL/STIL, comparabilidade/períodos/ciclos/histórico/limites. Não forçar indicadores ou mostrar recuperação/carga adequada/capacidade como fato sem regra/evidência.
 
-## 6. Crew Lite e reconhecimento apropriado
+Running preserva etapas/targets/intervalos/tempo/distância/pace/RPE/FC quando aplicáveis; Strength exercício/séries/reps/carga/esforço/descanso/substituição e progressão, sem fricção durante treino. Post-workout só coleta sinal com consumidor e mínima pergunta opcional; aprendizado visível quando útil, sem interrogar ou adaptar em toda conclusão.
 
-Compromisso leve é intenção comum de continuar fazendo o apropriado em um período, com adesão opcional e parte diferente por pessoa. Check-in privado direcionado não é prova de treino. Recuperar/descansar e retornar podem produzir a mesma mensagem mínima legítima sem causa íntima; fazer mais não aumenta mérito/apoio. Declaração do M3 não recebe selo de adequação/verificação.
+## 6. Shareability, roadmap e estados
 
-No fim do período, reconhecer qualitativamente o **encerramento do compromisso comum e a cooperação**, sem afirmar cumprimento de todos ou calcular check-ins. O marco “período encerrado” segue o tempo do compromisso; ausência/pausa de alguém não produz fracasso nem alteração que o identifique. Apoio privado responde à contribuição voluntária. Nenhum ranking, score, número de presença, lista de quem falta ou recap externo coletivo.
+Output externo de conquista/evolução/identidade por evento C054; premium e reconhecível, não dashboard cru. Próprios valores elegíveis por seleção; jamais Health/recovery/FC/HRV/RPE/RIR/Nutrition/motivo/localização/terceiros/metadata oculta. Semana/streak não coagem mais treino e incluem descanso apropriado; unknown não produz sucesso fictício. Prévia atual, cancelar sem perda e cópia externa por ato explícito/native share. Nenhuma rede/contato/auto-post/importação de likes ou performance de share como valor principal.
 
-Pausar vínculo, interromper prática e revogar envio são ações independentes. Outros membros podem ver somente nome de exibição e estado neutro “Em pausa” previsto; nunca motivo, horário/histórico, modo, outras Crews, Nutrition/recovery, confiança ou performance. Permissões e audiência de check-in são próprias, não se ampliam por membership/nova entrada.
+Crew inteira é DEFERRED, NOT REJECTED; sem estados sociais/entrada M3/tabs. Nutrition completa diferida, apoio leve existente só se elegível. Wearables ingest-first, outbound condicional com seus estados/controles intactos, sem integração universal. Erros/offline/unknown/versão/revogação/hold/retorno e pagamento pendente/cancelado sempre têm saída e preservam dados. Billing não confunde failure do atleta/hold clínico; assinatura não força consentimento.
 
-## 7. Aceitação de etapa e handoff
+## 7. Aceitação e handoff
 
-EM-1.1 serve se cada classe frequente tem caminho direto, mesma referência/autoridade, estados recuperáveis e fechamento observável; CF-1.1 examina isso por S01–S18. É modelo de comportamento, não UX Spec completa, catálogo de telas ou validação visual.
-
-Autoria Product/UX worker; PA §9 registra self sem PASS próprio. Product/UX judge avalia estrutura; Security/Engineering julgam fronteiras/controles sobre revisões atuais. Após gate/publicação, Claude consome índice/Scope/AEC e dependências exatas do PDR para detalhar UX sob próxima missão autorizada. Nenhum aceite de Claude é presumido; visual/técnica/runtime exigem gates próprios.
+PDR G01–G11 é inventário único de owner/prova. Detalhes de policy, preço, templates/copy e provider não impedem desenhar a experiência definida; não preencher placeholders com promessa falsa. Após gate atual e sync mínimo, seguir ao Visual/UI planejado por autorização C056. Não reabrir produto/research/engine, nem adicionar grande review cycle sem conflito material. Nenhuma aprovação visual/código/produção é inferida desta especificação.

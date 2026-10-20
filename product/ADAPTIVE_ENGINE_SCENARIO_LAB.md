@@ -1,7 +1,9 @@
 # Adaptive Engine Scenario Lab / Eval Suite Specification
 
-Revisão **AESL-1.0-r2** · 2026-10-15 · Missão **VF-AEOS-20261015-001**.
-Estado: **SPECIFICATION**; gates documentais e publicação no registro da missão. Autoria `/root`, Chief coordena. Consumidores: futura harness de Engineering/Quality, AI Systems para JEV/LLM, profissionais competentes para gold labels. [AEOS-1.0](ADAPTIVE_ENGINE_OPERATIONAL_SPEC.md) define contratos; [AEC-1.1](ADAPTIVE_ENGINE_CONTRACT.md) mantém autoridade. [PDR §5](PRODUCT_DECISION_REGISTER.md) continua inventário único de gaps. [Registro/reviews](../audits/adaptive-engine-2026-10-15/MISSION_RECORD.md) contém estado por hashes. **Nenhum cenário executável, ML ou integração é implementado/executado nesta missão.**
+Revisão **AESL-1.2-r2** · amendment 2026-10-19 (baseline 2026-10-15) · Contrato **FREEZE-20261019-r1** (baseline AEOS preservado no Git).
+Estado: **CANDIDATE_IN_ISOLATION**; evento AEOS anterior abaixo cobre somente seu baseline. Autoria `/root`, Chief coordena. Consumidores: futura harness de Engineering/Quality, AI Systems para JEV/LLM, profissionais competentes para gold labels. [AEOS-1.2-r2 candidate](ADAPTIVE_ENGINE_OPERATIONAL_SPEC.md) define contratos; [AEC-1.3 candidate](ADAPTIVE_ENGINE_CONTRACT.md) mantém autoridade. [PDR §5](PRODUCT_DECISION_REGISTER.md) continua inventário único de gaps. [Registro/reviews atuais](../audits/v1-freeze-2026-10-19/MISSION_RECORD.md) contém estado por hashes; [registro AEOS](../audits/adaptive-engine-2026-10-15/MISSION_RECORD.md) é histórico. **Nenhum cenário executável, ML ou integração é implementado/executado nesta missão.**
+
+> **FREEZE-20261019-r1 / CANDIDATE_IN_ISOLATION.** Delta posterior ao SIL; fonte/impacto/reviews no [registro freeze](../audits/v1-freeze-2026-10-19/MISSION_RECORD.md). Nenhuma alteração no checkout ativo; gates históricos valem só para os respectivos inputs.
 
 ## 1. Objetivo, limites e consumidores
 
@@ -200,3 +202,61 @@ Ordem futura de runs: validar fixture/types/oracles/refs e negativos de autorida
 Reviewers independentes recebem run manifest, evidência, limitações e split; autores de policy/model não aprovam a própria entrega. Engineering/Quality julgam contratos/mecanismos; AI julga tipagem/shadow/fidelidade/calibração; Security julga finalidades/exposição/efeitos; profissionais reais julgam domínio. Chief agrega gates atuais, sem substituir juízo técnico. Limiar não invariante de promoção JEV será proposto após baseline/experts e aprovado pelo owner competente; esta especificação não escolhe metas, sample count ou rollout. Nenhum agreement sintético promove controlador.
 
 Resultado desta missão: **especificação de 47 cenários, 9 sequências, relações contrafactuais e métricas**, submetida a review documental. Não há relatório de testes executados ou treinamento. Falta real de policy profissional, jurídico, credenciais/device ou dados gold não impede definir oráculos estruturais, mas bloqueia a etapa real dependente. **HARD STOP após docs/reviews/checks; sem implementar harness/motor/ML/provider/Figma/telas.**
+
+## 9. Oráculos especialistas (SIL — especificação, não execução)
+
+Extensão por [SIS](SPORT_INTELLIGENCE_SPEC.md), [RIL](RUN_INTELLIGENCE_SPEC.md), [STIL](STRENGTH_INTELLIGENCE_SPEC.md), AEOS §2.1. Reutiliza ScenarioFixture/ExpectedOracle/EvalRun, HC e perfis SYNTHETIC_ONLY existentes; S01–47 e Q01–09 permanecem byte-identical no corpo. Cada futura fixture deve fechar fatos/receitas/regras/expected outcome por hash antes de executar. Sem regra de domínio, decisão fisiológica recebe NOT_EVALUABLE_DOMAIN; invariantes continuam testáveis. Nenhum cenário foi executado.
+
+| ID / caso | Input/variação a congelar | Oráculo obrigatório / proibido |
+|---|---|---|
+| SIL-S01 força principal | Par de fixtures mesmos fatos/candidatos válidos; muda apenas goal confirmado Run-first → Strength-first. | B0 aplica B1–B6 sem runner-first secreto; ambos mantêm profundidade especialista. Diferença exata de decisão exige conjunto/ordem da fixture; safety pode manter mesmo resultado. |
+| SIL-S02 forma de corrida | Repeat com total N, trabalho/recuperação, última recuperação explicitada, completion/target/advance e baseline. | Totais/steps preservam receita; sem confundir N com repetições Strength ou inventar distância/FC. Alterar recuperação/densidade requer nova receita/candidato. |
+| SIL-S03 target e referência | Mesma sessão com método de zona/baseline revisto e variante de pace↔velocidade. | Revisão/unidades/faixas/método conservados; proposta antiga invalidada quando dependente, histórico inalterado; sem média entre métodos/zero default. |
+| SIL-S04 progressão Run | Par com mesmo realizado: alvo original A deliberadamente reduzido para B versus tentativa do alvo A ainda vigente. | Aderência contra executado; primeiro não é falha de A nem prova de conquista de A. Segundo só recebe classificação sob critério aplicável. Ausência de policy → UNCLASSIFIED. |
+| SIL-S05 progressão Strength | Reps/carga/RIR/descanso/configuração comparáveis versus RIR desconhecido ou equipamento alterado. | Só regra aprovada concede oportunidade/ação; não aumento automático por sessão completa, calendário ou PR. Convenção por mão/total/assistência não se perde. |
+| SIL-S06 estruturas de força | Uma sessão com warmup, superset e drop set; reentregar por manual/provider. | Séries/segmentos têm IDs/relação únicos; warmup separado de trabalho; atribuição por músculo não multiplica exposição sistêmica; sem carga extra pelo segundo delivery. |
+| SIL-S07 exposição e projeções | Mesmo fato/revisão interpretado por Run, Strength e Recovery, depois corrigido/suprimido. | Uma contribuição ativa por escopo; relação de interferência e fadiga estimada não viram nova atividade. Correção substitui; supressão prevalece; desconhecido não vira zero. |
+| SIL-S08 previsto versus realizado | Sessão planejada observada parcialmente, resto desconhecido; associação confirmada versus ambígua. | Não somar plano+observado como dois treinos. Parte sem prova é desconhecida; ambiguidades preservadas sem duplicação ou fusão inventada. |
+| SIL-S09 custo e substituição | Receita alternativa com mesmo grupo mas estímulo/demanda axial/excêntrica diferentes e corrida próxima. | Preservação/perda explícita, validação conjunta/horizonte; grupo igual não prova equivalência/safety; sem alternativa válida → controle escopado. |
+| SIL-S10 fase/evento | Taper para prova-alvo versus deload sem evento; data cancelada/indefinida. | Fase/propósito/goal refs distintos; ASK da informação decisiva ou receita apropriada; sem calendário/percentual universal, compressão de semanas ou reposição automática. |
+| SIL-S11 ciclo proibido | Repetir proposals/assessments sem novo fato, embaralhar ordem, receber contraproposta stale. | Mesmo resultado/delta sem reaplicação; proposta não vira performance/fadiga observada; sem chamada recursiva entre layers. Novo fato material permite sucessor com trace. |
+| SIL-S12 início com pendência | Proposta afeta sessão escolhida; iniciar sessão antes do commit; variante proposta não afeta essa sessão. | Primeira APPLY_PLAN_CHANGE/composto inteiro STALE; evento de agência ligado às razões registrado no trace e StabilityState. Reexecutar mesmas razões sob novo ID/conjunto não repropõe o restante sem fato material surgido depois do início; próprio início não basta. Outras sessões seguem sucessor normal; safety imediato. Segunda proposta só invalida se dependência material, sem serialização global. |
+| SIL-S13 PR e analytics | Fatos comparáveis versus máquina/variante diferente, estimated 1RM versus medição, correção duplicada. | Recorde por critério/configuração e estimativa rotulada; sem novo PR por delivery/critério mudado, sem progressão automática ou mais mérito por volume. |
+| SIL-S14 paridade versus efeito | Casos profissionais por objetivo/perfil/equipamento e coordenação versus planos isolados, cobertura e comparador versionados. | Contrato sintético não prova paridade/eficácia/superioridade. Domínio G01–G04 e avaliação G11 permanecem requeridos antes dos respectivos claims. |
+
+Coverage: Run prescription/zones/progression/programming/performance/recovery/analytics → SIL-S02/03/04/10/14; Strength prescription/progression/periodization/exercise/recovery/analytics → SIL-S05/06/09/10/13/14; ownership/I11/I12/carga/loops → SIL-S01/04/07/08/11/12 e S29/S32/S45–47 existentes. Não há meta numérica, nova harness, policy ou gate visual nesta extensão.
+
+### 9.1 Adendo training doctrine — oráculos futuros, sem execução
+
+| ID | Fixture/variação | Expected / forbidden |
+|---|---|---|
+| TD-S01 fundamento | Alternativa plausível/nova/LLM ou heurística sem suporte vs receita/fundamento aplicável. | Não ganha autoridade por texto/novidade; refs/princípio/aplicabilidade/limites requeridos; insuficiente não recebe dose inventada. |
+| TD-S02 aprender sem mutar | Fato após sessão atualiza AthleteState com vigente adequado; oportunidade de progresso presente. | LEARN/KEEP sem delta, export, aviso ou autoaplicação futura; assessment pode informar próximo horizonte sob finalidade própria. |
+| TD-S03 próximo ciclo | Continuação, resultado comparável favorável vs insuficiente, fase planejada. | Evolução significativa prefere continuação; earned progression só com critério, manter/rebasear quando cabível. Calendário não concede aumento; phase/deload/taper são variação com propósito, não perda/ganho presumido. |
+| TD-S04 tipo não burla estabilidade | Renomear mudança marginal do vigente como PROGRESSION ou PROGRAMMED_VARIATION; variante já aceita no plano. | Primeiro caso KEEP se adequado/sem necessidade; segundo executar estrutura aceita não é mutação. Reativa material preserva Level0/custo/menor intervenção/guarda. |
+| TD-S05 consistência | Mesmos movimentos/estrutura úteis à comparação vs gerador varia só por repetição. | Preservar consistência intencional; novidade/quantidade de mudanças não prova personalização/inteligência. |
+| TD-S06 concurrent evidence | Mesmas ExposureRefs, contextos de prioridade/spacing/demanda/volume/recuperação diferentes; suporte fraco para dose exata. | Avaliação conjunta defensável/qualificada, sem cancelamento por proximidade ou fadiga duplicada; alternativa conservadora/reversível coberta ou abstensão dependente. |
+| TD-S07 explicação/claim | KEEP sustentado vs mudança material; rótulo evidence-informed em marketing. | Texto fiel a fato/evidência/princípio/objetivo, não mudança como prova de IA, perfeição/garantia clínica/claim specialist-grade. Gate humano futuro G11 não bloqueia Visual/UI. |
+
+São extensões de fixtures sintéticas/ExpectedOracle existentes, não harness executada, fonte científica ou novos gates visuais. Auditoria documental do adendo A–N em registro freeze.
+
+## 10. Oráculos FREEZE — adequação antes de mudança
+
+Especificação documental adicional, **não execução**. Reutiliza fixtures/ExpectedOracle e HC/JEV/trace existentes. Uma futura run do novo AEOS deve migrar fixtures antigas: qualquer expected de mudança S01–47/SIL-S01–14 recebe adequacy/necessity/ChangeCostRule explícitos e razão de KEEP insuficiente; sem isso o cenário é incompleto/NOT_EVALUABLE para a nova política, não aprovação automática do oráculo anterior. Nada inventa gold fisiológico.
+
+| ID | Fixture/variação | Expected / forbidden |
+|---|---|---|
+| FZ-S01 learn only | Plano válido ADEQUATE, nova sessão observada atualiza modelo. | KEEP, zero change_set/revisão de conteúdo/export/aviso; AthleteState pode mudar. |
+| FZ-S02 marginal optimum | Mesmo plano adequado, alternativa teoricamente melhor em uma feature. | Nenhuma mutação; B1 não pula necessity gate; JEV favorável não muda oficial. |
+| FZ-S03 minimum effective | Plano inadequado sob regra sintética fechada; micro/volume restauram qualidade, replan também. | Escolher menor intervenção suficiente pelo custo/contexto, não ótimo marginal amplo; HC/horizonte em conjunto. |
+| FZ-S04 noise/hysteresis | Pequena oscilação definida não material no fixture (RPE/pace/FC/sono/série). | Sem mudança/reproposta/notificação; regra faltante → indeterminação/controle, nunca limiar inventado. |
+| FZ-S05 next sticky | Mesmos fatos, só janela/estado visto/escolhido da próxima sessão muda. | Maior custo/exigência de evidência conforme policy; sem threshold temporal hardcoded. Controle safety igual e imediato em ambas. |
+| FZ-S06 priority | RUN_FIRST/STRENGTH_FIRST/BALANCED com mesmos candidatos e objetivos. | Primário/coprimários preservados ou ASK mínimo; sem default secreto, dose igual ou 50/50 oculto; HC prevalece. |
+| FZ-S07 decline | Pessoa recusa delta e prefere vigente ainda válido; alternativa possível. | AgencyConstraint no alcance, procurar alternativa admissível; sem reoferta por ID novo ou liberar plano inválido. |
+| FZ-S08 authority defeats stability | Restrição/approval/consent revogado com plano sticky/adequado antes. | HOLD/cancel dependente imediato, sem cooldown/KEEP anterior; direitos/registro preservados. |
+| FZ-S09 initial and continue | Nenhum plano versus novo horizonte futuro, receitas aprovadas. | REPLAN base NONE explícita/scope INITIAL + adoção; continuação antecipada versionada; sem estabilidade fictícia/autoadoção. |
+| FZ-S10 paid boundary | Prévia válida + purchase/cancel/expiration enquanto sessão em curso. | Assinatura não adota plano/consente export; gerar/aplicar novo treino só entitlement válido, registrar/fechar/corrigir/history/rights não sequestrados. |
+| FZ-S11 share | Own PR/recap/streak/week com fatos conhecidos versus dado corrigido/unknown. | Artefato da revisão e campos escolhidos; sem health/route/terceiro/metadata oculto, auto-post ou mérito por volume. Unknown não completa semana; descanso correto não quebra streak. |
+| FZ-S12 ingestion only | Leitura confiável disponível, nenhuma rota outbound barata/provada. | V1 não bloqueada por outbound global; app/registro e analytics honestos; não dizer no relógio/entregue sem prova. |
+
+Fixtures são sintéticas por default. Domain adequacy/thresholds/response/paridade, preços/retenção e device real dependem G01–G11 no seu trigger, não novo discovery para UI.
