@@ -590,3 +590,13 @@ Founder addenda: Figma is the official design deliverable and source of truth; V
 ## 2026-10-20 — Visual direction approved: S1.2 Selective Maturity / MISSION-VISUAL-1.0
 
 Founder rejected Direction A (Calm Precision, kept as CANDIDATE A on Figma page 04). The S1 Visual Synthesis (current clarity + legacy richness, legacy inspected read-only under Founder authorisation) was approved as the base. A first maturity pass, S1.1, was rejected as too austere and kept only as a reference. The selective refinement S1.2 was approved "por enquanto" (for now), and work continues from it. S1.2 keeps the S1 richness and corrects only arbitrary or false-certainty elements: evidence-aware copy, plan vs actual and dual-axis readability, countable coordination proof with sample size, estimates with uncertainty, a shared strength scale and consistent session times. The judgment rules are persisted in UXS §24.2 (VIS-10–15), and VIS-09 now treats sport colour as a contextual layer rather than a chart rule. No production code. Design-system freeze is still a separate Founder decision.
+
+## 2026-10-20 — Foundations and components rebuilt from S1.2 / MISSION-VISUAL-1.0
+
+Figma file NeaZKGCzHMy6IHc47cVEHs. Page 01 Foundations: the existing variables and styles were reconciled to S1.2 rather than recreated. Changes:
+- Updated: the dark tonal palette, and 18 text styles moved to Mona Sans + Barlow Semi Condensed.
+- New variables: zones Z1–Z5 (dark and light), light accents, target band, plan block, chart grid and quaternary text.
+- New styles: 10 gradient styles (contextual atmospheres and data ramps).
+- New specimen board, which includes the evidence language.
+
+Page 02 Components: the Candidate A components moved to 07 Archive without deletion, and the page 04 instances stay linked. The new component sets were extracted from the approved S1.2 screens and bound to variables and styles: navigation and controls, session and plan, strength execution, data and analytics, Evidence Block, and Chart Container (Default, Loading, Empty, Limited). Light mode is not yet validated. Text style coverage is partial, because S1.2 uses a few sizes outside the current type scale. No design-system freeze and no production code.
