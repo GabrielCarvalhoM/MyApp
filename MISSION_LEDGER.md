@@ -600,3 +600,7 @@ Figma file NeaZKGCzHMy6IHc47cVEHs. Page 01 Foundations: the existing variables a
 - New specimen board, which includes the evidence language.
 
 Page 02 Components: the Candidate A components moved to 07 Archive without deletion, and the page 04 instances stay linked. The new component sets were extracted from the approved S1.2 screens and bound to variables and styles: navigation and controls, session and plan, strength execution, data and analytics, Evidence Block, and Chart Container (Default, Loading, Empty, Limited). Light mode is not yet validated. Text style coverage is partial, because S1.2 uses a few sizes outside the current type scale. No design-system freeze and no production code.
+
+## 2026-10-20 — Type scale completed; V1 final screens assembled from components / MISSION-VISUAL-1.0
+
+The type scale now has 25 roles taken from the sizes S1.2 actually uses: Data/11–34, Label XS/L/XL, Overline/S, Tag, Nav, Control and Body Medium. With them, all 396 component texts are bound to a style. On page 04 V1 Final Screens, the six S1.2 screens (Hoje, Execução de Força, Semana, Activity Detail, Progresso, Deep Dive) are rebuilt from instances of the page 02 components, 75 instances in total, and are visually identical to S1.2. The Candidate A screens moved to 07 Archive without deletion. Still open: states (loading/empty/error/adapted) applied on screens, flows/prototype, light mode validation, and the sport variants not yet designed (easy/long run profiles, strength-day hero). No design-system freeze and no production code.
