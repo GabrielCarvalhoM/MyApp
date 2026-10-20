@@ -617,3 +617,18 @@ New Figma components, all built from tokens:
 - Rest Timer, Status Banner (Offline, Sync error, Changed) and Skeleton.
 
 Page 04 V1 · Estados has seven state screens built from instances: Hoje on a strength day, on a rest day, with a pending proposal, offline and loading; Execução de Força during rest; and Progresso with limited data.
+
+## 2026-10-20 — Run execution, same-day double sessions, flows and prototype / MISSION-VISUAL-1.0
+
+Run Execution screens were added on page 04, in two states: interval in progress and paused. They follow VIS-07: a main metric readable at a distance, a target status, a session position marker and large controls. These are run-dedicated screens, so they carry the run atmosphere.
+
+Same-day double sessions follow HOJ-C03: the sessions appear in the plan's order, each with its own execution, and the relationship between them is stated as a plan fact. New components: Session Compact Card (Run/Strength × Planned/Done) and the Week Day Row variant Type=Double. Two new Hoje states show a day with two sessions, morning and afternoon (strength done). Also added: a "proposta confirmada" Hoje state and the tokens run/muted and strength/muted (reduced tones without relying on paint opacity).
+
+Page 05 Flows/Prototype has five flows with 24 hotspots and 5 starting points:
+1. Run: Hoje → execute → pause → conclude → Activity.
+2. Strength: series → rest → series.
+3. Proposal: confirm, keep or undo.
+4. Navigation: tabs → Análise (L3) → back.
+5. Two sessions in the same day.
+
+Tall frames scroll as whole frames in the prototype; fixed tab bars are not yet configured.
