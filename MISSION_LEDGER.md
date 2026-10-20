@@ -739,3 +739,59 @@ New components: List Row (Chevron / Switch / None, with label, detail, value, ic
 - Totals: 8 flows, 53 hotspots, no broken links.
 
 Light mode was checked on Você, Assinatura and Preferências. The Cover handoff is updated.
+
+## 2026-10-20 — Product design hardening (direction locked) / MISSION-VISUAL-1.1
+
+The Founder opened the hardening phase. VISUAL DIRECTION IS LOCKED. Only polish, consistency, stress tests, edge states, components, prototype, QA and handoff are allowed. The rules are in UXS §24.3 VIS-16–20, and CURRENT_MISSION is revised to 1.1.
+
+**Figma structure.**
+- Pages: 01 Foundations · 02 Components · 03 Final V1 Screens · 04 Flows / Prototype · 05 Shareable Outputs · 06 States / Edge Cases · 07 Archive / Deprecated.
+- The explorations (S1, S1.1, S1.2) were moved into Archive.
+- The states sections and the subscription states now live on 06.
+
+**Selection.** Choice Card, Plan Option and Window Toggle now use one language: raised surface, border/strong and a filled check badge (checkbox for multi-select). This replaces the white border with a white dot.
+
+**Onboarding polish.**
+- Single-choice priority advances on tap, with no CTA.
+- Shorter microcopy.
+- "Cerca de 3 minutos" is restored.
+
+**First value.**
+- Title is now "Sua semana está pronta.", with the goal in the overline.
+- Three specific plan facts.
+- An honest question: the long run (~1h40) exceeds the declared 60 min.
+
+**Component hardening.**
+- Week Day Row: titles and details truncate. New states: Missed (no make-up), Changed (MUDOU tag + before→after), Done Run/Double, and Today for Run/Strength/Double.
+- Week Stat: one segment per planned session (up to 9), using the sport/muted token.
+- Set Row: Warm-up and Skipped states.
+- Exercise Header: long names wrap to 2 lines.
+
+**Stress test on page 06 (VIS-18).**
+- A–G weeks; H PR; I partly failed intervals; J limited data; K no HR; M manual log; L plateau/deload/missing RIR; N strength under stress; O–Q run steps.
+- Fixed along the way:
+  - Green was used for stable/0%/deload and for "no target"; these are now neutral.
+  - Sessions without HR or without splits no longer claim HR, laps or map data.
+  - A single-step run no longer offers "pular etapa".
+  - Scenario F now uses the same change reason as the Change Proposal.
+
+**New surfaces** (needed for the golden paths):
+- Sessão (planned facet, SURF-07).
+- Mudança aplicada (SURF-06).
+- Deep Dive de corrida (SURF-03 L3).
+
+**Prototype.** Flows A–F are named (onboarding→Hoje; strength→post-workout; run→Activity; week→session/change; progress→run deep dive; progress→strength deep dive), plus flows 3, 4, 5, 7 and 8. There are 61 hotspots and no broken links.
+
+**Foundations.**
+- New Motion variable collection: durations, stagger, reduce-motion rule.
+- Specs for selection, data-colour semantics and motion.
+
+**QA.**
+- iOS picker sheet state for profile edits.
+- Light mode checked on the new pieces; dark checked throughout.
+
+**Real pending items:**
+- Week Rhythm, strength-lift bars and small multiples are illustrative drawings that engineering must render from data.
+- Dynamic Type at AX sizes is validated in code.
+- Motion and haptics are specified, not animated.
+- Legal text and trial length are still slots; the price is provisional.
