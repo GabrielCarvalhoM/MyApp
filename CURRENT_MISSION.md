@@ -6,6 +6,8 @@ Revision **MISSION-VISUAL-1.0** · opened 2026-10-19 America/Sao_Paulo · Founde
 
 **Official design deliverable (Founder addenda 2026-10-19, persisted in [UXS §24.1 VIS-01–09](product/UX_SPECIFICATION.md) and RS §Transversal):** V1 primary platform = MOBILE / IPHONE / IOS. Figma is the design source of truth: [Vilumo Fit — V1 Product Design](https://www.figma.com/design/NeaZKGCzHMy6IHc47cVEHs) (file key `NeaZKGCzHMy6IHc47cVEHs`). HTML in `explorations/visual-v1/` is internal exploration only and is not a deliverable.
 
+**Approved visual direction (Founder, 2026-10-20):** S1.2 · Selective Maturity on Figma page 03, with judgment rules persisted in [UXS §24.2 VIS-10–15](product/UX_SPECIFICATION.md). S1 is the preserved baseline, S1.1 is rejected (reference only) and Candidate A is archived on page 04. Next: foundations and components built from S1.2.
+
 ## Objective
 1. Integrate the Founder/Work V1 Product Freeze (`87537c8`, combined patch) without checkout or reset. Done in `32b7fb6`, see [integration record](audits/v1-freeze-sync-2026-10-19/INTEGRATION_RECORD.md).
 2. Classify only the targeted UX delta. Done in [UX_DELTA](audits/v1-freeze-sync-2026-10-19/UX_DELTA.md).
