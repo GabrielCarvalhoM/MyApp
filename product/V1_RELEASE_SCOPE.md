@@ -22,7 +22,7 @@ Autoridade: [PTC-3.2.1](../canon/VILUMO_FIT_PRODUCT_THESIS_CONTRACT.md) C047–C
 | Subscription | Value before hard ask: prévia coordenada e valor → paywall → treino sob entitlement válido. | Sem preço/trial definido, billing implementado ou créditos/economia interna. Recusa não perde dados/direitos/registro em curso. |
 | Wearables | Ingestão/reconciliação confiável; Apple Health/HealthKit e rotas pertinentes quando comprovadas. | Export opcional por baixo esforço/custo qualificado, fidelidade e acesso; nenhum caminho outbound obrigatório para launch. |
 | Nutrition apoio | Somente leve contextual existente com conteúdo elegível e custo baixo; pode ser omitido quando faltar aprovação. | Sem módulo/superfície adicional, dose individual, suplementos, logging/macros/dieta. |
-| Transversal | Brasil, PT-BR+EN, iOS+Android, 18+, caminho solo completo, offline/erros/consentimento/direitos honestos. | No implementation/release claim. Sem wearable, Crew, conversa ou share obrigatório. |
+| Transversal | Brasil, PT-BR+EN, iOS+Android, 18+; **plataforma primária de produto/design: mobile / iPhone / iOS** (Android, tablet e web são adaptações e não dirigem a arquitetura visual da V1; Founder 2026-10-19, UXS §24.1), caminho solo completo, offline/erros/consentimento/direitos honestos. | No implementation/release claim. Sem wearable, Crew, conversa ou share obrigatório. |
 
 ## 3. OUT / roadmap DEFERRED, NOT REJECTED
 

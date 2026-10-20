@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Onboarding — prioridade</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Instrument+Serif:ital@0;1&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.vl{--bg:#0A0B0D;--s1:#131417;--s2:#1B1C20;--s3:#26282D;--line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.16);--tx:#F3F2EF;--tx2:#A9AAB0;--tx3:#83858C;--run:#FF7A3D;--runs:rgba(255,122,61,.14);--str:#8EA2FF;--strs:rgba(142,162,255,.14);--rest:#9AA79F;--inv:#0A0B0D;--pri:#F3F2EF;font-family:'Geist',system-ui,sans-serif;color:var(--tx);background:var(--bg);-webkit-font-smoothing:antialiased}
+.vl.light{--bg:#F5F4F1;--s1:#FFFFFF;--s2:#EEEDE9;--s3:#E3E2DD;--line:rgba(0,0,0,.08);--line2:rgba(0,0,0,.16);--tx:#111214;--tx2:#55575D;--tx3:#686A70;--run:#C94A12;--runs:rgba(201,74,18,.10);--str:#3F57CC;--strs:rgba(63,87,204,.10);--rest:#56645C;--inv:#F5F4F1;--pri:#111214}
+.serif{font-family:'Instrument Serif',Georgia,serif;font-weight:400;letter-spacing:-.01em}
+.num{font-variant-numeric:tabular-nums}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;cursor:pointer}
+</style>
+</helmet>
+<div class="vl {{themeClass}}" style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;padding:64px 20px 32px;gap:28px;overflow:hidden">
+
+  <div style="display:flex;align-items:center;gap:12px">
+    <button aria-label="Voltar" style="width:44px;height:44px;border-radius:22px;border:1px solid var(--line);background:transparent;display:flex;align-items:center;justify-content:center;padding:0">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>
+    </button>
+    <div style="flex-grow:1;display:grid;grid-template-columns:repeat(6, minmax(0, 1fr));gap:4px" aria-label="Passo 3 de 6">
+      <div style="height:3px;border-radius:2px;background:var(--tx)"></div>
+      <div style="height:3px;border-radius:2px;background:var(--tx)"></div>
+      <div style="height:3px;border-radius:2px;background:var(--tx)"></div>
+      <div style="height:3px;border-radius:2px;background:var(--s3)"></div>
+      <div style="height:3px;border-radius:2px;background:var(--s3)"></div>
+      <div style="height:3px;border-radius:2px;background:var(--s3)"></div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div style="font-size:13px;color:var(--tx3);letter-spacing:.04em;text-transform:uppercase">Prioridade</div>
+    <h1 class="serif" style="margin:0;font-size:40px;line-height:1.05">Quando a semana apertar, o que vem primeiro?</h1>
+    <p style="margin:0;font-size:15px;line-height:1.5;color:var(--tx2)">Você treina os dois a sério. Isso só decide o que protegemos quando não cabe tudo.</p>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:10px" role="radiogroup" aria-label="Prioridade">
+    <sc-for list="{{options}}" as="o" hint-placeholder-count="3">
+      <button role="radio" aria-checked="{{o.checked}}" onClick="{{o.pick}}" style="{{o.cardStyle}}">
+        <div style="display:flex;align-items:center;gap:6px;width:52px;flex-shrink:0">
+          <div style="{{o.dotA}}"></div>
+          <div style="{{o.dotB}}"></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;flex-grow:1;text-align:left">
+          <div style="font-size:17px;font-weight:600">{{o.title}}</div>
+          <div style="font-size:13.5px;line-height:1.4;color:var(--tx2)">{{o.body}}</div>
+        </div>
+        <div style="{{o.radio}}">
+          <sc-if value="{{o.selected}}" hint-placeholder-val="{{false}}">
+            <div style="width:10px;height:10px;border-radius:5px;background:var(--inv)"></div>
+          </sc-if>
+        </div>
+      </button>
+    </sc-for>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div style="font-size:12px;color:var(--tx3)">Seus objetivos</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:var(--runs);font-size:13px">
+        <span style="width:6px;height:6px;border-radius:3px;background:var(--run)"></span>Meia maratona · 14 dez
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:var(--strs);font-size:13px">
+        <span style="width:6px;height:6px;border-radius:2px;background:var(--str)"></span>Força geral
+      </div>
+    </div>
+  </div>
+
+  <div style="flex-grow:1"></div>
+
+  <div style="display:flex;flex-direction:column;gap:6px">
+    <a href="FirstValue.dc.html" style="height:56px;border-radius:28px;background:var(--pri);color:var(--inv);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600">Continuar</a>
+    <a href="FirstValue.dc.html" style="height:44px;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--tx2)">Ainda não sei</a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["dark","light"],"default":"dark"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { picked: 'run' }; }
+  renderVals() {
+    const t = this.props.theme ?? 'dark';
+    const defs = [
+      { id: 'run', title: 'Corrida primeiro', body: 'A prova manda. A força apoia sem competir com as sessões-chave.', a: ['var(--run)', 18], b: ['var(--str)', 10] },
+      { id: 'str', title: 'Força primeiro', body: 'A evolução na força manda. A corrida mantém base sem roubar recuperação.', a: ['var(--str)', 18], b: ['var(--run)', 10] },
+      { id: 'bal', title: 'Equilibrado', body: 'Os dois evoluem juntos. Se houver conflito real, perguntamos antes.', a: ['var(--run)', 14], b: ['var(--str)', 14] }
+    ];
+    const options = defs.map((d) => {
+      const sel = this.state.picked === d.id;
+      const dot = (c, s, sq) => `width:${s}px;height:${s}px;border-radius:${sq ? 3 : s / 2}px;background:${c}`;
+      return {
+        title: d.title, body: d.body, selected: sel, checked: sel ? 'true' : 'false',
+        pick: () => this.setState({ picked: d.id }),
+        cardStyle: `display:flex;align-items:center;gap:14px;padding:18px 16px;border-radius:20px;text-align:left;width:100%;box-sizing:border-box;min-height:84px;background:${sel ? 'var(--s2)' : 'var(--s1)'};border:1px solid ${sel ? 'var(--line2)' : 'var(--line)'}`,
+        dotA: dot(d.a[0], d.a[1], d.a[0].includes('str')),
+        dotB: dot(d.b[0], d.b[1], d.b[0].includes('str')),
+        radio: `width:22px;height:22px;border-radius:11px;flex-shrink:0;display:flex;align-items:center;justify-content:center;box-sizing:border-box;${sel ? 'background:var(--pri)' : 'border:1.5px solid var(--line2)'}`
+      };
+    });
+    return { themeClass: t === 'light' ? 'light' : '', options };
+  }
+}
+</script>
+</body>
+</html>

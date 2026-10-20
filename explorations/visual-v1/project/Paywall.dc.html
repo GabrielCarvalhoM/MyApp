@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Assinatura — depois do primeiro valor</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Instrument+Serif:ital@0;1&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.vl{--bg:#0A0B0D;--s1:#131417;--s2:#1B1C20;--s3:#26282D;--line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.16);--tx:#F3F2EF;--tx2:#A9AAB0;--tx3:#83858C;--run:#FF7A3D;--runs:rgba(255,122,61,.14);--str:#8EA2FF;--strs:rgba(142,162,255,.14);--rest:#9AA79F;--inv:#0A0B0D;--pri:#F3F2EF;font-family:'Geist',system-ui,sans-serif;color:var(--tx);background:var(--bg);-webkit-font-smoothing:antialiased}
+.vl.light{--bg:#F5F4F1;--s1:#FFFFFF;--s2:#EEEDE9;--s3:#E3E2DD;--line:rgba(0,0,0,.08);--line2:rgba(0,0,0,.16);--tx:#111214;--tx2:#55575D;--tx3:#686A70;--run:#C94A12;--runs:rgba(201,74,18,.10);--str:#3F57CC;--strs:rgba(63,87,204,.10);--rest:#56645C;--inv:#F5F4F1;--pri:#111214}
+.serif{font-family:'Instrument Serif',Georgia,serif;font-weight:400;letter-spacing:-.01em}
+.num{font-variant-numeric:tabular-nums}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;cursor:pointer}
+</style>
+</helmet>
+<div class="vl {{themeClass}}" style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;padding:56px 20px 28px;gap:22px;overflow:hidden">
+
+  <div style="display:flex;justify-content:flex-end">
+    <a href="FirstValue.dc.html" style="height:44px;padding:0 4px;display:flex;align-items:center;font-size:14px;color:var(--tx2)">Agora não</a>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <h1 class="serif" style="margin:0;font-size:42px;line-height:1.02">Mantenha sua semana coordenada.</h1>
+    <p style="margin:0;font-size:15px;line-height:1.5;color:var(--tx2)">A semana que você acabou de ver continua se encaixando conforme você treina.</p>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:14px;padding:4px 0">
+    <div style="display:flex;gap:12px;align-items:center">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 5l7 14" stroke="var(--run)"></path><path d="M19 5l-7 14" stroke="var(--str)"></path></svg>
+      <div style="font-size:15px">Corrida e força num plano só</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--tx2)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h4l3-7 4 14 3-7h2"></path></svg>
+      <div style="font-size:15px">Muda só quando faz diferença, e diz por quê</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--tx2)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"></path></svg>
+      <div style="font-size:15px">Análises de corrida, força e do conjunto</div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:10px" role="radiogroup" aria-label="Plano">
+    <sc-for list="{{plans}}" as="p" hint-placeholder-count="2">
+      <button role="radio" aria-checked="{{p.checked}}" onClick="{{p.pick}}" style="{{p.style}}">
+        <div style="display:flex;flex-direction:column;gap:4px;flex-grow:1;text-align:left">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:16px;font-weight:600">{{p.name}}</span>
+            <sc-if value="{{p.badge}}" hint-placeholder-val="{{false}}">
+              <span style="font-size:11px;font-weight:600;padding:3px 8px;border-radius:999px;background:var(--pri);color:var(--inv)">{{p.badge}}</span>
+            </sc-if>
+          </div>
+          <span style="font-size:13px;color:var(--tx2)">{{p.sub}}</span>
+        </div>
+        <span class="num" style="font-size:15px;font-weight:600">{{p.price}}</span>
+      </button>
+    </sc-for>
+  </div>
+
+  <div style="flex-grow:1"></div>
+
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <a href="Today.dc.html" style="height:56px;border-radius:28px;background:var(--pri);color:var(--inv);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600">Começar [N] dias grátis</a>
+    <div style="font-size:12px;line-height:1.5;color:var(--tx3);text-align:center">[TERMOS DO TESTE E DA RENOVAÇÃO]</div>
+    <div style="display:flex;justify-content:center;gap:20px;font-size:13px;color:var(--tx2)">
+      <a href="#" style="min-height:44px;display:flex;align-items:center">Restaurar compra</a>
+      <a href="#" style="min-height:44px;display:flex;align-items:center">Termos</a>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["dark","light"],"default":"dark"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { plan: 'y' }; }
+  renderVals() {
+    const t = this.props.theme ?? 'dark';
+    const plans = [
+      { id: 'y', name: 'Anual', sub: '[EQUIVALENTE MENSAL] por mês', price: '[PREÇO ANUAL]', badge: 'Melhor valor' },
+      { id: 'm', name: 'Mensal', sub: 'Flexível', price: '[PREÇO MENSAL]', badge: '' }
+    ].map((p) => {
+      const sel = this.state.plan === p.id;
+      return { ...p, checked: sel ? 'true' : 'false', pick: () => this.setState({ plan: p.id }),
+        style: `display:flex;align-items:center;gap:12px;width:100%;box-sizing:border-box;min-height:72px;padding:16px 18px;border-radius:20px;background:${sel ? 'var(--s2)' : 'var(--s1)'};border:${sel ? '1.5px solid var(--tx)' : '1px solid var(--line)'}` };
+    });
+    return { themeClass: t === 'light' ? 'light' : '', plans };
+  }
+}
+</script>
+</body>
+</html>
