@@ -1,6 +1,6 @@
 # Vilumo Fit — Detailed UX Specification
 
-**Estado: CANDIDATE_IN_ISOLATION — sync do freeze para a próxima fase Visual/UI; não altera a UX ativa do Claude.**
+**Estado: ACTIVE — integrada em MyApp/main em 2026-10-19 (sync V1 freeze, [registro](../audits/v1-freeze-sync-2026-10-19/INTEGRATION_RECORD.md)); delta UX dirigido em [UX_DELTA](../audits/v1-freeze-sync-2026-10-19/UX_DELTA.md). Insumo da fase Visual/UI.**
 
 Revisão **UXS-1.1-FREEZE-r2** · 2026-10-19 · FREEZE-20261019-r1. Base: UXS-1.0-r3, SHA256 598b055d8df6cf67cafe0365e88d0ba694164d00c7ab6576fc2643eff5dcfcdb, recuperável no commit SIL 07a119b26f2008a9eaa2820d0300b98046952afe. Os pareceres/gate dessa base continuam somente sobre seus hashes; não se apresentam como reviews deste sync.
 
@@ -147,7 +147,6 @@ Nenhum fluxo é destino: não tem referência estável própria, não possui obj
 | FLOW-14 | Interromper/retomar | Plano/Hoje | escolha pessoal/período passado | Sem motivo ou ação social; RETURN rebaseado e confirmado. Pausa retroativa só anotação do passado, sem prescrever de volta ou apagar realizado. |
 | FLOW-15 | Consentir / revogar por finalidade | SURF-13 (e ponto de uso) | primeiro uso pessoal, integração, share, I10 | Mostra finalidade, destinatários, alcance, persistência e efeito da revogação; registra idioma e versão do texto (SEC-J3-06). |
 | FLOW-16 | DEFERRED fora da V1 | — | Crew/entrada social/conversa futura | Não materializar fluxo ou placeholder. |
-
 | FLOW-17 | Valor → oferta/trial/assinatura → adoção/treino | Week/valor → SURF-14 → Plano/Hoje | primeiro valor ou gerir/restaurar | Oferta clara, estado real, atos separados; cancelar volta ao valor/contexto/dados, sem cobrar nesta fase documental. |
 
 ### 3.4 Superfícies rejeitadas
@@ -278,7 +277,6 @@ Toda linha tem saída (PR-10). Rótulos são funcionais.
 | ONB-14 | Wearable é oferecido depois da adoção ou quando agrega a uma ação (enviar, importar), nunca como passo obrigatório nem como “perfil incompleto”. | L009, F01, EM §3 |
 | ONB-15 | Interrupção do onboarding guarda o que foi confirmado; retomar continua do ponto; nada é inferido do abandono. | EM §5 |
 | ONB-16 | Entrada social/M3 DEFERRED; nenhum passo ou tela V1. | C041 |
-
 | ONB-17 | First Value / AHA: perceber a semana coordenada, não duas fichas justapostas. Prévia e razão factualmente suportadas ou estado de limite quando falta autoridade; onboarding não termina só em boas-vindas. | C052 |
 | ONB-18 | VALUE BEFORE HARD ASK. Demonstrar personalização/semana e benefício antes da oferta preferencial; testar trial/anual/mensal/preço/timing depois. Não cobrar/definir billing aqui. | C053; F11 |
 | ONB-19 | Post-workout coleta mínimo sinal com consumidor real para Athlete Model; percepção/esforço opcionais com construto/âncoras aprovados, sem questionário longo ou promessa de mutar toda vez. | AEC§1.2; RUN/STR |
