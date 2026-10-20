@@ -710,3 +710,32 @@ The flow has 7 steps plus welcome and consent, and still ends at first value. Re
 **Handoff.** The Cover page has the index, conventions, the onboarding input→consumer map and known gaps.
 
 Not done: design-system freeze, Profile/Settings screens, final legal and price copy. V1 visual is closed for Founder review.
+
+## 2026-10-20 — Você (profile and settings) and provisional prices / MISSION-VISUAL-1.0
+
+The Founder asked for the profile and settings area to be designed and set provisional prices.
+
+**Prices (provisional).**
+- Annual: R$ 199,90/ano, shown as equivalent to R$ 16,66 per month.
+- Monthly: R$ 59,90/mês.
+
+The trial length and the terms text remain slots. The prices are recorded in UXS SURF-14 and applied to the paywall, the "confirming" state, the prototype and the Plan Option component.
+
+**Você (SURF-05/11–14).** Page 04 has seven new screens:
+- Overview: profile; Meu contexto summary; subscription; connections; preferences; privacy; sign out.
+- Sobre você (edit): saving does not change the week, and a proposal appears first if it matters. Includes "apagar peso e altura".
+- Disponibilidade (edit): multi-window days, typical duration, per-day exceptions and the same-day preference. Leads to "Ver efeito na semana" (FLOW-02).
+- Idioma, unidades e avisos: language and units start from the iPhone. Changing units changes display only. There are three notification switches.
+- Assinatura: active status confirmed by the App Store, switching to monthly, manage in App Store, restore. Cancelling does not delete data.
+- Conexões: Apple Saúde and Apple Watch, with one switch per purpose. Recovery signals are their own purpose and are off by default. Disconnecting keeps history.
+- Privacidade e dados: three purposes (secondary learning off by default), the consent record (language and text version) and rights (export, correct, shares made, delete account).
+
+New components: List Row (Chevron / Switch / None, with label, detail, value, icon and divider) and Switch. UXS ONB-09 now places the per-day duration fine-tuning in Você › Disponibilidade, and the onboarding hint is updated to match.
+
+**Prototype.**
+- New flow 8: Você → each sub-screen → back.
+- The "Você" tab on the flow 4 screens now leads to it.
+- Flow 6 has its name back; it had been reset to "Flow 1".
+- Totals: 8 flows, 53 hotspots, no broken links.
+
+Light mode was checked on Você, Assinatura and Preferências. The Cover handoff is updated.
