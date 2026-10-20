@@ -680,3 +680,33 @@ WCAG AA audit of the semantic text-on-background pairs, both modes. Primitive ch
 | zone/4-light | #B7791F | #AE731D | low margin for graphics |
 
 Results after the change: text pairs ≥4.6 and graphics ≥3.3 in both modes. text/quaternary stays at about 2:1 and is documented as disabled/future content only (exempt under WCAG 1.4.3).
+
+## 2026-10-20 — Onboarding r2, token binding, light-mode check, prototype scroll and handoff / MISSION-VISUAL-1.0
+
+Founder request: a localized fix to the onboarding, then close the V1. It does not reopen UX, architecture or visual direction.
+
+**Onboarding r2.** The principle is ASK ONLY WHAT CHANGES THE PLAN, AT THE CHEAPEST APPROPRIATE MOMENT. Changes:
+- Language is no longer a step. It and units come from the system locale and can be changed in Profile.
+- 18+ is an eligibility check on the welcome screen. It is not the athlete's age.
+- New "Sobre você" step: date of birth, height and weight. Weight and height can be skipped.
+- Experience now asks for recent frequency and approximate run volume, not only years.
+- Availability is a multi-select of morning, afternoon and evening per day, using the new Window Toggle component (checkbox semantics). A typical session length is asked once and can be fine-tuned later.
+- New step for running and strength on the same day: yes / some days (only days with two marked windows) / avoid. It is separate from availability.
+- Equipment now covers specific home equipment.
+
+The flow has 7 steps plus welcome and consent, and still ends at first value. Retired r1 screens are in 07 Archive as deprecated.
+
+**Docs synced (minimal).** UXS ONB-01/02/03/08/09 and §6.2 are updated, and ONB-20 (profile data) and ONB-21 (same-day preference) are new. In AEOS AthleteState, `profile_context` is new and `practice_context` is extended. Profile data only initializes the model as context. It is never an isolated determinant and never produces a physiological claim without evidence.
+
+**Figma.**
+- New components: Window Toggle and Profile Field. Onboarding Progress now has 7 segments.
+- Bound paints are now created with resolved raw colors. Paints created with black raw values rendered dark.
+- Fixed colors were bound to semantic tokens: 183 paints on 04, 181 on 05 and 1 on 06. No raw solid colors remain in screens. This also moved 29 stale #6E737D texts to text/tertiary, applying the contrast fix.
+- New alpha-carrying tokens: data/run-dim, data/run-strong, data/strength-dim, data/neutral-dim and overlay/scrim. Layer opacity on bound paints is avoided.
+- Light mode was checked on clones of Hoje, Execução de Força, Activity Detail, Progresso and the onboarding. It is coherent. Dark was re-checked with no regression.
+
+**Prototype.** Flow 6 was rebuilt with the 9 r2 screens. There are 36 hotspots and no broken links. The 20 tall frames now scroll inside 852 with a fixed status bar and a fixed tab bar or CTA.
+
+**Handoff.** The Cover page has the index, conventions, the onboarding input→consumer map and known gaps.
+
+Not done: design-system freeze, Profile/Settings screens, final legal and price copy. V1 visual is closed for Founder review.

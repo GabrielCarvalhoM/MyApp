@@ -67,7 +67,8 @@ Associação de atividade: `UNASSOCIATED → MATCH_PROPOSED → CONFIRMED`, ou `
 | Componente tipado | Conteúdo / uso |
 |---|---|
 | `identity_scope` | Pessoa pseudonimizada no processamento, experiência pessoal V1 (M1), 18+ e elegibilidade de cobertura por authority refs. M2/M3 e perfis sociais são deferred, sem coleta/avaliação V1. |
-| `practice_context` | Experiência declarada por modalidade, equipamento, disponibilidade e timezone, restrições voluntárias pertinentes, cobertura recente conhecida/desconhecida. |
+| `profile_context` | Data de nascimento (idade), altura e peso declarados (UXS ONB-20), com revisão. Contexto de cold start e de carga relativa; não determina prescrição isolado, não gera afirmação fisiológica sem evidência e perde peso relativo conforme `observed_exposure`/performance acumulam. Ausência é desconhecido explícito. |
+| `practice_context` | Experiência declarada por modalidade **e frequência/volume recentes** (UXS ONB-08), equipamento, disponibilidade multi-janela por dia + duração típica, preferência de duas sessões no mesmo dia (sim / dias escolhidos / evitar — UXS ONB-21; janela disponível não implica sessão), timezone, restrições voluntárias pertinentes, cobertura recente conhecida/desconhecida. |
 | `goal_state: Ref<GoalPriorityModel>` | Prioridades explícitas, eventos e trade-offs autorizados; desconhecido não vira runner-first por default. |
 | `planned_exposure` | Sessões futuras por modalidade/intenção/revisão, janela e dependências. |
 | `observed_exposure` | Real reconciliado por modalidade e região/tarefa quando policy sustentar, parcial/não planejado/abaixo-igual-acima ou `UNCLASSIFIED`; carga desconhecida não vira zero. |
