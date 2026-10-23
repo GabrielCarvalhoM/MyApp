@@ -1,0 +1,65 @@
+{
+  "revision": "AE-CLOSE-20261022-r4",
+  "completion_state": "PARTIAL_INDEPENDENT_REVIEW",
+  "summary": "O revisor esportivo concluiu e assinou por hash: PASS documental limitado, REQUEST_CHANGES / NO-GO para autoridade prescritiva. Governança e safety tiveram leitura/observações independentes, mas a finalização do pacote por hash foi interrompida pelo limite de uso. Não há aprovação independente unânime, finalização dos três gates ou gold humano.",
+  "reviews": [
+    {
+      "perspective": "Sports / training logic",
+      "reviewer": "/root/sports_judge",
+      "disposition": "REQUEST_CHANGES / NO-GO prescritivo",
+      "documentary_scope": "PASS após correções, escopo esportivo documental",
+      "file": "../../reviews/closure-r4/sports.md",
+      "reviewed_payload_sha256": "27c1e3104999ac5b363197c8ea21b53dc0fc942c0afa28c8becd80b794fe4268",
+      "final_hash_signoff": true,
+      "file_sha256": "a421f31b7f5971568dab8091bcb6b12bdb3596db114940c12932d73069a28917"
+    },
+    {
+      "perspective": "AE / governance consistency",
+      "reviewer": "/root/governance_judge",
+      "disposition": "PRELIMINARY_ONLY / FINAL_REVIEW_INCOMPLETE",
+      "file": "../../reviews/closure-r4/governance.md",
+      "reviewed_payload_sha256": null,
+      "final_hash_signoff": false,
+      "limit": "Parecer preliminar gravado; finalização após novo manifest interrompida por limite de uso. GOV4-01 corrigido no output e verificado pelo autor; parecer integral de governança permanece pendente.",
+      "file_sha256": "204ab6849a4af38d49480f21abe7f01e3fb27e0163889dc24697e7130702df43"
+    },
+    {
+      "perspective": "Product safety / evidence",
+      "reviewer": "/root/safety_judge",
+      "disposition": "PARTIAL_REVIEW / NO_FINAL_APPROVAL",
+      "file": "../../reviews/closure-r4/safety-session-record.md",
+      "reviewed_payload_sha256": null,
+      "final_hash_signoff": false,
+      "limit": "Observações preliminares independentes preservadas em transcrição do integrador; nenhum parecer final por hash foi gravado antes do limite de uso.",
+      "file_sha256": "70e050aeda108783d82011639230dd8ce206c640014b89ac423510f37814c4dd"
+    }
+  ],
+  "prescriptive_verdict": "NO-GO",
+  "human_professional_approvals": 0,
+  "remaining_independent_review": [
+    "Finalizar governança no mesmo payload congelado",
+    "Finalizar safety/evidência no mesmo payload congelado"
+  ],
+  "findings": [
+    {
+      "id": "SP4-01",
+      "status": "CORRECT_INDEPENDENTLY_RECHECKED",
+      "owner": "author/integrator"
+    },
+    {
+      "id": "SP4-02",
+      "status": "CORRECT_INDEPENDENTLY_RECHECKED",
+      "owner": "coverage author"
+    },
+    {
+      "id": "SP4-03",
+      "status": "REQUEST_CHANGES_HUMAN_REVIEW_REQUIRED",
+      "owner": "G01–G04 owners"
+    },
+    {
+      "id": "GOV4-01",
+      "status": "AUTHOR_CORRECTED_GOVERNANCE_FINAL_RECHECK_PENDING",
+      "owner": "integrator / governance judge"
+    }
+  ]
+}

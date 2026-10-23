@@ -1,0 +1,2355 @@
+{
+  "revision": "TDF-HR-0.2-r1",
+  "status": "SYNTHETIC_ONLY / NON_AUTHORITATIVE",
+  "source_revision": "0.2",
+  "source_json": "../../../product/candidates/training-domain-foundation/0.2/foundation/DOMAIN_REVIEW_FIXTURES.json",
+  "composition": "Projection from same 0.2 source; both cases receive the union of source candidates plus explicitly incomplete review prompts. Only inputs.priority_mode changes. No S05 or r4 symbolic long-run facts imported.",
+  "cases": [
+    {
+      "case_id": "S01",
+      "status": "QUESTIONABLE / NOT_EVALUABLE_DOMAIN",
+      "inputs": {
+        "base_fixture": {
+          "id": "BASE-REVIEW",
+          "revision": "0.2",
+          "athlete": {
+            "id": "synthetic-A",
+            "revision": "0.2",
+            "adult": true,
+            "age": 34,
+            "experience": {
+              "running": "recreational, reported2years",
+              "strength": "reported1year"
+            },
+            "history_ref": {
+              "id": "history-example",
+              "revision": "0.2"
+            },
+            "restrictions": {
+              "status": "UNKNOWN",
+              "value": null,
+              "reason": "not clinically or professionally assessed"
+            },
+            "goal_priority_origin": "SYNTHETIC_USER_CONFIRMED",
+            "coverage_approval_ref": null
+          },
+          "plan": {
+            "id": "plan-example",
+            "revision": "0.2",
+            "timezone": "America/Sao_Paulo",
+            "session_refs": [
+              {
+                "id": "lower-mon",
+                "revision": "0.2"
+              },
+              {
+                "id": "run-tue",
+                "revision": "0.2"
+              },
+              {
+                "id": "run-thu",
+                "revision": "0.2"
+              },
+              {
+                "id": "upper-fri",
+                "revision": "0.2"
+              }
+            ]
+          },
+          "history": {
+            "id": "history-example",
+            "revision": "0.2",
+            "scope": "illustrative prior7days",
+            "reported_run_distance": {
+              "value": 24000,
+              "unit": "m"
+            },
+            "reported_strength_sessions": 2,
+            "comparison_exposure": "squat60kg total x3sets x5reps RIR3 reported",
+            "coverage": "incomplete_without_raw_activity_lineage",
+            "provenance_class": "ATHLETE_OBSERVATION",
+            "synthetic": true
+          }
+        },
+        "session_intents": [
+          {
+            "id": "intent-lower",
+            "revision": "0.2",
+            "sport": "STRENGTH",
+            "purpose_candidate": "general_lower_strength",
+            "essential_stimulus": {
+              "status": "UNKNOWN",
+              "value": null,
+              "reason": "professional definition required"
+            },
+            "criticality": {
+              "value": "HIGH",
+              "origin": "SYNTHETIC_REVIEW_PREMISE",
+              "rule_ref": null
+            },
+            "approval_ref": null
+          },
+          {
+            "id": "intent-threshold",
+            "revision": "0.2",
+            "sport": "RUNNING",
+            "purpose_candidate": "intended_threshold_exposure",
+            "essential_stimulus": {
+              "status": "UNKNOWN",
+              "value": null,
+              "reason": "professional definition required"
+            },
+            "criticality": {
+              "value": "HIGH",
+              "origin": "SYNTHETIC_REVIEW_PREMISE",
+              "rule_ref": null
+            },
+            "approval_ref": null
+          },
+          {
+            "id": "intent-easy",
+            "revision": "0.2",
+            "sport": "RUNNING",
+            "purpose_candidate": "easy_aerobic_exposure",
+            "essential_stimulus": {
+              "status": "UNKNOWN",
+              "value": null,
+              "reason": "professional definition required"
+            },
+            "criticality": {
+              "value": "LOW",
+              "origin": "SYNTHETIC_REVIEW_PREMISE",
+              "rule_ref": null
+            },
+            "approval_ref": null
+          },
+          {
+            "id": "intent-upper",
+            "revision": "0.2",
+            "sport": "STRENGTH",
+            "purpose_candidate": "horizontal_pull_strength",
+            "essential_stimulus": {
+              "status": "UNKNOWN",
+              "value": null,
+              "reason": "professional definition required"
+            },
+            "criticality": {
+              "value": "LOW",
+              "origin": "SYNTHETIC_REVIEW_PREMISE",
+              "rule_ref": null
+            },
+            "approval_ref": null
+          }
+        ],
+        "strength_variations": [
+          {
+            "id": "back_squat_barbell",
+            "revision": "0.2",
+            "exercise_ref": {
+              "id": "back_squat",
+              "revision": "0.2"
+            },
+            "equipment": [
+              "barbell",
+              "rack"
+            ],
+            "resistance_mode": "external",
+            "laterality": "bilateral",
+            "configuration": {
+              "bar_position": "high_bar",
+              "stance": "self_selected",
+              "rom": "candidate comfortable full ROM; not assessed",
+              "contraction": "dynamic"
+            },
+            "provenance_class": "DOMAIN_JUDGMENT",
+            "approval_ref": null,
+            "status": "SYNTHETIC_ONLY"
+          },
+          {
+            "id": "rdl_barbell",
+            "revision": "0.2",
+            "exercise_ref": {
+              "id": "romanian_deadlift",
+              "revision": "0.2"
+            },
+            "equipment": [
+              "barbell"
+            ],
+            "resistance_mode": "external",
+            "laterality": "bilateral",
+            "configuration": {
+              "rom": "candidate to below knee; not assessed",
+              "contraction": "dynamic"
+            },
+            "provenance_class": "DOMAIN_JUDGMENT",
+            "approval_ref": null,
+            "status": "SYNTHETIC_ONLY"
+          },
+          {
+            "id": "split_squat_db",
+            "revision": "0.2",
+            "exercise_ref": {
+              "id": "bulgarian_split_squat",
+              "revision": "0.2"
+            },
+            "equipment": [
+              "dumbbell",
+              "rear_foot_support"
+            ],
+            "resistance_mode": "external",
+            "laterality": "unilateral",
+            "configuration": {
+              "rom": "candidate self-selected; not assessed",
+              "contraction": "dynamic"
+            },
+            "provenance_class": "DOMAIN_JUDGMENT",
+            "approval_ref": null,
+            "status": "SYNTHETIC_ONLY"
+          },
+          {
+            "id": "row_barbell",
+            "revision": "0.2",
+            "exercise_ref": {
+              "id": "barbell_row",
+              "revision": "0.2"
+            },
+            "equipment": [
+              "barbell"
+            ],
+            "resistance_mode": "external",
+            "laterality": "bilateral",
+            "configuration": {
+              "trunk_support": "none",
+              "contraction": "dynamic"
+            },
+            "provenance_class": "DOMAIN_JUDGMENT",
+            "approval_ref": null,
+            "status": "SYNTHETIC_ONLY"
+          }
+        ],
+        "strength_prescriptions": [
+          {
+            "id": "squat-example",
+            "revision": "0.2",
+            "variation_ref": {
+              "id": "back_squat_barbell",
+              "revision": "0.2"
+            },
+            "sets": [
+              {
+                "id": "sq-1",
+                "role": "work",
+                "side": "both",
+                "completion": {
+                  "basis": "reps",
+                  "amount": {
+                    "value": 5,
+                    "unit": "rep"
+                  },
+                  "advance": "manual"
+                },
+                "load": {
+                  "value": 60,
+                  "unit": "kg",
+                  "convention": "external_total_including_bar"
+                },
+                "effort": {
+                  "metric": "RIR",
+                  "value": 3,
+                  "scale_ref": {
+                    "id": "RIR_SYNTHETIC",
+                    "revision": "0.2"
+                  },
+                  "collection": "after_set",
+                  "status": "SYNTHETIC_ESTIMATE"
+                },
+                "rest": {
+                  "value": 150,
+                  "unit": "s"
+                },
+                "tempo": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "not specified; no default"
+                },
+                "rom": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "see configuration; technique not assessed"
+                }
+              },
+              {
+                "id": "sq-2",
+                "role": "work",
+                "side": "both",
+                "completion": {
+                  "basis": "reps",
+                  "amount": {
+                    "value": 5,
+                    "unit": "rep"
+                  },
+                  "advance": "manual"
+                },
+                "load": {
+                  "value": 60,
+                  "unit": "kg",
+                  "convention": "external_total_including_bar"
+                },
+                "effort": {
+                  "metric": "RIR",
+                  "value": 3,
+                  "scale_ref": {
+                    "id": "RIR_SYNTHETIC",
+                    "revision": "0.2"
+                  },
+                  "collection": "after_set",
+                  "status": "SYNTHETIC_ESTIMATE"
+                },
+                "rest": {
+                  "value": 150,
+                  "unit": "s"
+                },
+                "tempo": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "not specified; no default"
+                },
+                "rom": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "see configuration; technique not assessed"
+                }
+              },
+              {
+                "id": "sq-3",
+                "role": "work",
+                "side": "both",
+                "completion": {
+                  "basis": "reps",
+                  "amount": {
+                    "value": 5,
+                    "unit": "rep"
+                  },
+                  "advance": "manual"
+                },
+                "load": {
+                  "value": 60,
+                  "unit": "kg",
+                  "convention": "external_total_including_bar"
+                },
+                "effort": {
+                  "metric": "RIR",
+                  "value": 3,
+                  "scale_ref": {
+                    "id": "RIR_SYNTHETIC",
+                    "revision": "0.2"
+                  },
+                  "collection": "after_set",
+                  "status": "SYNTHETIC_ESTIMATE"
+                },
+                "rest": {
+                  "value": 150,
+                  "unit": "s"
+                },
+                "tempo": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "not specified; no default"
+                },
+                "rom": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "see configuration; technique not assessed"
+                }
+              }
+            ],
+            "session_intent_ref": {
+              "id": "intent-lower",
+              "revision": "0.2"
+            },
+            "accepted_envelope_ref": null,
+            "approval_ref": null,
+            "status": "SYNTHETIC_ONLY"
+          },
+          {
+            "id": "rdl-example",
+            "revision": "0.2",
+            "variation_ref": {
+              "id": "rdl_barbell",
+              "revision": "0.2"
+            },
+            "sets": [
+              {
+                "id": "rdl-1",
+                "role": "work",
+                "side": "both",
+                "completion": {
+                  "basis": "reps",
+                  "amount": {
+                    "value": 8,
+                    "unit": "rep"
+                  },
+                  "advance": "manual"
+                },
+                "load": {
+                  "value": 40,
+                  "unit": "kg",
+                  "convention": "external_total_including_bar"
+                },
+                "effort": {
+                  "metric": "RIR",
+                  "value": 3,
+                  "scale_ref": {
+                    "id": "RIR_SYNTHETIC",
+                    "revision": "0.2"
+                  },
+                  "collection": "after_set",
+                  "status": "SYNTHETIC_ESTIMATE"
+                },
+                "rest": {
+                  "value": 150,
+                  "unit": "s"
+                },
+                "tempo": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "not specified; no default"
+                },
+                "rom": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "see configuration; technique not assessed"
+                }
+              },
+              {
+                "id": "rdl-2",
+                "role": "work",
+                "side": "both",
+                "completion": {
+                  "basis": "reps",
+                  "amount": {
+                    "value": 8,
+                    "unit": "rep"
+                  },
+                  "advance": "manual"
+                },
+                "load": {
+                  "value": 40,
+                  "unit": "kg",
+                  "convention": "external_total_including_bar"
+                },
+                "effort": {
+                  "metric": "RIR",
+                  "value": 3,
+                  "scale_ref": {
+                    "id": "RIR_SYNTHETIC",
+                    "revision": "0.2"
+                  },
+                  "collection": "after_set",
+                  "status": "SYNTHETIC_ESTIMATE"
+                },
+                "rest": {
+                  "value": 150,
+                  "unit": "s"
+                },
+                "tempo": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "not specified; no default"
+                },
+                "rom": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "see configuration; technique not assessed"
+                }
+              }
+            ],
+            "session_intent_ref": {
+              "id": "intent-lower",
+              "revision": "0.2"
+            },
+            "accepted_envelope_ref": null,
+            "approval_ref": null,
+            "status": "SYNTHETIC_ONLY"
+          },
+          {
+            "id": "split-example",
+            "revision": "0.2",
+            "variation_ref": {
+              "id": "split_squat_db",
+              "revision": "0.2"
+            },
+            "sets": [
+              {
+                "id": "sp-left-1",
+                "role": "work",
+                "side": "left",
+                "completion": {
+                  "basis": "reps",
+                  "amount": {
+                    "value": 6,
+                    "unit": "rep"
+                  },
+                  "advance": "manual"
+                },
+                "load": {
+                  "value": 8,
+                  "unit": "kg",
+                  "convention": "per_hand"
+                },
+                "effort": {
+                  "metric": "RIR",
+                  "value": 3,
+                  "scale_ref": {
+                    "id": "RIR_SYNTHETIC",
+                    "revision": "0.2"
+                  },
+                  "collection": "after_set",
+                  "status": "SYNTHETIC_ESTIMATE"
+                },
+                "rest": {
+                  "value": 150,
+                  "unit": "s"
+                },
+                "tempo": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "not specified; no default"
+                },
+                "rom": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "see configuration; technique not assessed"
+                }
+              },
+              {
+                "id": "sp-left-2",
+                "role": "work",
+                "side": "left",
+                "completion": {
+                  "basis": "reps",
+                  "amount": {
+                    "value": 6,
+                    "unit": "rep"
+                  },
+                  "advance": "manual"
+                },
+                "load": {
+                  "value": 8,
+                  "unit": "kg",
+                  "convention": "per_hand"
+                },
+                "effort": {
+                  "metric": "RIR",
+                  "value": 3,
+                  "scale_ref": {
+                    "id": "RIR_SYNTHETIC",
+                    "revision": "0.2"
+                  },
+                  "collection": "after_set",
+                  "status": "SYNTHETIC_ESTIMATE"
+                },
+                "rest": {
+                  "value": 150,
+                  "unit": "s"
+                },
+                "tempo": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "not specified; no default"
+                },
+                "rom": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "see configuration; technique not assessed"
+                }
+              },
+              {
+                "id": "sp-right-1",
+                "role": "work",
+                "side": "right",
+                "completion": {
+                  "basis": "reps",
+                  "amount": {
+                    "value": 6,
+                    "unit": "rep"
+                  },
+                  "advance": "manual"
+                },
+                "load": {
+                  "value": 8,
+                  "unit": "kg",
+                  "convention": "per_hand"
+                },
+                "effort": {
+                  "metric": "RIR",
+                  "value": 3,
+                  "scale_ref": {
+                    "id": "RIR_SYNTHETIC",
+                    "revision": "0.2"
+                  },
+                  "collection": "after_set",
+                  "status": "SYNTHETIC_ESTIMATE"
+                },
+                "rest": {
+                  "value": 150,
+                  "unit": "s"
+                },
+                "tempo": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "not specified; no default"
+                },
+                "rom": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "see configuration; technique not assessed"
+                }
+              },
+              {
+                "id": "sp-right-2",
+                "role": "work",
+                "side": "right",
+                "completion": {
+                  "basis": "reps",
+                  "amount": {
+                    "value": 6,
+                    "unit": "rep"
+                  },
+                  "advance": "manual"
+                },
+                "load": {
+                  "value": 8,
+                  "unit": "kg",
+                  "convention": "per_hand"
+                },
+                "effort": {
+                  "metric": "RIR",
+                  "value": 3,
+                  "scale_ref": {
+                    "id": "RIR_SYNTHETIC",
+                    "revision": "0.2"
+                  },
+                  "collection": "after_set",
+                  "status": "SYNTHETIC_ESTIMATE"
+                },
+                "rest": {
+                  "value": 150,
+                  "unit": "s"
+                },
+                "tempo": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "not specified; no default"
+                },
+                "rom": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "see configuration; technique not assessed"
+                }
+              }
+            ],
+            "session_intent_ref": {
+              "id": "intent-lower",
+              "revision": "0.2"
+            },
+            "accepted_envelope_ref": null,
+            "approval_ref": null,
+            "status": "SYNTHETIC_ONLY"
+          },
+          {
+            "id": "row-original",
+            "revision": "0.2",
+            "variation_ref": {
+              "id": "row_barbell",
+              "revision": "0.2"
+            },
+            "sets": [
+              {
+                "id": "row-1",
+                "role": "work",
+                "side": "both",
+                "completion": {
+                  "basis": "reps",
+                  "amount": {
+                    "value": 8,
+                    "unit": "rep"
+                  },
+                  "advance": "manual"
+                },
+                "load": {
+                  "value": 30,
+                  "unit": "kg",
+                  "convention": "external_total_including_bar"
+                },
+                "effort": {
+                  "metric": "RIR",
+                  "value": 3,
+                  "scale_ref": {
+                    "id": "RIR_SYNTHETIC",
+                    "revision": "0.2"
+                  },
+                  "collection": "after_set",
+                  "status": "SYNTHETIC_ESTIMATE"
+                },
+                "rest": {
+                  "value": 150,
+                  "unit": "s"
+                },
+                "tempo": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "not specified; no default"
+                },
+                "rom": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "see configuration; technique not assessed"
+                }
+              },
+              {
+                "id": "row-2",
+                "role": "work",
+                "side": "both",
+                "completion": {
+                  "basis": "reps",
+                  "amount": {
+                    "value": 8,
+                    "unit": "rep"
+                  },
+                  "advance": "manual"
+                },
+                "load": {
+                  "value": 30,
+                  "unit": "kg",
+                  "convention": "external_total_including_bar"
+                },
+                "effort": {
+                  "metric": "RIR",
+                  "value": 3,
+                  "scale_ref": {
+                    "id": "RIR_SYNTHETIC",
+                    "revision": "0.2"
+                  },
+                  "collection": "after_set",
+                  "status": "SYNTHETIC_ESTIMATE"
+                },
+                "rest": {
+                  "value": 150,
+                  "unit": "s"
+                },
+                "tempo": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "not specified; no default"
+                },
+                "rom": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "see configuration; technique not assessed"
+                }
+              }
+            ],
+            "session_intent_ref": {
+              "id": "intent-upper",
+              "revision": "0.2"
+            },
+            "accepted_envelope_ref": null,
+            "approval_ref": null,
+            "status": "SYNTHETIC_ONLY"
+          }
+        ],
+        "run_intensity_references": [
+          {
+            "id": "RPE_SYNTHETIC",
+            "revision": "0.2",
+            "metric": "RPE",
+            "construct": "subjective_interval_effort",
+            "method": "illustrative 0–10 scale; anchors require G02",
+            "unit": "score_0_10",
+            "source_class": "POLICY_CANDIDATE",
+            "measured_threshold_ref": null,
+            "population": "synthetic adult recreational athlete only",
+            "established_at": "2026-10-22T09:00:00-03:00",
+            "validity": {
+              "status": "UNKNOWN",
+              "value": null,
+              "reason": "freshness/applicability rules not approved"
+            },
+            "approval_ref": null
+          }
+        ],
+        "effort_references": [
+          {
+            "id": "RIR_SYNTHETIC",
+            "revision": "0.2",
+            "construct": "estimated_repetitions_in_reserve",
+            "scale": "0 or more reps",
+            "source": "synthetic_self_report",
+            "collection": "after_set",
+            "approval_ref": null
+          }
+        ],
+        "run_prescriptions": [
+          {
+            "id": "threshold-example",
+            "revision": "0.2",
+            "archetype_ref": {
+              "id": "threshold_cruise_intervals",
+              "revision": "0.2"
+            },
+            "session_intent_ref": {
+              "id": "intent-threshold",
+              "revision": "0.2"
+            },
+            "intensity_reference_ref": {
+              "id": "RPE_SYNTHETIC",
+              "revision": "0.2"
+            },
+            "blocks": [
+              {
+                "id": "warm",
+                "type": "step",
+                "role": "warmup",
+                "completion": {
+                  "basis": "duration",
+                  "amount": {
+                    "value": 600,
+                    "unit": "s"
+                  },
+                  "advance": "automatic"
+                },
+                "target": {
+                  "metric": "RPE",
+                  "range": {
+                    "min": 2,
+                    "max": 2
+                  },
+                  "reference_ref": {
+                    "id": "RPE_SYNTHETIC",
+                    "revision": "0.2"
+                  },
+                  "role": "primary"
+                },
+                "terrain": {
+                  "surface": "flat_paved",
+                  "grade_percent": 0
+                },
+                "recovery_mode": null
+              },
+              {
+                "id": "repeat-main",
+                "type": "repeat",
+                "iterations_total": 3,
+                "recovery_after_last": false,
+                "work": {
+                  "id": "work",
+                  "type": "step",
+                  "role": "work",
+                  "completion": {
+                    "basis": "duration",
+                    "amount": {
+                      "value": 360,
+                      "unit": "s"
+                    },
+                    "advance": "automatic"
+                  },
+                  "target": {
+                    "metric": "RPE",
+                    "range": {
+                      "min": 6,
+                      "max": 6
+                    },
+                    "reference_ref": {
+                      "id": "RPE_SYNTHETIC",
+                      "revision": "0.2"
+                    },
+                    "role": "primary"
+                  },
+                  "terrain": {
+                    "surface": "flat_paved",
+                    "grade_percent": 0
+                  },
+                  "recovery_mode": null
+                },
+                "recovery": {
+                  "id": "rec",
+                  "type": "step",
+                  "role": "recovery",
+                  "completion": {
+                    "basis": "duration",
+                    "amount": {
+                      "value": 120,
+                      "unit": "s"
+                    },
+                    "advance": "automatic"
+                  },
+                  "target": {
+                    "metric": "RPE",
+                    "range": {
+                      "min": 2,
+                      "max": 2
+                    },
+                    "reference_ref": {
+                      "id": "RPE_SYNTHETIC",
+                      "revision": "0.2"
+                    },
+                    "role": "primary"
+                  },
+                  "terrain": {
+                    "surface": "flat_paved",
+                    "grade_percent": 0
+                  },
+                  "recovery_mode": "jog"
+                }
+              },
+              {
+                "id": "cool",
+                "type": "step",
+                "role": "cooldown",
+                "completion": {
+                  "basis": "duration",
+                  "amount": {
+                    "value": 300,
+                    "unit": "s"
+                  },
+                  "advance": "automatic"
+                },
+                "target": {
+                  "metric": "RPE",
+                  "range": {
+                    "min": 2,
+                    "max": 2
+                  },
+                  "reference_ref": {
+                    "id": "RPE_SYNTHETIC",
+                    "revision": "0.2"
+                  },
+                  "role": "primary"
+                },
+                "terrain": {
+                  "surface": "flat_paved",
+                  "grade_percent": 0
+                },
+                "recovery_mode": null
+              }
+            ],
+            "totals": {
+              "duration_s": 2220,
+              "work_duration_s": 1080,
+              "recovery_duration_s": 240
+            },
+            "construct_status": "threshold is an intended stimulus, NOT measured/verified by RPE 6",
+            "approval_ref": null,
+            "status": "SYNTHETIC_ONLY"
+          },
+          {
+            "id": "easy-example",
+            "revision": "0.2",
+            "archetype_ref": {
+              "id": "easy_run",
+              "revision": "0.2"
+            },
+            "session_intent_ref": {
+              "id": "intent-easy",
+              "revision": "0.2"
+            },
+            "intensity_reference_ref": {
+              "id": "RPE_SYNTHETIC",
+              "revision": "0.2"
+            },
+            "blocks": [
+              {
+                "id": "easy-work",
+                "type": "step",
+                "role": "work",
+                "completion": {
+                  "basis": "duration",
+                  "amount": {
+                    "value": 1800,
+                    "unit": "s"
+                  },
+                  "advance": "automatic"
+                },
+                "target": {
+                  "metric": "RPE",
+                  "range": {
+                    "min": 2,
+                    "max": 2
+                  },
+                  "reference_ref": {
+                    "id": "RPE_SYNTHETIC",
+                    "revision": "0.2"
+                  },
+                  "role": "primary"
+                },
+                "terrain": {
+                  "surface": "flat_paved",
+                  "grade_percent": 0
+                },
+                "recovery_mode": null
+              }
+            ],
+            "totals": {
+              "duration_s": 1800,
+              "work_duration_s": 1800,
+              "recovery_duration_s": 0
+            },
+            "approval_ref": null,
+            "status": "SYNTHETIC_ONLY"
+          }
+        ],
+        "sessions": [
+          {
+            "id": "lower-mon",
+            "revision": "0.2",
+            "sport": "STRENGTH",
+            "start": "2026-10-26T18:00:00-03:00",
+            "end": "2026-10-26T19:00:00-03:00",
+            "prescription_refs": [
+              {
+                "id": "squat-example",
+                "revision": "0.2"
+              },
+              {
+                "id": "rdl-example",
+                "revision": "0.2"
+              },
+              {
+                "id": "split-example",
+                "revision": "0.2"
+              }
+            ],
+            "intent_ref": {
+              "id": "intent-lower",
+              "revision": "0.2"
+            }
+          },
+          {
+            "id": "run-tue",
+            "revision": "0.2",
+            "sport": "RUNNING",
+            "start": "2026-10-27T07:00:00-03:00",
+            "end": "2026-10-27T07:37:00-03:00",
+            "prescription_refs": [
+              {
+                "id": "threshold-example",
+                "revision": "0.2"
+              }
+            ],
+            "intent_ref": {
+              "id": "intent-threshold",
+              "revision": "0.2"
+            }
+          },
+          {
+            "id": "run-thu",
+            "revision": "0.2",
+            "sport": "RUNNING",
+            "start": "2026-10-29T07:00:00-03:00",
+            "end": "2026-10-29T07:30:00-03:00",
+            "prescription_refs": [
+              {
+                "id": "easy-example",
+                "revision": "0.2"
+              }
+            ],
+            "intent_ref": {
+              "id": "intent-easy",
+              "revision": "0.2"
+            }
+          },
+          {
+            "id": "upper-fri",
+            "revision": "0.2",
+            "sport": "STRENGTH",
+            "start": "2026-10-30T18:00:00-03:00",
+            "end": "2026-10-30T18:45:00-03:00",
+            "prescription_refs": [
+              {
+                "id": "row-original",
+                "revision": "0.2"
+              }
+            ],
+            "intent_ref": {
+              "id": "intent-upper",
+              "revision": "0.2"
+            }
+          }
+        ],
+        "selected_session_ids": [
+          "lower-mon",
+          "run-tue",
+          "run-thu",
+          "upper-fri"
+        ],
+        "recovery_signals": {
+          "sleep": null,
+          "fatigue": null,
+          "soreness": null,
+          "HRV": null,
+          "readiness": null,
+          "new_material_fact": null
+        },
+        "unknowns": [
+          "block_phase_and_week",
+          "event_goal",
+          "essential_stimulus",
+          "restriction_eligibility",
+          "recent_recovery",
+          "individual_threshold_calibration",
+          "raw_history",
+          "commitment_and_availability",
+          "session_effects"
+        ],
+        "candidate_catalog": [
+          {
+            "id": "K",
+            "type": "KEEP",
+            "origin": "S01+S02",
+            "delta": []
+          },
+          {
+            "id": "M",
+            "type": "micro",
+            "origin": "REVIEW_PROMPT_NOT_RECIPE",
+            "delta": null
+          },
+          {
+            "id": "V-L",
+            "type": "REDUCE_VOLUME_LOWER",
+            "origin": "S01/lower-less-volume",
+            "delta": {
+              "prescription": "squat-example",
+              "omit_set_id": "sq-3"
+            }
+          },
+          {
+            "id": "V-R",
+            "type": "REDUCE_VOLUME_RUN",
+            "origin": "S02/run-less-volume",
+            "delta": {
+              "prescription": "threshold-example",
+              "block": "repeat-main",
+              "iterations_total": 2
+            }
+          },
+          {
+            "id": "I",
+            "type": "volume-intensity",
+            "origin": "REVIEW_PROMPT_NOT_RECIPE",
+            "delta": null
+          },
+          {
+            "id": "MV-L",
+            "type": "MOVE_LOWER",
+            "origin": "S01/move-lower",
+            "delta": {
+              "session": "lower-mon",
+              "new_start": "2026-10-28T18:00:00-03:00",
+              "new_end": "2026-10-28T19:00:00-03:00"
+            }
+          },
+          {
+            "id": "MV-R",
+            "type": "MOVE_RUN",
+            "origin": "S02/move-run",
+            "delta": {
+              "session": "run-tue",
+              "new_start": "2026-10-28T07:00:00-03:00",
+              "new_end": "2026-10-28T07:37:00-03:00"
+            }
+          },
+          {
+            "id": "SUB",
+            "type": "SUBSTITUTE",
+            "origin": "REVIEW_PROMPT_NOT_RECIPE",
+            "delta": null
+          },
+          {
+            "id": "PR",
+            "type": "PARTIAL_REPLAN",
+            "origin": "REVIEW_PROMPT_NOT_RECIPE",
+            "delta": null
+          }
+        ],
+        "priority_mode": "RUN_FIRST"
+      },
+      "selected_action": null,
+      "professional_approval_ref": null
+    },
+    {
+      "case_id": "S02",
+      "status": "QUESTIONABLE / NOT_EVALUABLE_DOMAIN",
+      "inputs": {
+        "base_fixture": {
+          "id": "BASE-REVIEW",
+          "revision": "0.2",
+          "athlete": {
+            "id": "synthetic-A",
+            "revision": "0.2",
+            "adult": true,
+            "age": 34,
+            "experience": {
+              "running": "recreational, reported2years",
+              "strength": "reported1year"
+            },
+            "history_ref": {
+              "id": "history-example",
+              "revision": "0.2"
+            },
+            "restrictions": {
+              "status": "UNKNOWN",
+              "value": null,
+              "reason": "not clinically or professionally assessed"
+            },
+            "goal_priority_origin": "SYNTHETIC_USER_CONFIRMED",
+            "coverage_approval_ref": null
+          },
+          "plan": {
+            "id": "plan-example",
+            "revision": "0.2",
+            "timezone": "America/Sao_Paulo",
+            "session_refs": [
+              {
+                "id": "lower-mon",
+                "revision": "0.2"
+              },
+              {
+                "id": "run-tue",
+                "revision": "0.2"
+              },
+              {
+                "id": "run-thu",
+                "revision": "0.2"
+              },
+              {
+                "id": "upper-fri",
+                "revision": "0.2"
+              }
+            ]
+          },
+          "history": {
+            "id": "history-example",
+            "revision": "0.2",
+            "scope": "illustrative prior7days",
+            "reported_run_distance": {
+              "value": 24000,
+              "unit": "m"
+            },
+            "reported_strength_sessions": 2,
+            "comparison_exposure": "squat60kg total x3sets x5reps RIR3 reported",
+            "coverage": "incomplete_without_raw_activity_lineage",
+            "provenance_class": "ATHLETE_OBSERVATION",
+            "synthetic": true
+          }
+        },
+        "session_intents": [
+          {
+            "id": "intent-lower",
+            "revision": "0.2",
+            "sport": "STRENGTH",
+            "purpose_candidate": "general_lower_strength",
+            "essential_stimulus": {
+              "status": "UNKNOWN",
+              "value": null,
+              "reason": "professional definition required"
+            },
+            "criticality": {
+              "value": "HIGH",
+              "origin": "SYNTHETIC_REVIEW_PREMISE",
+              "rule_ref": null
+            },
+            "approval_ref": null
+          },
+          {
+            "id": "intent-threshold",
+            "revision": "0.2",
+            "sport": "RUNNING",
+            "purpose_candidate": "intended_threshold_exposure",
+            "essential_stimulus": {
+              "status": "UNKNOWN",
+              "value": null,
+              "reason": "professional definition required"
+            },
+            "criticality": {
+              "value": "HIGH",
+              "origin": "SYNTHETIC_REVIEW_PREMISE",
+              "rule_ref": null
+            },
+            "approval_ref": null
+          },
+          {
+            "id": "intent-easy",
+            "revision": "0.2",
+            "sport": "RUNNING",
+            "purpose_candidate": "easy_aerobic_exposure",
+            "essential_stimulus": {
+              "status": "UNKNOWN",
+              "value": null,
+              "reason": "professional definition required"
+            },
+            "criticality": {
+              "value": "LOW",
+              "origin": "SYNTHETIC_REVIEW_PREMISE",
+              "rule_ref": null
+            },
+            "approval_ref": null
+          },
+          {
+            "id": "intent-upper",
+            "revision": "0.2",
+            "sport": "STRENGTH",
+            "purpose_candidate": "horizontal_pull_strength",
+            "essential_stimulus": {
+              "status": "UNKNOWN",
+              "value": null,
+              "reason": "professional definition required"
+            },
+            "criticality": {
+              "value": "LOW",
+              "origin": "SYNTHETIC_REVIEW_PREMISE",
+              "rule_ref": null
+            },
+            "approval_ref": null
+          }
+        ],
+        "strength_variations": [
+          {
+            "id": "back_squat_barbell",
+            "revision": "0.2",
+            "exercise_ref": {
+              "id": "back_squat",
+              "revision": "0.2"
+            },
+            "equipment": [
+              "barbell",
+              "rack"
+            ],
+            "resistance_mode": "external",
+            "laterality": "bilateral",
+            "configuration": {
+              "bar_position": "high_bar",
+              "stance": "self_selected",
+              "rom": "candidate comfortable full ROM; not assessed",
+              "contraction": "dynamic"
+            },
+            "provenance_class": "DOMAIN_JUDGMENT",
+            "approval_ref": null,
+            "status": "SYNTHETIC_ONLY"
+          },
+          {
+            "id": "rdl_barbell",
+            "revision": "0.2",
+            "exercise_ref": {
+              "id": "romanian_deadlift",
+              "revision": "0.2"
+            },
+            "equipment": [
+              "barbell"
+            ],
+            "resistance_mode": "external",
+            "laterality": "bilateral",
+            "configuration": {
+              "rom": "candidate to below knee; not assessed",
+              "contraction": "dynamic"
+            },
+            "provenance_class": "DOMAIN_JUDGMENT",
+            "approval_ref": null,
+            "status": "SYNTHETIC_ONLY"
+          },
+          {
+            "id": "split_squat_db",
+            "revision": "0.2",
+            "exercise_ref": {
+              "id": "bulgarian_split_squat",
+              "revision": "0.2"
+            },
+            "equipment": [
+              "dumbbell",
+              "rear_foot_support"
+            ],
+            "resistance_mode": "external",
+            "laterality": "unilateral",
+            "configuration": {
+              "rom": "candidate self-selected; not assessed",
+              "contraction": "dynamic"
+            },
+            "provenance_class": "DOMAIN_JUDGMENT",
+            "approval_ref": null,
+            "status": "SYNTHETIC_ONLY"
+          },
+          {
+            "id": "row_barbell",
+            "revision": "0.2",
+            "exercise_ref": {
+              "id": "barbell_row",
+              "revision": "0.2"
+            },
+            "equipment": [
+              "barbell"
+            ],
+            "resistance_mode": "external",
+            "laterality": "bilateral",
+            "configuration": {
+              "trunk_support": "none",
+              "contraction": "dynamic"
+            },
+            "provenance_class": "DOMAIN_JUDGMENT",
+            "approval_ref": null,
+            "status": "SYNTHETIC_ONLY"
+          }
+        ],
+        "strength_prescriptions": [
+          {
+            "id": "squat-example",
+            "revision": "0.2",
+            "variation_ref": {
+              "id": "back_squat_barbell",
+              "revision": "0.2"
+            },
+            "sets": [
+              {
+                "id": "sq-1",
+                "role": "work",
+                "side": "both",
+                "completion": {
+                  "basis": "reps",
+                  "amount": {
+                    "value": 5,
+                    "unit": "rep"
+                  },
+                  "advance": "manual"
+                },
+                "load": {
+                  "value": 60,
+                  "unit": "kg",
+                  "convention": "external_total_including_bar"
+                },
+                "effort": {
+                  "metric": "RIR",
+                  "value": 3,
+                  "scale_ref": {
+                    "id": "RIR_SYNTHETIC",
+                    "revision": "0.2"
+                  },
+                  "collection": "after_set",
+                  "status": "SYNTHETIC_ESTIMATE"
+                },
+                "rest": {
+                  "value": 150,
+                  "unit": "s"
+                },
+                "tempo": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "not specified; no default"
+                },
+                "rom": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "see configuration; technique not assessed"
+                }
+              },
+              {
+                "id": "sq-2",
+                "role": "work",
+                "side": "both",
+                "completion": {
+                  "basis": "reps",
+                  "amount": {
+                    "value": 5,
+                    "unit": "rep"
+                  },
+                  "advance": "manual"
+                },
+                "load": {
+                  "value": 60,
+                  "unit": "kg",
+                  "convention": "external_total_including_bar"
+                },
+                "effort": {
+                  "metric": "RIR",
+                  "value": 3,
+                  "scale_ref": {
+                    "id": "RIR_SYNTHETIC",
+                    "revision": "0.2"
+                  },
+                  "collection": "after_set",
+                  "status": "SYNTHETIC_ESTIMATE"
+                },
+                "rest": {
+                  "value": 150,
+                  "unit": "s"
+                },
+                "tempo": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "not specified; no default"
+                },
+                "rom": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "see configuration; technique not assessed"
+                }
+              },
+              {
+                "id": "sq-3",
+                "role": "work",
+                "side": "both",
+                "completion": {
+                  "basis": "reps",
+                  "amount": {
+                    "value": 5,
+                    "unit": "rep"
+                  },
+                  "advance": "manual"
+                },
+                "load": {
+                  "value": 60,
+                  "unit": "kg",
+                  "convention": "external_total_including_bar"
+                },
+                "effort": {
+                  "metric": "RIR",
+                  "value": 3,
+                  "scale_ref": {
+                    "id": "RIR_SYNTHETIC",
+                    "revision": "0.2"
+                  },
+                  "collection": "after_set",
+                  "status": "SYNTHETIC_ESTIMATE"
+                },
+                "rest": {
+                  "value": 150,
+                  "unit": "s"
+                },
+                "tempo": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "not specified; no default"
+                },
+                "rom": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "see configuration; technique not assessed"
+                }
+              }
+            ],
+            "session_intent_ref": {
+              "id": "intent-lower",
+              "revision": "0.2"
+            },
+            "accepted_envelope_ref": null,
+            "approval_ref": null,
+            "status": "SYNTHETIC_ONLY"
+          },
+          {
+            "id": "rdl-example",
+            "revision": "0.2",
+            "variation_ref": {
+              "id": "rdl_barbell",
+              "revision": "0.2"
+            },
+            "sets": [
+              {
+                "id": "rdl-1",
+                "role": "work",
+                "side": "both",
+                "completion": {
+                  "basis": "reps",
+                  "amount": {
+                    "value": 8,
+                    "unit": "rep"
+                  },
+                  "advance": "manual"
+                },
+                "load": {
+                  "value": 40,
+                  "unit": "kg",
+                  "convention": "external_total_including_bar"
+                },
+                "effort": {
+                  "metric": "RIR",
+                  "value": 3,
+                  "scale_ref": {
+                    "id": "RIR_SYNTHETIC",
+                    "revision": "0.2"
+                  },
+                  "collection": "after_set",
+                  "status": "SYNTHETIC_ESTIMATE"
+                },
+                "rest": {
+                  "value": 150,
+                  "unit": "s"
+                },
+                "tempo": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "not specified; no default"
+                },
+                "rom": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "see configuration; technique not assessed"
+                }
+              },
+              {
+                "id": "rdl-2",
+                "role": "work",
+                "side": "both",
+                "completion": {
+                  "basis": "reps",
+                  "amount": {
+                    "value": 8,
+                    "unit": "rep"
+                  },
+                  "advance": "manual"
+                },
+                "load": {
+                  "value": 40,
+                  "unit": "kg",
+                  "convention": "external_total_including_bar"
+                },
+                "effort": {
+                  "metric": "RIR",
+                  "value": 3,
+                  "scale_ref": {
+                    "id": "RIR_SYNTHETIC",
+                    "revision": "0.2"
+                  },
+                  "collection": "after_set",
+                  "status": "SYNTHETIC_ESTIMATE"
+                },
+                "rest": {
+                  "value": 150,
+                  "unit": "s"
+                },
+                "tempo": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "not specified; no default"
+                },
+                "rom": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "see configuration; technique not assessed"
+                }
+              }
+            ],
+            "session_intent_ref": {
+              "id": "intent-lower",
+              "revision": "0.2"
+            },
+            "accepted_envelope_ref": null,
+            "approval_ref": null,
+            "status": "SYNTHETIC_ONLY"
+          },
+          {
+            "id": "split-example",
+            "revision": "0.2",
+            "variation_ref": {
+              "id": "split_squat_db",
+              "revision": "0.2"
+            },
+            "sets": [
+              {
+                "id": "sp-left-1",
+                "role": "work",
+                "side": "left",
+                "completion": {
+                  "basis": "reps",
+                  "amount": {
+                    "value": 6,
+                    "unit": "rep"
+                  },
+                  "advance": "manual"
+                },
+                "load": {
+                  "value": 8,
+                  "unit": "kg",
+                  "convention": "per_hand"
+                },
+                "effort": {
+                  "metric": "RIR",
+                  "value": 3,
+                  "scale_ref": {
+                    "id": "RIR_SYNTHETIC",
+                    "revision": "0.2"
+                  },
+                  "collection": "after_set",
+                  "status": "SYNTHETIC_ESTIMATE"
+                },
+                "rest": {
+                  "value": 150,
+                  "unit": "s"
+                },
+                "tempo": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "not specified; no default"
+                },
+                "rom": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "see configuration; technique not assessed"
+                }
+              },
+              {
+                "id": "sp-left-2",
+                "role": "work",
+                "side": "left",
+                "completion": {
+                  "basis": "reps",
+                  "amount": {
+                    "value": 6,
+                    "unit": "rep"
+                  },
+                  "advance": "manual"
+                },
+                "load": {
+                  "value": 8,
+                  "unit": "kg",
+                  "convention": "per_hand"
+                },
+                "effort": {
+                  "metric": "RIR",
+                  "value": 3,
+                  "scale_ref": {
+                    "id": "RIR_SYNTHETIC",
+                    "revision": "0.2"
+                  },
+                  "collection": "after_set",
+                  "status": "SYNTHETIC_ESTIMATE"
+                },
+                "rest": {
+                  "value": 150,
+                  "unit": "s"
+                },
+                "tempo": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "not specified; no default"
+                },
+                "rom": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "see configuration; technique not assessed"
+                }
+              },
+              {
+                "id": "sp-right-1",
+                "role": "work",
+                "side": "right",
+                "completion": {
+                  "basis": "reps",
+                  "amount": {
+                    "value": 6,
+                    "unit": "rep"
+                  },
+                  "advance": "manual"
+                },
+                "load": {
+                  "value": 8,
+                  "unit": "kg",
+                  "convention": "per_hand"
+                },
+                "effort": {
+                  "metric": "RIR",
+                  "value": 3,
+                  "scale_ref": {
+                    "id": "RIR_SYNTHETIC",
+                    "revision": "0.2"
+                  },
+                  "collection": "after_set",
+                  "status": "SYNTHETIC_ESTIMATE"
+                },
+                "rest": {
+                  "value": 150,
+                  "unit": "s"
+                },
+                "tempo": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "not specified; no default"
+                },
+                "rom": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "see configuration; technique not assessed"
+                }
+              },
+              {
+                "id": "sp-right-2",
+                "role": "work",
+                "side": "right",
+                "completion": {
+                  "basis": "reps",
+                  "amount": {
+                    "value": 6,
+                    "unit": "rep"
+                  },
+                  "advance": "manual"
+                },
+                "load": {
+                  "value": 8,
+                  "unit": "kg",
+                  "convention": "per_hand"
+                },
+                "effort": {
+                  "metric": "RIR",
+                  "value": 3,
+                  "scale_ref": {
+                    "id": "RIR_SYNTHETIC",
+                    "revision": "0.2"
+                  },
+                  "collection": "after_set",
+                  "status": "SYNTHETIC_ESTIMATE"
+                },
+                "rest": {
+                  "value": 150,
+                  "unit": "s"
+                },
+                "tempo": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "not specified; no default"
+                },
+                "rom": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "see configuration; technique not assessed"
+                }
+              }
+            ],
+            "session_intent_ref": {
+              "id": "intent-lower",
+              "revision": "0.2"
+            },
+            "accepted_envelope_ref": null,
+            "approval_ref": null,
+            "status": "SYNTHETIC_ONLY"
+          },
+          {
+            "id": "row-original",
+            "revision": "0.2",
+            "variation_ref": {
+              "id": "row_barbell",
+              "revision": "0.2"
+            },
+            "sets": [
+              {
+                "id": "row-1",
+                "role": "work",
+                "side": "both",
+                "completion": {
+                  "basis": "reps",
+                  "amount": {
+                    "value": 8,
+                    "unit": "rep"
+                  },
+                  "advance": "manual"
+                },
+                "load": {
+                  "value": 30,
+                  "unit": "kg",
+                  "convention": "external_total_including_bar"
+                },
+                "effort": {
+                  "metric": "RIR",
+                  "value": 3,
+                  "scale_ref": {
+                    "id": "RIR_SYNTHETIC",
+                    "revision": "0.2"
+                  },
+                  "collection": "after_set",
+                  "status": "SYNTHETIC_ESTIMATE"
+                },
+                "rest": {
+                  "value": 150,
+                  "unit": "s"
+                },
+                "tempo": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "not specified; no default"
+                },
+                "rom": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "see configuration; technique not assessed"
+                }
+              },
+              {
+                "id": "row-2",
+                "role": "work",
+                "side": "both",
+                "completion": {
+                  "basis": "reps",
+                  "amount": {
+                    "value": 8,
+                    "unit": "rep"
+                  },
+                  "advance": "manual"
+                },
+                "load": {
+                  "value": 30,
+                  "unit": "kg",
+                  "convention": "external_total_including_bar"
+                },
+                "effort": {
+                  "metric": "RIR",
+                  "value": 3,
+                  "scale_ref": {
+                    "id": "RIR_SYNTHETIC",
+                    "revision": "0.2"
+                  },
+                  "collection": "after_set",
+                  "status": "SYNTHETIC_ESTIMATE"
+                },
+                "rest": {
+                  "value": 150,
+                  "unit": "s"
+                },
+                "tempo": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "not specified; no default"
+                },
+                "rom": {
+                  "status": "UNKNOWN",
+                  "value": null,
+                  "reason": "see configuration; technique not assessed"
+                }
+              }
+            ],
+            "session_intent_ref": {
+              "id": "intent-upper",
+              "revision": "0.2"
+            },
+            "accepted_envelope_ref": null,
+            "approval_ref": null,
+            "status": "SYNTHETIC_ONLY"
+          }
+        ],
+        "run_intensity_references": [
+          {
+            "id": "RPE_SYNTHETIC",
+            "revision": "0.2",
+            "metric": "RPE",
+            "construct": "subjective_interval_effort",
+            "method": "illustrative 0–10 scale; anchors require G02",
+            "unit": "score_0_10",
+            "source_class": "POLICY_CANDIDATE",
+            "measured_threshold_ref": null,
+            "population": "synthetic adult recreational athlete only",
+            "established_at": "2026-10-22T09:00:00-03:00",
+            "validity": {
+              "status": "UNKNOWN",
+              "value": null,
+              "reason": "freshness/applicability rules not approved"
+            },
+            "approval_ref": null
+          }
+        ],
+        "effort_references": [
+          {
+            "id": "RIR_SYNTHETIC",
+            "revision": "0.2",
+            "construct": "estimated_repetitions_in_reserve",
+            "scale": "0 or more reps",
+            "source": "synthetic_self_report",
+            "collection": "after_set",
+            "approval_ref": null
+          }
+        ],
+        "run_prescriptions": [
+          {
+            "id": "threshold-example",
+            "revision": "0.2",
+            "archetype_ref": {
+              "id": "threshold_cruise_intervals",
+              "revision": "0.2"
+            },
+            "session_intent_ref": {
+              "id": "intent-threshold",
+              "revision": "0.2"
+            },
+            "intensity_reference_ref": {
+              "id": "RPE_SYNTHETIC",
+              "revision": "0.2"
+            },
+            "blocks": [
+              {
+                "id": "warm",
+                "type": "step",
+                "role": "warmup",
+                "completion": {
+                  "basis": "duration",
+                  "amount": {
+                    "value": 600,
+                    "unit": "s"
+                  },
+                  "advance": "automatic"
+                },
+                "target": {
+                  "metric": "RPE",
+                  "range": {
+                    "min": 2,
+                    "max": 2
+                  },
+                  "reference_ref": {
+                    "id": "RPE_SYNTHETIC",
+                    "revision": "0.2"
+                  },
+                  "role": "primary"
+                },
+                "terrain": {
+                  "surface": "flat_paved",
+                  "grade_percent": 0
+                },
+                "recovery_mode": null
+              },
+              {
+                "id": "repeat-main",
+                "type": "repeat",
+                "iterations_total": 3,
+                "recovery_after_last": false,
+                "work": {
+                  "id": "work",
+                  "type": "step",
+                  "role": "work",
+                  "completion": {
+                    "basis": "duration",
+                    "amount": {
+                      "value": 360,
+                      "unit": "s"
+                    },
+                    "advance": "automatic"
+                  },
+                  "target": {
+                    "metric": "RPE",
+                    "range": {
+                      "min": 6,
+                      "max": 6
+                    },
+                    "reference_ref": {
+                      "id": "RPE_SYNTHETIC",
+                      "revision": "0.2"
+                    },
+                    "role": "primary"
+                  },
+                  "terrain": {
+                    "surface": "flat_paved",
+                    "grade_percent": 0
+                  },
+                  "recovery_mode": null
+                },
+                "recovery": {
+                  "id": "rec",
+                  "type": "step",
+                  "role": "recovery",
+                  "completion": {
+                    "basis": "duration",
+                    "amount": {
+                      "value": 120,
+                      "unit": "s"
+                    },
+                    "advance": "automatic"
+                  },
+                  "target": {
+                    "metric": "RPE",
+                    "range": {
+                      "min": 2,
+                      "max": 2
+                    },
+                    "reference_ref": {
+                      "id": "RPE_SYNTHETIC",
+                      "revision": "0.2"
+                    },
+                    "role": "primary"
+                  },
+                  "terrain": {
+                    "surface": "flat_paved",
+                    "grade_percent": 0
+                  },
+                  "recovery_mode": "jog"
+                }
+              },
+              {
+                "id": "cool",
+                "type": "step",
+                "role": "cooldown",
+                "completion": {
+                  "basis": "duration",
+                  "amount": {
+                    "value": 300,
+                    "unit": "s"
+                  },
+                  "advance": "automatic"
+                },
+                "target": {
+                  "metric": "RPE",
+                  "range": {
+                    "min": 2,
+                    "max": 2
+                  },
+                  "reference_ref": {
+                    "id": "RPE_SYNTHETIC",
+                    "revision": "0.2"
+                  },
+                  "role": "primary"
+                },
+                "terrain": {
+                  "surface": "flat_paved",
+                  "grade_percent": 0
+                },
+                "recovery_mode": null
+              }
+            ],
+            "totals": {
+              "duration_s": 2220,
+              "work_duration_s": 1080,
+              "recovery_duration_s": 240
+            },
+            "construct_status": "threshold is an intended stimulus, NOT measured/verified by RPE 6",
+            "approval_ref": null,
+            "status": "SYNTHETIC_ONLY"
+          },
+          {
+            "id": "easy-example",
+            "revision": "0.2",
+            "archetype_ref": {
+              "id": "easy_run",
+              "revision": "0.2"
+            },
+            "session_intent_ref": {
+              "id": "intent-easy",
+              "revision": "0.2"
+            },
+            "intensity_reference_ref": {
+              "id": "RPE_SYNTHETIC",
+              "revision": "0.2"
+            },
+            "blocks": [
+              {
+                "id": "easy-work",
+                "type": "step",
+                "role": "work",
+                "completion": {
+                  "basis": "duration",
+                  "amount": {
+                    "value": 1800,
+                    "unit": "s"
+                  },
+                  "advance": "automatic"
+                },
+                "target": {
+                  "metric": "RPE",
+                  "range": {
+                    "min": 2,
+                    "max": 2
+                  },
+                  "reference_ref": {
+                    "id": "RPE_SYNTHETIC",
+                    "revision": "0.2"
+                  },
+                  "role": "primary"
+                },
+                "terrain": {
+                  "surface": "flat_paved",
+                  "grade_percent": 0
+                },
+                "recovery_mode": null
+              }
+            ],
+            "totals": {
+              "duration_s": 1800,
+              "work_duration_s": 1800,
+              "recovery_duration_s": 0
+            },
+            "approval_ref": null,
+            "status": "SYNTHETIC_ONLY"
+          }
+        ],
+        "sessions": [
+          {
+            "id": "lower-mon",
+            "revision": "0.2",
+            "sport": "STRENGTH",
+            "start": "2026-10-26T18:00:00-03:00",
+            "end": "2026-10-26T19:00:00-03:00",
+            "prescription_refs": [
+              {
+                "id": "squat-example",
+                "revision": "0.2"
+              },
+              {
+                "id": "rdl-example",
+                "revision": "0.2"
+              },
+              {
+                "id": "split-example",
+                "revision": "0.2"
+              }
+            ],
+            "intent_ref": {
+              "id": "intent-lower",
+              "revision": "0.2"
+            }
+          },
+          {
+            "id": "run-tue",
+            "revision": "0.2",
+            "sport": "RUNNING",
+            "start": "2026-10-27T07:00:00-03:00",
+            "end": "2026-10-27T07:37:00-03:00",
+            "prescription_refs": [
+              {
+                "id": "threshold-example",
+                "revision": "0.2"
+              }
+            ],
+            "intent_ref": {
+              "id": "intent-threshold",
+              "revision": "0.2"
+            }
+          },
+          {
+            "id": "run-thu",
+            "revision": "0.2",
+            "sport": "RUNNING",
+            "start": "2026-10-29T07:00:00-03:00",
+            "end": "2026-10-29T07:30:00-03:00",
+            "prescription_refs": [
+              {
+                "id": "easy-example",
+                "revision": "0.2"
+              }
+            ],
+            "intent_ref": {
+              "id": "intent-easy",
+              "revision": "0.2"
+            }
+          },
+          {
+            "id": "upper-fri",
+            "revision": "0.2",
+            "sport": "STRENGTH",
+            "start": "2026-10-30T18:00:00-03:00",
+            "end": "2026-10-30T18:45:00-03:00",
+            "prescription_refs": [
+              {
+                "id": "row-original",
+                "revision": "0.2"
+              }
+            ],
+            "intent_ref": {
+              "id": "intent-upper",
+              "revision": "0.2"
+            }
+          }
+        ],
+        "selected_session_ids": [
+          "lower-mon",
+          "run-tue",
+          "run-thu",
+          "upper-fri"
+        ],
+        "recovery_signals": {
+          "sleep": null,
+          "fatigue": null,
+          "soreness": null,
+          "HRV": null,
+          "readiness": null,
+          "new_material_fact": null
+        },
+        "unknowns": [
+          "block_phase_and_week",
+          "event_goal",
+          "essential_stimulus",
+          "restriction_eligibility",
+          "recent_recovery",
+          "individual_threshold_calibration",
+          "raw_history",
+          "commitment_and_availability",
+          "session_effects"
+        ],
+        "candidate_catalog": [
+          {
+            "id": "K",
+            "type": "KEEP",
+            "origin": "S01+S02",
+            "delta": []
+          },
+          {
+            "id": "M",
+            "type": "micro",
+            "origin": "REVIEW_PROMPT_NOT_RECIPE",
+            "delta": null
+          },
+          {
+            "id": "V-L",
+            "type": "REDUCE_VOLUME_LOWER",
+            "origin": "S01/lower-less-volume",
+            "delta": {
+              "prescription": "squat-example",
+              "omit_set_id": "sq-3"
+            }
+          },
+          {
+            "id": "V-R",
+            "type": "REDUCE_VOLUME_RUN",
+            "origin": "S02/run-less-volume",
+            "delta": {
+              "prescription": "threshold-example",
+              "block": "repeat-main",
+              "iterations_total": 2
+            }
+          },
+          {
+            "id": "I",
+            "type": "volume-intensity",
+            "origin": "REVIEW_PROMPT_NOT_RECIPE",
+            "delta": null
+          },
+          {
+            "id": "MV-L",
+            "type": "MOVE_LOWER",
+            "origin": "S01/move-lower",
+            "delta": {
+              "session": "lower-mon",
+              "new_start": "2026-10-28T18:00:00-03:00",
+              "new_end": "2026-10-28T19:00:00-03:00"
+            }
+          },
+          {
+            "id": "MV-R",
+            "type": "MOVE_RUN",
+            "origin": "S02/move-run",
+            "delta": {
+              "session": "run-tue",
+              "new_start": "2026-10-28T07:00:00-03:00",
+              "new_end": "2026-10-28T07:37:00-03:00"
+            }
+          },
+          {
+            "id": "SUB",
+            "type": "SUBSTITUTE",
+            "origin": "REVIEW_PROMPT_NOT_RECIPE",
+            "delta": null
+          },
+          {
+            "id": "PR",
+            "type": "PARTIAL_REPLAN",
+            "origin": "REVIEW_PROMPT_NOT_RECIPE",
+            "delta": null
+          }
+        ],
+        "priority_mode": "STRENGTH_FIRST"
+      },
+      "selected_action": null,
+      "professional_approval_ref": null
+    }
+  ]
+}

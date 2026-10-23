@@ -795,3 +795,10 @@ The Founder opened the hardening phase. VISUAL DIRECTION IS LOCKED. Only polish,
 - Dynamic Type at AX sizes is validated in code.
 - Motion and haptics are specified, not animated.
 - Legal text and trial length are still slots; the price is provisional.
+
+
+## 2026-10-22 — Training Domain Foundation 0.2 candidate + bounded human G01/G02 review / TDF-HR-0.2-r1
+
+Direct Founder request: preserve supplied 0.2 and audit, integrate candidate and prepare scope/population plus lower × threshold for a real qualified professional. [Candidate](product/candidates/training-domain-foundation/0.2/README.md) = CANDIDATE / NON-AUTHORITATIVE; READY WITH FIXES FOR DELIMITED HUMAN REVIEW; NOT PRODUCT/DOMAIN TRUTH. [Review brief](reviews/human-domain-review/training-domain-foundation-0.2/00_REVIEW_BRIEF.md) leads to G01, two controlled priority cases, policy candidates, blank decision form, bounded evidence and traceability. [Audit/provenance](audits/training-domain-foundation-0.2/README.md) preserves both input ZIPs and closure r4 separately, SHA-256 and preexisting repository state.
+
+Routing T2/R1/L2; current instance authors, one fresh Research/Evidence judge checks documentary fidelity after deterministic checks; no physiological approval. The original 15 foundation files stay byte-identical. CURRENT_MISSION receives an additive locator; active canon and Product Truth, PDR, AE/Run/Strength, runtime and Figma are untouched. Preexisting changes are preserved and excluded from this mission's commit. Next gate: human G01 scope and G02 rule/case decisions by artifact/version with credentials, rationale and conditions. G01–G04 = HUMAN_REVIEW_REQUIRED; eight QUESTIONABLE (S01/S02/S05/S12/S13/S14/S28/S29) unchanged; C1–C6 sporting-open. No new r5, catalog expansion, runtime or automatic promotion. Completion proof and documentary review are recorded in the audit; preparing review is not approval.

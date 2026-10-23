@@ -1,0 +1,225 @@
+{
+  "revision": "AE-POLICY-20261022-r4.1",
+  "mission": "AE-CLOSE-20261022-r4",
+  "authored_at": "2026-10-22",
+  "timezone": "America/Sao_Paulo",
+  "author_role": "Research & Evidence Strategist",
+  "author_is_independent_judge": false,
+  "scope": "ETAPA 3; evidence and documentary conditional contracts for fixtures, no normative authority edits",
+  "evidence_gate_documentary_synthetic": "EVIDENCE_PARTIAL_PROCEED_AS_EXPERIMENT",
+  "evidence_gate_prescriptive_final_authority": "EVIDENCE_INSUFFICIENT",
+  "domain_approval_status": "DOMAIN_APPROVAL_OPEN",
+  "domain_gaps_closed": 0,
+  "contract_status": "DOCUMENTED_PENDING_INDEPENDENT_REVIEW",
+  "not_runtime_implementation": true,
+  "not_clinical_validation": true,
+  "not_new_gap_or_policy_registry": true,
+  "local_authorities": [
+    {"path": "inputs/product/PRODUCT_DECISION_REGISTER.md", "revision": "PDR-1.4 / EXP-AUTH-r1 over PDR-1.3", "sections": ["5", "freeze line 182"], "sha256": "D8F30B7C546976ACB366641CC2651C994F415EA7AB4A2C5815DDC5D63C1E149A", "classification": "DECIDED"},
+    {"path": "inputs/product/ADAPTIVE_ENGINE_OPERATIONAL_SPEC.md", "sections": ["9", "10", "17", "18"], "sha256": "56534C1BBE80C9B805EF3D7F94C63D0DCED293AE79FFD0220C5FB1315744A610", "classification": "DECIDED"},
+    {"path": "inputs/product/SPORT_INTELLIGENCE_SPEC.md", "revision": "SIS-1.1-r2 / EXP-AUTH-r1", "sections": ["1.1", "3", "4", "5", "6", "7"], "sha256": "1C7290F99063D1D1914FB563DF029EE00724F96C54196721B71DFA0B5994A312", "classification": "DECIDED"},
+    {"path": "inputs/product/RUN_INTELLIGENCE_SPEC.md", "sections": ["1.1", "3", "4", "5", "7", "8", "9"], "sha256": "1A70C3B865F40105B1537C3674E8DA1F2AAAC27EDE7878B38D85F8AC5E607880", "classification": "DECIDED"},
+    {"path": "inputs/product/STRENGTH_INTELLIGENCE_SPEC.md", "revision": "STIL-1.1-r1 / EXP-AUTH-r1", "sections": ["1.1", "2", "3", "4", "5", "6", "7", "8", "9"], "sha256": "17B156B7EE26C2020B79C54AD627B2D87E95C3A9A0B77373C62652A055C95F40", "classification": "DECIDED"},
+    {"path": "reviews/sports.md", "revision": "SPORTS-r1 with draft review", "sha256": "273ED5179C7FED15972A3242A3ACD1293E8D7A73D3A681DBEE0D3D726F226623", "classification": "OBSERVED_DOCUMENTARY_REVIEW"}
+  ],
+  "freeze_exact_line_182": "Freeze: G02 inclui critérios profissionais versionados de adequação, necessidade/benefício material após Change Cost, hysteresis/stickiness e trade-offs Balanced; sem thresholds arbitrários. G06 inclui medição/execução em segundo plano no telefone e finalidade G07 antes de ativação; fallback UX é tempo/manual explícito, sem mapa/traçado V1. G09 inclui entitlement atual separado de consentimento/adoção, sem interromper registro/fechamento em curso ou direitos/histórico por expiração. Nenhum desses itens exige redescoberta antes de UI.",
+  "gaps": [
+    {
+      "id": "G01", "name": "Cobertura", "origin": "DR-20/49; TR-G01/G-REG-2", "authority": "PDR section 5 line 168 / AEOS PS01",
+      "exact_definition": "Founder aloca profissional real de Educação Física habilitado e recursos; profissional valida perfis adultos, objetivos/sessões Running, repertório/equipamento/progressão Strength, restrições/casos suportados; jurídico qualifica modelo de serviço. Prova: escopo versionado com casos positivos/negativos, não apenas bibliografia.",
+      "exact_implementation_limit": "Bloqueia regras/cobertura prescritivas reais desse perfil e claims de suporte. Não bloqueia futura infraestrutura neutra sob outra missão.",
+      "status": "HUMAN_REVIEW_REQUIRED", "domain_status": "DOMAIN_APPROVAL_OPEN", "documentary_status": "DOCUMENTED", "professional_approval_ref": null,
+      "closure_this_round": "Coverage/recipe submission schema, conditional eligibility checks and positive/negative case requirements; no supported-population claim.",
+      "missing_evidence": ["Named qualified training professional allocated by Founder", "Versioned approved adult profiles/objectives/exclusions and Running sessions", "Approved Strength repertoire/equipment/progression and recipes", "Positive and negative scope cases", "Legal qualification of service model already required by PDR"],
+      "owner": "Founder allocates; qualified training professional validates; legal qualifies existing service-scope requirement", "trigger": "Before implementing real prescriptive coverage/rules for the profile or claiming support",
+      "affected": ["All real prescription fixtures", "C1", "C2", "C4", "C5", "C6"], "contract_refs": ["PC-COVERAGE", "PC-MEC", "PC-SAFETY"]
+    },
+    {
+      "id": "G02", "name": "Política e instrumentos", "origin": "DR-08/17/20; TR-G02/03", "authority": "PDR section 5 line 169 plus freeze line 182 / AEOS PS02",
+      "exact_definition": "Autoridade de treino valida sinais que qualificam cada ação, prioridades/spacing, intensidade/volume, substituições, deload, freshness/referência pessoal, RPE/RIR e momento/âncoras de coleta; Engineering prova dispositivo/execução. Prova: política/rule IDs versionados, limites e cenários aceitos/rejeitados.",
+      "exact_implementation_limit": "Antes de implementar como autoridade final ou ativar geração/adaptação/export prescritivos. Não inventar defaults “seguros”.",
+      "status": "HUMAN_REVIEW_REQUIRED", "domain_status": "DOMAIN_APPROVAL_OPEN", "documentary_status": "DOCUMENTED", "professional_approval_ref": null,
+      "closure_this_round": "Evidence-linked clauses and rule schema; explicit absence behavior, alternatives, adequacy/necessity/cost/horizon and no universal thresholds.",
+      "missing_evidence": ["Qualified approval for each rule ID/revision/applicability", "Measurement construct/protocol/anchors/freshness and personal-reference method", "Adequacy/materiality/necessity and ChangeCost criteria", "Hysteresis/stickiness and material new-fact criteria", "Dose/spacing/substitution/deload/progression ranges and limits", "Balanced trade-offs and accepted/rejected case payloads", "Engineering device/execution proof where relevant"],
+      "owner": "Training authority; Engineering for device/execution", "trigger": "Before implementation as final training authority or activation of prescriptive generation/adaptation/export",
+      "affected": ["S01", "S02", "S05", "S12", "S13", "S14", "S28", "S29", "C1", "C2", "C3", "C4", "C5", "C6"], "contract_refs": ["PC-MEC", "PC-SIGNALS", "PC-INTERFERENCE", "PC-BALANCED", "PC-ENVELOPE", "PC-PROGRESSION", "PC-TAPER", "PC-EXPOSURE"]
+    },
+    {
+      "id": "G03", "name": "Aderência", "origin": "DR-20; TR-G05", "authority": "PDR section 5 line 170 / AEOS PS03",
+      "exact_definition": "Product/UX com profissional de treino fixa critérios por modalidade/sessão, parcial e tolerâncias; prova por casos incluindo correção, desvio admissível e ausência de sync.",
+      "exact_implementation_limit": "Antes de classificar/usar aderência automaticamente. Sem score social ou mérito por excesso.",
+      "status": "HUMAN_REVIEW_REQUIRED", "domain_status": "DOMAIN_APPROVAL_OPEN", "documentary_status": "DOCUMENTED", "professional_approval_ref": null,
+      "closure_this_round": "Version-correct raw comparison, UNKNOWN/UNCLASSIFIED absence handling, partial/correction scenarios and no excess-as-merit rule.",
+      "missing_evidence": ["Joint Product/UX and training acceptance by modality/session", "Partial/comparability/tolerance criteria", "Accepted/rejected cases including factual correction, admissible deviation and missing sync"],
+      "owner": "Product/UX with training professional", "trigger": "Before automatic adherence classification or use",
+      "affected": ["S09", "S28", "C1", "C6"], "contract_refs": ["PC-ADHERENCE", "PC-NO-DEBT", "PC-PROGRESSION"]
+    },
+    {
+      "id": "G04", "name": "Safety/retorno", "origin": "DR-17; TR-G04/G-SAFE-1", "authority": "PDR section 5 line 171 / AEOS PS04",
+      "exact_definition": "Profissionais competentes (médico quando avaliação clínica) aprovam classes concretas, urgência/copy, elegibilidade, restrição, liberação e retorno; treino cobre retorno não clínico, Engineering falha operacional. Prova: regras e casos versionados, evidência de reavaliação e responsável real.",
+      "exact_implementation_limit": "Antes de coletar/classificar/atuar nesses casos, liberar hold ou prescrever retorno. Confirmação/score/LLM não dão clearance.",
+      "status": "HUMAN_REVIEW_REQUIRED", "domain_status": "DOMAIN_APPROVAL_OPEN", "documentary_status": "DOCUMENTED", "professional_approval_ref": null,
+      "closure_this_round": "Cause-scoped HOLD, responsible exit-evidence schema, re-evaluation and prohibition of automatic clearance.",
+      "missing_evidence": ["Real responsible qualified approver for each concrete restriction/return class", "Clinician approval when clinical assessment applies", "Approved urgency/copy/eligibility/restriction/release/return rules and cases", "Accepted exit evidence plus re-evaluation of dependent gates", "Engineering operational-failure evidence where applicable"],
+      "owner": "Competent training/health professionals; physician for clinical assessment; Engineering for operational failure", "trigger": "Before affected collection/classification/action, HOLD release or return prescription",
+      "affected": ["S07", "S28", "S29", "C1", "C4"], "contract_refs": ["PC-SAFETY", "PC-COVERAGE", "PC-NO-DEBT"]
+    }
+  ],
+  "clause_semantics": "PC IDs are submission references to derived documentary contracts, not approved physiological rules and not a parallel PolicyBundle registry. A fixture passing them proves only its declared scope.",
+  "clauses": [
+    {
+      "id": "PC-COVERAGE", "gaps": ["G01", "G02", "G04"], "classification": "DECIDED", "authority": ["PDR G01-G04", "AEOS HC01-HC06/PS01-PS04", "SIS 3"],
+      "rule": "Prescription candidate requires applicable approved coverage, recipe/repertoire revision, policy revision and all dependent gates; missing critical authority stops the dependent scope.",
+      "allowed_documentary_output": ["Validate references and absence", "Scoped control with preserved independent recording"],
+      "must_not": ["Invent beginner/safe default prescription", "Treat literature/LLM as qualified approval", "KEEP invalid plan by default"],
+      "fixture_witness": "Positive: explicit matched approved-ref stub under SYNTHETIC_ONLY. Negative: missing/out-of-scope/revoked reference rejects dependent candidate.",
+      "domain_rule_approved": false, "confidence": "HIGH for documentary authority; unknown for unapproved coverage"
+    },
+    {
+      "id": "PC-MEC", "gaps": ["G02"], "classification": "DECIDED", "authority": ["AEOS 10.1-10.2", "PDR freeze line 182"],
+      "rule": "Evaluate validity/adequacy first. Mutation requires material fact, necessity REQUIRED, objective KEEP insufficiency, comparison of smaller sufficient alternatives, ChangeCostRule, scope/horizon and current agency. Explore levels 0,1,2,3,4,5,6 in order of sufficient intervention; severity is not a physiological adequacy test.",
+      "required_assessments": ["adequacy_rule_ref", "material_fact_ref", "necessity_rule_ref", "keep_insufficient_reason", "lower_options_with_outcomes_and_evidence", "change_cost_rule_ref", "remaining_horizon_ref", "agency_requirement", "next_check"],
+      "allowed_documentary_output": ["Conditional migration trace", "ASK for decisive preference", "HOLD missing critical authority", "KEEP only when adequate under rule"],
+      "must_not": ["Approve MOVE from proximity alone", "Use smallness as sufficient evidence", "Use JEV to create necessity", "Promote INITIAL/RETURN to Level 5/6 automatically"],
+      "fixture_witness": "Each lower alternative has a rejected/accepted/unknown result with reason and trace to frozen state; unknown physiological effects remain conditional.",
+      "domain_rule_approved": false, "confidence": "HIGH for required structure; domain adequacy unknown without approved rule"
+    },
+    {
+      "id": "PC-SIGNALS", "gaps": ["G02", "G04"], "classification": "INFERRED", "authority": ["SIS 1.1/5", "RIL 7", "STIL 7", "AEOS PS02/PS04"], "evidence_refs": ["EV-HRV-RCT", "EV-HRV-SR", "EV-MONITORING"],
+      "rule": "Retain construct, method/device/version, collection timing/quality, individual reference, freshness and comparability. Single or convergent signals do not automatically decide mutation; applicable approved interpretation must establish materiality. Local functional restriction is not nullified by favorable aggregate or HRV.",
+      "allowed_documentary_output": ["Learn-only under adequate plan", "Qualify unknown/conflicting evidence", "Trigger rule-bound reassessment"],
+      "must_not": ["Universal HRV threshold", "Infer diagnosis/clearance from score", "Invent two/three-night rule", "Treat two representations of one signal as independent convergence"],
+      "fixture_witness": "Noise → explicit rule-bound convergence → minimum valid action → reassessment under same measurement rule. State transitions are synthetic until approved.",
+      "domain_rule_approved": false, "confidence": "MODERATE for qualified interpretation; exact thresholds/protocols require approval"
+    },
+    {
+      "id": "PC-INTERFERENCE", "gaps": ["G02"], "classification": "INFERRED", "authority": ["SIS 1.1/3/4/5", "RIL 7", "STIL 4/7"], "evidence_refs": ["EV-CT-SR", "EV-ORDER-SR", "EV-SPACING-RCT", "EV-ORDER-RCT"],
+      "rule": "Evaluate endpoint/goal, modality/task/dose, novelty/local/systemic demand, order/spacing, declared preference, known comparable response and full affected horizon. A calendar conflict can be concrete; a training-conflict effect requires evidence/rule. Validate both sessions and the next material stimulus jointly.",
+      "allowed_documentary_output": ["Compare explicit same-day windows and accepted double preference", "Reject schedule-infeasible candidate", "Conditional Run-first/Strength-first decision under frozen applicable assessments"],
+      "must_not": ["Proximity equals harmful interference", "Fixed universal spacing cutoff", "Strength-first order for every endpoint", "Double preference proves tolerance", "Sum extra interference fatigue to already counted exposure"],
+      "fixture_witness": "Both orders, move/reduce/keep, next-day and week consequences explicit. Unknown sporting preservation is not scored as proven.",
+      "domain_rule_approved": false, "confidence": "MODERATE for endpoint-specific risk; low for individual exact spacing/dose transfer"
+    },
+    {
+      "id": "PC-BALANCED", "gaps": ["G02"], "classification": "DECIDED", "authority": ["AEOS 10.2 B1-B6", "PDR freeze line 182", "SIS 4"],
+      "rule": "Use confirmed copriorities and partial comparator. A jointly valid option preserving both can dominate worse options under approved preservation criteria. Material incomparable sacrifices require ASK; unknown critical evidence requires scoped review/control, not preference-only ASK.",
+      "allowed_documentary_output": ["Recommend unique Pareto-dominant minimally sufficient option", "ASK between jointly valid incomparable trade-offs"],
+      "must_not": ["Hidden Run/Strength priority", "50/50 dose by enum", "Tie break material trade-off by ID", "ASK substitutes for missing domain authority"],
+      "fixture_witness": "Dominance matrix plus separate incomparable variant; preservation labels are synthetic assessments or approved references explicitly distinguished.",
+      "domain_rule_approved": false, "confidence": "HIGH for comparator contract; domain preservation remains conditional"
+    },
+    {
+      "id": "PC-ENVELOPE", "gaps": ["G02", "G03"], "classification": "DECIDED", "authority": ["AEOS 10.3", "STIL 1.1/2/3", "SIS 6"], "evidence_refs": ["EV-AUTOREG-SR", "EV-AUTOREG-COUNTER"],
+      "rule": "An unchanged preaccepted authorized envelope/selection rule can yield different realized loads/efforts as execution. Changing envelope limits, purpose or selection rule is a new proposal subject to adequacy/necessity/agency. Preserve accepted envelope revision and observed choice separately.",
+      "allowed_documentary_output": ["Record execution within accepted envelope without content mutation", "Reject or review out-of-envelope proposal"],
+      "must_not": ["Stability freezes absolute load contrary to accepted envelope", "Expand envelope under execution label", "Derive unknown RIR", "Copy failure-based study protocol into default"],
+      "fixture_witness": "In-envelope choice and one out-of-envelope request against same immutable accepted envelope; no physiological numeric envelope authored here.",
+      "domain_rule_approved": false, "confidence": "HIGH for execution/mutation distinction; no universal efficacy claim"
+    },
+    {
+      "id": "PC-PROGRESSION", "gaps": ["G02", "G03"], "classification": "DECIDED", "authority": ["AEOS 10.3", "SIS 6", "RIL 4/8", "STIL 3/8"],
+      "rule": "Keep progression opportunity separate from achieved adaptation and plan mutation. Next-cycle proposal requires comparable observed targets, effort/conditions where required, response/recovery/horizon and approved progression rule. Engine-removed target is not achieved or failed by athlete.",
+      "allowed_documentary_output": ["Record eligible opportunity with limitations", "Maintain/rebase/abstain under applicable policy", "Prepare next-cycle conditional proposal"],
+      "must_not": ["Calendar-based universal increment", "PR or completion alone earns increase", "Reduced original target counted as attained", "Comparison across unknown machine/configuration"],
+      "fixture_witness": "Accepted/executed revisions, comparable repetitions and counterexample with missing effort/configuration; progression result conditional on approved rule.",
+      "domain_rule_approved": false, "confidence": "HIGH for semantic contract; dose/increments unknown"
+    },
+    {
+      "id": "PC-ADHERENCE", "gaps": ["G03"], "classification": "DECIDED", "authority": ["PDR G03", "SIS 6", "RIL 8", "STIL 8"],
+      "rule": "Compare observed execution with actually accepted/executed revision, preserving raw deviation, partial/unknown and corrections. Classification/tolerance requires applicable jointly approved Product/UX and training rule.",
+      "allowed_documentary_output": ["Raw factual comparison", "UNKNOWN/UNCLASSIFIED where insufficient", "Recompute after correction without rewritten history"],
+      "must_not": ["Sync absence means missed", "Extra volume means better adherence", "Accept LLM tolerance", "Conflate completion, intended stimulus and performance gain"],
+      "fixture_witness": "Correction, partial, admissible deviation and missing-sync states with declared applicability; numeric pass/fail tolerance unfilled.",
+      "domain_rule_approved": false, "confidence": "HIGH for data semantics; automatic thresholds unapproved"
+    },
+    {
+      "id": "PC-NO-DEBT", "gaps": ["G02", "G03", "G04"], "classification": "DECIDED", "authority": ["SIS 6", "RIL 7", "STIL 3/4"],
+      "rule": "Confirmed missed work creates a fact and reassessment of remaining horizon, not obligatory repayment. Rebase under current authority and context. Added/moved work requires its own validated purpose/adequacy and next-stimulus check.",
+      "allowed_documentary_output": ["Keep adequate remaining week", "Propose least sufficient supported change", "Review unsupported return prescription"],
+      "must_not": ["Add missed km/sets to tomorrow by default", "Assume recovery during unobserved break", "Restore last maximum automatically"],
+      "fixture_witness": "Confirmed miss vs missing-sync counterfactual, constrained horizon and no catch-up requirement; no exact return dose invented.",
+      "domain_rule_approved": false, "confidence": "HIGH for no-obligation contract; actual rebase prescription conditional"
+    },
+    {
+      "id": "PC-SAFETY", "gaps": ["G04"], "classification": "DECIDED", "authority": ["PDR G04", "AEOS 9 HoldRecord", "AEOS PS04"], "evidence_refs": ["EV-RETURN-CONSENSUS"],
+      "rule": "Track cause class, affected scope, evidence, policy, real resolution owner, exit-evidence requirements and re-evaluation. Clinical restriction requires competent authority; nonclinical return requires applicable training rule. Operational hold can resolve by verified operational evidence only within its cause.",
+      "allowed_documentary_output": ["Scoped HOLD and review requirement", "Preserve independent record/history/correction", "Synthetic exit-evidence test without real clearance claim"],
+      "must_not": ["Time/score/no pain/consent/LLM gives clearance", "Operational fix releases clinical restriction", "Blanket safe exercise substitution", "Invent urgency/clinical copy"],
+      "fixture_witness": "Exit proof of matching cause plus all dependent gates re-evaluated; synthetic clinician-ref cannot be presented as real approval.",
+      "domain_rule_approved": false, "confidence": "HIGH for authority boundary; clinical/return rules require competent approval"
+    },
+    {
+      "id": "PC-TAPER", "gaps": ["G01", "G02"], "classification": "INFERRED", "authority": ["RIL 5", "STIL 4", "AEOS 10"], "evidence_refs": ["EV-TAPER-SR", "EV-TAPER-COUNTER"],
+      "rule": "Use confirmed event/date/distance/status and temporal goal priority, current phase and accepted plan; compare KEEP and supported demand-redistribution candidates with retained/lost stimulus and Strength effects. Cancelled/postponed event reopens adequacy under current facts, not automatic loading.",
+      "allowed_documentary_output": ["Concrete event-relative fixture and candidates", "Conditional taper under approved recipe", "Reassess after event cancellation"],
+      "must_not": ["Universal percent or duration copied from meta-analysis", "Guaranteed race improvement", "Event date silently overrides Strength-first", "Taper and deload equivalent", "Automatic overload on cancellation"],
+      "fixture_witness": "Event-relative horizon plus cancelled/postponed variant, non-event strength goal, next-check and pending recipe reference explicit.",
+      "domain_rule_approved": false, "confidence": "MODERATE for taper as context-specific strategy; event-specific dose unapproved"
+    },
+    {
+      "id": "PC-EXPOSURE", "gaps": ["G02"], "classification": "DECIDED", "authority": ["SIS 5 SIL-I1-I5", "STIL 7", "RIL 7"], "evidence_refs": ["EV-MONITORING"],
+      "rule": "Maintain vector of canonical observed exposures with units, methods and uncertainties; replace planned past with known observed without duplicating it. Modelled fatigue/recovery debt/interference is a projection of refs, never new exposure or physiological certainty.",
+      "allowed_documentary_output": ["Auditable synthetic debt state transitions", "Observed/planned separation", "Method-qualified recovery reassessment"],
+      "must_not": ["Convert km to sets without approved model", "Add total to its components", "Treat favorable score as clearance", "Claim simulated debt proves measured recovery"],
+      "fixture_witness": "Correction/dedup, unknown partial exposure and repeated worsening synthetic state followed by rule-bound reassessment; no invented debt score/cutoff.",
+      "domain_rule_approved": false, "confidence": "HIGH for accounting semantics; quantitative fatigue model unfilled"
+    }
+  ],
+  "evidence_sources": [
+    {"id": "EV-CT-SR", "citation": "Schumann et al. 2022", "title": "Compatibility of Concurrent Aerobic and Strength Training for Skeletal Muscle Size and Function", "url": "https://pubmed.ncbi.nlm.nih.gov/34757594/", "doi": "10.1007/s40279-021-01587-7", "published": "2022-03", "retrieved_at": "2026-10-22", "access": "Indexed abstract; PMC discussion extracts", "design": "Systematic review/random-effects meta-analysis; 43 studies; supervised interventions at least four weeks", "population": "Healthy adults; studies vary in sex/age/training status", "observed": "No aggregate impairment of maximal strength or hypertrophy; explosive-strength attenuation, especially same-session subgroup.", "limits": "Group/subgroup findings do not define individual safe spacing or establish every running/strength pair adequate; no significant moderator is not proof of no effect.", "counterevidence": "EV-SPACING-RCT provides a narrower adverse pattern; distinct endpoints cannot be pooled as one interference outcome.", "claims": ["CL-01", "CL-02"], "confidence": "MODERATE for endpoint-specific group pattern; LOW for exact individual transfer", "classification": "OBSERVED_AS_REPORTED"},
+    {"id": "EV-ORDER-SR", "citation": "Eddens et al. 2018", "title": "The Role of Intra-Session Exercise Sequence in the Interference Effect", "url": "https://pubmed.ncbi.nlm.nih.gov/28917030/", "doi": "10.1007/s40279-017-0784-1", "published": "2018-01", "retrieved_at": "2026-10-22", "access": "Indexed abstract and PMC key-point extracts", "design": "Systematic review/meta-analysis; ten studies of at least five weeks", "population": "Healthy adults in concurrent programs", "observed": "Resistance-before-endurance favored lower-body dynamic strength; other analyzed outcomes did not show order effects.", "limits": "Intra-session evidence is not a rule for every same-day separated double, race-specific endurance or individual response.", "counterevidence": "EV-ORDER-RCT has different power findings and comparable strength outcomes.", "claims": ["CL-02"], "confidence": "MODERATE for restricted endpoint; LOW for universal order", "classification": "OBSERVED_AS_REPORTED"},
+    {"id": "EV-SPACING-RCT", "citation": "Robineau et al. 2016", "title": "Specific Training Effects of Concurrent Aerobic and Strength Exercises Depend on Recovery Duration", "url": "https://pubmed.ncbi.nlm.nih.gov/25546450/", "doi": "10.1519/JSC.0000000000000798", "published": "2016-03", "retrieved_at": "2026-10-22", "access": "Indexed PubMed abstract", "design": "Random allocation to control/strength/concurrent schedules over seven weeks; timing conditions compared", "population": "58 amateur male rugby players; strength first", "observed": "Some neuromuscular/aerobic adaptations differed with between-mode recovery duration.", "limits": "Sport/sex/order restricted, short intervention, magnitude-based inference; authors' hours recommendation is not adopted as universal policy.", "counterevidence": "EV-CT-SR and EV-ORDER-RCT distinguish endpoints and show compatibility for some outcomes.", "claims": ["CL-01", "CL-02"], "confidence": "MODERATE within study, LOW for general hybrid threshold", "classification": "OBSERVED_AS_REPORTED"},
+    {"id": "EV-ORDER-RCT", "citation": "Lee et al. 2020", "title": "Order of same-day concurrent training influences some indices of power development, but not strength, lean mass, or aerobic fitness", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7224562/", "doi": "10.1371/journal.pone.0233134", "published": "2020-05-14", "retrieved_at": "2026-10-22", "access": "Full-text indexed extracts", "design": "Nine-week resistance-only versus same-day concurrent training comparison", "population": "29 healthy moderately active men; cycling HIIT, not running", "observed": "Maximal strength/lean-mass adaptations were comparable; power and subjective effort/readiness differed by arrangement.", "limits": "Small groups, short duration, cycling, magnitude-based inference; neither proves long-term equivalence nor supports consumer readiness cutoff.", "counterevidence": "EV-SPACING-RCT shows different responses; EV-ORDER-SR favors one order for dynamic-strength endpoint.", "claims": ["CL-01", "CL-02"], "confidence": "MODERATE for distinguishing outcomes; LOW for exact running transfer", "classification": "OBSERVED_AS_REPORTED"},
+    {"id": "EV-HRV-RCT", "citation": "Vesterinen et al. 2016", "title": "Individual Endurance Training Prescription with Heart Rate Variability", "url": "https://pubmed.ncbi.nlm.nih.gov/26909534/", "doi": "10.1249/MSS.0000000000000910", "published": "2016-07", "retrieved_at": "2026-10-22", "access": "Indexed PubMed abstract", "design": "HRV-guided versus predefined training; four-week preparation and eight-week intervention", "population": "40 recreational endurance runners", "observed": "Individual HRV timing used fewer moderate/high-intensity sessions with small between-group 3000-m performance difference.", "limits": "Specified repeated measurement/reference procedure; endurance context; no universal nightly device threshold or clinical clearance.", "counterevidence": "EV-HRV-SR found pooled fitness/performance advantages small and non-significant; within-group significance is not between-group proof.", "claims": ["CL-03"], "confidence": "MODERATE for possible protocol-bound use; LOW for generic HRV action", "classification": "OBSERVED_AS_REPORTED"},
+    {"id": "EV-HRV-SR", "citation": "Manresa-Rocamora et al. 2021", "title": "Heart Rate Variability-Guided Training for Enhancing Cardiac-Vagal Modulation, Aerobic Fitness, and Endurance Performance", "url": "https://pubmed.ncbi.nlm.nih.gov/34639599/", "doi": "10.3390/ijerph181910299", "published": "2021-09-29", "retrieved_at": "2026-10-22", "access": "Indexed abstract", "design": "Methodological systematic review/random-effects meta-analysis; searches through October 2020", "population": "Controlled HRV-guided endurance-training intervention samples", "observed": "Vagal HRV improved; pooled aerobic-fitness/endurance-performance advantages were small and non-significant.", "limits": "Method/reference/recording practices unresolved; overlapping interventions with other HRV reviews are not independent confirmation.", "counterevidence": "EV-HRV-RCT supports selected individualized use; non-significance does not establish HRV has no value.", "claims": ["CL-03"], "confidence": "MODERATE for limited general superiority and method dependence", "classification": "OBSERVED_AS_REPORTED"},
+    {"id": "EV-MONITORING", "citation": "Saw, Main and Gastin 2016", "title": "Monitoring the athlete training response: subjective self-reported measures trump commonly used objective measures", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4789708/", "doi": "10.1136/bjsports-2015-094758", "published": "2016", "retrieved_at": "2026-10-22", "access": "Full-text indexed methods/results/discussion extracts", "design": "Systematic review; 56 studies; descriptive synthesis because of heterogeneity", "population": "Athletes across sports/training contexts", "observed": "Self-reported wellbeing often responded to load; objective/subjective associations were inconsistent.", "limits": "Heterogeneity, non-training stressors, selective reporting and group means; no universal total readiness or recovery-debt threshold validated.", "counterevidence": "Subjective/objective discordance prevents using convergence as an automatic causal or diagnostic result.", "claims": ["CL-04"], "confidence": "MODERATE for complementary monitoring, LOW for action thresholds", "classification": "OBSERVED_AS_REPORTED"},
+    {"id": "EV-AUTOREG-SR", "citation": "Huang et al. 2025", "title": "Autoregulated resistance training for maximal strength enhancement", "url": "https://pubmed.ncbi.nlm.nih.gov/40791980/", "doi": "10.1016/j.jesf.2025.07.006", "published": "2025-10; online 2025-07-26", "retrieved_at": "2026-10-22", "access": "Indexed abstract; no full-text risk-of-bias extraction", "design": "Systematic review/network meta-analysis comparing APRE, RPE, velocity and percentage-based methods", "population": "Resistance-training intervention samples with squat/bench 1RM outcomes; detailed inclusion population not extracted", "observed": "Authors favor autoregulation overall; estimates/rankings vary by method and exercise.", "limits": "Network rankings do not establish universal superiority; abstract reports some intervals crossing null and has broad conclusion. Not used to select protocol/dose or rank products.", "counterevidence": "EV-AUTOREG-COUNTER does not find broad autoregulation superiority; methods are not identical.", "claims": ["CL-05"], "confidence": "LOW-MODERATE; contextual support only", "classification": "OBSERVED_AS_REPORTED"},
+    {"id": "EV-AUTOREG-COUNTER", "citation": "Barnes et al. 2026", "title": "A Comparison of Traditional and Autoregulated Periodized Strength Training in Resistance-Trained Men", "url": "https://pubmed.ncbi.nlm.nih.gov/42497844/", "doi": "10.1519/JSC.0000000000005617", "published": "2026-07-24 online", "retrieved_at": "2026-10-22", "access": "Indexed PubMed abstract", "design": "Randomized crossover; two eight-week blocks with two-week washout", "population": "Eight resistance-trained men", "observed": "Both methods improved lower-body strength without significant between-method difference; bench interaction favored traditional method.", "limits": "Very small male sample, possible carryover, failure-based performance protocol differs from RIR envelope; its loading protocol is not adopted.", "counterevidence": "EV-AUTOREG-SR favors autoregulation overall; heterogeneity prevents treating one as universal refutation.", "claims": ["CL-05"], "confidence": "LOW-MODERATE as counterexample to universal superiority", "classification": "OBSERVED_AS_REPORTED"},
+    {"id": "EV-TAPER-SR", "citation": "Wang et al. 2023", "title": "Effects of tapering on performance in endurance athletes", "url": "https://pubmed.ncbi.nlm.nih.gov/37163550/", "doi": "10.1371/journal.pone.0282838", "published": "2023-05-10", "retrieved_at": "2026-10-22", "access": "Indexed abstract and PMC limitation extracts", "design": "Systematic review/meta-analysis; 14 studies", "population": "Competitive athletes across endurance and some sprint contexts", "observed": "Time-trial/time-to-exhaustion improved in pooled analyses; maximal oxygen uptake/economy did not show improvement.", "limits": "Pre/post analyses, subgroups, event heterogeneity and sprint inclusion limit transfer; reported percentage/duration suggestions are not a validated individual recipe.", "counterevidence": "EV-TAPER-COUNTER has no significant performance improvement; lack of significance in tiny study is not proof of no benefit.", "claims": ["CL-06"], "confidence": "MODERATE for context-dependent strategy; LOW for exact app dose", "classification": "OBSERVED_AS_REPORTED"},
+    {"id": "EV-TAPER-COUNTER", "citation": "Mujika et al. 2000", "title": "Physiological responses to a 6-d taper in middle-distance runners", "url": "https://pubmed.ncbi.nlm.nih.gov/10694140/", "doi": "10.1097/00005768-200002000-00038", "published": "2000-02", "retrieved_at": "2026-10-22", "access": "Indexed PubMed abstract", "design": "Random assignment to two taper protocols after training", "population": "Eight well-trained male middle-distance runners; four per arm; 800-m outcome", "observed": "Neither taper showed statistically significant performance improvement.", "limits": "Tiny sample, no non-taper comparator, short event/protocol; cannot prove taper ineffective or extrapolate to distance race.", "counterevidence": "EV-TAPER-SR finds pooled performance benefit.", "claims": ["CL-06"], "confidence": "LOW for general effect, useful against guaranteed benefit", "classification": "OBSERVED_AS_REPORTED"},
+    {"id": "EV-RETURN-CONSENSUS", "citation": "Ardern et al. 2016", "title": "2016 Consensus statement on return to sport from the First World Congress in Sports Physical Therapy, Bern", "url": "https://pubmed.ncbi.nlm.nih.gov/27226389/", "doi": "10.1136/bjsports-2016-096278", "published": "2016-07; online 2016-05-25", "retrieved_at": "2026-10-22", "access": "Indexed abstract", "design": "Consensus process with 17 expert clinicians; synthesis and group deliberation", "population": "Return-to-sport decision context after injury; no trial sample for app policy", "observed": "Return is multifactorial risk management shared by clinicians, athletes and coaches, not isolated final clearance event.", "limits": "Consensus is not validation of product triage, urgency copy or medical algorithm; condition-specific review still needed.", "counterevidence": "No policy-level validation data for Vilumo identified; clinical and nonclinical return must remain distinct.", "claims": ["CL-07"], "confidence": "MODERATE for authority/process boundary; no clinical validation", "classification": "OBSERVED_AS_REPORTED"}
+  ],
+  "claims": [
+    {"id": "CL-01", "text": "Proximity alone cannot prove material Run-Strength inadequacy", "classification": "INFERRED", "scope": "Documentary arbitration, not individual causal prediction", "sources": ["EV-CT-SR", "EV-SPACING-RCT", "EV-ORDER-RCT"], "decision": "PC-INTERFERENCE requires endpoint/task/horizon and applicable rule", "confidence": "MODERATE", "gap": "G02 individual applicability and sufficient-change assessment"},
+    {"id": "CL-02", "text": "Order and spacing of doubles are conditional on endpoint, preference and admissible horizon", "classification": "INFERRED", "scope": "Same-day Run-Strength fixture contract", "sources": ["EV-ORDER-SR", "EV-ORDER-RCT", "EV-SPACING-RCT"], "decision": "No universal order or spacing cutoff; C2 remains domain-conditional", "confidence": "MODERATE", "gap": "G01/G02 double eligibility, payload and next-stimulus approval"},
+    {"id": "CL-03", "text": "HRV interpretation requires a specified individual-reference measurement/decision method", "classification": "INFERRED", "scope": "Endurance evidence; no clinical clearance", "sources": ["EV-HRV-RCT", "EV-HRV-SR"], "decision": "No isolated nightly veto or blanket HRV irrelevance", "confidence": "MODERATE", "gap": "G02 protocol/freshness/materiality; G04 restrictions"},
+    {"id": "CL-04", "text": "Recovery signals represent different uncertain constructs; simulated debt is not measured physiology", "classification": "INFERRED", "scope": "Monitoring and exposure projection", "sources": ["EV-MONITORING"], "decision": "PC-SIGNALS/PC-EXPOSURE preserve vector, provenance and uncertainty", "confidence": "MODERATE", "gap": "G02 approved interpretation and re-evaluation rule"},
+    {"id": "CL-05", "text": "Already accepted autoregulated selection is execution; changing its envelope is mutation", "classification": "DECIDED", "scope": "AEOS/STIL accepted-plan semantics", "sources": ["AEOS 10.3", "STIL 1.1/2/3", "EV-AUTOREG-SR", "EV-AUTOREG-COUNTER"], "decision": "PC-ENVELOPE; literature provides context, not authority for distinction or dose", "confidence": "HIGH for semantics; limited empirical generalization", "gap": "G02 qualified approval of actual envelope/anchors"},
+    {"id": "CL-06", "text": "Taper must be event/priority/phase/population specific and cannot promise benefit", "classification": "INFERRED", "scope": "C5 documentary event decision", "sources": ["EV-TAPER-SR", "EV-TAPER-COUNTER"], "decision": "PC-TAPER no numeric universal recipe; validate cancelled/postponed variants", "confidence": "MODERATE", "gap": "G01/G02 approved event recipe"},
+    {"id": "CL-07", "text": "Return after clinical restriction needs competent assessment and accepted evidence, not an app score or click", "classification": "DECIDED", "scope": "PDR G04/AEOS HOLD; consensus corroborates process boundary", "sources": ["PDR G04", "AEOS 9/PS04", "EV-RETURN-CONSENSUS"], "decision": "PC-SAFETY; no fabricated clearance", "confidence": "HIGH for authority; clinical rule not approved", "gap": "G04 actual classes, responsible professionals, exit/re-evaluation cases"},
+    {"id": "CL-08", "text": "Adherence, completed dose, intended stimulus and earned progression are distinct conclusions", "classification": "DECIDED", "scope": "Raw event/correction and future evaluation semantics", "sources": ["PDR G03", "SIS 6", "RIL 8", "STIL 3/8"], "decision": "PC-ADHERENCE/PC-PROGRESSION; no research-created tolerance", "confidence": "HIGH for contract", "gap": "G03 joint Product/UX-training criteria"}
+  ],
+  "rule_submission_schema": {
+    "status": "SUBMISSION_SCHEMA_ONLY_NOT_APPROVAL",
+    "required_fields": ["rule_id", "revision", "policy_bundle_ref", "real_approver_identity_and_qualification", "approval_scope_and_disposition", "population_eligibility_exclusions", "goal_phase_event_scope", "recipe_and_repertoire_revision", "payload_units_and_configuration", "inputs_constructs_protocol_anchors", "freshness_and_comparability", "adequacy_materiality_necessity_rules", "ChangeCostRule", "smaller_alternatives_and_rejection_reasons", "joint_horizon_and_next_stimulus", "approved_ranges_envelopes_and_rationale", "missing_conflicting_evidence_behavior", "safety_restriction_and_exit_refs", "agency_requirement", "reassessment_and_withdrawal_trigger", "evidence_and_counterevidence_refs", "accepted_cases", "rejected_cases", "signature_or_review_record_for_exact_version"],
+    "approval_template": {"rule_id": null, "revision": null, "qualified_approver": null, "qualification_ref": null, "review_record": null, "disposition": "HUMAN_REVIEW_REQUIRED", "approved_population": null, "approved_ranges": null, "accepted_case_refs": [], "rejected_case_refs": [], "conditions": [], "review_trigger": "Before dependent real prescription implementation/activation"},
+    "witness_source_classes": ["DOCUMENTARY_CONTROL", "SYNTHETIC_ONLY", "DOMAIN_APPROVED"],
+    "promotion_rule": "DOMAIN_APPROVED requires real scoped approval evidence and exact-version cases; a synthetic fixture passing or literature citation cannot promote itself.",
+    "submission_case_refs": ["S01", "S02", "S05", "S12", "S13", "S14", "S28", "S29", "C1", "C2", "C3", "C4", "C5", "C6"]
+  },
+  "excluded_or_limited_sources": [
+    {"ref": "PMID 33337690", "disposition": "EXCLUDED_RETRACTED_AS_RECORDED_IN_R3", "substantive_use": false},
+    {"ref": "Graham and Cleather DOI 10.1519/JSC.0000000000003164 / PMID 31009432", "url": "https://pubmed.ncbi.nlm.nih.gov/31009432/", "disposition": "IDENTITY_RECHECKED_ONLY; no abstract available, publisher inaccessible; prior r3 evidence retained as history", "substantive_new_use": false},
+    {"ref": "Other HRV meta-analysis DOI 10.1016/j.jsams.2021.04.012", "disposition": "Consulted for counterevidence; overlapping intervention corpus not counted as independent replication or added sample", "substantive_numeric_use": false},
+    {"ref": "Secondary blogs, narrative reviews and unrelated search hits", "disposition": "NOT_USED_FOR_SUBSTANTIVE_CLAIMS", "substantive_use": false}
+  ],
+  "limits": [
+    "No observed Vilumo runtime or athlete outcomes; no clinical validation or expert-parity claim.",
+    "Literature access was bounded, often indexed abstracts; systematic-review titles do not make this project search a systematic review.",
+    "Primary studies may be included in cited meta-analyses; evidence is not independent by URL count.",
+    "Group effects and subgroup time windows are not individual thresholds, safety guarantees or approved recipes.",
+    "No universal dose, percentage, duration, HRV cutoff, return interval, adherence tolerance or progression increment authored.",
+    "No real professional approval evidence in inspected inputs; absence not proof of nonexistence elsewhere.",
+    "G09/G11 triggers remain existing separate requirements; not closed by this documentary research."
+  ],
+  "experiment_guardrails": {
+    "allowed_scope": "Local documentary/control and explicitly synthetic fixture evaluation only",
+    "reversibility": "Versioned local draft; no athlete-facing execution or real plan mutation",
+    "measurement": ["Reference integrity", "Critical-field completeness", "Counterexample coverage", "Independent fidelity review against unchanged r3 rubric"],
+    "stop": ["Attempted real prescription/export from synthetic assumptions", "Missing critical rule or changed authority", "Independent material REQUEST_CHANGES"],
+    "owner": "Mission owner; qualified reviewers before dependent prescription work",
+    "research_stop_reason": "Additional general literature would not supply real approval or approved case payloads; targeted sources suffice to bound permissible contract and show material counterevidence."
+  },
+  "self_check_is_not_approval": true,
+  "next_action": "Independent review of exact artifact revisions; consume clauses with synthetic/domain distinction; obtain scoped real G01-G04 approval evidence before dependent prescriptive implementation."
+}

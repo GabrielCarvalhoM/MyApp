@@ -1,0 +1,2869 @@
+{
+  "schema_revision": "TDF-CONCEPT-0.2",
+  "revision": "0.2",
+  "status": "SYNTHETIC_ONLY",
+  "warning": "Illustrative doses test representability only. No dose/target/response is an approved recommendation; no physiology oracle or runtime execution.",
+  "base_fixture": {
+    "id": "BASE-REVIEW",
+    "revision": "0.2",
+    "athlete": {
+      "id": "synthetic-A",
+      "revision": "0.2",
+      "adult": true,
+      "age": 34,
+      "experience": {
+        "running": "recreational, reported2years",
+        "strength": "reported1year"
+      },
+      "history_ref": {
+        "id": "history-example",
+        "revision": "0.2"
+      },
+      "restrictions": {
+        "status": "UNKNOWN",
+        "value": null,
+        "reason": "not clinically or professionally assessed"
+      },
+      "goal_priority_origin": "SYNTHETIC_USER_CONFIRMED",
+      "coverage_approval_ref": null
+    },
+    "plan": {
+      "id": "plan-example",
+      "revision": "0.2",
+      "timezone": "America/Sao_Paulo",
+      "session_refs": [
+        {
+          "id": "lower-mon",
+          "revision": "0.2"
+        },
+        {
+          "id": "run-tue",
+          "revision": "0.2"
+        },
+        {
+          "id": "run-thu",
+          "revision": "0.2"
+        },
+        {
+          "id": "upper-fri",
+          "revision": "0.2"
+        }
+      ]
+    },
+    "history": {
+      "id": "history-example",
+      "revision": "0.2",
+      "scope": "illustrative prior7days",
+      "reported_run_distance": {
+        "value": 24000,
+        "unit": "m"
+      },
+      "reported_strength_sessions": 2,
+      "comparison_exposure": "squat60kg total x3sets x5reps RIR3 reported",
+      "coverage": "incomplete_without_raw_activity_lineage",
+      "provenance_class": "ATHLETE_OBSERVATION",
+      "synthetic": true
+    }
+  },
+  "session_intents": [
+    {
+      "id": "intent-lower",
+      "revision": "0.2",
+      "sport": "STRENGTH",
+      "purpose_candidate": "general_lower_strength",
+      "essential_stimulus": {
+        "status": "UNKNOWN",
+        "value": null,
+        "reason": "professional definition required"
+      },
+      "criticality": {
+        "value": "HIGH",
+        "origin": "SYNTHETIC_REVIEW_PREMISE",
+        "rule_ref": null
+      },
+      "approval_ref": null
+    },
+    {
+      "id": "intent-threshold",
+      "revision": "0.2",
+      "sport": "RUNNING",
+      "purpose_candidate": "intended_threshold_exposure",
+      "essential_stimulus": {
+        "status": "UNKNOWN",
+        "value": null,
+        "reason": "professional definition required"
+      },
+      "criticality": {
+        "value": "HIGH",
+        "origin": "SYNTHETIC_REVIEW_PREMISE",
+        "rule_ref": null
+      },
+      "approval_ref": null
+    },
+    {
+      "id": "intent-easy",
+      "revision": "0.2",
+      "sport": "RUNNING",
+      "purpose_candidate": "easy_aerobic_exposure",
+      "essential_stimulus": {
+        "status": "UNKNOWN",
+        "value": null,
+        "reason": "professional definition required"
+      },
+      "criticality": {
+        "value": "LOW",
+        "origin": "SYNTHETIC_REVIEW_PREMISE",
+        "rule_ref": null
+      },
+      "approval_ref": null
+    },
+    {
+      "id": "intent-upper",
+      "revision": "0.2",
+      "sport": "STRENGTH",
+      "purpose_candidate": "horizontal_pull_strength",
+      "essential_stimulus": {
+        "status": "UNKNOWN",
+        "value": null,
+        "reason": "professional definition required"
+      },
+      "criticality": {
+        "value": "LOW",
+        "origin": "SYNTHETIC_REVIEW_PREMISE",
+        "rule_ref": null
+      },
+      "approval_ref": null
+    },
+    {
+      "id": "intent-trunk",
+      "revision": "0.2",
+      "sport": "STRENGTH",
+      "purpose_candidate": "trunk_endurance",
+      "essential_stimulus": {
+        "status": "UNKNOWN",
+        "value": null,
+        "reason": "professional definition required"
+      },
+      "criticality": {
+        "value": "UNASSESSED",
+        "origin": "SYNTHETIC_REVIEW_PREMISE",
+        "rule_ref": null
+      },
+      "approval_ref": null
+    },
+    {
+      "id": "intent-hills",
+      "revision": "0.2",
+      "sport": "RUNNING",
+      "purpose_candidate": "short_hill_stimulus",
+      "essential_stimulus": {
+        "status": "UNKNOWN",
+        "value": null,
+        "reason": "professional definition required"
+      },
+      "criticality": {
+        "value": "UNASSESSED",
+        "origin": "SYNTHETIC_REVIEW_PREMISE",
+        "rule_ref": null
+      },
+      "approval_ref": null
+    }
+  ],
+  "strength_variations": [
+    {
+      "id": "back_squat_barbell",
+      "revision": "0.2",
+      "exercise_ref": {
+        "id": "back_squat",
+        "revision": "0.2"
+      },
+      "equipment": [
+        "barbell",
+        "rack"
+      ],
+      "resistance_mode": "external",
+      "laterality": "bilateral",
+      "configuration": {
+        "bar_position": "high_bar",
+        "stance": "self_selected",
+        "rom": "candidate comfortable full ROM; not assessed",
+        "contraction": "dynamic"
+      },
+      "provenance_class": "DOMAIN_JUDGMENT",
+      "approval_ref": null,
+      "status": "SYNTHETIC_ONLY"
+    },
+    {
+      "id": "rdl_barbell",
+      "revision": "0.2",
+      "exercise_ref": {
+        "id": "romanian_deadlift",
+        "revision": "0.2"
+      },
+      "equipment": [
+        "barbell"
+      ],
+      "resistance_mode": "external",
+      "laterality": "bilateral",
+      "configuration": {
+        "rom": "candidate to below knee; not assessed",
+        "contraction": "dynamic"
+      },
+      "provenance_class": "DOMAIN_JUDGMENT",
+      "approval_ref": null,
+      "status": "SYNTHETIC_ONLY"
+    },
+    {
+      "id": "split_squat_db",
+      "revision": "0.2",
+      "exercise_ref": {
+        "id": "bulgarian_split_squat",
+        "revision": "0.2"
+      },
+      "equipment": [
+        "dumbbell",
+        "rear_foot_support"
+      ],
+      "resistance_mode": "external",
+      "laterality": "unilateral",
+      "configuration": {
+        "rom": "candidate self-selected; not assessed",
+        "contraction": "dynamic"
+      },
+      "provenance_class": "DOMAIN_JUDGMENT",
+      "approval_ref": null,
+      "status": "SYNTHETIC_ONLY"
+    },
+    {
+      "id": "row_barbell",
+      "revision": "0.2",
+      "exercise_ref": {
+        "id": "barbell_row",
+        "revision": "0.2"
+      },
+      "equipment": [
+        "barbell"
+      ],
+      "resistance_mode": "external",
+      "laterality": "bilateral",
+      "configuration": {
+        "trunk_support": "none",
+        "contraction": "dynamic"
+      },
+      "provenance_class": "DOMAIN_JUDGMENT",
+      "approval_ref": null,
+      "status": "SYNTHETIC_ONLY"
+    },
+    {
+      "id": "row_chest_db",
+      "revision": "0.2",
+      "exercise_ref": {
+        "id": "chest_supported_row",
+        "revision": "0.2"
+      },
+      "equipment": [
+        "incline_bench",
+        "dumbbell"
+      ],
+      "resistance_mode": "external",
+      "laterality": "bilateral",
+      "configuration": {
+        "trunk_support": "chest",
+        "contraction": "dynamic"
+      },
+      "provenance_class": "DOMAIN_JUDGMENT",
+      "approval_ref": null,
+      "status": "SYNTHETIC_ONLY"
+    },
+    {
+      "id": "side_plank_hold",
+      "revision": "0.2",
+      "exercise_ref": {
+        "id": "side_plank",
+        "revision": "0.2"
+      },
+      "equipment": [
+        "floor"
+      ],
+      "resistance_mode": "bodyweight",
+      "laterality": "unilateral",
+      "configuration": {
+        "support": "forearm_and_feet",
+        "contraction": "isometric",
+        "rom": "static"
+      },
+      "provenance_class": "DOMAIN_JUDGMENT",
+      "approval_ref": null,
+      "status": "SYNTHETIC_ONLY"
+    },
+    {
+      "id": "calf_standing_db",
+      "revision": "0.2",
+      "exercise_ref": {
+        "id": "standing_calf_raise",
+        "revision": "0.2"
+      },
+      "equipment": [
+        "dumbbell",
+        "hand_support"
+      ],
+      "resistance_mode": "external",
+      "laterality": "unilateral",
+      "configuration": {
+        "knee_position": "extended_candidate",
+        "contraction": "dynamic"
+      },
+      "provenance_class": "DOMAIN_JUDGMENT",
+      "approval_ref": null,
+      "status": "SYNTHETIC_ONLY"
+    }
+  ],
+  "strength_prescriptions": [
+    {
+      "id": "squat-example",
+      "revision": "0.2",
+      "variation_ref": {
+        "id": "back_squat_barbell",
+        "revision": "0.2"
+      },
+      "sets": [
+        {
+          "id": "sq-1",
+          "role": "work",
+          "side": "both",
+          "completion": {
+            "basis": "reps",
+            "amount": {
+              "value": 5,
+              "unit": "rep"
+            },
+            "advance": "manual"
+          },
+          "load": {
+            "value": 60,
+            "unit": "kg",
+            "convention": "external_total_including_bar"
+          },
+          "effort": {
+            "metric": "RIR",
+            "value": 3,
+            "scale_ref": {
+              "id": "RIR_SYNTHETIC",
+              "revision": "0.2"
+            },
+            "collection": "after_set",
+            "status": "SYNTHETIC_ESTIMATE"
+          },
+          "rest": {
+            "value": 150,
+            "unit": "s"
+          },
+          "tempo": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "not specified; no default"
+          },
+          "rom": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "see configuration; technique not assessed"
+          }
+        },
+        {
+          "id": "sq-2",
+          "role": "work",
+          "side": "both",
+          "completion": {
+            "basis": "reps",
+            "amount": {
+              "value": 5,
+              "unit": "rep"
+            },
+            "advance": "manual"
+          },
+          "load": {
+            "value": 60,
+            "unit": "kg",
+            "convention": "external_total_including_bar"
+          },
+          "effort": {
+            "metric": "RIR",
+            "value": 3,
+            "scale_ref": {
+              "id": "RIR_SYNTHETIC",
+              "revision": "0.2"
+            },
+            "collection": "after_set",
+            "status": "SYNTHETIC_ESTIMATE"
+          },
+          "rest": {
+            "value": 150,
+            "unit": "s"
+          },
+          "tempo": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "not specified; no default"
+          },
+          "rom": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "see configuration; technique not assessed"
+          }
+        },
+        {
+          "id": "sq-3",
+          "role": "work",
+          "side": "both",
+          "completion": {
+            "basis": "reps",
+            "amount": {
+              "value": 5,
+              "unit": "rep"
+            },
+            "advance": "manual"
+          },
+          "load": {
+            "value": 60,
+            "unit": "kg",
+            "convention": "external_total_including_bar"
+          },
+          "effort": {
+            "metric": "RIR",
+            "value": 3,
+            "scale_ref": {
+              "id": "RIR_SYNTHETIC",
+              "revision": "0.2"
+            },
+            "collection": "after_set",
+            "status": "SYNTHETIC_ESTIMATE"
+          },
+          "rest": {
+            "value": 150,
+            "unit": "s"
+          },
+          "tempo": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "not specified; no default"
+          },
+          "rom": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "see configuration; technique not assessed"
+          }
+        }
+      ],
+      "session_intent_ref": {
+        "id": "intent-lower",
+        "revision": "0.2"
+      },
+      "accepted_envelope_ref": null,
+      "approval_ref": null,
+      "status": "SYNTHETIC_ONLY"
+    },
+    {
+      "id": "rdl-example",
+      "revision": "0.2",
+      "variation_ref": {
+        "id": "rdl_barbell",
+        "revision": "0.2"
+      },
+      "sets": [
+        {
+          "id": "rdl-1",
+          "role": "work",
+          "side": "both",
+          "completion": {
+            "basis": "reps",
+            "amount": {
+              "value": 8,
+              "unit": "rep"
+            },
+            "advance": "manual"
+          },
+          "load": {
+            "value": 40,
+            "unit": "kg",
+            "convention": "external_total_including_bar"
+          },
+          "effort": {
+            "metric": "RIR",
+            "value": 3,
+            "scale_ref": {
+              "id": "RIR_SYNTHETIC",
+              "revision": "0.2"
+            },
+            "collection": "after_set",
+            "status": "SYNTHETIC_ESTIMATE"
+          },
+          "rest": {
+            "value": 150,
+            "unit": "s"
+          },
+          "tempo": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "not specified; no default"
+          },
+          "rom": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "see configuration; technique not assessed"
+          }
+        },
+        {
+          "id": "rdl-2",
+          "role": "work",
+          "side": "both",
+          "completion": {
+            "basis": "reps",
+            "amount": {
+              "value": 8,
+              "unit": "rep"
+            },
+            "advance": "manual"
+          },
+          "load": {
+            "value": 40,
+            "unit": "kg",
+            "convention": "external_total_including_bar"
+          },
+          "effort": {
+            "metric": "RIR",
+            "value": 3,
+            "scale_ref": {
+              "id": "RIR_SYNTHETIC",
+              "revision": "0.2"
+            },
+            "collection": "after_set",
+            "status": "SYNTHETIC_ESTIMATE"
+          },
+          "rest": {
+            "value": 150,
+            "unit": "s"
+          },
+          "tempo": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "not specified; no default"
+          },
+          "rom": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "see configuration; technique not assessed"
+          }
+        }
+      ],
+      "session_intent_ref": {
+        "id": "intent-lower",
+        "revision": "0.2"
+      },
+      "accepted_envelope_ref": null,
+      "approval_ref": null,
+      "status": "SYNTHETIC_ONLY"
+    },
+    {
+      "id": "split-example",
+      "revision": "0.2",
+      "variation_ref": {
+        "id": "split_squat_db",
+        "revision": "0.2"
+      },
+      "sets": [
+        {
+          "id": "sp-left-1",
+          "role": "work",
+          "side": "left",
+          "completion": {
+            "basis": "reps",
+            "amount": {
+              "value": 6,
+              "unit": "rep"
+            },
+            "advance": "manual"
+          },
+          "load": {
+            "value": 8,
+            "unit": "kg",
+            "convention": "per_hand"
+          },
+          "effort": {
+            "metric": "RIR",
+            "value": 3,
+            "scale_ref": {
+              "id": "RIR_SYNTHETIC",
+              "revision": "0.2"
+            },
+            "collection": "after_set",
+            "status": "SYNTHETIC_ESTIMATE"
+          },
+          "rest": {
+            "value": 150,
+            "unit": "s"
+          },
+          "tempo": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "not specified; no default"
+          },
+          "rom": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "see configuration; technique not assessed"
+          }
+        },
+        {
+          "id": "sp-left-2",
+          "role": "work",
+          "side": "left",
+          "completion": {
+            "basis": "reps",
+            "amount": {
+              "value": 6,
+              "unit": "rep"
+            },
+            "advance": "manual"
+          },
+          "load": {
+            "value": 8,
+            "unit": "kg",
+            "convention": "per_hand"
+          },
+          "effort": {
+            "metric": "RIR",
+            "value": 3,
+            "scale_ref": {
+              "id": "RIR_SYNTHETIC",
+              "revision": "0.2"
+            },
+            "collection": "after_set",
+            "status": "SYNTHETIC_ESTIMATE"
+          },
+          "rest": {
+            "value": 150,
+            "unit": "s"
+          },
+          "tempo": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "not specified; no default"
+          },
+          "rom": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "see configuration; technique not assessed"
+          }
+        },
+        {
+          "id": "sp-right-1",
+          "role": "work",
+          "side": "right",
+          "completion": {
+            "basis": "reps",
+            "amount": {
+              "value": 6,
+              "unit": "rep"
+            },
+            "advance": "manual"
+          },
+          "load": {
+            "value": 8,
+            "unit": "kg",
+            "convention": "per_hand"
+          },
+          "effort": {
+            "metric": "RIR",
+            "value": 3,
+            "scale_ref": {
+              "id": "RIR_SYNTHETIC",
+              "revision": "0.2"
+            },
+            "collection": "after_set",
+            "status": "SYNTHETIC_ESTIMATE"
+          },
+          "rest": {
+            "value": 150,
+            "unit": "s"
+          },
+          "tempo": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "not specified; no default"
+          },
+          "rom": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "see configuration; technique not assessed"
+          }
+        },
+        {
+          "id": "sp-right-2",
+          "role": "work",
+          "side": "right",
+          "completion": {
+            "basis": "reps",
+            "amount": {
+              "value": 6,
+              "unit": "rep"
+            },
+            "advance": "manual"
+          },
+          "load": {
+            "value": 8,
+            "unit": "kg",
+            "convention": "per_hand"
+          },
+          "effort": {
+            "metric": "RIR",
+            "value": 3,
+            "scale_ref": {
+              "id": "RIR_SYNTHETIC",
+              "revision": "0.2"
+            },
+            "collection": "after_set",
+            "status": "SYNTHETIC_ESTIMATE"
+          },
+          "rest": {
+            "value": 150,
+            "unit": "s"
+          },
+          "tempo": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "not specified; no default"
+          },
+          "rom": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "see configuration; technique not assessed"
+          }
+        }
+      ],
+      "session_intent_ref": {
+        "id": "intent-lower",
+        "revision": "0.2"
+      },
+      "accepted_envelope_ref": null,
+      "approval_ref": null,
+      "status": "SYNTHETIC_ONLY"
+    },
+    {
+      "id": "row-original",
+      "revision": "0.2",
+      "variation_ref": {
+        "id": "row_barbell",
+        "revision": "0.2"
+      },
+      "sets": [
+        {
+          "id": "row-1",
+          "role": "work",
+          "side": "both",
+          "completion": {
+            "basis": "reps",
+            "amount": {
+              "value": 8,
+              "unit": "rep"
+            },
+            "advance": "manual"
+          },
+          "load": {
+            "value": 30,
+            "unit": "kg",
+            "convention": "external_total_including_bar"
+          },
+          "effort": {
+            "metric": "RIR",
+            "value": 3,
+            "scale_ref": {
+              "id": "RIR_SYNTHETIC",
+              "revision": "0.2"
+            },
+            "collection": "after_set",
+            "status": "SYNTHETIC_ESTIMATE"
+          },
+          "rest": {
+            "value": 150,
+            "unit": "s"
+          },
+          "tempo": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "not specified; no default"
+          },
+          "rom": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "see configuration; technique not assessed"
+          }
+        },
+        {
+          "id": "row-2",
+          "role": "work",
+          "side": "both",
+          "completion": {
+            "basis": "reps",
+            "amount": {
+              "value": 8,
+              "unit": "rep"
+            },
+            "advance": "manual"
+          },
+          "load": {
+            "value": 30,
+            "unit": "kg",
+            "convention": "external_total_including_bar"
+          },
+          "effort": {
+            "metric": "RIR",
+            "value": 3,
+            "scale_ref": {
+              "id": "RIR_SYNTHETIC",
+              "revision": "0.2"
+            },
+            "collection": "after_set",
+            "status": "SYNTHETIC_ESTIMATE"
+          },
+          "rest": {
+            "value": 150,
+            "unit": "s"
+          },
+          "tempo": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "not specified; no default"
+          },
+          "rom": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "see configuration; technique not assessed"
+          }
+        }
+      ],
+      "session_intent_ref": {
+        "id": "intent-upper",
+        "revision": "0.2"
+      },
+      "accepted_envelope_ref": null,
+      "approval_ref": null,
+      "status": "SYNTHETIC_ONLY"
+    },
+    {
+      "id": "row-alternative",
+      "revision": "0.2",
+      "variation_ref": {
+        "id": "row_chest_db",
+        "revision": "0.2"
+      },
+      "sets": [
+        {
+          "id": "row-alt-1",
+          "role": "work",
+          "side": "both",
+          "completion": {
+            "basis": "reps",
+            "amount": {
+              "value": 8,
+              "unit": "rep"
+            },
+            "advance": "manual"
+          },
+          "load": {
+            "value": 10,
+            "unit": "kg",
+            "convention": "per_hand"
+          },
+          "effort": {
+            "metric": "RIR",
+            "value": 3,
+            "scale_ref": {
+              "id": "RIR_SYNTHETIC",
+              "revision": "0.2"
+            },
+            "collection": "after_set",
+            "status": "SYNTHETIC_ESTIMATE"
+          },
+          "rest": {
+            "value": 150,
+            "unit": "s"
+          },
+          "tempo": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "not specified; no default"
+          },
+          "rom": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "see configuration; technique not assessed"
+          }
+        },
+        {
+          "id": "row-alt-2",
+          "role": "work",
+          "side": "both",
+          "completion": {
+            "basis": "reps",
+            "amount": {
+              "value": 8,
+              "unit": "rep"
+            },
+            "advance": "manual"
+          },
+          "load": {
+            "value": 10,
+            "unit": "kg",
+            "convention": "per_hand"
+          },
+          "effort": {
+            "metric": "RIR",
+            "value": 3,
+            "scale_ref": {
+              "id": "RIR_SYNTHETIC",
+              "revision": "0.2"
+            },
+            "collection": "after_set",
+            "status": "SYNTHETIC_ESTIMATE"
+          },
+          "rest": {
+            "value": 150,
+            "unit": "s"
+          },
+          "tempo": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "not specified; no default"
+          },
+          "rom": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "see configuration; technique not assessed"
+          }
+        }
+      ],
+      "session_intent_ref": {
+        "id": "intent-upper",
+        "revision": "0.2"
+      },
+      "accepted_envelope_ref": null,
+      "approval_ref": null,
+      "status": "SYNTHETIC_ONLY"
+    },
+    {
+      "id": "plank-example",
+      "revision": "0.2",
+      "variation_ref": {
+        "id": "side_plank_hold",
+        "revision": "0.2"
+      },
+      "sets": [
+        {
+          "id": "plank-left",
+          "side": "left",
+          "role": "work",
+          "completion": {
+            "basis": "duration",
+            "amount": {
+              "value": 20,
+              "unit": "s"
+            },
+            "advance": "manual"
+          },
+          "load": {
+            "value": null,
+            "unit": null,
+            "convention": "bodyweight"
+          },
+          "effort": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "RIR for reps is inapplicable; hold reserve not supplied"
+          },
+          "rest": {
+            "value": 60,
+            "unit": "s"
+          },
+          "tempo": {
+            "status": "NOT_APPLICABLE",
+            "value": null,
+            "reason": "static hold"
+          },
+          "rom": {
+            "status": "NOT_APPLICABLE",
+            "value": null,
+            "reason": "static hold"
+          }
+        },
+        {
+          "id": "plank-right",
+          "side": "right",
+          "role": "work",
+          "completion": {
+            "basis": "duration",
+            "amount": {
+              "value": 20,
+              "unit": "s"
+            },
+            "advance": "manual"
+          },
+          "load": {
+            "value": null,
+            "unit": null,
+            "convention": "bodyweight"
+          },
+          "effort": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "RIR for reps is inapplicable; hold reserve not supplied"
+          },
+          "rest": {
+            "value": 60,
+            "unit": "s"
+          },
+          "tempo": {
+            "status": "NOT_APPLICABLE",
+            "value": null,
+            "reason": "static hold"
+          },
+          "rom": {
+            "status": "NOT_APPLICABLE",
+            "value": null,
+            "reason": "static hold"
+          }
+        }
+      ],
+      "session_intent_ref": {
+        "id": "intent-trunk",
+        "revision": "0.2"
+      },
+      "accepted_envelope_ref": null,
+      "approval_ref": null,
+      "status": "SYNTHETIC_ONLY"
+    }
+  ],
+  "run_intensity_references": [
+    {
+      "id": "RPE_SYNTHETIC",
+      "revision": "0.2",
+      "metric": "RPE",
+      "construct": "subjective_interval_effort",
+      "method": "illustrative 0–10 scale; anchors require G02",
+      "unit": "score_0_10",
+      "source_class": "POLICY_CANDIDATE",
+      "measured_threshold_ref": null,
+      "population": "synthetic adult recreational athlete only",
+      "established_at": "2026-10-22T09:00:00-03:00",
+      "validity": {
+        "status": "UNKNOWN",
+        "value": null,
+        "reason": "freshness/applicability rules not approved"
+      },
+      "approval_ref": null
+    }
+  ],
+  "effort_references": [
+    {
+      "id": "RIR_SYNTHETIC",
+      "revision": "0.2",
+      "construct": "estimated_repetitions_in_reserve",
+      "scale": "0 or more reps",
+      "source": "synthetic_self_report",
+      "collection": "after_set",
+      "approval_ref": null
+    }
+  ],
+  "run_prescriptions": [
+    {
+      "id": "threshold-example",
+      "revision": "0.2",
+      "archetype_ref": {
+        "id": "threshold_cruise_intervals",
+        "revision": "0.2"
+      },
+      "session_intent_ref": {
+        "id": "intent-threshold",
+        "revision": "0.2"
+      },
+      "intensity_reference_ref": {
+        "id": "RPE_SYNTHETIC",
+        "revision": "0.2"
+      },
+      "blocks": [
+        {
+          "id": "warm",
+          "type": "step",
+          "role": "warmup",
+          "completion": {
+            "basis": "duration",
+            "amount": {
+              "value": 600,
+              "unit": "s"
+            },
+            "advance": "automatic"
+          },
+          "target": {
+            "metric": "RPE",
+            "range": {
+              "min": 2,
+              "max": 2
+            },
+            "reference_ref": {
+              "id": "RPE_SYNTHETIC",
+              "revision": "0.2"
+            },
+            "role": "primary"
+          },
+          "terrain": {
+            "surface": "flat_paved",
+            "grade_percent": 0
+          },
+          "recovery_mode": null
+        },
+        {
+          "id": "repeat-main",
+          "type": "repeat",
+          "iterations_total": 3,
+          "recovery_after_last": false,
+          "work": {
+            "id": "work",
+            "type": "step",
+            "role": "work",
+            "completion": {
+              "basis": "duration",
+              "amount": {
+                "value": 360,
+                "unit": "s"
+              },
+              "advance": "automatic"
+            },
+            "target": {
+              "metric": "RPE",
+              "range": {
+                "min": 6,
+                "max": 6
+              },
+              "reference_ref": {
+                "id": "RPE_SYNTHETIC",
+                "revision": "0.2"
+              },
+              "role": "primary"
+            },
+            "terrain": {
+              "surface": "flat_paved",
+              "grade_percent": 0
+            },
+            "recovery_mode": null
+          },
+          "recovery": {
+            "id": "rec",
+            "type": "step",
+            "role": "recovery",
+            "completion": {
+              "basis": "duration",
+              "amount": {
+                "value": 120,
+                "unit": "s"
+              },
+              "advance": "automatic"
+            },
+            "target": {
+              "metric": "RPE",
+              "range": {
+                "min": 2,
+                "max": 2
+              },
+              "reference_ref": {
+                "id": "RPE_SYNTHETIC",
+                "revision": "0.2"
+              },
+              "role": "primary"
+            },
+            "terrain": {
+              "surface": "flat_paved",
+              "grade_percent": 0
+            },
+            "recovery_mode": "jog"
+          }
+        },
+        {
+          "id": "cool",
+          "type": "step",
+          "role": "cooldown",
+          "completion": {
+            "basis": "duration",
+            "amount": {
+              "value": 300,
+              "unit": "s"
+            },
+            "advance": "automatic"
+          },
+          "target": {
+            "metric": "RPE",
+            "range": {
+              "min": 2,
+              "max": 2
+            },
+            "reference_ref": {
+              "id": "RPE_SYNTHETIC",
+              "revision": "0.2"
+            },
+            "role": "primary"
+          },
+          "terrain": {
+            "surface": "flat_paved",
+            "grade_percent": 0
+          },
+          "recovery_mode": null
+        }
+      ],
+      "totals": {
+        "duration_s": 2220,
+        "work_duration_s": 1080,
+        "recovery_duration_s": 240
+      },
+      "construct_status": "threshold is an intended stimulus, NOT measured/verified by RPE 6",
+      "approval_ref": null,
+      "status": "SYNTHETIC_ONLY"
+    },
+    {
+      "id": "easy-example",
+      "revision": "0.2",
+      "archetype_ref": {
+        "id": "easy_run",
+        "revision": "0.2"
+      },
+      "session_intent_ref": {
+        "id": "intent-easy",
+        "revision": "0.2"
+      },
+      "intensity_reference_ref": {
+        "id": "RPE_SYNTHETIC",
+        "revision": "0.2"
+      },
+      "blocks": [
+        {
+          "id": "easy-work",
+          "type": "step",
+          "role": "work",
+          "completion": {
+            "basis": "duration",
+            "amount": {
+              "value": 1800,
+              "unit": "s"
+            },
+            "advance": "automatic"
+          },
+          "target": {
+            "metric": "RPE",
+            "range": {
+              "min": 2,
+              "max": 2
+            },
+            "reference_ref": {
+              "id": "RPE_SYNTHETIC",
+              "revision": "0.2"
+            },
+            "role": "primary"
+          },
+          "terrain": {
+            "surface": "flat_paved",
+            "grade_percent": 0
+          },
+          "recovery_mode": null
+        }
+      ],
+      "totals": {
+        "duration_s": 1800,
+        "work_duration_s": 1800,
+        "recovery_duration_s": 0
+      },
+      "approval_ref": null,
+      "status": "SYNTHETIC_ONLY"
+    },
+    {
+      "id": "hills-context-example",
+      "revision": "0.2",
+      "archetype_ref": {
+        "id": "hill_repeats_short",
+        "revision": "0.2"
+      },
+      "session_intent_ref": {
+        "id": "intent-hills",
+        "revision": "0.2"
+      },
+      "intensity_reference_ref": {
+        "id": "RPE_SYNTHETIC",
+        "revision": "0.2"
+      },
+      "blocks": [
+        {
+          "id": "hill-warm",
+          "type": "step",
+          "role": "warmup",
+          "completion": {
+            "basis": "duration",
+            "amount": {
+              "value": 600,
+              "unit": "s"
+            },
+            "advance": "automatic"
+          },
+          "target": {
+            "metric": "RPE",
+            "range": {
+              "min": 2,
+              "max": 2
+            },
+            "reference_ref": {
+              "id": "RPE_SYNTHETIC",
+              "revision": "0.2"
+            },
+            "role": "primary"
+          },
+          "terrain": {
+            "surface": "flat_paved",
+            "grade_percent": 0
+          },
+          "recovery_mode": null
+        },
+        {
+          "id": "hill-repeat",
+          "type": "repeat",
+          "iterations_total": 4,
+          "recovery_after_last": false,
+          "work": {
+            "id": "hill-work",
+            "type": "step",
+            "role": "work",
+            "completion": {
+              "basis": "duration",
+              "amount": {
+                "value": 15,
+                "unit": "s"
+              },
+              "advance": "automatic"
+            },
+            "target": {
+              "metric": "RPE",
+              "range": {
+                "min": 7,
+                "max": 7
+              },
+              "reference_ref": {
+                "id": "RPE_SYNTHETIC",
+                "revision": "0.2"
+              },
+              "role": "primary"
+            },
+            "terrain": {
+              "surface": "paved_hill",
+              "grade_percent": 5
+            },
+            "recovery_mode": null
+          },
+          "recovery": {
+            "id": "hill-rec",
+            "type": "step",
+            "role": "recovery",
+            "completion": {
+              "basis": "duration",
+              "amount": {
+                "value": 120,
+                "unit": "s"
+              },
+              "advance": "automatic"
+            },
+            "target": {
+              "metric": "RPE",
+              "range": {
+                "min": 2,
+                "max": 2
+              },
+              "reference_ref": {
+                "id": "RPE_SYNTHETIC",
+                "revision": "0.2"
+              },
+              "role": "primary"
+            },
+            "terrain": {
+              "surface": "paved_hill",
+              "grade_percent": -5
+            },
+            "recovery_mode": "walk_downhill"
+          }
+        },
+        {
+          "id": "hill-cool",
+          "type": "step",
+          "role": "cooldown",
+          "completion": {
+            "basis": "duration",
+            "amount": {
+              "value": 300,
+              "unit": "s"
+            },
+            "advance": "automatic"
+          },
+          "target": {
+            "metric": "RPE",
+            "range": {
+              "min": 2,
+              "max": 2
+            },
+            "reference_ref": {
+              "id": "RPE_SYNTHETIC",
+              "revision": "0.2"
+            },
+            "role": "primary"
+          },
+          "terrain": {
+            "surface": "flat_paved",
+            "grade_percent": 0
+          },
+          "recovery_mode": null
+        }
+      ],
+      "totals": {
+        "duration_s": 1320,
+        "work_duration_s": 60,
+        "recovery_duration_s": 360
+      },
+      "approval_ref": null,
+      "status": "SYNTHETIC_ONLY"
+    }
+  ],
+  "sessions": [
+    {
+      "id": "lower-mon",
+      "revision": "0.2",
+      "sport": "STRENGTH",
+      "start": "2026-10-26T18:00:00-03:00",
+      "end": "2026-10-26T19:00:00-03:00",
+      "prescription_refs": [
+        {
+          "id": "squat-example",
+          "revision": "0.2"
+        },
+        {
+          "id": "rdl-example",
+          "revision": "0.2"
+        },
+        {
+          "id": "split-example",
+          "revision": "0.2"
+        }
+      ],
+      "intent_ref": {
+        "id": "intent-lower",
+        "revision": "0.2"
+      }
+    },
+    {
+      "id": "run-tue",
+      "revision": "0.2",
+      "sport": "RUNNING",
+      "start": "2026-10-27T07:00:00-03:00",
+      "end": "2026-10-27T07:37:00-03:00",
+      "prescription_refs": [
+        {
+          "id": "threshold-example",
+          "revision": "0.2"
+        }
+      ],
+      "intent_ref": {
+        "id": "intent-threshold",
+        "revision": "0.2"
+      }
+    },
+    {
+      "id": "run-thu",
+      "revision": "0.2",
+      "sport": "RUNNING",
+      "start": "2026-10-29T07:00:00-03:00",
+      "end": "2026-10-29T07:30:00-03:00",
+      "prescription_refs": [
+        {
+          "id": "easy-example",
+          "revision": "0.2"
+        }
+      ],
+      "intent_ref": {
+        "id": "intent-easy",
+        "revision": "0.2"
+      }
+    },
+    {
+      "id": "upper-fri",
+      "revision": "0.2",
+      "sport": "STRENGTH",
+      "start": "2026-10-30T18:00:00-03:00",
+      "end": "2026-10-30T18:45:00-03:00",
+      "prescription_refs": [
+        {
+          "id": "row-original",
+          "revision": "0.2"
+        }
+      ],
+      "intent_ref": {
+        "id": "intent-upper",
+        "revision": "0.2"
+      }
+    }
+  ],
+  "demand_profiles": [
+    {
+      "id": "demand-lower-example",
+      "revision": "0.2",
+      "session_ref": {
+        "id": "lower-mon",
+        "revision": "0.2"
+      },
+      "planned_or_observed": "PLANNED",
+      "dimensions": [
+        {
+          "dimension": "lower_local",
+          "band": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "no approved comparator/calibration"
+          },
+          "comparison_basis_ref": null,
+          "provenance_class": "DERIVED_ESTIMATE"
+        },
+        {
+          "dimension": "upper_local",
+          "band": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "no approved comparator/calibration"
+          },
+          "comparison_basis_ref": null,
+          "provenance_class": "DERIVED_ESTIMATE"
+        },
+        {
+          "dimension": "cardiovascular",
+          "band": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "no approved comparator/calibration"
+          },
+          "comparison_basis_ref": null,
+          "provenance_class": "DERIVED_ESTIMATE"
+        },
+        {
+          "dimension": "neuromuscular",
+          "band": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "no approved comparator/calibration"
+          },
+          "comparison_basis_ref": null,
+          "provenance_class": "DERIVED_ESTIMATE"
+        },
+        {
+          "dimension": "eccentric",
+          "band": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "no approved comparator/calibration"
+          },
+          "comparison_basis_ref": null,
+          "provenance_class": "DERIVED_ESTIMATE"
+        },
+        {
+          "dimension": "axial",
+          "band": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "no approved comparator/calibration"
+          },
+          "comparison_basis_ref": null,
+          "provenance_class": "DERIVED_ESTIMATE"
+        },
+        {
+          "dimension": "impact",
+          "band": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "no approved comparator/calibration"
+          },
+          "comparison_basis_ref": null,
+          "provenance_class": "DERIVED_ESTIMATE"
+        },
+        {
+          "dimension": "metabolic",
+          "band": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "no approved comparator/calibration"
+          },
+          "comparison_basis_ref": null,
+          "provenance_class": "DERIVED_ESTIMATE"
+        }
+      ],
+      "local_muscle_projection": {
+        "status": "UNKNOWN",
+        "value": null,
+        "reason": "taxonomy is not effective-volume attribution"
+      },
+      "source_exposure_refs": [],
+      "model_ref": {
+        "status": "UNKNOWN",
+        "value": null,
+        "reason": "not implemented or validated"
+      },
+      "systemic_summary": {
+        "status": "UNKNOWN",
+        "value": null,
+        "reason": "not an additive independent exposure"
+      },
+      "athlete_state_ref": {
+        "id": "synthetic-A",
+        "revision": "0.2"
+      },
+      "prescription_refs": [
+        {
+          "id": "squat-example",
+          "revision": "0.2"
+        },
+        {
+          "id": "rdl-example",
+          "revision": "0.2"
+        },
+        {
+          "id": "split-example",
+          "revision": "0.2"
+        }
+      ],
+      "status": "NOT_ESTIMATED",
+      "derived_at": null
+    }
+  ],
+  "substitution_relations": [
+    {
+      "id": "row-substitution-review",
+      "revision": "0.2",
+      "from_variation_ref": {
+        "id": "row_barbell",
+        "revision": "0.2"
+      },
+      "to_variation_ref": {
+        "id": "row_chest_db",
+        "revision": "0.2"
+      },
+      "direction": "ONE_WAY_CANDIDATE",
+      "objective_candidate": "horizontal pulling",
+      "preserved_candidates": [
+        "pull pattern"
+      ],
+      "changed_candidates": [
+        "trunk_support",
+        "load_convention",
+        "specificity"
+      ],
+      "cost_comparison": {
+        "status": "UNKNOWN",
+        "value": null,
+        "reason": "no dose-specific validated comparator"
+      },
+      "eligibility": {
+        "status": "UNKNOWN",
+        "value": null,
+        "reason": "equipment, goal, restrictions and athlete"
+      },
+      "approval_ref": null,
+      "status": "HUMAN_REVIEW_REQUIRED"
+    }
+  ],
+  "reconciliation": {
+    "id": "reconciliation-example",
+    "revision": "0.2",
+    "planned_session_ref": {
+      "id": "lower-mon",
+      "revision": "0.2"
+    },
+    "observed_fact": {
+      "id": "squat-log",
+      "revision": "2",
+      "supersedes_revision": "1",
+      "active": true,
+      "observed_at": "2026-10-26T18:10:00-03:00",
+      "received_at": "2026-10-26T18:25:00-03:00"
+    },
+    "observed_segment_ids": [
+      "sq-1",
+      "sq-2"
+    ],
+    "duplicate_deliveries": [
+      {
+        "delivery": "manual",
+        "canonical_fact_ref": {
+          "id": "squat-log",
+          "revision": "2"
+        }
+      },
+      {
+        "delivery": "wearable",
+        "canonical_fact_ref": {
+          "id": "squat-log",
+          "revision": "2"
+        }
+      }
+    ],
+    "contribution_key": [
+      "squat-log",
+      "2",
+      "sq-1+sq-2"
+    ],
+    "projection_rule": "observed active revision replaces matched planned segments in past projection; same canonical fact is not counted again",
+    "unobserved_segment_ids": [
+      "sq-3",
+      "rdl-1",
+      "rdl-2",
+      "sp-left-1",
+      "sp-left-2",
+      "sp-right-1",
+      "sp-right-2"
+    ],
+    "unobserved_past_status": "UNKNOWN",
+    "future_remaining_status": "PLANNED_IF_STILL_VALID",
+    "interaction_adds_exposure": false,
+    "observation_is_not_prescription_change": true,
+    "historical_fact": {
+      "id": "squat-log",
+      "revision": "1",
+      "active": false,
+      "observed_segment_ids": [
+        "sq-1"
+      ],
+      "superseded_by": {
+        "id": "squat-log",
+        "revision": "2"
+      }
+    },
+    "observed_segments": [
+      {
+        "set_id": "sq-1",
+        "target_revision_ref": {
+          "id": "squat-example",
+          "revision": "0.2"
+        },
+        "reps": 5,
+        "load": {
+          "value": 60,
+          "unit": "kg",
+          "convention": "external_total_including_bar"
+        },
+        "estimated_RIR": 3,
+        "observation_status": "REPORTED_SYNTHETIC"
+      },
+      {
+        "set_id": "sq-2",
+        "target_revision_ref": {
+          "id": "squat-example",
+          "revision": "0.2"
+        },
+        "reps": 5,
+        "load": {
+          "value": 60,
+          "unit": "kg",
+          "convention": "external_total_including_bar"
+        },
+        "estimated_RIR": 3,
+        "observation_status": "REPORTED_SYNTHETIC"
+      }
+    ]
+  },
+  "scenarios": [
+    {
+      "id": "S01",
+      "revision": "0.2",
+      "base_fixture_ref": {
+        "id": "BASE-REVIEW",
+        "revision": "0.2"
+      },
+      "overrides": {
+        "priority_mode": "RUN_FIRST",
+        "session_refs": [
+          {
+            "id": "lower-mon",
+            "revision": "0.2"
+          },
+          {
+            "id": "run-tue",
+            "revision": "0.2"
+          }
+        ],
+        "alternatives": [
+          {
+            "id": "keep",
+            "approval_ref": null,
+            "adequacy": "UNDETERMINATE",
+            "necessity": "UNDETERMINATE",
+            "minimum_effective": "UNDETERMINATE",
+            "change_cost": {
+              "status": "UNKNOWN",
+              "value": null,
+              "reason": "not physiological cost; needs AEOS PlanStabilityCost by alternative"
+            },
+            "rejected_smaller_alternatives": [],
+            "human_disposition": null,
+            "delta": []
+          },
+          {
+            "id": "lower-less-volume",
+            "approval_ref": null,
+            "adequacy": "UNDETERMINATE",
+            "necessity": "UNDETERMINATE",
+            "minimum_effective": "UNDETERMINATE",
+            "change_cost": {
+              "status": "UNKNOWN",
+              "value": null,
+              "reason": "not physiological cost; needs AEOS PlanStabilityCost by alternative"
+            },
+            "rejected_smaller_alternatives": [],
+            "human_disposition": null,
+            "delta": [
+              {
+                "prescription_ref": {
+                  "id": "squat-example",
+                  "revision": "0.2"
+                },
+                "omit_set_id": "sq-3"
+              }
+            ]
+          },
+          {
+            "id": "move-lower",
+            "approval_ref": null,
+            "adequacy": "UNDETERMINATE",
+            "necessity": "UNDETERMINATE",
+            "minimum_effective": "UNDETERMINATE",
+            "change_cost": {
+              "status": "UNKNOWN",
+              "value": null,
+              "reason": "not physiological cost; needs AEOS PlanStabilityCost by alternative"
+            },
+            "rejected_smaller_alternatives": [],
+            "human_disposition": null,
+            "delta": [
+              {
+                "session_ref": {
+                  "id": "lower-mon",
+                  "revision": "0.2"
+                },
+                "new_start": "2026-10-28T18:00:00-03:00",
+                "new_end": "2026-10-28T19:00:00-03:00",
+                "duration_policy": "preserve base duration in this synthetic candidate; explicit end included"
+              }
+            ]
+          }
+        ],
+        "timing": {
+          "session_a_ref": {
+            "id": "lower-mon",
+            "revision": "0.2"
+          },
+          "session_b_ref": {
+            "id": "run-tue",
+            "revision": "0.2"
+          },
+          "start_to_start_s": 46800,
+          "end_to_start_s": 43200,
+          "construct": "distinct clock intervals; no physiological cutoff"
+        }
+      },
+      "review_question": "Does this exact dose/12h end-to-start interval (13h start-to-start) compromise intended run? Compare KEEP and smaller changes before MOVE; an empty calendar alone is not physiological proof.",
+      "coverage_status": "CONCRETE_REVIEW_INPUT_PARTIAL_DOMAIN",
+      "assessment_status": "NOT_EVALUABLE_DOMAIN",
+      "professional_approval_ref": null,
+      "expected_action": null,
+      "expected_sporting_effect": null
+    },
+    {
+      "id": "S02",
+      "revision": "0.2",
+      "base_fixture_ref": {
+        "id": "BASE-REVIEW",
+        "revision": "0.2"
+      },
+      "overrides": {
+        "priority_mode": "STRENGTH_FIRST",
+        "same_domain_facts_as": "S01",
+        "alternatives": [
+          {
+            "id": "keep",
+            "approval_ref": null,
+            "adequacy": "UNDETERMINATE",
+            "necessity": "UNDETERMINATE",
+            "minimum_effective": "UNDETERMINATE",
+            "change_cost": {
+              "status": "UNKNOWN",
+              "value": null,
+              "reason": "not physiological cost; needs AEOS PlanStabilityCost by alternative"
+            },
+            "rejected_smaller_alternatives": [],
+            "human_disposition": null,
+            "delta": []
+          },
+          {
+            "id": "run-less-volume",
+            "approval_ref": null,
+            "adequacy": "UNDETERMINATE",
+            "necessity": "UNDETERMINATE",
+            "minimum_effective": "UNDETERMINATE",
+            "change_cost": {
+              "status": "UNKNOWN",
+              "value": null,
+              "reason": "not physiological cost; needs AEOS PlanStabilityCost by alternative"
+            },
+            "rejected_smaller_alternatives": [],
+            "human_disposition": null,
+            "delta": [
+              {
+                "prescription_ref": {
+                  "id": "threshold-example",
+                  "revision": "0.2"
+                },
+                "iterations_total": 2
+              }
+            ]
+          },
+          {
+            "id": "move-run",
+            "approval_ref": null,
+            "adequacy": "UNDETERMINATE",
+            "necessity": "UNDETERMINATE",
+            "minimum_effective": "UNDETERMINATE",
+            "change_cost": {
+              "status": "UNKNOWN",
+              "value": null,
+              "reason": "not physiological cost; needs AEOS PlanStabilityCost by alternative"
+            },
+            "rejected_smaller_alternatives": [],
+            "human_disposition": null,
+            "delta": [
+              {
+                "session_ref": {
+                  "id": "run-tue",
+                  "revision": "0.2"
+                },
+                "new_start": "2026-10-28T07:00:00-03:00",
+                "new_end": "2026-10-28T07:37:00-03:00",
+                "duration_policy": "preserve base duration in this synthetic candidate; explicit end included"
+              }
+            ]
+          }
+        ]
+      },
+      "review_question": "Does priority change the jointly valid alternative while preserving enough intended running stimulus? No priority may repair invalid dose.",
+      "coverage_status": "CONCRETE_REVIEW_INPUT_PARTIAL_DOMAIN",
+      "assessment_status": "NOT_EVALUABLE_DOMAIN",
+      "professional_approval_ref": null,
+      "expected_action": null,
+      "expected_sporting_effect": null
+    },
+    {
+      "id": "S05",
+      "revision": "0.2",
+      "base_fixture_ref": {
+        "id": "BASE-REVIEW",
+        "revision": "0.2"
+      },
+      "overrides": {
+        "history_ref": {
+          "id": "history-example",
+          "revision": "0.2"
+        },
+        "signals": [
+          {
+            "fact_ref": {
+              "id": "sleep-1",
+              "revision": "0.2"
+            },
+            "value": {
+              "value": 5,
+              "unit": "h"
+            },
+            "usual": {
+              "value": 7.5,
+              "unit": "h"
+            },
+            "observed_at": "2026-10-27T06:00:00-03:00",
+            "received_at": "2026-10-27T06:05:00-03:00",
+            "source": "synthetic_self_report",
+            "id": "sleep-1",
+            "revision": "0.2"
+          },
+          {
+            "fact_ref": {
+              "id": "local-1",
+              "revision": "0.2"
+            },
+            "value": "legs_feel_heavy",
+            "observed_at": "2026-10-27T06:00:00-03:00",
+            "received_at": "2026-10-27T06:05:00-03:00",
+            "source": "synthetic_self_report",
+            "id": "local-1",
+            "revision": "0.2"
+          },
+          {
+            "fact_ref": {
+              "id": "performance-1",
+              "revision": "0.2"
+            },
+            "comparison": {
+              "same_distance_m": 5000,
+              "previous_duration_s": 1800,
+              "current_duration_s": 1900,
+              "reported_RPE": 4
+            },
+            "comparability": "UNCLASSIFIED",
+            "source": "synthetic_activity",
+            "id": "performance-1",
+            "revision": "0.2",
+            "observed_at": "2026-10-25T09:30:00-03:00",
+            "received_at": "2026-10-25T09:35:00-03:00"
+          }
+        ]
+      },
+      "review_question": "Which signal convergence is material under comparable conditions? Sleep report plus slower run cannot establish cause or automatic dose change.",
+      "coverage_status": "CONCRETE_REVIEW_INPUT_PARTIAL_DOMAIN",
+      "assessment_status": "NOT_EVALUABLE_DOMAIN",
+      "professional_approval_ref": null,
+      "expected_action": null,
+      "expected_sporting_effect": null
+    },
+    {
+      "id": "S12",
+      "revision": "0.2",
+      "base_fixture_ref": {
+        "id": "BASE-REVIEW",
+        "revision": "0.2"
+      },
+      "overrides": {
+        "execution": {
+          "id": "exec-squat-overtarget",
+          "revision": "0.2",
+          "prescription_ref": {
+            "id": "squat-example",
+            "revision": "0.2"
+          },
+          "observed_sets": [
+            {
+              "id": "sq-1",
+              "role": "work",
+              "side": "both",
+              "completion": {
+                "basis": "reps",
+                "amount": {
+                  "value": 5,
+                  "unit": "rep"
+                },
+                "advance": "manual"
+              },
+              "load": {
+                "value": 60,
+                "unit": "kg",
+                "convention": "external_total_including_bar"
+              },
+              "effort": {
+                "metric": "RIR",
+                "value": 3,
+                "scale_ref": {
+                  "id": "RIR_SYNTHETIC",
+                  "revision": "0.2"
+                },
+                "collection": "after_set",
+                "status": "SYNTHETIC_ESTIMATE"
+              },
+              "rest": {
+                "value": 150,
+                "unit": "s"
+              },
+              "tempo": {
+                "status": "UNKNOWN",
+                "value": null,
+                "reason": "not specified; no default"
+              },
+              "rom": {
+                "status": "UNKNOWN",
+                "value": null,
+                "reason": "see configuration; technique not assessed"
+              }
+            },
+            {
+              "id": "sq-2",
+              "role": "work",
+              "side": "both",
+              "completion": {
+                "basis": "reps",
+                "amount": {
+                  "value": 5,
+                  "unit": "rep"
+                },
+                "advance": "manual"
+              },
+              "load": {
+                "value": 60,
+                "unit": "kg",
+                "convention": "external_total_including_bar"
+              },
+              "effort": {
+                "metric": "RIR",
+                "value": 3,
+                "scale_ref": {
+                  "id": "RIR_SYNTHETIC",
+                  "revision": "0.2"
+                },
+                "collection": "after_set",
+                "status": "SYNTHETIC_ESTIMATE"
+              },
+              "rest": {
+                "value": 150,
+                "unit": "s"
+              },
+              "tempo": {
+                "status": "UNKNOWN",
+                "value": null,
+                "reason": "not specified; no default"
+              },
+              "rom": {
+                "status": "UNKNOWN",
+                "value": null,
+                "reason": "see configuration; technique not assessed"
+              }
+            },
+            {
+              "id": "sq-3",
+              "role": "work",
+              "side": "both",
+              "completion": {
+                "basis": "reps",
+                "amount": {
+                  "value": 5,
+                  "unit": "rep"
+                },
+                "advance": "manual"
+              },
+              "load": {
+                "value": 60,
+                "unit": "kg",
+                "convention": "external_total_including_bar"
+              },
+              "effort": {
+                "metric": "RIR",
+                "value": 3,
+                "scale_ref": {
+                  "id": "RIR_SYNTHETIC",
+                  "revision": "0.2"
+                },
+                "collection": "after_set",
+                "status": "SYNTHETIC_ESTIMATE"
+              },
+              "rest": {
+                "value": 150,
+                "unit": "s"
+              },
+              "tempo": {
+                "status": "UNKNOWN",
+                "value": null,
+                "reason": "not specified; no default"
+              },
+              "rom": {
+                "status": "UNKNOWN",
+                "value": null,
+                "reason": "see configuration; technique not assessed"
+              }
+            },
+            {
+              "id": "sq-extra-4",
+              "role": "work",
+              "side": "both",
+              "completion": {
+                "basis": "reps",
+                "amount": {
+                  "value": 5,
+                  "unit": "rep"
+                },
+                "advance": "manual"
+              },
+              "load": {
+                "value": 60,
+                "unit": "kg",
+                "convention": "external_total_including_bar"
+              },
+              "effort": {
+                "metric": "RIR",
+                "value": 3,
+                "scale_ref": {
+                  "id": "RIR_SYNTHETIC",
+                  "revision": "0.2"
+                },
+                "collection": "after_set",
+                "status": "SYNTHETIC_ESTIMATE"
+              },
+              "rest": {
+                "value": 150,
+                "unit": "s"
+              },
+              "tempo": {
+                "status": "UNKNOWN",
+                "value": null,
+                "reason": "not specified; no default"
+              },
+              "rom": {
+                "status": "UNKNOWN",
+                "value": null,
+                "reason": "see configuration; technique not assessed"
+              },
+              "observed_at": "2026-10-26T18:20:00-03:00"
+            }
+          ],
+          "coverage": "reported_sets_only",
+          "effort_note": "RIR3 estimates kept equal; only extra set is the example deviation",
+          "comparability": "UNCLASSIFIED",
+          "canonical_fact_ref": {
+            "id": "squat-actual-extra",
+            "revision": "0.2"
+          }
+        },
+        "source_fact_ref": {
+          "id": "squat-actual-extra",
+          "revision": "0.2"
+        },
+        "source_fact": {
+          "id": "squat-actual-extra",
+          "revision": "0.2",
+          "observed_at": "2026-10-26T18:25:00-03:00",
+          "received_at": "2026-10-26T18:30:00-03:00",
+          "scope": "reported squat work sets only",
+          "synthetic": true
+        }
+      },
+      "review_question": "Is the extra set material for this athlete/horizon? Higher RIR is farther from failure and is not generically above target stress.",
+      "coverage_status": "CONCRETE_REVIEW_INPUT_PARTIAL_DOMAIN",
+      "assessment_status": "NOT_EVALUABLE_DOMAIN",
+      "professional_approval_ref": null,
+      "expected_action": null,
+      "expected_sporting_effect": null
+    },
+    {
+      "id": "S13",
+      "revision": "0.2",
+      "base_fixture_ref": {
+        "id": "BASE-REVIEW",
+        "revision": "0.2"
+      },
+      "overrides": {
+        "session_ref": {
+          "id": "run-tue",
+          "revision": "0.2"
+        },
+        "criticality": "HIGH",
+        "criticality_origin": "synthetic_premise",
+        "event_ref": null,
+        "session_intent_override": {
+          "intent_ref": {
+            "id": "intent-threshold",
+            "revision": "0.2"
+          },
+          "criticality": "HIGH",
+          "origin": "SYNTHETIC_REVIEW_PREMISE"
+        }
+      },
+      "review_question": "What essential stimulus is protected, by which phase/goal rule? HIGH alone neither proves necessity nor overrides safety/confirmed priority.",
+      "coverage_status": "CONCRETE_REVIEW_INPUT_PARTIAL_DOMAIN",
+      "assessment_status": "NOT_EVALUABLE_DOMAIN",
+      "professional_approval_ref": null,
+      "expected_action": null,
+      "expected_sporting_effect": null
+    },
+    {
+      "id": "S14",
+      "revision": "0.2",
+      "base_fixture_ref": {
+        "id": "BASE-REVIEW",
+        "revision": "0.2"
+      },
+      "overrides": {
+        "session_ref": {
+          "id": "run-tue",
+          "revision": "0.2"
+        },
+        "criticality": "LOW",
+        "criticality_origin": "synthetic_premise",
+        "event_ref": null,
+        "session_intent_override": {
+          "intent_ref": {
+            "id": "intent-threshold",
+            "revision": "0.2"
+          },
+          "criticality": "LOW",
+          "origin": "SYNTHETIC_REVIEW_PREMISE"
+        }
+      },
+      "review_question": "Is KEEP adequate despite lower importance? LOW alone does not authorize mutation.",
+      "coverage_status": "CONCRETE_REVIEW_INPUT_PARTIAL_DOMAIN",
+      "assessment_status": "NOT_EVALUABLE_DOMAIN",
+      "professional_approval_ref": null,
+      "expected_action": null,
+      "expected_sporting_effect": null,
+      "controlled_comparison": {
+        "same_dose_schedule_priority_as": "S13",
+        "only_changed_field": "criticality",
+        "recipe_effects": "not approved; no sporting action oracle"
+      }
+    },
+    {
+      "id": "S28",
+      "revision": "0.2",
+      "base_fixture_ref": {
+        "id": "BASE-REVIEW",
+        "revision": "0.2"
+      },
+      "overrides": {
+        "last_plan_ref": {
+          "id": "plan-example",
+          "revision": "0.2"
+        },
+        "interruption": {
+          "days": 14,
+          "reason": "synthetic schedule disruption; no illness/injury asserted",
+          "last_observed_ref": {
+            "id": "history-example",
+            "revision": "0.2"
+          }
+        },
+        "restriction_status": {
+          "status": "UNKNOWN",
+          "value": null,
+          "reason": "eligibility and current restrictions need re-evaluation; no inferred clearance"
+        },
+        "reentry_candidate_refs": [
+          {
+            "id": "easy-example",
+            "revision": "0.2"
+          },
+          {
+            "id": "squat-example",
+            "revision": "0.2"
+          }
+        ]
+      },
+      "review_question": "Define nonclinical rebase/eligibility and any exclusions. Listed candidates are not approved return doses; old targets cannot be restored automatically.",
+      "coverage_status": "CONCRETE_REVIEW_INPUT_PARTIAL_DOMAIN",
+      "assessment_status": "NOT_EVALUABLE_DOMAIN",
+      "professional_approval_ref": null,
+      "expected_action": null,
+      "expected_sporting_effect": null
+    },
+    {
+      "id": "S29",
+      "revision": "0.2",
+      "base_fixture_ref": {
+        "id": "BASE-REVIEW",
+        "revision": "0.2"
+      },
+      "overrides": {
+        "session_ref": {
+          "id": "lower-mon",
+          "revision": "0.2"
+        },
+        "executing_revision": "0.2",
+        "started_at": "2026-10-26T18:00:00-03:00",
+        "completed_set_refs": [
+          "sq-1",
+          "sq-2"
+        ],
+        "new_material_fact": {
+          "id": "equipment-loss",
+          "known_at": "2026-10-26T18:18:00-03:00",
+          "value": "rack unavailable for remaining squat set"
+        },
+        "pending_prestart_proposal_status": "STALE_ON_START",
+        "proposal_scope": "remaining_work_only",
+        "remaining_candidate": {
+          "id": "remove-or-replace-remainder",
+          "approval_ref": null,
+          "adequacy": "UNDETERMINATE",
+          "necessity": "UNDETERMINATE",
+          "minimum_effective": "UNDETERMINATE",
+          "change_cost": {
+            "status": "UNKNOWN",
+            "value": null,
+            "reason": "not physiological cost; needs AEOS PlanStabilityCost by alternative"
+          },
+          "rejected_smaller_alternatives": [],
+          "human_disposition": null,
+          "remaining_set_refs": [
+            "sq-3",
+            "rdl-1",
+            "rdl-2",
+            "sp-left-1",
+            "sp-left-2",
+            "sp-right-1",
+            "sp-right-2"
+          ]
+        }
+      },
+      "review_question": "What remainder-only alternative is eligible? Keep completed dose and revision; new post-start fact may justify review, not retroactive rewrite.",
+      "coverage_status": "CONCRETE_REVIEW_INPUT_PARTIAL_DOMAIN",
+      "assessment_status": "NOT_EVALUABLE_DOMAIN",
+      "professional_approval_ref": null,
+      "expected_action": null,
+      "expected_sporting_effect": null
+    },
+    {
+      "id": "C1",
+      "revision": "0.2",
+      "base_fixture_ref": {
+        "id": "BASE-REVIEW",
+        "revision": "0.2"
+      },
+      "overrides": {
+        "days": [
+          {
+            "date": "2026-10-26",
+            "session_ref": {
+              "id": "lower-mon",
+              "revision": "0.2"
+            },
+            "state": "planned_then_partial_observed"
+          },
+          {
+            "date": "2026-10-27",
+            "session_ref": {
+              "id": "run-tue",
+              "revision": "0.2"
+            },
+            "signal_ref": {
+              "id": "sleep-1",
+              "revision": "0.2"
+            }
+          },
+          {
+            "date": "2026-10-28",
+            "state": "no_sync",
+            "exposure": {
+              "status": "UNKNOWN",
+              "value": null,
+              "reason": "missing activity is not zero/rest"
+            }
+          },
+          {
+            "date": "2026-10-29",
+            "session_ref": {
+              "id": "run-thu",
+              "revision": "0.2"
+            },
+            "state": "planned"
+          },
+          {
+            "date": "2026-10-30",
+            "session_ref": {
+              "id": "upper-fri",
+              "revision": "0.2"
+            },
+            "state": "planned"
+          }
+        ],
+        "exposure_reconciliation_ref": {
+          "id": "reconciliation-example",
+          "revision": "0.2"
+        }
+      },
+      "review_question": "Review accumulated response with the same fact revisions and missingness; do not sum ordinal bands or fill unsynced days with zero.",
+      "coverage_status": "CONCRETE_REVIEW_INPUT_PARTIAL_DOMAIN",
+      "assessment_status": "NOT_EVALUABLE_DOMAIN",
+      "professional_approval_ref": null,
+      "expected_action": null,
+      "expected_sporting_effect": null
+    },
+    {
+      "id": "C2",
+      "revision": "0.2",
+      "base_fixture_ref": {
+        "id": "BASE-REVIEW",
+        "revision": "0.2"
+      },
+      "overrides": {
+        "double": [
+          {
+            "session_ref": {
+              "id": "run-tue",
+              "revision": "0.2"
+            },
+            "start": "2026-10-27T07:00:00-03:00",
+            "end": "2026-10-27T07:37:00-03:00"
+          },
+          {
+            "session_ref": {
+              "id": "lower-mon",
+              "revision": "0.2"
+            },
+            "start": "2026-10-27T18:00:00-03:00",
+            "end": "2026-10-27T19:00:00-03:00"
+          }
+        ],
+        "next_session_ref": {
+          "id": "run-thu",
+          "revision": "0.2"
+        },
+        "preference": "run before strength if both independently and jointly adequate",
+        "preference_origin": "synthetic_user_confirmed"
+      },
+      "review_question": "Assess order/end-to-start interval and next stimulus; calendar feasibility does not establish physiological compatibility.",
+      "coverage_status": "CONCRETE_REVIEW_INPUT_PARTIAL_DOMAIN",
+      "assessment_status": "NOT_EVALUABLE_DOMAIN",
+      "professional_approval_ref": null,
+      "expected_action": null,
+      "expected_sporting_effect": null
+    },
+    {
+      "id": "C3",
+      "revision": "0.2",
+      "base_fixture_ref": {
+        "id": "BASE-REVIEW",
+        "revision": "0.2"
+      },
+      "overrides": {
+        "priority_mode": "BALANCED_HYBRID",
+        "co_primary_goals": [
+          "general_lower_strength",
+          "running_endurance"
+        ],
+        "alternatives": [
+          {
+            "id": "preserve-strength",
+            "approval_ref": null,
+            "adequacy": "UNDETERMINATE",
+            "necessity": "UNDETERMINATE",
+            "minimum_effective": "UNDETERMINATE",
+            "change_cost": {
+              "status": "UNKNOWN",
+              "value": null,
+              "reason": "not physiological cost; needs AEOS PlanStabilityCost by alternative"
+            },
+            "rejected_smaller_alternatives": [],
+            "human_disposition": null,
+            "delta": [
+              {
+                "prescription_ref": {
+                  "id": "threshold-example",
+                  "revision": "0.2"
+                },
+                "iterations_total": 2
+              }
+            ]
+          },
+          {
+            "id": "preserve-run",
+            "approval_ref": null,
+            "adequacy": "UNDETERMINATE",
+            "necessity": "UNDETERMINATE",
+            "minimum_effective": "UNDETERMINATE",
+            "change_cost": {
+              "status": "UNKNOWN",
+              "value": null,
+              "reason": "not physiological cost; needs AEOS PlanStabilityCost by alternative"
+            },
+            "rejected_smaller_alternatives": [],
+            "human_disposition": null,
+            "delta": [
+              {
+                "prescription_ref": {
+                  "id": "squat-example",
+                  "revision": "0.2"
+                },
+                "omit_set_id": "sq-3"
+              }
+            ]
+          }
+        ],
+        "hidden_weights": false
+      },
+      "review_question": "Establish jointly valid effects first, then Pareto. Ask preference only for a material tradeoff among valid alternatives, not as substitute for missing dose policy.",
+      "coverage_status": "CONCRETE_REVIEW_INPUT_PARTIAL_DOMAIN",
+      "assessment_status": "NOT_EVALUABLE_DOMAIN",
+      "professional_approval_ref": null,
+      "expected_action": null,
+      "expected_sporting_effect": null
+    },
+    {
+      "id": "C4",
+      "revision": "0.2",
+      "base_fixture_ref": {
+        "id": "BASE-REVIEW",
+        "revision": "0.2"
+      },
+      "overrides": {
+        "candidate_level_hints": [
+          {
+            "level": 0,
+            "delta": "KEEP",
+            "status": "CONTROL_ONLY"
+          },
+          {
+            "level": 1,
+            "delta": "squat rest 150s to 180s",
+            "status": "CLASSIFICATION_AND_EFFECT_REQUIRE_REVIEW"
+          },
+          {
+            "level": 2,
+            "delta": "omit sq-3",
+            "status": "DOMAIN_OPEN"
+          },
+          {
+            "level": 3,
+            "delta": "move lower-mon to Wednesday18h",
+            "status": "DOMAIN_OPEN"
+          },
+          {
+            "level": 4,
+            "delta": "row-original to row-alternative",
+            "status": "DOMAIN_OPEN"
+          },
+          {
+            "level": 5,
+            "delta": null,
+            "status": "NO_SUFFICIENT_WITNESS"
+          },
+          {
+            "level": 6,
+            "delta": null,
+            "status": "NO_SUFFICIENT_WITNESS"
+          }
+        ]
+      },
+      "review_question": "Review smallest sufficient changes and actual class boundaries. Naming level5/6 or rebase is not a positive sporting witness.",
+      "coverage_status": "CONCRETE_REVIEW_INPUT_PARTIAL_DOMAIN",
+      "assessment_status": "NOT_EVALUABLE_DOMAIN",
+      "professional_approval_ref": null,
+      "expected_action": null,
+      "expected_sporting_effect": null
+    },
+    {
+      "id": "C5",
+      "revision": "0.2",
+      "base_fixture_ref": {
+        "id": "BASE-REVIEW",
+        "revision": "0.2"
+      },
+      "overrides": {
+        "event": {
+          "id": "event-synthetic",
+          "revision": "0.2",
+          "date": "2026-11-01",
+          "distance": {
+            "value": 10,
+            "unit": "km"
+          },
+          "priority": "primary_candidate",
+          "status": "scheduled",
+          "source": "SYNTHETIC_EVENT_NOT_PUBLIC_RACE"
+        },
+        "phase_candidate": "taper",
+        "session_refs": [
+          {
+            "id": "run-tue",
+            "revision": "0.2"
+          },
+          {
+            "id": "lower-mon",
+            "revision": "0.2"
+          }
+        ],
+        "counterfactuals": [
+          "event_cancelled",
+          "event_postponed",
+          "event_secondary"
+        ]
+      },
+      "review_question": "Supply event-specific retained stimulus and coordinated Strength prescription; no taper percentages or recovery windows are preapproved.",
+      "coverage_status": "CONCRETE_REVIEW_INPUT_PARTIAL_DOMAIN",
+      "assessment_status": "NOT_EVALUABLE_DOMAIN",
+      "professional_approval_ref": null,
+      "expected_action": null,
+      "expected_sporting_effect": null
+    },
+    {
+      "id": "C6",
+      "revision": "0.2",
+      "base_fixture_ref": {
+        "id": "BASE-REVIEW",
+        "revision": "0.2"
+      },
+      "overrides": {
+        "envelope": {
+          "id": "envelope-synthetic",
+          "revision": "0.2",
+          "prescription_ref": {
+            "id": "squat-example",
+            "revision": "0.2"
+          },
+          "set_ids": [
+            "sq-1",
+            "sq-2",
+            "sq-3"
+          ],
+          "reps": {
+            "min": 4,
+            "max": 6
+          },
+          "load": {
+            "value": 60,
+            "unit": "kg",
+            "convention": "external_total_including_bar"
+          },
+          "effort_target": {
+            "metric": "RIR",
+            "value": 3
+          },
+          "accepted_as_control_premise": true,
+          "approval_ref": null
+        },
+        "branches": [
+          {
+            "observed_reps": [
+              5,
+              5,
+              4
+            ],
+            "classification": "inside_envelope_control_only"
+          },
+          {
+            "observed_reps": [
+              7,
+              7,
+              7
+            ],
+            "classification": "outside_envelope_new_proposal_required"
+          },
+          {
+            "observed_reps": [
+              6,
+              6,
+              6
+            ],
+            "classification": "progression_opportunity_not_awarded"
+          },
+          {
+            "observed_reps": null,
+            "classification": "UNKNOWN_no_progression_inferred"
+          }
+        ],
+        "prescription_binding": {
+          "prescription_ref": {
+            "id": "squat-example",
+            "revision": "0.2"
+          },
+          "accepted_envelope_ref": {
+            "id": "envelope-synthetic",
+            "revision": "0.2"
+          },
+          "only_in_this_synthetic_branch": true
+        }
+      },
+      "review_question": "Validate professional envelope, anchors and progression/comparability. Simulated acceptance tests control only; it creates no real policy approval.",
+      "coverage_status": "CONCRETE_REVIEW_INPUT_PARTIAL_DOMAIN",
+      "assessment_status": "NOT_EVALUABLE_DOMAIN",
+      "professional_approval_ref": null,
+      "expected_action": null,
+      "expected_sporting_effect": null
+    }
+  ],
+  "provenance": {
+    "classification": "POLICY_CANDIDATE",
+    "author": "audit root",
+    "scope": "all invented doses, contexts, configurations and control premises in this file",
+    "status": "SYNTHETIC_ONLY",
+    "external_athlete_data": false,
+    "approval_ref": null
+  },
+  "run_executions": [
+    {
+      "id": "run-partial",
+      "revision": "0.2",
+      "canonical_fact_ref": {
+        "id": "run-fact-partial",
+        "revision": "0.2"
+      },
+      "canonical_fact": {
+        "id": "run-fact-partial",
+        "revision": "0.2",
+        "observed_at": "2026-10-27T07:21:00-03:00",
+        "received_at": "2026-10-27T07:21:10-03:00",
+        "source": "SYNTHETIC"
+      },
+      "session_ref": {
+        "id": "run-tue",
+        "revision": "0.2"
+      },
+      "executing_prescription_ref": {
+        "id": "threshold-example",
+        "revision": "0.2"
+      },
+      "intensity_reference_ref": {
+        "id": "RPE_SYNTHETIC",
+        "revision": "0.2"
+      },
+      "status": "IN_PROGRESS_PARTIAL",
+      "segments": [
+        {
+          "block_id": "warm",
+          "iteration": null,
+          "duration_s": 600,
+          "status": "COMPLETED",
+          "target_revision_ref": {
+            "id": "threshold-example",
+            "revision": "0.2"
+          }
+        },
+        {
+          "block_id": "work",
+          "iteration": 1,
+          "duration_s": 360,
+          "status": "COMPLETED",
+          "target_revision_ref": {
+            "id": "threshold-example",
+            "revision": "0.2"
+          }
+        },
+        {
+          "block_id": "rec",
+          "iteration": 1,
+          "duration_s": 120,
+          "status": "COMPLETED",
+          "target_revision_ref": {
+            "id": "threshold-example",
+            "revision": "0.2"
+          }
+        },
+        {
+          "block_id": "work",
+          "iteration": 2,
+          "duration_s": 180,
+          "status": "PARTIAL",
+          "target_revision_ref": {
+            "id": "threshold-example",
+            "revision": "0.2"
+          }
+        }
+      ],
+      "observed_duration_s": 1260,
+      "future_remaining_duration_s": 960,
+      "future_status": "PLANNED_IF_STILL_VALID",
+      "adherence": "UNCLASSIFIED",
+      "progression": "NOT_AWARDED",
+      "approval_ref": null
+    }
+  ],
+  "fixture_composition": {
+    "base": "resolve base fixture plus referenced objects, then the listed scenario overrides; no adoption of plan changes",
+    "c2": "double entries REPLACE clock placement of those same session IDs for this branch, not add duplicate sessions/exposures",
+    "move": "candidate new_start/new_end replace window together, retaining baseline duration unless explicitly changed",
+    "criticality": "S13/S14 keep prescription, schedule and priority equal; only contextual criticality differs; no physical demand change inferred"
+  }
+}

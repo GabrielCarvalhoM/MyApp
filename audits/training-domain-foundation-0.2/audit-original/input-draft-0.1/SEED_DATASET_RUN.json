@@ -1,0 +1,747 @@
+{
+  "version": "draft-0.1",
+  "status": "DOMAIN_REVIEW_REQUIRED",
+  "count": 17,
+  "items": [
+    {
+      "id": "recovery_run",
+      "name": "Recovery Run",
+      "kind": "run_session_archetype",
+      "training_purpose": "recovery",
+      "structure_type": "continuous",
+      "allowed_target_types": [
+        "RPE",
+        "HR",
+        "pace"
+      ],
+      "prescription_parameters": [
+        "duration_or_distance"
+      ],
+      "domain_judgment_candidates": {
+        "cardiovascular_demand_tendency": "low",
+        "metabolic_demand_tendency": "low",
+        "lower_limb_demand_tendency": "low",
+        "neuromuscular_demand_tendency": "low",
+        "status": "HUMAN_REVIEW_REQUIRED"
+      },
+      "required_context": [
+        "athlete_intensity_reference",
+        "goal_phase",
+        "recent_history",
+        "planned_week",
+        "surface_terrain_if_material"
+      ],
+      "not_fixed_on_archetype": [
+        "exact_intensity",
+        "exact_duration",
+        "repetitions",
+        "recovery",
+        "weekly_frequency",
+        "recovery_time",
+        "interference"
+      ],
+      "provenance": {
+        "taxonomy": "derived from current RUN_INTELLIGENCE_SPEC + endurance-training literature",
+        "cost_tags": "Vilumo domain judgment candidate; not universal physiological fact"
+      }
+    },
+    {
+      "id": "easy_run",
+      "name": "Easy Run",
+      "kind": "run_session_archetype",
+      "training_purpose": "aerobic_base",
+      "structure_type": "continuous",
+      "allowed_target_types": [
+        "RPE",
+        "HR",
+        "pace"
+      ],
+      "prescription_parameters": [
+        "duration_or_distance"
+      ],
+      "domain_judgment_candidates": {
+        "cardiovascular_demand_tendency": "low_moderate",
+        "metabolic_demand_tendency": "low",
+        "lower_limb_demand_tendency": "low_moderate",
+        "neuromuscular_demand_tendency": "low",
+        "status": "HUMAN_REVIEW_REQUIRED"
+      },
+      "required_context": [
+        "athlete_intensity_reference",
+        "goal_phase",
+        "recent_history",
+        "planned_week",
+        "surface_terrain_if_material"
+      ],
+      "not_fixed_on_archetype": [
+        "exact_intensity",
+        "exact_duration",
+        "repetitions",
+        "recovery",
+        "weekly_frequency",
+        "recovery_time",
+        "interference"
+      ],
+      "provenance": {
+        "taxonomy": "derived from current RUN_INTELLIGENCE_SPEC + endurance-training literature",
+        "cost_tags": "Vilumo domain judgment candidate; not universal physiological fact"
+      }
+    },
+    {
+      "id": "steady_run",
+      "name": "Steady Run",
+      "kind": "run_session_archetype",
+      "training_purpose": "aerobic_endurance",
+      "structure_type": "continuous",
+      "allowed_target_types": [
+        "RPE",
+        "HR",
+        "pace"
+      ],
+      "prescription_parameters": [
+        "duration_or_distance"
+      ],
+      "domain_judgment_candidates": {
+        "cardiovascular_demand_tendency": "moderate",
+        "metabolic_demand_tendency": "moderate",
+        "lower_limb_demand_tendency": "moderate",
+        "neuromuscular_demand_tendency": "low",
+        "status": "HUMAN_REVIEW_REQUIRED"
+      },
+      "required_context": [
+        "athlete_intensity_reference",
+        "goal_phase",
+        "recent_history",
+        "planned_week",
+        "surface_terrain_if_material"
+      ],
+      "not_fixed_on_archetype": [
+        "exact_intensity",
+        "exact_duration",
+        "repetitions",
+        "recovery",
+        "weekly_frequency",
+        "recovery_time",
+        "interference"
+      ],
+      "provenance": {
+        "taxonomy": "derived from current RUN_INTELLIGENCE_SPEC + endurance-training literature",
+        "cost_tags": "Vilumo domain judgment candidate; not universal physiological fact"
+      }
+    },
+    {
+      "id": "long_run",
+      "name": "Long Run",
+      "kind": "run_session_archetype",
+      "training_purpose": "prolonged_endurance",
+      "structure_type": "continuous_or_progressive",
+      "allowed_target_types": [
+        "RPE",
+        "HR",
+        "pace"
+      ],
+      "prescription_parameters": [
+        "duration_or_distance",
+        "optional_segments"
+      ],
+      "domain_judgment_candidates": {
+        "cardiovascular_demand_tendency": "moderate",
+        "metabolic_demand_tendency": "moderate",
+        "lower_limb_demand_tendency": "high",
+        "neuromuscular_demand_tendency": "moderate",
+        "status": "HUMAN_REVIEW_REQUIRED"
+      },
+      "required_context": [
+        "athlete_intensity_reference",
+        "goal_phase",
+        "recent_history",
+        "planned_week",
+        "surface_terrain_if_material"
+      ],
+      "not_fixed_on_archetype": [
+        "exact_intensity",
+        "exact_duration",
+        "repetitions",
+        "recovery",
+        "weekly_frequency",
+        "recovery_time",
+        "interference"
+      ],
+      "provenance": {
+        "taxonomy": "derived from current RUN_INTELLIGENCE_SPEC + endurance-training literature",
+        "cost_tags": "Vilumo domain judgment candidate; not universal physiological fact"
+      }
+    },
+    {
+      "id": "progression_run",
+      "name": "Progression Run",
+      "kind": "run_session_archetype",
+      "training_purpose": "controlled_progression",
+      "structure_type": "segmented_continuous",
+      "allowed_target_types": [
+        "RPE",
+        "HR",
+        "pace"
+      ],
+      "prescription_parameters": [
+        "segments",
+        "duration_or_distance"
+      ],
+      "domain_judgment_candidates": {
+        "cardiovascular_demand_tendency": "moderate_high",
+        "metabolic_demand_tendency": "moderate_high",
+        "lower_limb_demand_tendency": "moderate_high",
+        "neuromuscular_demand_tendency": "moderate",
+        "status": "HUMAN_REVIEW_REQUIRED"
+      },
+      "required_context": [
+        "athlete_intensity_reference",
+        "goal_phase",
+        "recent_history",
+        "planned_week",
+        "surface_terrain_if_material"
+      ],
+      "not_fixed_on_archetype": [
+        "exact_intensity",
+        "exact_duration",
+        "repetitions",
+        "recovery",
+        "weekly_frequency",
+        "recovery_time",
+        "interference"
+      ],
+      "provenance": {
+        "taxonomy": "derived from current RUN_INTELLIGENCE_SPEC + endurance-training literature",
+        "cost_tags": "Vilumo domain judgment candidate; not universal physiological fact"
+      }
+    },
+    {
+      "id": "tempo_continuous",
+      "name": "Tempo Continuous",
+      "kind": "run_session_archetype",
+      "training_purpose": "sustained_quality",
+      "structure_type": "continuous",
+      "allowed_target_types": [
+        "RPE",
+        "HR",
+        "pace",
+        "power"
+      ],
+      "prescription_parameters": [
+        "duration_or_distance"
+      ],
+      "domain_judgment_candidates": {
+        "cardiovascular_demand_tendency": "high",
+        "metabolic_demand_tendency": "high",
+        "lower_limb_demand_tendency": "moderate_high",
+        "neuromuscular_demand_tendency": "low_moderate",
+        "status": "HUMAN_REVIEW_REQUIRED"
+      },
+      "required_context": [
+        "athlete_intensity_reference",
+        "goal_phase",
+        "recent_history",
+        "planned_week",
+        "surface_terrain_if_material"
+      ],
+      "not_fixed_on_archetype": [
+        "exact_intensity",
+        "exact_duration",
+        "repetitions",
+        "recovery",
+        "weekly_frequency",
+        "recovery_time",
+        "interference"
+      ],
+      "provenance": {
+        "taxonomy": "derived from current RUN_INTELLIGENCE_SPEC + endurance-training literature",
+        "cost_tags": "Vilumo domain judgment candidate; not universal physiological fact"
+      }
+    },
+    {
+      "id": "threshold_continuous",
+      "name": "Threshold Continuous",
+      "kind": "run_session_archetype",
+      "training_purpose": "threshold_stimulus",
+      "structure_type": "continuous",
+      "allowed_target_types": [
+        "RPE",
+        "HR",
+        "pace",
+        "power"
+      ],
+      "prescription_parameters": [
+        "duration_or_distance"
+      ],
+      "domain_judgment_candidates": {
+        "cardiovascular_demand_tendency": "high",
+        "metabolic_demand_tendency": "high",
+        "lower_limb_demand_tendency": "high",
+        "neuromuscular_demand_tendency": "moderate",
+        "status": "HUMAN_REVIEW_REQUIRED"
+      },
+      "required_context": [
+        "athlete_intensity_reference",
+        "goal_phase",
+        "recent_history",
+        "planned_week",
+        "surface_terrain_if_material"
+      ],
+      "not_fixed_on_archetype": [
+        "exact_intensity",
+        "exact_duration",
+        "repetitions",
+        "recovery",
+        "weekly_frequency",
+        "recovery_time",
+        "interference"
+      ],
+      "provenance": {
+        "taxonomy": "derived from current RUN_INTELLIGENCE_SPEC + endurance-training literature",
+        "cost_tags": "Vilumo domain judgment candidate; not universal physiological fact"
+      }
+    },
+    {
+      "id": "threshold_cruise_intervals",
+      "name": "Threshold Cruise Intervals",
+      "kind": "run_session_archetype",
+      "training_purpose": "threshold_stimulus",
+      "structure_type": "repeated_blocks",
+      "allowed_target_types": [
+        "RPE",
+        "HR",
+        "pace",
+        "power"
+      ],
+      "prescription_parameters": [
+        "repetitions",
+        "work_duration_or_distance",
+        "recovery_duration_or_distance"
+      ],
+      "domain_judgment_candidates": {
+        "cardiovascular_demand_tendency": "high",
+        "metabolic_demand_tendency": "high",
+        "lower_limb_demand_tendency": "high",
+        "neuromuscular_demand_tendency": "moderate",
+        "status": "HUMAN_REVIEW_REQUIRED"
+      },
+      "required_context": [
+        "athlete_intensity_reference",
+        "goal_phase",
+        "recent_history",
+        "planned_week",
+        "surface_terrain_if_material"
+      ],
+      "not_fixed_on_archetype": [
+        "exact_intensity",
+        "exact_duration",
+        "repetitions",
+        "recovery",
+        "weekly_frequency",
+        "recovery_time",
+        "interference"
+      ],
+      "provenance": {
+        "taxonomy": "derived from current RUN_INTELLIGENCE_SPEC + endurance-training literature",
+        "cost_tags": "Vilumo domain judgment candidate; not universal physiological fact"
+      }
+    },
+    {
+      "id": "vo2_long_intervals",
+      "name": "VO2-style Long Intervals",
+      "kind": "run_session_archetype",
+      "training_purpose": "high_aerobic_power",
+      "structure_type": "repeated_blocks",
+      "allowed_target_types": [
+        "RPE",
+        "pace",
+        "power",
+        "HR_secondary"
+      ],
+      "prescription_parameters": [
+        "repetitions",
+        "work_duration_or_distance",
+        "recovery_duration_or_distance"
+      ],
+      "domain_judgment_candidates": {
+        "cardiovascular_demand_tendency": "very_high",
+        "metabolic_demand_tendency": "very_high",
+        "lower_limb_demand_tendency": "high",
+        "neuromuscular_demand_tendency": "moderate_high",
+        "status": "HUMAN_REVIEW_REQUIRED"
+      },
+      "required_context": [
+        "athlete_intensity_reference",
+        "goal_phase",
+        "recent_history",
+        "planned_week",
+        "surface_terrain_if_material"
+      ],
+      "not_fixed_on_archetype": [
+        "exact_intensity",
+        "exact_duration",
+        "repetitions",
+        "recovery",
+        "weekly_frequency",
+        "recovery_time",
+        "interference"
+      ],
+      "provenance": {
+        "taxonomy": "derived from current RUN_INTELLIGENCE_SPEC + endurance-training literature",
+        "cost_tags": "Vilumo domain judgment candidate; not universal physiological fact"
+      }
+    },
+    {
+      "id": "short_intervals",
+      "name": "Short Intervals",
+      "kind": "run_session_archetype",
+      "training_purpose": "speed_economy_or_high_intensity",
+      "structure_type": "repeated_blocks",
+      "allowed_target_types": [
+        "RPE",
+        "pace",
+        "power"
+      ],
+      "prescription_parameters": [
+        "repetitions",
+        "work_duration_or_distance",
+        "recovery_duration_or_distance"
+      ],
+      "domain_judgment_candidates": {
+        "cardiovascular_demand_tendency": "high",
+        "metabolic_demand_tendency": "very_high",
+        "lower_limb_demand_tendency": "moderate_high",
+        "neuromuscular_demand_tendency": "high",
+        "status": "HUMAN_REVIEW_REQUIRED"
+      },
+      "required_context": [
+        "athlete_intensity_reference",
+        "goal_phase",
+        "recent_history",
+        "planned_week",
+        "surface_terrain_if_material"
+      ],
+      "not_fixed_on_archetype": [
+        "exact_intensity",
+        "exact_duration",
+        "repetitions",
+        "recovery",
+        "weekly_frequency",
+        "recovery_time",
+        "interference"
+      ],
+      "provenance": {
+        "taxonomy": "derived from current RUN_INTELLIGENCE_SPEC + endurance-training literature",
+        "cost_tags": "Vilumo domain judgment candidate; not universal physiological fact"
+      }
+    },
+    {
+      "id": "fartlek",
+      "name": "Fartlek",
+      "kind": "run_session_archetype",
+      "training_purpose": "variable_intensity",
+      "structure_type": "variable_blocks",
+      "allowed_target_types": [
+        "RPE",
+        "pace",
+        "HR"
+      ],
+      "prescription_parameters": [
+        "work_blocks",
+        "recovery_blocks"
+      ],
+      "domain_judgment_candidates": {
+        "cardiovascular_demand_tendency": "high",
+        "metabolic_demand_tendency": "high",
+        "lower_limb_demand_tendency": "moderate_high",
+        "neuromuscular_demand_tendency": "moderate",
+        "status": "HUMAN_REVIEW_REQUIRED"
+      },
+      "required_context": [
+        "athlete_intensity_reference",
+        "goal_phase",
+        "recent_history",
+        "planned_week",
+        "surface_terrain_if_material"
+      ],
+      "not_fixed_on_archetype": [
+        "exact_intensity",
+        "exact_duration",
+        "repetitions",
+        "recovery",
+        "weekly_frequency",
+        "recovery_time",
+        "interference"
+      ],
+      "provenance": {
+        "taxonomy": "derived from current RUN_INTELLIGENCE_SPEC + endurance-training literature",
+        "cost_tags": "Vilumo domain judgment candidate; not universal physiological fact"
+      }
+    },
+    {
+      "id": "hill_repeats_short",
+      "name": "Short Hill Repeats",
+      "kind": "run_session_archetype",
+      "training_purpose": "neuromuscular_hill_power",
+      "structure_type": "repeated_blocks",
+      "allowed_target_types": [
+        "RPE",
+        "time",
+        "pace_optional"
+      ],
+      "prescription_parameters": [
+        "repetitions",
+        "work_duration",
+        "grade_context",
+        "recovery_duration"
+      ],
+      "domain_judgment_candidates": {
+        "cardiovascular_demand_tendency": "high",
+        "metabolic_demand_tendency": "high",
+        "lower_limb_demand_tendency": "high",
+        "neuromuscular_demand_tendency": "high",
+        "status": "HUMAN_REVIEW_REQUIRED"
+      },
+      "required_context": [
+        "athlete_intensity_reference",
+        "goal_phase",
+        "recent_history",
+        "planned_week",
+        "surface_terrain_if_material"
+      ],
+      "not_fixed_on_archetype": [
+        "exact_intensity",
+        "exact_duration",
+        "repetitions",
+        "recovery",
+        "weekly_frequency",
+        "recovery_time",
+        "interference"
+      ],
+      "provenance": {
+        "taxonomy": "derived from current RUN_INTELLIGENCE_SPEC + endurance-training literature",
+        "cost_tags": "Vilumo domain judgment candidate; not universal physiological fact"
+      }
+    },
+    {
+      "id": "hill_repeats_long",
+      "name": "Long Hill Repeats",
+      "kind": "run_session_archetype",
+      "training_purpose": "aerobic_power_hills",
+      "structure_type": "repeated_blocks",
+      "allowed_target_types": [
+        "RPE",
+        "time",
+        "HR_secondary"
+      ],
+      "prescription_parameters": [
+        "repetitions",
+        "work_duration",
+        "grade_context",
+        "recovery_duration"
+      ],
+      "domain_judgment_candidates": {
+        "cardiovascular_demand_tendency": "very_high",
+        "metabolic_demand_tendency": "high",
+        "lower_limb_demand_tendency": "very_high",
+        "neuromuscular_demand_tendency": "high",
+        "status": "HUMAN_REVIEW_REQUIRED"
+      },
+      "required_context": [
+        "athlete_intensity_reference",
+        "goal_phase",
+        "recent_history",
+        "planned_week",
+        "surface_terrain_if_material"
+      ],
+      "not_fixed_on_archetype": [
+        "exact_intensity",
+        "exact_duration",
+        "repetitions",
+        "recovery",
+        "weekly_frequency",
+        "recovery_time",
+        "interference"
+      ],
+      "provenance": {
+        "taxonomy": "derived from current RUN_INTELLIGENCE_SPEC + endurance-training literature",
+        "cost_tags": "Vilumo domain judgment candidate; not universal physiological fact"
+      }
+    },
+    {
+      "id": "strides",
+      "name": "Strides",
+      "kind": "run_session_archetype",
+      "training_purpose": "neuromuscular_speed",
+      "structure_type": "repeated_short",
+      "allowed_target_types": [
+        "RPE",
+        "pace_relative"
+      ],
+      "prescription_parameters": [
+        "repetitions",
+        "work_duration_or_distance",
+        "full_recovery"
+      ],
+      "domain_judgment_candidates": {
+        "cardiovascular_demand_tendency": "low_moderate",
+        "metabolic_demand_tendency": "high",
+        "lower_limb_demand_tendency": "low_moderate",
+        "neuromuscular_demand_tendency": "high",
+        "status": "HUMAN_REVIEW_REQUIRED"
+      },
+      "required_context": [
+        "athlete_intensity_reference",
+        "goal_phase",
+        "recent_history",
+        "planned_week",
+        "surface_terrain_if_material"
+      ],
+      "not_fixed_on_archetype": [
+        "exact_intensity",
+        "exact_duration",
+        "repetitions",
+        "recovery",
+        "weekly_frequency",
+        "recovery_time",
+        "interference"
+      ],
+      "provenance": {
+        "taxonomy": "derived from current RUN_INTELLIGENCE_SPEC + endurance-training literature",
+        "cost_tags": "Vilumo domain judgment candidate; not universal physiological fact"
+      }
+    },
+    {
+      "id": "race_pace_session",
+      "name": "Race-Pace Session",
+      "kind": "run_session_archetype",
+      "training_purpose": "event_specificity",
+      "structure_type": "continuous_or_intervals",
+      "allowed_target_types": [
+        "pace",
+        "RPE",
+        "HR_secondary"
+      ],
+      "prescription_parameters": [
+        "event_context",
+        "work_blocks",
+        "recovery_blocks"
+      ],
+      "domain_judgment_candidates": {
+        "cardiovascular_demand_tendency": "high",
+        "metabolic_demand_tendency": "high",
+        "lower_limb_demand_tendency": "high",
+        "neuromuscular_demand_tendency": "moderate",
+        "status": "HUMAN_REVIEW_REQUIRED"
+      },
+      "required_context": [
+        "athlete_intensity_reference",
+        "goal_phase",
+        "recent_history",
+        "planned_week",
+        "surface_terrain_if_material"
+      ],
+      "not_fixed_on_archetype": [
+        "exact_intensity",
+        "exact_duration",
+        "repetitions",
+        "recovery",
+        "weekly_frequency",
+        "recovery_time",
+        "interference"
+      ],
+      "provenance": {
+        "taxonomy": "derived from current RUN_INTELLIGENCE_SPEC + endurance-training literature",
+        "cost_tags": "Vilumo domain judgment candidate; not universal physiological fact"
+      }
+    },
+    {
+      "id": "taper_specific_session",
+      "name": "Taper-Specific Session",
+      "kind": "run_session_archetype",
+      "training_purpose": "retain_stimulus_reduce_demand",
+      "structure_type": "contextual",
+      "allowed_target_types": [
+        "RPE",
+        "pace",
+        "HR_secondary"
+      ],
+      "prescription_parameters": [
+        "event_context",
+        "reduced_exposure",
+        "quality_retention"
+      ],
+      "domain_judgment_candidates": {
+        "cardiovascular_demand_tendency": "contextual",
+        "metabolic_demand_tendency": "contextual",
+        "lower_limb_demand_tendency": "contextual",
+        "neuromuscular_demand_tendency": "contextual",
+        "status": "HUMAN_REVIEW_REQUIRED"
+      },
+      "required_context": [
+        "athlete_intensity_reference",
+        "goal_phase",
+        "recent_history",
+        "planned_week",
+        "surface_terrain_if_material"
+      ],
+      "not_fixed_on_archetype": [
+        "exact_intensity",
+        "exact_duration",
+        "repetitions",
+        "recovery",
+        "weekly_frequency",
+        "recovery_time",
+        "interference"
+      ],
+      "provenance": {
+        "taxonomy": "derived from current RUN_INTELLIGENCE_SPEC + endurance-training literature",
+        "cost_tags": "Vilumo domain judgment candidate; not universal physiological fact"
+      }
+    },
+    {
+      "id": "race",
+      "name": "Race",
+      "kind": "run_session_archetype",
+      "training_purpose": "competition",
+      "structure_type": "event",
+      "allowed_target_types": [
+        "pace",
+        "RPE",
+        "HR",
+        "power"
+      ],
+      "prescription_parameters": [
+        "distance",
+        "event_context"
+      ],
+      "domain_judgment_candidates": {
+        "cardiovascular_demand_tendency": "very_high",
+        "metabolic_demand_tendency": "very_high",
+        "lower_limb_demand_tendency": "very_high",
+        "neuromuscular_demand_tendency": "contextual",
+        "status": "HUMAN_REVIEW_REQUIRED"
+      },
+      "required_context": [
+        "athlete_intensity_reference",
+        "goal_phase",
+        "recent_history",
+        "planned_week",
+        "surface_terrain_if_material"
+      ],
+      "not_fixed_on_archetype": [
+        "exact_intensity",
+        "exact_duration",
+        "repetitions",
+        "recovery",
+        "weekly_frequency",
+        "recovery_time",
+        "interference"
+      ],
+      "provenance": {
+        "taxonomy": "derived from current RUN_INTELLIGENCE_SPEC + endurance-training literature",
+        "cost_tags": "Vilumo domain judgment candidate; not universal physiological fact"
+      }
+    }
+  ]
+}

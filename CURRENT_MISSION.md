@@ -26,3 +26,12 @@ Chief T2/R2/L2. UI & Experience Designer authors the exploration. Product/UX che
 
 ## Completion and hard stop
 Stop after the visual slice exists and is reported to the Founder. Implementation, design-system freeze and any build decision are separate Founder decisions.
+
+
+<!-- TDF_HUMAN_REVIEW_START: TDF-HR-0.2-r1 -->
+## Documentary follow-up — Training Domain Foundation 0.2 / 2026-10-22
+
+Current direct Founder request authorizes candidate integration and a bounded G01/G02 human-review package. [Candidate 0.2](product/candidates/training-domain-foundation/0.2/README.md) is **CANDIDATE / NON-AUTHORITATIVE · READY WITH FIXES FOR DELIMITED HUMAN REVIEW · NOT PRODUCT/DOMAIN TRUTH**. [Start the human review](reviews/human-domain-review/training-domain-foundation-0.2/00_REVIEW_BRIEF.md); [provenance/audit](audits/training-domain-foundation-0.2/README.md). This appendix does not change the completed experience-decontamination decision above.
+
+G01–G04 remain HUMAN_REVIEW_REQUIRED; S01/S02/S05/S12/S13/S14/S28/S29 remain QUESTIONABLE; C1–C6 remain sporting-open. Next owner: Founder allocates a qualified human training professional to review population/scope and the controlled lower × threshold pair. Item-level decisions must identify population, rule/version, rationale, conditions and reviewer credentials. No promotion, gate closure, runtime, Figma edit or change to Product Truth/AE/Run/Strength is authorized or inferred from preparing this packet. Status/evidence and final documentary disposition live in the linked audit; future sessions should read the review brief for this follow-up only.
+<!-- TDF_HUMAN_REVIEW_END: TDF-HR-0.2-r1 -->
