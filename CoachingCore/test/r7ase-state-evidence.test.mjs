@@ -195,12 +195,17 @@ test('State evidence family J (I6, P6): a historical correction replaces the fac
  for(const [id,e] of Object.entries(before.interruption.entry.strength.exercises))if(id!=='back-squat'){const a=ex(after,id);assert.ok(!(a.load>e.load),id);assert.ok(!(a.load===e.load&&(a.loadTick??0)>(e.loadTick??0)),id);}
 });
 
-test('State evidence I7, I10: planning keeps projecting; a first review after unreported weeks keeps the plan, history keeps the facts',()=>{
- // Weeks 0-3 never reported, week 4 executed in full and reviewed: the planner continues the plan (its quality work stays), while a break
- // starts from what the record shows executed.
- const g=generateProgram(intake({id:'t7se-i7'}),opts),t={p:g.program,ledger:[]},planned=JSON.stringify(t.p.weeks[5].sessions.map(s=>[s.id,s.role]));weekly(t,4);
- assert.equal(JSON.stringify(t.p.weeks[5].sessions.map(s=>[s.id,s.role])),planned,'the plan of week 5 keeps its sessions');
- const projected=t.p.stateTrace[5].run.easyWeeksDone,d=B(copy(t),5);
+test('State evidence I7, I10: planning keeps projecting; a first review after unreported weeks plans next week from what was executed, history keeps the facts',()=>{
+ // Weeks 0-3 never reported, week 4 executed in full and reviewed: a break starts from what the record shows executed. Decision authority
+ // closure (QE-R7ASC-02, Founder 1.2): next week starts from what was executed too. The unreported weeks earn no executed easy week, so they
+ // unlock no quality run; the weeks after it are still projected (assumed executed). The earlier version of this test expected week 5 to keep
+ // the quality run the projection had unlocked from four unexecuted weeks (declared boundary E10, withdrawn).
+ const g=generateProgram(intake({id:'t7se-i7'}),opts),t={p:g.program,ledger:[]},projected=t.p.stateTrace[5].run.easyWeeksDone,quality=w=>t.p.weeks[w].sessions.some(s=>live(s)&&s.role==='QUALITY');
+ assert.ok(t.p.weeks[5].sessions.some(s=>live(s)&&s.role==='QUALITY'),'the projection had unlocked quality in week 5');
+ weekly(t,4);
+ assert.ok(t.p.stateTrace[5].run.easyWeeksDone<=1&&!quality(5),`next week starts from the one executed week (${t.p.stateTrace[5].run.easyWeeksDone}): no quality unlocked`);
+ assert.ok(t.p.weeks.slice(6).some((x,i)=>quality(6+i)),'later weeks are still projected');
+ const d=B(copy(t),5);
  assert.ok(d.interruption.entry.run.easyWeeksDone<projected,`history counts executed weeks only (${d.interruption.entry.run.easyWeeksDone} < ${projected})`);
  assert.ok(d.interruption.entry.run.easyWeeksDone<=1);
 });

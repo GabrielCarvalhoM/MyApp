@@ -62,21 +62,29 @@ function q3Week2(v){N=0;const t=gen({id:'t7sc-q3'});weekly(t,0);const w1=t.p.wee
  return t.p.weeks[2].sessions.filter(live).map((s,i)=>({...obs(t.p,s,SAT(s)?v:{}),eventId:`q3-w2-${i}`}));}
 /** db-rdl established at 20 kg in weeks 0-1, then corrected away ("I did not do the RDLs"): EARLY with week 1's review, LATE on Monday 07:00 of
  * week 2 after its rows were planned from the uncorrected evidence. Week 2 reported identically in every cell: reviewed, or (factsOnly) sent on
- * Monday of week 3 so that no decision closes week 2. */
+ * Monday of week 3 so that no decision closes week 2. Decision authority closure: a correction that moves the week's start re-plans the rows still
+ * ahead (QE-R7ASC-01, Property B), so the LATE cell's KNOWN 20 row is replaced before it is executed (`planned` is the row before the correction);
+ * AFTER delivers the same corrections only with week 2's own reports, so the row executed is the KNOWN 20 planned from the retracted evidence. */
 function q3(cell,w2,{factsOnly=false}={}){N=0;const t=gen({id:'t7sc-q3'});weekly(t,0);
  const w1=t.p.weeks[1].sessions.filter(live).map((s,i)=>({...obs(t.p,s),eventId:`q3-w1-${i}`}));
  const has=o=>t.p.weeks.some(w=>w.sessions.some(s=>s.id===o.sessionId&&s.prescription?.exercises?.some(e=>e.id===RDL)));
  const originals=[...t.ledger.filter(o=>o.logs?.[RDL]&&!o.superseded),...w1.filter(has)],correctedAt=`${addDays(t.p.weeks[1].startDate,6)}T20:30:00Z`;
  const fixes=originals.map(o=>({eventId:o.eventId+'-fix',athleteId:o.athleteId,sessionId:o.sessionId,observedAt:o.observedAt,correctionOf:o.eventId,correctedAt,actual:{...structuredClone(o.actual),exercises:(o.actual.exercises??[]).filter(e=>e.id!==RDL)},response:{...o.response}}));
- if(cell==='EARLY')step(t,at(t.p,1,6,'21:00:00',{observations:[...w1,...fixes]}));else{step(t,at(t.p,1,6,'21:00:00',{observations:w1}));step(t,at(t.p,2,0,'07:00:00',{observations:fixes}));}
- const rows2=rowsOf(t,2,SAT,[RDL]);
- step(t,factsOnly?at(t.p,3,0,'06:00:00',{observations:structuredClone(w2)}):at(t.p,2,6,'21:00:00',{observations:structuredClone(w2)}));
- return {t,rows2};}
+ if(cell==='EARLY')step(t,at(t.p,1,6,'21:00:00',{observations:[...w1,...fixes]}));else step(t,at(t.p,1,6,'21:00:00',{observations:w1}));
+ const planned=rowsOf(t,2,SAT,[RDL]);if(cell==='LATE')step(t,at(t.p,2,0,'07:00:00',{observations:fixes}));
+ const rows2=rowsOf(t,2,SAT,[RDL]),late=cell==='AFTER'?fixes:[];
+ step(t,factsOnly?at(t.p,3,0,'06:00:00',{observations:[...structuredClone(w2),...late]}):at(t.p,2,6,'21:00:00',{observations:[...structuredClone(w2),...late]}));
+ return {t,rows2,planned};}
 for(const [name,v] of Object.entries(Q3V))test(`QE-R7ASM-01 (${name}): a KNOWN row planned from retracted evidence establishes nothing; history does not depend on when the correction reached the plan`,()=>{
- const w2=q3Week2(v),E=q3('EARLY',w2),L=q3('LATE',w2);
- assert.equal(record(E.t),record(L.t),'the two cells hold the same record of facts');
- assert.equal(L.rows2[0].mode,'KNOWN','the LATE cell planned a KNOWN 20 row before the correction reached it');
+ // Decision authority closure: the LATE correction re-plans the row before it is executed; the AFTER cell executes the stale KNOWN 20 row, which
+ // still establishes nothing (the start does not hold the exercise with a known load: heldKnownLoad).
+ const w2=q3Week2(v),E=q3('EARLY',w2),La=q3('LATE',w2),L=q3('AFTER',w2);
+ assert.equal(record(E.t),record(L.t),'the two cells hold the same record of facts');assert.equal(record(E.t),record(La.t));
+ assert.equal(La.planned[0].mode,'KNOWN','the LATE cell planned a KNOWN 20 row before the correction reached it');
+ assert.deepEqual(La.rows2,E.rows2,'the correction re-plans the row still ahead from the corrected evidence');
+ assert.equal(L.rows2[0].mode,'KNOWN','the AFTER cell executed the KNOWN 20 row planned from the retracted evidence');
  assert.equal(E.rows2[0].mode,'ESTABLISH','the EARLY cell planned the establishment');
+ assert.equal(JSON.stringify(history(La.t,3,0)),JSON.stringify(history(E.t,3,0)),'LATE and EARLY: the same HistoricalState');
  const he=history(E.t,3,0),hl=history(L.t,3,0);
  // The atoms of what was established: whether the exercise is held, its mode, load, pending log, unlogged flag, source, dates and the lift. The
  // largest whole count executed (lastExecutedSets) is the prescribed count the athlete executed (SSCTR D49, R20): the cells' rows prescribed 2 and
@@ -91,7 +99,7 @@ for(const [name,v] of Object.entries(Q3V))test(`QE-R7ASM-01 (${name}): a KNOWN r
  if(name==='loggedAt18'){const s=hl.state.strength.exercises[RDL];assert.equal(s.mode,'FROM_LOG');assert.equal(s.pendingLoad,18,'a first log waits for confirmation (SSCTR D45)');assert.equal(hex(hl,RDL).liftedLoad,18,'the lift is a fact');}
 });
 test('QE-R7ASM-01 (facts only, Q12a): the same when the week is never reviewed',()=>{
- const w2=q3Week2(Q3V.noDetails),E=q3('EARLY',w2,{factsOnly:true}),L=q3('LATE',w2,{factsOnly:true});
+ const w2=q3Week2(Q3V.noDetails),E=q3('EARLY',w2,{factsOnly:true}),L=q3('AFTER',w2,{factsOnly:true});
  assert.equal(record(E.t),record(L.t));
  const hl=history(L.t,3,0,'06:30:00'),he=history(E.t,3,0,'06:30:00');
  assert.deepEqual(hl.state.strength.exercises[RDL]??null,he.state.strength.exercises[RDL]??null);
@@ -234,7 +242,8 @@ test('SSCTR F3 (R6-H25): after the change to MAINTAIN no bench press or lat pull
 // ---------- H1-H5: history ingress ----------
 
 test('H1: a projected KNOWN load without a factual load gives history no load',()=>{
- const w2=q3Week2(Q3V.noDetails),{t,rows2}=q3('LATE',w2),H=history(t,3,0);
+ // Decision authority closure: the AFTER cell executes the KNOWN row planned from the retracted evidence (a LATE correction now re-plans it first).
+ const w2=q3Week2(Q3V.noDetails),{t,rows2}=q3('AFTER',w2),H=history(t,3,0);
  assert.equal(rows2[0].mode,'KNOWN');assert.equal(rows2[0].value,20,'the plan prescribed 20');
  assert.ok(!hex(H,RDL)||hex(H,RDL).lastExecutedLoad===null);
  assert.notEqual(H.state.strength.exercises[RDL]?.load,20);
@@ -477,8 +486,9 @@ test('Property D (found on the way): a past week\'s gate never counts a log exec
 test('QE-R7ASM-01 (the load questions): the decision asks to confirm a first log of an exercise history does not hold, whatever its row prescribed',()=>{
  // The question follows the transition (SSCTR D45): the log its own review left waiting is the one it asks about. That holds in the EARLY cell (an
  // establishment row) and in the LATE one (a KNOWN 20 row planned from the retracted evidence).
- const w2=q3Week2({}),cells={EARLY:q3('EARLY',w2),LATE:q3('LATE',w2)};
- assert.equal(cells.LATE.rows2[0].mode,'KNOWN','the LATE cell\'s row was planned KNOWN from the retracted evidence');
+ // Decision authority closure: the AFTER cell executes the KNOWN row (a LATE correction now re-plans it first; that cell asks too).
+ const w2=q3Week2({}),cells={EARLY:q3('EARLY',w2),LATE:q3('LATE',w2),AFTER:q3('AFTER',w2)};
+ assert.equal(cells.AFTER.rows2[0].mode,'KNOWN','the AFTER cell\'s row was planned KNOWN from the retracted evidence');
  for(const [name,x] of Object.entries(cells)){
   assert.equal(history(x.t,3,0).state.strength.exercises[RDL]?.pendingLoad,20,`${name}: the first log waits for confirmation`);
   assert.deepEqual((x.t.last.loadQuestions??[]).filter(q=>q.exerciseId===RDL).map(q=>[q.reason,q.logged]),[['ESTABLISHMENT_LOG_UNCONFIRMED',20]],`${name}: and the decision asks for it`);

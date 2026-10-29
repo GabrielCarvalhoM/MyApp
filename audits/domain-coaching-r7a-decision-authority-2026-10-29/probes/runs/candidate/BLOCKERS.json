@@ -1,0 +1,238 @@
+{
+ "probe": "reproduce-blockers-r7ada",
+ "target": "live",
+ "root": "CoachingCore",
+ "node": "v24.19.0",
+ "ranAt": "2026-10-29T21:26:52.686Z",
+ "present": {
+  "QE-R7ASC-01": false,
+  "QE-R7ASC-02": true,
+  "QE-R7ASC-03": false,
+  "QE-R7ASC-04": false,
+  "F4": false
+ },
+ "presentByMechanism": {
+  "QE-R7ASC-02": false
+ },
+ "blockers": {
+  "QE-R7ASC-01": {
+   "signal": "identical record, HistoricalState differs with when the correction reached the plan (stale KNOWN row adopted as history)",
+   "P01": [
+    {
+     "variant": "noDetails",
+     "sameRecord": true,
+     "sameHistoryAtWeek4": true
+    },
+    {
+     "variant": "repsNoLoad",
+     "sameRecord": true,
+     "sameHistoryAtWeek4": true
+    },
+    {
+     "variant": "unknownUnit",
+     "sameRecord": true,
+     "sameHistoryAtWeek4": true
+    }
+   ],
+   "P01_24kg": [
+    {
+     "variant": "noDetails",
+     "sameRecord": true,
+     "sameHistoryAtWeek4": true
+    },
+    {
+     "variant": "repsNoLoad",
+     "sameRecord": true,
+     "sameHistoryAtWeek4": true
+    },
+    {
+     "variant": "unknownUnit",
+     "sameRecord": true,
+     "sameHistoryAtWeek4": true
+    }
+   ],
+   "P01b": {
+    "neverReviewed": {
+     "sameRecord": true,
+     "sameHistory": true
+    },
+    "conflict": {
+     "sameRecord": true,
+     "sameHistoryWeek3": true
+    }
+   }
+  },
+  "QE-R7ASC-02": {
+   "signal": "identical ledgers and identical history, yet the plan two weeks on differs or runs ahead of history (projected run progress used as earned)",
+   "P02": {
+    "a_easy": {
+     "identicalLedgers": true,
+     "historyEqual": true,
+     "rowsDiffer": false
+    },
+    "b_walkjog": {
+     "identicalLedgers": true,
+     "historyEqual": true,
+     "rowsDiffer": false
+    },
+    "c_walkjogLongReturn": {
+     "identicalLedgers": true,
+     "historyEqual": true,
+     "rowsDiffer": false
+    }
+   },
+   "P02b": {
+    "EASY": {
+     "cases": 22,
+     "violating": [
+      "k=1 NOLONG: "
+     ]
+    },
+    "WALK_JOG": {
+     "cases": 22,
+     "violating": []
+    }
+   },
+   "mechanism": {
+    "EASY": {
+     "planAheadOfHistory": []
+    },
+    "WALK_JOG": {
+     "planAheadOfHistory": []
+    }
+   },
+   "literalCells": [
+    {
+     "k": 1,
+     "shape": "NOLONG",
+     "planDims": [],
+     "uAheadOfHistory": [],
+     "U": "EASY:40:EASY_MINUTES=40 EASY:40:EASY_MINUTES=40 LONG:55:LONG_MINUTES=55",
+     "R": "EASY:45:EASY_MINUTES=45 EASY:40:EASY_MINUTES=40 LONG:55:LONG_MINUTES=55"
+    }
+   ]
+  },
+  "QE-R7ASC-03": {
+   "signal": "a missed long run in a RETURN week still steps the return; the return week is credited before its Sunday run exists",
+   "P05": {
+    "MODERATE": {
+     "missedLongStillSteps": false,
+     "creditedBeforeSundayExists": false,
+     "missedGate": {
+      "EASY": "HOLD"
+     },
+     "nextWeekRunRowsMissed": "EASY:15:RETURN_STEP=0 EASY:15:RETURN_STEP=0 LONG:20:RETURN_STEP=0",
+     "nextWeekRunRowsExec": "EASY:15:RETURN_STEP=0 EASY:15:RETURN_STEP=0 LONG:20:RETURN_STEP=0"
+    },
+    "LONG": {
+     "missedLongStillSteps": false,
+     "creditedBeforeSundayExists": false,
+     "missedGate": {
+      "EASY": "HOLD"
+     },
+     "nextWeekRunRowsMissed": "EASY:15:RESTART_MINUTES=15 EASY:15:RESTART_MINUTES=15 EASY:15:RESTART_MINUTES=15",
+     "nextWeekRunRowsExec": "EASY:15:RESTART_MINUTES=15 EASY:15:RESTART_MINUTES=15 EASY:15:RESTART_MINUTES=15"
+    }
+   },
+   "P05b": {
+    "SUNDAY_PENDING": {
+     "basis": {
+      "RUN": "RETURN_ENTRY",
+      "STRENGTH": "RETURN_ENTRY"
+     },
+     "run": {
+      "mode": "RETURN",
+      "returnStep": 0
+     }
+    },
+    "SUNDAY_MISSED": {
+     "basis": {
+      "RUN": "RETURN_ENTRY",
+      "STRENGTH": "RETURN_ENTRY"
+     },
+     "run": {
+      "mode": "RETURN",
+      "returnStep": 0
+     }
+    }
+   }
+  },
+  "QE-R7ASC-04": {
+   "signal": "identical record; week 5 dose depends on whether an unrelated equipment statement re-composed the week (two goal contexts)",
+   "P07": {
+    "pairs": 20,
+    "pairsWithDivergence": []
+   }
+  },
+  "F4": {
+   "signal": "a walk/jog return after a HOLD or consolidation week resumes above the last step run (SHORT) or one below it (MODERATE)",
+   "walkjog": {
+    "cells": 12,
+    "aboveRecipeAfterSecondReturn": 0,
+    "examples": []
+   }
+  }
+ },
+ "runs": {
+  "P02": {
+   "exit": 0,
+   "seconds": 5,
+   "outSha256": "8de918adf491dbc0a49dce5fccc56098590f7d5a21ddab0b9461c3ee4306ba8f",
+   "identicalToReviewerRunExceptRoot": false
+  },
+  "P01b": {
+   "exit": 0,
+   "seconds": 7,
+   "outSha256": "dcca7dadafa81da992b1483bc6bc681d61c0858b03654f6fbf2141eed132889b",
+   "identicalToReviewerRunExceptRoot": false
+  },
+  "P05b": {
+   "exit": 0,
+   "seconds": 2,
+   "outSha256": "51022d69b4f18c3b0fe2ac4369801e147eae9adfa5d1c95c765f1bf2a30b63ad",
+   "identicalToReviewerRunExceptRoot": false
+  },
+  "P05": {
+   "exit": 0,
+   "seconds": 8,
+   "outSha256": "e314c8df656cf077d7cbb2f75f84dc128c2da7fa455edaac5d37ba682da0eda8",
+   "identicalToReviewerRunExceptRoot": false
+  },
+  "P01": {
+   "exit": 0,
+   "seconds": 15,
+   "outSha256": "9a2791ecc073470a7879f581f3b0a6ae5a74be6181f53ace9645912840256480",
+   "identicalToReviewerRunExceptRoot": false
+  },
+  "walkjog-trace": {
+   "exit": 0,
+   "seconds": 1,
+   "outSha256": "c734b3a35b7cb019b51f98b68e1576a8afd2b787ec94acf42f54a6bc30181ff7",
+   "identicalToReviewerRunExceptRoot": false
+  },
+  "P01.w3kg24": {
+   "exit": 0,
+   "seconds": 17,
+   "outSha256": "701e14f0b6d84330f22bbfc01ed3bcdfa5d177aa0bd6e7509e764b6badd24c94",
+   "identicalToReviewerRunExceptRoot": false
+  },
+  "walkjog": {
+   "exit": 0,
+   "seconds": 4,
+   "outSha256": "4dc6786adaa87544758f4fceef9c4bc5f06386a752156fb359f1db67dad430e5",
+   "identicalToReviewerRunExceptRoot": false
+  },
+  "P07": {
+   "exit": 0,
+   "seconds": 27,
+   "outSha256": "c30e13adb29a74558838e8bd234f8c9bc3f053b1cedb93298a1936cf889300da",
+   "identicalToReviewerRunExceptRoot": false
+  },
+  "P02b": {
+   "exit": 0,
+   "seconds": 51,
+   "outSha256": "205ab3f6f643f8ca0c36f8dbdd685387199472c9e0034ac65a4399c562c626aa",
+   "identicalToReviewerRunExceptRoot": false
+  }
+ }
+}

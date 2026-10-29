@@ -1,0 +1,849 @@
+{
+ "revision": "R7ADA-REGRESSION-NAMED-1",
+ "source": {
+  "regression": "CoachingCore/r7/decision-authority/REGRESSION_R7ADA.json",
+  "ablation": "audits/domain-coaching-r7a-decision-authority-2026-10-29/probes/runs/ablation.out.json"
+ },
+ "classes": {
+  "RUN_VIEW_FROM_EVIDENCE": {
+   "contract": "C1, C2 (QE-R7ASC-02 closure; E10 withdrawn)",
+   "meaning": "The decision's run is the PLAN reading's (EarnedRunProgress): weeks the case never reports earn no run progression, so quality and strides unlock, ladder steps and long runs follow executed weeks, not the projection."
+  },
+  "GATE_ORDER": {
+   "contract": "C3 (QE-R7ASC-03; P4)",
+   "meaning": "One verdict per gate key, the most restrictive standing, whatever order roles or rows are read in."
+  },
+  "PLAN_READING": {
+   "contract": "B1 (QE-R7ASC-04)",
+   "meaning": "Every planning consumer of a decision reads the evidence reducer's PLAN reading (transitions under the entered week's context; open weeks held)."
+  },
+  "RETURN_WEEK_E7": {
+   "contract": "B2 (QE-R7ASC-04)",
+   "meaning": "The PLAN reading reads a return's own week as the planner's review does (E7); the closing review agrees with it and keeps the plan where the predecessor re-planned. Rows identical."
+  }
+ },
+ "summary": {
+  "r6FreshHoldout": {
+   "cases": 35,
+   "identical": 20,
+   "different": [
+    "R6-H17",
+    "R6-H18",
+    "R6-H19",
+    "R6-H22",
+    "R6-H23",
+    "R6-H24",
+    "R6-H25",
+    "R6-H26",
+    "R6-H29",
+    "R6-H30",
+    "R6-H31",
+    "R6-H32",
+    "R6-H33",
+    "R6-H34",
+    "R6-H35"
+   ],
+   "statusChanged": [
+    "R6-H24: MODIFY/SUBSTITUTE KEEP/KEEP MODIFY/GATED_NEXT_STEP -> MODIFY/SUBSTITUTE KEEP/INSTANTIATE_LOGGED_LOADS MODIFY/GATED_NEXT_STEP",
+    "R6-H35: MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP -> ERROR"
+   ],
+   "errors": [
+    "R6-H35"
+   ],
+   "doseRose": [
+    "R6-H17 (7)",
+    "R6-H19 (2)",
+    "R6-H22 (8)",
+    "R6-H23 (1)",
+    "R6-H24 (4)",
+    "R6-H25 (6)",
+    "R6-H26 (4)",
+    "R6-H30 (4)",
+    "R6-H31 (4)",
+    "R6-H32 (6)",
+    "R6-H34 (12)"
+   ]
+  },
+  "r5Corpus": {
+   "cases": 24,
+   "identical": 24,
+   "different": [],
+   "statusChanged": [],
+   "errors": [],
+   "doseRose": []
+  },
+  "profiles": {
+   "cases": 16,
+   "identical": 16,
+   "different": [],
+   "statusChanged": [],
+   "errors": [],
+   "doseRose": []
+  },
+  "simulations": {
+   "cases": 14,
+   "identical": 13,
+   "different": [
+    "T05_10K8_SHORT_INTERRUPTION"
+   ],
+   "statusChanged": [],
+   "errors": [],
+   "doseRose": []
+  }
+ },
+ "items": [
+  {
+   "id": "R6 R6-H17",
+   "classes": [
+    "RUN_VIEW_FROM_EVIDENCE"
+   ],
+   "restoredByReverting": [
+    "RUN_VIEW_FROM_EVIDENCE",
+    "PROGRESSION",
+    "VIEW_AS_PREDECESSOR",
+    "ALL",
+    "ALL_BUT_FACT",
+    "ALL_BUT_REPLAN_ON_CORRECTION",
+    "ALL_BUT_PLAN_CONTEXT",
+    "ALL_BUT_RETURN_WEEK_E7",
+    "ALL_BUT_REBUILD_OWN_VIEW",
+    "ALL_BUT_PLAN_READING",
+    "ALL_BUT_GATE_ORDER",
+    "ALL_BUT_WALKJOG_STEP_RUN",
+    "ALL_BUT_WALKJOG_RETURN_CEILING"
+   ],
+   "statusChanged": null,
+   "error": null,
+   "fell": 27,
+   "kindChanged": 1,
+   "rose": [
+    {
+     "line": "step1 week 5 2027-04-08 RUN/QUALITY minutes: {\"family\":\"THRESHOLD\",\"minutes\":43,\"reps\":3,\"work\":8,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":49,\"reps\":3,\"work\":6,\"strides\":null,\"calibration\":\"CURRENT_FAMILIAR_TASK\"}",
+     "class": "FAMILIAR_TASK",
+     "reading": "the athlete's current familiar THRESHOLD task (3x6, calibrated on the intake's own session) instead of THRESHOLD step 3"
+    },
+    {
+     "line": "step1 week 6 2027-04-15 RUN/QUALITY reps: {\"family\":\"HALF_MARATHON_SPECIFIC\",\"minutes\":42,\"reps\":2,\"work\":12,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":41,\"reps\":4,\"work\":5,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "SPECIFIC_NOT_YET_EARNED",
+     "reading": "threshold step 1 instead of HALF_MARATHON_SPECIFIC step 0: the specific ladder needs the executed threshold sessions"
+    },
+    {
+     "line": "step1 week 7 2027-04-22 RUN/QUALITY work: {\"family\":\"HALF_MARATHON_SPECIFIC\",\"minutes\":49,\"reps\":3,\"work\":10,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"HALF_MARATHON_SPECIFIC\",\"minutes\":42,\"reps\":2,\"work\":12,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "HALF_MARATHON_SPECIFIC step 0 instead of 1; the field \"work\" of the lower step is larger"
+    },
+    {
+     "line": "step1 week 8 2027-04-29 RUN/QUALITY minutes: {\"family\":\"HALF_MARATHON_SPECIFIC\",\"minutes\":48,\"reps\":2,\"work\":15,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"HALF_MARATHON_SPECIFIC\",\"minutes\":49,\"reps\":3,\"work\":10,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "HALF_MARATHON_SPECIFIC step 1 instead of 2; the field \"minutes\" of the lower step is larger"
+    },
+    {
+     "line": "step1 week 8 2027-04-29 RUN/QUALITY reps: {\"family\":\"HALF_MARATHON_SPECIFIC\",\"minutes\":48,\"reps\":2,\"work\":15,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"HALF_MARATHON_SPECIFIC\",\"minutes\":49,\"reps\":3,\"work\":10,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "HALF_MARATHON_SPECIFIC step 1 instead of 2; the field \"reps\" of the lower step is larger"
+    },
+    {
+     "line": "step1 week 9 2027-05-06 RUN/QUALITY work: {\"family\":\"HALF_MARATHON_SPECIFIC\",\"minutes\":55,\"reps\":3,\"work\":12,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"HALF_MARATHON_SPECIFIC\",\"minutes\":48,\"reps\":2,\"work\":15,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "HALF_MARATHON_SPECIFIC step 2 instead of 3; the field \"work\" of the lower step is larger"
+    },
+    {
+     "line": "step2 week 5 2027-04-08 RUN/QUALITY minutes: {\"family\":\"THRESHOLD\",\"minutes\":43,\"reps\":3,\"work\":8,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":49,\"reps\":3,\"work\":6,\"strides\":null,\"calibration\":\"CURRENT_FAMILIAR_TASK\"}",
+     "class": "FAMILIAR_TASK",
+     "reading": "the athlete's current familiar THRESHOLD task (3x6, calibrated on the intake's own session) instead of THRESHOLD step 3"
+    }
+   ]
+  },
+  {
+   "id": "R6 R6-H18",
+   "classes": [
+    "RUN_VIEW_FROM_EVIDENCE",
+    "GATE_ORDER"
+   ],
+   "restoredByReverting": [
+    "PROGRESSION",
+    "ALL",
+    "ALL_BUT_FACT",
+    "ALL_BUT_REPLAN_ON_CORRECTION",
+    "ALL_BUT_PLAN_CONTEXT",
+    "ALL_BUT_RETURN_WEEK_E7",
+    "ALL_BUT_REBUILD_OWN_VIEW",
+    "ALL_BUT_PLAN_READING",
+    "ALL_BUT_WALKJOG_STEP_RUN",
+    "ALL_BUT_WALKJOG_RETURN_CEILING"
+   ],
+   "statusChanged": null,
+   "error": null,
+   "fell": 6,
+   "kindChanged": 0,
+   "rose": []
+  },
+  {
+   "id": "R6 R6-H19",
+   "classes": [
+    "RUN_VIEW_FROM_EVIDENCE"
+   ],
+   "restoredByReverting": [
+    "RUN_VIEW_FROM_EVIDENCE",
+    "PROGRESSION",
+    "VIEW_AS_PREDECESSOR",
+    "ALL",
+    "ALL_BUT_FACT",
+    "ALL_BUT_REPLAN_ON_CORRECTION",
+    "ALL_BUT_PLAN_CONTEXT",
+    "ALL_BUT_RETURN_WEEK_E7",
+    "ALL_BUT_REBUILD_OWN_VIEW",
+    "ALL_BUT_PLAN_READING",
+    "ALL_BUT_GATE_ORDER",
+    "ALL_BUT_WALKJOG_STEP_RUN",
+    "ALL_BUT_WALKJOG_RETURN_CEILING"
+   ],
+   "statusChanged": null,
+   "error": null,
+   "fell": 13,
+   "kindChanged": 1,
+   "rose": [
+    {
+     "line": "step1 week 5 2027-02-11 RUN/QUALITY minutes: {\"family\":\"THRESHOLD\",\"minutes\":43,\"reps\":3,\"work\":8,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"TEN_K_SPECIFIC\",\"minutes\":50,\"reps\":5,\"work\":3,\"strides\":null,\"calibration\":\"CURRENT_FAMILIAR_TASK\"}",
+     "class": "FAMILIAR_TASK",
+     "reading": "the athlete's current familiar TEN_K_SPECIFIC task (5x3, calibrated on the intake's own session) instead of THRESHOLD step 3"
+    },
+    {
+     "line": "step1 week 5 2027-02-11 RUN/QUALITY reps: {\"family\":\"THRESHOLD\",\"minutes\":43,\"reps\":3,\"work\":8,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"TEN_K_SPECIFIC\",\"minutes\":50,\"reps\":5,\"work\":3,\"strides\":null,\"calibration\":\"CURRENT_FAMILIAR_TASK\"}",
+     "class": "FAMILIAR_TASK",
+     "reading": "the athlete's current familiar TEN_K_SPECIFIC task (5x3, calibrated on the intake's own session) instead of THRESHOLD step 3"
+    }
+   ]
+  },
+  {
+   "id": "R6 R6-H22",
+   "classes": [
+    "RUN_VIEW_FROM_EVIDENCE"
+   ],
+   "restoredByReverting": [
+    "RUN_VIEW_FROM_EVIDENCE",
+    "PROGRESSION",
+    "VIEW_AS_PREDECESSOR",
+    "ALL",
+    "ALL_BUT_FACT",
+    "ALL_BUT_REPLAN_ON_CORRECTION",
+    "ALL_BUT_PLAN_CONTEXT",
+    "ALL_BUT_RETURN_WEEK_E7",
+    "ALL_BUT_REBUILD_OWN_VIEW",
+    "ALL_BUT_PLAN_READING",
+    "ALL_BUT_GATE_ORDER",
+    "ALL_BUT_WALKJOG_STEP_RUN",
+    "ALL_BUT_WALKJOG_RETURN_CEILING"
+   ],
+   "statusChanged": null,
+   "error": null,
+   "fell": 101,
+   "kindChanged": 0,
+   "rose": [
+    {
+     "line": "step1 week 6 2027-02-18 RUN/QUALITY reps: {\"family\":\"THRESHOLD\",\"minutes\":49,\"reps\":3,\"work\":10,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":41,\"reps\":4,\"work\":5,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "THRESHOLD step 1 instead of 5; the field \"reps\" of the lower step is larger"
+    },
+    {
+     "line": "step1 week 8 2027-03-04 RUN/QUALITY reps: {\"family\":\"THRESHOLD\",\"minutes\":49,\"reps\":3,\"work\":10,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":48,\"reps\":5,\"work\":5,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "THRESHOLD step 2 instead of 5; the field \"reps\" of the lower step is larger"
+    },
+    {
+     "line": "step2 week 6 2027-02-18 RUN/QUALITY reps: {\"family\":\"THRESHOLD\",\"minutes\":49,\"reps\":3,\"work\":10,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":41,\"reps\":4,\"work\":5,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "THRESHOLD step 1 instead of 5; the field \"reps\" of the lower step is larger"
+    },
+    {
+     "line": "step2 week 8 2027-03-03 RUN/QUALITY reps: {\"family\":\"THRESHOLD\",\"minutes\":49,\"reps\":3,\"work\":10,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":41,\"reps\":4,\"work\":5,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "THRESHOLD step 1 instead of 5; the field \"reps\" of the lower step is larger"
+    },
+    {
+     "line": "step2 week 9 2027-03-10 RUN/QUALITY reps: {\"family\":\"THRESHOLD\",\"minutes\":49,\"reps\":3,\"work\":10,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":48,\"reps\":5,\"work\":5,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "THRESHOLD step 2 instead of 5; the field \"reps\" of the lower step is larger"
+    },
+    {
+     "line": "step3 week 6 2027-02-18 RUN/QUALITY reps: {\"family\":\"THRESHOLD\",\"minutes\":49,\"reps\":3,\"work\":10,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":41,\"reps\":4,\"work\":5,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "THRESHOLD step 1 instead of 5; the field \"reps\" of the lower step is larger"
+    },
+    {
+     "line": "step3 week 8 2027-03-03 RUN/QUALITY reps: {\"family\":\"THRESHOLD\",\"minutes\":49,\"reps\":3,\"work\":10,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":41,\"reps\":4,\"work\":5,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "THRESHOLD step 1 instead of 5; the field \"reps\" of the lower step is larger"
+    },
+    {
+     "line": "step3 week 9 2027-03-10 RUN/QUALITY reps: {\"family\":\"THRESHOLD\",\"minutes\":49,\"reps\":3,\"work\":10,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":48,\"reps\":5,\"work\":5,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "THRESHOLD step 2 instead of 5; the field \"reps\" of the lower step is larger"
+    }
+   ]
+  },
+  {
+   "id": "R6 R6-H23",
+   "classes": [
+    "RUN_VIEW_FROM_EVIDENCE",
+    "GATE_ORDER"
+   ],
+   "restoredByReverting": [
+    "PROGRESSION",
+    "ALL",
+    "ALL_BUT_FACT",
+    "ALL_BUT_REPLAN_ON_CORRECTION",
+    "ALL_BUT_PLAN_CONTEXT",
+    "ALL_BUT_RETURN_WEEK_E7",
+    "ALL_BUT_REBUILD_OWN_VIEW",
+    "ALL_BUT_PLAN_READING",
+    "ALL_BUT_WALKJOG_STEP_RUN",
+    "ALL_BUT_WALKJOG_RETURN_CEILING"
+   ],
+   "statusChanged": null,
+   "error": null,
+   "fell": 14,
+   "kindChanged": 1,
+   "rose": [
+    {
+     "line": "step1 week 6 2027-10-12 RUN/QUALITY reps: {\"family\":\"THRESHOLD\",\"minutes\":43,\"reps\":3,\"work\":8,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":41,\"reps\":4,\"work\":5,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "THRESHOLD step 1 instead of 3; the field \"reps\" of the lower step is larger"
+    }
+   ]
+  },
+  {
+   "id": "R6 R6-H24",
+   "classes": [
+    "RUN_VIEW_FROM_EVIDENCE",
+    "GATE_ORDER"
+   ],
+   "restoredByReverting": [
+    "PROGRESSION",
+    "ALL",
+    "ALL_BUT_FACT",
+    "ALL_BUT_REPLAN_ON_CORRECTION",
+    "ALL_BUT_PLAN_CONTEXT",
+    "ALL_BUT_RETURN_WEEK_E7",
+    "ALL_BUT_REBUILD_OWN_VIEW",
+    "ALL_BUT_PLAN_READING",
+    "ALL_BUT_WALKJOG_STEP_RUN",
+    "ALL_BUT_WALKJOG_RETURN_CEILING"
+   ],
+   "statusChanged": "MODIFY/SUBSTITUTE KEEP/KEEP MODIFY/GATED_NEXT_STEP -> MODIFY/SUBSTITUTE KEEP/INSTANTIATE_LOGGED_LOADS MODIFY/GATED_NEXT_STEP",
+   "error": null,
+   "fell": 27,
+   "kindChanged": 0,
+   "rose": [
+    {
+     "line": "step2 week 7 2027-05-27 RUN/QUALITY work: {\"family\":\"HALF_MARATHON_SPECIFIC\",\"minutes\":49,\"reps\":3,\"work\":10,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"HALF_MARATHON_SPECIFIC\",\"minutes\":42,\"reps\":2,\"work\":12,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "HALF_MARATHON_SPECIFIC step 0 instead of 1; the field \"work\" of the lower step is larger"
+    },
+    {
+     "line": "step2 week 8 2027-06-03 RUN/QUALITY minutes: {\"family\":\"HALF_MARATHON_SPECIFIC\",\"minutes\":48,\"reps\":2,\"work\":15,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"HALF_MARATHON_SPECIFIC\",\"minutes\":49,\"reps\":3,\"work\":10,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "HALF_MARATHON_SPECIFIC step 1 instead of 2; the field \"minutes\" of the lower step is larger"
+    },
+    {
+     "line": "step2 week 8 2027-06-03 RUN/QUALITY reps: {\"family\":\"HALF_MARATHON_SPECIFIC\",\"minutes\":48,\"reps\":2,\"work\":15,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"HALF_MARATHON_SPECIFIC\",\"minutes\":49,\"reps\":3,\"work\":10,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "HALF_MARATHON_SPECIFIC step 1 instead of 2; the field \"reps\" of the lower step is larger"
+    },
+    {
+     "line": "step2 week 9 2027-06-10 RUN/QUALITY work: {\"family\":\"HALF_MARATHON_SPECIFIC\",\"minutes\":55,\"reps\":3,\"work\":12,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"HALF_MARATHON_SPECIFIC\",\"minutes\":48,\"reps\":2,\"work\":15,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "HALF_MARATHON_SPECIFIC step 2 instead of 3; the field \"work\" of the lower step is larger"
+    }
+   ]
+  },
+  {
+   "id": "R6 R6-H25",
+   "classes": [
+    "RUN_VIEW_FROM_EVIDENCE"
+   ],
+   "restoredByReverting": [
+    "RUN_VIEW_FROM_EVIDENCE",
+    "PROGRESSION",
+    "VIEW_AS_PREDECESSOR",
+    "ALL",
+    "ALL_BUT_FACT",
+    "ALL_BUT_REPLAN_ON_CORRECTION",
+    "ALL_BUT_PLAN_CONTEXT",
+    "ALL_BUT_RETURN_WEEK_E7",
+    "ALL_BUT_REBUILD_OWN_VIEW",
+    "ALL_BUT_PLAN_READING",
+    "ALL_BUT_GATE_ORDER",
+    "ALL_BUT_WALKJOG_STEP_RUN",
+    "ALL_BUT_WALKJOG_RETURN_CEILING"
+   ],
+   "statusChanged": null,
+   "error": null,
+   "fell": 33,
+   "kindChanged": 5,
+   "rose": [
+    {
+     "line": "step0 week 3 2027-01-28 RUN/QUALITY minutes: {\"family\":\"THRESHOLD\",\"minutes\":34,\"reps\":3,\"work\":5,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"EASY\",\"minutes\":35,\"reps\":null,\"work\":null,\"strides\":null,\"calibration\":\"CURRENT_EASY_EFFORT\"}",
+     "class": "QUALITY_WITHHELD",
+     "reading": "THRESHOLD replaced by an easy run: quality not unlocked by executed weeks"
+    },
+    {
+     "line": "step1 week 3 2027-01-28 RUN/QUALITY minutes: {\"family\":\"THRESHOLD\",\"minutes\":34,\"reps\":3,\"work\":5,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"EASY\",\"minutes\":35,\"reps\":null,\"work\":null,\"strides\":null,\"calibration\":\"CURRENT_EASY_EFFORT\"}",
+     "class": "QUALITY_WITHHELD",
+     "reading": "THRESHOLD replaced by an easy run: quality not unlocked by executed weeks"
+    },
+    {
+     "line": "step1 week 10 2027-03-18 RUN/QUALITY minutes: {\"family\":\"TEN_K_SPECIFIC\",\"minutes\":23,\"reps\":2,\"work\":3,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"EASY\",\"minutes\":25,\"reps\":null,\"work\":null,\"strides\":4,\"calibration\":\"CURRENT_EASY_EFFORT\"}",
+     "class": "QUALITY_WITHHELD",
+     "reading": "TEN_K_SPECIFIC replaced by an easy run: quality not unlocked by executed weeks"
+    },
+    {
+     "line": "step1 week 13 2027-04-06 RUN/EASY minutes: {\"family\":\"EASY\",\"minutes\":25,\"reps\":null,\"work\":null,\"strides\":6,\"calibration\":\"CURRENT_EASY_EFFORT\"} -> {\"family\":\"EASY\",\"minutes\":30,\"reps\":null,\"work\":null,\"strides\":6,\"calibration\":\"CURRENT_EASY_EFFORT\"}",
+     "class": "PROJECTION_ROTATION",
+     "reading": "a projected easy run of a plan re-based on earned state: its rotating easy step falls in another week (no unexecuted week credited)"
+    },
+    {
+     "line": "step1 week 14 2027-04-13 RUN/EASY minutes: {\"family\":\"EASY\",\"minutes\":25,\"reps\":null,\"work\":null,\"strides\":6,\"calibration\":\"CURRENT_EASY_EFFORT\"} -> {\"family\":\"EASY\",\"minutes\":30,\"reps\":null,\"work\":null,\"strides\":6,\"calibration\":\"CURRENT_EASY_EFFORT\"}",
+     "class": "PROJECTION_ROTATION",
+     "reading": "a projected easy run of a plan re-based on earned state: its rotating easy step falls in another week (no unexecuted week credited)"
+    },
+    {
+     "line": "step1 week 15 2027-04-20 RUN/EASY minutes: {\"family\":\"EASY\",\"minutes\":25,\"reps\":null,\"work\":null,\"strides\":6,\"calibration\":\"CURRENT_EASY_EFFORT\"} -> {\"family\":\"EASY\",\"minutes\":30,\"reps\":null,\"work\":null,\"strides\":6,\"calibration\":\"CURRENT_EASY_EFFORT\"}",
+     "class": "PROJECTION_ROTATION",
+     "reading": "a projected easy run of a plan re-based on earned state: its rotating easy step falls in another week (no unexecuted week credited)"
+    }
+   ]
+  },
+  {
+   "id": "R6 R6-H26",
+   "classes": [
+    "PLAN_READING",
+    "RUN_VIEW_FROM_EVIDENCE"
+   ],
+   "restoredByReverting": [
+    "PROGRESSION",
+    "VIEW_AS_PREDECESSOR",
+    "ALL",
+    "ALL_BUT_FACT",
+    "ALL_BUT_REPLAN_ON_CORRECTION",
+    "ALL_BUT_PLAN_CONTEXT",
+    "ALL_BUT_RETURN_WEEK_E7",
+    "ALL_BUT_REBUILD_OWN_VIEW",
+    "ALL_BUT_GATE_ORDER",
+    "ALL_BUT_WALKJOG_STEP_RUN",
+    "ALL_BUT_WALKJOG_RETURN_CEILING"
+   ],
+   "statusChanged": null,
+   "error": null,
+   "fell": 53,
+   "kindChanged": 0,
+   "rose": [
+    {
+     "line": "step0 week 6 2027-06-17 RUN/QUALITY reps: {\"family\":\"THRESHOLD\",\"minutes\":49,\"reps\":3,\"work\":10,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":41,\"reps\":4,\"work\":5,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "THRESHOLD step 1 instead of 5; the field \"reps\" of the lower step is larger"
+    },
+    {
+     "line": "step0 week 8 2027-07-01 RUN/QUALITY reps: {\"family\":\"THRESHOLD\",\"minutes\":49,\"reps\":3,\"work\":10,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":48,\"reps\":5,\"work\":5,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "THRESHOLD step 2 instead of 5; the field \"reps\" of the lower step is larger"
+    },
+    {
+     "line": "step1 week 6 2027-06-17 RUN/QUALITY reps: {\"family\":\"THRESHOLD\",\"minutes\":49,\"reps\":3,\"work\":10,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":41,\"reps\":4,\"work\":5,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "THRESHOLD step 1 instead of 5; the field \"reps\" of the lower step is larger"
+    },
+    {
+     "line": "step2 week 6 2027-06-17 RUN/QUALITY reps: {\"family\":\"THRESHOLD\",\"minutes\":49,\"reps\":3,\"work\":10,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":41,\"reps\":4,\"work\":5,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "THRESHOLD step 1 instead of 5; the field \"reps\" of the lower step is larger"
+    }
+   ]
+  },
+  {
+   "id": "R6 R6-H29",
+   "classes": [
+    "RUN_VIEW_FROM_EVIDENCE"
+   ],
+   "restoredByReverting": [
+    "RUN_VIEW_FROM_EVIDENCE",
+    "PROGRESSION",
+    "VIEW_AS_PREDECESSOR",
+    "ALL",
+    "ALL_BUT_FACT",
+    "ALL_BUT_REPLAN_ON_CORRECTION",
+    "ALL_BUT_PLAN_CONTEXT",
+    "ALL_BUT_RETURN_WEEK_E7",
+    "ALL_BUT_REBUILD_OWN_VIEW",
+    "ALL_BUT_PLAN_READING",
+    "ALL_BUT_GATE_ORDER",
+    "ALL_BUT_WALKJOG_STEP_RUN",
+    "ALL_BUT_WALKJOG_RETURN_CEILING"
+   ],
+   "statusChanged": null,
+   "error": null,
+   "fell": 4,
+   "kindChanged": 0,
+   "rose": []
+  },
+  {
+   "id": "R6 R6-H30",
+   "classes": [
+    "RUN_VIEW_FROM_EVIDENCE"
+   ],
+   "restoredByReverting": [
+    "RUN_VIEW_FROM_EVIDENCE",
+    "PROGRESSION",
+    "VIEW_AS_PREDECESSOR",
+    "ALL",
+    "ALL_BUT_FACT",
+    "ALL_BUT_REPLAN_ON_CORRECTION",
+    "ALL_BUT_PLAN_CONTEXT",
+    "ALL_BUT_RETURN_WEEK_E7",
+    "ALL_BUT_REBUILD_OWN_VIEW",
+    "ALL_BUT_PLAN_READING",
+    "ALL_BUT_GATE_ORDER",
+    "ALL_BUT_WALKJOG_STEP_RUN",
+    "ALL_BUT_WALKJOG_RETURN_CEILING"
+   ],
+   "statusChanged": null,
+   "error": null,
+   "fell": 9,
+   "kindChanged": 0,
+   "rose": [
+    {
+     "line": "step0 week 15 2027-09-23 RUN/QUALITY minutes: {\"family\":\"THRESHOLD\",\"minutes\":43,\"reps\":3,\"work\":8,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":49,\"reps\":3,\"work\":6,\"strides\":null,\"calibration\":\"CURRENT_FAMILIAR_TASK\"}",
+     "class": "FAMILIAR_TASK",
+     "reading": "the athlete's current familiar THRESHOLD task (3x6, calibrated on the intake's own session) instead of THRESHOLD step 3"
+    },
+    {
+     "line": "step1 week 15 2027-09-23 RUN/QUALITY minutes: {\"family\":\"THRESHOLD\",\"minutes\":43,\"reps\":3,\"work\":8,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":49,\"reps\":3,\"work\":6,\"strides\":null,\"calibration\":\"CURRENT_FAMILIAR_TASK\"}",
+     "class": "FAMILIAR_TASK",
+     "reading": "the athlete's current familiar THRESHOLD task (3x6, calibrated on the intake's own session) instead of THRESHOLD step 3"
+    },
+    {
+     "line": "step2 week 15 2027-09-23 RUN/QUALITY minutes: {\"family\":\"THRESHOLD\",\"minutes\":43,\"reps\":3,\"work\":8,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":49,\"reps\":3,\"work\":6,\"strides\":null,\"calibration\":\"CURRENT_FAMILIAR_TASK\"}",
+     "class": "FAMILIAR_TASK",
+     "reading": "the athlete's current familiar THRESHOLD task (3x6, calibrated on the intake's own session) instead of THRESHOLD step 3"
+    },
+    {
+     "line": "step4 week 15 2027-09-23 RUN/QUALITY minutes: {\"family\":\"THRESHOLD\",\"minutes\":43,\"reps\":3,\"work\":8,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":49,\"reps\":3,\"work\":6,\"strides\":null,\"calibration\":\"CURRENT_FAMILIAR_TASK\"}",
+     "class": "FAMILIAR_TASK",
+     "reading": "the athlete's current familiar THRESHOLD task (3x6, calibrated on the intake's own session) instead of THRESHOLD step 3"
+    }
+   ]
+  },
+  {
+   "id": "R6 R6-H31",
+   "classes": [
+    "RUN_VIEW_FROM_EVIDENCE"
+   ],
+   "restoredByReverting": [
+    "RUN_VIEW_FROM_EVIDENCE",
+    "PROGRESSION",
+    "VIEW_AS_PREDECESSOR",
+    "ALL",
+    "ALL_BUT_FACT",
+    "ALL_BUT_REPLAN_ON_CORRECTION",
+    "ALL_BUT_PLAN_CONTEXT",
+    "ALL_BUT_RETURN_WEEK_E7",
+    "ALL_BUT_REBUILD_OWN_VIEW",
+    "ALL_BUT_PLAN_READING",
+    "ALL_BUT_GATE_ORDER",
+    "ALL_BUT_WALKJOG_STEP_RUN",
+    "ALL_BUT_WALKJOG_RETURN_CEILING"
+   ],
+   "statusChanged": null,
+   "error": null,
+   "fell": 22,
+   "kindChanged": 3,
+   "rose": [
+    {
+     "line": "step0 week 3 2027-01-28 RUN/QUALITY minutes: {\"family\":\"THRESHOLD\",\"minutes\":34,\"reps\":3,\"work\":5,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"EASY\",\"minutes\":40,\"reps\":null,\"work\":null,\"strides\":null,\"calibration\":\"CURRENT_EASY_EFFORT\"}",
+     "class": "QUALITY_WITHHELD",
+     "reading": "THRESHOLD replaced by an easy run: quality not unlocked by executed weeks"
+    },
+    {
+     "line": "step1 week 3 2027-01-28 RUN/QUALITY minutes: {\"family\":\"THRESHOLD\",\"minutes\":34,\"reps\":3,\"work\":5,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"EASY\",\"minutes\":40,\"reps\":null,\"work\":null,\"strides\":null,\"calibration\":\"CURRENT_EASY_EFFORT\"}",
+     "class": "QUALITY_WITHHELD",
+     "reading": "THRESHOLD replaced by an easy run: quality not unlocked by executed weeks"
+    },
+    {
+     "line": "step1 week 6 2027-02-18 RUN/QUALITY minutes: {\"family\":\"THRESHOLD\",\"minutes\":43,\"reps\":3,\"work\":8,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":48,\"reps\":5,\"work\":5,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "THRESHOLD step 2 instead of 3; the field \"minutes\" of the lower step is larger"
+    },
+    {
+     "line": "step1 week 6 2027-02-18 RUN/QUALITY reps: {\"family\":\"THRESHOLD\",\"minutes\":43,\"reps\":3,\"work\":8,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":48,\"reps\":5,\"work\":5,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "THRESHOLD step 2 instead of 3; the field \"reps\" of the lower step is larger"
+    }
+   ]
+  },
+  {
+   "id": "R6 R6-H32",
+   "classes": [
+    "RUN_VIEW_FROM_EVIDENCE"
+   ],
+   "restoredByReverting": [
+    "RUN_VIEW_FROM_EVIDENCE",
+    "PROGRESSION",
+    "VIEW_AS_PREDECESSOR",
+    "ALL",
+    "ALL_BUT_FACT",
+    "ALL_BUT_REPLAN_ON_CORRECTION",
+    "ALL_BUT_PLAN_CONTEXT",
+    "ALL_BUT_RETURN_WEEK_E7",
+    "ALL_BUT_REBUILD_OWN_VIEW",
+    "ALL_BUT_PLAN_READING",
+    "ALL_BUT_GATE_ORDER",
+    "ALL_BUT_WALKJOG_STEP_RUN",
+    "ALL_BUT_WALKJOG_RETURN_CEILING"
+   ],
+   "statusChanged": null,
+   "error": null,
+   "fell": 24,
+   "kindChanged": 1,
+   "rose": [
+    {
+     "line": "step0 week 5 2027-06-10 RUN/QUALITY minutes: {\"family\":\"THRESHOLD\",\"minutes\":43,\"reps\":3,\"work\":8,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":49,\"reps\":3,\"work\":6,\"strides\":null,\"calibration\":\"CURRENT_FAMILIAR_TASK\"}",
+     "class": "FAMILIAR_TASK",
+     "reading": "the athlete's current familiar THRESHOLD task (3x6, calibrated on the intake's own session) instead of THRESHOLD step 3"
+    },
+    {
+     "line": "step0 week 6 2027-06-17 RUN/QUALITY reps: {\"family\":\"HALF_MARATHON_SPECIFIC\",\"minutes\":42,\"reps\":2,\"work\":12,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":41,\"reps\":4,\"work\":5,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "SPECIFIC_NOT_YET_EARNED",
+     "reading": "threshold step 1 instead of HALF_MARATHON_SPECIFIC step 0: the specific ladder needs the executed threshold sessions"
+    },
+    {
+     "line": "step0 week 7 2027-06-24 RUN/QUALITY work: {\"family\":\"HALF_MARATHON_SPECIFIC\",\"minutes\":49,\"reps\":3,\"work\":10,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"HALF_MARATHON_SPECIFIC\",\"minutes\":42,\"reps\":2,\"work\":12,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "HALF_MARATHON_SPECIFIC step 0 instead of 1; the field \"work\" of the lower step is larger"
+    },
+    {
+     "line": "step0 week 8 2027-07-01 RUN/QUALITY minutes: {\"family\":\"HALF_MARATHON_SPECIFIC\",\"minutes\":48,\"reps\":2,\"work\":15,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"HALF_MARATHON_SPECIFIC\",\"minutes\":49,\"reps\":3,\"work\":10,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "HALF_MARATHON_SPECIFIC step 1 instead of 2; the field \"minutes\" of the lower step is larger"
+    },
+    {
+     "line": "step0 week 8 2027-07-01 RUN/QUALITY reps: {\"family\":\"HALF_MARATHON_SPECIFIC\",\"minutes\":48,\"reps\":2,\"work\":15,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"HALF_MARATHON_SPECIFIC\",\"minutes\":49,\"reps\":3,\"work\":10,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "HALF_MARATHON_SPECIFIC step 1 instead of 2; the field \"reps\" of the lower step is larger"
+    },
+    {
+     "line": "step0 week 9 2027-07-08 RUN/QUALITY work: {\"family\":\"HALF_MARATHON_SPECIFIC\",\"minutes\":55,\"reps\":3,\"work\":12,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"HALF_MARATHON_SPECIFIC\",\"minutes\":48,\"reps\":2,\"work\":15,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "HALF_MARATHON_SPECIFIC step 2 instead of 3; the field \"work\" of the lower step is larger"
+    }
+   ]
+  },
+  {
+   "id": "R6 R6-H33",
+   "classes": [
+    "RUN_VIEW_FROM_EVIDENCE",
+    "GATE_ORDER"
+   ],
+   "restoredByReverting": [
+    "PROGRESSION",
+    "ALL",
+    "ALL_BUT_FACT",
+    "ALL_BUT_REPLAN_ON_CORRECTION",
+    "ALL_BUT_PLAN_CONTEXT",
+    "ALL_BUT_RETURN_WEEK_E7",
+    "ALL_BUT_REBUILD_OWN_VIEW",
+    "ALL_BUT_PLAN_READING",
+    "ALL_BUT_WALKJOG_STEP_RUN",
+    "ALL_BUT_WALKJOG_RETURN_CEILING"
+   ],
+   "statusChanged": null,
+   "error": null,
+   "fell": 6,
+   "kindChanged": 0,
+   "rose": []
+  },
+  {
+   "id": "R6 R6-H34",
+   "classes": [
+    "RUN_VIEW_FROM_EVIDENCE"
+   ],
+   "restoredByReverting": [
+    "RUN_VIEW_FROM_EVIDENCE",
+    "PROGRESSION",
+    "VIEW_AS_PREDECESSOR",
+    "ALL",
+    "ALL_BUT_FACT",
+    "ALL_BUT_REPLAN_ON_CORRECTION",
+    "ALL_BUT_PLAN_CONTEXT",
+    "ALL_BUT_RETURN_WEEK_E7",
+    "ALL_BUT_REBUILD_OWN_VIEW",
+    "ALL_BUT_PLAN_READING",
+    "ALL_BUT_GATE_ORDER",
+    "ALL_BUT_WALKJOG_STEP_RUN",
+    "ALL_BUT_WALKJOG_RETURN_CEILING"
+   ],
+   "statusChanged": null,
+   "error": null,
+   "fell": 31,
+   "kindChanged": 0,
+   "rose": [
+    {
+     "line": "step0 week 4 2027-04-01 RUN/QUALITY minutes: {\"family\":\"THRESHOLD\",\"minutes\":43,\"reps\":3,\"work\":8,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":48,\"reps\":5,\"work\":5,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "THRESHOLD step 2 instead of 3; the field \"minutes\" of the lower step is larger"
+    },
+    {
+     "line": "step0 week 4 2027-04-01 RUN/QUALITY reps: {\"family\":\"THRESHOLD\",\"minutes\":43,\"reps\":3,\"work\":8,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":48,\"reps\":5,\"work\":5,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "THRESHOLD step 2 instead of 3; the field \"reps\" of the lower step is larger"
+    },
+    {
+     "line": "step0 week 6 2027-04-15 RUN/QUALITY minutes: {\"family\":\"THRESHOLD\",\"minutes\":49,\"reps\":3,\"work\":10,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":53,\"reps\":4,\"work\":8,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "THRESHOLD step 4 instead of 5; the field \"minutes\" of the lower step is larger"
+    },
+    {
+     "line": "step0 week 6 2027-04-15 RUN/QUALITY reps: {\"family\":\"THRESHOLD\",\"minutes\":49,\"reps\":3,\"work\":10,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":53,\"reps\":4,\"work\":8,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "THRESHOLD step 4 instead of 5; the field \"reps\" of the lower step is larger"
+    },
+    {
+     "line": "step1 week 4 2027-04-01 RUN/QUALITY minutes: {\"family\":\"THRESHOLD\",\"minutes\":43,\"reps\":3,\"work\":8,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":48,\"reps\":5,\"work\":5,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "THRESHOLD step 2 instead of 3; the field \"minutes\" of the lower step is larger"
+    },
+    {
+     "line": "step1 week 4 2027-04-01 RUN/QUALITY reps: {\"family\":\"THRESHOLD\",\"minutes\":43,\"reps\":3,\"work\":8,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":48,\"reps\":5,\"work\":5,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "THRESHOLD step 2 instead of 3; the field \"reps\" of the lower step is larger"
+    },
+    {
+     "line": "step1 week 6 2027-04-15 RUN/QUALITY minutes: {\"family\":\"THRESHOLD\",\"minutes\":49,\"reps\":3,\"work\":10,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":53,\"reps\":4,\"work\":8,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "THRESHOLD step 4 instead of 5; the field \"minutes\" of the lower step is larger"
+    },
+    {
+     "line": "step1 week 6 2027-04-15 RUN/QUALITY reps: {\"family\":\"THRESHOLD\",\"minutes\":49,\"reps\":3,\"work\":10,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":53,\"reps\":4,\"work\":8,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "THRESHOLD step 4 instead of 5; the field \"reps\" of the lower step is larger"
+    },
+    {
+     "line": "step2 week 4 2027-04-01 RUN/QUALITY minutes: {\"family\":\"THRESHOLD\",\"minutes\":43,\"reps\":3,\"work\":8,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":48,\"reps\":5,\"work\":5,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "THRESHOLD step 2 instead of 3; the field \"minutes\" of the lower step is larger"
+    },
+    {
+     "line": "step2 week 4 2027-04-01 RUN/QUALITY reps: {\"family\":\"THRESHOLD\",\"minutes\":43,\"reps\":3,\"work\":8,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":48,\"reps\":5,\"work\":5,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "THRESHOLD step 2 instead of 3; the field \"reps\" of the lower step is larger"
+    },
+    {
+     "line": "step2 week 6 2027-04-15 RUN/QUALITY minutes: {\"family\":\"THRESHOLD\",\"minutes\":49,\"reps\":3,\"work\":10,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":53,\"reps\":4,\"work\":8,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "THRESHOLD step 4 instead of 5; the field \"minutes\" of the lower step is larger"
+    },
+    {
+     "line": "step2 week 6 2027-04-15 RUN/QUALITY reps: {\"family\":\"THRESHOLD\",\"minutes\":49,\"reps\":3,\"work\":10,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"} -> {\"family\":\"THRESHOLD\",\"minutes\":53,\"reps\":4,\"work\":8,\"strides\":null,\"calibration\":\"EFFORT_ANCHORED\"}",
+     "class": "LOWER_LADDER_STEP",
+     "reading": "THRESHOLD step 4 instead of 5; the field \"reps\" of the lower step is larger"
+    }
+   ]
+  },
+  {
+   "id": "R6 R6-H35",
+   "classes": [
+    "RUN_VIEW_FROM_EVIDENCE"
+   ],
+   "restoredByReverting": [
+    "RUN_VIEW_FROM_EVIDENCE",
+    "PROGRESSION",
+    "VIEW_AS_PREDECESSOR",
+    "ALL",
+    "ALL_BUT_FACT",
+    "ALL_BUT_REPLAN_ON_CORRECTION",
+    "ALL_BUT_PLAN_CONTEXT",
+    "ALL_BUT_RETURN_WEEK_E7",
+    "ALL_BUT_REBUILD_OWN_VIEW",
+    "ALL_BUT_PLAN_READING",
+    "ALL_BUT_GATE_ORDER",
+    "ALL_BUT_WALKJOG_STEP_RUN",
+    "ALL_BUT_WALKJOG_RETURN_CEILING"
+   ],
+   "statusChanged": "MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP -> ERROR",
+   "error": {
+    "before": null,
+    "current": "Observation fact matches no session: {\"weekIndex\":5,\"sport\":\"RUN\",\"role\":[\"QUALITY\"],\"completed\":true,\"actualStimulus\":\"AS_PRESCRIBED\",\"response\":{\"performance\":\"UNDER\",\"recovery\":\"COMPATIBLE\",\"effort\":\"HARDER\",\"nextDayFunction\":\"NORMAL\"},\"confounded\":true,\"comparable\":false}"
+   },
+   "fell": 0,
+   "kindChanged": 0,
+   "rose": []
+  },
+  {
+   "id": "SIMULATION T05_10K8_SHORT_INTERRUPTION",
+   "classes": [
+    "RETURN_WEEK_E7",
+    "PLAN_READING"
+   ],
+   "restoredByReverting": [
+    "RETURN_WEEK_E7",
+    "PLAN_READING",
+    "DECISION_CONTEXT",
+    "PROGRESSION",
+    "VIEW_AS_PREDECESSOR",
+    "ALL",
+    "ALL_BUT_FACT",
+    "ALL_BUT_REPLAN_ON_CORRECTION",
+    "ALL_BUT_PLAN_CONTEXT",
+    "ALL_BUT_RETURN_WEEK_E7",
+    "ALL_BUT_REBUILD_OWN_VIEW",
+    "ALL_BUT_PLAN_READING",
+    "ALL_BUT_RUN_VIEW_FROM_EVIDENCE",
+    "ALL_BUT_GATE_ORDER",
+    "ALL_BUT_WALKJOG_STEP_RUN",
+    "ALL_BUT_WALKJOG_RETURN_CEILING"
+   ],
+   "differences": [
+    {
+     "path": "/summary/actions/KEEP",
+     "before": "5",
+     "current": "6"
+    },
+    {
+     "path": "/summary/actions/INSTANTIATE_LOGGED_LOADS",
+     "before": "2",
+     "current": "1"
+    },
+    {
+     "path": "/summary/instantiations",
+     "before": "2",
+     "current": "1"
+    },
+    {
+     "path": "/decisions/4/action",
+     "before": "\"INSTANTIATE_LOGGED_LOADS\"",
+     "current": "\"KEEP\""
+    },
+    {
+     "path": "/decisions/4/reason",
+     "before": "\"Logged loads replace planned placeholders; the progression rule is unchanged\"",
+     "current": "\"Executed as planned without adverse signal; the planned progression step stands\""
+    }
+   ]
+  }
+ ],
+ "verdict": {
+  "differences": 16,
+  "unclassifiedDifferences": 0,
+  "unclassified": [],
+  "roseDoses": 58,
+  "roseByClass": {
+   "FAMILIAR_TASK": 9,
+   "SPECIFIC_NOT_YET_EARNED": 2,
+   "LOWER_LADDER_STEP": 39,
+   "QUALITY_WITHHELD": 5,
+   "PROJECTION_ROTATION": 3
+  },
+  "unreadRose": [],
+  "strengthDoseRose": 0,
+  "r6H35": "The fixture's week-5 QUALITY fact matches no session: weeks 0-3 are never reported, so QUALITY is not unlocked (RUN_VIEW_FROM_EVIDENCE); the predecessor credited them from the projection. The case ends in a runner error on the candidate, recorded, never dropped."
+ }
+}

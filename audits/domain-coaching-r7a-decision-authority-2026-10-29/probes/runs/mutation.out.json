@@ -1,0 +1,304 @@
+{
+ "probe": "r7ada-mutation",
+ "mutants": [
+  {
+   "id": "F1",
+   "contract": "FACTUAL_AUTHORITY",
+   "what": "a planned KNOWN row is the reference whatever history holds (prescribed load establishes history)",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "killed": true,
+   "stage": "r7ada-test-file",
+   "testsRun": 31,
+   "failing": 4,
+   "killingTests": [
+    "QE-R7ASC-01 (P01, noDetails, 19 kg): an exercise history holds only as FROM_LOG adopts no load from a KNOWN row planned before a correction",
+    "QE-R7ASC-01 (P01, repsNoLoad, 24 kg): an exercise history holds only as FROM_LOG adopts no load from a KNOWN row planned before a correction",
+    "QE-R7ASC-01 (P01, unknownUnit, 19 kg): an exercise history holds only as FROM_LOG adopts no load from a KNOWN row planned before a correction",
+    "P1 factual independence from the target: the same evidence with a planned target of 20 or of 24 kg gives the same HistoricalState"
+   ]
+  },
+  {
+   "id": "F2",
+   "contract": "FACTUAL_AUTHORITY",
+   "what": "facts-only reading of a week no review closed adopts the planned KNOWN row",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "killed": true,
+   "stage": "r7ada-test-file",
+   "testsRun": 31,
+   "failing": 4,
+   "killingTests": [
+    "QE-R7ASC-01 (P01, noDetails, 19 kg): an exercise history holds only as FROM_LOG adopts no load from a KNOWN row planned before a correction",
+    "QE-R7ASC-01 (P01, repsNoLoad, 24 kg): an exercise history holds only as FROM_LOG adopts no load from a KNOWN row planned before a correction",
+    "QE-R7ASC-01 (P01, unknownUnit, 19 kg): an exercise history holds only as FROM_LOG adopts no load from a KNOWN row planned before a correction",
+    "P1 factual independence from the target: the same evidence with a planned target of 20 or of 24 kg gives the same HistoricalState"
+   ]
+  },
+  {
+   "id": "F3",
+   "contract": "FACTUAL_AUTHORITY",
+   "what": "the evidence transition adopts the planned KNOWN row",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "killed": true,
+   "stage": "r7ada-test-file",
+   "testsRun": 31,
+   "failing": 4,
+   "killingTests": [
+    "QE-R7ASC-01 (P01, noDetails, 19 kg): an exercise history holds only as FROM_LOG adopts no load from a KNOWN row planned before a correction",
+    "QE-R7ASC-01 (P01, repsNoLoad, 24 kg): an exercise history holds only as FROM_LOG adopts no load from a KNOWN row planned before a correction",
+    "QE-R7ASC-01 (P01, unknownUnit, 19 kg): an exercise history holds only as FROM_LOG adopts no load from a KNOWN row planned before a correction",
+    "P1 factual independence from the target: the same evidence with a planned target of 20 or of 24 kg gives the same HistoricalState"
+   ]
+  },
+  {
+   "id": "F4",
+   "contract": "FACTUAL_AUTHORITY",
+   "what": "load questions judge a log against the planned KNOWN row",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "killed": true,
+   "stage": "r7ada-test-file",
+   "testsRun": 31,
+   "failing": 3,
+   "killingTests": [
+    "QE-R7ASC-01 (P01, noDetails, 19 kg): an exercise history holds only as FROM_LOG adopts no load from a KNOWN row planned before a correction",
+    "QE-R7ASC-01 (P01, repsNoLoad, 24 kg): an exercise history holds only as FROM_LOG adopts no load from a KNOWN row planned before a correction",
+    "QE-R7ASC-01 (P01, unknownUnit, 19 kg): an exercise history holds only as FROM_LOG adopts no load from a KNOWN row planned before a correction"
+   ]
+  },
+  {
+   "id": "F5",
+   "contract": "FACTUAL_AUTHORITY",
+   "what": "a correction or retraction of an earlier week never re-plans the rows ahead",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "killed": true,
+   "stage": "r7ada-test-file",
+   "testsRun": 31,
+   "failing": 1,
+   "killingTests": [
+    "QE-R7ASC-01 (stale row above a corrected known load): a correction re-plans the rows ahead, so the same record gives the same history"
+   ]
+  },
+  {
+   "id": "C1",
+   "contract": "COHERENT_DECISION_CONTEXT",
+   "what": "the planning reading judges a transition under the old week context (old and new goal mixed)",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "killed": true,
+   "stage": "r7ada-test-file",
+   "testsRun": 31,
+   "failing": 6,
+   "killingTests": [
+    "QE-R7ASC-04 (P07, STRENGTH -> HYPERTROPHY): an equipment statement that changes no exercise leaves the week after a goal change as the review planned it",
+    "QE-R7ASC-04 (P07, STRENGTH -> MAINTAIN): an equipment statement that changes no exercise leaves the week after a goal change as the review planned it",
+    "QE-R7ASC-04 (P07, GENERAL -> RUNNING_SUPPORT): an equipment statement that changes no exercise leaves the week after a goal change as the review planned it",
+    "QE-R7ASC-04 (P07, MAINTAIN -> HYPERTROPHY): an equipment statement that changes no exercise leaves the week after a goal change as the review planned it",
+    "QE-R7ASC-04 (P07, RUNNING_SUPPORT -> MAINTAIN): an equipment statement that changes no exercise leaves the week after a goal change as the review planned it",
+    "P2 context consistency: equivalent facts and context give the same prescription, whichever no-op handler runs, in either order"
+   ]
+  },
+  {
+   "id": "C2",
+   "contract": "COHERENT_DECISION_CONTEXT",
+   "what": "a return week is read without its pre-return rows by the planner (E7 dropped)",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "killed": true,
+   "stage": "r7ada-test-file",
+   "testsRun": 31,
+   "failing": 1,
+   "killingTests": [
+    "QE-R7ASC-04 (return week): the review that closes a return's own week and a later no-op decision resolve the same next week"
+   ]
+  },
+  {
+   "id": "C3",
+   "contract": "COHERENT_DECISION_CONTEXT",
+   "what": "a re-plan of this week keeps the PlanningView computed under the context it replaces",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "killed": true,
+   "stage": "full-suite",
+   "testsRun": 663,
+   "failing": 3,
+   "killingTests": [
+    "R7-A.1 C2: a change stated from a later week never re-plans the weeks before it, whatever re-plans them later (E02, E11-E14)",
+    "R7-A.1 C5: the newer equipment statement is in force (two windows; a permanent change after a window); rows of one slot keep the plan order",
+    "R7-A.1 C5: of two statements of one event date the later is the event in either order; its taper and race window follow it (SSCTR S4)"
+   ]
+  },
+  {
+   "id": "C4",
+   "contract": "COHERENT_DECISION_CONTEXT",
+   "what": "the decision reads the history reading instead of the planning reading",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "killed": true,
+   "stage": "r7ada-test-file",
+   "testsRun": 31,
+   "failing": 7,
+   "killingTests": [
+    "QE-R7ASC-04 (P07, STRENGTH -> HYPERTROPHY): an equipment statement that changes no exercise leaves the week after a goal change as the review planned it",
+    "QE-R7ASC-04 (P07, STRENGTH -> MAINTAIN): an equipment statement that changes no exercise leaves the week after a goal change as the review planned it",
+    "QE-R7ASC-04 (P07, GENERAL -> RUNNING_SUPPORT): an equipment statement that changes no exercise leaves the week after a goal change as the review planned it",
+    "QE-R7ASC-04 (P07, MAINTAIN -> HYPERTROPHY): an equipment statement that changes no exercise leaves the week after a goal change as the review planned it",
+    "QE-R7ASC-04 (P07, RUNNING_SUPPORT -> MAINTAIN): an equipment statement that changes no exercise leaves the week after a goal change as the review planned it",
+    "P2 context consistency: equivalent facts and context give the same prescription, whichever no-op handler runs, in either order",
+    "QE-R7ASC-04 (return week): the review that closes a return's own week and a later no-op decision resolve the same next week"
+   ]
+  },
+  {
+   "id": "P1",
+   "contract": "PROGRESSION_AUTHORITY",
+   "what": "the run view takes the projection (planner target treated as earned; E10 restored)",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "killed": true,
+   "stage": "r7ada-test-file",
+   "testsRun": 31,
+   "failing": 6,
+   "killingTests": [
+    "QE-R7ASC-02 (P02b EASY, k=1): two unexecuted weeks earn nothing; the plan starts from history, reviewed or not",
+    "QE-R7ASC-02 (P02b EASY, k=4): two unexecuted weeks earn nothing; the plan starts from history, reviewed or not",
+    "QE-R7ASC-02 (P02b WALK_JOG, k=2): two unexecuted weeks earn nothing; the plan starts from history, reviewed or not",
+    "QE-R7ASC-02 (P02b WALK_JOG, k=10): two unexecuted weeks earn nothing; the plan starts from history, reviewed or not",
+    "P3 no calendar progression: weeks passing with nothing executed leave EarnedProgress unchanged, and the plan starts from it",
+    "QE-R7ASC-03 (missed long run outside a re-entry): unexecuted long runs never step the next one because the projection was ahead"
+   ]
+  },
+  {
+   "id": "P2",
+   "contract": "PROGRESSION_AUTHORITY",
+   "what": "a week neither closed nor complete advances in the planning reading (calendar progression)",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "killed": true,
+   "stage": "r7ada-test-file",
+   "testsRun": 31,
+   "failing": 6,
+   "killingTests": [
+    "QE-R7ASC-02 (P02b EASY, k=1): two unexecuted weeks earn nothing; the plan starts from history, reviewed or not",
+    "QE-R7ASC-02 (P02b EASY, k=4): two unexecuted weeks earn nothing; the plan starts from history, reviewed or not",
+    "QE-R7ASC-02 (P02b WALK_JOG, k=2): two unexecuted weeks earn nothing; the plan starts from history, reviewed or not",
+    "QE-R7ASC-02 (P02b WALK_JOG, k=10): two unexecuted weeks earn nothing; the plan starts from history, reviewed or not",
+    "P3 no calendar progression: weeks passing with nothing executed leave EarnedProgress unchanged, and the plan starts from it",
+    "QE-R7ASC-03 (missed long run outside a re-entry): unexecuted long runs never step the next one because the projection was ahead"
+   ]
+  },
+  {
+   "id": "P3",
+   "contract": "PROGRESSION_AUTHORITY",
+   "what": "gate resolution is last-writer-wins",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "killed": true,
+   "stage": "r7ada-test-file",
+   "testsRun": 31,
+   "failing": 3,
+   "killingTests": [
+    "QE-R7ASC-03 (P05, P05b): a missed long run holds the return; a run not yet due is never credited",
+    "P4 gate order independence: a held role holds the shared re-entry gate whether it is read first or last",
+    "P5 future session is not fact: a later run of the week never credits progression before it is executed"
+   ]
+  },
+  {
+   "id": "P4",
+   "contract": "PROGRESSION_AUTHORITY",
+   "what": "a run not yet due (future session) no longer holds its gate",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "killed": true,
+   "stage": "r7ada-test-file",
+   "testsRun": 31,
+   "failing": 8,
+   "killingTests": [
+    "QE-R7ASC-02 (P02b EASY, k=1): two unexecuted weeks earn nothing; the plan starts from history, reviewed or not",
+    "QE-R7ASC-02 (P02b EASY, k=4): two unexecuted weeks earn nothing; the plan starts from history, reviewed or not",
+    "QE-R7ASC-02 (P02b WALK_JOG, k=10): two unexecuted weeks earn nothing; the plan starts from history, reviewed or not",
+    "P3 no calendar progression: weeks passing with nothing executed leave EarnedProgress unchanged, and the plan starts from it",
+    "QE-R7ASC-03 (P05, P05b): a missed long run holds the return; a run not yet due is never credited",
+    "P4 gate order independence: a held role holds the shared re-entry gate whether it is read first or last",
+    "P5 future session is not fact: a later run of the week never credits progression before it is executed",
+    "QE-R7ASC-03 (missed long run outside a re-entry): unexecuted long runs never step the next one because the projection was ahead"
+   ]
+  },
+  {
+   "id": "P5",
+   "contract": "PROGRESSION_AUTHORITY",
+   "what": "a missed long run still advances the long-run target",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "killed": true,
+   "stage": "r7ada-test-file",
+   "testsRun": 31,
+   "failing": 2,
+   "killingTests": [
+    "P3 no calendar progression: weeks passing with nothing executed leave EarnedProgress unchanged, and the plan starts from it",
+    "QE-R7ASC-03 (missed long run outside a re-entry): unexecuted long runs never step the next one because the projection was ahead"
+   ]
+  },
+  {
+   "id": "W1",
+   "contract": "WALK_JOG_CEILING",
+   "what": "HOLD and consolidation keep a walk/jog step above the one the week ran",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "killed": true,
+   "stage": "full-suite",
+   "testsRun": 663,
+   "failing": 1,
+   "killingTests": [
+    "F1, the walk/jog side: after a short return the walk/jog step follows the step run, never one the plan did not prescribe"
+   ]
+  },
+  {
+   "id": "W2",
+   "contract": "WALK_JOG_CEILING",
+   "what": "a return ignores the step last run (tolerated ceiling)",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "killed": true,
+   "stage": "r7ada-test-file",
+   "testsRun": 31,
+   "failing": 2,
+   "killingTests": [
+    "P6 walk/jog ceiling: a return never starts above the step last run, however far history had moved",
+    "P7 execution promotion: once the athlete runs the next step, a return resumes from it"
+   ]
+  }
+ ],
+ "baseline": {
+  "r7adaTestFile": {
+   "total": 31,
+   "failing": []
+  },
+  "fullSuite": {
+   "total": 663,
+   "failing": [
+    "Root cause VALIDATION_COUPLED_TO_UNUSED_ALTERNATIVES (H02/H09/H13): dependent duration follows sets; the baseline is never blocked",
+    "Root cause STALE_ALTERNATIVE_POISONS_BASELINE (H24): stale alternatives are excluded individually; replays and contradictions never count",
+    "Root cause BALANCED_INPUT_ORDER (H03/H11/H20): generation compares joint harm, independent of option order",
+    "Root cause BALANCED_INITIAL_GENERATION (H20): the initial generation is fixed, not only the later move",
+    "Root cause ADAPTER_CLOCK (H07/H08/H10/H11): an omitted time never becomes a clock after the review",
+    "Root cause RETURN_PREPARATION_DIMENSION (H16): a known nonclinical return reuses the current demonstration and stages strength",
+    "Root cause SUBSTITUTION_NOT_SELECTED (H19): supplied admissible substitutes enter the candidate set and are disclosed",
+    "Root cause UNKNOWN_COMBINED_TOLERANCE (H21): unknown arrangement recovery stays admissible under whole-week tolerance; history informs the choice",
+    "Event transition in the legacy path (H01/H22): taper and race week are derived from the athlete baseline",
+    "Bounded R5 behaviors stay correct: H06 asks, H12/H14/H23 keep",
+    "Legacy alternative admissibility is per alternative and reasons are explicit",
+    "Legacy unknown arrangement response is admissible only with LOW interference and no same-day pairing (SSCTR D26)",
+    "SSCTR R6: a clinical flag that means yes in any form routes to a human in the intake, the review and the legacy path"
+   ]
+  }
+ },
+ "summary": {
+  "mutants": 16,
+  "applied": 16,
+  "killedByTests": 16,
+  "survivors": []
+ }
+}

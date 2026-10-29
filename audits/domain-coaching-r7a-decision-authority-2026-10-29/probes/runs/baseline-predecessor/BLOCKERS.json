@@ -1,0 +1,591 @@
+{
+ "probe": "reproduce-blockers-r7ada",
+ "target": "predecessor",
+ "root": "audits/domain-coaching-r7a-decision-authority-2026-10-29/state-consumer-freeze-source/CoachingCore",
+ "node": "v24.19.0",
+ "ranAt": "2026-10-29T21:26:52.985Z",
+ "present": {
+  "QE-R7ASC-01": true,
+  "QE-R7ASC-02": true,
+  "QE-R7ASC-03": true,
+  "QE-R7ASC-04": true,
+  "F4": true
+ },
+ "presentByMechanism": {
+  "QE-R7ASC-02": true
+ },
+ "blockers": {
+  "QE-R7ASC-01": {
+   "signal": "identical record, HistoricalState differs with when the correction reached the plan (stale KNOWN row adopted as history)",
+   "P01": [
+    {
+     "variant": "noDetails",
+     "sameRecord": true,
+     "sameHistoryAtWeek4": false
+    },
+    {
+     "variant": "repsNoLoad",
+     "sameRecord": true,
+     "sameHistoryAtWeek4": false
+    },
+    {
+     "variant": "unknownUnit",
+     "sameRecord": true,
+     "sameHistoryAtWeek4": false
+    }
+   ],
+   "P01_24kg": [
+    {
+     "variant": "noDetails",
+     "sameRecord": true,
+     "sameHistoryAtWeek4": false
+    },
+    {
+     "variant": "repsNoLoad",
+     "sameRecord": true,
+     "sameHistoryAtWeek4": false
+    },
+    {
+     "variant": "unknownUnit",
+     "sameRecord": true,
+     "sameHistoryAtWeek4": false
+    }
+   ],
+   "P01b": {
+    "neverReviewed": {
+     "sameRecord": true,
+     "sameHistory": false
+    },
+    "conflict": {
+     "sameRecord": true,
+     "sameHistoryWeek3": false
+    }
+   }
+  },
+  "QE-R7ASC-02": {
+   "signal": "identical ledgers and identical history, yet the plan two weeks on differs or runs ahead of history (projected run progress used as earned)",
+   "P02": {
+    "a_easy": {
+     "identicalLedgers": true,
+     "historyEqual": true,
+     "rowsDiffer": true
+    },
+    "b_walkjog": {
+     "identicalLedgers": true,
+     "historyEqual": true,
+     "rowsDiffer": false
+    },
+    "c_walkjogLongReturn": {
+     "identicalLedgers": true,
+     "historyEqual": true,
+     "rowsDiffer": false
+    }
+   },
+   "P02b": {
+    "EASY": {
+     "cases": 22,
+     "violating": [
+      "k=1 EMPTY: easyWeeksDone",
+      "k=1 NOLONG: easyWeeksDone",
+      "k=3 EMPTY: easyWeeksDone,stridesDone",
+      "k=4 EMPTY: easy,long,qualityStep,easyWeeksDone,stridesDone",
+      "k=5 EMPTY: qualityStep,easyWeeksDone,stridesDone",
+      "k=6 EMPTY: qualityStep,easyWeeksDone,stridesDone",
+      "k=7 EMPTY: easyWeeksDone,stridesDone",
+      "k=8 EMPTY: qualityStep,easyWeeksDone,stridesDone",
+      "k=9 EMPTY: easy,qualityStep,easyWeeksDone,stridesDone",
+      "k=10 EMPTY: qualityStep,easyWeeksDone,stridesDone",
+      "k=11 EMPTY: easyWeeksDone,stridesDone"
+     ]
+    },
+    "WALK_JOG": {
+     "cases": 22,
+     "violating": [
+      "k=1 EMPTY: walkStep",
+      "k=2 EMPTY: walkStep",
+      "k=3 EMPTY: walkStep",
+      "k=5 EMPTY: walkStep",
+      "k=6 EMPTY: walkStep",
+      "k=7 EMPTY: walkStep",
+      "k=9 EMPTY: walkStep",
+      "k=10 EMPTY: mode,walkStep,easy",
+      "k=11 EMPTY: easyWeeksDone"
+     ]
+    }
+   },
+   "mechanism": {
+    "EASY": {
+     "planAheadOfHistory": [
+      "k=1 EMPTY: easyWeeksDone",
+      "k=1 NOLONG: easyWeeksDone",
+      "k=2 EMPTY: qualityStep,easyWeeksDone,stridesDone",
+      "k=2 NOLONG: easyWeeksDone",
+      "k=3 EMPTY: easyWeeksDone,stridesDone",
+      "k=3 NOLONG: easyWeeksDone",
+      "k=4 EMPTY: easy,long,qualityStep,easyWeeksDone,stridesDone",
+      "k=4 NOLONG: long,easyWeeksDone",
+      "k=5 EMPTY: qualityStep,easyWeeksDone,stridesDone",
+      "k=5 NOLONG: easyWeeksDone",
+      "k=6 EMPTY: qualityStep,easyWeeksDone,stridesDone",
+      "k=6 NOLONG: easyWeeksDone",
+      "k=7 EMPTY: easyWeeksDone,stridesDone",
+      "k=7 NOLONG: easyWeeksDone",
+      "k=8 EMPTY: qualityStep,easyWeeksDone,stridesDone",
+      "k=8 NOLONG: easyWeeksDone",
+      "k=9 EMPTY: easy,qualityStep,easyWeeksDone,stridesDone",
+      "k=9 NOLONG: easyWeeksDone",
+      "k=10 EMPTY: qualityStep,easyWeeksDone,stridesDone",
+      "k=10 NOLONG: easyWeeksDone",
+      "k=11 EMPTY: easyWeeksDone,stridesDone",
+      "k=11 NOLONG: easyWeeksDone"
+     ]
+    },
+    "WALK_JOG": {
+     "planAheadOfHistory": [
+      "k=1 EMPTY: walkStep",
+      "k=2 EMPTY: walkStep",
+      "k=3 EMPTY: walkStep",
+      "k=5 EMPTY: walkStep",
+      "k=6 EMPTY: walkStep",
+      "k=7 EMPTY: walkStep",
+      "k=9 EMPTY: walkStep",
+      "k=10 EMPTY: walkStep",
+      "k=11 EMPTY: easyWeeksDone"
+     ]
+    }
+   },
+   "literalCells": [
+    {
+     "k": 1,
+     "shape": "EMPTY",
+     "planDims": [
+      "easyWeeksDone"
+     ],
+     "uAheadOfHistory": [
+      "easyWeeksDone"
+     ],
+     "U": "QUALITY:34:THRESHOLD_STEP=0 EASY:45:EASY_MINUTES=45:strides4 LONG:55:LONG_MINUTES=55",
+     "R": "EASY:40:EASY_MINUTES=40 EASY:40:EASY_MINUTES=40 LONG:55:LONG_MINUTES=55"
+    },
+    {
+     "k": 1,
+     "shape": "NOLONG",
+     "planDims": [
+      "easyWeeksDone"
+     ],
+     "uAheadOfHistory": [
+      "easyWeeksDone"
+     ],
+     "U": "QUALITY:34:THRESHOLD_STEP=0 EASY:45:EASY_MINUTES=45:strides4 LONG:55:LONG_MINUTES=55",
+     "R": "EASY:45:EASY_MINUTES=45 EASY:40:EASY_MINUTES=40 LONG:55:LONG_MINUTES=55"
+    },
+    {
+     "k": 3,
+     "shape": "EMPTY",
+     "planDims": [
+      "easyWeeksDone",
+      "stridesDone"
+     ],
+     "uAheadOfHistory": [
+      "easyWeeksDone",
+      "stridesDone"
+     ],
+     "U": "QUALITY:41:THRESHOLD_STEP=1 EASY:45:EASY_MINUTES=45:strides5 LONG:70:LONG_MINUTES=70",
+     "R": "QUALITY:41:THRESHOLD_STEP=1 EASY:45:EASY_MINUTES=45:strides4 LONG:70:LONG_MINUTES=70"
+    },
+    {
+     "k": 4,
+     "shape": "EMPTY",
+     "planDims": [
+      "easy",
+      "long",
+      "qualityStep",
+      "easyWeeksDone",
+      "stridesDone"
+     ],
+     "uAheadOfHistory": [
+      "easy",
+      "long",
+      "qualityStep",
+      "easyWeeksDone",
+      "stridesDone"
+     ],
+     "U": "QUALITY:48:THRESHOLD_STEP=2 EASY:45:EASY_MINUTES=45:strides5 LONG:70:LONG_MINUTES=75",
+     "R": "QUALITY:41:THRESHOLD_STEP=1 EASY:45:EASY_MINUTES=45:strides5 LONG:70:LONG_MINUTES=70"
+    },
+    {
+     "k": 5,
+     "shape": "EMPTY",
+     "planDims": [
+      "qualityStep",
+      "easyWeeksDone",
+      "stridesDone"
+     ],
+     "uAheadOfHistory": [
+      "qualityStep",
+      "easyWeeksDone",
+      "stridesDone"
+     ],
+     "U": "QUALITY:48:THRESHOLD_STEP=2 EASY:45:EASY_MINUTES=45:strides6 LONG:65:LONG_MINUTES=65",
+     "R": "QUALITY:41:THRESHOLD_STEP=1 EASY:45:EASY_MINUTES=45:strides5 LONG:65:LONG_MINUTES=65"
+    },
+    {
+     "k": 6,
+     "shape": "EMPTY",
+     "planDims": [
+      "qualityStep",
+      "easyWeeksDone",
+      "stridesDone"
+     ],
+     "uAheadOfHistory": [
+      "qualityStep",
+      "easyWeeksDone",
+      "stridesDone"
+     ],
+     "U": "QUALITY:53:THRESHOLD_STEP=4 EASY:50:EASY_MINUTES=50:strides6 LONG:75:LONG_MINUTES=75",
+     "R": "QUALITY:43:THRESHOLD_STEP=3 EASY:45:EASY_MINUTES=45:strides6 LONG:75:LONG_MINUTES=75"
+    },
+    {
+     "k": 7,
+     "shape": "EMPTY",
+     "planDims": [
+      "easyWeeksDone",
+      "stridesDone"
+     ],
+     "uAheadOfHistory": [
+      "easyWeeksDone",
+      "stridesDone"
+     ],
+     "U": "QUALITY:53:THRESHOLD_STEP=4 EASY:50:EASY_MINUTES=50:strides6 LONG:75:LONG_MINUTES=75",
+     "R": "QUALITY:53:THRESHOLD_STEP=4 EASY:50:EASY_MINUTES=50:strides6 LONG:75:LONG_MINUTES=75"
+    },
+    {
+     "k": 8,
+     "shape": "EMPTY",
+     "planDims": [
+      "qualityStep",
+      "easyWeeksDone",
+      "stridesDone"
+     ],
+     "uAheadOfHistory": [
+      "qualityStep",
+      "easyWeeksDone",
+      "stridesDone"
+     ],
+     "U": "QUALITY:49:THRESHOLD_STEP=5 EASY:50:EASY_MINUTES=50:strides6 LONG:75:LONG_MINUTES=75",
+     "R": "QUALITY:53:THRESHOLD_STEP=4 EASY:50:EASY_MINUTES=50:strides6 LONG:75:LONG_MINUTES=75"
+    },
+    {
+     "k": 9,
+     "shape": "EMPTY",
+     "planDims": [
+      "easy",
+      "qualityStep",
+      "easyWeeksDone",
+      "stridesDone"
+     ],
+     "uAheadOfHistory": [
+      "easy",
+      "qualityStep",
+      "easyWeeksDone",
+      "stridesDone"
+     ],
+     "U": "QUALITY:53:THRESHOLD_STEP=4 EASY:50:EASY_MINUTES=50:strides6 LONG:65:LONG_MINUTES=65",
+     "R": "QUALITY:53:THRESHOLD_STEP=4 EASY:50:EASY_MINUTES=50:strides6 LONG:65:LONG_MINUTES=65"
+    },
+    {
+     "k": 10,
+     "shape": "EMPTY",
+     "planDims": [
+      "qualityStep",
+      "easyWeeksDone",
+      "stridesDone"
+     ],
+     "uAheadOfHistory": [
+      "qualityStep",
+      "easyWeeksDone",
+      "stridesDone"
+     ],
+     "U": "QUALITY:49:THRESHOLD_STEP=5 EASY:50:EASY_MINUTES=50:strides6 LONG:75:LONG_MINUTES=75",
+     "R": "QUALITY:49:THRESHOLD_STEP=5 EASY:50:EASY_MINUTES=50:strides6 LONG:75:LONG_MINUTES=75"
+    },
+    {
+     "k": 11,
+     "shape": "EMPTY",
+     "planDims": [
+      "easyWeeksDone",
+      "stridesDone"
+     ],
+     "uAheadOfHistory": [
+      "easyWeeksDone",
+      "stridesDone"
+     ],
+     "U": "QUALITY:49:THRESHOLD_STEP=5 EASY:50:EASY_MINUTES=50:strides6 LONG:75:LONG_MINUTES=75",
+     "R": "QUALITY:49:THRESHOLD_STEP=5 EASY:50:EASY_MINUTES=50:strides6 LONG:75:LONG_MINUTES=75"
+    },
+    {
+     "k": 1,
+     "shape": "EMPTY",
+     "planDims": [
+      "walkStep"
+     ],
+     "uAheadOfHistory": [
+      "walkStep"
+     ],
+     "U": "WALK_JOG:23:WALK_JOG_STEP=2 WALK_JOG:23:WALK_JOG_STEP=2 WALK_JOG:23:WALK_JOG_STEP=2",
+     "R": "WALK_JOG:21:WALK_JOG_STEP=1 WALK_JOG:21:WALK_JOG_STEP=1 WALK_JOG:21:WALK_JOG_STEP=1"
+    },
+    {
+     "k": 2,
+     "shape": "EMPTY",
+     "planDims": [
+      "walkStep"
+     ],
+     "uAheadOfHistory": [
+      "walkStep"
+     ],
+     "U": "WALK_JOG:26:WALK_JOG_STEP=3 WALK_JOG:26:WALK_JOG_STEP=3 WALK_JOG:26:WALK_JOG_STEP=3",
+     "R": "WALK_JOG:23:WALK_JOG_STEP=2 WALK_JOG:23:WALK_JOG_STEP=2 WALK_JOG:23:WALK_JOG_STEP=2"
+    },
+    {
+     "k": 3,
+     "shape": "EMPTY",
+     "planDims": [
+      "walkStep"
+     ],
+     "uAheadOfHistory": [
+      "walkStep"
+     ],
+     "U": "WALK_JOG:28:WALK_JOG_STEP=4 WALK_JOG:28:WALK_JOG_STEP=4 WALK_JOG:28:WALK_JOG_STEP=4",
+     "R": "WALK_JOG:26:WALK_JOG_STEP=3 WALK_JOG:26:WALK_JOG_STEP=3 WALK_JOG:26:WALK_JOG_STEP=3"
+    },
+    {
+     "k": 5,
+     "shape": "EMPTY",
+     "planDims": [
+      "walkStep"
+     ],
+     "uAheadOfHistory": [
+      "walkStep"
+     ],
+     "U": "WALK_JOG:26:WALK_JOG_STEP=5 WALK_JOG:26:WALK_JOG_STEP=5 WALK_JOG:26:WALK_JOG_STEP=5",
+     "R": "WALK_JOG:28:WALK_JOG_STEP=4 WALK_JOG:28:WALK_JOG_STEP=4 WALK_JOG:28:WALK_JOG_STEP=4"
+    },
+    {
+     "k": 6,
+     "shape": "EMPTY",
+     "planDims": [
+      "walkStep"
+     ],
+     "uAheadOfHistory": [
+      "walkStep"
+     ],
+     "U": "WALK_JOG:28:WALK_JOG_STEP=6 WALK_JOG:28:WALK_JOG_STEP=6 WALK_JOG:28:WALK_JOG_STEP=6",
+     "R": "WALK_JOG:26:WALK_JOG_STEP=5 WALK_JOG:26:WALK_JOG_STEP=5 WALK_JOG:26:WALK_JOG_STEP=5"
+    },
+    {
+     "k": 7,
+     "shape": "EMPTY",
+     "planDims": [
+      "walkStep"
+     ],
+     "uAheadOfHistory": [
+      "walkStep"
+     ],
+     "U": "WALK_JOG:26:WALK_JOG_STEP=7 WALK_JOG:26:WALK_JOG_STEP=7 WALK_JOG:26:WALK_JOG_STEP=7",
+     "R": "WALK_JOG:28:WALK_JOG_STEP=6 WALK_JOG:28:WALK_JOG_STEP=6 WALK_JOG:28:WALK_JOG_STEP=6"
+    },
+    {
+     "k": 9,
+     "shape": "EMPTY",
+     "planDims": [
+      "walkStep"
+     ],
+     "uAheadOfHistory": [
+      "walkStep"
+     ],
+     "U": "WALK_JOG:28:WALK_JOG_STEP=8 WALK_JOG:28:WALK_JOG_STEP=8 WALK_JOG:28:WALK_JOG_STEP=8",
+     "R": "WALK_JOG:26:WALK_JOG_STEP=7 WALK_JOG:26:WALK_JOG_STEP=7 WALK_JOG:26:WALK_JOG_STEP=7"
+    },
+    {
+     "k": 10,
+     "shape": "EMPTY",
+     "planDims": [
+      "mode",
+      "walkStep",
+      "easy"
+     ],
+     "uAheadOfHistory": [
+      "walkStep"
+     ],
+     "U": "EASY:21:EASY_MINUTES=25 EASY:21:EASY_MINUTES=25 EASY:21:EASY_MINUTES=25",
+     "R": "WALK_JOG:28:WALK_JOG_STEP=8 WALK_JOG:28:WALK_JOG_STEP=8 WALK_JOG:28:WALK_JOG_STEP=8"
+    },
+    {
+     "k": 11,
+     "shape": "EMPTY",
+     "planDims": [
+      "easyWeeksDone"
+     ],
+     "uAheadOfHistory": [
+      "easyWeeksDone"
+     ],
+     "U": "EASY:25:EASY_MINUTES=25 EASY:25:EASY_MINUTES=25 EASY:25:EASY_MINUTES=25",
+     "R": "EASY:25:EASY_MINUTES=25 EASY:25:EASY_MINUTES=25 EASY:25:EASY_MINUTES=25"
+    }
+   ]
+  },
+  "QE-R7ASC-03": {
+   "signal": "a missed long run in a RETURN week still steps the return; the return week is credited before its Sunday run exists",
+   "P05": {
+    "MODERATE": {
+     "missedLongStillSteps": true,
+     "creditedBeforeSundayExists": true,
+     "missedGate": {
+      "EASY": "ADVANCE"
+     },
+     "nextWeekRunRowsMissed": "EASY:30:RETURN_STEP=1 EASY:30:RETURN_STEP=1 LONG:45:RETURN_STEP=1",
+     "nextWeekRunRowsExec": "EASY:30:RETURN_STEP=1 EASY:30:RETURN_STEP=1 LONG:45:RETURN_STEP=1"
+    },
+    "LONG": {
+     "missedLongStillSteps": false,
+     "creditedBeforeSundayExists": false,
+     "missedGate": {
+      "EASY": "HOLD"
+     },
+     "nextWeekRunRowsMissed": "EASY:15:RESTART_MINUTES=15 EASY:15:RESTART_MINUTES=15 EASY:15:RESTART_MINUTES=15",
+     "nextWeekRunRowsExec": "EASY:20:RESTART_MINUTES=20 EASY:20:RESTART_MINUTES=20 EASY:20:RESTART_MINUTES=20"
+    }
+   },
+   "P05b": {
+    "SUNDAY_PENDING": {
+     "basis": {
+      "RUN": "COMPLETED_SESSIONS",
+      "STRENGTH": "RETURN_ENTRY"
+     },
+     "run": {
+      "mode": "RETURN",
+      "returnStep": 1
+     }
+    },
+    "SUNDAY_MISSED": {
+     "basis": {
+      "RUN": "COMPLETED_SESSIONS",
+      "STRENGTH": "RETURN_ENTRY"
+     },
+     "run": {
+      "mode": "RETURN",
+      "returnStep": 1
+     }
+    }
+   }
+  },
+  "QE-R7ASC-04": {
+   "signal": "identical record; week 5 dose depends on whether an unrelated equipment statement re-composed the week (two goal contexts)",
+   "P07": {
+    "pairs": 20,
+    "pairsWithDivergence": [
+     "STRENGTH->HYPERTROPHY",
+     "STRENGTH->GENERAL",
+     "STRENGTH->RUNNING_SUPPORT",
+     "STRENGTH->MAINTAIN",
+     "HYPERTROPHY->STRENGTH",
+     "HYPERTROPHY->RUNNING_SUPPORT",
+     "HYPERTROPHY->MAINTAIN",
+     "GENERAL->STRENGTH",
+     "GENERAL->RUNNING_SUPPORT",
+     "GENERAL->MAINTAIN",
+     "RUNNING_SUPPORT->STRENGTH",
+     "RUNNING_SUPPORT->HYPERTROPHY",
+     "RUNNING_SUPPORT->GENERAL",
+     "RUNNING_SUPPORT->MAINTAIN",
+     "MAINTAIN->STRENGTH",
+     "MAINTAIN->HYPERTROPHY",
+     "MAINTAIN->GENERAL",
+     "MAINTAIN->RUNNING_SUPPORT"
+    ]
+   }
+  },
+  "F4": {
+   "signal": "a walk/jog return after a HOLD or consolidation week resumes above the last step run (SHORT) or one below it (MODERATE)",
+   "walkjog": {
+    "cells": 12,
+    "aboveRecipeAfterSecondReturn": 10,
+    "examples": [
+     "CONS/ALL/SHORT: held w4 (CONSOLIDATION) gate ADVANCE, plan 2 vs history 3; last step run 2; first week back w6: 3 (recipe allows 2)",
+     "CONS/ALL/MODERATE: held w4 (CONSOLIDATION) gate ADVANCE, plan 2 vs history 3; last step run 2; first week back w7: 2 (recipe allows 1)",
+     "CONS/ONE_MISSED/SHORT: held w4 (CONSOLIDATION) gate HOLD, plan 2 vs history 3; last step run 2; first week back w6: 3 (recipe allows 2)",
+     "CONS/ONE_MISSED/MODERATE: held w4 (CONSOLIDATION) gate HOLD, plan 2 vs history 3; last step run 2; first week back w7: 2 (recipe allows 1)",
+     "CONS/NONE/SHORT: held w4 (CONSOLIDATION) gate HOLD, plan 2 vs history 3; last step run 2; first week back w6: 3 (recipe allows 2)",
+     "CONS/NONE/MODERATE: held w4 (CONSOLIDATION) gate HOLD, plan 2 vs history 3; last step run 2; first week back w7: 2 (recipe allows 1)",
+     "DEV/ONE_MISSED/SHORT: held w3 (DEVELOPMENT) gate HOLD, plan 1 vs history 2; last step run 1; first week back w5: 2 (recipe allows 1)",
+     "DEV/ONE_MISSED/MODERATE: held w3 (DEVELOPMENT) gate HOLD, plan 1 vs history 2; last step run 1; first week back w6: 1 (recipe allows 0)",
+     "DEV/NONE/SHORT: held w3 (DEVELOPMENT) gate HOLD, plan 1 vs history 2; last step run 1; first week back w5: 2 (recipe allows 1)",
+     "DEV/NONE/MODERATE: held w3 (DEVELOPMENT) gate HOLD, plan 1 vs history 2; last step run 1; first week back w6: 1 (recipe allows 0)"
+    ]
+   }
+  }
+ },
+ "runs": {
+  "P01b": {
+   "exit": 0,
+   "seconds": 7,
+   "outSha256": "c3b84d203a770bf852fbb3a4ea4558a2b5cadc230afa68820bce1450b34683fd",
+   "identicalToReviewerRunExceptRoot": true
+  },
+  "P02": {
+   "exit": 0,
+   "seconds": 7,
+   "outSha256": "329ec72dae503d9eb5a026984aab3dc2c81ca8b4739a7c91bb0eb8e99a5d0188",
+   "identicalToReviewerRunExceptRoot": true
+  },
+  "P05b": {
+   "exit": 0,
+   "seconds": 2,
+   "outSha256": "b63b35f2263cc76f92ff726caba8bcc4d931a20bac9036d7268ad12ea126d1ce",
+   "identicalToReviewerRunExceptRoot": true
+  },
+  "P05": {
+   "exit": 0,
+   "seconds": 7,
+   "outSha256": "0f9be8a95e1b7bf437e9c50e055030e3c76359c474a631aa6951e8dc79fe2942",
+   "identicalToReviewerRunExceptRoot": true
+  },
+  "P01": {
+   "exit": 0,
+   "seconds": 17,
+   "outSha256": "32f9cd8c2dcf6fdacc226e5b56955b4a2f5aeb1de2d66585d3ec3b6b62f7b16d",
+   "identicalToReviewerRunExceptRoot": true
+  },
+  "P01.w3kg24": {
+   "exit": 0,
+   "seconds": 17,
+   "outSha256": "95ba2f7d911938b6565803bbb84d71c66bd433998b2e67d3e36ce6882e73881c",
+   "identicalToReviewerRunExceptRoot": true
+  },
+  "walkjog": {
+   "exit": 0,
+   "seconds": 4,
+   "outSha256": "152f0a9b5b6c983c07b222281f4774005851ad06ee01028082fed77689914f8c",
+   "identicalToReviewerRunExceptRoot": true
+  },
+  "walkjog-trace": {
+   "exit": 0,
+   "seconds": 1,
+   "outSha256": "3408953314e70965344497d28fade8b98648b2fb847380d52c5d5277c176fcc9",
+   "identicalToReviewerRunExceptRoot": true
+  },
+  "P07": {
+   "exit": 0,
+   "seconds": 27,
+   "outSha256": "59f16fd24493ee5037612a388be5ae187bf37e1b5aa733954a67f1f68336ad0f",
+   "identicalToReviewerRunExceptRoot": true
+  },
+  "P02b": {
+   "exit": 0,
+   "seconds": 52,
+   "outSha256": "0d40391a735fa9b656207966acf702b8aad0e1a8864088feaae09f56ce9b2a49",
+   "identicalToReviewerRunExceptRoot": true
+  }
+ }
+}

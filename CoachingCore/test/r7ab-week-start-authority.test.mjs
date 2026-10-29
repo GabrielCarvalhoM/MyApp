@@ -81,11 +81,15 @@ test('R7-A boundary I5/P3 (families D, E): execution promotes authority only thr
  // Executed exactly as projected (the known loads the re-entry rows keep), never reviewed: completed sessions anchor week 6 (§10).
  const a=copy(t);perDay(a,5,s=>s.day<6,atKnown(a));sundayOnMonday(a,atKnown(a));
  const A6=tripB(a,d0);assert.equal(A6.interruption.stateAt.week,6);assert.deepEqual(A6.interruption.stateAt.authority,{RUN:'COMPLETED_SESSIONS',STRENGTH:'COMPLETED_SESSIONS'});
- // The same week reviewed on Sunday: the weekly review's rule (P2: the same base).
- const b=copy(t);perDay(b,5,s=>s.day<6,atKnown(b));weekly(b,5,()=>false);
+ // The same week reviewed on Sunday: the weekly review's rule (P2: the same base). Decision authority closure (QE-R7ASC-03): the review carries
+ // Sunday's long run, as A executed it; the same review without it (the long run missed) holds the return step, whatever order the run roles
+ // are read in (the earlier version of this cell left Sunday unreported and still expected step 1, the last-writer reading of the shared gate).
+ const b=copy(t);perDay(b,5,s=>s.day<6,atKnown(b));weekly(b,5,s=>s.day===6);
  const B6=tripB(b,d0);assert.equal(B6.interruption.stateAt.week,6);assert.ok(['WEEK_EVIDENCE','COMPLETED_SESSIONS'].includes(B6.interruption.stateAt.authority.RUN));
  assert.deepEqual(stepsOf(A6.interruption.entry),stepsOf(B6.interruption.entry),'executed and reviewed give the same steps');
  assert.equal(A6.interruption.entry.run.returnStep,1);
+ const m=copy(t);perDay(m,5,s=>s.day<6,atKnown(m));weekly(m,5,()=>false);
+ assert.equal(tripB(m,d0).interruption.entry.run.returnStep,0,'a long run missed holds the return step');
  // State model: lifting lighter than the rows kept is still a week the athlete executed, so it is evidence: the next start is anchored on the
  // athlete's own executed state, and the known load is the 20 kg lifted, never the 82.5 the return rows carried as a ceiling.
  const c=copy(t);perDay(c,5,s=>s.day<6,{kg:()=>20});sundayOnMonday(c);

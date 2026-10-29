@@ -200,7 +200,10 @@ export function advanceRun(sk,st0,w,gate={}){
  if(st.mode==='RETURN'){const k=g('EASY'),base=Number.isInteger(P.returnStep)?Math.min(st.returnStep,P.returnStep):st.returnStep;st.returnStep=Math.max(0,base+STEP[k]);if(st.returnStep>=sk.op.return.moderateStepsToPrior){const to=st.returnTo;st.mode=to.mode;st.easy=to.easy;st.long=to.long;st.walks=to.walks??0;st.walkStep=to.walkStep??st.walkStep;st.restart=to.restart??st.restart;st.qualityStep=Math.max(0,(to.qualityStep??0)-1);st.specificStep=Math.max(0,(to.specificStep??0)-1);delete st.returnFrom;delete st.returnTo;delete st.returnStep;}return st;}
  // Taper, race-window and post-event days hold what walk/jog and restart athletes have reached (SSCTR D43): no step there.
  const ed=eventDays(sk),endBefore=ed?ed.before(w,6):null,eventHold=['TAPER','RACE_WEEK','POST_EVENT'].includes(phase)||endBefore!==null&&endBefore>=0&&endBefore<=ed.taperDays;
- if(st.mode==='WALK_JOG'){const k=g('WALK_JOG'),d=(phase==='CONSOLIDATION'||eventHold)&&k!=='REGRESS'?0:STEP[k],from=d>0&&Number.isInteger(P.walkStep)?Math.min(st.walkStep,P.walkStep):st.walkStep;st.walkStep=Math.max(0,from+d);if(next==='NEXT_BLOCK'&&!st.resumed){st.resumed=true;st.walkStep=Math.max(0,st.walkStep-1);}if(st.walkStep>=ladder.length){const X=R.walkJogExit;st.mode='EASY';st.easy=Math.min(budget,X.easyMinutes);st.long=null;st.walks=Math.max(0,st.nEasy-X.maxRunsPerWeek);st.easyWeeksDone=0;st.stridesEligible=true;}}
+ // The walk/jog step moves from the step the week's runs prescribed for every gate, as RETURN and RESTART do (decision authority closure, SSCTR F4,
+ // R44): a consolidation week or a HOLD repeats that step, so history never keeps a step above the one the week ran. In the event window the
+ // one-step-back days are a planned reduction, not a tolerance: the step reached holds there (SSCTR D43).
+ if(st.mode==='WALK_JOG'){const k=g('WALK_JOG'),d=(phase==='CONSOLIDATION'||eventHold)&&k!=='REGRESS'?0:STEP[k],from=!eventHold&&Number.isInteger(P.walkStep)?Math.min(st.walkStep,P.walkStep):st.walkStep;st.walkStep=Math.max(0,from+d);if(next==='NEXT_BLOCK'&&!st.resumed){st.resumed=true;st.walkStep=Math.max(0,st.walkStep-1);}if(st.walkStep>=ladder.length){const X=R.walkJogExit;st.mode='EASY';st.easy=Math.min(budget,X.easyMinutes);st.long=null;st.walks=Math.max(0,st.nEasy-X.maxRunsPerWeek);st.easyWeeksDone=0;st.stridesEligible=true;}}
  else if(st.mode==='RESTART'){const k=g('EASY'),X=R.restart,d=eventHold&&k!=='REGRESS'?0:STEP[k],from=Number.isFinite(P.restart)?Math.min(st.restart,P.restart):st.restart;st.restart=Math.max(op.return.entryRunMinutes,from+X.stepMinutes*d);if(st.restart>=Math.min(budget,X.switchToEasyAtMinutes)){st.mode='EASY';st.easy=Math.min(budget,st.restart);st.long=st.hasLong?Math.min(longBudget,st.restart+X.longRunOffsetMinutes):null;st.easyWeeksDone=0;st.stridesEligible=true;
   // Running days stay at the restart frequency; the other chosen days keep walks and return one at a time at block starts.
   st.walks=Math.max(0,st.nEasy+(st.hasLong?1:0)-op.establishment.maxWalkJogDaysPerWeek);}}
@@ -490,6 +493,11 @@ const reEstablish=(ex,u)=>{const c0=Number.isInteger(u.baseSets)?u.baseSets:u.se
  * before or after the row was planned therefore makes no difference. The repetition target stays the one the row prescribed for that exposure.
  */
 export const asEstablishment=u=>u?.mode==='KNOWN'?{...u,mode:'ESTABLISH',value:null}:u;
+/** Factual authority (decision authority closure, QE-R7ASC-01): the start holds a known load for the exercise, settled by executed evidence. Only
+ * then is a KNOWN row the reference a log is judged against (SSCTR D44). An exercise held as FROM_LOG (established by effort, unlogged, or a log
+ * awaiting confirmation) has no usable load, so a KNOWN row planned before a correction, retraction or conflict is read as an establishment: its
+ * first log waits for confirmation (SSCTR D45), whenever the correction reached the plan. */
+export const heldKnownLoad=ex=>ex?.mode==='KNOWN'&&Number.isFinite(ex.load);
 /** The return step an exercise's exposures of the week were dosed at (state model consumer closure, Property D; SSCTR F1, D49, D53): the entry is
  * step 0, return step 2 is step 1, any other row a dose beyond the return steps. The highest one, so a week that reached a step is read at it. */
 const RETURN_DOSE={RETURN_ENTRY:0,RETURN_STEP:1};
@@ -539,8 +547,8 @@ export const executedDosesOf=ss=>Object.fromEntries(Object.entries(ss?.exercises
 export function strengthAtBreak(sk,ss0,used,gate={},{performed={},logged={},evidenceMode=false}={}){
  const ss=clone(ss0),planned=ss0.planned??{},entryWeek=entryWeekOf(ss0,used),returningWeek=returningWeekOf(ss0,used),facts=evidenceMode?{...(ss0.facts??executedDosesOf(ss0))}:null;delete ss.planned;delete ss.entryWeek;delete ss.facts;
  for(const [id,rows] of byExercise(used)){
-  // An exercise the start does not hold is set up only by what was executed (asEstablishment).
-  const list=ss0.exercises[id]?rows:rows.map(asEstablishment);
+  // An exercise the start does not hold with a known load is set up or read only by what was executed (asEstablishment; QE-R7ASC-01).
+  const list=heldKnownLoad(ss0.exercises[id])?rows:rows.map(asEstablishment);
   const {date:on,executed:done}=executedOf(list,performed?.[id],false);if(!on)continue;
   const u=done[0]??list.at(-1),k=gate[id]??gate.STRENGTH??gate.ALL??'HOLD';
   let ex=ss.exercises[id];
@@ -581,6 +589,13 @@ export function historicalStrength(ss){
  }
  return {...rest,exercises};
 }
+/**
+ * The run as a return reads it (decision authority closure, SSCTR F4; R6-NONCLINICAL-RETURN: re-entry returns to the prior tolerated dose, and
+ * historical maxima are a ceiling, not current proof): a walk/jog step the evidence released but the athlete has not run yet waits for a run, so
+ * the return starts from the step of the last walk/jog session executed (`lastStepRun`), never above it. Without a walk/jog session on the
+ * record the state stands (the intake's reported step). Once the athlete runs the next step, that step is the one a later return reads.
+ */
+export const historicalRun=(run,lastStepRun)=>run?.mode==='WALK_JOG'&&Number.isInteger(lastStepRun)&&Number.isInteger(run.walkStep)&&run.walkStep>lastStepRun?{...run,walkStep:lastStepRun}:run;
 /** Transition after week w for exercises used that week. gate per exercise id or 'STRENGTH'. Logged loads replace planned ones before the gate.
  * A step needs a logged set at the current load in the gating week; a conditional projection assumes the planned logs.
  * `performed` maps an exercise to the local date a review saw it last performed in the week and the sessions that performed it
@@ -600,9 +615,10 @@ export function advanceStrength(sk,ss0,w,used,gate={},logged={},{assumeLogged=fa
  // return (strengthReturnSets: the block in progress at the break earns no set), and its count rises at most one set per executed week.
  const returningWeek=returningWeekOf(ss0,used);
  for(const [id,rows] of byExercise(used)){
-  // Read as executed evidence (a review or the evidence reducer, not a conditional projection), an exercise the start does not hold is set up
-  // only by what was executed, never by what its rows prescribed (asEstablishment; state model consumer closure, QE-R7ASM-01).
-  const list=assumeLogged||ss0.exercises[id]?rows:rows.map(asEstablishment);
+  // Read as executed evidence (a review or the evidence reducer, not a conditional projection), an exercise the start does not hold with a known
+  // load is set up or adopted only by what was executed, never by what its rows prescribed (asEstablishment; QE-R7ASM-01, QE-R7ASC-01): a KNOWN
+  // row of an exercise history holds only as FROM_LOG is no reference for its first log.
+  const list=assumeLogged||heldKnownLoad(ss0.exercises[id])?rows:rows.map(asEstablishment);
   // The gate is known before the adoption: an above-plan load is adopted only when this exposure met the ADVANCE criterion (SSCTR D44).
   // The first executed exposure decides what the week was (a re-establishment or not); the last executed one gives its counts, as
   // "the last executed count" reads (SSCTR D49, R19; R7-A).

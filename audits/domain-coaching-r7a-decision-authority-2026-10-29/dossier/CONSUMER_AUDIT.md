@@ -1,0 +1,30 @@
+# Consumer audit (Founder request §34)
+
+Only the consumers tied to the five findings are audited, against the bytes frozen as R7A-DECISION-AUTHORITY-FREEZE-1. Line numbers refer to those bytes.
+
+The five questions:
+1. Does it read History or the Projection?
+2. Does it use the correct context?
+3. Can it grant progress without execution?
+4. Can it read a future session?
+5. Can it return above the factual tolerated state?
+
+Evidence names:
+- tests: `CoachingCore/test/r7ada-decision-authority.test.mjs`, unless another file is named;
+- self-challenge classes: `probes/runs/self-challenge.*.out.json`;
+- mutants: `probes/runs/mutation.out.json`.
+
+| Consumer (source) | 1. History or Projection | 2. Context | 3. Progress without execution | 4. Future session | 5. Above tolerated |
+|---|---|---|---|---|---|
+| **Factual adoption.** `loggedLoadDecision` (r6-program.mjs:430), reached from `advanceStrength` (:604) and `strengthAtBreak` (:547); `loggedLoadQuestions` (r6-adaptation.mjs:88) | The executed log. A KNOWN row is a reference only when the start holds a factual known load (`heldKnownLoad`, r6-program.mjs:500); otherwise the row is an establishment (A1) | The transition's skeleton: the entered week's context in the PLAN reading, the week's own in history | No. A FROM_LOG, unlogged or pending exercise adopts nothing from a planned KNOWN row. An unreadable load is no load (A2). Mutants F1–F4 killed; class A1 24/0, A5 2/0 | No. Logs are cut at the reading's clock (Property D, unchanged) | Not applicable: no return path |
+| **Program setup.** `setUp` (r6-program.mjs:484), `asEstablishment` (:495), in `strengthAtBreak` and `advanceStrength` | Executed evidence only: an exercise the start does not hold with a known load is set up by what was executed (A1). Intake facts (knownExercises) are history | One context per transition | No. The first exposure is an establishment (SSCTR D52) | No | Not applicable |
+| **Run progression.** `advanceRun` (r6-program.mjs:185), fed by `planningBase` (r6-adaptation.mjs:784) and the PLAN reading of `evidenceState` (:707) | The PLAN reading, which is history plus the planner's policy, in every mode (C1). The projection supplies only the `planned` summaries and `modeHistory` | The entered week's context for every transition (B1) | No. A past week neither closed nor complete replays as HOLD (C2). Counters move only on `done(...)` gates. QE-R7ASC-02's P02b: 0 of 44 cells with the plan ahead of history (predecessor 31); class D1 44/0 (predecessor 40); mutants P1, P2 killed | No. A PENDING run holds its gate (C4); mutant P4 killed | RETURN, RESTART and WALK_JOG start from min(state, the dose the week prescribed) (W1); mutant W1 killed |
+| **Gate resolution.** `weeklyGates` / `setGate` (r6-adaptation.mjs:155, :160) | The week's evidence as read at the cut (`weekEvidence`); the start of the decision's PlanningView | The skeleton the caller passes: the entered week's in the PLAN reading, the planner's own in a review | No. The most restrictive verdict stands (C3), so a HOLD or REGRESS is never overwritten. P4 test; class D3 22/0 (predecessor 9); mutant P3 killed | No. PENDING → HOLD | Not applicable |
+| **Weekly review.** `weeklyReview` (r6-adaptation.mjs:362), `evidenceStart` (:258), `composeWeeks` (r6-composition.mjs:208) | Closing: next week's start is `evidenceStart` on `ctx.base` (the PlanningView) with the week's gates. Under way: KEEP, or REPLAN_FROM_EVIDENCE when a correction moved the view (A3) | `ctx.base` comes from the PLAN reading; next week's skeleton for its transition (C2) | Closing: no. Under way: it never gates. **Declared R1:** a decision that re-plans nothing keeps the stored rows, so a week projected over an unreviewed week stays until a re-plan (identical on the predecessor) | No. A review under way never treats future sessions as missed (R6) | Not applicable |
+| **Goal change.** `goalChange` (r6-adaptation.mjs:597) → `rebuild` (:476) → `composeWeeks` | The PlanningView recomputed on the program the change produces (B3) | The new context for the weeks it re-plans; each transition under the context of the week it enters. P07: 20/20 pairs; class C1 20/0 (predecessor 18), C2 4/0, C3 28/0 (predecessor 26); mutants C1, C3, C4 killed | No. The run comes from evidence. Strength is EarnedProgress resolved under the new goal's dose (MAINTAIN: 70 × 10, then 70 × 8) | No | Not applicable |
+| **Return / restart.** `returnAfterPause` (r6-adaptation.mjs:922), `stateAtBreak` (:871), `staleReturn` (:914) | HistoricalState at the break (HISTORY reading), executed doses only | The break's own clock | No. The return steps advance only on the shared EASY gate, every row of the return week read (E7, C3). **Declared R2:** a mid-week return holds its first week. Class D3; mutant C2 killed | No. A PENDING run holds the return (P05b) | No. Historical maxima are ceilings; strength resumes at the executed dose (F1, D53 tests); walk/jog at the step last run (W2) |
+| **Walk/jog restoration.** `advanceRun` WALK_JOG (r6-program.mjs:206), `historicalRun` (:598) | History: the steps of the walk/jog sessions executed | Not applicable | No. A step moves only from the step the week ran; HOLD and consolidation repeat it (W1). Class E1 12/0 (predecessor 10) | No | No. A return starts at the step last run at most (W2); MODERATE one below. F4 test: 5 cells; classes E1, E2 28/0 (predecessor 22); mutant W2 killed |
+
+**Not consumers of earned state:** `conditionalNext`, `projectWeeks` and `weekAsPlanned` *produce* the projection: the plan assumes the week executes, which planning may do (§12). Every decision that re-plans reads its start from the PlanningView. No HistoricalState reader reads them.
+
+**Result:** no audited consumer grants progression without execution, reads a future session, or returns above the factual tolerated state. Two boundaries remain open for the Founder or SSCTR: R1 (the standing projection between re-plans) and R2 (a mid-week return holds its first week under E7). See [DECISION_AUTHORITY_CONTRACT.md](../DECISION_AUTHORITY_CONTRACT.md).

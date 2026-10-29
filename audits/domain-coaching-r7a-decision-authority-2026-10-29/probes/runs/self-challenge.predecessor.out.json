@@ -1,0 +1,418 @@
+{
+ "probe": "r7ada-self-challenge",
+ "tree": "audits/domain-coaching-r7a-decision-authority-2026-10-29/state-consumer-freeze-source/CoachingCore",
+ "classes": {
+  "A1 FROM_LOG + KNOWN row planned before a correction": {
+   "cases": 24,
+   "violations": 24,
+   "examples": [
+    "A1 noDetails 18kg LATE",
+    "A1 noDetails 18kg AFTER",
+    "A1 noDetails 20kg LATE",
+    "A1 noDetails 20kg AFTER"
+   ]
+  },
+  "A2 known load corrected lower, row ahead planned from the retracted one": {
+   "cases": 5,
+   "violations": 2,
+   "examples": [
+    "A2 26kg LATE",
+    "A2 28kg LATE"
+   ]
+  },
+  "A3 conflicting late wearable record": {
+   "cases": 2,
+   "violations": 0,
+   "examples": []
+  },
+  "A4 the planned target alone (P1)": {
+   "cases": 18,
+   "violations": 8,
+   "examples": [
+    "A4 firstLog 20kg target 16",
+    "A4 firstLog 22kg target 16",
+    "A4 firstLog 26kg target 24",
+    "A4 firstLog 26kg target 30"
+   ]
+  },
+  "A5 unreadable execution is no load": {
+   "cases": 2,
+   "violations": 2,
+   "examples": [
+    "A5 unknownUnit",
+    "A5 repsNoLoad"
+   ]
+  },
+  "A6 a newer report of a break moves an establishment inside the pause": {
+   "cases": 2,
+   "violations": 0,
+   "examples": []
+  },
+  "C1 goal change, every ordered pair (P07)": {
+   "cases": 20,
+   "violations": 18,
+   "examples": [
+    "C1 STRENGTH->HYPERTROPHY",
+    "C1 STRENGTH->GENERAL",
+    "C1 STRENGTH->RUNNING_SUPPORT",
+    "C1 STRENGTH->MAINTAIN"
+   ]
+  },
+  "C2 goal change stated after the closing review": {
+   "cases": 4,
+   "violations": 0,
+   "examples": []
+  },
+  "C3 handler order (no-op statements in every order)": {
+   "cases": 28,
+   "violations": 26,
+   "examples": [
+    "C3 equip+window+schedule+review",
+    "C3 equip+window+review+schedule",
+    "C3 equip+schedule+window+review",
+    "C3 equip+schedule+review+window"
+   ]
+  },
+  "C4 review closure": {
+   "cases": 13,
+   "violations": 0,
+   "examples": []
+  },
+  "C5 a return's own week closed, then a no-op decision": {
+   "cases": 12,
+   "violations": 8,
+   "examples": [
+    "C5 17d executed",
+    "C5 17d long missed",
+    "C5 18d executed",
+    "C5 18d long missed"
+   ]
+  },
+  "D1 two unexecuted weeks: threshold, quality, strides, ladder, continuous running": {
+   "cases": 44,
+   "violations": 40,
+   "examples": [
+    "D1 EASY k=1 U ahead easyExtra,devCount,easyWeeksDone rows differ",
+    "D1 EASY k=2 U ahead qualityStep,thresholdDone,devCount,easyWeeksDone,qualityDone,stridesDone",
+    "D1 EASY k=3 U ahead easyWeeksDone,qualityDone,stridesDone rows differ",
+    "D1 EASY k=4 U ahead long,easy,qualityStep,thresholdDone,devCount,easyWeeksDone,qualityDone,stridesDone rows differ"
+   ]
+  },
+  "D2 missed long runs with the projection ahead": {
+   "cases": 4,
+   "violations": 1,
+   "examples": [
+    "D2 long runs of weeks 4,5 missed"
+   ]
+  },
+  "D3 HOLD + RETURN: each run of the return week missed, a run not yet due, a second return week": {
+   "cases": 22,
+   "violations": 9,
+   "examples": [
+    "D3 MODERATE missed none: entry R0 before the last run R1 history R1 plan R1",
+    "D3 MODERATE missed LONG: entry R0 before the last run R1 history R1 plan R1",
+    "D3 MODERATE second re-entry week, its LONG run missed: after week 1 R1, after week 2 plan EASY history EASY",
+    "D3 MODERATE_MON missed none: entry R0 before the last run R1 history R1 plan R1"
+   ]
+  },
+  "E1 SSCTR walk/jog cells (HOLD, consolidation, repeated pause)": {
+   "cases": 12,
+   "violations": 10,
+   "examples": [
+    "E1 CONS/ALL/SHORT: back 3 allowed 2",
+    "E1 CONS/ALL/MODERATE: back 2 allowed 1",
+    "E1 CONS/ONE_MISSED/SHORT: back 3 allowed 2",
+    "E1 CONS/ONE_MISSED/MODERATE: back 2 allowed 1"
+   ]
+  },
+  "E2 a step earned and never run, then a pause": {
+   "cases": 16,
+   "violations": 12,
+   "examples": [
+    "E2 ran 2 weeks, next step never run, SHORT: last 1 entry 2 back 2 allowed 1",
+    "E2 ran 2 weeks, next step never run, SHORT (reported the same week): last 1 entry 2 back 2 allowed 1",
+    "E2 ran 2 weeks, next step never run, MODERATE: last 1 entry 1 back 1 allowed 0",
+    "E2 ran 2 weeks, next step never run, MODERATE (reported the same week): last 1 entry 1 back 1 allowed 0"
+   ]
+  }
+ },
+ "declared": {
+  "A2 an exposure executed before its correction arrived (SSCTR D44)": [
+   {
+    "kg": 20,
+    "afterEqualsEarly": true,
+    "early": {
+     "mode": "KNOWN",
+     "last": 20,
+     "lifted": 20,
+     "tick": 1
+    },
+    "after": {
+     "mode": "KNOWN",
+     "last": 20,
+     "lifted": 20,
+     "tick": 1
+    },
+    "afterRow": "2026-11-28 db-rdl KNOWN26 2x5@3",
+    "earlyRow": "2026-11-28 db-rdl KNOWN22 2x5@3"
+   },
+   {
+    "kg": 22,
+    "afterEqualsEarly": true,
+    "early": {
+     "mode": "KNOWN",
+     "last": 22,
+     "lifted": 22,
+     "tick": 0
+    },
+    "after": {
+     "mode": "KNOWN",
+     "last": 22,
+     "lifted": 22,
+     "tick": 0
+    },
+    "afterRow": "2026-11-28 db-rdl KNOWN26 2x5@3",
+    "earlyRow": "2026-11-28 db-rdl KNOWN22 2x5@3"
+   },
+   {
+    "kg": 24,
+    "afterEqualsEarly": true,
+    "early": {
+     "mode": "KNOWN",
+     "last": 24,
+     "lifted": 24,
+     "tick": 0
+    },
+    "after": {
+     "mode": "KNOWN",
+     "last": 24,
+     "lifted": 24,
+     "tick": 0
+    },
+    "afterRow": "2026-11-28 db-rdl KNOWN26 2x5@3",
+    "earlyRow": "2026-11-28 db-rdl KNOWN22 2x5@3"
+   },
+   {
+    "kg": 26,
+    "afterEqualsEarly": false,
+    "early": {
+     "mode": "KNOWN",
+     "last": 20,
+     "lifted": 26,
+     "tick": 1
+    },
+    "after": {
+     "mode": "KNOWN",
+     "last": 26,
+     "lifted": 26,
+     "tick": 0
+    },
+    "afterRow": "2026-11-28 db-rdl KNOWN26 2x5@3",
+    "earlyRow": "2026-11-28 db-rdl KNOWN22 2x5@3"
+   },
+   {
+    "kg": 28,
+    "afterEqualsEarly": false,
+    "early": {
+     "mode": "KNOWN",
+     "last": 20,
+     "lifted": 28,
+     "tick": 1
+    },
+    "after": {
+     "mode": "KNOWN",
+     "last": 28,
+     "lifted": 28,
+     "tick": 0
+    },
+    "afterRow": "2026-11-28 db-rdl KNOWN26 2x5@3",
+    "earlyRow": "2026-11-28 db-rdl KNOWN22 2x5@3"
+   }
+  ],
+  "C4c standing projection: a week no review closed, then a decision that re-plans nothing (boundary E1/E3)": [
+   {
+    "cell": "EASY k=2",
+    "storedRowsKeptBy": [
+     "none",
+     "equipment",
+     "schedule",
+     "report"
+    ],
+    "runAsStored": [
+     "2026-11-24 QUALITY:34:THRESHOLD_STEP=0",
+     "2026-11-26 EASY:45:EASY_MINUTES=45:strides4",
+     "2026-11-29 LONG:60:LONG_MINUTES=60"
+    ],
+    "runAsResolved": [
+     "2026-11-24 QUALITY:34:THRESHOLD_STEP=0",
+     "2026-11-26 EASY:45:EASY_MINUTES=45:strides4",
+     "2026-11-29 LONG:55:LONG_MINUTES=55"
+    ],
+    "strengthKeptBy": [
+     "none",
+     "schedule",
+     "report"
+    ],
+    "storedStartAheadOfHistory": [
+     "qualityStep",
+     "thresholdDone",
+     "devCount",
+     "easyWeeksDone",
+     "qualityDone",
+     "stridesDone",
+     "achieved.easy",
+     "achieved.strides",
+     "achieved.quality"
+    ]
+   },
+   {
+    "cell": "EASY k=3",
+    "storedRowsKeptBy": [
+     "none",
+     "equipment",
+     "schedule",
+     "report"
+    ],
+    "runAsStored": [
+     "2026-12-01 QUALITY:41:THRESHOLD_STEP=1",
+     "2026-12-03 EASY:45:EASY_MINUTES=45:strides5",
+     "2026-12-06 LONG:70:LONG_MINUTES=70"
+    ],
+    "runAsResolved": [
+     "2026-12-01 QUALITY:41:THRESHOLD_STEP=1",
+     "2026-12-03 EASY:45:EASY_MINUTES=45:strides4",
+     "2026-12-06 LONG:70:LONG_MINUTES=70"
+    ],
+    "strengthKeptBy": [
+     "none",
+     "schedule",
+     "report"
+    ],
+    "storedStartAheadOfHistory": [
+     "easyWeeksDone",
+     "qualityDone",
+     "stridesDone"
+    ]
+   },
+   {
+    "cell": "EASY k=5",
+    "storedRowsKeptBy": [
+     "none",
+     "equipment",
+     "schedule",
+     "report"
+    ],
+    "runAsStored": [
+     "2026-12-15 QUALITY:43:THRESHOLD_STEP=3",
+     "2026-12-17 EASY:45:EASY_MINUTES=45:strides6",
+     "2026-12-20 LONG:75:LONG_MINUTES=75"
+    ],
+    "runAsResolved": [
+     "2026-12-15 QUALITY:48:THRESHOLD_STEP=2",
+     "2026-12-17 EASY:45:EASY_MINUTES=45:strides5",
+     "2026-12-20 LONG:75:LONG_MINUTES=75"
+    ],
+    "strengthKeptBy": [
+     "none",
+     "schedule",
+     "report"
+    ],
+    "storedStartAheadOfHistory": [
+     "qualityStep",
+     "thresholdDone",
+     "devCount",
+     "easyWeeksDone",
+     "qualityDone",
+     "stridesDone",
+     "longestContinuous",
+     "achieved.long"
+    ]
+   },
+   {
+    "cell": "WALK_JOG k=2",
+    "storedRowsKeptBy": [
+     "none",
+     "equipment",
+     "schedule",
+     "report"
+    ],
+    "runAsStored": [
+     "2026-11-24 WALK_JOG:26:WALK_JOG_STEP=3",
+     "2026-11-26 WALK_JOG:26:WALK_JOG_STEP=3",
+     "2026-11-29 WALK_JOG:26:WALK_JOG_STEP=3"
+    ],
+    "runAsResolved": [
+     "2026-11-24 WALK_JOG:23:WALK_JOG_STEP=2",
+     "2026-11-26 WALK_JOG:23:WALK_JOG_STEP=2",
+     "2026-11-29 WALK_JOG:23:WALK_JOG_STEP=2"
+    ],
+    "strengthKeptBy": [
+     "none",
+     "schedule",
+     "report"
+    ],
+    "storedStartAheadOfHistory": [
+     "walkStep"
+    ]
+   },
+   {
+    "cell": "WALK_JOG k=3",
+    "storedRowsKeptBy": [
+     "none",
+     "equipment",
+     "schedule",
+     "report"
+    ],
+    "runAsStored": [
+     "2026-12-01 WALK_JOG:28:WALK_JOG_STEP=4",
+     "2026-12-03 WALK_JOG:28:WALK_JOG_STEP=4",
+     "2026-12-06 WALK_JOG:28:WALK_JOG_STEP=4"
+    ],
+    "runAsResolved": [
+     "2026-12-01 WALK_JOG:26:WALK_JOG_STEP=3",
+     "2026-12-03 WALK_JOG:26:WALK_JOG_STEP=3",
+     "2026-12-06 WALK_JOG:26:WALK_JOG_STEP=3"
+    ],
+    "strengthKeptBy": [
+     "none",
+     "schedule",
+     "report"
+    ],
+    "storedStartAheadOfHistory": [
+     "walkStep"
+    ]
+   },
+   {
+    "cell": "WALK_JOG k=5",
+    "storedRowsKeptBy": [
+     "none",
+     "equipment",
+     "schedule",
+     "report"
+    ],
+    "runAsStored": [
+     "2026-12-15 WALK_JOG:26:WALK_JOG_STEP=5",
+     "2026-12-17 WALK_JOG:26:WALK_JOG_STEP=5",
+     "2026-12-20 WALK_JOG:26:WALK_JOG_STEP=5"
+    ],
+    "runAsResolved": [
+     "2026-12-15 WALK_JOG:28:WALK_JOG_STEP=4",
+     "2026-12-17 WALK_JOG:28:WALK_JOG_STEP=4",
+     "2026-12-20 WALK_JOG:28:WALK_JOG_STEP=4"
+    ],
+    "strengthKeptBy": [
+     "none",
+     "schedule",
+     "report"
+    ],
+    "storedStartAheadOfHistory": [
+     "walkStep"
+    ]
+   }
+  ]
+ },
+ "total": {
+  "cases": 228,
+  "violations": 160
+ }
+}

@@ -1,0 +1,159 @@
+{
+ "revision": "R7ADA-EVIDENCE-RUNS",
+ "runs": [
+  {
+   "name": "ablation",
+   "script": "audits/domain-coaching-r7a-decision-authority-2026-10-29/probes/r7ada-ablation.mjs",
+   "scriptSha256": "e579425a7aeac7d67aca9252ee0f966e9a3eec166e5199547109d7a08e1f9f0e",
+   "args": [],
+   "env": {},
+   "why": "§35: a named cause for every regression difference",
+   "exit": 0,
+   "seconds": 615,
+   "sourceDigestStart": "3a7166b25aaf550f7692cc058f0e582b42e9eb7f74b9e361f23733b5e74ab244",
+   "sourceDigestEnd": "3a7166b25aaf550f7692cc058f0e582b42e9eb7f74b9e361f23733b5e74ab244",
+   "output": "audits/domain-coaching-r7a-decision-authority-2026-10-29/probes/runs/ablation.out.json",
+   "outSha256": "896547cf6fe8c579f00bd22c20f7defced8e9757d8973230e050152a7e1a2a99",
+   "stderrTail": ""
+  },
+  {
+   "name": "blockers.candidate",
+   "script": "audits/domain-coaching-r7a-decision-authority-2026-10-29/probes/reproduce-blockers-r7ada.mjs",
+   "scriptSha256": "4abf29cde0036732f31f833f688b47d091b4d2cef15faf6e007dfedf6abe04f5",
+   "args": [
+    "live",
+    "candidate"
+   ],
+   "env": {},
+   "why": "§37: the same probes on the candidate",
+   "exit": 0,
+   "seconds": 52,
+   "sourceDigestStart": "3a7166b25aaf550f7692cc058f0e582b42e9eb7f74b9e361f23733b5e74ab244",
+   "sourceDigestEnd": "3a7166b25aaf550f7692cc058f0e582b42e9eb7f74b9e361f23733b5e74ab244",
+   "output": "audits/domain-coaching-r7a-decision-authority-2026-10-29/probes/runs/candidate/BLOCKERS.json",
+   "outSha256": "a6331f353334f54a06c2afe19b6e856a5f90c1bce0de2716fd2709b943238b7f",
+   "stderrTail": ""
+  },
+  {
+   "name": "blockers.predecessor",
+   "script": "audits/domain-coaching-r7a-decision-authority-2026-10-29/probes/reproduce-blockers-r7ada.mjs",
+   "scriptSha256": "4abf29cde0036732f31f833f688b47d091b4d2cef15faf6e007dfedf6abe04f5",
+   "args": [
+    "predecessor",
+    "baseline-predecessor"
+   ],
+   "env": {},
+   "why": "§4: the five blockers on STATE-MODEL-CONSUMER-FREEZE-1, with the reviewers' own probes",
+   "exit": 0,
+   "seconds": 52,
+   "sourceDigestStart": "3a7166b25aaf550f7692cc058f0e582b42e9eb7f74b9e361f23733b5e74ab244",
+   "sourceDigestEnd": "3a7166b25aaf550f7692cc058f0e582b42e9eb7f74b9e361f23733b5e74ab244",
+   "output": "audits/domain-coaching-r7a-decision-authority-2026-10-29/probes/runs/baseline-predecessor/BLOCKERS.json",
+   "outSha256": "a50e59864280731d9011678e82953d61558294605e4d6e44838ceac83d35f7d1",
+   "stderrTail": ""
+  },
+  {
+   "name": "judges",
+   "script": "audits/domain-coaching-r7a-decision-authority-2026-10-29/probes/rerun-judges-r7ada.mjs",
+   "scriptSha256": "57bc24bfbc2f608ab911ae74d2570c4396958171b8429d9d12c7f9a6a78848af",
+   "args": [
+    "audits/domain-coaching-r7a-decision-authority-2026-10-29/probes/judges"
+   ],
+   "env": {},
+   "why": "§24: every earlier judge probe, unchanged, on the candidate",
+   "exit": 0,
+   "seconds": 92,
+   "sourceDigestStart": "3a7166b25aaf550f7692cc058f0e582b42e9eb7f74b9e361f23733b5e74ab244",
+   "sourceDigestEnd": "3a7166b25aaf550f7692cc058f0e582b42e9eb7f74b9e361f23733b5e74ab244",
+   "output": "audits/domain-coaching-r7a-decision-authority-2026-10-29/probes/runs/judges.summary.out.json",
+   "outSha256": "39b6461934dffc207f7f2f558de2b3a930ab6fbc266f541db5c874a3bae343a9",
+   "stderrTail": ""
+  },
+  {
+   "name": "mutation",
+   "script": "audits/domain-coaching-r7a-decision-authority-2026-10-29/probes/r7ada-mutation.mjs",
+   "scriptSha256": "493df442d5dfb3f07a3ca37874fc08d10c7ba0239b8778fe6941026c723c16b3",
+   "args": [],
+   "env": {},
+   "why": "§33: bounded mutation of the new contracts",
+   "exit": 0,
+   "seconds": 653,
+   "sourceDigestStart": "3a7166b25aaf550f7692cc058f0e582b42e9eb7f74b9e361f23733b5e74ab244",
+   "sourceDigestEnd": "3a7166b25aaf550f7692cc058f0e582b42e9eb7f74b9e361f23733b5e74ab244",
+   "output": "audits/domain-coaching-r7a-decision-authority-2026-10-29/probes/runs/mutation.out.json",
+   "outSha256": "84e37bcaf9c11e2aa730dd3c91263204a18fa51e2b7abd73c873d3c1d93e003c",
+   "stderrTail": ""
+  },
+  {
+   "name": "regression",
+   "script": "CoachingCore/scripts/regress-r7ada.mjs",
+   "scriptSha256": "d9211d6c14d7bf9cd55037d472a88fb648a3293e268145a21aad14cded0007e6",
+   "args": [],
+   "env": {},
+   "why": "§35: R5 corpus, R6 holdout, profiles, simulations against the predecessor",
+   "exit": 0,
+   "seconds": 53,
+   "sourceDigestStart": "3a7166b25aaf550f7692cc058f0e582b42e9eb7f74b9e361f23733b5e74ab244",
+   "sourceDigestEnd": "3a7166b25aaf550f7692cc058f0e582b42e9eb7f74b9e361f23733b5e74ab244",
+   "output": "audits/domain-coaching-r7a-decision-authority-2026-10-29/probes/runs/regression.summary.out.json",
+   "outSha256": "a5f0c425b06a9a1f9b87c6ac9f94ba74317b152cc4fe5e8bf6143c41765ab72d",
+   "stderrTail": ""
+  },
+  {
+   "name": "self-challenge.candidate",
+   "script": "audits/domain-coaching-r7a-decision-authority-2026-10-29/probes/r7ada-self-challenge.mjs",
+   "scriptSha256": "9546df1f29f8ecddc2f3a8624de4fccd630d22aecd2e8b60a9b7c808c0370309",
+   "args": [],
+   "env": {},
+   "why": "§32: equivalence classes on the candidate",
+   "exit": 0,
+   "seconds": 136,
+   "sourceDigestStart": "3a7166b25aaf550f7692cc058f0e582b42e9eb7f74b9e361f23733b5e74ab244",
+   "sourceDigestEnd": "3a7166b25aaf550f7692cc058f0e582b42e9eb7f74b9e361f23733b5e74ab244",
+   "output": "audits/domain-coaching-r7a-decision-authority-2026-10-29/probes/runs/self-challenge.candidate.out.json",
+   "outSha256": "2c6a3c5508e93efba8582f32a250d0d60650f5eccfca73836da05b1a2fd8fa2e",
+   "stderrTail": ""
+  },
+  {
+   "name": "self-challenge.predecessor",
+   "script": "audits/domain-coaching-r7a-decision-authority-2026-10-29/probes/r7ada-self-challenge.mjs",
+   "scriptSha256": "9546df1f29f8ecddc2f3a8624de4fccd630d22aecd2e8b60a9b7c808c0370309",
+   "args": [],
+   "env": {
+    "R7ADA_ROOT": "audits/domain-coaching-r7a-decision-authority-2026-10-29/state-consumer-freeze-source/CoachingCore"
+   },
+   "why": "§32: the same classes on the predecessor",
+   "exit": 0,
+   "seconds": 120,
+   "sourceDigestStart": "3a7166b25aaf550f7692cc058f0e582b42e9eb7f74b9e361f23733b5e74ab244",
+   "sourceDigestEnd": "3a7166b25aaf550f7692cc058f0e582b42e9eb7f74b9e361f23733b5e74ab244",
+   "output": "audits/domain-coaching-r7a-decision-authority-2026-10-29/probes/runs/self-challenge.predecessor.out.json",
+   "outSha256": "42025ac87461c7ec434b32767cc164979abd7b44e42facdc1200bf1c62e60885",
+   "stderrTail": ""
+  },
+  {
+   "name": "tests-on-predecessor",
+   "script": "audits/domain-coaching-r7a-decision-authority-2026-10-29/probes/tests-on-predecessor-r7ada.mjs",
+   "scriptSha256": "f29d0fcfc7ad250a013933018088c06f5f8bfca9ddf7c3552d65ed3a1d138f6b",
+   "args": [],
+   "env": {},
+   "why": "§28: the new and edited tests fail on the predecessor where they guard a finding",
+   "exit": 0,
+   "seconds": 53,
+   "sourceDigestStart": "3a7166b25aaf550f7692cc058f0e582b42e9eb7f74b9e361f23733b5e74ab244",
+   "sourceDigestEnd": "3a7166b25aaf550f7692cc058f0e582b42e9eb7f74b9e361f23733b5e74ab244",
+   "output": "audits/domain-coaching-r7a-decision-authority-2026-10-29/probes/runs/tests-on-predecessor.out.json",
+   "outSha256": "26f6c1953b992461f7dd4c6a98e945deacef7721211a61bb3e37ef7980246c38",
+   "stderrTail": ""
+  }
+ ],
+ "updatedAt": "2026-10-29T21:39:55.025Z",
+ "node": "v24.19.0",
+ "sourceDigest": "3a7166b25aaf550f7692cc058f0e582b42e9eb7f74b9e361f23733b5e74ab244",
+ "rule": "Every run is bound to the source digest recomputed before and after it; the freeze refuses a run on other bytes or one that failed.",
+ "summary": {
+  "runs": 9,
+  "failed": [],
+  "unbound": []
+ }
+}

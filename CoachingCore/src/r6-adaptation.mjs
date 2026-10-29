@@ -1,6 +1,6 @@
 import {clone,freeze,hash} from './value.mjs';
 import {r6Authority,allows} from './r6-authority.mjs';
-import {validProgram,programHash,skeletonOf,advanceRun,advanceStrength,strengthAtBreak,historicalStrength,loggedLoadDecision,adoptionBasis,asEstablishment,resolveExercisePrescription,dayPhaseOf,startStrengthReturn,eventCompletionItem,validateWeeks,peakOf,contextOf,arrangementCandidates,arrangementDisclosures,strengthTemplates,planPhases,buildGoalModel,blocksFrom,goalDose,runTarget,runMinutesOf,plannedOf,plannedStrengthOf,anchoredStart,projectedStart,WEEK_START,EVENT_PHASES,DEVELOPMENT,BLOCK_INTENT} from './r6-program.mjs';
+import {validProgram,programHash,skeletonOf,advanceRun,advanceStrength,strengthAtBreak,historicalStrength,historicalRun,loggedLoadDecision,adoptionBasis,asEstablishment,heldKnownLoad,resolveExercisePrescription,dayPhaseOf,startStrengthReturn,eventCompletionItem,validateWeeks,peakOf,contextOf,arrangementCandidates,arrangementDisclosures,strengthTemplates,planPhases,buildGoalModel,blocksFrom,goalDose,runTarget,runMinutesOf,plannedOf,plannedStrengthOf,anchoredStart,projectedStart,WEEK_START,EVENT_PHASES,DEVELOPMENT,BLOCK_INTENT} from './r6-program.mjs';
 import {chooseBalanced,interferenceCosts,SEVERITY} from './r6-balanced.mjs';
 import {substitutesFor,catalogueEntry} from './r6-catalogue.mjs';
 import {exerciseRow,fitStrengthSession,strengthPrescription,easyPrescription,validateR6Prescription} from './r6-prescription.mjs';
@@ -17,6 +17,8 @@ const HORIZONS=['H0_SESSION','H1_WEEK','H2_BLOCK','H3_GOAL_EVENT'];
 const CLINICAL_KEYS=['pain','persistentPain','injury','illness','functionalLimitation','clinicalConcern'];
 export const sessionType=s=>s.sport==='RUN'?'RUN:'+s.role:'STRENGTH:'+(s.templateType??s.prescription?.family??'SESSION');
 const RUN_GATE_ROLE={LONG:'LONG',QUALITY:'QUALITY',EASY:'EASY',WALK_JOG:'WALK_JOG'};
+/** Gate precedence (decision authority closure, QE-R7ASC-03): a gate that stops progression outranks one that allows it. */
+const GATE_ORDER={EARNED:0,ADVANCE:1,HOLD:2,REGRESS:3};
 
 // ---------- reference continuation state ----------
 function previousValidity(program,review){
@@ -90,8 +92,8 @@ function loggedLoadQuestions(program,sk,w,ev,{gates=null,confirmations={},base=n
   const c=confirmationFor(confirmations,id,l);
   if(l.unitUnknown&&!c){out.push({exerciseId:id,sessionId:row.sessionId,logged:l.loggedRaw,reason:'LOGGED_UNIT_OR_CONVENTION_UNKNOWN',question:`Confirm the load logged for ${id}: its unit or convention is not the planned one, so it was not used`});continue;}
   // The question judges a log against the exposure it was logged in, as the transition does (SSCTR D44; R7-A); an exercise the start does not hold
-  // is an establishment, whatever its row prescribed (asEstablishment, state model consumer closure).
-  const row0=used.find(x=>x.id===id&&x.session===row.sessionId)??used.find(x=>x.id===id),u=state[id]?row0:asEstablishment(row0),load=c?c.kg:l.load;if(!u||!Number.isFinite(load))continue;
+  // with a known load is an establishment, whatever its row prescribed (asEstablishment, heldKnownLoad; QE-R7ASM-01, QE-R7ASC-01).
+  const row0=used.find(x=>x.id===id&&x.session===row.sessionId)??used.find(x=>x.id===id),u=heldKnownLoad(state[id])?row0:asEstablishment(row0),load=c?c.kg:l.load;if(!u||!Number.isFinite(load))continue;
   const k=G?G[id]??G.STRENGTH??G.ALL:null,own=deciding[id]?.sessionId===row.sessionId;
   const d=loggedLoadDecision(sk.op.strength,adoptionBasis(state[id],u),u,{load,convention:l.convention,confirmed:!!c,earlier:own?deciding[id].earlier:null},{advanced:k?['ADVANCE','EARNED'].includes(k):null,hint:sk.cap?.strength?.loadHints?.[id]??null});
   if(d.adopted&&!d.capped||d.pending&&!own)continue;
@@ -152,7 +154,10 @@ const later=(a,b)=>!a?b:!b?a:Date.parse(a)>=Date.parse(b)?a:b;
  */
 function weeklyGates(program,sk,w,ev,ledger,asOf,{systemic=false,base=null}={}){
  const L=sk.op.learning,SG=sk.op.strength.gates,gates={},reasons=[],phase=sk.plan.phases[w],nearEvent=['SPECIFIC','TAPER','RACE_WEEK','POST_EVENT'].includes(sk.plan.phases[w+1])||['TAPER','RACE_WEEK','POST_EVENT'].includes(phase);
- const setGate=(key,value,why)=>{gates[key]=value;reasons.push({key,gate:value,why});};
+ // One verdict per gate key, whatever order its roles or rows are read in (decision authority closure, QE-R7ASC-03): the most restrictive one
+ // stands, so a role or row that holds or steps back a dose is never overwritten by one read after it. In RETURN and RESTART every run role gates
+ // on EASY (SSCTR R13): a missed long run holds the return, and a run not yet due (PENDING) holds it until it is executed.
+ const setGate=(key,value,why)=>{if(!(key in gates)||GATE_ORDER[value]>GATE_ORDER[gates[key]])gates[key]=value;reasons.push({key,gate:value,why});};
  // The week's start the gates read for its mode and return steps (state model): the caller's base, a PlanningView start or the evidence state;
  // the stored start only when none is given.
  const start=base??program.stateTrace[w];
@@ -172,7 +177,6 @@ function weeklyGates(program,sk,w,ev,ledger,asOf,{systemic=false,base=null}={}){
  const below=l=>l.repsMet===false||Number.isFinite(l.minRir)&&Number.isFinite(l.plannedRir)&&l.minRir<l.plannedRir-SG.advanceMinimumLoggedRirBelowPrescribed;
  const surplus=l=>l.repsMet===true&&Number.isFinite(l.minRir)&&Number.isFinite(l.plannedRir)&&l.minRir>=l.plannedRir+SG.earnedLoggedRirAbovePrescribed;
  for(const row of ev.rows.filter(x=>x.sport==='STRENGTH'))for(const id of row.exercises){
-  if(gates[id]&&gates[id]!=='ADVANCE')continue;
   const exState=start?.strength?.exercises?.[id],returning=Number.isInteger(exState?.returnStep);
   // The logs a gate counts exist by its clock (state model consumer closure, Property D): when the evidence reducer reads an earlier week at that
   // week's own clock, a log executed after it never makes that week REGRESS or EARNED, as recent() already bounds the adverse count.
@@ -368,7 +372,17 @@ function weeklyReview(ctx,{extraReason=null,systemicSignal=false}={}){
    if(r.proposal&&hash(r.proposal.arrangementSessions)!==hash(program.arrangementSessions))return {...r,learnedPatterns:patterns};
   }
  }
- if(ev.pending)return {action:'KEEP',reason:(extraReason?extraReason+'; ':'')+'next-week steps are gated when this week’s remaining sessions are complete',counterfactuals:[counter('KEEP','KEEP',true,'Smallest effective decision mid-week',{selected:true}),counter('EARLY_GATE','HOLD_NEXT_STEP',false,'Gating before the week ends would treat future sessions as missed')]};
+ if(ev.pending){
+  // Evidence about an earlier week (a correction, a retraction, a conflict or a late record) that moved this week's PlanningView re-plans the
+  // sessions still ahead from it (decision authority closure, QE-R7ASC-01, Property B): no row planned from a retracted fact stays the reference a
+  // later log is judged against, whenever the correction arrived. Otherwise the week continues as planned.
+  const moved=viewMovedBy(ctx),replan=moved?composeWeeks(ctx,program,{fromWeek:w,evidence:evidenceRule(ctx)}):null;
+  if(replan?.ask)return {action:'ASK',reason:replan.ask,missingInputs:replan.missingInputs};
+  const changed=replan?changedSessions(program,replan):0;
+  if(changed){const decision={eventId:ctx.review.event.id,asOf,action:'REPLAN_FROM_EVIDENCE',fromWeek:w,horizonsConsidered:HORIZONS},proposal=finishProposal(program,sk,replan,decision);
+   return {action:'REPLAN_FROM_EVIDENCE',reason:(extraReason?extraReason+'; ':'')+'Evidence about an earlier week changed what this week starts from; the sessions still ahead are planned again from it, completed sessions stay as they were',proposal,horizons:horizonSummary(sk,program,proposal,{w,changed}),counterfactuals:[counter('KEEP','KEEP',false,'Keeping rows planned from evidence that has since been corrected would judge the next logs against facts that no longer stand'),counter('REPLAN_FROM_EVIDENCE','REPLAN_FROM_EVIDENCE',true,'The sessions still ahead follow the evidence as it now stands',{selected:true,changeCount:changed})]};}
+  return {action:'KEEP',reason:(extraReason?extraReason+'; ':'')+'next-week steps are gated when this week’s remaining sessions are complete',counterfactuals:[counter('KEEP','KEEP',true,'Smallest effective decision mid-week',{selected:true}),counter('EARLY_GATE','HOLD_NEXT_STEP',false,'Gating before the week ends would treat future sessions as missed')]};
+ }
  const {gates,reasons}=weeklyGates(program,sk,w,ev,ledger,asOf,{systemic,base:ctx.base});
  const logs=loggedLoads(ev,confirmationsOf(ctx)),allAdvance=Object.values(gates).every(g=>g==='ADVANCE');
  const rebased=rebasedNext(program,w),skn=sk.at(w+1)??sk;
@@ -473,7 +487,11 @@ function rebuild(ctx,{canonical=null,goals=false,fromWeek=ctx.w+1,reason,action,
  const current=fromWeek===ctx.w+1&&!rebased&&!gates?weekAsPlanned(ctx,program,ctx.w):null,by={eventId:review.event.id,asOf:ctx.asOf};
  const start=fromWeek!==ctx.w+1?null:rebased?{runState:clone(rebased.run),strengthState:clone(rebased.strength)}:gates?evidenceStart(ctx,{week:program.weeks[ctx.w],start:ctx.base},skn,{gates}):conditionalNext(ctx,skn,ctx.w,current);
  const startAuthority=fromWeek!==ctx.w+1?null:rebased?program.weeks[ctx.w+1].startAuthority:gates?anchoredStart(WEEK_START.WEEK_EVIDENCE,by):projectedStart(current.week,by);
- const projected=composeWeeks(ctx,next,{fromWeek,start,startAuthority,evidence:evidenceRule(ctx)});
+ // A change that reaches this week changes the context this week is entered under: this week is planned from the PlanningView of the changed
+ // program (the transition into it under its new context, C2), the start every later decision reads too, so the order in which this change and
+ // any other one arrive never changes the dose (decision authority closure, QE-R7ASC-04).
+ const own=fromWeek===ctx.w?{...ctx,program:next,sk,evidence:undefined}:ctx;if(own!==ctx)own.base=planningBase(own);
+ const projected=composeWeeks(own,next,{fromWeek,start,startAuthority,evidence:evidenceRule(own)});
  if(projected.ask)return {action:'ASK',reason:projected.ask,missingInputs:projected.missingInputs};
  const disclosures=arrangementDisclosures(trace.choices),negotiation=[...(program.negotiation??[]).filter(n=>n.id!=='ARRANGEMENT_COST_DISCLOSED'||!trace.contexts.includes(n.context)),...disclosures];
  const fields={weeks:projected.weeks,stateTrace:projected.stateTrace,schedule:next.canonical.schedule,canonical:next.canonical,templates:next.templates,arrangementSessions:next.arrangementSessions,phases:next.phases,blocks:next.blocks,goal:next.goal,negotiation,contextBefore:next.contextBefore??null};
@@ -676,9 +694,18 @@ function interruptionEpisode(ctx,{start,end,id=null}){
  * The strength state carries the dose each exercise executed (`facts`; EARNED_PROGRESS stays in its ticks, R42). Evidence about one exercise or
  * sport never moves another (I10, I11). From the planning record it reads only the prescription (the week's rows and their summary, `planned`),
  * which decisions closed a week (a start's WEEK_EVIDENCE provenance and its clock) and a return's recorded entry. Memoized per week.
+ *
+ * Two readings of the same evidence (decision authority closure). HISTORY (the default) is HistoricalState: a week's evidence is judged under
+ * the context the athlete executed it in. PLAN is the basis of the PlanningView, the one reading every planning consumer resolves a decision
+ * from (QE-R7ASC-04): the same facts, gates and transitions, except that
+ * - the transition out of week j follows the context of the week it enters (R7-A.1 C2, as the weekly review, a re-plan and a projection
+ *   apply it), so a goal, schedule or event change is applied once, explicitly, at its first week, and never by one consumer only;
+ * - the run of a week neither closed nor complete makes no step (every gate HOLD) while the plan's calendar constraints still apply (a trim to
+ *   the dose the week prescribed, the next block's resumption, a re-entry dose): an unexecuted week is held, never progressed (QE-R7ASC-02).
+ * Neither reading reads a value of PlanningProjection.
  */
-function evidenceState(ctx,{cut,day,ledger,program=ctx.program,ret=null,p=null}){
- const until=Date.parse(cut),seen=ledger.filter(o=>Date.parse(o.observedAt)<until),usable=seen.filter(o=>!o.conflicted);
+function evidenceState(ctx,{cut,day,ledger,program=ctx.program,ret=null,p=null,reading='HISTORY'}){
+ const until=Date.parse(cut),seen=ledger.filter(o=>Date.parse(o.observedAt)<until),usable=seen.filter(o=>!o.conflicted),plan=reading==='PLAN';
  const view={...program,decisions:program.decisions.filter(d=>Date.parse(d.asOf)<until)},runKeys=new Set(Object.values(RUN_GATE_ROLE)),memo=new Map();
  // The state after the last week (k = weeks.length, what the public reader reads in that week) falls in no week (state model consumer closure).
  const skOf=j=>ctx.sk.at?.(j)??ctx.sk,inWeek=(k,d)=>!!d&&!!program.weeks[k]&&d>=program.weeks[k].startDate&&d<=onDate(program.weeks[k].startDate,6),before=a=>Date.parse(a.asOf)<until;
@@ -702,28 +729,33 @@ function evidenceState(ctx,{cut,day,ledger,program=ctx.program,ret=null,p=null})
   if(r){const v={basis:WEEK_START.RETURN_ENTRY,week:k};out={state:{run:clone(r.entry.run),strength:clone(r.entry.strength)},values:{RUN:v,STRENGTH:Object.fromEntries(Object.keys(r.entry.strength?.exercises??{}).map(id=>[id,v]))},sport:{RUN:v,STRENGTH:v},since:{day:r.day,asOf:r.asOf},executed:[]};}
   else if(k===0){const v={basis:WEEK_START.INTAKE,week:0},s=intake();out={state:s,values:{RUN:v,STRENGTH:Object.fromEntries(Object.keys(s.strength.exercises).map(id=>[id,v]))},sport:{RUN:v,STRENGTH:v},since:null,executed:[]};}
   else{
-   // A week's evidence is judged under the plan the athlete executed that week: its own context (sk.at(j)), never one a later change re-planned,
-   // so no later decision (a goal, event or schedule change) rewrites what an earlier week earned (I1, P3).
-   const j=k-1,P=at(j),week=program.weeks[j],skj=skOf(j),skn=skj;
-   // The week's sessions after the return whose entry the state before it is (C5); the evidence of the week as read at the cut.
-   const after=P.since?s=>!beforeReturn(program,P.since)(s):()=>true,wk={...week,sessions:week.sessions.filter(after)},v={...view,weeks:program.weeks.map((x,i)=>i===j?wk:x)};
-   const ev=weekEvidence(v,j,day,seen,ctx.quarantined??[]),sg=signals(week),logs=loggedLoads(ev,sg.confirmations),performed=performedInWeek(ev,seen),used=usedInWeek(wk);
-   const clock=clockOf(j),vj={...v,decisions:view.decisions.filter(d=>Date.parse(d.asOf)<Date.parse(clock))};
-   const {gates}=weeklyGates(vj,skj,j,ev,usable,clock,{systemic:!!ev.systemicConvergence||sg.systemic,base:P.state}),g={ALL:'HOLD',...gates};
+   // HISTORY: a week's evidence is judged under the plan the athlete executed that week, its own context (sk.at(j)), never one a later change
+   // re-planned, so no later decision (a goal, event or schedule change) rewrites what an earlier week earned (I1, P3). PLAN: the gates and the
+   // transition follow the context of the week entered, as the planner's own transitions do (C2; QE-R7ASC-04).
+   const j=k-1,P=at(j),week=program.weeks[j],skj=skOf(j),skn=plan?skOf(k):skj,sg=signals(week),clock=clockOf(j);
+   // The evidence of the week as read at the cut, from some of its sessions, with the prescription summary that describes them (what the plan
+   // prescribed; never the plan's state).
+   const read=(sessions,stored,entryWeek)=>{
+    const wk={...week,sessions},v={...view,weeks:program.weeks.map((x,i)=>i===j?wk:x)},ev=weekEvidence(v,j,day,seen,ctx.quarantined??[]),used=usedInWeek(wk);
+    const vj={...v,decisions:view.decisions.filter(d=>Date.parse(d.asOf)<Date.parse(clock))},{gates}=weeklyGates(vj,skn,j,ev,usable,clock,{systemic:!!ev.systemicConvergence||sg.systemic,base:P.state});
+    return {ev,used,gates,g:{ALL:'HOLD',...gates},logs:loggedLoads(ev,sg.confirmations),performed:performedInWeek(ev,seen),entryWeek,plannedRun:stored?.run?.planned??plannedOf(wk),plannedStrength:stored?.strength?.planned??plannedStrengthOf(used.map(u=>({...u,sets:u.phasedSets??u.sets})))};
+   };
+   // The week's sessions after the return whose entry the state before it is (C5), with their own summary: a run planned before the break, inside
+   // the pause, is never read as executed (state model consumer closure, Property A; NF-R7ASM-1). The PLAN reading reads a return's own week as the
+   // planner's weekly review reads it, every row of the week with the week's summary (E7), whether or not a review closed it: the start it gives
+   // is the one that review gives, so a review closing the week never changes the dose (decision authority closure, QE-R7ASC-04).
+   const after=P.since?s=>!beforeReturn(program,P.since)(s):()=>true,C5=read(week.sessions.filter(after),P.since?null:program.stateTrace[j]);
+   const R=plan&&P.since?read(week.sessions,program.stateTrace[j],program.stateTrace[j]?.strength?.entryWeek):C5;
    // Executed completely: every gate of the sport ADVANCE or EARNED (a gate holds when any row of its role or exercise was not executed as
    // prescribed) and, for strength, every exercise's deciding log usable: a load in an unknown unit is no evidence of any load (Founder §13).
-   const complete=sport=>{const keys=sport==='RUN'?Object.keys(gates).filter(x=>runKeys.has(x)):[...new Set(ev.rows.filter(x=>x.sport==='STRENGTH').flatMap(x=>x.exercises))];return keys.length>0&&keys.every(x=>['ADVANCE','EARNED'].includes(gates[x])&&(sport==='RUN'||!!logs[x]));};
+   const complete=sport=>{const {gates,ev,logs}=R,keys=sport==='RUN'?Object.keys(gates).filter(x=>runKeys.has(x)):[...new Set(ev.rows.filter(x=>x.sport==='STRENGTH').flatMap(x=>x.exercises))];return keys.length>0&&keys.every(x=>['ADVANCE','EARNED'].includes(gates[x])&&(sport==='RUN'||!!logs[x]));};
    const how=sport=>closed(j,sport)?WEEK_START.WEEK_EVIDENCE:complete(sport)?'COMPLETED_SESSIONS':null;
-   // The prescription summary of the week, as the review reads it (what the plan prescribed; never the plan's state). In a return's own week it
-   // is the summary of the sessions after the return's point, the ones this reading judges (C5): a run planned before the break, inside the pause,
-   // is never read as executed (state model consumer closure, Property A; NF-R7ASM-1).
-   const stored=P.since?null:program.stateTrace[j],plannedRun=stored?.run?.planned??plannedOf(wk),plannedStrength=stored?.strength?.planned??plannedStrengthOf(used.map(u=>({...u,sets:u.phasedSets??u.sets})));
    const hr=how('RUN'),hs=how('STRENGTH');
-   const run=hr?advanceRun(skn,{...P.state.run,planned:plannedRun},j,g):P.state.run;
-   const strength=hs?advanceStrength(skn,{...P.state.strength,planned:plannedStrength},j,used,g,logs,{performed,evidenceMode:true}):strengthAtBreak(skj,{...P.state.strength,planned:plannedStrength},used,g,{performed,logged:logs,evidenceMode:true});
+   const run=hr?advanceRun(skn,{...P.state.run,planned:R.plannedRun},j,R.g):plan?advanceRun(skn,{...P.state.run,planned:R.plannedRun},j,{ALL:'HOLD'}):P.state.run;
+   const strength=hs?advanceStrength(skn,{...P.state.strength,planned:R.plannedStrength,...(typeof R.entryWeek==='boolean'?{entryWeek:R.entryWeek}:{})},j,R.used,R.g,R.logs,{performed:R.performed,evidenceMode:true}):strengthAtBreak(skj,{...P.state.strength,planned:C5.plannedStrength},C5.used,C5.g,{performed:C5.performed,logged:C5.logs,evidenceMode:true});
    const runV=hr?{basis:hr,week:k}:P.values.RUN,sv=hs?{basis:hs,week:k}:null;
    const values=Object.fromEntries(Object.keys(strength.exercises).map(id=>[id,sv??P.values.STRENGTH[id]??{basis:'FACTS',week:null}]));
-   out={state:{run,strength},values:{RUN:runV,STRENGTH:values},sport:{RUN:runV,STRENGTH:sv??P.sport.STRENGTH},since:null,executed:hs?[]:[...new Set([...P.executed,...Object.keys(performed)])]};
+   out={state:{run,strength},values:{RUN:runV,STRENGTH:values},sport:{RUN:runV,STRENGTH:sv??P.sport.STRENGTH},since:null,executed:hs?[]:[...new Set([...P.executed,...Object.keys(C5.performed)])]};
   }
   memo.set(k,out);return out;
  };
@@ -732,31 +764,44 @@ function evidenceState(ctx,{cut,day,ledger,program=ctx.program,ret=null,p=null})
 }
 /** The return in force for a decision's own clock: the latest interruption's report in force (every recorded report precedes the decision). */
 const returnInForce=program=>{const r=episodesOf(program).at(-1)?.live;return r?.entry?{entry:r.entry,day:r.day,asOf:r.asOf,eventId:r.eventId,late:false,inForce:true}:null;};
-/** The evidence state at the decision's own cut (memoized on the decision's context). */
-const decisionEvidence=ctx=>ctx.evidence??=evidenceState(ctx,{cut:ctx.asOf,day:ctx.asOfLocal,ledger:ctx.fullLedger??ctx.ledger,ret:returnInForce(ctx.program)});
-/** The run modes of a re-entry (state model consumer closure, QE-R7ASM-02): a moderate return (RETURN) and a restart (RESTART, after a long
- * interruption or a reported pause), whose steps follow the weeks the athlete executed (I13; the policy's return and restart recipes). */
-const REENTRY_MODES=['RETURN','RESTART'];
+/** The evidence state at the decision's own cut, in the PLAN reading every planning consumer resolves from (memoized on the decision's context). */
+const decisionEvidence=ctx=>ctx.evidence??=evidenceState(ctx,{cut:ctx.asOf,day:ctx.asOfLocal,ledger:ctx.fullLedger??ctx.ledger,ret:returnInForce(ctx.program),reading:'PLAN'});
 /**
- * PlanningView (Founder §1, §15; state model consumer closure §7–§11): the start of this week the decision plans from. It is derived and has no
- * historical authority of its own; it declares which structure each part comes from, so no reader confuses it with history:
- * - strength: each exercise's dose as one unit, resolved from HistoricalState by resolveExercisePrescription (EarnedProgress: load, repetition
+ * PlanningView (Founder §1, §15; state model consumer closure §7–§11; decision authority closure): the start of this week the decision plans from,
+ * one DecisionContext for every consumer. It is derived and has no historical authority of its own; it declares which structure each part comes
+ * from, so no reader confuses it with history:
+ * - the evidence, in the PLAN reading of the evidence reducer: the facts and gates of HistoricalState, with each transition under the context of
+ *   the week it enters (one goal, phase and schedule per transition, QE-R7ASC-04);
+ * - strength: each exercise's dose as one unit, resolved from that reading by resolveExercisePrescription (EarnedProgress: load, repetition
  *   target and tick together, with the dates, return steps, counts and caps only executed evidence moves). An exercise only the plan assumed
  *   established is absent, so its next exposure is an establishment (D52). No projected atom is mixed into a dose (QE-R7ASM-03, F2, F3);
- * - the run: history's whole run while either reading is in a re-entry mode (RETURN or RESTART: the steps of a return or restart follow the weeks
- *   executed, whichever mode, QE-R7ASM-02); otherwise the projection's targets and unlock permissions (the trainer keeps projecting, Founder §14;
- *   R6-H35), with the capability atoms read as facts (the achieved peaks and the longest continuous run) from the reducer;
+ * - the run: that reading's whole run in every mode (EarnedRunProgress). The projection's targets, ladder steps and unlock counters are never a
+ *   start (QE-R7ASM-02, QE-R7ASC-02): two unexecuted weeks advance no threshold, quality, strides, walk/jog step or long run. The modes the
+ *   program used (`modeHistory`, SSCTR D47) are a record of the plan, kept from both;
  * - the week's prescription summaries (`planned`) and its entry-week flag from the projection, which describe the rows the week prescribes.
  * The planner reads it; it never writes HistoricalState.
  */
 function planningBase(ctx){
- const P=ctx.program.stateTrace[ctx.w],H=decisionEvidence(ctx)(ctx.w).state;
- let run;
- if([H.run.mode,P.run.mode].some(m=>REENTRY_MODES.includes(m)))run={...clone(H.run),planned:clone(P.run.planned)};
- else{run={...clone(P.run),achieved:clone(H.run.achieved)};if('longestContinuous' in H.run)run.longestContinuous=H.run.longestContinuous;else delete run.longestContinuous;}
+ const P=ctx.program.stateTrace[ctx.w],V=decisionEvidence(ctx)(ctx.w).state;
+ const run={...clone(V.run),planned:clone(P.run.planned)},modes=[...new Set([...(V.run.modeHistory??[]),...(P.run.modeHistory??[])])].sort();
+ if(modes.length)run.modeHistory=modes;else delete run.modeHistory;
  const exercises={};
- for(const [id,h] of Object.entries(H.strength.exercises)){const v=resolveExercisePrescription(h);if(v)exercises[id]=v;}
+ for(const [id,h] of Object.entries(V.strength.exercises)){const v=resolveExercisePrescription(h);if(v)exercises[id]=v;}
  return {run,strength:{...clone(P.strength),exercises}};
+}
+/**
+ * Whether this review withdrew or changed evidence the plan may have been built on, and so moved this week's PlanningView (decision authority
+ * closure, Property B): it carries a correction or a retraction, or a report that quarantines another in conflict, and the view on the record as
+ * the review received it (the carried record, read canonically) differs from the view with the review's reports. New facts alone (a late record
+ * of an earlier session) leave a projection ahead of them standing: the plan keeps projecting until a review gates the week.
+ */
+function viewMovedBy(ctx){
+ const obs=(Array.isArray(ctx.review.observations)?ctx.review.observations:[]).filter(o=>o&&typeof o==='object'),start=ctx.program.weeks[ctx.w].startDate,dates=new Map(ctx.program.weeks.flatMap(x=>x.sessions.map(s=>[s.id,s.date])));
+ const corrects=obs.some(o=>o.correctionOf!==undefined&&o.correctionOf!==null);
+ if(!corrects&&!obs.some(o=>(dates.get(o.sessionId)??start)<start))return false;
+ const {ledger,quarantined}=canonicalRecord(ctx.program,Array.isArray(ctx.review.actualLedger)?ctx.review.actualLedger:[],{authority:ctx.authority,cut:ctx.asOf});
+ if(!corrects&&!(ctx.quarantined??[]).some(q=>!quarantined.includes(q)))return false;
+ return hash(planningBase({...ctx,fullLedger:ledger,ledger:ledger.filter(o=>!o.conflicted),quarantined,evidence:undefined}))!==hash(ctx.base);
 }
 /**
  * HistoricalState (Founder §1, §3, §13): what is known to have happened by a cut, read from canonical evidence only. Public and read-only: it
@@ -821,7 +866,7 @@ function canonicalRecord(program,actualLedger,{authority,cut}){
  *    after the start (the first day is a whole day of the interruption, R7-A.2 §5), the other reading is recorded (`point.sameDay`), and
  *    `material` says whether the order changes the state the return starts from (then the return asks).
  * The state returned is history as a return reads it (I13, T13): historicalStrength undoes a step the evidence released but the athlete never
- * executed, so a return starts from the dose last executed.
+ * executed, so a return starts from the dose last executed; historicalRun does the same for the walk/jog ladder (the step last run, SSCTR F4).
  */
 function stateAtBreak(ctx,{start,startedAt=null,episode=null}){
  const {program}=ctx,tz=program.timezoneOffsetMinutes??0,p=Math.max(0,Math.min(ctx.w,Math.floor(dayGap(program.startDate,start)/7)));
@@ -852,7 +897,10 @@ function stateAtBreak(ctx,{start,startedAt=null,episode=null}){
  // Why the point holds authority as history (Founder §7): per sport, the basis of the evidence it reads, and per value its basis and the week it
  // comes from. The point recorded is the earliest of those weeks (a return's entry when that is the point).
  const point=at.pointOf(Math.min(H.sport.RUN.week,H.sport.STRENGTH.week)),authority={RUN:H.sport.RUN.basis,STRENGTH:H.sport.STRENGTH.basis};
- return {state:{run:clone(H.state.run),strength:base.strength},material,point:{...point,authority,values:clone(H.values),executed:[...new Set([...H.executed,...Object.keys(base.performed)])].sort(),...(late?{reportedAfterStart:true}:{}),...(other?{sameDay:other}:{})}};
+ // The run as a return reads it (decision authority closure, SSCTR F4): a walk/jog step never above the step of the last walk/jog session executed
+ // completely before the interruption began (historicalRun); a step the evidence released but the athlete never ran is not tolerated yet.
+ const byId=new Map(program.weeks.flatMap(x=>x.sessions.map(s=>[s.id,s]))),stepsRun=all.filter(o=>!o.conflicted&&!o.partial&&o.context?.sport==='RUN'&&o.context.role==='WALK_JOG'&&Date.parse(o.observedAt)<Date.parse(cut)).sort((a,b)=>Date.parse(a.observedAt)-Date.parse(b.observedAt)).map(o=>byId.get(o.context.sessionId)?.progression?.value).filter(Number.isInteger);
+ return {state:{run:historicalRun(clone(H.state.run),stepsRun.at(-1)??null),strength:base.strength},material,point:{...point,authority,values:clone(H.values),executed:[...new Set([...H.executed,...Object.keys(base.performed)])].sort(),...(late?{reportedAfterStart:true}:{}),...(other?{sameDay:other}:{})}};
 }
 /** The strength start of a return from the state at its interruption: a short one resumes it; a moderate or long one starts the return steps
  * from it, its last executed count the ceiling (SSCTR D49). */
