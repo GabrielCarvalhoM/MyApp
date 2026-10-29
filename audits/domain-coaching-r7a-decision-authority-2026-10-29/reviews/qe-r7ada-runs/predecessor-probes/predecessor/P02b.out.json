@@ -1,0 +1,1423 @@
+{
+ "probe": "qe-r7asc-P02b-run-view-sweep",
+ "root": "/home/user/MyApp/audits/domain-coaching-r7a-decision-authority-2026-10-29/state-consumer-freeze-source/CoachingCore",
+ "profiles": {
+  "EASY": {
+   "cases": 22,
+   "identicalLedgersAll": true,
+   "historyEqualAll": false,
+   "rowsDiffer": 12,
+   "uAheadCases": 22,
+   "cases_": [
+    {
+     "k": 1,
+     "shape": "EMPTY",
+     "phases": [
+      "DEVELOPMENT",
+      "DEVELOPMENT"
+     ],
+     "identicalLedgers": true,
+     "historyEqual": true,
+     "rowsDiffer": true,
+     "planDims": [
+      "easyWeeksDone"
+     ],
+     "U": {
+      "plan": {
+       "easyWeeksDone": 2
+      },
+      "rows": "QUALITY:34:THRESHOLD_STEP=0 EASY:45:EASY_MINUTES=45:strides4 LONG:55:LONG_MINUTES=55"
+     },
+     "R": {
+      "plan": {
+       "easyWeeksDone": 1
+      },
+      "rows": "EASY:40:EASY_MINUTES=40 EASY:40:EASY_MINUTES=40 LONG:55:LONG_MINUTES=55"
+     },
+     "history": {
+      "easyWeeksDone": 1
+     },
+     "uAheadOfHistory": [
+      "easyWeeksDone"
+     ]
+    },
+    {
+     "k": 1,
+     "shape": "NOLONG",
+     "phases": [
+      "DEVELOPMENT",
+      "DEVELOPMENT"
+     ],
+     "identicalLedgers": true,
+     "historyEqual": true,
+     "rowsDiffer": true,
+     "planDims": [
+      "easyWeeksDone"
+     ],
+     "U": {
+      "plan": {
+       "easyWeeksDone": 2
+      },
+      "rows": "QUALITY:34:THRESHOLD_STEP=0 EASY:45:EASY_MINUTES=45:strides4 LONG:55:LONG_MINUTES=55"
+     },
+     "R": {
+      "plan": {
+       "easyWeeksDone": 1
+      },
+      "rows": "EASY:45:EASY_MINUTES=45 EASY:40:EASY_MINUTES=40 LONG:55:LONG_MINUTES=55"
+     },
+     "history": {
+      "easyWeeksDone": 1
+     },
+     "uAheadOfHistory": [
+      "easyWeeksDone"
+     ]
+    },
+    {
+     "k": 2,
+     "shape": "EMPTY",
+     "phases": [
+      "DEVELOPMENT",
+      "CONSOLIDATION"
+     ],
+     "identicalLedgers": true,
+     "historyEqual": false,
+     "rowsDiffer": true,
+     "planDims": [
+      "long",
+      "qualityStep",
+      "easyWeeksDone",
+      "stridesDone"
+     ],
+     "U": {
+      "plan": {
+       "long": 70,
+       "qualityStep": 1,
+       "easyWeeksDone": 3,
+       "stridesDone": 1
+      },
+      "rows": "QUALITY:41:THRESHOLD_STEP=1 EASY:45:EASY_MINUTES=45:strides4 LONG:70:LONG_MINUTES=70"
+     },
+     "R": {
+      "plan": {
+       "long": 65,
+       "qualityStep": 0,
+       "easyWeeksDone": 2,
+       "stridesDone": 0
+      },
+      "rows": "QUALITY:34:THRESHOLD_STEP=0 EASY:45:EASY_MINUTES=45:strides4 LONG:65:LONG_MINUTES=65"
+     },
+     "history": {
+      "long": 70,
+      "qualityStep": 0,
+      "easyWeeksDone": 2,
+      "stridesDone": 0
+     },
+     "uAheadOfHistory": [
+      "qualityStep",
+      "easyWeeksDone",
+      "stridesDone"
+     ]
+    },
+    {
+     "k": 2,
+     "shape": "NOLONG",
+     "phases": [
+      "DEVELOPMENT",
+      "CONSOLIDATION"
+     ],
+     "identicalLedgers": true,
+     "historyEqual": false,
+     "rowsDiffer": true,
+     "planDims": [
+      "long",
+      "easyWeeksDone"
+     ],
+     "U": {
+      "plan": {
+       "long": 70,
+       "easyWeeksDone": 3
+      },
+      "rows": "QUALITY:41:THRESHOLD_STEP=1 EASY:45:EASY_MINUTES=45:strides4 LONG:70:LONG_MINUTES=70"
+     },
+     "R": {
+      "plan": {
+       "long": 65,
+       "easyWeeksDone": 2
+      },
+      "rows": "QUALITY:41:THRESHOLD_STEP=1 EASY:45:EASY_MINUTES=45:strides4 LONG:65:LONG_MINUTES=65"
+     },
+     "history": {
+      "long": 70,
+      "easyWeeksDone": 2
+     },
+     "uAheadOfHistory": [
+      "easyWeeksDone"
+     ]
+    },
+    {
+     "k": 3,
+     "shape": "EMPTY",
+     "phases": [
+      "CONSOLIDATION",
+      "DEVELOPMENT"
+     ],
+     "identicalLedgers": true,
+     "historyEqual": true,
+     "rowsDiffer": true,
+     "planDims": [
+      "easyWeeksDone",
+      "stridesDone"
+     ],
+     "U": {
+      "plan": {
+       "easyWeeksDone": 4,
+       "stridesDone": 2
+      },
+      "rows": "QUALITY:41:THRESHOLD_STEP=1 EASY:45:EASY_MINUTES=45:strides5 LONG:70:LONG_MINUTES=70"
+     },
+     "R": {
+      "plan": {
+       "easyWeeksDone": 3,
+       "stridesDone": 1
+      },
+      "rows": "QUALITY:41:THRESHOLD_STEP=1 EASY:45:EASY_MINUTES=45:strides4 LONG:70:LONG_MINUTES=70"
+     },
+     "history": {
+      "easyWeeksDone": 3,
+      "stridesDone": 1
+     },
+     "uAheadOfHistory": [
+      "easyWeeksDone",
+      "stridesDone"
+     ]
+    },
+    {
+     "k": 3,
+     "shape": "NOLONG",
+     "phases": [
+      "CONSOLIDATION",
+      "DEVELOPMENT"
+     ],
+     "identicalLedgers": true,
+     "historyEqual": false,
+     "rowsDiffer": true,
+     "planDims": [
+      "easyWeeksDone"
+     ],
+     "U": {
+      "plan": {
+       "easyWeeksDone": 4
+      },
+      "rows": "QUALITY:41:THRESHOLD_STEP=1 EASY:45:EASY_MINUTES=45:strides5 LONG:70:LONG_MINUTES=70"
+     },
+     "R": {
+      "plan": {
+       "easyWeeksDone": 3
+      },
+      "rows": "QUALITY:41:THRESHOLD_STEP=1 EASY:45:EASY_MINUTES=45:strides4 LONG:70:LONG_MINUTES=70"
+     },
+     "history": {
+      "easyWeeksDone": 3
+     },
+     "uAheadOfHistory": [
+      "easyWeeksDone"
+     ]
+    },
+    {
+     "k": 4,
+     "shape": "EMPTY",
+     "phases": [
+      "DEVELOPMENT",
+      "DEVELOPMENT"
+     ],
+     "identicalLedgers": true,
+     "historyEqual": true,
+     "rowsDiffer": true,
+     "planDims": [
+      "easy",
+      "long",
+      "qualityStep",
+      "easyWeeksDone",
+      "stridesDone"
+     ],
+     "U": {
+      "plan": {
+       "easy": 45,
+       "long": 75,
+       "qualityStep": 2,
+       "easyWeeksDone": 5,
+       "stridesDone": 3
+      },
+      "rows": "QUALITY:48:THRESHOLD_STEP=2 EASY:45:EASY_MINUTES=45:strides5 LONG:70:LONG_MINUTES=75"
+     },
+     "R": {
+      "plan": {
+       "easy": 40,
+       "long": 70,
+       "qualityStep": 1,
+       "easyWeeksDone": 4,
+       "stridesDone": 2
+      },
+      "rows": "QUALITY:41:THRESHOLD_STEP=1 EASY:45:EASY_MINUTES=45:strides5 LONG:70:LONG_MINUTES=70"
+     },
+     "history": {
+      "easy": 40,
+      "long": 70,
+      "qualityStep": 1,
+      "easyWeeksDone": 4,
+      "stridesDone": 2
+     },
+     "uAheadOfHistory": [
+      "easy",
+      "long",
+      "qualityStep",
+      "easyWeeksDone",
+      "stridesDone"
+     ]
+    },
+    {
+     "k": 4,
+     "shape": "NOLONG",
+     "phases": [
+      "DEVELOPMENT",
+      "DEVELOPMENT"
+     ],
+     "identicalLedgers": true,
+     "historyEqual": false,
+     "rowsDiffer": true,
+     "planDims": [
+      "long",
+      "easyWeeksDone"
+     ],
+     "U": {
+      "plan": {
+       "long": 75,
+       "easyWeeksDone": 5
+      },
+      "rows": "QUALITY:48:THRESHOLD_STEP=2 EASY:45:EASY_MINUTES=45:strides5 LONG:70:LONG_MINUTES=75"
+     },
+     "R": {
+      "plan": {
+       "long": 70,
+       "easyWeeksDone": 4
+      },
+      "rows": "QUALITY:48:THRESHOLD_STEP=2 EASY:45:EASY_MINUTES=45:strides5 LONG:70:LONG_MINUTES=70"
+     },
+     "history": {
+      "long": 70,
+      "easyWeeksDone": 4
+     },
+     "uAheadOfHistory": [
+      "long",
+      "easyWeeksDone"
+     ]
+    },
+    {
+     "k": 5,
+     "shape": "EMPTY",
+     "phases": [
+      "DEVELOPMENT",
+      "DEVELOPMENT"
+     ],
+     "identicalLedgers": true,
+     "historyEqual": true,
+     "rowsDiffer": true,
+     "planDims": [
+      "qualityStep",
+      "easyWeeksDone",
+      "stridesDone"
+     ],
+     "U": {
+      "plan": {
+       "qualityStep": 3,
+       "easyWeeksDone": 6,
+       "stridesDone": 4
+      },
+      "rows": "QUALITY:48:THRESHOLD_STEP=2 EASY:45:EASY_MINUTES=45:strides6 LONG:65:LONG_MINUTES=65"
+     },
+     "R": {
+      "plan": {
+       "qualityStep": 2,
+       "easyWeeksDone": 5,
+       "stridesDone": 3
+      },
+      "rows": "QUALITY:41:THRESHOLD_STEP=1 EASY:45:EASY_MINUTES=45:strides5 LONG:65:LONG_MINUTES=65"
+     },
+     "history": {
+      "qualityStep": 2,
+      "easyWeeksDone": 5,
+      "stridesDone": 3
+     },
+     "uAheadOfHistory": [
+      "qualityStep",
+      "easyWeeksDone",
+      "stridesDone"
+     ]
+    },
+    {
+     "k": 5,
+     "shape": "NOLONG",
+     "phases": [
+      "DEVELOPMENT",
+      "DEVELOPMENT"
+     ],
+     "identicalLedgers": true,
+     "historyEqual": false,
+     "rowsDiffer": true,
+     "planDims": [
+      "easyWeeksDone"
+     ],
+     "U": {
+      "plan": {
+       "easyWeeksDone": 6
+      },
+      "rows": "QUALITY:48:THRESHOLD_STEP=2 EASY:45:EASY_MINUTES=45:strides6 LONG:65:LONG_MINUTES=65"
+     },
+     "R": {
+      "plan": {
+       "easyWeeksDone": 5
+      },
+      "rows": "QUALITY:48:THRESHOLD_STEP=2 EASY:45:EASY_MINUTES=45:strides5 LONG:65:LONG_MINUTES=65"
+     },
+     "history": {
+      "easyWeeksDone": 5
+     },
+     "uAheadOfHistory": [
+      "easyWeeksDone"
+     ]
+    },
+    {
+     "k": 6,
+     "shape": "EMPTY",
+     "phases": [
+      "DEVELOPMENT",
+      "CONSOLIDATION"
+     ],
+     "identicalLedgers": true,
+     "historyEqual": true,
+     "rowsDiffer": true,
+     "planDims": [
+      "qualityStep",
+      "easyWeeksDone",
+      "stridesDone"
+     ],
+     "U": {
+      "plan": {
+       "qualityStep": 4,
+       "easyWeeksDone": 7,
+       "stridesDone": 5
+      },
+      "rows": "QUALITY:53:THRESHOLD_STEP=4 EASY:50:EASY_MINUTES=50:strides6 LONG:75:LONG_MINUTES=75"
+     },
+     "R": {
+      "plan": {
+       "qualityStep": 3,
+       "easyWeeksDone": 6,
+       "stridesDone": 4
+      },
+      "rows": "QUALITY:43:THRESHOLD_STEP=3 EASY:45:EASY_MINUTES=45:strides6 LONG:75:LONG_MINUTES=75"
+     },
+     "history": {
+      "qualityStep": 3,
+      "easyWeeksDone": 6,
+      "stridesDone": 4
+     },
+     "uAheadOfHistory": [
+      "qualityStep",
+      "easyWeeksDone",
+      "stridesDone"
+     ]
+    },
+    {
+     "k": 6,
+     "shape": "NOLONG",
+     "phases": [
+      "DEVELOPMENT",
+      "CONSOLIDATION"
+     ],
+     "identicalLedgers": true,
+     "historyEqual": false,
+     "rowsDiffer": false,
+     "planDims": [
+      "easyWeeksDone"
+     ],
+     "U": {
+      "plan": {
+       "easyWeeksDone": 7
+      },
+      "rows": "QUALITY:53:THRESHOLD_STEP=4 EASY:50:EASY_MINUTES=50:strides6 LONG:75:LONG_MINUTES=75"
+     },
+     "R": {
+      "plan": {
+       "easyWeeksDone": 6
+      },
+      "rows": "QUALITY:53:THRESHOLD_STEP=4 EASY:50:EASY_MINUTES=50:strides6 LONG:75:LONG_MINUTES=75"
+     },
+     "history": {
+      "easyWeeksDone": 6
+     },
+     "uAheadOfHistory": [
+      "easyWeeksDone"
+     ]
+    },
+    {
+     "k": 7,
+     "shape": "EMPTY",
+     "phases": [
+      "CONSOLIDATION",
+      "DEVELOPMENT"
+     ],
+     "identicalLedgers": true,
+     "historyEqual": true,
+     "rowsDiffer": false,
+     "planDims": [
+      "easyWeeksDone",
+      "stridesDone"
+     ],
+     "U": {
+      "plan": {
+       "easyWeeksDone": 8,
+       "stridesDone": 6
+      },
+      "rows": "QUALITY:53:THRESHOLD_STEP=4 EASY:50:EASY_MINUTES=50:strides6 LONG:75:LONG_MINUTES=75"
+     },
+     "R": {
+      "plan": {
+       "easyWeeksDone": 7,
+       "stridesDone": 5
+      },
+      "rows": "QUALITY:53:THRESHOLD_STEP=4 EASY:50:EASY_MINUTES=50:strides6 LONG:75:LONG_MINUTES=75"
+     },
+     "history": {
+      "easyWeeksDone": 7,
+      "stridesDone": 5
+     },
+     "uAheadOfHistory": [
+      "easyWeeksDone",
+      "stridesDone"
+     ]
+    },
+    {
+     "k": 7,
+     "shape": "NOLONG",
+     "phases": [
+      "CONSOLIDATION",
+      "DEVELOPMENT"
+     ],
+     "identicalLedgers": true,
+     "historyEqual": false,
+     "rowsDiffer": false,
+     "planDims": [
+      "easyWeeksDone"
+     ],
+     "U": {
+      "plan": {
+       "easyWeeksDone": 8
+      },
+      "rows": "QUALITY:53:THRESHOLD_STEP=4 EASY:50:EASY_MINUTES=50:strides6 LONG:75:LONG_MINUTES=75"
+     },
+     "R": {
+      "plan": {
+       "easyWeeksDone": 7
+      },
+      "rows": "QUALITY:53:THRESHOLD_STEP=4 EASY:50:EASY_MINUTES=50:strides6 LONG:75:LONG_MINUTES=75"
+     },
+     "history": {
+      "easyWeeksDone": 7
+     },
+     "uAheadOfHistory": [
+      "easyWeeksDone"
+     ]
+    },
+    {
+     "k": 8,
+     "shape": "EMPTY",
+     "phases": [
+      "DEVELOPMENT",
+      "DEVELOPMENT"
+     ],
+     "identicalLedgers": true,
+     "historyEqual": true,
+     "rowsDiffer": true,
+     "planDims": [
+      "qualityStep",
+      "easyWeeksDone",
+      "stridesDone"
+     ],
+     "U": {
+      "plan": {
+       "qualityStep": 5,
+       "easyWeeksDone": 9,
+       "stridesDone": 7
+      },
+      "rows": "QUALITY:49:THRESHOLD_STEP=5 EASY:50:EASY_MINUTES=50:strides6 LONG:75:LONG_MINUTES=75"
+     },
+     "R": {
+      "plan": {
+       "qualityStep": 4,
+       "easyWeeksDone": 8,
+       "stridesDone": 6
+      },
+      "rows": "QUALITY:53:THRESHOLD_STEP=4 EASY:50:EASY_MINUTES=50:strides6 LONG:75:LONG_MINUTES=75"
+     },
+     "history": {
+      "qualityStep": 4,
+      "easyWeeksDone": 8,
+      "stridesDone": 6
+     },
+     "uAheadOfHistory": [
+      "qualityStep",
+      "easyWeeksDone",
+      "stridesDone"
+     ]
+    },
+    {
+     "k": 8,
+     "shape": "NOLONG",
+     "phases": [
+      "DEVELOPMENT",
+      "DEVELOPMENT"
+     ],
+     "identicalLedgers": true,
+     "historyEqual": false,
+     "rowsDiffer": false,
+     "planDims": [
+      "easyWeeksDone"
+     ],
+     "U": {
+      "plan": {
+       "easyWeeksDone": 9
+      },
+      "rows": "QUALITY:49:THRESHOLD_STEP=5 EASY:50:EASY_MINUTES=50:strides6 LONG:75:LONG_MINUTES=75"
+     },
+     "R": {
+      "plan": {
+       "easyWeeksDone": 8
+      },
+      "rows": "QUALITY:49:THRESHOLD_STEP=5 EASY:50:EASY_MINUTES=50:strides6 LONG:75:LONG_MINUTES=75"
+     },
+     "history": {
+      "easyWeeksDone": 8
+     },
+     "uAheadOfHistory": [
+      "easyWeeksDone"
+     ]
+    },
+    {
+     "k": 9,
+     "shape": "EMPTY",
+     "phases": [
+      "DEVELOPMENT",
+      "DEVELOPMENT"
+     ],
+     "identicalLedgers": true,
+     "historyEqual": true,
+     "rowsDiffer": false,
+     "planDims": [
+      "easy",
+      "qualityStep",
+      "easyWeeksDone",
+      "stridesDone"
+     ],
+     "U": {
+      "plan": {
+       "easy": 50,
+       "qualityStep": 6,
+       "easyWeeksDone": 10,
+       "stridesDone": 8
+      },
+      "rows": "QUALITY:53:THRESHOLD_STEP=4 EASY:50:EASY_MINUTES=50:strides6 LONG:65:LONG_MINUTES=65"
+     },
+     "R": {
+      "plan": {
+       "easy": 45,
+       "qualityStep": 5,
+       "easyWeeksDone": 9,
+       "stridesDone": 7
+      },
+      "rows": "QUALITY:53:THRESHOLD_STEP=4 EASY:50:EASY_MINUTES=50:strides6 LONG:65:LONG_MINUTES=65"
+     },
+     "history": {
+      "easy": 45,
+      "qualityStep": 5,
+      "easyWeeksDone": 9,
+      "stridesDone": 7
+     },
+     "uAheadOfHistory": [
+      "easy",
+      "qualityStep",
+      "easyWeeksDone",
+      "stridesDone"
+     ]
+    },
+    {
+     "k": 9,
+     "shape": "NOLONG",
+     "phases": [
+      "DEVELOPMENT",
+      "DEVELOPMENT"
+     ],
+     "identicalLedgers": true,
+     "historyEqual": false,
+     "rowsDiffer": false,
+     "planDims": [
+      "easyWeeksDone"
+     ],
+     "U": {
+      "plan": {
+       "easyWeeksDone": 10
+      },
+      "rows": "QUALITY:53:THRESHOLD_STEP=4 EASY:50:EASY_MINUTES=50:strides6 LONG:65:LONG_MINUTES=65"
+     },
+     "R": {
+      "plan": {
+       "easyWeeksDone": 9
+      },
+      "rows": "QUALITY:53:THRESHOLD_STEP=4 EASY:50:EASY_MINUTES=50:strides6 LONG:65:LONG_MINUTES=65"
+     },
+     "history": {
+      "easyWeeksDone": 9
+     },
+     "uAheadOfHistory": [
+      "easyWeeksDone"
+     ]
+    },
+    {
+     "k": 10,
+     "shape": "EMPTY",
+     "phases": [
+      "DEVELOPMENT",
+      "CONSOLIDATION"
+     ],
+     "identicalLedgers": true,
+     "historyEqual": true,
+     "rowsDiffer": false,
+     "planDims": [
+      "qualityStep",
+      "easyWeeksDone",
+      "stridesDone"
+     ],
+     "U": {
+      "plan": {
+       "qualityStep": 7,
+       "easyWeeksDone": 11,
+       "stridesDone": 9
+      },
+      "rows": "QUALITY:49:THRESHOLD_STEP=5 EASY:50:EASY_MINUTES=50:strides6 LONG:75:LONG_MINUTES=75"
+     },
+     "R": {
+      "plan": {
+       "qualityStep": 6,
+       "easyWeeksDone": 10,
+       "stridesDone": 8
+      },
+      "rows": "QUALITY:49:THRESHOLD_STEP=5 EASY:50:EASY_MINUTES=50:strides6 LONG:75:LONG_MINUTES=75"
+     },
+     "history": {
+      "qualityStep": 6,
+      "easyWeeksDone": 10,
+      "stridesDone": 8
+     },
+     "uAheadOfHistory": [
+      "qualityStep",
+      "easyWeeksDone",
+      "stridesDone"
+     ]
+    },
+    {
+     "k": 10,
+     "shape": "NOLONG",
+     "phases": [
+      "DEVELOPMENT",
+      "CONSOLIDATION"
+     ],
+     "identicalLedgers": true,
+     "historyEqual": false,
+     "rowsDiffer": false,
+     "planDims": [
+      "easyWeeksDone"
+     ],
+     "U": {
+      "plan": {
+       "easyWeeksDone": 11
+      },
+      "rows": "QUALITY:49:THRESHOLD_STEP=5 EASY:50:EASY_MINUTES=50:strides6 LONG:75:LONG_MINUTES=75"
+     },
+     "R": {
+      "plan": {
+       "easyWeeksDone": 10
+      },
+      "rows": "QUALITY:49:THRESHOLD_STEP=5 EASY:50:EASY_MINUTES=50:strides6 LONG:75:LONG_MINUTES=75"
+     },
+     "history": {
+      "easyWeeksDone": 10
+     },
+     "uAheadOfHistory": [
+      "easyWeeksDone"
+     ]
+    },
+    {
+     "k": 11,
+     "shape": "EMPTY",
+     "phases": [
+      "CONSOLIDATION",
+      "DEVELOPMENT"
+     ],
+     "identicalLedgers": true,
+     "historyEqual": true,
+     "rowsDiffer": false,
+     "planDims": [
+      "easyWeeksDone",
+      "stridesDone"
+     ],
+     "U": {
+      "plan": {
+       "easyWeeksDone": 12,
+       "stridesDone": 10
+      },
+      "rows": "QUALITY:49:THRESHOLD_STEP=5 EASY:50:EASY_MINUTES=50:strides6 LONG:75:LONG_MINUTES=75"
+     },
+     "R": {
+      "plan": {
+       "easyWeeksDone": 11,
+       "stridesDone": 9
+      },
+      "rows": "QUALITY:49:THRESHOLD_STEP=5 EASY:50:EASY_MINUTES=50:strides6 LONG:75:LONG_MINUTES=75"
+     },
+     "history": {
+      "easyWeeksDone": 11,
+      "stridesDone": 9
+     },
+     "uAheadOfHistory": [
+      "easyWeeksDone",
+      "stridesDone"
+     ]
+    },
+    {
+     "k": 11,
+     "shape": "NOLONG",
+     "phases": [
+      "CONSOLIDATION",
+      "DEVELOPMENT"
+     ],
+     "identicalLedgers": true,
+     "historyEqual": false,
+     "rowsDiffer": false,
+     "planDims": [
+      "easyWeeksDone"
+     ],
+     "U": {
+      "plan": {
+       "easyWeeksDone": 12
+      },
+      "rows": "QUALITY:49:THRESHOLD_STEP=5 EASY:50:EASY_MINUTES=50:strides6 LONG:75:LONG_MINUTES=75"
+     },
+     "R": {
+      "plan": {
+       "easyWeeksDone": 11
+      },
+      "rows": "QUALITY:49:THRESHOLD_STEP=5 EASY:50:EASY_MINUTES=50:strides6 LONG:75:LONG_MINUTES=75"
+     },
+     "history": {
+      "easyWeeksDone": 11
+     },
+     "uAheadOfHistory": [
+      "easyWeeksDone"
+     ]
+    }
+   ]
+  },
+  "WALK_JOG": {
+   "cases": 22,
+   "identicalLedgersAll": false,
+   "historyEqualAll": false,
+   "rowsDiffer": 8,
+   "uAheadCases": 9,
+   "cases_": [
+    {
+     "k": 1,
+     "shape": "EMPTY",
+     "phases": [
+      "DEVELOPMENT",
+      "DEVELOPMENT"
+     ],
+     "identicalLedgers": true,
+     "historyEqual": true,
+     "rowsDiffer": true,
+     "planDims": [
+      "walkStep"
+     ],
+     "U": {
+      "plan": {
+       "walkStep": 2
+      },
+      "rows": "WALK_JOG:23:WALK_JOG_STEP=2 WALK_JOG:23:WALK_JOG_STEP=2 WALK_JOG:23:WALK_JOG_STEP=2"
+     },
+     "R": {
+      "plan": {
+       "walkStep": 1
+      },
+      "rows": "WALK_JOG:21:WALK_JOG_STEP=1 WALK_JOG:21:WALK_JOG_STEP=1 WALK_JOG:21:WALK_JOG_STEP=1"
+     },
+     "history": {
+      "walkStep": 1
+     },
+     "uAheadOfHistory": [
+      "walkStep"
+     ]
+    },
+    {
+     "k": 1,
+     "shape": "NOLONG",
+     "phases": [
+      "DEVELOPMENT",
+      "DEVELOPMENT"
+     ],
+     "identicalLedgers": false,
+     "historyEqual": false,
+     "rowsDiffer": false,
+     "planDims": [],
+     "U": {
+      "plan": {},
+      "rows": "WALK_JOG:23:WALK_JOG_STEP=2 WALK_JOG:23:WALK_JOG_STEP=2 WALK_JOG:23:WALK_JOG_STEP=2"
+     },
+     "R": {
+      "plan": {},
+      "rows": "WALK_JOG:23:WALK_JOG_STEP=2 WALK_JOG:23:WALK_JOG_STEP=2 WALK_JOG:23:WALK_JOG_STEP=2"
+     },
+     "history": {},
+     "uAheadOfHistory": []
+    },
+    {
+     "k": 2,
+     "shape": "EMPTY",
+     "phases": [
+      "DEVELOPMENT",
+      "DEVELOPMENT"
+     ],
+     "identicalLedgers": true,
+     "historyEqual": true,
+     "rowsDiffer": true,
+     "planDims": [
+      "walkStep"
+     ],
+     "U": {
+      "plan": {
+       "walkStep": 3
+      },
+      "rows": "WALK_JOG:26:WALK_JOG_STEP=3 WALK_JOG:26:WALK_JOG_STEP=3 WALK_JOG:26:WALK_JOG_STEP=3"
+     },
+     "R": {
+      "plan": {
+       "walkStep": 2
+      },
+      "rows": "WALK_JOG:23:WALK_JOG_STEP=2 WALK_JOG:23:WALK_JOG_STEP=2 WALK_JOG:23:WALK_JOG_STEP=2"
+     },
+     "history": {
+      "walkStep": 2
+     },
+     "uAheadOfHistory": [
+      "walkStep"
+     ]
+    },
+    {
+     "k": 2,
+     "shape": "NOLONG",
+     "phases": [
+      "DEVELOPMENT",
+      "DEVELOPMENT"
+     ],
+     "identicalLedgers": false,
+     "historyEqual": false,
+     "rowsDiffer": false,
+     "planDims": [],
+     "U": {
+      "plan": {},
+      "rows": "WALK_JOG:26:WALK_JOG_STEP=3 WALK_JOG:26:WALK_JOG_STEP=3 WALK_JOG:26:WALK_JOG_STEP=3"
+     },
+     "R": {
+      "plan": {},
+      "rows": "WALK_JOG:26:WALK_JOG_STEP=3 WALK_JOG:26:WALK_JOG_STEP=3 WALK_JOG:26:WALK_JOG_STEP=3"
+     },
+     "history": {},
+     "uAheadOfHistory": []
+    },
+    {
+     "k": 3,
+     "shape": "EMPTY",
+     "phases": [
+      "DEVELOPMENT",
+      "CONSOLIDATION"
+     ],
+     "identicalLedgers": true,
+     "historyEqual": true,
+     "rowsDiffer": true,
+     "planDims": [
+      "walkStep"
+     ],
+     "U": {
+      "plan": {
+       "walkStep": 4
+      },
+      "rows": "WALK_JOG:28:WALK_JOG_STEP=4 WALK_JOG:28:WALK_JOG_STEP=4 WALK_JOG:28:WALK_JOG_STEP=4"
+     },
+     "R": {
+      "plan": {
+       "walkStep": 3
+      },
+      "rows": "WALK_JOG:26:WALK_JOG_STEP=3 WALK_JOG:26:WALK_JOG_STEP=3 WALK_JOG:26:WALK_JOG_STEP=3"
+     },
+     "history": {
+      "walkStep": 3
+     },
+     "uAheadOfHistory": [
+      "walkStep"
+     ]
+    },
+    {
+     "k": 3,
+     "shape": "NOLONG",
+     "phases": [
+      "DEVELOPMENT",
+      "CONSOLIDATION"
+     ],
+     "identicalLedgers": false,
+     "historyEqual": false,
+     "rowsDiffer": false,
+     "planDims": [],
+     "U": {
+      "plan": {},
+      "rows": "WALK_JOG:28:WALK_JOG_STEP=4 WALK_JOG:28:WALK_JOG_STEP=4 WALK_JOG:28:WALK_JOG_STEP=4"
+     },
+     "R": {
+      "plan": {},
+      "rows": "WALK_JOG:28:WALK_JOG_STEP=4 WALK_JOG:28:WALK_JOG_STEP=4 WALK_JOG:28:WALK_JOG_STEP=4"
+     },
+     "history": {},
+     "uAheadOfHistory": []
+    },
+    {
+     "k": 4,
+     "shape": "EMPTY",
+     "phases": [
+      "CONSOLIDATION",
+      "DEVELOPMENT"
+     ],
+     "identicalLedgers": true,
+     "historyEqual": true,
+     "rowsDiffer": false,
+     "planDims": [],
+     "U": {
+      "plan": {},
+      "rows": "WALK_JOG:28:WALK_JOG_STEP=4 WALK_JOG:28:WALK_JOG_STEP=4 WALK_JOG:28:WALK_JOG_STEP=4"
+     },
+     "R": {
+      "plan": {},
+      "rows": "WALK_JOG:28:WALK_JOG_STEP=4 WALK_JOG:28:WALK_JOG_STEP=4 WALK_JOG:28:WALK_JOG_STEP=4"
+     },
+     "history": {},
+     "uAheadOfHistory": []
+    },
+    {
+     "k": 4,
+     "shape": "NOLONG",
+     "phases": [
+      "CONSOLIDATION",
+      "DEVELOPMENT"
+     ],
+     "identicalLedgers": false,
+     "historyEqual": true,
+     "rowsDiffer": false,
+     "planDims": [],
+     "U": {
+      "plan": {},
+      "rows": "WALK_JOG:28:WALK_JOG_STEP=4 WALK_JOG:28:WALK_JOG_STEP=4 WALK_JOG:28:WALK_JOG_STEP=4"
+     },
+     "R": {
+      "plan": {},
+      "rows": "WALK_JOG:28:WALK_JOG_STEP=4 WALK_JOG:28:WALK_JOG_STEP=4 WALK_JOG:28:WALK_JOG_STEP=4"
+     },
+     "history": {},
+     "uAheadOfHistory": []
+    },
+    {
+     "k": 5,
+     "shape": "EMPTY",
+     "phases": [
+      "DEVELOPMENT",
+      "DEVELOPMENT"
+     ],
+     "identicalLedgers": true,
+     "historyEqual": true,
+     "rowsDiffer": true,
+     "planDims": [
+      "walkStep"
+     ],
+     "U": {
+      "plan": {
+       "walkStep": 5
+      },
+      "rows": "WALK_JOG:26:WALK_JOG_STEP=5 WALK_JOG:26:WALK_JOG_STEP=5 WALK_JOG:26:WALK_JOG_STEP=5"
+     },
+     "R": {
+      "plan": {
+       "walkStep": 4
+      },
+      "rows": "WALK_JOG:28:WALK_JOG_STEP=4 WALK_JOG:28:WALK_JOG_STEP=4 WALK_JOG:28:WALK_JOG_STEP=4"
+     },
+     "history": {
+      "walkStep": 4
+     },
+     "uAheadOfHistory": [
+      "walkStep"
+     ]
+    },
+    {
+     "k": 5,
+     "shape": "NOLONG",
+     "phases": [
+      "DEVELOPMENT",
+      "DEVELOPMENT"
+     ],
+     "identicalLedgers": false,
+     "historyEqual": false,
+     "rowsDiffer": false,
+     "planDims": [],
+     "U": {
+      "plan": {},
+      "rows": "WALK_JOG:26:WALK_JOG_STEP=5 WALK_JOG:26:WALK_JOG_STEP=5 WALK_JOG:26:WALK_JOG_STEP=5"
+     },
+     "R": {
+      "plan": {},
+      "rows": "WALK_JOG:26:WALK_JOG_STEP=5 WALK_JOG:26:WALK_JOG_STEP=5 WALK_JOG:26:WALK_JOG_STEP=5"
+     },
+     "history": {},
+     "uAheadOfHistory": []
+    },
+    {
+     "k": 6,
+     "shape": "EMPTY",
+     "phases": [
+      "DEVELOPMENT",
+      "DEVELOPMENT"
+     ],
+     "identicalLedgers": true,
+     "historyEqual": true,
+     "rowsDiffer": true,
+     "planDims": [
+      "walkStep"
+     ],
+     "U": {
+      "plan": {
+       "walkStep": 6
+      },
+      "rows": "WALK_JOG:28:WALK_JOG_STEP=6 WALK_JOG:28:WALK_JOG_STEP=6 WALK_JOG:28:WALK_JOG_STEP=6"
+     },
+     "R": {
+      "plan": {
+       "walkStep": 5
+      },
+      "rows": "WALK_JOG:26:WALK_JOG_STEP=5 WALK_JOG:26:WALK_JOG_STEP=5 WALK_JOG:26:WALK_JOG_STEP=5"
+     },
+     "history": {
+      "walkStep": 5
+     },
+     "uAheadOfHistory": [
+      "walkStep"
+     ]
+    },
+    {
+     "k": 6,
+     "shape": "NOLONG",
+     "phases": [
+      "DEVELOPMENT",
+      "DEVELOPMENT"
+     ],
+     "identicalLedgers": false,
+     "historyEqual": false,
+     "rowsDiffer": false,
+     "planDims": [],
+     "U": {
+      "plan": {},
+      "rows": "WALK_JOG:28:WALK_JOG_STEP=6 WALK_JOG:28:WALK_JOG_STEP=6 WALK_JOG:28:WALK_JOG_STEP=6"
+     },
+     "R": {
+      "plan": {},
+      "rows": "WALK_JOG:28:WALK_JOG_STEP=6 WALK_JOG:28:WALK_JOG_STEP=6 WALK_JOG:28:WALK_JOG_STEP=6"
+     },
+     "history": {},
+     "uAheadOfHistory": []
+    },
+    {
+     "k": 7,
+     "shape": "EMPTY",
+     "phases": [
+      "DEVELOPMENT",
+      "CONSOLIDATION"
+     ],
+     "identicalLedgers": true,
+     "historyEqual": true,
+     "rowsDiffer": true,
+     "planDims": [
+      "walkStep"
+     ],
+     "U": {
+      "plan": {
+       "walkStep": 7
+      },
+      "rows": "WALK_JOG:26:WALK_JOG_STEP=7 WALK_JOG:26:WALK_JOG_STEP=7 WALK_JOG:26:WALK_JOG_STEP=7"
+     },
+     "R": {
+      "plan": {
+       "walkStep": 6
+      },
+      "rows": "WALK_JOG:28:WALK_JOG_STEP=6 WALK_JOG:28:WALK_JOG_STEP=6 WALK_JOG:28:WALK_JOG_STEP=6"
+     },
+     "history": {
+      "walkStep": 6
+     },
+     "uAheadOfHistory": [
+      "walkStep"
+     ]
+    },
+    {
+     "k": 7,
+     "shape": "NOLONG",
+     "phases": [
+      "DEVELOPMENT",
+      "CONSOLIDATION"
+     ],
+     "identicalLedgers": false,
+     "historyEqual": false,
+     "rowsDiffer": false,
+     "planDims": [],
+     "U": {
+      "plan": {},
+      "rows": "WALK_JOG:26:WALK_JOG_STEP=7 WALK_JOG:26:WALK_JOG_STEP=7 WALK_JOG:26:WALK_JOG_STEP=7"
+     },
+     "R": {
+      "plan": {},
+      "rows": "WALK_JOG:26:WALK_JOG_STEP=7 WALK_JOG:26:WALK_JOG_STEP=7 WALK_JOG:26:WALK_JOG_STEP=7"
+     },
+     "history": {},
+     "uAheadOfHistory": []
+    },
+    {
+     "k": 8,
+     "shape": "EMPTY",
+     "phases": [
+      "CONSOLIDATION",
+      "DEVELOPMENT"
+     ],
+     "identicalLedgers": true,
+     "historyEqual": true,
+     "rowsDiffer": false,
+     "planDims": [],
+     "U": {
+      "plan": {},
+      "rows": "WALK_JOG:26:WALK_JOG_STEP=7 WALK_JOG:26:WALK_JOG_STEP=7 WALK_JOG:26:WALK_JOG_STEP=7"
+     },
+     "R": {
+      "plan": {},
+      "rows": "WALK_JOG:26:WALK_JOG_STEP=7 WALK_JOG:26:WALK_JOG_STEP=7 WALK_JOG:26:WALK_JOG_STEP=7"
+     },
+     "history": {},
+     "uAheadOfHistory": []
+    },
+    {
+     "k": 8,
+     "shape": "NOLONG",
+     "phases": [
+      "CONSOLIDATION",
+      "DEVELOPMENT"
+     ],
+     "identicalLedgers": false,
+     "historyEqual": true,
+     "rowsDiffer": false,
+     "planDims": [],
+     "U": {
+      "plan": {},
+      "rows": "WALK_JOG:26:WALK_JOG_STEP=7 WALK_JOG:26:WALK_JOG_STEP=7 WALK_JOG:26:WALK_JOG_STEP=7"
+     },
+     "R": {
+      "plan": {},
+      "rows": "WALK_JOG:26:WALK_JOG_STEP=7 WALK_JOG:26:WALK_JOG_STEP=7 WALK_JOG:26:WALK_JOG_STEP=7"
+     },
+     "history": {},
+     "uAheadOfHistory": []
+    },
+    {
+     "k": 9,
+     "shape": "EMPTY",
+     "phases": [
+      "DEVELOPMENT",
+      "DEVELOPMENT"
+     ],
+     "identicalLedgers": true,
+     "historyEqual": true,
+     "rowsDiffer": true,
+     "planDims": [
+      "walkStep"
+     ],
+     "U": {
+      "plan": {
+       "walkStep": 8
+      },
+      "rows": "WALK_JOG:28:WALK_JOG_STEP=8 WALK_JOG:28:WALK_JOG_STEP=8 WALK_JOG:28:WALK_JOG_STEP=8"
+     },
+     "R": {
+      "plan": {
+       "walkStep": 7
+      },
+      "rows": "WALK_JOG:26:WALK_JOG_STEP=7 WALK_JOG:26:WALK_JOG_STEP=7 WALK_JOG:26:WALK_JOG_STEP=7"
+     },
+     "history": {
+      "walkStep": 7
+     },
+     "uAheadOfHistory": [
+      "walkStep"
+     ]
+    },
+    {
+     "k": 9,
+     "shape": "NOLONG",
+     "phases": [
+      "DEVELOPMENT",
+      "DEVELOPMENT"
+     ],
+     "identicalLedgers": false,
+     "historyEqual": false,
+     "rowsDiffer": false,
+     "planDims": [],
+     "U": {
+      "plan": {},
+      "rows": "WALK_JOG:28:WALK_JOG_STEP=8 WALK_JOG:28:WALK_JOG_STEP=8 WALK_JOG:28:WALK_JOG_STEP=8"
+     },
+     "R": {
+      "plan": {},
+      "rows": "WALK_JOG:28:WALK_JOG_STEP=8 WALK_JOG:28:WALK_JOG_STEP=8 WALK_JOG:28:WALK_JOG_STEP=8"
+     },
+     "history": {},
+     "uAheadOfHistory": []
+    },
+    {
+     "k": 10,
+     "shape": "EMPTY",
+     "phases": [
+      "DEVELOPMENT",
+      "DEVELOPMENT"
+     ],
+     "identicalLedgers": true,
+     "historyEqual": true,
+     "rowsDiffer": true,
+     "planDims": [
+      "mode",
+      "walkStep",
+      "easy"
+     ],
+     "U": {
+      "plan": {
+       "mode": "EASY",
+       "walkStep": 9,
+       "easy": 25
+      },
+      "rows": "EASY:21:EASY_MINUTES=25 EASY:21:EASY_MINUTES=25 EASY:21:EASY_MINUTES=25"
+     },
+     "R": {
+      "plan": {
+       "mode": "WALK_JOG",
+       "walkStep": 8,
+       "easy": null
+      },
+      "rows": "WALK_JOG:28:WALK_JOG_STEP=8 WALK_JOG:28:WALK_JOG_STEP=8 WALK_JOG:28:WALK_JOG_STEP=8"
+     },
+     "history": {
+      "mode": "WALK_JOG",
+      "walkStep": 8,
+      "easy": null
+     },
+     "uAheadOfHistory": [
+      "walkStep"
+     ]
+    },
+    {
+     "k": 10,
+     "shape": "NOLONG",
+     "phases": [
+      "DEVELOPMENT",
+      "DEVELOPMENT"
+     ],
+     "identicalLedgers": false,
+     "historyEqual": false,
+     "rowsDiffer": false,
+     "planDims": [],
+     "U": {
+      "plan": {},
+      "rows": "EASY:25:EASY_MINUTES=25 EASY:25:EASY_MINUTES=25 EASY:25:EASY_MINUTES=25"
+     },
+     "R": {
+      "plan": {},
+      "rows": "EASY:25:EASY_MINUTES=25 EASY:25:EASY_MINUTES=25 EASY:25:EASY_MINUTES=25"
+     },
+     "history": {},
+     "uAheadOfHistory": []
+    },
+    {
+     "k": 11,
+     "shape": "EMPTY",
+     "phases": [
+      "DEVELOPMENT",
+      "CONSOLIDATION"
+     ],
+     "identicalLedgers": true,
+     "historyEqual": true,
+     "rowsDiffer": false,
+     "planDims": [
+      "easyWeeksDone"
+     ],
+     "U": {
+      "plan": {
+       "easyWeeksDone": 1
+      },
+      "rows": "EASY:25:EASY_MINUTES=25 EASY:25:EASY_MINUTES=25 EASY:25:EASY_MINUTES=25"
+     },
+     "R": {
+      "plan": {
+       "easyWeeksDone": 0
+      },
+      "rows": "EASY:25:EASY_MINUTES=25 EASY:25:EASY_MINUTES=25 EASY:25:EASY_MINUTES=25"
+     },
+     "history": {
+      "easyWeeksDone": 0
+     },
+     "uAheadOfHistory": [
+      "easyWeeksDone"
+     ]
+    },
+    {
+     "k": 11,
+     "shape": "NOLONG",
+     "phases": [
+      "DEVELOPMENT",
+      "CONSOLIDATION"
+     ],
+     "identicalLedgers": false,
+     "historyEqual": false,
+     "rowsDiffer": false,
+     "planDims": [],
+     "U": {
+      "plan": {},
+      "rows": "EASY:25:EASY_MINUTES=25 EASY:25:EASY_MINUTES=25 EASY:25:EASY_MINUTES=25"
+     },
+     "R": {
+      "plan": {},
+      "rows": "EASY:25:EASY_MINUTES=25 EASY:25:EASY_MINUTES=25 EASY:25:EASY_MINUTES=25"
+     },
+     "history": {},
+     "uAheadOfHistory": []
+    }
+   ]
+  }
+ }
+}

@@ -1,0 +1,219 @@
+{
+ "review": "R7ADA-QE-r1",
+ "date": "2026-10-29",
+ "role": "Quality & Reliability Engineering Reviewer (independent; not the author)",
+ "verdictLine": "R7A_DECISION_AUTHORITY_ENGINEERING_REVIEW = NOT_READY",
+ "reviewInvalid": "NO",
+ "branch": {
+  "review": "review/r7ada-decision-authority-engineering",
+  "createdFrom": "5434b3265f5634d1e7c796426cd9d8415b3b1af2",
+  "baselineUnchanged": "claude/trusting-euler-04la8t"
+ },
+ "freeze": {
+  "revision": "R7A-DECISION-AUTHORITY-FREEZE-1",
+  "record": "CoachingCore/r7/decision-authority/RUNTIME_FREEZE_R7A_DECISION_AUTHORITY.json",
+  "recordSha256": "8d5c7146b0a254fb7b9a689174731c967f39ae4888720bc5f927a81cf71e9f00",
+  "sourceDigest": "3a7166b25aaf550f7692cc058f0e582b42e9eb7f74b9e361f23733b5e74ab244",
+  "manifestDigest": "a500cdd94b8a4994a718029d4ee6efdc703e4f54de59d0855b5598c0d1afb224",
+  "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+  "freezeCommit": "d4631cd03fb27bbc1857532500748476ab764987",
+  "handoffCommit": "5434b3265f5634d1e7c796426cd9d8415b3b1af2"
+ },
+ "integrity": {
+  "start": {
+   "sourceDigest": true,
+   "manifestDigest": true,
+   "policyHash": true,
+   "sourceDigestAsRequested": true,
+   "manifestDigestAsRequested": true,
+   "policyPrefixAsRequested": true,
+   "runtimeHashAgrees": true
+  },
+  "end": {
+   "sourceDigest": true,
+   "manifestDigest": true,
+   "policyHash": true,
+   "sourceDigestAsRequested": true,
+   "manifestDigestAsRequested": true,
+   "policyPrefixAsRequested": true,
+   "runtimeHashAgrees": true
+  },
+  "workingTreeVsRecord": {
+   "mismatched": [],
+   "unfrozen": [],
+   "missing": [],
+   "strayFiles": []
+  },
+  "freezeCommitBlobsMismatched": [],
+  "handoffCommitBlobsMismatched": [],
+  "handoffCommitFiles": [
+   "CURRENT_MISSION.md",
+   "MISSION_LEDGER.md",
+   "audits/domain-coaching-r7a-decision-authority-2026-10-29/REVIEW_HANDOFF.md"
+  ],
+  "predecessorCopy": {
+   "files": 84,
+   "mismatches": [],
+   "sourceDigest": "adab37162d4f30d783faed2fe02fd44769a4be36be7bb1f6e8455a01b86235e5"
+  },
+  "nodeTest": "663/663 (Node v24.19.0)",
+  "verifyR7ada": "13/14; reviews-not-dispatched fails by design"
+ },
+ "centralQuestion": "Yes, on classes A/B (QE-R7ADA-01) and E (QE-R7ADA-02). C and D hold on every path tried.",
+ "classes": {
+  "A": "VIOLATED (QE-R7ADA-01)",
+  "B": "VIOLATED (QE-R7ADA-01)",
+  "C": "HOLDS",
+  "D": "HOLDS (R1 is a TESTFLIGHT gate, not consumed as earned)",
+  "E": "VIOLATED (QE-R7ADA-02)"
+ },
+ "targetFindings": {
+  "QE-R7ASC-01": {
+   "status": "CLOSED_ON_REPRODUCTIONS_CLASS_OPEN",
+   "evidence": "P01 x2 loads + P01b: EARLY=LATE history 8/8 (predecessor 0/8); A1 guards FROM_LOG through every handler (Q01/Q01b 0 violations)",
+   "residual": "QE-R7ADA-01"
+  },
+  "QE-R7ASC-02": {
+   "status": "CLOSED",
+   "evidence": "P02 a/b/c identical; P02b EASY 0/22 plan ahead of history (predecessor 22/22); literal cell EASY k=1 NOLONG conservative (U 135 vs R 140 run minutes; full histories differ in easyExtra, devCount; Q07); Q02 no projection consumed as earned"
+  },
+  "QE-R7ASC-03": {
+   "status": "CLOSED",
+   "evidence": "P05/P05b/P04 (truncation 0); Q04 T1-T3 0/18 at tz 0 and -180, T4 order independent, T5 strength collisions HOLD, T6 RETURN mixed verdicts HOLD in any order (predecessor ADVANCE)"
+  },
+  "QE-R7ASC-04": {
+   "status": "CLOSED",
+   "evidence": "P07 0/20 (predecessor 18/20); Q05 106 scenarios x 9 no-op orders 0 diverging (predecessor 48/58 on the reduced grid)"
+  },
+  "SSCTR-F4": {
+   "status": "CLOSED_ON_CELLS_CLASS_OPEN",
+   "evidence": "Q06 W-RELEASED, W-REPEAT, W-HOLD entry <= step last run (predecessor one above)",
+   "residual": "QE-R7ADA-02 (walk/jog exit)"
+  },
+  "earlierBlockers": {
+   "status": "STAY_CLOSED",
+   "evidence": "35 earlier judge probes: 35/35 byte-identical to the author's re-run; vs predecessor 20 identical, 11 path-only, 4 named differences (P40b, I01, Q12, Q3) whose criteria hold"
+  }
+ },
+ "declared": {
+  "R1": {
+   "ruling": "NOT_CONSUMED_AS_EARNED; TESTFLIGHT gate (policy R18 / R6-NONCLINICAL-RETURN condition 22), Founder-owned; not a D blocker for this gate",
+   "measured": "standing rows ahead of re-planned rows in 7/11 EASY and 8/11 WALK_JOG cells; after one open week: QUALITY+strides before unlock (k=1), one threshold/long/easy/walk-jog step; after two open weeks: two threshold steps (k=4: 3 vs earned 1), walk/jog step 7 graduated to continuous running (k=9). HistoricalState and every later decision's view step only from evidence."
+  },
+  "R2": {
+   "ruling": "conservative; SSCTR ruling; not a blocker"
+  },
+  "R3": {
+   "ruling": "not a blocker (plan at or below history in every cell read)"
+  },
+  "R6-H35": {
+   "ruling": "EXPECTED_DIFFERENCE; not a blocker",
+   "evidence": "Q03: unreported weeks 0-3 leave easyWeeksDone 0 < qualityNeeds 2, no week-5 QUALITY; with weeks 0-3 reported the candidate equals the predecessor step by step"
+  }
+ },
+ "findings": [
+  {
+   "id": "QE-R7ADA-01",
+   "severity": "MEDIUM",
+   "blocking": true,
+   "classes": [
+    "A",
+    "B"
+   ],
+   "sameClassAs": "QE-R7ASC-01",
+   "manifestation": "NEW (KNOWN-held state; correction or conflict carried by a review kind that does not re-plan this week)",
+   "introducedByThisFreeze": false,
+   "summary": "A3 re-plans only in weeklyReview under way; a correction or a quarantining wearable record delivered with SCHEDULE_CHANGE (no-op or from next week), GOAL_CHANGE (no-op or from next week), UNAVAILABLE_DAY, LOCAL_FATIGUE that reduces or DOUBLE_CONFLICT with a turn keeps this week's rows planned from the retracted fact; with history holding KNOWN at the lower factual load (heldKnownLoad true) the stale row is the D44 reference and a log within one increment of it is adopted without the question asked when the same facts arrive EARLY.",
+   "paths": [
+    "src/r6-adaptation.mjs:379 (viewMovedBy only in weeklyReview)",
+    "src/r6-adaptation.mjs:534, :539, :476 (scheduleChange KEEP / rebuild from next week)",
+    "src/r6-adaptation.mjs:620, :633 (goalChange KEEP / rebuild from next week)",
+    "src/r6-adaptation.mjs:547, :444 with src/r6-composition.mjs:138 (unavailableDay, fatigue REDUCE: adaptThisWeek on the week as it stands)",
+    "src/r6-program.mjs:500, :621, :434 (heldKnownLoad true -> KNOWN row is the reference -> planned = row value)"
+   ],
+   "reproduction": "qe-r7ada-Q01-correction-via-handlers.mjs, qe-r7ada-Q01b-correction-via-handlers-robustness.mjs",
+   "cells": {
+    "candidate": {
+     "Q01": "14/78",
+     "Q01b": "12/45"
+    },
+    "predecessor": {
+     "Q01": "22/78",
+     "Q01b": "15/45"
+    }
+   },
+   "example": "UNAVAILABLE_DAY Thu + correction 24->20 kg on Monday of week 2; Saturday logged 24 kg 3x5 @RIR3: EARLY row KNOWN 20, question LOGGED_LOAD_ABOVE_PLAN 24/20, HistoricalState KNOWN 20, week 3 KNOWN 22 2x5; LATE row KNOWN 24 (planned from retracted logs), no question, HistoricalState KNOWN 24 LOGGED_ACTUAL, week 3 KNOWN 24 2x5; identical facts"
+  },
+  {
+   "id": "QE-R7ADA-02",
+   "severity": "MEDIUM (walk/jog exit); LOW for the EASY-mode part, SSCTR to rule",
+   "blocking": true,
+   "blockingBasis": "walk/jog exit manifestation",
+   "classes": [
+    "E"
+   ],
+   "sameClassAs": "SSCTR F4",
+   "manifestation": "NEW (the ladder's exit; EASY-mode SHORT returns)",
+   "introducedByThisFreeze": false,
+   "summary": "A SHORT return resumes HistoricalState's run, which keeps steps the evidence released but the athlete never executed; historicalRun caps only mode WALK_JOG steps. After step 8 (20-min continuous jog) the graduated state EASY 25 is resumed after a 3-10 day break (3/3); EASY runners resume released long/easy steps (8/18: e.g. longest long 70 -> 75; easy 40 -> 45). Against R6-NONCLINICAL-RETURN condition 7 and the SSCTR return base.",
+   "paths": [
+    "src/r6-adaptation.mjs:973 (SHORT: runState = clone(prior.run))",
+    "src/r6-adaptation.mjs:903 (historicalRun on H.state.run)",
+    "src/r6-program.mjs:598 (historicalRun caps only WALK_JOG)"
+   ],
+   "reproduction": "qe-r7ada-Q06c-return-base-run.mjs (also Q06, Q06b; MODERATE control Q06d)",
+   "cells": {
+    "candidate": {
+     "walkjogExitShort": "3/3",
+     "easyShort": "8/18"
+    },
+    "predecessor": {
+     "walkjogExitShort": "3/3",
+     "easyShort": "8/18"
+    }
+   },
+   "notAffected": [
+    "MODERATE returns (single-run ceiling)",
+    "walk/jog steps inside the ladder (W2)",
+    "first quality slot (D58)",
+    "strength returns"
+   ]
+  }
+ ],
+ "observations": [
+  {
+   "id": "OBS-1",
+   "class": "BACKLOG",
+   "text": "A closing review whose evidence-based start yields the stored rows returns KEEP without a proposal; the stale stateTrace keeps projected counters ahead of history (Q02 EASY k=7, 11). No decision reads them (planningBase reads only planned/modeHistory); modeOf() reads the stored mode for observation classification."
+  },
+  {
+   "id": "OBS-2",
+   "class": "SSCTR",
+   "text": "A walk/jog step executed once with an adverse response, then a SHORT break, resumes at that step (consistent with HOLD)."
+  },
+  {
+   "id": "OBS-3",
+   "class": "NONBLOCKING",
+   "text": "The consumer audit omits the handlers in QE-R7ADA-01, and its 'No' to question 5 for the return path does not hold for the walk/jog exit or EASY-mode SHORT returns."
+  },
+  {
+   "id": "OBS-4",
+   "class": "NONBLOCKING",
+   "text": "Two of my own first detectors (Q04 basis, T5 naive load) were false positives; corrected and re-run."
+  }
+ ],
+ "notIssued": [
+  "fix",
+  "second freeze",
+  "R7A_EXIT_READINESS",
+  "R7-B0"
+ ],
+ "evidence": {
+  "runsRecord": "qe-r7ada-runs/RUNS.json",
+  "runsRecordSha256": "3091b89062aeb0bcedab243c1951343269e1d599ba45356f1b3d893b4d1cc9ee",
+  "boundToSourceDigest": "3a7166b25aaf550f7692cc058f0e582b42e9eb7f74b9e361f23733b5e74ab244",
+  "outputs": 89,
+  "scripts": 16,
+  "selfChallengeRerun": "byte-identical to the author's run (228 cases, 0 violations)"
+ }
+}

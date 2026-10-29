@@ -1,0 +1,737 @@
+{
+ "probe": "qe-r7asc-P01-stale-known-row-adoption",
+ "root": "/home/user/MyApp/audits/domain-coaching-r7a-decision-authority-2026-10-29/state-consumer-freeze-source/CoachingCore",
+ "exercise": "db-rdl",
+ "variants": [
+  {
+   "variant": "noDetails",
+   "cells": {
+    "EARLY": {
+     "record": "f692676ca6aaa092a38ca320dbe034f3a25a61532288621522fac15a6263b310",
+     "week2SaturdayRows": [
+      "2026-11-21 db-rdl FIRST_ESTABLISH ESTABLISH 2x5@RIR3"
+     ],
+     "week3SaturdayRowsAsPlanned": [
+      "2026-11-28 db-rdl FROM_LOG FROM_LOG 2x5@RIR3"
+     ],
+     "week3SaturdayRowsExecuted": [
+      "2026-11-28 db-rdl FROM_LOG FROM_LOG 2x5@RIR3"
+     ],
+     "historyAtWeek3": {
+      "mode": "FROM_LOG",
+      "lastExecutedLoad": null,
+      "liftedLoad": null,
+      "state": {
+       "mode": "FROM_LOG",
+       "load": null,
+       "pendingLoad": null,
+       "unlogged": true,
+       "source": "PLANNED_ESTABLISHMENT"
+      }
+     },
+     "week3Review": {
+      "status": "MODIFY",
+      "action": "ADOPT_LOGGED_LOADS",
+      "gate": "ADVANCE",
+      "loadQuestions": [
+       {
+        "reason": "ESTABLISHMENT_LOG_UNCONFIRMED",
+        "logged": 19,
+        "planned": null
+       }
+      ]
+     },
+     "historyAtWeek4": {
+      "mode": "FROM_LOG",
+      "lastExecutedLoad": null,
+      "liftedLoad": 19,
+      "tick": 0,
+      "state": {
+       "mode": "FROM_LOG",
+       "load": null,
+       "pendingLoad": 19,
+       "unlogged": false,
+       "source": "PLANNED_ESTABLISHMENT"
+      }
+     },
+     "internalReducer": {
+      "mode": "FROM_LOG",
+      "load": null,
+      "reps": 5,
+      "loadTick": 0,
+      "pendingLoad": 19,
+      "unlogged": false,
+      "source": "PLANNED_ESTABLISHMENT"
+     },
+     "week4SaturdayRows": [
+      "2026-12-05 db-rdl FROM_LOG FROM_LOG 4x5@RIR3"
+     ],
+     "usableLogs": [
+      {
+       "eventId": "c1-w3-3",
+       "sessionId": "w3-str-d5",
+       "day": "2026-11-28",
+       "load": 19,
+       "reps": 5,
+       "unitUnknown": false
+      }
+     ]
+    },
+    "LATE": {
+     "record": "f692676ca6aaa092a38ca320dbe034f3a25a61532288621522fac15a6263b310",
+     "week2SaturdayRows": [
+      "2026-11-21 db-rdl KNOWN KNOWN20 3x5@RIR3"
+     ],
+     "week3SaturdayRowsAsPlanned": [
+      "2026-11-28 db-rdl KNOWN KNOWN22 2x5@RIR3"
+     ],
+     "week3SaturdayRowsExecuted": [
+      "2026-11-28 db-rdl KNOWN KNOWN22 2x5@RIR3"
+     ],
+     "historyAtWeek3": {
+      "mode": "FROM_LOG",
+      "lastExecutedLoad": null,
+      "liftedLoad": null,
+      "state": {
+       "mode": "FROM_LOG",
+       "load": null,
+       "pendingLoad": null,
+       "unlogged": true,
+       "source": "PLANNED_ESTABLISHMENT"
+      }
+     },
+     "week3Review": {
+      "status": "MODIFY",
+      "action": "ADOPT_LOGGED_LOADS",
+      "gate": "ADVANCE",
+      "loadQuestions": []
+     },
+     "historyAtWeek4": {
+      "mode": "KNOWN",
+      "lastExecutedLoad": 19,
+      "liftedLoad": 19,
+      "tick": 0,
+      "state": {
+       "mode": "KNOWN",
+       "load": 19,
+       "pendingLoad": null,
+       "unlogged": false,
+       "source": "LOGGED_ACTUAL"
+      }
+     },
+     "internalReducer": {
+      "mode": "KNOWN",
+      "load": 19,
+      "reps": 5,
+      "loadTick": 0,
+      "pendingLoad": null,
+      "unlogged": false,
+      "source": "LOGGED_ACTUAL"
+     },
+     "week4SaturdayRows": [
+      "2026-12-05 db-rdl KNOWN KNOWN19 4x5@RIR3"
+     ],
+     "usableLogs": [
+      {
+       "eventId": "c1-w3-3",
+       "sessionId": "w3-str-d5",
+       "day": "2026-11-28",
+       "load": 19,
+       "reps": 5,
+       "unitUnknown": false
+      }
+     ]
+    },
+    "NOCORR": {
+     "record": "accf9dce55291b4b618219845b60508a15691e9255ee35014451081e495a8e78",
+     "week2SaturdayRows": [
+      "2026-11-21 db-rdl KNOWN KNOWN20 3x5@RIR3"
+     ],
+     "week3SaturdayRowsAsPlanned": [
+      "2026-11-28 db-rdl KNOWN KNOWN22 2x5@RIR3"
+     ],
+     "week3SaturdayRowsExecuted": [
+      "2026-11-28 db-rdl KNOWN KNOWN22 2x5@RIR3"
+     ],
+     "historyAtWeek3": {
+      "mode": "KNOWN",
+      "lastExecutedLoad": 20,
+      "liftedLoad": 20,
+      "state": {
+       "mode": "KNOWN",
+       "load": 20,
+       "pendingLoad": null,
+       "unlogged": false,
+       "source": "LOGGED_ACTUAL"
+      }
+     },
+     "week3Review": {
+      "status": "MODIFY",
+      "action": "ADOPT_LOGGED_LOADS",
+      "gate": "ADVANCE",
+      "loadQuestions": []
+     },
+     "historyAtWeek4": {
+      "mode": "KNOWN",
+      "lastExecutedLoad": 19,
+      "liftedLoad": 19,
+      "tick": 1,
+      "state": {
+       "mode": "KNOWN",
+       "load": 19,
+       "pendingLoad": null,
+       "unlogged": false,
+       "source": "LOGGED_ACTUAL"
+      }
+     },
+     "internalReducer": {
+      "mode": "KNOWN",
+      "load": 19,
+      "reps": 5,
+      "loadTick": 1,
+      "pendingLoad": null,
+      "unlogged": false,
+      "source": "LOGGED_ACTUAL"
+     },
+     "week4SaturdayRows": [
+      "2026-12-05 db-rdl KNOWN KNOWN19 4x5@RIR3"
+     ],
+     "usableLogs": [
+      {
+       "eventId": "qe7sc-o-3",
+       "sessionId": "w0-str-d5",
+       "day": "2026-11-07",
+       "load": 20,
+       "reps": 5,
+       "unitUnknown": false
+      },
+      {
+       "eventId": "c1-w1-3",
+       "sessionId": "w1-str-d5",
+       "day": "2026-11-14",
+       "load": 20,
+       "reps": 5,
+       "unitUnknown": false
+      },
+      {
+       "eventId": "c1-w3-3",
+       "sessionId": "w3-str-d5",
+       "day": "2026-11-28",
+       "load": 19,
+       "reps": 5,
+       "unitUnknown": false
+      }
+     ]
+    }
+   },
+   "sameRecordEarlyLate": true,
+   "sameHistoryAtWeek3": true,
+   "sameHistoryAtWeek4": false,
+   "lateAdoptedFirstLogAgainstStaleKnownRow": true,
+   "earlyAsksLateDoesNot": true
+  },
+  {
+   "variant": "repsNoLoad",
+   "cells": {
+    "EARLY": {
+     "record": "d86c75cef5123e9976547d70552d93b6dba299204c9d8c7bb6092d86e30e36ca",
+     "week2SaturdayRows": [
+      "2026-11-21 db-rdl FIRST_ESTABLISH ESTABLISH 2x5@RIR3"
+     ],
+     "week3SaturdayRowsAsPlanned": [
+      "2026-11-28 db-rdl FROM_LOG FROM_LOG 2x5@RIR3"
+     ],
+     "week3SaturdayRowsExecuted": [
+      "2026-11-28 db-rdl FROM_LOG FROM_LOG 2x5@RIR3"
+     ],
+     "historyAtWeek3": {
+      "mode": "FROM_LOG",
+      "lastExecutedLoad": null,
+      "liftedLoad": null,
+      "state": {
+       "mode": "FROM_LOG",
+       "load": null,
+       "pendingLoad": null,
+       "unlogged": true,
+       "source": "PLANNED_ESTABLISHMENT"
+      }
+     },
+     "week3Review": {
+      "status": "MODIFY",
+      "action": "ADOPT_LOGGED_LOADS",
+      "gate": "ADVANCE",
+      "loadQuestions": [
+       {
+        "reason": "ESTABLISHMENT_LOG_UNCONFIRMED",
+        "logged": 19,
+        "planned": null
+       }
+      ]
+     },
+     "historyAtWeek4": {
+      "mode": "FROM_LOG",
+      "lastExecutedLoad": null,
+      "liftedLoad": 19,
+      "tick": 0,
+      "state": {
+       "mode": "FROM_LOG",
+       "load": null,
+       "pendingLoad": 19,
+       "unlogged": false,
+       "source": "PLANNED_ESTABLISHMENT"
+      }
+     },
+     "internalReducer": {
+      "mode": "FROM_LOG",
+      "load": null,
+      "reps": 5,
+      "loadTick": 0,
+      "pendingLoad": 19,
+      "unlogged": false,
+      "source": "PLANNED_ESTABLISHMENT"
+     },
+     "week4SaturdayRows": [
+      "2026-12-05 db-rdl FROM_LOG FROM_LOG 4x5@RIR3"
+     ],
+     "usableLogs": [
+      {
+       "eventId": "c1-w2-3",
+       "sessionId": "w2-str-d5",
+       "day": "2026-11-21",
+       "load": null,
+       "reps": 5,
+       "unitUnknown": false
+      },
+      {
+       "eventId": "c1-w3-3",
+       "sessionId": "w3-str-d5",
+       "day": "2026-11-28",
+       "load": 19,
+       "reps": 5,
+       "unitUnknown": false
+      }
+     ]
+    },
+    "LATE": {
+     "record": "d86c75cef5123e9976547d70552d93b6dba299204c9d8c7bb6092d86e30e36ca",
+     "week2SaturdayRows": [
+      "2026-11-21 db-rdl KNOWN KNOWN20 3x5@RIR3"
+     ],
+     "week3SaturdayRowsAsPlanned": [
+      "2026-11-28 db-rdl KNOWN KNOWN22 2x5@RIR3"
+     ],
+     "week3SaturdayRowsExecuted": [
+      "2026-11-28 db-rdl KNOWN KNOWN22 2x5@RIR3"
+     ],
+     "historyAtWeek3": {
+      "mode": "FROM_LOG",
+      "lastExecutedLoad": null,
+      "liftedLoad": null,
+      "state": {
+       "mode": "FROM_LOG",
+       "load": null,
+       "pendingLoad": null,
+       "unlogged": true,
+       "source": "PLANNED_ESTABLISHMENT"
+      }
+     },
+     "week3Review": {
+      "status": "MODIFY",
+      "action": "ADOPT_LOGGED_LOADS",
+      "gate": "ADVANCE",
+      "loadQuestions": []
+     },
+     "historyAtWeek4": {
+      "mode": "KNOWN",
+      "lastExecutedLoad": 19,
+      "liftedLoad": 19,
+      "tick": 0,
+      "state": {
+       "mode": "KNOWN",
+       "load": 19,
+       "pendingLoad": null,
+       "unlogged": false,
+       "source": "LOGGED_ACTUAL"
+      }
+     },
+     "internalReducer": {
+      "mode": "KNOWN",
+      "load": 19,
+      "reps": 5,
+      "loadTick": 0,
+      "pendingLoad": null,
+      "unlogged": false,
+      "source": "LOGGED_ACTUAL"
+     },
+     "week4SaturdayRows": [
+      "2026-12-05 db-rdl KNOWN KNOWN19 4x5@RIR3"
+     ],
+     "usableLogs": [
+      {
+       "eventId": "c1-w2-3",
+       "sessionId": "w2-str-d5",
+       "day": "2026-11-21",
+       "load": null,
+       "reps": 5,
+       "unitUnknown": false
+      },
+      {
+       "eventId": "c1-w3-3",
+       "sessionId": "w3-str-d5",
+       "day": "2026-11-28",
+       "load": 19,
+       "reps": 5,
+       "unitUnknown": false
+      }
+     ]
+    },
+    "NOCORR": {
+     "record": "416d8d9094eb4fb4386fb3c97ac96c24d4693f938710e0b27f1d32c21e311efd",
+     "week2SaturdayRows": [
+      "2026-11-21 db-rdl KNOWN KNOWN20 3x5@RIR3"
+     ],
+     "week3SaturdayRowsAsPlanned": [
+      "2026-11-28 db-rdl KNOWN KNOWN22 2x5@RIR3"
+     ],
+     "week3SaturdayRowsExecuted": [
+      "2026-11-28 db-rdl KNOWN KNOWN22 2x5@RIR3"
+     ],
+     "historyAtWeek3": {
+      "mode": "KNOWN",
+      "lastExecutedLoad": 20,
+      "liftedLoad": 20,
+      "state": {
+       "mode": "KNOWN",
+       "load": 20,
+       "pendingLoad": null,
+       "unlogged": false,
+       "source": "LOGGED_ACTUAL"
+      }
+     },
+     "week3Review": {
+      "status": "MODIFY",
+      "action": "ADOPT_LOGGED_LOADS",
+      "gate": "ADVANCE",
+      "loadQuestions": []
+     },
+     "historyAtWeek4": {
+      "mode": "KNOWN",
+      "lastExecutedLoad": 19,
+      "liftedLoad": 19,
+      "tick": 1,
+      "state": {
+       "mode": "KNOWN",
+       "load": 19,
+       "pendingLoad": null,
+       "unlogged": false,
+       "source": "LOGGED_ACTUAL"
+      }
+     },
+     "internalReducer": {
+      "mode": "KNOWN",
+      "load": 19,
+      "reps": 5,
+      "loadTick": 1,
+      "pendingLoad": null,
+      "unlogged": false,
+      "source": "LOGGED_ACTUAL"
+     },
+     "week4SaturdayRows": [
+      "2026-12-05 db-rdl KNOWN KNOWN19 4x5@RIR3"
+     ],
+     "usableLogs": [
+      {
+       "eventId": "qe7sc-o-3",
+       "sessionId": "w0-str-d5",
+       "day": "2026-11-07",
+       "load": 20,
+       "reps": 5,
+       "unitUnknown": false
+      },
+      {
+       "eventId": "c1-w1-3",
+       "sessionId": "w1-str-d5",
+       "day": "2026-11-14",
+       "load": 20,
+       "reps": 5,
+       "unitUnknown": false
+      },
+      {
+       "eventId": "c1-w2-3",
+       "sessionId": "w2-str-d5",
+       "day": "2026-11-21",
+       "load": null,
+       "reps": 5,
+       "unitUnknown": false
+      },
+      {
+       "eventId": "c1-w3-3",
+       "sessionId": "w3-str-d5",
+       "day": "2026-11-28",
+       "load": 19,
+       "reps": 5,
+       "unitUnknown": false
+      }
+     ]
+    }
+   },
+   "sameRecordEarlyLate": true,
+   "sameHistoryAtWeek3": true,
+   "sameHistoryAtWeek4": false,
+   "lateAdoptedFirstLogAgainstStaleKnownRow": true,
+   "earlyAsksLateDoesNot": true
+  },
+  {
+   "variant": "unknownUnit",
+   "cells": {
+    "EARLY": {
+     "record": "8ca7cbc7d73ff5b5eab536f0e4a7206c1c828329f6d705ac0189c0abdf28b8ae",
+     "week2SaturdayRows": [
+      "2026-11-21 db-rdl FIRST_ESTABLISH ESTABLISH 2x5@RIR3"
+     ],
+     "week3SaturdayRowsAsPlanned": [
+      "2026-11-28 db-rdl FROM_LOG FROM_LOG 2x5@RIR3"
+     ],
+     "week3SaturdayRowsExecuted": [
+      "2026-11-28 db-rdl FROM_LOG FROM_LOG 2x5@RIR3"
+     ],
+     "historyAtWeek3": {
+      "mode": "FROM_LOG",
+      "lastExecutedLoad": null,
+      "liftedLoad": null,
+      "state": {
+       "mode": "FROM_LOG",
+       "load": null,
+       "pendingLoad": null,
+       "unlogged": true,
+       "source": "PLANNED_ESTABLISHMENT"
+      }
+     },
+     "week3Review": {
+      "status": "MODIFY",
+      "action": "ADOPT_LOGGED_LOADS",
+      "gate": "ADVANCE",
+      "loadQuestions": [
+       {
+        "reason": "ESTABLISHMENT_LOG_UNCONFIRMED",
+        "logged": 19,
+        "planned": null
+       }
+      ]
+     },
+     "historyAtWeek4": {
+      "mode": "FROM_LOG",
+      "lastExecutedLoad": null,
+      "liftedLoad": 19,
+      "tick": 0,
+      "state": {
+       "mode": "FROM_LOG",
+       "load": null,
+       "pendingLoad": 19,
+       "unlogged": false,
+       "source": "PLANNED_ESTABLISHMENT"
+      }
+     },
+     "internalReducer": {
+      "mode": "FROM_LOG",
+      "load": null,
+      "reps": 5,
+      "loadTick": 0,
+      "pendingLoad": 19,
+      "unlogged": false,
+      "source": "PLANNED_ESTABLISHMENT"
+     },
+     "week4SaturdayRows": [
+      "2026-12-05 db-rdl FROM_LOG FROM_LOG 4x5@RIR3"
+     ],
+     "usableLogs": [
+      {
+       "eventId": "c1-w2-3",
+       "sessionId": "w2-str-d5",
+       "day": "2026-11-21",
+       "load": null,
+       "reps": 5,
+       "unitUnknown": true
+      },
+      {
+       "eventId": "c1-w3-3",
+       "sessionId": "w3-str-d5",
+       "day": "2026-11-28",
+       "load": 19,
+       "reps": 5,
+       "unitUnknown": false
+      }
+     ]
+    },
+    "LATE": {
+     "record": "8ca7cbc7d73ff5b5eab536f0e4a7206c1c828329f6d705ac0189c0abdf28b8ae",
+     "week2SaturdayRows": [
+      "2026-11-21 db-rdl KNOWN KNOWN20 3x5@RIR3"
+     ],
+     "week3SaturdayRowsAsPlanned": [
+      "2026-11-28 db-rdl KNOWN KNOWN22 2x5@RIR3"
+     ],
+     "week3SaturdayRowsExecuted": [
+      "2026-11-28 db-rdl KNOWN KNOWN22 2x5@RIR3"
+     ],
+     "historyAtWeek3": {
+      "mode": "FROM_LOG",
+      "lastExecutedLoad": null,
+      "liftedLoad": null,
+      "state": {
+       "mode": "FROM_LOG",
+       "load": null,
+       "pendingLoad": null,
+       "unlogged": true,
+       "source": "PLANNED_ESTABLISHMENT"
+      }
+     },
+     "week3Review": {
+      "status": "MODIFY",
+      "action": "ADOPT_LOGGED_LOADS",
+      "gate": "ADVANCE",
+      "loadQuestions": []
+     },
+     "historyAtWeek4": {
+      "mode": "KNOWN",
+      "lastExecutedLoad": 19,
+      "liftedLoad": 19,
+      "tick": 0,
+      "state": {
+       "mode": "KNOWN",
+       "load": 19,
+       "pendingLoad": null,
+       "unlogged": false,
+       "source": "LOGGED_ACTUAL"
+      }
+     },
+     "internalReducer": {
+      "mode": "KNOWN",
+      "load": 19,
+      "reps": 5,
+      "loadTick": 0,
+      "pendingLoad": null,
+      "unlogged": false,
+      "source": "LOGGED_ACTUAL"
+     },
+     "week4SaturdayRows": [
+      "2026-12-05 db-rdl KNOWN KNOWN19 4x5@RIR3"
+     ],
+     "usableLogs": [
+      {
+       "eventId": "c1-w2-3",
+       "sessionId": "w2-str-d5",
+       "day": "2026-11-21",
+       "load": null,
+       "reps": 5,
+       "unitUnknown": true
+      },
+      {
+       "eventId": "c1-w3-3",
+       "sessionId": "w3-str-d5",
+       "day": "2026-11-28",
+       "load": 19,
+       "reps": 5,
+       "unitUnknown": false
+      }
+     ]
+    },
+    "NOCORR": {
+     "record": "7ed7f3da4b27551b2a86f22a842e658a9fbc474729cfdfcd9915aca36da649ff",
+     "week2SaturdayRows": [
+      "2026-11-21 db-rdl KNOWN KNOWN20 3x5@RIR3"
+     ],
+     "week3SaturdayRowsAsPlanned": [
+      "2026-11-28 db-rdl KNOWN KNOWN22 2x5@RIR3"
+     ],
+     "week3SaturdayRowsExecuted": [
+      "2026-11-28 db-rdl KNOWN KNOWN22 2x5@RIR3"
+     ],
+     "historyAtWeek3": {
+      "mode": "KNOWN",
+      "lastExecutedLoad": 20,
+      "liftedLoad": 20,
+      "state": {
+       "mode": "KNOWN",
+       "load": 20,
+       "pendingLoad": null,
+       "unlogged": false,
+       "source": "LOGGED_ACTUAL"
+      }
+     },
+     "week3Review": {
+      "status": "MODIFY",
+      "action": "ADOPT_LOGGED_LOADS",
+      "gate": "ADVANCE",
+      "loadQuestions": []
+     },
+     "historyAtWeek4": {
+      "mode": "KNOWN",
+      "lastExecutedLoad": 19,
+      "liftedLoad": 19,
+      "tick": 1,
+      "state": {
+       "mode": "KNOWN",
+       "load": 19,
+       "pendingLoad": null,
+       "unlogged": false,
+       "source": "LOGGED_ACTUAL"
+      }
+     },
+     "internalReducer": {
+      "mode": "KNOWN",
+      "load": 19,
+      "reps": 5,
+      "loadTick": 1,
+      "pendingLoad": null,
+      "unlogged": false,
+      "source": "LOGGED_ACTUAL"
+     },
+     "week4SaturdayRows": [
+      "2026-12-05 db-rdl KNOWN KNOWN19 4x5@RIR3"
+     ],
+     "usableLogs": [
+      {
+       "eventId": "qe7sc-o-3",
+       "sessionId": "w0-str-d5",
+       "day": "2026-11-07",
+       "load": 20,
+       "reps": 5,
+       "unitUnknown": false
+      },
+      {
+       "eventId": "c1-w1-3",
+       "sessionId": "w1-str-d5",
+       "day": "2026-11-14",
+       "load": 20,
+       "reps": 5,
+       "unitUnknown": false
+      },
+      {
+       "eventId": "c1-w2-3",
+       "sessionId": "w2-str-d5",
+       "day": "2026-11-21",
+       "load": null,
+       "reps": 5,
+       "unitUnknown": true
+      },
+      {
+       "eventId": "c1-w3-3",
+       "sessionId": "w3-str-d5",
+       "day": "2026-11-28",
+       "load": 19,
+       "reps": 5,
+       "unitUnknown": false
+      }
+     ]
+    }
+   },
+   "sameRecordEarlyLate": true,
+   "sameHistoryAtWeek3": true,
+   "sameHistoryAtWeek4": false,
+   "lateAdoptedFirstLogAgainstStaleKnownRow": true,
+   "earlyAsksLateDoesNot": true
+  }
+ ],
+ "anyViolation": true
+}
