@@ -1,0 +1,628 @@
+{
+  "revision": "R6-DELIVERABLE-1",
+  "topic": "STRENGTH_PROGRAMMING_R6",
+  "generatedAt": "2026-10-27T05:03:30.454Z",
+  "authority": "CURRENT_INDEPENDENT_REVIEW",
+  "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+  "sourceDigest": "507f35fc66f4d1e105e19ce513dc067f9fee5fdc35c039ad52a8c825e46bf857",
+  "freezeRevision": "R6-FREEZE-1",
+  "runtimeState": "NOT_FROZEN_AFTER_FREEZE_1: the SSCTR refused FREEZE-2 in round 12 and R6 closed with an explicit blocker (OPEN_GAPS_R6); the runtime files listed are the current, unfrozen ones, while the simulation, demonstration and R5 replay outputs cited are the FREEZE-1 ones",
+  "boundaries": [
+    {
+      "boundaryId": "R6-LOAD-ESTABLISHMENT",
+      "enabled": "APPROVED",
+      "ssctr": {
+        "disposition": "APPROVE_WITH_CONDITIONS",
+        "evidence": null,
+        "conditions": [
+          "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+          "Binding: this record binds canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c (value.mjs hash). Any policy byte change invalidates it; any change to the runtime functions named in requiredRuntimeChanges needs a delta binding review before runtime freeze.",
+          "Operational values are reversible coaching choices inside the envelope, never physiological thresholds, injury-prevention rules, readiness scores, finish-time promises or individual-response predictions.",
+          "Steps advance only on executed comparable work without an adverse signal; nothing progresses from elapsed calendar time alone; completed history and official plan state stay immutable.",
+          "Athletes with strength class NONE complete unloaded or light-implement practice before any effort-guided loaded set; the first loaded exposure is at most 2 sets at RIR >= 3.",
+          "The establishment instruction describes an ascending ramp: start with the lightest available load and add the smallest increment between preparatory sets while at least the target reserve remains with stable technique; the working load is the heaviest such load; load and convention are recorded.",
+          "No kilogram is derived from sex, body mass, another exercise or implement; a stale or differently configured known load is only a hint or ceiling.",
+          "After establishment, a load or repetition step requires a logged set record meeting target repetitions with reserve >= prescribed RIR - 1; otherwise the dose holds. A logged load above the planned load is adopted only when that exposure meets this criterion and only up to one smallest increment above the plan, never above a re-establishment ceiling; otherwise the planned load stays the reference and the logged load is asked about. A logged load at or below the plan is executed evidence; a changed known load is a modification (D44).",
+          "RIR is treated as approximate (about one repetition of error); technique and comfort govern continuation and stopping.",
+          "Fail-closed: no ESTABLISH rows are emitted when this boundary is not enabled.",
+          "A load logged on an establishment row becomes a prescribed numeric (KNOWN) load only after the athlete confirms it (in kilograms or pounds, in the planned convention), after a second logged exposure of the exercise in a separate session (later, or earlier in the same week) within establishmentAgreementIncrements smallest increment of it, or when it lies within one smallest increment of the athlete's own load hint in the same convention. Until then the next exposure is FROM_LOG with no number, its instructions describe effort-guided selection only and never point to the logged value (D48), and the logged value is asked about. Numeric plausibility of a confirmed or repeated value is Data-owned (D45).",
+          "Loads are kilograms in the engine: a pound value (intake or log) converts at the nearest 0.5 kg and keeps the reported value; another or missing unit, or a logged convention different from the planned one, is never adopted and is asked about; no prescription carries pounds or a known load above 500 kg.",
+          "An above-plan logged load is adopted only when that exercise's gate for the week is ADVANCE or EARNED; a missing reps-in-reserve log, an adverse response or a converging-fatigue hold keeps the planned load and the load is asked about (D44).",
+          "Establishment needs an executed exposure with a logged load: an establishment exposure that was missed, dated inside a declared pause, reported only in a conflicted report, or performed without a usable logged load establishes no load, so the next exposure is again the effort-guided establishment row (at most the establishment set count at RIR >= 3, the ramp-up, no load, no progression step), under the earlier ceiling when there is one; a FROM_LOG row exists only for an exercise with a logged load (pending or adopted) and never says 'use the load you logged' without one. Until a review sees the exercise performed with a logged load, its later exposures in the same week are the establishment row too, and two establishment logs of that week within one increment confirm each other (D45; dossier Q1). D52, resolved in round 11.",
+          "An exercise not performed for more than return.moderateMaxDays, counted in calendar days from its last executed exposure to the date of the session being built (the completed-work ledger at reviews; for an intake known dose, its observedAt; in a projection, the planned date), restarts with effort-guided establishment with its last logged load as a ceiling, whether the absence came from rotation, a substitution window, skipped sessions or a return. Each session is judged on its own date, and no unexecuted exposure counts (dossier Q4). Its earlier set count, including any block-boundary set, comes back at most one set per executed week without a phase reduction, never at once, whatever the state's mode at the re-establishment (known load, pending establishment log or unlogged), and the re-establishment row itself never exceeds the reduced dose of a taper, race-window or post-event session (strength.resumeAfterDays and setsAfterReestablishment; D52 resolved in round 11; D53 resolved in round 12 for a known-load state and still open for a from-log state; D54 open; both required before FREEZE-2).",
+          "A session reported completed without exercise details counts as performed for every exercise of that session (the resume clock) but is no load evidence: a new loaded exercise is established again, a known lift keeps its load without a step, and a from-log exercise without a usable logged load is established again by effort under its earlier ceiling. A partial report counts only the exercises it lists (dossier Q2).",
+          "An intake known dose was last performed on its observedAt date, which must be the date the dose was last performed, not the date it was reported; its resume clock starts there, so a dose observed close to the 28-day intake limit can be re-established at its first program exposure (dossier Q3).",
+          "A conflicted execution report performs nothing and neither sets nor confirms a load until it is corrected (QRE-R6-14; author-found with D52).",
+          "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+        ]
+      },
+      "envelope": {
+        "claim": "An unknown external load is resolved inside the first loaded exposure by technique practice and an ascending ramp: start with the lightest available load and add the smallest increment between preparatory sets while at least the target repetitions in reserve remain with stable technique; the working load is the heaviest such load, recorded with its convention.",
+        "limits": [
+          "no kilogram from sex, body mass, another exercise or another implement",
+          "RIR is approximate; technique and comfort govern continuation",
+          "novices practice unloaded or with a light implement before any effort-guided loading"
+        ]
+      }
+    },
+    {
+      "boundaryId": "R6-PLANNED-PROGRESSION",
+      "enabled": "APPROVED",
+      "ssctr": {
+        "disposition": "APPROVE_WITH_CONDITIONS",
+        "evidence": null,
+        "conditions": [
+          "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+          "Binding: this record binds canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c (value.mjs hash). Any policy byte change invalidates it; any change to the runtime functions named in requiredRuntimeChanges needs a delta binding review before runtime freeze.",
+          "Operational values are reversible coaching choices inside the envelope, never physiological thresholds, injury-prevention rules, readiness scores, finish-time promises or individual-response predictions.",
+          "Steps advance only on executed comparable work without an adverse signal; nothing progresses from elapsed calendar time alone; completed history and official plan state stay immutable.",
+          "One progression dimension per session type per week; EARNED may release a step the cadence would otherwise hold or skip a consolidation hold, but never adds more than one step on any dimension in a week, and is unavailable in WALK_JOG, RESTART and RETURN modes.",
+          "Every step requires executed comparable sessions without an adverse signal in the gating week; quality/strides activation, block-boundary set increases and ladder steps count executed weeks, never calendar weeks.",
+          "Single-run ceiling (operational.run.singleRunCeiling): no planned run other than the race exceeds the longest completed run of the preceding 30 days (completed-work ledger, the intake-reported longest current run while within 30 days of intake, a valid return demonstration) by more than one stepMinutes; walk/jog ladder sessions and walks follow the ladder, whose start never holds more jogging per session than the longest current run (D42); with nothing completed in the window the reviewed entry (return.entryRunMinutes) is the ceiling in every week, not only the first.",
+          "When the 30-day reference run is under 50 minutes, the 5-minute step exceeds 10% of it; the step stays response-gated, is disclosed, and is never combined with another single-session increase in the same week. A long-run step that the long-run share cap holds is not a single-session increase: that week the easy step and the quality step proceed under their own gates and cadence, and if either steps the long-run target waits where it was prescribed. In such a week the stepped easy run may equal the long run prescribed that week, never exceed it. A long run held at the single-run ceiling is still a step beyond the 30-day reference (D50, resolved in round 10).",
+          "Strength ADVANCE requires logged target repetitions and minimum logged RIR >= prescribed RIR - 1; EARNED requires minimum logged RIR >= prescribed RIR + 2 on two comparable exposures outside consolidation; a known-load or bodyweight repetition or load step requires a logged set for that exercise in the gating week; missing logs or unknown logged RIR hold the dose without regression; a logged load above the plan never becomes the reference unless that exposure met the ADVANCE criterion (D44).",
+          "longRunShareOfWeeklyMinutesMax limits long-run growth in weeks with at least three running sessions; the cap holds the long run and never shortens it below the typical easy run or the last build week's long run; consolidation, taper and return reductions are separate rules.",
+          "Transition magnitudes (restart step and switch point, walk/jog exit dose, consolidation reduction, post-event redevelopment) are declared in the policy, not hard-coded.",
+          "Repeated adverse responses (two comparable within 14 days at the current dose after any regression) regress one step; a single adverse response holds.",
+          "A run dimension or exercise with no executed session in the reviewed week holds: it never counts as an executed week, never advances a walk/jog step, never unlocks quality or strides and never converts a walk. In a conditional projection a week with no planned session of a dimension likewise never counts as executed for it (D46).",
+          "After an exercise is re-established by effort, its prescribed set count, including any block-boundary set, returns at most one set per executed week without a phase reduction, never two at once, whatever the state's mode at the re-establishment (D53: resolved in round 12 for a known-load state, still open for a from-log state; required before FREEZE-2).",
+          "Return-entry and return-step exposures never count toward a block-boundary set increase: a development block with any such exposure of the exercise earns no set, including the block in progress at the break. After the return steps the set count comes back at most one set per executed week without a phase reduction, up to the ceiling (the last set count executed before the break outside a phase reduction), with phase reductions on top; it goes above the ceiling only through a later development block with no return-step exposure (operational.return.strengthReturnSets; D49, shared with R6-NONCLINICAL-RETURN).",
+          "With no easy run planned in a week (every easy day a walk), the executed long run gates the development-week count and the walk-to-run conversion; a converted walk becomes an easy run at run.minimumSessionMinutes that then progresses like the others (R12). In a conditional projection, restart and return sessions of any role gate on EASY, as in reviews (R13).",
+          "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+        ]
+      },
+      "envelope": {
+        "claim": "A planned, response-gated trajectory with one progression dimension per session type per step, small absolute steps and periodic consolidation weeks is a defensible recreational progression model.",
+        "limits": [
+          "no ten-percent or other universal injury rule is claimed",
+          "planned future doses are conditional proposals, not predictions",
+          "no progression from elapsed calendar alone"
+        ]
+      }
+    },
+    {
+      "boundaryId": "R6-ROTATION",
+      "enabled": "APPROVED",
+      "ssctr": {
+        "disposition": "APPROVE_WITH_CONDITIONS",
+        "evidence": null,
+        "conditions": [
+          "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+          "Binding: this record binds canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c (value.mjs hash). Any policy byte change invalidates it; any change to the runtime functions named in requiredRuntimeChanges needs a delta binding review before runtime freeze.",
+          "Operational values are reversible coaching choices inside the envelope, never physiological thresholds, injury-prevention rules, readiness scores, finish-time promises or individual-response predictions.",
+          "Steps advance only on executed comparable work without an adverse signal; nothing progresses from elapsed calendar time alone; completed history and official plan state stay immutable.",
+          "Main lifts stay; COACH_DECIDES, EVERY_6_WEEKS and EVERY_2_WEEKS rotate accessories only on the stated cadence; close variants of main lifts are not rotated in R6.",
+          "No rotation in ESTABLISHMENT, SPECIFIC, TAPER, RACE_WEEK or POST_EVENT weeks.",
+          "Each newly rotated exercise starts with effort-guided establishment; no load is transferred; no progression step in its first exposure.",
+          "A rotated-back exercise not performed for more than return.moderateMaxDays restarts effort-guided with its last logged load as a ceiling.",
+          "FIXED never rotates except for needed substitutions.",
+          "A rotated-back or re-established exercise regains its earlier set count, including any block-boundary set, at most one set per executed week without a phase reduction, never two at once, whatever the state's mode at the re-establishment, including an exercise whose establishment log is still pending (D53: resolved in round 12 for a known-load state, still open for a from-log state; required before FREEZE-2).",
+          "After a return, rotation resumes on its cadence once the exercises in use complete their return steps; exercises not used during the return carry no return step (D51).",
+          "Conditions 7 and 8 count executed exposures: a rotated exercise whose first exposure was not executed starts with effort-guided establishment at its next exposure, and the days in condition 8 are counted from the last executed exposure of that exercise (D52, resolved in round 11).",
+          "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+        ]
+      },
+      "envelope": {
+        "claim": "Exercise rotation can follow the athlete's preference by changing accessories and close variants while main lifts stay, deferring any change near an event and establishing each new exercise by effort.",
+        "limits": [
+          "FIXED keeps the selection except needed substitutions",
+          "rotation never transfers load and never coincides with a progression step on the new exercise"
+        ]
+      }
+    }
+  ],
+  "policyValues": {
+    "strength": {
+      "warmupMinutes": 5,
+      "cooldownMinutes": 3,
+      "secondsPerRep": 4,
+      "preparationMinutes": {
+        "MAIN": 2,
+        "ACCESSORY": 1,
+        "PRACTICE": 1
+      },
+      "restSeconds": {
+        "MAIN": 120,
+        "MAIN_STRENGTH_GOAL": 150,
+        "ACCESSORY": 75,
+        "PRACTICE": 60
+      },
+      "goalDoses": {
+        "STRENGTH": {
+          "reps": 5,
+          "repRange": [
+            4,
+            6
+          ],
+          "sets": 3,
+          "maxSets": 4,
+          "targetRir": 2,
+          "startRir": 3,
+          "mode": "LOAD"
+        },
+        "HYPERTROPHY": {
+          "reps": 8,
+          "repRange": [
+            8,
+            12
+          ],
+          "sets": 3,
+          "maxSets": 4,
+          "targetRir": 2,
+          "startRir": 3,
+          "mode": "REPS_THEN_LOAD"
+        },
+        "RUNNING_SUPPORT": {
+          "reps": 8,
+          "repRange": [
+            6,
+            10
+          ],
+          "sets": 2,
+          "maxSets": 3,
+          "targetRir": 3,
+          "startRir": 3,
+          "mode": "REPS_THEN_LOAD"
+        },
+        "MAINTAIN": {
+          "reps": 8,
+          "repRange": [
+            8,
+            8
+          ],
+          "sets": 2,
+          "maxSets": 2,
+          "targetRir": 3,
+          "startRir": 3,
+          "mode": "HOLD"
+        },
+        "GENERAL": {
+          "reps": 10,
+          "repRange": [
+            8,
+            12
+          ],
+          "sets": 2,
+          "maxSets": 3,
+          "targetRir": 3,
+          "startRir": 3,
+          "mode": "REPS_THEN_LOAD"
+        }
+      },
+      "repStep": 2,
+      "addSetAtBlockBoundary": true,
+      "smallestIncrement": {
+        "TOTAL": 2.5,
+        "PER_HAND": 2,
+        "MACHINE_STACK": 1,
+        "BODYWEIGHT": 0
+      },
+      "consolidationSetReduction": 1,
+      "minimumSessionMinutes": 15,
+      "maxExercises": {
+        "MAIN_ONLY_BUDGET": 3,
+        "DEFAULT": 5
+      },
+      "gates": {
+        "advanceMinimumLoggedRirBelowPrescribed": 1,
+        "earnedLoggedRirAbovePrescribed": 2,
+        "earnedComparableExposures": 2,
+        "knownLoadStepRequiresLoggedSetInGatingWeek": true,
+        "missingLogs": "HOLD without regression"
+      },
+      "setIncreaseAtBlockBoundary": "Per exercise, only when the final exposures of that exercise in the block were ADVANCE or EARNED, and never for a block in which the exercise had a return-entry or return-step exposure (SSCTR D49).",
+      "resumeAfterDays": "An exercise not performed for more than return.moderateMaxDays (rotation back, end of a substitution window) restarts with effort-guided establishment; its last logged load is a ceiling.",
+      "loadUnits": "Loads are kilograms inside the engine. A pound value (intake or log) is converted at the boundary to the nearest 0.5 kg and kept as reported; any other or missing unit, or a logged convention different from the planned one, leaves the load unknown: it is never adopted and the athlete is asked to confirm it. A reported known dose above six sets is kept as history and the plan starts at six.",
+      "loggedLoadAdoption": {
+        "maximumKilograms": 500,
+        "maximumIncrementsAbovePlanned": 1,
+        "establishmentAgreementIncrements": 1,
+        "semantics": "A logged load becomes the reference only inside 0 to maximumKilograms kg and at most maximumIncrementsAbovePlanned smallest increment above the load the plan stated for that exposure (the known load, or the last logged load for a from-log row). A load above the stated one is adopted only when that exposure met the ADVANCE criterion (target reps met, minimum logged RIR at or above the prescription minus gates.advanceMinimumLoggedRirBelowPrescribed, no adverse response); otherwise the planned load stays and the athlete is asked (SSCTR D44). A logged load is never adopted above a re-establishment ceiling or, during a return, above the load before the break: it is capped there and asked about. A first establishment log (no planned load, no ceiling, no earlier load) is not a number: the next exposure is from-log with no number, its instructions describe effort-guided selection only and never point to the logged value (SSCTR D48), and the athlete is asked. It becomes the reference only when the athlete confirms it (review loadConfirmations: exercise, value, unit kg or lb, the planned convention), when a second log of the same exercise (a later exposure, or an earlier one in the same week) agrees with it within establishmentAgreementIncrements smallest increment, or when it is within establishmentAgreementIncrements smallest increment of the athlete's own load hint in the same convention (SSCTR D45). A confirmation replaces the logged value and never bypasses the other rules. Anything else keeps the planned reference and is asked about. A known planned load replaced by a different executed load is a modification, not an instantiation. Numeric plausibility of a logged value inside the 0 to maximumKilograms bound, including a load logged far below the plan (SSCTR R5), belongs to Data and is an open gap."
+      },
+      "setsAfterReestablishment": "After an exercise is re-established by effort, its earlier set count comes back one set per executed week, never at once."
+    },
+    "rotation": {
+      "COACH_DECIDES": {
+        "everyWeeks": 6,
+        "scope": "ACCESSORIES"
+      },
+      "EVERY_6_WEEKS": {
+        "everyWeeks": 6,
+        "scope": "ACCESSORIES"
+      },
+      "EVERY_2_WEEKS": {
+        "everyWeeks": 2,
+        "scope": "ACCESSORIES"
+      },
+      "FIXED": {
+        "everyWeeks": null,
+        "scope": "NONE"
+      },
+      "deferInPhases": [
+        "SPECIFIC",
+        "TAPER",
+        "RACE_WEEK",
+        "POST_EVENT"
+      ],
+      "notes": "Main lifts stay; accessories rotate on the cadence; close variants of main lifts are not rotated in R6. A rotated exercise starts with effort-guided establishment with no load transferred; a rotated-back exercise unused for more than return.moderateMaxDays restarts effort-guided with its last logged load as a ceiling."
+    }
+  },
+  "runtime": [
+    {
+      "file": "CoachingCore/src/r6-program.mjs",
+      "functions": [
+        "strengthTemplates",
+        "strengthDose",
+        "advanceStrength"
+      ],
+      "sha256": "57973e9735388d3d5f194b37ff7f5080669d2c1c3fb228b59873ac7adf6fe3ec"
+    },
+    {
+      "file": "CoachingCore/src/r6-adaptation.mjs",
+      "functions": [
+        "performedInWeek"
+      ],
+      "sha256": "d6a1d6fc74b7ef5b02a389dba3429cb25a00b16a2df97120b64314e96a6ba6f4"
+    },
+    {
+      "file": "CoachingCore/src/r6-prescription.mjs",
+      "functions": [
+        "exerciseRow",
+        "fitStrengthSession",
+        "strengthPrescription"
+      ],
+      "sha256": "6d223c285fb5e1595086dcd6be275956a2cfb122e036060ace369b4bc83cb4ed"
+    },
+    {
+      "file": "CoachingCore/src/r6-catalogue.mjs",
+      "functions": [
+        "candidatesFor"
+      ],
+      "sha256": "cdad88cb67ba7164030c900648079946e70bb10778120886d25476718dbf3d5f"
+    }
+  ],
+  "evidence": {
+    "tests": [
+      {
+        "file": "CoachingCore/test/r6-adaptation.test.mjs",
+        "name": "Adaptation: repeated adverse responses regress one step, then hysteresis holds"
+      },
+      {
+        "file": "CoachingCore/test/r6-adaptation.test.mjs",
+        "name": "Adaptation: a selected KEEP is always an admissible counterfactual, including weeks with logged loads that change nothing"
+      },
+      {
+        "file": "CoachingCore/test/r6-balanced-provenance.test.mjs",
+        "name": "Balanced: an easy run right before moderate or heavy lower-body work costs strength, so strength-first wins when strength develops (SSCTR D24)"
+      },
+      {
+        "file": "CoachingCore/test/r6-engineering-fixes.test.mjs",
+        "name": "QRE-R6-02: a logged load outside 0–500 kg or more than one increment above the plan is not adopted and is asked about"
+      },
+      {
+        "file": "CoachingCore/test/r6-intake-program.test.mjs",
+        "name": "R6 cold start: unknown loads are established by effort; no kilogram is fabricated; sex never feeds dose"
+      },
+      {
+        "file": "CoachingCore/test/r6-intake-program.test.mjs",
+        "name": "R6 event transition: taper, race week, race day and post-event exist; strength stays reduced and stops before the race"
+      },
+      {
+        "file": "CoachingCore/test/r6-r5-regression.test.mjs",
+        "name": "Root cause VALIDATION_COUPLED_TO_UNUSED_ALTERNATIVES (H02/H09/H13): dependent duration follows sets; the baseline is never blocked"
+      },
+      {
+        "file": "CoachingCore/test/r6-r5-regression.test.mjs",
+        "name": "Root cause RETURN_PREPARATION_DIMENSION (H16): a known nonclinical return reuses the current demonstration and stages strength"
+      },
+      {
+        "file": "CoachingCore/test/r6-simulation.test.mjs",
+        "name": "Simulation: repeated surplus earns, repeated adverse regresses, single signals hold, conflicts stay uncertain"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r10-fixes.test.mjs",
+        "name": "SSCTR D52: strength — a missed first establishment exposure establishes nothing; the next exposure is the establishment row again (every 2 weeks, coach decides, fixed)"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r10-fixes.test.mjs",
+        "name": "SSCTR D52: strength — later sessions of the week repeat the establishment of an exercise first set up that week"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r10-fixes.test.mjs",
+        "name": "SSCTR D52: strength — a bodyweight exercise whose first exposures were missed starts again at its first-exposure dose"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r10-fixes.test.mjs",
+        "name": "SSCTR D52: strength — a conflicted execution report performs and confirms nothing until it is corrected"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r10-fixes.test.mjs",
+        "name": "SSCTR D52: strength — a session completed without a logged load establishes no load; the next exposure is the establishment row again"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r10-fixes.test.mjs",
+        "name": "SSCTR D52: strength — five weeks of skipped strength sessions re-establish a known lift by effort, counted in calendar days from its last performance"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r10-fixes.test.mjs",
+        "name": "SSCTR D52: strength — a missed re-establishment re-establishes nothing; one performed without a logged load leaves the next exposure effort-guided under the earlier ceiling"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r10-fixes.test.mjs",
+        "name": "SSCTR D52: strength — a known dose skipped from the first week counts its resume clock from the day it was observed"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r10-fixes.test.mjs",
+        "name": "SSCTR D52: after a return, an exercise first prescribed in a session dated inside the pause establishes by effort, and one last done more than 28 days earlier re-establishes (strength)"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r11-fixes.test.mjs",
+        "name": "SSCTR D53: strength — after a re-establishment a block-boundary set earned before the gap comes back one set at a time"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r11-fixes.test.mjs",
+        "name": "SSCTR D53: strength — a block whose only executed exposure was the re-establishment adds its set no faster than one set per week"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r11-fixes.test.mjs",
+        "name": "SSCTR D53: strength — a phase-reduced week after a re-establishment does not advance the regained set count"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r11-fixes.test.mjs",
+        "name": "SSCTR D53: strength — a return replaces the regain after a re-establishment: its cap is cleared and the return steps govern the sets"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r11-fixes.test.mjs",
+        "name": "SSCTR D53: strength — the probe-AH next exposure after any performed re-establishment is at most one set above it, and the earlier count comes back"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r7-fixes.test.mjs",
+        "name": "SSCTR D44: an above-plan logged load is adopted only when that exposure met the ADVANCE criterion"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r7-fixes.test.mjs",
+        "name": "SSCTR D45: one establishment log is not a number until confirmed, logged again or matching the athlete’s own hint"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r7-fixes.test.mjs",
+        "name": "SSCTR D45: a changed pending load reaches the next review even when no prescription changes"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r7-fixes.test.mjs",
+        "name": "SSCTR D45: a return-entry log never sets a load above the one before the break"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r8-fixes.test.mjs",
+        "name": "SSCTR D48: a pending load row instructs effort-guided selection only"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r8-fixes.test.mjs",
+        "name": "SSCTR D49: probe-U timeline s1-d35: strength sets come back one per executed week to the count before the break; return weeks earn no block set"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r8-fixes.test.mjs",
+        "name": "SSCTR D49: probe-U timeline s3-d21: strength sets come back one per executed week to the count before the break; return weeks earn no block set"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r8-fixes.test.mjs",
+        "name": "SSCTR D49: probe-U timeline s5-d14: strength sets come back one per executed week to the count before the break; return weeks earn no block set"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r8-fixes.test.mjs",
+        "name": "SSCTR D49: the strength return ceiling, step 2 and the phase reductions on top"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r8-fixes.test.mjs",
+        "name": "SSCTR D49: from a five-set strength dose, return step 2 is one set above the entry and the climb waits through a phase-reduced week"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r8-fixes.test.mjs",
+        "name": "SSCTR D49: a return step close to a race keeps the race-window strength light"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r9-fixes.test.mjs",
+        "name": "SSCTR D51: after a return the strength state leaves the return and rotation resumes on its cadence (every 2 weeks)"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r9-fixes.test.mjs",
+        "name": "SSCTR D51: after a return the strength state leaves the return and rotation resumes on its cadence (coach decides)"
+      }
+    ],
+    "demonstrations": [
+      {
+        "id": "B",
+        "title": "Cold-start Strength-first → effort-guided load establishment → logged loads → progression",
+        "selected": null
+      },
+      {
+        "id": "F",
+        "title": "Missed key strength session → horizon-preserving adaptation",
+        "selected": "SKIP_NO_DEBT"
+      },
+      {
+        "id": "H",
+        "title": "Repeated underperformance → regression with hysteresis",
+        "selected": "GATED_NEXT_STEP"
+      }
+    ],
+    "trajectories": [
+      {
+        "id": "T04_STRENGTH12_REPEATED_UNDERPERFORMANCE",
+        "horizon": 12,
+        "allInvariantsHold": true,
+        "actions": {
+          "INSTANTIATE_LOGGED_LOADS": 2,
+          "KEEP": 7,
+          "GATED_NEXT_STEP": 3
+        }
+      },
+      {
+        "id": "T11_BODYWEIGHT4_ESTABLISHMENT",
+        "horizon": 4,
+        "allInvariantsHold": true,
+        "actions": {
+          "INSTANTIATE_LOGGED_LOADS": 2,
+          "KEEP": 2
+        }
+      }
+    ],
+    "r5Regression": [
+      {
+        "caseId": "R5-H02",
+        "r5Classification": "UNSUPPORTED",
+        "rootCause": "VALIDATION_COUPLED_TO_UNUSED_ALTERNATIVES",
+        "resultR6": "PROPOSED",
+        "classificationR6": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R5-H09",
+        "r5Classification": "UNSUPPORTED",
+        "rootCause": "VALIDATION_COUPLED_TO_UNUSED_ALTERNATIVES",
+        "resultR6": "MODIFY",
+        "classificationR6": "BEST_SUPPORTED"
+      },
+      {
+        "caseId": "R5-H13",
+        "r5Classification": "UNSUPPORTED",
+        "rootCause": "VALIDATION_COUPLED_TO_UNUSED_ALTERNATIVES",
+        "resultR6": "MODIFY",
+        "classificationR6": "ACCEPTABLE_ALTERNATIVE"
+      }
+    ],
+    "freshHoldout": [
+      {
+        "caseId": "R6-H01",
+        "family": "COLD_START",
+        "classification": "UNSUPPORTED"
+      },
+      {
+        "caseId": "R6-H02",
+        "family": "COLD_START",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H03",
+        "family": "COLD_START",
+        "classification": "UNSUPPORTED"
+      },
+      {
+        "caseId": "R6-H04",
+        "family": "COLD_START",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H05",
+        "family": "COLD_START",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H06",
+        "family": "COLD_START",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H07",
+        "family": "COLD_START",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H08",
+        "family": "COLD_START",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H09",
+        "family": "COLD_START",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H13",
+        "family": "INTAKE_SAFETY_SCOPE",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H14",
+        "family": "INTAKE_SAFETY_SCOPE",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H15",
+        "family": "BALANCED_CONFLICT",
+        "classification": "BEST_SUPPORTED"
+      },
+      {
+        "caseId": "R6-H16",
+        "family": "BALANCED_CONFLICT",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H17",
+        "family": "ADAPTATION",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H18",
+        "family": "ADAPTATION",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H20",
+        "family": "ADAPTATION",
+        "classification": "CORPUS_ERROR"
+      },
+      {
+        "caseId": "R6-H21",
+        "family": "ADAPTATION",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H22",
+        "family": "ADAPTATION",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H23",
+        "family": "ADAPTATION",
+        "classification": "UNSUPPORTED"
+      },
+      {
+        "caseId": "R6-H24",
+        "family": "ADAPTATION",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H25",
+        "family": "ADAPTATION",
+        "classification": "UNSUPPORTED"
+      },
+      {
+        "caseId": "R6-H27",
+        "family": "RETURN_AFTER_PAUSE",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H32",
+        "family": "DATA_QUALITY",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H33",
+        "family": "DATA_QUALITY",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H34",
+        "family": "ATHLETE_LEARNING",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      }
+    ]
+  },
+  "inputs": {
+    "simulation": "CoachingCore/r6/SIMULATION_RESULTS_R6.json",
+    "demonstrations": "CoachingCore/r6/DEMONSTRATIONS_R6.json",
+    "r5Replay": "CoachingCore/r6/R5_HOLDOUT_REPLAY_R6.json",
+    "ssctrReview": "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-policy-review.json",
+    "r5RegressionReview": "audits/domain-coaching-r6-2026-10-26/reviews/r5-regression-review.json",
+    "coachingReview": "audits/domain-coaching-r6-2026-10-26/reviews/coaching-quality-holdout-review.json"
+  }
+}

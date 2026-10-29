@@ -1,0 +1,393 @@
+{
+ "revision": "R7ASM-MUTATION-1",
+ "generatedAt": "2026-10-29T02:29:18.232Z",
+ "node": "v24.19.0",
+ "tests": [
+  "test/r7asm-state-model.test.mjs",
+  "test/r7ase-state-evidence.test.mjs",
+  "test/r7ab-week-start-authority.test.mjs",
+  "test/r7af-episode-identity.test.mjs",
+  "test/r7a2-interruption.test.mjs",
+  "test/r7a1-composition.test.mjs",
+  "test/r7a-cycle2.test.mjs",
+  "test/r6-adaptation.test.mjs",
+  "test/r6-ssctr-r10-fixes.test.mjs"
+ ],
+ "clean": {
+  "tests": 150,
+  "fail": 0,
+  "failing": []
+ },
+ "total": 29,
+ "caught": 20,
+ "results": [
+  {
+   "mutation": "§24 planner writes history: a planning transition records the executed doses too, so a projected step becomes a fact",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 150,
+   "fail": 1,
+   "failing": [
+    "Write ownership: HistoricalState is read-only, PlanningProjection holds the targets, PlanningView is derived per decision"
+   ]
+  },
+  {
+   "mutation": "§24 planner writes history: the executed dose is recorded after the step, not as the evidence settled it",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 150,
+   "fail": 1,
+   "failing": [
+    "T7: a tick genuinely earned advances EARNED_PROGRESS, and two of them release the next load"
+   ]
+  },
+  {
+   "mutation": "§24 historical consumer reads projection: the reducer starts each week from the stored start",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 150,
+   "fail": 28,
+   "failing": [
+    "Adaptation: nonclinical return is staged from current evidence; clinical or unknown cause is never given a recipe",
+    "SSCTR D52: after a return, an exercise first prescribed in a session dated inside the pause establishes by effort, and one last done more than 28 days earlier re-establishes (strength)",
+    "R7-A cycle 2: an exercise first set up during a return regains at most one set per executed week and earns no block set (SSCTR D55; D49; INV-03)",
+    "R7-A.2 I4/I5/I8 (SSCTR D59): exercises first executed in the break’s week enter the return steps with their executed count as the ceiling",
+    "R7-A boundary I1/I3 (family H, P5): time alone, a week boundary or a stored field never makes a projection history",
+    "R7-A boundary I4: inside a return, a value a review held from a projected start is not history until a week is executed in full"
+   ]
+  },
+  {
+   "mutation": "§24 historical consumer reads projection: the state at a break is the stored start",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 150,
+   "fail": 26,
+   "failing": [
+    "Adaptation: nonclinical return is staged from current evidence; clinical or unknown cause is never given a recipe",
+    "R7-A.2 I1/I3 (QE-R7A1-09): a separate break in the same week starts from the re-entry, never from before the first break",
+    "R7-A.2 I3 (QE-R7A1-09): a separate break across the week boundary keeps the return steps and the run return",
+    "R7-A.2 I2/I3: three breaks; a correction after a separate break starts from that break’s re-entry, never from before the first",
+    "R7-A.2 I4/C5: a session of the plan before a return is never a fact of a later, separate break",
+    "R7-A boundary §14 QE-R7AF-01: after an unfinished, unreviewed re-entry week, no later decision makes the projected week start history"
+   ]
+  },
+  {
+   "mutation": "§24 historical consumer reads projection: the public HistoricalState reports the planning record",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 150,
+   "fail": 5,
+   "failing": [
+    "T8: a planned date with no execution never moves lastPerformed",
+    "T12: a week boundary never promotes a target",
+    "P2: time passing with no evidence leaves HistoricalState unchanged",
+    "P4: adding a relevant execution moves only what that evidence supports",
+    "Write ownership: HistoricalState is read-only, PlanningProjection holds the targets, PlanningView is derived per decision"
+   ]
+  },
+  {
+   "mutation": "§24 historical consumer reads projection: the view hands the planner the projection's history atoms",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 150,
+   "fail": 2,
+   "failing": [
+    "T2 (QE-R7ASE-02): the re-establishment threshold D52 is measured from the last executed exposure, never from a planned date",
+    "T8: a planned date with no execution never moves lastPerformed"
+   ]
+  },
+  {
+   "mutation": "§24 load execution copies tick: a lift at a load above the evidence state keeps the projection's count",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 150,
+   "fail": 7,
+   "failing": [
+    "State evidence §18 P40 (QE-R7AB-01, families A, F, H; I1, I2, I9): a review never makes a projected load history; the plan keeps projecting it",
+    "State evidence families B, I (P4, §11 completed execution): a projected load the athlete then lifts becomes history",
+    "T1 (QE-R7ASE-01): a lifted projected dose promotes the load, never the projection's load tick",
+    "T6: a load executed without earning a step advances the load, never the progression credit",
+    "T7: a tick genuinely earned advances EARNED_PROGRESS, and two of them release the next load",
+    "T7b (R42 in the planner): a load adopted above the state's own starts its credit at nothing, in the plan as in history"
+   ]
+  },
+  {
+   "mutation": "§24 load execution copies tick: the repetition target of the earlier load travels to the new one",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": false,
+   "tests": 150,
+   "fail": 0,
+   "failing": []
+  },
+  {
+   "mutation": "§24 load execution copies tick: the view takes the tick from the projection at any load",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": false,
+   "tests": 150,
+   "fail": 0,
+   "failing": []
+  },
+  {
+   "mutation": "§24 planned date populates lastPerformed: the view keeps the plan's date",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 150,
+   "fail": 2,
+   "failing": [
+    "T2 (QE-R7ASE-02): the re-establishment threshold D52 is measured from the last executed exposure, never from a planned date",
+    "T8: a planned date with no execution never moves lastPerformed"
+   ]
+  },
+  {
+   "mutation": "§24 planned date populates lastPerformed: a projected transition dates an exercise it only planned",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 150,
+   "fail": 11,
+   "failing": [
+    "SSCTR D52: strength — a conflicted execution report performs and confirms nothing until it is corrected",
+    "SSCTR D52: strength — five weeks of skipped strength sessions re-establish a known lift by effort, counted in calendar days from its last performance",
+    "SSCTR D52: strength — a missed re-establishment re-establishes nothing; one performed without a logged load leaves the next exposure effort-guided under the earlier ceiling",
+    "SSCTR D52: strength — a known dose skipped from the first week counts its resume clock from the day it was observed",
+    "R7-A cycle 2: HOLD and REGRESS repeat the planned repetitions; a short set never becomes the target (QE-R7A-12; strength gates)",
+    "R7-A cycle 2: only a time-budget fit is not a reduction; a fatigue reduction after a re-establishment keeps the regain cap (QE-R7A-14; SSCTR D53 Q1, item 7; INV-03)"
+   ]
+  },
+  {
+   "mutation": "§24 week review promotes target: the review's rule is applied to the stored start instead of the decision's view",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 150,
+   "fail": 6,
+   "failing": [
+    "State evidence §18 P40 (QE-R7AB-01, families A, F, H; I1, I2, I9): a review never makes a projected load history; the plan keeps projecting it",
+    "T2 (QE-R7ASE-02): the re-establishment threshold D52 is measured from the last executed exposure, never from a planned date",
+    "T8: a planned date with no execution never moves lastPerformed",
+    "T10b: a load the record cannot read is never prescribed as known: the next row keeps the last readable load",
+    "T13b: a handler that re-plans this week prescribes from history, never from the stored projection",
+    "T7c: the plan never holds a progression credit history does not hold at that load"
+   ]
+  },
+  {
+   "mutation": "§24 week review promotes target: the reducer treats every week as closed",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 150,
+   "fail": 17,
+   "failing": [
+    "Adaptation: nonclinical return is staged from current evidence; clinical or unknown cause is never given a recipe",
+    "R7-A boundary §14 QE-R7AF-01: after an unfinished, unreviewed re-entry week, no later decision makes the projected week start history",
+    "R7-A boundary I2 (§7): every return records why its state point holds authority as history",
+    "R7-A boundary I5/P3 (families D, E): execution promotes authority only through evidence; review and completed sessions agree",
+    "R7-A boundary I1/I3 (family H, P5): time alone, a week boundary or a stored field never makes a projection history",
+    "R7-A boundary §13 premise: a week executed, but not as its projection assumed, never makes the projected start history"
+   ]
+  },
+  {
+   "mutation": "§24 week review promotes target: a week counts as complete whatever its gates",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 150,
+   "fail": 15,
+   "failing": [
+    "Adaptation: nonclinical return is staged from current evidence; clinical or unknown cause is never given a recipe",
+    "R7-A boundary §14 QE-R7AF-01: after an unfinished, unreviewed re-entry week, no later decision makes the projected week start history",
+    "R7-A boundary I2 (§7): every return records why its state point holds authority as history",
+    "R7-A boundary I1/I3 (family H, P5): time alone, a week boundary or a stored field never makes a projection history",
+    "R7-A boundary §13 premise: a week executed, but not as its projection assumed, never makes the projected start history",
+    "R7-A boundary families A, C: an equipment statement on the last day, or an event change that re-plans this week, keeps a projected start projected"
+   ]
+  },
+  {
+   "mutation": "§24 week boundary promotes target: the public reader takes the next week's start when the cut crosses it",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": false,
+   "tests": 150,
+   "fail": 0,
+   "failing": []
+  },
+  {
+   "mutation": "§24 week boundary promotes target: a week's gates are read at the cut instead of at its own clock",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": false,
+   "tests": 150,
+   "fail": 0,
+   "failing": []
+  },
+  {
+   "mutation": "§24 partial evidence fills projection: an unreadable load takes the row's planned load",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": false,
+   "tests": 150,
+   "fail": 0,
+   "failing": []
+  },
+  {
+   "mutation": "§24 partial evidence fills projection: a week with an unusable log still counts as complete",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 150,
+   "fail": 2,
+   "failing": [
+    "State evidence family C unreviewed (§13): a load logged in an unknown unit is no load, and verifies no projection",
+    "State evidence family C, completed sessions (§13): an unreadable load in a week otherwise executed as projected verifies nothing"
+   ]
+  },
+  {
+   "mutation": "§24 partial evidence fills projection: the view keeps a load above the evidence-gated one",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 150,
+   "fail": 5,
+   "failing": [
+    "State evidence §18 P40 (QE-R7AB-01, families A, F, H; I1, I2, I9): a review never makes a projected load history; the plan keeps projecting it",
+    "T10b: a load the record cannot read is never prescribed as known: the next row keeps the last readable load",
+    "T13b: a handler that re-plans this week prescribes from history, never from the stored projection",
+    "T13d: a handler that re-plans a week whose stored start is still a projection prescribes from history",
+    "T10c: a load the record cannot read advances nothing, through a week no review closed"
+   ]
+  },
+  {
+   "mutation": "§24 cross-exercise promotion: an exercise with no history of its own takes another exercise's",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": false,
+   "tests": 150,
+   "fail": 0,
+   "failing": []
+  },
+  {
+   "mutation": "§24 cross-sport promotion: one sport's evidence closes the other",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 150,
+   "fail": 7,
+   "failing": [
+    "R7-A boundary §13 premise: a week executed, but not as its projection assumed, never makes the projected start history",
+    "R7-A boundary families A, C: an equipment statement on the last day, or an event change that re-plans this week, keeps a projected start projected",
+    "R7-A boundary P4 (family F): a correction that removes the evidence a start relied on withdraws its authority",
+    "State evidence family C unreviewed (§13): a load logged in an unknown unit is no load, and verifies no projection",
+    "State evidence family C, completed sessions (§13): an unreadable load in a week otherwise executed as projected verifies nothing",
+    "State evidence I3 (a gate is evidence): an exercise executed with an adverse response verifies no projection"
+   ]
+  },
+  {
+   "mutation": "the return reads the released step instead of the dose last executed (T13)",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 150,
+   "fail": 24,
+   "failing": [
+    "R7-A.2 I1/I3 (QE-R7A1-09): a separate break in the same week starts from the re-entry, never from before the first break",
+    "R7-A.2 I3 (QE-R7A1-09): a separate break across the week boundary keeps the return steps and the run return",
+    "R7-A.2 P1/P6: the same break reported again, or only at another time, is the same break with the same plan",
+    "R7-A.2 P5: a break reported at 23:30 on Sunday or at 00:30 on Monday is the same break with the same next week",
+    "R7-A.2 I2/I3: three breaks; a correction after a separate break starts from that break’s re-entry, never from before the first",
+    "R7-A.2 I1: a report of a break that ended before the latest reported one began is asked, never guessed"
+   ]
+  },
+  {
+   "mutation": "the reducer judges a past week under the latest plan instead of the one it was executed under",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 150,
+   "fail": 7,
+   "failing": [
+    "R7-A.1 C2: a change stated from a later week never re-plans the weeks before it, whatever re-plans them later (E02, E11-E14)",
+    "R7-A.1 C2/C3: a change from a later week composes the weeks before it as planned, whatever change came first (run ceiling, goals)",
+    "R7-A.1 C5: the newer equipment statement is in force (two windows; a permanent change after a window); rows of one slot keep the plan order",
+    "R7-A.1 C5: of two statements of one event date the later is the event in either order; its taper and race window follow it (SSCTR S4)",
+    "State evidence families G, K (I8, P1, P2, P7): no week boundary, clock, handler or order makes a projection history",
+    "P1: saving a projection again, any number of times, leaves HistoricalState unchanged"
+   ]
+  },
+  {
+   "mutation": "a re-planned week keeps the stored start of the decision's own week",
+   "file": "src/r6-composition.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 150,
+   "fail": 2,
+   "failing": [
+    "T13d: a handler that re-plans a week whose stored start is still a projection prescribes from history",
+    "T10c: a load the record cannot read advances nothing, through a week no review closed"
+   ]
+  },
+  {
+   "mutation": "the re-establishment threshold of a move is measured from the stored start",
+   "file": "src/r6-composition.mjs",
+   "applied": true,
+   "caught": false,
+   "tests": 150,
+   "fail": 0,
+   "failing": []
+  },
+  {
+   "mutation": "the gates of a decision read the stored start",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": false,
+   "tests": 150,
+   "fail": 0,
+   "failing": []
+  },
+  {
+   "mutation": "a week start records the values it carried, and history reads them again",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 150,
+   "fail": 4,
+   "failing": [
+    "R7-A boundary I4: inside a return, a value a review held from a projected start is not history until a week is executed in full",
+    "State evidence §18 P40 (QE-R7AB-01, families A, F, H; I1, I2, I9): a review never makes a projected load history; the plan keeps projecting it",
+    "State evidence I9 (two steps): a value a review carried from a projection never becomes history through a later projection",
+    "Write ownership: HistoricalState is read-only, PlanningProjection holds the targets, PlanningView is derived per decision"
+   ]
+  },
+  {
+   "mutation": "past contexts are dropped, so a later change rewrites what an earlier week earned",
+   "file": "src/r6-composition.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 150,
+   "fail": 3,
+   "failing": [
+    "R7-A.1 C2: a change stated from a later week never re-plans the weeks before it, whatever re-plans them later (E02, E11-E14)",
+    "R7-A.1 C5: the newer equipment statement is in force (two windows; a permanent change after a window); rows of one slot keep the plan order",
+    "R7-A.1 C5: of two statements of one event date the later is the event in either order; its taper and race window follow it (SSCTR S4)"
+   ]
+  },
+  {
+   "mutation": "an exercise the evidence never established is handed to the planner anyway",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": false,
+   "tests": 150,
+   "fail": 0,
+   "failing": []
+  }
+ ]
+}

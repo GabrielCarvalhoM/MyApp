@@ -1,0 +1,49 @@
+{
+ "probe": "R7A1-QE-P11",
+ "tests": [
+  "test/r7a-semantic-core.test.mjs",
+  "test/r7a-cycle2.test.mjs",
+  "test/r7a1-composition.test.mjs"
+ ],
+ "results": [
+  {
+   "mutation": "unmutated copy",
+   "caught": false,
+   "failed": []
+  },
+  {
+   "mutation": "author: A1 C7 two races ahead pass validation (recorded: survives, documented)",
+   "applied": true,
+   "caught": false,
+   "failingTests": []
+  },
+  {
+   "mutation": "author: A1 C4 recorded adaptations are not applied again (recorded: caught)",
+   "applied": false
+  },
+  {
+   "mutation": "author: A1 QE-05 an agreeing report does not fill unknown fields (recorded: caught)",
+   "applied": false
+  },
+  {
+   "mutation": "author: A1 C5 a newer return starts from the start an earlier return replaced (recorded: caught)",
+   "applied": false
+  },
+  {
+   "mutation": "own: C4 a missed-session move is never re-applied",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C4/C5: a short return’s easy slot survives the review; a pre-break session never moves into a re-entry (E01, E10)"
+   ]
+  },
+  {
+   "mutation": "own: SYSTEMIC_SIGNAL ignored by the weekly review",
+   "applied": false
+  },
+  {
+   "mutation": "own: fatigue uses aheadOf alone (same-day PM session adapted)",
+   "applied": false
+  }
+ ]
+}

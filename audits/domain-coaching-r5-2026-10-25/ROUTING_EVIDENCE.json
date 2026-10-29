@@ -1,0 +1,121 @@
+{
+  "tier": "T3",
+  "pr_risk": "R2",
+  "agents": [
+    "chief",
+    "research-evidence-strategist",
+    "engineering-systems-architect",
+    "product-engineer",
+    "quality-reliability-engineer"
+  ],
+  "reasons": {
+    "research-evidence-strategist": [
+      "Material evidence/need uncertainty; digital research sufficient when calibrated"
+    ],
+    "engineering-systems-architect": [
+      "Material technical boundary/contracts/impact analysis"
+    ],
+    "quality-reliability-engineer": [
+      "Executable behavior/reliability proof material"
+    ],
+    "product-engineer": [
+      "Author of executable change; self-check is not approval"
+    ],
+    "chief": [
+      "Coordinate cross-domain dependencies and gate state, not domain review"
+    ]
+  },
+  "gates": [
+    "EVIDENCE_SUFFICIENT",
+    "ENGINEERING_ARCHITECTURE_READY",
+    "QUALITY_READY",
+    "IMPLEMENTATION_READY_FOR_REVIEW"
+  ],
+  "checks": [
+    "applicable_local_checks",
+    "required_ci",
+    "acceptance_evidence"
+  ],
+  "independent_judges": [
+    {
+      "role": "research-evidence-strategist",
+      "instance": "fresh-independent",
+      "may_edit_author_artifact": false
+    },
+    {
+      "role": "engineering-systems-architect",
+      "instance": "fresh-independent",
+      "may_edit_author_artifact": false
+    },
+    {
+      "role": "quality-reliability-engineer",
+      "instance": "fresh-independent",
+      "may_edit_author_artifact": false
+    }
+  ],
+  "spawn_agents": [
+    "chief",
+    "research-evidence-strategist",
+    "engineering-systems-architect",
+    "product-engineer",
+    "quality-reliability-engineer"
+  ],
+  "founder_decision": false,
+  "policy_version": "1.4.0",
+  "execution_capabilities": [
+    "write-implementation-plan",
+    "test-driven-development",
+    "request-code-review",
+    "verify-before-completion"
+  ],
+  "capability_reasons": {
+    "write-implementation-plan": [
+      "complex_implementation"
+    ],
+    "test-driven-development": [
+      "domain_logic"
+    ],
+    "request-code-review": [
+      "independent_review"
+    ],
+    "verify-before-completion": [
+      "transversal objective evidence before success"
+    ]
+  },
+  "EXECUTION_LEVEL": "L3",
+  "RISK_PROFILE": {
+    "impact": "unspecified",
+    "irreversibility": "unspecified",
+    "uncertainty": "unspecified",
+    "dependencies": "unspecified"
+  },
+  "OWNER": "chief",
+  "JUDGES": [
+    {
+      "role": "research-evidence-strategist",
+      "instance": "fresh-independent",
+      "may_edit_author_artifact": false
+    },
+    {
+      "role": "engineering-systems-architect",
+      "instance": "fresh-independent",
+      "may_edit_author_artifact": false
+    },
+    {
+      "role": "quality-reliability-engineer",
+      "instance": "fresh-independent",
+      "may_edit_author_artifact": false
+    }
+  ],
+  "ARTIFACTS_REQUIRED": [],
+  "STOP_WHEN": null,
+  "ESCALATE_IF": null,
+  "execution_mode": "productization",
+  "canonization_allowed": true,
+  "level_transition": "INITIAL",
+  "policy_decisions": {},
+  "execution_holds": [],
+  "execution_hold": false,
+  "contract_record_required": true,
+  "policy_scope_limit": "Declared input policy only; refs/authority need real verification; no native dispatch enforcement"
+}

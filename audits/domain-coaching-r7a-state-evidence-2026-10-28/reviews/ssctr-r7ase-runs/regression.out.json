@@ -1,0 +1,4880 @@
+{
+ "probe": "R7ASE-SSCTR-r1-REGRESSION",
+ "at": "2026-10-28T22:09:35.567Z",
+ "node": "v24.19.0",
+ "ignored": [
+  "hash",
+  "digest",
+  "inputHashes",
+  "startAuthority",
+  "startBeforeReturnAuthority",
+  "*Hash/*Digest",
+  "interruption.stateAt"
+ ],
+ "summary": {
+  "r6FreshHoldout": {
+   "cases": 35,
+   "identical": 33,
+   "different": [
+    "R6-H17",
+    "R6-H26"
+   ],
+   "statusChanged": [],
+   "differencesOutsideReturnReach": []
+  },
+  "r5Corpus": {
+   "cases": 24,
+   "identical": 24,
+   "different": [],
+   "statusChanged": [],
+   "differencesOutsideReturnReach": []
+  },
+  "profiles": {
+   "cases": 16,
+   "identical": 16,
+   "different": [],
+   "statusChanged": [],
+   "differencesOutsideReturnReach": []
+  },
+  "simulations": {
+   "cases": 14,
+   "identical": 14,
+   "different": [],
+   "statusChanged": [],
+   "differencesOutsideReturnReach": []
+  }
+ },
+ "differing": {
+  "r6FreshHoldout": [
+   {
+    "caseId": "R6-H17",
+    "operation": "SEQUENCE",
+    "identical": false,
+    "statusBoundary": "KEEP/KEEP MODIFY/GATED_NEXT_STEP MODIFY/REESTABLISH",
+    "statusStateEvidence": "KEEP/KEEP MODIFY/GATED_NEXT_STEP MODIFY/REESTABLISH",
+    "returnReach": {
+     "step": 2,
+     "returnWeek": null
+    },
+    "differences": [
+     {
+      "path": "/steps/2/result/proposal/weeks/6/sessions/0/prescription/durationMinutes",
+      "boundary": "28",
+      "stateEvidence": "25",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/6/sessions/0/prescription/exercises/1/sets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/6/sessions/0/prescription/exercises/1/exposure/phaseBasis",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/6/sessions/0/prescription/exercises/1/exposure/phasedSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/6/sessions/0/prescription/exercises/1/exposure/baseSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/6/sessions/0/prescription/exercises/1/exposure/normalSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/6/sessions/0/prescription/exercises/3/exposure/phaseBasis",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/6/sessions/0/prescription/exercises/3/exposure/baseSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/6/sessions/0/prescription/exercises/3/exposure/normalSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/6/sessions/0/prescription/exercises/4/exposure/phaseBasis",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/6/sessions/0/prescription/exercises/4/exposure/baseSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/6/sessions/0/prescription/exercises/4/exposure/normalSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/6/sessions/1/prescription/durationMinutes",
+      "boundary": "40",
+      "stateEvidence": "35",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/6/sessions/1/prescription/instructions/3",
+      "boundary": "\"In the last part, 5 × 20 s relaxed fast strides with 90 s easy walk/jog between; smooth, never a sprint\"",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/6/sessions/1/prescription/strides",
+      "boundary": "{\"repetitions\":5,\"workSeconds\":20,\"recoverySeconds\":90}",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/6/sessions/1/progression/value",
+      "boundary": "40",
+      "stateEvidence": "35",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/6/sessions/2/prescription/durationMinutes",
+      "boundary": "42",
+      "stateEvidence": "49",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/6/sessions/2/progression/dimension",
+      "boundary": "\"SPECIFIC_STEP\"",
+      "stateEvidence": "\"THRESHOLD_STEP\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/6/sessions/2/progression/ladder",
+      "boundary": "\"HALF_MARATHON\"",
+      "stateEvidence": "\"FAMILIAR\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/6/sessions/3/prescription/durationMinutes",
+      "boundary": "29",
+      "stateEvidence": "27",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/6/sessions/3/prescription/exercises/2/sets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/6/sessions/3/prescription/exercises/2/exposure/phaseBasis",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/6/sessions/3/prescription/exercises/2/exposure/phasedSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/6/sessions/3/prescription/exercises/2/exposure/baseSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/6/sessions/3/prescription/exercises/2/exposure/normalSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/6/sessions/3/prescription/exercises/4/exposure/phaseBasis",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/6/sessions/3/prescription/exercises/4/exposure/baseSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/6/sessions/3/prescription/exercises/4/exposure/normalSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/6/sessions/5/prescription/durationMinutes",
+      "boundary": "95",
+      "stateEvidence": "85",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/6/sessions/5/progression/value",
+      "boundary": "100",
+      "stateEvidence": "85",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/6/sessions/5/progression/heldBy",
+      "boundary": "\"LONG_RUN_SHARE\"",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/6/sessions/5/explanation",
+      "boundary": "\"Long run held within its share of the week until easy running grows\"",
+      "stateEvidence": "null",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/6/plannedRunMinutes",
+      "boundary": "212",
+      "stateEvidence": "204",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/6/plannedStrengthSets",
+      "boundary": "17",
+      "stateEvidence": "15",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/0/prescription/durationMinutes",
+      "boundary": "28",
+      "stateEvidence": "25",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/0/prescription/exercises/1/sets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/0/prescription/exercises/1/exposure/phaseBasis",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/0/prescription/exercises/1/exposure/phasedSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/0/prescription/exercises/1/exposure/baseSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/0/prescription/exercises/1/exposure/normalSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/0/prescription/exercises/3/exposure/phaseBasis",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/0/prescription/exercises/3/exposure/baseSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/0/prescription/exercises/3/exposure/normalSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/0/prescription/exercises/4/exposure/phaseBasis",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/0/prescription/exercises/4/exposure/baseSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/0/prescription/exercises/4/exposure/normalSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/1/prescription/durationMinutes",
+      "boundary": "40",
+      "stateEvidence": "35",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/1/prescription/instructions/3",
+      "boundary": "\"In the last part, 5 × 20 s relaxed fast strides with 90 s easy walk/jog between; smooth, never a sprint\"",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/1/prescription/strides",
+      "boundary": "{\"repetitions\":5,\"workSeconds\":20,\"recoverySeconds\":90}",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/1/progression/value",
+      "boundary": "40",
+      "stateEvidence": "35",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/2/prescription/family",
+      "boundary": "\"HALF_MARATHON_SPECIFIC\"",
+      "stateEvidence": "\"THRESHOLD\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/2/prescription/durationMinutes",
+      "boundary": "49",
+      "stateEvidence": "41",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/2/prescription/effortDomain",
+      "boundary": "\"HALF_MARATHON_EFFORT\"",
+      "stateEvidence": "\"THRESHOLD_CONTROLLED\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/2/prescription/effort",
+      "boundary": "\"Steady-hard (about 6-7 of 10): sustainable, controlled breathing\"",
+      "stateEvidence": "\"Comfortably hard and controlled (about 6-7 of 10): short phrases only; you could hold it much longer than the repetition\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/2/prescription/work/repetitions",
+      "boundary": "3",
+      "stateEvidence": "4",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/2/prescription/work/workMinutes",
+      "boundary": "10",
+      "stateEvidence": "5",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/2/prescription/instructions/1",
+      "boundary": "\"3 × 10 min — Steady-hard (about 6-7 of 10): sustainable, controlled breathing; 2 min easy jog or walk between\"",
+      "stateEvidence": "\"4 × 5 min — Comfortably hard and controlled (about 6-7 of 10): short phrases only; you could hold it much longer than the repetition; 2 min easy jog or walk between\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/2/progression/dimension",
+      "boundary": "\"SPECIFIC_STEP\"",
+      "stateEvidence": "\"THRESHOLD_STEP\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/2/progression/ladder",
+      "boundary": "\"HALF_MARATHON\"",
+      "stateEvidence": "\"THRESHOLD\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/3/prescription/durationMinutes",
+      "boundary": "29",
+      "stateEvidence": "27",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/3/prescription/exercises/2/sets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/3/prescription/exercises/2/exposure/phaseBasis",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/3/prescription/exercises/2/exposure/phasedSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/3/prescription/exercises/2/exposure/baseSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/3/prescription/exercises/2/exposure/normalSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/3/prescription/exercises/4/exposure/phaseBasis",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/3/prescription/exercises/4/exposure/baseSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/3/prescription/exercises/4/exposure/normalSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/4/prescription/durationMinutes",
+      "boundary": "40",
+      "stateEvidence": "35",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/4/progression/value",
+      "boundary": "40",
+      "stateEvidence": "35",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/5/prescription/durationMinutes",
+      "boundary": "100",
+      "stateEvidence": "90",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/sessions/5/progression/value",
+      "boundary": "100",
+      "stateEvidence": "90",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/plannedRunMinutes",
+      "boundary": "229",
+      "stateEvidence": "201",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/7/plannedStrengthSets",
+      "boundary": "17",
+      "stateEvidence": "15",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/0/prescription/durationMinutes",
+      "boundary": "28",
+      "stateEvidence": "25",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/0/prescription/exercises/1/sets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/0/prescription/exercises/1/exposure/phaseBasis",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/0/prescription/exercises/1/exposure/phasedSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/0/prescription/exercises/1/exposure/baseSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/0/prescription/exercises/1/exposure/normalSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/0/prescription/exercises/3/exposure/phaseBasis",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/0/prescription/exercises/3/exposure/baseSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/0/prescription/exercises/3/exposure/normalSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/0/prescription/exercises/4/exposure/phaseBasis",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/0/prescription/exercises/4/exposure/baseSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/0/prescription/exercises/4/exposure/normalSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/1/prescription/instructions/3",
+      "boundary": "\"In the last part, 6 × 20 s relaxed fast strides with 90 s easy walk/jog between; smooth, never a sprint\"",
+      "stateEvidence": "\"In the last part, 4 × 20 s relaxed fast strides with 90 s easy walk/jog between; smooth, never a sprint\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/1/prescription/strides/repetitions",
+      "boundary": "6",
+      "stateEvidence": "4",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/2/prescription/durationMinutes",
+      "boundary": "48",
+      "stateEvidence": "42",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/2/prescription/work/workMinutes",
+      "boundary": "15",
+      "stateEvidence": "12",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/2/prescription/calibration/firstExposure",
+      "boundary": "false",
+      "stateEvidence": "true",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/2/prescription/instructions/1",
+      "boundary": "\"2 × 15 min — Steady-hard (about 6-7 of 10): sustainable, controlled breathing; 3 min easy jog or walk between\"",
+      "stateEvidence": "\"2 × 12 min — Steady-hard (about 6-7 of 10): sustainable, controlled breathing; 3 min easy jog or walk between\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/2/prescription/instructions/3",
+      "boundary": "\"Hold form and effort; if effort climbs above the cue, end the hard part early — an easy finish is fine\"",
+      "stateEvidence": "\"First exposure: let effort set the pace and note the pace you observe; there is no pace target\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/2/prescription/instructions/4",
+      "boundary": "\"Record repetitions completed, effort and next-day function\"",
+      "stateEvidence": "\"Hold form and effort; if effort climbs above the cue, end the hard part early — an easy finish is fine\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/2/prescription/instructions/5",
+      "boundary": null,
+      "stateEvidence": "\"Record repetitions completed, effort and next-day function\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/2/progression/value",
+      "boundary": "2",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/3/prescription/durationMinutes",
+      "boundary": "29",
+      "stateEvidence": "27",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/3/prescription/exercises/2/sets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/3/prescription/exercises/2/exposure/phaseBasis",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/3/prescription/exercises/2/exposure/phasedSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/3/prescription/exercises/2/exposure/baseSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/3/prescription/exercises/2/exposure/normalSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/3/prescription/exercises/4/exposure/phaseBasis",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/3/prescription/exercises/4/exposure/baseSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/3/prescription/exercises/4/exposure/normalSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/4/prescription/durationMinutes",
+      "boundary": "40",
+      "stateEvidence": "35",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/4/progression/value",
+      "boundary": "40",
+      "stateEvidence": "35",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/5/prescription/durationMinutes",
+      "boundary": "100",
+      "stateEvidence": "95",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/5/progression/value",
+      "boundary": "105",
+      "stateEvidence": "95",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/5/progression/heldBy",
+      "boundary": "\"LONG_RUN_SHARE\"",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/sessions/5/explanation",
+      "boundary": "\"Long run held within its share of the week until easy running grows\"",
+      "stateEvidence": "null",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/plannedRunMinutes",
+      "boundary": "228",
+      "stateEvidence": "212",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/8/plannedStrengthSets",
+      "boundary": "17",
+      "stateEvidence": "15",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/9/sessions/0/prescription/durationMinutes",
+      "boundary": "28",
+      "stateEvidence": "25",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/9/sessions/0/prescription/exercises/1/sets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/9/sessions/0/prescription/exercises/1/exposure/phaseBasis",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/9/sessions/0/prescription/exercises/1/exposure/phasedSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/9/sessions/0/prescription/exercises/1/exposure/baseSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/9/sessions/0/prescription/exercises/1/exposure/normalSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/9/sessions/0/prescription/exercises/3/exposure/phaseBasis",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/9/sessions/0/prescription/exercises/3/exposure/baseSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/9/sessions/0/prescription/exercises/3/exposure/normalSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/9/sessions/0/prescription/exercises/4/exposure/phaseBasis",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/9/sessions/0/prescription/exercises/4/exposure/baseSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/9/sessions/0/prescription/exercises/4/exposure/normalSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/9/sessions/1/prescription/instructions/3",
+      "boundary": "\"In the last part, 6 × 20 s relaxed fast strides with 90 s easy walk/jog between; smooth, never a sprint\"",
+      "stateEvidence": "\"In the last part, 4 × 20 s relaxed fast strides with 90 s easy walk/jog between; smooth, never a sprint\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/9/sessions/1/prescription/strides/repetitions",
+      "boundary": "6",
+      "stateEvidence": "4",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/9/sessions/2/prescription/durationMinutes",
+      "boundary": "55",
+      "stateEvidence": "49",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/9/sessions/2/prescription/work/workMinutes",
+      "boundary": "12",
+      "stateEvidence": "10",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/9/sessions/2/prescription/instructions/1",
+      "boundary": "\"3 × 12 min — Steady-hard (about 6-7 of 10): sustainable, controlled breathing; 2 min easy jog or walk between\"",
+      "stateEvidence": "\"3 × 10 min — Steady-hard (about 6-7 of 10): sustainable, controlled breathing; 2 min easy jog or walk between\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/9/sessions/2/progression/value",
+      "boundary": "3",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/9/sessions/3/prescription/durationMinutes",
+      "boundary": "29",
+      "stateEvidence": "27",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/9/sessions/3/prescription/exercises/2/sets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/9/sessions/3/prescription/exercises/2/exposure/phaseBasis",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/9/sessions/3/prescription/exercises/2/exposure/phasedSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/9/sessions/3/prescription/exercises/2/exposure/baseSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/9/sessions/3/prescription/exercises/2/exposure/normalSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/9/sessions/3/prescription/exercises/4/exposure/phaseBasis",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/9/sessions/3/prescription/exercises/4/exposure/baseSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/9/sessions/3/prescription/exercises/4/exposure/normalSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/9/sessions/4/prescription/durationMinutes",
+      "boundary": "40",
+      "stateEvidence": "35",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/9/sessions/4/progression/value",
+      "boundary": "40",
+      "stateEvidence": "35",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/9/sessions/5/prescription/durationMinutes",
+      "boundary": "105",
+      "stateEvidence": "100",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/9/sessions/5/progression/value",
+      "boundary": "105",
+      "stateEvidence": "100",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/9/plannedRunMinutes",
+      "boundary": "240",
+      "stateEvidence": "224",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/9/plannedStrengthSets",
+      "boundary": "17",
+      "stateEvidence": "15",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/10/sessions/0/prescription/exercises/1/exposure/phaseBasis",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/10/sessions/0/prescription/exercises/1/exposure/baseSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/10/sessions/0/prescription/exercises/1/exposure/normalSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/10/sessions/0/prescription/exercises/3/exposure/phaseBasis",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/10/sessions/0/prescription/exercises/3/exposure/baseSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/10/sessions/0/prescription/exercises/3/exposure/normalSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/10/sessions/0/prescription/exercises/4/exposure/phaseBasis",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/10/sessions/0/prescription/exercises/4/exposure/baseSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/10/sessions/0/prescription/exercises/4/exposure/normalSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/10/sessions/1/prescription/instructions/3",
+      "boundary": "\"In the last part, 5 × 20 s relaxed fast strides with 90 s easy walk/jog between; smooth, never a sprint\"",
+      "stateEvidence": "\"In the last part, 4 × 20 s relaxed fast strides with 90 s easy walk/jog between; smooth, never a sprint\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/10/sessions/1/prescription/strides/repetitions",
+      "boundary": "5",
+      "stateEvidence": "4",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/10/sessions/2/prescription/durationMinutes",
+      "boundary": "37",
+      "stateEvidence": "33",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/10/sessions/2/prescription/work/workMinutes",
+      "boundary": "10",
+      "stateEvidence": "8",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/10/sessions/2/prescription/instructions/1",
+      "boundary": "\"2 × 10 min — Steady-hard (about 6-7 of 10): sustainable, controlled breathing; 2 min easy jog or walk between\"",
+      "stateEvidence": "\"2 × 8 min — Steady-hard (about 6-7 of 10): sustainable, controlled breathing; 2 min easy jog or walk between\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/10/sessions/3/prescription/exercises/2/exposure/phaseBasis",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/10/sessions/3/prescription/exercises/2/exposure/baseSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/10/sessions/3/prescription/exercises/2/exposure/normalSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/10/sessions/3/prescription/exercises/4/exposure/phaseBasis",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/10/sessions/3/prescription/exercises/4/exposure/baseSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/10/sessions/3/prescription/exercises/4/exposure/normalSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/10/sessions/4/prescription/instructions/3",
+      "boundary": "\"In the last part, 5 × 20 s relaxed fast strides with 90 s easy walk/jog between; smooth, never a sprint\"",
+      "stateEvidence": "\"In the last part, 4 × 20 s relaxed fast strides with 90 s easy walk/jog between; smooth, never a sprint\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/10/sessions/4/prescription/strides/repetitions",
+      "boundary": "5",
+      "stateEvidence": "4",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/10/plannedRunMinutes",
+      "boundary": "157",
+      "stateEvidence": "153",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/11/sessions/0/prescription/exercises/1/exposure/phaseBasis",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/11/sessions/0/prescription/exercises/1/exposure/baseSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/weeks/11/sessions/0/prescription/exercises/1/exposure/normalSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/run/long",
+      "boundary": "100",
+      "stateEvidence": "85",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/run/easyExtra",
+      "boundary": "1",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/run/qualityStep",
+      "boundary": "3",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/run/thresholdDone",
+      "boundary": "3",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/run/devCount",
+      "boundary": "3",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/run/longByWeek/0",
+      "boundary": "80",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/run/longByWeek/1",
+      "boundary": "85",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/run/longByWeek/2",
+      "boundary": "90",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/run/longByWeek/3",
+      "boundary": "85",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/run/longByWeek/4",
+      "boundary": "95",
+      "stateEvidence": "80",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/run/easyWeeksDone",
+      "boundary": "4",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/run/qualityDone",
+      "boundary": "4",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/run/stridesDone",
+      "boundary": "2",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/run/achieved/easy",
+      "boundary": "40",
+      "stateEvidence": "null",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/run/achieved/quality",
+      "boundary": "{\"family\":\"THRESHOLD\",\"work\":{\"repetitions\":5,\"workMinutes\":5,\"recoveryMinutes\":2}}",
+      "stateEvidence": "null",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/run/achieved/strides",
+      "boundary": "4",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/run/planned/long",
+      "boundary": "95",
+      "stateEvidence": "85",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/run/planned/easy",
+      "boundary": "40",
+      "stateEvidence": "35",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/run/planned/quality/family",
+      "boundary": "\"HALF_MARATHON_SPECIFIC\"",
+      "stateEvidence": "\"THRESHOLD\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/run/planned/quality/work/repetitions",
+      "boundary": "2",
+      "stateEvidence": "3",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/run/planned/quality/work/workMinutes",
+      "boundary": "12",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/run/planned/quality/work/recoveryMinutes",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/run/planned/strides",
+      "boundary": "5",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/run/planned/longHeldByShare",
+      "boundary": "true",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/strength/exercises/goblet-squat/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/strength/exercises/db-rdl/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/strength/exercises/db-split-squat/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/strength/exercises/db-row/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/strength/exercises/push-up/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/strength/exercises/db-calf-raise/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/strength/exercises/dead-bug/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/strength/planned/push-up/sets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/strength/planned/push-up/baseSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/strength/planned/push-up/normalSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/strength/planned/db-calf-raise/baseSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/strength/planned/db-calf-raise/normalSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/strength/planned/dead-bug/baseSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/6/strength/planned/dead-bug/normalSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/run/long",
+      "boundary": "100",
+      "stateEvidence": "90",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/run/easyExtra",
+      "boundary": "2",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/run/qualityStep",
+      "boundary": "3",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/run/specificStep",
+      "boundary": "1",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/run/thresholdDone",
+      "boundary": "3",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/run/devCount",
+      "boundary": "4",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/run/longByWeek/0",
+      "boundary": "80",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/run/longByWeek/1",
+      "boundary": "85",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/run/longByWeek/2",
+      "boundary": "90",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/run/longByWeek/3",
+      "boundary": "85",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/run/longByWeek/4",
+      "boundary": "95",
+      "stateEvidence": "80",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/run/longByWeek/6",
+      "boundary": "100",
+      "stateEvidence": "85",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/run/easyWeeksDone",
+      "boundary": "5",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/run/qualityDone",
+      "boundary": "5",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/run/stridesDone",
+      "boundary": "3",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/run/achieved/easy",
+      "boundary": "40",
+      "stateEvidence": "35",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/run/achieved/quality/family",
+      "boundary": "\"HALF_MARATHON_SPECIFIC\"",
+      "stateEvidence": "\"THRESHOLD\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/run/achieved/quality/work/repetitions",
+      "boundary": "2",
+      "stateEvidence": "3",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/run/achieved/quality/work/workMinutes",
+      "boundary": "12",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/run/achieved/quality/work/recoveryMinutes",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/run/achieved/strides",
+      "boundary": "5",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/run/planned/long",
+      "boundary": "100",
+      "stateEvidence": "90",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/run/planned/easy",
+      "boundary": "40",
+      "stateEvidence": "35",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/run/planned/quality/family",
+      "boundary": "\"HALF_MARATHON_SPECIFIC\"",
+      "stateEvidence": "\"THRESHOLD\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/run/planned/quality/work/repetitions",
+      "boundary": "3",
+      "stateEvidence": "4",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/run/planned/quality/work/workMinutes",
+      "boundary": "10",
+      "stateEvidence": "5",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/run/planned/strides",
+      "boundary": "5",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/strength/exercises/goblet-squat/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/strength/exercises/db-rdl/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/strength/exercises/db-split-squat/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/strength/exercises/db-row/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/strength/exercises/push-up/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/strength/exercises/db-calf-raise/lastExecutedSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/strength/exercises/db-calf-raise/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/strength/exercises/dead-bug/lastExecutedSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/strength/exercises/dead-bug/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/strength/planned/push-up/sets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/strength/planned/push-up/baseSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/strength/planned/push-up/normalSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/strength/planned/db-calf-raise/baseSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/strength/planned/db-calf-raise/normalSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/strength/planned/dead-bug/baseSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/7/strength/planned/dead-bug/normalSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/run/long",
+      "boundary": "105",
+      "stateEvidence": "95",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/run/easyExtra",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/run/qualityStep",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/run/specificStep",
+      "boundary": "2",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/run/thresholdDone",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/run/devCount",
+      "boundary": "5",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/run/longByWeek/0",
+      "boundary": "80",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/run/longByWeek/1",
+      "boundary": "85",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/run/longByWeek/2",
+      "boundary": "90",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/run/longByWeek/3",
+      "boundary": "85",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/run/longByWeek/4",
+      "boundary": "95",
+      "stateEvidence": "80",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/run/longByWeek/6",
+      "boundary": "100",
+      "stateEvidence": "85",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/run/longByWeek/7",
+      "boundary": "100",
+      "stateEvidence": "90",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/run/easyWeeksDone",
+      "boundary": "6",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/run/qualityDone",
+      "boundary": "6",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/run/stridesDone",
+      "boundary": "4",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/run/achieved/long",
+      "boundary": "100",
+      "stateEvidence": "95",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/run/achieved/easy",
+      "boundary": "40",
+      "stateEvidence": "35",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/run/achieved/quality/family",
+      "boundary": "\"HALF_MARATHON_SPECIFIC\"",
+      "stateEvidence": "\"THRESHOLD\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/run/achieved/quality/work/repetitions",
+      "boundary": "3",
+      "stateEvidence": "4",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/run/achieved/quality/work/workMinutes",
+      "boundary": "10",
+      "stateEvidence": "5",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/run/achieved/strides",
+      "boundary": "5",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/run/longestContinuous",
+      "boundary": "100",
+      "stateEvidence": "95",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/run/planned/long",
+      "boundary": "100",
+      "stateEvidence": "95",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/run/planned/quality/work/workMinutes",
+      "boundary": "15",
+      "stateEvidence": "12",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/run/planned/strides",
+      "boundary": "6",
+      "stateEvidence": "4",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/run/planned/longHeldByShare",
+      "boundary": "true",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/strength/exercises/goblet-squat/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/strength/exercises/db-rdl/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/strength/exercises/db-split-squat/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/strength/exercises/db-row/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/strength/exercises/push-up/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/strength/exercises/db-calf-raise/lastExecutedSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/strength/exercises/db-calf-raise/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/strength/exercises/dead-bug/lastExecutedSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/strength/exercises/dead-bug/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/strength/planned/push-up/sets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/strength/planned/push-up/baseSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/strength/planned/push-up/normalSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/strength/planned/db-calf-raise/baseSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/strength/planned/db-calf-raise/normalSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/strength/planned/dead-bug/baseSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/8/strength/planned/dead-bug/normalSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/run/long",
+      "boundary": "105",
+      "stateEvidence": "100",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/run/easy",
+      "boundary": "40",
+      "stateEvidence": "35",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/run/easyExtra",
+      "boundary": "0",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/run/qualityStep",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/run/specificStep",
+      "boundary": "3",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/run/thresholdDone",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/run/devCount",
+      "boundary": "6",
+      "stateEvidence": "3",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/run/longByWeek/0",
+      "boundary": "80",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/run/longByWeek/1",
+      "boundary": "85",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/run/longByWeek/2",
+      "boundary": "90",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/run/longByWeek/3",
+      "boundary": "85",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/run/longByWeek/4",
+      "boundary": "95",
+      "stateEvidence": "80",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/run/longByWeek/6",
+      "boundary": "100",
+      "stateEvidence": "85",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/run/longByWeek/7",
+      "boundary": "100",
+      "stateEvidence": "90",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/run/longByWeek/8",
+      "boundary": "105",
+      "stateEvidence": "95",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/run/easyWeeksDone",
+      "boundary": "7",
+      "stateEvidence": "3",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/run/qualityDone",
+      "boundary": "7",
+      "stateEvidence": "3",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/run/stridesDone",
+      "boundary": "5",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/run/achieved/long",
+      "boundary": "100",
+      "stateEvidence": "95",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/run/achieved/quality/work/workMinutes",
+      "boundary": "15",
+      "stateEvidence": "12",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/run/achieved/strides",
+      "boundary": "6",
+      "stateEvidence": "4",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/run/longestContinuous",
+      "boundary": "100",
+      "stateEvidence": "95",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/run/planned/long",
+      "boundary": "105",
+      "stateEvidence": "100",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/run/planned/quality/work/workMinutes",
+      "boundary": "12",
+      "stateEvidence": "10",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/run/planned/strides",
+      "boundary": "6",
+      "stateEvidence": "4",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/strength/exercises/goblet-squat/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/strength/exercises/db-rdl/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/strength/exercises/db-split-squat/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/strength/exercises/db-row/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/strength/exercises/push-up/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/strength/exercises/db-calf-raise/lastExecutedSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/strength/exercises/db-calf-raise/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/strength/exercises/dead-bug/lastExecutedSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/strength/exercises/dead-bug/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/strength/planned/push-up/sets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/strength/planned/push-up/baseSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/strength/planned/push-up/normalSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/strength/planned/db-calf-raise/baseSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/strength/planned/db-calf-raise/normalSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/strength/planned/dead-bug/baseSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/9/strength/planned/dead-bug/normalSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/run/easy",
+      "boundary": "40",
+      "stateEvidence": "35",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/run/easyExtra",
+      "boundary": "0",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/run/qualityStep",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/run/specificStep",
+      "boundary": "4",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/run/thresholdDone",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/run/devCount",
+      "boundary": "7",
+      "stateEvidence": "4",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/run/longByWeek/0",
+      "boundary": "80",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/run/longByWeek/1",
+      "boundary": "85",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/run/longByWeek/2",
+      "boundary": "90",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/run/longByWeek/3",
+      "boundary": "85",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/run/longByWeek/4",
+      "boundary": "95",
+      "stateEvidence": "80",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/run/longByWeek/6",
+      "boundary": "100",
+      "stateEvidence": "85",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/run/longByWeek/7",
+      "boundary": "100",
+      "stateEvidence": "90",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/run/longByWeek/8",
+      "boundary": "105",
+      "stateEvidence": "95",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/run/longByWeek/9",
+      "boundary": "105",
+      "stateEvidence": "100",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/run/easyWeeksDone",
+      "boundary": "8",
+      "stateEvidence": "4",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/run/qualityDone",
+      "boundary": "8",
+      "stateEvidence": "4",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/run/stridesDone",
+      "boundary": "6",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/run/achieved/long",
+      "boundary": "105",
+      "stateEvidence": "100",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/run/achieved/quality/work/workMinutes",
+      "boundary": "12",
+      "stateEvidence": "10",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/run/achieved/strides",
+      "boundary": "6",
+      "stateEvidence": "4",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/run/longestContinuous",
+      "boundary": "105",
+      "stateEvidence": "100",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/run/planned/quality/work/workMinutes",
+      "boundary": "10",
+      "stateEvidence": "8",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/run/planned/strides",
+      "boundary": "5",
+      "stateEvidence": "4",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/strength/exercises/goblet-squat/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/strength/exercises/db-rdl/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/strength/exercises/db-split-squat/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/strength/exercises/db-row/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/strength/exercises/push-up/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/strength/exercises/db-calf-raise/lastExecutedSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/strength/exercises/db-calf-raise/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/strength/exercises/dead-bug/lastExecutedSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/strength/exercises/dead-bug/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/strength/planned/push-up/baseSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/strength/planned/push-up/normalSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/strength/planned/db-calf-raise/baseSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/strength/planned/db-calf-raise/normalSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/strength/planned/dead-bug/baseSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/10/strength/planned/dead-bug/normalSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/11/run/qualityStep",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/11/run/specificStep",
+      "boundary": "4",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/11/run/thresholdDone",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/11/run/devCount",
+      "boundary": "7",
+      "stateEvidence": "4",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/11/run/longByWeek/0",
+      "boundary": "80",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/11/run/longByWeek/1",
+      "boundary": "85",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/11/run/longByWeek/2",
+      "boundary": "90",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/11/run/longByWeek/3",
+      "boundary": "85",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/11/run/longByWeek/4",
+      "boundary": "95",
+      "stateEvidence": "80",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/11/run/longByWeek/6",
+      "boundary": "100",
+      "stateEvidence": "85",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/11/run/longByWeek/7",
+      "boundary": "100",
+      "stateEvidence": "90",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/11/run/longByWeek/8",
+      "boundary": "105",
+      "stateEvidence": "95",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/11/run/longByWeek/9",
+      "boundary": "105",
+      "stateEvidence": "100",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/11/run/easyWeeksDone",
+      "boundary": "9",
+      "stateEvidence": "5",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/11/run/qualityDone",
+      "boundary": "9",
+      "stateEvidence": "5",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/11/run/stridesDone",
+      "boundary": "7",
+      "stateEvidence": "3",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/11/run/achieved/long",
+      "boundary": "105",
+      "stateEvidence": "100",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/11/run/achieved/quality/work/workMinutes",
+      "boundary": "10",
+      "stateEvidence": "8",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/11/run/achieved/strides",
+      "boundary": "6",
+      "stateEvidence": "4",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/11/run/longestContinuous",
+      "boundary": "105",
+      "stateEvidence": "100",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/11/strength/exercises/goblet-squat/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/11/strength/exercises/db-rdl/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/11/strength/exercises/db-split-squat/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/2/result/proposal/stateTrace/11/strength/exercises/db-row/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     }
+    ]
+   },
+   {
+    "caseId": "R6-H26",
+    "operation": "SEQUENCE",
+    "identical": false,
+    "statusBoundary": "KEEP/KEEP MODIFY/REESTABLISH MODIFY/GATED_NEXT_STEP",
+    "statusStateEvidence": "KEEP/KEEP MODIFY/REESTABLISH MODIFY/GATED_NEXT_STEP",
+    "returnReach": {
+     "step": 1,
+     "returnWeek": null
+    },
+    "differences": [
+     {
+      "path": "/steps/1/result/proposal/weeks/8/sessions/3/prescription/exercises/0/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/8/sessions/3/prescription/exercises/0/instructions/1",
+      "boundary": "\"Ramp up: start with the lightest available load and add the smallest increment between preparatory sets while at least 4 repetitions stay in reserve at 8 repetitions with steady technique; the workin",
+      "stateEvidence": "\"Ramp up: start with the lightest available load and add the smallest increment between preparatory sets while at least 4 repetitions stay in reserve at 6 repetitions with steady technique; the workin",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/8/sessions/3/prescription/exercises/1/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/8/sessions/3/prescription/exercises/1/instructions/1",
+      "boundary": "\"Ramp up: start with the lightest available load and add the smallest increment between preparatory sets while at least 4 repetitions stay in reserve at 8 repetitions with steady technique; the workin",
+      "stateEvidence": "\"Ramp up: start with the lightest available load and add the smallest increment between preparatory sets while at least 4 repetitions stay in reserve at 6 repetitions with steady technique; the workin",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/8/sessions/3/prescription/exercises/3/reps",
+      "boundary": "6",
+      "stateEvidence": "10",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/8/sessions/3/prescription/exercises/3/instructions/1",
+      "boundary": "\"Ramp up: start with the lightest available load and add the smallest increment between preparatory sets while at least 4 repetitions stay in reserve at 6 repetitions with steady technique; the workin",
+      "stateEvidence": "\"Ramp up: start with the lightest available load and add the smallest increment between preparatory sets while at least 4 repetitions stay in reserve at 10 repetitions with steady technique; the worki",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/8/sessions/3/prescription/exercises/3/instructions/3",
+      "boundary": "\"Return entry: choose a load that leaves at least 4 reps in reserve; do not exceed the previous 16 and do not restore it because days have passed\"",
+      "stateEvidence": "\"Return entry: choose a load that leaves at least 4 reps in reserve; do not exceed the previous 14 and do not restore it because days have passed\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/9/sessions/0/prescription/durationMinutes",
+      "boundary": "26",
+      "stateEvidence": "25",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/9/sessions/0/prescription/exercises/0/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/9/sessions/0/prescription/exercises/0/instructions/1",
+      "boundary": "\"Ramp up: start with the lightest available load and add the smallest increment between preparatory sets while at least 4 repetitions stay in reserve at 8 repetitions with steady technique; the workin",
+      "stateEvidence": "\"Ramp up: start with the lightest available load and add the smallest increment between preparatory sets while at least 4 repetitions stay in reserve at 6 repetitions with steady technique; the workin",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/9/sessions/0/prescription/exercises/2/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/9/sessions/3/prescription/exercises/0/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/9/sessions/3/prescription/exercises/1/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/9/sessions/3/prescription/exercises/3/reps",
+      "boundary": "6",
+      "stateEvidence": "10",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/9/sessions/3/prescription/exercises/3/load/rule",
+      "boundary": "\"Use the load you logged at the return entry; no increase yet; never above the previous 16\"",
+      "stateEvidence": "\"Use the load you logged at the return entry; no increase yet; never above the previous 14\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/9/sessions/3/prescription/exercises/3/instructions/1",
+      "boundary": "\"Use the load you logged at the return entry; no increase yet; never above the previous 16\"",
+      "stateEvidence": "\"Use the load you logged at the return entry; no increase yet; never above the previous 14\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/9/sessions/5/prescription/durationMinutes",
+      "boundary": "65",
+      "stateEvidence": "50",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/9/plannedRunMinutes",
+      "boundary": "140",
+      "stateEvidence": "125",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/0/prescription/durationMinutes",
+      "boundary": "26",
+      "stateEvidence": "22",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/0/prescription/exercises/0/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/0/prescription/exercises/1/sets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/0/prescription/exercises/1/exposure/phaseBasis",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/0/prescription/exercises/1/exposure/phasedSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/0/prescription/exercises/1/exposure/baseSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/0/prescription/exercises/1/exposure/normalSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/0/prescription/exercises/2/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/0/prescription/exercises/4/exposure/phaseBasis",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/0/prescription/exercises/4/exposure/baseSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/0/prescription/exercises/4/exposure/normalSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/1/prescription/durationMinutes",
+      "boundary": "40",
+      "stateEvidence": "35",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/1/prescription/instructions/3",
+      "boundary": "\"In the last part, 6 × 20 s relaxed fast strides with 90 s easy walk/jog between; smooth, never a sprint\"",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/1/prescription/strides",
+      "boundary": "{\"repetitions\":6,\"workSeconds\":20,\"recoverySeconds\":90}",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/1/progression/value",
+      "boundary": "40",
+      "stateEvidence": "35",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/2/prescription/family",
+      "boundary": "\"HALF_MARATHON_SPECIFIC\"",
+      "stateEvidence": "\"THRESHOLD\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/2/prescription/durationMinutes",
+      "boundary": "42",
+      "stateEvidence": "49",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/2/prescription/warmupMinutes",
+      "boundary": "10",
+      "stateEvidence": "15",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/2/prescription/cooldownMinutes",
+      "boundary": "5",
+      "stateEvidence": "10",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/2/prescription/effortDomain",
+      "boundary": "\"HALF_MARATHON_EFFORT\"",
+      "stateEvidence": "\"THRESHOLD_CONTROLLED\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/2/prescription/effort",
+      "boundary": "\"Steady-hard (about 6-7 of 10): sustainable, controlled breathing\"",
+      "stateEvidence": "\"comfortably hard\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/2/prescription/work/repetitions",
+      "boundary": "2",
+      "stateEvidence": "3",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/2/prescription/work/workMinutes",
+      "boundary": "12",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/2/prescription/work/recoveryMinutes",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/2/prescription/calibration/basis",
+      "boundary": "\"EFFORT_ANCHORED\"",
+      "stateEvidence": "\"CURRENT_FAMILIAR_TASK\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/2/prescription/calibration/firstExposure",
+      "boundary": "true",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/2/prescription/calibration/paceFromGoalTime",
+      "boundary": "false",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/2/prescription/calibration/paceFromEasyRuns",
+      "boundary": "false",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/2/prescription/calibration/observedAt",
+      "boundary": null,
+      "stateEvidence": "\"2027-04-27\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/2/prescription/instructions",
+      "boundary": "[\"Warm up 10 minutes easy\",\"2 × 12 min — Steady-hard (about 6-7 of 10): sustainable, controlled breathing; 3 min easy jog or walk between\",\"Cool down 5 minutes easy\",\"First exposure: let effort set th",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/2/progression/dimension",
+      "boundary": "\"SPECIFIC_STEP\"",
+      "stateEvidence": "\"THRESHOLD_STEP\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/2/progression/ladder",
+      "boundary": "\"HALF_MARATHON\"",
+      "stateEvidence": "\"FAMILIAR\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/3/prescription/durationMinutes",
+      "boundary": "29",
+      "stateEvidence": "27",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/3/prescription/exercises/0/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/3/prescription/exercises/1/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/3/prescription/exercises/2/sets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/3/prescription/exercises/2/exposure/phaseBasis",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/3/prescription/exercises/2/exposure/phasedSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/3/prescription/exercises/2/exposure/baseSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/3/prescription/exercises/2/exposure/normalSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/3/prescription/exercises/3/reps",
+      "boundary": "6",
+      "stateEvidence": "10",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/3/prescription/exercises/3/load/value",
+      "boundary": "16",
+      "stateEvidence": "14",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/3/prescription/exercises/4/exposure/phaseBasis",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/3/prescription/exercises/4/exposure/baseSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/3/prescription/exercises/4/exposure/normalSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/4/prescription/durationMinutes",
+      "boundary": "40",
+      "stateEvidence": "35",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/4/progression/value",
+      "boundary": "40",
+      "stateEvidence": "35",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/5/prescription/durationMinutes",
+      "boundary": "95",
+      "stateEvidence": "80",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/5/progression/value",
+      "boundary": "105",
+      "stateEvidence": "80",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/5/progression/heldBy",
+      "boundary": "\"LONG_RUN_SHARE\"",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/sessions/5/explanation",
+      "boundary": "\"Long run held within its share of the week until easy running grows\"",
+      "stateEvidence": "null",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/plannedRunMinutes",
+      "boundary": "217",
+      "stateEvidence": "199",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/10/plannedStrengthSets",
+      "boundary": "16",
+      "stateEvidence": "14",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/11/sessions/0/prescription/durationMinutes",
+      "boundary": "25",
+      "stateEvidence": "22",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/11/sessions/0/prescription/exercises/0/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/11/sessions/0/prescription/exercises/1/sets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/11/sessions/0/prescription/exercises/1/exposure/phaseBasis",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/11/sessions/0/prescription/exercises/1/exposure/phasedSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/11/sessions/0/prescription/exercises/1/exposure/baseSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/11/sessions/0/prescription/exercises/1/exposure/normalSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/11/sessions/0/prescription/exercises/2/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/11/sessions/1/prescription/durationMinutes",
+      "boundary": "40",
+      "stateEvidence": "35",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/11/sessions/1/prescription/instructions/3",
+      "boundary": "\"In the last part, 6 × 20 s relaxed fast strides with 90 s easy walk/jog between; smooth, never a sprint\"",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/11/sessions/1/prescription/strides",
+      "boundary": "{\"repetitions\":6,\"workSeconds\":20,\"recoverySeconds\":90}",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/11/sessions/1/progression/value",
+      "boundary": "40",
+      "stateEvidence": "35",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/11/sessions/2/prescription/family",
+      "boundary": "\"HALF_MARATHON_SPECIFIC\"",
+      "stateEvidence": "\"THRESHOLD\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/11/sessions/2/prescription/durationMinutes",
+      "boundary": "49",
+      "stateEvidence": "41",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/11/sessions/2/prescription/effortDomain",
+      "boundary": "\"HALF_MARATHON_EFFORT\"",
+      "stateEvidence": "\"THRESHOLD_CONTROLLED\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/11/sessions/2/prescription/effort",
+      "boundary": "\"Steady-hard (about 6-7 of 10): sustainable, controlled breathing\"",
+      "stateEvidence": "\"Comfortably hard and controlled (about 6-7 of 10): short phrases only; you could hold it much longer than the repetition\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/11/sessions/2/prescription/work/repetitions",
+      "boundary": "3",
+      "stateEvidence": "4",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/11/sessions/2/prescription/work/workMinutes",
+      "boundary": "10",
+      "stateEvidence": "5",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/11/sessions/2/prescription/instructions/1",
+      "boundary": "\"3 × 10 min — Steady-hard (about 6-7 of 10): sustainable, controlled breathing; 2 min easy jog or walk between\"",
+      "stateEvidence": "\"4 × 5 min — Comfortably hard and controlled (about 6-7 of 10): short phrases only; you could hold it much longer than the repetition; 2 min easy jog or walk between\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/11/sessions/2/progression/dimension",
+      "boundary": "\"SPECIFIC_STEP\"",
+      "stateEvidence": "\"THRESHOLD_STEP\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/11/sessions/2/progression/ladder",
+      "boundary": "\"HALF_MARATHON\"",
+      "stateEvidence": "\"THRESHOLD\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/11/sessions/3/prescription/durationMinutes",
+      "boundary": "28",
+      "stateEvidence": "24",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/11/sessions/3/prescription/exercises/0/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/11/sessions/3/prescription/exercises/1/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/11/sessions/3/prescription/exercises/2/sets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/11/sessions/3/prescription/exercises/2/exposure/phaseBasis",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/11/sessions/3/prescription/exercises/2/exposure/phasedSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/11/sessions/3/prescription/exercises/2/exposure/baseSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/11/sessions/3/prescription/exercises/2/exposure/normalSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/11/sessions/4/prescription/durationMinutes",
+      "boundary": "40",
+      "stateEvidence": "35",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/11/sessions/4/progression/value",
+      "boundary": "40",
+      "stateEvidence": "35",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/11/sessions/5/prescription/durationMinutes",
+      "boundary": "100",
+      "stateEvidence": "85",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/11/sessions/5/progression/value",
+      "boundary": "100",
+      "stateEvidence": "85",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/11/plannedRunMinutes",
+      "boundary": "229",
+      "stateEvidence": "196",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/11/plannedStrengthSets",
+      "boundary": "15",
+      "stateEvidence": "13",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/12/sessions/0/prescription/durationMinutes",
+      "boundary": "25",
+      "stateEvidence": "22",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/12/sessions/0/prescription/exercises/0/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/12/sessions/0/prescription/exercises/1/sets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/12/sessions/0/prescription/exercises/1/exposure/phaseBasis",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/12/sessions/0/prescription/exercises/1/exposure/phasedSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/12/sessions/0/prescription/exercises/1/exposure/baseSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/12/sessions/0/prescription/exercises/1/exposure/normalSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/12/sessions/0/prescription/exercises/2/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/12/sessions/1/prescription/instructions/3",
+      "boundary": "\"In the last part, 6 × 20 s relaxed fast strides with 90 s easy walk/jog between; smooth, never a sprint\"",
+      "stateEvidence": "\"In the last part, 4 × 20 s relaxed fast strides with 90 s easy walk/jog between; smooth, never a sprint\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/12/sessions/1/prescription/strides/repetitions",
+      "boundary": "6",
+      "stateEvidence": "4",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/12/sessions/2/prescription/durationMinutes",
+      "boundary": "48",
+      "stateEvidence": "42",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/12/sessions/2/prescription/work/workMinutes",
+      "boundary": "15",
+      "stateEvidence": "12",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/12/sessions/2/prescription/calibration/firstExposure",
+      "boundary": "false",
+      "stateEvidence": "true",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/12/sessions/2/prescription/instructions/1",
+      "boundary": "\"2 × 15 min — Steady-hard (about 6-7 of 10): sustainable, controlled breathing; 3 min easy jog or walk between\"",
+      "stateEvidence": "\"2 × 12 min — Steady-hard (about 6-7 of 10): sustainable, controlled breathing; 3 min easy jog or walk between\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/12/sessions/2/prescription/instructions/3",
+      "boundary": "\"Hold form and effort; if effort climbs above the cue, end the hard part early — an easy finish is fine\"",
+      "stateEvidence": "\"First exposure: let effort set the pace and note the pace you observe; there is no pace target\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/12/sessions/2/prescription/instructions/4",
+      "boundary": "\"Record repetitions completed, effort and next-day function\"",
+      "stateEvidence": "\"Hold form and effort; if effort climbs above the cue, end the hard part early — an easy finish is fine\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/12/sessions/2/prescription/instructions/5",
+      "boundary": null,
+      "stateEvidence": "\"Record repetitions completed, effort and next-day function\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/12/sessions/2/progression/value",
+      "boundary": "2",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/12/sessions/3/prescription/durationMinutes",
+      "boundary": "28",
+      "stateEvidence": "24",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/12/sessions/3/prescription/exercises/0/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/12/sessions/3/prescription/exercises/1/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/12/sessions/3/prescription/exercises/2/sets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/12/sessions/3/prescription/exercises/2/exposure/phaseBasis",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/12/sessions/3/prescription/exercises/2/exposure/phasedSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/12/sessions/3/prescription/exercises/2/exposure/baseSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/12/sessions/3/prescription/exercises/2/exposure/normalSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/12/sessions/4/prescription/durationMinutes",
+      "boundary": "40",
+      "stateEvidence": "35",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/12/sessions/4/progression/value",
+      "boundary": "40",
+      "stateEvidence": "35",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/12/sessions/5/prescription/durationMinutes",
+      "boundary": "100",
+      "stateEvidence": "90",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/12/sessions/5/progression/value",
+      "boundary": "105",
+      "stateEvidence": "90",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/12/sessions/5/progression/heldBy",
+      "boundary": "\"LONG_RUN_SHARE\"",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/12/sessions/5/explanation",
+      "boundary": "\"Long run held within its share of the week until easy running grows\"",
+      "stateEvidence": "null",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/12/plannedRunMinutes",
+      "boundary": "228",
+      "stateEvidence": "207",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/12/plannedStrengthSets",
+      "boundary": "15",
+      "stateEvidence": "13",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/13/sessions/0/prescription/durationMinutes",
+      "boundary": "25",
+      "stateEvidence": "22",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/13/sessions/0/prescription/exercises/0/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/13/sessions/0/prescription/exercises/1/sets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/13/sessions/0/prescription/exercises/1/exposure/phaseBasis",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/13/sessions/0/prescription/exercises/1/exposure/phasedSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/13/sessions/0/prescription/exercises/1/exposure/baseSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/13/sessions/0/prescription/exercises/1/exposure/normalSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/13/sessions/0/prescription/exercises/2/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/13/sessions/1/prescription/durationMinutes",
+      "boundary": "45",
+      "stateEvidence": "40",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/13/sessions/1/prescription/instructions/3",
+      "boundary": "\"In the last part, 6 × 20 s relaxed fast strides with 90 s easy walk/jog between; smooth, never a sprint\"",
+      "stateEvidence": "\"In the last part, 4 × 20 s relaxed fast strides with 90 s easy walk/jog between; smooth, never a sprint\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/13/sessions/1/prescription/strides/repetitions",
+      "boundary": "6",
+      "stateEvidence": "4",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/13/sessions/1/progression/value",
+      "boundary": "45",
+      "stateEvidence": "40",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/13/sessions/2/prescription/durationMinutes",
+      "boundary": "55",
+      "stateEvidence": "49",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/13/sessions/2/prescription/work/workMinutes",
+      "boundary": "12",
+      "stateEvidence": "10",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/13/sessions/2/prescription/instructions/1",
+      "boundary": "\"3 × 12 min — Steady-hard (about 6-7 of 10): sustainable, controlled breathing; 2 min easy jog or walk between\"",
+      "stateEvidence": "\"3 × 10 min — Steady-hard (about 6-7 of 10): sustainable, controlled breathing; 2 min easy jog or walk between\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/13/sessions/2/progression/value",
+      "boundary": "3",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/13/sessions/3/prescription/durationMinutes",
+      "boundary": "28",
+      "stateEvidence": "24",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/13/sessions/3/prescription/exercises/0/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/13/sessions/3/prescription/exercises/1/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/13/sessions/3/prescription/exercises/2/sets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/13/sessions/3/prescription/exercises/2/exposure/phaseBasis",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/13/sessions/3/prescription/exercises/2/exposure/phasedSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/13/sessions/3/prescription/exercises/2/exposure/baseSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/13/sessions/3/prescription/exercises/2/exposure/normalSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/13/sessions/4/prescription/durationMinutes",
+      "boundary": "40",
+      "stateEvidence": "35",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/13/sessions/4/progression/value",
+      "boundary": "40",
+      "stateEvidence": "35",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/13/sessions/5/prescription/durationMinutes",
+      "boundary": "105",
+      "stateEvidence": "95",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/13/sessions/5/progression/value",
+      "boundary": "105",
+      "stateEvidence": "95",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/13/plannedRunMinutes",
+      "boundary": "245",
+      "stateEvidence": "219",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/13/plannedStrengthSets",
+      "boundary": "15",
+      "stateEvidence": "13",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/14/sessions/0/prescription/exercises/0/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/14/sessions/0/prescription/exercises/1/exposure/phaseBasis",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/14/sessions/0/prescription/exercises/1/exposure/baseSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/14/sessions/0/prescription/exercises/1/exposure/normalSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/14/sessions/0/prescription/exercises/2/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/14/sessions/1/prescription/instructions/3",
+      "boundary": "\"In the last part, 5 × 20 s relaxed fast strides with 90 s easy walk/jog between; smooth, never a sprint\"",
+      "stateEvidence": "\"In the last part, 4 × 20 s relaxed fast strides with 90 s easy walk/jog between; smooth, never a sprint\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/14/sessions/1/prescription/strides/repetitions",
+      "boundary": "5",
+      "stateEvidence": "4",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/14/sessions/2/prescription/durationMinutes",
+      "boundary": "37",
+      "stateEvidence": "33",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/14/sessions/2/prescription/work/workMinutes",
+      "boundary": "10",
+      "stateEvidence": "8",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/14/sessions/2/prescription/instructions/1",
+      "boundary": "\"2 × 10 min — Steady-hard (about 6-7 of 10): sustainable, controlled breathing; 2 min easy jog or walk between\"",
+      "stateEvidence": "\"2 × 8 min — Steady-hard (about 6-7 of 10): sustainable, controlled breathing; 2 min easy jog or walk between\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/14/sessions/3/prescription/exercises/0/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/14/sessions/3/prescription/exercises/1/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/14/sessions/3/prescription/exercises/2/exposure/phaseBasis",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/14/sessions/3/prescription/exercises/2/exposure/baseSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/14/sessions/3/prescription/exercises/2/exposure/normalSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/14/sessions/4/prescription/instructions/3",
+      "boundary": "\"In the last part, 5 × 20 s relaxed fast strides with 90 s easy walk/jog between; smooth, never a sprint\"",
+      "stateEvidence": "\"In the last part, 4 × 20 s relaxed fast strides with 90 s easy walk/jog between; smooth, never a sprint\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/14/sessions/4/prescription/strides/repetitions",
+      "boundary": "5",
+      "stateEvidence": "4",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/14/plannedRunMinutes",
+      "boundary": "157",
+      "stateEvidence": "153",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/15/sessions/0/prescription/exercises/0/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/15/sessions/0/prescription/exercises/1/exposure/phaseBasis",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/15/sessions/0/prescription/exercises/1/exposure/baseSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/15/sessions/0/prescription/exercises/1/exposure/normalSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/15/sessions/0/prescription/exercises/2/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/15/sessions/1/prescription/durationMinutes",
+      "boundary": "25",
+      "stateEvidence": "20",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/weeks/15/plannedRunMinutes",
+      "boundary": "68",
+      "stateEvidence": "63",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/8/run/long",
+      "boundary": "105",
+      "stateEvidence": "80",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/8/run/easyExtra",
+      "boundary": "2",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/8/run/qualityStep",
+      "boundary": "5",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/8/run/thresholdDone",
+      "boundary": "5",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/8/run/devCount",
+      "boundary": "5",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/8/run/longByWeek/0",
+      "boundary": "80",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/8/run/longByWeek/1",
+      "boundary": "85",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/8/run/longByWeek/2",
+      "boundary": "90",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/8/run/longByWeek/3",
+      "boundary": "85",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/8/run/longByWeek/4",
+      "boundary": "95",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/8/run/longByWeek/5",
+      "boundary": "100",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/8/run/easyWeeksDone",
+      "boundary": "6",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/8/run/qualityDone",
+      "boundary": "6",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/8/run/stridesDone",
+      "boundary": "4",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/8/run/achieved/long",
+      "boundary": "100",
+      "stateEvidence": "null",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/8/run/achieved/easy",
+      "boundary": "40",
+      "stateEvidence": "null",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/8/run/achieved/quality",
+      "boundary": "{\"family\":\"THRESHOLD\",\"work\":{\"repetitions\":4,\"workMinutes\":8,\"recoveryMinutes\":2}}",
+      "stateEvidence": "null",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/8/run/achieved/strides",
+      "boundary": "5",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/8/run/longestContinuous",
+      "boundary": "100",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/8/run/returnTo/long",
+      "boundary": "105",
+      "stateEvidence": "80",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/8/run/returnTo/qualityStep",
+      "boundary": "5",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/8/strength/exercises/goblet-squat/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/8/strength/exercises/goblet-squat/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/8/strength/exercises/db-rdl/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/8/strength/exercises/db-rdl/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/8/strength/exercises/db-split-squat/load",
+      "boundary": "16",
+      "stateEvidence": "14",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/8/strength/exercises/db-split-squat/reps",
+      "boundary": "6",
+      "stateEvidence": "10",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/8/strength/exercises/db-split-squat/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/8/strength/exercises/db-row/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/8/strength/exercises/db-row/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/8/strength/exercises/push-up/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/8/strength/exercises/db-calf-raise/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/8/strength/exercises/db-calf-raise/unlogged",
+      "boundary": null,
+      "stateEvidence": "true",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/8/strength/exercises/dead-bug/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/8/strength/devCount",
+      "boundary": "5",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/run/long",
+      "boundary": "105",
+      "stateEvidence": "80",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/run/easyExtra",
+      "boundary": "2",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/run/qualityStep",
+      "boundary": "5",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/run/thresholdDone",
+      "boundary": "5",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/run/devCount",
+      "boundary": "5",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/run/longByWeek/0",
+      "boundary": "80",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/run/longByWeek/1",
+      "boundary": "85",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/run/longByWeek/2",
+      "boundary": "90",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/run/longByWeek/3",
+      "boundary": "85",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/run/longByWeek/4",
+      "boundary": "95",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/run/longByWeek/5",
+      "boundary": "100",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/run/easyWeeksDone",
+      "boundary": "6",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/run/qualityDone",
+      "boundary": "6",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/run/stridesDone",
+      "boundary": "4",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/run/achieved/long",
+      "boundary": "100",
+      "stateEvidence": "null",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/run/achieved/easy",
+      "boundary": "40",
+      "stateEvidence": "null",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/run/achieved/quality",
+      "boundary": "{\"family\":\"THRESHOLD\",\"work\":{\"repetitions\":4,\"workMinutes\":8,\"recoveryMinutes\":2}}",
+      "stateEvidence": "null",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/run/achieved/strides",
+      "boundary": "5",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/run/longestContinuous",
+      "boundary": "100",
+      "stateEvidence": "20",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/run/returnTo/long",
+      "boundary": "105",
+      "stateEvidence": "80",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/run/returnTo/qualityStep",
+      "boundary": "5",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/run/planned/long",
+      "boundary": "65",
+      "stateEvidence": "50",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/strength/exercises/goblet-squat/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/strength/exercises/goblet-squat/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/strength/exercises/db-rdl/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/strength/exercises/db-rdl/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/strength/exercises/db-split-squat/load",
+      "boundary": "16",
+      "stateEvidence": "14",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/strength/exercises/db-split-squat/reps",
+      "boundary": "6",
+      "stateEvidence": "10",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/strength/exercises/db-split-squat/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/strength/exercises/db-row/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/strength/exercises/db-row/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/strength/exercises/push-up/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/strength/exercises/db-calf-raise/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/strength/exercises/db-calf-raise/unlogged",
+      "boundary": null,
+      "stateEvidence": "true",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/strength/exercises/dead-bug/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/9/strength/devCount",
+      "boundary": "6",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/run/long",
+      "boundary": "105",
+      "stateEvidence": "80",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/run/easyExtra",
+      "boundary": "2",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/run/qualityStep",
+      "boundary": "4",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/run/thresholdDone",
+      "boundary": "5",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/run/devCount",
+      "boundary": "5",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/run/longByWeek/0",
+      "boundary": "80",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/run/longByWeek/1",
+      "boundary": "85",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/run/longByWeek/2",
+      "boundary": "90",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/run/longByWeek/3",
+      "boundary": "85",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/run/longByWeek/4",
+      "boundary": "95",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/run/longByWeek/5",
+      "boundary": "100",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/run/longByWeek/9",
+      "boundary": "65",
+      "stateEvidence": "50",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/run/easyWeeksDone",
+      "boundary": "6",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/run/qualityDone",
+      "boundary": "6",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/run/stridesDone",
+      "boundary": "4",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/run/achieved/long",
+      "boundary": "100",
+      "stateEvidence": "null",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/run/achieved/easy",
+      "boundary": "40",
+      "stateEvidence": "null",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/run/achieved/quality",
+      "boundary": "{\"family\":\"THRESHOLD\",\"work\":{\"repetitions\":4,\"workMinutes\":8,\"recoveryMinutes\":2}}",
+      "stateEvidence": "null",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/run/achieved/strides",
+      "boundary": "5",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/run/longestContinuous",
+      "boundary": "100",
+      "stateEvidence": "50",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/run/planned/long",
+      "boundary": "95",
+      "stateEvidence": "80",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/run/planned/easy",
+      "boundary": "40",
+      "stateEvidence": "35",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/run/planned/quality/family",
+      "boundary": "\"HALF_MARATHON_SPECIFIC\"",
+      "stateEvidence": "\"THRESHOLD\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/run/planned/quality/work/repetitions",
+      "boundary": "2",
+      "stateEvidence": "3",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/run/planned/quality/work/workMinutes",
+      "boundary": "12",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/run/planned/quality/work/recoveryMinutes",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/run/planned/strides",
+      "boundary": "6",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/run/planned/longHeldByShare",
+      "boundary": "true",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/strength/exercises/goblet-squat/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/strength/exercises/goblet-squat/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/strength/exercises/db-rdl/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/strength/exercises/db-rdl/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/strength/exercises/db-split-squat/load",
+      "boundary": "16",
+      "stateEvidence": "14",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/strength/exercises/db-split-squat/reps",
+      "boundary": "6",
+      "stateEvidence": "10",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/strength/exercises/db-split-squat/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/strength/exercises/db-row/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/strength/exercises/db-row/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/strength/exercises/push-up/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/strength/exercises/db-calf-raise/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/strength/exercises/dead-bug/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/strength/devCount",
+      "boundary": "7",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/strength/planned/push-up/sets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/strength/planned/push-up/baseSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/strength/planned/push-up/normalSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/strength/planned/dead-bug/baseSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/10/strength/planned/dead-bug/normalSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/run/long",
+      "boundary": "100",
+      "stateEvidence": "85",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/run/easy",
+      "boundary": "40",
+      "stateEvidence": "35",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/run/qualityStep",
+      "boundary": "4",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/run/specificStep",
+      "boundary": "1",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/run/thresholdDone",
+      "boundary": "5",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/run/devCount",
+      "boundary": "6",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/run/longByWeek/0",
+      "boundary": "80",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/run/longByWeek/1",
+      "boundary": "85",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/run/longByWeek/2",
+      "boundary": "90",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/run/longByWeek/3",
+      "boundary": "85",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/run/longByWeek/4",
+      "boundary": "95",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/run/longByWeek/5",
+      "boundary": "100",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/run/longByWeek/9",
+      "boundary": "65",
+      "stateEvidence": "50",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/run/longByWeek/10",
+      "boundary": "105",
+      "stateEvidence": "80",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/run/easyWeeksDone",
+      "boundary": "7",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/run/qualityDone",
+      "boundary": "7",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/run/stridesDone",
+      "boundary": "5",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/run/achieved/long",
+      "boundary": "100",
+      "stateEvidence": "80",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/run/achieved/easy",
+      "boundary": "40",
+      "stateEvidence": "35",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/run/achieved/quality/family",
+      "boundary": "\"HALF_MARATHON_SPECIFIC\"",
+      "stateEvidence": "\"THRESHOLD\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/run/achieved/quality/work/repetitions",
+      "boundary": "2",
+      "stateEvidence": "3",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/run/achieved/quality/work/workMinutes",
+      "boundary": "12",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/run/achieved/quality/work/recoveryMinutes",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/run/achieved/strides",
+      "boundary": "6",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/run/longestContinuous",
+      "boundary": "100",
+      "stateEvidence": "80",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/run/planned/long",
+      "boundary": "100",
+      "stateEvidence": "85",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/run/planned/easy",
+      "boundary": "40",
+      "stateEvidence": "35",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/run/planned/quality/family",
+      "boundary": "\"HALF_MARATHON_SPECIFIC\"",
+      "stateEvidence": "\"THRESHOLD\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/run/planned/quality/work/repetitions",
+      "boundary": "3",
+      "stateEvidence": "4",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/run/planned/quality/work/workMinutes",
+      "boundary": "10",
+      "stateEvidence": "5",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/run/planned/strides",
+      "boundary": "6",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/strength/exercises/goblet-squat/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/strength/exercises/goblet-squat/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/strength/exercises/db-rdl/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/strength/exercises/db-rdl/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/strength/exercises/db-split-squat/load",
+      "boundary": "16",
+      "stateEvidence": "14",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/strength/exercises/db-split-squat/reps",
+      "boundary": "6",
+      "stateEvidence": "10",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/strength/exercises/db-split-squat/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/strength/exercises/db-row/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/strength/exercises/db-row/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/strength/exercises/push-up/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/strength/exercises/db-calf-raise/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/strength/exercises/dead-bug/lastExecutedSets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/strength/exercises/dead-bug/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/strength/exercises/dead-bug/setCeiling",
+      "boundary": "2",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/strength/exercises/dead-bug/setCap",
+      "boundary": "2",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/strength/devCount",
+      "boundary": "7",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/strength/planned/push-up/sets",
+      "boundary": "2",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/strength/planned/push-up/baseSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/11/strength/planned/push-up/normalSets",
+      "boundary": "3",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/run/long",
+      "boundary": "105",
+      "stateEvidence": "90",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/run/easy",
+      "boundary": "40",
+      "stateEvidence": "35",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/run/easyExtra",
+      "boundary": "0",
+      "stateEvidence": "1",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/run/qualityStep",
+      "boundary": "4",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/run/specificStep",
+      "boundary": "2",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/run/thresholdDone",
+      "boundary": "5",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/run/devCount",
+      "boundary": "7",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/run/longByWeek/0",
+      "boundary": "80",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/run/longByWeek/1",
+      "boundary": "85",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/run/longByWeek/2",
+      "boundary": "90",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/run/longByWeek/3",
+      "boundary": "85",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/run/longByWeek/4",
+      "boundary": "95",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/run/longByWeek/5",
+      "boundary": "100",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/run/longByWeek/9",
+      "boundary": "65",
+      "stateEvidence": "50",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/run/longByWeek/10",
+      "boundary": "105",
+      "stateEvidence": "80",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/run/longByWeek/11",
+      "boundary": "100",
+      "stateEvidence": "85",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/run/easyWeeksDone",
+      "boundary": "8",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/run/qualityDone",
+      "boundary": "8",
+      "stateEvidence": "2",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/run/stridesDone",
+      "boundary": "6",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/run/achieved/long",
+      "boundary": "100",
+      "stateEvidence": "85",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/run/achieved/easy",
+      "boundary": "40",
+      "stateEvidence": "35",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/run/achieved/quality/family",
+      "boundary": "\"HALF_MARATHON_SPECIFIC\"",
+      "stateEvidence": "\"THRESHOLD\"",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/run/achieved/quality/work/repetitions",
+      "boundary": "3",
+      "stateEvidence": "4",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/run/achieved/quality/work/workMinutes",
+      "boundary": "10",
+      "stateEvidence": "5",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/run/achieved/strides",
+      "boundary": "6",
+      "stateEvidence": "0",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/run/longestContinuous",
+      "boundary": "100",
+      "stateEvidence": "85",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/run/planned/long",
+      "boundary": "100",
+      "stateEvidence": "90",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/run/planned/quality/work/workMinutes",
+      "boundary": "15",
+      "stateEvidence": "12",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/run/planned/strides",
+      "boundary": "6",
+      "stateEvidence": "4",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/run/planned/longHeldByShare",
+      "boundary": "true",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/strength/exercises/goblet-squat/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/strength/exercises/goblet-squat/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/strength/exercises/db-rdl/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/strength/exercises/db-rdl/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/strength/exercises/db-split-squat/load",
+      "boundary": "16",
+      "stateEvidence": "14",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/strength/exercises/db-split-squat/reps",
+      "boundary": "6",
+      "stateEvidence": "10",
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/strength/exercises/db-split-squat/blocksDone",
+      "boundary": "1",
+      "stateEvidence": null,
+      "inReturnReach": true
+     },
+     {
+      "path": "/steps/1/result/proposal/stateTrace/12/strength/exercises/db-row/reps",
+      "boundary": "8",
+      "stateEvidence": "6",
+      "inReturnReach": true
+     }
+    ]
+   }
+  ],
+  "r5Corpus": [],
+  "profiles": [],
+  "simulations": []
+ }
+}

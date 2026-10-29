@@ -1,0 +1,138 @@
+{
+  "revision": "R6-DELIVERABLE-1",
+  "topic": "SUBSTITUTION_ENGINE_R6",
+  "generatedAt": "2026-10-27T05:03:30.456Z",
+  "authority": "CURRENT_INDEPENDENT_REVIEW",
+  "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+  "sourceDigest": "507f35fc66f4d1e105e19ce513dc067f9fee5fdc35c039ad52a8c825e46bf857",
+  "freezeRevision": "R6-FREEZE-1",
+  "runtimeState": "NOT_FROZEN_AFTER_FREEZE_1: the SSCTR refused FREEZE-2 in round 12 and R6 closed with an explicit blocker (OPEN_GAPS_R6); the runtime files listed are the current, unfrozen ones, while the simulation, demonstration and R5 replay outputs cited are the FREEZE-1 ones",
+  "boundaries": [
+    {
+      "boundaryId": "R6-SUBSTITUTION",
+      "enabled": "APPROVED",
+      "ssctr": {
+        "disposition": "APPROVE_WITH_CONDITIONS",
+        "evidence": null,
+        "conditions": [
+          "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+          "Binding: this record binds canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c (value.mjs hash). Any policy byte change invalidates it; any change to the runtime functions named in requiredRuntimeChanges needs a delta binding review before runtime freeze.",
+          "Operational values are reversible coaching choices inside the envelope, never physiological thresholds, injury-prevention rules, readiness scores, finish-time promises or individual-response predictions.",
+          "Steps advance only on executed comparable work without an adverse signal; nothing progresses from elapsed calendar time alone; completed history and official plan state stay immutable.",
+          "Candidates keep the movement pattern first, then the variant family; equipment must be available; skill must not exceed declared experience unless the exercise is familiar.",
+          "An unfamiliar substitute uses effort-guided establishment, at most 2 sets at RIR >= 3, with no load converted; a bodyweight-for-load swap is disclosed as a different stimulus.",
+          "No progression step on a substituted exercise in its first exposure; the substitution persists through every reprojection inside its window; after a temporary window the original exercise resumes with its last logged load as a ceiling.",
+          "A pattern without a substitute is omitted and disclosed as an essential-stimulus loss where applicable.",
+          "Without this authority an equipment change returns UNSUPPORTED.",
+          "Conditions 6 and 7 apply to the substitute's first executed exposure: a missed establishment exposure establishes nothing, and the days before the original exercise resumes are counted from its last executed exposure (D52, resolved in round 11).",
+          "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+        ]
+      },
+      "envelope": {
+        "claim": "When equipment or circumstance removes an exercise, a same-pattern substitute that preserves movement intent may replace it; an unfamiliar substitute starts with effort-guided establishment and the stimulus change is disclosed.",
+        "limits": [
+          "no load conversion between exercises or implements",
+          "no claim that bodyweight practice equals external-load strength",
+          "no progression while changing the task"
+        ]
+      }
+    }
+  ],
+  "policyValues": {},
+  "runtime": [
+    {
+      "file": "CoachingCore/src/r6-adaptation.mjs",
+      "functions": [
+        "equipmentChange"
+      ],
+      "sha256": "d6a1d6fc74b7ef5b02a389dba3429cb25a00b16a2df97120b64314e96a6ba6f4"
+    },
+    {
+      "file": "CoachingCore/src/r6-catalogue.mjs",
+      "functions": [
+        "substitutesFor"
+      ],
+      "sha256": "cdad88cb67ba7164030c900648079946e70bb10778120886d25476718dbf3d5f"
+    },
+    {
+      "file": "CoachingCore/src/r6-legacy.mjs",
+      "functions": [
+        "legacyCandidates"
+      ],
+      "sha256": "4312aeef7fa1fee67bc9a617ee7d189bd14da7486f0a3a47b38275306d9ca36b"
+    }
+  ],
+  "evidence": {
+    "tests": [
+      {
+        "file": "CoachingCore/test/r6-adaptation.test.mjs",
+        "name": "Adaptation: equipment loss substitutes by movement intent, establishes unfamiliar work and converts no load"
+      },
+      {
+        "file": "CoachingCore/test/r6-adaptation.test.mjs",
+        "name": "Adaptation: a substitution persists through later weekly reviews (SSCTR D27)"
+      },
+      {
+        "file": "CoachingCore/test/r6-r5-regression.test.mjs",
+        "name": "Root cause SUBSTITUTION_NOT_SELECTED (H19): supplied admissible substitutes enter the candidate set and are disclosed"
+      },
+      {
+        "file": "CoachingCore/test/r6-simulation.test.mjs",
+        "name": "Simulation: interruptions, schedule change, substitution and fatigue are handled with the smallest valid change"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r10-fixes.test.mjs",
+        "name": "SSCTR D52: an unfamiliar substitute whose first establishment exposure was missed establishes at its next exposure"
+      }
+    ],
+    "demonstrations": [
+      {
+        "id": "J",
+        "title": "Substitution after an equipment change → valid replacement",
+        "selected": "SUBSTITUTE"
+      }
+    ],
+    "trajectories": [
+      {
+        "id": "T07_GENERAL8_SCHEDULE_AND_EQUIPMENT",
+        "horizon": 8,
+        "allInvariantsHold": true,
+        "actions": {
+          "INSTANTIATE_LOGGED_LOADS": 5,
+          "KEEP": 3,
+          "REARRANGE_FUTURE_WEEKS": 1,
+          "SUBSTITUTE": 1
+        }
+      }
+    ],
+    "r5Regression": [
+      {
+        "caseId": "R5-H19",
+        "r5Classification": "UNSUPPORTED",
+        "rootCause": "SUBSTITUTION_NOT_SELECTED",
+        "resultR6": "MODIFY",
+        "classificationR6": "BEST_SUPPORTED"
+      }
+    ],
+    "freshHoldout": [
+      {
+        "caseId": "R6-H04",
+        "family": "COLD_START",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H24",
+        "family": "ADAPTATION",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      }
+    ]
+  },
+  "inputs": {
+    "simulation": "CoachingCore/r6/SIMULATION_RESULTS_R6.json",
+    "demonstrations": "CoachingCore/r6/DEMONSTRATIONS_R6.json",
+    "r5Replay": "CoachingCore/r6/R5_HOLDOUT_REPLAY_R6.json",
+    "ssctrReview": "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-policy-review.json",
+    "r5RegressionReview": "audits/domain-coaching-r6-2026-10-26/reviews/r5-regression-review.json",
+    "coachingReview": "audits/domain-coaching-r6-2026-10-26/reviews/coaching-quality-holdout-review.json"
+  }
+}

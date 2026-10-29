@@ -1,0 +1,223 @@
+{
+ "revision": "R7A1-QE-r2",
+ "reviewer": "quality-reliability-engineer (fresh instance)",
+ "model": "claude-opus-5-5",
+ "gate": "R7A1_ENGINEERING_REVIEW",
+ "reviewedAt": "2026-10-27",
+ "cycle": "Single narrow re-check of the single correction cycle (FOUNDER_REQUEST §11). There is no further cycle.",
+ "freezeReviewed": {
+  "revision": "R7A1-FREEZE-A2",
+  "file": "CoachingCore/r7/a1/RUNTIME_FREEZE_R7A1_FREEZE_A2.json",
+  "sourceDigest": "71edc245cfe06a376732ec8054f2e09f277066f2ee4004f34827b2c90a1c4024",
+  "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+  "recomputedAtStartAndEnd": true,
+  "frozenFiles": 78,
+  "frozenFilesMismatching": 0,
+  "deltaFromFreezeA1Verified": "Live tree equals the A2 manifest (78/78). A1 and A2 manifests differ only in src/r6-adaptation.mjs, src/r6-composition.mjs, src/r6-program.mjs, src/r6-provenance.mjs and the added test/r7a1-correction.test.mjs. Reverse-applying dossier/RUNTIME_DELTA_R7A1_A1_TO_A2.diff to a copy of the live tree reproduces FREEZE-A1 byte for byte (77/77 files match RUNTIME_FREEZE_R7A1_FREEZE_A1.json).",
+  "evidence": [
+   "reviews/qe-a2-digest.start.out.json",
+   "reviews/qe-a2-digest.end.out.json",
+   "reviews/qe-a2-verify.start.out.json",
+   "reviews/qe-a2-verify.end.out.json"
+  ],
+  "endCheck": {
+   "digest": "71edc245cfe06a376732ec8054f2e09f277066f2ee4004f34827b2c90a1c4024 (matchesFreeze true, 0 frozen-file mismatches) at 2026-10-28T02:33:05Z",
+   "verifier": "15/17; failing only independent-reviews and deliverables (mutation-check passes once the author final A2 output was written)"
+  },
+  "startCheck": {
+   "digest": "71edc245cfe06a376732ec8054f2e09f277066f2ee4004f34827b2c90a1c4024 (matchesFreeze true, 0 frozen-file mismatches) at 2026-10-28T02:03:02Z",
+   "verifier": "14/17; failing mutation-check (final A2 output not yet written), independent-reviews, deliverables"
+  }
+ },
+ "verdict": {
+  "R7A1_ENGINEERING_REVIEW": "NOT_READY",
+  "reason": "All five findings of the first review are closed by their mechanism, with a test that fails on FREEZE-A1 and passes on FREEZE-A2. But the mechanism of the QE-R7A1-03 fix (and the C5 rule of FREEZE-A1 it extends) does not check that a newer return reports the same break. A second, separate break that begins in a week an earlier return re-planned is treated as a correction of the first: its return starts from the state before the first break. The first return's re-entry is erased (return steps, run RETURN mode), and the athlete goes back to pre-break doses after a 16-day break: 1 set at RIR 4 becomes 3 sets at RIR 3 at the pre-break known load, and the long run goes from 20-45 to 70-75 minutes (QE-R7A1-09, HIGH, material). The same missing identity makes a second short break reuse the first one's easy slot, so its own first quality run stays hard (QE-R7A1-10, MEDIUM, material). Across the week boundary the defect is new in FREEZE-A2; inside the same week it is already present in FREEZE-A1, and my first review missed it. FREEZE-2 has neither. A new HIGH blocks under FOUNDER_REQUEST §13."
+ },
+ "findings": [
+  {
+   "id": "QE-R7A1-01",
+   "severity": "HIGH",
+   "status": "CLOSED",
+   "byMechanism": true,
+   "test": "test/r7a1-correction.test.mjs 'R7-A.1 C2/C4 (QE-R7A1-01)' and 'R7-A.1 C7 (QE-R7A1-01)'; both fail on my reconstructed FREEZE-A1 copy (moved back-squat in w3-str-d2; C7 assertion false) and pass on FREEZE-A2",
+   "evidence": "Mechanism: one per-date equipment reading (r6-program.mjs:831 sk.equipmentForDate) used by the templates, by moveCandidates fits (r6-composition.mjs:57), which every move path calls (missedMove, unavailableSessions, the re-application of MISSED_SESSION), and by C7 equipmentUnavailable (r6-program.mjs:813). An equipment statement with nothing to substitute is recorded (r6-adaptation.mjs:554). Probes re-run by me on FREEZE-A2: qe-a2-P01 barbellOnOrAfterChange [] in all four cases (permanent and window, both orders); qe-a2-P01b the move into the window is refused (KEEP; FREEZE-2 MOVE with back-squat inside the window); qe-a2-P09 O2 0 violations in 5,000 sequences; qe-a2-P15 a recorded no-op equipment statement changes no row and no adaptation in 27 cases. My copy of the run-1 C7 survivor mutant is now caught by the C7 test. That guard is pinned only by a direct test: no composition path writes such a row (P09 shows no equipmentUnavailable refusal). Observation, not a finding: in the order 'miss, then equipment' the recorded move is dropped (the target stays missed, without debt). In the order 'equipment, then miss' the substituted content moves. My first review allowed this option ('the move is not offered, or it is consumed'), and C4 A2 states it."
+  },
+  {
+   "id": "QE-R7A1-02",
+   "severity": "HIGH",
+   "status": "CLOSED",
+   "byMechanism": true,
+   "test": "test/r7a1-correction.test.mjs 'R7-A.1 C3 (QE-R7A1-02)'; fails on FREEZE-A1 (schedule change re-derives week 4: qualityDone 1 -> 2, sets 3 -> 4) and passes on FREEZE-A2",
+   "evidence": "Mechanism: systemicOf, confirmationsOf and reviewGates (r6-adaptation.mjs:239-241) are read by weeklyReview, evidenceStart (the composition's evidence rule), rebuild and loggedLoadQuestions. Load confirmations are recorded on the week (:324). Probes re-run by me on FREEZE-A2: qe-a2-P04 dosesAboveHeld [] and no ADVANCE gate on all eight paths (FREEZE-A1: up to 7 doses above the held start); qe-a2-P05 the learned-rearrangement review holds LONG and EASY (FREEZE-2 ADVANCE); qe-a2-P10 the confirmed 20 kg loads stay KNOWN after an equipment add, an equipment swap, a schedule change and a goal change; qe-a2-P15 a no-op equipment statement after a systemic hold or after confirmations changes nothing. Residual (LOW, not material): QE-R7A1-11."
+  },
+  {
+   "id": "QE-R7A1-03",
+   "severity": "MEDIUM",
+   "status": "CLOSED",
+   "byMechanism": true,
+   "test": "test/r7a1-correction.test.mjs 'R7-A.1 C5 (QE-R7A1-03)'; fails on FREEZE-A1 (Sunday 22:00 gives pre-break doses, Monday 07:00 gives re-entry step 0) and passes on FREEZE-A2; my mutant restoring the FREEZE-A1 reading (startBeforeReturn only when pauseWeek === w) is caught by it",
+   "evidence": "Mechanism: prior = program.weeks[pauseWeek].startBeforeReturn ?? stateTrace[pauseWeek] (r6-adaptation.mjs:626); strip removes RETURN_WAIT and SHORT_RETURN_EASY from every week from this one on (:645). qe-a2-P02 on FREEZE-A2: the correction gives the same plan from week 6 at Sunday 22:00 and at Monday 07:00 (sameFromWeek6 true; FREEZE-A1 false). The claim of the finding is closed. The mechanism has no same-break condition, so it over-reaches to a separate, later break: QE-R7A1-09 (the cross-week variant comes from this change, which applied my first review's required change as I wrote it)."
+  },
+  {
+   "id": "QE-R7A1-04",
+   "severity": "MEDIUM",
+   "status": "CLOSED",
+   "byMechanism": true,
+   "test": "test/r7a1-correction.test.mjs 'R7-A.1 C1 (QE-R7A1-04)'; fails on FREEZE-A1 (unavailable-today PM session stays PLANNED) and passes on FREEZE-A2",
+   "evidence": "Mechanism: fatigueSessions, unavailableSessions, conflictSessions and the move-slot filter use env.ahead alone (r6-composition.mjs:57-108); an adaptation records the sessions of its day already past at its report (adaptation().past, :141) and is re-applied with aheadAt (:117). qe-a2-P06 on FREEZE-A2: unavailable today, systemic fatigue and an event conflict today all reach the Monday PM session still ahead (FREEZE-A1: KEEP or unchanged); the AM easy run is skipped only while its shift is open. The author's three A2 mutants for these selectors are caught (run 1). Observation, not a finding: my mutant that drops the own-clock guard in reapply (ahead: env.ahead) survives the four R7-A/R7-A.1 test files. The guard only matters when a re-plan's clock is earlier than the adaptation's. In forward time, ahead at the report contains ahead now."
+  },
+  {
+   "id": "QE-R7A1-05",
+   "severity": "MEDIUM",
+   "status": "CLOSED",
+   "byMechanism": true,
+   "test": "test/r7a1-correction.test.mjs 'R7-A.1 I4 (QE-R7A1-05)'; fails on FREEZE-A1 ({value:80} without a unit) and passes on FREEZE-A2",
+   "evidence": "Mechanism: in mergeActual, 'known' is 'readable' (load: kgOf, the predicate the ranking uses; reps and rir: Number.isFinite), and a present but unreadable value is kept as provenance under 'unreadable' (r6-provenance.mjs:43). qe-a2-P07 on FREEZE-A2: missing unit, 'LBS' and 'pounds', both orders: load 80, no load question, the next squat loadTick 1 (FREEZE-A1: null, LOGGED_UNIT_OR_CONVENTION_UNKNOWN); three agreeing reports equal in all six orders."
+  }
+ ],
+ "blockers": [
+  {
+   "id": "QE-R7A-01",
+   "status": "OPEN",
+   "evidence": "Its stated path is closed: the return re-base survives an equipment change in either order (closed on FREEZE-A1). The C3 residual that kept it open, QE-R7A1-02, is closed (above). But its expectation is still violated: 'a localized modification in the current week does not destroy valid future state' (FOUNDER_REQUEST §3). By the standard my first review applied, the start a decision of this week set must not be re-derived by a later change. A second return in the same week, for a separate break that began after re-entry started, re-plans this week and next week from the state before the first break. That erases the first return's re-entry (qe-a2-P13 S_sameWeek, FREEZE-A1 and FREEZE-A2; FREEZE-2 keeps it). Across the week boundary the same happens on FREEZE-A2 only (X, X2). Recorded as QE-R7A1-09."
+  },
+  {
+   "id": "QE-R7A-02",
+   "status": "CLOSED",
+   "evidence": "Same-day eligibility is one test in every selector (QE-R7A1-04 closed: qe-a2-P06, C1 test). The short return still eases the same-day quality slot. Its easy slot now passes on to the first quality slot still ahead (D58; the SSCTR rules the dose). One identity defect in that slot when a second, separate short break follows is recorded as QE-R7A1-10. It is not the same-day eligibility mechanism of QE-R7A-02."
+  },
+  {
+   "id": "QE-R7A-03",
+   "status": "CLOSED",
+   "evidence": "Unchanged by the delta. qe-a2-P09 O6 (at most one live race, on the current event date): 0 violations in 5,000 sequences on FREEZE-A2. Verifier composition-probes and handler grids pass."
+  },
+  {
+   "id": "QE-R7A-05",
+   "status": "CLOSED",
+   "evidence": "QE-R7A1-05 closed by its mechanism (qe-a2-P07, I4 test)."
+  },
+  {
+   "id": "QE-R7A-12",
+   "status": "CLOSED",
+   "evidence": "Not touched by the delta (the D57 edit is in the cap end, after the target logic). Full suite 505/505 on FREEZE-A2. The R7-A.1 mutation reverts for QE-R7A-12 are caught in run 1. The dose reading is the SSCTR's."
+  },
+  {
+   "id": "QE-R7A-19",
+   "status": "CLOSED",
+   "evidence": "Recorded adaptations are re-applied by composeWeeks. A move whose content no longer fits its slot's equipment is dropped without debt (C4 A2). qe-a2-P15: no adaptation lost through a recorded no-op statement after a move, a short return or a review (27 cases). qe-a2-P09: O1, O3, O4 and O7 have 0 violations in 5,000 sequences."
+  },
+  {
+   "id": "D56",
+   "status": "CLOSED",
+   "evidence": "Engineering side. qe-a2-P08 on FREEZE-A2 (rows written by the R6-closure runtime, 24 timelines, 300 legacy rows): 0 cap rises or ends after a trimmed week, 0 capped jumps; identical to the author's re-run. The D57 whole-week mutant (run-1 survivor) is caught by the added D57 test in my copy. The formulation is the SSCTR's."
+  },
+  {
+   "id": "D53",
+   "status": "CLOSED",
+   "evidence": "Engineering side only, with D56 above. The SSCTR's acceptance of the semantics is a separate condition (FOUNDER_REQUEST §10)."
+  }
+ ],
+ "newFindings": [
+  {
+   "id": "QE-R7A1-09",
+   "severity": "HIGH",
+   "material": true,
+   "class": "C5 supersession: a later, separate break is read as a newer report of the earlier break (return identity); state preservation and return ceiling",
+   "mechanism": "returnAfterPause reads prior = program.weeks[pauseWeek].startBeforeReturn ?? stateTrace[pauseWeek] (r6-adaptation.mjs:626) for any return whose break begins in a week where an earlier return stored startBeforeReturn (a MODERATE or LONG return that re-planned its own week, :651). Nothing checks that the newer report is about the same break: its interruption dates against the earlier one's, or its start against the earlier return's report day. For a separate break that began after re-entry started, the newer return starts from the state before the first break. It erases the re-entry state that the first return set and the athlete executed: returnStep, the run RETURN mode and its returnTo. SHORT then 'resumes last completed doses' from pre-break doses. Origin: the same-week variant came with FREEZE-A1's C5 reading (pauseWeek === w), which my first review did not find. The cross-week variant came with FREEZE-A2's QE-R7A1-03 fix, which applied my required change as written. FREEZE-2 reads stateTrace[pauseWeek], the re-entry start, and has neither variant.",
+   "reproduction": "reviews/qe-a2-P13-second-break-after-reentry.mjs (outputs .A2, .A1copy, .A2-priorA1mutant, .F2). Program runDays [1,3,6], strengthDays [2,5]; weeks 0-2 executed, weeks 3-4 not trained. Week 5 Monday 06:00: RETURN_AFTER_PAUSE, 16 days (TRAVEL), re-entry this week (back-squat 1x5 @RIR4 ESTABLISH, runs 15/15/20). X: Tuesday-Thursday re-entry sessions executed; week 5 weekly review (week 6 at return step 1: back-squat 2x5, run mode RETURN, long 45); a second, separate break Friday of week 5 to Tuesday of week 6 (5 days, SHORT), reported Wednesday 06:00 of week 6. FREEZE-A2: week 6 back-squat 3x5 @RIR3 KNOWN 82.5, long run 70; week 7 starts at back-squat KNOWN 85 with returnStep null and run mode EASY, easy 45, long 75 (6 rows more than one set above the re-entry). FREEZE-A1, FREEZE-2 and my FREEZE-A2 mutant with the FREEZE-A1 reading: week 6 1x5 @RIR4, long 20; week 7 returnStep 1, run mode RETURN. X2 (the second break Friday-Sunday, reported Monday 06:00 of week 6): the same. S: only the Tuesday run executed; a second break Wednesday-Thursday of week 5 (2 days), reported Friday 06:00. On FREEZE-A1 and FREEZE-A2, Saturday's strength becomes 3x5 @RIR3 KNOWN 22 and the long run 70, with no strength re-entry session done; week 6 is at pre-break doses (9 rows more than one set above the re-entry). FREEZE-2 keeps the re-entry. Every step is a valid synthetic input through evaluateProgram, and every proposal passes C7.",
+   "requiredChange": "Identify the break a return reports: record its interruption, or at least its report day, with startBeforeReturn. Read startBeforeReturn only for a newer report of that break, for example one whose break begins before the earlier return's report day or overlaps its interruption. Otherwise start from the stored start of the break's week (the re-entry the athlete was doing). Tests: two separate breaks in the same week and across the week boundary keep the first re-entry; the QE-R7A1-03 and C4/C6 correction tests keep passing."
+  },
+  {
+   "id": "QE-R7A1-10",
+   "severity": "MEDIUM",
+   "material": true,
+   "class": "C4/C5 (D58): the short-return easy slot's identity is not tied to its return (same root cause as QE-R7A1-09)",
+   "mechanism": "shortReturnEasy (r6-composition.mjs:114) takes as its slot any session whose explanation is the easy-slot text, before looking for the first quality slot still ahead of its report. The composeWeeks carry (:203) uses the same test. A second, separate short break in a week whose quality slot an earlier short return already eased (now history) therefore takes that old slot as its own. Nothing is carried, and the first quality slot after the second break runs as planned. FREEZE-A1 and FREEZE-2 gave no easy slot in either case (the D58 defect). FREEZE-A2 fixes the single-return case but not this one.",
+   "reproduction": "reviews/qe-a2-P14-second-short-break-easy-slot.mjs (outputs .A2, .A1copy, .F2). Default program (quality on Tuesday); weeks 0-2 executed. Week 3 Monday 06:00: a 6-day short return eases Tuesday's quality run, which is run and reported. A second break Wednesday-Friday (3 days) is reported Saturday 06:00, then the weekly review. FREEZE-A2: week 4 Tuesday stays QUALITY THRESHOLD 41, and the only easy slot is w3-run-d1 (the first break's). The same second break alone on FREEZE-A2: week 4 Tuesday runs EASY 41.",
+   "requiredChange": "Tie the eased slot to the return that made it (for example the return's event id on the row and in the adaptation). A newer report of the same break keeps its slot; a separate short break gets its own. Test: two separate short breaks in one week. The dose reading stays with the SSCTR (D58)."
+  },
+  {
+   "id": "QE-R7A1-11",
+   "severity": "LOW",
+   "material": false,
+   "class": "C3: a KEEP weekly review leaves the projected start; a later change of the complete week re-derives the evidence start",
+   "mechanism": "weeklyReview answers KEEP without a proposal when the evidence start changes no row (keepOk compares sessions only, r6-adaptation.mjs weeklyReview), so the stored stateTrace[w+1] (the earlier projection) stands. Any later change of the complete week that composes from the evidence re-derives it. Changes that do: a schedule change and an equipment window (FREEZE-2 and FREEZE-A1); on FREEZE-A2 also a no-op equipment statement, now recorded. The two starts differ in the state reps of two accessories (db-calf-raise and db-split-squat, 7 vs 6).",
+   "reproduction": "reviews/qe-a2-P15-noop-equipment-statement.mjs (afterReview) and reviews/qe-a2-P16-keep-review-then-change.mjs (two profiles, weeks 2-4; outputs .A2, .A1copy, .F2); rows compared over weeks 3-8 and after two further reviews in qe-a2-scratch-keepreview-rows.mjs: no row differs.",
+   "requiredChange": "Not required for READY: the difference is state only, with no row effect in the profiles probed. When next touched, a KEEP review should store its evidence start, or the evidence rule should compare like the review does."
+  }
+ ],
+ "residualsAcknowledged": [
+  "QE-R7A1-06 (LOW, C3 Sunday-morning completeness), QE-R7A1-07 (LOW, fail-closed refusal: all 6 P09 O9 refusals on FREEZE-A2 are phaseDose:glute-bridge:accessory), QE-R7A1-08 (LOW, for the SSCTR): unchanged, as the brief states",
+  "Adaptation order with a short return (brief residual 2): consistent with C4 as written; the author's D58 combination probe covers one return with each same-week adaptation, not two returns (see QE-R7A1-10)",
+  "Shift granularity (QE-R7A-23), week totals, context records (representation only) and the R23 class: unchanged; P03 re-run below"
+ ],
+ "equivalentPathsSearched": [
+  "My named probes re-run on FREEZE-A2: qe-a2-P01, P01b, P02, P04, P05, P06, P07, P10 (each output byte-identical to the author's probes/a1-judge-rerun/*.A2 file; each also run on my reconstructed FREEZE-A1 copy, which reproduces my first review's outputs byte for byte)",
+  "qe-a2-P09 seeds 7 and 1013, N=2,500 each: 5,000 sequences, 14,943 steps, 0 errors; O1, O2, O3, O4, O6, O7: 0 violations; O9: 6 refusals, all QE-R7A1-07 (byte-identical to the author's re-run)",
+  "qe-a2-P08 (D56 on real R6-closure rows; the delta touches the cap end): 300 legacy rows, A 0/0, B 0/0",
+  "qe-a2-P03 (time-zone invariance; the delta touches same-day selectors and adaptation clocks): see ran.probes",
+  "Second, separate break after a re-entry this week, same week and across the week boundary (qe-a2-P13): FOUND QE-R7A1-09",
+  "Second, separate short break after a short return's easy slot is history (qe-a2-P14): FOUND QE-R7A1-10",
+  "Recorded no-op equipment statement (A2 instantiation-only KEEP) at nine clocks/setups x three statements (qe-a2-P15): rows and adaptations unchanged; one state-only difference after a KEEP review: QE-R7A1-11",
+  "KEEP weekly review then schedule, goal, equipment window, no-op equipment change, two profiles, weeks 1-4 (qe-a2-P16): QE-R7A1-11 (state only, pre-existing)",
+  "Move paths: every move (missed session, unavailable day, re-application) goes through moveCandidates fits; buildWeek's equipmentOverride has no caller; rows carry equipment from the catalogue (R6-closure rows too)",
+  "Mutants in scratch copies: run-1 survivors 'final validation ignores equipment' and 'return cap ends after a week that was not whole' are now caught; the FREEZE-A1 prior reading is caught by the C5 test; the own-clock guard in reapply survives (observation)"
+ ],
+ "evidenceAdequacy": {
+  "tests": "505/505 on FREEZE-A2 (node --test, v24.19.0). The 10 correction tests fail on my reconstructed FREEZE-A1 copy for the right reasons (assertion messages checked). No test, grid or probe of the author's has two separate breaks, so neither QE-R7A1-09 nor QE-R7A1-10 is reachable by them.",
+  "grids": "Order equivalence on one clock cannot see QE-R7A1-09: both orders are the same single sequence (first return, then second return), and the defect is in the meaning of the second one.",
+  "mutation": "The author's final full run on FREEZE-A2 (probes/mutation-check-r7a1.A2.out.json, 2026-10-28T02:31:51Z) was written before my end check: 88/89 caught, 89 applied, 0 undocumented survivors; the one documented survivor is the C7 duplicate-race guard, as on FREEZE-A1; the R7-A survivor QE-R7A-22 is caught. I independently confirmed that run 1's two undocumented survivors (C7 equipment guard, D57 whole-week end) are caught by the added tests. No mutant covers the same-break condition: by construction, single-fix reverts cannot measure behaviour nobody fixed.",
+  "regression": "Not re-run (prohibited). The verifier's regression check passes."
+ },
+ "integrityRecommendations": {
+  "WEEK_COMPOSITION_INTEGRITY": "READY (engineering): QE-R7A1-01, 02 and 04 are closed by their mechanism. P09 found no oracle violation in 5,000 sequences, and P15 found that a recorded no-op statement changes no row. QE-R7A1-11 is LOW (state only).",
+  "STATE_PRESERVATION_INTEGRITY": "NOT_READY: QE-R7A1-09. A later, separate return erases the re-entry state an earlier return set and the athlete executed. QE-R7A1-10 has the same root cause.",
+  "EVENT_SUPERSESSION_INTEGRITY": "READY (engineering): unchanged; P09 O6 0 in 5,000 sequences.",
+  "EXERCISE_MERGE_INTEGRITY": "READY: QE-R7A1-05 closed by its mechanism.",
+  "RETURN_RECOVERY_CEILING_INTEGRITY": "NOT_READY (engineering side): QE-R7A1-09 bypasses the return steps after a 16-day break (1 set at RIR 4 becomes 3 sets at RIR 3 at the pre-break load). D56 holds on every representation (P08); D57 and D58 are ruled by the SSCTR."
+ },
+ "notReadyRecord": {
+  "blocker": "QE-R7A1-09 (HIGH), with QE-R7A1-10 (MEDIUM) from the same root cause; QE-R7A-01 open through it",
+  "rootCause": "Return supersession (C5) has no break identity. 'A newer report of a break' is implemented as 'any return whose break begins in a week an earlier return re-planned' (startBeforeReturn), and as 'any slot already eased' (the easy-slot explanation). A separate, later break is therefore read as a correction of the earlier one.",
+  "whyNotClosed": "The same-week variant entered with FREEZE-A1's C5. My first review, the handler grids and the tests did not exercise two separate breaks. The cross-week variant entered with the A2 fix of QE-R7A1-03, which my first review specified without a same-break condition. The single correction cycle is spent (FOUNDER_REQUEST §11).",
+  "smallestNextMission": "One bounded fix in returnAfterPause and shortReturnEasy/composeWeeks: record the break a return reports, use startBeforeReturn and the earlier eased slot only for a newer report of that break, and otherwise start from the stored re-entry and give the new short break its own slot. Tests: two separate breaks (same week, across the week boundary) and two separate short breaks in one week, plus the existing correction tests. Then a narrow re-check that re-runs qe-a2-P13, qe-a2-P14, qe-a2-P02 and qe-a2-P09."
+ },
+ "ran": {
+  "verifier": "node CoachingCore/scripts/verify-r7a1.mjs (no --write): start 14/17 (failing mutation-check, independent-reviews, deliverables); end 15/17 (failing independent-reviews, deliverables); freeze-current passes at both",
+  "digest": "reviews/qe-a2-digest.mjs at start and end (hash() of value.mjs over the src/*.mjs SHA-256 map, as in freeze-r7a1.mjs)",
+  "tests": "node --test in CoachingCore (505/505, reviews/qe-a2-node-test.out.txt); test/r7a1-correction.test.mjs on my reconstructed FREEZE-A1 copy (0/10)",
+  "probes": [
+   "qe-a2-P01",
+   "qe-a2-P01b",
+   "qe-a2-P02",
+   "qe-a2-P03 (2,844 comparisons, 0 differences)",
+   "qe-a2-P04",
+   "qe-a2-P05",
+   "qe-a2-P06",
+   "qe-a2-P07",
+   "qe-a2-P08",
+   "qe-a2-P09 (seeds 7 and 1013, 2,500 each)",
+   "qe-a2-P10",
+   "qe-a2-P13 (new)",
+   "qe-a2-P14 (new)",
+   "qe-a2-P15 (new)",
+   "qe-a2-P16 (new)",
+   "qe-a2-scratch-* (exploration only)"
+  ],
+  "copies": "Scratch copies outside the repository (session scratchpad): a byte-exact FREEZE-A1 rebuilt by reverse-applying the A1-to-A2 diff (77/77 hashes), and FREEZE-A2 mutants (FREEZE-A1 prior reading; own-clock guard removed; C7 equipment guard removed; D57 whole-week guard removed)",
+  "notRun": [
+   "npm run verify",
+   "npm run simulate",
+   "npm run demonstrations:r6",
+   "other scripts/verify-r*.mjs",
+   "regress-r7a.mjs",
+   "regress-r7a1.mjs",
+   "freeze-r7a1.mjs",
+   "prepare-r7a1.mjs",
+   "queue-r7a1.mjs",
+   "probes/mutation-check-r7a1.mjs",
+   "probes/ssctr-r12-instrument.mjs"
+  ],
+  "authority": "DEV_TEST_ONLY devAuthority(); synthetic data; no network; no commit; nothing written under CoachingCore/ and nothing outside audits/domain-coaching-r7a1-2026-10-27/reviews/ except the session scratchpad"
+ }
+}

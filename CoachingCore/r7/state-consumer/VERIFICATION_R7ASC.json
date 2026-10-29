@@ -1,0 +1,628 @@
+{
+  "revision": "R7ASC-VERIFICATION-1",
+  "verifiedAt": "2026-10-29T14:24:19.130Z",
+  "node": "v24.19.0",
+  "passing": 25,
+  "total": 25,
+  "freeze": "RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json",
+  "checks": [
+    {
+      "id": "baseline-preserved",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "entries": 3851,
+        "changed": [
+          "CoachingCore/src/r6-adaptation.mjs",
+          "CoachingCore/src/r6-program.mjs",
+          "CoachingCore/test/r7asm-state-model.test.mjs",
+          "CURRENT_MISSION.md",
+          "MISSION_LEDGER.md"
+        ],
+        "unexpected": [],
+        "insertOnly": [
+          {
+            "file": "CURRENT_MISSION.md",
+            "unchanged": false,
+            "prefixPreserved": true,
+            "prefixBytes": 65823,
+            "appendedBytes": 11210,
+            "carriageReturnsAppended": 0
+          },
+          {
+            "file": "MISSION_LEDGER.md",
+            "unchanged": false,
+            "prefixPreserved": true,
+            "prefixBytes": 124470,
+            "appendedBytes": 4653,
+            "carriageReturnsAppended": 0
+          }
+        ],
+        "addedFiles": 8,
+        "addedOutside": []
+      }
+    },
+    {
+      "id": "freeze-current",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "revision": "STATE-MODEL-CONSUMER-FREEZE-1",
+        "sourceDigest": "adab37162d4f30d783faed2fe02fd44769a4be36be7bb1f6e8455a01b86235e5",
+        "recomputed": "adab37162d4f30d783faed2fe02fd44769a4be36be7bb1f6e8455a01b86235e5",
+        "manifestDigest": "4f11f4b48782a5f16dc6c9770a367d013564380aecc42d19be348d4ebc45cd1f",
+        "freezes": [
+          "RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json"
+        ],
+        "delta": {
+          "changed": [
+            "src/r6-adaptation.mjs",
+            "src/r6-program.mjs",
+            "test/r7asm-state-model.test.mjs"
+          ],
+          "added": [
+            "test/r7asc-state-consumer.test.mjs"
+          ],
+          "removed": [],
+          "baseline": "audits/domain-coaching-r7a-state-consumer-2026-10-29/state-model-freeze-source/MANIFEST.json",
+          "priorFreezeSourceDigest": "0db72d0edd9fd7f1382e1ed8622d29e2ff3356699da18872b0670615956e2eb8"
+        },
+        "drift": [],
+        "unfrozen": []
+      }
+    },
+    {
+      "id": "policy-unchanged",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+        "revision": "R6-POLICY-5"
+      }
+    },
+    {
+      "id": "tests",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "tests": 632,
+        "passing": 632,
+        "fail": 0,
+        "node": "v24.19.0"
+      }
+    },
+    {
+      "id": "baseline-reproduced",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "probes": 24,
+        "compare": {
+          "probes": 22,
+          "reproduced": 22,
+          "byteIdentical": 21,
+          "onlyClockOrLabel": [
+            "ssctr-trace-h25"
+          ],
+          "notReproduced": [],
+          "tests": "589/589 (fail 0)",
+          "verifyR7asmReadOnly": "14/16",
+          "verifyR7asmFailing": [
+            "baseline-preserved",
+            "reviews-not-dispatched"
+          ]
+        }
+      }
+    },
+    {
+      "id": "evidence-runs-bound",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "runs": 62,
+        "unbound": [],
+        "failed": [],
+        "skipped": [],
+        "changed": []
+      }
+    },
+    {
+      "id": "ssctr-kit-runs-bound",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "runs": 43,
+        "unbound": [],
+        "failed": [],
+        "skipped": [],
+        "changed": []
+      }
+    },
+    {
+      "id": "qe-r7asm-01-closed",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "q3": [
+          {
+            "variant": "noDetails",
+            "sameRecord": true,
+            "prescribedKnownLoadBecameHistory": false,
+            "sameRecordDifferentHistory": false
+          },
+          {
+            "variant": "repsNoLoad",
+            "sameRecord": true,
+            "prescribedKnownLoadBecameHistory": false,
+            "sameRecordDifferentHistory": false
+          },
+          {
+            "variant": "unknownUnit",
+            "sameRecord": true,
+            "prescribedKnownLoadBecameHistory": false,
+            "sameRecordDifferentHistory": false
+          },
+          {
+            "variant": "loggedAt18",
+            "sameRecord": true,
+            "prescribedKnownLoadBecameHistory": false,
+            "sameRecordDifferentHistory": false
+          }
+        ],
+        "q3b": {
+          "sameRecord": true,
+          "prescribedKnownLoadBecameHistory": false,
+          "historiesDiffer": false
+        },
+        "q12FactsOnly": {
+          "mode": "FROM_LOG",
+          "stateLoad": null,
+          "source": "PLANNED_ESTABLISHMENT",
+          "lastExecutedLoad": null
+        }
+      }
+    },
+    {
+      "id": "qe-r7asm-02-closed",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "q4": [
+          {
+            "variant": "LONG",
+            "identicalLedgers": true,
+            "planDiffersWithIdenticalLedgers": false,
+            "historyEqual": true
+          },
+          {
+            "variant": "MODERATE",
+            "identicalLedgers": true,
+            "planDiffersWithIdenticalLedgers": false,
+            "historyEqual": true
+          }
+        ],
+        "q4b": {
+          "historyAlwaysEqual": true,
+          "firstWeekRowsDiffer": null,
+          "firstWeekPlanStateDiffers": null
+        }
+      }
+    },
+    {
+      "id": "qe-r7asm-03-closed",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "q11c": {
+          "identicalLedgers": true,
+          "historyEqual": true,
+          "onlyU": 0,
+          "onlyR": 0
+        },
+        "q12Goals": {
+          "GENERAL": {
+            "identicalLedgers": true,
+            "historyEqual": true,
+            "onlyU": 0,
+            "onlyR": 0
+          },
+          "RUNNING_SUPPORT": {
+            "identicalLedgers": true,
+            "historyEqual": true,
+            "onlyU": 0,
+            "onlyR": 0
+          }
+        }
+      }
+    },
+    {
+      "id": "qe-r7asm-04-closed",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "publicApiIgnoresCorrection": false,
+        "recordAsReturnedEqualsWithoutSuperseded": true,
+        "publicApiReadsRetractedLoad": false
+      }
+    },
+    {
+      "id": "ssctr-f1-d53-d57-closed",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "grid": {
+          "B": 0,
+          "C": 0,
+          "capRiseOrEndAfterNotWhole": 0,
+          "heldAfterWhole": 0
+        },
+        "caps": {
+          "B": 0,
+          "coveredJumps": 0,
+          "unexplained": 0
+        },
+        "capsExtensionB": 0
+      }
+    },
+    {
+      "id": "ssctr-f2-closed",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "goals": {
+          "STRENGTH": {
+            "rows": 42,
+            "outOfRange": 0
+          },
+          "HYPERTROPHY": {
+            "rows": 42,
+            "outOfRange": 0
+          },
+          "RUNNING_SUPPORT": {
+            "rows": 42,
+            "outOfRange": 0
+          }
+        },
+        "outOfRange": []
+      }
+    },
+    {
+      "id": "ssctr-f3-closed",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "rowsAfterTheChange": 56,
+        "aboveTheRange": []
+      }
+    },
+    {
+      "id": "ssctr-d56-d58-d59-preserved",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "identicalToApprovedRun": [
+          {
+            "n": "d58",
+            "identical": true
+          },
+          {
+            "n": "short",
+            "identical": true
+          },
+          {
+            "n": "firstweek",
+            "identical": true
+          },
+          {
+            "n": "f-sameday",
+            "identical": true
+          },
+          {
+            "n": "x-ceiling",
+            "identical": true
+          },
+          {
+            "n": "x-rotation",
+            "identical": true
+          },
+          {
+            "n": "x-sameday",
+            "identical": true
+          },
+          {
+            "n": "x-trace-rot",
+            "identical": true
+          },
+          {
+            "n": "caps-ext.shard0",
+            "identical": true
+          },
+          {
+            "n": "caps-ext.shard1",
+            "identical": true
+          }
+        ],
+        "firstWeekViolations": []
+      }
+    },
+    {
+      "id": "ssctr-differences-explained",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "grid": [
+          {
+            "timelinesDifferingFromSE": 27,
+            "rows": {
+              "GOAL_RANGE_CUT": 21,
+              "CARRIED_FROM_PREDECESSOR": 277,
+              "F1_RESTORED_WITH_RETURN_BASE": 12
+            }
+          },
+          {
+            "timelinesDifferingFromSE": 42,
+            "rows": {
+              "CARRIED_FROM_PREDECESSOR": 387,
+              "GOAL_RANGE_CUT": 36,
+              "F1_RESTORED_WITH_RETURN_BASE": 16
+            }
+          },
+          {
+            "timelinesDifferingFromSE": 43,
+            "rows": {
+              "CARRIED_FROM_PREDECESSOR": 401,
+              "GOAL_RANGE_CUT": 32,
+              "F1_RESTORED_WITH_RETURN_BASE": 16
+            }
+          },
+          {
+            "timelinesDifferingFromSE": 47,
+            "rows": {
+              "CARRIED_FROM_PREDECESSOR": 399,
+              "GOAL_RANGE_CUT": 43,
+              "F1_RESTORED_WITH_RETURN_BASE": 16
+            }
+          }
+        ],
+        "xItems": {
+          "differences": 15,
+          "allRepetitionCutsOnly": true
+        },
+        "xFirstweekIdenticalBesidesRepsRow": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "xTraceSdIdenticalToPredecessor": true,
+        "round12": {
+          "differFromPredecessor": [
+            "V_D47reviews"
+          ],
+          "d47BackToApprovedReading": true
+        }
+      }
+    },
+    {
+      "id": "earlier-blockers-closed",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "qeR7ase01": [
+          {
+            "name": "repsShort",
+            "ledgersEqual": true,
+            "namedAtomsDiffer": [],
+            "rowsEqual": true
+          },
+          {
+            "name": "repsUnlogged",
+            "ledgersEqual": true,
+            "namedAtomsDiffer": [],
+            "rowsEqual": true
+          }
+        ],
+        "qeR7ase02": [
+          {
+            "name": "qe-r7ase-P50",
+            "reestablish": true,
+            "controlAgrees": true
+          },
+          {
+            "name": "qe-r7ase-P50.tz540",
+            "reestablish": true,
+            "controlAgrees": true
+          },
+          {
+            "name": "qe-r7ase-P50.tz-300",
+            "reestablish": true,
+            "controlAgrees": true
+          }
+        ],
+        "qeR7ab01": true
+      }
+    },
+    {
+      "id": "self-challenge",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "classes": 16,
+        "cases": 1376,
+        "liveViolations": 0,
+        "priorFreezeViolations": 84,
+        "priorByClass": {
+          "C1-known-row-without-load": 18,
+          "C2-retracted-evidence": 16,
+          "C3-conflicting-report": 2,
+          "C5-hold": 3,
+          "C7-reps-then-load": 3,
+          "C10-return-midweek-restoration": 5,
+          "C15-view-vs-history": 3,
+          "C16-later-evidence-invariance": 34
+        }
+      }
+    },
+    {
+      "id": "tests-discriminate",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "total": 77,
+        "failingOnPredecessor": 27,
+        "findingsWithoutAFailingTest": []
+      }
+    },
+    {
+      "id": "mutation-check",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "total": 26,
+        "caught": 25,
+        "survivors": 1,
+        "documented": 1,
+        "undocumented": [],
+        "boundTo": "adab37162d4f30d783faed2fe02fd44769a4be36be7bb1f6e8455a01b86235e5",
+        "testsDrift": []
+      }
+    },
+    {
+      "id": "regression",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "sourcesBoundToCurrentRuntime": true,
+        "summary": {
+          "r6FreshHoldout": {
+            "cases": 35,
+            "identical": 25,
+            "different": [
+              "R6-H02",
+              "R6-H03",
+              "R6-H05",
+              "R6-H18",
+              "R6-H22",
+              "R6-H24",
+              "R6-H25",
+              "R6-H26",
+              "R6-H27",
+              "R6-H33"
+            ],
+            "statusChanged": []
+          },
+          "r5Corpus": {
+            "cases": 24,
+            "identical": 24,
+            "different": [],
+            "statusChanged": []
+          },
+          "profiles": {
+            "cases": 16,
+            "identical": 12,
+            "different": [
+              "D_NOVICE_RUNNER_EXPERIENCED_STRENGTH",
+              "G_LOW_DATA_NO_WEARABLE",
+              "WALK_JOG_FIVE_DAYS",
+              "RESTART_AFTER_PAUSE"
+            ],
+            "statusChanged": []
+          },
+          "simulations": {
+            "cases": 14,
+            "identical": 10,
+            "different": [
+              "T04_STRENGTH12_REPEATED_UNDERPERFORMANCE",
+              "T05_10K8_SHORT_INTERRUPTION",
+              "T08_NOVICE8_MODERATE_INTERRUPTION",
+              "T13_HM16_FATIGUE_SIGNALS"
+            ],
+            "statusChanged": []
+          }
+        },
+        "classes": [
+          {
+            "id": "EARNED_REPETITIONS",
+            "cases": 3,
+            "risen": 4,
+            "fallen": 44
+          },
+          {
+            "id": "GOAL_RANGE_CUT",
+            "cases": 3,
+            "risen": 0,
+            "fallen": 37
+          },
+          {
+            "id": "HOLD_REPEATS_DOSE",
+            "cases": 2,
+            "risen": 56,
+            "fallen": 1
+          },
+          {
+            "id": "RETURN_WEEK_SUMMARY",
+            "cases": 1,
+            "risen": 0,
+            "fallen": 0
+          },
+          {
+            "id": "PLANNED_SUMMARY_BOOKKEEPING",
+            "cases": 9,
+            "risen": 0,
+            "fallen": 0
+          }
+        ],
+        "verdict": {
+          "casesTotal": 89,
+          "casesDifferentRaw": 18,
+          "casesDifferentAfterBookkeeping": 9,
+          "doseFieldsRisen": 60,
+          "doseFieldsFallen": 82,
+          "unclassifiedDifferences": 0
+        }
+      }
+    },
+    {
+      "id": "queue-untouched",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "sha256": "221a03651e103e82636c42b37fe263dd61ce1bde2e6b73f552e6dc6b10b50218"
+      }
+    },
+    {
+      "id": "deliverables",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "missing": []
+      }
+    },
+    {
+      "id": "reviews-not-dispatched",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "reviewFiles": [
+          "ENGINEERING_REVIEW_BRIEF.md",
+          "SSCTR_REGRESSION_REVIEW_BRIEF.md"
+        ],
+        "verdictsPresent": []
+      }
+    },
+    {
+      "id": "mission-state",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "blocks": 2,
+        "frozenBlock": true,
+        "firstBlockBytes": 1379
+      }
+    }
+  ]
+}

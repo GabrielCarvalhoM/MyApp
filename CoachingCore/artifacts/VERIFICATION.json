@@ -1,0 +1,181 @@
+{
+  "revision": "BSR-VERIFY-0.1.0",
+  "verifiedAt": "2026-10-24T12:41:04.991Z",
+  "status": "PASS",
+  "environment": {
+    "node": "v24.19.0",
+    "platform": "win32",
+    "scope": "OFFLINE_SYNTHETIC_SHADOW"
+  },
+  "checks": [
+    {
+      "name": "current_executable_tests",
+      "status": "PASS",
+      "evidence": {
+        "command": "node --test --test-reporter=tap",
+        "node": "v24.19.0",
+        "exitCode": 0,
+        "tests": 98,
+        "passed": 98,
+        "failed": 0,
+        "raw": "artifacts/TEST_RESULTS_CURRENT.tap",
+        "sha256": "8cf5c10e7e462d890860d6b2df6ae85e2f5cf3f6d3d6cc7420f77bd324114ea7"
+      }
+    },
+    {
+      "name": "upstream_reviewed_authority_integrity",
+      "status": "PASS",
+      "evidence": {
+        "sources": 32,
+        "records": 57,
+        "bundleHash": "ece7bc96a09956b725b70a5bab9355ce9f63c3a1c5ce7a5c2f1d8a1538ccede6"
+      }
+    },
+    {
+      "name": "saved_trace_replay_schema_and_no_application",
+      "status": "PASS",
+      "evidence": {
+        "uniqueTraces": 160,
+        "replayed": 160,
+        "schemaValid": 160,
+        "officialPlanMutations": 0,
+        "appliedEffects": 0
+      }
+    },
+    {
+      "name": "coverage_disjoint_denominators_and_evaluation_index",
+      "status": "PASS",
+      "evidence": {
+        "rows": 164,
+        "unique": 160,
+        "originalScenarios": 24,
+        "positiveProposalDecisions": 6,
+        "branchesCountedAsPositive": 0
+      }
+    },
+    {
+      "name": "multi_day_and_horizon_execution",
+      "status": "PASS",
+      "evidence": {
+        "familiarWeeks": 9,
+        "stressWeeks": 4,
+        "observationBlockWeeks": 4,
+        "determinismChecks": 164,
+        "replayChecks": 164,
+        "limits": "Compatible daily actuals are explicit synthetic scripted outcomes derived from familiar source doses, not physiological predictions. Four-week proposals are evaluated independently, never used as adopted plan or evidence of response to the proposed dose."
+      }
+    },
+    {
+      "name": "preexisting_dirty_repository_and_queue_preserved",
+      "status": "PASS",
+      "evidence": {
+        "unchangedFiles": 627,
+        "appendOnlyEntryFiles": 2,
+        "humanQueueItems": 88,
+        "newScientificApprovals": 0,
+        "newHumanQueueItems": 0,
+        "queueHash": "14df9d98bf954809b76116d31fcf4a5d84cbacc9058892a8401fec0e942dec2f"
+      }
+    },
+    {
+      "name": "runtime_does_not_import_expected_oracle",
+      "status": "PASS",
+      "evidence": {
+        "originalE2EProfiles": 24,
+        "noviceCounterpartProfiles": 1,
+        "expectedOracleImport": false,
+        "clarification": "Explicit candidate resources and reviewed inputs are distinct from expected disposition/autonomy/MEC test oracles"
+      }
+    },
+    {
+      "name": "requested_deliverables_exist",
+      "status": "PASS",
+      "evidence": {
+        "artifacts": 15,
+        "finalReportAndVerification": "Emitted by this current verification after independent gate checks"
+      }
+    },
+    {
+      "name": "independent_ssctr_review_current",
+      "status": "PASS",
+      "evidence": {
+        "verdict": "READY",
+        "path": "audits/bounded-shadow-runtime-2026-10-24/reviews/ssctr.json",
+        "sha256": "37c87430c3ac1db018e214e8f0f8b50485f61c61e40baa54274b1ddfcf6fdeb8",
+        "reviewedFiles": 20
+      }
+    },
+    {
+      "name": "independent_quality_review_current",
+      "status": "PASS",
+      "evidence": {
+        "verdict": "PASS",
+        "path": "audits/bounded-shadow-runtime-2026-10-24/reviews/quality.json",
+        "sha256": "fd739ba596defc859d91bf8b3cf0b702fcba232483041222cf999902fb31561e",
+        "reviewedFiles": 37
+      }
+    }
+  ],
+  "verdicts": {
+    "BOUNDED_SHADOW_RUNTIME_READINESS": "READY",
+    "POSITIVE_PRESCRIPTION_COVERAGE": "NOT_READY",
+    "AUTONOMOUS_COACHING_SPEC_READINESS": "NOT_READY",
+    "AUTONOMOUS_COACH_RUNTIME_READINESS": "NO_GO",
+    "NEXT_ENGINEERING_STEP": "DOMAIN_CLOSURE_REQUIRED"
+  },
+  "reviewResults": {
+    "ssctr": {
+      "verdict": "READY",
+      "path": "audits/bounded-shadow-runtime-2026-10-24/reviews/ssctr.json",
+      "sha256": "37c87430c3ac1db018e214e8f0f8b50485f61c61e40baa54274b1ddfcf6fdeb8",
+      "reviewedFiles": 20
+    },
+    "quality": {
+      "verdict": "PASS",
+      "path": "audits/bounded-shadow-runtime-2026-10-24/reviews/quality.json",
+      "sha256": "fd739ba596defc859d91bf8b3cf0b702fcba232483041222cf999902fb31561e",
+      "reviewedFiles": 37
+    }
+  },
+  "artifactHashes": {
+    "BOUNDED_SHADOW_RUNTIME_CONTRACT.md": "3e0d30864df8b6d69351463ad64ad007d6d250fbbac5fd4bc0c351f73a363424",
+    "POLICY_REGISTRY_RUNTIME_BINDINGS.json": "14b79422dda80dfce5916af487d5a2dff7f7ec9a9ee15fde6f9e7d291184758d",
+    "SHADOW_DECISION_SCHEMA.json": "0c3014c16f8870f57d9ba8bc1de037040228d026e9c6d325e819e7b422b41410",
+    "SHADOW_INPUT_SCHEMA.json": "74cce78c62ef4f6417bc53ae959a4a40eda832b4a270741e87a087ae4baa56a9",
+    "artifacts/SYNTHETIC_SHADOW_RESULTS.md": "d8cdc59d115b718e01c8bf1e0f1fcab6f078842133e040c861fb430f502e0b6c",
+    "artifacts/SYNTHETIC_SHADOW_RESULTS.json": "55aa9678f6b5a673686651d6aeec51427f93e18fbd23366c5d29bc196cf32eaa",
+    "artifacts/COACHING_COVERAGE_BASELINE.md": "36b9749996fb4aa55a96f02173169db6226983945c2c96942a666a0c19ae4cb7",
+    "artifacts/COACHING_COVERAGE_BASELINE.json": "54c55f9934dd9b4326dd6e36d3996f5dc267cbf62b40405c95d6646d0d8bfe41",
+    "artifacts/RUNTIME_TRACE_EXAMPLES.md": "ee2d613bfdafc361f8e8e5c9d7b282f19cc600ce88f4180577a175f80989a5d9",
+    "artifacts/RUNTIME_TRACE_EXAMPLES.json": "cc6888602898487772c6372ee5d92f6c84595a40f5a5a57d10da6fdc1e236895",
+    "artifacts/ACF_G01_G05_PROGRESS.md": "d16eb78ffb84ff1d33f03ad5e159e9dd3fc4460b976144e66b7d7acd42045236",
+    "artifacts/ACF_G01_G05_PROGRESS.json": "92976777b8a5c50ef2ce38e7df96245643020e5e9fc0471f171cec829622cae4",
+    "artifacts/SSCTR_EVIDENCE_SNAPSHOT.json": "0e02acc8e1df04a3f706e9f5fefa73b77c80c41fc215027a21a403cc4e182be1",
+    "artifacts/HUMAN_REVALIDATION_QUEUE_UPDATE.json": "adf4d315e1160430c5ee623752cc90f6636c44b30143eba9538e117a867d4c59",
+    "artifacts/OPEN_GAPS_AFTER_SHADOW.md": "c66ca9a24e7b1846dbfb553c77cdbd6cba162b73701c0db0eff94bc06194e05e",
+    "artifacts/FINAL_REPORT.md": "2ce59849c39539d4937c7fffe77a1056049efa88a1fbf857a2bbfdc957e2f1da",
+    "package.json": "19afb2165dab12e9bf53d4cd983fe89ad2a36c2ed3889d38d93fb8b7610c3cbc",
+    "package-lock.json": "a6ea7b32bb5071e05f41f5e92cb81e06bdf1c74bc9bd87808fbbad4f57735417",
+    "src/runtime.mjs": "f6ba019c74ee072b485d51662585e52f0add6d465fbf413a8598cf3a2e189034",
+    "src/semantics.mjs": "e1ef468c4eaf304a85fb5173a89d71dcaf094ab9712663c16e5fffadae588d8c",
+    "src/fixtures.mjs": "b615c3db0022f0125e36f5ae573964de2863d587c3b9631dc48dddad581f2d13",
+    "scripts/compile-authority.mjs": "e7e9e368839994f892de8f67bfaefbd27f9df5492e4fcd25e99b7a0dc845db0b",
+    "scripts/simulate.mjs": "7a6d01ee1cd72d7d3fd0307bdee453440cb5fd253719ae5467833f3f72198aaf",
+    "scripts/prepare-artifacts.mjs": "92cf6fb410a8a67027fd8bf2b0e607bfce7aa5c1f21175b139b9382f5d7efb5b",
+    "scripts/verify.mjs": "fc341946bebe2612ac7380b0d574fb5bbbebd42f3a2c3268c6bd3f264542d067"
+  },
+  "scientificApprovalsAdded": 0,
+  "humanValidation": false,
+  "clinicalValidation": false,
+  "empiricalValidation": false,
+  "uiChanged": false,
+  "figmaAccessed": false,
+  "productionRelease": false,
+  "officialPlanApplication": false,
+  "limitations": [
+    "Finite exact synthetic contexts only",
+    "Current schema/guard/conformance evidence is not safety/efficacy or human validation",
+    "No cross-process idempotency or real-service application",
+    "Full V1 sporting gaps retained"
+  ]
+}

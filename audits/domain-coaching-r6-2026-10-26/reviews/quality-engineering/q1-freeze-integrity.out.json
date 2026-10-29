@@ -1,0 +1,32 @@
+{
+  "probe": "Q1a-freeze-integrity",
+  "node": "v24.19.0",
+  "frozenAt": "2026-10-26T18:33:58.846Z",
+  "manifestDigest": "507f35fc66f4d1e105e19ce513dc067f9fee5fdc35c039ad52a8c825e46bf857",
+  "expectedDigest": "507f35fc66f4d1e105e19ce513dc067f9fee5fdc35c039ad52a8c825e46bf857",
+  "recomputedDigestFromManifest": "507f35fc66f4d1e105e19ce513dc067f9fee5fdc35c039ad52a8c825e46bf857",
+  "digestFromCurrentFiles": "507f35fc66f4d1e105e19ce513dc067f9fee5fdc35c039ad52a8c825e46bf857",
+  "entries": 53,
+  "mismatches": [],
+  "unlistedRuntimeFiles": [],
+  "listedButNotDerived": [],
+  "otherReads": [
+    {
+      "file": "CoachingCore/src/r3-runtime.mjs",
+      "snippet": "existsSync(p)?JSON.parse(fs.readFileSync(p,'utf8')):null;"
+    },
+    {
+      "file": "CoachingCore/src/r4-authority.mjs",
+      "snippet": "existsSync(url)?JSON.parse(fs.readFileSync(url,'utf8')):null;"
+    },
+    {
+      "file": "CoachingCore/src/r5-authority.mjs",
+      "snippet": "existsSync(url)?JSON.parse(fs.readFileSync(url,'utf8').replace(/^\\uFEFF/,'')):null;"
+    },
+    {
+      "file": "CoachingCore/src/r6-authority.mjs",
+      "snippet": "existsSync(url)?JSON.parse(fs.readFileSync(url,'utf8').replace(/^﻿/,'')):null;"
+    }
+  ],
+  "pass": true
+}

@@ -1,0 +1,198 @@
+R7-A final tests on a byte-exact R7A2-FREEZE-1 copy (freeze1-source) with test/r7af-episode-identity.test.mjs sha256 3e087d898a6dd5499553d1654c1720432fcc4327d7f9f74c7475c8372d2dec3f
+✖ R7-A final I1/I3 (§13 same episode, 0.6): a correction names its interruption, keeps its identity and reads the state at its new start (128.6063ms)
+✖ R7-A final I2/I4/P1 (QE-R7A2-01): a report of the first break made after a separate break began never turns that break into the first (499.6576ms)
+✔ R7-A final P3: a second break after the re-entry leaves the first break’s identity, record and state untouched (211.931ms)
+✖ R7-A final P5 (§13 cross week): a separate break gives the same start in the re-entry week or the next one when nothing else was decided (231.9855ms)
+✖ R7-A final I8 (§13 short + short, QE-R7A1-10): a second short break after the first one’s slot was run has its own slot, whatever came between (172.0233ms)
+✖ R7-A final I6 (§13 late session, 0.7, QE-R7A2-02, SSCTR R37): Monday’s lifting synced after a Wednesday break began counts; after its return it is confirmed first (95.1722ms)
+✖ R7-A final I7/P4 (§13 same day, 0.8, SSCTR NF-1): a session on the first day counts by the stated start time, and is asked without one (105.4386ms)
+✖ R7-A final P6: the same report twice adds nothing; the same record again is the same interruption (198.5555ms)
+✖ R7-A final I9 (0.4, §9, QE-R7A2-03): without a name, dates that touch or overlap are asked; a correction of an earlier break is asked (200.5888ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 1
+ℹ fail 8
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1952.5128
+
+✖ failing tests:
+
+test at test\r7af-episode-identity.test.mjs:53:1
+✖ R7-A final I1/I3 (§13 same episode, 0.6): a correction names its interruption, keeps its identity and reads the state at its new start (128.6063ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  undefined !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/tmp.8vt0F0BLzg/CoachingCore/test/r7af-episode-identity.test.mjs:59:90)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7af-episode-identity.test.mjs:78:1
+✖ R7-A final I2/I4/P1 (QE-R7A2-01): a report of the first break made after a separate break began never turns that break into the first (499.6576ms)
+  AssertionError [ERR_ASSERTION]: duplicate
+  + actual - expected
+  
+  + 'SAME_BREAK'
+  - 'NEW'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/tmp.8vt0F0BLzg/CoachingCore/test/r7af-episode-identity.test.mjs:86:48)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'SAME_BREAK',
+    expected: 'NEW',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7af-episode-identity.test.mjs:110:1
+✖ R7-A final P5 (§13 cross week): a separate break gives the same start in the re-entry week or the next one when nothing else was decided (231.9855ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   'WEEK_START',
+  +   null,
+  +   6
+  -   'RETURN',
+  -   't7af-5-RETURN_AFTER_PAUSE-104',
+  -   5
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/tmp.8vt0F0BLzg/CoachingCore/test/r7af-episode-identity.test.mjs:116:75)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'WEEK_START', null, 6 ],
+    expected: [ 'RETURN', 't7af-5-RETURN_AFTER_PAUSE-104', 5 ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7af-episode-identity.test.mjs:128:1
+✖ R7-A final I8 (§13 short + short, QE-R7A1-10): a second short break after the first one’s slot was run has its own slot, whatever came between (172.0233ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'SAME_BREAK'
+  - 'NEW'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/tmp.8vt0F0BLzg/CoachingCore/test/r7af-episode-identity.test.mjs:136:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'SAME_BREAK',
+    expected: 'NEW',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7af-episode-identity.test.mjs:141:1
+✖ R7-A final I6 (§13 late session, 0.7, QE-R7A2-02, SSCTR R37): Monday’s lifting synced after a Wednesday break began counts; after its return it is confirmed first (95.1722ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  'KEEP' !== 'ASK'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/tmp.8vt0F0BLzg/CoachingCore/test/r7af-episode-identity.test.mjs:152:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'KEEP',
+    expected: 'ASK',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7af-episode-identity.test.mjs:168:1
+✖ R7-A final I7/P4 (§13 same day, 0.8, SSCTR NF-1): a session on the first day counts by the stated start time, and is asked without one (105.4386ms)
+  AssertionError [ERR_ASSERTION]: goblet-squat: lifted before the break began
+  
+  undefined !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/tmp.8vt0F0BLzg/CoachingCore/test/r7af-episode-identity.test.mjs:175:36)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7af-episode-identity.test.mjs:186:1
+✖ R7-A final P6: the same report twice adds nothing; the same record again is the same interruption (198.5555ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  'MODIFY' !== 'KEEP'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/tmp.8vt0F0BLzg/CoachingCore/test/r7af-episode-identity.test.mjs:189:36)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'MODIFY',
+    expected: 'KEEP',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7af-episode-identity.test.mjs:196:1
+✖ R7-A final I9 (0.4, §9, QE-R7A2-03): without a name, dates that touch or overlap are asked; a correction of an earlier break is asked (200.5888ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  'MODIFY' !== 'ASK'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/tmp.8vt0F0BLzg/CoachingCore/test/r7af-episode-identity.test.mjs:199:146)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'MODIFY',
+    expected: 'ASK',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -1,5 +1,9 @@
 # Vilumo Fit — Core Flows
 
+<!-- EXPERIENCE_AUTHORITY_OVERLAY_START: EXP-AUTH-r1 -->
+> **Authority overlay · 2026-10-22 · EXP-AUTH-r1.** Read through [DR-93–97](PRODUCT_DECISION_REGISTER.md) / [index filter](../canon/CANONICAL_INDEX.md). Preconditions, object/permission ownership, agency, safe failure/recovery semantics, business constraints and valid outcomes remain. Old destinations and flows as prescribed screen sequences are **LEGACY / SUPERSEDED AS ACTIVE UX AUTHORITY**; semantic ordering (authorization before effect, preview before explicit projection) still binds. DR-91 qualifies blanket route exclusions. No candidate IA is imposed or approved. Isolation metadata is historical after `32b7fb6`; scenario descriptions are not proof of execution. Designer entry: [derived context](DESIGNER_PRODUCT_CONTEXT.md).
+<!-- EXPERIENCE_AUTHORITY_OVERLAY_END: EXP-AUTH-r1 -->
+
 **Estado:** CANDIDATE_IN_ISOLATION — freeze posterior ao SIL; reviews no registro freeze.
 
 | Campo | Valor |
@@ -13,9 +17,9 @@ Cada fluxo declara gatilho, objetos, passos, fechamento e recuperação. “Conf
 
 ## F01. Entrar e obter primeiro valor
 
-Gatilho: primeira abertura/retomada do onboarding pessoal, sem caminho social. Objetos: pessoa/consentimento/objetivos/prioridade/Athlete Model/plano inicial. Destino: onboarding → prévia da Week → oferta F11 → adoção → Hoje.
+Gatilho: primeira abertura/retomada do onboarding pessoal, sem caminho social. Objetos: pessoa/consentimento/objetivos/prioridade/Athlete Model/plano inicial. Destino: onboarding no aparelho → conta (DR-111) → prévia da Week → oferta F11 → adoção → Hoje.
 
-1. Idioma PT-BR/EN e 18+ com dados mínimos/método G08, sem perfil indevido de inelegível. Consentimento/base por finalidade, sensores/wearable e I10 secundário separados e opcionais quando aplicável.
+1. Idioma PT-BR/EN/ES e 18+ com dados mínimos/método G08, sem perfil indevido de inelegível. Consentimento/base por finalidade, sensores/wearable e I10 secundário separados e opcionais quando aplicável.
 2. Objetivo concreto Running e Strength, prioridade RUN_FIRST/STRENGTH_FIRST/BALANCED, experiência/prática recente, disponibilidade/equipamento e limitação relevante mínima. Unknown é honesto; arbitragem dependente pede preferência, não assume runner-first.
 3. Model inicial e especialistas propõem semana coordenada sob policy/cobertura aprovadas; REPLAN base sem plano explícita, adoção APPLY_PLAN_CHANGE. Sem receita/autoridade, estado de limite e próximo passo, não dose inventada ou plano pronto fictício.
 4. Mostrar semana e explicação simples da relação Run×Strength/objetivo protegido, confidence/limites; ajustar respostas ou continuar. Primeiro valor é perceber coordenação, não boas-vindas ou IA decorativa.

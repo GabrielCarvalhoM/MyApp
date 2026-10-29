@@ -1,0 +1,795 @@
+{
+ "revision": "R7ASC-SSCTR-QUEUE-PROPOSAL-r1",
+ "reviewRevision": "R7ASC-SSCTR-r1",
+ "destination": "reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json",
+ "note": "Proposal only: one item per prescriptive approval of R7ASC-SSCTR-r1, each bound to STATE-MODEL-CONSUMER-FREEZE-1, a freeze this review finds NOT_READY (F4). The queue file was not edited; the Chief decides whether to integrate them append-only. Funding NOT_DECLARED.",
+ "funding_trigger": {
+  "state": "NOT_DECLARED",
+  "declaration_ref": null,
+  "declared_at": null
+ },
+ "preserveAllHistoricalEntries": true,
+ "items": [
+  {
+   "queue_id": "HQ-R7ASC-SSCTR-QUALITY-SLOT-READINGS",
+   "decision_id": "R7A1-SSCTR-QUALITY-SLOT-READINGS",
+   "decision_revision": "R7ASC-SSCTR-r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/state-consumer/RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json",
+    "artifact_revision": "STATE-MODEL-CONSUMER-FREEZE-1",
+    "sha256": "5c8687755daa3294339150d35170178e033e12d552315ed92fb4cd668217f3b2",
+    "rule_ids": [
+     "R6-NONCLINICAL-RETURN condition 7 (SHORT: the first quality slot runs easy)",
+     "operational.return.shortMaxDays",
+     "r6-composition.mjs shortReturnEasy, composeWeeks (SHORT_RETURN_EASY carry), reapply, unavailableSessions, conflictSessions, missedMove",
+     "r6-adaptation.mjs returnAfterPause (SHORT_RETURN_EASY on the week re-entry starts)",
+     "WEEK_COMPOSITION_CONTRACT R7A1-COMPOSITION-1, C1 and C4",
+     "R7-A.2 INTERRUPTION_CONTRACT R7A2-COMPOSITION-3: r6-adaptation.mjs interruptionEpisode, stateAtBreak, returnAfterPause; r6-program.mjs strengthAtBreak, startStrengthReturn; r6-composition.mjs shortReturnEasy (easedFor), composeWeeks (carry per break)",
+     "R7-A final INTERRUPTION_EPISODE_CONTRACT R7AF-INTERRUPTION-1: r6-adaptation.mjs episodesOf, interruptionEpisode (isSameInterruption), stateAtBreak (executedStateAt), returnStrength, staleReturn, returnAfterPause",
+     "R7-A boundary WEEK_START_AUTHORITY_CONTRACT R7AB-WEEKSTART-1: r6-program.mjs WEEK_START, premiseOf, startAuthority, anchoredStart, projectedStart, generateProgram (authorities); r6-composition.mjs composeWeeks (startAuthority); r6-adaptation.mjs historicalWeekStart, stateAtBreak (walk-back before any return too; stateAt.authority), weeklyReview, rebuild, returnAfterPause (startBeforeReturnAuthority; Founder §11 temporal contradiction asked)",
+     "STATE_EVIDENCE_CONTRACT R7ASE-STATE-EVIDENCE-1 (value-scoped fact vs projection): r6-adaptation.mjs historicalView, stateAtBreak (value by value; stateAt.values), projectedBaseOf, evidenceStart, weeklyReview, rebuild; r6-program.mjs exercisePremiseOf, projectedStart (per-exercise premises), anchoredStart (projectedBase), strengthAtBreak (a known load lifted is the load); r6-composition.mjs composeWeeks (projectedBase); declared boundaries E1-E6",
+     "STATE_MODEL_CONTRACT R7ASM-STATE-MODEL-1 (HistoricalState vs PlanningProjection): r6-adaptation.mjs evidenceState (the evidence reducer; E6: a week executed as finally prescribed is evidence), planningBase and planningExercise (the PlanningView, HISTORY_ATOMS), historicalStateOf, stateAtBreak with historicalStrength, weeklyGates/evidenceStart on the view; r6-program.mjs earnedAt (R42: credit 0 and the executed repetitions at a new load), executedDose, historicalStrength (a return resumes the dose last executed), anchoredStart; r6-composition.mjs weekAsPlanned (ctx.base), composeWeeks (a later fromWeek chained from the view), moveCandidates (D52 from the view), withContextChange (past contexts kept); declared boundaries E1-E6",
+     "STATE_CONSUMER_CONTRACT R7ASC-STATE-CONSUMER-1 (history ingress, the resolved prescription, evidence through time): r6-program.mjs asEstablishment, resolveExercisePrescription, earnedAt (the gate decides the new-load repetitions), doseStep (a return step moves from the dose run), strengthCandidate inRange (the current goal range on every known-dose row), advanceRun (RETURN, RESTART and WALK_JOG move from the dose the week prescribed), plannedOf (the re-entry dose); r6-adaptation.mjs planningBase (history's run in RETURN or RESTART), historicalStateOf and canonicalRecord, evidenceState (a return's own week read after its point), weeklyGates (a past week's gate counts the logs up to its clock), loggedLoadQuestions"
+    ]
+   },
+   "approved_scope": {
+    "gate": "G02",
+    "item_ids": [
+     "D58",
+     "QE-R7A-02",
+     "R27",
+     "R32",
+     "R33",
+     "R18"
+    ],
+    "prescriptive_impact": true,
+    "whole_gate_closure": false
+   },
+   "conditions": [
+    "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+    "Binding: this record binds runtime STATE-MODEL-CONSUMER-FREEZE-1 (CoachingCore/r7/state-consumer/RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json, sha256 5c8687755daa3294339150d35170178e033e12d552315ed92fb4cd668217f3b2; source digest adab37162d4f30d783faed2fe02fd44769a4be36be7bb1f6e8455a01b86235e5; manifest 4f11f4b48782a5f16dc6c9770a367d013564380aecc42d19be348d4ebc45cd1f; r6-adaptation.mjs d2296bb3b4bc0246fadeaea0bd0d4bae9ed2f1edb8bd55fafae2565c32293e17, r6-program.mjs e5f644eeaecd12f8eddf7c80e2c095db938fc2c73abd552876009a27fb9b56b5, r6-composition.mjs 91208e1c13ff7fcbcac886d9a7ff3c71ee47eb82c4300d888542a6c54ee2d901) at the unchanged policy R6-POLICY-5 (canonical hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c). Any change to a bound file or to the policy hash expires it.",
+    "D58 (met at R7A1-FREEZE-A2 and at R7A2-FREEZE-1 and at R7A-FINAL-FREEZE and at R7A-BOUNDARY-FINAL-FREEZE and at STATE-EVIDENCE-FREEZE-1 and at HISTORICAL-PROJECTION-FREEZE-1): in a short return the first quality slot still ahead of the return report (C1), in the week re-entry starts or a later week, runs easy, recorded on the week that holds it so later re-plans and the weekly review keep it; exactly one slot is changed; the readings of \"still ahead\" when other adaptations meet it are ruled in R7A1-SSCTR-QUALITY-SLOT-READINGS. Regression: the short grid at 0 after the return and after the review, and tests \"R7-A.1 C4/C5 (D58)\" and \"R7-A.1 C4 (D58)\".",
+    "Reading (a): a quality run already eased by another adaptation is not the return’s easy slot; the slot is the first session still ahead that would run at quality dose. Reading (b): a skipped session (unavailable date, event conflict) is never the slot; a quality run moved within the week is. Reading (c): a slot made easy and later skipped passes on to the first quality slot of the next week placed, at the next composition from a later week; next week shows its planned quality run until then.",
+    "Not named in the dossier, accepted: a slot made easy and not done (missed or unreported) does not pass on; the next quality session is at the held dose (the missed-session rule). A short break whose week holds no quality slot carries the slot to the next week placed that holds one, across a race touch, a race and a post-event week (R32, R33 for the next policy revision).",
+    "D59 (met at R7A2-FREEZE-1 and at R7A-FINAL-FREEZE and at R7A-BOUNDARY-FINAL-FREEZE and at STATE-EVIDENCE-FREEZE-1 and at HISTORICAL-PROJECTION-FREEZE-1, closed): a return starts from the state at the break (stateAtBreak, strengthAtBreak): every exercise executed before the break’s first day is in use with its last performed date and, outside a return step and a phase reduction, its last executed whole count after the time fit (target met) as the ceiling (the largest of the break week, R20); a moderate or long return enters it at strengthEntrySets with strengthEntryMinimumRir or more, step 2 follows, the block in progress earns no set and the count comes back at most one set per executed whole week up to the ceiling; the progression the pre-break exposures earned stays unapplied. Regression: ssctr-r7a1-recheck-firstweek.mjs with E, O and B at 0 for NONE and FAMILIAR and O at 0 for KNOWN, my restoration, cap and short grids, and test \"R7-A.2 I4/I5/I8 (SSCTR D59)\". R7ASE-SSCTR-r1: the state at the break also takes the load the athlete lifted on a known-load row as the exercise’s load (lighter, or heavier only under D44: at most one smallest increment above the row and the row’s target met), a fact and never a step; an effort-guided row adopts nothing; a projected dose lifted exactly is that load with its repetition target and no further step. This approval excludes a stored load tick that counts an exposure the projection assumed and the athlete did not execute (NF-R7ASE-3, R42).",
+    "The start state of a return is the state at its interruption under R7A2-SSCTR-INTERRUPTION-STATE (revision R7ASM-SSCTR-r1), INTERRUPTION_EPISODE_CONTRACT R7AF-INTERRUPTION-1, WEEK_START_AUTHORITY_CONTRACT R7AB-WEEKSTART-1 (its record, temporal-contradiction rule and boundaries B1-B7, B9-B11) and STATE_MODEL_CONTRACT R7ASM-STATE-MODEL-1 (which replaces STATE_EVIDENCE_CONTRACT R7ASE-STATE-EVIDENCE-1): a correction names its interruption (episodeId) or repeats its days and starts from what the athlete had executed at its own start; a break after a re-entry or after training is new and starts from that re-entry plus the facts executed since; the state at the interruption is read value by value (one value per strength exercise, one for the run): a stored value counts only when its start holds that value as evidence decided before the cut (the intake, a return’s entry, the weekly review’s rule on that value’s historical value, or a projection whose own base value was historical and that the week before executed per sport exactly as assumed, loads included); a value a review carried from a projection is rebuilt by the review’s rule on its historical value; otherwise the value moves back to its last such start and the sessions executed after it are facts only (a known load lifted is the load under D44; a projected dose lifted is that load with its repetition target, never a load tick only the projection counted); weeks never reported are not history; a named correction that contradicts its own executed re-entry is asked; anything else is asked; each short break owns its easy slot.",
+    "Weekly-review contract: these readings hold when every elapsed week receives a gating weekly review, in order and after its last session; a week that receives no gating review keeps the projection’s assumption, and a skipped easy slot then reaches next week only at a composition from a later week (E3; R18, Engineering with Product/Data)."
+   ],
+   "approval_date": "2026-10-29",
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Chief (integration); future funded qualified human (revalidation)",
+   "human_review": null,
+   "re_review_triggers": [
+    "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+    "Any change to a file listed in RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json (new freeze revision).",
+    "A correction of F4 (the walk/jog return): a new freeze needs this regression check again on my walk/jog probe, the restoration and caps grids, the temporal probe and the HOLD probe.",
+    "A runtime, Product/UX or Data decision on unreported weeks before a return or a race week (R41).",
+    "A new systematic review or meta-analysis on detraining, retraining or return after a break."
+   ]
+  },
+  {
+   "queue_id": "HQ-R7ASC-SSCTR-D59-PAUSE-WEEK-START",
+   "decision_id": "R7A1-SSCTR-D59-PAUSE-WEEK-START",
+   "decision_revision": "R7ASC-SSCTR-r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/state-consumer/RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json",
+    "artifact_revision": "STATE-MODEL-CONSUMER-FREEZE-1",
+    "sha256": "5c8687755daa3294339150d35170178e033e12d552315ed92fb4cd668217f3b2",
+    "rule_ids": [
+     "return.strengthReturnSets (entry, step 2, ceiling, \"the block in progress at the break earns no set\")",
+     "operational.return.strengthEntrySets, strengthEntryMinimumRir, shortMaxDays, moderateMaxDays",
+     "R6-NONCLINICAL-RETURN",
+     "strength.setsAfterReestablishment (QRE-R6-17, SSCTR D53)",
+     "R7-A.2 INTERRUPTION_CONTRACT R7A2-COMPOSITION-3: r6-adaptation.mjs interruptionEpisode, stateAtBreak, returnAfterPause; r6-program.mjs strengthAtBreak, startStrengthReturn; r6-composition.mjs shortReturnEasy (easedFor), composeWeeks (carry per break)",
+     "Founder request R7-A.2 §13 (D59) and I4-I8",
+     "R7-A final INTERRUPTION_EPISODE_CONTRACT R7AF-INTERRUPTION-1: r6-adaptation.mjs episodesOf, interruptionEpisode (isSameInterruption), stateAtBreak (executedStateAt), returnStrength, staleReturn, returnAfterPause",
+     "R7-A boundary WEEK_START_AUTHORITY_CONTRACT R7AB-WEEKSTART-1: r6-program.mjs WEEK_START, premiseOf, startAuthority, anchoredStart, projectedStart, generateProgram (authorities); r6-composition.mjs composeWeeks (startAuthority); r6-adaptation.mjs historicalWeekStart, stateAtBreak (walk-back before any return too; stateAt.authority), weeklyReview, rebuild, returnAfterPause (startBeforeReturnAuthority; Founder §11 temporal contradiction asked)",
+     "STATE_EVIDENCE_CONTRACT R7ASE-STATE-EVIDENCE-1 (value-scoped fact vs projection): r6-adaptation.mjs historicalView, stateAtBreak (value by value; stateAt.values), projectedBaseOf, evidenceStart, weeklyReview, rebuild; r6-program.mjs exercisePremiseOf, projectedStart (per-exercise premises), anchoredStart (projectedBase), strengthAtBreak (a known load lifted is the load); r6-composition.mjs composeWeeks (projectedBase); declared boundaries E1-E6",
+     "STATE_MODEL_CONTRACT R7ASM-STATE-MODEL-1 (HistoricalState vs PlanningProjection): r6-adaptation.mjs evidenceState (the evidence reducer; E6: a week executed as finally prescribed is evidence), planningBase and planningExercise (the PlanningView, HISTORY_ATOMS), historicalStateOf, stateAtBreak with historicalStrength, weeklyGates/evidenceStart on the view; r6-program.mjs earnedAt (R42: credit 0 and the executed repetitions at a new load), executedDose, historicalStrength (a return resumes the dose last executed), anchoredStart; r6-composition.mjs weekAsPlanned (ctx.base), composeWeeks (a later fromWeek chained from the view), moveCandidates (D52 from the view), withContextChange (past contexts kept); declared boundaries E1-E6",
+     "STATE_CONSUMER_CONTRACT R7ASC-STATE-CONSUMER-1 (history ingress, the resolved prescription, evidence through time): r6-program.mjs asEstablishment, resolveExercisePrescription, earnedAt (the gate decides the new-load repetitions), doseStep (a return step moves from the dose run), strengthCandidate inRange (the current goal range on every known-dose row), advanceRun (RETURN, RESTART and WALK_JOG move from the dose the week prescribed), plannedOf (the re-entry dose); r6-adaptation.mjs planningBase (history's run in RETURN or RESTART), historicalStateOf and canonicalRecord, evidenceState (a return's own week read after its point), weeklyGates (a past week's gate counts the logs up to its clock), loggedLoadQuestions"
+    ]
+   },
+   "approved_scope": {
+    "gate": "G02",
+    "item_ids": [
+     "D59",
+     "D53",
+     "I4",
+     "I5",
+     "I6",
+     "I7",
+     "I8",
+     "R6 round-11 \"Sessions before the pause, in the pause week\""
+    ],
+    "prescriptive_impact": true,
+    "whole_gate_closure": false
+   },
+   "conditions": [
+    "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+    "Binding: this record binds runtime STATE-MODEL-CONSUMER-FREEZE-1 (CoachingCore/r7/state-consumer/RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json, sha256 5c8687755daa3294339150d35170178e033e12d552315ed92fb4cd668217f3b2; source digest adab37162d4f30d783faed2fe02fd44769a4be36be7bb1f6e8455a01b86235e5; manifest 4f11f4b48782a5f16dc6c9770a367d013564380aecc42d19be348d4ebc45cd1f; r6-adaptation.mjs d2296bb3b4bc0246fadeaea0bd0d4bae9ed2f1edb8bd55fafae2565c32293e17, r6-program.mjs e5f644eeaecd12f8eddf7c80e2c095db938fc2c73abd552876009a27fb9b56b5, r6-composition.mjs 91208e1c13ff7fcbcac886d9a7ff3c71ee47eb82c4300d888542a6c54ee2d901) at the unchanged policy R6-POLICY-5 (canonical hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c). Any change to a bound file or to the policy hash expires it.",
+    "D59 (met at R7A2-FREEZE-1 and at R7A-FINAL-FREEZE and at R7A-BOUNDARY-FINAL-FREEZE and at STATE-EVIDENCE-FREEZE-1 and at HISTORICAL-PROJECTION-FREEZE-1, closed): a return starts from the state at the break (stateAtBreak, strengthAtBreak): every exercise executed before the break’s first day is in use with its last performed date and, outside a return step and a phase reduction, its last executed whole count after the time fit (target met) as the ceiling (the largest of the break week, R20); a moderate or long return enters it at strengthEntrySets with strengthEntryMinimumRir or more, step 2 follows, the block in progress earns no set and the count comes back at most one set per executed whole week up to the ceiling; the progression the pre-break exposures earned stays unapplied. Regression: ssctr-r7a1-recheck-firstweek.mjs with E, O and B at 0 for NONE and FAMILIAR and O at 0 for KNOWN, my restoration, cap and short grids, and test \"R7-A.2 I4/I5/I8 (SSCTR D59)\". R7ASE-SSCTR-r1: the state at the break also takes the load the athlete lifted on a known-load row as the exercise’s load (lighter, or heavier only under D44: at most one smallest increment above the row and the row’s target met), a fact and never a step; an effort-guided row adopts nothing; a projected dose lifted exactly is that load with its repetition target and no further step. This approval excludes a stored load tick that counts an exposure the projection assumed and the athlete did not execute (NF-R7ASE-3, R42).",
+    "Supersedes in part the R6 round-11 acceptance \"Sessions before the pause, in the pause week\": the progression of the break week’s pre-break exposures stays unapplied for every exercise; their facts (in use, last performed date, last executed whole count) are kept for every exercise, first exposures included.",
+    "A strength session on an interruption’s first day is ordered by the interruption’s stated start time: a session completed before that time is in the state (entry, that day’s count as the ceiling), one completed after it is not; with dates only it is asked when its order changes a fact the return starts from (in use, ceiling, unlogged load), and when only a last performed date differs the earlier date is kept (the conservative reading for a re-establishment threshold). This replaces the R7-A.2 NF-1 boundary.",
+    "Training before the latest interruption logged after its return is confirmed first: while that return sets the plan (its re-entry week), every other report asks to confirm the interruption again, and the newer report reads the whole record (entry and ceiling as read in time). This replaces the R7-A.2 S-H/R37 boundary; the cost of what the pending question holds back is NF-R7AF-1 (routed, R38).",
+    "Weekly-review contract as in every record (R18)."
+   ],
+   "approval_date": "2026-10-29",
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Chief (integration); future funded qualified human (revalidation)",
+   "human_review": null,
+   "re_review_triggers": [
+    "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+    "Any change to a file listed in RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json (new freeze revision).",
+    "A correction of F4 (the walk/jog return): a new freeze needs this regression check again on my walk/jog probe, the restoration and caps grids, the temporal probe and the HOLD probe.",
+    "A runtime, Product/UX or Data decision on unreported weeks before a return or a race week (R41).",
+    "A new systematic review or meta-analysis on detraining, retraining or return after a break."
+   ]
+  },
+  {
+   "queue_id": "HQ-R7ASC-SSCTR-D56-FORMULATION",
+   "decision_id": "R7A1-SSCTR-D56-FORMULATION",
+   "decision_revision": "R7ASC-SSCTR-r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/state-consumer/RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json",
+    "artifact_revision": "STATE-MODEL-CONSUMER-FREEZE-1",
+    "sha256": "5c8687755daa3294339150d35170178e033e12d552315ed92fb4cd668217f3b2",
+    "rule_ids": [
+     "strength.setsAfterReestablishment",
+     "return.strengthReturnSets",
+     "R6-PLANNED-PROGRESSION condition 14",
+     "R6-ROTATION condition 10",
+     "R6-LOAD-ESTABLISHMENT condition 15",
+     "R7A-SSCTR-REGAIN-BASE conditions 5, 6 and 9",
+     "R7A-SSCTR-ITEMS-5-8 item 7",
+     "r6-program.mjs advanceStrength (baseOf, phasedOf, afterFit, wholeWeek; setCap and regainCap rise and end)",
+     "WEEK_COMPOSITION_CONTRACT R7A1-COMPOSITION-1, rule D56 (I6)",
+     "R7A1-FREEZE-A2 delta: r6-program.mjs advanceStrength (setCap end, D57), r6-composition.mjs shortReturnEasy and composeWeeks carry (D58), aheadOf at fatigueSessions, unavailableSessions and conflictSessions (C1), moveCandidates equipment fit, r6-adaptation.mjs evidenceStart and reviewGates (review inputs), returnAfterPause prior, r6-provenance.mjs unreadable loads",
+     "R7-A.2 INTERRUPTION_CONTRACT R7A2-COMPOSITION-3: r6-adaptation.mjs interruptionEpisode, stateAtBreak, returnAfterPause; r6-program.mjs strengthAtBreak, startStrengthReturn; r6-composition.mjs shortReturnEasy (easedFor), composeWeeks (carry per break)",
+     "R7-A final INTERRUPTION_EPISODE_CONTRACT R7AF-INTERRUPTION-1: r6-adaptation.mjs episodesOf, interruptionEpisode (isSameInterruption), stateAtBreak (executedStateAt), returnStrength, staleReturn, returnAfterPause",
+     "R7-A boundary WEEK_START_AUTHORITY_CONTRACT R7AB-WEEKSTART-1: r6-program.mjs WEEK_START, premiseOf, startAuthority, anchoredStart, projectedStart, generateProgram (authorities); r6-composition.mjs composeWeeks (startAuthority); r6-adaptation.mjs historicalWeekStart, stateAtBreak (walk-back before any return too; stateAt.authority), weeklyReview, rebuild, returnAfterPause (startBeforeReturnAuthority; Founder §11 temporal contradiction asked)",
+     "STATE_EVIDENCE_CONTRACT R7ASE-STATE-EVIDENCE-1 (value-scoped fact vs projection): r6-adaptation.mjs historicalView, stateAtBreak (value by value; stateAt.values), projectedBaseOf, evidenceStart, weeklyReview, rebuild; r6-program.mjs exercisePremiseOf, projectedStart (per-exercise premises), anchoredStart (projectedBase), strengthAtBreak (a known load lifted is the load); r6-composition.mjs composeWeeks (projectedBase); declared boundaries E1-E6",
+     "STATE_MODEL_CONTRACT R7ASM-STATE-MODEL-1 (HistoricalState vs PlanningProjection): r6-adaptation.mjs evidenceState (the evidence reducer; E6: a week executed as finally prescribed is evidence), planningBase and planningExercise (the PlanningView, HISTORY_ATOMS), historicalStateOf, stateAtBreak with historicalStrength, weeklyGates/evidenceStart on the view; r6-program.mjs earnedAt (R42: credit 0 and the executed repetitions at a new load), executedDose, historicalStrength (a return resumes the dose last executed), anchoredStart; r6-composition.mjs weekAsPlanned (ctx.base), composeWeeks (a later fromWeek chained from the view), moveCandidates (D52 from the view), withContextChange (past contexts kept); declared boundaries E1-E6",
+     "STATE_CONSUMER_CONTRACT R7ASC-STATE-CONSUMER-1 (history ingress, the resolved prescription, evidence through time): r6-program.mjs asEstablishment, resolveExercisePrescription, earnedAt (the gate decides the new-load repetitions), doseStep (a return step moves from the dose run), strengthCandidate inRange (the current goal range on every known-dose row), advanceRun (RETURN, RESTART and WALK_JOG move from the dose the week prescribed), plannedOf (the re-entry dose); r6-adaptation.mjs planningBase (history's run in RETURN or RESTART), historicalStateOf and canonicalRecord, evidenceState (a return's own week read after its point), weeklyGates (a past week's gate counts the logs up to its clock), loggedLoadQuestions"
+    ]
+   },
+   "approved_scope": {
+    "gate": "G02",
+    "item_ids": [
+     "S1",
+     "D56",
+     "D57",
+     "QE-R7A-22",
+     "R30"
+    ],
+    "prescriptive_impact": true,
+    "whole_gate_closure": false
+   },
+   "conditions": [
+    "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+    "Binding: this record binds runtime STATE-MODEL-CONSUMER-FREEZE-1 (CoachingCore/r7/state-consumer/RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json, sha256 5c8687755daa3294339150d35170178e033e12d552315ed92fb4cd668217f3b2; source digest adab37162d4f30d783faed2fe02fd44769a4be36be7bb1f6e8455a01b86235e5; manifest 4f11f4b48782a5f16dc6c9770a367d013564380aecc42d19be348d4ebc45cd1f; r6-adaptation.mjs d2296bb3b4bc0246fadeaea0bd0d4bae9ed2f1edb8bd55fafae2565c32293e17, r6-program.mjs e5f644eeaecd12f8eddf7c80e2c095db938fc2c73abd552876009a27fb9b56b5, r6-composition.mjs 91208e1c13ff7fcbcac886d9a7ff3c71ee47eb82c4300d888542a6c54ee2d901) at the unchanged policy R6-POLICY-5 (canonical hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c). Any change to a bound file or to the policy hash expires it.",
+    "The regain cap after a re-establishment and the return cap at and after the end of the return steps rise by one set only after a week whose last executed exposure of the exercise, the one that gives the week’s counts (R19, INV-04), did its whole count (its count before the phase reduction) after its time fit; \"an executed exposure\" in R7A-SSCTR-r2 condition 9 means this exposure (met at R7A1-FREEZE-A1 and at R7A1-FREEZE-A2 and at R7A2-FREEZE-1 and at R7A-FINAL-FREEZE and at R7A-BOUNDARY-FINAL-FREEZE and at STATE-EVIDENCE-FREEZE-1 and at HISTORICAL-PROJECTION-FREEZE-1).",
+    "A time fit stays a non-reduction for the phase reading and for the return ceiling (R20); a fatigue or phase reduction of the last executed exposure holds the cap (FR2, QE-R7A-22) (met).",
+    "A row written before R7-A, which states no counts, reads its week’s planned counts, so every representation reads the same (met).",
+    "D57 (met at R7A1-FREEZE-A2 and at R7A2-FREEZE-1 and at R7A-FINAL-FREEZE and at R7A-BOUNDARY-FINAL-FREEZE and at STATE-EVIDENCE-FREEZE-1 and at HISTORICAL-PROJECTION-FREEZE-1): the return cap rises and ends only after a week whose last executed exposure did its whole count after its time fit, and ends only when it is at or above next week’s normal count with the block-boundary set that transition earns (phase reductions on top); the regain cap ends only at the largest count the exercise can have. No count after a re-establishment or a return exceeds the largest count executed since then by more than one set, for every exercise a cap or the return steps cover (B = 0 over the 864 and 360 timelines of my grids). The end test reads next week’s count as this week’s normal count plus the block set; another rise of the normal count at a transition (the NONE-class first-block clamp, a priorSets regain) was not reached with a cap in force (observation N4). Regression: the grid’s A, B and C at 0 and test \"R7-A.1 D57\" (both parts).",
+    "D59 (met at R7A2-FREEZE-1 and at R7A-FINAL-FREEZE and at R7A-BOUNDARY-FINAL-FREEZE and at STATE-EVIDENCE-FREEZE-1 and at HISTORICAL-PROJECTION-FREEZE-1, closed): a return starts from the state at the break (stateAtBreak, strengthAtBreak): every exercise executed before the break’s first day is in use with its last performed date and, outside a return step and a phase reduction, its last executed whole count after the time fit (target met) as the ceiling (the largest of the break week, R20); a moderate or long return enters it at strengthEntrySets with strengthEntryMinimumRir or more, step 2 follows, the block in progress earns no set and the count comes back at most one set per executed whole week up to the ceiling; the progression the pre-break exposures earned stays unapplied. Regression: ssctr-r7a1-recheck-firstweek.mjs with E, O and B at 0 for NONE and FAMILIAR and O at 0 for KNOWN, my restoration, cap and short grids, and test \"R7-A.2 I4/I5/I8 (SSCTR D59)\". R7ASE-SSCTR-r1: the state at the break also takes the load the athlete lifted on a known-load row as the exercise’s load (lighter, or heavier only under D44: at most one smallest increment above the row and the row’s target met), a fact and never a step; an effort-guided row adopts nothing; a projected dose lifted exactly is that load with its repetition target and no further step. This approval excludes a stored load tick that counts an exposure the projection assumed and the athlete did not execute (NF-R7ASE-3, R42).",
+    "The start state of a return is the state at its interruption under R7A2-SSCTR-INTERRUPTION-STATE (revision R7ASM-SSCTR-r1), INTERRUPTION_EPISODE_CONTRACT R7AF-INTERRUPTION-1, WEEK_START_AUTHORITY_CONTRACT R7AB-WEEKSTART-1 (its record, temporal-contradiction rule and boundaries B1-B7, B9-B11) and STATE_MODEL_CONTRACT R7ASM-STATE-MODEL-1 (which replaces STATE_EVIDENCE_CONTRACT R7ASE-STATE-EVIDENCE-1): a correction names its interruption (episodeId) or repeats its days and starts from what the athlete had executed at its own start; a break after a re-entry or after training is new and starts from that re-entry plus the facts executed since; the state at the interruption is read value by value (one value per strength exercise, one for the run): a stored value counts only when its start holds that value as evidence decided before the cut (the intake, a return’s entry, the weekly review’s rule on that value’s historical value, or a projection whose own base value was historical and that the week before executed per sport exactly as assumed, loads included); a value a review carried from a projection is rebuilt by the review’s rule on its historical value; otherwise the value moves back to its last such start and the sessions executed after it are facts only (a known load lifted is the load under D44; a projected dose lifted is that load with its repetition target, never a load tick only the projection counted); weeks never reported are not history; a named correction that contradicts its own executed re-entry is asked; anything else is asked; each short break owns its easy slot.",
+    "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+   ],
+   "approval_date": "2026-10-29",
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Chief (integration); future funded qualified human (revalidation)",
+   "human_review": null,
+   "re_review_triggers": [
+    "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+    "Any change to a file listed in RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json (new freeze revision).",
+    "A correction of F4 (the walk/jog return): a new freeze needs this regression check again on my walk/jog probe, the restoration and caps grids, the temporal probe and the HOLD probe.",
+    "A runtime, Product/UX or Data decision on unreported weeks before a return or a race week (R41).",
+    "A new systematic review or meta-analysis on detraining, retraining or return after a break."
+   ]
+  },
+  {
+   "queue_id": "HQ-R7ASC-SSCTR-SAME-DAY",
+   "decision_id": "R7A1-SSCTR-SAME-DAY",
+   "decision_revision": "R7ASC-SSCTR-r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/state-consumer/RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json",
+    "artifact_revision": "STATE-MODEL-CONSUMER-FREEZE-1",
+    "sha256": "5c8687755daa3294339150d35170178e033e12d552315ed92fb4cd668217f3b2",
+    "rule_ids": [
+     "R6-NONCLINICAL-RETURN condition 7 (SHORT: the first quality slot runs easy)",
+     "operational.return (shortMaxDays)",
+     "R6-SUBSTITUTION condition 6 and R6-NONCLINICAL-RETURN condition 21 (establishment of a never-performed exercise)",
+     "r6-composition.mjs aheadOf (C1), shortReturnEasy, adaptThisWeek and reapply (SHORT_RETURN_EASY)",
+     "r6-adaptation.mjs returnAfterPause (fromWeek, SHORT_RETURN_EASY), equipmentChange",
+     "WEEK_COMPOSITION_CONTRACT R7A1-COMPOSITION-1, C1 and C4",
+     "R7A1-FREEZE-A2 delta: r6-program.mjs advanceStrength (setCap end, D57), r6-composition.mjs shortReturnEasy and composeWeeks carry (D58), aheadOf at fatigueSessions, unavailableSessions and conflictSessions (C1), moveCandidates equipment fit, r6-adaptation.mjs evidenceStart and reviewGates (review inputs), returnAfterPause prior, r6-provenance.mjs unreadable loads",
+     "R7-A.2 INTERRUPTION_CONTRACT R7A2-COMPOSITION-3: r6-adaptation.mjs interruptionEpisode, stateAtBreak, returnAfterPause; r6-program.mjs strengthAtBreak, startStrengthReturn; r6-composition.mjs shortReturnEasy (easedFor), composeWeeks (carry per break)",
+     "R7-A final INTERRUPTION_EPISODE_CONTRACT R7AF-INTERRUPTION-1: r6-adaptation.mjs episodesOf, interruptionEpisode (isSameInterruption), stateAtBreak (executedStateAt), returnStrength, staleReturn, returnAfterPause",
+     "R7-A boundary WEEK_START_AUTHORITY_CONTRACT R7AB-WEEKSTART-1: r6-program.mjs WEEK_START, premiseOf, startAuthority, anchoredStart, projectedStart, generateProgram (authorities); r6-composition.mjs composeWeeks (startAuthority); r6-adaptation.mjs historicalWeekStart, stateAtBreak (walk-back before any return too; stateAt.authority), weeklyReview, rebuild, returnAfterPause (startBeforeReturnAuthority; Founder §11 temporal contradiction asked)",
+     "STATE_EVIDENCE_CONTRACT R7ASE-STATE-EVIDENCE-1 (value-scoped fact vs projection): r6-adaptation.mjs historicalView, stateAtBreak (value by value; stateAt.values), projectedBaseOf, evidenceStart, weeklyReview, rebuild; r6-program.mjs exercisePremiseOf, projectedStart (per-exercise premises), anchoredStart (projectedBase), strengthAtBreak (a known load lifted is the load); r6-composition.mjs composeWeeks (projectedBase); declared boundaries E1-E6",
+     "STATE_MODEL_CONTRACT R7ASM-STATE-MODEL-1 (HistoricalState vs PlanningProjection): r6-adaptation.mjs evidenceState (the evidence reducer; E6: a week executed as finally prescribed is evidence), planningBase and planningExercise (the PlanningView, HISTORY_ATOMS), historicalStateOf, stateAtBreak with historicalStrength, weeklyGates/evidenceStart on the view; r6-program.mjs earnedAt (R42: credit 0 and the executed repetitions at a new load), executedDose, historicalStrength (a return resumes the dose last executed), anchoredStart; r6-composition.mjs weekAsPlanned (ctx.base), composeWeeks (a later fromWeek chained from the view), moveCandidates (D52 from the view), withContextChange (past contexts kept); declared boundaries E1-E6",
+     "STATE_CONSUMER_CONTRACT R7ASC-STATE-CONSUMER-1 (history ingress, the resolved prescription, evidence through time): r6-program.mjs asEstablishment, resolveExercisePrescription, earnedAt (the gate decides the new-load repetitions), doseStep (a return step moves from the dose run), strengthCandidate inRange (the current goal range on every known-dose row), advanceRun (RETURN, RESTART and WALK_JOG move from the dose the week prescribed), plannedOf (the re-entry dose); r6-adaptation.mjs planningBase (history's run in RETURN or RESTART), historicalStateOf and canonicalRecord, evidenceState (a return's own week read after its point), weeklyGates (a past week's gate counts the logs up to its clock), loggedLoadQuestions"
+    ]
+   },
+   "approved_scope": {
+    "gate": "G02",
+    "item_ids": [
+     "S3",
+     "S7",
+     "QE-R7A-02",
+     "R27",
+     "D58",
+     "QE-R7A-23"
+    ],
+    "prescriptive_impact": true,
+    "whole_gate_closure": false
+   },
+   "conditions": [
+    "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+    "Binding: this record binds runtime STATE-MODEL-CONSUMER-FREEZE-1 (CoachingCore/r7/state-consumer/RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json, sha256 5c8687755daa3294339150d35170178e033e12d552315ed92fb4cd668217f3b2; source digest adab37162d4f30d783faed2fe02fd44769a4be36be7bb1f6e8455a01b86235e5; manifest 4f11f4b48782a5f16dc6c9770a367d013564380aecc42d19be348d4ebc45cd1f; r6-adaptation.mjs d2296bb3b4bc0246fadeaea0bd0d4bae9ed2f1edb8bd55fafae2565c32293e17, r6-program.mjs e5f644eeaecd12f8eddf7c80e2c095db938fc2c73abd552876009a27fb9b56b5, r6-composition.mjs 91208e1c13ff7fcbcac886d9a7ff3c71ee47eb82c4300d888542a6c54ee2d901) at the unchanged policy R6-POLICY-5 (canonical hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c). Any change to a bound file or to the policy hash expires it.",
+    "R27 / QE-R7A-02 (same-day reading, met at R7A1-FREEZE-A1 and at R7A1-FREEZE-A2 and at R7A2-FREEZE-1 and at R7A-FINAL-FREEZE and at R7A-BOUNDARY-FINAL-FREEZE and at STATE-EVIDENCE-FREEZE-1 and at HISTORICAL-PROJECTION-FREEZE-1): a session is still ahead of a review when it is dated after the review’s local date, or dated that day with no execution report while its chosen shift is not over; a morning (AM) session is over at noon local time, an afternoon or unspecified shift at the end of the day. A short return reported on the morning of a quality day, or the evening before, makes that run easy; an evening report never rewrites that morning’s session. The noon boundary is an operational convention of the shift model, not a physiological threshold.",
+    "D58 (met at R7A1-FREEZE-A2 and at R7A2-FREEZE-1 and at R7A-FINAL-FREEZE and at R7A-BOUNDARY-FINAL-FREEZE and at STATE-EVIDENCE-FREEZE-1 and at HISTORICAL-PROJECTION-FREEZE-1): in a short return the first quality slot still ahead of the return report (C1), in the week re-entry starts or a later week, runs easy, recorded on the week that holds it so later re-plans and the weekly review keep it; exactly one slot is changed; the readings of \"still ahead\" when other adaptations meet it are ruled in R7A1-SSCTR-QUALITY-SLOT-READINGS. Regression: the short grid at 0 after the return and after the review, and tests \"R7-A.1 C4/C5 (D58)\" and \"R7-A.1 C4 (D58)\".",
+    "A same-day equipment change re-plans the strength sessions still ahead that day; a never-performed substitute gets the effort-guided establishment (at most 2 sets at RIR 3 or more, no load converted); sessions reported before the change keep their rows (met).",
+    "D59 (met at R7A2-FREEZE-1 and at R7A-FINAL-FREEZE and at R7A-BOUNDARY-FINAL-FREEZE and at STATE-EVIDENCE-FREEZE-1 and at HISTORICAL-PROJECTION-FREEZE-1, closed): a return starts from the state at the break (stateAtBreak, strengthAtBreak): every exercise executed before the break’s first day is in use with its last performed date and, outside a return step and a phase reduction, its last executed whole count after the time fit (target met) as the ceiling (the largest of the break week, R20); a moderate or long return enters it at strengthEntrySets with strengthEntryMinimumRir or more, step 2 follows, the block in progress earns no set and the count comes back at most one set per executed whole week up to the ceiling; the progression the pre-break exposures earned stays unapplied. Regression: ssctr-r7a1-recheck-firstweek.mjs with E, O and B at 0 for NONE and FAMILIAR and O at 0 for KNOWN, my restoration, cap and short grids, and test \"R7-A.2 I4/I5/I8 (SSCTR D59)\". R7ASE-SSCTR-r1: the state at the break also takes the load the athlete lifted on a known-load row as the exercise’s load (lighter, or heavier only under D44: at most one smallest increment above the row and the row’s target met), a fact and never a step; an effort-guided row adopts nothing; a projected dose lifted exactly is that load with its repetition target and no further step. This approval excludes a stored load tick that counts an exposure the projection assumed and the athlete did not execute (NF-R7ASE-3, R42).",
+    "The readings of \"the first quality slot still ahead\" when other adaptations meet it, when the slot is not done and near a race are those of R7A1-SSCTR-QUALITY-SLOT-READINGS.",
+    "The start state of a return is the state at its interruption under R7A2-SSCTR-INTERRUPTION-STATE (revision R7ASM-SSCTR-r1), INTERRUPTION_EPISODE_CONTRACT R7AF-INTERRUPTION-1, WEEK_START_AUTHORITY_CONTRACT R7AB-WEEKSTART-1 (its record, temporal-contradiction rule and boundaries B1-B7, B9-B11) and STATE_MODEL_CONTRACT R7ASM-STATE-MODEL-1 (which replaces STATE_EVIDENCE_CONTRACT R7ASE-STATE-EVIDENCE-1): a correction names its interruption (episodeId) or repeats its days and starts from what the athlete had executed at its own start; a break after a re-entry or after training is new and starts from that re-entry plus the facts executed since; the state at the interruption is read value by value (one value per strength exercise, one for the run): a stored value counts only when its start holds that value as evidence decided before the cut (the intake, a return’s entry, the weekly review’s rule on that value’s historical value, or a projection whose own base value was historical and that the week before executed per sport exactly as assumed, loads included); a value a review carried from a projection is rebuilt by the review’s rule on its historical value; otherwise the value moves back to its last such start and the sessions executed after it are facts only (a known load lifted is the load under D44; a projected dose lifted is that load with its repetition target, never a load tick only the projection counted); weeks never reported are not history; a named correction that contradicts its own executed re-entry is asked; anything else is asked; each short break owns its easy slot.",
+    "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+   ],
+   "approval_date": "2026-10-29",
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Chief (integration); future funded qualified human (revalidation)",
+   "human_review": null,
+   "re_review_triggers": [
+    "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+    "Any change to a file listed in RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json (new freeze revision).",
+    "A correction of F4 (the walk/jog return): a new freeze needs this regression check again on my walk/jog probe, the restoration and caps grids, the temporal probe and the HOLD probe.",
+    "A runtime, Product/UX or Data decision on unreported weeks before a return or a race week (R41).",
+    "A new systematic review or meta-analysis on detraining, retraining or return after a break."
+   ]
+  },
+  {
+   "queue_id": "HQ-R7ASC-SSCTR-DOSE-READING",
+   "decision_id": "R7A1-SSCTR-DOSE-READING",
+   "decision_revision": "R7ASC-SSCTR-r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/state-consumer/RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json",
+    "artifact_revision": "STATE-MODEL-CONSUMER-FREEZE-1",
+    "sha256": "5c8687755daa3294339150d35170178e033e12d552315ed92fb4cd668217f3b2",
+    "rule_ids": [
+     "strength.gates (HOLD repeats the dose; REGRESS lowers the load; ADVANCE)",
+     "strength.loggedLoadAdoption (D44, D45)",
+     "R6-PLANNED-PROGRESSION condition 9",
+     "r6-program.mjs advanceStrength (adoption: progression evidence against establishment evidence)",
+     "WEEK_COMPOSITION_CONTRACT R7A1-COMPOSITION-1, rule QE-R7A-12 (I5)",
+     "R7A1-FREEZE-A2 delta: r6-program.mjs advanceStrength (setCap end, D57), r6-composition.mjs shortReturnEasy and composeWeeks carry (D58), aheadOf at fatigueSessions, unavailableSessions and conflictSessions (C1), moveCandidates equipment fit, r6-adaptation.mjs evidenceStart and reviewGates (review inputs), returnAfterPause prior, r6-provenance.mjs unreadable loads",
+     "R7-A.2 INTERRUPTION_CONTRACT R7A2-COMPOSITION-3: r6-adaptation.mjs interruptionEpisode, stateAtBreak, returnAfterPause; r6-program.mjs strengthAtBreak, startStrengthReturn; r6-composition.mjs shortReturnEasy (easedFor), composeWeeks (carry per break)",
+     "R7-A final INTERRUPTION_EPISODE_CONTRACT R7AF-INTERRUPTION-1: r6-adaptation.mjs episodesOf, interruptionEpisode (isSameInterruption), stateAtBreak (executedStateAt), returnStrength, staleReturn, returnAfterPause",
+     "R7-A boundary WEEK_START_AUTHORITY_CONTRACT R7AB-WEEKSTART-1: r6-program.mjs WEEK_START, premiseOf, startAuthority, anchoredStart, projectedStart, generateProgram (authorities); r6-composition.mjs composeWeeks (startAuthority); r6-adaptation.mjs historicalWeekStart, stateAtBreak (walk-back before any return too; stateAt.authority), weeklyReview, rebuild, returnAfterPause (startBeforeReturnAuthority; Founder §11 temporal contradiction asked)",
+     "STATE_EVIDENCE_CONTRACT R7ASE-STATE-EVIDENCE-1 (value-scoped fact vs projection): r6-adaptation.mjs historicalView, stateAtBreak (value by value; stateAt.values), projectedBaseOf, evidenceStart, weeklyReview, rebuild; r6-program.mjs exercisePremiseOf, projectedStart (per-exercise premises), anchoredStart (projectedBase), strengthAtBreak (a known load lifted is the load); r6-composition.mjs composeWeeks (projectedBase); declared boundaries E1-E6",
+     "STATE_MODEL_CONTRACT R7ASM-STATE-MODEL-1 (HistoricalState vs PlanningProjection): r6-adaptation.mjs evidenceState (the evidence reducer; E6: a week executed as finally prescribed is evidence), planningBase and planningExercise (the PlanningView, HISTORY_ATOMS), historicalStateOf, stateAtBreak with historicalStrength, weeklyGates/evidenceStart on the view; r6-program.mjs earnedAt (R42: credit 0 and the executed repetitions at a new load), executedDose, historicalStrength (a return resumes the dose last executed), anchoredStart; r6-composition.mjs weekAsPlanned (ctx.base), composeWeeks (a later fromWeek chained from the view), moveCandidates (D52 from the view), withContextChange (past contexts kept); declared boundaries E1-E6",
+     "STATE_CONSUMER_CONTRACT R7ASC-STATE-CONSUMER-1 (history ingress, the resolved prescription, evidence through time): r6-program.mjs asEstablishment, resolveExercisePrescription, earnedAt (the gate decides the new-load repetitions), doseStep (a return step moves from the dose run), strengthCandidate inRange (the current goal range on every known-dose row), advanceRun (RETURN, RESTART and WALK_JOG move from the dose the week prescribed), plannedOf (the re-entry dose); r6-adaptation.mjs planningBase (history's run in RETURN or RESTART), historicalStateOf and canonicalRecord, evidenceState (a return's own week read after its point), weeklyGates (a past week's gate counts the logs up to its clock), loggedLoadQuestions"
+    ]
+   },
+   "approved_scope": {
+    "gate": "G02",
+    "item_ids": [
+     "S4",
+     "QE-R7A-12",
+     "R25"
+    ],
+    "prescriptive_impact": true,
+    "whole_gate_closure": false
+   },
+   "conditions": [
+    "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+    "Binding: this record binds runtime STATE-MODEL-CONSUMER-FREEZE-1 (CoachingCore/r7/state-consumer/RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json, sha256 5c8687755daa3294339150d35170178e033e12d552315ed92fb4cd668217f3b2; source digest adab37162d4f30d783faed2fe02fd44769a4be36be7bb1f6e8455a01b86235e5; manifest 4f11f4b48782a5f16dc6c9770a367d013564380aecc42d19be348d4ebc45cd1f; r6-adaptation.mjs d2296bb3b4bc0246fadeaea0bd0d4bae9ed2f1edb8bd55fafae2565c32293e17, r6-program.mjs e5f644eeaecd12f8eddf7c80e2c095db938fc2c73abd552876009a27fb9b56b5, r6-composition.mjs 91208e1c13ff7fcbcac886d9a7ff3c71ee47eb82c4300d888542a6c54ee2d901) at the unchanged policy R6-POLICY-5 (canonical hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c). Any change to a bound file or to the policy hash expires it.",
+    "A logged load of an exposure that prescribed a known load is progression evidence: HOLD and REGRESS keep the planned repetition target (REGRESS lowers the load one smallest increment, or the repetitions by repStep down to the range floor when no load is known); ADVANCE or EARNED takes the logged repetitions as at the planned load, the prescription staying inside the goal’s range (met).",
+    "A lighter logged load is adopted only under the existing adoption rules, never above a re-establishment ceiling; a heavier one only when that exposure met the ADVANCE criterion (D44, D45) (met).",
+    "Only an establishment exposure (first establishment, re-establishment, return entry, from-log) sets its target from its logged repetitions (met).",
+    "D59 (met at R7A2-FREEZE-1 and at R7A-FINAL-FREEZE and at R7A-BOUNDARY-FINAL-FREEZE and at STATE-EVIDENCE-FREEZE-1 and at HISTORICAL-PROJECTION-FREEZE-1, closed): a return starts from the state at the break (stateAtBreak, strengthAtBreak): every exercise executed before the break’s first day is in use with its last performed date and, outside a return step and a phase reduction, its last executed whole count after the time fit (target met) as the ceiling (the largest of the break week, R20); a moderate or long return enters it at strengthEntrySets with strengthEntryMinimumRir or more, step 2 follows, the block in progress earns no set and the count comes back at most one set per executed whole week up to the ceiling; the progression the pre-break exposures earned stays unapplied. Regression: ssctr-r7a1-recheck-firstweek.mjs with E, O and B at 0 for NONE and FAMILIAR and O at 0 for KNOWN, my restoration, cap and short grids, and test \"R7-A.2 I4/I5/I8 (SSCTR D59)\". R7ASE-SSCTR-r1: the state at the break also takes the load the athlete lifted on a known-load row as the exercise’s load (lighter, or heavier only under D44: at most one smallest increment above the row and the row’s target met), a fact and never a step; an effort-guided row adopts nothing; a projected dose lifted exactly is that load with its repetition target and no further step. This approval excludes a stored load tick that counts an exposure the projection assumed and the athlete did not execute (NF-R7ASE-3, R42).",
+    "The start state of a return is the state at its interruption under R7A2-SSCTR-INTERRUPTION-STATE (revision R7ASM-SSCTR-r1), INTERRUPTION_EPISODE_CONTRACT R7AF-INTERRUPTION-1, WEEK_START_AUTHORITY_CONTRACT R7AB-WEEKSTART-1 (its record, temporal-contradiction rule and boundaries B1-B7, B9-B11) and STATE_MODEL_CONTRACT R7ASM-STATE-MODEL-1 (which replaces STATE_EVIDENCE_CONTRACT R7ASE-STATE-EVIDENCE-1): a correction names its interruption (episodeId) or repeats its days and starts from what the athlete had executed at its own start; a break after a re-entry or after training is new and starts from that re-entry plus the facts executed since; the state at the interruption is read value by value (one value per strength exercise, one for the run): a stored value counts only when its start holds that value as evidence decided before the cut (the intake, a return’s entry, the weekly review’s rule on that value’s historical value, or a projection whose own base value was historical and that the week before executed per sport exactly as assumed, loads included); a value a review carried from a projection is rebuilt by the review’s rule on its historical value; otherwise the value moves back to its last such start and the sessions executed after it are facts only (a known load lifted is the load under D44; a projected dose lifted is that load with its repetition target, never a load tick only the projection counted); weeks never reported are not history; a named correction that contradicts its own executed re-entry is asked; anything else is asked; each short break owns its easy slot.",
+    "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18).",
+    "NOT MET at HISTORICAL-PROJECTION-FREEZE-1 (F2, blocking): when a lift adopts a load above the one the state held (r6-program.mjs earnedAt), the repetitions logged become the target whatever the gate, so HOLD no longer repeats the dose (82.5 kg x 3 for a 4-6 range after 3 of 5 repetitions; 5 -> 6 after 8 repetitions at reserve 0). The approval of the reading stands; this freeze does not implement it.",
+    "NF-R7ASC-1 is a declared limitation, not covered by this approval: at a new load a HOLD repeats the row's repetition target even when that target is a repetition step only the projection had (REPS_THEN_LOAD goals, after two projected steps)."
+   ],
+   "approval_date": "2026-10-29",
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Chief (integration); future funded qualified human (revalidation)",
+   "human_review": null,
+   "re_review_triggers": [
+    "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+    "Any change to a file listed in RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json (new freeze revision).",
+    "A correction of F4 (the walk/jog return): a new freeze needs this regression check again on my walk/jog probe, the restoration and caps grids, the temporal probe and the HOLD probe.",
+    "A runtime, Product/UX or Data decision on unreported weeks before a return or a race week (R41).",
+    "A new systematic review or meta-analysis on detraining, retraining or return after a break."
+   ]
+  },
+  {
+   "queue_id": "HQ-R7ASC-SSCTR-COMPOSITION",
+   "decision_id": "R7A1-SSCTR-COMPOSITION",
+   "decision_revision": "R7ASC-SSCTR-r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/state-consumer/RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json",
+    "artifact_revision": "STATE-MODEL-CONSUMER-FREEZE-1",
+    "sha256": "5c8687755daa3294339150d35170178e033e12d552315ed92fb4cd668217f3b2",
+    "rule_ids": [
+     "R6-NONCLINICAL-RETURN conditions 9 and 21; operational.return.strengthKnownLoadAfterReturnLog",
+     "R6-PLANNED-PROGRESSION conditions 4, 7 and 13; operational.run.singleRunCeiling (\"in a conditional projection, earlier projected weeks count as executed\")",
+     "operational.event.proximitySemantics and R6-EVENT-TRANSITION",
+     "strength gates under systemic convergence (R6 weekly review)",
+     "r6-composition.mjs composeWeeks, weekAsPlanned, conditionalNext, returnedOn, rebasedNext, adaptThisWeek, reapply, moveCandidates, withContextChange",
+     "r6-adaptation.mjs weeklyReview, rebuild, goalChange (into or out of the event window; from), returnAfterPause (startBeforeReturn), fatigue (SYSTEMIC_SIGNAL)",
+     "WEEK_COMPOSITION_CONTRACT R7A1-COMPOSITION-1, C2-C5",
+     "R7A1-FREEZE-A2 delta: r6-program.mjs advanceStrength (setCap end, D57), r6-composition.mjs shortReturnEasy and composeWeeks carry (D58), aheadOf at fatigueSessions, unavailableSessions and conflictSessions (C1), moveCandidates equipment fit, r6-adaptation.mjs evidenceStart and reviewGates (review inputs), returnAfterPause prior, r6-provenance.mjs unreadable loads",
+     "R7-A.2 INTERRUPTION_CONTRACT R7A2-COMPOSITION-3: r6-adaptation.mjs interruptionEpisode, stateAtBreak, returnAfterPause; r6-program.mjs strengthAtBreak, startStrengthReturn; r6-composition.mjs shortReturnEasy (easedFor), composeWeeks (carry per break)",
+     "R7-A final INTERRUPTION_EPISODE_CONTRACT R7AF-INTERRUPTION-1: r6-adaptation.mjs episodesOf, interruptionEpisode (isSameInterruption), stateAtBreak (executedStateAt), returnStrength, staleReturn, returnAfterPause",
+     "R7-A boundary WEEK_START_AUTHORITY_CONTRACT R7AB-WEEKSTART-1: r6-program.mjs WEEK_START, premiseOf, startAuthority, anchoredStart, projectedStart, generateProgram (authorities); r6-composition.mjs composeWeeks (startAuthority); r6-adaptation.mjs historicalWeekStart, stateAtBreak (walk-back before any return too; stateAt.authority), weeklyReview, rebuild, returnAfterPause (startBeforeReturnAuthority; Founder §11 temporal contradiction asked)",
+     "STATE_EVIDENCE_CONTRACT R7ASE-STATE-EVIDENCE-1 (value-scoped fact vs projection): r6-adaptation.mjs historicalView, stateAtBreak (value by value; stateAt.values), projectedBaseOf, evidenceStart, weeklyReview, rebuild; r6-program.mjs exercisePremiseOf, projectedStart (per-exercise premises), anchoredStart (projectedBase), strengthAtBreak (a known load lifted is the load); r6-composition.mjs composeWeeks (projectedBase); declared boundaries E1-E6",
+     "STATE_MODEL_CONTRACT R7ASM-STATE-MODEL-1 (HistoricalState vs PlanningProjection): r6-adaptation.mjs evidenceState (the evidence reducer; E6: a week executed as finally prescribed is evidence), planningBase and planningExercise (the PlanningView, HISTORY_ATOMS), historicalStateOf, stateAtBreak with historicalStrength, weeklyGates/evidenceStart on the view; r6-program.mjs earnedAt (R42: credit 0 and the executed repetitions at a new load), executedDose, historicalStrength (a return resumes the dose last executed), anchoredStart; r6-composition.mjs weekAsPlanned (ctx.base), composeWeeks (a later fromWeek chained from the view), moveCandidates (D52 from the view), withContextChange (past contexts kept); declared boundaries E1-E6",
+     "STATE_CONSUMER_CONTRACT R7ASC-STATE-CONSUMER-1 (history ingress, the resolved prescription, evidence through time): r6-program.mjs asEstablishment, resolveExercisePrescription, earnedAt (the gate decides the new-load repetitions), doseStep (a return step moves from the dose run), strengthCandidate inRange (the current goal range on every known-dose row), advanceRun (RETURN, RESTART and WALK_JOG move from the dose the week prescribed), plannedOf (the re-entry dose); r6-adaptation.mjs planningBase (history's run in RETURN or RESTART), historicalStateOf and canonicalRecord, evidenceState (a return's own week read after its point), weeklyGates (a past week's gate counts the logs up to its clock), loggedLoadQuestions"
+    ]
+   },
+   "approved_scope": {
+    "gate": "G02",
+    "item_ids": [
+     "S5",
+     "S6",
+     "S8",
+     "S9",
+     "S10",
+     "E10",
+     "R6-H22",
+     "R6-H24",
+     "R6-H25",
+     "R6-H26",
+     "R6-H29"
+    ],
+    "prescriptive_impact": true,
+    "whole_gate_closure": false
+   },
+   "conditions": [
+    "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+    "Binding: this record binds runtime STATE-MODEL-CONSUMER-FREEZE-1 (CoachingCore/r7/state-consumer/RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json, sha256 5c8687755daa3294339150d35170178e033e12d552315ed92fb4cd668217f3b2; source digest adab37162d4f30d783faed2fe02fd44769a4be36be7bb1f6e8455a01b86235e5; manifest 4f11f4b48782a5f16dc6c9770a367d013564380aecc42d19be348d4ebc45cd1f; r6-adaptation.mjs d2296bb3b4bc0246fadeaea0bd0d4bae9ed2f1edb8bd55fafae2565c32293e17, r6-program.mjs e5f644eeaecd12f8eddf7c80e2c095db938fc2c73abd552876009a27fb9b56b5, r6-composition.mjs 91208e1c13ff7fcbcac886d9a7ff3c71ee47eb82c4300d888542a6c54ee2d901) at the unchanged policy R6-POLICY-5 (canonical hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c). Any change to a bound file or to the policy hash expires it.",
+    "S5 (C5): a session dated before a return reported the same week is never moved into the re-entry and never counts as done in next week’s conditional plan; a lift not done since the break starts at the return entry (strengthEntrySets at RIR at least strengthEntryMinimumRir), never at a later step without an entry; a newer report of a break that began this week starts from the start the week had before an earlier report of it, so a corrected report plans the week as the corrected report alone (met).",
+    "S6 (C3): once the week is complete, its evidence decides next week’s start whatever handler re-plans (an unreported complete week holds); while the week is under way, the conditional plan of the week as now planned decides, its rows assumed executed as prescribed except sessions dated before a return; a return’s re-base of next week is kept; the weekly review re-derives the start from evidence (met).",
+    "S6 (run ceiling): in a conditional projection the earlier projected weeks count as executed for the single-run ceiling, as the policy states; the first week a review projects uses completed runs only (met).",
+    "S9 (C5): an event change re-plans this week’s remaining days when it moves one of them into or out of the taper, race-window or post-event days, by days to the race; completed sessions stay as executed; only the taper of the event in force remains; the race statement stays the longest continuous run planned before the race (met).",
+    "S10 (C4): content an adaptation moves into a slot keeps the week’s earlier adaptations, each with its own clock; a move never uses a skipped slot; a systemic fatigue report with nothing left to reduce reviews the week with its signal and records it, so a later review of the same week keeps it; a mid-week reduction does not set that signal (met).",
+    "S10 (C2): a change stated from a later date applies from the first week that begins on or after it, starting that week from the week before it as planned with its transition under the new context (met).",
+    "S8: the first strength week after a break stays RETURN_ENTRY with the run in RETURN mode whatever change of the same evening comes first; a moved race leaves one race; a reviewed transition survives a later equipment change; same-week adaptations survive an event change (met).",
+    "D59 (met at R7A2-FREEZE-1 and at R7A-FINAL-FREEZE and at R7A-BOUNDARY-FINAL-FREEZE and at STATE-EVIDENCE-FREEZE-1 and at HISTORICAL-PROJECTION-FREEZE-1, closed): a return starts from the state at the break (stateAtBreak, strengthAtBreak): every exercise executed before the break’s first day is in use with its last performed date and, outside a return step and a phase reduction, its last executed whole count after the time fit (target met) as the ceiling (the largest of the break week, R20); a moderate or long return enters it at strengthEntrySets with strengthEntryMinimumRir or more, step 2 follows, the block in progress earns no set and the count comes back at most one set per executed whole week up to the ceiling; the progression the pre-break exposures earned stays unapplied. Regression: ssctr-r7a1-recheck-firstweek.mjs with E, O and B at 0 for NONE and FAMILIAR and O at 0 for KNOWN, my restoration, cap and short grids, and test \"R7-A.2 I4/I5/I8 (SSCTR D59)\". R7ASE-SSCTR-r1: the state at the break also takes the load the athlete lifted on a known-load row as the exercise’s load (lighter, or heavier only under D44: at most one smallest increment above the row and the row’s target met), a fact and never a step; an effort-guided row adopts nothing; a projected dose lifted exactly is that load with its repetition target and no further step. This approval excludes a stored load tick that counts an exposure the projection assumed and the athlete did not execute (NF-R7ASE-3, R42).",
+    "The start state of a return is the state at its interruption under R7A2-SSCTR-INTERRUPTION-STATE (revision R7ASM-SSCTR-r1), INTERRUPTION_EPISODE_CONTRACT R7AF-INTERRUPTION-1, WEEK_START_AUTHORITY_CONTRACT R7AB-WEEKSTART-1 (its record, temporal-contradiction rule and boundaries B1-B7, B9-B11) and STATE_MODEL_CONTRACT R7ASM-STATE-MODEL-1 (which replaces STATE_EVIDENCE_CONTRACT R7ASE-STATE-EVIDENCE-1): a correction names its interruption (episodeId) or repeats its days and starts from what the athlete had executed at its own start; a break after a re-entry or after training is new and starts from that re-entry plus the facts executed since; the state at the interruption is read value by value (one value per strength exercise, one for the run): a stored value counts only when its start holds that value as evidence decided before the cut (the intake, a return’s entry, the weekly review’s rule on that value’s historical value, or a projection whose own base value was historical and that the week before executed per sport exactly as assumed, loads included); a value a review carried from a projection is rebuilt by the review’s rule on its historical value; otherwise the value moves back to its last such start and the sessions executed after it are facts only (a known load lifted is the load under D44; a projected dose lifted is that load with its repetition target, never a load tick only the projection counted); weeks never reported are not history; a named correction that contradicts its own executed re-entry is asked; anything else is asked; each short break owns its easy slot.",
+    "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18).",
+    "NOT MET at HISTORICAL-PROJECTION-FREEZE-1 (F3, blocking): after a goal change to MAINTAIN and a later re-plan, from-log rows prescribe the earlier goal's repetition target at the load last logged (bench press 2x12 at 70 kg after 70 kg x 10 was executed; range 8-8), for every remaining week."
+   ],
+   "approval_date": "2026-10-29",
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Chief (integration); future funded qualified human (revalidation)",
+   "human_review": null,
+   "re_review_triggers": [
+    "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+    "Any change to a file listed in RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json (new freeze revision).",
+    "A correction of F4 (the walk/jog return): a new freeze needs this regression check again on my walk/jog probe, the restoration and caps grids, the temporal probe and the HOLD probe.",
+    "A runtime, Product/UX or Data decision on unreported weeks before a return or a race week (R41).",
+    "A new systematic review or meta-analysis on detraining, retraining or return after a break."
+   ]
+  },
+  {
+   "queue_id": "HQ-R7ASC-SSCTR-REGAIN-BASE",
+   "decision_id": "R7A1-SSCTR-REGAIN-BASE",
+   "decision_revision": "R7ASC-SSCTR-r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/state-consumer/RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json",
+    "artifact_revision": "STATE-MODEL-CONSUMER-FREEZE-1",
+    "sha256": "5c8687755daa3294339150d35170178e033e12d552315ed92fb4cd668217f3b2",
+    "rule_ids": [
+     "strength.setsAfterReestablishment",
+     "strength.resumeAfterDays",
+     "return.strengthReturnSets (D49 analogue)",
+     "R6-LOAD-ESTABLISHMENT condition 15",
+     "R6-PLANNED-PROGRESSION condition 14",
+     "R6-ROTATION condition 10",
+     "r6-program.mjs advanceStrength (re-establishment branch, regainCap, the unreduced predicate of the cap rise, exposure.phasedSets)",
+     "r6-program.mjs strengthCandidate/strengthDose (REESTABLISH row, baseSets, phasedSets)",
+     "r6-composition.mjs (R7A1-FREEZE-A1): composeWeeks, weekAsPlanned, conditionalNext, reapply",
+     "R7A1-FREEZE-A2 delta: r6-program.mjs advanceStrength (setCap end, D57), r6-composition.mjs shortReturnEasy and composeWeeks carry (D58), aheadOf at fatigueSessions, unavailableSessions and conflictSessions (C1), moveCandidates equipment fit, r6-adaptation.mjs evidenceStart and reviewGates (review inputs), returnAfterPause prior, r6-provenance.mjs unreadable loads",
+     "R7-A.2 INTERRUPTION_CONTRACT R7A2-COMPOSITION-3: r6-adaptation.mjs interruptionEpisode, stateAtBreak, returnAfterPause; r6-program.mjs strengthAtBreak, startStrengthReturn; r6-composition.mjs shortReturnEasy (easedFor), composeWeeks (carry per break)",
+     "R7-A final INTERRUPTION_EPISODE_CONTRACT R7AF-INTERRUPTION-1: r6-adaptation.mjs episodesOf, interruptionEpisode (isSameInterruption), stateAtBreak (executedStateAt), returnStrength, staleReturn, returnAfterPause",
+     "R7-A boundary WEEK_START_AUTHORITY_CONTRACT R7AB-WEEKSTART-1: r6-program.mjs WEEK_START, premiseOf, startAuthority, anchoredStart, projectedStart, generateProgram (authorities); r6-composition.mjs composeWeeks (startAuthority); r6-adaptation.mjs historicalWeekStart, stateAtBreak (walk-back before any return too; stateAt.authority), weeklyReview, rebuild, returnAfterPause (startBeforeReturnAuthority; Founder §11 temporal contradiction asked)",
+     "STATE_EVIDENCE_CONTRACT R7ASE-STATE-EVIDENCE-1 (value-scoped fact vs projection): r6-adaptation.mjs historicalView, stateAtBreak (value by value; stateAt.values), projectedBaseOf, evidenceStart, weeklyReview, rebuild; r6-program.mjs exercisePremiseOf, projectedStart (per-exercise premises), anchoredStart (projectedBase), strengthAtBreak (a known load lifted is the load); r6-composition.mjs composeWeeks (projectedBase); declared boundaries E1-E6",
+     "STATE_MODEL_CONTRACT R7ASM-STATE-MODEL-1 (HistoricalState vs PlanningProjection): r6-adaptation.mjs evidenceState (the evidence reducer; E6: a week executed as finally prescribed is evidence), planningBase and planningExercise (the PlanningView, HISTORY_ATOMS), historicalStateOf, stateAtBreak with historicalStrength, weeklyGates/evidenceStart on the view; r6-program.mjs earnedAt (R42: credit 0 and the executed repetitions at a new load), executedDose, historicalStrength (a return resumes the dose last executed), anchoredStart; r6-composition.mjs weekAsPlanned (ctx.base), composeWeeks (a later fromWeek chained from the view), moveCandidates (D52 from the view), withContextChange (past contexts kept); declared boundaries E1-E6",
+     "STATE_CONSUMER_CONTRACT R7ASC-STATE-CONSUMER-1 (history ingress, the resolved prescription, evidence through time): r6-program.mjs asEstablishment, resolveExercisePrescription, earnedAt (the gate decides the new-load repetitions), doseStep (a return step moves from the dose run), strengthCandidate inRange (the current goal range on every known-dose row), advanceRun (RETURN, RESTART and WALK_JOG move from the dose the week prescribed), plannedOf (the re-entry dose); r6-adaptation.mjs planningBase (history's run in RETURN or RESTART), historicalStateOf and canonicalRecord, evidenceState (a return's own week read after its point), weeklyGates (a past week's gate counts the logs up to its clock), loggedLoadQuestions"
+    ]
+   },
+   "approved_scope": {
+    "gate": "G02",
+    "item_ids": [
+     "D53",
+     "Q1",
+     "R6-LOAD-ESTABLISHMENT",
+     "R6-PLANNED-PROGRESSION",
+     "R6-ROTATION"
+    ],
+    "prescriptive_impact": true,
+    "whole_gate_closure": false
+   },
+   "conditions": [
+    "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+    "Binding: this record binds runtime STATE-MODEL-CONSUMER-FREEZE-1 (CoachingCore/r7/state-consumer/RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json, sha256 5c8687755daa3294339150d35170178e033e12d552315ed92fb4cd668217f3b2; source digest adab37162d4f30d783faed2fe02fd44769a4be36be7bb1f6e8455a01b86235e5; manifest 4f11f4b48782a5f16dc6c9770a367d013564380aecc42d19be348d4ebc45cd1f; r6-adaptation.mjs d2296bb3b4bc0246fadeaea0bd0d4bae9ed2f1edb8bd55fafae2565c32293e17, r6-program.mjs e5f644eeaecd12f8eddf7c80e2c095db938fc2c73abd552876009a27fb9b56b5, r6-composition.mjs 91208e1c13ff7fcbcac886d9a7ff3c71ee47eb82c4300d888542a6c54ee2d901) at the unchanged policy R6-POLICY-5 (canonical hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c). Any change to a bound file or to the policy hash expires it.",
+    "After a performed re-establishment by effort (more than return.moderateMaxDays since the last executed exposure), the earlier count, block-boundary set included, comes back at most one set per executed week, never at once, whatever the state mode at the re-establishment (known load, pending establishment log, unlogged or re-established) (D53, resolved).",
+    "The regain base is the re-establishment count before its phase reduction: min(goal sets for the role, 2, the count the exercise would otherwise have that day). A re-establishment reduced by its phase is followed by that count itself, as a phase-reduced return step 2 is followed by the step-2 count (Q1, reading A).",
+    "The cap rises by one set only after a week whose last executed exposure of the exercise executed its whole count (executed sets equal to its count before the phase reduction, gate ADVANCE or EARNED, a logged set); a week whose executed row was below that count, by its phase or by an in-week fatigue reduction, never raises it. A phase week whose reduction did not bring the row below that count counts as a whole executed week.",
+    "Every later count stays at or below the cap, with phase reductions on top, and is never more than one set above the largest count executed since the re-establishment.",
+    "Load: a logged load at or after the re-establishment becomes the reference only by the existing adoption rules, never above the re-establishment ceiling (D44, D45).",
+    "To be declared in the next policy revision: setsAfterReestablishment states the base before the phase reduction and the whole-count rule, in the words of strengthReturnSets.",
+    "D56 (final formulation, R7A1-SSCTR-r1 S1): a time-budget fit is not a phase reduction, but a week executed its whole count only when the last executed exposure of the exercise that week, the one that gives the week’s counts (R19, INV-04), executed its count before the phase reduction after its time fit. Any other week neither raises nor ends the regain cap (after a re-establishment) or the return cap (at and after the end of the return steps); the return ceiling (lastExecutedSets) is the largest whole count executed after the fit (R20). Met at R7A1-FREEZE-A1 for the rise of both caps and for the regain cap; met at R7A1-FREEZE-A2 for the end of the return cap too (D57 closed). D57 (met at R7A1-FREEZE-A2 and at R7A2-FREEZE-1 and at R7A-FINAL-FREEZE and at R7A-BOUNDARY-FINAL-FREEZE and at STATE-EVIDENCE-FREEZE-1 and at HISTORICAL-PROJECTION-FREEZE-1): the return cap rises and ends only after a week whose last executed exposure did its whole count after its time fit, and ends only when it is at or above next week’s normal count with the block-boundary set that transition earns (phase reductions on top); the regain cap ends only at the largest count the exercise can have. No count after a re-establishment or a return exceeds the largest count executed since then by more than one set, for every exercise a cap or the return steps cover (B = 0 over the 864 and 360 timelines of my grids). The end test reads next week’s count as this week’s normal count plus the block set; another rise of the normal count at a transition (the NONE-class first-block clamp, a priorSets regain) was not reached with a cap in force (observation N4). Regression: the grid’s A, B and C at 0 and test \"R7-A.1 D57\" (both parts).",
+    "D59 (met at R7A2-FREEZE-1 and at R7A-FINAL-FREEZE and at R7A-BOUNDARY-FINAL-FREEZE and at STATE-EVIDENCE-FREEZE-1 and at HISTORICAL-PROJECTION-FREEZE-1, closed): a return starts from the state at the break (stateAtBreak, strengthAtBreak): every exercise executed before the break’s first day is in use with its last performed date and, outside a return step and a phase reduction, its last executed whole count after the time fit (target met) as the ceiling (the largest of the break week, R20); a moderate or long return enters it at strengthEntrySets with strengthEntryMinimumRir or more, step 2 follows, the block in progress earns no set and the count comes back at most one set per executed whole week up to the ceiling; the progression the pre-break exposures earned stays unapplied. Regression: ssctr-r7a1-recheck-firstweek.mjs with E, O and B at 0 for NONE and FAMILIAR and O at 0 for KNOWN, my restoration, cap and short grids, and test \"R7-A.2 I4/I5/I8 (SSCTR D59)\". R7ASE-SSCTR-r1: the state at the break also takes the load the athlete lifted on a known-load row as the exercise’s load (lighter, or heavier only under D44: at most one smallest increment above the row and the row’s target met), a fact and never a step; an effort-guided row adopts nothing; a projected dose lifted exactly is that load with its repetition target and no further step. This approval excludes a stored load tick that counts an exposure the projection assumed and the athlete did not execute (NF-R7ASE-3, R42).",
+    "The start state of a return is the state at its interruption under R7A2-SSCTR-INTERRUPTION-STATE (revision R7ASM-SSCTR-r1), INTERRUPTION_EPISODE_CONTRACT R7AF-INTERRUPTION-1, WEEK_START_AUTHORITY_CONTRACT R7AB-WEEKSTART-1 (its record, temporal-contradiction rule and boundaries B1-B7, B9-B11) and STATE_MODEL_CONTRACT R7ASM-STATE-MODEL-1 (which replaces STATE_EVIDENCE_CONTRACT R7ASE-STATE-EVIDENCE-1): a correction names its interruption (episodeId) or repeats its days and starts from what the athlete had executed at its own start; a break after a re-entry or after training is new and starts from that re-entry plus the facts executed since; the state at the interruption is read value by value (one value per strength exercise, one for the run): a stored value counts only when its start holds that value as evidence decided before the cut (the intake, a return’s entry, the weekly review’s rule on that value’s historical value, or a projection whose own base value was historical and that the week before executed per sport exactly as assumed, loads included); a value a review carried from a projection is rebuilt by the review’s rule on its historical value; otherwise the value moves back to its last such start and the sessions executed after it are facts only (a known load lifted is the load under D44; a projected dose lifted is that load with its repetition target, never a load tick only the projection counted); weeks never reported are not history; a named correction that contradicts its own executed re-entry is asked; anything else is asked; each short break owns its easy slot.",
+    "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18).",
+    "NOT MET at HISTORICAL-PROJECTION-FREEZE-1 (F1, blocking): a count the declared return recipe places under restoration comes back two sets at once (D53, D57); the regain after a re-establishment itself (reading A, the reest timelines) still holds."
+   ],
+   "approval_date": "2026-10-29",
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Chief (integration); future funded qualified human (revalidation)",
+   "human_review": null,
+   "re_review_triggers": [
+    "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+    "Any change to a file listed in RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json (new freeze revision).",
+    "A correction of F4 (the walk/jog return): a new freeze needs this regression check again on my walk/jog probe, the restoration and caps grids, the temporal probe and the HOLD probe.",
+    "A runtime, Product/UX or Data decision on unreported weeks before a return or a race week (R41).",
+    "A new systematic review or meta-analysis on detraining, retraining or return after a break."
+   ]
+  },
+  {
+   "queue_id": "HQ-R7ASC-SSCTR-REESTABLISH-PHASE",
+   "decision_id": "R7A1-SSCTR-REESTABLISH-PHASE",
+   "decision_revision": "R7ASC-SSCTR-r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/state-consumer/RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json",
+    "artifact_revision": "STATE-MODEL-CONSUMER-FREEZE-1",
+    "sha256": "5c8687755daa3294339150d35170178e033e12d552315ed92fb4cd668217f3b2",
+    "rule_ids": [
+     "Policy principle 8",
+     "operational.event (raceWeekStrengthSets, raceWeekStrengthMinimumRir, postEventStrengthSets, taperStrengthSetFraction, raceWeekStrengthMinDaysBeforeRace, proximitySemantics)",
+     "strength.consolidationSetReduction",
+     "strength.resumeAfterDays",
+     "R6-EVENT-TRANSITION conditions 7, 8 and 18",
+     "R6-LOAD-ESTABLISHMENT condition 15",
+     "r6-composition.mjs (R7A1-FREEZE-A1): composeWeeks, weekAsPlanned, conditionalNext, reapply",
+     "R7A1-FREEZE-A2 delta: r6-program.mjs advanceStrength (setCap end, D57), r6-composition.mjs shortReturnEasy and composeWeeks carry (D58), aheadOf at fatigueSessions, unavailableSessions and conflictSessions (C1), moveCandidates equipment fit, r6-adaptation.mjs evidenceStart and reviewGates (review inputs), returnAfterPause prior, r6-provenance.mjs unreadable loads",
+     "R7-A.2 INTERRUPTION_CONTRACT R7A2-COMPOSITION-3: r6-adaptation.mjs interruptionEpisode, stateAtBreak, returnAfterPause; r6-program.mjs strengthAtBreak, startStrengthReturn; r6-composition.mjs shortReturnEasy (easedFor), composeWeeks (carry per break)",
+     "R7-A final INTERRUPTION_EPISODE_CONTRACT R7AF-INTERRUPTION-1: r6-adaptation.mjs episodesOf, interruptionEpisode (isSameInterruption), stateAtBreak (executedStateAt), returnStrength, staleReturn, returnAfterPause",
+     "R7-A boundary WEEK_START_AUTHORITY_CONTRACT R7AB-WEEKSTART-1: r6-program.mjs WEEK_START, premiseOf, startAuthority, anchoredStart, projectedStart, generateProgram (authorities); r6-composition.mjs composeWeeks (startAuthority); r6-adaptation.mjs historicalWeekStart, stateAtBreak (walk-back before any return too; stateAt.authority), weeklyReview, rebuild, returnAfterPause (startBeforeReturnAuthority; Founder §11 temporal contradiction asked)",
+     "STATE_EVIDENCE_CONTRACT R7ASE-STATE-EVIDENCE-1 (value-scoped fact vs projection): r6-adaptation.mjs historicalView, stateAtBreak (value by value; stateAt.values), projectedBaseOf, evidenceStart, weeklyReview, rebuild; r6-program.mjs exercisePremiseOf, projectedStart (per-exercise premises), anchoredStart (projectedBase), strengthAtBreak (a known load lifted is the load); r6-composition.mjs composeWeeks (projectedBase); declared boundaries E1-E6",
+     "STATE_MODEL_CONTRACT R7ASM-STATE-MODEL-1 (HistoricalState vs PlanningProjection): r6-adaptation.mjs evidenceState (the evidence reducer; E6: a week executed as finally prescribed is evidence), planningBase and planningExercise (the PlanningView, HISTORY_ATOMS), historicalStateOf, stateAtBreak with historicalStrength, weeklyGates/evidenceStart on the view; r6-program.mjs earnedAt (R42: credit 0 and the executed repetitions at a new load), executedDose, historicalStrength (a return resumes the dose last executed), anchoredStart; r6-composition.mjs weekAsPlanned (ctx.base), composeWeeks (a later fromWeek chained from the view), moveCandidates (D52 from the view), withContextChange (past contexts kept); declared boundaries E1-E6",
+     "STATE_CONSUMER_CONTRACT R7ASC-STATE-CONSUMER-1 (history ingress, the resolved prescription, evidence through time): r6-program.mjs asEstablishment, resolveExercisePrescription, earnedAt (the gate decides the new-load repetitions), doseStep (a return step moves from the dose run), strengthCandidate inRange (the current goal range on every known-dose row), advanceRun (RETURN, RESTART and WALK_JOG move from the dose the week prescribed), plannedOf (the re-entry dose); r6-adaptation.mjs planningBase (history's run in RETURN or RESTART), historicalStateOf and canonicalRecord, evidenceState (a return's own week read after its point), weeklyGates (a past week's gate counts the logs up to its clock), loggedLoadQuestions"
+    ]
+   },
+   "approved_scope": {
+    "gate": "G02",
+    "item_ids": [
+     "D54",
+     "Q2",
+     "R6-EVENT-TRANSITION",
+     "R6-LOAD-ESTABLISHMENT"
+    ],
+    "prescriptive_impact": true,
+    "whole_gate_closure": false
+   },
+   "conditions": [
+    "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+    "Binding: this record binds runtime STATE-MODEL-CONSUMER-FREEZE-1 (CoachingCore/r7/state-consumer/RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json, sha256 5c8687755daa3294339150d35170178e033e12d552315ed92fb4cd668217f3b2; source digest adab37162d4f30d783faed2fe02fd44769a4be36be7bb1f6e8455a01b86235e5; manifest 4f11f4b48782a5f16dc6c9770a367d013564380aecc42d19be348d4ebc45cd1f; r6-adaptation.mjs d2296bb3b4bc0246fadeaea0bd0d4bae9ed2f1edb8bd55fafae2565c32293e17, r6-program.mjs e5f644eeaecd12f8eddf7c80e2c095db938fc2c73abd552876009a27fb9b56b5, r6-composition.mjs 91208e1c13ff7fcbcac886d9a7ff3c71ee47eb82c4300d888542a6c54ee2d901) at the unchanged policy R6-POLICY-5 (canonical hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c). Any change to a bound file or to the policy hash expires it.",
+    "Every strength row, the re-establishment row included, takes its day phase once: sets = min(row cap, phase dose of the count the exercise would otherwise have that day), reps in reserve >= max(row floor, phase minimum); the day phase follows days to the race (proximitySemantics).",
+    "Race window and post-event: main lifts only, at most raceWeekStrengthSets / postEventStrengthSets set(s) at RIR >= raceWeekStrengthMinimumRir; one race-window session at most, on the strength day furthest from the race and none in the last raceWeekStrengthMinDaysBeforeRace days. Taper and specific rows keep RIR >= 3 (D54, resolved).",
+    "A re-establishment row is never above min(goal sets for its role, 2) and never above the phase dose of the exercise's own count that day; it may be below min(goal sets, 2) when that phase dose or the exercise's own count is lower (consolidation, specific, a known dose of 1 set) (Q2).",
+    "At a re-establishment the load stays effort-guided under the earlier ceiling; no load increase, new exercise or rotation in taper or race week.",
+    "The final validation rejects any strength row above its day phase dose or below the phase minimum reps in reserve, whatever branch built it.",
+    "D59 (met at R7A2-FREEZE-1 and at R7A-FINAL-FREEZE and at R7A-BOUNDARY-FINAL-FREEZE and at STATE-EVIDENCE-FREEZE-1 and at HISTORICAL-PROJECTION-FREEZE-1, closed): a return starts from the state at the break (stateAtBreak, strengthAtBreak): every exercise executed before the break’s first day is in use with its last performed date and, outside a return step and a phase reduction, its last executed whole count after the time fit (target met) as the ceiling (the largest of the break week, R20); a moderate or long return enters it at strengthEntrySets with strengthEntryMinimumRir or more, step 2 follows, the block in progress earns no set and the count comes back at most one set per executed whole week up to the ceiling; the progression the pre-break exposures earned stays unapplied. Regression: ssctr-r7a1-recheck-firstweek.mjs with E, O and B at 0 for NONE and FAMILIAR and O at 0 for KNOWN, my restoration, cap and short grids, and test \"R7-A.2 I4/I5/I8 (SSCTR D59)\". R7ASE-SSCTR-r1: the state at the break also takes the load the athlete lifted on a known-load row as the exercise’s load (lighter, or heavier only under D44: at most one smallest increment above the row and the row’s target met), a fact and never a step; an effort-guided row adopts nothing; a projected dose lifted exactly is that load with its repetition target and no further step. This approval excludes a stored load tick that counts an exposure the projection assumed and the athlete did not execute (NF-R7ASE-3, R42).",
+    "The start state of a return is the state at its interruption under R7A2-SSCTR-INTERRUPTION-STATE (revision R7ASM-SSCTR-r1), INTERRUPTION_EPISODE_CONTRACT R7AF-INTERRUPTION-1, WEEK_START_AUTHORITY_CONTRACT R7AB-WEEKSTART-1 (its record, temporal-contradiction rule and boundaries B1-B7, B9-B11) and STATE_MODEL_CONTRACT R7ASM-STATE-MODEL-1 (which replaces STATE_EVIDENCE_CONTRACT R7ASE-STATE-EVIDENCE-1): a correction names its interruption (episodeId) or repeats its days and starts from what the athlete had executed at its own start; a break after a re-entry or after training is new and starts from that re-entry plus the facts executed since; the state at the interruption is read value by value (one value per strength exercise, one for the run): a stored value counts only when its start holds that value as evidence decided before the cut (the intake, a return’s entry, the weekly review’s rule on that value’s historical value, or a projection whose own base value was historical and that the week before executed per sport exactly as assumed, loads included); a value a review carried from a projection is rebuilt by the review’s rule on its historical value; otherwise the value moves back to its last such start and the sessions executed after it are facts only (a known load lifted is the load under D44; a projected dose lifted is that load with its repetition target, never a load tick only the projection counted); weeks never reported are not history; a named correction that contradicts its own executed re-entry is asked; anything else is asked; each short break owns its easy slot.",
+    "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+   ],
+   "approval_date": "2026-10-29",
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Chief (integration); future funded qualified human (revalidation)",
+   "human_review": null,
+   "re_review_triggers": [
+    "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+    "Any change to a file listed in RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json (new freeze revision).",
+    "A correction of F4 (the walk/jog return): a new freeze needs this regression check again on my walk/jog probe, the restoration and caps grids, the temporal probe and the HOLD probe.",
+    "A runtime, Product/UX or Data decision on unreported weeks before a return or a race week (R41).",
+    "A new systematic review or meta-analysis on detraining, retraining or return after a break."
+   ]
+  },
+  {
+   "queue_id": "HQ-R7ASC-SSCTR-SPLIT-WEEK",
+   "decision_id": "R7A1-SSCTR-SPLIT-WEEK",
+   "decision_revision": "R7ASC-SSCTR-r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/state-consumer/RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json",
+    "artifact_revision": "STATE-MODEL-CONSUMER-FREEZE-1",
+    "sha256": "5c8687755daa3294339150d35170178e033e12d552315ed92fb4cd668217f3b2",
+    "rule_ids": [
+     "strength.resumeAfterDays",
+     "strength.setsAfterReestablishment",
+     "return.strengthReturnSets (\"the last set count executed\")",
+     "R6-LOAD-ESTABLISHMENT condition 15 (\"each session is judged on its own date, and no unexecuted exposure counts\")",
+     "r6-program.mjs advanceStrength (first executed exposure for the kind; the whole set for the return ceiling, R20; the cap rise)",
+     "r6-composition.mjs (R7A1-FREEZE-A1): composeWeeks, weekAsPlanned, conditionalNext, reapply",
+     "R7A1-FREEZE-A2 delta: r6-program.mjs advanceStrength (setCap end, D57), r6-composition.mjs shortReturnEasy and composeWeeks carry (D58), aheadOf at fatigueSessions, unavailableSessions and conflictSessions (C1), moveCandidates equipment fit, r6-adaptation.mjs evidenceStart and reviewGates (review inputs), returnAfterPause prior, r6-provenance.mjs unreadable loads",
+     "R7-A.2 INTERRUPTION_CONTRACT R7A2-COMPOSITION-3: r6-adaptation.mjs interruptionEpisode, stateAtBreak, returnAfterPause; r6-program.mjs strengthAtBreak, startStrengthReturn; r6-composition.mjs shortReturnEasy (easedFor), composeWeeks (carry per break)",
+     "R7-A final INTERRUPTION_EPISODE_CONTRACT R7AF-INTERRUPTION-1: r6-adaptation.mjs episodesOf, interruptionEpisode (isSameInterruption), stateAtBreak (executedStateAt), returnStrength, staleReturn, returnAfterPause",
+     "R7-A boundary WEEK_START_AUTHORITY_CONTRACT R7AB-WEEKSTART-1: r6-program.mjs WEEK_START, premiseOf, startAuthority, anchoredStart, projectedStart, generateProgram (authorities); r6-composition.mjs composeWeeks (startAuthority); r6-adaptation.mjs historicalWeekStart, stateAtBreak (walk-back before any return too; stateAt.authority), weeklyReview, rebuild, returnAfterPause (startBeforeReturnAuthority; Founder §11 temporal contradiction asked)",
+     "STATE_EVIDENCE_CONTRACT R7ASE-STATE-EVIDENCE-1 (value-scoped fact vs projection): r6-adaptation.mjs historicalView, stateAtBreak (value by value; stateAt.values), projectedBaseOf, evidenceStart, weeklyReview, rebuild; r6-program.mjs exercisePremiseOf, projectedStart (per-exercise premises), anchoredStart (projectedBase), strengthAtBreak (a known load lifted is the load); r6-composition.mjs composeWeeks (projectedBase); declared boundaries E1-E6",
+     "STATE_MODEL_CONTRACT R7ASM-STATE-MODEL-1 (HistoricalState vs PlanningProjection): r6-adaptation.mjs evidenceState (the evidence reducer; E6: a week executed as finally prescribed is evidence), planningBase and planningExercise (the PlanningView, HISTORY_ATOMS), historicalStateOf, stateAtBreak with historicalStrength, weeklyGates/evidenceStart on the view; r6-program.mjs earnedAt (R42: credit 0 and the executed repetitions at a new load), executedDose, historicalStrength (a return resumes the dose last executed), anchoredStart; r6-composition.mjs weekAsPlanned (ctx.base), composeWeeks (a later fromWeek chained from the view), moveCandidates (D52 from the view), withContextChange (past contexts kept); declared boundaries E1-E6",
+     "STATE_CONSUMER_CONTRACT R7ASC-STATE-CONSUMER-1 (history ingress, the resolved prescription, evidence through time): r6-program.mjs asEstablishment, resolveExercisePrescription, earnedAt (the gate decides the new-load repetitions), doseStep (a return step moves from the dose run), strengthCandidate inRange (the current goal range on every known-dose row), advanceRun (RETURN, RESTART and WALK_JOG move from the dose the week prescribed), plannedOf (the re-entry dose); r6-adaptation.mjs planningBase (history's run in RETURN or RESTART), historicalStateOf and canonicalRecord, evidenceState (a return's own week read after its point), weeklyGates (a past week's gate counts the logs up to its clock), loggedLoadQuestions"
+    ]
+   },
+   "approved_scope": {
+    "gate": "G02",
+    "item_ids": [
+     "Q3",
+     "R19",
+     "R6-LOAD-ESTABLISHMENT",
+     "R6-ROTATION"
+    ],
+    "prescriptive_impact": true,
+    "whole_gate_closure": false
+   },
+   "conditions": [
+    "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+    "Binding: this record binds runtime STATE-MODEL-CONSUMER-FREEZE-1 (CoachingCore/r7/state-consumer/RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json, sha256 5c8687755daa3294339150d35170178e033e12d552315ed92fb4cd668217f3b2; source digest adab37162d4f30d783faed2fe02fd44769a4be36be7bb1f6e8455a01b86235e5; manifest 4f11f4b48782a5f16dc6c9770a367d013564380aecc42d19be348d4ebc45cd1f; r6-adaptation.mjs d2296bb3b4bc0246fadeaea0bd0d4bae9ed2f1edb8bd55fafae2565c32293e17, r6-program.mjs e5f644eeaecd12f8eddf7c80e2c095db938fc2c73abd552876009a27fb9b56b5, r6-composition.mjs 91208e1c13ff7fcbcac886d9a7ff3c71ee47eb82c4300d888542a6c54ee2d901) at the unchanged policy R6-POLICY-5 (canonical hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c). Any change to a bound file or to the policy hash expires it.",
+    "A week re-established an exercise only when its first executed exposure that week was a re-establishment row; a known-dose exposure executed first keeps the state known at its count, with no conversion and no regain cap, whatever later rows of that week prescribe (R19, resolved).",
+    "The week’s counts come from what it executed: the return ceiling is the largest whole count executed that week outside a phase reduction, each exposure counted after its time fit (R20, met); the regain and return caps rise only after a week whose last executed exposure, the one that gives the week’s counts (condition 3, R19), executed its whole count after its time fit (D56 final formulation, R7A1-SSCTR-r1 S1, met at R7A1-FREEZE-A1 and at R7A1-FREEZE-A2 and at R7A2-FREEZE-1 and at R7A-FINAL-FREEZE and at R7A-BOUNDARY-FINAL-FREEZE and at STATE-EVIDENCE-FREEZE-1 and at HISTORICAL-PROJECTION-FREEZE-1); a prescribed but unexecuted row never decides.",
+    "A logged load is judged against the exposure it was logged in, under the earlier ceiling when that exposure was a re-establishment (D44, D45).",
+    "D59 (met at R7A2-FREEZE-1 and at R7A-FINAL-FREEZE and at R7A-BOUNDARY-FINAL-FREEZE and at STATE-EVIDENCE-FREEZE-1 and at HISTORICAL-PROJECTION-FREEZE-1, closed): a return starts from the state at the break (stateAtBreak, strengthAtBreak): every exercise executed before the break’s first day is in use with its last performed date and, outside a return step and a phase reduction, its last executed whole count after the time fit (target met) as the ceiling (the largest of the break week, R20); a moderate or long return enters it at strengthEntrySets with strengthEntryMinimumRir or more, step 2 follows, the block in progress earns no set and the count comes back at most one set per executed whole week up to the ceiling; the progression the pre-break exposures earned stays unapplied. Regression: ssctr-r7a1-recheck-firstweek.mjs with E, O and B at 0 for NONE and FAMILIAR and O at 0 for KNOWN, my restoration, cap and short grids, and test \"R7-A.2 I4/I5/I8 (SSCTR D59)\". R7ASE-SSCTR-r1: the state at the break also takes the load the athlete lifted on a known-load row as the exercise’s load (lighter, or heavier only under D44: at most one smallest increment above the row and the row’s target met), a fact and never a step; an effort-guided row adopts nothing; a projected dose lifted exactly is that load with its repetition target and no further step. This approval excludes a stored load tick that counts an exposure the projection assumed and the athlete did not execute (NF-R7ASE-3, R42).",
+    "The start state of a return is the state at its interruption under R7A2-SSCTR-INTERRUPTION-STATE (revision R7ASM-SSCTR-r1), INTERRUPTION_EPISODE_CONTRACT R7AF-INTERRUPTION-1, WEEK_START_AUTHORITY_CONTRACT R7AB-WEEKSTART-1 (its record, temporal-contradiction rule and boundaries B1-B7, B9-B11) and STATE_MODEL_CONTRACT R7ASM-STATE-MODEL-1 (which replaces STATE_EVIDENCE_CONTRACT R7ASE-STATE-EVIDENCE-1): a correction names its interruption (episodeId) or repeats its days and starts from what the athlete had executed at its own start; a break after a re-entry or after training is new and starts from that re-entry plus the facts executed since; the state at the interruption is read value by value (one value per strength exercise, one for the run): a stored value counts only when its start holds that value as evidence decided before the cut (the intake, a return’s entry, the weekly review’s rule on that value’s historical value, or a projection whose own base value was historical and that the week before executed per sport exactly as assumed, loads included); a value a review carried from a projection is rebuilt by the review’s rule on its historical value; otherwise the value moves back to its last such start and the sessions executed after it are facts only (a known load lifted is the load under D44; a projected dose lifted is that load with its repetition target, never a load tick only the projection counted); weeks never reported are not history; a named correction that contradicts its own executed re-entry is asked; anything else is asked; each short break owns its easy slot.",
+    "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+   ],
+   "approval_date": "2026-10-29",
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Chief (integration); future funded qualified human (revalidation)",
+   "human_review": null,
+   "re_review_triggers": [
+    "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+    "Any change to a file listed in RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json (new freeze revision).",
+    "A correction of F4 (the walk/jog return): a new freeze needs this regression check again on my walk/jog probe, the restoration and caps grids, the temporal probe and the HOLD probe.",
+    "A runtime, Product/UX or Data decision on unreported weeks before a return or a race week (R41).",
+    "A new systematic review or meta-analysis on detraining, retraining or return after a break."
+   ]
+  },
+  {
+   "queue_id": "HQ-R7ASC-SSCTR-ITEMS-5-8",
+   "decision_id": "R7A1-SSCTR-ITEMS-5-8",
+   "decision_revision": "R7ASC-SSCTR-r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/state-consumer/RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json",
+    "artifact_revision": "STATE-MODEL-CONSUMER-FREEZE-1",
+    "sha256": "5c8687755daa3294339150d35170178e033e12d552315ed92fb4cd668217f3b2",
+    "rule_ids": [
+     "return.strengthEntryWeek",
+     "R6-NONCLINICAL-RETURN condition 21",
+     "R6-SUBSTITUTION condition 6",
+     "strength.gates.missingLogs (\"HOLD without regression\")",
+     "R6-PLANNED-PROGRESSION condition 9",
+     "R6-PARTIAL-NOISY-LEARNING condition 7",
+     "return.strengthReturnSets (\"a week without a phase reduction executed its whole count\")",
+     "operational.event.proximitySemantics",
+     "r6-program.mjs buildWeek (in-use entry week; entry week kept through a rebuild), advanceStrength (returningWeek, returnInBlock, regainCap of an exercise first set up in the return steps)",
+     "r6-adaptation.mjs strengthLogs, strength gates, moveCandidates (one day phase; sameKind)",
+     "r6-composition.mjs (R7A1-FREEZE-A1): composeWeeks, weekAsPlanned, conditionalNext, reapply",
+     "R7A1-FREEZE-A2 delta: r6-program.mjs advanceStrength (setCap end, D57), r6-composition.mjs shortReturnEasy and composeWeeks carry (D58), aheadOf at fatigueSessions, unavailableSessions and conflictSessions (C1), moveCandidates equipment fit, r6-adaptation.mjs evidenceStart and reviewGates (review inputs), returnAfterPause prior, r6-provenance.mjs unreadable loads",
+     "R7-A.2 INTERRUPTION_CONTRACT R7A2-COMPOSITION-3: r6-adaptation.mjs interruptionEpisode, stateAtBreak, returnAfterPause; r6-program.mjs strengthAtBreak, startStrengthReturn; r6-composition.mjs shortReturnEasy (easedFor), composeWeeks (carry per break)",
+     "R7-A final INTERRUPTION_EPISODE_CONTRACT R7AF-INTERRUPTION-1: r6-adaptation.mjs episodesOf, interruptionEpisode (isSameInterruption), stateAtBreak (executedStateAt), returnStrength, staleReturn, returnAfterPause",
+     "R7-A boundary WEEK_START_AUTHORITY_CONTRACT R7AB-WEEKSTART-1: r6-program.mjs WEEK_START, premiseOf, startAuthority, anchoredStart, projectedStart, generateProgram (authorities); r6-composition.mjs composeWeeks (startAuthority); r6-adaptation.mjs historicalWeekStart, stateAtBreak (walk-back before any return too; stateAt.authority), weeklyReview, rebuild, returnAfterPause (startBeforeReturnAuthority; Founder §11 temporal contradiction asked)",
+     "STATE_EVIDENCE_CONTRACT R7ASE-STATE-EVIDENCE-1 (value-scoped fact vs projection): r6-adaptation.mjs historicalView, stateAtBreak (value by value; stateAt.values), projectedBaseOf, evidenceStart, weeklyReview, rebuild; r6-program.mjs exercisePremiseOf, projectedStart (per-exercise premises), anchoredStart (projectedBase), strengthAtBreak (a known load lifted is the load); r6-composition.mjs composeWeeks (projectedBase); declared boundaries E1-E6",
+     "STATE_MODEL_CONTRACT R7ASM-STATE-MODEL-1 (HistoricalState vs PlanningProjection): r6-adaptation.mjs evidenceState (the evidence reducer; E6: a week executed as finally prescribed is evidence), planningBase and planningExercise (the PlanningView, HISTORY_ATOMS), historicalStateOf, stateAtBreak with historicalStrength, weeklyGates/evidenceStart on the view; r6-program.mjs earnedAt (R42: credit 0 and the executed repetitions at a new load), executedDose, historicalStrength (a return resumes the dose last executed), anchoredStart; r6-composition.mjs weekAsPlanned (ctx.base), composeWeeks (a later fromWeek chained from the view), moveCandidates (D52 from the view), withContextChange (past contexts kept); declared boundaries E1-E6",
+     "STATE_CONSUMER_CONTRACT R7ASC-STATE-CONSUMER-1 (history ingress, the resolved prescription, evidence through time): r6-program.mjs asEstablishment, resolveExercisePrescription, earnedAt (the gate decides the new-load repetitions), doseStep (a return step moves from the dose run), strengthCandidate inRange (the current goal range on every known-dose row), advanceRun (RETURN, RESTART and WALK_JOG move from the dose the week prescribed), plannedOf (the re-entry dose); r6-adaptation.mjs planningBase (history's run in RETURN or RESTART), historicalStateOf and canonicalRecord, evidenceState (a return's own week read after its point), weeklyGates (a past week's gate counts the logs up to its clock), loggedLoadQuestions"
+    ]
+   },
+   "approved_scope": {
+    "gate": "G02",
+    "item_ids": [
+     "Q4",
+     "item 5",
+     "item 6",
+     "item 7",
+     "item 8",
+     "R6-NONCLINICAL-RETURN",
+     "R6-SUBSTITUTION",
+     "R6-PLANNED-PROGRESSION",
+     "R6-EVENT-TRANSITION"
+    ],
+    "prescriptive_impact": true,
+    "whole_gate_closure": false
+   },
+   "conditions": [
+    "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+    "Binding: this record binds runtime STATE-MODEL-CONSUMER-FREEZE-1 (CoachingCore/r7/state-consumer/RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json, sha256 5c8687755daa3294339150d35170178e033e12d552315ed92fb4cd668217f3b2; source digest adab37162d4f30d783faed2fe02fd44769a4be36be7bb1f6e8455a01b86235e5; manifest 4f11f4b48782a5f16dc6c9770a367d013564380aecc42d19be348d4ebc45cd1f; r6-adaptation.mjs d2296bb3b4bc0246fadeaea0bd0d4bae9ed2f1edb8bd55fafae2565c32293e17, r6-program.mjs e5f644eeaecd12f8eddf7c80e2c095db938fc2c73abd552876009a27fb9b56b5, r6-composition.mjs 91208e1c13ff7fcbcac886d9a7ff3c71ee47eb82c4300d888542a6c54ee2d901) at the unchanged policy R6-POLICY-5 (canonical hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c). Any change to a bound file or to the policy hash expires it.",
+    "Item 5: a return-entry week is one in which an exercise in use that week is at the entry step; an exercise not in use (rotated out and still parked at the entry step) has no weight. A never-performed exercise, a substitute included, first prescribed after every exercise in use has passed the entry step is established by effort, at most 2 sets at RIR >= 3, with no load converted, and then progresses as a new exercise (NR-21, SUB-6).",
+    "D55 (met at R7A-FREEZE-2, at R7A1-FREEZE-A1 and at R7A1-FREEZE-A2 and at R7A2-FREEZE-1 and at R7A-FINAL-FREEZE and at R7A-BOUNDARY-FINAL-FREEZE and at STATE-EVIDENCE-FREEZE-1 and at HISTORICAL-PROJECTION-FREEZE-1): an exercise first set up while the exercises in use are in the return steps of a moderate or long return earns no block-boundary set for the block of the return, as return-entry and return-step exposures do not; after the return steps its count rises at most one set per executed week, up to its normal count (its ceiling under strengthReturnSets), with phase reductions on top. Regression tests: the RS2 scenario (return step 2 in a block-end week, a substitution window) for HYPERTROPHY, STRENGTH and RUNNING_SUPPORT, with EVERY_2_WEEKS (parked exercises) and FIXED rotation.",
+    "Item 6: sets logged without repetitions leave the repetition target neither met nor missed; the dose holds without a regression step and repetitions are never adopted from a missing value; a logged reserve below the prescription minus one, or fewer sets than prescribed, remains a missed target.",
+    "Item 7: a week whose last executed row of an exercise is below its count before the phase reduction, by its phase or by an in-week fatigue reduction, earns no regain, return-cap or return-ceiling set.",
+    "Item 8: a missed session moves only to a later chosen day of the same sport whose day phase, by days to the race, equals its own; no move in taper or race week; race touches and shakeouts never move.",
+    "D59 (met at R7A2-FREEZE-1 and at R7A-FINAL-FREEZE and at R7A-BOUNDARY-FINAL-FREEZE and at STATE-EVIDENCE-FREEZE-1 and at HISTORICAL-PROJECTION-FREEZE-1, closed): a return starts from the state at the break (stateAtBreak, strengthAtBreak): every exercise executed before the break’s first day is in use with its last performed date and, outside a return step and a phase reduction, its last executed whole count after the time fit (target met) as the ceiling (the largest of the break week, R20); a moderate or long return enters it at strengthEntrySets with strengthEntryMinimumRir or more, step 2 follows, the block in progress earns no set and the count comes back at most one set per executed whole week up to the ceiling; the progression the pre-break exposures earned stays unapplied. Regression: ssctr-r7a1-recheck-firstweek.mjs with E, O and B at 0 for NONE and FAMILIAR and O at 0 for KNOWN, my restoration, cap and short grids, and test \"R7-A.2 I4/I5/I8 (SSCTR D59)\". R7ASE-SSCTR-r1: the state at the break also takes the load the athlete lifted on a known-load row as the exercise’s load (lighter, or heavier only under D44: at most one smallest increment above the row and the row’s target met), a fact and never a step; an effort-guided row adopts nothing; a projected dose lifted exactly is that load with its repetition target and no further step. This approval excludes a stored load tick that counts an exposure the projection assumed and the athlete did not execute (NF-R7ASE-3, R42).",
+    "The start state of a return is the state at its interruption under R7A2-SSCTR-INTERRUPTION-STATE (revision R7ASM-SSCTR-r1), INTERRUPTION_EPISODE_CONTRACT R7AF-INTERRUPTION-1, WEEK_START_AUTHORITY_CONTRACT R7AB-WEEKSTART-1 (its record, temporal-contradiction rule and boundaries B1-B7, B9-B11) and STATE_MODEL_CONTRACT R7ASM-STATE-MODEL-1 (which replaces STATE_EVIDENCE_CONTRACT R7ASE-STATE-EVIDENCE-1): a correction names its interruption (episodeId) or repeats its days and starts from what the athlete had executed at its own start; a break after a re-entry or after training is new and starts from that re-entry plus the facts executed since; the state at the interruption is read value by value (one value per strength exercise, one for the run): a stored value counts only when its start holds that value as evidence decided before the cut (the intake, a return’s entry, the weekly review’s rule on that value’s historical value, or a projection whose own base value was historical and that the week before executed per sport exactly as assumed, loads included); a value a review carried from a projection is rebuilt by the review’s rule on its historical value; otherwise the value moves back to its last such start and the sessions executed after it are facts only (a known load lifted is the load under D44; a projected dose lifted is that load with its repetition target, never a load tick only the projection counted); weeks never reported are not history; a named correction that contradicts its own executed re-entry is asked; anything else is asked; each short break owns its easy slot.",
+    "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+   ],
+   "approval_date": "2026-10-29",
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Chief (integration); future funded qualified human (revalidation)",
+   "human_review": null,
+   "re_review_triggers": [
+    "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+    "Any change to a file listed in RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json (new freeze revision).",
+    "A correction of F4 (the walk/jog return): a new freeze needs this regression check again on my walk/jog probe, the restoration and caps grids, the temporal probe and the HOLD probe.",
+    "A runtime, Product/UX or Data decision on unreported weeks before a return or a race week (R41).",
+    "A new systematic review or meta-analysis on detraining, retraining or return after a break."
+   ]
+  },
+  {
+   "queue_id": "HQ-R7ASC-SSCTR-CYCLE2-COMPOSITIONS",
+   "decision_id": "R7A1-SSCTR-CYCLE2-COMPOSITIONS",
+   "decision_revision": "R7ASC-SSCTR-r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/state-consumer/RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json",
+    "artifact_revision": "STATE-MODEL-CONSUMER-FREEZE-1",
+    "sha256": "5c8687755daa3294339150d35170178e033e12d552315ed92fb4cd668217f3b2",
+    "rule_ids": [
+     "strength.gates (HOLD repeats the dose; REGRESS lowers the load; missingLogs HOLD without regression)",
+     "operational.return (strengthReturnSets, strengthEntryWeek, strengthKnownLoadAfterReturnLog, shortMaxDays, moderateMaxDays)",
+     "R6-NONCLINICAL-RETURN conditions 7, 9 and 21",
+     "operational.event.proximitySemantics and R6-EVENT-TRANSITION",
+     "R6-LOAD-ESTABLISHMENT condition 15 (each session on its own date; D52)",
+     "strength.setsAfterReestablishment, R6-PLANNED-PROGRESSION condition 14, R6-ROTATION condition 10",
+     "r6-program.mjs advanceStrength (adoption repetitions; unreduced; whole; returningWeek), buildWeek and projectWeeks (entryWeek), needsReestablishment",
+     "r6-adaptation.mjs returnAfterPause (aheadOf, wait, SHORT first quality), goalChange (reachesThisWeek), moveCandidates (sameKind), fatigue (phasedSets), weeklyReview and rebuild (rebasedNext)",
+     "r6-composition.mjs (R7A1-FREEZE-A1): composeWeeks, weekAsPlanned, conditionalNext, reapply",
+     "R7A1-FREEZE-A2 delta: r6-program.mjs advanceStrength (setCap end, D57), r6-composition.mjs shortReturnEasy and composeWeeks carry (D58), aheadOf at fatigueSessions, unavailableSessions and conflictSessions (C1), moveCandidates equipment fit, r6-adaptation.mjs evidenceStart and reviewGates (review inputs), returnAfterPause prior, r6-provenance.mjs unreadable loads",
+     "R7-A.2 INTERRUPTION_CONTRACT R7A2-COMPOSITION-3: r6-adaptation.mjs interruptionEpisode, stateAtBreak, returnAfterPause; r6-program.mjs strengthAtBreak, startStrengthReturn; r6-composition.mjs shortReturnEasy (easedFor), composeWeeks (carry per break)",
+     "R7-A final INTERRUPTION_EPISODE_CONTRACT R7AF-INTERRUPTION-1: r6-adaptation.mjs episodesOf, interruptionEpisode (isSameInterruption), stateAtBreak (executedStateAt), returnStrength, staleReturn, returnAfterPause",
+     "R7-A boundary WEEK_START_AUTHORITY_CONTRACT R7AB-WEEKSTART-1: r6-program.mjs WEEK_START, premiseOf, startAuthority, anchoredStart, projectedStart, generateProgram (authorities); r6-composition.mjs composeWeeks (startAuthority); r6-adaptation.mjs historicalWeekStart, stateAtBreak (walk-back before any return too; stateAt.authority), weeklyReview, rebuild, returnAfterPause (startBeforeReturnAuthority; Founder §11 temporal contradiction asked)",
+     "STATE_EVIDENCE_CONTRACT R7ASE-STATE-EVIDENCE-1 (value-scoped fact vs projection): r6-adaptation.mjs historicalView, stateAtBreak (value by value; stateAt.values), projectedBaseOf, evidenceStart, weeklyReview, rebuild; r6-program.mjs exercisePremiseOf, projectedStart (per-exercise premises), anchoredStart (projectedBase), strengthAtBreak (a known load lifted is the load); r6-composition.mjs composeWeeks (projectedBase); declared boundaries E1-E6",
+     "STATE_MODEL_CONTRACT R7ASM-STATE-MODEL-1 (HistoricalState vs PlanningProjection): r6-adaptation.mjs evidenceState (the evidence reducer; E6: a week executed as finally prescribed is evidence), planningBase and planningExercise (the PlanningView, HISTORY_ATOMS), historicalStateOf, stateAtBreak with historicalStrength, weeklyGates/evidenceStart on the view; r6-program.mjs earnedAt (R42: credit 0 and the executed repetitions at a new load), executedDose, historicalStrength (a return resumes the dose last executed), anchoredStart; r6-composition.mjs weekAsPlanned (ctx.base), composeWeeks (a later fromWeek chained from the view), moveCandidates (D52 from the view), withContextChange (past contexts kept); declared boundaries E1-E6",
+     "STATE_CONSUMER_CONTRACT R7ASC-STATE-CONSUMER-1 (history ingress, the resolved prescription, evidence through time): r6-program.mjs asEstablishment, resolveExercisePrescription, earnedAt (the gate decides the new-load repetitions), doseStep (a return step moves from the dose run), strengthCandidate inRange (the current goal range on every known-dose row), advanceRun (RETURN, RESTART and WALK_JOG move from the dose the week prescribed), plannedOf (the re-entry dose); r6-adaptation.mjs planningBase (history's run in RETURN or RESTART), historicalStateOf and canonicalRecord, evidenceState (a return's own week read after its point), weeklyGates (a past week's gate counts the logs up to its clock), loggedLoadQuestions"
+    ]
+   },
+   "approved_scope": {
+    "gate": "G02",
+    "item_ids": [
+     "S2",
+     "S3",
+     "S4",
+     "S5",
+     "S6",
+     "S7",
+     "D56",
+     "R27",
+     "R26"
+    ],
+    "prescriptive_impact": true,
+    "whole_gate_closure": false
+   },
+   "conditions": [
+    "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+    "Binding: this record binds runtime STATE-MODEL-CONSUMER-FREEZE-1 (CoachingCore/r7/state-consumer/RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json, sha256 5c8687755daa3294339150d35170178e033e12d552315ed92fb4cd668217f3b2; source digest adab37162d4f30d783faed2fe02fd44769a4be36be7bb1f6e8455a01b86235e5; manifest 4f11f4b48782a5f16dc6c9770a367d013564380aecc42d19be348d4ebc45cd1f; r6-adaptation.mjs d2296bb3b4bc0246fadeaea0bd0d4bae9ed2f1edb8bd55fafae2565c32293e17, r6-program.mjs e5f644eeaecd12f8eddf7c80e2c095db938fc2c73abd552876009a27fb9b56b5, r6-composition.mjs 91208e1c13ff7fcbcac886d9a7ff3c71ee47eb82c4300d888542a6c54ee2d901) at the unchanged policy R6-POLICY-5 (canonical hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c). Any change to a bound file or to the policy hash expires it.",
+    "S2: on HOLD and REGRESS a log that confirms the known load leaves the repetition target as planned (REGRESS lowers the load one smallest increment, or the repetitions by repStep down to the range floor when no load is known); on ADVANCE or EARNED the logged repetitions may replace it; a newly established load (first establishment or re-establishment by effort) is adopted with the repetitions logged for it. A set without repetitions is unknown, never a missed target.",
+    "S3: a return re-plans every session still ahead of the review (later dates, or the same day without an execution report); sessions reported before the review keep their prescription; when re-entry starts the next week, a session still ahead this week waits (rest by design) and never keeps its pre-break dose; a race is never turned into rest.",
+    "R27 / QE-R7A-02 (same-day reading, met at R7A1-FREEZE-A1 and at R7A1-FREEZE-A2 and at R7A2-FREEZE-1 and at R7A-FINAL-FREEZE and at R7A-BOUNDARY-FINAL-FREEZE and at STATE-EVIDENCE-FREEZE-1 and at HISTORICAL-PROJECTION-FREEZE-1): a session is still ahead of a review when it is dated after the review’s local date, or dated that day with no execution report while its chosen shift is not over; a morning (AM) session is over at noon local time, an afternoon or unspecified shift at the end of the day. A short return reported on the morning of a quality day, or the evening before, makes that run easy; an evening report never rewrites that morning’s session. The noon boundary is an operational convention of the shift model, not a physiological threshold. D58 (met at R7A1-FREEZE-A2 and at R7A2-FREEZE-1 and at R7A-FINAL-FREEZE and at R7A-BOUNDARY-FINAL-FREEZE and at STATE-EVIDENCE-FREEZE-1 and at HISTORICAL-PROJECTION-FREEZE-1): in a short return the first quality slot still ahead of the return report (C1), in the week re-entry starts or a later week, runs easy, recorded on the week that holds it so later re-plans and the weekly review keep it; exactly one slot is changed; the readings of \"still ahead\" when other adaptations meet it are ruled in R7A1-SSCTR-QUALITY-SLOT-READINGS. Regression: the short grid at 0 after the return and after the review, and tests \"R7-A.1 C4/C5 (D58)\" and \"R7-A.1 C4 (D58)\".",
+    "S4/S9: when an event change moves any remaining day of the current week into or out of the taper, race-window or post-event days, or the race itself is still ahead this week, those days are re-planned under the new phases by days to the race (proximitySemantics), with completed sessions unchanged; a goal change that only renames a training phase applies from the next week.",
+    "S5: a missed session is moved only to a later chosen day of the same sport, in the same day phase, where every strength row keeps its kind on the new date (a known or from-log row never becomes a re-establishment by moving, nor the reverse); otherwise it is skipped without debt.",
+    "S6: a fatigue reduction lowers the recorded count and makes the week reduced; the return ceiling is the largest whole count executed that week outside a phase reduction, each exposure counted after its time fit (R20).",
+    "D56 (final formulation, R7A1-SSCTR-r1 S1): a time-budget fit is not a phase reduction, but a week executed its whole count only when the last executed exposure of the exercise that week, the one that gives the week’s counts (R19, INV-04), executed its count before the phase reduction after its time fit. Any other week neither raises nor ends the regain cap (after a re-establishment) or the return cap (at and after the end of the return steps); the return ceiling (lastExecutedSets) is the largest whole count executed after the fit (R20). Met at R7A1-FREEZE-A1 for the rise of both caps and for the regain cap; met at R7A1-FREEZE-A2 for the end of the return cap too (D57 closed). D57 (met at R7A1-FREEZE-A2 and at R7A2-FREEZE-1 and at R7A-FINAL-FREEZE and at R7A-BOUNDARY-FINAL-FREEZE and at STATE-EVIDENCE-FREEZE-1 and at HISTORICAL-PROJECTION-FREEZE-1): the return cap rises and ends only after a week whose last executed exposure did its whole count after its time fit, and ends only when it is at or above next week’s normal count with the block-boundary set that transition earns (phase reductions on top); the regain cap ends only at the largest count the exercise can have. No count after a re-establishment or a return exceeds the largest count executed since then by more than one set, for every exercise a cap or the return steps cover (B = 0 over the 864 and 360 timelines of my grids). The end test reads next week’s count as this week’s normal count plus the block set; another rise of the normal count at a transition (the NONE-class first-block clamp, a priorSets regain) was not reached with a cap in force (observation N4). Regression: the grid’s A, B and C at 0 and test \"R7-A.1 D57\" (both parts).",
+    "S7: a week planned as a return-entry week stays one when its remaining days are rebuilt; every new exercise in it gets the entry dose in every time budget and follows the return steps.",
+    "D59 (met at R7A2-FREEZE-1 and at R7A-FINAL-FREEZE and at R7A-BOUNDARY-FINAL-FREEZE and at STATE-EVIDENCE-FREEZE-1 and at HISTORICAL-PROJECTION-FREEZE-1, closed): a return starts from the state at the break (stateAtBreak, strengthAtBreak): every exercise executed before the break’s first day is in use with its last performed date and, outside a return step and a phase reduction, its last executed whole count after the time fit (target met) as the ceiling (the largest of the break week, R20); a moderate or long return enters it at strengthEntrySets with strengthEntryMinimumRir or more, step 2 follows, the block in progress earns no set and the count comes back at most one set per executed whole week up to the ceiling; the progression the pre-break exposures earned stays unapplied. Regression: ssctr-r7a1-recheck-firstweek.mjs with E, O and B at 0 for NONE and FAMILIAR and O at 0 for KNOWN, my restoration, cap and short grids, and test \"R7-A.2 I4/I5/I8 (SSCTR D59)\". R7ASE-SSCTR-r1: the state at the break also takes the load the athlete lifted on a known-load row as the exercise’s load (lighter, or heavier only under D44: at most one smallest increment above the row and the row’s target met), a fact and never a step; an effort-guided row adopts nothing; a projected dose lifted exactly is that load with its repetition target and no further step. This approval excludes a stored load tick that counts an exposure the projection assumed and the athlete did not execute (NF-R7ASE-3, R42).",
+    "The readings of \"the first quality slot still ahead\" when other adaptations meet it, when the slot is not done and near a race are those of R7A1-SSCTR-QUALITY-SLOT-READINGS.",
+    "The start state of a return is the state at its interruption under R7A2-SSCTR-INTERRUPTION-STATE (revision R7ASM-SSCTR-r1), INTERRUPTION_EPISODE_CONTRACT R7AF-INTERRUPTION-1, WEEK_START_AUTHORITY_CONTRACT R7AB-WEEKSTART-1 (its record, temporal-contradiction rule and boundaries B1-B7, B9-B11) and STATE_MODEL_CONTRACT R7ASM-STATE-MODEL-1 (which replaces STATE_EVIDENCE_CONTRACT R7ASE-STATE-EVIDENCE-1): a correction names its interruption (episodeId) or repeats its days and starts from what the athlete had executed at its own start; a break after a re-entry or after training is new and starts from that re-entry plus the facts executed since; the state at the interruption is read value by value (one value per strength exercise, one for the run): a stored value counts only when its start holds that value as evidence decided before the cut (the intake, a return’s entry, the weekly review’s rule on that value’s historical value, or a projection whose own base value was historical and that the week before executed per sport exactly as assumed, loads included); a value a review carried from a projection is rebuilt by the review’s rule on its historical value; otherwise the value moves back to its last such start and the sessions executed after it are facts only (a known load lifted is the load under D44; a projected dose lifted is that load with its repetition target, never a load tick only the projection counted); weeks never reported are not history; a named correction that contradicts its own executed re-entry is asked; anything else is asked; each short break owns its easy slot.",
+    "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18).",
+    "NOT MET at HISTORICAL-PROJECTION-FREEZE-1 (blocking): S2 on the R42 path (F2); and F1, where an exercise the return steps covered comes back from 1 to 3 sets at once after the return-week crediting desynchronises the return steps and D51 removes its return step."
+   ],
+   "approval_date": "2026-10-29",
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Chief (integration); future funded qualified human (revalidation)",
+   "human_review": null,
+   "re_review_triggers": [
+    "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+    "Any change to a file listed in RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json (new freeze revision).",
+    "A correction of F4 (the walk/jog return): a new freeze needs this regression check again on my walk/jog probe, the restoration and caps grids, the temporal probe and the HOLD probe.",
+    "A runtime, Product/UX or Data decision on unreported weeks before a return or a race week (R41).",
+    "A new systematic review or meta-analysis on detraining, retraining or return after a break."
+   ]
+  },
+  {
+   "queue_id": "HQ-R7ASC-SSCTR-GOAL-RANGE-CUT",
+   "decision_id": "R7ASC-SSCTR-GOAL-RANGE-CUT",
+   "decision_revision": "R7ASC-SSCTR-r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/state-consumer/RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json",
+    "artifact_revision": "STATE-MODEL-CONSUMER-FREEZE-1",
+    "sha256": "5c8687755daa3294339150d35170178e033e12d552315ed92fb4cd668217f3b2",
+    "rule_ids": [
+     "strengthCandidate inRange (known-dose rows)",
+     "goalDoses.STRENGTH repRange 4-6",
+     "return.strengthReturnSets, strengthEntrySets, strengthEntryMinimumRir",
+     "R7ASM-SSCTR-r1 Return base (the return starts from the dose last executed)",
+     "STATE_CONSUMER_CONTRACT R7ASC-STATE-CONSUMER-1 (history ingress, the resolved prescription, evidence through time): r6-program.mjs asEstablishment, resolveExercisePrescription, earnedAt (the gate decides the new-load repetitions), doseStep (a return step moves from the dose run), strengthCandidate inRange (the current goal range on every known-dose row), advanceRun (RETURN, RESTART and WALK_JOG move from the dose the week prescribed), plannedOf (the re-entry dose); r6-adaptation.mjs planningBase (history's run in RETURN or RESTART), historicalStateOf and canonicalRecord, evidenceState (a return's own week read after its point), weeklyGates (a past week's gate counts the logs up to its clock), loggedLoadQuestions"
+    ]
+   },
+   "approved_scope": {
+    "gate": "G02",
+    "item_ids": [
+     "STATE_CONSUMER_CONTRACT §10 item 3",
+     "F3 reach"
+    ],
+    "prescriptive_impact": true,
+    "whole_gate_closure": false
+   },
+   "conditions": [
+    "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+    "Binding: this record binds runtime STATE-MODEL-CONSUMER-FREEZE-1 (CoachingCore/r7/state-consumer/RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json, sha256 5c8687755daa3294339150d35170178e033e12d552315ed92fb4cd668217f3b2; source digest adab37162d4f30d783faed2fe02fd44769a4be36be7bb1f6e8455a01b86235e5; manifest 4f11f4b48782a5f16dc6c9770a367d013564380aecc42d19be348d4ebc45cd1f; r6-adaptation.mjs d2296bb3b4bc0246fadeaea0bd0d4bae9ed2f1edb8bd55fafae2565c32293e17, r6-program.mjs e5f644eeaecd12f8eddf7c80e2c095db938fc2c73abd552876009a27fb9b56b5, r6-composition.mjs 91208e1c13ff7fcbcac886d9a7ff3c71ee47eb82c4300d888542a6c54ee2d901) at the unchanged policy R6-POLICY-5 (canonical hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c). Any change to a bound file or to the policy hash expires it."
+   ],
+   "approval_date": "2026-10-29",
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Chief (integration); future funded qualified human (revalidation)",
+   "human_review": null,
+   "re_review_triggers": [
+    "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+    "Any change to a file listed in RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json (new freeze revision).",
+    "A correction of F4 (the walk/jog return): a new freeze needs this regression check again on my walk/jog probe, the restoration and caps grids, the temporal probe and the HOLD probe.",
+    "A runtime, Product/UX or Data decision on unreported weeks before a return or a race week (R41).",
+    "A new systematic review or meta-analysis on detraining, retraining or return after a break."
+   ]
+  },
+  {
+   "queue_id": "HQ-R7ASC-SSCTR-RETURN-BASE-CARRIED",
+   "decision_id": "R7ASC-SSCTR-RETURN-BASE-CARRIED",
+   "decision_revision": "R7ASC-SSCTR-r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/state-consumer/RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json",
+    "artifact_revision": "STATE-MODEL-CONSUMER-FREEZE-1",
+    "sha256": "5c8687755daa3294339150d35170178e033e12d552315ed92fb4cd668217f3b2",
+    "rule_ids": [
+     "stateAtBreak / historicalStrength (the dose last executed)",
+     "return.strengthEntrySets, strengthEntryMinimumRir, returnLoadCap",
+     "R6-NONCLINICAL-RETURN (historical maxima are a ceiling, not current proof)",
+     "STATE_CONSUMER_CONTRACT R7ASC-STATE-CONSUMER-1 (history ingress, the resolved prescription, evidence through time): r6-program.mjs asEstablishment, resolveExercisePrescription, earnedAt (the gate decides the new-load repetitions), doseStep (a return step moves from the dose run), strengthCandidate inRange (the current goal range on every known-dose row), advanceRun (RETURN, RESTART and WALK_JOG move from the dose the week prescribed), plannedOf (the re-entry dose); r6-adaptation.mjs planningBase (history's run in RETURN or RESTART), historicalStateOf and canonicalRecord, evidenceState (a return's own week read after its point), weeklyGates (a past week's gate counts the logs up to its clock), loggedLoadQuestions"
+    ]
+   },
+   "approved_scope": {
+    "gate": "G02",
+    "item_ids": [
+     "STATE_CONSUMER_CONTRACT §10 item 8"
+    ],
+    "prescriptive_impact": true,
+    "whole_gate_closure": false
+   },
+   "conditions": [
+    "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+    "Binding: this record binds runtime STATE-MODEL-CONSUMER-FREEZE-1 (CoachingCore/r7/state-consumer/RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json, sha256 5c8687755daa3294339150d35170178e033e12d552315ed92fb4cd668217f3b2; source digest adab37162d4f30d783faed2fe02fd44769a4be36be7bb1f6e8455a01b86235e5; manifest 4f11f4b48782a5f16dc6c9770a367d013564380aecc42d19be348d4ebc45cd1f; r6-adaptation.mjs d2296bb3b4bc0246fadeaea0bd0d4bae9ed2f1edb8bd55fafae2565c32293e17, r6-program.mjs e5f644eeaecd12f8eddf7c80e2c095db938fc2c73abd552876009a27fb9b56b5, r6-composition.mjs 91208e1c13ff7fcbcac886d9a7ff3c71ee47eb82c4300d888542a6c54ee2d901) at the unchanged policy R6-POLICY-5 (canonical hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c). Any change to a bound file or to the policy hash expires it."
+   ],
+   "approval_date": "2026-10-29",
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Chief (integration); future funded qualified human (revalidation)",
+   "human_review": null,
+   "re_review_triggers": [
+    "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+    "Any change to a file listed in RUNTIME_FREEZE_STATE_MODEL_CONSUMER.json (new freeze revision).",
+    "A correction of F4 (the walk/jog return): a new freeze needs this regression check again on my walk/jog probe, the restoration and caps grids, the temporal probe and the HOLD probe.",
+    "A runtime, Product/UX or Data decision on unreported weeks before a return or a race week (R41).",
+    "A new systematic review or meta-analysis on detraining, retraining or return after a break."
+   ]
+  }
+ ]
+}

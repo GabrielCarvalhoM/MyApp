@@ -1,0 +1,41 @@
+# Running trajectories — R5
+
+Executable easy/long/current calibrated cruise/faster/hills/strides/event-specific anchors can be preserved across phases. Progression/regression uses the smallest current familiar compatible one-dimensional alternative, with complete physical execution and repeated comparable response. No universal weekly percentage rule or pace-to-physiology inference exists.
+
+Scope: OFFLINE_SYNTHETIC_NODE24_REFERENCE. Candidate implementation; not Product Truth, production, clinical or empirical validation.
+
+## supportedFamilies
+
+- EASY
+- LONG
+- CRUISE
+- FASTER
+- HILLS
+- STRIDES
+- EVENT_SPECIFIC
+- WALK_JOG
+
+## prescriptionFields
+
+- durationMinutes
+- effortDomain
+- effort
+- warmupMinutes
+- cooldownMinutes
+- work.repetitions/workMinutes/recoveryMinutes for hard tasks
+- CURRENT_TASK calibration for hard tasks
+- equipment
+
+## demonstrated
+
+- Easy duration progression/regression
+- Long-run continuity after a missed key workout
+- Familiar cruise preservation
+- Novice-asymmetric walk/jog establishment repertoire
+- Event gap disclosure
+
+## limits
+
+- Familiar hills/strides/faster tasks can be carried; novel family establishment and broad progressions are not demonstrated
+- Event taper requires complete supplied bound configuration
+- No physiological forecast or half-marathon performance guarantee

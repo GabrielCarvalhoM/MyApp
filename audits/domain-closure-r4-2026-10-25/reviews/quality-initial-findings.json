@@ -1,0 +1,18 @@
+{
+  "revision": "DCR4-QUALITY-FINDINGS-initial",
+  "reviewer": "/root/holdout_quality",
+  "independent": true,
+  "status": "REQUEST_CHANGES",
+  "evidence": ["quality-initial-runtime-snapshot.json", "quality-initial-probes.raw.json"],
+  "note": "Initial submission findings. Author owns correction; later assessment must independently replay current hashes. Holdout facts/expectations remain sealed. Once outputs informed implementation, later passes are challenge-set reuse rather than unseen generalization.",
+  "findings": [
+    {"id":"Q01","severity":"MUST","criterion":"Actual availability is a hard admissibility boundary","reproduction":"LONG_WINDOW_TOO_SHORT, CRUISE_WINDOW_TOO_SHORT, STRENGTH_WINDOW_TOO_SHORT","observed":"Positive 60-minute run despite 20-minute window; complete cruise despite 10-minute window; two strength sets with 120-second rest despite one-minute window.","owner":"runtime author","resolution":"CORRECT"},
+    {"id":"Q02","severity":"MUST","criterion":"Equipment/load must be actually available","reproduction":"BAD_EQUIPMENT_INCREMENT","observed":"Positive 13 kg per hand although only 12 kg dumbbells are supplied.","owner":"runtime author","resolution":"CORRECT"},
+    {"id":"Q03","severity":"MUST","criterion":"Negated compatibility cannot earn progression","reproduction":"NEGATED_FAMILIAR_RESPONSE","observed":"candidateResponse 'not compatible in similar context' passes regex and earns positive progression.","owner":"runtime author","resolution":"CORRECT"},
+    {"id":"Q04","severity":"MUST","criterion":"Primary objective governs trade-off with secondary objective","reproduction":"STRENGTH_MAINTENANCE_SECONDARY","observed":"Secondary maintenance of other movements vetoes primary row-development progression because the regex scans the full goal object.","owner":"runtime author","resolution":"CORRECT"},
+    {"id":"Q05","severity":"MUST","criterion":"Experienced first-product prescription preserves relevant history and both modality goals","reproduction":"R4-HO-03","observed":"Known two-run 90-minute week becomes three-run 150-minute week, while two full strength sessions become one set of row only; familiar long-run minutes are reused as easy-run anchor.","owner":"runtime author","resolution":"CORRECT"},
+    {"id":"Q06","severity":"MUST","criterion":"Task-family comparability constrains prescription","reproduction":"WRONG_FAMILY_TOLERANCE","observed":"Easy/long-run history authorizes a 60-minute VO2_STYLE_INTERVALS recipe when only requested family is changed.","owner":"runtime author","resolution":"CORRECT"},
+    {"id":"Q07","severity":"MUST","criterion":"Adapt only remaining work; material necessity required","reproduction":"EMPTY_LOCAL_REMAINDER","observed":"Positive omission is proposed even though the affected optional work is explicitly already completed.","owner":"runtime author","resolution":"CORRECT"},
+    {"id":"Q08","severity":"MUST","criterion":"Conditional strength approval requires complete effort/rest context","reproduction":"REP-R2-12 in quality-initial-runtime-snapshot.json","observed":"Positive regression lacks any rest prescription or preserved rest context despite explicit SSCTR condition.","owner":"runtime author with SSCTR clarification if needed","resolution":"CORRECT_OR_CLARIFY_CONDITION"}
+  ]
+}

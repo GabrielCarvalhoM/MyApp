@@ -1,0 +1,153 @@
+{
+  "revision": "R5-VERIFY-1",
+  "verifiedAt": "2026-10-26T12:21:38.819Z",
+  "node": "v24.19.0",
+  "sourceDigest": "1590d1aaa6cb5cb5259d2fc86e77191f3e1a60f1dd5411fc4c34bb9748f839d3",
+  "objectiveChecksPassing": true,
+  "checks": [
+    {
+      "name": "Node24",
+      "status": "PASS",
+      "evidence": "v24.19.0"
+    },
+    {
+      "name": "all_current_BSR_R2_R3_R4_R5_tests",
+      "status": "PASS",
+      "evidence": {
+        "tests": 280,
+        "passed": 280,
+        "failed": 0,
+        "command": "node --test --test-reporter=tap",
+        "log": "CoachingCore/r5/TEST_RESULTS_CURRENT.tap",
+        "sha256": "f67ddaff31d21cd4355abdf3e0b150dbc732c0d60837359a542cadce0a1306fb"
+      }
+    },
+    {
+      "name": "frozen_runtime_and_authority_unchanged",
+      "status": "PASS",
+      "evidence": {
+        "sourceDigest": "1590d1aaa6cb5cb5259d2fc86e77191f3e1a60f1dd5411fc4c34bb9748f839d3",
+        "files": 18,
+        "frozenAt": "2026-10-26T11:56:53.854Z"
+      }
+    },
+    {
+      "name": "preexisting_Core_and_frozen_R4_preserved",
+      "status": "PASS",
+      "evidence": {
+        "preservedFiles": 189,
+        "packageEntrypoints": "R5 defaults with explicit historical R4 aliases; test unchanged",
+        "documentedSupersession": "CoachingCore/r5/CONFORMANCE_SUPERSESSION_R5.md"
+      }
+    },
+    {
+      "name": "historical_legacy_R2_exact_replay",
+      "status": "PASS",
+      "evidence": {
+        "exactHistoricalInputs": 365
+      }
+    },
+    {
+      "name": "all_66_R4_results_exact_and_frozen40_facts_intact",
+      "status": "PASS",
+      "evidence": {
+        "currentExactR4Decisions": 66,
+        "frozen42Hash": "efd521341252db0413ea9dbac0b28df83ef5b7606cad1b99fd025ea024f07971"
+      }
+    },
+    {
+      "name": "science_current_frozen_binding_and_single_queue",
+      "status": "PASS",
+      "evidence": {
+        "scientificRecords": 4,
+        "probes": 26,
+        "queueBefore": 110,
+        "queueAdded": 4,
+        "queueTotal": 114
+      }
+    },
+    {
+      "name": "independent_frozen_engineering_current",
+      "status": "PASS",
+      "evidence": {
+        "review": "audits/domain-coaching-r5-2026-10-25/reviews/quality-frozen-review.json",
+        "sha256": "9234b6e624c091637ed34f0b9912e3db50472d9d045c057ab42e251561f21245"
+      }
+    },
+    {
+      "name": "no_runtime_corpus_or_expectation_coupling",
+      "status": "PASS",
+      "evidence": [
+        "r5-adaptation.mjs",
+        "r5-authority.mjs",
+        "r5-contract.mjs",
+        "r5-index.mjs",
+        "r5-learning.mjs",
+        "r5-observation.mjs",
+        "r5-program.mjs",
+        "r5-review-context.mjs",
+        "r5-schedule.mjs",
+        "r5-selectors.mjs",
+        "r5-simulator.mjs",
+        "r5-validity.mjs"
+      ]
+    },
+    {
+      "name": "whole_program_trajectories_replay_and_invariants",
+      "status": "PASS",
+      "evidence": {
+        "trajectories": 11,
+        "weeks": 120,
+        "sessions": 580,
+        "actuals": 550,
+        "mutations": 6,
+        "physiologicalPredictions": 0
+      }
+    },
+    {
+      "name": "fresh_independent_holdout_sealed_after_freeze",
+      "status": "PASS",
+      "evidence": {
+        "cases": 24,
+        "corpusSha256": "9557f4bf539073301cde242172cd019983ebf8997fc16b91aae37e634f0cf5c5",
+        "authorStartedAt": "2026-10-26T11:58:07.000Z",
+        "firstEvaluationAt": "2026-10-26T12:10:40.675Z"
+      }
+    },
+    {
+      "name": "first_holdout_results_exact_replay_no_retuning",
+      "status": "PASS",
+      "evidence": {
+        "cases": 24,
+        "generated": 17,
+        "materialReviewSteps": 14,
+        "firstRawSha256": "c202e0ab2b5e1217a85ce2e174b35130b731c03d8dc2c053a3aa75d8bf4357d4",
+        "runtimeChangesSinceFirstEvaluation": 0
+      }
+    },
+    {
+      "name": "independent_coaching_quality_complete_and_current",
+      "status": "PASS",
+      "evidence": {
+        "counts": {
+          "BEST_SUPPORTED": 4,
+          "ACCEPTABLE_ALTERNATIVE": 4,
+          "SUBOPTIMAL": 3,
+          "INSUFFICIENT_INFORMATION": 6,
+          "UNSUPPORTED": 7
+        },
+        "reviewSha256": "eeb9c09d612fad3f503d1d6fa6f32b08c915830f1b2323349b1d44aad8ba9764"
+      }
+    },
+    {
+      "name": "requested_deliverable_files_present_and_json_valid",
+      "status": "PASS",
+      "evidence": {
+        "pairedContracts": 11
+      }
+    }
+  ],
+  "passing": 14,
+  "total": 14,
+  "scope": "Objective evidence for delivered bounded offline reference. Broad R5 Definition of Done and production readiness are separately assessed; a green checker is not clinical/empirical validation."
+}

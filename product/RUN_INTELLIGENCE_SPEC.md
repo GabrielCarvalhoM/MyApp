@@ -1,5 +1,9 @@
 # Run Intelligence Layer
 
+<!-- EXPERIENCE_AUTHORITY_OVERLAY_START: EXP-AUTH-r1 -->
+> **Domain authority retained · 2026-10-22 · EXP-AUTH-r1.** Full prescription/progression/programming/performance/recovery/analytics semantics and scientific/approval limits remain intact. [DR-93–97](PRODUCT_DECISION_REGISTER.md) / [index filter](../canon/CANONICAL_INDEX.md) retire only inherited presentation, placement and “existing objects/no new destinations” instructions as architecture requirements; anti-bloat and no invented capability remain. Isolation metadata is history after `32b7fb6`; no efficacy or implemented support follows. Designer entry: [derived context](DESIGNER_PRODUCT_CONTEXT.md).
+<!-- EXPERIENCE_AUTHORITY_OVERLAY_END: EXP-AUTH-r1 -->
+
 Revisão **RIL-1.1-r1** · 2026-10-19 · **CANDIDATE_IN_ISOLATION** · task FREEZE-20261019-r1 (baseline SIL).
 Owner semântico: Run Intelligence sob Adaptive Engine. [SIS](SPORT_INTELLIGENCE_SPEC.md) define entradas/saídas/ownership, carga compartilhada e arbitragem; [AEC](ADAPTIVE_ENGINE_CONTRACT.md) controla comportamento; [AEOS](ADAPTIVE_ENGINE_OPERATIONAL_SPEC.md) controla avaliação. Aqui se especifica o núcleo decisório de corrida para implementação futura; não é planilha pronta, catálogo comercial ou receita fisiológica aprovada.
 
@@ -74,6 +78,8 @@ O especialista deve justificar distribuição de estímulos/frequência, altern�
 Taper reduz/redistribui demanda para evento-alvo quando coberto, com propósito/retensão de estímulo e interação com força explicitados. Deload administra demanda acumulada/necessidade de recuperação dentro do ciclo; descanso e HOLD têm significados distintos. Nenhuma semana fixa de descarga, porcentagem, “80/20” obrigatório ou regra universal de taper é criada aqui.
 
 Prova movida/cancelada, interrupção ou disponibilidade alterada provoca revisão do horizonte e da fase sob regra; não comprime automaticamente semanas perdidas ou repõe longões. Eventos secundários e testes não recebem a mesma prioridade de um alvo principal por terem data. Força próxima do evento entra como proposta ao Orchestrator, que valida efeito com Strength Intelligence; Run não cancela unilateralmente a outra modalidade.
+
+**Dias de corrida e longão (DR-112).** Os dias e o turno das corridas são os escolhidos pela pessoa, e o longão cai no dia que ela escolheu entre eles; a progressão do longão segue a política de corrida vigente. Mais dias espalham a carga semanal, não a aumentam. Vizinhança com força é tratada pelo conteúdo, não movendo dias (SIS §5).
 
 ## 6. Performance model
 

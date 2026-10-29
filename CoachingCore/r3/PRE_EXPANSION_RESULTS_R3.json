@@ -1,0 +1,1999 @@
+[
+  {
+    "caseId": "REP-R2-01",
+    "title": "New athlete, no product history, first low-data week",
+    "gap": "ACF-G01",
+    "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+    "schemaValid": true,
+    "inputHash": "f7753a62b21e0f7bb66c28e8b673656bfc1d03761a5c21feecbfe47f1b2a96aa",
+    "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+    "decisionType": "NOT_SUPPORTED_YET",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": true
+    },
+    "rationale": "The supplied establishment context is understood, but no approved whole-request recipe matches these modality configurations, available days and current exposure. An adult label is not an exact age; a reported walk is not a run tolerance or machine-task demonstration.",
+    "missingInputs": [],
+    "dependency": "FIRST_PRESCRIPTION_EXACT_RECIPE",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/history",
+      "/calibration",
+      "/onboarding/movementKnowledge",
+      "/onboarding/availability",
+      "/reportedExposure"
+    ],
+    "adapterWarnings": [],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-02",
+    "title": "Run novice, experienced lifter, first integrated week",
+    "gap": "ACF-G01",
+    "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+    "schemaValid": true,
+    "inputHash": "b9563354e1962656aa0f27cf066d15b100fa9bfa11fed4902940f3cb89cdb2a5",
+    "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+    "decisionType": "NOT_SUPPORTED_YET",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": true
+    },
+    "rationale": "The supplied establishment context is understood, but no approved whole-request recipe matches these modality configurations, available days and current exposure. An adult label is not an exact age; a reported walk is not a run tolerance or machine-task demonstration.",
+    "missingInputs": [],
+    "dependency": "FIRST_PRESCRIPTION_EXACT_RECIPE",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/history",
+      "/calibration",
+      "/onboarding/movementKnowledge",
+      "/onboarding/availability",
+      "/reportedExposure"
+    ],
+    "adapterWarnings": [
+      {
+        "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+        "sourcePaths": [
+          "/reportedExposure/run/familiar"
+        ],
+        "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+      }
+    ],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-03",
+    "title": "Strength novice, established runner, first strength exposure",
+    "gap": "ACF-G01",
+    "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+    "schemaValid": true,
+    "inputHash": "3733acd7218f915b7c2eb4a23bd6f974c0e6c8c976d9d363943680cbd13ecbc8",
+    "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+    "decisionType": "NOT_SUPPORTED_YET",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": true
+    },
+    "rationale": "The supplied establishment context is understood, but no approved whole-request recipe matches these modality configurations, available days and current exposure. An adult label is not an exact age; a reported walk is not a run tolerance or machine-task demonstration.",
+    "missingInputs": [],
+    "dependency": "FIRST_PRESCRIPTION_EXACT_RECIPE",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/history",
+      "/calibration",
+      "/onboarding/movementKnowledge",
+      "/onboarding/availability",
+      "/reportedExposure"
+    ],
+    "adapterWarnings": [
+      {
+        "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+        "sourcePaths": [
+          "/currentDemand/officialRunWeek"
+        ],
+        "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+      }
+    ],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-04",
+    "title": "Unknown movement competence with a requested loaded squat",
+    "gap": "ACF-G01",
+    "targetCategory": "USEFUL_ASK",
+    "schemaValid": true,
+    "inputHash": "ccc0fb6e619adecf947a8df0e6f0e562418eb3afe8031eec362f739c1d05c33d",
+    "coverage": "USEFUL_ASK",
+    "decisionType": "ASK",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": false
+    },
+    "rationale": "Requested load and equipment do not establish task competence, configuration or demonstrated load",
+    "missingInputs": [
+      "/onboarding/movementKnowledge",
+      "/reportedExposure/strength"
+    ],
+    "dependency": "SUBSTANTIVE_MISSING_INPUT",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/history",
+      "/calibration",
+      "/onboarding/movementKnowledge",
+      "/onboarding/availability",
+      "/reportedExposure"
+    ],
+    "adapterWarnings": [],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-05",
+    "title": "First VO2 family requested by a run novice",
+    "gap": "ACF-G01",
+    "targetCategory": "USEFUL_ASK",
+    "schemaValid": true,
+    "inputHash": "318a6a5f2a0354df0897f58c3d744154d4129223640895ce4a412344190f2733",
+    "coverage": "USEFUL_ASK",
+    "decisionType": "ASK",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": false
+    },
+    "rationale": "Lifting experience does not establish interval competence or task-specific calibration",
+    "missingInputs": [
+      "/reportedExposure/run",
+      "/currentDemand/calibration"
+    ],
+    "dependency": "SUBSTANTIVE_MISSING_INPUT",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/history",
+      "/calibration"
+    ],
+    "adapterWarnings": [
+      {
+        "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+        "sourcePaths": [
+          "/currentDemand/family"
+        ],
+        "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+      }
+    ],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-06",
+    "title": "Reported familiar easy running without imported device history",
+    "gap": "ACF-G01",
+    "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+    "schemaValid": true,
+    "inputHash": "0d196c050ea5128aa4d46e6979a639ea0b9594c51a9e6273782dc4ef3afca580",
+    "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+    "decisionType": "NOT_SUPPORTED_YET",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": true
+    },
+    "rationale": "The supplied establishment context is understood, but no approved whole-request recipe matches these modality configurations, available days and current exposure. An adult label is not an exact age; a reported walk is not a run tolerance or machine-task demonstration.",
+    "missingInputs": [],
+    "dependency": "FIRST_PRESCRIPTION_EXACT_RECIPE",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/history",
+      "/calibration",
+      "/onboarding/movementKnowledge",
+      "/onboarding/availability",
+      "/reportedExposure"
+    ],
+    "adapterWarnings": [],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-07",
+    "title": "First run/walk establishment after comfortable walking",
+    "gap": "ACF-G01",
+    "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+    "schemaValid": true,
+    "inputHash": "d83e96eec879a72a1d6509630bddd8cb1afbc0815dade44877406f7bd3cac99a",
+    "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+    "decisionType": "NOT_SUPPORTED_YET",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": true
+    },
+    "rationale": "The supplied establishment context is understood, but no approved whole-request recipe matches these modality configurations, available days and current exposure. An adult label is not an exact age; a reported walk is not a run tolerance or machine-task demonstration.",
+    "missingInputs": [],
+    "dependency": "FIRST_PRESCRIPTION_EXACT_RECIPE",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/history",
+      "/calibration",
+      "/onboarding/movementKnowledge",
+      "/onboarding/availability",
+      "/reportedExposure"
+    ],
+    "adapterWarnings": [],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-08",
+    "title": "Incomplete onboarding and unknown eligibility",
+    "gap": "ACF-G01",
+    "targetCategory": "USEFUL_ASK",
+    "schemaValid": true,
+    "inputHash": "bba576066fb9924e7e85b39b0902747883641b442491099fbfc10637395de867",
+    "coverage": "USEFUL_ASK",
+    "decisionType": "ASK",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": false
+    },
+    "rationale": "Current eligibility is unknown; no disease or clearance is inferred",
+    "missingInputs": [
+      "/eligibility/status"
+    ],
+    "dependency": "SUBSTANTIVE_MISSING_INPUT",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason"
+    ],
+    "adapterWarnings": [],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-09",
+    "title": "Local calf fatigue and an optional unperformed accessory",
+    "gap": "ACF-G02",
+    "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+    "schemaValid": true,
+    "inputHash": "5a6ecc13e07e97346729cb81e4fadbf1400dff5974d7193d6cfc0e081ef0f395",
+    "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+    "decisionType": "NOT_SUPPORTED_YET",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": true
+    },
+    "rationale": "Exact essential/optional configuration is represented. R2 back-squat/calf removal cannot replace this goblet/row/loaded-calf dose; smaller sufficient alternatives still need bounded adjudication.",
+    "missingInputs": [],
+    "dependency": "OPTIONAL_ACCESSORY_EXACT_CONFIGURATION",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/history",
+      "/calibration",
+      "/alternatives"
+    ],
+    "adapterWarnings": [],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-10",
+    "title": "Converging systemic fatigue and under-target cruise execution",
+    "gap": "ACF-G02",
+    "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+    "schemaValid": true,
+    "inputHash": "5b2b5e71f6654550b3ea17f7240241d283eaefc687b667d630c71248abb5ffb8",
+    "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+    "decisionType": "NOT_SUPPORTED_YET",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": true
+    },
+    "rationale": "The 5min plus 3min completed prefix is immutable. No approved future-suffix dose matches this partially executed cruise configuration and converging response.",
+    "missingInputs": [],
+    "dependency": "PARTIAL_CRUISE_SUFFIX_DOSING",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/completedPrefix",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/history",
+      "/calibration",
+      "/alternatives"
+    ],
+    "adapterWarnings": [],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-11",
+    "title": "Repeated over-target strength execution with familiar next step",
+    "gap": "ACF-G02",
+    "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+    "schemaValid": true,
+    "inputHash": "470eeed7c507a8ab05157dc46b91bf1843082556bc17e2dbfb1d138ad05cd075",
+    "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+    "decisionType": "NOT_SUPPORTED_YET",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": true
+    },
+    "rationale": "Exact set-level response and candidate load/repetitions are consumed. Current necessity, smallest sufficient change and this movement-specific finite candidate lack a reviewed binding.",
+    "missingInputs": [],
+    "dependency": "STRENGTH_ADAPTATION_EXACT_TASK",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/history",
+      "/calibration"
+    ],
+    "adapterWarnings": [],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-12",
+    "title": "Under-target strength execution in one known configuration",
+    "gap": "ACF-G02",
+    "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+    "schemaValid": true,
+    "inputHash": "5689ab85d7054e28e38868c5d910f4ba18c2dcd559bc6cecea8405b08706e264",
+    "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+    "decisionType": "NOT_SUPPORTED_YET",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": true
+    },
+    "rationale": "Exact set-level response and candidate load/repetitions are consumed. Current necessity, smallest sufficient change and this movement-specific finite candidate lack a reviewed binding.",
+    "missingInputs": [],
+    "dependency": "STRENGTH_ADAPTATION_EXACT_TASK",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/history",
+      "/calibration"
+    ],
+    "adapterWarnings": [],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-13",
+    "title": "One small easy-run deviation in an otherwise ordinary week",
+    "gap": "ACF-G02",
+    "targetCategory": "SUPPORTED_KEEP",
+    "schemaValid": true,
+    "inputHash": "c87774e77567ff3a5b75abf39881095a1878d26a7c40793e43d750ab6c75a9f9",
+    "coverage": "SUPPORTED_KEEP",
+    "decisionType": "KEEP",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": true
+    },
+    "rationale": "The bounded familiar week has no supported necessity for change; retain actual26 and planned25 separately. The one-minute observation is not a universal noise threshold.",
+    "missingInputs": [],
+    "dependency": null,
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/history",
+      "/calibration"
+    ],
+    "adapterWarnings": [],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-14",
+    "title": "Missed optional easy session with normal core work",
+    "gap": "ACF-G02",
+    "targetCategory": "SUPPORTED_KEEP",
+    "schemaValid": true,
+    "inputHash": "708721d697a0d1cdea108d5326e975408e055e5537ad0a057ce440182a398bd7",
+    "coverage": "SUPPORTED_KEEP",
+    "decisionType": "KEEP",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": true
+    },
+    "rationale": "Explicit optional omission leaves feasible essential work and compatible response. No catch-up work or automatic progression.",
+    "missingInputs": [],
+    "dependency": null,
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/history",
+      "/calibration",
+      "/athletePreference"
+    ],
+    "adapterWarnings": [],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-15",
+    "title": "Double-session conflict with Run-first priority",
+    "gap": "ACF-G02",
+    "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+    "schemaValid": true,
+    "inputHash": "04642117e5b1e65a46080c5ab3148020aa28a79899fbe70f33deb25e54336a62",
+    "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+    "decisionType": "NOT_SUPPORTED_YET",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": true
+    },
+    "rationale": "Local start/duration/window overlap is representable. Familiar arrangement is not a complete admissibility/essential-stimulus review; priority alone cannot certify either moved configuration.",
+    "missingInputs": [],
+    "dependency": "JOINT_SCHEDULE_ADMISSIBILITY",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/history",
+      "/calibration",
+      "/alternatives"
+    ],
+    "adapterWarnings": [
+      {
+        "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+        "sourcePaths": [
+          "/currentDemand/planned/run/start"
+        ],
+        "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+      },
+      {
+        "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+        "sourcePaths": [
+          "/currentDemand/planned/strength/start"
+        ],
+        "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+      },
+      {
+        "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+        "sourcePaths": [
+          "/currentDemand/availability/THU/0/0"
+        ],
+        "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+      },
+      {
+        "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+        "sourcePaths": [
+          "/currentDemand/availability/THU/0/1"
+        ],
+        "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+      },
+      {
+        "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+        "sourcePaths": [
+          "/currentDemand/availability/FRI/0/0"
+        ],
+        "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+      },
+      {
+        "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+        "sourcePaths": [
+          "/currentDemand/availability/FRI/0/1"
+        ],
+        "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+      }
+    ],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-16",
+    "title": "Same double-session conflict with Strength-first priority",
+    "gap": "ACF-G02",
+    "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+    "schemaValid": true,
+    "inputHash": "11b268f5250c2c62e49291d38cfd92d6f173f9b4db63e5d988d757f5fa23939d",
+    "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+    "decisionType": "NOT_SUPPORTED_YET",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": true
+    },
+    "rationale": "Local start/duration/window overlap is representable. Familiar arrangement is not a complete admissibility/essential-stimulus review; priority alone cannot certify either moved configuration.",
+    "missingInputs": [],
+    "dependency": "JOINT_SCHEDULE_ADMISSIBILITY",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/history",
+      "/calibration",
+      "/alternatives"
+    ],
+    "adapterWarnings": [
+      {
+        "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+        "sourcePaths": [
+          "/currentDemand/planned/run/start"
+        ],
+        "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+      },
+      {
+        "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+        "sourcePaths": [
+          "/currentDemand/planned/strength/start"
+        ],
+        "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+      },
+      {
+        "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+        "sourcePaths": [
+          "/currentDemand/availability/THU/0/0"
+        ],
+        "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+      },
+      {
+        "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+        "sourcePaths": [
+          "/currentDemand/availability/THU/0/1"
+        ],
+        "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+      },
+      {
+        "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+        "sourcePaths": [
+          "/currentDemand/availability/FRI/0/0"
+        ],
+        "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+      },
+      {
+        "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+        "sourcePaths": [
+          "/currentDemand/availability/FRI/0/1"
+        ],
+        "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+      }
+    ],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-17",
+    "title": "A wearable-only recovery warning without an athlete problem",
+    "gap": "ACF-G02",
+    "targetCategory": "SUPPORTED_KEEP",
+    "schemaValid": true,
+    "inputHash": "85bfc9f5044f4c1ff59b3399fd71ee76f182eac1eccba2831865755cb2e8a5a3",
+    "coverage": "USEFUL_ASK",
+    "decisionType": "ASK",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": false
+    },
+    "rationale": "Supplied sources disagree; reconcile the specific facts before dependent interpretation",
+    "missingInputs": [
+      "{\"code\":\"DATA_TIER_DEVICE_CONFLICT\",\"sourcePaths\":[\"/population/dataTier\",\"/wearable/type\"],\"detail\":\"NO_WEARABLE conflicts with an explicitly described device; both facts retained\",\"requiresResolution\":true}"
+    ],
+    "dependency": "SUBSTANTIVE_MISSING_INPUT",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason"
+    ],
+    "adapterWarnings": [],
+    "adapterConflicts": [
+      {
+        "code": "DATA_TIER_DEVICE_CONFLICT",
+        "sourcePaths": [
+          "/population/dataTier",
+          "/wearable/type"
+        ],
+        "detail": "NO_WEARABLE conflicts with an explicitly described device; both facts retained",
+        "requiresResolution": true
+      }
+    ]
+  },
+  {
+    "caseId": "REP-R2-18",
+    "title": "Configured substitution requested without a complete joint prescription",
+    "gap": "ACF-G02",
+    "targetCategory": "USEFUL_ASK",
+    "schemaValid": true,
+    "inputHash": "c29baf0bb39a91e76a75ce7ad51585ccea62aed77e8a171f46b81bf79037259b",
+    "coverage": "USEFUL_ASK",
+    "decisionType": "ASK",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": false
+    },
+    "rationale": "Barbell kilograms cannot supply dumbbell load, competence, configuration or complete alternative recipe",
+    "missingInputs": [
+      "/currentDemand/requested/loadKgPerHand",
+      "/history/requestedMovementFamiliar",
+      "/history/completeAlternativeRecipe"
+    ],
+    "dependency": "SUBSTANTIVE_MISSING_INPUT",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/history",
+      "/calibration"
+    ],
+    "adapterWarnings": [],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-19",
+    "title": "Short travel interruption, familiar runner, first return session",
+    "gap": "ACF-G03",
+    "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+    "schemaValid": true,
+    "inputHash": "4c50d0d666f23b3fbb5e87657fefeffbce4dc59968ef9d1cfea18878ce1c3fe1",
+    "coverage": "USEFUL_ASK",
+    "decisionType": "ASK",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": false
+    },
+    "rationale": "The nonclinical pause is explicit, but current task-specific capacity/response is unestablished; ordinary walking and historical tolerance do not establish a current run or lifting dose",
+    "missingInputs": [
+      "/observations/currentCapacity",
+      "/observations/currentTaskDemonstration"
+    ],
+    "dependency": "SUBSTANTIVE_MISSING_INPUT",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/calibration",
+      "/interruption"
+    ],
+    "adapterWarnings": [
+      {
+        "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+        "sourcePaths": [
+          "/priorHistory/run/cruise"
+        ],
+        "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+      }
+    ],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-20",
+    "title": "Moderate work interruption, familiar strength athlete",
+    "gap": "ACF-G03",
+    "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+    "schemaValid": true,
+    "inputHash": "e1207575b0f535cb479669468ffe6931be10a23b0c2c2f4051cf35e64e1b6cfa",
+    "coverage": "USEFUL_ASK",
+    "decisionType": "ASK",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": false
+    },
+    "rationale": "The nonclinical pause is explicit, but current task-specific capacity/response is unestablished; ordinary walking and historical tolerance do not establish a current run or lifting dose",
+    "missingInputs": [
+      "/observations/currentCapacity",
+      "/observations/currentTaskDemonstration"
+    ],
+    "dependency": "SUBSTANTIVE_MISSING_INPUT",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/calibration",
+      "/interruption"
+    ],
+    "adapterWarnings": [],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-21",
+    "title": "Hybrid return week after a nonclinical pause",
+    "gap": "ACF-G03",
+    "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+    "schemaValid": true,
+    "inputHash": "4d8756f727dc3e986b835a79cde2004356c2f5b57d5eee13dac064eab94caf3a",
+    "coverage": "USEFUL_ASK",
+    "decisionType": "ASK",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": false
+    },
+    "rationale": "The nonclinical pause is explicit, but current task-specific capacity/response is unestablished; ordinary walking and historical tolerance do not establish a current run or lifting dose",
+    "missingInputs": [
+      "/observations/currentCapacity",
+      "/observations/currentTaskDemonstration"
+    ],
+    "dependency": "SUBSTANTIVE_MISSING_INPUT",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/calibration",
+      "/interruption"
+    ],
+    "adapterWarnings": [],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-22",
+    "title": "Old training history without interruption reason or current response",
+    "gap": "ACF-G03",
+    "targetCategory": "USEFUL_ASK",
+    "schemaValid": true,
+    "inputHash": "ba3f65a3e907c1e150ec6450e22bfddd115eac3a1b58b84fb2fdee01055a6563",
+    "coverage": "USEFUL_ASK",
+    "decisionType": "ASK",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": false
+    },
+    "rationale": "Interruption reason and actual exposure/current restrictions are missing; elapsed days and an old plan cannot establish current capacity",
+    "missingInputs": [
+      "/interruption/reason",
+      "/interruption/nonclinical",
+      "/interruption/actualExposureKnown",
+      "/observations/currentCapacity"
+    ],
+    "dependency": "SUBSTANTIVE_MISSING_INPUT",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/calibration",
+      "/interruption"
+    ],
+    "adapterWarnings": [
+      {
+        "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+        "sourcePaths": [
+          "/priorHistory/run"
+        ],
+        "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+      }
+    ],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-23",
+    "title": "Post-pause current test has an incompatible but nonclinical response",
+    "gap": "ACF-G03",
+    "targetCategory": "CORRECT_ABSTAIN_OR_HOLD",
+    "schemaValid": true,
+    "inputHash": "2179f7d6fe2cd3af47b719327ffbf8d85325647f852de4c7e238f79033e2cfee",
+    "coverage": "CORRECT_ABSTAIN_OR_HOLD",
+    "decisionType": "HOLD",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": true
+    },
+    "rationale": "Incompatible entry response and uncertain comparison prevent restoring former loads; no reviewed smaller current alternative is supplied",
+    "missingInputs": [],
+    "dependency": "CURRENT_REENTRY_REASSESSMENT",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/calibration",
+      "/interruption"
+    ],
+    "adapterWarnings": [],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-24",
+    "title": "Return following injury with persistent pain",
+    "gap": "ACF-G03",
+    "targetCategory": "CLINICAL_OR_OUT_OF_SCOPE",
+    "schemaValid": true,
+    "inputHash": "b564012f56737ba8909b4269d550e524d3dbf36efa02c82e4a8ce53a13f46250",
+    "coverage": "CLINICAL_OR_OUT_OF_SCOPE",
+    "decisionType": "CLINICAL_HUMAN_REQUIRED",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": false,
+      "decisionReady": false
+    },
+    "rationale": "Explicit clinical dependency requires a qualified human; no dependent dose is selected",
+    "missingInputs": [],
+    "dependency": "QUALIFIED_CLINICAL_HUMAN",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population"
+    ],
+    "adapterWarnings": [],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-25",
+    "title": "Recreational 10K Run-first race week with familiar strength maintenance",
+    "gap": "ACF-G04",
+    "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+    "schemaValid": true,
+    "inputHash": "0e1de8a3e2003ff440eee8c62e2bebbfc64b7648e0db30aa0df05b40e45a664d",
+    "coverage": "NOT_SUPPORTED_SCIENCE_GAP",
+    "decisionType": "HOLD",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": true
+    },
+    "rationale": "The exact event, temporary priority, familiar run/strength components and windows are consumed. Their combined baseline-relative race-week recipe and essential-stimulus adequacy lack sufficient independent approval.",
+    "missingInputs": [],
+    "dependency": "JOINT_HYBRID_TAPER_RECIPE",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/calibration",
+      "/event",
+      "/availability",
+      "/constraints",
+      "/event/firstAtDistance"
+    ],
+    "adapterWarnings": [
+      {
+        "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+        "sourcePaths": [
+          "/priorHistory/run/easy"
+        ],
+        "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+      },
+      {
+        "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+        "sourcePaths": [
+          "/priorHistory/run/racePaceCue"
+        ],
+        "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+      },
+      {
+        "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+        "sourcePaths": [
+          "/priorHistory/run/long"
+        ],
+        "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+      }
+    ],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-26",
+    "title": "Recreational half-marathon Run-first week",
+    "gap": "ACF-G04",
+    "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+    "schemaValid": true,
+    "inputHash": "fa7cc98fd511962105fcbcf1bb2685143e0923c763c7d994d62ad445afd1ddbc",
+    "coverage": "NOT_SUPPORTED_SCIENCE_GAP",
+    "decisionType": "HOLD",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": true
+    },
+    "rationale": "The exact event, temporary priority, familiar run/strength components and windows are consumed. Their combined baseline-relative race-week recipe and essential-stimulus adequacy lack sufficient independent approval.",
+    "missingInputs": [],
+    "dependency": "JOINT_HYBRID_TAPER_RECIPE",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/calibration",
+      "/event",
+      "/availability",
+      "/constraints",
+      "/event/firstAtDistance"
+    ],
+    "adapterWarnings": [
+      {
+        "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+        "sourcePaths": [
+          "/priorHistory/run/easy"
+        ],
+        "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+      },
+      {
+        "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+        "sourcePaths": [
+          "/priorHistory/run/long"
+        ],
+        "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+      }
+    ],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-27",
+    "title": "Balanced athlete temporarily elevates a familiar 10K event",
+    "gap": "ACF-G04",
+    "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+    "schemaValid": true,
+    "inputHash": "36811dcbd7571ef84a610f3555070922158b76662bd2c23013f0b5a0a1330b24",
+    "coverage": "NOT_SUPPORTED_SCIENCE_GAP",
+    "decisionType": "HOLD",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": true
+    },
+    "rationale": "The exact event, temporary priority, familiar run/strength components and windows are consumed. Their combined baseline-relative race-week recipe and essential-stimulus adequacy lack sufficient independent approval.",
+    "missingInputs": [],
+    "dependency": "JOINT_HYBRID_TAPER_RECIPE",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/calibration",
+      "/event",
+      "/availability",
+      "/constraints",
+      "/event/firstAtDistance"
+    ],
+    "adapterWarnings": [
+      {
+        "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+        "sourcePaths": [
+          "/priorHistory/run"
+        ],
+        "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+      }
+    ],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-28",
+    "title": "First half-marathon with incomplete long-run and race-pace history",
+    "gap": "ACF-G04",
+    "targetCategory": "NOT_SUPPORTED_YET",
+    "schemaValid": true,
+    "inputHash": "f0f0be61cc0f859bce2036ed67138ef364a67d1de6d25bd77f45220dce3034d1",
+    "coverage": "USEFUL_ASK",
+    "decisionType": "ASK",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": false
+    },
+    "rationale": "Recent long-run exposure, distance-specific experience and event intent remain unknown; no 5K-to-half pace conversion is permitted",
+    "missingInputs": [
+      "/priorHistory/run/longestRecentRun",
+      "/calibration/halfMarathonPace"
+    ],
+    "dependency": "SUBSTANTIVE_MISSING_INPUT",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/calibration",
+      "/event",
+      "/availability",
+      "/constraints",
+      "/event/firstAtDistance"
+    ],
+    "adapterWarnings": [
+      {
+        "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+        "sourcePaths": [
+          "/priorHistory/run"
+        ],
+        "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+      }
+    ],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-29",
+    "title": "Post-10K ordinary recovery transition without a capacity claim",
+    "gap": "ACF-G04",
+    "targetCategory": "USEFUL_ASK",
+    "schemaValid": true,
+    "inputHash": "bc4c154311dcb3f5b99507d07814f1ac93d901db4f73734167777aa41928d630",
+    "coverage": "USEFUL_ASK",
+    "decisionType": "ASK",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": false
+    },
+    "rationale": "Hard event completion does not establish next-day recovery; current symptoms, function and subjective response must be supplied. Absolute evaluation date is not invented.",
+    "missingInputs": [
+      "/observations/postEventSymptoms",
+      "/observations/currentFunction",
+      "/observations/subjectiveRecovery"
+    ],
+    "dependency": "SUBSTANTIVE_MISSING_INPUT",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/calibration",
+      "/event"
+    ],
+    "adapterWarnings": [
+      {
+        "code": "EVENT_TIME_WITHOUT_EVALUATION_ANCHOR",
+        "sourcePaths": [
+          "/event/completedAt",
+          "/evaluatedAt"
+        ],
+        "detail": "Absolute event time retained; relative current/event chronology cannot be computed"
+      }
+    ],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-30",
+    "title": "Race-week illness symptoms override event preference",
+    "gap": "ACF-G04",
+    "targetCategory": "CLINICAL_OR_OUT_OF_SCOPE",
+    "schemaValid": true,
+    "inputHash": "784e229224082a8afe59578d19d452987fbcc219df73d5dc1b61cfc110fb17b4",
+    "coverage": "CLINICAL_OR_OUT_OF_SCOPE",
+    "decisionType": "CLINICAL_HUMAN_REQUIRED",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": false,
+      "decisionReady": false
+    },
+    "rationale": "Explicit clinical dependency requires a qualified human; no dependent dose is selected",
+    "missingInputs": [],
+    "dependency": "QUALIFIED_CLINICAL_HUMAN",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population"
+    ],
+    "adapterWarnings": [],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-31",
+    "title": "Easy session without a wearable or lab test",
+    "gap": "ACF-G05",
+    "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+    "schemaValid": true,
+    "inputHash": "b9ac11140d454342ded87fafbddc1445e724c81f49073d0ec4270e6c664852d2",
+    "coverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+    "decisionType": "MODIFY",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": true
+    },
+    "rationale": "Select only the exact currently familiar bounded task; no physiological calibration, novel dose, full-week sufficiency or efficacy is inferred",
+    "missingInputs": [],
+    "dependency": null,
+    "policyRefs": [
+      {
+        "id": "R2-P14",
+        "version": "R2-POLICY-1",
+        "hash": "2a54d9d64492aa2d117112abe1cc7d04c7dce9c94258a5be0a038a219dae6f87"
+      }
+    ],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/calibration",
+      "/currentDemand/family",
+      "/environment",
+      "/environment/conditions"
+    ],
+    "adapterWarnings": [
+      {
+        "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+        "sourcePaths": [
+          "/priorHistory/sameRoute"
+        ],
+        "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+      }
+    ],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-32",
+    "title": "Recovery label has no separately calibrated construct",
+    "gap": "ACF-G05",
+    "targetCategory": "USEFUL_ASK",
+    "schemaValid": true,
+    "inputHash": "83daaa6273c432a283c9e2ff6d0e525a29a7e927c1b4a374c3598f62c44657e6",
+    "coverage": "USEFUL_ASK",
+    "decisionType": "ASK",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": false
+    },
+    "rationale": "A separate recovery pace/intent has no calibrated construct; familiar easy is not automatically a distinct recovery target",
+    "missingInputs": [
+      "/calibration/recoveryDistinctConstruct",
+      "/observations/needForSeparateRecoveryIntent"
+    ],
+    "dependency": "SUBSTANTIVE_MISSING_INPUT",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/calibration",
+      "/currentDemand/family",
+      "/environment"
+    ],
+    "adapterWarnings": [
+      {
+        "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+        "sourcePaths": [
+          "/priorHistory/easy"
+        ],
+        "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+      }
+    ],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-33",
+    "title": "Steady session with a personally familiar effort anchor",
+    "gap": "ACF-G05",
+    "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+    "schemaValid": true,
+    "inputHash": "b8aae80d87738d0b8ce3024117ed802ab49d8de5ee9a155cfb21ed710a460f9a",
+    "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+    "decisionType": "NOT_SUPPORTED_YET",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": true
+    },
+    "rationale": "The complete familiar task is represented but its exact recipe has no current independent executable approval",
+    "missingInputs": [],
+    "dependency": "FAMILIAR_STEADY_RECIPE",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/calibration",
+      "/currentDemand/family",
+      "/environment"
+    ],
+    "adapterWarnings": [],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-34",
+    "title": "Cruise session with recent comparable execution and disagreement limits",
+    "gap": "ACF-G05",
+    "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+    "schemaValid": true,
+    "inputHash": "00d893f0911c3c298efc5e5dc01dfadb82d56f8c3de2dbaed59f7f6f2bd2c813",
+    "coverage": "USEFUL_ASK",
+    "decisionType": "ASK",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": false
+    },
+    "rationale": "Familiar cruise work and330s/km are present; the full recipe warm-up/cool-down and current comparable complete dose are not supplied. Matching the work blocks alone is insufficient.",
+    "missingInputs": [
+      "/priorHistory/sameFamily/warmupMinutes",
+      "/priorHistory/sameFamily/cooldownMinutes"
+    ],
+    "dependency": "SUBSTANTIVE_MISSING_INPUT",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/calibration",
+      "/currentDemand/family",
+      "/environment"
+    ],
+    "adapterWarnings": [],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-35",
+    "title": "VO2-style label from a proprietary watch prediction",
+    "gap": "ACF-G05",
+    "targetCategory": "NOT_SUPPORTED_YET",
+    "schemaValid": true,
+    "inputHash": "4d55edb970d04c4beeb3ddce9d0aac1d2a1a2056f776da8cd9db51be2ca7cea1",
+    "coverage": "NOT_SUPPORTED_SCIENCE_GAP",
+    "decisionType": "HOLD",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": true
+    },
+    "rationale": "The requested exact target cannot be inferred from a proprietary prediction, easy pace or noncomparable old race. A separately established current same-task protocol/target is absent.",
+    "missingInputs": [],
+    "dependency": "UNSUPPORTED_CALIBRATION_CROSSWALK",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/calibration",
+      "/currentDemand/family",
+      "/environment"
+    ],
+    "adapterWarnings": [
+      {
+        "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+        "sourcePaths": [
+          "/currentDemand/family"
+        ],
+        "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+      },
+      {
+        "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+        "sourcePaths": [
+          "/currentDemand/requested"
+        ],
+        "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+      }
+    ],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-36",
+    "title": "Short intervals without recent comparable high-speed exposure",
+    "gap": "ACF-G05",
+    "targetCategory": "NOT_SUPPORTED_YET",
+    "schemaValid": true,
+    "inputHash": "90c9a62067c3b329cbaf68e36e5b901e33d6c695e2f3a580f34dff11081875f0",
+    "coverage": "NOT_SUPPORTED_SCIENCE_GAP",
+    "decisionType": "HOLD",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": true
+    },
+    "rationale": "The requested exact target cannot be inferred from a proprietary prediction, easy pace or noncomparable old race. A separately established current same-task protocol/target is absent.",
+    "missingInputs": [],
+    "dependency": "UNSUPPORTED_CALIBRATION_CROSSWALK",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/calibration",
+      "/currentDemand/family",
+      "/environment"
+    ],
+    "adapterWarnings": [
+      {
+        "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+        "sourcePaths": [
+          "/currentDemand/requested"
+        ],
+        "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+      },
+      {
+        "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+        "sourcePaths": [
+          "/priorHistory/easy"
+        ],
+        "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+      }
+    ],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-37",
+    "title": "Long-run next step after compatible repeated familiar exposure",
+    "gap": "ACF-G05",
+    "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+    "schemaValid": true,
+    "inputHash": "79b0f26461827e7300d2db5a62bef1664b8e6339e5489cb85a9a3ce2ec7b309d",
+    "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+    "decisionType": "NOT_SUPPORTED_YET",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": true
+    },
+    "rationale": "The55-to60min familiar candidate is distinct from the reviewed40-to45 selector; exact next-horizon need and smallest sufficient step are not approved by relabeling minutes.",
+    "missingInputs": [],
+    "dependency": "LONG_RUN_EXACT_PROGRESS_CANDIDATE",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/calibration"
+    ],
+    "adapterWarnings": [],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-38",
+    "title": "Hills on an unfamiliar steep route",
+    "gap": "ACF-G05",
+    "targetCategory": "USEFUL_ASK",
+    "schemaValid": true,
+    "inputHash": "fa708c93250501e5001a696c6d8815779bd2e17266724c81073213dc24362e85",
+    "coverage": "USEFUL_ASK",
+    "decisionType": "ASK",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": false
+    },
+    "rationale": "Flat pace does not calibrate unfamiliar hills; grade, footing, bout and downhill exposure are material",
+    "missingInputs": [
+      "/calibration/grade",
+      "/calibration/duration",
+      "/calibration/downhillExposure",
+      "/environment/surface"
+    ],
+    "dependency": "SUBSTANTIVE_MISSING_INPUT",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/calibration",
+      "/currentDemand/family",
+      "/environment"
+    ],
+    "adapterWarnings": [],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-39",
+    "title": "Familiar relaxed strides with explicit recovery",
+    "gap": "ACF-G05",
+    "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+    "schemaValid": true,
+    "inputHash": "06bd1e6b1f8e51e6a601f0c300c14ea405e0279c36423a863fa7760a46d9dab8",
+    "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+    "decisionType": "NOT_SUPPORTED_YET",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": true
+    },
+    "rationale": "The complete familiar task is represented but its exact recipe has no current independent executable approval",
+    "missingInputs": [],
+    "dependency": "FAMILIAR_STRIDES_RECIPE",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/calibration",
+      "/currentDemand/family",
+      "/environment"
+    ],
+    "adapterWarnings": [],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-40",
+    "title": "Race-pace work inferred from a noncomparable old result",
+    "gap": "ACF-G05",
+    "targetCategory": "NOT_SUPPORTED_YET",
+    "schemaValid": true,
+    "inputHash": "01a6d26c156233ee7a6df3238eb781e8fac1fdeb5d703c16b7fae5f1b4ab0260",
+    "coverage": "NOT_SUPPORTED_SCIENCE_GAP",
+    "decisionType": "HOLD",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": true
+    },
+    "rationale": "The requested exact target cannot be inferred from a proprietary prediction, easy pace or noncomparable old race. A separately established current same-task protocol/target is absent.",
+    "missingInputs": [],
+    "dependency": "UNSUPPORTED_CALIBRATION_CROSSWALK",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/calibration",
+      "/currentDemand/family",
+      "/environment"
+    ],
+    "adapterWarnings": [
+      {
+        "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+        "sourcePaths": [
+          "/currentDemand/targetEvent"
+        ],
+        "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+      }
+    ],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-41",
+    "title": "Repeated lower-before-cruise response ranks existing schedule options",
+    "gap": "ATHLETE_SPECIFIC_LEARNING",
+    "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+    "schemaValid": true,
+    "inputHash": "15ec5648fd3c0a0fee09a2b2e836383309a1fc7663bb045cbea34c471fd9c7bd",
+    "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+    "decisionType": "NOT_SUPPORTED_YET",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": true
+    },
+    "rationale": "Contextual observations are preserved as associations. Each option still requires independent admissibility and a current reason to choose; no causal rule or unreviewed option is created.",
+    "missingInputs": [],
+    "dependency": "OPTION_ADMISSIBILITY_AND_NECESSITY",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/calibration",
+      "/learningConsent",
+      "/constraints"
+    ],
+    "adapterWarnings": [],
+    "adapterConflicts": []
+  },
+  {
+    "caseId": "REP-R2-42",
+    "title": "Single noisy fatigue-performance association cannot create a rule",
+    "gap": "ATHLETE_SPECIFIC_LEARNING",
+    "targetCategory": "CORRECT_ABSTAIN_OR_HOLD",
+    "schemaValid": true,
+    "inputHash": "06e79053c8aafc121d2b5aec34425dd868af6f63553951751dc9438ff0b419ff",
+    "coverage": "CORRECT_ABSTAIN_OR_HOLD",
+    "decisionType": "HOLD",
+    "semanticConsumption": {
+      "schemaValid": true,
+      "consumed": true,
+      "normal": true,
+      "decisionReady": true
+    },
+    "rationale": "One confounded association cannot create a learned causal fatigue rule or a new dose. Preserve the population prior and actual observation.",
+    "missingInputs": [],
+    "dependency": "NO_SUPPORTED_INDIVIDUAL_RULE",
+    "policyRefs": [],
+    "readPaths": [
+      "/currentDemand/officialPlan",
+      "/currentDemand/officialWeek",
+      "/currentDemand/officialRunWeek",
+      "/currentDemand/session",
+      "/currentDemand/planned",
+      "/completedPrefix",
+      "/currentDemand/session/completed",
+      "/eligibility",
+      "/currentDemand/kind",
+      "/population",
+      "/interruption/reason",
+      "/currentDemand",
+      "/observations",
+      "/priorHistory",
+      "/calibration",
+      "/learningConsent"
+    ],
+    "adapterWarnings": [],
+    "adapterConflicts": []
+  }
+]

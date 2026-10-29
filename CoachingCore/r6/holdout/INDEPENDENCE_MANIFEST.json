@@ -1,0 +1,83 @@
+{
+  "revision": "R6-HOLDOUT-1",
+  "author": "Independent R6 holdout author (Claude Opus 5.5 general-purpose subagent acting as an independent hybrid running/strength coach); not the runtime author",
+  "authorStartedAt": "2026-10-26T18:34:51.046Z",
+  "sealedAt": "2026-10-26T19:20:13.595Z",
+  "freezeRevision": "R6-FREEZE-1",
+  "freezeFrozenAt": "2026-10-26T18:33:58.846Z",
+  "freezeDigest": "507f35fc66f4d1e105e19ce513dc067f9fee5fdc35c039ad52a8c825e46bf857",
+  "corpusPath": "CoachingCore/r6/holdout/R6_INDEPENDENT_HOLDOUT.json",
+  "corpusSha256": "49a85b8c3c413a0d2f5a7fabbdf212b629ef1b66613420d08e494e5a04bf0708",
+  "hashMode": "SHA-256 over the exact corpus file bytes (UTF-8, LF line endings, 2-space JSON, trailing newline)",
+  "bytes": 333143,
+  "cases": 35,
+  "steps": 53,
+  "families": {
+    "COLD_START": 9,
+    "INTAKE_SAFETY_SCOPE": 5,
+    "BALANCED_CONFLICT": 2,
+    "ADAPTATION": 9,
+    "RETURN_AFTER_PAUSE": 3,
+    "EVENT_TRANSITION": 2,
+    "DATA_QUALITY": 3,
+    "ATHLETE_LEARNING": 2
+  },
+  "builderPath": "CoachingCore/r6/holdout/build-independent-holdout.mjs",
+  "builderSha256": "ec1e7e7be07511fd731bf5fa1cef8c4317be3e7eb889ee79c342d4f7ff99d915",
+  "representationClarifications": [
+    {
+      "topic": "week index base",
+      "question": "INTERFACE_ONLY.md does not state whether week index / review weekIndex / targetRef.weekIndex / observationFacts[].weekIndex are 0-based or 1-based.",
+      "askedOf": "coordinator (main)",
+      "answer": "Week indices are 0-based: the first program week is weekIndex 0 and starts on the intake startDate; week i starts at startDate + 7*i days. Applies to week index, review weekIndex, targetRef.weekIndex and observationFacts[].weekIndex, like day 0-6.",
+      "receivedBeforeSeal": true,
+      "appliedAs": "WEEK_BASE = 0 in the builder; the scenario/assessment texts cite both \"week index N\" and \"program week N+1\".",
+      "interfaceFileChanged": false
+    }
+  ],
+  "engineImplementationByAuthor": false,
+  "runtimeInspectedBeforeSeal": false,
+  "outputsInspectedBeforeSeal": false,
+  "runtimeImportedOrExecutedByAuthor": false,
+  "developmentFixturesInspected": false,
+  "earlierHoldoutsInspected": false,
+  "assessmentsAuthoredBeforeRuntimeOutput": true,
+  "firstEvaluationExecutedByAuthor": false,
+  "inspectedFiles": [
+    {
+      "path": "CoachingCore/r6/holdout/INTERFACE_ONLY.md",
+      "scope": "read in full (the public interface)",
+      "sha256": "139907b3be14d856e4d2fa8bc6ab083d53a38838aa77d9da6c85740ef77c4909",
+      "matchesFreezeEntry": true
+    },
+    {
+      "path": "CoachingCore/r6/RUNTIME_FREEZE_R6.json",
+      "scope": "metadata only (revision, frozenAt, sourceDigest; the INTERFACE_ONLY.md entry hash for comparison); no listed file was opened",
+      "sha256": "1fb89ac66ea1576526fdd178c6f34b14a1f50c3c2e01c571570e5bff0003d12b"
+    }
+  ],
+  "filesWritten": [
+    "CoachingCore/r6/holdout/build-independent-holdout.mjs",
+    "CoachingCore/r6/holdout/R6_INDEPENDENT_HOLDOUT.json",
+    "CoachingCore/r6/holdout/INDEPENDENCE_MANIFEST.json"
+  ],
+  "contextDisclosure": "The session harness injected the user-level and project-level CLAUDE.md instructions and the auto-memory index into the author's context (general project governance, for example that unknown eligibility is ASK and clinical judgment stays human). No repository file other than the two listed above was opened, listed, searched or imported, and the only directory listing was of the holdout folder (to confirm it existed). The builder imports only node:fs, node:crypto, node:path and node:url.",
+  "commandsRun": [
+    "node -e \"console.log(new Date().toISOString())\" (author start time)",
+    "ls of CoachingCore/r6/holdout/ and node --version",
+    "node build-independent-holdout.mjs --check / (default) / --seal",
+    "Before sealing: mutated copies of this builder (scratchpad, --check only, nothing written) to confirm the validator rejects a too-early weekly review, a fact on a non-chosen day and an unflagged future timestamp; ad-hoc node -e reads of the author's own corpus file to print a calendar summary.",
+    "After sealing: sha256sum of the three holdout files; this manifest note appended (corpus unchanged)."
+  ],
+  "interfaceGapsNoted": [
+    "Week index base was not stated (resolved by the coordinator clarification above).",
+    "No turn-level unavailability: DOUBLE_CONFLICT is expressed as changes {strengthTurn:\"AM\", sameTurnConfirmed:false, from, to} for the conflict date; the interface does not define how a double conflict should be encoded.",
+    "A partial strength session can only be described by minutes (or by guessing program-chosen exercise ids); there is no \"first N exercises done\" or \"accessories skipped\" form.",
+    "Weekly reviews must name existing sessions; if a program drops one of the athlete's chosen days in a given week (deload, taper, fewer days than offered), a sport+day fact becomes a corpus error. There is no \"all planned sessions done as prescribed\" shorthand.",
+    "Next-day function of a session on the last day of a week cannot be reported in that week's review (it must stay UNKNOWN or arrive later as a correction).",
+    "Vocabularies not enumerated: eligibility.status beyond NONCLINICAL_CONFIRMED/UNKNOWN, specialPopulation values, performanceAnchors kind/distance, wearable provider names (used \"NONE\" for no wearable), effort/response values beyond those listed.",
+    "No free-text field for pain location or a missed-session reason outside interruption.",
+    "No explicit wearable last-sync time; a stale sync can only be expressed as an absence of observations.",
+    "The interface does not say whether an event date may fall on a day that is not one of the athlete's run days (used deliberately in H06, H16, H29 and H34)."
+  ]
+}

@@ -1,0 +1,132 @@
+{
+  "revision": "R5-VERIFY-1",
+  "verifiedAt": "2026-10-26T12:05:28.296Z",
+  "node": "v24.19.0",
+  "sourceDigest": "1590d1aaa6cb5cb5259d2fc86e77191f3e1a60f1dd5411fc4c34bb9748f839d3",
+  "objectiveChecksPassing": false,
+  "checks": [
+    {
+      "name": "Node24",
+      "status": "PASS",
+      "evidence": "v24.19.0"
+    },
+    {
+      "name": "all_current_BSR_R2_R3_R4_R5_tests",
+      "status": "PASS",
+      "evidence": {
+        "tests": 280,
+        "passed": 280,
+        "failed": 0,
+        "command": "node --test --test-reporter=tap",
+        "log": "CoachingCore/r5/TEST_RESULTS_CURRENT.tap",
+        "sha256": "6436c9e0c6375780e740aebbca05e44266a18ea66dca875068129eacb23282af"
+      }
+    },
+    {
+      "name": "frozen_runtime_and_authority_unchanged",
+      "status": "PASS",
+      "evidence": {
+        "sourceDigest": "1590d1aaa6cb5cb5259d2fc86e77191f3e1a60f1dd5411fc4c34bb9748f839d3",
+        "files": 18,
+        "frozenAt": "2026-10-26T11:56:53.854Z"
+      }
+    },
+    {
+      "name": "preexisting_Core_and_frozen_R4_preserved",
+      "status": "PASS",
+      "evidence": {
+        "preservedFiles": 190,
+        "documentedSupersession": "CoachingCore/r5/CONFORMANCE_SUPERSESSION_R5.md"
+      }
+    },
+    {
+      "name": "historical_legacy_R2_exact_replay",
+      "status": "PASS",
+      "evidence": {
+        "exactHistoricalInputs": 365
+      }
+    },
+    {
+      "name": "all_66_R4_results_exact_and_frozen40_facts_intact",
+      "status": "PASS",
+      "evidence": {
+        "currentExactR4Decisions": 66,
+        "frozen42Hash": "efd521341252db0413ea9dbac0b28df83ef5b7606cad1b99fd025ea024f07971"
+      }
+    },
+    {
+      "name": "science_current_frozen_binding_and_single_queue",
+      "status": "PASS",
+      "evidence": {
+        "scientificRecords": 4,
+        "probes": 26,
+        "queueBefore": 110,
+        "queueAdded": 4,
+        "queueTotal": 114
+      }
+    },
+    {
+      "name": "independent_frozen_engineering_current",
+      "status": "PASS",
+      "evidence": {
+        "review": "audits/domain-coaching-r5-2026-10-25/reviews/quality-frozen-review.json",
+        "sha256": "9234b6e624c091637ed34f0b9912e3db50472d9d045c057ab42e251561f21245"
+      }
+    },
+    {
+      "name": "no_runtime_corpus_or_expectation_coupling",
+      "status": "PASS",
+      "evidence": [
+        "r5-adaptation.mjs",
+        "r5-authority.mjs",
+        "r5-contract.mjs",
+        "r5-index.mjs",
+        "r5-learning.mjs",
+        "r5-observation.mjs",
+        "r5-program.mjs",
+        "r5-review-context.mjs",
+        "r5-schedule.mjs",
+        "r5-selectors.mjs",
+        "r5-simulator.mjs",
+        "r5-validity.mjs"
+      ]
+    },
+    {
+      "name": "whole_program_trajectories_replay_and_invariants",
+      "status": "PASS",
+      "evidence": {
+        "trajectories": 11,
+        "weeks": 120,
+        "sessions": 580,
+        "actuals": 550,
+        "mutations": 6,
+        "physiologicalPredictions": 0
+      }
+    },
+    {
+      "name": "fresh_independent_holdout_sealed_after_freeze",
+      "status": "FAIL",
+      "error": "Error: ENOENT: no such file or directory, open 'C:\\Users\\carva\\Desktop\\myApp\\MyApp\\CoachingCore\\r5\\holdout\\INDEPENDENCE_MANIFEST.json'\n    at Object.readFileSync (node:fs:484:20)\n    at read (file:///C:/Users/carva/Desktop/myApp/MyApp/CoachingCore/scripts/verify-r5.mjs:14:29)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/CoachingCore/scripts/verify-r5.mjs:68:50\n    at check (file:///C:/Users/carva/Desktop/myApp/MyApp/CoachingCore/scripts/verify-r5.mjs:16:80)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/CoachingCore/scripts/verify-r5.mjs:67:1\n    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)\n    at async node:internal/modules/esm/loader:643:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)"
+    },
+    {
+      "name": "first_holdout_results_exact_replay_no_retuning",
+      "status": "FAIL",
+      "error": "Error: ENOENT: no such file or directory, open 'C:\\Users\\carva\\Desktop\\myApp\\MyApp\\CoachingCore\\r5\\holdout\\R5_INDEPENDENT_HOLDOUT.json'\n    at Object.readFileSync (node:fs:484:20)\n    at read (file:///C:/Users/carva/Desktop/myApp/MyApp/CoachingCore/scripts/verify-r5.mjs:14:29)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/CoachingCore/scripts/verify-r5.mjs:73:10\n    at check (file:///C:/Users/carva/Desktop/myApp/MyApp/CoachingCore/scripts/verify-r5.mjs:16:80)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/CoachingCore/scripts/verify-r5.mjs:72:1\n    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)\n    at async node:internal/modules/esm/loader:643:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)"
+    },
+    {
+      "name": "independent_coaching_quality_complete_and_current",
+      "status": "FAIL",
+      "error": "Error: ENOENT: no such file or directory, open 'C:\\Users\\carva\\Desktop\\myApp\\MyApp\\audits\\domain-coaching-r5-2026-10-25\\reviews\\quality-holdout-review.json'\n    at Object.readFileSync (node:fs:484:20)\n    at read (file:///C:/Users/carva/Desktop/myApp/MyApp/CoachingCore/scripts/verify-r5.mjs:14:29)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/CoachingCore/scripts/verify-r5.mjs:78:10\n    at check (file:///C:/Users/carva/Desktop/myApp/MyApp/CoachingCore/scripts/verify-r5.mjs:16:80)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/CoachingCore/scripts/verify-r5.mjs:77:1\n    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)\n    at async node:internal/modules/esm/loader:643:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)"
+    },
+    {
+      "name": "requested_deliverable_files_present_and_json_valid",
+      "status": "PASS",
+      "evidence": {
+        "pairedContracts": 11
+      }
+    }
+  ],
+  "passing": 11,
+  "total": 14,
+  "scope": "Objective evidence for delivered bounded offline reference. Broad R5 Definition of Done and production readiness are separately assessed; a green checker is not clinical/empirical validation."
+}

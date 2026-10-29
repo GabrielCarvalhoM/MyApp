@@ -1,0 +1,259 @@
+{
+  "purpose": "INDEPENDENT_DEV_ADVERSARIAL_PROBES_NOT_HOLDOUT",
+  "evaluator": "/root/quality",
+  "node": "v24.19.0",
+  "generatedAt": "2026-10-26T11:51:36.791Z",
+  "sourceHashes": {
+    "CoachingCore/src/r5-adaptation.mjs": "b1c50cc7432cfcf133113d083aa8e2a56783ba99efc2c707c62b74d7538c18d9",
+    "CoachingCore/src/r5-authority.mjs": "0eafe07af8c04bc67bf7268ac791d003b1c823241ea2e8a6dd22cd60b10954ad",
+    "CoachingCore/src/r5-contract.mjs": "39b2ce74a199bd269ce507a74de87b7d375f9d996488f43dd1c242f633735c77",
+    "CoachingCore/src/r5-index.mjs": "2d2482122f695fe9c0a3faee72418d3eb723eed39c9f9bf9e87482826a58b8f7",
+    "CoachingCore/src/r5-learning.mjs": "a78b220c6d140418a8f9f5401e616496f7a2042c06bdabf274302e01918af334",
+    "CoachingCore/src/r5-observation.mjs": "91e9607a18702b6d47487369bd5ab823ffc1542b298a85f19423fa1c6ef43b8e",
+    "CoachingCore/src/r5-program.mjs": "05795bab7967bca751ebb1fa0eb18c3ff6939b6204188b5d2fbbd6e7189ee7ad",
+    "CoachingCore/src/r5-review-context.mjs": "8b7f331c4852ea09d4631b69ddeb2d6174a1b8ec3401216e65528162d8b50ad6",
+    "CoachingCore/src/r5-schedule.mjs": "600d0f67bda6b9e57f3aab65f0e77deac1961676ceef0e940d43d83bb09a90e6",
+    "CoachingCore/src/r5-selectors.mjs": "a4d755cdc8fad1bcd265fac7a2967a545db5a3f17781d62e9dfad2d33764c156",
+    "CoachingCore/src/r5-simulator.mjs": "05bda2eed7488e0f649f6458cd8bddfc439f07c49cdcd75e59c11fe6f158f127",
+    "CoachingCore/src/r5-validity.mjs": "0ffed4b9b50fa6d681e53fd8f2c8c5197612db34d0c8906293664e4336f27891"
+  },
+  "authorityMode": "TEST_ONLY (production authority/binding separately reviewed)",
+  "rows": [
+    {
+      "id": "Q01",
+      "criterion": "Direction of PROGRESS is validated",
+      "generationRejected": true,
+      "status": "INVALID_INPUT",
+      "errors": [
+        "alternative.demandDirection",
+        "alternative.combinedWeekContext"
+      ],
+      "missingInputs": []
+    },
+    {
+      "id": "Q02",
+      "criterion": "Direction of REGRESS is validated",
+      "generationRejected": true,
+      "status": "INVALID_INPUT",
+      "errors": [
+        "alternative.demandDirection",
+        "alternative.combinedWeekContext"
+      ],
+      "missingInputs": []
+    },
+    {
+      "id": "Q03",
+      "criterion": "Schedule movement preserves the current progressed dose",
+      "status": "MODIFY",
+      "action": "MOVE",
+      "beforeMinutes": 35,
+      "afterMinutes": 35,
+      "followingWeekMinutes": 35
+    },
+    {
+      "id": "Q04",
+      "criterion": "Review chronology cannot rewrite already executed sessions",
+      "status": "HOLD",
+      "action": "HOLD",
+      "observedAt": "2026-11-02T20:00:00Z",
+      "oldDate": "2026-11-02",
+      "actualPreserved": true,
+      "changedPastWeek": false
+    },
+    {
+      "id": "Q05",
+      "criterion": "Malformed calendar date fails closed without crash",
+      "dateValid": false,
+      "status": "INVALID_INPUT",
+      "inputStart": "2026-02-30"
+    },
+    {
+      "id": "Q06",
+      "criterion": "Invalid review date returns structured rejection without crash",
+      "status": "HOLD",
+      "errors": [
+        "explicit asOf timestamp with timezone"
+      ]
+    },
+    {
+      "id": "Q07",
+      "criterion": "Backward model clock is structured HOLD rather than exception",
+      "status": "HOLD",
+      "errors": [
+        "athleteModel clock exceeds review clock"
+      ]
+    },
+    {
+      "id": "Q08",
+      "criterion": "Clinical routing does not learn a dose-compatible response during clinical concern",
+      "status": "CLINICAL_HUMAN_REQUIRED",
+      "modelObservationCount": 0,
+      "actualLedgerCount": 1
+    },
+    {
+      "id": "Q09",
+      "criterion": "Progression must fit the actual available window",
+      "status": "UNSUPPORTED",
+      "action": "UNSUPPORTED",
+      "windowMinutes": 30
+    },
+    {
+      "id": "Q10",
+      "criterion": "Alternatives cannot introduce unavailable equipment under one-dimensional progression",
+      "generationRejected": true,
+      "status": "INVALID_INPUT",
+      "errors": [
+        "progression.oneDimension",
+        "alternative.demandDirection",
+        "alternative.combinedWeekContext"
+      ],
+      "missingInputs": []
+    },
+    {
+      "id": "Q11",
+      "criterion": "Current fatigue targets the affected optional session rather than all optional work",
+      "status": "MODIFY",
+      "action": "REDUCE",
+      "removed": [
+        "w0-strength-b"
+      ],
+      "remaining": [
+        "easy",
+        "strength-a",
+        "cruise",
+        "long"
+      ]
+    },
+    {
+      "id": "Q12",
+      "criterion": "Malformed nested input returns validation result rather than uncaught TypeError",
+      "status": "INVALID_INPUT"
+    },
+    {
+      "id": "Q13",
+      "criterion": "Actual current-dose exposure, not planned-dose labels, earns progression",
+      "status": "KEEP",
+      "action": "KEEP",
+      "plannedMinutes": 30,
+      "actualMinutes": [
+        1,
+        1,
+        1
+      ],
+      "confidence": "PRIOR"
+    },
+    {
+      "id": "Q14",
+      "criterion": "Near-term event has a real EVENT block rather than overlapping pre-event phases",
+      "status": "PROPOSED",
+      "eventDate": "2026-10-30",
+      "eventWeekPhase": "EVENT",
+      "eventWeekSessionDates": [],
+      "postEventPhase": "REVIEW",
+      "blocks": [
+        {
+          "phase": "EVENT",
+          "start": 0,
+          "end": 1
+        },
+        {
+          "phase": "REVIEW",
+          "start": 1,
+          "end": 16
+        }
+      ]
+    },
+    {
+      "id": "Q15",
+      "criterion": "Session clock prevents a response observed before the scheduled session start",
+      "status": "HOLD",
+      "scheduledStart": "07:00",
+      "observationTime": "00:01",
+      "acceptedModelCount": 0
+    },
+    {
+      "id": "Q16",
+      "criterion": "Changing session preparation/calibration/equipment cannot be hidden by duration-only dimension",
+      "generationRejected": true,
+      "status": "INVALID_INPUT",
+      "errors": [
+        "progression.oneDimension",
+        "alternative.demandDirection",
+        "alternative.combinedWeekContext"
+      ],
+      "missingInputs": []
+    },
+    {
+      "id": "Q17",
+      "criterion": "Valid earned run progression still works",
+      "status": "MODIFY",
+      "action": "PROGRESS",
+      "before": 30,
+      "after": 35
+    },
+    {
+      "id": "Q18",
+      "criterion": "Valid earned strength progression still works with actual sets/reps",
+      "status": "MODIFY",
+      "action": "PROGRESS",
+      "before": 6,
+      "after": 7
+    },
+    {
+      "id": "Q19",
+      "criterion": "Smallest supported run-work increment is selected independent of alternative order",
+      "status": "MODIFY",
+      "action": "PROGRESS",
+      "smallerReps": 4,
+      "largerReps": 5,
+      "selected": "cruise-smaller",
+      "selectedReps": 4
+    },
+    {
+      "id": "Q20",
+      "criterion": "Strength actual load must bind current dose rather than only aggregate sets/reps",
+      "status": "KEEP",
+      "action": "KEEP",
+      "actualLoadKg": 1,
+      "prescribedSquatKg": 40,
+      "modelObservationCount": 0
+    },
+    {
+      "id": "Q21",
+      "criterion": "An existing learned actual cannot be removed merely because review omits duplicate actualLedger",
+      "status": "KEEP",
+      "action": "KEEP",
+      "knownCompletedSession": "w0-easy",
+      "learnedCompletedCount": 1
+    },
+    {
+      "id": "Q22",
+      "criterion": "Updated availability cannot overbook overlapping session times",
+      "status": "UNSUPPORTED",
+      "action": "UNSUPPORTED"
+    },
+    {
+      "id": "Q23",
+      "criterion": "Missed essential alone does not make the next valid key session inadequate",
+      "status": "KEEP",
+      "action": "DISCARD",
+      "proposal": false
+    },
+    {
+      "id": "Q24",
+      "criterion": "Clinical pending cannot be downgraded by a missing-eligibility review then auto-cleared",
+      "firstStatus": "CLINICAL_HUMAN_REQUIRED",
+      "intermediateStatus": "ASK",
+      "intermediatePending": "ASK",
+      "finalStatus": "KEEP",
+      "finalPending": null
+    },
+    {
+      "id": "Q25",
+      "criterion": "RECOVERED alone does not clear a nonclinical pending reference",
+      "firstStatus": "ASK",
+      "finalStatus": "ASK",
+      "pending": "ASK"
+    }
+  ]
+}

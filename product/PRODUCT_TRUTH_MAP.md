@@ -1,5 +1,18 @@
 # Vilumo Fit — Product Truth Map
 
+<!-- EXPERIENCE_AUTHORITY_OVERLAY_START: EXP-AUTH-r1 -->
+> **PTM-1.3 authority overlay · 2026-10-22 · EXP-AUTH-r1.** Source **S10** = [current direct Founder request](../audits/experience-decontamination-2026-10-22/FOUNDER_REQUEST.md), DECIDED / CURRENT_PRODUCT_DECISION; [DR-93–97](PRODUCT_DECISION_REGISTER.md) records scope and impact. This source supersedes experience authority only: all product/domain semantics and invariants remain. The [index responsibility map](../canon/CANONICAL_INDEX.md) selects A product/domain, B independent behavioral principles and C legacy prescriptions; retained migration/history below cannot revive old IA/style, fixed levels or design locks. Previous isolation metadata is historical after integration `32b7fb6`. This overlay is the PCG draft for review; no prior PASS is transferred. The [designer view](DESIGNER_PRODUCT_CONTEXT.md) is derived, not a second Product Truth.
+<!-- EXPERIENCE_AUTHORITY_OVERLAY_END: EXP-AUTH-r1 -->
+
+<!-- V1_WEARABLE_SCOPE_OVERLAY_START: VWS-20261027-r2 -->
+> **Traceability · 2026-10-27 · post-R6 product scope supersession.** Source **S-VWS** = the current direct Founder requests [r1](../audits/v1-wearable-scope-2026-10-27/FOUNDER_REQUEST.md) and [r2](../audits/v1-wearable-scope-2026-10-27/FOUNDER_REQUEST_R2.md), DECIDED / CURRENT_PRODUCT_DECISION, recorded as [PDR DR-117–123](PRODUCT_DECISION_REGISTER.md).
+> - **THESIS_CONFLICT-VWS-01.** Source A is C040, C055 and O016 (V1 structured export as a per-route option, conditional outbound, third-party provider, vendor/device matrix) together with DR-58/68/83/107. Source B is the later Founder decision. The same competent decisor narrows V1 to Apple Health/HealthKit inbound on iOS, with write-back open, and moves direct manufacturer integrations and watch outbound, Apple Watch included, to V2/POST_V1.
+> - **Platform supersession (not a thesis conflict).** The thesis leaves platform to the PDR (§14). DR-120 replaces the V1 platform part of DR-47/DR-103 (iOS+Android) with iOS only; Android is POST_V1 / FUTURE_PLATFORM_EXPANSION. The S3 row below keeps the historical Founder answer.
+> - **Resolution.** A V1-only supersession, annotated next to C055 and in PTC §6. Clause text and history stay. The VFT-C040 row below keeps its meaning for future routes, and its V1 part is read through DR-117/118. The VFT-O016 row's V1 part narrows to HealthKit data types, permissions and fidelity. C012/C034/L009/L014 and all invariants are unchanged.
+> - **Dependents.** RS wearables row/§3/§6, AEC §5 overlay, PDM boundary, UXS overlay, designer context, index pointer.
+> - **Resolved.** OPEN_PRODUCT_PLATFORM_DECISION-01 is RESOLVED — V1_IOS_ONLY (DR-120). Open: HealthKit write-back (OPEN_TECHNICAL_PRODUCT_DECISION, DR-121).
+<!-- V1_WEARABLE_SCOPE_OVERLAY_END: VWS-20261027-r2 -->
+
 | Campo | Valor |
 |---|---|
 | Revisão | **PTM-1.2** · 2026-10-19 |

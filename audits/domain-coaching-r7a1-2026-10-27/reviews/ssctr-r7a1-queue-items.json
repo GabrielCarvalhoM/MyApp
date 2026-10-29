@@ -1,0 +1,434 @@
+{
+ "revision": "R7A1-SSCTR-QUEUE-PROPOSAL-r1",
+ "reviewRevision": "R7A1-SSCTR-r1",
+ "destination": "reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json",
+ "note": "Proposal only: one item per approved prescriptive decision of R7A1-SSCTR-r1, each bound to R7A1-FREEZE-A1. The queue file was not edited; the Chief integrates these items append-only. Four items are new decisions; five refine the integrated HQ-R7A-SSCTR-* items (bound to R7A-FREEZE-2) by re-binding the same decisions to R7A1-FREEZE-A1, without replacing them. Conditions marked not met (D57, D58) are outside the approval until a later freeze meets them. R7A1-SSCTR-RESTORATION-SCOPE is an abstention and has no item. Funding NOT_DECLARED.",
+ "funding_trigger": {
+  "state": "NOT_DECLARED",
+  "declaration_ref": null,
+  "declared_at": null
+ },
+ "preserveAllHistoricalEntries": true,
+ "refines": [
+  {
+   "item": "HQ-R7A1-SSCTR-REGAIN-BASE",
+   "refinesQueueItem": "HQ-R7A-SSCTR-REGAIN-BASE",
+   "refinesBindingOf": "R7A-SSCTR-REGAIN-BASE@R7A-SSCTR-r2"
+  },
+  {
+   "item": "HQ-R7A1-SSCTR-REESTABLISH-PHASE",
+   "refinesQueueItem": "HQ-R7A-SSCTR-REESTABLISH-PHASE",
+   "refinesBindingOf": "R7A-SSCTR-REESTABLISH-PHASE@R7A-SSCTR-r2"
+  },
+  {
+   "item": "HQ-R7A1-SSCTR-SPLIT-WEEK",
+   "refinesQueueItem": "HQ-R7A-SSCTR-SPLIT-WEEK",
+   "refinesBindingOf": "R7A-SSCTR-SPLIT-WEEK@R7A-SSCTR-r2"
+  },
+  {
+   "item": "HQ-R7A1-SSCTR-ITEMS-5-8",
+   "refinesQueueItem": "HQ-R7A-SSCTR-ITEMS-5-8",
+   "refinesBindingOf": "R7A-SSCTR-ITEMS-5-8@R7A-SSCTR-r2"
+  },
+  {
+   "item": "HQ-R7A1-SSCTR-CYCLE2-COMPOSITIONS",
+   "refinesQueueItem": "HQ-R7A-SSCTR-CYCLE2-COMPOSITIONS",
+   "refinesBindingOf": "R7A-SSCTR-CYCLE2-COMPOSITIONS@R7A-SSCTR-r2"
+  }
+ ],
+ "items": [
+  {
+   "queue_id": "HQ-R7A1-SSCTR-D56-FORMULATION",
+   "decision_id": "R7A1-SSCTR-D56-FORMULATION",
+   "decision_revision": "R7A1-SSCTR-r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/a1/RUNTIME_FREEZE_R7A1_FREEZE_A1.json",
+    "artifact_revision": "R7A1-FREEZE-A1",
+    "sha256": "9e7b9cecc59bc7990e7bcc05665fd9e493072d2cf97cd57d0c5fc08d83f0a228",
+    "rule_ids": [
+     "strength.setsAfterReestablishment",
+     "return.strengthReturnSets",
+     "R6-PLANNED-PROGRESSION condition 14",
+     "R6-ROTATION condition 10",
+     "R6-LOAD-ESTABLISHMENT condition 15",
+     "R7A-SSCTR-REGAIN-BASE conditions 5, 6 and 9",
+     "R7A-SSCTR-ITEMS-5-8 item 7",
+     "r6-program.mjs advanceStrength (baseOf, phasedOf, afterFit, wholeWeek; setCap and regainCap rise and end)",
+     "WEEK_COMPOSITION_CONTRACT R7A1-COMPOSITION-1, rule D56 (I6)"
+    ]
+   },
+   "approved_scope": "Bounded R7A1-SSCTR-D56-FORMULATION runtime composition ruling only, under every listed condition, bound to R7A1-FREEZE-A1 (conditions marked not met are outside the approval until a later freeze meets them) and canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c; no generated-workout queue row.",
+   "conditions": [
+    "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+    "Binding: this record binds runtime R7A1-FREEZE-A1 (CoachingCore/r7/a1/RUNTIME_FREEZE_R7A1_FREEZE_A1.json, sha256 9e7b9cecc59bc7990e7bcc05665fd9e493072d2cf97cd57d0c5fc08d83f0a228; source digest 2de8681f13e5cb499df6a5a3dc443d52877850528ceb298b598d03de6ec2141a; r6-program.mjs f283b79bb878b3694761af4e5b8dd2439b611c20e4b239d8e9f7b08a559453fd, r6-adaptation.mjs 5257dc0930e47b728255b5fc2ffc98b70598ba2c211d7ed590f19fb2f3b488b6, r6-provenance.mjs a92ae909eca680e96273545b0be28921f6eba545b12600d3094c543cf118b459, r6-composition.mjs 1bc0856764b0b3e9f9ac958d8ff916da2701150bfb202bd693a5412bb4f2fd16, r6-intake.mjs 99a8683e3fb0b163380bd0376a2be605660f4d3eebedee50b3e269cba793933a) at the unchanged canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c. Any change to a bound file needs a new freeze revision and a narrow runtime delta check; any policy byte change needs a delta binding review.",
+    "The regain cap after a re-establishment and the return cap at and after the end of the return steps rise by one set only after a week whose last executed exposure of the exercise, the one that gives the week’s counts (R19, INV-04), did its whole count (its count before the phase reduction) after its time fit; \"an executed exposure\" in R7A-SSCTR-r2 condition 9 means this exposure (met at R7A1-FREEZE-A1).",
+    "A time fit stays a non-reduction for the phase reading and for the return ceiling (R20); a fatigue or phase reduction of the last executed exposure holds the cap (FR2, QE-R7A-22) (met).",
+    "A row written before R7-A, which states no counts, reads its week’s planned counts, so every representation reads the same (met).",
+    "D57 (required before any freeze is accepted; not met at R7A1-FREEZE-A1): a cap ends only after a week whose last executed exposure did its whole count after its time fit, and only when the cap is at or above the count the exercise would otherwise have next week, its normal count including any block-boundary set earned at that transition (phase reductions on top). No count after a re-establishment or a return exceeds the largest count executed since then by more than one set, at block boundaries too. At R7A1-FREEZE-A1 the return cap ends against the ending week’s normal count and after weeks fitted below their whole count (ssctr-r7a1-grid.mjs: 38 counts two sets above the largest executed since the return, 1 to 3; 8 return-cap ends after weeks whose every exposure was fitted below), so this clause is outside the approval until a later freeze meets it. Regression: the grid’s B, C and the ends-after-unwhole-weeks count at 0 over its 864 timelines, with the 20-minute RUNNING_SUPPORT returns.",
+    "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+   ],
+   "approval_date": "2026-10-27",
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Chief / Founder",
+   "human_review": null,
+   "re_review_triggers": [
+    "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+    "Any change to a file listed in RUNTIME_FREEZE_R7A1_FREEZE_A1.json (new freeze revision), including the D57 and D58 fixes of the correction cycle.",
+    "New or corrected systematic review/meta-analysis or trial on repeated-bout protection, re-establishment or return after a training gap, short-term detraining, tapering or strength dosing near endurance events.",
+    "Population, event-distance or V1 scope change.",
+    "Adverse event, runtime inconsistency or contrary comparable observations.",
+    "Founder funding declaration (move approved items to HUMAN_REVALIDATION_REQUIRED)."
+   ]
+  },
+  {
+   "queue_id": "HQ-R7A1-SSCTR-SAME-DAY",
+   "decision_id": "R7A1-SSCTR-SAME-DAY",
+   "decision_revision": "R7A1-SSCTR-r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/a1/RUNTIME_FREEZE_R7A1_FREEZE_A1.json",
+    "artifact_revision": "R7A1-FREEZE-A1",
+    "sha256": "9e7b9cecc59bc7990e7bcc05665fd9e493072d2cf97cd57d0c5fc08d83f0a228",
+    "rule_ids": [
+     "R6-NONCLINICAL-RETURN condition 7 (SHORT: the first quality slot runs easy)",
+     "operational.return (shortMaxDays)",
+     "R6-SUBSTITUTION condition 6 and R6-NONCLINICAL-RETURN condition 21 (establishment of a never-performed exercise)",
+     "r6-composition.mjs aheadOf (C1), shortReturnEasy, adaptThisWeek and reapply (SHORT_RETURN_EASY)",
+     "r6-adaptation.mjs returnAfterPause (fromWeek, SHORT_RETURN_EASY), equipmentChange",
+     "WEEK_COMPOSITION_CONTRACT R7A1-COMPOSITION-1, C1 and C4"
+    ]
+   },
+   "approved_scope": "Bounded R7A1-SSCTR-SAME-DAY runtime composition ruling only, under every listed condition, bound to R7A1-FREEZE-A1 (conditions marked not met are outside the approval until a later freeze meets them) and canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c; no generated-workout queue row.",
+   "conditions": [
+    "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+    "Binding: this record binds runtime R7A1-FREEZE-A1 (CoachingCore/r7/a1/RUNTIME_FREEZE_R7A1_FREEZE_A1.json, sha256 9e7b9cecc59bc7990e7bcc05665fd9e493072d2cf97cd57d0c5fc08d83f0a228; source digest 2de8681f13e5cb499df6a5a3dc443d52877850528ceb298b598d03de6ec2141a; r6-program.mjs f283b79bb878b3694761af4e5b8dd2439b611c20e4b239d8e9f7b08a559453fd, r6-adaptation.mjs 5257dc0930e47b728255b5fc2ffc98b70598ba2c211d7ed590f19fb2f3b488b6, r6-provenance.mjs a92ae909eca680e96273545b0be28921f6eba545b12600d3094c543cf118b459, r6-composition.mjs 1bc0856764b0b3e9f9ac958d8ff916da2701150bfb202bd693a5412bb4f2fd16, r6-intake.mjs 99a8683e3fb0b163380bd0376a2be605660f4d3eebedee50b3e269cba793933a) at the unchanged canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c. Any change to a bound file needs a new freeze revision and a narrow runtime delta check; any policy byte change needs a delta binding review.",
+    "R27 / QE-R7A-02 (same-day reading, met at R7A1-FREEZE-A1): a session is still ahead of a review when it is dated after the review’s local date, or dated that day with no execution report while its chosen shift is not over; a morning (AM) session is over at noon local time, an afternoon or unspecified shift at the end of the day. A short return reported on the morning of a quality day, or the evening before, makes that run easy; an evening report never rewrites that morning’s session. The noon boundary is an operational convention of the shift model, not a physiological threshold.",
+    "D58 (required before any freeze is accepted; not met at R7A1-FREEZE-A1): in a short return the first quality slot after the break is the first quality slot still ahead of the return report, in the week re-entry starts or a later week; it runs easy, recorded as an adaptation of the week that holds it so a later re-plan and the weekly review keep it; exactly one slot is changed. At R7A1-FREEZE-A1 the rule reaches only the week re-entry starts: when that week’s quality slot is already past and two or more sessions remain, next week’s first quality slot keeps its quality dose (ssctr-r7a1-short.mjs: 96 of 315 cases, also after the weekly review; in a 10-day break THRESHOLD 41 where the last executed was 34), so this clause is outside the approval until a later freeze meets it. Regression: the short grid’s defects at 0 after the return and after the review.",
+    "A same-day equipment change re-plans the strength sessions still ahead that day; a never-performed substitute gets the effort-guided establishment (at most 2 sets at RIR 3 or more, no load converted); sessions reported before the change keep their rows (met).",
+    "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+   ],
+   "approval_date": "2026-10-27",
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Chief / Founder",
+   "human_review": null,
+   "re_review_triggers": [
+    "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+    "Any change to a file listed in RUNTIME_FREEZE_R7A1_FREEZE_A1.json (new freeze revision), including the D57 and D58 fixes of the correction cycle.",
+    "New or corrected systematic review/meta-analysis or trial on repeated-bout protection, re-establishment or return after a training gap, short-term detraining, tapering or strength dosing near endurance events.",
+    "Population, event-distance or V1 scope change.",
+    "Adverse event, runtime inconsistency or contrary comparable observations.",
+    "Founder funding declaration (move approved items to HUMAN_REVALIDATION_REQUIRED)."
+   ]
+  },
+  {
+   "queue_id": "HQ-R7A1-SSCTR-DOSE-READING",
+   "decision_id": "R7A1-SSCTR-DOSE-READING",
+   "decision_revision": "R7A1-SSCTR-r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/a1/RUNTIME_FREEZE_R7A1_FREEZE_A1.json",
+    "artifact_revision": "R7A1-FREEZE-A1",
+    "sha256": "9e7b9cecc59bc7990e7bcc05665fd9e493072d2cf97cd57d0c5fc08d83f0a228",
+    "rule_ids": [
+     "strength.gates (HOLD repeats the dose; REGRESS lowers the load; ADVANCE)",
+     "strength.loggedLoadAdoption (D44, D45)",
+     "R6-PLANNED-PROGRESSION condition 9",
+     "r6-program.mjs advanceStrength (adoption: progression evidence against establishment evidence)",
+     "WEEK_COMPOSITION_CONTRACT R7A1-COMPOSITION-1, rule QE-R7A-12 (I5)"
+    ]
+   },
+   "approved_scope": "Bounded R7A1-SSCTR-DOSE-READING runtime composition ruling only, under every listed condition, bound to R7A1-FREEZE-A1 (conditions marked not met are outside the approval until a later freeze meets them) and canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c; no generated-workout queue row.",
+   "conditions": [
+    "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+    "Binding: this record binds runtime R7A1-FREEZE-A1 (CoachingCore/r7/a1/RUNTIME_FREEZE_R7A1_FREEZE_A1.json, sha256 9e7b9cecc59bc7990e7bcc05665fd9e493072d2cf97cd57d0c5fc08d83f0a228; source digest 2de8681f13e5cb499df6a5a3dc443d52877850528ceb298b598d03de6ec2141a; r6-program.mjs f283b79bb878b3694761af4e5b8dd2439b611c20e4b239d8e9f7b08a559453fd, r6-adaptation.mjs 5257dc0930e47b728255b5fc2ffc98b70598ba2c211d7ed590f19fb2f3b488b6, r6-provenance.mjs a92ae909eca680e96273545b0be28921f6eba545b12600d3094c543cf118b459, r6-composition.mjs 1bc0856764b0b3e9f9ac958d8ff916da2701150bfb202bd693a5412bb4f2fd16, r6-intake.mjs 99a8683e3fb0b163380bd0376a2be605660f4d3eebedee50b3e269cba793933a) at the unchanged canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c. Any change to a bound file needs a new freeze revision and a narrow runtime delta check; any policy byte change needs a delta binding review.",
+    "A logged load of an exposure that prescribed a known load is progression evidence: HOLD and REGRESS keep the planned repetition target (REGRESS lowers the load one smallest increment, or the repetitions by repStep down to the range floor when no load is known); ADVANCE or EARNED takes the logged repetitions as at the planned load, the prescription staying inside the goal’s range (met).",
+    "A lighter logged load is adopted only under the existing adoption rules, never above a re-establishment ceiling; a heavier one only when that exposure met the ADVANCE criterion (D44, D45) (met).",
+    "Only an establishment exposure (first establishment, re-establishment, return entry, from-log) sets its target from its logged repetitions (met).",
+    "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+   ],
+   "approval_date": "2026-10-27",
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Chief / Founder",
+   "human_review": null,
+   "re_review_triggers": [
+    "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+    "Any change to a file listed in RUNTIME_FREEZE_R7A1_FREEZE_A1.json (new freeze revision), including the D57 and D58 fixes of the correction cycle.",
+    "New or corrected systematic review/meta-analysis or trial on repeated-bout protection, re-establishment or return after a training gap, short-term detraining, tapering or strength dosing near endurance events.",
+    "Population, event-distance or V1 scope change.",
+    "Adverse event, runtime inconsistency or contrary comparable observations.",
+    "Founder funding declaration (move approved items to HUMAN_REVALIDATION_REQUIRED)."
+   ]
+  },
+  {
+   "queue_id": "HQ-R7A1-SSCTR-COMPOSITION",
+   "decision_id": "R7A1-SSCTR-COMPOSITION",
+   "decision_revision": "R7A1-SSCTR-r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/a1/RUNTIME_FREEZE_R7A1_FREEZE_A1.json",
+    "artifact_revision": "R7A1-FREEZE-A1",
+    "sha256": "9e7b9cecc59bc7990e7bcc05665fd9e493072d2cf97cd57d0c5fc08d83f0a228",
+    "rule_ids": [
+     "R6-NONCLINICAL-RETURN conditions 9 and 21; operational.return.strengthKnownLoadAfterReturnLog",
+     "R6-PLANNED-PROGRESSION conditions 4, 7 and 13; operational.run.singleRunCeiling (\"in a conditional projection, earlier projected weeks count as executed\")",
+     "operational.event.proximitySemantics and R6-EVENT-TRANSITION",
+     "strength gates under systemic convergence (R6 weekly review)",
+     "r6-composition.mjs composeWeeks, weekAsPlanned, conditionalNext, returnedOn, rebasedNext, adaptThisWeek, reapply, moveCandidates, withContextChange",
+     "r6-adaptation.mjs weeklyReview, rebuild, goalChange (into or out of the event window; from), returnAfterPause (startBeforeReturn), fatigue (SYSTEMIC_SIGNAL)",
+     "WEEK_COMPOSITION_CONTRACT R7A1-COMPOSITION-1, C2-C5"
+    ]
+   },
+   "approved_scope": "Bounded R7A1-SSCTR-COMPOSITION runtime composition ruling only, under every listed condition, bound to R7A1-FREEZE-A1 (conditions marked not met are outside the approval until a later freeze meets them) and canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c; no generated-workout queue row.",
+   "conditions": [
+    "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+    "Binding: this record binds runtime R7A1-FREEZE-A1 (CoachingCore/r7/a1/RUNTIME_FREEZE_R7A1_FREEZE_A1.json, sha256 9e7b9cecc59bc7990e7bcc05665fd9e493072d2cf97cd57d0c5fc08d83f0a228; source digest 2de8681f13e5cb499df6a5a3dc443d52877850528ceb298b598d03de6ec2141a; r6-program.mjs f283b79bb878b3694761af4e5b8dd2439b611c20e4b239d8e9f7b08a559453fd, r6-adaptation.mjs 5257dc0930e47b728255b5fc2ffc98b70598ba2c211d7ed590f19fb2f3b488b6, r6-provenance.mjs a92ae909eca680e96273545b0be28921f6eba545b12600d3094c543cf118b459, r6-composition.mjs 1bc0856764b0b3e9f9ac958d8ff916da2701150bfb202bd693a5412bb4f2fd16, r6-intake.mjs 99a8683e3fb0b163380bd0376a2be605660f4d3eebedee50b3e269cba793933a) at the unchanged canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c. Any change to a bound file needs a new freeze revision and a narrow runtime delta check; any policy byte change needs a delta binding review.",
+    "S5 (C5): a session dated before a return reported the same week is never moved into the re-entry and never counts as done in next week’s conditional plan; a lift not done since the break starts at the return entry (strengthEntrySets at RIR at least strengthEntryMinimumRir), never at a later step without an entry; a newer report of a break that began this week starts from the start the week had before an earlier report of it, so a corrected report plans the week as the corrected report alone (met).",
+    "S6 (C3): once the week is complete, its evidence decides next week’s start whatever handler re-plans (an unreported complete week holds); while the week is under way, the conditional plan of the week as now planned decides, its rows assumed executed as prescribed except sessions dated before a return; a return’s re-base of next week is kept; the weekly review re-derives the start from evidence (met).",
+    "S6 (run ceiling): in a conditional projection the earlier projected weeks count as executed for the single-run ceiling, as the policy states; the first week a review projects uses completed runs only (met).",
+    "S9 (C5): an event change re-plans this week’s remaining days when it moves one of them into or out of the taper, race-window or post-event days, by days to the race; completed sessions stay as executed; only the taper of the event in force remains; the race statement stays the longest continuous run planned before the race (met).",
+    "S10 (C4): content an adaptation moves into a slot keeps the week’s earlier adaptations, each with its own clock; a move never uses a skipped slot; a systemic fatigue report with nothing left to reduce reviews the week with its signal and records it, so a later review of the same week keeps it; a mid-week reduction does not set that signal (met).",
+    "S10 (C2): a change stated from a later date applies from the first week that begins on or after it, starting that week from the week before it as planned with its transition under the new context (met).",
+    "S8: the first strength week after a break stays RETURN_ENTRY with the run in RETURN mode whatever change of the same evening comes first; a moved race leaves one race; a reviewed transition survives a later equipment change; same-week adaptations survive an event change (met).",
+    "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+   ],
+   "approval_date": "2026-10-27",
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Chief / Founder",
+   "human_review": null,
+   "re_review_triggers": [
+    "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+    "Any change to a file listed in RUNTIME_FREEZE_R7A1_FREEZE_A1.json (new freeze revision), including the D57 and D58 fixes of the correction cycle.",
+    "New or corrected systematic review/meta-analysis or trial on repeated-bout protection, re-establishment or return after a training gap, short-term detraining, tapering or strength dosing near endurance events.",
+    "Population, event-distance or V1 scope change.",
+    "Adverse event, runtime inconsistency or contrary comparable observations.",
+    "Founder funding declaration (move approved items to HUMAN_REVALIDATION_REQUIRED)."
+   ]
+  },
+  {
+   "queue_id": "HQ-R7A1-SSCTR-REGAIN-BASE",
+   "decision_id": "R7A1-SSCTR-REGAIN-BASE",
+   "decision_revision": "R7A1-SSCTR-r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/a1/RUNTIME_FREEZE_R7A1_FREEZE_A1.json",
+    "artifact_revision": "R7A1-FREEZE-A1",
+    "sha256": "9e7b9cecc59bc7990e7bcc05665fd9e493072d2cf97cd57d0c5fc08d83f0a228",
+    "rule_ids": [
+     "strength.setsAfterReestablishment",
+     "strength.resumeAfterDays",
+     "return.strengthReturnSets (D49 analogue)",
+     "R6-LOAD-ESTABLISHMENT condition 15",
+     "R6-PLANNED-PROGRESSION condition 14",
+     "R6-ROTATION condition 10",
+     "r6-program.mjs advanceStrength (re-establishment branch, regainCap, the unreduced predicate of the cap rise, exposure.phasedSets)",
+     "r6-program.mjs strengthCandidate/strengthDose (REESTABLISH row, baseSets, phasedSets)",
+     "r6-composition.mjs (R7A1-FREEZE-A1): composeWeeks, weekAsPlanned, conditionalNext, reapply"
+    ]
+   },
+   "approved_scope": "Bounded R7A1-SSCTR-REGAIN-BASE runtime composition ruling only, under every listed condition, bound to R7A1-FREEZE-A1 (conditions marked not met are outside the approval until a later freeze meets them) and canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c; refines the integrated item of R7A-SSCTR-REGAIN-BASE (R7A-FREEZE-2) by re-binding the same decision; no generated-workout queue row.",
+   "conditions": [
+    "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+    "Binding: this record binds runtime R7A1-FREEZE-A1 (CoachingCore/r7/a1/RUNTIME_FREEZE_R7A1_FREEZE_A1.json, sha256 9e7b9cecc59bc7990e7bcc05665fd9e493072d2cf97cd57d0c5fc08d83f0a228; source digest 2de8681f13e5cb499df6a5a3dc443d52877850528ceb298b598d03de6ec2141a; r6-program.mjs f283b79bb878b3694761af4e5b8dd2439b611c20e4b239d8e9f7b08a559453fd, r6-adaptation.mjs 5257dc0930e47b728255b5fc2ffc98b70598ba2c211d7ed590f19fb2f3b488b6, r6-provenance.mjs a92ae909eca680e96273545b0be28921f6eba545b12600d3094c543cf118b459, r6-composition.mjs 1bc0856764b0b3e9f9ac958d8ff916da2701150bfb202bd693a5412bb4f2fd16, r6-intake.mjs 99a8683e3fb0b163380bd0376a2be605660f4d3eebedee50b3e269cba793933a) at the unchanged canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c. Any change to a bound file needs a new freeze revision and a narrow runtime delta check; any policy byte change needs a delta binding review.",
+    "After a performed re-establishment by effort (more than return.moderateMaxDays since the last executed exposure), the earlier count, block-boundary set included, comes back at most one set per executed week, never at once, whatever the state mode at the re-establishment (known load, pending establishment log, unlogged or re-established) (D53, resolved).",
+    "The regain base is the re-establishment count before its phase reduction: min(goal sets for the role, 2, the count the exercise would otherwise have that day). A re-establishment reduced by its phase is followed by that count itself, as a phase-reduced return step 2 is followed by the step-2 count (Q1, reading A).",
+    "The cap rises by one set only after a week whose last executed exposure of the exercise executed its whole count (executed sets equal to its count before the phase reduction, gate ADVANCE or EARNED, a logged set); a week whose executed row was below that count, by its phase or by an in-week fatigue reduction, never raises it. A phase week whose reduction did not bring the row below that count counts as a whole executed week.",
+    "Every later count stays at or below the cap, with phase reductions on top, and is never more than one set above the largest count executed since the re-establishment.",
+    "Load: a logged load at or after the re-establishment becomes the reference only by the existing adoption rules, never above the re-establishment ceiling (D44, D45).",
+    "To be declared in the next policy revision: setsAfterReestablishment states the base before the phase reduction and the whole-count rule, in the words of strengthReturnSets.",
+    "D56 (final formulation, R7A1-SSCTR-r1 S1): a time-budget fit is not a phase reduction, but a week executed its whole count only when the last executed exposure of the exercise that week, the one that gives the week’s counts (R19, INV-04), executed its count before the phase reduction after its time fit. Any other week neither raises nor ends the regain cap (after a re-establishment) or the return cap (at and after the end of the return steps); the return ceiling (lastExecutedSets) is the largest whole count executed after the fit (R20). Met at R7A1-FREEZE-A1 for the rise of both caps and for the regain cap; not met for the end of the return cap (D57). D57 (not met at R7A1-FREEZE-A1): a cap ends only after a week whose last executed exposure did its whole count after its time fit, and only when the cap is at or above the count the exercise would otherwise have next week, its normal count including any block-boundary set earned at that transition (phase reductions on top). No count after a re-establishment or a return exceeds the largest count executed since then by more than one set, at block boundaries too. At R7A1-FREEZE-A1 the return cap ends against the ending week’s normal count and after weeks fitted below their whole count (ssctr-r7a1-grid.mjs: 38 counts two sets above the largest executed since the return, 1 to 3; 8 return-cap ends after weeks whose every exposure was fitted below), so this clause is outside the approval until a later freeze meets it. Regression: the grid’s B, C and the ends-after-unwhole-weeks count at 0 over its 864 timelines, with the 20-minute RUNNING_SUPPORT returns.",
+    "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+   ],
+   "approval_date": "2026-10-27",
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Chief / Founder",
+   "human_review": null,
+   "re_review_triggers": [
+    "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+    "Any change to a file listed in RUNTIME_FREEZE_R7A1_FREEZE_A1.json (new freeze revision), including the D57 and D58 fixes of the correction cycle.",
+    "New or corrected systematic review/meta-analysis or trial on repeated-bout protection, re-establishment or return after a training gap, short-term detraining, tapering or strength dosing near endurance events.",
+    "Population, event-distance or V1 scope change.",
+    "Adverse event, runtime inconsistency or contrary comparable observations.",
+    "Founder funding declaration (move approved items to HUMAN_REVALIDATION_REQUIRED)."
+   ]
+  },
+  {
+   "queue_id": "HQ-R7A1-SSCTR-REESTABLISH-PHASE",
+   "decision_id": "R7A1-SSCTR-REESTABLISH-PHASE",
+   "decision_revision": "R7A1-SSCTR-r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/a1/RUNTIME_FREEZE_R7A1_FREEZE_A1.json",
+    "artifact_revision": "R7A1-FREEZE-A1",
+    "sha256": "9e7b9cecc59bc7990e7bcc05665fd9e493072d2cf97cd57d0c5fc08d83f0a228",
+    "rule_ids": [
+     "Policy principle 8",
+     "operational.event (raceWeekStrengthSets, raceWeekStrengthMinimumRir, postEventStrengthSets, taperStrengthSetFraction, raceWeekStrengthMinDaysBeforeRace, proximitySemantics)",
+     "strength.consolidationSetReduction",
+     "strength.resumeAfterDays",
+     "R6-EVENT-TRANSITION conditions 7, 8 and 18",
+     "R6-LOAD-ESTABLISHMENT condition 15",
+     "r6-composition.mjs (R7A1-FREEZE-A1): composeWeeks, weekAsPlanned, conditionalNext, reapply"
+    ]
+   },
+   "approved_scope": "Bounded R7A1-SSCTR-REESTABLISH-PHASE runtime composition ruling only, under every listed condition, bound to R7A1-FREEZE-A1 (conditions marked not met are outside the approval until a later freeze meets them) and canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c; refines the integrated item of R7A-SSCTR-REESTABLISH-PHASE (R7A-FREEZE-2) by re-binding the same decision; no generated-workout queue row.",
+   "conditions": [
+    "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+    "Binding: this record binds runtime R7A1-FREEZE-A1 (CoachingCore/r7/a1/RUNTIME_FREEZE_R7A1_FREEZE_A1.json, sha256 9e7b9cecc59bc7990e7bcc05665fd9e493072d2cf97cd57d0c5fc08d83f0a228; source digest 2de8681f13e5cb499df6a5a3dc443d52877850528ceb298b598d03de6ec2141a; r6-program.mjs f283b79bb878b3694761af4e5b8dd2439b611c20e4b239d8e9f7b08a559453fd, r6-adaptation.mjs 5257dc0930e47b728255b5fc2ffc98b70598ba2c211d7ed590f19fb2f3b488b6, r6-provenance.mjs a92ae909eca680e96273545b0be28921f6eba545b12600d3094c543cf118b459, r6-composition.mjs 1bc0856764b0b3e9f9ac958d8ff916da2701150bfb202bd693a5412bb4f2fd16, r6-intake.mjs 99a8683e3fb0b163380bd0376a2be605660f4d3eebedee50b3e269cba793933a) at the unchanged canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c. Any change to a bound file needs a new freeze revision and a narrow runtime delta check; any policy byte change needs a delta binding review.",
+    "Every strength row, the re-establishment row included, takes its day phase once: sets = min(row cap, phase dose of the count the exercise would otherwise have that day), reps in reserve >= max(row floor, phase minimum); the day phase follows days to the race (proximitySemantics).",
+    "Race window and post-event: main lifts only, at most raceWeekStrengthSets / postEventStrengthSets set(s) at RIR >= raceWeekStrengthMinimumRir; one race-window session at most, on the strength day furthest from the race and none in the last raceWeekStrengthMinDaysBeforeRace days. Taper and specific rows keep RIR >= 3 (D54, resolved).",
+    "A re-establishment row is never above min(goal sets for its role, 2) and never above the phase dose of the exercise's own count that day; it may be below min(goal sets, 2) when that phase dose or the exercise's own count is lower (consolidation, specific, a known dose of 1 set) (Q2).",
+    "At a re-establishment the load stays effort-guided under the earlier ceiling; no load increase, new exercise or rotation in taper or race week.",
+    "The final validation rejects any strength row above its day phase dose or below the phase minimum reps in reserve, whatever branch built it.",
+    "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+   ],
+   "approval_date": "2026-10-27",
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Chief / Founder",
+   "human_review": null,
+   "re_review_triggers": [
+    "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+    "Any change to a file listed in RUNTIME_FREEZE_R7A1_FREEZE_A1.json (new freeze revision), including the D57 and D58 fixes of the correction cycle.",
+    "New or corrected systematic review/meta-analysis or trial on repeated-bout protection, re-establishment or return after a training gap, short-term detraining, tapering or strength dosing near endurance events.",
+    "Population, event-distance or V1 scope change.",
+    "Adverse event, runtime inconsistency or contrary comparable observations.",
+    "Founder funding declaration (move approved items to HUMAN_REVALIDATION_REQUIRED)."
+   ]
+  },
+  {
+   "queue_id": "HQ-R7A1-SSCTR-SPLIT-WEEK",
+   "decision_id": "R7A1-SSCTR-SPLIT-WEEK",
+   "decision_revision": "R7A1-SSCTR-r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/a1/RUNTIME_FREEZE_R7A1_FREEZE_A1.json",
+    "artifact_revision": "R7A1-FREEZE-A1",
+    "sha256": "9e7b9cecc59bc7990e7bcc05665fd9e493072d2cf97cd57d0c5fc08d83f0a228",
+    "rule_ids": [
+     "strength.resumeAfterDays",
+     "strength.setsAfterReestablishment",
+     "return.strengthReturnSets (\"the last set count executed\")",
+     "R6-LOAD-ESTABLISHMENT condition 15 (\"each session is judged on its own date, and no unexecuted exposure counts\")",
+     "r6-program.mjs advanceStrength (first executed exposure for the kind; the whole set for the return ceiling, R20; the cap rise)",
+     "r6-composition.mjs (R7A1-FREEZE-A1): composeWeeks, weekAsPlanned, conditionalNext, reapply"
+    ]
+   },
+   "approved_scope": "Bounded R7A1-SSCTR-SPLIT-WEEK runtime composition ruling only, under every listed condition, bound to R7A1-FREEZE-A1 (conditions marked not met are outside the approval until a later freeze meets them) and canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c; refines the integrated item of R7A-SSCTR-SPLIT-WEEK (R7A-FREEZE-2) by re-binding the same decision; no generated-workout queue row.",
+   "conditions": [
+    "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+    "Binding: this record binds runtime R7A1-FREEZE-A1 (CoachingCore/r7/a1/RUNTIME_FREEZE_R7A1_FREEZE_A1.json, sha256 9e7b9cecc59bc7990e7bcc05665fd9e493072d2cf97cd57d0c5fc08d83f0a228; source digest 2de8681f13e5cb499df6a5a3dc443d52877850528ceb298b598d03de6ec2141a; r6-program.mjs f283b79bb878b3694761af4e5b8dd2439b611c20e4b239d8e9f7b08a559453fd, r6-adaptation.mjs 5257dc0930e47b728255b5fc2ffc98b70598ba2c211d7ed590f19fb2f3b488b6, r6-provenance.mjs a92ae909eca680e96273545b0be28921f6eba545b12600d3094c543cf118b459, r6-composition.mjs 1bc0856764b0b3e9f9ac958d8ff916da2701150bfb202bd693a5412bb4f2fd16, r6-intake.mjs 99a8683e3fb0b163380bd0376a2be605660f4d3eebedee50b3e269cba793933a) at the unchanged canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c. Any change to a bound file needs a new freeze revision and a narrow runtime delta check; any policy byte change needs a delta binding review.",
+    "A week re-established an exercise only when its first executed exposure that week was a re-establishment row; a known-dose exposure executed first keeps the state known at its count, with no conversion and no regain cap, whatever later rows of that week prescribe (R19, resolved).",
+    "The week’s counts come from what it executed: the return ceiling is the largest whole count executed that week outside a phase reduction, each exposure counted after its time fit (R20, met); the regain and return caps rise only after a week whose last executed exposure, the one that gives the week’s counts (condition 3, R19), executed its whole count after its time fit (D56 final formulation, R7A1-SSCTR-r1 S1, met at R7A1-FREEZE-A1); a prescribed but unexecuted row never decides.",
+    "A logged load is judged against the exposure it was logged in, under the earlier ceiling when that exposure was a re-establishment (D44, D45).",
+    "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+   ],
+   "approval_date": "2026-10-27",
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Chief / Founder",
+   "human_review": null,
+   "re_review_triggers": [
+    "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+    "Any change to a file listed in RUNTIME_FREEZE_R7A1_FREEZE_A1.json (new freeze revision), including the D57 and D58 fixes of the correction cycle.",
+    "New or corrected systematic review/meta-analysis or trial on repeated-bout protection, re-establishment or return after a training gap, short-term detraining, tapering or strength dosing near endurance events.",
+    "Population, event-distance or V1 scope change.",
+    "Adverse event, runtime inconsistency or contrary comparable observations.",
+    "Founder funding declaration (move approved items to HUMAN_REVALIDATION_REQUIRED)."
+   ]
+  },
+  {
+   "queue_id": "HQ-R7A1-SSCTR-ITEMS-5-8",
+   "decision_id": "R7A1-SSCTR-ITEMS-5-8",
+   "decision_revision": "R7A1-SSCTR-r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/a1/RUNTIME_FREEZE_R7A1_FREEZE_A1.json",
+    "artifact_revision": "R7A1-FREEZE-A1",
+    "sha256": "9e7b9cecc59bc7990e7bcc05665fd9e493072d2cf97cd57d0c5fc08d83f0a228",
+    "rule_ids": [
+     "return.strengthEntryWeek",
+     "R6-NONCLINICAL-RETURN condition 21",
+     "R6-SUBSTITUTION condition 6",
+     "strength.gates.missingLogs (\"HOLD without regression\")",
+     "R6-PLANNED-PROGRESSION condition 9",
+     "R6-PARTIAL-NOISY-LEARNING condition 7",
+     "return.strengthReturnSets (\"a week without a phase reduction executed its whole count\")",
+     "operational.event.proximitySemantics",
+     "r6-program.mjs buildWeek (in-use entry week; entry week kept through a rebuild), advanceStrength (returningWeek, returnInBlock, regainCap of an exercise first set up in the return steps)",
+     "r6-adaptation.mjs strengthLogs, strength gates, moveCandidates (one day phase; sameKind)",
+     "r6-composition.mjs (R7A1-FREEZE-A1): composeWeeks, weekAsPlanned, conditionalNext, reapply"
+    ]
+   },
+   "approved_scope": "Bounded R7A1-SSCTR-ITEMS-5-8 runtime composition ruling only, under every listed condition, bound to R7A1-FREEZE-A1 (conditions marked not met are outside the approval until a later freeze meets them) and canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c; refines the integrated item of R7A-SSCTR-ITEMS-5-8 (R7A-FREEZE-2) by re-binding the same decision; no generated-workout queue row.",
+   "conditions": [
+    "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+    "Binding: this record binds runtime R7A1-FREEZE-A1 (CoachingCore/r7/a1/RUNTIME_FREEZE_R7A1_FREEZE_A1.json, sha256 9e7b9cecc59bc7990e7bcc05665fd9e493072d2cf97cd57d0c5fc08d83f0a228; source digest 2de8681f13e5cb499df6a5a3dc443d52877850528ceb298b598d03de6ec2141a; r6-program.mjs f283b79bb878b3694761af4e5b8dd2439b611c20e4b239d8e9f7b08a559453fd, r6-adaptation.mjs 5257dc0930e47b728255b5fc2ffc98b70598ba2c211d7ed590f19fb2f3b488b6, r6-provenance.mjs a92ae909eca680e96273545b0be28921f6eba545b12600d3094c543cf118b459, r6-composition.mjs 1bc0856764b0b3e9f9ac958d8ff916da2701150bfb202bd693a5412bb4f2fd16, r6-intake.mjs 99a8683e3fb0b163380bd0376a2be605660f4d3eebedee50b3e269cba793933a) at the unchanged canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c. Any change to a bound file needs a new freeze revision and a narrow runtime delta check; any policy byte change needs a delta binding review.",
+    "Item 5: a return-entry week is one in which an exercise in use that week is at the entry step; an exercise not in use (rotated out and still parked at the entry step) has no weight. A never-performed exercise, a substitute included, first prescribed after every exercise in use has passed the entry step is established by effort, at most 2 sets at RIR >= 3, with no load converted, and then progresses as a new exercise (NR-21, SUB-6).",
+    "D55 (met at R7A-FREEZE-2 and at R7A1-FREEZE-A1): an exercise first set up while the exercises in use are in the return steps of a moderate or long return earns no block-boundary set for the block of the return, as return-entry and return-step exposures do not; after the return steps its count rises at most one set per executed week, up to its normal count (its ceiling under strengthReturnSets), with phase reductions on top. Regression tests: the RS2 scenario (return step 2 in a block-end week, a substitution window) for HYPERTROPHY, STRENGTH and RUNNING_SUPPORT, with EVERY_2_WEEKS (parked exercises) and FIXED rotation.",
+    "Item 6: sets logged without repetitions leave the repetition target neither met nor missed; the dose holds without a regression step and repetitions are never adopted from a missing value; a logged reserve below the prescription minus one, or fewer sets than prescribed, remains a missed target.",
+    "Item 7: a week whose last executed row of an exercise is below its count before the phase reduction, by its phase or by an in-week fatigue reduction, earns no regain, return-cap or return-ceiling set.",
+    "Item 8: a missed session moves only to a later chosen day of the same sport whose day phase, by days to the race, equals its own; no move in taper or race week; race touches and shakeouts never move.",
+    "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+   ],
+   "approval_date": "2026-10-27",
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Chief / Founder",
+   "human_review": null,
+   "re_review_triggers": [
+    "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+    "Any change to a file listed in RUNTIME_FREEZE_R7A1_FREEZE_A1.json (new freeze revision), including the D57 and D58 fixes of the correction cycle.",
+    "New or corrected systematic review/meta-analysis or trial on repeated-bout protection, re-establishment or return after a training gap, short-term detraining, tapering or strength dosing near endurance events.",
+    "Population, event-distance or V1 scope change.",
+    "Adverse event, runtime inconsistency or contrary comparable observations.",
+    "Founder funding declaration (move approved items to HUMAN_REVALIDATION_REQUIRED)."
+   ]
+  },
+  {
+   "queue_id": "HQ-R7A1-SSCTR-CYCLE2-COMPOSITIONS",
+   "decision_id": "R7A1-SSCTR-CYCLE2-COMPOSITIONS",
+   "decision_revision": "R7A1-SSCTR-r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/a1/RUNTIME_FREEZE_R7A1_FREEZE_A1.json",
+    "artifact_revision": "R7A1-FREEZE-A1",
+    "sha256": "9e7b9cecc59bc7990e7bcc05665fd9e493072d2cf97cd57d0c5fc08d83f0a228",
+    "rule_ids": [
+     "strength.gates (HOLD repeats the dose; REGRESS lowers the load; missingLogs HOLD without regression)",
+     "operational.return (strengthReturnSets, strengthEntryWeek, strengthKnownLoadAfterReturnLog, shortMaxDays, moderateMaxDays)",
+     "R6-NONCLINICAL-RETURN conditions 7, 9 and 21",
+     "operational.event.proximitySemantics and R6-EVENT-TRANSITION",
+     "R6-LOAD-ESTABLISHMENT condition 15 (each session on its own date; D52)",
+     "strength.setsAfterReestablishment, R6-PLANNED-PROGRESSION condition 14, R6-ROTATION condition 10",
+     "r6-program.mjs advanceStrength (adoption repetitions; unreduced; whole; returningWeek), buildWeek and projectWeeks (entryWeek), needsReestablishment",
+     "r6-adaptation.mjs returnAfterPause (aheadOf, wait, SHORT first quality), goalChange (reachesThisWeek), moveCandidates (sameKind), fatigue (phasedSets), weeklyReview and rebuild (rebasedNext)",
+     "r6-composition.mjs (R7A1-FREEZE-A1): composeWeeks, weekAsPlanned, conditionalNext, reapply"
+    ]
+   },
+   "approved_scope": "Bounded R7A1-SSCTR-CYCLE2-COMPOSITIONS runtime composition ruling only, under every listed condition, bound to R7A1-FREEZE-A1 (conditions marked not met are outside the approval until a later freeze meets them) and canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c; refines the integrated item of R7A-SSCTR-CYCLE2-COMPOSITIONS (R7A-FREEZE-2) by re-binding the same decision; no generated-workout queue row.",
+   "conditions": [
+    "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+    "Binding: this record binds runtime R7A1-FREEZE-A1 (CoachingCore/r7/a1/RUNTIME_FREEZE_R7A1_FREEZE_A1.json, sha256 9e7b9cecc59bc7990e7bcc05665fd9e493072d2cf97cd57d0c5fc08d83f0a228; source digest 2de8681f13e5cb499df6a5a3dc443d52877850528ceb298b598d03de6ec2141a; r6-program.mjs f283b79bb878b3694761af4e5b8dd2439b611c20e4b239d8e9f7b08a559453fd, r6-adaptation.mjs 5257dc0930e47b728255b5fc2ffc98b70598ba2c211d7ed590f19fb2f3b488b6, r6-provenance.mjs a92ae909eca680e96273545b0be28921f6eba545b12600d3094c543cf118b459, r6-composition.mjs 1bc0856764b0b3e9f9ac958d8ff916da2701150bfb202bd693a5412bb4f2fd16, r6-intake.mjs 99a8683e3fb0b163380bd0376a2be605660f4d3eebedee50b3e269cba793933a) at the unchanged canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c. Any change to a bound file needs a new freeze revision and a narrow runtime delta check; any policy byte change needs a delta binding review.",
+    "S2: on HOLD and REGRESS a log that confirms the known load leaves the repetition target as planned (REGRESS lowers the load one smallest increment, or the repetitions by repStep down to the range floor when no load is known); on ADVANCE or EARNED the logged repetitions may replace it; a newly established load (first establishment or re-establishment by effort) is adopted with the repetitions logged for it. A set without repetitions is unknown, never a missed target.",
+    "S3: a return re-plans every session still ahead of the review (later dates, or the same day without an execution report); sessions reported before the review keep their prescription; when re-entry starts the next week, a session still ahead this week waits (rest by design) and never keeps its pre-break dose; a race is never turned into rest.",
+    "R27 / QE-R7A-02 (same-day reading, met at R7A1-FREEZE-A1): a session is still ahead of a review when it is dated after the review’s local date, or dated that day with no execution report while its chosen shift is not over; a morning (AM) session is over at noon local time, an afternoon or unspecified shift at the end of the day. A short return reported on the morning of a quality day, or the evening before, makes that run easy; an evening report never rewrites that morning’s session. The noon boundary is an operational convention of the shift model, not a physiological threshold. D58 (not met at R7A1-FREEZE-A1): in a short return the first quality slot after the break is the first quality slot still ahead of the return report, in the week re-entry starts or a later week; it runs easy, recorded as an adaptation of the week that holds it so a later re-plan and the weekly review keep it; exactly one slot is changed. At R7A1-FREEZE-A1 the rule reaches only the week re-entry starts: when that week’s quality slot is already past and two or more sessions remain, next week’s first quality slot keeps its quality dose (ssctr-r7a1-short.mjs: 96 of 315 cases, also after the weekly review; in a 10-day break THRESHOLD 41 where the last executed was 34), so this clause is outside the approval until a later freeze meets it. Regression: the short grid’s defects at 0 after the return and after the review.",
+    "S4/S9: when an event change moves any remaining day of the current week into or out of the taper, race-window or post-event days, or the race itself is still ahead this week, those days are re-planned under the new phases by days to the race (proximitySemantics), with completed sessions unchanged; a goal change that only renames a training phase applies from the next week.",
+    "S5: a missed session is moved only to a later chosen day of the same sport, in the same day phase, where every strength row keeps its kind on the new date (a known or from-log row never becomes a re-establishment by moving, nor the reverse); otherwise it is skipped without debt.",
+    "S6: a fatigue reduction lowers the recorded count and makes the week reduced; the return ceiling is the largest whole count executed that week outside a phase reduction, each exposure counted after its time fit (R20).",
+    "D56 (final formulation, R7A1-SSCTR-r1 S1): a time-budget fit is not a phase reduction, but a week executed its whole count only when the last executed exposure of the exercise that week, the one that gives the week’s counts (R19, INV-04), executed its count before the phase reduction after its time fit. Any other week neither raises nor ends the regain cap (after a re-establishment) or the return cap (at and after the end of the return steps); the return ceiling (lastExecutedSets) is the largest whole count executed after the fit (R20). Met at R7A1-FREEZE-A1 for the rise of both caps and for the regain cap; not met for the end of the return cap (D57). D57 (not met at R7A1-FREEZE-A1): see R7A1-SSCTR-D56-FORMULATION.",
+    "S7: a week planned as a return-entry week stays one when its remaining days are rebuilt; every new exercise in it gets the entry dose in every time budget and follows the return steps.",
+    "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+   ],
+   "approval_date": "2026-10-27",
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Chief / Founder",
+   "human_review": null,
+   "re_review_triggers": [
+    "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+    "Any change to a file listed in RUNTIME_FREEZE_R7A1_FREEZE_A1.json (new freeze revision), including the D57 and D58 fixes of the correction cycle.",
+    "New or corrected systematic review/meta-analysis or trial on repeated-bout protection, re-establishment or return after a training gap, short-term detraining, tapering or strength dosing near endurance events.",
+    "Population, event-distance or V1 scope change.",
+    "Adverse event, runtime inconsistency or contrary comparable observations.",
+    "Founder funding declaration (move approved items to HUMAN_REVALIDATION_REQUIRED)."
+   ]
+  }
+ ]
+}

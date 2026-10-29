@@ -1,0 +1,110 @@
+TAP version 13
+# Subtest: cold-start model retains population prior, validates and is immutable
+ok 1 - cold-start model retains population prior, validates and is immutable
+  ---
+  duration_ms: 2.6792
+  type: 'test'
+  ...
+# Subtest: actual comparable repeated response becomes contextual ranking evidence without mutating inputs
+ok 2 - actual comparable repeated response becomes contextual ranking evidence without mutating inputs
+  ---
+  duration_ms: 2.6349
+  type: 'test'
+  ...
+# Subtest: one event and same-day repetitions never become strong learned preference
+ok 3 - one event and same-day repetitions never become strong learned preference
+  ---
+  duration_ms: 8.7267
+  type: 'test'
+  ...
+# Subtest: consent is explicit and revocation removes individual ranking influence
+ok 4 - consent is explicit and revocation removes individual ranking influence
+  ---
+  duration_ms: 1.2568
+  type: 'test'
+  ...
+# Subtest: wrong owner, prediction, future, stale, confounded and unestablished comparability are excluded
+not ok 5 - wrong owner, prediction, future, stale, confounded and unestablished comparability are excluded
+  ---
+  duration_ms: 0.8631
+  type: 'test'
+  location: 'C:\\Users\\carva\\Desktop\\myApp\\MyApp\\CoachingCore\\test\\r5-learning.test.mjs:51:1'
+  failureType: 'testCodeFailure'
+  error: 'CONFOUNDED'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/CoachingCore/test/r5-learning.test.mjs:57:10)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1382:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+    Test.postRun (node:internal/test_runner/test:1522:19)
+    Test.run (node:internal/test_runner/test:1447:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: incomplete actuals, invalid response enum, absent planned provenance and invalid times fail closed
+ok 6 - incomplete actuals, invalid response enum, absent planned provenance and invalid times fail closed
+  ---
+  duration_ms: 0.8623
+  type: 'test'
+  ...
+# Subtest: duplicate IDs and replay are idempotent; changed payload and reused source never double count
+ok 7 - duplicate IDs and replay are idempotent; changed payload and reused source never double count
+  ---
+  duration_ms: 1.3409
+  type: 'test'
+  ...
+# Subtest: hash integrity covers observations, owner, consent and flags; tampering cannot influence ranking
+ok 8 - hash integrity covers observations, owner, consent and flags; tampering cannot influence ranking
+  ---
+  duration_ms: 1.3312
+  type: 'test'
+  ...
+# Subtest: learning does not cross phase, dose, family, modality or equipment boundaries
+ok 9 - learning does not cross phase, dose, family, modality or equipment boundaries
+  ---
+  duration_ms: 1.064
+  type: 'test'
+  ...
+# Subtest: unknown outcomes preserve uncertainty and mixed comparable response weakens strong evidence
+ok 10 - unknown outcomes preserve uncertainty and mixed comparable response weakens strong evidence
+  ---
+  duration_ms: 1.2645
+  type: 'test'
+  ...
+# Subtest: strong association may select only an already admissible option
+ok 11 - strong association may select only an already admissible option
+  ---
+  duration_ms: 0.6881
+  type: 'test'
+  ...
+# Subtest: repeated adverse arrangement may prefer an existing compatible alternative without causal claims
+ok 12 - repeated adverse arrangement may prefer an existing compatible alternative without causal claims
+  ---
+  duration_ms: 0.6629
+  type: 'test'
+  ...
+# Subtest: evidence expires and explicit clock prevents future-model or backwards replay use
+ok 13 - evidence expires and explicit clock prevents future-model or backwards replay use
+  ---
+  duration_ms: 0.7887
+  type: 'test'
+  ...
+# Subtest: multiple reports for one session cannot manufacture longitudinal confidence
+ok 14 - multiple reports for one session cannot manufacture longitudinal confidence
+  ---
+  duration_ms: 0.4816
+  type: 'test'
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 13
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 99.5273

@@ -1,0 +1,78 @@
+{
+ "revision": "R7ASE-DISPOSITION-1",
+ "date": "2026-10-28",
+ "owner": "Chief / runtime author (current Claude Code instance); judges independent",
+ "mission": "COACHING CORE — STATE EVIDENCE MODEL — value-scoped fact vs projection closure",
+ "founderDecision": "STATE_EVIDENCE_AUTHORITY = VALUE_SCOPED (Founder request §0; recursive whole-week authority rejected as the main solution)",
+ "delivery": "CLOSED_WITH_EXPLICIT_BLOCKER",
+ "stateEvidenceModel": "NOT_READY",
+ "exitReadiness": "NOT_READY",
+ "nextMission": "FOUNDER_ARCHITECTURAL_DECISION",
+ "completeDefinitionOfDone": false,
+ "freeze": {
+  "revision": "STATE-EVIDENCE-FREEZE-1",
+  "file": "CoachingCore/r7/state-evidence/RUNTIME_FREEZE_STATE_EVIDENCE.json",
+  "fileSha256": "a8683cbad60fd7f7b9da8b09e5c44bc74a55c6a2445e744606d37dbc6fde69f7",
+  "sourceDigest": "692483ce5147d90797441baf2ac73c9d433197bd40047f147202ca4e4bff2cc1",
+  "delta": {"changed": ["src/r6-adaptation.mjs", "src/r6-composition.mjs", "src/r6-program.mjs", "test/r7ab-week-start-authority.test.mjs"], "added": ["test/r7ase-state-evidence.test.mjs"], "removed": []}
+ },
+ "baselineFreeze": {"revision": "R7A-BOUNDARY-FINAL-FREEZE", "sourceDigest": "36a71ca84fb87789d8623e2050ac9e308a963400af86a3ba73a373043bbf186c", "copy": "audits/domain-coaching-r7a-state-evidence-2026-10-28/boundary-freeze-source/"},
+ "baseline": {
+  "file": "audits/domain-coaching-r7a-state-evidence-2026-10-28/BASELINE.json",
+  "entries": 2862,
+  "reproduced": "Before any edit: R7A-BOUNDARY-FINAL-FREEZE digest recomputed (0 of 81 drift); verify-r7ab read-only 17/17; node --test 540/540; the judge's P40 byte-identical (b76b8259…), with P40b, P40c, P41 and P47b"
+ },
+ "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+ "policyChanged": false,
+ "contracts": [
+  {"file": "audits/domain-coaching-r7a-state-evidence-2026-10-28/STATE_EVIDENCE_CONTRACT.md", "revision": "R7ASE-STATE-EVIDENCE-1"},
+  {"file": "audits/domain-coaching-r7a-state-evidence-2026-10-28/TASK_CONTRACT.md", "revision": "R7ASE-CONTRACT-2"}
+ ],
+ "tests": {
+  "suite": "555/555 (node --test, Node v24.19.0)",
+  "new": "CoachingCore/test/r7ase-state-evidence.test.mjs (15; 10 fail on the R7A-BOUNDARY-FINAL-FREEZE copy: probes/r7ase-tests.on-boundary-freeze.out.txt)",
+  "edited": "CoachingCore/test/r7ab-week-start-authority.test.mjs, three cases marked State evidence (contract §9)"
+ },
+ "evidence": {
+  "runner": "audits/domain-coaching-r7a-state-evidence-2026-10-28/probes/run-evidence-r7ase.mjs",
+  "record": "audits/domain-coaching-r7a-state-evidence-2026-10-28/probes/EVIDENCE_RUNS_R7ASE.json",
+  "runs": 96,
+  "failed": 0,
+  "boundDigest": "692483ce5147d90797441baf2ac73c9d433197bd40047f147202ca4e4bff2cc1",
+  "comparison": "probes/COMPARE_R7ASE.json: 75 of 95 byte-identical to R7A-BOUNDARY-FINAL-FREEZE; the 20 differences named in probes/COMPARE_R7ASE_NAMED.json (the judge corrects its P40b note: cells 8-9 have U ahead in a repetition target, QE-R7AB-02's class)",
+  "selfChallenge": "12 classes, 0 violations; 52 on the boundary-freeze copy",
+  "mutation": "23/23 caught, all applied",
+  "regression": "CoachingCore/r7/state-evidence/REGRESSION_R7ASE.json: R5 24/24, profiles 16/16, simulations 14/14 identical; R6 holdout 33/35 (R6-H17, R6-H26 named in probes/REGRESSION_R7ASE_NAMED.json)",
+  "consumerAudit": "dossier/CONSUMER_AUDIT_R7ASE.md"
+ },
+ "reviews": {
+  "engineering": {"revision": "R7ASE-QE-r1", "files": "audits/domain-coaching-r7a-state-evidence-2026-10-28/reviews/quality-engineering-r7ase-review.{md,json}", "reviewer": "fresh quality-reliability-engineer (claude-opus-5-5, effort max)", "verdict": "NOT_READY", "digest": "692483ce… at start and end", "findings": ["QE-R7ASE-01 MEDIUM material", "QE-R7ASE-02 MEDIUM material", "QE-R7ASE-03 LOW", "QE-R7ASE-04 LOW"], "boundaries": "E1 rejected in part; E2–E6 accepted"},
+  "ssctr": {"revision": "R7ASE-SSCTR-r1", "files": "audits/domain-coaching-r7a-state-evidence-2026-10-28/reviews/ssctr-r7ase-regression.{md,json}", "reviewer": "native sports-science-concurrent-training-reviewer (effort xhigh)", "verdict": "ACCEPT", "digest": "692483ce… at start and end", "rulings": "SE-A, SE-C, SE-E, SE-F, SE-G approved; SE-B approved with conditions (NF-R7ASE-1, R41); SE-D approved with conditions (the load and its repetition target, not the stored tick: NF-R7ASE-3, R42); SE-H approved as declared boundaries (NF-R7ASE-2)", "blockers": "D53 closed; D56–D58 hold; D59 closed", "queueProposal": "reviews/ssctr-r7ase-regression-queue-items.json (12)"}
+ },
+ "chiefReproduction": "The Chief re-ran reviews/qe-r7ase-P51d-identical-ledgers.mjs and reviews/qe-r7ase-P50-reestablish-projected-date.mjs read-only on the frozen bytes: both outputs byte-identical to the judge's",
+ "notReadyRecord": {
+  "QE-R7ASE-01": {
+   "finding": "When the athlete lifts a projected load, atDose (src/r6-adaptation.mjs:714-720) promotes the stored start's whole dose, including the load tick. When the projection ran two weeks ahead of history, the tick at the new load counts an exposure never executed. Identical ledgers: U db-rdl and db-split-squat KNOWN 24 tick 1 (basis WEEK_EVIDENCE week 8, rebuilt) against R6 tick 0; after a SHORT return U steps to 26 kg on 2027-01-09, R6 on 2027-01-16. The SSCTR independently reports the same atom (NF-R7ASE-3, back squat) and does not approve it as history",
+   "reproduction": "reviews/qe-r7ase-P51d-identical-ledgers.mjs; reviews/qe-r7ase-P51c-atdose-projected-tick-unmet.mjs (four time zones and the boundary copy); reviews/qe-r7ase-P51b-atdose-projected-tick-dev.mjs; reviews/ssctr-r7ase-tick-probe.mjs",
+   "stateAtomThatLostProvenance": "A strength exercise's loadTick (the count of successful exposures at the current load): recorded basis WEEK_EVIDENCE rebuilt, real provenance a CONDITIONAL_PLAN's assumption about a missed session. By the same code also the repetition target under a repetition-progression goal (the judge: inferred, not run)",
+   "fromChosenGranularity": "Yes. One strength exercise is one value (contract §3); atDose promotes the value's whole dose tuple on the evidence of one of its atoms (the load), a container-level promotion inside the value",
+   "physicalSeparationOfHistoricalStateAndPlanningProjection": "Not required for this instance: promoting only the load and deriving the tick from executed exposures would close it (SSCTR R42). The engineering judge reads the pattern as an argument for it: history is rebuilt by copying values out of the planning record under per-value rules, and two such copy rules have now leaked (QE-R7AB-01, then this one, introduced by its fix). A HistoricalState advanced only by executed evidence would remove the class structurally"
+  },
+  "QE-R7ASE-02": {
+   "finding": "The planner's D52 predicate needsReestablishment (src/r6-program.mjs:335, used at :362; 'in calendar days from its last executed exposure') reads lastPerformed from the planning start. A review updates that date only for an exercise performed in its week, so a planned date carried from an unreviewed week survives every later review in which the exercise is missed. In P40's U: planning 2026-11-21 (never executed), history 2026-11-14; on 2026-12-19, 35 days after the last exposure, U prescribes db-rdl 3x5@3 KNOWN 22 and db-split-squat 2x6@3 KNOWN 22, never lifted, where R prescribes the D52 re-establishment by effort. Same class (P52): return-step doses planned from a projected return step after the re-entry session was missed",
+   "reproduction": "reviews/qe-r7ase-P50-reestablish-projected-date.mjs (four time zones and the boundary copy); reviews/qe-r7ase-I02-same-facts.mjs; reviews/qe-r7ase-P52-fresh-exercise-entryweek.mjs",
+   "stateAtomThatLostProvenance": "A strength exercise's lastPerformed in the planning view (stateTrace[k].strength.exercises[id].lastPerformed), read as the last executed exposure; in P52 the exercises' returnStep, read by the row's exposure kind",
+   "fromChosenGranularity": "No. The value is correctly identified (projectedBase) and history is right; the planner evaluates a predicate defined on executed history against the planning view (contract E1 too broad: 'the next review reads the facts' is false for atoms a review does not move)",
+   "physicalSeparationOfHistoricalStateAndPlanningProjection": "Separate read paths are required: history-defined predicates inside the planner must read the historical view. Physical separation is one way to enforce it, not the only one; one record serving both views is what lets such a predicate silently read a projected atom (the judge)"
+  }
+ },
+ "nonBlocking": {
+  "QE-R7ASE-03": "E2: a reviewed run step ahead of its control survives an unreviewed week (long 70 against 65); a review's step, not a projection (SSCTR NF-R7ASE-2: record for the next run-state mission)",
+  "QE-R7ASE-04": "A fresh substitute exercise inherits the planning view's entry-week flag (cross-exercise); its values match the row executed",
+  "NF-R7ASE-1": "After weeks never reported, a return can start the run below what reported weeks executed (R6-H17, R6-H26); conservative; SSCTR R41",
+  "judgeObservation": "After a review steps a load from evidence, the runtime's historical load is the evidence-gated next load, even before it is lifted (contract §4, every earlier control); Founder §3 calls the next prescribed load a projection, so the load atom may conflate two meanings — a question for the Founder's decision"
+ },
+ "humanQueue": {"before": 187, "after": 199, "appended": 12, "record": "audits/domain-coaching-r7a-state-evidence-2026-10-28/QUEUE_INTEGRATION_R7ASE.json", "earlierItemsByteIdentical": true, "funding": "NOT_DECLARED"},
+ "notDone": ["no correction cycle after the freeze (Founder §27)", "no second freeze", "no R7A_FINAL_HANDOFF.md (NOT_READY)", "DOMAIN_COACHING_R7-B0 not started", "no commit, merge or deploy", "no UI, Figma, KMP, HealthKit, integration, production or real-plan effect", "product/ and canon/ not edited; policy unchanged"],
+ "historicalVerifiersAfterThisMission": "verify-r7ab.mjs read-only, run at closure: 12/17, failing baseline-preserved, freeze-current, tests-on-final-freeze, regression and queue-append-only, all by design: this mission supersedes R7A-BOUNDARY-FINAL-FREEZE (its sources and its test file changed; the test file's boundary bytes are in boundary-freeze-source/) and appended to the queue. Its record is not rewritten"
+}

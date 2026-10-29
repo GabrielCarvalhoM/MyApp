@@ -1,0 +1,7 @@
+# Reassessment — 2026-10-26
+
+The initial direction/time/provenance fixes made observable progress, but independent round2b found surviving paths in the same material invariants. No third narrow aggregate-dose patch is accepted. Root cause: the actual execution boundary described only totals, while prescription/scheduling had richer structure; model observations and caller ledger were alternative mutable views; changed availability bypassed initial input validation. This is a contract/capability gap, not missing permission or a scientific reversal.
+
+Revised hypothesis: a single physical-stimulus projection shared by all observation ingestion, merging model actuals into the immutable ledger, and one shared availability validator close the divergent paths. Falsification: lower-load strength / omitted hard run work / missing caller ledger / overlapping new windows must never produce learned progression or mutation of completed work. Existing independent Q19–Q22 and SSCTR13 are the regression witnesses. Root owns correction; independent SSCTR/Quality own re-evaluation. No global rule is changed.
+
+Also enforce the policy's whole-week one-dose-change budget and compare increment magnitude in its actual physical dimension. No summed universal coaching score is introduced. Future dose alternatives need a source-bound compatible combined-week context; individually familiar tasks do not authorize arbitrary combined overload.

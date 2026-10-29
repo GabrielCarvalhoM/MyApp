@@ -1,0 +1,101 @@
+{
+ "revision": "R7AB-READINESS-1",
+ "generatedAt": "2026-10-28T19:20:00.000Z",
+ "mission": "DOMAIN_COACHING_R7-A Final Boundary Closure (Week-Start State Authority & Return Continuity)",
+ "phase": "The final boundary micro-closure of R7-A, after R7-A, R7-A.1, R7-A.2 and the R7-A Final Closure (not R7-B0 or R7-B)",
+ "scope": "OFFLINE_SYNTHETIC_NODE24_REFERENCE",
+ "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+ "freezeRevision": "R7A-BOUNDARY-FINAL-FREEZE",
+ "sourceDigest": "36a71ca84fb87789d8623e2050ac9e308a963400af86a3ba73a373043bbf186c",
+ "freezeFileSha256": "3ebc9b02995d95f39b172fbbb79b652c149b10c74984ce7b8da6fd870778b97d",
+ "delivery": "CLOSED_WITH_EXPLICIT_BLOCKER",
+ "noForcedReady": true,
+ "notEmitted": [
+  "AUTONOMOUS_COACH_READY",
+  "COACHING_DECISION_QUALITY_GLOBALLY_READY",
+  "KMP_READY",
+  "PRODUCTION_READY",
+  "HUMAN_VALIDATED",
+  "CLINICALLY_VALIDATED"
+ ],
+ "blockers": {
+  "QE-R7A-01": "CLOSED",
+  "QE-R7A1-09": "CLOSED",
+  "QE-R7A1-10": "CLOSED",
+  "QE-R7A2-01": "CLOSED",
+  "QE-R7A2-02": "CLOSED (engineering side: confirmation-first)",
+  "QE-R7A2-03": "CLOSED",
+  "QE-R7AF-01": "CLOSED on its own path (the engineering judge: the class stays open through QE-R7AB-01)",
+  "QE-R7AF-02": "CLOSED (Founder §11: a named correction contradicting its own executed re-entry is asked)",
+  "D53": "CLOSED",
+  "D56": "CLOSED",
+  "D57": "CLOSED",
+  "D58": "CLOSED",
+  "D59": "CLOSED",
+  "QE-R7AB-01": "OPEN (material, engineering re-check R7AB-QE-r1)"
+ },
+ "verdicts": {
+  "WEEK_COMPOSITION_INTEGRITY": "READY",
+  "STATE_PRESERVATION_INTEGRITY": "NOT_READY",
+  "EVENT_SUPERSESSION_INTEGRITY": "READY",
+  "EXERCISE_MERGE_INTEGRITY": "READY",
+  "RETURN_RECOVERY_CEILING_INTEGRITY": "NOT_READY",
+  "WEEK_START_STATE_AUTHORITY": "NOT_READY",
+  "R7A_FINAL_ENGINEERING_RECHECK": "NOT_READY",
+  "R7A_FINAL_SCIENTIFIC_RECHECK": "READY",
+  "R7A_EXIT_READINESS": "NOT_READY"
+ },
+ "reasons": {
+  "WEEK_COMPOSITION_INTEGRITY": {
+   "basis": "Engineering recommends READY (R7AB-QE-r1): P09 O1-O7 = 0 in 5,000 sequences; every preservation probe byte-identical; the judge's 47 re-runs byte-identical to the author's recorded outputs. SSCTR: D58 holds."
+  },
+  "STATE_PRESERVATION_INTEGRITY": {
+   "blockedBy": ["QE-R7AB-01"],
+   "why": "Outside a return, a weekly review records the next week's start as WEEK_EVIDENCE and carries unchanged every value its evidence did not move from the week's own start, even when that start was an unverified projection. historicalWeekStart checks that base only while return steps are under way. So in a program's first weeks, after a SHORT return or after a completed return, values only the plan assumed become evidence-anchored history (P40: db-rdl and db-split-squat at 22 kg, lifted at 20; P40b 9 of 9 cells; P40c a moderate return's ceiling; P41 after a short return; P47b through a Sunday local-fatigue report). R7A-FINAL-FREEZE carries the same values on that path: the path is older than this mission, which did not reach it",
+   "holds": "QE-R7AF-01's path is closed: on P30c every trigger gives the control's start, and on P30b no cell advances the run. Identity holds: P31 V1, V2, V4 and V5 = 0 at four time zones. The SSCTR found 0 unexecuted run steps over 22 return paths"
+  },
+  "EVENT_SUPERSESSION_INTEGRITY": {
+   "basis": "Engineering recommends READY; P09 O6 0; P34 unchanged"
+  },
+  "EXERCISE_MERGE_INTEGRITY": {
+   "basis": "Engineering recommends READY; P07 byte-identical"
+  },
+  "RETURN_RECOVERY_CEILING_INTEGRITY": {
+   "blockedBy": ["QE-R7AB-01 (engineering side)"],
+   "why": "The contract's S-F (no unexecuted load or count reaches a ceiling or a resumed dose through a stored start) fails on QE-R7AB-01's path: P40c carries a never-lifted 22 kg into a moderate return's entry as the ceiling. The sporting side is ACCEPT (R7AB-SSCTR-r1): D53 closed, D56-D59 hold, S-A to S-F approved within the paths the SSCTR probed"
+  },
+  "WEEK_START_STATE_AUTHORITY": {
+   "blockedBy": ["QE-R7AB-01"],
+   "why": "Founder §2 asks whether every week start reused as history now has authority derived from real evidence of the week before. Not yet: a WEEK_EVIDENCE start certifies the review's step, not the base it was applied to, and outside a return the base is not checked",
+   "holds": "Within the return in force and on every path the R7-A final judge reproduced, a projected start no longer counts as history whatever else is decided (I1, I3, I4, I8): equipment, schedule, goal, event, fatigue and no-op statements alike. Completed sessions anchor a projection only when executed exactly as it assumed. Time alone promotes nothing"
+  },
+  "R7A_FINAL_ENGINEERING_RECHECK": {
+   "verdict": "NOT_READY",
+   "review": "audits/domain-coaching-r7a-boundary-2026-10-28/reviews/quality-engineering-r7ab-recheck.json",
+   "digestStartEnd": "36a71ca84fb87789d8623e2050ac9e308a963400af86a3ba73a373043bbf186c (both)"
+  },
+  "R7A_FINAL_SCIENTIFIC_RECHECK": {
+   "verdict": "ACCEPT",
+   "review": "audits/domain-coaching-r7a-boundary-2026-10-28/reviews/ssctr-r7ab-recheck.json",
+   "digestStartEnd": "36a71ca84fb87789d8623e2050ac9e308a963400af86a3ba73a373043bbf186c (both)",
+   "nonBlocking": ["NF-R7AB-1 (R40): the start is history only when both sports hold, so a strength-only shortfall in a re-entry week left unreviewed also sends the run back to its entry (conservative; boundary B8)"]
+  },
+  "R7A_EXIT_READINESS": {
+   "verdict": "NOT_READY",
+   "why": "A material engineering blocker (QE-R7AB-01) on the single freeze; there is no correction cycle (Founder §22)",
+   "next": "FOUNDER_ARCHITECTURAL_DECISION"
+  }
+ },
+ "nonMaterialFindings": {
+  "QE-R7AB-02": "LOW: a week with establishment rows executed exactly as planned but never reviewed gives a slightly less progressed start (a pending 20 kg) than the same week reviewed (a confirmed 20 kg)",
+  "QE-R7AB-03": "LOW: a named correction that encloses training recorded before the interruption's first report is applied silently. Founder question: does §11's 'already-attributed execution' cover it?",
+  "NF-R7AB-1": "SSCTR non-blocking, recommendation R40 (per-sport walk-back; make sure a late-logged re-entry week still gets its own review)",
+  "carriedOver": ["QE-R7AF-03 (LOW)", "QE-R7AF-04 (LOW)", "SSCTR R38", "SSCTR R39"]
+ },
+ "queue": {
+  "before": 175,
+  "after": 187,
+  "record": "audits/domain-coaching-r7a-boundary-2026-10-28/QUEUE_INTEGRATION_R7AB.json",
+  "funding": "NOT_DECLARED"
+ }
+}

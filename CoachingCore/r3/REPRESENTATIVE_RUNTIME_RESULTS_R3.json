@@ -1,0 +1,4619 @@
+{
+  "revision": "R3-RESULTS-1",
+  "dashboard": {
+    "REPRESENTATIVE_CASES_TOTAL": 42,
+    "SCHEMA_VALID": 42,
+    "SEMANTICALLY_CONSUMABLE": 40,
+    "ADAPTER_BLOCKED": 0,
+    "DOMAIN_BLOCKED": 16,
+    "SCIENTIFICALLY_UNSUPPORTED": 3,
+    "SUBSTANTIVE_ASK_REQUIRED": 15,
+    "CLINICAL_OR_OUT_OF_SCOPE": 2
+  },
+  "results": [
+    {
+      "caseId": "REP-R2-01",
+      "title": "New athlete, no product history, first low-data week",
+      "gap": "ACF-G01",
+      "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "schemaValid": true,
+      "inputHash": "f7753a62b21e0f7bb66c28e8b673656bfc1d03761a5c21feecbfe47f1b2a96aa",
+      "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "decisionType": "NOT_SUPPORTED_YET",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "FIRST_WEEK",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/onboarding",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "3051c8f00071e4ea91e03e4f69271e34b28ccda2d8f130c8160ee6b4b549912d"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/reportedExposure",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object",
+                  "array",
+                  "string"
+                ],
+                "typed": true,
+                "valueHash": "2e1a1b7868311c0e6ebed3464883ce06d7d38b27618ff971976336a86dbd6242"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": true
+      },
+      "rationale": "The supplied establishment context is understood, but no approved whole-request recipe matches these modality configurations, available days and current exposure. An adult label is not an exact age; a reported walk is not a run tolerance or machine-task demonstration.",
+      "missingInputs": [],
+      "dependency": "FIRST_PRESCRIPTION_EXACT_RECIPE",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/onboarding",
+        "/reportedExposure",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/priorHistory",
+        "/history",
+        "/calibration",
+        "/onboarding/movementKnowledge",
+        "/onboarding/availability"
+      ],
+      "adapterWarnings": [],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-02",
+      "title": "Run novice, experienced lifter, first integrated week",
+      "gap": "ACF-G01",
+      "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "schemaValid": true,
+      "inputHash": "b9563354e1962656aa0f27cf066d15b100fa9bfa11fed4902940f3cb89cdb2a5",
+      "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "decisionType": "NOT_SUPPORTED_YET",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "FIRST_WEEK",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/onboarding",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "d23a595a0df4a4dbb380f34a88d321c7ae1dcdcb8440725eb11ff2268214aa6b"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/reportedExposure",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object",
+                  "array",
+                  "string"
+                ],
+                "typed": true,
+                "valueHash": "143fa58ba8e9d430ec3114428c6918dfdbd4db371105688d28ee87ab002cdee2"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": true
+      },
+      "rationale": "The supplied establishment context is understood, but no approved whole-request recipe matches these modality configurations, available days and current exposure. An adult label is not an exact age; a reported walk is not a run tolerance or machine-task demonstration.",
+      "missingInputs": [],
+      "dependency": "FIRST_PRESCRIPTION_EXACT_RECIPE",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/onboarding",
+        "/reportedExposure",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/priorHistory",
+        "/history",
+        "/calibration",
+        "/onboarding/movementKnowledge",
+        "/onboarding/availability"
+      ],
+      "adapterWarnings": [
+        {
+          "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+          "sourcePaths": [
+            "/reportedExposure/run/familiar"
+          ],
+          "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+        }
+      ],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-03",
+      "title": "Strength novice, established runner, first strength exposure",
+      "gap": "ACF-G01",
+      "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "schemaValid": true,
+      "inputHash": "3733acd7218f915b7c2eb4a23bd6f974c0e6c8c976d9d363943680cbd13ecbc8",
+      "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "decisionType": "NOT_SUPPORTED_YET",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "FIRST_STRENGTH_SESSION",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/onboarding",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "338a6639e93d9076b31f0783f9c5d8ae134c17d60deb2084de97a03be2b5711b"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": true
+      },
+      "rationale": "The supplied establishment context is understood, but no approved whole-request recipe matches these modality configurations, available days and current exposure. An adult label is not an exact age; a reported walk is not a run tolerance or machine-task demonstration.",
+      "missingInputs": [],
+      "dependency": "FIRST_PRESCRIPTION_EXACT_RECIPE",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/onboarding",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/priorHistory",
+        "/history",
+        "/calibration",
+        "/onboarding/movementKnowledge",
+        "/onboarding/availability",
+        "/reportedExposure"
+      ],
+      "adapterWarnings": [
+        {
+          "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+          "sourcePaths": [
+            "/currentDemand/officialRunWeek"
+          ],
+          "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+        }
+      ],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-04",
+      "title": "Unknown movement competence with a requested loaded squat",
+      "gap": "ACF-G01",
+      "targetCategory": "USEFUL_ASK",
+      "schemaValid": true,
+      "inputHash": "ccc0fb6e619adecf947a8df0e6f0e562418eb3afe8031eec362f739c1d05c33d",
+      "coverage": "USEFUL_ASK",
+      "decisionType": "ASK",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "FIRST_STRENGTH_SESSION",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/onboarding",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "a7ad95314027a00c445a230bb23cf559083e697f7d578bf3b3fcb15869a5252a"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": false
+      },
+      "rationale": "Requested load and equipment do not establish task competence, configuration or demonstrated load",
+      "missingInputs": [
+        "/onboarding/movementKnowledge",
+        "/reportedExposure/strength"
+      ],
+      "dependency": "SUBSTANTIVE_MISSING_INPUT",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/onboarding",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/priorHistory",
+        "/history",
+        "/calibration",
+        "/onboarding/movementKnowledge",
+        "/onboarding/availability",
+        "/reportedExposure"
+      ],
+      "adapterWarnings": [],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-05",
+      "title": "First VO2 family requested by a run novice",
+      "gap": "ACF-G01",
+      "targetCategory": "USEFUL_ASK",
+      "schemaValid": true,
+      "inputHash": "318a6a5f2a0354df0897f58c3d744154d4129223640895ce4a412344190f2733",
+      "coverage": "USEFUL_ASK",
+      "decisionType": "ASK",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "NEVER_EXPOSED_RUN_FAMILY",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/reportedExposure/run",
+                "state": "KNOWN",
+                "present": true,
+                "type": "string",
+                "expectedTypes": [
+                  "object",
+                  "array",
+                  "string"
+                ],
+                "typed": true,
+                "valueHash": "cbc53d4b08e003115a7b8273d86ee2ea4f70b835d3416b1e72de800b4ec113cd"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/currentDemand/family",
+                "state": "KNOWN",
+                "present": true,
+                "type": "string",
+                "expectedTypes": [
+                  "string"
+                ],
+                "typed": true,
+                "valueHash": "38895b76811465932feb4be16242f5c0469d597c08e3aef4db68ef198663e774"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": false
+      },
+      "rationale": "Lifting experience does not establish interval competence or task-specific calibration",
+      "missingInputs": [
+        "/currentDemand/calibration"
+      ],
+      "dependency": "SUBSTANTIVE_MISSING_INPUT",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/reportedExposure/run",
+        "/currentDemand/family",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/priorHistory",
+        "/history",
+        "/calibration"
+      ],
+      "adapterWarnings": [
+        {
+          "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+          "sourcePaths": [
+            "/currentDemand/family"
+          ],
+          "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+        }
+      ],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-06",
+      "title": "Reported familiar easy running without imported device history",
+      "gap": "ACF-G01",
+      "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "schemaValid": true,
+      "inputHash": "0d196c050ea5128aa4d46e6979a639ea0b9594c51a9e6273782dc4ef3afca580",
+      "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "decisionType": "NOT_SUPPORTED_YET",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "FIRST_PRODUCT_WEEK",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/onboarding",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "2083d81c763b65bbe9ba256b6ab6ceaf55b45dbe4b1800853c1a24ab80f2603d"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/reportedExposure",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object",
+                  "array",
+                  "string"
+                ],
+                "typed": true,
+                "valueHash": "57033aeb8104ec65f10a95a5e73c3f7595f8cbe27b3aec6200530c337868f7a1"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": true
+      },
+      "rationale": "The supplied establishment context is understood, but no approved whole-request recipe matches these modality configurations, available days and current exposure. An adult label is not an exact age; a reported walk is not a run tolerance or machine-task demonstration.",
+      "missingInputs": [],
+      "dependency": "FIRST_PRESCRIPTION_EXACT_RECIPE",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/onboarding",
+        "/reportedExposure",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/priorHistory",
+        "/history",
+        "/calibration",
+        "/onboarding/movementKnowledge",
+        "/onboarding/availability"
+      ],
+      "adapterWarnings": [],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-07",
+      "title": "First run/walk establishment after comfortable walking",
+      "gap": "ACF-G01",
+      "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "schemaValid": true,
+      "inputHash": "d83e96eec879a72a1d6509630bddd8cb1afbc0815dade44877406f7bd3cac99a",
+      "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "decisionType": "NOT_SUPPORTED_YET",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "FIRST_RUN_SESSION",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/onboarding",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "62e45a6446bd72caebfcee90e7dca3395aa82e146d189b571808aede6015fc4e"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/reportedExposure",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object",
+                  "array",
+                  "string"
+                ],
+                "typed": true,
+                "valueHash": "6708268f78429a1504a04914d70a1d65b859773cea7e245a4414ef64aa92ed15"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": true
+      },
+      "rationale": "The supplied establishment context is understood, but no approved whole-request recipe matches these modality configurations, available days and current exposure. An adult label is not an exact age; a reported walk is not a run tolerance or machine-task demonstration.",
+      "missingInputs": [],
+      "dependency": "FIRST_PRESCRIPTION_EXACT_RECIPE",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/onboarding",
+        "/reportedExposure",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/priorHistory",
+        "/history",
+        "/calibration",
+        "/onboarding/movementKnowledge",
+        "/onboarding/availability"
+      ],
+      "adapterWarnings": [],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-08",
+      "title": "Incomplete onboarding and unknown eligibility",
+      "gap": "ACF-G01",
+      "targetCategory": "USEFUL_ASK",
+      "schemaValid": true,
+      "inputHash": "bba576066fb9924e7e85b39b0902747883641b442491099fbfc10637395de867",
+      "coverage": "USEFUL_ASK",
+      "decisionType": "ASK",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "FIRST_WEEK",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/onboarding",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "5bebe461946e5360fca63cf30761649496cbad15fc205cc88affa1f3d61a8460"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/reportedExposure",
+                "state": "UNKNOWN",
+                "present": true,
+                "type": "null",
+                "expectedTypes": [
+                  "object",
+                  "array",
+                  "string"
+                ],
+                "typed": true,
+                "valueHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": false
+      },
+      "rationale": "Current eligibility is unknown; no disease or clearance is inferred",
+      "missingInputs": [
+        "/eligibility/status"
+      ],
+      "dependency": "SUBSTANTIVE_MISSING_INPUT",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/onboarding",
+        "/reportedExposure",
+        "/observations",
+        "/interruption/reason"
+      ],
+      "adapterWarnings": [],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-09",
+      "title": "Local calf fatigue and an optional unperformed accessory",
+      "gap": "ACF-G02",
+      "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "schemaValid": true,
+      "inputHash": "5a6ecc13e07e97346729cb81e4fadbf1400dff5974d7193d6cfc0e081ef0f395",
+      "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "decisionType": "NOT_SUPPORTED_YET",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "LOCAL_FATIGUE",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/currentDemand/session/essential",
+                "state": "KNOWN",
+                "present": true,
+                "type": "array",
+                "expectedTypes": [
+                  "array"
+                ],
+                "typed": true,
+                "valueHash": "df1f0388d055409cfea2b7ad5e0dcffad61d8eb7f731325d44e445024a8a1bae"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/currentDemand/session/optional",
+                "state": "KNOWN",
+                "present": true,
+                "type": "array",
+                "expectedTypes": [
+                  "array"
+                ],
+                "typed": true,
+                "valueHash": "114854f87a520c2992ff348407ea1b7e95de472bc4882dfff0416c9c8e673afe"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/observations/local",
+                "state": "KNOWN",
+                "present": true,
+                "type": "string",
+                "expectedTypes": [
+                  "string"
+                ],
+                "typed": true,
+                "valueHash": "9172be5d6c5418a44caeb651edd7eb3d186c08497cc77e3aa7b1ce0c9364dfeb"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/alternatives",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object",
+                  "array",
+                  "string"
+                ],
+                "typed": true,
+                "valueHash": "190ed18c7228324c19990aabd8e4f6869051f2d3c2c147a77701668d05b4808e"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": true
+      },
+      "rationale": "Typed essential/optional configuration is represented. Its exact task, current necessity and smaller sufficient alternatives still need a bounded independently approved binding; no other registry configuration is substituted.",
+      "missingInputs": [],
+      "dependency": "OPTIONAL_ACCESSORY_EXACT_CONFIGURATION",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/currentDemand/session/essential",
+        "/currentDemand/session/optional",
+        "/observations/local",
+        "/alternatives",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/priorHistory",
+        "/history",
+        "/calibration"
+      ],
+      "adapterWarnings": [],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-10",
+      "title": "Converging systemic fatigue and under-target cruise execution",
+      "gap": "ACF-G02",
+      "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "schemaValid": true,
+      "inputHash": "5b2b5e71f6654550b3ea17f7240241d283eaefc687b667d630c71248abb5ffb8",
+      "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "decisionType": "NOT_SUPPORTED_YET",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "SYSTEMIC_FATIGUE",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/currentDemand/session",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "9d6789a7a41da722c2830bd94d87f779d646acc60eb032a8421827e63b158ba6"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/observations/firstTwoRepetitions",
+                "state": "KNOWN",
+                "present": true,
+                "type": "string",
+                "expectedTypes": [
+                  "string"
+                ],
+                "typed": true,
+                "valueHash": "b633e05ef8d951336c8ad99f6ddd1591f5d4bdc68c9d6ceaa29a608f8fea0e0b"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/completedPrefix",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "37d3ad75268ca8c498cf845b251fa4a541cf61834f369b5f94fae1a6ebcd2419"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": true
+      },
+      "rationale": "Actual completed dose {\"repetitions\":2,\"actualWorkMinutes\":[5,3]} is immutable. This exact partial-execution context has no independently approved future-suffix dose binding.",
+      "missingInputs": [],
+      "dependency": "PARTIAL_CRUISE_SUFFIX_DOSING",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/completedPrefix",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/observations/firstTwoRepetitions",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/priorHistory",
+        "/history",
+        "/calibration",
+        "/alternatives"
+      ],
+      "adapterWarnings": [],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-11",
+      "title": "Repeated over-target strength execution with familiar next step",
+      "gap": "ACF-G02",
+      "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "schemaValid": true,
+      "inputHash": "470eeed7c507a8ab05157dc46b91bf1843082556bc17e2dbfb1d138ad05cd075",
+      "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "decisionType": "NOT_SUPPORTED_YET",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "NEXT_STRENGTH_SESSION",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/currentDemand/exercise",
+                "state": "KNOWN",
+                "present": true,
+                "type": "string",
+                "expectedTypes": [
+                  "string"
+                ],
+                "typed": true,
+                "valueHash": "99163cec6f6f1731ef7824b83b812f842b0eb91102187848eaa1f83fe0a11214"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/currentDemand/base",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "f0563b57ef558b280fa160e3f72272f38d974abed6b9aa3213ee54a9b161e4a7"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/currentDemand/candidate",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "07d4f1fde31638f359a634d146ff8acb88eb2d94c1faf2b066036d1dcccaf15a"
+              },
+              {
+                "path": "/currentDemand/availableAlternative",
+                "state": "ABSENT",
+                "present": false,
+                "type": "undefined",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": false,
+                "valueHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/observations",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "949e501c9990c380f4adac34a9cfb9f703e79589239cd89d2158ce156eb92113"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": true
+      },
+      "rationale": "Exact set-level response and candidate load/repetitions are consumed. Current necessity, smallest sufficient change and this movement-specific finite candidate lack a reviewed binding.",
+      "missingInputs": [],
+      "dependency": "STRENGTH_ADAPTATION_EXACT_TASK",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/currentDemand/exercise",
+        "/currentDemand/base",
+        "/currentDemand/candidate",
+        "/currentDemand/availableAlternative",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/priorHistory",
+        "/history",
+        "/calibration"
+      ],
+      "adapterWarnings": [],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-12",
+      "title": "Under-target strength execution in one known configuration",
+      "gap": "ACF-G02",
+      "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "schemaValid": true,
+      "inputHash": "5689ab85d7054e28e38868c5d910f4ba18c2dcd559bc6cecea8405b08706e264",
+      "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "decisionType": "NOT_SUPPORTED_YET",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "NEXT_STRENGTH_SESSION",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/currentDemand/exercise",
+                "state": "KNOWN",
+                "present": true,
+                "type": "string",
+                "expectedTypes": [
+                  "string"
+                ],
+                "typed": true,
+                "valueHash": "2eae1508416f5a4b2a8e04ed4f749b4ef976965541d56b9dd37fa8a4e3d69208"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/currentDemand/base",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "f9279416422f930c6831faf20035bc7c1fa41dc96bef492d2e936f250f674670"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/currentDemand/candidate",
+                "state": "ABSENT",
+                "present": false,
+                "type": "undefined",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": false,
+                "valueHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+              },
+              {
+                "path": "/currentDemand/availableAlternative",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "b183c33b31ef07c73a090f9dfa94a6a0e662eb75e00a5de8b8d7df8374a967fc"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/observations",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "0178eae5475566c9eeab59cd8bb8c8d09510a87bd2a4c9111f7b5336390880f5"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": true
+      },
+      "rationale": "Exact set-level response and candidate load/repetitions are consumed. Current necessity, smallest sufficient change and this movement-specific finite candidate lack a reviewed binding.",
+      "missingInputs": [],
+      "dependency": "STRENGTH_ADAPTATION_EXACT_TASK",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/currentDemand/exercise",
+        "/currentDemand/base",
+        "/currentDemand/candidate",
+        "/currentDemand/availableAlternative",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/priorHistory",
+        "/history",
+        "/calibration"
+      ],
+      "adapterWarnings": [],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-13",
+      "title": "One small easy-run deviation in an otherwise ordinary week",
+      "gap": "ACF-G02",
+      "targetCategory": "SUPPORTED_KEEP",
+      "schemaValid": true,
+      "inputHash": "c87774e77567ff3a5b75abf39881095a1878d26a7c40793e43d750ab6c75a9f9",
+      "coverage": "SUPPORTED_KEEP",
+      "decisionType": "KEEP",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "REVIEW_NEXT_SESSION",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/currentDemand/officialWeek",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "b9977f0dfc82d0381d7c84c8bf4c9176379752a6fef166ee565d1ff914bc4e46"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/observations/lastEasyRun",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "a31eb673edfc2959ae0931a54fbd843b78d723f7eb4a04791ef8f22245b505f2"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/history/pattern",
+                "state": "KNOWN",
+                "present": true,
+                "type": "string",
+                "expectedTypes": [
+                  "string"
+                ],
+                "typed": true,
+                "valueHash": "15971fefe8b4b9176c4d2288e2b07ca957e119faa9e12a2ce922f1889d82a1bb"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": true
+      },
+      "rationale": "The bounded familiar week has no supported necessity for change; retain actual26 and planned25 separately. The one-minute observation is not a universal noise threshold.",
+      "missingInputs": [],
+      "dependency": null,
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/observations/lastEasyRun",
+        "/history/pattern",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/priorHistory",
+        "/history",
+        "/calibration",
+        "/interruption"
+      ],
+      "adapterWarnings": [],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-14",
+      "title": "Missed optional easy session with normal core work",
+      "gap": "ACF-G02",
+      "targetCategory": "SUPPORTED_KEEP",
+      "schemaValid": true,
+      "inputHash": "708721d697a0d1cdea108d5326e975408e055e5537ad0a057ce440182a398bd7",
+      "coverage": "SUPPORTED_KEEP",
+      "decisionType": "KEEP",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "MISSED_OPTIONAL_SESSION",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/currentDemand/session",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "52d0eed18f236f6a9918de16e90cd88a739413ef4f8627d798fbe0e04df73a84"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/currentDemand/remainingWeek",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "97193c4f8116edda11370513ae4c67f7f76fb95291350bb29a302874c411cad4"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/observations",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "c53fe4d95eac140a2c1b43af31394e496f179feddb24b999b43797f0a09193b9"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": true
+      },
+      "rationale": "Explicit optional omission leaves feasible essential work and compatible response. No catch-up work or automatic progression.",
+      "missingInputs": [],
+      "dependency": null,
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/currentDemand/remainingWeek",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/priorHistory",
+        "/history",
+        "/calibration",
+        "/athletePreference",
+        "/interruption"
+      ],
+      "adapterWarnings": [],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-15",
+      "title": "Double-session conflict with Run-first priority",
+      "gap": "ACF-G02",
+      "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "schemaValid": true,
+      "inputHash": "04642117e5b1e65a46080c5ab3148020aa28a79899fbe70f33deb25e54336a62",
+      "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "decisionType": "NOT_SUPPORTED_YET",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "ACUTE_INTERFERENCE_AND_SCHEDULE_CONFLICT",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/currentDemand/planned",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "f034a13340a83a36aa9754358f0032d1ffece4cfdfc4ef603fa06bcd193cf621"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/currentDemand/availability",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object",
+                  "array",
+                  "string"
+                ],
+                "typed": true,
+                "valueHash": "58ae5cac9ea196f5e8170dffe691b154a140585967cc802639049b78ef7d07a3"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/alternatives",
+                "state": "KNOWN",
+                "present": true,
+                "type": "array",
+                "expectedTypes": [
+                  "object",
+                  "array",
+                  "string"
+                ],
+                "typed": true,
+                "valueHash": "4dc4b1e778dfbfb3ddb499064ba8ce0655fd7a011892c06c45a94a6b83481596"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": true
+      },
+      "rationale": "Local start/duration/window overlap is representable. Familiar arrangement is not a complete admissibility/essential-stimulus review; priority alone cannot certify either moved configuration.",
+      "missingInputs": [],
+      "dependency": "JOINT_SCHEDULE_ADMISSIBILITY",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/currentDemand/availability",
+        "/alternatives",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/priorHistory",
+        "/history",
+        "/calibration"
+      ],
+      "adapterWarnings": [
+        {
+          "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+          "sourcePaths": [
+            "/currentDemand/planned/run/start"
+          ],
+          "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+        },
+        {
+          "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+          "sourcePaths": [
+            "/currentDemand/planned/strength/start"
+          ],
+          "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+        },
+        {
+          "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+          "sourcePaths": [
+            "/currentDemand/availability/THU/0/0"
+          ],
+          "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+        },
+        {
+          "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+          "sourcePaths": [
+            "/currentDemand/availability/THU/0/1"
+          ],
+          "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+        },
+        {
+          "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+          "sourcePaths": [
+            "/currentDemand/availability/FRI/0/0"
+          ],
+          "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+        },
+        {
+          "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+          "sourcePaths": [
+            "/currentDemand/availability/FRI/0/1"
+          ],
+          "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+        }
+      ],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-16",
+      "title": "Same double-session conflict with Strength-first priority",
+      "gap": "ACF-G02",
+      "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "schemaValid": true,
+      "inputHash": "11b268f5250c2c62e49291d38cfd92d6f173f9b4db63e5d988d757f5fa23939d",
+      "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "decisionType": "NOT_SUPPORTED_YET",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "ACUTE_INTERFERENCE_AND_SCHEDULE_CONFLICT",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/currentDemand/planned",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "add5f8ef720d316321429b0b1bfd3c058be2aee698d7d768ff678e15943f6105"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/currentDemand/availability",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object",
+                  "array",
+                  "string"
+                ],
+                "typed": true,
+                "valueHash": "58ae5cac9ea196f5e8170dffe691b154a140585967cc802639049b78ef7d07a3"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/alternatives",
+                "state": "KNOWN",
+                "present": true,
+                "type": "array",
+                "expectedTypes": [
+                  "object",
+                  "array",
+                  "string"
+                ],
+                "typed": true,
+                "valueHash": "0c5521bd3b031c56479d3b1a64c7021b66690b57e73b8ed0483003cb93ef747e"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": true
+      },
+      "rationale": "Local start/duration/window overlap is representable. Familiar arrangement is not a complete admissibility/essential-stimulus review; priority alone cannot certify either moved configuration.",
+      "missingInputs": [],
+      "dependency": "JOINT_SCHEDULE_ADMISSIBILITY",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/currentDemand/availability",
+        "/alternatives",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/priorHistory",
+        "/history",
+        "/calibration"
+      ],
+      "adapterWarnings": [
+        {
+          "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+          "sourcePaths": [
+            "/currentDemand/planned/run/start"
+          ],
+          "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+        },
+        {
+          "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+          "sourcePaths": [
+            "/currentDemand/planned/strength/start"
+          ],
+          "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+        },
+        {
+          "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+          "sourcePaths": [
+            "/currentDemand/availability/THU/0/0"
+          ],
+          "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+        },
+        {
+          "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+          "sourcePaths": [
+            "/currentDemand/availability/THU/0/1"
+          ],
+          "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+        },
+        {
+          "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+          "sourcePaths": [
+            "/currentDemand/availability/FRI/0/0"
+          ],
+          "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+        },
+        {
+          "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+          "sourcePaths": [
+            "/currentDemand/availability/FRI/0/1"
+          ],
+          "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+        }
+      ],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-17",
+      "title": "A wearable-only recovery warning without an athlete problem",
+      "gap": "ACF-G02",
+      "targetCategory": "SUPPORTED_KEEP",
+      "schemaValid": true,
+      "inputHash": "85bfc9f5044f4c1ff59b3399fd71ee76f182eac1eccba2831865755cb2e8a5a3",
+      "coverage": "USEFUL_ASK",
+      "decisionType": "ASK",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "REVIEW_SESSION",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/currentDemand/session",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "a79c3a1252253abfa91b1991213eb7957dfa4dc5881272d926b294b7db09bb4c"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/observations",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "bd48332abc483b167eea6dcc41ff0070237f89c5351817bd3b476dbbe372dfcf"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/wearable",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "28e89073048debe278c5f63fac24ed8dde7580a0c9c11e23113382e655345dcf"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": false
+      },
+      "rationale": "Supplied sources disagree; reconcile the specific facts before dependent interpretation",
+      "missingInputs": [
+        "/population/dataTier",
+        "/wearable/type"
+      ],
+      "dependency": "SUBSTANTIVE_MISSING_INPUT",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/observations",
+        "/wearable",
+        "/interruption/reason"
+      ],
+      "adapterWarnings": [],
+      "adapterConflicts": [
+        {
+          "code": "DATA_TIER_DEVICE_CONFLICT",
+          "sourcePaths": [
+            "/population/dataTier",
+            "/wearable/type"
+          ],
+          "detail": "NO_WEARABLE conflicts with an explicitly described device; both facts retained",
+          "requiresResolution": true
+        }
+      ]
+    },
+    {
+      "caseId": "REP-R2-18",
+      "title": "Configured substitution requested without a complete joint prescription",
+      "gap": "ACF-G02",
+      "targetCategory": "USEFUL_ASK",
+      "schemaValid": true,
+      "inputHash": "c29baf0bb39a91e76a75ce7ad51585ccea62aed77e8a171f46b81bf79037259b",
+      "coverage": "USEFUL_ASK",
+      "decisionType": "ASK",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "EQUIPMENT_SUBSTITUTION",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/currentDemand/original",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "70cf0f7112565dea57bf3404172ec71feb0ea7ef27ef35798f5957b5ea564c72"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/currentDemand/requested",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "42571ea3d3af14f9d008cd3c2044469db3131cd6050eecf84bb09b343f947407"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/history",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "ed5d0938512f3d7e2a898c2588be5372cb02e0f3fcfbfb2885e77829dbb446f5"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": false
+      },
+      "rationale": "Barbell kilograms cannot supply dumbbell load, competence, configuration or complete alternative recipe",
+      "missingInputs": [
+        "/currentDemand/requested/loadKgPerHand"
+      ],
+      "dependency": "SUBSTANTIVE_MISSING_INPUT",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/currentDemand/original",
+        "/currentDemand/requested",
+        "/history",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/priorHistory",
+        "/calibration"
+      ],
+      "adapterWarnings": [],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-19",
+      "title": "Short travel interruption, familiar runner, first return session",
+      "gap": "ACF-G03",
+      "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "schemaValid": true,
+      "inputHash": "4c50d0d666f23b3fbb5e87657fefeffbce4dc59968ef9d1cfea18878ce1c3fe1",
+      "coverage": "USEFUL_ASK",
+      "decisionType": "ASK",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "FIRST_RETURN_SESSION",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/interruption",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "3d1d713d7aba56debc12dc216b6c49fbd73d3a61e0fb83a02924eb82511019fc"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/priorHistory",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "07cd1f87fd6c2f0a1c517ef74ed16d861a5bfd7d28a591f4d4bb7a530e4e93d6"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/observations",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "1154d3a533a0e97f2736a7974a67f0e37f98ebeec44fe45664d561bf2a3ef3fc"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": false
+      },
+      "rationale": "The nonclinical pause is explicit, but current task-specific capacity/response is unestablished; ordinary walking and historical tolerance do not establish a current run or lifting dose",
+      "missingInputs": [
+        "/observations/currentTaskDemonstration"
+      ],
+      "dependency": "SUBSTANTIVE_MISSING_INPUT",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/interruption",
+        "/priorHistory",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/calibration",
+        "/observations/currentTaskDemonstration"
+      ],
+      "adapterWarnings": [
+        {
+          "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+          "sourcePaths": [
+            "/priorHistory/run/cruise"
+          ],
+          "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+        }
+      ],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-20",
+      "title": "Moderate work interruption, familiar strength athlete",
+      "gap": "ACF-G03",
+      "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "schemaValid": true,
+      "inputHash": "e1207575b0f535cb479669468ffe6931be10a23b0c2c2f4051cf35e64e1b6cfa",
+      "coverage": "USEFUL_ASK",
+      "decisionType": "ASK",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "FIRST_RETURN_STRENGTH",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/interruption",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "087c0d6c42cdf518dcfb1466240d7efbc47bb0b26b7e39525e5c63cad16f5787"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/priorHistory",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "9769252f88f39475afd5398c210ed1329893ccaf244835f4c2f2d4f05b41d194"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/observations",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "6711583f4db32ad9337c8c4d08728522af5a1938026540db633fc50a0179feaf"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": false
+      },
+      "rationale": "The nonclinical pause is explicit, but current task-specific capacity/response is unestablished; ordinary walking and historical tolerance do not establish a current run or lifting dose",
+      "missingInputs": [
+        "/observations/currentTaskDemonstration"
+      ],
+      "dependency": "SUBSTANTIVE_MISSING_INPUT",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/interruption",
+        "/priorHistory",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/calibration",
+        "/observations/currentTaskDemonstration"
+      ],
+      "adapterWarnings": [],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-21",
+      "title": "Hybrid return week after a nonclinical pause",
+      "gap": "ACF-G03",
+      "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "schemaValid": true,
+      "inputHash": "4d8756f727dc3e986b835a79cde2004356c2f5b57d5eee13dac064eab94caf3a",
+      "coverage": "USEFUL_ASK",
+      "decisionType": "ASK",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "RETURN_WEEK",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/interruption",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "ad83db1223cbeca3b0c96671c50b79859b34a3688dc250e7ddcd178c5d1c504c"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/priorHistory",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "7f98af4748732c7f08c80b3e3e0c680f0c31744bb5332a45557239d3960c47ee"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/observations",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "c9d04877a588a8fd3154dd6567a2cf747ff88e13f3e5f006965143c275a23ae1"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": false
+      },
+      "rationale": "The nonclinical pause is explicit, but current task-specific capacity/response is unestablished; ordinary walking and historical tolerance do not establish a current run or lifting dose",
+      "missingInputs": [
+        "/observations/currentTaskDemonstration"
+      ],
+      "dependency": "SUBSTANTIVE_MISSING_INPUT",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/interruption",
+        "/priorHistory",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/calibration",
+        "/observations/currentTaskDemonstration"
+      ],
+      "adapterWarnings": [],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-22",
+      "title": "Old training history without interruption reason or current response",
+      "gap": "ACF-G03",
+      "targetCategory": "USEFUL_ASK",
+      "schemaValid": true,
+      "inputHash": "ba3f65a3e907c1e150ec6450e22bfddd115eac3a1b58b84fb2fdee01055a6563",
+      "coverage": "USEFUL_ASK",
+      "decisionType": "ASK",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "RETURN_WEEK",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/interruption",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "588b5a6cb185367c3337f167cd09e657da71d60e4a8f3b1ec557a97cf300a7d4"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/priorHistory",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "9c4ea76c6216713c9ed17d37aecaea728ea8d208a45dda7287c637f50abc4532"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/observations",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "7dcfbfaa598a4f8b883b1b5dc1ea06db4b0887e2dbb5b9e21601e0cfb1e68d32"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": false
+      },
+      "rationale": "Interruption reason and actual exposure/current restrictions are missing; elapsed days and an old plan cannot establish current capacity",
+      "missingInputs": [
+        "/interruption/reason",
+        "/interruption/nonclinical",
+        "/observations/currentCapacity"
+      ],
+      "dependency": "SUBSTANTIVE_MISSING_INPUT",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/interruption",
+        "/priorHistory",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/calibration"
+      ],
+      "adapterWarnings": [
+        {
+          "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+          "sourcePaths": [
+            "/priorHistory/run"
+          ],
+          "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+        }
+      ],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-23",
+      "title": "Post-pause current test has an incompatible but nonclinical response",
+      "gap": "ACF-G03",
+      "targetCategory": "CORRECT_ABSTAIN_OR_HOLD",
+      "schemaValid": true,
+      "inputHash": "2179f7d6fe2cd3af47b719327ffbf8d85325647f852de4c7e238f79033e2cfee",
+      "coverage": "CORRECT_ABSTAIN_OR_HOLD",
+      "decisionType": "HOLD",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "RETURN_NEXT_STEP",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/interruption",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "b4094f3e7134679de76b533a11ac47841de7c10b9fc7dc10fff4b18499dda6f4"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/observations",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "55c3230c6fd702ca9013a2950e8ffde80826d92ec45a899120df6c299f633207"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/currentDemand/availableReviewedSmallerAlternative",
+                "state": "UNKNOWN",
+                "present": true,
+                "type": "null",
+                "expectedTypes": [
+                  "object",
+                  "array",
+                  "string"
+                ],
+                "typed": true,
+                "valueHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": true
+      },
+      "rationale": "The supplied early-ended entry response and uncertain comparison do not support restoring former loads; no reviewed smaller current alternative is supplied",
+      "missingInputs": [],
+      "dependency": "CURRENT_REENTRY_REASSESSMENT",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/interruption",
+        "/observations",
+        "/currentDemand/availableReviewedSmallerAlternative",
+        "/interruption/reason",
+        "/currentDemand",
+        "/priorHistory",
+        "/calibration"
+      ],
+      "adapterWarnings": [],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-24",
+      "title": "Return following injury with persistent pain",
+      "gap": "ACF-G03",
+      "targetCategory": "CLINICAL_OR_OUT_OF_SCOPE",
+      "schemaValid": true,
+      "inputHash": "b564012f56737ba8909b4269d550e524d3dbf36efa02c82e4a8ce53a13f46250",
+      "coverage": "CLINICAL_OR_OUT_OF_SCOPE",
+      "decisionType": "CLINICAL_HUMAN_REQUIRED",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": false,
+        "normal": false,
+        "materialContract": {
+          "recognized": false,
+          "valid": false,
+          "contract": "R3-MATERIAL-1",
+          "errors": [
+            {
+              "path": "/currentDemand/kind",
+              "reason": "UNIMPLEMENTED_SEMANTIC_REQUEST"
+            }
+          ]
+        },
+        "bindingAssessment": [],
+        "decisionReady": false
+      },
+      "rationale": "Explicit clinical dependency requires a qualified human; no dependent dose is selected",
+      "missingInputs": [],
+      "dependency": "QUALIFIED_CLINICAL_HUMAN",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/observations"
+      ],
+      "adapterWarnings": [],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-25",
+      "title": "Recreational 10K Run-first race week with familiar strength maintenance",
+      "gap": "ACF-G04",
+      "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "schemaValid": true,
+      "inputHash": "0e1de8a3e2003ff440eee8c62e2bebbfc64b7648e0db30aa0df05b40e45a664d",
+      "coverage": "NOT_SUPPORTED_SCIENCE_GAP",
+      "decisionType": "HOLD",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "RACE_WEEK",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/event",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "323585459cbeba20193e3add9c9ee354da6ec5b302b60c38ee110e206bd7aeff"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/priorHistory",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "2fc1918cafb2ca54e813cb5dd8c0e787dda2aa089686b04fb18a8017b7ef12a4"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/availability",
+                "state": "ABSENT",
+                "present": false,
+                "type": "undefined",
+                "expectedTypes": [
+                  "array"
+                ],
+                "typed": false,
+                "valueHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+              },
+              {
+                "path": "/currentDemand/availability",
+                "state": "KNOWN",
+                "present": true,
+                "type": "array",
+                "expectedTypes": [
+                  "object",
+                  "array",
+                  "string"
+                ],
+                "typed": true,
+                "valueHash": "be620c1355dbe27eda9ffcedd6583b308137351e69a1f1afd63574f5dc39ff79"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": true
+      },
+      "rationale": "The exact event, temporary priority, familiar run/strength components and windows are consumed. Their combined baseline-relative race-week recipe and essential-stimulus adequacy lack sufficient independent approval.",
+      "missingInputs": [],
+      "dependency": "JOINT_HYBRID_TAPER_RECIPE",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/event",
+        "/priorHistory",
+        "/availability",
+        "/currentDemand/availability",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/calibration",
+        "/constraints",
+        "/event/firstAtDistance"
+      ],
+      "adapterWarnings": [
+        {
+          "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+          "sourcePaths": [
+            "/priorHistory/run/easy"
+          ],
+          "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+        },
+        {
+          "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+          "sourcePaths": [
+            "/priorHistory/run/racePaceCue"
+          ],
+          "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+        },
+        {
+          "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+          "sourcePaths": [
+            "/priorHistory/run/long"
+          ],
+          "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+        }
+      ],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-26",
+      "title": "Recreational half-marathon Run-first week",
+      "gap": "ACF-G04",
+      "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "schemaValid": true,
+      "inputHash": "fa7cc98fd511962105fcbcf1bb2685143e0923c763c7d994d62ad445afd1ddbc",
+      "coverage": "NOT_SUPPORTED_SCIENCE_GAP",
+      "decisionType": "HOLD",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "RACE_WEEK",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/event",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "71f3a7d2663da9d9927bb184b9abe3574ba659a9d7b7d3f215b7e2e4e01641b1"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/priorHistory",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "7f42954009b7e4c318821c123d57a31214cbebecac5925e04ebc309754d7554c"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/availability",
+                "state": "KNOWN",
+                "present": true,
+                "type": "array",
+                "expectedTypes": [
+                  "array"
+                ],
+                "typed": true,
+                "valueHash": "8cb41ac0d2b5c43e1e00a92b63e9acac922e18eeacafd475f6e979b57d0681ff"
+              },
+              {
+                "path": "/currentDemand/availability",
+                "state": "ABSENT",
+                "present": false,
+                "type": "undefined",
+                "expectedTypes": [
+                  "object",
+                  "array",
+                  "string"
+                ],
+                "typed": false,
+                "valueHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": true
+      },
+      "rationale": "The exact event, temporary priority, familiar run/strength components and windows are consumed. Their combined baseline-relative race-week recipe and essential-stimulus adequacy lack sufficient independent approval.",
+      "missingInputs": [],
+      "dependency": "JOINT_HYBRID_TAPER_RECIPE",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/event",
+        "/priorHistory",
+        "/availability",
+        "/currentDemand/availability",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/calibration",
+        "/constraints",
+        "/event/firstAtDistance"
+      ],
+      "adapterWarnings": [
+        {
+          "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+          "sourcePaths": [
+            "/priorHistory/run/easy"
+          ],
+          "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+        },
+        {
+          "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+          "sourcePaths": [
+            "/priorHistory/run/long"
+          ],
+          "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+        }
+      ],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-27",
+      "title": "Balanced athlete temporarily elevates a familiar 10K event",
+      "gap": "ACF-G04",
+      "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "schemaValid": true,
+      "inputHash": "36811dcbd7571ef84a610f3555070922158b76662bd2c23013f0b5a0a1330b24",
+      "coverage": "NOT_SUPPORTED_SCIENCE_GAP",
+      "decisionType": "HOLD",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "RACE_WEEK",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/event",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "bbbf4d0af597543edba932445d9bbbeaa2457a6b2d519070b9b78fcb97d67cdf"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/priorHistory",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "4f1dc9025da45cdff232e0f7e18ad625b674c932cd8ba33f34a597122095f4f6"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/availability",
+                "state": "KNOWN",
+                "present": true,
+                "type": "array",
+                "expectedTypes": [
+                  "array"
+                ],
+                "typed": true,
+                "valueHash": "d3f321c364736879778a04b052b1af5e42bb58b73622c051636ef26e7a3eef4b"
+              },
+              {
+                "path": "/currentDemand/availability",
+                "state": "ABSENT",
+                "present": false,
+                "type": "undefined",
+                "expectedTypes": [
+                  "object",
+                  "array",
+                  "string"
+                ],
+                "typed": false,
+                "valueHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": true
+      },
+      "rationale": "The exact event, temporary priority, familiar run/strength components and windows are consumed. Their combined baseline-relative race-week recipe and essential-stimulus adequacy lack sufficient independent approval.",
+      "missingInputs": [],
+      "dependency": "JOINT_HYBRID_TAPER_RECIPE",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/event",
+        "/priorHistory",
+        "/availability",
+        "/currentDemand/availability",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/calibration",
+        "/constraints",
+        "/event/firstAtDistance"
+      ],
+      "adapterWarnings": [
+        {
+          "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+          "sourcePaths": [
+            "/priorHistory/run"
+          ],
+          "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+        }
+      ],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-28",
+      "title": "First half-marathon with incomplete long-run and race-pace history",
+      "gap": "ACF-G04",
+      "targetCategory": "NOT_SUPPORTED_YET",
+      "schemaValid": true,
+      "inputHash": "f0f0be61cc0f859bce2036ed67138ef364a67d1de6d25bd77f45220dce3034d1",
+      "coverage": "USEFUL_ASK",
+      "decisionType": "ASK",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "RACE_WEEK",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/event",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "1799ba4d21f35cbdbf71176a41064bfb284864c1a0ff171ea2dca4f7523043ab"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/priorHistory",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "23d2b6678ad61c2b7b8ff3f849a6dcd759480c99f9066680b5cdc52451296030"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/availability",
+                "state": "KNOWN",
+                "present": true,
+                "type": "array",
+                "expectedTypes": [
+                  "array"
+                ],
+                "typed": true,
+                "valueHash": "e427da9e234670d9834063256f71a9d77ddbb352c5f95238c756151b461505f6"
+              },
+              {
+                "path": "/currentDemand/availability",
+                "state": "ABSENT",
+                "present": false,
+                "type": "undefined",
+                "expectedTypes": [
+                  "object",
+                  "array",
+                  "string"
+                ],
+                "typed": false,
+                "valueHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": false
+      },
+      "rationale": "Recent long-run exposure, distance-specific experience and event intent remain unknown; no 5K-to-half pace conversion is permitted",
+      "missingInputs": [
+        "/priorHistory/run/longestRecentRun",
+        "/calibration/halfMarathonPace"
+      ],
+      "dependency": "SUBSTANTIVE_MISSING_INPUT",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/event",
+        "/priorHistory",
+        "/availability",
+        "/currentDemand/availability",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/calibration",
+        "/constraints",
+        "/event/firstAtDistance"
+      ],
+      "adapterWarnings": [
+        {
+          "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+          "sourcePaths": [
+            "/priorHistory/run"
+          ],
+          "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+        }
+      ],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-29",
+      "title": "Post-10K ordinary recovery transition without a capacity claim",
+      "gap": "ACF-G04",
+      "targetCategory": "USEFUL_ASK",
+      "schemaValid": true,
+      "inputHash": "bc4c154311dcb3f5b99507d07814f1ac93d901db4f73734167777aa41928d630",
+      "coverage": "USEFUL_ASK",
+      "decisionType": "ASK",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "DAY_AFTER_EVENT",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/event",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "3ff7d218a6ae9f9aabe2a2606fb7fc17d4c7a365e80141e720eed0cfeabba84f"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/observations",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "b48ceea904896c222ebc598bd44eaf73604883f1a9b491d760c5a07973d4b320"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": false
+      },
+      "rationale": "Hard event completion does not establish next-day recovery; the listed current response facts remain absent/unknown. Absolute evaluation date is not invented.",
+      "missingInputs": [
+        "/observations/postEventSymptoms",
+        "/observations/currentFunction",
+        "/observations/subjectiveRecovery"
+      ],
+      "dependency": "SUBSTANTIVE_MISSING_INPUT",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/event",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/priorHistory",
+        "/calibration"
+      ],
+      "adapterWarnings": [
+        {
+          "code": "EVENT_TIME_WITHOUT_EVALUATION_ANCHOR",
+          "sourcePaths": [
+            "/event/completedAt",
+            "/evaluatedAt"
+          ],
+          "detail": "Absolute event time retained; relative current/event chronology cannot be computed"
+        }
+      ],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-30",
+      "title": "Race-week illness symptoms override event preference",
+      "gap": "ACF-G04",
+      "targetCategory": "CLINICAL_OR_OUT_OF_SCOPE",
+      "schemaValid": true,
+      "inputHash": "784e229224082a8afe59578d19d452987fbcc219df73d5dc1b61cfc110fb17b4",
+      "coverage": "CLINICAL_OR_OUT_OF_SCOPE",
+      "decisionType": "CLINICAL_HUMAN_REQUIRED",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": false,
+        "normal": false,
+        "materialContract": {
+          "recognized": true,
+          "valid": false,
+          "contract": "R3-MATERIAL-1",
+          "request": "RACE_WEEK",
+          "errors": [
+            {
+              "path": "/availability",
+              "reason": "must have required property 'availability'",
+              "keyword": "required"
+            },
+            {
+              "path": "/currentDemand/availability",
+              "reason": "must have required property 'availability'",
+              "keyword": "required"
+            },
+            {
+              "path": "",
+              "reason": "must match a schema in anyOf",
+              "keyword": "anyOf"
+            },
+            {
+              "path": "/priorHistory",
+              "reason": "must have required property 'priorHistory'",
+              "keyword": "required"
+            }
+          ],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/event",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "c48169c3f5b5d6a9b50b88bfe55a448530b2ee0c5277c1b44e0c33bf83580828"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/priorHistory",
+                "state": "ABSENT",
+                "present": false,
+                "type": "undefined",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": false,
+                "valueHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+              }
+            ],
+            "present": false
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/availability",
+                "state": "ABSENT",
+                "present": false,
+                "type": "undefined",
+                "expectedTypes": [
+                  "array"
+                ],
+                "typed": false,
+                "valueHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+              },
+              {
+                "path": "/currentDemand/availability",
+                "state": "ABSENT",
+                "present": false,
+                "type": "undefined",
+                "expectedTypes": [
+                  "object",
+                  "array",
+                  "string"
+                ],
+                "typed": false,
+                "valueHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+              }
+            ],
+            "present": false
+          }
+        ],
+        "decisionReady": false
+      },
+      "rationale": "Explicit clinical dependency requires a qualified human; no dependent dose is selected",
+      "missingInputs": [],
+      "dependency": "QUALIFIED_CLINICAL_HUMAN",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/event",
+        "/priorHistory",
+        "/availability",
+        "/currentDemand/availability",
+        "/observations"
+      ],
+      "adapterWarnings": [],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-31",
+      "title": "Easy session without a wearable or lab test",
+      "gap": "ACF-G05",
+      "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "schemaValid": true,
+      "inputHash": "b9ac11140d454342ded87fafbddc1445e724c81f49073d0ec4270e6c664852d2",
+      "coverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "decisionType": "MODIFY",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "RUN_CALIBRATION",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/currentDemand/family",
+                "state": "KNOWN",
+                "present": true,
+                "type": "string",
+                "expectedTypes": [
+                  "string"
+                ],
+                "typed": true,
+                "valueHash": "5df1ce0a2f2925f1493f363942055ba575fbdd55ba47fd11b15f4086755d1c08"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/priorHistory",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "3987e560b8317c42267686e60741c36a37525c24c054309f6ce19ac0e09d7b04"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/calibration",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "023b1de9e015e79f13b5548bc61ddb610287a9e301e5f4309411d1d0933900e7"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": true
+      },
+      "rationale": "Select only the exact currently familiar bounded task; no physiological calibration, novel dose, full-week sufficiency or efficacy is inferred",
+      "missingInputs": [],
+      "dependency": null,
+      "policyRefs": [
+        {
+          "id": "R2-P14",
+          "version": "R2-POLICY-1",
+          "hash": "2a54d9d64492aa2d117112abe1cc7d04c7dce9c94258a5be0a038a219dae6f87"
+        }
+      ],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/currentDemand/family",
+        "/priorHistory",
+        "/calibration",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/environment",
+        "/environment/terrain",
+        "/environment/conditions",
+        "/interruption"
+      ],
+      "adapterWarnings": [
+        {
+          "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+          "sourcePaths": [
+            "/priorHistory/sameRoute"
+          ],
+          "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+        }
+      ],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-32",
+      "title": "Recovery label has no separately calibrated construct",
+      "gap": "ACF-G05",
+      "targetCategory": "USEFUL_ASK",
+      "schemaValid": true,
+      "inputHash": "83daaa6273c432a283c9e2ff6d0e525a29a7e927c1b4a374c3598f62c44657e6",
+      "coverage": "USEFUL_ASK",
+      "decisionType": "ASK",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "RUN_CALIBRATION",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/currentDemand/family",
+                "state": "KNOWN",
+                "present": true,
+                "type": "string",
+                "expectedTypes": [
+                  "string"
+                ],
+                "typed": true,
+                "valueHash": "9fb3a49001fd8e250f1663a4fb1d46e9a9cc21bac24048275dafc6eadcc965ff"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/priorHistory",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "d7a414abefa3669cb4c1ebc239e0b5f1b324b030e1a4aff3192e3de5584eeca4"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/calibration",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "579403163f66542417a322ec4546e56099122f4d53c8ad9573c5eb8ac303e7ba"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": false
+      },
+      "rationale": "A separate recovery target needs an explicit construct/intent; familiar easy is not automatically a distinct recovery calibration",
+      "missingInputs": [
+        "/calibration/recoveryDistinctConstruct",
+        "/observations/needForSeparateRecoveryIntent"
+      ],
+      "dependency": "SUBSTANTIVE_MISSING_INPUT",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/currentDemand/family",
+        "/priorHistory",
+        "/calibration",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/environment"
+      ],
+      "adapterWarnings": [
+        {
+          "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+          "sourcePaths": [
+            "/priorHistory/easy"
+          ],
+          "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+        }
+      ],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-33",
+      "title": "Steady session with a personally familiar effort anchor",
+      "gap": "ACF-G05",
+      "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "schemaValid": true,
+      "inputHash": "b8aae80d87738d0b8ce3024117ed802ab49d8de5ee9a155cfb21ed710a460f9a",
+      "coverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "decisionType": "MODIFY",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "RUN_CALIBRATION",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/currentDemand/family",
+                "state": "KNOWN",
+                "present": true,
+                "type": "string",
+                "expectedTypes": [
+                  "string"
+                ],
+                "typed": true,
+                "valueHash": "751b9a84c0be2e31883afbda7f93fa56860075bbc37c20b3862a3d5f2eeff5ac"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/priorHistory",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "1782b77ffe5c47111d64972921bd043a4968ea7fc6ce88d9cb10e916b2b01863"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/calibration",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "1c9d980ddd368430ed74c5ab55ca50d8ec0b00bc5b38b1851eb501d4b2a13aad"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": true
+      },
+      "rationale": "Select only the exact currently familiar bounded task; no physiological calibration, novel dose, full-week sufficiency or efficacy is inferred",
+      "missingInputs": [],
+      "dependency": null,
+      "policyRefs": [
+        {
+          "id": "R3-STEADY",
+          "version": "DCR3-POLICY-1",
+          "hash": "90df77d15faea1200c294120695e8af4a6c2dfd389c1639cb6ec77c97a502f5d"
+        }
+      ],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/currentDemand/family",
+        "/priorHistory",
+        "/calibration",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/environment",
+        "/eligibility/source",
+        "/interruption"
+      ],
+      "adapterWarnings": [],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-34",
+      "title": "Cruise session with recent comparable execution and disagreement limits",
+      "gap": "ACF-G05",
+      "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "schemaValid": true,
+      "inputHash": "00d893f0911c3c298efc5e5dc01dfadb82d56f8c3de2dbaed59f7f6f2bd2c813",
+      "coverage": "USEFUL_ASK",
+      "decisionType": "ASK",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "RUN_CALIBRATION",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/currentDemand/family",
+                "state": "KNOWN",
+                "present": true,
+                "type": "string",
+                "expectedTypes": [
+                  "string"
+                ],
+                "typed": true,
+                "valueHash": "e33dfd5abcddc20e0a8c0d257076625782b91de381c79d7eedf7b7fca70b8a3b"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/priorHistory",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "89a94ec54c17ecf019924b0bd8b3109a3f56cc8b182c0a057678eba33bc04b9d"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/calibration",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "eb0b2739917a2af33574261cd14e53044ef75c38cbdc06f028aa20cc0e6f8abc"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": false
+      },
+      "rationale": "Cruise work is present, but the listed full-session components are missing. Matching work blocks alone does not establish complete-recipe tolerance.",
+      "missingInputs": [
+        "/priorHistory/sameFamily/warmupMinutes",
+        "/priorHistory/sameFamily/cooldownMinutes"
+      ],
+      "dependency": "SUBSTANTIVE_MISSING_INPUT",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/currentDemand/family",
+        "/priorHistory",
+        "/calibration",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/environment"
+      ],
+      "adapterWarnings": [],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-35",
+      "title": "VO2-style label from a proprietary watch prediction",
+      "gap": "ACF-G05",
+      "targetCategory": "NOT_SUPPORTED_YET",
+      "schemaValid": true,
+      "inputHash": "4d55edb970d04c4beeb3ddce9d0aac1d2a1a2056f776da8cd9db51be2ca7cea1",
+      "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "decisionType": "NOT_SUPPORTED_YET",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "RUN_CALIBRATION",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/currentDemand/family",
+                "state": "KNOWN",
+                "present": true,
+                "type": "string",
+                "expectedTypes": [
+                  "string"
+                ],
+                "typed": true,
+                "valueHash": "38895b76811465932feb4be16242f5c0469d597c08e3aef4db68ef198663e774"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/priorHistory",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "2c579b5104a7b4677e4a1582f84c49a963f3ca2657849461257085f788c0988a"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/calibration",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "a151fedd5959118e577b1e79a1397e90392e9c996fe771348f2c91633e383c82"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": true
+      },
+      "rationale": "The provided prediction, easy pace or historical race does not bind an exact current same-task recipe/target. Primary gap is task establishment/domain binding; no new literature insufficiency is inferred merely from missing athlete data.",
+      "missingInputs": [],
+      "dependency": "CURRENT_TASK_CALIBRATION_BINDING",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/currentDemand/family",
+        "/priorHistory",
+        "/calibration",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/environment"
+      ],
+      "adapterWarnings": [
+        {
+          "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+          "sourcePaths": [
+            "/currentDemand/family"
+          ],
+          "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+        },
+        {
+          "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+          "sourcePaths": [
+            "/currentDemand/requested"
+          ],
+          "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+        }
+      ],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-36",
+      "title": "Short intervals without recent comparable high-speed exposure",
+      "gap": "ACF-G05",
+      "targetCategory": "NOT_SUPPORTED_YET",
+      "schemaValid": true,
+      "inputHash": "90c9a62067c3b329cbaf68e36e5b901e33d6c695e2f3a580f34dff11081875f0",
+      "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "decisionType": "NOT_SUPPORTED_YET",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "RUN_CALIBRATION",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/currentDemand/family",
+                "state": "KNOWN",
+                "present": true,
+                "type": "string",
+                "expectedTypes": [
+                  "string"
+                ],
+                "typed": true,
+                "valueHash": "e0678b50f883c70580b43410ae556a4c2dd9f87780abb01c1a10cfd29ea7ff70"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/priorHistory",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "899ca88946b6e46eb17d0b100537b425d06366527626eab0831929bcba961cfc"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/calibration",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "d62bbf97dc3ae6f1685774edf3090b940a104f676b81253b4f15e0e3c9ba24f8"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": true
+      },
+      "rationale": "The provided prediction, easy pace or historical race does not bind an exact current same-task recipe/target. Primary gap is task establishment/domain binding; no new literature insufficiency is inferred merely from missing athlete data.",
+      "missingInputs": [],
+      "dependency": "CURRENT_TASK_CALIBRATION_BINDING",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/currentDemand/family",
+        "/priorHistory",
+        "/calibration",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/environment"
+      ],
+      "adapterWarnings": [
+        {
+          "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+          "sourcePaths": [
+            "/currentDemand/requested"
+          ],
+          "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+        },
+        {
+          "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+          "sourcePaths": [
+            "/priorHistory/easy"
+          ],
+          "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+        }
+      ],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-37",
+      "title": "Long-run next step after compatible repeated familiar exposure",
+      "gap": "ACF-G05",
+      "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "schemaValid": true,
+      "inputHash": "79b0f26461827e7300d2db5a62bef1664b8e6339e5489cb85a9a3ce2ec7b309d",
+      "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "decisionType": "NOT_SUPPORTED_YET",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "RUN_NEXT_SESSION",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/currentDemand/currentMinutes",
+                "state": "KNOWN",
+                "present": true,
+                "type": "number",
+                "expectedTypes": [
+                  "number"
+                ],
+                "typed": true,
+                "valueHash": "02d20bbd7e394ad5999a4cebabac9619732c343a4cac99470c03e23ba2bdc2bc"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/currentDemand/candidateMinutes",
+                "state": "KNOWN",
+                "present": true,
+                "type": "number",
+                "expectedTypes": [
+                  "number"
+                ],
+                "typed": true,
+                "valueHash": "39fa9ec190eee7b6f4dff1100d6343e10918d044c75eac8f9e9a2596173f80c9"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/priorHistory",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "fb689cc72c8977c1ff588f62a7d8dd66717713e8a4160b03476190a2bef815d1"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/calibration",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "60808fd6863f7776a6cd51789d7f27d361b2f6b9c3c146575ed75008e9b58399"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": true
+      },
+      "rationale": "The55-to60min familiar candidate is distinct from the reviewed40-to45 selector; exact next-horizon need and smallest sufficient step are not approved by relabeling minutes.",
+      "missingInputs": [],
+      "dependency": "LONG_RUN_EXACT_PROGRESS_CANDIDATE",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/currentDemand/currentMinutes",
+        "/currentDemand/candidateMinutes",
+        "/priorHistory",
+        "/calibration",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand"
+      ],
+      "adapterWarnings": [],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-38",
+      "title": "Hills on an unfamiliar steep route",
+      "gap": "ACF-G05",
+      "targetCategory": "USEFUL_ASK",
+      "schemaValid": true,
+      "inputHash": "fa708c93250501e5001a696c6d8815779bd2e17266724c81073213dc24362e85",
+      "coverage": "USEFUL_ASK",
+      "decisionType": "ASK",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "RUN_CALIBRATION",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/currentDemand/family",
+                "state": "KNOWN",
+                "present": true,
+                "type": "string",
+                "expectedTypes": [
+                  "string"
+                ],
+                "typed": true,
+                "valueHash": "751b202d096c1f79d61d6b837f29f1103ae8141dabd977644a2c463f6218a0dc"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/priorHistory",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "8c7cf52204337393ee986f430313b4f2e9014fedf6ed15dce2a0badc0e6d53c4"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/calibration",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "a8f3c6fa7c7028131eb7e0f2fe956c0b7e74a5df97e99843448eb58a166935bb"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": false
+      },
+      "rationale": "Flat pace does not calibrate unfamiliar hills; grade, footing, bout and downhill exposure are material",
+      "missingInputs": [
+        "/calibration/grade",
+        "/calibration/duration",
+        "/calibration/downhillExposure",
+        "/environment/surface"
+      ],
+      "dependency": "SUBSTANTIVE_MISSING_INPUT",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/currentDemand/family",
+        "/priorHistory",
+        "/calibration",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/environment"
+      ],
+      "adapterWarnings": [],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-39",
+      "title": "Familiar relaxed strides with explicit recovery",
+      "gap": "ACF-G05",
+      "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "schemaValid": true,
+      "inputHash": "06bd1e6b1f8e51e6a601f0c300c14ea405e0279c36423a863fa7760a46d9dab8",
+      "coverage": "USEFUL_ASK",
+      "decisionType": "ASK",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "RUN_CALIBRATION",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/currentDemand/family",
+                "state": "KNOWN",
+                "present": true,
+                "type": "string",
+                "expectedTypes": [
+                  "string"
+                ],
+                "typed": true,
+                "valueHash": "e2824a51285d517e25125c537cc54460b892b683fcda8ef2298ce125c7636bf4"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/priorHistory",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "551b85a26478984c170d3006dac2c5ccecc5ed2a8d788aeb78e4c40ff1804be3"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/calibration",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "041cbf66e245e305e4bb6b19d473b6583f079c3b1c7665df860501bd9dff1e7f"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": false
+      },
+      "rationale": "The familiar4x15s block and self-paced walking recovery are represented, but preparation and the full-session envelope are absent. No easy minutes or fixed rest may be added to turn a block into a complete session.",
+      "missingInputs": [
+        "/priorHistory/sameFamily/preparation",
+        "/currentDemand/sessionEnvelope"
+      ],
+      "dependency": "SUBSTANTIVE_MISSING_INPUT",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/currentDemand/family",
+        "/priorHistory",
+        "/calibration",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/environment"
+      ],
+      "adapterWarnings": [],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-40",
+      "title": "Race-pace work inferred from a noncomparable old result",
+      "gap": "ACF-G05",
+      "targetCategory": "NOT_SUPPORTED_YET",
+      "schemaValid": true,
+      "inputHash": "01a6d26c156233ee7a6df3238eb781e8fac1fdeb5d703c16b7fae5f1b4ab0260",
+      "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "decisionType": "NOT_SUPPORTED_YET",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "RUN_CALIBRATION",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/currentDemand/family",
+                "state": "KNOWN",
+                "present": true,
+                "type": "string",
+                "expectedTypes": [
+                  "string"
+                ],
+                "typed": true,
+                "valueHash": "995c2c1f36eb37fc959075ed4249bb94dfb7154fb15fe42cc9fd83c9fc56200f"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/priorHistory",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "b483f4b1ecdc64e5d6be57c86fbe85a84f1e1ae97b6f2d97ce7f3027be7ef877"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/calibration",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "8d5d40c2a973c3d08753fd8040646d7a326edcb56e6d2173c68e30705b315258"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": true
+      },
+      "rationale": "The provided prediction, easy pace or historical race does not bind an exact current same-task recipe/target. Primary gap is task establishment/domain binding; no new literature insufficiency is inferred merely from missing athlete data.",
+      "missingInputs": [],
+      "dependency": "CURRENT_TASK_CALIBRATION_BINDING",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/currentDemand/family",
+        "/priorHistory",
+        "/calibration",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/environment"
+      ],
+      "adapterWarnings": [
+        {
+          "code": "NARRATIVE_NUMERIC_CONTENT_RETAINED",
+          "sourcePaths": [
+            "/currentDemand/targetEvent"
+          ],
+          "detail": "Prose remains a source fact; no dose, capacity, comparability, necessity or approval is inferred"
+        }
+      ],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-41",
+      "title": "Repeated lower-before-cruise response ranks existing schedule options",
+      "gap": "ATHLETE_SPECIFIC_LEARNING",
+      "targetCategory": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "schemaValid": true,
+      "inputHash": "15ec5648fd3c0a0fee09a2b2e836383309a1fc7663bb045cbea34c471fd9c7bd",
+      "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "decisionType": "NOT_SUPPORTED_YET",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "RANK_EXISTING_ADMISSIBLE_OPTIONS",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/currentDemand/options",
+                "state": "KNOWN",
+                "present": true,
+                "type": "array",
+                "expectedTypes": [
+                  "array"
+                ],
+                "typed": true,
+                "valueHash": "811e331e344b33a398023340ea67f6ccb182f5265e10f8d55d28d7dbd99f46b7"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/priorHistory/observations",
+                "state": "KNOWN",
+                "present": true,
+                "type": "array",
+                "expectedTypes": [
+                  "array"
+                ],
+                "typed": true,
+                "valueHash": "fe5b3b5dcfb16c8abb6c9b86be1dc1490b2d0c682c7e5cd8f18e5ab0e0d1b52d"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/constraints",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "2eaaf6e25ca341e3e4040e1cacdac7b4b9b5136f03be889b4bff0a3f7be1df2e"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/learningConsent",
+                "state": "KNOWN",
+                "present": true,
+                "type": "object",
+                "expectedTypes": [
+                  "object"
+                ],
+                "typed": true,
+                "valueHash": "5b3d65ef83d5026db38934485fc9f31cfbd53ddc5fe4f7ca99816d95345ed854"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": true
+      },
+      "rationale": "Contextual observations are preserved as associations. Each option still requires independent admissibility and a current reason to choose; no causal rule or unreviewed option is created.",
+      "missingInputs": [],
+      "dependency": "OPTION_ADMISSIBILITY_AND_NECESSITY",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/currentDemand/options",
+        "/priorHistory/observations",
+        "/constraints",
+        "/learningConsent",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/priorHistory",
+        "/calibration"
+      ],
+      "adapterWarnings": [],
+      "adapterConflicts": []
+    },
+    {
+      "caseId": "REP-R2-42",
+      "title": "Single noisy fatigue-performance association cannot create a rule",
+      "gap": "ATHLETE_SPECIFIC_LEARNING",
+      "targetCategory": "CORRECT_ABSTAIN_OR_HOLD",
+      "schemaValid": true,
+      "inputHash": "06e79053c8aafc121d2b5aec34425dd868af6f63553951751dc9438ff0b419ff",
+      "coverage": "CORRECT_ABSTAIN_OR_HOLD",
+      "decisionType": "HOLD",
+      "semanticConsumption": {
+        "schemaValid": true,
+        "consumed": true,
+        "normal": true,
+        "materialContract": {
+          "recognized": true,
+          "valid": true,
+          "contract": "R3-MATERIAL-1",
+          "request": "LEARN_NEW_RULE",
+          "errors": [],
+          "scope": "Typed source-bound request operands, explicit unknowns and eligibility/gap routing; not arbitrary narrative comprehension, sporting sufficiency, dose-readiness or population coverage"
+        },
+        "bindingAssessment": [
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/currentDemand/requestedRule",
+                "state": "KNOWN",
+                "present": true,
+                "type": "string",
+                "expectedTypes": [
+                  "string"
+                ],
+                "typed": true,
+                "valueHash": "61367e7a2cb17cd53363171a52d089e714b4f144e7a08f33d303530633601e0d"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/priorHistory/observations",
+                "state": "KNOWN",
+                "present": true,
+                "type": "array",
+                "expectedTypes": [
+                  "array"
+                ],
+                "typed": true,
+                "valueHash": "e27da00c60d741dfdc200053f7be035bdfe57c87735fbbc1e131d33def417660"
+              }
+            ],
+            "present": true
+          },
+          {
+            "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+            "alternatives": [
+              {
+                "path": "/availableAdmissibleDoseAlternatives",
+                "state": "UNKNOWN",
+                "present": true,
+                "type": "null",
+                "expectedTypes": [
+                  "object",
+                  "array",
+                  "string"
+                ],
+                "typed": true,
+                "valueHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+              }
+            ],
+            "present": true
+          }
+        ],
+        "decisionReady": true
+      },
+      "rationale": "The supplied confounded observations do not establish a causal fatigue rule or an independently admissible new dose. Preserve the population prior and actual observations.",
+      "missingInputs": [],
+      "dependency": "NO_SUPPORTED_INDIVIDUAL_RULE",
+      "policyRefs": [],
+      "readPaths": [
+        "/currentDemand/officialPlan",
+        "/currentDemand/officialWeek",
+        "/currentDemand/officialRunWeek",
+        "/currentDemand/session",
+        "/currentDemand/planned",
+        "/completedPrefix",
+        "/currentDemand/session/completed",
+        "/eligibility",
+        "/currentDemand/kind",
+        "/population",
+        "/currentDemand/requestedRule",
+        "/priorHistory/observations",
+        "/availableAdmissibleDoseAlternatives",
+        "/observations",
+        "/interruption/reason",
+        "/currentDemand",
+        "/priorHistory",
+        "/calibration",
+        "/learningConsent"
+      ],
+      "adapterWarnings": [],
+      "adapterConflicts": []
+    }
+  ]
+}

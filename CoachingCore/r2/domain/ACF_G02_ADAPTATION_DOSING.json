@@ -1,0 +1,857 @@
+{
+  "revision": "DCR2-SCI-r2",
+  "status": "CANDIDATE_PENDING_INDEPENDENT_SSCTR",
+  "authority": "OFFLINE_REFERENCE_ORACLE_ONLY",
+  "authorInstance": "/root/science_synthesis",
+  "population": "Adult recreational V1, modality-specific novice/intermediate; explicitly nonclinical eligibility/context; no current injury/illness/persistent pain or clearance-dependent return",
+  "commonRequiredInputs": [
+    "age/adult status",
+    "explicit restriction/symptom assessment and provenance",
+    "per-modality experience",
+    "goal and priority",
+    "current schedule/time/equipment",
+    "current prescription revision and performed history where relevant",
+    "athlete agency and selected horizon"
+  ],
+  "commonGuards": [
+    "Missing eligibility -> ASK / ELIGIBILITY_UNASSESSED; no presumed health or disease",
+    "Clinical dependency -> CLINICAL_HUMAN_REQUIRED, no dose substitution",
+    "No mutation of completed work, official plan or applied state",
+    "New prescription is a proposal at most; independent SSCTR and complete runtime binding required",
+    "No simultaneous novel Run and Strength progression",
+    "No automatic compensation for missed optional work",
+    "Operational witness counts/time bounds are DECIDED protocol eligibility, not universal physiological thresholds"
+  ],
+  "reviewExpiry": {
+    "owner": "Chief + independent SSCTR",
+    "trigger": [
+      "material policy/recipe/calibration/population change",
+      "new applicable synthesis/correction/retraction",
+      "contradictory comparable response",
+      "adverse event",
+      "human funding declaration and revalidation"
+    ]
+  },
+  "humanRevalidation": "Author creates no approval or queue item. Chief queues only actual independent prescriptive approvals.",
+  "provenance": "All witness inputs are synthetic unless explicitly labelled athlete-reported or task demonstration; synthetic traces test conformance, not efficacy/safety.",
+  "gap": "ACF-G02",
+  "title": "Positive adaptation dosing",
+  "principle": "Finite alternatives follow necessity and smallest sufficient change; no universal fatigue or progress formula.",
+  "policies": [
+    {
+      "policyId": "R2-P03",
+      "revision": "DCR2-SCI-r2",
+      "gap": "ACF-G02",
+      "title": "Strength next-session repetition progression inside demonstrated capacity",
+      "request": "PROGRESS_STRENGTH",
+      "status": "CANDIDATE_PENDING_INDEPENDENT_SSCTR",
+      "eligibility": "Adult recreational V1, modality-specific novice/intermediate; explicitly nonclinical eligibility/context; no current injury/illness/persistent pain or clearance-dependent return",
+      "requiredInputs": [
+        "same configuration and loadKg across current3x8 and comparable episodes",
+        "at least two complete comparable executions including observed3x10 within effort/technique target",
+        "recovery/current context adequate; no event/competing recovery concern",
+        "explicit next-session candidate goal",
+        "established task-specific targetRir2 if emitted; never defaultRIR from athlete class"
+      ],
+      "guards": [
+        "Two episodes is witness-specific operational evidence, not magic universal sufficiency",
+        "Do not infer RIR from one report; inconsistent technique invalidates comparison",
+        "Current3x8 must be materially below selected adequate next-horizon stimulus; priority alone insufficient"
+      ],
+      "finiteCandidates": [
+        {
+          "recipeId": "R2-ST-PROG-3X9",
+          "modality": "STRENGTH",
+          "family": "REPETITION_PROGRESSION",
+          "prescription": {
+            "sets": 3,
+            "reps": 9,
+            "loadKgFrom": "facts.loadKg",
+            "restSeconds": 180,
+            "unchanged": [
+              "configuration",
+              "load",
+              "rest",
+              "exercise order"
+            ]
+          }
+        }
+      ],
+      "decisionRule": "Select3x9 only within currently demonstrated3x10 capability and all guards; otherwise keep adequate3x8 or ASK. No simultaneous load/sets increase.",
+      "claims": [
+        "C02",
+        "C03"
+      ],
+      "sources": [
+        "R2-S03",
+        "R2-S04",
+        "R2-S11"
+      ],
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS_FOR_FRAMEWORK_ONLY",
+      "exactDoseEvidence": "DECIDED_FINITE_PROTOCOL_NOT_POPULATION_LAW; independent disposition required",
+      "nextCheck": "Record actual task/configuration/dose, technique/effort and current symptoms after execution and before next dependent session; contradictory response disables escalation.",
+      "fallback": "ASK missing decision-changing input; HOLD unsupported/uncalibrated dose; clinical dependency CLINICAL_HUMAN_REQUIRED.",
+      "essentialStimulus": "Same movement/load and adequate subfailure execution, one repetition per set added.",
+      "positiveWitness": "Explicit repeated comparable3x10 at same load makes3x9 an evidence-bounded candidate; not new maximum capacity prediction.",
+      "smallerAlternatives": [
+        {
+          "candidate": "KEEP3x8",
+          "result": "Succeeds if current dose remains adequate; must record why progression desired for next horizon."
+        },
+        {
+          "candidate": "Increase load",
+          "result": "Unnecessary additional dimension."
+        }
+      ],
+      "tradeOff": "More work versus measurement uncertainty; moderate confidence only for exact profile.",
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "Bounded protocol selection with explicit individual context; exact dose/effect remains unvalidated."
+      },
+      "runtimeBinding": {
+        "registry": "CoachingCore/r2/POSITIVE_PRESCRIPTION_REGISTRY.json",
+        "inputSchema": "CoachingCore/r2/SHADOW_INPUT_R2_SCHEMA.json",
+        "semanticsVsTransport": "requiredInputs are domain requirements; only fieldCrosswalk entries name transport fields. No undocumented field is treated as an existing API property.",
+        "recipeIdAliases": {
+          "R2-ST-PROG-3X9": "R2-SQUAT-3X9"
+        },
+        "fieldCrosswalk": {
+          "calibrated RIR": "event.facts.rirCalibratedForTask && establishedTargetRir===2",
+          "comparable responses": "event.facts.episodes",
+          "necessity": "event.facts.nextHorizonNeedConfirmed"
+        },
+        "authority": "Integrated registry exact recipe and current independent SSCTR disposition govern execution. Alias/composition is not an additional dose or independent approval."
+      }
+    },
+    {
+      "policyId": "R2-P04",
+      "revision": "DCR2-SCI-r2",
+      "gap": "ACF-G02",
+      "title": "Local fatigue: remove one optional accessory",
+      "request": "LOCAL_FATIGUE",
+      "status": "CANDIDATE_PENDING_INDEPENDENT_SSCTR",
+      "eligibility": "Adult recreational V1, modality-specific novice/intermediate; explicitly nonclinical eligibility/context; no current injury/illness/persistent pain or clearance-dependent return",
+      "requiredInputs": [
+        "optional calfRaise2x12 explicit in selected plan",
+        "local calf fatigue without pain/clinical limitation",
+        "repeated comparable accessory execution fails intended quality",
+        "essential tasks unaffected and current intent preserved",
+        "removal is prospectively allowed; no completed prefix edits",
+        "facts.oneOptionalSetStillInadequate boolean; if false, familiar1x12 is sufficient and admissible"
+      ],
+      "guards": [
+        "Local label alone does not establish need; require task-specific adequacy problem",
+        "Essential calf-specific goal makes accessory nonoptional -> not eligible",
+        "No automatic reduction elsewhere or next week"
+      ],
+      "finiteCandidates": [
+        {
+          "recipeId": "R2-LOWER-ONE-CALF",
+          "modality": "STRENGTH",
+          "family": "OPTIONAL_ACCESSORY_REDUCTION",
+          "prescription": {
+            "calfRaise": {
+              "sets": 1,
+              "reps": 12
+            },
+            "preserveAllOtherTasks": true
+          }
+        },
+        {
+          "recipeId": "R2-REMOVE-OPTIONAL-CALF",
+          "modality": "STRENGTH",
+          "family": "OPTIONAL_ACCESSORY_REMOVAL",
+          "prescription": {
+            "removeExercise": "calfRaise",
+            "removeSets": 2,
+            "removeRepsPerSet": 12,
+            "preserveAllOtherTasks": true
+          }
+        }
+      ],
+      "decisionRule": "If one familiar optional set is sufficient, select1x12. Omit both optional sets only when explicit oneOptionalSetStillInadequate=true. Preserve essential tasks, historical prefix and all other sessions; isolated noisy report with adequate execution -> KEEP.",
+      "claims": [
+        "C04",
+        "C05"
+      ],
+      "sources": [
+        "R2-S05",
+        "R2-S06",
+        "R2-S07"
+      ],
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS_FOR_FRAMEWORK_ONLY",
+      "exactDoseEvidence": "DECIDED_FINITE_PROTOCOL_NOT_POPULATION_LAW; independent disposition required",
+      "nextCheck": "Record actual task/configuration/dose, technique/effort and current symptoms after execution and before next dependent session; contradictory response disables escalation.",
+      "fallback": "ASK missing decision-changing input; HOLD unsupported/uncalibrated dose; clinical dependency CLINICAL_HUMAN_REQUIRED.",
+      "essentialStimulus": "All explicitly essential Run/Strength tasks unchanged; accessory intent traded off, not denied.",
+      "smallerAlternatives": [
+        {
+          "candidate": "KEEP",
+          "result": "Fails only when actual repeated accessory quality constraint is established."
+        },
+        {
+          "candidate": "Remove one set",
+          "result": "Prefer this if one set is a currently admissible/tolerable useful candidate; full omission requires explicit evidence that reduced optional task remains inadequate."
+        },
+        {
+          "candidate": "Whole-week deload",
+          "result": "Unnecessary given localized optional task."
+        }
+      ],
+      "tradeOff": "Temporarily forgo calf accessory work; no claim global fatigue resolved or injury prevented.",
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "Bounded protocol selection with explicit individual context; exact dose/effect remains unvalidated."
+      },
+      "runtimeBinding": {
+        "registry": "CoachingCore/r2/POSITIVE_PRESCRIPTION_REGISTRY.json",
+        "inputSchema": "CoachingCore/r2/SHADOW_INPUT_R2_SCHEMA.json",
+        "semanticsVsTransport": "requiredInputs are domain requirements; only fieldCrosswalk entries name transport fields. No undocumented field is treated as an existing API property.",
+        "recipeIdAliases": {
+          "R2-REMOVE-OPTIONAL-CALF": "R2-LOWER-NO-CALF",
+          "R2-LOWER-ONE-CALF": "R2-LOWER-ONE-CALF"
+        },
+        "fieldCrosswalk": {
+          "single optional set inadequate": "event.facts.oneOptionalSetStillInadequate",
+          "material current problem": "event.facts.materialProblem",
+          "calibrated essential RIR": "event.facts.rirCalibratedForTask && establishedTargetRir===2"
+        },
+        "authority": "Integrated registry exact recipe and current independent SSCTR disposition govern execution. Alias/composition is not an additional dose or independent approval."
+      }
+    },
+    {
+      "policyId": "R2-P05",
+      "revision": "DCR2-SCI-r2",
+      "gap": "ACF-G02",
+      "title": "Converging systemic signals: explicit familiar branch",
+      "request": "SYSTEMIC_FATIGUE",
+      "status": "CANDIDATE_PENDING_INDEPENDENT_SSCTR",
+      "eligibility": "Adult recreational V1, modality-specific novice/intermediate; explicitly nonclinical eligibility/context; no current injury/illness/persistent pain or clearance-dependent return",
+      "requiredInputs": [
+        "individually unusual sleep/recovery concern plus comparable observed performance deterioration",
+        "nonclinical reason assessed",
+        "known branch containing familiar20min easy now and same essential session at allowed future slot",
+        "all essential commitments, current capacity and schedule feasibility verified",
+        "facts.branchAuthorized, facts.branchFamiliar, facts.branchWindowAllowed, facts.easyCurrentlyTolerated; fixed registry THU/SAT branch and current registry revision"
+      ],
+      "guards": [
+        "No biomarker/subjective composite cutoff",
+        "No prescription from single noisy fatigue event",
+        "Branch must preserve every essential session in the horizon and cannot silently propagate whole-week replan",
+        "Repeated systemic symptoms/uncertain cause -> ASK or clinical route as applicable"
+      ],
+      "finiteCandidates": [
+        {
+          "recipeId": "R2-SYSTEMIC-FAMILIAR-BRANCH",
+          "modality": "HYBRID",
+          "family": "PREAUTHORIZED_BRANCH",
+          "prescription": {
+            "now": {
+              "family": "EASY",
+              "durationMinutes": 20,
+              "targetMethod": "COMFORTABLE_CONVERSATION",
+              "familiarityRequired": true
+            },
+            "essentialSession": "COPY_UNCHANGED_TO_EXPLICIT_ALLOWED_SLOT",
+            "branchFrom": "Fixed exact registry THU/SAT preauthorized branch, not arbitrary input branch"
+          }
+        }
+      ],
+      "decisionRule": "Rank an already familiar explicitly authorized feasible branch above KEEP only when converging nonclinical facts establish current-session inadequacy. Do not invent causal attribution or a universal deload.",
+      "claims": [
+        "C04",
+        "C05"
+      ],
+      "sources": [
+        "R2-S05",
+        "R2-S06",
+        "R2-S07"
+      ],
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS_FOR_FRAMEWORK_ONLY",
+      "exactDoseEvidence": "KNOWN_BRANCH_SELECTION_ONLY; not proof20min treats systemic fatigue",
+      "nextCheck": "Record actual task/configuration/dose, technique/effort and current symptoms after execution and before next dependent session; contradictory response disables escalation.",
+      "fallback": "ASK missing decision-changing input; HOLD unsupported/uncalibrated dose; clinical dependency CLINICAL_HUMAN_REQUIRED.",
+      "essentialStimulus": "Essential session retained unchanged at feasible slot; immediate familiar easy is not its physiological equivalent.",
+      "smallerAlternatives": [
+        {
+          "candidate": "KEEP",
+          "result": "Valid if present session remains adequate despite signals; otherwise documented failure."
+        },
+        {
+          "candidate": "Optional-volume removal",
+          "result": "Prefer if sufficient; branch only when core-session problem survives."
+        }
+      ],
+      "tradeOff": "Delay stimulus and alter commitment; mechanism of fatigue remains uncertain.",
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "Bounded protocol selection with explicit individual context; exact dose/effect remains unvalidated."
+      },
+      "runtimeBinding": {
+        "registry": "CoachingCore/r2/POSITIVE_PRESCRIPTION_REGISTRY.json",
+        "inputSchema": "CoachingCore/r2/SHADOW_INPUT_R2_SCHEMA.json",
+        "semanticsVsTransport": "requiredInputs are domain requirements; only fieldCrosswalk entries name transport fields. No undocumented field is treated as an existing API property.",
+        "recipeIdAliases": {
+          "R2-SYSTEMIC-FAMILIAR-BRANCH": "THU_R2-EASY-20__SAT_R2-RUN-5X3"
+        },
+        "fieldCrosswalk": {
+          "branch authorization": "event.facts.branchAuthorized",
+          "branch familiarity/window": "event.facts.branchFamiliar && branchWindowAllowed",
+          "current easy capability": "event.facts.easyCurrentlyTolerated",
+          "converging facts": "event.facts.subjectiveFatigue && performanceDecline && contextComparable && materialProblem"
+        },
+        "authority": "Integrated registry exact recipe and current independent SSCTR disposition govern execution. Alias/composition is not an additional dose or independent approval."
+      }
+    },
+    {
+      "policyId": "R2-P06",
+      "revision": "DCR2-SCI-r2",
+      "gap": "ACF-G02",
+      "title": "Under-target Strength: one-set reduction to familiar candidate",
+      "request": "UNDER_TARGET_STRENGTH",
+      "status": "CANDIDATE_PENDING_INDEPENDENT_SSCTR",
+      "eligibility": "Adult recreational V1, modality-specific novice/intermediate; explicitly nonclinical eligibility/context; no current injury/illness/persistent pain or clearance-dependent return",
+      "requiredInputs": [
+        "current3x8 same explicit loadKg/config/rest180s",
+        "comparable recent episodes complete first2x8 with technique/effort target but third set repeatedly inadequate",
+        "2x8 candidate previously familiar and tolerated",
+        "essential intent admissible at2sets for this horizon",
+        "established task-specific targetRir2 if emitted; never defaultRIR from athlete class"
+      ],
+      "guards": [
+        "Recording error, unfamiliar equipment, altered technique or external one-off explanation -> reconcile/ASK",
+        "If first two sets also inadequate, no2set assumption",
+        "Current essential volume requirement of3sets blocks this reduction"
+      ],
+      "finiteCandidates": [
+        {
+          "recipeId": "R2-ST-3TO2",
+          "modality": "STRENGTH",
+          "family": "SET_REDUCTION",
+          "prescription": {
+            "sets": 2,
+            "reps": 8,
+            "loadKgFrom": "facts.loadKg",
+            "restSeconds": 180,
+            "remove": "THIRD_DEFINED_SET_ONLY"
+          }
+        }
+      ],
+      "decisionRule": "Propose exact2x8 next horizon after necessity established; keep load/reps/rest fixed, check response before further change.",
+      "claims": [
+        "C02",
+        "C03",
+        "C05"
+      ],
+      "sources": [
+        "R2-S03",
+        "R2-S04",
+        "R2-S11",
+        "R2-S07"
+      ],
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS_FOR_FRAMEWORK_ONLY",
+      "exactDoseEvidence": "DECIDED_FINITE_PROTOCOL_NOT_POPULATION_LAW; independent disposition required",
+      "nextCheck": "Record actual task/configuration/dose, technique/effort and current symptoms after execution and before next dependent session; contradictory response disables escalation.",
+      "fallback": "ASK missing decision-changing input; HOLD unsupported/uncalibrated dose; clinical dependency CLINICAL_HUMAN_REQUIRED.",
+      "essentialStimulus": "Known two-set movement/load stimulus retained; no claim identical long-term gains.",
+      "smallerAlternatives": [
+        {
+          "candidate": "KEEP",
+          "result": "Fails if repeated third-set inadequacy at matched context."
+        },
+        {
+          "candidate": "Longer rest",
+          "result": "Would be smaller if allowed and sufficient; exact profile already uses appropriate familiar rest and excludes this alternative only with evidence."
+        },
+        {
+          "candidate": "Reduce load",
+          "result": "Changes force target unnecessarily if2sets adequate."
+        }
+      ],
+      "tradeOff": "Less volume versus repeated inadequate third set.",
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "Bounded protocol selection with explicit individual context; exact dose/effect remains unvalidated."
+      },
+      "runtimeBinding": {
+        "registry": "CoachingCore/r2/POSITIVE_PRESCRIPTION_REGISTRY.json",
+        "inputSchema": "CoachingCore/r2/SHADOW_INPUT_R2_SCHEMA.json",
+        "semanticsVsTransport": "requiredInputs are domain requirements; only fieldCrosswalk entries name transport fields. No undocumented field is treated as an existing API property.",
+        "recipeIdAliases": {
+          "R2-ST-3TO2": "R2-SQUAT-2X8"
+        },
+        "fieldCrosswalk": {
+          "current load": "event.facts.loadKg",
+          "comparable task episodes": "event.facts.episodes",
+          "familiar reduced candidate": "event.facts.reducedCandidateTolerated",
+          "calibrated RIR": "event.facts.rirCalibratedForTask && establishedTargetRir===2"
+        },
+        "authority": "Integrated registry exact recipe and current independent SSCTR disposition govern execution. Alias/composition is not an additional dose or independent approval."
+      }
+    },
+    {
+      "policyId": "R2-P07",
+      "revision": "DCR2-SCI-r2",
+      "gap": "ACF-G02",
+      "title": "Under-target Run: remove one defined interval repetition",
+      "request": "REDUCE_RUN_REPETITION",
+      "status": "CANDIDATE_PENDING_INDEPENDENT_SSCTR",
+      "eligibility": "Adult recreational V1, modality-specific novice/intermediate; explicitly nonclinical eligibility/context; no current injury/illness/persistent pain or clearance-dependent return",
+      "requiredInputs": [
+        "current5x3min at explicit paceSecondsPerKm and120s recovery",
+        "FIELD_SESSION_TARGET calibration for same family/context",
+        "first4 reps comparable and tolerated, fifth repeatedly inadequate",
+        "4x3 candidate familiar and preserves intent",
+        "surface/conditions/recording comparable"
+      ],
+      "guards": [
+        "Do not infer VO2max exposure from label/pace",
+        "Do not increase speed or reduce rest to compensate",
+        "Uncalibrated target or early-rep deterioration -> ASK/HOLD"
+      ],
+      "finiteCandidates": [
+        {
+          "recipeId": "R2-RUN-5TO4",
+          "modality": "RUN",
+          "family": "INTERVAL_REPETITION_REDUCTION",
+          "prescription": {
+            "warmupMinutes": 10,
+            "repetitions": 4,
+            "workMinutes": 3,
+            "recoverySeconds": 120,
+            "cooldownMinutes": 10,
+            "paceSecondsPerKmFrom": "facts.paceSecondsPerKm",
+            "targetConstruct": "FIELD_SESSION_TARGET"
+          }
+        }
+      ],
+      "decisionRule": "Select familiar4x3 with existing pace/rest when5th repetition causes established inadequacy. No substitution of threshold/CS/VO2 constructs.",
+      "claims": [
+        "C04",
+        "C05",
+        "C10"
+      ],
+      "sources": [
+        "R2-S05",
+        "R2-S06",
+        "R2-S07",
+        "R2-S09",
+        "R2-S10"
+      ],
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS_FOR_FRAMEWORK_ONLY",
+      "exactDoseEvidence": "DECIDED_FINITE_PROTOCOL_NOT_POPULATION_LAW; independent disposition required",
+      "nextCheck": "Record actual task/configuration/dose, technique/effort and current symptoms after execution and before next dependent session; contradictory response disables escalation.",
+      "fallback": "ASK missing decision-changing input; HOLD unsupported/uncalibrated dose; clinical dependency CLINICAL_HUMAN_REQUIRED.",
+      "essentialStimulus": "Four matched work bouts at established target; total stimulus lower and not claimed equivalent.",
+      "smallerAlternatives": [
+        {
+          "candidate": "KEEP5",
+          "result": "Fails only with comparable repeated fifth-repetition inadequacy."
+        },
+        {
+          "candidate": "More rest",
+          "result": "Choose if feasible/supported and sufficient; no assumption unavailable."
+        },
+        {
+          "candidate": "Slow all reps",
+          "result": "May alter established intent; not needed if four meet target."
+        }
+      ],
+      "tradeOff": "Lower accumulated work; next response determines repeat or request further review.",
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "Bounded protocol selection with explicit individual context; exact dose/effect remains unvalidated."
+      },
+      "runtimeBinding": {
+        "registry": "CoachingCore/r2/POSITIVE_PRESCRIPTION_REGISTRY.json",
+        "inputSchema": "CoachingCore/r2/SHADOW_INPUT_R2_SCHEMA.json",
+        "semanticsVsTransport": "requiredInputs are domain requirements; only fieldCrosswalk entries name transport fields. No undocumented field is treated as an existing API property.",
+        "recipeIdAliases": {
+          "R2-RUN-5TO4": "R2-RUN-4X3"
+        },
+        "fieldCrosswalk": {
+          "current field target": "event.facts.paceSecondsPerKm && targetCalibrated",
+          "material fifth-rep issue": "event.facts.fifthRepDegrades && fourRepsTolerated && materialProblem"
+        },
+        "authority": "Integrated registry exact recipe and current independent SSCTR disposition govern execution. Alias/composition is not an additional dose or independent approval."
+      }
+    },
+    {
+      "policyId": "R2-P08",
+      "revision": "DCR2-SCI-r2",
+      "gap": "ACF-G02",
+      "title": "Easy/long next-horizon duration selection inside current tolerance",
+      "request": "PROGRESS_RUN",
+      "status": "CANDIDATE_PENDING_INDEPENDENT_SSCTR",
+      "eligibility": "Adult recreational V1, modality-specific novice/intermediate; explicitly nonclinical eligibility/context; no current injury/illness/persistent pain or clearance-dependent return",
+      "requiredInputs": [
+        "current40min easy/long",
+        "45min same family/effort/surface currently familiar and repeatedly tolerated",
+        "current context/recovery consistent",
+        "next-horizon goal supports increment; no simultaneous intensity increase"
+      ],
+      "guards": [
+        "No calendar or10% rule",
+        "Past remote45min does not establish present45min",
+        "Long is relative to athlete; same45min not universally long"
+      ],
+      "finiteCandidates": [
+        {
+          "recipeId": "R2-RUN-40TO45",
+          "modality": "RUN",
+          "family": "DURATION_PROGRESSION",
+          "prescription": {
+            "durationMinutes": 45,
+            "targetMethod": "COMFORTABLE_CONVERSATION",
+            "paceTarget": null,
+            "unchanged": [
+              "effort intent",
+              "frequency",
+              "other session doses"
+            ]
+          }
+        }
+      ],
+      "decisionRule": "Choose45min next horizon only within current demonstrated tolerance and sufficient recovery; adequate40min remains KEEP when change unnecessary.",
+      "claims": [
+        "C01",
+        "C07",
+        "C10"
+      ],
+      "sources": [
+        "R2-S01",
+        "R2-S02",
+        "R2-S09",
+        "R2-S10"
+      ],
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS_FOR_FRAMEWORK_ONLY",
+      "exactDoseEvidence": "DECIDED_FINITE_PROTOCOL_NOT_POPULATION_LAW; independent disposition required",
+      "nextCheck": "Record actual task/configuration/dose, technique/effort and current symptoms after execution and before next dependent session; contradictory response disables escalation.",
+      "fallback": "ASK missing decision-changing input; HOLD unsupported/uncalibrated dose; clinical dependency CLINICAL_HUMAN_REQUIRED.",
+      "essentialStimulus": "Familiar aerobic duration intent without intensity escalation.",
+      "smallerAlternatives": [
+        {
+          "candidate": "KEEP40",
+          "result": "Valid whenever adequate; compare explicit goal and horizon."
+        },
+        {
+          "candidate": "Add hard finish",
+          "result": "Unsupported and unnecessary."
+        }
+      ],
+      "tradeOff": "Additional duration versus context/tolerance uncertainty.",
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "Bounded protocol selection with explicit individual context; exact dose/effect remains unvalidated."
+      },
+      "runtimeBinding": {
+        "registry": "CoachingCore/r2/POSITIVE_PRESCRIPTION_REGISTRY.json",
+        "inputSchema": "CoachingCore/r2/SHADOW_INPUT_R2_SCHEMA.json",
+        "semanticsVsTransport": "requiredInputs are domain requirements; only fieldCrosswalk entries name transport fields. No undocumented field is treated as an existing API property.",
+        "recipeIdAliases": {
+          "R2-RUN-40TO45": "R2-EASY-45"
+        },
+        "fieldCrosswalk": {
+          "current demonstrated45min": "event.facts.candidatePreviouslyTolerated && episodes",
+          "necessity": "event.facts.nextHorizonNeedConfirmed"
+        },
+        "authority": "Integrated registry exact recipe and current independent SSCTR disposition govern execution. Alias/composition is not an additional dose or independent approval."
+      }
+    },
+    {
+      "policyId": "R2-P15",
+      "revision": "DCR2-SCI-r2",
+      "gap": "ACF-G02",
+      "title": "Athlete-specific history ranks already admissible options",
+      "request": "RANK_OPTIONS",
+      "status": "CANDIDATE_PENDING_INDEPENDENT_SSCTR",
+      "eligibility": "Adult recreational V1, modality-specific novice/intermediate; explicitly nonclinical eligibility/context; no current injury/illness/persistent pain or clearance-dependent return",
+      "requiredInputs": [
+        "explicit finite options with independent admissibility",
+        "repeated comparable context/action/response episodes",
+        "contradictions/confounds and current context",
+        "population prior and goal/priority",
+        "source/time/revision for each observation"
+      ],
+      "guards": [
+        "Never expand dose/admissibility from learned preference",
+        "Single noisy event does not change ranking",
+        "No universal count/confidence threshold; finite witness may use repeated data as a gate but not claim general minimum",
+        "Associations never prove schedule/candidate caused outcome",
+        "Contradictory equivalent observations preserve population prior/KEEP or ASK"
+      ],
+      "finiteCandidates": [],
+      "selectorShape": {
+        "input": "List of independently admissible option IDs and complete recipes",
+        "output": "Stable ranking with populationPrior, comparableEpisodes, counterexamples, confounds, rationale and uncertainty; no new recipe"
+      },
+      "decisionRule": "Within admissible candidates only, compatible repeated individual observations may adjust ranking; confounding/noise/unmatched context cannot create dose or inevitability. Keep ties stable and explain context mismatch.",
+      "claims": [
+        "C04",
+        "C05",
+        "C11"
+      ],
+      "sources": [
+        "R2-S05",
+        "R2-S06",
+        "R2-S07"
+      ],
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS_FOR_DESCRIPTIVE_CONTEXTUAL_RANKING_ONLY",
+      "exactDoseEvidence": "NO_NEW_DOSE; individual efficacy/causality unproved",
+      "essentialStimulus": "All candidates already protect essentials; ranking changes convenience/observed tolerance preference only.",
+      "positiveWitnesses": [
+        "Repeated comparable lower-before-threshold episodes vs lower-after-threshold, with changed ranking only for matched context",
+        "Repeated long-run45min tolerance ranks familiar45 versus already admissible alternative",
+        "Repeated familiar Strength response ranks rep candidate without creating new load",
+        "Single subjective fatigue report alone leaves ranking unchanged"
+      ],
+      "nextCheck": "Log selected option and next comparable observed response; contradiction removes learned preference; population prior stays visible.",
+      "fallback": "KEEP prior stable ranking or ASK missing comparability; never fit a new rule to one event.",
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "Bounded protocol selection with explicit individual context; exact dose/effect remains unvalidated."
+      },
+      "runtimeBinding": {
+        "registry": "CoachingCore/r2/POSITIVE_PRESCRIPTION_REGISTRY.json",
+        "inputSchema": "CoachingCore/r2/SHADOW_INPUT_R2_SCHEMA.json",
+        "semanticsVsTransport": "requiredInputs are domain requirements; only fieldCrosswalk entries name transport fields. No undocumented field is treated as an existing API property.",
+        "recipeIdAliases": {},
+        "fieldCrosswalk": {
+          "finite admissible alternatives": "event.facts.alternatives && candidatesAdmissible",
+          "comparable individual episodes": "event.facts.episodes && relevantContextUnchanged && counterevidenceConsidered"
+        },
+        "authority": "Integrated registry exact recipe and current independent SSCTR disposition govern execution. Alias/composition is not an additional dose or independent approval."
+      }
+    }
+  ],
+  "openPortions": [
+    "Novel acute dose from subjective fatigue alone",
+    "Systemic unexplained symptoms",
+    "Partial replan beyond exact authorized branch",
+    "New load/reps beyond current task tolerance",
+    "Unmatched-context learned preference"
+  ],
+  "evidenceState": "EVIDENCE_PARTIAL_PROCEED_AS_EXPERIMENT_FOR_OFFLINE_PROTOCOLS",
+  "decisiveClaims": [
+    {
+      "id": "C01",
+      "text": "An exact first-week run/walk protocol can be offered as bounded establishment, not as a universal safe/optimal dose.",
+      "classification": "INFERRED",
+      "evidence_status": "SUPPORTED_WITH_LIMITS",
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "Exact published novice protocol available; outcome evidence rejects prevention certainty; hybrid transfer conditional."
+      },
+      "sources": [
+        "R2-S01"
+      ],
+      "counterevidence": [
+        "R2-S02"
+      ],
+      "population": "Adult nonclinical novice recreational runner, current walking context/cue comprehension; no simultaneous novel Strength progression",
+      "horizon": "First week/observation",
+      "decision": [
+        "R2-P01",
+        "R2-P08",
+        "R2-P14"
+      ],
+      "limits": "Eligibility/current capacity is not guaranteed by label/walk test. Day variants are DECIDED logistical transfers."
+    },
+    {
+      "id": "C02",
+      "text": "Healthy adults can benefit from multiple RT configurations; low-volume establishment is possible, but exact1x8/120s first-week adequacy is a protocol choice.",
+      "classification": "INFERRED",
+      "evidence_status": "SUPPORTED_WITH_LIMITS",
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "Current position stand and NMA support broad RT approaches; exact protocol and hybrid transfer not tested."
+      },
+      "sources": [
+        "R2-S03",
+        "R2-S04"
+      ],
+      "counterevidence": [
+        "R2-S03 limitations: supervised chronic studies; many acute variables not analysed"
+      ],
+      "population": "Healthy adult RT novice/intermediate; no autonomous unsupervised safety inference",
+      "horizon": "Chronic framework with acute indirectness",
+      "decision": [
+        "R2-P02",
+        "R2-P03",
+        "R2-P06",
+        "R2-P10"
+      ],
+      "limits": "1set is establishment, not full hypertrophy optimization; no precise load generated from class. S03/S04 overlap."
+    },
+    {
+      "id": "C03",
+      "text": "RIR and task technique require configuration-specific interpretation; RIR2/4 cannot be presumed accurate from experience label.",
+      "classification": "INFERRED",
+      "evidence_status": "SUPPORTED_WITH_LIMITS",
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "Current supervised primary study demonstrates persistent task/target error despite practice."
+      },
+      "sources": [
+        "R2-S11",
+        "R2-S04"
+      ],
+      "counterevidence": [
+        "R2-S11: practice improved accuracy but did not establish universal precise transfer"
+      ],
+      "population": "Recreational adults; limited direct transfer to novice4-machine or squat",
+      "horizon": "Within-session effort and multiweek skill",
+      "decision": [
+        "R2-P01",
+        "R2-P02",
+        "R2-P03",
+        "R2-P06",
+        "R2-P10",
+        "R2-P14"
+      ],
+      "limits": "Do not reproduce repeated failure-test protocol; numeric target emitted only when explicit task-specific calibration supplied."
+    },
+    {
+      "id": "C04",
+      "text": "Concurrent demand overlap alone does not prove acute/chronic interference or necessity; endpoint, actual dose, timing, context and response matter.",
+      "classification": "INFERRED",
+      "evidence_status": "SUPPORTED_WITH_LIMITS",
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "Chronic and acute reviews show outcome- and protocol-dependent results; exact individual response remains unknown."
+      },
+      "sources": [
+        "R2-S05",
+        "R2-S06"
+      ],
+      "counterevidence": [
+        "R2-S05: explosive-strength versus maximal-strength findings differ",
+        "R2-S06: some acute outcomes unchanged, performance reporting heterogeneous"
+      ],
+      "population": "Healthy adults/runners in study protocols; not clinical",
+      "horizon": "Acute and chronic kept separate",
+      "decision": [
+        "R2-P04",
+        "R2-P05",
+        "R2-P07",
+        "R2-P11",
+        "R2-P12",
+        "R2-P13",
+        "R2-P15"
+      ],
+      "limits": "No universal minimum hours, automatic deletion of Strength or global fatigue score."
+    },
+    {
+      "id": "C05",
+      "text": "Task-specific performance and subjective recovery can inform a bounded candidate comparison; they do not identify an exact required set/repetition reduction.",
+      "classification": "INFERRED",
+      "evidence_status": "SUPPORTED_WITH_LIMITS",
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "Monitoring supports context, while acute review does not quantify individual rescue dose."
+      },
+      "sources": [
+        "R2-S06"
+      ],
+      "contextSources": [
+        "R2-S07"
+      ],
+      "counterevidence": [
+        "R2-S07: subjective/objective association inconsistent; indexed only by author",
+        "R2-S06: adverse acute outcomes not universal"
+      ],
+      "population": "Athlete monitoring; exact V1 witness demands independently admissible/familiar candidate",
+      "horizon": "Next session",
+      "decision": [
+        "R2-P04",
+        "R2-P05",
+        "R2-P06",
+        "R2-P07",
+        "R2-P15"
+      ],
+      "limits": "Exact reduction derives from current observed admissible task candidate plus independent judgment, never a fatigue-score formula."
+    },
+    {
+      "id": "C07",
+      "text": "No10% or other universal percentage progression/injury-prevention rule is justified by these data.",
+      "classification": "INFERRED",
+      "evidence_status": "SUPPORTED_WITH_LIMITS",
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "Final randomized trial directly failed to support injury-prevention advantage of tested graded schedule; this is not equivalence/safety proof."
+      },
+      "sources": [
+        "R2-S01"
+      ],
+      "counterevidence": [
+        "R2-S02"
+      ],
+      "population": "Novice event-training trial; no claim absence of all useful progression bounds",
+      "horizon": "Weeks",
+      "decision": [
+        "R2-P01",
+        "R2-P08"
+      ],
+      "limits": "No target arbitrary percentage imposed; single success cannot create repeated increment loop."
+    },
+    {
+      "id": "C10",
+      "text": "CS, LT2, MLSS, race pace and familiar field-session targets must remain distinct, with method-specific calibration and comparison.",
+      "classification": "INFERRED",
+      "evidence_status": "SUPPORTED_WITH_LIMITS",
+      "confidence": {
+        "level": "HIGH",
+        "rationale": "Current open scoping review directly rejects interchangeability; measurement protocols/context vary."
+      },
+      "sources": [
+        "R2-S09"
+      ],
+      "contextSources": [
+        "R2-S10"
+      ],
+      "counterevidence": [
+        "R2-S09: methods can be correlated and useful yet not interchangeable; scoping appraisal not formal causal synthesis"
+      ],
+      "population": "Running measurement; no generic first-ever hard-session calibration",
+      "horizon": "Calibration and repeated comparison",
+      "decision": [
+        "R2-P07",
+        "R2-P08",
+        "R2-P09",
+        "R2-P11",
+        "R2-P12",
+        "R2-P13",
+        "R2-P14"
+      ],
+      "limits": "HR/RPE/pace/power do not turn labels into physiological constructs by default. No arbitrary target crosswalk."
+    },
+    {
+      "id": "C11",
+      "text": "Comparable athlete observations may rank existing admissible options descriptively, without establishing causality or new dose bounds.",
+      "classification": "DECIDED",
+      "evidence_status": "SUPPORTED_WITH_LIMITS",
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "A bounded inference/measurement rule; effectiveness of learning heuristic is unvalidated and retained as hypothesis."
+      },
+      "sources": [
+        "R2-S05",
+        "R2-S06"
+      ],
+      "contextSources": [
+        "R2-S07"
+      ],
+      "counterevidence": [
+        "Unmatched context, confounding and noisy single events can reverse apparent preferences."
+      ],
+      "population": "Synthetic learned-history witnesses only; not empirical person-specific causal model",
+      "horizon": "Next-horizon ranking",
+      "decision": [
+        "R2-P15"
+      ],
+      "limits": "No magic minimum count; witness guards are operational; runtime cannot expand admissibility from ranking."
+    }
+  ],
+  "transportCrosswalk": "Domain requiredInputs are semantic requirements; per-policy runtimeBinding maps transport fields and recipe aliases. Current exact integrated registry and independent disposition govern execution."
+}
+

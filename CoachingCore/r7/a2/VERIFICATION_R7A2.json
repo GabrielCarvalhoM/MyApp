@@ -1,0 +1,500 @@
+{
+  "revision": "R7A2-VERIFICATION-1",
+  "verifiedAt": "2026-10-28T14:14:13.513Z",
+  "node": "v24.19.0",
+  "passing": 19,
+  "total": 19,
+  "checks": [
+    {
+      "id": "baseline-preserved",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "entries": 1674,
+        "changed": [
+          "CoachingCore/src/r6-adaptation.mjs",
+          "CoachingCore/src/r6-composition.mjs",
+          "CoachingCore/src/r6-program.mjs",
+          "CURRENT_MISSION.md",
+          "MISSION_LEDGER.md",
+          "reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json"
+        ],
+        "unexpected": [],
+        "insertOnly": [
+          {
+            "file": "CURRENT_MISSION.md",
+            "prefixPreserved": true,
+            "prefixBytes": 44682,
+            "appendedBytes": 3088,
+            "carriageReturnsAppended": 0
+          },
+          {
+            "file": "MISSION_LEDGER.md",
+            "prefixPreserved": true,
+            "prefixBytes": 113502,
+            "appendedBytes": 1649,
+            "carriageReturnsAppended": 0
+          }
+        ],
+        "addedFiles": [
+          "CoachingCore/r7/a2/FINAL_REPORT_R7A2.md",
+          "CoachingCore/r7/a2/READINESS_R7A2.json",
+          "CoachingCore/r7/a2/REGRESSION_R7A2.json",
+          "CoachingCore/r7/a2/RUNTIME_FREEZE_R7A2_FREEZE_1.json",
+          "CoachingCore/r7/a2/VERIFICATION_R7A2.json",
+          "CoachingCore/scripts/freeze-r7a2.mjs",
+          "CoachingCore/scripts/prepare-r7a2.mjs",
+          "CoachingCore/scripts/queue-r7a2.mjs",
+          "CoachingCore/scripts/regress-r7a2.mjs",
+          "CoachingCore/scripts/verify-r7a2.mjs",
+          "CoachingCore/test/r7a2-interruption.test.mjs"
+        ],
+        "addedOutsideR7A2": []
+      }
+    },
+    {
+      "id": "freeze-current",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "revision": "R7A2-FREEZE-1",
+        "sourceDigest": "e0637ec2613acde1132d70fc64a5a6f0f1062b74d6c5cfafb6654dc1a54c7a28",
+        "freezes": [
+          "RUNTIME_FREEZE_R7A2_FREEZE_1.json"
+        ],
+        "deltaFromR7A1FreezeA2": {
+          "changed": [
+            "src/r6-adaptation.mjs",
+            "src/r6-composition.mjs",
+            "src/r6-program.mjs"
+          ],
+          "added": [
+            "test/r7a2-interruption.test.mjs"
+          ],
+          "removed": [],
+          "baseline": "audits/domain-coaching-r7a2-2026-10-28/freezeA2-source/MANIFEST.json",
+          "freezeA2SourceDigest": "71edc245cfe06a376732ec8054f2e09f277066f2ee4004f34827b2c90a1c4024"
+        },
+        "drift": [],
+        "unfrozen": []
+      }
+    },
+    {
+      "id": "policy-unchanged",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+        "revision": "R6-POLICY-5"
+      }
+    },
+    {
+      "id": "tests",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "tests": 519,
+        "pass_": 519,
+        "fail": 0,
+        "node": "v24.19.0"
+      }
+    },
+    {
+      "id": "baseline-reproduced",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "P13": true,
+        "P14": true,
+        "firstWeek": true,
+        "verifyR7A1": "17/17",
+        "tests": "505 / fail 0"
+      }
+    },
+    {
+      "id": "evidence-runs-bound",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "runs": 38,
+        "missing": [],
+        "unbound": [],
+        "failed": [],
+        "changed": [],
+        "instrumentData": true
+      }
+    },
+    {
+      "id": "qe-r7a1-09-closed",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "cases": [
+          {
+            "case": "X_crossWeek",
+            "second": "REESTABLISH",
+            "aboveExecutedReentry": 0,
+            "aboveReentryPlan": 0,
+            "preBreakDose": 0,
+            "runMode": "RETURN",
+            "returnStep": true
+          },
+          {
+            "case": "X2_crossWeekMonday",
+            "second": "REESTABLISH",
+            "aboveExecutedReentry": 0,
+            "aboveReentryPlan": 0,
+            "preBreakDose": 0,
+            "runMode": "RETURN",
+            "returnStep": true
+          },
+          {
+            "case": "S_sameWeek",
+            "second": "REESTABLISH",
+            "aboveExecutedReentry": 0,
+            "aboveReentryPlan": 0,
+            "preBreakDose": 0,
+            "runMode": "RETURN",
+            "returnStep": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "qe-r7a1-10-closed",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "afterReturnSlots": [
+          "w3:w3-run-d1",
+          "w4:w4-run-d1"
+        ],
+        "afterReviewSlots": [
+          "w3:w3-run-d1",
+          "w4:w4-run-d1"
+        ],
+        "nextTuesday": "d1AM RUN EASY EASY:34",
+        "aloneNextTuesday": "d1AM RUN EASY EASY:41"
+      }
+    },
+    {
+      "id": "d59-first-week-grid",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "cases": 306,
+        "byClass": {
+          "NONE": {
+            "cases": 90,
+            "exercises": 264,
+            "E": 0,
+            "O": 0,
+            "B": 0,
+            "casesWithAny": 0
+          },
+          "FAMILIAR": {
+            "cases": 108,
+            "exercises": 408,
+            "E": 0,
+            "O": 0,
+            "B": 0,
+            "casesWithAny": 0
+          },
+          "KNOWN": {
+            "cases": 108,
+            "exercises": 408,
+            "E": 0,
+            "O": 0,
+            "B": 0,
+            "casesWithAny": 0
+          }
+        },
+        "before": {
+          "NONE": {
+            "cases": 90,
+            "exercises": 264,
+            "E": 264,
+            "O": 561,
+            "B": 109,
+            "casesWithAny": 90
+          },
+          "FAMILIAR": {
+            "cases": 108,
+            "exercises": 408,
+            "E": 408,
+            "O": 1021,
+            "B": 117,
+            "casesWithAny": 108
+          },
+          "KNOWN": {
+            "cases": 108,
+            "exercises": 408,
+            "E": 0,
+            "O": 72,
+            "B": 0,
+            "casesWithAny": 36
+          }
+        }
+      }
+    },
+    {
+      "id": "qe-probes",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "identical": {
+          "P01": true,
+          "P01b": true,
+          "P02": true,
+          "P03": true,
+          "P04": true,
+          "P05": true,
+          "P07": true,
+          "P08": true,
+          "P10": true,
+          "P15": true,
+          "P16": true
+        },
+        "P06": {
+          "namedDifference": "RETURN_MODERATE rows: an accessory first executed in the break week keeps its executed rep target (7) at the entry (SSCTR D59; was the goal’s 5)",
+          "holds": true
+        },
+        "P09": [
+          {
+            "seed": "seed7",
+            "sequences": 2500,
+            "errors": 0,
+            "violations": {
+              "O1": 0,
+              "O2": 0,
+              "O3": 0,
+              "O4": 0,
+              "O6": 0,
+              "O7": 0,
+              "O9": 2
+            },
+            "refusals": [
+              "phaseDose:glute-bridge:accessory"
+            ],
+            "identicalToA2": true
+          },
+          {
+            "seed": "seed1013",
+            "sequences": 2500,
+            "errors": 0,
+            "violations": {
+              "O1": 0,
+              "O2": 0,
+              "O3": 0,
+              "O4": 0,
+              "O6": 0,
+              "O7": 0,
+              "O9": 4
+            },
+            "refusals": [
+              "phaseDose:glute-bridge:accessory"
+            ],
+            "identicalToA2": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "ssctr-grids",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "unchanged": {
+          "short": true,
+          "d58": true,
+          "probe": true
+        },
+        "restorationGrid": {
+          "timelines": 864,
+          "skipped": 0,
+          "riseOrEnd": 0,
+          "held": 0,
+          "B": 0,
+          "C": 0,
+          "U": 237,
+          "Ubefore": 237,
+          "capWeeksLastNotWhole": "4211 -> 4173",
+          "heldAtReturnCeiling": "4970 -> 4576",
+          "longCaps": "677 -> 683"
+        },
+        "caps": {
+          "timelines": 864,
+          "extTimelines": 360,
+          "binding": "9912 -> 9499",
+          "unexplained": 0,
+          "extUnexplained": 0,
+          "B": 0,
+          "extB": 0,
+          "J": 237,
+          "Jbefore": 237
+        },
+        "instrument": {
+          "byteCopy": true,
+          "sections": 43,
+          "differentFromA2": []
+        }
+      }
+    },
+    {
+      "id": "r7a1-author-probes",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "identical": {
+          "r7a1-composition-probes": true,
+          "r7a1-representation-three-step": true,
+          "r7a1-d58-combinations": true
+        },
+        "mondayGrid": {
+          "equalUpToD59Reps": true,
+          "pairs": 157,
+          "defects": 0
+        },
+        "eveningGrid": {
+          "equalUpToNamed": true,
+          "pairs": 1188,
+          "defects": [
+            "race d6 RETURN_SHORT x PARTIAL_REPORTS weekDiffers=false",
+            "race d6 RETURN_SHORT x WEEKLY_REPORTS weekDiffers=false"
+          ],
+          "named": "A return reads the record as reported at its own clock (INTERRUPTION_CONTRACT §5): reported after the return, the week’s earlier sessions change only what it read"
+        },
+        "d56Grid": {
+          "timelines": 144,
+          "trimmedWeeksWithCap": "206 -> 200",
+          "riseOrEndAfterTrimmed": 0,
+          "jumps": {
+            "capped": 0,
+            "uncovered": 30,
+            "uncoveredByExercise": {
+              "dead-bug/BODYWEIGHT": 18,
+              "db-calf-raise/FROM_LOG": 8,
+              "db-split-squat/FROM_LOG": 4
+            }
+          },
+          "holds": true
+        }
+      }
+    },
+    {
+      "id": "self-challenge",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "cases": 42,
+        "violations": 0,
+        "onFreezeA2": 16
+      }
+    },
+    {
+      "id": "tests-fail-on-freeze-a2",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "boundToCurrentTestFile": true,
+        "tests": 14,
+        "failingOnFreezeA2": 14
+      }
+    },
+    {
+      "id": "mutation-check",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "caught": 19,
+        "total": 19,
+        "documentedSurvivors": [],
+        "open": []
+      }
+    },
+    {
+      "id": "regression",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "sourcesBoundToCurrentRuntime": true,
+        "r5": "24/24",
+        "profiles": "16/16",
+        "simulations": "14/14",
+        "r6Holdout": "34/35",
+        "named": {
+          "R6-H17": "State at the break (SSCTR D59): the Monday exposures before the Wednesday break keep their last performed date and db-calf-raise its last executed whole count (2 after the block set) as the ceiling of a later return; rows and statuses unchanged"
+        },
+        "differencesAreStateFactsOnly": true,
+        "unnamed": [],
+        "classification": "REGRESSION / CHALLENGE REUSE; not generalization evidence"
+      }
+    },
+    {
+      "id": "independent-reviews",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "freeze": "R7A2-FREEZE-1",
+        "engineering": {
+          "present": true,
+          "file": "audits/domain-coaching-r7a2-2026-10-28/reviews/quality-engineering-r7a2-recheck.json",
+          "verdict": "NOT_READY",
+          "digest": "e0637ec2613acde1132d70fc64a5a6f0f1062b74d6c5cfafb6654dc1a54c7a28",
+          "bound": true
+        },
+        "ssctr": {
+          "present": true,
+          "file": "audits/domain-coaching-r7a2-2026-10-28/reviews/ssctr-r7a2-recheck.json",
+          "verdict": {
+            "R7A2_SCIENTIFIC_RECHECK": "ACCEPT",
+            "reason": "No blocking finding in my scope. D59 is CLOSED on its Founder §13 criterion: my unchanged first-week grid gives E = O = B = 0 for NONE (90 cases, 264 exercises) and FAMILIAR (108, 408) and O = 0 for KNOWN (108, 408; E and B also 0); the return entry happens for every executed exercise; no block set is earned by the block in progress; the ceiling equals the last whole count executed before the break in every case measured (3,240 first-week exercises over moderate, long, 28/29-day and missed-target breaks, and 1,090 exercises of later-week returns); no count rises more than one set per executed whole week (B 0 everywhere; restoration grid A, B, C 0; 0 unexplained binding cap-weeks). D53 is CLOSED: no known equivalent state mode remains; the two boundaries found (a session on a break's stated first day; executions logged after the return) leave the return without a pre-break count by the Founder's own temporal invariants and the record as reported, so no declared ceiling is bypassed, and a newer report of the same break restores the entry and ceiling. D56, D57 and D58 hold. S-A to S-H are approved, S-C, S-D and S-H with recorded costs or boundaries. No policy text, clinical semantics or Founder decision is needed for the ruling. Five non-blocking findings are routed."
+          },
+          "digest": "e0637ec2613acde1132d70fc64a5a6f0f1062b74d6c5cfafb6654dc1a54c7a28",
+          "bound": true
+        }
+      }
+    },
+    {
+      "id": "queue-append-only",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "before": {
+          "revision": "SSCTR-HRQ-20261027-R7A1-r1",
+          "items": 151,
+          "sha256": "28e001ff99ee1d47e21b84f14eb5a8437fda1163b37a1a92616fa41813e045b9"
+        },
+        "after": {
+          "items": 163,
+          "sha256": "656d9b618d3bb122eb3fbf2fcdd7d98b47e2507ee20fbdf57a65160e60471d89"
+        },
+        "appended": [
+          "HQ-R7A2-SSCTR-QUALITY-SLOT-READINGS",
+          "HQ-R7A2-SSCTR-D59-PAUSE-WEEK-START",
+          "HQ-R7A2-SSCTR-D56-FORMULATION",
+          "HQ-R7A2-SSCTR-SAME-DAY",
+          "HQ-R7A2-SSCTR-DOSE-READING",
+          "HQ-R7A2-SSCTR-COMPOSITION",
+          "HQ-R7A2-SSCTR-REGAIN-BASE",
+          "HQ-R7A2-SSCTR-REESTABLISH-PHASE",
+          "HQ-R7A2-SSCTR-SPLIT-WEEK",
+          "HQ-R7A2-SSCTR-ITEMS-5-8",
+          "HQ-R7A2-SSCTR-CYCLE2-COMPOSITIONS",
+          "HQ-R7A2-SSCTR-INTERRUPTION-STATE"
+        ],
+        "earlierItemsByteIdentical": true
+      }
+    },
+    {
+      "id": "deliverables",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "missing": [],
+        "handoffWithoutReady": false,
+        "exit": "NOT_READY"
+      }
+    }
+  ]
+}

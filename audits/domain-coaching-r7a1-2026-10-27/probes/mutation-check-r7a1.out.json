@@ -1,0 +1,714 @@
+{
+ "check": "R7A1-MUTATION-1",
+ "runAt": "2026-10-27T22:31:39.898Z",
+ "scope": "test/r7a-semantic-core.test.mjs + test/r7a-cycle2.test.mjs + test/r7a1-composition.test.mjs against single-fix reverts in a temporary copy",
+ "caught": 72,
+ "applied": 73,
+ "total": 73,
+ "documentedSurvivors": 1,
+ "undocumentedSurvivors": [],
+ "notApplied": [],
+ "results": [
+  {
+   "mutation": "D53 regain only for a known-load state",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A state composition (D53): after a performed re-establishment the count rises at most one set per week for every state mode"
+   ]
+  },
+  {
+   "mutation": "D54 re-establishment skips the phase reduction",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A phase integrity (D54 metamorphic): a re-establishment due in a taper, race-window or post-event session never exceeds the twin executed throughout",
+    "R7-A.1 C5/C7: a moved race replaces the earlier one in either order, never two races (QE-R7A-03)"
+   ]
+  },
+  {
+   "mutation": "C17 validation without the phase-dose check",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: an event change in the middle of a week validates with its executed sessions as they were done (QE-R7A-04; INV-02, INV-10)",
+    "R7-A phase integrity (C17): the final validation rejects a strength row above its day phase dose, whatever produced it"
+   ]
+  },
+  {
+   "mutation": "R19 the last prescribed exposure decides the week",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A state composition (R19): the week follows the executed exposure, not the last prescribed one"
+   ]
+  },
+  {
+   "mutation": "Counts from the first executed exposure (R7-A survivor, QE-R7A-22)",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 D56/R19: the last executed exposure gives the week’s counts; a whole first session does not lift a cap the week then reduced (QE-R7A-22)"
+   ]
+  },
+  {
+   "mutation": "C11 every exercise in the state decides the entry week",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A state composition (C11): an exercise not in use carries no weight in the return-entry decision"
+   ]
+  },
+  {
+   "mutation": "C12 a set without reps counts as zero reps",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A canonical input (C12, gates.missingLogs): sets logged without repetitions hold the step and never regress it"
+   ]
+  },
+  {
+   "mutation": "C16 a dated change is applied from next week",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A canonical input (C16): a change stated for dates is never applied beyond them"
+   ]
+  },
+  {
+   "mutation": "C18 a race is complete only near its window",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A reconstruction (C18): a race finished faster than its window is a completed race (operational.event.raceDay window)"
+   ]
+  },
+  {
+   "mutation": "C10 the carried record drops superseded facts",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: the carried record round-trips: a correction of a merged report and an exact replay change nothing in the next review (QE-R7A-08, QE-R7A-09; INV-10)",
+    "R7-A canonical input (C10): a correction survives the carried record; normalization of the carried record is idempotent"
+   ]
+  },
+  {
+   "mutation": "C10 normalizer forgets carried history",
+   "file": "src/r6-provenance.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: the carried record round-trips: a correction of a merged report and an exact replay change nothing in the next review (QE-R7A-08, QE-R7A-09; INV-10)",
+    "R7-A cycle 2: only a carried row can be history; a new report flagged superseded is a live report and passes every check (QE-R7A-16; INV-10)",
+    "R7-A canonical input (C10): a correction survives the carried record; normalization of the carried record is idempotent"
+   ]
+  },
+  {
+   "mutation": "C09 exercise logs ignored when two reports agree on time",
+   "file": "src/r6-provenance.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: two reports of one session that disagree on repetitions, reserve or load are a conflict in any order and units (QE-R7A-06, QE-R7A-07; INV-08, INV-09)",
+    "R7-A canonical input (C09): two reports of one strength session with contradictory loads are a conflict in either order; agreeing ones merge"
+   ]
+  },
+  {
+   "mutation": "C07 last record wins",
+   "file": "src/r6-intake.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: intake records of one exercise merge by what they say: a label never decides, instants compare as instants, a record without a load keeps the hint (QE-R7A-13; INV-06, INV-07)",
+    "R7-A canonical input (C07): strength records merge independently of order and source; an incomplete record never displaces a complete dose"
+   ]
+  },
+  {
+   "mutation": "QE-01 a same-week review ignores the return stored for next week",
+   "file": "src/r6-composition.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "test\\r7a-cycle2.test.mjs",
+    "test\\r7a-semantic-core.test.mjs",
+    "test\\r7a1-composition.test.mjs"
+   ]
+  },
+  {
+   "mutation": "QE-02 a session later the same day is not ahead",
+   "file": "src/r6-composition.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: a return reported on the morning of a session re-doses that unreported session; one already reported keeps its dose (QE-R7A-02; return policy; INV-04)",
+    "R7-A cycle 2: an event date that reaches this week re-plans its remaining days under the new phases, later same-week proposals validate, and a postponed race leaves no old race (QE-R7A-03, QE-R7A-04; operational.event; INV-02)",
+    "R7-A.1 C1: same-day eligibility follows the chosen shift (QE-R7A-02, QE-R7A-23)",
+    "R7-A.1 C4/C5: a short return’s easy slot survives the review; a pre-break session never moves into a re-entry (E01, E10)"
+   ]
+  },
+  {
+   "mutation": "QE-03 an event change never reaches this week",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: an event date that reaches this week re-plans its remaining days under the new phases, later same-week proposals validate, and a postponed race leaves no old race (QE-R7A-03, QE-R7A-04; operational.event; INV-02)",
+    "R7-A cycle 2: an event change in the middle of a week validates with its executed sessions as they were done (QE-R7A-04; INV-02, INV-10)",
+    "R7-A.1 C5/C7: a moved race replaces the earlier one in either order, never two races (QE-R7A-03)"
+   ]
+  },
+  {
+   "mutation": "QE-04 executed history re-validated against new phases",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: an event change in the middle of a week validates with its executed sessions as they were done (QE-R7A-04; INV-02, INV-10)",
+    "R7-A.1 C1: same-day eligibility follows the chosen shift (QE-R7A-02, QE-R7A-23)"
+   ]
+  },
+  {
+   "mutation": "QE-05 a second report replaces the exercise list",
+   "file": "src/r6-provenance.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: an agreeing second report of a strength session changes nothing, whatever it lists, omits or is labelled (QE-R7A-05; INV-07, INV-08)",
+    "R7-A.1 QE-R7A-05: an agreeing report never makes a known field unknown, in either arrival order",
+    "R7-A.1 QE-R7A-05: two agreeing reports from equal sources that tie on every criterion merge by content, never by their labels"
+   ]
+  },
+  {
+   "mutation": "QE-06 repetitions and reserve not compared per exercise",
+   "file": "src/r6-provenance.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: two reports of one session that disagree on repetitions, reserve or load are a conflict in any order and units (QE-R7A-06, QE-R7A-07; INV-08, INV-09)"
+   ]
+  },
+  {
+   "mutation": "QE-07 a load in pounds is no load",
+   "file": "src/r6-provenance.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: two reports of one session that disagree on repetitions, reserve or load are a conflict in any order and units (QE-R7A-06, QE-R7A-07; INV-08, INV-09)"
+   ]
+  },
+  {
+   "mutation": "QE-08 a carried superseded row answers only to its own id",
+   "file": "src/r6-provenance.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: the carried record round-trips: a correction of a merged report and an exact replay change nothing in the next review (QE-R7A-08, QE-R7A-09; INV-10)"
+   ]
+  },
+  {
+   "mutation": "QE-09 an exact replay compared with the merged row",
+   "file": "src/r6-provenance.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: the carried record round-trips: a correction of a merged report and an exact replay change nothing in the next review (QE-R7A-08, QE-R7A-09; INV-10)"
+   ]
+  },
+  {
+   "mutation": "QE-10 a move ignores the dose its new date allows",
+   "file": "src/r6-composition.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: a session moved to another date is never prescribed a dose that date does not allow (QE-R7A-10; SSCTR D52; principle 8)"
+   ]
+  },
+  {
+   "mutation": "QE-11 malformed window dates read as a window",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: a dated change with dates the plan cannot use is asked, never applied (QE-R7A-11; INV-11)"
+   ]
+  },
+  {
+   "mutation": "QE-12 logged repetitions replace the target on any gate",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: HOLD and REGRESS repeat the planned repetitions; a short set never becomes the target (QE-R7A-12; strength gates)",
+    "R7-A.1 QE-R7A-12: a lighter known-load shortfall keeps the repetition target; an advanced lighter log takes its repetitions as at the planned load"
+   ]
+  },
+  {
+   "mutation": "QE-12 a newly established load keeps the old repetition target",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: HOLD and REGRESS repeat the planned repetitions; a short set never becomes the target (QE-R7A-12; strength gates)"
+   ]
+  },
+  {
+   "mutation": "QE-13 the label breaks a same-date tie",
+   "file": "src/r6-intake.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: intake records of one exercise merge by what they say: a label never decides, instants compare as instants, a record without a load keeps the hint (QE-R7A-13; INV-06, INV-07)"
+   ]
+  },
+  {
+   "mutation": "QE-14 the projection reads the untrimmed count",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: only a time-budget fit is not a reduction; a fatigue reduction after a re-establishment keeps the regain cap (QE-R7A-14; SSCTR D53 Q1, item 7; INV-03)",
+    "R7-A.1 C2/C3: a change from a later week composes the weeks before it as planned, whatever change came first (run ceiling, goals)"
+   ]
+  },
+  {
+   "mutation": "R20 the ceiling reads the last exposure, not the largest whole count",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: only a time-budget fit is not a reduction; a fatigue reduction after a re-establishment keeps the regain cap (QE-R7A-14; SSCTR D53 Q1, item 7; INV-03)"
+   ]
+  },
+  {
+   "mutation": "QE-14 a fatigue reduction is not a reduction",
+   "file": "src/r6-composition.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 I6: a week reduced for fatigue is a reduction for the return ceiling; only a time fit is not (QE-R7A-14, SSCTR FR2, R20)"
+   ]
+  },
+  {
+   "mutation": "QE-15 a rebuild forgets the entry week",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: a return-entry week stays one when its remaining days are rebuilt, whatever the time budget (QE-R7A-15; SSCTR D49, D55)"
+   ]
+  },
+  {
+   "mutation": "QE-16 a new report can claim to be history",
+   "file": "src/r6-provenance.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: only a carried row can be history; a new report flagged superseded is a live report and passes every check (QE-R7A-16; INV-10)"
+   ]
+  },
+  {
+   "mutation": "QE-17 the review reads a practice row by its role",
+   "file": "src/r6-composition.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: a practice exercise is practice in the plan and in the review (QE-R7A-17; INV-04)"
+   ]
+  },
+  {
+   "mutation": "D55 a fresh exercise in a returning week starts outside the return",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: an exercise first set up during a return regains at most one set per executed week and earns no block set (SSCTR D55; D49; INV-03)"
+   ]
+  },
+  {
+   "mutation": "A1 C1 an evening review re-plans a morning session",
+   "file": "src/r6-composition.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C1: same-day eligibility follows the chosen shift (QE-R7A-02, QE-R7A-23)"
+   ]
+  },
+  {
+   "mutation": "A1 C1 a re-plan rewrites history rows",
+   "file": "src/r6-composition.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: a return reported on the morning of a session re-doses that unreported session; one already reported keeps its dose (QE-R7A-02; return policy; INV-04)",
+    "R7-A cycle 2: an event change in the middle of a week validates with its executed sessions as they were done (QE-R7A-04; INV-02, INV-10)",
+    "R7-A.1 C3: re-planning this week keeps the next-week start a decision of this week set (QE-R7A-01, SSCTR O-1/R28)",
+    "R7-A.1 C3/C5: next week’s conditional plan never counts a session from the plan before a return of this week",
+    "R7-A.1 C5/C7: a moved race replaces the earlier one in either order, never two races (QE-R7A-03)",
+    "R7-A.1 C1: same-day eligibility follows the chosen shift (QE-R7A-02, QE-R7A-23)",
+    "R7-A.1 C4/C5: a short return’s easy slot survives the review; a pre-break session never moves into a re-entry (E01, E10)",
+    "R7-A.1 C4/C6: a re-applied adaptation changes only the re-planned rows; a move whose slot is history is consumed; a newer return replaces the earlier one",
+    "R7-A.1 C4: a later adaptation keeps the week’s earlier ones on what it moves; a move never uses a skipped slot; a late fatigue signal survives the review"
+   ]
+  },
+  {
+   "mutation": "A1 C3 a re-plan of this week forgets the return stored for next week",
+   "file": "src/r6-composition.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C3: re-planning this week keeps the next-week start a decision of this week set (QE-R7A-01, SSCTR O-1/R28)",
+    "R7-A.1 C5/C7: a moved race replaces the earlier one in either order, never two races (QE-R7A-03)"
+   ]
+  },
+  {
+   "mutation": "A1 C3 a complete week re-planned from the conditional plan",
+   "file": "src/r6-composition.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C3: re-planning this week keeps the next-week start a decision of this week set (QE-R7A-01, SSCTR O-1/R28)"
+   ]
+  },
+  {
+   "mutation": "A1 C3 a re-plan from next week holds mid-week",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C2: a change stated from a later week never re-plans the weeks before it, whatever re-plans them later (E02, E11-E14)",
+    "R7-A.1 C5: of two statements of one event date the later is the event in either order; its taper and race window follow it (SSCTR S4)"
+   ]
+  },
+  {
+   "mutation": "A1 C5 a pre-return session counts in the re-entry’s conditional plan",
+   "file": "src/r6-composition.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C3/C5: next week’s conditional plan never counts a session from the plan before a return of this week"
+   ]
+  },
+  {
+   "mutation": "A1 C4 recorded adaptations are not applied again",
+   "file": "src/r6-composition.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C5/C7: a moved race replaces the earlier one in either order, never two races (QE-R7A-03)",
+    "R7-A.1 C4: same-week adaptations and a later re-plan of the week compose in either order (QE-R7A-19, E03, E04)",
+    "R7-A.1 C1: same-day eligibility follows the chosen shift (QE-R7A-02, QE-R7A-23)",
+    "R7-A.1 C4/C5: a short return’s easy slot survives the review; a pre-break session never moves into a re-entry (E01, E10)",
+    "R7-A.1 C4: a later adaptation keeps the week’s earlier ones on what it moves; a move never uses a skipped slot; a late fatigue signal survives the review"
+   ]
+  },
+  {
+   "mutation": "A1 C4 adaptations are not recorded",
+   "file": "src/r6-composition.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C5/C7: a moved race replaces the earlier one in either order, never two races (QE-R7A-03)",
+    "R7-A.1 C4: same-week adaptations and a later re-plan of the week compose in either order (QE-R7A-19, E03, E04)",
+    "R7-A.1 C4/C5: a short return’s easy slot survives the review; a pre-break session never moves into a re-entry (E01, E10)",
+    "R7-A.1 C4/C6: a re-applied adaptation changes only the re-planned rows; a move whose slot is history is consumed; a newer return replaces the earlier one",
+    "R7-A.1 C4: a later adaptation keeps the week’s earlier ones on what it moves; a move never uses a skipped slot; a late fatigue signal survives the review"
+   ]
+  },
+  {
+   "mutation": "A1 C4 a re-applied adaptation touches kept rows",
+   "file": "src/r6-composition.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C4/C6: a re-applied adaptation changes only the re-planned rows; a move whose slot is history is consumed; a newer return replaces the earlier one"
+   ]
+  },
+  {
+   "mutation": "A1 C4 a consumed move is applied again",
+   "file": "src/r6-composition.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C4/C6: a re-applied adaptation changes only the re-planned rows; a move whose slot is history is consumed; a newer return replaces the earlier one"
+   ]
+  },
+  {
+   "mutation": "A1 C2 a context change rewrites the weeks before it",
+   "file": "src/r6-composition.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C2: a change stated from a later week never re-plans the weeks before it, whatever re-plans them later (E02, E11-E14)",
+    "R7-A.1 C2/C3: a change from a later week composes the weeks before it as planned, whatever change came first (run ceiling, goals)",
+    "R7-A.1 C4/C5: a waiting or event-conflict day carries no session in either order; a goal stated from a later date starts there"
+   ]
+  },
+  {
+   "mutation": "A1 C2 weeks built under the latest context",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C2: a change stated from a later week never re-plans the weeks before it, whatever re-plans them later (E02, E11-E14)",
+    "R7-A.1 C2/C3: a change from a later week composes the weeks before it as planned, whatever change came first (run ceiling, goals)"
+   ]
+  },
+  {
+   "mutation": "A1 C2 weeks validated under the latest context",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C2: a change stated from a later week never re-plans the weeks before it, whatever re-plans them later (E02, E11-E14)",
+    "R7-A.1 C2/C3: a change from a later week composes the weeks before it as planned, whatever change came first (run ceiling, goals)"
+   ]
+  },
+  {
+   "mutation": "A1 C2 phases merged where the context starts",
+   "file": "src/r6-composition.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C2: a change stated from a later week never re-plans the weeks before it, whatever re-plans them later (E02, E11-E14)",
+    "R7-A.1 C2/C3: a change from a later week composes the weeks before it as planned, whatever change came first (run ceiling, goals)",
+    "R7-A.1 C5: of two statements of one event date the later is the event in either order; its taper and race window follow it (SSCTR S4)"
+   ]
+  },
+  {
+   "mutation": "A1 C2 a goal change applies the latest context’s goals",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C2/C3: a change from a later week composes the weeks before it as planned, whatever change came first (run ceiling, goals)"
+   ]
+  },
+  {
+   "mutation": "A1 C2 a permanent equipment change from a later date applies now",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C2: a change stated from a later week never re-plans the weeks before it, whatever re-plans them later (E02, E11-E14)"
+   ]
+  },
+  {
+   "mutation": "A1 C5 the oldest equipment window wins",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C5: the newer equipment statement is in force (two windows; a permanent change after a window); rows of one slot keep the plan order"
+   ]
+  },
+  {
+   "mutation": "A1 C5 a newer return keeps the earlier one’s adaptations",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C4/C6: a re-applied adaptation changes only the re-planned rows; a move whose slot is history is consumed; a newer return replaces the earlier one"
+   ]
+  },
+  {
+   "mutation": "A1 C5 a pre-break session moves into the re-entry",
+   "file": "src/r6-composition.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C4/C5: a short return’s easy slot survives the review; a pre-break session never moves into a re-entry (E01, E10)"
+   ]
+  },
+  {
+   "mutation": "A1 C7 two races ahead pass validation",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": false,
+   "failingTests": [],
+   "documented": "A fail-closed guard of the final validation for a state no composition path is known to produce: the class it guards (an event change that leaves the earlier race) is pinned by the QE-R7A-03 test through its cause (mutations of C3/C5 above). Kept as defence in depth; not a behaviour of any known path."
+  },
+  {
+   "mutation": "A1 D56 a trimmed week raises or ends the caps",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 D56: weeks trimmed to the time budget neither raise nor end the regain cap; more time adds one set at a time, in every representation"
+   ]
+  },
+  {
+   "mutation": "A1 D56 a row written before R7-A reads a trimmed week as whole",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 D56: weeks trimmed to the time budget neither raise nor end the regain cap; more time adds one set at a time, in every representation"
+   ]
+  },
+  {
+   "mutation": "A1 QE-12 a lighter known-load shortfall sets the target",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 QE-R7A-12: a lighter known-load shortfall keeps the repetition target; an advanced lighter log takes its repetitions as at the planned load"
+   ]
+  },
+  {
+   "mutation": "A1 QE-05 an agreeing report does not fill unknown fields",
+   "file": "src/r6-provenance.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 QE-R7A-05: an agreeing report never makes a known field unknown, in either arrival order"
+   ]
+  },
+  {
+   "mutation": "A1 QE-05 a full tie decided by arrival order",
+   "file": "src/r6-provenance.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 QE-R7A-05: two agreeing reports from equal sources that tie on every criterion merge by content, never by their labels"
+   ]
+  },
+  {
+   "mutation": "A1 the planned counts read after the fit",
+   "file": "src/r6-composition.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C2/C3: a change from a later week composes the weeks before it as planned, whatever change came first (run ceiling, goals)"
+   ]
+  },
+  {
+   "mutation": "A1 QE-02 a short return’s easy slot is not recorded",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C1: same-day eligibility follows the chosen shift (QE-R7A-02, QE-R7A-23)",
+    "R7-A.1 C4/C5: a short return’s easy slot survives the review; a pre-break session never moves into a re-entry (E01, E10)",
+    "R7-A.1 C4: a later adaptation keeps the week’s earlier ones on what it moves; a move never uses a skipped slot; a late fatigue signal survives the review"
+   ]
+  },
+  {
+   "mutation": "A1 C3 a change from a later week counts only executed runs before it",
+   "file": "src/r6-composition.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C2/C3: a change from a later week composes the weeks before it as planned, whatever change came first (run ceiling, goals)"
+   ]
+  },
+  {
+   "mutation": "A1 C5 a permanent equipment change keeps the earlier windows",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C5: the newer equipment statement is in force (two windows; a permanent change after a window); rows of one slot keep the plan order"
+   ]
+  },
+  {
+   "mutation": "A1 C1 rows of one slot follow the order the change met them",
+   "file": "src/r6-composition.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C5: the newer equipment statement is in force (two windows; a permanent change after a window); rows of one slot keep the plan order"
+   ]
+  },
+  {
+   "mutation": "A1 C5 a newer return starts from the start an earlier return replaced",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C4/C6: a re-applied adaptation changes only the re-planned rows; a move whose slot is history is consumed; a newer return replaces the earlier one"
+   ]
+  },
+  {
+   "mutation": "A1 C5 an event change out of the event window starts next week",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C5: of two statements of one event date the later is the event in either order; its taper and race window follow it (SSCTR S4)"
+   ]
+  },
+  {
+   "mutation": "A1 C4 a move may use a skipped slot",
+   "file": "src/r6-composition.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C4: a later adaptation keeps the week’s earlier ones on what it moves; a move never uses a skipped slot; a late fatigue signal survives the review"
+   ]
+  },
+  {
+   "mutation": "A1 C4 a later adaptation ignores the earlier ones on what it moves",
+   "file": "src/r6-composition.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C4: a later adaptation keeps the week’s earlier ones on what it moves; a move never uses a skipped slot; a late fatigue signal survives the review"
+   ]
+  },
+  {
+   "mutation": "A1 C4 a later review drops the fatigue signal of the week",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C4: a later adaptation keeps the week’s earlier ones on what it moves; a move never uses a skipped slot; a late fatigue signal survives the review"
+   ]
+  },
+  {
+   "mutation": "A1 C4 a waiting session keeps the skip of an earlier adaptation",
+   "file": "src/r6-composition.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C4/C5: a waiting or event-conflict day carries no session in either order; a goal stated from a later date starts there"
+   ]
+  },
+  {
+   "mutation": "A1 C4 an event conflict skips a day with no session",
+   "file": "src/r6-composition.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C4/C5: a waiting or event-conflict day carries no session in either order; a goal stated from a later date starts there"
+   ]
+  },
+  {
+   "mutation": "A1 C2 a dated goal change applies from next week",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C4/C5: a waiting or event-conflict day carries no session in either order; a goal stated from a later date starts there"
+   ]
+  },
+  {
+   "mutation": "A1 C2 a change from a later week starts from its old start",
+   "file": "src/r6-composition.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C2/C3: a change from a later week composes the weeks before it as planned, whatever change came first (run ceiling, goals)"
+   ]
+  }
+ ]
+}

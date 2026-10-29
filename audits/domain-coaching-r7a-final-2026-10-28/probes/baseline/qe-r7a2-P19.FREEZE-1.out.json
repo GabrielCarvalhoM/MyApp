@@ -1,0 +1,1501 @@
+{
+ "probe": "R7A2-QE-P19",
+ "runtime": "LIVE",
+ "A": {
+  "eventId": "qa1-20",
+  "day": "2026-12-07",
+  "break": [
+   "2026-11-21",
+   "2026-12-06"
+  ]
+ },
+ "tally": {
+  "cells": 48,
+  "sameBreakB": 12,
+  "askB": 0,
+  "preBreakDose": 6,
+  "longAbove45": 24,
+  "errors": 0
+ },
+ "byTiming": {
+  "BEFORE_B": {
+   "cells": 12,
+   "violating": 6
+  },
+  "DURING_B": {
+   "cells": 12,
+   "violating": 0
+  },
+  "AFTER_B": {
+   "cells": 12,
+   "violating": 12
+  },
+  "AFTER_B_REPORT": {
+   "cells": 12,
+   "violating": 6
+  }
+ },
+ "cells": [
+  {
+   "bStart": "2026-12-10",
+   "bDays": 2,
+   "fixKind": "SAME_DATES",
+   "timing": "BEFORE_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-09 22:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-12 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "RETURN/w5"
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w5-run-d6 20",
+    "w6-run-d6 45"
+   ],
+   "violations": []
+  },
+  {
+   "bStart": "2026-12-10",
+   "bDays": 2,
+   "fixKind": "SAME_DATES",
+   "timing": "DURING_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-10 12:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-12 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "RETURN/w5"
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w5-run-d6 20",
+    "w6-run-d6 45"
+   ],
+   "violations": []
+  },
+  {
+   "bStart": "2026-12-10",
+   "bDays": 2,
+   "fixKind": "SAME_DATES",
+   "timing": "AFTER_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-12 06:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-12 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w5"
+    }
+   ],
+   "preBreakDose": [
+    "w5-str-d5:db-rdl 3x5@3/KNOWN22",
+    "w5-str-d5:db-row 3x5@3/KNOWN22",
+    "w5-str-d5:db-bench-press 3x6@3/KNOWN20",
+    "w6-str-d2:back-squat 3x5@3/KNOWN82.5",
+    "w6-str-d2:db-bench-press 3x6@3/KNOWN22",
+    "w6-str-d2:db-row 3x5@3/KNOWN24",
+    "w6-str-d5:db-rdl 3x5@3/KNOWN22",
+    "w6-str-d5:db-row 3x5@3/KNOWN24",
+    "w6-str-d5:db-bench-press 3x6@3/KNOWN22"
+   ],
+   "longs": [
+    "w5-run-d6 70",
+    "w6-run-d6 70"
+   ],
+   "violations": [
+    "B read as SAME_BREAK",
+    "pre-break dose after B",
+    "long run above 45 after B"
+   ]
+  },
+  {
+   "bStart": "2026-12-10",
+   "bDays": 2,
+   "fixKind": "SAME_DATES",
+   "timing": "AFTER_B_REPORT",
+   "steps": [
+    {
+     "what": "B",
+     "at": "2026-12-12 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "RETURN/w5"
+    },
+    {
+     "what": "A_FIX",
+     "at": "2026-12-12 08:00",
+     "result": "ASK/ASK",
+     "relation": null,
+     "stateAt": null
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w5-run-d6 20",
+    "w6-run-d6 45"
+   ],
+   "violations": []
+  },
+  {
+   "bStart": "2026-12-10",
+   "bDays": 2,
+   "fixKind": "EARLIER_START",
+   "timing": "BEFORE_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-09 22:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-12 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "RETURN/w5"
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w5-run-d6 20",
+    "w6-run-d6 45"
+   ],
+   "violations": []
+  },
+  {
+   "bStart": "2026-12-10",
+   "bDays": 2,
+   "fixKind": "EARLIER_START",
+   "timing": "DURING_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-10 12:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-12 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "RETURN/w5"
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w5-run-d6 20",
+    "w6-run-d6 45"
+   ],
+   "violations": []
+  },
+  {
+   "bStart": "2026-12-10",
+   "bDays": 2,
+   "fixKind": "EARLIER_START",
+   "timing": "AFTER_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-12 06:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-12 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w5"
+    }
+   ],
+   "preBreakDose": [
+    "w5-str-d5:db-rdl 3x5@3/KNOWN22",
+    "w5-str-d5:db-row 3x5@3/KNOWN22",
+    "w5-str-d5:db-bench-press 3x6@3/KNOWN20",
+    "w6-str-d2:back-squat 3x5@3/KNOWN82.5",
+    "w6-str-d2:db-bench-press 3x6@3/KNOWN22",
+    "w6-str-d2:db-row 3x5@3/KNOWN24",
+    "w6-str-d5:db-rdl 3x5@3/KNOWN22",
+    "w6-str-d5:db-row 3x5@3/KNOWN24",
+    "w6-str-d5:db-bench-press 3x6@3/KNOWN22"
+   ],
+   "longs": [
+    "w5-run-d6 70",
+    "w6-run-d6 70"
+   ],
+   "violations": [
+    "B read as SAME_BREAK",
+    "pre-break dose after B",
+    "long run above 45 after B"
+   ]
+  },
+  {
+   "bStart": "2026-12-10",
+   "bDays": 2,
+   "fixKind": "EARLIER_START",
+   "timing": "AFTER_B_REPORT",
+   "steps": [
+    {
+     "what": "B",
+     "at": "2026-12-12 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "RETURN/w5"
+    },
+    {
+     "what": "A_FIX",
+     "at": "2026-12-12 08:00",
+     "result": "ASK/ASK",
+     "relation": null,
+     "stateAt": null
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w5-run-d6 20",
+    "w6-run-d6 45"
+   ],
+   "violations": []
+  },
+  {
+   "bStart": "2026-12-10",
+   "bDays": 2,
+   "fixKind": "LATER_END",
+   "timing": "BEFORE_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-09 22:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-12 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "RETURN/w5"
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w5-run-d6 20",
+    "w6-run-d6 45"
+   ],
+   "violations": []
+  },
+  {
+   "bStart": "2026-12-10",
+   "bDays": 2,
+   "fixKind": "LATER_END",
+   "timing": "DURING_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-10 12:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-12 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "RETURN/w5"
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w5-run-d6 20",
+    "w6-run-d6 45"
+   ],
+   "violations": []
+  },
+  {
+   "bStart": "2026-12-10",
+   "bDays": 2,
+   "fixKind": "LATER_END",
+   "timing": "AFTER_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-12 06:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-12 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w5"
+    }
+   ],
+   "preBreakDose": [
+    "w5-str-d5:db-rdl 3x5@3/KNOWN22",
+    "w5-str-d5:db-row 3x5@3/KNOWN22",
+    "w5-str-d5:db-bench-press 3x6@3/KNOWN20",
+    "w6-str-d2:back-squat 3x5@3/KNOWN82.5",
+    "w6-str-d2:db-bench-press 3x6@3/KNOWN22",
+    "w6-str-d2:db-row 3x5@3/KNOWN24",
+    "w6-str-d5:db-rdl 3x5@3/KNOWN22",
+    "w6-str-d5:db-row 3x5@3/KNOWN24",
+    "w6-str-d5:db-bench-press 3x6@3/KNOWN22"
+   ],
+   "longs": [
+    "w5-run-d6 70",
+    "w6-run-d6 70"
+   ],
+   "violations": [
+    "B read as SAME_BREAK",
+    "pre-break dose after B",
+    "long run above 45 after B"
+   ]
+  },
+  {
+   "bStart": "2026-12-10",
+   "bDays": 2,
+   "fixKind": "LATER_END",
+   "timing": "AFTER_B_REPORT",
+   "steps": [
+    {
+     "what": "B",
+     "at": "2026-12-12 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "RETURN/w5"
+    },
+    {
+     "what": "A_FIX",
+     "at": "2026-12-12 08:00",
+     "result": "ASK/ASK",
+     "relation": null,
+     "stateAt": null
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w5-run-d6 20",
+    "w6-run-d6 45"
+   ],
+   "violations": []
+  },
+  {
+   "bStart": "2026-12-10",
+   "bDays": 4,
+   "fixKind": "SAME_DATES",
+   "timing": "BEFORE_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-09 22:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-14 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "RETURN/w5"
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w6-run-d6 20",
+    "w7-run-d6 45"
+   ],
+   "violations": []
+  },
+  {
+   "bStart": "2026-12-10",
+   "bDays": 4,
+   "fixKind": "SAME_DATES",
+   "timing": "DURING_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-10 12:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-14 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "RETURN/w5"
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w6-run-d6 20",
+    "w7-run-d6 45"
+   ],
+   "violations": []
+  },
+  {
+   "bStart": "2026-12-10",
+   "bDays": 4,
+   "fixKind": "SAME_DATES",
+   "timing": "AFTER_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-14 06:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-14 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w5"
+    }
+   ],
+   "preBreakDose": [
+    "w6-str-d2:back-squat 3x5@3/KNOWN82.5",
+    "w6-str-d2:db-bench-press 3x6@3/KNOWN20",
+    "w6-str-d2:db-row 3x5@3/KNOWN22",
+    "w6-str-d5:db-rdl 3x5@3/KNOWN22",
+    "w6-str-d5:db-row 3x5@3/KNOWN22",
+    "w6-str-d5:db-bench-press 3x6@3/KNOWN20"
+   ],
+   "longs": [
+    "w6-run-d6 70",
+    "w7-run-d6 65"
+   ],
+   "violations": [
+    "B read as SAME_BREAK",
+    "pre-break dose after B",
+    "long run above 45 after B"
+   ]
+  },
+  {
+   "bStart": "2026-12-10",
+   "bDays": 4,
+   "fixKind": "SAME_DATES",
+   "timing": "AFTER_B_REPORT",
+   "steps": [
+    {
+     "what": "B",
+     "at": "2026-12-14 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "RETURN/w5"
+    },
+    {
+     "what": "A_FIX",
+     "at": "2026-12-14 08:00",
+     "result": "ASK/ASK",
+     "relation": null,
+     "stateAt": null
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w6-run-d6 20",
+    "w7-run-d6 45"
+   ],
+   "violations": []
+  },
+  {
+   "bStart": "2026-12-10",
+   "bDays": 4,
+   "fixKind": "EARLIER_START",
+   "timing": "BEFORE_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-09 22:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-14 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "RETURN/w5"
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w6-run-d6 20",
+    "w7-run-d6 45"
+   ],
+   "violations": []
+  },
+  {
+   "bStart": "2026-12-10",
+   "bDays": 4,
+   "fixKind": "EARLIER_START",
+   "timing": "DURING_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-10 12:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-14 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "RETURN/w5"
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w6-run-d6 20",
+    "w7-run-d6 45"
+   ],
+   "violations": []
+  },
+  {
+   "bStart": "2026-12-10",
+   "bDays": 4,
+   "fixKind": "EARLIER_START",
+   "timing": "AFTER_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-14 06:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-14 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w5"
+    }
+   ],
+   "preBreakDose": [
+    "w6-str-d2:back-squat 3x5@3/KNOWN82.5",
+    "w6-str-d2:db-bench-press 3x6@3/KNOWN20",
+    "w6-str-d2:db-row 3x5@3/KNOWN22",
+    "w6-str-d5:db-rdl 3x5@3/KNOWN22",
+    "w6-str-d5:db-row 3x5@3/KNOWN22",
+    "w6-str-d5:db-bench-press 3x6@3/KNOWN20"
+   ],
+   "longs": [
+    "w6-run-d6 70",
+    "w7-run-d6 65"
+   ],
+   "violations": [
+    "B read as SAME_BREAK",
+    "pre-break dose after B",
+    "long run above 45 after B"
+   ]
+  },
+  {
+   "bStart": "2026-12-10",
+   "bDays": 4,
+   "fixKind": "EARLIER_START",
+   "timing": "AFTER_B_REPORT",
+   "steps": [
+    {
+     "what": "B",
+     "at": "2026-12-14 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "RETURN/w5"
+    },
+    {
+     "what": "A_FIX",
+     "at": "2026-12-14 08:00",
+     "result": "ASK/ASK",
+     "relation": null,
+     "stateAt": null
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w6-run-d6 20",
+    "w7-run-d6 45"
+   ],
+   "violations": []
+  },
+  {
+   "bStart": "2026-12-10",
+   "bDays": 4,
+   "fixKind": "LATER_END",
+   "timing": "BEFORE_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-09 22:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-14 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "RETURN/w5"
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w6-run-d6 20",
+    "w7-run-d6 45"
+   ],
+   "violations": []
+  },
+  {
+   "bStart": "2026-12-10",
+   "bDays": 4,
+   "fixKind": "LATER_END",
+   "timing": "DURING_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-10 12:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-14 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "RETURN/w5"
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w6-run-d6 20",
+    "w7-run-d6 45"
+   ],
+   "violations": []
+  },
+  {
+   "bStart": "2026-12-10",
+   "bDays": 4,
+   "fixKind": "LATER_END",
+   "timing": "AFTER_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-14 06:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-14 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w5"
+    }
+   ],
+   "preBreakDose": [
+    "w6-str-d2:back-squat 3x5@3/KNOWN82.5",
+    "w6-str-d2:db-bench-press 3x6@3/KNOWN20",
+    "w6-str-d2:db-row 3x5@3/KNOWN22",
+    "w6-str-d5:db-rdl 3x5@3/KNOWN22",
+    "w6-str-d5:db-row 3x5@3/KNOWN22",
+    "w6-str-d5:db-bench-press 3x6@3/KNOWN20"
+   ],
+   "longs": [
+    "w6-run-d6 70",
+    "w7-run-d6 65"
+   ],
+   "violations": [
+    "B read as SAME_BREAK",
+    "pre-break dose after B",
+    "long run above 45 after B"
+   ]
+  },
+  {
+   "bStart": "2026-12-10",
+   "bDays": 4,
+   "fixKind": "LATER_END",
+   "timing": "AFTER_B_REPORT",
+   "steps": [
+    {
+     "what": "B",
+     "at": "2026-12-14 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "RETURN/w5"
+    },
+    {
+     "what": "A_FIX",
+     "at": "2026-12-14 08:00",
+     "result": "ASK/ASK",
+     "relation": null,
+     "stateAt": null
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w6-run-d6 20",
+    "w7-run-d6 45"
+   ],
+   "violations": []
+  },
+  {
+   "bStart": "2026-12-14",
+   "bDays": 2,
+   "fixKind": "SAME_DATES",
+   "timing": "BEFORE_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-09 22:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-16 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "WEEK_START/w6"
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w6-run-d6 45",
+    "w7-run-d6 60"
+   ],
+   "violations": [
+    "long run above 45 after B"
+   ]
+  },
+  {
+   "bStart": "2026-12-14",
+   "bDays": 2,
+   "fixKind": "SAME_DATES",
+   "timing": "DURING_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-14 12:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-16 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "RETURN/w6"
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w6-run-d6 20",
+    "w7-run-d6 45"
+   ],
+   "violations": []
+  },
+  {
+   "bStart": "2026-12-14",
+   "bDays": 2,
+   "fixKind": "SAME_DATES",
+   "timing": "AFTER_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-16 06:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-16 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w6"
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w6-run-d6 45",
+    "w7-run-d6 60"
+   ],
+   "violations": [
+    "B read as SAME_BREAK",
+    "long run above 45 after B"
+   ]
+  },
+  {
+   "bStart": "2026-12-14",
+   "bDays": 2,
+   "fixKind": "SAME_DATES",
+   "timing": "AFTER_B_REPORT",
+   "steps": [
+    {
+     "what": "B",
+     "at": "2026-12-16 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "WEEK_START/w6"
+    },
+    {
+     "what": "A_FIX",
+     "at": "2026-12-16 08:00",
+     "result": "ASK/ASK",
+     "relation": null,
+     "stateAt": null
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w6-run-d6 45",
+    "w7-run-d6 60"
+   ],
+   "violations": [
+    "long run above 45 after B"
+   ]
+  },
+  {
+   "bStart": "2026-12-14",
+   "bDays": 2,
+   "fixKind": "EARLIER_START",
+   "timing": "BEFORE_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-09 22:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-16 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "WEEK_START/w6"
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w6-run-d6 45",
+    "w7-run-d6 60"
+   ],
+   "violations": [
+    "long run above 45 after B"
+   ]
+  },
+  {
+   "bStart": "2026-12-14",
+   "bDays": 2,
+   "fixKind": "EARLIER_START",
+   "timing": "DURING_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-14 12:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-16 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "RETURN/w6"
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w6-run-d6 20",
+    "w7-run-d6 45"
+   ],
+   "violations": []
+  },
+  {
+   "bStart": "2026-12-14",
+   "bDays": 2,
+   "fixKind": "EARLIER_START",
+   "timing": "AFTER_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-16 06:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-16 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w6"
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w6-run-d6 45",
+    "w7-run-d6 60"
+   ],
+   "violations": [
+    "B read as SAME_BREAK",
+    "long run above 45 after B"
+   ]
+  },
+  {
+   "bStart": "2026-12-14",
+   "bDays": 2,
+   "fixKind": "EARLIER_START",
+   "timing": "AFTER_B_REPORT",
+   "steps": [
+    {
+     "what": "B",
+     "at": "2026-12-16 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "WEEK_START/w6"
+    },
+    {
+     "what": "A_FIX",
+     "at": "2026-12-16 08:00",
+     "result": "ASK/ASK",
+     "relation": null,
+     "stateAt": null
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w6-run-d6 45",
+    "w7-run-d6 60"
+   ],
+   "violations": [
+    "long run above 45 after B"
+   ]
+  },
+  {
+   "bStart": "2026-12-14",
+   "bDays": 2,
+   "fixKind": "LATER_END",
+   "timing": "BEFORE_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-09 22:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-16 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "WEEK_START/w6"
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w6-run-d6 45",
+    "w7-run-d6 60"
+   ],
+   "violations": [
+    "long run above 45 after B"
+   ]
+  },
+  {
+   "bStart": "2026-12-14",
+   "bDays": 2,
+   "fixKind": "LATER_END",
+   "timing": "DURING_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-14 12:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-16 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "RETURN/w6"
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w6-run-d6 20",
+    "w7-run-d6 45"
+   ],
+   "violations": []
+  },
+  {
+   "bStart": "2026-12-14",
+   "bDays": 2,
+   "fixKind": "LATER_END",
+   "timing": "AFTER_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-16 06:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-16 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w6"
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w6-run-d6 45",
+    "w7-run-d6 60"
+   ],
+   "violations": [
+    "B read as SAME_BREAK",
+    "long run above 45 after B"
+   ]
+  },
+  {
+   "bStart": "2026-12-14",
+   "bDays": 2,
+   "fixKind": "LATER_END",
+   "timing": "AFTER_B_REPORT",
+   "steps": [
+    {
+     "what": "B",
+     "at": "2026-12-16 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "WEEK_START/w6"
+    },
+    {
+     "what": "A_FIX",
+     "at": "2026-12-16 08:00",
+     "result": "ASK/ASK",
+     "relation": null,
+     "stateAt": null
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w6-run-d6 45",
+    "w7-run-d6 60"
+   ],
+   "violations": [
+    "long run above 45 after B"
+   ]
+  },
+  {
+   "bStart": "2026-12-14",
+   "bDays": 4,
+   "fixKind": "SAME_DATES",
+   "timing": "BEFORE_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-09 22:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-18 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "WEEK_START/w6"
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w6-run-d6 45",
+    "w7-run-d6 60"
+   ],
+   "violations": [
+    "long run above 45 after B"
+   ]
+  },
+  {
+   "bStart": "2026-12-14",
+   "bDays": 4,
+   "fixKind": "SAME_DATES",
+   "timing": "DURING_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-14 12:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-18 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "RETURN/w6"
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w6-run-d6 20",
+    "w7-run-d6 45"
+   ],
+   "violations": []
+  },
+  {
+   "bStart": "2026-12-14",
+   "bDays": 4,
+   "fixKind": "SAME_DATES",
+   "timing": "AFTER_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-18 06:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-18 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w6"
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w6-run-d6 45",
+    "w7-run-d6 60"
+   ],
+   "violations": [
+    "B read as SAME_BREAK",
+    "long run above 45 after B"
+   ]
+  },
+  {
+   "bStart": "2026-12-14",
+   "bDays": 4,
+   "fixKind": "SAME_DATES",
+   "timing": "AFTER_B_REPORT",
+   "steps": [
+    {
+     "what": "B",
+     "at": "2026-12-18 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "WEEK_START/w6"
+    },
+    {
+     "what": "A_FIX",
+     "at": "2026-12-18 08:00",
+     "result": "ASK/ASK",
+     "relation": null,
+     "stateAt": null
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w6-run-d6 45",
+    "w7-run-d6 60"
+   ],
+   "violations": [
+    "long run above 45 after B"
+   ]
+  },
+  {
+   "bStart": "2026-12-14",
+   "bDays": 4,
+   "fixKind": "EARLIER_START",
+   "timing": "BEFORE_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-09 22:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-18 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "WEEK_START/w6"
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w6-run-d6 45",
+    "w7-run-d6 60"
+   ],
+   "violations": [
+    "long run above 45 after B"
+   ]
+  },
+  {
+   "bStart": "2026-12-14",
+   "bDays": 4,
+   "fixKind": "EARLIER_START",
+   "timing": "DURING_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-14 12:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-18 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "RETURN/w6"
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w6-run-d6 20",
+    "w7-run-d6 45"
+   ],
+   "violations": []
+  },
+  {
+   "bStart": "2026-12-14",
+   "bDays": 4,
+   "fixKind": "EARLIER_START",
+   "timing": "AFTER_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-18 06:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-18 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w6"
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w6-run-d6 45",
+    "w7-run-d6 60"
+   ],
+   "violations": [
+    "B read as SAME_BREAK",
+    "long run above 45 after B"
+   ]
+  },
+  {
+   "bStart": "2026-12-14",
+   "bDays": 4,
+   "fixKind": "EARLIER_START",
+   "timing": "AFTER_B_REPORT",
+   "steps": [
+    {
+     "what": "B",
+     "at": "2026-12-18 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "WEEK_START/w6"
+    },
+    {
+     "what": "A_FIX",
+     "at": "2026-12-18 08:00",
+     "result": "ASK/ASK",
+     "relation": null,
+     "stateAt": null
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w6-run-d6 45",
+    "w7-run-d6 60"
+   ],
+   "violations": [
+    "long run above 45 after B"
+   ]
+  },
+  {
+   "bStart": "2026-12-14",
+   "bDays": 4,
+   "fixKind": "LATER_END",
+   "timing": "BEFORE_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-09 22:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-18 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "WEEK_START/w6"
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w6-run-d6 45",
+    "w7-run-d6 60"
+   ],
+   "violations": [
+    "long run above 45 after B"
+   ]
+  },
+  {
+   "bStart": "2026-12-14",
+   "bDays": 4,
+   "fixKind": "LATER_END",
+   "timing": "DURING_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-14 12:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-18 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "RETURN/w6"
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w6-run-d6 20",
+    "w7-run-d6 45"
+   ],
+   "violations": []
+  },
+  {
+   "bStart": "2026-12-14",
+   "bDays": 4,
+   "fixKind": "LATER_END",
+   "timing": "AFTER_B",
+   "steps": [
+    {
+     "what": "A_FIX",
+     "at": "2026-12-18 06:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w2"
+    },
+    {
+     "what": "B",
+     "at": "2026-12-18 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "SAME_BREAK",
+     "stateAt": "WEEK_START/w6"
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w6-run-d6 45",
+    "w7-run-d6 60"
+   ],
+   "violations": [
+    "B read as SAME_BREAK",
+    "long run above 45 after B"
+   ]
+  },
+  {
+   "bStart": "2026-12-14",
+   "bDays": 4,
+   "fixKind": "LATER_END",
+   "timing": "AFTER_B_REPORT",
+   "steps": [
+    {
+     "what": "B",
+     "at": "2026-12-18 07:00",
+     "result": "MODIFY/REESTABLISH",
+     "relation": "NEW",
+     "stateAt": "WEEK_START/w6"
+    },
+    {
+     "what": "A_FIX",
+     "at": "2026-12-18 08:00",
+     "result": "ASK/ASK",
+     "relation": null,
+     "stateAt": null
+    }
+   ],
+   "preBreakDose": [],
+   "longs": [
+    "w6-run-d6 45",
+    "w7-run-d6 60"
+   ],
+   "violations": [
+    "long run above 45 after B"
+   ]
+  }
+ ]
+}

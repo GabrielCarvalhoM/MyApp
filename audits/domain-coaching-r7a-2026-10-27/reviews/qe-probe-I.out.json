@@ -1,0 +1,113 @@
+{
+ "probe": "I",
+ "I1_sameDateLabelDecides": {
+  "selfA_watchB": {
+   "load": 20,
+   "hint": 20,
+   "source": "SELF_REPORT",
+   "observedAt": "2026-10-29"
+  },
+  "watchA_selfB": {
+   "load": 24,
+   "hint": 24,
+   "source": "SELF_REPORT",
+   "observedAt": "2026-10-29"
+  },
+  "lowercaseSelfA_watchB": {
+   "load": 20,
+   "hint": 20,
+   "source": "self_report",
+   "observedAt": "2026-10-29"
+  },
+  "watchA_lowercaseSelfB": {
+   "load": 20,
+   "hint": 20,
+   "source": "APPLE_HEALTH",
+   "observedAt": "2026-10-29"
+  },
+  "manualA_watchB": {
+   "load": 20,
+   "hint": 20,
+   "source": "MANUAL",
+   "observedAt": "2026-10-29"
+  },
+  "watchA_manualB": {
+   "load": 20,
+   "hint": 20,
+   "source": "APPLE_HEALTH",
+   "observedAt": "2026-10-29"
+  }
+ },
+ "I2_observedAtStringOrder": {
+  "laterInstantLoses": {
+   "load": 20,
+   "hint": 20,
+   "source": "SELF_REPORT",
+   "observedAt": "2026-10-30T01:00:00+05:00"
+  },
+  "note": "2026-10-30T01:00:00+05:00 is 2026-10-29T20:00Z, earlier than 2026-10-29T22:00Z (B, 24 kg)",
+  "sameDayTimestampBeatsSelfReportRule": {
+   "load": 24,
+   "hint": 24,
+   "source": "APPLE_HEALTH",
+   "observedAt": "2026-10-29T06:00:00Z"
+  }
+ },
+ "I3_laterRecordWithoutLoadDisplacesHint": {
+  "hintOnly": {
+   "knownRecord": {
+    "load": null,
+    "hint": 20,
+    "source": "SELF_REPORT",
+    "observedAt": "2026-10-27"
+   },
+   "exposuresWeek0": 1,
+   "week0Row": "ESTABLISH",
+   "decision": "KEEP/INSTANTIATE_LOGGED_LOADS",
+   "stateAfterWeek0": {
+    "mode": "KNOWN",
+    "load": 20,
+    "pendingLoad": null
+   },
+   "questions": []
+  },
+  "hintThenLaterNoLoadRecord": {
+   "knownRecord": {
+    "load": null,
+    "hint": null,
+    "source": "SELF_REPORT",
+    "observedAt": "2026-10-30"
+   },
+   "exposuresWeek0": 1,
+   "week0Row": "ESTABLISH",
+   "decision": "KEEP/INSTANTIATE_LOGGED_LOADS",
+   "stateAfterWeek0": {
+    "mode": "FROM_LOG",
+    "load": null,
+    "pendingLoad": 20
+   },
+   "questions": [
+    "ESTABLISHMENT_LOG_UNCONFIRMED"
+   ]
+  },
+  "noLoadRecordOnly": {
+   "knownRecord": {
+    "load": null,
+    "hint": null,
+    "source": "SELF_REPORT",
+    "observedAt": "2026-10-30"
+   },
+   "exposuresWeek0": 1,
+   "week0Row": "ESTABLISH",
+   "decision": "KEEP/INSTANTIATE_LOGGED_LOADS",
+   "stateAfterWeek0": {
+    "mode": "FROM_LOG",
+    "load": null,
+    "pendingLoad": 20
+   },
+   "questions": [
+    "ESTABLISHMENT_LOG_UNCONFIRMED"
+   ]
+  }
+ }
+}

@@ -1,0 +1,213 @@
+{
+ "check": "R7A2-MUTATION-1",
+ "runAt": "2026-10-28T13:13:34.570Z",
+ "scope": "test/r7a2-interruption.test.mjs + test/r7a1-correction.test.mjs + test/r7a1-composition.test.mjs against single-piece removals of the R7-A.2 interruption model in a temporary copy",
+ "caught": 19,
+ "applied": 19,
+ "total": 19,
+ "documentedSurvivors": 0,
+ "undocumentedSurvivors": 0,
+ "notApplied": 0,
+ "results": [
+  {
+   "mutation": "I1 identity ignored: every report is a new break",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C4/C6: a re-applied adaptation changes only the re-planned rows; a move whose slot is history is consumed; a newer return replaces the earlier one",
+    "R7-A.2 I2: a newer report of the same break supersedes the earlier one, in the same week or a later one, and creates no new break",
+    "R7-A.2 I9 (QE-R7A1-10): a second short break never adopts the first one’s easy slot; a newer report of the same break keeps it",
+    "R7-A.2 P1/P6: the same break reported again, or only at another time, is the same break with the same plan",
+    "R7-A.2 I2/I3: three breaks; a correction after a separate break starts from that break’s re-entry, never from before the first",
+    "R7-A.2 I4: a return reads the executions recorded by its report; a newer report of the same break reads the ones recorded later",
+    "R7-A.2 I1: a report of a break that ended before the latest reported one began is asked, never guessed"
+   ]
+  },
+  {
+   "mutation": "I2/I3 every later report read as a correction of the earlier break",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.2 I1/I3 (QE-R7A1-09): a separate break in the same week starts from the re-entry, never from before the first break",
+    "R7-A.2 I3 (QE-R7A1-09): a separate break across the week boundary keeps the return steps and the run return",
+    "R7-A.2 I9 (QE-R7A1-10): a second short break never adopts the first one’s easy slot; a newer report of the same break keeps it",
+    "R7-A.2 I2/I3: three breaks; a correction after a separate break starts from that break’s re-entry, never from before the first",
+    "R7-A.2 I4/C5: a session of the plan before a return is never a fact of a later, separate break",
+    "R7-A.2 I1: a report of a break that ended before the latest reported one began is asked, never guessed"
+   ]
+  },
+  {
+   "mutation": "I2 a correction may reach back across an earlier re-entry",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.2 I1: a report of a break that ended before the latest reported one began is asked, never guessed"
+   ]
+  },
+  {
+   "mutation": "I1 a late report of an earlier break is applied as a new break",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.2 I1: a report of a break that ended before the latest reported one began is asked, never guessed"
+   ]
+  },
+  {
+   "mutation": "I4 start of the break week instead of the state at the break",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.2 I4/I5/I8 (SSCTR D59): exercises first executed in the break’s week enter the return steps with their executed count as the ceiling",
+    "R7-A.2 I4/I6 (§11): an exercise not executed, or executed only from the break’s first day, is not in the state at the break",
+    "R7-A.2 P3/P4: an exposure before the break adds to the state at the break; moved to the break’s first day it no longer counts",
+    "R7-A.2 I7: a week’s executed exposures before the break earn no step, no block set and no load adoption",
+    "R7-A.2 I4: a return reads the executions recorded by its report; a newer report of the same break reads the ones recorded later"
+   ]
+  },
+  {
+   "mutation": "I3 an earlier return of the break week is never its starting point",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.2 I1/I3 (QE-R7A1-09): a separate break in the same week starts from the re-entry, never from before the first break",
+    "R7-A.2 I3 (QE-R7A1-09): a separate break across the week boundary keeps the return steps and the run return",
+    "R7-A.2 I2/I3: three breaks; a correction after a separate break starts from that break’s re-entry, never from before the first",
+    "R7-A.2 I4/C5: a session of the plan before a return is never a fact of a later, separate break"
+   ]
+  },
+  {
+   "mutation": "I3/I6 a return reported after the break began is its starting point",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C4/C6: a re-applied adaptation changes only the re-planned rows; a move whose slot is history is consumed; a newer return replaces the earlier one",
+    "R7-A.2 I2: a newer report of the same break supersedes the earlier one, in the same week or a later one, and creates no new break",
+    "R7-A.2 I2/I3: three breaks; a correction after a separate break starts from that break’s re-entry, never from before the first",
+    "R7-A.2 I4: a return reads the executions recorded by its report; a newer report of the same break reads the ones recorded later"
+   ]
+  },
+  {
+   "mutation": "I5 a first exposure before the break is ignored",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.2 I4/I5/I8 (SSCTR D59): exercises first executed in the break’s week enter the return steps with their executed count as the ceiling",
+    "R7-A.2 I4/I6 (§11): an exercise not executed, or executed only from the break’s first day, is not in the state at the break",
+    "R7-A.2 P3/P4: an exposure before the break adds to the state at the break; moved to the break’s first day it no longer counts",
+    "R7-A.2 I7: a week’s executed exposures before the break earn no step, no block set and no load adoption",
+    "R7-A.2 I4: a return reads the executions recorded by its report; a newer report of the same break reads the ones recorded later"
+   ]
+  },
+  {
+   "mutation": "I6 an unexecuted session on the break's first day belongs to the week before it",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.2 I4/I6 (§11): an exercise not executed, or executed only from the break’s first day, is not in the state at the break"
+   ]
+  },
+  {
+   "mutation": "I4 a session executed before the break is read by its planned date only",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.2 I4/I6 (§11): an exercise not executed, or executed only from the break’s first day, is not in the state at the break"
+   ]
+  },
+  {
+   "mutation": "I4 the window starts at the week start even after a return of that week",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.2 I4/C5: a session of the plan before a return is never a fact of a later, separate break"
+   ]
+  },
+  {
+   "mutation": "I6 a conflicted report executes a session before the break",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.2 I4/I6 (§11): an exercise not executed, or executed only from the break’s first day, is not in the state at the break"
+   ]
+  },
+  {
+   "mutation": "I2/I9 a newer report of the same break eases a second slot after its slot was run",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.2 I9 (QE-R7A1-10): a second short break never adopts the first one’s easy slot; a newer report of the same break keeps it"
+   ]
+  },
+  {
+   "mutation": "I6 an execution observed after the break began counts",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.2 I4/I6 (§11): an exercise not executed, or executed only from the break’s first day, is not in the state at the break"
+   ]
+  },
+  {
+   "mutation": "I7 the ceiling read without the logged target",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.2 I7: a week’s executed exposures before the break earn no step, no block set and no load adoption"
+   ]
+  },
+  {
+   "mutation": "I7 exposures before the break earn their week's transition",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.2 I4/I5/I8 (SSCTR D59): exercises first executed in the break’s week enter the return steps with their executed count as the ceiling",
+    "R7-A.2 I4/I6 (§11): an exercise not executed, or executed only from the break’s first day, is not in the state at the break",
+    "R7-A.2 I7: a week’s executed exposures before the break earn no step, no block set and no load adoption",
+    "R7-A.2 I4: a return reads the executions recorded by its report; a newer report of the same break reads the ones recorded later"
+   ]
+  },
+  {
+   "mutation": "I9 a short return adopts any eased slot",
+   "file": "src/r6-composition.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.2 I9 (QE-R7A1-10): a second short break never adopts the first one’s easy slot; a newer report of the same break keeps it"
+   ]
+  },
+  {
+   "mutation": "I9 the eased slot carries no break",
+   "file": "src/r6-composition.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C4 (D58): the easy slot stays one slot whatever else the week holds: one already history stays it, one skipped passes on",
+    "R7-A.2 I9 (QE-R7A1-10): a second short break never adopts the first one’s easy slot; a newer report of the same break keeps it"
+   ]
+  },
+  {
+   "mutation": "I9 a separate break strips the earlier break's adaptations",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.2 I9 (QE-R7A1-10): a second short break never adopts the first one’s easy slot; a newer report of the same break keeps it"
+   ]
+  }
+ ]
+}

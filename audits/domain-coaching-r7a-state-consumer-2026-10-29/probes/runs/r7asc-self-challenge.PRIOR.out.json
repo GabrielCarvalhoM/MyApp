@@ -1,0 +1,485 @@
+{
+ "probe": "r7asc-self-challenge",
+ "root": "C:\\Users\\carva\\Desktop\\myApp\\MyApp\\audits\\domain-coaching-r7a-state-consumer-2026-10-29\\state-model-freeze-source\\CoachingCore",
+ "classes": {
+  "C1-known-row-without-load": {
+   "cases": 12,
+   "violations": 18,
+   "examples": [
+    {
+     "why": "history depends on when the correction reached the plan",
+     "name": "noDetails",
+     "factsOnly": false,
+     "early": {
+      "mode": "FROM_LOG",
+      "load": null,
+      "pendingLoad": 20,
+      "unlogged": false,
+      "lastPerformed": "2026-11-21",
+      "loadTick": 0,
+      "lifted": 20
+     },
+     "late": {
+      "mode": "KNOWN",
+      "load": 20,
+      "pendingLoad": null,
+      "unlogged": false,
+      "lastPerformed": "2026-11-21",
+      "loadTick": 1,
+      "lifted": 20
+     }
+    },
+    {
+     "why": "return entries differ",
+     "name": "noDetails",
+     "factsOnly": false
+    },
+    {
+     "why": "history depends on when the correction reached the plan",
+     "name": "noDetails",
+     "factsOnly": true,
+     "early": {
+      "mode": "FROM_LOG",
+      "load": null,
+      "pendingLoad": 20,
+      "unlogged": false,
+      "lastPerformed": "2026-11-21",
+      "loadTick": 0,
+      "lifted": 20
+     },
+     "late": {
+      "mode": "KNOWN",
+      "load": 20,
+      "pendingLoad": null,
+      "unlogged": false,
+      "lastPerformed": "2026-11-21",
+      "loadTick": 1,
+      "lifted": 20
+     }
+    },
+    {
+     "why": "return entries differ",
+     "name": "noDetails",
+     "factsOnly": true
+    },
+    {
+     "why": "history depends on when the correction reached the plan",
+     "name": "repsNoLoad",
+     "factsOnly": false,
+     "early": {
+      "mode": "FROM_LOG",
+      "load": null,
+      "pendingLoad": 20,
+      "unlogged": false,
+      "lastPerformed": "2026-11-21",
+      "loadTick": 0,
+      "lifted": 20
+     },
+     "late": {
+      "mode": "KNOWN",
+      "load": 20,
+      "pendingLoad": null,
+      "unlogged": false,
+      "lastPerformed": "2026-11-21",
+      "loadTick": 1,
+      "lifted": 20
+     }
+    },
+    {
+     "why": "return entries differ",
+     "name": "repsNoLoad",
+     "factsOnly": false
+    }
+   ]
+  },
+  "C2-retracted-evidence": {
+   "cases": 4,
+   "violations": 16,
+   "examples": [
+    {
+     "why": "a public reader returns the retracted 22",
+     "name": "to20",
+     "w": 4,
+     "d": 6
+    },
+    {
+     "why": "a public reader returns the retracted 22",
+     "name": "to20",
+     "w": 5,
+     "d": 0
+    },
+    {
+     "why": "a public reader returns the retracted 22",
+     "name": "to20",
+     "w": 5,
+     "d": 3
+    },
+    {
+     "why": "a public reader returns the retracted 22",
+     "name": "to20",
+     "w": 6,
+     "d": 0
+    },
+    {
+     "why": "a public reader returns the retracted 22",
+     "name": "to18",
+     "w": 4,
+     "d": 6
+    },
+    {
+     "why": "a public reader returns the retracted 22",
+     "name": "to18",
+     "w": 5,
+     "d": 0
+    }
+   ]
+  },
+  "C3-conflicting-report": {
+   "cases": 4,
+   "violations": 2,
+   "examples": [
+    {
+     "why": "a KNOWN load with only a quarantined log",
+     "late": true,
+     "variant": "shorter",
+     "state": {
+      "status": "ESTABLISHED",
+      "mode": "KNOWN",
+      "load": 20,
+      "convention": "PER_HAND",
+      "reps": 5,
+      "sets": 3,
+      "rir": 3,
+      "loadTick": 0,
+      "source": "PLANNED_ESTABLISHMENT",
+      "lastPerformed": "2026-11-14"
+     }
+    },
+    {
+     "why": "a KNOWN load with only a quarantined log",
+     "late": true,
+     "variant": "heavier",
+     "state": {
+      "status": "ESTABLISHED",
+      "mode": "KNOWN",
+      "load": 20,
+      "convention": "PER_HAND",
+      "reps": 5,
+      "sets": 3,
+      "rir": 3,
+      "loadTick": 0,
+      "source": "PLANNED_ESTABLISHMENT",
+      "lastPerformed": "2026-11-14"
+     }
+    }
+   ]
+  },
+  "C4-late-wearable-data": {
+   "cases": 2,
+   "violations": 0,
+   "examples": []
+  },
+  "C5-hold": {
+   "cases": 30,
+   "violations": 3,
+   "examples": [
+    {
+     "why": "HOLD progressed the held dose",
+     "goal": "STRENGTH",
+     "name": "aboveLowReserve",
+     "path": "R42",
+     "held": {
+      "id": "back-squat",
+      "date": "2026-11-25",
+      "mode": "KNOWN",
+      "value": 82.5,
+      "reps": 5,
+      "sets": 2,
+      "kind": "KNOWN"
+     },
+     "next": {
+      "id": "back-squat",
+      "date": "2026-12-02",
+      "mode": "KNOWN",
+      "value": 82.5,
+      "reps": 6,
+      "sets": 3,
+      "kind": "KNOWN"
+     }
+    },
+    {
+     "why": "HOLD progressed the held dose",
+     "goal": "HYPERTROPHY",
+     "name": "aboveLowReserve",
+     "path": "R42",
+     "held": {
+      "id": "back-squat",
+      "date": "2026-11-25",
+      "mode": "KNOWN",
+      "value": 82.5,
+      "reps": 8,
+      "sets": 2,
+      "kind": "KNOWN"
+     },
+     "next": {
+      "id": "back-squat",
+      "date": "2026-12-02",
+      "mode": "KNOWN",
+      "value": 82.5,
+      "reps": 11,
+      "sets": 3,
+      "kind": "KNOWN"
+     }
+    },
+    {
+     "why": "HOLD progressed the held dose",
+     "goal": "RUNNING_SUPPORT",
+     "name": "aboveLowReserve",
+     "path": "R42",
+     "held": {
+      "id": "back-squat",
+      "date": "2026-11-25",
+      "mode": "KNOWN",
+      "value": 82.5,
+      "reps": 8,
+      "sets": 2,
+      "kind": "KNOWN"
+     },
+     "next": {
+      "id": "back-squat",
+      "date": "2026-12-02",
+      "mode": "KNOWN",
+      "value": 82.5,
+      "reps": 10,
+      "sets": 3,
+      "kind": "KNOWN"
+     }
+    }
+   ]
+  },
+  "C6-maintain": {
+   "cases": 32,
+   "violations": 0,
+   "examples": []
+  },
+  "C7-reps-then-load": {
+   "cases": 6,
+   "violations": 3,
+   "examples": [
+    {
+     "why": "the dose after empty weeks depends on whether they were reviewed",
+     "goal": "HYPERTROPHY",
+     "empty": 2
+    },
+    {
+     "why": "the dose after empty weeks depends on whether they were reviewed",
+     "goal": "GENERAL",
+     "empty": 2
+    },
+    {
+     "why": "the dose after empty weeks depends on whether they were reviewed",
+     "goal": "RUNNING_SUPPORT",
+     "empty": 2
+    }
+   ]
+  },
+  "C8-goal-change": {
+   "cases": 20,
+   "violations": 0,
+   "examples": []
+  },
+  "C9-partial": {
+   "cases": 4,
+   "violations": 0,
+   "examples": []
+  },
+  "C10-return-midweek-restoration": {
+   "cases": 38,
+   "violations": 5,
+   "examples": [
+    {
+     "why": "a covered count came back more than one set above the largest executed since the break",
+     "goal": "STRENGTH",
+     "minutes": 20,
+     "mode": "thu",
+     "days": [
+      0,
+      2,
+      4
+     ],
+     "week": 9,
+     "id": "db-overhead-press",
+     "sets": 3,
+     "largest": 1
+    },
+    {
+     "why": "a covered count came back more than one set above the largest executed since the break",
+     "goal": "STRENGTH",
+     "minutes": 20,
+     "mode": "fri",
+     "days": [
+      0,
+      2,
+      4
+     ],
+     "week": 9,
+     "id": "db-overhead-press",
+     "sets": 3,
+     "largest": 1
+    },
+    {
+     "why": "a covered count came back more than one set above the largest executed since the break",
+     "goal": "HYPERTROPHY",
+     "minutes": 20,
+     "mode": "thu",
+     "days": [
+      0,
+      2,
+      4
+     ],
+     "week": 9,
+     "id": "db-overhead-press",
+     "sets": 3,
+     "largest": 1
+    },
+    {
+     "why": "a covered count came back more than one set above the largest executed since the break",
+     "goal": "HYPERTROPHY",
+     "minutes": 20,
+     "mode": "fri",
+     "days": [
+      0,
+      2,
+      4
+     ],
+     "week": 9,
+     "id": "db-overhead-press",
+     "sets": 3,
+     "largest": 1
+    },
+    {
+     "why": "the run re-entry skipped a dose",
+     "mode": "RETURN",
+     "seq": [
+      0,
+      "done",
+      "done"
+     ]
+    }
+   ]
+  },
+  "C11-future-same-week": {
+   "cases": 60,
+   "violations": 0,
+   "examples": []
+  },
+  "C12-week-boundary": {
+   "cases": 5,
+   "violations": 0,
+   "examples": []
+  },
+  "C13-same-day-order": {
+   "cases": 3,
+   "violations": 0,
+   "examples": []
+  },
+  "C14-reducer-vs-public-reader": {
+   "cases": 4,
+   "violations": 0,
+   "examples": []
+  },
+  "C15-view-vs-history": {
+   "cases": 2,
+   "violations": 3,
+   "examples": [
+    {
+     "why": "the view mixes an atom history does not hold",
+     "name": "plain",
+     "id": "db-calf-raise",
+     "atom": "reps",
+     "view": 7,
+     "history": 6
+    },
+    {
+     "why": "the view mixes an atom history does not hold",
+     "name": "plain",
+     "id": "db-split-squat",
+     "atom": "reps",
+     "view": 7,
+     "history": 6
+    },
+    {
+     "why": "the view mixes an atom history does not hold",
+     "name": "p51",
+     "id": "db-calf-raise",
+     "atom": "reps",
+     "view": 7,
+     "history": 6
+    }
+   ]
+  },
+  "C16-later-evidence-invariance": {
+   "cases": 1133,
+   "violations": 34,
+   "examples": [
+    {
+     "why": "history records a target the last executed exposure never carried",
+     "id": "T04_STRENGTH12_REPEATED_UNDERPERFORMANCE",
+     "week": 5,
+     "exercise": "back-squat",
+     "rowReps": 8,
+     "history": 6,
+     "kind": "KNOWN"
+    },
+    {
+     "why": "history records a target the last executed exposure never carried",
+     "id": "T04_STRENGTH12_REPEATED_UNDERPERFORMANCE",
+     "week": 5,
+     "exercise": "db-calf-raise",
+     "rowReps": 8,
+     "history": 6,
+     "kind": "KNOWN"
+    },
+    {
+     "why": "history records a target the last executed exposure never carried",
+     "id": "T04_STRENGTH12_REPEATED_UNDERPERFORMANCE",
+     "week": 5,
+     "exercise": "dead-bug",
+     "rowReps": 16,
+     "history": 8,
+     "kind": "BODYWEIGHT"
+    },
+    {
+     "why": "history records a target the last executed exposure never carried",
+     "id": "T04_STRENGTH12_REPEATED_UNDERPERFORMANCE",
+     "week": 6,
+     "exercise": "dead-bug",
+     "rowReps": 14,
+     "history": 8,
+     "kind": "BODYWEIGHT"
+    },
+    {
+     "why": "history records a target the last executed exposure never carried",
+     "id": "T04_STRENGTH12_REPEATED_UNDERPERFORMANCE",
+     "week": 7,
+     "exercise": "dead-bug",
+     "rowReps": 14,
+     "history": 8,
+     "kind": "BODYWEIGHT"
+    },
+    {
+     "why": "history records a target the last executed exposure never carried",
+     "id": "T04_STRENGTH12_REPEATED_UNDERPERFORMANCE",
+     "week": 8,
+     "exercise": "dead-bug",
+     "rowReps": 14,
+     "history": 8,
+     "kind": "BODYWEIGHT"
+    }
+   ]
+  }
+ },
+ "totalViolations": 84,
+ "classesRun": 16,
+ "cases": 1359
+}

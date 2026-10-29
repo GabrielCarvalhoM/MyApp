@@ -1,0 +1,241 @@
+{
+  "revision": "DCR3-VERIFICATION-1",
+  "executedAt": "2026-10-25T11:44:56.205Z",
+  "node": "v24.19.0",
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "current_all_legacy_R2_R3_tests",
+      "status": "PASS",
+      "evidence": {
+        "command": "node --test --test-reporter=tap",
+        "node": "v24.19.0",
+        "exitCode": 0,
+        "tests": 209,
+        "passed": 209,
+        "failed": 0,
+        "raw": "CoachingCore/r3/TEST_RESULTS_CURRENT.tap",
+        "sha256": "9837ee259e942464c1e4790370b64bf9050ebb7d1fedb12302c1cf21b8da6edb"
+      }
+    },
+    {
+      "name": "current_reproducible_simulation_and_reports",
+      "status": "PASS",
+      "evidence": {
+        "commands": [
+          "node scripts/simulate-r3.mjs",
+          "node scripts/report-r3.mjs"
+        ],
+        "exitCodes": [
+          0,
+          0
+        ],
+        "raw": "CoachingCore/r3/SIMULATION_CURRENT.log"
+      }
+    },
+    {
+      "name": "frozen_source_and_independent42_forensics",
+      "status": "PASS",
+      "evidence": {
+        "cases": 42,
+        "forensicRows": 42,
+        "sourceCorpusRawHash": "10fe324dee5ad9f20aa33f28b118a63dbf82e8bd3da6dd44e0d51d506279d0bf",
+        "sourceCasesHash": "efd521341252db0413ea9dbac0b28df83ef5b7606cad1b99fd025ea024f07971",
+        "sourceExpectationsUnchanged": true
+      }
+    },
+    {
+      "name": "canonical42_lossless_typed_material_consumption_and_scope",
+      "status": "PASS",
+      "evidence": {
+        "schemaValid": 42,
+        "materialConsumableNormal": 40,
+        "clinical": 2,
+        "positive": 2,
+        "losslessFacts": 42,
+        "deterministicInputDecisions": 42,
+        "officialMutations": 0,
+        "appliedEffects": 0
+      }
+    },
+    {
+      "name": "new_scientific_records_exact_targets_and_existing_R2_authority",
+      "status": "PASS",
+      "evidence": {
+        "newRecords": 2,
+        "newConditionalApprovals": 1,
+        "newAbstentions": 1,
+        "existingR2ConditionalApprovals": 12,
+        "fullV1ScientificApproval": false
+      }
+    },
+    {
+      "name": "single_queue_exact100_prefix_and_only_actual_approval",
+      "status": "PASS",
+      "evidence": {
+        "preserved": 100,
+        "addedActualApprovals": 1,
+        "total": 101,
+        "fundingUnchanged": true,
+        "abstentionQueued": false
+      }
+    },
+    {
+      "name": "all205_R2_and160_legacy_unique_saved_inputs_exact_replay",
+      "status": "PASS",
+      "evidence": {
+        "r2": {
+          "uniqueInputs": 205,
+          "exactReplay": 205,
+          "positive": 32,
+          "mutations": 0,
+          "effects": 0,
+          "flips": 0
+        },
+        "legacy": {
+          "uniqueInputs": 160,
+          "exactReplay": 160,
+          "positive": 11,
+          "mutations": 0,
+          "effects": 0,
+          "flips": 0
+        },
+        "total": 365
+      }
+    },
+    {
+      "name": "unchanged_legacy_R2_source_tests_registry_and_scientific_decisions",
+      "status": "PASS",
+      "evidence": {
+        "exactPreservedFiles": 15,
+        "defaultScriptChange": "R3 is the current mission; prior verifier remains preserved and labelled historical. Generated R2 report hash and mission locator staleness are recorded, not silently reapproved."
+      }
+    },
+    {
+      "name": "canonical84_multiday_multiweek_steps_replayed_no_propagation_or_noise",
+      "status": "PASS",
+      "evidence": {
+        "rows": 84,
+        "streams": 3,
+        "weeksEach": 4,
+        "scriptedNotPhysiological": true,
+        "automaticRestoration": false,
+        "officialMutations": 0,
+        "appliedEffects": 0,
+        "flips": 0
+      }
+    },
+    {
+      "name": "honest_baseline_disjoint_classes_and_bound_denominators",
+      "status": "PASS",
+      "evidence": {
+        "dashboard": {
+          "REPRESENTATIVE_CASES_TOTAL": 42,
+          "SCHEMA_VALID": 42,
+          "SEMANTICALLY_CONSUMABLE": 40,
+          "ADAPTER_BLOCKED": 0,
+          "DOMAIN_BLOCKED": 16,
+          "SCIENTIFICALLY_UNSUPPORTED": 3,
+          "SUBSTANTIVE_ASK_REQUIRED": 15,
+          "CLINICAL_OR_OUT_OF_SCOPE": 2
+        },
+        "among": {
+          "POSITIVE": 2,
+          "KEEP": 2,
+          "USEFUL_ASK": 15,
+          "HOLD": 2,
+          "NOT_SUPPORTED_DOMAIN": 16,
+          "NOT_SUPPORTED_SCIENCE": 3
+        },
+        "ratio": "2/40",
+        "positiveOpportunities": "2/23",
+        "beforeExpansion": "1/40",
+        "populationCoverageClaim": false
+      }
+    },
+    {
+      "name": "fresh_independent_SSCTR_binding_and_actual_record_validation",
+      "status": "PASS",
+      "evidence": {
+        "review": "audits/domain-closure-r3-2026-10-24/reviews/ssctr-review.json",
+        "targetsChecked": 12,
+        "verdict": "PASS_BOUNDED_SCIENTIFIC_BINDING",
+        "actualValidator": "audits/domain-closure-r3-2026-10-24/reviews/ssctr-schema-validation.json",
+        "humanOrEmpiricalValidation": false
+      }
+    },
+    {
+      "name": "fresh_independent_Quality_core_measurement_and_verifier_gate",
+      "status": "PASS",
+      "evidence": {
+        "review": "audits/domain-closure-r3-2026-10-24/reviews/quality.json",
+        "targetsChecked": 34,
+        "verdict": "QUALITY_READY"
+      }
+    },
+    {
+      "name": "all_requested_artifacts_readiness_and_explicit_scope",
+      "status": "PASS",
+      "evidence": {
+        "artifactsChecked": 20,
+        "verdicts": {
+          "REPRESENTATIVE_INPUT_READINESS": "READY_WITH_FIXES",
+          "RUNTIME_CONSUMPTION_READINESS": "READY_WITH_FIXES",
+          "POSITIVE_PRESCRIPTION_COVERAGE": "NOT_READY",
+          "FIRST_PRESCRIPTION_READINESS": "NOT_READY",
+          "ADAPTATION_DOSING_READINESS": "NOT_READY",
+          "RETURN_AFTER_PAUSE_READINESS": "NOT_READY",
+          "RUN_CALIBRATION_READINESS": "NOT_READY",
+          "HYBRID_TAPER_READINESS": "NOT_READY",
+          "AUTONOMOUS_COACHING_SPEC_READINESS": "NOT_READY",
+          "NEXT_ENGINEERING_STEP": "DOMAIN_CLOSURE_R4"
+        },
+        "fullAutonomousRuntime": "NO_GO",
+        "UI": false,
+        "Figma": false,
+        "KMP": false,
+        "production": false,
+        "realUserMutation": false,
+        "ProductTruthPromotion": false
+      }
+    }
+  ],
+  "artifactHashes": {
+    "CoachingCore/src/r3-input.mjs": "35320aac23badeab919ee6eb7479c5b6e1ff050596ca30a681f95f7d84b63b3b",
+    "CoachingCore/src/r3-consumption.mjs": "a0526a8954d1a27fe90ad5c5779d72bf05841306232df75e573f61935a5ae398",
+    "CoachingCore/src/r3-runtime.mjs": "34ec4622b6511d33323c3bc2fb388692659d5617958233243470494a1a1718b7",
+    "CoachingCore/src/r3-index.mjs": "7476017a5a9f4b21ce9cf546ecbf611751cc6e4a21b0887bd0e98ca6e90e50dc",
+    "CoachingCore/scripts/simulate-r3.mjs": "52658b51faed4994b8fb801e8a19535ffeae328b00de6a5d6cab8eb957bcac36",
+    "CoachingCore/scripts/report-r3.mjs": "b214976ce88f8435a3d706d829c72621c0dae60ed73f391c5966a041c051577f",
+    "CoachingCore/scripts/verify-r3.mjs": "e4ea8346bf0d19376f17053471b1b6545f9e213d74c0430b51e4c043c585af99",
+    "CoachingCore/package.json": "4aafffa43c362a3c48ad69a55aa2db13ea6cc5053d5dfbe0cd5ba11e33b3bc1b",
+    "CoachingCore/test/r3-input.test.mjs": "a18b3aeb12e3fe9179967fb8df1990aa7974ea5056d3f4e8337a481801d4305d",
+    "CoachingCore/test/r3-runtime.test.mjs": "5f6a9bd3041658aa932a59a0078ecc43d00368abc55bfd73b483c61fc29fa856",
+    "CoachingCore/r3/CANONICAL_COACHING_INPUT_R3_SCHEMA.json": "7d924267b84772ab03586b0301a16e6072117713669b01635771f5cd602fb4aa",
+    "CoachingCore/r3/INPUT_CONTRACT_R3.md": "af6844624c4cd744cd01a3ee7bc94695853ee33b4e8e392e58bb7c83fb89ee39",
+    "CoachingCore/r3/FINAL_REPORT.md": "6cbd77a2c10fe3dc6d9779aef9b5e16ca39f5f7ade47f2a9fffa9c687924a375",
+    "audits/domain-closure-r3-2026-10-24/reviews/ssctr-records.json": "009ac1b374109f788331bbfd2020cf18284540d0f80e72e0cba2f8f4703aece4",
+    "audits/domain-closure-r3-2026-10-24/reviews/ssctr-review.json": "facf7fb53eefaee2cbb0b7aa6d756d569aac7a0db0ab39c7d494167299fe91d5",
+    "audits/domain-closure-r3-2026-10-24/reviews/quality.json": "5117aa934a34fe1f301ac012ead62f5c3746c2510c921e5526d2ab79d6285b2d"
+  },
+  "failed": [],
+  "verdicts": {
+    "revision": "DCR3-VERDICTS-1",
+    "verdicts": {
+      "REPRESENTATIVE_INPUT_READINESS": "READY_WITH_FIXES",
+      "RUNTIME_CONSUMPTION_READINESS": "READY_WITH_FIXES",
+      "POSITIVE_PRESCRIPTION_COVERAGE": "NOT_READY",
+      "FIRST_PRESCRIPTION_READINESS": "NOT_READY",
+      "ADAPTATION_DOSING_READINESS": "NOT_READY",
+      "RETURN_AFTER_PAUSE_READINESS": "NOT_READY",
+      "RUN_CALIBRATION_READINESS": "NOT_READY",
+      "HYBRID_TAPER_READINESS": "NOT_READY",
+      "AUTONOMOUS_COACHING_SPEC_READINESS": "NOT_READY",
+      "NEXT_ENGINEERING_STEP": "DOMAIN_CLOSURE_R4"
+    },
+    "scopeOfFirstTwo": "Exact frozen42 synthetic source vocabulary and explicit typed material eligibility/gap routing. Additional source adapters, general prose interpretation and out-of-corpus coverage are not ready. These are not full V1 input/runtime maturity verdicts.",
+    "rationale": "Software noise removed for the42 source cases; positive breadth remains2 exact tasks among40 understood normal cases. Establishment, adaptation, current return and joint taper remain materially incomplete.",
+    "fullAutonomousRuntime": "NO_GO"
+  },
+  "closureClaim": "Bounded R3 mission acceptance and independent gates satisfied; full autonomous/V1 readiness remains NOT_READY/NO_GO"
+}

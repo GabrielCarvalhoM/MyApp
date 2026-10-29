@@ -1,0 +1,1541 @@
+{
+ "revision": "R7A-QE-r1",
+ "reviewer": {
+  "role": "Quality & Reliability Engineer (constitution 1.3.0)",
+  "instance": "fresh independent engineering judge, claude-opus-5-5, not the runtime author",
+  "date": "2026-10-27"
+ },
+ "gate": "R7A_ENGINEERING_REVIEW",
+ "freezeReviewed": {
+  "revision": "R7A-FREEZE-1",
+  "file": "CoachingCore/r7/RUNTIME_FREEZE_R7A_1.json",
+  "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+  "sourceDigest": "1f2bb1d807825a6027f994ff36b8adb4c42705273c37f800cfa64c03a4e07d65",
+  "verification": {
+   "script": "reviews/qe-verify-freeze.mjs",
+   "output": "reviews/qe-verify-freeze.out.json",
+   "filesMatching": "74/74 (SHA-256)",
+   "sourceDigestRecomputedWith": "src/value.mjs hash over the src/ entries, as scripts/freeze-r7a.mjs defines it",
+   "result": {
+    "recomputedSourceDigest": "1f2bb1d807825a6027f994ff36b8adb4c42705273c37f800cfa64c03a4e07d65",
+    "matchesDeclared": true
+   },
+   "rerunAfterAllProbes": true
+  }
+ },
+ "whatIRan": {
+  "tests": {
+   "command": "cd CoachingCore && node --test",
+   "result": [
+    "ℹ tests 460",
+    "ℹ pass 460",
+    "ℹ fail 0"
+   ]
+  },
+  "baseline": "Pre-R7A runtime rebuilt byte-exact from audits/domain-coaching-r7a-2026-10-27/pre-r7a-source into the OS temp directory (reviews/qe-lib.mjs pre()); every finding marked preExistingAtR6Closure was reproduced on it",
+  "authority": "devAuthority() from CoachingCore/r6/fixtures/dev-authority.mjs (DEV_TEST_ONLY)",
+  "notRun": [
+   "npm run verify",
+   "scripts/verify-r*.mjs"
+  ],
+  "edits": "none under CoachingCore/ or any R5/R6 path; probes and outputs only under reviews/ (qe-*)",
+  "probes": [
+   "qe-lib.mjs",
+   "qe-verify-freeze.mjs",
+   "qe-probe-A-return-then-weekly.mjs",
+   "qe-probe-A2-return-same-day.mjs",
+   "qe-probe-B-event-date-current-week.mjs",
+   "qe-probe-B3-race-postponed.mjs",
+   "qe-probe-CDEF-provenance.mjs",
+   "qe-probe-C34-merge-label-and-drift.mjs",
+   "qe-probe-D2-lb-conflict.mjs",
+   "qe-probe-G-move-reestablish.mjs",
+   "qe-probe-H-equipment-window-dates.mjs",
+   "qe-probe-I-intake-merge.mjs",
+   "qe-probe-J-budget-trim.mjs",
+   "qe-probe-K-entry-week-definitions.mjs",
+   "qe-probe-L-d53-grid.mjs",
+   "qe-probe-M-legacy-representation.mjs",
+   "qe-probe-N-false-unsupported-grid.mjs",
+   "qe-probe-N2-after-event-change.mjs",
+   "qe-probe-OPQ-minor.mjs",
+   "qe-probe-R-unknown-reps.mjs",
+   "qe-build-review.mjs"
+  ]
+ },
+ "severityCounts": {
+  "HIGH": 4,
+  "MEDIUM": 8,
+  "LOW": 6
+ },
+ "findings": [
+  {
+   "id": "QE-R7A-01",
+   "severity": "HIGH",
+   "blocking": true,
+   "new": true,
+   "narrow": true,
+   "runtimeOnly": true,
+   "preExistingAtR6Closure": true,
+   "class": [
+    "order dependence",
+    "invalid state reconstruction",
+    "stale state"
+   ],
+   "title": "A return started next week is erased by any later review of the same week",
+   "claimBroken": "Headline (same situation, same meaning whatever the arrival order); STATE_COMPOSITION_STABILITY; strengthReturnSets / D49 return steps; run return (RETURN mode)",
+   "mechanism": "returnAfterPause with fewer than two sessions left this week re-plans from week w+1 and stores the return state only in stateTrace[w+1]. weeklyReview (and rebuild with fromWeek=w+1) re-derive week w+1 from stateTrace[w], the pre-break state, so the return steps and the run RETURN mode disappear (r6-adaptation.mjs weeklyReview line 353, rebuild line 450; returnAfterPause line 611).",
+   "reproduction": {
+    "script": "reviews/qe-probe-A-return-then-weekly.mjs",
+    "command": "node audits/domain-coaching-r7a-2026-10-27/reviews/qe-probe-A-return-then-weekly.mjs",
+    "output": "reviews/qe-probe-A.out.json",
+    "excerpt": {
+     "returnReview": {
+      "fromWeek": 6,
+      "runModeWeek6": "RETURN",
+      "week6FirstRow": "2026-12-14 d0 w6-str-d0 back-squat 1x5@4 ESTABLISH kind=RETURN_ENTRY phase=DEVELOPMENT/1",
+      "week6Run": [
+       "EASY:15",
+       "EASY:15",
+       "LONG:20"
+      ]
+     },
+     "order1_returnThenWeekly": {
+      "weekly": "MODIFY/GATED_NEXT_STEP",
+      "runModeWeek6": "EASY",
+      "returnStepsWeek6": {
+       "back-squat": null,
+       "db-bench-press": null,
+       "db-row": null,
+       "db-calf-raise": null,
+       "dead-bug": null,
+       "db-rdl": null,
+       "db-split-squat": null
+      },
+      "week6FirstRow": "2026-12-14 d0 w6-str-d0 back-squat 4x5@3 KNOWN 82.5 kind=KNOWN phase=DEVELOPMENT/4",
+      "week6Run": [
+       "EASY:40",
+       "QUALITY:41",
+       "LONG:65"
+      ]
+     },
+     "order2_weeklyThenReturn": {
+      "runModeWeek6": "RETURN",
+      "week6FirstRow": "2026-12-14 d0 w6-str-d0 back-squat 1x5@4 ESTABLISH kind=RETURN_ENTRY phase=DEVELOPMENT/1"
+     },
+     "sameDefectViaScheduleChange": {
+      "change": "MODIFY/REARRANGE_FUTURE_WEEKS",
+      "runModeWeek6": "EASY",
+      "week6FirstRow": "2026-12-14 d0 w6-str-d0 back-squat 4x5@3 KNOWN 82.5 kind=KNOWN phase=DEVELOPMENT/4"
+     },
+     "verdict": {
+      "returnErasedByWeeklyReview": true
+     }
+    },
+    "preR7A": {
+     "command": "QE_RUNTIME=pre node audits/domain-coaching-r7a-2026-10-27/reviews/qe-probe-A-return-then-weekly.mjs",
+     "output": "reviews/qe-probe-A.PRE.out.json",
+     "verdict": {
+      "returnErasedByWeeklyReview": true
+     },
+     "order1Week6FirstRow": "2026-12-14 d0 w6-str-d0 back-squat 4x5@3 KNOWN 82.5 kind=- phase=-/-"
+    }
+   }
+  },
+  {
+   "id": "QE-R7A-02",
+   "severity": "HIGH",
+   "blocking": true,
+   "new": true,
+   "narrow": true,
+   "runtimeOnly": true,
+   "preExistingAtR6Closure": true,
+   "class": [
+    "event-day boundary",
+    "skipped modifier",
+    "invalid state reconstruction"
+   ],
+   "title": "A session later on the day of a return review keeps its full pre-break dose and is then counted as the return entry",
+   "claimBroken": "Headline; strengthReturnSets / strengthEntryWeek (every exposure in a return-entry week at the entry dose); returnLoadCap",
+   "mechanism": "returnAfterPause re-plans only sessions with s.date > asOfLocal (and counts futureThisWeek the same way): a return reported in the morning keeps that evening's session as prescribed before the break. The weekly review then advances returnStep 0 -> 1 on that full-dose execution and adopts its load as the return-entry log (r6-adaptation.mjs lines 611 and 615).",
+   "reproduction": {
+    "script": "reviews/qe-probe-A2-return-same-day.mjs",
+    "command": "node audits/domain-coaching-r7a-2026-10-27/reviews/qe-probe-A2-return-same-day.mjs",
+    "output": "reviews/qe-probe-A2.out.json",
+    "excerpt": {
+     "returnReview": {
+      "asOf": "2026-12-07T07:00:00Z",
+      "status": "MODIFY",
+      "action": "REESTABLISH",
+      "fromWeek": 5
+     },
+     "day0Sessions": [
+      {
+       "id": "w5-str-d0",
+       "turn": "PM",
+       "sport": "STRENGTH",
+       "role": "STRENGTH_FULL_A"
+      }
+     ],
+     "stateAtWeekStart_backSquatReturnStep": 0,
+     "weekRows": [
+      "2026-12-07 d0 w5-str-d0 back-squat 4x5@3 KNOWN 82.5 kind=KNOWN phase=DEVELOPMENT/4",
+      "2026-12-07 d0 w5-str-d0 db-bench-press 4x6@3 KNOWN 20 kind=KNOWN phase=DEVELOPMENT/4",
+      "2026-12-11 d4 w5-str-d4 db-rdl 1x5@4 ESTABLISH kind=RETURN_ENTRY phase=DEVELOPMENT/1"
+     ],
+     "afterWeeklyReview": {
+      "decision": "MODIFY/ADOPT_LOGGED_LOADS",
+      "backSquatReturnStepNextWeek": 1,
+      "nextWeekFirstRow": "2026-12-14 d0 w6-str-d0 back-squat 2x5@3 KNOWN 82.5 kind=RETURN_STEP phase=DEVELOPMENT/2"
+     }
+    },
+    "preR7A": {
+     "command": "QE_RUNTIME=pre node audits/domain-coaching-r7a-2026-10-27/reviews/qe-probe-A2-return-same-day.mjs",
+     "output": "reviews/qe-probe-A2.PRE.out.json",
+     "weekRow0": "2026-12-07 d0 w5-str-d0 back-squat 4x5@3 KNOWN 82.5 kind=- phase=-/-",
+     "nextWeekFirstRow": "2026-12-14 d0 w6-str-d0 back-squat 2x5@3 KNOWN 82.5 kind=- phase=-/-"
+    }
+   }
+  },
+  {
+   "id": "QE-R7A-03",
+   "severity": "HIGH",
+   "blocking": true,
+   "new": true,
+   "narrow": true,
+   "runtimeOnly": true,
+   "preExistingAtR6Closure": true,
+   "class": [
+    "skipped modifier through another branch",
+    "stale state across a skeleton change"
+   ],
+   "title": "An event moved closer (or added) leaves this week's remaining sessions in the new race window and taper at their old BUILD dose; a postponed race keeps its old RACE session",
+   "claimBroken": "Claim 1 (every row within the phase dose; \"validateWeeks enforces it on every generated or proposed week\"); operational.event.proximitySemantics; raceDateUnavailable spirit (a race is never kept silently)",
+   "mechanism": "goalChange -> rebuild with fromWeek = w+1 and mergedPhases keeps the old phases before fromWeek, while raceWeek/raceDay/taperStart change. Week w is neither re-dosed nor validated (validation runs from fromWeek). dayPhaseOf under the new skeleton already classifies those days as RACE_WEEK/TAPER.",
+   "reproduction": {
+    "script": "reviews/qe-probe-B-event-date-current-week.mjs and reviews/qe-probe-B3-race-postponed.mjs",
+    "command": "node audits/domain-coaching-r7a-2026-10-27/reviews/qe-probe-B-event-date-current-week.mjs ; node audits/domain-coaching-r7a-2026-10-27/reviews/qe-probe-B3-race-postponed.mjs",
+    "output": "reviews/qe-probe-B.out.json, reviews/qe-probe-B3.out.json",
+    "excerpt": {
+     "eventDateChange": {
+      "status": "MODIFY",
+      "action": "REPLAN_FUTURE_PHASES",
+      "newRace": "2026-12-21",
+      "fromWeek": 7,
+      "newRaceWeek": 7,
+      "weekPhaseKept": "BUILD"
+     },
+     "currentWeekRemaining": [
+      {
+       "date": "2026-12-15",
+       "role": "EASY",
+       "dayPhaseNow": "RACE_WEEK",
+       "daysToRace": 6,
+       "dose": "EASY 45 min"
+      },
+      {
+       "date": "2026-12-17",
+       "role": "QUALITY",
+       "dayPhaseNow": "RACE_WEEK",
+       "daysToRace": 4,
+       "dose": "THRESHOLD 43 min"
+      },
+      {
+       "date": "2026-12-17",
+       "role": "STRENGTH_FULL_B",
+       "dayPhaseNow": "RACE_WEEK",
+       "daysToRace": 4,
+       "dose": [
+        "db-rdl MAIN 4x5@3 KNOWN 24 rowPhase=BUILD",
+        "db-row MAIN 4x5@3 KNOWN 24 rowPhase=BUILD",
+        "db-bench-press MAIN 4x6@3 KNOWN 22 rowPhase=BUILD",
+        "db-split-squat ACCESSORY 3x6@3 KNOWN 24 rowPhase=BUILD",
+        "dead-bug ACCESSORY 3x10@3 BODYWEIGHT rowPhase=BUILD"
+       ]
+      },
+      {
+       "date": "2026-12-20",
+       "role": "LONG",
+       "dayPhaseNow": "RACE_WEEK",
+       "daysToRace": 1,
+       "dose": "LONG 70 min"
+      }
+     ],
+     "twinGeneratedWithNewDate": [
+      {
+       "day": 1,
+       "sport": "RUN",
+       "role": "EASY",
+       "dose": "EASY 25 min"
+      },
+      {
+       "day": 3,
+       "sport": "RUN",
+       "role": "RACE_TOUCH",
+       "dose": "RACE_TOUCH 25 min"
+      },
+      {
+       "day": 3,
+       "sport": "STRENGTH",
+       "role": "STRENGTH_FULL_B",
+       "dose": [
+        "db-rdl 1x@4",
+        "db-row 1x@4",
+        "db-bench-press 1x@4"
+       ]
+      },
+      {
+       "day": 6,
+       "sport": "RUN",
+       "role": "SHAKEOUT",
+       "dose": "SHAKEOUT 15 min"
+      }
+     ],
+     "racePostponedDuringRaceWeek": {
+      "status": "MODIFY",
+      "action": "REPLAN_FUTURE_PHASES",
+      "oldRace": "2027-02-07",
+      "newRace": "2027-02-14",
+      "raceSessionsInProposal": [
+       "w13 2027-02-07 w13-race",
+       "w14 2027-02-14 w14-race"
+      ]
+     }
+    },
+    "preR7A": {
+     "command": "QE_RUNTIME=pre node audits/domain-coaching-r7a-2026-10-27/reviews/qe-probe-B-event-date-current-week.mjs",
+     "output": "reviews/qe-probe-B.PRE.out.json",
+     "strengthDay3": [
+      "db-rdl MAIN 4x5@3 KNOWN 24 rowPhase=-",
+      "db-row MAIN 4x5@3 KNOWN 24 rowPhase=-",
+      "db-bench-press MAIN 4x6@3 KNOWN 22 rowPhase=-",
+      "db-split-squat ACCESSORY 3x6@3 KNOWN 24 rowPhase=-",
+      "dead-bug ACCESSORY 3x10@3 BODYWEIGHT rowPhase=-"
+     ],
+     "longDay6": "LONG 70 min"
+    }
+   }
+  },
+  {
+   "id": "QE-R7A-04",
+   "severity": "MEDIUM",
+   "blocking": true,
+   "new": true,
+   "narrow": true,
+   "runtimeOnly": true,
+   "preExistingAtR6Closure": false,
+   "introducedByR7A": true,
+   "class": [
+    "false UNSUPPORTED (new validation)",
+    "validation reads rows it did not write"
+   ],
+   "title": "R7-A phase-dose validation rejects ordinary same-week proposals after an event change (40 of 102 in the grid; all accepted before R7-A)",
+   "claimBroken": "Brief check \"the new validation cannot reject legitimate proposals in ordinary use\"; PHASE_MODIFIER_INTEGRITY",
+   "mechanism": "MOVE / REDUCE / RESCHEDULE_WITHIN_WEEK proposals are validated from week w with the program skeleton; after QE-R7A-03 the week-w rows (including past, immutable ones) were built under the earlier skeleton, so validateWeeks reports phaseDose errors for rows the proposal did not write and the whole decision becomes UNSUPPORTED (an athlete reporting systemic fatigue gets no reduction at all).",
+   "reproduction": {
+    "script": "reviews/qe-probe-B-event-date-current-week.mjs and reviews/qe-probe-N2-after-event-change.mjs",
+    "command": "node audits/domain-coaching-r7a-2026-10-27/reviews/qe-probe-B-event-date-current-week.mjs ; node audits/domain-coaching-r7a-2026-10-27/reviews/qe-probe-N2-after-event-change.mjs",
+    "output": "reviews/qe-probe-B.out.json, reviews/qe-probe-N2.out.json",
+    "excerpt": {
+     "unavailableTuesdayRun": {
+      "status": "UNSUPPORTED",
+      "action": "UNSUPPORTED",
+      "reason": "Counterfactual failed complete validation; no partial change is presented as valid",
+      "errors": [
+       "w6-str-d0:phaseDose:back-squat:sets",
+       "w6-str-d0:phaseDose:db-bench-press:sets",
+       "w6-str-d0:phaseDose:db-row:sets",
+       "w6-str-d0:phaseDose:db-calf-raise:sets",
+       "w6-str-d0:phaseDose:dead-bug:sets",
+       "w6-str-d3:phaseDose:db-rdl:sets"
+      ]
+     },
+     "systemicFatigue": {
+      "status": "UNSUPPORTED",
+      "action": "UNSUPPORTED",
+      "errors": [
+       "w6-str-d0:phaseDose:back-squat:sets",
+       "w6-str-d0:phaseDose:db-bench-press:sets",
+       "w6-str-d0:phaseDose:db-row:sets",
+       "w6-str-d0:phaseDose:db-calf-raise:sets",
+       "w6-str-d0:phaseDose:dead-bug:sets",
+       "w6-str-d3:phaseDose:db-rdl:sets"
+      ]
+     },
+     "grid": {
+      "sameWeekProposalsAfterChange": 102,
+      "rejectedWithPhaseDose_current": 40,
+      "ofWhichAcceptedByPreR7A": 40,
+      "firstCases": [
+       "TEN_K:w11:UNAVAILABLE_DAY cur=UNSUPPORTED(10) pre=MODIFY",
+       "TEN_K:w11:LOCAL_FATIGUE cur=UNSUPPORTED(9) pre=MODIFY",
+       "TEN_K:w11:SYSTEMIC_FATIGUE cur=UNSUPPORTED(5) pre=MODIFY",
+       "HALF:w9:UNAVAILABLE_DAY cur=UNSUPPORTED(3) pre=MODIFY",
+       "HALF:w9:LOCAL_FATIGUE cur=UNSUPPORTED(3) pre=MODIFY"
+      ]
+     }
+    },
+    "preR7A": {
+     "output": "reviews/qe-probe-B.PRE.out.json",
+     "unavailableTuesdayRun": {
+      "status": "MODIFY",
+      "action": "RESCHEDULE_WITHIN_WEEK"
+     },
+     "systemicFatigue": {
+      "status": "MODIFY",
+      "action": "REDUCE"
+     }
+    }
+   },
+   "note": "Ordinary single-branch use does not trigger it: probe N, 467 review branches over three programs, 0 phaseDose rejections (QE-R7A-NB claims)."
+  },
+  {
+   "id": "QE-R7A-05",
+   "severity": "HIGH",
+   "blocking": true,
+   "new": true,
+   "narrow": true,
+   "runtimeOnly": true,
+   "preExistingAtR6Closure": true,
+   "class": [
+    "unknown displaces known",
+    "provenance leak (label)",
+    "duplicate changes a prescription"
+   ],
+   "title": "An agreeing second report of a strength session replaces the whole exercise list: a watch that recognises fewer exercises (or no loads) erases the manual logs; the provider label prefix alone decides it",
+   "claimBroken": "Claim 6 (\"an exact replay or an agreeing second report changes nothing\"; \"a source label alone never changes a decision\"); policy principle 9 (missing data is never negative evidence; duplicates merge); class C08 marked not reproduced by the author",
+   "mechanism": "normalizeObservations merges a complementary duplicate with previous.actual = {...previous.actual, ...o.actual} when o has the better source rank, so actual.exercises is replaced wholesale; sourceQuality ranks a report WEARABLE_FULL when provider starts with \"WEARABLE\" or an activityId is present (r6-provenance.mjs lines 14, 105-106). performedInWeek then lists only the surviving exercises as performed.",
+   "reproduction": {
+    "script": "reviews/qe-probe-CDEF-provenance.mjs (C) and reviews/qe-probe-C34-merge-label-and-drift.mjs (C3, C4)",
+    "command": "node audits/domain-coaching-r7a-2026-10-27/reviews/qe-probe-CDEF-provenance.mjs ; node audits/domain-coaching-r7a-2026-10-27/reviews/qe-probe-C34-merge-label-and-drift.mjs",
+    "output": "reviews/qe-probe-CDEF.out.json, reviews/qe-probe-C34.out.json",
+    "excerpt": {
+     "baselineGates": {
+      "LONG": "ADVANCE",
+      "EASY": "ADVANCE",
+      "back-squat": "ADVANCE",
+      "db-bench-press": "ADVANCE",
+      "db-row": "ADVANCE",
+      "db-calf-raise": "ADVANCE",
+      "dead-bug": "ADVANCE",
+      "db-rdl": "ADVANCE",
+      "db-split-squat": "ADVANCE"
+     },
+     "withAgreeingSubsetWatchReport": {
+      "duplicates": [
+       {
+        "eventId": "qe-c-watch-subset",
+        "mergedInto": "qe-c-0",
+        "reason": "SAME_EXECUTION_DIFFERENT_SOURCE"
+       }
+      ],
+      "conflicts": 0,
+      "gates": {
+       "LONG": "ADVANCE",
+       "EASY": "ADVANCE",
+       "back-squat": "ADVANCE",
+       "db-bench-press": "HOLD",
+       "db-row": "HOLD",
+       "db-calf-raise": "HOLD",
+       "dead-bug": "HOLD",
+       "db-rdl": "ADVANCE",
+       "db-split-squat": "ADVANCE"
+      },
+      "logs": {
+       "back-squat": {
+        "load": 80,
+        "reps": 5,
+        "setsDone": 3
+       }
+      },
+      "decisionUnchanged": false
+     },
+     "withAgreeingNoLoadWatchReport": {
+      "logsBackSquat": {
+       "load": null,
+       "reps": 5,
+       "setsDone": 3
+      },
+      "action": "ADOPT_LOGGED_LOADS",
+      "decisionUnchanged": false
+     },
+     "labelOnly_C3": {
+      "provider 'WEARABLE_WATCH': decision unchanged": false,
+      "provider 'SMARTWATCH': decision unchanged": true
+     },
+     "twelveWeeks_C4": {
+      "log": "0:MODIFY/GATED_NEXT_STEP 1:MODIFY/GATED_NEXT_STEP 2:MODIFY/GATED_NEXT_STEP 3:MODIFY/GATED_NEXT_STEP 4:MODIFY/GATED_NEXT_STEP 5:MODIFY/GATED_NEXT_STEP 6:MODIFY/GATED_NEXT_STEP 7:MODIFY/GATED_NEXT_STEP 8:MODIFY/GATED_NEXT_STEP 9:MODIFY/GATED_NEXT_STEP 10:MODIFY/GATED_NEXT_STEP",
+      "rowsReestablishedOrUnloggedAlthoughDoneWeekly": 17,
+      "examples": [
+       "2026-11-27 d4 w3-str-d4 db-bench-press 2x5@3 ESTABLISH kind=REESTABLISH phase=CONSOLIDATION/3",
+       "2026-11-30 d0 w4-str-d0 db-bench-press 2x5@3 ESTABLISH kind=REESTABLISH phase=DEVELOPMENT/3",
+       "2026-12-04 d4 w4-str-d4 db-bench-press 2x5@3 ESTABLISH kind=REESTABLISH phase=DEVELOPMENT/3"
+      ],
+      "lastPerformedAtWeek6": {
+       "back-squat": "2026-12-07",
+       "db-bench-press": "2026-10-29",
+       "db-rdl": "2026-12-11"
+      }
+     }
+    },
+    "preR7A": {
+     "command": "QE_RUNTIME=pre node audits/domain-coaching-r7a-2026-10-27/reviews/qe-probe-CDEF-provenance.mjs",
+     "output": "reviews/qe-probe-CDEF.PRE.out.json",
+     "subsetDecisionUnchanged": false,
+     "noLoadDecisionUnchanged": false
+    }
+   }
+  },
+  {
+   "id": "QE-R7A-06",
+   "severity": "MEDIUM",
+   "blocking": true,
+   "new": true,
+   "narrow": true,
+   "runtimeOnly": true,
+   "preExistingAtR6Closure": true,
+   "class": [
+    "contradictory observations merged by arrival order"
+   ],
+   "title": "Two reports of one session that contradict on repetitions or RIR are merged, not quarantined; the earlier one wins and the gate depends on arrival order",
+   "claimBroken": "Claim 6 (\"contradictory reports of one session are a conflict in either arrival order\"); operational.learning.conflicts (\"different physical facts\")",
+   "mechanism": "R7-A physicalAgrees compares per-exercise set counts and the heaviest load only; reps and RIR are not compared. With equal source rank the first report's facts are kept.",
+   "reproduction": {
+    "script": "reviews/qe-probe-CDEF-provenance.mjs (D)",
+    "command": "node audits/domain-coaching-r7a-2026-10-27/reviews/qe-probe-CDEF-provenance.mjs",
+    "output": "reviews/qe-probe-CDEF.out.json",
+    "excerpt": {
+     "reps": {
+      "threeArrivesFirst": {
+       "conflicts": 0,
+       "duplicates": [
+        "SAME_EXECUTION_DIFFERENT_SOURCE"
+       ],
+       "gateSquat": "HOLD",
+       "squatLog": {
+        "load": 80,
+        "reps": 3,
+        "setsDone": 3
+       }
+      },
+      "fiveArrivesFirst": {
+       "conflicts": 0,
+       "duplicates": [
+        "SAME_EXECUTION_DIFFERENT_SOURCE"
+       ],
+       "gateSquat": "ADVANCE",
+       "squatLog": {
+        "load": 80,
+        "reps": 5,
+        "setsDone": 3
+       }
+      },
+      "sameDecisionEitherOrder": false
+     },
+     "rir": {
+      "zeroArrivesFirst": {
+       "conflicts": 0,
+       "gateSquat": "HOLD"
+      },
+      "threeArrivesFirst": {
+       "conflicts": 0,
+       "gateSquat": "ADVANCE"
+      },
+      "sameDecisionEitherOrder": false
+     }
+    },
+    "preR7A": {
+     "output": "reviews/qe-probe-CDEF.PRE.out.json",
+     "repsSameDecisionEitherOrder": false,
+     "rirSameDecisionEitherOrder": false
+    }
+   }
+  },
+  {
+   "id": "QE-R7A-07",
+   "severity": "MEDIUM",
+   "blocking": true,
+   "new": true,
+   "narrow": true,
+   "runtimeOnly": true,
+   "preExistingAtR6Closure": false,
+   "introducedByR7A": "partial fix (new code path skips pounds)",
+   "class": [
+    "hidden unit conversion",
+    "contradictory observations merged"
+   ],
+   "title": "The R7-A exercise-level conflict check skips loads logged in pounds: 80 kg vs 100 lb merges as agreeing and the squat reference drops to 45.5 kg",
+   "claimBroken": "Claim 6 (contradictory reports are a conflict); strength.loadUnits (pounds are converted at the boundary)",
+   "mechanism": "exerciseFacts (r6-provenance.mjs line 52) reads a set load only as a bare number or {unit:\"KG\"}; an LB load yields no value, so the load comparison is skipped. strengthLogs later converts the surviving (better-source) pounds to 45.5 kg and it is adopted below the plan.",
+   "reproduction": {
+    "script": "reviews/qe-probe-D2-lb-conflict.mjs",
+    "command": "node audits/domain-coaching-r7a-2026-10-27/reviews/qe-probe-D2-lb-conflict.mjs",
+    "output": "reviews/qe-probe-D2.out.json",
+    "excerpt": {
+     "watchInPounds_100lb": {
+      "conflicts": [],
+      "duplicates": [
+       "SAME_EXECUTION_DIFFERENT_SOURCE"
+      ],
+      "status": "MODIFY/ADOPT_LOGGED_LOADS",
+      "squatLogKg": 45.5,
+      "squatStateNextWeek": 45.5
+     },
+     "watchInKilograms_45_5kg": {
+      "conflicts": [
+       "CONFLICTING_PHYSICAL_OR_RESPONSE_REPORTS"
+      ],
+      "duplicates": [],
+      "status": "MODIFY/GATED_NEXT_STEP",
+      "squatLogKg": 80,
+      "squatStateNextWeek": 80
+     }
+    },
+    "preR7A": {
+     "command": "QE_RUNTIME=pre node audits/domain-coaching-r7a-2026-10-27/reviews/qe-probe-D2-lb-conflict.mjs",
+     "output": "reviews/qe-probe-D2.PRE.out.json",
+     "watchInPounds": {
+      "conflicts": [],
+      "squatStateNextWeek": 45.5
+     },
+     "watchInKilograms": {
+      "conflicts": [],
+      "squatStateNextWeek": 45.5
+     }
+    }
+   }
+  },
+  {
+   "id": "QE-R7A-08",
+   "severity": "MEDIUM",
+   "blocking": true,
+   "new": true,
+   "narrow": true,
+   "runtimeOnly": true,
+   "preExistingAtR6Closure": true,
+   "class": [
+    "historical correction lost",
+    "non-idempotent normalization of the carried ledger"
+   ],
+   "title": "A correction of a merged duplicate (correctionOf = the watch report's eventId) is valid in its review and rejected once carried: the session loses every live fact",
+   "claimBroken": "Claim 6 (\"a correction survives being carried into later reviews (normalization of the carried ledger is idempotent)\"); residual of C10",
+   "mechanism": "In the first review byEvent maps the merged duplicate's eventId to the surviving row, so the chain validates. The carried ledger holds only the surviving row (superseded) and the correction; the duplicate's eventId is no longer findable, so the carried correction is INVALID_CORRECTION_CHAIN (r6-provenance.mjs lines 79-80, 109).",
+   "reproduction": {
+    "script": "reviews/qe-probe-CDEF-provenance.mjs (E)",
+    "command": "node audits/domain-coaching-r7a-2026-10-27/reviews/qe-probe-CDEF-provenance.mjs",
+    "output": "reviews/qe-probe-CDEF.out.json",
+    "excerpt": {
+     "probe": "E",
+     "normalize": {
+      "firstReview": {
+       "live": [
+        [
+         "qe-e-C",
+         55
+        ]
+       ],
+       "superseded": [
+        {
+         "eventId": "qe-e-M",
+         "supersededBy": "qe-e-C",
+         "correctedAt": "2026-11-03T12:00:00.000Z"
+        }
+       ],
+       "duplicates": [
+        [
+         "qe-e-W",
+         "qe-e-M"
+        ]
+       ],
+       "excluded": []
+      },
+      "carriedReview": {
+       "live": [],
+       "excluded": [
+        [
+         "qe-e-C",
+         "INVALID_CORRECTION_CHAIN"
+        ]
+       ]
+      },
+      "idempotent": false
+     },
+     "endToEnd": {
+      "week0Review": {
+       "live": [
+        [
+         "qe-e-C",
+         55
+        ]
+       ]
+      },
+      "week1Review": {
+       "live": [],
+       "excluded": [
+        [
+         "qe-e-C",
+         "INVALID_CORRECTION_CHAIN"
+        ]
+       ]
+      }
+     }
+    }
+   },
+   "preR7A": {
+    "output": "reviews/qe-probe-CDEF.PRE.out.json",
+    "endToEnd": {
+     "week0Review": {
+      "live": [
+       [
+        "qe-e-C",
+        55
+       ]
+      ]
+     },
+     "week1Review": {
+      "live": [],
+      "excluded": [
+       [
+        "qe-e-C",
+        "INVALID_CORRECTION_CHAIN"
+       ]
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "QE-R7A-09",
+   "severity": "MEDIUM",
+   "blocking": true,
+   "new": true,
+   "narrow": true,
+   "runtimeOnly": true,
+   "preExistingAtR6Closure": true,
+   "class": [
+    "duplicate observation changes a decision",
+    "order dependence across reviews"
+   ],
+   "title": "An exact replay, in a later review, of a report that was merged with a complementary duplicate is quarantined as a conflict and changes the decision",
+   "claimBroken": "Claim 6 (\"an exact replay ... changes nothing\")",
+   "mechanism": "The carried row's inputHash is recomputed from the carried (normalized, merged) row and its actual now holds the other source's facts, so the raw replay matches neither and is EVENT_ID_REUSED_WITH_DIFFERENT_FACTS (r6-provenance.mjs lines 88-92).",
+   "reproduction": {
+    "script": "reviews/qe-probe-CDEF-provenance.mjs (F)",
+    "command": "node audits/domain-coaching-r7a-2026-10-27/reviews/qe-probe-CDEF-provenance.mjs",
+    "output": "reviews/qe-probe-CDEF.out.json",
+    "excerpt": {
+     "probe": "F",
+     "review1": {
+      "duplicates": [
+       [
+        "qe-e-W",
+        "qe-e-M",
+        "SAME_EXECUTION_DIFFERENT_SOURCE"
+       ]
+      ],
+      "runRow": "COMPLETED"
+     },
+     "review2WithoutReplay": {
+      "conflicts": [],
+      "runRow": "COMPLETED",
+      "status": "KEEP",
+      "action": "INSTANTIATE_LOGGED_LOADS"
+     },
+     "review2WithExactReplayOfM": {
+      "conflicts": [
+       {
+        "identity": "session:w0-run-d1",
+        "eventIds": [
+         "qe-e-M"
+        ],
+        "reason": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS"
+       }
+      ],
+      "excluded": [
+       [
+        "qe-e-M",
+        "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS"
+       ]
+      ],
+      "runRow": "CONFLICTED",
+      "status": "MODIFY",
+      "action": "GATED_NEXT_STEP",
+      "gates": {
+       "LONG": "ADVANCE",
+       "EASY": "HOLD",
+       "back-squat": "ADVANCE",
+       "db-bench-press": "ADVANCE",
+       "db-row": "ADVANCE",
+       "db-calf-raise": "ADVANCE",
+       "dead-bug": "ADVANCE",
+       "db-rdl": "ADVANCE",
+       "db-split-squat": "ADVANCE"
+      }
+     },
+     "replayChangesDecision": true
+    }
+   },
+   "preR7A": {
+    "output": "reviews/qe-probe-CDEF.PRE.out.json",
+    "replayChangesDecision": true
+   }
+  },
+  {
+   "id": "QE-R7A-10",
+   "severity": "MEDIUM",
+   "blocking": true,
+   "new": true,
+   "narrow": true,
+   "runtimeOnly": true,
+   "preExistingAtR6Closure": true,
+   "class": [
+    "branch asymmetry",
+    "stale row (kind computed for another date)"
+   ],
+   "title": "A key strength session moved later in the week keeps the kind and dose of its original date: back squat 3x5 at 82.5 kg KNOWN, 30 days after its last exposure",
+   "claimBroken": "Headline (another branch, another meaning); strength.resumeAfterDays / SSCTR D52 (not performed for more than 28 days restarts with effort-guided establishment)",
+   "mechanism": "moveCandidates clones the target prescription onto the later slot (r6-adaptation.mjs line 378); the R7-A same-phase guard checks the day phase but not the date-dependent kind (strengthCandidate re-establishment rule, r6-program.mjs line 360). The review then reads kind KNOWN, so no re-establishment follows.",
+   "reproduction": {
+    "script": "reviews/qe-probe-G-move-reestablish.mjs",
+    "command": "node audits/domain-coaching-r7a-2026-10-27/reviews/qe-probe-G-move-reestablish.mjs",
+    "output": "reviews/qe-probe-G.out.json",
+    "excerpt": {
+     "review": {
+      "status": "MODIFY",
+      "action": "MOVE",
+      "reason": "Do the missed lower on 2026-12-09 instead of the upper session planned there; no new day, no added interference",
+      "candidates": [
+       "SKIP_NO_DEBT:true",
+       "MOVE_TO_w5-str-d2:true",
+       "STACK_OR_CATCH_UP:false"
+      ]
+     },
+     "targetFirstRow": "back-squat 3x5@3 KNOWN 82.5 kind=KNOWN daysSinceLast=28",
+     "movedFirstRow": "back-squat 3x5@3 KNOWN 82.5 kind=KNOWN daysSinceLast=30 (> 28?)"
+    },
+    "preR7A": {
+     "command": "QE_RUNTIME=pre node audits/domain-coaching-r7a-2026-10-27/reviews/qe-probe-G-move-reestablish.mjs",
+     "output": "reviews/qe-probe-G.PRE.out.json",
+     "movedFirstRow": "back-squat 3x5@3 KNOWN 82.5 kind=- daysSinceLast=30 (> 28?)"
+    }
+   }
+  },
+  {
+   "id": "QE-R7A-11",
+   "severity": "MEDIUM",
+   "blocking": true,
+   "new": true,
+   "narrow": true,
+   "runtimeOnly": true,
+   "preExistingAtR6Closure": true,
+   "class": [
+    "dated change applied beyond its dates",
+    "branch asymmetry (validation on one path only)"
+   ],
+   "title": "EQUIPMENT_CHANGE stores any from/to string: a malformed end date makes a temporary change permanent in effect; an inverted window is silently KEEP",
+   "claimBroken": "Claim 6 (\"a dated schedule change is never applied beyond its dates\"); R7-A C16 validation exists only for SCHEDULE_CHANGE / DOUBLE_CONFLICT",
+   "mechanism": "equipmentChange takes changes.from/to unchecked (r6-adaptation.mjs line 520) and templatesForDate compares dates as strings (r6-program.mjs line 789): \"soon\" and \"2026-13-45\" sort after real dates.",
+   "reproduction": {
+    "script": "reviews/qe-probe-H-equipment-window-dates.mjs",
+    "command": "node audits/domain-coaching-r7a-2026-10-27/reviews/qe-probe-H-equipment-window-dates.mjs",
+    "output": "reviews/qe-probe-H.out.json",
+    "excerpt": {
+     "original": [
+      "w3:barbell",
+      "w4:barbell",
+      "w5:barbell"
+     ],
+     "validWindow": {
+      "window": [
+       {
+        "from": "2026-11-23",
+        "to": "2026-11-29",
+        "equipment": [
+         "BENCH",
+         "DUMBBELLS"
+        ]
+       }
+      ],
+      "weeks": [
+       "w3:substituted",
+       "w4:barbell",
+       "w5:barbell"
+      ]
+     },
+     "malformedTo": {
+      "window": [
+       {
+        "from": "2026-11-23",
+        "to": "soon",
+        "equipment": [
+         "BENCH",
+         "DUMBBELLS"
+        ]
+       }
+      ],
+      "weeks": [
+       "w3:substituted",
+       "w4:substituted",
+       "w5:substituted",
+       "w6:substituted",
+       "w7:substituted",
+       "w8:substituted",
+       "w9:substituted",
+       "w10:substituted",
+       "w11:substituted"
+      ]
+     },
+     "impossibleDate": {
+      "weeks": [
+       "w3:substituted",
+       "w4:substituted",
+       "w5:substituted",
+       "w6:substituted",
+       "w7:substituted",
+       "w8:substituted",
+       "w9:barbell",
+       "w10:barbell",
+       "w11:barbell"
+      ]
+     },
+     "invertedWindow": {
+      "status": "KEEP"
+     },
+     "scheduleChangeSameDates": {
+      "malformedTo": {
+       "to": "soon",
+       "status": "ASK",
+       "action": "ASK",
+       "missingInputs": [
+        "changes.to"
+       ]
+      },
+      "invertedWindow": {
+       "to": "2026-11-01",
+       "status": "ASK",
+       "action": "ASK",
+       "missingInputs": [
+        "changes.to"
+       ]
+      }
+     }
+    }
+   }
+  },
+  {
+   "id": "QE-R7A-12",
+   "severity": "MEDIUM",
+   "blocking": true,
+   "new": true,
+   "narrow": true,
+   "runtimeOnly": true,
+   "preExistingAtR6Closure": true,
+   "class": [
+    "inconsistent state transition",
+    "skipped modifier (HOLD does not hold)"
+   ],
+   "title": "One known-load set below target (3 of 5 reps) gives a HOLD gate, yet the next week prescribes 3x3, below the goal rep range [4, 6]",
+   "claimBroken": "gates (HOLD = repeat the dose); class C12 / CQ-R6-11 invariant the R7-A test itself states (\"within one load mode reps never fall after a gated review\"), here for a known shortfall instead of missing reps",
+   "mechanism": "advanceStrength adopts a logged load at the planned value and sets ex.reps = log.reps (the minimum logged reps) whatever the gate (r6-program.mjs line 475); KNOWN rows prescribe min(ex.reps, hi) with no lower bound at the rep range.",
+   "reproduction": {
+    "script": "reviews/qe-probe-R-unknown-reps.mjs (R2)",
+    "command": "node audits/domain-coaching-r7a-2026-10-27/reviews/qe-probe-R-unknown-reps.mjs",
+    "output": "reviews/qe-probe-R.out.json",
+    "excerpt": {
+     "current": {
+      "probe": "R2",
+      "runtime": "CURRENT",
+      "gate": "HOLD",
+      "goalRepRange": [
+       4,
+       6
+      ],
+      "week1BackSquat": [
+       "2026-11-09 d0 w1-str-d0 back-squat 3x3@3 KNOWN 80 kind=KNOWN phase=DEVELOPMENT/3"
+      ]
+     },
+     "preR7A": {
+      "probe": "R2",
+      "runtime": "PRE_R7A",
+      "gate": "HOLD",
+      "goalRepRange": [
+       4,
+       6
+      ],
+      "week1BackSquat": [
+       "2026-11-09 d0 w1-str-d0 back-squat 3x3@3 KNOWN 80 kind=- phase=-/-"
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "QE-R7A-13",
+   "severity": "LOW",
+   "blocking": false,
+   "new": true,
+   "narrow": true,
+   "runtimeOnly": true,
+   "class": [
+    "provenance leak (label literal)",
+    "hidden convention (time strings)",
+    "unknown displaces known (load hint)"
+   ],
+   "title": "Intake strength-record merge (R7-A lead): same-date precedence keyed on the literal \"SELF_REPORT\"; observedAt compared as raw strings; a later record without any load displaces an earlier load hint",
+   "claimBroken": "Claim 6 (intake records merge independently of source; a source label alone never changes a decision) and class C07 for load hints",
+   "reproduction": {
+    "script": "reviews/qe-probe-I-intake-merge.mjs",
+    "command": "node audits/domain-coaching-r7a-2026-10-27/reviews/qe-probe-I-intake-merge.mjs",
+    "output": "reviews/qe-probe-I.out.json",
+    "excerpt": {
+     "I1": {
+      "selfA_watchB": {
+       "load": 20,
+       "hint": 20,
+       "source": "SELF_REPORT",
+       "observedAt": "2026-10-29"
+      },
+      "watchA_selfB": {
+       "load": 24,
+       "hint": 24,
+       "source": "SELF_REPORT",
+       "observedAt": "2026-10-29"
+      },
+      "lowercaseSelfA_watchB": {
+       "load": 20,
+       "hint": 20,
+       "source": "self_report",
+       "observedAt": "2026-10-29"
+      },
+      "watchA_lowercaseSelfB": {
+       "load": 20,
+       "hint": 20,
+       "source": "APPLE_HEALTH",
+       "observedAt": "2026-10-29"
+      },
+      "manualA_watchB": {
+       "load": 20,
+       "hint": 20,
+       "source": "MANUAL",
+       "observedAt": "2026-10-29"
+      },
+      "watchA_manualB": {
+       "load": 20,
+       "hint": 20,
+       "source": "APPLE_HEALTH",
+       "observedAt": "2026-10-29"
+      }
+     },
+     "I2": {
+      "laterInstantLoses": {
+       "load": 20,
+       "hint": 20,
+       "source": "SELF_REPORT",
+       "observedAt": "2026-10-30T01:00:00+05:00"
+      },
+      "note": "2026-10-30T01:00:00+05:00 is 2026-10-29T20:00Z, earlier than 2026-10-29T22:00Z (B, 24 kg)",
+      "sameDayTimestampBeatsSelfReportRule": {
+       "load": 24,
+       "hint": 24,
+       "source": "APPLE_HEALTH",
+       "observedAt": "2026-10-29T06:00:00Z"
+      }
+     },
+     "I3": {
+      "hintOnly": {
+       "mode": "KNOWN",
+       "load": 20,
+       "pendingLoad": null
+      },
+      "hintThenLaterNoLoadRecord": {
+       "mode": "FROM_LOG",
+       "load": null,
+       "pendingLoad": 20
+      },
+      "questions": [
+       "ESTABLISHMENT_LOG_UNCONFIRMED"
+      ]
+     }
+    }
+   },
+   "whyNonBlocking": "Both doses are complete and current and their disagreement is disclosed; the hint loss makes the first log pending (asked) rather than adopted, the conservative side."
+  },
+  {
+   "id": "QE-R7A-14",
+   "severity": "LOW",
+   "blocking": false,
+   "new": true,
+   "narrow": true,
+   "runtimeOnly": true,
+   "introducedByR7A": true,
+   "class": [
+    "two readings of one week",
+    "duplicated semantic logic"
+   ],
+   "title": "A time-budget trim is read as a phase reduction: fitStrengthSession lowers row sets after strengthDose; the review compares row sets with exposure.baseSets, the projection and the legacy fallback with the untrimmed plan",
+   "claimBroken": "Claim 2 (one reading of the week); \"a week without a phase reduction executed its whole count\"",
+   "reproduction": {
+    "script": "reviews/qe-probe-J-budget-trim.mjs and reviews/qe-probe-M-legacy-representation.mjs",
+    "command": "node audits/domain-coaching-r7a-2026-10-27/reviews/qe-probe-J-budget-trim.mjs ; QE_RUNTIME=pre node audits/domain-coaching-r7a-2026-10-27/reviews/qe-probe-J-budget-trim.mjs ; node audits/domain-coaching-r7a-2026-10-27/reviews/qe-probe-M-legacy-representation.mjs",
+    "output": "reviews/qe-probe-J.out.json, reviews/qe-probe-J.PRE.out.json, reviews/qe-probe-M.out.json",
+    "excerpt": {
+     "trimmedRowsInUnreducedPhases": {
+      "n": 58,
+      "ex": [
+       "2026-11-09 d0 w1-str-d0 db-row 2x5@3 FROM_LOG kind=FROM_LOG phase=DEVELOPMENT/3 baseSets=3",
+       "2026-11-13 d4 w1-str-d4 db-bench-press 2x6@3 KNOWN 18 kind=KNOWN phase=DEVELOPMENT/3 baseSets=3",
+       "2026-11-16 d0 w2-str-d0 db-row 2x5@3 FROM_LOG kind=FROM_LOG phase=DEVELOPMENT/3 baseSets=3"
+      ]
+     },
+     "crossRuntimeDiff": "db-bench-press cap2 cur \"///3\" pre \"///2\" (setCap/regainCap/setCeiling/lastExecutedSets at week 2 start; only difference)",
+     "stripExposure_splitWeek": [
+      [
+       "w8-str-d0 db-calf-raise 2x10@3 KNOWN 20",
+       "w8-str-d0 db-calf-raise 1x10@3 KNOWN 20"
+      ]
+     ],
+     "stripExposure_budget": [
+      {
+       "id": "db-bench-press",
+       "withExposure": 3,
+       "withoutExposure": 2
+      }
+     ]
+    }
+   },
+   "whyNonBlocking": "Effects are conservative (the count rises later or the ceiling keeps an earlier executed value) and the regain base after a reduced re-establishment is the routed SSCTR Q1; no decision difference appeared in the as-prescribed logs."
+  },
+  {
+   "id": "QE-R7A-15",
+   "severity": "LOW",
+   "blocking": false,
+   "new": true,
+   "narrow": true,
+   "runtimeOnly": true,
+   "class": [
+    "duplicated semantic logic (return-entry week)"
+   ],
+   "title": "The two R7-A definitions of a return-entry week (template slots before fitting in buildWeek; fitted rows in advanceStrength) disagree in a mixed week",
+   "claimBroken": "Claim 4 (one in-use reading)",
+   "reproduction": {
+    "script": "reviews/qe-probe-K-entry-week-definitions.mjs",
+    "command": "node audits/domain-coaching-r7a-2026-10-27/reviews/qe-probe-K-entry-week-definitions.mjs",
+    "output": "reviews/qe-probe-K.out.json",
+    "excerpt": {
+     "budget30_weekW_newMains": [
+      "2026-12-11 d4 w5-str-d4 lat-pulldown 2x8@3 ESTABLISH kind=FIRST_ESTABLISH phase=DEVELOPMENT/3",
+      "2026-12-11 d4 w5-str-d4 machine-chest-press 2x8@3 ESTABLISH kind=FIRST_ESTABLISH phase=DEVELOPMENT/3"
+     ],
+     "budget30_stepsAfter": {
+      "lat-pulldown": 1,
+      "machine-chest-press": 1
+     },
+     "budget60_weekW_newMains": [
+      "2026-12-11 d4 w5-str-d4 lat-pulldown 1x8@4 ESTABLISH kind=RETURN_ENTRY phase=DEVELOPMENT/1",
+      "2026-12-11 d4 w5-str-d4 machine-chest-press 1x8@4 ESTABLISH kind=RETURN_ENTRY phase=DEVELOPMENT/1"
+     ]
+    }
+   },
+   "whyNonBlocking": "Needs a return plus a same-day permanent equipment change under a main-only budget; the new mains get 2x8 @3 instead of 1x8 @4 for one week."
+  },
+  {
+   "id": "QE-R7A-16",
+   "severity": "LOW",
+   "blocking": false,
+   "new": true,
+   "narrow": true,
+   "runtimeOnly": true,
+   "introducedByR7A": true,
+   "class": [
+    "provenance leak (input flag)"
+   ],
+   "title": "A new observation carrying superseded:true is dropped silently (neither accepted nor excluded, before the time checks) and carried as history",
+   "claimBroken": "Claim 6 (history short-cut meant only for carried rows)",
+   "reproduction": {
+    "script": "reviews/qe-probe-OPQ-minor.mjs (O)",
+    "command": "node audits/domain-coaching-r7a-2026-10-27/reviews/qe-probe-OPQ-minor.mjs",
+    "output": "reviews/qe-probe-OPQ.out.json",
+    "excerpt": {
+     "plainFact": {
+      "accepted": 1,
+      "excluded": 0
+     },
+     "sameFactFlaggedSuperseded": {
+      "accepted": 0,
+      "excluded": 0,
+      "supersededRows": 1,
+      "superseded": 0
+     },
+     "futureFactFlaggedSuperseded": {
+      "accepted": 0,
+      "excluded": [],
+      "supersededRows": 1
+     }
+    }
+   }
+  },
+  {
+   "id": "QE-R7A-17",
+   "severity": "LOW",
+   "blocking": false,
+   "new": true,
+   "narrow": true,
+   "runtimeOnly": true,
+   "class": [
+    "two readings of one row (practice flag)"
+   ],
+   "title": "The LUNGE practice exercise (split-squat-bodyweight) has catalogue role ACCESSORY: plan-time used marks it practice, review-time usedInWeek does not, so the reviewed transition runs the ordinary branch",
+   "reproduction": {
+    "script": "reviews/qe-probe-OPQ-minor.mjs (P)",
+    "command": "node audits/domain-coaching-r7a-2026-10-27/reviews/qe-probe-OPQ-minor.mjs",
+    "output": "reviews/qe-probe-OPQ.out.json",
+    "excerpt": {
+     "practiceRowsWeek0": [
+      "w0-str-d0 sit-to-stand role=PRACTICE",
+      "w0-str-d0 hip-hinge-practice role=PRACTICE",
+      "w0-str-d0 split-squat-bodyweight role=ACCESSORY"
+     ],
+     "splitSquatBodyweight_reviewed_lastExecutedSets": 1,
+     "sitToStand_reviewed_lastExecutedSets": null
+    }
+   }
+  },
+  {
+   "id": "QE-R7A-18",
+   "severity": "LOW",
+   "blocking": false,
+   "new": true,
+   "narrow": true,
+   "runtimeOnly": true,
+   "preExistingAtR6Closure": true,
+   "class": [
+    "duplicate within a session (rotation)"
+   ],
+   "title": "CORE template rotation resolves both TRUNK slots to the same exercise (side-plank twice in one session)",
+   "reproduction": {
+    "script": "reviews/qe-probe-OPQ-minor.mjs (Q)",
+    "command": "node audits/domain-coaching-r7a-2026-10-27/reviews/qe-probe-OPQ-minor.mjs",
+    "output": "reviews/qe-probe-OPQ.out.json",
+    "excerpt": {
+     "sessionsWithTheSameExerciseTwice": 36,
+     "examples": [
+      "w2-str-d4 STRENGTH_CORE [side-plank,standing-calf-raise,side-plank]",
+      "w3-str-d4 STRENGTH_CORE [side-plank,standing-calf-raise,side-plank]",
+      "w6-str-d4 STRENGTH_CORE [side-plank,standing-calf-raise,side-plank]",
+      "w7-str-d4 STRENGTH_CORE [side-plank,standing-calf-raise,side-plank]",
+      "w10-str-d4 STRENGTH_CORE [side-plank,standing-calf-raise,side-plank]"
+     ]
+    }
+   }
+  }
+ ],
+ "claimsTriedNotBroken": [
+  {
+   "claim": "Claim 3, D53 every state mode",
+   "attempt": "Grid of 192 timelines: state mode before the gap (KNOWN, pending, unlogged, re-established twice) x gap position (mid development, block end, into consolidation, late) x execution (as prescribed, one set logged, report without exercise details) x goal (STRENGTH, GENERAL) x two or three strength days (split week by date)",
+   "evidence": {
+    "script": "reviews/qe-probe-L-d53-grid.mjs",
+    "output": "reviews/qe-probe-L.out.json",
+    "result": {
+     "probe": "L",
+     "timelines": 192,
+     "statuses": {
+      "KEEP": 934,
+      "MODIFY": 1946
+     },
+     "performedReestablishments": 1092,
+     "laterRowsChecked": 5844,
+     "violations": 0,
+     "examples": [],
+     "phaseDoseErrors": 0,
+     "phaseExamples": []
+    }
+   }
+  },
+  {
+   "claim": "Claim 1, phase dose of every generated or reviewed row in a single branch",
+   "attempt": "Same grid: validateWeeks phaseDose on every final program; probe N: 467 ordinary review branches (missed session, unavailable day, local and systemic fatigue, temporary equipment change, schedule change, goal change, event later/earlier, returns of 12, 20 and 40 days) on 10K, half-marathon and no-event programs, against the pre-R7A runtime",
+   "evidence": {
+    "script": "reviews/qe-probe-N-false-unsupported-grid.mjs",
+    "output": "reviews/qe-probe-N.out.json",
+    "result": {
+     "phaseDoseErrorsInGrid": 0,
+     "cases": 467,
+     "currentStatuses": {
+      "KEEP": 42,
+      "MODIFY": 410,
+      "ASK": 15
+     },
+     "preR7AStatuses": {
+      "KEEP": 41,
+      "MODIFY": 411,
+      "ASK": 15
+     },
+     "newUnsupportedWithPhaseDose": 0
+    }
+   }
+  },
+  {
+   "claim": "Claim 5, unknown repetitions",
+   "attempt": "All sets without reps, mixed known and unknown, reps as a string, negative, null",
+   "evidence": {
+    "script": "reviews/qe-probe-R-unknown-reps.mjs",
+    "output": "reviews/qe-probe-R.out.json",
+    "result": {
+     "allUnknown": {
+      "gate": "HOLD",
+      "repsMet": null,
+      "nextState": {
+       "load": 80,
+       "reps": 5,
+       "loadTick": 0
+      }
+     },
+     "mixedKnownMeets": {
+      "gate": "HOLD",
+      "repsMet": null,
+      "nextState": {
+       "load": 80,
+       "reps": 5,
+       "loadTick": 0
+      }
+     },
+     "stringReps": {
+      "gate": "HOLD",
+      "repsMet": null,
+      "nextState": {
+       "load": 80,
+       "reps": 5,
+       "loadTick": 0
+      }
+     },
+     "negativeReps": {
+      "gate": "HOLD",
+      "repsMet": null,
+      "nextState": {
+       "load": 80,
+       "reps": 5,
+       "loadTick": 0
+      }
+     },
+     "nullReps": {
+      "gate": "HOLD",
+      "repsMet": null,
+      "nextState": {
+       "load": 80,
+       "reps": 5,
+       "loadTick": 0
+      }
+     },
+     "knownShortfall": {
+      "gate": "HOLD",
+      "repsMet": false,
+      "nextState": {
+       "load": 80,
+       "reps": 3,
+       "loadTick": 0
+      }
+     },
+     "asPrescribed": {
+      "gate": "ADVANCE",
+      "repsMet": true,
+      "nextState": {
+       "load": 80,
+       "reps": 5,
+       "loadTick": 1
+      }
+     }
+    }
+   }
+  },
+  {
+   "claim": "Claim 2, legacy programs without exposure",
+   "attempt": "Programs generated and reviewed for half the horizon by the pre-R7A runtime, then reviewed by the current runtime, against the current runtime throughout (5 scenarios incl. re-establishment, budget trim, split week, event taper)",
+   "evidence": {
+    "script": "reviews/qe-probe-M-legacy-representation.mjs",
+    "output": "reviews/qe-probe-M.out.json",
+    "result": {
+     "asPrescribed": {
+      "finalWeekSame": true
+     },
+     "reestablishInConsolidation": {
+      "finalWeekSame": true
+     },
+     "budgetTrimmed": {
+      "finalWeekSame": true
+     },
+     "splitWeekThreeDays": {
+      "finalWeekSame": true
+     },
+     "eventTaper": {
+      "finalWeekSame": true
+     }
+    }
+   },
+   "note": "Stripping exposure from a current program changes counts only in the QE-R7A-14 cases."
+  },
+  {
+   "claim": "R19 split week / late execution",
+   "attempt": "The day-0 session performed two days late (30 days after the last squat): the review reads the executed exposure and keeps the state consistent with what was done",
+   "evidence": {
+    "script": "reviews/qe-probe-G-move-reestablish.mjs (G2)",
+    "output": "reviews/qe-probe-G.out.json",
+    "result": {
+     "probe": "G2",
+     "performedOn": "2026-12-09",
+     "daysSinceLastBackSquat": 30,
+     "review": "MODIFY/GATED_NEXT_STEP",
+     "backSquatStateNextWeek": {
+      "mode": "KNOWN",
+      "load": 82.5,
+      "source": "LOGGED_ACTUAL",
+      "lastPerformed": "2026-12-09",
+      "regainCap": null
+     },
+     "nextWeekBackSquat": [
+      "2026-12-14 d0 w6-str-d0 back-squat 3x5@3 KNOWN 82.5 kind=KNOWN phase=DEVELOPMENT/3"
+     ]
+    }
+   }
+  },
+  {
+   "claim": "Exact replay inside one review; source labels on identical observations (C06); race completion (C18); dated schedule change (C16) on the schedule path",
+   "attempt": "Covered by the author tests (rerun: 460/460) and not contradicted by my probes; C16 holds on SCHEDULE_CHANGE (probe H, ASK on malformed and inverted dates)",
+   "evidence": {
+    "script": "reviews/qe-probe-H-equipment-window-dates.mjs",
+    "result": {
+     "malformedTo": {
+      "to": "soon",
+      "status": "ASK",
+      "action": "ASK",
+      "missingInputs": [
+       "changes.to"
+      ]
+     },
+     "invertedWindow": {
+      "to": "2026-11-01",
+      "status": "ASK",
+      "action": "ASK",
+      "missingInputs": [
+       "changes.to"
+      ]
+     }
+    }
+   }
+  }
+ ],
+ "knownAndRoutedNotCounted": [
+  "C15 / SSCTR R18 (review continuity, R7-C)",
+  "F-ACCESSORY-REPS (R7-B)",
+  "Q1 regain base after a phase-reduced re-establishment (SSCTR)"
+ ],
+ "verdict": {
+  "R7A_ENGINEERING_REVIEW": "NOT_READY",
+  "reason": "The R7-A core mechanisms hold where they were aimed (D53 in every state mode, D54 phase composition, unknown repetitions, legacy hand-over), but the headline invariant fails through neighbouring branches: arrival order of same-week reviews erases a return (01), the return-day boundary skips the entry dose (02), an event-date change leaves race-window and taper days at build doses (03) and the new validation then rejects ordinary proposals (04), and canonical-input stability fails for complementary duplicates, contradictions, pounds, carried corrections and replays (05-09); 10-12 are further state-composition failures. STOP_WHEN (\"no known HIGH structural failure of this phase stays open\") is not met.",
+  "blockingList": [
+   {
+    "id": "QE-R7A-01",
+    "severity": "HIGH",
+    "title": "A return started next week is erased by any later review of the same week",
+    "new": true,
+    "narrow": true,
+    "runtimeOnly": true
+   },
+   {
+    "id": "QE-R7A-02",
+    "severity": "HIGH",
+    "title": "A session later on the day of a return review keeps its full pre-break dose and is then counted as the return entry",
+    "new": true,
+    "narrow": true,
+    "runtimeOnly": true
+   },
+   {
+    "id": "QE-R7A-03",
+    "severity": "HIGH",
+    "title": "An event moved closer (or added) leaves this week's remaining sessions in the new race window and taper at their old BUILD dose; a postponed race keeps its old RACE session",
+    "new": true,
+    "narrow": true,
+    "runtimeOnly": true
+   },
+   {
+    "id": "QE-R7A-04",
+    "severity": "MEDIUM",
+    "title": "R7-A phase-dose validation rejects ordinary same-week proposals after an event change (40 of 102 in the grid; all accepted before R7-A)",
+    "new": true,
+    "narrow": true,
+    "runtimeOnly": true
+   },
+   {
+    "id": "QE-R7A-05",
+    "severity": "HIGH",
+    "title": "An agreeing second report of a strength session replaces the whole exercise list: a watch that recognises fewer exercises (or no loads) erases the manual logs; the provider label prefix alone decides it",
+    "new": true,
+    "narrow": true,
+    "runtimeOnly": true
+   },
+   {
+    "id": "QE-R7A-06",
+    "severity": "MEDIUM",
+    "title": "Two reports of one session that contradict on repetitions or RIR are merged, not quarantined; the earlier one wins and the gate depends on arrival order",
+    "new": true,
+    "narrow": true,
+    "runtimeOnly": true
+   },
+   {
+    "id": "QE-R7A-07",
+    "severity": "MEDIUM",
+    "title": "The R7-A exercise-level conflict check skips loads logged in pounds: 80 kg vs 100 lb merges as agreeing and the squat reference drops to 45.5 kg",
+    "new": true,
+    "narrow": true,
+    "runtimeOnly": true
+   },
+   {
+    "id": "QE-R7A-08",
+    "severity": "MEDIUM",
+    "title": "A correction of a merged duplicate (correctionOf = the watch report's eventId) is valid in its review and rejected once carried: the session loses every live fact",
+    "new": true,
+    "narrow": true,
+    "runtimeOnly": true
+   },
+   {
+    "id": "QE-R7A-09",
+    "severity": "MEDIUM",
+    "title": "An exact replay, in a later review, of a report that was merged with a complementary duplicate is quarantined as a conflict and changes the decision",
+    "new": true,
+    "narrow": true,
+    "runtimeOnly": true
+   },
+   {
+    "id": "QE-R7A-10",
+    "severity": "MEDIUM",
+    "title": "A key strength session moved later in the week keeps the kind and dose of its original date: back squat 3x5 at 82.5 kg KNOWN, 30 days after its last exposure",
+    "new": true,
+    "narrow": true,
+    "runtimeOnly": true
+   },
+   {
+    "id": "QE-R7A-11",
+    "severity": "MEDIUM",
+    "title": "EQUIPMENT_CHANGE stores any from/to string: a malformed end date makes a temporary change permanent in effect; an inverted window is silently KEEP",
+    "new": true,
+    "narrow": true,
+    "runtimeOnly": true
+   },
+   {
+    "id": "QE-R7A-12",
+    "severity": "MEDIUM",
+    "title": "One known-load set below target (3 of 5 reps) gives a HOLD gate, yet the next week prescribes 3x3, below the goal rep range [4, 6]",
+    "new": true,
+    "narrow": true,
+    "runtimeOnly": true
+   }
+  ],
+  "cycleBoundAssessment": "Every blocker is new to the recorded history (not in OPEN_GAPS_R6 or the R7-A class table as found), narrow (one code locus each, listed in mechanism) and runtime-only (the current policy text already states the required behaviour: D49/strengthEntryWeek, proximitySemantics, learning.conflicts, principle 9, loadUnits, resumeAfterDays, gates HOLD). Under the Founder bound a single narrow re-check is therefore admissible; 03/04 share a root and 05/08/09 share the merge path, so the re-check can be scoped to those loci. Ten of the twelve blockers predate R7-A (reproduced on the R6 closure runtime); 04 and 07 are introduced or left partial by the R7-A delta."
+ },
+ "nonBlockingRecommendations": [
+  "Validate rows against exposure.phase as well as the day phase, so a row built under another skeleton is reported as stale rather than as a dose violation",
+  "Carry mergedSourceIds as resolvable event ids for correction chains",
+  "Compare reps and RIR per exercise in physicalAgrees with the existing within-one convention",
+  "Add the cross-review replay, return-then-weekly and event-change-then-proposal sequences to the R7-A regression set"
+ ]
+}

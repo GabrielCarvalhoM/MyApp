@@ -1,0 +1,292 @@
+{
+  "revision": "R5-SSCTR-PROBES-r4",
+  "date": "2026-10-26",
+  "independent": true,
+  "total": 26,
+  "passing": 26,
+  "passed": true,
+  "rows": [
+    {
+      "id": "progress-direction",
+      "expected": "Reject lower-demand alternative mislabeled PROGRESS",
+      "actual": "INVALID_INPUT",
+      "passed": true,
+      "detail": {}
+    },
+    {
+      "id": "regression-direction",
+      "expected": "Reject higher-demand alternative mislabeled REGRESS",
+      "actual": "INVALID_INPUT",
+      "passed": true,
+      "detail": {}
+    },
+    {
+      "id": "progression-window-fit",
+      "expected": "Future complete task must fit actual window",
+      "actual": "UNSUPPORTED",
+      "passed": true,
+      "detail": {
+        "availableMinutes": 30
+      }
+    },
+    {
+      "id": "actual-dose-comparability",
+      "expected": "A one-minute actual cannot earn full thirty-minute task progression",
+      "actual": "KEEP",
+      "passed": true,
+      "detail": {
+        "actualMinutes": 1
+      }
+    },
+    {
+      "id": "earned-dose-does-not-overwrite-event",
+      "expected": "Earlier ordinary-week progression must preserve separately bound complete event week",
+      "actual": "PROGRESS",
+      "passed": true,
+      "detail": {
+        "eventMinutesBefore": 20,
+        "eventMinutesAfter": 20,
+        "eventWeekStatus": "CONDITIONAL"
+      }
+    },
+    {
+      "id": "unknown-return-reason",
+      "expected": "Unknown interruption reason cannot receive prescriptive return",
+      "actual": "ASK",
+      "passed": true,
+      "detail": {}
+    },
+    {
+      "id": "excluded-population-context",
+      "expected": "Pregnancy metadata cannot inherit ordinary adult scope",
+      "actual": "INVALID_INPUT",
+      "passed": true,
+      "detail": {}
+    },
+    {
+      "id": "maximal-easy-anchor",
+      "expected": "Familiar label cannot authorize maximal EASY task",
+      "actual": "INVALID_INPUT",
+      "passed": true,
+      "detail": {}
+    },
+    {
+      "id": "same-dose-move-after-regression",
+      "expected": "Scheduling cannot automatically restore baseline after a regression",
+      "actual": "MOVE",
+      "passed": true,
+      "detail": {
+        "currentMinutes": 25,
+        "movedMinutes": 25
+      }
+    },
+    {
+      "id": "original-constraints-persist",
+      "expected": "Original incompatible arrangement remains excluded in later review",
+      "actual": "UNSUPPORTED",
+      "passed": true,
+      "detail": {}
+    },
+    {
+      "id": "review-week-clock-consistency",
+      "expected": "A stale week index cannot mutate an already elapsed horizon",
+      "actual": "HOLD",
+      "passed": true,
+      "detail": {}
+    },
+    {
+      "id": "unambiguous-strength-load-basis",
+      "expected": "Mutually inconsistent bodyweight/per-hand load units cannot be executed",
+      "actual": "INVALID_INPUT",
+      "passed": true,
+      "detail": {}
+    },
+    {
+      "id": "strength-actual-load-comparability",
+      "expected": "Matching aggregate reps/sets at a different/unknown load cannot earn planned-load progression",
+      "actual": "KEEP",
+      "passed": true,
+      "detail": {
+        "actualLoadKg": 1
+      }
+    },
+    {
+      "id": "imported-model-actual-rebinding",
+      "expected": "A locally valid hash cannot authorize physically noncomparable model evidence",
+      "actual": "HOLD",
+      "passed": true,
+      "detail": {
+        "modelRows": 3,
+        "errors": [
+          "model evidence physical source binding ssctr-0",
+          "model evidence physical source binding ssctr-1",
+          "model evidence physical source binding ssctr-2"
+        ]
+      }
+    },
+    {
+      "id": "complete-strength-positive-control",
+      "expected": "Complete comparable familiar strength actuals can earn the known smallest reps option",
+      "actual": "PROGRESS",
+      "passed": true,
+      "detail": {
+        "selectedReps": 7
+      }
+    },
+    {
+      "id": "one-prospective-week-dose-budget",
+      "expected": "A second dose dimension cannot cascade into the same next week",
+      "actual": "KEEP",
+      "passed": true,
+      "detail": {
+        "firstAction": "PROGRESS",
+        "secondReason": "One prospective dose dimension is already changed for this next horizon; observe and reconcile the combined response before another change"
+      }
+    },
+    {
+      "id": "hard-run-work-comparability",
+      "expected": "Matching total minutes with different hard repetitions cannot establish planned-task tolerance",
+      "actual": "KEEP",
+      "passed": true,
+      "detail": {
+        "acceptedModelRows": 0,
+        "actualWorkRepetitions": 1
+      }
+    },
+    {
+      "id": "alternative-combined-context-required",
+      "expected": "A session-only familiar alternative cannot establish combined-week dose admissibility",
+      "actual": "INVALID_INPUT",
+      "passed": true,
+      "detail": {
+        "errors": [
+          "alternative.combinedWeekContext"
+        ]
+      }
+    },
+    {
+      "id": "clinical-observation-not-tolerance-learning",
+      "expected": "Clinical context cannot add prescriptive tolerance evidence",
+      "actual": "CLINICAL_HUMAN_REQUIRED",
+      "passed": true,
+      "detail": {
+        "modelRows": 0
+      }
+    },
+    {
+      "id": "minimum-work-magnitude",
+      "expected": "Compare actual work-minute deltas inside one physical dimension",
+      "actual": "PROGRESS",
+      "passed": true,
+      "detail": {
+        "selectedWorkMinutes": 7,
+        "alternativeOrder": [
+          8,
+          7
+        ]
+      }
+    },
+    {
+      "id": "missed-essential-alone-stability",
+      "expected": "A missed essential plus a feasible alternative alone does not require moving the next adequate stimulus",
+      "actual": "DISCARD",
+      "passed": true,
+      "detail": {}
+    },
+    {
+      "id": "pending-clinical-never-clears",
+      "expected": "Generic normal task/function reconciliation cannot clear a clinical dependency",
+      "actual": "CLINICAL_HUMAN_REQUIRED",
+      "passed": true,
+      "detail": {}
+    },
+    {
+      "id": "unknown-return-not-generically-reconciled",
+      "expected": "Recovery compatibility cannot erase unknown interruption reason or missing re-establishment evidence",
+      "actual": "ASK",
+      "passed": true,
+      "detail": {
+        "initial": "ASK",
+        "reason": "Return/goal dependency requires its specific current facts and reviewed task path, or a newly validated rebased program; generic recovery cannot clear it"
+      }
+    },
+    {
+      "id": "current-combined-nonclinical-reconciliation",
+      "expected": "Current complete task/function/recovery evidence can resume bounded familiar nonclinical scope",
+      "actual": "KEEP",
+      "passed": true,
+      "detail": {
+        "initial": "ASK"
+      }
+    },
+    {
+      "id": "simulator-clinical-state-no-auto-execution",
+      "expected": "A generic reconciliation fixture cannot make the simulator execute a clinically suspended proposal",
+      "actual": "CLINICAL_HUMAN_REQUIRED",
+      "passed": true,
+      "detail": {
+        "firstAction": "CLINICAL_HUMAN_REQUIRED",
+        "nextActualCount": 0
+      }
+    },
+    {
+      "id": "prior-clinical-dependency-not-tolerance-learning",
+      "expected": "New actual facts under unresolved clinical validity cannot add prescriptive tolerance evidence",
+      "actual": "CLINICAL_HUMAN_REQUIRED",
+      "passed": true,
+      "detail": {
+        "modelRows": 0
+      }
+    }
+  ],
+  "reviewedFiles": [
+    {
+      "path": "CoachingCore/src/r5-adaptation.mjs",
+      "sha256": "434769da56d05618da7cfc757dfbfd5e96ffb2c2777a224e329a8f7b8de52220"
+    },
+    {
+      "path": "CoachingCore/src/r5-authority.mjs",
+      "sha256": "0eafe07af8c04bc67bf7268ac791d003b1c823241ea2e8a6dd22cd60b10954ad"
+    },
+    {
+      "path": "CoachingCore/src/r5-contract.mjs",
+      "sha256": "39b2ce74a199bd269ce507a74de87b7d375f9d996488f43dd1c242f633735c77"
+    },
+    {
+      "path": "CoachingCore/src/r5-index.mjs",
+      "sha256": "2d2482122f695fe9c0a3faee72418d3eb723eed39c9f9bf9e87482826a58b8f7"
+    },
+    {
+      "path": "CoachingCore/src/r5-learning.mjs",
+      "sha256": "a78b220c6d140418a8f9f5401e616496f7a2042c06bdabf274302e01918af334"
+    },
+    {
+      "path": "CoachingCore/src/r5-observation.mjs",
+      "sha256": "91e9607a18702b6d47487369bd5ab823ffc1542b298a85f19423fa1c6ef43b8e"
+    },
+    {
+      "path": "CoachingCore/src/r5-program.mjs",
+      "sha256": "05795bab7967bca751ebb1fa0eb18c3ff6939b6204188b5d2fbbd6e7189ee7ad"
+    },
+    {
+      "path": "CoachingCore/src/r5-review-context.mjs",
+      "sha256": "c392a2ac7ab02ad74f3259a8a66ef657bb748e98458810816a4bcb7100384f3e"
+    },
+    {
+      "path": "CoachingCore/src/r5-schedule.mjs",
+      "sha256": "600d0f67bda6b9e57f3aab65f0e77deac1961676ceef0e940d43d83bb09a90e6"
+    },
+    {
+      "path": "CoachingCore/src/r5-selectors.mjs",
+      "sha256": "a4d755cdc8fad1bcd265fac7a2967a545db5a3f17781d62e9dfad2d33764c156"
+    },
+    {
+      "path": "CoachingCore/src/r5-simulator.mjs",
+      "sha256": "e18ac696baff3dcf47305846a8b9b4c078453ca2841f8652835997a4e59d70c0"
+    },
+    {
+      "path": "CoachingCore/src/r5-validity.mjs",
+      "sha256": "ef19dfb0a59c7c024d1e63c960bf2ece864b0e509b345766f5ede37ce1628867"
+    }
+  ]
+}

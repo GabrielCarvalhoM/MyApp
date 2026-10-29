@@ -1,0 +1,245 @@
+{
+  "revision": "R6-READINESS-VERDICTS-1",
+  "generatedAt": "2026-10-27T05:02:00.690Z",
+  "scope": "OFFLINE_SYNTHETIC_NODE24_REFERENCE",
+  "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+  "delivery": "CLOSED_WITH_EXPLICIT_BLOCKER",
+  "completeAutonomousDefinitionOfDone": false,
+  "blocker": {
+    "ids": [
+      "D53",
+      "D54"
+    ],
+    "freeze2": "REFUSED_BY_SSCTR",
+    "ssctrRevision": "R6-SSCTR-POLICY-r12",
+    "ssctrNextStep": "In R7: fix D53 for every state mode and D54 in the runtime, without a policy change, with the regression tests listed per item; then a narrow runtime delta check at hash 18ec48f3... (a policy text change would need a delta binding review of the new hash). FREEZE-2 cannot follow from this round.",
+    "owner": "Engineering (the R7 runtime author) with the SSCTR",
+    "bound": "audits/domain-coaching-r6-2026-10-26/FOUNDER_LOOP_BOUND.md",
+    "evidence": [
+      "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-policy-review.json",
+      "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-probe-runtime-d53-r12.out.json"
+    ],
+    "openGaps": "CoachingCore/r6/OPEN_GAPS_R6.json"
+  },
+  "sourceDigest": "507f35fc66f4d1e105e19ce513dc067f9fee5fdc35c039ad52a8c825e46bf857",
+  "freezeRevision": "R6-FREEZE-1",
+  "runtimeState": "NOT_FROZEN_AFTER_FREEZE_1",
+  "noForcedReady": true,
+  "independentEvidence": {
+    "science": "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-policy-review.json",
+    "coaching": "audits/domain-coaching-r6-2026-10-26/reviews/coaching-quality-holdout-review.json",
+    "engineeringFreeze1": "audits/domain-coaching-r6-2026-10-26/reviews/quality-engineering-review.json",
+    "engineeringRereview": null,
+    "r5Regression": "audits/domain-coaching-r6-2026-10-26/reviews/r5-regression-review.json"
+  },
+  "r5Regression": {
+    "before": {
+      "source": "R5-QUALITY-HOLDOUT-1 metrics.primaryCases.qualityCounts",
+      "BEST_SUPPORTED": 4,
+      "ACCEPTABLE_ALTERNATIVE": 4,
+      "SUBOPTIMAL": 3,
+      "INSUFFICIENT_INFORMATION": 6,
+      "UNSUPPORTED": 7,
+      "CLINICAL_OUT_OF_SCOPE": 0,
+      "total": 24,
+      "underThisRubric": {
+        "BEST_SUPPORTED": 4,
+        "ACCEPTABLE_ALTERNATIVE": 4,
+        "SUBOPTIMAL": 3,
+        "INSUFFICIENT_INFORMATION": 6,
+        "UNSUPPORTED": 6,
+        "CLINICAL_OUT_OF_SCOPE": 1,
+        "note": "H17 relabelled only."
+      }
+    },
+    "afterFreeze1": {
+      "BEST_SUPPORTED": 11,
+      "ACCEPTABLE_ALTERNATIVE": 10,
+      "SUBOPTIMAL": 0,
+      "INSUFFICIENT_INFORMATION": 2,
+      "UNSUPPORTED": 0,
+      "CLINICAL_OUT_OF_SCOPE": 1,
+      "total": 24,
+      "bestSupportedCases": [
+        "R5-H03",
+        "R5-H07",
+        "R5-H08",
+        "R5-H09",
+        "R5-H10",
+        "R5-H11",
+        "R5-H12",
+        "R5-H14",
+        "R5-H19",
+        "R5-H20",
+        "R5-H23"
+      ],
+      "acceptableCases": [
+        "R5-H01",
+        "R5-H02",
+        "R5-H04",
+        "R5-H05",
+        "R5-H13",
+        "R5-H16",
+        "R5-H18",
+        "R5-H21",
+        "R5-H22",
+        "R5-H24"
+      ],
+      "insufficientCases": [
+        "R5-H06",
+        "R5-H15"
+      ],
+      "clinicalOutOfScopeCases": [
+        "R5-H17"
+      ],
+      "generationStatus": {
+        "PROPOSED": 23,
+        "ASK": 1
+      },
+      "reviewStepStatus": {
+        "KEEP": 14,
+        "MODIFY": 7,
+        "ASK": 1,
+        "CLINICAL_HUMAN_REQUIRED": 1,
+        "note": "23 executed review steps across 17 REVIEW/SEQUENCE cases (all 23 intended steps executed, versus 14/23 in R5); MODIFY = PROGRESS x2, REGRESS x1, MOVE x2, SUBSTITUTE x1, REESTABLISH x1; KEEP includes 2 DISCARD actions."
+      },
+      "unsafePositivePrescriptionsIdentified": 0
+    },
+    "gate": "QUALITY_READY_WITH_CONDITIONS"
+  },
+  "verdicts": {
+    "COLD_START_READINESS": {
+      "verdict": "NOT_READY",
+      "rationale": "Judge: PARTLY_MET: Works for the standard intermediate self-reported runner (17 of 18 sequence-case generations acceptable or better) and for known-load lifters; fails or is materially suboptimal for 7 of the 9 dedicated cold-start profiles (wearable conflict, novice racer, experienced runner adding strength, bodyweight hypertrophy, short-horizon race) plus the restart (H27). The dedicated cold-start family is the weakest (2 acceptable, 5 suboptimal, 2 unsupported of 9); CQ-R6-01 (evidence fusion) and CQ-R6-09 are open.",
+      "evidence": [
+        "audits/domain-coaching-r6-2026-10-26/reviews/coaching-quality-holdout-review.json"
+      ]
+    },
+    "WHOLE_PROGRAM_GENERATION_READINESS": {
+      "verdict": "NOT_READY",
+      "rationale": "Judge: PARTLY_MET: 30 of 30 PROPOSED programs are structurally complete with phases, taper, race week and post-event weeks; 20 of 30 are acceptable or better, 8 suboptimal, 1 incomplete, 1 unsupported; the engine proposes programs it marks as unable to prepare the goal. All 30 generated programs are structurally complete, but 10 need material fixes (8 suboptimal, 1 incomplete, 1 unsupported).",
+      "evidence": [
+        "CoachingCore/r6/PROGRAM_QUALITY_R6.json"
+      ]
+    },
+    "RUN_PROGRAMMING_READINESS": {
+      "verdict": "NOT_READY",
+      "rationale": "Judge CQ-R6-02 (HIGH): long and easy runs go flat or never build in several programs. D50 addresses part of it in the unfrozen runtime, which no frozen evidence or holdout rerun verifies.",
+      "evidence": [
+        "audits/domain-coaching-r6-2026-10-26/reviews/coaching-quality-holdout-review.json",
+        "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-dossier/RUNTIME_DELTA_D50_D51.md"
+      ]
+    },
+    "STRENGTH_PROGRAMMING_READINESS": {
+      "verdict": "NOT_READY",
+      "rationale": "The R6 blocker is in strength: D53 (from-log path) and D54 are open, so the SSCTR refused FREEZE-2. The judge adds CQ-R6-07 (load convention), CQ-R6-11 (bodyweight reps collapse; probably fixed, undocumented) and CQ-R6-12 (no pull exercise).",
+      "evidence": [
+        "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-policy-review.json",
+        "CoachingCore/r6/OPEN_GAPS_R6.json"
+      ]
+    },
+    "BALANCED_HYBRID_READINESS": {
+      "verdict": "NOT_READY",
+      "rationale": "Judge: PARTLY_MET: The no-priority default (H15) is arranged correctly; the two-performance-goal, three-evening case (H16) shows unconfirmed stacking, JOINT priority without an explicit choice and heavy hinge before the long run in the same session.",
+      "evidence": [
+        "audits/domain-coaching-r6-2026-10-26/reviews/coaching-quality-holdout-review.json"
+      ]
+    },
+    "HYBRID_PROGRAMMING_READINESS": {
+      "verdict": "NOT_READY",
+      "rationale": "Judge CQ-R6-08 (loaded lower-body work just before the long run) and CQ-R6-15 (unconfirmed stacking and JOINT priority) are open, and the trajectories are only partly complete (PARTLY_MET: Standard HM/10K run trajectories and known-load strength progressions are complete; long-run stalls, novice race builds, bodyweight hypertrophy dosing, the missing pull pattern and eve-of-long-run lower-body placement are not.).",
+      "evidence": [
+        "audits/domain-coaching-r6-2026-10-26/reviews/coaching-quality-holdout-review.json"
+      ]
+    },
+    "SUBSTITUTION_READINESS": {
+      "verdict": "NOT_READY",
+      "rationale": "Judge: PARTLY_MET: The temporary equipment window substitutes by pattern, leaves running untouched, survives a time-zone change and reverts; the bodyweight pull option is never found (H24 window, H06 for 12 weeks). Only one substitution case in the holdout. The SSCTR has no blocking defect in SUBSTITUTION at 18ec48f3, but the runtime is not frozen.",
+      "evidence": [
+        "audits/domain-coaching-r6-2026-10-26/reviews/coaching-quality-holdout-review.json",
+        "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-policy-review.json"
+      ]
+    },
+    "RETURN_AFTER_PAUSE_READINESS": {
+      "verdict": "PARTIAL",
+      "rationale": "Judge: MET: A 5-day break resumes with a minimal re-establishment; a 17-day break re-enters at about 60% and is gated by evidence; an 11-week restart starts from current running; no ASK when a nonclinical category is given; illness routes to a human. Caveats: a fast conditional third week and an unchanged peak in H26; H27's plateau is counted under trajectories. The SSCTR has no blocking defect in NONCLINICAL-RETURN. It stays PARTIAL because the runtime is not frozen and, before any use beyond the offline reference, the free-text clinical screen (R11, R15), R14 and R18 must close.",
+      "evidence": [
+        "audits/domain-coaching-r6-2026-10-26/reviews/coaching-quality-holdout-review.json",
+        "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-policy-review.json"
+      ]
+    },
+    "EVENT_TRANSITION_READINESS": {
+      "verdict": "NOT_READY",
+      "rationale": "Judge: PARTLY_MET: Every event program carries taper, race week (touch at 3+ days, optional shakeout, light or no strength in the final days, Saturday races handled) and post-event weeks; event-week conflicts are resolved by subtraction; but completion athletes get a race-effort race day (H03, H27; addressed per dossier by D43/D47) and race results are recorded PARTIAL. D54 (re-establishment rows ignore the taper, race-week and post-event doses) blocks the freeze; CQ-R6-06 (race effort after walk/jog preparation) is addressed per dossier only, not verified on the holdout.",
+      "evidence": [
+        "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-policy-review.json",
+        "audits/domain-coaching-r6-2026-10-26/reviews/coaching-quality-holdout-review.json"
+      ]
+    },
+    "HORIZON_COACHING_READINESS": {
+      "verdict": "NOT_READY",
+      "rationale": "Judge CQ-R6-04 (HIGH): replans over unreviewed weeks read them as zero exposure and collapse the runs before a race (tied to R18), and CQ-R6-03 (HIGH): a one-day conflict becomes a permanent same-turn stack.",
+      "evidence": [
+        "audits/domain-coaching-r6-2026-10-26/reviews/coaching-quality-holdout-review.json"
+      ]
+    },
+    "ADAPTIVE_COACHING_READINESS": {
+      "verdict": "NOT_READY",
+      "rationale": "Most adaptation steps are appropriate (25 KEEP and 20 MODIFY of 53), but two event types produce unsupported proposals (CQ-R6-03, CQ-R6-04), and the weekly-review contract (R18) is an owned gap.",
+      "evidence": [
+        "audits/domain-coaching-r6-2026-10-26/reviews/coaching-quality-holdout-review.json"
+      ]
+    },
+    "ATHLETE_LEARNING_MODEL_READINESS": {
+      "verdict": "NOT_READY",
+      "rationale": "Judge: NOT_MET: No overfit and no false causal claim, but no learned pattern changed any decision; H34's repeated long-run response was handled by week-local gates only; H20 is a corpus error. No learned pattern changed any decision (CQ-R6-14).",
+      "evidence": [
+        "audits/domain-coaching-r6-2026-10-26/reviews/coaching-quality-holdout-review.json"
+      ]
+    },
+    "COACHING_DECISION_QUALITY": {
+      "verdict": "NOT_READY",
+      "rationale": "The independent judge recommends NOT_READY: adaptation decision core is close (bounded fixes: double-conflict semantics, R18 state, correction chains), but cold-start decisions are not at coach quality. (quality status QUALITY_BLOCKED): 4 best supported, 14 acceptable, 9 suboptimal, 4 unsupported of 35.",
+      "evidence": [
+        "audits/domain-coaching-r6-2026-10-26/reviews/coaching-quality-holdout-review.json"
+      ]
+    },
+    "WHOLE_PROGRAM_QUALITY": {
+      "verdict": "NOT_READY",
+      "rationale": "The independent judge recommends NOT_READY: 20 of 30 programs acceptable or better, concentrated in one profile; stalls, evidence-fusion errors and arrangement defects in the rest.: 7 best supported, 13 acceptable, 8 suboptimal, 1 incomplete, 1 unsupported of 30 programs.",
+      "evidence": [
+        "CoachingCore/r6/PROGRAM_QUALITY_R6.json"
+      ]
+    },
+    "AUTONOMOUS_COACHING_SPEC_READINESS": {
+      "verdict": "NOT_READY",
+      "rationale": "The R6 Definition of Done is not met: the fixed runtime is not frozen (FREEZE-2 refused), the fresh holdout shows core-semantics defects, and the engineering re-review did not run.",
+      "evidence": [
+        "CoachingCore/r6/OPEN_GAPS_R6.json"
+      ]
+    },
+    "PRODUCTION_CORE_SEMANTIC_STABILITY": {
+      "verdict": "NOT_READY",
+      "rationale": "The runtime is not frozen: two runtime-only blockers (D53, D54) remain after twelve SSCTR rounds. The judge finds no architecture hole but core-semantics defects (PARTLY_MET: No architecture hole; core-semantics domain defects in cold-start evidence fusion, progression, unreviewed-week state (R18) and conflict semantics.; NOT_MET: The leading gaps (CQ-R6-01 to CQ-R6-05) concern evidence fusion, progression and state semantics every athlete passes through.).",
+      "evidence": [
+        "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-policy-review.json",
+        "audits/domain-coaching-r6-2026-10-26/reviews/coaching-quality-holdout-review.json"
+      ]
+    },
+    "KMP_PRODUCTION_CORE_PREP_READINESS": {
+      "verdict": "NOT_READY",
+      "rationale": "The Founder's gate needs every criterion met. The judge assesses 1 of 10 as MET, 7 as PARTLY_MET and 2 as NOT_MET; and there is no frozen runtime to migrate.",
+      "evidence": [
+        "audits/domain-coaching-r6-2026-10-26/reviews/coaching-quality-holdout-review.json"
+      ]
+    },
+    "NEXT_ENGINEERING_STEP": {
+      "verdict": "DOMAIN_COACHING_R7",
+      "rationale": "R6 closes with an explicit blocker under the Founder bound. R7 starts with D53 for every state mode and D54 (the SSCTR next step), then a narrow SSCTR check, a freeze and the engineering re-review; it must close R18 and the judge’s HIGH findings (CQ-R6-01 to CQ-R6-06) before any KMP preparation, and needs a fresh unseen holdout. R7 needs its own Founder-authorized mission definition.",
+      "evidence": [
+        "CoachingCore/r6/OPEN_GAPS_R6.json",
+        "audits/domain-coaching-r6-2026-10-26/FOUNDER_LOOP_BOUND.md"
+      ]
+    }
+  }
+}

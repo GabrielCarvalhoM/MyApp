@@ -1,0 +1,735 @@
+{
+  "revision": "DCR4-SSCTR-BINDING-PROBES-1",
+  "date": "2026-10-25",
+  "reviewer": "/root/ssctr",
+  "independentOfRuntimeAuthor": true,
+  "passed": false,
+  "total": 24,
+  "passing": 12,
+  "targets": [
+    {
+      "path": "CoachingCore/src/r4-runtime.mjs",
+      "sha256": "2a65aab30d16c8497187234c7efaefe0331ed240a64571b08484834dabeda2e9"
+    },
+    {
+      "path": "CoachingCore/src/r4-candidates.mjs",
+      "sha256": "913e3f39743c9c4d729eec471560b026fe316608a7e39cb609093a74a8f0a70c"
+    },
+    {
+      "path": "CoachingCore/src/r4-athlete-model.mjs",
+      "sha256": "4d1d924f2407d859a048ddeedbfa12bda007037db29e51b78f2ab76a149e17f3"
+    },
+    {
+      "path": "CoachingCore/src/r4-authority.mjs",
+      "sha256": "8e39bbb54b7978ca1c0ac9c4cfc8986985e7bb61ecdf3e4f00c5d6716ad7e9b9"
+    },
+    {
+      "path": "CoachingCore/r4/PRESCRIPTION_ENVELOPE_REGISTRY.json",
+      "sha256": "0e8f6c29dc75d6dc68c047f5bd3974de88fd7eeed724564d5183ece7b0db57b6"
+    },
+    {
+      "path": "audits/domain-closure-r4-2026-10-25/reviews/ssctr-envelope-review.json",
+      "sha256": "6ae5e2b6f8f41168e99779e0f22f124ffe05af873214ec31c19b20a502aac055"
+    }
+  ],
+  "probes": [
+    {
+      "id": "baseline-familiar-cruise",
+      "sourceId": "REP-R2-34",
+      "passed": true,
+      "expected": "POSITIVE_WITHIN_REVIEWED_SCOPE",
+      "actualDecision": "MODIFY",
+      "coverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "selected": "COMPOSE_FAMILIAR_WORK_SESSION",
+      "reason": "Retain the familiar compatible task and compose reviewed easy preparation/cooldown rather than demand a paper for exact minutes",
+      "immutable": true,
+      "inputHash": "35003f6320b15ad35680760f697472e0805d78385bd94481e8484eec9984c34a",
+      "recipe": {
+        "family": "THRESHOLD_CRUISE",
+        "warmup": {
+          "minutes": 10,
+          "effort": "Comfortable conversational; walk if needed"
+        },
+        "work": {
+          "repetitions": 3,
+          "workMinutesEach": 5,
+          "recoveryMinutes": 2,
+          "paceSecondsPerKm": 330,
+          "effort": "familiar controlled hard",
+          "response": "compatible"
+        },
+        "cooldown": {
+          "minutes": 5,
+          "effort": "Very easy conversational or walk"
+        },
+        "calibration": {
+          "method": "recent comparable protocol + pace/effort cross-check",
+          "claim": "Familiar task/effort anchor, not a measured physiological boundary"
+        },
+        "stopIfEffortPaceDiverge": true
+      },
+      "scientificConditions": [
+        "OFFLINE_SYNTHETIC_REFERENCE_ONLY; explicit current nonclinical eligible adult V1 context. No clinical clearance, rehabilitation, diagnosis, pregnancy/postpartum/frailty or elite extrapolation.",
+        "Use current goal, relevant phase/key stimulus, exposure/competence, recovery, availability/equipment and future horizon. Missing information is not silently imputed; clinical flags override prescription.",
+        "Numeric entry/preparation/effort choices are bounded reversible coaching selections, not physiological safety thresholds or exact-dose efficacy claims. Current response can shorten or end work.",
+        "Choose among admissible alternatives with traceable goal/priority/MEC reasoning; preserve completed work, agency, source provenance and plan immutability. No positive whole-task credit for an incomplete subtask.",
+        "Review execution, effort, current/next-day function and recovery; material target, selector, population or evidence changes invalidate dependent approval. Bind current review plus future-human queue.",
+        "Supplied current comparable work/effort exposure governs main work. No watch VO2 estimate, old/downhill result or easy pace may create a high-intensity or race target.",
+        "Ten-minute easy preparation and five-minute easy cooldown are coaching selections; allow shorter/terminated exit on response and fit all components to availability. They are not fabricated prior history.",
+        "Progress only to a supplied previously tolerated next dose with compatible current comparable response and future-week fit; preserve intensity while changing one dimension. No universal percentage threshold.",
+        "Familiar strides mean relaxed nonmaximal efforts with prior compatible exposure and eligible current easy preparation; no maximal sprint, novel hills or uncalibrated VO2 equivalence."
+      ]
+    },
+    {
+      "id": "baseline-relaxed-strides",
+      "sourceId": "REP-R2-39",
+      "passed": true,
+      "expected": "POSITIVE_WITHIN_REVIEWED_SCOPE",
+      "actualDecision": "MODIFY",
+      "coverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "selected": "COMPOSE_FAMILIAR_WORK_SESSION",
+      "reason": "Retain the familiar compatible task and compose reviewed easy preparation/cooldown rather than demand a paper for exact minutes",
+      "immutable": true,
+      "inputHash": "99c3ccae31ba0f4f6fb96ef1855ce9796e213c0bcd2b9fdf9a52675e1df80faf",
+      "recipe": {
+        "family": "STRIDES",
+        "warmup": {
+          "minutes": 10,
+          "effort": "Comfortable conversational; walk if needed"
+        },
+        "work": {
+          "repetitions": 4,
+          "secondsEach": 15,
+          "effort": "relaxed quick running; not all-out",
+          "recovery": "walk until comfortable before next repetition",
+          "surface": "flat dry path",
+          "response": "compatible"
+        },
+        "cooldown": {
+          "minutes": 5,
+          "effort": "Very easy conversational or walk"
+        },
+        "calibration": {
+          "method": "familiar movement/effort cue",
+          "claim": "Familiar task/effort anchor, not a measured physiological boundary"
+        },
+        "stopIfEffortPaceDiverge": true
+      },
+      "scientificConditions": [
+        "OFFLINE_SYNTHETIC_REFERENCE_ONLY; explicit current nonclinical eligible adult V1 context. No clinical clearance, rehabilitation, diagnosis, pregnancy/postpartum/frailty or elite extrapolation.",
+        "Use current goal, relevant phase/key stimulus, exposure/competence, recovery, availability/equipment and future horizon. Missing information is not silently imputed; clinical flags override prescription.",
+        "Numeric entry/preparation/effort choices are bounded reversible coaching selections, not physiological safety thresholds or exact-dose efficacy claims. Current response can shorten or end work.",
+        "Choose among admissible alternatives with traceable goal/priority/MEC reasoning; preserve completed work, agency, source provenance and plan immutability. No positive whole-task credit for an incomplete subtask.",
+        "Review execution, effort, current/next-day function and recovery; material target, selector, population or evidence changes invalidate dependent approval. Bind current review plus future-human queue.",
+        "Supplied current comparable work/effort exposure governs main work. No watch VO2 estimate, old/downhill result or easy pace may create a high-intensity or race target.",
+        "Ten-minute easy preparation and five-minute easy cooldown are coaching selections; allow shorter/terminated exit on response and fit all components to availability. They are not fabricated prior history.",
+        "Progress only to a supplied previously tolerated next dose with compatible current comparable response and future-week fit; preserve intensity while changing one dimension. No universal percentage threshold.",
+        "Familiar strides mean relaxed nonmaximal efforts with prior compatible exposure and eligible current easy preparation; no maximal sprint, novel hills or uncalibrated VO2 equivalence."
+      ]
+    },
+    {
+      "id": "baseline-logistics-return",
+      "sourceId": "REP-R2-19",
+      "passed": true,
+      "expected": "POSITIVE_WITHIN_REVIEWED_SCOPE",
+      "actualDecision": "MODIFY",
+      "coverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "selected": "GOVERNED_LOW_DEMAND_REENTRY",
+      "reason": "Use a lower-demand reversible trial instead of requiring current performance before any safe establishment action",
+      "immutable": true,
+      "inputHash": "b540f48ef66ea2d6a7d79acbbd978df562b4564a587722dd2304a4004025fa3c",
+      "recipe": {
+        "family": "EASY_REESTABLISHMENT",
+        "maximumMinutes": 15,
+        "effort": "Comfortable complete sentences; begin walking, introduce short easy jogs only while comfortable",
+        "walkBreaks": "As needed; total time is a ceiling, not an obligation",
+        "noRestoredCapacityClaim": true,
+        "noAutomaticProgression": true
+      },
+      "scientificConditions": [
+        "OFFLINE_SYNTHETIC_REFERENCE_ONLY; explicit current nonclinical eligible adult V1 context. No clinical clearance, rehabilitation, diagnosis, pregnancy/postpartum/frailty or elite extrapolation.",
+        "Use current goal, relevant phase/key stimulus, exposure/competence, recovery, availability/equipment and future horizon. Missing information is not silently imputed; clinical flags override prescription.",
+        "Numeric entry/preparation/effort choices are bounded reversible coaching selections, not physiological safety thresholds or exact-dose efficacy claims. Current response can shorten or end work.",
+        "Choose among admissible alternatives with traceable goal/priority/MEC reasoning; preserve completed work, agency, source provenance and plan immutability. No positive whole-task credit for an incomplete subtask.",
+        "Review execution, effort, current/next-day function and recovery; material target, selector, population or evidence changes invalidate dependent approval. Bind current review plus future-human queue.",
+        "Interruption reason/exposure and current eligibility must be known. Pain, illness, functional limitation or clearance-dependent return routes clinically; an unexplained pause requires clarification.",
+        "Fifteen-minute run entry is an upper proposed duration with walk/stop option; it is not forced continuous running or restored former capacity. Current ordinary walking is relevant context, not proof of hard-run tolerance.",
+        "Strength uses an explicitly familiar low-demand configuration, one initial set and approximate RIR≥4 cue; no unknown load and no automatic prior-week restoration.",
+        "Later tasks/progression are conditional on observed execution/effort/function/recovery. Do not score an unconditional complete former week as established.",
+        "A complete compatible current postpause demonstration may outrank the generic entry prior, only with current comparable effort/function and complete configuration; this is observed current capacity, not restored historical capacity or elapsed-time inference."
+      ]
+    },
+    {
+      "id": "strides-all-out",
+      "sourceId": "REP-R2-39",
+      "passed": false,
+      "expected": "NO_POSITIVE_OUTSIDE_REVIEWED_SCOPE",
+      "actualDecision": "MODIFY",
+      "coverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "selected": "COMPOSE_FAMILIAR_WORK_SESSION",
+      "reason": "Retain the familiar compatible task and compose reviewed easy preparation/cooldown rather than demand a paper for exact minutes",
+      "immutable": true,
+      "inputHash": "b188f7c6c85a5c8d1ee3c7931b134b1194e42b67606df3a99d4a3f5e8043f979",
+      "recipe": {
+        "family": "STRIDES",
+        "warmup": {
+          "minutes": 10,
+          "effort": "Comfortable conversational; walk if needed"
+        },
+        "work": {
+          "repetitions": 4,
+          "secondsEach": 15,
+          "effort": "all-out maximal sprint",
+          "recovery": "walk until comfortable before next repetition",
+          "surface": "flat dry path",
+          "response": "compatible"
+        },
+        "cooldown": {
+          "minutes": 5,
+          "effort": "Very easy conversational or walk"
+        },
+        "calibration": {
+          "method": "familiar movement/effort cue",
+          "claim": "Familiar task/effort anchor, not a measured physiological boundary"
+        },
+        "stopIfEffortPaceDiverge": true
+      },
+      "scientificConditions": [
+        "OFFLINE_SYNTHETIC_REFERENCE_ONLY; explicit current nonclinical eligible adult V1 context. No clinical clearance, rehabilitation, diagnosis, pregnancy/postpartum/frailty or elite extrapolation.",
+        "Use current goal, relevant phase/key stimulus, exposure/competence, recovery, availability/equipment and future horizon. Missing information is not silently imputed; clinical flags override prescription.",
+        "Numeric entry/preparation/effort choices are bounded reversible coaching selections, not physiological safety thresholds or exact-dose efficacy claims. Current response can shorten or end work.",
+        "Choose among admissible alternatives with traceable goal/priority/MEC reasoning; preserve completed work, agency, source provenance and plan immutability. No positive whole-task credit for an incomplete subtask.",
+        "Review execution, effort, current/next-day function and recovery; material target, selector, population or evidence changes invalidate dependent approval. Bind current review plus future-human queue.",
+        "Supplied current comparable work/effort exposure governs main work. No watch VO2 estimate, old/downhill result or easy pace may create a high-intensity or race target.",
+        "Ten-minute easy preparation and five-minute easy cooldown are coaching selections; allow shorter/terminated exit on response and fit all components to availability. They are not fabricated prior history.",
+        "Progress only to a supplied previously tolerated next dose with compatible current comparable response and future-week fit; preserve intensity while changing one dimension. No universal percentage threshold.",
+        "Familiar strides mean relaxed nonmaximal efforts with prior compatible exposure and eligible current easy preparation; no maximal sprint, novel hills or uncalibrated VO2 equivalence."
+      ]
+    },
+    {
+      "id": "cruise-maximal-effort",
+      "sourceId": "REP-R2-34",
+      "passed": false,
+      "expected": "NO_POSITIVE_OUTSIDE_REVIEWED_SCOPE",
+      "actualDecision": "MODIFY",
+      "coverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "selected": "COMPOSE_FAMILIAR_WORK_SESSION",
+      "reason": "Retain the familiar compatible task and compose reviewed easy preparation/cooldown rather than demand a paper for exact minutes",
+      "immutable": true,
+      "inputHash": "20e4f54ff3d6b20eb6bd73b0d4a69ae26d38d28c0b6973c82aa67279fdc2bb3e",
+      "recipe": {
+        "family": "THRESHOLD_CRUISE",
+        "warmup": {
+          "minutes": 10,
+          "effort": "Comfortable conversational; walk if needed"
+        },
+        "work": {
+          "repetitions": 3,
+          "workMinutesEach": 5,
+          "recoveryMinutes": 2,
+          "paceSecondsPerKm": 330,
+          "effort": "maximal unsustainable all-out",
+          "response": "compatible"
+        },
+        "cooldown": {
+          "minutes": 5,
+          "effort": "Very easy conversational or walk"
+        },
+        "calibration": {
+          "method": "recent comparable protocol + pace/effort cross-check",
+          "claim": "Familiar task/effort anchor, not a measured physiological boundary"
+        },
+        "stopIfEffortPaceDiverge": true
+      },
+      "scientificConditions": [
+        "OFFLINE_SYNTHETIC_REFERENCE_ONLY; explicit current nonclinical eligible adult V1 context. No clinical clearance, rehabilitation, diagnosis, pregnancy/postpartum/frailty or elite extrapolation.",
+        "Use current goal, relevant phase/key stimulus, exposure/competence, recovery, availability/equipment and future horizon. Missing information is not silently imputed; clinical flags override prescription.",
+        "Numeric entry/preparation/effort choices are bounded reversible coaching selections, not physiological safety thresholds or exact-dose efficacy claims. Current response can shorten or end work.",
+        "Choose among admissible alternatives with traceable goal/priority/MEC reasoning; preserve completed work, agency, source provenance and plan immutability. No positive whole-task credit for an incomplete subtask.",
+        "Review execution, effort, current/next-day function and recovery; material target, selector, population or evidence changes invalidate dependent approval. Bind current review plus future-human queue.",
+        "Supplied current comparable work/effort exposure governs main work. No watch VO2 estimate, old/downhill result or easy pace may create a high-intensity or race target.",
+        "Ten-minute easy preparation and five-minute easy cooldown are coaching selections; allow shorter/terminated exit on response and fit all components to availability. They are not fabricated prior history.",
+        "Progress only to a supplied previously tolerated next dose with compatible current comparable response and future-week fit; preserve intensity while changing one dimension. No universal percentage threshold.",
+        "Familiar strides mean relaxed nonmaximal efforts with prior compatible exposure and eligible current easy preparation; no maximal sprint, novel hills or uncalibrated VO2 equivalence."
+      ]
+    },
+    {
+      "id": "cruise-insufficient-total-window",
+      "sourceId": "REP-R2-34",
+      "passed": false,
+      "expected": "NO_POSITIVE_OUTSIDE_REVIEWED_SCOPE",
+      "actualDecision": "MODIFY",
+      "coverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "selected": "COMPOSE_FAMILIAR_WORK_SESSION",
+      "reason": "Retain the familiar compatible task and compose reviewed easy preparation/cooldown rather than demand a paper for exact minutes",
+      "immutable": true,
+      "inputHash": "5720d13bf5250be33facaca45d4eb9325e81434af992bda45d3c025ba7c172e3",
+      "recipe": {
+        "family": "THRESHOLD_CRUISE",
+        "warmup": {
+          "minutes": 10,
+          "effort": "Comfortable conversational; walk if needed"
+        },
+        "work": {
+          "repetitions": 3,
+          "workMinutesEach": 5,
+          "recoveryMinutes": 2,
+          "paceSecondsPerKm": 330,
+          "effort": "familiar controlled hard",
+          "response": "compatible"
+        },
+        "cooldown": {
+          "minutes": 5,
+          "effort": "Very easy conversational or walk"
+        },
+        "calibration": {
+          "method": "recent comparable protocol + pace/effort cross-check",
+          "claim": "Familiar task/effort anchor, not a measured physiological boundary"
+        },
+        "stopIfEffortPaceDiverge": true
+      },
+      "scientificConditions": [
+        "OFFLINE_SYNTHETIC_REFERENCE_ONLY; explicit current nonclinical eligible adult V1 context. No clinical clearance, rehabilitation, diagnosis, pregnancy/postpartum/frailty or elite extrapolation.",
+        "Use current goal, relevant phase/key stimulus, exposure/competence, recovery, availability/equipment and future horizon. Missing information is not silently imputed; clinical flags override prescription.",
+        "Numeric entry/preparation/effort choices are bounded reversible coaching selections, not physiological safety thresholds or exact-dose efficacy claims. Current response can shorten or end work.",
+        "Choose among admissible alternatives with traceable goal/priority/MEC reasoning; preserve completed work, agency, source provenance and plan immutability. No positive whole-task credit for an incomplete subtask.",
+        "Review execution, effort, current/next-day function and recovery; material target, selector, population or evidence changes invalidate dependent approval. Bind current review plus future-human queue.",
+        "Supplied current comparable work/effort exposure governs main work. No watch VO2 estimate, old/downhill result or easy pace may create a high-intensity or race target.",
+        "Ten-minute easy preparation and five-minute easy cooldown are coaching selections; allow shorter/terminated exit on response and fit all components to availability. They are not fabricated prior history.",
+        "Progress only to a supplied previously tolerated next dose with compatible current comparable response and future-week fit; preserve intensity while changing one dimension. No universal percentage threshold.",
+        "Familiar strides mean relaxed nonmaximal efforts with prior compatible exposure and eligible current easy preparation; no maximal sprint, novel hills or uncalibrated VO2 equivalence."
+      ]
+    },
+    {
+      "id": "strides-insufficient-total-window",
+      "sourceId": "REP-R2-39",
+      "passed": false,
+      "expected": "NO_POSITIVE_OUTSIDE_REVIEWED_SCOPE",
+      "actualDecision": "MODIFY",
+      "coverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "selected": "COMPOSE_FAMILIAR_WORK_SESSION",
+      "reason": "Retain the familiar compatible task and compose reviewed easy preparation/cooldown rather than demand a paper for exact minutes",
+      "immutable": true,
+      "inputHash": "3c68e6e222bfcb94ad9f4699b5878c43441c6e598c68a4839c1d83e678ea779e",
+      "recipe": {
+        "family": "STRIDES",
+        "warmup": {
+          "minutes": 10,
+          "effort": "Comfortable conversational; walk if needed"
+        },
+        "work": {
+          "repetitions": 4,
+          "secondsEach": 15,
+          "effort": "relaxed quick running; not all-out",
+          "recovery": "walk until comfortable before next repetition",
+          "surface": "flat dry path",
+          "response": "compatible"
+        },
+        "cooldown": {
+          "minutes": 5,
+          "effort": "Very easy conversational or walk"
+        },
+        "calibration": {
+          "method": "familiar movement/effort cue",
+          "claim": "Familiar task/effort anchor, not a measured physiological boundary"
+        },
+        "stopIfEffortPaceDiverge": true
+      },
+      "scientificConditions": [
+        "OFFLINE_SYNTHETIC_REFERENCE_ONLY; explicit current nonclinical eligible adult V1 context. No clinical clearance, rehabilitation, diagnosis, pregnancy/postpartum/frailty or elite extrapolation.",
+        "Use current goal, relevant phase/key stimulus, exposure/competence, recovery, availability/equipment and future horizon. Missing information is not silently imputed; clinical flags override prescription.",
+        "Numeric entry/preparation/effort choices are bounded reversible coaching selections, not physiological safety thresholds or exact-dose efficacy claims. Current response can shorten or end work.",
+        "Choose among admissible alternatives with traceable goal/priority/MEC reasoning; preserve completed work, agency, source provenance and plan immutability. No positive whole-task credit for an incomplete subtask.",
+        "Review execution, effort, current/next-day function and recovery; material target, selector, population or evidence changes invalidate dependent approval. Bind current review plus future-human queue.",
+        "Supplied current comparable work/effort exposure governs main work. No watch VO2 estimate, old/downhill result or easy pace may create a high-intensity or race target.",
+        "Ten-minute easy preparation and five-minute easy cooldown are coaching selections; allow shorter/terminated exit on response and fit all components to availability. They are not fabricated prior history.",
+        "Progress only to a supplied previously tolerated next dose with compatible current comparable response and future-week fit; preserve intensity while changing one dimension. No universal percentage threshold.",
+        "Familiar strides mean relaxed nonmaximal efforts with prior compatible exposure and eligible current easy preparation; no maximal sprint, novel hills or uncalibrated VO2 equivalence."
+      ]
+    },
+    {
+      "id": "familiar-response-negation",
+      "sourceId": "REP-R2-34",
+      "passed": false,
+      "expected": "NO_POSITIVE_OUTSIDE_REVIEWED_SCOPE",
+      "actualDecision": "MODIFY",
+      "coverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "selected": "COMPOSE_FAMILIAR_WORK_SESSION",
+      "reason": "Retain the familiar compatible task and compose reviewed easy preparation/cooldown rather than demand a paper for exact minutes",
+      "immutable": true,
+      "inputHash": "2e6ba3948aa0054f5ad0f63b3e67f88e15b60f15bbe52dc3a2dbfb066d7574da",
+      "recipe": {
+        "family": "THRESHOLD_CRUISE",
+        "warmup": {
+          "minutes": 10,
+          "effort": "Comfortable conversational; walk if needed"
+        },
+        "work": {
+          "repetitions": 3,
+          "workMinutesEach": 5,
+          "recoveryMinutes": 2,
+          "paceSecondsPerKm": 330,
+          "effort": "familiar controlled hard",
+          "response": "not compatible"
+        },
+        "cooldown": {
+          "minutes": 5,
+          "effort": "Very easy conversational or walk"
+        },
+        "calibration": {
+          "method": "recent comparable protocol + pace/effort cross-check",
+          "claim": "Familiar task/effort anchor, not a measured physiological boundary"
+        },
+        "stopIfEffortPaceDiverge": true
+      },
+      "scientificConditions": [
+        "OFFLINE_SYNTHETIC_REFERENCE_ONLY; explicit current nonclinical eligible adult V1 context. No clinical clearance, rehabilitation, diagnosis, pregnancy/postpartum/frailty or elite extrapolation.",
+        "Use current goal, relevant phase/key stimulus, exposure/competence, recovery, availability/equipment and future horizon. Missing information is not silently imputed; clinical flags override prescription.",
+        "Numeric entry/preparation/effort choices are bounded reversible coaching selections, not physiological safety thresholds or exact-dose efficacy claims. Current response can shorten or end work.",
+        "Choose among admissible alternatives with traceable goal/priority/MEC reasoning; preserve completed work, agency, source provenance and plan immutability. No positive whole-task credit for an incomplete subtask.",
+        "Review execution, effort, current/next-day function and recovery; material target, selector, population or evidence changes invalidate dependent approval. Bind current review plus future-human queue.",
+        "Supplied current comparable work/effort exposure governs main work. No watch VO2 estimate, old/downhill result or easy pace may create a high-intensity or race target.",
+        "Ten-minute easy preparation and five-minute easy cooldown are coaching selections; allow shorter/terminated exit on response and fit all components to availability. They are not fabricated prior history.",
+        "Progress only to a supplied previously tolerated next dose with compatible current comparable response and future-week fit; preserve intensity while changing one dimension. No universal percentage threshold.",
+        "Familiar strides mean relaxed nonmaximal efforts with prior compatible exposure and eligible current easy preparation; no maximal sprint, novel hills or uncalibrated VO2 equivalence."
+      ]
+    },
+    {
+      "id": "familiar-response-adversative",
+      "sourceId": "REP-R2-34",
+      "passed": true,
+      "expected": "NO_POSITIVE_OUTSIDE_REVIEWED_SCOPE",
+      "actualDecision": "NOT_SUPPORTED_YET",
+      "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "selected": null,
+      "reason": "The supplied run family/context has no reusable executable binding",
+      "immutable": true,
+      "inputHash": "dcb428c3b884df28bd3e27e2f538d557aece04b8a5797fda3cef047907649dc6",
+      "recipe": null,
+      "scientificConditions": []
+    },
+    {
+      "id": "strength-recovery-incompatible",
+      "sourceId": "REP-R2-11",
+      "passed": false,
+      "expected": "NO_POSITIVE_OUTSIDE_REVIEWED_SCOPE",
+      "actualDecision": "MODIFY",
+      "coverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "selected": "EARNED_MINIMUM_PROGRESSION",
+      "reason": "Repeated easy comparable completion and prior compatible candidate support a one-dimension step",
+      "immutable": true,
+      "inputHash": "c8e5e555bd3eaee431c3ff22fb57bcbb110534d73e5a87826563f05475a56667",
+      "recipe": {
+        "exercise": "chest-supported dumbbell row",
+        "sets": 2,
+        "reps": 9,
+        "loadKgPerHand": 12,
+        "targetRir": 3,
+        "restSeconds": 120
+      },
+      "scientificConditions": [
+        "OFFLINE_SYNTHETIC_REFERENCE_ONLY; explicit current nonclinical eligible adult V1 context. No clinical clearance, rehabilitation, diagnosis, pregnancy/postpartum/frailty or elite extrapolation.",
+        "Use current goal, relevant phase/key stimulus, exposure/competence, recovery, availability/equipment and future horizon. Missing information is not silently imputed; clinical flags override prescription.",
+        "Numeric entry/preparation/effort choices are bounded reversible coaching selections, not physiological safety thresholds or exact-dose efficacy claims. Current response can shorten or end work.",
+        "Choose among admissible alternatives with traceable goal/priority/MEC reasoning; preserve completed work, agency, source provenance and plan immutability. No positive whole-task credit for an incomplete subtask.",
+        "Review execution, effort, current/next-day function and recovery; material target, selector, population or evidence changes invalidate dependent approval. Bind current review plus future-human queue.",
+        "Use the same movement/configuration and complete effort/rest context; require actual equipment increments. Repetitions/load change one dimension and cannot be inferred from unrelated exercise kilograms.",
+        "A lower familiar load or rep choice is preferred only when the comparator shows it resolves a material mismatch; do not claim a universally optimal one-repetition or two-kilogram adjustment.",
+        "No single noisy performance observation becomes a hard rule. Effort/RIR remains uncertain, and observation consistency/comparability matters more than an arbitrary universal count."
+      ]
+    },
+    {
+      "id": "strength-technique-negated",
+      "sourceId": "REP-R2-11",
+      "passed": false,
+      "expected": "NO_POSITIVE_OUTSIDE_REVIEWED_SCOPE",
+      "actualDecision": "MODIFY",
+      "coverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "selected": "EARNED_MINIMUM_PROGRESSION",
+      "reason": "Repeated easy comparable completion and prior compatible candidate support a one-dimension step",
+      "immutable": true,
+      "inputHash": "6bc861db9a835f3352a1bf6095cdad7290ba05803d07b1e1fc3c1cd150b19b71",
+      "recipe": {
+        "exercise": "chest-supported dumbbell row",
+        "sets": 2,
+        "reps": 9,
+        "loadKgPerHand": 12,
+        "targetRir": 3,
+        "restSeconds": 120
+      },
+      "scientificConditions": [
+        "OFFLINE_SYNTHETIC_REFERENCE_ONLY; explicit current nonclinical eligible adult V1 context. No clinical clearance, rehabilitation, diagnosis, pregnancy/postpartum/frailty or elite extrapolation.",
+        "Use current goal, relevant phase/key stimulus, exposure/competence, recovery, availability/equipment and future horizon. Missing information is not silently imputed; clinical flags override prescription.",
+        "Numeric entry/preparation/effort choices are bounded reversible coaching selections, not physiological safety thresholds or exact-dose efficacy claims. Current response can shorten or end work.",
+        "Choose among admissible alternatives with traceable goal/priority/MEC reasoning; preserve completed work, agency, source provenance and plan immutability. No positive whole-task credit for an incomplete subtask.",
+        "Review execution, effort, current/next-day function and recovery; material target, selector, population or evidence changes invalidate dependent approval. Bind current review plus future-human queue.",
+        "Use the same movement/configuration and complete effort/rest context; require actual equipment increments. Repetitions/load change one dimension and cannot be inferred from unrelated exercise kilograms.",
+        "A lower familiar load or rep choice is preferred only when the comparator shows it resolves a material mismatch; do not claim a universally optimal one-repetition or two-kilogram adjustment.",
+        "No single noisy performance observation becomes a hard rule. Effort/RIR remains uncertain, and observation consistency/comparability matters more than an arbitrary universal count."
+      ]
+    },
+    {
+      "id": "strength-history-response-negated",
+      "sourceId": "REP-R2-11",
+      "passed": false,
+      "expected": "NO_POSITIVE_OUTSIDE_REVIEWED_SCOPE",
+      "actualDecision": "MODIFY",
+      "coverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "selected": "EARNED_MINIMUM_PROGRESSION",
+      "reason": "Repeated easy comparable completion and prior compatible candidate support a one-dimension step",
+      "immutable": true,
+      "inputHash": "bf5402238636ac4b08f30e0b4aba1692ee802e77f5e4778dbda298568e182240",
+      "recipe": {
+        "exercise": "chest-supported dumbbell row",
+        "sets": 2,
+        "reps": 9,
+        "loadKgPerHand": 12,
+        "targetRir": 3,
+        "restSeconds": 120
+      },
+      "scientificConditions": [
+        "OFFLINE_SYNTHETIC_REFERENCE_ONLY; explicit current nonclinical eligible adult V1 context. No clinical clearance, rehabilitation, diagnosis, pregnancy/postpartum/frailty or elite extrapolation.",
+        "Use current goal, relevant phase/key stimulus, exposure/competence, recovery, availability/equipment and future horizon. Missing information is not silently imputed; clinical flags override prescription.",
+        "Numeric entry/preparation/effort choices are bounded reversible coaching selections, not physiological safety thresholds or exact-dose efficacy claims. Current response can shorten or end work.",
+        "Choose among admissible alternatives with traceable goal/priority/MEC reasoning; preserve completed work, agency, source provenance and plan immutability. No positive whole-task credit for an incomplete subtask.",
+        "Review execution, effort, current/next-day function and recovery; material target, selector, population or evidence changes invalidate dependent approval. Bind current review plus future-human queue.",
+        "Use the same movement/configuration and complete effort/rest context; require actual equipment increments. Repetitions/load change one dimension and cannot be inferred from unrelated exercise kilograms.",
+        "A lower familiar load or rep choice is preferred only when the comparator shows it resolves a material mismatch; do not claim a universally optimal one-repetition or two-kilogram adjustment.",
+        "No single noisy performance observation becomes a hard rule. Effort/RIR remains uncertain, and observation consistency/comparability matters more than an arbitrary universal count."
+      ]
+    },
+    {
+      "id": "strength-history-context-different",
+      "sourceId": "REP-R2-11",
+      "passed": false,
+      "expected": "NO_POSITIVE_OUTSIDE_REVIEWED_SCOPE",
+      "actualDecision": "MODIFY",
+      "coverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "selected": "EARNED_MINIMUM_PROGRESSION",
+      "reason": "Repeated easy comparable completion and prior compatible candidate support a one-dimension step",
+      "immutable": true,
+      "inputHash": "5e9c44387c369a5d4812f121c8f2412df1041befc227e0fb93868271a62b9a20",
+      "recipe": {
+        "exercise": "chest-supported dumbbell row",
+        "sets": 2,
+        "reps": 9,
+        "loadKgPerHand": 12,
+        "targetRir": 3,
+        "restSeconds": 120
+      },
+      "scientificConditions": [
+        "OFFLINE_SYNTHETIC_REFERENCE_ONLY; explicit current nonclinical eligible adult V1 context. No clinical clearance, rehabilitation, diagnosis, pregnancy/postpartum/frailty or elite extrapolation.",
+        "Use current goal, relevant phase/key stimulus, exposure/competence, recovery, availability/equipment and future horizon. Missing information is not silently imputed; clinical flags override prescription.",
+        "Numeric entry/preparation/effort choices are bounded reversible coaching selections, not physiological safety thresholds or exact-dose efficacy claims. Current response can shorten or end work.",
+        "Choose among admissible alternatives with traceable goal/priority/MEC reasoning; preserve completed work, agency, source provenance and plan immutability. No positive whole-task credit for an incomplete subtask.",
+        "Review execution, effort, current/next-day function and recovery; material target, selector, population or evidence changes invalidate dependent approval. Bind current review plus future-human queue.",
+        "Use the same movement/configuration and complete effort/rest context; require actual equipment increments. Repetitions/load change one dimension and cannot be inferred from unrelated exercise kilograms.",
+        "A lower familiar load or rep choice is preferred only when the comparator shows it resolves a material mismatch; do not claim a universally optimal one-repetition or two-kilogram adjustment.",
+        "No single noisy performance observation becomes a hard rule. Effort/RIR remains uncertain, and observation consistency/comparability matters more than an arbitrary universal count."
+      ]
+    },
+    {
+      "id": "return-abnormal-current-function",
+      "sourceId": "REP-R2-19",
+      "passed": false,
+      "expected": "NO_POSITIVE_OUTSIDE_REVIEWED_SCOPE",
+      "actualDecision": "MODIFY",
+      "coverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "selected": "GOVERNED_LOW_DEMAND_REENTRY",
+      "reason": "Use a lower-demand reversible trial instead of requiring current performance before any safe establishment action",
+      "immutable": true,
+      "inputHash": "74aa18d8a1effec8f0fd24b47a0b3e8b719165a53fcba22223aea1589ed36d81",
+      "recipe": {
+        "family": "EASY_REESTABLISHMENT",
+        "maximumMinutes": 15,
+        "effort": "Comfortable complete sentences; begin walking, introduce short easy jogs only while comfortable",
+        "walkBreaks": "As needed; total time is a ceiling, not an obligation",
+        "noRestoredCapacityClaim": true,
+        "noAutomaticProgression": true
+      },
+      "scientificConditions": [
+        "OFFLINE_SYNTHETIC_REFERENCE_ONLY; explicit current nonclinical eligible adult V1 context. No clinical clearance, rehabilitation, diagnosis, pregnancy/postpartum/frailty or elite extrapolation.",
+        "Use current goal, relevant phase/key stimulus, exposure/competence, recovery, availability/equipment and future horizon. Missing information is not silently imputed; clinical flags override prescription.",
+        "Numeric entry/preparation/effort choices are bounded reversible coaching selections, not physiological safety thresholds or exact-dose efficacy claims. Current response can shorten or end work.",
+        "Choose among admissible alternatives with traceable goal/priority/MEC reasoning; preserve completed work, agency, source provenance and plan immutability. No positive whole-task credit for an incomplete subtask.",
+        "Review execution, effort, current/next-day function and recovery; material target, selector, population or evidence changes invalidate dependent approval. Bind current review plus future-human queue.",
+        "Interruption reason/exposure and current eligibility must be known. Pain, illness, functional limitation or clearance-dependent return routes clinically; an unexplained pause requires clarification.",
+        "Fifteen-minute run entry is an upper proposed duration with walk/stop option; it is not forced continuous running or restored former capacity. Current ordinary walking is relevant context, not proof of hard-run tolerance.",
+        "Strength uses an explicitly familiar low-demand configuration, one initial set and approximate RIR≥4 cue; no unknown load and no automatic prior-week restoration.",
+        "Later tasks/progression are conditional on observed execution/effort/function/recovery. Do not score an unconditional complete former week as established.",
+        "A complete compatible current postpause demonstration may outrank the generic entry prior, only with current comparable effort/function and complete configuration; this is observed current capacity, not restored historical capacity or elapsed-time inference."
+      ]
+    },
+    {
+      "id": "return-hard-current-demonstration",
+      "sourceId": "REP-R2-19",
+      "passed": false,
+      "expected": "NO_POSITIVE_OUTSIDE_REVIEWED_SCOPE",
+      "actualDecision": "MODIFY",
+      "coverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "selected": "CURRENT_COMPATIBLE_DEMONSTRATION",
+      "reason": "Current comparable compatible execution outranks a generic population entry prior; repeat this demonstrated task without assuming former capacity",
+      "immutable": true,
+      "inputHash": "f251dbf4a00106fde9d6de9f3dcbf7ac8082e271cf9f92185fcc601f123e80a7",
+      "recipe": {
+        "family": "HARD_RUN",
+        "minutes": 30,
+        "effort": "all-out"
+      },
+      "scientificConditions": [
+        "OFFLINE_SYNTHETIC_REFERENCE_ONLY; explicit current nonclinical eligible adult V1 context. No clinical clearance, rehabilitation, diagnosis, pregnancy/postpartum/frailty or elite extrapolation.",
+        "Use current goal, relevant phase/key stimulus, exposure/competence, recovery, availability/equipment and future horizon. Missing information is not silently imputed; clinical flags override prescription.",
+        "Numeric entry/preparation/effort choices are bounded reversible coaching selections, not physiological safety thresholds or exact-dose efficacy claims. Current response can shorten or end work.",
+        "Choose among admissible alternatives with traceable goal/priority/MEC reasoning; preserve completed work, agency, source provenance and plan immutability. No positive whole-task credit for an incomplete subtask.",
+        "Review execution, effort, current/next-day function and recovery; material target, selector, population or evidence changes invalidate dependent approval. Bind current review plus future-human queue.",
+        "Interruption reason/exposure and current eligibility must be known. Pain, illness, functional limitation or clearance-dependent return routes clinically; an unexplained pause requires clarification.",
+        "Fifteen-minute run entry is an upper proposed duration with walk/stop option; it is not forced continuous running or restored former capacity. Current ordinary walking is relevant context, not proof of hard-run tolerance.",
+        "Strength uses an explicitly familiar low-demand configuration, one initial set and approximate RIR≥4 cue; no unknown load and no automatic prior-week restoration.",
+        "Later tasks/progression are conditional on observed execution/effort/function/recovery. Do not score an unconditional complete former week as established.",
+        "A complete compatible current postpause demonstration may outrank the generic entry prior, only with current comparable effort/function and complete configuration; this is observed current capacity, not restored historical capacity or elapsed-time inference."
+      ]
+    },
+    {
+      "id": "return-normal-demo-cue-contradiction",
+      "sourceId": "REP-R2-19",
+      "passed": false,
+      "expected": "NO_POSITIVE_OUTSIDE_REVIEWED_SCOPE",
+      "actualDecision": "MODIFY",
+      "coverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "selected": "CURRENT_COMPATIBLE_DEMONSTRATION",
+      "reason": "Current comparable compatible execution outranks a generic population entry prior; repeat this demonstrated task without assuming former capacity",
+      "immutable": true,
+      "inputHash": "e9532841254d05c8aea238e063be95cd26c27861bac46174c61a2562c10f83bd",
+      "recipe": {
+        "family": "EASY",
+        "minutes": 15,
+        "effort": "maximal effort not conversational"
+      },
+      "scientificConditions": [
+        "OFFLINE_SYNTHETIC_REFERENCE_ONLY; explicit current nonclinical eligible adult V1 context. No clinical clearance, rehabilitation, diagnosis, pregnancy/postpartum/frailty or elite extrapolation.",
+        "Use current goal, relevant phase/key stimulus, exposure/competence, recovery, availability/equipment and future horizon. Missing information is not silently imputed; clinical flags override prescription.",
+        "Numeric entry/preparation/effort choices are bounded reversible coaching selections, not physiological safety thresholds or exact-dose efficacy claims. Current response can shorten or end work.",
+        "Choose among admissible alternatives with traceable goal/priority/MEC reasoning; preserve completed work, agency, source provenance and plan immutability. No positive whole-task credit for an incomplete subtask.",
+        "Review execution, effort, current/next-day function and recovery; material target, selector, population or evidence changes invalidate dependent approval. Bind current review plus future-human queue.",
+        "Interruption reason/exposure and current eligibility must be known. Pain, illness, functional limitation or clearance-dependent return routes clinically; an unexplained pause requires clarification.",
+        "Fifteen-minute run entry is an upper proposed duration with walk/stop option; it is not forced continuous running or restored former capacity. Current ordinary walking is relevant context, not proof of hard-run tolerance.",
+        "Strength uses an explicitly familiar low-demand configuration, one initial set and approximate RIR≥4 cue; no unknown load and no automatic prior-week restoration.",
+        "Later tasks/progression are conditional on observed execution/effort/function/recovery. Do not score an unconditional complete former week as established.",
+        "A complete compatible current postpause demonstration may outrank the generic entry prior, only with current comparable effort/function and complete configuration; this is observed current capacity, not restored historical capacity or elapsed-time inference."
+      ]
+    },
+    {
+      "id": "return-unknown-reason",
+      "sourceId": "REP-R2-19",
+      "passed": true,
+      "expected": "NO_POSITIVE_OUTSIDE_REVIEWED_SCOPE",
+      "actualDecision": "ASK",
+      "coverage": "USEFUL_ASK",
+      "selected": null,
+      "reason": "Interruption cause, actual exposure and current restrictions are needed before treating this as nonclinical re-establishment",
+      "immutable": true,
+      "inputHash": "b8c2c790159f59d4eb32d5cc05a921292f866bec1149fb118af1fc91851e9f35",
+      "recipe": null,
+      "scientificConditions": []
+    },
+    {
+      "id": "substitution-incomplete-effort-rest",
+      "sourceId": "REP-R2-18",
+      "passed": true,
+      "expected": "NO_POSITIVE_OUTSIDE_REVIEWED_SCOPE",
+      "actualDecision": "ASK",
+      "coverage": "NOT_SUPPORTED_SOFTWARE_CONTRACT_GAP",
+      "selected": null,
+      "reason": "Request-specific material representation is incomplete, empty, conflicting or untyped. This is a contract/normalization ASK, excluded from useful coaching and semantic consumption.",
+      "immutable": true,
+      "inputHash": "5ee174be185662a1918dbfca617f02485021476ec839583da63e1ddab4d2eaa6",
+      "recipe": null,
+      "scientificConditions": []
+    },
+    {
+      "id": "substitution-unknown-load-units",
+      "sourceId": "REP-R2-18",
+      "passed": true,
+      "expected": "NO_POSITIVE_OUTSIDE_REVIEWED_SCOPE",
+      "actualDecision": "ASK",
+      "coverage": "NOT_SUPPORTED_SOFTWARE_CONTRACT_GAP",
+      "selected": null,
+      "reason": "Request-specific material representation is incomplete, empty, conflicting or untyped. This is a contract/normalization ASK, excluded from useful coaching and semantic consumption.",
+      "immutable": true,
+      "inputHash": "14ba02437cfbc08c7144ca6630afe5a1cc0a3a5d16c800b4cc82c1da143f96af",
+      "recipe": null,
+      "scientificConditions": []
+    },
+    {
+      "id": "clinical-guard",
+      "sourceId": "REP-R2-34",
+      "passed": true,
+      "expected": "NO_POSITIVE_OUTSIDE_REVIEWED_SCOPE",
+      "actualDecision": "CLINICAL_HUMAN_REQUIRED",
+      "coverage": "CLINICAL_OR_OUT_OF_SCOPE",
+      "selected": null,
+      "reason": "Explicit clinical dependency requires a qualified human; no dependent dose is selected",
+      "immutable": true,
+      "inputHash": "8ffef6dcf9a789f9669fa20f72093cf7f59fee2c2459bbbcd929e9f42aa6f693",
+      "recipe": null,
+      "scientificConditions": []
+    },
+    {
+      "id": "missing-eligibility",
+      "sourceId": "REP-R2-34",
+      "passed": true,
+      "expected": "NO_POSITIVE_OUTSIDE_REVIEWED_SCOPE",
+      "actualDecision": "NOT_SUPPORTED_YET",
+      "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "selected": null,
+      "reason": "The requested information is supplied and retained; this context still needs an exact independently supported recipe/eligibility binding",
+      "immutable": true,
+      "inputHash": "1523e7f81cc092511f1cae682f45505e39808dcf23e894cf13d44dcdee978979",
+      "recipe": null,
+      "scientificConditions": []
+    },
+    {
+      "id": "stale-envelope",
+      "sourceId": "REP-R2-34",
+      "passed": true,
+      "expected": "NO_POSITIVE_OUTSIDE_REVIEWED_SCOPE",
+      "actualDecision": "NOT_SUPPORTED_YET",
+      "coverage": "NOT_SUPPORTED_SCIENCE_GAP",
+      "selected": null,
+      "reason": "Reviewed full-session preparation and cooldown bounds unavailable",
+      "immutable": true,
+      "inputHash": "985415d0767e0fa23683385eef87056f39acceb8d81e7f22497a49705da50e4a",
+      "recipe": null,
+      "scientificConditions": []
+    },
+    {
+      "id": "single-noisy-strength-result",
+      "sourceId": "REP-R2-11",
+      "passed": true,
+      "expected": "KEEP",
+      "actualDecision": "KEEP",
+      "coverage": "SUPPORTED_KEEP",
+      "selected": null,
+      "reason": "A single noisy response or unfamiliar candidate does not earn progression; retain the familiar prescription and observe comparable response",
+      "immutable": true,
+      "inputHash": "76c01fd33752d6f11ae29bbba84b3b091ecb5cd1395698df17484d5bce79a95b",
+      "recipe": null,
+      "scientificConditions": []
+    },
+    {
+      "id": "schedule-no-secondary-window",
+      "sourceId": "REP-R2-15",
+      "passed": true,
+      "expected": "NO_POSITIVE_OUTSIDE_REVIEWED_SCOPE",
+      "actualDecision": "NOT_SUPPORTED_YET",
+      "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "selected": null,
+      "reason": "No admissible complete recipe remains after current context constraints",
+      "immutable": true,
+      "inputHash": "1421b7738e965d2f441ea91c5b9f9d2f364f063e14c5430acf328b3e6c169ed5",
+      "recipe": null,
+      "scientificConditions": []
+    }
+  ],
+  "limits": "Synthetic scientific-boundary/adversarial checks only. Not a human, clinical, empirical effectiveness or complete V1 coaching-quality validation."
+}

@@ -1,0 +1,1275 @@
+{
+  "revision": "R7A-DISPOSITIONS-2",
+  "mission": "DOMAIN_COACHING_R7-A",
+  "freeze": "R7A-FREEZE-2",
+  "dispositionValues": [
+    "FIXED_R7A",
+    "PROVEN_NOT_APPLICABLE",
+    "R7B_COLD_START",
+    "R7C_LONGITUDINAL",
+    "R7D_GENERALIZATION",
+    "POST_V1",
+    "CLINICAL_OUT_OF_SCOPE",
+    "STANDING_LIMIT",
+    "OPEN_R7A_BLOCKER",
+    "OPEN_R7A_NONBLOCKING"
+  ],
+  "evidence": {
+    "before": "audits/domain-coaching-r7a-2026-10-27/probes/r7a-class-probes.BEFORE.out.json (pre-R7A runtime) and ssctr-r12-instrument.BEFORE.out.json (byte-identical to the SSCTR round-12 output)",
+    "after": "audits/domain-coaching-r7a-2026-10-27/probes/r7a-class-probes.CYCLE2.out.json and ssctr-r12-instrument.CYCLE2.out.json (R7A-FREEZE-2)",
+    "tests": "CoachingCore/test/r7a-semantic-core.test.mjs and CoachingCore/test/r7a-cycle2.test.mjs",
+    "mutation": "audits/domain-coaching-r7a-2026-10-27/probes/mutation-check-r7a.out.json",
+    "regression": "CoachingCore/r7/REGRESSION_R7A.json",
+    "afterFirstCycle": "audits/domain-coaching-r7a-2026-10-27/probes/r7a-class-probes.AFTER.out.json and ssctr-r12-instrument.AFTER.out.json (R7A-FREEZE-1)",
+    "judgeProbes": "audits/domain-coaching-r7a-2026-10-27/reviews/qe-probe-*.mjs and ssctr-r7a-delta-probe*.mjs (the judges own; the author re-ran them in an isolated copy)",
+    "secondCycleDelta": "audits/domain-coaching-r7a-2026-10-27/dossier/RUNTIME_DELTA_R7A_CYCLE2.diff",
+    "regressionFirstFreeze": "CoachingCore/r7/REGRESSION_R7A_FREEZE1.json"
+  },
+  "classes": [
+    {
+      "id": "C01",
+      "class": "D53: restoration after re-establishment, every state mode",
+      "before": "REPRODUCED (SSCTR AI noisy grid: 48 next exposures more than one set above; AJ from-log scripts)",
+      "rootCause": "Two definitions of one concept: strengthDose decided a re-establishment for any state with a gap above return.moderateMaxDays, advanceStrength recognised one only when ex.mode === 'KNOWN' (reestablishes)",
+      "fix": "r6-program.mjs: the row states its kind (exposure.kind); advanceStrength starts the regain at every performed REESTABLISH, whatever the state's mode, from the count before the phase reduction",
+      "after": "NOT_REPRODUCED (AI noisy next-exposure jumps 48 -> 0; AJ from-log cases 0; AH 0/584)",
+      "invariant": "INV-03",
+      "tests": [
+        "R7-A state composition (D53)"
+      ],
+      "disposition": "OPEN_R7A_BLOCKER",
+      "review": "SSCTR re-check R7A-SSCTR-r2: runtime not accepted (D56); engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)",
+      "dispositionAfterRecheck": "OPEN_R7A_BLOCKER",
+      "recheckResidual": [
+        "D56"
+      ],
+      "closureNote": "Fixed on R7A-FREEZE-1 for every state mode (SSCTR R7A-SSCTR-r1: D53 RESOLVED; the phase and regain grids give the same results on FREEZE-2). The second cycle opened an equivalent path, D56 (a regain cap raised or ended by fully time-fitted weeks; SSCTR R7A-SSCTR-r2). Founder §16 closes D53 only if an independent review finds no uncorrected equivalent, so D53 is not closed on the final runtime"
+    },
+    {
+      "id": "C02",
+      "class": "D54: re-establishment x taper / race week / post-race",
+      "before": "REPRODUCED (SSCTR AK: 70 rows above the phase dose; class probe: 120 race-window/post-event rows at 2x5 @RIR3)",
+      "rootCause": "The re-establishment row returned before the phase reduction (early return)",
+      "fix": "r6-program.mjs: strengthCandidate + one phaseDose step for every row",
+      "after": "NOT_REPRODUCED (AK 0; class probe 0 of 3,360 rows)",
+      "invariant": "INV-01",
+      "tests": [
+        "R7-A phase integrity",
+        "R7-A phase integrity (D54 metamorphic)"
+      ],
+      "disposition": "FIXED_R7A",
+      "review": "SSCTR re-check R7A-SSCTR-r2: runtime not accepted (D56); engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)"
+    },
+    {
+      "id": "C03",
+      "class": "Early returns skipping the phase modifier (return x phase, establishment x phase)",
+      "before": "STRUCTURAL: three rows returned before the phase step (re-establishment: violating; return entry for a new exercise and return step 0: compliant only because 1 set @RIR4 is at or below every phase dose)",
+      "rootCause": "Branch-local composition",
+      "fix": "Same as C02: no row returns before the phase step",
+      "after": "NOT_REPRODUCED; every row reached by the grid passes the phase bounds",
+      "invariant": "INV-01",
+      "tests": [
+        "R7-A phase integrity"
+      ],
+      "disposition": "FIXED_R7A",
+      "review": "SSCTR re-check R7A-SSCTR-r2: runtime not accepted (D56); engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)"
+    },
+    {
+      "id": "C04",
+      "class": "Reconstruction of the executed exposure (SSCTR R19, split weeks)",
+      "before": "REPRODUCED (an executed 3x10 at the known load followed by a missed re-establishment row: next week 2 sets with a regain cap)",
+      "rootCause": "The transition took the last prescribed exposure per exercise (Map overwrite) and re-derived its meaning from load modes",
+      "fix": "advanceStrength: the first executed exposure decides the week's kind; the last executed one gives its counts; usedInWeek reads each row's exposure and session; the re-establishment note reads 'as of the last review'",
+      "after": "NOT_REPRODUCED",
+      "invariant": "INV-04",
+      "tests": [
+        "R7-A state composition (R19)",
+        "R7-A state composition: the last executed count ..."
+      ],
+      "disposition": "OPEN_R7A_BLOCKER",
+      "review": "SSCTR re-check R7A-SSCTR-r2: runtime not accepted (D56); engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)",
+      "secondCycle": {
+        "findings": [
+          "QE-R7A-14",
+          "QE-R7A-17",
+          "SSCTR R20"
+        ],
+        "what": "Two readings of one week: a row trimmed to the athlete's time read as a phase reduction in the review while the projection read the untrimmed plan; a practice row read by role in the review. Now: exposure.phasedSets (before any time fit, lowered by a fatigue reduction), the plan's fitted count, the return ceiling = the largest whole count executed outside a phase reduction (R20), practice by exposure kind",
+        "tests": [
+          "R7-A cycle 2: only a time-budget fit is not a reduction; a fatigue reduction after a re-establishment keeps the regain cap",
+          "R7-A cycle 2: a practice exercise is practice in the plan and in the review"
+        ],
+        "review": "SSCTR re-check R7A-SSCTR-r2: runtime not accepted (D56); engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)"
+      },
+      "dispositionAfterRecheck": "OPEN_R7A_BLOCKER",
+      "recheckResidual": [
+        "D56"
+      ],
+      "recheckOpenNonBlocking": [
+        "QE-R7A-22"
+      ]
+    },
+    {
+      "id": "C05",
+      "class": "TOTAL x PER_HAND, hidden unit conversion",
+      "before": "The engine never converts a convention; the H07 relabelling (self-report TOTAL shown PER_HAND) came from C07. A missing convention means the planned convention for logs and intake records alike (consistent). A logged load in another convention is unknown and asked (strength.loadUnits)",
+      "rootCause": "None in the engine (C07 was the path). Catalogue data: single-implement exercises (goblet-squat, kb-goblet-squat) carry PER_HAND",
+      "fix": "C07 fix; the loadUnits invariant is now a test",
+      "after": "NOT_REPRODUCED",
+      "invariant": "INV-09",
+      "tests": [
+        "R7-A canonical input (C05, strength.loadUnits)"
+      ],
+      "disposition": "FIXED_R7A",
+      "residual": {
+        "id": "F-SINGLE-IMPLEMENT-CONVENTION",
+        "disposition": "R7B_COLD_START",
+        "reason": "A goblet squat holds one implement, so 'kg per hand' misdescribes it and TOTAL and PER_HAND reports of the same physical load are treated as different conventions. Fixing it needs an implement count in the exercise library and a decision on the increment for one implement (2 or 2.5 kg): catalogue and dose semantics for R7-B with the SSCTR, not a branch inconsistency"
+      }
+    },
+    {
+      "id": "C06",
+      "class": "Source/provenance label changing the outcome",
+      "before": "REPRODUCED by the engineering judge on R7A-FREEZE-1: the provider name prefix decided which report of a merged session supplied its physical facts (probe C3), and the intake same-date tie was keyed on the literal \"SELF_REPORT\" (probe I1). The first-cycle class probes varied labels on a single report only",
+      "rootCause": "sourceQuality read the provider prefix; the intake lead compared the label literally",
+      "fix": "r6-provenance.mjs: source quality from the declared quality or a device activity id only (DR-123); r6-intake.mjs: origin by list, the last tie by content (cycle 2)",
+      "after": "NOT_REPRODUCED (judge probes C3, I1; test \"intake records of one exercise merge by what they say\")",
+      "invariant": "INV-07",
+      "tests": [
+        "R7-A canonical input (C06, DR-123)",
+        "R7-A cycle 2: an agreeing second report of a strength session changes nothing, whatever it lists, omits or is labelled",
+        "R7-A cycle 2: intake records of one exercise merge by what they say"
+      ],
+      "disposition": "FIXED_R7A",
+      "firstDisposition": "PROVEN_NOT_APPLICABLE",
+      "refutedBy": [
+        "QE-R7A-05",
+        "QE-R7A-13"
+      ],
+      "review": "SSCTR re-check R7A-SSCTR-r2: runtime not accepted (D56); engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)",
+      "recheckOpenNonBlocking": [
+        "QE-R7A-13"
+      ]
+    },
+    {
+      "id": "C07",
+      "class": "Unknown displacing known; merge order",
+      "before": "REPRODUCED (a wearable record without RIR replaced a complete self-reported dose; duplicate self-reports order-dependent)",
+      "rootCause": "Last-wins Map merge in canonicalizeIntake",
+      "fix": "r6-intake.mjs: order-independent merge; a record without a complete current dose never displaces one with it; between complete doses the latest observation leads, same date -> the athlete's own report; disagreement disclosed",
+      "after": "NOT_REPRODUCED",
+      "invariant": "INV-06",
+      "tests": [
+        "R7-A canonical input (C07)"
+      ],
+      "disposition": "FIXED_R7A",
+      "review": "SSCTR re-check R7A-SSCTR-r2: runtime not accepted (D56); engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)",
+      "residual": {
+        "disposition": "R7B_COLD_START",
+        "reason": "Which of two complete, disagreeing doses should seed a known exercise (and the run-history fusion of CQ-R6-01) is cold-start fusion policy"
+      },
+      "secondCycle": {
+        "findings": [
+          "QE-R7A-13"
+        ],
+        "what": "Intake: instants compared as instants (a date-only record at the latest instant of its day); a later record without a load keeps the earlier hint",
+        "tests": [
+          "R7-A cycle 2: intake records of one exercise merge by what they say"
+        ],
+        "review": "SSCTR re-check R7A-SSCTR-r2: runtime not accepted (D56); engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)"
+      }
+    },
+    {
+      "id": "C08",
+      "class": "Duplicate observations",
+      "before": "REPRODUCED by the engineering judge on R7A-FREEZE-1: an agreeing watch report listing fewer exercises (or no loads) replaced the manual logs (probe C); an exact replay, in a later review, of a report merged with a complementary duplicate was quarantined as a conflict (probe F). The first-cycle probes replayed single, unmerged reports only",
+      "rootCause": "A merge replaced the whole exercise list with the better source; the carried merged row kept only one input hash",
+      "fix": "r6-provenance.mjs: mergeActual per exercise (known beats unknown, then declared quality, then the conservative value); every merged report keeps its input hash (cycle 2)",
+      "after": "NOT_REPRODUCED (judge probes C, C4, F; test \"the carried record round-trips\")",
+      "invariant": "INV-08",
+      "tests": [
+        "R7-A canonical input (C08)",
+        "R7-A cycle 2: an agreeing second report of a strength session changes nothing, whatever it lists, omits or is labelled",
+        "R7-A cycle 2: the carried record round-trips"
+      ],
+      "disposition": "OPEN_R7A_BLOCKER",
+      "firstDisposition": "PROVEN_NOT_APPLICABLE",
+      "refutedBy": [
+        "QE-R7A-05",
+        "QE-R7A-09"
+      ],
+      "review": "SSCTR re-check R7A-SSCTR-r2: runtime not accepted (D56); engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)",
+      "dispositionAfterRecheck": "OPEN_R7A_BLOCKER",
+      "recheckResidual": [
+        "QE-R7A-05"
+      ]
+    },
+    {
+      "id": "C09",
+      "class": "Contradictory observations",
+      "before": "REPRODUCED (two reports of one session with equal completion and minutes but loads 20 vs 40 kg merged silently; the result depended on which arrived first)",
+      "rootCause": "physicalAgrees compared top-level facts only",
+      "fix": "r6-provenance.mjs: reports disagree when an exercise both logged differs by more than one set or one smallest increment of load, or states another convention; the existing conflict quarantine applies",
+      "after": "NOT_REPRODUCED (one conflict in either arrival order)",
+      "invariant": "INV-08",
+      "tests": [
+        "R7-A canonical input (C09)"
+      ],
+      "disposition": "FIXED_R7A",
+      "review": "SSCTR re-check R7A-SSCTR-r2: runtime not accepted (D56); engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)",
+      "secondCycle": {
+        "findings": [
+          "QE-R7A-06",
+          "QE-R7A-07"
+        ],
+        "what": "Reports of one session that disagree on repetitions or reserve (within one) or on load in pounds (converted) are a conflict in any order",
+        "tests": [
+          "R7-A cycle 2: two reports of one session that disagree on repetitions, reserve or load are a conflict in any order and units"
+        ],
+        "review": "SSCTR re-check R7A-SSCTR-r2: runtime not accepted (D56); engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)"
+      }
+    },
+    {
+      "id": "C10",
+      "class": "Historical corrections lost",
+      "before": "REPRODUCED (a correction accepted in one review was rejected INVALID_CORRECTION_CHAIN when the carried ledger was normalized again; the session lost its execution)",
+      "rootCause": "Superseded facts were dropped from the carried record, so normalization of the carried record was not idempotent",
+      "fix": "r6-provenance.mjs + r6-adaptation.mjs: superseded facts travel in the carried record as inert history and are found by later chains",
+      "after": "NOT_REPRODUCED (end to end and for chains of corrections)",
+      "invariant": "INV-10",
+      "tests": [
+        "R7-A canonical input (C10)"
+      ],
+      "disposition": "FIXED_R7A",
+      "review": "SSCTR re-check R7A-SSCTR-r2: runtime not accepted (D56); engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)",
+      "secondCycle": {
+        "findings": [
+          "QE-R7A-08",
+          "QE-R7A-16"
+        ],
+        "what": "A correction of a merged report survives the carried record (the superseded row answers to every merged id); only a carried row can be history",
+        "tests": [
+          "R7-A cycle 2: the carried record round-trips",
+          "R7-A cycle 2: only a carried row can be history"
+        ],
+        "review": "SSCTR re-check R7A-SSCTR-r2: runtime not accepted (D56); engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)"
+      },
+      "recheckOpenNonBlocking": [
+        "QE-R7A-20"
+      ]
+    },
+    {
+      "id": "C11",
+      "class": "Inactive historical exercises altering current state",
+      "before": "REPRODUCED (in return step 2 a substitute got the return-entry dose because rotated-out exercises stayed at return step 0)",
+      "rootCause": "The return-entry week scanned every exercise in the state",
+      "fix": "r6-program.mjs: an exercise in use this week at the entry step makes a return-entry week (planner and transition)",
+      "after": "NOT_REPRODUCED (the substitute gets 2x8 @RIR3 establishment)",
+      "invariant": "INV-05",
+      "tests": [
+        "R7-A state composition (C11)"
+      ],
+      "disposition": "FIXED_R7A",
+      "review": "SSCTR re-check R7A-SSCTR-r2: runtime not accepted (D56); engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)",
+      "secondCycle": {
+        "findings": [
+          "QE-R7A-15"
+        ],
+        "what": "The week's entry flag travels in its state; a week planned as a return-entry week stays one when its remaining days are rebuilt (one definition for planner and review)",
+        "tests": [
+          "R7-A cycle 2: a return-entry week stays one when its remaining days are rebuilt, whatever the time budget"
+        ],
+        "review": "SSCTR re-check R7A-SSCTR-r2: runtime not accepted (D56); engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)"
+      }
+    },
+    {
+      "id": "C12",
+      "class": "Bodyweight repetition restoration (CQ-R6-11) and unknown repetitions",
+      "before": "As prescribed: NOT_REPRODUCED on the R6 closure runtime. Sets logged without reps: REPRODUCED (read as 0 reps: bodyweight reps regressed 16 -> 8; a known-load lifter's reviews failed)",
+      "rootCause": "strengthLogs mapped a missing rep count to 0 (unknown treated as zero)",
+      "fix": "r6-adaptation.mjs: unknown reps -> repsMet null -> HOLD, never a regression, never adopted",
+      "after": "NOT_REPRODUCED",
+      "invariant": "INV-06",
+      "tests": [
+        "R7-A canonical input (C12, gates.missingLogs)"
+      ],
+      "disposition": "OPEN_R7A_BLOCKER",
+      "review": "SSCTR re-check R7A-SSCTR-r2: runtime not accepted (D56); engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)",
+      "secondCycle": {
+        "findings": [
+          "QE-R7A-12"
+        ],
+        "what": "HOLD and REGRESS keep the planned repetition target; logged repetitions replace it only when the exposure met it",
+        "tests": [
+          "R7-A cycle 2: HOLD and REGRESS repeat the planned repetitions"
+        ],
+        "review": "SSCTR re-check R7A-SSCTR-r2: runtime not accepted (D56); engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)"
+      },
+      "dispositionAfterRecheck": "OPEN_R7A_BLOCKER",
+      "recheckResidual": [
+        "QE-R7A-12"
+      ]
+    },
+    {
+      "id": "C13",
+      "class": "Establishment x progression",
+      "before": "REPRODUCED by the SSCTR on R7A-FREEZE-1 (probe RS2): a never-performed exercise first set up while the exercises in use were in the return steps earned a block-boundary set from its single establishment exposure and rose 2 -> 4 sets. The first-cycle class probes compared first establishment and re-establishment outside a return only",
+      "rootCause": "A fresh exercise in a returning week entered outside the return: no returnInBlock, no regain cap",
+      "fix": "r6-program.mjs advanceStrength: in a week whose exercises in use are in the return steps, a fresh exercise carries the return block and a regain cap from its count before the phase reduction (SSCTR Q1) (cycle 2)",
+      "after": "NOT_REPRODUCED (SSCTR RS2: +1 set at most, blocksDone 0; test \"an exercise first set up during a return regains at most one set per executed week\")",
+      "disposition": "FIXED_R7A",
+      "note": "R17 (a, c, d) and R21 stay with the SSCTR for the next policy revision (R7-B)",
+      "firstDisposition": "PROVEN_NOT_APPLICABLE",
+      "refutedBy": [
+        "SSCTR D55"
+      ],
+      "tests": [
+        "R7-A cycle 2: an exercise first set up during a return regains at most one set per executed week and earns no block set"
+      ],
+      "review": "SSCTR re-check R7A-SSCTR-r2: runtime not accepted (D56); engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)"
+    },
+    {
+      "id": "C14",
+      "class": "Stale evidence influencing current state",
+      "before": "NOT_REPRODUCED (a report of a six-week-old session arriving late leaves the current decision unchanged)",
+      "rootCause": "-",
+      "fix": "None needed",
+      "after": "NOT_REPRODUCED",
+      "disposition": "PROVEN_NOT_APPLICABLE"
+    },
+    {
+      "id": "C15",
+      "class": "Unknown as zero / missing review as a negative signal (SSCTR R18, CQ-R6-04)",
+      "before": "REPRODUCED (weeks 3-6 unreviewed: a weekly review credits the projection, long run 70; a schedule change at the same point plans 15-minute runs)",
+      "rootCause": "The projection credits weeks that had no review (R18) while the single-run ceiling reads the same weeks as zero running from the ledger",
+      "fix": "None in R7-A",
+      "after": "REPRODUCED",
+      "disposition": "R7C_LONGITUDINAL",
+      "reason": "Making both readings agree needs to know which weeks were reviewed (a review-continuity input the review contract does not carry) and Product/Data's G03 decision on how an absence is asked. R7-A adds no contract and decides no product flow. Entry for R7-C: R18, probe C15, G03"
+    },
+    {
+      "id": "C16",
+      "class": "Schedule facts persisting (CQ-R6-03)",
+      "before": "REPRODUCED (a one-day turn change, from = to, became permanent; the conflict day itself was unchanged)",
+      "rootCause": "scheduleChange ignored the declared changes.from/to",
+      "fix": "r6-adaptation.mjs: a bounded change (to) is asked; an open-ended one (from) starts with the first week that begins on or after it; from/to validated",
+      "after": "NOT_REPRODUCED",
+      "invariant": "INV-11",
+      "tests": [
+        "R7-A canonical input (C16)"
+      ],
+      "disposition": "FIXED_R7A",
+      "review": "SSCTR re-check R7A-SSCTR-r2: runtime not accepted (D56); engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)",
+      "residual": {
+        "disposition": "R7C_LONGITUDINAL",
+        "reason": "Representing a temporary schedule window (and resolving a one-day conflict automatically) is a longitudinal adaptation capability"
+      },
+      "secondCycle": {
+        "findings": [
+          "QE-R7A-11"
+        ],
+        "what": "An equipment window with dates the plan cannot use (malformed, impossible, inverted) is asked",
+        "tests": [
+          "R7-A cycle 2: a dated change with dates the plan cannot use is asked, never applied"
+        ],
+        "review": "SSCTR re-check R7A-SSCTR-r2: runtime not accepted (D56); engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)"
+      }
+    },
+    {
+      "id": "C17",
+      "class": "Early return that ignores later validation",
+      "before": "REPRODUCED (validateWeeks had no phase-dose check, so the D54 rows passed)",
+      "rootCause": "The final validation did not express the phase invariant",
+      "fix": "validateWeeks rejects any strength row above its day's phase dose",
+      "after": "NOT_REPRODUCED",
+      "invariant": "INV-02",
+      "tests": [
+        "R7-A phase integrity (C17)"
+      ],
+      "disposition": "FIXED_R7A",
+      "review": "SSCTR re-check R7A-SSCTR-r2: runtime not accepted (D56); engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)",
+      "secondCycle": {
+        "findings": [
+          "QE-R7A-04"
+        ],
+        "what": "The final validation no longer rejects ordinary same-week proposals after an event change: executed history is not re-validated against phases a later change introduced",
+        "tests": [
+          "R7-A cycle 2: an event date that reaches this week re-plans its remaining days under the new phases, later same-week proposals validate, and a postponed race leaves no old race"
+        ],
+        "review": "SSCTR re-check R7A-SSCTR-r2: runtime not accepted (D56); engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)"
+      }
+    },
+    {
+      "id": "C18",
+      "class": "Race completion semantics (CQ-R6-13)",
+      "before": "REPRODUCED (a 10K finished in 52 min against its 75-min window recorded PARTIAL and non-comparable)",
+      "rootCause": "The completeness check read the race window as a target duration",
+      "fix": "r6-adaptation.mjs: a finished race is complete whatever its time",
+      "after": "NOT_REPRODUCED",
+      "invariant": "INV-12",
+      "tests": [
+        "R7-A reconstruction (C18)"
+      ],
+      "disposition": "FIXED_R7A",
+      "review": "SSCTR re-check R7A-SSCTR-r2: runtime not accepted (D56); engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)"
+    },
+    {
+      "id": "C19",
+      "class": "Moves within a week crossing a day phase",
+      "before": "Latent: a missed key session could move to a later chosen day with another day phase (taper or race window) and keep its dose",
+      "rootCause": "moveCandidates did not compare day phases",
+      "fix": "r6-adaptation.mjs: candidate moves never cross a day phase",
+      "after": "Guarded; also caught by the final validation",
+      "invariant": "INV-02",
+      "disposition": "FIXED_R7A",
+      "review": "SSCTR re-check R7A-SSCTR-r2: runtime not accepted (D56); engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)",
+      "secondCycle": {
+        "findings": [
+          "QE-R7A-10",
+          "SSCTR R24"
+        ],
+        "what": "A move is offered only when every row keeps its kind on the new date (one re-establishment test for planner and moves)",
+        "tests": [
+          "R7-A cycle 2: a session moved to another date is never prescribed a dose that date does not allow"
+        ],
+        "review": "SSCTR re-check R7A-SSCTR-r2: runtime not accepted (D56); engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)"
+      }
+    },
+    {
+      "id": "C20",
+      "class": "Same-week reviews composing in either order (state reconstruction)",
+      "foundBy": "QE-R7A-01",
+      "before": "REPRODUCED on R7A-FREEZE-1 (and the R6 closure runtime): a return that starts next week was erased by any later review of the same week, which rebuilt next week from the pre-break state",
+      "rootCause": "weeklyReview and rebuild re-derived week w+1 from stateTrace[w], ignoring the return state stored at stateTrace[w+1]",
+      "fix": "r6-adaptation.mjs: rebasedNext — a same-week review starts next week from the return an earlier review of the week stored",
+      "after": "NOT_REPRODUCED (judge probe A: either order gives the same next week)",
+      "invariant": "INV-04",
+      "tests": [
+        "R7-A cycle 2: reviews of one week compose in either order"
+      ],
+      "disposition": "OPEN_R7A_BLOCKER",
+      "review": "SSCTR re-check R7A-SSCTR-r2: runtime not accepted (D56); engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)",
+      "dispositionAfterRecheck": "OPEN_R7A_BLOCKER",
+      "recheckResidual": [
+        "QE-R7A-01",
+        "QE-R7A-19"
+      ]
+    },
+    {
+      "id": "C21",
+      "class": "The current day: a session later the same day",
+      "foundBy": "QE-R7A-02",
+      "before": "REPRODUCED on R7A-FREEZE-1 (and the R6 closure runtime): a session on the day of a return review with no report kept its full pre-break dose and was then counted as the return entry",
+      "rootCause": "\"Ahead\" meant a later date only",
+      "fix": "r6-adaptation.mjs: aheadOf — a later date, or the same day without a report; when re-entry starts next week, a session still ahead this week waits (rest by design)",
+      "after": "NOT_REPRODUCED (judge probe A2)",
+      "invariant": "INV-04",
+      "tests": [
+        "R7-A cycle 2: a return reported on the morning of a session re-doses that unreported session; one already reported keeps its dose"
+      ],
+      "disposition": "OPEN_R7A_BLOCKER",
+      "review": "SSCTR re-check R7A-SSCTR-r2: runtime not accepted (D56); engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)",
+      "dispositionAfterRecheck": "OPEN_R7A_BLOCKER",
+      "recheckResidual": [
+        "QE-R7A-02"
+      ]
+    },
+    {
+      "id": "C22",
+      "class": "A change that reaches the current week",
+      "foundBy": "QE-R7A-03",
+      "before": "REPRODUCED on R7A-FREEZE-1 (and the R6 closure runtime): an event moved closer left this week's remaining sessions at their old BUILD dose inside the new taper and race window; a postponed race kept its old RACE session",
+      "rootCause": "Goal and event changes always rebuilt from next week",
+      "fix": "r6-adaptation.mjs: a change that moves a remaining day of this week into the taper, race-week or post-event window, or with the race still ahead this week, re-plans those days (completed sessions unchanged); a goal that only renames a training phase still starts next week",
+      "after": "NOT_REPRODUCED (judge probes B, B3, N2)",
+      "invariant": "INV-02, INV-11",
+      "tests": [
+        "R7-A cycle 2: an event date that reaches this week re-plans its remaining days under the new phases, later same-week proposals validate, and a postponed race leaves no old race"
+      ],
+      "disposition": "OPEN_R7A_BLOCKER",
+      "review": "SSCTR re-check R7A-SSCTR-r2: runtime not accepted (D56); engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)",
+      "dispositionAfterRecheck": "OPEN_R7A_BLOCKER",
+      "recheckResidual": [
+        "QE-R7A-03",
+        "QE-R7A-19"
+      ]
+    }
+  ],
+  "invariants": [
+    {
+      "id": "INV-01",
+      "statement": "Every strength row passes exactly one phase step: sets = min(row cap, phase dose of the count the exercise would otherwise have that day); reps in reserve = max(row floor, phase minimum). Race week and post-event: main lifts only, raceWeekStrengthSets / postEventStrengthSets sets, at least raceWeekStrengthMinimumRir in reserve; specific and taper: at least 3 in reserve",
+      "authority": "operational.event; principle 8; SSCTR D49, D54"
+    },
+    {
+      "id": "INV-02",
+      "statement": "No generated or proposed strength row is above its day's phase dose, whatever produced it (final validation); a session never moves into a day with another phase",
+      "authority": "operational.event.proximitySemantics"
+    },
+    {
+      "id": "INV-03",
+      "statement": "After any performed re-establishment, whatever the state's mode, the count rises at most one set per executed week without a phase reduction, from the re-establishment count before its phase reduction, up to the count the exercise would otherwise have",
+      "authority": "strength.setsAfterReestablishment; SSCTR D53; Q1 pending"
+    },
+    {
+      "id": "INV-04",
+      "statement": "A review reads what each row prescribed (its exposure) and what was executed: the first executed exposure decides the week's kind, the last executed one its counts; rows written before R7-A are classified with the rules that wrote them",
+      "authority": "SSCTR R19; strengthReturnSets 'last executed count'"
+    },
+    {
+      "id": "INV-05",
+      "statement": "An exercise not in use this week does not change the dose of the exercises in use (return-entry week)",
+      "authority": "R6-POLICY-4 strengthEntryWeek; SSCTR R17(b) description"
+    },
+    {
+      "id": "INV-06",
+      "statement": "Unknown is never given a value: a set without reps is neither met nor missed; a record without a complete dose never displaces one with it",
+      "authority": "gates.missingLogs; DR-121"
+    },
+    {
+      "id": "INV-07",
+      "statement": "The same canonical facts under another source label give the same decision",
+      "authority": "DR-123"
+    },
+    {
+      "id": "INV-08",
+      "statement": "An exact replay or an agreeing second report changes no decision; contradictory reports of one session are a conflict in any arrival order",
+      "authority": "PROVENANCE_TIME_R6; QRE-R6-13/14"
+    },
+    {
+      "id": "INV-09",
+      "statement": "A load reported in a convention other than the planned one is unknown and asked, never relabelled or adopted",
+      "authority": "strength.loadUnits"
+    },
+    {
+      "id": "INV-10",
+      "statement": "The carried record is append-only: normalizing it again keeps every correction live and every superseded fact inert",
+      "authority": "R6-POLICY-3 item 8 (append-only record)"
+    },
+    {
+      "id": "INV-11",
+      "statement": "A fact stated for dates is never applied beyond them",
+      "authority": "review contract changes.from/to"
+    },
+    {
+      "id": "INV-12",
+      "statement": "A race's duration is its event window: a finished race is complete",
+      "authority": "operational.event.raceDay"
+    }
+  ],
+  "r7aFindings": [
+    {
+      "id": "F-ACCESSORY-REPS",
+      "severity": "LOW",
+      "statement": "Under STRENGTH and MAINTAIN goals an accessory's rep target depends on its load mode: establishment and from-log rows use goal reps + 2 (up to 15), known rows clamp to the goal's rep range, so reps fall 7 -> 6 (STRENGTH) or 10 -> 8 (MAINTAIN) when the load becomes known. Neither rule is declared in the policy",
+      "disposition": "R7B_COLD_START",
+      "reason": "Choosing the accessory rep target is a sporting decision for the SSCTR in the strength-programming work of R7-B; R7-A does not invent it"
+    },
+    {
+      "id": "F-SINGLE-IMPLEMENT-CONVENTION",
+      "severity": "LOW",
+      "statement": "See C05 residual",
+      "disposition": "R7B_COLD_START"
+    }
+  ],
+  "r6Items": [
+    {
+      "id": "BLOCKER-D53",
+      "kind": "BLOCKER",
+      "severity": null,
+      "disposition": "OPEN_R7A_BLOCKER",
+      "reason": "C01: fixed on R7A-FREEZE-1 (SSCTR R7A-SSCTR-r1 RESOLVED); the second cycle opened the equivalent path D56 (SSCTR R7A-SSCTR-r2), so under §16 it is not closed on R7A-FREEZE-2"
+    },
+    {
+      "id": "BLOCKER-D54",
+      "kind": "BLOCKER",
+      "severity": null,
+      "disposition": "FIXED_R7A",
+      "reason": "C02. SSCTR R7A-SSCTR-r1: D54 RESOLVED; on R7A-FREEZE-2 the SSCTR phase grid equals FREEZE-1 and the engineering re-check (R7A-QE-r2) found no row above its day phase. The R7-A runtime as a whole is not accepted (closure.blockers)"
+    },
+    {
+      "id": "BLOCKER-FREEZE-2",
+      "kind": "BLOCKER",
+      "severity": null,
+      "disposition": "OPEN_R7A_BLOCKER",
+      "reason": "R6 needed an accepted successor to R6-FREEZE-1. R7-A produced R7A-FREEZE-1 and R7A-FREEZE-2, each reviewed by the SSCTR and an independent engineering judge; neither accepted R7A-FREEZE-2 (R7A-SSCTR-r2 runtimeAccepted false, D56; R7A-QE-r2 NOT_READY). R6 FREEZE-1 stays the R6 record"
+    },
+    {
+      "id": "NOT-RUN-POSTFIX",
+      "kind": "NOT_RUN",
+      "severity": null,
+      "disposition": "R7D_GENERALIZATION",
+      "reason": "New generalization evidence belongs to the R7-D fresh holdout; R7-A replayed the R6 holdout as regression only (REGRESSION_R7A.json)"
+    },
+    {
+      "id": "NOT-RUN-ENGINEERING-REREVIEW",
+      "kind": "NOT_RUN",
+      "severity": null,
+      "disposition": "FIXED_R7A",
+      "reason": "Run: the independent engineering review of R7A-FREEZE-1 and its single re-check of R7A-FREEZE-2 (reviews/quality-engineering-r7a-review.json, quality-engineering-r7a-recheck.json)"
+    },
+    {
+      "id": "NOT-RUN-R5-RECLASSIFICATION",
+      "kind": "NOT_RUN",
+      "severity": null,
+      "disposition": "R7D_GENERALIZATION",
+      "reason": "R7-A reclassifies no earlier result; the R5 corpus replays identically (24/24) through the R7-A runtime"
+    },
+    {
+      "id": "NOT-RUN-OFFICIAL-OUTPUTS",
+      "kind": "NOT_RUN",
+      "severity": null,
+      "disposition": "FIXED_R7A",
+      "reason": "R7-A outputs live in CoachingCore/r7 (regression, probes); R6 official outputs stay FREEZE-1 history"
+    },
+    {
+      "id": "SSCTR-R18",
+      "kind": "SSCTR_OPEN",
+      "severity": null,
+      "disposition": "R7C_LONGITUDINAL",
+      "reason": "C15: needs a review-continuity input and G03"
+    },
+    {
+      "id": "SSCTR-R11",
+      "kind": "SSCTR_OPEN",
+      "severity": null,
+      "disposition": "R7B_COLD_START",
+      "reason": "Structured intake design (asking pregnancy/postpartum status again); with Product/Data and the SSCTR"
+    },
+    {
+      "id": "SSCTR-R15",
+      "kind": "SSCTR_OPEN",
+      "severity": null,
+      "disposition": "R7C_LONGITUDINAL",
+      "reason": "Clinical-screen lexicon false positives at returns and reviews; with the SSCTR before use beyond the offline reference"
+    },
+    {
+      "id": "SSCTR-R14",
+      "kind": "SSCTR_OPEN",
+      "severity": null,
+      "disposition": "R7C_LONGITUDINAL",
+      "reason": "Tied to G03 (sessions inside a declared pause)"
+    },
+    {
+      "id": "SSCTR-R1",
+      "kind": "SSCTR_OPEN",
+      "severity": null,
+      "disposition": "R7C_LONGITUDINAL",
+      "reason": "Asking for RIR when a step holds for missing RIR: review-time coaching"
+    },
+    {
+      "id": "SSCTR-R2",
+      "kind": "SSCTR_OPEN",
+      "severity": null,
+      "disposition": "R7C_LONGITUDINAL",
+      "reason": "Structured reasonCategory collection (Product/Data)"
+    },
+    {
+      "id": "SSCTR-R5",
+      "kind": "SSCTR_OPEN",
+      "severity": null,
+      "disposition": "R7C_LONGITUDINAL",
+      "reason": "Logged load far below the plan: Data-owned threshold"
+    },
+    {
+      "id": "SSCTR-R8",
+      "kind": "SSCTR_OPEN",
+      "severity": null,
+      "disposition": "R7B_COLD_START",
+      "reason": "Completion race-day choice before the race window: program negotiation"
+    },
+    {
+      "id": "SSCTR-R9",
+      "kind": "SSCTR_OPEN",
+      "severity": null,
+      "disposition": "R7B_COLD_START",
+      "reason": "Completion pacing for EASY-class racers: event programming policy"
+    },
+    {
+      "id": "SSCTR-R16",
+      "kind": "SSCTR_OPEN",
+      "severity": null,
+      "disposition": "R7B_COLD_START",
+      "reason": "Long-run floor in consolidation and first cold-start weeks: next policy revision"
+    },
+    {
+      "id": "SSCTR-R17",
+      "kind": "SSCTR_OPEN",
+      "severity": null,
+      "disposition": "R7B_COLD_START",
+      "reason": "Declarations (a) bodyweight resume, (c) block-boundary set after establishment-only blocks, (d) steps at a re-establishment review: next policy revision. (b) is unchanged as policy; R7-A aligned the runtime to its stated description (C11)"
+    },
+    {
+      "id": "SSCTR-R19",
+      "kind": "SSCTR_OPEN",
+      "severity": null,
+      "disposition": "FIXED_R7A",
+      "reason": "C04: the first executed exposure decides the week and the last executed one gives its counts (SSCTR R7A-SSCTR-r1 Q3; re-bound in R7A-SSCTR-r2 SPLIT-WEEK with R20). That decision condition 4 (the whole-count test for the cap rise) is not met on R7A-FREEZE-2: D56, open"
+    },
+    {
+      "id": "CLINICAL-SCREEN",
+      "kind": "OWNED_GAP",
+      "severity": null,
+      "disposition": "CLINICAL_OUT_OF_SCOPE",
+      "reason": "Heuristic clinical screen; re-review with its battery and the structured intake design before any use beyond the offline reference"
+    },
+    {
+      "id": "G03",
+      "kind": "PRODUCT_DATA",
+      "severity": null,
+      "disposition": "R7C_LONGITUDINAL",
+      "reason": "Product/Data decision on sessions inside a declared pause and asking about absences"
+    },
+    {
+      "id": "D49-LIMITS",
+      "kind": "LIMIT",
+      "severity": null,
+      "disposition": "R7C_LONGITUDINAL",
+      "reason": "Sets after a return: next policy revision"
+    },
+    {
+      "id": "ROTATION-CLOSE-VARIANTS",
+      "kind": "PRODUCT_DATA",
+      "severity": null,
+      "disposition": "R7B_COLD_START",
+      "reason": "Product decision (Founder OB-2) vs the SSCTR condition"
+    },
+    {
+      "id": "LEARNING-CONSENT-SCOPE",
+      "kind": "PRODUCT_DATA",
+      "severity": null,
+      "disposition": "R7C_LONGITUDINAL",
+      "reason": "Data-owned privacy scope of learning"
+    },
+    {
+      "id": "LOGGED-LOAD-PLAUSIBILITY",
+      "kind": "PRODUCT_DATA",
+      "severity": null,
+      "disposition": "R7C_LONGITUDINAL",
+      "reason": "Data-owned numeric plausibility"
+    },
+    {
+      "id": "POUND-DISPLAY",
+      "kind": "PRODUCT_DATA",
+      "severity": null,
+      "disposition": "R7B_COLD_START",
+      "reason": "DR-114 mapping into CoachingCore (intake/display), owned by the next coaching mission"
+    },
+    {
+      "id": "KNOWN-DOSE-OBSERVED-AT",
+      "kind": "PRODUCT_DATA",
+      "severity": null,
+      "disposition": "R7B_COLD_START",
+      "reason": "Intake data semantics of a known dose date"
+    },
+    {
+      "id": "R5-FINDINGS",
+      "kind": "EARLIER_FINDING",
+      "severity": null,
+      "disposition": "R7B_COLD_START",
+      "reason": "Program-quality findings of the R5 regression review"
+    },
+    {
+      "id": "HOLDOUT-INTERFACE-GAPS",
+      "kind": "EARLIER_FINDING",
+      "severity": null,
+      "disposition": "R7D_GENERALIZATION",
+      "reason": "Interface gaps for the next independent holdout"
+    },
+    {
+      "id": "HM-LONG-RUN-PEAK",
+      "kind": "COACHING_GAP",
+      "severity": null,
+      "disposition": "R7B_COLD_START",
+      "reason": "Whole-program progression"
+    },
+    {
+      "id": "INTAKE-CONTRADICTIONS",
+      "kind": "EARLIER_FINDING",
+      "severity": null,
+      "disposition": "R7B_COLD_START",
+      "reason": "Intake validation"
+    },
+    {
+      "id": "MOVED-SESSION-SKIPPED",
+      "kind": "EARLIER_FINDING",
+      "severity": null,
+      "disposition": "R7C_LONGITUDINAL",
+      "reason": "Record annotation of a moved missed session; prescription unchanged"
+    },
+    {
+      "id": "JUDGE-CQ-R6-01",
+      "kind": "JUDGE_FINDING",
+      "severity": "HIGH",
+      "disposition": "R7B_COLD_START",
+      "reason": "Cold-start fusion of run history and self-report. R7-A fixed the strength-record merge part (C07); the run-history coverage reading and the fusion rule are cold start"
+    },
+    {
+      "id": "JUDGE-CQ-R6-02",
+      "kind": "JUDGE_FINDING",
+      "severity": "HIGH",
+      "disposition": "R7B_COLD_START",
+      "reason": "Whole-program progression"
+    },
+    {
+      "id": "JUDGE-CQ-R6-03",
+      "kind": "JUDGE_FINDING",
+      "severity": "HIGH",
+      "disposition": "FIXED_R7A",
+      "reason": "C16: a dated change is never applied beyond its dates (the one-day case is asked). Residual capability (temporary schedule windows) -> R7C_LONGITUDINAL"
+    },
+    {
+      "id": "JUDGE-CQ-R6-04",
+      "kind": "JUDGE_FINDING",
+      "severity": "HIGH",
+      "disposition": "R7C_LONGITUDINAL",
+      "reason": "C15 / R18 with G03"
+    },
+    {
+      "id": "JUDGE-CQ-R6-05",
+      "kind": "JUDGE_FINDING",
+      "severity": "HIGH",
+      "disposition": "R7B_COLD_START",
+      "reason": "Whole-program negotiation when the plan cannot reach the goal"
+    },
+    {
+      "id": "JUDGE-CQ-R6-06",
+      "kind": "JUDGE_FINDING",
+      "severity": "HIGH",
+      "disposition": "PROVEN_NOT_APPLICABLE",
+      "reason": "probes/r7a-cq06-probe.mjs: walk/jog- and restart-built racers get a completion race day without strides on both the R6 closure and the R7-A runtime (R6 D43(c)/D47). Holdout re-verification belongs to R7-D"
+    },
+    {
+      "id": "JUDGE-CQ-R6-07",
+      "kind": "JUDGE_FINDING",
+      "severity": "MEDIUM",
+      "disposition": "FIXED_R7A",
+      "reason": "C07 (the self-reported dose is no longer dropped). Residual: single-implement convention -> R7B_COLD_START"
+    },
+    {
+      "id": "JUDGE-CQ-R6-08",
+      "kind": "JUDGE_FINDING",
+      "severity": "MEDIUM",
+      "disposition": "R7B_COLD_START",
+      "reason": "Hybrid arrangement"
+    },
+    {
+      "id": "JUDGE-CQ-R6-09",
+      "kind": "JUDGE_FINDING",
+      "severity": "MEDIUM",
+      "disposition": "R7B_COLD_START",
+      "reason": "Use of known current doses at cold start"
+    },
+    {
+      "id": "JUDGE-CQ-R6-10",
+      "kind": "JUDGE_FINDING",
+      "severity": "MEDIUM",
+      "disposition": "R7B_COLD_START",
+      "reason": "Availability vs prescription for novices"
+    },
+    {
+      "id": "JUDGE-CQ-R6-11",
+      "kind": "JUDGE_FINDING",
+      "severity": "MEDIUM",
+      "disposition": "PROVEN_NOT_APPLICABLE",
+      "reason": "As prescribed, bodyweight reps do not collapse on the R6 closure or the R7-A runtime (C12); the unknown-reps variant R7-A found is FIXED_R7A"
+    },
+    {
+      "id": "JUDGE-CQ-R6-12",
+      "kind": "JUDGE_FINDING",
+      "severity": "MEDIUM",
+      "disposition": "R7B_COLD_START",
+      "reason": "Pull-pattern selection"
+    },
+    {
+      "id": "JUDGE-CQ-R6-13",
+      "kind": "JUDGE_FINDING",
+      "severity": "MEDIUM",
+      "disposition": "FIXED_R7A",
+      "reason": "C10 (corrections carried) and C18 (race completion). The H32 chain was already valid on the R6 closure runtime"
+    },
+    {
+      "id": "JUDGE-CQ-R6-14",
+      "kind": "JUDGE_FINDING",
+      "severity": "MEDIUM",
+      "disposition": "R7C_LONGITUDINAL",
+      "reason": "Athlete Model influence"
+    },
+    {
+      "id": "JUDGE-CQ-R6-15",
+      "kind": "JUDGE_FINDING",
+      "severity": "MEDIUM",
+      "disposition": "R7B_COLD_START",
+      "reason": "Two-goal arrangement and session order"
+    },
+    {
+      "id": "JUDGE-CQ-R6-16",
+      "kind": "JUDGE_FINDING",
+      "severity": "LOW",
+      "disposition": "R7C_LONGITUDINAL",
+      "reason": "Mid-week response to repeated adverse sessions"
+    },
+    {
+      "id": "JUDGE-CQ-R6-17",
+      "kind": "JUDGE_FINDING",
+      "severity": "LOW",
+      "disposition": "R7B_COLD_START",
+      "reason": "Time-goal realism communication"
+    },
+    {
+      "id": "JUDGE-CQ-R6-18",
+      "kind": "JUDGE_FINDING",
+      "severity": "LOW",
+      "disposition": "R7B_COLD_START",
+      "reason": "Emphasis preferences in the dose"
+    },
+    {
+      "id": "JUDGE-CQ-R6-19",
+      "kind": "JUDGE_FINDING",
+      "severity": "LOW",
+      "disposition": "R7C_LONGITUDINAL",
+      "reason": "Communication and record defects across reviews"
+    },
+    {
+      "id": "NO-VALIDATION",
+      "kind": "SCOPE",
+      "severity": null,
+      "disposition": "STANDING_LIMIT",
+      "reason": "Not a finding: no human, empirical or clinical validation"
+    },
+    {
+      "id": "SCOPE-EXCLUSIONS",
+      "kind": "SCOPE",
+      "severity": null,
+      "disposition": "STANDING_LIMIT",
+      "reason": "Not a finding: V1 population and event scope"
+    },
+    {
+      "id": "NO-WEARABLE-INGESTION",
+      "kind": "SCOPE",
+      "severity": null,
+      "disposition": "STANDING_LIMIT",
+      "reason": "Not a finding: real ingestion is the iOS HealthKit adapter (production), outside R7 (DR-121, DR-123)"
+    },
+    {
+      "id": "WEEKLY-REVIEW-CONTRACT",
+      "kind": "SCOPE",
+      "severity": null,
+      "disposition": "R7C_LONGITUDINAL",
+      "reason": "Holds until R18 closes"
+    }
+  ],
+  "r6ItemCounts": {
+    "OPEN_R7A_BLOCKER": 2,
+    "FIXED_R7A": 7,
+    "R7D_GENERALIZATION": 3,
+    "R7C_LONGITUDINAL": 16,
+    "R7B_COLD_START": 21,
+    "CLINICAL_OUT_OF_SCOPE": 1,
+    "PROVEN_NOT_APPLICABLE": 2,
+    "STANDING_LIMIT": 3
+  },
+  "firstFreeze": "R7A-FREEZE-1",
+  "judgeFindings": [
+    {
+      "id": "QE-R7A-10",
+      "source": "engineering review R7A-QE-r1 (R7A-FREEZE-1)",
+      "classes": "C19",
+      "disposition": "FIXED_R7A",
+      "review": "engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)",
+      "recheck": "FIXED"
+    },
+    {
+      "id": "QE-R7A-11",
+      "source": "engineering review R7A-QE-r1 (R7A-FREEZE-1)",
+      "classes": "C16",
+      "disposition": "FIXED_R7A",
+      "review": "engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)",
+      "recheck": "FIXED"
+    },
+    {
+      "id": "QE-R7A-12",
+      "source": "engineering review R7A-QE-r1 (R7A-FREEZE-1)",
+      "classes": "C12",
+      "disposition": "OPEN_R7A_BLOCKER",
+      "review": "engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)",
+      "recheck": "PARTIAL",
+      "residual": {
+        "class": "C12",
+        "what": "A shortfall logged one or two increments lighter than the plan still becomes the repetition target (3x3 at 77.5 kg, 3x2 at 75 kg below the goal range)",
+        "severity": "MEDIUM",
+        "new": false,
+        "narrow": true,
+        "runtimeOnly": true,
+        "preExistingAtR6Closure": true,
+        "source": "audits/domain-coaching-r7a-2026-10-27/reviews/quality-engineering-r7a-recheck.json"
+      }
+    },
+    {
+      "id": "QE-R7A-13",
+      "source": "engineering review R7A-QE-r1 (R7A-FREEZE-1)",
+      "classes": "C06, C07",
+      "disposition": "OPEN_R7A_NONBLOCKING",
+      "review": "engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)",
+      "recheck": "PARTIAL",
+      "residual": {
+        "what": "A date-only intake record is read at 23:59:59 UTC, not at the end of the athlete's local day",
+        "severity": "LOW",
+        "source": "audits/domain-coaching-r7a-2026-10-27/reviews/quality-engineering-r7a-recheck.json"
+      }
+    },
+    {
+      "id": "QE-R7A-14",
+      "source": "engineering review R7A-QE-r1 (R7A-FREEZE-1)",
+      "classes": "C04",
+      "disposition": "FIXED_R7A",
+      "review": "engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)",
+      "recheck": "FIXED",
+      "note": "Fixed for the engineering reading (one count in projection and review; a fit is not a phase reduction), but its reading of the caps introduced D56 (SSCTR re-check): for the regain and return caps a fit must still count as an incomplete week"
+    },
+    {
+      "id": "QE-R7A-15",
+      "source": "engineering review R7A-QE-r1 (R7A-FREEZE-1)",
+      "classes": "C11",
+      "disposition": "FIXED_R7A",
+      "review": "engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)",
+      "recheck": "FIXED"
+    },
+    {
+      "id": "QE-R7A-16",
+      "source": "engineering review R7A-QE-r1 (R7A-FREEZE-1)",
+      "classes": "C10",
+      "disposition": "FIXED_R7A",
+      "review": "engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)",
+      "recheck": "FIXED"
+    },
+    {
+      "id": "QE-R7A-17",
+      "source": "engineering review R7A-QE-r1 (R7A-FREEZE-1)",
+      "classes": "C04",
+      "disposition": "FIXED_R7A",
+      "review": "engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)",
+      "recheck": "FIXED"
+    },
+    {
+      "id": "QE-R7A-01",
+      "source": "engineering review R7A-QE-r1 (R7A-FREEZE-1)",
+      "classes": "C20",
+      "disposition": "OPEN_R7A_BLOCKER",
+      "review": "engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)",
+      "recheck": "PARTIAL",
+      "residual": {
+        "class": "C20",
+        "what": "An EQUIPMENT_CHANGE of the same week still erases a return that starts next week (equipmentChange re-projects from the pre-break state; it never reads the stored return)",
+        "severity": "HIGH",
+        "new": false,
+        "narrow": true,
+        "runtimeOnly": true,
+        "preExistingAtR6Closure": true,
+        "source": "audits/domain-coaching-r7a-2026-10-27/reviews/quality-engineering-r7a-recheck.json"
+      }
+    },
+    {
+      "id": "QE-R7A-02",
+      "source": "engineering review R7A-QE-r1 (R7A-FREEZE-1)",
+      "classes": "C21",
+      "disposition": "OPEN_R7A_BLOCKER",
+      "review": "engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)",
+      "recheck": "PARTIAL",
+      "residual": {
+        "class": "C21",
+        "what": "SHORT-class return: reported on the morning of a quality day, the first run back stays the quality run (the SHORT rule still compares dates only)",
+        "severity": "MEDIUM",
+        "new": false,
+        "narrow": true,
+        "runtimeOnly": true,
+        "preExistingAtR6Closure": true,
+        "source": "audits/domain-coaching-r7a-2026-10-27/reviews/quality-engineering-r7a-recheck.json"
+      }
+    },
+    {
+      "id": "QE-R7A-03",
+      "source": "engineering review R7A-QE-r1 (R7A-FREEZE-1)",
+      "classes": "C22",
+      "disposition": "OPEN_R7A_BLOCKER",
+      "review": "engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)",
+      "recheck": "PARTIAL",
+      "residual": {
+        "class": "C22",
+        "what": "After a return that re-plans from next week, postponing the race leaves the old race in place (two races); the opposite order gives one",
+        "severity": "HIGH",
+        "new": false,
+        "narrow": true,
+        "runtimeOnly": true,
+        "preExistingAtR6Closure": true,
+        "source": "audits/domain-coaching-r7a-2026-10-27/reviews/quality-engineering-r7a-recheck.json"
+      }
+    },
+    {
+      "id": "QE-R7A-04",
+      "source": "engineering review R7A-QE-r1 (R7A-FREEZE-1)",
+      "classes": "C17",
+      "disposition": "FIXED_R7A",
+      "review": "engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)",
+      "recheck": "FIXED"
+    },
+    {
+      "id": "QE-R7A-05",
+      "source": "engineering review R7A-QE-r1 (R7A-FREEZE-1)",
+      "classes": "C06, C08",
+      "disposition": "OPEN_R7A_BLOCKER",
+      "review": "engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)",
+      "recheck": "PARTIAL",
+      "residual": {
+        "class": "C08",
+        "what": "The per-exercise merge keeps one whole entry, so a known load can be replaced by an unknown one when the other entry has as many known values (field-by-field merge needed); over ten weeks four exercises are never established",
+        "severity": "MEDIUM",
+        "new": false,
+        "narrow": true,
+        "runtimeOnly": true,
+        "preExistingAtR6Closure": true,
+        "source": "audits/domain-coaching-r7a-2026-10-27/reviews/quality-engineering-r7a-recheck.json"
+      }
+    },
+    {
+      "id": "QE-R7A-06",
+      "source": "engineering review R7A-QE-r1 (R7A-FREEZE-1)",
+      "classes": "C09",
+      "disposition": "FIXED_R7A",
+      "review": "engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)",
+      "recheck": "FIXED"
+    },
+    {
+      "id": "QE-R7A-07",
+      "source": "engineering review R7A-QE-r1 (R7A-FREEZE-1)",
+      "classes": "C09",
+      "disposition": "FIXED_R7A",
+      "review": "engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)",
+      "recheck": "FIXED"
+    },
+    {
+      "id": "QE-R7A-08",
+      "source": "engineering review R7A-QE-r1 (R7A-FREEZE-1)",
+      "classes": "C10",
+      "disposition": "FIXED_R7A",
+      "review": "engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)",
+      "recheck": "FIXED"
+    },
+    {
+      "id": "QE-R7A-09",
+      "source": "engineering review R7A-QE-r1 (R7A-FREEZE-1)",
+      "classes": "C08",
+      "disposition": "FIXED_R7A",
+      "review": "engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)",
+      "recheck": "FIXED"
+    },
+    {
+      "id": "QE-R7A-18",
+      "source": "engineering review R7A-QE-r1 (R7A-FREEZE-1)",
+      "classes": "-",
+      "statement": "CORE template rotation resolves both TRUNK slots to the same exercise (side-plank twice in one session)",
+      "disposition": "R7B_COLD_START",
+      "reason": "Template and rotation competence of the whole program (cold start and whole-program scope); not a semantic-composition defect",
+      "review": "engineering re-check R7A-QE-r2: NOT_READY (QE-R7A-01, 02, 03, 05, 12 partial; QE-R7A-19 new)",
+      "recheck": "NOT_FIXED (routed)"
+    },
+    {
+      "id": "D55",
+      "source": "SSCTR review R7A-SSCTR-r1 (R7A-FREEZE-1)",
+      "classes": "C13",
+      "disposition": "FIXED_R7A",
+      "review": "SSCTR re-check R7A-SSCTR-r2: runtime not accepted (D56)",
+      "recheck": "RESOLVED (R7A-SSCTR-r2: 12 exercises first set up in return step 2, none earns a block set or rises more than one set)"
+    },
+    {
+      "id": "QE-R7A-19",
+      "source": "engineering re-check R7A-QE-r2 (R7A-FREEZE-2)",
+      "classes": "C22, C20",
+      "statement": "An event change that reaches this week discards the week's earlier same-week adaptations (systemic-fatigue reduction, unavailable-day reschedule): the rebuild from the current week re-projects from the week-start state",
+      "introducedBy": "R7-A second cycle (QE-R7A-03 fix)",
+      "severity": "MEDIUM",
+      "blocking": true,
+      "disposition": "OPEN_R7A_BLOCKER"
+    },
+    {
+      "id": "QE-R7A-20",
+      "source": "engineering re-check R7A-QE-r2 (R7A-FREEZE-2)",
+      "classes": "C10, C08",
+      "statement": "A new report carrying its own provenance.mergedSourceIds / inputHashes registers under other reports' event ids, so a genuine report is absorbed as an exact replay",
+      "introducedBy": "R7-A second cycle",
+      "severity": "LOW",
+      "blocking": false,
+      "disposition": "OPEN_R7A_NONBLOCKING"
+    },
+    {
+      "id": "QE-R7A-21",
+      "source": "engineering re-check R7A-QE-r2 (R7A-FREEZE-2)",
+      "classes": "C08, C09",
+      "statement": "Three or more reports of one session: arrival order still decides merged minutes (cycle 2) and whether two contradicting reports merge when a middle one arrives first (pre-R7A)",
+      "severity": "LOW",
+      "blocking": false,
+      "disposition": "OPEN_R7A_NONBLOCKING"
+    },
+    {
+      "id": "QE-R7A-22",
+      "source": "engineering re-check R7A-QE-r2 (R7A-FREEZE-2)",
+      "classes": "C04",
+      "statement": "The documented mutation survivor (\"counts from the first executed exposure\") is reachable (a return, then systemic fatigue mid cap week): FREEZE-2 keeps the set cap correctly, but no test pins it; the author's reach search was too narrow",
+      "severity": "LOW",
+      "blocking": false,
+      "disposition": "OPEN_R7A_NONBLOCKING"
+    },
+    {
+      "id": "QE-R7A-23",
+      "source": "engineering re-check R7A-QE-r2 (R7A-FREEZE-2)",
+      "classes": "C21",
+      "statement": "aheadOf ignores the session time: an evening re-plan before a late report rewrites the record of a session already done that day (no decision difference found)",
+      "introducedBy": "R7-A second cycle",
+      "severity": "LOW",
+      "blocking": false,
+      "disposition": "OPEN_R7A_NONBLOCKING"
+    },
+    {
+      "id": "D56",
+      "source": "SSCTR re-check R7A-SSCTR-r2 (R7A-FREEZE-2)",
+      "classes": "C04, C01",
+      "statement": "A week whose executed exposures of an exercise were all fitted to the time budget below their count counts as a whole executed week, so it raises or ends the regain cap (and the return cap at and after the end of the return steps); with a later budget increase the count rises more than one set above the largest executed count (back squat 2, 2, then 4 sets; 64 fully fitted weeks release the cap, 16 jumps, FREEZE-1: 0 and 0)",
+      "introducedBy": "R7-A second cycle (QE-R7A-14 reading of phasedSets for the caps)",
+      "requiredChange": "The regain cap, and the return cap at and after the end of the return steps, rise or end only after a week in which an executed exposure did its whole count after its time fit (the test the return ceiling already uses)",
+      "contradicts": "strength.setsAfterReestablishment (\"never at once\"); PLANNED-PROGRESSION 14; ROTATION 10; LOAD-ESTABLISHMENT 15; R7A-SSCTR-REGAIN-BASE conditions 5 and 6",
+      "severity": "BLOCKER",
+      "blocking": true,
+      "new": true,
+      "narrow": true,
+      "runtimeOnly": true,
+      "disposition": "OPEN_R7A_BLOCKER"
+    },
+    {
+      "id": "SSCTR-O1 (R28)",
+      "source": "SSCTR re-check R7A-SSCTR-r2, outside the delta",
+      "classes": "C20",
+      "statement": "An EQUIPMENT_CHANGE filed after the same week's weekly review re-projects the week from its start and loses the reviewed entry log (the back squat returns at 4x5 KNOWN 82.5, the pre-break load); identical on FREEZE-2, FREEZE-1 and the R6 closure runtime; same handler as the QE-R7A-01 residual",
+      "severity": "not ruled (state composition)",
+      "blocking": false,
+      "disposition": "OPEN_R7A_NONBLOCKING",
+      "note": "Travels with the QE-R7A-01 residual: one fix of the equipment-change handler covers both"
+    }
+  ],
+  "dispositionNotes": {
+    "OPEN_R7A_BLOCKER": "Blocks R7-A exit: named in READINESS_R7A.json and FINAL_DISPOSITION.json; the next Founder-authorized mission takes it (no further R7-A cycle under the bound)",
+    "OPEN_R7A_NONBLOCKING": "Known, not blocking R7-A exit, not fixed; travels with the blockers to the next Founder-authorized mission"
+  },
+  "closure": {
+    "state": "CLOSED_WITH_EXPLICIT_BLOCKER",
+    "blockers": [
+      "QE-R7A-12",
+      "QE-R7A-01",
+      "QE-R7A-02",
+      "QE-R7A-03",
+      "QE-R7A-05",
+      "QE-R7A-19",
+      "D56"
+    ],
+    "bound": "One review and at most one narrow re-check per judge (TASK_CONTRACT.md); no further cycle"
+  }
+}

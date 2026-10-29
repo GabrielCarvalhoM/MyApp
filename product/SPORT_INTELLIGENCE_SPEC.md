@@ -1,5 +1,9 @@
 # Sport Intelligence — contratos internos do Adaptive Engine
 
+<!-- EXPERIENCE_AUTHORITY_OVERLAY_START: EXP-AUTH-r1 -->
+> **Domain authority retained · 2026-10-22 · EXP-AUTH-r1.** Full specialist responsibilities, Recovery/Load/Interference, proposal/assessment/progression contracts and evidence/approval limits remain intact. [DR-93–97](PRODUCT_DECISION_REGISTER.md) / [index filter](../canon/CANONICAL_INDEX.md) retire only old surface allocation, “existing objects/no new destinations” presentation prescriptions and experience reading sequences as requirements. No capability/scope is added and no layer must become a surface. Isolation metadata is history after `32b7fb6`, not a new gate. Designer entry: [derived context](DESIGNER_PRODUCT_CONTEXT.md).
+<!-- EXPERIENCE_AUTHORITY_OVERLAY_END: EXP-AUTH-r1 -->
+
 Revisão **SIS-1.1-r2** · 2026-10-19 · task **FREEZE-20261019-r1** (baseline SIL).
 Estado: **CANDIDATE_IN_ISOLATION**. Delta documental autorizado pelo Founder, preparado para integração após o gate atual do Claude. Não publicado no checkout ativo. [Registro atual, autoridade e impacto](../audits/v1-freeze-2026-10-19/MISSION_RECORD.md); [baseline SIL](../audits/specialist-layers-2026-10-19/MISSION_RECORD.md).
 
@@ -52,7 +56,7 @@ Tipos abaixo são extensões conceituais dos tipos AEOS, não APIs. `Ref` inclui
 
 | Contrato | Campos / semântica mínima | Owner / consumo |
 |---|---|---|
-| `SpecialistRequest` | `evaluation_ref`, snapshot/fingerprint, AthleteState/context/goal/plan-base refs, fatos e exposure refs pertinentes, disponibilidade/equipamento, restrições/holds, policy/approval refs, recipe/repertoire revisions, escopo e janela solicitados. | Orchestrator envia o mesmo snapshot-base a Run/Strength; projeção mínima por finalidade. |
+| `SpecialistRequest` | `evaluation_ref`, snapshot/fingerprint, AthleteState/context/goal/plan-base refs, fatos e exposure refs pertinentes, dias e turnos escolhidos por esporte, longão e preferência de troca (DR-112/113), equipamento, restrições/holds, policy/approval refs, recipe/repertoire revisions, escopo e janela solicitados. | Orchestrator envia o mesmo snapshot-base a Run/Strength; projeção mínima por finalidade. |
 | `SpecialistProposal` | Layer/revisão, request/snapshot refs, SessionIntent/SessionDemand, payload de modalidade, receita e regras usadas, estímulo essencial, alternativas admissíveis, limites/unknowns, efeitos na progressão e condições de validade. | Especialista propõe; Orchestrator compõe em `AdaptationCandidate` AEOS. Não é decisão vigente nem autorização de export. |
 | `SpecialistAssessment` | Sessão/revisão executada, fatos reconciliados, comparabilidade, demanda observada, performance e aderência separadas, critério/versão ou `UNCLASSIFIED`, oportunidade de progressão ou motivo de abstensão. | Especialista avalia observação; projeções compartilhadas só avançam por atualização versionada, sem escrever plano. |
 | `ExposureContribution` | FactRef + revisão ativa, escopo/tarefa/modalidade, observada versus planejada, dimensões de dose com unidades e demanda qualitativa sustentada, transformação/policy refs, cobertura/limites. | Recovery/Load projeta um fato; múltiplas interpretações referenciam a mesma contribuição. Não é uma nova atividade. |
@@ -78,6 +82,8 @@ Uma alternativa não pode ficar `VALID` apenas porque cada metade passou isolada
 ## 5. Carga, recuperação e ausência de dupla contagem
 
 O modelo compartilhado preserva vetor de exposições, não um escalar de “fadiga total”. Corrida pode contribuir distância/duração, tempo em intensidade sustentada e demanda mecânica; força pode contribuir séries/reps/carga/esforço e demanda local/axial/excêntrica. Não converter km em séries, somar kg a minutos, confundir carga externa com interna ou apresentar janela de recuperação como certeza.
+
+**Dias escolhidos (DR-112, SSCTR OB-2 Q1/Q2).** A coordenação acontece pelo conteúdo dentro dos dias e turnos escolhidos pela pessoa, nunca movendo dias: quando os dias permitem, o trabalho de pernas mais pesado, excêntrico ou novo fica longe do dia anterior ao longão e do mesmo dia antes dele; se todos os dias de força são vizinhos do longão, a demanda de pernas cai por conteúdo e o trade-off é explicado; em força principal, o conteúdo do longão pode ceder. A carga semanal é definida antes e distribuída entre os dias escolhidos. No mesmo turno, primeiro o treino-chave do dia pela prioridade; em Balanced com os dois chave, ASK; a pessoa pode inverter. Sem regra de horas (POL-07).
 
 Invariantes verificáveis:
 

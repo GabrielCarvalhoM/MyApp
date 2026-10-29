@@ -1,0 +1,357 @@
+{
+ "revision": "R7ASC-MUTATION-1",
+ "generatedAt": "2026-10-29T14:18:21.284Z",
+ "node": "v24.19.0",
+ "tests": [
+  "test/r7asc-state-consumer.test.mjs",
+  "test/r7asm-state-model.test.mjs",
+  "test/r7ase-state-evidence.test.mjs",
+  "test/r7ab-week-start-authority.test.mjs",
+  "test/r7af-episode-identity.test.mjs",
+  "test/r7a2-interruption.test.mjs",
+  "test/r7a1-composition.test.mjs",
+  "test/r7a1-correction.test.mjs",
+  "test/r7a-cycle2.test.mjs",
+  "test/r7a-semantic-core.test.mjs",
+  "test/r6-adaptation.test.mjs",
+  "test/r6-ssctr-r10-fixes.test.mjs"
+ ],
+ "bound": {
+  "sourceDigest": "adab37162d4f30d783faed2fe02fd44769a4be36be7bb1f6e8455a01b86235e5",
+  "tests": {
+   "test/r7asc-state-consumer.test.mjs": "b7ab6fff706da3ca5e286284c08f5b1315867cdb36b9285203738fb76b5b290c",
+   "test/r7asm-state-model.test.mjs": "9d9c91c27052eac5ba2db0db11f0a5a60408f9ecee4b15f0496a884df2584e9e",
+   "test/r7ase-state-evidence.test.mjs": "a03e940248f10d7638bffccae2281647c5d468784aa00d7887fc2c64ab359741",
+   "test/r7ab-week-start-authority.test.mjs": "dcf375e2bf92bed7c3254e4613e464094da9ab8781421abb23af9c9ece075053",
+   "test/r7af-episode-identity.test.mjs": "3e087d898a6dd5499553d1654c1720432fcc4327d7f9f74c7475c8372d2dec3f",
+   "test/r7a2-interruption.test.mjs": "d852d6ad8c6cb22131807c1de526e56cc7d5840af8c4cc05e610f90bec542262",
+   "test/r7a1-composition.test.mjs": "f5442438572dd997af7254c2023fd74a0b7241e026349ffc81a457f9ba6251c0",
+   "test/r7a1-correction.test.mjs": "d4d8e0407cdc8d4c9c48152ddd1ba1d9133aa250ac05130ba55fe06bbb451f09",
+   "test/r7a-cycle2.test.mjs": "8a965580c5ad2644f268dbe4cd402d15bd8da726af531c8647fcf796899484ec",
+   "test/r7a-semantic-core.test.mjs": "1f1497c5c48f9e6b465d959816ba59cf586283d9badf1c58a5b35d0b4cbbe311",
+   "test/r6-adaptation.test.mjs": "c7f5e57b35fbd78cbffd3bcb3f84fa8b8e348d3f72db4efa1b46fc552db0a2b7",
+   "test/r6-ssctr-r10-fixes.test.mjs": "1bbc5f7c323745746b024577cb0f8d05bef19c0c327a2b57c387ecb532a4bf05"
+  }
+ },
+ "clean": {
+  "tests": 220,
+  "fail": 0,
+  "failing": []
+ },
+ "total": 26,
+ "caught": 25,
+ "results": [
+  {
+   "mutation": "§25 projection establishes load: a KNOWN row's load sets up an exercise the start does not hold, in every consumer",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 220,
+   "fail": 10,
+   "failing": [
+    "QE-R7ASM-01 (noDetails): a KNOWN row planned from retracted evidence establishes nothing; history does not depend on when the correction reached the plan",
+    "QE-R7ASM-01 (repsNoLoad): a KNOWN row planned from retracted evidence establishes nothing; history does not depend on when the correction reached the plan",
+    "QE-R7ASM-01 (unknownUnit): a KNOWN row planned from retracted evidence establishes nothing; history does not depend on when the correction reached the plan",
+    "QE-R7ASM-01 (loggedAt18): a KNOWN row planned from retracted evidence establishes nothing; history does not depend on when the correction reached the plan",
+    "QE-R7ASM-01 (facts only, Q12a): the same when the week is never reviewed",
+    "QE-R7ASM-01 (conflict, Q3b): a late wearable record that quarantines the establishing session leaves no prescribed load in history"
+   ]
+  },
+  {
+   "mutation": "§25 projection establishes load: the facts-only reading (strengthAtBreak) takes the row as executed evidence",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 220,
+   "fail": 1,
+   "failing": [
+    "QE-R7ASM-01 (facts only, Q12a): the same when the week is never reviewed"
+   ]
+  },
+  {
+   "mutation": "§25 projection establishes load: the evidence reducer's transition (advanceStrength) takes the row as executed evidence",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 220,
+   "fail": 9,
+   "failing": [
+    "QE-R7ASM-01 (noDetails): a KNOWN row planned from retracted evidence establishes nothing; history does not depend on when the correction reached the plan",
+    "QE-R7ASM-01 (repsNoLoad): a KNOWN row planned from retracted evidence establishes nothing; history does not depend on when the correction reached the plan",
+    "QE-R7ASM-01 (unknownUnit): a KNOWN row planned from retracted evidence establishes nothing; history does not depend on when the correction reached the plan",
+    "QE-R7ASM-01 (loggedAt18): a KNOWN row planned from retracted evidence establishes nothing; history does not depend on when the correction reached the plan",
+    "QE-R7ASM-01 (conflict, Q3b): a late wearable record that quarantines the establishing session leaves no prescribed load in history",
+    "H1: a projected KNOWN load without a factual load gives history no load"
+   ]
+  },
+  {
+   "mutation": "§25 projection establishes load: the load questions judge a first log against the row's load",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 220,
+   "fail": 1,
+   "failing": [
+    "QE-R7ASM-01 (the load questions): the decision asks to confirm a first log of an exercise history does not hold, whatever its row prescribed"
+   ]
+  },
+  {
+   "mutation": "§25 projection establishes load: the view hands the planner the projection's exercise when it holds one",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 220,
+   "fail": 13,
+   "failing": [
+    "QE-R7ASM-03: with identical ledgers, a decision after two empty weeks prescribes the repetitions history earned, not the projection's steps",
+    "QE-R7ASM-04: historicalStateOf reads a corrected load and a retracted session as the runtime does, never the superseded row",
+    "H5: a correction removes the retracted value from every historical reader",
+    "S3: a projection above history creates no unearned progression: load, tick and repetitions are history's",
+    "P2: a retracted fact is returned as factual by no public reader",
+    "State evidence §18 P40 (QE-R7AB-01, families A, F, H; I1, I2, I9): a review never makes a projected load history; the plan keeps projecting it"
+   ]
+  },
+  {
+   "mutation": "§25 public Historical API reads superseded line: historicalStateOf reads the carried rows as given",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 220,
+   "fail": 16,
+   "failing": [
+    "QE-R7ASM-01 (noDetails): a KNOWN row planned from retracted evidence establishes nothing; history does not depend on when the correction reached the plan",
+    "QE-R7ASM-01 (repsNoLoad): a KNOWN row planned from retracted evidence establishes nothing; history does not depend on when the correction reached the plan",
+    "QE-R7ASM-01 (unknownUnit): a KNOWN row planned from retracted evidence establishes nothing; history does not depend on when the correction reached the plan",
+    "QE-R7ASM-01 (loggedAt18): a KNOWN row planned from retracted evidence establishes nothing; history does not depend on when the correction reached the plan",
+    "QE-R7ASM-01 (facts only, Q12a): the same when the week is never reviewed",
+    "QE-R7ASM-01 (conflict, Q3b): a late wearable record that quarantines the establishing session leaves no prescribed load in history"
+   ]
+  },
+  {
+   "mutation": "§25 retracted evidence remains public: the public record drops the corrections, so the line they retract stays factual",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 220,
+   "fail": 1,
+   "failing": [
+    "P7: the evidence reducer and the public reader give one HistoricalState, corrections included"
+   ]
+  },
+  {
+   "mutation": "§25 retracted evidence remains public: the public record is normalized at the cut, so a correction made after it does not apply",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 220,
+   "fail": 1,
+   "failing": [
+    "T3: a late sync whose execution came before the cut enters that cut's history retroactively"
+   ]
+  },
+  {
+   "mutation": "§25 HOLD uses projected reps: the view takes the projection's repetition target",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 220,
+   "fail": 1,
+   "failing": [
+    "QE-R7ASM-03: with identical ledgers, a decision after two empty weeks prescribes the repetitions history earned, not the projection's steps"
+   ]
+  },
+  {
+   "mutation": "§25 HOLD uses projected reps: a new load takes the logged repetitions whatever the gate (F2 as found)",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 220,
+   "fail": 2,
+   "failing": [
+    "SSCTR F2: a load the plan stepped above history, lifted short or at low reserve, is held at its prescribed repetitions, inside the range",
+    "SSCTR F2, REGRESS at a projected load (REPS_THEN_LOAD): the regression starts from the dose held at that load, never from the earlier load's target"
+   ]
+  },
+  {
+   "mutation": "§25 MAINTAIN keeps old projected reps: rows of a known dose are not cut at the current goal's range",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 220,
+   "fail": 1,
+   "failing": [
+    "SSCTR F3 (R6-H25): after the change to MAINTAIN no bench press or lat pulldown row leaves 8-8 or rises above the dose executed"
+   ]
+  },
+  {
+   "mutation": "§25 future session earns return credit: a strength return step moves from the state, not from the dose executed",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 220,
+   "fail": 1,
+   "failing": [
+    "SSCTR F1 (D53, D57): after a mid-week return, no covered count comes back more than one set above the largest executed since the break"
+   ]
+  },
+  {
+   "mutation": "§25 future session earns return credit: a run return step moves from the state, not from the dose run",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 220,
+   "fail": 1,
+   "failing": [
+    "S5: a moderate return and a restart read the same facts; their differences come from their recipes only"
+   ]
+  },
+  {
+   "mutation": "§25 future session earns return credit: the walk/jog step moves from the state, not from the step run",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 220,
+   "fail": 1,
+   "failing": [
+    "F1, the walk/jog side: after a short return the walk/jog step follows the step run, never one the plan did not prescribe"
+   ]
+  },
+  {
+   "mutation": "§25 future session earns return credit: a return's own week is read with the whole week's planned summary (NF-R7ASM-1)",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 220,
+   "fail": 1,
+   "failing": [
+    "NF-R7ASM-1: in a restart's own week a run planned inside the pause is never credited as run (the D47 statement)"
+   ]
+  },
+  {
+   "mutation": "§25 future session earns return credit: a past week's gate counts logs executed after its clock (Property D)",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 220,
+   "fail": 1,
+   "failing": [
+    "Property D (found on the way): a past week's gate never counts a log executed after its clock (the T04 simulation's dead bug)"
+   ]
+  },
+  {
+   "mutation": "§25 RESTART reads projection instead of factual base: the view takes the projection's run in a restart",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 220,
+   "fail": 1,
+   "failing": [
+    "QE-R7ASM-02: with identical ledgers, a LONG return (RESTART) and a MODERATE one (RETURN) plan the same run whether or not the empty week was reviewed"
+   ]
+  },
+  {
+   "mutation": "§25 RESTART reads projection instead of factual base: the view takes the projection's run in every re-entry mode",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 220,
+   "fail": 1,
+   "failing": [
+    "QE-R7ASM-02: with identical ledgers, a LONG return (RESTART) and a MODERATE one (RETURN) plan the same run whether or not the empty week was reviewed"
+   ]
+  },
+  {
+   "mutation": "§25 RESTART reads projection instead of factual base: the view takes history's run only when history itself is in re-entry",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": false,
+   "tests": 220,
+   "fail": 0,
+   "failing": []
+  },
+  {
+   "mutation": "§25 RESTART reads projection instead of factual base: restart minutes move from the state, not from the minutes run",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 220,
+   "fail": 1,
+   "failing": [
+    "S5: a moderate return and a restart read the same facts; their differences come from their recipes only"
+   ]
+  },
+  {
+   "mutation": "the prescription summary states no re-entry dose, so the run steps cannot see what the week ran",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 220,
+   "fail": 2,
+   "failing": [
+    "S5: a moderate return and a restart read the same facts; their differences come from their recipes only",
+    "F1, the walk/jog side: after a short return the walk/jog step follows the step run, never one the plan did not prescribe"
+   ]
+  },
+  {
+   "mutation": "R42: a credit earned at another load crosses to the new load",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 220,
+   "fail": 8,
+   "failing": [
+    "R42 and the gate's repetitions: a heavier load the athlete chose starts its credit at 0 and takes the repetitions executed at it",
+    "State evidence §18 P40 (QE-R7AB-01, families A, F, H; I1, I2, I9): a review never makes a projected load history; the plan keeps projecting it",
+    "State evidence families B, I (P4, §11 completed execution): a projected load the athlete then lifts becomes history",
+    "T1 (QE-R7ASE-01): a lifted projected dose promotes the load, never the projection's load tick",
+    "T6: a load executed without earning a step advances the load, never the progression credit",
+    "T7: a tick genuinely earned advances EARNED_PROGRESS, and two of them release the next load"
+   ]
+  },
+  {
+   "mutation": "R42: the credit restarts only when the athlete lifted the higher load (the predecessor's condition)",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 220,
+   "fail": 1,
+   "failing": [
+    "R42 and the gate's repetitions: a heavier load the athlete chose starts its credit at 0 and takes the repetitions executed at it"
+   ]
+  },
+  {
+   "mutation": "a new load keeps the repetitions of the earlier load",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 220,
+   "fail": 1,
+   "failing": [
+    "SSCTR F2, REGRESS at a projected load (REPS_THEN_LOAD): the regression starts from the dose held at that load, never from the earlier load's target"
+   ]
+  },
+  {
+   "mutation": "the public reader fails in a program's last week while a return is in force",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 220,
+   "fail": 2,
+   "failing": [
+    "The public reader answers for a cut in the last week of a program while a return is in force (it threw before)",
+    "F1, the walk/jog side: after a short return the walk/jog step follows the step run, never one the plan did not prescribe"
+   ]
+  },
+  {
+   "mutation": "the goal range cuts only the return entry, not the later rows of a known dose",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 220,
+   "fail": 1,
+   "failing": [
+    "SSCTR F3 (R6-H25): after the change to MAINTAIN no bench press or lat pulldown row leaves 8-8 or rises above the dose executed"
+   ]
+  }
+ ]
+}

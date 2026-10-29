@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:vilumo:ssctr:decision:1.0.0",
+  "title": "SSCTR provisional AI decision record 1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "review_id", "review_revision", "review_date", "agent_version", "constitution_revision", "protocol_revision", "reviewer", "target", "question", "population_context", "scope", "literature_snapshot", "claims", "evidence_status", "applicability", "disposition", "proposed_action", "decision", "confidence", "limitations", "ae_review", "governance", "expiry", "human_revalidation"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "review_id": {"type": "string", "minLength": 1},
+    "review_revision": {"type": "string", "minLength": 1},
+    "review_date": {"type": "string", "format": "date"},
+    "agent_version": {"const": "SSCTR-1.0.0"},
+    "constitution_revision": {"const": "SSCTR-CONST-1.0.0"},
+    "protocol_revision": {"const": "SSCTR-EP-1.0.0"},
+    "reviewer": {
+      "type": "object", "additionalProperties": false,
+      "required": ["actor_type", "instance_id", "human_credentials_claimed", "independent_of_target_author"],
+      "properties": {
+        "actor_type": {"const": "AI_AGENT"},
+        "instance_id": {"type": "string", "minLength": 1},
+        "human_credentials_claimed": {"const": false},
+        "independent_of_target_author": {"type": "boolean"}
+      }
+    },
+    "target": {
+      "type": "object", "additionalProperties": false,
+      "required": ["project", "artifact", "artifact_revision", "rule_ids"],
+      "properties": {
+        "project": {"const": "MyApp / Vilumo Fit"},
+        "artifact": {"type": "string", "minLength": 1},
+        "artifact_revision": {"type": "string", "minLength": 1},
+        "sha256": {"type": ["string", "null"], "pattern": "^[a-fA-F0-9]{64}$"},
+        "rule_ids": {"$ref": "#/$defs/nonemptyStrings"}
+      }
+    },
+    "question": {"type": "string", "minLength": 1},
+    "population_context": {
+      "type": "object", "additionalProperties": false,
+      "required": ["population", "eligibility_status", "facts", "unknowns"],
+      "properties": {
+        "population": {"type": "string", "minLength": 1},
+        "eligibility_status": {"enum": ["NONCLINICAL_CONFIRMED", "ELIGIBILITY_UNASSESSED", "CLINICAL_CONCERN", "SCOPE_DEFINITION_ONLY"]},
+        "facts": {"$ref": "#/$defs/nonemptyStrings"},
+        "unknowns": {"$ref": "#/$defs/strings"}
+      }
+    },
+    "scope": {
+      "type": "object", "additionalProperties": false,
+      "required": ["gate", "item_ids", "prescriptive_impact", "whole_gate_closure"],
+      "properties": {
+        "gate": {"enum": ["G01", "G02", "G03", "G04", "OTHER_NONCLINICAL"]},
+        "item_ids": {"$ref": "#/$defs/nonemptyStrings"},
+        "prescriptive_impact": {"type": "boolean"},
+        "whole_gate_closure": {"const": false}
+      }
+    },
+    "literature_snapshot": {
+      "type": "object", "additionalProperties": false,
+      "required": ["as_of", "searches", "sources", "counterevidence_search"],
+      "properties": {
+        "as_of": {"type": "string", "format": "date"},
+        "searches": {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["query", "site", "searched_on", "purpose", "result_notes"], "additionalProperties": false, "properties": {"query": {"type": "string", "minLength": 1}, "site": {"type": "string", "minLength": 1}, "searched_on": {"type": "string", "format": "date"}, "purpose": {"type": "string", "minLength": 1}, "result_notes": {"type": "string", "minLength": 1}}}},
+        "sources": {"type": "array", "items": {"$ref": "#/$defs/source"}},
+        "counterevidence_search": {"type": "string", "minLength": 1}
+      }
+    },
+    "claims": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/claim"}},
+    "evidence_status": {"$ref": "#/$defs/evidenceStatus"},
+    "applicability": {"type": "string", "minLength": 1},
+    "disposition": {"enum": ["APPROVE", "APPROVE_WITH_CONDITIONS", "REVISE", "REJECT", "ABSTAIN", "LIMITED_REVERSIBLE_RECOMMENDATION", "OUT_OF_SCOPE"]},
+    "proposed_action": {"enum": ["KEEP", "ASK", "HOLD", "CONDITIONAL_OPTIONS", "MODIFY_CANDIDATE", "CLINICAL_HUMAN_REQUIRED", "NOT_APPLICABLE"]},
+    "decision": {
+      "type": "object", "additionalProperties": false,
+      "required": ["rationale", "preserve", "modify", "mec_change_level", "trade_off", "must_not", "conditions"],
+      "properties": {
+        "rationale": {"type": "string", "minLength": 1},
+        "preserve": {"$ref": "#/$defs/nonemptyStrings"},
+        "modify": {"$ref": "#/$defs/strings"},
+        "mec_change_level": {"type": "string", "minLength": 1},
+        "trade_off": {"type": "string", "minLength": 1},
+        "must_not": {"$ref": "#/$defs/nonemptyStrings"},
+        "conditions": {"$ref": "#/$defs/strings"}
+      }
+    },
+    "confidence": {"type": "object", "additionalProperties": false, "required": ["level", "rationale"], "properties": {"level": {"enum": ["LOW", "MODERATE", "HIGH"]}, "rationale": {"type": "string", "minLength": 1}}},
+    "limitations": {"$ref": "#/$defs/nonemptyStrings"},
+    "ae_review": {"type": "object", "additionalProperties": false, "required": ["applicable", "answers", "not_applicable_reason"], "properties": {"applicable": {"type": "boolean"}, "answers": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["question_number", "answer"], "properties": {"question_number": {"type": "integer", "minimum": 1, "maximum": 10}, "answer": {"type": "string", "minLength": 1}}}}, "not_applicable_reason": {"type": ["string", "null"]}}},
+    "governance": {"type": "object", "additionalProperties": false, "required": ["gate_status", "publication_status", "human_validation", "empirical_product_validation", "clinical_clearance", "next_owner", "next_action"], "properties": {"gate_status": {"const": "NOT_CLOSED_BY_THIS_RECORD"}, "publication_status": {"const": "NOT_PUBLISHED"}, "human_validation": {"const": false}, "empirical_product_validation": {"const": false}, "clinical_clearance": {"const": false}, "next_owner": {"type": "string", "minLength": 1}, "next_action": {"type": "string", "minLength": 1}}},
+    "expiry": {"type": "object", "additionalProperties": false, "required": ["owner", "review_by", "event_based_expiry", "triggers"], "properties": {"owner": {"type": "string", "minLength": 1}, "review_by": {"type": ["string", "null"], "format": "date"}, "event_based_expiry": {"type": "string", "minLength": 1}, "triggers": {"$ref": "#/$defs/nonemptyStrings"}}},
+    "human_revalidation": {"type": "object", "additionalProperties": false, "required": ["state", "queue_ref", "human_review"], "properties": {"state": {"enum": ["NOT_APPROVED_PRESCRIPTIVE_DECISION", "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION", "HUMAN_REVALIDATION_REQUIRED"]}, "queue_ref": {"type": ["string", "null"]}, "human_review": {"const": null}}},
+    "supersedes": {"type": ["string", "null"]},
+    "dependent_items": {"$ref": "#/$defs/strings"}
+  },
+  "allOf": [
+    {"if": {"properties": {"disposition": {"enum": ["APPROVE", "APPROVE_WITH_CONDITIONS"]}}, "required": ["disposition"]}, "then": {"properties": {"evidence_status": {"enum": ["WELL_SUPPORTED", "SUPPORTED_WITH_LIMITS"]}, "reviewer": {"properties": {"independent_of_target_author": {"const": true}}}, "population_context": {"properties": {"eligibility_status": {"enum": ["NONCLINICAL_CONFIRMED", "SCOPE_DEFINITION_ONLY"]}}}, "claims": {"contains": {"properties": {"role": {"const": "DECISION_SUPPORT"}, "evidence_status": {"enum": ["WELL_SUPPORTED", "SUPPORTED_WITH_LIMITS"]}, "source_ids": {"minItems": 1}}, "required": ["role", "evidence_status", "source_ids"]}}, "literature_snapshot": {"properties": {"sources": {"contains": {"properties": {"verified": {"const": true}, "access": {"const": "FULL_TEXT"}, "prescriptive_support_eligible": {"const": true}}, "required": ["verified", "access", "prescriptive_support_eligible"]}}}}}}},
+    {"if": {"properties": {"disposition": {"enum": ["APPROVE", "APPROVE_WITH_CONDITIONS"]}, "scope": {"properties": {"prescriptive_impact": {"const": true}}, "required": ["prescriptive_impact"]}}, "required": ["disposition", "scope"]}, "then": {"properties": {"human_revalidation": {"properties": {"state": {"enum": ["QUEUED_FOR_FUNDED_HUMAN_REVALIDATION", "HUMAN_REVALIDATION_REQUIRED"]}, "queue_ref": {"type": "string", "minLength": 1}}}}}},
+    {"if": {"properties": {"disposition": {"const": "APPROVE_WITH_CONDITIONS"}}, "required": ["disposition"]}, "then": {"properties": {"decision": {"properties": {"conditions": {"minItems": 1}}}}}},
+    {"if": {"properties": {"evidence_status": {"enum": ["PLAUSIBLE_BUT_UNCERTAIN", "INSUFFICIENT_EVIDENCE", "CONFLICTING_EVIDENCE"]}}, "required": ["evidence_status"]}, "then": {"properties": {"disposition": {"enum": ["REVISE", "REJECT", "ABSTAIN", "LIMITED_REVERSIBLE_RECOMMENDATION"]}}}},
+    {"if": {"anyOf": [{"properties": {"evidence_status": {"const": "OUT_OF_SCOPE_CLINICAL"}}, "required": ["evidence_status"]}, {"properties": {"population_context": {"properties": {"eligibility_status": {"const": "CLINICAL_CONCERN"}}, "required": ["eligibility_status"]}}, "required": ["population_context"]}]}, "then": {"properties": {"evidence_status": {"const": "OUT_OF_SCOPE_CLINICAL"}, "disposition": {"const": "OUT_OF_SCOPE"}, "proposed_action": {"const": "CLINICAL_HUMAN_REQUIRED"}, "human_revalidation": {"properties": {"state": {"const": "NOT_APPROVED_PRESCRIPTIVE_DECISION"}, "queue_ref": {"const": null}}}}}},
+    {"if": {"properties": {"population_context": {"properties": {"eligibility_status": {"const": "ELIGIBILITY_UNASSESSED"}}, "required": ["eligibility_status"]}}, "required": ["population_context"]}, "then": {"properties": {"proposed_action": {"enum": ["ASK", "HOLD", "CONDITIONAL_OPTIONS", "NOT_APPLICABLE"]}, "disposition": {"enum": ["REVISE", "REJECT", "ABSTAIN", "LIMITED_REVERSIBLE_RECOMMENDATION"]}}}},
+    {"if": {"properties": {"ae_review": {"properties": {"applicable": {"const": true}}, "required": ["applicable"]}}, "required": ["ae_review"]}, "then": {"properties": {"ae_review": {"properties": {"answers": {"minItems": 10, "maxItems": 10}, "not_applicable_reason": {"const": null}}}}}, "else": {"properties": {"ae_review": {"properties": {"not_applicable_reason": {"type": "string", "minLength": 1}}}}}}
+  ],
+  "$defs": {
+    "strings": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "nonemptyStrings": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "evidenceStatus": {"enum": ["WELL_SUPPORTED", "SUPPORTED_WITH_LIMITS", "PLAUSIBLE_BUT_UNCERTAIN", "INSUFFICIENT_EVIDENCE", "CONFLICTING_EVIDENCE", "OUT_OF_SCOPE_CLINICAL"]},
+    "source": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_id", "title", "authors", "year", "url", "doi", "pmid", "source_type", "access", "accessed_on", "verified", "prescriptive_support_eligible", "population_design_dose", "findings", "locator", "limitations", "counterevidence"],
+      "properties": {
+        "source_id": {"type": "string", "minLength": 1}, "title": {"type": "string", "minLength": 1}, "authors": {"type": "string", "minLength": 1}, "year": {"type": "integer", "minimum": 1900}, "url": {"type": "string", "format": "uri"}, "doi": {"type": ["string", "null"]}, "pmid": {"type": ["string", "null"]},
+        "source_type": {"enum": ["CONSENSUS_POSITION_STAND", "SYSTEMATIC_REVIEW", "META_ANALYSIS", "UMBRELLA_REVIEW", "RCT", "PROSPECTIVE_COHORT", "MECHANISTIC_BIOMECHANICAL", "ACUTE_STUDY", "OTHER_OBSERVATIONAL", "PREPRINT_UNREVIEWED", "ABSTRACT_ONLY_REPORT", "COMMENTARY_OPINION"]},
+        "access": {"enum": ["FULL_TEXT", "ABSTRACT_ONLY", "RECORD_ONLY"]}, "accessed_on": {"type": "string", "format": "date"}, "verified": {"type": "boolean"}, "prescriptive_support_eligible": {"type": "boolean"}, "population_design_dose": {"type": "string", "minLength": 1}, "findings": {"type": "string", "minLength": 1}, "locator": {"type": "string", "minLength": 1}, "limitations": {"$ref": "#/$defs/nonemptyStrings"}, "counterevidence": {"$ref": "#/$defs/nonemptyStrings"}
+      },
+      "allOf": [{"if": {"anyOf": [{"properties": {"access": {"enum": ["ABSTRACT_ONLY", "RECORD_ONLY"]}}, "required": ["access"]}, {"properties": {"source_type": {"enum": ["PREPRINT_UNREVIEWED", "ABSTRACT_ONLY_REPORT", "COMMENTARY_OPINION"]}}, "required": ["source_type"]}]}, "then": {"properties": {"prescriptive_support_eligible": {"const": false}}}}]
+    },
+    "claim": {
+      "type": "object", "additionalProperties": false,
+      "required": ["claim_id", "statement", "basis", "role", "evidence_status", "source_ids", "applicability", "limitations", "counterevidence"],
+      "properties": {"claim_id": {"type": "string", "minLength": 1}, "statement": {"type": "string", "minLength": 1}, "basis": {"enum": ["OBSERVED", "INFERRED", "ASSUMED", "DECIDED"]}, "role": {"enum": ["DECISION_SUPPORT", "CONTEXT", "COUNTEREVIDENCE", "OPEN_QUESTION"]}, "evidence_status": {"$ref": "#/$defs/evidenceStatus"}, "source_ids": {"$ref": "#/$defs/strings"}, "applicability": {"type": "string", "minLength": 1}, "limitations": {"$ref": "#/$defs/nonemptyStrings"}, "counterevidence": {"$ref": "#/$defs/nonemptyStrings"}},
+      "allOf": [{"if": {"properties": {"role": {"const": "DECISION_SUPPORT"}}, "required": ["role"]}, "then": {"properties": {"evidence_status": {"enum": ["WELL_SUPPORTED", "SUPPORTED_WITH_LIMITS"]}, "source_ids": {"minItems": 1}}}}]
+    }
+  }
+}

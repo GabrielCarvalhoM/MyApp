@@ -1,0 +1,124 @@
+{
+  "runtime": "FREEZE-1 reconstruction (freeze1-recon/), see freeze1-recon-manifest.json",
+  "controls": {
+    "R6-H01": {
+      "generationProgramHashEqual": true,
+      "stepsEqual": true
+    },
+    "R6-H19": {
+      "generationProgramHashEqual": true,
+      "stepsEqual": true
+    },
+    "R6-H23": {
+      "generationProgramHashEqual": true,
+      "stepsEqual": true
+    },
+    "R6-H25": {
+      "generationProgramHashEqual": true,
+      "stepsEqual": true
+    }
+  },
+  "probes": {
+    "H25_eventDateChange_withWeeklyReviews": {
+      "lastStep": {
+        "status": "MODIFY",
+        "action": "REPLAN_FUTURE_PHASES"
+      },
+      "weeks7to11": [
+        "W7 SPECIFIC run=148 E40/Q38/L70",
+        "W8 SPECIFIC run=158 E45/Q43/L70",
+        "W9 SPECIFIC run=158 E45/Q43/L70",
+        "W10 TAPER run=111 E35/Q31/L45",
+        "W11 RACE_WEEK run=125 E25/R25/R75"
+      ],
+      "recordedWeeks7to11": [
+        "W7 SPECIFIC run=45 E15/E15/L15",
+        "W8 SPECIFIC run=50 E15/E15/L20",
+        "W9 SPECIFIC run=63 E15/Q23/L25",
+        "W10 TAPER run=83 E30/Q23/L30",
+        "W11 RACE_WEEK run=120 E20/R25/R75"
+      ]
+    },
+    "H23_doubleConflict_withWeeklyReviews": {
+      "lastStep": {
+        "status": "MODIFY",
+        "action": "REARRANGE_FUTURE_WEEKS"
+      },
+      "week4TuesdaySessions": [
+        "RUN:QUALITY AM PLANNED",
+        "STRENGTH:STRENGTH_FULL_A PM PLANNED"
+      ],
+      "week5TuesdaySessions": [
+        "STRENGTH:STRENGTH_FULL_A AM",
+        "RUN:EASY AM"
+      ],
+      "weeks5to9": [
+        "W5 BUILD run=156 E45/Q41/L70",
+        "W6 BUILD run=163 E45/Q48/L70",
+        "W7 SPECIFIC run=153 E45/Q38/L70",
+        "W8 SPECIFIC run=163 E50/Q43/L70",
+        "W9 SPECIFIC run=163 E50/Q43/L70"
+      ],
+      "recordedWeeks5to9": [
+        "W5 BUILD run=45 E15/E15/L15",
+        "W6 BUILD run=50 E15/E15/L20",
+        "W7 SPECIFIC run=50 E15/E15/L20",
+        "W8 SPECIFIC run=50 E15/E15/L20",
+        "W9 SPECIFIC run=50 E15/E15/L20"
+      ]
+    },
+    "H19_withWeek5WeeklyReview": {
+      "week5Review": {
+        "status": "MODIFY",
+        "action": "GATED_NEXT_STEP",
+        "gates": {
+          "LONG": "HOLD",
+          "QUALITY": "REGRESS",
+          "EASY": "ADVANCE",
+          "goblet-squat": "ADVANCE",
+          "db-bench-press": "ADVANCE",
+          "db-row": "ADVANCE",
+          "db-calf-raise": "ADVANCE",
+          "dead-bug": "ADVANCE",
+          "db-rdl": "ADVANCE",
+          "db-split-squat": "ADVANCE"
+        },
+        "week6": "W6 BUILD run=158 E40/Q48/L70"
+      },
+      "s4": {
+        "status": "KEEP",
+        "action": "KEEP",
+        "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+      }
+    },
+    "H01_withEightWeeksOfConsistentHistory": {
+      "status": "PROPOSED",
+      "capabilityRun": {
+        "basis": "SELF_REPORT_AND_WEARABLE_CONSERVATIVE",
+        "weeklyMinutes": 210,
+        "days": 4,
+        "longest": 78,
+        "class": "QUALITY_FAMILIAR"
+      },
+      "gaps": [],
+      "weeks": [
+        "W0 BUILD run=204 Q49/E40/E40/L75",
+        "W1 BUILD run=201 Q41/E40/E40/L80",
+        "W2 BUILD run=218 Q48/E45/E40/L85",
+        "W3 CONSOLIDATION run=213 Q48/E45/E40/L80",
+        "W4 BUILD run=218 Q43/E45/E40/L90",
+        "W5 BUILD run=238 Q53/E45/E45/L95",
+        "W6 BUILD run=239 Q49/E45/E45/L100",
+        "W7 CONSOLIDATION run=238 Q53/E45/E45/L95",
+        "W8 BUILD run=244 Q49/E45/E45/L105",
+        "W9 BUILD run=244 Q49/E45/E45/L105",
+        "W10 SPECIFIC run=242 Q42/E50/E45/L105",
+        "W11 SPECIFIC run=249 Q49/E50/E45/L105",
+        "W12 SPECIFIC run=253 Q48/E50/E50/L105",
+        "W13 SPECIFIC run=260 Q55/E50/E50/L105",
+        "W14 TAPER run=167 Q37/E35/E35/L60",
+        "W15 RACE_WEEK run=203 E25/R28/R150"
+      ]
+    }
+  }
+}

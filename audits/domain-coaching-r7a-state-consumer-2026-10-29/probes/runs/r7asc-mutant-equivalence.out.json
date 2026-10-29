@@ -1,0 +1,28 @@
+{
+ "probe": "mutant-equivalence-r7asc",
+ "timelines": 238,
+ "ran": 112,
+ "mutants": {
+  "survivor": {
+   "file": "src/r6-adaptation.mjs",
+   "mutation": "if(REENTRY_MODES.includes(H.run.mode))run=",
+   "differingTimelines": 0,
+   "examples": []
+  },
+  "control": {
+   "file": "src/r6-program.mjs",
+   "mutation": "from=st.walkStep;",
+   "differingTimelines": 6,
+   "examples": [
+    "D_NOVICE_RUNNER_EXPERIENCED_STRENGTH-w5d3-rev",
+    "D_NOVICE_RUNNER_EXPERIENCED_STRENGTH-w5d3-unrev",
+    "G_LOW_DATA_NO_WEARABLE-w5d3-rev",
+    "G_LOW_DATA_NO_WEARABLE-w5d3-unrev",
+    "WALK_JOG_FIVE_DAYS-w5d3-rev",
+    "WALK_JOG_FIVE_DAYS-w5d3-unrev"
+   ]
+  }
+ },
+ "survivorEquivalentOnBattery": true,
+ "controlDetected": true
+}

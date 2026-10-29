@@ -1,0 +1,1435 @@
+{
+  "summary": {
+    "probes": 95,
+    "explicitChecks": 53,
+    "failedChecks": 14,
+    "allInputsUnchanged": true,
+    "allAppliedEqualsOfficial": true
+  },
+  "failed": [
+    {
+      "label": "narrative-persistentpain-return",
+      "decision": {
+        "type": "HOLD",
+        "coverage": "CORRECT_ABSTAIN_OR_HOLD",
+        "rationale": "Incompatible entry response and uncertain comparison prevent restoring former loads; no reviewed smaller current alternative is supplied",
+        "missing": [],
+        "consumption": {
+          "schemaValid": true,
+          "consumed": true,
+          "normal": true,
+          "bindingAssessment": [
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/interruption",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "object",
+                  "expectedTypes": [
+                    "object"
+                  ],
+                  "typed": true,
+                  "valueHash": "b4094f3e7134679de76b533a11ac47841de7c10b9fc7dc10fff4b18499dda6f4"
+                }
+              ],
+              "present": true
+            },
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/observations",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "object",
+                  "expectedTypes": [
+                    "object"
+                  ],
+                  "typed": true,
+                  "valueHash": "26ce3453455f358246a775f333d4ccd66f240c9b495177f295d34bae5cc5d8f8"
+                }
+              ],
+              "present": true
+            },
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/currentDemand/availableReviewedSmallerAlternative",
+                  "state": "UNKNOWN",
+                  "present": true,
+                  "type": "null",
+                  "expectedTypes": [
+                    "object",
+                    "array",
+                    "string"
+                  ],
+                  "typed": true,
+                  "valueHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+                }
+              ],
+              "present": true
+            }
+          ],
+          "decisionReady": true
+        },
+        "candidate": null,
+        "policyRefs": [],
+        "dependency": "CURRENT_REENTRY_REASSESSMENT",
+        "readPaths": [
+          "/currentDemand/officialPlan",
+          "/currentDemand/officialWeek",
+          "/currentDemand/officialRunWeek",
+          "/currentDemand/session",
+          "/currentDemand/planned",
+          "/completedPrefix",
+          "/currentDemand/session/completed",
+          "/eligibility",
+          "/currentDemand/kind",
+          "/population",
+          "/interruption",
+          "/observations",
+          "/currentDemand/availableReviewedSmallerAlternative",
+          "/observations",
+          "/interruption/reason",
+          "/currentDemand",
+          "/observations",
+          "/priorHistory",
+          "/calibration",
+          "/interruption"
+        ]
+      }
+    },
+    {
+      "label": "empty-material-establishment",
+      "decision": {
+        "type": "NOT_SUPPORTED_YET",
+        "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+        "rationale": "The supplied establishment context is understood, but no approved whole-request recipe matches these modality configurations, available days and current exposure. An adult label is not an exact age; a reported walk is not a run tolerance or machine-task demonstration.",
+        "missing": [],
+        "consumption": {
+          "schemaValid": true,
+          "consumed": true,
+          "normal": true,
+          "bindingAssessment": [
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/onboarding",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "object",
+                  "expectedTypes": [
+                    "object"
+                  ],
+                  "typed": true,
+                  "valueHash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+                }
+              ],
+              "present": true
+            },
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/reportedExposure",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "object",
+                  "expectedTypes": [
+                    "object",
+                    "array",
+                    "string"
+                  ],
+                  "typed": true,
+                  "valueHash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+                }
+              ],
+              "present": true
+            }
+          ],
+          "decisionReady": true
+        },
+        "candidate": null,
+        "policyRefs": [],
+        "dependency": "FIRST_PRESCRIPTION_EXACT_RECIPE",
+        "readPaths": [
+          "/currentDemand/officialPlan",
+          "/currentDemand/officialWeek",
+          "/currentDemand/officialRunWeek",
+          "/currentDemand/session",
+          "/currentDemand/planned",
+          "/completedPrefix",
+          "/currentDemand/session/completed",
+          "/eligibility",
+          "/currentDemand/kind",
+          "/population",
+          "/onboarding",
+          "/reportedExposure",
+          "/observations",
+          "/interruption/reason",
+          "/currentDemand",
+          "/observations",
+          "/priorHistory",
+          "/history",
+          "/calibration",
+          "/onboarding/movementKnowledge",
+          "/onboarding/availability",
+          "/reportedExposure"
+        ]
+      }
+    },
+    {
+      "label": "empty-material-local-fatigue",
+      "decision": {
+        "type": "NOT_SUPPORTED_YET",
+        "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+        "rationale": "Exact essential/optional configuration is represented. R2 back-squat/calf removal cannot replace this goblet/row/loaded-calf dose; smaller sufficient alternatives still need bounded adjudication.",
+        "missing": [],
+        "consumption": {
+          "schemaValid": true,
+          "consumed": true,
+          "normal": true,
+          "bindingAssessment": [
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/currentDemand/session/essential",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "array",
+                  "expectedTypes": [
+                    "array"
+                  ],
+                  "typed": true,
+                  "valueHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+                }
+              ],
+              "present": true
+            },
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/currentDemand/session/optional",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "array",
+                  "expectedTypes": [
+                    "array"
+                  ],
+                  "typed": true,
+                  "valueHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+                }
+              ],
+              "present": true
+            },
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/observations/local",
+                  "state": "UNKNOWN",
+                  "present": true,
+                  "type": "string",
+                  "expectedTypes": [
+                    "string"
+                  ],
+                  "typed": true,
+                  "valueHash": "eb8bf0d80db323992f6b634aab492b1e6d9e96a8e87a511c2a0db75ab929452c"
+                }
+              ],
+              "present": true
+            },
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/alternatives",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "object",
+                  "expectedTypes": [
+                    "object",
+                    "array",
+                    "string"
+                  ],
+                  "typed": true,
+                  "valueHash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+                }
+              ],
+              "present": true
+            }
+          ],
+          "decisionReady": true
+        },
+        "candidate": null,
+        "policyRefs": [],
+        "dependency": "OPTIONAL_ACCESSORY_EXACT_CONFIGURATION",
+        "readPaths": [
+          "/currentDemand/officialPlan",
+          "/currentDemand/officialWeek",
+          "/currentDemand/officialRunWeek",
+          "/currentDemand/session",
+          "/completedPrefix",
+          "/currentDemand/session/completed",
+          "/eligibility",
+          "/currentDemand/kind",
+          "/population",
+          "/currentDemand/session/essential",
+          "/currentDemand/session/optional",
+          "/observations/local",
+          "/alternatives",
+          "/observations",
+          "/interruption/reason",
+          "/currentDemand",
+          "/observations",
+          "/priorHistory",
+          "/history",
+          "/calibration",
+          "/alternatives"
+        ]
+      }
+    },
+    {
+      "label": "empty-material-completed-prefix",
+      "decision": {
+        "type": "NOT_SUPPORTED_YET",
+        "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+        "rationale": "The 5min plus 3min completed prefix is immutable. No approved future-suffix dose matches this partially executed cruise configuration and converging response.",
+        "missing": [],
+        "consumption": {
+          "schemaValid": true,
+          "consumed": true,
+          "normal": true,
+          "bindingAssessment": [
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/currentDemand/session",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "object",
+                  "expectedTypes": [
+                    "object"
+                  ],
+                  "typed": true,
+                  "valueHash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+                }
+              ],
+              "present": true
+            },
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/observations/firstTwoRepetitions",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "string",
+                  "expectedTypes": [
+                    "string"
+                  ],
+                  "typed": true,
+                  "valueHash": "b633e05ef8d951336c8ad99f6ddd1591f5d4bdc68c9d6ceaa29a608f8fea0e0b"
+                }
+              ],
+              "present": true
+            },
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/completedPrefix",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "object",
+                  "expectedTypes": [
+                    "object"
+                  ],
+                  "typed": true,
+                  "valueHash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+                }
+              ],
+              "present": true
+            }
+          ],
+          "decisionReady": true
+        },
+        "candidate": null,
+        "policyRefs": [],
+        "dependency": "PARTIAL_CRUISE_SUFFIX_DOSING",
+        "readPaths": [
+          "/currentDemand/officialPlan",
+          "/currentDemand/officialWeek",
+          "/currentDemand/officialRunWeek",
+          "/currentDemand/session",
+          "/completedPrefix",
+          "/eligibility",
+          "/currentDemand/kind",
+          "/population",
+          "/currentDemand/session",
+          "/observations/firstTwoRepetitions",
+          "/completedPrefix",
+          "/observations",
+          "/interruption/reason",
+          "/currentDemand",
+          "/observations",
+          "/priorHistory",
+          "/history",
+          "/calibration",
+          "/completedPrefix",
+          "/alternatives"
+        ]
+      }
+    },
+    {
+      "label": "changed-partial-actual-prefix",
+      "decision": {
+        "type": "NOT_SUPPORTED_YET",
+        "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+        "rationale": "The 5min plus 3min completed prefix is immutable. No approved future-suffix dose matches this partially executed cruise configuration and converging response.",
+        "missing": [],
+        "consumption": {
+          "schemaValid": true,
+          "consumed": true,
+          "normal": true,
+          "bindingAssessment": [
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/currentDemand/session",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "object",
+                  "expectedTypes": [
+                    "object"
+                  ],
+                  "typed": true,
+                  "valueHash": "9d6789a7a41da722c2830bd94d87f779d646acc60eb032a8421827e63b158ba6"
+                }
+              ],
+              "present": true
+            },
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/observations/firstTwoRepetitions",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "string",
+                  "expectedTypes": [
+                    "string"
+                  ],
+                  "typed": true,
+                  "valueHash": "b633e05ef8d951336c8ad99f6ddd1591f5d4bdc68c9d6ceaa29a608f8fea0e0b"
+                }
+              ],
+              "present": true
+            },
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/completedPrefix",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "object",
+                  "expectedTypes": [
+                    "object"
+                  ],
+                  "typed": true,
+                  "valueHash": "59552a914b9fe1c7776c4e86874d9309e8dfab5549cc6de7a5e88e617e6321e1"
+                }
+              ],
+              "present": true
+            }
+          ],
+          "decisionReady": true
+        },
+        "candidate": null,
+        "policyRefs": [],
+        "dependency": "PARTIAL_CRUISE_SUFFIX_DOSING",
+        "readPaths": [
+          "/currentDemand/officialPlan",
+          "/currentDemand/officialWeek",
+          "/currentDemand/officialRunWeek",
+          "/currentDemand/session",
+          "/completedPrefix",
+          "/eligibility",
+          "/currentDemand/kind",
+          "/population",
+          "/currentDemand/session",
+          "/observations/firstTwoRepetitions",
+          "/completedPrefix",
+          "/observations",
+          "/interruption/reason",
+          "/currentDemand",
+          "/observations",
+          "/priorHistory",
+          "/history",
+          "/calibration",
+          "/completedPrefix",
+          "/alternatives"
+        ]
+      }
+    },
+    {
+      "label": "empty-material-strength-dose",
+      "decision": {
+        "type": "NOT_SUPPORTED_YET",
+        "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+        "rationale": "Exact set-level response and candidate load/repetitions are consumed. Current necessity, smallest sufficient change and this movement-specific finite candidate lack a reviewed binding.",
+        "missing": [],
+        "consumption": {
+          "schemaValid": true,
+          "consumed": true,
+          "normal": true,
+          "bindingAssessment": [
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/currentDemand/exercise",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "string",
+                  "expectedTypes": [
+                    "string"
+                  ],
+                  "typed": true,
+                  "valueHash": "99163cec6f6f1731ef7824b83b812f842b0eb91102187848eaa1f83fe0a11214"
+                }
+              ],
+              "present": true
+            },
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/currentDemand/base",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "object",
+                  "expectedTypes": [
+                    "object"
+                  ],
+                  "typed": true,
+                  "valueHash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+                }
+              ],
+              "present": true
+            },
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/currentDemand/candidate",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "object",
+                  "expectedTypes": [
+                    "object"
+                  ],
+                  "typed": true,
+                  "valueHash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+                },
+                {
+                  "path": "/currentDemand/availableAlternative",
+                  "state": "ABSENT",
+                  "present": false,
+                  "type": "undefined",
+                  "expectedTypes": [
+                    "object"
+                  ],
+                  "typed": false,
+                  "valueHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+                }
+              ],
+              "present": true
+            },
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/observations",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "object",
+                  "expectedTypes": [
+                    "object"
+                  ],
+                  "typed": true,
+                  "valueHash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+                }
+              ],
+              "present": true
+            }
+          ],
+          "decisionReady": true
+        },
+        "candidate": null,
+        "policyRefs": [],
+        "dependency": "STRENGTH_ADAPTATION_EXACT_TASK",
+        "readPaths": [
+          "/currentDemand/officialPlan",
+          "/currentDemand/officialWeek",
+          "/currentDemand/officialRunWeek",
+          "/currentDemand/session",
+          "/currentDemand/planned",
+          "/completedPrefix",
+          "/currentDemand/session/completed",
+          "/eligibility",
+          "/currentDemand/kind",
+          "/population",
+          "/currentDemand/exercise",
+          "/currentDemand/base",
+          "/currentDemand/candidate",
+          "/currentDemand/availableAlternative",
+          "/observations",
+          "/observations",
+          "/interruption/reason",
+          "/currentDemand",
+          "/observations",
+          "/priorHistory",
+          "/history",
+          "/calibration"
+        ]
+      }
+    },
+    {
+      "label": "empty-material-taper",
+      "decision": {
+        "type": "HOLD",
+        "coverage": "NOT_SUPPORTED_SCIENCE_GAP",
+        "rationale": "The exact event, temporary priority, familiar run/strength components and windows are consumed. Their combined baseline-relative race-week recipe and essential-stimulus adequacy lack sufficient independent approval.",
+        "missing": [],
+        "consumption": {
+          "schemaValid": true,
+          "consumed": true,
+          "normal": true,
+          "bindingAssessment": [
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/event",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "object",
+                  "expectedTypes": [
+                    "object"
+                  ],
+                  "typed": true,
+                  "valueHash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+                }
+              ],
+              "present": true
+            },
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/priorHistory",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "object",
+                  "expectedTypes": [
+                    "object"
+                  ],
+                  "typed": true,
+                  "valueHash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+                }
+              ],
+              "present": true
+            },
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/availability",
+                  "state": "ABSENT",
+                  "present": false,
+                  "type": "undefined",
+                  "expectedTypes": [
+                    "array"
+                  ],
+                  "typed": false,
+                  "valueHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+                },
+                {
+                  "path": "/currentDemand/availability",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "array",
+                  "expectedTypes": [
+                    "object",
+                    "array",
+                    "string"
+                  ],
+                  "typed": true,
+                  "valueHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+                }
+              ],
+              "present": true
+            }
+          ],
+          "decisionReady": true
+        },
+        "candidate": null,
+        "policyRefs": [],
+        "dependency": "JOINT_HYBRID_TAPER_RECIPE",
+        "readPaths": [
+          "/currentDemand/officialPlan",
+          "/currentDemand/officialWeek",
+          "/currentDemand/officialRunWeek",
+          "/currentDemand/session",
+          "/currentDemand/planned",
+          "/completedPrefix",
+          "/currentDemand/session/completed",
+          "/eligibility",
+          "/currentDemand/kind",
+          "/population",
+          "/event",
+          "/priorHistory",
+          "/availability",
+          "/currentDemand/availability",
+          "/observations",
+          "/interruption/reason",
+          "/currentDemand",
+          "/observations",
+          "/priorHistory",
+          "/calibration",
+          "/event",
+          "/availability",
+          "/constraints",
+          "/event/firstAtDistance"
+        ]
+      }
+    },
+    {
+      "label": "empty-material-calibration",
+      "decision": {
+        "type": "NOT_SUPPORTED_YET",
+        "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+        "rationale": "The provided prediction, easy pace or historical race does not bind an exact current same-task recipe/target. Primary gap is task establishment/domain binding; no new literature insufficiency is inferred merely from missing athlete data.",
+        "missing": [],
+        "consumption": {
+          "schemaValid": true,
+          "consumed": true,
+          "normal": true,
+          "bindingAssessment": [
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/currentDemand/family",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "string",
+                  "expectedTypes": [
+                    "string"
+                  ],
+                  "typed": true,
+                  "valueHash": "38895b76811465932feb4be16242f5c0469d597c08e3aef4db68ef198663e774"
+                }
+              ],
+              "present": true
+            },
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/priorHistory",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "object",
+                  "expectedTypes": [
+                    "object"
+                  ],
+                  "typed": true,
+                  "valueHash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+                }
+              ],
+              "present": true
+            },
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/calibration",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "object",
+                  "expectedTypes": [
+                    "object"
+                  ],
+                  "typed": true,
+                  "valueHash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+                }
+              ],
+              "present": true
+            }
+          ],
+          "decisionReady": true
+        },
+        "candidate": null,
+        "policyRefs": [],
+        "dependency": "CURRENT_TASK_CALIBRATION_BINDING",
+        "readPaths": [
+          "/currentDemand/officialPlan",
+          "/currentDemand/officialWeek",
+          "/currentDemand/officialRunWeek",
+          "/currentDemand/session",
+          "/currentDemand/planned",
+          "/completedPrefix",
+          "/currentDemand/session/completed",
+          "/eligibility",
+          "/currentDemand/kind",
+          "/population",
+          "/currentDemand/family",
+          "/priorHistory",
+          "/calibration",
+          "/observations",
+          "/interruption/reason",
+          "/currentDemand",
+          "/observations",
+          "/priorHistory",
+          "/calibration",
+          "/currentDemand/family",
+          "/environment"
+        ]
+      }
+    },
+    {
+      "label": "empty-material-ranking",
+      "decision": {
+        "type": "NOT_SUPPORTED_YET",
+        "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+        "rationale": "Contextual observations are preserved as associations. Each option still requires independent admissibility and a current reason to choose; no causal rule or unreviewed option is created.",
+        "missing": [],
+        "consumption": {
+          "schemaValid": true,
+          "consumed": true,
+          "normal": true,
+          "bindingAssessment": [
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/currentDemand/options",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "array",
+                  "expectedTypes": [
+                    "array"
+                  ],
+                  "typed": true,
+                  "valueHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+                }
+              ],
+              "present": true
+            },
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/priorHistory/observations",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "array",
+                  "expectedTypes": [
+                    "array"
+                  ],
+                  "typed": true,
+                  "valueHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+                }
+              ],
+              "present": true
+            },
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/constraints",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "object",
+                  "expectedTypes": [
+                    "object"
+                  ],
+                  "typed": true,
+                  "valueHash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+                }
+              ],
+              "present": true
+            },
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/learningConsent",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "object",
+                  "expectedTypes": [
+                    "object"
+                  ],
+                  "typed": true,
+                  "valueHash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+                }
+              ],
+              "present": true
+            }
+          ],
+          "decisionReady": true
+        },
+        "candidate": null,
+        "policyRefs": [],
+        "dependency": "OPTION_ADMISSIBILITY_AND_NECESSITY",
+        "readPaths": [
+          "/currentDemand/officialPlan",
+          "/currentDemand/officialWeek",
+          "/currentDemand/officialRunWeek",
+          "/currentDemand/session",
+          "/currentDemand/planned",
+          "/completedPrefix",
+          "/currentDemand/session/completed",
+          "/eligibility",
+          "/currentDemand/kind",
+          "/population",
+          "/currentDemand/options",
+          "/priorHistory/observations",
+          "/constraints",
+          "/learningConsent",
+          "/observations",
+          "/interruption/reason",
+          "/currentDemand",
+          "/observations",
+          "/priorHistory",
+          "/calibration",
+          "/learningConsent",
+          "/constraints"
+        ]
+      }
+    },
+    {
+      "label": "empty-material-learning",
+      "decision": {
+        "type": "HOLD",
+        "coverage": "CORRECT_ABSTAIN_OR_HOLD",
+        "rationale": "One confounded association cannot create a learned causal fatigue rule or a new dose. Preserve the population prior and actual observation.",
+        "missing": [],
+        "consumption": {
+          "schemaValid": true,
+          "consumed": true,
+          "normal": true,
+          "bindingAssessment": [
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/currentDemand/requestedRule",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "string",
+                  "expectedTypes": [
+                    "string"
+                  ],
+                  "typed": true,
+                  "valueHash": "61367e7a2cb17cd53363171a52d089e714b4f144e7a08f33d303530633601e0d"
+                }
+              ],
+              "present": true
+            },
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/priorHistory/observations",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "array",
+                  "expectedTypes": [
+                    "array"
+                  ],
+                  "typed": true,
+                  "valueHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+                }
+              ],
+              "present": true
+            },
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/availableAdmissibleDoseAlternatives",
+                  "state": "UNKNOWN",
+                  "present": true,
+                  "type": "null",
+                  "expectedTypes": [
+                    "object",
+                    "array",
+                    "string"
+                  ],
+                  "typed": true,
+                  "valueHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+                }
+              ],
+              "present": true
+            }
+          ],
+          "decisionReady": true
+        },
+        "candidate": null,
+        "policyRefs": [],
+        "dependency": "NO_SUPPORTED_INDIVIDUAL_RULE",
+        "readPaths": [
+          "/currentDemand/officialPlan",
+          "/currentDemand/officialWeek",
+          "/currentDemand/officialRunWeek",
+          "/currentDemand/session",
+          "/currentDemand/planned",
+          "/completedPrefix",
+          "/currentDemand/session/completed",
+          "/eligibility",
+          "/currentDemand/kind",
+          "/population",
+          "/currentDemand/requestedRule",
+          "/priorHistory/observations",
+          "/availableAdmissibleDoseAlternatives",
+          "/observations",
+          "/interruption/reason",
+          "/currentDemand",
+          "/observations",
+          "/priorHistory",
+          "/calibration",
+          "/learningConsent"
+        ]
+      }
+    },
+    {
+      "label": "substitution-required-facts-now-supplied",
+      "decision": {
+        "type": "ASK",
+        "coverage": "USEFUL_ASK",
+        "rationale": "Barbell kilograms cannot supply dumbbell load, competence, configuration or complete alternative recipe",
+        "missing": [
+          "/currentDemand/requested/loadKgPerHand",
+          "/history/requestedMovementFamiliar",
+          "/history/completeAlternativeRecipe"
+        ],
+        "consumption": {
+          "schemaValid": true,
+          "consumed": true,
+          "normal": true,
+          "bindingAssessment": [
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/currentDemand/original",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "object",
+                  "expectedTypes": [
+                    "object"
+                  ],
+                  "typed": true,
+                  "valueHash": "70cf0f7112565dea57bf3404172ec71feb0ea7ef27ef35798f5957b5ea564c72"
+                }
+              ],
+              "present": true
+            },
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/currentDemand/requested",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "object",
+                  "expectedTypes": [
+                    "object"
+                  ],
+                  "typed": true,
+                  "valueHash": "73e411bbffe99c823a0c88134b867429411f715596ff31e81cfba231f718ce41"
+                }
+              ],
+              "present": true
+            },
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/history",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "object",
+                  "expectedTypes": [
+                    "object"
+                  ],
+                  "typed": true,
+                  "valueHash": "75309c2f4c2175cc45c12cb1691b5491a342dd55a6c242672019e18ea838e9ba"
+                }
+              ],
+              "present": true
+            }
+          ],
+          "decisionReady": false
+        },
+        "candidate": null,
+        "policyRefs": [],
+        "dependency": "SUBSTANTIVE_MISSING_INPUT",
+        "readPaths": [
+          "/currentDemand/officialPlan",
+          "/currentDemand/officialWeek",
+          "/currentDemand/officialRunWeek",
+          "/currentDemand/session",
+          "/currentDemand/planned",
+          "/completedPrefix",
+          "/currentDemand/session/completed",
+          "/eligibility",
+          "/currentDemand/kind",
+          "/population",
+          "/currentDemand/original",
+          "/currentDemand/requested",
+          "/history",
+          "/observations",
+          "/interruption/reason",
+          "/currentDemand",
+          "/observations",
+          "/priorHistory",
+          "/history",
+          "/calibration"
+        ]
+      }
+    },
+    {
+      "label": "hills-required-facts-now-supplied",
+      "decision": {
+        "type": "ASK",
+        "coverage": "USEFUL_ASK",
+        "rationale": "Flat pace does not calibrate unfamiliar hills; grade, footing, bout and downhill exposure are material",
+        "missing": [
+          "/calibration/grade",
+          "/calibration/duration",
+          "/calibration/downhillExposure",
+          "/environment/surface"
+        ],
+        "consumption": {
+          "schemaValid": true,
+          "consumed": true,
+          "normal": true,
+          "bindingAssessment": [
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/currentDemand/family",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "string",
+                  "expectedTypes": [
+                    "string"
+                  ],
+                  "typed": true,
+                  "valueHash": "751b202d096c1f79d61d6b837f29f1103ae8141dabd977644a2c463f6218a0dc"
+                }
+              ],
+              "present": true
+            },
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/priorHistory",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "object",
+                  "expectedTypes": [
+                    "object"
+                  ],
+                  "typed": true,
+                  "valueHash": "8c7cf52204337393ee986f430313b4f2e9014fedf6ed15dce2a0badc0e6d53c4"
+                }
+              ],
+              "present": true
+            },
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/calibration",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "object",
+                  "expectedTypes": [
+                    "object"
+                  ],
+                  "typed": true,
+                  "valueHash": "347e7c5f0bfbce82aec645a87b6dc91541581e67ac36a2ef82b794cf33283f05"
+                }
+              ],
+              "present": true
+            }
+          ],
+          "decisionReady": false
+        },
+        "candidate": null,
+        "policyRefs": [],
+        "dependency": "SUBSTANTIVE_MISSING_INPUT",
+        "readPaths": [
+          "/currentDemand/officialPlan",
+          "/currentDemand/officialWeek",
+          "/currentDemand/officialRunWeek",
+          "/currentDemand/session",
+          "/currentDemand/planned",
+          "/completedPrefix",
+          "/currentDemand/session/completed",
+          "/eligibility",
+          "/currentDemand/kind",
+          "/population",
+          "/currentDemand/family",
+          "/priorHistory",
+          "/calibration",
+          "/observations",
+          "/interruption/reason",
+          "/currentDemand",
+          "/observations",
+          "/priorHistory",
+          "/calibration",
+          "/currentDemand/family",
+          "/environment"
+        ]
+      }
+    },
+    {
+      "label": "strides-required-facts-now-supplied",
+      "decision": {
+        "type": "ASK",
+        "coverage": "USEFUL_ASK",
+        "rationale": "The familiar4x15s block and self-paced walking recovery are represented, but preparation and the full-session envelope are absent. No easy minutes or fixed rest may be added to turn a block into a complete session.",
+        "missing": [
+          "/priorHistory/sameFamily/preparation",
+          "/currentDemand/sessionEnvelope"
+        ],
+        "consumption": {
+          "schemaValid": true,
+          "consumed": true,
+          "normal": true,
+          "bindingAssessment": [
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/currentDemand/family",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "string",
+                  "expectedTypes": [
+                    "string"
+                  ],
+                  "typed": true,
+                  "valueHash": "e2824a51285d517e25125c537cc54460b892b683fcda8ef2298ce125c7636bf4"
+                }
+              ],
+              "present": true
+            },
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/priorHistory",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "object",
+                  "expectedTypes": [
+                    "object"
+                  ],
+                  "typed": true,
+                  "valueHash": "508a18c65097b051863b21d6476cdd02e647774071440107f37b1cd7fbfdc4cc"
+                }
+              ],
+              "present": true
+            },
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/calibration",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "object",
+                  "expectedTypes": [
+                    "object"
+                  ],
+                  "typed": true,
+                  "valueHash": "041cbf66e245e305e4bb6b19d473b6583f079c3b1c7665df860501bd9dff1e7f"
+                }
+              ],
+              "present": true
+            }
+          ],
+          "decisionReady": false
+        },
+        "candidate": null,
+        "policyRefs": [],
+        "dependency": "SUBSTANTIVE_MISSING_INPUT",
+        "readPaths": [
+          "/currentDemand/officialPlan",
+          "/currentDemand/officialWeek",
+          "/currentDemand/officialRunWeek",
+          "/currentDemand/session",
+          "/currentDemand/planned",
+          "/completedPrefix",
+          "/currentDemand/session/completed",
+          "/eligibility",
+          "/currentDemand/kind",
+          "/population",
+          "/currentDemand/family",
+          "/priorHistory",
+          "/calibration",
+          "/observations",
+          "/interruption/reason",
+          "/currentDemand",
+          "/observations",
+          "/priorHistory",
+          "/calibration",
+          "/currentDemand/family",
+          "/environment"
+        ]
+      }
+    },
+    {
+      "label": "first-half-required-facts-now-supplied",
+      "decision": {
+        "type": "ASK",
+        "coverage": "USEFUL_ASK",
+        "rationale": "Recent long-run exposure, distance-specific experience and event intent remain unknown; no 5K-to-half pace conversion is permitted",
+        "missing": [
+          "/priorHistory/run/longestRecentRun",
+          "/calibration/halfMarathonPace"
+        ],
+        "consumption": {
+          "schemaValid": true,
+          "consumed": true,
+          "normal": true,
+          "bindingAssessment": [
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/event",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "object",
+                  "expectedTypes": [
+                    "object"
+                  ],
+                  "typed": true,
+                  "valueHash": "1799ba4d21f35cbdbf71176a41064bfb284864c1a0ff171ea2dca4f7523043ab"
+                }
+              ],
+              "present": true
+            },
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/priorHistory",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "object",
+                  "expectedTypes": [
+                    "object"
+                  ],
+                  "typed": true,
+                  "valueHash": "cbf81cce8d0418218db237b2d248ca6dd0a401161cb2fe6d102930d03169b931"
+                }
+              ],
+              "present": true
+            },
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/availability",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "array",
+                  "expectedTypes": [
+                    "array"
+                  ],
+                  "typed": true,
+                  "valueHash": "e427da9e234670d9834063256f71a9d77ddbb352c5f95238c756151b461505f6"
+                },
+                {
+                  "path": "/currentDemand/availability",
+                  "state": "ABSENT",
+                  "present": false,
+                  "type": "undefined",
+                  "expectedTypes": [
+                    "object",
+                    "array",
+                    "string"
+                  ],
+                  "typed": false,
+                  "valueHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+                }
+              ],
+              "present": true
+            }
+          ],
+          "decisionReady": false
+        },
+        "candidate": null,
+        "policyRefs": [],
+        "dependency": "SUBSTANTIVE_MISSING_INPUT",
+        "readPaths": [
+          "/currentDemand/officialPlan",
+          "/currentDemand/officialWeek",
+          "/currentDemand/officialRunWeek",
+          "/currentDemand/session",
+          "/currentDemand/planned",
+          "/completedPrefix",
+          "/currentDemand/session/completed",
+          "/eligibility",
+          "/currentDemand/kind",
+          "/population",
+          "/event",
+          "/priorHistory",
+          "/availability",
+          "/currentDemand/availability",
+          "/observations",
+          "/interruption/reason",
+          "/currentDemand",
+          "/observations",
+          "/priorHistory",
+          "/calibration",
+          "/event",
+          "/availability",
+          "/constraints",
+          "/event/firstAtDistance"
+        ]
+      }
+    }
+  ],
+  "artifactHashes": {
+    "src/r3-input.mjs": "35320aac23badeab919ee6eb7479c5b6e1ff050596ca30a681f95f7d84b63b3b",
+    "src/r3-runtime.mjs": "8c78936415afd32d0ff3ca516d17d8d9234411c50c506d1eed431d7dcf526aaa",
+    "r3/CANONICAL_COACHING_INPUT_R3_SCHEMA.json": "7d924267b84772ab03586b0301a16e6072117713669b01635771f5cd602fb4aa",
+    "r3/BOUNDED_POLICY_CANDIDATES_R3.json": "4d9044923ac05160db928a464466d5d6491c22cd496c9f43429cf6a9594c35fb",
+    "scripts/simulate-r3.mjs": "daf7f925e7a0c2bf63628a1b6f2def28e23816b3c283f10a5940712ed2677792",
+    "test/r3-input.test.mjs": "a18b3aeb12e3fe9179967fb8df1990aa7974ea5056d3f4e8337a481801d4305d",
+    "test/r3-runtime.test.mjs": "570d99b9072f9e55c1e50237285a7fb50418799028d2b6d711d0de8c08a098cd",
+    "reviews/ssctr-records.json": "009ac1b374109f788331bbfd2020cf18284540d0f80e72e0cba2f8f4703aece4"
+  }
+}

@@ -1,0 +1,17 @@
+# DOMAIN CLOSURE R2 — Positive Prescription Expansion
+
+R2-20261024-r1. Current direct Founder request authorizes bounded scientific/domain expansion and executable Node24 reference semantics, superseding earlier implementation prohibitions only within offline synthetic SHADOW. No UI, Figma, KMP, production, real athlete, official plan effect or Product Truth promotion.
+
+Owner/coordinator and runtime author: /root. T3/R2/L3, A2 local implementation/research. Material prescribing behavior; low irreversibility through additive local files; high sporting uncertainty; bounded cross-domain dependencies. No new service/trust boundary, private human data, runtime LLM or operational autonomy. Existing dirty checkout is retained; no reset, commit, or blanket staging. Global state is untouched.
+
+Separate instances: scientific synthesis author; independent representative-corpus author; fresh default explicitly loaded SSCTR adversarial judge (native project type unavailable); fresh runtime/conformance quality judge after deterministic checks; independent governance consistency judge. Root integrates rather than grants its own scientific approval. Applicable skills: route-work, write-implementation-plan, test-driven-development, verify-before-completion, project sports-science-review 1.0.0. Research and review are limited to material policies and concrete executable consumers.
+
+Plan/checkpoints:
+1. Snapshot current project/BSR/queue hashes and rerun baseline. Baseline: Node24.19.0, 98/98 tests on 2026-10-24.
+2. Scientific author treats G01–G05 with finite candidate policies, claims/counterevidence/applicability. Independent corpus author freezes normal V1 cases before seeing runtime results. Reviewable policy registry carries recipes/guards, not expected evaluation outputs.
+3. Add a versioned strict R2 input contract and pure policy interpreter dispatched through existing evaluateShadow; preserve BSR1 semantics. Each positive action requires exact independent current SSCTR authority. Add development fixtures, positive/negative/boundary/missing/unsupported/replay/clinical/immutable-state tests. Capture meaningful RED then GREEN.
+4. Independently adjudicate proposed prescriptions, bind approved items only, add actual approvals to the single future funded-human queue preserving all 88 previous entries. Limited/unsupported items fail closed. No whole-gap approval inferred.
+5. Execute representative corpus separately from development fixtures and run multi-day/multi-week scripted observations. Record denominator, unique logical inputs, action classes, trace completeness, no effects, no cascade/tremor/overfitting/priority inversion.
+6. Deterministic checks then fresh SSCTR fidelity, Quality and governance review on exact revisions. Resolve findings, record freshness, eight requested verdicts and narrower owned gaps. Future shared production core may use this Node oracle/conformance reference, probably KMP in a later mission.
+
+STOP_WHEN: every requested deliverable and applicable independent gate has current evidence; every new positive policy is executable with review/queue/test/trace; remaining unsupported scope explicit. Readiness is not forced. ESCALATE_IF: same material finding survives two correction attempts, decisive evidence/authority missing or upstream contradiction. Diagnose/reroute rather than fabricate policy. Rollback only mission-owned additions and exact additive pointers; preserve prior uncommitted work.

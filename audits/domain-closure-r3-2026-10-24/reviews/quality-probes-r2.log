@@ -1,0 +1,116 @@
+{
+  "summary": {
+    "probes": 82,
+    "explicitChecks": 40,
+    "failedChecks": 1,
+    "allInputsUnchanged": true,
+    "allAppliedEqualsOfficial": true
+  },
+  "failed": [
+    {
+      "label": "narrative-persistentpain-return",
+      "decision": {
+        "type": "HOLD",
+        "coverage": "CORRECT_ABSTAIN_OR_HOLD",
+        "rationale": "Incompatible entry response and uncertain comparison prevent restoring former loads; no reviewed smaller current alternative is supplied",
+        "missing": [],
+        "consumption": {
+          "schemaValid": true,
+          "consumed": true,
+          "normal": true,
+          "bindingAssessment": [
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/interruption",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "object",
+                  "expectedTypes": [
+                    "object"
+                  ],
+                  "typed": true,
+                  "valueHash": "b4094f3e7134679de76b533a11ac47841de7c10b9fc7dc10fff4b18499dda6f4"
+                }
+              ],
+              "present": true
+            },
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/observations",
+                  "state": "KNOWN",
+                  "present": true,
+                  "type": "object",
+                  "expectedTypes": [
+                    "object"
+                  ],
+                  "typed": true,
+                  "valueHash": "26ce3453455f358246a775f333d4ccd66f240c9b495177f295d34bae5cc5d8f8"
+                }
+              ],
+              "present": true
+            },
+            {
+              "check": "SOURCE_BOUND_MATERIAL_OPERAND",
+              "alternatives": [
+                {
+                  "path": "/currentDemand/availableReviewedSmallerAlternative",
+                  "state": "UNKNOWN",
+                  "present": true,
+                  "type": "null",
+                  "expectedTypes": [
+                    "object",
+                    "array",
+                    "string"
+                  ],
+                  "typed": true,
+                  "valueHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+                }
+              ],
+              "present": true
+            }
+          ],
+          "decisionReady": true
+        },
+        "candidate": null,
+        "policyRefs": [],
+        "dependency": "CURRENT_REENTRY_REASSESSMENT",
+        "readPaths": [
+          "/currentDemand/officialPlan",
+          "/currentDemand/officialWeek",
+          "/currentDemand/officialRunWeek",
+          "/currentDemand/session",
+          "/currentDemand/planned",
+          "/completedPrefix",
+          "/currentDemand/session/completed",
+          "/eligibility",
+          "/currentDemand/kind",
+          "/population",
+          "/interruption",
+          "/observations",
+          "/currentDemand/availableReviewedSmallerAlternative",
+          "/observations",
+          "/interruption/reason",
+          "/currentDemand",
+          "/observations",
+          "/priorHistory",
+          "/calibration",
+          "/interruption"
+        ]
+      }
+    }
+  ],
+  "artifactHashes": {
+    "src/r3-input.mjs": "35320aac23badeab919ee6eb7479c5b6e1ff050596ca30a681f95f7d84b63b3b",
+    "src/r3-runtime.mjs": "8c78936415afd32d0ff3ca516d17d8d9234411c50c506d1eed431d7dcf526aaa",
+    "r3/CANONICAL_COACHING_INPUT_R3_SCHEMA.json": "7d924267b84772ab03586b0301a16e6072117713669b01635771f5cd602fb4aa",
+    "r3/BOUNDED_POLICY_CANDIDATES_R3.json": "4d9044923ac05160db928a464466d5d6491c22cd496c9f43429cf6a9594c35fb",
+    "scripts/simulate-r3.mjs": "daf7f925e7a0c2bf63628a1b6f2def28e23816b3c283f10a5940712ed2677792",
+    "test/r3-input.test.mjs": "a18b3aeb12e3fe9179967fb8df1990aa7974ea5056d3f4e8337a481801d4305d",
+    "test/r3-runtime.test.mjs": "570d99b9072f9e55c1e50237285a7fb50418799028d2b6d711d0de8c08a098cd",
+    "reviews/ssctr-records.json": "009ac1b374109f788331bbfd2020cf18284540d0f80e72e0cba2f8f4703aece4"
+  }
+}

@@ -1,0 +1,334 @@
+{
+  "revision": "DCR4-ASK-1",
+  "count": 15,
+  "classes": {
+    "A": "ESSENTIAL_LIVE_ATHLETE_INPUT",
+    "B": "ESTABLISHMENT_INPUT",
+    "C": "ATHLETE_MODEL_SHOULD_KNOW",
+    "D": "POLICY_GAP_DISGUISED_AS_ASK",
+    "E": "CLINICAL_BOUNDARY_ASK",
+    "F": "USER_PREFERENCE_AGENCY"
+  },
+  "primaryCounts": {
+    "A": 1,
+    "B": 5,
+    "C": 1,
+    "D": 6,
+    "E": 2,
+    "F": 0
+  },
+  "cases": [
+    {
+      "caseId": "REP-R2-04",
+      "classCode": "B",
+      "classification": "ESTABLISHMENT_INPUT",
+      "r3Missing": [
+        "/onboarding/movementKnowledge",
+        "/reportedExposure/strength"
+      ],
+      "rationale": "Unknown barbell competence/load is a real first-life question; a requested kilogram value is not competence.",
+      "futureDependency": "Targeted question with response that can change the decision",
+      "frozenFactsChanged": false,
+      "r4Result": {
+        "caseId": "REP-R2-04",
+        "from": "USEFUL_ASK",
+        "to": "USEFUL_ASK",
+        "missingInputs": [
+          "/onboarding/movementKnowledge",
+          "/reportedExposure/strength"
+        ],
+        "remainingDependency": "SUBSTANTIVE_MISSING_INPUT"
+      }
+    },
+    {
+      "caseId": "REP-R2-05",
+      "classCode": "B",
+      "classification": "ESTABLISHMENT_INPUT",
+      "r3Missing": [
+        "/currentDemand/calibration"
+      ],
+      "rationale": "A novice lacks current interval exposure/anchor; ask targeted establishment rather than promise VO2 pace.",
+      "futureDependency": "Targeted question with response that can change the decision",
+      "frozenFactsChanged": false,
+      "r4Result": {
+        "caseId": "REP-R2-05",
+        "from": "USEFUL_ASK",
+        "to": "USEFUL_ASK",
+        "missingInputs": [
+          "/currentDemand/calibration"
+        ],
+        "remainingDependency": "SUBSTANTIVE_MISSING_INPUT"
+      }
+    },
+    {
+      "caseId": "REP-R2-08",
+      "classCode": "E",
+      "classification": "CLINICAL_BOUNDARY_ASK",
+      "r3Missing": [
+        "/eligibility/status"
+      ],
+      "rationale": "Current eligibility assessment is genuinely absent; also availability/equipment establishment. Unknown is neither clinical concern nor clearance.",
+      "futureDependency": "Targeted question with response that can change the decision",
+      "frozenFactsChanged": false,
+      "r4Result": {
+        "caseId": "REP-R2-08",
+        "from": "USEFUL_ASK",
+        "to": "USEFUL_ASK",
+        "missingInputs": [
+          "/eligibility/status"
+        ],
+        "remainingDependency": "SUBSTANTIVE_MISSING_INPUT"
+      }
+    },
+    {
+      "caseId": "REP-R2-17",
+      "classCode": "C",
+      "classification": "ATHLETE_MODEL_SHOULD_KNOW",
+      "r3Missing": [
+        "/population/dataTier",
+        "/wearable/type"
+      ],
+      "rationale": "The system should reconcile device/data-tier provenance and firmware comparability; current synthetic facts conflict, so frozen case cannot silently resolve it.",
+      "futureDependency": "Retrieve/reconcile system history/provenance; do not repeatedly ask athlete for system-owned data",
+      "frozenFactsChanged": false,
+      "r4Result": {
+        "caseId": "REP-R2-17",
+        "from": "USEFUL_ASK",
+        "to": "USEFUL_ASK",
+        "missingInputs": [
+          "/population/dataTier",
+          "/wearable/type"
+        ],
+        "remainingDependency": "SUBSTANTIVE_MISSING_INPUT"
+      }
+    },
+    {
+      "caseId": "REP-R2-18",
+      "classCode": "B",
+      "classification": "ESTABLISHMENT_INPUT",
+      "r3Missing": [
+        "/currentDemand/requested/loadKgPerHand"
+      ],
+      "rationale": "Unfamiliar dumbbell task and own per-hand load/configuration are not inferable from barbell total load.",
+      "futureDependency": "Targeted question with response that can change the decision",
+      "frozenFactsChanged": false,
+      "r4Result": {
+        "caseId": "REP-R2-18",
+        "from": "USEFUL_ASK",
+        "to": "USEFUL_ASK",
+        "missingInputs": [
+          "/currentDemand/requested/loadKgPerHand"
+        ],
+        "remainingDependency": "SUBSTANTIVE_MISSING_INPUT"
+      }
+    },
+    {
+      "caseId": "REP-R2-19",
+      "classCode": "D",
+      "classification": "POLICY_GAP_DISGUISED_AS_ASK",
+      "r3Missing": [
+        "/observations/currentTaskDemonstration"
+      ],
+      "rationale": "Demanding a post-pause run demonstration before any low-demand entry makes re-establishment circular. Known nonclinical context can support a monitored entry.",
+      "futureDependency": "Implement bounded selector; retain any remaining genuinely material input question",
+      "frozenFactsChanged": false,
+      "r4Result": {
+        "caseId": "REP-R2-19",
+        "from": "USEFUL_ASK",
+        "to": "POSITIVE",
+        "missingInputs": [],
+        "remainingDependency": null
+      }
+    },
+    {
+      "caseId": "REP-R2-20",
+      "classCode": "D",
+      "classification": "POLICY_GAP_DISGUISED_AS_ASK",
+      "r3Missing": [
+        "/observations/currentTaskDemonstration"
+      ],
+      "rationale": "A complete prior low-demand familiarization exists; current capacity uncertainty should govern reduced entry and observation, not force a test before testing.",
+      "futureDependency": "Implement bounded selector; retain any remaining genuinely material input question",
+      "frozenFactsChanged": false,
+      "r4Result": {
+        "caseId": "REP-R2-20",
+        "from": "USEFUL_ASK",
+        "to": "POSITIVE",
+        "missingInputs": [],
+        "remainingDependency": null
+      }
+    },
+    {
+      "caseId": "REP-R2-21",
+      "classCode": "D",
+      "classification": "POLICY_GAP_DISGUISED_AS_ASK",
+      "r3Missing": [
+        "/observations/currentTaskDemonstration"
+      ],
+      "rationale": "Staged nonclinical return logic is missing; lack of restored capacity is not by itself a reason to ask for impossible proof. Whole-week completeness still matters.",
+      "futureDependency": "Implement bounded selector; retain any remaining genuinely material input question",
+      "frozenFactsChanged": false,
+      "r4Result": {
+        "caseId": "REP-R2-21",
+        "from": "USEFUL_ASK",
+        "to": "POSITIVE",
+        "missingInputs": [],
+        "remainingDependency": null
+      }
+    },
+    {
+      "caseId": "REP-R2-22",
+      "classCode": "E",
+      "classification": "CLINICAL_BOUNDARY_ASK",
+      "r3Missing": [
+        "/interruption/reason",
+        "/interruption/nonclinical",
+        "/observations/currentCapacity"
+      ],
+      "rationale": "Interruption reason/current restrictions and actual exposure are unknown; resolving nonclinical versus clinical routing is essential.",
+      "futureDependency": "Targeted question with response that can change the decision",
+      "frozenFactsChanged": false,
+      "r4Result": {
+        "caseId": "REP-R2-22",
+        "from": "USEFUL_ASK",
+        "to": "USEFUL_ASK",
+        "missingInputs": [
+          "/interruption/reason",
+          "/interruption/nonclinical",
+          "/observations/currentRestrictions"
+        ],
+        "remainingDependency": "SUBSTANTIVE_MISSING_INPUT"
+      }
+    },
+    {
+      "caseId": "REP-R2-28",
+      "classCode": "B",
+      "classification": "ESTABLISHMENT_INPUT",
+      "r3Missing": [
+        "/priorHistory/run/longestRecentRun",
+        "/calibration/halfMarathonPace"
+      ],
+      "rationale": "First half-marathon recent long exposure, intent and current anchors materially affect feasibility. A 5K result cannot settle them.",
+      "futureDependency": "Targeted question with response that can change the decision",
+      "frozenFactsChanged": false,
+      "r4Result": {
+        "caseId": "REP-R2-28",
+        "from": "USEFUL_ASK",
+        "to": "USEFUL_ASK",
+        "missingInputs": [
+          "/priorHistory/run/longestRecentRun",
+          "/calibration/halfMarathonPace"
+        ],
+        "remainingDependency": "SUBSTANTIVE_MISSING_INPUT"
+      }
+    },
+    {
+      "caseId": "REP-R2-29",
+      "classCode": "A",
+      "classification": "ESSENTIAL_LIVE_ATHLETE_INPUT",
+      "r3Missing": [
+        "/observations/postEventSymptoms",
+        "/observations/currentFunction",
+        "/observations/subjectiveRecovery"
+      ],
+      "rationale": "Current post-event symptoms, ordinary function and perceived recovery must be supplied now.",
+      "futureDependency": "Targeted question with response that can change the decision",
+      "frozenFactsChanged": false,
+      "r4Result": {
+        "caseId": "REP-R2-29",
+        "from": "USEFUL_ASK",
+        "to": "USEFUL_ASK",
+        "missingInputs": [
+          "/observations/postEventSymptoms",
+          "/observations/currentFunction",
+          "/observations/subjectiveRecovery"
+        ],
+        "remainingDependency": "SUBSTANTIVE_MISSING_INPUT"
+      }
+    },
+    {
+      "caseId": "REP-R2-32",
+      "classCode": "D",
+      "classification": "POLICY_GAP_DISGUISED_AS_ASK",
+      "r3Missing": [
+        "/calibration/recoveryDistinctConstruct",
+        "/observations/needForSeparateRecoveryIntent"
+      ],
+      "rationale": "Separate recovery pace is an unsupported construct; define intent and use a defensible easy option when appropriate rather than repeatedly asking for a distinct physiological target. Exact requested separate target is not automatically satisfied.",
+      "futureDependency": "Implement bounded selector; retain any remaining genuinely material input question",
+      "frozenFactsChanged": false,
+      "r4Result": {
+        "caseId": "REP-R2-32",
+        "from": "USEFUL_ASK",
+        "to": "USEFUL_ASK",
+        "missingInputs": [
+          "/calibration/recoveryDistinctConstruct",
+          "/observations/needForSeparateRecoveryIntent"
+        ],
+        "remainingDependency": "SUBSTANTIVE_MISSING_INPUT"
+      }
+    },
+    {
+      "caseId": "REP-R2-34",
+      "classCode": "D",
+      "classification": "POLICY_GAP_DISGUISED_AS_ASK",
+      "r3Missing": [
+        "/priorHistory/sameFamily/warmupMinutes",
+        "/priorHistory/sameFamily/cooldownMinutes"
+      ],
+      "rationale": "Missing exact historical warmup/cooldown is not by itself a barrier to coach-composed easy preparation inside a reviewed envelope.",
+      "futureDependency": "Implement bounded selector; retain any remaining genuinely material input question",
+      "frozenFactsChanged": false,
+      "r4Result": {
+        "caseId": "REP-R2-34",
+        "from": "USEFUL_ASK",
+        "to": "POSITIVE",
+        "missingInputs": [],
+        "remainingDependency": null
+      }
+    },
+    {
+      "caseId": "REP-R2-38",
+      "classCode": "B",
+      "classification": "ESTABLISHMENT_INPUT",
+      "r3Missing": [
+        "/calibration/grade",
+        "/calibration/duration",
+        "/calibration/downhillExposure",
+        "/environment/surface"
+      ],
+      "rationale": "Unknown grade, surface, downhill exposure and hard-bout competence matter for a novel hill task.",
+      "futureDependency": "Targeted question with response that can change the decision",
+      "frozenFactsChanged": false,
+      "r4Result": {
+        "caseId": "REP-R2-38",
+        "from": "USEFUL_ASK",
+        "to": "USEFUL_ASK",
+        "missingInputs": [
+          "/calibration/currentComparableTaskAnchor"
+        ],
+        "remainingDependency": "SUBSTANTIVE_MISSING_INPUT"
+      }
+    },
+    {
+      "caseId": "REP-R2-39",
+      "classCode": "D",
+      "classification": "POLICY_GAP_DISGUISED_AS_ASK",
+      "r3Missing": [
+        "/priorHistory/sameFamily/preparation",
+        "/currentDemand/sessionEnvelope"
+      ],
+      "rationale": "Familiar relaxed strides have response/effort evidence; a reviewed preparation envelope can supply a new operational choice without fabricating historical facts.",
+      "futureDependency": "Implement bounded selector; retain any remaining genuinely material input question",
+      "frozenFactsChanged": false,
+      "r4Result": {
+        "caseId": "REP-R2-39",
+        "from": "USEFUL_ASK",
+        "to": "POSITIVE",
+        "missingInputs": [],
+        "remainingDependency": null
+      }
+    }
+  ],
+  "interpretation": "No fabricated ASK reduction. C is a system responsibility, not permission to overwrite conflicting frozen facts. D identifies overconservative logic, not guaranteed positive conversion."
+}

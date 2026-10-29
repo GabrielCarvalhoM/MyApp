@@ -1,0 +1,799 @@
+{
+ "probe": "R7AB-SELF-CHALLENGE-1",
+ "runtime": "LIVE",
+ "classes": {
+  "C1-unrelated-decision": {
+   "control": {
+    "point": "RETURN/w5/qa1-20",
+    "steps": {
+     "run": 0,
+     "mode": "RETURN",
+     "strength": {
+      "back-squat": 0,
+      "db-bench-press": 0,
+      "db-row": 0,
+      "db-calf-raise": 0,
+      "dead-bug": 0,
+      "db-rdl": 0,
+      "db-split-squat": 0
+     }
+    }
+   },
+   "cells": [
+    {
+     "clock": "mon0600",
+     "x": "equipmentWindow",
+     "xr": "MODIFY/SUBSTITUTE",
+     "point": "RETURN/w5/qa1-20",
+     "authority": {
+      "RUN": "RETURN_ENTRY",
+      "STRENGTH": "RETURN_ENTRY"
+     },
+     "same": true
+    },
+    {
+     "clock": "mon0600",
+     "x": "equipmentNoop",
+     "xr": "KEEP/KEEP",
+     "point": "RETURN/w5/qa1-20",
+     "authority": {
+      "RUN": "RETURN_ENTRY",
+      "STRENGTH": "RETURN_ENTRY"
+     },
+     "same": true
+    },
+    {
+     "clock": "mon0600",
+     "x": "equipmentSame",
+     "xr": "KEEP/KEEP",
+     "point": "RETURN/w5/qa1-20",
+     "authority": {
+      "RUN": "RETURN_ENTRY",
+      "STRENGTH": "RETURN_ENTRY"
+     },
+     "same": true
+    },
+    {
+     "clock": "mon0600",
+     "x": "systemicFatigue",
+     "xr": "MODIFY/REDUCE",
+     "point": "RETURN/w5/qa1-20",
+     "authority": {
+      "RUN": "RETURN_ENTRY",
+      "STRENGTH": "RETURN_ENTRY"
+     },
+     "same": true
+    },
+    {
+     "clock": "mon0600",
+     "x": "localFatigue",
+     "xr": "MODIFY/REDUCE",
+     "point": "RETURN/w5/qa1-20",
+     "authority": {
+      "RUN": "RETURN_ENTRY",
+      "STRENGTH": "RETURN_ENTRY"
+     },
+     "same": true
+    },
+    {
+     "clock": "mon0600",
+     "x": "strengthMinutes",
+     "xr": "MODIFY/REARRANGE_FUTURE_WEEKS",
+     "point": "RETURN/w5/qa1-20",
+     "authority": {
+      "RUN": "RETURN_ENTRY",
+      "STRENGTH": "RETURN_ENTRY"
+     },
+     "same": true
+    },
+    {
+     "clock": "mon0600",
+     "x": "sameSchedule",
+     "xr": "KEEP/KEEP",
+     "point": "RETURN/w5/qa1-20",
+     "authority": {
+      "RUN": "RETURN_ENTRY",
+      "STRENGTH": "RETURN_ENTRY"
+     },
+     "same": true
+    },
+    {
+     "clock": "mon0600",
+     "x": "goalChange",
+     "xr": "MODIFY/REPLAN_FUTURE_PHASES",
+     "point": "RETURN/w5/qa1-20",
+     "authority": {
+      "RUN": "RETURN_ENTRY",
+      "STRENGTH": "RETURN_ENTRY"
+     },
+     "same": true
+    },
+    {
+     "clock": "mon0600",
+     "x": "unavailableDay",
+     "xr": "MODIFY/RESCHEDULE_WITHIN_WEEK",
+     "point": "RETURN/w5/qa1-20",
+     "authority": {
+      "RUN": "RETURN_ENTRY",
+      "STRENGTH": "RETURN_ENTRY"
+     },
+     "same": true
+    },
+    {
+     "clock": "mon0600",
+     "x": "missedNone",
+     "xr": "KEEP/KEEP",
+     "point": "RETURN/w5/qa1-20",
+     "authority": {
+      "RUN": "RETURN_ENTRY",
+      "STRENGTH": "RETURN_ENTRY"
+     },
+     "same": true
+    },
+    {
+     "clock": "mon0600",
+     "x": "recovered",
+     "xr": "KEEP/KEEP",
+     "point": "RETURN/w5/qa1-20",
+     "authority": {
+      "RUN": "RETURN_ENTRY",
+      "STRENGTH": "RETURN_ENTRY"
+     },
+     "same": true
+    },
+    {
+     "clock": "sun0600",
+     "x": "weeklyReview",
+     "xr": "MODIFY/GATED_NEXT_STEP",
+     "point": "WEEK_START/w6/-",
+     "authority": {
+      "RUN": "WEEK_EVIDENCE",
+      "STRENGTH": "WEEK_EVIDENCE"
+     },
+     "steps": {
+      "run": 0,
+      "mode": "RETURN",
+      "strength": {
+       "back-squat": 1,
+       "db-bench-press": 0,
+       "db-row": 0,
+       "db-calf-raise": 1,
+       "dead-bug": 0,
+       "db-rdl": 0,
+       "db-split-squat": 0
+      }
+     }
+    },
+    {
+     "clock": "sun0600",
+     "x": "equipmentWindow",
+     "xr": "MODIFY/SUBSTITUTE",
+     "point": "RETURN/w5/qa1-20",
+     "authority": {
+      "RUN": "RETURN_ENTRY",
+      "STRENGTH": "RETURN_ENTRY"
+     },
+     "steps": {
+      "run": 0,
+      "mode": "RETURN",
+      "strength": {
+       "back-squat": 0,
+       "db-bench-press": 0,
+       "db-row": 0,
+       "db-calf-raise": 0,
+       "dead-bug": 0,
+       "db-rdl": 0,
+       "db-split-squat": 0
+      }
+     }
+    },
+    {
+     "clock": "sun0600",
+     "x": "equipmentNoop",
+     "xr": "KEEP/KEEP",
+     "point": "RETURN/w5/qa1-20",
+     "authority": {
+      "RUN": "RETURN_ENTRY",
+      "STRENGTH": "RETURN_ENTRY"
+     },
+     "steps": {
+      "run": 0,
+      "mode": "RETURN",
+      "strength": {
+       "back-squat": 0,
+       "db-bench-press": 0,
+       "db-row": 0,
+       "db-calf-raise": 0,
+       "dead-bug": 0,
+       "db-rdl": 0,
+       "db-split-squat": 0
+      }
+     }
+    },
+    {
+     "clock": "sun0600",
+     "x": "equipmentSame",
+     "xr": "KEEP/KEEP",
+     "point": "RETURN/w5/qa1-20",
+     "authority": {
+      "RUN": "RETURN_ENTRY",
+      "STRENGTH": "RETURN_ENTRY"
+     },
+     "steps": {
+      "run": 0,
+      "mode": "RETURN",
+      "strength": {
+       "back-squat": 0,
+       "db-bench-press": 0,
+       "db-row": 0,
+       "db-calf-raise": 0,
+       "dead-bug": 0,
+       "db-rdl": 0,
+       "db-split-squat": 0
+      }
+     }
+    },
+    {
+     "clock": "sun0600",
+     "x": "systemicFatigue",
+     "xr": "MODIFY/GATED_NEXT_STEP",
+     "point": "WEEK_START/w6/-",
+     "authority": {
+      "RUN": "WEEK_EVIDENCE",
+      "STRENGTH": "WEEK_EVIDENCE"
+     },
+     "steps": {
+      "run": 0,
+      "mode": "RETURN",
+      "strength": {
+       "back-squat": 0,
+       "db-bench-press": 0,
+       "db-row": 0,
+       "db-calf-raise": 0,
+       "dead-bug": 0,
+       "db-rdl": 0,
+       "db-split-squat": 0
+      }
+     }
+    },
+    {
+     "clock": "sun0600",
+     "x": "localFatigue",
+     "xr": "MODIFY/GATED_NEXT_STEP",
+     "point": "WEEK_START/w6/-",
+     "authority": {
+      "RUN": "WEEK_EVIDENCE",
+      "STRENGTH": "WEEK_EVIDENCE"
+     },
+     "steps": {
+      "run": 0,
+      "mode": "RETURN",
+      "strength": {
+       "back-squat": 1,
+       "db-bench-press": 0,
+       "db-row": 0,
+       "db-calf-raise": 1,
+       "dead-bug": 0,
+       "db-rdl": 0,
+       "db-split-squat": 0
+      }
+     }
+    },
+    {
+     "clock": "sun0600",
+     "x": "strengthMinutes",
+     "xr": "MODIFY/REARRANGE_FUTURE_WEEKS",
+     "point": "WEEK_START/w6/-",
+     "authority": {
+      "RUN": "WEEK_EVIDENCE",
+      "STRENGTH": "WEEK_EVIDENCE"
+     },
+     "steps": {
+      "run": 0,
+      "mode": "RETURN",
+      "strength": {
+       "back-squat": 1,
+       "db-bench-press": 0,
+       "db-row": 0,
+       "db-calf-raise": 1,
+       "dead-bug": 0,
+       "db-rdl": 0,
+       "db-split-squat": 0
+      }
+     }
+    },
+    {
+     "clock": "sun0600",
+     "x": "sameSchedule",
+     "xr": "KEEP/KEEP",
+     "point": "RETURN/w5/qa1-20",
+     "authority": {
+      "RUN": "RETURN_ENTRY",
+      "STRENGTH": "RETURN_ENTRY"
+     },
+     "steps": {
+      "run": 0,
+      "mode": "RETURN",
+      "strength": {
+       "back-squat": 0,
+       "db-bench-press": 0,
+       "db-row": 0,
+       "db-calf-raise": 0,
+       "dead-bug": 0,
+       "db-rdl": 0,
+       "db-split-squat": 0
+      }
+     }
+    },
+    {
+     "clock": "sun0600",
+     "x": "goalChange",
+     "xr": "MODIFY/REPLAN_FUTURE_PHASES",
+     "point": "WEEK_START/w6/-",
+     "authority": {
+      "RUN": "WEEK_EVIDENCE",
+      "STRENGTH": "WEEK_EVIDENCE"
+     },
+     "steps": {
+      "run": 0,
+      "mode": "RETURN",
+      "strength": {
+       "back-squat": 1,
+       "db-bench-press": 0,
+       "db-row": 0,
+       "db-calf-raise": 1,
+       "dead-bug": 0,
+       "db-rdl": 0,
+       "db-split-squat": 0
+      }
+     }
+    },
+    {
+     "clock": "sun0600",
+     "x": "unavailableDay",
+     "xr": "KEEP/KEEP",
+     "point": "RETURN/w5/qa1-20",
+     "authority": {
+      "RUN": "RETURN_ENTRY",
+      "STRENGTH": "RETURN_ENTRY"
+     },
+     "steps": {
+      "run": 0,
+      "mode": "RETURN",
+      "strength": {
+       "back-squat": 0,
+       "db-bench-press": 0,
+       "db-row": 0,
+       "db-calf-raise": 0,
+       "dead-bug": 0,
+       "db-rdl": 0,
+       "db-split-squat": 0
+      }
+     }
+    },
+    {
+     "clock": "sun0600",
+     "x": "missedNone",
+     "xr": "MODIFY/GATED_NEXT_STEP",
+     "point": "WEEK_START/w6/-",
+     "authority": {
+      "RUN": "WEEK_EVIDENCE",
+      "STRENGTH": "WEEK_EVIDENCE"
+     },
+     "steps": {
+      "run": 0,
+      "mode": "RETURN",
+      "strength": {
+       "back-squat": 1,
+       "db-bench-press": 0,
+       "db-row": 0,
+       "db-calf-raise": 1,
+       "dead-bug": 0,
+       "db-rdl": 0,
+       "db-split-squat": 0
+      }
+     }
+    },
+    {
+     "clock": "sun0600",
+     "x": "recovered",
+     "xr": "MODIFY/GATED_NEXT_STEP",
+     "point": "WEEK_START/w6/-",
+     "authority": {
+      "RUN": "WEEK_EVIDENCE",
+      "STRENGTH": "WEEK_EVIDENCE"
+     },
+     "steps": {
+      "run": 0,
+      "mode": "RETURN",
+      "strength": {
+       "back-squat": 1,
+       "db-bench-press": 0,
+       "db-row": 0,
+       "db-calf-raise": 1,
+       "dead-bug": 0,
+       "db-rdl": 0,
+       "db-split-squat": 0
+      }
+     }
+    }
+   ]
+  },
+  "C2-executed-in-full": {
+   "perDayNoReview": {
+    "point": "RETURN/w5/qa1-94",
+    "authority": {
+     "RUN": "RETURN_ENTRY",
+     "STRENGTH": "RETURN_ENTRY"
+    },
+    "steps": {
+     "run": 0,
+     "mode": "RETURN",
+     "strength": {
+      "back-squat": 0,
+      "db-bench-press": 0,
+      "db-row": 0,
+      "db-calf-raise": 0,
+      "dead-bug": 0,
+      "db-rdl": 0,
+      "db-split-squat": 0
+     }
+    }
+   },
+   "sundayReview": {
+    "point": "WEEK_START/w6/-",
+    "authority": {
+     "RUN": "WEEK_EVIDENCE",
+     "STRENGTH": "WEEK_EVIDENCE"
+    },
+    "steps": {
+     "run": 1,
+     "mode": "RETURN",
+     "strength": {
+      "back-squat": 1,
+      "db-bench-press": 1,
+      "db-row": 1,
+      "db-calf-raise": 1,
+      "dead-bug": 1,
+      "db-rdl": 1,
+      "db-split-squat": 1
+     }
+    }
+   },
+   "perDayAtKnownLoads": {
+    "point": "WEEK_START/w6/-",
+    "authority": {
+     "RUN": "COMPLETED_SESSIONS",
+     "STRENGTH": "COMPLETED_SESSIONS"
+    },
+    "steps": {
+     "run": 1,
+     "mode": "RETURN",
+     "strength": {
+      "back-squat": 1,
+      "db-bench-press": 1,
+      "db-row": 1,
+      "db-calf-raise": 1,
+      "dead-bug": 1,
+      "db-rdl": 1,
+      "db-split-squat": 1
+     }
+    }
+   }
+  },
+  "C3-premise-breakers": {
+   "notCompleted": {
+    "point": "RETURN/w5/qa1-148",
+    "authority": {
+     "RUN": "RETURN_ENTRY",
+     "STRENGTH": "RETURN_ENTRY"
+    },
+    "steps": {
+     "run": 0,
+     "mode": "RETURN",
+     "strength": {
+      "back-squat": 0,
+      "db-bench-press": 0,
+      "db-row": 0,
+      "db-calf-raise": 0,
+      "dead-bug": 0,
+      "db-rdl": 0,
+      "db-split-squat": 0
+     }
+    }
+   },
+   "partialRun": {
+    "point": "RETURN/w5/qa1-148",
+    "authority": {
+     "RUN": "RETURN_ENTRY",
+     "STRENGTH": "RETURN_ENTRY"
+    },
+    "steps": {
+     "run": 0,
+     "mode": "RETURN",
+     "strength": {
+      "back-squat": 0,
+      "db-bench-press": 0,
+      "db-row": 0,
+      "db-calf-raise": 0,
+      "dead-bug": 0,
+      "db-rdl": 0,
+      "db-split-squat": 0
+     }
+    }
+   },
+   "adverse": {
+    "point": "RETURN/w5/qa1-148",
+    "authority": {
+     "RUN": "RETURN_ENTRY",
+     "STRENGTH": "RETURN_ENTRY"
+    },
+    "steps": {
+     "run": 0,
+     "mode": "RETURN",
+     "strength": {
+      "back-squat": 0,
+      "db-bench-press": 0,
+      "db-row": 0,
+      "db-calf-raise": 0,
+      "dead-bug": 0,
+      "db-rdl": 0,
+      "db-split-squat": 0
+     }
+    }
+   },
+   "skippedByUnavailableDay": {
+    "point": "RETURN/w5/qa1-148",
+    "authority": {
+     "RUN": "RETURN_ENTRY",
+     "STRENGTH": "RETURN_ENTRY"
+    },
+    "steps": {
+     "run": 0,
+     "mode": "RETURN",
+     "strength": {
+      "back-squat": 0,
+      "db-bench-press": 0,
+      "db-row": 0,
+      "db-calf-raise": 0,
+      "dead-bug": 0,
+      "db-rdl": 0,
+      "db-split-squat": 0
+     }
+    }
+   },
+   "reducedBySystemicFatigue": {
+    "point": "RETURN/w5/qa1-148",
+    "authority": {
+     "RUN": "RETURN_ENTRY",
+     "STRENGTH": "RETURN_ENTRY"
+    },
+    "steps": {
+     "run": 0,
+     "mode": "RETURN",
+     "strength": {
+      "back-squat": 0,
+      "db-bench-press": 0,
+      "db-row": 0,
+      "db-calf-raise": 0,
+      "dead-bug": 0,
+      "db-rdl": 0,
+      "db-split-squat": 0
+     }
+    }
+   },
+   "missedSaturdayLift": {
+    "point": "RETURN/w5/qa1-148",
+    "authority": {
+     "RUN": "RETURN_ENTRY",
+     "STRENGTH": "RETURN_ENTRY"
+    },
+    "steps": {
+     "run": 0,
+     "mode": "RETURN",
+     "strength": {
+      "back-squat": 0,
+      "db-bench-press": 0,
+      "db-row": 0,
+      "db-calf-raise": 0,
+      "dead-bug": 0,
+      "db-rdl": 0,
+      "db-split-squat": 0
+     }
+    }
+   },
+   "strengthNotLogged": {
+    "point": "RETURN/w5/qa1-148",
+    "authority": {
+     "RUN": "RETURN_ENTRY",
+     "STRENGTH": "RETURN_ENTRY"
+    },
+    "steps": {
+     "run": 0,
+     "mode": "RETURN",
+     "strength": {
+      "back-squat": 0,
+      "db-bench-press": 0,
+      "db-row": 0,
+      "db-calf-raise": 0,
+      "dead-bug": 0,
+      "db-rdl": 0,
+      "db-split-squat": 0
+     }
+    }
+   }
+  },
+  "C4-held-from-projected-start": {
+   "missedTwice": {
+    "week6Start": "PROJECTED",
+    "week7Start": "EVIDENCE_ANCHORED",
+    "point": "RETURN/w5/qa1-244",
+    "authority": {
+     "RUN": "RETURN_ENTRY",
+     "STRENGTH": "RETURN_ENTRY"
+    },
+    "steps": {
+     "run": 0,
+     "mode": "RETURN",
+     "strength": {
+      "back-squat": 0,
+      "db-bench-press": 0,
+      "db-row": 0,
+      "db-calf-raise": 0,
+      "dead-bug": 0,
+      "db-rdl": 0,
+      "db-split-squat": 0
+     }
+    }
+   },
+   "weekSixInFull": {
+    "point": "WEEK_START/w7/-",
+    "authority": {
+     "RUN": "WEEK_EVIDENCE",
+     "STRENGTH": "WEEK_EVIDENCE"
+    },
+    "steps": {
+     "run": null,
+     "mode": "EASY",
+     "strength": {
+      "back-squat": null,
+      "db-bench-press": null,
+      "db-row": null,
+      "db-calf-raise": null,
+      "dead-bug": null,
+      "db-rdl": null,
+      "db-split-squat": null
+     }
+    }
+   }
+  },
+  "C5-time-and-boundary": {
+   "nextWeek": {
+    "point": "RETURN/w5/qa1-294",
+    "steps": {
+     "run": 0,
+     "mode": "RETURN",
+     "strength": {
+      "back-squat": 0,
+      "db-bench-press": 0,
+      "db-row": 0,
+      "db-calf-raise": 0,
+      "dead-bug": 0,
+      "db-rdl": 0,
+      "db-split-squat": 0
+     }
+    }
+   },
+   "twoWeeksLater": {
+    "point": "RETURN/w5/qa1-294",
+    "steps": {
+     "run": 0,
+     "mode": "RETURN",
+     "strength": {
+      "back-squat": 0,
+      "db-bench-press": 0,
+      "db-row": 0,
+      "db-calf-raise": 0,
+      "dead-bug": 0,
+      "db-rdl": 0,
+      "db-split-squat": 0
+     }
+    }
+   },
+   "sunday": {
+    "point": "RETURN/w5/qa1-294",
+    "steps": {
+     "run": 0,
+     "mode": "RETURN",
+     "strength": {
+      "back-squat": 0,
+      "db-bench-press": 0,
+      "db-row": 0,
+      "db-calf-raise": 0,
+      "dead-bug": 0,
+      "db-rdl": 0,
+      "db-split-squat": 0
+     }
+    }
+   },
+   "monday": {
+    "point": "RETURN/w5/qa1-294",
+    "steps": {
+     "run": 0,
+     "mode": "RETURN",
+     "strength": {
+      "back-squat": 0,
+      "db-bench-press": 0,
+      "db-row": 0,
+      "db-calf-raise": 0,
+      "dead-bug": 0,
+      "db-rdl": 0,
+      "db-split-squat": 0
+     }
+    }
+   }
+  },
+  "C6-evidence-removed": {
+   "complete": {
+    "point": "WEEK_START/w6/-",
+    "authority": {
+     "RUN": "COMPLETED_SESSIONS",
+     "STRENGTH": "COMPLETED_SESSIONS"
+    }
+   },
+   "corrected": {
+    "point": "RETURN/w5/qa1-327",
+    "authority": {
+     "RUN": "RETURN_ENTRY",
+     "STRENGTH": "RETURN_ENTRY"
+    },
+    "ledger": [
+     {
+      "completed": false,
+      "conflicted": false,
+      "superseded": false
+     },
+     {
+      "completed": true,
+      "conflicted": false,
+      "superseded": true
+     }
+    ]
+   }
+  },
+  "C7-temporal-contradiction": {
+   "movedPastReentry": "ASK/ASK",
+   "byReportId": "ASK/ASK",
+   "endOverTuesday": "ASK/ASK",
+   "movedEarlier": "MODIFY/REESTABLISH",
+   "noExecutedReentry": "MODIFY/REESTABLISH"
+  },
+  "C8-first-interruption": {
+   "halfExecuted": {
+    "point": "WEEK_START/w3/-",
+    "authority": {
+     "RUN": "COMPLETED_SESSIONS",
+     "STRENGTH": "COMPLETED_SESSIONS"
+    }
+   },
+   "reviewed": {
+    "point": "WEEK_START/w4/-",
+    "authority": {
+     "RUN": "COMPLETED_SESSIONS",
+     "STRENGTH": "COMPLETED_SESSIONS"
+    }
+   }
+  },
+  "C9-time-zones": {
+   "540:equipmentNoop": "RETURN/w5/qa1-444",
+   "540:systemicFatigue": "RETURN/w5/qa1-444",
+   "-300:equipmentNoop": "RETURN/w5/qa1-474",
+   "-300:systemicFatigue": "RETURN/w5/qa1-474"
+  }
+ },
+ "violations": [],
+ "summary": {
+  "classes": 9,
+  "violations": 0
+ }
+}

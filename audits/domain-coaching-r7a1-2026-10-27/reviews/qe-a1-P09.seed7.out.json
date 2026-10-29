@@ -1,0 +1,114 @@
+{
+ "probe": "R7A1-QE-P09",
+ "runtime": "A1",
+ "seed": 7,
+ "sequences": 2500,
+ "steps": 7506,
+ "refusals": [
+  {
+   "program": "race",
+   "seq": "EQUIPMENT_CHANGE@w6d0 05:00 > EVENT_DATE_CHANGE@w6d0 07:00",
+   "status": "UNSUPPORTED",
+   "reason": "Counterfactual failed complete validation; no partial change is presented as valid",
+   "errors": [
+    "w6-str-d3:phaseDose:glute-bridge:accessory"
+   ]
+  },
+  {
+   "program": "race",
+   "seq": "EQUIPMENT_CHANGE@w6d0 05:00 > EVENT_DATE_CHANGE@w6d0 07:00",
+   "status": "UNSUPPORTED",
+   "reason": "Counterfactual failed complete validation; no partial change is presented as valid",
+   "errors": [
+    "w6-str-d3:phaseDose:glute-bridge:accessory"
+   ]
+  }
+ ],
+ "violations": {
+  "O1": [],
+  "O2": [
+   {
+    "program": "s3",
+    "seq": "EQUIPMENT_CHANGE {\"equipment\":[\"BODYWEIGHT\"],\"from\":\"2026-11-25\",\"to\":\"2026-11-26\"}@w3d2 05:00 MODIFY/SUBSTITUTE > EQUIPMENT_CHANGE {\"equipment\":[\"DUMBBELLS\",\"BENCH\"]}@w3d3 12:30 MODIFY/SUBSTITUTE > LOCAL_FATIGUE@w3d6 23:30 KEEP/KEEP > WEEKLY_REVIEW@w3d6 21:00 KEEP/KEEP > EQUIPMENT_CHANGE {\"equipment\":[\"DUMBBELLS\",\"BENCH\",\"BARBELL\",\"RACK\"]}@w4d0 20:00 MODIFY/SUBSTITUTE",
+    "detail": "2026-11-30 w4-str-d0: back-squat outside DUMBBELLS+BENCH"
+   },
+   {
+    "program": "race",
+    "seq": "EQUIPMENT_CHANGE {\"equipment\":[\"DUMBBELLS\",\"BENCH\"]}@w6d0 11:30 MODIFY/SUBSTITUTE > WEEKLY_REVIEW@w6d6 21:00 KEEP/INSTANTIATE_LOGGED_LOADS > EQUIPMENT_CHANGE {\"equipment\":[\"DUMBBELLS\",\"BENCH\"],\"from\":\"2026-12-22\",\"to\":\"2026-12-23\"}@w7d0 05:00 KEEP/KEEP > WEEKLY_REVIEW@w7d6 21:00 KEEP/INSTANTIATE_LOGGED_LOADS > EQUIPMENT_CHANGE {\"equipment\":[\"DUMBBELLS\",\"BENCH\",\"BARBELL\",\"RACK\"]}@w8d0 20:00 MODIFY/SUBSTITUTE > WEEKLY_REVIEW@w8d6 21:00 KEEP/KEEP > EVENT_DATE_CHANGE {\"eventDate\":\"2027-01-11\"}@w9d0 23:30 MODIFY/REPLAN_FUTURE_PHASES",
+    "detail": "2026-12-28 w8-str-d0: back-squat outside DUMBBELLS+BENCH"
+   },
+   {
+    "program": "plain",
+    "seq": "EQUIPMENT_CHANGE {\"equipment\":[\"DUMBBELLS\"],\"from\":\"2026-11-26\",\"to\":\"2026-11-29\"}@w3d2 05:00 MODIFY/SUBSTITUTE > EQUIPMENT_CHANGE {\"equipment\":[\"DUMBBELLS\",\"BENCH\"]}@w3d5 18:00 MODIFY/SUBSTITUTE > WEEKLY_REVIEW@w3d6 21:00 KEEP/KEEP > EQUIPMENT_CHANGE {\"equipment\":[\"DUMBBELLS\",\"BENCH\",\"BARBELL\",\"RACK\"]}@w4d0 18:00 MODIFY/SUBSTITUTE > EQUIPMENT_CHANGE {\"equipment\":[\"DUMBBELLS\",\"BENCH\"]}@w4d0 20:00 MODIFY/SUBSTITUTE",
+    "detail": "2026-11-28 w3-str-d5: db-bench-press outside DUMBBELLS"
+   },
+   {
+    "program": "plain",
+    "seq": "GOAL_CHANGE {\"goals\":{\"strength\":\"GENERAL\"}}@w3d1 05:00 MODIFY/REPLAN_FUTURE_PHASES > EQUIPMENT_CHANGE {\"equipment\":[\"DUMBBELLS\",\"BENCH\"]}@w3d1 07:00 MODIFY/SUBSTITUTE > EQUIPMENT_CHANGE {\"equipment\":[\"DUMBBELLS\",\"BENCH\",\"BARBELL\",\"RACK\"]}@w3d2 23:30 MODIFY/SUBSTITUTE > EQUIPMENT_CHANGE {\"equipment\":[\"DUMBBELLS\"],\"from\":\"2026-11-28\",\"to\":\"2026-12-04\"}@w3d5 12:30 MODIFY/SUBSTITUTE",
+    "detail": "2026-11-25 w3-str-d2: back-squat outside DUMBBELLS+BENCH"
+   },
+   {
+    "program": "plain",
+    "seq": "EQUIPMENT_CHANGE {\"equipment\":[\"DUMBBELLS\",\"BENCH\"]}@w3d0 05:00 MODIFY/SUBSTITUTE > EQUIPMENT_CHANGE {\"equipment\":[\"DUMBBELLS\",\"BENCH\",\"BARBELL\",\"RACK\"]}@w3d2 11:30 MODIFY/SUBSTITUTE > RETURN_AFTER_PAUSE 8d@w3d5 18:00 MODIFY/REESTABLISH > WEEKLY_REVIEW@w3d6 21:00 MODIFY/GATED_NEXT_STEP > MISSED_SESSION w4-str-d2@w4d5 07:00 KEEP/KEEP",
+    "detail": "2026-11-25 w3-str-d2: back-squat outside DUMBBELLS+BENCH"
+   },
+   {
+    "program": "plain",
+    "seq": "EQUIPMENT_CHANGE {\"equipment\":[\"DUMBBELLS\"],\"from\":\"2026-11-26\",\"to\":\"2026-11-29\"}@w3d2 05:00 MODIFY/SUBSTITUTE > EQUIPMENT_CHANGE {\"equipment\":[\"DUMBBELLS\",\"BENCH\"]}@w3d5 18:00 MODIFY/SUBSTITUTE > WEEKLY_REVIEW@w3d6 21:00 KEEP/KEEP > EQUIPMENT_CHANGE {\"equipment\":[\"DUMBBELLS\",\"BENCH\",\"BARBELL\",\"RACK\"]}@w4d0 18:00 MODIFY/SUBSTITUTE > EQUIPMENT_CHANGE {\"equipment\":[\"DUMBBELLS\",\"BENCH\"]}@w4d0 20:00 MODIFY/SUBSTITUTE",
+    "detail": "2026-11-28 w3-str-d5: db-bench-press outside DUMBBELLS"
+   },
+   {
+    "program": "plain",
+    "seq": "GOAL_CHANGE {\"goals\":{\"strength\":\"GENERAL\"}}@w3d1 05:00 MODIFY/REPLAN_FUTURE_PHASES > EQUIPMENT_CHANGE {\"equipment\":[\"DUMBBELLS\",\"BENCH\"]}@w3d1 07:00 MODIFY/SUBSTITUTE > EQUIPMENT_CHANGE {\"equipment\":[\"DUMBBELLS\",\"BENCH\",\"BARBELL\",\"RACK\"]}@w3d2 23:30 MODIFY/SUBSTITUTE > EQUIPMENT_CHANGE {\"equipment\":[\"DUMBBELLS\"],\"from\":\"2026-11-28\",\"to\":\"2026-12-04\"}@w3d5 12:30 MODIFY/SUBSTITUTE",
+    "detail": "2026-11-25 w3-str-d2: back-squat outside DUMBBELLS+BENCH"
+   },
+   {
+    "program": "plain",
+    "seq": "EQUIPMENT_CHANGE {\"equipment\":[\"DUMBBELLS\",\"BENCH\"]}@w3d0 05:00 MODIFY/SUBSTITUTE > EQUIPMENT_CHANGE {\"equipment\":[\"DUMBBELLS\",\"BENCH\",\"BARBELL\",\"RACK\"]}@w3d2 11:30 MODIFY/SUBSTITUTE > RETURN_AFTER_PAUSE 8d@w3d5 18:00 MODIFY/REESTABLISH > WEEKLY_REVIEW@w3d6 21:00 MODIFY/GATED_NEXT_STEP > MISSED_SESSION w4-str-d2@w4d5 07:00 KEEP/KEEP",
+    "detail": "2026-11-25 w3-str-d2: back-squat outside DUMBBELLS+BENCH"
+   },
+   {
+    "program": "plain",
+    "seq": "EQUIPMENT_CHANGE {\"equipment\":[\"DUMBBELLS\"],\"from\":\"2026-11-26\",\"to\":\"2026-11-29\"}@w3d2 05:00 MODIFY/SUBSTITUTE > EQUIPMENT_CHANGE {\"equipment\":[\"DUMBBELLS\",\"BENCH\"]}@w3d5 18:00 MODIFY/SUBSTITUTE > WEEKLY_REVIEW@w3d6 21:00 KEEP/KEEP > EQUIPMENT_CHANGE {\"equipment\":[\"DUMBBELLS\",\"BENCH\",\"BARBELL\",\"RACK\"]}@w4d0 18:00 MODIFY/SUBSTITUTE > EQUIPMENT_CHANGE {\"equipment\":[\"DUMBBELLS\",\"BENCH\"]}@w4d0 20:00 MODIFY/SUBSTITUTE",
+    "detail": "2026-11-28 w3-str-d5: db-bench-press outside DUMBBELLS"
+   },
+   {
+    "program": "plain",
+    "seq": "GOAL_CHANGE {\"goals\":{\"strength\":\"GENERAL\"}}@w3d1 05:00 MODIFY/REPLAN_FUTURE_PHASES > EQUIPMENT_CHANGE {\"equipment\":[\"DUMBBELLS\",\"BENCH\"]}@w3d1 07:00 MODIFY/SUBSTITUTE > EQUIPMENT_CHANGE {\"equipment\":[\"DUMBBELLS\",\"BENCH\",\"BARBELL\",\"RACK\"]}@w3d2 23:30 MODIFY/SUBSTITUTE > EQUIPMENT_CHANGE {\"equipment\":[\"DUMBBELLS\"],\"from\":\"2026-11-28\",\"to\":\"2026-12-04\"}@w3d5 12:30 MODIFY/SUBSTITUTE",
+    "detail": "2026-11-25 w3-str-d2: back-squat outside DUMBBELLS+BENCH"
+   },
+   {
+    "program": "plain",
+    "seq": "EQUIPMENT_CHANGE {\"equipment\":[\"DUMBBELLS\",\"BENCH\"]}@w3d0 05:00 MODIFY/SUBSTITUTE > EQUIPMENT_CHANGE {\"equipment\":[\"DUMBBELLS\",\"BENCH\",\"BARBELL\",\"RACK\"]}@w3d2 11:30 MODIFY/SUBSTITUTE > RETURN_AFTER_PAUSE 8d@w3d5 18:00 MODIFY/REESTABLISH > WEEKLY_REVIEW@w3d6 21:00 MODIFY/GATED_NEXT_STEP > MISSED_SESSION w4-str-d2@w4d5 07:00 KEEP/KEEP",
+    "detail": "2026-11-25 w3-str-d2: back-squat outside DUMBBELLS+BENCH"
+   }
+  ],
+  "O3": [],
+  "O4": [],
+  "O6": [],
+  "O7": [],
+  "O9": [
+   {
+    "program": "race",
+    "seq": "EQUIPMENT_CHANGE {\"equipment\":[\"BODYWEIGHT\"],\"from\":\"2026-12-16\",\"to\":\"2026-12-17\"}@w6d0 05:00 MODIFY/SUBSTITUTE > EVENT_DATE_CHANGE {\"eventDate\":\"2026-12-23\"}@w6d0 07:00 UNSUPPORTED/UNSUPPORTED > GOAL_CHANGE {\"goals\":{\"strength\":\"HYPERTROPHY\"}}@w6d1 11:30 MODIFY/REPLAN_FUTURE_PHASES",
+    "detail": "EVENT_DATE_CHANGE: w6-str-d3:phaseDose:glute-bridge:accessory"
+   },
+   {
+    "program": "race",
+    "seq": "EQUIPMENT_CHANGE {\"equipment\":[\"BODYWEIGHT\"],\"from\":\"2026-12-16\",\"to\":\"2026-12-17\"}@w6d0 05:00 MODIFY/SUBSTITUTE > EVENT_DATE_CHANGE {\"eventDate\":\"2026-12-23\"}@w6d0 07:00 UNSUPPORTED/UNSUPPORTED > GOAL_CHANGE {\"goals\":{\"strength\":\"HYPERTROPHY\"}}@w6d1 11:30 MODIFY/REPLAN_FUTURE_PHASES",
+    "detail": "EVENT_DATE_CHANGE: w6-str-d3:phaseDose:glute-bridge:accessory"
+   }
+  ]
+ },
+ "errors": [],
+ "summary": {
+  "O1": 0,
+  "O2": 11,
+  "O3": 0,
+  "O4": 0,
+  "O6": 0,
+  "O7": 0,
+  "O9": 2
+ },
+ "refusalCount": 2
+}

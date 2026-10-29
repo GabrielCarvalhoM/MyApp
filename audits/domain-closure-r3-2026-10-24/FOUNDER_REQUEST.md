@@ -1,0 +1,3 @@
+# Founder authorization — 2026-10-24
+
+Direct request in this Codex session: execute **DOMAIN CLOSURE R3 — REPRESENTATIVE COVERAGE & RUNTIME CONSUMPTION** in MyApp. Audit all42 frozen R2 representative cases; stabilize typed input, pure normalization and traceability; measure actual coverage only after software noise is removed; close only demonstrated bounded gaps with independent SSCTR review; preserve BSR/R2 invariants. Required outputs are in `CoachingCore/r3/` and this audit. No UI/Figma/KMP/production/real-user mutation or Product Truth promotion. The session's complete ten-phase request is the controlling authority.

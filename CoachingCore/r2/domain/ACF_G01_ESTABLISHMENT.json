@@ -1,0 +1,398 @@
+{
+  "revision": "DCR2-SCI-r2",
+  "status": "CANDIDATE_PENDING_INDEPENDENT_SSCTR",
+  "authority": "OFFLINE_REFERENCE_ORACLE_ONLY",
+  "authorInstance": "/root/science_synthesis",
+  "population": "Adult recreational V1, modality-specific novice/intermediate; explicitly nonclinical eligibility/context; no current injury/illness/persistent pain or clearance-dependent return",
+  "commonRequiredInputs": [
+    "age/adult status",
+    "explicit restriction/symptom assessment and provenance",
+    "per-modality experience",
+    "goal and priority",
+    "current schedule/time/equipment",
+    "current prescription revision and performed history where relevant",
+    "athlete agency and selected horizon"
+  ],
+  "commonGuards": [
+    "Missing eligibility -> ASK / ELIGIBILITY_UNASSESSED; no presumed health or disease",
+    "Clinical dependency -> CLINICAL_HUMAN_REQUIRED, no dose substitution",
+    "No mutation of completed work, official plan or applied state",
+    "New prescription is a proposal at most; independent SSCTR and complete runtime binding required",
+    "No simultaneous novel Run and Strength progression",
+    "No automatic compensation for missed optional work",
+    "Operational witness counts/time bounds are DECIDED protocol eligibility, not universal physiological thresholds"
+  ],
+  "reviewExpiry": {
+    "owner": "Chief + independent SSCTR",
+    "trigger": [
+      "material policy/recipe/calibration/population change",
+      "new applicable synthesis/correction/retraction",
+      "contradictory comparable response",
+      "adverse event",
+      "human funding declaration and revalidation"
+    ]
+  },
+  "humanRevalidation": "Author creates no approval or queue item. Chief queues only actual independent prescriptive approvals.",
+  "provenance": "All witness inputs are synthetic unless explicitly labelled athlete-reported or task demonstration; synthetic traces test conformance, not efficacy/safety.",
+  "gap": "ACF-G01",
+  "title": "First prescription / establishment",
+  "principle": "No product history is not no current ability; current task demonstration differs from prior product exposure.",
+  "policies": [
+    {
+      "policyId": "R2-P01",
+      "revision": "DCR2-SCI-r2",
+      "gap": "ACF-G01",
+      "title": "First Run establishment without product history",
+      "request": "ESTABLISH_RUN",
+      "status": "CANDIDATE_PENDING_INDEPENDENT_SSCTR",
+      "eligibility": "Explicitly nonclinical recreational adult aged18–65 for this source-transferred bounded protocol; age bound describes scoped applicability, not clinical clearance.",
+      "requiredInputs": [
+        "facts.walkMinutes >=30",
+        "facts.comfortableTalk ===true",
+        "facts.timeBudgetMinutes >=30",
+        "facts.availableDays is one of [MON,WED,SAT], [TUE,THU,SAT], [MON,WED,FRI] and fits current schedule",
+        "explicit adult/nonclinical eligibility",
+        "current walking is comfortable, context/provenance known"
+      ],
+      "guards": [
+        "30 minutes walking is an operational entry bound, not a validated clinical test or threshold",
+        "No clinical symptom inference from walking success",
+        "No simultaneous Strength progression or new hard Run family",
+        "First session does not require prior Run exposure; existing Strength competence does not substitute for Run context",
+        "Original study ages18–65 and physician eligibility procedure limit transfer; app synthetic eligibility is not represented as equivalent screening/clearance"
+      ],
+      "finiteCandidates": [
+        {
+          "recipeId": "R2-RUN-EST-10X1",
+          "modality": "RUN",
+          "family": "ESTABLISHMENT",
+          "prescription": {
+            "warmupWalkMinutes": 5,
+            "repetitions": 10,
+            "runMinutes": 1,
+            "walkMinutes": 1,
+            "cooldownWalkMinutes": 5,
+            "totalMinutes": 30,
+            "runningMinutes": 10,
+            "targetMethod": "COMFORTABLE_CONVERSATION",
+            "paceTarget": null,
+            "hrTarget": null,
+            "days": [
+              "MON",
+              "WED",
+              "SAT"
+            ],
+            "allowedDayLists": [
+              [
+                "MON",
+                "WED",
+                "SAT"
+              ],
+              [
+                "TUE",
+                "THU",
+                "SAT"
+              ],
+              [
+                "MON",
+                "WED",
+                "FRI"
+              ]
+            ],
+            "dayVariantProvenance": "MON/WED/SAT encouraged in source; other lists are DECIDED logistical transfer requiring same independent disposition, not spacing law or independent dose witnesses"
+          }
+        }
+      ],
+      "decisionRule": "With all guards satisfied propose exact run/walk week. Pause run segment and walk if comfortable speech cannot be maintained; this is an instruction to regulate effort, not clinical reassurance. Week2 repeats exact week only after completed context/response review; no automatic week2 increase.",
+      "claims": [
+        "C01",
+        "C03",
+        "C07"
+      ],
+      "sources": [
+        "R2-S01",
+        "R2-S02",
+        "R2-S11"
+      ],
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS_FOR_FRAMEWORK_ONLY",
+      "exactDoseEvidence": "DECIDED_FINITE_PROTOCOL_NOT_POPULATION_LAW; independent disposition required",
+      "nextCheck": "Record actual task/configuration/dose, technique/effort and current symptoms after execution and before next dependent session; contradictory response disables escalation.",
+      "fallback": "ASK missing decision-changing input; HOLD unsupported/uncalibrated dose; clinical dependency CLINICAL_HUMAN_REQUIRED.",
+      "positiveWitness": "New-to-product Run novice / Strength intermediate, no wearable, explicit nonclinical current walking capability; three exact establishment sessions.",
+      "essentialStimulus": "Repeated low-complexity running exposure at self-regulated comfortable effort; no threshold claim.",
+      "smallerAlternatives": [
+        {
+          "candidate": "ASK",
+          "result": "Needed for absent eligibility/context; unnecessary if complete."
+        },
+        {
+          "candidate": "Walking only",
+          "result": "Admissible lower-demand option if run cue fails; not counted as positive running coverage."
+        },
+        {
+          "candidate": "Continuous20min Run",
+          "result": "Requires tolerance not supplied."
+        }
+      ],
+      "counterevidence": "RCT did not establish injury prevention or optimal progression; no assumption of risk-free running.",
+      "week1ToWeek2": {
+        "week1": "R2-RUN-EST-10X1 x3",
+        "observation": "actual completed segments, speech, effort, symptoms, recovery and other-modality exposure",
+        "week2": "REPEAT_ONLY_OR_ASK/HOLD; repeat is SUPPORTED_KEEP, not new positive progression."
+      },
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "Bounded protocol selection with explicit individual context; exact dose/effect remains unvalidated."
+      },
+      "runtimeBinding": {
+        "registry": "CoachingCore/r2/POSITIVE_PRESCRIPTION_REGISTRY.json",
+        "inputSchema": "CoachingCore/r2/SHADOW_INPUT_R2_SCHEMA.json",
+        "semanticsVsTransport": "requiredInputs are domain requirements; only fieldCrosswalk entries name transport fields. No undocumented field is treated as an existing API property.",
+        "recipeIdAliases": {
+          "R2-RUN-EST-10X1": "R2-RUN-EST-10X1"
+        },
+        "fieldCrosswalk": {
+          "semantic current walking": "event.facts.walkMinutes",
+          "semantic comfortable talk": "event.facts.comfortableTalk",
+          "semantic days": "event.facts.availableDays",
+          "age applicability": "athleteState.ageYears"
+        },
+        "authority": "Integrated registry exact recipe and current independent SSCTR disposition govern execution. Alias/composition is not an additional dose or independent approval."
+      }
+    },
+    {
+      "policyId": "R2-P02",
+      "revision": "DCR2-SCI-r2",
+      "gap": "ACF-G01",
+      "title": "First Strength week after configuration familiarization",
+      "request": "ESTABLISH_STRENGTH",
+      "status": "CANDIDATE_PENDING_INDEPENDENT_SSCTR",
+      "eligibility": "Adult recreational V1, modality-specific novice/intermediate; explicitly nonclinical eligibility/context; no current injury/illness/persistent pain or clearance-dependent return",
+      "requiredInputs": [
+        "facts.configurationFamiliar && facts.techniqueDemonstrated && facts.loadEstablished for each of the four current configurations",
+        "facts.loadsKg.legPress, machineChestPress, seatedCableRow, seatedLegCurl are actual current established numerical loads",
+        "same machine/settings and ROM demonstrated",
+        "two nonconsecutive available days",
+        "technique/effort cue understood and no grinding/compensatory execution"
+      ],
+      "guards": [
+        "No numerical load/RIR inferred from novice label or Run experience",
+        "Load is established now per task; the runtime copies it, never calculates percentage1RM",
+        "Unknown movement competence -> ASK with familiarization task; not blind prescription",
+        "No failure test required to calibrate RIR"
+      ],
+      "finiteCandidates": [
+        {
+          "recipeId": "R2-ST-EST-1X8",
+          "modality": "STRENGTH",
+          "family": "ESTABLISHMENT",
+          "prescription": {
+            "days": [
+              "TUE",
+              "FRI"
+            ],
+            "exercises": [
+              {
+                "exercise": "legPress",
+                "sets": 1,
+                "reps": 8,
+                "loadKgFrom": "facts.loadsKg.legPress",
+                "restSeconds": 120
+              },
+              {
+                "exercise": "machineChestPress",
+                "sets": 1,
+                "reps": 8,
+                "loadKgFrom": "facts.loadsKg.machineChestPress",
+                "restSeconds": 120
+              },
+              {
+                "exercise": "seatedCableRow",
+                "sets": 1,
+                "reps": 8,
+                "loadKgFrom": "facts.loadsKg.seatedCableRow",
+                "restSeconds": 120
+              },
+              {
+                "exercise": "seatedLegCurl",
+                "sets": 1,
+                "reps": 8,
+                "loadKgFrom": "facts.loadsKg.seatedLegCurl",
+                "restSeconds": 120
+              }
+            ],
+            "effortCue": "Clearly stop before failure; maintain demonstrated technique and easy-to-moderate effort",
+            "rirTarget": null,
+            "loadSelection": "COPY_EXPLICIT_CURRENT_ESTABLISHED_LOAD_PER_CONFIGURATION"
+          }
+        }
+      ],
+      "decisionRule": "Propose two exact familiarization sessions only after all four current task loads and competence are established. Week2 may repeat after response review; no calendar-driven progression.",
+      "claims": [
+        "C02",
+        "C03"
+      ],
+      "sources": [
+        "R2-S03",
+        "R2-S04",
+        "R2-S11"
+      ],
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS_FOR_FRAMEWORK_ONLY",
+      "exactDoseEvidence": "DECIDED_FINITE_PROTOCOL_NOT_POPULATION_LAW; independent disposition required",
+      "nextCheck": "Record actual task/configuration/dose, technique/effort and current symptoms after execution and before next dependent session; contradictory response disables escalation.",
+      "fallback": "ASK missing decision-changing input; HOLD unsupported/uncalibrated dose; clinical dependency CLINICAL_HUMAN_REQUIRED.",
+      "positiveWitness": "Run intermediate / Strength novice with current machine demonstrations, no wearable or prior product history.",
+      "essentialStimulus": "Initial repeated exposure to lower push, upper push/pull and knee flexion; not complete long-term repertoire closure.",
+      "counterevidence": "Chronic supervised RT evidence does not prove exact1x8/120s or autonomous unsupervised coaching. This candidate needs bounded independent transfer judgment.",
+      "smallerAlternatives": [
+        {
+          "candidate": "ASK technique/load",
+          "result": "Required if any one configuration is unknown."
+        },
+        {
+          "candidate": "Single familiarization session",
+          "result": "Permissible if only one day; exact two-day week is not inferred."
+        },
+        {
+          "candidate": "Heavy barbell/load from body mass",
+          "result": "Unsupported."
+        }
+      ],
+      "week1ToWeek2": {
+        "week1": "R2-ST-EST-1X8 x2",
+        "observation": "per-task actual loads/reps/technique and effort, no new restrictions, recoverability",
+        "week2": "REPEAT_ONLY; P03 requires own comparable capacity/context."
+      },
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "Bounded protocol selection with explicit individual context; exact dose/effect remains unvalidated."
+      },
+      "runtimeBinding": {
+        "registry": "CoachingCore/r2/POSITIVE_PRESCRIPTION_REGISTRY.json",
+        "inputSchema": "CoachingCore/r2/SHADOW_INPUT_R2_SCHEMA.json",
+        "semanticsVsTransport": "requiredInputs are domain requirements; only fieldCrosswalk entries name transport fields. No undocumented field is treated as an existing API property.",
+        "recipeIdAliases": {
+          "R2-ST-EST-1X8": "R2-ST-EST-1X8"
+        },
+        "fieldCrosswalk": {
+          "semantic current task familiarization": "event.facts.configurationFamiliar && techniqueDemonstrated && loadEstablished",
+          "numeric current loads": "event.facts.loadsKg",
+          "semantic two days": "event.facts.availableDays"
+        },
+        "authority": "Integrated registry exact recipe and current independent SSCTR disposition govern execution. Alias/composition is not an additional dose or independent approval."
+      }
+    }
+  ],
+  "openPortions": [
+    "Never-exposed continuous run beyond establishment",
+    "Unknown movement competence/load; no technique inference",
+    "Initial sustained harder Run target",
+    "Complete individualized initial training program across all configurations"
+  ],
+  "evidenceState": "EVIDENCE_PARTIAL_PROCEED_AS_EXPERIMENT_FOR_OFFLINE_PROTOCOLS",
+  "decisiveClaims": [
+    {
+      "id": "C01",
+      "text": "An exact first-week run/walk protocol can be offered as bounded establishment, not as a universal safe/optimal dose.",
+      "classification": "INFERRED",
+      "evidence_status": "SUPPORTED_WITH_LIMITS",
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "Exact published novice protocol available; outcome evidence rejects prevention certainty; hybrid transfer conditional."
+      },
+      "sources": [
+        "R2-S01"
+      ],
+      "counterevidence": [
+        "R2-S02"
+      ],
+      "population": "Adult nonclinical novice recreational runner, current walking context/cue comprehension; no simultaneous novel Strength progression",
+      "horizon": "First week/observation",
+      "decision": [
+        "R2-P01",
+        "R2-P08",
+        "R2-P14"
+      ],
+      "limits": "Eligibility/current capacity is not guaranteed by label/walk test. Day variants are DECIDED logistical transfers."
+    },
+    {
+      "id": "C02",
+      "text": "Healthy adults can benefit from multiple RT configurations; low-volume establishment is possible, but exact1x8/120s first-week adequacy is a protocol choice.",
+      "classification": "INFERRED",
+      "evidence_status": "SUPPORTED_WITH_LIMITS",
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "Current position stand and NMA support broad RT approaches; exact protocol and hybrid transfer not tested."
+      },
+      "sources": [
+        "R2-S03",
+        "R2-S04"
+      ],
+      "counterevidence": [
+        "R2-S03 limitations: supervised chronic studies; many acute variables not analysed"
+      ],
+      "population": "Healthy adult RT novice/intermediate; no autonomous unsupervised safety inference",
+      "horizon": "Chronic framework with acute indirectness",
+      "decision": [
+        "R2-P02",
+        "R2-P03",
+        "R2-P06",
+        "R2-P10"
+      ],
+      "limits": "1set is establishment, not full hypertrophy optimization; no precise load generated from class. S03/S04 overlap."
+    },
+    {
+      "id": "C03",
+      "text": "RIR and task technique require configuration-specific interpretation; RIR2/4 cannot be presumed accurate from experience label.",
+      "classification": "INFERRED",
+      "evidence_status": "SUPPORTED_WITH_LIMITS",
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "Current supervised primary study demonstrates persistent task/target error despite practice."
+      },
+      "sources": [
+        "R2-S11",
+        "R2-S04"
+      ],
+      "counterevidence": [
+        "R2-S11: practice improved accuracy but did not establish universal precise transfer"
+      ],
+      "population": "Recreational adults; limited direct transfer to novice4-machine or squat",
+      "horizon": "Within-session effort and multiweek skill",
+      "decision": [
+        "R2-P01",
+        "R2-P02",
+        "R2-P03",
+        "R2-P06",
+        "R2-P10",
+        "R2-P14"
+      ],
+      "limits": "Do not reproduce repeated failure-test protocol; numeric target emitted only when explicit task-specific calibration supplied."
+    },
+    {
+      "id": "C07",
+      "text": "No10% or other universal percentage progression/injury-prevention rule is justified by these data.",
+      "classification": "INFERRED",
+      "evidence_status": "SUPPORTED_WITH_LIMITS",
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "Final randomized trial directly failed to support injury-prevention advantage of tested graded schedule; this is not equivalence/safety proof."
+      },
+      "sources": [
+        "R2-S01"
+      ],
+      "counterevidence": [
+        "R2-S02"
+      ],
+      "population": "Novice event-training trial; no claim absence of all useful progression bounds",
+      "horizon": "Weeks",
+      "decision": [
+        "R2-P01",
+        "R2-P08"
+      ],
+      "limits": "No target arbitrary percentage imposed; single success cannot create repeated increment loop."
+    }
+  ],
+  "transportCrosswalk": "Domain requiredInputs are semantic requirements; per-policy runtimeBinding maps transport fields and recipe aliases. Current exact integrated registry and independent disposition govern execution."
+}
+

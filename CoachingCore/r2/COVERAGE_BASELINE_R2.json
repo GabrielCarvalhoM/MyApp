@@ -1,0 +1,360 @@
+{
+  "revision": "COVERAGE-BASELINE-R2-1",
+  "measuredAt": "2026-10-24T23:43:01.457Z",
+  "positiveNumeratorRule": "Only concrete MODIFY with exact independent scientific authority, recipe, trace and no unresolved semantic-binding issue; KEEP/ASK/HOLD never enter numerator",
+  "denominatorPolicy": "Each corpus is reported separately; context variants, scripted days and replay do not become independent dose laws or V1 prevalence estimates",
+  "classes": [
+    "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+    "SUPPORTED_KEEP",
+    "USEFUL_ASK",
+    "CORRECT_ABSTAIN_OR_HOLD",
+    "NOT_SUPPORTED_YET",
+    "CLINICAL_OR_OUT_OF_SCOPE"
+  ],
+  "corpora": {
+    "DEVELOPMENT": {
+      "rows": 15,
+      "uniqueInputs": 15,
+      "classes": {
+        "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED": 12,
+        "SUPPORTED_KEEP": 0,
+        "USEFUL_ASK": 0,
+        "CORRECT_ABSTAIN_OR_HOLD": 3,
+        "NOT_SUPPORTED_YET": 0,
+        "CLINICAL_OR_OUT_OF_SCOPE": 0
+      }
+    },
+    "DEVELOPMENT_FAMILY_VARIANTS": {
+      "rows": 4,
+      "uniqueInputs": 4,
+      "classes": {
+        "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED": 4,
+        "SUPPORTED_KEEP": 0,
+        "USEFUL_ASK": 0,
+        "CORRECT_ABSTAIN_OR_HOLD": 0,
+        "NOT_SUPPORTED_YET": 0,
+        "CLINICAL_OR_OUT_OF_SCOPE": 0
+      }
+    },
+    "CONTEXT_VARIANTS": {
+      "rows": 9,
+      "uniqueInputs": 9,
+      "classes": {
+        "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED": 9,
+        "SUPPORTED_KEEP": 0,
+        "USEFUL_ASK": 0,
+        "CORRECT_ABSTAIN_OR_HOLD": 0,
+        "NOT_SUPPORTED_YET": 0,
+        "CLINICAL_OR_OUT_OF_SCOPE": 0
+      }
+    },
+    "REPRESENTATIVE_INDEPENDENT": {
+      "rows": 42,
+      "uniqueInputs": 42,
+      "classes": {
+        "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED": 1,
+        "SUPPORTED_KEEP": 0,
+        "USEFUL_ASK": 6,
+        "CORRECT_ABSTAIN_OR_HOLD": 0,
+        "NOT_SUPPORTED_YET": 33,
+        "CLINICAL_OR_OUT_OF_SCOPE": 2
+      }
+    },
+    "ESTABLISHMENT_TRANSITIONS": {
+      "rows": 18,
+      "uniqueInputs": 18,
+      "classes": {
+        "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED": 2,
+        "SUPPORTED_KEEP": 8,
+        "USEFUL_ASK": 8,
+        "CORRECT_ABSTAIN_OR_HOLD": 0,
+        "NOT_SUPPORTED_YET": 0,
+        "CLINICAL_OR_OUT_OF_SCOPE": 0
+      }
+    },
+    "FOUR_WEEK_R2_OBSERVATION": {
+      "rows": 84,
+      "uniqueInputs": 84,
+      "classes": {
+        "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED": 3,
+        "SUPPORTED_KEEP": 81,
+        "USEFUL_ASK": 0,
+        "CORRECT_ABSTAIN_OR_HOLD": 0,
+        "NOT_SUPPORTED_YET": 0,
+        "CLINICAL_OR_OUT_OF_SCOPE": 0
+      }
+    },
+    "SEVEN_DAY_R2_STRESS": {
+      "rows": 28,
+      "uniqueInputs": 28,
+      "classes": {
+        "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED": 3,
+        "SUPPORTED_KEEP": 0,
+        "USEFUL_ASK": 0,
+        "CORRECT_ABSTAIN_OR_HOLD": 25,
+        "NOT_SUPPORTED_YET": 0,
+        "CLINICAL_OR_OUT_OF_SCOPE": 0
+      }
+    },
+    "UNSUPPORTED_NOISE": {
+      "rows": 4,
+      "uniqueInputs": 2,
+      "classes": {
+        "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED": 0,
+        "SUPPORTED_KEEP": 0,
+        "USEFUL_ASK": 0,
+        "CORRECT_ABSTAIN_OR_HOLD": 0,
+        "NOT_SUPPORTED_YET": 4,
+        "CLINICAL_OR_OUT_OF_SCOPE": 0
+      }
+    },
+    "UNSUPPORTED_FAMILY": {
+      "rows": 5,
+      "uniqueInputs": 5,
+      "classes": {
+        "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED": 0,
+        "SUPPORTED_KEEP": 0,
+        "USEFUL_ASK": 0,
+        "CORRECT_ABSTAIN_OR_HOLD": 0,
+        "NOT_SUPPORTED_YET": 5,
+        "CLINICAL_OR_OUT_OF_SCOPE": 0
+      }
+    }
+  },
+  "legacyOriginalACF24": {
+    "rows": 24,
+    "positive": 6,
+    "keep": 10,
+    "ask": 6,
+    "hold": 2,
+    "unchanged": true
+  },
+  "development": {
+    "requests": 15,
+    "positive": 12,
+    "independentTaperAbstentions": 3
+  },
+  "representative": {
+    "rows": 42,
+    "classes": {
+      "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED": 1,
+      "SUPPORTED_KEEP": 0,
+      "USEFUL_ASK": 6,
+      "CORRECT_ABSTAIN_OR_HOLD": 0,
+      "NOT_SUPPORTED_YET": 33,
+      "CLINICAL_OR_OUT_OF_SCOPE": 2
+    },
+    "targetPositiveOpportunities": 23,
+    "unresolvedPositiveOpportunities": [
+      {
+        "caseId": "REP-R2-01",
+        "actual": "USEFUL_ASK",
+        "schemaValid": true,
+        "missingSemanticBinding": [
+          "Frozen available days differ from the fixed Mon/Wed/Sat establishment template. A full-week proposal must not replace supplied availability."
+        ]
+      },
+      {
+        "caseId": "REP-R2-02",
+        "actual": "NOT_SUPPORTED_YET",
+        "schemaValid": false,
+        "missingSemanticBinding": [
+          "Frozen available days differ from the fixed Mon/Wed/Sat establishment template. A full-week proposal must not replace supplied availability."
+        ]
+      },
+      {
+        "caseId": "REP-R2-03",
+        "actual": "NOT_SUPPORTED_YET",
+        "schemaValid": false,
+        "missingSemanticBinding": [
+          "Supplied sit-to-stand/supported-row demonstrations do not establish the four machine tasks in R2-ST-EST-1X8."
+        ]
+      },
+      {
+        "caseId": "REP-R2-06",
+        "actual": "NOT_SUPPORTED_YET",
+        "schemaValid": false,
+        "missingSemanticBinding": [
+          "No initial known-easy-repeat selector for the reported 20 min run configuration; generic novice run/walk establishment is a different task."
+        ]
+      },
+      {
+        "caseId": "REP-R2-07",
+        "actual": "USEFUL_ASK",
+        "schemaValid": true,
+        "missingSemanticBinding": [
+          "Frozen available days differ from the fixed Mon/Wed/Sat establishment template. A full-week proposal must not replace supplied availability."
+        ]
+      },
+      {
+        "caseId": "REP-R2-09",
+        "actual": "NOT_SUPPORTED_YET",
+        "schemaValid": false,
+        "missingSemanticBinding": [
+          "R2-LOWER-CALF contains back squat 3x8/RIR2 and bodyweight calf 2x12; the frozen case is goblet squat 2x8/RIR3 plus supported row and loaded calf 2x10. Substituting the registry recipe would alter essential work."
+        ]
+      },
+      {
+        "caseId": "REP-R2-10",
+        "actual": "NOT_SUPPORTED_YET",
+        "schemaValid": false,
+        "missingSemanticBinding": [
+          "Converging fatigue in partially completed 4x5 cruise work is not the 5x3-to-easy preauthorized swap selector. Completed prefix and early-ended second repetition are retained in frozen facts; R2 completed schema cannot represent exact partial dose."
+        ]
+      },
+      {
+        "caseId": "REP-R2-11",
+        "actual": "NOT_SUPPORTED_YET",
+        "schemaValid": false,
+        "missingSemanticBinding": [
+          "A supported-row 2x8-to-2x9 step is not the reviewed back-squat 3x8-to-3x9 recipe. RIR values are retained conservatively as minimum across actual sets; per-set history remains in frozen facts."
+        ]
+      },
+      {
+        "caseId": "REP-R2-12",
+        "actual": "NOT_SUPPORTED_YET",
+        "schemaValid": false,
+        "missingSemanticBinding": [
+          "Known smaller goblet load 22kg is not a back-squat set-removal recipe. The exact actual set sequence 8/7/6 is preserved in the frozen facts and cannot be replaced by one scalar in a prescriptive claim."
+        ]
+      },
+      {
+        "caseId": "REP-R2-15",
+        "actual": "NOT_SUPPORTED_YET",
+        "schemaValid": false,
+        "missingSemanticBinding": [
+          "R2 RANK_OPTIONS only accepts MON_LOWER/WED_LOWER, not the independently supplied THU/FRI two-modality availability conflict. Losslessly mapping actual times and alternatives is unavailable."
+        ]
+      },
+      {
+        "caseId": "REP-R2-16",
+        "actual": "NOT_SUPPORTED_YET",
+        "schemaValid": false,
+        "missingSemanticBinding": [
+          "R2 RANK_OPTIONS only accepts MON_LOWER/WED_LOWER, not the independently supplied THU/FRI two-modality availability conflict. Losslessly mapping actual times and alternatives is unavailable."
+        ]
+      },
+      {
+        "caseId": "REP-R2-19",
+        "actual": "NOT_SUPPORTED_YET",
+        "schemaValid": false,
+        "missingSemanticBinding": [
+          "Only prior 25min easy tolerance and current ordinary walking are known. No current demonstrated run minutes or named day is supplied; automatic 20min return would infer capacity."
+        ]
+      },
+      {
+        "caseId": "REP-R2-20",
+        "actual": "NOT_SUPPORTED_YET",
+        "schemaValid": false,
+        "missingSemanticBinding": [
+          "Old goblet 2x8@16kg history is not a current machine-task demonstration. Current task/load fields and machine kilograms are absent."
+        ]
+      },
+      {
+        "caseId": "REP-R2-21",
+        "actual": "NOT_SUPPORTED_YET",
+        "schemaValid": false,
+        "missingSemanticBinding": [
+          "No joint RETURN_HYBRID request exists. Current establishment must address both modalities from the frozen independent entry configurations, not restore the former week."
+        ]
+      },
+      {
+        "caseId": "REP-R2-25",
+        "actual": "NOT_SUPPORTED_YET",
+        "schemaValid": false,
+        "missingSemanticBinding": [
+          "Familiar goblet/supported or light strength intent cannot be changed into the registry legPress/machineChestPress/cableRow template. Familiar event cues differ from fixed registry repetitions and do not establish every other event-week recipe."
+        ]
+      },
+      {
+        "caseId": "REP-R2-26",
+        "actual": "NOT_SUPPORTED_YET",
+        "schemaValid": false,
+        "missingSemanticBinding": [
+          "Familiar goblet/supported or light strength intent cannot be changed into the registry legPress/machineChestPress/cableRow template. Familiar event cues differ from fixed registry repetitions and do not establish every other event-week recipe."
+        ]
+      },
+      {
+        "caseId": "REP-R2-27",
+        "actual": "NOT_SUPPORTED_YET",
+        "schemaValid": false,
+        "missingSemanticBinding": [
+          "Familiar goblet/supported or light strength intent cannot be changed into the registry legPress/machineChestPress/cableRow template. Familiar event cues differ from fixed registry repetitions and do not establish every other event-week recipe.",
+          "The event is SAT and available days MON/WED/SAT; a SUN event template must not override those facts."
+        ]
+      },
+      {
+        "caseId": "REP-R2-33",
+        "actual": "NOT_SUPPORTED_YET",
+        "schemaValid": true,
+        "missingSemanticBinding": [
+          "The registry has no independent familiar steady 15min work protocol; easy/VO2 recipes are not equivalent."
+        ]
+      },
+      {
+        "caseId": "REP-R2-34",
+        "actual": "USEFUL_ASK",
+        "schemaValid": true,
+        "missingSemanticBinding": [
+          "FIELD_SESSION_TARGET preserves the familiar task anchor without asserting measured LT2 or CS. The familiar 3x5 cruise recipe is not the 4x3 VO2-style field recipe."
+        ]
+      },
+      {
+        "caseId": "REP-R2-37",
+        "actual": "NOT_SUPPORTED_YET",
+        "schemaValid": false,
+        "missingSemanticBinding": [
+          "Frozen long-run candidate is 55-to-60 minutes, not the registry 40-to-45 selector."
+        ]
+      },
+      {
+        "caseId": "REP-R2-39",
+        "actual": "USEFUL_ASK",
+        "schemaValid": true,
+        "missingSemanticBinding": [
+          "The frozen 4x15s relaxed strides use self-paced walking recovery and supply no 20min easy component. R2-EASY20-STRIDES adds 20min easy and fixes 60s recovery. A candidate must not silently add/change those doses."
+        ]
+      },
+      {
+        "caseId": "REP-R2-41",
+        "actual": "NOT_SUPPORTED_YET",
+        "schemaValid": false,
+        "missingSemanticBinding": [
+          "Ranking must await separate admissibility confirmation for both candidates and a current reason to choose a next-horizon option. It cannot convert four uncontrolled observations into causality."
+        ]
+      }
+    ],
+    "currentSchemaValid": 8,
+    "currentSchemaInvalid": 34,
+    "adapterOriginallySchemaValid": 8,
+    "independentCorpusHash": "efd521341252db0413ea9dbac0b28df83ef5b7606cad1b99fd025ea024f07971",
+    "transportVersusDomain": "Schema-invalid cases demonstrate contract/adapter incompleteness. Schema-valid cases receive substantive guard/policy evaluation; neither result is population coverage.",
+    "rawDecisionCounts": {
+      "MODIFY": 1,
+      "KEEP": 0,
+      "ASK": 38,
+      "HOLD": 0,
+      "ABSTAIN": 0,
+      "NOT_SUPPORTED_YET": 1,
+      "CLINICAL_HUMAN_REQUIRED": 2
+    },
+    "askBreakdown": {
+      "transportOrContractAsk": 32,
+      "substantiveMissingInputAsk": 6,
+      "rule": "Schema-invalid ASK is semantically NOT_SUPPORTED_YET, never automatically USEFUL_ASK. Raw decision types remain available."
+    }
+  },
+  "unique": {
+    "count": 205,
+    "classes": {
+      "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED": 32,
+      "SUPPORTED_KEEP": 89,
+      "USEFUL_ASK": 14,
+      "CORRECT_ABSTAIN_OR_HOLD": 28,
+      "NOT_SUPPORTED_YET": 40,
+      "CLINICAL_OR_OUT_OF_SCOPE": 2
+    }
+  },
+  "humanValidation": false,
+  "empiricalValidation": false
+}

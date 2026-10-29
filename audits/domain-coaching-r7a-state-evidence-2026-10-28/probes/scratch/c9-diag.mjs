@@ -1,0 +1,60 @@
+// DOMAIN_COACHING_R7-A Final Closure author self-challenge (Founder request §15): equivalence classes of two and three interruptions, one
+// interruption corrected several times, a correction and a new interruption in both orders, a correction made while a later interruption went
+// on, late session evidence, the same day, the week boundary, the first loaded week, repeated short returns, equipment and fatigue between
+// interruptions, duplicate reports, explicit identity and time zones. Each case states its oracle; the probe prints the violations.
+// RT=freeze1 runs the byte-exact R7A2-FREEZE-1 copy (../freeze1-source), otherwise the live tree. Synthetic data, DEV_TEST_ONLY authority,
+// read-only: prints only. Usage: node r7af-self-challenge.mjs > out.json
+import path from 'node:path';
+import {pathToFileURL} from 'node:url';
+const here=import.meta.dirname,F1=false,CC=process.env.CC_ROOT??path.resolve(here,'../../../../CoachingCore');
+const load=rel=>import(pathToFileURL(path.join(CC,rel)).href);
+const R=await load('src/r6-index.mjs'),{devAuthority}=await load('r6/fixtures/dev-authority.mjs'),opts={authority:devAuthority()};
+const addDays=(d,n)=>new Date(Date.parse(d+'T00:00:00Z')+n*864e5).toISOString().slice(0,10);
+const elig=d=>({status:'NONCLINICAL_CONFIRMED',assessedAt:d,pain:false,persistentPain:false,injury:false,illness:false,functionalLimitation:false,clinicalConcern:false});
+const OK={performance:'COMPATIBLE',recovery:'COMPATIBLE',effort:'ON_TARGET',nextDayFunction:'NORMAL'};
+const K=(id,sets,reps,kg,c='TOTAL')=>({id,sets,reps,load:{value:kg,unit:'KG',convention:c},rir:2,current:true,familiar:true,tolerated:true,observedAt:'2026-10-29'});
+let N=0;
+const intake=(id,{cls='KNOWN',schedule={},tz=0}={})=>({version:'R6-INTAKE-1',synthetic:true,purpose:'SHADOW_REFERENCE',asOf:'2026-11-01',startDate:'2026-11-02',weeks:16,learningConsent:true,...(tz?{timezoneOffsetMinutes:tz}:{}),
+ athlete:{id,ageEligible:true,eligibility:elig('2026-11-01'),goals:{run:'PERFORMANCE',strength:'STRENGTH'},runExperience:'INTERMEDIATE',strengthExperience:cls==='NONE'?'NONE':'INTERMEDIATE',recent:{runDaysPerWeek:3,runMinutesPerWeek:150,longestRunMinutes:70,strengthDaysPerWeek:cls==='NONE'?0:2},equipment:['DUMBBELLS','BENCH','BARBELL','RACK'],knownExercises:cls==='KNOWN'?[K('back-squat',3,5,80),K('db-bench-press',3,8,18,'PER_HAND')]:[],exerciseRotationPreference:'FIXED'},
+ schedule:{runDays:[1,3,6],strengthDays:[2,5],runTurn:'AM',strengthTurn:'PM',runMinutes:60,strengthMinutes:60,longRunDay:6,longRunMinutes:100,...schedule}});
+const tzOf=p=>p.timezoneOffsetMinutes??0,localAt=(d,hm,tz)=>new Date(Date.parse(`${d}T${hm}:00Z`)-tz*60000).toISOString();
+const at=(p,w,day,hm,x)=>{const d=addDays(p.weeks[w].startDate,day);return {version:'R6-REVIEW-1',synthetic:true,purpose:'SHADOW_REFERENCE',asOf:localAt(d,hm,tzOf(p)),weekIndex:w,event:{id:`af-${N++}`,kind:x.kind??'WEEKLY_REVIEW'},eligibility:elig(d),observations:[],...x};};
+function obs(p,s,{day=s.date,hm=null,reportedAt=null}={}){const pr=s.prescription,actual={completed:true,minutes:pr.durationMinutes};if(pr.modality==='STRENGTH')actual.exercises=pr.exercises.map(e=>({id:e.id,sets:Array.from({length:e.sets},()=>({load:{value:e.load.mode==='KNOWN'?e.load.value:e.load.mode==='BODYWEIGHT'?0:20,unit:e.load.mode==='BODYWEIGHT'?'BODYWEIGHT':'KG',convention:e.load.convention},reps:e.reps,rir:e.rir}))}));return {eventId:`af-o-${N++}`,athleteId:p.athleteId,sessionId:s.id,observedAt:localAt(day,hm??(s.turn==='PM'?'19:00':'08:00'),tzOf(p)),...(reportedAt?{reportedAt}:{}),actual,response:{...OK}};}
+const live=s=>s.prescription&&s.status!=='SKIPPED';
+const ev=(t,x)=>{const r=R.evaluateProgram(t.p,{...x,actualLedger:t.ledger},opts);t.ledger=r.actualLedger??t.ledger;if(r.proposal)t.p=r.proposal;t.log.push(`${x.event.kind}@w${x.weekIndex}:${r.status}/${r.action}`);return r;};
+const weekly=(t,w,keep=()=>true)=>ev(t,at(t.p,w,6,'21:00',{kind:'WEEKLY_REVIEW',observations:t.p.weeks[w].sessions.filter(s=>live(s)&&keep(s)).map(s=>obs(t.p,s))}));
+const reportOn=(t,w,day,hm,keep,kind='WEEKLY_REVIEW')=>ev(t,at(t.p,w,day,hm,{kind,observations:t.p.weeks[w].sessions.filter(s=>live(s)&&keep(s)).map(s=>obs(t.p,s))}));
+const brk=(start,end,extra={})=>({kind:'RETURN_AFTER_PAUSE',interruption:{days:Math.round((Date.parse(end)-Date.parse(start))/864e5)+1,startDate:start,endDate:end,reasonCategory:'TRAVEL',reason:'Work travel',...extra}});
+const begin=(id,o={},weeks=3)=>{const g=R.generateProgram(intake(id,o),opts);if(!g.program)throw Error(id+': '+g.status);const t={p:g.program,ledger:[],log:[]};for(let w=0;w<weeks;w++)weekly(t,w);return t;};
+const copyT=t=>({p:t.p,ledger:t.ledger,log:[...t.log]});
+const returns=P=>P.decisions.filter(d=>d.action==='REESTABLISH'),lastR=P=>returns(P).at(-1);
+const episodes=P=>new Set(returns(P).map(d=>d.interruption?.episode??d.eventId)).size;
+const rowsFrom=(P,w,from)=>P.weeks[w]?.sessions.filter(s=>s.sport==='STRENGTH'&&live(s)&&s.date>=from).flatMap(s=>s.prescription.exercises.map(e=>({date:s.date,id:e.id,sets:e.sets,rir:e.rir,mode:e.load.mode,value:e.load.value??null,kind:e.exposure?.kind??null})))??[];
+const longsFrom=(P,w,from)=>P.weeks[w]?.sessions.filter(s=>live(s)&&s.role==='LONG'&&s.date>=from).map(s=>s.prescription.durationMinutes)??[];
+const weekOfDay=(P,d)=>Math.floor((Date.parse(d)-Date.parse(P.startDate))/(7*864e5)),dayIn=(P,d)=>(Date.parse(d)-Date.parse(P.weeks[weekOfDay(P,d)].startDate))/864e5;
+const evOn=(t,d,hm,x)=>ev(t,at(t.p,weekOfDay(t.p,d),dayIn(t.p,d),hm,x));
+const out={probe:'R7AF-SELF-CHALLENGE-1',runtime:F1?'R7A2-FREEZE-1':'live tree (check the digest)',cases:{},violations:[]};
+const flag=(c,what)=>out.violations.push(`${c}: ${what}`);
+const expect=(c,cond,what)=>{if(!cond)flag(c,what);};
+// Oracle D (Founder 0.3, QE-R7A1-09 class): after a separate interruption that follows a re-entry, for two weeks no strength row is at the
+// pre-break dose (a known load at three sets or more) and no long run is longer than the re-entry long run plus one 25-minute step.
+function oracleDose(c,P,from,reentryLong){const w=weekOfDay(P,from),bad=[...[w,w+1].flatMap(k=>rowsFrom(P,k,from).filter(r=>r.mode==='KNOWN'&&r.sets>=3).map(r=>`w${k} ${r.id} ${r.sets}/KNOWN${r.value}`)),...[w,w+1].flatMap(k=>longsFrom(P,k,from).filter(m=>m>reentryLong+25).map(m=>`w${k} long ${m}`))];if(bad.length)flag(c,'dose '+bad.slice(0,3).join('; '));return bad.length;}
+const rec=(c,t,extra={})=>{out.cases[c]={log:t.log,returns:returns(t.p).map(d=>({eventId:d.eventId,relation:d.interruption?.relation??null,basis:d.interruption?.basis??null,episode:d.interruption?.episode??null,revision:d.interruption?.revision??null,supersedes:d.interruption?.supersedes??null,start:d.interruption?.startDate??null,end:d.interruption?.endDate??null,stateAt:d.interruption?.stateAt?`${d.interruption.stateAt.kind}/w${d.interruption.stateAt.week}/${d.interruption.stateAt.eventId??'-'}`:null})),...extra};};
+/** A: weeks 0-2 trained, 3-4 untrained, a 16-day return Monday 06:00 of week 5 (re-entry that week); Monday to Wednesday executed. */
+function base(id,o={}){const t=begin(id,o);weekly(t,3,()=>false);weekly(t,4,()=>false);const d0=t.p.weeks[5].startDate;ev(t,at(t.p,5,0,'06:00',brk(addDays(d0,-16),addDays(d0,-1))));const A=lastR(t.p);reportOn(t,5,2,'21:00',s=>s.day<3);return {t,d0,A,reentryLong:Math.max(...longsFrom(t.p,5,d0),20)};}
+const diff=(a,b,at='',o=[])=>{if(JSON.stringify(a)===JSON.stringify(b))return o;if(a&&b&&typeof a==='object'&&typeof b==='object'){for(const k of new Set([...Object.keys(a),...Object.keys(b)]))diff(a[k],b[k],at+'/'+k,o);return o;}o.push(at+': '+JSON.stringify(a)+' | '+JSON.stringify(b));return o;};
+for(const len of [2,12]){const x=base('af-c9a-'+len),y=base('af-c9b-'+len);
+ evOn(x.t,addDays(x.d0,3+len),'07:00',brk(addDays(x.d0,3),addDays(x.d0,2+len)));evOn(y.t,addDays(y.d0,7+len),'07:00',brk(addDays(y.d0,7),addDays(y.d0,6+len)));
+ const X=lastR(x.t.p).interruption,Y=lastR(y.t.p).interruption;
+ console.log('=== len',len,'x(Thu w5)',X.classification??X.class,JSON.stringify(X.stateAt?.authority),X.stateAt?.kind+'/w'+X.stateAt?.week,' y(Mon w6)',Y.classification??Y.class,JSON.stringify(Y.stateAt?.authority),Y.stateAt?.kind+'/w'+Y.stateAt?.week);
+ console.log(' values x:',JSON.stringify(X.stateAt?.values));console.log(' values y:',JSON.stringify(Y.stateAt?.values));
+ console.log(' entry diff x | y:',diff(X.entry,Y.entry).filter(l=>!l.includes('lastPerformed')).slice(0,20));
+ console.log(' state diff x | y:',diff(X.state??X.executedState,Y.state??Y.executedState).filter(l=>!l.includes('lastPerformed')).slice(0,20));
+}
+const canon=v=>Array.isArray(v)?v.map(canon):v&&typeof v==='object'?Object.fromEntries(Object.keys(v).sort().map(k=>[k,canon(v[k])])):v;
+for(const len of [2,12]){const x=base('af-c9a2-'+len),y=base('af-c9b2-'+len);
+ evOn(x.t,addDays(x.d0,3+len),'07:00',brk(addDays(x.d0,3),addDays(x.d0,2+len)));evOn(y.t,addDays(y.d0,7+len),'07:00',brk(addDays(y.d0,7),addDays(y.d0,6+len)));
+ const strip=e=>({...e,strength:{...e.strength,exercises:Object.fromEntries(Object.entries(e.strength.exercises).map(([k,v])=>[k,(({lastPerformed,...z})=>z)(v)]))}});
+ const X=strip(lastR(x.t.p).interruption.entry),Y=strip(lastR(y.t.p).interruption.entry);
+ console.log('len',len,'raw equal',JSON.stringify(X)===JSON.stringify(Y),'canonical equal',JSON.stringify(canon(X))===JSON.stringify(canon(Y)),'x order',Object.keys(X.strength.exercises).join(','),'y order',Object.keys(Y.strength.exercises).join(','));
+}

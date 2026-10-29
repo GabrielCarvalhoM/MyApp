@@ -1,0 +1,1229 @@
+{
+  "task": "DOMAIN_CLOSURE_R2",
+  "evaluator": "/root/runtime_quality",
+  "role": "INDEPENDENT_JUDGE",
+  "node": "v24.19.0",
+  "executedAt": "2026-10-24T17:42:27.003Z",
+  "authoredCasesWithoutDevelopmentOracle": true,
+  "revisions": {
+    "CoachingCore/src/runtime.mjs": "b1e5b9adfa6a1295ba639799ce34a7403f641c549fb15f597dd0f1a7aeaca82f",
+    "CoachingCore/src/r2-runtime.mjs": "38c19ba641cad6eb6b1ef4b38f7630631e33927c76a97cabee2327af33113c76",
+    "CoachingCore/src/semantics.mjs": "e1ef468c4eaf304a85fb5173a89d71dcaf094ab9712663c16e5fffadae588d8c",
+    "CoachingCore/r2/SHADOW_INPUT_R2_SCHEMA.json": "5a406a567258f922b87996da4f6ba26ae105fd13ccbfe5192dd8677762faa32e",
+    "CoachingCore/r2/POSITIVE_PRESCRIPTION_REGISTRY.json": "3e5b6af1e9561ee54ae01c02adf06256b0629a258274a0d10b17f6bb58b63abe",
+    "CoachingCore/r2/SSCTR_RUNTIME_AUTHORITY.json": "74bb320b13183cf02e6803debc071b1e628478fe2b41f364cf6c9a59ae8592cd"
+  },
+  "summary": {
+    "tests": 294,
+    "pass": 279,
+    "fail": 15
+  },
+  "rows": [
+    {
+      "id": "positive-and-trace-ESTABLISH_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "clinical-malformed-ESTABLISH_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-top-ESTABLISH_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-fact-ESTABLISH_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-recovery-ESTABLISH_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "identity-ESTABLISH_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "future-observation-ESTABLISH_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "partial-observation-ESTABLISH_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-response-ESTABLISH_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "unassessed-ESTABLISH_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "context-changed-ESTABLISH_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "stale-policy-ESTABLISH_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "contradictory-policy-ESTABLISH_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "missing-facts-ESTABLISH_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "real-input-ESTABLISH_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "revoked-ESTABLISH_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "unreconciled-actual-ESTABLISH_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "positive-and-trace-ESTABLISH_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "clinical-malformed-ESTABLISH_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-top-ESTABLISH_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-fact-ESTABLISH_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-recovery-ESTABLISH_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "identity-ESTABLISH_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "future-observation-ESTABLISH_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "partial-observation-ESTABLISH_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-response-ESTABLISH_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "unassessed-ESTABLISH_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "context-changed-ESTABLISH_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "stale-policy-ESTABLISH_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "contradictory-policy-ESTABLISH_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "missing-facts-ESTABLISH_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "real-input-ESTABLISH_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "revoked-ESTABLISH_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "unreconciled-actual-ESTABLISH_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "positive-and-trace-PROGRESS_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "clinical-malformed-PROGRESS_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-top-PROGRESS_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-fact-PROGRESS_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-recovery-PROGRESS_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "identity-PROGRESS_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "future-observation-PROGRESS_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "partial-observation-PROGRESS_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-response-PROGRESS_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "unassessed-PROGRESS_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "context-changed-PROGRESS_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "stale-policy-PROGRESS_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "contradictory-policy-PROGRESS_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "missing-facts-PROGRESS_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "real-input-PROGRESS_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "revoked-PROGRESS_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "unreconciled-actual-PROGRESS_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "positive-and-trace-LOCAL_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "clinical-malformed-LOCAL_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-top-LOCAL_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-fact-LOCAL_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-recovery-LOCAL_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "identity-LOCAL_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "future-observation-LOCAL_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "partial-observation-LOCAL_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-response-LOCAL_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "unassessed-LOCAL_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "context-changed-LOCAL_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "stale-policy-LOCAL_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "contradictory-policy-LOCAL_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "missing-facts-LOCAL_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "real-input-LOCAL_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "revoked-LOCAL_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "unreconciled-actual-LOCAL_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "positive-and-trace-SYSTEMIC_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "clinical-malformed-SYSTEMIC_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-top-SYSTEMIC_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-fact-SYSTEMIC_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-recovery-SYSTEMIC_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "identity-SYSTEMIC_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "future-observation-SYSTEMIC_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "partial-observation-SYSTEMIC_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-response-SYSTEMIC_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "unassessed-SYSTEMIC_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "context-changed-SYSTEMIC_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "stale-policy-SYSTEMIC_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "contradictory-policy-SYSTEMIC_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "missing-facts-SYSTEMIC_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "real-input-SYSTEMIC_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "revoked-SYSTEMIC_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "unreconciled-actual-SYSTEMIC_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "positive-and-trace-UNDER_TARGET_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "clinical-malformed-UNDER_TARGET_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-top-UNDER_TARGET_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-fact-UNDER_TARGET_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-recovery-UNDER_TARGET_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "identity-UNDER_TARGET_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "future-observation-UNDER_TARGET_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "partial-observation-UNDER_TARGET_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-response-UNDER_TARGET_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "unassessed-UNDER_TARGET_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "context-changed-UNDER_TARGET_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "stale-policy-UNDER_TARGET_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "contradictory-policy-UNDER_TARGET_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "missing-facts-UNDER_TARGET_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "real-input-UNDER_TARGET_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "revoked-UNDER_TARGET_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "unreconciled-actual-UNDER_TARGET_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "positive-and-trace-REDUCE_RUN_REPETITION",
+      "status": "PASS"
+    },
+    {
+      "id": "clinical-malformed-REDUCE_RUN_REPETITION",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-top-REDUCE_RUN_REPETITION",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-fact-REDUCE_RUN_REPETITION",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-recovery-REDUCE_RUN_REPETITION",
+      "status": "PASS"
+    },
+    {
+      "id": "identity-REDUCE_RUN_REPETITION",
+      "status": "PASS"
+    },
+    {
+      "id": "future-observation-REDUCE_RUN_REPETITION",
+      "status": "PASS"
+    },
+    {
+      "id": "partial-observation-REDUCE_RUN_REPETITION",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-response-REDUCE_RUN_REPETITION",
+      "status": "PASS"
+    },
+    {
+      "id": "unassessed-REDUCE_RUN_REPETITION",
+      "status": "PASS"
+    },
+    {
+      "id": "context-changed-REDUCE_RUN_REPETITION",
+      "status": "PASS"
+    },
+    {
+      "id": "stale-policy-REDUCE_RUN_REPETITION",
+      "status": "PASS"
+    },
+    {
+      "id": "contradictory-policy-REDUCE_RUN_REPETITION",
+      "status": "PASS"
+    },
+    {
+      "id": "missing-facts-REDUCE_RUN_REPETITION",
+      "status": "PASS"
+    },
+    {
+      "id": "real-input-REDUCE_RUN_REPETITION",
+      "status": "PASS"
+    },
+    {
+      "id": "revoked-REDUCE_RUN_REPETITION",
+      "status": "PASS"
+    },
+    {
+      "id": "unreconciled-actual-REDUCE_RUN_REPETITION",
+      "status": "PASS"
+    },
+    {
+      "id": "positive-and-trace-PROGRESS_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "clinical-malformed-PROGRESS_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-top-PROGRESS_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-fact-PROGRESS_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-recovery-PROGRESS_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "identity-PROGRESS_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "future-observation-PROGRESS_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "partial-observation-PROGRESS_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-response-PROGRESS_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "unassessed-PROGRESS_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "context-changed-PROGRESS_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "stale-policy-PROGRESS_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "contradictory-policy-PROGRESS_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "missing-facts-PROGRESS_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "real-input-PROGRESS_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "revoked-PROGRESS_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "unreconciled-actual-PROGRESS_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "positive-and-trace-RETURN_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "clinical-malformed-RETURN_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-top-RETURN_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-fact-RETURN_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-recovery-RETURN_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "identity-RETURN_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "future-observation-RETURN_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "partial-observation-RETURN_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-response-RETURN_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "unassessed-RETURN_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "context-changed-RETURN_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "stale-policy-RETURN_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "contradictory-policy-RETURN_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "missing-facts-RETURN_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "real-input-RETURN_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "revoked-RETURN_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "unreconciled-actual-RETURN_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "positive-and-trace-RETURN_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "clinical-malformed-RETURN_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-top-RETURN_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-fact-RETURN_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-recovery-RETURN_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "identity-RETURN_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "future-observation-RETURN_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "partial-observation-RETURN_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-response-RETURN_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "unassessed-RETURN_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "context-changed-RETURN_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "stale-policy-RETURN_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "contradictory-policy-RETURN_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "missing-facts-RETURN_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "real-input-RETURN_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "revoked-RETURN_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "unreconciled-actual-RETURN_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "positive-and-trace-CALIBRATE_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "clinical-malformed-CALIBRATE_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-top-CALIBRATE_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-fact-CALIBRATE_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-recovery-CALIBRATE_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "identity-CALIBRATE_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "future-observation-CALIBRATE_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "partial-observation-CALIBRATE_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-response-CALIBRATE_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "unassessed-CALIBRATE_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "context-changed-CALIBRATE_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "stale-policy-CALIBRATE_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "contradictory-policy-CALIBRATE_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "missing-facts-CALIBRATE_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "real-input-CALIBRATE_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "revoked-CALIBRATE_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "unreconciled-actual-CALIBRATE_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "positive-and-trace-RANK_OPTIONS",
+      "status": "PASS"
+    },
+    {
+      "id": "clinical-malformed-RANK_OPTIONS",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-top-RANK_OPTIONS",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-fact-RANK_OPTIONS",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-recovery-RANK_OPTIONS",
+      "status": "PASS"
+    },
+    {
+      "id": "identity-RANK_OPTIONS",
+      "status": "PASS"
+    },
+    {
+      "id": "future-observation-RANK_OPTIONS",
+      "status": "PASS"
+    },
+    {
+      "id": "partial-observation-RANK_OPTIONS",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-response-RANK_OPTIONS",
+      "status": "PASS"
+    },
+    {
+      "id": "unassessed-RANK_OPTIONS",
+      "status": "PASS"
+    },
+    {
+      "id": "context-changed-RANK_OPTIONS",
+      "status": "PASS"
+    },
+    {
+      "id": "stale-policy-RANK_OPTIONS",
+      "status": "PASS"
+    },
+    {
+      "id": "contradictory-policy-RANK_OPTIONS",
+      "status": "PASS"
+    },
+    {
+      "id": "missing-facts-RANK_OPTIONS",
+      "status": "PASS"
+    },
+    {
+      "id": "real-input-RANK_OPTIONS",
+      "status": "PASS"
+    },
+    {
+      "id": "revoked-RANK_OPTIONS",
+      "status": "PASS"
+    },
+    {
+      "id": "unreconciled-actual-RANK_OPTIONS",
+      "status": "PASS"
+    },
+    {
+      "id": "missing-target-PROGRESS_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "completed-target-PROGRESS_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "preserve-unrelated-completed-PROGRESS_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "missing-target-UNDER_TARGET_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "completed-target-UNDER_TARGET_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "preserve-unrelated-completed-UNDER_TARGET_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "missing-target-REDUCE_RUN_REPETITION",
+      "status": "PASS"
+    },
+    {
+      "id": "completed-target-REDUCE_RUN_REPETITION",
+      "status": "PASS"
+    },
+    {
+      "id": "preserve-unrelated-completed-REDUCE_RUN_REPETITION",
+      "status": "PASS"
+    },
+    {
+      "id": "missing-target-PROGRESS_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "completed-target-PROGRESS_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "preserve-unrelated-completed-PROGRESS_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "missing-target-LOCAL_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "completed-target-LOCAL_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "preserve-unrelated-completed-LOCAL_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "missing-target-SYSTEMIC_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "completed-target-SYSTEMIC_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "preserve-unrelated-completed-SYSTEMIC_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "missing-target-CALIBRATE_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "completed-target-CALIBRATE_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "preserve-unrelated-completed-CALIBRATE_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "missing-target-RANK_OPTIONS",
+      "status": "PASS"
+    },
+    {
+      "id": "completed-target-RANK_OPTIONS",
+      "status": "PASS"
+    },
+    {
+      "id": "preserve-unrelated-completed-RANK_OPTIONS",
+      "status": "PASS"
+    },
+    {
+      "id": "single-noise-PROGRESS_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "duplicate-fact-PROGRESS_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "wrong-athlete-PROGRESS_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "future-history-PROGRESS_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-technique-PROGRESS_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "not-comparable-PROGRESS_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "single-noise-UNDER_TARGET_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "duplicate-fact-UNDER_TARGET_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "wrong-athlete-UNDER_TARGET_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "future-history-UNDER_TARGET_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-technique-UNDER_TARGET_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "not-comparable-UNDER_TARGET_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "single-noise-REDUCE_RUN_REPETITION",
+      "status": "PASS"
+    },
+    {
+      "id": "duplicate-fact-REDUCE_RUN_REPETITION",
+      "status": "PASS"
+    },
+    {
+      "id": "wrong-athlete-REDUCE_RUN_REPETITION",
+      "status": "PASS"
+    },
+    {
+      "id": "future-history-REDUCE_RUN_REPETITION",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-technique-REDUCE_RUN_REPETITION",
+      "status": "PASS"
+    },
+    {
+      "id": "not-comparable-REDUCE_RUN_REPETITION",
+      "status": "PASS"
+    },
+    {
+      "id": "single-noise-PROGRESS_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "duplicate-fact-PROGRESS_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "wrong-athlete-PROGRESS_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "future-history-PROGRESS_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-technique-PROGRESS_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "not-comparable-PROGRESS_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "learned-one-noise",
+      "status": "PASS"
+    },
+    {
+      "id": "learned-duplicate",
+      "status": "PASS"
+    },
+    {
+      "id": "learned-counterevidence-missing",
+      "status": "PASS"
+    },
+    {
+      "id": "learned-inadmissible-options",
+      "status": "PASS"
+    },
+    {
+      "id": "learned-changed-context",
+      "status": "PASS"
+    },
+    {
+      "id": "learned-purpose",
+      "status": "PASS"
+    },
+    {
+      "id": "local-minimum-change",
+      "status": "PASS"
+    },
+    {
+      "id": "no-necessity-keeps",
+      "status": "PASS"
+    },
+    {
+      "id": "smaller-sufficient-prevents-large-reduction",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-recipe-param-PROGRESS_STRENGTH",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-recipe-param-CALIBRATE_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "unknown-machine-load-key",
+      "status": "PASS"
+    },
+    {
+      "id": "unrelated-unknown-machine-load-key",
+      "status": "PASS"
+    },
+    {
+      "id": "preserve-reentry-unrelated-completed",
+      "status": "PASS"
+    },
+    {
+      "id": "clinical-reason-over-malformed-contract",
+      "status": "PASS"
+    },
+    {
+      "id": "calibration-construct-no-equivalence",
+      "status": "PASS"
+    },
+    {
+      "id": "calibration-tolerance-binding",
+      "status": "PASS"
+    },
+    {
+      "id": "calibration-preserves-concrete-adequate-target",
+      "status": "FAIL",
+      "message": "Calibration cannot turn an already concrete hard session into easy work without necessity/admissibility {\"basePlanId\":\"QUALITY-PLAN\",\"basePlanRevision\":\"23\",\"basePlanHash\":\"337b28e5326c1fdc6b04e67876f80b68bc568e11e5ee888d1a0592d5ed5e1c0a\",\"athleteId\":\"QUALITY-ATHLETE\",\"scope\":\"NEXT_REVIEWED_HORIZON\",\"sessions\":[{\"session_id\":\"primary\",\"day\":\"MON\",\"recipeId\":\"R2-EASY-20\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{},\"modality\":\"RUN\",\"family\":\"EASY\",\"prescription\":{\"durationMinutes\":20,\"target\":{\"method\":\"TALK_RPE\",\"construct\":\"EASY_EFFORT\",\"cue\":\"Comfortable conversational running, slow or walk to retain comfortable speech; stop and reassess if symptoms or technique/function changes\",\"noPhysiologicalZoneClaim\":true}}}],\"confirmation\":\"REQUIRED_FOR_ANY_FUTURE_EFFECT\"}",
+      "stack": "AssertionError [ERR_ASSERTION]: Calibration cannot turn an already concrete hard session into easy work without necessity/admissibility {\"basePlanId\":\"QUALITY-PLAN\",\"basePlanRevision\":\"23\",\"basePlanHash\":\"337b28e5326c1fdc6b04e67876f80b68bc568e11e5ee888d1a0592d5ed5e1c0a\",\"athleteId\":\"QUALITY-ATHLETE\",\"scope\":\"NEXT_REVIEWED_HORIZON\",\"sessions\":[{\"session_id\":\"primary\",\"day\":\"MON\",\"recipeId\":\"R2-EASY-20\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{},\"modality\":\"RUN\",\"family\":\"EASY\",\"prescription\":{\"durationMinutes\":20,\"target\":{\"method\":\"TALK_RPE\",\"construct\":\"EASY_EFFORT\",\"cue\":\"Comfortable conversational running, slow or walk to retain comfortable speech; stop and reassess if symptoms or technique/function changes\",\"noPhysiologicalZoneClaim\":true}}}],\"confirmation\":\"REQUIRED_FOR_ANY_FUTURE_EFFECT\"}\n    at noPositive (file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:43:55)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:81:210\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:94:39\n    at Array.map (<anonymous>)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:94:18\n    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)\n    at async node:internal/modules/esm/loader:643:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)"
+    },
+    {
+      "id": "calibration-preserves-modality",
+      "status": "FAIL",
+      "message": "Run calibration cannot replace unrelated strength work {\"basePlanId\":\"QUALITY-PLAN\",\"basePlanRevision\":\"23\",\"basePlanHash\":\"54761f95b8ba5eb9f7c8549ce1f612408da05bdcacc48558a98895c585b42952\",\"athleteId\":\"QUALITY-ATHLETE\",\"scope\":\"NEXT_REVIEWED_HORIZON\",\"sessions\":[{\"session_id\":\"primary\",\"day\":\"MON\",\"recipeId\":\"R2-EASY-20\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{},\"modality\":\"RUN\",\"family\":\"EASY\",\"prescription\":{\"durationMinutes\":20,\"target\":{\"method\":\"TALK_RPE\",\"construct\":\"EASY_EFFORT\",\"cue\":\"Comfortable conversational running, slow or walk to retain comfortable speech; stop and reassess if symptoms or technique/function changes\",\"noPhysiologicalZoneClaim\":true}}}],\"confirmation\":\"REQUIRED_FOR_ANY_FUTURE_EFFECT\"}",
+      "stack": "AssertionError [ERR_ASSERTION]: Run calibration cannot replace unrelated strength work {\"basePlanId\":\"QUALITY-PLAN\",\"basePlanRevision\":\"23\",\"basePlanHash\":\"54761f95b8ba5eb9f7c8549ce1f612408da05bdcacc48558a98895c585b42952\",\"athleteId\":\"QUALITY-ATHLETE\",\"scope\":\"NEXT_REVIEWED_HORIZON\",\"sessions\":[{\"session_id\":\"primary\",\"day\":\"MON\",\"recipeId\":\"R2-EASY-20\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{},\"modality\":\"RUN\",\"family\":\"EASY\",\"prescription\":{\"durationMinutes\":20,\"target\":{\"method\":\"TALK_RPE\",\"construct\":\"EASY_EFFORT\",\"cue\":\"Comfortable conversational running, slow or walk to retain comfortable speech; stop and reassess if symptoms or technique/function changes\",\"noPhysiologicalZoneClaim\":true}}}],\"confirmation\":\"REQUIRED_FOR_ANY_FUTURE_EFFECT\"}\n    at noPositive (file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:43:55)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:82:199\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:94:39\n    at Array.map (<anonymous>)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:94:18\n    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)\n    at async node:internal/modules/esm/loader:643:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)"
+    },
+    {
+      "id": "ranking-preserves-effort-dose",
+      "status": "PASS"
+    },
+    {
+      "id": "systemic-zero-pace-not-executable",
+      "status": "PASS"
+    },
+    {
+      "id": "unrelated-bound-effort-does-not-change",
+      "status": "PASS"
+    },
+    {
+      "id": "contradictory-minor-age-ESTABLISH_RUN",
+      "status": "PASS"
+    },
+    {
+      "id": "contradictory-minor-age-ESTABLISH_STRENGTH",
+      "status": "FAIL",
+      "message": "Declared age contradicts adult population {\"basePlanId\":null,\"basePlanRevision\":null,\"basePlanHash\":\"74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b\",\"athleteId\":\"QUALITY-ATHLETE\",\"scope\":\"FIRST_ESTABLISHMENT_WEEK\",\"sessions\":[{\"session_id\":\"est-strength-0\",\"day\":\"WED\",\"recipeId\":\"R2-ST-EST-1X8\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{\"loadsKg\":{\"legPress\":28,\"machineChestPress\":10,\"seatedCableRow\":22,\"seatedLegCurl\":18}},\"modality\":\"STRENGTH\",\"family\":\"ESTABLISHMENT\",\"prescription\":{\"warmup\":\"5min easy movement then previously demonstrated task rehearsal\",\"exercises\":[{\"exercise\":\"legPress\",\"sets\":1,\"reps\":8,\"loadKg\":28,\"restSeconds\":120,\"effort\":\"Easy/moderate, clearly stop before failure; no RIR precision inferred\"},{\"exercise\":\"machineChestPress\",\"sets\":1,\"reps\":8,\"loadKg\":10,\"restSeconds\":120,\"effort\":\"Easy/moderate, clearly stop before failure; no RIR precision inferred\"},{\"exercise\":\"seatedCableRow\",\"sets\":1,\"reps\":8,\"loadKg\":22,\"restSeconds\":120,\"effort\":\"Easy/moderate, clearly stop before failure; no RIR precision inferred\"},{\"exercise\":\"seatedLegCurl\",\"sets\":1,\"reps\":8,\"loadKg\":18,\"restSeconds\":120,\"effort\":\"Easy/moderate, clearly stop before failure; no RIR precision inferred\"}]}},{\"session_id\":\"est-strength-1\",\"day\":\"SAT\",\"recipeId\":\"R2-ST-EST-1X8\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{\"loadsKg\":{\"legPress\":28,\"machineChestPress\":10,\"seatedCableRow\":22,\"seatedLegCurl\":18}},\"modality\":\"STRENGTH\",\"family\":\"ESTABLISHMENT\",\"prescription\":{\"warmup\":\"5min easy movement then previously demonstrated task rehearsal\",\"exercises\":[{\"exercise\":\"legPress\",\"sets\":1,\"reps\":8,\"loadKg\":28,\"restSeconds\":120,\"effort\":\"Easy/moderate, clearly stop before failure; no RIR precision inferred\"},{\"exercise\":\"machineChestPress\",\"sets\":1,\"reps\":8,\"loadKg\":10,\"restSeconds\":120,\"effort\":\"Easy/moderate, clearly stop before failure; no RIR precision inferred\"},{\"exercise\":\"seatedCableRow\",\"sets\":1,\"reps\":8,\"loadKg\":22,\"restSeconds\":120,\"effort\":\"Easy/moderate, clearly stop before failure; no RIR precision inferred\"},{\"exercise\":\"seatedLegCurl\",\"sets\":1,\"reps\":8,\"loadKg\":18,\"restSeconds\":120,\"effort\":\"Easy/moderate, clearly stop before failure; no RIR precision inferred\"}]}}],\"confirmation\":\"REQUIRED_FOR_ANY_FUTURE_EFFECT\"}",
+      "stack": "AssertionError [ERR_ASSERTION]: Declared age contradicts adult population {\"basePlanId\":null,\"basePlanRevision\":null,\"basePlanHash\":\"74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b\",\"athleteId\":\"QUALITY-ATHLETE\",\"scope\":\"FIRST_ESTABLISHMENT_WEEK\",\"sessions\":[{\"session_id\":\"est-strength-0\",\"day\":\"WED\",\"recipeId\":\"R2-ST-EST-1X8\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{\"loadsKg\":{\"legPress\":28,\"machineChestPress\":10,\"seatedCableRow\":22,\"seatedLegCurl\":18}},\"modality\":\"STRENGTH\",\"family\":\"ESTABLISHMENT\",\"prescription\":{\"warmup\":\"5min easy movement then previously demonstrated task rehearsal\",\"exercises\":[{\"exercise\":\"legPress\",\"sets\":1,\"reps\":8,\"loadKg\":28,\"restSeconds\":120,\"effort\":\"Easy/moderate, clearly stop before failure; no RIR precision inferred\"},{\"exercise\":\"machineChestPress\",\"sets\":1,\"reps\":8,\"loadKg\":10,\"restSeconds\":120,\"effort\":\"Easy/moderate, clearly stop before failure; no RIR precision inferred\"},{\"exercise\":\"seatedCableRow\",\"sets\":1,\"reps\":8,\"loadKg\":22,\"restSeconds\":120,\"effort\":\"Easy/moderate, clearly stop before failure; no RIR precision inferred\"},{\"exercise\":\"seatedLegCurl\",\"sets\":1,\"reps\":8,\"loadKg\":18,\"restSeconds\":120,\"effort\":\"Easy/moderate, clearly stop before failure; no RIR precision inferred\"}]}},{\"session_id\":\"est-strength-1\",\"day\":\"SAT\",\"recipeId\":\"R2-ST-EST-1X8\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{\"loadsKg\":{\"legPress\":28,\"machineChestPress\":10,\"seatedCableRow\":22,\"seatedLegCurl\":18}},\"modality\":\"STRENGTH\",\"family\":\"ESTABLISHMENT\",\"prescription\":{\"warmup\":\"5min easy movement then previously demonstrated task rehearsal\",\"exercises\":[{\"exercise\":\"legPress\",\"sets\":1,\"reps\":8,\"loadKg\":28,\"restSeconds\":120,\"effort\":\"Easy/moderate, clearly stop before failure; no RIR precision inferred\"},{\"exercise\":\"machineChestPress\",\"sets\":1,\"reps\":8,\"loadKg\":10,\"restSeconds\":120,\"effort\":\"Easy/moderate, clearly stop before failure; no RIR precision inferred\"},{\"exercise\":\"seatedCableRow\",\"sets\":1,\"reps\":8,\"loadKg\":22,\"restSeconds\":120,\"effort\":\"Easy/moderate, clearly stop before failure; no RIR precision inferred\"},{\"exercise\":\"seatedLegCurl\",\"sets\":1,\"reps\":8,\"loadKg\":18,\"restSeconds\":120,\"effort\":\"Easy/moderate, clearly stop before failure; no RIR precision inferred\"}]}}],\"confirmation\":\"REQUIRED_FOR_ANY_FUTURE_EFFECT\"}\n    at noPositive (file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:43:55)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:86:135\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:94:39\n    at Array.map (<anonymous>)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:94:18\n    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)\n    at async node:internal/modules/esm/loader:643:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)"
+    },
+    {
+      "id": "contradictory-minor-age-PROGRESS_STRENGTH",
+      "status": "FAIL",
+      "message": "Declared age contradicts adult population {\"basePlanId\":\"QUALITY-PLAN\",\"basePlanRevision\":\"23\",\"basePlanHash\":\"54761f95b8ba5eb9f7c8549ce1f612408da05bdcacc48558a98895c585b42952\",\"athleteId\":\"QUALITY-ATHLETE\",\"scope\":\"NEXT_REVIEWED_HORIZON\",\"sessions\":[{\"session_id\":\"primary\",\"day\":\"MON\",\"recipeId\":\"R2-SQUAT-3X9\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{\"loadKg\":72.5,\"targetRir\":2},\"modality\":\"STRENGTH\",\"family\":\"SQUAT\",\"prescription\":{\"exercise\":\"back_squat_familiar_configuration\",\"sets\":3,\"reps\":9,\"loadKg\":72.5,\"restSeconds\":180,\"targetRir\":2,\"technique\":\"Previously demonstrated configuration; no grinding or technique degradation\"}}],\"confirmation\":\"REQUIRED_FOR_ANY_FUTURE_EFFECT\"}",
+      "stack": "AssertionError [ERR_ASSERTION]: Declared age contradicts adult population {\"basePlanId\":\"QUALITY-PLAN\",\"basePlanRevision\":\"23\",\"basePlanHash\":\"54761f95b8ba5eb9f7c8549ce1f612408da05bdcacc48558a98895c585b42952\",\"athleteId\":\"QUALITY-ATHLETE\",\"scope\":\"NEXT_REVIEWED_HORIZON\",\"sessions\":[{\"session_id\":\"primary\",\"day\":\"MON\",\"recipeId\":\"R2-SQUAT-3X9\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{\"loadKg\":72.5,\"targetRir\":2},\"modality\":\"STRENGTH\",\"family\":\"SQUAT\",\"prescription\":{\"exercise\":\"back_squat_familiar_configuration\",\"sets\":3,\"reps\":9,\"loadKg\":72.5,\"restSeconds\":180,\"targetRir\":2,\"technique\":\"Previously demonstrated configuration; no grinding or technique degradation\"}}],\"confirmation\":\"REQUIRED_FOR_ANY_FUTURE_EFFECT\"}\n    at noPositive (file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:43:55)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:86:135\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:94:39\n    at Array.map (<anonymous>)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:94:18\n    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)\n    at async node:internal/modules/esm/loader:643:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)"
+    },
+    {
+      "id": "contradictory-minor-age-LOCAL_FATIGUE",
+      "status": "FAIL",
+      "message": "Declared age contradicts adult population {\"basePlanId\":\"QUALITY-PLAN\",\"basePlanRevision\":\"23\",\"basePlanHash\":\"c51a956bd3d972779d7fbbe337a7763770dd95ba9b5519d4def8d939dcffae68\",\"athleteId\":\"QUALITY-ATHLETE\",\"scope\":\"NEXT_REVIEWED_HORIZON\",\"sessions\":[{\"session_id\":\"primary\",\"day\":\"MON\",\"recipeId\":\"R2-LOWER-ONE-CALF\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{\"loadKg\":72.5,\"targetRir\":2},\"modality\":\"STRENGTH\",\"family\":\"LOWER\",\"prescription\":{\"exercises\":[{\"exercise\":\"back_squat_familiar_configuration\",\"sets\":3,\"reps\":8,\"loadKg\":72.5,\"restSeconds\":180,\"targetRir\":2,\"essential\":true},{\"exercise\":\"calf_raise_familiar_bodyweight\",\"sets\":1,\"reps\":12,\"restSeconds\":120,\"optional\":true}]}}],\"confirmation\":\"REQUIRED_FOR_ANY_FUTURE_EFFECT\"}",
+      "stack": "AssertionError [ERR_ASSERTION]: Declared age contradicts adult population {\"basePlanId\":\"QUALITY-PLAN\",\"basePlanRevision\":\"23\",\"basePlanHash\":\"c51a956bd3d972779d7fbbe337a7763770dd95ba9b5519d4def8d939dcffae68\",\"athleteId\":\"QUALITY-ATHLETE\",\"scope\":\"NEXT_REVIEWED_HORIZON\",\"sessions\":[{\"session_id\":\"primary\",\"day\":\"MON\",\"recipeId\":\"R2-LOWER-ONE-CALF\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{\"loadKg\":72.5,\"targetRir\":2},\"modality\":\"STRENGTH\",\"family\":\"LOWER\",\"prescription\":{\"exercises\":[{\"exercise\":\"back_squat_familiar_configuration\",\"sets\":3,\"reps\":8,\"loadKg\":72.5,\"restSeconds\":180,\"targetRir\":2,\"essential\":true},{\"exercise\":\"calf_raise_familiar_bodyweight\",\"sets\":1,\"reps\":12,\"restSeconds\":120,\"optional\":true}]}}],\"confirmation\":\"REQUIRED_FOR_ANY_FUTURE_EFFECT\"}\n    at noPositive (file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:43:55)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:86:135\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:94:39\n    at Array.map (<anonymous>)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:94:18\n    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)\n    at async node:internal/modules/esm/loader:643:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)"
+    },
+    {
+      "id": "contradictory-minor-age-SYSTEMIC_FATIGUE",
+      "status": "FAIL",
+      "message": "Declared age contradicts adult population {\"basePlanId\":\"QUALITY-PLAN\",\"basePlanRevision\":\"23\",\"basePlanHash\":\"9467c819e077c83579d25b56addcea4d8513d2933986547d06e84689a5cb5e60\",\"athleteId\":\"QUALITY-ATHLETE\",\"scope\":\"NEXT_REVIEWED_HORIZON\",\"sessions\":[{\"session_id\":\"primary\",\"day\":\"SAT\",\"recipeId\":\"R2-RUN-5X3\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{\"paceSecondsPerKm\":331},\"modality\":\"RUN\",\"family\":\"VO2_STYLE\",\"prescription\":{\"warmupMinutes\":10,\"repetitions\":5,\"workMinutes\":3,\"recoveryBetweenRepetitionsSeconds\":120,\"recoveryMode\":\"EASY_JOG_OR_WALK\",\"cooldownMinutes\":10,\"target\":{\"method\":\"PACE\",\"construct\":\"FAMILIAR_FIELD_SESSION_TARGET\",\"paceSecondsPerKm\":331,\"noVO2OrLT2Equivalence\":true}}},{\"session_id\":\"easy\",\"day\":\"THU\",\"recipeId\":\"R2-EASY-20\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{},\"modality\":\"RUN\",\"family\":\"EASY\",\"prescription\":{\"durationMinutes\":20,\"target\":{\"method\":\"TALK_RPE\",\"construct\":\"EASY_EFFORT\",\"cue\":\"Comfortable conversational running, slow or walk to retain comfortable speech; stop and reassess if symptoms or technique/function changes\",\"noPhysiologicalZoneClaim\":true}}}],\"confirmation\":\"REQUIRED_FOR_ANY_FUTURE_EFFECT\"}",
+      "stack": "AssertionError [ERR_ASSERTION]: Declared age contradicts adult population {\"basePlanId\":\"QUALITY-PLAN\",\"basePlanRevision\":\"23\",\"basePlanHash\":\"9467c819e077c83579d25b56addcea4d8513d2933986547d06e84689a5cb5e60\",\"athleteId\":\"QUALITY-ATHLETE\",\"scope\":\"NEXT_REVIEWED_HORIZON\",\"sessions\":[{\"session_id\":\"primary\",\"day\":\"SAT\",\"recipeId\":\"R2-RUN-5X3\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{\"paceSecondsPerKm\":331},\"modality\":\"RUN\",\"family\":\"VO2_STYLE\",\"prescription\":{\"warmupMinutes\":10,\"repetitions\":5,\"workMinutes\":3,\"recoveryBetweenRepetitionsSeconds\":120,\"recoveryMode\":\"EASY_JOG_OR_WALK\",\"cooldownMinutes\":10,\"target\":{\"method\":\"PACE\",\"construct\":\"FAMILIAR_FIELD_SESSION_TARGET\",\"paceSecondsPerKm\":331,\"noVO2OrLT2Equivalence\":true}}},{\"session_id\":\"easy\",\"day\":\"THU\",\"recipeId\":\"R2-EASY-20\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{},\"modality\":\"RUN\",\"family\":\"EASY\",\"prescription\":{\"durationMinutes\":20,\"target\":{\"method\":\"TALK_RPE\",\"construct\":\"EASY_EFFORT\",\"cue\":\"Comfortable conversational running, slow or walk to retain comfortable speech; stop and reassess if symptoms or technique/function changes\",\"noPhysiologicalZoneClaim\":true}}}],\"confirmation\":\"REQUIRED_FOR_ANY_FUTURE_EFFECT\"}\n    at noPositive (file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:43:55)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:86:135\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:94:39\n    at Array.map (<anonymous>)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:94:18\n    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)\n    at async node:internal/modules/esm/loader:643:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)"
+    },
+    {
+      "id": "contradictory-minor-age-UNDER_TARGET_STRENGTH",
+      "status": "FAIL",
+      "message": "Declared age contradicts adult population {\"basePlanId\":\"QUALITY-PLAN\",\"basePlanRevision\":\"23\",\"basePlanHash\":\"54761f95b8ba5eb9f7c8549ce1f612408da05bdcacc48558a98895c585b42952\",\"athleteId\":\"QUALITY-ATHLETE\",\"scope\":\"NEXT_REVIEWED_HORIZON\",\"sessions\":[{\"session_id\":\"primary\",\"day\":\"MON\",\"recipeId\":\"R2-SQUAT-2X8\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{\"loadKg\":72.5,\"targetRir\":2},\"modality\":\"STRENGTH\",\"family\":\"SQUAT\",\"prescription\":{\"exercise\":\"back_squat_familiar_configuration\",\"sets\":2,\"reps\":8,\"loadKg\":72.5,\"restSeconds\":180,\"targetRir\":2,\"technique\":\"Previously demonstrated configuration; no grinding or technique degradation\"}}],\"confirmation\":\"REQUIRED_FOR_ANY_FUTURE_EFFECT\"}",
+      "stack": "AssertionError [ERR_ASSERTION]: Declared age contradicts adult population {\"basePlanId\":\"QUALITY-PLAN\",\"basePlanRevision\":\"23\",\"basePlanHash\":\"54761f95b8ba5eb9f7c8549ce1f612408da05bdcacc48558a98895c585b42952\",\"athleteId\":\"QUALITY-ATHLETE\",\"scope\":\"NEXT_REVIEWED_HORIZON\",\"sessions\":[{\"session_id\":\"primary\",\"day\":\"MON\",\"recipeId\":\"R2-SQUAT-2X8\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{\"loadKg\":72.5,\"targetRir\":2},\"modality\":\"STRENGTH\",\"family\":\"SQUAT\",\"prescription\":{\"exercise\":\"back_squat_familiar_configuration\",\"sets\":2,\"reps\":8,\"loadKg\":72.5,\"restSeconds\":180,\"targetRir\":2,\"technique\":\"Previously demonstrated configuration; no grinding or technique degradation\"}}],\"confirmation\":\"REQUIRED_FOR_ANY_FUTURE_EFFECT\"}\n    at noPositive (file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:43:55)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:86:135\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:94:39\n    at Array.map (<anonymous>)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:94:18\n    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)\n    at async node:internal/modules/esm/loader:643:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)"
+    },
+    {
+      "id": "contradictory-minor-age-REDUCE_RUN_REPETITION",
+      "status": "FAIL",
+      "message": "Declared age contradicts adult population {\"basePlanId\":\"QUALITY-PLAN\",\"basePlanRevision\":\"23\",\"basePlanHash\":\"337b28e5326c1fdc6b04e67876f80b68bc568e11e5ee888d1a0592d5ed5e1c0a\",\"athleteId\":\"QUALITY-ATHLETE\",\"scope\":\"NEXT_REVIEWED_HORIZON\",\"sessions\":[{\"session_id\":\"primary\",\"day\":\"MON\",\"recipeId\":\"R2-RUN-4X3\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{\"paceSecondsPerKm\":331},\"modality\":\"RUN\",\"family\":\"VO2_STYLE\",\"prescription\":{\"warmupMinutes\":10,\"repetitions\":4,\"workMinutes\":3,\"recoveryBetweenRepetitionsSeconds\":120,\"recoveryMode\":\"EASY_JOG_OR_WALK\",\"cooldownMinutes\":10,\"target\":{\"method\":\"PACE\",\"construct\":\"FAMILIAR_FIELD_SESSION_TARGET\",\"paceSecondsPerKm\":331,\"noVO2OrLT2Equivalence\":true}}}],\"confirmation\":\"REQUIRED_FOR_ANY_FUTURE_EFFECT\"}",
+      "stack": "AssertionError [ERR_ASSERTION]: Declared age contradicts adult population {\"basePlanId\":\"QUALITY-PLAN\",\"basePlanRevision\":\"23\",\"basePlanHash\":\"337b28e5326c1fdc6b04e67876f80b68bc568e11e5ee888d1a0592d5ed5e1c0a\",\"athleteId\":\"QUALITY-ATHLETE\",\"scope\":\"NEXT_REVIEWED_HORIZON\",\"sessions\":[{\"session_id\":\"primary\",\"day\":\"MON\",\"recipeId\":\"R2-RUN-4X3\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{\"paceSecondsPerKm\":331},\"modality\":\"RUN\",\"family\":\"VO2_STYLE\",\"prescription\":{\"warmupMinutes\":10,\"repetitions\":4,\"workMinutes\":3,\"recoveryBetweenRepetitionsSeconds\":120,\"recoveryMode\":\"EASY_JOG_OR_WALK\",\"cooldownMinutes\":10,\"target\":{\"method\":\"PACE\",\"construct\":\"FAMILIAR_FIELD_SESSION_TARGET\",\"paceSecondsPerKm\":331,\"noVO2OrLT2Equivalence\":true}}}],\"confirmation\":\"REQUIRED_FOR_ANY_FUTURE_EFFECT\"}\n    at noPositive (file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:43:55)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:86:135\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:94:39\n    at Array.map (<anonymous>)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:94:18\n    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)\n    at async node:internal/modules/esm/loader:643:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)"
+    },
+    {
+      "id": "contradictory-minor-age-PROGRESS_RUN",
+      "status": "FAIL",
+      "message": "Declared age contradicts adult population {\"basePlanId\":\"QUALITY-PLAN\",\"basePlanRevision\":\"23\",\"basePlanHash\":\"f10960ce2c65435318ee780e983376cf2a6480315ffb3fc061d9aa37bb203b59\",\"athleteId\":\"QUALITY-ATHLETE\",\"scope\":\"NEXT_REVIEWED_HORIZON\",\"sessions\":[{\"session_id\":\"primary\",\"day\":\"MON\",\"recipeId\":\"R2-EASY-45\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{},\"modality\":\"RUN\",\"family\":\"EASY\",\"prescription\":{\"durationMinutes\":45,\"target\":{\"method\":\"TALK_RPE\",\"construct\":\"EASY_EFFORT\",\"cue\":\"Comfortable conversational running, slow or walk to retain comfortable speech; stop and reassess if symptoms or technique/function changes\",\"noPhysiologicalZoneClaim\":true}}}],\"confirmation\":\"REQUIRED_FOR_ANY_FUTURE_EFFECT\"}",
+      "stack": "AssertionError [ERR_ASSERTION]: Declared age contradicts adult population {\"basePlanId\":\"QUALITY-PLAN\",\"basePlanRevision\":\"23\",\"basePlanHash\":\"f10960ce2c65435318ee780e983376cf2a6480315ffb3fc061d9aa37bb203b59\",\"athleteId\":\"QUALITY-ATHLETE\",\"scope\":\"NEXT_REVIEWED_HORIZON\",\"sessions\":[{\"session_id\":\"primary\",\"day\":\"MON\",\"recipeId\":\"R2-EASY-45\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{},\"modality\":\"RUN\",\"family\":\"EASY\",\"prescription\":{\"durationMinutes\":45,\"target\":{\"method\":\"TALK_RPE\",\"construct\":\"EASY_EFFORT\",\"cue\":\"Comfortable conversational running, slow or walk to retain comfortable speech; stop and reassess if symptoms or technique/function changes\",\"noPhysiologicalZoneClaim\":true}}}],\"confirmation\":\"REQUIRED_FOR_ANY_FUTURE_EFFECT\"}\n    at noPositive (file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:43:55)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:86:135\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:94:39\n    at Array.map (<anonymous>)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:94:18\n    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)\n    at async node:internal/modules/esm/loader:643:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)"
+    },
+    {
+      "id": "contradictory-minor-age-RETURN_RUN",
+      "status": "FAIL",
+      "message": "Declared age contradicts adult population {\"basePlanId\":\"QUALITY-PLAN\",\"basePlanRevision\":\"23\",\"basePlanHash\":\"f10960ce2c65435318ee780e983376cf2a6480315ffb3fc061d9aa37bb203b59\",\"athleteId\":\"QUALITY-ATHLETE\",\"scope\":\"FIRST_RETURN_SESSION_ONLY\",\"sessions\":[{\"session_id\":\"return-run\",\"day\":\"WED\",\"recipeId\":\"R2-EASY-20\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{},\"modality\":\"RUN\",\"family\":\"EASY\",\"prescription\":{\"durationMinutes\":20,\"target\":{\"method\":\"TALK_RPE\",\"construct\":\"EASY_EFFORT\",\"cue\":\"Comfortable conversational running, slow or walk to retain comfortable speech; stop and reassess if symptoms or technique/function changes\",\"noPhysiologicalZoneClaim\":true}}}],\"confirmation\":\"REQUIRED_FOR_ANY_FUTURE_EFFECT\",\"preservedCompletedSessions\":[],\"unrelatedCurrentPlanPreserved\":true}",
+      "stack": "AssertionError [ERR_ASSERTION]: Declared age contradicts adult population {\"basePlanId\":\"QUALITY-PLAN\",\"basePlanRevision\":\"23\",\"basePlanHash\":\"f10960ce2c65435318ee780e983376cf2a6480315ffb3fc061d9aa37bb203b59\",\"athleteId\":\"QUALITY-ATHLETE\",\"scope\":\"FIRST_RETURN_SESSION_ONLY\",\"sessions\":[{\"session_id\":\"return-run\",\"day\":\"WED\",\"recipeId\":\"R2-EASY-20\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{},\"modality\":\"RUN\",\"family\":\"EASY\",\"prescription\":{\"durationMinutes\":20,\"target\":{\"method\":\"TALK_RPE\",\"construct\":\"EASY_EFFORT\",\"cue\":\"Comfortable conversational running, slow or walk to retain comfortable speech; stop and reassess if symptoms or technique/function changes\",\"noPhysiologicalZoneClaim\":true}}}],\"confirmation\":\"REQUIRED_FOR_ANY_FUTURE_EFFECT\",\"preservedCompletedSessions\":[],\"unrelatedCurrentPlanPreserved\":true}\n    at noPositive (file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:43:55)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:86:135\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:94:39\n    at Array.map (<anonymous>)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:94:18\n    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)\n    at async node:internal/modules/esm/loader:643:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)"
+    },
+    {
+      "id": "contradictory-minor-age-RETURN_STRENGTH",
+      "status": "FAIL",
+      "message": "Declared age contradicts adult population {\"basePlanId\":\"QUALITY-PLAN\",\"basePlanRevision\":\"23\",\"basePlanHash\":\"f10960ce2c65435318ee780e983376cf2a6480315ffb3fc061d9aa37bb203b59\",\"athleteId\":\"QUALITY-ATHLETE\",\"scope\":\"FIRST_RETURN_SESSIONS_ONLY\",\"sessions\":[{\"session_id\":\"est-strength-0\",\"day\":\"WED\",\"recipeId\":\"R2-ST-EST-1X8\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{\"loadsKg\":{\"legPress\":28,\"machineChestPress\":10,\"seatedCableRow\":22,\"seatedLegCurl\":18}},\"modality\":\"STRENGTH\",\"family\":\"ESTABLISHMENT\",\"prescription\":{\"warmup\":\"5min easy movement then previously demonstrated task rehearsal\",\"exercises\":[{\"exercise\":\"legPress\",\"sets\":1,\"reps\":8,\"loadKg\":28,\"restSeconds\":120,\"effort\":\"Easy/moderate, clearly stop before failure; no RIR precision inferred\"},{\"exercise\":\"machineChestPress\",\"sets\":1,\"reps\":8,\"loadKg\":10,\"restSeconds\":120,\"effort\":\"Easy/moderate, clearly stop before failure; no RIR precision inferred\"},{\"exercise\":\"seatedCableRow\",\"sets\":1,\"reps\":8,\"loadKg\":22,\"restSeconds\":120,\"effort\":\"Easy/moderate, clearly stop before failure; no RIR precision inferred\"},{\"exercise\":\"seatedLegCurl\",\"sets\":1,\"reps\":8,\"loadKg\":18,\"restSeconds\":120,\"effort\":\"Easy/moderate, clearly stop before failure; no RIR precision inferred\"}]}},{\"session_id\":\"est-strength-1\",\"day\":\"SAT\",\"recipeId\":\"R2-ST-EST-1X8\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{\"loadsKg\":{\"legPress\":28,\"machineChestPress\":10,\"seatedCableRow\":22,\"seatedLegCurl\":18}},\"modality\":\"STRENGTH\",\"family\":\"ESTABLISHMENT\",\"prescription\":{\"warmup\":\"5min easy movement then previously demonstrated task rehearsal\",\"exercises\":[{\"exercise\":\"legPress\",\"sets\":1,\"reps\":8,\"loadKg\":28,\"restSeconds\":120,\"effort\":\"Easy/moderate, clearly stop before failure; no RIR precision inferred\"},{\"exercise\":\"machineChestPress\",\"sets\":1,\"reps\":8,\"loadKg\":10,\"restSeconds\":120,\"effort\":\"Easy/moderate, clearly stop before failure; no RIR precision inferred\"},{\"exercise\":\"seatedCableRow\",\"sets\":1,\"reps\":8,\"loadKg\":22,\"restSeconds\":120,\"effort\":\"Easy/moderate, clearly stop before failure; no RIR precision inferred\"},{\"exercise\":\"seatedLegCurl\",\"sets\":1,\"reps\":8,\"loadKg\":18,\"restSeconds\":120,\"effort\":\"Easy/moderate, clearly stop before failure; no RIR precision inferred\"}]}}],\"confirmation\":\"REQUIRED_FOR_ANY_FUTURE_EFFECT\",\"preservedCompletedSessions\":[],\"unrelatedCurrentPlanPreserved\":true}",
+      "stack": "AssertionError [ERR_ASSERTION]: Declared age contradicts adult population {\"basePlanId\":\"QUALITY-PLAN\",\"basePlanRevision\":\"23\",\"basePlanHash\":\"f10960ce2c65435318ee780e983376cf2a6480315ffb3fc061d9aa37bb203b59\",\"athleteId\":\"QUALITY-ATHLETE\",\"scope\":\"FIRST_RETURN_SESSIONS_ONLY\",\"sessions\":[{\"session_id\":\"est-strength-0\",\"day\":\"WED\",\"recipeId\":\"R2-ST-EST-1X8\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{\"loadsKg\":{\"legPress\":28,\"machineChestPress\":10,\"seatedCableRow\":22,\"seatedLegCurl\":18}},\"modality\":\"STRENGTH\",\"family\":\"ESTABLISHMENT\",\"prescription\":{\"warmup\":\"5min easy movement then previously demonstrated task rehearsal\",\"exercises\":[{\"exercise\":\"legPress\",\"sets\":1,\"reps\":8,\"loadKg\":28,\"restSeconds\":120,\"effort\":\"Easy/moderate, clearly stop before failure; no RIR precision inferred\"},{\"exercise\":\"machineChestPress\",\"sets\":1,\"reps\":8,\"loadKg\":10,\"restSeconds\":120,\"effort\":\"Easy/moderate, clearly stop before failure; no RIR precision inferred\"},{\"exercise\":\"seatedCableRow\",\"sets\":1,\"reps\":8,\"loadKg\":22,\"restSeconds\":120,\"effort\":\"Easy/moderate, clearly stop before failure; no RIR precision inferred\"},{\"exercise\":\"seatedLegCurl\",\"sets\":1,\"reps\":8,\"loadKg\":18,\"restSeconds\":120,\"effort\":\"Easy/moderate, clearly stop before failure; no RIR precision inferred\"}]}},{\"session_id\":\"est-strength-1\",\"day\":\"SAT\",\"recipeId\":\"R2-ST-EST-1X8\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{\"loadsKg\":{\"legPress\":28,\"machineChestPress\":10,\"seatedCableRow\":22,\"seatedLegCurl\":18}},\"modality\":\"STRENGTH\",\"family\":\"ESTABLISHMENT\",\"prescription\":{\"warmup\":\"5min easy movement then previously demonstrated task rehearsal\",\"exercises\":[{\"exercise\":\"legPress\",\"sets\":1,\"reps\":8,\"loadKg\":28,\"restSeconds\":120,\"effort\":\"Easy/moderate, clearly stop before failure; no RIR precision inferred\"},{\"exercise\":\"machineChestPress\",\"sets\":1,\"reps\":8,\"loadKg\":10,\"restSeconds\":120,\"effort\":\"Easy/moderate, clearly stop before failure; no RIR precision inferred\"},{\"exercise\":\"seatedCableRow\",\"sets\":1,\"reps\":8,\"loadKg\":22,\"restSeconds\":120,\"effort\":\"Easy/moderate, clearly stop before failure; no RIR precision inferred\"},{\"exercise\":\"seatedLegCurl\",\"sets\":1,\"reps\":8,\"loadKg\":18,\"restSeconds\":120,\"effort\":\"Easy/moderate, clearly stop before failure; no RIR precision inferred\"}]}}],\"confirmation\":\"REQUIRED_FOR_ANY_FUTURE_EFFECT\",\"preservedCompletedSessions\":[],\"unrelatedCurrentPlanPreserved\":true}\n    at noPositive (file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:43:55)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:86:135\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:94:39\n    at Array.map (<anonymous>)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:94:18\n    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)\n    at async node:internal/modules/esm/loader:643:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)"
+    },
+    {
+      "id": "contradictory-minor-age-CALIBRATE_RUN",
+      "status": "FAIL",
+      "message": "Declared age contradicts adult population {\"basePlanId\":\"QUALITY-PLAN\",\"basePlanRevision\":\"23\",\"basePlanHash\":\"70fd05ff9d160fa6f1727cb5d7a0cff19c549301e0794362ab7ca3b91a51d2b3\",\"athleteId\":\"QUALITY-ATHLETE\",\"scope\":\"NEXT_REVIEWED_HORIZON\",\"sessions\":[{\"session_id\":\"primary\",\"day\":\"MON\",\"recipeId\":\"R2-EASY-20\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{},\"modality\":\"RUN\",\"family\":\"EASY\",\"prescription\":{\"durationMinutes\":20,\"target\":{\"method\":\"TALK_RPE\",\"construct\":\"EASY_EFFORT\",\"cue\":\"Comfortable conversational running, slow or walk to retain comfortable speech; stop and reassess if symptoms or technique/function changes\",\"noPhysiologicalZoneClaim\":true}}}],\"confirmation\":\"REQUIRED_FOR_ANY_FUTURE_EFFECT\"}",
+      "stack": "AssertionError [ERR_ASSERTION]: Declared age contradicts adult population {\"basePlanId\":\"QUALITY-PLAN\",\"basePlanRevision\":\"23\",\"basePlanHash\":\"70fd05ff9d160fa6f1727cb5d7a0cff19c549301e0794362ab7ca3b91a51d2b3\",\"athleteId\":\"QUALITY-ATHLETE\",\"scope\":\"NEXT_REVIEWED_HORIZON\",\"sessions\":[{\"session_id\":\"primary\",\"day\":\"MON\",\"recipeId\":\"R2-EASY-20\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{},\"modality\":\"RUN\",\"family\":\"EASY\",\"prescription\":{\"durationMinutes\":20,\"target\":{\"method\":\"TALK_RPE\",\"construct\":\"EASY_EFFORT\",\"cue\":\"Comfortable conversational running, slow or walk to retain comfortable speech; stop and reassess if symptoms or technique/function changes\",\"noPhysiologicalZoneClaim\":true}}}],\"confirmation\":\"REQUIRED_FOR_ANY_FUTURE_EFFECT\"}\n    at noPositive (file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:43:55)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:86:135\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:94:39\n    at Array.map (<anonymous>)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:94:18\n    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)\n    at async node:internal/modules/esm/loader:643:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)"
+    },
+    {
+      "id": "contradictory-minor-age-RANK_OPTIONS",
+      "status": "FAIL",
+      "message": "Declared age contradicts adult population {\"basePlanId\":\"QUALITY-PLAN\",\"basePlanRevision\":\"23\",\"basePlanHash\":\"c51a956bd3d972779d7fbbe337a7763770dd95ba9b5519d4def8d939dcffae68\",\"athleteId\":\"QUALITY-ATHLETE\",\"scope\":\"NEXT_REVIEWED_HORIZON\",\"sessions\":[{\"session_id\":\"primary\",\"day\":\"WED\",\"recipeId\":\"R2-LOWER-CALF\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{\"loadKg\":72.5,\"targetRir\":2},\"modality\":\"STRENGTH\",\"family\":\"LOWER\",\"prescription\":{\"exercises\":[{\"exercise\":\"back_squat_familiar_configuration\",\"sets\":3,\"reps\":8,\"loadKg\":72.5,\"restSeconds\":180,\"targetRir\":2,\"essential\":true},{\"exercise\":\"calf_raise_familiar_bodyweight\",\"sets\":2,\"reps\":12,\"restSeconds\":120,\"optional\":true}]}}],\"confirmation\":\"REQUIRED_FOR_ANY_FUTURE_EFFECT\",\"learning\":{\"causalClaim\":false,\"populationPriorVisible\":true,\"changedRanking\":[\"WED_LOWER\",\"MON_LOWER\"],\"scope\":\"EXACT_COMPARABLE_OBSERVATIONAL_CONTEXT\",\"minimumCountLaw\":false}}",
+      "stack": "AssertionError [ERR_ASSERTION]: Declared age contradicts adult population {\"basePlanId\":\"QUALITY-PLAN\",\"basePlanRevision\":\"23\",\"basePlanHash\":\"c51a956bd3d972779d7fbbe337a7763770dd95ba9b5519d4def8d939dcffae68\",\"athleteId\":\"QUALITY-ATHLETE\",\"scope\":\"NEXT_REVIEWED_HORIZON\",\"sessions\":[{\"session_id\":\"primary\",\"day\":\"WED\",\"recipeId\":\"R2-LOWER-CALF\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{\"loadKg\":72.5,\"targetRir\":2},\"modality\":\"STRENGTH\",\"family\":\"LOWER\",\"prescription\":{\"exercises\":[{\"exercise\":\"back_squat_familiar_configuration\",\"sets\":3,\"reps\":8,\"loadKg\":72.5,\"restSeconds\":180,\"targetRir\":2,\"essential\":true},{\"exercise\":\"calf_raise_familiar_bodyweight\",\"sets\":2,\"reps\":12,\"restSeconds\":120,\"optional\":true}]}}],\"confirmation\":\"REQUIRED_FOR_ANY_FUTURE_EFFECT\",\"learning\":{\"causalClaim\":false,\"populationPriorVisible\":true,\"changedRanking\":[\"WED_LOWER\",\"MON_LOWER\"],\"scope\":\"EXACT_COMPARABLE_OBSERVATIONAL_CONTEXT\",\"minimumCountLaw\":false}}\n    at noPositive (file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:43:55)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:86:135\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:94:39\n    at Array.map (<anonymous>)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:94:18\n    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)\n    at async node:internal/modules/esm/loader:643:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)"
+    },
+    {
+      "id": "impossible-observation-calendar-date",
+      "status": "FAIL",
+      "message": "February30 is not a real observation date {\"basePlanId\":\"QUALITY-PLAN\",\"basePlanRevision\":\"23\",\"basePlanHash\":\"c51a956bd3d972779d7fbbe337a7763770dd95ba9b5519d4def8d939dcffae68\",\"athleteId\":\"QUALITY-ATHLETE\",\"scope\":\"NEXT_REVIEWED_HORIZON\",\"sessions\":[{\"session_id\":\"primary\",\"day\":\"MON\",\"recipeId\":\"R2-LOWER-ONE-CALF\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{\"loadKg\":72.5,\"targetRir\":2},\"modality\":\"STRENGTH\",\"family\":\"LOWER\",\"prescription\":{\"exercises\":[{\"exercise\":\"back_squat_familiar_configuration\",\"sets\":3,\"reps\":8,\"loadKg\":72.5,\"restSeconds\":180,\"targetRir\":2,\"essential\":true},{\"exercise\":\"calf_raise_familiar_bodyweight\",\"sets\":1,\"reps\":12,\"restSeconds\":120,\"optional\":true}]}}],\"confirmation\":\"REQUIRED_FOR_ANY_FUTURE_EFFECT\"}",
+      "stack": "AssertionError [ERR_ASSERTION]: February30 is not a real observation date {\"basePlanId\":\"QUALITY-PLAN\",\"basePlanRevision\":\"23\",\"basePlanHash\":\"c51a956bd3d972779d7fbbe337a7763770dd95ba9b5519d4def8d939dcffae68\",\"athleteId\":\"QUALITY-ATHLETE\",\"scope\":\"NEXT_REVIEWED_HORIZON\",\"sessions\":[{\"session_id\":\"primary\",\"day\":\"MON\",\"recipeId\":\"R2-LOWER-ONE-CALF\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{\"loadKg\":72.5,\"targetRir\":2},\"modality\":\"STRENGTH\",\"family\":\"LOWER\",\"prescription\":{\"exercises\":[{\"exercise\":\"back_squat_familiar_configuration\",\"sets\":3,\"reps\":8,\"loadKg\":72.5,\"restSeconds\":180,\"targetRir\":2,\"essential\":true},{\"exercise\":\"calf_raise_familiar_bodyweight\",\"sets\":1,\"reps\":12,\"restSeconds\":120,\"optional\":true}]}}],\"confirmation\":\"REQUIRED_FOR_ANY_FUTURE_EFFECT\"}\n    at noPositive (file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:43:55)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:87:128\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:94:39\n    at Array.map (<anonymous>)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:94:18\n    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)\n    at async node:internal/modules/esm/loader:643:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)"
+    },
+    {
+      "id": "impossible-episode-calendar-date",
+      "status": "FAIL",
+      "message": "February30 is not a real historical observation date {\"basePlanId\":\"QUALITY-PLAN\",\"basePlanRevision\":\"23\",\"basePlanHash\":\"f10960ce2c65435318ee780e983376cf2a6480315ffb3fc061d9aa37bb203b59\",\"athleteId\":\"QUALITY-ATHLETE\",\"scope\":\"NEXT_REVIEWED_HORIZON\",\"sessions\":[{\"session_id\":\"primary\",\"day\":\"MON\",\"recipeId\":\"R2-EASY-45\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{},\"modality\":\"RUN\",\"family\":\"EASY\",\"prescription\":{\"durationMinutes\":45,\"target\":{\"method\":\"TALK_RPE\",\"construct\":\"EASY_EFFORT\",\"cue\":\"Comfortable conversational running, slow or walk to retain comfortable speech; stop and reassess if symptoms or technique/function changes\",\"noPhysiologicalZoneClaim\":true}}}],\"confirmation\":\"REQUIRED_FOR_ANY_FUTURE_EFFECT\"}",
+      "stack": "AssertionError [ERR_ASSERTION]: February30 is not a real historical observation date {\"basePlanId\":\"QUALITY-PLAN\",\"basePlanRevision\":\"23\",\"basePlanHash\":\"f10960ce2c65435318ee780e983376cf2a6480315ffb3fc061d9aa37bb203b59\",\"athleteId\":\"QUALITY-ATHLETE\",\"scope\":\"NEXT_REVIEWED_HORIZON\",\"sessions\":[{\"session_id\":\"primary\",\"day\":\"MON\",\"recipeId\":\"R2-EASY-45\",\"recipeRevision\":\"R2-RECIPE-1\",\"status\":\"PLANNED\",\"optional\":false,\"parameters\":{},\"modality\":\"RUN\",\"family\":\"EASY\",\"prescription\":{\"durationMinutes\":45,\"target\":{\"method\":\"TALK_RPE\",\"construct\":\"EASY_EFFORT\",\"cue\":\"Comfortable conversational running, slow or walk to retain comfortable speech; stop and reassess if symptoms or technique/function changes\",\"noPhysiologicalZoneClaim\":true}}}],\"confirmation\":\"REQUIRED_FOR_ANY_FUTURE_EFFECT\"}\n    at noPositive (file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:43:55)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:88:135\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:94:39\n    at Array.map (<anonymous>)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-closure-r2-2026-10-24/reviews/quality-adversarial.mjs:94:18\n    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)\n    at async node:internal/modules/esm/loader:643:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)"
+    },
+    {
+      "id": "unapproved-taper-remains-held-TAPER_10K",
+      "status": "PASS"
+    },
+    {
+      "id": "unapproved-taper-remains-held-TAPER_HALF",
+      "status": "PASS"
+    },
+    {
+      "id": "unapproved-taper-remains-held-TAPER_BALANCED",
+      "status": "PASS"
+    },
+    {
+      "id": "unrelated-workload-does-not-grow",
+      "status": "PASS"
+    },
+    {
+      "id": "priorities-SYSTEMIC_FATIGUE",
+      "status": "PASS"
+    },
+    {
+      "id": "priorities-LOCAL_FATIGUE",
+      "status": "PASS"
+    }
+  ]
+}

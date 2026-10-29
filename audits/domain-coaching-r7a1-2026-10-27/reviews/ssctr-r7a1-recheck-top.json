@@ -1,0 +1,112 @@
+{
+ "mission": "DOMAIN_COACHING_R7-A.1 (Weekly Composition Closure), the single narrow re-check of the single correction cycle",
+ "gate": "R7A1_SCIENTIFIC_REVIEW",
+ "kind": "narrow re-check (D57, D58 with my grids; the changed files at 18ec48f3...; S1 and S4-S10)",
+ "reviewer": "SSCTR via documented fallback (fresh default instance loading adapter, constitution 1.0.0 and skill)",
+ "reviewerDetails": "A fresh default Claude Code instance (claude-opus-5-5), not the R7A1-SSCTR-r1 instance; it explicitly loaded .claude/agents/sports-science-concurrent-training-reviewer.md, CONSTITUTION.md (SSCTR-CONST-1.0.0), .agents/skills/sports-science-review/SKILL.md, EVIDENCE_PROTOCOL.md, REVIEW_TEMPLATE.md, decision.schema.json and ESCALATION_AND_HUMAN_REVALIDATION.md. The native SSCTR agent type is not exposed in this session. No Agent tool. It did not author the policy, the runtime, the correction or the tests.",
+ "authority": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY for bounded nonclinical internal sporting decisions only; clinical judgment stays CLINICAL_HUMAN_REQUIRED and unknown eligibility is ASK",
+ "humanValidation": false,
+ "empiricalProductValidation": false,
+ "clinicalClearance": false,
+ "runtimeSovereignty": false,
+ "productTruthPublication": false,
+ "verdict": {
+  "R7A1_SCIENTIFIC_REVIEW": "NOT_READY",
+  "reason": "One blocking finding in my scope: D59 (new in this re-check, pre-existing since at least R7A-FREEZE-2, outside the FREEZE-A1 to A2 delta), a known equivalent state mode of D53. A moderate return whose pause week holds the first executed exposures of an exercise starts from a state that predates them; when that week is the athlete's first loaded week, every exercise executed before the break restarts as a first establishment: no return entry (672 of 672 exercises), the block in progress earns its set, 1,582 rows above the declared ceiling and 226 counts two sets above the largest since the return (NONE and FAMILIAR athletes, every case of the configuration). Under Founder request §10, D53 cannot be CLOSED while a known equivalent state mode allows a restoration jump, and §13 requires D53 CLOSED. Both findings of my first review are closed: D57 and D58. D56 is closed. S1 and S4-S10 hold at FREEZE-A2. The fix is runtime-only: no policy text, clinical semantics or Founder decision is needed for the ruling."
+ },
+ "items": [
+  {"id": "D57", "status": "CLOSED", "blocking": false, "basis": "Restoration grid (864 timelines, 0 skipped) on R7A1-FREEZE-A2: B 0 (FREEZE-A1: 38), C 0, cap rises or ends after a week whose last exposure was not whole 0 of 4,211 (FREEZE-A1: 806), caps held after a whole week below the ceiling 0; equal to the author's A2 re-run on every count. Cap diagnostic: 9,912 binding cap-weeks, 0 unexplained; NONE/NOVICE extension (360 timelines): B 0, 0 unexplained. Both D57 tests pass (505/505). The long caps (L 677: 87 ended, 590 on) hold no count back without a declared reason (see longCaps)."},
+  {"id": "D58", "status": "CLOSED", "blocking": false, "basis": "Short-return grid (315 cases) on R7A1-FREEZE-A2: 0 defects after the return and after the review, 0 without a slot, 0 extra, 0 history changed (FREEZE-A1: 96 and 96); author combination probe re-run 0 of 136; my probe S10: next week's first quality slot runs easy after a short return reported the evening of a missed last quality slot, in both orders. The three readings of the dossier are accepted, and two more are ruled (see qualitySlotReadings)."},
+  {"id": "D59", "status": "OPEN", "blocking": true, "basis": "New, D53 class, pre-existing (identical counts on R7A-FREEZE-2). returnAfterPause starts the return from program.stateTrace[pauseWeek], the state at the start of the break's own week, so an exercise whose first executed exposure falls in that week before the break has no state at the return. First-week return grid (306 cases): NONE E 264/264, O 561, B 109; FAMILIAR E 408/408, O 1,021, B 117; KNOWN (control) E 0, B 0, O 72 (the ceiling of an exercise first done in the pause week falls back to the normal count). Traces: NONE 1x5 @RIR3 then 3x5 (1 to 3); FAMILIAR 2x5 @RIR3 then 4x5 at 40 minutes (2 to 4); the declared recipe gives 1 set @RIR4, step 2, and the ceiling 2 until a later completed block. Physiological size modest (one pre-break week leaves repeated-bout protection, RIR 3 or more); it blocks on the Founder's D53 criterion. Required change (runtime only): the return's start state keeps, for every exercise executed in the pause week before the break, that it was performed (in use, last performed date) and its last executed count outside a phase reduction; it then enters the return steps, the block in progress earns no set, and no count exceeds the largest since the return by more than one set. Regression: ssctr-r7a1-recheck-firstweek.mjs at E = O = B = 0 for NONE and FAMILIAR and O = 0 for KNOWN, with my other grids unchanged. Record R7A1-SSCTR-D59-PAUSE-WEEK-START (REVISE)."},
+  {"id": "S1", "status": "HOLDS", "blocking": false, "basis": "D56 formulation (the last executed exposure) unchanged in code; my grid A 0 (rise and end); author D56 grid re-run equal to its A2 output; QE-R7A-22 section of my probe unchanged."},
+  {"id": "S4", "status": "HOLDS", "blocking": false, "basis": "My probe S4 equals its FREEZE-A1 output; the provenance change (QE-R7A1-05) reads a known load instead of an unreadable one, consistent with R25."},
+  {"id": "S5", "status": "HOLDS", "blocking": false, "basis": "Probe S5 unchanged; a return correction made in a later week now supersedes the earlier report (QE-R7A1-03), consistent with S5. The start state of a return is D59, outside S5."},
+  {"id": "S6", "status": "HOLDS", "blocking": false, "basis": "Probe S6 differs only where QE-R7A1-01 now records an equipment statement with nothing to substitute: a complete unreported week then holds next week (82.5/20) and the later review gives 85/22, equal to review-first, my S6 ruling 2 reaching one more handler. The review's own inputs (systemic determination, confirmed loads) now start next week for every handler (QE-R7A1-02), consistent with S6 and S10."},
+  {"id": "S7", "status": "HOLDS", "blocking": false, "basis": "Probe S7 unchanged; C1 now applies alone in fatigueSessions, unavailableSessions and conflictSessions, so a same-day session still ahead is reached (accepted C1 reading); a move never uses a date without its equipment."},
+  {"id": "S8", "status": "HOLDS", "blocking": false, "basis": "Probe S8 unchanged; the author tests for QE-R7A-01, 03, 19 and O-1 pass (505/505)."},
+  {"id": "S9", "status": "HOLDS", "blocking": false, "basis": "Probe S9 unchanged; round-12 instrument V_D47reviews as on FREEZE-A1 (race statement 25 to 30 minutes, still the longest continuous run planned before the race)."},
+  {"id": "S10", "status": "HOLDS", "blocking": false, "basis": "Probe S10 differs only by the D58 fix; no quality run follows a systemic fatigue report in either order (my E1 and the author's 136-case probe); no move uses a slot marked unavailable."}
+ ],
+ "d53": {"status": "OPEN", "basis": "The original paths stay corrected, D56 is corrected (D57 closed), and the SSCTR approves the final semantics of the caps, but a known equivalent state mode allows a restoration jump: D59 (Founder request §10, third clause). D53 closes when D59 is fixed and the first-week grid is at 0, with the engineering judge finding no further equivalent."},
+ "d56": {"status": "CLOSED", "basis": "The class 'a restoration ceiling must not be reset or bypassed by temporary schedule or time constraints' is met at R7A1-FREEZE-A2: no regain or return cap rises or ends after a week whose last executed exposure was trimmed or phase-reduced (0 of 4,211 such cap-weeks), the return cap ends only when it covers next week's count (D57), and no covered count comes back more than one set above the largest since the break (B 0 in 1,224 timelines). The cost of 'last' (L 677) is conservative and declared (R30). D59 is not a time constraint; it keeps the family, D53, open."},
+ "earlierRecords": [
+  {"id": "R7A1-SSCTR-D56-FORMULATION", "bindsFreezeA2": true, "basis": "Re-bound as R7A1-SSCTR-r2. D57 condition now met (grid A, B, C at 0; tests). D59 added as a scope exclusion."},
+  {"id": "R7A1-SSCTR-RESTORATION-SCOPE", "bindsFreezeA2": true, "basis": "Re-bound unchanged (abstention, no queue item): U 237, the same exercises. D59 is distinguished from the R23 class because its exercises were executed before the break."},
+  {"id": "R7A1-SSCTR-SAME-DAY", "bindsFreezeA2": true, "basis": "Re-bound. D58 condition now met; C1 now applied by every same-day handler; readings by reference to R7A1-SSCTR-QUALITY-SLOT-READINGS; D59 excluded."},
+  {"id": "R7A1-SSCTR-DOSE-READING", "bindsFreezeA2": true, "basis": "Re-bound unchanged: probe S4 equal; provenance change consistent. D59 excluded."},
+  {"id": "R7A1-SSCTR-COMPOSITION", "bindsFreezeA2": true, "basis": "Re-bound: S5 extended to a later-week correction, S6 ruling 2 reaches the equipment handler, S10 includes the D58 cases; the start state of a return (D59) is excluded."},
+  {"id": "R7A1-SSCTR-REGAIN-BASE", "bindsFreezeA2": true, "basis": "Re-bound. Condition 9 (D56 final) now met for the end of the return cap (D57). D59 excluded."},
+  {"id": "R7A1-SSCTR-REESTABLISH-PHASE", "bindsFreezeA2": true, "basis": "Re-bound unchanged: C 0, instrument AK equal."},
+  {"id": "R7A1-SSCTR-SPLIT-WEEK", "bindsFreezeA2": true, "basis": "Re-bound unchanged: A 0, A2 held 0, R20 unchanged."},
+  {"id": "R7A1-SSCTR-ITEMS-5-8", "bindsFreezeA2": true, "basis": "Re-bound unchanged: D55 still met, item 7 unchanged; D59 is a different state mode (no exercise in the return steps at all)."},
+  {"id": "R7A1-SSCTR-CYCLE2-COMPOSITIONS", "bindsFreezeA2": true, "basis": "Re-bound. Condition 5 (R27) now met for D58; condition 9 (D56) met for the end of the return cap; readings by reference; D59 excluded."}
+ ],
+ "newFindings": [
+  {"id": "D59", "blocking": true, "kind": "D53 class, pre-existing", "owner": "Runtime author (returnAfterPause), then the SSCTR and the engineering judge on a new freeze", "summary": "A return re-bases on the start of the pause week and loses an exercise's first executed exposures in that week; in the first loaded week the whole return recipe is bypassed (entry, step 2, ceiling, block-in-progress rule). Also narrows the R6 round-11 acceptance 'Sessions before the pause, in the pause week' to exercises already in state at the start of that week."},
+  {"id": "N1 (R32)", "blocking": false, "kind": "reading, conservative", "owner": "Runtime author with Product Constitution & Governance (next policy revision)", "summary": "Condition 7 does not say whether a quality run eased by another adaptation, or a race touch or a race, counts as the short return's easy slot. FREEZE-A2 says no: fatigue-first gives one more easy quality session next week than return-first, and a short break in the taper or race week carries the easy slot to the first next-block threshold after the post-event week."},
+  {"id": "N2 (R33)", "blocking": false, "kind": "adherence semantics (G03)", "owner": "Product/UX with Data, then the policy revision", "summary": "An easy slot not done (missed report or unreported) does not pass on, while one skipped prospectively (unavailable, event conflict) does. Next week's quality is then the held dose (41, the same as when the slot was done). Declare whether a slot made easy and not done owes its easy run."},
+  {"id": "N3 (R18)", "blocking": false, "kind": "weekly-review contract, already owned", "owner": "Engineering with Product/Data", "summary": "Without the weekly review of the week holding a skipped easy slot, a report made next week does not carry it (next week keeps THRESHOLD 48, the conditional plan). Covered by the weekly-review condition of every record."},
+  {"id": "N4", "blocking": false, "kind": "observation on the D57 end test", "owner": "Runtime author, at the next change of advanceStrength", "summary": "The return-cap end reads next week's count as this week's normal count plus the block set. Another rise of the normal count at a transition (the NONE-class first-block clamp, a priorSets regain) was not reached with a cap in force in 1,224 timelines (B 0); computing next week's count directly would remove the dependency."},
+  {"id": "N5 (R34)", "blocking": false, "kind": "cost of R20, declared", "owner": "Runtime author with Product Constitution & Governance (next policy revision)", "summary": "A return ceiling set by a pre-break count fitted to a short time budget binds for many weeks once the budget rises (773 of 1,200 binding caps at the horizon are at the ceiling). Declared (strengthReturnSets, R20) and conservative; decide whether such a ceiling follows the count before the fit, still one set per whole week."}
+ ],
+ "qualitySlotReadings": {
+  "a_fatigueFirst": "Accepted. A run eased by systemic fatigue is no longer a quality slot; the return's easy slot is the next session that would run at quality dose. Other order: the return's slot is this week's and fatigue has nothing more to ease. Both orders: no quality run after the fatigue report, every dose at or below plan; next week EASY 41 (fatigue first) or THRESHOLD 41 held (return first). Non-blocking order dependence of one session (R32).",
+  "b_unavailableFirst": "Accepted. A skipped session is not a slot; the moved quality run is the slot if the move rule moved it, else next week's first quality slot (my E2: Tuesday skipped, next week's Tuesday EASY 41 after the review; the author's layout moves it to Thursday).",
+  "c_easySlotUnavailableAfter": "Accepted with the weekly-review condition. It passes on at the next composition from a later week, the weekly review at the latest; until then next week shows its planned quality run (THRESHOLD 48), a plan, not an executed dose. Without that review a next-week report does not carry it (R18).",
+  "d_easySlotNotDone_notNamed": "Accepted, non-blocking. A missed or unreported easy slot does not pass on; next week's quality is the held dose 41, equal to the control with the slot done and to a missed quality without a break (R33, G03).",
+  "e_noQualitySlotBeforeRace_notNamed": "Accepted, non-blocking. A short break in the taper week (after its quality) or in race week keeps the race touch and the race (condition 7 reads QUALITY only, unchanged since R6) and makes the first next-block threshold after the post-event week easy (EASY 48, week 15). Conservative, one session (R32)."
+ },
+ "longCaps": {
+  "ruling": "No long cap holds a count back without a declared reason.",
+  "bindingCapWeeks": 9912,
+  "causes": {"AT_CEILING": 4969, "FIRST": 2112, "HELD_LAST_PHASED": 1103, "HELD_LAST_TRIMMED": 884, "RISING": 838, "HELD_NOT_EXECUTED": 6, "UNEXPLAINED": 0},
+  "horizon": {"capsOn": 1244, "bindingThere": 1200, "notBindingThere": 44, "lastBindingCause": {"AT_CEILING": 773, "RISING": 267, "HELD_LAST_TRIMMED": 152, "NONE (binding from week 15 only, the D57 end test covering a block set)": 6, "HELD_NOT_EXECUTED": 2}},
+  "reading": "At the ceiling: the declared return ceiling (strengthReturnSets; R20 reads it after the time fit). Held after a phase-reduced or time-trimmed last exposure: the D56 'last' predicate (R30 for its cost). Rising: one set per whole week. First: the first week after the steps or the re-establishment. The L growth from 517 to 677 is the end of the return cap now waiting for a whole week that covers next week's count, which is D57 itself.",
+  "instrument": "ssctr-r7a1-recheck-caps.mjs (and its EXT extension)"
+ },
+ "deltaCheck": {
+  "changedFiles": ["src/r6-adaptation.mjs", "src/r6-composition.mjs", "src/r6-program.mjs", "src/r6-provenance.mjs"],
+  "addedFiles": ["test/r7a1-correction.test.mjs"],
+  "unchanged": "PROGRAM_POLICY_R6.json (canonical 18ec48f3..., file a75be1aa...), fixtures",
+  "sportingReach": [
+   "Review inputs (systemic determination, confirmed loads) start next week for every handler (QE-R7A1-02): approved, consistent with S6 and S10.",
+   "A return correction made in a later week supersedes the earlier report (QE-R7A1-03): approved, consistent with S5. The same line keeps stateTrace[pauseWeek] as the base, the root of D59, unchanged by the fix.",
+   "Same-day adaptations reach exactly the sessions still ahead (C1) in fatigue, unavailable-day and event-conflict handling (QE-R7A1-04): approved, the accepted C1 reading (a 06:00 systemic report now reduces that afternoon's strength).",
+   "A moved session never uses a date without its equipment; the final validation refuses such a row; an equipment statement with nothing to substitute is recorded (QE-R7A1-01): approved; it brings my S6 complete-week hold to this handler.",
+   "An unreadable load is filled from the other report's readable one (QE-R7A1-05): no sporting rule; feeds S4 with the known load.",
+   "D57 (advanceStrength setCap end) and D58 (shortReturnEasy, composeWeeks carry, returnAfterPause strip of later weeks): ruled above."
+  ]
+ },
+ "nonBlockingRecommendations": [
+  {"id": "R32", "kind": "new", "owner": "Runtime author with Product Constitution & Governance", "recommendation": "Declare whether a quality run eased by another adaptation, a race touch or a race discharges the short return's easy slot."},
+  {"id": "R33", "kind": "new", "owner": "Product/UX with Data, then the policy revision", "recommendation": "Declare whether a slot made easy and not done owes its easy run."},
+  {"id": "R34", "kind": "new", "owner": "Runtime author with Product Constitution & Governance", "recommendation": "Decide whether a return ceiling set by a time-fitted pre-break count follows the count before the fit once the budget rises, one set per whole week."},
+  {"id": "N4", "kind": "new, engineering", "owner": "Runtime author", "recommendation": "Compute next week's normal count directly in the return-cap end test."},
+  {"id": "R30, R31, R23, R26, R21, R17(b), R22, SHIFT-CLOCK, F-ACCESSORY-REPS, R18", "kind": "retained", "owner": "As in R7A1-SSCTR-r1", "recommendation": "Unchanged by this re-check."}
+ ],
+ "checksRun": [
+  "ssctr-r7a1-recheck-verify.mjs at the start and the end: 78/78 bound files match, source digest recomputed 71edc245..., policy 18ec48f3... (file a75be1aa...), delta from FREEZE-A1 by file.",
+  "node --test in CoachingCore (Node v24.19.0): 505/505 pass.",
+  "My restoration grid ssctr-r7a1-grid.mjs (byte-identical to r1, 622e02d7...), 4 shards merged: equal to the author's A2 re-run on every count.",
+  "My short-return grid ssctr-r7a1-short.mjs (a8a62c04...): equal to the author's A2 re-run.",
+  "My targeted probe ssctr-r7a1-probe.mjs (61d42287...): 4 leaves differ from its FREEZE-A1 output (S6 equipment hold, S10 D58), each explained.",
+  "My round-12 instrument copy ssctr-r7a1-instrument.mjs (618c110f..., byte-equal to probes/ssctr-r12-instrument.mjs) with R7A_PROBE_OUT: equal to the author's A2 output up to its own path; against my FREEZE-A1 output only the named D57 differences, no violation.",
+  "New: ssctr-r7a1-recheck-caps.mjs (cap causes; plus a NONE/NOVICE extension), ssctr-r7a1-recheck-d58.mjs (readings E1-E5), ssctr-r7a1-recheck-firstweek.mjs (D59, on FREEZE-A2 and the FREEZE-2 snapshot), ssctr-r7a1-recheck-trace.mjs (three traces).",
+  "Author probes re-run read-only: r7a1-composition-probes.mjs, r7a1-d56-grid.mjs, r7a1-d58-combinations.mjs: byte-equal to their A2 outputs.",
+  "node CoachingCore/scripts/verify-r7a1.mjs without --write: 14/17; open: mutation-check (its A2 output is not there yet), independent-reviews and deliverables (expected before closure); ssctr-instrument passes."
+ ],
+ "notRunOrRead": [
+  "Not run: npm run verify, npm run simulate, npm run demonstrations:r6, any earlier scripts/verify-r*.mjs, regress-r7a*.mjs, freeze-r7a1.mjs, prepare-r7a1.mjs, queue-r7a1.mjs, probes/mutation-check-r7a1.mjs.",
+  "Read only for D59 provenance, after my own finding: the engineering judge's R7A1 review and re-check lines that mention pauseWeek (QE-R7A1-03). Its findings were not otherwise read, to keep the judgments independent."
+ ],
+ "literatureAccess": {
+  "tools": "Node fetch to PubMed E-utilities (esearch, esummary and efetch, HTTP 200).",
+  "searches": "One directed search (Q3: repeated-bout duration in untrained or briefly trained people), 14 hits.",
+  "abstractsRead": ["Cleary 2002 (R7A1-S05)", "Margaritelis 2015 (R7A1-S06)"],
+  "fullTextRead": "None new. R6-S01, R6-S14 and R6-S48 (full text, read in R6) and R7A-S03 to S06 (abstracts) reused verbatim.",
+  "basis": "D57, D58 and D59 rest on the declared rules, my earlier conditions and the Founder's D53 criterion; the abstracts only calibrate D59's physiological size, and no ruling rests on them alone."
+ },
+ "escalation": "None needed for the ruling: no policy text change, no clinical semantics, no Founder decision, and the binding did not drift (digest equal at start and end). Under Founder request §11 a material blocker after the single re-check closes R7-A.1 as NOT_READY with no third cycle; the next mission is the Founder's. Smallest next mission: a bounded runtime-only correction of D59 in returnAfterPause (the start state of a return), regression ssctr-r7a1-recheck-firstweek.mjs at E = O = B = 0 with my other grids unchanged, one freeze, then one narrow SSCTR and engineering re-check.",
+ "housekeeping": "One of my background runs (the FREEZE-2 first-week grid) started in the parent folder audits/domain-coaching-r7a1-2026-10-27/ (a shell grouping error) and left three files of mine there (its error log, an empty output and a one-line log). I moved them to my scratchpad, deleted nothing, and reran the FREEZE-2 grid correctly in reviews/.",
+ "funding_trigger": {"state": "NOT_DECLARED", "declaration_ref": null, "declared_at": null}
+}

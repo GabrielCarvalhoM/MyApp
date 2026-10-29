@@ -1,0 +1,35 @@
+# Counterfactual decision model — R5
+
+Concrete feasible configurations and supplied dose alternatives are compared ordinally. There is no universal summed score. The trace records admissibility, contribution/protected stimulus, future impact, disruption and reversibility; increment magnitude is compared only within the same physical dimension.
+
+Scope: OFFLINE_SYNTHETIC_NODE24_REFERENCE. Candidate implementation; not Product Truth, production, clinical or empirical validation.
+
+## criteria
+
+- Admissibility
+- Goal contribution
+- Phase adequacy
+- Essential stimulus preservation
+- Clearly better feasible option
+- Necessity of trade-off
+- Minimum sufficient change
+- Comparable individual evidence
+- Future horizon impact
+- Corrective next observation
+
+## qualityClasses
+
+- BEST_SUPPORTED
+- ACCEPTABLE_ALTERNATIVE
+- SUBOPTIMAL
+- INSUFFICIENT_INFORMATION
+- UNSUPPORTED
+
+## qualityAuthority
+
+Runtime emits UNREVIEWED self-check. Independent case-specific reviewer owns quality labels; acceptable is never best-supported.
+
+## limits
+
+- Counterfactual labels are finite selector metadata, not exhaustive optimization
+- Some rejected larger changes have no executable recipe; they are not counted as admissible competitors

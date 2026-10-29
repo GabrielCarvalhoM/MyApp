@@ -1,0 +1,700 @@
+{
+ "probe": "R7AB-SELF-CHALLENGE-1",
+ "runtime": "QE_LIVE_ROOT",
+ "classes": {
+  "C1-unrelated-decision": {
+   "control": {
+    "point": "RETURN/w5/qa1-20",
+    "steps": {
+     "run": 0,
+     "mode": "RETURN",
+     "strength": {
+      "back-squat": 0,
+      "db-bench-press": 0,
+      "db-row": 0,
+      "db-calf-raise": 0,
+      "dead-bug": 0,
+      "db-rdl": 0,
+      "db-split-squat": 0
+     }
+    }
+   },
+   "cells": [
+    {
+     "clock": "mon0600",
+     "x": "equipmentWindow",
+     "xr": "MODIFY/SUBSTITUTE",
+     "point": "WEEK_START/w6/-",
+     "same": false
+    },
+    {
+     "clock": "mon0600",
+     "x": "equipmentNoop",
+     "xr": "KEEP/KEEP",
+     "point": "WEEK_START/w6/-",
+     "same": false
+    },
+    {
+     "clock": "mon0600",
+     "x": "equipmentSame",
+     "xr": "KEEP/KEEP",
+     "point": "WEEK_START/w6/-",
+     "same": false
+    },
+    {
+     "clock": "mon0600",
+     "x": "systemicFatigue",
+     "xr": "MODIFY/REDUCE",
+     "point": "WEEK_START/w6/-",
+     "same": false
+    },
+    {
+     "clock": "mon0600",
+     "x": "localFatigue",
+     "xr": "MODIFY/REDUCE",
+     "point": "WEEK_START/w6/-",
+     "same": false
+    },
+    {
+     "clock": "mon0600",
+     "x": "strengthMinutes",
+     "xr": "MODIFY/REARRANGE_FUTURE_WEEKS",
+     "point": "RETURN/w5/qa1-20",
+     "same": true
+    },
+    {
+     "clock": "mon0600",
+     "x": "sameSchedule",
+     "xr": "KEEP/KEEP",
+     "point": "RETURN/w5/qa1-20",
+     "same": true
+    },
+    {
+     "clock": "mon0600",
+     "x": "goalChange",
+     "xr": "MODIFY/REPLAN_FUTURE_PHASES",
+     "point": "RETURN/w5/qa1-20",
+     "same": true
+    },
+    {
+     "clock": "mon0600",
+     "x": "unavailableDay",
+     "xr": "MODIFY/RESCHEDULE_WITHIN_WEEK",
+     "point": "WEEK_START/w6/-",
+     "same": false
+    },
+    {
+     "clock": "mon0600",
+     "x": "missedNone",
+     "xr": "KEEP/KEEP",
+     "point": "RETURN/w5/qa1-20",
+     "same": true
+    },
+    {
+     "clock": "mon0600",
+     "x": "recovered",
+     "xr": "KEEP/KEEP",
+     "point": "RETURN/w5/qa1-20",
+     "same": true
+    },
+    {
+     "clock": "sun0600",
+     "x": "weeklyReview",
+     "xr": "MODIFY/GATED_NEXT_STEP",
+     "point": "WEEK_START/w6/-",
+     "steps": {
+      "run": 0,
+      "mode": "RETURN",
+      "strength": {
+       "back-squat": 1,
+       "db-bench-press": 0,
+       "db-row": 0,
+       "db-calf-raise": 1,
+       "dead-bug": 0,
+       "db-rdl": 0,
+       "db-split-squat": 0
+      }
+     }
+    },
+    {
+     "clock": "sun0600",
+     "x": "equipmentWindow",
+     "xr": "MODIFY/SUBSTITUTE",
+     "point": "WEEK_START/w6/-",
+     "steps": {
+      "run": 1,
+      "mode": "RETURN",
+      "strength": {
+       "back-squat": 1,
+       "db-bench-press": 0,
+       "db-row": 0,
+       "db-calf-raise": 1,
+       "dead-bug": 0,
+       "db-rdl": 0,
+       "db-split-squat": 0
+      }
+     }
+    },
+    {
+     "clock": "sun0600",
+     "x": "equipmentNoop",
+     "xr": "KEEP/KEEP",
+     "point": "WEEK_START/w6/-",
+     "steps": {
+      "run": 1,
+      "mode": "RETURN",
+      "strength": {
+       "back-squat": 1,
+       "db-bench-press": 0,
+       "db-row": 0,
+       "db-calf-raise": 1,
+       "dead-bug": 0,
+       "db-rdl": 0,
+       "db-split-squat": 0
+      }
+     }
+    },
+    {
+     "clock": "sun0600",
+     "x": "equipmentSame",
+     "xr": "KEEP/KEEP",
+     "point": "WEEK_START/w6/-",
+     "steps": {
+      "run": 1,
+      "mode": "RETURN",
+      "strength": {
+       "back-squat": 1,
+       "db-bench-press": 0,
+       "db-row": 0,
+       "db-calf-raise": 1,
+       "dead-bug": 0,
+       "db-rdl": 0,
+       "db-split-squat": 0
+      }
+     }
+    },
+    {
+     "clock": "sun0600",
+     "x": "systemicFatigue",
+     "xr": "MODIFY/GATED_NEXT_STEP",
+     "point": "WEEK_START/w6/-",
+     "steps": {
+      "run": 0,
+      "mode": "RETURN",
+      "strength": {
+       "back-squat": 0,
+       "db-bench-press": 0,
+       "db-row": 0,
+       "db-calf-raise": 0,
+       "dead-bug": 0,
+       "db-rdl": 0,
+       "db-split-squat": 0
+      }
+     }
+    },
+    {
+     "clock": "sun0600",
+     "x": "localFatigue",
+     "xr": "MODIFY/GATED_NEXT_STEP",
+     "point": "WEEK_START/w6/-",
+     "steps": {
+      "run": 0,
+      "mode": "RETURN",
+      "strength": {
+       "back-squat": 1,
+       "db-bench-press": 0,
+       "db-row": 0,
+       "db-calf-raise": 1,
+       "dead-bug": 0,
+       "db-rdl": 0,
+       "db-split-squat": 0
+      }
+     }
+    },
+    {
+     "clock": "sun0600",
+     "x": "strengthMinutes",
+     "xr": "MODIFY/REARRANGE_FUTURE_WEEKS",
+     "point": "WEEK_START/w6/-",
+     "steps": {
+      "run": 0,
+      "mode": "RETURN",
+      "strength": {
+       "back-squat": 1,
+       "db-bench-press": 0,
+       "db-row": 0,
+       "db-calf-raise": 1,
+       "dead-bug": 0,
+       "db-rdl": 0,
+       "db-split-squat": 0
+      }
+     }
+    },
+    {
+     "clock": "sun0600",
+     "x": "sameSchedule",
+     "xr": "KEEP/KEEP",
+     "point": "RETURN/w5/qa1-20",
+     "steps": {
+      "run": 0,
+      "mode": "RETURN",
+      "strength": {
+       "back-squat": 0,
+       "db-bench-press": 0,
+       "db-row": 0,
+       "db-calf-raise": 0,
+       "dead-bug": 0,
+       "db-rdl": 0,
+       "db-split-squat": 0
+      }
+     }
+    },
+    {
+     "clock": "sun0600",
+     "x": "goalChange",
+     "xr": "MODIFY/REPLAN_FUTURE_PHASES",
+     "point": "WEEK_START/w6/-",
+     "steps": {
+      "run": 0,
+      "mode": "RETURN",
+      "strength": {
+       "back-squat": 1,
+       "db-bench-press": 0,
+       "db-row": 0,
+       "db-calf-raise": 1,
+       "dead-bug": 0,
+       "db-rdl": 0,
+       "db-split-squat": 0
+      }
+     }
+    },
+    {
+     "clock": "sun0600",
+     "x": "unavailableDay",
+     "xr": "KEEP/KEEP",
+     "point": "RETURN/w5/qa1-20",
+     "steps": {
+      "run": 0,
+      "mode": "RETURN",
+      "strength": {
+       "back-squat": 0,
+       "db-bench-press": 0,
+       "db-row": 0,
+       "db-calf-raise": 0,
+       "dead-bug": 0,
+       "db-rdl": 0,
+       "db-split-squat": 0
+      }
+     }
+    },
+    {
+     "clock": "sun0600",
+     "x": "missedNone",
+     "xr": "MODIFY/GATED_NEXT_STEP",
+     "point": "WEEK_START/w6/-",
+     "steps": {
+      "run": 0,
+      "mode": "RETURN",
+      "strength": {
+       "back-squat": 1,
+       "db-bench-press": 0,
+       "db-row": 0,
+       "db-calf-raise": 1,
+       "dead-bug": 0,
+       "db-rdl": 0,
+       "db-split-squat": 0
+      }
+     }
+    },
+    {
+     "clock": "sun0600",
+     "x": "recovered",
+     "xr": "MODIFY/GATED_NEXT_STEP",
+     "point": "WEEK_START/w6/-",
+     "steps": {
+      "run": 0,
+      "mode": "RETURN",
+      "strength": {
+       "back-squat": 1,
+       "db-bench-press": 0,
+       "db-row": 0,
+       "db-calf-raise": 1,
+       "dead-bug": 0,
+       "db-rdl": 0,
+       "db-split-squat": 0
+      }
+     }
+    }
+   ]
+  },
+  "C2-executed-in-full": {
+   "perDayNoReview": {
+    "point": "WEEK_START/w6/-",
+    "steps": {
+     "run": 1,
+     "mode": "RETURN",
+     "strength": {
+      "back-squat": 1,
+      "db-bench-press": 1,
+      "db-row": 1,
+      "db-calf-raise": 1,
+      "dead-bug": 1,
+      "db-rdl": 1,
+      "db-split-squat": 1
+     }
+    }
+   },
+   "sundayReview": {
+    "point": "WEEK_START/w6/-",
+    "steps": {
+     "run": 1,
+     "mode": "RETURN",
+     "strength": {
+      "back-squat": 1,
+      "db-bench-press": 1,
+      "db-row": 1,
+      "db-calf-raise": 1,
+      "dead-bug": 1,
+      "db-rdl": 1,
+      "db-split-squat": 1
+     }
+    }
+   },
+   "perDayAtKnownLoads": {
+    "point": "WEEK_START/w6/-",
+    "steps": {
+     "run": 1,
+     "mode": "RETURN",
+     "strength": {
+      "back-squat": 1,
+      "db-bench-press": 1,
+      "db-row": 1,
+      "db-calf-raise": 1,
+      "dead-bug": 1,
+      "db-rdl": 1,
+      "db-split-squat": 1
+     }
+    }
+   }
+  },
+  "C3-premise-breakers": {
+   "notCompleted": {
+    "point": "WEEK_START/w6/-",
+    "steps": {
+     "run": 1,
+     "mode": "RETURN",
+     "strength": {
+      "back-squat": 1,
+      "db-bench-press": 1,
+      "db-row": 1,
+      "db-calf-raise": 1,
+      "dead-bug": 1,
+      "db-rdl": 1,
+      "db-split-squat": 1
+     }
+    }
+   },
+   "partialRun": {
+    "point": "WEEK_START/w6/-",
+    "steps": {
+     "run": 1,
+     "mode": "RETURN",
+     "strength": {
+      "back-squat": 1,
+      "db-bench-press": 1,
+      "db-row": 1,
+      "db-calf-raise": 1,
+      "dead-bug": 1,
+      "db-rdl": 1,
+      "db-split-squat": 1
+     }
+    }
+   },
+   "adverse": {
+    "point": "WEEK_START/w6/-",
+    "steps": {
+     "run": 1,
+     "mode": "RETURN",
+     "strength": {
+      "back-squat": 1,
+      "db-bench-press": 1,
+      "db-row": 1,
+      "db-calf-raise": 1,
+      "dead-bug": 1,
+      "db-rdl": 1,
+      "db-split-squat": 1
+     }
+    }
+   },
+   "skippedByUnavailableDay": {
+    "point": "WEEK_START/w6/-",
+    "steps": {
+     "run": 1,
+     "mode": "RETURN",
+     "strength": {
+      "back-squat": 1,
+      "db-bench-press": 1,
+      "db-row": 1,
+      "db-calf-raise": 1,
+      "dead-bug": 1,
+      "db-rdl": 1,
+      "db-split-squat": 1
+     }
+    }
+   },
+   "reducedBySystemicFatigue": {
+    "point": "WEEK_START/w6/-",
+    "steps": {
+     "run": 1,
+     "mode": "RETURN",
+     "strength": {
+      "back-squat": 1,
+      "db-bench-press": 1,
+      "db-row": 1,
+      "db-calf-raise": 1,
+      "dead-bug": 1,
+      "db-rdl": 1,
+      "db-split-squat": 1
+     }
+    }
+   },
+   "missedSaturdayLift": {
+    "point": "RETURN/w5/qa1-148",
+    "steps": {
+     "run": 0,
+     "mode": "RETURN",
+     "strength": {
+      "back-squat": 0,
+      "db-bench-press": 0,
+      "db-row": 0,
+      "db-calf-raise": 0,
+      "dead-bug": 0,
+      "db-rdl": 0,
+      "db-split-squat": 0
+     }
+    }
+   },
+   "strengthNotLogged": {
+    "point": "WEEK_START/w6/-",
+    "steps": {
+     "run": 1,
+     "mode": "RETURN",
+     "strength": {
+      "back-squat": 1,
+      "db-bench-press": 1,
+      "db-row": 1,
+      "db-calf-raise": 1,
+      "dead-bug": 1,
+      "db-rdl": 1,
+      "db-split-squat": 1
+     }
+    }
+   }
+  },
+  "C4-held-from-projected-start": {
+   "missedTwice": {
+    "week6Start": null,
+    "week7Start": null,
+    "point": "WEEK_START/w7/-",
+    "steps": {
+     "run": null,
+     "mode": "EASY",
+     "strength": {
+      "back-squat": null,
+      "db-bench-press": 1,
+      "db-row": 1,
+      "db-calf-raise": null,
+      "dead-bug": 1,
+      "db-rdl": 1,
+      "db-split-squat": 1
+     }
+    }
+   },
+   "weekSixInFull": {
+    "point": "WEEK_START/w7/-",
+    "steps": {
+     "run": null,
+     "mode": "EASY",
+     "strength": {
+      "back-squat": null,
+      "db-bench-press": null,
+      "db-row": null,
+      "db-calf-raise": null,
+      "dead-bug": null,
+      "db-rdl": null,
+      "db-split-squat": null
+     }
+    }
+   }
+  },
+  "C5-time-and-boundary": {
+   "nextWeek": {
+    "point": "RETURN/w5/qa1-294",
+    "steps": {
+     "run": 0,
+     "mode": "RETURN",
+     "strength": {
+      "back-squat": 0,
+      "db-bench-press": 0,
+      "db-row": 0,
+      "db-calf-raise": 0,
+      "dead-bug": 0,
+      "db-rdl": 0,
+      "db-split-squat": 0
+     }
+    }
+   },
+   "twoWeeksLater": {
+    "point": "RETURN/w5/qa1-294",
+    "steps": {
+     "run": 0,
+     "mode": "RETURN",
+     "strength": {
+      "back-squat": 0,
+      "db-bench-press": 0,
+      "db-row": 0,
+      "db-calf-raise": 0,
+      "dead-bug": 0,
+      "db-rdl": 0,
+      "db-split-squat": 0
+     }
+    }
+   },
+   "sunday": {
+    "point": "RETURN/w5/qa1-294",
+    "steps": {
+     "run": 0,
+     "mode": "RETURN",
+     "strength": {
+      "back-squat": 0,
+      "db-bench-press": 0,
+      "db-row": 0,
+      "db-calf-raise": 0,
+      "dead-bug": 0,
+      "db-rdl": 0,
+      "db-split-squat": 0
+     }
+    }
+   },
+   "monday": {
+    "point": "RETURN/w5/qa1-294",
+    "steps": {
+     "run": 0,
+     "mode": "RETURN",
+     "strength": {
+      "back-squat": 0,
+      "db-bench-press": 0,
+      "db-row": 0,
+      "db-calf-raise": 0,
+      "dead-bug": 0,
+      "db-rdl": 0,
+      "db-split-squat": 0
+     }
+    }
+   }
+  },
+  "C6-evidence-removed": {
+   "complete": {
+    "point": "WEEK_START/w6/-"
+   },
+   "corrected": {
+    "point": "WEEK_START/w6/-",
+    "ledger": [
+     {
+      "completed": false,
+      "conflicted": false,
+      "superseded": false
+     },
+     {
+      "completed": true,
+      "conflicted": false,
+      "superseded": true
+     }
+    ]
+   }
+  },
+  "C7-temporal-contradiction": {
+   "movedPastReentry": "MODIFY/REESTABLISH",
+   "byReportId": "MODIFY/REESTABLISH",
+   "endOverTuesday": "MODIFY/REESTABLISH",
+   "movedEarlier": "MODIFY/REESTABLISH",
+   "noExecutedReentry": "MODIFY/REESTABLISH"
+  },
+  "C8-first-interruption": {
+   "halfExecuted": {
+    "point": "WEEK_START/w4/-"
+   },
+   "reviewed": {
+    "point": "WEEK_START/w4/-"
+   }
+  },
+  "C9-time-zones": {
+   "540:equipmentNoop": "WEEK_START/w6/-",
+   "540:systemicFatigue": "WEEK_START/w6/-",
+   "-300:equipmentNoop": "WEEK_START/w6/-",
+   "-300:systemicFatigue": "WEEK_START/w6/-"
+  }
+ },
+ "violations": [
+  "C1-unrelated-decision: equipmentWindow at Monday 06:00 of week 6 changes B's start (point WEEK_START/w6/-, steps {\"run\":1,\"mode\":\"RETURN\",\"strength\":{\"back-squat\":1,\"db-bench-press\":1,\"db-row\":1,\"db-calf-raise\":1,\"dead-bug\":1,\"db-rdl\":1,\"db-split-squat\":1}} vs control {\"run\":0,\"mode\":\"RETURN\",\"strength\":{\"back-squat\":0,\"db-bench-press\":0,\"db-row\":0,\"db-calf-raise\":0,\"dead-bug\":0,\"db-rdl\":0,\"db-split-squat\":0}})",
+  "C1-unrelated-decision: equipmentNoop at Monday 06:00 of week 6 changes B's start (point WEEK_START/w6/-, steps {\"run\":1,\"mode\":\"RETURN\",\"strength\":{\"back-squat\":1,\"db-bench-press\":1,\"db-row\":1,\"db-calf-raise\":1,\"dead-bug\":1,\"db-rdl\":1,\"db-split-squat\":1}} vs control {\"run\":0,\"mode\":\"RETURN\",\"strength\":{\"back-squat\":0,\"db-bench-press\":0,\"db-row\":0,\"db-calf-raise\":0,\"dead-bug\":0,\"db-rdl\":0,\"db-split-squat\":0}})",
+  "C1-unrelated-decision: equipmentSame at Monday 06:00 of week 6 changes B's start (point WEEK_START/w6/-, steps {\"run\":1,\"mode\":\"RETURN\",\"strength\":{\"back-squat\":1,\"db-bench-press\":1,\"db-row\":1,\"db-calf-raise\":1,\"dead-bug\":1,\"db-rdl\":1,\"db-split-squat\":1}} vs control {\"run\":0,\"mode\":\"RETURN\",\"strength\":{\"back-squat\":0,\"db-bench-press\":0,\"db-row\":0,\"db-calf-raise\":0,\"dead-bug\":0,\"db-rdl\":0,\"db-split-squat\":0}})",
+  "C1-unrelated-decision: systemicFatigue at Monday 06:00 of week 6 changes B's start (point WEEK_START/w6/-, steps {\"run\":1,\"mode\":\"RETURN\",\"strength\":{\"back-squat\":1,\"db-bench-press\":1,\"db-row\":1,\"db-calf-raise\":1,\"dead-bug\":1,\"db-rdl\":1,\"db-split-squat\":1}} vs control {\"run\":0,\"mode\":\"RETURN\",\"strength\":{\"back-squat\":0,\"db-bench-press\":0,\"db-row\":0,\"db-calf-raise\":0,\"dead-bug\":0,\"db-rdl\":0,\"db-split-squat\":0}})",
+  "C1-unrelated-decision: localFatigue at Monday 06:00 of week 6 changes B's start (point WEEK_START/w6/-, steps {\"run\":1,\"mode\":\"RETURN\",\"strength\":{\"back-squat\":1,\"db-bench-press\":1,\"db-row\":1,\"db-calf-raise\":1,\"dead-bug\":1,\"db-rdl\":1,\"db-split-squat\":1}} vs control {\"run\":0,\"mode\":\"RETURN\",\"strength\":{\"back-squat\":0,\"db-bench-press\":0,\"db-row\":0,\"db-calf-raise\":0,\"dead-bug\":0,\"db-rdl\":0,\"db-split-squat\":0}})",
+  "C1-unrelated-decision: unavailableDay at Monday 06:00 of week 6 changes B's start (point WEEK_START/w6/-, steps {\"run\":1,\"mode\":\"RETURN\",\"strength\":{\"back-squat\":1,\"db-bench-press\":1,\"db-row\":1,\"db-calf-raise\":1,\"dead-bug\":1,\"db-rdl\":1,\"db-split-squat\":1}} vs control {\"run\":0,\"mode\":\"RETURN\",\"strength\":{\"back-squat\":0,\"db-bench-press\":0,\"db-row\":0,\"db-calf-raise\":0,\"dead-bug\":0,\"db-rdl\":0,\"db-split-squat\":0}})",
+  "C1-unrelated-decision: weeklyReview at Sunday 06:00: back-squat at step 1 (control 0) without executing it",
+  "C1-unrelated-decision: weeklyReview at Sunday 06:00: db-calf-raise at step 1 (control 0) without executing it",
+  "C1-unrelated-decision: equipmentWindow at Sunday 06:00: the run return step 1 differs from the control's 0 (Thursday's run was missed)",
+  "C1-unrelated-decision: equipmentWindow at Sunday 06:00: back-squat at step 1 (control 0) without executing it",
+  "C1-unrelated-decision: equipmentWindow at Sunday 06:00: db-calf-raise at step 1 (control 0) without executing it",
+  "C1-unrelated-decision: equipmentWindow at Sunday 06:00 gives neither the control's start nor the weekly review's",
+  "C1-unrelated-decision: equipmentNoop at Sunday 06:00: the run return step 1 differs from the control's 0 (Thursday's run was missed)",
+  "C1-unrelated-decision: equipmentNoop at Sunday 06:00: back-squat at step 1 (control 0) without executing it",
+  "C1-unrelated-decision: equipmentNoop at Sunday 06:00: db-calf-raise at step 1 (control 0) without executing it",
+  "C1-unrelated-decision: equipmentNoop at Sunday 06:00 gives neither the control's start nor the weekly review's",
+  "C1-unrelated-decision: equipmentSame at Sunday 06:00: the run return step 1 differs from the control's 0 (Thursday's run was missed)",
+  "C1-unrelated-decision: equipmentSame at Sunday 06:00: back-squat at step 1 (control 0) without executing it",
+  "C1-unrelated-decision: equipmentSame at Sunday 06:00: db-calf-raise at step 1 (control 0) without executing it",
+  "C1-unrelated-decision: equipmentSame at Sunday 06:00 gives neither the control's start nor the weekly review's",
+  "C1-unrelated-decision: localFatigue at Sunday 06:00: back-squat at step 1 (control 0) without executing it",
+  "C1-unrelated-decision: localFatigue at Sunday 06:00: db-calf-raise at step 1 (control 0) without executing it",
+  "C1-unrelated-decision: strengthMinutes at Sunday 06:00: back-squat at step 1 (control 0) without executing it",
+  "C1-unrelated-decision: strengthMinutes at Sunday 06:00: db-calf-raise at step 1 (control 0) without executing it",
+  "C1-unrelated-decision: goalChange at Sunday 06:00: back-squat at step 1 (control 0) without executing it",
+  "C1-unrelated-decision: goalChange at Sunday 06:00: db-calf-raise at step 1 (control 0) without executing it",
+  "C1-unrelated-decision: missedNone at Sunday 06:00: back-squat at step 1 (control 0) without executing it",
+  "C1-unrelated-decision: missedNone at Sunday 06:00: db-calf-raise at step 1 (control 0) without executing it",
+  "C1-unrelated-decision: recovered at Sunday 06:00: back-squat at step 1 (control 0) without executing it",
+  "C1-unrelated-decision: recovered at Sunday 06:00: db-calf-raise at step 1 (control 0) without executing it",
+  "C2-executed-in-full: an unreviewed re-entry week lifted lighter than the projection, yet B starts at WEEK_START/w6/-",
+  "C2-executed-in-full: an unreviewed re-entry week executed exactly as projected is not history (WEEK_START/w6/- undefined)",
+  "C3-premise-breakers: notCompleted: B starts at WEEK_START/w6/- although the re-entry week did not execute as the projection assumed",
+  "C3-premise-breakers: notCompleted: the run return step at B is 1",
+  "C3-premise-breakers: partialRun: B starts at WEEK_START/w6/- although the re-entry week did not execute as the projection assumed",
+  "C3-premise-breakers: partialRun: the run return step at B is 1",
+  "C3-premise-breakers: adverse: B starts at WEEK_START/w6/- although the re-entry week did not execute as the projection assumed",
+  "C3-premise-breakers: adverse: the run return step at B is 1",
+  "C3-premise-breakers: skippedByUnavailableDay: B starts at WEEK_START/w6/- although the re-entry week did not execute as the projection assumed",
+  "C3-premise-breakers: skippedByUnavailableDay: the run return step at B is 1",
+  "C3-premise-breakers: reducedBySystemicFatigue: B starts at WEEK_START/w6/- although the re-entry week did not execute as the projection assumed",
+  "C3-premise-breakers: reducedBySystemicFatigue: the run return step at B is 1",
+  "C3-premise-breakers: strengthNotLogged: B starts at WEEK_START/w6/- although the re-entry week did not execute as the projection assumed",
+  "C3-premise-breakers: strengthNotLogged: the run return step at B is 1",
+  "C4-held-from-projected-start: db-rdl was never executed after A, yet B resumes it at return step 1",
+  "C4-held-from-projected-start: db-split-squat was never executed after A, yet B resumes it at return step 1",
+  "C4-held-from-projected-start: week 7's start holds values carried from A's projection, yet B starts at WEEK_START/w7/-",
+  "C6-evidence-removed: after the correction the projection still counts (WEEK_START/w6/-)",
+  "C7-temporal-contradiction: a correction moved past the executed re-entry is MODIFY/REESTABLISH",
+  "C7-temporal-contradiction: the same by report id is MODIFY/REESTABLISH",
+  "C7-temporal-contradiction: a correction ending over the executed Tuesday run is MODIFY/REESTABLISH",
+  "C8-first-interruption: week 4's planned start is read as history (WEEK_START/w4/-)",
+  "C9-time-zones: tz 540 equipmentNoop: B's start differs from the control",
+  "C9-time-zones: tz 540 systemicFatigue: B's start differs from the control",
+  "C9-time-zones: tz -300 equipmentNoop: B's start differs from the control",
+  "C9-time-zones: tz -300 systemicFatigue: B's start differs from the control"
+ ],
+ "summary": {
+  "classes": 9,
+  "violations": 56
+ }
+}

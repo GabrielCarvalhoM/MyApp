@@ -1,5 +1,9 @@
 # VILUMO FIT — PRODUCT THESIS CONTRACT
 
+<!-- EXPERIENCE_AUTHORITY_OVERLAY_START: EXP-AUTH-r1 -->
+> **Authority overlay · 2026-10-22 · EXP-AUTH-r1.** Founder decision [DR-93–97](../product/PRODUCT_DECISION_REGISTER.md) preserves every product/domain invariant and capability while superseding the old experience prescriptions. Read through the [current responsibility filter](CANONICAL_INDEX.md): C048 retains quality/anti-bloat, not inherited style; C051 retains progressive depth, not fixed levels/destinations; C028–37 retain independent behavioral meaning, not old screen allocation; C056's prior mission sequence is historical. The aesthetic reference below is **LEGACY / NO ACTIVE DESIGN AUTHORITY**. The freeze's isolated-state metadata below is historical: integration occurred in `32b7fb6`; this overlay is author submission for independent review, not a transferred PASS. Designer entry: [derived product context](../product/DESIGNER_PRODUCT_CONTEXT.md).
+<!-- EXPERIENCE_AUTHORITY_OVERLAY_END: EXP-AUTH-r1 -->
+
 ## 1. Document Status e autoridade
 
 | Campo | Valor |
@@ -62,6 +66,8 @@ O problema trabalhado na V1 é coordenar corrida e força na mesma vida, conside
 **VFT-C054 · CURRENT PRODUCT DECISION** — External Shareability V1 gera outputs de conquistas/evolução/identidade em completed workout, PR, race, milestone, weekly completion, meaningful evolution, personal streak, performance recap e relevant multisport achievement; distância/volume e evolução de força entram quando forem fatos próprios elegíveis. Famílias prioritárias, não nove templates/telas obrigatórios. Prévia exata, controle/inclusão/destino e ato explícito; nada auto-publicado, dashboard cru, dados de terceiros ou contexto privado de saúde. Instagram Stories, WhatsApp, TikTok quando formato couber e native share sheet são destinos possíveis de cópia escolhida, não integrações/API/contas a construir. Sem likes/audiência importados. Streak/semana respeitam descanso/adaptação e desconhecido; não pressionam volume, falha ou exposição.
 
 **VFT-C055 · CURRENT PRODUCT DECISION** — Wearables têm escopo V1 ingest-first; nenhuma missão paralela de dezenas de integrações. Provider terceiro já considerado pode reduzir esforço somente se prova de custo/acesso/fidelidade sustentar, sem escolher vendor ou assumir contrato existente. Outbound condicional preserva sua especificação, mas o mínimo de release não exige todos os devices, app nativo em relógio ou um outbound universal. UX desenha limites/capabilities e fallback honesto; APIs/preços finais não bloqueiam exploração visual.
+
+> **Post-R6 scope supersession · 2026-10-27 · VWS-20261027-r2.** For V1, the third-party provider and conditional outbound parts of C055 are superseded by [PDR DR-117–123](../product/PRODUCT_DECISION_REGISTER.md) (current direct Founder decisions). The V1 external source is Apple Health/HealthKit inbound on iOS; direct manufacturer integrations and watch outbound, Apple Watch included, are V2/POST_V1. Ingest-first, honest fallback and "no parallel mission of dozens of integrations" remain. See the note in §6.
 
 **VFT-C056 · CURRENT PRODUCT DECISION** — Após o gate atual do Claude fechar, integrar/sincronizar o patch, inspecionar apenas conflitos materiais novos, executar checks mínimos, resolver conflitos reais e seguir diretamente à fase Visual/UI planejada. O pedido de freeze é a direção Founder para essa sequência; não exige outra missão documental, redescoberta ou nova aprovação das decisões já dadas. Nenhuma tela é produzida nesta missão e nenhum gate corrente do Claude é declarado encerrado. Código/release, validação clínica e efeitos externos mantêm autorizações próprias. Preço exato, copy, quantidade de templates, thresholds e provider completo não bloqueiam design coerente.
 
@@ -139,6 +145,16 @@ Um Adaptive Engine Contract separado só se justifica quando tiver consumidor e 
 Exemplos como maior atenção a fueling antes de um longão ou à recuperação entre corrida e força ilustram relevância contextual; não aprovam dose, percentual, horário, alimento, população ou eficácia. Um percentual ou timing mencionado em conversa importada não se torna prescrição canônica. Nenhum insight é apresentado como avaliação nutricional completa. O contexto nutricional pessoal não é exposto à Crew para provar cumprimento.
 
 ## 6. Wearables — infraestrutura de closed loop
+
+<!-- V1_WEARABLE_SCOPE_OVERLAY_START: VWS-20261027-r2 -->
+> **Post-R6 product scope supersession · 2026-10-27 · current direct Founder decisions ([r1](../audits/v1-wearable-scope-2026-10-27/FOUNDER_REQUEST.md), [r2](../audits/v1-wearable-scope-2026-10-27/FOUNDER_REQUEST_R2.md)), [PDR DR-117–123](../product/PRODUCT_DECISION_REGISTER.md).** Scope of the supersession: V1 only.
+> - **V1 source.** C040's "HealthKit/Apple Health" is now the V1 external health/activity source on iOS. HealthKit inbound is required: only what is actually available and authorized, including activities from other devices that reach Apple Health, without assuming exercise, sets, reps, load, interval structure or proprietary fields. Missing data stays missing.
+> - **Write-back.** Writing the app's own activities to HealthKit is an OPEN_TECHNICAL_PRODUCT_DECISION (DR-121).
+> - **POST_V1.** C040's "Structured export … permanece opção por rota" and C009's "preparação condicional" are V2/POST_V1 for every watch, Apple Watch/WorkoutKit included (DR-122). So are direct Garmin/COROS/Polar integrations, vendor OAuth, FIT/vendor-specific ingestion, two-way sync and plan or calendar sent to the watch.
+> - **O016.** The provider/device matrix is POST_V1; for V1 it narrows to HealthKit data types, permissions and fidelity.
+> - **Platform.** Platform stays a PDR decision (§14): V1 is iOS only, and Android is POST_V1 / FUTURE_PLATFORM_EXPANSION (DR-120).
+> - **Unchanged.** C040's text below stays as recorded. Its states, provenance, consent, late/conflicting/unavailable data, distinct purposes, honest failure and "connection ≠ authority over adequacy" remain binding for the V1 source and for any future one. No invariant changes. The Coaching Core stays platform- and vendor-agnostic (DR-119, DR-123).
+<!-- V1_WEARABLE_SCOPE_OVERLAY_END: VWS-20261027-r2 -->
 
 **VFT-C040 · CURRENT PRODUCT DECISION** — V1 prioriza aprender com atividades realizadas externamente por ingestão/reconciliação confiáveis, incluindo HealthKit/Apple Health quando capacidade/finalidade forem comprovadas. Structured export já especificado permanece opção por rota se verificada, custo/esforço incremental cabíveis e suporte íntegro; não é obrigação de lançar experiência completa em todos os relógios ou um caminho outbound como gate global da V1. Receber treino ≠ recriar Vilumo no relógio. Estados/provenance/preflight/consentimento permanecem obrigatórios para toda integração que entrar; nenhum vendor/provider está escolhido por este contrato.
 

@@ -1,0 +1,5396 @@
+{
+  "revision": "R6-SIMULATION-1",
+  "generatedAt": "2026-10-26T18:35:01.615Z",
+  "authority": "CURRENT_INDEPENDENT_REVIEW",
+  "approvedBoundaries": {
+    "R6-COLD-START": "APPROVED",
+    "R6-LOAD-ESTABLISHMENT": "APPROVED",
+    "R6-PLANNED-PROGRESSION": "APPROVED",
+    "R6-RUN-QUALITY": "APPROVED",
+    "R6-HYBRID-ARRANGEMENT": "APPROVED",
+    "R6-SUBSTITUTION": "APPROVED",
+    "R6-NONCLINICAL-RETURN": "APPROVED",
+    "R6-EVENT-TRANSITION": "APPROVED",
+    "R6-PARTIAL-NOISY-LEARNING": "APPROVED",
+    "R6-ROTATION": "APPROVED"
+  },
+  "policyHash": "af2779fe0fc0e0a52f4b6371d3b360996687e57931b9b3feb878e9652f464910",
+  "scope": "Synthetic scripted fixtures; development evidence, never holdout or outcome evidence",
+  "populationOutcomePrediction": false,
+  "totals": {
+    "trajectories": 14,
+    "simulated": 14,
+    "allInvariantsHold": 14,
+    "horizons": [
+      4,
+      8,
+      12,
+      16
+    ]
+  },
+  "rows": [
+    {
+      "id": "T01_HM16_STRONG_ADHERENCE",
+      "horizon": 16,
+      "profile": "A_RUN_FIRST_HALF_MARATHON",
+      "covers": [
+        "strong adherence",
+        "event transition",
+        "race week",
+        "post-event"
+      ],
+      "status": "SIMULATED_SYNTHETIC_FIXTURES",
+      "invariants": {
+        "generated": true,
+        "noOfficialEffect": true,
+        "completedWorkImmutable": true,
+        "selectedOptionsAdmissible": true,
+        "noDeadlock": true,
+        "noPermanentHold": true,
+        "noRepeatedUnnecessaryAsk": true,
+        "noAdaptationCascade": true,
+        "noRunawayProgression": true,
+        "noWeeklyTremor": true,
+        "noPriorityInversion": true,
+        "scheduleValid": true,
+        "raceWeekPresent": true
+      },
+      "allInvariantsHold": true,
+      "summary": {
+        "weeksExecuted": 16,
+        "sessionsPlanned": 78,
+        "actualExecutions": 78,
+        "decisions": {
+          "KEEP": 16
+        },
+        "actions": {
+          "INSTANTIATE_LOGGED_LOADS": 2,
+          "KEEP": 14
+        },
+        "adoptedChanges": 0,
+        "instantiations": 2,
+        "maxWeeklyRunIncrease": null,
+        "runMinutes": [
+          150,
+          150,
+          155,
+          149,
+          144,
+          161,
+          173,
+          168,
+          168,
+          172,
+          184,
+          183,
+          195,
+          132,
+          58,
+          80
+        ],
+        "strengthSets": [
+          16,
+          16,
+          16,
+          16,
+          10,
+          26,
+          22,
+          22,
+          16,
+          16,
+          16,
+          16,
+          16,
+          10,
+          3,
+          3
+        ],
+        "phases": [
+          "ESTABLISHMENT",
+          "BUILD",
+          "BUILD",
+          "BUILD",
+          "CONSOLIDATION",
+          "BUILD",
+          "BUILD",
+          "BUILD",
+          "CONSOLIDATION",
+          "SPECIFIC",
+          "SPECIFIC",
+          "SPECIFIC",
+          "SPECIFIC",
+          "TAPER",
+          "RACE_WEEK",
+          "POST_EVENT"
+        ],
+        "populationOutcomePrediction": false
+      },
+      "decisions": [
+        {
+          "weekIndex": 0,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "INSTANTIATE_LOGGED_LOADS",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE"
+          },
+          "reason": "Logged loads replace planned placeholders; the progression rule is unchanged"
+        },
+        {
+          "weekIndex": 1,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 2,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 3,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 4,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 5,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 6,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "INSTANTIATE_LOGGED_LOADS",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Logged loads replace planned placeholders; the progression rule is unchanged"
+        },
+        {
+          "weekIndex": 7,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 8,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 9,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 10,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 11,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 12,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 13,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 14,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 15,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": null,
+          "reason": "Final week of the horizon; record outcomes for the next program"
+        }
+      ],
+      "initialProgramHash": "e0a2e661db82360d8af5f00d3be1bb3d6bad00fc61f22143290baa9a8aec171c",
+      "finalProgramHash": "cbace1d3752cbfb94d6706745623873615a046a1d72c971e22a087b7739eada5",
+      "finalWeeks": [
+        {
+          "index": 0,
+          "phase": "ESTABLISHMENT",
+          "runMinutes": 150,
+          "sessions": [
+            "1:EASY:45",
+            "2:STRENGTH_FULL_A:goblet-squat@2x8+db-bench-press@2x8+db-row@2x8+db-calf-raise@1x10+dead-bug@1x10",
+            "3:EASY:45",
+            "4:STRENGTH_FULL_B:db-rdl@2x8+db-row@2x8+db-bench-press@2x8+db-split-squat@1x10+dead-bug@1x10",
+            "6:LONG:60"
+          ]
+        },
+        {
+          "index": 1,
+          "phase": "BUILD",
+          "runMinutes": 150,
+          "sessions": [
+            "1:EASY:45",
+            "2:STRENGTH_FULL_A:goblet-squat@2x8+db-bench-press@2x8+db-row@2x8+db-calf-raise@1x10+dead-bug@1x10",
+            "3:EASY:45",
+            "4:STRENGTH_FULL_B:db-rdl@2x8+db-row@2x8+db-bench-press@2x8+db-split-squat@1x10+dead-bug@1x10",
+            "6:LONG:60"
+          ]
+        },
+        {
+          "index": 2,
+          "phase": "BUILD",
+          "runMinutes": 155,
+          "sessions": [
+            "1:EASY:45",
+            "2:STRENGTH_FULL_A:goblet-squat@2x10+db-bench-press@2x10+db-row@2x10+db-calf-raise@1x6+dead-bug@1x6",
+            "3:EASY:45",
+            "4:STRENGTH_FULL_B:db-rdl@2x10+db-row@2x10+db-bench-press@2x10+db-split-squat@1x6+dead-bug@1x6",
+            "6:LONG:65"
+          ]
+        },
+        {
+          "index": 3,
+          "phase": "BUILD",
+          "runMinutes": 149,
+          "sessions": [
+            "1:QUALITY:34",
+            "2:STRENGTH_FULL_A:goblet-squat@2x6+db-bench-press@2x6+db-row@2x6+db-calf-raise@1x8+dead-bug@1x8",
+            "3:EASY:50",
+            "4:STRENGTH_FULL_B:db-rdl@2x6+db-row@2x6+db-bench-press@2x6+db-split-squat@1x8+dead-bug@1x8",
+            "6:LONG:65"
+          ]
+        },
+        {
+          "index": 4,
+          "phase": "CONSOLIDATION",
+          "runMinutes": 144,
+          "sessions": [
+            "1:QUALITY:34",
+            "2:STRENGTH_FULL_A:goblet-squat@1x8+db-bench-press@1x8+db-row@1x8+db-calf-raise@1x10+dead-bug@1x10",
+            "3:EASY:50",
+            "4:STRENGTH_FULL_B:db-rdl@1x8+db-row@1x8+db-bench-press@1x8+db-split-squat@1x10+dead-bug@1x10",
+            "6:LONG:60"
+          ]
+        },
+        {
+          "index": 5,
+          "phase": "BUILD",
+          "runMinutes": 161,
+          "sessions": [
+            "1:QUALITY:41",
+            "2:STRENGTH_FULL_A:goblet-squat@3x8+db-bench-press@3x8+db-row@3x8+db-calf-raise@2x10+dead-bug@2x10",
+            "3:EASY:50",
+            "4:STRENGTH_FULL_B:db-rdl@3x8+db-row@3x8+db-bench-press@3x8+db-split-squat@2x10+dead-bug@2x10",
+            "6:LONG:70"
+          ]
+        },
+        {
+          "index": 6,
+          "phase": "BUILD",
+          "runMinutes": 173,
+          "sessions": [
+            "1:QUALITY:48",
+            "2:STRENGTH_FULL_A:goblet-squat@3x10+db-bench-press@3x10+db-row@3x10+standing-calf-raise@1x10+side-plank@1x10",
+            "3:EASY:50",
+            "4:STRENGTH_FULL_B:db-rdl@3x10+db-row@3x10+db-bench-press@3x10+db-step-up@1x10+side-plank@1x10",
+            "6:LONG:75"
+          ]
+        },
+        {
+          "index": 7,
+          "phase": "BUILD",
+          "runMinutes": 168,
+          "sessions": [
+            "1:QUALITY:43",
+            "2:STRENGTH_FULL_A:goblet-squat@3x6+db-bench-press@3x6+db-row@3x6+standing-calf-raise@1x6+side-plank@1x6",
+            "3:EASY:50",
+            "4:STRENGTH_FULL_B:db-rdl@3x6+db-row@3x6+db-bench-press@3x6+db-step-up@1x6+side-plank@1x6",
+            "6:LONG:75"
+          ]
+        },
+        {
+          "index": 8,
+          "phase": "CONSOLIDATION",
+          "runMinutes": 168,
+          "sessions": [
+            "1:QUALITY:43",
+            "2:STRENGTH_FULL_A:goblet-squat@2x8+db-bench-press@2x8+db-row@2x8+standing-calf-raise@1x8+side-plank@1x8",
+            "3:EASY:55",
+            "4:STRENGTH_FULL_B:db-rdl@2x8+db-row@2x8+db-bench-press@2x8+db-step-up@1x8+side-plank@1x8",
+            "6:LONG:70"
+          ]
+        },
+        {
+          "index": 9,
+          "phase": "SPECIFIC",
+          "runMinutes": 172,
+          "sessions": [
+            "1:QUALITY:42",
+            "2:STRENGTH_FULL_A:goblet-squat@2x8+db-bench-press@2x8+db-row@2x8+standing-calf-raise@1x8+side-plank@1x8",
+            "3:EASY:55",
+            "4:STRENGTH_FULL_B:db-rdl@2x8+db-row@2x8+db-bench-press@2x8+db-step-up@1x8+side-plank@1x8",
+            "6:LONG:75"
+          ]
+        },
+        {
+          "index": 10,
+          "phase": "SPECIFIC",
+          "runMinutes": 184,
+          "sessions": [
+            "1:QUALITY:49",
+            "2:STRENGTH_FULL_A:goblet-squat@2x8+db-bench-press@2x8+db-row@2x8+standing-calf-raise@1x8+side-plank@1x8",
+            "3:EASY:55",
+            "4:STRENGTH_FULL_B:db-rdl@2x8+db-row@2x8+db-bench-press@2x8+db-step-up@1x8+side-plank@1x8",
+            "6:LONG:80"
+          ]
+        },
+        {
+          "index": 11,
+          "phase": "SPECIFIC",
+          "runMinutes": 183,
+          "sessions": [
+            "1:QUALITY:48",
+            "2:STRENGTH_FULL_A:goblet-squat@2x8+db-bench-press@2x8+db-row@2x8+standing-calf-raise@1x8+side-plank@1x8",
+            "3:EASY:55",
+            "4:STRENGTH_FULL_B:db-rdl@2x8+db-row@2x8+db-bench-press@2x8+db-step-up@1x8+side-plank@1x8",
+            "6:LONG:80"
+          ]
+        },
+        {
+          "index": 12,
+          "phase": "SPECIFIC",
+          "runMinutes": 195,
+          "sessions": [
+            "1:QUALITY:55",
+            "2:STRENGTH_FULL_A:goblet-squat@2x8+db-bench-press@2x8+db-row@2x8+standing-calf-raise@1x8+side-plank@1x8",
+            "3:EASY:55",
+            "4:STRENGTH_FULL_B:db-rdl@2x8+db-row@2x8+db-bench-press@2x8+db-step-up@1x8+side-plank@1x8",
+            "6:LONG:85"
+          ]
+        },
+        {
+          "index": 13,
+          "phase": "TAPER",
+          "runMinutes": 132,
+          "sessions": [
+            "1:QUALITY:37",
+            "2:STRENGTH_FULL_A:goblet-squat@1x8+db-bench-press@1x8+db-row@1x8+standing-calf-raise@1x8+side-plank@1x8",
+            "3:EASY:40",
+            "4:STRENGTH_FULL_B:db-rdl@1x8+db-row@1x8+db-bench-press@1x8+db-step-up@1x8+side-plank@1x8",
+            "6:LONG:55"
+          ]
+        },
+        {
+          "index": 14,
+          "phase": "RACE_WEEK",
+          "runMinutes": 58,
+          "sessions": [
+            "1:EASY:30",
+            "2:STRENGTH_FULL_A:goblet-squat@1x8+db-bench-press@1x8+db-row@1x8",
+            "3:RACE_TOUCH:28",
+            "6:RACE:150"
+          ]
+        },
+        {
+          "index": 15,
+          "phase": "POST_EVENT",
+          "runMinutes": 80,
+          "sessions": [
+            "1:RECOVERY_EASY:20",
+            "2:STRENGTH_FULL_A:goblet-squat@1x8+db-bench-press@1x8+db-row@1x8",
+            "3:RECOVERY_EASY:30",
+            "6:RECOVERY_EASY:30"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T02_HM16_IRREGULAR_ADHERENCE",
+      "horizon": 16,
+      "profile": "A_RUN_FIRST_HALF_MARATHON",
+      "covers": [
+        "irregular adherence",
+        "missed key workout",
+        "partial completion",
+        "missed key strength"
+      ],
+      "status": "SIMULATED_SYNTHETIC_FIXTURES",
+      "invariants": {
+        "generated": true,
+        "noOfficialEffect": true,
+        "completedWorkImmutable": true,
+        "selectedOptionsAdmissible": true,
+        "noDeadlock": true,
+        "noPermanentHold": true,
+        "noRepeatedUnnecessaryAsk": true,
+        "noAdaptationCascade": true,
+        "noRunawayProgression": true,
+        "noWeeklyTremor": true,
+        "noPriorityInversion": true,
+        "scheduleValid": true,
+        "raceWeekPresent": true
+      },
+      "allInvariantsHold": true,
+      "summary": {
+        "weeksExecuted": 16,
+        "sessionsPlanned": 78,
+        "actualExecutions": 71,
+        "decisions": {
+          "KEEP": 11,
+          "MODIFY": 6
+        },
+        "actions": {
+          "INSTANTIATE_LOGGED_LOADS": 1,
+          "KEEP": 10,
+          "GATED_NEXT_STEP": 5,
+          "MOVE": 1
+        },
+        "adoptedChanges": 6,
+        "instantiations": 1,
+        "maxWeeklyRunIncrease": null,
+        "runMinutes": [
+          150,
+          150,
+          155,
+          160,
+          149,
+          154,
+          161,
+          168,
+          163,
+          167,
+          184,
+          189,
+          188,
+          129,
+          58,
+          80
+        ],
+        "strengthSets": [
+          16,
+          16,
+          16,
+          16,
+          10,
+          26,
+          22,
+          22,
+          16,
+          16,
+          16,
+          16,
+          16,
+          10,
+          3,
+          3
+        ],
+        "phases": [
+          "ESTABLISHMENT",
+          "BUILD",
+          "BUILD",
+          "BUILD",
+          "CONSOLIDATION",
+          "BUILD",
+          "BUILD",
+          "BUILD",
+          "CONSOLIDATION",
+          "SPECIFIC",
+          "SPECIFIC",
+          "SPECIFIC",
+          "SPECIFIC",
+          "TAPER",
+          "RACE_WEEK",
+          "POST_EVENT"
+        ],
+        "populationOutcomePrediction": false
+      },
+      "decisions": [
+        {
+          "weekIndex": 0,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "INSTANTIATE_LOGGED_LOADS",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE"
+          },
+          "reason": "Logged loads replace planned placeholders; the progression rule is unchanged"
+        },
+        {
+          "weekIndex": 1,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 2,
+          "kind": "WEEKLY_REVIEW",
+          "status": "MODIFY",
+          "action": "GATED_NEXT_STEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "HOLD",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE"
+          },
+          "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation"
+        },
+        {
+          "weekIndex": 3,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 4,
+          "kind": "WEEKLY_REVIEW",
+          "status": "MODIFY",
+          "action": "GATED_NEXT_STEP",
+          "gates": {
+            "LONG": "HOLD",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE"
+          },
+          "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation"
+        },
+        {
+          "weekIndex": 5,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 6,
+          "kind": "WEEKLY_REVIEW",
+          "status": "MODIFY",
+          "action": "GATED_NEXT_STEP",
+          "gates": {
+            "LONG": "HOLD",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation"
+        },
+        {
+          "weekIndex": 7,
+          "kind": "WEEKLY_REVIEW",
+          "status": "MODIFY",
+          "action": "GATED_NEXT_STEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "HOLD",
+            "db-bench-press": "HOLD",
+            "db-row": "HOLD",
+            "standing-calf-raise": "HOLD",
+            "side-plank": "HOLD",
+            "db-rdl": "HOLD",
+            "db-step-up": "HOLD"
+          },
+          "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation"
+        },
+        {
+          "weekIndex": 8,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 9,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 10,
+          "kind": "MISSED_SESSION",
+          "status": "MODIFY",
+          "action": "MOVE",
+          "gates": null,
+          "reason": "Do the missed quality on 2027-01-14 instead of the easy session planned there; no new day, no added interference"
+        },
+        {
+          "weekIndex": 10,
+          "kind": "WEEKLY_REVIEW",
+          "status": "MODIFY",
+          "action": "GATED_NEXT_STEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "HOLD",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation"
+        },
+        {
+          "weekIndex": 11,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 12,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 13,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 14,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 15,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": null,
+          "reason": "Final week of the horizon; record outcomes for the next program"
+        }
+      ],
+      "initialProgramHash": "e0a2e661db82360d8af5f00d3be1bb3d6bad00fc61f22143290baa9a8aec171c",
+      "finalProgramHash": "c18a3d2dda36a7cac313ff00c7c8ac3b75b023ca43128857b10222b894d117dc",
+      "finalWeeks": [
+        {
+          "index": 0,
+          "phase": "ESTABLISHMENT",
+          "runMinutes": 150,
+          "sessions": [
+            "1:EASY:45",
+            "2:STRENGTH_FULL_A:goblet-squat@2x8+db-bench-press@2x8+db-row@2x8+db-calf-raise@1x10+dead-bug@1x10",
+            "3:EASY:45",
+            "4:STRENGTH_FULL_B:db-rdl@2x8+db-row@2x8+db-bench-press@2x8+db-split-squat@1x10+dead-bug@1x10",
+            "6:LONG:60"
+          ]
+        },
+        {
+          "index": 1,
+          "phase": "BUILD",
+          "runMinutes": 150,
+          "sessions": [
+            "1:EASY:45",
+            "2:STRENGTH_FULL_A:goblet-squat@2x8+db-bench-press@2x8+db-row@2x8+db-calf-raise@1x10+dead-bug@1x10",
+            "3:EASY:45",
+            "4:STRENGTH_FULL_B:db-rdl@2x8+db-row@2x8+db-bench-press@2x8+db-split-squat@1x10+dead-bug@1x10",
+            "6:LONG:60"
+          ]
+        },
+        {
+          "index": 2,
+          "phase": "BUILD",
+          "runMinutes": 155,
+          "sessions": [
+            "1:EASY:45",
+            "2:STRENGTH_FULL_A:goblet-squat@2x10+db-bench-press@2x10+db-row@2x10+db-calf-raise@1x6+dead-bug@1x6",
+            "3:EASY:45",
+            "4:STRENGTH_FULL_B:db-rdl@2x10+db-row@2x10+db-bench-press@2x10+db-split-squat@1x6+dead-bug@1x6",
+            "6:LONG:65"
+          ]
+        },
+        {
+          "index": 3,
+          "phase": "BUILD",
+          "runMinutes": 160,
+          "sessions": [
+            "1:EASY:45",
+            "2:STRENGTH_FULL_A:goblet-squat@2x6+db-bench-press@2x6+db-row@2x6+db-calf-raise@1x8+dead-bug@1x8",
+            "3:EASY:45",
+            "4:STRENGTH_FULL_B:db-rdl@2x6+db-row@2x6+db-bench-press@2x6+db-split-squat@1x8+dead-bug@1x8",
+            "6:LONG:70"
+          ]
+        },
+        {
+          "index": 4,
+          "phase": "CONSOLIDATION",
+          "runMinutes": 149,
+          "sessions": [
+            "1:QUALITY:34",
+            "2:STRENGTH_FULL_A:goblet-squat@1x8+db-bench-press@1x8+db-row@1x8+db-calf-raise@1x10+dead-bug@1x10",
+            "3:EASY:50",
+            "4:STRENGTH_FULL_B:db-rdl@1x8+db-row@1x8+db-bench-press@1x8+db-split-squat@1x10+dead-bug@1x10",
+            "6:LONG:65"
+          ]
+        },
+        {
+          "index": 5,
+          "phase": "BUILD",
+          "runMinutes": 154,
+          "sessions": [
+            "1:QUALITY:34",
+            "2:STRENGTH_FULL_A:goblet-squat@3x8+db-bench-press@3x8+db-row@3x8+db-calf-raise@2x10+dead-bug@2x10",
+            "3:EASY:50",
+            "4:STRENGTH_FULL_B:db-rdl@3x8+db-row@3x8+db-bench-press@3x8+db-split-squat@2x10+dead-bug@2x10",
+            "6:LONG:70"
+          ]
+        },
+        {
+          "index": 6,
+          "phase": "BUILD",
+          "runMinutes": 161,
+          "sessions": [
+            "1:QUALITY:41",
+            "2:STRENGTH_FULL_A:goblet-squat@3x10+db-bench-press@3x10+db-row@3x10+standing-calf-raise@1x10+side-plank@1x10",
+            "3:EASY:50",
+            "4:STRENGTH_FULL_B:db-rdl@3x10+db-row@3x10+db-bench-press@3x10+db-step-up@1x10+side-plank@1x10",
+            "6:LONG:70"
+          ]
+        },
+        {
+          "index": 7,
+          "phase": "BUILD",
+          "runMinutes": 168,
+          "sessions": [
+            "1:QUALITY:48",
+            "2:STRENGTH_FULL_A:goblet-squat@3x6+db-bench-press@3x6+db-row@3x6+standing-calf-raise@1x6+side-plank@1x6",
+            "3:EASY:50",
+            "4:STRENGTH_FULL_B:db-rdl@3x6+db-row@3x6+db-bench-press@3x6+db-step-up@1x6+side-plank@1x6",
+            "6:LONG:70"
+          ]
+        },
+        {
+          "index": 8,
+          "phase": "CONSOLIDATION",
+          "runMinutes": 163,
+          "sessions": [
+            "1:QUALITY:48",
+            "2:STRENGTH_FULL_A:goblet-squat@2x6+db-bench-press@2x6+db-row@2x6+standing-calf-raise@1x6+side-plank@1x6",
+            "3:EASY:50",
+            "4:STRENGTH_FULL_B:db-rdl@2x6+db-row@2x6+db-bench-press@2x6+db-step-up@1x6+side-plank@1x6",
+            "6:LONG:65"
+          ]
+        },
+        {
+          "index": 9,
+          "phase": "SPECIFIC",
+          "runMinutes": 167,
+          "sessions": [
+            "1:QUALITY:42",
+            "2:STRENGTH_FULL_A:goblet-squat@2x6+db-bench-press@2x6+db-row@2x6+standing-calf-raise@1x6+side-plank@1x6",
+            "3:EASY:50",
+            "4:STRENGTH_FULL_B:db-rdl@2x6+db-row@2x6+db-bench-press@2x6+db-step-up@1x6+side-plank@1x6",
+            "6:LONG:75"
+          ]
+        },
+        {
+          "index": 10,
+          "phase": "SPECIFIC",
+          "runMinutes": 184,
+          "sessions": [
+            "1:QUALITY:49",
+            "2:STRENGTH_FULL_A:goblet-squat@2x6+db-bench-press@2x6+db-row@2x6+standing-calf-raise@1x6+side-plank@1x6",
+            "3:QUALITY:49",
+            "4:STRENGTH_FULL_B:db-rdl@2x6+db-row@2x6+db-bench-press@2x6+db-step-up@1x6+side-plank@1x6",
+            "6:LONG:80"
+          ]
+        },
+        {
+          "index": 11,
+          "phase": "SPECIFIC",
+          "runMinutes": 189,
+          "sessions": [
+            "1:QUALITY:49",
+            "2:STRENGTH_FULL_A:goblet-squat@2x6+db-bench-press@2x6+db-row@2x6+standing-calf-raise@1x6+side-plank@1x6",
+            "3:EASY:55",
+            "4:STRENGTH_FULL_B:db-rdl@2x6+db-row@2x6+db-bench-press@2x6+db-step-up@1x6+side-plank@1x6",
+            "6:LONG:85"
+          ]
+        },
+        {
+          "index": 12,
+          "phase": "SPECIFIC",
+          "runMinutes": 188,
+          "sessions": [
+            "1:QUALITY:48",
+            "2:STRENGTH_FULL_A:goblet-squat@2x6+db-bench-press@2x6+db-row@2x6+standing-calf-raise@1x6+side-plank@1x6",
+            "3:EASY:55",
+            "4:STRENGTH_FULL_B:db-rdl@2x6+db-row@2x6+db-bench-press@2x6+db-step-up@1x6+side-plank@1x6",
+            "6:LONG:85"
+          ]
+        },
+        {
+          "index": 13,
+          "phase": "TAPER",
+          "runMinutes": 129,
+          "sessions": [
+            "1:QUALITY:34",
+            "2:STRENGTH_FULL_A:goblet-squat@1x6+db-bench-press@1x6+db-row@1x6+standing-calf-raise@1x6+side-plank@1x6",
+            "3:EASY:40",
+            "4:STRENGTH_FULL_B:db-rdl@1x6+db-row@1x6+db-bench-press@1x6+db-step-up@1x6+side-plank@1x6",
+            "6:LONG:55"
+          ]
+        },
+        {
+          "index": 14,
+          "phase": "RACE_WEEK",
+          "runMinutes": 58,
+          "sessions": [
+            "1:EASY:30",
+            "2:STRENGTH_FULL_A:goblet-squat@1x6+db-bench-press@1x6+db-row@1x6",
+            "3:RACE_TOUCH:28",
+            "6:RACE:150"
+          ]
+        },
+        {
+          "index": 15,
+          "phase": "POST_EVENT",
+          "runMinutes": 80,
+          "sessions": [
+            "1:RECOVERY_EASY:20",
+            "2:STRENGTH_FULL_A:goblet-squat@1x6+db-bench-press@1x6+db-row@1x6",
+            "3:RECOVERY_EASY:30",
+            "6:RECOVERY_EASY:30"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T03_BALANCED12_OVERPERFORMANCE",
+      "horizon": 12,
+      "profile": "C_BALANCED_HYBRID",
+      "covers": [
+        "overperformance",
+        "earned progression",
+        "Balanced arrangement"
+      ],
+      "status": "SIMULATED_SYNTHETIC_FIXTURES",
+      "invariants": {
+        "generated": true,
+        "noOfficialEffect": true,
+        "completedWorkImmutable": true,
+        "selectedOptionsAdmissible": true,
+        "noDeadlock": true,
+        "noPermanentHold": true,
+        "noRepeatedUnnecessaryAsk": true,
+        "noAdaptationCascade": true,
+        "noRunawayProgression": true,
+        "noWeeklyTremor": true,
+        "noPriorityInversion": true,
+        "scheduleValid": true,
+        "raceWeekPresent": true
+      },
+      "allInvariantsHold": true,
+      "summary": {
+        "weeksExecuted": 12,
+        "sessionsPlanned": 60,
+        "actualExecutions": 60,
+        "decisions": {
+          "KEEP": 9,
+          "MODIFY": 3
+        },
+        "actions": {
+          "INSTANTIATE_LOGGED_LOADS": 1,
+          "KEEP": 8,
+          "GATED_NEXT_STEP": 3
+        },
+        "adoptedChanges": 3,
+        "instantiations": 1,
+        "maxWeeklyRunIncrease": null,
+        "runMinutes": [
+          120,
+          125,
+          134,
+          129,
+          146,
+          158,
+          153,
+          153,
+          158,
+          169,
+          169,
+          153
+        ],
+        "strengthSets": [
+          24,
+          26,
+          26,
+          16,
+          30,
+          30,
+          32,
+          22,
+          30,
+          30,
+          30,
+          26
+        ],
+        "phases": [
+          "DEVELOPMENT",
+          "DEVELOPMENT",
+          "DEVELOPMENT",
+          "CONSOLIDATION",
+          "DEVELOPMENT",
+          "DEVELOPMENT",
+          "DEVELOPMENT",
+          "CONSOLIDATION",
+          "DEVELOPMENT",
+          "DEVELOPMENT",
+          "DEVELOPMENT",
+          "CONSOLIDATION"
+        ],
+        "populationOutcomePrediction": false
+      },
+      "decisions": [
+        {
+          "weekIndex": 0,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "INSTANTIATE_LOGGED_LOADS",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "back-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "barbell-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE"
+          },
+          "reason": "Logged loads replace planned placeholders; the progression rule is unchanged"
+        },
+        {
+          "weekIndex": 1,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "back-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "barbell-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 2,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "back-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "barbell-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 3,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "back-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "barbell-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 4,
+          "kind": "WEEKLY_REVIEW",
+          "status": "MODIFY",
+          "action": "GATED_NEXT_STEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "back-squat": "ADVANCE",
+            "db-bench-press": "EARNED",
+            "db-row": "EARNED",
+            "db-calf-raise": "ADVANCE",
+            "barbell-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE"
+          },
+          "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation"
+        },
+        {
+          "weekIndex": 5,
+          "kind": "WEEKLY_REVIEW",
+          "status": "MODIFY",
+          "action": "GATED_NEXT_STEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "back-squat": "EARNED",
+            "db-bench-press": "EARNED",
+            "db-row": "EARNED",
+            "db-calf-raise": "EARNED",
+            "barbell-rdl": "EARNED",
+            "db-split-squat": "EARNED"
+          },
+          "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation"
+        },
+        {
+          "weekIndex": 6,
+          "kind": "WEEKLY_REVIEW",
+          "status": "MODIFY",
+          "action": "GATED_NEXT_STEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "back-squat": "ADVANCE",
+            "db-bench-press": "EARNED",
+            "db-row": "EARNED",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE",
+            "barbell-rdl": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation"
+        },
+        {
+          "weekIndex": 7,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "back-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE",
+            "barbell-rdl": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 8,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "back-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "barbell-rdl": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 9,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "back-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "barbell-rdl": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 10,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "back-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "barbell-rdl": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 11,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": null,
+          "reason": "Final week of the horizon; record outcomes for the next program"
+        }
+      ],
+      "initialProgramHash": "8dc2d61d9b5c712bbcc5d78704ede97d803d18cef5f1ada1844ec4214802bc63",
+      "finalProgramHash": "53c0b1324b4daa621f2cb55fc283fabb134ff3b4d59ee25b60f9d33c8475cca2",
+      "finalWeeks": [
+        {
+          "index": 0,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 120,
+          "sessions": [
+            "0:STRENGTH_FULL_A:back-squat@3x5+db-bench-press@2x5+db-row@2x5+db-calf-raise@2x7+dead-bug@2x7",
+            "1:EASY:35",
+            "3:EASY:35",
+            "4:STRENGTH_FULL_B:barbell-rdl@3x6+db-row@3x5+db-bench-press@3x5+db-split-squat@2x7+dead-bug@2x7",
+            "6:LONG:50"
+          ]
+        },
+        {
+          "index": 1,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 125,
+          "sessions": [
+            "0:STRENGTH_FULL_A:back-squat@3x5+db-bench-press@3x5+db-row@3x5+db-calf-raise@2x6+dead-bug@2x7",
+            "1:EASY:35",
+            "3:EASY:35",
+            "4:STRENGTH_FULL_B:barbell-rdl@3x6+db-row@3x5+db-bench-press@3x5+db-split-squat@2x6+dead-bug@2x7",
+            "6:LONG:55"
+          ]
+        },
+        {
+          "index": 2,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 134,
+          "sessions": [
+            "0:STRENGTH_FULL_A:back-squat@3x5+db-bench-press@3x5+db-row@3x5+db-calf-raise@2x6+dead-bug@2x7",
+            "1:EASY:40",
+            "3:QUALITY:34",
+            "4:STRENGTH_FULL_B:barbell-rdl@3x6+db-row@3x5+db-bench-press@3x5+db-split-squat@2x6+dead-bug@2x7",
+            "6:LONG:60"
+          ]
+        },
+        {
+          "index": 3,
+          "phase": "CONSOLIDATION",
+          "runMinutes": 129,
+          "sessions": [
+            "0:STRENGTH_FULL_A:back-squat@2x5+db-bench-press@2x5+db-row@2x5+db-calf-raise@1x6+dead-bug@1x7",
+            "1:EASY:40",
+            "3:QUALITY:34",
+            "4:STRENGTH_FULL_B:barbell-rdl@2x6+db-row@2x5+db-bench-press@2x5+db-split-squat@1x6+dead-bug@1x7",
+            "6:LONG:55"
+          ]
+        },
+        {
+          "index": 4,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 146,
+          "sessions": [
+            "0:STRENGTH_FULL_A:back-squat@4x5+db-bench-press@4x5+db-row@4x5+db-calf-raise@3x6",
+            "1:EASY:40",
+            "3:QUALITY:41",
+            "4:STRENGTH_FULL_B:barbell-rdl@4x6+db-row@4x5+db-bench-press@4x5+db-split-squat@3x6",
+            "6:LONG:65"
+          ]
+        },
+        {
+          "index": 5,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 158,
+          "sessions": [
+            "0:STRENGTH_FULL_A:back-squat@4x5+db-bench-press@4x5+db-row@4x5+db-calf-raise@3x6",
+            "1:EASY:40",
+            "3:QUALITY:48",
+            "4:STRENGTH_FULL_B:barbell-rdl@4x6+db-row@4x5+db-bench-press@4x5+db-split-squat@3x6",
+            "6:LONG:70"
+          ]
+        },
+        {
+          "index": 6,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 153,
+          "sessions": [
+            "0:STRENGTH_FULL_A:back-squat@4x5+db-bench-press@4x5+db-row@4x5+standing-calf-raise@2x7+side-plank@2x7",
+            "1:EASY:40",
+            "3:QUALITY:43",
+            "4:STRENGTH_FULL_B:barbell-rdl@4x6+db-row@4x5+db-bench-press@4x5+db-step-up@2x7+side-plank@2x7",
+            "6:LONG:70"
+          ]
+        },
+        {
+          "index": 7,
+          "phase": "CONSOLIDATION",
+          "runMinutes": 153,
+          "sessions": [
+            "0:STRENGTH_FULL_A:back-squat@3x5+db-bench-press@3x5+db-row@3x5+standing-calf-raise@1x7+side-plank@1x7",
+            "1:EASY:45",
+            "3:QUALITY:43",
+            "4:STRENGTH_FULL_B:barbell-rdl@3x6+db-row@3x5+db-bench-press@3x5+db-step-up@1x6+side-plank@1x7",
+            "6:LONG:65"
+          ]
+        },
+        {
+          "index": 8,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 158,
+          "sessions": [
+            "0:STRENGTH_FULL_A:back-squat@4x5+db-bench-press@4x5+db-row@4x5+standing-calf-raise@3x7",
+            "1:EASY:45",
+            "3:QUALITY:43",
+            "4:STRENGTH_FULL_B:barbell-rdl@4x6+db-row@4x5+db-bench-press@4x5+db-step-up@3x6",
+            "6:LONG:70"
+          ]
+        },
+        {
+          "index": 9,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 169,
+          "sessions": [
+            "0:STRENGTH_FULL_A:back-squat@4x5+db-bench-press@4x5+db-row@4x5+standing-calf-raise@3x7",
+            "1:EASY:45",
+            "3:QUALITY:49",
+            "4:STRENGTH_FULL_B:barbell-rdl@4x6+db-row@4x5+db-bench-press@4x5+db-step-up@3x6",
+            "6:LONG:75"
+          ]
+        },
+        {
+          "index": 10,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 169,
+          "sessions": [
+            "0:STRENGTH_FULL_A:back-squat@4x5+db-bench-press@4x5+db-row@4x5+standing-calf-raise@3x7",
+            "1:EASY:45",
+            "3:QUALITY:49",
+            "4:STRENGTH_FULL_B:barbell-rdl@4x6+db-row@4x5+db-bench-press@4x5+db-step-up@3x6",
+            "6:LONG:75"
+          ]
+        },
+        {
+          "index": 11,
+          "phase": "CONSOLIDATION",
+          "runMinutes": 153,
+          "sessions": [
+            "0:STRENGTH_FULL_A:back-squat@3x5+db-bench-press@3x5+db-row@3x5+standing-calf-raise@2x7+side-plank@2x7",
+            "1:EASY:45",
+            "3:QUALITY:43",
+            "4:STRENGTH_FULL_B:barbell-rdl@3x6+db-row@3x5+db-bench-press@3x5+db-step-up@2x6+side-plank@2x7",
+            "6:LONG:65"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T04_STRENGTH12_REPEATED_UNDERPERFORMANCE",
+      "horizon": 12,
+      "profile": "B_STRENGTH_FIRST",
+      "covers": [
+        "repeated underperformance",
+        "regression",
+        "strength-first"
+      ],
+      "status": "SIMULATED_SYNTHETIC_FIXTURES",
+      "invariants": {
+        "generated": true,
+        "noOfficialEffect": true,
+        "completedWorkImmutable": true,
+        "selectedOptionsAdmissible": true,
+        "noDeadlock": true,
+        "noPermanentHold": true,
+        "noRepeatedUnnecessaryAsk": true,
+        "noAdaptationCascade": true,
+        "noRunawayProgression": true,
+        "noWeeklyTremor": true,
+        "noPriorityInversion": true,
+        "scheduleValid": true,
+        "raceWeekPresent": true
+      },
+      "allInvariantsHold": true,
+      "summary": {
+        "weeksExecuted": 12,
+        "sessionsPlanned": 60,
+        "actualExecutions": 60,
+        "decisions": {
+          "KEEP": 9,
+          "MODIFY": 3
+        },
+        "actions": {
+          "INSTANTIATE_LOGGED_LOADS": 2,
+          "KEEP": 7,
+          "GATED_NEXT_STEP": 3
+        },
+        "adoptedChanges": 3,
+        "instantiations": 2,
+        "maxWeeklyRunIncrease": null,
+        "runMinutes": [
+          70,
+          70,
+          75,
+          65,
+          75,
+          75,
+          75,
+          65,
+          75,
+          75,
+          75,
+          65
+        ],
+        "strengthSets": [
+          37,
+          37,
+          37,
+          22,
+          43,
+          43,
+          42,
+          27,
+          52,
+          52,
+          52,
+          37
+        ],
+        "phases": [
+          "DEVELOPMENT",
+          "DEVELOPMENT",
+          "DEVELOPMENT",
+          "CONSOLIDATION",
+          "DEVELOPMENT",
+          "DEVELOPMENT",
+          "DEVELOPMENT",
+          "CONSOLIDATION",
+          "DEVELOPMENT",
+          "DEVELOPMENT",
+          "DEVELOPMENT",
+          "CONSOLIDATION"
+        ],
+        "populationOutcomePrediction": false
+      },
+      "decisions": [
+        {
+          "weekIndex": 0,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "INSTANTIATE_LOGGED_LOADS",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "back-squat": "ADVANCE",
+            "barbell-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "one-arm-db-row": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-overhead-press": "ADVANCE",
+            "db-row": "ADVANCE"
+          },
+          "reason": "Logged loads replace planned placeholders; the progression rule is unchanged"
+        },
+        {
+          "weekIndex": 1,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "back-squat": "ADVANCE",
+            "barbell-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "one-arm-db-row": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-overhead-press": "ADVANCE",
+            "db-row": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 2,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "back-squat": "ADVANCE",
+            "barbell-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "one-arm-db-row": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-overhead-press": "ADVANCE",
+            "db-row": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 3,
+          "kind": "WEEKLY_REVIEW",
+          "status": "MODIFY",
+          "action": "GATED_NEXT_STEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "back-squat": "HOLD",
+            "barbell-rdl": "HOLD",
+            "db-split-squat": "HOLD",
+            "db-calf-raise": "HOLD",
+            "dead-bug": "HOLD",
+            "one-arm-db-row": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-overhead-press": "ADVANCE",
+            "db-row": "ADVANCE"
+          },
+          "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation"
+        },
+        {
+          "weekIndex": 4,
+          "kind": "WEEKLY_REVIEW",
+          "status": "MODIFY",
+          "action": "GATED_NEXT_STEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "back-squat": "REGRESS",
+            "barbell-rdl": "REGRESS",
+            "db-split-squat": "REGRESS",
+            "db-calf-raise": "REGRESS",
+            "dead-bug": "REGRESS",
+            "one-arm-db-row": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-overhead-press": "ADVANCE",
+            "db-row": "ADVANCE"
+          },
+          "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation"
+        },
+        {
+          "weekIndex": 5,
+          "kind": "WEEKLY_REVIEW",
+          "status": "MODIFY",
+          "action": "GATED_NEXT_STEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "back-squat": "HOLD",
+            "barbell-rdl": "HOLD",
+            "db-split-squat": "HOLD",
+            "db-calf-raise": "HOLD",
+            "dead-bug": "HOLD",
+            "one-arm-db-row": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-overhead-press": "ADVANCE",
+            "db-row": "ADVANCE"
+          },
+          "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation"
+        },
+        {
+          "weekIndex": 6,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "INSTANTIATE_LOGGED_LOADS",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "back-squat": "ADVANCE",
+            "barbell-rdl": "ADVANCE",
+            "db-step-up": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE",
+            "one-arm-db-row": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-floor-press": "ADVANCE",
+            "db-row": "ADVANCE"
+          },
+          "reason": "Logged loads replace planned placeholders; the progression rule is unchanged"
+        },
+        {
+          "weekIndex": 7,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "back-squat": "ADVANCE",
+            "barbell-rdl": "ADVANCE",
+            "db-step-up": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE",
+            "one-arm-db-row": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-floor-press": "ADVANCE",
+            "db-row": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 8,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "back-squat": "ADVANCE",
+            "barbell-rdl": "ADVANCE",
+            "db-step-up": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE",
+            "one-arm-db-row": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-floor-press": "ADVANCE",
+            "db-row": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 9,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "back-squat": "ADVANCE",
+            "barbell-rdl": "ADVANCE",
+            "db-step-up": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE",
+            "one-arm-db-row": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-floor-press": "ADVANCE",
+            "db-row": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 10,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "back-squat": "ADVANCE",
+            "barbell-rdl": "ADVANCE",
+            "db-step-up": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE",
+            "one-arm-db-row": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-floor-press": "ADVANCE",
+            "db-row": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 11,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": null,
+          "reason": "Final week of the horizon; record outcomes for the next program"
+        }
+      ],
+      "initialProgramHash": "ad20d7eb7684057d0b96038dd8c01b3e8a2975b378c19e9dbdef7d7ad3e04038",
+      "finalProgramHash": "58780a9824b5ed515f0eb947bea3aa0ee0def115a99991608517a6e13e781af6",
+      "finalWeeks": [
+        {
+          "index": 0,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 70,
+          "sessions": [
+            "0:STRENGTH_LOWER:back-squat@3x8+barbell-rdl@3x8+db-split-squat@2x10+db-calf-raise@2x10+dead-bug@2x10",
+            "2:EASY:30",
+            "3:STRENGTH_FULL_B:barbell-rdl@3x8+one-arm-db-row@3x10+db-bench-press@3x10+db-split-squat@2x10+dead-bug@2x10",
+            "4:STRENGTH_UPPER:db-bench-press@3x10+one-arm-db-row@3x10+db-overhead-press@2x10+db-row@2x10+dead-bug@2x10",
+            "5:LONG:40"
+          ]
+        },
+        {
+          "index": 1,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 70,
+          "sessions": [
+            "0:STRENGTH_LOWER:back-squat@3x10+barbell-rdl@3x10+db-split-squat@2x12+db-calf-raise@2x12+dead-bug@2x12",
+            "2:EASY:30",
+            "3:STRENGTH_FULL_B:barbell-rdl@3x10+one-arm-db-row@3x12+db-bench-press@3x12+db-split-squat@2x12+dead-bug@2x12",
+            "4:STRENGTH_UPPER:db-bench-press@3x12+one-arm-db-row@3x12+db-overhead-press@2x12+db-row@2x12+dead-bug@2x12",
+            "5:LONG:40"
+          ]
+        },
+        {
+          "index": 2,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 75,
+          "sessions": [
+            "0:STRENGTH_LOWER:back-squat@3x12+barbell-rdl@3x12+db-split-squat@2x8+db-calf-raise@2x8+dead-bug@2x8",
+            "2:EASY:35",
+            "3:STRENGTH_FULL_B:barbell-rdl@3x12+one-arm-db-row@3x8+db-bench-press@3x8+db-split-squat@2x8+dead-bug@2x8",
+            "4:STRENGTH_UPPER:db-bench-press@3x8+one-arm-db-row@3x8+db-overhead-press@2x8+db-row@2x8+dead-bug@2x8",
+            "5:LONG:40"
+          ]
+        },
+        {
+          "index": 3,
+          "phase": "CONSOLIDATION",
+          "runMinutes": 65,
+          "sessions": [
+            "0:STRENGTH_LOWER:back-squat@2x8+barbell-rdl@2x8+db-split-squat@1x10+db-calf-raise@1x10+dead-bug@1x10",
+            "2:EASY:35",
+            "3:STRENGTH_FULL_B:barbell-rdl@2x8+one-arm-db-row@2x10+db-bench-press@2x10+db-split-squat@1x10+dead-bug@1x10",
+            "4:STRENGTH_UPPER:db-bench-press@2x10+one-arm-db-row@2x10+db-overhead-press@1x10+db-row@1x10+dead-bug@1x10",
+            "5:LONG:30"
+          ]
+        },
+        {
+          "index": 4,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 75,
+          "sessions": [
+            "0:STRENGTH_LOWER:back-squat@3x6+barbell-rdl@3x8+db-split-squat@2x10+db-calf-raise@2x8+dead-bug@2x10",
+            "2:EASY:35",
+            "3:STRENGTH_FULL_B:barbell-rdl@3x8+one-arm-db-row@4x10+db-bench-press@4x10+db-split-squat@2x10+dead-bug@2x10",
+            "4:STRENGTH_UPPER:db-bench-press@4x10+one-arm-db-row@4x10+db-overhead-press@3x10+db-row@3x10+dead-bug@2x10",
+            "5:LONG:40"
+          ]
+        },
+        {
+          "index": 5,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 75,
+          "sessions": [
+            "0:STRENGTH_LOWER:back-squat@3x4+barbell-rdl@3x8+db-split-squat@2x10+db-calf-raise@2x6+dead-bug@2x8",
+            "2:EASY:35",
+            "3:STRENGTH_FULL_B:barbell-rdl@3x8+one-arm-db-row@4x12+db-bench-press@4x12+db-split-squat@2x10+dead-bug@2x8",
+            "4:STRENGTH_UPPER:db-bench-press@4x12+one-arm-db-row@4x12+db-overhead-press@3x12+db-row@3x12+dead-bug@2x8",
+            "5:LONG:40"
+          ]
+        },
+        {
+          "index": 6,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 75,
+          "sessions": [
+            "0:STRENGTH_LOWER:back-squat@3x2+barbell-rdl@3x8+db-step-up@2x10+standing-calf-raise@2x10+side-plank@2x10",
+            "2:EASY:35",
+            "3:STRENGTH_FULL_B:barbell-rdl@3x8+one-arm-db-row@4x8+db-bench-press@4x8+db-step-up@2x10+side-plank@2x10",
+            "4:STRENGTH_UPPER:db-bench-press@4x8+one-arm-db-row@4x8+db-floor-press@2x10+db-row@3x8+side-plank@2x10",
+            "5:LONG:40"
+          ]
+        },
+        {
+          "index": 7,
+          "phase": "CONSOLIDATION",
+          "runMinutes": 65,
+          "sessions": [
+            "0:STRENGTH_LOWER:back-squat@2x4+barbell-rdl@2x10+db-step-up@1x12+standing-calf-raise@1x12+side-plank@1x12",
+            "2:EASY:35",
+            "3:STRENGTH_FULL_B:barbell-rdl@2x10+one-arm-db-row@3x10+db-bench-press@3x10+db-step-up@1x12+side-plank@1x12",
+            "4:STRENGTH_UPPER:db-bench-press@3x10+one-arm-db-row@3x10+db-floor-press@1x12+db-row@2x10+side-plank@1x12",
+            "5:LONG:30"
+          ]
+        },
+        {
+          "index": 8,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 75,
+          "sessions": [
+            "0:STRENGTH_LOWER:back-squat@4x4+barbell-rdl@4x10+db-step-up@3x12+standing-calf-raise@3x12+side-plank@3x12",
+            "2:EASY:35",
+            "3:STRENGTH_FULL_B:barbell-rdl@4x10+one-arm-db-row@4x10+db-bench-press@4x10+db-step-up@3x12+side-plank@3x12",
+            "4:STRENGTH_UPPER:db-bench-press@4x10+one-arm-db-row@4x10+db-floor-press@3x12+db-row@3x10+side-plank@3x12",
+            "5:LONG:40"
+          ]
+        },
+        {
+          "index": 9,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 75,
+          "sessions": [
+            "0:STRENGTH_LOWER:back-squat@4x6+barbell-rdl@4x12+db-step-up@3x8+standing-calf-raise@3x8+side-plank@3x8",
+            "2:EASY:35",
+            "3:STRENGTH_FULL_B:barbell-rdl@4x12+one-arm-db-row@4x12+db-bench-press@4x12+db-step-up@3x8+side-plank@3x8",
+            "4:STRENGTH_UPPER:db-bench-press@4x12+one-arm-db-row@4x12+db-floor-press@3x8+db-row@3x12+side-plank@3x8",
+            "5:LONG:40"
+          ]
+        },
+        {
+          "index": 10,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 75,
+          "sessions": [
+            "0:STRENGTH_LOWER:back-squat@4x8+barbell-rdl@4x8+db-step-up@3x10+standing-calf-raise@3x10+side-plank@3x10",
+            "2:EASY:35",
+            "3:STRENGTH_FULL_B:barbell-rdl@4x8+one-arm-db-row@4x8+db-bench-press@4x8+db-step-up@3x10+side-plank@3x10",
+            "4:STRENGTH_UPPER:db-bench-press@4x8+one-arm-db-row@4x8+db-floor-press@3x10+db-row@3x8+side-plank@3x10",
+            "5:LONG:40"
+          ]
+        },
+        {
+          "index": 11,
+          "phase": "CONSOLIDATION",
+          "runMinutes": 65,
+          "sessions": [
+            "0:STRENGTH_LOWER:back-squat@3x10+barbell-rdl@3x10+db-step-up@2x12+standing-calf-raise@2x12+side-plank@2x12",
+            "2:EASY:35",
+            "3:STRENGTH_FULL_B:barbell-rdl@3x10+one-arm-db-row@3x10+db-bench-press@3x10+db-step-up@2x12+side-plank@2x12",
+            "4:STRENGTH_UPPER:db-bench-press@3x10+one-arm-db-row@3x10+db-floor-press@2x12+db-row@2x10+side-plank@2x12",
+            "5:LONG:30"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T05_10K8_SHORT_INTERRUPTION",
+      "horizon": 8,
+      "profile": "E_EXPERIENCED_RUNNER_NOVICE_STRENGTH",
+      "covers": [
+        "short interruption",
+        "event transition",
+        "novice strength establishment"
+      ],
+      "status": "SIMULATED_SYNTHETIC_FIXTURES",
+      "invariants": {
+        "generated": true,
+        "noOfficialEffect": true,
+        "completedWorkImmutable": true,
+        "selectedOptionsAdmissible": true,
+        "noDeadlock": true,
+        "noPermanentHold": true,
+        "noRepeatedUnnecessaryAsk": true,
+        "noAdaptationCascade": true,
+        "noRunawayProgression": true,
+        "noWeeklyTremor": true,
+        "noPriorityInversion": true,
+        "scheduleValid": true,
+        "raceWeekPresent": true
+      },
+      "allInvariantsHold": true,
+      "summary": {
+        "weeksExecuted": 8,
+        "sessionsPlanned": 45,
+        "actualExecutions": 39,
+        "decisions": {
+          "KEEP": 7,
+          "MODIFY": 1
+        },
+        "actions": {
+          "INSTANTIATE_LOGGED_LOADS": 2,
+          "REESTABLISH": 1,
+          "KEEP": 5
+        },
+        "adoptedChanges": 1,
+        "instantiations": 2,
+        "maxWeeklyRunIncrease": null,
+        "runMinutes": [
+          190,
+          196,
+          198,
+          196,
+          198,
+          139,
+          65,
+          80
+        ],
+        "strengthSets": [
+          8,
+          10,
+          10,
+          6,
+          6,
+          6,
+          2,
+          2
+        ],
+        "phases": [
+          "ESTABLISHMENT",
+          "BUILD",
+          "SPECIFIC",
+          "SPECIFIC",
+          "SPECIFIC",
+          "TAPER",
+          "RACE_WEEK",
+          "POST_EVENT"
+        ],
+        "populationOutcomePrediction": false
+      },
+      "decisions": [
+        {
+          "weekIndex": 0,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "INSTANTIATE_LOGGED_LOADS",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "sit-to-stand": "ADVANCE",
+            "wall-pushup": "ADVANCE",
+            "supported-calf-raise": "ADVANCE",
+            "glute-bridge": "ADVANCE",
+            "incline-push-up": "ADVANCE",
+            "reverse-lunge": "ADVANCE"
+          },
+          "reason": "Logged loads replace planned placeholders; the progression rule is unchanged"
+        },
+        {
+          "weekIndex": 1,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "INSTANTIATE_LOGGED_LOADS",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "box-squat-bodyweight": "ADVANCE",
+            "incline-push-up": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "glute-bridge": "ADVANCE",
+            "reverse-lunge": "ADVANCE"
+          },
+          "reason": "Logged loads replace planned placeholders; the progression rule is unchanged"
+        },
+        {
+          "weekIndex": 3,
+          "kind": "RETURN_AFTER_PAUSE",
+          "status": "MODIFY",
+          "action": "REESTABLISH",
+          "gates": null,
+          "reason": "short nonclinical interruption (8 days): resume the last completed doses; no step until execution is observed"
+        },
+        {
+          "weekIndex": 3,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "box-squat-bodyweight": "ADVANCE",
+            "incline-push-up": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "glute-bridge": "ADVANCE",
+            "reverse-lunge": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 4,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "box-squat-bodyweight": "ADVANCE",
+            "incline-push-up": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "glute-bridge": "ADVANCE",
+            "reverse-lunge": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 5,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "box-squat-bodyweight": "ADVANCE",
+            "incline-push-up": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "glute-bridge": "ADVANCE",
+            "reverse-lunge": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 6,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "EASY": "ADVANCE",
+            "box-squat-bodyweight": "ADVANCE",
+            "incline-push-up": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 7,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": null,
+          "reason": "Final week of the horizon; record outcomes for the next program"
+        }
+      ],
+      "initialProgramHash": "e9114628ba4b1b4a19eb6f20e4cfdd0a569f804afad2ba88878985fbbe9b805d",
+      "finalProgramHash": "16d3eb99f247b7d1a175d5aa63fd223464b86bf3d5892837403211c4e30fe0cc",
+      "finalWeeks": [
+        {
+          "index": 0,
+          "phase": "ESTABLISHMENT",
+          "runMinutes": 190,
+          "sessions": [
+            "0:EASY:40",
+            "1:STRENGTH_FULL_A:sit-to-stand@1x5+wall-pushup@1x5+supported-calf-raise@1x5",
+            "2:EASY:40",
+            "3:STRENGTH_FULL_B:glute-bridge@2x10+incline-push-up@2x10+reverse-lunge@1x12",
+            "4:EASY:40",
+            "6:LONG:70"
+          ]
+        },
+        {
+          "index": 1,
+          "phase": "BUILD",
+          "runMinutes": 196,
+          "sessions": [
+            "0:EASY:40",
+            "1:STRENGTH_FULL_A:box-squat-bodyweight@2x10+incline-push-up@2x10+standing-calf-raise@1x12",
+            "2:QUALITY:46",
+            "3:STRENGTH_FULL_B:glute-bridge@2x10+incline-push-up@2x10+reverse-lunge@1x12",
+            "4:EASY:40",
+            "6:LONG:70"
+          ]
+        },
+        {
+          "index": 2,
+          "phase": "SPECIFIC",
+          "runMinutes": 198,
+          "sessions": [
+            "0:EASY:40",
+            "1:STRENGTH_FULL_A:box-squat-bodyweight@2x12+incline-push-up@2x12+standing-calf-raise@1x8",
+            "2:QUALITY:48",
+            "3:STRENGTH_FULL_B:glute-bridge@2x12+incline-push-up@2x12+reverse-lunge@1x8",
+            "4:EASY:40",
+            "6:LONG:70"
+          ]
+        },
+        {
+          "index": 3,
+          "phase": "SPECIFIC",
+          "runMinutes": 196,
+          "sessions": [
+            "0:EASY:45",
+            "1:STRENGTH_FULL_A:box-squat-bodyweight@1x10+incline-push-up@1x10+standing-calf-raise@1x12",
+            "2:EASY:46",
+            "3:STRENGTH_FULL_B:glute-bridge@1x10+incline-push-up@1x10+reverse-lunge@1x12",
+            "4:EASY:40",
+            "6:LONG:70"
+          ]
+        },
+        {
+          "index": 4,
+          "phase": "SPECIFIC",
+          "runMinutes": 198,
+          "sessions": [
+            "0:EASY:40",
+            "1:STRENGTH_FULL_A:box-squat-bodyweight@1x10+incline-push-up@1x10+standing-calf-raise@1x12",
+            "2:QUALITY:48",
+            "3:STRENGTH_FULL_B:glute-bridge@1x10+incline-push-up@1x10+reverse-lunge@1x12",
+            "4:EASY:40",
+            "6:LONG:70"
+          ]
+        },
+        {
+          "index": 5,
+          "phase": "TAPER",
+          "runMinutes": 139,
+          "sessions": [
+            "0:EASY:30",
+            "1:STRENGTH_FULL_A:box-squat-bodyweight@1x10+incline-push-up@1x10+standing-calf-raise@1x12",
+            "2:QUALITY:34",
+            "3:STRENGTH_FULL_B:glute-bridge@1x10+incline-push-up@1x10+reverse-lunge@1x12",
+            "4:EASY:30",
+            "6:LONG:45"
+          ]
+        },
+        {
+          "index": 6,
+          "phase": "RACE_WEEK",
+          "runMinutes": 65,
+          "sessions": [
+            "0:EASY:20",
+            "1:STRENGTH_FULL_A:box-squat-bodyweight@1x10+incline-push-up@1x10",
+            "2:RACE_TOUCH:25",
+            "4:EASY:20",
+            "6:RACE:75"
+          ]
+        },
+        {
+          "index": 7,
+          "phase": "POST_EVENT",
+          "runMinutes": 80,
+          "sessions": [
+            "1:STRENGTH_FULL_A:box-squat-bodyweight@1x10+incline-push-up@1x10",
+            "2:RECOVERY_EASY:20",
+            "4:RECOVERY_EASY:30",
+            "6:RECOVERY_EASY:30"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T06_LOWDATA8_WALKJOG_EARNED",
+      "horizon": 8,
+      "profile": "G_LOW_DATA_NO_WEARABLE",
+      "covers": [
+        "low data",
+        "walk/jog establishment",
+        "earned progression"
+      ],
+      "status": "SIMULATED_SYNTHETIC_FIXTURES",
+      "invariants": {
+        "generated": true,
+        "noOfficialEffect": true,
+        "completedWorkImmutable": true,
+        "selectedOptionsAdmissible": true,
+        "noDeadlock": true,
+        "noPermanentHold": true,
+        "noRepeatedUnnecessaryAsk": true,
+        "noAdaptationCascade": true,
+        "noRunawayProgression": true,
+        "noWeeklyTremor": true,
+        "noPriorityInversion": true,
+        "scheduleValid": true,
+        "raceWeekPresent": true
+      },
+      "allInvariantsHold": true,
+      "summary": {
+        "weeksExecuted": 8,
+        "sessionsPlanned": 40,
+        "actualExecutions": 40,
+        "decisions": {
+          "KEEP": 8
+        },
+        "actions": {
+          "INSTANTIATE_LOGGED_LOADS": 3,
+          "KEEP": 5
+        },
+        "adoptedChanges": 0,
+        "instantiations": 3,
+        "maxWeeklyRunIncrease": null,
+        "runMinutes": [
+          60,
+          63,
+          69,
+          78,
+          84,
+          84,
+          78,
+          84
+        ],
+        "strengthSets": [
+          13,
+          16,
+          16,
+          16,
+          10,
+          26,
+          22,
+          22
+        ],
+        "phases": [
+          "ESTABLISHMENT",
+          "DEVELOPMENT",
+          "DEVELOPMENT",
+          "DEVELOPMENT",
+          "CONSOLIDATION",
+          "DEVELOPMENT",
+          "DEVELOPMENT",
+          "DEVELOPMENT"
+        ],
+        "populationOutcomePrediction": false
+      },
+      "decisions": [
+        {
+          "weekIndex": 0,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "INSTANTIATE_LOGGED_LOADS",
+          "gates": {
+            "WALK_JOG": "ADVANCE",
+            "sit-to-stand": "ADVANCE",
+            "wall-pushup": "ADVANCE",
+            "prone-row-practice": "ADVANCE",
+            "supported-calf-raise": "ADVANCE",
+            "dead-bug-practice": "ADVANCE",
+            "glute-bridge": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-floor-press": "ADVANCE",
+            "db-step-up": "ADVANCE",
+            "dead-bug": "ADVANCE"
+          },
+          "reason": "Logged loads replace planned placeholders; the progression rule is unchanged"
+        },
+        {
+          "weekIndex": 1,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "INSTANTIATE_LOGGED_LOADS",
+          "gates": {
+            "WALK_JOG": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-floor-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "glute-bridge": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Logged loads replace planned placeholders; the progression rule is unchanged"
+        },
+        {
+          "weekIndex": 2,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "WALK_JOG": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-floor-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "glute-bridge": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 3,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "WALK_JOG": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-floor-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "glute-bridge": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 4,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "WALK_JOG": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-floor-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "glute-bridge": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 5,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "WALK_JOG": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-floor-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "glute-bridge": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 6,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "INSTANTIATE_LOGGED_LOADS",
+          "gates": {
+            "WALK_JOG": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-floor-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE",
+            "glute-bridge": "ADVANCE",
+            "reverse-lunge": "ADVANCE"
+          },
+          "reason": "Logged loads replace planned placeholders; the progression rule is unchanged"
+        },
+        {
+          "weekIndex": 7,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": null,
+          "reason": "Final week of the horizon; record outcomes for the next program"
+        }
+      ],
+      "initialProgramHash": "162e49e453d9dcfe6ff2b529092735ff91494ddd9b53601eeec31c510c12c820",
+      "finalProgramHash": "4aae0fd7a05847fbd4c6ce5d9e2b5d0d930cbc4efb295b9c9cd5c4e2b5b3ecce",
+      "finalWeeks": [
+        {
+          "index": 0,
+          "phase": "ESTABLISHMENT",
+          "runMinutes": 60,
+          "sessions": [
+            "1:WALK_JOG:20",
+            "2:STRENGTH_FULL_A:sit-to-stand@1x5+wall-pushup@1x5+prone-row-practice@1x5+supported-calf-raise@1x5+dead-bug-practice@1x5",
+            "3:WALK_JOG:20",
+            "4:STRENGTH_FULL_B:glute-bridge@2x10+db-row@2x8+db-floor-press@2x8+db-step-up@1x8+dead-bug@1x12",
+            "5:WALK_JOG:20"
+          ]
+        },
+        {
+          "index": 1,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 63,
+          "sessions": [
+            "1:WALK_JOG:21",
+            "2:STRENGTH_FULL_A:goblet-squat@2x10+db-floor-press@2x8+db-row@2x8+db-calf-raise@1x12+dead-bug@1x12",
+            "3:WALK_JOG:21",
+            "4:STRENGTH_FULL_B:glute-bridge@2x10+db-row@2x8+db-floor-press@2x8+db-step-up@1x8+dead-bug@1x12",
+            "5:WALK_JOG:21"
+          ]
+        },
+        {
+          "index": 2,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 69,
+          "sessions": [
+            "1:WALK_JOG:23",
+            "2:STRENGTH_FULL_A:goblet-squat@2x12+db-floor-press@2x10+db-row@2x10+db-calf-raise@1x8+dead-bug@1x8",
+            "3:WALK_JOG:23",
+            "4:STRENGTH_FULL_B:glute-bridge@2x12+db-row@2x10+db-floor-press@2x10+db-step-up@1x10+dead-bug@1x8",
+            "5:WALK_JOG:23"
+          ]
+        },
+        {
+          "index": 3,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 78,
+          "sessions": [
+            "1:WALK_JOG:26",
+            "2:STRENGTH_FULL_A:goblet-squat@2x8+db-floor-press@2x12+db-row@2x12+db-calf-raise@1x10+dead-bug@1x10",
+            "3:WALK_JOG:26",
+            "4:STRENGTH_FULL_B:glute-bridge@2x8+db-row@2x12+db-floor-press@2x12+db-step-up@1x12+dead-bug@1x10",
+            "5:WALK_JOG:26"
+          ]
+        },
+        {
+          "index": 4,
+          "phase": "CONSOLIDATION",
+          "runMinutes": 84,
+          "sessions": [
+            "1:WALK_JOG:28",
+            "2:STRENGTH_FULL_A:goblet-squat@1x10+db-floor-press@1x8+db-row@1x8+db-calf-raise@1x12+dead-bug@1x12",
+            "3:WALK_JOG:28",
+            "4:STRENGTH_FULL_B:glute-bridge@1x10+db-row@1x8+db-floor-press@1x8+db-step-up@1x8+dead-bug@1x12",
+            "5:WALK_JOG:28"
+          ]
+        },
+        {
+          "index": 5,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 84,
+          "sessions": [
+            "1:WALK_JOG:28",
+            "2:STRENGTH_FULL_A:goblet-squat@3x10+db-floor-press@3x8+db-row@3x8+db-calf-raise@2x12+dead-bug@2x12",
+            "3:WALK_JOG:28",
+            "4:STRENGTH_FULL_B:glute-bridge@3x10+db-row@3x8+db-floor-press@3x8+db-step-up@2x8+dead-bug@2x12",
+            "5:WALK_JOG:28"
+          ]
+        },
+        {
+          "index": 6,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 78,
+          "sessions": [
+            "1:WALK_JOG:26",
+            "2:STRENGTH_FULL_A:goblet-squat@3x12+db-floor-press@3x10+db-row@3x10+standing-calf-raise@1x12+side-plank@1x12",
+            "3:WALK_JOG:26",
+            "4:STRENGTH_FULL_B:glute-bridge@3x12+db-row@3x10+db-floor-press@3x10+reverse-lunge@1x12+side-plank@1x12",
+            "5:WALK_JOG:26"
+          ]
+        },
+        {
+          "index": 7,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 84,
+          "sessions": [
+            "1:WALK_JOG:28",
+            "2:STRENGTH_FULL_A:goblet-squat@3x8+db-floor-press@3x12+db-row@3x12+standing-calf-raise@1x8+side-plank@1x8",
+            "3:WALK_JOG:28",
+            "4:STRENGTH_FULL_B:glute-bridge@3x8+db-row@3x12+db-floor-press@3x12+reverse-lunge@1x8+side-plank@1x8",
+            "5:WALK_JOG:28"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T07_GENERAL8_SCHEDULE_AND_EQUIPMENT",
+      "horizon": 8,
+      "profile": "F_GENERAL_HYBRID",
+      "covers": [
+        "schedule change",
+        "substitution",
+        "general fitness"
+      ],
+      "status": "SIMULATED_SYNTHETIC_FIXTURES",
+      "invariants": {
+        "generated": true,
+        "noOfficialEffect": true,
+        "completedWorkImmutable": true,
+        "selectedOptionsAdmissible": true,
+        "noDeadlock": true,
+        "noPermanentHold": true,
+        "noRepeatedUnnecessaryAsk": true,
+        "noAdaptationCascade": true,
+        "noRunawayProgression": true,
+        "noWeeklyTremor": true,
+        "noPriorityInversion": true,
+        "scheduleValid": true,
+        "raceWeekPresent": true
+      },
+      "allInvariantsHold": true,
+      "summary": {
+        "weeksExecuted": 8,
+        "sessionsPlanned": 32,
+        "actualExecutions": 32,
+        "decisions": {
+          "KEEP": 8,
+          "MODIFY": 2
+        },
+        "actions": {
+          "INSTANTIATE_LOGGED_LOADS": 5,
+          "KEEP": 3,
+          "REARRANGE_FUTURE_WEEKS": 1,
+          "SUBSTITUTE": 1
+        },
+        "adoptedChanges": 2,
+        "instantiations": 5,
+        "maxWeeklyRunIncrease": null,
+        "runMinutes": [
+          60,
+          60,
+          65,
+          70,
+          60,
+          70,
+          75,
+          75
+        ],
+        "strengthSets": [
+          13,
+          16,
+          16,
+          16,
+          10,
+          15,
+          22,
+          22
+        ],
+        "phases": [
+          "ESTABLISHMENT",
+          "DEVELOPMENT",
+          "DEVELOPMENT",
+          "DEVELOPMENT",
+          "CONSOLIDATION",
+          "DEVELOPMENT",
+          "DEVELOPMENT",
+          "DEVELOPMENT"
+        ],
+        "populationOutcomePrediction": false
+      },
+      "decisions": [
+        {
+          "weekIndex": 0,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "INSTANTIATE_LOGGED_LOADS",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "sit-to-stand": "ADVANCE",
+            "wall-pushup": "ADVANCE",
+            "prone-row-practice": "ADVANCE",
+            "supported-calf-raise": "ADVANCE",
+            "dead-bug-practice": "ADVANCE",
+            "glute-bridge": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-floor-press": "ADVANCE",
+            "db-step-up": "ADVANCE",
+            "dead-bug": "ADVANCE"
+          },
+          "reason": "Logged loads replace planned placeholders; the progression rule is unchanged"
+        },
+        {
+          "weekIndex": 1,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "INSTANTIATE_LOGGED_LOADS",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-floor-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "glute-bridge": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Logged loads replace planned placeholders; the progression rule is unchanged"
+        },
+        {
+          "weekIndex": 2,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-floor-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "glute-bridge": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 3,
+          "kind": "SCHEDULE_CHANGE",
+          "status": "MODIFY",
+          "action": "REARRANGE_FUTURE_WEEKS",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-floor-press": "HOLD",
+            "db-row": "HOLD",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "HOLD",
+            "glute-bridge": "HOLD",
+            "db-step-up": "HOLD"
+          },
+          "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the athlete removed"
+        },
+        {
+          "weekIndex": 3,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "INSTANTIATE_LOGGED_LOADS",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-floor-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "glute-bridge": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Logged loads replace planned placeholders; the progression rule is unchanged"
+        },
+        {
+          "weekIndex": 4,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-floor-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "glute-bridge": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 5,
+          "kind": "EQUIPMENT_CHANGE",
+          "status": "MODIFY",
+          "action": "SUBSTITUTE",
+          "gates": null,
+          "reason": "Equipment changed: same-intent substitutes from 2026-12-08 to 2026-12-13; unfamiliar ones are established by effort; the stimulus change is disclosed"
+        },
+        {
+          "weekIndex": 5,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "INSTANTIATE_LOGGED_LOADS",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "box-squat-bodyweight": "ADVANCE",
+            "incline-push-up": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "glute-bridge": "ADVANCE",
+            "reverse-lunge": "ADVANCE"
+          },
+          "reason": "Logged loads replace planned placeholders; the progression rule is unchanged"
+        },
+        {
+          "weekIndex": 6,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "INSTANTIATE_LOGGED_LOADS",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-floor-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE",
+            "glute-bridge": "ADVANCE",
+            "reverse-lunge": "ADVANCE"
+          },
+          "reason": "Logged loads replace planned placeholders; the progression rule is unchanged"
+        },
+        {
+          "weekIndex": 7,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": null,
+          "reason": "Final week of the horizon; record outcomes for the next program"
+        }
+      ],
+      "initialProgramHash": "af1b15b1dbcf4a56cb5c98a40ad438583f3f431e1ee2a48cd1d9f307a5422bb3",
+      "finalProgramHash": "430a4cb89320a18f3a2c95e573b21cc7ee541890b871885e246eefea54f9ced0",
+      "finalWeeks": [
+        {
+          "index": 0,
+          "phase": "ESTABLISHMENT",
+          "runMinutes": 60,
+          "sessions": [
+            "1:EASY:30",
+            "2:STRENGTH_FULL_A:sit-to-stand@1x5+wall-pushup@1x5+prone-row-practice@1x5+supported-calf-raise@1x5+dead-bug-practice@1x5",
+            "4:LONG:30",
+            "5:STRENGTH_FULL_B:glute-bridge@2x10+db-row@2x8+db-floor-press@2x8+db-step-up@1x8+dead-bug@1x12"
+          ]
+        },
+        {
+          "index": 1,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 60,
+          "sessions": [
+            "1:EASY:30",
+            "2:STRENGTH_FULL_A:goblet-squat@2x10+db-floor-press@2x8+db-row@2x8+db-calf-raise@1x12+dead-bug@1x12",
+            "4:LONG:30",
+            "5:STRENGTH_FULL_B:glute-bridge@2x10+db-row@2x8+db-floor-press@2x8+db-step-up@1x8+dead-bug@1x12"
+          ]
+        },
+        {
+          "index": 2,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 65,
+          "sessions": [
+            "1:EASY:30",
+            "2:STRENGTH_FULL_A:goblet-squat@2x12+db-floor-press@2x10+db-row@2x10+db-calf-raise@1x8+dead-bug@1x8",
+            "4:LONG:35",
+            "5:STRENGTH_FULL_B:glute-bridge@2x12+db-row@2x10+db-floor-press@2x10+db-step-up@1x10+dead-bug@1x8"
+          ]
+        },
+        {
+          "index": 3,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 70,
+          "sessions": [
+            "1:EASY:30",
+            "2:STRENGTH_FULL_A:goblet-squat@2x8+db-floor-press@2x12+db-row@2x12+db-calf-raise@1x10+dead-bug@1x10",
+            "4:LONG:40",
+            "5:STRENGTH_FULL_B:glute-bridge@2x8+db-row@2x12+db-floor-press@2x12+db-step-up@1x12+dead-bug@1x10"
+          ]
+        },
+        {
+          "index": 4,
+          "phase": "CONSOLIDATION",
+          "runMinutes": 60,
+          "sessions": [
+            "0:EASY:30",
+            "1:STRENGTH_FULL_A:goblet-squat@1x10+db-floor-press@1x8+db-row@1x8+db-calf-raise@1x12+dead-bug@1x12",
+            "3:LONG:30",
+            "5:STRENGTH_FULL_B:glute-bridge@1x10+db-row@1x8+db-floor-press@1x8+db-step-up@1x8+dead-bug@1x12"
+          ]
+        },
+        {
+          "index": 5,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 70,
+          "sessions": [
+            "0:EASY:30",
+            "1:STRENGTH_FULL_A:box-squat-bodyweight@2x10+incline-push-up@2x10+standing-calf-raise@1x12+dead-bug@2x12",
+            "3:LONG:40",
+            "5:STRENGTH_FULL_B:glute-bridge@3x10+incline-push-up@2x10+reverse-lunge@1x12+dead-bug@2x12"
+          ]
+        },
+        {
+          "index": 6,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 75,
+          "sessions": [
+            "0:EASY:35",
+            "1:STRENGTH_FULL_A:goblet-squat@3x10+db-floor-press@3x8+db-row@3x8+standing-calf-raise@1x8+side-plank@1x12",
+            "3:LONG:40",
+            "5:STRENGTH_FULL_B:glute-bridge@3x12+db-row@3x8+db-floor-press@3x8+reverse-lunge@1x8+side-plank@1x12"
+          ]
+        },
+        {
+          "index": 7,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 75,
+          "sessions": [
+            "0:EASY:35",
+            "1:STRENGTH_FULL_A:goblet-squat@3x12+db-floor-press@3x10+db-row@3x10+standing-calf-raise@1x10+side-plank@1x8",
+            "3:LONG:40",
+            "5:STRENGTH_FULL_B:glute-bridge@3x8+db-row@3x10+db-floor-press@3x10+reverse-lunge@1x10+side-plank@1x8"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T08_NOVICE8_MODERATE_INTERRUPTION",
+      "horizon": 8,
+      "profile": "D_NOVICE_RUNNER_EXPERIENCED_STRENGTH",
+      "covers": [
+        "moderate interruption",
+        "strength-dominant return",
+        "novice runner"
+      ],
+      "status": "SIMULATED_SYNTHETIC_FIXTURES",
+      "invariants": {
+        "generated": true,
+        "noOfficialEffect": true,
+        "completedWorkImmutable": true,
+        "selectedOptionsAdmissible": true,
+        "noDeadlock": true,
+        "noPermanentHold": true,
+        "noRepeatedUnnecessaryAsk": true,
+        "noAdaptationCascade": true,
+        "noRunawayProgression": true,
+        "noWeeklyTremor": true,
+        "noPriorityInversion": true,
+        "scheduleValid": true,
+        "raceWeekPresent": true
+      },
+      "allInvariantsHold": true,
+      "summary": {
+        "weeksExecuted": 8,
+        "sessionsPlanned": 48,
+        "actualExecutions": 36,
+        "decisions": {
+          "KEEP": 6,
+          "MODIFY": 1
+        },
+        "actions": {
+          "INSTANTIATE_LOGGED_LOADS": 2,
+          "KEEP": 4,
+          "REESTABLISH": 1
+        },
+        "adoptedChanges": 1,
+        "instantiations": 2,
+        "maxWeeklyRunIncrease": null,
+        "runMinutes": [
+          60,
+          63,
+          69,
+          78,
+          84,
+          63,
+          69,
+          78
+        ],
+        "strengthSets": [
+          39,
+          40,
+          40,
+          40,
+          25,
+          15,
+          25,
+          40
+        ],
+        "phases": [
+          "ESTABLISHMENT",
+          "DEVELOPMENT",
+          "DEVELOPMENT",
+          "DEVELOPMENT",
+          "CONSOLIDATION",
+          "DEVELOPMENT",
+          "DEVELOPMENT",
+          "DEVELOPMENT"
+        ],
+        "populationOutcomePrediction": false
+      },
+      "decisions": [
+        {
+          "weekIndex": 0,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "INSTANTIATE_LOGGED_LOADS",
+          "gates": {
+            "WALK_JOG": "ADVANCE",
+            "back-squat": "ADVANCE",
+            "barbell-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "one-arm-db-row": "ADVANCE"
+          },
+          "reason": "Logged loads replace planned placeholders; the progression rule is unchanged"
+        },
+        {
+          "weekIndex": 1,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "WALK_JOG": "ADVANCE",
+            "back-squat": "ADVANCE",
+            "barbell-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "one-arm-db-row": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 2,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "WALK_JOG": "ADVANCE",
+            "back-squat": "ADVANCE",
+            "barbell-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "one-arm-db-row": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 5,
+          "kind": "RETURN_AFTER_PAUSE",
+          "status": "MODIFY",
+          "action": "REESTABLISH",
+          "gates": null,
+          "reason": "moderate nonclinical interruption (16 days): re-entry from the reviewed entry dose, returning to the prior tolerated dose in 2 conditional steps"
+        },
+        {
+          "weekIndex": 5,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "INSTANTIATE_LOGGED_LOADS",
+          "gates": {
+            "WALK_JOG": "ADVANCE",
+            "back-squat": "ADVANCE",
+            "barbell-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "one-arm-db-row": "ADVANCE"
+          },
+          "reason": "Logged loads replace planned placeholders; the progression rule is unchanged"
+        },
+        {
+          "weekIndex": 6,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "WALK_JOG": "ADVANCE",
+            "back-squat": "ADVANCE",
+            "barbell-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "one-arm-db-row": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 7,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": null,
+          "reason": "Final week of the horizon; record outcomes for the next program"
+        }
+      ],
+      "initialProgramHash": "00cef19763ecf968541a44c197979448d9a395f2197596251ec7d5373d60204e",
+      "finalProgramHash": "19df38070033ee6d66b4c8c3e0b09734bd462ea76834412d6237ac48cd1987e0",
+      "finalWeeks": [
+        {
+          "index": 0,
+          "phase": "ESTABLISHMENT",
+          "runMinutes": 60,
+          "sessions": [
+            "0:STRENGTH_LOWER:back-squat@4x5+barbell-rdl@3x6+db-split-squat@2x7+db-calf-raise@2x7+dead-bug@2x7",
+            "1:WALK_JOG:20",
+            "2:STRENGTH_UPPER:bench-press@4x5+db-row@2x5+db-bench-press@2x7+one-arm-db-row@2x7+dead-bug@2x7",
+            "3:WALK_JOG:20",
+            "4:STRENGTH_FULL_B:barbell-rdl@3x6+db-row@3x5+bench-press@4x5+db-split-squat@2x7+dead-bug@2x7",
+            "5:WALK_JOG:20"
+          ]
+        },
+        {
+          "index": 1,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 63,
+          "sessions": [
+            "0:STRENGTH_LOWER:back-squat@4x5+barbell-rdl@3x6+db-split-squat@2x6+db-calf-raise@2x6+dead-bug@2x7",
+            "1:WALK_JOG:21",
+            "2:STRENGTH_UPPER:bench-press@4x5+db-row@3x5+db-bench-press@2x6+one-arm-db-row@2x6+dead-bug@2x7",
+            "3:WALK_JOG:21",
+            "4:STRENGTH_FULL_B:barbell-rdl@3x6+db-row@3x5+bench-press@4x5+db-split-squat@2x6+dead-bug@2x7",
+            "5:WALK_JOG:21"
+          ]
+        },
+        {
+          "index": 2,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 69,
+          "sessions": [
+            "0:STRENGTH_LOWER:back-squat@4x5+barbell-rdl@3x6+db-split-squat@2x6+db-calf-raise@2x6+dead-bug@2x7",
+            "1:WALK_JOG:23",
+            "2:STRENGTH_UPPER:bench-press@4x5+db-row@3x5+db-bench-press@2x6+one-arm-db-row@2x6+dead-bug@2x7",
+            "3:WALK_JOG:23",
+            "4:STRENGTH_FULL_B:barbell-rdl@3x6+db-row@3x5+bench-press@4x5+db-split-squat@2x6+dead-bug@2x7",
+            "5:WALK_JOG:23"
+          ]
+        },
+        {
+          "index": 3,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 78,
+          "sessions": [
+            "0:STRENGTH_LOWER:back-squat@4x5+barbell-rdl@3x6+db-split-squat@2x6+db-calf-raise@2x6+dead-bug@2x7",
+            "1:WALK_JOG:26",
+            "2:STRENGTH_UPPER:bench-press@4x5+db-row@3x5+db-bench-press@2x6+one-arm-db-row@2x6+dead-bug@2x7",
+            "3:WALK_JOG:26",
+            "4:STRENGTH_FULL_B:barbell-rdl@3x6+db-row@3x5+bench-press@4x5+db-split-squat@2x6+dead-bug@2x7",
+            "5:WALK_JOG:26"
+          ]
+        },
+        {
+          "index": 4,
+          "phase": "CONSOLIDATION",
+          "runMinutes": 84,
+          "sessions": [
+            "0:STRENGTH_LOWER:back-squat@3x5+barbell-rdl@2x6+db-split-squat@1x6+db-calf-raise@1x6+dead-bug@1x7",
+            "1:WALK_JOG:28",
+            "2:STRENGTH_UPPER:bench-press@3x5+db-row@2x5+db-bench-press@1x6+one-arm-db-row@1x6+dead-bug@1x7",
+            "3:WALK_JOG:28",
+            "4:STRENGTH_FULL_B:barbell-rdl@2x6+db-row@2x5+bench-press@3x5+db-split-squat@1x6+dead-bug@1x7",
+            "5:WALK_JOG:28"
+          ]
+        },
+        {
+          "index": 5,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 63,
+          "sessions": [
+            "0:STRENGTH_LOWER:back-squat@4x5+barbell-rdl@4x6+db-split-squat@3x6+db-calf-raise@3x6+dead-bug@3x7",
+            "1:WALK_JOG:21",
+            "2:STRENGTH_UPPER:bench-press@1x5+db-row@1x5+db-bench-press@1x7+one-arm-db-row@1x7+dead-bug@1x7",
+            "3:WALK_JOG:21",
+            "4:STRENGTH_FULL_B:barbell-rdl@1x6+db-row@1x5+bench-press@1x5+db-split-squat@1x7+dead-bug@1x7",
+            "5:WALK_JOG:21"
+          ]
+        },
+        {
+          "index": 6,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 69,
+          "sessions": [
+            "0:STRENGTH_LOWER:back-squat@3x5+barbell-rdl@2x6+db-split-squat@1x7+db-calf-raise@1x6+dead-bug@1x7",
+            "1:WALK_JOG:23",
+            "2:STRENGTH_UPPER:bench-press@3x5+db-row@2x5+db-bench-press@1x7+one-arm-db-row@1x7+dead-bug@1x7",
+            "3:WALK_JOG:23",
+            "4:STRENGTH_FULL_B:barbell-rdl@2x6+db-row@2x5+bench-press@3x5+db-split-squat@1x7+dead-bug@1x7",
+            "5:WALK_JOG:23"
+          ]
+        },
+        {
+          "index": 7,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 78,
+          "sessions": [
+            "0:STRENGTH_LOWER:back-squat@4x5+barbell-rdl@3x6+db-step-up@2x7+standing-calf-raise@2x7+side-plank@2x7",
+            "1:WALK_JOG:26",
+            "2:STRENGTH_UPPER:bench-press@4x5+db-row@3x5+db-overhead-press@2x7+one-arm-db-row@2x6+side-plank@2x7",
+            "3:WALK_JOG:26",
+            "4:STRENGTH_FULL_B:barbell-rdl@3x6+db-row@3x5+bench-press@4x5+db-step-up@2x7+side-plank@2x7",
+            "5:WALK_JOG:26"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T09_PARTIAL_WEARABLE12_NOISY",
+      "horizon": 12,
+      "profile": "H_PARTIAL_WEARABLE",
+      "covers": [
+        "partial wearable",
+        "missing RPE",
+        "manual+wearable duplicate",
+        "stale sync",
+        "future skew",
+        "one bad session",
+        "conflicting signals"
+      ],
+      "status": "SIMULATED_SYNTHETIC_FIXTURES",
+      "invariants": {
+        "generated": true,
+        "noOfficialEffect": true,
+        "completedWorkImmutable": true,
+        "selectedOptionsAdmissible": true,
+        "noDeadlock": true,
+        "noPermanentHold": true,
+        "noRepeatedUnnecessaryAsk": true,
+        "noAdaptationCascade": true,
+        "noRunawayProgression": true,
+        "noWeeklyTremor": true,
+        "noPriorityInversion": true,
+        "scheduleValid": true,
+        "raceWeekPresent": true
+      },
+      "allInvariantsHold": true,
+      "summary": {
+        "weeksExecuted": 12,
+        "sessionsPlanned": 48,
+        "actualExecutions": 49,
+        "decisions": {
+          "KEEP": 10,
+          "MODIFY": 2
+        },
+        "actions": {
+          "INSTANTIATE_LOGGED_LOADS": 2,
+          "KEEP": 8,
+          "GATED_NEXT_STEP": 2
+        },
+        "adoptedChanges": 2,
+        "instantiations": 2,
+        "maxWeeklyRunIncrease": null,
+        "runMinutes": [
+          65,
+          65,
+          70,
+          70,
+          60,
+          70,
+          70,
+          70,
+          65,
+          70,
+          70,
+          70
+        ],
+        "strengthSets": [
+          8,
+          8,
+          8,
+          8,
+          5,
+          8,
+          8,
+          8,
+          5,
+          8,
+          8,
+          8
+        ],
+        "phases": [
+          "ESTABLISHMENT",
+          "DEVELOPMENT",
+          "DEVELOPMENT",
+          "DEVELOPMENT",
+          "CONSOLIDATION",
+          "DEVELOPMENT",
+          "DEVELOPMENT",
+          "DEVELOPMENT",
+          "CONSOLIDATION",
+          "DEVELOPMENT",
+          "DEVELOPMENT",
+          "DEVELOPMENT"
+        ],
+        "populationOutcomePrediction": false
+      },
+      "decisions": [
+        {
+          "weekIndex": 0,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "INSTANTIATE_LOGGED_LOADS",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-floor-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE"
+          },
+          "reason": "Logged loads replace planned placeholders; the progression rule is unchanged"
+        },
+        {
+          "weekIndex": 1,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-floor-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 2,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-floor-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 3,
+          "kind": "WEEKLY_REVIEW",
+          "status": "MODIFY",
+          "action": "GATED_NEXT_STEP",
+          "gates": {
+            "LONG": "HOLD",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-floor-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE"
+          },
+          "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation"
+        },
+        {
+          "weekIndex": 4,
+          "kind": "WEEKLY_REVIEW",
+          "status": "MODIFY",
+          "action": "GATED_NEXT_STEP",
+          "gates": {
+            "LONG": "HOLD",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-floor-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE"
+          },
+          "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation"
+        },
+        {
+          "weekIndex": 5,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-floor-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 6,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "INSTANTIATE_LOGGED_LOADS",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-floor-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE"
+          },
+          "reason": "Logged loads replace planned placeholders; the progression rule is unchanged"
+        },
+        {
+          "weekIndex": 7,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-floor-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 8,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-floor-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 9,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-floor-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 10,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-floor-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 11,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": null,
+          "reason": "Final week of the horizon; record outcomes for the next program"
+        }
+      ],
+      "initialProgramHash": "016110c130cee0e38be42c595bdd8d79d4d44a96851113a751e37741975eab31",
+      "finalProgramHash": "24196be31a732403359a54b8654f7d25d2e6ecd4135ea26d00d740bf0daa6f8e",
+      "finalWeeks": [
+        {
+          "index": 0,
+          "phase": "ESTABLISHMENT",
+          "runMinutes": 65,
+          "sessions": [
+            "0:EASY:20",
+            "2:EASY:20",
+            "3:STRENGTH_FULL_A:goblet-squat@2x8+db-floor-press@2x8+db-row@2x8+db-calf-raise@1x10+dead-bug@1x10",
+            "5:LONG:25"
+          ]
+        },
+        {
+          "index": 1,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 65,
+          "sessions": [
+            "0:EASY:20",
+            "2:EASY:20",
+            "3:STRENGTH_FULL_A:goblet-squat@2x8+db-floor-press@2x8+db-row@2x8+db-calf-raise@1x8+dead-bug@1x10",
+            "5:LONG:25"
+          ]
+        },
+        {
+          "index": 2,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 70,
+          "sessions": [
+            "0:EASY:20",
+            "2:EASY:20",
+            "3:STRENGTH_FULL_A:goblet-squat@2x8+db-floor-press@2x8+db-row@2x8+db-calf-raise@1x8+dead-bug@1x10",
+            "5:LONG:30"
+          ]
+        },
+        {
+          "index": 3,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 70,
+          "sessions": [
+            "0:EASY:20",
+            "2:EASY:20",
+            "3:STRENGTH_FULL_A:goblet-squat@2x8+db-floor-press@2x8+db-row@2x8+db-calf-raise@1x8+dead-bug@1x10",
+            "5:LONG:30"
+          ]
+        },
+        {
+          "index": 4,
+          "phase": "CONSOLIDATION",
+          "runMinutes": 60,
+          "sessions": [
+            "0:EASY:20",
+            "2:EASY:20",
+            "3:STRENGTH_FULL_A:goblet-squat@1x8+db-floor-press@1x8+db-row@1x8+db-calf-raise@1x8+dead-bug@1x10",
+            "5:LONG:20"
+          ]
+        },
+        {
+          "index": 5,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 70,
+          "sessions": [
+            "0:EASY:20",
+            "2:EASY:20",
+            "3:STRENGTH_FULL_A:goblet-squat@2x8+db-floor-press@2x8+db-row@2x8+db-calf-raise@1x8+dead-bug@1x10",
+            "5:LONG:30"
+          ]
+        },
+        {
+          "index": 6,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 70,
+          "sessions": [
+            "0:EASY:20",
+            "2:EASY:20",
+            "3:STRENGTH_FULL_A:goblet-squat@2x8+db-floor-press@2x8+db-row@2x8+standing-calf-raise@1x10+side-plank@1x10",
+            "5:LONG:30"
+          ]
+        },
+        {
+          "index": 7,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 70,
+          "sessions": [
+            "0:EASY:20",
+            "2:EASY:20",
+            "3:STRENGTH_FULL_A:goblet-squat@2x8+db-floor-press@2x8+db-row@2x8+standing-calf-raise@1x10+side-plank@1x10",
+            "5:LONG:30"
+          ]
+        },
+        {
+          "index": 8,
+          "phase": "CONSOLIDATION",
+          "runMinutes": 65,
+          "sessions": [
+            "0:EASY:20",
+            "2:EASY:20",
+            "3:STRENGTH_FULL_A:goblet-squat@1x8+db-floor-press@1x8+db-row@1x8+standing-calf-raise@1x10+side-plank@1x10",
+            "5:LONG:25"
+          ]
+        },
+        {
+          "index": 9,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 70,
+          "sessions": [
+            "0:EASY:20",
+            "2:EASY:20",
+            "3:STRENGTH_FULL_A:goblet-squat@2x8+db-floor-press@2x8+db-row@2x8+standing-calf-raise@1x10+side-plank@1x10",
+            "5:LONG:30"
+          ]
+        },
+        {
+          "index": 10,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 70,
+          "sessions": [
+            "0:EASY:20",
+            "2:EASY:20",
+            "3:STRENGTH_FULL_A:goblet-squat@2x8+db-floor-press@2x8+db-row@2x8+standing-calf-raise@1x10+side-plank@1x10",
+            "5:LONG:30"
+          ]
+        },
+        {
+          "index": 11,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 70,
+          "sessions": [
+            "0:EASY:20",
+            "2:EASY:20",
+            "3:STRENGTH_FULL_A:goblet-squat@2x8+db-floor-press@2x8+db-row@2x8+standing-calf-raise@1x10+side-plank@1x10",
+            "5:LONG:30"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T10_10K12_SPECIFIC_MISSED_AND_POST_EVENT",
+      "horizon": 12,
+      "profile": "TEN_K_EIGHT_WEEKS",
+      "covers": [
+        "missed key run in specific phase",
+        "race week",
+        "post-event",
+        "next block"
+      ],
+      "status": "SIMULATED_SYNTHETIC_FIXTURES",
+      "invariants": {
+        "generated": true,
+        "noOfficialEffect": true,
+        "completedWorkImmutable": true,
+        "selectedOptionsAdmissible": true,
+        "noDeadlock": true,
+        "noPermanentHold": true,
+        "noRepeatedUnnecessaryAsk": true,
+        "noAdaptationCascade": true,
+        "noRunawayProgression": true,
+        "noWeeklyTremor": true,
+        "noPriorityInversion": true,
+        "scheduleValid": true,
+        "raceWeekPresent": true
+      },
+      "allInvariantsHold": true,
+      "summary": {
+        "weeksExecuted": 12,
+        "sessionsPlanned": 58,
+        "actualExecutions": 56,
+        "decisions": {
+          "KEEP": 11,
+          "MODIFY": 2
+        },
+        "actions": {
+          "INSTANTIATE_LOGGED_LOADS": 1,
+          "KEEP": 10,
+          "MOVE": 1,
+          "GATED_NEXT_STEP": 1
+        },
+        "adoptedChanges": 2,
+        "instantiations": 1,
+        "maxWeeklyRunIncrease": null,
+        "runMinutes": [
+          125,
+          125,
+          125,
+          134,
+          146,
+          146,
+          97,
+          60,
+          50,
+          99,
+          104,
+          104
+        ],
+        "strengthSets": [
+          16,
+          16,
+          16,
+          10,
+          10,
+          10,
+          10,
+          3,
+          3,
+          16,
+          16,
+          16
+        ],
+        "phases": [
+          "ESTABLISHMENT",
+          "BUILD",
+          "BUILD",
+          "SPECIFIC",
+          "SPECIFIC",
+          "SPECIFIC",
+          "TAPER",
+          "RACE_WEEK",
+          "POST_EVENT",
+          "NEXT_BLOCK",
+          "NEXT_BLOCK",
+          "NEXT_BLOCK"
+        ],
+        "populationOutcomePrediction": false
+      },
+      "decisions": [
+        {
+          "weekIndex": 0,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "INSTANTIATE_LOGGED_LOADS",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE"
+          },
+          "reason": "Logged loads replace planned placeholders; the progression rule is unchanged"
+        },
+        {
+          "weekIndex": 1,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 2,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 3,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 4,
+          "kind": "MISSED_SESSION",
+          "status": "MODIFY",
+          "action": "MOVE",
+          "gates": null,
+          "reason": "Do the missed quality on 2026-12-02 instead of the easy session planned there; no new day, no added interference"
+        },
+        {
+          "weekIndex": 4,
+          "kind": "WEEKLY_REVIEW",
+          "status": "MODIFY",
+          "action": "GATED_NEXT_STEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "HOLD",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE"
+          },
+          "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation"
+        },
+        {
+          "weekIndex": 5,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 6,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 7,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 8,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 9,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 10,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 11,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": null,
+          "reason": "Final week of the horizon; record outcomes for the next program"
+        }
+      ],
+      "initialProgramHash": "a199e17ae26022b49aa7c5fc3db924a1c54efbcac8defcf9f9c726f8aa320bb5",
+      "finalProgramHash": "651df40cc5d0bb9ca5f4dfc05a266b341e734ca470d19d883b65e037fecd7fac",
+      "finalWeeks": [
+        {
+          "index": 0,
+          "phase": "ESTABLISHMENT",
+          "runMinutes": 125,
+          "sessions": [
+            "0:EASY:35",
+            "1:STRENGTH_FULL_A:goblet-squat@2x8+db-bench-press@2x8+db-row@2x8+db-calf-raise@1x10+dead-bug@1x10",
+            "2:EASY:35",
+            "3:STRENGTH_FULL_B:db-rdl@2x8+db-row@2x8+db-bench-press@2x8+db-split-squat@1x10+dead-bug@1x10",
+            "5:LONG:55"
+          ]
+        },
+        {
+          "index": 1,
+          "phase": "BUILD",
+          "runMinutes": 125,
+          "sessions": [
+            "0:EASY:35",
+            "1:STRENGTH_FULL_A:goblet-squat@2x8+db-bench-press@2x8+db-row@2x8+db-calf-raise@1x8+dead-bug@1x10",
+            "2:EASY:35",
+            "3:STRENGTH_FULL_B:db-rdl@2x8+db-row@2x8+db-bench-press@2x8+db-split-squat@1x8+dead-bug@1x10",
+            "5:LONG:55"
+          ]
+        },
+        {
+          "index": 2,
+          "phase": "BUILD",
+          "runMinutes": 125,
+          "sessions": [
+            "0:EASY:35",
+            "1:STRENGTH_FULL_A:goblet-squat@2x8+db-bench-press@2x8+db-row@2x8+db-calf-raise@1x8+dead-bug@1x10",
+            "2:EASY:35",
+            "3:STRENGTH_FULL_B:db-rdl@2x8+db-row@2x8+db-bench-press@2x8+db-split-squat@1x8+dead-bug@1x10",
+            "5:LONG:55"
+          ]
+        },
+        {
+          "index": 3,
+          "phase": "SPECIFIC",
+          "runMinutes": 134,
+          "sessions": [
+            "0:QUALITY:34",
+            "1:STRENGTH_FULL_A:goblet-squat@1x8+db-bench-press@1x8+db-row@1x8+db-calf-raise@1x8+dead-bug@1x10",
+            "2:EASY:40",
+            "3:STRENGTH_FULL_B:db-rdl@1x8+db-row@1x8+db-bench-press@1x8+db-split-squat@1x8+dead-bug@1x10",
+            "5:LONG:60"
+          ]
+        },
+        {
+          "index": 4,
+          "phase": "SPECIFIC",
+          "runMinutes": 146,
+          "sessions": [
+            "0:QUALITY:41",
+            "1:STRENGTH_FULL_A:goblet-squat@1x8+db-bench-press@1x8+db-row@1x8+db-calf-raise@1x8+dead-bug@1x10",
+            "2:QUALITY:41",
+            "3:STRENGTH_FULL_B:db-rdl@1x8+db-row@1x8+db-bench-press@1x8+db-split-squat@1x8+dead-bug@1x10",
+            "5:LONG:65"
+          ]
+        },
+        {
+          "index": 5,
+          "phase": "SPECIFIC",
+          "runMinutes": 146,
+          "sessions": [
+            "0:QUALITY:41",
+            "1:STRENGTH_FULL_A:goblet-squat@1x8+db-bench-press@1x8+db-row@1x8+db-calf-raise@1x8+dead-bug@1x10",
+            "2:EASY:40",
+            "3:STRENGTH_FULL_B:db-rdl@1x8+db-row@1x8+db-bench-press@1x8+db-split-squat@1x8+dead-bug@1x10",
+            "5:LONG:65"
+          ]
+        },
+        {
+          "index": 6,
+          "phase": "TAPER",
+          "runMinutes": 97,
+          "sessions": [
+            "0:QUALITY:27",
+            "1:STRENGTH_FULL_A:goblet-squat@1x8+db-bench-press@1x8+db-row@1x8+db-calf-raise@1x8+dead-bug@1x10",
+            "2:EASY:30",
+            "3:STRENGTH_FULL_B:db-rdl@1x8+db-row@1x8+db-bench-press@1x8+db-split-squat@1x8+dead-bug@1x10",
+            "5:LONG:40"
+          ]
+        },
+        {
+          "index": 7,
+          "phase": "RACE_WEEK",
+          "runMinutes": 60,
+          "sessions": [
+            "0:EASY:20",
+            "1:STRENGTH_FULL_A:goblet-squat@1x8+db-bench-press@1x8+db-row@1x8",
+            "2:RACE_TOUCH:25",
+            "5:SHAKEOUT:15",
+            "6:RACE:75"
+          ]
+        },
+        {
+          "index": 8,
+          "phase": "POST_EVENT",
+          "runMinutes": 50,
+          "sessions": [
+            "1:STRENGTH_FULL_A:goblet-squat@1x8+db-bench-press@1x8+db-row@1x8",
+            "2:RECOVERY_EASY:20",
+            "5:RECOVERY_EASY:30"
+          ]
+        },
+        {
+          "index": 9,
+          "phase": "NEXT_BLOCK",
+          "runMinutes": 99,
+          "sessions": [
+            "0:QUALITY:34",
+            "1:STRENGTH_FULL_A:goblet-squat@2x8+db-bench-press@2x8+db-row@2x8+db-calf-raise@1x8+dead-bug@1x10",
+            "2:EASY:25",
+            "3:STRENGTH_FULL_B:db-rdl@2x8+db-row@2x8+db-bench-press@2x8+db-split-squat@1x8+dead-bug@1x10",
+            "5:LONG:40"
+          ]
+        },
+        {
+          "index": 10,
+          "phase": "NEXT_BLOCK",
+          "runMinutes": 104,
+          "sessions": [
+            "0:QUALITY:34",
+            "1:STRENGTH_FULL_A:goblet-squat@2x8+db-bench-press@2x8+db-row@2x8+db-calf-raise@1x8+dead-bug@1x10",
+            "2:EASY:25",
+            "3:STRENGTH_FULL_B:db-rdl@2x8+db-row@2x8+db-bench-press@2x8+db-split-squat@1x8+dead-bug@1x10",
+            "5:LONG:45"
+          ]
+        },
+        {
+          "index": 11,
+          "phase": "NEXT_BLOCK",
+          "runMinutes": 104,
+          "sessions": [
+            "0:QUALITY:34",
+            "1:STRENGTH_FULL_A:goblet-squat@2x8+db-bench-press@2x8+db-row@2x8+db-calf-raise@1x8+dead-bug@1x10",
+            "2:EASY:25",
+            "3:STRENGTH_FULL_B:db-rdl@2x8+db-row@2x8+db-bench-press@2x8+db-split-squat@1x8+dead-bug@1x10",
+            "5:LONG:45"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T11_BODYWEIGHT4_ESTABLISHMENT",
+      "horizon": 4,
+      "profile": "BODYWEIGHT_ONLY_NOVICE",
+      "covers": [
+        "4-week establishment",
+        "strength only",
+        "bodyweight"
+      ],
+      "status": "SIMULATED_SYNTHETIC_FIXTURES",
+      "invariants": {
+        "generated": true,
+        "noOfficialEffect": true,
+        "completedWorkImmutable": true,
+        "selectedOptionsAdmissible": true,
+        "noDeadlock": true,
+        "noPermanentHold": true,
+        "noRepeatedUnnecessaryAsk": true,
+        "noAdaptationCascade": true,
+        "noRunawayProgression": true,
+        "noWeeklyTremor": true,
+        "noPriorityInversion": true,
+        "scheduleValid": true,
+        "raceWeekPresent": true
+      },
+      "allInvariantsHold": true,
+      "summary": {
+        "weeksExecuted": 4,
+        "sessionsPlanned": 12,
+        "actualExecutions": 12,
+        "decisions": {
+          "KEEP": 4
+        },
+        "actions": {
+          "INSTANTIATE_LOGGED_LOADS": 2,
+          "KEEP": 2
+        },
+        "adoptedChanges": 0,
+        "instantiations": 2,
+        "maxWeeklyRunIncrease": null,
+        "runMinutes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "strengthSets": [
+          11,
+          13,
+          13,
+          13
+        ],
+        "phases": [
+          "ESTABLISHMENT",
+          "DEVELOPMENT",
+          "DEVELOPMENT",
+          "DEVELOPMENT"
+        ],
+        "populationOutcomePrediction": false
+      },
+      "decisions": [
+        {
+          "weekIndex": 0,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "INSTANTIATE_LOGGED_LOADS",
+          "gates": {
+            "sit-to-stand": "ADVANCE",
+            "hip-hinge-practice": "ADVANCE",
+            "split-squat-bodyweight": "ADVANCE",
+            "incline-push-up": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "glute-bridge": "ADVANCE",
+            "reverse-lunge": "ADVANCE"
+          },
+          "reason": "Logged loads replace planned placeholders; the progression rule is unchanged"
+        },
+        {
+          "weekIndex": 1,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "INSTANTIATE_LOGGED_LOADS",
+          "gates": {
+            "box-squat-bodyweight": "ADVANCE",
+            "glute-bridge": "ADVANCE",
+            "reverse-lunge": "ADVANCE",
+            "incline-push-up": "ADVANCE",
+            "dead-bug": "ADVANCE"
+          },
+          "reason": "Logged loads replace planned placeholders; the progression rule is unchanged"
+        },
+        {
+          "weekIndex": 2,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "box-squat-bodyweight": "ADVANCE",
+            "glute-bridge": "ADVANCE",
+            "reverse-lunge": "ADVANCE",
+            "incline-push-up": "ADVANCE",
+            "dead-bug": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 3,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": null,
+          "reason": "Final week of the horizon; record outcomes for the next program"
+        }
+      ],
+      "initialProgramHash": "aee1bd703760d0ace31bf76b7bbac4810239fb113cd1820a840c5cc976033cd3",
+      "finalProgramHash": "6d836711869f56e30c331170d8866389cd7a5baa9bfe7c000f08205520752fcc",
+      "finalWeeks": [
+        {
+          "index": 0,
+          "phase": "ESTABLISHMENT",
+          "runMinutes": 0,
+          "sessions": [
+            "0:STRENGTH_LOWER:sit-to-stand@1x5+hip-hinge-practice@1x5+split-squat-bodyweight@1x5",
+            "2:STRENGTH_UPPER:incline-push-up@2x10+dead-bug@1x12",
+            "4:STRENGTH_FULL_B:glute-bridge@2x10+incline-push-up@2x10+reverse-lunge@1x12"
+          ]
+        },
+        {
+          "index": 1,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 0,
+          "sessions": [
+            "0:STRENGTH_LOWER:box-squat-bodyweight@2x10+glute-bridge@2x10+reverse-lunge@1x12",
+            "2:STRENGTH_UPPER:incline-push-up@2x10+dead-bug@1x12",
+            "4:STRENGTH_FULL_B:glute-bridge@2x10+incline-push-up@2x10+reverse-lunge@1x12"
+          ]
+        },
+        {
+          "index": 2,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 0,
+          "sessions": [
+            "0:STRENGTH_LOWER:box-squat-bodyweight@2x12+glute-bridge@2x12+reverse-lunge@1x8",
+            "2:STRENGTH_UPPER:incline-push-up@2x12+dead-bug@1x8",
+            "4:STRENGTH_FULL_B:glute-bridge@2x12+incline-push-up@2x12+reverse-lunge@1x8"
+          ]
+        },
+        {
+          "index": 3,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 0,
+          "sessions": [
+            "0:STRENGTH_LOWER:box-squat-bodyweight@2x8+glute-bridge@2x8+reverse-lunge@1x10",
+            "2:STRENGTH_UPPER:incline-push-up@2x8+dead-bug@1x10",
+            "4:STRENGTH_FULL_B:glute-bridge@2x8+incline-push-up@2x8+reverse-lunge@1x10"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T12_RESTART8",
+      "horizon": 8,
+      "profile": "RESTART_AFTER_PAUSE",
+      "covers": [
+        "restart after long pause",
+        "re-establishment"
+      ],
+      "status": "SIMULATED_SYNTHETIC_FIXTURES",
+      "invariants": {
+        "generated": true,
+        "noOfficialEffect": true,
+        "completedWorkImmutable": true,
+        "selectedOptionsAdmissible": true,
+        "noDeadlock": true,
+        "noPermanentHold": true,
+        "noRepeatedUnnecessaryAsk": true,
+        "noAdaptationCascade": true,
+        "noRunawayProgression": true,
+        "noWeeklyTremor": true,
+        "noPriorityInversion": true,
+        "scheduleValid": true,
+        "raceWeekPresent": true
+      },
+      "allInvariantsHold": true,
+      "summary": {
+        "weeksExecuted": 8,
+        "sessionsPlanned": 32,
+        "actualExecutions": 32,
+        "decisions": {
+          "KEEP": 8
+        },
+        "actions": {
+          "INSTANTIATE_LOGGED_LOADS": 2,
+          "KEEP": 6
+        },
+        "adoptedChanges": 0,
+        "instantiations": 2,
+        "maxWeeklyRunIncrease": null,
+        "runMinutes": [
+          45,
+          60,
+          75,
+          90,
+          85,
+          95,
+          100,
+          105
+        ],
+        "strengthSets": [
+          8,
+          8,
+          8,
+          8,
+          5,
+          8,
+          8,
+          8
+        ],
+        "phases": [
+          "ESTABLISHMENT",
+          "DEVELOPMENT",
+          "DEVELOPMENT",
+          "DEVELOPMENT",
+          "CONSOLIDATION",
+          "DEVELOPMENT",
+          "DEVELOPMENT",
+          "DEVELOPMENT"
+        ],
+        "populationOutcomePrediction": false
+      },
+      "decisions": [
+        {
+          "weekIndex": 0,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "INSTANTIATE_LOGGED_LOADS",
+          "gates": {
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE"
+          },
+          "reason": "Logged loads replace planned placeholders; the progression rule is unchanged"
+        },
+        {
+          "weekIndex": 1,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 2,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 3,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 4,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 5,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 6,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "INSTANTIATE_LOGGED_LOADS",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE"
+          },
+          "reason": "Logged loads replace planned placeholders; the progression rule is unchanged"
+        },
+        {
+          "weekIndex": 7,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": null,
+          "reason": "Final week of the horizon; record outcomes for the next program"
+        }
+      ],
+      "initialProgramHash": "cbff6c6230e61e7e8bdde4a0c983db337704a4c2805c51fd8d0e871cf52146f4",
+      "finalProgramHash": "9d2e11afaeaf0ed33ac9c832dd708b9a200d4a968f9dcc432073f709d71fb506",
+      "finalWeeks": [
+        {
+          "index": 0,
+          "phase": "ESTABLISHMENT",
+          "runMinutes": 45,
+          "sessions": [
+            "1:EASY:15",
+            "2:STRENGTH_FULL_A:goblet-squat@2x8+db-bench-press@2x8+db-row@2x8+db-calf-raise@1x10+dead-bug@1x10",
+            "3:EASY:15",
+            "6:EASY:15"
+          ]
+        },
+        {
+          "index": 1,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 60,
+          "sessions": [
+            "1:EASY:20",
+            "2:STRENGTH_FULL_A:goblet-squat@2x8+db-bench-press@2x8+db-row@2x8+db-calf-raise@1x8+dead-bug@1x10",
+            "3:EASY:20",
+            "6:EASY:20"
+          ]
+        },
+        {
+          "index": 2,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 75,
+          "sessions": [
+            "1:EASY:25",
+            "2:STRENGTH_FULL_A:goblet-squat@2x8+db-bench-press@2x8+db-row@2x8+db-calf-raise@1x8+dead-bug@1x10",
+            "3:EASY:25",
+            "6:EASY:25"
+          ]
+        },
+        {
+          "index": 3,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 90,
+          "sessions": [
+            "1:EASY:30",
+            "2:STRENGTH_FULL_A:goblet-squat@2x8+db-bench-press@2x8+db-row@2x8+db-calf-raise@1x8+dead-bug@1x10",
+            "3:EASY:30",
+            "6:LONG:30"
+          ]
+        },
+        {
+          "index": 4,
+          "phase": "CONSOLIDATION",
+          "runMinutes": 85,
+          "sessions": [
+            "1:EASY:30",
+            "2:STRENGTH_FULL_A:goblet-squat@1x8+db-bench-press@1x8+db-row@1x8+db-calf-raise@1x8+dead-bug@1x10",
+            "3:EASY:30",
+            "6:LONG:25"
+          ]
+        },
+        {
+          "index": 5,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 95,
+          "sessions": [
+            "1:EASY:30",
+            "2:STRENGTH_FULL_A:goblet-squat@2x8+db-bench-press@2x8+db-row@2x8+db-calf-raise@1x8+dead-bug@1x10",
+            "3:EASY:30",
+            "6:LONG:35"
+          ]
+        },
+        {
+          "index": 6,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 100,
+          "sessions": [
+            "1:EASY:30",
+            "2:STRENGTH_FULL_A:goblet-squat@2x8+db-bench-press@2x8+db-row@2x8+standing-calf-raise@1x10+side-plank@1x10",
+            "3:EASY:30",
+            "6:LONG:40"
+          ]
+        },
+        {
+          "index": 7,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 105,
+          "sessions": [
+            "1:EASY:30",
+            "2:STRENGTH_FULL_A:goblet-squat@2x8+db-bench-press@2x8+db-row@2x8+standing-calf-raise@1x10+side-plank@1x10",
+            "3:EASY:30",
+            "6:LONG:45"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T13_HM16_FATIGUE_SIGNALS",
+      "horizon": 16,
+      "profile": "A_RUN_FIRST_HALF_MARATHON",
+      "covers": [
+        "local fatigue",
+        "systemic convergence"
+      ],
+      "status": "SIMULATED_SYNTHETIC_FIXTURES",
+      "invariants": {
+        "generated": true,
+        "noOfficialEffect": true,
+        "completedWorkImmutable": true,
+        "selectedOptionsAdmissible": true,
+        "noDeadlock": true,
+        "noPermanentHold": true,
+        "noRepeatedUnnecessaryAsk": true,
+        "noAdaptationCascade": true,
+        "noRunawayProgression": true,
+        "noWeeklyTremor": true,
+        "noPriorityInversion": true,
+        "scheduleValid": true,
+        "raceWeekPresent": true
+      },
+      "allInvariantsHold": true,
+      "summary": {
+        "weeksExecuted": 16,
+        "sessionsPlanned": 78,
+        "actualExecutions": 78,
+        "decisions": {
+          "KEEP": 15,
+          "MODIFY": 3
+        },
+        "actions": {
+          "INSTANTIATE_LOGGED_LOADS": 2,
+          "KEEP": 13,
+          "REDUCE": 2,
+          "GATED_NEXT_STEP": 1
+        },
+        "adoptedChanges": 3,
+        "instantiations": 2,
+        "maxWeeklyRunIncrease": null,
+        "runMinutes": [
+          150,
+          150,
+          155,
+          149,
+          144,
+          161,
+          173,
+          168,
+          168,
+          172,
+          184,
+          183,
+          195,
+          132,
+          58,
+          80
+        ],
+        "strengthSets": [
+          16,
+          16,
+          16,
+          16,
+          10,
+          26,
+          22,
+          22,
+          16,
+          16,
+          16,
+          16,
+          16,
+          10,
+          3,
+          3
+        ],
+        "phases": [
+          "ESTABLISHMENT",
+          "BUILD",
+          "BUILD",
+          "BUILD",
+          "CONSOLIDATION",
+          "BUILD",
+          "BUILD",
+          "BUILD",
+          "CONSOLIDATION",
+          "SPECIFIC",
+          "SPECIFIC",
+          "SPECIFIC",
+          "SPECIFIC",
+          "TAPER",
+          "RACE_WEEK",
+          "POST_EVENT"
+        ],
+        "populationOutcomePrediction": false
+      },
+      "decisions": [
+        {
+          "weekIndex": 0,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "INSTANTIATE_LOGGED_LOADS",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE"
+          },
+          "reason": "Logged loads replace planned placeholders; the progression rule is unchanged"
+        },
+        {
+          "weekIndex": 1,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 2,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 3,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 4,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-split-squat": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 5,
+          "kind": "LOCAL_FATIGUE",
+          "status": "MODIFY",
+          "action": "REDUCE",
+          "gates": null,
+          "reason": "Remove only optional local work for the affected region; essentials stay"
+        },
+        {
+          "weekIndex": 5,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "db-calf-raise": "ADVANCE",
+            "dead-bug": "ADVANCE",
+            "db-rdl": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 6,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "INSTANTIATE_LOGGED_LOADS",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Logged loads replace planned placeholders; the progression rule is unchanged"
+        },
+        {
+          "weekIndex": 7,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 8,
+          "kind": "SYSTEMIC_FATIGUE",
+          "status": "MODIFY",
+          "action": "REDUCE",
+          "gates": null,
+          "reason": "Remove the remaining hard suffix; keep easy participation"
+        },
+        {
+          "weekIndex": 8,
+          "kind": "WEEKLY_REVIEW",
+          "status": "MODIFY",
+          "action": "GATED_NEXT_STEP",
+          "gates": {
+            "LONG": "HOLD",
+            "QUALITY": "HOLD",
+            "EASY": "HOLD",
+            "goblet-squat": "HOLD",
+            "db-bench-press": "REGRESS",
+            "db-row": "REGRESS",
+            "standing-calf-raise": "HOLD",
+            "side-plank": "HOLD",
+            "db-rdl": "HOLD"
+          },
+          "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation"
+        },
+        {
+          "weekIndex": 9,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 10,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 11,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 12,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 13,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "LONG": "ADVANCE",
+            "QUALITY": "ADVANCE",
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE",
+            "standing-calf-raise": "ADVANCE",
+            "side-plank": "ADVANCE",
+            "db-rdl": "ADVANCE",
+            "db-step-up": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 14,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "EASY": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-bench-press": "ADVANCE",
+            "db-row": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 15,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": null,
+          "reason": "Final week of the horizon; record outcomes for the next program"
+        }
+      ],
+      "initialProgramHash": "e0a2e661db82360d8af5f00d3be1bb3d6bad00fc61f22143290baa9a8aec171c",
+      "finalProgramHash": "05e0e4ce514161760e767b1516689e7200d4545c8db05f00dcd531abdac653fe",
+      "finalWeeks": [
+        {
+          "index": 0,
+          "phase": "ESTABLISHMENT",
+          "runMinutes": 150,
+          "sessions": [
+            "1:EASY:45",
+            "2:STRENGTH_FULL_A:goblet-squat@2x8+db-bench-press@2x8+db-row@2x8+db-calf-raise@1x10+dead-bug@1x10",
+            "3:EASY:45",
+            "4:STRENGTH_FULL_B:db-rdl@2x8+db-row@2x8+db-bench-press@2x8+db-split-squat@1x10+dead-bug@1x10",
+            "6:LONG:60"
+          ]
+        },
+        {
+          "index": 1,
+          "phase": "BUILD",
+          "runMinutes": 150,
+          "sessions": [
+            "1:EASY:45",
+            "2:STRENGTH_FULL_A:goblet-squat@2x8+db-bench-press@2x8+db-row@2x8+db-calf-raise@1x10+dead-bug@1x10",
+            "3:EASY:45",
+            "4:STRENGTH_FULL_B:db-rdl@2x8+db-row@2x8+db-bench-press@2x8+db-split-squat@1x10+dead-bug@1x10",
+            "6:LONG:60"
+          ]
+        },
+        {
+          "index": 2,
+          "phase": "BUILD",
+          "runMinutes": 155,
+          "sessions": [
+            "1:EASY:45",
+            "2:STRENGTH_FULL_A:goblet-squat@2x10+db-bench-press@2x10+db-row@2x10+db-calf-raise@1x6+dead-bug@1x6",
+            "3:EASY:45",
+            "4:STRENGTH_FULL_B:db-rdl@2x10+db-row@2x10+db-bench-press@2x10+db-split-squat@1x6+dead-bug@1x6",
+            "6:LONG:65"
+          ]
+        },
+        {
+          "index": 3,
+          "phase": "BUILD",
+          "runMinutes": 149,
+          "sessions": [
+            "1:QUALITY:34",
+            "2:STRENGTH_FULL_A:goblet-squat@2x6+db-bench-press@2x6+db-row@2x6+db-calf-raise@1x8+dead-bug@1x8",
+            "3:EASY:50",
+            "4:STRENGTH_FULL_B:db-rdl@2x6+db-row@2x6+db-bench-press@2x6+db-split-squat@1x8+dead-bug@1x8",
+            "6:LONG:65"
+          ]
+        },
+        {
+          "index": 4,
+          "phase": "CONSOLIDATION",
+          "runMinutes": 144,
+          "sessions": [
+            "1:QUALITY:34",
+            "2:STRENGTH_FULL_A:goblet-squat@1x8+db-bench-press@1x8+db-row@1x8+db-calf-raise@1x10+dead-bug@1x10",
+            "3:EASY:50",
+            "4:STRENGTH_FULL_B:db-rdl@1x8+db-row@1x8+db-bench-press@1x8+db-split-squat@1x10+dead-bug@1x10",
+            "6:LONG:60"
+          ]
+        },
+        {
+          "index": 5,
+          "phase": "BUILD",
+          "runMinutes": 161,
+          "sessions": [
+            "1:QUALITY:41",
+            "2:STRENGTH_FULL_A:goblet-squat@3x8+db-bench-press@3x8+db-row@3x8+db-calf-raise@2x10+dead-bug@2x10",
+            "3:EASY:50",
+            "4:STRENGTH_FULL_B:db-rdl@3x8+db-row@3x8+db-bench-press@3x8+dead-bug@2x10",
+            "6:LONG:70"
+          ]
+        },
+        {
+          "index": 6,
+          "phase": "BUILD",
+          "runMinutes": 173,
+          "sessions": [
+            "1:QUALITY:48",
+            "2:STRENGTH_FULL_A:goblet-squat@3x10+db-bench-press@3x10+db-row@3x10+standing-calf-raise@1x10+side-plank@1x10",
+            "3:EASY:50",
+            "4:STRENGTH_FULL_B:db-rdl@3x10+db-row@3x10+db-bench-press@3x10+db-step-up@1x10+side-plank@1x10",
+            "6:LONG:75"
+          ]
+        },
+        {
+          "index": 7,
+          "phase": "BUILD",
+          "runMinutes": 168,
+          "sessions": [
+            "1:QUALITY:43",
+            "2:STRENGTH_FULL_A:goblet-squat@3x6+db-bench-press@3x6+db-row@3x6+standing-calf-raise@1x6+side-plank@1x6",
+            "3:EASY:50",
+            "4:STRENGTH_FULL_B:db-rdl@3x6+db-row@3x6+db-bench-press@3x6+db-step-up@1x6+side-plank@1x6",
+            "6:LONG:75"
+          ]
+        },
+        {
+          "index": 8,
+          "phase": "CONSOLIDATION",
+          "runMinutes": 168,
+          "sessions": [
+            "1:QUALITY:43",
+            "2:STRENGTH_FULL_A:goblet-squat@2x8+db-bench-press@2x8+db-row@2x8+standing-calf-raise@1x8+side-plank@1x8",
+            "3:EASY:55",
+            "4:STRENGTH_FULL_B:db-rdl@1x8+db-row@1x8+db-bench-press@1x8",
+            "6:LONG:70"
+          ]
+        },
+        {
+          "index": 9,
+          "phase": "SPECIFIC",
+          "runMinutes": 172,
+          "sessions": [
+            "1:QUALITY:42",
+            "2:STRENGTH_FULL_A:goblet-squat@2x6+db-bench-press@2x6+db-row@2x6+standing-calf-raise@1x6+side-plank@1x6",
+            "3:EASY:55",
+            "4:STRENGTH_FULL_B:db-rdl@2x6+db-row@2x6+db-bench-press@2x6+db-step-up@1x8+side-plank@1x6",
+            "6:LONG:75"
+          ]
+        },
+        {
+          "index": 10,
+          "phase": "SPECIFIC",
+          "runMinutes": 184,
+          "sessions": [
+            "1:QUALITY:49",
+            "2:STRENGTH_FULL_A:goblet-squat@2x6+db-bench-press@2x6+db-row@2x6+standing-calf-raise@1x6+side-plank@1x6",
+            "3:EASY:55",
+            "4:STRENGTH_FULL_B:db-rdl@2x6+db-row@2x6+db-bench-press@2x6+db-step-up@1x8+side-plank@1x6",
+            "6:LONG:80"
+          ]
+        },
+        {
+          "index": 11,
+          "phase": "SPECIFIC",
+          "runMinutes": 183,
+          "sessions": [
+            "1:QUALITY:48",
+            "2:STRENGTH_FULL_A:goblet-squat@2x6+db-bench-press@2x6+db-row@2x6+standing-calf-raise@1x6+side-plank@1x6",
+            "3:EASY:55",
+            "4:STRENGTH_FULL_B:db-rdl@2x6+db-row@2x6+db-bench-press@2x6+db-step-up@1x8+side-plank@1x6",
+            "6:LONG:80"
+          ]
+        },
+        {
+          "index": 12,
+          "phase": "SPECIFIC",
+          "runMinutes": 195,
+          "sessions": [
+            "1:QUALITY:55",
+            "2:STRENGTH_FULL_A:goblet-squat@2x6+db-bench-press@2x6+db-row@2x6+standing-calf-raise@1x6+side-plank@1x6",
+            "3:EASY:55",
+            "4:STRENGTH_FULL_B:db-rdl@2x6+db-row@2x6+db-bench-press@2x6+db-step-up@1x8+side-plank@1x6",
+            "6:LONG:85"
+          ]
+        },
+        {
+          "index": 13,
+          "phase": "TAPER",
+          "runMinutes": 132,
+          "sessions": [
+            "1:QUALITY:37",
+            "2:STRENGTH_FULL_A:goblet-squat@1x6+db-bench-press@1x6+db-row@1x6+standing-calf-raise@1x6+side-plank@1x6",
+            "3:EASY:40",
+            "4:STRENGTH_FULL_B:db-rdl@1x6+db-row@1x6+db-bench-press@1x6+db-step-up@1x8+side-plank@1x6",
+            "6:LONG:55"
+          ]
+        },
+        {
+          "index": 14,
+          "phase": "RACE_WEEK",
+          "runMinutes": 58,
+          "sessions": [
+            "1:EASY:30",
+            "2:STRENGTH_FULL_A:goblet-squat@1x6+db-bench-press@1x6+db-row@1x6",
+            "3:RACE_TOUCH:28",
+            "6:RACE:150"
+          ]
+        },
+        {
+          "index": 15,
+          "phase": "POST_EVENT",
+          "runMinutes": 80,
+          "sessions": [
+            "1:RECOVERY_EASY:20",
+            "2:STRENGTH_FULL_A:goblet-squat@1x6+db-bench-press@1x6+db-row@1x6",
+            "3:RECOVERY_EASY:30",
+            "6:RECOVERY_EASY:30"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T14_WALKJOG4_FIVE_DAYS",
+      "horizon": 4,
+      "profile": "WALK_JOG_FIVE_DAYS",
+      "covers": [
+        "4-week establishment",
+        "too many run days negotiated",
+        "optional walks skipped"
+      ],
+      "status": "SIMULATED_SYNTHETIC_FIXTURES",
+      "invariants": {
+        "generated": true,
+        "noOfficialEffect": true,
+        "completedWorkImmutable": true,
+        "selectedOptionsAdmissible": true,
+        "noDeadlock": true,
+        "noPermanentHold": true,
+        "noRepeatedUnnecessaryAsk": true,
+        "noAdaptationCascade": true,
+        "noRunawayProgression": true,
+        "noWeeklyTremor": true,
+        "noPriorityInversion": true,
+        "scheduleValid": true,
+        "raceWeekPresent": true
+      },
+      "allInvariantsHold": true,
+      "summary": {
+        "weeksExecuted": 4,
+        "sessionsPlanned": 24,
+        "actualExecutions": 16,
+        "decisions": {
+          "KEEP": 4
+        },
+        "actions": {
+          "KEEP": 3,
+          "INSTANTIATE_LOGGED_LOADS": 1
+        },
+        "adoptedChanges": 0,
+        "instantiations": 1,
+        "maxWeeklyRunIncrease": null,
+        "runMinutes": [
+          60,
+          63,
+          69,
+          78
+        ],
+        "strengthSets": [
+          3,
+          6,
+          6,
+          6
+        ],
+        "phases": [
+          "ESTABLISHMENT",
+          "DEVELOPMENT",
+          "DEVELOPMENT",
+          "DEVELOPMENT"
+        ],
+        "populationOutcomePrediction": false
+      },
+      "decisions": [
+        {
+          "weekIndex": 0,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "WALK_JOG": "ADVANCE",
+            "sit-to-stand": "ADVANCE",
+            "wall-pushup": "ADVANCE",
+            "prone-row-practice": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 1,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "INSTANTIATE_LOGGED_LOADS",
+          "gates": {
+            "WALK_JOG": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-floor-press": "ADVANCE",
+            "db-row": "ADVANCE"
+          },
+          "reason": "Logged loads replace planned placeholders; the progression rule is unchanged"
+        },
+        {
+          "weekIndex": 2,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": {
+            "WALK_JOG": "ADVANCE",
+            "goblet-squat": "ADVANCE",
+            "db-floor-press": "ADVANCE",
+            "db-row": "ADVANCE"
+          },
+          "reason": "Executed as planned without adverse signal; the planned progression step stands"
+        },
+        {
+          "weekIndex": 3,
+          "kind": "WEEKLY_REVIEW",
+          "status": "KEEP",
+          "action": "KEEP",
+          "gates": null,
+          "reason": "Final week of the horizon; record outcomes for the next program"
+        }
+      ],
+      "initialProgramHash": "2226bb0c48f94e856be0d856bbbf16e55114035d842e0302eec4e61885345f72",
+      "finalProgramHash": "3a8071432053b690ec015e2559136be5bd49d722d3da343f62f74f4481360e15",
+      "finalWeeks": [
+        {
+          "index": 0,
+          "phase": "ESTABLISHMENT",
+          "runMinutes": 60,
+          "sessions": [
+            "0:WALK_JOG:20",
+            "1:WALK:20",
+            "2:WALK_JOG:20",
+            "3:STRENGTH_FULL_A:sit-to-stand@1x5+wall-pushup@1x5+prone-row-practice@1x5",
+            "4:WALK_JOG:20",
+            "5:WALK:20"
+          ]
+        },
+        {
+          "index": 1,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 63,
+          "sessions": [
+            "0:WALK_JOG:21",
+            "1:WALK:20",
+            "2:WALK_JOG:21",
+            "3:STRENGTH_FULL_A:goblet-squat@2x10+db-floor-press@2x10+db-row@2x10",
+            "4:WALK_JOG:21",
+            "5:WALK:20"
+          ]
+        },
+        {
+          "index": 2,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 69,
+          "sessions": [
+            "0:WALK_JOG:23",
+            "1:WALK:20",
+            "2:WALK_JOG:23",
+            "3:STRENGTH_FULL_A:goblet-squat@2x12+db-floor-press@2x12+db-row@2x12",
+            "4:WALK_JOG:23",
+            "5:WALK:20"
+          ]
+        },
+        {
+          "index": 3,
+          "phase": "DEVELOPMENT",
+          "runMinutes": 78,
+          "sessions": [
+            "0:WALK_JOG:26",
+            "1:WALK:20",
+            "2:WALK_JOG:26",
+            "3:STRENGTH_FULL_A:goblet-squat@2x8+db-floor-press@2x8+db-row@2x8",
+            "4:WALK_JOG:26",
+            "5:WALK:20"
+          ]
+        }
+      ]
+    }
+  ]
+}

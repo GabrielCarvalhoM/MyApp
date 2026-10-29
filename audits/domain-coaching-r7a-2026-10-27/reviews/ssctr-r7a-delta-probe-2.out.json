@@ -1,0 +1,1353 @@
+{
+ "probe": "R7A-SSCTR-r1-delta-probe-2",
+ "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+ "authorityUsed": "DEV_TEST_ONLY devAuthority() of each runtime, bound to the unchanged policy hash",
+ "node": "v24.19.0",
+ "sections": {
+  "MR2_missingReps": {
+   "cur-noReps": {
+    "log": "0:KEEP/INSTANTIATE_LOGGED_LOADS 1:MODIFY/GATED_NEXT_STEP 2:MODIFY/GATED_NEXT_STEP 3:KEEP/KEEP 4:KEEP/KEEP",
+    "gatesWeeks1to3": [
+     "HOLD",
+     "HOLD",
+     "ADVANCE"
+    ],
+    "squatWeeks1to4": [
+     "3x5@3 KNOWN 80",
+     "3x5@3 KNOWN 80",
+     "2x5@3 KNOWN 80",
+     "4x5@3 KNOWN 80"
+    ],
+    "stateRepsAfterWeeks1to3": [
+     5,
+     5,
+     5
+    ],
+    "stateLoadAfterWeeks1to3": [
+     80,
+     80,
+     80
+    ]
+   },
+   "cur-noRepsNoRir": {
+    "log": "0:KEEP/INSTANTIATE_LOGGED_LOADS 1:MODIFY/GATED_NEXT_STEP 2:MODIFY/GATED_NEXT_STEP 3:KEEP/KEEP 4:KEEP/KEEP",
+    "gatesWeeks1to3": [
+     "HOLD",
+     "HOLD",
+     "ADVANCE"
+    ],
+    "squatWeeks1to4": [
+     "3x5@3 KNOWN 80",
+     "3x5@3 KNOWN 80",
+     "2x5@3 KNOWN 80",
+     "4x5@3 KNOWN 80"
+    ],
+    "stateRepsAfterWeeks1to3": [
+     5,
+     5,
+     5
+    ],
+    "stateLoadAfterWeeks1to3": [
+     80,
+     80,
+     80
+    ]
+   },
+   "cur-repsBelowTarget": {
+    "log": "0:KEEP/INSTANTIATE_LOGGED_LOADS 1:MODIFY/GATED_NEXT_STEP 2:MODIFY/GATED_NEXT_STEP 3:KEEP/KEEP 4:KEEP/KEEP",
+    "gatesWeeks1to3": [
+     "HOLD",
+     "REGRESS",
+     "ADVANCE"
+    ],
+    "squatWeeks1to4": [
+     "3x5@3 KNOWN 80",
+     "3x3@3 KNOWN 80",
+     "2x1@3 KNOWN 77.5",
+     "4x1@3 KNOWN 77.5"
+    ],
+    "stateRepsAfterWeeks1to3": [
+     3,
+     1,
+     1
+    ],
+    "stateLoadAfterWeeks1to3": [
+     80,
+     77.5,
+     77.5
+    ]
+   },
+   "cur-noRepsLowRir": {
+    "log": "0:KEEP/INSTANTIATE_LOGGED_LOADS 1:MODIFY/GATED_NEXT_STEP 2:MODIFY/GATED_NEXT_STEP 3:KEEP/KEEP 4:KEEP/KEEP",
+    "gatesWeeks1to3": [
+     "HOLD",
+     "REGRESS",
+     "ADVANCE"
+    ],
+    "squatWeeks1to4": [
+     "3x5@3 KNOWN 80",
+     "3x5@3 KNOWN 80",
+     "2x5@3 KNOWN 77.5",
+     "4x5@3 KNOWN 77.5"
+    ],
+    "stateRepsAfterWeeks1to3": [
+     5,
+     5,
+     5
+    ],
+    "stateLoadAfterWeeks1to3": [
+     80,
+     77.5,
+     77.5
+    ]
+   },
+   "pre-noReps": {
+    "log": "0:KEEP/INSTANTIATE_LOGGED_LOADS 1:UNSUPPORTED/UNSUPPORTED 2:UNSUPPORTED/UNSUPPORTED 3:MODIFY/GATED_NEXT_STEP 4:KEEP/KEEP",
+    "gatesWeeks1to3": [
+     "NO_GATES",
+     "NO_GATES",
+     "ADVANCE"
+    ],
+    "squatWeeks1to4": [
+     "3x5@3 KNOWN 80",
+     "3x5@3 KNOWN 82.5",
+     "2x5@3 KNOWN 82.5",
+     "4x5@3 KNOWN 82.5"
+    ],
+    "stateRepsAfterWeeks1to3": [
+     5,
+     5,
+     5
+    ],
+    "stateLoadAfterWeeks1to3": [
+     82.5,
+     82.5,
+     82.5
+    ]
+   },
+   "pre-noRepsNoRir": {
+    "log": "0:KEEP/INSTANTIATE_LOGGED_LOADS 1:UNSUPPORTED/UNSUPPORTED 2:UNSUPPORTED/UNSUPPORTED 3:MODIFY/GATED_NEXT_STEP 4:KEEP/KEEP",
+    "gatesWeeks1to3": [
+     "NO_GATES",
+     "NO_GATES",
+     "ADVANCE"
+    ],
+    "squatWeeks1to4": [
+     "3x5@3 KNOWN 80",
+     "3x5@3 KNOWN 82.5",
+     "2x5@3 KNOWN 82.5",
+     "4x5@3 KNOWN 82.5"
+    ],
+    "stateRepsAfterWeeks1to3": [
+     5,
+     5,
+     5
+    ],
+    "stateLoadAfterWeeks1to3": [
+     82.5,
+     82.5,
+     82.5
+    ]
+   },
+   "pre-repsBelowTarget": {
+    "log": "0:KEEP/INSTANTIATE_LOGGED_LOADS 1:MODIFY/GATED_NEXT_STEP 2:MODIFY/GATED_NEXT_STEP 3:KEEP/KEEP 4:KEEP/KEEP",
+    "gatesWeeks1to3": [
+     "HOLD",
+     "REGRESS",
+     "ADVANCE"
+    ],
+    "squatWeeks1to4": [
+     "3x5@3 KNOWN 80",
+     "3x3@3 KNOWN 80",
+     "2x1@3 KNOWN 77.5",
+     "4x1@3 KNOWN 77.5"
+    ],
+    "stateRepsAfterWeeks1to3": [
+     3,
+     1,
+     1
+    ],
+    "stateLoadAfterWeeks1to3": [
+     80,
+     77.5,
+     77.5
+    ]
+   },
+   "pre-noRepsLowRir": {
+    "log": "0:KEEP/INSTANTIATE_LOGGED_LOADS 1:UNSUPPORTED/UNSUPPORTED 2:UNSUPPORTED/UNSUPPORTED 3:MODIFY/GATED_NEXT_STEP 4:KEEP/KEEP",
+    "gatesWeeks1to3": [
+     "NO_GATES",
+     "NO_GATES",
+     "ADVANCE"
+    ],
+    "squatWeeks1to4": [
+     "3x5@3 KNOWN 80",
+     "3x5@3 KNOWN 82.5",
+     "2x5@3 KNOWN 82.5",
+     "4x5@3 KNOWN 82.5"
+    ],
+    "stateRepsAfterWeeks1to3": [
+     5,
+     5,
+     5
+    ],
+    "stateLoadAfterWeeks1to3": [
+     82.5,
+     82.5,
+     82.5
+    ]
+   },
+   "ms": 669
+  },
+  "RS2_substituteAfterReturnStep2": {
+   "cur-EVERY_2_WEEKS-HYPERTROPHY": {
+    "returnReview": "MODIFY/REESTABLISH",
+    "substitution": "MODIFY/SUBSTITUTE",
+    "entryWeek": 6,
+    "step2Week": 7,
+    "phases": "DEVELOPMENT,DEVELOPMENT,DEVELOPMENT,CONSOLIDATION,DEVELOPMENT,DEVELOPMENT",
+    "blockEnds": "3/7/11/15",
+    "parkedAtEntryStepInStep2": [
+     "standing-calf-raise",
+     "side-plank",
+     "db-step-up"
+    ],
+    "substitutes": [
+     "goblet-squat"
+    ],
+    "reviews": [
+     "7:MODIFY/ADOPT_LOGGED_LOADS",
+     "8:KEEP/KEEP",
+     "9:KEEP/KEEP"
+    ],
+    "rows": {
+     "goblet-squat": [
+      "w7 CONSO 2x8@3 ESTABLISH FIRST_ESTABLISH",
+      "w8 DEVEL 4x8@3 FROM_LOG FROM_LOG",
+      "w9 DEVEL -"
+     ],
+     "db-bench-press": [
+      "w7 CONSO 1x8@3 FROM_LOG RETURN_STEP + 1x8@3 FROM_LOG RETURN_STEP",
+      "w8 DEVEL 2x8@3 KNOWN 20 KNOWN + 2x8@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 3x10@3 KNOWN 20 KNOWN + 3x10@3 KNOWN 20 KNOWN"
+     ],
+     "db-row": [
+      "w7 CONSO 1x8@3 FROM_LOG RETURN_STEP + 1x8@3 FROM_LOG RETURN_STEP",
+      "w8 DEVEL 2x8@3 KNOWN 20 KNOWN + 2x8@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 3x10@3 KNOWN 20 KNOWN + 3x10@3 KNOWN 20 KNOWN"
+     ],
+     "db-calf-raise": [
+      "w7 CONSO 1x12@3 FROM_LOG RETURN_STEP",
+      "w8 DEVEL 2x12@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 2x8@3 KNOWN 22 KNOWN"
+     ],
+     "dead-bug": [
+      "w7 CONSO 1x14@3 BODYWEIGHT RETURN_STEP + 1x14@3 BODYWEIGHT RETURN_STEP",
+      "w8 DEVEL 2x14@3 BODYWEIGHT BODYWEIGHT + 2x14@3 BODYWEIGHT BODYWEIGHT",
+      "w9 DEVEL 2x16@3 BODYWEIGHT BODYWEIGHT + 2x16@3 BODYWEIGHT BODYWEIGHT"
+     ],
+     "db-rdl": [
+      "w7 CONSO 1x12@3 FROM_LOG RETURN_STEP",
+      "w8 DEVEL 2x12@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 3x8@3 KNOWN 22 KNOWN"
+     ],
+     "db-split-squat": [
+      "w7 CONSO 1x12@3 FROM_LOG RETURN_STEP",
+      "w8 DEVEL 2x12@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 2x8@3 KNOWN 22 KNOWN"
+     ],
+     "back-squat": [
+      "w7 CONSO -",
+      "w8 DEVEL -",
+      "w9 DEVEL 3x11@3 KNOWN 80 KNOWN"
+     ]
+    },
+    "substituteStateAfterS2": {
+     "goblet-squat": {
+      "mode": "FROM_LOG",
+      "blocksDone": 1,
+      "returnStep": null,
+      "setCap": null,
+      "regainCap": null
+     }
+    },
+    "substituteStateAfterS2plus1": {
+     "goblet-squat": {
+      "mode": "FROM_LOG",
+      "blocksDone": 1,
+      "returnStep": null,
+      "setCap": null,
+      "regainCap": null
+     }
+    }
+   },
+   "cur-EVERY_2_WEEKS-STRENGTH": {
+    "returnReview": "MODIFY/REESTABLISH",
+    "substitution": "MODIFY/SUBSTITUTE",
+    "entryWeek": 6,
+    "step2Week": 7,
+    "phases": "DEVELOPMENT,DEVELOPMENT,DEVELOPMENT,CONSOLIDATION,DEVELOPMENT,DEVELOPMENT",
+    "blockEnds": "3/7/11/15",
+    "parkedAtEntryStepInStep2": [
+     "standing-calf-raise",
+     "side-plank",
+     "db-step-up"
+    ],
+    "substitutes": [
+     "goblet-squat"
+    ],
+    "reviews": [
+     "7:MODIFY/ADOPT_LOGGED_LOADS",
+     "8:KEEP/KEEP",
+     "9:KEEP/KEEP"
+    ],
+    "rows": {
+     "goblet-squat": [
+      "w7 CONSO 2x5@3 ESTABLISH FIRST_ESTABLISH",
+      "w8 DEVEL 4x5@3 FROM_LOG FROM_LOG",
+      "w9 DEVEL -"
+     ],
+     "db-bench-press": [
+      "w7 CONSO 1x6@3 FROM_LOG RETURN_STEP + 1x6@3 FROM_LOG RETURN_STEP",
+      "w8 DEVEL 2x6@3 KNOWN 20 KNOWN + 2x6@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 3x6@3 KNOWN 22 KNOWN + 3x6@3 KNOWN 22 KNOWN"
+     ],
+     "db-row": [
+      "w7 CONSO 1x5@3 FROM_LOG RETURN_STEP + 1x5@3 FROM_LOG RETURN_STEP",
+      "w8 DEVEL 2x5@3 KNOWN 20 KNOWN + 2x5@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 3x5@3 KNOWN 22 KNOWN + 3x5@3 KNOWN 22 KNOWN"
+     ],
+     "db-calf-raise": [
+      "w7 CONSO 1x7@3 FROM_LOG RETURN_STEP",
+      "w8 DEVEL 2x6@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 2x6@3 KNOWN 22 KNOWN"
+     ],
+     "dead-bug": [
+      "w7 CONSO 1x10@3 BODYWEIGHT RETURN_STEP + 1x10@3 BODYWEIGHT RETURN_STEP",
+      "w8 DEVEL 2x10@3 BODYWEIGHT BODYWEIGHT + 2x10@3 BODYWEIGHT BODYWEIGHT",
+      "w9 DEVEL 2x10@3 BODYWEIGHT BODYWEIGHT + 2x10@3 BODYWEIGHT BODYWEIGHT"
+     ],
+     "db-rdl": [
+      "w7 CONSO 1x5@3 FROM_LOG RETURN_STEP",
+      "w8 DEVEL 2x5@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 3x5@3 KNOWN 20 KNOWN"
+     ],
+     "db-split-squat": [
+      "w7 CONSO 1x7@3 FROM_LOG RETURN_STEP",
+      "w8 DEVEL 2x6@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 2x6@3 KNOWN 22 KNOWN"
+     ],
+     "back-squat": [
+      "w7 CONSO -",
+      "w8 DEVEL -",
+      "w9 DEVEL 3x5@3 KNOWN 82.5 KNOWN"
+     ]
+    },
+    "substituteStateAfterS2": {
+     "goblet-squat": {
+      "mode": "FROM_LOG",
+      "blocksDone": 1,
+      "returnStep": null,
+      "setCap": null,
+      "regainCap": null
+     }
+    },
+    "substituteStateAfterS2plus1": {
+     "goblet-squat": {
+      "mode": "FROM_LOG",
+      "blocksDone": 1,
+      "returnStep": null,
+      "setCap": null,
+      "regainCap": null
+     }
+    }
+   },
+   "cur-EVERY_2_WEEKS-RUNNING_SUPPORT": {
+    "returnReview": "MODIFY/REESTABLISH",
+    "substitution": "MODIFY/SUBSTITUTE",
+    "entryWeek": 6,
+    "step2Week": 7,
+    "phases": "DEVELOPMENT,DEVELOPMENT,DEVELOPMENT,CONSOLIDATION,DEVELOPMENT,DEVELOPMENT",
+    "blockEnds": "3/7/11/15",
+    "parkedAtEntryStepInStep2": [
+     "standing-calf-raise",
+     "side-plank",
+     "db-step-up"
+    ],
+    "substitutes": [
+     "goblet-squat"
+    ],
+    "reviews": [
+     "7:MODIFY/ADOPT_LOGGED_LOADS",
+     "8:KEEP/KEEP",
+     "9:KEEP/KEEP"
+    ],
+    "rows": {
+     "goblet-squat": [
+      "w7 CONSO 1x8@3 ESTABLISH FIRST_ESTABLISH",
+      "w8 DEVEL 3x8@3 FROM_LOG FROM_LOG",
+      "w9 DEVEL -"
+     ],
+     "db-bench-press": [
+      "w7 CONSO 1x8@3 FROM_LOG RETURN_STEP + 1x8@3 FROM_LOG RETURN_STEP",
+      "w8 DEVEL 2x8@3 KNOWN 20 KNOWN + 2x8@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 3x10@3 KNOWN 20 KNOWN + 3x10@3 KNOWN 20 KNOWN"
+     ],
+     "db-row": [
+      "w7 CONSO 1x8@3 FROM_LOG RETURN_STEP + 1x8@3 FROM_LOG RETURN_STEP",
+      "w8 DEVEL 2x8@3 KNOWN 20 KNOWN + 2x8@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 2x10@3 KNOWN 20 KNOWN + 2x10@3 KNOWN 20 KNOWN"
+     ],
+     "db-calf-raise": [
+      "w7 CONSO 1x6@3 FROM_LOG RETURN_STEP",
+      "w8 DEVEL 1x6@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 1x8@3 KNOWN 20 KNOWN"
+     ],
+     "dead-bug": [
+      "w7 CONSO 1x14@3 BODYWEIGHT RETURN_STEP + 1x14@3 BODYWEIGHT RETURN_STEP",
+      "w8 DEVEL 1x14@3 BODYWEIGHT BODYWEIGHT + 1x14@3 BODYWEIGHT BODYWEIGHT",
+      "w9 DEVEL 1x14@3 BODYWEIGHT BODYWEIGHT + 1x14@3 BODYWEIGHT BODYWEIGHT"
+     ],
+     "db-rdl": [
+      "w7 CONSO 1x6@3 FROM_LOG RETURN_STEP",
+      "w8 DEVEL 2x6@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 2x8@3 KNOWN 20 KNOWN"
+     ],
+     "db-split-squat": [
+      "w7 CONSO 1x6@3 FROM_LOG RETURN_STEP",
+      "w8 DEVEL 1x6@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 1x8@3 KNOWN 20 KNOWN"
+     ],
+     "back-squat": [
+      "w7 CONSO -",
+      "w8 DEVEL -",
+      "w9 DEVEL 3x6@3 KNOWN 82.5 KNOWN"
+     ]
+    },
+    "substituteStateAfterS2": {
+     "goblet-squat": {
+      "mode": "FROM_LOG",
+      "blocksDone": 1,
+      "returnStep": null,
+      "setCap": null,
+      "regainCap": null
+     }
+    },
+    "substituteStateAfterS2plus1": {
+     "goblet-squat": {
+      "mode": "FROM_LOG",
+      "blocksDone": 1,
+      "returnStep": null,
+      "setCap": null,
+      "regainCap": null
+     }
+    }
+   },
+   "cur-FIXED-HYPERTROPHY": {
+    "returnReview": "MODIFY/REESTABLISH",
+    "substitution": "MODIFY/SUBSTITUTE",
+    "entryWeek": 6,
+    "step2Week": 7,
+    "phases": "DEVELOPMENT,DEVELOPMENT,DEVELOPMENT,CONSOLIDATION,DEVELOPMENT,DEVELOPMENT",
+    "blockEnds": "3/7/11/15",
+    "parkedAtEntryStepInStep2": [],
+    "substitutes": [
+     "goblet-squat"
+    ],
+    "reviews": [
+     "7:MODIFY/ADOPT_LOGGED_LOADS",
+     "8:KEEP/KEEP",
+     "9:KEEP/KEEP"
+    ],
+    "rows": {
+     "goblet-squat": [
+      "w7 CONSO 2x8@3 ESTABLISH FIRST_ESTABLISH",
+      "w8 DEVEL 4x8@3 FROM_LOG FROM_LOG",
+      "w9 DEVEL -"
+     ],
+     "db-bench-press": [
+      "w7 CONSO 1x8@3 FROM_LOG RETURN_STEP + 1x8@3 FROM_LOG RETURN_STEP",
+      "w8 DEVEL 2x8@3 KNOWN 20 KNOWN + 2x8@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 3x10@3 KNOWN 20 KNOWN + 3x10@3 KNOWN 20 KNOWN"
+     ],
+     "db-row": [
+      "w7 CONSO 1x8@3 FROM_LOG RETURN_STEP + 1x8@3 FROM_LOG RETURN_STEP",
+      "w8 DEVEL 2x8@3 KNOWN 20 KNOWN + 2x8@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 3x10@3 KNOWN 20 KNOWN + 3x10@3 KNOWN 20 KNOWN"
+     ],
+     "db-calf-raise": [
+      "w7 CONSO 1x8@3 FROM_LOG RETURN_STEP",
+      "w8 DEVEL 2x8@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 2x10@3 KNOWN 20 KNOWN"
+     ],
+     "dead-bug": [
+      "w7 CONSO 1x16@3 BODYWEIGHT RETURN_STEP + 1x16@3 BODYWEIGHT RETURN_STEP",
+      "w8 DEVEL 2x16@3 BODYWEIGHT BODYWEIGHT + 2x16@3 BODYWEIGHT BODYWEIGHT",
+      "w9 DEVEL 2x16@3 BODYWEIGHT BODYWEIGHT + 2x16@3 BODYWEIGHT BODYWEIGHT"
+     ],
+     "db-rdl": [
+      "w7 CONSO 1x12@3 FROM_LOG RETURN_STEP",
+      "w8 DEVEL 2x12@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 3x8@3 KNOWN 22 KNOWN"
+     ],
+     "db-split-squat": [
+      "w7 CONSO 1x8@3 FROM_LOG RETURN_STEP",
+      "w8 DEVEL 2x8@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 2x10@3 KNOWN 20 KNOWN"
+     ],
+     "back-squat": [
+      "w7 CONSO -",
+      "w8 DEVEL -",
+      "w9 DEVEL 3x11@3 KNOWN 80 KNOWN"
+     ]
+    },
+    "substituteStateAfterS2": {
+     "goblet-squat": {
+      "mode": "FROM_LOG",
+      "blocksDone": 1,
+      "returnStep": null,
+      "setCap": null,
+      "regainCap": null
+     }
+    },
+    "substituteStateAfterS2plus1": {
+     "goblet-squat": {
+      "mode": "FROM_LOG",
+      "blocksDone": 1,
+      "returnStep": null,
+      "setCap": null,
+      "regainCap": null
+     }
+    }
+   },
+   "cur-FIXED-STRENGTH": {
+    "returnReview": "MODIFY/REESTABLISH",
+    "substitution": "MODIFY/SUBSTITUTE",
+    "entryWeek": 6,
+    "step2Week": 7,
+    "phases": "DEVELOPMENT,DEVELOPMENT,DEVELOPMENT,CONSOLIDATION,DEVELOPMENT,DEVELOPMENT",
+    "blockEnds": "3/7/11/15",
+    "parkedAtEntryStepInStep2": [],
+    "substitutes": [
+     "goblet-squat"
+    ],
+    "reviews": [
+     "7:MODIFY/ADOPT_LOGGED_LOADS",
+     "8:KEEP/KEEP",
+     "9:KEEP/KEEP"
+    ],
+    "rows": {
+     "goblet-squat": [
+      "w7 CONSO 2x5@3 ESTABLISH FIRST_ESTABLISH",
+      "w8 DEVEL 4x5@3 FROM_LOG FROM_LOG",
+      "w9 DEVEL -"
+     ],
+     "db-bench-press": [
+      "w7 CONSO 1x6@3 FROM_LOG RETURN_STEP + 1x6@3 FROM_LOG RETURN_STEP",
+      "w8 DEVEL 2x6@3 KNOWN 20 KNOWN + 2x6@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 3x6@3 KNOWN 22 KNOWN + 3x6@3 KNOWN 22 KNOWN"
+     ],
+     "db-row": [
+      "w7 CONSO 1x5@3 FROM_LOG RETURN_STEP + 1x5@3 FROM_LOG RETURN_STEP",
+      "w8 DEVEL 2x5@3 KNOWN 20 KNOWN + 2x5@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 3x5@3 KNOWN 22 KNOWN + 3x5@3 KNOWN 22 KNOWN"
+     ],
+     "db-calf-raise": [
+      "w7 CONSO 1x7@3 FROM_LOG RETURN_STEP",
+      "w8 DEVEL 2x6@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 2x6@3 KNOWN 20 KNOWN"
+     ],
+     "dead-bug": [
+      "w7 CONSO 1x10@3 BODYWEIGHT RETURN_STEP + 1x10@3 BODYWEIGHT RETURN_STEP",
+      "w8 DEVEL 2x10@3 BODYWEIGHT BODYWEIGHT + 2x10@3 BODYWEIGHT BODYWEIGHT",
+      "w9 DEVEL 2x10@3 BODYWEIGHT BODYWEIGHT + 2x10@3 BODYWEIGHT BODYWEIGHT"
+     ],
+     "db-rdl": [
+      "w7 CONSO 1x5@3 FROM_LOG RETURN_STEP",
+      "w8 DEVEL 2x5@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 3x5@3 KNOWN 20 KNOWN"
+     ],
+     "db-split-squat": [
+      "w7 CONSO 1x7@3 FROM_LOG RETURN_STEP",
+      "w8 DEVEL 2x6@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 2x6@3 KNOWN 20 KNOWN"
+     ],
+     "back-squat": [
+      "w7 CONSO -",
+      "w8 DEVEL -",
+      "w9 DEVEL 3x5@3 KNOWN 82.5 KNOWN"
+     ]
+    },
+    "substituteStateAfterS2": {
+     "goblet-squat": {
+      "mode": "FROM_LOG",
+      "blocksDone": 1,
+      "returnStep": null,
+      "setCap": null,
+      "regainCap": null
+     }
+    },
+    "substituteStateAfterS2plus1": {
+     "goblet-squat": {
+      "mode": "FROM_LOG",
+      "blocksDone": 1,
+      "returnStep": null,
+      "setCap": null,
+      "regainCap": null
+     }
+    }
+   },
+   "cur-FIXED-RUNNING_SUPPORT": {
+    "returnReview": "MODIFY/REESTABLISH",
+    "substitution": "MODIFY/SUBSTITUTE",
+    "entryWeek": 6,
+    "step2Week": 7,
+    "phases": "DEVELOPMENT,DEVELOPMENT,DEVELOPMENT,CONSOLIDATION,DEVELOPMENT,DEVELOPMENT",
+    "blockEnds": "3/7/11/15",
+    "parkedAtEntryStepInStep2": [],
+    "substitutes": [
+     "goblet-squat"
+    ],
+    "reviews": [
+     "7:MODIFY/ADOPT_LOGGED_LOADS",
+     "8:KEEP/KEEP",
+     "9:KEEP/KEEP"
+    ],
+    "rows": {
+     "goblet-squat": [
+      "w7 CONSO 1x8@3 ESTABLISH FIRST_ESTABLISH",
+      "w8 DEVEL 3x8@3 FROM_LOG FROM_LOG",
+      "w9 DEVEL -"
+     ],
+     "db-bench-press": [
+      "w7 CONSO 1x8@3 FROM_LOG RETURN_STEP + 1x8@3 FROM_LOG RETURN_STEP",
+      "w8 DEVEL 2x8@3 KNOWN 20 KNOWN + 2x8@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 3x10@3 KNOWN 20 KNOWN + 3x10@3 KNOWN 20 KNOWN"
+     ],
+     "db-row": [
+      "w7 CONSO 1x8@3 FROM_LOG RETURN_STEP + 1x8@3 FROM_LOG RETURN_STEP",
+      "w8 DEVEL 2x8@3 KNOWN 20 KNOWN + 2x8@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 2x10@3 KNOWN 20 KNOWN + 2x10@3 KNOWN 20 KNOWN"
+     ],
+     "db-calf-raise": [
+      "w7 CONSO 1x8@3 FROM_LOG RETURN_STEP",
+      "w8 DEVEL 1x8@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 1x10@3 KNOWN 20 KNOWN"
+     ],
+     "dead-bug": [
+      "w7 CONSO 1x14@3 BODYWEIGHT RETURN_STEP + 1x14@3 BODYWEIGHT RETURN_STEP",
+      "w8 DEVEL 1x14@3 BODYWEIGHT BODYWEIGHT + 1x14@3 BODYWEIGHT BODYWEIGHT",
+      "w9 DEVEL 1x14@3 BODYWEIGHT BODYWEIGHT + 1x14@3 BODYWEIGHT BODYWEIGHT"
+     ],
+     "db-rdl": [
+      "w7 CONSO 1x6@3 FROM_LOG RETURN_STEP",
+      "w8 DEVEL 2x6@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 2x8@3 KNOWN 20 KNOWN"
+     ],
+     "db-split-squat": [
+      "w7 CONSO 1x8@3 FROM_LOG RETURN_STEP",
+      "w8 DEVEL 1x8@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 1x10@3 KNOWN 20 KNOWN"
+     ],
+     "back-squat": [
+      "w7 CONSO -",
+      "w8 DEVEL -",
+      "w9 DEVEL 3x6@3 KNOWN 82.5 KNOWN"
+     ]
+    },
+    "substituteStateAfterS2": {
+     "goblet-squat": {
+      "mode": "FROM_LOG",
+      "blocksDone": 1,
+      "returnStep": null,
+      "setCap": null,
+      "regainCap": null
+     }
+    },
+    "substituteStateAfterS2plus1": {
+     "goblet-squat": {
+      "mode": "FROM_LOG",
+      "blocksDone": 1,
+      "returnStep": null,
+      "setCap": null,
+      "regainCap": null
+     }
+    }
+   },
+   "pre-EVERY_2_WEEKS-HYPERTROPHY": {
+    "returnReview": "MODIFY/REESTABLISH",
+    "substitution": "MODIFY/SUBSTITUTE",
+    "entryWeek": 6,
+    "step2Week": 7,
+    "phases": "DEVELOPMENT,DEVELOPMENT,DEVELOPMENT,CONSOLIDATION,DEVELOPMENT,DEVELOPMENT",
+    "blockEnds": "3/7/11/15",
+    "parkedAtEntryStepInStep2": [
+     "standing-calf-raise",
+     "side-plank",
+     "db-step-up"
+    ],
+    "substitutes": [
+     "goblet-squat"
+    ],
+    "reviews": [
+     "7:MODIFY/ADOPT_LOGGED_LOADS",
+     "8:KEEP/KEEP",
+     "9:KEEP/KEEP"
+    ],
+    "rows": {
+     "goblet-squat": [
+      "w7 CONSO 1x8@4 ESTABLISH RETURN_ENTRY",
+      "w8 DEVEL 2x8@3 FROM_LOG FROM_LOG",
+      "w9 DEVEL -"
+     ],
+     "db-bench-press": [
+      "w7 CONSO 1x8@3 FROM_LOG FROM_LOG + 1x8@3 FROM_LOG FROM_LOG",
+      "w8 DEVEL 2x8@3 KNOWN 20 KNOWN + 2x8@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 3x10@3 KNOWN 20 KNOWN + 3x10@3 KNOWN 20 KNOWN"
+     ],
+     "db-row": [
+      "w7 CONSO 1x8@3 FROM_LOG FROM_LOG + 1x8@3 FROM_LOG FROM_LOG",
+      "w8 DEVEL 2x8@3 KNOWN 20 KNOWN + 2x8@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 3x10@3 KNOWN 20 KNOWN + 3x10@3 KNOWN 20 KNOWN"
+     ],
+     "db-calf-raise": [
+      "w7 CONSO 1x12@3 FROM_LOG FROM_LOG",
+      "w8 DEVEL 2x12@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 2x8@3 KNOWN 22 KNOWN"
+     ],
+     "dead-bug": [
+      "w7 CONSO 1x14@3 BODYWEIGHT BODYWEIGHT + 1x14@3 BODYWEIGHT BODYWEIGHT",
+      "w8 DEVEL 2x14@3 BODYWEIGHT BODYWEIGHT + 2x14@3 BODYWEIGHT BODYWEIGHT",
+      "w9 DEVEL 2x16@3 BODYWEIGHT BODYWEIGHT + 2x16@3 BODYWEIGHT BODYWEIGHT"
+     ],
+     "db-rdl": [
+      "w7 CONSO 1x12@3 FROM_LOG FROM_LOG",
+      "w8 DEVEL 2x12@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 3x8@3 KNOWN 22 KNOWN"
+     ],
+     "db-split-squat": [
+      "w7 CONSO 1x12@3 FROM_LOG FROM_LOG",
+      "w8 DEVEL 2x12@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 2x8@3 KNOWN 22 KNOWN"
+     ],
+     "back-squat": [
+      "w7 CONSO -",
+      "w8 DEVEL -",
+      "w9 DEVEL 3x11@3 KNOWN 80 KNOWN"
+     ]
+    },
+    "substituteStateAfterS2": {
+     "goblet-squat": {
+      "mode": "FROM_LOG",
+      "blocksDone": 0,
+      "returnStep": 1,
+      "setCap": null,
+      "regainCap": null
+     }
+    },
+    "substituteStateAfterS2plus1": {
+     "goblet-squat": {
+      "mode": "FROM_LOG",
+      "blocksDone": 0,
+      "returnStep": null,
+      "setCap": 3,
+      "regainCap": null
+     }
+    }
+   },
+   "pre-EVERY_2_WEEKS-STRENGTH": {
+    "returnReview": "MODIFY/REESTABLISH",
+    "substitution": "MODIFY/SUBSTITUTE",
+    "entryWeek": 6,
+    "step2Week": 7,
+    "phases": "DEVELOPMENT,DEVELOPMENT,DEVELOPMENT,CONSOLIDATION,DEVELOPMENT,DEVELOPMENT",
+    "blockEnds": "3/7/11/15",
+    "parkedAtEntryStepInStep2": [
+     "standing-calf-raise",
+     "side-plank",
+     "db-step-up"
+    ],
+    "substitutes": [
+     "goblet-squat"
+    ],
+    "reviews": [
+     "7:MODIFY/ADOPT_LOGGED_LOADS",
+     "8:KEEP/KEEP",
+     "9:KEEP/KEEP"
+    ],
+    "rows": {
+     "goblet-squat": [
+      "w7 CONSO 1x5@4 ESTABLISH RETURN_ENTRY",
+      "w8 DEVEL 2x5@3 FROM_LOG FROM_LOG",
+      "w9 DEVEL -"
+     ],
+     "db-bench-press": [
+      "w7 CONSO 1x6@3 FROM_LOG FROM_LOG + 1x6@3 FROM_LOG FROM_LOG",
+      "w8 DEVEL 2x6@3 KNOWN 20 KNOWN + 2x6@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 3x6@3 KNOWN 22 KNOWN + 3x6@3 KNOWN 22 KNOWN"
+     ],
+     "db-row": [
+      "w7 CONSO 1x5@3 FROM_LOG FROM_LOG + 1x5@3 FROM_LOG FROM_LOG",
+      "w8 DEVEL 2x5@3 KNOWN 20 KNOWN + 2x5@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 3x5@3 KNOWN 22 KNOWN + 3x5@3 KNOWN 22 KNOWN"
+     ],
+     "db-calf-raise": [
+      "w7 CONSO 1x7@3 FROM_LOG FROM_LOG",
+      "w8 DEVEL 2x6@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 2x6@3 KNOWN 22 KNOWN"
+     ],
+     "dead-bug": [
+      "w7 CONSO 1x10@3 BODYWEIGHT BODYWEIGHT + 1x10@3 BODYWEIGHT BODYWEIGHT",
+      "w8 DEVEL 2x10@3 BODYWEIGHT BODYWEIGHT + 2x10@3 BODYWEIGHT BODYWEIGHT",
+      "w9 DEVEL 2x10@3 BODYWEIGHT BODYWEIGHT + 2x10@3 BODYWEIGHT BODYWEIGHT"
+     ],
+     "db-rdl": [
+      "w7 CONSO 1x5@3 FROM_LOG FROM_LOG",
+      "w8 DEVEL 2x5@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 3x5@3 KNOWN 20 KNOWN"
+     ],
+     "db-split-squat": [
+      "w7 CONSO 1x7@3 FROM_LOG FROM_LOG",
+      "w8 DEVEL 2x6@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 2x6@3 KNOWN 22 KNOWN"
+     ],
+     "back-squat": [
+      "w7 CONSO -",
+      "w8 DEVEL -",
+      "w9 DEVEL 3x5@3 KNOWN 82.5 KNOWN"
+     ]
+    },
+    "substituteStateAfterS2": {
+     "goblet-squat": {
+      "mode": "FROM_LOG",
+      "blocksDone": 0,
+      "returnStep": 1,
+      "setCap": null,
+      "regainCap": null
+     }
+    },
+    "substituteStateAfterS2plus1": {
+     "goblet-squat": {
+      "mode": "FROM_LOG",
+      "blocksDone": 0,
+      "returnStep": null,
+      "setCap": 3,
+      "regainCap": null
+     }
+    }
+   },
+   "pre-EVERY_2_WEEKS-RUNNING_SUPPORT": {
+    "returnReview": "MODIFY/REESTABLISH",
+    "substitution": "MODIFY/SUBSTITUTE",
+    "entryWeek": 6,
+    "step2Week": 7,
+    "phases": "DEVELOPMENT,DEVELOPMENT,DEVELOPMENT,CONSOLIDATION,DEVELOPMENT,DEVELOPMENT",
+    "blockEnds": "3/7/11/15",
+    "parkedAtEntryStepInStep2": [
+     "standing-calf-raise",
+     "side-plank",
+     "db-step-up"
+    ],
+    "substitutes": [
+     "goblet-squat"
+    ],
+    "reviews": [
+     "7:MODIFY/ADOPT_LOGGED_LOADS",
+     "8:KEEP/KEEP",
+     "9:KEEP/KEEP"
+    ],
+    "rows": {
+     "goblet-squat": [
+      "w7 CONSO 1x8@4 ESTABLISH RETURN_ENTRY",
+      "w8 DEVEL 1x8@3 FROM_LOG FROM_LOG",
+      "w9 DEVEL -"
+     ],
+     "db-bench-press": [
+      "w7 CONSO 1x8@3 FROM_LOG FROM_LOG + 1x8@3 FROM_LOG FROM_LOG",
+      "w8 DEVEL 2x8@3 KNOWN 20 KNOWN + 2x8@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 3x10@3 KNOWN 20 KNOWN + 3x10@3 KNOWN 20 KNOWN"
+     ],
+     "db-row": [
+      "w7 CONSO 1x8@3 FROM_LOG FROM_LOG + 1x8@3 FROM_LOG FROM_LOG",
+      "w8 DEVEL 2x8@3 KNOWN 20 KNOWN + 2x8@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 2x10@3 KNOWN 20 KNOWN + 2x10@3 KNOWN 20 KNOWN"
+     ],
+     "db-calf-raise": [
+      "w7 CONSO 1x6@3 FROM_LOG FROM_LOG",
+      "w8 DEVEL 1x6@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 1x8@3 KNOWN 20 KNOWN"
+     ],
+     "dead-bug": [
+      "w7 CONSO 1x14@3 BODYWEIGHT BODYWEIGHT + 1x14@3 BODYWEIGHT BODYWEIGHT",
+      "w8 DEVEL 1x14@3 BODYWEIGHT BODYWEIGHT + 1x14@3 BODYWEIGHT BODYWEIGHT",
+      "w9 DEVEL 1x14@3 BODYWEIGHT BODYWEIGHT + 1x14@3 BODYWEIGHT BODYWEIGHT"
+     ],
+     "db-rdl": [
+      "w7 CONSO 1x6@3 FROM_LOG FROM_LOG",
+      "w8 DEVEL 2x6@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 2x8@3 KNOWN 20 KNOWN"
+     ],
+     "db-split-squat": [
+      "w7 CONSO 1x6@3 FROM_LOG FROM_LOG",
+      "w8 DEVEL 1x6@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 1x8@3 KNOWN 20 KNOWN"
+     ],
+     "back-squat": [
+      "w7 CONSO -",
+      "w8 DEVEL -",
+      "w9 DEVEL 3x6@3 KNOWN 82.5 KNOWN"
+     ]
+    },
+    "substituteStateAfterS2": {
+     "goblet-squat": {
+      "mode": "FROM_LOG",
+      "blocksDone": 0,
+      "returnStep": 1,
+      "setCap": null,
+      "regainCap": null
+     }
+    },
+    "substituteStateAfterS2plus1": {
+     "goblet-squat": {
+      "mode": "FROM_LOG",
+      "blocksDone": 0,
+      "returnStep": null,
+      "setCap": 2,
+      "regainCap": null
+     }
+    }
+   },
+   "pre-FIXED-HYPERTROPHY": {
+    "returnReview": "MODIFY/REESTABLISH",
+    "substitution": "MODIFY/SUBSTITUTE",
+    "entryWeek": 6,
+    "step2Week": 7,
+    "phases": "DEVELOPMENT,DEVELOPMENT,DEVELOPMENT,CONSOLIDATION,DEVELOPMENT,DEVELOPMENT",
+    "blockEnds": "3/7/11/15",
+    "parkedAtEntryStepInStep2": [],
+    "substitutes": [
+     "goblet-squat"
+    ],
+    "reviews": [
+     "7:MODIFY/ADOPT_LOGGED_LOADS",
+     "8:KEEP/KEEP",
+     "9:KEEP/KEEP"
+    ],
+    "rows": {
+     "goblet-squat": [
+      "w7 CONSO 2x8@3 ESTABLISH ESTABLISH",
+      "w8 DEVEL 4x8@3 FROM_LOG FROM_LOG",
+      "w9 DEVEL -"
+     ],
+     "db-bench-press": [
+      "w7 CONSO 1x8@3 FROM_LOG FROM_LOG + 1x8@3 FROM_LOG FROM_LOG",
+      "w8 DEVEL 2x8@3 KNOWN 20 KNOWN + 2x8@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 3x10@3 KNOWN 20 KNOWN + 3x10@3 KNOWN 20 KNOWN"
+     ],
+     "db-row": [
+      "w7 CONSO 1x8@3 FROM_LOG FROM_LOG + 1x8@3 FROM_LOG FROM_LOG",
+      "w8 DEVEL 2x8@3 KNOWN 20 KNOWN + 2x8@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 3x10@3 KNOWN 20 KNOWN + 3x10@3 KNOWN 20 KNOWN"
+     ],
+     "db-calf-raise": [
+      "w7 CONSO 1x8@3 FROM_LOG FROM_LOG",
+      "w8 DEVEL 2x8@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 2x10@3 KNOWN 20 KNOWN"
+     ],
+     "dead-bug": [
+      "w7 CONSO 1x16@3 BODYWEIGHT BODYWEIGHT + 1x16@3 BODYWEIGHT BODYWEIGHT",
+      "w8 DEVEL 2x16@3 BODYWEIGHT BODYWEIGHT + 2x16@3 BODYWEIGHT BODYWEIGHT",
+      "w9 DEVEL 2x16@3 BODYWEIGHT BODYWEIGHT + 2x16@3 BODYWEIGHT BODYWEIGHT"
+     ],
+     "db-rdl": [
+      "w7 CONSO 1x12@3 FROM_LOG FROM_LOG",
+      "w8 DEVEL 2x12@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 3x8@3 KNOWN 22 KNOWN"
+     ],
+     "db-split-squat": [
+      "w7 CONSO 1x8@3 FROM_LOG FROM_LOG",
+      "w8 DEVEL 2x8@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 2x10@3 KNOWN 20 KNOWN"
+     ],
+     "back-squat": [
+      "w7 CONSO -",
+      "w8 DEVEL -",
+      "w9 DEVEL 3x11@3 KNOWN 80 KNOWN"
+     ]
+    },
+    "substituteStateAfterS2": {
+     "goblet-squat": {
+      "mode": "FROM_LOG",
+      "blocksDone": 1,
+      "returnStep": null,
+      "setCap": null,
+      "regainCap": null
+     }
+    },
+    "substituteStateAfterS2plus1": {
+     "goblet-squat": {
+      "mode": "FROM_LOG",
+      "blocksDone": 1,
+      "returnStep": null,
+      "setCap": null,
+      "regainCap": null
+     }
+    }
+   },
+   "pre-FIXED-STRENGTH": {
+    "returnReview": "MODIFY/REESTABLISH",
+    "substitution": "MODIFY/SUBSTITUTE",
+    "entryWeek": 6,
+    "step2Week": 7,
+    "phases": "DEVELOPMENT,DEVELOPMENT,DEVELOPMENT,CONSOLIDATION,DEVELOPMENT,DEVELOPMENT",
+    "blockEnds": "3/7/11/15",
+    "parkedAtEntryStepInStep2": [],
+    "substitutes": [
+     "goblet-squat"
+    ],
+    "reviews": [
+     "7:MODIFY/ADOPT_LOGGED_LOADS",
+     "8:KEEP/KEEP",
+     "9:KEEP/KEEP"
+    ],
+    "rows": {
+     "goblet-squat": [
+      "w7 CONSO 2x5@3 ESTABLISH ESTABLISH",
+      "w8 DEVEL 4x5@3 FROM_LOG FROM_LOG",
+      "w9 DEVEL -"
+     ],
+     "db-bench-press": [
+      "w7 CONSO 1x6@3 FROM_LOG FROM_LOG + 1x6@3 FROM_LOG FROM_LOG",
+      "w8 DEVEL 2x6@3 KNOWN 20 KNOWN + 2x6@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 3x6@3 KNOWN 22 KNOWN + 3x6@3 KNOWN 22 KNOWN"
+     ],
+     "db-row": [
+      "w7 CONSO 1x5@3 FROM_LOG FROM_LOG + 1x5@3 FROM_LOG FROM_LOG",
+      "w8 DEVEL 2x5@3 KNOWN 20 KNOWN + 2x5@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 3x5@3 KNOWN 22 KNOWN + 3x5@3 KNOWN 22 KNOWN"
+     ],
+     "db-calf-raise": [
+      "w7 CONSO 1x7@3 FROM_LOG FROM_LOG",
+      "w8 DEVEL 2x6@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 2x6@3 KNOWN 20 KNOWN"
+     ],
+     "dead-bug": [
+      "w7 CONSO 1x10@3 BODYWEIGHT BODYWEIGHT + 1x10@3 BODYWEIGHT BODYWEIGHT",
+      "w8 DEVEL 2x10@3 BODYWEIGHT BODYWEIGHT + 2x10@3 BODYWEIGHT BODYWEIGHT",
+      "w9 DEVEL 2x10@3 BODYWEIGHT BODYWEIGHT + 2x10@3 BODYWEIGHT BODYWEIGHT"
+     ],
+     "db-rdl": [
+      "w7 CONSO 1x5@3 FROM_LOG FROM_LOG",
+      "w8 DEVEL 2x5@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 3x5@3 KNOWN 20 KNOWN"
+     ],
+     "db-split-squat": [
+      "w7 CONSO 1x7@3 FROM_LOG FROM_LOG",
+      "w8 DEVEL 2x6@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 2x6@3 KNOWN 20 KNOWN"
+     ],
+     "back-squat": [
+      "w7 CONSO -",
+      "w8 DEVEL -",
+      "w9 DEVEL 3x5@3 KNOWN 82.5 KNOWN"
+     ]
+    },
+    "substituteStateAfterS2": {
+     "goblet-squat": {
+      "mode": "FROM_LOG",
+      "blocksDone": 1,
+      "returnStep": null,
+      "setCap": null,
+      "regainCap": null
+     }
+    },
+    "substituteStateAfterS2plus1": {
+     "goblet-squat": {
+      "mode": "FROM_LOG",
+      "blocksDone": 1,
+      "returnStep": null,
+      "setCap": null,
+      "regainCap": null
+     }
+    }
+   },
+   "pre-FIXED-RUNNING_SUPPORT": {
+    "returnReview": "MODIFY/REESTABLISH",
+    "substitution": "MODIFY/SUBSTITUTE",
+    "entryWeek": 6,
+    "step2Week": 7,
+    "phases": "DEVELOPMENT,DEVELOPMENT,DEVELOPMENT,CONSOLIDATION,DEVELOPMENT,DEVELOPMENT",
+    "blockEnds": "3/7/11/15",
+    "parkedAtEntryStepInStep2": [],
+    "substitutes": [
+     "goblet-squat"
+    ],
+    "reviews": [
+     "7:MODIFY/ADOPT_LOGGED_LOADS",
+     "8:KEEP/KEEP",
+     "9:KEEP/KEEP"
+    ],
+    "rows": {
+     "goblet-squat": [
+      "w7 CONSO 1x8@3 ESTABLISH ESTABLISH",
+      "w8 DEVEL 3x8@3 FROM_LOG FROM_LOG",
+      "w9 DEVEL -"
+     ],
+     "db-bench-press": [
+      "w7 CONSO 1x8@3 FROM_LOG FROM_LOG + 1x8@3 FROM_LOG FROM_LOG",
+      "w8 DEVEL 2x8@3 KNOWN 20 KNOWN + 2x8@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 3x10@3 KNOWN 20 KNOWN + 3x10@3 KNOWN 20 KNOWN"
+     ],
+     "db-row": [
+      "w7 CONSO 1x8@3 FROM_LOG FROM_LOG + 1x8@3 FROM_LOG FROM_LOG",
+      "w8 DEVEL 2x8@3 KNOWN 20 KNOWN + 2x8@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 2x10@3 KNOWN 20 KNOWN + 2x10@3 KNOWN 20 KNOWN"
+     ],
+     "db-calf-raise": [
+      "w7 CONSO 1x8@3 FROM_LOG FROM_LOG",
+      "w8 DEVEL 1x8@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 1x10@3 KNOWN 20 KNOWN"
+     ],
+     "dead-bug": [
+      "w7 CONSO 1x14@3 BODYWEIGHT BODYWEIGHT + 1x14@3 BODYWEIGHT BODYWEIGHT",
+      "w8 DEVEL 1x14@3 BODYWEIGHT BODYWEIGHT + 1x14@3 BODYWEIGHT BODYWEIGHT",
+      "w9 DEVEL 1x14@3 BODYWEIGHT BODYWEIGHT + 1x14@3 BODYWEIGHT BODYWEIGHT"
+     ],
+     "db-rdl": [
+      "w7 CONSO 1x6@3 FROM_LOG FROM_LOG",
+      "w8 DEVEL 2x6@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 2x8@3 KNOWN 20 KNOWN"
+     ],
+     "db-split-squat": [
+      "w7 CONSO 1x8@3 FROM_LOG FROM_LOG",
+      "w8 DEVEL 1x8@3 KNOWN 20 KNOWN",
+      "w9 DEVEL 1x10@3 KNOWN 20 KNOWN"
+     ],
+     "back-squat": [
+      "w7 CONSO -",
+      "w8 DEVEL -",
+      "w9 DEVEL 3x6@3 KNOWN 82.5 KNOWN"
+     ]
+    },
+    "substituteStateAfterS2": {
+     "goblet-squat": {
+      "mode": "FROM_LOG",
+      "blocksDone": 1,
+      "returnStep": null,
+      "setCap": null,
+      "regainCap": null
+     }
+    },
+    "substituteStateAfterS2plus1": {
+     "goblet-squat": {
+      "mode": "FROM_LOG",
+      "blocksDone": 1,
+      "returnStep": null,
+      "setCap": null,
+      "regainCap": null
+     }
+    }
+   },
+   "ms": 3403
+  },
+  "FR2_fatigueReducedDevelopmentWeek": {
+   "cur-twin": {
+    "phases": "DEVELOPMENT,DEVELOPMENT,DEVELOPMENT,CONSOLIDATION,DEVELOPMENT,DEVELOPMENT",
+    "log": "4:MODIFY/GATED_NEXT_STEP 5:KEEP/INSTANTIATE_LOGGED_LOADS 6:KEEP/KEEP 7:KEEP/KEEP 8:KEEP/KEEP 9:KEEP/KEEP",
+    "extras": [],
+    "rows": {
+     "barbell-rdl": [
+      "w5 2x5@3 ESTABLISH [REESTABLISH 2]",
+      "w6 3x5@3 KNOWN 22.5 [KNOWN 3]",
+      "w7 2x5@3 KNOWN 22.5 [KNOWN 3]",
+      "w8 4x5@3 KNOWN 22.5 [KNOWN 4]",
+      "w9 4x5@3 KNOWN 25 [KNOWN 4]"
+     ],
+     "db-row": [
+      "w5 2x5@3 ESTABLISH [REESTABLISH 2] + 2x5@3 ESTABLISH [REESTABLISH 2]",
+      "w6 3x5@3 KNOWN 22 [KNOWN 3] + 3x5@3 KNOWN 22 [KNOWN 3]",
+      "w7 2x5@3 KNOWN 22 [KNOWN 3] + 2x5@3 KNOWN 22 [KNOWN 3]",
+      "w8 4x5@3 KNOWN 22 [KNOWN 4] + 4x5@3 KNOWN 22 [KNOWN 4]",
+      "w9 4x5@3 KNOWN 24 [KNOWN 4] + 4x5@3 KNOWN 24 [KNOWN 4]"
+     ],
+     "db-bench-press": [
+      "w5 2x5@3 ESTABLISH [REESTABLISH 2] + 2x5@3 ESTABLISH [REESTABLISH 2]",
+      "w6 3x5@3 KNOWN 20 [KNOWN 3] + 3x5@3 KNOWN 20 [KNOWN 3]",
+      "w7 2x5@3 KNOWN 20 [KNOWN 3] + 2x5@3 KNOWN 20 [KNOWN 3]",
+      "w8 4x5@3 KNOWN 20 [KNOWN 4] + 4x5@3 KNOWN 20 [KNOWN 4]",
+      "w9 4x5@3 KNOWN 22 [KNOWN 4] + 4x5@3 KNOWN 22 [KNOWN 4]"
+     ]
+    },
+    "regainCapAfterWeeks5to8": {
+     "barbell-rdl": [
+      3,
+      null,
+      null,
+      null
+     ],
+     "db-row": [
+      3,
+      null,
+      null,
+      null
+     ],
+     "db-bench-press": [
+      3,
+      null,
+      null,
+      null
+     ]
+    }
+   },
+   "cur-fatigue": {
+    "phases": "DEVELOPMENT,DEVELOPMENT,DEVELOPMENT,CONSOLIDATION,DEVELOPMENT,DEVELOPMENT",
+    "log": "4:MODIFY/GATED_NEXT_STEP 5:KEEP/INSTANTIATE_LOGGED_LOADS 6+:MODIFY/REDUCE 6:MODIFY/ADOPT_LOGGED_LOADS 7:KEEP/KEEP 8:KEEP/KEEP",
+    "extras": [
+     "6:MODIFY/REDUCE"
+    ],
+    "rows": {
+     "barbell-rdl": [
+      "w5 2x5@3 ESTABLISH [REESTABLISH 2]",
+      "w6 2x5@4 KNOWN 22.5 [KNOWN 3]",
+      "w7 2x5@3 KNOWN 22.5 [KNOWN 3]",
+      "w8 3x5@3 KNOWN 22.5 [KNOWN 3]",
+      "w9 4x5@3 KNOWN 25 [KNOWN 4]"
+     ],
+     "db-row": [
+      "w5 2x5@3 ESTABLISH [REESTABLISH 2] + 2x5@3 ESTABLISH [REESTABLISH 2]",
+      "w6 3x5@3 KNOWN 22 [KNOWN 3] + 2x5@4 KNOWN 22 [KNOWN 3]",
+      "w7 2x5@3 KNOWN 22 [KNOWN 3] + 2x5@3 KNOWN 22 [KNOWN 3]",
+      "w8 3x5@3 KNOWN 22 [KNOWN 3] + 3x5@3 KNOWN 22 [KNOWN 3]",
+      "w9 4x5@3 KNOWN 24 [KNOWN 4] + 4x5@3 KNOWN 24 [KNOWN 4]"
+     ],
+     "db-bench-press": [
+      "w5 2x5@3 ESTABLISH [REESTABLISH 2] + 2x5@3 ESTABLISH [REESTABLISH 2]",
+      "w6 3x5@3 KNOWN 20 [KNOWN 3] + 2x5@4 KNOWN 20 [KNOWN 3]",
+      "w7 2x5@3 KNOWN 20 [KNOWN 3] + 2x5@3 KNOWN 20 [KNOWN 3]",
+      "w8 3x5@3 KNOWN 20 [KNOWN 3] + 3x5@3 KNOWN 20 [KNOWN 3]",
+      "w9 4x5@3 KNOWN 22 [KNOWN 4] + 4x5@3 KNOWN 22 [KNOWN 4]"
+     ]
+    },
+    "regainCapAfterWeeks5to8": {
+     "barbell-rdl": [
+      3,
+      3,
+      3,
+      null
+     ],
+     "db-row": [
+      3,
+      3,
+      3,
+      null
+     ],
+     "db-bench-press": [
+      3,
+      3,
+      3,
+      null
+     ]
+    }
+   },
+   "pre-twin": {
+    "phases": "DEVELOPMENT,DEVELOPMENT,DEVELOPMENT,CONSOLIDATION,DEVELOPMENT,DEVELOPMENT",
+    "log": "4:MODIFY/GATED_NEXT_STEP 5:KEEP/INSTANTIATE_LOGGED_LOADS 6:KEEP/KEEP 7:KEEP/KEEP 8:KEEP/KEEP 9:KEEP/KEEP",
+    "extras": [],
+    "rows": {
+     "barbell-rdl": [
+      "w5 2x5@3 ESTABLISH",
+      "w6 3x5@3 KNOWN 22.5",
+      "w7 2x5@3 KNOWN 22.5",
+      "w8 4x5@3 KNOWN 22.5",
+      "w9 4x5@3 KNOWN 25"
+     ],
+     "db-row": [
+      "w5 2x5@3 ESTABLISH + 2x5@3 ESTABLISH",
+      "w6 3x5@3 KNOWN 22 + 3x5@3 KNOWN 22",
+      "w7 2x5@3 KNOWN 22 + 2x5@3 KNOWN 22",
+      "w8 4x5@3 KNOWN 22 + 4x5@3 KNOWN 22",
+      "w9 4x5@3 KNOWN 24 + 4x5@3 KNOWN 24"
+     ],
+     "db-bench-press": [
+      "w5 2x5@3 ESTABLISH + 2x5@3 ESTABLISH",
+      "w6 3x5@3 KNOWN 20 + 3x5@3 KNOWN 20",
+      "w7 2x5@3 KNOWN 20 + 2x5@3 KNOWN 20",
+      "w8 4x5@3 KNOWN 20 + 4x5@3 KNOWN 20",
+      "w9 4x5@3 KNOWN 22 + 4x5@3 KNOWN 22"
+     ]
+    },
+    "regainCapAfterWeeks5to8": {
+     "barbell-rdl": [
+      3,
+      null,
+      null,
+      null
+     ],
+     "db-row": [
+      3,
+      null,
+      null,
+      null
+     ],
+     "db-bench-press": [
+      3,
+      null,
+      null,
+      null
+     ]
+    }
+   },
+   "pre-fatigue": {
+    "phases": "DEVELOPMENT,DEVELOPMENT,DEVELOPMENT,CONSOLIDATION,DEVELOPMENT,DEVELOPMENT",
+    "log": "4:MODIFY/GATED_NEXT_STEP 5:KEEP/INSTANTIATE_LOGGED_LOADS 6+:MODIFY/REDUCE 6:MODIFY/ADOPT_LOGGED_LOADS 7:KEEP/KEEP 8:KEEP/KEEP",
+    "extras": [
+     "6:MODIFY/REDUCE"
+    ],
+    "rows": {
+     "barbell-rdl": [
+      "w5 2x5@3 ESTABLISH",
+      "w6 2x5@4 KNOWN 22.5",
+      "w7 2x5@3 KNOWN 22.5",
+      "w8 4x5@3 KNOWN 22.5",
+      "w9 4x5@3 KNOWN 25"
+     ],
+     "db-row": [
+      "w5 2x5@3 ESTABLISH + 2x5@3 ESTABLISH",
+      "w6 3x5@3 KNOWN 22 + 2x5@4 KNOWN 22",
+      "w7 2x5@3 KNOWN 22 + 2x5@3 KNOWN 22",
+      "w8 4x5@3 KNOWN 22 + 4x5@3 KNOWN 22",
+      "w9 4x5@3 KNOWN 24 + 4x5@3 KNOWN 24"
+     ],
+     "db-bench-press": [
+      "w5 2x5@3 ESTABLISH + 2x5@3 ESTABLISH",
+      "w6 3x5@3 KNOWN 20 + 2x5@4 KNOWN 20",
+      "w7 2x5@3 KNOWN 20 + 2x5@3 KNOWN 20",
+      "w8 4x5@3 KNOWN 20 + 4x5@3 KNOWN 20",
+      "w9 4x5@3 KNOWN 22 + 4x5@3 KNOWN 22"
+     ]
+    },
+    "regainCapAfterWeeks5to8": {
+     "barbell-rdl": [
+      3,
+      null,
+      null,
+      null
+     ],
+     "db-row": [
+      3,
+      null,
+      null,
+      null
+     ],
+     "db-bench-press": [
+      3,
+      null,
+      null,
+      null
+     ]
+    }
+   },
+   "ms": 780
+  }
+ }
+}

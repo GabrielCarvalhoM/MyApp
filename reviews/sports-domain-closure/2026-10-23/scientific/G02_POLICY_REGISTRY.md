@@ -1,0 +1,37 @@
+# G02 policy registry
+**SDC-SCI-r1 · AUTHOR_SUBMISSION · SSCTR-1.0.0 · 2026-10-23.**
+
+All athlete states and doses are explicitly synthetic. Independent review, not this author, determines item approval. Foundation 0.2 remains candidate; runtime/Figma/clinical clearance are outside scope.
+
+The policy fields distinguish literature-supported boundaries, explicit programming intent, and unvalidated exact-dose effects. A proposed conditional approval is a request to the independent reviewer; it is not self-approval.
+
+| ID | Submitted disposition | Rule |
+|---|---|---|
+| P-ADEQUACY | APPROVE_WITH_CONDITIONS | When current eligibility, goals, task comparability, recipe and affected horizon support adequacy, KEEP/LEARN_ONLY. An optional signal, surplus set, missed low-criticality task, overlap or priority alone creates no necessity. Unknown critical input leads to ASK/HOLD dependent scope. |
+| P-CONVERGENCE | LIMITED_REVERSIBLE_RECOMMENDATION | Assess freshness/protocol/context and own longitudinal task response. Joint signals justify concern only relative to required intent, not fixed count/score. Exact reduction efficacy remains uncertain; bounded reversible options require agency and recheck. |
+| P-ABOVE | APPROVE_WITH_CONDITIONS | Retain planned revision and actual performed work separately; compare concrete dimension. Above-by-extra-set is not higher RIR = more load, not earned progression, reward or compulsory reduction. Adapt only on material future inadequacy supported by reconciled current facts. |
+| P-CRITICALITY | APPROVE_WITH_CONDITIONS | Criticality is authorized goal/phase linkage with essential/dispensable task intent. Alone no need. After a concrete availability need, preserve essential full work by move when feasible; allow explicitly accepted smaller supplemental intent instead when low criticality. If linkage not established, ASK not label-based mutation. |
+| P-RETURN | LIMITED_REVERSIBLE_RECOMMENDATION | Document nonclinical reason, duration, prior state and current eligibility; no automatic old target/debt replacement. R28-14D exact trial R-E20/S-LRE is limited reversible, not approved general return recipe. Unknown ->ASK/HOLD; clinical cause ->CLINICAL_HUMAN_REQUIRED. |
+| P-REMAINDER | APPROVE_WITH_CONDITIONS | Only a material new fact after start permits new remaining proposal; preserve executed prefix and current revision; no stale proposal acceptance or same facts reproposal. Select the smallest sufficient accepted remainder change; clinical concern bypasses stability but not clinical human. |
+| P-PRIORITY-PARETO | APPROVE_WITH_CONDITIONS | Priority ranks defensible tradeoffs after necessity. Balanced uses co-priority dominance, with ASK for material incomparability; adequate familiar preference or equal preservation may produce identical outcomes across priorities. |
+| P-MEC | APPROVE_WITH_CONDITIONS | Use exact conceptual AE Levels0-6; test smaller effects before bigger. Five/six require explicit coupled week/block necessity, not maximal optimization or return label. Witnesses demonstrate control necessity under premises; no efficacy gold. |
+| P-TAPER | LIMITED_REVERSIBLE_RECOMMENDATION | Event/familiar training status/phase/essential stimuli/recovery must be explicit. Well-trained endurance evidence bounds direction; exact combined taper R-TAPER10K remains limited. No universal percent, race prediction, elite coverage or automatic restore after cancellation. |
+| P-ENVELOPE | APPROVE_WITH_CONDITIONS | Pre-authorized reps/load/effort flexibility is execution, not new mutation; stability must allow it. Outside envelope retained as observed and reviewed. Earned next cycle candidate requires comparable task response; exact step is limited trial, not universal progression threshold. |
+
+Concrete review recipes:
+
+- **R-E30** (APPROVE_WITH_CONDITIONS): familiar easy aerobic exposure without an intensity objective. Only already regular runners with comparable 30 min tolerance; not entry for never-runners.
+- **R-E20** (LIMITED_REVERSIBLE_RECOMMENDATION): re-establish familiar easy-running exposure. Reversible test exemplar for R28-14D only; no efficacy/safety or injury-risk guarantee; no auto-progression.
+- **R-Q18** (APPROVE_WITH_CONDITIONS): 18 min controlled cruise work as the accepted session intent, not universal minimum. Requires task-specific familiar calibration and recent comparable tolerance. No fixed RPE/pace defines threshold for all runners.
+- **R-Q12** (APPROVE_WITH_CONDITIONS): retain a bounded exposure while deliberately accepting loss of 6 min original work. Not equivalent to original 18 min intent; only when secondary-intent loss is explicitly allowed or as limited candidate.
+- **R-QMICRO** (APPROVE_WITH_CONDITIONS): preserve all 18 min work with lower density. New fixed recovery-target candidate outside the current fixed 2 min prescription; requires current confirmation. If a separate prior range already permits 3 min, choosing it is execution/Level0. No guarantee of fatigue reduction.
+- **S-L60** (APPROVE_WITH_CONDITIONS): familiar general lower-strength exposure preserving squat and hip hinge; unilateral accessory is goal context dependent. Not novice skill instruction, power or elite-peaking recipe. No inference from exercise name alone to fatigue.
+- **S-L2** (APPROVE_WITH_CONDITIONS): preserve familiar load and most work with explicit loss of one squat set. No equivalence or universal minimum-effective-dose claim.
+- **S-LRE** (LIMITED_REVERSIBLE_RECOMMENDATION): reacquaint with familiar patterns after explicitly schedule-only pause. R28-14D synthetic limited trial only. Exact loads are illustrative below own familiar targets, not a fixed percentage or a certified safe restart.
+- **S-U45** (APPROVE_WITH_CONDITIONS): familiar general upper push/pull; calf/trunk accessory coverage for chosen general-fitness goal. No claim that calf/trunk inclusion is universal mandatory battery or sufficient for all strength outcomes.
+- **S-GDB** (APPROVE_WITH_CONDITIONS): general strength patterns with familiar configured movements. Only already competent adult at these loads. Does not close dual-novice coaching or maximal strength with limited load.
+- **S-SUB-GOBLET** (APPROVE_WITH_CONDITIONS): general knee-extensor resistance exposure when exact barbell specificity is dispensable. Not equal barbell strength stimulus or lower fatigue by default. Must be pre-familiar; never workaround for pain.
+- **R-TAPER10K** (LIMITED_REVERSIBLE_RECOMMENDATION): retain small familiar event-specific exposure while releasing accumulated volume. Only C5 trained adult with previously tolerated taper pattern. Exact sequence not an evidence-optimal taper, not general recreational/elite/hybrid coverage.
+- **S-G30** (APPROVE_WITH_CONDITIONS): general whole-body strength exposure in reduced-goalblock. Not a maximal-strength/hypertrophy-optimal recipe, clinical program or universal minimal dose. Familiar measured timing and skill are necessary.
+
+The exact reduction for fatigue, exact return sequence, exact event taper and earned load step remain limited reversible candidates. No literature review validates a universally sufficient third-set omission, fixed number of return days, fixed taper percentage, or RIR/progression cutoff. The explicit numbers in the fixtures are test inputs and accepted programming choices, not population thresholds.

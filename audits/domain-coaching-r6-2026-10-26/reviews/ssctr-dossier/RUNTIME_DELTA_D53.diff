@@ -1,0 +1,42 @@
+--- reviewed-18ec48f3-r11-source/src/r6-program.mjs
++++ CoachingCore/src/r6-program.mjs
+@@ -344,8 +344,9 @@
+   if(entry.loading==='BODYWEIGHT')return {sets:n1,reps:ex.reps??g.reps,rir:r1,mode:'BODYWEIGHT',baseSets:s1};
+   return ex.mode==='KNOWN'&&ex.returnLogged===true?{sets:n1,reps:ex.reps,rir:r1,mode:'KNOWN',value:ex.load,convention:ex.convention,note:'Return step 2: the load logged at the return entry; sets come back one at a time',baseSets:s1}:{sets:n1,reps:ex.reps??g.reps,rir:r1,mode:'FROM_LOG',rule:Number.isFinite(ex.pendingLoad)?PENDING_RULE:`Use the load you logged at the return entry; no increase yet${ex.load!=null?`; never above the previous ${ex.load}`:''}`,...(Number.isFinite(ex.pendingLoad)?{pending:true}:{}),baseSets:s1};
+  }
+- // After a return the sets come back one per executed week, up to the count before the break (SSCTR D49).
+- const base=Number.isInteger(ex?.setCap)?Math.min(normal,ex.setCap):normal,reps=main?g.reps:Math.min(15,g.reps+2);
++ // After a return the sets come back one per executed week, up to the count before the break (SSCTR D49). After a re-establishment
++ // the count, block-boundary set included, comes back from the re-establishment count the same way (SSCTR D53).
++ const base=Math.min(normal,Number.isInteger(ex?.setCap)?ex.setCap:Infinity,Number.isInteger(ex?.regainCap)?ex.regainCap:Infinity),reps=main?g.reps:Math.min(15,g.reps+2);
+  const [sets,rir]=phased(base,g.startRir),counts={baseSets:base,normalSets:normal};
+  const hold=['SPECIFIC','TAPER','RACE_WEEK','POST_EVENT','CONSOLIDATION'].includes(phase);
+  if(entry.loading==='BODYWEIGHT')return {sets:ex?sets:Math.min(sets,2),reps:ex?.reps??reps,rir:Math.max(3,rir),mode:'BODYWEIGHT',establishment:!ex,baseSets:ex?base:Math.min(base,2),normalSets:normal};
+@@ -394,7 +395,7 @@
+  * executed count before the break (outside a phase reduction; the known count if none was executed) is the ceiling.
+  */
+ export function startStrengthReturn(ex){
+- const n={...ex,returnStep:0,returnInBlock:true};delete n.setCap;delete n.setCeiling;delete n.returnLogged;
++ const n={...ex,returnStep:0,returnInBlock:true};delete n.setCap;delete n.setCeiling;delete n.returnLogged;delete n.regainCap;
+  const ceiling=Number.isInteger(ex.lastExecutedSets)?ex.lastExecutedSets:Number.isInteger(ex.sets)?ex.sets:null;
+  if(ceiling!==null)n.setCeiling=ceiling;
+  return n;
+@@ -418,7 +419,8 @@
+   // A prescription that was not executed establishes nothing: an exercise gets its state once it is performed (SSCTR D52).
+   if(fresh){if(!on)continue;ex={status:'ESTABLISHED',mode:u.mode==='BODYWEIGHT'?'BODYWEIGHT':u.mode==='KNOWN'?'KNOWN':'FROM_LOG',load:u.mode==='KNOWN'?u.value:null,convention:u.convention??null,reps:u.reps,sets:u.mode==='KNOWN'?u.sets:null,rir:u.rir,loadTick:0,source:'PLANNED_ESTABLISHMENT',...(entryWeek?{returnStep:0}:{})};}
+   // Re-established by effort once performed: the earlier set count comes back one set per executed week, never at once (QRE-R6-17).
+-  else if(on&&reestablishes(ex,u)){ex.ceiling=ex.load;ex.mode='FROM_LOG';ex.source='RE_ESTABLISHED';if(Number.isInteger(ex.sets)&&Number.isInteger(u.sets)&&ex.sets>u.sets){ex.priorSets=ex.sets;ex.sets=u.sets;}}
++  // The prescribed count, block-boundary set included, starts again from the re-establishment count (SSCTR D53).
++  else if(on&&reestablishes(ex,u)){ex.ceiling=ex.load;ex.mode='FROM_LOG';ex.source='RE_ESTABLISHED';if(Number.isInteger(ex.sets)&&Number.isInteger(u.sets)&&ex.sets>u.sets){ex.priorSets=ex.sets;ex.sets=u.sets;}if(Number.isInteger(u.sets))ex.regainCap=u.sets;}
+   const adoption=!u.practice&&log?loggedLoadDecision(S,ex,u,log,{advanced:advancedGate(k),hint:sk.cap?.strength?.loadHints?.[u.id]??null}):null;
+   // At a review a loaded exercise is established only by a logged load, adopted or awaiting confirmation (SSCTR D52).
+   if(fresh){if(!assumeLogged&&!u.practice&&ex.mode==='FROM_LOG'&&!adoption?.adopted&&!adoption?.pending)continue;ss.exercises[u.id]=ex;}
+@@ -439,6 +441,8 @@
+   if(!returning&&executed&&Number.isInteger(p?.sets)&&p.sets===p.baseSets)ex.lastExecutedSets=Number.isInteger(u.sets)?Math.min(p.sets,u.sets):p.sets;
+   // After the return steps the cap rises one set per executed unreduced week up to the ceiling, and ends once it no longer binds.
+   if(!returning&&Number.isInteger(ex.setCap)){if(executed&&unreduced)ex.setCap=Math.min(Number.isInteger(ex.setCeiling)?ex.setCeiling:Infinity,ex.setCap+1);if(Number.isInteger(p?.normalSets)&&ex.setCap>=p.normalSets){delete ex.setCap;delete ex.setCeiling;}}
++  // After a re-establishment the cap rises one set per executed unreduced week, and ends once no count it could hold back remains (SSCTR D53).
++  if(!returning&&Number.isInteger(ex.regainCap)){if(executed&&unreduced)ex.regainCap++;if(ex.regainCap>=Math.max(g.maxSets,Number.isInteger(ex.priorSets)?ex.priorSets:0,Number.isInteger(ex.sets)?ex.sets:0))delete ex.regainCap;}
+   if(Number.isInteger(ex.priorSets)){if(executed)ex.sets=Math.min(ex.priorSets,ex.sets+1);if(ex.sets>=ex.priorSets)delete ex.priorSets;}
+   if(returning){if(k==='REGRESS')ex.returnStep=Math.max(0,ex.returnStep-1);else if(executed)ex.returnStep++;if(ex.returnStep>=2){delete ex.returnStep;delete ex.returnLogged;finished=true;ex.setCap=Math.min(ceiling,(Number.isInteger(p?.baseSets)?p.baseSets:u.sets)+(unreduced?1:0));}continue;}
+   if(k==='REGRESS'){if(ex.mode==='KNOWN'&&ex.load>=step&&step>0)ex.load=Math.round((ex.load-step)*10)/10;else ex.reps=Math.max(lo,(ex.reps??lo)-S.repStep);continue;}

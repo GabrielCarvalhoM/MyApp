@@ -1,0 +1,192 @@
+--- reviewed-18ec48f3-r10-source/src/r6-program.mjs
++++ CoachingCore/src/r6-program.mjs
+@@ -312,7 +312,8 @@
+ export const goalDose=sk=>sk.op.strength.goalDoses[sk.goal.strength.kind]??sk.op.strength.goalDoses.GENERAL;
+ export function initialStrengthState(sk){
+  const exercises={};
+- for(const k of sk.cap.strength.known)exercises[k.id]={status:'ESTABLISHED',mode:'KNOWN',load:k.dose.load.value,convention:k.dose.load.convention,reps:k.dose.reps,sets:k.dose.sets,rir:k.dose.rir,loadTick:0,source:'CURRENT_FAMILIAR_KNOWN_DOSE'};
++ // A known dose was last performed when it was observed: the resume clock starts there (SSCTR D52).
++ for(const k of sk.cap.strength.known)exercises[k.id]={status:'ESTABLISHED',mode:'KNOWN',load:k.dose.load.value,convention:k.dose.load.convention,reps:k.dose.reps,sets:k.dose.sets,rir:k.dose.rir,loadTick:0,source:'CURRENT_FAMILIAR_KNOWN_DOSE',...(typeof k.observedAt==='string'?{lastPerformed:k.observedAt.slice(0,10)}:{})};
+  return {exercises,devCount:0,completedBlocks:0};
+ }
+ const PENDING_RULE='Choose the load by effort as in your first session; the load you logged becomes your reference once you confirm it or log it again';
+@@ -320,14 +321,15 @@
+ export const returnStepSets=(op,ceiling)=>Math.max(1,Math.min(ceiling-1,op.return.strengthEntrySets+1));
+ /**
+  * Dose of one slot in week w from the exercise state and phase. baseSets is the count before the phase reduction and
+- * normalSets the count without a return cap; both travel in the week's planned strength state.
++ * normalSets the count without a return cap; both travel in the week's planned strength state. `date` is the session date.
+  */
+-function strengthDose(sk,ss,w,slot,entry,{firstOfWeek,phase:dayPhase=null}){
++function strengthDose(sk,ss,w,slot,entry,{firstOfWeek,phase:dayPhase=null,date=null}){
+  const {op,plan,cap}=sk,S=op.strength,E=op.event,g=goalDose(sk),phase=dayPhase??plan.phases[w],main=slot.role==='MAIN',[lo,hi]=g.repRange,ex=ss.exercises[entry.id];
+  if(['RACE_WEEK','POST_EVENT'].includes(phase)&&!main)return {skip:true};
+  if(!ex&&Object.values(ss.exercises).some(e=>e.returnStep===0)){const r=op.return;return {sets:r.strengthEntrySets,reps:g.reps,rir:r.strengthEntryMinimumRir,mode:entry.loading==='BODYWEIGHT'?'BODYWEIGHT':'ESTABLISH',establishment:entry.loading!=='BODYWEIGHT',note:'Return entry: lowest demand while capacity is re-established',baseSets:r.strengthEntrySets};}
+  if(!ex&&phase==='ESTABLISHMENT'&&cap.strength.class==='NONE'&&firstOfWeek){const u=op.establishment.unloadedPractice;return {practice:true,sets:u.sets,reps:u.reps,rir:u.minimumRir};}
+- if(ex&&!Number.isInteger(ex.returnStep)&&Number.isInteger(ex.lastWeek)&&(w-ex.lastWeek-1)*7>op.return.moderateMaxDays&&entry.loading!=='BODYWEIGHT'){const e=op.establishment.effortGuidedLoad,n=Math.min(main?g.sets:Math.max(1,g.sets-1),2);return {sets:n,reps:main?g.reps:Math.min(15,g.reps+2),rir:Math.max(e.minimumRir,g.startRir),mode:'ESTABLISH',establishment:true,note:`Not done for more than ${op.return.moderateMaxDays} days: establish the load again by effort${ex.load!=null?`; do not exceed ${ex.load} ${ex.convention==='PER_HAND'?'kg per hand':'kg'}`:''}`,baseSets:n};}
++ // Not performed for more than the moderate return window, in calendar days from its last executed exposure (SSCTR D52).
++ if(ex&&!Number.isInteger(ex.returnStep)&&ex.lastPerformed&&date&&dayGap(ex.lastPerformed,date)>op.return.moderateMaxDays&&entry.loading!=='BODYWEIGHT'){const e=op.establishment.effortGuidedLoad,n=Math.min(main?g.sets:Math.max(1,g.sets-1),2);return {sets:n,reps:main?g.reps:Math.min(15,g.reps+2),rir:Math.max(e.minimumRir,g.startRir),mode:'ESTABLISH',establishment:true,note:`Not done for more than ${op.return.moderateMaxDays} days: establish the load again by effort${ex.load!=null?`; do not exceed ${ex.load} ${ex.convention==='PER_HAND'?'kg per hand':'kg'}`:''}`,baseSets:n};}
+  // Phase reductions apply on top of the current count, in the return steps as everywhere else (SSCTR D49).
+  const phased=(n,r)=>phase==='CONSOLIDATION'?[Math.max(1,n-S.consolidationSetReduction),r]:phase==='SPECIFIC'?[Math.max(1,n-1),Math.max(3,r)]:phase==='TAPER'?[Math.max(1,Math.round(Math.max(1,n-1)*E.taperStrengthSetFraction)),Math.max(3,r)]:phase==='RACE_WEEK'?[E.raceWeekStrengthSets,E.raceWeekStrengthMinimumRir]:phase==='POST_EVENT'?[E.postEventStrengthSets,E.raceWeekStrengthMinimumRir]:[n,r];
+  let normal=ex?.sets??(main?g.sets:Math.max(1,g.sets-1));
+@@ -351,6 +353,8 @@
+   const e=op.establishment.effortGuidedLoad,hint=cap.strength.loadHints[entry.id],first=cap.strength.class==='NONE'&&phase==='ESTABLISHMENT'?e.sets:2;
+   return {sets:Math.min(sets,first),reps:cap.strength.class==='NONE'&&phase==='ESTABLISHMENT'?e.reps:reps,rir:Math.max(e.minimumRir,rir),mode:'ESTABLISH',establishment:true,note:hint?`An earlier ${hint.value} ${hint.unit} at another rep target is a starting hint only`:null,baseSets:Math.min(base,first),normalSets:normal};
+  }
++ // A from-log row needs a logged load: an exercise a review saw performed without one is established by effort again (SSCTR D52).
++ if(ex.unlogged&&ex.mode==='FROM_LOG'){const e=op.establishment.effortGuidedLoad;return {sets:Math.min(sets,e.sets),reps:ex.reps??reps,rir:Math.max(e.minimumRir,rir),mode:'ESTABLISH',establishment:true,note:`No usable load was logged last time: establish the load by effort again${Number.isFinite(ex.ceiling)?`; do not exceed ${ex.ceiling} ${ex.convention==='PER_HAND'?'kg per hand':'kg'}`:''}`,baseSets:Math.min(base,e.sets),normalSets:normal};}
+  if(ex.mode==='KNOWN')return {sets,reps:g.mode==='LOAD'?Math.min(ex.reps,hi):Math.min(ex.reps,hi),rir:Math.max(rir,2),mode:'KNOWN',value:ex.load,convention:ex.convention,note:hold?'No load increase in this phase':null,...counts};
+  const pending=Number.isFinite(ex.pendingLoad),rule=pending?PENDING_RULE:ex.ceiling!=null&&ex.source==='RE_ESTABLISHED'?`Use the load you established last time; never above the previous ${ex.ceiling} until a new log supports it`:hold?'Use the last logged load; no increase in this phase':g.mode==='LOAD'?`If every set reached ${g.reps} reps with at least ${g.targetRir} in reserve, add the smallest available increment; otherwise repeat`:g.mode==='HOLD'?'Keep the logged load while reps in reserve hold':`Add ${S.repStep} reps per set while at least ${g.targetRir} reps stay in reserve, up to ${hi}; then add the smallest increment and return to ${lo}`;
+  return {sets,reps:ex.reps??reps,rir,mode:'FROM_LOG',rule,...(pending?{pending:true}:{}),...counts};
+@@ -397,25 +401,34 @@
+ }
+ const advancedGate=k=>['ADVANCE','EARNED'].includes(k);
+ /** Transition after week w for exercises used that week. gate per exercise id or 'STRENGTH'. Logged loads replace planned ones before the gate.
+- * A step needs a logged set at the current load in the gating week; a conditional projection assumes the planned logs. */
+-export function advanceStrength(sk,ss0,w,used,gate={},logged={},{assumeLogged=false}={}){
++ * A step needs a logged set at the current load in the gating week; a conditional projection assumes the planned logs.
++ * `performed` maps an exercise to the local date a review saw it last performed in the week; a conditional projection assumes
++ * every planned exposure performed on its date (SSCTR D52). */
++export function advanceStrength(sk,ss0,w,used,gate={},logged={},{assumeLogged=false,performed={}}={}){
+  const {op,plan,blocks}=sk,S=op.strength,g=goalDose(sk),phase=plan.phases[w],[lo,hi]=g.repRange,ss=clone(ss0),dev=DEVELOPMENT.includes(phase),blockEnd=blocks.some(b=>DEVELOPMENT.includes(b.family)&&b.endWeekExclusive===w+1);
+  // The week's planned counts (before the phase reduction, and without a return cap) travel in its state, so a review sees them too.
+  const planned=ss0.planned??{};delete ss.planned;
+  // An exercise first established in a return-entry week continues through the return steps like the others (author-found, R6-POLICY-4).
+  const entryWeek=Object.values(ss0.exercises).some(e=>e.returnStep===0);let finished=false;
++ const performedOn=id=>assumeLogged?used.filter(x=>x.id===id&&x.date).map(x=>x.date).sort().at(-1)??null:performed?.[id]??null;
+  for(const u of [...new Map(used.map(x=>[x.id,x])).values()]){
+-  let ex=ss.exercises[u.id];
+-  if(!ex)ex=ss.exercises[u.id]={status:'ESTABLISHED',mode:u.mode==='BODYWEIGHT'?'BODYWEIGHT':u.mode==='KNOWN'?'KNOWN':'FROM_LOG',load:u.mode==='KNOWN'?u.value:null,convention:u.convention??null,reps:u.reps,sets:u.mode==='KNOWN'?u.sets:null,rir:u.rir,loadTick:0,source:'PLANNED_ESTABLISHMENT',...(entryWeek?{returnStep:0}:{})};
+-  // Re-established by effort: the earlier set count comes back one set per executed week, never at once (QRE-R6-17).
+-  else if(reestablishes(ex,u)){ex.ceiling=ex.load;ex.mode='FROM_LOG';ex.source='RE_ESTABLISHED';if(Number.isInteger(ex.sets)&&Number.isInteger(u.sets)&&ex.sets>u.sets){ex.priorSets=ex.sets;ex.sets=u.sets;}}
+-  ex.lastWeek=w;
+-  if(u.practice)continue;
+   // The gate is known before the adoption: an above-plan load is adopted only when this exposure met the ADVANCE criterion (SSCTR D44).
+-  const k=gate[u.id]??gate.STRENGTH??gate.ALL??'ADVANCE',log=logged[u.id],adoption=log?loggedLoadDecision(S,ex,u,log,{advanced:advancedGate(k),hint:sk.cap?.strength?.loadHints?.[u.id]??null}):null;
++  const on=performedOn(u.id),k=gate[u.id]??gate.STRENGTH??gate.ALL??'ADVANCE',log=logged[u.id];
++  let ex=ss.exercises[u.id];const fresh=!ex;
++  // A prescription that was not executed establishes nothing: an exercise gets its state once it is performed (SSCTR D52).
++  if(fresh){if(!on)continue;ex={status:'ESTABLISHED',mode:u.mode==='BODYWEIGHT'?'BODYWEIGHT':u.mode==='KNOWN'?'KNOWN':'FROM_LOG',load:u.mode==='KNOWN'?u.value:null,convention:u.convention??null,reps:u.reps,sets:u.mode==='KNOWN'?u.sets:null,rir:u.rir,loadTick:0,source:'PLANNED_ESTABLISHMENT',...(entryWeek?{returnStep:0}:{})};}
++  // Re-established by effort once performed: the earlier set count comes back one set per executed week, never at once (QRE-R6-17).
++  else if(on&&reestablishes(ex,u)){ex.ceiling=ex.load;ex.mode='FROM_LOG';ex.source='RE_ESTABLISHED';if(Number.isInteger(ex.sets)&&Number.isInteger(u.sets)&&ex.sets>u.sets){ex.priorSets=ex.sets;ex.sets=u.sets;}}
++  const adoption=!u.practice&&log?loggedLoadDecision(S,ex,u,log,{advanced:advancedGate(k),hint:sk.cap?.strength?.loadHints?.[u.id]??null}):null;
++  // At a review a loaded exercise is established only by a logged load, adopted or awaiting confirmation (SSCTR D52).
++  if(fresh){if(!assumeLogged&&!u.practice&&ex.mode==='FROM_LOG'&&!adoption?.adopted&&!adoption?.pending)continue;ss.exercises[u.id]=ex;}
++  if(on&&!(ex.lastPerformed>=on))ex.lastPerformed=on;
++  if(u.practice)continue;
+   if(adoption?.adopted){ex.mode='KNOWN';ex.load=adoption.value;ex.convention=log.convention??ex.convention??catalogueEntry(u.id)?.convention??'TOTAL';ex.reps=log.reps??ex.reps;ex.source='LOGGED_ACTUAL';delete ex.ceiling;delete ex.pendingLoad;if(Number.isInteger(ex.returnStep))ex.returnLogged=true;}
+   // An unconfirmed establishment log is not a number: the next exposure stays FROM_LOG and the athlete is asked (SSCTR D45).
+   else if(adoption?.pending){ex.mode='FROM_LOG';ex.pendingLoad=log.load;ex.convention=log.convention??ex.convention;}
++  // A from-log row needs a logged load: an exposure performed without a usable one leaves the next one chosen by effort (SSCTR D52).
++  if(on&&!assumeLogged&&ex.mode==='FROM_LOG'&&!Number.isFinite(ex.pendingLoad))ex.unlogged=true;else if(on)delete ex.unlogged;
+   const step=S.smallestIncrement[ex.convention]??0,evidence=assumeLogged||!!log,executed=advancedGate(k)&&evidence,returning=Number.isInteger(ex.returnStep),p=planned[u.id];
+   // A week without a phase reduction executed its whole count; only such a week moves the return count up (SSCTR D49).
+   const unreduced=!p||!Number.isInteger(p.sets)||p.sets===p.baseSets,ceiling=Number.isInteger(ex.setCeiling)?ex.setCeiling:Infinity;
+@@ -442,16 +455,16 @@
+  if(dev)ss.devCount++;
+  return ss;
+ }
+-function strengthRowsFor(sk,template,w,ss,{firstOfWeek,phase=null}){
++function strengthRowsFor(sk,template,w,ss,{firstOfWeek,phase=null,date=null}){
+  const {op,goal}=sk,S=op.strength,rows=[],used=[],returning=Object.values(ss.exercises).some(e=>Number.isInteger(e.returnStep)),rotation=returning?{}:sk.rotation(w,template);
+  for(const r of template.rows){
+   const entryId=rotation[r.slot]??r.entry.id,entry=catalogueEntry(entryId)??r.entry;
+   const restKey=r.role==='MAIN'?(goal.strength.kind==='STRENGTH'?'MAIN_STRENGTH_GOAL':'MAIN'):'ACCESSORY',common={restSeconds:S.restSeconds[restKey],preparationMinutes:S.preparationMinutes[r.role==='MAIN'?'MAIN':'ACCESSORY']};
+-  const dose=strengthDose(sk,ss,w,r,entry,{firstOfWeek,phase});
++  const dose=strengthDose(sk,ss,w,r,entry,{firstOfWeek,phase,date});
+   if(dose.skip)continue;
+-  if(dose.practice){const practice=catalogueEntry(PRACTICE_ID[r.pattern])??entry;rows.push(exerciseRow(practice,{sets:dose.sets,reps:dose.reps,rir:dose.rir,mode:'BODYWEIGHT',restSeconds:S.restSeconds.PRACTICE,preparationMinutes:S.preparationMinutes.PRACTICE,establishment:true,note:'Movement practice: learn the pattern; this is not a strength test'}));used.push({id:practice.id,practice:true});continue;}
++  if(dose.practice){const practice=catalogueEntry(PRACTICE_ID[r.pattern])??entry;rows.push(exerciseRow(practice,{sets:dose.sets,reps:dose.reps,rir:dose.rir,mode:'BODYWEIGHT',restSeconds:S.restSeconds.PRACTICE,preparationMinutes:S.preparationMinutes.PRACTICE,establishment:true,note:'Movement practice: learn the pattern; this is not a strength test'}));used.push({id:practice.id,practice:true,date});continue;}
+   rows.push(exerciseRow(entry,{...common,sets:dose.sets,reps:dose.reps,rir:Math.max(2,dose.rir),mode:dose.mode,value:dose.value??null,convention:dose.convention??null,establishment:!!dose.establishment,rule:dose.rule??null,note:dose.note??null,pending:!!dose.pending}));
+-  used.push({id:entry.id,mode:dose.mode,value:dose.value??null,convention:dose.convention??entry.convention,reps:dose.reps,sets:dose.sets,rir:dose.rir,baseSets:dose.baseSets??null,normalSets:dose.normalSets??null});
++  used.push({id:entry.id,mode:dose.mode,value:dose.value??null,convention:dose.convention??entry.convention,reps:dose.reps,sets:dose.sets,rir:dose.rir,baseSets:dose.baseSets??null,normalSets:dose.normalSets??null,date});
+  }
+  return {rows,used};
+ }
+@@ -578,14 +591,15 @@
+    else if(b>ed.windowDays&&b<=ed.taperDays&&!['TAPER','RACE_WEEK','POST_EVENT'].includes(phase))strengthPhase='TAPER';
+   }
+   if(phase==='POST_EVENT'){const since=7-plan.raceDay+r.day;if(since<op.event.postEventFirstRunMinDaysAfterRace||sessions.some(x=>x.sport==='STRENGTH'&&x.prescription)){sessions.push(restByDesign(common,'Post-event week: one light strength session is enough; this day is rest or mobility by design'));continue;}}
+-  const built=t?strengthRowsFor(sk,t,w,strengthState,{firstOfWeek:firstStrength,phase:strengthPhase}):{rows:[],used:[]};firstStrength=false;
++  const built=t?strengthRowsFor(sk,t,w,strengthState,{firstOfWeek:firstStrength,phase:strengthPhase,date:common.date}):{rows:[],used:[]};firstStrength=false;
+   const fitted=built.rows.length?fitStrengthSession(built.rows,{budget:s.strengthMinutes,warmup:op.strength.warmupMinutes,cooldown:op.strength.cooldownMinutes,secondsPerRep:op.strength.secondsPerRep,maxExercises:s.strengthMinutes<35?op.strength.maxExercises.MAIN_ONLY_BUDGET:op.strength.maxExercises.DEFAULT,minimumExercises:Math.min(2,built.rows.length)}):null;
+   if(!fitted){sessions.push(restByDesign(common,'The chosen time cannot hold a supported strength session; more time on this day is needed'));continue;}
+   const fittedIds=new Set(fitted.map(e=>e.id)),usedNow=built.used.filter(u=>fittedIds.has(u.id));used.push(...usedNow);
+-  // Exercises established earlier in the same week are established for the later sessions of that week; in a return-entry
+-  // week they keep the entry dose for the rest of the week (author-found, R6-POLICY-4).
++  // An exercise first set up earlier in the week is not yet established for its later sessions: until a review sees it performed
++  // with a logged load, every exposure is its establishment (SSCTR D52). In a return-entry week such an exercise keeps the entry
++  // dose for the rest of the week (author-found, R6-POLICY-4).
+   const entryWeek=Object.values(strengthState.exercises).some(e=>e.returnStep===0);
+-  strengthState=clone(strengthState);for(const u of usedNow)if(!u.practice&&!strengthState.exercises[u.id])strengthState.exercises[u.id]={status:'ESTABLISHED',mode:u.mode==='BODYWEIGHT'?'BODYWEIGHT':u.mode==='KNOWN'?'KNOWN':'FROM_LOG',load:u.mode==='KNOWN'?u.value:null,convention:u.convention??null,reps:u.reps,sets:u.mode==='KNOWN'?u.sets:null,rir:u.rir,loadTick:0,source:'PLANNED_ESTABLISHMENT',...(entryWeek?{returnStep:0}:{})};
++  if(entryWeek){strengthState=clone(strengthState);for(const u of usedNow)if(!u.practice&&!strengthState.exercises[u.id])strengthState.exercises[u.id]={status:'ESTABLISHED',mode:u.mode==='BODYWEIGHT'?'BODYWEIGHT':u.mode==='KNOWN'?'KNOWN':'FROM_LOG',load:u.mode==='KNOWN'?u.value:null,convention:u.convention??null,reps:u.reps,sets:u.mode==='KNOWN'?u.sets:null,rir:u.rir,loadTick:0,source:'PLANNED_ESTABLISHMENT',returnStep:0};}
+   const family=['RACE_WEEK','POST_EVENT','TAPER'].includes(strengthPhase)?'MAINTENANCE':fitted.every(e=>e.load.mode==='BODYWEIGHT'&&e.establishment)?'PRACTICE':t.family;
+   const p=strengthPrescription(family,fitted,{budget:s.strengthMinutes,warmup:op.strength.warmupMinutes,cooldown:op.strength.cooldownMinutes,secondsPerRep:op.strength.secondsPerRep,goalMode:goalDose(sk).mode,instructions:strengthPhase==='RACE_WEEK'?['Final days before the race: one short session to keep the movement pattern; nothing new or heavy']:strengthPhase==='TAPER'?['Taper: fewer sets at familiar loads; no new exercises or heavier loads']:[]});
+   const heavy=fitted.some(e=>e.region==='LOWER'&&['HEAVY','MODERATE'].includes(e.lowerDemand)&&e.sets>=2);
+--- reviewed-18ec48f3-r10-source/src/r6-adaptation.mjs
++++ CoachingCore/src/r6-adaptation.mjs
+@@ -191,8 +191,9 @@
+ }
+ // A logged set is step evidence when its load is known in kilograms, or for a bodyweight row (no external load); a load in an unknown unit is not.
+ // The week's last usable log of an exercise decides; an earlier one in the same week travels with it as `earlier`, and an athlete
+-// confirmation in the planned convention replaces the logged value (SSCTR D45).
+-const loggedLoads=(ev,confirmations={})=>{const out={};for(const r of ev.rows)for(const [id,l] of Object.entries(r.logs??{})){const c=confirmationFor(confirmations,id,l),earlier=Number.isFinite(out[id]?.load)?out[id].load:null;if(c)out[id]={load:c.kg,convention:l.convention,reps:l.reps,confirmed:true,earlier,sessionId:r.sessionId};else if(Number.isFinite(l.load)||!l.unitUnknown&&l.convention==='BODYWEIGHT')out[id]={load:Number.isFinite(l.load)?l.load:null,convention:l.convention,reps:l.reps,earlier,sessionId:r.sessionId};}return out;};
++// confirmation in the planned convention replaces the logged value (SSCTR D45). A conflicted report is no evidence until it is
++// corrected: it neither sets nor confirms a load (QRE-R6-14; author-found with SSCTR D52).
++const loggedLoads=(ev,confirmations={})=>{const out={};for(const r of ev.rows.filter(x=>x.status!=='CONFLICTED'))for(const [id,l] of Object.entries(r.logs??{})){const c=confirmationFor(confirmations,id,l),earlier=Number.isFinite(out[id]?.load)?out[id].load:null;if(c)out[id]={load:c.kg,convention:l.convention,reps:l.reps,confirmed:true,earlier,sessionId:r.sessionId};else if(Number.isFinite(l.load)||!l.unitUnknown&&l.convention==='BODYWEIGHT')out[id]={load:Number.isFinite(l.load)?l.load:null,convention:l.convention,reps:l.reps,earlier,sessionId:r.sessionId};}return out;};
+ /**
+  * Completed runs for the single-run ceiling (R6-PLANNED-PROGRESSION): executed runs from the completed-work ledger and,
+  * while it is recent, the longest current run the athlete reported at intake. Walk/jog counts its jogging minutes.
+@@ -208,7 +209,21 @@
+  return [...out,...extra];
+ }
+ // ---------- proposal mechanics ----------
+-function usedInWeek(week){return week.sessions.filter(s=>s.sport==='STRENGTH'&&s.prescription).flatMap(s=>s.prescription.exercises.map(e=>({id:e.id,mode:e.load.mode,value:e.load.value??null,convention:e.load.convention,reps:e.reps,sets:e.sets,rir:e.rir,practice:e.role==='PRACTICE'})));}
++function usedInWeek(week){return week.sessions.filter(s=>s.sport==='STRENGTH'&&s.prescription).flatMap(s=>s.prescription.exercises.map(e=>({id:e.id,mode:e.load.mode,value:e.load.value??null,convention:e.load.convention,reps:e.reps,sets:e.sets,rir:e.rir,practice:e.role==='PRACTICE',date:s.date})));}
++/**
++ * The local date each exercise was last performed in the reviewed week (SSCTR D52): a completed or partial execution report of a
++ * session that prescribed it and lists it with at least one set; a completed report without exercise details counts for every
++ * exercise of its session. A missed, pending or conflicted session performs nothing.
++ */
++function performedInWeek(ev,ledger){
++ const out={},byEvent=new Map(ledger.map(o=>[o.eventId,o]));
++ for(const r of ev.rows){
++  if(r.sport!=='STRENGTH'||!['COMPLETED','PARTIAL'].includes(r.status))continue;
++  const listed=Object.keys(r.logs??{}),ids=listed.length?listed:r.status==='COMPLETED'?r.exercises:[],date=byEvent.get(r.eventId)?.localDate??r.date;
++  for(const id of ids)if(!(out[id]>=date))out[id]=date;
++ }
++ return out;
++}
+ function reproject(program,sk,fromWeek,{runState,strengthState},{arrangementOverride=null,completedRuns=[]}={}){
+  const prior=program.weeks.slice(0,fromWeek),{weeks,states}=projectWeeks(sk,fromWeek,{runState,strengthState},prior,{arrangementOverride,completedRuns});
+  return {weeks:[...prior,...weeks],stateTrace:[...program.stateTrace.slice(0,fromWeek),...states]};
+@@ -327,7 +342,7 @@
+  const state=program.stateTrace[w],used=usedInWeek(program.weeks[w]);
+  // A dimension with no executed session this week has no gate: it holds, it never counts as executed (QRE-R6-04).
+  const evidenceGates={ALL:'HOLD',...gates};
+- const nextState={runState:advanceRun(sk,state.run,w,evidenceGates),strengthState:advanceStrength(sk,state.strength,w,used,evidenceGates,logs)};
++ const nextState={runState:advanceRun(sk,state.run,w,evidenceGates),strengthState:advanceStrength(sk,state.strength,w,used,evidenceGates,logs,{performed:performedInWeek(ev,ctx.fullLedger??ledger)})};
+  const projected=reproject(program,sk,w+1,nextState,{completedRuns:ctx.completedRuns}),changed=changedSessions(program,projected);
+  // An unconfirmed establishment load lives only in the state: a new or changed pending value needs a proposal to reach the next review (SSCTR D45).
+  const pending=Object.keys(logs).filter(id=>Number.isFinite(nextState.strengthState.exercises[id]?.pendingLoad)),pendingMoved=pending.some(id=>nextState.strengthState.exercises[id].pendingLoad!==program.stateTrace[w+1]?.strength?.exercises?.[id]?.pendingLoad);
+@@ -422,7 +437,7 @@
+  sk.arrangement={...program.arrangementSessions,...arrangementSessions};sk.templates=templates;
+  const state=program.stateTrace[Math.min(fromWeek,program.stateTrace.length-1)],prevWeek=fromWeek-1;
+  const gates=ctx.ev.pending?{ALL:'HOLD'}:weeklyGates(program,skeletonOf(program,authority),ctx.w,ctx.ev,ctx.ledger,ctx.asOf).gates,evidenceGates={ALL:'HOLD',...gates};
+- const startState=fromWeek===ctx.w+1?{runState:advanceRun(sk,program.stateTrace[ctx.w].run,ctx.w,evidenceGates),strengthState:advanceStrength(sk,program.stateTrace[ctx.w].strength,ctx.w,usedInWeek(program.weeks[ctx.w]),evidenceGates,loggedLoads(ctx.ev,ctx.confirmations))}:{runState:state.run,strengthState:state.strength};
++ const startState=fromWeek===ctx.w+1?{runState:advanceRun(sk,program.stateTrace[ctx.w].run,ctx.w,evidenceGates),strengthState:advanceStrength(sk,program.stateTrace[ctx.w].strength,ctx.w,usedInWeek(program.weeks[ctx.w]),evidenceGates,loggedLoads(ctx.ev,ctx.confirmations),{performed:performedInWeek(ctx.ev,ctx.fullLedger??ctx.ledger)})}:{runState:state.run,strengthState:state.strength};
+  const projected=reproject(program,sk,fromWeek,startState,{completedRuns:ctx.completedRuns});
+  const disclosures=arrangementDisclosures(choices),negotiation=[...(program.negotiation??[]).filter(n=>n.id!=='ARRANGEMENT_COST_DISCLOSED'||!contexts.includes(n.context)),...disclosures];
+  const next={...projected,schedule:canonical.schedule,canonical,templates,arrangementSessions:sk.arrangement,phases:mergedPhases,blocks,goal,negotiation};
+--- reviewed-18ec48f3-r10-source/test/r6-ssctr-revision.test.mjs
++++ CoachingCore/test/r6-ssctr-revision.test.mjs
+@@ -78,7 +78,8 @@
+ });
+ test('D30: an exercise unused for more than the moderate return window restarts effort-guided with its last load as a ceiling',()=>{
+  const p=generateProgram(PROFILES.C_BALANCED_HYBRID,opts).program,sk=skeletonOf(p,devAuthority()),w=8,state=structuredClone(p.stateTrace[w].strength);
+- const known=Object.entries(state.exercises).find(([,e])=>e.mode==='KNOWN');assert.ok(known);known[1].lastWeek=w-6;
++ // The resume clock counts calendar days from the last executed exposure (SSCTR D52): last performed six weeks earlier.
++ const known=Object.entries(state.exercises).find(([,e])=>e.mode==='KNOWN');assert.ok(known);known[1].lastPerformed=p.weeks[w-6].startDate;
+  const {week}=buildWeek(sk,w,p.stateTrace[w].run,state,p.weeks.slice(0,w));
+  const row=week.sessions.flatMap(s=>s.prescription?.exercises??[]).find(e=>e.id===known[0]);
+  assert.equal(row.load.mode,'ESTABLISH');assert.match(row.instructions.join(' '),/do not exceed/);

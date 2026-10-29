@@ -1,0 +1,173 @@
+{
+  "revision": "DCR4-VERIFY-1",
+  "executedAt": "2026-10-25T12:26:02.596Z",
+  "node": "v24.19.0",
+  "status": "FAIL",
+  "checks": [
+    {
+      "name": "node24_reference",
+      "status": "PASS",
+      "evidence": "v24.19.0"
+    },
+    {
+      "name": "all_current_tests",
+      "status": "PASS",
+      "evidence": {
+        "command": "node --test --test-reporter=tap",
+        "exitCode": 0,
+        "tests": 230,
+        "passed": 230,
+        "failed": 0,
+        "log": "CoachingCore/r4/TEST_RESULTS_CURRENT.tap",
+        "sha256": "8c9025a20e4e523c2d134beeb74881acbdfcc24d4c642012e5e25f0757df68e3"
+      }
+    },
+    {
+      "name": "frozen_historical_source_preservation",
+      "status": "PASS",
+      "evidence": {
+        "preserved": 579,
+        "intentionallyChanged": [
+          "CURRENT_MISSION.md",
+          "MISSION_LEDGER.md",
+          "CoachingCore/package.json",
+          "reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json"
+        ],
+        "preexistingDirtyCheckoutPreserved": true
+      }
+    },
+    {
+      "name": "frozen42_unchanged_and_original_r3_distribution",
+      "status": "PASS",
+      "evidence": {
+        "frozenHash": "efd521341252db0413ea9dbac0b28df83ef5b7606cad1b99fd025ea024f07971",
+        "all": 42,
+        "normal": 40,
+        "clinical": 2
+      }
+    },
+    {
+      "name": "independent_holdout_seal_and_all_runtime_invariants",
+      "status": "PASS",
+      "evidence": {
+        "evaluated": 66,
+        "normal": 64,
+        "clinical": 2,
+        "positiveRaw": 25,
+        "officialMutations": 0,
+        "appliedEffects": 0,
+        "holdoutSeal": "6c81410c36dbef9772bacb762c48bdd12d43210ad0370875c1a30d6134024a2a",
+        "finalHoldoutReuse": "First evaluation retained; subsequent fixes disclosed as challenge reuse, not fresh unseen validation"
+      }
+    },
+    {
+      "name": "runtime_has_no_corpus_or_expected_output_import",
+      "status": "PASS",
+      "evidence": [
+        "r4-athlete-model.mjs",
+        "r4-authority.mjs",
+        "r4-candidates.mjs",
+        "r4-context.mjs",
+        "r4-index.mjs",
+        "r4-runtime.mjs"
+      ]
+    },
+    {
+      "name": "reusable_envelope_current_independent_scientific_authority",
+      "status": "PASS",
+      "evidence": {
+        "envelopes": 9,
+        "independentConditionalApprovals": 9,
+        "validation": {
+          "passed": true,
+          "records": 9,
+          "errors": [],
+          "queueProposalConsistent": true,
+          "actualGlobalQueueMergeObserved": true,
+          "queueValidation": {
+            "scope": "R4_ONLY_IN_MEMORY_PROJECTION_OF_SINGLE_AUTHORITATIVE_QUEUE",
+            "totalAuthoritativeQueueEntries": 110,
+            "newApprovedEntries": 9,
+            "fundingState": "NOT_DECLARED",
+            "actualQueueConditionsAndRevisionsMatch": true
+          },
+          "limits": "Schema, references, exact registry bytes and current R4 queue correspondence only; not historical queue certification, source truth or runtime enforcement."
+        },
+        "sourceScope": "Provisional internal literature review, not human/clinical/empirical validation"
+      }
+    },
+    {
+      "name": "single_human_queue_preserved_prefix_and_reusable_semantics",
+      "status": "PASS",
+      "evidence": {
+        "preserved": 101,
+        "addedReusableApprovals": 9,
+        "total": 110,
+        "funding": "NOT_DECLARED"
+      }
+    },
+    {
+      "name": "historical_legacy_r2_exact_replays",
+      "status": "PASS",
+      "evidence": {
+        "exactHistoricalInputs": 365,
+        "counts": {
+          "CoachingCore/r2/RUNTIME_R2_TRACES.json": 205,
+          "CoachingCore/r2/legacy-replay/RUNTIME_TRACE_EXAMPLES.json": 160
+        }
+      }
+    },
+    {
+      "name": "independent_coaching_quality_current_and_complete",
+      "status": "FAIL",
+      "error": "Error: ENOENT: no such file or directory, open 'C:\\Users\\carva\\Desktop\\myApp\\MyApp\\audits\\domain-closure-r4-2026-10-25\\reviews\\quality-assessment.json'\n    at Object.readFileSync (node:fs:484:20)\n    at load (file:///C:/Users/carva/Desktop/myApp/MyApp/CoachingCore/scripts/verify-r4.mjs:11:29)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/CoachingCore/scripts/verify-r4.mjs:74:10\n    at check (file:///C:/Users/carva/Desktop/myApp/MyApp/CoachingCore/scripts/verify-r4.mjs:15:70)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/CoachingCore/scripts/verify-r4.mjs:73:1\n    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)\n    at async node:internal/modules/esm/loader:643:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)"
+    },
+    {
+      "name": "independent_ssctr_binding_current",
+      "status": "FAIL",
+      "error": "Error: ENOENT: no such file or directory, open 'C:\\Users\\carva\\Desktop\\myApp\\MyApp\\audits\\domain-closure-r4-2026-10-25\\reviews\\ssctr-binding-review.json'\n    at Object.readFileSync (node:fs:484:20)\n    at load (file:///C:/Users/carva/Desktop/myApp/MyApp/CoachingCore/scripts/verify-r4.mjs:11:29)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/CoachingCore/scripts/verify-r4.mjs:81:10\n    at check (file:///C:/Users/carva/Desktop/myApp/MyApp/CoachingCore/scripts/verify-r4.mjs:15:70)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/CoachingCore/scripts/verify-r4.mjs:80:1\n    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)\n    at async node:internal/modules/esm/loader:643:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)"
+    },
+    {
+      "name": "deliverables_and_root_cause_ask_coverage",
+      "status": "PASS",
+      "evidence": {
+        "mandatory": 16,
+        "rootClusters": 5,
+        "domainCases": 16,
+        "asks": 15
+      }
+    }
+  ],
+  "pass": 10,
+  "fail": 2,
+  "limits": [
+    "Offline synthetic reference only",
+    "Current objective checks and independent internal judgments do not establish physiological optimality, clinical clearance, efficacy or production readiness"
+  ],
+  "artifactHashes": [
+    {
+      "path": "CoachingCore/src/r4-athlete-model.mjs",
+      "sha256": "e87fd3343a7c82f70be1603396080f61939201f43e33c96b74b5aa46ffa9e8c8"
+    },
+    {
+      "path": "CoachingCore/src/r4-authority.mjs",
+      "sha256": "8e39bbb54b7978ca1c0ac9c4cfc8986985e7bb61ecdf3e4f00c5d6716ad7e9b9"
+    },
+    {
+      "path": "CoachingCore/src/r4-candidates.mjs",
+      "sha256": "2c499ace6c6cdee8f8dfc0e6f90d1c9a91971595a5a774cf9e287ccc16d91322"
+    },
+    {
+      "path": "CoachingCore/src/r4-context.mjs",
+      "sha256": "e00f9a0aa9781ef89b2c10ce7a46fcc634c5e7b7998d67176a14b057aa697ee6"
+    },
+    {
+      "path": "CoachingCore/src/r4-index.mjs",
+      "sha256": "4440316641c01a987dc1c8fc7562e970c45bb7c4c03c57b8e8186ede7dc01a7e"
+    },
+    {
+      "path": "CoachingCore/src/r4-runtime.mjs",
+      "sha256": "99ae4d2e2c5f6ac17ab26ad96a7e9d3f0d2bc5d77fbcbfe9851365638c6ec03b"
+    }
+  ]
+}

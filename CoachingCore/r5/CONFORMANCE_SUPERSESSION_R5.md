@@ -1,0 +1,7 @@
+# R5 conformance scope
+
+BSR/R2/R3/R4 runtime, source fixtures, original independent expectations, envelope registry and historical evidence are preserved. All current unit tests run together. R5 uses an additive versioned entrypoint. Default package simulate/verify commands now select R5; explicit simulate:r4 and verify:r4-historical aliases preserve access to R4. The test command and dependencies are unchanged. Package command wiring is intentionally updated after freeze; it changes no frozen runtime/policy/input/evaluator behavior. Node24 remains the oracle.
+
+The single authoritative funded-human queue intentionally advances from 110 to 114 entries, preserving every historical item value and adding four reusable R5 approvals. R4's historical aggregate verifier assertion of exactly 110 queue items is superseded only for that global count/current queue hash. R5 does not rewrite R4 verification or declare its old closure newly run. The R5 verifier checks the preserved 110-item prefix, exact 365 historical legacy inputs, exact 66 R4 decisions, current scientific reviews, and the new frozen implementation separately.
+
+CURRENT_MISSION and MISSION_LEDGER receive additive scope/delivery locators only. No UI, Figma, KMP, production, canonical training doctrine or real-user plan authority is changed. Dates in fixtures remain their explicitly supplied synthetic dates; wall-clock delivery is 2026-10-26.

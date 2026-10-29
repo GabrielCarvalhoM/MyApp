@@ -1,0 +1,54 @@
+{
+  "instance": "/root/prescription_author",
+  "date": "2026-10-23",
+  "role": "AUTHOR_NOT_INDEPENDENT_JUDGE",
+  "purpose": "Verify broad RT/autoregulation/taper source access and seek calibration/novice counterexamples; exact fixture numbers remain synthetic decisions",
+  "operations": [
+    {
+      "type": "OPEN",
+      "urls": [
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC10171681/",
+        "https://link.springer.com/article/10.1186/s40798-021-00404-9"
+      ],
+      "result": "Full-text HTML accessible; ACSM title/date/eligibility/abstract and later selected tables/discussion; taper abstract/introduction; autoregulation abstract/methods/limitations selected text inspected. Not a claim every source line read.",
+      "use": "Broad principles and explicit limits; not exact dose approval"
+    },
+    {
+      "type": "SEARCH",
+      "queries": [
+        "site.pmc.ncbi.nlm.nih.gov exercise intensity prescription threshold running physiological boundaries review",
+        "site.pmc.ncbi.nlm.nih.gov running novice training progression injury randomized trial no universal 10 percent",
+        "site.pmc.ncbi.nlm.nih.gov repetitions in reserve accuracy prediction meta analysis resistance training 2025"
+      ],
+      "result": "Found clinical and nonclinical calibration reviews, Run Clever, GRONORUN protocol and a 2025 RIR study in older adults. Clinical population was not imported to V1; protocol is not trial outcome; search snippets are not source verification.",
+      "use": "Discovery/counterevidence only. No policy justified solely from these snippets. Results sent to root for scientific-synthesis context."
+    },
+    {
+      "type": "OPEN",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9185660/",
+      "result": "reCAPTCHA; full text not accessed by author",
+      "use": "Excluded as decisive author support; no claim of full-text reading"
+    },
+    {
+      "type": "FIND",
+      "requests": [
+        {"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/", "pattern": "failure"},
+        {"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/", "pattern": "TABLE 3"},
+        {"url": "https://link.springer.com/article/10.1186/s40798-021-00404-9", "pattern": "Limitations"}
+      ],
+      "result": "ACSM table/strength and hypertrophy sections, discussion on failure and exact RIR uncertainty; autoregulation primary limitations inspected",
+      "use": "Confirmed failure is not a universal requirement; exact RIR/velocity targets have limitations. Did not treat null differences as equivalence."
+    },
+    {
+      "type": "LOCAL_READ",
+      "paths": [
+        "reviews/sports-domain-closure/2026-10-23/scientific/LITERATURE_SNAPSHOT.json",
+        "product/candidates/autonomous-coaching-foundation/1.0.0/SCIENTIFIC_SYNTHESIS.md",
+        "product/candidates/autonomous-coaching-foundation/1.0.0/LITERATURE_SNAPSHOT.json"
+      ],
+      "result": "Preserved Lxx identities; linked current synthesis for L12/L15/L16/L19/L22/L24 and their actual access/locator records",
+      "use": "Source refs and scope caveats; reading a source registry is not independent source verification or policy approval"
+    }
+  ]
+}

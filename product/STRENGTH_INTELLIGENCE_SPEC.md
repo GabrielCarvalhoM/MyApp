@@ -1,5 +1,9 @@
 # Strength Intelligence Layer
 
+<!-- EXPERIENCE_AUTHORITY_OVERLAY_START: EXP-AUTH-r1 -->
+> **Domain authority retained · 2026-10-22 · EXP-AUTH-r1.** Full prescription/progression/programming/exercise/recovery/analytics semantics and scientific/approval limits remain intact. [DR-93–97](PRODUCT_DECISION_REGISTER.md) / [index filter](../canon/CANONICAL_INDEX.md) retire only inherited surface allocation, “existing objects” presentation prescriptions and experience reading sequences as requirements. No capability implies a surface and no scope is added. Isolation metadata is history after `32b7fb6`; no efficacy or implemented support follows. Designer entry: [derived context](DESIGNER_PRODUCT_CONTEXT.md).
+<!-- EXPERIENCE_AUTHORITY_OVERLAY_END: EXP-AUTH-r1 -->
+
 Revisão **STIL-1.1-r1** · 2026-10-19 · **CANDIDATE_IN_ISOLATION** · task FREEZE-20261019-r1 (baseline SIL).
 Owner semântico: Strength Intelligence sob Adaptive Engine. [SIS](SPORT_INTELLIGENCE_SPEC.md) define contratos/ownership/arbitragem e carga compartilhada; [AEC](ADAPTIVE_ENGINE_CONTRACT.md) e [AEOS](ADAPTIVE_ENGINE_OPERATIONAL_SPEC.md) conservam autoridade. Especificação do núcleo decisório para implementação futura, sem catálogo de features, fórmulas ou prescrição real aprovada.
 
@@ -64,6 +68,8 @@ Deve sustentar distribuição de estímulo e recuperação por grupo/padrão, vo
 Deload pode reduzir/redistribuir demanda conforme regra; taper para evento de força ou evento Running exige objetivo/prioridade, retenção/perda de estímulo e coordenação. Não há semana fixa, percentual de 1RM, séries por músculo ou regra universal de falha definidos neste documento. Bloco encerrado não prova adaptação física, recuperação ou prontidão.
 
 Agenda apertada, prova próxima, mudança de equipamento ou sessão extra de corrida podem mudar divisão/ordem/volume; alternativa precisa preservar mínimo de estímulo aprovado e não simplesmente empilhar trabalho no dia seguinte. Se não houver solução que preserve ambos os objetivos, Orchestrator explicita trade-off ou ASK da preferência material.
+
+**Troca de exercícios (DR-113, SSCTR OB-2 Q3).** A preferência da pessoa — o coach decide, a cada 6 semanas, a cada 2 semanas ou fixo — governa só a seleção de exercícios. Uma troca preserva o estímulo essencial (músculos-alvo e papel do padrão, demanda comparável, equipamento disponível, competência) e é sistemática, nunca aleatória ou redundante (change_reason PROGRAMMED_VARIATION). O primeiro treino com um exercício novo é calibração pelo esforço sob a autorregulação aprovada; a carga não passa por fórmula. “O coach decide” mantém a seleção dentro do bloco e troca na virada ou por propósito declarado; “Fixo” mantém a seleção, com substituição elegível só com agência. Troca que cairia em taper ou semana de prova é adiada com explicação. Cadências de 2 e 6 semanas são preferência, não ótimo científico; a receita (o que muda, quantos exercícios, como a carga passa) exige SSCTR antes do runtime. Os dias e o turno da força são os escolhidos pela pessoa (DR-112); a divisão entre eles é decisão do coach.
 
 ## 5. Exercise intelligence e banco de exercícios
 

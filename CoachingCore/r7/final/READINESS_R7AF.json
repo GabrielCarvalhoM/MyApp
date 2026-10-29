@@ -1,0 +1,86 @@
+{
+ "revision": "R7AF-READINESS-1",
+ "generatedAt": "2026-10-28T16:55:47.160Z",
+ "mission": "DOMAIN_COACHING_R7-A Final Closure (Interruption Episode Identity & Return Continuity)",
+ "phase": "The final micro-closure of R7-A, after R7-A, R7-A.1 and R7-A.2 (not R7-B0 or R7-B)",
+ "scope": "OFFLINE_SYNTHETIC_NODE24_REFERENCE",
+ "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+ "freezeRevision": "R7A-FINAL-FREEZE",
+ "sourceDigest": "ec2debe730df8931d1525f2b1a729ce3d808c08842fb75397d2fc91084294605",
+ "freezeFileSha256": "a5f07a3f65e28fb924413ceb12ad43c124313b8ae152cbbe876f04584ad2b6f3",
+ "delivery": "CLOSED_WITH_EXPLICIT_BLOCKER",
+ "noForcedReady": true,
+ "notEmitted": [
+  "AUTONOMOUS_COACH_READY",
+  "COACHING_DECISION_QUALITY_GLOBALLY_READY",
+  "KMP_READY",
+  "PRODUCTION_READY",
+  "HUMAN_VALIDATED",
+  "CLINICALLY_VALIDATED"
+ ],
+ "blockers": {
+  "QE-R7A-01": "CLOSED",
+  "QE-R7A1-09": "CLOSED",
+  "QE-R7A1-10": "CLOSED",
+  "QE-R7A2-01": "CLOSED",
+  "QE-R7A2-02": "CLOSED (engineering side: confirmation-first)",
+  "QE-R7A2-03": "CLOSED",
+  "D53": "CLOSED",
+  "D56": "CLOSED",
+  "D57": "CLOSED",
+  "D58": "CLOSED",
+  "D59": "CLOSED",
+  "QE-R7AF-01": "OPEN (material, engineering re-check R7AF-QE-r1)"
+ },
+ "verdicts": {
+  "WEEK_COMPOSITION_INTEGRITY": "READY",
+  "STATE_PRESERVATION_INTEGRITY": "NOT_READY",
+  "EVENT_SUPERSESSION_INTEGRITY": "READY",
+  "EXERCISE_MERGE_INTEGRITY": "READY",
+  "RETURN_RECOVERY_CEILING_INTEGRITY": "NOT_READY",
+  "R7A_FINAL_ENGINEERING_RECHECK": "NOT_READY",
+  "R7A_FINAL_SCIENTIFIC_RECHECK": "READY",
+  "R7A_EXIT_READINESS": "NOT_READY"
+ },
+ "reasons": {
+  "WEEK_COMPOSITION_INTEGRITY": {
+   "basis": "Engineering recommends READY (R7AF-QE-r1): every mandatory §18 probe and every preservation probe (P01, P01b, P03-P08, P10, P13-P16) byte-identical to the author's recorded runs; P09 5,000 sequences, 0 errors, O1-O7 = 0; the R7-A.1 grids differ only by named Founder-0.4 asks. The order dependence a plan-based same-day test produced was found and removed before the freeze. SSCTR: D58 holds."
+  },
+  "STATE_PRESERVATION_INTEGRITY": {
+   "blockedBy": ["QE-R7AF-01"],
+   "why": "After a return whose re-entry week was neither finished nor reviewed, one unrelated decision dated after that week (an equipment statement, even one that changes nothing, or a systemic-fatigue report) makes the earned-week check accept the week start the return stored, so a separate later break starts from a return step the athlete never executed (P30c: week 6 runs 30/45 instead of 15/20; week 7 back-squat 2x5@3 KNOWN 82.5 instead of the 1x5@4 entry; P30b: 13 of 15 cells). On R7A2-FREEZE-1 every cell gives the same output (step 1): not a regression of R7-A.2's sporting output, but this mission's earned-start rule (P5, §10, Founder 0.5) holds only when nothing else was decided",
+   "holds": "Identity: in 216 order and timing cells at four time zones, three-break short-return grids, duplicates and named cases, two different interruptions never shared an identity and a correction was never recorded as a new episode. QE-R7A2-01's path is closed (P17 0 pre-break rows; P19 0 of 48 cells; P20 B's own slot; P21 a separate break)"
+  },
+  "EVENT_SUPERSESSION_INTEGRITY": {
+   "basis": "Engineering recommends READY; P09 O6 0 in 5,000 sequences"
+  },
+  "EXERCISE_MERGE_INTEGRITY": {
+   "basis": "Engineering recommends READY; P07 byte-identical"
+  },
+  "RETURN_RECOVERY_CEILING_INTEGRITY": {
+   "blockedBy": ["QE-R7AF-01"],
+   "why": "Engineering side: a short return after QE-R7AF-01's trigger resumes a return step never completed",
+   "holds": "SSCTR (R7AF-SSCTR-r1, ACCEPT): D53 closed; D56, D57, D58, D59 hold; first-week grid E = O = B = 0 for NONE, FAMILIAR and KNOWN; restoration, cap and short grids byte-identical to R7A2-FREEZE-1; F-A to F-F approved"
+  },
+  "R7A_FINAL_ENGINEERING_RECHECK": {
+   "file": "audits/domain-coaching-r7a-final-2026-10-28/reviews/quality-engineering-r7af-recheck.json",
+   "revision": "R7AF-QE-r1",
+   "verdict": "NOT_READY",
+   "blocking": ["QE-R7AF-01"],
+   "notMaterial": ["QE-R7AF-02 (MEDIUM)", "QE-R7AF-03 (LOW)", "QE-R7AF-04 (LOW)"]
+  },
+  "R7A_FINAL_SCIENTIFIC_RECHECK": {
+   "file": "audits/domain-coaching-r7a-final-2026-10-28/reviews/ssctr-r7af-recheck.json",
+   "revision": "R7AF-SSCTR-r1",
+   "verdict": "ACCEPT",
+   "blocking": [],
+   "nonBlocking": ["NF-R7AF-1 (R38)", "NF-R7AF-2 (R39)"]
+  },
+  "R7A_EXIT_READINESS": {
+   "why": "Founder §17 and §20: READY needs both re-checks to accept the single freeze and every integrity verdict READY. The engineering re-check found a material blocker (QE-R7AF-01); no correction cycle follows the freeze, so the mission closes NOT_READY and the decision returns to the Founder (§23)",
+   "nextMission": "FOUNDER_ARCHITECTURAL_DECISION"
+  }
+ },
+ "handoff": "Not written: R7A_EXIT_READINESS is NOT_READY (Founder §22, §23)",
+ "r7b0Started": false
+}

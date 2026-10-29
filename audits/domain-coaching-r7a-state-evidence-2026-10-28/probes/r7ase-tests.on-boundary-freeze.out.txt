@@ -1,0 +1,228 @@
+# CoachingCore/test/r7ase-state-evidence.test.mjs on R7A-BOUNDARY-FINAL-FREEZE (36a71ca84fb87789d8623e2050ac9e308a963400af86a3ba73a373043bbf186c)
+# test file sha256 4984a4ff3f44237fb2cd77af4adc56065f308a614438f0ddb7987ac674001159
+# node v24.19.0, exit 1, 2026-10-28T21:03:47.282Z
+✖ State evidence §18 P40 (QE-R7AB-01, families A, F, H; I1, I2, I9): a review never makes a projected load history; the plan keeps projecting it (325.3197ms)
+✔ State evidence families B, I (P4, §11 completed execution): a projected load the athlete then lifts becomes history (344.9497ms)
+✖ State evidence §8 last performed date: completed sessions verify a projection, its dates are the executed ones (186.121ms)
+✖ State evidence family C (§13, I5): partial evidence promotes only what was observed (334.3968ms)
+✖ State evidence I2, I3 (QE-R7AB-01 through completed sessions): a week executed in full verifies a projection only on a base the athlete executed (334.8227ms)
+✖ State evidence family C unreviewed (§13): a load logged in an unknown unit is no load, and verifies no projection (182.906ms)
+✖ State evidence family C, completed sessions (§13): an unreadable load in a week otherwise executed as projected verifies nothing (233.9671ms)
+✔ State evidence I3 (a gate is evidence): an exercise executed with an adverse response verifies no projection (199.0434ms)
+✖ State evidence I9 (two steps): a value a review carried from a projection never becomes history through a later projection (277.9251ms)
+✖ State evidence P5: a target of 22 kg executed at 21 kg is 21 kg of history (179.3732ms)
+✔ State evidence families D, E (I4, P3): evidence about another sport or exercise moves nothing else (321.0841ms)
+✔ State evidence families G, K (I8, P1, P2, P7): no week boundary, clock, handler or order makes a projection history (716.7909ms)
+✖ State evidence family J (I6, P6): a historical correction replaces the fact it corrects and promotes nothing else (209.7937ms)
+✖ State evidence I7, I10: planning keeps projecting; a first review after unreported weeks keeps the plan, history keeps the facts (66.7398ms)
+✔ State evidence I11: the athlete model learns only from reported observations, never from a projection (145.8199ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 5
+ℹ fail 10
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4179.4458
+
+✖ failing tests:
+
+test at test\r7ase-state-evidence.test.mjs:43:1
+✖ State evidence §18 P40 (QE-R7AB-01, families A, F, H; I1, I2, I9): a review never makes a projected load history; the plan keeps projecting it (325.3197ms)
+  TypeError: Cannot read properties of undefined (reading 'includes')
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/r7ase-tests-bf-ROL7Z1/CoachingCore/test/r7ase-state-evidence.test.mjs:48:169)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)
+
+test at test\r7ase-state-evidence.test.mjs:70:1
+✖ State evidence §8 last performed date: completed sessions verify a projection, its dates are the executed ones (186.121ms)
+  AssertionError [ERR_ASSERTION]: the date it was executed, not the date planned
+  + actual - expected
+  
+  + '2026-11-25'
+  - '2026-11-26'
+              ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/r7ase-tests-bf-ROL7Z1/CoachingCore/test/r7ase-state-evidence.test.mjs:76:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: '2026-11-25',
+    expected: '2026-11-26',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7ase-state-evidence.test.mjs:79:1
+✖ State evidence family C (§13, I5): partial evidence promotes only what was observed (334.3968ms)
+  AssertionError [ERR_ASSERTION]: unknown is not the projection
+  
+  22 !== 20
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/r7ase-tests-bf-ROL7Z1/CoachingCore/test/r7ase-state-evidence.test.mjs:87:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 22,
+    expected: 20,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7ase-state-evidence.test.mjs:90:1
+✖ State evidence I2, I3 (QE-R7AB-01 through completed sessions): a week executed in full verifies a projection only on a base the athlete executed (334.8227ms)
+  AssertionError [ERR_ASSERTION]: history: the load lifted
+  
+  24 !== 22
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/r7ase-tests-bf-ROL7Z1/CoachingCore/test/r7ase-state-evidence.test.mjs:96:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 24,
+    expected: 22,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7ase-state-evidence.test.mjs:100:1
+✖ State evidence family C unreviewed (§13): a load logged in an unknown unit is no load, and verifies no projection (182.906ms)
+  AssertionError [ERR_ASSERTION]: the last known load, not the planned one
+  
+  22 !== 20
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/r7ase-tests-bf-ROL7Z1/CoachingCore/test/r7ase-state-evidence.test.mjs:107:24)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 22,
+    expected: 20,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7ase-state-evidence.test.mjs:110:1
+✖ State evidence family C, completed sessions (§13): an unreadable load in a week otherwise executed as projected verifies nothing (233.9671ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  24 !== 22
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/r7ase-tests-bf-ROL7Z1/CoachingCore/test/r7ase-state-evidence.test.mjs:119:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 24,
+    expected: 22,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7ase-state-evidence.test.mjs:134:1
+✖ State evidence I9 (two steps): a value a review carried from a projection never becomes history through a later projection (277.9251ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - true
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/r7ase-tests-bf-ROL7Z1/CoachingCore/test/r7ase-state-evidence.test.mjs:139:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7ase-state-evidence.test.mjs:144:1
+✖ State evidence P5: a target of 22 kg executed at 21 kg is 21 kg of history (179.3732ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  20 !== 21
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/r7ase-tests-bf-ROL7Z1/CoachingCore/test/r7ase-state-evidence.test.mjs:147:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 20,
+    expected: 21,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7ase-state-evidence.test.mjs:178:1
+✖ State evidence family J (I6, P6): a historical correction replaces the fact it corrects and promotes nothing else (209.7937ms)
+  AssertionError [ERR_ASSERTION]: the corrected load is history
+  
+  82.5 !== 77.5
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/r7ase-tests-bf-ROL7Z1/CoachingCore/test/r7ase-state-evidence.test.mjs:183:28)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 82.5,
+    expected: 77.5,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7ase-state-evidence.test.mjs:187:1
+✖ State evidence I7, I10: planning keeps projecting; a first review after unreported weeks keeps the plan, history keeps the facts (66.7398ms)
+  AssertionError [ERR_ASSERTION]: history counts executed weeks only (5 < 5)
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/r7ase-tests-bf-ROL7Z1/CoachingCore/test/r7ase-state-evidence.test.mjs:193:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

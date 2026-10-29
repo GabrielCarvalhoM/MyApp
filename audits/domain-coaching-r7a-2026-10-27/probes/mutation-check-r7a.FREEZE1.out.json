@@ -1,0 +1,113 @@
+{
+ "check": "R7A-MUTATION-1",
+ "runAt": "2026-10-27T13:52:14.253Z",
+ "scope": "test/r7a-semantic-core.test.mjs against single-fix reverts in a temporary copy",
+ "caught": 13,
+ "total": 13,
+ "results": [
+  {
+   "mutation": "D53 regain only for a known-load state",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A state composition (D53): after a performed re-establishment the count rises at most one set per week for every state mode"
+   ]
+  },
+  {
+   "mutation": "D54 re-establishment skips the phase reduction",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A phase integrity (D54 metamorphic): a re-establishment due in a taper, race-window or post-event session never exceeds the twin executed throughout"
+   ]
+  },
+  {
+   "mutation": "C17 validation without the phase-dose check",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A phase integrity (C17): the final validation rejects a strength row above its day phase dose, whatever produced it"
+   ]
+  },
+  {
+   "mutation": "R19 the last prescribed exposure decides the week",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A state composition (R19): the week follows the executed exposure, not the last prescribed one"
+   ]
+  },
+  {
+   "mutation": "Counts from the first executed exposure",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A state composition: the last executed count of an exercise used with two roles in a week is the later exposure (strengthReturnSets ceiling)"
+   ]
+  },
+  {
+   "mutation": "C11 every exercise in the state decides the entry week",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A state composition (C11): an exercise not in use carries no weight in the return-entry decision"
+   ]
+  },
+  {
+   "mutation": "C12 a set without reps counts as zero reps",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A canonical input (C12, gates.missingLogs): sets logged without repetitions hold the step and never regress it"
+   ]
+  },
+  {
+   "mutation": "C16 a dated change is applied from next week",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A canonical input (C16): a change stated for dates is never applied beyond them"
+   ]
+  },
+  {
+   "mutation": "C18 a race is complete only near its window",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A reconstruction (C18): a race finished faster than its window is a completed race (operational.event.raceDay window)"
+   ]
+  },
+  {
+   "mutation": "C10 the carried record drops superseded facts",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A canonical input (C10): a correction survives the carried record; normalization of the carried record is idempotent"
+   ]
+  },
+  {
+   "mutation": "C10 normalizer forgets carried history",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A canonical input (C10): a correction survives the carried record; normalization of the carried record is idempotent"
+   ]
+  },
+  {
+   "mutation": "C09 exercise logs ignored when two reports agree on time",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A canonical input (C09): two reports of one strength session with contradictory loads are a conflict in either order; agreeing ones merge"
+   ]
+  },
+  {
+   "mutation": "C07 last record wins",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A canonical input (C07): strength records merge independently of order and source; an incomplete record never displaces a complete dose"
+   ]
+  }
+ ]
+}

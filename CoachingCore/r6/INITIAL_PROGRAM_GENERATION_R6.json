@@ -1,0 +1,1554 @@
+{
+  "revision": "R6-DELIVERABLE-1",
+  "topic": "INITIAL_PROGRAM_GENERATION_R6",
+  "generatedAt": "2026-10-27T05:03:30.332Z",
+  "authority": "CURRENT_INDEPENDENT_REVIEW",
+  "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+  "sourceDigest": "507f35fc66f4d1e105e19ce513dc067f9fee5fdc35c039ad52a8c825e46bf857",
+  "freezeRevision": "R6-FREEZE-1",
+  "runtimeState": "NOT_FROZEN_AFTER_FREEZE_1: the SSCTR refused FREEZE-2 in round 12 and R6 closed with an explicit blocker (OPEN_GAPS_R6); the runtime files listed are the current, unfrozen ones, while the simulation, demonstration and R5 replay outputs cited are the FREEZE-1 ones",
+  "boundaries": [
+    {
+      "boundaryId": "R6-COLD-START",
+      "enabled": "APPROVED",
+      "ssctr": {
+        "disposition": "APPROVE_WITH_CONDITIONS",
+        "evidence": null,
+        "conditions": [
+          "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+          "Binding: this record binds canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c (value.mjs hash). Any policy byte change invalidates it; any change to the runtime functions named in requiredRuntimeChanges needs a delta binding review before runtime freeze.",
+          "Operational values are reversible coaching choices inside the envelope, never physiological thresholds, injury-prevention rules, readiness scores, finish-time promises or individual-response predictions.",
+          "Steps advance only on executed comparable work without an adverse signal; nothing progresses from elapsed calendar time alone; completed history and official plan state stay immutable.",
+          "Week-1 planned running minutes (walks excluded; walk/jog counts its jogging minutes) <= current reported or wearable-conservative weekly running minutes; when current exposure is zero or unknown, or the athlete is a novice, only the listed establishment entries (walk/jog ladder step 0, the 15-20 minute easy entry) are used.",
+          "Week-1 long run <= the longest current run reported; rounding may not exceed it.",
+          "No quality, strides or race-effort work in week 1 except a current familiar quality task that fits inside the week-1 running ceiling.",
+          "Unknowns are emitted with one of the four categories; ASK only for facts that change the first program (eligibility, goal, chosen days and session time, event date); clinical flags route to a human.",
+          "A restart-after-pause class requires R6-NONCLINICAL-RETURN authority and a pause reason that passes the clinical-reason check of that boundary.",
+          "Load-establishment rows appear only when R6-LOAD-ESTABLISHMENT is enabled.",
+          "Sex, height and weight never enter dose; an event time goal never sets pace.",
+          "An intake pause needs a structured nonclinical reason category; free text alone is ASK and can only add CLINICAL or ASK outcomes.",
+          "A non-novice whose longest current run or weekly running is below run.minimumSessionMinutes starts on the walk/jog ladder at the highest step whose jogging per session is <= the longest current run and <= current weekly running divided by the walk/jog exposures of the week; no week-1 session holds more running than the longest current run (D42).",
+          "Intake loads: a pound value converts to kilograms at the nearest 0.5 kg and keeps the reported value; any other or missing unit leaves the load unknown and asked; a reported known dose above six sets starts at six.",
+          "An eligibility flag that means yes in any form (true, 1, yes, y, sim, si or sí, trimmed, in any letter case and with or without accents) routes CLINICAL_HUMAN_REQUIRED; any other non-boolean flag leaves eligibility unassessed (ASK), never clearance and never assumed illness.",
+          "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+        ]
+      },
+      "envelope": {
+        "claim": "An eligible adult with no product history can receive a complete conditional first program built from onboarding-like facts, with establishment sessions wherever capacity is unknown.",
+        "requires": [
+          "current nonclinical eligibility (unknown is ASK, clinical routes to a human)",
+          "at least one goal",
+          "chosen days and time per session for each programmed sport"
+        ],
+        "unknownCategories": [
+          "SAFE_CONSERVATIVE_ESTABLISHMENT",
+          "ASK_REQUIRED",
+          "LEARN_DURING_FIRST_SESSIONS",
+          "CLINICAL_OUT_OF_SCOPE"
+        ],
+        "limits": [
+          "no fitness test, maximal effort or race-pace estimate in week 1",
+          "no injury-prevention claim",
+          "no universal starter dose beyond the listed establishment entries"
+        ]
+      }
+    },
+    {
+      "boundaryId": "R6-PLANNED-PROGRESSION",
+      "enabled": "APPROVED",
+      "ssctr": {
+        "disposition": "APPROVE_WITH_CONDITIONS",
+        "evidence": null,
+        "conditions": [
+          "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+          "Binding: this record binds canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c (value.mjs hash). Any policy byte change invalidates it; any change to the runtime functions named in requiredRuntimeChanges needs a delta binding review before runtime freeze.",
+          "Operational values are reversible coaching choices inside the envelope, never physiological thresholds, injury-prevention rules, readiness scores, finish-time promises or individual-response predictions.",
+          "Steps advance only on executed comparable work without an adverse signal; nothing progresses from elapsed calendar time alone; completed history and official plan state stay immutable.",
+          "One progression dimension per session type per week; EARNED may release a step the cadence would otherwise hold or skip a consolidation hold, but never adds more than one step on any dimension in a week, and is unavailable in WALK_JOG, RESTART and RETURN modes.",
+          "Every step requires executed comparable sessions without an adverse signal in the gating week; quality/strides activation, block-boundary set increases and ladder steps count executed weeks, never calendar weeks.",
+          "Single-run ceiling (operational.run.singleRunCeiling): no planned run other than the race exceeds the longest completed run of the preceding 30 days (completed-work ledger, the intake-reported longest current run while within 30 days of intake, a valid return demonstration) by more than one stepMinutes; walk/jog ladder sessions and walks follow the ladder, whose start never holds more jogging per session than the longest current run (D42); with nothing completed in the window the reviewed entry (return.entryRunMinutes) is the ceiling in every week, not only the first.",
+          "When the 30-day reference run is under 50 minutes, the 5-minute step exceeds 10% of it; the step stays response-gated, is disclosed, and is never combined with another single-session increase in the same week. A long-run step that the long-run share cap holds is not a single-session increase: that week the easy step and the quality step proceed under their own gates and cadence, and if either steps the long-run target waits where it was prescribed. In such a week the stepped easy run may equal the long run prescribed that week, never exceed it. A long run held at the single-run ceiling is still a step beyond the 30-day reference (D50, resolved in round 10).",
+          "Strength ADVANCE requires logged target repetitions and minimum logged RIR >= prescribed RIR - 1; EARNED requires minimum logged RIR >= prescribed RIR + 2 on two comparable exposures outside consolidation; a known-load or bodyweight repetition or load step requires a logged set for that exercise in the gating week; missing logs or unknown logged RIR hold the dose without regression; a logged load above the plan never becomes the reference unless that exposure met the ADVANCE criterion (D44).",
+          "longRunShareOfWeeklyMinutesMax limits long-run growth in weeks with at least three running sessions; the cap holds the long run and never shortens it below the typical easy run or the last build week's long run; consolidation, taper and return reductions are separate rules.",
+          "Transition magnitudes (restart step and switch point, walk/jog exit dose, consolidation reduction, post-event redevelopment) are declared in the policy, not hard-coded.",
+          "Repeated adverse responses (two comparable within 14 days at the current dose after any regression) regress one step; a single adverse response holds.",
+          "A run dimension or exercise with no executed session in the reviewed week holds: it never counts as an executed week, never advances a walk/jog step, never unlocks quality or strides and never converts a walk. In a conditional projection a week with no planned session of a dimension likewise never counts as executed for it (D46).",
+          "After an exercise is re-established by effort, its prescribed set count, including any block-boundary set, returns at most one set per executed week without a phase reduction, never two at once, whatever the state's mode at the re-establishment (D53: resolved in round 12 for a known-load state, still open for a from-log state; required before FREEZE-2).",
+          "Return-entry and return-step exposures never count toward a block-boundary set increase: a development block with any such exposure of the exercise earns no set, including the block in progress at the break. After the return steps the set count comes back at most one set per executed week without a phase reduction, up to the ceiling (the last set count executed before the break outside a phase reduction), with phase reductions on top; it goes above the ceiling only through a later development block with no return-step exposure (operational.return.strengthReturnSets; D49, shared with R6-NONCLINICAL-RETURN).",
+          "With no easy run planned in a week (every easy day a walk), the executed long run gates the development-week count and the walk-to-run conversion; a converted walk becomes an easy run at run.minimumSessionMinutes that then progresses like the others (R12). In a conditional projection, restart and return sessions of any role gate on EASY, as in reviews (R13).",
+          "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+        ]
+      },
+      "envelope": {
+        "claim": "A planned, response-gated trajectory with one progression dimension per session type per step, small absolute steps and periodic consolidation weeks is a defensible recreational progression model.",
+        "limits": [
+          "no ten-percent or other universal injury rule is claimed",
+          "planned future doses are conditional proposals, not predictions",
+          "no progression from elapsed calendar alone"
+        ]
+      }
+    },
+    {
+      "boundaryId": "R6-HYBRID-ARRANGEMENT",
+      "enabled": "APPROVED",
+      "ssctr": {
+        "disposition": "APPROVE_WITH_CONDITIONS",
+        "evidence": null,
+        "conditions": [
+          "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+          "Binding: this record binds canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c (value.mjs hash). Any policy byte change invalidates it; any change to the runtime functions named in requiredRuntimeChanges needs a delta binding review before runtime freeze.",
+          "Operational values are reversible coaching choices inside the envelope, never physiological thresholds, injury-prevention rules, readiness scores, finish-time promises or individual-response predictions.",
+          "Steps advance only on executed comparable work without an adverse signal; nothing progresses from elapsed calendar time alone; completed history and official plan state stay immutable.",
+          "Severity is ordinal only: compare Pareto first, then by leximax of the sorted severity multiset (worst first); counts or sums of costs are not used.",
+          "Any run, easy included, within sameSessionGapHours before MODERATE/HEAVY lower-body work carries a strength-axis cost when strength has a development role; no tie-break depends on candidate identifier strings; equal-harm opposing trade-offs under a JOINT lead are ASKed.",
+          "Quality-run-first may be the default for an equal-standing athlete only when the alternative places MODERATE/HEAVY lower-body work within nextDayGapHours before the key run; the choice is disclosed as a reversible population-based default, the athlete may choose otherwise, and repeated comparable athlete evidence may override it; for accustomed lifters the asymmetry is weaker and must be disclosed as such.",
+          "Unknown arrangement-level response is admissible only when current whole-week tolerance covers the same task set and frequency, the candidate's worst H0 severity is <= LOW, and it introduces no same-day pairing absent from the athlete's reported routine; otherwise it needs arrangement evidence or ASK; adverse arrangement evidence excludes it.",
+          "The trace names the decisive comparison (for example LOWEST_WORST_CASE_JOINT_HARM) whenever non-identical candidates were compared.",
+          "No universal spacing minimum; the gap bins rank options and never forbid a feasible arrangement by themselves.",
+          "Cold start: same-day pairings arising from the athlete's own chosen days and shifts are admissible and ranked; when the selected arrangement carries a MODERATE or higher H0 cost the program discloses it and offers the shift or day change as a negotiation option.",
+          "Near an event, arrangements follow days to the race: no strength in the last raceWeekStrengthMinDaysBeforeRace days; at most one short light session (raceWeekStrengthSets sets, main lifts, RIR >= raceWeekStrengthMinimumRir) on the strength day furthest from the race inside the race window; strength on taper days takes the taper dose.",
+          "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+        ]
+      },
+      "envelope": {
+        "claim": "Residual-fatigue interactions between sessions differ by direction and gap: heavy lower-body resistance work within roughly the preceding day can impair a key run more than a controlled run impairs next-day strength; same-session order matters most; upper-body work interacts little with running.",
+        "severityClasses": [
+          "NONE",
+          "LOW",
+          "MODERATE",
+          "HIGH"
+        ],
+        "limits": [
+          "ordinal classes only, never summed into a score",
+          "individual athlete evidence may override the population ordering",
+          "self-reported tolerated arrangements stay admissible",
+          "An arrangement whose own combined response is unknown stays admissible with disclosed uncertainty when current whole-week tolerance covers the same tasks; adverse arrangement evidence excludes it"
+        ]
+      }
+    },
+    {
+      "boundaryId": "R6-EVENT-TRANSITION",
+      "enabled": "APPROVED",
+      "ssctr": {
+        "disposition": "APPROVE_WITH_CONDITIONS",
+        "evidence": null,
+        "conditions": [
+          "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+          "Binding: this record binds canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c (value.mjs hash). Any policy byte change invalidates it; any change to the runtime functions named in requiredRuntimeChanges needs a delta binding review before runtime freeze.",
+          "Operational values are reversible coaching choices inside the envelope, never physiological thresholds, injury-prevention rules, readiness scores, finish-time promises or individual-response predictions.",
+          "Steps advance only on executed comparable work without an adverse signal; nothing progresses from elapsed calendar time alone; completed history and official plan state stay immutable.",
+          "Supported events are 10K and half-marathon only; one taper week plus the race week, progressive: taper-week easy runs within taperWeekRunVolumeRange and the long run within taperWeekLongRunRange of the executed peak; taper quality total work minutes within taperQualityWorkRange; race-week easy runs within raceWeekRunVolumeRange; the policy states these are per-session fractions.",
+          "Frequency is maintained; intensity is maintained only through work already executed in build/specific weeks; a race-effort touch at the policy dose >= raceWeekTouchMinDaysBeforeRace days before the race requires R6-RUN-QUALITY and an executed comparable quality session; shakeout strides require executed strides; otherwise easy.",
+          "Strength stays at a reduced dose: taper sets about taperStrengthSetFraction of the preceding dose at RIR >= 3; race week one session of raceWeekStrengthSets at RIR >= raceWeekStrengthMinimumRir no later than raceWeekStrengthMinDaysBeforeRace days before the race; no new exercise, load increase or rotation.",
+          "Post-event: no running before postEventFirstRunMinDaysAfterRace days; runs optional and easy within postEventEasyMinutes; one light strength session; redevelopment (NEXT_BLOCK) requires an eligibility and function assessment dated after the race; redevelopment fractions are declared in the policy.",
+          "The legacy path uses the athlete's event kind and only policy-declared fractions.",
+          "No finish-time, readiness or peak-performance claim.",
+          "Event proximity counts days to the race (raceWindowDays 6; 7 taper days per taper week before the window): race-window sessions have no long run and no quality, an optional shakeout the day before, at most one race-effort touch on the run day closest to the race that is >= raceWeekTouchMinDaysBeforeRace days out, and short easy runs; taper-day sessions take taper doses whichever calendar week they fall in; post-race sessions follow the post-event rules by days since the race; a race date marked unavailable is asked about.",
+          "In WALK_JOG or RESTART mode, taper-day, race-window and post-event run sessions are reductions or holds of the achieved session of that mode, never a continuous run the mode has not reached (D43a).",
+          "Race day is a completion prescription at conversational effort with walk breaks (jog bouts no longer than achieved), without strides and without an instruction to press, when the race-week mode is WALK_JOG, RESTART or RETURN, when the athlete was in WALK_JOG or RESTART mode in any week of the program before the race (D47), or for a half marathon whose achieved long run is below raceDayCompletion.halfMarathonAchievedLongRunBelowMinutes; race-day warm-up strides and shakeout strides for any athlete only after executed strides (D43b-c, R9).",
+          "Whenever race day is a completion, the program or the proposal carries the non-blocking negotiation, recomputed from the race-week state of every proposal (added, replaced or removed), stating the longest continuous run executed by race week (never 0 when such a run was counted; a restart after a long interruption starts the count again), why race day is a completion, and both options (keep the event with walk breaks; a later or shorter event) (D43d, D47).",
+          "In taper weeks and at the start of the next block the long run is never shorter than that week's easy run (R10).",
+          "Walk/jog and restart steps do not advance on taper, race-window or post-event days; the next block resumes the walk/jog ladder one step back.",
+          "No exemption from the history-based completion applies unless it is declared and reviewed (D47c).",
+          "An exercise re-established by effort in a taper, race-window or post-event session takes that session's reduced strength dose: never more sets than the phase dose the exercise would otherwise have that day and never fewer reps in reserve than the phase minimum; the load stays effort-guided under its earlier ceiling (D54, required before FREEZE-2).",
+          "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+        ]
+      },
+      "envelope": {
+        "claim": "For recreational 10K and half-marathon events, a progressive volume reduction over the final one to two weeks while maintaining session frequency and a short intensity touch, with strength kept at a reduced dose and stopped in the final days, followed by an easy nonclinical post-event week, is a defensible event transition.",
+        "limits": [
+          "no finish-time guarantee or readiness claim",
+          "no new intensity, overload or new exercise in the taper",
+          "no fixed universal recovery day count after the race; function and eligibility are checked"
+        ]
+      }
+    }
+  ],
+  "policyValues": {
+    "establishment": {
+      "walkJogLadder": [
+        {
+          "repetitions": 3,
+          "jogSeconds": 30,
+          "walkSeconds": 120
+        },
+        {
+          "repetitions": 5,
+          "jogSeconds": 30,
+          "walkSeconds": 120
+        },
+        {
+          "repetitions": 5,
+          "jogSeconds": 60,
+          "walkSeconds": 120
+        },
+        {
+          "repetitions": 5,
+          "jogSeconds": 90,
+          "walkSeconds": 120
+        },
+        {
+          "repetitions": 5,
+          "jogSeconds": 120,
+          "walkSeconds": 120
+        },
+        {
+          "repetitions": 4,
+          "jogSeconds": 180,
+          "walkSeconds": 90
+        },
+        {
+          "repetitions": 3,
+          "jogSeconds": 300,
+          "walkSeconds": 90
+        },
+        {
+          "repetitions": 2,
+          "jogSeconds": 480,
+          "walkSeconds": 60
+        },
+        {
+          "repetitions": 1,
+          "jogSeconds": 1200,
+          "walkSeconds": 0
+        }
+      ],
+      "walkJogWarmupMinutes": 5,
+      "walkJogCooldownMinutes": 3,
+      "maxWalkJogDaysPerWeek": 3,
+      "walkSessionMinutes": [
+        20,
+        30
+      ],
+      "unknownExposureEasyMinutes": 20,
+      "unloadedPractice": {
+        "sets": 1,
+        "reps": 5,
+        "minimumRir": 3
+      },
+      "effortGuidedLoad": {
+        "sets": 2,
+        "reps": 8,
+        "minimumRir": 3
+      },
+      "notes": "When current exposure is zero or unknown, only walkJogLadder step 0 and the unknownExposureEasyMinutes entry are used; load-establishment rows appear only when R6-LOAD-ESTABLISHMENT is enabled.",
+      "belowMinimumSession": "Current running below run.minimumSessionMinutes (longest current run or weekly running) cannot hold a continuous easy run: the athlete starts on the walk/jog ladder. A non-novice starts at the highest ladder step whose jogging per session is within both the longest current run and current weekly running divided by the walk/jog exposures of the week (maxWalkJogDaysPerWeek at most); novices and zero or unknown exposure start at step 0 (SSCTR D42)."
+    },
+    "run": {
+      "minimumSessionMinutes": 15,
+      "easyStepMinutes": 5,
+      "easyStepEveryDevelopmentWeeks": 2,
+      "longRunStepMinutes": 5,
+      "consolidationEveryNthDevelopmentWeek": 4,
+      "longRunTargets": {
+        "HALF_MARATHON": 105,
+        "10K": 70,
+        "PERFORMANCE": 75,
+        "REGULAR": 60,
+        "GENERAL": 50
+      },
+      "longRunShareOfWeeklyMinutesMax": 0.45,
+      "qualityWarmupMinutes": 10,
+      "qualityCooldownMinutes": 5,
+      "qualityRequiresEstablishedEasyWeeks": 2,
+      "thresholdLadder": [
+        {
+          "repetitions": 3,
+          "workMinutes": 5,
+          "recoveryMinutes": 2
+        },
+        {
+          "repetitions": 4,
+          "workMinutes": 5,
+          "recoveryMinutes": 2
+        },
+        {
+          "repetitions": 5,
+          "workMinutes": 5,
+          "recoveryMinutes": 2
+        },
+        {
+          "repetitions": 3,
+          "workMinutes": 8,
+          "recoveryMinutes": 2
+        },
+        {
+          "repetitions": 4,
+          "workMinutes": 8,
+          "recoveryMinutes": 2
+        },
+        {
+          "repetitions": 3,
+          "workMinutes": 10,
+          "recoveryMinutes": 2
+        }
+      ],
+      "tenKSpecificLadder": [
+        {
+          "repetitions": 5,
+          "workMinutes": 3,
+          "recoveryMinutes": 2
+        },
+        {
+          "repetitions": 6,
+          "workMinutes": 3,
+          "recoveryMinutes": 2
+        },
+        {
+          "repetitions": 5,
+          "workMinutes": 4,
+          "recoveryMinutes": 2
+        },
+        {
+          "repetitions": 6,
+          "workMinutes": 4,
+          "recoveryMinutes": 2
+        }
+      ],
+      "halfMarathonSpecificLadder": [
+        {
+          "repetitions": 2,
+          "workMinutes": 12,
+          "recoveryMinutes": 3
+        },
+        {
+          "repetitions": 3,
+          "workMinutes": 10,
+          "recoveryMinutes": 2
+        },
+        {
+          "repetitions": 2,
+          "workMinutes": 15,
+          "recoveryMinutes": 3
+        },
+        {
+          "repetitions": 3,
+          "workMinutes": 12,
+          "recoveryMinutes": 2
+        }
+      ],
+      "specificRequiresCompatibleThresholdSessions": 2,
+      "strides": {
+        "entryRepetitions": 4,
+        "maxRepetitions": 6,
+        "workSeconds": 20,
+        "recoverySeconds": 90,
+        "requiresEstablishedEasyWeeks": 2,
+        "optionalFor": [
+          "EASY_LOW",
+          "NOVICE"
+        ],
+        "optionalNote": "For EASY_LOW or novice runners strides are optional; the easy run without them is an equal alternative."
+      },
+      "effortCues": {
+        "EASY_CONVERSATIONAL": "Conversational effort (about 2-4 of 10): full sentences are possible; walk breaks are allowed",
+        "STRIDE_RELAXED_FAST": "Relaxed fast strides (about 7 of 10): smooth and controlled, never a sprint",
+        "THRESHOLD_CONTROLLED": "Comfortably hard and controlled (about 6-7 of 10): short phrases only; you could hold it much longer than the repetition",
+        "TEN_K_EFFORT": "Hard but controlled (about 7-8 of 10): a few words at a time; finish every repetition with form intact",
+        "HALF_MARATHON_EFFORT": "Steady-hard (about 6-7 of 10): sustainable, controlled breathing"
+      },
+      "singleRunCeiling": {
+        "windowDays": 30,
+        "stepMinutes": 5,
+        "appliesTo": "Every planned run except the race, including long-run steps, RESTART->EASY and WALK_JOG->EASY transitions and return steps",
+        "reference": "Longest completed run in the preceding windowDays from the completed-work ledger; in a conditional projection, earlier projected weeks count as executed. Walk/jog sessions count their jogging minutes. With no completed run in the window, the reviewed entry (return.entryRunMinutes) is the ceiling in every week, not only the first projected week; in the first cold-start week the intake ceiling applies.",
+        "disclosure": "When the reference run is under 50 minutes a 5-minute step exceeds 10% of it; the step stays response-gated, is disclosed and is never combined with another single-session increase in the same week."
+      },
+      "firstWeek": {
+        "longRunNotAboveReportedLongest": true,
+        "rounding": "down to 5 minutes",
+        "familiarQualityOnlyInsideReportedMinutes": true
+      },
+      "restart": {
+        "stepMinutes": 5,
+        "switchToEasyAtMinutes": 30,
+        "longRunOffsetMinutes": 10,
+        "longRunCappedBySingleRunCeiling": true
+      },
+      "walkJogExit": {
+        "easyMinutes": 25,
+        "maxRunsPerWeek": 3
+      },
+      "consolidationLongRunReductionSteps": 2,
+      "longRunShareSemantics": "longRunShareOfWeeklyMinutesMax applies in every week with at least three running sessions (walks excluded). The cap holds the long run, it never shortens it: the long run is never reduced below the typical easy run of that week, nor below the long run prescribed in the last build week (a shorter quality session on the ladder does not shorten the long run).",
+      "earned": "At most one step per progression dimension per week. EARNED may release a step the cadence would hold (easy-run cadence, load tick) or skip a consolidation hold, never more. Unavailable in WALK_JOG, RESTART and RETURN modes, where it counts as ADVANCE.",
+      "activationCounts": "qualityRequiresEstablishedEasyWeeks and strides.requiresEstablishedEasyWeeks count executed non-establishment easy weeks (EASY and LONG gates ADVANCE or EARNED); stride repetitions add one every two further executed easy weeks."
+    },
+    "strength": {
+      "warmupMinutes": 5,
+      "cooldownMinutes": 3,
+      "secondsPerRep": 4,
+      "preparationMinutes": {
+        "MAIN": 2,
+        "ACCESSORY": 1,
+        "PRACTICE": 1
+      },
+      "restSeconds": {
+        "MAIN": 120,
+        "MAIN_STRENGTH_GOAL": 150,
+        "ACCESSORY": 75,
+        "PRACTICE": 60
+      },
+      "goalDoses": {
+        "STRENGTH": {
+          "reps": 5,
+          "repRange": [
+            4,
+            6
+          ],
+          "sets": 3,
+          "maxSets": 4,
+          "targetRir": 2,
+          "startRir": 3,
+          "mode": "LOAD"
+        },
+        "HYPERTROPHY": {
+          "reps": 8,
+          "repRange": [
+            8,
+            12
+          ],
+          "sets": 3,
+          "maxSets": 4,
+          "targetRir": 2,
+          "startRir": 3,
+          "mode": "REPS_THEN_LOAD"
+        },
+        "RUNNING_SUPPORT": {
+          "reps": 8,
+          "repRange": [
+            6,
+            10
+          ],
+          "sets": 2,
+          "maxSets": 3,
+          "targetRir": 3,
+          "startRir": 3,
+          "mode": "REPS_THEN_LOAD"
+        },
+        "MAINTAIN": {
+          "reps": 8,
+          "repRange": [
+            8,
+            8
+          ],
+          "sets": 2,
+          "maxSets": 2,
+          "targetRir": 3,
+          "startRir": 3,
+          "mode": "HOLD"
+        },
+        "GENERAL": {
+          "reps": 10,
+          "repRange": [
+            8,
+            12
+          ],
+          "sets": 2,
+          "maxSets": 3,
+          "targetRir": 3,
+          "startRir": 3,
+          "mode": "REPS_THEN_LOAD"
+        }
+      },
+      "repStep": 2,
+      "addSetAtBlockBoundary": true,
+      "smallestIncrement": {
+        "TOTAL": 2.5,
+        "PER_HAND": 2,
+        "MACHINE_STACK": 1,
+        "BODYWEIGHT": 0
+      },
+      "consolidationSetReduction": 1,
+      "minimumSessionMinutes": 15,
+      "maxExercises": {
+        "MAIN_ONLY_BUDGET": 3,
+        "DEFAULT": 5
+      },
+      "gates": {
+        "advanceMinimumLoggedRirBelowPrescribed": 1,
+        "earnedLoggedRirAbovePrescribed": 2,
+        "earnedComparableExposures": 2,
+        "knownLoadStepRequiresLoggedSetInGatingWeek": true,
+        "missingLogs": "HOLD without regression"
+      },
+      "setIncreaseAtBlockBoundary": "Per exercise, only when the final exposures of that exercise in the block were ADVANCE or EARNED, and never for a block in which the exercise had a return-entry or return-step exposure (SSCTR D49).",
+      "resumeAfterDays": "An exercise not performed for more than return.moderateMaxDays (rotation back, end of a substitution window) restarts with effort-guided establishment; its last logged load is a ceiling.",
+      "loadUnits": "Loads are kilograms inside the engine. A pound value (intake or log) is converted at the boundary to the nearest 0.5 kg and kept as reported; any other or missing unit, or a logged convention different from the planned one, leaves the load unknown: it is never adopted and the athlete is asked to confirm it. A reported known dose above six sets is kept as history and the plan starts at six.",
+      "loggedLoadAdoption": {
+        "maximumKilograms": 500,
+        "maximumIncrementsAbovePlanned": 1,
+        "establishmentAgreementIncrements": 1,
+        "semantics": "A logged load becomes the reference only inside 0 to maximumKilograms kg and at most maximumIncrementsAbovePlanned smallest increment above the load the plan stated for that exposure (the known load, or the last logged load for a from-log row). A load above the stated one is adopted only when that exposure met the ADVANCE criterion (target reps met, minimum logged RIR at or above the prescription minus gates.advanceMinimumLoggedRirBelowPrescribed, no adverse response); otherwise the planned load stays and the athlete is asked (SSCTR D44). A logged load is never adopted above a re-establishment ceiling or, during a return, above the load before the break: it is capped there and asked about. A first establishment log (no planned load, no ceiling, no earlier load) is not a number: the next exposure is from-log with no number, its instructions describe effort-guided selection only and never point to the logged value (SSCTR D48), and the athlete is asked. It becomes the reference only when the athlete confirms it (review loadConfirmations: exercise, value, unit kg or lb, the planned convention), when a second log of the same exercise (a later exposure, or an earlier one in the same week) agrees with it within establishmentAgreementIncrements smallest increment, or when it is within establishmentAgreementIncrements smallest increment of the athlete's own load hint in the same convention (SSCTR D45). A confirmation replaces the logged value and never bypasses the other rules. Anything else keeps the planned reference and is asked about. A known planned load replaced by a different executed load is a modification, not an instantiation. Numeric plausibility of a logged value inside the 0 to maximumKilograms bound, including a load logged far below the plan (SSCTR R5), belongs to Data and is an open gap."
+      },
+      "setsAfterReestablishment": "After an exercise is re-established by effort, its earlier set count comes back one set per executed week, never at once."
+    }
+  },
+  "runtime": [
+    {
+      "file": "CoachingCore/src/r6-program.mjs",
+      "functions": [
+        "planPhases",
+        "blocksFrom",
+        "strengthTemplates",
+        "arrangementCandidates",
+        "projectWeeks",
+        "validateWeeks",
+        "generateProgram"
+      ],
+      "sha256": "57973e9735388d3d5f194b37ff7f5080669d2c1c3fb228b59873ac7adf6fe3ec"
+    }
+  ],
+  "evidence": {
+    "tests": [
+      {
+        "file": "CoachingCore/test/r6-engineering-fixes.test.mjs",
+        "name": "QRE-R6-09: week 1 never exceeds reported running and every later run respects the single-run ceiling"
+      },
+      {
+        "file": "CoachingCore/test/r6-intake-program.test.mjs",
+        "name": "R6 cold start: core profiles A–H produce complete valid programs on chosen days without prebuilt weeks"
+      },
+      {
+        "file": "CoachingCore/test/r6-intake-program.test.mjs",
+        "name": "R6 cold start: week 1 never exceeds reported running and more chosen days spread rather than add load"
+      },
+      {
+        "file": "CoachingCore/test/r6-intake-program.test.mjs",
+        "name": "R6 cold start fails closed without current independent authority"
+      }
+    ],
+    "demonstrations": [
+      {
+        "id": "A",
+        "title": "Cold-start Run-first half marathon → 16-week plan → week 1",
+        "selected": null
+      },
+      {
+        "id": "B",
+        "title": "Cold-start Strength-first → effort-guided load establishment → logged loads → progression",
+        "selected": null
+      },
+      {
+        "id": "C",
+        "title": "Cold-start Balanced hybrid without a static priority flag",
+        "selected": null
+      }
+    ],
+    "trajectories": [
+      {
+        "id": "T01_HM16_STRONG_ADHERENCE",
+        "horizon": 16,
+        "allInvariantsHold": true,
+        "actions": {
+          "INSTANTIATE_LOGGED_LOADS": 2,
+          "KEEP": 14
+        }
+      },
+      {
+        "id": "T11_BODYWEIGHT4_ESTABLISHMENT",
+        "horizon": 4,
+        "allInvariantsHold": true,
+        "actions": {
+          "INSTANTIATE_LOGGED_LOADS": 2,
+          "KEEP": 2
+        }
+      }
+    ],
+    "r5Regression": [
+      {
+        "caseId": "R5-H01",
+        "r5Classification": "ACCEPTABLE_ALTERNATIVE",
+        "rootCause": "EVENT_TRANSITION_NOT_DERIVABLE",
+        "resultR6": "PROPOSED",
+        "classificationR6": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R5-H02",
+        "r5Classification": "UNSUPPORTED",
+        "rootCause": "VALIDATION_COUPLED_TO_UNUSED_ALTERNATIVES",
+        "resultR6": "PROPOSED",
+        "classificationR6": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R5-H09",
+        "r5Classification": "UNSUPPORTED",
+        "rootCause": "VALIDATION_COUPLED_TO_UNUSED_ALTERNATIVES",
+        "resultR6": "MODIFY",
+        "classificationR6": "BEST_SUPPORTED"
+      },
+      {
+        "caseId": "R5-H13",
+        "r5Classification": "UNSUPPORTED",
+        "rootCause": "VALIDATION_COUPLED_TO_UNUSED_ALTERNATIVES",
+        "resultR6": "MODIFY",
+        "classificationR6": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R5-H24",
+        "r5Classification": "UNSUPPORTED",
+        "rootCause": "STALE_ALTERNATIVE_POISONS_BASELINE",
+        "resultR6": "KEEP",
+        "classificationR6": "ACCEPTABLE_ALTERNATIVE"
+      }
+    ],
+    "freshHoldout": [
+      {
+        "caseId": "R6-H01",
+        "family": "COLD_START",
+        "classification": "UNSUPPORTED"
+      },
+      {
+        "caseId": "R6-H02",
+        "family": "COLD_START",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H03",
+        "family": "COLD_START",
+        "classification": "UNSUPPORTED"
+      },
+      {
+        "caseId": "R6-H04",
+        "family": "COLD_START",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H05",
+        "family": "COLD_START",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H06",
+        "family": "COLD_START",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H07",
+        "family": "COLD_START",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H08",
+        "family": "COLD_START",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H09",
+        "family": "COLD_START",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H17",
+        "family": "ADAPTATION",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H18",
+        "family": "ADAPTATION",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H19",
+        "family": "ADAPTATION",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H21",
+        "family": "ADAPTATION",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H22",
+        "family": "ADAPTATION",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H23",
+        "family": "ADAPTATION",
+        "classification": "UNSUPPORTED"
+      },
+      {
+        "caseId": "R6-H25",
+        "family": "ADAPTATION",
+        "classification": "UNSUPPORTED"
+      },
+      {
+        "caseId": "R6-H26",
+        "family": "RETURN_AFTER_PAUSE",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H28",
+        "family": "RETURN_AFTER_PAUSE",
+        "classification": "CLINICAL_OUT_OF_SCOPE"
+      },
+      {
+        "caseId": "R6-H29",
+        "family": "EVENT_TRANSITION",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H30",
+        "family": "EVENT_TRANSITION",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H31",
+        "family": "DATA_QUALITY",
+        "classification": "BEST_SUPPORTED"
+      },
+      {
+        "caseId": "R6-H32",
+        "family": "DATA_QUALITY",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H33",
+        "family": "DATA_QUALITY",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H34",
+        "family": "ATHLETE_LEARNING",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H35",
+        "family": "ATHLETE_LEARNING",
+        "classification": "BEST_SUPPORTED"
+      }
+    ]
+  },
+  "profileOutcomes": [
+    {
+      "profile": "A_RUN_FIRST_HALF_MARATHON",
+      "status": "PROPOSED",
+      "reason": "Complete conditional program generated from onboarding-like facts",
+      "missingInputs": [],
+      "capability": {
+        "run": "EASY_CURRENT",
+        "strength": "FAMILIAR_UNKNOWN_LOAD"
+      },
+      "weeks": 16,
+      "phases": [
+        "ESTABLISHMENT",
+        "BUILD",
+        "BUILD",
+        "BUILD",
+        "CONSOLIDATION",
+        "BUILD",
+        "BUILD",
+        "BUILD",
+        "CONSOLIDATION",
+        "SPECIFIC",
+        "SPECIFIC",
+        "SPECIFIC",
+        "SPECIFIC",
+        "TAPER",
+        "RACE_WEEK",
+        "POST_EVENT"
+      ],
+      "weeklyRunMinutes": [
+        150,
+        150,
+        155,
+        149,
+        144,
+        161,
+        173,
+        168,
+        168,
+        172,
+        184,
+        183,
+        195,
+        132,
+        58,
+        80
+      ],
+      "weeklyStrengthSets": [
+        16,
+        16,
+        16,
+        16,
+        10,
+        26,
+        22,
+        22,
+        16,
+        16,
+        16,
+        16,
+        16,
+        10,
+        3,
+        3
+      ],
+      "unknowns": [
+        {
+          "field": "knownExercises.load",
+          "category": "SAFE_CONSERVATIVE_ESTABLISHMENT"
+        },
+        {
+          "field": "event.timeGoalMinutes",
+          "category": "SAFE_CONSERVATIVE_ESTABLISHMENT"
+        }
+      ]
+    },
+    {
+      "profile": "B_STRENGTH_FIRST",
+      "status": "PROPOSED",
+      "reason": "Complete conditional program generated from onboarding-like facts",
+      "missingInputs": [],
+      "capability": {
+        "run": "EASY_CURRENT",
+        "strength": "KNOWN_LOAD"
+      },
+      "weeks": 12,
+      "phases": [
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "CONSOLIDATION",
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "CONSOLIDATION",
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "CONSOLIDATION"
+      ],
+      "weeklyRunMinutes": [
+        70,
+        70,
+        75,
+        65,
+        75,
+        75,
+        75,
+        65,
+        75,
+        75,
+        75,
+        65
+      ],
+      "weeklyStrengthSets": [
+        37,
+        37,
+        37,
+        22,
+        52,
+        52,
+        45,
+        30,
+        52,
+        52,
+        52,
+        37
+      ],
+      "unknowns": []
+    },
+    {
+      "profile": "C_BALANCED_HYBRID",
+      "status": "PROPOSED",
+      "reason": "Complete conditional program generated from onboarding-like facts",
+      "missingInputs": [],
+      "capability": {
+        "run": "EASY_CURRENT",
+        "strength": "KNOWN_LOAD"
+      },
+      "weeks": 12,
+      "phases": [
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "CONSOLIDATION",
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "CONSOLIDATION",
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "CONSOLIDATION"
+      ],
+      "weeklyRunMinutes": [
+        120,
+        125,
+        134,
+        129,
+        146,
+        158,
+        153,
+        153,
+        158,
+        169,
+        169,
+        153
+      ],
+      "weeklyStrengthSets": [
+        22,
+        26,
+        26,
+        16,
+        30,
+        30,
+        32,
+        22,
+        30,
+        30,
+        30,
+        26
+      ],
+      "unknowns": []
+    },
+    {
+      "profile": "D_NOVICE_RUNNER_EXPERIENCED_STRENGTH",
+      "status": "PROPOSED",
+      "reason": "Complete conditional program generated from onboarding-like facts",
+      "missingInputs": [],
+      "capability": {
+        "run": "WALK_JOG",
+        "strength": "KNOWN_LOAD"
+      },
+      "weeks": 8,
+      "phases": [
+        "ESTABLISHMENT",
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "CONSOLIDATION",
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "DEVELOPMENT"
+      ],
+      "weeklyRunMinutes": [
+        60,
+        63,
+        69,
+        78,
+        84,
+        84,
+        78,
+        84
+      ],
+      "weeklyStrengthSets": [
+        38,
+        40,
+        40,
+        40,
+        25,
+        52,
+        45,
+        45
+      ],
+      "unknowns": []
+    },
+    {
+      "profile": "E_EXPERIENCED_RUNNER_NOVICE_STRENGTH",
+      "status": "PROPOSED",
+      "reason": "Complete conditional program generated from onboarding-like facts",
+      "missingInputs": [],
+      "capability": {
+        "run": "QUALITY_FAMILIAR",
+        "strength": "NONE"
+      },
+      "weeks": 8,
+      "phases": [
+        "ESTABLISHMENT",
+        "BUILD",
+        "SPECIFIC",
+        "SPECIFIC",
+        "SPECIFIC",
+        "TAPER",
+        "RACE_WEEK",
+        "POST_EVENT"
+      ],
+      "weeklyRunMinutes": [
+        190,
+        196,
+        198,
+        193,
+        198,
+        143,
+        75,
+        80
+      ],
+      "weeklyStrengthSets": [
+        8,
+        10,
+        10,
+        10,
+        10,
+        6,
+        2,
+        2
+      ],
+      "unknowns": [
+        {
+          "field": "knownExercises.load",
+          "category": "SAFE_CONSERVATIVE_ESTABLISHMENT"
+        }
+      ]
+    },
+    {
+      "profile": "F_GENERAL_HYBRID",
+      "status": "PROPOSED",
+      "reason": "Complete conditional program generated from onboarding-like facts",
+      "missingInputs": [],
+      "capability": {
+        "run": "EASY_LOW",
+        "strength": "NONE"
+      },
+      "weeks": 8,
+      "phases": [
+        "ESTABLISHMENT",
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "CONSOLIDATION",
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "DEVELOPMENT"
+      ],
+      "weeklyRunMinutes": [
+        60,
+        60,
+        65,
+        70,
+        60,
+        70,
+        75,
+        75
+      ],
+      "weeklyStrengthSets": [
+        13,
+        16,
+        16,
+        16,
+        10,
+        24,
+        22,
+        22
+      ],
+      "unknowns": [
+        {
+          "field": "knownExercises.load",
+          "category": "SAFE_CONSERVATIVE_ESTABLISHMENT"
+        }
+      ]
+    },
+    {
+      "profile": "G_LOW_DATA_NO_WEARABLE",
+      "status": "PROPOSED",
+      "reason": "Complete conditional program generated from onboarding-like facts",
+      "missingInputs": [],
+      "capability": {
+        "run": "WALK_JOG",
+        "strength": "NONE"
+      },
+      "weeks": 8,
+      "phases": [
+        "ESTABLISHMENT",
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "CONSOLIDATION",
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "DEVELOPMENT"
+      ],
+      "weeklyRunMinutes": [
+        60,
+        63,
+        69,
+        78,
+        84,
+        84,
+        78,
+        84
+      ],
+      "weeklyStrengthSets": [
+        13,
+        16,
+        16,
+        16,
+        10,
+        24,
+        22,
+        22
+      ],
+      "unknowns": [
+        {
+          "field": "runExperience",
+          "category": "SAFE_CONSERVATIVE_ESTABLISHMENT"
+        },
+        {
+          "field": "strengthExperience",
+          "category": "SAFE_CONSERVATIVE_ESTABLISHMENT"
+        },
+        {
+          "field": "schedule.longRunDay",
+          "category": "SAFE_CONSERVATIVE_ESTABLISHMENT"
+        },
+        {
+          "field": "recent.runMinutesPerWeek",
+          "category": "SAFE_CONSERVATIVE_ESTABLISHMENT"
+        },
+        {
+          "field": "recent.strengthDaysPerWeek",
+          "category": "LEARN_DURING_FIRST_SESSIONS"
+        },
+        {
+          "field": "knownExercises.load",
+          "category": "SAFE_CONSERVATIVE_ESTABLISHMENT"
+        }
+      ]
+    },
+    {
+      "profile": "H_PARTIAL_WEARABLE",
+      "status": "PROPOSED",
+      "reason": "Complete conditional program generated from onboarding-like facts",
+      "missingInputs": [],
+      "capability": {
+        "run": "EASY_LOW",
+        "strength": "FAMILIAR_UNKNOWN_LOAD"
+      },
+      "weeks": 12,
+      "phases": [
+        "ESTABLISHMENT",
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "CONSOLIDATION",
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "CONSOLIDATION",
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "DEVELOPMENT"
+      ],
+      "weeklyRunMinutes": [
+        65,
+        65,
+        70,
+        70,
+        65,
+        70,
+        75,
+        80,
+        75,
+        80,
+        80,
+        85
+      ],
+      "weeklyStrengthSets": [
+        8,
+        8,
+        8,
+        8,
+        5,
+        8,
+        8,
+        8,
+        5,
+        8,
+        8,
+        8
+      ],
+      "unknowns": [
+        {
+          "field": "wearable.subjectiveEffort",
+          "category": "LEARN_DURING_FIRST_SESSIONS"
+        },
+        {
+          "field": "wearable.history",
+          "category": "LEARN_DURING_FIRST_SESSIONS"
+        },
+        {
+          "field": "recent.strengthDaysPerWeek",
+          "category": "LEARN_DURING_FIRST_SESSIONS"
+        },
+        {
+          "field": "knownExercises.load",
+          "category": "SAFE_CONSERVATIVE_ESTABLISHMENT"
+        }
+      ]
+    },
+    {
+      "profile": "WALK_JOG_FIVE_DAYS",
+      "status": "PROPOSED",
+      "reason": "Complete conditional program generated from onboarding-like facts",
+      "missingInputs": [],
+      "capability": {
+        "run": "WALK_JOG",
+        "strength": "NONE"
+      },
+      "weeks": 8,
+      "phases": [
+        "ESTABLISHMENT",
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "CONSOLIDATION",
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "DEVELOPMENT"
+      ],
+      "weeklyRunMinutes": [
+        60,
+        63,
+        69,
+        78,
+        84,
+        84,
+        78,
+        84
+      ],
+      "weeklyStrengthSets": [
+        3,
+        6,
+        6,
+        6,
+        3,
+        8,
+        8,
+        8
+      ],
+      "unknowns": [
+        {
+          "field": "recent.strengthDaysPerWeek",
+          "category": "LEARN_DURING_FIRST_SESSIONS"
+        },
+        {
+          "field": "knownExercises.load",
+          "category": "SAFE_CONSERVATIVE_ESTABLISHMENT"
+        }
+      ]
+    },
+    {
+      "profile": "TEN_K_EIGHT_WEEKS",
+      "status": "PROPOSED",
+      "reason": "Complete conditional program generated from onboarding-like facts",
+      "missingInputs": [],
+      "capability": {
+        "run": "EASY_CURRENT",
+        "strength": "FAMILIAR_UNKNOWN_LOAD"
+      },
+      "weeks": 12,
+      "phases": [
+        "ESTABLISHMENT",
+        "BUILD",
+        "BUILD",
+        "SPECIFIC",
+        "SPECIFIC",
+        "SPECIFIC",
+        "TAPER",
+        "RACE_WEEK",
+        "POST_EVENT",
+        "NEXT_BLOCK",
+        "NEXT_BLOCK",
+        "NEXT_BLOCK"
+      ],
+      "weeklyRunMinutes": [
+        125,
+        125,
+        125,
+        134,
+        146,
+        143,
+        98,
+        60,
+        50,
+        99,
+        104,
+        104
+      ],
+      "weeklyStrengthSets": [
+        16,
+        16,
+        16,
+        10,
+        10,
+        10,
+        10,
+        3,
+        3,
+        16,
+        16,
+        16
+      ],
+      "unknowns": [
+        {
+          "field": "recent.strengthDaysPerWeek",
+          "category": "LEARN_DURING_FIRST_SESSIONS"
+        },
+        {
+          "field": "knownExercises.load",
+          "category": "SAFE_CONSERVATIVE_ESTABLISHMENT"
+        }
+      ]
+    },
+    {
+      "profile": "SHARED_SAME_TURN",
+      "status": "PROPOSED",
+      "reason": "Complete conditional program generated from onboarding-like facts",
+      "missingInputs": [],
+      "capability": {
+        "run": "EASY_CURRENT",
+        "strength": "FAMILIAR_UNKNOWN_LOAD"
+      },
+      "weeks": 8,
+      "phases": [
+        "ESTABLISHMENT",
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "CONSOLIDATION",
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "DEVELOPMENT"
+      ],
+      "weeklyRunMinutes": [
+        115,
+        115,
+        115,
+        119,
+        109,
+        126,
+        126,
+        128
+      ],
+      "weeklyStrengthSets": [
+        20,
+        26,
+        26,
+        26,
+        16,
+        30,
+        28,
+        28
+      ],
+      "unknowns": [
+        {
+          "field": "recent.strengthDaysPerWeek",
+          "category": "LEARN_DURING_FIRST_SESSIONS"
+        },
+        {
+          "field": "knownExercises.load",
+          "category": "SAFE_CONSERVATIVE_ESTABLISHMENT"
+        }
+      ]
+    },
+    {
+      "profile": "CLINICAL_PAIN",
+      "status": "CLINICAL_HUMAN_REQUIRED",
+      "reason": "Current pain, injury, illness or functional limitation routes to qualified human assessment; no training dose is substituted",
+      "missingInputs": [],
+      "capability": null,
+      "weeks": null,
+      "phases": null,
+      "weeklyRunMinutes": null,
+      "weeklyStrengthSets": null,
+      "unknowns": [
+        {
+          "field": "eligibility",
+          "category": "CLINICAL_OUT_OF_SCOPE"
+        },
+        {
+          "field": "runExperience",
+          "category": "SAFE_CONSERVATIVE_ESTABLISHMENT"
+        },
+        {
+          "field": "strengthExperience",
+          "category": "SAFE_CONSERVATIVE_ESTABLISHMENT"
+        },
+        {
+          "field": "schedule.longRunDay",
+          "category": "SAFE_CONSERVATIVE_ESTABLISHMENT"
+        },
+        {
+          "field": "recent.runMinutesPerWeek",
+          "category": "SAFE_CONSERVATIVE_ESTABLISHMENT"
+        },
+        {
+          "field": "recent.strengthDaysPerWeek",
+          "category": "LEARN_DURING_FIRST_SESSIONS"
+        },
+        {
+          "field": "knownExercises.load",
+          "category": "SAFE_CONSERVATIVE_ESTABLISHMENT"
+        }
+      ]
+    },
+    {
+      "profile": "ELIGIBILITY_UNKNOWN",
+      "status": "ASK",
+      "reason": "Only facts that change the first program are asked; everything else is established or learned",
+      "missingInputs": [
+        "athlete.eligibility.currentNonclinicalAssessment"
+      ],
+      "capability": null,
+      "weeks": null,
+      "phases": null,
+      "weeklyRunMinutes": null,
+      "weeklyStrengthSets": null,
+      "unknowns": [
+        {
+          "field": "eligibility",
+          "category": "ASK_REQUIRED"
+        },
+        {
+          "field": "runExperience",
+          "category": "SAFE_CONSERVATIVE_ESTABLISHMENT"
+        },
+        {
+          "field": "strengthExperience",
+          "category": "SAFE_CONSERVATIVE_ESTABLISHMENT"
+        },
+        {
+          "field": "schedule.longRunDay",
+          "category": "SAFE_CONSERVATIVE_ESTABLISHMENT"
+        },
+        {
+          "field": "recent.runMinutesPerWeek",
+          "category": "SAFE_CONSERVATIVE_ESTABLISHMENT"
+        },
+        {
+          "field": "recent.strengthDaysPerWeek",
+          "category": "LEARN_DURING_FIRST_SESSIONS"
+        },
+        {
+          "field": "knownExercises.load",
+          "category": "SAFE_CONSERVATIVE_ESTABLISHMENT"
+        }
+      ]
+    },
+    {
+      "profile": "MARATHON_OUT_OF_SCOPE",
+      "status": "UNSUPPORTED",
+      "reason": "Outside the V1 coaching population or event scope: EVENT_DISTANCE_OUTSIDE_V1",
+      "missingInputs": [],
+      "capability": null,
+      "weeks": null,
+      "phases": null,
+      "weeklyRunMinutes": null,
+      "weeklyStrengthSets": null,
+      "unknowns": [
+        {
+          "field": "strengthExperience",
+          "category": "SAFE_CONSERVATIVE_ESTABLISHMENT"
+        },
+        {
+          "field": "recent.strengthDaysPerWeek",
+          "category": "LEARN_DURING_FIRST_SESSIONS"
+        },
+        {
+          "field": "knownExercises.load",
+          "category": "SAFE_CONSERVATIVE_ESTABLISHMENT"
+        }
+      ]
+    },
+    {
+      "profile": "BODYWEIGHT_ONLY_NOVICE",
+      "status": "PROPOSED",
+      "reason": "Complete conditional program generated from onboarding-like facts",
+      "missingInputs": [],
+      "capability": {
+        "run": "NOT_PROGRAMMED",
+        "strength": "NONE"
+      },
+      "weeks": 4,
+      "phases": [
+        "ESTABLISHMENT",
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "DEVELOPMENT"
+      ],
+      "weeklyRunMinutes": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "weeklyStrengthSets": [
+        11,
+        13,
+        13,
+        13
+      ],
+      "unknowns": [
+        {
+          "field": "recent.strengthDaysPerWeek",
+          "category": "LEARN_DURING_FIRST_SESSIONS"
+        },
+        {
+          "field": "knownExercises.load",
+          "category": "SAFE_CONSERVATIVE_ESTABLISHMENT"
+        }
+      ]
+    },
+    {
+      "profile": "RESTART_AFTER_PAUSE",
+      "status": "PROPOSED",
+      "reason": "Complete conditional program generated from onboarding-like facts",
+      "missingInputs": [],
+      "capability": {
+        "run": "RESTART",
+        "strength": "FAMILIAR_UNKNOWN_LOAD"
+      },
+      "weeks": 8,
+      "phases": [
+        "ESTABLISHMENT",
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "CONSOLIDATION",
+        "DEVELOPMENT",
+        "DEVELOPMENT",
+        "DEVELOPMENT"
+      ],
+      "weeklyRunMinutes": [
+        45,
+        60,
+        75,
+        90,
+        85,
+        95,
+        100,
+        105
+      ],
+      "weeklyStrengthSets": [
+        8,
+        8,
+        8,
+        8,
+        5,
+        8,
+        8,
+        8
+      ],
+      "unknowns": [
+        {
+          "field": "recent.strengthDaysPerWeek",
+          "category": "LEARN_DURING_FIRST_SESSIONS"
+        },
+        {
+          "field": "knownExercises.load",
+          "category": "SAFE_CONSERVATIVE_ESTABLISHMENT"
+        }
+      ]
+    }
+  ],
+  "inputs": {
+    "simulation": "CoachingCore/r6/SIMULATION_RESULTS_R6.json",
+    "demonstrations": "CoachingCore/r6/DEMONSTRATIONS_R6.json",
+    "r5Replay": "CoachingCore/r6/R5_HOLDOUT_REPLAY_R6.json",
+    "ssctrReview": "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-policy-review.json",
+    "r5RegressionReview": "audits/domain-coaching-r6-2026-10-26/reviews/r5-regression-review.json",
+    "coachingReview": "audits/domain-coaching-r6-2026-10-26/reviews/coaching-quality-holdout-review.json"
+  }
+}

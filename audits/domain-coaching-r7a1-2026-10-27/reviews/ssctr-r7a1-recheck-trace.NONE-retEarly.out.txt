@@ -1,0 +1,21 @@
+class (see skeleton) blocks [["ESTABLISHMENT",0,1],["DEVELOPMENT",1,5],["DEVELOPMENT",5,9],["DEVELOPMENT",9,13],["DEVELOPMENT",13,16]]
+w0 ESTABLISHMENT goblet-squat: rows [] state null
+w0 ESTABLISHMENT db-floor-press: rows [] state null
+w1 DEVELOPMENT goblet-squat: rows ["d0:2x5@3 ESTABLISH FIRST_ESTABLISH base2/norm2"] state null
+w1 DEVELOPMENT db-floor-press: rows ["d0:2x5@3 ESTABLISH FIRST_ESTABLISH base2/norm2"] state null
+w2 DEVELOPMENT goblet-squat: rows ["d0:2x5@3 FROM_LOG FROM_LOG base2/norm2"] state {"mode":"FROM_LOG","sets":null,"lastExecutedSets":2,"lastPerformed":"2026-11-09","status":"ESTABLISHED","source":"PLANNED_ESTABLISHMENT"}
+w2 DEVELOPMENT db-floor-press: rows ["d0:2x5@3 FROM_LOG FROM_LOG base2/norm2"] state {"mode":"FROM_LOG","sets":null,"lastExecutedSets":2,"lastPerformed":"2026-11-09","status":"ESTABLISHED","source":"PLANNED_ESTABLISHMENT"}
+w3 DEVELOPMENT goblet-squat: rows ["d0:2x5@3 FROM_LOG FROM_LOG base2/norm2"] state {"mode":"FROM_LOG","sets":null,"lastExecutedSets":2,"lastPerformed":"2026-11-09","status":"ESTABLISHED","source":"PLANNED_ESTABLISHMENT"}
+w3 DEVELOPMENT db-floor-press: rows ["d0:2x5@3 FROM_LOG FROM_LOG base2/norm2"] state {"mode":"FROM_LOG","sets":null,"lastExecutedSets":2,"lastPerformed":"2026-11-09","status":"ESTABLISHED","source":"PLANNED_ESTABLISHMENT"}
+   RETURN_AFTER_PAUSE@w4:MODIFY/REESTABLISH
+w4 CONSOLIDATION goblet-squat: rows ["d0:1x5@3 ESTABLISH FIRST_ESTABLISH base2/norm2"] state null
+w4 CONSOLIDATION db-floor-press: rows ["d0:1x5@3 ESTABLISH FIRST_ESTABLISH base2/norm2"] state null
+w5 DEVELOPMENT goblet-squat: rows ["d0:3x5@3 FROM_LOG FROM_LOG base4/norm4"] state {"mode":"FROM_LOG","sets":null,"lastPerformed":"2026-11-30","blocksDone":1,"status":"ESTABLISHED","source":"PLANNED_ESTABLISHMENT"}
+w5 DEVELOPMENT db-floor-press: rows ["d0:3x5@3 FROM_LOG FROM_LOG base4/norm4"] state {"mode":"FROM_LOG","sets":null,"lastPerformed":"2026-11-30","blocksDone":1,"status":"ESTABLISHED","source":"PLANNED_ESTABLISHMENT"}
+w6 DEVELOPMENT goblet-squat: rows ["d0:3x5@3 KNOWN KNOWN base4/norm4"] state {"mode":"KNOWN","sets":null,"lastExecutedSets":3,"lastPerformed":"2026-12-07","blocksDone":1,"status":"ESTABLISHED","source":"LOGGED_ACTUAL"}
+w6 DEVELOPMENT db-floor-press: rows ["d0:3x5@3 KNOWN KNOWN base4/norm4"] state {"mode":"KNOWN","sets":null,"lastExecutedSets":3,"lastPerformed":"2026-12-07","blocksDone":1,"status":"ESTABLISHED","source":"LOGGED_ACTUAL"}
+w7 DEVELOPMENT goblet-squat: rows ["d0:3x5@3 KNOWN KNOWN base4/norm4"] state {"mode":"KNOWN","sets":null,"lastExecutedSets":3,"lastPerformed":"2026-12-14","blocksDone":1,"status":"ESTABLISHED","source":"LOGGED_ACTUAL"}
+w7 DEVELOPMENT db-floor-press: rows ["d0:3x5@3 KNOWN KNOWN base4/norm4"] state {"mode":"KNOWN","sets":null,"lastExecutedSets":3,"lastPerformed":"2026-12-14","blocksDone":1,"status":"ESTABLISHED","source":"LOGGED_ACTUAL"}
+w8 CONSOLIDATION goblet-squat: rows ["d0:3x5@3 KNOWN KNOWN base4/norm4"] state {"mode":"KNOWN","sets":null,"lastExecutedSets":3,"lastPerformed":"2026-12-21","blocksDone":1,"status":"ESTABLISHED","source":"LOGGED_ACTUAL"}
+w8 CONSOLIDATION db-floor-press: rows ["d0:3x5@3 KNOWN KNOWN base4/norm4"] state {"mode":"KNOWN","sets":null,"lastExecutedSets":3,"lastPerformed":"2026-12-21","blocksDone":1,"status":"ESTABLISHED","source":"LOGGED_ACTUAL"}
+WEEKLY_REVIEW@w0:KEEP/KEEP | WEEKLY_REVIEW@w1:KEEP/INSTANTIATE_LOGGED_LOADS | WEEKLY_REVIEW@w2:MODIFY/GATED_NEXT_STEP | WEEKLY_REVIEW@w3:MODIFY/GATED_NEXT_STEP | RETURN_AFTER_PAUSE@w4:MODIFY/REESTABLISH | WEEKLY_REVIEW@w4:KEEP/INSTANTIATE_LOGGED_LOADS | WEEKLY_REVIEW@w5:KEEP/INSTANTIATE_LOGGED_LOADS | WEEKLY_REVIEW@w6:KEEP/KEEP | WEEKLY_REVIEW@w7:KEEP/KEEP | WEEKLY_REVIEW@w8:KEEP/KEEP

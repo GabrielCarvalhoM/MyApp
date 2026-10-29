@@ -1,5 +1,9 @@
 # Adaptive Engine Operational Specification
 
+<!-- EXPERIENCE_AUTHORITY_OVERLAY_START: EXP-AUTH-r1 -->
+> **Domain authority retained · 2026-10-22 · EXP-AUTH-r1.** AthleteState, pipeline, B0/HC, JEV SHADOW, stability, learning, guard/trace/agency and every policy slot remain intact. [DR-93–97](PRODUCT_DECISION_REGISTER.md) / [index filter](../canon/CANONICAL_INDEX.md) withdraw inherited UI projection/placement instructions and old experience reading sequences as design authority only. None of these internal types requires a visible surface. Isolation metadata is historical after `32b7fb6`; specified contracts are not implementation/validation proof. Designer entry: [derived context](DESIGNER_PRODUCT_CONTEXT.md).
+<!-- EXPERIENCE_AUTHORITY_OVERLAY_END: EXP-AUTH-r1 -->
+
 Revisão **AEOS-1.2-r2** · amendment 2026-10-19 (baseline 2026-10-15) · Contrato **FREEZE-20261019-r1** (baseline AEOS preservado no Git).
 Estado: **CANDIDATE_IN_ISOLATION**; evento AEOS anterior abaixo cobre somente seu baseline. Autoria: `/root`, sob coordenação do Chief. Publicação/pareceres deste delta por hash no [registro freeze](../audits/v1-freeze-2026-10-19/MISSION_RECORD.md); o [registro AEOS](../audits/adaptive-engine-2026-10-15/MISSION_RECORD.md) é histórico. Nenhum gate de execução, segurança clínica, eficácia ou release é emitido aqui.
 
@@ -67,8 +71,8 @@ Associação de atividade: `UNASSOCIATED → MATCH_PROPOSED → CONFIRMED`, ou `
 | Componente tipado | Conteúdo / uso |
 |---|---|
 | `identity_scope` | Pessoa pseudonimizada no processamento, experiência pessoal V1 (M1), 18+ e elegibilidade de cobertura por authority refs. M2/M3 e perfis sociais são deferred, sem coleta/avaliação V1. |
-| `profile_context` | Data de nascimento (idade), altura e peso declarados (UXS ONB-20), com revisão. Contexto de cold start e de carga relativa; não determina prescrição isolado, não gera afirmação fisiológica sem evidência e perde peso relativo conforme `observed_exposure`/performance acumulam. Ausência é desconhecido explícito. |
-| `practice_context` | Experiência declarada por modalidade **e frequência/volume recentes** (UXS ONB-08), equipamento, disponibilidade multi-janela por dia + duração típica, preferência de duas sessões no mesmo dia (sim / dias escolhidos / evitar — UXS ONB-21; janela disponível não implica sessão), timezone, restrições voluntárias pertinentes, cobertura recente conhecida/desconhecida. |
+| `profile_context` | Data de nascimento (idade), altura, peso e **sexo opcional** declarados (UXS ONB-20; DR-114), com revisão. Contexto de cold start e de carga relativa; não determina prescrição isolado, não gera afirmação fisiológica sem evidência e perde peso relativo conforme `observed_exposure`/performance acumulam. Sexo só pode ser pista fraca para a primeira faixa de carga absoluta sugerida quando nada é conhecido (valores exigem SSCTR antes do runtime); nunca volume, frequência, progressão, seleção, ritmo/zona, ciclo, hormônios ou estado clínico; “Prefiro não dizer” = sem contexto de sexo. Unidade é apresentação. Ausência é desconhecido explícito. |
+| `practice_context` | Experiência declarada por modalidade **e frequência/volume recentes** (UXS ONB-08), equipamento, **dias e turno escolhidos por esporte, dia do longão e tempo por treino** (UXS ONB-09; DR-112: restrição dura de alocação — cada dia escolhido recebe uma sessão daquele esporte e nenhum outro dia recebe sem ato da pessoa; a carga semanal é definida antes e distribuída entre os dias), confirmação de treinos em sequência no mesmo turno (UXS ONB-21), **preferência de troca de exercícios da força** (UXS ONB-22; DR-113), timezone, restrições voluntárias pertinentes, cobertura recente conhecida/desconhecida. |
 | `goal_state: Ref<GoalPriorityModel>` | Prioridades explícitas, eventos e trade-offs autorizados; desconhecido não vira runner-first por default. |
 | `planned_exposure` | Sessões futuras por modalidade/intenção/revisão, janela e dependências. |
 | `observed_exposure` | Real reconciliado por modalidade e região/tarefa quando policy sustentar, parcial/não planejado/abaixo-igual-acima ou `UNCLASSIFIED`; carga desconhecida não vira zero. |
@@ -115,7 +119,7 @@ GoalPriorityModel: objetivo concreto de Running e Strength, coverage/goal refs, 
 | C02 Goal/criticality trade-off | Opções preservam propósitos/objetivos diferentes ou sessão-chave não flexível; usar prioridade/trade-off confirmado ou ASK. |
 | C03 Recovery/performance convergence | Sono/fadiga/performance comparáveis convergem ou divergem por policy; múltiplos sinais não geram fórmula universal. Poor sleep isolado não determina redução automática. |
 | C04 Safety/restriction/applicability | Limitação funcional/restrição/red flag ou público fora de cobertura; gate determinístico e HOLD afetado/owner competente. HRV boa não anula. |
-| C05 Availability/equipment | Janela/equipamento necessários incompatíveis; MOVE/SUBSTITUTE apenas repertório/janela aprovados, senão ASK/HOLD dependente. |
+| C05 Availability/equipment | Dia/turno escolhido ou equipamento necessários incompatíveis; SUBSTITUTE apenas repertório aprovado e MOVE apenas dentro dos dias escolhidos ou por ato da pessoa (DR-112), senão ASK/HOLD dependente. |
 | C06 Observation mismatch | Planejado versus parcial/não planejado/abaixo-igual-acima com G03; readaptar futuro, sem compensar débito ou premiar excesso. |
 | C07 Missing/late/conflicting source | Ausência de sync, unidade/método/identidade ou fontes conflitantes; reconciliar/pedir fato mínimo. Garmin atrasado não significa treino perdido. |
 | C08 Version/override/stability | Contexto/objetivo/override mudou, proposta antiga ou repetição; invalidar/reevaluar, impedir mutação repetida e flip-flop sem fato material. |
@@ -354,7 +358,7 @@ LLM é opcional para explicar e para o canal de coordenação; loop e tarefas di
 
 | Operação / tipo | Contrato permitido |
 |---|---|
-| `ExplanationRequest` | `decision_ref`, `official_outcome`, claims/reason refs aprovados do trace B0/gate, alcance/deltas públicos à própria pessoa, confiança/limites, próximos passos/catálogo e locale PT-BR/EN. Apenas projeção autorizada; sem conversa/provider text bruto ou fatos privados desnecessários. |
+| `ExplanationRequest` | `decision_ref`, `official_outcome`, claims/reason refs aprovados do trace B0/gate, alcance/deltas públicos à própria pessoa, confiança/limites, próximos passos/catálogo e locale PT-BR/EN/ES. Apenas projeção autorizada; sem conversa/provider text bruto ou fatos privados desnecessários. |
 | `ExplanationResponse` | `decision_ref`, `revision`, texto, `claim_bindings` para cada afirmação material, `limitations`, `model_or_template_revision`, `status`. Texto não contém novos efeitos, policy, evidência, diagnóstico ou instrução Nutrition pessoal. |
 | `FactCandidateExtraction` | Fato voluntário candidato + trecho privado mínimo/construct/origem e necessidade de confirmação. Material/sensível só entra no objeto canônico após confirmação/correção explícita; texto não edita estado por si. |
 | `PrepareAllowedAction` | Selecionar referência de opção já preparada/permitida, mostrar alcance e pedir confirmação no caminho canônico; sem gerar delta novo ou ferramentas de efeito. |

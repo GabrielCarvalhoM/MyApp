@@ -1,5 +1,9 @@
 # Vilumo Fit — Adaptive Engine Contract
 
+<!-- EXPERIENCE_AUTHORITY_OVERLAY_START: EXP-AUTH-r1 -->
+> **Domain authority retained · 2026-10-22 · EXP-AUTH-r1.** The complete behavioral/control, learning, stability, scientific, safety, agency and permission contract is preserved. [DR-93–97](PRODUCT_DECISION_REGISTER.md) / [index filter](../canon/CANONICAL_INDEX.md) retire only inherited UI placement, old experience references as requirements and obsolete mission reading sequences. They change no policy, threshold, effect or approval trigger. Metadata describing isolation is history after `32b7fb6`; no gate transfers to this overlay. Designer entry: [derived context](DESIGNER_PRODUCT_CONTEXT.md).
+<!-- EXPERIENCE_AUTHORITY_OVERLAY_END: EXP-AUTH-r1 -->
+
 **Estado:** CANDIDATE_IN_ISOLATION — freeze/adendo posterior ao SIL; integração/publicação pendentes no checkout ativo.
 
 > **FREEZE-20261019-r1 / CANDIDATE_IN_ISOLATION.** Delta posterior ao SIL; fonte/impacto/reviews no [registro freeze](../audits/v1-freeze-2026-10-19/MISSION_RECORD.md). Nenhuma alteração no checkout ativo; gates históricos valem só para os respectivos inputs.
@@ -107,7 +111,7 @@ Estas classes delimitam o que a futura política pode fazer **depois** de valida
 | Classe | Contrato de comportamento |
 |---|---|
 | Manter | Plano continua aplicável, inputs necessários suficientes e sem conflito/hold material; ausência de dados novos não certifica segurança nem score alto aumenta carga. |
-| Mover / reordenar | Propor janelas/sessões afetadas e trade-off de prioridade/agenda; verificar viabilidade nas duas modalidades e confirmar o ajuste. Sem intervalo universal. |
+| Mover / reordenar | Propor sessões afetadas e trade-off de prioridade/agenda dentro dos dias e turnos escolhidos (DR-112); mover para outro dia só por ato da pessoa. Verificar viabilidade nas duas modalidades e confirmar o ajuste. Sem intervalo universal. |
 | Reduzir volume | Alterar quantidade de trabalho preservando propósito admissível, explicando efeito futuro. Não presumir que manter intensidade alta é seguro. |
 | Reduzir intensidade | Distinguir pace, alvo, carga relativa ou esforço do volume; apenas limites aprovados, sem percentual inventado. |
 | Substituir | Somente repertório/aplicabilidade/equipamento aprovados; explicar propósito retido/perdido. Sem esporte novo, equivalência calórica ou exercício para contornar dor. Sem alternativa válida, abster-se. |
@@ -144,6 +148,14 @@ Estas classes delimitam o que a futura política pode fazer **depois** de valida
 - Feedback social, alcance e distribuição não entram como evidência fisiológica/decisória. Aprendizado comportamental secundário de I10 é finalidade própria opcional, desligada por padrão; revogar interrompe esse uso e remove ou deixa de usar os derivados dessa finalidade, sem revogar o uso primário ainda autorizado (PDM I10). Nenhum perfilamento social; retenção/prova técnica seguem seus owners antes de implementação, sem prazo ou modelo inventado.
 
 ## 5. Structured workouts e closed loop wearable
+
+<!-- V1_WEARABLE_SCOPE_OVERLAY_START: VWS-20261027-r2 -->
+> **Post-R6 product scope supersession · 2026-10-27 · [PDR DR-117–123](PRODUCT_DECISION_REGISTER.md).** This section stays the integration contract, now split by release.
+> - **V1-binding, whatever the source.** V1 is iOS only. Its external source is Apple Health/HealthKit, and inbound is required. Writing the app's own activities to HealthKit is an OPEN_TECHNICAL_PRODUCT_DECISION: if it is adopted, it is a separate purpose, and a written activity read back is the same fact (§4). The read side of §5.1 binds the inbound source: capability declared per route and data type, with levels of proof; consent per source, data type and purpose; no promise of external permission granularity; opaque HealthKit read is not denial, zero or a missed session; history windows and gaps stay explicit. §5.4 webhook, normalization, adaptation and revocation rules and the at-effect revalidation bind V1 too, as does all of §4.
+> - **V2/POST_V1 specification, inert in V1.** Everything that writes to a watch or a vendor stays preserved as specification, Apple Watch/WorkoutKit delivery and interval control from the watch included (DR-122). In §5.1: publish/update/delete/revoke capabilities, consent to send, the WEA-1.0 matrix of Garmin/COROS Partner, Apple WorkoutKit and Polar routes, and the Terra alternative. Also §5.2 export preflight, §5.3 export cycle, and the §5.4 publish/update/replace/delete rows for remote copies.
+> - **Canonical path.** `HealthKit → iOS platform adapter → canonical athlete/workout data → Coaching Core`, alongside manual records and in-app execution. A future Android layer would use its own platform adapter feeding the same Core (DR-123). The neutral representation principle also governs the inbound canonical workout.
+> - **Partial data and sources.** A partial import keeps its unknown fields unknown and never fills them from defaults. No coaching rule branches on the source.
+<!-- V1_WEARABLE_SCOPE_OVERLAY_END: VWS-20261027-r2 -->
 
 ### 5.1 Capacidades e permissões
 

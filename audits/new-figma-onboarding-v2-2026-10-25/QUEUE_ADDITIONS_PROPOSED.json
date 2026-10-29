@@ -1,0 +1,108 @@
+{
+  "revision": "OB2-HRQ-PROPOSED-r1",
+  "state": "READY_TO_APPEND — NOT YET IN THE QUEUE",
+  "queue": "reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json",
+  "queue_at_preparation": {
+    "queue_revision": "SSCTR-HRQ-20261026-R5-r1",
+    "items": 114,
+    "sha256": "b68f978415648dad48081d6db99123132ca322221b2ca8357a9e409c3e2bdaf8"
+  },
+  "why_not_appended_now": "DOMAIN COACHING R5 closed on 2026-10-26 with CoachingCore/scripts/verify-r5.mjs as the default `npm run verify`. It asserts exactly 114 queue items and rewrites CoachingCore/r5/VERIFICATION.json when run, so appending now would turn R5's recorded closure evidence into a FAIL. The next mission that owns the queue (DOMAIN_COACHING_R6 or an explicit Chief/Founder act) appends these three items verbatim, keeps the 114 earlier items byte-identical, and bumps queue_revision.",
+  "source_review": {
+    "path": "audits/new-figma-onboarding-v2-2026-10-25/reviews/SSCTR_REVIEW.md",
+    "sha256": "971fbe9574d10ce1a8e6a21290b157fc59d6fc5b1b3d7b7cb299af66fa4556bd",
+    "decision_record": "SSCTR-OB2-2026-10-25-r1"
+  },
+  "items": [
+    {
+      "queue_id": "HRQ-OB2-Q1-ALLOC",
+      "decision_id": "SSCTR-OB2-Q1-ALLOC",
+      "decision_revision": "r1",
+      "target": {
+        "project": "MyApp / Vilumo Fit",
+        "artifact": "audits/new-figma-onboarding-v2-2026-10-25/reviews/SSCTR_REVIEW.md",
+        "artifact_revision": "SSCTR-OB2-2026-10-25-r1",
+        "sha256": "971fbe9574d10ce1a8e6a21290b157fc59d6fc5b1b3d7b7cb299af66fa4556bd",
+        "rule_ids": ["OB2-Q1-ALLOC", "PDR DR-112"]
+      },
+      "approved_scope": "Reusable allocation envelope for person-chosen training days (DR-112) only under every listed condition; no exact workout or dose is approved.",
+      "conditions": [
+        "Each chosen day carries a session of a supported family for that sport and profile; the weekly load is set first from goal, recent practice (ONB-08), phase and approved policy, then distributed across the chosen days. More days never raise the weekly load nor lower the per-session floor below a supported recipe.",
+        "High frequency is judged against the person's own recent frequency and volume, never a universal count: shorter, easier sessions inside approved recipes first; if a chosen day cannot be a supported session for the profile, or too few days serve the goal, the onboarding names the fact and the person decides (ON-V7/V7b). The app never drops a chosen day and never invents a frequency ceiling.",
+        "Long-run adjacency is handled by content, never by moving days: heaviest lower-body, eccentric-dominant or novel strength work stays away from the day before the long run when the chosen days allow; otherwise lower-body demand is reduced by content and the trade-off explained; in Strength-first the long run's content may flex. No hour-based spacing rule (POL-07).",
+        "On a day with both sports in different shifts, the person's shift choice fixes the order; the coach protects the priority through the content of the earlier session; only the person moves sessions (EDT-02).",
+        "HOLD, a reported limitation or an out-of-coverage case may reduce a session, replace it with recovery or retain it, always explained and never by silently removing the day. Persistent pain, injury or illness route to CLINICAL_HUMAN_REQUIRED with no substitute dose."
+      ],
+      "approval_date": "2026-10-25",
+      "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+      "owner": "Chief / Founder",
+      "human_review": null,
+      "re_review_triggers": [
+        "New systematic review on training frequency/volume distribution or running injury and single-run spikes.",
+        "Real-use data showing chosen-day adherence or adverse patterns; change to the V1 population or objectives.",
+        "Definition of the 'supported session' recipe floor; Founder funding declaration and qualified-human revalidation."
+      ]
+    },
+    {
+      "queue_id": "HRQ-OB2-Q2-ORDER",
+      "decision_id": "SSCTR-OB2-Q2-ORDER",
+      "decision_revision": "r1",
+      "target": {
+        "project": "MyApp / Vilumo Fit",
+        "artifact": "audits/new-figma-onboarding-v2-2026-10-25/reviews/SSCTR_REVIEW.md",
+        "artifact_revision": "SSCTR-OB2-2026-10-25-r1",
+        "sha256": "971fbe9574d10ce1a8e6a21290b157fc59d6fc5b1b3d7b7cb299af66fa4556bd",
+        "rule_ids": ["OB2-Q2-ORDER", "PDR DR-112", "UXS ONB-21"]
+      },
+      "approved_scope": "Reusable rule for confirmed back-to-back strength and running sessions in the same shift only under every listed condition.",
+      "conditions": [
+        "Back-to-back is allowed only when the person chose the same day and shift for both sports and confirmed 'fazer em sequência'; the confirmation is a changeable preference, not an inference.",
+        "Order follows the day's key session and the declared priority: Força primeiro → strength first; Corrida primeiro → the run first when it is that day's key run (quality, long or race-specific), strength first equally defensible when the run is easy, with an explanation; Equilíbrio → the day's key session first, and if both are key the trade-off is asked, never silently run-first. The person can always swap the order.",
+        "No hour or minute rule and no claim about recovery between the two parts (POL-07).",
+        "Where the chosen days allow, avoid a demanding key session of one sport straight before a demanding key session of the other through content allocation, not by moving days; if unavoidable, lower the non-priority session's demand under approved policy and explain it.",
+        "A double counts as two sessions, not a third load event or a fatigue score; the combined length is shown only as a logistics fact."
+      ],
+      "approval_date": "2026-10-25",
+      "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+      "owner": "Chief / Founder",
+      "human_review": null,
+      "re_review_triggers": [
+        "New systematic review or meta-analysis on intra-session sequence and the interference effect.",
+        "Correction or retraction of a cited source; adverse or contrary comparable observations.",
+        "Founder funding declaration and qualified-human revalidation."
+      ]
+    },
+    {
+      "queue_id": "HRQ-OB2-Q3-ROTATION",
+      "decision_id": "SSCTR-OB2-Q3-ROTATION",
+      "decision_revision": "r1",
+      "target": {
+        "project": "MyApp / Vilumo Fit",
+        "artifact": "audits/new-figma-onboarding-v2-2026-10-25/reviews/SSCTR_REVIEW.md",
+        "artifact_revision": "SSCTR-OB2-2026-10-25-r1",
+        "sha256": "971fbe9574d10ce1a8e6a21290b157fc59d6fc5b1b3d7b7cb299af66fa4556bd",
+        "rule_ids": ["OB2-Q3-ROTATION", "PDR DR-113", "UXS ONB-22"]
+      },
+      "approved_scope": "Reusable boundary for the strength exercise-rotation preference only under every listed condition; cadences are preferences, not evidence-optimal values; the rotation recipe itself is not approved.",
+      "conditions": [
+        "Rotation means exercise selection only and swaps an exercise for one that preserves the essential stimulus (same target muscles and pattern role, comparable demand, available equipment, the person's competence); systematic, never random or redundant (change_reason PROGRAMMED_VARIATION).",
+        "The first session with a new exercise is a calibration exposure: load set from effort (RIR/RPE) under the approved autoregulation policy, never carried over by formula; no exact first-exposure dose is approved.",
+        "'Fixo' keeps the selection; eligible substitutions (equipment, discomfort or restriction) always need the person's agency; persistent pain or a new limitation goes to CLINICAL_HUMAN_REQUIRED, not to a substitution.",
+        "Until a rotation policy is SSCTR-reviewed, 'O coach decide' keeps the selection within a block and changes at block transitions or for a stated purpose; its 'Recomendado' tag derives from approved policy, never pre-selects, and never means frequent unexplained changes."
+      ],
+      "approval_date": "2026-10-25",
+      "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+      "owner": "Chief / Founder",
+      "human_review": null,
+      "re_review_triggers": [
+        "New systematic review on exercise variation and strength or hypertrophy outcomes.",
+        "Definition of the rotation recipe (what changes, how many exercises, load carry-over) or of anchor-lift handling for the 2-week option.",
+        "Founder funding declaration and qualified-human revalidation."
+      ]
+    }
+  ],
+  "not_queued": {
+    "Q4_sex_input": "LIMITED_REVERSIBLE_RECOMMENDATION — no prescriptive approval; any future sex-based starting-load prior needs its own SSCTR approval and queue entry before activation.",
+    "Q5_priority_suggestion": "LIMITED_REVERSIBLE_RECOMMENDATION — optional visibility entry OB2-Q5-PRIORITY-SUGGEST left to the Chief; not prepared."
+  }
+}

@@ -1,0 +1,339 @@
+{
+  "revision": "R6-DELIVERABLE-1",
+  "topic": "ATHLETE_MODEL_R6",
+  "generatedAt": "2026-10-27T05:03:30.461Z",
+  "authority": "CURRENT_INDEPENDENT_REVIEW",
+  "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+  "sourceDigest": "507f35fc66f4d1e105e19ce513dc067f9fee5fdc35c039ad52a8c825e46bf857",
+  "freezeRevision": "R6-FREEZE-1",
+  "runtimeState": "NOT_FROZEN_AFTER_FREEZE_1: the SSCTR refused FREEZE-2 in round 12 and R6 closed with an explicit blocker (OPEN_GAPS_R6); the runtime files listed are the current, unfrozen ones, while the simulation, demonstration and R5 replay outputs cited are the FREEZE-1 ones",
+  "boundaries": [
+    {
+      "boundaryId": "R6-PARTIAL-NOISY-LEARNING",
+      "enabled": "APPROVED",
+      "ssctr": {
+        "disposition": "APPROVE_WITH_CONDITIONS",
+        "evidence": null,
+        "conditions": [
+          "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+          "Binding: this record binds canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c (value.mjs hash). Any policy byte change invalidates it; any change to the runtime functions named in requiredRuntimeChanges needs a delta binding review before runtime freeze.",
+          "Operational values are reversible coaching choices inside the envelope, never physiological thresholds, injury-prevention rules, readiness scores, finish-time promises or individual-response predictions.",
+          "Steps advance only on executed comparable work without an adverse signal; nothing progresses from elapsed calendar time alone; completed history and official plan state stay immutable.",
+          "Causal time: no future or future-reported facts; day-precision facts receive the latest causal instant of that local day; clock skew beyond futureClockSkewSeconds is excluded.",
+          "Duplicates merge; the same event identifier with different facts and disagreeing duplicates are quarantined; stale facts beyond maximumAgeDays leave learning and gating but stay in the completed-work ledger.",
+          "Partial executions count only for adherence and hold the step; missing effort or heart rate is unknown, never adverse.",
+          "Comparability: identical prescription hash and arrangement pool across FOUNDATION/BUILD/DEVELOPMENT/SPECIFIC/CONSOLIDATION/ESTABLISHMENT labels; TAPER, EVENT/RACE_WEEK, POST_EVENT, REVIEW and RETURN/RESTART-mode observations never pool with build-class observations.",
+          "Consolidation-week observations may support HOLD or REGRESS but not EARNED surplus.",
+          "Arrangement-preference queries include the phase class and a dose key; outputs are associative ranking among admissible options only, never dose authority, causal or clinical inference.",
+          "G03 adherence/comparability semantics remain jointly owned by Product/UX and Data; this record does not close G03.",
+          "The completed-work record is append-only: a report conflicting with another for the same session (same event identifier with different facts, different physical facts or responses, or one wearable activity bound to two sessions) stays recorded, flagged and quarantined; the session is CONFLICTED for gating and its facts count for neither capacity, learning, load adoption or confirmation, nor the strength resume clock until a correction resolves them (author-found with D52); a report dated before its activity is rejected.",
+          "Without learning consent the athlete model stays empty and no athlete-specific pattern changes the plan; gating on the plan's own completed-work record does not depend on learning consent; the privacy scope of consent stays with Product/Data.",
+          "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+        ]
+      },
+      "envelope": {
+        "claim": "Imperfect real-world observations can inform near-term coaching (hold, advance, regress, rank) when provenance, comparability, recency, consistency and hysteresis are kept, without causal or physiological claims.",
+        "limits": [
+          "partial work informs only the observed component and adherence",
+          "missing effort or heart rate is unknown, not adverse",
+          "duplicates merge, conflicts quarantine, stale data expires",
+          "Build-phase labels (foundation, development, specific, consolidation) are operational partitions: observations of the identical prescription and arrangement stay comparable across them; taper, race week, post-event and return phases never pool with build phases"
+        ]
+      }
+    }
+  ],
+  "policyValues": {
+    "learning": {
+      "maximumAgeDays": 56,
+      "emergingSessions": 3,
+      "emergingSpanDays": 7,
+      "strongSessions": 4,
+      "strongSpanDays": 14,
+      "repeatedAdverseForRegression": 2,
+      "repeatedAdverseWindowDays": 14,
+      "earnedProgressionSessions": 3,
+      "futureClockSkewSeconds": 300,
+      "comparablePhaseClasses": {
+        "BUILD": [
+          "FOUNDATION",
+          "DEVELOPMENT",
+          "SPECIFIC",
+          "BUILD",
+          "CONSOLIDATION",
+          "ESTABLISHMENT"
+        ],
+        "TAPER": [
+          "TAPER"
+        ],
+        "EVENT": [
+          "EVENT",
+          "RACE_WEEK"
+        ],
+        "POST_EVENT": [
+          "POST_EVENT"
+        ],
+        "REVIEW": [
+          "REVIEW",
+          "NEXT_BLOCK"
+        ]
+      },
+      "pooling": {
+        "buildClassModesExcluded": [
+          "RETURN",
+          "RESTART"
+        ],
+        "separateClasses": [
+          "TAPER",
+          "EVENT",
+          "POST_EVENT",
+          "REVIEW"
+        ],
+        "consolidationFeedsEarned": false,
+        "arrangementPreferenceQuery": "sessionType + phaseClass + doseKey (quality family, ladder and step of the current quality session); no query without a current quality dose"
+      },
+      "missingGate": "A run dimension or exercise with no executed session in the reviewed week has no gate and holds; in a conditional projection a run dimension advances only when the week plans a session of it (SSCTR D46), and restart and return sessions of any role gate on EASY there, as in reviews (SSCTR R13). Such a dimension never counts as an executed week, never unlocks quality or strides and never converts a walk. A week with no easy run planned (every easy day a walk) uses the executed long run for the development-week count and the walk conversion instead; the first converted walk becomes an easy run at run.minimumSessionMinutes that then progresses like the others (SSCTR R12).",
+      "conflicts": "A report that conflicts with another for the same session (same event id with different facts, different physical facts or responses, or one wearable activity bound to two sessions) stays in the completed-work record, flagged, and is quarantined: the session is CONFLICTED for gating and the facts count for neither capacity nor learning until a correction resolves them. A report dated before the activity it reports is rejected.",
+      "consentScope": "Without learning consent the athlete model stays empty and no athlete-specific pattern (learned rearrangement or learned preference) changes the plan; gating on the plan’s own completed-work record does not depend on learning consent."
+    }
+  },
+  "runtime": [
+    {
+      "file": "CoachingCore/src/r6-learning.mjs",
+      "functions": [
+        "createLearningModel",
+        "updateLearningModel",
+        "evidenceFor",
+        "preferredArrangement",
+        "classify"
+      ],
+      "sha256": "dced0698ebbee06f81208b9fb9e404d3d6bb534a689fe0572c7d9949c9a22a10"
+    },
+    {
+      "file": "CoachingCore/src/r6-adaptation.mjs",
+      "functions": [
+        "learnedInterference"
+      ],
+      "sha256": "d6a1d6fc74b7ef5b02a389dba3429cb25a00b16a2df97120b64314e96a6ba6f4"
+    }
+  ],
+  "evidence": {
+    "tests": [
+      {
+        "file": "CoachingCore/test/r6-adaptation.test.mjs",
+        "name": "Adaptation: repeated adverse responses regress one step, then hysteresis holds"
+      },
+      {
+        "file": "CoachingCore/test/r6-adaptation.test.mjs",
+        "name": "Adaptation: repeated easier executions earn one step, never two; walk/jog never earns (SSCTR D11/D12)"
+      },
+      {
+        "file": "CoachingCore/test/r6-adaptation.test.mjs",
+        "name": "Adaptation: a learned rearrangement applies and records the week’s gates, so hysteresis sees its regression"
+      },
+      {
+        "file": "CoachingCore/test/r6-balanced-provenance.test.mjs",
+        "name": "Provenance: stale observations expire for learning windows"
+      },
+      {
+        "file": "CoachingCore/test/r6-balanced-provenance.test.mjs",
+        "name": "Learning: one bad session is a signal, not a rule; missing effort is unknown, not adverse"
+      },
+      {
+        "file": "CoachingCore/test/r6-balanced-provenance.test.mjs",
+        "name": "Learning: partial completion informs adherence only; repeated comparable outcomes build confidence; conflicts stay mixed"
+      },
+      {
+        "file": "CoachingCore/test/r6-balanced-provenance.test.mjs",
+        "name": "Learning: declined consent keeps nothing for personalization"
+      },
+      {
+        "file": "CoachingCore/test/r6-balanced-provenance.test.mjs",
+        "name": "Learning: an arrangement preference needs repeated comparable evidence and never grants admissibility"
+      },
+      {
+        "file": "CoachingCore/test/r6-engineering-fixes.test.mjs",
+        "name": "QRE-R6-14: the completed-work ledger is append-only; a conflicting report quarantines the fact for gating and learning"
+      },
+      {
+        "file": "CoachingCore/test/r6-engineering-fixes.test.mjs",
+        "name": "QRE-R6-16: without learning consent no athlete-specific pattern changes the plan"
+      },
+      {
+        "file": "CoachingCore/test/r6-simulation.test.mjs",
+        "name": "Simulation: repeated surplus earns, repeated adverse regresses, single signals hold, conflicts stay uncertain"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r11-fixes.test.mjs",
+        "name": "SSCTR D53: strength — after a re-establishment a block-boundary set earned before the gap comes back one set at a time"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r8-fixes.test.mjs",
+        "name": "SSCTR D49: probe-U timeline s1-d35: strength sets come back one per executed week to the count before the break; return weeks earn no block set"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r8-fixes.test.mjs",
+        "name": "SSCTR D49: probe-U timeline s3-d21: strength sets come back one per executed week to the count before the break; return weeks earn no block set"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r8-fixes.test.mjs",
+        "name": "SSCTR D49: probe-U timeline s5-d14: strength sets come back one per executed week to the count before the break; return weeks earn no block set"
+      }
+    ],
+    "demonstrations": [
+      {
+        "id": "G",
+        "title": "Partial session → learning update without overreaction",
+        "selected": "GATED_NEXT_STEP"
+      },
+      {
+        "id": "H",
+        "title": "Repeated underperformance → regression with hysteresis",
+        "selected": "GATED_NEXT_STEP"
+      },
+      {
+        "id": "I",
+        "title": "Overperformance → earned progression",
+        "selected": "GATED_NEXT_STEP"
+      },
+      {
+        "id": "M",
+        "title": "Athlete-specific learned pattern changes a future valid decision",
+        "selected": "LEARNED_REARRANGEMENT"
+      }
+    ],
+    "trajectories": [
+      {
+        "id": "T03_BALANCED12_OVERPERFORMANCE",
+        "horizon": 12,
+        "allInvariantsHold": true,
+        "actions": {
+          "INSTANTIATE_LOGGED_LOADS": 1,
+          "KEEP": 8,
+          "GATED_NEXT_STEP": 3
+        }
+      },
+      {
+        "id": "T09_PARTIAL_WEARABLE12_NOISY",
+        "horizon": 12,
+        "allInvariantsHold": true,
+        "actions": {
+          "INSTANTIATE_LOGGED_LOADS": 2,
+          "KEEP": 8,
+          "GATED_NEXT_STEP": 2
+        }
+      }
+    ],
+    "r5Regression": [
+      {
+        "caseId": "R5-H08",
+        "r5Classification": "INSUFFICIENT_INFORMATION",
+        "rootCause": "ADAPTER_CLOCK_AND_PHASE_COMPARABILITY",
+        "resultR6": "MODIFY",
+        "classificationR6": "BEST_SUPPORTED"
+      },
+      {
+        "caseId": "R5-H12",
+        "r5Classification": "BEST_SUPPORTED",
+        "rootCause": "BOUNDED_R5_BEHAVIOR",
+        "resultR6": "KEEP",
+        "classificationR6": "BEST_SUPPORTED"
+      },
+      {
+        "caseId": "R5-H14",
+        "r5Classification": "BEST_SUPPORTED",
+        "rootCause": "BOUNDED_R5_BEHAVIOR",
+        "resultR6": "KEEP",
+        "classificationR6": "BEST_SUPPORTED"
+      },
+      {
+        "caseId": "R5-H21",
+        "r5Classification": "INSUFFICIENT_INFORMATION",
+        "rootCause": "UNKNOWN_COMBINED_TOLERANCE",
+        "resultR6": "KEEP",
+        "classificationR6": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R5-H23",
+        "r5Classification": "BEST_SUPPORTED",
+        "rootCause": "BOUNDED_R5_BEHAVIOR",
+        "resultR6": "KEEP",
+        "classificationR6": "BEST_SUPPORTED"
+      }
+    ],
+    "freshHoldout": [
+      {
+        "caseId": "R6-H01",
+        "family": "COLD_START",
+        "classification": "UNSUPPORTED"
+      },
+      {
+        "caseId": "R6-H07",
+        "family": "COLD_START",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H08",
+        "family": "COLD_START",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H16",
+        "family": "BALANCED_CONFLICT",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H19",
+        "family": "ADAPTATION",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H20",
+        "family": "ADAPTATION",
+        "classification": "CORPUS_ERROR"
+      },
+      {
+        "caseId": "R6-H21",
+        "family": "ADAPTATION",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H22",
+        "family": "ADAPTATION",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H29",
+        "family": "EVENT_TRANSITION",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H31",
+        "family": "DATA_QUALITY",
+        "classification": "BEST_SUPPORTED"
+      },
+      {
+        "caseId": "R6-H32",
+        "family": "DATA_QUALITY",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H34",
+        "family": "ATHLETE_LEARNING",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H35",
+        "family": "ATHLETE_LEARNING",
+        "classification": "BEST_SUPPORTED"
+      }
+    ]
+  },
+  "inputs": {
+    "simulation": "CoachingCore/r6/SIMULATION_RESULTS_R6.json",
+    "demonstrations": "CoachingCore/r6/DEMONSTRATIONS_R6.json",
+    "r5Replay": "CoachingCore/r6/R5_HOLDOUT_REPLAY_R6.json",
+    "ssctrReview": "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-policy-review.json",
+    "r5RegressionReview": "audits/domain-coaching-r6-2026-10-26/reviews/r5-regression-review.json",
+    "coachingReview": "audits/domain-coaching-r6-2026-10-26/reviews/coaching-quality-holdout-review.json"
+  }
+}

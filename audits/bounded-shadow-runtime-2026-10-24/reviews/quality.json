@@ -1,0 +1,3219 @@
+{
+  "task_id": "BSR-0.1.0",
+  "contract_revision": "BSR-0.1.0 TASK_CONTRACT.md",
+  "evaluator": "/root/quality_review",
+  "agent_version": "QUALITY_RELIABILITY_ENGINEER-1.3.0",
+  "rubric": {
+    "id": "QUALITY",
+    "version": "1.1.0"
+  },
+  "skills": [
+    "verify-before-completion1.3.0",
+    "verify-domain-gate1.3.0"
+  ],
+  "mode": "independent",
+  "author_instances": [
+    "/root",
+    "/root/semantics_worker"
+  ],
+  "environment": {
+    "os": "Windows",
+    "node": "v24.19.0",
+    "repository": "C:/Users/carva/Desktop/myApp/MyApp",
+    "head_revision": "1d25c73e56661c8feac780aa814cc26aef51c9fc",
+    "base_revision": "1d25c73e56661c8feac780aa814cc26aef51c9fc",
+    "working_tree": "Dirty with prior documentary work; no source changes made by judge"
+  },
+  "status": "QUALITY_READY",
+  "verdict": "PASS",
+  "scope": "Finite offline synthetic bounded shadow evaluator,schemas,bindings/compiler,fixtures,98native tests and160unique traces/164evaluation rows. No real-user/clinical efficacy,UI,adoption,application or production gate.",
+  "iterations": [
+    {
+      "id": "initial-77-tests",
+      "artifact_sha256": {
+        "CoachingCore/src/runtime.mjs": "129e7b9bd41fae1b76be12326862331a94e72fbf8ce1607d886bd11ce53ca060",
+        "CoachingCore/src/semantics.mjs": "e1ef468c4eaf304a85fb5173a89d71dcaf094ab9712663c16e5fffadae588d8c",
+        "CoachingCore/src/value.mjs": "5bd765f68aa9e1f39ff0ce1366c7ac08e4b092bf281b49e2caa12c7c4bdb3a3b",
+        "CoachingCore/src/fixtures.mjs": "91d069399d9d472c290f0441023a0dd7c759a6e10e1c69be58f093878a73a324",
+        "CoachingCore/scripts/compile-authority.mjs": "8dd81937cb8eb52961b814df765aaf0be3ff7e36007bbff6ebcfc3114a39d84c",
+        "CoachingCore/POLICY_REGISTRY_RUNTIME_BINDINGS.json": "d2ede026793b32f145197bdfa4dbc7393d81e81f9b62ec298d7e94aee1e623b1",
+        "CoachingCore/fixtures/authority-bundle.json": "d940081460ab2c8bb90a6babac584592186b9f36b5a536c4b79ddd5df2a5f377"
+      },
+      "checks": [
+        {
+          "command": "node --version; node --test",
+          "cwd": "CoachingCore",
+          "exit_code": 0,
+          "summary": "77 tests,77 pass,0 fail,0 skipped; duration436.5624ms"
+        },
+        {
+          "command": "node --input-type=module in-memory adversarial probe set",
+          "exit_code": 0,
+          "summary": "ClinicalFlags,injury,interruption,coverage unknown,malformed policy request,daily extra conflicting/inferred facts,unbound daily/Golden policy and five unbound recipe revocations reproduced; all official/applied plan equality assertions remained true"
+        }
+      ],
+      "findings": [
+        {
+          "id": "Q-01",
+          "priority": 1,
+          "criterion": "Clinical and interruption guards dominate dependent prescription",
+          "file": "CoachingCore/src/runtime.mjs",
+          "lines": [
+            133,
+            144
+          ],
+          "reproduction": "scenarioInput('E2E-05') + recoveryContext.clinicalFlags=['persistent-pain'] or injury=true, or interrupted=true/TRAVEL/actualExposureKnown=false",
+          "actual": "MODIFY easy30 to35",
+          "expected": "CLINICAL_HUMAN_REQUIRED for explicit clinical facts; ASK/HOLD/NOT_SUPPORTED_YET for interruption/current-capacity uncertainty",
+          "owner": "/root"
+        },
+        {
+          "id": "Q-02",
+          "priority": 1,
+          "criterion": "Unknown coverage does not become certainty",
+          "file": "CoachingCore/src/runtime.mjs",
+          "lines": [
+            137,
+            142
+          ],
+          "reproduction": "scenarioInput('E2E-05').provenance.coverage='COVERAGE_UNKNOWN'",
+          "actual": "MODIFY with empty missingInputs",
+          "expected": "Nonprescribing closed decision preserving coverage uncertainty",
+          "owner": "/root"
+        },
+        {
+          "id": "Q-03",
+          "priority": 1,
+          "criterion": "Daily decisions do not silently discard extra/conflicting actual or inferred facts",
+          "file": "CoachingCore/src/runtime.mjs",
+          "lines": [
+            93,
+            110
+          ],
+          "reproduction": "Reviewed MON completed actuals + observedExecutionState.events=[{source_conflict:true}] OR actual.sourceConflict=true OR inferred readiness; clinical observation also ignored",
+          "actual": "KEEP / All known actual work and explicit compatible context fit",
+          "expected": "ASK/HOLD/unsupported or clinical boundary; no supported KEEP from unreconciled dependent facts",
+          "owner": "/root"
+        },
+        {
+          "id": "Q-04",
+          "priority": 2,
+          "criterion": "Every requested policy is bound to the evaluated context",
+          "file": "CoachingCore/src/runtime.mjs",
+          "lines": [
+            145,
+            153
+          ],
+          "reproduction": "dayInput(reviewed plan,'MON',validActuals) or goldenInput('S13-T') + requestedPolicyIds=['POL-13']",
+          "actual": "KEEP for daily / MODIFY for Golden; unrelated requested policy ignored",
+          "expected": "NOT_SUPPORTED_YET for the unbound request",
+          "owner": "/root"
+        },
+        {
+          "id": "Q-05",
+          "priority": 2,
+          "criterion": "Malformed supported transport values fail closed without crashing",
+          "file": "CoachingCore/src/runtime.mjs",
+          "lines": [
+            145,
+            145
+          ],
+          "reproduction": "scenarioInput('E2E-05').policyContext.requestedPolicyIds='POL-04'",
+          "actual": "TypeError: .some is not a function",
+          "expected": "Nonprescribing input-contract decision",
+          "owner": "/root"
+        },
+        {
+          "id": "Q-06",
+          "priority": 1,
+          "criterion": "All emitted candidate subjects/recipes have current authority lineage",
+          "file": "CoachingCore/scripts/compile-authority.mjs",
+          "lines": [
+            40,
+            44
+          ],
+          "reproduction": "scenarioInput('E2E-20') + revokedReviewIds=[id] for each R01/R04/R07/S06/S07",
+          "actual": "MODIFY emits both RN and SN candidates although those SN-dependent recipe reviews are not guarded and active input subject is RN",
+          "expected": "One subject-specific candidate; every emitted recipe current/revocation guard; separate counterpart fixture for SN",
+          "owner": "/root"
+        }
+      ]
+    },
+    {
+      "id": "correction1-92-tests",
+      "checks": [
+        {
+          "command": "node --test",
+          "cwd": "CoachingCore",
+          "exit_code": 0,
+          "summary": "92 tests passed,0 failed,0 skipped;455.9207ms"
+        },
+        {
+          "command": "independent replay of every RUNTIME_TRACE_EXAMPLES.json input; assert.deepEqual output and inputHash; recompute decisionCounts",
+          "exit_code": 0,
+          "summary": "160/160 unique traces replay identically;160/160 plan snapshots preserved; counts match KEEP123,MODIFY11,HOLD10,ASK8,CLINICAL_HUMAN_REQUIRED2,NOT_SUPPORTED_YET6"
+        },
+        {
+          "command": "independent AJV2020 validation of every saved decision",
+          "exit_code": 0,
+          "summary": "160/160 saved decisions valid against schema"
+        }
+      ],
+      "closures_provisional": [
+        "Q01 clinical/interruption flags correctly dominate",
+        "Q02 unknown coverage now ASK",
+        "Q04 unbound daily/Golden policy now NOT_SUPPORTED_YET",
+        "Q06 subject-isolated RN/SN candidates with revoked recipe tests now HOLD"
+      ],
+      "remaining": [
+        {
+          "parent_finding": "Q03",
+          "summary": "Three extra daily lineage probes were initially still KEEP; author added event ID,explicit subject and shared fact-origin guards. Reprobed: all ASK; extra observation metadata now NOT_SUPPORTED_YET."
+        },
+        {
+          "parent_finding": "Q05",
+          "summary": "Daily completed=[null] still throws TypeError reading sessionId before guard at correction1 snapshot."
+        },
+        {
+          "id": "Q07",
+          "priority": 1,
+          "summary": "evaluatedAt=1 still produces MODIFY and schema-invalid timestamp. sourceRef={} and sourceRevision={} still allow MODIFY. Invalid string-ID metadata emits schema-invalid closed decisions. Typed input validation and nullable safe trace IDs required."
+        },
+        {
+          "id": "Q08",
+          "priority": 2,
+          "summary": "E2E16 modify references future_lower,WED→MON but resolvedPlan sessions equal official base, which already places lower MON; explicitly model ranking-only future alternatives or obtain exact current-plan applicability from separate scientific review. Do not fake an applied-plan patch."
+        },
+        {
+          "id": "Q09",
+          "priority": 2,
+          "summary": "Trace map retains last corpus/label per inputHash,so ACF24 corpus saved trace labels lose E2E04/06 to FOUR_WEEK_PROPOSALS. Add164-row evaluation index mapping every corpus/label to traceId to reconstruct per-corpus counts."
+        }
+      ]
+    },
+    {
+      "id": "final-frozen",
+      "startedAt": "2026-10-24T12:38:20.426Z",
+      "finishedAt": "2026-10-24T12:38:24.059Z",
+      "bundleHash": "ece7bc96a09956b725b70a5bab9355ce9f63c3a1c5ce7a5c2f1d8a1538ccede6",
+      "judgeHarnessCorrection": "Initial final-pass harness incorrectly demanded HOLD for a preexisting source-conflict ASK(E2E11). Corrected oracle: normally KEEP/MODIFY contexts must HOLD on authority revocation; other contexts must remain nonprescribing. No product source change was required.",
+      "checks": [
+        {
+          "command": "node --test",
+          "cwd": "CoachingCore",
+          "exit_code": 0,
+          "stdout": "✔ E2E-01 — independent source conformance (20.8284ms)\n✔ E2E-02 — independent source conformance (12.4965ms)\n✔ E2E-03 — independent source conformance (16.8259ms)\n✔ E2E-04 — independent source conformance (13.892ms)\n✔ E2E-05 — independent source conformance (11.2317ms)\n✔ E2E-06 — independent source conformance (10.3278ms)\n✔ E2E-07 — independent source conformance (11.365ms)\n✔ E2E-08 — independent source conformance (12.1214ms)\n✔ E2E-09 — independent source conformance (12.9132ms)\n✔ E2E-10 — independent source conformance (13.961ms)\n✔ E2E-11 — independent source conformance (3.9034ms)\n✔ E2E-12 — independent source conformance (15.1097ms)\n✔ E2E-13 — independent source conformance (12.8457ms)\n✔ E2E-14 — independent source conformance (9.4104ms)\n✔ E2E-15 — independent source conformance (16.1733ms)\n✔ E2E-16 — independent source conformance (15.4262ms)\n✔ E2E-17 — independent source conformance (14.3584ms)\n✔ E2E-18 — independent source conformance (17.7179ms)\n✔ E2E-19 — independent source conformance (10.7596ms)\n✔ E2E-20 — independent source conformance (12.1061ms)\n✔ E2E-21 — independent source conformance (17.4359ms)\n✔ E2E-22 — independent source conformance (14.2395ms)\n✔ E2E-23 — independent source conformance (20.8475ms)\n✔ E2E-24 — independent source conformance (20.2036ms)\n✔ S13-N — exact independently approved Golden successor (2.6761ms)\n✔ S13-T — exact independently approved Golden successor (2.148ms)\n✔ S14-N — exact independently approved Golden successor (1.7945ms)\n✔ S14-T — exact independently approved Golden successor (2.0692ms)\n✔ S29-R2 — exact independently approved Golden successor (2.2167ms)\n✔ S29-N — exact independently approved Golden successor (2.2116ms)\n✔ S29-C — exact independently approved Golden successor (1.3379ms)\n✔ QA: extra clinical field clinicalFlags routes human (4.3528ms)\n✔ QA: extra clinical field injury routes human (3.6474ms)\n✔ QA: extra clinical field illness routes human (2.1193ms)\n✔ QA: extra clinical field functionalLimitation routes human (1.9737ms)\n✔ QA: nonclinical interruption cannot reuse progression profile (3.4795ms)\n✔ QA: truthy unknown coverage is not sufficient (3.4241ms)\n✔ QA: malformed requestedPolicyIds fails closed without exception (4.3872ms)\n✔ QA: daily observed conflict event is never discarded (3.5039ms)\n✔ QA: daily actual conflict is not a successful completion (5.4088ms)\n✔ QA: daily inference is not an unused side channel (5.0528ms)\n✔ QA: requested taper cannot be satisfied by daily or Golden different policy (5.912ms)\n✔ QA: clinical flags take precedence over unassessed eligibility (2.6056ms)\n✔ QA: novice output is single-subject and every dependent recipe revocation blocks it (52.7331ms)\n✔ QA: daily event id is mandatory for complete traces (3.2155ms)\n✔ QA: daily actual subject mismatch cannot establish adequacy (3.9785ms)\n✔ QA: one canonical source cannot establish two full-session executions (4.5044ms)\n✔ QA: malformed daily rows and primitive metadata yield schema-valid nonprescribing decisions (10.3294ms)\n✔ SSCTR: Golden must bind all observations and ancillary context, not just facts (4.6172ms)\n✔ SSCTR: daily no-op cannot ignore an attached branch or learned context (5.1975ms)\n✔ reviewed adequate Run-first week returns KEEP without mutating official plan (12.4169ms)\n✔ unknown eligibility fails closed without plan effects (2.8086ms)\n✔ clinical concern fails closed without plan effects (4.9141ms)\n✔ missing metadata fails closed without plan effects (5.5501ms)\n✔ source conflict fails closed without plan effects (2.2441ms)\n✔ missing upload is not missed session fails closed without plan effects (15.4688ms)\n✔ revoked exact approval fails closed without plan effects (6.8601ms)\n✔ stale registry fails closed without plan effects (2.5514ms)\n✔ unknown policy fails closed without plan effects (3.1479ms)\n✔ unbound known policy fails closed without plan effects (3.9038ms)\n✔ changed athlete competence fails closed without plan effects (7.5139ms)\n✔ changed calibration fails closed without plan effects (10.9317ms)\n✔ changed exact dose fails closed without plan effects (10.9199ms)\n✔ current scoped hold fails closed without plan effects (2.0909ms)\n✔ unknown recovery context fails closed without plan effects (2.0655ms)\n✔ extra conflicting history fails closed without plan effects (4.6571ms)\n✔ first-ever establishment fails closed without plan effects (1.1509ms)\n✔ real use prohibited fails closed without plan effects (1.9225ms)\n✔ broad envelope does not authorize a new calculated within-envelope change (9.9761ms)\n✔ branch actual24+8=32 is not the original40; completed prefix retained (9.4617ms)\n✔ calf branch actual7 is not planned9; no replacement or debt (12.1893ms)\n✔ learned history uses distinct supplied observational episodes and no causal claim (16.888ms)\n✔ longitudinal purpose denial suspends use of learned response (6.5545ms)\n✔ same logical evaluation replay records once and never applies (12.7621ms)\n✔ returned snapshots cannot mutate official input or other evaluations (7.669ms)\n✔ priority cannot create necessity; copriority trade-off remains ASK when needed (0.202ms)\n✔ daily actual is validated independently; planned work never becomes completed by absence (11.1405ms)\n✔ malformed input remains a nonprescribing decision (0.2021ms)\n✔ all E2E and Golden decisions validate against the delivered JSON Schema (190.6164ms)\n✔ schema rejects application and incorrect autonomous mutation ceiling (4.8115ms)\n✔ G03-W05 confirmed mirrors and replay count one segment, retaining each provenance (10.668ms)\n✔ G03-W06 distinct canonical executions remain distinct despite identical metrics (0.3635ms)\n✔ G03-W07 ambiguous identity preserves alternatives and blocks dependent total (0.2993ms)\n✔ G03-W08/W09 verified correction replaces old segment regardless receipt/replay order (1.1209ms)\n✔ correction scope cannot supersede a different set and correction cycles fail closed (0.5445ms)\n✔ G03-W19 opaque revisions or conflicting deliveries never select latest/average (0.3374ms)\n✔ G03-W19 explicit suppression tombstone survives correction and provider replay (0.3474ms)\n✔ G03-W03/W04 zero is observed; missing coverage is unknown rather than omitted work (0.2394ms)\n✔ G03-W17/W18 planned/projected/inferred data never adds observed exposure (0.3064ms)\n✔ missing identity/state never defaults to a confirmed completed fact (0.4279ms)\n✔ ambiguous association cannot become an observed total through canonical identity alone (0.2349ms)\n✔ G03-W01 exact/ranged comparisons do not supply tolerance or physiological conclusions (0.6213ms)\n✔ G03-W11/W12/W14 mismatched constructs/units/methods/configuration/target revisions remain unclassified (0.4436ms)\n✔ G03-W16 accepted remainder target preserves executed prefix revision (0.1987ms)\n✔ G03-W13 explicit source conflict blocks comparison, even if numeric value matches (0.2156ms)\n✔ G04 unknown eligibility is ASK; supplied clinical dependencies always require human (0.4908ms)\n✔ G04-W01/W02/W04/W06 no duration-to-dose or old-load restoration follows a pause (0.235ms)\n✔ an approved return recipe only routes to its separate policy review, never restores old load (0.1868ms)\nℹ tests 98\nℹ suites 0\nℹ pass 98\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 586.8064\n",
+          "stderr": ""
+        },
+        {
+          "command": "independent in-memory adversarial input/authority probes",
+          "exit_code": 0,
+          "count": 294,
+          "revocations": 258,
+          "prescribingRevocations": 179,
+          "results": [
+            {
+              "name": "clinicalFlags",
+              "type": "CLINICAL_HUMAN_REQUIRED",
+              "modifyCount": 0,
+              "inputHash": "5d1b1a0a748d19a42c29943529e9238d53091e6473b726329b86fa0a0ccab0f9",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "injury",
+              "type": "CLINICAL_HUMAN_REQUIRED",
+              "modifyCount": 0,
+              "inputHash": "78f00a793e4b79f4bb976ffe32606252392098e90669c7882aff69e81ef08bb2",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "clinical dominates unknown eligibility",
+              "type": "CLINICAL_HUMAN_REQUIRED",
+              "modifyCount": 0,
+              "inputHash": "097a7049ed49167404391149085f9733c5c3e18fcf6498088372c90889ccbfb9",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "interruption",
+              "type": "ASK",
+              "modifyCount": 0,
+              "inputHash": "efba08a6be159928f8425ad7d011fc89927456ad00cdac10294cd91eb75e4eda",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "unknown coverage",
+              "type": "ASK",
+              "modifyCount": 0,
+              "inputHash": "748d9a19573ff4c3cdf04e06e9bbde867c5704995a00931dc73c809b6dae0ed2",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "malformed requested policies",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "d58353b97ec31f194b74c5b294fdde73a3c71786f3e0405b28ec1c935f9472f5",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "numeric timestamp",
+              "type": "ASK",
+              "modifyCount": 0,
+              "inputHash": "ea3c6829ae74f34dd2ba22493116fa06cc9d7052a8e904f16963012fe12daa8b",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "object source revision",
+              "type": "ASK",
+              "modifyCount": 0,
+              "inputHash": "121de13cdba41c58238c1dc7f156a32e18c08dcc638fbe2b93df9ef325c6b96a",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "object source ref",
+              "type": "ASK",
+              "modifyCount": 0,
+              "inputHash": "8b1807fde0d3ded2541cfa56880083dafe18cb6d023861809b396e692e28b158",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "object fixture id",
+              "type": "ASK",
+              "modifyCount": 0,
+              "inputHash": "746303b06fcb54b50d33b2c656c52b31581ddfa58435a5444912a1682c8882f0",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "numeric event id",
+              "type": "ASK",
+              "modifyCount": 0,
+              "inputHash": "9ff0591541b3aa7d2e99c18110478312de4915297f226493903f744e7b277ab8",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "unknown policy",
+              "type": "NOT_SUPPORTED_YET",
+              "modifyCount": 0,
+              "inputHash": "f1798add91f3b41d0161bb8437a02abbfe7bbfd2047944334c6168d7e2063f50",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "source conflict",
+              "type": "ASK",
+              "modifyCount": 0,
+              "inputHash": "fa3a32ea5b7e13c27148c0a009c3ed4687191d842fc35c97da7804e962b51c6c",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "missing source revision",
+              "type": "ASK",
+              "modifyCount": 0,
+              "inputHash": "bad1434b7094e058bd4e6d0cc7b24fcce3b19342989b75c3e085b55a67c0db44",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "stale registry",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "aa445c50f9ba9ac3f1c7b8cf244008662eadffa0a2956e2fc73e605c93766057",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "current hold",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "9bb1db6636fd88e0f8dea8b09d28e41c82dac5f9799d73e68cda47c07c2fb365",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "extra inferred fact",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "fc61681a74fbe065c3b7905e9a43faf6c95091e41b8588adacf3b9774c3cb97e",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "real use",
+              "type": "ABSTAIN",
+              "modifyCount": 0,
+              "inputHash": "0ee22dd8e91ad8f6a18b39754fc439bc61ae3db950f3fa070dbb96896afbd370",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "first establishment",
+              "type": "NOT_SUPPORTED_YET",
+              "modifyCount": 0,
+              "inputHash": "4e663a253cdf05e8bb3b4a6e0a8bf5854a711b0979545b0d757952c6452ae77f",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "daily extra source conflict event",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "8d7950cbd269f0acc654a305121e3937b13d6377b4bb83d80dfbff601c90503e",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "daily actual conflict",
+              "type": "ASK",
+              "modifyCount": 0,
+              "inputHash": "737ad21f3fffcbe8396829d957af05b238152d2ff6ca66441fd6649e2c24a57e",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "daily inferred readiness",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "2139a289754fbfadf1d3d693a71cd61b334dd1dab224e4dd1dc54917a0610490",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "daily clinical observation",
+              "type": "NOT_SUPPORTED_YET",
+              "modifyCount": 0,
+              "inputHash": "cb6fdb8bc1103e2f747d59a92a49286abd83ad2dde80ea3c5d64eb9ec9b7b43d",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "daily observation conflict",
+              "type": "NOT_SUPPORTED_YET",
+              "modifyCount": 0,
+              "inputHash": "26924bced910e1134101a39aee93b4fa34d0779c5c3673345afa5081a784d97a",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "daily null row",
+              "type": "ASK",
+              "modifyCount": 0,
+              "inputHash": "96711a9171abcab9a3d0ea70bb7b76a27319199f8d6b507bb512bb23d9a29b96",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "daily no event id",
+              "type": "ASK",
+              "modifyCount": 0,
+              "inputHash": "1719f8f541c1077f7180b93d00597c8fb91ed8c8c10181cb8a51f886677cae10",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "daily other subject",
+              "type": "ASK",
+              "modifyCount": 0,
+              "inputHash": "2ea5879adb56bd211e8a934d7481351c321406683fa58c8a480e0b5097733156",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "daily duplicate origin",
+              "type": "ASK",
+              "modifyCount": 0,
+              "inputHash": "abf417085a2ab10a355c0b4eb255cb24b8e71bac241036d1f1c12215afe2387e",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "daily future observedAt",
+              "type": "ASK",
+              "modifyCount": 0,
+              "inputHash": "5be658e646fd3c9b1c73062ebfa185851d089d1e697e0ff2eadc7201758b61cb",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "daily unbound policy",
+              "type": "NOT_SUPPORTED_YET",
+              "modifyCount": 0,
+              "inputHash": "1314e9affb1dea4e0bd00c022043f9165ddbfeeee9b3695383d276583042b5c2",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "daily incompatible dose",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "6dee721d1e49d95fcd30bb6c30719f063ddf4eb4558f9dfc47e6dcbd382b57ad",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "daily missing subject",
+              "type": "ASK",
+              "modifyCount": 0,
+              "inputHash": "bf088f979a5a8de8e5d3616acdb78909999104f280f48ba6f179f8e9bf96fa6b",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "Golden unbound S13-T",
+              "type": "NOT_SUPPORTED_YET",
+              "modifyCount": 0,
+              "inputHash": "1c10954b3e8f802ffc176a36cb18b4c692f19788f1c259013fcd0d850b7447a5",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "Golden unbound S14-T",
+              "type": "NOT_SUPPORTED_YET",
+              "modifyCount": 0,
+              "inputHash": "66cb040bc4e2d0b124f2eca9806e2fdbee2dfa40a5701aa22587c02687c77ee2",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "Golden unbound S29-R2",
+              "type": "NOT_SUPPORTED_YET",
+              "modifyCount": 0,
+              "inputHash": "f9c8519e2f6636e9573b3edbf8261983dec2d5f08d4de2b57ff735361471e773",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-01 revoked SSCTR-ACF-E-WEEKS",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "480e988faf2c4050d994c7fe30051f3652d118b6b38915152c256797373658be",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-01 revoked SSCTR-ACF-ABC",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "b2688c4b252b3223efa0038abebe6bd50becb005420e2969ddaa4689c2b025a1",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-01 revoked SSCTR-ACF-P07",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "7d91f8298a59ff558cadac8458f9422f321a7d096c3d42c3b15cfdea62fd22c5",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-01 revoked SSCTR-ACF-P08",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "56237bb571df250b2134921d152b6cdf82d708e667b2bfc574304c7137595f67",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-01 revoked SSCTR-ACF-P18",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "09331a165f458e8f8199db0f9a880b955d1114c865485e2438203bb679eb359a",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-01 revoked SSCTR-ACF-P19",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "a1a90386cff9bc0ce7ad40f783a430f1d7b4681b32a99bd59324952ddf38c7be",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-01 revoked SSCTR-ACF-R01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "8b414e4a2076bc3e82bd140857a9b7717990eef5745ca6964a67476cce356fcd",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-01 revoked SSCTR-ACF-R02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "74e35bc82a500e4fbb3280372bbdc8e483c125814882821abc1979a54a75d418",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-01 revoked SSCTR-ACF-R04",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "567d02fd5671781e3f3cbaddd2c19d00a2f88848013327aedb72712d4f803d2e",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-01 revoked SSCTR-ACF-R07",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "ce0da1e6605741a0a674c9032172cff6b3411cc6c577183fbbeb66615ba580c9",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-01 revoked SSCTR-ACF-S01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "05db60cae469535bcff24f45fee6620614941e9048bd3df32e836bfabc5daf85",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-01 revoked SSCTR-ACF-S02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "cb835023299e60882dca80a466d6adf3421598db7556866a4dfdc8669afe6d82",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-02 revoked SSCTR-ACF-E-WEEKS",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "9d1338efbba092da0a956ead856df0a8c05888732c89bc4cf324113348d0d884",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-02 revoked SSCTR-ACF-ABC",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "4a52c749afba918b174b8c8b5d353e27d23b14372d6d5f26b31d3bd5d6461c8c",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-02 revoked SSCTR-ACF-P07",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "1ef06a72f8a6bdfbdb0a52d91e70981900140cb7e6a7b32869a461fd598aa4d0",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-02 revoked SSCTR-ACF-P08",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "8f18724f271dc692a005f7033f8f976d9927a02fef764c39ebe82bd1abc7f363",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-02 revoked SSCTR-ACF-P18",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "fc49db587bf431eb84fd1c9afdfc0b6706a8563d8307c170259f01ddc7cd0c4b",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-02 revoked SSCTR-ACF-P19",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "2c0c334f8be1a7b9ea1f4b122b7cb693138fcba81208203d6b6dc4ef84699485",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-02 revoked SSCTR-ACF-R01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "41bec030051673644599ba2a50f548ecdcee8541b971fa49e7f9c04d460eb677",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-02 revoked SSCTR-ACF-R02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "a36c5a7860899084cd1aedb5072ae88b5bf8736a361b08ad79e6902c47deefba",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-02 revoked SSCTR-ACF-S01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "d510fae4391c82000372d7a83c0e66ba059c70825d72afeda6094079767416b2",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-02 revoked SSCTR-ACF-S02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "0ea5875bb3b288ea57b20048f3fa3a79c1f33c3f4c6f9686f9b34ca534e864cf",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-02 revoked SSCTR-ACF-S03",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "ffe15cb560182764a50dd5b0346db4316ccd1d5106dc9464654f2427a1605a30",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-03 revoked SSCTR-ACF-E-WEEKS",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "f7497ed7893a7b39988d761e1dffc13e501f248ebf2fb665da8cdb136060c480",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-03 revoked SSCTR-ACF-ABC",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "957f4367dfe0fdbfb0ba42998f9ed34d3ac31d3b630410161e0fa06cf3c8c2c4",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-03 revoked SSCTR-ACF-P07",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "42de424cc1c1539b3fc4de262f3b2bff933b3773ffb15091690e6ba107984ad6",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-03 revoked SSCTR-ACF-P08",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "b7db07e8473f68c3aba0dab3e7fcc1c8f8b365fe0e136bae8fdbf3eed21fbdfd",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-03 revoked SSCTR-ACF-P18",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "38e291f162c8954b3e8e96b5f8e1228c3d17947eb5064cfd281527961c199915",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-03 revoked SSCTR-ACF-P19",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "ddd6d5ff564cf5cb6b7ba4948889958fc0e7e890205387c8e1379e63fea3e3d7",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-03 revoked SSCTR-ACF-R01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "15e284c0e8bdbea59639d77f8d6b2d145687b0fbb3c6868140a66a987960153f",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-03 revoked SSCTR-ACF-R04",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "1a2d2c32a754b207b55a23c941a862f402a563e10be90c7024c366684dafdfbb",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-03 revoked SSCTR-ACF-R07",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "6d4c34322fe8e1b3a41416fda7f68a8001c7653d213d15e5154594408dae5818",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-03 revoked SSCTR-ACF-S01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "05083339051211fb0abbe5d2476acfec5d33ded9465ea4568829d4a22cbfca37",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-03 revoked SSCTR-ACF-S02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "7aebcad76a460f594bd9ccd365e558b1e4096cc5acced63882ebc242ffca6c45",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-03 revoked SSCTR-ACF-S03",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "c7e87a31a043946667e02a8715893fb025700f10267df9fbde8a321fabe7092f",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-04 revoked SSCTR-ACF-E-RUNPROG",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "bfa42050126adc91ba0607c7b11507fd142d96bd569b6700a13300cadedf5bcf",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-04 revoked SSCTR-ACF-ABC",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "12a67a7786ec88e9a7f3fa6d4ffe8297e6eee6ac546ba7c1a624c3176361de84",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-04 revoked SSCTR-ACF-P01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "22ee9492f8d6680445a518dccda82f58b1ca02fe624024138e31283f1ba25af1",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-04 revoked SSCTR-ACF-P12",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "b9105012e98070dbdecd81c00f8dc6a309818b7c778dc64d6ef34f4c6cb4ca1e",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-04 revoked SSCTR-ACF-P16",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "c723fbb3cab2c2b33be3343a3de698da971dea87402248fae0bf3f0f80a5daa3",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-04 revoked SSCTR-ACF-R01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "a8462feb5b0641d9fed2d278b2c58d09d5925e2949f688fa4af055361c1d7c8b",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-04 revoked SSCTR-ACF-R02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "88b9943ac33bc81d77573541aaf34e16c35a1cdf847bf281a78a1db2d5b4101c",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-04 revoked SSCTR-ACF-R04",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "79f5fc5d917e00e07cd0a02655a998f27ceea40c72f833c8ced02884ebd36b2a",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-04 revoked SSCTR-ACF-R07",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "4bd0c956e1675c4c67e2cf05cf9982060053fe506f0295ba4d6c214d9c4c425c",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-04 revoked SSCTR-ACF-S01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "252103ae38c193f230c2cd76561ac2d0a9d6955f7bca473f3a34693dc3731a68",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-04 revoked SSCTR-ACF-S02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "3327bfd1f01aec8fc4776d43b16887258600dcdbe6e7fc08594971851cd54c61",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-05 revoked SSCTR-ACF-E-RUNPROG",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "d100777dd25ac86be65c0df0766417037512eba28e6d2dead76e618ceb7fe9e6",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-05 revoked SSCTR-ACF-ABC",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "67957636699629223915eee8a9554c4726d43494d522aeeac7ffb8431feb4441",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-05 revoked SSCTR-ACF-P01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "ec7bdfee67c7b8e6840b7826f83017857f786e57c30416e1f616366b5ac6cccf",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-05 revoked SSCTR-ACF-P16",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "90d0fb7ae18f6e67653895bec3664e2ee2be49c3f2882e5aec4c3902623e1297",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-05 revoked SSCTR-ACF-P17",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "95f0a508c2162c97a115ccd381a193413d524b9b506e141db9f428ae882945e6",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-05 revoked SSCTR-ACF-R01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "3ef8649c767ef234dd6fcfb47782a198285c83ef4483e944c94002a1b80baaa0",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-05 revoked SSCTR-ACF-R02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "132d1b17d54fef183ebc0fb8a36eb58a59e5f01dd78200951afb4163a63fcec9",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-05 revoked SSCTR-ACF-R04",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "72f3a46b9a750343cc868cf37dda5b02f0b0163758a506cba4f8f007a70dceef",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-05 revoked SSCTR-ACF-R07",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "a7abeca8d55b2326897f124fa980ddcf8e6ecdc65c13f7da47f7fecdbd61c187",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-05 revoked SSCTR-ACF-S01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "b836e5626528827c0c1fac622755f4242b8c8c55bc6e12e4b8b4ef4a6559eb4b",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-05 revoked SSCTR-ACF-S02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "67b1e1d47741fff008775462ad5286427376be167fe141ebf034dec7c77e89a2",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-06 revoked SSCTR-ACF-E-STRPROG",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "41a96f34f37c97c7524bc16497addccd2c9413d284e638f9f4bf0ec67d7a25f6",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-06 revoked SSCTR-ACF-ABC",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "2bc09c55e9d8f741c1e003e86cabfa86b49891b8c74807ca78247e54049e9176",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-06 revoked SSCTR-ACF-P01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "60741b080ebe176d0d9928dc3bb2fea60062ebef7f2bb7b3f0a35a3b2b89daba",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-06 revoked SSCTR-ACF-P03",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "748f5b179f5ea44edb8c71c0c8b83bc24d6b2bfb05280c3868b79c1189a9831c",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-06 revoked SSCTR-ACF-R01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "2e129481a28d88a5a5955f723365c0436e5f46dded8d48192b30d6969802046c",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-06 revoked SSCTR-ACF-R02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "e552212030a39efc0284bf11252cba11f92f635c38fdb7048ca85221d76b7807",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-06 revoked SSCTR-ACF-R04",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "6056a72c75cda448f52188f81717bcb6173639c80a909fd8ab884c20cfc4c9e5",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-06 revoked SSCTR-ACF-R07",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "a89dd2cc09422ed7c633111fe19d3103c8d87743c051ed8b3630162ce15474d6",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-06 revoked SSCTR-ACF-S01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "ec54ef4cc9849b3be9e49e35886d54d085ed216956886160fffe80d4898c9cad",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-06 revoked SSCTR-ACF-S02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "fc4db059f4ede69ef4d7aae7e0f4e6576a00345ceec2bf06d44ca85dac305ece",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-07 revoked SSCTR-ACF-E-WEEKS",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "a6f08ddccf4bd602ed4e02d8b15aa2fbff2dd12440c38719302f1c50ae3df989",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-07 revoked SSCTR-ACF-ABC",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "0e93816d4229000853bf3007faf06fb79d72dca6b035a05d8ea2bd969f518016",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-07 revoked SSCTR-ACF-P04",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "45bfa2b269efedd1901ee3609fa7db67cb59b21cf1c0be9b0cbe4b3b62cd7d84",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-07 revoked SSCTR-ACF-P15",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "f028e2e93bd5b2a6b637515969aa8653c89a791edc578d46f6df2e7cf8a3b1bc",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-07 revoked SSCTR-ACF-R01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "efe168b31dda27e09de734a59b865bfe51907d10c0e3ef04e8ea577efdb68d08",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-07 revoked SSCTR-ACF-R02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "08aefc3912c0ccd20ec6ea8fcf6addc394d9969c1c68b03cb5b87fb7035a20a3",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-07 revoked SSCTR-ACF-R04",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "e483c6d5d3b002fd277328d534d5f656f3788e40b2b640e6011c60fa5812a20d",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-07 revoked SSCTR-ACF-R07",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "892f42f0f22ce50bb2eb32ad7c1f8b14f79d297d04bb568d811b7d78cae8c981",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-07 revoked SSCTR-ACF-S01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "1290b28a4abbfd87724213f1866af8902eab040e0fe0f533f01de15d6eb44749",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-07 revoked SSCTR-ACF-S02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "ba7ac16b0c8d3112de05ab3034b98a84810942e0af205a71c978fd28dfd2551d",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-08 revoked SSCTR-ACF-E-CONTROLS",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "38b2dc738f5aa7e810f8dd5cb4ffa339c81a4ee73df56b1e9dacc7a54515c344",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-08 revoked SSCTR-ACF-ABC",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "8a8711009f88529ca84253b72b19e67406fb0d3d51e9f427dc7610536952cf45",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-08 revoked SSCTR-ACF-P05",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "3c39bff2568eee4024445846163b6bf66ca4943d960a6ebcc73894a7d6b78e71",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-08 revoked SSCTR-ACF-P08",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "a3534994be60bcdcd9cb33709ace8635375c2e30c9fff6c3f24228a216611cd4",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-08 revoked SSCTR-ACF-P19",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "63d5d0fe271a7f21cd5ecc1c1c60bf9e693e3272d1fcf7a2d69f0e6d2d120d8a",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-08 revoked SSCTR-ACF-R01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "ad8e117ac709291aa00b00dae6907d2c130e7629a7204b85326c30229122f13a",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-08 revoked SSCTR-ACF-R02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "5880385716adbfef7bb3774b82e4e5341abcb734f6284cd5e99b07876a7214de",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-08 revoked SSCTR-ACF-R04",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "d75c91305305e940462b893935596e0f418ba420a890722cb4b8b50a84d4d792",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-08 revoked SSCTR-ACF-R07",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "c2e4202aff5f8c22206aadd2a2f9a13739a9a16d3c8ae2ddab674ad11402cbde",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-08 revoked SSCTR-ACF-S01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "be243102cd5c8f15ac4e7571bff5dcf362e26211a686daa3cd7d7384bcbdbe11",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-08 revoked SSCTR-ACF-S02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "7c2060bee3210786a971b8d531a7f7fa031f87e77e1b49aad3f376123167a655",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-09 revoked SSCTR-ACF-E-CONTROLS",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "29e7642d28a0df1997002b8b5fbee1fc7dda3009dfbef621cfb6cc0eb0ade45a",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-09 revoked SSCTR-ACF-ABC",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "feb4c20d0c7664922354ca9a0531ef8751087e7d3e316b89754c3b32b4ef8e51",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-09 revoked SSCTR-ACF-P06",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "005ace7b98aa635123f430ca955f16cd7bd3878d2d47d47e6833afaf57e85e88",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-09 revoked SSCTR-ACF-P12",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "b569e266a48a4857f29f2d9021626f8128b8a03bbf178fa5777029fd702ecd51",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-09 revoked SSCTR-ACF-P20",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "0b1ecb5101e4217a621ae5e5425dbe25850e1c868268a37d5072d018351aa086",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-09 revoked SSCTR-ACF-R01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "98d059abb1141874e990bc6c252a1e51e879db15f07a67e61e8fc7d6461fb683",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-09 revoked SSCTR-ACF-R02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "15c88c126eb41ecc0026cf103ebcfc818358f76a75e2e801c26f16d715230c1e",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-09 revoked SSCTR-ACF-R04",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "f2874b120fbd46db86f48f76a991ca56c799c438058df0ea1eb8a6af10e1b7e1",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-09 revoked SSCTR-ACF-R07",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "d22fe08582d34ab232426ed6f0fef6994ad3ef97644dda3e0c316d1cb3b24b82",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-09 revoked SSCTR-ACF-S01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "c42418254820dfb4022205fbc96da046655ed8840fe0965014eaeae705748322",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-09 revoked SSCTR-ACF-S02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "848c76a89f77c099e4d12662857e3fd51be5d3d7ff7936e819c6c34eaf84ad92",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-10 revoked SSCTR-ACF-E-WEEKS",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "02d50c3eb9e6f0c371a02bd7ef1e15d69560004c112bfeaaeab925b25d1c3849",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-10 revoked SSCTR-ACF-ABC",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "e689f32c351f37c119ac9ade33bd760dc879537afaf52f7e1ab9170a383cda80",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-10 revoked SSCTR-ACF-P03",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "d9c5f42b055fb8359993c559cc6916f571b41d50372a21bb31b3550c485cacef",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-10 revoked SSCTR-ACF-P16",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "cb0cd642d538d6cf22abcb557e9e0c6a4c86af6593b57c7614a07d82ea03c5e4",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-10 revoked SSCTR-ACF-R01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "7a0820ab8c9704b16232f148628bf89dfa8f4f2bb0b9356ccb61a14b4bc419f9",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-10 revoked SSCTR-ACF-R02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "baee20f16c4bfd407bd524f74dccfbf3e341845c14d43edfd6aa3a012bd4c7da",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-10 revoked SSCTR-ACF-R04",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "ddff10a30dd352c1887732d1830bea6829ee0c7b56bff19606170e69139b0eea",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-10 revoked SSCTR-ACF-R07",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "58e44101b16690d4f9387beef92195c87daf3ce108f6c272f8a3303ba9f1080f",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-10 revoked SSCTR-ACF-S01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "330c81cddee4c841e8852ba024b38a9d1c2b343d28d4dccafa5686f3e0bb2f98",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-10 revoked SSCTR-ACF-S02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "7415ada39023e2f051eddfb2c615e82fc70f210a4ff0d76db761d3118a924114",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-11 revoked SSCTR-ACF-E-CONTROLS",
+              "type": "ASK",
+              "modifyCount": 0,
+              "inputHash": "5cd4519b18b9563d73a7a70323eee754ab26477f9e3ea9c4689d10b6dd366ed3",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-11 revoked SSCTR-ACF-ABC",
+              "type": "ASK",
+              "modifyCount": 0,
+              "inputHash": "3236a44df3103fab6f23e7e483b1f39da0c18f39d998a8db9f6fdf3bcc3bad03",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-11 revoked SSCTR-ACF-P02",
+              "type": "ASK",
+              "modifyCount": 0,
+              "inputHash": "6531da24ab99c05d2727907f246f5aaa03bda4954a49a47b293497c0da65b422",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-11 revoked SSCTR-ACF-P15",
+              "type": "ASK",
+              "modifyCount": 0,
+              "inputHash": "01481904092f2c6a51c032cef888ee2cb8c95805dc062f2fd87fbefefc75a265",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-11 revoked SSCTR-ACF-R01",
+              "type": "ASK",
+              "modifyCount": 0,
+              "inputHash": "9a413727b00d40aa86a1ff2e1a6b8f172cbf9130b858e442650e088543d685ca",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-11 revoked SSCTR-ACF-R02",
+              "type": "ASK",
+              "modifyCount": 0,
+              "inputHash": "92db0512f0cd5e638d09b015bd726a76c4c20b1eb0ca68267d115349971eeb0c",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-11 revoked SSCTR-ACF-R04",
+              "type": "ASK",
+              "modifyCount": 0,
+              "inputHash": "74b8111e2b7a6ba7de398d439c6f5547647f609e6a3d633845aa532d63dd79d1",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-11 revoked SSCTR-ACF-R07",
+              "type": "ASK",
+              "modifyCount": 0,
+              "inputHash": "916bf29e869c649740e9cce89c11d0d5b4df97c8ebdc69b43abee069c7e3da5a",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-11 revoked SSCTR-ACF-S01",
+              "type": "ASK",
+              "modifyCount": 0,
+              "inputHash": "10ab003921501db7fe662574485781352b9c6e8edafed7edef19d03a2840451f",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-11 revoked SSCTR-ACF-S02",
+              "type": "ASK",
+              "modifyCount": 0,
+              "inputHash": "e6c98be4b40a68e457bb624ee0f2d6823b7bdb8e84da2ae5d827d8b252cad57e",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-12 revoked SSCTR-ACF-E-WEEKS",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "65f28142f0c2c986046376d5510df2b4c8bdb0b081e1002a749f1a3a0aae5341",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-12 revoked SSCTR-ACF-ABC",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "08bdf6eb9dba948ae65b46c05c1f61c796e72186b1b9bd15ea91065f77caf6d4",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-12 revoked SSCTR-ACF-P07",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "73511b5228dc70c3366a5d0aae55513cec88caab35cf79254c34aedd0d0a30f2",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-12 revoked SSCTR-ACF-P08",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "b952d690dd2d8ddb30c00a0126ac9adb834e21020e77da73746034053cefc112",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-12 revoked SSCTR-ACF-R01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "a37ad8e0932fd4a625a6d7d7514c70c845b9b5ec67ff7815232891c7d215f7aa",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-12 revoked SSCTR-ACF-R02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "9297952e95b61a704dfb22a0b5c8f624ac2cf906128b6c180f66ff6c9e08808d",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-12 revoked SSCTR-ACF-R04",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "7ab93d8e0a49fa700dd98a86e4ca7beee6a3519a411216ac5f38ea0fe041a433",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-12 revoked SSCTR-ACF-R07",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "ca65fd82123637b6a4f57408b34e7247f3ecf9376e91eb2487022f73b915f383",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-12 revoked SSCTR-ACF-S01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "d768d219676e98b9862b221bd69b9b7707c1269b435045d1ca7b05283891a8e3",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-12 revoked SSCTR-ACF-S02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "d27be023988ce268ac4e341b69b55ffbc5faca816638b89d5048a28398498a61",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-13 revoked SSCTR-ACF-E-CONTROLS",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "568ac48c00708962c594d10deda49ea4124c8cc1f669a2d1f073743539375caa",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-13 revoked SSCTR-ACF-ABC",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "73b5de423c14aee3ae3055e8d16d8d23d08e7085cd5212a444cae1bb78aa3f20",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-13 revoked SSCTR-ACF-R01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "425e2d5222787a0a12cd9ab473095da9f11de9f297f27ed789a8b61131adcb35",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-13 revoked SSCTR-ACF-R02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "e20f3d296ab4ba6286737a79b6ec51a3b512fc0219545833c2f5d778b22f0199",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-13 revoked SSCTR-ACF-R04",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "20fc95916867dc338e6b887a479b106856d3f205ca52b66f871b79d9c095143b",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-13 revoked SSCTR-ACF-R07",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "0c08749999d5f7e618a9bef2344e9973200b06ee0d77c40038c93cad328e77c9",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-13 revoked SSCTR-ACF-S01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "f078447499571375b4ae9a4a65f89bdcf18d2cf3c0bab5ae12b578be4f924415",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-13 revoked SSCTR-ACF-S02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "6750baec32c7004c311f6c812f3760940f3dc5c622540e6325c99cc6fe937516",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-14 revoked SSCTR-ACF-E-CONTROLS",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "c3babe98187710253a21641a4c4e5db2190d15c7ef696707001351fc6f8b17eb",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-14 revoked SSCTR-ACF-ABC",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "2019e0bc93305b8759a804478b90df057d5ecb066d39c185e550660732cc4905",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-14 revoked SSCTR-ACF-R01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "294763868f41c6ee19130b99849fc01f870dec3323ad412dfc9e3046d578e31a",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-14 revoked SSCTR-ACF-S01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "2c3719ce72cb996dcc559652dae6731c17098e55148262cbf502e70e99522876",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-14 revoked SSCTR-ACF-S02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "276fc6fdb4ddb1307422fbf6910fc74647cdfc1d467c239b483232ab3aa89d70",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-15 revoked SSCTR-ACF-E-INSESSION",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "0813e7044e92958b7a53a6b8d749aef1ce143d5c3aae7f01cb9bb23694b6f6bc",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-15 revoked SSCTR-ACF-ABC",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "8d1759b7fa1daa4eac492aa641fea7be53813d3f6cb1dea84786b583c126af78",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-15 revoked SSCTR-ACF-P18",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "3a2b2444ad32a1f76725e13e7ff5f19166ccabbc32ab992c2b16061af1c1614c",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-15 revoked SSCTR-ACF-P20",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "98973d3ba87bf7de1a8509d37f70a92075a8215cf9feef5b0bf626160591458d",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-15 revoked SSCTR-ACF-R01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "e1a1a46d7ed4b4a521b3f679086b90a76554d4f14f3dad027015826c53da857b",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-15 revoked SSCTR-ACF-R02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "490cae5fc751525b584b7bae4ee0347cd3d73c981ce2f21e379b2bd3f400b047",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-15 revoked SSCTR-ACF-R04",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "a16d2b6de33b7c24eb5361415ce61223b0a9df8bb760c17ca4db41c2e57a540e",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-15 revoked SSCTR-ACF-R07",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "c94819b916aa8cf00ffbc42ee10e3367f922af7c4c0988c2bca7cba773279c74",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-15 revoked SSCTR-ACF-S01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "8fe9f48cad39215ddf4fd21204511e0bcfbd061d0239704958d37ba017bbf30c",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-15 revoked SSCTR-ACF-S02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "00d2d795b5a075fb006d58d0aad9d5966e60e9fc73eae65830f94d423f1142c6",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-16 revoked SSCTR-ACF-E-LEARN",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "6b9d541bdf399c1d694a1f1a82efb770459a1540b57cd3c5a050c1c916b69b33",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-16 revoked SSCTR-ACF-ABC",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "607d734b64989f3f152cbe4e16a09264b368932630984a32e031552cf92ea415",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-16 revoked SSCTR-ACF-P08",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "36ed035af30910ddbdccfc015a3a87d27f67a17efcb429eccf218ec0aaa43767",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-16 revoked SSCTR-ACF-P16",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "7ba57ba97ed7aa5e197aed0faf14d53482a971a557136b3d2f0edb83db2fa080",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-16 revoked SSCTR-ACF-P19",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "16820b8bc8acf7e74226b4d7079ed0c3825147533bdc7d9fa421d26ad32a7d53",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-16 revoked SSCTR-ACF-R01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "a341a4863abd449858ba968cdaa407c02e6648909c9541f2343def5d8b2e630e",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-16 revoked SSCTR-ACF-R04",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "9086723c52e4e73db86c979a89de4540bca2f00731f58a8a46d4ef7c66afc425",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-16 revoked SSCTR-ACF-R07",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "feef0b66a65f7d828a244d29663e62d5aed27b5f4a69627012ad51641734eded",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-16 revoked SSCTR-ACF-S01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "70f59951aa59ad17571984f5b66abe2f8372cc234b54d194449d418eca5dbc8d",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-16 revoked SSCTR-ACF-S02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "d1286f5ea485465c7250a9f79637fb8eae19fff37d7ddea7c7d77ffdd3a85132",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-16 revoked SSCTR-ACF-S03",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "b337b22d156ed8c7997267f6e11bbd9c31bffc7b58061a0586c8a0ba2918d307",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-17 revoked SSCTR-ACF-E-CONTROLS",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "5a40bdd0e8fbfde2321622b17a990dfdfad934649ac733865b8debf583da1a53",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-17 revoked SSCTR-ACF-ABC",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "571711c7370d02d13ff901c4ebd2e1f91722c661f43b91a13e075a53009a7a55",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-17 revoked SSCTR-ACF-P09",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "2149b2db42cc6dbd4af4b4d3544e1773b204b8a0cb8d8e7a2f75a3e206c73191",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-17 revoked SSCTR-ACF-R01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "b93e4717f29d9e9af3d3c69408b8b8177cf876ea895b65ea9a6e41bc59dad68b",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-17 revoked SSCTR-ACF-R02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "093f06736f6d5c0a806d5203a539990c0c93335e68f2ac29b182cb9bc856b707",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-17 revoked SSCTR-ACF-S01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "a6bc28054f0d81d9101a8dc7e2e70fe4db9a74016e9dcf8450947ac3b4ca3aff",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-17 revoked SSCTR-ACF-S02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "30c31d56037d704f18b395db838cdfd18e04079cf23a85d1eef1b59fc1c89a2e",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-17 revoked SSCTR-ACF-S03",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "d6c4ae93011abda2b46fc67c780fb359ca09dbd5e134d46b86dc47619e13c614",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-18 revoked SSCTR-ACF-E-CONTROLS",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "d673a54f919c59b182dfc52adfd729d1feecf56359be69f7fbc4c751b8029e75",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-18 revoked SSCTR-ACF-ABC",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "979ec4de30ac963d65f9ed0634f080c6469c0b9f91bbee57dc35920fb8d17576",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-18 revoked SSCTR-ACF-P10",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "5831585c06641c85ff3d4005aed9dcb958222198dbe92d8c0e3e99969302b493",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-18 revoked SSCTR-ACF-R01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "a9776acaa28c2c7de769b1fff20dce5899a09735433c435a40108c4f1cf644ce",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-18 revoked SSCTR-ACF-R02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "cb89c1ef48770b5d4d9913dd801b1dc627f2725599494660c22f652f58abb3f4",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-18 revoked SSCTR-ACF-R04",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "90374440d169751ffc1d8fc6eb73e5c1d71fa4edf1332508d2c2a9f2c3d2f6f0",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-18 revoked SSCTR-ACF-R07",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "4eb789cd9e7a818bcdb9ed2bfa2a3d642fa84fcab7bc2397bce7f166763a97cd",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-18 revoked SSCTR-ACF-S01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "62006980122578c49baf889fc855857c7098d7fecf113d498f9686a8c0abaf03",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-18 revoked SSCTR-ACF-S02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "64a4dc22b855ecc7901f288f20edd6383afccc9d2df9bf235b2898d8ba323efc",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-19 revoked SSCTR-ACF-E-WEEKS",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "7e370498c9a03091373d51b763a9ace0fa7aed2a476add4be36ecea89ef81edf",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-19 revoked SSCTR-ACF-ABC",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "9bdef8ffc0339be1a48beaafd24fb23d1e031ef63925b57fed481fe6de96b873",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-19 revoked SSCTR-ACF-P06",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "16fd3b0875763bf9d65d1639c28d0d0830d4feffd91411c0110879558bc4de1f",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-19 revoked SSCTR-ACF-P15",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "d0edb157ec4efb3e33f2485cf34f7a2adacbe24c461766c83e05d520e666632a",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-19 revoked SSCTR-ACF-R01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "a33202098ee30201efc750daba9be685e2c44be0850c82876971c06fa0e91e27",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-19 revoked SSCTR-ACF-S01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "60f3970f0550c8aa622b0e4f75aabd6810ba33a4cb0b51d9631ceea17a7e0c56",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-19 revoked SSCTR-ACF-S02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "36b07516c06f8ba961a1ae379d11565f6d0ef934f07b6a752605069f4977a833",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-20 revoked SSCTR-ACF-E-NOVICES",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "cf7b8a51abe15e14dc524c9e28e2e0d90bfc461039e28b7eb866d4278ebe65aa",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-20 revoked SSCTR-ACF-ABC",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "000bdce5fcebfe9e7a733e786cc06a8cd1b7fccded696e8d28c127292b49b5ac",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-20 revoked SSCTR-ACF-P01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "11a10ce91a46917af6402dd0bfd694c677071ed645c1f36a5b0e8629d66ed221",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-20 revoked SSCTR-ACF-P16",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "08e8f857baa6196e5e2017b66cf2520c632a7ab9c5a0da970dc54de13744aeea",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-20 revoked SSCTR-ACF-P18",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "80319a782cc54cb2c6dbb441146ca660d78e6b8048c19fb3e8b521650d162f43",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-20 revoked SSCTR-ACF-R16",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "47db54b131cf3a81f45caf8cb738dacffe64a866ded69115b90fd635747d9512",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-20 revoked SSCTR-ACF-S01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "3a1156e00d0e4376e9ca08bef0f61000ad6545c2998b0ec934d9cda654b64842",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-20 revoked SSCTR-ACF-S02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "43fe494e2c2f5130da3349e1048cb04e28beef197c2cd72cac5336475e319ff5",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-21 revoked SSCTR-ACF-E-CONTROLS",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "eaa27431cb3e8bc6fb2c0afccbfa76996a90362ea629aaad3e312859b9781a60",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-21 revoked SSCTR-ACF-ABC",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "4c2c8dce7d7dc4162a351469430709c799c20ef9ac56aa4a884e099969917ad5",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-21 revoked SSCTR-ACF-P07",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "9c5973fe3a23db541bd15febf57e9bbb46913c8d52dc3760bfd9fb2ee976541f",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-21 revoked SSCTR-ACF-P08",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "0d216d18c93b82ed68b7c2fa4f2215c110a7d241c9ef602c11471378f679a8f8",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-21 revoked SSCTR-ACF-P19",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "0c48f3f75cbcf6a518402a6d3e6133a8d8fd16a9591cd5b66795200ca76845ae",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-21 revoked SSCTR-ACF-R01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "f5764abdd6da7fb0eae02dfe0183bfa65dbb981b6e22fa3c8b7554719723e071",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-21 revoked SSCTR-ACF-R04",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "fd64eaf9a74d603e31034e5d211d5e6a4990f83fd7ff7efcbc1be7ac128966d4",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-21 revoked SSCTR-ACF-R07",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "a197c226a9b20f52b1cae81299eea6f249e4e4bead58e39e612487c45b02f8ce",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-21 revoked SSCTR-ACF-S01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "351c6b1b76d1670e48d37feca78d09b467c2df66ce179398e3666a462df25420",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-21 revoked SSCTR-ACF-S02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "3ce8edbaca2d0cb98380cad9f6937f3a35aaf7cc2fbbbef5971b0b01d58b2eae",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-21 revoked SSCTR-ACF-S03",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "272495c72a64e804f9d254fc004780f76626bed6f4257c5282efa35e6e789f8e",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-22 revoked SSCTR-ACF-E-WEEKS",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "bcf4aa302a73a76bf9e7386d74cbffd5f8bc4e7b7fa66c52415757082a367f1e",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-22 revoked SSCTR-ACF-ABC",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "c2c1289f6d77506a2092e7fdb61467b35d6bb7079f6190c4f6b38d73a41975bb",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-22 revoked SSCTR-ACF-P06",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "3eb3d7b037c7296a0d9689fce6064a546a781bef9beab867d61e64132e453dde",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-22 revoked SSCTR-ACF-P15",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "60d51b75b702e2965665821d7554ab55a6cb8c30434f4cb4cb06a34ddbd90c0f",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-22 revoked SSCTR-ACF-P16",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "ce3c624a04744bd5a5b7f15f6da83b5efe503aa56d931daef4fe49f471700002",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-22 revoked SSCTR-ACF-R01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "f6aa56831805dc95ce8e78317643032b0ab64bbe3befe387e9555aa81a6d2fde",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-22 revoked SSCTR-ACF-R02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "31ddede1782215293ab32b67be13261274f22be3dd568b41d996af964a65e338",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-22 revoked SSCTR-ACF-R04",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "9d5b5718ce0a5cdd716abaf1f305afeda094999528beadb38ab343df132a9381",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-22 revoked SSCTR-ACF-R07",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "ca592bc17ec9eb33e157719bbc6040551ee6d18a585e0fa6e39f88b8d5456845",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-22 revoked SSCTR-ACF-S01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "00a3efba24eb2497c36ac3d8e5b5eef2a0a218b94e4238af6ab481d60af8d4b3",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-22 revoked SSCTR-ACF-S02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "2175b55d9f8a686b2fb1f6633837f907784101674636085c3fc0dd7d616b31fc",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-23 revoked SSCTR-ACF-E-UNDERPERF",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "b7974db95091a5fa27f12a8eed7864386555401982424818d69d8b257e89f40a",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-23 revoked SSCTR-ACF-ABC",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "1f59ba7ddf677d03b875f359a935eb1d44f378352aa0c2f912ac549b63b2e8e3",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-23 revoked SSCTR-ACF-P02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "b6d3f026992e27a9a5538ba06370b1966d3846c5407a7f733006b44913299061",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-23 revoked SSCTR-ACF-P01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "b367d901efbcd88e2ba7a0a1b395aff4e972883215c2fbe64d058dc4cee10fff",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-23 revoked SSCTR-ACF-P12",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "9310f2394078b918f4838a4e93b37afad02e3e60d8cb2d719230ab2deb7bb386",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-23 revoked SSCTR-ACF-R01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "c01ad3ad6f794fb3e8915f67e168fd48ccaa18cbebcd7bf8cc94277833168204",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-23 revoked SSCTR-ACF-R02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "fe0675b849769f8def1fc0c319ced3eb37d3df5af2ca6e96369640bc04930cbb",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-23 revoked SSCTR-ACF-R04",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "5718657488d9d9ddacbdf6574ed99de0adac770b149fee46ea4968ec541be98e",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-23 revoked SSCTR-ACF-R07",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "c315db8e8746796d1dfeb5be108f5a31c8a3a98a247067c956a3cef3a00c0d72",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-23 revoked SSCTR-ACF-S01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "e6f2520503487f5a2f680b405a56ce773a228ed6673825de710f79527072b953",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-23 revoked SSCTR-ACF-S02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "85029436115777adb737e7c67049b3bbf2d9d20ed4452ba5c7e64fcce7f55fa3",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-24 revoked SSCTR-ACF-E-LOCALBRANCH",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "7e6911ebb22a717413017d04809d9f46b36c0b3e61257caf65b4a5537d975c0a",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-24 revoked SSCTR-ACF-ABC",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "3ffc095d1f07ecb71a9ec451d81ffbbb2983acd9cd2ad0725f1acbc04b1e6920",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-24 revoked SSCTR-ACF-P05",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "cb4510a690f213125e2e9ff86b533568dd7cde923fd25d0c9985859741267f4d",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-24 revoked SSCTR-ACF-P18",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "9ea943483f14c72c1897123012ef66d8ae1a6fb6bdb177f48473d8bec93d71ca",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-24 revoked SSCTR-ACF-P20",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "afaffe881a2a9f6e1962c3e2c72f76e0ec71dd7efb4f8865a2be5f7a704baad8",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-24 revoked SSCTR-ACF-R01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "583040de845e8d5ddcc2b8ac91afa85ab38c3a4698ce090edab27424480bd3c5",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-24 revoked SSCTR-ACF-R02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "97ab249c8d0ef4d637d0e94200856fd191d710706a8122298bfc8930c81b8038",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-24 revoked SSCTR-ACF-R04",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "87d573eeca7fb9bf8974ceeee6b0df373bb3b6748c164707c673c8a23e2142bf",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-24 revoked SSCTR-ACF-R07",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "3813be7718466b203128472e314c79a06fba9c16505857979226a328f6ef07ff",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-24 revoked SSCTR-ACF-S01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "d05aba63c1143fe9d61e7563745d1234dba7ee1351eae8c916d3f94f169a70db",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-24 revoked SSCTR-ACF-S02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "2f1adc6f8205765ba178ab52df82bb91929d9b7defe33a51f13dd8913b2c129b",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-20-SN revoked SSCTR-ACF-E-NOVICES",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "2efa436f89bec43bd676998737ed19cf27d21885ddf2479dd42006502b0edcbe",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-20-SN revoked SSCTR-ACF-ABC",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "0db690b6f1c03eba288cb417153af3202973bdfbde22560adbfbe085b3b40533",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-20-SN revoked SSCTR-ACF-P01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "888d32b29997333d0960c823e44759047497ebb845a9e506dbcb2af67027310d",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-20-SN revoked SSCTR-ACF-P16",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "4a83002d12e39fa0950205c67d455b70f4357f2993129e03339980839e28d936",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-20-SN revoked SSCTR-ACF-P18",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "4c75c910c3a7f01cfd06a0edbcf493d1ef0c242914e47398cf1cf329bc826aab",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-20-SN revoked SSCTR-ACF-R16",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "3924ce084d281099bd056275b7e62c665b4e4e398fb9d35d510da1ee2ec1a0ad",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-20-SN revoked SSCTR-ACF-S01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "bba22a9f3c11b1d95c601ca6a0f277002c0cd682b1c1b0fc49b303f618ffd277",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-20-SN revoked SSCTR-ACF-S02",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "682ec680b5437958af8a4ca2d43dfde5f752f03edd4361fef7f62329d21900fa",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-20-SN revoked SSCTR-ACF-R01",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "887d950569c0e646c76c706b340008c6fff864578421ff63bb6088cb7c46e302",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-20-SN revoked SSCTR-ACF-R04",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "f3da57662161232c14690e482220ba3438cb6b94f39227e9338ec5d5e6d986f8",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-20-SN revoked SSCTR-ACF-R07",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "d21142df65cb292e773d8483c1dd34d6143a38ec378721dc37cf75d984b52316",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-20-SN revoked SSCTR-ACF-S06",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "1362cfdb0b82ffc1ea3b483e94c152868b86b8658f0d2abbcc7a72b6fb3106ab",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "E2E-20-SN revoked SSCTR-ACF-S07",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "7c45cdd766c7ba7c44942c6841597e7020db7c82fd568b0f332d98fa0e82d933",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "S13-N revoked SDC",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "55811da53ada3ccba80ce84e76a0271731bde2f2176c874125d4bc668d29d492",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "S13-T revoked SDC",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "3a66060a451b3e61c1d1df7cf36552fabe3f244646fb691d25d6d535b1b88bf9",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "S14-N revoked SDC",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "0874e27992e288a22f71e12acfc2d2be805f99a5a5a984c72dba645aad26f756",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "S14-T revoked SDC",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "3a9c76a3049e4bfd8722bd09d8b41cf4748030e336183f31eb9979244aa28b11",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "S29-R2 revoked SDC",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "1ed0b4e0b00c62f93b7ca5708db3400aa8332b452a827a9123a7a02e33914996",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "S29-N revoked SDC",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "7aa8ee00cf07bb100217d68c525707e068e39c24dbd14b8666873ea2700e67c9",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            },
+            {
+              "name": "learned purpose denied",
+              "type": "HOLD",
+              "modifyCount": 0,
+              "inputHash": "5c4f738681f959e9db3b30e6664d660b46b60e6738831978dbd2ab10e3c8d050",
+              "schemaValid": true,
+              "inputUnchanged": true,
+              "planPreserved": true
+            }
+          ]
+        },
+        {
+          "command": "independent160-trace full replay/schema/hash/preservation and164-row evaluation index/corpus/count recomputation",
+          "exit_code": 0,
+          "allOutputsIdentical": true,
+          "counts": {
+            "KEEP": 123,
+            "MODIFY": 11,
+            "HOLD": 10,
+            "ASK": 8,
+            "CLINICAL_HUMAN_REQUIRED": 2,
+            "NOT_SUPPORTED_YET": 6
+          },
+          "classes": {
+            "SUPPORTED_KEEP": 123,
+            "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED": 11,
+            "CORRECT_ABSTAIN_OR_HOLD": 10,
+            "USEFUL_ASK": 8,
+            "CLINICAL_OR_OUT_OF_SCOPE": 2,
+            "NOT_SUPPORTED_YET": 6
+          },
+          "allPlansPreserved": true,
+          "indexCount": 164,
+          "uniqueTraceCount": 160
+        },
+        {
+          "command": "independent bundle and exact scientific review target integrity",
+          "exit_code": 0,
+          "acfRecords": 57,
+          "sdcTargets": 7,
+          "bundleHash": "ece7bc96a09956b725b70a5bab9355ce9f63c3a1c5ce7a5c2f1d8a1538ccede6"
+        },
+        {
+          "command": "deep frozen caller snapshots,journal replay and prospective ranking contract",
+          "exit_code": 0,
+          "allPassed": true
+        }
+      ],
+      "reviewedFileHashes": {
+        "CoachingCore/BOUNDED_SHADOW_RUNTIME_CONTRACT.md": "3e0d30864df8b6d69351463ad64ad007d6d250fbbac5fd4bc0c351f73a363424",
+        "CoachingCore/POLICY_REGISTRY_RUNTIME_BINDINGS.json": "14b79422dda80dfce5916af487d5a2dff7f7ec9a9ee15fde6f9e7d291184758d",
+        "CoachingCore/README.md": "bdff5bb1fb318434a31187956cb31e7739046fff57457835123e033ea19936cb",
+        "CoachingCore/SHADOW_DECISION_SCHEMA.json": "0c3014c16f8870f57d9ba8bc1de037040228d026e9c6d325e819e7b422b41410",
+        "CoachingCore/SHADOW_INPUT_SCHEMA.json": "74cce78c62ef4f6417bc53ae959a4a40eda832b4a270741e87a087ae4baa56a9",
+        "CoachingCore/artifacts/ACF_G01_G05_PROGRESS.json": "92976777b8a5c50ef2ce38e7df96245643020e5e9fc0471f171cec829622cae4",
+        "CoachingCore/artifacts/ACF_G01_G05_PROGRESS.md": "d16eb78ffb84ff1d33f03ad5e159e9dd3fc4460b976144e66b7d7acd42045236",
+        "CoachingCore/artifacts/COACHING_COVERAGE_BASELINE.json": "54c55f9934dd9b4326dd6e36d3996f5dc267cbf62b40405c95d6646d0d8bfe41",
+        "CoachingCore/artifacts/COACHING_COVERAGE_BASELINE.md": "36b9749996fb4aa55a96f02173169db6226983945c2c96942a666a0c19ae4cb7",
+        "CoachingCore/artifacts/HUMAN_REVALIDATION_QUEUE_UPDATE.json": "adf4d315e1160430c5ee623752cc90f6636c44b30143eba9538e117a867d4c59",
+        "CoachingCore/artifacts/HUMAN_REVALIDATION_QUEUE_UPDATE.md": "b5ba77d97e00781cc1e8810a8ef07923c3e42db181f6f14ce3809f3d942bffd8",
+        "CoachingCore/artifacts/OPEN_GAPS_AFTER_SHADOW.json": "24be009527d93660ff7c70870738b68e81423dac4e4d1759183ee44105aceead",
+        "CoachingCore/artifacts/OPEN_GAPS_AFTER_SHADOW.md": "c66ca9a24e7b1846dbfb553c77cdbd6cba162b73701c0db0eff94bc06194e05e",
+        "CoachingCore/artifacts/RUNTIME_TRACE_EXAMPLES.json": "cc6888602898487772c6372ee5d92f6c84595a40f5a5a57d10da6fdc1e236895",
+        "CoachingCore/artifacts/RUNTIME_TRACE_EXAMPLES.md": "ee2d613bfdafc361f8e8e5c9d7b282f19cc600ce88f4180577a175f80989a5d9",
+        "CoachingCore/artifacts/SSCTR_EVIDENCE_SNAPSHOT.json": "0e02acc8e1df04a3f706e9f5fefa73b77c80c41fc215027a21a403cc4e182be1",
+        "CoachingCore/artifacts/SYNTHETIC_SHADOW_RESULTS.json": "55aa9678f6b5a673686651d6aeec51427f93e18fbd23366c5d29bc196cf32eaa",
+        "CoachingCore/artifacts/SYNTHETIC_SHADOW_RESULTS.md": "d8cdc59d115b718e01c8bf1e0f1fcab6f078842133e040c861fb430f502e0b6c",
+        "CoachingCore/artifacts/TEST_RESULTS.tap": "b7186f30c8b2fcf0adfe5b54f4612ab887a5d622f8d82f5eb35f33627af66aa2",
+        "CoachingCore/fixtures/authority-bundle.json": "f416c892a50ced8079efb79ad4496af0edaeeb12c80d624ddb3fa836b0c8bd3b",
+        "CoachingCore/fixtures/e2e-inputs.json": "8568f04a7c4f7450f6189828d85b199d4749811a6ea8dbc5c4b621e46b1d3c45",
+        "CoachingCore/fixtures/e2e-oracles.json": "2a24201544a281680c1942475af360ab5735941ae64894a2fe73b18a0b96dac9",
+        "CoachingCore/package-lock.json": "a6ea7b32bb5071e05f41f5e92cb81e06bdf1c74bc9bd87808fbbad4f57735417",
+        "CoachingCore/package.json": "19afb2165dab12e9bf53d4cd983fe89ad2a36c2ed3889d38d93fb8b7610c3cbc",
+        "CoachingCore/scripts/compile-authority.mjs": "e7e9e368839994f892de8f67bfaefbd27f9df5492e4fcd25e99b7a0dc845db0b",
+        "CoachingCore/scripts/simulate.mjs": "7a6d01ee1cd72d7d3fd0307bdee453440cb5fd253719ae5467833f3f72198aaf",
+        "CoachingCore/src/fixtures.mjs": "b615c3db0022f0125e36f5ae573964de2863d587c3b9631dc48dddad581f2d13",
+        "CoachingCore/src/index.mjs": "f65801d023d69a5f2f4af7308a998b7771fc27bfd230d8a479748c200b3edc13",
+        "CoachingCore/src/runtime.mjs": "f6ba019c74ee072b485d51662585e52f0add6d465fbf413a8598cf3a2e189034",
+        "CoachingCore/src/semantics.mjs": "e1ef468c4eaf304a85fb5173a89d71dcaf094ab9712663c16e5fffadae588d8c",
+        "CoachingCore/src/value.mjs": "5bd765f68aa9e1f39ff0ce1366c7ac08e4b092bf281b49e2caa12c7c4bdb3a3b",
+        "CoachingCore/test/conformance.test.mjs": "3360a7cf9e814f1c9b7389e33c6c45d0eda508316382267748255acce8830692",
+        "CoachingCore/test/review-regressions.test.mjs": "62b66be420a3bd02b94bac99c64d51a099bd2562cf21cce99ea17d399416b7c6",
+        "CoachingCore/test/runtime.test.mjs": "852f8a33acef87f20cecdef3ce60c20e2ccc96b38bbaa725c0eee5106d66aa6e",
+        "CoachingCore/test/schema.test.mjs": "512ae0be79134a9f669d7528470841ef3f4615d9c507ed9b3c9a789f5918457b",
+        "CoachingCore/test/semantics.test.mjs": "33260e584b4aa802cc9bc9d122a2015e504ca3397fdc74c871202c1cf4b2d769",
+        "audits/bounded-shadow-runtime-2026-10-24/TASK_CONTRACT.md": "ca4c9d708f96bcdbce4b3b6d84a0c83d314744798bfca25b7cb2c456a932d8b6"
+      }
+    },
+    {
+      "id": "evidence-log-refresh",
+      "reviewedAt": "2026-10-24T12:40:40.810Z",
+      "scope": "Only reviewed TEST_RESULTS.tap evidence was superseded by a subsequent current 98/98 execution. Runtime,contracts,bundle,fixtures,simulation and other reviewed files remain byte-identical.",
+      "changedFile": {
+        "path": "CoachingCore/artifacts/TEST_RESULTS.tap",
+        "oldHash": "b7186f30c8b2fcf0adfe5b54f4612ab887a5d622f8d82f5eb35f33627af66aa2",
+        "newHash": "b41406e7ecacd306dc5bc8b49b4442686d6b371d3d13aee434886b190d381166"
+      },
+      "checks": [
+        {
+          "command": "Independent exact SHA256 comparison of every reviewed file",
+          "exit_code": 0,
+          "reviewedFiles": 37,
+          "unchangedFiles": 36,
+          "onlyChangedPath": "CoachingCore/artifacts/TEST_RESULTS.tap"
+        },
+        {
+          "command": "Read current TAP; verify98unique passing tests,98plan,no failed/skipped/cancelled/todo",
+          "exit_code": 0,
+          "tests": 98,
+          "passed": 98,
+          "failed": 0,
+          "raw": "CoachingCore/artifacts/TEST_RESULTS.tap",
+          "sha256": "b41406e7ecacd306dc5bc8b49b4442686d6b371d3d13aee434886b190d381166",
+          "durationMs": 565.8119
+        },
+        {
+          "command": "Inspect verifier evidence lifecycle and strict independent-hash check",
+          "exit_code": 0,
+          "verifierPath": "CoachingCore/scripts/verify.mjs",
+          "verifierHash": "fc341946bebe2612ac7380b0d574fb5bbbebd42f3a2c3268c6bd3f264542d067",
+          "preservesReviewedLog": true,
+          "writesCurrentLogSeparately": true,
+          "strictReviewHashComparisonRetained": true
+        }
+      ],
+      "nativeTestsRerunByJudge": false,
+      "simulationRerunByJudge": false,
+      "reviewedLogOverwrittenByJudge": false,
+      "verdict": "PASS",
+      "openBlockingFindings": 0
+    }
+  ],
+  "findings": [
+    {
+      "id": "Q-01",
+      "priority": 1,
+      "criterion": "Clinical and interruption guards dominate dependent prescription",
+      "file": "CoachingCore/src/runtime.mjs",
+      "lines": [
+        133,
+        144
+      ],
+      "reproduction": "scenarioInput('E2E-05') + recoveryContext.clinicalFlags=['persistent-pain'] or injury=true, or interrupted=true/TRAVEL/actualExposureKnown=false",
+      "actual": "MODIFY easy30 to35",
+      "expected": "CLINICAL_HUMAN_REQUIRED for explicit clinical facts; ASK/HOLD/NOT_SUPPORTED_YET for interruption/current-capacity uncertainty",
+      "owner": "/root"
+    },
+    {
+      "id": "Q-02",
+      "priority": 1,
+      "criterion": "Unknown coverage does not become certainty",
+      "file": "CoachingCore/src/runtime.mjs",
+      "lines": [
+        137,
+        142
+      ],
+      "reproduction": "scenarioInput('E2E-05').provenance.coverage='COVERAGE_UNKNOWN'",
+      "actual": "MODIFY with empty missingInputs",
+      "expected": "Nonprescribing closed decision preserving coverage uncertainty",
+      "owner": "/root"
+    },
+    {
+      "id": "Q-03",
+      "priority": 1,
+      "criterion": "Daily decisions do not silently discard extra/conflicting actual or inferred facts",
+      "file": "CoachingCore/src/runtime.mjs",
+      "lines": [
+        93,
+        110
+      ],
+      "reproduction": "Reviewed MON completed actuals + observedExecutionState.events=[{source_conflict:true}] OR actual.sourceConflict=true OR inferred readiness; clinical observation also ignored",
+      "actual": "KEEP / All known actual work and explicit compatible context fit",
+      "expected": "ASK/HOLD/unsupported or clinical boundary; no supported KEEP from unreconciled dependent facts",
+      "owner": "/root"
+    },
+    {
+      "id": "Q-04",
+      "priority": 2,
+      "criterion": "Every requested policy is bound to the evaluated context",
+      "file": "CoachingCore/src/runtime.mjs",
+      "lines": [
+        145,
+        153
+      ],
+      "reproduction": "dayInput(reviewed plan,'MON',validActuals) or goldenInput('S13-T') + requestedPolicyIds=['POL-13']",
+      "actual": "KEEP for daily / MODIFY for Golden; unrelated requested policy ignored",
+      "expected": "NOT_SUPPORTED_YET for the unbound request",
+      "owner": "/root"
+    },
+    {
+      "id": "Q-05",
+      "priority": 2,
+      "criterion": "Malformed supported transport values fail closed without crashing",
+      "file": "CoachingCore/src/runtime.mjs",
+      "lines": [
+        145,
+        145
+      ],
+      "reproduction": "scenarioInput('E2E-05').policyContext.requestedPolicyIds='POL-04'",
+      "actual": "TypeError: .some is not a function",
+      "expected": "Nonprescribing input-contract decision",
+      "owner": "/root"
+    },
+    {
+      "id": "Q-06",
+      "priority": 1,
+      "criterion": "All emitted candidate subjects/recipes have current authority lineage",
+      "file": "CoachingCore/scripts/compile-authority.mjs",
+      "lines": [
+        40,
+        44
+      ],
+      "reproduction": "scenarioInput('E2E-20') + revokedReviewIds=[id] for each R01/R04/R07/S06/S07",
+      "actual": "MODIFY emits both RN and SN candidates although those SN-dependent recipe reviews are not guarded and active input subject is RN",
+      "expected": "One subject-specific candidate; every emitted recipe current/revocation guard; separate counterpart fixture for SN",
+      "owner": "/root"
+    }
+  ],
+  "next_action": "Root consolidates independent Quality PASS withcurrent independent SSCTR andobjective finalverification;no production,real-user orplan-application authority implied.",
+  "openBlockingFindings": 0,
+  "completedAt": "2026-10-24T12:40:40.810Z",
+  "reviewedFileHashes": {
+    "CoachingCore/BOUNDED_SHADOW_RUNTIME_CONTRACT.md": "3e0d30864df8b6d69351463ad64ad007d6d250fbbac5fd4bc0c351f73a363424",
+    "CoachingCore/POLICY_REGISTRY_RUNTIME_BINDINGS.json": "14b79422dda80dfce5916af487d5a2dff7f7ec9a9ee15fde6f9e7d291184758d",
+    "CoachingCore/README.md": "bdff5bb1fb318434a31187956cb31e7739046fff57457835123e033ea19936cb",
+    "CoachingCore/SHADOW_DECISION_SCHEMA.json": "0c3014c16f8870f57d9ba8bc1de037040228d026e9c6d325e819e7b422b41410",
+    "CoachingCore/SHADOW_INPUT_SCHEMA.json": "74cce78c62ef4f6417bc53ae959a4a40eda832b4a270741e87a087ae4baa56a9",
+    "CoachingCore/artifacts/ACF_G01_G05_PROGRESS.json": "92976777b8a5c50ef2ce38e7df96245643020e5e9fc0471f171cec829622cae4",
+    "CoachingCore/artifacts/ACF_G01_G05_PROGRESS.md": "d16eb78ffb84ff1d33f03ad5e159e9dd3fc4460b976144e66b7d7acd42045236",
+    "CoachingCore/artifacts/COACHING_COVERAGE_BASELINE.json": "54c55f9934dd9b4326dd6e36d3996f5dc267cbf62b40405c95d6646d0d8bfe41",
+    "CoachingCore/artifacts/COACHING_COVERAGE_BASELINE.md": "36b9749996fb4aa55a96f02173169db6226983945c2c96942a666a0c19ae4cb7",
+    "CoachingCore/artifacts/HUMAN_REVALIDATION_QUEUE_UPDATE.json": "adf4d315e1160430c5ee623752cc90f6636c44b30143eba9538e117a867d4c59",
+    "CoachingCore/artifacts/HUMAN_REVALIDATION_QUEUE_UPDATE.md": "b5ba77d97e00781cc1e8810a8ef07923c3e42db181f6f14ce3809f3d942bffd8",
+    "CoachingCore/artifacts/OPEN_GAPS_AFTER_SHADOW.json": "24be009527d93660ff7c70870738b68e81423dac4e4d1759183ee44105aceead",
+    "CoachingCore/artifacts/OPEN_GAPS_AFTER_SHADOW.md": "c66ca9a24e7b1846dbfb553c77cdbd6cba162b73701c0db0eff94bc06194e05e",
+    "CoachingCore/artifacts/RUNTIME_TRACE_EXAMPLES.json": "cc6888602898487772c6372ee5d92f6c84595a40f5a5a57d10da6fdc1e236895",
+    "CoachingCore/artifacts/RUNTIME_TRACE_EXAMPLES.md": "ee2d613bfdafc361f8e8e5c9d7b282f19cc600ce88f4180577a175f80989a5d9",
+    "CoachingCore/artifacts/SSCTR_EVIDENCE_SNAPSHOT.json": "0e02acc8e1df04a3f706e9f5fefa73b77c80c41fc215027a21a403cc4e182be1",
+    "CoachingCore/artifacts/SYNTHETIC_SHADOW_RESULTS.json": "55aa9678f6b5a673686651d6aeec51427f93e18fbd23366c5d29bc196cf32eaa",
+    "CoachingCore/artifacts/SYNTHETIC_SHADOW_RESULTS.md": "d8cdc59d115b718e01c8bf1e0f1fcab6f078842133e040c861fb430f502e0b6c",
+    "CoachingCore/artifacts/TEST_RESULTS.tap": "b41406e7ecacd306dc5bc8b49b4442686d6b371d3d13aee434886b190d381166",
+    "CoachingCore/fixtures/authority-bundle.json": "f416c892a50ced8079efb79ad4496af0edaeeb12c80d624ddb3fa836b0c8bd3b",
+    "CoachingCore/fixtures/e2e-inputs.json": "8568f04a7c4f7450f6189828d85b199d4749811a6ea8dbc5c4b621e46b1d3c45",
+    "CoachingCore/fixtures/e2e-oracles.json": "2a24201544a281680c1942475af360ab5735941ae64894a2fe73b18a0b96dac9",
+    "CoachingCore/package-lock.json": "a6ea7b32bb5071e05f41f5e92cb81e06bdf1c74bc9bd87808fbbad4f57735417",
+    "CoachingCore/package.json": "19afb2165dab12e9bf53d4cd983fe89ad2a36c2ed3889d38d93fb8b7610c3cbc",
+    "CoachingCore/scripts/compile-authority.mjs": "e7e9e368839994f892de8f67bfaefbd27f9df5492e4fcd25e99b7a0dc845db0b",
+    "CoachingCore/scripts/simulate.mjs": "7a6d01ee1cd72d7d3fd0307bdee453440cb5fd253719ae5467833f3f72198aaf",
+    "CoachingCore/src/fixtures.mjs": "b615c3db0022f0125e36f5ae573964de2863d587c3b9631dc48dddad581f2d13",
+    "CoachingCore/src/index.mjs": "f65801d023d69a5f2f4af7308a998b7771fc27bfd230d8a479748c200b3edc13",
+    "CoachingCore/src/runtime.mjs": "f6ba019c74ee072b485d51662585e52f0add6d465fbf413a8598cf3a2e189034",
+    "CoachingCore/src/semantics.mjs": "e1ef468c4eaf304a85fb5173a89d71dcaf094ab9712663c16e5fffadae588d8c",
+    "CoachingCore/src/value.mjs": "5bd765f68aa9e1f39ff0ce1366c7ac08e4b092bf281b49e2caa12c7c4bdb3a3b",
+    "CoachingCore/test/conformance.test.mjs": "3360a7cf9e814f1c9b7389e33c6c45d0eda508316382267748255acce8830692",
+    "CoachingCore/test/review-regressions.test.mjs": "62b66be420a3bd02b94bac99c64d51a099bd2562cf21cce99ea17d399416b7c6",
+    "CoachingCore/test/runtime.test.mjs": "852f8a33acef87f20cecdef3ce60c20e2ccc96b38bbaa725c0eee5106d66aa6e",
+    "CoachingCore/test/schema.test.mjs": "512ae0be79134a9f669d7528470841ef3f4615d9c507ed9b3c9a789f5918457b",
+    "CoachingCore/test/semantics.test.mjs": "33260e584b4aa802cc9bc9d122a2015e504ca3397fdc74c871202c1cf4b2d769",
+    "audits/bounded-shadow-runtime-2026-10-24/TASK_CONTRACT.md": "ca4c9d708f96bcdbce4b3b6d84a0c83d314744798bfca25b7cb2c456a932d8b6"
+  },
+  "artifact_revision": "ece7bc96a09956b725b70a5bab9355ce9f63c3a1c5ce7a5c2f1d8a1538ccede6",
+  "inputs_revision": "c252ce74317a3afc9b6a21d533bba3c2a9c90319f6c1c5e73b31040e778bf2af",
+  "criteria": [
+    {
+      "id": "official_plan_and_caller_preservation",
+      "result": "PASS",
+      "evidence": "98native tests,independent adverse probes,160full saved replays,deepfreeze mutation andjournal idempotence"
+    },
+    {
+      "id": "authority_recipe_subject_context_binding",
+      "result": "PASS",
+      "evidence": "258 independent revocations;179 normally KEEP/MODIFY ACF contexts strictly HOLD;six nonclinical Golden contexts HOLD. Novice candidates are single-subject."
+    },
+    {
+      "id": "clinical_unknown_malformed_source_fail_closed",
+      "result": "PASS",
+      "evidence": "Explicit clinical dominance,interruption,unknown coverage,malformed primitive/null rows,source conflict,subject/fact provenance andpurpose checks closed withschema-valid decisions"
+    },
+    {
+      "id": "conformance_autonomy_mec_provenance",
+      "result": "PASS",
+      "evidence": "24source E2Es,novice counterpart,seven Golden successors,G03/G04 semantics andcurrent regression/schema tests"
+    },
+    {
+      "id": "determinism_and_replay",
+      "result": "PASS",
+      "evidence": "160full outputs independently reproduced,journal replay duplicate stores once;application absent"
+    },
+    {
+      "id": "synthetic_coverage_and_auditable_metrics",
+      "result": "PASS",
+      "evidence": "9seven-day weeks,4seven-day stress trajectories,28day stream;164index rows resolve160inputs andallcorpus/coverage counts match;positive6/24 separated"
+    },
+    {
+      "id": "scientific_effectiveness_and_clinical_human_validation",
+      "result": "NOT_APPLICABLE",
+      "reason": "Separate SSCTR owns scientific fidelity;synthetic QA is not efficacy,safety,human orclinical validation"
+    },
+    {
+      "id": "UI_device_and_release",
+      "result": "NOT_APPLICABLE",
+      "reason": "Mission expressly excludes UI,Figma,realathletes,production andofficial effects;Node24 Windows is applicable executable environment"
+    }
+  ],
+  "findingResolutions": [
+    {
+      "id": "Q-01",
+      "status": "CLOSED_IN_REVIEWED_REVISION",
+      "owner": "/root",
+      "evidence": "final-frozen checks andexact reviewedFileHashes"
+    },
+    {
+      "id": "Q-02",
+      "status": "CLOSED_IN_REVIEWED_REVISION",
+      "owner": "/root",
+      "evidence": "final-frozen checks andexact reviewedFileHashes"
+    },
+    {
+      "id": "Q-03",
+      "status": "CLOSED_IN_REVIEWED_REVISION",
+      "owner": "/root",
+      "evidence": "final-frozen checks andexact reviewedFileHashes"
+    },
+    {
+      "id": "Q-04",
+      "status": "CLOSED_IN_REVIEWED_REVISION",
+      "owner": "/root",
+      "evidence": "final-frozen checks andexact reviewedFileHashes"
+    },
+    {
+      "id": "Q-05",
+      "status": "CLOSED_IN_REVIEWED_REVISION",
+      "owner": "/root",
+      "evidence": "final-frozen checks andexact reviewedFileHashes"
+    },
+    {
+      "id": "Q-06",
+      "status": "CLOSED_IN_REVIEWED_REVISION",
+      "owner": "/root",
+      "evidence": "final-frozen checks andexact reviewedFileHashes"
+    },
+    {
+      "id": "Q07",
+      "status": "CLOSED_IN_REVIEWED_REVISION",
+      "owner": "/root",
+      "evidence": "final-frozen checks andexact reviewedFileHashes"
+    },
+    {
+      "id": "Q08",
+      "status": "CLOSED_IN_REVIEWED_REVISION",
+      "owner": "/root",
+      "evidence": "final-frozen checks andexact reviewedFileHashes"
+    },
+    {
+      "id": "Q09",
+      "status": "CLOSED_IN_REVIEWED_REVISION",
+      "owner": "/root",
+      "evidence": "final-frozen checks andexact reviewedFileHashes"
+    }
+  ],
+  "limitations": [
+    "Finite exact-context conformance only;not a generalized prescribing engine.",
+    "Designed counts cannot support efficacy,safety orpopulation coverage.",
+    "E2E16 explicitly ranks next-horizon alternatives;comparison is not a newly validated complete-week prescription orofficialpatch.",
+    "AJV8.20.0 is a locked runtime dependency forinput validation only.",
+    "Only exact reviewed bytes are covered;material changes invalidate this gate."
+  ]
+}

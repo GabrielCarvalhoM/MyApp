@@ -1,0 +1,327 @@
+{
+  "revision": "R6-VERIFICATION-1",
+  "verifiedAt": "2026-10-27T05:06:00.467Z",
+  "node": "v24.19.0",
+  "passing": 10,
+  "total": 14,
+  "firstEvaluationSha256": "b3d155b63d525325ac94688f403efa073b12698dd342ed43a87093be7a75eb3e",
+  "checks": [
+    {
+      "id": "baseline-preserved",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "entries": 331,
+        "changed": [
+          "CoachingCore/package.json",
+          "CURRENT_MISSION.md",
+          "MISSION_LEDGER.md"
+        ],
+        "unexpected": [],
+        "insertOnly": [
+          {
+            "file": "CURRENT_MISSION.md",
+            "insertOnlySinceR6Entry": true
+          },
+          {
+            "file": "MISSION_LEDGER.md",
+            "insertOnlySinceR6Entry": true
+          }
+        ],
+        "documentedSupersession": [
+          {
+            "file": "CoachingCore/package.json",
+            "record": "CoachingCore/r6/CONFORMANCE_SUPERSESSION_R6.md"
+          }
+        ]
+      }
+    },
+    {
+      "id": "package-entrypoints",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "scripts": {
+          "test": "node --test",
+          "compile:authority": "node scripts/compile-authority.mjs",
+          "simulate": "node scripts/simulate-r6.mjs",
+          "verify": "node scripts/verify-r6.mjs",
+          "verify:r6-write": "node scripts/verify-r6.mjs --write",
+          "simulate:r6": "node scripts/simulate-r6.mjs",
+          "demonstrations:r6": "node scripts/demonstrations-r6.mjs",
+          "regress:r5-in-r6": "node scripts/regress-r5-in-r6.mjs",
+          "simulate:r2": "node scripts/simulate-r2.mjs",
+          "verify:r2-historical": "node scripts/verify-r2.mjs",
+          "compile:r2-authority": "node scripts/compile-r2-authority.mjs",
+          "simulate:r3": "node scripts/simulate-r3.mjs",
+          "verify:r3-historical": "node scripts/verify-r3.mjs",
+          "report:r4": "node scripts/report-r4.mjs",
+          "simulate:r4": "node scripts/simulate-r4.mjs",
+          "verify:r4-historical": "node scripts/verify-r4.mjs",
+          "simulate:r5": "node scripts/simulate-r5.mjs",
+          "report:r5": "node scripts/report-r5.mjs",
+          "verify:r5-historical": "node scripts/verify-r5.mjs"
+        }
+      }
+    },
+    {
+      "id": "runtime-freeze",
+      "pass": false,
+      "detail": {
+        "pass": false,
+        "revision": "R6-FREEZE-1",
+        "sourceDigest": "507f35fc66f4d1e105e19ce513dc067f9fee5fdc35c039ad52a8c825e46bf857",
+        "frozenAt": "2026-10-26T18:33:58.846Z",
+        "entries": 53,
+        "drift": [
+          "CoachingCore/r6/PROGRAM_POLICY_R6.json",
+          "CoachingCore/src/r6-adaptation.mjs",
+          "CoachingCore/src/r6-balanced.mjs",
+          "CoachingCore/src/r6-catalogue.mjs",
+          "CoachingCore/src/r6-clinical.mjs",
+          "CoachingCore/src/r6-intake.mjs",
+          "CoachingCore/src/r6-legacy.mjs",
+          "CoachingCore/src/r6-prescription.mjs",
+          "CoachingCore/src/r6-program.mjs",
+          "CoachingCore/src/r6-provenance.mjs",
+          "CoachingCore/src/r6-simulator.mjs",
+          "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-policy-review.json"
+        ],
+        "unfrozen": [],
+        "predecessor": null,
+        "delta": null
+      }
+    },
+    {
+      "id": "ssctr-authority",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+        "reviewPolicyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+        "approved": {
+          "R6-COLD-START": "APPROVED",
+          "R6-LOAD-ESTABLISHMENT": "APPROVED",
+          "R6-PLANNED-PROGRESSION": "APPROVED",
+          "R6-RUN-QUALITY": "APPROVED",
+          "R6-HYBRID-ARRANGEMENT": "APPROVED",
+          "R6-SUBSTITUTION": "APPROVED",
+          "R6-NONCLINICAL-RETURN": "APPROVED",
+          "R6-EVENT-TRANSITION": "APPROVED",
+          "R6-PARTIAL-NOISY-LEARNING": "APPROVED",
+          "R6-ROTATION": "APPROVED"
+        },
+        "dispositions": [
+          {
+            "boundaryId": "R6-COLD-START",
+            "disposition": "APPROVE_WITH_CONDITIONS"
+          },
+          {
+            "boundaryId": "R6-LOAD-ESTABLISHMENT",
+            "disposition": "APPROVE_WITH_CONDITIONS"
+          },
+          {
+            "boundaryId": "R6-PLANNED-PROGRESSION",
+            "disposition": "APPROVE_WITH_CONDITIONS"
+          },
+          {
+            "boundaryId": "R6-RUN-QUALITY",
+            "disposition": "APPROVE_WITH_CONDITIONS"
+          },
+          {
+            "boundaryId": "R6-HYBRID-ARRANGEMENT",
+            "disposition": "APPROVE_WITH_CONDITIONS"
+          },
+          {
+            "boundaryId": "R6-SUBSTITUTION",
+            "disposition": "APPROVE_WITH_CONDITIONS"
+          },
+          {
+            "boundaryId": "R6-NONCLINICAL-RETURN",
+            "disposition": "APPROVE_WITH_CONDITIONS"
+          },
+          {
+            "boundaryId": "R6-EVENT-TRANSITION",
+            "disposition": "APPROVE_WITH_CONDITIONS"
+          },
+          {
+            "boundaryId": "R6-PARTIAL-NOISY-LEARNING",
+            "disposition": "APPROVE_WITH_CONDITIONS"
+          },
+          {
+            "boundaryId": "R6-ROTATION",
+            "disposition": "APPROVE_WITH_CONDITIONS"
+          }
+        ]
+      }
+    },
+    {
+      "id": "fresh-holdout",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "corpusSha256": "49a85b8c3c413a0d2f5a7fabbdf212b629ef1b66613420d08e494e5a04bf0708",
+        "firstEvaluationSha256": "b3d155b63d525325ac94688f403efa073b12698dd342ed43a87093be7a75eb3e",
+        "firstEvaluationFreeze": "507f35fc66f4d1e105e19ce513dc067f9fee5fdc35c039ad52a8c825e46bf857",
+        "cases": 35,
+        "errors": 0,
+        "authorStartedAt": "2026-10-26T18:34:51.046Z",
+        "sealedAt": "2026-10-26T19:20:13.595Z",
+        "evaluatedAt": "2026-10-26T19:21:49.665Z",
+        "rawUnchangedSinceLastVerification": null,
+        "postfix": null
+      }
+    },
+    {
+      "id": "r5-regression",
+      "pass": false,
+      "detail": {
+        "pass": false,
+        "cases": 24,
+        "errors": 0,
+        "factsUnchanged": true
+      }
+    },
+    {
+      "id": "simulation",
+      "pass": false,
+      "detail": {
+        "pass": false,
+        "trajectories": 14,
+        "simulated": 14,
+        "allInvariantsHold": 14,
+        "horizons": [
+          4,
+          8,
+          12,
+          16
+        ]
+      }
+    },
+    {
+      "id": "demonstrations",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "ids": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G",
+          "H",
+          "I",
+          "J",
+          "K",
+          "L",
+          "M"
+        ]
+      }
+    },
+    {
+      "id": "independent-reviews",
+      "pass": false,
+      "detail": {
+        "pass": false,
+        "rows": [
+          {
+            "review": "ssctr",
+            "path": "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-policy-review.json",
+            "present": true,
+            "sha256": "6238cbf0ed9fdbf1e5337f97a21d720c9dc0f5311422c9c8ade4309e7f008c70"
+          },
+          {
+            "review": "coachingHoldout",
+            "path": "audits/domain-coaching-r6-2026-10-26/reviews/coaching-quality-holdout-review.json",
+            "present": true,
+            "sha256": "9a314726ac38474052eb7e802c51d4e0ef9d662d268d8939751920a4375ab0b3"
+          },
+          {
+            "review": "r5Regression",
+            "path": "audits/domain-coaching-r6-2026-10-26/reviews/r5-regression-review.json",
+            "present": true,
+            "sha256": "89c10b0288de5d455175ad90c0e0fe2c88bb9872bf62c96b8156f2c9e7f9d07c"
+          },
+          {
+            "review": "engineering",
+            "path": "audits/domain-coaching-r6-2026-10-26/reviews/quality-engineering-review.json",
+            "present": true,
+            "sha256": "65d60d323e97db8112e0c6eeec4394ea0605154f5c0b55f61cb0c8fa9067a0c5"
+          },
+          {
+            "review": "engineeringRereview",
+            "path": "audits/domain-coaching-r6-2026-10-26/reviews/quality-engineering-rereview.json",
+            "present": false,
+            "sha256": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "deliverables",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "count": 40,
+        "missing": []
+      }
+    },
+    {
+      "id": "readiness-verdicts",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "missing": [],
+        "kmp": "NOT_READY",
+        "next": "DOMAIN_COACHING_R7"
+      }
+    },
+    {
+      "id": "tests",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "tests": 443,
+        "pass_": 443,
+        "fail": 0,
+        "exitCode": 0
+      }
+    },
+    {
+      "id": "human-queue",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "before": 114,
+        "after": 127,
+        "appended": [
+          "HRQ-OB2-Q1-ALLOC",
+          "HRQ-OB2-Q2-ORDER",
+          "HRQ-OB2-Q3-ROTATION",
+          "HQ-R6-COLD-START",
+          "HQ-R6-LOAD-ESTABLISHMENT",
+          "HQ-R6-PLANNED-PROGRESSION",
+          "HQ-R6-RUN-QUALITY",
+          "HQ-R6-HYBRID-ARRANGEMENT",
+          "HQ-R6-SUBSTITUTION",
+          "HQ-R6-NONCLINICAL-RETURN",
+          "HQ-R6-EVENT-TRANSITION",
+          "HQ-R6-PARTIAL-NOISY-LEARNING",
+          "HQ-R6-ROTATION"
+        ]
+      }
+    },
+    {
+      "id": "no-forbidden-scope",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "kmpOrGradleFiles": [],
+        "productCanonUnchanged": "see baseline-preserved",
+        "uiFigmaChanged": false
+      }
+    }
+  ]
+}

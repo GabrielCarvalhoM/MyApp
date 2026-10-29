@@ -1,0 +1,55 @@
+# Frozen40 R4 rerun
+
+R2 source facts and original expectations unchanged; same 40 normal cases, with 2 clinical sentinels evaluated separately. Raw positive coverage is separate from independent coaching quality.
+
+| Category | R3 | R4 |
+|---|---:|---:|
+| POSITIVE | 2 | 18 |
+| KEEP | 2 | 2 |
+| USEFUL_ASK | 15 | 15 |
+| HOLD | 2 | 2 |
+| NOT_SUPPORTED_DOMAIN | 16 | 0 |
+| NOT_SUPPORTED_SCIENCE | 3 | 3 |
+
+| Case | R4 | Decision |
+|---|---|---|
+| REP-R2-01 | POSITIVE | MODIFY |
+| REP-R2-02 | USEFUL_ASK | ASK |
+| REP-R2-03 | POSITIVE | MODIFY |
+| REP-R2-04 | USEFUL_ASK | ASK |
+| REP-R2-05 | USEFUL_ASK | ASK |
+| REP-R2-06 | POSITIVE | MODIFY |
+| REP-R2-07 | POSITIVE | MODIFY |
+| REP-R2-08 | USEFUL_ASK | ASK |
+| REP-R2-09 | POSITIVE | MODIFY |
+| REP-R2-10 | POSITIVE | MODIFY |
+| REP-R2-11 | POSITIVE | MODIFY |
+| REP-R2-12 | POSITIVE | MODIFY |
+| REP-R2-13 | KEEP | KEEP |
+| REP-R2-14 | KEEP | KEEP |
+| REP-R2-15 | POSITIVE | MODIFY |
+| REP-R2-16 | POSITIVE | MODIFY |
+| REP-R2-17 | USEFUL_ASK | ASK |
+| REP-R2-18 | USEFUL_ASK | ASK |
+| REP-R2-19 | POSITIVE | MODIFY |
+| REP-R2-20 | POSITIVE | MODIFY |
+| REP-R2-21 | POSITIVE | MODIFY |
+| REP-R2-22 | USEFUL_ASK | ASK |
+| REP-R2-23 | HOLD | HOLD |
+| REP-R2-25 | NOT_SUPPORTED_SCIENCE | HOLD |
+| REP-R2-26 | NOT_SUPPORTED_SCIENCE | HOLD |
+| REP-R2-27 | NOT_SUPPORTED_SCIENCE | HOLD |
+| REP-R2-28 | USEFUL_ASK | ASK |
+| REP-R2-29 | USEFUL_ASK | ASK |
+| REP-R2-31 | POSITIVE | MODIFY |
+| REP-R2-32 | USEFUL_ASK | ASK |
+| REP-R2-33 | POSITIVE | MODIFY |
+| REP-R2-34 | POSITIVE | MODIFY |
+| REP-R2-35 | USEFUL_ASK | ASK |
+| REP-R2-36 | USEFUL_ASK | ASK |
+| REP-R2-37 | POSITIVE | MODIFY |
+| REP-R2-38 | USEFUL_ASK | ASK |
+| REP-R2-39 | POSITIVE | MODIFY |
+| REP-R2-40 | USEFUL_ASK | ASK |
+| REP-R2-41 | USEFUL_ASK | ASK |
+| REP-R2-42 | HOLD | HOLD |

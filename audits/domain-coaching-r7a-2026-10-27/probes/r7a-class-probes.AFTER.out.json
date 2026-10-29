@@ -1,0 +1,515 @@
+{
+ "probe": "R7A-CLASS-PROBES",
+ "runtime": "CURRENT",
+ "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+ "sections": {
+  "C03_phaseBoundsAllRowKinds": {
+   "reproduced": false,
+   "rowsChecked": 3360,
+   "rowKindsInReducedDays": {
+    "TAPER KNOWN": 192,
+    "TAPER BODYWEIGHT": 120,
+    "RACE_WINDOW KNOWN": 72,
+    "POST_EVENT KNOWN": 132,
+    "TAPER Not done for more than 2": 192,
+    "RACE_WINDOW Not done for more than 2": 72,
+    "POST_EVENT Not done for more than 2": 48,
+    "TAPER Return entry": 96,
+    "RACE_WINDOW Return step 2": 36
+   },
+   "violations": 0,
+   "examples": []
+  },
+  "C04_splitWeekExecutedExposure": {
+   "reproduced": false,
+   "exercise": "db-bench-press",
+   "log": "0:KEEP/INSTANTIATE_LOGGED_LOADS 1:MODIFY/GATED_NEXT_STEP 2:MODIFY/GATED_NEXT_STEP 3:MODIFY/GATED_NEXT_STEP 4:MODIFY/GATED_NEXT_STEP 5:MODIFY/GATED_NEXT_STEP 6:KEEP/INSTANTIATE_LOGGED_LOADS",
+   "stateBeforeWeek5": {
+    "mode": "KNOWN",
+    "load": 18,
+    "ceiling": null,
+    "sets": 3,
+    "priorSets": null,
+    "regainCap": null,
+    "lastPerformed": "2026-11-11",
+    "source": "LOGGED_ACTUAL"
+   },
+   "week5": [
+    "2026-12-09 3x10@3 KNOWN 18/h",
+    "2026-12-11 2x8@3 ESTABLISH | Not done for more than 28 days"
+   ],
+   "executedInWeek5": "2026-12-09 3x10@3 KNOWN 18/h",
+   "stateAfterWeek5": {
+    "mode": "KNOWN",
+    "load": 18,
+    "ceiling": null,
+    "sets": 3,
+    "priorSets": null,
+    "regainCap": null,
+    "lastPerformed": "2026-12-09",
+    "source": "LOGGED_ACTUAL"
+   },
+   "week6": [
+    "3x10@3 KNOWN 18/h",
+    "3x10@3 KNOWN 18/h"
+   ]
+  },
+  "C05_C07_intakeStrengthRecords": {
+   "reproduced": false,
+   "selfReportOnly": {
+    "dose": {
+     "sets": 3,
+     "reps": 10,
+     "rir": 2,
+     "load": {
+      "value": 20,
+      "unit": "KG",
+      "convention": "TOTAL"
+     }
+    },
+    "source": "SELF_REPORT"
+   },
+   "withWearableRecord": {
+    "dose": {
+     "sets": 3,
+     "reps": 10,
+     "rir": 2,
+     "load": {
+      "value": 20,
+      "unit": "KG",
+      "convention": "TOTAL"
+     }
+    },
+    "source": "SELF_REPORT"
+   },
+   "wearableRecordDisplacesSelfReport": false,
+   "conventionRelabelled": false,
+   "bareNumberLoad": {
+    "value": 20,
+    "unit": "KG",
+    "convention": "PER_HAND"
+   },
+   "duplicateSelfReportsOrderDependent": false,
+   "completeThenIncomplete": {
+    "dose": {
+     "sets": 3,
+     "reps": 10,
+     "rir": 2,
+     "load": {
+      "value": 20,
+      "unit": "KG",
+      "convention": "TOTAL"
+     }
+    },
+    "source": "SELF_REPORT"
+   },
+   "incompleteThenComplete": {
+    "dose": {
+     "sets": 3,
+     "reps": 10,
+     "rir": 2,
+     "load": {
+      "value": 20,
+      "unit": "KG",
+      "convention": "TOTAL"
+     }
+    },
+    "source": "SELF_REPORT"
+   }
+  },
+  "C06_provenanceLabelEquivalence": {
+   "reproduced": false,
+   "reviewDecisionVariants": 1,
+   "intakeExposureVariants": 1,
+   "intakeExposure": {
+    "runDaysPerWeek": 3,
+    "runMinutesPerWeek": 120,
+    "longestRunMinutes": 40,
+    "strengthDaysPerWeek": null,
+    "basis": "WEARABLE_FULL"
+   }
+  },
+  "C08_C09_duplicatesAndContradictions": {
+   "reproduced": false,
+   "exactReplayInvariant": true,
+   "sameExecutionSecondSourceInvariant": true,
+   "contradictoryLogs": {
+    "orderAB": {
+     "conflicts": 1,
+     "duplicates": [],
+     "pendingLoads": {
+      "db-bench-press": 20,
+      "db-row": 20,
+      "db-rdl": 20,
+      "db-split-squat": 20
+     }
+    },
+    "orderBA": {
+     "conflicts": 1,
+     "duplicates": [],
+     "pendingLoads": {
+      "db-bench-press": 20,
+      "db-row": 20,
+      "db-rdl": 20,
+      "db-split-squat": 20
+     }
+    }
+   }
+  },
+  "C10_correctionIdempotence": {
+   "reproduced": false,
+   "firstReview": {
+    "accepted": [
+     [
+      "e2",
+      45
+     ]
+    ],
+    "superseded": [
+     "e1"
+    ]
+   },
+   "carriedLedgerReview": {
+    "accepted": [
+     [
+      "e2",
+      45
+     ]
+    ],
+    "excluded": []
+   },
+   "endToEnd": {
+    "week0Facts": [
+     [
+      "c10-b",
+      35
+     ]
+    ],
+    "week1Facts": [
+     [
+      "c10-b",
+      35
+     ]
+    ],
+    "week1Excluded": []
+   }
+  },
+  "C11_inactiveExerciseReturnStep": {
+   "reproduced": false,
+   "rotation": {
+    "w1": 2,
+    "w2": 4,
+    "rotatedIn": [
+     "standing-calf-raise",
+     "side-plank",
+     "db-step-up"
+    ]
+   },
+   "returnReview": "MODIFY/REESTABLISH",
+   "entryWeek": {
+    "w": 6,
+    "returnSteps": {
+     "back-squat": 0,
+     "db-bench-press": 0,
+     "db-row": 0,
+     "db-calf-raise": 0,
+     "dead-bug": 0,
+     "db-rdl": 0,
+     "db-split-squat": 0,
+     "standing-calf-raise": 0,
+     "side-plank": 0,
+     "db-step-up": 0
+    },
+    "inUse": [
+     "back-squat",
+     "db-bench-press",
+     "db-row",
+     "db-calf-raise",
+     "dead-bug",
+     "db-rdl",
+     "db-split-squat"
+    ]
+   },
+   "step2Week": {
+    "w": 7,
+    "returnSteps": {
+     "back-squat": 1,
+     "db-bench-press": 1,
+     "db-row": 1,
+     "db-calf-raise": 1,
+     "dead-bug": 1,
+     "db-rdl": 1,
+     "db-split-squat": 1,
+     "standing-calf-raise": 0,
+     "side-plank": 0,
+     "db-step-up": 0
+    },
+    "inUse": [
+     "back-squat",
+     "db-bench-press",
+     "db-row",
+     "db-calf-raise",
+     "dead-bug",
+     "db-rdl",
+     "db-split-squat"
+    ]
+   },
+   "inactiveExercisesStillAtEntryStepInStep2": [
+    "standing-calf-raise",
+    "side-plank",
+    "db-step-up"
+   ],
+   "newExerciseRowsInStep2": [
+    "goblet-squat 2x8@3 ESTABLISH"
+   ],
+   "step2RowsAfterSubstitution": [
+    "2026-12-21 goblet-squat 2x8@3 ESTABLISH",
+    "2026-12-21 db-bench-press 1x8@3 FROM_LOG",
+    "2026-12-21 db-row 1x8@3 FROM_LOG",
+    "2026-12-21 db-calf-raise 1x12@3 FROM_LOG",
+    "2026-12-21 dead-bug 1x14@3 BODYWEIGHT",
+    "2026-12-25 db-rdl 1x12@3 FROM_LOG",
+    "2026-12-25 db-row 1x8@3 FROM_LOG",
+    "2026-12-25 db-bench-press 1x8@3 FROM_LOG",
+    "2026-12-25 db-split-squat 1x12@3 FROM_LOG",
+    "2026-12-25 dead-bug 1x14@3 BODYWEIGHT"
+   ],
+   "substitution": "MODIFY/SUBSTITUTE"
+  },
+  "C12_bodyweightRepetitions": {
+   "reproduced": false,
+   "asPrescribedRepsFall": false,
+   "setsWithoutRepsRepsFall": false,
+   "knownLoadFallsWhenRepsUnlogged": false,
+   "asPrescribed": {
+    "log": "0:KEEP/INSTANTIATE_LOGGED_LOADS 1:KEEP/KEEP 2:KEEP/KEEP 3:KEEP/KEEP 4:KEEP/KEEP 5:KEEP/KEEP 6:KEEP/KEEP",
+    "reps": {
+     "sit-to-stand": [
+      5,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+     ],
+     "hip-hinge-practice": [
+      5,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+     ],
+     "split-squat-bodyweight": [
+      5,
+      null,
+      null,
+      null,
+      null,
+      null,
+      5,
+      7
+     ],
+     "incline-push-up": [
+      10,
+      10,
+      12,
+      14,
+      16,
+      16,
+      16,
+      16
+     ],
+     "dead-bug": [
+      12,
+      12,
+      14,
+      16,
+      16,
+      16,
+      null,
+      null
+     ],
+     "glute-bridge": [
+      10,
+      10,
+      12,
+      14,
+      16,
+      16,
+      16,
+      16
+     ],
+     "reverse-lunge": [
+      12,
+      12,
+      14,
+      16,
+      16,
+      null,
+      null,
+      null
+     ]
+    }
+   },
+   "setsWithoutReps": {
+    "log": "0:MODIFY/GATED_NEXT_STEP 1:MODIFY/GATED_NEXT_STEP 2:MODIFY/GATED_NEXT_STEP 3:MODIFY/GATED_NEXT_STEP 4:MODIFY/GATED_NEXT_STEP 5:MODIFY/GATED_NEXT_STEP 6:MODIFY/GATED_NEXT_STEP",
+    "reps": {
+     "sit-to-stand": [
+      5,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+     ],
+     "hip-hinge-practice": [
+      5,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+     ],
+     "split-squat-bodyweight": [
+      5,
+      null,
+      null,
+      null,
+      null,
+      null,
+      5,
+      5
+     ],
+     "incline-push-up": [
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10
+     ],
+     "dead-bug": [
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      null,
+      null
+     ],
+     "glute-bridge": [
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10
+     ],
+     "reverse-lunge": [
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      null,
+      null
+     ]
+    }
+   },
+   "knownLifterWithoutReps": {
+    "log": "0:MODIFY/GATED_NEXT_STEP 1:MODIFY/GATED_NEXT_STEP 2:MODIFY/GATED_NEXT_STEP 3:MODIFY/GATED_NEXT_STEP 4:MODIFY/GATED_NEXT_STEP 5:MODIFY/GATED_NEXT_STEP 6:MODIFY/GATED_NEXT_STEP",
+    "backSquat": [
+     "80x5",
+     "80x5",
+     "80x5",
+     "80x5",
+     "80x5",
+     "80x5",
+     "80x5",
+     "80x5"
+    ],
+    "bench": [
+     "18x6",
+     "18x6",
+     "18x6",
+     "18x6",
+     "18x6",
+     "18x6",
+     "18x6",
+     "18x6"
+    ]
+   }
+  },
+  "C14_staleLateReport": {
+   "reproduced": false,
+   "same": true,
+   "lateReportOutcome": "ACCEPTED"
+  },
+  "C15_unreviewedWeeks": {
+   "reproduced": true,
+   "reviewedWeeks": "0-2 only",
+   "projectionStateWeek7": {
+    "long": 70,
+    "easy": 45
+   },
+   "weeklyReviewWeek7": "KEEP/INSTANTIATE_LOGGED_LOADS",
+   "week8AfterWeekly": [
+    "EASY:50",
+    "QUALITY:43",
+    "LONG:70"
+   ],
+   "scheduleChangeWeek7": "MODIFY/REARRANGE_FUTURE_WEEKS",
+   "week8AfterScheduleChange": [
+    "EASY:15",
+    "EASY:15",
+    "LONG:15"
+   ],
+   "week9AfterScheduleChange": [
+    "EASY:15",
+    "EASY:15",
+    "LONG:20"
+   ]
+  },
+  "C16_scopedScheduleChange": {
+   "reproduced": false,
+   "change": "ASK/ASK",
+   "conflictDate": "2026-11-10",
+   "week1Day1": [
+    "RUN:AM",
+    "STRENGTH:PM"
+   ],
+   "week2Day1": [
+    "RUN:AM",
+    "STRENGTH:PM"
+   ],
+   "week4Day1": [
+    "RUN:AM",
+    "STRENGTH:PM"
+   ],
+   "canonicalStrengthTurnAfter": "PM"
+  },
+  "C18_raceCompletion": {
+   "reproduced": false,
+   "raceWindowMinutes": 75,
+   "reportedMinutes": 52,
+   "evidenceStatus": "COMPLETED",
+   "ledgerPartial": false,
+   "comparable": true
+  }
+ }
+}

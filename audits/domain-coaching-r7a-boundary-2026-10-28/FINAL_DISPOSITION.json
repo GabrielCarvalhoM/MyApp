@@ -1,0 +1,147 @@
+{
+ "revision": "R7AB-DISPOSITION-1",
+ "date": "2026-10-28",
+ "owner": "Chief / runtime author (current Claude Code instance); judges independent",
+ "mission": "DOMAIN_COACHING_R7-A Final Boundary Closure — Week-Start State Authority & Return Continuity",
+ "delivery": "CLOSED_WITH_EXPLICIT_BLOCKER",
+ "exitReadiness": "NOT_READY",
+ "completeDefinitionOfDone": false,
+ "freeze": {
+  "revision": "R7A-BOUNDARY-FINAL-FREEZE",
+  "file": "CoachingCore/r7/boundary/RUNTIME_FREEZE_R7A_BOUNDARY.json",
+  "fileSha256": "3ebc9b02995d95f39b172fbbb79b652c149b10c74984ce7b8da6fd870778b97d",
+  "sourceDigest": "36a71ca84fb87789d8623e2050ac9e308a963400af86a3ba73a373043bbf186c",
+  "files": 81,
+  "delta": {"changed": ["src/r6-adaptation.mjs", "src/r6-composition.mjs", "src/r6-program.mjs", "test/r6-adaptation.test.mjs"], "added": ["test/r7ab-week-start-authority.test.mjs"], "removed": []}
+ },
+ "baselineFreeze": {"revision": "R7A-FINAL-FREEZE", "sourceDigest": "ec2debe730df8931d1525f2b1a729ce3d808c08842fb75397d2fc91084294605", "copy": "audits/domain-coaching-r7a-boundary-2026-10-28/final-freeze-source/"},
+ "baseline": {
+  "file": "audits/domain-coaching-r7a-boundary-2026-10-28/BASELINE.json",
+  "entries": 2366,
+  "reproduced": "Before any edit: R7A-FINAL-FREEZE digest recomputed (0 of 80 drift); verify-r7af read-only 18/18; node --test 528/528; the judge's P30c and P30b byte-identical to its recorded outputs (8dfa53db…, db28ce3d…); SSCTR R7AF-SSCTR-r1 ACCEPT on the historical freeze"
+ },
+ "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+ "policyChanged": false,
+ "contract": {"file": "audits/domain-coaching-r7a-boundary-2026-10-28/WEEK_START_AUTHORITY_CONTRACT.md", "revision": "R7AB-WEEKSTART-1"},
+ "tests": {
+  "suite": "540/540 (node --test, Node v24.19.0): 528 earlier and 12 new",
+  "new": "CoachingCore/test/r7ab-week-start-authority.test.mjs (12; 10 fail on a byte-exact R7A-FINAL-FREEZE copy; the two that pass, time alone and late sync, are behaviour that freeze already had: audits/domain-coaching-r7a-boundary-2026-10-28/probes/r7ab-tests.on-final-freeze.out.txt)",
+  "edited": "CoachingCore/test/r6-adaptation.test.mjs 'nonclinical return is staged from current evidence', marked R7-A boundary (Founder 0.1: a never-logged program starts from the intake; the 1-set entry is asserted after three executed weeks)"
+ },
+ "evidence": {
+  "runner": "audits/domain-coaching-r7a-boundary-2026-10-28/probes/run-evidence-r7ab.mjs",
+  "record": "audits/domain-coaching-r7a-boundary-2026-10-28/probes/EVIDENCE_RUNS_R7AB.json",
+  "runs": 78,
+  "failed": 0,
+  "boundDigest": "36a71ca84fb87789d8623e2050ac9e308a963400af86a3ba73a373043bbf186c",
+  "comparison": "audits/domain-coaching-r7a-boundary-2026-10-28/probes/COMPARE_R7AB.json: 68 of 77 byte-identical to R7A-FINAL-FREEZE; the 9 differences named in COMPARE_R7AB_NAMED.json (QE-R7AF-01 fixed: P30, P30b, P30c; Founder §11: P37; Founder 0.1: P32 L4 unreviewed and the round-12 instrument's never-logged case; bookkeeping: two probes print the new stateAt.authority; this mission's self-challenge)",
+  "selfChallenge": "probes/r7ab-self-challenge.mjs: 9 classes, 0 violations; 56 on R7A-FINAL-FREEZE",
+  "mutation": "probes/mutation-check-r7ab.mjs: 21 mutants of this semantics only, 20 caught and 1 documented (the decision-clock guard, equivalent on reachable paths); round 1 was 16/21 and its survivors became tests before the freeze"
+ },
+ "objectiveVerification": {
+  "script": "CoachingCore/scripts/verify-r7ab.mjs",
+  "output": "CoachingCore/r7/boundary/VERIFICATION_R7AB.json",
+  "note": "The verifier proves the evidence chain (baseline, freeze, policy, tests, baseline reproduction, evidence runs and digests, QE-R7AF-01 on the judge's probes, the earlier blockers, D59, self-challenge, tests on the final freeze, mutation, regression, named differences, reviews bound to the digest, the queue and the deliverables). It does not make the mission READY"
+ },
+ "independentJudgments": {
+  "engineering": {
+   "file": "audits/domain-coaching-r7a-boundary-2026-10-28/reviews/quality-engineering-r7ab-recheck.json",
+   "revision": "R7AB-QE-r1",
+   "reviewer": "fresh quality-reliability-engineer (claude-opus-5-5, effort xhigh, applied through the dispatch guard)",
+   "freezeBound": true,
+   "digestStartEnd": "36a71ca84fb87789d8623e2050ac9e308a963400af86a3ba73a373043bbf186c",
+   "verdict": "NOT_READY",
+   "material": ["QE-R7AB-01"],
+   "nonMaterial": ["QE-R7AB-02", "QE-R7AB-03"]
+  },
+  "ssctr": {
+   "file": "audits/domain-coaching-r7a-boundary-2026-10-28/reviews/ssctr-r7ab-recheck.json",
+   "revision": "R7AB-SSCTR-r1",
+   "reviewer": "native sports-science-concurrent-training-reviewer (claude-opus-5-5, effort xhigh, applied through the dispatch guard)",
+   "freezeBound": true,
+   "digestStartEnd": "36a71ca84fb87789d8623e2050ac9e308a963400af86a3ba73a373043bbf186c",
+   "verdict": "ACCEPT",
+   "items": {"D53": "CLOSED", "D56": "CLOSED", "D57": "CLOSED", "D58": "CLOSED", "D59": "CLOSED"},
+   "rulings": {"S-A": "APPROVED", "S-B": "APPROVED with NF-R7AB-1", "S-C": "APPROVED", "S-D": "APPROVED with NF-R7AB-1", "S-E": "APPROVED (Founder §11 ASK)", "S-F": "APPROVED on the 22 paths probed"},
+   "nonBlocking": ["NF-R7AB-1 (R40)"],
+   "records": "13 R7AF-SSCTR-r1 records re-bound as R7AB-SSCTR-r1"
+  }
+ },
+ "cycleBound": {
+  "rule": "Build, self-challenge, one freeze (R7A-BOUNDARY-FINAL-FREEZE), both re-checks in parallel on the same bytes, stop. No second freeze, no correction cycle, no new sub-phase (Founder §19, §22)",
+  "correctionCyclesRun": 0,
+  "furtherCycle": false
+ },
+ "blockers": {
+  "QE-R7A-01": "CLOSED",
+  "QE-R7A1-09": "CLOSED",
+  "QE-R7A1-10": "CLOSED",
+  "QE-R7A2-01": "CLOSED",
+  "QE-R7A2-02": "CLOSED",
+  "QE-R7A2-03": "CLOSED",
+  "QE-R7AF-01": "CLOSED on its own path (the class stays open through QE-R7AB-01)",
+  "QE-R7AF-02": "CLOSED (Founder §11)",
+  "D53": "CLOSED",
+  "D56": "CLOSED",
+  "D57": "CLOSED",
+  "D58": "CLOSED",
+  "D59": "CLOSED",
+  "QE-R7AB-01": "OPEN"
+ },
+ "remaining": [
+  {"id": "QE-R7AB-01", "source": "engineering re-check R7AB-QE-r1", "severity": "MEDIUM", "material": true, "what": "Outside a return, a weekly review (or any handler that applies its rule) records the next week's start as WEEK_EVIDENCE. It carries, unchanged, every value its evidence did not move from the week's own start, even when that start was an unverified projection. historicalWeekStart checks that base only while return steps are under way. So in a program's first weeks, after a SHORT return or after a completed return, a load or count only the plan assumed becomes evidence-anchored history and reaches a resumed dose or a return ceiling"},
+  {"id": "QE-R7AB-02", "source": "R7AB-QE-r1", "severity": "LOW", "material": false},
+  {"id": "QE-R7AB-03", "source": "R7AB-QE-r1", "severity": "LOW", "material": false, "founderQuestion": "Does §11's 'already-attributed execution' include training recorded before the interruption's first report that a named correction now encloses?"},
+  {"id": "NF-R7AB-1", "source": "R7AB-SSCTR-r1", "blocking": false, "recommendation": "R40"},
+  {"id": "QE-R7AF-03", "severity": "LOW", "material": false, "carriedOver": true},
+  {"id": "QE-R7AF-04", "severity": "LOW", "material": false, "carriedOver": true},
+  {"id": "R38", "source": "SSCTR", "blocking": false, "carriedOver": true},
+  {"id": "R39", "source": "SSCTR", "blocking": false, "carriedOver": true}
+ ],
+ "notReadyRecord": {
+  "finding": "QE-R7AB-01 (MEDIUM, material)",
+  "reproduction": "reviews/qe-r7ab-P40-held-outside-return.mjs, with variants P40b, P40c, P41 and P47b. The author reproduced P40 byte for byte on the frozen bytes (b76b8259…): the program's first interruption starts at week 4 (WEEK_EVIDENCE) with db-rdl and db-split-squat at 22 kg, a load tick the plan assumed in a week whose Saturday lift was missed and never reviewed; the ledger shows 20 kg; the control (the same facts, that week reviewed) gives 20. On the R7A-FINAL-FREEZE copy the same 22 kg is carried: an older path this mission did not reach",
+  "newManifestationOfProjectedVsHistorical": "Yes (the judge). A projected value acquires historical authority because a later decision stored it, here the canonical weekly review that held it. It is not QE-R7AF-01's path: no earlier return and no unrelated handler",
+  "requiresHistoryStateModelRevision": "Yes (the judge). At minimum, evidence authority must be recursive on every week, not only inside a return: a reviewed start is history only when the start it was computed from is history, or the week was executed in full. An exact answer needs per-value provenance (which values the review moved from evidence and which it carried), which the contract's B8 calls a new state model",
+  "whyTheCurrentSolutionWasInsufficient": "Authority is recorded per start and per sport, and WEEK_EVIDENCE certifies the review's transition, not the base it was applied to. The author bounded the base check to returns, where week-level absorption is precise. Applied on every week, week-level absorption keeps an athlete who misses a session every week out of history for good after one unverified week (the reason for the bound, contract B8), so the exact repair is per value",
+  "authorReading": "Separate from the judge: the two options trade conservatism against precision. (a) Recursive authority on every week is a small change but discards reviewed progress after one unverified week until a week is executed in full; the SSCTR's NF-R7AB-1 already shows that cost inside a return. (b) Per-value provenance (per exercise and per run dimension: moved by evidence, or carried from a base with its own authority) is exact but adds a per-value record to every start and to the reading of history: a state-model decision",
+  "smallestArchitecturalDecision": "Whether evidence authority is recursive on every week (option a), or recorded per value (option b). Related, not blocking: QE-R7AB-03 (§11 scope for training enclosed before the first report), SSCTR R40 (per-sport walk-back), QE-R7AB-02, QE-R7AF-03/04, R38, R39"
+ },
+ "verdicts": {
+  "WEEK_COMPOSITION_INTEGRITY": "READY",
+  "STATE_PRESERVATION_INTEGRITY": "NOT_READY",
+  "EVENT_SUPERSESSION_INTEGRITY": "READY",
+  "EXERCISE_MERGE_INTEGRITY": "READY",
+  "RETURN_RECOVERY_CEILING_INTEGRITY": "NOT_READY",
+  "WEEK_START_STATE_AUTHORITY": "NOT_READY",
+  "R7A_FINAL_ENGINEERING_RECHECK": "NOT_READY",
+  "R7A_FINAL_SCIENTIFIC_RECHECK": "READY",
+  "R7A_EXIT_READINESS": "NOT_READY"
+ },
+ "queue": {"before": 175, "after": 187, "appended": 12, "ids": "HQ-R7AB-SSCTR-*", "record": "audits/domain-coaching-r7a-boundary-2026-10-28/QUEUE_INTEGRATION_R7AB.json", "funding": "NOT_DECLARED"},
+ "regression": {"file": "CoachingCore/r7/boundary/REGRESSION_R7AB.json", "againstFinalFreeze": {"r6Holdout": "35/35", "r5": "24/24", "profiles": "16/16", "simulations": "14/14"}, "classification": "REGRESSION / CHALLENGE REUSE; not generalization evidence"},
+ "supersededVerifierChecks": "verify-r7af.mjs (read-only) now fails freeze-current, baseline-preserved and queue-append-only by design: this mission supersedes R7A-FINAL-FREEZE and appended to the queue; its recorded VERIFICATION_R7AF.json is not rewritten",
+ "handoff": "Not written: R7A_EXIT_READINESS is NOT_READY (Founder §25, §26)",
+ "nextEngineeringStep": {"decision": "FOUNDER", "nextMission": "FOUNDER_ARCHITECTURAL_DECISION", "notStarted": true},
+ "r7b0Started": false,
+ "r7bStarted": false,
+ "nextMissionStarted": false,
+ "productionOrRealAthleteAuthority": false,
+ "uiFigmaKmpChanges": false,
+ "integrationsImplemented": false,
+ "commitMergeDeployPerformed": false,
+ "deliverables": [
+  "audits/domain-coaching-r7a-boundary-2026-10-28/FOUNDER_REQUEST.md",
+  "audits/domain-coaching-r7a-boundary-2026-10-28/TASK_CONTRACT.md",
+  "audits/domain-coaching-r7a-boundary-2026-10-28/WEEK_START_AUTHORITY_CONTRACT.md",
+  "audits/domain-coaching-r7a-boundary-2026-10-28/BASELINE.json",
+  "audits/domain-coaching-r7a-boundary-2026-10-28/CHECKPOINT.md",
+  "audits/domain-coaching-r7a-boundary-2026-10-28/QUEUE_INTEGRATION_R7AB.json",
+  "audits/domain-coaching-r7a-boundary-2026-10-28/FINAL_DISPOSITION.json",
+  "CoachingCore/r7/boundary/RUNTIME_FREEZE_R7A_BOUNDARY.json",
+  "CoachingCore/r7/boundary/REGRESSION_R7AB.json",
+  "CoachingCore/r7/boundary/READINESS_R7AB.json",
+  "CoachingCore/r7/boundary/FINAL_REPORT_R7AB.md",
+  "CoachingCore/r7/boundary/VERIFICATION_R7AB.json"
+ ]
+}

@@ -1,0 +1,214 @@
+# CoachingCore/test/r7ab-week-start-authority.test.mjs sha256 7edf7532ab6c4bd223348fd680c7b1d4f5aa25724afc56914401328439201f2e, run on a byte-exact R7A-FINAL-FREEZE copy (final-freeze-source/CoachingCore, ec2debe7...) with node v24.19.0
+✖ R7-A boundary §14 QE-R7AF-01: after an unfinished, unreviewed re-entry week, no later decision makes the projected week start history (249.6124ms)
+✖ R7-A boundary I2 (§7): every return records why its state point holds authority as history (192.826ms)
+✖ R7-A boundary I5/P3 (families D, E): execution promotes authority only through evidence; review and completed sessions agree (269.2185ms)
+✔ R7-A boundary I1/I3 (family H, P5): time alone, a week boundary or a stored field never makes a projection history (338.423ms)
+✖ R7-A boundary §13 premise: a week executed, but not as its projection assumed, never makes the projected start history (260.864ms)
+✖ R7-A boundary I4: inside a return, a value a review held from a projected start is not history until a week is executed in full (247.3192ms)
+✖ R7-A boundary families A, C: an equipment statement on the last day, or an event change that re-plans this week, keeps a projected start projected (246.7554ms)
+✖ R7-A boundary I8/P1/P2 (families A, B, C): equivalent and no-op changes give the same base; none promotes a projection (275.203ms)
+✖ R7-A boundary P4 (family F): a correction that removes the evidence a start relied on withdraws its authority (309.1732ms)
+✔ R7-A boundary I6: evidence synced late counts by the time it was executed (211.2835ms)
+✖ R7-A boundary I7 (Founder §11): a named correction that contradicts its own executed re-entry is asked; a consistent one applies (223.7519ms)
+✖ R7-A boundary (Founder 0.1, family G): before any return too, a planned week start is history only through evidence (132.8255ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 2
+ℹ fail 10
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3075.3183
+
+✖ failing tests:
+
+test at test\r7ab-week-start-authority.test.mjs:53:1
+✖ R7-A boundary §14 QE-R7AF-01: after an unfinished, unreviewed re-entry week, no later decision makes the projected week start history (249.6124ms)
+  TypeError: Cannot read properties of undefined (reading 'authority')
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/C--Users-carva-Desktop-myApp-MyApp/f3a1ed08-2e89-4025-a8b6-b10e02b213f1/scratchpad/ff/CoachingCore/test/r7ab-week-start-authority.test.mjs:55:43)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)
+
+test at test\r7ab-week-start-authority.test.mjs:70:1
+✖ R7-A boundary I2 (§7): every return records why its state point holds authority as history (192.826ms)
+  AssertionError [ERR_ASSERTION]: A: week 2, set by the review of week 1
+  + actual - expected
+  
+  + undefined
+  - {
+  -   RUN: 'WEEK_EVIDENCE',
+  -   STRENGTH: 'WEEK_EVIDENCE'
+  - }
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/C--Users-carva-Desktop-myApp-MyApp/f3a1ed08-2e89-4025-a8b6-b10e02b213f1/scratchpad/ff/CoachingCore/test/r7ab-week-start-authority.test.mjs:72:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { RUN: 'WEEK_EVIDENCE', STRENGTH: 'WEEK_EVIDENCE' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7ab-week-start-authority.test.mjs:77:1
+✖ R7-A boundary I5/P3 (families D, E): execution promotes authority only through evidence; review and completed sessions agree (269.2185ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + undefined
+  - {
+  -   RUN: 'COMPLETED_SESSIONS',
+  -   STRENGTH: 'COMPLETED_SESSIONS'
+  - }
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/C--Users-carva-Desktop-myApp-MyApp/f3a1ed08-2e89-4025-a8b6-b10e02b213f1/scratchpad/ff/CoachingCore/test/r7ab-week-start-authority.test.mjs:81:75)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { RUN: 'COMPLETED_SESSIONS', STRENGTH: 'COMPLETED_SESSIONS' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7ab-week-start-authority.test.mjs:99:1
+✖ R7-A boundary §13 premise: a week executed, but not as its projection assumed, never makes the projected start history (260.864ms)
+  AssertionError [ERR_ASSERTION]: reported not done
+  + actual - expected
+  
+  + 'WEEK_START'
+  - 'RETURN'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/C--Users-carva-Desktop-myApp-MyApp/f3a1ed08-2e89-4025-a8b6-b10e02b213f1/scratchpad/ff/CoachingCore/test/r7ab-week-start-authority.test.mjs:110:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'WEEK_START',
+    expected: 'RETURN',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7ab-week-start-authority.test.mjs:112:1
+✖ R7-A boundary I4: inside a return, a value a review held from a projected start is not history until a week is executed in full (247.3192ms)
+  TypeError: Cannot read properties of undefined (reading 'authority')
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/C--Users-carva-Desktop-myApp-MyApp/f3a1ed08-2e89-4025-a8b6-b10e02b213f1/scratchpad/ff/CoachingCore/test/r7ab-week-start-authority.test.mjs:117:93)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\r7ab-week-start-authority.test.mjs:128:1
+✖ R7-A boundary families A, C: an equipment statement on the last day, or an event change that re-plans this week, keeps a projected start projected (246.7554ms)
+  TypeError: Cannot read properties of undefined (reading 'RUN')
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/C--Users-carva-Desktop-myApp-MyApp/f3a1ed08-2e89-4025-a8b6-b10e02b213f1/scratchpad/ff/CoachingCore/test/r7ab-week-start-authority.test.mjs:134:45)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\r7ab-week-start-authority.test.mjs:150:1
+✖ R7-A boundary I8/P1/P2 (families A, B, C): equivalent and no-op changes give the same base; none promotes a projection (275.203ms)
+  AssertionError [ERR_ASSERTION]: sameEquipment
+  + actual - expected
+  
+  + 'WEEK_START'
+  - 'RETURN'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/C--Users-carva-Desktop-myApp-MyApp/f3a1ed08-2e89-4025-a8b6-b10e02b213f1/scratchpad/ff/CoachingCore/test/r7ab-week-start-authority.test.mjs:157:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'WEEK_START',
+    expected: 'RETURN',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7ab-week-start-authority.test.mjs:164:1
+✖ R7-A boundary P4 (family F): a correction that removes the evidence a start relied on withdraws its authority (309.1732ms)
+  AssertionError [ERR_ASSERTION]: recomputed from the corrected record
+  + actual - expected
+  
+  + 'WEEK_START'
+  - 'RETURN'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/C--Users-carva-Desktop-myApp-MyApp/f3a1ed08-2e89-4025-a8b6-b10e02b213f1/scratchpad/ff/CoachingCore/test/r7ab-week-start-authority.test.mjs:169:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'WEEK_START',
+    expected: 'RETURN',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7ab-week-start-authority.test.mjs:178:1
+✖ R7-A boundary I7 (Founder §11): a named correction that contradicts its own executed re-entry is asked; a consistent one applies (223.7519ms)
+  AssertionError [ERR_ASSERTION]: moved after its own re-entry
+  
+  'MODIFY' !== 'ASK'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/C--Users-carva-Desktop-myApp-MyApp/f3a1ed08-2e89-4025-a8b6-b10e02b213f1/scratchpad/ff/CoachingCore/test/r7ab-week-start-authority.test.mjs:182:39)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'MODIFY',
+    expected: 'ASK',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7ab-week-start-authority.test.mjs:188:1
+✖ R7-A boundary (Founder 0.1, family G): before any return too, a planned week start is history only through evidence (132.8255ms)
+  AssertionError [ERR_ASSERTION]: Expected "actual" to be strictly unequal to: 4
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/C--Users-carva-Desktop-myApp-MyApp/f3a1ed08-2e89-4025-a8b6-b10e02b213f1/scratchpad/ff/CoachingCore/test/r7ab-week-start-authority.test.mjs:193:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 4,
+    expected: 4,
+    operator: 'notStrictEqual',
+    diff: 'simple'
+  }

@@ -1,0 +1,253 @@
+{
+  "revision": "DCR2-VERIFY-1",
+  "verifiedAt": "2026-10-24T23:43:09.146Z",
+  "status": "INCOMPLETE",
+  "meaning": "Current bounded offline conformance and independent review freshness; NOT V1 readiness or efficacy/safety/clinical/production approval",
+  "environment": {
+    "node": "v24.19.0",
+    "platform": "win32",
+    "purpose": "OFFLINE_SYNTHETIC_SHADOW_REFERENCE"
+  },
+  "checks": [
+    {
+      "name": "current_executable_tests",
+      "status": "PASS",
+      "evidence": {
+        "command": "node --test --test-reporter=tap",
+        "node": "v24.19.0",
+        "exitCode": 0,
+        "tests": 203,
+        "passed": 203,
+        "failed": 0,
+        "raw": "CoachingCore/r2/TEST_RESULTS_CURRENT.tap",
+        "sha256": "a87335a1c60a0b252c8d8fe818a45921cce68e12400a69bd41bce38530ff1495"
+      }
+    },
+    {
+      "name": "exact_independent_scientific_authority",
+      "status": "PASS",
+      "evidence": {
+        "policies": 15,
+        "conditionalApprovals": 12,
+        "abstentions": 3,
+        "registryRawHash": "3e5b6af1e9561ee54ae01c02adf06256b0629a258274a0d10b17f6bb58b63abe",
+        "humanCredentials": false
+      }
+    },
+    {
+      "name": "saved_R2_trace_replay_schema_determinism_and_no_application",
+      "status": "PASS",
+      "evidence": {
+        "uniqueInputs": 205,
+        "replayed": 205,
+        "schemaValid": 205,
+        "positiveProposals": 32,
+        "officialPlanMutations": 0,
+        "appliedEffects": 0
+      }
+    },
+    {
+      "name": "current_legacy_simulation_replay",
+      "status": "PASS",
+      "evidence": {
+        "uniqueInputs": 160,
+        "replayed": 160,
+        "schemaValid": 160,
+        "positiveProposals": 11,
+        "officialPlanMutations": 0,
+        "appliedEffects": 0
+      }
+    },
+    {
+      "name": "representative_independence_and_honest_denominators",
+      "status": "PASS",
+      "evidence": {
+        "independentCases": 42,
+        "positive": 1,
+        "positiveOpportunities": 23,
+        "currentSchemaValid": 8,
+        "currentSchemaInvalid": 34,
+        "semanticClasses": {
+          "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED": 1,
+          "SUPPORTED_KEEP": 0,
+          "USEFUL_ASK": 6,
+          "CORRECT_ABSTAIN_OR_HOLD": 0,
+          "NOT_SUPPORTED_YET": 33,
+          "CLINICAL_OR_OUT_OF_SCOPE": 2
+        },
+        "rawAskBreakdown": {
+          "transportOrContractAsk": 32,
+          "substantiveMissingInputAsk": 6,
+          "rule": "Schema-invalid ASK is semantically NOT_SUPPORTED_YET, never automatically USEFUL_ASK. Raw decision types remain available."
+        },
+        "frozenCorpusHash": "efd521341252db0413ea9dbac0b28df83ef5b7606cad1b99fd025ea024f07971"
+      }
+    },
+    {
+      "name": "single_human_queue_preserves_history_and_only_actual_approvals",
+      "status": "PASS",
+      "evidence": {
+        "preserved": 88,
+        "added": 12,
+        "total": 100,
+        "fundingUnchanged": true,
+        "noAbstentionQueued": true
+      }
+    },
+    {
+      "name": "baseline_authority_and_existing_work_preserved",
+      "status": "PASS",
+      "evidence": {
+        "baselineFiles": 682,
+        "missionOwnedChangedPaths": [
+          "CoachingCore/BOUNDED_SHADOW_RUNTIME_CONTRACT.md",
+          "CoachingCore/package.json",
+          "CoachingCore/README.md",
+          "CoachingCore/src/runtime.mjs",
+          "CURRENT_MISSION.md",
+          "MISSION_LEDGER.md",
+          "reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json"
+        ],
+        "externalConcurrentDeltas": [
+          {
+            "path": "audits/new-figma-v1-completion-2026-10-23/DELIVERY_REPORT.md",
+            "beforeSha256": "2c3b5277f0af3384af0f9b802184feb9b427dbe0043c4dede3483d54addc005b",
+            "currentSha256": "d9b7dc0d1e1499cba6c8f4be7d10e959f3f6dc192ce49911930f28c420bfcad4",
+            "classification": "External concurrent IDV-1 visual-audit locator, not a scientific/runtime R2 input and not changed/certified by R2"
+          }
+        ],
+        "unclassifiedChanges": 0,
+        "concurrentMissionContext": "IDV-1 inserted its own visual locator in the shared mission/ledger; all original text is retained in order. No external visual activity is attributed to or certified by R2"
+      }
+    },
+    {
+      "name": "multiday_multiweek_scope_and_guard_metrics",
+      "status": "PASS",
+      "evidence": {
+        "rows": 209,
+        "uniqueR2Inputs": 205,
+        "legacyRows": 164,
+        "legacyUnique": 160,
+        "trajectories": 9,
+        "establishmentWeeks": 2,
+        "fourWeekStreams": 3,
+        "stressWeeks": 4,
+        "scriptedResponsesNotPhysiology": true,
+        "officialPlanMutations": 0,
+        "appliedEffects": 0,
+        "identicalInputFlips": 0,
+        "unsupportedNoisePrescriptions": 0
+      }
+    },
+    {
+      "name": "independent_SSCTR_final_current_fidelity_gate",
+      "status": "PASS",
+      "evidence": {
+        "path": "audits/domain-closure-r2-2026-10-24/reviews/ssctr-final-verification.json",
+        "verdict": "PASS",
+        "supportingHashesChecked": 19,
+        "probes": 52,
+        "scope": "Current fidelity of bounded scientific conditions only; not V1 readiness, efficacy, safety, clinical clearance or autonomy"
+      }
+    },
+    {
+      "name": "independent_quality_current_gate",
+      "status": "FAIL",
+      "error": "Stale independent review target: CoachingCore/r2/COVERAGE_BASELINE_R2.json\n+ actual - expected\n\n+ 'bec4d8ca9a4a15252351ada240ad803b8bea57233aab2bf3ec0ae74879916509'\n- '98c5cc7459d311f0582bfa87dc98d6a04f70b39c3cc7cabca8803763c90de8c1'\n"
+    },
+    {
+      "name": "independent_governance_current_gate",
+      "status": "FAIL",
+      "error": "Stale independent review target: CURRENT_MISSION.md\n+ actual - expected\n\n+ '59cfb8e19312cb61337e68407af135e185ac35dbb76703cb977efa84fad57e04'\n- 'a7617b6e54d130040705eed89ea6d95a86661b9861c2c6193c6bb51b191eeb9f'\n"
+    },
+    {
+      "name": "all_requested_deliverables_and_explicit_readiness",
+      "status": "PASS",
+      "evidence": {
+        "requestedArtifactPathsChecked": 30,
+        "verdicts": {
+          "POSITIVE_PRESCRIPTION_COVERAGE": "NOT_READY",
+          "FIRST_PRESCRIPTION_READINESS": "NOT_READY",
+          "ADAPTATION_DOSING_READINESS": "NOT_READY",
+          "RETURN_AFTER_PAUSE_READINESS": "NOT_READY",
+          "HYBRID_TAPER_READINESS": "NOT_READY",
+          "RUN_CALIBRATION_READINESS": "NOT_READY",
+          "AUTONOMOUS_COACHING_SPEC_READINESS": "NOT_READY",
+          "NEXT_ENGINEERING_STEP": "DOMAIN_CLOSURE_R3"
+        },
+        "fullAutonomousRuntime": "NO_GO"
+      }
+    }
+  ],
+  "verdicts": {
+    "POSITIVE_PRESCRIPTION_COVERAGE": "NOT_READY",
+    "FIRST_PRESCRIPTION_READINESS": "NOT_READY",
+    "ADAPTATION_DOSING_READINESS": "NOT_READY",
+    "RETURN_AFTER_PAUSE_READINESS": "NOT_READY",
+    "HYBRID_TAPER_READINESS": "NOT_READY",
+    "RUN_CALIBRATION_READINESS": "NOT_READY",
+    "AUTONOMOUS_COACHING_SPEC_READINESS": "NOT_READY",
+    "NEXT_ENGINEERING_STEP": "DOMAIN_CLOSURE_R3"
+  },
+  "artifactHashes": {
+    "CoachingCore/r2/COVERAGE_BASELINE_R2.json": "bec4d8ca9a4a15252351ada240ad803b8bea57233aab2bf3ec0ae74879916509",
+    "CoachingCore/r2/COVERAGE_BASELINE_R2.md": "de73a80a7a5bd1e2666933b4da1db5a21113db3aaa6162478539a062456dcbe8",
+    "CoachingCore/r2/domain/ACF_G01_ESTABLISHMENT.json": "993f60728f98162c0326f097685cb1e1b2e532033ed44ccf47c047be802c343d",
+    "CoachingCore/r2/domain/ACF_G01_ESTABLISHMENT.md": "e3f42e15cb0964dadfd04a479260bab8afa9e0cacbf64576d5e2cb258d92d5eb",
+    "CoachingCore/r2/domain/ACF_G02_ADAPTATION_DOSING.json": "34bf95a63b24bfa8bd2883e0d6f0b1e12e0ef7b717f91a410f42d1ef6e998761",
+    "CoachingCore/r2/domain/ACF_G02_ADAPTATION_DOSING.md": "576b68db3ae54630e9b3634c8a1addf0b806f458b5ed014ef9333e1af9a31a9e",
+    "CoachingCore/r2/domain/ACF_G03_RETURN.json": "24672ac898119b3c8dab686b0661014604e960390e71204b6c2042463a8c3d80",
+    "CoachingCore/r2/domain/ACF_G03_RETURN.md": "7e778c9dad970ba2615c027dbf5b9dafc4cde7b1591cd370990d7318e45fcc26",
+    "CoachingCore/r2/domain/ACF_G04_TAPER_RACE_WEEK.json": "5d5accd71ccce7ea272fb27f0411d6fbb57fd1bfcdcc02a7c333651ca836c3d0",
+    "CoachingCore/r2/domain/ACF_G04_TAPER_RACE_WEEK.md": "c4c9551b09d102a7bb604caf4419e12c5d75595819dc84c13946e142c663c031",
+    "CoachingCore/r2/domain/ACF_G05_RUN_CALIBRATION.json": "5fa5916d68a8c569ca5ad95540d28d4499b98455e31be81d0cceff6805e79df9",
+    "CoachingCore/r2/domain/ACF_G05_RUN_CALIBRATION.md": "f672585cd6e69e00c4f24b5c662350bbb6d445db3e4f342852c72cd75e358e56",
+    "CoachingCore/r2/domain/LITERATURE_SNAPSHOT_R2.json": "79968c932b05d40057cd1a5f94875a2b99897212d777ed2f65342de22ccb5868",
+    "CoachingCore/r2/domain/SCIENTIFIC_CLAIM_MAP_R2.json": "fb573a0d2cb3d4d3f164588120505501b471e4e1e800403fef546b67ea4b9c38",
+    "CoachingCore/r2/domain/SEARCH_LOG_R2.md": "a9cf0c35991702571d3851e7979fb971126fac6fa4b0b4630a38932c58af2931",
+    "CoachingCore/r2/DOMAIN_CLOSURE_R2_REPORT.md": "72afbc3646d719d6bdab64c820c0db62a31866c103c62a926a72e95aaec7182b",
+    "CoachingCore/r2/evaluation/R2_EVAL_INPUTS.json": "bba26866b6975008fe6175ee3503d8fdaed14c1662d5b755168195403e5023b0",
+    "CoachingCore/r2/evaluation/REPRESENTATIVE_CORPUS_R2.json": "10fe324dee5ad9f20aa33f28b118a63dbf82e8bd3da6dd44e0d51d506279d0bf",
+    "CoachingCore/r2/evaluation/REPRESENTATIVE_CORPUS_R2.md": "5a805d44fbdf4d829b72b30a70fe37863d9305c3efcd66f359ced4f735d96200",
+    "CoachingCore/r2/FINAL_REPORT.md": "16df9726fcbf7a01b26b6fab37683a19a311eab15accc7f2a2481a930c3b290c",
+    "CoachingCore/r2/HUMAN_REVALIDATION_QUEUE_UPDATE.json": "0c58d5bc5405a59b285c634f1a573c19800cc0161fc1a9f206c16a3ccdbe08c8",
+    "CoachingCore/r2/INPUT_CONTRACT.md": "f9447f886ce6d85ab1e263aac7fcbdbefae477bee2a72bb39c0fc2a46a1697ce",
+    "CoachingCore/r2/legacy-replay/COACHING_COVERAGE_BASELINE.json": "481b85fcedc5ab9c079623317ea3694e47922ea649268ad59b2222e7b1c4155b",
+    "CoachingCore/r2/legacy-replay/COACHING_COVERAGE_BASELINE.md": "36b9749996fb4aa55a96f02173169db6226983945c2c96942a666a0c19ae4cb7",
+    "CoachingCore/r2/legacy-replay/RUNTIME_TRACE_EXAMPLES.json": "cc6888602898487772c6372ee5d92f6c84595a40f5a5a57d10da6fdc1e236895",
+    "CoachingCore/r2/legacy-replay/RUNTIME_TRACE_EXAMPLES.md": "ee2d613bfdafc361f8e8e5c9d7b282f19cc600ce88f4180577a175f80989a5d9",
+    "CoachingCore/r2/legacy-replay/SYNTHETIC_SHADOW_RESULTS.json": "e67935cedea487bf89c5f09597a60e66278aebb2ae1b921ff4dc7007a1ec3501",
+    "CoachingCore/r2/legacy-replay/SYNTHETIC_SHADOW_RESULTS.md": "d8cdc59d115b718e01c8bf1e0f1fcab6f078842133e040c861fb430f502e0b6c",
+    "CoachingCore/r2/LEGACY_SIMULATION_LOG.txt": "11404c9ffa50fe5dd02b2d6a0f351150f8ada87599f8b6bf035efdadcba24b6b",
+    "CoachingCore/r2/OPEN_GAPS_R2.json": "9525494e2c2319b16122ade175540e00f2c6cd15ad905fc72a0d4d6ef4f2cd8f",
+    "CoachingCore/r2/OPEN_GAPS_R2.md": "44965051c9db1037d741d5883a5fae35d98d5605d5b37269fecb9eed45a85ab1",
+    "CoachingCore/r2/POSITIVE_PRESCRIPTION_REGISTRY.json": "3e5b6af1e9561ee54ae01c02adf06256b0629a258274a0d10b17f6bb58b63abe",
+    "CoachingCore/r2/POSITIVE_PRESCRIPTION_REGISTRY.md": "0f266dc4f564c927cfdc0ee1c1bd8486f45ed8464f96553bb0d5f70d76aa2196",
+    "CoachingCore/r2/README.md": "552b4f9f053533b748c1b539455b7253e5ae940b8b44fdff9c6a06d26f54f86e",
+    "CoachingCore/r2/RUNTIME_R2_RESULTS.json": "7f75280e5ffd5835a405a2521e552c00374f91d764e30915716be32c5a2ae7e3",
+    "CoachingCore/r2/RUNTIME_R2_RESULTS.md": "addcc8dfd6a82322b7d91b17f5ebaa70b2b785c56a90a9507c58404a9e41e1ba",
+    "CoachingCore/r2/RUNTIME_R2_TRACES.json": "513d67fd9679755011d073533ee26b6749bfa92a51cfdddfc57b5e2b843c0f44",
+    "CoachingCore/r2/SHADOW_INPUT_R2_SCHEMA.json": "10da9ae20f7a946852a6ce9f2de73db23fc1d325b404f3d8b09667a52b2929a7",
+    "CoachingCore/r2/SSCTR_RUNTIME_AUTHORITY.json": "74bb320b13183cf02e6803debc071b1e628478fe2b41f364cf6c9a59ae8592cd",
+    "CoachingCore/r2/TEST_RESULTS_CURRENT.tap": "a87335a1c60a0b252c8d8fe818a45921cce68e12400a69bd41bce38530ff1495",
+    "CoachingCore/src/runtime.mjs": "b52b1bbe9c8742a5a27eee9cec548cc06ac33d312713a02be6c24730737ebe9c",
+    "CoachingCore/src/r2-runtime.mjs": "2dc76442339fadf3ddfbf0fb1f67dd2e9d6101cb2eb785a02171b70ad45902c8",
+    "CoachingCore/src/r2-fixtures.mjs": "2c57aa5b9a9e473843790e17532108001b7bf600d1b07c091794a0dc9c95e302",
+    "CoachingCore/scripts/verify-r2.mjs": "ddcf9415e432b9f81a4e24ab0e468670e3a21d40cc226c5a23e7ffd12385b9bf",
+    "CoachingCore/scripts/simulate-r2.mjs": "4e4a359b1be0e315f3988c426caf62cdd2768fa2fd0cf3b24bd0a97cf666d5db",
+    "CoachingCore/scripts/report-r2.mjs": "2159586f42911309bb4e8e08e21ce4e06eceedddd515f8e0092fcb46ad68e7ea",
+    "CoachingCore/test/r2.test.mjs": "d4ce81b0c42fdfd40ea7445e55c730b2f4df21bc5eabe97a27be7969154a1dc7",
+    "CoachingCore/package.json": "e7de17fef02b0fce17afb6304b16f1752a22618e69409efd7fa6f7f9587da930",
+    "CoachingCore/package-lock.json": "a6ea7b32bb5071e05f41f5e92cb81e06bdf1c74bc9bd87808fbbad4f57735417"
+  },
+  "scientificApprovalsAdded": 12,
+  "historicalQueueItemsPreserved": 88,
+  "humanValidation": false,
+  "clinicalValidation": false,
+  "empiricalValidation": false,
+  "officialPlanApplication": false,
+  "uiImplementation": false,
+  "figmaAction": false,
+  "kmpMigration": false,
+  "productionRelease": false
+}

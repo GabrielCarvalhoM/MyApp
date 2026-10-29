@@ -1,0 +1,108 @@
+{
+ "probe": "P5",
+ "runtime": "CURRENT",
+ "5a_tenWeeks": {
+  "manualWithoutRir": {
+   "log": "0:MODIFY/GATED_NEXT_STEP 1:MODIFY/GATED_NEXT_STEP 2:MODIFY/GATED_NEXT_STEP 3:MODIFY/GATED_NEXT_STEP 4:MODIFY/GATED_NEXT_STEP 5:MODIFY/GATED_NEXT_STEP 6:MODIFY/GATED_NEXT_STEP 7:MODIFY/GATED_NEXT_STEP 8:MODIFY/GATED_NEXT_STEP 9:MODIFY/GATED_NEXT_STEP",
+   "finalKnownLoads": {
+    "back-squat": 80,
+    "db-bench-press": 18,
+    "db-row": 20,
+    "db-calf-raise": 20,
+    "db-rdl": 20,
+    "db-split-squat": 20
+   },
+   "sources": {
+    "back-squat": "LOGGED_ACTUAL",
+    "db-bench-press": "LOGGED_ACTUAL",
+    "db-row": "LOGGED_ACTUAL",
+    "db-calf-raise": "LOGGED_ACTUAL",
+    "dead-bug": "PLANNED_ESTABLISHMENT",
+    "db-rdl": "LOGGED_ACTUAL",
+    "db-split-squat": "LOGGED_ACTUAL"
+   }
+  },
+  "manualPlusDevice_merged": {
+   "log": "0:MODIFY/ADOPT_LOGGED_LOADS 1:MODIFY/ADOPT_LOGGED_LOADS 2:MODIFY/ADOPT_LOGGED_LOADS 3:KEEP/INSTANTIATE_LOGGED_LOADS 4:MODIFY/ADOPT_LOGGED_LOADS 5:MODIFY/ADOPT_LOGGED_LOADS 6:MODIFY/ADOPT_LOGGED_LOADS 7:KEEP/INSTANTIATE_LOGGED_LOADS 8:MODIFY/ADOPT_LOGGED_LOADS 9:MODIFY/ADOPT_LOGGED_LOADS",
+   "finalKnownLoads": {
+    "back-squat": 80,
+    "db-bench-press": 18
+   },
+   "sources": {
+    "back-squat": "CURRENT_FAMILIAR_KNOWN_DOSE",
+    "db-bench-press": "CURRENT_FAMILIAR_KNOWN_DOSE",
+    "dead-bug": "PLANNED_ESTABLISHMENT"
+   }
+  },
+  "fieldUnion_manualWithRir": {
+   "log": "0:KEEP/INSTANTIATE_LOGGED_LOADS 1:KEEP/INSTANTIATE_LOGGED_LOADS 2:KEEP/KEEP 3:KEEP/KEEP 4:KEEP/KEEP 5:KEEP/KEEP 6:KEEP/KEEP 7:KEEP/KEEP 8:KEEP/KEEP 9:KEEP/KEEP",
+   "finalKnownLoads": {
+    "back-squat": 90,
+    "db-bench-press": 26,
+    "db-row": 28,
+    "db-calf-raise": 26,
+    "db-rdl": 26,
+    "db-split-squat": 26
+   },
+   "sources": {
+    "back-squat": "LOGGED_ACTUAL",
+    "db-bench-press": "LOGGED_ACTUAL",
+    "db-row": "LOGGED_ACTUAL",
+    "db-calf-raise": "LOGGED_ACTUAL",
+    "dead-bug": "PLANNED_ESTABLISHMENT",
+    "db-rdl": "LOGGED_ACTUAL",
+    "db-split-squat": "LOGGED_ACTUAL"
+   }
+  },
+  "mergedEqualsUnion": false,
+  "loadsBehindUnion": [
+   "back-squat: merged 80 vs union 90",
+   "db-bench-press: merged 18 vs union 26",
+   "db-row: merged undefined vs union 28",
+   "db-calf-raise: merged undefined vs union 26",
+   "db-rdl: merged undefined vs union 26",
+   "db-split-squat: merged undefined vs union 26"
+  ]
+ },
+ "5b_runTriplesTenWeeks": {
+  "nextWeekRunsByOrder": {
+   "MWS": [
+    "EASY:35,EASY:35,LONG:55",
+    "EASY:40,QUALITY:34,LONG:60",
+    "EASY:40,QUALITY:34,LONG:55",
+    "EASY:40,QUALITY:41,LONG:65",
+    "EASY:40,QUALITY:48,LONG:70",
+    "EASY:40,QUALITY:43,LONG:70",
+    "EASY:45,QUALITY:43,LONG:65",
+    "EASY:45,QUALITY:43,LONG:70",
+    "EASY:45,QUALITY:49,LONG:75",
+    "EASY:45,QUALITY:49,LONG:75"
+   ],
+   "WMS": [
+    "EASY:35,EASY:35,LONG:55",
+    "EASY:40,QUALITY:34,LONG:60",
+    "EASY:40,QUALITY:34,LONG:55",
+    "EASY:40,QUALITY:41,LONG:65",
+    "EASY:40,QUALITY:48,LONG:70",
+    "EASY:40,QUALITY:43,LONG:70",
+    "EASY:45,QUALITY:43,LONG:65",
+    "EASY:45,QUALITY:43,LONG:70",
+    "EASY:45,QUALITY:49,LONG:75",
+    "EASY:45,QUALITY:49,LONG:75"
+   ],
+   "SWM": [
+    "EASY:35,EASY:35,LONG:55",
+    "EASY:40,QUALITY:34,LONG:60",
+    "EASY:40,QUALITY:34,LONG:55",
+    "EASY:40,QUALITY:41,LONG:65",
+    "EASY:40,QUALITY:48,LONG:70",
+    "EASY:40,QUALITY:43,LONG:70",
+    "EASY:45,QUALITY:43,LONG:65",
+    "EASY:45,QUALITY:43,LONG:70",
+    "EASY:45,QUALITY:49,LONG:75",
+    "EASY:45,QUALITY:49,LONG:75"
+   ]
+  },
+  "weeksThatDifferByArrivalOrder": []
+ }
+}

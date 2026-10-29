@@ -1,0 +1,439 @@
+{
+  "revision": "R7AB-VERIFICATION-1",
+  "verifiedAt": "2026-10-28T19:09:34.458Z",
+  "node": "v24.19.0",
+  "passing": 17,
+  "total": 17,
+  "checks": [
+    {
+      "id": "baseline-preserved",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "entries": 2366,
+        "changed": [
+          "CoachingCore/src/r6-adaptation.mjs",
+          "CoachingCore/src/r6-composition.mjs",
+          "CoachingCore/src/r6-program.mjs",
+          "CoachingCore/test/r6-adaptation.test.mjs",
+          "CURRENT_MISSION.md",
+          "MISSION_LEDGER.md",
+          "reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json"
+        ],
+        "unexpected": [],
+        "insertOnly": [
+          {
+            "file": "CURRENT_MISSION.md",
+            "unchanged": false,
+            "prefixPreserved": true,
+            "prefixBytes": 51485,
+            "appendedBytes": 3921,
+            "carriageReturnsAppended": 0
+          },
+          {
+            "file": "MISSION_LEDGER.md",
+            "unchanged": false,
+            "prefixPreserved": true,
+            "prefixBytes": 117129,
+            "appendedBytes": 2037,
+            "carriageReturnsAppended": 0
+          }
+        ],
+        "addedFiles": [
+          "CoachingCore/r7/boundary/FINAL_REPORT_R7AB.md",
+          "CoachingCore/r7/boundary/READINESS_R7AB.json",
+          "CoachingCore/r7/boundary/REGRESSION_R7AB.json",
+          "CoachingCore/r7/boundary/RUNTIME_FREEZE_R7A_BOUNDARY.json",
+          "CoachingCore/scripts/freeze-r7ab.mjs",
+          "CoachingCore/scripts/prepare-r7ab.mjs",
+          "CoachingCore/scripts/queue-r7ab.mjs",
+          "CoachingCore/scripts/regress-r7ab.mjs",
+          "CoachingCore/scripts/verify-r7ab.mjs",
+          "CoachingCore/test/r7ab-week-start-authority.test.mjs"
+        ],
+        "addedOutside": []
+      }
+    },
+    {
+      "id": "freeze-current",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "revision": "R7A-BOUNDARY-FINAL-FREEZE",
+        "sourceDigest": "36a71ca84fb87789d8623e2050ac9e308a963400af86a3ba73a373043bbf186c",
+        "recomputed": "36a71ca84fb87789d8623e2050ac9e308a963400af86a3ba73a373043bbf186c",
+        "freezes": [
+          "RUNTIME_FREEZE_R7A_BOUNDARY.json"
+        ],
+        "deltaFromR7AFinalFreeze": {
+          "changed": [
+            "src/r6-adaptation.mjs",
+            "src/r6-composition.mjs",
+            "src/r6-program.mjs",
+            "test/r6-adaptation.test.mjs"
+          ],
+          "added": [
+            "test/r7ab-week-start-authority.test.mjs"
+          ],
+          "removed": [],
+          "baseline": "audits/domain-coaching-r7a-boundary-2026-10-28/final-freeze-source/MANIFEST.json",
+          "finalFreezeSourceDigest": "ec2debe730df8931d1525f2b1a729ce3d808c08842fb75397d2fc91084294605"
+        },
+        "drift": [],
+        "unfrozen": []
+      }
+    },
+    {
+      "id": "policy-unchanged",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+        "revision": "R6-POLICY-5"
+      }
+    },
+    {
+      "id": "tests",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "tests": 540,
+        "pass_": 540,
+        "fail": 0,
+        "node": "v24.19.0"
+      }
+    },
+    {
+      "id": "baseline-reproduced",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "P30c": true,
+        "P30b": true,
+        "verifyR7AF": "18/18",
+        "tests": "528 / fail 0"
+      }
+    },
+    {
+      "id": "evidence-runs-bound",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "runs": 78,
+        "expected": 78,
+        "missing": [],
+        "unbound": [],
+        "failed": [],
+        "changed": []
+      }
+    },
+    {
+      "id": "qe-r7af-01-closed",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "P30c": [
+          {
+            "case": "control",
+            "stateAt": "RETURN/w5/qa1-20",
+            "equalsStoredByA": false,
+            "run": "RETURN step 0 easy 40 long 70",
+            "sameAsControl": true
+          },
+          {
+            "case": "equipmentWindow",
+            "stateAt": "RETURN/w5/qa1-20",
+            "equalsStoredByA": false,
+            "run": "RETURN step 0 easy 40 long 70",
+            "sameAsControl": true
+          },
+          {
+            "case": "equipmentFullKit",
+            "stateAt": "RETURN/w5/qa1-20",
+            "equalsStoredByA": false,
+            "run": "RETURN step 0 easy 40 long 70",
+            "sameAsControl": true
+          },
+          {
+            "case": "systemicFatigue",
+            "stateAt": "RETURN/w5/qa1-20",
+            "equalsStoredByA": false,
+            "run": "RETURN step 0 easy 40 long 70",
+            "sameAsControl": true
+          }
+        ],
+        "P30b": {
+          "tally": {
+            "cells": 15,
+            "differs": 6,
+            "runStepAhead": 0,
+            "strengthStepAhead": 4
+          },
+          "differing": [
+            {
+              "clock": "sun0600",
+              "x": "strengthMinutes",
+              "stateAt": "WEEK_START/w6/null",
+              "runAhead": false
+            },
+            {
+              "clock": "sun0600",
+              "x": "systemicFatigue",
+              "stateAt": "WEEK_START/w6/null",
+              "runAhead": false
+            },
+            {
+              "clock": "sun0600",
+              "x": "goalChange",
+              "stateAt": "WEEK_START/w6/null",
+              "runAhead": false
+            },
+            {
+              "clock": "sun1000",
+              "x": "strengthMinutes",
+              "stateAt": "WEEK_START/w6/null",
+              "runAhead": false
+            },
+            {
+              "clock": "sun1000",
+              "x": "systemicFatigue",
+              "stateAt": "WEEK_START/w6/null",
+              "runAhead": false
+            },
+            {
+              "clock": "sun1000",
+              "x": "goalChange",
+              "stateAt": "WEEK_START/w6/null",
+              "runAhead": false
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "earlier-blockers-closed",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "P17": true,
+        "P19": {
+          "cells": 48,
+          "sameBreakB": 0,
+          "askB": 0,
+          "preBreakDose": 0,
+          "longAbove45": 0,
+          "errors": 0
+        },
+        "P20": true,
+        "P21": true,
+        "P13": true,
+        "P31": [
+          {
+            "name": "qe7af-P31",
+            "V1": 0,
+            "V2": 0,
+            "V3": 10,
+            "V4": 0,
+            "V5": 0,
+            "V6": 18,
+            "cells": 216
+          },
+          {
+            "name": "qe7af-P31.tz540",
+            "V1": 0,
+            "V2": 0,
+            "V3": 10,
+            "V4": 0,
+            "V5": 0,
+            "V6": 18,
+            "cells": 216
+          },
+          {
+            "name": "qe7af-P31.tz-300",
+            "V1": 0,
+            "V2": 0,
+            "V3": 10,
+            "V4": 0,
+            "V5": 0,
+            "V6": 18,
+            "cells": 216
+          },
+          {
+            "name": "qe7af-P31.tz-600",
+            "V1": 0,
+            "V2": 0,
+            "V3": 10,
+            "V4": 0,
+            "V5": 0,
+            "V6": 18,
+            "cells": 216
+          }
+        ]
+      }
+    },
+    {
+      "id": "d59-first-week-grid",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "cases": 306,
+        "byClass": {
+          "NONE": {
+            "cases": 90,
+            "exercises": 264,
+            "E": 0,
+            "O": 0,
+            "B": 0,
+            "casesWithAny": 0
+          },
+          "FAMILIAR": {
+            "cases": 108,
+            "exercises": 408,
+            "E": 0,
+            "O": 0,
+            "B": 0,
+            "casesWithAny": 0
+          },
+          "KNOWN": {
+            "cases": 108,
+            "exercises": 408,
+            "E": 0,
+            "O": 0,
+            "B": 0,
+            "casesWithAny": 0
+          }
+        }
+      }
+    },
+    {
+      "id": "self-challenge",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "classes": 9,
+        "violations": 0,
+        "onFinalFreeze": 56
+      }
+    },
+    {
+      "id": "tests-on-final-freeze",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "boundToCurrentTestFile": true,
+        "tests": 12,
+        "failingOnFinalFreeze": 10,
+        "passingOnFinalFreeze": [
+          "R7-A boundary I1/I3",
+          "R7-A boundary I6: evidence synced late counts by the time it was executed"
+        ]
+      }
+    },
+    {
+      "id": "mutation-check",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "caught": 20,
+        "total": 21,
+        "documented": 1,
+        "open": []
+      }
+    },
+    {
+      "id": "regression",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "sourcesBoundToCurrentRuntime": true,
+        "r6": "35/35",
+        "r5": "24/24",
+        "profiles": "16/16",
+        "simulations": "14/14"
+      }
+    },
+    {
+      "id": "compared-with-final-freeze",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "identical": 68,
+        "different": [
+          "qe7af-P30",
+          "qe7af-P30b",
+          "qe7af-P30c",
+          "qe7af-P32",
+          "qe7af-P37",
+          "r7ab-self-challenge",
+          "r7af-self-challenge",
+          "ssctr-instrument",
+          "ssctr2-x-items"
+        ],
+        "unnamed": [],
+        "uncompared": []
+      }
+    },
+    {
+      "id": "independent-reviews",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "engineering": {
+          "present": true,
+          "file": "audits/domain-coaching-r7a-boundary-2026-10-28/reviews/quality-engineering-r7ab-recheck.json",
+          "verdict": "NOT_READY",
+          "digest": "36a71ca84fb87789d8623e2050ac9e308a963400af86a3ba73a373043bbf186c",
+          "bound": true
+        },
+        "ssctr": {
+          "present": true,
+          "file": "audits/domain-coaching-r7a-boundary-2026-10-28/reviews/ssctr-r7ab-recheck.json",
+          "verdict": "ACCEPT",
+          "digest": "36a71ca84fb87789d8623e2050ac9e308a963400af86a3ba73a373043bbf186c",
+          "bound": true
+        }
+      }
+    },
+    {
+      "id": "queue-append-only",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "before": {
+          "revision": "SSCTR-HRQ-20261028-R7AF-r1",
+          "items": 175,
+          "sha256": "ac191554721233bc14695fc9a8173652e57326a058cba0a82f465347133c7219"
+        },
+        "after": {
+          "items": 187,
+          "sha256": "3dfcc39e20ee11a0dc2cf4490eb6ca0f327fec5cf8c4cd539e55ef785ac892fa"
+        },
+        "appended": [
+          "HQ-R7AB-SSCTR-QUALITY-SLOT-READINGS",
+          "HQ-R7AB-SSCTR-D59-PAUSE-WEEK-START",
+          "HQ-R7AB-SSCTR-D56-FORMULATION",
+          "HQ-R7AB-SSCTR-SAME-DAY",
+          "HQ-R7AB-SSCTR-DOSE-READING",
+          "HQ-R7AB-SSCTR-COMPOSITION",
+          "HQ-R7AB-SSCTR-REGAIN-BASE",
+          "HQ-R7AB-SSCTR-REESTABLISH-PHASE",
+          "HQ-R7AB-SSCTR-SPLIT-WEEK",
+          "HQ-R7AB-SSCTR-ITEMS-5-8",
+          "HQ-R7AB-SSCTR-CYCLE2-COMPOSITIONS",
+          "HQ-R7AB-SSCTR-INTERRUPTION-STATE"
+        ],
+        "earlierItemsByteIdentical": true
+      }
+    },
+    {
+      "id": "deliverables",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "missing": [],
+        "handoffWithoutReady": false,
+        "exit": "NOT_READY"
+      }
+    }
+  ]
+}

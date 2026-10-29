@@ -1,0 +1,442 @@
+{
+ "probe": "R7A1-SSCTR-r2-D58",
+ "runtime": "live tree (check the digest)",
+ "sections": {
+  "E1_fatigueAndReturn": {
+   "lastExecutedQuality": "w3 d1 QUALITY THRESHOLD:34",
+   "fatigueThenReturn": {
+    "afterPair": {
+     "log": [
+      "WEEKLY_REVIEW@w2d22T21:00:KEEP/KEEP",
+      "WEEKLY_REVIEW@w3d29T21:00:MODIFY/GATED_NEXT_STEP",
+      "SYSTEMIC_FATIGUE@w4d30T05:00:MODIFY/REDUCE",
+      "RETURN_AFTER_PAUSE@w4d30T06:00:MODIFY/REESTABLISH"
+     ],
+     "w4": [
+      "d1 EASY EASY:41",
+      "d3 EASY EASY:45",
+      "d6 LONG LONG:70"
+     ],
+     "w5": [
+      "d1 EASY EASY:48 [easy slot]",
+      "d3 EASY EASY:45",
+      "d6 LONG LONG:75"
+     ],
+     "easySlots": [
+      "w5:w5-run-d1"
+     ]
+    },
+    "afterReview": {
+     "log": [
+      "WEEKLY_REVIEW@w3d29T21:00:MODIFY/GATED_NEXT_STEP",
+      "SYSTEMIC_FATIGUE@w4d30T05:00:MODIFY/REDUCE",
+      "RETURN_AFTER_PAUSE@w4d30T06:00:MODIFY/REESTABLISH",
+      "WEEKLY_REVIEW@w4d06T21:00:MODIFY/ADOPT_LOGGED_LOADS"
+     ],
+     "w5": [
+      "d1 EASY EASY:41 [easy slot]",
+      "d3 EASY EASY:45",
+      "d6 LONG LONG:70"
+     ],
+     "easySlots": [
+      "w5:w5-run-d1"
+     ]
+    }
+   },
+   "returnThenFatigue": {
+    "afterPair": {
+     "log": [
+      "WEEKLY_REVIEW@w2d22T21:00:KEEP/KEEP",
+      "WEEKLY_REVIEW@w3d29T21:00:MODIFY/GATED_NEXT_STEP",
+      "RETURN_AFTER_PAUSE@w4d30T05:00:MODIFY/REESTABLISH",
+      "SYSTEMIC_FATIGUE@w4d30T06:00:MODIFY/REDUCE"
+     ],
+     "w4": [
+      "d1 EASY EASY:41 [easy slot]",
+      "d3 EASY EASY:45",
+      "d6 LONG LONG:70"
+     ],
+     "w5": [
+      "d1 QUALITY THRESHOLD:48",
+      "d3 EASY EASY:45",
+      "d6 LONG LONG:75"
+     ],
+     "easySlots": [
+      "w4:w4-run-d1"
+     ]
+    },
+    "afterReview": {
+     "log": [
+      "WEEKLY_REVIEW@w3d29T21:00:MODIFY/GATED_NEXT_STEP",
+      "RETURN_AFTER_PAUSE@w4d30T05:00:MODIFY/REESTABLISH",
+      "SYSTEMIC_FATIGUE@w4d30T06:00:MODIFY/REDUCE",
+      "WEEKLY_REVIEW@w4d06T21:00:MODIFY/ADOPT_LOGGED_LOADS"
+     ],
+     "w5": [
+      "d1 QUALITY THRESHOLD:41",
+      "d3 EASY EASY:45",
+      "d6 LONG LONG:70"
+     ],
+     "easySlots": []
+    }
+   }
+  },
+  "E2_unavailableAndReturn": {
+   "unavailableThenReturn": {
+    "afterPair": {
+     "log": [
+      "WEEKLY_REVIEW@w2d22T21:00:KEEP/KEEP",
+      "WEEKLY_REVIEW@w3d29T21:00:MODIFY/GATED_NEXT_STEP",
+      "UNAVAILABLE_DAY@w4d30T05:00:MODIFY/RESCHEDULE_WITHIN_WEEK",
+      "RETURN_AFTER_PAUSE@w4d30T06:00:MODIFY/REESTABLISH"
+     ],
+     "w4": [
+      "d1 QUALITY SKIPPED THRESHOLD:41",
+      "d3 EASY EASY:45",
+      "d6 LONG LONG:70"
+     ],
+     "w5": [
+      "d1 EASY EASY:48 [easy slot]",
+      "d3 EASY EASY:45",
+      "d6 LONG LONG:75"
+     ],
+     "easySlots": [
+      "w5:w5-run-d1"
+     ]
+    },
+    "afterReview": {
+     "log": [
+      "WEEKLY_REVIEW@w3d29T21:00:MODIFY/GATED_NEXT_STEP",
+      "UNAVAILABLE_DAY@w4d30T05:00:MODIFY/RESCHEDULE_WITHIN_WEEK",
+      "RETURN_AFTER_PAUSE@w4d30T06:00:MODIFY/REESTABLISH",
+      "WEEKLY_REVIEW@w4d06T21:00:MODIFY/GATED_NEXT_STEP"
+     ],
+     "w5": [
+      "d1 EASY EASY:41 [easy slot]",
+      "d3 EASY EASY:45",
+      "d6 LONG LONG:70"
+     ],
+     "easySlots": [
+      "w5:w5-run-d1"
+     ]
+    }
+   },
+   "returnThenUnavailable": {
+    "afterPair": {
+     "log": [
+      "WEEKLY_REVIEW@w2d22T21:00:KEEP/KEEP",
+      "WEEKLY_REVIEW@w3d29T21:00:MODIFY/GATED_NEXT_STEP",
+      "RETURN_AFTER_PAUSE@w4d30T05:00:MODIFY/REESTABLISH",
+      "UNAVAILABLE_DAY@w4d30T06:00:MODIFY/RESCHEDULE_WITHIN_WEEK"
+     ],
+     "w4": [
+      "d1 EASY SKIPPED EASY:41",
+      "d3 EASY EASY:45",
+      "d6 LONG LONG:70"
+     ],
+     "w5": [
+      "d1 QUALITY THRESHOLD:48",
+      "d3 EASY EASY:45",
+      "d6 LONG LONG:75"
+     ],
+     "easySlots": []
+    },
+    "afterReview": {
+     "log": [
+      "WEEKLY_REVIEW@w3d29T21:00:MODIFY/GATED_NEXT_STEP",
+      "RETURN_AFTER_PAUSE@w4d30T05:00:MODIFY/REESTABLISH",
+      "UNAVAILABLE_DAY@w4d30T06:00:MODIFY/RESCHEDULE_WITHIN_WEEK",
+      "WEEKLY_REVIEW@w4d06T21:00:MODIFY/GATED_NEXT_STEP"
+     ],
+     "w5": [
+      "d1 EASY EASY:41 [easy slot]",
+      "d3 EASY EASY:45",
+      "d6 LONG LONG:70"
+     ],
+     "easySlots": [
+      "w5:w5-run-d1"
+     ]
+    }
+   }
+  },
+  "E3_easySlotUnavailable": {
+   "afterReturn": {
+    "log": [
+     "WEEKLY_REVIEW@w1d15T21:00:KEEP/INSTANTIATE_LOGGED_LOADS",
+     "WEEKLY_REVIEW@w2d22T21:00:KEEP/KEEP",
+     "WEEKLY_REVIEW@w3d29T21:00:MODIFY/GATED_NEXT_STEP",
+     "RETURN_AFTER_PAUSE@w4d30T05:00:MODIFY/REESTABLISH"
+    ],
+    "w4": [
+     "d1 EASY EASY:41 [easy slot]",
+     "d3 EASY EASY:45",
+     "d6 LONG LONG:70"
+    ],
+    "w5": [
+     "d1 QUALITY THRESHOLD:48",
+     "d3 EASY EASY:45",
+     "d6 LONG LONG:75"
+    ],
+    "easySlots": [
+     "w4:w4-run-d1"
+    ]
+   },
+   "beforeReview": {
+    "log": [
+     "WEEKLY_REVIEW@w2d22T21:00:KEEP/KEEP",
+     "WEEKLY_REVIEW@w3d29T21:00:MODIFY/GATED_NEXT_STEP",
+     "RETURN_AFTER_PAUSE@w4d30T05:00:MODIFY/REESTABLISH",
+     "UNAVAILABLE_DAY@w4d30T07:00:MODIFY/RESCHEDULE_WITHIN_WEEK"
+    ],
+    "w4": [
+     "d1 EASY SKIPPED EASY:41",
+     "d3 EASY EASY:45",
+     "d6 LONG LONG:70"
+    ],
+    "w5": [
+     "d1 QUALITY THRESHOLD:48",
+     "d3 EASY EASY:45",
+     "d6 LONG LONG:75"
+    ],
+    "easySlots": []
+   },
+   "afterReview": {
+    "log": [
+     "WEEKLY_REVIEW@w3d29T21:00:MODIFY/GATED_NEXT_STEP",
+     "RETURN_AFTER_PAUSE@w4d30T05:00:MODIFY/REESTABLISH",
+     "UNAVAILABLE_DAY@w4d30T07:00:MODIFY/RESCHEDULE_WITHIN_WEEK",
+     "WEEKLY_REVIEW@w4d06T21:00:MODIFY/GATED_NEXT_STEP"
+    ],
+    "w5": [
+     "d1 EASY EASY:41 [easy slot]",
+     "d3 EASY EASY:45",
+     "d6 LONG LONG:70"
+    ],
+    "easySlots": [
+     "w5:w5-run-d1"
+    ]
+   },
+   "nextWeekReportWithoutReview": {
+    "status": "MODIFY/REARRANGE_FUTURE_WEEKS",
+    "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the athlete removed",
+    "log": [
+     "WEEKLY_REVIEW@w3d29T21:00:MODIFY/GATED_NEXT_STEP",
+     "RETURN_AFTER_PAUSE@w4d30T05:00:MODIFY/REESTABLISH",
+     "UNAVAILABLE_DAY@w4d30T07:00:MODIFY/RESCHEDULE_WITHIN_WEEK",
+     "SCHEDULE_CHANGE@w5d07T05:00:MODIFY/REARRANGE_FUTURE_WEEKS"
+    ],
+    "w5": [
+     "d1 QUALITY THRESHOLD:48",
+     "d3 EASY EASY:45",
+     "d6 LONG LONG:75"
+    ],
+    "easySlots": []
+   }
+  },
+  "E4_easySlotNotDone": {
+   "lastExecutedQuality": "w3 d1 QUALITY THRESHOLD:34",
+   "controlEasyDone": {
+    "log": [
+     "WEEKLY_REVIEW@w2d22T21:00:KEEP/KEEP",
+     "WEEKLY_REVIEW@w3d29T21:00:MODIFY/GATED_NEXT_STEP",
+     "RETURN_AFTER_PAUSE@w4d30T05:00:MODIFY/REESTABLISH",
+     "WEEKLY_REVIEW@w4d06T21:00:KEEP/INSTANTIATE_LOGGED_LOADS"
+    ],
+    "w5": [
+     "d1 QUALITY THRESHOLD:41",
+     "d3 EASY EASY:45",
+     "d6 LONG LONG:70"
+    ],
+    "easySlots": []
+   },
+   "missedReport": {
+    "afterMissed": {
+     "status": "KEEP/KEEP",
+     "log": [
+      "WEEKLY_REVIEW@w2d22T21:00:KEEP/KEEP",
+      "WEEKLY_REVIEW@w3d29T21:00:MODIFY/GATED_NEXT_STEP",
+      "RETURN_AFTER_PAUSE@w4d30T05:00:MODIFY/REESTABLISH",
+      "MISSED_SESSION@w4d01T21:00:KEEP/KEEP"
+     ],
+     "w4": [
+      "d1 EASY EASY:41 [easy slot]",
+      "d3 EASY EASY:45",
+      "d6 LONG LONG:70"
+     ],
+     "w5": [
+      "d1 QUALITY THRESHOLD:48",
+      "d3 EASY EASY:45",
+      "d6 LONG LONG:75"
+     ],
+     "easySlots": [
+      "w4:w4-run-d1"
+     ]
+    },
+    "afterReview": {
+     "log": [
+      "WEEKLY_REVIEW@w3d29T21:00:MODIFY/GATED_NEXT_STEP",
+      "RETURN_AFTER_PAUSE@w4d30T05:00:MODIFY/REESTABLISH",
+      "MISSED_SESSION@w4d01T21:00:KEEP/KEEP",
+      "WEEKLY_REVIEW@w4d06T21:00:MODIFY/GATED_NEXT_STEP"
+     ],
+     "w5": [
+      "d1 QUALITY THRESHOLD:41",
+      "d3 EASY EASY:45",
+      "d6 LONG LONG:70"
+     ],
+     "easySlots": []
+    }
+   },
+   "unreportedAtReview": {
+    "log": [
+     "WEEKLY_REVIEW@w2d22T21:00:KEEP/KEEP",
+     "WEEKLY_REVIEW@w3d29T21:00:MODIFY/GATED_NEXT_STEP",
+     "RETURN_AFTER_PAUSE@w4d30T05:00:MODIFY/REESTABLISH",
+     "WEEKLY_REVIEW@w4d06T21:00:MODIFY/GATED_NEXT_STEP"
+    ],
+    "w5": [
+     "d1 QUALITY THRESHOLD:41",
+     "d3 EASY EASY:45",
+     "d6 LONG LONG:70"
+    ],
+    "easySlots": []
+   },
+   "controlNoBreakQualityMissed": {
+    "w4": [
+     "d1 QUALITY THRESHOLD:41",
+     "d3 EASY EASY:45",
+     "d6 LONG LONG:70"
+    ],
+    "log": [
+     "WEEKLY_REVIEW@w1d15T21:00:KEEP/INSTANTIATE_LOGGED_LOADS",
+     "WEEKLY_REVIEW@w2d22T21:00:KEEP/KEEP",
+     "WEEKLY_REVIEW@w3d29T21:00:KEEP/KEEP",
+     "WEEKLY_REVIEW@w4d06T21:00:MODIFY/GATED_NEXT_STEP"
+    ],
+    "w5": [
+     "d1 QUALITY THRESHOLD:41",
+     "d3 EASY EASY:45",
+     "d6 LONG LONG:70"
+    ],
+    "easySlots": []
+   }
+  },
+  "E5_raceProgram": {
+   "phases": [
+    "SPECIFIC",
+    "TAPER",
+    "RACE_WEEK",
+    "POST_EVENT",
+    "NEXT_BLOCK"
+   ],
+   "taperReportedAfterQuality": {
+    "afterReturn": {
+     "log": [
+      "WEEKLY_REVIEW@w9d10T21:00:KEEP/KEEP",
+      "WEEKLY_REVIEW@w10d17T21:00:KEEP/KEEP",
+      "WEEKLY_REVIEW@w11d24T21:00:MODIFY/GATED_NEXT_STEP",
+      "RETURN_AFTER_PAUSE@w12d26T21:00:MODIFY/REESTABLISH"
+     ],
+     "w12": [
+      "d1 QUALITY TEN_K_SPECIFIC:31",
+      "d3 EASY EASY:40",
+      "d6 LONG LONG:45"
+     ],
+     "w13": [
+      "d1 EASY EASY:25",
+      "d3 RACE_TOUCH RACE_TOUCH:25",
+      "d6 RACE RACE:75"
+     ],
+     "w14": [
+      "d1 RECOVERY_EASY RECOVERY_EASY:20",
+      "d3 RECOVERY_EASY RECOVERY_EASY:30",
+      "d6 RECOVERY_EASY RECOVERY_EASY:30"
+     ],
+     "w15": [
+      "d1 EASY EASY:48 [easy slot]",
+      "d3 EASY EASY:35",
+      "d6 LONG LONG:40"
+     ],
+     "easySlots": [
+      "w15:w15-run-d1"
+     ]
+    },
+    "afterReviews": {
+     "log": [
+      "RETURN_AFTER_PAUSE@w12d26T21:00:MODIFY/REESTABLISH",
+      "WEEKLY_REVIEW@w12d31T21:00:MODIFY/GATED_NEXT_STEP",
+      "WEEKLY_REVIEW@w13d07T21:00:KEEP/KEEP",
+      "WEEKLY_REVIEW@w14d14T21:00:KEEP/KEEP"
+     ],
+     "w13": [
+      "d1 EASY EASY:25",
+      "d3 RACE_TOUCH RACE_TOUCH:25",
+      "d6 RACE RACE:75"
+     ],
+     "w14": [
+      "d1 RECOVERY_EASY RECOVERY_EASY:20",
+      "d3 RECOVERY_EASY RECOVERY_EASY:30",
+      "d6 RECOVERY_EASY RECOVERY_EASY:30"
+     ],
+     "w15": [
+      "d1 EASY EASY:48 [easy slot]",
+      "d3 EASY EASY:35",
+      "d6 LONG LONG:40"
+     ],
+     "easySlots": [
+      "w15:w15-run-d1"
+     ]
+    }
+   },
+   "raceWeekReport": {
+    "afterReturn": {
+     "log": [
+      "WEEKLY_REVIEW@w10d17T21:00:KEEP/KEEP",
+      "WEEKLY_REVIEW@w11d24T21:00:KEEP/KEEP",
+      "WEEKLY_REVIEW@w12d31T21:00:MODIFY/GATED_NEXT_STEP",
+      "RETURN_AFTER_PAUSE@w13d01T06:00:MODIFY/REESTABLISH"
+     ],
+     "w13": [
+      "d1 EASY EASY:25",
+      "d3 RACE_TOUCH RACE_TOUCH:25",
+      "d6 RACE RACE:75"
+     ],
+     "w14": [
+      "d1 RECOVERY_EASY RECOVERY_EASY:20",
+      "d3 RECOVERY_EASY RECOVERY_EASY:30",
+      "d6 RECOVERY_EASY RECOVERY_EASY:30"
+     ],
+     "w15": [
+      "d1 EASY EASY:48 [easy slot]",
+      "d3 EASY EASY:35",
+      "d6 LONG LONG:40"
+     ],
+     "easySlots": [
+      "w15:w15-run-d1"
+     ]
+    },
+    "afterReviews": {
+     "log": [
+      "WEEKLY_REVIEW@w12d31T21:00:MODIFY/GATED_NEXT_STEP",
+      "RETURN_AFTER_PAUSE@w13d01T06:00:MODIFY/REESTABLISH",
+      "WEEKLY_REVIEW@w13d07T21:00:KEEP/KEEP",
+      "WEEKLY_REVIEW@w14d14T21:00:KEEP/KEEP"
+     ],
+     "w14": [
+      "d1 RECOVERY_EASY RECOVERY_EASY:20",
+      "d3 RECOVERY_EASY RECOVERY_EASY:30",
+      "d6 RECOVERY_EASY RECOVERY_EASY:30"
+     ],
+     "w15": [
+      "d1 EASY EASY:48 [easy slot]",
+      "d3 EASY EASY:35",
+      "d6 LONG LONG:40"
+     ],
+     "easySlots": [
+      "w15:w15-run-d1"
+     ]
+    }
+   }
+  }
+ }
+}

@@ -1,0 +1,106 @@
+{
+  "revision": "R7A1-READINESS-1",
+  "generatedAt": "2026-10-28T02:45:39.853Z",
+  "mission": "DOMAIN_COACHING_R7-A.1",
+  "phase": "R7-A.1, a blocker-only continuation of R7-A (not R7-B)",
+  "scope": "OFFLINE_SYNTHETIC_NODE24_REFERENCE",
+  "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+  "freezeRevision": "R7A1-FREEZE-A2",
+  "sourceDigest": "71edc245cfe06a376732ec8054f2e09f277066f2ee4004f34827b2c90a1c4024",
+  "freezeFileSha256": "a8c5e409de7bba0a0a02ad2043ce55ebcc3e5f7ef4b6d8018b0cec79d8cd57cc",
+  "delivery": "CLOSED_WITH_EXPLICIT_BLOCKER",
+  "noForcedReady": true,
+  "notEmitted": [
+    "AUTONOMOUS_COACHING_READY",
+    "KMP_READY"
+  ],
+  "verdicts": {
+    "WEEK_COMPOSITION_INTEGRITY": "READY",
+    "STATE_PRESERVATION_INTEGRITY": "NOT_READY",
+    "EVENT_SUPERSESSION_INTEGRITY": "READY",
+    "EXERCISE_MERGE_INTEGRITY": "READY",
+    "RETURN_RECOVERY_CEILING_INTEGRITY": "NOT_READY",
+    "R7A1_ENGINEERING_REVIEW": "NOT_READY",
+    "R7A1_SCIENTIFIC_REVIEW": "NOT_READY",
+    "R7A_EXIT_READINESS": "NOT_READY"
+  },
+  "reasons": {
+    "WEEK_COMPOSITION_INTEGRITY": {
+      "basis": "One way to re-plan weeks, adapt this week and change the context (contract C1–C7, R7A1-COMPOSITION-2): engineering READY (QE-R7A1-01, 02 and 04 closed by mechanism; P09 0 oracle violations in 5,000 sequences); SSCTR: D58 closed, S10 holds",
+      "grids": "Monday 157 pairs and evening 1,188 pairs with 0 defects (FREEZE-2 84 and 384); D58 combinations 0/136; three-step 172/0"
+    },
+    "STATE_PRESERVATION_INTEGRITY": {
+      "blockedBy": [
+        "QE-R7A1-09",
+        "QE-R7A1-10",
+        "QE-R7A-01"
+      ],
+      "why": "A later, separate return erases the re-entry state an earlier return set and the athlete executed; a second short break reuses the first one’s easy slot",
+      "holds": "The review’s held start and confirmed loads (QE-R7A1-02), a return correction of the same break (QE-R7A1-03), moved content and equipment (QE-R7A1-01)"
+    },
+    "EVENT_SUPERSESSION_INTEGRITY": {
+      "basis": "QE-R7A-03 closed; P09 O6 0 in 5,000 sequences; both event-date orders equal their later statement alone; SSCTR S9 holds"
+    },
+    "EXERCISE_MERGE_INTEGRITY": {
+      "basis": "QE-R7A-05 and QE-R7A1-05 closed: agreeing reports merge field by field with readable-value predicates, in either arrival order (engineering only; no sporting rule)"
+    },
+    "RETURN_RECOVERY_CEILING_INTEGRITY": {
+      "blockedBy": [
+        "D59",
+        "D53",
+        "QE-R7A1-09"
+      ],
+      "why": "A return re-based on the start of the pause week loses exercises first executed there (D59), so D53 stays open; a separate later break bypasses the return steps (QE-R7A1-09)",
+      "holds": "D56 and D57 closed (no cap rises or ends after a trimmed or reduced week; no count two sets above the largest since the return in 864 timelines)"
+    },
+    "R7A1_ENGINEERING_REVIEW": {
+      "file": "audits/domain-coaching-r7a1-2026-10-27/reviews/quality-engineering-r7a1-recheck.json",
+      "revision": "R7A1-QE-r2",
+      "verdict": "NOT_READY",
+      "blocking": [
+        "QE-R7A1-09",
+        "QE-R7A1-10"
+      ]
+    },
+    "R7A1_SCIENTIFIC_REVIEW": {
+      "file": "audits/domain-coaching-r7a1-2026-10-27/reviews/ssctr-r7a1-recheck.json",
+      "revision": "R7A1-SSCTR-r2",
+      "verdict": "NOT_READY",
+      "blocking": [
+        "D59"
+      ]
+    },
+    "R7A_EXIT_READINESS": {
+      "why": "Founder request §13 is not met: QE-R7A-01 and D53 are open, both judges are NOT_READY on R7A1-FREEZE-A2, and a new HIGH (QE-R7A1-09) belongs to R7-A. The single correction cycle is spent (§11): no further cycle, no handoff (§16), R7-B not started."
+    }
+  },
+  "acceptance": {
+    "blockers": {
+      "QE-R7A-01": "OPEN",
+      "QE-R7A-02": "CLOSED",
+      "QE-R7A-03": "CLOSED",
+      "QE-R7A-05": "CLOSED",
+      "QE-R7A-12": "CLOSED",
+      "QE-R7A-19": "CLOSED",
+      "D56": "CLOSED",
+      "D53": "OPEN"
+    },
+    "structure": "Composition: one model, both judges in scope; preservation of the return baseline: not met",
+    "regression": "R5 24/24; R6 and R7-A differences each named by clause (verify-r7a1 regression)",
+    "mutation": "88/89 caught; 1 documented survivor (A1 C7 two races ahead); the R7-A survivor QE-R7A-22 caught",
+    "reviews": "Engineering NOT_READY; SSCTR NOT_READY",
+    "newHigh": [
+      "QE-R7A1-09"
+    ]
+  },
+  "notReadyRecord": {
+    "blocker": "QE-R7A1-09 (HIGH) and QE-R7A1-10 (MEDIUM) from the engineering re-check, D59 (blocking) from the SSCTR re-check; QE-R7A-01 and D53 stay open through them",
+    "rootCause": "The return’s starting point is read from week-boundary snapshots, not from the break itself. Return supersession (C5) has no break identity: \"a newer report of a break\" is implemented as \"any return whose break begins in a week an earlier return re-planned\" (startBeforeReturn) and \"any slot already eased\" (the easy-slot text), so a separate later break is read as a correction of the earlier one. And the state a return starts from is the start of the pause week (stateTrace[pauseWeek]), so what the athlete executed in that week before the break is lost.",
+    "evidence": [
+      "reviews/quality-engineering-r7a1-recheck.{md,json} (P13, P14; A2, FREEZE-A1 copy, FREEZE-2 and a prior-A1 mutant)",
+      "reviews/ssctr-r7a1-recheck.{md,json} (first-week grid, 306 cases; identical counts on FREEZE-2)"
+    ],
+    "whyNotClosed": "The single correction cycle closed every finding of the first reviews by its mechanism (QE-R7A1-01 to 05, D57, D58, each with a test that fails on FREEZE-A1), but neither the author’s tests and grids nor the first reviews exercised two separate breaks or exercises first executed in the pause week. The cross-week variant of QE-R7A1-09 came from the QE-R7A1-03 fix as specified, without a same-break condition. The cycle bound (Founder request §11) allows no further correction.",
+    "smallestNextMission": "A bounded, Founder-authorized fix of the return baseline only: record the break each return reports (its interruption, its report) and start every return from the executed state at the break’s start (the pause week’s start advanced by the exposures executed before the break, for exercises first executed there too); read startBeforeReturn and an earlier eased slot only for a newer report of the same break, and give a separate short break its own slot (tied to its return). Tests: two separate breaks in the same week and across the week boundary, two separate short breaks in one week, a first loaded week with exercises executed before the break, and the existing tests. Then one freeze and one narrow re-check by each judge: engineering qe-a2-P13, P14, P02 and P09; SSCTR the first-week grid (E, O and B at 0), the restoration grid and the short grid."
+  }
+}

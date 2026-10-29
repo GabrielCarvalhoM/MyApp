@@ -1,0 +1,295 @@
+{
+  "revision": "R7A1-DISPOSITION-1",
+  "date": "2026-10-28T02:45:39.853Z",
+  "owner": "Claude Code R7-A.1 session (Chief / current instance)",
+  "mission": "DOMAIN_COACHING_R7-A.1",
+  "delivery": "CLOSED_WITH_EXPLICIT_BLOCKER",
+  "exitReadiness": "NOT_READY",
+  "completeDefinitionOfDone": false,
+  "freeze": {
+    "revision": "R7A1-FREEZE-A2",
+    "file": "CoachingCore/r7/a1/RUNTIME_FREEZE_R7A1_FREEZE_A2.json",
+    "fileSha256": "a8c5e409de7bba0a0a02ad2043ce55ebcc3e5f7ef4b6d8018b0cec79d8cd57cc",
+    "sourceDigest": "71edc245cfe06a376732ec8054f2e09f277066f2ee4004f34827b2c90a1c4024",
+    "frozenAt": "2026-10-28T01:50:48.859Z",
+    "files": 78
+  },
+  "firstFreeze": {
+    "revision": "R7A1-FREEZE-A1",
+    "file": "CoachingCore/r7/a1/RUNTIME_FREEZE_R7A1_FREEZE_A1.json",
+    "fileSha256": "9e7b9cecc59bc7990e7bcc05665fd9e493072d2cf97cd57d0c5fc08d83f0a228",
+    "sourceDigest": "2de8681f13e5cb499df6a5a3dc443d52877850528ceb298b598d03de6ec2141a",
+    "frozenAt": "2026-10-27T22:33:25.287Z"
+  },
+  "baselineFreeze": {
+    "revision": "R7A-FREEZE-2",
+    "sourceDigest": "f56ae974762523b1efacd9ad7a9046cc7f6b7d33e42a7c2c955e758ef0f7821c",
+    "copy": "audits/domain-coaching-r7a1-2026-10-27/freeze2-source/"
+  },
+  "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+  "policyChanged": false,
+  "tests": {
+    "suite": "505/505 (node --test, Node v24.19.0)",
+    "r7a1": [
+      "CoachingCore/test/r7a1-composition.test.mjs (19)",
+      "CoachingCore/test/r7a1-correction.test.mjs (10; all fail on a byte-exact FREEZE-A1 copy: audits/domain-coaching-r7a1-2026-10-27/probes/r7a1-correction-tests.on-FREEZE-A1.out.txt)"
+    ],
+    "mutation": "audits/domain-coaching-r7a1-2026-10-27/probes/mutation-check-r7a1.A2.out.json (88/89; one documented survivor, the C7 duplicate-race guard; first A2 run audits/domain-coaching-r7a1-2026-10-27/probes/mutation-check-r7a1.A2-run1.out.json 86/89 led to two tests before the freeze)"
+  },
+  "objectiveVerification": {
+    "script": "CoachingCore/scripts/verify-r7a1.mjs",
+    "output": "CoachingCore/r7/a1/VERIFICATION_R7A1.json",
+    "verifiedAt": "2026-10-28T02:51:45.619Z",
+    "passing": 17,
+    "total": 17,
+    "failing": [],
+    "note": "The verifier proves the evidence chain (baseline, freeze, tests, regression, probes, grids, mutation, judge bindings, queue, deliverables); it does not make the mission READY"
+  },
+  "independentJudgments": {
+    "engineering": {
+      "first": {
+        "file": "audits/domain-coaching-r7a1-2026-10-27/reviews/quality-engineering-r7a1-review.json",
+        "revision": "R7A1-QE-r1",
+        "freeze": "R7A1-FREEZE-A1",
+        "verdict": "NOT_READY",
+        "material": [
+          "QE-R7A1-01",
+          "QE-R7A1-02",
+          "QE-R7A1-03",
+          "QE-R7A1-04",
+          "QE-R7A1-05"
+        ]
+      },
+      "recheck": {
+        "file": "audits/domain-coaching-r7a1-2026-10-27/reviews/quality-engineering-r7a1-recheck.json",
+        "revision": "R7A1-QE-r2",
+        "freeze": "R7A1-FREEZE-A2",
+        "verdict": "NOT_READY",
+        "resolved": [
+          "QE-R7A1-01",
+          "QE-R7A1-02",
+          "QE-R7A1-03",
+          "QE-R7A1-04",
+          "QE-R7A1-05"
+        ],
+        "material": [
+          "QE-R7A1-09",
+          "QE-R7A1-10"
+        ],
+        "low": [
+          "QE-R7A1-11"
+        ]
+      }
+    },
+    "ssctr": {
+      "first": {
+        "file": "audits/domain-coaching-r7a1-2026-10-27/reviews/ssctr-r7a1-review.json",
+        "revision": "R7A1-SSCTR-r1",
+        "freeze": "R7A1-FREEZE-A1",
+        "verdict": "NOT_READY",
+        "blocking": [
+          "D57",
+          "D58"
+        ]
+      },
+      "recheck": {
+        "file": "audits/domain-coaching-r7a1-2026-10-27/reviews/ssctr-r7a1-recheck.json",
+        "revision": "R7A1-SSCTR-r2",
+        "freeze": "R7A1-FREEZE-A2",
+        "verdict": "NOT_READY",
+        "resolved": [
+          "D56",
+          "D57",
+          "D58"
+        ],
+        "blocking": [
+          "D59"
+        ],
+        "reviewer": "documented fallback: fresh default instance loading the project adapter, constitution 1.0.0 and skill"
+      }
+    }
+  },
+  "cycleBound": {
+    "rule": "One build freeze, both judges, at most one correction cycle with material findings only, one freeze and one narrow re-check per judge; no third cycle (Founder request §11)",
+    "correctionCyclesRun": 1,
+    "furtherCycle": false
+  },
+  "blockers": [
+    {
+      "id": "QE-R7A-01",
+      "status": "OPEN",
+      "by": "engineering re-check R7A1-QE-r2",
+      "basis": "A local change of the current week still destroys valid future state: a separate, later break erases the re-entry an earlier return set (QE-R7A1-09)"
+    },
+    {
+      "id": "QE-R7A-02",
+      "status": "CLOSED",
+      "by": "engineering R7A1-QE-r2; SSCTR R7A1-SSCTR-r2 (D58 closed)",
+      "basis": "One C1 reading of \"still ahead\" for every handler; a short return’s easy slot reaches the first quality slot still ahead, this week or later"
+    },
+    {
+      "id": "QE-R7A-03",
+      "status": "CLOSED",
+      "by": "engineering R7A1-QE-r1 and r2",
+      "basis": "Event changes reach this week’s remaining days; at most one race ahead; P09 O6 0 in 5,000 sequences"
+    },
+    {
+      "id": "QE-R7A-05",
+      "status": "CLOSED",
+      "by": "engineering R7A1-QE-r2",
+      "basis": "Field-by-field merge of agreeing reports with readable-value predicates (QE-R7A1-05 closed)"
+    },
+    {
+      "id": "QE-R7A-12",
+      "status": "CLOSED",
+      "by": "engineering R7A1-QE-r1 and r2; SSCTR S4",
+      "basis": "A lighter logged known load is progression evidence; HOLD and REGRESS keep the planned target"
+    },
+    {
+      "id": "QE-R7A-19",
+      "status": "CLOSED",
+      "by": "engineering R7A1-QE-r1 and r2",
+      "basis": "Recorded adaptations are applied again to re-planned rows with their own clocks"
+    },
+    {
+      "id": "D56",
+      "status": "CLOSED",
+      "by": "SSCTR R7A1-SSCTR-r2; engineering R7A1-QE-r2",
+      "basis": "No regain or return cap rises or ends after a week whose last executed exposure was trimmed or phase-reduced (0 of 4,211); D57 closed"
+    },
+    {
+      "id": "D53",
+      "status": "OPEN",
+      "by": "SSCTR R7A1-SSCTR-r2 (engineering side CLOSED)",
+      "basis": "A known equivalent state mode allows a restoration jump: D59 (Founder request §10, third clause)"
+    }
+  ],
+  "remaining": [
+    {
+      "id": "QE-R7A1-09",
+      "source": "engineering re-check R7A1-QE-r2",
+      "severity": "HIGH",
+      "material": true,
+      "what": "returnAfterPause starts any return whose break begins in a week an earlier return re-planned from that week’s startBeforeReturn, with no check that it reports the same break. A separate, later break restarts from the state before the first break: after a 16-day break and its re-entry (1x5 @RIR4), a 5-day break brings back 3x5 @RIR3 at the pre-break known load and a 70-75 minute long run; the return steps and the run RETURN mode are lost.",
+      "origin": "Same-week variant present since R7A1-FREEZE-A1 (its C5 rule); cross-week variant introduced by the A2 fix of QE-R7A1-03. Not on R7A-FREEZE-2.",
+      "evidence": [
+        "audits/domain-coaching-r7a1-2026-10-27/reviews/qe-a2-P13-second-break-after-reentry.mjs",
+        "audits/domain-coaching-r7a1-2026-10-27/reviews/qe-a2-P13.A2.out.json",
+        "audits/domain-coaching-r7a1-2026-10-27/reviews/qe-a2-P13.A1copy.out.json",
+        "audits/domain-coaching-r7a1-2026-10-27/reviews/qe-a2-P13.F2.out.json",
+        "audits/domain-coaching-r7a1-2026-10-27/reviews/qe-a2-P13.A2-priorA1mutant.out.json"
+      ]
+    },
+    {
+      "id": "QE-R7A1-10",
+      "source": "engineering re-check R7A1-QE-r2",
+      "severity": "MEDIUM",
+      "material": true,
+      "what": "shortReturnEasy and the composeWeeks carry identify the easy slot by its explanation text, so a second, separate short break adopts the first one’s executed slot and its own first quality run stays hard (THRESHOLD 41; EASY 41 when the second break is reported alone).",
+      "origin": "Introduced with the A2 D58 fix; FREEZE-A1 and FREEZE-2 gave no easy slot in either case (the D58 defect).",
+      "evidence": [
+        "audits/domain-coaching-r7a1-2026-10-27/reviews/qe-a2-P14-second-short-break-easy-slot.mjs",
+        "audits/domain-coaching-r7a1-2026-10-27/reviews/qe-a2-P14.A2.out.json"
+      ]
+    },
+    {
+      "id": "D59",
+      "source": "SSCTR re-check R7A1-SSCTR-r2",
+      "severity": "BLOCKING",
+      "material": true,
+      "what": "returnAfterPause re-bases a return on stateTrace[pauseWeek], the state at the start of the break’s own week, so an exercise whose first executed exposures fall in that week before the break has no state: when that week is the athlete’s first loaded week, every exercise executed before the break restarts as a first establishment, with no return entry and the block in progress earning its set (NONE and FAMILIAR athletes: 672 of 672 exercises without a return entry, 1,582 rows above the declared ceiling, 226 counts two sets above the largest since the return).",
+      "origin": "Pre-existing: identical counts on R7A-FREEZE-2; outside the FREEZE-A1 to FREEZE-A2 delta. It narrows the R6 round-11 acceptance of sessions before the pause in the pause week.",
+      "evidence": [
+        "audits/domain-coaching-r7a1-2026-10-27/reviews/ssctr-r7a1-recheck.md",
+        "audits/domain-coaching-r7a1-2026-10-27/reviews/ssctr-r7a1-recheck.json"
+      ]
+    }
+  ],
+  "notReadyRecord": {
+    "blocker": "QE-R7A1-09 (HIGH) and QE-R7A1-10 (MEDIUM) from the engineering re-check, D59 (blocking) from the SSCTR re-check; QE-R7A-01 and D53 stay open through them",
+    "rootCause": "The return’s starting point is read from week-boundary snapshots, not from the break itself. Return supersession (C5) has no break identity: \"a newer report of a break\" is implemented as \"any return whose break begins in a week an earlier return re-planned\" (startBeforeReturn) and \"any slot already eased\" (the easy-slot text), so a separate later break is read as a correction of the earlier one. And the state a return starts from is the start of the pause week (stateTrace[pauseWeek]), so what the athlete executed in that week before the break is lost.",
+    "evidence": [
+      "reviews/quality-engineering-r7a1-recheck.{md,json} (P13, P14; A2, FREEZE-A1 copy, FREEZE-2 and a prior-A1 mutant)",
+      "reviews/ssctr-r7a1-recheck.{md,json} (first-week grid, 306 cases; identical counts on FREEZE-2)"
+    ],
+    "whyNotClosed": "The single correction cycle closed every finding of the first reviews by its mechanism (QE-R7A1-01 to 05, D57, D58, each with a test that fails on FREEZE-A1), but neither the author’s tests and grids nor the first reviews exercised two separate breaks or exercises first executed in the pause week. The cross-week variant of QE-R7A1-09 came from the QE-R7A1-03 fix as specified, without a same-break condition. The cycle bound (Founder request §11) allows no further correction.",
+    "smallestNextMission": "A bounded, Founder-authorized fix of the return baseline only: record the break each return reports (its interruption, its report) and start every return from the executed state at the break’s start (the pause week’s start advanced by the exposures executed before the break, for exercises first executed there too); read startBeforeReturn and an earlier eased slot only for a newer report of the same break, and give a separate short break its own slot (tied to its return). Tests: two separate breaks in the same week and across the week boundary, two separate short breaks in one week, a first loaded week with exercises executed before the break, and the existing tests. Then one freeze and one narrow re-check by each judge: engineering qe-a2-P13, P14, P02 and P09; SSCTR the first-week grid (E, O and B at 0), the restoration grid and the short grid."
+  },
+  "verdicts": {
+    "WEEK_COMPOSITION_INTEGRITY": "READY",
+    "STATE_PRESERVATION_INTEGRITY": "NOT_READY",
+    "EVENT_SUPERSESSION_INTEGRITY": "READY",
+    "EXERCISE_MERGE_INTEGRITY": "READY",
+    "RETURN_RECOVERY_CEILING_INTEGRITY": "NOT_READY",
+    "R7A1_ENGINEERING_REVIEW": "NOT_READY",
+    "R7A1_SCIENTIFIC_REVIEW": "NOT_READY",
+    "R7A_EXIT_READINESS": "NOT_READY"
+  },
+  "queue": {
+    "integration": "audits/domain-coaching-r7a1-2026-10-27/QUEUE_INTEGRATION_R7A1.json",
+    "before": 132,
+    "after": 151,
+    "appended": [
+      "HQ-R7A1-SSCTR-D56-FORMULATION",
+      "HQ-R7A1-SSCTR-SAME-DAY",
+      "HQ-R7A1-SSCTR-DOSE-READING",
+      "HQ-R7A1-SSCTR-COMPOSITION",
+      "HQ-R7A1-SSCTR-REGAIN-BASE",
+      "HQ-R7A1-SSCTR-REESTABLISH-PHASE",
+      "HQ-R7A1-SSCTR-SPLIT-WEEK",
+      "HQ-R7A1-SSCTR-ITEMS-5-8",
+      "HQ-R7A1-SSCTR-CYCLE2-COMPOSITIONS",
+      "HQ-R7A1-SSCTR-R2-QUALITY-SLOT-READINGS",
+      "HQ-R7A1-SSCTR-R2-D56-FORMULATION",
+      "HQ-R7A1-SSCTR-R2-SAME-DAY",
+      "HQ-R7A1-SSCTR-R2-DOSE-READING",
+      "HQ-R7A1-SSCTR-R2-COMPOSITION",
+      "HQ-R7A1-SSCTR-R2-REGAIN-BASE",
+      "HQ-R7A1-SSCTR-R2-REESTABLISH-PHASE",
+      "HQ-R7A1-SSCTR-R2-SPLIT-WEEK",
+      "HQ-R7A1-SSCTR-R2-ITEMS-5-8",
+      "HQ-R7A1-SSCTR-R2-CYCLE2-COMPOSITIONS"
+    ],
+    "earlierItemsByteIdentical": true,
+    "fundingState": "NOT_DECLARED",
+    "note": "The nine R7A1-SSCTR-r1 items (bound to FREEZE-A1) and, after them, the ten R7A1-SSCTR-r2 items (bound to FREEZE-A2; nine re-bind the r1 decisions, one is new); D59 is outside every approval and has no item"
+  },
+  "regression": {
+    "file": "CoachingCore/r7/a1/REGRESSION_R7A1.json",
+    "againstFreeze2": {
+      "r6Holdout": "30/35",
+      "r5": "24/24",
+      "profiles": "16/16",
+      "simulations": "12/14"
+    },
+    "classification": "REGRESSION / CHALLENGE REUSE; not generalization evidence; every difference named by clause in verify-r7a1"
+  },
+  "handoff": "Not written: R7A_EXIT_READINESS is NOT_READY (Founder request §15, §16)",
+  "nextEngineeringStep": {
+    "decision": "FOUNDER",
+    "recommended": "A bounded, Founder-authorized fix of the return baseline only: record the break each return reports (its interruption, its report) and start every return from the executed state at the break’s start (the pause week’s start advanced by the exposures executed before the break, for exercises first executed there too); read startBeforeReturn and an earlier eased slot only for a newer report of the same break, and give a separate short break its own slot (tied to its return). Tests: two separate breaks in the same week and across the week boundary, two separate short breaks in one week, a first loaded week with exercises executed before the break, and the existing tests. Then one freeze and one narrow re-check by each judge: engineering qe-a2-P13, P14, P02 and P09; SSCTR the first-week grid (E, O and B at 0), the restoration grid and the short grid.",
+    "notStarted": true
+  },
+  "r7bStarted": false,
+  "nextMissionStarted": false,
+  "productionOrRealAthleteAuthority": false,
+  "uiFigmaKmpChanges": false,
+  "integrationsImplemented": false,
+  "commitMergeDeployPerformed": false,
+  "deliverables": [
+    "audits/domain-coaching-r7a1-2026-10-27/WEEK_COMPOSITION_CONTRACT.md",
+    "CoachingCore/r7/a1/RUNTIME_FREEZE_R7A1_FREEZE_A1.json",
+    "CoachingCore/r7/a1/RUNTIME_FREEZE_R7A1_FREEZE_A2.json",
+    "CoachingCore/r7/a1/REGRESSION_R7A1.json",
+    "CoachingCore/r7/a1/READINESS_R7A1.json",
+    "CoachingCore/r7/a1/FINAL_REPORT_R7A1.md",
+    "CoachingCore/r7/a1/VERIFICATION_R7A1.json",
+    "CoachingCore/src/r6-composition.mjs",
+    "CoachingCore/test/r7a1-composition.test.mjs",
+    "CoachingCore/test/r7a1-correction.test.mjs",
+    "audits/domain-coaching-r7a1-2026-10-27/QUEUE_INTEGRATION_R7A1.json",
+    "audits/domain-coaching-r7a1-2026-10-27/CHECKPOINT.md",
+    "audits/domain-coaching-r7a1-2026-10-27/dossier/",
+    "audits/domain-coaching-r7a1-2026-10-27/probes/"
+  ]
+}

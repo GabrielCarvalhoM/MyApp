@@ -1,0 +1,408 @@
+{
+ "probe": "Q4-provenance-time",
+ "authorityUsed": "REAL r6Authority()",
+ "timezoneOffsetMinutes": -180,
+ "checks": [
+  {
+   "id": "baseline.allCompletedAdvance",
+   "pass": true,
+   "detail": {
+    "completed": 5,
+    "status": "KEEP",
+    "action": "INSTANTIATE_LOGGED_LOADS",
+    "gates": {
+     "LONG": "ADVANCE",
+     "EASY": "ADVANCE",
+     "back-squat": "ADVANCE",
+     "db-bench-press": "ADVANCE",
+     "db-row": "ADVANCE",
+     "db-calf-raise": "ADVANCE",
+     "dead-bug": "ADVANCE",
+     "db-rdl": "ADVANCE",
+     "db-split-squat": "ADVANCE"
+    }
+   }
+  },
+  {
+   "id": "clock.skew120s",
+   "pass": true,
+   "detail": {
+    "excluded": [
+     {
+      "eventId": "q-skew-skew120s",
+      "sessionId": "w0-run-d6",
+      "reason": "FUTURE_CLOCK_SKEW_QUARANTINED",
+      "inputHash": "673d270688afae5a076da0ffa89816148deea4b7e376ec5f183ed52132839908"
+     }
+    ],
+    "lastStatus": "NOT_REPORTED"
+   }
+  },
+  {
+   "id": "clock.future1h",
+   "pass": true,
+   "detail": {
+    "excluded": [
+     {
+      "eventId": "q-skew-future1h",
+      "sessionId": "w0-run-d6",
+      "reason": "FUTURE_OBSERVATION",
+      "inputHash": "d8b5e35f3e36e34b6fb57efcbf22ecda758ddf152e0d6151db0749d29af41eaf"
+     }
+    ],
+    "lastStatus": "NOT_REPORTED"
+   }
+  },
+  {
+   "id": "time.futureReportExcluded",
+   "pass": true,
+   "detail": [
+    {
+     "eventId": "q-futrep",
+     "sessionId": "w0-run-d6",
+     "reason": "FUTURE_REPORT_NOT_AVAILABLE",
+     "inputHash": "8f8cb867d33a100326af3359b40afbe6285619a3e1dab18c58f3f2ab25b888a5"
+    }
+   ]
+  },
+  {
+   "id": "time.reportBeforeObservationRejected",
+   "pass": false,
+   "detail": {
+    "accepted": true,
+    "excluded": []
+   }
+  },
+  {
+   "id": "tz.localDayBinding",
+   "pass": true,
+   "detail": {
+    "localDate": "2026-11-03",
+    "sessionDate": "2026-11-03",
+    "dateShift": 0
+   }
+  },
+  {
+   "id": "tz.dayPrecisionLatestCausalInstant",
+   "pass": true,
+   "detail": {
+    "observedAt": "2026-11-04T02:59:59.000Z",
+    "localDate": "2026-11-03"
+   }
+  },
+  {
+   "id": "tz.reviewWeekByLocalDay",
+   "pass": true,
+   "detail": {
+    "week0": "KEEP",
+    "week1": "HOLD",
+    "week1errors": [
+     "weekIndex/asOf chronology"
+    ]
+   }
+  },
+  {
+   "id": "order.sameDecision",
+   "pass": true,
+   "detail": {
+    "base": {
+     "status": "KEEP",
+     "action": "INSTANTIATE_LOGGED_LOADS",
+     "gates": {
+      "LONG": "ADVANCE",
+      "EASY": "ADVANCE",
+      "back-squat": "ADVANCE",
+      "db-bench-press": "ADVANCE",
+      "db-row": "ADVANCE",
+      "db-calf-raise": "ADVANCE",
+      "dead-bug": "ADVANCE",
+      "db-rdl": "ADVANCE",
+      "db-split-squat": "ADVANCE"
+     },
+     "proposal": "07018f1c5c3d6776a9e2a1028b3c90877282226e4c100d906415868d53dd21bd"
+    },
+    "shuffled": {
+     "status": "KEEP",
+     "action": "INSTANTIATE_LOGGED_LOADS",
+     "gates": {
+      "LONG": "ADVANCE",
+      "EASY": "ADVANCE",
+      "back-squat": "ADVANCE",
+      "db-bench-press": "ADVANCE",
+      "db-row": "ADVANCE",
+      "db-calf-raise": "ADVANCE",
+      "dead-bug": "ADVANCE",
+      "db-rdl": "ADVANCE",
+      "db-split-squat": "ADVANCE"
+     },
+     "proposal": "07018f1c5c3d6776a9e2a1028b3c90877282226e4c100d906415868d53dd21bd"
+    },
+    "viaLedger": {
+     "status": "KEEP",
+     "action": "INSTANTIATE_LOGGED_LOADS",
+     "gates": {
+      "LONG": "ADVANCE",
+      "EASY": "ADVANCE",
+      "back-squat": "ADVANCE",
+      "db-bench-press": "ADVANCE",
+      "db-row": "ADVANCE",
+      "db-calf-raise": "ADVANCE",
+      "dead-bug": "ADVANCE",
+      "db-rdl": "ADVANCE",
+      "db-split-squat": "ADVANCE"
+     },
+     "proposal": "07018f1c5c3d6776a9e2a1028b3c90877282226e4c100d906415868d53dd21bd"
+    }
+   }
+  },
+  {
+   "id": "dup.crossSourceMergedOnce",
+   "pass": true,
+   "detail": {
+    "rows": 1,
+    "duplicates": [
+     {
+      "eventId": "q-wear",
+      "mergedInto": "q-man",
+      "reason": "SAME_EXECUTION_DIFFERENT_SOURCE"
+     }
+    ]
+   }
+  },
+  {
+   "id": "dup.sameActivityTwoSessionsNotDoubleCounted",
+   "pass": false,
+   "detail": {
+    "boundCount": 2,
+    "sessions": [
+     "w0-run-d1",
+     "w0-run-d3"
+    ],
+    "statuses": [
+     [
+      "w0-run-d1",
+      "COMPLETED"
+     ],
+     [
+      "w0-run-d3",
+      "COMPLETED"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "dup.exactReplayMerged",
+   "pass": true,
+   "detail": {
+    "before": 5,
+    "after": 5,
+    "duplicates": 5
+   }
+  },
+  {
+   "id": "conflict.sameIdDifferentFactsQuarantined",
+   "pass": true,
+   "detail": {
+    "row": {
+     "sessionId": "w0-run-d1",
+     "sport": "RUN",
+     "role": "EASY",
+     "key": false,
+     "optional": false,
+     "date": "2026-11-03",
+     "status": "CONFLICTED",
+     "kind": null,
+     "eventId": null,
+     "logs": {},
+     "exercises": []
+    },
+    "gates": {
+     "LONG": "ADVANCE",
+     "EASY": "HOLD",
+     "back-squat": "ADVANCE",
+     "db-bench-press": "ADVANCE",
+     "db-row": "ADVANCE",
+     "db-calf-raise": "ADVANCE",
+     "dead-bug": "ADVANCE",
+     "db-rdl": "ADVANCE",
+     "db-split-squat": "ADVANCE"
+    },
+    "status": "MODIFY"
+   }
+  },
+  {
+   "id": "conflict.laterConflictDoesNotEraseCompletedLedger",
+   "pass": false,
+   "detail": {
+    "priorHad": true,
+    "afterHas": false,
+    "conflicts": [
+     {
+      "identity": "session:w0-run-d1",
+      "eventIds": [
+       "q-q-prov-w0-run-d1"
+      ],
+      "reason": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS"
+     }
+    ],
+    "ledgerSizeBefore": 5,
+    "ledgerSizeAfter": 4,
+    "status": "KEEP"
+   }
+  },
+  {
+   "id": "correction.supersedes",
+   "pass": true,
+   "detail": [
+    {
+     "eventId": "q-q-prov-w0-run-d1",
+     "supersededBy": "q-corr",
+     "correctedAt": "2026-11-08T23:00:00.000Z"
+    }
+   ]
+  },
+  {
+   "id": "correction.futureCorrectionRejected",
+   "pass": true,
+   "detail": [
+    {
+     "eventId": "q-corr-f",
+     "sessionId": "w0-run-d1",
+     "reason": "INVALID_CORRECTION_CHAIN",
+     "inputHash": "02cddd63065012d0f37fca3d3b004ff6c9f7359744e9b7ae73aec147a144a33a"
+    }
+   ]
+  },
+  {
+   "id": "correction.crossIdentityRejected",
+   "pass": true,
+   "detail": [
+    {
+     "eventId": "q-corr-x",
+     "sessionId": "w0-run-d3",
+     "reason": "INVALID_CORRECTION_CHAIN",
+     "inputHash": "85f570cecfe430b671d82a40fc8d5f218c05679fbcaab8f573130f8942f2b367"
+    }
+   ]
+  },
+  {
+   "id": "correction.lateDoesNotChangePast",
+   "pass": true,
+   "detail": {
+    "status": "KEEP",
+    "action": "KEEP",
+    "pastSame": true,
+    "decisionsPrefix": true
+   }
+  },
+  {
+   "id": "stale.leavesLearningKeepsLedger",
+   "pass": true,
+   "detail": {
+    "inLedger": true,
+    "inModel": false,
+    "excluded": [
+     {
+      "eventId": "q-old",
+      "sessionId": "w0-run-d1",
+      "reason": "STALE_OBSERVATION",
+      "inputHash": "2ed10f6a80845a86e93049d12da4d040518f9ba3ca44d95d8a3222f24d6a8010"
+     }
+    ]
+   }
+  },
+  {
+   "id": "unknown.runAdvances",
+   "pass": true,
+   "detail": {
+    "gates": {
+     "LONG": "ADVANCE",
+     "EASY": "ADVANCE",
+     "back-squat": "HOLD",
+     "db-bench-press": "HOLD",
+     "db-row": "HOLD",
+     "db-calf-raise": "HOLD",
+     "dead-bug": "HOLD",
+     "db-rdl": "HOLD",
+     "db-split-squat": "HOLD"
+    },
+    "status": "MODIFY",
+    "action": "GATED_NEXT_STEP"
+   }
+  },
+  {
+   "id": "unknown.strengthHoldsNotRegress",
+   "pass": true,
+   "detail": [
+    [
+     "back-squat",
+     "HOLD"
+    ],
+    [
+     "db-bench-press",
+     "HOLD"
+    ],
+    [
+     "db-row",
+     "HOLD"
+    ],
+    [
+     "db-calf-raise",
+     "HOLD"
+    ],
+    [
+     "dead-bug",
+     "HOLD"
+    ],
+    [
+     "db-rdl",
+     "HOLD"
+    ],
+    [
+     "db-split-squat",
+     "HOLD"
+    ]
+   ]
+  },
+  {
+   "id": "unknown.notAdverseInEvidence",
+   "pass": true,
+   "detail": [
+    "COMPLETED_NO_RESPONSE",
+    "COMPLETED_NO_RESPONSE",
+    "COMPLETED_NO_RESPONSE",
+    "COMPLETED_NO_RESPONSE",
+    "COMPLETED_NO_RESPONSE"
+   ]
+  },
+  {
+   "id": "dup.acrossReviewsOnce",
+   "pass": true,
+   "detail": {
+    "rows": [
+     "q-r1"
+    ],
+    "duplicates": [
+     {
+      "eventId": "q-r2",
+      "mergedInto": "q-r1",
+      "reason": "SAME_EXECUTION_DIFFERENT_SOURCE"
+     }
+    ]
+   }
+  },
+  {
+   "id": "identity.foreignAthleteExcluded",
+   "pass": true,
+   "detail": [
+    {
+     "eventId": "q-other",
+     "sessionId": "w0-run-d1",
+     "reason": "ATHLETE_MISMATCH",
+     "inputHash": "d950c71f3af4f0f78981735f106396f9db84a5465f89fed7ef96be0b89def040"
+    }
+   ]
+  }
+ ],
+ "pass": false
+}

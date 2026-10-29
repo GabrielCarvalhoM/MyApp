@@ -1,0 +1,54 @@
+{
+  "revision": "DCR4-LEARNING-1",
+  "model": "population prior + grounded athlete history + comparable recent responses + current context → ordinal option preference",
+  "requiredEvidence": [
+    "allowed learning purpose/consent",
+    "source/event provenance",
+    "same task/equipment/role and relevant environment comparability",
+    "known observation chronology when recency is claimed",
+    "actual response distinct from predicted response"
+  ],
+  "allowedChanges": [
+    "soft preference among independently admissible same-dose configurations",
+    "choice of familiar progression/regression under envelope",
+    "prioritize monitoring of uncertain response"
+  ],
+  "prohibited": [
+    "new hard causal rule from one or confounded observations",
+    "fabricate recency when dates absent",
+    "arbitrary universal sample threshold",
+    "unbounded dose expansion",
+    "clearance/restored capacity from ordinary function alone"
+  ],
+  "hysteresis": "Retain population prior under noisy or mixed evidence; consistent comparable observations can support a reversible soft preference. Contradiction or context change weakens it; no irreversible global athlete rule.",
+  "updateSemantics": "Pure proposal/snapshot only. No persistent real athlete model, production ingestion or official plan mutation.",
+  "implementationLimits": "Executable behavior and accepted model schema must be read from final r4 runtime/tests; conceptual desired fields do not imply all are implemented.",
+  "implementedContract": {
+    "exports": [
+      "buildAthleteModel",
+      "updateAthleteModel"
+    ],
+    "acceptedObservation": [
+      "eventId or observationId",
+      "sourceHash64hex",
+      "origin ACTUAL_EXECUTION",
+      "finite observedAt",
+      "context object",
+      "comparable true",
+      "purposeAllowed true"
+    ],
+    "filters": [
+      "duplicate event id",
+      "explicit stale",
+      "unestablished comparability",
+      "missing actual source provenance"
+    ],
+    "status": "PURE_SYNTHETIC_EVIDENCE_SNAPSHOT_AND_ADVISORY_ASSOCIATION",
+    "positiveLearnedOptionSelection": "BLOCKED: LEARNED_OPTION_ADMISSIBILITY_CONTRACT until complete options have independently verifiable reusable-envelope binding",
+    "limitations": [
+      "No generalized recency decay or calibrated response model",
+      "No persistent production learning",
+      "No universal observation-count sufficiency or causal inference"
+    ]
+  }
+}

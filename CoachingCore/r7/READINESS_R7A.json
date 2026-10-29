@@ -1,0 +1,112 @@
+{
+  "revision": "R7A-READINESS-1",
+  "generatedAt": "2026-10-27T17:24:05.203Z",
+  "mission": "DOMAIN_COACHING_R7-A",
+  "phase": "R7-A, the first of R7-A..R7-D",
+  "scope": "OFFLINE_SYNTHETIC_NODE24_REFERENCE",
+  "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+  "freezeRevision": "R7A-FREEZE-2",
+  "sourceDigest": "f56ae974762523b1efacd9ad7a9046cc7f6b7d33e42a7c2c955e758ef0f7821c",
+  "freezeFileSha256": "15be6a40875a8ce5ba833db542ee85a7e227736ed0997b0c3cf1072485189d07",
+  "delivery": "CLOSED_WITH_EXPLICIT_BLOCKER",
+  "noForcedReady": true,
+  "notEmitted": [
+    "AUTONOMOUS_COACHING_READY",
+    "KMP_READY"
+  ],
+  "verdicts": {
+    "STATE_COMPOSITION_STABILITY": "NOT_READY",
+    "PHASE_MODIFIER_INTEGRITY": "NOT_READY",
+    "PRESCRIPTION_RECONSTRUCTION_INTEGRITY": "NOT_READY",
+    "CANONICAL_INPUT_SEMANTIC_STABILITY": "NOT_READY",
+    "R7A_ENGINEERING_REVIEW": "NOT_READY",
+    "R7A_SCIENTIFIC_REVIEW": "NOT_READY",
+    "R7A_EXIT_READINESS": "NOT_READY"
+  },
+  "reasons": {
+    "STATE_COMPOSITION_STABILITY": {
+      "blockedBy": [
+        "QE-R7A-01",
+        "QE-R7A-03",
+        "QE-R7A-19",
+        "D56"
+      ],
+      "why": "Same-week handlers still do not compose in every order: an equipment change erases a return that starts next week, a return in race week followed by a postponed race leaves two races, an event change that reaches this week discards the week's earlier adaptations, and fully time-fitted weeks raise the regain cap (an equivalent of D53, so D53 does not close under §16)",
+      "holds": "A weekly review, schedule change or goal change after a return; exercises not in use; the entry week through a rebuild; D55"
+    },
+    "PHASE_MODIFIER_INTEGRITY": {
+      "blockedBy": [
+        "QE-R7A-03"
+      ],
+      "why": "Every row stays inside its day phase dose (INV-01, INV-02; instrument AK 0; the SSCTR phase grid and S4), and D54 is resolved, but the event phase is not stable under composition: after a return that re-plans from next week, a postponed race leaves the old race session in a week that is now taper",
+      "holds": "D54; race week, post-event and taper reductions for every row kind; moves never cross a day phase"
+    },
+    "PRESCRIPTION_RECONSTRUCTION_INTEGRITY": {
+      "blockedBy": [
+        "D56",
+        "QE-R7A-12",
+        "QE-R7A-02",
+        "QE-R7A-19"
+      ],
+      "why": "A time-fitted week is read as whole for the caps (D56); a shortfall at a lighter load becomes the repetition target; a SHORT return on the morning of a quality day keeps the quality session; a mid-week rebuild re-projects from the week-start state instead of the week as prescribed",
+      "holds": "The first executed exposure decides the week and the last executed one gives its counts (R19); the return ceiling is the largest whole count executed (R20); practice rows; race completion"
+    },
+    "CANONICAL_INPUT_SEMANTIC_STABILITY": {
+      "blockedBy": [
+        "QE-R7A-05"
+      ],
+      "why": "The per-exercise merge keeps one whole entry and can drop a known load",
+      "holds": "Label equivalence, duplicates and exact replays, contradictions in any order and unit, carried corrections, dated facts asked; open non-blocking: QE-R7A-13 residual, 20, 21, 23"
+    },
+    "R7A_ENGINEERING_REVIEW": {
+      "blockedBy": [
+        "QE-R7A-01",
+        "QE-R7A-02",
+        "QE-R7A-03",
+        "QE-R7A-05",
+        "QE-R7A-12",
+        "QE-R7A-19"
+      ],
+      "why": "R7A-QE-r2, the single narrow re-check of R7A-FREEZE-2: 11 of 18 first-round findings fixed, five partly fixed and still blocking, QE-R7A-19 new and blocking, QE-R7A-20 to 23 new and non-blocking"
+    },
+    "R7A_SCIENTIFIC_REVIEW": {
+      "blockedBy": [
+        "D56"
+      ],
+      "why": "R7A-SSCTR-r2: runtime not accepted; D55 resolved; S2-S5 and S7 hold; S6 holds in part (D56 blocks); the four FREEZE-1 decisions re-bound to FREEZE-2 and one new record; five queue items integrated"
+    },
+    "R7A_EXIT_READINESS": {
+      "blockedBy": [
+        "QE-R7A-01",
+        "QE-R7A-02",
+        "QE-R7A-03",
+        "QE-R7A-05",
+        "QE-R7A-12",
+        "QE-R7A-19",
+        "D56"
+      ],
+      "why": "Stop conditions 1, 6 and 7 of the Founder request are not met: D53 cannot close under §16 while D56 is open, the independent engineering review of the candidate is NOT_READY, and two HIGH structural failures (QE-R7A-01, QE-R7A-03 residuals) stay open. The cycle bound admits no further cycle, so R7-A closes with these blockers named"
+    }
+  },
+  "blockers": [
+    "QE-R7A-01",
+    "QE-R7A-02",
+    "QE-R7A-03",
+    "QE-R7A-05",
+    "QE-R7A-12",
+    "QE-R7A-19",
+    "D56"
+  ],
+  "independentEvidence": {
+    "ssctr": {
+      "first": "audits/domain-coaching-r7a-2026-10-27/reviews/ssctr-r7a-review.json",
+      "recheck": "audits/domain-coaching-r7a-2026-10-27/reviews/ssctr-r7a-recheck.json"
+    },
+    "engineering": {
+      "first": "audits/domain-coaching-r7a-2026-10-27/reviews/quality-engineering-r7a-review.json",
+      "recheck": "audits/domain-coaching-r7a-2026-10-27/reviews/quality-engineering-r7a-recheck.json"
+    }
+  },
+  "bound": "One review and at most one narrow re-check per judge (TASK_CONTRACT.md; Founder rule on bounded review cycles); both used; no further cycle",
+  "dispositions": "CoachingCore/r7/CLASS_DISPOSITIONS_R7A.json"
+}

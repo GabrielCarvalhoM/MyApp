@@ -1,5 +1,9 @@
 # Vilumo Fit — Experience Model
 
+<!-- EXPERIENCE_AUTHORITY_OVERLAY_START: EXP-AUTH-r1 -->
+> **Authority overlay · 2026-10-22 · EXP-AUTH-r1.** [DR-93–97](PRODUCT_DECISION_REGISTER.md) / [index filter](../canon/CANONICAL_INDEX.md): semantic outcomes, direct operation, agency, meaningful disclosure, learning, factual history, privacy and commercial constraints stay active. Old destination names, fixed levels, composition and journeys as prescribed screen sequences are **LEGACY / SUPERSEDED AS ACTIVE UX AUTHORITY**. Progressive depth does not impose the old architecture; authorization must still precede its effect. DR-91 qualifies blanket route exclusions. No Figma change or new solution is prescribed. Previous isolation metadata is history after `32b7fb6`; this overlay does not transfer a gate. Designer entry: [derived context](DESIGNER_PRODUCT_CONTEXT.md).
+<!-- EXPERIENCE_AUTHORITY_OVERLAY_END: EXP-AUTH-r1 -->
+
 Revisão **EM-1.2** · 2026-10-19 · **CANDIDATE_IN_ISOLATION / FREEZE-20261019-r1**.
 Consome [PTC-3.2.1](../canon/VILUMO_FIT_PRODUCT_THESIS_CONTRACT.md), [Scope](V1_RELEASE_SCOPE.md), [PDM](PRODUCT_DOMAIN_MODEL.md), [PA](PRODUCT_ARCHITECTURE.md), [AEC](ADAPTIVE_ENGINE_CONTRACT.md) e [AEOS](ADAPTIVE_ENGINE_OPERATIONAL_SPEC.md). Registro/pareceres: [freeze](../audits/v1-freeze-2026-10-19/MISSION_RECORD.md). Mesmo loop pessoal e controles já definidos, sem nova tela ou algoritmo.
 
@@ -9,7 +13,7 @@ Decide→Prepare→Execute→Observe→Adapt→Share→Repeat é mapa de valor, 
 
 ## 2. Primeira semana e valor
 
-Onboarding pergunta objetivos concretos, Run-first/Strength-first/Balanced, experiência, dias/janelas, equipamento e só restrições/dados pertinentes com finalidade. Não anamnese completa nem sensores obrigatórios. Gerar proposta de semana inicialmente coordenada, com razão legível da distribuição entre modalidades e limites/confiança. Não terminar só em boas-vindas. Fora da cobertura/regra: limite/próximo passo, sem “plano pronto” fictício.
+Onboarding (antes da conta e só no aparelho até ela — DR-111) pergunta objetivos concretos, Run-first/Strength-first/Balanced, experiência, dias e turnos por esporte com o longão (o plano usa exatamente esses dias — DR-112), troca de exercícios da força (DR-113), equipamento e só restrições/dados pertinentes com finalidade. Não anamnese completa nem sensores obrigatórios. Gerar proposta de semana inicialmente coordenada, com razão legível da distribuição entre modalidades e limites/confiança. Não terminar só em boas-vindas. Fora da cobertura/regra: limite/próximo passo, sem “plano pronto” fictício.
 
 Value before hard ask: apresentar personalização/semana e valor antes do paywall preferencial; trial/mensal/anual/price/timing testáveis. Oferta transparente quando real; protótipo usa slots. Compra confirma escolha comercial, adoção confirma plano; são atos distintos. Treinar sob entitlement aplicável depois da escolha; direitos/histórico e registro em curso não são hostage da assinatura.
 

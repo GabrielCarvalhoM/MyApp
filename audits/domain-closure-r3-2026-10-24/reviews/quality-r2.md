@@ -1,0 +1,17 @@
+# DCR3 independent Quality review — r2
+
+**QUALITY_BLOCKED / REQUEST_CHANGES** remains. Same independent judge, contract and rubric as quality-r1.md. Runtime rawSHA256 `8c78936415afd32d0ff3ca516d17d8d9234411c50c506d1eed431d7dcf526aaa`, adapter `35320aac23badeab919ee6eb7479c5b6e1ff050596ca30a681f95f7d84b63b3b`. Source files stable throughout each probe batch. Evidence `quality-probes-r2.raw.json` (82 variants,39/40 explicit expectations pass) and broader challenge `quality-probes-r2b.raw.json` (95 variants,39/53 explicit expectations pass). All95 preserve input and applied==official. These are execution results, not inferred code outcomes.
+
+Resolved from r1: terrain selector, STEADY sibling history context, exact current request dose, narrative pain='persistent with ordinary jogging', supplied missing facts in29/32/34, trace/warning/provenance integrity, reversed array windows and capacity contradictions. Root added guarded behavior; judge changed only review probes and outputs.
+
+The mechanism still has two critical gaps:
+
+1. **P1 semantic binding remains parent-shape presence.** Deleting parent fields now correctly asks with consumed=false. Replacing them by empty containers still sets consumed=true. `empty-material-completed-prefix` supplies session={} and completedPrefix={}; fixed rationale still asserts5+3 actual minutes. `changed-partial-actual-prefix` changes actualWorkMinutes to[4,2] but rationale still asserts5+3. Establishment empty onboarding/exposure, strength empty base/candidate, taper empty event/history/windows, calibration empty history/target, empty option ranking and zero-observation learning all receive consumed=true with fact-specific rationale. Object/array type plus source hash does not prove meaning was used. Exact frozen values may be normalized, but a positive-only40 denominator remains unproved as a semantic metric. Required correction: actual material leaf/status predicates and source-derived rationale, or narrower request-routing metric with unresolved binding gaps and lower consumption count. Do not substitute exact corpus/hash recognition for semantics.
+
+2. **P1 supplied missing paths still hardcoded ASK in other branches.** Supplying all requested paths in18 (substitution),38 (hills),39 (strides preparation/envelope),28 (half-marathon history/anchor) leaves identical USEFUL_ASK saying the paths remain missing. The previous correction addressed29/32/34 only. Require one actual-missingness mechanism or exhaustive branch fidelity, not positive sporting action. Supplied facts can lead to an explicit domain/science gap pending review.
+
+3. **P1 clinical vocabulary gap persists:** observations.persistentPain='present' in23 remains normal HOLD. Since schema retains this explicit source fact, do not discard a named persistent pain signal because its value lacks the word 'persistent' again. An ambiguous clinical signal can safely ASK/referral; explicit persistent pain belongs to clinical boundary, not normal coaching coverage.
+
+New raw evidence includes full source variants, validation, decisions, hashes, consumed flags and read paths. No dose was applied and no official/completed facts were mutated. Historical exact205+160 replay separately PASS in quality-legacy-replay.raw.json. Sporting approval and clinical competence remain outside this judge's authority.
+
+Owner root engineering; re-evaluate revised mechanism and regenerated denominator before gate. Parent was notified immediately with reproducible labels. No author artifact was silently corrected by judge.

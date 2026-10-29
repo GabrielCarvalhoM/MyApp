@@ -1,0 +1,188 @@
+{
+ "revision": "R7ASM-REGRESSION-NAMED-1",
+ "generatedAt": "2026-10-29T02:32:13.773Z",
+ "source": "CoachingCore/r7/state-model/REGRESSION_R7ASM.json",
+ "summary": {
+  "r6FreshHoldout": {
+   "cases": 35,
+   "identical": 20,
+   "different": [
+    "R6-H17",
+    "R6-H18",
+    "R6-H19",
+    "R6-H22",
+    "R6-H23",
+    "R6-H24",
+    "R6-H25",
+    "R6-H26",
+    "R6-H29",
+    "R6-H30",
+    "R6-H31",
+    "R6-H32",
+    "R6-H33",
+    "R6-H34",
+    "R6-H35"
+   ],
+   "statusChanged": [
+    "R6-H18: MODIFY/MOVE KEEP/KEEP MODIFY/GATED_NEXT_STEP -> KEEP/KEEP KEEP/KEEP MODIFY/GATED_NEXT_STEP",
+    "R6-H26: KEEP/KEEP MODIFY/REESTABLISH MODIFY/GATED_NEXT_STEP -> KEEP/INSTANTIATE_LOGGED_LOADS MODIFY/REESTABLISH MODIFY/GATED_NEXT_STEP"
+   ]
+  },
+  "r5Corpus": {
+   "cases": 24,
+   "identical": 24,
+   "different": [],
+   "statusChanged": []
+  },
+  "profiles": {
+   "cases": 16,
+   "identical": 16,
+   "different": [],
+   "statusChanged": []
+  },
+  "simulations": {
+   "cases": 14,
+   "identical": 12,
+   "different": [
+    "T04_STRENGTH12_REPEATED_UNDERPERFORMANCE",
+    "T13_HM16_FATIGUE_SIGNALS"
+   ],
+   "statusChanged": []
+  }
+ },
+ "classes": [
+  {
+   "id": "NEVER_ESTABLISHED_EXERCISE",
+   "why": "An exercise the evidence never established is not in the PlanningView, so its next exposure establishes the load by effort again (SSCTR D52) instead of carrying the projection's established state",
+   "cases": [
+    "R6-H17",
+    "R6-H19",
+    "R6-H22",
+    "R6-H23",
+    "R6-H24",
+    "R6-H29",
+    "R6-H30",
+    "R6-H31",
+    "R6-H32",
+    "R6-H33",
+    "R6-H34",
+    "R6-H35"
+   ],
+   "differences": 86
+  },
+  {
+   "id": "RUN_CAPABILITY_FROM_HISTORY",
+   "why": "The run's achieved peaks and longest continuous run come from HistoricalState, so the taper, race-day completion and redevelopment read what was executed",
+   "cases": [
+    "R6-H17",
+    "R6-H19",
+    "R6-H22",
+    "R6-H30",
+    "R6-H32",
+    "R6-H34",
+    "R6-H35"
+   ],
+   "differences": 35
+  },
+  {
+   "id": "EARNED_PROGRESS_R42",
+   "why": "R42: no progression credit is carried across a load change, in the plan as in history, so a load step can come one successful exposure later",
+   "cases": [
+    "R6-H23",
+    "R6-H24",
+    "R6-H25",
+    "R6-H29"
+   ],
+   "differences": 28
+  },
+  {
+   "id": "DECISION_FROM_VIEW",
+   "why": "A decision reads the PlanningView instead of the stored projection, so its own week's rows, its move admissibility and its counterfactuals follow executed history",
+   "cases": [
+    "R6-H18",
+    "R6-H26"
+   ],
+   "differences": 33
+  },
+  {
+   "id": "ROW_SHAPE",
+   "why": "The row that follows a changed state: its sets, repetitions, duration, totals, instructions or family, including the simulation's row strings",
+   "cases": [
+    "R6-H17",
+    "R6-H18",
+    "R6-H19",
+    "R6-H22",
+    "R6-H23",
+    "R6-H24",
+    "R6-H26",
+    "R6-H29",
+    "R6-H30",
+    "R6-H32",
+    "R6-H33",
+    "R6-H35",
+    "T04_STRENGTH12_REPEATED_UNDERPERFORMANCE",
+    "T13_HM16_FATIGUE_SIGNALS"
+   ],
+   "differences": 159
+  },
+  {
+   "id": "STATE_BOOKKEEPING",
+   "why": "State atoms that follow from the classes above: the blocks an exercise earned, the week's planned counts, the last executed count, the context label an observation carries, and the exercises a state holds",
+   "cases": [
+    "R6-H17",
+    "R6-H18",
+    "R6-H19",
+    "R6-H22",
+    "R6-H31",
+    "R6-H32",
+    "R6-H33",
+    "R6-H35"
+   ],
+   "differences": 40
+  }
+ ],
+ "unclassified": [],
+ "dose": {
+  "rose": [
+   {
+    "case": "R6-H24",
+    "path": "/steps/0/result/proposal/weeks/6/sessions/0/prescription/exercises/0/reps",
+    "before": 6,
+    "current": 8
+   },
+   {
+    "case": "R6-H29",
+    "path": "/steps/0/result/proposal/weeks/6/sessions/3/prescription/exercises/0/reps",
+    "before": 6,
+    "current": 8
+   },
+   {
+    "case": "R6-H29",
+    "path": "/steps/0/result/proposal/weeks/7/sessions/3/prescription/exercises/0/reps",
+    "before": 6,
+    "current": 10
+   }
+  ],
+  "fell": 113,
+  "equal": 0
+ },
+ "statusChanged": [
+  {
+   "case": "R6-H18",
+   "before": "MODIFY/MOVE KEEP/KEEP MODIFY/GATED_NEXT_STEP",
+   "current": "KEEP/KEEP KEEP/KEEP MODIFY/GATED_NEXT_STEP"
+  },
+  {
+   "case": "R6-H26",
+   "before": "KEEP/KEEP MODIFY/REESTABLISH MODIFY/GATED_NEXT_STEP",
+   "current": "KEEP/INSTANTIATE_LOGGED_LOADS MODIFY/REESTABLISH MODIFY/GATED_NEXT_STEP"
+  }
+ ],
+ "verdict": {
+  "casesDifferent": 17,
+  "casesTotal": 89,
+  "doseFieldsRisen": 3,
+  "doseFieldsFallen": 113,
+  "unclassifiedDifferences": 0
+ }
+}

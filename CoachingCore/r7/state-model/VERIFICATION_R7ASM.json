@@ -1,0 +1,413 @@
+{
+  "revision": "R7ASM-VERIFICATION-1",
+  "verifiedAt": "2026-10-29T02:37:06.479Z",
+  "node": "v24.19.0",
+  "passing": 16,
+  "total": 16,
+  "freeze": "RUNTIME_FREEZE_HISTORICAL_PROJECTION.json",
+  "checks": [
+    {
+      "id": "baseline-preserved",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "entries": 3513,
+        "changed": [
+          "CoachingCore/src/r6-adaptation.mjs",
+          "CoachingCore/src/r6-composition.mjs",
+          "CoachingCore/src/r6-program.mjs",
+          "CoachingCore/test/r7a-cycle2.test.mjs",
+          "CoachingCore/test/r7a1-composition.test.mjs",
+          "CoachingCore/test/r7a2-interruption.test.mjs",
+          "CoachingCore/test/r7ab-week-start-authority.test.mjs",
+          "CoachingCore/test/r7ase-state-evidence.test.mjs",
+          "CURRENT_MISSION.md",
+          "MISSION_LEDGER.md"
+        ],
+        "unexpected": [],
+        "insertOnly": [
+          {
+            "file": "CURRENT_MISSION.md",
+            "unchanged": false,
+            "prefixPreserved": true,
+            "prefixBytes": 59617,
+            "appendedBytes": 1596,
+            "carriageReturnsAppended": 0
+          },
+          {
+            "file": "MISSION_LEDGER.md",
+            "unchanged": false,
+            "prefixPreserved": true,
+            "prefixBytes": 121258,
+            "appendedBytes": 921,
+            "carriageReturnsAppended": 0
+          }
+        ],
+        "addedFiles": 8,
+        "addedOutside": []
+      }
+    },
+    {
+      "id": "freeze-current",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "revision": "HISTORICAL-PROJECTION-FREEZE-1",
+        "sourceDigest": "0db72d0edd9fd7f1382e1ed8622d29e2ff3356699da18872b0670615956e2eb8",
+        "recomputed": "0db72d0edd9fd7f1382e1ed8622d29e2ff3356699da18872b0670615956e2eb8",
+        "freezes": [
+          "RUNTIME_FREEZE_HISTORICAL_PROJECTION.json"
+        ],
+        "delta": {
+          "changed": [
+            "src/r6-adaptation.mjs",
+            "src/r6-composition.mjs",
+            "src/r6-program.mjs",
+            "test/r7a-cycle2.test.mjs",
+            "test/r7a1-composition.test.mjs",
+            "test/r7a2-interruption.test.mjs",
+            "test/r7ab-week-start-authority.test.mjs",
+            "test/r7ase-state-evidence.test.mjs"
+          ],
+          "added": [
+            "test/r7asm-state-model.test.mjs"
+          ],
+          "removed": [],
+          "baseline": "audits/domain-coaching-r7a-state-model-2026-10-28/state-evidence-freeze-source/MANIFEST.json",
+          "priorFreezeSourceDigest": "692483ce5147d90797441baf2ac73c9d433197bd40047f147202ca4e4bff2cc1"
+        },
+        "drift": [],
+        "unfrozen": []
+      }
+    },
+    {
+      "id": "policy-unchanged",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+        "revision": "R6-POLICY-5"
+      }
+    },
+    {
+      "id": "tests",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "tests": 589,
+        "passing": 589,
+        "fail": 0,
+        "node": "v24.19.0"
+      }
+    },
+    {
+      "id": "baseline-reproduced",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "P51d": true,
+        "P51c": true,
+        "P50": true,
+        "P52": true,
+        "I02": true,
+        "verifyR7ASE": "17/17",
+        "tests": "555 / fail 0"
+      }
+    },
+    {
+      "id": "evidence-runs-bound",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "runs": 29,
+        "unbound": [],
+        "failed": [],
+        "skipped": [],
+        "changed": []
+      }
+    },
+    {
+      "id": "qe-r7ase-01-closed",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "variants": [
+          {
+            "name": "repsShort",
+            "ledgersEqual": true,
+            "namedAtomsDiffer": [],
+            "rowsEqual": true,
+            "ticks": {
+              "db-rdl": [
+                "KNOWN22 reps 5 tick 1 step - sets -",
+                "KNOWN22 reps 5 tick 1 step - sets -"
+              ],
+              "db-split-squat": [
+                "KNOWN22 reps 6 tick 1 step - sets -",
+                "KNOWN22 reps 6 tick 1 step - sets -"
+              ]
+            }
+          },
+          {
+            "name": "repsUnlogged",
+            "ledgersEqual": true,
+            "namedAtomsDiffer": [],
+            "rowsEqual": true,
+            "ticks": {
+              "db-rdl": [
+                "KNOWN22 reps 5 tick 1 step - sets -",
+                "KNOWN22 reps 5 tick 1 step - sets -"
+              ],
+              "db-split-squat": [
+                "KNOWN22 reps 6 tick 1 step - sets -",
+                "KNOWN22 reps 6 tick 1 step - sets -"
+              ]
+            }
+          }
+        ],
+        "p51cVariants": 4
+      }
+    },
+    {
+      "id": "qe-r7ase-02-closed",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "cells": [
+          {
+            "name": "qe-r7ase-P50",
+            "reestablish": true,
+            "controlAgrees": true,
+            "planningDates": {
+              "db-rdl": "KNOWN20 lastPerformed 2026-11-14",
+              "db-split-squat": "KNOWN20 lastPerformed 2026-11-14"
+            },
+            "week6RowsDiffer": false
+          },
+          {
+            "name": "qe-r7ase-P50.tz540",
+            "reestablish": true,
+            "controlAgrees": true,
+            "planningDates": {
+              "db-rdl": "KNOWN20 lastPerformed 2026-11-14",
+              "db-split-squat": "KNOWN20 lastPerformed 2026-11-14"
+            },
+            "week6RowsDiffer": false
+          },
+          {
+            "name": "qe-r7ase-P50.tz-300",
+            "reestablish": true,
+            "controlAgrees": true,
+            "planningDates": {
+              "db-rdl": "KNOWN20 lastPerformed 2026-11-14",
+              "db-split-squat": "KNOWN20 lastPerformed 2026-11-14"
+            },
+            "week6RowsDiffer": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "qe-r7ab-01-closed",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "p40": [
+          {
+            "name": "qe-r7ab-P40",
+            "variants": [
+              {
+                "k": "saturdayLift",
+                "entryDiff": {
+                  "run": null,
+                  "strength": {}
+                }
+              },
+              {
+                "k": "tuesdayQuality",
+                "entryDiff": {
+                  "run": null,
+                  "strength": {}
+                }
+              }
+            ]
+          },
+          {
+            "name": "qe-r7ab-P40.tz540",
+            "variants": [
+              {
+                "k": "saturdayLift",
+                "entryDiff": {
+                  "run": null,
+                  "strength": {}
+                }
+              },
+              {
+                "k": "tuesdayQuality",
+                "entryDiff": {
+                  "run": null,
+                  "strength": {}
+                }
+              }
+            ]
+          }
+        ],
+        "p40cLoads": {
+          "U": 20,
+          "R": 20
+        }
+      }
+    },
+    {
+      "id": "self-challenge",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "classes": 12,
+        "liveViolations": 0,
+        "priorFreezeViolations": 42
+      }
+    },
+    {
+      "id": "t1-t2-discriminating",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "live": {
+          "t1": true,
+          "t2": true
+        },
+        "priorFreeze": {
+          "t1": false,
+          "t2": false
+        }
+      }
+    },
+    {
+      "id": "mutation-check",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "total": 29,
+        "caught": 20,
+        "survivors": 9,
+        "documented": 9,
+        "undocumented": []
+      }
+    },
+    {
+      "id": "regression",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "sourcesBoundToCurrentRuntime": true,
+        "summary": {
+          "r6FreshHoldout": {
+            "cases": 35,
+            "identical": 20,
+            "different": [
+              "R6-H17",
+              "R6-H18",
+              "R6-H19",
+              "R6-H22",
+              "R6-H23",
+              "R6-H24",
+              "R6-H25",
+              "R6-H26",
+              "R6-H29",
+              "R6-H30",
+              "R6-H31",
+              "R6-H32",
+              "R6-H33",
+              "R6-H34",
+              "R6-H35"
+            ],
+            "statusChanged": [
+              "R6-H18: MODIFY/MOVE KEEP/KEEP MODIFY/GATED_NEXT_STEP -> KEEP/KEEP KEEP/KEEP MODIFY/GATED_NEXT_STEP",
+              "R6-H26: KEEP/KEEP MODIFY/REESTABLISH MODIFY/GATED_NEXT_STEP -> KEEP/INSTANTIATE_LOGGED_LOADS MODIFY/REESTABLISH MODIFY/GATED_NEXT_STEP"
+            ]
+          },
+          "r5Corpus": {
+            "cases": 24,
+            "identical": 24,
+            "different": [],
+            "statusChanged": []
+          },
+          "profiles": {
+            "cases": 16,
+            "identical": 16,
+            "different": [],
+            "statusChanged": []
+          },
+          "simulations": {
+            "cases": 14,
+            "identical": 12,
+            "different": [
+              "T04_STRENGTH12_REPEATED_UNDERPERFORMANCE",
+              "T13_HM16_FATIGUE_SIGNALS"
+            ],
+            "statusChanged": []
+          }
+        },
+        "classes": [
+          {
+            "id": "NEVER_ESTABLISHED_EXERCISE",
+            "cases": 12
+          },
+          {
+            "id": "RUN_CAPABILITY_FROM_HISTORY",
+            "cases": 7
+          },
+          {
+            "id": "EARNED_PROGRESS_R42",
+            "cases": 4
+          },
+          {
+            "id": "DECISION_FROM_VIEW",
+            "cases": 2
+          },
+          {
+            "id": "ROW_SHAPE",
+            "cases": 14
+          },
+          {
+            "id": "STATE_BOOKKEEPING",
+            "cases": 8
+          }
+        ],
+        "doseFieldsRisen": 3,
+        "doseFieldsFallen": 113,
+        "allRisenAreEffortGuided": true
+      }
+    },
+    {
+      "id": "queue-untouched",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "sha256": "221a03651e103e82636c42b37fe263dd61ce1bde2e6b73f552e6dc6b10b50218"
+      }
+    },
+    {
+      "id": "deliverables",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "missing": []
+      }
+    },
+    {
+      "id": "reviews-not-dispatched",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "reviewFiles": [
+          "ENGINEERING_REVIEW_BRIEF.md",
+          "SSCTR_REGRESSION_REVIEW_BRIEF.md"
+        ],
+        "verdictsPresent": [],
+        "handoffPresent": false
+      }
+    }
+  ]
+}

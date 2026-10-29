@@ -1,0 +1,2110 @@
+{
+  "id": "SDC-SEMANTICS-WITNESSES",
+  "revision": "SDC-SEM-W-r1",
+  "date": "2026-10-23",
+  "timezone": "America/Sao_Paulo",
+  "state": "AUTHOR_SUBMISSION",
+  "synthetic_only": true,
+  "runtime_execution_claim": false,
+  "sports_validation_claim": false,
+  "human_validation_claim": false,
+  "numeric_values": "Explicit synthetic target/observed values; no universal tolerance, duration-to-dose mapping or physiological approval. Exact arithmetic is descriptive only.",
+  "source_manifest": "G03_REVIEW.json#/source_manifest",
+  "common_athlete": {
+    "id": "SEM-ATH-01",
+    "synthetic": true,
+    "age_years": 34,
+    "mode": "BALANCED_HYBRID",
+    "goal_priority": "recreational running and general strength, copriorities",
+    "phase": "general development, no event",
+    "experience": "documented regular recreational practice in both domains within fiction; no inference from years alone",
+    "equipment": "barbell/rack/plates in fictional familiar configuration; no unreviewed equivalence",
+    "eligibility": "Each positive boundary fixture explicitly states current declared nonclinical context. No medical screening/clearance or risk absence is certified. Unknown/clinical variants override this.",
+    "recovery": "fixture-specific; never filled as normal by default"
+  },
+  "historical_week": {
+    "synthetic": true,
+    "authority": "HISTORICAL_TARGET_FACTS_FOR_SEMANTIC_TESTS_NOT_APPROVED_RECIPES",
+    "Mon": "SEM-ST-BASE@r1",
+    "Tue": "SEM-RUN-BASE@r1",
+    "Wed": "30min easy self-reported effort3/10 synthetic target",
+    "Thu": "familiar upper work2x8 row40kg total at reported RIR3, semantic fixture only",
+    "Sat": "35min easy self-reported effort3/10 synthetic target",
+    "other_days": "no planned training in fixture; not assumed available for moves"
+  },
+  "targets": [
+    {
+      "ref": "SEM-ST-BASE@r1",
+      "kind": "SYNTHETIC_TARGET_NOT_APPROVED_RECIPE",
+      "configuration_ref": "SEM-BARBELL-SQUAT@r1",
+      "sets": [
+        {
+          "id": "s1",
+          "role": "work",
+          "reps": 5,
+          "load": {
+            "value": 60,
+            "unit": "kg",
+            "convention": "total_including_bar"
+          },
+          "reported_effort": {
+            "metric": "estimated_RIR",
+            "target_band": [
+              2,
+              4
+            ],
+            "unit": "repetitions_in_reserve",
+            "method_ref": "SEM-RIR-POSTSET@r1"
+          },
+          "rest_before_s": null
+        },
+        {
+          "id": "s2",
+          "role": "work",
+          "reps": 5,
+          "load": {
+            "value": 60,
+            "unit": "kg",
+            "convention": "total_including_bar"
+          },
+          "reported_effort": {
+            "metric": "estimated_RIR",
+            "target_band": [
+              2,
+              4
+            ],
+            "unit": "repetitions_in_reserve",
+            "method_ref": "SEM-RIR-POSTSET@r1"
+          },
+          "rest_before_s": 180
+        },
+        {
+          "id": "s3",
+          "role": "work",
+          "reps": 5,
+          "load": {
+            "value": 60,
+            "unit": "kg",
+            "convention": "total_including_bar"
+          },
+          "reported_effort": {
+            "metric": "estimated_RIR",
+            "target_band": [
+              2,
+              4
+            ],
+            "unit": "repetitions_in_reserve",
+            "method_ref": "SEM-RIR-POSTSET@r1"
+          },
+          "rest_before_s": 180
+        }
+      ],
+      "required_semantic_dimensions": [
+        "unique_set_coverage",
+        "reps",
+        "load_and_convention",
+        "reported_effort_same_method",
+        "between_set_rest"
+      ],
+      "technique_or_physiological_stimulus": "UNASSESSED"
+    },
+    {
+      "ref": "SEM-ST-REDUCED@r2",
+      "kind": "SYNTHETIC_ACCEPTED_TARGET_NOT_SPORTING_APPROVAL",
+      "parent": "SEM-ST-BASE@r1",
+      "delta": "withdraw s3 before start, all s1/s2 semantic targets preserved"
+    },
+    {
+      "ref": "SEM-ST-REMAINDER@r2",
+      "kind": "SYNTHETIC_ACCEPTED_TARGET_NOT_SPORTING_APPROVAL",
+      "parent": "SEM-ST-BASE@r1",
+      "delta": "s1 completed under r1; remaining s2/s3 target50kg total, same5reps and declared effort/rest"
+    },
+    {
+      "ref": "SEM-RUN-BASE@r1",
+      "kind": "SYNTHETIC_TARGET_NOT_APPROVED_RECIPE",
+      "blocks": [
+        {
+          "id": "warmup",
+          "duration_s": 600,
+          "effort_target": 3
+        },
+        {
+          "id": "work",
+          "instances": 3,
+          "duration_s_each": 360,
+          "effort_target_each": 6
+        },
+        {
+          "id": "between_recovery",
+          "instances": 2,
+          "duration_s_each": 120,
+          "effort_target_each": 3
+        },
+        {
+          "id": "cooldown",
+          "duration_s": 300,
+          "effort_target": 3
+        }
+      ],
+      "effort_method": "SEM-INTERVAL-EFFORT-0-10@r1: same declared scale/collection anchors in comparisons; no numeric cross-scale mapping or physiological threshold claim",
+      "total_s": 2220,
+      "total_work_s": 1080,
+      "required_semantic_dimensions": [
+        "unique_step_instance_coverage",
+        "duration_per_instance",
+        "reported_effort_same_method"
+      ],
+      "physiological_threshold": "NOT_ESTABLISHED"
+    }
+  ],
+  "witnesses": [
+    {
+      "id": "G03-W01",
+      "title": "Exact/banded strength target honoured on declared dimensions",
+      "synthetic": true,
+      "real_athlete_data": false,
+      "rule_refs": [
+        "G03-R01",
+        "G03-R02",
+        "G03-R07"
+      ],
+      "input": {
+        "target_ref": "SEM-ST-BASE@r1",
+        "executed_target_map": "All set instances target r1",
+        "observed": {
+          "sets": [
+            {
+              "id": "s1",
+              "reps": 5,
+              "load_kg_total_including_bar": 60,
+              "estimated_RIR": 3,
+              "method": "SEM-RIR-POSTSET@r1",
+              "rest_before_s": null
+            },
+            {
+              "id": "s2",
+              "reps": 5,
+              "load_kg_total_including_bar": 60,
+              "estimated_RIR": 3,
+              "method": "SEM-RIR-POSTSET@r1",
+              "rest_before_s": 180
+            },
+            {
+              "id": "s3",
+              "reps": 5,
+              "load_kg_total_including_bar": 60,
+              "estimated_RIR": 3,
+              "method": "SEM-RIR-POSTSET@r1",
+              "rest_before_s": 180
+            }
+          ],
+          "coverage": "COMPLETE_FOR_DECLARED_SEMANTIC_DIMENSIONS",
+          "association": "CONFIRMED"
+        }
+      },
+      "reconciled_fact": {
+        "canonical_fact": "sem-st-a@r1",
+        "unique_sets": 3,
+        "known_reps": 15,
+        "active_revision": "r1",
+        "config": "SEM-BARBELL-SQUAT@r1"
+      },
+      "interpretation": {
+        "dimensions": {
+          "set_count": "WITHIN_TARGET",
+          "reps_per_set": "WITHIN_TARGET",
+          "load": "WITHIN_TARGET",
+          "reported_RIR_band": "WITHIN_TARGET",
+          "between_set_rest": "WITHIN_TARGET"
+        },
+        "structure": "ACCOUNTED_FOR",
+        "adherence": "HONOURED_EXECUTED_TARGET_FOR_DECLARED_DIMENSIONS",
+        "physiological_intent": "UNASSESSED",
+        "technique": "NOT_OBSERVED"
+      },
+      "action_bounds": {
+        "allowed": [
+          "record one outcome and semantic target conformance",
+          "learn without changing plan"
+        ],
+        "blocked": [
+          "earned progression",
+          "claim correct technique or adequate stimulus"
+        ]
+      },
+      "expected_preserve": [
+        "canonical fact/active revision and original target history",
+        "known dimensional facts and explicit unknowns",
+        "athlete choice; no silent plan mutation",
+        "RIR remains a report/estimate, not proof of actual failure reserve"
+      ],
+      "expected_modify": [
+        "only derived fact/interpretation projections when evidence changes"
+      ],
+      "must_not": [
+        "physiological or clinical approval from synthetic data",
+        "universal adherence percentage",
+        "extra credit/progression/debt replacement without separate approved rule"
+      ],
+      "agency": "Athlete can inspect/correct association, actuals or target lineage; future mutation requires current scoped act. Correction is not medical clearance.",
+      "re_review_trigger": "New active correction, method/target/configuration/context/authority change or resolved critical unknown",
+      "evidence_refs": [
+        "SEM-N1",
+        "SEM-N2",
+        "SEM-N3",
+        "SEM-N4",
+        "SEM-N5",
+        "SEM-N6"
+      ],
+      "SSCTR_disposition": "PENDING_INDEPENDENT_REVIEW",
+      "fixture_status": "AUTHOR_SUBMISSION_DOCUMENTARY_ORACLE_NOT_RUNTIME_EXECUTED"
+    },
+    {
+      "id": "G03-W02",
+      "title": "Accepted prestart reduction is compared to reduced target",
+      "synthetic": true,
+      "real_athlete_data": false,
+      "rule_refs": [
+        "G03-R01",
+        "G03-R07"
+      ],
+      "input": {
+        "original_target": "SEM-ST-BASE@r1",
+        "accepted_successor": "SEM-ST-REDUCED@r2",
+        "acceptance": "SYNTHETIC_CONFIRMED_BEFORE_START",
+        "delta": "Withdraw s3; keep s1/s2 targets",
+        "actual": "s1/s2 completed at 5 reps,60kg total,RIR3,180s between",
+        "coverage": "known"
+      },
+      "reconciled_fact": {
+        "canonical_fact": "sem-st-b@r1",
+        "unique_sets": 2,
+        "known_reps": 10,
+        "withdrawn_set": "s3 not attempted and not expected under r2"
+      },
+      "interpretation": {
+        "structure": "ACCOUNTED_FOR_UNDER_R2",
+        "adherence": "HONOURED_EXECUTED_TARGET_FOR_DECLARED_DIMENSIONS",
+        "original_target_achieved": "NOT_ASSERTED",
+        "sporting_intent": "UNASSESSED"
+      },
+      "action_bounds": {
+        "allowed": [
+          "record accepted target honoured",
+          "retain original prescription as history"
+        ],
+        "blocked": [
+          "classify r1 failure",
+          "grant r1 earned progression"
+        ]
+      },
+      "expected_preserve": [
+        "canonical fact/active revision and original target history",
+        "known dimensional facts and explicit unknowns",
+        "athlete choice; no silent plan mutation",
+        "reason for withdrawal and r2 acceptance boundary"
+      ],
+      "expected_modify": [
+        "only derived fact/interpretation projections when evidence changes"
+      ],
+      "must_not": [
+        "physiological or clinical approval from synthetic data",
+        "universal adherence percentage",
+        "extra credit/progression/debt replacement without separate approved rule"
+      ],
+      "agency": "Athlete can inspect/correct association, actuals or target lineage; future mutation requires current scoped act. Correction is not medical clearance.",
+      "re_review_trigger": "New active correction, method/target/configuration/context/authority change or resolved critical unknown",
+      "evidence_refs": [
+        "SEM-N1",
+        "SEM-N2",
+        "SEM-N3",
+        "SEM-N4",
+        "SEM-N5",
+        "SEM-N6"
+      ],
+      "SSCTR_disposition": "PENDING_INDEPENDENT_REVIEW",
+      "fixture_status": "AUTHOR_SUBMISSION_DOCUMENTARY_ORACLE_NOT_RUNTIME_EXECUTED"
+    },
+    {
+      "id": "G03-W03",
+      "title": "Known partial execution with explicit omission",
+      "synthetic": true,
+      "real_athlete_data": false,
+      "rule_refs": [
+        "G03-R03",
+        "G03-R07"
+      ],
+      "input": {
+        "target_ref": "SEM-ST-BASE@r1",
+        "actual": "s1/s2 5 reps60kg; athlete explicitly states s3 not performed because time ended",
+        "session_ended": true
+      },
+      "reconciled_fact": {
+        "canonical_fact": "sem-st-c@r1",
+        "known_work_sets": 2,
+        "known_reps": 10,
+        "s3": "OMITTED_CONFIRMED",
+        "coverage": "KNOWN_PARTIAL"
+      },
+      "interpretation": {
+        "structure": "PARTIAL_KNOWN",
+        "set_count": "BELOW",
+        "s1_s2_dose": "KNOWN",
+        "adherence": "PARTIAL_AGAINST_EXECUTED_TARGET_WITHOUT_MORAL_JUDGMENT",
+        "intent": "UNASSESSED"
+      },
+      "action_bounds": {
+        "allowed": [
+          "record partial fact",
+          "evaluate remaining horizon under G02 only if relevant"
+        ],
+        "blocked": [
+          "replace missing set as debt",
+          "infer incapacity or recovery issue"
+        ]
+      },
+      "expected_preserve": [
+        "canonical fact/active revision and original target history",
+        "known dimensional facts and explicit unknowns",
+        "athlete choice; no silent plan mutation"
+      ],
+      "expected_modify": [
+        "actual exposure projection uses known two sets once; no planned third-set exposure"
+      ],
+      "must_not": [
+        "physiological or clinical approval from synthetic data",
+        "universal adherence percentage",
+        "extra credit/progression/debt replacement without separate approved rule"
+      ],
+      "agency": "Athlete can inspect/correct association, actuals or target lineage; future mutation requires current scoped act. Correction is not medical clearance.",
+      "re_review_trigger": "New active correction, method/target/configuration/context/authority change or resolved critical unknown",
+      "evidence_refs": [
+        "SEM-N1",
+        "SEM-N2",
+        "SEM-N3",
+        "SEM-N4",
+        "SEM-N5",
+        "SEM-N6"
+      ],
+      "SSCTR_disposition": "PENDING_INDEPENDENT_REVIEW",
+      "fixture_status": "AUTHOR_SUBMISSION_DOCUMENTARY_ORACLE_NOT_RUNTIME_EXECUTED"
+    },
+    {
+      "id": "G03-W04",
+      "title": "Unreported third set is not omission",
+      "synthetic": true,
+      "real_athlete_data": false,
+      "rule_refs": [
+        "G03-R03"
+      ],
+      "input": {
+        "target_ref": "SEM-ST-BASE@r1",
+        "actual": "only s1/s2 delivered; provider coverage incomplete; athlete not asked",
+        "provider_label": "completed"
+      },
+      "reconciled_fact": {
+        "canonical_fact": "sem-st-d@r1",
+        "known_sets": [
+          "s1",
+          "s2"
+        ],
+        "s3": "UNKNOWN_SOURCE_DELAY",
+        "coverage": "PARTIAL_OBSERVATION"
+      },
+      "interpretation": {
+        "known_dimensions": "retain s1/s2 actuals",
+        "structure": "UNKNOWN",
+        "overall_adherence": "UNCLASSIFIED",
+        "rest_or_omission": "UNKNOWN"
+      },
+      "action_bounds": {
+        "allowed": [
+          "retain honest known prefix",
+          "ask whether s3 occurred if decision-critical"
+        ],
+        "blocked": [
+          "classify failed set",
+          "honoured rest",
+          "assume completed from provider label"
+        ]
+      },
+      "expected_preserve": [
+        "canonical fact/active revision and original target history",
+        "known dimensional facts and explicit unknowns",
+        "athlete choice; no silent plan mutation"
+      ],
+      "expected_modify": [
+        "only derived fact/interpretation projections when evidence changes"
+      ],
+      "must_not": [
+        "physiological or clinical approval from synthetic data",
+        "universal adherence percentage",
+        "extra credit/progression/debt replacement without separate approved rule",
+        "provider completed substitutes for segment coverage"
+      ],
+      "agency": "Athlete can inspect/correct association, actuals or target lineage; future mutation requires current scoped act. Correction is not medical clearance.",
+      "re_review_trigger": "New active correction, method/target/configuration/context/authority change or resolved critical unknown",
+      "evidence_refs": [
+        "SEM-N1",
+        "SEM-N2",
+        "SEM-N3",
+        "SEM-N4",
+        "SEM-N5",
+        "SEM-N6"
+      ],
+      "SSCTR_disposition": "PENDING_INDEPENDENT_REVIEW",
+      "fixture_status": "AUTHOR_SUBMISSION_DOCUMENTARY_ORACLE_NOT_RUNTIME_EXECUTED"
+    },
+    {
+      "id": "G03-W05",
+      "title": "Confirmed mirror and retries count one origin fact",
+      "synthetic": true,
+      "real_athlete_data": false,
+      "rule_refs": [
+        "G03-R04",
+        "G03-R08"
+      ],
+      "input": {
+        "deliveries": [
+          {
+            "delivery_id": "d1",
+            "origin_namespace": "synthetic:device-A",
+            "origin_fact": "run-400",
+            "source_revision": "r1"
+          },
+          {
+            "delivery_id": "d2",
+            "mirror_of": "synthetic:device-A/run-400@r1",
+            "verified_lineage": true
+          },
+          {
+            "delivery_id": "d3",
+            "retry_of": "d1"
+          }
+        ],
+        "actual": "5000m run,1800s once"
+      },
+      "reconciled_fact": {
+        "canonical_fact": "sem-run-400@r1",
+        "active_observed_contributions": 1,
+        "distance_m": 5000,
+        "duration_s": 1800,
+        "delivery_refs": [
+          "d1",
+          "d2",
+          "d3"
+        ]
+      },
+      "interpretation": {
+        "exposure": "one run",
+        "multiple_sources": "lineage, not independent extra evidence",
+        "adherence": "requires target comparator, not source count"
+      },
+      "action_bounds": {
+        "allowed": [
+          "associate confirmed mirrors",
+          "project one observed run"
+        ],
+        "blocked": [
+          "15000m sum",
+          "extra adaptation from repeat delivery"
+        ]
+      },
+      "expected_preserve": [
+        "canonical fact/active revision and original target history",
+        "known dimensional facts and explicit unknowns",
+        "athlete choice; no silent plan mutation"
+      ],
+      "expected_modify": [
+        "only derived fact/interpretation projections when evidence changes"
+      ],
+      "must_not": [
+        "physiological or clinical approval from synthetic data",
+        "universal adherence percentage",
+        "extra credit/progression/debt replacement without separate approved rule",
+        "source count automatically increases confidence"
+      ],
+      "agency": "Athlete can inspect/correct association, actuals or target lineage; future mutation requires current scoped act. Correction is not medical clearance.",
+      "re_review_trigger": "New active correction, method/target/configuration/context/authority change or resolved critical unknown",
+      "evidence_refs": [
+        "SEM-N1",
+        "SEM-N2",
+        "SEM-N3",
+        "SEM-N4",
+        "SEM-N5",
+        "SEM-N6"
+      ],
+      "SSCTR_disposition": "PENDING_INDEPENDENT_REVIEW",
+      "fixture_status": "AUTHOR_SUBMISSION_DOCUMENTARY_ORACLE_NOT_RUNTIME_EXECUTED"
+    },
+    {
+      "id": "G03-W06",
+      "title": "Two confirmed similar real sessions remain distinct",
+      "synthetic": true,
+      "real_athlete_data": false,
+      "rule_refs": [
+        "G03-R04"
+      ],
+      "input": {
+        "records": [
+          {
+            "origin": "synthetic:device-A/run-401",
+            "occurred_at": "2026-10-21T07:00:00-03:00",
+            "distance_m": 5000
+          },
+          {
+            "origin": "synthetic:device-A/run-402",
+            "occurred_at": "2026-10-21T18:00:00-03:00",
+            "distance_m": 5000
+          }
+        ],
+        "athlete_confirmed_two_sessions": true
+      },
+      "reconciled_fact": {
+        "canonical_facts": [
+          "sem-run-401@r1",
+          "sem-run-402@r1"
+        ],
+        "unique_sessions": 2,
+        "known_distance_m_sum": 10000
+      },
+      "interpretation": {
+        "identity": "two confirmed facts",
+        "physiological_load": "not inferred from distance sum alone",
+        "adherence": "separate target association per session"
+      },
+      "action_bounds": {
+        "allowed": [
+          "retain both facts",
+          "aggregate same-unit distance as clearly defined descriptive total"
+        ],
+        "blocked": [
+          "merge because metrics match",
+          "derive universal fatigue from total"
+        ]
+      },
+      "expected_preserve": [
+        "canonical fact/active revision and original target history",
+        "known dimensional facts and explicit unknowns",
+        "athlete choice; no silent plan mutation"
+      ],
+      "expected_modify": [
+        "only derived fact/interpretation projections when evidence changes"
+      ],
+      "must_not": [
+        "physiological or clinical approval from synthetic data",
+        "universal adherence percentage",
+        "extra credit/progression/debt replacement without separate approved rule"
+      ],
+      "agency": "Athlete can inspect/correct association, actuals or target lineage; future mutation requires current scoped act. Correction is not medical clearance.",
+      "re_review_trigger": "New active correction, method/target/configuration/context/authority change or resolved critical unknown",
+      "evidence_refs": [
+        "SEM-N1",
+        "SEM-N2",
+        "SEM-N3",
+        "SEM-N4",
+        "SEM-N5",
+        "SEM-N6"
+      ],
+      "SSCTR_disposition": "PENDING_INDEPENDENT_REVIEW",
+      "fixture_status": "AUTHOR_SUBMISSION_DOCUMENTARY_ORACLE_NOT_RUNTIME_EXECUTED"
+    },
+    {
+      "id": "G03-W07",
+      "title": "Possible duplicate unresolved: neither double nor zero",
+      "synthetic": true,
+      "real_athlete_data": false,
+      "rule_refs": [
+        "G03-R04",
+        "G03-R08"
+      ],
+      "input": {
+        "records": [
+          {
+            "origin": "synthetic:A/7",
+            "distance_m": 5000
+          },
+          {
+            "origin": "synthetic:B/9",
+            "distance_m": 5100
+          }
+        ],
+        "similar_time": true,
+        "shared_origin_proof": null,
+        "athlete_confirmation": null
+      },
+      "reconciled_fact": {
+        "identity_group": "sem-ambiguous-1",
+        "status": "AMBIGUOUS",
+        "possible_facts": [
+          "synthetic:A/7",
+          "synthetic:B/9"
+        ],
+        "active_aggregate_distance": "UNCLASSIFIED_PENDING_IDENTITY"
+      },
+      "interpretation": {
+        "adherence": "UNCLASSIFIED_FOR_DEPENDENT_TOTAL",
+        "uncertainty": "one vs two real sessions unresolved"
+      },
+      "action_bounds": {
+        "allowed": [
+          "preserve both source observations",
+          "ask minimum identity question",
+          "continue independent recording"
+        ],
+        "blocked": [
+          "sum10100m",
+          "average5050m as canonical",
+          "delete as zero"
+        ]
+      },
+      "expected_preserve": [
+        "canonical fact/active revision and original target history",
+        "known dimensional facts and explicit unknowns",
+        "athlete choice; no silent plan mutation"
+      ],
+      "expected_modify": [
+        "only derived fact/interpretation projections when evidence changes"
+      ],
+      "must_not": [
+        "physiological or clinical approval from synthetic data",
+        "universal adherence percentage",
+        "extra credit/progression/debt replacement without separate approved rule",
+        "similarity auto-confirms association"
+      ],
+      "agency": "Athlete can inspect/correct association, actuals or target lineage; future mutation requires current scoped act. Correction is not medical clearance.",
+      "re_review_trigger": "New active correction, method/target/configuration/context/authority change or resolved critical unknown",
+      "evidence_refs": [
+        "SEM-N1",
+        "SEM-N2",
+        "SEM-N3",
+        "SEM-N4",
+        "SEM-N5",
+        "SEM-N6"
+      ],
+      "SSCTR_disposition": "PENDING_INDEPENDENT_REVIEW",
+      "fixture_status": "AUTHOR_SUBMISSION_DOCUMENTARY_ORACLE_NOT_RUNTIME_EXECUTED"
+    },
+    {
+      "id": "G03-W08",
+      "title": "Correction replaces prior load in the same set scope",
+      "synthetic": true,
+      "real_athlete_data": false,
+      "rule_refs": [
+        "G03-R05"
+      ],
+      "input": {
+        "canonical_fact": "sem-st-e",
+        "prior": "r1:3x5,60kg total",
+        "correction": "r2 explicitly corrects all three loads to50kg total, same execution",
+        "verified_correction_of": "sem-st-e@r1",
+        "target_ref": "SEM-ST-BASE@r1"
+      },
+      "reconciled_fact": {
+        "canonical_fact": "sem-st-e@r2",
+        "unique_work_sets": 3,
+        "known_reps": 15,
+        "load_kg_total_each": 50,
+        "superseded": "r1"
+      },
+      "interpretation": {
+        "load": "BELOW_TARGET60",
+        "prior_interpretation": "retained as superseded at prior fact frontier",
+        "adherence": "recomputed on r2; no new workout"
+      },
+      "action_bounds": {
+        "allowed": [
+          "recompute affected projection",
+          "re-evaluate future opportunity if G02 material"
+        ],
+        "blocked": [
+          "count r1+r2",
+          "rewrite past plan",
+          "automatic retroactive prescription"
+        ]
+      },
+      "expected_preserve": [
+        "canonical fact/active revision and original target history",
+        "known dimensional facts and explicit unknowns",
+        "athlete choice; no silent plan mutation"
+      ],
+      "expected_modify": [
+        "only derived fact/interpretation projections when evidence changes"
+      ],
+      "must_not": [
+        "physiological or clinical approval from synthetic data",
+        "universal adherence percentage",
+        "extra credit/progression/debt replacement without separate approved rule"
+      ],
+      "agency": "Athlete can inspect/correct association, actuals or target lineage; future mutation requires current scoped act. Correction is not medical clearance.",
+      "re_review_trigger": "New active correction, method/target/configuration/context/authority change or resolved critical unknown",
+      "evidence_refs": [
+        "SEM-N1",
+        "SEM-N2",
+        "SEM-N3",
+        "SEM-N4",
+        "SEM-N5",
+        "SEM-N6"
+      ],
+      "SSCTR_disposition": "PENDING_INDEPENDENT_REVIEW",
+      "fixture_status": "AUTHOR_SUBMISSION_DOCUMENTARY_ORACLE_NOT_RUNTIME_EXECUTED"
+    },
+    {
+      "id": "G03-W09",
+      "title": "Old revision arriving later cannot reactivate it",
+      "synthetic": true,
+      "real_athlete_data": false,
+      "rule_refs": [
+        "G03-R05"
+      ],
+      "input": {
+        "current_fact": "sem-st-e@r2",
+        "deliveries": [
+          {
+            "source_revision": "r2",
+            "received_at": "2026-10-21T10:00:00-03:00",
+            "correction_of": "r1"
+          },
+          {
+            "source_revision": "r1",
+            "received_at": "2026-10-22T10:00:00-03:00"
+          }
+        ]
+      },
+      "reconciled_fact": {
+        "active_revision": "r2",
+        "later_delivery": "proven superseded r1; retained only per lawful lineage policy"
+      },
+      "interpretation": {
+        "exposure": "unchanged",
+        "repeated_evaluation": "same relevant fact frontier; no new physiological fact"
+      },
+      "action_bounds": {
+        "allowed": [
+          "retain r2 as active",
+          "idempotent no additional effect"
+        ],
+        "blocked": [
+          "switch to r1 due receipt time",
+          "repeat adaptation due replay"
+        ]
+      },
+      "expected_preserve": [
+        "canonical fact/active revision and original target history",
+        "known dimensional facts and explicit unknowns",
+        "athlete choice; no silent plan mutation"
+      ],
+      "expected_modify": [
+        "only derived fact/interpretation projections when evidence changes"
+      ],
+      "must_not": [
+        "physiological or clinical approval from synthetic data",
+        "universal adherence percentage",
+        "extra credit/progression/debt replacement without separate approved rule"
+      ],
+      "agency": "Athlete can inspect/correct association, actuals or target lineage; future mutation requires current scoped act. Correction is not medical clearance.",
+      "re_review_trigger": "New active correction, method/target/configuration/context/authority change or resolved critical unknown",
+      "evidence_refs": [
+        "SEM-N1",
+        "SEM-N2",
+        "SEM-N3",
+        "SEM-N4",
+        "SEM-N5",
+        "SEM-N6"
+      ],
+      "SSCTR_disposition": "PENDING_INDEPENDENT_REVIEW",
+      "fixture_status": "AUTHOR_SUBMISSION_DOCUMENTARY_ORACLE_NOT_RUNTIME_EXECUTED"
+    },
+    {
+      "id": "G03-W10",
+      "title": "Historic recovery signal not current after context change",
+      "synthetic": true,
+      "real_athlete_data": false,
+      "rule_refs": [
+        "G03-R06"
+      ],
+      "input": {
+        "observation": "sleep report from2026-10-17 before travel",
+        "received_at": "2026-10-23T08:00:00-03:00",
+        "decision": "readiness for2026-10-23 evening",
+        "known_change": "travel and altered sleep schedule after observation",
+        "freshness_rule": "current-use suitability requires post-change context in this candidate; physiological time window not defined"
+      },
+      "reconciled_fact": {
+        "historic_fact": "valid statement for2026-10-17",
+        "current_readiness_evidence": "UNKNOWN_POST_CHANGE"
+      },
+      "interpretation": {
+        "freshness": "STALE_FOR_THIS_CURRENT_USE",
+        "historic_record": "PRESERVED",
+        "readiness": "UNASSESSED"
+      },
+      "action_bounds": {
+        "allowed": [
+          "ask current context only if essential to decision",
+          "use independent approved path if optional signal unnecessary"
+        ],
+        "blocked": [
+          "treat newest receipt as fresh",
+          "erase history",
+          "hold all training solely for optional missing metric"
+        ]
+      },
+      "expected_preserve": [
+        "canonical fact/active revision and original target history",
+        "known dimensional facts and explicit unknowns",
+        "athlete choice; no silent plan mutation"
+      ],
+      "expected_modify": [
+        "only derived fact/interpretation projections when evidence changes"
+      ],
+      "must_not": [
+        "physiological or clinical approval from synthetic data",
+        "universal adherence percentage",
+        "extra credit/progression/debt replacement without separate approved rule",
+        "invent universal24h/48h freshness window"
+      ],
+      "agency": "Athlete can inspect/correct association, actuals or target lineage; future mutation requires current scoped act. Correction is not medical clearance.",
+      "re_review_trigger": "New active correction, method/target/configuration/context/authority change or resolved critical unknown",
+      "evidence_refs": [
+        "SEM-N1",
+        "SEM-N2",
+        "SEM-N3",
+        "SEM-N4",
+        "SEM-N5",
+        "SEM-N6"
+      ],
+      "SSCTR_disposition": "PENDING_INDEPENDENT_REVIEW",
+      "fixture_status": "AUTHOR_SUBMISSION_DOCUMENTARY_ORACLE_NOT_RUNTIME_EXECUTED"
+    },
+    {
+      "id": "G03-W11",
+      "title": "Per-hand and total load mismatch blocks load comparison",
+      "synthetic": true,
+      "real_athlete_data": false,
+      "rule_refs": [
+        "G03-R02"
+      ],
+      "input": {
+        "target": "dumbbell exercise20kg per hand",
+        "observation": "20kg with load convention missing",
+        "reps": 5,
+        "same_variant_confirmed": true
+      },
+      "reconciled_fact": {
+        "known_reps": 5,
+        "observed_load_convention": "UNKNOWN",
+        "load_comparability": "UNKNOWN"
+      },
+      "interpretation": {
+        "reps": "known comparison may stand",
+        "load": "UNCLASSIFIED",
+        "overall_adherence": "UNCLASSIFIED_IF_LOAD_CRITICAL"
+      },
+      "action_bounds": {
+        "allowed": [
+          "ask load convention",
+          "retain raw value with unknown convention"
+        ],
+        "blocked": [
+          "assume20kg total or40kg total",
+          "infer PR/progression"
+        ]
+      },
+      "expected_preserve": [
+        "canonical fact/active revision and original target history",
+        "known dimensional facts and explicit unknowns",
+        "athlete choice; no silent plan mutation"
+      ],
+      "expected_modify": [
+        "only derived fact/interpretation projections when evidence changes"
+      ],
+      "must_not": [
+        "physiological or clinical approval from synthetic data",
+        "universal adherence percentage",
+        "extra credit/progression/debt replacement without separate approved rule"
+      ],
+      "agency": "Athlete can inspect/correct association, actuals or target lineage; future mutation requires current scoped act. Correction is not medical clearance.",
+      "re_review_trigger": "New active correction, method/target/configuration/context/authority change or resolved critical unknown",
+      "evidence_refs": [
+        "SEM-N1",
+        "SEM-N2",
+        "SEM-N3",
+        "SEM-N4",
+        "SEM-N5",
+        "SEM-N6"
+      ],
+      "SSCTR_disposition": "PENDING_INDEPENDENT_REVIEW",
+      "fixture_status": "AUTHOR_SUBMISSION_DOCUMENTARY_ORACLE_NOT_RUNTIME_EXECUTED"
+    },
+    {
+      "id": "G03-W12",
+      "title": "New intensity calibration cannot rewrite old target",
+      "synthetic": true,
+      "real_athlete_data": false,
+      "rule_refs": [
+        "G03-R01",
+        "G03-R02"
+      ],
+      "input": {
+        "historical_target_ref": "SEM-RUN-BASE@r1",
+        "historical_method": "SEM-INTERVAL-EFFORT-0-10@r1",
+        "observed_work_effort": [
+          6,
+          6,
+          6
+        ],
+        "new_calibration_ref": "SEM-ZONES@r2 established next day; different method"
+      },
+      "reconciled_fact": {
+        "run_fact": "sem-run-g@r1",
+        "executed_intensity_ref": "SEM-INTERVAL-EFFORT-0-10@r1",
+        "new_reference": "future-use candidate only"
+      },
+      "interpretation": {
+        "reported_effort_vs_old_target": "WITHIN_TARGET",
+        "new_zone_classification_of_past_adherence": "NOT_ALLOWED",
+        "physiological_threshold": "UNASSESSED"
+      },
+      "action_bounds": {
+        "allowed": [
+          "keep original target/method",
+          "review future proposal under new reference if authority valid"
+        ],
+        "blocked": [
+          "retroactively mark old work nonadherent",
+          "label RPE6 physiological threshold"
+        ]
+      },
+      "expected_preserve": [
+        "canonical fact/active revision and original target history",
+        "known dimensional facts and explicit unknowns",
+        "athlete choice; no silent plan mutation"
+      ],
+      "expected_modify": [
+        "only derived fact/interpretation projections when evidence changes"
+      ],
+      "must_not": [
+        "physiological or clinical approval from synthetic data",
+        "universal adherence percentage",
+        "extra credit/progression/debt replacement without separate approved rule",
+        "calibration update rewrites history"
+      ],
+      "agency": "Athlete can inspect/correct association, actuals or target lineage; future mutation requires current scoped act. Correction is not medical clearance.",
+      "re_review_trigger": "New active correction, method/target/configuration/context/authority change or resolved critical unknown",
+      "evidence_refs": [
+        "SEM-N1",
+        "SEM-N2",
+        "SEM-N3",
+        "SEM-N4",
+        "SEM-N5",
+        "SEM-N6"
+      ],
+      "SSCTR_disposition": "PENDING_INDEPENDENT_REVIEW",
+      "fixture_status": "AUTHOR_SUBMISSION_DOCUMENTARY_ORACLE_NOT_RUNTIME_EXECUTED"
+    },
+    {
+      "id": "G03-W13",
+      "title": "Discordant intensity metrics without precedence remain conflict",
+      "synthetic": true,
+      "real_athlete_data": false,
+      "rule_refs": [
+        "G03-R02"
+      ],
+      "input": {
+        "target": "run effort band per explicit method; secondary pace/HR have no approved precedence",
+        "observations": {
+          "reported_interval_effort": "within declared band",
+          "pace": "different from comparable session",
+          "HR": "conflicting direction"
+        },
+        "context_comparability": "not resolved"
+      },
+      "reconciled_fact": {
+        "effort_report": "known reported value",
+        "pace_HR": "separate known/quality-limited measurements",
+        "precedence_rule": null
+      },
+      "interpretation": {
+        "reported_effort_dimension": "may compare narrowly",
+        "combined_intensity_or_readiness": "CONFLICT_UNCLASSIFIED",
+        "cause": "UNKNOWN"
+      },
+      "action_bounds": {
+        "allowed": [
+          "retain each measurement",
+          "ask decision-critical context",
+          "hold dependent interpretation"
+        ],
+        "blocked": [
+          "average HR+pace+RPE",
+          "infer fatigue/illness",
+          "auto-adapt from conflict"
+        ]
+      },
+      "expected_preserve": [
+        "canonical fact/active revision and original target history",
+        "known dimensional facts and explicit unknowns",
+        "athlete choice; no silent plan mutation"
+      ],
+      "expected_modify": [
+        "only derived fact/interpretation projections when evidence changes"
+      ],
+      "must_not": [
+        "physiological or clinical approval from synthetic data",
+        "universal adherence percentage",
+        "extra credit/progression/debt replacement without separate approved rule"
+      ],
+      "agency": "Athlete can inspect/correct association, actuals or target lineage; future mutation requires current scoped act. Correction is not medical clearance.",
+      "re_review_trigger": "New active correction, method/target/configuration/context/authority change or resolved critical unknown",
+      "evidence_refs": [
+        "SEM-N1",
+        "SEM-N2",
+        "SEM-N3",
+        "SEM-N4",
+        "SEM-N5",
+        "SEM-N6"
+      ],
+      "SSCTR_disposition": "PENDING_INDEPENDENT_REVIEW",
+      "fixture_status": "AUTHOR_SUBMISSION_DOCUMENTARY_ORACLE_NOT_RUNTIME_EXECUTED"
+    },
+    {
+      "id": "G03-W14",
+      "title": "Session RPE cannot fill interval RPE",
+      "synthetic": true,
+      "real_athlete_data": false,
+      "rule_refs": [
+        "G03-R02"
+      ],
+      "input": {
+        "target_ref": "SEM-RUN-BASE@r1",
+        "actual": "all durations delivered",
+        "only_effort_observation": {
+          "metric": "session_RPE",
+          "value": 8,
+          "collection": "20min after finish",
+          "scale": "0-10"
+        },
+        "interval_effort": "NOT_COLLECTED"
+      },
+      "reconciled_fact": {
+        "structure": "all segment times known",
+        "interval_effort": "UNKNOWN",
+        "session_RPE": "known different construct"
+      },
+      "interpretation": {
+        "time_dimension": "WITHIN_TARGET",
+        "interval_intensity": "UNCLASSIFIED",
+        "overall_adherence": "UNCLASSIFIED_IF_INTERVAL_EFFORT_CRITICAL"
+      },
+      "action_bounds": {
+        "allowed": [
+          "record completed structure and session perception separately"
+        ],
+        "blocked": [
+          "substitute session8 for interval6",
+          "declare over-threshold work"
+        ]
+      },
+      "expected_preserve": [
+        "canonical fact/active revision and original target history",
+        "known dimensional facts and explicit unknowns",
+        "athlete choice; no silent plan mutation"
+      ],
+      "expected_modify": [
+        "only derived fact/interpretation projections when evidence changes"
+      ],
+      "must_not": [
+        "physiological or clinical approval from synthetic data",
+        "universal adherence percentage",
+        "extra credit/progression/debt replacement without separate approved rule"
+      ],
+      "agency": "Athlete can inspect/correct association, actuals or target lineage; future mutation requires current scoped act. Correction is not medical clearance.",
+      "re_review_trigger": "New active correction, method/target/configuration/context/authority change or resolved critical unknown",
+      "evidence_refs": [
+        "SEM-N1",
+        "SEM-N2",
+        "SEM-N3",
+        "SEM-N4",
+        "SEM-N5",
+        "SEM-N6"
+      ],
+      "SSCTR_disposition": "PENDING_INDEPENDENT_REVIEW",
+      "fixture_status": "AUTHOR_SUBMISSION_DOCUMENTARY_ORACLE_NOT_RUNTIME_EXECUTED"
+    },
+    {
+      "id": "G03-W15",
+      "title": "Above target duration is a fact, not extra merit",
+      "synthetic": true,
+      "real_athlete_data": false,
+      "rule_refs": [
+        "G03-R01",
+        "G03-R07"
+      ],
+      "input": {
+        "target_ref": "SEM-RUN-BASE@r1",
+        "actual": {
+          "warmup_s": 600,
+          "work_s": [
+            420,
+            420,
+            420
+          ],
+          "between_recovery_s": [
+            120,
+            120
+          ],
+          "cooldown_s": 300,
+          "reported_work_effort": [
+            6,
+            6,
+            6
+          ]
+        },
+        "work_duration_target_s_each": 360
+      },
+      "reconciled_fact": {
+        "canonical_fact": "sem-run-h@r1",
+        "known_total_s": 2400,
+        "known_work_s": 1260,
+        "planned_work_s": 1080,
+        "work_delta_s": 180
+      },
+      "interpretation": {
+        "work_duration": "ABOVE_BY180s",
+        "effort_report": "WITHIN_TARGET_ON_SAME_DECLARED_SCALE",
+        "physiological_materiality": "SEPARATE_G02_REVIEW",
+        "adherence": "NO_EXTRA_CREDIT"
+      },
+      "action_bounds": {
+        "allowed": [
+          "record actual dose once",
+          "learn-only if current plan remains adequate under valid G02 rule",
+          "review horizon if material fact establishes necessity"
+        ],
+        "blocked": [
+          "automatic progression/reduction",
+          "infer cause or recovery cost from180s alone"
+        ]
+      },
+      "expected_preserve": [
+        "canonical fact/active revision and original target history",
+        "known dimensional facts and explicit unknowns",
+        "athlete choice; no silent plan mutation"
+      ],
+      "expected_modify": [
+        "only derived fact/interpretation projections when evidence changes"
+      ],
+      "must_not": [
+        "physiological or clinical approval from synthetic data",
+        "universal adherence percentage",
+        "extra credit/progression/debt replacement without separate approved rule"
+      ],
+      "agency": "Athlete can inspect/correct association, actuals or target lineage; future mutation requires current scoped act. Correction is not medical clearance.",
+      "re_review_trigger": "New active correction, method/target/configuration/context/authority change or resolved critical unknown",
+      "evidence_refs": [
+        "SEM-N1",
+        "SEM-N2",
+        "SEM-N3",
+        "SEM-N4",
+        "SEM-N5",
+        "SEM-N6"
+      ],
+      "SSCTR_disposition": "PENDING_INDEPENDENT_REVIEW",
+      "fixture_status": "AUTHOR_SUBMISSION_DOCUMENTARY_ORACLE_NOT_RUNTIME_EXECUTED"
+    },
+    {
+      "id": "G03-W16",
+      "title": "Executed prefix retains r1; accepted remainder uses r2",
+      "synthetic": true,
+      "real_athlete_data": false,
+      "rule_refs": [
+        "G03-R01",
+        "G03-R03"
+      ],
+      "input": {
+        "session_started_at": "2026-10-21T18:00:00-03:00",
+        "set1": "5reps60kg under r1 completed18:10",
+        "new_fact_at": "18:12 equipment constraint",
+        "accepted_remainder_at": "18:15 synthetic confirmation of r2 sets2/3 at50kg",
+        "actual_sets2_3": "5reps50kg each"
+      },
+      "reconciled_fact": {
+        "canonical_fact": "sem-st-i@r1",
+        "executed_target_map": [
+          {
+            "segments": [
+              "s1"
+            ],
+            "target": "SEM-ST-BASE@r1"
+          },
+          {
+            "segments": [
+              "s2",
+              "s3"
+            ],
+            "target": "SEM-ST-REMAINDER@r2"
+          }
+        ],
+        "known_reps": 15
+      },
+      "interpretation": {
+        "s1_load": "WITHIN_R1",
+        "s2_s3_load": "WITHIN_R2",
+        "historical_target_rewrite": "FORBIDDEN",
+        "stimulus_sufficiency": "SEPARATE_S29_G02_GATE"
+      },
+      "action_bounds": {
+        "allowed": [
+          "compare each segment to actual target",
+          "preserve reason/acceptance boundary"
+        ],
+        "blocked": [
+          "compare s1 against50kg",
+          "claim original3x5at60kg conquered",
+          "approve adaptation merely because lineage is valid"
+        ]
+      },
+      "expected_preserve": [
+        "canonical fact/active revision and original target history",
+        "known dimensional facts and explicit unknowns",
+        "athlete choice; no silent plan mutation"
+      ],
+      "expected_modify": [
+        "only derived fact/interpretation projections when evidence changes"
+      ],
+      "must_not": [
+        "physiological or clinical approval from synthetic data",
+        "universal adherence percentage",
+        "extra credit/progression/debt replacement without separate approved rule"
+      ],
+      "agency": "Athlete can inspect/correct association, actuals or target lineage; future mutation requires current scoped act. Correction is not medical clearance.",
+      "re_review_trigger": "New active correction, method/target/configuration/context/authority change or resolved critical unknown",
+      "evidence_refs": [
+        "SEM-N1",
+        "SEM-N2",
+        "SEM-N3",
+        "SEM-N4",
+        "SEM-N5",
+        "SEM-N6"
+      ],
+      "SSCTR_disposition": "PENDING_INDEPENDENT_REVIEW",
+      "fixture_status": "AUTHOR_SUBMISSION_DOCUMENTARY_ORACLE_NOT_RUNTIME_EXECUTED"
+    },
+    {
+      "id": "G03-W17",
+      "title": "Observed prefix and future remainder have separate scopes",
+      "synthetic": true,
+      "real_athlete_data": false,
+      "rule_refs": [
+        "G03-R03",
+        "G03-R08"
+      ],
+      "input": {
+        "run_target": "5000m",
+        "session_in_progress": true,
+        "observed_so_far_m": 3000,
+        "future_remaining_target_m": 2000,
+        "future_remainder_validity": "fixture-assumed semantic projection only, no sporting approval"
+      },
+      "reconciled_fact": {
+        "observed_past_m": 3000,
+        "projected_future_m": 2000,
+        "planned_full5000m": "not additional observed contribution"
+      },
+      "interpretation": {
+        "observed_exposure": "3000m known once",
+        "full_execution": "not yet known",
+        "adherence": "not complete merely from projection"
+      },
+      "action_bounds": {
+        "allowed": [
+          "show past observed and remaining planned separately"
+        ],
+        "blocked": [
+          "record8000m",
+          "record5000m as already done",
+          "mark unobserved remaining as failed"
+        ]
+      },
+      "expected_preserve": [
+        "canonical fact/active revision and original target history",
+        "known dimensional facts and explicit unknowns",
+        "athlete choice; no silent plan mutation"
+      ],
+      "expected_modify": [
+        "only derived fact/interpretation projections when evidence changes"
+      ],
+      "must_not": [
+        "physiological or clinical approval from synthetic data",
+        "universal adherence percentage",
+        "extra credit/progression/debt replacement without separate approved rule"
+      ],
+      "agency": "Athlete can inspect/correct association, actuals or target lineage; future mutation requires current scoped act. Correction is not medical clearance.",
+      "re_review_trigger": "New active correction, method/target/configuration/context/authority change or resolved critical unknown",
+      "evidence_refs": [
+        "SEM-N1",
+        "SEM-N2",
+        "SEM-N3",
+        "SEM-N4",
+        "SEM-N5",
+        "SEM-N6"
+      ],
+      "SSCTR_disposition": "PENDING_INDEPENDENT_REVIEW",
+      "fixture_status": "AUTHOR_SUBMISSION_DOCUMENTARY_ORACLE_NOT_RUNTIME_EXECUTED"
+    },
+    {
+      "id": "G03-W18",
+      "title": "Local/systemic interpretations do not add another exposure",
+      "synthetic": true,
+      "real_athlete_data": false,
+      "rule_refs": [
+        "G03-R08"
+      ],
+      "input": {
+        "canonical_execution": "sem-st-a@r1",
+        "known_work_sets": 3,
+        "muscle_projection_refs": [
+          "synthetic:quadriceps",
+          "synthetic:gluteal"
+        ],
+        "recovery_model_ref": "derived from same three sets",
+        "interaction_ref": "same strength fact linked to next run"
+      },
+      "reconciled_fact": {
+        "unique_strength_work_sets": 3,
+        "canonical_exposure_ref": "sem-st-a@r1/work",
+        "derived_refs": "point back to canonical exposure, not new sessions"
+      },
+      "interpretation": {
+        "local_attribution": "method-dependent projection",
+        "systemic_exposure": "no duplicate sessions/sets",
+        "interference": "relationship, not extra workout"
+      },
+      "action_bounds": {
+        "allowed": [
+          "retain distinct interpretive dimensions with provenance"
+        ],
+        "blocked": [
+          "sum3+3muscle+3systemic sets",
+          "add invented interference penalty as physical exposure"
+        ]
+      },
+      "expected_preserve": [
+        "canonical fact/active revision and original target history",
+        "known dimensional facts and explicit unknowns",
+        "athlete choice; no silent plan mutation"
+      ],
+      "expected_modify": [
+        "only derived fact/interpretation projections when evidence changes"
+      ],
+      "must_not": [
+        "physiological or clinical approval from synthetic data",
+        "universal adherence percentage",
+        "extra credit/progression/debt replacement without separate approved rule"
+      ],
+      "agency": "Athlete can inspect/correct association, actuals or target lineage; future mutation requires current scoped act. Correction is not medical clearance.",
+      "re_review_trigger": "New active correction, method/target/configuration/context/authority change or resolved critical unknown",
+      "evidence_refs": [
+        "SEM-N1",
+        "SEM-N2",
+        "SEM-N3",
+        "SEM-N4",
+        "SEM-N5",
+        "SEM-N6"
+      ],
+      "SSCTR_disposition": "PENDING_INDEPENDENT_REVIEW",
+      "fixture_status": "AUTHOR_SUBMISSION_DOCUMENTARY_ORACLE_NOT_RUNTIME_EXECUTED"
+    },
+    {
+      "id": "G03-W19",
+      "title": "Opaque newer source conflicts; suppression still wins replay",
+      "synthetic": true,
+      "real_athlete_data": false,
+      "rule_refs": [
+        "G03-R04",
+        "G03-R05"
+      ],
+      "input": {
+        "fact": "sem-run-j",
+        "source_A": "duration1800s",
+        "source_B": "duration2100s, later received, opaque revision lineage",
+        "critical_identity": "association confirmed but correction precedence unresolved",
+        "second_branch": "same fact lawfully suppressed then provider retries"
+      },
+      "reconciled_fact": {
+        "primary_branch": "CONFLICT_DURATION; no authoritative active corrected value chosen",
+        "suppression_branch": "NOT_REACTIVATED; follow existing lawful precedence controls without new retention policy"
+      },
+      "interpretation": {
+        "duration_comparison": "UNCLASSIFIED_PENDING_RECONCILIATION",
+        "suppressed_fact_use": "FORBIDDEN",
+        "source_richness": "does not confer precedence"
+      },
+      "action_bounds": {
+        "allowed": [
+          "ask source/correction context",
+          "preserve unknown only to permitted scope",
+          "honour existing suppression guard"
+        ],
+        "blocked": [
+          "average1950s",
+          "choose latest receipt",
+          "reactivate suppressed data through new transform"
+        ]
+      },
+      "expected_preserve": [
+        "canonical fact/active revision and original target history",
+        "known dimensional facts and explicit unknowns",
+        "athlete choice; no silent plan mutation"
+      ],
+      "expected_modify": [
+        "only derived fact/interpretation projections when evidence changes"
+      ],
+      "must_not": [
+        "physiological or clinical approval from synthetic data",
+        "universal adherence percentage",
+        "extra credit/progression/debt replacement without separate approved rule",
+        "invent retention period or lawful marker authority"
+      ],
+      "agency": "Athlete can inspect/correct association, actuals or target lineage; future mutation requires current scoped act. Correction is not medical clearance.",
+      "re_review_trigger": "New active correction, method/target/configuration/context/authority change or resolved critical unknown",
+      "evidence_refs": [
+        "SEM-N1",
+        "SEM-N2",
+        "SEM-N3",
+        "SEM-N4",
+        "SEM-N5",
+        "SEM-N6"
+      ],
+      "SSCTR_disposition": "PENDING_INDEPENDENT_REVIEW",
+      "fixture_status": "AUTHOR_SUBMISSION_DOCUMENTARY_ORACLE_NOT_RUNTIME_EXECUTED"
+    },
+    {
+      "id": "G04-W01",
+      "title": "Nine-day explicitly nonclinical travel pause: candidate for recipe review",
+      "synthetic": true,
+      "real_athlete_data": false,
+      "rule_refs": [
+        "G04-NC-01",
+        "G04-NC-06"
+      ],
+      "input": {
+        "athlete_ref": "SEM-ATH-01",
+        "interruption": {
+          "start": "2026-10-10",
+          "end": "2026-10-18",
+          "elapsed_days_fixture": 9,
+          "reason": "declared business travel, no supplied clinical dependency",
+          "activity": "two20min walks declared; no run/strength performed"
+        },
+        "current_context": "explicit nonclinical context/restriction information supplied in fixture; configuration competence unchanged; no clinical clearance asserted",
+        "former_targets": [
+          "SEM-ST-BASE@r1",
+          "SEM-RUN-BASE@r1"
+        ],
+        "re_entry_recipe_ref": null
+      },
+      "reconciled_fact": {
+        "continuity": "RETURNING",
+        "pause_reason": "DECLARED_NONCLINICAL",
+        "former_targets": "historical comparison only",
+        "missed_work_debt": false
+      },
+      "interpretation": {
+        "boundary": "eligible for bounded nonclinical policy review only",
+        "return_dose": "HOLD_RECIPE_UNTIL_APPROVED",
+        "readiness_or_detraining": "NOT_INFERRED_FROM9DAYS"
+      },
+      "action_bounds": {
+        "allowed": [
+          "review concrete covered re-entry candidate when supplied",
+          "ask only decision-critical current details"
+        ],
+        "blocked": [
+          "repeat previous loads/pace automatically",
+          "prescribe generic gradual return",
+          "claim safe from9days"
+        ]
+      },
+      "expected_preserve": [
+        "canonical fact/active revision and original target history",
+        "known dimensional facts and explicit unknowns",
+        "athlete choice; no silent plan mutation",
+        "actual travel exposure separately from missed planned work"
+      ],
+      "expected_modify": [
+        "continuity/context projection only; no plan delta approved"
+      ],
+      "must_not": [
+        "physiological or clinical approval from synthetic data",
+        "universal adherence percentage",
+        "extra credit/progression/debt replacement without separate approved rule"
+      ],
+      "agency": "Athlete can inspect/correct association, actuals or target lineage; future mutation requires current scoped act. Correction is not medical clearance.",
+      "re_review_trigger": "New active correction, method/target/configuration/context/authority change or resolved critical unknown",
+      "evidence_refs": [
+        "SEM-N1",
+        "SEM-N2",
+        "SEM-N3",
+        "SEM-N4",
+        "SEM-N5",
+        "SEM-N6"
+      ],
+      "SSCTR_disposition": "PENDING_INDEPENDENT_REVIEW",
+      "fixture_status": "AUTHOR_SUBMISSION_DOCUMENTARY_ORACLE_NOT_RUNTIME_EXECUTED"
+    },
+    {
+      "id": "G04-W02",
+      "title": "Twenty-eight-day agenda pause with changed weekly capacity",
+      "synthetic": true,
+      "real_athlete_data": false,
+      "rule_refs": [
+        "G04-NC-01",
+        "G04-NC-07"
+      ],
+      "input": {
+        "athlete_ref": "SEM-ATH-01",
+        "interruption": {
+          "elapsed_days_fixture": 28,
+          "reason": "declared work schedule, no supplied clinical dependency",
+          "actual_training": "none declared"
+        },
+        "old_week": "Mon strength,Tue run,Wed easy,Thu upper,Sat easy",
+        "new_availability": "Tue40min andSat45min only; other days unavailable",
+        "goal": "general strength and recreational running remain copriorities",
+        "current_eligibility": "fixture explicit current nonclinical information",
+        "re_entry_recipe_ref": null
+      },
+      "reconciled_fact": {
+        "continuity": "RETURNING",
+        "material_logistical_fact": "old five-slot week cannot fit two supplied slots",
+        "duration_effect_on_capacity": "UNKNOWN"
+      },
+      "interpretation": {
+        "need_to_review_horizon": "SUPPORTED_LOGISTICALLY",
+        "partial_replan": "CANDIDATE_ONLY",
+        "dose_and_sporting_sufficiency": "SEPARATE_G02_APPROVED_RECIPE_REQUIRED"
+      },
+      "action_bounds": {
+        "allowed": [
+          "review integrated partial replan candidate",
+          "compare KEEP/micro/dose/move/substitute against both essential intents under approved recipe",
+          "ASK if balanced tradeoff unresolved"
+        ],
+        "blocked": [
+          "compress lost4weeks",
+          "declare28day dose cutoff",
+          "silently sacrifice running or strength"
+        ]
+      },
+      "expected_preserve": [
+        "canonical fact/active revision and original target history",
+        "known dimensional facts and explicit unknowns",
+        "athlete choice; no silent plan mutation"
+      ],
+      "expected_modify": [
+        "future plan only after concrete approved candidate/current acceptance; old records untouched"
+      ],
+      "must_not": [
+        "physiological or clinical approval from synthetic data",
+        "universal adherence percentage",
+        "extra credit/progression/debt replacement without separate approved rule"
+      ],
+      "agency": "Athlete can inspect/correct association, actuals or target lineage; future mutation requires current scoped act. Correction is not medical clearance.",
+      "re_review_trigger": "New active correction, method/target/configuration/context/authority change or resolved critical unknown",
+      "evidence_refs": [
+        "SEM-N1",
+        "SEM-N2",
+        "SEM-N3",
+        "SEM-N4",
+        "SEM-N5",
+        "SEM-N6"
+      ],
+      "SSCTR_disposition": "PENDING_INDEPENDENT_REVIEW",
+      "fixture_status": "AUTHOR_SUBMISSION_DOCUMENTARY_ORACLE_NOT_RUNTIME_EXECUTED"
+    },
+    {
+      "id": "G04-W03",
+      "title": "Missing current eligibility is ASK, not disease",
+      "synthetic": true,
+      "real_athlete_data": false,
+      "rule_refs": [
+        "G04-NC-02"
+      ],
+      "input": {
+        "pause_reason": "declared agenda",
+        "current_symptom_restriction_history": "NOT_COLLECTED",
+        "clinical_concern_supplied": false
+      },
+      "reconciled_fact": {
+        "eligibility": "ELIGIBILITY_UNASSESSED",
+        "disease": "NOT_INFERRED"
+      },
+      "interpretation": {
+        "route": "ASK",
+        "dependent_prescription": "HOLD",
+        "clinical_referral_from_missingness_alone": "NOT_REQUIRED_BY_THIS_RULE"
+      },
+      "action_bounds": {
+        "allowed": [
+          "ask current decision-critical eligibility information",
+          "continue independent logging/context clarification"
+        ],
+        "blocked": [
+          "assume normal",
+          "assume disease",
+          "issue fallback dose"
+        ]
+      },
+      "expected_preserve": [
+        "canonical fact/active revision and original target history",
+        "known dimensional facts and explicit unknowns",
+        "athlete choice; no silent plan mutation"
+      ],
+      "expected_modify": [
+        "only derived fact/interpretation projections when evidence changes"
+      ],
+      "must_not": [
+        "physiological or clinical approval from synthetic data",
+        "universal adherence percentage",
+        "extra credit/progression/debt replacement without separate approved rule"
+      ],
+      "agency": "Athlete can inspect/correct association, actuals or target lineage; future mutation requires current scoped act. Correction is not medical clearance.",
+      "re_review_trigger": "New active correction, method/target/configuration/context/authority change or resolved critical unknown",
+      "evidence_refs": [
+        "SEM-N1",
+        "SEM-N2",
+        "SEM-N3",
+        "SEM-N4",
+        "SEM-N5",
+        "SEM-N6"
+      ],
+      "SSCTR_disposition": "PENDING_INDEPENDENT_REVIEW",
+      "fixture_status": "AUTHOR_SUBMISSION_DOCUMENTARY_ORACLE_NOT_RUNTIME_EXECUTED"
+    },
+    {
+      "id": "G04-W04",
+      "title": "Silent sync gap cannot establish nonclinical interruption",
+      "synthetic": true,
+      "real_athlete_data": false,
+      "rule_refs": [
+        "G04-NC-03"
+      ],
+      "input": {
+        "provider_sync_gap_days_fixture": 14,
+        "athlete_declared_pause": false,
+        "reason": null,
+        "actual_exposure": null
+      },
+      "reconciled_fact": {
+        "continuity": "NO_DATA, not confirmed interruption",
+        "training_status": "UNKNOWN"
+      },
+      "interpretation": {
+        "route": "ASK reason/actual exposure if needed",
+        "return_category": "UNCLASSIFIED"
+      },
+      "action_bounds": {
+        "allowed": [
+          "clarify whether training occurred and whether any interruption was nonclinical"
+        ],
+        "blocked": [
+          "assume detraining",
+          "debt replacement",
+          "clinical referral from sync absence"
+        ]
+      },
+      "expected_preserve": [
+        "canonical fact/active revision and original target history",
+        "known dimensional facts and explicit unknowns",
+        "athlete choice; no silent plan mutation"
+      ],
+      "expected_modify": [
+        "only derived fact/interpretation projections when evidence changes"
+      ],
+      "must_not": [
+        "physiological or clinical approval from synthetic data",
+        "universal adherence percentage",
+        "extra credit/progression/debt replacement without separate approved rule"
+      ],
+      "agency": "Athlete can inspect/correct association, actuals or target lineage; future mutation requires current scoped act. Correction is not medical clearance.",
+      "re_review_trigger": "New active correction, method/target/configuration/context/authority change or resolved critical unknown",
+      "evidence_refs": [
+        "SEM-N1",
+        "SEM-N2",
+        "SEM-N3",
+        "SEM-N4",
+        "SEM-N5",
+        "SEM-N6"
+      ],
+      "SSCTR_disposition": "PENDING_INDEPENDENT_REVIEW",
+      "fixture_status": "AUTHOR_SUBMISSION_DOCUMENTARY_ORACLE_NOT_RUNTIME_EXECUTED"
+    },
+    {
+      "id": "G04-W05",
+      "title": "Relevant new context invalidates prior eligibility assumption",
+      "synthetic": true,
+      "real_athlete_data": false,
+      "rule_refs": [
+        "G04-NC-02"
+      ],
+      "input": {
+        "old_eligibility_information": "before travel",
+        "known_new_fact": "athlete says situation changed but restriction information not provided",
+        "new_clinical_fact_supplied": false
+      },
+      "reconciled_fact": {
+        "current_eligibility": "UNKNOWN_AFTER_RELEVANT_CHANGE",
+        "old_record": "historical only"
+      },
+      "interpretation": {
+        "route": "ASK / ELIGIBILITY_UNASSESSED",
+        "prescription_scope": "HOLD_DEPENDENT_ONLY"
+      },
+      "action_bounds": {
+        "allowed": [
+          "obtain current missing information",
+          "preserve historical statement"
+        ],
+        "blocked": [
+          "invent medical time-to-expiry",
+          "clear by old answer or favourable HRV"
+        ]
+      },
+      "expected_preserve": [
+        "canonical fact/active revision and original target history",
+        "known dimensional facts and explicit unknowns",
+        "athlete choice; no silent plan mutation"
+      ],
+      "expected_modify": [
+        "only derived fact/interpretation projections when evidence changes"
+      ],
+      "must_not": [
+        "physiological or clinical approval from synthetic data",
+        "universal adherence percentage",
+        "extra credit/progression/debt replacement without separate approved rule"
+      ],
+      "agency": "Athlete can inspect/correct association, actuals or target lineage; future mutation requires current scoped act. Correction is not medical clearance.",
+      "re_review_trigger": "New active correction, method/target/configuration/context/authority change or resolved critical unknown",
+      "evidence_refs": [
+        "SEM-N1",
+        "SEM-N2",
+        "SEM-N3",
+        "SEM-N4",
+        "SEM-N5",
+        "SEM-N6"
+      ],
+      "SSCTR_disposition": "PENDING_INDEPENDENT_REVIEW",
+      "fixture_status": "AUTHOR_SUBMISSION_DOCUMENTARY_ORACLE_NOT_RUNTIME_EXECUTED"
+    },
+    {
+      "id": "G04-W06",
+      "title": "Known eligibility but absent/revoked re-entry authority",
+      "synthetic": true,
+      "real_athlete_data": false,
+      "rule_refs": [
+        "G04-NC-06"
+      ],
+      "input": {
+        "current_nonclinical_context": "explicit synthetic facts supplied",
+        "goal_configuration": "known",
+        "recipe": "candidate only or prior approval revoked",
+        "no_valid_equivalent_recipe": true
+      },
+      "reconciled_fact": {
+        "eligibility_information": "present within fixture",
+        "recipe_authority": "ABSENT_OR_REVOKED"
+      },
+      "interpretation": {
+        "route": "HOLD_DEPENDENT_RECIPE",
+        "whole_person_out_of_scope": "NOT_INFERRED"
+      },
+      "action_bounds": {
+        "allowed": [
+          "request covered recipe review or genuinely approved alternative"
+        ],
+        "blocked": [
+          "assume low dose safe",
+          "treat foundation candidate as Truth",
+          "reinstate revoked approval"
+        ]
+      },
+      "expected_preserve": [
+        "canonical fact/active revision and original target history",
+        "known dimensional facts and explicit unknowns",
+        "athlete choice; no silent plan mutation"
+      ],
+      "expected_modify": [
+        "only derived fact/interpretation projections when evidence changes"
+      ],
+      "must_not": [
+        "physiological or clinical approval from synthetic data",
+        "universal adherence percentage",
+        "extra credit/progression/debt replacement without separate approved rule"
+      ],
+      "agency": "Athlete can inspect/correct association, actuals or target lineage; future mutation requires current scoped act. Correction is not medical clearance.",
+      "re_review_trigger": "New active correction, method/target/configuration/context/authority change or resolved critical unknown",
+      "evidence_refs": [
+        "SEM-N1",
+        "SEM-N2",
+        "SEM-N3",
+        "SEM-N4",
+        "SEM-N5",
+        "SEM-N6"
+      ],
+      "SSCTR_disposition": "PENDING_INDEPENDENT_REVIEW",
+      "fixture_status": "AUTHOR_SUBMISSION_DOCUMENTARY_ORACLE_NOT_RUNTIME_EXECUTED"
+    },
+    {
+      "id": "G04-W07",
+      "title": "Isolated optional nonclinical fatigue signal with otherwise adequate evidence",
+      "synthetic": true,
+      "real_athlete_data": false,
+      "rule_refs": [
+        "G04-NC-04"
+      ],
+      "input": {
+        "clinical_dependency_supplied": false,
+        "optional_report": "one poor sleep report",
+        "other_facts": "comparable performance/context currently adequate per an independently approved G02 rule, authority assumed only inside this test",
+        "current_plan_validity": "all required nonclinical checks satisfied in synthetic precondition"
+      },
+      "reconciled_fact": {
+        "sleep_report": "one known perception, no causal diagnosis",
+        "adequacy": "per referenced valid G02 rule precondition, not from absence of concern"
+      },
+      "interpretation": {
+        "route": "LEARN_ONLY / KEEP_IF_G02_PRECONDITION_HOLDS",
+        "weak_signal": "does not create necessity alone"
+      },
+      "action_bounds": {
+        "allowed": [
+          "preserve adequate current plan",
+          "record report and recheck if relevant new facts emerge"
+        ],
+        "blocked": [
+          "automatic deload",
+          "claim no fatigue/illness",
+          "use this witness to approve absent G02 policy"
+        ]
+      },
+      "expected_preserve": [
+        "canonical fact/active revision and original target history",
+        "known dimensional facts and explicit unknowns",
+        "athlete choice; no silent plan mutation",
+        "optional missing sensor data does not create compulsory wearable collection"
+      ],
+      "expected_modify": [
+        "only derived fact/interpretation projections when evidence changes"
+      ],
+      "must_not": [
+        "physiological or clinical approval from synthetic data",
+        "universal adherence percentage",
+        "extra credit/progression/debt replacement without separate approved rule"
+      ],
+      "agency": "Athlete can inspect/correct association, actuals or target lineage; future mutation requires current scoped act. Correction is not medical clearance.",
+      "re_review_trigger": "New active correction, method/target/configuration/context/authority change or resolved critical unknown",
+      "evidence_refs": [
+        "SEM-N1",
+        "SEM-N2",
+        "SEM-N3",
+        "SEM-N4",
+        "SEM-N5",
+        "SEM-N6"
+      ],
+      "SSCTR_disposition": "PENDING_INDEPENDENT_REVIEW",
+      "fixture_status": "AUTHOR_SUBMISSION_DOCUMENTARY_ORACLE_NOT_RUNTIME_EXECUTED"
+    },
+    {
+      "id": "G04-W08",
+      "title": "Converging comparable nonclinical signals route to G02, no invented dose",
+      "synthetic": true,
+      "real_athlete_data": false,
+      "rule_refs": [
+        "G04-NC-04"
+      ],
+      "input": {
+        "clinical_dependency_supplied": false,
+        "observations": "fresh self-reported recovery difficulty plus repeat comparable task underperformance; detailed cause not asserted",
+        "comparability": "reconciled same task/configuration/method/context per reviewed comparator",
+        "current_plan": "adequacy now requires review",
+        "dose_policy_ref": null
+      },
+      "reconciled_fact": {
+        "signals": "distinct comparable facts with provenance, not independent votes about same event",
+        "clinical_cause": "UNKNOWN_NOT_DIAGNOSED"
+      },
+      "interpretation": {
+        "route": "G02_ADEQUACY_NECESSITY_REVIEW",
+        "specific_reduction_or_spacing": "NOT_APPROVED_HERE"
+      },
+      "action_bounds": {
+        "allowed": [
+          "assess KEEP and smallest valid intervention under G02 when recipe exists",
+          "ASK/HOLD dependent choice if policy missing"
+        ],
+        "blocked": [
+          "universal fatigue score",
+          "fixed deload percentage",
+          "claim safe re-entry or diagnose cause"
+        ]
+      },
+      "expected_preserve": [
+        "canonical fact/active revision and original target history",
+        "known dimensional facts and explicit unknowns",
+        "athlete choice; no silent plan mutation"
+      ],
+      "expected_modify": [
+        "only derived fact/interpretation projections when evidence changes"
+      ],
+      "must_not": [
+        "physiological or clinical approval from synthetic data",
+        "universal adherence percentage",
+        "extra credit/progression/debt replacement without separate approved rule"
+      ],
+      "agency": "Athlete can inspect/correct association, actuals or target lineage; future mutation requires current scoped act. Correction is not medical clearance.",
+      "re_review_trigger": "New active correction, method/target/configuration/context/authority change or resolved critical unknown",
+      "evidence_refs": [
+        "SEM-N1",
+        "SEM-N2",
+        "SEM-N3",
+        "SEM-N4",
+        "SEM-N5",
+        "SEM-N6"
+      ],
+      "SSCTR_disposition": "PENDING_INDEPENDENT_REVIEW",
+      "fixture_status": "AUTHOR_SUBMISSION_DOCUMENTARY_ORACLE_NOT_RUNTIME_EXECUTED"
+    },
+    {
+      "id": "G04-W09",
+      "title": "Persistent pain/injury branch remains human clinical",
+      "synthetic": true,
+      "real_athlete_data": false,
+      "rule_refs": [
+        "G04-NC-05"
+      ],
+      "input": {
+        "athlete_report": "persistent knee pain with functional limitation after interruption",
+        "clinical_assessment_available": false,
+        "goal_priority": "RUN_FIRST"
+      },
+      "reconciled_fact": {
+        "authority_boundary": "CLINICAL_DEPENDENCY_SUPPLIED",
+        "diagnosis": "NOT_ASSESSED"
+      },
+      "interpretation": {
+        "route": "OUT_OF_SCOPE_CLINICAL / CLINICAL_HUMAN_REQUIRED",
+        "dependent_training_dose": "NONE_FROM_AGENT"
+      },
+      "action_bounds": {
+        "allowed": [
+          "retain affected prescriptive judgment",
+          "route to competent clinical human",
+          "preserve private minimum context and owner/exit requirement"
+        ],
+        "blocked": [
+          "diagnose injury",
+          "suggest reduced run/rehab as replacement",
+          "clear due run priority/acceptance/funding"
+        ]
+      },
+      "expected_preserve": [
+        "canonical fact/active revision and original target history",
+        "known dimensional facts and explicit unknowns",
+        "athlete choice; no silent plan mutation"
+      ],
+      "expected_modify": [
+        "dependent hold/route only; no therapeutic prescription"
+      ],
+      "must_not": [
+        "physiological or clinical approval from synthetic data",
+        "universal adherence percentage",
+        "extra credit/progression/debt replacement without separate approved rule",
+        "wait for funded-human revalidation before necessary clinical route"
+      ],
+      "agency": "Athlete can inspect/correct association, actuals or target lineage; future mutation requires current scoped act. Correction is not medical clearance.",
+      "re_review_trigger": "New active correction, method/target/configuration/context/authority change or resolved critical unknown",
+      "evidence_refs": [
+        "SEM-N1",
+        "SEM-N2",
+        "SEM-N3",
+        "SEM-N4",
+        "SEM-N5",
+        "SEM-N6"
+      ],
+      "SSCTR_disposition": "PENDING_INDEPENDENT_REVIEW",
+      "fixture_status": "AUTHOR_SUBMISSION_DOCUMENTARY_ORACLE_NOT_RUNTIME_EXECUTED"
+    },
+    {
+      "id": "G04-W10",
+      "title": "Illness/clearance after session start: retain prefix, clinical hold on dependent remainder",
+      "synthetic": true,
+      "real_athlete_data": false,
+      "rule_refs": [
+        "G04-NC-05",
+        "G04-NC-08"
+      ],
+      "input": {
+        "session": "SEM-ST-BASE@r1 started; s1 completed",
+        "new_post_start_fact": "athlete discloses current illness and asks whether cleared to continue",
+        "remaining": "s2/s3 not executed",
+        "device_score": "favourable"
+      },
+      "reconciled_fact": {
+        "completed_prefix": "s1 under r1 retained as observed",
+        "clinical_dependency": "present",
+        "remaining_work": "not reclassified as completed"
+      },
+      "interpretation": {
+        "route": "OUT_OF_SCOPE_CLINICAL / CLINICAL_HUMAN_REQUIRED",
+        "clearance": "NOT_PROVIDED",
+        "dose_for_remainder": "NONE_FROM_AGENT"
+      },
+      "action_bounds": {
+        "allowed": [
+          "retain executed prefix and current facts",
+          "hold dependent prescriptive judgment and route to competent human"
+        ],
+        "blocked": [
+          "favourable score clears",
+          "rewrite completed s1",
+          "recommend modified rehab/recovery dose",
+          "use consent to override clinical boundary"
+        ]
+      },
+      "expected_preserve": [
+        "canonical fact/active revision and original target history",
+        "known dimensional facts and explicit unknowns",
+        "athlete choice; no silent plan mutation"
+      ],
+      "expected_modify": [
+        "scope/route for dependent remainder only; no completed-work rewrite"
+      ],
+      "must_not": [
+        "physiological or clinical approval from synthetic data",
+        "universal adherence percentage",
+        "extra credit/progression/debt replacement without separate approved rule"
+      ],
+      "agency": "Athlete can inspect/correct association, actuals or target lineage; future mutation requires current scoped act. Correction is not medical clearance.",
+      "re_review_trigger": "New active correction, method/target/configuration/context/authority change or resolved critical unknown",
+      "evidence_refs": [
+        "SEM-N1",
+        "SEM-N2",
+        "SEM-N3",
+        "SEM-N4",
+        "SEM-N5",
+        "SEM-N6"
+      ],
+      "SSCTR_disposition": "PENDING_INDEPENDENT_REVIEW",
+      "fixture_status": "AUTHOR_SUBMISSION_DOCUMENTARY_ORACLE_NOT_RUNTIME_EXECUTED"
+    }
+  ],
+  "counts": {
+    "G03": 19,
+    "G04": 10,
+    "total": 29
+  },
+  "approval": "No self-issued gate; independent SSCTR/source/governance review and publication remain separate."
+}

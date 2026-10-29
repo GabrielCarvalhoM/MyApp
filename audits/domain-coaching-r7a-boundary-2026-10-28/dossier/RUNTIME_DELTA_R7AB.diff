@@ -1,0 +1,500 @@
+diff --git a/audits/domain-coaching-r7a-boundary-2026-10-28/final-freeze-source/CoachingCore/src/r6-adaptation.mjs b/CoachingCore/src/r6-adaptation.mjs
+index 64410d3..90b0c54 100644
+--- a/audits/domain-coaching-r7a-boundary-2026-10-28/final-freeze-source/CoachingCore/src/r6-adaptation.mjs
++++ b/CoachingCore/src/r6-adaptation.mjs
+@@ -1,6 +1,6 @@
+ import {clone,freeze,hash} from './value.mjs';
+ import {r6Authority,allows} from './r6-authority.mjs';
+-import {validProgram,programHash,skeletonOf,advanceRun,advanceStrength,strengthAtBreak,loggedLoadDecision,adoptionBasis,dayPhaseOf,startStrengthReturn,eventCompletionItem,validateWeeks,peakOf,contextOf,arrangementCandidates,arrangementDisclosures,strengthTemplates,planPhases,buildGoalModel,blocksFrom,goalDose,runTarget,runMinutesOf,EVENT_PHASES,DEVELOPMENT,BLOCK_INTENT} from './r6-program.mjs';
++import {validProgram,programHash,skeletonOf,advanceRun,advanceStrength,strengthAtBreak,loggedLoadDecision,adoptionBasis,dayPhaseOf,startStrengthReturn,eventCompletionItem,validateWeeks,peakOf,contextOf,arrangementCandidates,arrangementDisclosures,strengthTemplates,planPhases,buildGoalModel,blocksFrom,goalDose,runTarget,runMinutesOf,premiseOf,anchoredStart,projectedStart,WEEK_START,EVENT_PHASES,DEVELOPMENT,BLOCK_INTENT} from './r6-program.mjs';
+ import {chooseBalanced,interferenceCosts,SEVERITY} from './r6-balanced.mjs';
+ import {substitutesFor,catalogueEntry} from './r6-catalogue.mjs';
+ import {exerciseRow,fitStrengthSession,strengthPrescription,easyPrescription,validateR6Prescription} from './r6-prescription.mjs';
+@@ -360,8 +360,8 @@ function weeklyReview(ctx,{extraReason=null,systemicSignal=false}={}){
+  const rebased=rebasedNext(program,w),skn=sk.at(w+1)??sk;
+  // A dimension with no executed session this week has no gate: it holds, it never counts as executed (QRE-R6-04).
+  const nextState=rebased?{runState:clone(rebased.run),strengthState:clone(rebased.strength)}:evidenceStart(ctx,program,skn,{gates});
+- // A return's re-base stays next week's start; otherwise the review's evidence sets it (R7-A.1 C3).
+- const projected=composeWeeks(ctx,program,{fromWeek:w+1,start:nextState});
++ // A return's re-base stays next week's start, with its authority; otherwise the review's evidence sets it (R7-A.1 C3; WEEK_EVIDENCE).
++ const projected=composeWeeks(ctx,program,{fromWeek:w+1,start:nextState,startAuthority:rebased?program.weeks[w+1].startAuthority:anchoredStart(WEEK_START.WEEK_EVIDENCE,{eventId:ctx.review.event.id,asOf})});
+  if(projected.ask)return {action:'ASK',reason:projected.ask,missingInputs:projected.missingInputs};
+  const changed=changedSessions(program,projected);
+  // An unconfirmed establishment load lives only in the state: a new or changed pending value needs a proposal to reach the next review (SSCTR D45).
+@@ -454,8 +454,11 @@ function rebuild(ctx,{canonical=null,goals=false,fromWeek=ctx.w+1,reason,action,
+  // Next week's start follows the one rule (C3): a return's re-base; this week's evidence once it is complete; while it is under way, the
+  // conditional plan of this week as planned (as every later week). From this week the composition applies the rule; from a later week the
+  // re-plan starts where that week starts.
+- const start=fromWeek!==ctx.w+1?null:rebased?{runState:clone(rebased.run),strengthState:clone(rebased.strength)}:gates?evidenceStart(ctx,program,skn,{gates}):conditionalNext(ctx,skn,ctx.w,weekAsPlanned(ctx,program,ctx.w));
+- const projected=composeWeeks(ctx,next,{fromWeek,start,evidence:evidenceRule(ctx)});
++ // Each start carries its authority: the return's, this week's evidence (WEEK_EVIDENCE) or the conditional plan of this week as planned.
++ const current=fromWeek===ctx.w+1&&!rebased&&!gates?weekAsPlanned(ctx,program,ctx.w):null,by={eventId:review.event.id,asOf:ctx.asOf};
++ const start=fromWeek!==ctx.w+1?null:rebased?{runState:clone(rebased.run),strengthState:clone(rebased.strength)}:gates?evidenceStart(ctx,program,skn,{gates}):conditionalNext(ctx,skn,ctx.w,current);
++ const startAuthority=fromWeek!==ctx.w+1?null:rebased?program.weeks[ctx.w+1].startAuthority:gates?anchoredStart(WEEK_START.WEEK_EVIDENCE,by):projectedStart(current.week,by);
++ const projected=composeWeeks(ctx,next,{fromWeek,start,startAuthority,evidence:evidenceRule(ctx)});
+  if(projected.ask)return {action:'ASK',reason:projected.ask,missingInputs:projected.missingInputs};
+  const disclosures=arrangementDisclosures(trace.choices),negotiation=[...(program.negotiation??[]).filter(n=>n.id!=='ARRANGEMENT_COST_DISCLOSED'||!trace.contexts.includes(n.context)),...disclosures];
+  const fields={weeks:projected.weeks,stateTrace:projected.stateTrace,schedule:next.canonical.schedule,canonical:next.canonical,templates:next.templates,arrangementSessions:next.arrangementSessions,phases:next.phases,blocks:next.blocks,goal:next.goal,negotiation,contextBefore:next.contextBefore??null};
+@@ -641,6 +644,63 @@ function interruptionEpisode(ctx,{start,end,id=null}){
+  if(end<last.live.start||prev&&!afterReentry(ctx,prev,start))return {ask:`This interruption ends before the one reported on ${last.first.day} began, or spans an earlier return: say when it started and ended, as one period`,missingInputs:dates};
+  return {ask:`This interruption shares days with the one first reported on ${last.first.day} (${last.live.start} to ${last.live.end}), or follows it with no return or training between, and is not marked as its correction: say whether it corrects that interruption (its episodeId ${last.id}) or is a different one`,missingInputs:['interruption.episodeId']};
+ }
++/**
++ * historicalWeekStart (R7-A boundary closure; Founder 0.1, §7, §8, §10): whether the start a week records may be reused at a cut (an
++ * interruption's start) as what the athlete had accumulated by then, and why. The planner reads every start alike; history reads only an
++ * evidence-anchored one. Each sport's part of the start must hold, from the authority the composition and the generator record:
++ * - INTAKE, the reported current state the program started from;
++ * - RETURN_ENTRY or WEEK_EVIDENCE, set from evidence by a decision made before the cut. While return steps are under way, a value the weekly
++ *   review held is the week before's own start, so that start must hold too, unless the week before was executed in full (I4);
++ * - CONDITIONAL_PLAN, the plan, only when the week before executed as the projection assumed, read as the weekly review reads it at the cut:
++ *   the rows are the ones the projection assumed (no later adaptation), every gate of the sport is ADVANCE or EARNED, and no logged load is
++ *   below the one the projection carried forward (completed sessions, §10; I5, P3).
++ * Nothing else makes a projection history: not a decision's date, a handler, a stored field or the passage of time (I1, I3, P5). A week
++ * recorded before this rule states no authority: the first week is the intake, a later one a projection whose evidence must hold (rows unknown).
++ * `point` reads the start a return of the week replaced (startBeforeReturn), as the state point does.
++ */
++function historicalWeekStart(ctx,{cut,start,ledger}){
++ const {program}=ctx,until=Date.parse(cut),seen=ledger.filter(o=>Date.parse(o.observedAt)<until),usable=seen.filter(o=>!o.conflicted);
++ const view={...program,decisions:program.decisions.filter(d=>Date.parse(d.asOf)<until)},runKeys=new Set(Object.values(RUN_GATE_ROLE)),reads=new Map(),memo=new Map();
++ const decidedBefore=part=>part.provenance===WEEK_START.INTAKE||(part.evidenceThrough??part.asOf??null)===null||Date.parse(part.evidenceThrough??part.asOf)<until;
++ // The week as the weekly review reads it at the cut: its evidence, gates and deciding logged loads, and whether every session was completed.
++ const reviewOf=j=>{
++  if(!reads.has(j)){const week=program.weeks[j],skj=ctx.sk.at?.(j)??ctx.sk,ev=weekEvidence(view,j,start,seen,ctx.quarantined??[]),before=a=>Date.parse(a.asOf)<until;
++   const systemic=!!ev.systemicConvergence||(week.adaptations??[]).some(a=>a.kind==='SYSTEMIC_SIGNAL'&&before(a)),confirmations=Object.assign({},...(week.adaptations??[]).filter(a=>a.kind==='LOAD_CONFIRMATIONS'&&before(a)).map(a=>a.confirmations));
++   reads.set(j,{week,skj,gates:weeklyGates(view,skj,j,ev,usable,cut,{systemic}).gates,logs:loggedLoads(ev,confirmations),whole:ev.rows.every(r=>r.status==='COMPLETED')});}
++  return reads.get(j);
++ };
++ // The week before executed, for one sport, as the projection of this start assumed (`premise`: the rows it assumed; undefined when unrecorded).
++ const asAssumed=(j,sport,premise)=>{
++  const r=reviewOf(j);if(premise!==undefined&&premise!==premiseOf(r.week,sport))return false;
++  if(Object.entries(r.gates).some(([key,g])=>runKeys.has(key)===(sport==='RUN')&&!['ADVANCE','EARNED'].includes(g)))return false;
++  if(sport!=='STRENGTH')return true;
++  // The load the projection assumed lifted: the row's known load, else the one the week started with (an effort-guided row keeps it as its
++  // ceiling). A review would adopt a lighter logged load, so a projection that kept the heavier one is not what was executed.
++  const used=usedInWeek(r.week),ss=program.stateTrace[j]?.strength?.exercises??{};
++  return Object.entries(r.logs).every(([id,log])=>{
++   const u=used.find(x=>x.id===id&&x.session===log.sessionId)??used.find(x=>x.id===id);if(!u||u.practice)return true;
++   const assumed=u.mode==='KNOWN'&&Number.isFinite(u.value)?u.value:Number.isFinite(ss[id]?.load)?ss[id].load:null,d=loggedLoadDecision(r.skj.op.strength,adoptionBasis(ss[id],u),u,log,{advanced:true});
++   return !(d.adopted&&assumed!==null&&d.value<assumed-1e-9);
++  });
++ };
++ const returning=st=>['RETURN','RESTART'].includes(st?.run?.mode)||Object.values(st?.strength?.exercises??{}).some(e=>Number.isInteger(e.returnStep));
++ const of=(k,point=false)=>{
++  const id=k+':'+point;if(memo.has(id))return memo.get(id);
++  const week=program.weeks[k],replaced=point&&!!week.startBeforeReturn,recorded=replaced?week.startBeforeReturnAuthority:week.startAuthority,state=replaced?week.startBeforeReturn:program.stateTrace[k];
++  // Inside a return, a value carried from the week before is historical only when that week's own start is, or the week was executed in full.
++  const carried=()=>!returning(state)||reviewOf(k-1).whole||of(k-1).historical;
++  const basis={};
++  for(const sport of ['RUN','STRENGTH']){
++   const part=recorded?recorded[sport]:{provenance:k===0?WEEK_START.INTAKE:WEEK_START.CONDITIONAL_PLAN},v=part?.provenance;
++   basis[sport]=!part?'UNRECORDED':!decidedBefore(part)?'DECIDED_AT_OR_AFTER_CUT':v===WEEK_START.INTAKE||v===WEEK_START.RETURN_ENTRY?v
++    :v===WEEK_START.WEEK_EVIDENCE?(k===0||carried()?v:'HELD_FROM_A_PROJECTED_START')
++    :v===WEEK_START.CONDITIONAL_PLAN&&k>0&&asAssumed(k-1,sport,recorded?part.premise:undefined)&&carried()?'COMPLETED_SESSIONS':'PROJECTED';
++  }
++  const out={historical:Object.values(basis).every(b=>['INTAKE','RETURN_ENTRY','WEEK_EVIDENCE','COMPLETED_SESSIONS'].includes(b)),basis};
++  memo.set(id,out);return out;
++ };
++ return of;
++}
+ /**
+  * executedStateAt(start) (R7-A final; Founder 0.5–0.8, §10; SSCTR D59): what the athlete had executed when an interruption began.
+  * 1. The point: the start set by the latest decision in force at that moment. The latest interruption before this one, other than this one's own
+@@ -649,12 +709,12 @@ function interruptionEpisode(ctx,{start,end,id=null}){
+  *    reported earlier, the start of this week, which carries it, as it stood before any return of this week replaced it (C5). An interruption
+  *    first reported only after this one began is still the latest one before it: the start its report set (0.7; the sessions between its end
+  *    and its report belong to the plan before it, C5). Without one, the start of this week.
+- *    After an earlier interruption's return, a week's start is a point only when it was earned: that return set it, a decision re-planned it once
+- *    the week before was over (the weekly review's rule), or the week before was executed as planned. Otherwise (a re-entry week neither
+- *    reviewed nor executed as planned) its planned start assumes return steps the athlete did not take (§10): the point moves back to that
+- *    week's own point, as far back as the return itself, and that week's executions are facts too, so the same history gives the same state
+- *    whichever side of a week boundary the interruption begins (P5). Before any return, the start of the week stands as the plan's (C3;
+- *    R7-A.2 §5, boundary 3).
++ *    A week's start is a point only when it holds authority as history at the cut (historicalWeekStart; R7-A boundary closure, Founder 0.1):
++ *    the intake, a return's entry, the weekly review's rule on the complete week before, or a projection the week before executed as it
++ *    assumed. Otherwise it is the plan (a projection, whoever stored it and whatever else was decided since), the point moves back, week by
++ *    week, as far as the return in force or the program's first week, and those weeks' executions are read as facts too, so the same history
++ *    gives the same state whichever side of a week boundary the interruption begins (P5) and whichever handler ran meanwhile (I8). This holds
++ *    before any return too: R7-A.2 boundary 3 (the plan's start of an unreviewed week) is superseded by Founder 0.1.
+  * 2. The facts (strengthAtBreak, R7-A.2): the strength exposures the record shows executed after that point and before the interruption began
+  *    (planned before it, or executed before it; a conflicted report executes nothing until corrected, QRE-R6-14), each week read as the weekly
+  *    review reads it, as facts only. Nothing from the start on counts (I7): no execution, no session planned then and not executed before it,
+@@ -669,11 +729,11 @@ function stateAtBreak(ctx,{start,startedAt=null,episode=null}){
+  const E=episodesOf(program).filter(e=>e.id!==episode&&e.live.end<start).reduce((m,e)=>!m||e.live.end>m.live.end||e.live.end===m.live.end&&Date.parse(e.first.asOf)>Date.parse(m.first.asOf)?e:m,null);
+  const R=E?E.reports.filter(inForce).at(-1)??E.live:null,late=!!R&&!inForce(R);
+  const cut=startedAt??new Date(Date.parse(start+'T00:00:00Z')-tz*60000).toISOString(),all=ctx.fullLedger??ctx.ledger,dayOf=o=>o.localDate??localDate(o.observedAt,tz);
+- const weekOf=k=>program.weeks[k],lastDay=k=>onDate(weekOf(k).startDate,6),doneBefore=new Set(all.filter(o=>!o.conflicted&&Date.parse(o.observedAt)<Date.parse(cut)).map(o=>o.sessionId));
++ const weekOf=k=>program.weeks[k],lastDay=k=>onDate(weekOf(k).startDate,6);
+  const pointAt=k=>R?.entry&&(late?k===p:inForce(R)&&R.day>=weekOf(k).startDate&&R.day<=lastDay(k))?{kind:'RETURN',day:R.day,asOf:R.asOf,eventId:R.eventId,state:R.entry}:{kind:'WEEK_START',day:weekOf(k).startDate,asOf:null,eventId:null,state:weekOf(k).startBeforeReturn??program.stateTrace[k]};
+- const earned=k=>!!R&&!late&&R.fromWeek===k||program.decisions.some(d=>d.fromWeek<=k&&localDate(d.asOf,tz)>=lastDay(k-1)&&Date.parse(d.asOf)<Date.parse(cut))||weekOf(k-1).sessions.every(s=>!s.prescription||s.status==='SKIPPED'||doneBefore.has(s.id));
++ const authorityAt=historicalWeekStart(ctx,{cut,start,ledger:all});
+  let k=p,point=pointAt(p);
+- while(point.kind==='WEEK_START'&&R&&!late&&R.day<weekOf(k).startDate&&!earned(k))point=pointAt(--k);
++ while(point.kind==='WEEK_START'&&k>0&&!authorityAt(k,true).historical)point=pointAt(--k);
+  const after=point.asOf?s=>!beforeReturn(program,{day:point.day,asOf:point.asOf})(s):()=>true;
+  const read=sameDay=>{
+   const ledger=all.filter(o=>startedAt?Date.parse(o.observedAt)<Date.parse(startedAt):dayOf(o)<start||sameDay&&dayOf(o)===start),executed=new Set(ledger.filter(o=>!o.conflicted).map(o=>o.sessionId)),performedAll={};
+@@ -694,7 +754,9 @@ function stateAtBreak(ctx,{start,startedAt=null,episode=null}){
+  // (the session after the start, so the earlier date) is the conservative one. Judged on the state, never on a plan that later changes.
+  const facts=s=>hash({...s,exercises:Object.fromEntries(Object.entries(s.exercises).map(([id,{lastPerformed,...e}])=>[id,e]))});
+  const other=alt&&hash(alt)!==hash(base.strength)?hash(alt):null,material=!!other&&facts(alt)!==facts(base.strength);
+- return {state:{run:clone(point.state.run),strength:base.strength},material,point:{kind:point.kind,week:k,day:point.day,asOf:point.asOf,eventId:point.eventId,executed:Object.keys(base.performed).sort(),...(late?{reportedAfterStart:true}:{}),...(other?{sameDay:other}:{})}};
++ // Why the point holds authority as history (Founder §7): a return's entry, or the week start's basis per sport.
++ const authority=point.kind==='RETURN'?{RUN:WEEK_START.RETURN_ENTRY,STRENGTH:WEEK_START.RETURN_ENTRY}:authorityAt(k,true).basis;
++ return {state:{run:clone(point.state.run),strength:base.strength},material,point:{kind:point.kind,week:k,day:point.day,asOf:point.asOf,eventId:point.eventId,authority,executed:Object.keys(base.performed).sort(),...(late?{reportedAfterStart:true}:{}),...(other?{sameDay:other}:{})}};
+ }
+ /** The strength start of a return from the state at its interruption: a short one resumes it; a moderate or long one starts the return steps
+  * from it, its last executed count the ceiling (SSCTR D49). */
+@@ -788,10 +850,20 @@ function returnAfterPause(ctx){
+  // report of the same break whose slot is already history keeps that slot: nothing else changes (R7-A.2 I2, I9).
+  const slotRun=ep.relation==='SAME_BREAK'&&program.weeks.some(x=>x.sessions.some(s=>s.easedFor===ep.episode&&!ahead(s)));
+  if(cls==='SHORT'&&!slotRun)base={...base,weeks:base.weeks.map((x,k)=>k!==fromWeek?x:{...x,adaptations:[...(x.adaptations??[]),fact('SHORT_RETURN_EASY')]})};
+- if(fromWeek===w)base={...base,weeks:base.weeks.map((x,k)=>k!==w?x:{...x,startBeforeReturn:clone(program.weeks[w].startBeforeReturn??program.stateTrace[w])})};
+- // Re-entry this week starts the week again from the return; re-entry next week is next week's start (C3).
+- const next=composeWeeks(ctx,base,{fromWeek,start:{runState,strengthState},completedRuns:returnRuns,returnDay:asOfLocal,evidence:evidenceRule(ctx)});
++ // The start a return replaces keeps its authority with it (historicalWeekStart reads that start for this week).
++ if(fromWeek===w){const was=program.weeks[w];base={...base,weeks:base.weeks.map((x,k)=>k!==w?x:{...x,startBeforeReturn:clone(was.startBeforeReturn??program.stateTrace[w]),startBeforeReturnAuthority:clone((was.startBeforeReturn?was.startBeforeReturnAuthority:was.startAuthority)??null)})};}
++ // Re-entry this week starts the week again from the return; re-entry next week is next week's start (C3). The entry is evidence-anchored:
++ // the state executed when the interruption began, with its facts (RETURN_ENTRY).
++ const next=composeWeeks(ctx,base,{fromWeek,start:{runState,strengthState},startAuthority:anchoredStart(WEEK_START.RETURN_ENTRY,{eventId:review.event.id,asOf:ctx.asOf}),completedRuns:returnRuns,returnDay:asOfLocal,evidence:evidenceRule(ctx)});
+  if(next.ask)return {action:'ASK',reason:next.ask,missingInputs:next.missingInputs};
++ // A named correction cannot move its interruption over the re-entry its return already had (Founder §11, I7): training recorded after that
++ // return began (the interruption's first report), on or before the corrected end, would be both re-entry and before or inside the
++ // interruption. When the new reading changes a prescription it is asked, never resolved by choosing one story.
++ if(ep.relation==='SAME_BREAK'&&ep.basis==='EXPLICIT'){
++  const e=episodesOf(program).find(x=>x.id===ep.episode),dayOfObs=o=>o.localDate??localDate(o.observedAt,tz);
++  const crossed=(ctx.fullLedger??ctx.ledger).filter(o=>!o.conflicted&&o.context?.sessionId&&(o.actual?.completed===true||Number(o.actual?.minutes)>0)&&Date.parse(o.observedAt)>=Date.parse(e.first.asOf)&&dayOfObs(o)<=end);
++  if(crossed.length&&changedSessions(program,{weeks:next.weeks})>0)return {action:'ASK',reason:`This correction puts the interruption first reported on ${e.first.day} from ${pauseStart} to ${end}, but training recorded after its return began (${[...new Set(crossed.map(dayOfObs))].sort().join(', ')}) would then come before or inside it, and both cannot be true: say when the interruption started and ended`,missingInputs:['interruption.startDate','interruption.endDate'],screen};
++ }
+  const eventSoon=sk.plan.raceWeek!==null&&sk.plan.raceWeek-fromWeek<=3&&sk.plan.raceWeek>=fromWeek;
+  // The report records its interruption (InterruptionEpisode, Founder 0.1): its days and start time when stated, its identity and revision, how
+  // it relates to the report before and why (basis), the facts it was given (inputHash), the point its state came from and the start it set,
+diff --git a/audits/domain-coaching-r7a-boundary-2026-10-28/final-freeze-source/CoachingCore/src/r6-composition.mjs b/CoachingCore/src/r6-composition.mjs
+index 4adbb4a..d0d87f9 100644
+--- a/audits/domain-coaching-r7a-boundary-2026-10-28/final-freeze-source/CoachingCore/src/r6-composition.mjs
++++ b/CoachingCore/src/r6-composition.mjs
+@@ -1,5 +1,5 @@
+ import {clone,hash} from './value.mjs';
+-import {skeletonOf,projectWeeks,advanceRun,advanceStrength,projectionGates,plannedOf,plannedStrengthOf,runMinutesOf,dayPhaseOf,needsReestablishment,weekSummary} from './r6-program.mjs';
++import {skeletonOf,projectWeeks,advanceRun,advanceStrength,projectionGates,plannedOf,plannedStrengthOf,runMinutesOf,dayPhaseOf,needsReestablishment,weekSummary,startAuthority,anchoredStart,projectedStart,WEEK_START} from './r6-program.mjs';
+ import {interferenceCosts,SEVERITY} from './r6-balanced.mjs';
+ import {easyPrescription,strengthPrescription} from './r6-prescription.mjs';
+ import {localDate} from './r6-provenance.mjs';
+@@ -196,8 +196,11 @@ export function conditionalNext(ctx,skn,w,{week,state},ret=returnOf(ctx.program,
+  *   slot moves on to the first later week that still holds a quality slot, also when a later change of its week skipped it (D58).
+  *   The start a return replaced (startBeforeReturn) is kept with the week, so a newer report of the same break starts from it (C5).
+  * The week's totals describe its rows as planned, before same-week adaptations; a strength-only re-plan keeps the running totals and rest days.
++ * Each placed week records the authority of its start (R7-A boundary closure, historicalWeekStart): a start the caller sets carries its own
++ * (`startAuthority`); a start kept keeps its own; the next week's start from this week's evidence is WEEK_EVIDENCE, by this decision; every
++ * conditional transition is CONDITIONAL_PLAN, with the rows it assumed executed; a sport outside `sports` keeps the authority of its part.
+  */
+-export function composeWeeks(ctx,next,{fromWeek,start=null,sports=SPORTS,completedRuns=ctx.completedRuns??[],returnDay=null,evidence=null}){
++export function composeWeeks(ctx,next,{fromWeek,start=null,startAuthority:startAuth=null,sports=SPORTS,completedRuns=ctx.completedRuns??[],returnDay=null,evidence=null}){
+  const {w,authority}=ctx,ahead=aheadOf(ctx),sk=skeletonOf(next,authority),at=i=>sk.at(i)??sk,N=sk.c.weeks,inScope=s=>sports.includes(s.sport),all=sports.length===SPORTS.length,fresh=s=>ahead(s)&&inScope(s);
+  // A short return's easy slot not found in its week, carried to the next week placed (D58), each with its own break (R7-A.2 I9). So is one
+  // that the week before the first week placed, this week or later, no longer holds (a later change of that week skipped or replaced it); it
+@@ -210,15 +213,17 @@ export function composeWeeks(ctx,next,{fromWeek,start=null,sports=SPORTS,complet
+  // ceiling, as a projection from next week counts them (policy run.singleRunCeiling; C3), and fromWeek starts from the week before it as
+  // planned, its transition under fromWeek's own context (C2: the transition into a week follows that week's context).
+  const executedOr=i=>[...completedRuns,...next.weeks.slice(w+1,Math.max(w+1,i)).flatMap(runsOf)];
+- if(!start&&fromWeek>w+1)start=conditionalNext(ctx,at(fromWeek),fromWeek-1,weekAsPlanned(ctx,next,fromWeek-1,{sports,completedRuns:executedOr(fromWeek-1)}),null);
++ const by={eventId:ctx.review?.event?.id??null,asOf:ctx.asOf??null};
++ if(!start&&fromWeek>w+1){const before=weekAsPlanned(ctx,next,fromWeek-1,{sports,completedRuns:executedOr(fromWeek-1)});start=conditionalNext(ctx,at(fromWeek),fromWeek-1,before,null);startAuth=projectedStart(before.week,by);}
+  completedRuns=executedOr(fromWeek);
+  const own=(i,state)=>all?state:{run:sports.includes('RUN')?state.run:next.stateTrace[i].run,strength:sports.includes('STRENGTH')?state.strength:next.stateTrace[i].strength};
++ const ownAuthority=(i,auth)=>all?auth:startAuthority({RUN:sports.includes('RUN')?auth?.RUN:next.weeks[i].startAuthority?.RUN,STRENGTH:sports.includes('STRENGTH')?auth?.STRENGTH:next.weeks[i].startAuthority?.STRENGTH});
+  const totals=(i,sessions)=>{const t=weekSummary(sessions);return all?t:{...t,plannedRunMinutes:next.weeks[i].plannedRunMinutes,restDays:next.weeks[i].restDays};};
+  const weeks=next.weeks.slice(0,fromWeek),stateTrace=next.stateTrace.slice(0,fromWeek);
+  if(held.length){const left=prior.adaptations.filter(a=>!held.includes(a));weeks[fromWeek-1]={...prior};if(left.length)weeks[fromWeek-1].adaptations=left;else delete weeks[fromWeek-1].adaptations;}
+  // Places week i: its rows as planned, then its recorded adaptations applied again; {ask} when the new plan contradicts one.
+- const place=(i,rows,state)=>{
+-  const merged=mergeRows(ctx,next,i,rows,sports),planned={...weeks[i]??{},sessions:merged,...totals(i,merged)};weeks[i]=planned;stateTrace[i]=own(i,state);
++ const place=(i,rows,state,auth)=>{
++  const merged=mergeRows(ctx,next,i,rows,sports),planned={...weeks[i]??{},sessions:merged,...totals(i,merged),startAuthority:ownAuthority(i,auth)};weeks[i]=planned;stateTrace[i]=own(i,state);
+   const list=[];let sessions=merged;
+   for(const a of [...(next.weeks[i].adaptations??[]),...carry]){
+    const env={program:{...next,weeks:weeks.map((x,k)=>k===i?{...x,sessions}:x),stateTrace},sk:at(i),w:i,ahead:fresh,authority,returned:returned(i)},r=reapply(env,sessions,a);if(r.ask)return r;
+@@ -227,15 +232,16 @@ export function composeWeeks(ctx,next,{fromWeek,start=null,sports=SPORTS,complet
+    list.push(a);sessions=r.sessions;
+   }
+   if(list.length)weeks[i]={...planned,sessions,adaptations:clone(list)};else if(next.weeks[i].adaptations)weeks[i]={...planned,sessions};
+-  if(next.weeks[i].startBeforeReturn)weeks[i]={...weeks[i],startBeforeReturn:clone(next.weeks[i].startBeforeReturn)};
++  if(next.weeks[i].startBeforeReturn)weeks[i]={...weeks[i],startBeforeReturn:clone(next.weeks[i].startBeforeReturn),...('startBeforeReturnAuthority' in next.weeks[i]?{startBeforeReturnAuthority:clone(next.weeks[i].startBeforeReturnAuthority)}:{})};
+   return {};
+  };
+  const first=weekAsPlanned(ctx,next,fromWeek,{start,sports,completedRuns});
+- weeks[fromWeek]=first.week;const p0=place(fromWeek,first.week.sessions,first.state);if(p0.ask)return p0;
++ weeks[fromWeek]=first.week;const p0=place(fromWeek,first.week.sessions,first.state,start?startAuth:next.weeks[fromWeek].startAuthority);if(p0.ask)return p0;
+  if(fromWeek+1>=N)return {weeks,stateTrace,sk};
+- const skn=at(fromWeek+1),rebased=fromWeek===w&&!start?rebasedNext(next,w):null;
+- const nextStart=rebased?{runState:clone(rebased.run),strengthState:clone(rebased.strength)}:fromWeek===w&&!ctx.ev?.pending&&evidence?evidence({...next,weeks,stateTrace},skn):conditionalNext(ctx,skn,fromWeek,first,returned(fromWeek));
++ const skn=at(fromWeek+1),rebased=fromWeek===w&&!start?rebasedNext(next,w):null,fromEvidence=!rebased&&fromWeek===w&&!ctx.ev?.pending&&!!evidence;
++ const nextStart=rebased?{runState:clone(rebased.run),strengthState:clone(rebased.strength)}:fromEvidence?evidence({...next,weeks,stateTrace},skn):conditionalNext(ctx,skn,fromWeek,first,returned(fromWeek));
++ const nextAuthority=rebased?next.weeks[fromWeek+1].startAuthority:fromEvidence?anchoredStart(WEEK_START.WEEK_EVIDENCE,by):projectedStart(first.week,by);
+  const rest=projectWeeks(sk,fromWeek+1,nextStart,[...next.weeks.slice(0,fromWeek),first.week],{completedRuns:[...completedRuns,...runsOf(first.week)]});
+- for(const [k,wk] of rest.weeks.entries()){weeks[fromWeek+1+k]=wk;const r=place(fromWeek+1+k,wk.sessions,rest.states[k]);if(r.ask)return r;}
++ for(const [k,wk] of rest.weeks.entries()){weeks[fromWeek+1+k]=wk;const r=place(fromWeek+1+k,wk.sessions,rest.states[k],k===0?nextAuthority:projectedStart(rest.weeks[k-1],by));if(r.ask)return r;}
+  return {weeks,stateTrace,sk};
+ }
+diff --git a/audits/domain-coaching-r7a-boundary-2026-10-28/final-freeze-source/CoachingCore/src/r6-program.mjs b/CoachingCore/src/r6-program.mjs
+index 7938554..b69246a 100644
+--- a/audits/domain-coaching-r7a-boundary-2026-10-28/final-freeze-source/CoachingCore/src/r6-program.mjs
++++ b/CoachingCore/src/r6-program.mjs
+@@ -793,6 +793,24 @@ export function withModeHistory(sk,rs){
+  const remembered=sk.op.event.raceDayCompletion?.historyModes??[],seen=rs.modeHistory??[];
+  return remembered.includes(rs.mode)&&!seen.includes(rs.mode)?{...rs,modeHistory:[...seen,rs.mode].sort()}:rs;
+ }
++/**
++ * Week-start authority (R7-A boundary closure; Founder 0.1, §7, §8): why a week's start holds the state it holds, per sport. An
++ * evidence-anchored part records what the athlete had accumulated, with the clock of the decision that read that evidence (`evidenceThrough`):
++ * INTAKE (the reported current state the program starts from), RETURN_ENTRY (a return's entry: the state executed when its interruption began,
++ * with the interruption's facts) or WEEK_EVIDENCE (the weekly review's rule applied to the complete week before). A projected part
++ * (CONDITIONAL_PLAN) is the plan: the week before assumed executed as prescribed, with a digest of the rows it assumed (`premise`). The planner
++ * reads every start alike; only a historical reader tells them apart (historicalWeekStart).
++ */
++export const WEEK_START={INTAKE:'INTAKE',RETURN_ENTRY:'RETURN_ENTRY',WEEK_EVIDENCE:'WEEK_EVIDENCE',CONDITIONAL_PLAN:'CONDITIONAL_PLAN'};
++const START_SPORTS=['RUN','STRENGTH'];
++/** The rows of one sport a projection of the next week's start assumed executed: identity, status and prescription, in any order. */
++export const premiseOf=(week,sport)=>hash((week?.sessions??[]).filter(s=>s.sport===sport).map(s=>[s.id,s.status??'PLANNED',s.prescription??null]).sort((a,b)=>a[0]<b[0]?-1:a[0]>b[0]?1:0));
++export function startAuthority(parts){
++ const p=Object.fromEntries(START_SPORTS.map(x=>[x,parts?.[x]??null]));
++ return {authority:START_SPORTS.every(x=>p[x]&&p[x].provenance!==WEEK_START.CONDITIONAL_PLAN)?'EVIDENCE_ANCHORED':'PROJECTED',...p};
++}
++export const anchoredStart=(provenance,{eventId=null,asOf=null}={})=>startAuthority(Object.fromEntries(START_SPORTS.map(x=>[x,{provenance,eventId,evidenceThrough:asOf}])));
++export const projectedStart=(week,{eventId=null,asOf=null}={})=>startAuthority(Object.fromEntries(START_SPORTS.map(x=>[x,{provenance:WEEK_START.CONDITIONAL_PLAN,eventId,asOf,premise:premiseOf(week,x)}])));
+ /**
+  * Projects weeks [fromWeek, toWeek) (default: to the end) from start states; later transitions assume each planned session executed
+  * (planning, not prediction). Each week is built under the context in force for it and the transition into a week follows that week's
+@@ -907,7 +925,9 @@ export function generateProgram(input,options={}){
+   if(choice.askRequired)return reject('ASK','Genuine run/strength arrangement trade-off with equal worst-case joint harm; a temporary preference is needed',{missingInputs:['schedule.temporaryPreference'],question:choice.question,trace:{capability:cap,goalModel:goal,phases:plan,arrangement:arrangementTrace}});
+   sk.arrangement[context]=choice.selected;previousId=choice.selected?.id??previousId;choices[context]=choice;
+  }
+- const runState=initialRunState(sk),strengthState=initialStrengthState(sk),{weeks,states}=projectWeeks(sk,0,{runState,strengthState},[],{coldStart:true,initialCeiling:['EASY_CURRENT','QUALITY_FAMILIAR','EASY_LOW'].includes(cap.run.class)?cap.run.longestMinutes??null:null});
++ const runState=initialRunState(sk),strengthState=initialStrengthState(sk),{weeks:projected,states}=projectWeeks(sk,0,{runState,strengthState},[],{coldStart:true,initialCeiling:['EASY_CURRENT','QUALITY_FAMILIAR','EASY_LOW'].includes(cap.run.class)?cap.run.longestMinutes??null:null});
++ // The first week starts from the athlete's reported current state; every later week from the conditional plan of the week before.
++ const weeks=projected.map((wk,i)=>({...wk,startAuthority:i===0?anchoredStart(WEEK_START.INTAKE,{asOf:c.asOf}):projectedStart(projected[i-1])}));
+  if(cap.run.programmed&&cap.run.class==='WALK_JOG'&&s.runDays.length>op.establishment.maxWalkJogDaysPerWeek)negotiation.push({id:'TOO_MANY_RUN_DAYS_FOR_ESTABLISHMENT',blocking:false,detail:`${s.runDays.length} run days chosen; establishment supports up to ${op.establishment.maxWalkJogDaysPerWeek} walk/jog exposures, so the other chosen days carry brisk walks`,options:['Keep the walks on those days','Choose fewer run days']});
+  if(runState.walks>0&&cap.run.class!=='WALK_JOG')negotiation.push({id:'TOO_MANY_RUN_DAYS_FOR_CURRENT_PRACTICE',blocking:false,detail:`Current running (${cap.run.weeklyMinutes??'unknown'} min/week) is spread over fewer runs; ${runState.walks} chosen run day(s) carry brisk walks and convert to runs at block starts when responses allow`,options:['Keep the plan','Choose fewer run days','Report more current running']});
+  const target=runTarget(sk);
+diff --git a/audits/domain-coaching-r7a-boundary-2026-10-28/final-freeze-source/CoachingCore/test/r6-adaptation.test.mjs b/CoachingCore/test/r6-adaptation.test.mjs
+index 5fb48bf..ba27b10 100644
+--- a/audits/domain-coaching-r7a-boundary-2026-10-28/final-freeze-source/CoachingCore/test/r6-adaptation.test.mjs
++++ b/CoachingCore/test/r6-adaptation.test.mjs
+@@ -123,7 +123,16 @@ test('Adaptation: nonclinical return is staged from current evidence; clinical o
+  assert.equal(moderate.action,'REESTABLISH');
+  const entry=moderate.proposal.weeks[w+1],step=moderate.proposal.weeks[w+2];
+  assert.ok(entry.sessions.every(s=>s.role!=='QUALITY'));assert.ok(entry.plannedRunMinutes<step.plannedRunMinutes);
+- assert.ok(entry.sessions.filter(s=>s.sport==='STRENGTH'&&s.prescription).every(s=>s.prescription.exercises.every(e=>e.sets===1&&e.rir>=4)));
++ // R7-A boundary (Founder 0.1): nothing was ever executed, so no planned week start is history. The return starts from the intake and an
++ // exercise never performed is established by effort (SSCTR D52), never at a load or count the plan only assumed.
++ const at=moderate.proposal.decisions.at(-1).interruption.stateAt;
++ assert.deepEqual([at.kind,at.week,at.authority,at.executed],['WEEK_START',0,{RUN:'INTAKE',STRENGTH:'INTAKE'},[]]);
++ assert.ok(entry.sessions.filter(s=>s.sport==='STRENGTH'&&s.prescription).every(s=>s.prescription.exercises.every(e=>e.load.mode!=='KNOWN'&&(e.exposure?.kind==='FIRST_ESTABLISH'||e.load.mode==='BODYWEIGHT'))));
++ // Once weeks are executed and reviewed, the strength return enters at one set with more reps in reserve.
++ let q=p,ledger=[];for(let i=0;i<3;i++){const r=evaluateProgram(q,review(q,i,'WEEKLY_REVIEW',{observations:all(q,i),actualLedger:ledger}),opts);ledger=r.actualLedger;if(r.proposal)q=r.proposal;}
++ const logged=evaluateProgram(q,review(q,w,'RETURN_AFTER_PAUSE',{interruption:{days:18,reasonCategory:'TRAVEL',nonclinical:true},actualLedger:ledger}),opts);
++ assert.equal(logged.action,'REESTABLISH');
++ assert.ok(logged.proposal.weeks[w+1].sessions.filter(s=>s.sport==='STRENGTH'&&s.prescription).every(s=>s.prescription.exercises.every(e=>e.sets===1&&e.rir>=4)));
+  const demo=evaluateProgram(p,review(p,w,'RETURN_AFTER_PAUSE',{interruption:{days:18,reasonCategory:'TRAVEL',nonclinical:true},currentDemonstration:{observedAt:lastDay(p,w),sport:'RUN',family:'EASY',minutes:30,completed:true,effort:'CONVERSATIONAL',response:'COMPATIBLE',ordinaryFunction:'COMPATIBLE',nextDayFunction:'NORMAL'}}),opts);
+  assert.ok(demo.proposal.weeks[w+1].plannedRunMinutes>entry.plannedRunMinutes,'a current demonstration replaces the generic entry');
+  assert.equal(evaluateProgram(p,review(p,w,'RETURN_AFTER_PAUSE',{interruption:{days:18,reason:'knee injury'}}),opts).status,'CLINICAL_HUMAN_REQUIRED');
+diff --git a/CoachingCore/test/r7ab-week-start-authority.test.mjs b/CoachingCore/test/r7ab-week-start-authority.test.mjs
+new file mode 100644
+index 0000000..c89e791
+--- /dev/null
++++ b/CoachingCore/test/r7ab-week-start-authority.test.mjs
+@@ -0,0 +1,195 @@
++// DOMAIN_COACHING_R7-A boundary closure: week-start state authority (Founder request §0.1, §7–§16; QE-R7AF-01;
++// audits/domain-coaching-r7a-boundary-2026-10-28/WEEK_START_AUTHORITY_CONTRACT.md). A week's start records why it holds its state; only an
++// evidence-anchored start is reused as what the athlete had executed when an interruption began. Each test names the invariant (I1–I8), the
++// family (A–H) or the property (P1–P5) it covers. Development authority; synthetic data.
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {generateProgram,evaluateProgram} from '../src/r6-index.mjs';
++import {devAuthority} from '../r6/fixtures/dev-authority.mjs';
++
++const opts={authority:devAuthority()};
++const addDays=(d,n)=>new Date(Date.parse(d+'T00:00:00Z')+n*864e5).toISOString().slice(0,10);
++const elig=d=>({status:'NONCLINICAL_CONFIRMED',assessedAt:d,pain:false,persistentPain:false,injury:false,illness:false,functionalLimitation:false,clinicalConcern:false});
++const OK={performance:'COMPATIBLE',recovery:'COMPATIBLE',effort:'ON_TARGET',nextDayFunction:'NORMAL'};
++const K=(id,sets,reps,kg,convention='TOTAL')=>({id,sets,reps,load:{value:kg,unit:'KG',convention},rir:2,current:true,familiar:true,tolerated:true,observedAt:'2026-10-29'});
++const intake=({id,schedule={}})=>({version:'R6-INTAKE-1',synthetic:true,purpose:'SHADOW_REFERENCE',asOf:'2026-11-01',startDate:'2026-11-02',weeks:16,learningConsent:true,
++ athlete:{id,ageEligible:true,eligibility:elig('2026-11-01'),goals:{run:'PERFORMANCE',strength:'STRENGTH'},runExperience:'INTERMEDIATE',strengthExperience:'INTERMEDIATE',recent:{runDaysPerWeek:3,runMinutesPerWeek:150,longestRunMinutes:70,strengthDaysPerWeek:2},equipment:['DUMBBELLS','BENCH','BARBELL','RACK'],knownExercises:[K('back-squat',3,5,80),K('db-bench-press',3,8,18,'PER_HAND')],exerciseRotationPreference:'FIXED'},
++ schedule:{runDays:[1,3,6],strengthDays:[2,5],runTurn:'AM',strengthTurn:'PM',runMinutes:60,strengthMinutes:60,longRunDay:6,longRunMinutes:100,...schedule}});
++let N=0;
++const at=(p,w,day,hour,x={})=>{const d=addDays(p.weeks[w].startDate,day);return {version:'R6-REVIEW-1',synthetic:true,purpose:'SHADOW_REFERENCE',asOf:`${d}T${hour}Z`,weekIndex:w,event:{id:`t7ab-${w}-${x.kind??'WEEKLY_REVIEW'}-${N++}`,kind:x.kind??'WEEKLY_REVIEW'},eligibility:elig(d),observations:[],...x};};
++/** A report of session s executed as prescribed on its date and shift; a chosen load is logged at 20 kg unless `kg` gives one. */
++function obs(p,s,{kg=null,actual=null,response=null}={}){const pr=s.prescription,a={completed:true,minutes:pr.durationMinutes};
++ if(pr.modality==='STRENGTH')a.exercises=pr.exercises.map(e=>({id:e.id,sets:Array.from({length:e.sets},()=>({load:e.load.mode==='BODYWEIGHT'?{value:0,unit:'BODYWEIGHT',convention:'BODYWEIGHT'}:{value:e.load.mode==='KNOWN'?e.load.value:kg?.(e.id)??20,unit:'KG',convention:e.load.convention},reps:e.reps,rir:e.rir}))}));
++ return {eventId:`t7ab-o-${N++}`,athleteId:p.athleteId,sessionId:s.id,observedAt:`${s.date}T${s.turn==='PM'?'19:00:00':'08:00:00'}Z`,actual:actual??a,response:{...OK,...(response??{})}};}
++const evaluate=(t,review)=>evaluateProgram(t.p,{...review,actualLedger:t.ledger},opts);
++const step=(t,review)=>{const r=evaluate(t,review);assert.ok(!['UNSUPPORTED','HOLD'].includes(r.status),`${review.event.kind}: ${r.status} ${r.reason} ${JSON.stringify(r.errors??[])}`);t.ledger=r.actualLedger??t.ledger;if(r.proposal)t.p=r.proposal;return r;};
++const live=s=>s.prescription&&s.status!=='SKIPPED';
++const weekly=(t,w,keep=()=>true)=>step(t,at(t.p,w,6,'21:00:00',{observations:t.p.weeks[w].sessions.filter(s=>live(s)&&keep(s)).map(s=>obs(t.p,s))}));
++/** Sessions of week w reported on their own evening, one mid-week review each: nothing consolidates the week (its review never runs). */
++const perDay=(t,w,keep,o={})=>{for(const s of t.p.weeks[w].sessions.filter(s=>live(s)&&keep(s)))step(t,at(t.p,w,s.day,s.day===6?'05:00:00':'21:00:00',{observations:[obs(t.p,s,typeof o==='function'?o(s):o)]}));};
++const start=(ia,weeks)=>{const g=generateProgram(intake(ia),opts);assert.ok(g.program,`${ia.id}: ${g.status} ${g.reason}`);const t={p:g.program,ledger:[]};for(let w=0;w<weeks;w++)weekly(t,w);return t;};
++const copy=t=>({p:t.p,ledger:t.ledger});
++const brk=(startDate,endDate,extra={})=>({kind:'RETURN_AFTER_PAUSE',interruption:{days:Math.round((Date.parse(endDate)-Date.parse(startDate))/864e5)+1,startDate,endDate,reasonCategory:'TRAVEL',reason:'Work travel',...extra}});
++const lastReturn=P=>P.decisions.filter(d=>d.action==='REESTABLISH').at(-1);
++const strengthRows=(P,w,from=null)=>P.weeks[w].sessions.filter(s=>s.sport==='STRENGTH'&&live(s)&&(!from||s.date>=from)).flatMap(s=>s.prescription.exercises.map(e=>({date:s.date,e})));
++const preBreakDose=(P,w,from)=>strengthRows(P,w,from).filter(({e})=>e.load.mode==='KNOWN'&&e.sets>=3);
++const runs=(P,w,from)=>P.weeks[w].sessions.filter(s=>live(s)&&s.sport==='RUN'&&s.date>=from).map(s=>s.prescription.durationMinutes);
++/** The state facts a return starts from: last performed dates and bookkeeping aside. */
++const facts=st=>JSON.stringify({run:{...st.run,planned:undefined},strength:{...st.strength,planned:undefined,entryWeek:undefined,exercises:Object.fromEntries(Object.entries(st.strength.exercises).sort().map(([k,{lastPerformed,...e}])=>[k,e]))}});
++const stepsOf=st=>({run:st.run.returnStep??null,strength:Object.fromEntries(Object.entries(st.strength.exercises).map(([k,e])=>[k,e.returnStep??null]))});
++/** Weeks 0-2 trained and reviewed, 3-4 untrained (the first break), then A: a 16-day return on Monday 06:00 of week 5 (re-entry that week). */
++function afterReturn(id){
++ const t=start({id},3);weekly(t,3,()=>false);weekly(t,4,()=>false);
++ const d0=t.p.weeks[5].startDate;step(t,at(t.p,5,0,'06:00:00',brk(addDays(d0,-16),addDays(d0,-1))));
++ return {t,d0,A:lastReturn(t.p)};
++}
++/** B: a separate two-day trip, Tuesday and Wednesday of week 6, reported Thursday 06:00. */
++const tripB=(t,d0,{from=8,to=9,said=10}={})=>{const r=step(t,at(t.p,Math.floor((Date.parse(addDays(d0,said))-Date.parse(t.p.startDate))/(7*864e5)),(said%7+7)%7,'06:00:00',brk(addDays(d0,from),addDays(d0,to))));assert.equal(r.action,'REESTABLISH',r.reason);return lastReturn(t.p);};
++/** Sunday's long run of the re-entry week reported on Monday of week 6, in week 6's first review: the re-entry week is never consolidated. */
++const sundayOnMonday=(t,o={})=>step(t,at(t.p,6,0,'06:00:00',{observations:t.p.weeks[5].sessions.filter(s=>live(s)&&s.day===6).map(s=>obs(t.p,s,o))}));
++// The loads the re-entry rows keep as their ceiling: logging them is executing the week exactly as its projection assumed.
++const atKnown=t=>({kg:id=>t.p.stateTrace[5].strength.exercises[id]?.load??20});
++
++test('R7-A boundary §14 QE-R7AF-01: after an unfinished, unreviewed re-entry week, no later decision makes the projected week start history',()=>{
++ const {t,d0,A}=afterReturn('t7ab-qe');perDay(t,5,s=>s.day<3);
++ assert.equal(t.p.weeks[6].startAuthority.authority,'PROJECTED','the return projects week 6 (I1)');
++ const ctl=copy(t),control=tripB(ctl,d0),after=P=>[...runs(P,6,addDays(d0,10)),...runs(P,7,addDays(d0,14))];
++ assert.equal(control.interruption.stateAt.kind,'RETURN');assert.equal(control.interruption.stateAt.eventId,A.eventId);
++ for(const [label,x] of [['equipment window',{kind:'EQUIPMENT_CHANGE',changes:{equipment:['DUMBBELLS','BENCH'],from:addDays(d0,21),to:addDays(d0,24)}}],['equipment, full kit (recorded, no change)',{kind:'EQUIPMENT_CHANGE',changes:{equipment:['DUMBBELLS','BENCH','BARBELL','RACK'],from:addDays(d0,21),to:addDays(d0,24)}}],['systemic fatigue',{kind:'SYSTEMIC_FATIGUE'}]]){
++  const u=copy(t);step(u,at(u.p,6,0,'06:00:00',x));
++  // The stored start is still the plan, whatever was stored since (I3).
++  assert.equal(u.p.weeks[6].startAuthority.authority,'PROJECTED',`${label}: week 6 start`);
++  const B=tripB(u,d0);
++  assert.equal(B.interruption.relation,'NEW',label);assert.equal(B.interruption.stateAt.kind,'RETURN',`${label}: B starts from the re-entry, not from week 6's projected start`);
++  assert.equal(facts(B.interruption.entry),facts(control.interruption.entry),`${label}: B's start equals the control's (I4, I8)`);
++  assert.equal(B.interruption.entry.run.returnStep,0,`${label}: no unexecuted run return step`);
++  assert.deepEqual(after(u.p),after(ctl.p),`${label}: the runs after B are the control's`);
++  for(const w of [6,7])assert.deepEqual(preBreakDose(u.p,w,addDays(d0,10)),[],`${label} week ${w}: no pre-break dose`);
++ }
++});
++test('R7-A boundary I2 (§7): every return records why its state point holds authority as history',()=>{
++ const {t,d0,A}=afterReturn('t7ab-i2');
++ assert.deepEqual(A.interruption.stateAt.authority,{RUN:'WEEK_EVIDENCE',STRENGTH:'WEEK_EVIDENCE'},'A: week 2, set by the review of week 1');
++ perDay(t,5,s=>s.day<3);const B=tripB(t,d0);
++ assert.deepEqual(B.interruption.stateAt.authority,{RUN:'RETURN_ENTRY',STRENGTH:'RETURN_ENTRY'});
++ assert.deepEqual(t.p.weeks[5].startAuthority.RUN.provenance,'RETURN_ENTRY');assert.ok(t.p.weeks[5].startAuthority.RUN.evidenceThrough);
++});
++test('R7-A boundary I5/P3 (families D, E): execution promotes authority only through evidence; review and completed sessions agree',()=>{
++ const {t,d0}=afterReturn('t7ab-i5');
++ // Executed exactly as projected (the known loads the re-entry rows keep), never reviewed: completed sessions anchor week 6 (§10).
++ const a=copy(t);perDay(a,5,s=>s.day<6,atKnown(a));sundayOnMonday(a,atKnown(a));
++ const A6=tripB(a,d0);assert.equal(A6.interruption.stateAt.week,6);assert.deepEqual(A6.interruption.stateAt.authority,{RUN:'COMPLETED_SESSIONS',STRENGTH:'COMPLETED_SESSIONS'});
++ // The same week reviewed on Sunday: the weekly review's rule (P2: the same base).
++ const b=copy(t);perDay(b,5,s=>s.day<6,atKnown(b));weekly(b,5,()=>false);
++ const B6=tripB(b,d0);assert.equal(B6.interruption.stateAt.week,6);assert.ok(['WEEK_EVIDENCE','COMPLETED_SESSIONS'].includes(B6.interruption.stateAt.authority.RUN));
++ assert.deepEqual(stepsOf(A6.interruption.entry),stepsOf(B6.interruption.entry),'executed and reviewed give the same steps');
++ assert.equal(A6.interruption.entry.run.returnStep,1);
++ // Lifting lighter than the projection kept: a review would adopt the lighter loads, so the projection is not what was executed.
++ const c=copy(t);perDay(c,5,s=>s.day<6,{kg:()=>20});sundayOnMonday(c);
++ assert.equal(tripB(c,d0).interruption.stateAt.kind,'RETURN');
++});
++test('R7-A boundary I1/I3 (family H, P5): time alone, a week boundary or a stored field never makes a projection history',()=>{
++ const {t,d0,A}=afterReturn('t7ab-h');
++ for(const o of [{},{from:15,to:16,said:17}]){const B=tripB(copy(t),d0,o);assert.equal(B.interruption.stateAt.kind,'RETURN',JSON.stringify(o));assert.equal(facts(B.interruption.entry),facts(A.interruption.entry),'nothing executed: B starts from A\'s re-entry');}
++ // The same executed history (Tuesday's run, Wednesday's lift), B on Sunday of week 5 or on Monday of week 6: the same steps (P5).
++ const x=copy(t);perDay(x,5,s=>s.day<3);const sun=tripB(x,d0,{from:6,to:7,said:8});
++ const y=copy(t);perDay(y,5,s=>s.day<3);const mon=tripB(y,d0,{from:7,to:8,said:9});
++ assert.deepEqual(stepsOf(sun.interruption.entry),stepsOf(mon.interruption.entry));
++});
++test('R7-A boundary §13 premise: a week executed, but not as its projection assumed, never makes the projected start history',()=>{
++ const {t,d0}=afterReturn('t7ab-premise');
++ const thursday=s=>s.day===3;
++ const cases={
++  'reported not done':u=>perDay(u,5,s=>s.day<6,s=>thursday(s)?{actual:{completed:false,minutes:0}}:atKnown(u)),
++  partial:u=>perDay(u,5,s=>s.day<6,s=>thursday(s)?{actual:{completed:true,minutes:5}}:atKnown(u)),
++  adverse:u=>perDay(u,5,s=>s.day<6,s=>thursday(s)?{response:{recovery:'ADVERSE'}}:atKnown(u)),
++  'skipped (unavailable day)':u=>{step(u,at(u.p,5,0,'08:00:00',{kind:'UNAVAILABLE_DAY',changes:{unavailableDates:[addDays(d0,3)]}}));perDay(u,5,s=>s.day<6,atKnown(u));},
++  'reduced (systemic fatigue)':u=>{step(u,at(u.p,5,0,'08:00:00',{kind:'SYSTEMIC_FATIGUE'}));perDay(u,5,s=>s.day<6,atKnown(u));}
++ };
++ for(const [label,fn] of Object.entries(cases)){const u=copy(t);fn(u);sundayOnMonday(u,atKnown(u));const B=tripB(u,d0);
++  assert.equal(B.interruption.stateAt.kind,'RETURN',label);assert.equal(B.interruption.entry.run.returnStep,0,label);}
++});
++test('R7-A boundary I4: inside a return, a value a review held from a projected start is not history until a week is executed in full',()=>{
++ const {t,d0}=afterReturn('t7ab-held');
++ // Saturday's lift missed in week 5 (never consolidated) and again in week 6, which is reviewed: its exercises were never executed.
++ perDay(t,5,s=>s.day<5);sundayOnMonday(t);const satOnly=[...new Set(strengthRows(t.p,5).filter(({date})=>date===addDays(d0,5)).map(({e})=>e.id))].filter(id=>!strengthRows(t.p,5).some(({date,e})=>date!==addDays(d0,5)&&e.id===id));
++ assert.ok(satOnly.length,'an exercise lifted only on Saturday');
++ const held=copy(t);weekly(held,6,s=>s.day!==5);assert.equal(held.p.weeks[7].startAuthority.authority,'EVIDENCE_ANCHORED');
++ const B=tripB(held,d0,{from:15,to:16,said:17});
++ assert.equal(B.interruption.stateAt.kind,'RETURN');for(const id of satOnly)assert.equal(B.interruption.entry.strength.exercises[id]?.returnStep,0,id);
++ const full=copy(t);weekly(full,6);assert.equal(tripB(full,d0,{from:15,to:16,said:17}).interruption.stateAt.week,7,'week 6 in full');
++ // A partial session is not a week executed in full: Saturday's lift of week 6 done with fewer sets is held too.
++ const partial=copy(t),sat=partial.p.weeks[6].sessions.find(s=>live(s)&&s.day===5);
++ step(partial,at(partial.p,6,6,'21:00:00',{observations:partial.p.weeks[6].sessions.filter(s=>live(s)).map(s=>s===sat?{...obs(partial.p,s),actual:{...obs(partial.p,s).actual,exercises:obs(partial.p,s).actual.exercises.map(e=>({...e,sets:e.sets.slice(0,Math.max(1,e.sets.length-1))}))}}:obs(partial.p,s))}));
++ const P=tripB(partial,d0,{from:15,to:16,said:17});
++ if(P.interruption.stateAt.kind!=='RETURN')for(const id of satOnly)assert.equal(P.interruption.entry.strength.exercises[id]?.returnStep,0,'partial '+id);
++ assert.equal(P.interruption.stateAt.kind,'RETURN','a partial session does not make the held values history');
++});
++test('R7-A boundary families A, C: an equipment statement on the last day, or an event change that re-plans this week, keeps a projected start projected',()=>{
++ const {t,d0}=afterReturn('t7ab-ac');perDay(t,5,s=>s.day<3);
++ const control=tripB(copy(t),d0);
++ // Sunday 06:00 of the unfinished re-entry week: a strength-only change applies the weekly review's rule to strength only; the run start it
++ // keeps is still the plan, so the start as a whole is not history.
++ const sun=copy(t);step(sun,at(sun.p,5,6,'06:00:00',{kind:'EQUIPMENT_CHANGE',changes:{equipment:['DUMBBELLS','BENCH'],from:addDays(d0,21),to:addDays(d0,24)}}));
++ assert.equal(sun.p.weeks[6].startAuthority.RUN.provenance,'CONDITIONAL_PLAN');
++ const S=tripB(sun,d0);assert.equal(S.interruption.stateAt.kind,'RETURN');assert.equal(facts(S.interruption.entry),facts(control.interruption.entry));
++ // After the weekly review on Sunday, a later strength-only change re-derives strength from the same evidence: the review's base stands.
++ const r=copy(t);weekly(r,5,()=>false);const R=tripB(copy(r),d0);
++ step(r,at(r.p,5,6,'22:00:00',{kind:'EQUIPMENT_CHANGE',changes:{equipment:['DUMBBELLS','BENCH'],from:addDays(d0,21),to:addDays(d0,24)}}));
++ const RE=tripB(r,d0);assert.equal(RE.interruption.stateAt.week,6);assert.equal(facts(RE.interruption.entry),facts(R.interruption.entry));
++ // An event moved so that this week's remaining days enter the taper re-plans from this week: the start of this week is kept, and so is its
++ // authority (Founder family C).
++ const RACE={kind:'RACE',event:{kind:'10K',date:addDays('2026-11-02',13*7+6)}};
++ const g=generateProgram({...intake({id:'t7ab-event'}),athlete:{...intake({id:'t7ab-event'}).athlete,goals:{run:RACE,strength:'STRENGTH'}}},opts);
++ const e={p:g.program,ledger:[]};for(let w=0;w<3;w++)weekly(e,w);weekly(e,3,()=>false);weekly(e,4,()=>false);
++ const e0=e.p.weeks[5].startDate;step(e,at(e.p,5,0,'06:00:00',brk(addDays(e0,-16),addDays(e0,-1))));perDay(e,5,s=>s.day<3);
++ const ectl=tripB(copy(e),e0),moved=copy(e),m=step(moved,at(moved.p,6,0,'06:00:00',{kind:'EVENT_DATE_CHANGE',changes:{eventDate:addDays(e0,14)}}));
++ assert.equal(m.proposal.decisions.at(-1).fromWeek,6,'the event change re-plans this week');assert.equal(moved.p.weeks[6].startAuthority.authority,'PROJECTED');
++ const EV=tripB(moved,e0);assert.equal(EV.interruption.stateAt.kind,'RETURN');assert.equal(facts(EV.interruption.entry),facts(ectl.interruption.entry));
++});
++test('R7-A boundary I8/P1/P2 (families A, B, C): equivalent and no-op changes give the same base; none promotes a projection',()=>{
++ const {t,d0}=afterReturn('t7ab-p1');perDay(t,5,s=>s.day<3);
++ const base=tripB(copy(t),d0);
++ const X={sameEquipment:{kind:'EQUIPMENT_CHANGE',changes:{equipment:['DUMBBELLS','BENCH','BARBELL','RACK']}},sameSchedule:{kind:'SCHEDULE_CHANGE',changes:{strengthMinutes:60}},
++  sameGoal:{kind:'GOAL_CHANGE',changes:{goals:{strength:'STRENGTH'}}},localFatigue:{kind:'LOCAL_FATIGUE',signals:{region:'LOWER'}},systemicFatigue:{kind:'SYSTEMIC_FATIGUE'},
++  scheduleFromNextWeek:{kind:'SCHEDULE_CHANGE',changes:{strengthMinutes:75}},goalFromNextWeek:{kind:'GOAL_CHANGE',changes:{goals:{strength:'HYPERTROPHY'}}},unavailable:{kind:'UNAVAILABLE_DAY',changes:{unavailableDates:[addDays(d0,12)]}}};
++ for(const [label,x] of Object.entries(X)){const u=copy(t);step(u,at(u.p,6,0,'06:00:00',x));const B=tripB(u,d0);
++  assert.equal(B.interruption.stateAt.kind,'RETURN',label);assert.equal(facts(B.interruption.entry),facts(base.interruption.entry),label);}
++ // On Sunday of week 5 the week is complete: the weekly review and a schedule change apply the same rule to it (P2).
++ const r=copy(t);weekly(r,5,()=>false);const R=tripB(r,d0);
++ const s=copy(t);step(s,at(s.p,5,6,'21:00:00',{kind:'SCHEDULE_CHANGE',changes:{strengthMinutes:75}}));const S=tripB(s,d0);
++ assert.equal(R.interruption.stateAt.week,6);assert.equal(facts(S.interruption.entry),facts(R.interruption.entry));
++ assert.equal(R.interruption.entry.run.returnStep,0,'Thursday\'s run was missed: the run holds');
++});
++test('R7-A boundary P4 (family F): a correction that removes the evidence a start relied on withdraws its authority',()=>{
++ const {t,d0}=afterReturn('t7ab-p4');perDay(t,5,s=>s.day<6,atKnown(t));sundayOnMonday(t,atKnown(t));
++ assert.equal(tripB(copy(t),d0).interruption.stateAt.week,6);
++ const thu=t.p.weeks[5].sessions.find(s=>live(s)&&s.day===3),orig=t.ledger.find(o=>o.sessionId===thu.id),fix=at(t.p,6,0,'07:00:00');
++ step(t,{...fix,observations:[{...obs(t.p,thu),eventId:'t7ab-p4-fix',correctionOf:orig.eventId,correctedAt:fix.asOf,actual:{completed:false,minutes:0}}]});
++ assert.equal(tripB(t,d0).interruption.stateAt.kind,'RETURN','recomputed from the corrected record');
++});
++test('R7-A boundary I6: evidence synced late counts by the time it was executed',()=>{
++ const {t,d0}=afterReturn('t7ab-i6');
++ // Every session of week 5 executed at the projected loads but synced only on Wednesday of week 6, during B: it was executed before B.
++ const late=t.p.weeks[5].sessions.filter(s=>live(s)).map(s=>obs(t.p,s,atKnown(t)));
++ step(t,at(t.p,6,2,'20:00:00',{observations:late}));
++ const B=tripB(t,d0);assert.equal(B.interruption.stateAt.week,6);assert.equal(B.interruption.entry.run.returnStep,1);
++});
++test('R7-A boundary I7 (Founder §11): a named correction that contradicts its own executed re-entry is asked; a consistent one applies',()=>{
++ const {t,d0,A}=afterReturn('t7ab-i7');perDay(t,5,s=>s.day<3);
++ const fix=(u,from,to,said,id=A.interruption.episode)=>evaluate(u,at(u.p,5,said,'06:00:00',brk(addDays(d0,from),addDays(d0,to),{episodeId:id})));
++ for(const [label,args] of [['moved after its own re-entry',[3,4,5]],['by its report id',[3,4,5,A.eventId]],['ending over the executed Tuesday run',[-16,1,5]]]){
++  const r=fix(copy(t),...args);assert.equal(r.status,'ASK',label);assert.deepEqual(r.missingInputs,['interruption.startDate','interruption.endDate'],label);}
++ const ok=copy(t),r=fix(ok,-20,-5,5);assert.equal(r.action,'REESTABLISH');assert.equal(lastReturn(r.proposal).interruption.relation,'SAME_BREAK');
++ // With nothing executed since the re-entry, moving the interruption after its first report does not contradict anything.
++ const {t:u,d0:e0,A:A2}=afterReturn('t7ab-i7b');
++ assert.equal(evaluate(u,at(u.p,5,5,'06:00:00',brk(addDays(e0,3),addDays(e0,4),{episodeId:A2.interruption.episode}))).action,'REESTABLISH');
++});
++test('R7-A boundary (Founder 0.1, family G): before any return too, a planned week start is history only through evidence',()=>{
++ const t=start({id:'t7ab-first'},3),d3=t.p.weeks[3].startDate;
++ const breakIn4=u=>{step(u,at(u.p,4,2,'06:00:00',brk(addDays(d3,8),addDays(d3,9))));return lastReturn(u.p);};
++ // Week 3 half executed and never reviewed: week 4's planned start assumed the rest.
++ const half=copy(t);perDay(half,3,s=>s.day<3);const H=breakIn4(half);
++ assert.notEqual(H.interruption.stateAt.week,4);assert.ok(Object.values(H.interruption.stateAt.authority).every(b=>b!=='PROJECTED'));
++ const full=copy(t);weekly(full,3);assert.equal(breakIn4(full).interruption.stateAt.week,4);
++});

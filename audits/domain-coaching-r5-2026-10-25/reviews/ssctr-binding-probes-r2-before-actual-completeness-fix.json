@@ -1,0 +1,157 @@
+{
+  "revision": "R5-SSCTR-PROBES-r2",
+  "date": "2026-10-25",
+  "independent": true,
+  "total": 13,
+  "passing": 12,
+  "passed": false,
+  "rows": [
+    {
+      "id": "progress-direction",
+      "expected": "Reject lower-demand alternative mislabeled PROGRESS",
+      "actual": "INVALID_INPUT",
+      "passed": true,
+      "detail": {}
+    },
+    {
+      "id": "regression-direction",
+      "expected": "Reject higher-demand alternative mislabeled REGRESS",
+      "actual": "INVALID_INPUT",
+      "passed": true,
+      "detail": {}
+    },
+    {
+      "id": "progression-window-fit",
+      "expected": "Future complete task must fit actual window",
+      "actual": "UNSUPPORTED",
+      "passed": true,
+      "detail": {
+        "availableMinutes": 30
+      }
+    },
+    {
+      "id": "actual-dose-comparability",
+      "expected": "A one-minute actual cannot earn full thirty-minute task progression",
+      "actual": "KEEP",
+      "passed": true,
+      "detail": {
+        "actualMinutes": 1
+      }
+    },
+    {
+      "id": "earned-dose-does-not-overwrite-event",
+      "expected": "Earlier ordinary-week progression must preserve separately bound complete event week",
+      "actual": "PROGRESS",
+      "passed": true,
+      "detail": {
+        "eventMinutesBefore": 20,
+        "eventMinutesAfter": 20,
+        "eventWeekStatus": "CONDITIONAL"
+      }
+    },
+    {
+      "id": "unknown-return-reason",
+      "expected": "Unknown interruption reason cannot receive prescriptive return",
+      "actual": "ASK",
+      "passed": true,
+      "detail": {}
+    },
+    {
+      "id": "excluded-population-context",
+      "expected": "Pregnancy metadata cannot inherit ordinary adult scope",
+      "actual": "INVALID_INPUT",
+      "passed": true,
+      "detail": {}
+    },
+    {
+      "id": "maximal-easy-anchor",
+      "expected": "Familiar label cannot authorize maximal EASY task",
+      "actual": "INVALID_INPUT",
+      "passed": true,
+      "detail": {}
+    },
+    {
+      "id": "same-dose-move-after-regression",
+      "expected": "Scheduling cannot automatically restore baseline after a regression",
+      "actual": "MOVE",
+      "passed": true,
+      "detail": {
+        "currentMinutes": 25,
+        "movedMinutes": 25
+      }
+    },
+    {
+      "id": "original-constraints-persist",
+      "expected": "Original incompatible arrangement remains excluded in later review",
+      "actual": "UNSUPPORTED",
+      "passed": true,
+      "detail": {}
+    },
+    {
+      "id": "review-week-clock-consistency",
+      "expected": "A stale week index cannot mutate an already elapsed horizon",
+      "actual": "HOLD",
+      "passed": true,
+      "detail": {}
+    },
+    {
+      "id": "unambiguous-strength-load-basis",
+      "expected": "Mutually inconsistent bodyweight/per-hand load units cannot be executed",
+      "actual": "INVALID_INPUT",
+      "passed": true,
+      "detail": {}
+    },
+    {
+      "id": "strength-actual-load-comparability",
+      "expected": "Matching aggregate reps/sets at a different/unknown load cannot earn planned-load progression",
+      "actual": "PROGRESS",
+      "passed": false,
+      "detail": {
+        "selectedReps": 7,
+        "actualLoadKg": 1
+      }
+    }
+  ],
+  "reviewedFiles": [
+    {
+      "path": "CoachingCore/src/r5-adaptation.mjs",
+      "sha256": "e926b56d459796ca9dac9ef648692acd4c082fd631cd761568b43c1c7baebe48"
+    },
+    {
+      "path": "CoachingCore/src/r5-authority.mjs",
+      "sha256": "0eafe07af8c04bc67bf7268ac791d003b1c823241ea2e8a6dd22cd60b10954ad"
+    },
+    {
+      "path": "CoachingCore/src/r5-contract.mjs",
+      "sha256": "aa15f25eaa6e0ff461e42ab2053a0f7fbdac9c3899b9b5a610fc58d686601b10"
+    },
+    {
+      "path": "CoachingCore/src/r5-index.mjs",
+      "sha256": "a8faf66c5b5c16b5134e435ac25879537ecda5e0e7bb14e4e6d9d24fa27e1e8d"
+    },
+    {
+      "path": "CoachingCore/src/r5-learning.mjs",
+      "sha256": "a78b220c6d140418a8f9f5401e616496f7a2042c06bdabf274302e01918af334"
+    },
+    {
+      "path": "CoachingCore/src/r5-program.mjs",
+      "sha256": "04ba08d4ad2747499db39727e5dee3c5c16af9151e3b8a2afe23cb964463c3e7"
+    },
+    {
+      "path": "CoachingCore/src/r5-review-context.mjs",
+      "sha256": "d42f112e8e065b06612b3bb0cdb9af638ee3e637a95da7f16f5b0bd9e776f648"
+    },
+    {
+      "path": "CoachingCore/src/r5-schedule.mjs",
+      "sha256": "991a0e0efe36860cb49d16e1d32c255c527f1f25006e5556d3056a9c132d6d3f"
+    },
+    {
+      "path": "CoachingCore/src/r5-selectors.mjs",
+      "sha256": "06d05aabdda14a0ef7dadd215e1c927fd907bdd39eb2bff5c0c840948e68fb8f"
+    },
+    {
+      "path": "CoachingCore/src/r5-simulator.mjs",
+      "sha256": "0844164dfe68698b8ac88ee06888e5e443d653cfb6fe093217311da9ca09592f"
+    }
+  ]
+}

@@ -1,0 +1,467 @@
+{
+  "revision": "R6-DELIVERABLE-1",
+  "topic": "EVENT_TRANSITION_R6",
+  "generatedAt": "2026-10-27T05:03:30.458Z",
+  "authority": "CURRENT_INDEPENDENT_REVIEW",
+  "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+  "sourceDigest": "507f35fc66f4d1e105e19ce513dc067f9fee5fdc35c039ad52a8c825e46bf857",
+  "freezeRevision": "R6-FREEZE-1",
+  "runtimeState": "NOT_FROZEN_AFTER_FREEZE_1: the SSCTR refused FREEZE-2 in round 12 and R6 closed with an explicit blocker (OPEN_GAPS_R6); the runtime files listed are the current, unfrozen ones, while the simulation, demonstration and R5 replay outputs cited are the FREEZE-1 ones",
+  "boundaries": [
+    {
+      "boundaryId": "R6-EVENT-TRANSITION",
+      "enabled": "APPROVED",
+      "ssctr": {
+        "disposition": "APPROVE_WITH_CONDITIONS",
+        "evidence": null,
+        "conditions": [
+          "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+          "Binding: this record binds canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c (value.mjs hash). Any policy byte change invalidates it; any change to the runtime functions named in requiredRuntimeChanges needs a delta binding review before runtime freeze.",
+          "Operational values are reversible coaching choices inside the envelope, never physiological thresholds, injury-prevention rules, readiness scores, finish-time promises or individual-response predictions.",
+          "Steps advance only on executed comparable work without an adverse signal; nothing progresses from elapsed calendar time alone; completed history and official plan state stay immutable.",
+          "Supported events are 10K and half-marathon only; one taper week plus the race week, progressive: taper-week easy runs within taperWeekRunVolumeRange and the long run within taperWeekLongRunRange of the executed peak; taper quality total work minutes within taperQualityWorkRange; race-week easy runs within raceWeekRunVolumeRange; the policy states these are per-session fractions.",
+          "Frequency is maintained; intensity is maintained only through work already executed in build/specific weeks; a race-effort touch at the policy dose >= raceWeekTouchMinDaysBeforeRace days before the race requires R6-RUN-QUALITY and an executed comparable quality session; shakeout strides require executed strides; otherwise easy.",
+          "Strength stays at a reduced dose: taper sets about taperStrengthSetFraction of the preceding dose at RIR >= 3; race week one session of raceWeekStrengthSets at RIR >= raceWeekStrengthMinimumRir no later than raceWeekStrengthMinDaysBeforeRace days before the race; no new exercise, load increase or rotation.",
+          "Post-event: no running before postEventFirstRunMinDaysAfterRace days; runs optional and easy within postEventEasyMinutes; one light strength session; redevelopment (NEXT_BLOCK) requires an eligibility and function assessment dated after the race; redevelopment fractions are declared in the policy.",
+          "The legacy path uses the athlete's event kind and only policy-declared fractions.",
+          "No finish-time, readiness or peak-performance claim.",
+          "Event proximity counts days to the race (raceWindowDays 6; 7 taper days per taper week before the window): race-window sessions have no long run and no quality, an optional shakeout the day before, at most one race-effort touch on the run day closest to the race that is >= raceWeekTouchMinDaysBeforeRace days out, and short easy runs; taper-day sessions take taper doses whichever calendar week they fall in; post-race sessions follow the post-event rules by days since the race; a race date marked unavailable is asked about.",
+          "In WALK_JOG or RESTART mode, taper-day, race-window and post-event run sessions are reductions or holds of the achieved session of that mode, never a continuous run the mode has not reached (D43a).",
+          "Race day is a completion prescription at conversational effort with walk breaks (jog bouts no longer than achieved), without strides and without an instruction to press, when the race-week mode is WALK_JOG, RESTART or RETURN, when the athlete was in WALK_JOG or RESTART mode in any week of the program before the race (D47), or for a half marathon whose achieved long run is below raceDayCompletion.halfMarathonAchievedLongRunBelowMinutes; race-day warm-up strides and shakeout strides for any athlete only after executed strides (D43b-c, R9).",
+          "Whenever race day is a completion, the program or the proposal carries the non-blocking negotiation, recomputed from the race-week state of every proposal (added, replaced or removed), stating the longest continuous run executed by race week (never 0 when such a run was counted; a restart after a long interruption starts the count again), why race day is a completion, and both options (keep the event with walk breaks; a later or shorter event) (D43d, D47).",
+          "In taper weeks and at the start of the next block the long run is never shorter than that week's easy run (R10).",
+          "Walk/jog and restart steps do not advance on taper, race-window or post-event days; the next block resumes the walk/jog ladder one step back.",
+          "No exemption from the history-based completion applies unless it is declared and reviewed (D47c).",
+          "An exercise re-established by effort in a taper, race-window or post-event session takes that session's reduced strength dose: never more sets than the phase dose the exercise would otherwise have that day and never fewer reps in reserve than the phase minimum; the load stays effort-guided under its earlier ceiling (D54, required before FREEZE-2).",
+          "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+        ]
+      },
+      "envelope": {
+        "claim": "For recreational 10K and half-marathon events, a progressive volume reduction over the final one to two weeks while maintaining session frequency and a short intensity touch, with strength kept at a reduced dose and stopped in the final days, followed by an easy nonclinical post-event week, is a defensible event transition.",
+        "limits": [
+          "no finish-time guarantee or readiness claim",
+          "no new intensity, overload or new exercise in the taper",
+          "no fixed universal recovery day count after the race; function and eligibility are checked"
+        ]
+      }
+    }
+  ],
+  "policyValues": {
+    "event": {
+      "taperWeekRunVolumeRange": [
+        0.6,
+        0.8
+      ],
+      "raceWeekRunVolumeRange": [
+        0.4,
+        0.6
+      ],
+      "taperWeekLongRunRange": [
+        0.55,
+        0.7
+      ],
+      "taperQualityWorkRange": [
+        0.5,
+        0.6
+      ],
+      "raceWeekTouch": {
+        "10K": {
+          "repetitions": 3,
+          "workMinutes": 2,
+          "recoveryMinutes": 2
+        },
+        "HALF_MARATHON": {
+          "repetitions": 2,
+          "workMinutes": 5,
+          "recoveryMinutes": 3
+        }
+      },
+      "raceWeekTouchMinDaysBeforeRace": 3,
+      "taperStrengthSetFraction": 0.5,
+      "raceWeekStrengthMinDaysBeforeRace": 3,
+      "raceWeekStrengthSets": 1,
+      "raceWeekStrengthMinimumRir": 4,
+      "shakeoutMinutes": [
+        15,
+        20
+      ],
+      "postEventEasyMinutes": [
+        20,
+        30
+      ],
+      "postEventFirstRunMinDaysAfterRace": 2,
+      "postEventStrengthSets": 1,
+      "specificWeeks": {
+        "10K": 3,
+        "HALF_MARATHON": 4
+      },
+      "taperWeeks": {
+        "10K": 1,
+        "HALF_MARATHON": 1
+      },
+      "runVolumeRangeSemantics": "taperWeekRunVolumeRange, taperWeekLongRunRange and raceWeekRunVolumeRange are per-session fractions of the corresponding achieved (executed) peak session, not weekly totals.",
+      "taperQualitySemantics": "taperQualityWorkRange applies to total work minutes (repetitions x work minutes) of the achieved peak quality session; repetition length is kept when fewer repetitions fit the range, otherwise repetitions shorten.",
+      "reducedWorkMinimums": {
+        "repetitions": 2,
+        "workMinutes": 3
+      },
+      "achievedPeakBasis": "Taper and race-week doses derive from executed sessions; with no executed quality the taper and race week are easy-only, and with no executed strides the shakeout has none.",
+      "raceDay": {
+        "windowMinutes": {
+          "10K": 75,
+          "HALF_MARATHON": 150
+        },
+        "warmupMinutes": {
+          "10K": 12,
+          "HALF_MARATHON": 8
+        },
+        "cooldownMinutes": 5
+      },
+      "shakeoutStrideRepetitions": 3,
+      "keptWalkMinutes": 20,
+      "legacyRaceWeekQuality": "A familiar quality task at least raceWeekTouchMinDaysBeforeRace days before the race becomes the raceWeekTouch dose of the event (never more than the familiar task); closer to the race it is an easy run.",
+      "nextBlock": {
+        "longRunFractionOfAchievedPeak": 0.625,
+        "easyFractionOfAchievedPeak": 0.7,
+        "qualityStepsBack": 3,
+        "requiresEligibilityOnOrAfterRace": true
+      },
+      "postRaceEligibility": "A review on or after race day in RACE_WEEK or POST_EVENT, or before a NEXT_BLOCK week, needs an eligibility and function assessment dated on or after the race; otherwise ASK.",
+      "raceWindowDays": 6,
+      "proximitySemantics": "Event rules count days to the race, never calendar weeks. Every session 1 to raceWindowDays days before the race follows race-week rules (no long run and no quality session; an optional shakeout the day before; at most one race-effort touch on the run day closest to the race that is still at least raceWeekTouchMinDaysBeforeRace days before it; other runs short and easy) and every session in the taper days before that (7 days per taper week) follows taper rules, whichever calendar week it falls in. Strength in the race window: none in the last raceWeekStrengthMinDaysBeforeRace days, and at most one short light session (raceWeekStrengthSets sets, main lifts only, at least raceWeekStrengthMinimumRir in reserve) on the strength day furthest from the race inside the window; strength on taper days takes the taper dose. Sessions after the race follow the post-event rules by days since the race.",
+      "raceDateUnavailable": "A race date marked unavailable (event-week conflict or unavailable day) is asked about; the race is never kept or skipped silently.",
+      "modeAwareSessions": "Taper, race-window and post-event sessions keep or reduce what the athlete has reached in the current run mode (SSCTR D43). Walk/jog: taper days hold the current ladder step, race-window days use one step back, the day before the race is an optional walk, post-event days are optional walk/jog one step back. Restart or return: taper days hold the current easy minutes, race-window days take raceWeekRunVolumeRange of them (never below return.entryRunMinutes), the day before is an optional short easy run, post-event runs never exceed the current minutes. No touch, quality or strides for these modes. Walk/jog and restart steps do not advance on taper, race-window or post-event days; the next block starts the walk/jog ladder one step back. Warm-up strides on race day and strides in the shakeout appear only after strides were executed.",
+      "raceDayCompletion": {
+        "modes": [
+          "WALK_JOG",
+          "RESTART",
+          "RETURN"
+        ],
+        "historyModes": [
+          "WALK_JOG",
+          "RESTART"
+        ],
+        "halfMarathonAchievedLongRunBelowMinutes": 75,
+        "semantics": "Race day is a completion at conversational effort with walk breaks (no strides, no surges, nothing to press) when the run mode in race week is one of modes (walk/jog, restart or return); when the run mode in any earlier week of this program was one of historyModes (walk/jog or restart, from the starting class or applied by a review; the run state keeps this history through mode changes, reviews and reprojections; SSCTR D47); or for a half marathon whose achieved long run is below halfMarathonAchievedLongRunBelowMinutes (the LONG_RUN_PEAK_BELOW_TARGET material threshold; SSCTR D43 and R9). No other exemption applies: one for athletes who rebuild a substantial long run would have to be declared and reviewed first. Whenever race day is a completion, the program or the proposal carries the non-blocking EVENT_AMBITIOUS_FOR_CURRENT_RUNNING negotiation with both options (keep the event and complete it with walk breaks; a later or shorter event), recomputed from the race-week state of every proposal. It states the longest continuous run executed by race week: the longest executed easy, long, restart or return run or ladder step without walk breaks, never 0 when such a run was reached (a restart after a long interruption starts this count again). In walk/jog it states the ladder step as well; in a return in race week it states the current easy minutes instead. It also states why race day is a completion: the run mode in race week, the program history or the half-marathon long run."
+      },
+      "longRunFloor": "In taper weeks and at the start of the next block the long run is never shorter than that week's easy run (SSCTR R10)."
+    }
+  },
+  "runtime": [
+    {
+      "file": "CoachingCore/src/r6-program.mjs",
+      "functions": [
+        "planPhases",
+        "buildWeek"
+      ],
+      "sha256": "57973e9735388d3d5f194b37ff7f5080669d2c1c3fb228b59873ac7adf6fe3ec"
+    },
+    {
+      "file": "CoachingCore/src/r6-adaptation.mjs",
+      "functions": [
+        "goalChange",
+        "eventWeekConflict"
+      ],
+      "sha256": "d6a1d6fc74b7ef5b02a389dba3429cb25a00b16a2df97120b64314e96a6ba6f4"
+    },
+    {
+      "file": "CoachingCore/src/r6-legacy.mjs",
+      "functions": [
+        "eventTransform"
+      ],
+      "sha256": "4312aeef7fa1fee67bc9a617ee7d189bd14da7486f0a3a47b38275306d9ca36b"
+    }
+  ],
+  "evidence": {
+    "tests": [
+      {
+        "file": "CoachingCore/test/r6-adaptation.test.mjs",
+        "name": "Adaptation: a missed long run is zero work, no debt; only that step repeats (H0–H3 traced)"
+      },
+      {
+        "file": "CoachingCore/test/r6-adaptation.test.mjs",
+        "name": "Adaptation: an event date change re-plans phases; a date outside the horizon asks for a new program"
+      },
+      {
+        "file": "CoachingCore/test/r6-adaptation.test.mjs",
+        "name": "Adaptation: after the race, redevelopment waits for an eligibility check dated on or after race day (SSCTR D04)"
+      },
+      {
+        "file": "CoachingCore/test/r6-balanced-provenance.test.mjs",
+        "name": "Interference model: direction and gap matter; upper body does not interfere; race protection is high"
+      },
+      {
+        "file": "CoachingCore/test/r6-engineering-fixes.test.mjs",
+        "name": "QRE-R6-03: event rules follow days to the race, whatever the race weekday"
+      },
+      {
+        "file": "CoachingCore/test/r6-engineering-fixes.test.mjs",
+        "name": "QRE-R6-11: an invalid event date or an unknown goal is asked about, never planned"
+      },
+      {
+        "file": "CoachingCore/test/r6-engineering-fixes.test.mjs",
+        "name": "QRE-R6-18: a race date marked unavailable is asked about"
+      },
+      {
+        "file": "CoachingCore/test/r6-engineering-fixes.test.mjs",
+        "name": "QRE-R6-19: an event plan never leaves the race without preparatory running"
+      },
+      {
+        "file": "CoachingCore/test/r6-intake-program.test.mjs",
+        "name": "R6 event transition: taper, race week, race day and post-event exist; strength stays reduced and stops before the race"
+      },
+      {
+        "file": "CoachingCore/test/r6-r5-regression.test.mjs",
+        "name": "Event transition in the legacy path (H01/H22): taper and race week are derived from the athlete baseline"
+      },
+      {
+        "file": "CoachingCore/test/r6-simulation.test.mjs",
+        "name": "Simulation: strong adherence keeps the plan; supported events reach race week and post-event"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r7-fixes.test.mjs",
+        "name": "SSCTR D43: a walk/jog athlete keeps walk/jog through taper, race window and after the race, and completes the race with walk breaks"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r7-fixes.test.mjs",
+        "name": "SSCTR D43: a restart athlete holds current easy minutes in the taper, reduces them before the race and completes the race"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r7-fixes.test.mjs",
+        "name": "SSCTR D43(c): race-day warm-up strides only after strides were executed"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r7-fixes.test.mjs",
+        "name": "SSCTR R9: a half marathon with an achieved long run below the declared minimum is a completion race"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r7-fixes.test.mjs",
+        "name": "SSCTR R10: in the taper the long run is never shorter than the easy run"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r8-fixes.test.mjs",
+        "name": "SSCTR D47: an athlete who built running from walk/jog or a restart in this program completes the race, with the negotiation stating the longest continuous run reached"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r8-fixes.test.mjs",
+        "name": "SSCTR D47(c): without walk/jog or restart in the program, a 10K is raced by effort; no exemption removes a completion the history requires"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r8-fixes.test.mjs",
+        "name": "SSCTR D47(a): a restart applied by a review makes race day a completion and the proposal carries the negotiation; the restart starts the run history again"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r8-fixes.test.mjs",
+        "name": "SSCTR D47(a): a goal change that adds a race to a program built from walk/jog emits the completion item; removing the race removes it"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r8-fixes.test.mjs",
+        "name": "SSCTR D49: a return step close to a race keeps the race-window strength light"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-revision.test.mjs",
+        "name": "D01/D02/D03: taper and race week derive from executed work; touches and strides need executed work and the quality authority"
+      }
+    ],
+    "demonstrations": [
+      {
+        "id": "L",
+        "title": "Half-marathon build → taper → race week → race → post-event",
+        "selected": "KEEP"
+      }
+    ],
+    "trajectories": [
+      {
+        "id": "T01_HM16_STRONG_ADHERENCE",
+        "horizon": 16,
+        "allInvariantsHold": true,
+        "actions": {
+          "INSTANTIATE_LOGGED_LOADS": 2,
+          "KEEP": 14
+        }
+      },
+      {
+        "id": "T10_10K12_SPECIFIC_MISSED_AND_POST_EVENT",
+        "horizon": 12,
+        "allInvariantsHold": true,
+        "actions": {
+          "INSTANTIATE_LOGGED_LOADS": 1,
+          "KEEP": 10,
+          "MOVE": 1,
+          "GATED_NEXT_STEP": 1
+        }
+      }
+    ],
+    "r5Regression": [
+      {
+        "caseId": "R5-H01",
+        "r5Classification": "ACCEPTABLE_ALTERNATIVE",
+        "rootCause": "EVENT_TRANSITION_NOT_DERIVABLE",
+        "resultR6": "PROPOSED",
+        "classificationR6": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R5-H22",
+        "r5Classification": "ACCEPTABLE_ALTERNATIVE",
+        "rootCause": "EVENT_TRANSITION_NOT_DERIVABLE",
+        "resultR6": "PROPOSED",
+        "classificationR6": "ACCEPTABLE_ALTERNATIVE"
+      }
+    ],
+    "freshHoldout": [
+      {
+        "caseId": "R6-H01",
+        "family": "COLD_START",
+        "classification": "UNSUPPORTED"
+      },
+      {
+        "caseId": "R6-H02",
+        "family": "COLD_START",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H03",
+        "family": "COLD_START",
+        "classification": "UNSUPPORTED"
+      },
+      {
+        "caseId": "R6-H04",
+        "family": "COLD_START",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H06",
+        "family": "COLD_START",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H07",
+        "family": "COLD_START",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H09",
+        "family": "COLD_START",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H10",
+        "family": "INTAKE_SAFETY_SCOPE",
+        "classification": "INSUFFICIENT_INFORMATION"
+      },
+      {
+        "caseId": "R6-H11",
+        "family": "INTAKE_SAFETY_SCOPE",
+        "classification": "CLINICAL_OUT_OF_SCOPE"
+      },
+      {
+        "caseId": "R6-H12",
+        "family": "INTAKE_SAFETY_SCOPE",
+        "classification": "BEST_SUPPORTED"
+      },
+      {
+        "caseId": "R6-H14",
+        "family": "INTAKE_SAFETY_SCOPE",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H15",
+        "family": "BALANCED_CONFLICT",
+        "classification": "BEST_SUPPORTED"
+      },
+      {
+        "caseId": "R6-H16",
+        "family": "BALANCED_CONFLICT",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H17",
+        "family": "ADAPTATION",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H19",
+        "family": "ADAPTATION",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H21",
+        "family": "ADAPTATION",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H22",
+        "family": "ADAPTATION",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H23",
+        "family": "ADAPTATION",
+        "classification": "UNSUPPORTED"
+      },
+      {
+        "caseId": "R6-H24",
+        "family": "ADAPTATION",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H25",
+        "family": "ADAPTATION",
+        "classification": "UNSUPPORTED"
+      },
+      {
+        "caseId": "R6-H26",
+        "family": "RETURN_AFTER_PAUSE",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H27",
+        "family": "RETURN_AFTER_PAUSE",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H28",
+        "family": "RETURN_AFTER_PAUSE",
+        "classification": "CLINICAL_OUT_OF_SCOPE"
+      },
+      {
+        "caseId": "R6-H29",
+        "family": "EVENT_TRANSITION",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H30",
+        "family": "EVENT_TRANSITION",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H31",
+        "family": "DATA_QUALITY",
+        "classification": "BEST_SUPPORTED"
+      },
+      {
+        "caseId": "R6-H32",
+        "family": "DATA_QUALITY",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H34",
+        "family": "ATHLETE_LEARNING",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H35",
+        "family": "ATHLETE_LEARNING",
+        "classification": "BEST_SUPPORTED"
+      }
+    ]
+  },
+  "inputs": {
+    "simulation": "CoachingCore/r6/SIMULATION_RESULTS_R6.json",
+    "demonstrations": "CoachingCore/r6/DEMONSTRATIONS_R6.json",
+    "r5Replay": "CoachingCore/r6/R5_HOLDOUT_REPLAY_R6.json",
+    "ssctrReview": "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-policy-review.json",
+    "r5RegressionReview": "audits/domain-coaching-r6-2026-10-26/reviews/r5-regression-review.json",
+    "coachingReview": "audits/domain-coaching-r6-2026-10-26/reviews/coaching-quality-holdout-review.json"
+  }
+}

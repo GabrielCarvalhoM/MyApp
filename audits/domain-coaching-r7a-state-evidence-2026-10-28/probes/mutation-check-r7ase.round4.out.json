@@ -1,0 +1,314 @@
+{
+ "revision": "R7ASE-MUTATION-1",
+ "generatedAt": "2026-10-28T21:07:13.919Z",
+ "node": "v24.19.0",
+ "tests": [
+  "test/r7ase-state-evidence.test.mjs",
+  "test/r7ab-week-start-authority.test.mjs",
+  "test/r7af-episode-identity.test.mjs",
+  "test/r7a2-interruption.test.mjs",
+  "test/r6-adaptation.test.mjs"
+ ],
+ "clean": {
+  "tests": 71,
+  "fail": 0,
+  "failing": []
+ },
+ "total": 23,
+ "caught": 23,
+ "documentedSurvivors": 0,
+ "results": [
+  {
+   "mutation": "§23 projected treated as historical: a projection holds whatever its base was",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 71,
+   "fail": 11,
+   "failing": [
+    "Adaptation: nonclinical return is staged from current evidence; clinical or unknown cause is never given a recipe",
+    "R7-A boundary §14 QE-R7AF-01: after an unfinished, unreviewed re-entry week, no later decision makes the projected week start history",
+    "R7-A boundary I2 (§7): every return records why its state point holds authority as history",
+    "R7-A boundary I1/I3 (family H, P5): time alone, a week boundary or a stored field never makes a projection history",
+    "R7-A boundary §13 premise: a week executed, but not as its projection assumed, never makes the projected start history",
+    "R7-A boundary families A, C: an equipment statement on the last day, or an event change that re-plans this week, keeps a projected start projected"
+   ]
+  },
+  {
+   "mutation": "§23 projected treated as historical (strength): a strength projection holds whatever its base and execution",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 71,
+   "fail": 16,
+   "failing": [
+    "Adaptation: nonclinical return is staged from current evidence; clinical or unknown cause is never given a recipe",
+    "R7-A boundary I2 (§7): every return records why its state point holds authority as history",
+    "R7-A boundary I5/P3 (families D, E): execution promotes authority only through evidence; review and completed sessions agree",
+    "R7-A boundary I1/I3 (family H, P5): time alone, a week boundary or a stored field never makes a projection history",
+    "R7-A boundary §13 premise: a week executed, but not as its projection assumed, never makes the projected start history",
+    "R7-A boundary I4: inside a return, a value a review held from a projected start is not history until a week is executed in full"
+   ]
+  },
+  {
+   "mutation": "§23 week review promotes untouched values: an evidence start holds every value (strength)",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 71,
+   "fail": 3,
+   "failing": [
+    "R7-A boundary I4: inside a return, a value a review held from a projected start is not history until a week is executed in full",
+    "State evidence §18 P40 (QE-R7AB-01, families A, F, H; I1, I2, I9): a review never makes a projected load history; the plan keeps projecting it",
+    "State evidence family C (§13, I5): partial evidence promotes only what was observed"
+   ]
+  },
+  {
+   "mutation": "§23 week review promotes untouched values: an evidence start holds the run",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 71,
+   "fail": 2,
+   "failing": [
+    "State evidence I9 (two steps): a value a review carried from a projection never becomes history through a later projection",
+    "State evidence I7, I10: planning keeps projecting; a first review after unreported weeks keeps the plan, history keeps the facts"
+   ]
+  },
+  {
+   "mutation": "§23 irrelevant evidence promotes value: an exercise counts as executed as assumed whatever its own rows, gate and log",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 71,
+   "fail": 16,
+   "failing": [
+    "Adaptation: nonclinical return is staged from current evidence; clinical or unknown cause is never given a recipe",
+    "R7-A boundary I2 (§7): every return records why its state point holds authority as history",
+    "R7-A boundary I5/P3 (families D, E): execution promotes authority only through evidence; review and completed sessions agree",
+    "R7-A boundary I1/I3 (family H, P5): time alone, a week boundary or a stored field never makes a projection history",
+    "R7-A boundary §13 premise: a week executed, but not as its projection assumed, never makes the projected start history",
+    "R7-A boundary I4: inside a return, a value a review held from a projected start is not history until a week is executed in full"
+   ]
+  },
+  {
+   "mutation": "§23 irrelevant evidence promotes value: the run counts as executed whatever its gates",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 71,
+   "fail": 11,
+   "failing": [
+    "Adaptation: nonclinical return is staged from current evidence; clinical or unknown cause is never given a recipe",
+    "R7-A boundary §14 QE-R7AF-01: after an unfinished, unreviewed re-entry week, no later decision makes the projected week start history",
+    "R7-A boundary I2 (§7): every return records why its state point holds authority as history",
+    "R7-A boundary I1/I3 (family H, P5): time alone, a week boundary or a stored field never makes a projection history",
+    "R7-A boundary §13 premise: a week executed, but not as its projection assumed, never makes the projected start history",
+    "R7-A boundary families A, C: an equipment statement on the last day, or an event change that re-plans this week, keeps a projected start projected"
+   ]
+  },
+  {
+   "mutation": "§23 planner reads historical when it needs projection: the review builds next week on the historical base",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 71,
+   "fail": 2,
+   "failing": [
+    "State evidence §18 P40 (QE-R7AB-01, families A, F, H; I1, I2, I9): a review never makes a projected load history; the plan keeps projecting it",
+    "State evidence I7, I10: planning keeps projecting; a first review after unreported weeks keeps the plan, history keeps the facts"
+   ]
+  },
+  {
+   "mutation": "§23 historical consumer reads projection: the state point is the stored start",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 71,
+   "fail": 23,
+   "failing": [
+    "Adaptation: nonclinical return is staged from current evidence; clinical or unknown cause is never given a recipe",
+    "R7-A.2 I1/I3 (QE-R7A1-09): a separate break in the same week starts from the re-entry, never from before the first break",
+    "R7-A.2 I3 (QE-R7A1-09): a separate break across the week boundary keeps the return steps and the run return",
+    "R7-A.2 I2/I3: three breaks; a correction after a separate break starts from that break’s re-entry, never from before the first",
+    "R7-A.2 I4/C5: a session of the plan before a return is never a fact of a later, separate break",
+    "R7-A boundary §14 QE-R7AF-01: after an unfinished, unreviewed re-entry week, no later decision makes the projected week start history"
+   ]
+  },
+  {
+   "mutation": "§23 partial evidence fills missing field from target: an unreadable load takes the row's planned load",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 71,
+   "fail": 1,
+   "failing": [
+    "State evidence family C unreviewed (§13): a load logged in an unknown unit is no load, and verifies no projection"
+   ]
+  },
+  {
+   "mutation": "§23 execution ignored during promotion: an executed load is not a fact",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 71,
+   "fail": 2,
+   "failing": [
+    "State evidence P5: a target of 22 kg executed at 21 kg is 21 kg of history",
+    "State evidence family J (I6, P6): a historical correction replaces the fact it corrects and promotes nothing else"
+   ]
+  },
+  {
+   "mutation": "§23 execution ignored during promotion: only a lighter executed load is a fact",
+   "file": "src/r6-program.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 71,
+   "fail": 1,
+   "failing": [
+    "State evidence P5: a target of 22 kg executed at 21 kg is 21 kg of history"
+   ]
+  },
+  {
+   "mutation": "base check removed (strength): a projection holds when the week before executed it, whatever its base",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 71,
+   "fail": 1,
+   "failing": [
+    "State evidence I2, I3 (QE-R7AB-01 through completed sessions): a week executed in full verifies a projection only on a base the athlete executed"
+   ]
+  },
+  {
+   "mutation": "base check removed (evidence starts): a value a review carried counts as held",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 71,
+   "fail": 3,
+   "failing": [
+    "R7-A boundary I4: inside a return, a value a review held from a projected start is not history until a week is executed in full",
+    "State evidence §18 P40 (QE-R7AB-01, families A, F, H; I1, I2, I9): a review never makes a projected load history; the plan keeps projecting it",
+    "State evidence family C (§13, I5): partial evidence promotes only what was observed"
+   ]
+  },
+  {
+   "mutation": "per-exercise premise ignored",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 71,
+   "fail": 1,
+   "failing": [
+    "R7-A boundary §13 premise: a week executed, but not as its projection assumed, never makes the projected start history"
+   ]
+  },
+  {
+   "mutation": "an exercise's own gate ignored",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 71,
+   "fail": 1,
+   "failing": [
+    "State evidence I3 (a gate is evidence): an exercise executed with an adverse response verifies no projection"
+   ]
+  },
+  {
+   "mutation": "load check removed",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 71,
+   "fail": 2,
+   "failing": [
+    "R7-A boundary I5/P3 (families D, E): execution promotes authority only through evidence; review and completed sessions agree",
+    "State evidence family J (I6, P6): a historical correction replaces the fact it corrects and promotes nothing else"
+   ]
+  },
+  {
+   "mutation": "exercises a later adaptation removed are not checked",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 71,
+   "fail": 1,
+   "failing": [
+    "R7-A boundary §13 premise: a week executed, but not as its projection assumed, never makes the projected start history"
+   ]
+  },
+  {
+   "mutation": "promotion per exercise instead of per sport (a partial week verifies its executed exercises)",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 71,
+   "fail": 3,
+   "failing": [
+    "R7-A boundary I1/I3 (family H, P5): time alone, a week boundary or a stored field never makes a projection history",
+    "R7-A final P5 (§13 cross week): a separate break gives the same start in the re-entry week or the next one when nothing else was decided",
+    "State evidence families G, K (I8, P1, P2, P7): no week boundary, clock, handler or order makes a projection history"
+   ]
+  },
+  {
+   "mutation": "executed date ignored: a verified projection keeps its planned date",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 71,
+   "fail": 1,
+   "failing": [
+    "State evidence §8 last performed date: completed sessions verify a projection, its dates are the executed ones"
+   ]
+  },
+  {
+   "mutation": "a lifted projected dose ignored: a tick counted at the earlier load is carried onto the lifted one",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 71,
+   "fail": 3,
+   "failing": [
+    "State evidence §18 P40 (QE-R7AB-01, families A, F, H; I1, I2, I9): a review never makes a projected load history; the plan keeps projecting it",
+    "State evidence families B, I (P4, §11 completed execution): a projected load the athlete then lifts becomes history",
+    "State evidence I2, I3 (QE-R7AB-01 through completed sessions): a week executed in full verifies a projection only on a base the athlete executed"
+   ]
+  },
+  {
+   "mutation": "a rebuilt value counted as held: a later projection built on the carried value can verify",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 71,
+   "fail": 1,
+   "failing": [
+    "State evidence I9 (two steps): a value a review carried from a projection never becomes history through a later projection"
+   ]
+  },
+  {
+   "mutation": "an unreadable load verifies a projection",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 71,
+   "fail": 1,
+   "failing": [
+    "State evidence family C, completed sessions (§13): an unreadable load in a week otherwise executed as projected verifies nothing"
+   ]
+  },
+  {
+   "mutation": "the record of carried values dropped",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "tests": 71,
+   "fail": 3,
+   "failing": [
+    "R7-A boundary I4: inside a return, a value a review held from a projected start is not history until a week is executed in full",
+    "State evidence §18 P40 (QE-R7AB-01, families A, F, H; I1, I2, I9): a review never makes a projected load history; the plan keeps projecting it",
+    "State evidence I9 (two steps): a value a review carried from a projection never becomes history through a later projection"
+   ]
+  }
+ ]
+}

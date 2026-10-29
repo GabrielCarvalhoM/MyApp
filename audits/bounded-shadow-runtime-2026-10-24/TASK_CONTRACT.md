@@ -1,0 +1,18 @@
+# BSR-0.1.0 — first executable coaching core
+
+Current direct Founder request authorizes implementation of V1 BOUNDED SHADOW RUNTIME and its local verification. It supersedes historical implementation prohibitions only for this mission. No UI/Figma, production, real athlete integration, official-plan effect, clinical policy or Product Truth promotion.
+
+Owner/coordinator /root. T3/R2/L2, implementation + independent scientific fidelity and Quality gates. Impact: material bounded behavior. Reversibility: low, additive local module. Uncertainty: bounded authority mapping; unsupported sport semantics remain closed. Dependencies: AEC/AEOS, ACF exact reviewed records and SDC semantic controls. No network service, sensitive human data, LLM inference or new trust boundary. Security/AI service/release gates NOT_APPLICABLE to this offline synthetic-only package; future activation requires fresh routing. Root coordinates implementation; fresh fallback SSCTR checks authority fidelity; independent Quality judge checks executable result after deterministic checks. No worker judges their own work.
+
+Real repository has documentary sources and no existing application/package/toolchain convention. Node 24.19.0 is available; Swift is absent. An ES module with one locked schema-validation dependency (AJV) runs on this host, keeps domain separate from IO and does not choose a future mobile app architecture. The finite supported domain is the exact reviewed synthetic contexts, not a generalized planner. Profile hashes are applicability bounds, not a substitute for clinical/empirical evidence.
+
+Execution uses route-work, write-implementation-plan, test-driven-development, verify-before-completion and project sports-science-review 1.0.0. Work remains in the current dirty checkout: new code paths have disjoint ownership; previous source bytes are protected by the baseline. Mission and ledger receive append-only entries. No commits containing others' work.
+
+Plan/checkpoints:
+1. Freeze selected authority inputs and preexisting repository hashes/status; create explicit bindings of policy+recipe+exact scientific record, preserving limitations and queue links. Verify current target hashes.
+2. Implement immutable JSON contracts, deterministic guard order and policy programs. Supply planned/actual/observed/inferred state separately. Evaluate explicit reviewed candidate prescriptions only; no policy generation or dose calculation.
+3. Translate all 24 E2E rows into executable conformance tests, separating expected oracle from runtime input. Add adversarial missing/changed/revoked/conflicting/clinical/provenance/replay and exact-branch guards. Test structural invariants rather than narrative equality.
+4. Run nine seven-day sequences plus four-week observation stream, event variants and controls. Measure unique logical evaluations separately from replay. Produce traces and coverage by disjoint class; branch execution is supported KEEP, not positive dose coverage.
+5. Run current deterministic checks, independent SSCTR fidelity and Quality review, resolve material findings and freeze final hashes/results. Deliver all requested artifacts, five verdicts and remaining owners.
+
+STOP_WHEN: executable module, current tests and simulations, auditable trace/coverage, all requested artifacts and independent applicable gates satisfied. ACF gaps can stay open with executable consumers and explicit reasons; no fabricated approvals. ESCALATE_IF: missing authority or upstream contradiction prevents bounded behavior, or same material fault survives two corrections. Reassess root cause rather than silently generalize. Rollback: remove only new mission-owned paths and reverse exact appended entries; never reset the dirty checkout.

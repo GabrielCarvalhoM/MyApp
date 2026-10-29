@@ -1,0 +1,11 @@
+# Coaching Intelligence architecture R4
+
+The missing layer is an explicit deterministic, read-only reference selector between scientific authority and executable Run/Strength/Hybrid recipes. Science defines admissible principles and bounds; Coaching Intelligence composes candidates and selects a preferred option for this goal/context. The Athlete Model supplies grounded history and soft individual preferences. The Adaptive Engine assesses materiality, future essential stimuli and minimum effective change. Actual response then informs the next review.
+
+SPORTS SCIENCE → approved envelope registry → COACHING INTELLIGENCE candidate generation and ordinal selection → RUN/STRENGTH/HYBRID executable recipe → SHADOW decision. ATHLETE MODEL and current observations inform selection; ATHLETE RESPONSE yields a model update proposal and a later decision, never a rewritten completed session.
+
+Entry point: src/r4-index.mjs; runtime src/r4-runtime.mjs, r4-candidates.mjs, r4-context.mjs, r4-authority.mjs and r4-athlete-model.mjs. The canonical R3 adapter remains the source of typed provenance. Registry and independent scientific records are loaded as data. No expected outputs or case corpus belong in runtime imports. Envelope content hashes invalidate stale approvals. Legacy/R2/R3 entry points preserve historical behavior; R4 is a versioned successor rather than retroactively rewriting their metrics.
+
+Responsibilities: admissibility, concrete composition, candidate comparison, progression/regression, essential-stimulus preservation, current/individual response, priority/trade-offs, smallest sufficient intervention, explicit uncertainty, prospective review. It cannot invent physiology, diagnosis, capacity, clinical clearance or scientific approval. A proposed recipe is a coaching inference inside an approved space, not an observed fact or an individually proven outcome.
+
+Outputs preserve officialPlanState, appliedState and completed actual work. No UI, Figma, KMP, production or real-user effect exists. Node24 remains the conformance reference. R4 artifacts are internal candidate implementation/evidence, not Product Truth or clinical/empirical validation. The registry familyCoverage and OPEN_GAPS delimit what remains incomplete.

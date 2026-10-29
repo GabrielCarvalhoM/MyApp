@@ -1,0 +1,100 @@
+{
+ "probe": "R7AB-QE-P45",
+ "runtime": "LIVE",
+ "cases": {
+  "C1_endOntoTuesday": {
+   "status": "ASK/ASK",
+   "missing": [
+    "interruption.startDate",
+    "interruption.endDate"
+   ],
+   "reason": "This correction puts the interruption first reported on 2026-12-07 from 2026-11-21 to 2026-12-08, but training recorded after its return began (2026-12-08) woul",
+   "decision": null
+  },
+  "C2_afterReentryStartedAt": {
+   "status": "ASK/ASK",
+   "missing": [
+    "interruption.startDate",
+    "interruption.endDate"
+   ],
+   "reason": "This correction puts the interruption first reported on 2026-12-07 from 2026-12-10 to 2026-12-11, but training recorded after its return began (2026-12-08, 2026",
+   "decision": null
+  },
+  "C3_daysOnlyFriday": {
+   "status": "ASK/ASK",
+   "missing": [
+    "interruption.startDate",
+    "interruption.endDate"
+   ],
+   "reason": "This correction puts the interruption first reported on 2026-12-07 from 2026-11-23 to 2026-12-10, but training recorded after its return began (2026-12-08, 2026",
+   "decision": null
+  },
+  "C4_startEarlier": {
+   "status": "ASK/ASK",
+   "missing": [
+    "interruption.startedAt"
+   ],
+   "reason": "A strength session was recorded on 2026-11-14, the day the interruption began, and whether it came before the interruption changes the state the return starts f",
+   "decision": null
+  },
+  "C5_endEarlier": {
+   "status": "MODIFY/REESTABLISH",
+   "missing": [],
+   "reason": "moderate nonclinical interruption (15 days): re-entry from the reviewed entry dose, returning to the prior tolerated dose in 2 conditional steps",
+   "decision": {
+    "eventId": "qa1-28",
+    "asOf": "2026-12-11T06:00:00.000Z",
+    "fromWeek": 5,
+    "relation": "SAME_BREAK",
+    "basis": "EXPLICIT",
+    "episode": "qa1-20",
+    "revision": 2,
+    "supersedes": "qa1-20",
+    "start": "2026-11-21",
+    "end": "2026-12-05",
+    "class": "MODERATE",
+    "stateAt": {
+     "kind": "WEEK_START",
+     "week": 2,
+     "eventId": null,
+     "sameDay": true,
+     "reportedAfterStart": false
+    }
+   }
+  },
+  "C6_byReportIdEndWednesday": {
+   "status": "ASK/ASK",
+   "missing": [
+    "interruption.startDate",
+    "interruption.endDate"
+   ],
+   "reason": "This correction puts the interruption first reported on 2026-12-07 from 2026-11-21 to 2026-12-09, but training recorded after its return began (2026-12-08, 2026",
+   "decision": null
+  },
+  "C7_endOntoTuesdayBeforeTraining": {
+   "status": "MODIFY/REESTABLISH",
+   "missing": [],
+   "reason": "moderate nonclinical interruption (17 days): re-entry from the reviewed entry dose, returning to the prior tolerated dose in 2 conditional steps",
+   "decision": {
+    "eventId": "qa1-30",
+    "asOf": "2026-12-08T05:00:00.000Z",
+    "fromWeek": 5,
+    "relation": "SAME_BREAK",
+    "basis": "EXPLICIT",
+    "episode": "qa1-20",
+    "revision": 2,
+    "supersedes": "qa1-20",
+    "start": "2026-11-21",
+    "end": "2026-12-07",
+    "class": "MODERATE",
+    "stateAt": {
+     "kind": "WEEK_START",
+     "week": 2,
+     "eventId": null,
+     "sameDay": true,
+     "reportedAfterStart": false
+    }
+   }
+  }
+ }
+}

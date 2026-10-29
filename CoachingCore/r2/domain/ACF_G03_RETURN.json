@@ -1,0 +1,353 @@
+{
+  "revision": "DCR2-SCI-r2",
+  "status": "CANDIDATE_PENDING_INDEPENDENT_SSCTR",
+  "authority": "OFFLINE_REFERENCE_ORACLE_ONLY",
+  "authorInstance": "/root/science_synthesis",
+  "population": "Adult recreational V1, modality-specific novice/intermediate; explicitly nonclinical eligibility/context; no current injury/illness/persistent pain or clearance-dependent return",
+  "commonRequiredInputs": [
+    "age/adult status",
+    "explicit restriction/symptom assessment and provenance",
+    "per-modality experience",
+    "goal and priority",
+    "current schedule/time/equipment",
+    "current prescription revision and performed history where relevant",
+    "athlete agency and selected horizon"
+  ],
+  "commonGuards": [
+    "Missing eligibility -> ASK / ELIGIBILITY_UNASSESSED; no presumed health or disease",
+    "Clinical dependency -> CLINICAL_HUMAN_REQUIRED, no dose substitution",
+    "No mutation of completed work, official plan or applied state",
+    "New prescription is a proposal at most; independent SSCTR and complete runtime binding required",
+    "No simultaneous novel Run and Strength progression",
+    "No automatic compensation for missed optional work",
+    "Operational witness counts/time bounds are DECIDED protocol eligibility, not universal physiological thresholds"
+  ],
+  "reviewExpiry": {
+    "owner": "Chief + independent SSCTR",
+    "trigger": [
+      "material policy/recipe/calibration/population change",
+      "new applicable synthesis/correction/retraction",
+      "contradictory comparable response",
+      "adverse event",
+      "human funding declaration and revalidation"
+    ]
+  },
+  "humanRevalidation": "Author creates no approval or queue item. Chief queues only actual independent prescriptive approvals.",
+  "provenance": "All witness inputs are synthetic unless explicitly labelled athlete-reported or task demonstration; synthetic traces test conformance, not efficacy/safety.",
+  "gap": "ACF-G03",
+  "title": "Nonclinical return after pause",
+  "principle": "Retain old configuration context, re-establish present load/effort; never old fitness times a percentage.",
+  "policies": [
+    {
+      "policyId": "R2-P09",
+      "revision": "DCR2-SCI-r2",
+      "gap": "ACF-G03",
+      "title": "Nonclinical Run re-entry with present capacity re-established",
+      "request": "RETURN_RUN",
+      "status": "CANDIDATE_PENDING_INDEPENDENT_SSCTR",
+      "eligibility": "Adult recreational V1, modality-specific novice/intermediate; explicitly nonclinical eligibility/context; no current injury/illness/persistent pain or clearance-dependent return",
+      "requiredInputs": [
+        "reason explicitly nonclinical (e.g. travel/time) and interruption dates/days",
+        "prior familiar modality/session/configuration",
+        "currentRunMinutes >=20 and capacityEstablishedToday true with comfortable speech",
+        "no clinical symptoms or clinical-return dependency"
+      ],
+      "guards": [
+        "Short/moderate are descriptive interruption bands, never a dosing formula",
+        "Old race/HR/pace and prior45min are not present capacity",
+        "Unknown current capacity -> establishment path only if its own complete eligibility; otherwise ASK"
+      ],
+      "finiteCandidates": [
+        {
+          "recipeId": "R2-RETURN-RUN-20",
+          "modality": "RUN",
+          "family": "NONCLINICAL_REENTRY",
+          "prescription": {
+            "durationMinutes": 20,
+            "targetMethod": "COMFORTABLE_CONVERSATION",
+            "paceTarget": null,
+            "hrTarget": null
+          }
+        }
+      ],
+      "decisionRule": "Propose20min easy familiar present-capacity session; observe response before next step. Unknown current capacity never gets20 by default.",
+      "claims": [
+        "C06",
+        "C10"
+      ],
+      "sources": [
+        "R2-S12",
+        "R2-S13",
+        "R2-S09",
+        "R2-S10"
+      ],
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS_FOR_FRAMEWORK_ONLY",
+      "exactDoseEvidence": "PRESENT_DEMONSTRATED_CAPACITY_SELECTION; framework transfer only, not physiological return validation",
+      "nextCheck": "Record actual task/configuration/dose, technique/effort and current symptoms after execution and before next dependent session; contradictory response disables escalation.",
+      "fallback": "ASK missing decision-changing input; HOLD unsupported/uncalibrated dose; clinical dependency CLINICAL_HUMAN_REQUIRED.",
+      "essentialStimulus": "Re-establish continuous familiar easy exposure at present demonstrated ability.",
+      "trajectory": "prior history -> current20min establishment -> actual execution/recovery -> repeat or separately reviewed P08 candidate; no universal return percentage",
+      "smallerAlternatives": [
+        {
+          "candidate": "ASK",
+          "result": "Required if interruption reason, eligibility or present capacity absent."
+        },
+        {
+          "candidate": "Old normal week",
+          "result": "Unsupported transfer of pre-pause fitness."
+        }
+      ],
+      "counterevidence": "Detraining responses differ; small single-exercise retraining trials cannot supply a hybrid return law.",
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "Bounded protocol selection with explicit individual context; exact dose/effect remains unvalidated."
+      },
+      "runtimeBinding": {
+        "registry": "CoachingCore/r2/POSITIVE_PRESCRIPTION_REGISTRY.json",
+        "inputSchema": "CoachingCore/r2/SHADOW_INPUT_R2_SCHEMA.json",
+        "semanticsVsTransport": "requiredInputs are domain requirements; only fieldCrosswalk entries name transport fields. No undocumented field is treated as an existing API property.",
+        "recipeIdAliases": {
+          "R2-RETURN-RUN-20": "R2-EASY-20"
+        },
+        "fieldCrosswalk": {
+          "reason": "event.facts.reason",
+          "current capability": "event.facts.currentRunMinutes && capacityEstablishedToday && currentComfortableTalk"
+        },
+        "authority": "Integrated registry exact recipe and current independent SSCTR disposition govern execution. Alias/composition is not an additional dose or independent approval."
+      }
+    },
+    {
+      "policyId": "R2-P10",
+      "revision": "DCR2-SCI-r2",
+      "gap": "ACF-G03",
+      "title": "Nonclinical Strength re-entry with loads re-established now",
+      "request": "RETURN_STRENGTH",
+      "status": "CANDIDATE_PENDING_INDEPENDENT_SSCTR",
+      "eligibility": "Adult recreational V1, modality-specific novice/intermediate; explicitly nonclinical eligibility/context; no current injury/illness/persistent pain or clearance-dependent return",
+      "requiredInputs": [
+        "explicit nonclinical interruption reason/dates",
+        "prior familiar configurations",
+        "all four current numerical loads and technique demonstrated today",
+        "nonconsecutive schedule and capacity to perform1x8 per task"
+      ],
+      "guards": [
+        "No old-load percentage or automatic prior full week",
+        "Current machine/settings must match",
+        "Unknown present capacity/competence -> ASK, not pseudo-low load"
+      ],
+      "finiteCandidates": [
+        {
+          "recipeId": "R2-RETURN-ST-1X8",
+          "modality": "STRENGTH",
+          "family": "NONCLINICAL_REENTRY",
+          "prescription": {
+            "days": [
+              "TUE",
+              "FRI"
+            ],
+            "exercises": [
+              {
+                "exercise": "legPress",
+                "sets": 1,
+                "reps": 8,
+                "loadKgFrom": "facts.loadsKg.legPress",
+                "restSeconds": 120
+              },
+              {
+                "exercise": "machineChestPress",
+                "sets": 1,
+                "reps": 8,
+                "loadKgFrom": "facts.loadsKg.machineChestPress",
+                "restSeconds": 120
+              },
+              {
+                "exercise": "seatedCableRow",
+                "sets": 1,
+                "reps": 8,
+                "loadKgFrom": "facts.loadsKg.seatedCableRow",
+                "restSeconds": 120
+              },
+              {
+                "exercise": "seatedLegCurl",
+                "sets": 1,
+                "reps": 8,
+                "loadKgFrom": "facts.loadsKg.seatedLegCurl",
+                "restSeconds": 120
+              }
+            ],
+            "rirTarget": null,
+            "loadSelection": "CURRENT_ESTABLISHED_LOADS_NOT_OLD_MAXIMUM"
+          }
+        }
+      ],
+      "decisionRule": "Select exact present-load1x8 re-entry exposure, then observe before further sessions/progression; other modality is assessed independently.",
+      "claims": [
+        "C02",
+        "C03",
+        "C06"
+      ],
+      "sources": [
+        "R2-S03",
+        "R2-S04",
+        "R2-S11",
+        "R2-S12",
+        "R2-S13"
+      ],
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS_FOR_FRAMEWORK_ONLY",
+      "exactDoseEvidence": "CANDIDATE_REENTRY_PROTOCOL; P02 approval does not automatically approve post-pause transfer",
+      "nextCheck": "Record actual task/configuration/dose, technique/effort and current symptoms after execution and before next dependent session; contradictory response disables escalation.",
+      "fallback": "ASK missing decision-changing input; HOLD unsupported/uncalibrated dose; clinical dependency CLINICAL_HUMAN_REQUIRED.",
+      "essentialStimulus": "Familiar movement exposure at current load; no promise to preserve all previous adaptations.",
+      "trajectory": "prior configuration -> current load establishment ->1x8 -> per-task response -> repeat or own admissible next-step recipe",
+      "smallerAlternatives": [
+        {
+          "candidate": "ASK task establishment",
+          "result": "Required for any unknown load/competence."
+        },
+        {
+          "candidate": "Full former3x8",
+          "result": "Present tolerance not established."
+        }
+      ],
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "Bounded protocol selection with explicit individual context; exact dose/effect remains unvalidated."
+      },
+      "runtimeBinding": {
+        "registry": "CoachingCore/r2/POSITIVE_PRESCRIPTION_REGISTRY.json",
+        "inputSchema": "CoachingCore/r2/SHADOW_INPUT_R2_SCHEMA.json",
+        "semanticsVsTransport": "requiredInputs are domain requirements; only fieldCrosswalk entries name transport fields. No undocumented field is treated as an existing API property.",
+        "recipeIdAliases": {
+          "R2-RETURN-ST-1X8": "R2-ST-EST-1X8"
+        },
+        "fieldCrosswalk": {
+          "current config/load": "event.facts.currentConfigurationDemonstrated && currentLoadEstablished",
+          "current numeric loads": "event.facts.loadsKg"
+        },
+        "authority": "Integrated registry exact recipe and current independent SSCTR disposition govern execution. Alias/composition is not an additional dose or independent approval."
+      }
+    }
+  ],
+  "openPortions": [
+    "Unknown current capacity without establishment inputs",
+    "Clinical/illness/injury return",
+    "Duration-based universal return algorithm",
+    "Full hybrid re-entry week without two modality-specific current establishments"
+  ],
+  "evidenceState": "EVIDENCE_PARTIAL_PROCEED_AS_EXPERIMENT_FOR_OFFLINE_PROTOCOLS",
+  "decisiveClaims": [
+    {
+      "id": "C02",
+      "text": "Healthy adults can benefit from multiple RT configurations; low-volume establishment is possible, but exact1x8/120s first-week adequacy is a protocol choice.",
+      "classification": "INFERRED",
+      "evidence_status": "SUPPORTED_WITH_LIMITS",
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "Current position stand and NMA support broad RT approaches; exact protocol and hybrid transfer not tested."
+      },
+      "sources": [
+        "R2-S03",
+        "R2-S04"
+      ],
+      "counterevidence": [
+        "R2-S03 limitations: supervised chronic studies; many acute variables not analysed"
+      ],
+      "population": "Healthy adult RT novice/intermediate; no autonomous unsupervised safety inference",
+      "horizon": "Chronic framework with acute indirectness",
+      "decision": [
+        "R2-P02",
+        "R2-P03",
+        "R2-P06",
+        "R2-P10"
+      ],
+      "limits": "1set is establishment, not full hypertrophy optimization; no precise load generated from class. S03/S04 overlap."
+    },
+    {
+      "id": "C03",
+      "text": "RIR and task technique require configuration-specific interpretation; RIR2/4 cannot be presumed accurate from experience label.",
+      "classification": "INFERRED",
+      "evidence_status": "SUPPORTED_WITH_LIMITS",
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "Current supervised primary study demonstrates persistent task/target error despite practice."
+      },
+      "sources": [
+        "R2-S11",
+        "R2-S04"
+      ],
+      "counterevidence": [
+        "R2-S11: practice improved accuracy but did not establish universal precise transfer"
+      ],
+      "population": "Recreational adults; limited direct transfer to novice4-machine or squat",
+      "horizon": "Within-session effort and multiweek skill",
+      "decision": [
+        "R2-P01",
+        "R2-P02",
+        "R2-P03",
+        "R2-P06",
+        "R2-P10",
+        "R2-P14"
+      ],
+      "limits": "Do not reproduce repeated failure-test protocol; numeric target emitted only when explicit task-specific calibration supplied."
+    },
+    {
+      "id": "C06",
+      "text": "Prior tolerance can retain configuration/history context after a nonclinical pause but cannot establish current capacity or a universal return percentage.",
+      "classification": "INFERRED",
+      "evidence_status": "SUPPORTED_WITH_LIMITS",
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "Detraining literature shows variable loss; no direct recipe law; present demonstrated capacity is deliberately required."
+      },
+      "sources": [
+        "R2-S12"
+      ],
+      "contextSources": [
+        "R2-S13"
+      ],
+      "counterevidence": [
+        "R2-S13: small bench-only retraining can recover; this does not specify first-return hybrid dose"
+      ],
+      "population": "Previously familiar recreational adult; interruption reason explicitly nonclinical",
+      "horizon": "First return session/week",
+      "decision": [
+        "R2-P09",
+        "R2-P10"
+      ],
+      "limits": "Unknown present capacity -> ASK/own establishment. Clinical return stays human. Days since pause are descriptive, not dosing parameter."
+    },
+    {
+      "id": "C10",
+      "text": "CS, LT2, MLSS, race pace and familiar field-session targets must remain distinct, with method-specific calibration and comparison.",
+      "classification": "INFERRED",
+      "evidence_status": "SUPPORTED_WITH_LIMITS",
+      "confidence": {
+        "level": "HIGH",
+        "rationale": "Current open scoping review directly rejects interchangeability; measurement protocols/context vary."
+      },
+      "sources": [
+        "R2-S09"
+      ],
+      "contextSources": [
+        "R2-S10"
+      ],
+      "counterevidence": [
+        "R2-S09: methods can be correlated and useful yet not interchangeable; scoping appraisal not formal causal synthesis"
+      ],
+      "population": "Running measurement; no generic first-ever hard-session calibration",
+      "horizon": "Calibration and repeated comparison",
+      "decision": [
+        "R2-P07",
+        "R2-P08",
+        "R2-P09",
+        "R2-P11",
+        "R2-P12",
+        "R2-P13",
+        "R2-P14"
+      ],
+      "limits": "HR/RPE/pace/power do not turn labels into physiological constructs by default. No arbitrary target crosswalk."
+    }
+  ],
+  "transportCrosswalk": "Domain requiredInputs are semantic requirements; per-policy runtimeBinding maps transport fields and recipe aliases. Current exact integrated registry and independent disposition govern execution."
+}
+

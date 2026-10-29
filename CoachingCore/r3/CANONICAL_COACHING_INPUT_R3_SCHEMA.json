@@ -1,0 +1,1109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vilumo.local/reference/CANONICAL_COACHING_INPUT_R3_SCHEMA.json",
+  "title": "Vilumo canonical coaching input R3 — synthetic shadow reference only",
+  "description": "Transport-valid representation does not establish sporting sufficiency, eligibility, policy approval or efficacy. Canonical facts are lossless typed JSON-pointer terminal cells; structured contexts are representation-only projections. Unknown, absent, not-applicable and origin are explicit. No date, age, dose, threshold or sporting necessity default is authorized.",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": "3.0.0"
+    },
+    "synthetic": {
+      "const": true
+    },
+    "purpose": {
+      "const": "SHADOW_REFERENCE"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "corpusId",
+        "version",
+        "caseId",
+        "factsHash"
+      ],
+      "properties": {
+        "corpusId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "caseId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "factsHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "declaredFactsHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "facts": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "pattern": "^(?:/(?:[^~]|~[01])*)*$"
+      },
+      "additionalProperties": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/factCell"
+          },
+          {
+            "properties": {
+              "value": {
+                "type": [
+                  "null",
+                  "boolean",
+                  "number",
+                  "string",
+                  "array",
+                  "object"
+                ],
+                "maxItems": 0,
+                "maxProperties": 0
+              }
+            }
+          }
+        ]
+      }
+    },
+    "structuredContexts": {
+      "type": "object",
+      "properties": {
+        "request": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "$ref": "#/$defs/stringCell"
+            },
+            "family": {
+              "$ref": "#/$defs/stringCell"
+            }
+          },
+          "required": [
+            "kind",
+            "family"
+          ],
+          "additionalProperties": false
+        },
+        "athlete": {
+          "type": "object",
+          "properties": {
+            "ageBand": {
+              "$ref": "#/$defs/stringCell"
+            },
+            "priority": {
+              "$ref": "#/$defs/stringCell"
+            },
+            "participation": {
+              "$ref": "#/$defs/stringCell"
+            },
+            "dataTier": {
+              "$ref": "#/$defs/stringCell"
+            },
+            "historyOrigin": {
+              "$ref": "#/$defs/stringCell"
+            },
+            "ageYears": {
+              "$ref": "#/$defs/numberCell"
+            },
+            "modalities": {
+              "type": "object",
+              "properties": {
+                "run": {
+                  "type": "object",
+                  "properties": {
+                    "experience": {
+                      "$ref": "#/$defs/stringCell"
+                    },
+                    "competence": {
+                      "$ref": "#/$defs/stringCell"
+                    }
+                  },
+                  "required": [
+                    "experience",
+                    "competence"
+                  ],
+                  "additionalProperties": false
+                },
+                "strength": {
+                  "type": "object",
+                  "properties": {
+                    "experience": {
+                      "$ref": "#/$defs/stringCell"
+                    },
+                    "competence": {
+                      "$ref": "#/$defs/stringCell"
+                    }
+                  },
+                  "required": [
+                    "experience",
+                    "competence"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "run",
+                "strength"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "ageBand",
+            "priority",
+            "participation",
+            "dataTier",
+            "historyOrigin",
+            "ageYears",
+            "modalities"
+          ],
+          "additionalProperties": false
+        },
+        "eligibility": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "$ref": "#/$defs/stringCell"
+            },
+            "source": {
+              "$ref": "#/$defs/stringCell"
+            },
+            "clinicalConcern": {
+              "$ref": "#/$defs/booleanCell"
+            },
+            "pain": {
+              "$ref": "#/$defs/booleanCell"
+            },
+            "persistentPain": {
+              "$ref": "#/$defs/booleanCell"
+            },
+            "injury": {
+              "$ref": "#/$defs/booleanCell"
+            },
+            "illness": {
+              "$ref": "#/$defs/booleanCell"
+            },
+            "functionalLimitation": {
+              "$ref": "#/$defs/booleanCell"
+            },
+            "clearanceClaim": {
+              "$ref": "#/$defs/booleanCell"
+            }
+          },
+          "required": [
+            "status",
+            "source",
+            "clinicalConcern",
+            "pain",
+            "persistentPain",
+            "injury",
+            "illness",
+            "functionalLimitation",
+            "clearanceClaim"
+          ],
+          "additionalProperties": false
+        },
+        "plan": {
+          "type": "object",
+          "properties": {
+            "officialPlan": {
+              "$ref": "#/$defs/factCell"
+            },
+            "officialRunWeek": {
+              "$ref": "#/$defs/factCell"
+            }
+          },
+          "required": [
+            "officialPlan",
+            "officialRunWeek"
+          ],
+          "additionalProperties": false
+        },
+        "goals": {
+          "type": "object",
+          "properties": {
+            "onboarding": {
+              "$ref": "#/$defs/factCell"
+            },
+            "phase": {
+              "$ref": "#/$defs/factCell"
+            },
+            "goal": {
+              "$ref": "#/$defs/factCell"
+            }
+          },
+          "required": [
+            "onboarding",
+            "phase",
+            "goal"
+          ],
+          "additionalProperties": false
+        },
+        "equipment": {
+          "type": "object",
+          "properties": {
+            "onboarding": {
+              "$ref": "#/$defs/factCell"
+            },
+            "movementKnowledge": {
+              "$ref": "#/$defs/factCell"
+            }
+          },
+          "required": [
+            "onboarding",
+            "movementKnowledge"
+          ],
+          "additionalProperties": false
+        },
+        "event": {
+          "type": "object",
+          "properties": {
+            "day": {
+              "$ref": "#/$defs/stringCell"
+            },
+            "completedAt": {
+              "$ref": "#/$defs/stringCell"
+            },
+            "priority": {
+              "$ref": "#/$defs/stringCell"
+            },
+            "goal": {
+              "$ref": "#/$defs/stringCell"
+            },
+            "priorityWindow": {
+              "$ref": "#/$defs/stringCell"
+            },
+            "actualEffort": {
+              "$ref": "#/$defs/stringCell"
+            },
+            "distanceKm": {
+              "$ref": "#/$defs/numberCell"
+            },
+            "athleteConfirmed": {
+              "$ref": "#/$defs/booleanCell"
+            },
+            "firstAtDistance": {
+              "$ref": "#/$defs/booleanCell"
+            }
+          },
+          "required": [
+            "day",
+            "completedAt",
+            "priority",
+            "goal",
+            "priorityWindow",
+            "actualEffort",
+            "distanceKm",
+            "athleteConfirmed",
+            "firstAtDistance"
+          ],
+          "additionalProperties": false
+        },
+        "interruption": {
+          "type": "object",
+          "properties": {
+            "reason": {
+              "$ref": "#/$defs/stringCell"
+            },
+            "exposureDuringPause": {
+              "$ref": "#/$defs/stringCell"
+            },
+            "durationDays": {
+              "$ref": "#/$defs/numberCell"
+            },
+            "nonclinical": {
+              "$ref": "#/$defs/booleanCell"
+            },
+            "actualExposureKnown": {
+              "$ref": "#/$defs/booleanCell"
+            }
+          },
+          "required": [
+            "reason",
+            "exposureDuringPause",
+            "durationDays",
+            "nonclinical",
+            "actualExposureKnown"
+          ],
+          "additionalProperties": false
+        },
+        "calibration": {
+          "type": "object",
+          "properties": {
+            "method": {
+              "$ref": "#/$defs/stringCell"
+            },
+            "source": {
+              "$ref": "#/$defs/stringCell"
+            },
+            "construct": {
+              "$ref": "#/$defs/stringCell"
+            },
+            "available": {
+              "$ref": "#/$defs/stringsCell"
+            },
+            "unavailable": {
+              "$ref": "#/$defs/stringsCell"
+            },
+            "sourcePaths": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          "required": [
+            "method",
+            "source",
+            "construct",
+            "available",
+            "unavailable",
+            "sourcePaths"
+          ],
+          "additionalProperties": false
+        },
+        "recovery": {
+          "type": "object",
+          "properties": {
+            "local": {
+              "$ref": "#/$defs/stringCell"
+            },
+            "systemic": {
+              "$ref": "#/$defs/stringCell"
+            },
+            "warmup": {
+              "$ref": "#/$defs/stringCell"
+            },
+            "currentCapacity": {
+              "$ref": "#/$defs/stringCell"
+            },
+            "currentFunction": {
+              "$ref": "#/$defs/stringCell"
+            },
+            "ordinaryFunction": {
+              "$ref": "#/$defs/stringCell"
+            },
+            "subjectiveRecovery": {
+              "$ref": "#/$defs/stringCell"
+            },
+            "clinicalConcern": {
+              "$ref": "#/$defs/booleanCell"
+            },
+            "pain": {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/factCell"
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "status": {
+                        "const": "KNOWN"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "value": {
+                        "type": [
+                          "boolean",
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                }
+              ]
+            },
+            "observationSourcePaths": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          "required": [
+            "local",
+            "systemic",
+            "warmup",
+            "currentCapacity",
+            "currentFunction",
+            "ordinaryFunction",
+            "subjectiveRecovery",
+            "clinicalConcern",
+            "pain",
+            "observationSourcePaths"
+          ],
+          "additionalProperties": false
+        },
+        "history": {
+          "type": "object",
+          "properties": {
+            "sourcePaths": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            },
+            "learningConsent": {
+              "$ref": "#/$defs/booleanCell"
+            },
+            "causalityEstablished": {
+              "$ref": "#/$defs/booleanCell"
+            },
+            "observational": {
+              "$ref": "#/$defs/booleanCell"
+            }
+          },
+          "required": [
+            "sourcePaths",
+            "learningConsent",
+            "causalityEstablished",
+            "observational"
+          ],
+          "additionalProperties": false
+        },
+        "schedule": {
+          "type": "object",
+          "properties": {
+            "timeBasis": {
+              "enum": [
+                "LOCAL_UNANCHORED",
+                "LOCAL_DATE_ANCHORED"
+              ]
+            },
+            "evaluationTime": {
+              "$ref": "#/$defs/stringCell"
+            },
+            "localDate": {
+              "$ref": "#/$defs/stringCell"
+            },
+            "timezone": {
+              "$ref": "#/$defs/stringCell"
+            },
+            "availability": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "sourcePath": {
+                    "type": "string"
+                  },
+                  "day": {
+                    "$ref": "#/$defs/stringCell"
+                  },
+                  "startLocal": {
+                    "$ref": "#/$defs/stringCell"
+                  },
+                  "endLocal": {
+                    "$ref": "#/$defs/stringCell"
+                  },
+                  "capacityMinutes": {
+                    "$ref": "#/$defs/numberCell"
+                  },
+                  "startMinute": {
+                    "$ref": "#/$defs/numberCell"
+                  },
+                  "endMinute": {
+                    "$ref": "#/$defs/numberCell"
+                  }
+                },
+                "required": [
+                  "sourcePath",
+                  "day",
+                  "startLocal",
+                  "endLocal",
+                  "capacityMinutes",
+                  "startMinute",
+                  "endMinute"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "timeBasis",
+            "evaluationTime",
+            "localDate",
+            "timezone",
+            "availability"
+          ],
+          "additionalProperties": false
+        },
+        "sessions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "sourcePath": {
+                "type": "string"
+              },
+              "modality": {
+                "enum": [
+                  "RUN",
+                  "WALK",
+                  "STRENGTH",
+                  "UNSPECIFIED"
+                ]
+              },
+              "role": {
+                "enum": [
+                  "PLANNED",
+                  "COMPLETED",
+                  "CANDIDATE",
+                  "HISTORICAL"
+                ]
+              },
+              "family": {
+                "$ref": "#/$defs/stringCell"
+              },
+              "exercise": {
+                "$ref": "#/$defs/stringCell"
+              },
+              "recipeReference": {
+                "$ref": "#/$defs/stringCell"
+              },
+              "sourceKind": {
+                "$ref": "#/$defs/stringCell"
+              },
+              "optional": {
+                "$ref": "#/$defs/booleanCell"
+              },
+              "dose": {
+                "type": "object",
+                "properties": {
+                  "durationMinutes": {
+                    "$ref": "#/$defs/numberCell"
+                  },
+                  "minutes": {
+                    "$ref": "#/$defs/numberCell"
+                  },
+                  "warmupMinutes": {
+                    "$ref": "#/$defs/numberCell"
+                  },
+                  "workMinutes": {
+                    "$ref": "#/$defs/numberCell"
+                  },
+                  "workMinutesEach": {
+                    "$ref": "#/$defs/numberCell"
+                  },
+                  "repetitions": {
+                    "$ref": "#/$defs/numberCell"
+                  },
+                  "recoveryMinutes": {
+                    "$ref": "#/$defs/numberCell"
+                  },
+                  "cooldownMinutes": {
+                    "$ref": "#/$defs/numberCell"
+                  },
+                  "secondsEach": {
+                    "$ref": "#/$defs/numberCell"
+                  },
+                  "paceSecondsPerKm": {
+                    "$ref": "#/$defs/numberCell"
+                  },
+                  "sets": {
+                    "$ref": "#/$defs/numberCell"
+                  },
+                  "setsEach": {
+                    "$ref": "#/$defs/numberCell"
+                  },
+                  "reps": {
+                    "allOf": [
+                      {
+                        "$ref": "#/$defs/factCell"
+                      },
+                      {
+                        "if": {
+                          "properties": {
+                            "status": {
+                              "const": "KNOWN"
+                            }
+                          }
+                        },
+                        "then": {
+                          "properties": {
+                            "value": {
+                              "anyOf": [
+                                {
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "number",
+                                    "minimum": 0
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "loadKg": {
+                    "$ref": "#/$defs/numberCell"
+                  },
+                  "loadKgPerHand": {
+                    "$ref": "#/$defs/numberCell"
+                  },
+                  "targetRir": {
+                    "$ref": "#/$defs/numberCell"
+                  },
+                  "restSeconds": {
+                    "$ref": "#/$defs/numberCell"
+                  },
+                  "plannedMinutes": {
+                    "$ref": "#/$defs/numberCell"
+                  },
+                  "actualMinutes": {
+                    "$ref": "#/$defs/numberCell"
+                  },
+                  "distanceKm": {
+                    "$ref": "#/$defs/numberCell"
+                  },
+                  "timeMinutes": {
+                    "$ref": "#/$defs/numberCell"
+                  },
+                  "actualWorkMinutes": {
+                    "allOf": [
+                      {
+                        "$ref": "#/$defs/factCell"
+                      },
+                      {
+                        "if": {
+                          "properties": {
+                            "status": {
+                              "const": "KNOWN"
+                            }
+                          }
+                        },
+                        "then": {
+                          "properties": {
+                            "value": {
+                              "type": "array",
+                              "items": {
+                                "type": "number",
+                                "minimum": 0
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "durationMinutes",
+                  "minutes",
+                  "warmupMinutes",
+                  "workMinutes",
+                  "workMinutesEach",
+                  "repetitions",
+                  "recoveryMinutes",
+                  "cooldownMinutes",
+                  "secondsEach",
+                  "paceSecondsPerKm",
+                  "sets",
+                  "setsEach",
+                  "reps",
+                  "loadKg",
+                  "loadKgPerHand",
+                  "targetRir",
+                  "restSeconds",
+                  "plannedMinutes",
+                  "actualMinutes",
+                  "distanceKm",
+                  "timeMinutes",
+                  "actualWorkMinutes"
+                ],
+                "additionalProperties": false
+              },
+              "timing": {
+                "type": "object",
+                "properties": {
+                  "day": {
+                    "$ref": "#/$defs/stringCell"
+                  },
+                  "startLocal": {
+                    "$ref": "#/$defs/stringCell"
+                  },
+                  "startMinute": {
+                    "$ref": "#/$defs/numberCell"
+                  }
+                },
+                "required": [
+                  "day",
+                  "startLocal",
+                  "startMinute"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "sourcePath",
+              "modality",
+              "role",
+              "family",
+              "exercise",
+              "recipeReference",
+              "sourceKind",
+              "optional",
+              "dose",
+              "timing"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "request",
+        "athlete",
+        "eligibility",
+        "plan",
+        "goals",
+        "equipment",
+        "event",
+        "interruption",
+        "calibration",
+        "recovery",
+        "history",
+        "schedule",
+        "sessions"
+      ],
+      "additionalProperties": false
+    },
+    "adapter": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "3.0.0"
+        },
+        "blocked": {
+          "type": "boolean"
+        },
+        "trace": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "operation": {
+                "enum": [
+                  "COPY",
+                  "NULL_AS_UNKNOWN",
+                  "UNKNOWN_TOKEN_PRESERVED",
+                  "MARK_ABSENT",
+                  "BIND_SOURCE",
+                  "HHMM_TO_LOCAL_MINUTE",
+                  "OBJECT_KEY_TO_LOCAL_DAY"
+                ]
+              },
+              "sourcePaths": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string"
+                }
+              },
+              "targetPath": {
+                "type": "string"
+              },
+              "detail": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "operation",
+              "sourcePaths",
+              "targetPath",
+              "detail"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "sourcePaths": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "detail": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "code",
+              "sourcePaths",
+              "detail"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "conflicts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "sourcePaths": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "detail": {
+                "type": "string"
+              },
+              "requiresResolution": {
+                "const": true
+              }
+            },
+            "required": [
+              "code",
+              "sourcePaths",
+              "detail",
+              "requiresResolution"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "version",
+        "blocked",
+        "trace",
+        "warnings",
+        "conflicts"
+      ],
+      "additionalProperties": false
+    },
+    "structure": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "pattern": "^(?:/(?:[^~]|~[01])*)*$"
+      },
+      "additionalProperties": {
+        "enum": [
+          "OBJECT",
+          "ARRAY"
+        ]
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "synthetic",
+    "purpose",
+    "source",
+    "facts",
+    "structuredContexts",
+    "adapter",
+    "structure"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "factCell": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "ABSENT",
+            "UNKNOWN",
+            "NOT_APPLICABLE",
+            "KNOWN"
+          ]
+        },
+        "origin": {
+          "enum": [
+            "UNSPECIFIED",
+            "MEASURED",
+            "SELF_REPORTED",
+            "EXPLICIT_SYNTHETIC",
+            "INFERRED",
+            "HISTORICAL_LEARNED_PATTERN"
+          ]
+        },
+        "sourcePath": {
+          "type": "string",
+          "pattern": "^(?:/(?:[^~]|~[01])*)*$"
+        },
+        "value": {},
+        "derivation": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "status",
+        "origin",
+        "sourcePath"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "ABSENT"
+              }
+            }
+          },
+          "then": {
+            "not": {
+              "required": [
+                "value"
+              ]
+            },
+            "properties": {
+              "origin": {
+                "const": "UNSPECIFIED"
+              }
+            }
+          },
+          "else": {
+            "required": [
+              "value"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "origin": {
+                "const": "INFERRED"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "derivation"
+            ]
+          }
+        }
+      ]
+    },
+    "stringCell": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/factCell"
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "KNOWN"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "numberCell": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/factCell"
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "KNOWN"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "booleanCell": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/factCell"
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "KNOWN"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "stringsCell": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/factCell"
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "KNOWN"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

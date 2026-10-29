@@ -1,0 +1,936 @@
+{
+  "fixture_id": "GOLD-SIL-S10-SDC-r1",
+  "revision": "SDC-GOLD-r1",
+  "synthetic": true,
+  "real_athlete_data": false,
+  "human_validation": false,
+  "empirical_product_validation": false,
+  "clinical_clearance": false,
+  "runtime_executed": false,
+  "source_baseline": {
+    "fixture_id": "GOLD-SIL-S10-r4",
+    "source_revision": "AE-CLOSE-20261022-r4",
+    "sha256": "da8ce03564ebf0283291bc8e3199b4693f1a65f45ac8904435eca7e7d6819497",
+    "input_changed": true,
+    "original_is_not_retroactively_closed": true
+  },
+  "status": "AUTHOR_SUBMISSION_PENDING_INDEPENDENT_DISPOSITION",
+  "oracle_kind": "BOUNDED_SYNTHETIC_POLICY_AND_CONTROL_ORACLE_NOT_PHYSIOLOGICAL_EFFICACY_GOLD",
+  "variants": [
+    {
+      "variant_id": "C5-TAPER",
+      "athlete_state": {
+        "fixture_id": "TAPER-A29",
+        "synthetic": true,
+        "age": 29,
+        "population": "adult recreational regular runner and competent strength trainee",
+        "eligibility": {
+          "status": "NONCLINICAL_CONFIRMED",
+          "provenance": "EXPLICIT_SYNTHETIC_TEST_PREMISE_NOT_REAL_CLEARANCE",
+          "facts": [
+            "pause/complaints specifically asked",
+            "no pain, injury, illness, functional limitation, medical restriction or clearance dependency in fixture",
+            "task competence and configuration familiarity supplied"
+          ],
+          "assessment_time": "2026-10-25T12:00:00-03:00"
+        },
+        "experience": {
+          "running": "trained recreational4 years;consistent40-48 km/week inlast6weeks",
+          "strength": "competent familiar S-L60/S-U45",
+          "VO2max": "synthetic measured58ml/kg/min; not eligibility threshold forproduct"
+        },
+        "goals": {
+          "running": "10 kmroadtime-trialevent2026-11-08",
+          "strength": "maintain familiar strength exposure, secondary",
+          "phase": "final7days taper after event moved earlier from Nov22",
+          "event_changed": "confirmed calendar revision2026-11-01"
+        },
+        "essential_stimuli": {
+          "lower": "familiar squat/hinge exposure with sustainable technique/reserve; exact 3rd squat set not always essential",
+          "run": "accepted controlled cruise exposure; 18 min intent or explicit revised reduced-intent candidate",
+          "upper": "general push/pull exposure",
+          "easy": "familiar low-intensity aerobic exposure"
+        },
+        "history": {
+          "prior_taper": "similar20-25min few-work-reps pattern tolerated once for5km, not validated10 kmoptimality",
+          "prior_week": "RunMon45easy,Wed10+3x6+4+5=37cruise,Fri35easy,Sun70easy;lowerTueS-L60,upperSatS-U45;allfamiliar",
+          "limitations": "not race prediction,not elite scope"
+        },
+        "recovery": {
+          "current": "no clinical signal; familiar training but accumulated normal block tiredness",
+          "recheck": "before each taper session; no fixed readiness score"
+        },
+        "intensity_calibration": {
+          "run_ref": "CAL-A-20261012",
+          "method": "synthetic assessed second-turnpoint-compatible effort, verified by familiar field repetitions under comparable conditions",
+          "RPE": "anchored subjective cross-check only, not a transfer of lab threshold",
+          "strength": "estimated RIR after familiar set, technically comfortable; error acknowledged"
+        },
+        "week": [
+          {
+            "session_id": "old-Mon",
+            "time": "2026-11-02T07:00-03:00",
+            "recipe_id": "R-E30",
+            "duration_min": 30
+          },
+          {
+            "session_id": "old-Wed",
+            "time": "2026-11-04T07:00-03:00",
+            "recipe_id": "R-Q18",
+            "duration_min": 37
+          },
+          {
+            "session_id": "old-Fri",
+            "time": "2026-11-06T07:00-03:00",
+            "recipe_id": "R-E30",
+            "duration_min": 30
+          },
+          {
+            "session_id": "old-Sat-lower",
+            "time": "2026-11-07T18:00-03:00",
+            "recipe_id": "S-L60",
+            "duration_min": 60
+          },
+          {
+            "session_id": "race",
+            "time": "2026-11-08T08:00-03:00",
+            "distance_km": 10
+          }
+        ],
+        "horizon": {
+          "start": "2026-11-02",
+          "end": "2026-11-09",
+          "nextkey": "10 kmraceNov8;post-event routine NOT approved by this record"
+        },
+        "schedule": {
+          "availability": [
+            "Mon 18:00-19:00",
+            "Tue 07:00-07:45",
+            "Wed 07:00-07:45",
+            "Wed 18:00-19:00",
+            "Thu 07:00-07:45",
+            "Fri 18:00-18:45"
+          ],
+          "commitments": "four planned sessions already viewed and accepted; no external delivery assumed",
+          "change_cost": "one move needs recommitment but feasible; prefer no unnecessary changes; no fake scalar cost"
+        },
+        "agency": "recommend only; APPLY_PLAN_CHANGE requires current scope/revision confirmation; execution remainder separate intent",
+        "priority_mode": "RUN_FIRST"
+      },
+      "goals_priority": {
+        "running": "10 kmroadtime-trialevent2026-11-08",
+        "strength": "maintain familiar strength exposure, secondary",
+        "phase": "final7days taper after event moved earlier from Nov22",
+        "event_changed": "confirmed calendar revision2026-11-01"
+      },
+      "planned_week": [
+        {
+          "session_id": "old-Mon",
+          "time": "2026-11-02T07:00-03:00",
+          "recipe_id": "R-E30",
+          "duration_min": 30,
+          "concrete_prescription": {
+            "recipe_id": "R-E30",
+            "revision": "SDC-SCI-r1",
+            "sport": "RUNNING",
+            "family": "easy",
+            "dose": {
+              "warmup": "5 min progressive easy included in total",
+              "total_min": 30,
+              "intensity": "comfortable conversational effort; prior familiar flat-route response; no physiological threshold inferred"
+            },
+            "equipment_AND": [
+              "appropriate shoes",
+              "flat accessible route or separately familiar treadmill"
+            ],
+            "essential_stimulus": "familiar easy aerobic exposure without an intensity objective",
+            "limits": "Only already regular runners with comparable 30 min tolerance; not entry for never-runners.",
+            "origin": "NEW_EXPLICIT_SYNTHETIC_REVIEW_CANDIDATE",
+            "runtime_catalog_exists": false,
+            "evidence_dose_status": "CASE_SPECIFIC_EXEMPLAR_NOT_UNIVERSAL_MINIMUM_OR_OPTIMUM",
+            "proposed_disposition": "APPROVE_WITH_CONDITIONS"
+          }
+        },
+        {
+          "session_id": "old-Wed",
+          "time": "2026-11-04T07:00-03:00",
+          "recipe_id": "R-Q18",
+          "duration_min": 37,
+          "concrete_prescription": {
+            "recipe_id": "R-Q18",
+            "revision": "SDC-SCI-r1",
+            "sport": "RUNNING",
+            "family": "calibrated_cruise",
+            "dose": {
+              "warmup_min": 10,
+              "work": {
+                "repeats": 3,
+                "minutes_each": 6
+              },
+              "between_reps_jog_min": 2,
+              "cooldown_min": 5,
+              "total_min": 37,
+              "intensity": "synthetic treadmill assessment 2026-10-12 individual second-turnpoint-compatible controlled effort; flat route comparison; RPE anchors retained as subjective cross-check, not RPE=threshold"
+            },
+            "equipment_AND": [
+              "appropriate shoes",
+              "flat familiar route or calibrated familiar treadmill",
+              "current individualized intensity-reference metadata"
+            ],
+            "essential_stimulus": "18 min controlled cruise work as the accepted session intent, not universal minimum",
+            "limits": "Requires task-specific familiar calibration and recent comparable tolerance. No fixed RPE/pace defines threshold for all runners.",
+            "origin": "NEW_EXPLICIT_SYNTHETIC_REVIEW_CANDIDATE",
+            "runtime_catalog_exists": false,
+            "evidence_dose_status": "CASE_SPECIFIC_EXEMPLAR_NOT_UNIVERSAL_MINIMUM_OR_OPTIMUM",
+            "proposed_disposition": "APPROVE_WITH_CONDITIONS"
+          }
+        },
+        {
+          "session_id": "old-Fri",
+          "time": "2026-11-06T07:00-03:00",
+          "recipe_id": "R-E30",
+          "duration_min": 30,
+          "concrete_prescription": {
+            "recipe_id": "R-E30",
+            "revision": "SDC-SCI-r1",
+            "sport": "RUNNING",
+            "family": "easy",
+            "dose": {
+              "warmup": "5 min progressive easy included in total",
+              "total_min": 30,
+              "intensity": "comfortable conversational effort; prior familiar flat-route response; no physiological threshold inferred"
+            },
+            "equipment_AND": [
+              "appropriate shoes",
+              "flat accessible route or separately familiar treadmill"
+            ],
+            "essential_stimulus": "familiar easy aerobic exposure without an intensity objective",
+            "limits": "Only already regular runners with comparable 30 min tolerance; not entry for never-runners.",
+            "origin": "NEW_EXPLICIT_SYNTHETIC_REVIEW_CANDIDATE",
+            "runtime_catalog_exists": false,
+            "evidence_dose_status": "CASE_SPECIFIC_EXEMPLAR_NOT_UNIVERSAL_MINIMUM_OR_OPTIMUM",
+            "proposed_disposition": "APPROVE_WITH_CONDITIONS"
+          }
+        },
+        {
+          "session_id": "old-Sat-lower",
+          "time": "2026-11-07T18:00-03:00",
+          "recipe_id": "S-L60",
+          "duration_min": 60,
+          "concrete_prescription": {
+            "recipe_id": "S-L60",
+            "revision": "SDC-SCI-r1",
+            "sport": "STRENGTH",
+            "family": "familiar_lower",
+            "dose": {
+              "warmup": "10 min familiar movement rehearsal and progressive nonfatiguing squat sets; not counted as work",
+              "exercises": [
+                {
+                  "id": "back_squat_high_bar",
+                  "sets": 3,
+                  "reps": 5,
+                  "load_kg_total_including_bar": 60,
+                  "RIR_target": 3,
+                  "rest_s": 150,
+                  "ROM": "familiar full comfortable ROM"
+                },
+                {
+                  "id": "barbell_RDL",
+                  "sets": 2,
+                  "reps": 8,
+                  "load_kg_total_including_bar": 40,
+                  "RIR_target": 3,
+                  "rest_s": 150,
+                  "ROM": "familiar below-knee hinge"
+                },
+                {
+                  "id": "rear_foot_elevated_split_squat",
+                  "sets_per_side": 2,
+                  "reps_per_side": 6,
+                  "load_kg_per_hand": 8,
+                  "RIR_target": 3,
+                  "rest_s_between_records": 150,
+                  "order": "left then right each round"
+                }
+              ],
+              "window_min": 60
+            },
+            "equipment_AND": [
+              "barbell with plates",
+              "rack with safety configuration",
+              "pair adjustable dumbbells",
+              "stable rear-foot support"
+            ],
+            "essential_stimulus": "familiar general lower-strength exposure preserving squat and hip hinge; unilateral accessory is goal context dependent",
+            "limits": "Not novice skill instruction, power or elite-peaking recipe. No inference from exercise name alone to fatigue.",
+            "origin": "NEW_EXPLICIT_SYNTHETIC_REVIEW_CANDIDATE",
+            "runtime_catalog_exists": false,
+            "evidence_dose_status": "CASE_SPECIFIC_EXEMPLAR_NOT_UNIVERSAL_MINIMUM_OR_OPTIMUM",
+            "proposed_disposition": "APPROVE_WITH_CONDITIONS"
+          }
+        },
+        {
+          "session_id": "race",
+          "time": "2026-11-08T08:00-03:00",
+          "distance_km": 10,
+          "concrete_prescription": null
+        }
+      ],
+      "recovery_context": {
+        "current": "no clinical signal; familiar training but accumulated normal block tiredness",
+        "recheck": "before each taper session; no fixed readiness score"
+      },
+      "expected_preserve": [
+        "event-specific familiar controlled exposure",
+        "clinical boundary",
+        "no invented predicted time"
+      ],
+      "expected_modify": [
+        "candidateR-TAPER10K; replace old week jointly;avoid novel lower work day before event;confirm changed goals and week"
+      ],
+      "mec_bounds": {
+        "min": null,
+        "max": null,
+        "scope": "No approved actionable change bound; candidate level records consideration only"
+      },
+      "must_not": [
+        "rewrite observed/completed history",
+        "replace missed training as debt",
+        "infer individual safety from null group findings",
+        "turn priority alone into necessity"
+      ],
+      "agency": "recommend only; APPLY_PLAN_CHANGE requires current scope/revision confirmation; execution remainder separate intent",
+      "re_review_trigger": [
+        "new symptoms/restrictions",
+        "new applicable evidence",
+        "changed goal/phase/intensity method/equipment",
+        "response outside accepted exemplar"
+      ],
+      "evidence_refs": [
+        "L09",
+        "L02"
+      ],
+      "SSCTR_disposition": {
+        "author_proposal": "LIMITED_REVERSIBLE_RECOMMENDATION",
+        "independent_review_ref": "../reviews/SCIENCE_FIDELITY_REVIEW.json",
+        "governance_ref": "../reviews/GOVERNANCE_REVIEW.json",
+        "final_consolidation_ref": "../GATE_DISPOSITION.json"
+      },
+      "exact_author_variant": {
+        "variant_id": "C5-TAPER",
+        "revision": "SDC-SCI-r1",
+        "branch": "earlier event invalidates development week",
+        "facts": {
+          "fixture_id": "TAPER-A29",
+          "synthetic": true,
+          "age": 29,
+          "population": "adult recreational regular runner and competent strength trainee",
+          "eligibility": {
+            "status": "NONCLINICAL_CONFIRMED",
+            "provenance": "EXPLICIT_SYNTHETIC_TEST_PREMISE_NOT_REAL_CLEARANCE",
+            "facts": [
+              "pause/complaints specifically asked",
+              "no pain, injury, illness, functional limitation, medical restriction or clearance dependency in fixture",
+              "task competence and configuration familiarity supplied"
+            ],
+            "assessment_time": "2026-10-25T12:00:00-03:00"
+          },
+          "experience": {
+            "running": "trained recreational4 years;consistent40-48 km/week inlast6weeks",
+            "strength": "competent familiar S-L60/S-U45",
+            "VO2max": "synthetic measured58ml/kg/min; not eligibility threshold forproduct"
+          },
+          "goals": {
+            "running": "10 kmroadtime-trialevent2026-11-08",
+            "strength": "maintain familiar strength exposure, secondary",
+            "phase": "final7days taper after event moved earlier from Nov22",
+            "event_changed": "confirmed calendar revision2026-11-01"
+          },
+          "essential_stimuli": {
+            "lower": "familiar squat/hinge exposure with sustainable technique/reserve; exact 3rd squat set not always essential",
+            "run": "accepted controlled cruise exposure; 18 min intent or explicit revised reduced-intent candidate",
+            "upper": "general push/pull exposure",
+            "easy": "familiar low-intensity aerobic exposure"
+          },
+          "history": {
+            "prior_taper": "similar20-25min few-work-reps pattern tolerated once for5km, not validated10 kmoptimality",
+            "prior_week": "RunMon45easy,Wed10+3x6+4+5=37cruise,Fri35easy,Sun70easy;lowerTueS-L60,upperSatS-U45;allfamiliar",
+            "limitations": "not race prediction,not elite scope"
+          },
+          "recovery": {
+            "current": "no clinical signal; familiar training but accumulated normal block tiredness",
+            "recheck": "before each taper session; no fixed readiness score"
+          },
+          "intensity_calibration": {
+            "run_ref": "CAL-A-20261012",
+            "method": "synthetic assessed second-turnpoint-compatible effort, verified by familiar field repetitions under comparable conditions",
+            "RPE": "anchored subjective cross-check only, not a transfer of lab threshold",
+            "strength": "estimated RIR after familiar set, technically comfortable; error acknowledged"
+          },
+          "week": [
+            {
+              "session_id": "old-Mon",
+              "time": "2026-11-02T07:00-03:00",
+              "recipe_id": "R-E30",
+              "duration_min": 30
+            },
+            {
+              "session_id": "old-Wed",
+              "time": "2026-11-04T07:00-03:00",
+              "recipe_id": "R-Q18",
+              "duration_min": 37
+            },
+            {
+              "session_id": "old-Fri",
+              "time": "2026-11-06T07:00-03:00",
+              "recipe_id": "R-E30",
+              "duration_min": 30
+            },
+            {
+              "session_id": "old-Sat-lower",
+              "time": "2026-11-07T18:00-03:00",
+              "recipe_id": "S-L60",
+              "duration_min": 60
+            },
+            {
+              "session_id": "race",
+              "time": "2026-11-08T08:00-03:00",
+              "distance_km": 10
+            }
+          ],
+          "horizon": {
+            "start": "2026-11-02",
+            "end": "2026-11-09",
+            "nextkey": "10 kmraceNov8;post-event routine NOT approved by this record"
+          },
+          "schedule": {
+            "availability": [
+              "Mon 18:00-19:00",
+              "Tue 07:00-07:45",
+              "Wed 07:00-07:45",
+              "Wed 18:00-19:00",
+              "Thu 07:00-07:45",
+              "Fri 18:00-18:45"
+            ],
+            "commitments": "four planned sessions already viewed and accepted; no external delivery assumed",
+            "change_cost": "one move needs recommitment but feasible; prefer no unnecessary changes; no fake scalar cost"
+          },
+          "agency": "recommend only; APPLY_PLAN_CHANGE requires current scope/revision confirmation; execution remainder separate intent",
+          "priority_mode": "RUN_FIRST"
+        },
+        "proposed_disposition": "LIMITED_REVERSIBLE_RECOMMENDATION",
+        "author_state": "AUTHOR_SUBMISSION",
+        "evidence_status": "PLAUSIBLE_BUT_UNCERTAIN",
+        "proposed_action": "MODIFY_CANDIDATE",
+        "mec_level": 5,
+        "expected_preserve": [
+          "event-specific familiar controlled exposure",
+          "clinical boundary",
+          "no invented predicted time"
+        ],
+        "expected_modify": [
+          "candidateR-TAPER10K; replace old week jointly;avoid novel lower work day before event;confirm changed goals and week"
+        ],
+        "smaller_alternatives": [
+          {
+            "candidate_id": "KEEP",
+            "verdict": "GOAL_PHASE_MISMATCH",
+            "reason": "old week not built for event now Nov8"
+          },
+          {
+            "candidate_id": "MICRO/ONE_REDUCTION/ONE_MOVE/ONE_SUB",
+            "verdict": "INSUFFICIENT_SCOPE",
+            "reason": "event phase changes multiple key tasks and their interactions; single change leaves old week logic elsewhere"
+          },
+          {
+            "candidate_id": "SIGNIFICANT_BLOCK_REPLAN",
+            "verdict": "UNNECESSARY",
+            "reason": "only final event week bounded"
+          }
+        ],
+        "evidence_refs": [
+          "L09",
+          "L02"
+        ],
+        "confidence": {
+          "level": "MODERATE",
+          "rationale": "Evidence bounds mechanism/framework; synthetic facts fix comparator. Exact individual response remains unvalidated."
+        },
+        "conditions": [
+          "only this explicit synthetic profile/configuration",
+          "current independent scientific and governance review required",
+          "no real athlete prescription inferred",
+          "recheck at next relevant session or material new fact"
+        ],
+        "limits": [
+          "Not clinical/human/empirical validation",
+          "No universal hours, fatigue score, adherence percentage or progression cutoff"
+        ],
+        "must_not": [
+          "rewrite observed/completed history",
+          "replace missed training as debt",
+          "infer individual safety from null group findings",
+          "turn priority alone into necessity"
+        ],
+        "agency": "recommend only; APPLY_PLAN_CHANGE requires current scope/revision confirmation; execution remainder separate intent",
+        "re_review_trigger": [
+          "new symptoms/restrictions",
+          "new applicable evidence",
+          "changed goal/phase/intensity method/equipment",
+          "response outside accepted exemplar"
+        ],
+        "dose_limitation": "Wang supports taper direction in well-trained mostly male17-32y,endurance groups. Does not validate exact10 kmhybridweek,42/50/60%or universal maintain-intensity rule. This fixture matched training status narrowly;individual adequacy unproven.",
+        "parent_id": "C5",
+        "target_artifact": "scientific/C1_C6_REVIEWS.json"
+      }
+    },
+    {
+      "variant_id": "C5-CANCEL",
+      "athlete_state": {
+        "fixture_id": "TAPER-A29",
+        "synthetic": true,
+        "age": 29,
+        "population": "adult recreational regular runner and competent strength trainee",
+        "eligibility": {
+          "status": "NONCLINICAL_CONFIRMED",
+          "provenance": "EXPLICIT_SYNTHETIC_TEST_PREMISE_NOT_REAL_CLEARANCE",
+          "facts": [
+            "pause/complaints specifically asked",
+            "no pain, injury, illness, functional limitation, medical restriction or clearance dependency in fixture",
+            "task competence and configuration familiarity supplied"
+          ],
+          "assessment_time": "2026-10-25T12:00:00-03:00"
+        },
+        "experience": {
+          "running": "trained recreational4 years;consistent40-48 km/week inlast6weeks",
+          "strength": "competent familiar S-L60/S-U45",
+          "VO2max": "synthetic measured58ml/kg/min; not eligibility threshold forproduct"
+        },
+        "goals": {
+          "phase": "await new accepted goal",
+          "running": "UNKNOWN"
+        },
+        "essential_stimuli": {
+          "lower": "familiar squat/hinge exposure with sustainable technique/reserve; exact 3rd squat set not always essential",
+          "run": "accepted controlled cruise exposure; 18 min intent or explicit revised reduced-intent candidate",
+          "upper": "general push/pull exposure",
+          "easy": "familiar low-intensity aerobic exposure"
+        },
+        "history": {
+          "prior_taper": "similar20-25min few-work-reps pattern tolerated once for5km, not validated10 kmoptimality",
+          "prior_week": "RunMon45easy,Wed10+3x6+4+5=37cruise,Fri35easy,Sun70easy;lowerTueS-L60,upperSatS-U45;allfamiliar",
+          "limitations": "not race prediction,not elite scope"
+        },
+        "recovery": {
+          "current": "no clinical signal; familiar training but accumulated normal block tiredness",
+          "recheck": "before each taper session; no fixed readiness score"
+        },
+        "intensity_calibration": {
+          "run_ref": "CAL-A-20261012",
+          "method": "synthetic assessed second-turnpoint-compatible effort, verified by familiar field repetitions under comparable conditions",
+          "RPE": "anchored subjective cross-check only, not a transfer of lab threshold",
+          "strength": "estimated RIR after familiar set, technically comfortable; error acknowledged"
+        },
+        "week": [
+          {
+            "session_id": "old-Mon",
+            "time": "2026-11-02T07:00-03:00",
+            "recipe_id": "R-E30",
+            "duration_min": 30
+          },
+          {
+            "session_id": "old-Wed",
+            "time": "2026-11-04T07:00-03:00",
+            "recipe_id": "R-Q18",
+            "duration_min": 37
+          },
+          {
+            "session_id": "old-Fri",
+            "time": "2026-11-06T07:00-03:00",
+            "recipe_id": "R-E30",
+            "duration_min": 30
+          },
+          {
+            "session_id": "old-Sat-lower",
+            "time": "2026-11-07T18:00-03:00",
+            "recipe_id": "S-L60",
+            "duration_min": 60
+          },
+          {
+            "session_id": "race",
+            "time": "2026-11-08T08:00-03:00",
+            "distance_km": 10
+          }
+        ],
+        "horizon": {
+          "start": "2026-11-02",
+          "end": "2026-11-09",
+          "nextkey": "10 kmraceNov8;post-event routine NOT approved by this record"
+        },
+        "schedule": {
+          "availability": [
+            "Mon 18:00-19:00",
+            "Tue 07:00-07:45",
+            "Wed 07:00-07:45",
+            "Wed 18:00-19:00",
+            "Thu 07:00-07:45",
+            "Fri 18:00-18:45"
+          ],
+          "commitments": "four planned sessions already viewed and accepted; no external delivery assumed",
+          "change_cost": "one move needs recommitment but feasible; prefer no unnecessary changes; no fake scalar cost"
+        },
+        "agency": "recommend only; APPLY_PLAN_CHANGE requires current scope/revision confirmation; execution remainder separate intent",
+        "priority_mode": "RUN_FIRST",
+        "event": "cancelledNov1"
+      },
+      "goals_priority": {
+        "phase": "await new accepted goal",
+        "running": "UNKNOWN"
+      },
+      "planned_week": [
+        {
+          "session_id": "old-Mon",
+          "time": "2026-11-02T07:00-03:00",
+          "recipe_id": "R-E30",
+          "duration_min": 30,
+          "concrete_prescription": {
+            "recipe_id": "R-E30",
+            "revision": "SDC-SCI-r1",
+            "sport": "RUNNING",
+            "family": "easy",
+            "dose": {
+              "warmup": "5 min progressive easy included in total",
+              "total_min": 30,
+              "intensity": "comfortable conversational effort; prior familiar flat-route response; no physiological threshold inferred"
+            },
+            "equipment_AND": [
+              "appropriate shoes",
+              "flat accessible route or separately familiar treadmill"
+            ],
+            "essential_stimulus": "familiar easy aerobic exposure without an intensity objective",
+            "limits": "Only already regular runners with comparable 30 min tolerance; not entry for never-runners.",
+            "origin": "NEW_EXPLICIT_SYNTHETIC_REVIEW_CANDIDATE",
+            "runtime_catalog_exists": false,
+            "evidence_dose_status": "CASE_SPECIFIC_EXEMPLAR_NOT_UNIVERSAL_MINIMUM_OR_OPTIMUM",
+            "proposed_disposition": "APPROVE_WITH_CONDITIONS"
+          }
+        },
+        {
+          "session_id": "old-Wed",
+          "time": "2026-11-04T07:00-03:00",
+          "recipe_id": "R-Q18",
+          "duration_min": 37,
+          "concrete_prescription": {
+            "recipe_id": "R-Q18",
+            "revision": "SDC-SCI-r1",
+            "sport": "RUNNING",
+            "family": "calibrated_cruise",
+            "dose": {
+              "warmup_min": 10,
+              "work": {
+                "repeats": 3,
+                "minutes_each": 6
+              },
+              "between_reps_jog_min": 2,
+              "cooldown_min": 5,
+              "total_min": 37,
+              "intensity": "synthetic treadmill assessment 2026-10-12 individual second-turnpoint-compatible controlled effort; flat route comparison; RPE anchors retained as subjective cross-check, not RPE=threshold"
+            },
+            "equipment_AND": [
+              "appropriate shoes",
+              "flat familiar route or calibrated familiar treadmill",
+              "current individualized intensity-reference metadata"
+            ],
+            "essential_stimulus": "18 min controlled cruise work as the accepted session intent, not universal minimum",
+            "limits": "Requires task-specific familiar calibration and recent comparable tolerance. No fixed RPE/pace defines threshold for all runners.",
+            "origin": "NEW_EXPLICIT_SYNTHETIC_REVIEW_CANDIDATE",
+            "runtime_catalog_exists": false,
+            "evidence_dose_status": "CASE_SPECIFIC_EXEMPLAR_NOT_UNIVERSAL_MINIMUM_OR_OPTIMUM",
+            "proposed_disposition": "APPROVE_WITH_CONDITIONS"
+          }
+        },
+        {
+          "session_id": "old-Fri",
+          "time": "2026-11-06T07:00-03:00",
+          "recipe_id": "R-E30",
+          "duration_min": 30,
+          "concrete_prescription": {
+            "recipe_id": "R-E30",
+            "revision": "SDC-SCI-r1",
+            "sport": "RUNNING",
+            "family": "easy",
+            "dose": {
+              "warmup": "5 min progressive easy included in total",
+              "total_min": 30,
+              "intensity": "comfortable conversational effort; prior familiar flat-route response; no physiological threshold inferred"
+            },
+            "equipment_AND": [
+              "appropriate shoes",
+              "flat accessible route or separately familiar treadmill"
+            ],
+            "essential_stimulus": "familiar easy aerobic exposure without an intensity objective",
+            "limits": "Only already regular runners with comparable 30 min tolerance; not entry for never-runners.",
+            "origin": "NEW_EXPLICIT_SYNTHETIC_REVIEW_CANDIDATE",
+            "runtime_catalog_exists": false,
+            "evidence_dose_status": "CASE_SPECIFIC_EXEMPLAR_NOT_UNIVERSAL_MINIMUM_OR_OPTIMUM",
+            "proposed_disposition": "APPROVE_WITH_CONDITIONS"
+          }
+        },
+        {
+          "session_id": "old-Sat-lower",
+          "time": "2026-11-07T18:00-03:00",
+          "recipe_id": "S-L60",
+          "duration_min": 60,
+          "concrete_prescription": {
+            "recipe_id": "S-L60",
+            "revision": "SDC-SCI-r1",
+            "sport": "STRENGTH",
+            "family": "familiar_lower",
+            "dose": {
+              "warmup": "10 min familiar movement rehearsal and progressive nonfatiguing squat sets; not counted as work",
+              "exercises": [
+                {
+                  "id": "back_squat_high_bar",
+                  "sets": 3,
+                  "reps": 5,
+                  "load_kg_total_including_bar": 60,
+                  "RIR_target": 3,
+                  "rest_s": 150,
+                  "ROM": "familiar full comfortable ROM"
+                },
+                {
+                  "id": "barbell_RDL",
+                  "sets": 2,
+                  "reps": 8,
+                  "load_kg_total_including_bar": 40,
+                  "RIR_target": 3,
+                  "rest_s": 150,
+                  "ROM": "familiar below-knee hinge"
+                },
+                {
+                  "id": "rear_foot_elevated_split_squat",
+                  "sets_per_side": 2,
+                  "reps_per_side": 6,
+                  "load_kg_per_hand": 8,
+                  "RIR_target": 3,
+                  "rest_s_between_records": 150,
+                  "order": "left then right each round"
+                }
+              ],
+              "window_min": 60
+            },
+            "equipment_AND": [
+              "barbell with plates",
+              "rack with safety configuration",
+              "pair adjustable dumbbells",
+              "stable rear-foot support"
+            ],
+            "essential_stimulus": "familiar general lower-strength exposure preserving squat and hip hinge; unilateral accessory is goal context dependent",
+            "limits": "Not novice skill instruction, power or elite-peaking recipe. No inference from exercise name alone to fatigue.",
+            "origin": "NEW_EXPLICIT_SYNTHETIC_REVIEW_CANDIDATE",
+            "runtime_catalog_exists": false,
+            "evidence_dose_status": "CASE_SPECIFIC_EXEMPLAR_NOT_UNIVERSAL_MINIMUM_OR_OPTIMUM",
+            "proposed_disposition": "APPROVE_WITH_CONDITIONS"
+          }
+        },
+        {
+          "session_id": "race",
+          "time": "2026-11-08T08:00-03:00",
+          "distance_km": 10,
+          "concrete_prescription": null
+        }
+      ],
+      "recovery_context": {
+        "current": "no clinical signal; familiar training but accumulated normal block tiredness",
+        "recheck": "before each taper session; no fixed readiness score"
+      },
+      "expected_preserve": [
+        "completed history"
+      ],
+      "expected_modify": [
+        "invalidate event-dependent proposal; askgoal; do not automatically restore old higher volume"
+      ],
+      "mec_bounds": {
+        "min": null,
+        "max": null,
+        "scope": "No approved actionable change bound; candidate level records consideration only"
+      },
+      "must_not": [
+        "rewrite observed/completed history",
+        "replace missed training as debt",
+        "infer individual safety from null group findings",
+        "turn priority alone into necessity"
+      ],
+      "agency": "recommend only; APPLY_PLAN_CHANGE requires current scope/revision confirmation; execution remainder separate intent",
+      "re_review_trigger": [
+        "new symptoms/restrictions",
+        "new applicable evidence",
+        "changed goal/phase/intensity method/equipment",
+        "response outside accepted exemplar"
+      ],
+      "evidence_refs": [
+        "L09"
+      ],
+      "SSCTR_disposition": {
+        "author_proposal": "REVISE",
+        "independent_review_ref": "../reviews/SCIENCE_FIDELITY_REVIEW.json",
+        "governance_ref": "../reviews/GOVERNANCE_REVIEW.json",
+        "final_consolidation_ref": "../GATE_DISPOSITION.json"
+      },
+      "exact_author_variant": {
+        "variant_id": "C5-CANCEL",
+        "revision": "SDC-SCI-r1",
+        "branch": "event cancelled after candidate",
+        "facts": {
+          "fixture_id": "TAPER-A29",
+          "synthetic": true,
+          "age": 29,
+          "population": "adult recreational regular runner and competent strength trainee",
+          "eligibility": {
+            "status": "NONCLINICAL_CONFIRMED",
+            "provenance": "EXPLICIT_SYNTHETIC_TEST_PREMISE_NOT_REAL_CLEARANCE",
+            "facts": [
+              "pause/complaints specifically asked",
+              "no pain, injury, illness, functional limitation, medical restriction or clearance dependency in fixture",
+              "task competence and configuration familiarity supplied"
+            ],
+            "assessment_time": "2026-10-25T12:00:00-03:00"
+          },
+          "experience": {
+            "running": "trained recreational4 years;consistent40-48 km/week inlast6weeks",
+            "strength": "competent familiar S-L60/S-U45",
+            "VO2max": "synthetic measured58ml/kg/min; not eligibility threshold forproduct"
+          },
+          "goals": {
+            "phase": "await new accepted goal",
+            "running": "UNKNOWN"
+          },
+          "essential_stimuli": {
+            "lower": "familiar squat/hinge exposure with sustainable technique/reserve; exact 3rd squat set not always essential",
+            "run": "accepted controlled cruise exposure; 18 min intent or explicit revised reduced-intent candidate",
+            "upper": "general push/pull exposure",
+            "easy": "familiar low-intensity aerobic exposure"
+          },
+          "history": {
+            "prior_taper": "similar20-25min few-work-reps pattern tolerated once for5km, not validated10 kmoptimality",
+            "prior_week": "RunMon45easy,Wed10+3x6+4+5=37cruise,Fri35easy,Sun70easy;lowerTueS-L60,upperSatS-U45;allfamiliar",
+            "limitations": "not race prediction,not elite scope"
+          },
+          "recovery": {
+            "current": "no clinical signal; familiar training but accumulated normal block tiredness",
+            "recheck": "before each taper session; no fixed readiness score"
+          },
+          "intensity_calibration": {
+            "run_ref": "CAL-A-20261012",
+            "method": "synthetic assessed second-turnpoint-compatible effort, verified by familiar field repetitions under comparable conditions",
+            "RPE": "anchored subjective cross-check only, not a transfer of lab threshold",
+            "strength": "estimated RIR after familiar set, technically comfortable; error acknowledged"
+          },
+          "week": [
+            {
+              "session_id": "old-Mon",
+              "time": "2026-11-02T07:00-03:00",
+              "recipe_id": "R-E30",
+              "duration_min": 30
+            },
+            {
+              "session_id": "old-Wed",
+              "time": "2026-11-04T07:00-03:00",
+              "recipe_id": "R-Q18",
+              "duration_min": 37
+            },
+            {
+              "session_id": "old-Fri",
+              "time": "2026-11-06T07:00-03:00",
+              "recipe_id": "R-E30",
+              "duration_min": 30
+            },
+            {
+              "session_id": "old-Sat-lower",
+              "time": "2026-11-07T18:00-03:00",
+              "recipe_id": "S-L60",
+              "duration_min": 60
+            },
+            {
+              "session_id": "race",
+              "time": "2026-11-08T08:00-03:00",
+              "distance_km": 10
+            }
+          ],
+          "horizon": {
+            "start": "2026-11-02",
+            "end": "2026-11-09",
+            "nextkey": "10 kmraceNov8;post-event routine NOT approved by this record"
+          },
+          "schedule": {
+            "availability": [
+              "Mon 18:00-19:00",
+              "Tue 07:00-07:45",
+              "Wed 07:00-07:45",
+              "Wed 18:00-19:00",
+              "Thu 07:00-07:45",
+              "Fri 18:00-18:45"
+            ],
+            "commitments": "four planned sessions already viewed and accepted; no external delivery assumed",
+            "change_cost": "one move needs recommitment but feasible; prefer no unnecessary changes; no fake scalar cost"
+          },
+          "agency": "recommend only; APPLY_PLAN_CHANGE requires current scope/revision confirmation; execution remainder separate intent",
+          "priority_mode": "RUN_FIRST",
+          "event": "cancelledNov1"
+        },
+        "proposed_disposition": "REVISE",
+        "author_state": "AUTHOR_SUBMISSION",
+        "evidence_status": "INSUFFICIENT_EVIDENCE",
+        "proposed_action": "ASK",
+        "mec_level": null,
+        "expected_preserve": [
+          "completed history"
+        ],
+        "expected_modify": [
+          "invalidate event-dependent proposal; askgoal; do not automatically restore old higher volume"
+        ],
+        "smaller_alternatives": [
+          {
+            "candidate_id": "KEEP_TAPER/RESTORE",
+            "verdict": "UNRESOLVED",
+            "reason": "goal-dependent intent changed"
+          }
+        ],
+        "evidence_refs": [
+          "L09"
+        ],
+        "confidence": {
+          "level": "MODERATE",
+          "rationale": "Evidence bounds mechanism/framework; synthetic facts fix comparator. Exact individual response remains unvalidated."
+        },
+        "conditions": [
+          "only this explicit synthetic profile/configuration",
+          "current independent scientific and governance review required",
+          "no real athlete prescription inferred",
+          "recheck at next relevant session or material new fact"
+        ],
+        "limits": [
+          "Not clinical/human/empirical validation",
+          "No universal hours, fatigue score, adherence percentage or progression cutoff"
+        ],
+        "must_not": [
+          "rewrite observed/completed history",
+          "replace missed training as debt",
+          "infer individual safety from null group findings",
+          "turn priority alone into necessity"
+        ],
+        "agency": "recommend only; APPLY_PLAN_CHANGE requires current scope/revision confirmation; execution remainder separate intent",
+        "re_review_trigger": [
+          "new symptoms/restrictions",
+          "new applicable evidence",
+          "changed goal/phase/intensity method/equipment",
+          "response outside accepted exemplar"
+        ],
+        "parent_id": "C5",
+        "target_artifact": "scientific/C1_C6_REVIEWS.json"
+      }
+    }
+  ],
+  "missing_variant_refs": [],
+  "re_review_trigger": "Any material athlete/source/recipe/policy/literature/agency change; funded human review; no automatic real-use approval"
+}

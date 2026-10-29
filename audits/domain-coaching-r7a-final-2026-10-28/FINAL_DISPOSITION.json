@@ -1,0 +1,217 @@
+{
+  "revision": "R7AF-DISPOSITION-1",
+  "date": "2026-10-28T16:58:13.244Z",
+  "owner": "Claude Code R7-A final session (Chief / current instance)",
+  "mission": "DOMAIN_COACHING_R7-A Final Closure — Interruption Episode Identity & Return Continuity",
+  "delivery": "CLOSED_WITH_EXPLICIT_BLOCKER",
+  "exitReadiness": "NOT_READY",
+  "completeDefinitionOfDone": false,
+  "freeze": {
+    "revision": "R7A-FINAL-FREEZE",
+    "file": "CoachingCore/r7/final/RUNTIME_FREEZE_R7A_FINAL.json",
+    "fileSha256": "a5f07a3f65e28fb924413ceb12ad43c124313b8ae152cbbe876f04584ad2b6f3",
+    "sourceDigest": "ec2debe730df8931d1525f2b1a729ce3d808c08842fb75397d2fc91084294605",
+    "files": 80,
+    "deltaFromR7A2Freeze1": {
+      "changed": ["src/r6-adaptation.mjs", "test/r7a1-composition.test.mjs", "test/r7a2-interruption.test.mjs"],
+      "added": ["test/r7af-episode-identity.test.mjs"],
+      "removed": []
+    }
+  },
+  "baselineFreeze": {
+    "revision": "R7A2-FREEZE-1",
+    "sourceDigest": "e0637ec2613acde1132d70fc64a5a6f0f1062b74d6c5cfafb6654dc1a54c7a28",
+    "copy": "audits/domain-coaching-r7a-final-2026-10-28/freeze1-source/"
+  },
+  "baseline": {
+    "file": "audits/domain-coaching-r7a-final-2026-10-28/BASELINE.json",
+    "boundFiles": 1952,
+    "verifyR7A2ReadOnly": "19/19",
+    "tests": "519/519",
+    "reproduced": "P17, P19, P20 and P21 byte-identical to the R7-A.2 engineering judge's outputs (probes/baseline/): same week, B read as SAME_BREAK of A with six rows at the pre-break dose and a 70-minute long run; cross week, B read as SAME_BREAK of A; P20 week 4 Tuesday QUALITY THRESHOLD 41; P21 B merged into A"
+  },
+  "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+  "policyChanged": false,
+  "contract": "audits/domain-coaching-r7a-final-2026-10-28/INTERRUPTION_EPISODE_CONTRACT.md (R7AF-INTERRUPTION-1, successor of INTERRUPTION_CONTRACT §2, §3 and boundaries 3 and 5 of §5, R7A2-COMPOSITION-3)",
+  "tests": {
+    "suite": "528/528 (node --test, Node v24.19.0): 519 earlier and 9 new",
+    "new": "CoachingCore/test/r7af-episode-identity.test.mjs (9; 8 fail on a byte-exact R7A2-FREEZE-1 copy, the P3 test passes there too: audits/domain-coaching-r7a-final-2026-10-28/probes/r7af-tests.on-FREEZE-1.out.txt)",
+    "editedEarlier": "test/r7a1-composition.test.mjs (C4/C6) and test/r7a2-interruption.test.mjs (I2, I9, I4/I6, the three-break correction): cases whose meaning the Founder's §0 changed, marked 'R7-A final'; R7A2-FREEZE-1 bytes in freeze1-source/",
+    "mutation": "audits/domain-coaching-r7a-final-2026-10-28/probes/mutation-check-r7af.out.json (21/21 mutants of the new invariants caught; the first run, 15/20, led to tests before the freeze)",
+    "selfChallenge": "audits/domain-coaching-r7a-final-2026-10-28/probes/r7af-self-challenge.mjs (43 cases, 16 classes; 0 violations on the freeze, 51 on R7A2-FREEZE-1)"
+  },
+  "evidence": {
+    "runner": "audits/domain-coaching-r7a-final-2026-10-28/probes/run-evidence-r7af.mjs",
+    "record": "audits/domain-coaching-r7a-final-2026-10-28/probes/EVIDENCE_RUNS_R7AF.json",
+    "runs": 59,
+    "failed": 0,
+    "boundDigest": "ec2debe730df8931d1525f2b1a729ce3d808c08842fb75397d2fc91084294605 before and after every run",
+    "comparison": "probes/COMPARE_R7AF.json: 41 outputs byte-identical to their R7A2-FREEZE-1 outputs, 16 different and all named in probes/COMPARE_R7AF_NAMED.json, 0 unnamed; the round-12 instrument's 43 sections equal",
+    "informativeRun": "probes/informative-run-1/ (not bound): the pre-freeze run that showed the same-day order dependence fixed before the freeze"
+  },
+  "objectiveVerification": {
+    "script": "CoachingCore/scripts/verify-r7af.mjs",
+    "output": "CoachingCore/r7/final/VERIFICATION_R7AF.json",
+    "note": "The verifier proves the evidence chain (baseline, freeze, policy, tests, baseline reproduction, evidence runs and digests, the closed QE-R7A2-01/QE-R7A1-09/10 paths, P02 and its named successor, the D59 grid, the self-challenge, the tests on FREEZE-1, mutation, regression, the comparison with FREEZE-1, judge bindings, queue, deliverables); it does not make the mission READY"
+  },
+  "independentJudgments": {
+    "engineering": {
+      "file": "audits/domain-coaching-r7a-final-2026-10-28/reviews/quality-engineering-r7af-recheck.json",
+      "revision": "R7AF-QE-r1",
+      "reviewer": "fresh quality-reliability-engineer (claude-opus-5-5, effort xhigh, applied through the dispatch guard)",
+      "freeze": "R7A-FINAL-FREEZE",
+      "digestAtStartAndEnd": "ec2debe7…, 0 of 80 files drift",
+      "verdict": "NOT_READY",
+      "material": ["QE-R7AF-01"],
+      "notMaterial": ["QE-R7AF-02 (MEDIUM)", "QE-R7AF-03 (LOW)", "QE-R7AF-04 (LOW)"],
+      "identity": "No failure: 216 order/timing cells at four time zones, three-break short-return grids, duplicates and named cases",
+      "boundaries": "B1-B6 accepted, with notes on B3 and B5",
+      "recommendations": {
+        "WEEK_COMPOSITION_INTEGRITY": "READY",
+        "STATE_PRESERVATION_INTEGRITY": "NOT_READY",
+        "EVENT_SUPERSESSION_INTEGRITY": "READY",
+        "EXERCISE_MERGE_INTEGRITY": "READY",
+        "RETURN_RECOVERY_CEILING_INTEGRITY_engineering": "NOT_READY"
+      }
+    },
+    "ssctr": {
+      "file": "audits/domain-coaching-r7a-final-2026-10-28/reviews/ssctr-r7af-recheck.json",
+      "revision": "R7AF-SSCTR-r1",
+      "reviewer": "native sports-science-concurrent-training-reviewer (claude-opus-5-5, effort xhigh, applied through the dispatch guard)",
+      "freeze": "R7A-FINAL-FREEZE",
+      "digestAtStartAndEnd": "ec2debe7…, 0 of 80 files drift",
+      "verdict": "ACCEPT",
+      "closed": ["D53"],
+      "holds": ["D56", "D57", "D58", "D59"],
+      "rulings": "F-A to F-F approved (F-C resolves NF-1; F-D implements R37; F-F is the Founder's ASK)",
+      "records": "13 records re-bound as R7AF-SSCTR-r1 (INTERRUPTION-STATE extended to F-A to F-F); Node validator 0 errors, negative control caught",
+      "nonBlocking": ["NF-R7AF-1 (R38)", "NF-R7AF-2 (R39)"]
+    }
+  },
+  "cycleBound": {
+    "rule": "Build, self-challenge, one freeze (R7A-FINAL-FREEZE), both re-checks in parallel on the same bytes, stop. No second freeze, no correction cycle, no A.3.1, no third reviewer (Founder §17)",
+    "correctionCyclesRun": 0,
+    "furtherCycle": false
+  },
+  "blockers": [
+    {"id": "QE-R7A-01", "status": "CLOSED", "by": "engineering re-check R7AF-QE-r1", "basis": "Through its manifestations QE-R7A1-09/10 (Founder §6); QE-R7AF-01 is a different mechanism"},
+    {"id": "QE-R7A1-09", "status": "CLOSED", "by": "engineering re-check R7AF-QE-r1", "basis": "P17 L1-L4, P19 0 of 48, the judge's 216-cell grid at four time zones, P35 0 of 15"},
+    {"id": "QE-R7A1-10", "status": "CLOSED", "by": "engineering re-check R7AF-QE-r1", "basis": "P14; P20 week 4 Tuesday EASY 34 eased for B; one slot per break"},
+    {"id": "QE-R7A2-01", "status": "CLOSED", "by": "engineering re-check R7AF-QE-r1", "basis": "P17, P19, P31"},
+    {"id": "QE-R7A2-02", "status": "CLOSED (engineering side)", "by": "engineering re-check R7AF-QE-r1", "basis": "Confirmation-first: P18 b/c, P32"},
+    {"id": "QE-R7A2-03", "status": "CLOSED", "by": "engineering re-check R7AF-QE-r1", "basis": "P21 TRAINING_BETWEEN; untrained asked"},
+    {"id": "D53", "status": "CLOSED", "by": "SSCTR re-check R7AF-SSCTR-r1 and Chief consolidation", "basis": "The SSCTR closed D53 in its scope; QE-R7A1-09 (Founder §22 of R7-A.2) and D59 are closed; the engineering judge found no unnamed path to the pre-break dose (QE-R7AF-02 reaches it only through an explicit correction, routed to the Founder)"},
+    {"id": "D56", "status": "CLOSED (holds)", "by": "SSCTR re-check R7AF-SSCTR-r1", "basis": "0 cap rises or ends after a non-whole week; 9,499 binding cap-weeks, 0 unexplained"},
+    {"id": "D57", "status": "CLOSED (holds)", "by": "SSCTR re-check R7AF-SSCTR-r1", "basis": "B 0, C 0"},
+    {"id": "D58", "status": "CLOSED (holds)", "by": "SSCTR re-check R7AF-SSCTR-r1", "basis": "Short grid 0/315; one easy slot per break"},
+    {"id": "D59", "status": "CLOSED (holds)", "by": "SSCTR re-check R7AF-SSCTR-r1", "basis": "First-week grid E = O = B = 0 for NONE, FAMILIAR and KNOWN, byte-identical to R7A2-FREEZE-1"},
+    {"id": "QE-R7AF-01", "status": "OPEN", "by": "engineering re-check R7AF-QE-r1", "basis": "Material (MEDIUM, new class); see notReadyRecord"}
+  ],
+  "remaining": [
+    {
+      "id": "QE-R7AF-01",
+      "source": "engineering re-check R7AF-QE-r1",
+      "severity": "MEDIUM",
+      "material": true,
+      "what": "After a return whose re-entry week was neither finished nor reviewed, any unrelated decision dated from that week's last day on and before a separate later break (an equipment statement, even one that changes nothing, or a systemic-fatigue report) makes stateAtBreak's earned-week predicate accept the week start the return stored, so the later break starts from a return step never executed (P30c: week 6 runs 30/45 instead of 15/20; week 7 back-squat 2x5@3 KNOWN 82.5 instead of the 1x5@4 entry, long 60 instead of 45; P30b: 13 of 15 cells change the start, 7 advance the run return step)",
+      "cause": "src/r6-adaptation.mjs:674: earned(k) counts any decision with fromWeek <= k dated on or after the last day of week k-1; a decision made in week k keeps week k's start and never re-derives it from week k-1's evidence",
+      "origin": "This mission's earned-start rule (contract §4, P5); on R7A2-FREEZE-1 every cell, control included, gives the same output (return step 1), so the sporting output equals R7-A.2's, which the SSCTR accepted",
+      "evidence": [
+        "audits/domain-coaching-r7a-final-2026-10-28/reviews/qe-r7af-P30c-reproduction.mjs",
+        "audits/domain-coaching-r7a-final-2026-10-28/reviews/qe-r7af-P30c.out.json",
+        "audits/domain-coaching-r7a-final-2026-10-28/reviews/qe-r7af-P30c.FREEZE-1.out.json",
+        "audits/domain-coaching-r7a-final-2026-10-28/reviews/qe-r7af-P30b-earned-week-grid.mjs",
+        "audits/domain-coaching-r7a-final-2026-10-28/reviews/qe-r7af-P30b.out.json"
+      ],
+      "reproducedByAuthor": "P30c re-run on R7A-FINAL-FREEZE: byte-identical to the judge's output (8dfa53db…)"
+    },
+    {"id": "QE-R7AF-02", "source": "engineering re-check R7AF-QE-r1", "severity": "MEDIUM", "material": false, "what": "A named correction (the earlier break's episodeId or one of its report ids) can move that break past its own executed re-entry, which restores the pre-break dose; Founder 0.4 puts explicit identity first, so whether such a correction is asked (I9) is the Founder's decision"},
+    {"id": "QE-R7AF-03", "source": "engineering re-check R7AF-QE-r1", "severity": "LOW", "material": false, "what": "The same record resent under a new event id weeks later is a DUPLICATE revision that restarts a completed return (pre-existing on R7A2-FREEZE-1); product decision whether unchanged facts should KEEP"},
+    {"id": "QE-R7AF-04", "source": "engineering re-check R7AF-QE-r1", "severity": "LOW", "material": false, "what": "A late fact that moves only last-performed dates still triggers the confirmation question (conservative over-ask)"},
+    {"id": "NF-R7AF-1 / R38", "source": "SSCTR re-check R7AF-SSCTR-r1", "material": false, "what": "While a confirmation question is pending, every other review of the re-entry week is also asked; if never answered and the week is missed, the next week keeps the step planned at the return (the outputs of an unreviewed week, boundary B3)"},
+    {"id": "NF-R7AF-2 / R39", "source": "SSCTR re-check R7AF-SSCTR-r1", "material": false, "what": "An unnamed correction that lengthens a break (5 to 14 days) is asked; meanwhile the short resume stays in force"}
+  ],
+  "notReadyRecord": {
+    "finding": "QE-R7AF-01 (MEDIUM, material)",
+    "reproduction": "reviews/qe-r7af-P30c-reproduction.mjs (control and three triggers) and reviews/qe-r7af-P30b-earned-week-grid.mjs (15 cells), both also run on the R7A2-FREEZE-1 copy",
+    "sameOrNewClass": "The judge classifies it as a new class (this mission's earned-week predicate, not identity). Author's reading, separate from the judge's: the residual of R7-A.2 boundary 3 (the planned start of an unreviewed week) in the narrowed form this mission introduced; the sporting output equals R7-A.2's on that path",
+    "whyIdentityDidNotResolveIt": "Identity is correct: the later break is a new episode with its own identity and no report reaches it. The defect is which week start counts as executed state, a temporal-state question",
+    "smallestArchitecturalDecision": "After a return, accept a planned week start only when it was set from the evidence of the week before (that week's review, or the week executed as planned). A broader variant, also the Founder's because it touches boundary 3 before any return: executedStateAt never reads a planned, undecided week start (it would change R6-era outputs on never-logged programs). Related decisions: QE-R7AF-02 (ask a named correction that moves a break past its own executed re-entry?), QE-R7AF-03 (KEEP an identical record under a new event id?), QE-R7AF-04 (stop asking for last-performed-only late facts?), SSCTR R38 and R39"
+  },
+  "verdicts": {
+    "WEEK_COMPOSITION_INTEGRITY": "READY",
+    "STATE_PRESERVATION_INTEGRITY": "NOT_READY",
+    "EVENT_SUPERSESSION_INTEGRITY": "READY",
+    "EXERCISE_MERGE_INTEGRITY": "READY",
+    "RETURN_RECOVERY_CEILING_INTEGRITY": "NOT_READY",
+    "R7A_FINAL_ENGINEERING_RECHECK": "NOT_READY",
+    "R7A_FINAL_SCIENTIFIC_RECHECK": "READY",
+    "R7A_EXIT_READINESS": "NOT_READY"
+  },
+  "queue": {
+    "integration": "audits/domain-coaching-r7a-final-2026-10-28/QUEUE_INTEGRATION_R7AF.json",
+    "before": 163,
+    "after": 175,
+    "appended": [
+      "HQ-R7AF-SSCTR-QUALITY-SLOT-READINGS",
+      "HQ-R7AF-SSCTR-D59-PAUSE-WEEK-START",
+      "HQ-R7AF-SSCTR-D56-FORMULATION",
+      "HQ-R7AF-SSCTR-SAME-DAY",
+      "HQ-R7AF-SSCTR-DOSE-READING",
+      "HQ-R7AF-SSCTR-COMPOSITION",
+      "HQ-R7AF-SSCTR-REGAIN-BASE",
+      "HQ-R7AF-SSCTR-REESTABLISH-PHASE",
+      "HQ-R7AF-SSCTR-SPLIT-WEEK",
+      "HQ-R7AF-SSCTR-ITEMS-5-8",
+      "HQ-R7AF-SSCTR-CYCLE2-COMPOSITIONS",
+      "HQ-R7AF-SSCTR-INTERRUPTION-STATE"
+    ],
+    "earlierItemsByteIdentical": true,
+    "fundingState": "NOT_DECLARED",
+    "supersedes": "R7-A.2's 163-item pin (audits/domain-coaching-r7a2-2026-10-28/QUEUE_INTEGRATION_R7A2.json), without rewriting it; the closed verify-r7a2 check queue-append-only now reports the later append, as earlier pins did"
+  },
+  "regression": {
+    "file": "CoachingCore/r7/final/REGRESSION_R7AF.json",
+    "againstFreeze1": {"r5": "24/24", "profiles": "16/16", "simulations": "14/14", "r6Holdout": "35/35"},
+    "classification": "REGRESSION / CHALLENGE REUSE; not generalization evidence"
+  },
+  "supersededVerifierChecks": "verify-r7a2.mjs (read-only) now fails freeze-current, baseline-preserved and queue-append-only by design: this mission supersedes R7A2-FREEZE-1 and appended to the queue; its recorded VERIFICATION_R7A2.json is not rewritten",
+  "handoff": "Not written: R7A_EXIT_READINESS is NOT_READY (Founder §22, §23)",
+  "nextEngineeringStep": {
+    "decision": "FOUNDER",
+    "nextMission": "FOUNDER_ARCHITECTURAL_DECISION",
+    "notStarted": true
+  },
+  "r7b0Started": false,
+  "r7bStarted": false,
+  "nextMissionStarted": false,
+  "productionOrRealAthleteAuthority": false,
+  "uiFigmaKmpChanges": false,
+  "integrationsImplemented": false,
+  "commitMergeDeployPerformed": false,
+  "deliverables": [
+    "audits/domain-coaching-r7a-final-2026-10-28/FOUNDER_REQUEST.md",
+    "audits/domain-coaching-r7a-final-2026-10-28/TASK_CONTRACT.md",
+    "audits/domain-coaching-r7a-final-2026-10-28/INTERRUPTION_EPISODE_CONTRACT.md",
+    "audits/domain-coaching-r7a-final-2026-10-28/BASELINE.json",
+    "audits/domain-coaching-r7a-final-2026-10-28/CHECKPOINT.md",
+    "audits/domain-coaching-r7a-final-2026-10-28/QUEUE_INTEGRATION_R7AF.json",
+    "audits/domain-coaching-r7a-final-2026-10-28/dossier/",
+    "audits/domain-coaching-r7a-final-2026-10-28/probes/",
+    "audits/domain-coaching-r7a-final-2026-10-28/reviews/",
+    "CoachingCore/r7/final/RUNTIME_FREEZE_R7A_FINAL.json",
+    "CoachingCore/r7/final/REGRESSION_R7AF.json",
+    "CoachingCore/r7/final/READINESS_R7AF.json",
+    "CoachingCore/r7/final/FINAL_REPORT_R7AF.md",
+    "CoachingCore/r7/final/VERIFICATION_R7AF.json",
+    "CoachingCore/src/r6-adaptation.mjs",
+    "CoachingCore/test/r7af-episode-identity.test.mjs",
+    "CoachingCore/test/r7a2-interruption.test.mjs",
+    "CoachingCore/test/r7a1-composition.test.mjs",
+    "CoachingCore/scripts/prepare-r7af.mjs",
+    "CoachingCore/scripts/regress-r7af.mjs",
+    "CoachingCore/scripts/freeze-r7af.mjs",
+    "CoachingCore/scripts/verify-r7af.mjs",
+    "CoachingCore/scripts/queue-r7af.mjs"
+  ]
+}

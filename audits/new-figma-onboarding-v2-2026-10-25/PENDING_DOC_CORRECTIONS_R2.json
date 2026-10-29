@@ -1,0 +1,390 @@
+{
+  "id": "OB2-DOC-CORRECTIONS-R2",
+  "revision": "r3",
+  "history": [
+    {
+      "revision": "r1",
+      "sha256Prefix": "be103e0cd58e5fc3",
+      "note": "Read by the four round-2 re-checks."
+    },
+    {
+      "revision": "r2",
+      "sha256Prefix": "101fbb6fd744483c",
+      "note": "Ops 2, 3, 4, 21, 23 and 26 changed as the re-checks asked; spot-checked by the four judges."
+    },
+    {
+      "revision": "r3",
+      "note": "Ops 1–34 byte-identical to r2. Ops 35–38 added for the Founder decision of 2026-10-26 on the 2-week rotation (SSCTR Q3 option a); SSCTR spot-checks them."
+    }
+  ],
+  "state": "READY_TO_APPLY — HELD WHILE DOMAIN_COACHING_R6 IS OPEN",
+  "preparedAt": "2026-10-26T14:36:31.362Z",
+  "heldFor": "audits/domain-coaching-r6-2026-10-26",
+  "whyHeld": "R6 opened 2026-10-26 10:08 (-03:00) and its BASELINE.json binds the SHA-256 of every product/ and canon/ file. Writing these eight files while R6 is open would make its baseline check fail for changes it did not make.",
+  "applyWhen": "R6 has FINAL_DISPOSITION.json, every target still matches preSha256, and no newer coaching mission binds product/ or canon/. If a target changed, re-validate each op (exact single occurrence) and have the owning judge re-check before applying.",
+  "howToApply": "node audits/new-figma-onboarding-v2-2026-10-25/apply-pending-doc-corrections.mjs (dry run) → add --apply. It snapshots the eight files to before-r2/ first and checks every result against postSha256.",
+  "basis": [
+    "audits/new-figma-onboarding-v2-2026-10-25/reviews/PRODUCT_UX_REVIEW.md (PUX-OB2-2026-10-26-r1)",
+    "audits/new-figma-onboarding-v2-2026-10-25/reviews/SECURITY_REVIEW_R2.md",
+    "audits/new-figma-onboarding-v2-2026-10-25/reviews/SSCTR_BINDING_REVIEW.md (SSCTR-OB2-BIND-2026-10-26-r1)",
+    "audits/new-figma-onboarding-v2-2026-10-25/reviews/PRODUCT_UX_RECHECK.md (PUX-OB2-2026-10-26-r2)",
+    "audits/new-figma-onboarding-v2-2026-10-25/reviews/SECURITY_RECHECK.md",
+    "audits/new-figma-onboarding-v2-2026-10-25/reviews/SSCTR_BINDING_RECHECK.md (SSCTR-OB2-BIND-2026-10-26-r2)"
+  ],
+  "files": [
+    {
+      "path": "product/PRODUCT_DECISION_REGISTER.md",
+      "preSha256": "d9ea31a1fd689ccee374207efb81068bf723dd0850470095e854b8a2f71ffa5a",
+      "postSha256": "d854ce6766d69d724566d6b8a65beaed766d62b58f1fd8a21ac741e6761a9378",
+      "ops": 9
+    },
+    {
+      "path": "product/UX_SPECIFICATION.md",
+      "preSha256": "8d91e7653c94bf2b012871c5be99248efb27f509dfc5f20fb32794d1597735d9",
+      "postSha256": "178be6b3b66385543806c6f6ca3c7b526d50e8d119d8579d8decbcb6b619cd60",
+      "ops": 20
+    },
+    {
+      "path": "product/ADAPTIVE_ENGINE_OPERATIONAL_SPEC.md",
+      "preSha256": "08149de67c576d26dc0d99fd26ca199aa3d5259b7dfefe1d06430ac8e0e65e02",
+      "postSha256": "4d1134d8348f2ae7a92cc4d142fc5a041af248ecd95f859937106a6a628856eb",
+      "ops": 3
+    },
+    {
+      "path": "product/ADAPTIVE_ENGINE_CONTRACT.md",
+      "preSha256": "1db3b0e07da7895e05a77e3f90486cce09a830da8f5a230447c1b5919560c730",
+      "postSha256": "fff70728b065a6dc04fd9b44de3bd67cee0e32a84913be196ae190632ec9c19e",
+      "ops": 1
+    },
+    {
+      "path": "product/SPORT_INTELLIGENCE_SPEC.md",
+      "preSha256": "2f5179ae44c9f41c077d4f53d61a94ae429c1142b672b98713e0c092f47e7e4d",
+      "postSha256": "ffa8c59d4c5d41dff775d4e8784274a7129ea5b6cb09a5712bd189129beadf2d",
+      "ops": 1
+    },
+    {
+      "path": "product/STRENGTH_INTELLIGENCE_SPEC.md",
+      "preSha256": "2d6d20b7b5ab360e402ba7a5dae69e3f817c5face8e5a1515d487f5d1b1c45c8",
+      "postSha256": "9c34742271c1e14bcec212d6b4300bb6c874298663bc7fb3e0b21a5a73eb5a67",
+      "ops": 2
+    },
+    {
+      "path": "product/CORE_FLOWS.md",
+      "preSha256": "e054cde8e470588c3cd102912f4cf710de0c443f89fed8c22792fdd4df19da19",
+      "postSha256": "82aa605eb39d25102477f46cce66f2bfc64ff5fbcad90e99461ca92ff2e18f4d",
+      "ops": 1
+    },
+    {
+      "path": "product/PRODUCT_ARCHITECTURE.md",
+      "preSha256": "1a7182d8fa44cdf352d0ca789d1828bcb028c6a4dcca2c3aafa35e06136a3623",
+      "postSha256": "e28bb58bb7f4e907aeb63f2c5b2ca0a82ddf305aa2c16624d96e26800bce3348",
+      "ops": 1
+    }
+  ],
+  "ops": [
+    {
+      "n": 1,
+      "file": "product/PRODUCT_DECISION_REGISTER.md",
+      "where": "PDR-1.7 DR-111",
+      "source": "PUX C5 + PUX M1",
+      "from": "nothing reaches Vilumo's servers, analytics or backups before the account exists and the terms are accepted. The person can erase the draft.",
+      "to": "no answer, Apple Health value or derived value reaches Vilumo's servers, analytics, logs or backups before the account exists and the terms are accepted (whether value-free funnel events may run before consent is a G07 decision). The person can erase the draft. One draft per device: with a draft present, \"Criar conta\" or an AC-04f \"Começar\" resumes it at the saved step, or returns to the account step when the questionnaire is complete; only the explicit erase restarts it."
+    },
+    {
+      "n": 2,
+      "file": "product/PRODUCT_DECISION_REGISTER.md",
+      "where": "PDR-1.7 DR-112",
+      "source": "PUX S7 (reworded per PUX-RECHECK S7)",
+      "from": "CoachingCore and the candidate HYBRID_PLANNING_ENGINE must map chosen days as hard constraints (owner: the current coaching mission, R5).",
+      "to": "CoachingCore and the candidate HYBRID_PLANNING_ENGINE must map chosen days as hard constraints. Owner: the next coaching mission that takes this mapping (DOMAIN_COACHING_R6, opened 2026-10-26, does not list it). R5 closed on 2026-10-26 with an availability-window scheduler, so the R5 runtime, the AESL fixtures that move sessions to free windows and the candidate POL-07 \"double preference\" are the gap."
+    },
+    {
+      "n": 3,
+      "file": "product/PRODUCT_DECISION_REGISTER.md",
+      "where": "PDR-1.7 Open / owner",
+      "source": "PUX S7 (reworded per PUX-RECHECK S7)",
+      "from": "mapping of DR-112–114 into CoachingCore and the candidate foundation → current coaching mission (R5) owner.",
+      "to": "mapping of DR-112–114 into CoachingCore, the AESL fixtures and the candidate foundation → the next coaching mission that takes it (not in the contract of DOMAIN_COACHING_R6, opened 2026-10-26); R5 closed on 2026-10-26 without it."
+    },
+    {
+      "n": 4,
+      "file": "product/PRODUCT_DECISION_REGISTER.md",
+      "where": "PDR-1.7 DR-113",
+      "source": "SSCTR-BIND Q3 + PUX-RECHECK N5",
+      "from": "Rotation changes exercise selection only and preserves the essential stimulus; load, sets, reps and effort keep progressing under approved policy, and the first session with a new exercise calibrates its load by effort.",
+      "to": "Rotation changes exercise selection only and preserves the essential stimulus; the load of the exercises that stay, sets, reps and effort keep progressing under approved policy; when an exercise changes, the new one's load starts with an effort-based calibration."
+    },
+    {
+      "n": 5,
+      "file": "product/PRODUCT_DECISION_REGISTER.md",
+      "where": "PDR-1.7 DR-114",
+      "source": "SSCTR-BIND Q4 (optional completion)",
+      "from": "\"Prefiro não dizer\" takes the same neutral path. |",
+      "to": "\"Prefiro não dizer\" takes the same neutral path, which must be adequate on its own: disclosing sex never yields a materially better plan. |"
+    },
+    {
+      "n": 6,
+      "file": "product/PRODUCT_DECISION_REGISTER.md",
+      "where": "PDR-1.7 DR-114",
+      "source": "SECURITY-R2 M4",
+      "from": "Security Q3: protected like `profile_context`; excluded from analytics, ads, pricing, sharing, notifications and LLM prompts unless G09 approves; never read from Apple Health or provider profiles; classification and retention → G07.",
+      "to": "Security Q3: protected like `profile_context`; never used for analytics, ads, pricing, sharing, notifications or comparison with others, and kept out of LLM prompts unless G09 approves that field; never read from Apple Health or provider profiles; erasing it in Perfil (back to \"Prefiro não dizer\") deletes the stored value; classification and retention → G07."
+    },
+    {
+      "n": 7,
+      "file": "product/PRODUCT_DECISION_REGISTER.md",
+      "where": "PDR-1.7 DR-115",
+      "source": "PUX C3",
+      "from": "run performance goal without date + strength development → Equilíbrio; any other, multiple or ambiguous pair → no tag. Rotation (ON-14b): \"O coach decide\".",
+      "to": "run performance goal without date (\"Correr mais rápido\" or \"Correr mais longe\") + strength development → Equilíbrio; any other, multiple or ambiguous pair → no tag. The reason names the person's own goals, in a line or in the option's own description: \"Recomendado pelo seu objetivo de força: ‹objetivo›\"; \"Recomendado porque sua prova tem data\"; \"Recomendado porque você quer correr com regularidade e evoluir na força\"; \"Recomendado porque os seus dois objetivos são de evolução\". Rotation (ON-14b): \"O coach decide\", whose reason is its own description."
+    },
+    {
+      "n": 8,
+      "file": "product/UX_SPECIFICATION.md",
+      "where": "UXS line 80",
+      "source": "PUX S3",
+      "from": "Uma edição de disponibilidade reavalia o horizonte das duas modalidades",
+      "to": "Uma edição de dias e turnos (Rotina) reavalia o horizonte das duas modalidades"
+    },
+    {
+      "n": 9,
+      "file": "product/UX_SPECIFICATION.md",
+      "where": "UXS SURF-X-12",
+      "source": "PUX S3",
+      "from": "| SURF-X-12 | Calendário separado do Plano | Duplicaria plano/agenda | Janelas no Plano; disponibilidade em SURF-11. |",
+      "to": "| SURF-X-12 | Calendário separado do Plano | Duplicaria plano/agenda | Janelas no Plano; dias e turnos escolhidos (Rotina) em SURF-11. |"
+    },
+    {
+      "n": 10,
+      "file": "product/UX_SPECIFICATION.md",
+      "where": "UXS AM-02",
+      "source": "PUX S3 + S4",
+      "from": "intervalo universal; sair da disponibilidade. |",
+      "to": "intervalo universal; levar sessão para fora dos dias escolhidos sem ato da pessoa (DR-112; outro dia só como opção explícita, de uma vez e rotulada como exceção daquele dia, EDT-02). |"
+    },
+    {
+      "n": 11,
+      "file": "product/UX_SPECIFICATION.md",
+      "where": "UXS FAC-07",
+      "source": "PUX S3",
+      "from": "| FAC-07 | Disponibilidade, agenda ou equipamento | C05 |",
+      "to": "| FAC-07 | Dias e turnos escolhidos, agenda ou equipamento | C05 |"
+    },
+    {
+      "n": 12,
+      "file": "product/UX_SPECIFICATION.md",
+      "where": "UXS AG-04",
+      "source": "PUX S3",
+      "from": "marcar indisponível, mudar disponibilidade/equipamento/objetivo (FLOW-04/SURF-11)",
+      "to": "marcar indisponível, mudar dias e turnos (Rotina)/equipamento/objetivo (FLOW-04/SURF-11)"
+    },
+    {
+      "n": 13,
+      "file": "product/UX_SPECIFICATION.md",
+      "where": "UXS EDT-01",
+      "source": "PUX S3",
+      "from": "“Alterar”: mover (dia/janela) ·",
+      "to": "“Alterar”: mover (dia/turno) ·"
+    },
+    {
+      "n": 14,
+      "file": "product/UX_SPECIFICATION.md",
+      "where": "UXS EDT-01",
+      "source": "PUX S3",
+      "from": "pausar o plano (FLOW-14) · mudar disponibilidade em geral (SURF-11);",
+      "to": "pausar o plano (FLOW-14) · mudar dias e turnos em geral (Rotina, SURF-11);"
+    },
+    {
+      "n": 15,
+      "file": "product/UX_SPECIFICATION.md",
+      "where": "UXS EDT-01 (edit path)",
+      "source": "PUX C2",
+      "from": "mudar respostas (ONB-06/07/09/10) ou mover uma sessão da proposta → nova avaliação → novo primeiro valor,",
+      "to": "mudar respostas (ONB-06/07/09/10/22; volta direto à montagem e à proposta, sem repetir o resto do questionário nem a conta) ou mover uma sessão da proposta → nova avaliação → novo primeiro valor,"
+    },
+    {
+      "n": 16,
+      "file": "product/UX_SPECIFICATION.md",
+      "where": "UXS CTN-06",
+      "source": "PUX S3",
+      "from": "retomar → contexto atual mínimo (disponibilidade, limitação)",
+      "to": "retomar → contexto atual mínimo (dias e turnos, limitação)"
+    },
+    {
+      "n": 17,
+      "file": "product/UX_SPECIFICATION.md",
+      "where": "UXS B03",
+      "source": "PUX S3",
+      "from": "| 5 intenções; dias com janelas e sessões; trocar ou mesmo dia | destino ocupado · fora da disponibilidade |",
+      "to": "| 5 intenções; dias e turnos escolhidos e sessões; trocar ou mesmo dia | destino ocupado · fora dos dias escolhidos (exceção daquele dia) |"
+    },
+    {
+      "n": 18,
+      "file": "product/UX_SPECIFICATION.md",
+      "where": "UXS ONB-05",
+      "source": "PUX S8",
+      "from": "termos e Política de privacidade são aceitos no passo da conta, antes de qualquer envio, e a política fica acessível antes da primeira coleta;",
+      "to": "termos, Política de privacidade e o consentimento primário (M1) são dados no passo da conta, antes de qualquer envio (ato separado ou junto do aceite: G07), e a política fica acessível antes da primeira coleta;"
+    },
+    {
+      "n": 19,
+      "file": "product/UX_SPECIFICATION.md",
+      "where": "UXS 6.2",
+      "source": "PUX S8",
+      "from": "| Consentimento primário (M1) | Agora |",
+      "to": "| Consentimento primário (M1) | No passo da conta, antes de qualquer envio (ONB-05/23) |"
+    },
+    {
+      "n": 20,
+      "file": "product/UX_SPECIFICATION.md",
+      "where": "UXS ONB-23",
+      "source": "PUX S8",
+      "from": "conta (Apple, Google ou e-mail; termos ao lado de toda ação que cria conta)",
+      "to": "conta (Apple, Google ou e-mail; termos e consentimento primário ao lado de toda ação que cria conta)"
+    },
+    {
+      "n": 21,
+      "file": "product/UX_SPECIFICATION.md",
+      "where": "UXS ONB-23",
+      "source": "PUX S6 + SECURITY-RECHECK N1",
+      "from": "Entrar numa conta existente no fim mantém o plano dela e apaga as respostas do aparelho, com aviso; nunca mescla. | DR-111;",
+      "to": "Entrar numa conta existente no fim mantém o plano dela e apaga as respostas do aparelho, com aviso; nunca mescla. Entrar leva aonde a conta está: plano ativo → Hoje; plano salvo sem assinatura → PP-08; respostas sem plano → montagem (ON-16); sem respostas → questionário no modo com conta → montagem, sem passo de conta e sem nenhuma frase de “só neste aparelho” (ON-01b, ON-08, ON-15b, ON-15d): o consentimento de finalidade diz que os dados vão para a conta, para montar o plano, e os consentimentos ficam registrados direto na conta. O aviso de respostas apagadas só aparece quando havia rascunho. | DR-111;"
+    },
+    {
+      "n": 22,
+      "file": "product/UX_SPECIFICATION.md",
+      "where": "UXS ONB-15",
+      "source": "PUX M1",
+      "from": "Validade do rascunho abandonado: G07. Nada é inferido do abandono.",
+      "to": "Validade do rascunho abandonado: G07. Um rascunho por aparelho: com rascunho presente, “Criar conta” (AC-04) ou “Começar” (AC-04f) retomam o passo salvo, ou levam ao passo da conta se o questionário estiver completo; só o apagar explícito recomeça. Nada é inferido do abandono."
+    },
+    {
+      "n": 23,
+      "file": "product/UX_SPECIFICATION.md",
+      "where": "UXS ONB-11",
+      "source": "PUX M3 + SECURITY-R2 M3a/S2 (narrowed per PUX-RECHECK N1 and SSCTR-RECHECK)",
+      "from": "Recusa é desconhecido — não prova ausência de restrição. |",
+      "to": "Recusa é desconhecido — não prova ausência de restrição. Antes da conta (DR-111), contar uma limitação (dor ou lesão, ou volta de pausa) pede um ato explícito de finalidade antes de qualquer detalhe, como a região; sem ele nada é guardado, a resposta vale como desconhecida e a pessoa pode autorizar depois em Perfil — o plano não a trata como “sem restrição”; em dor ou lesão, uma linha neutra recomenda avaliação profissional. |"
+    },
+    {
+      "n": 24,
+      "file": "product/UX_SPECIFICATION.md",
+      "where": "UXS ONB-07",
+      "source": "PUX C3",
+      "from": "corrida de desempenho sem data + força de desenvolvimento → Balanced; outro par, múltiplo ou ambíguo → sem sugestão. Nunca depende de sexo.",
+      "to": "corrida de desempenho sem data (“Correr mais rápido” ou “Correr mais longe”) + força de desenvolvimento → Balanced; outro par, múltiplo ou ambíguo → sem sugestão. O motivo nomeia os objetivos da própria pessoa. Nunca depende de sexo."
+    },
+    {
+      "n": 25,
+      "file": "product/UX_SPECIFICATION.md",
+      "where": "UXS ONB-09",
+      "source": "PUX S2 + S5",
+      "from": "mais o tempo por treino (força; corridas da semana e longão). O plano usa **exatamente** esses dias e turnos:",
+      "to": "mais o tempo por treino (força; corridas da semana e longão). Turnos: Manhã, Almoço ou Noite (o conjunto do novo Figma desde o V1); o “Horário” do turno é uma faixa preferida de início, editável e opcional, que posiciona o horário planejado sem travar (SES-02) — quem treina à tarde ajusta essa faixa. Quem treina um só esporte responde só a tela dele (ON-12a ou ON-12b). O plano usa **exatamente** esses dias e turnos:"
+    },
+    {
+      "n": 26,
+      "file": "product/UX_SPECIFICATION.md",
+      "where": "UXS ONB-22",
+      "source": "SSCTR-BIND Q3 + PUX-RECHECK N5",
+      "from": "Troca muda só a seleção de exercícios, preservando o estímulo essencial; a progressão de carga, séries, repetições e esforço segue a política aprovada; o primeiro treino com um exercício novo ajusta a carga pelo esforço.",
+      "to": "Troca muda só a seleção de exercícios, preservando o estímulo essencial; a carga dos exercícios que ficam, séries, repetições e esforço seguem evoluindo pela política aprovada; quando um exercício muda, a carga do novo começa por um ajuste pelo esforço."
+    },
+    {
+      "n": 27,
+      "file": "product/ADAPTIVE_ENGINE_OPERATIONAL_SPEC.md",
+      "where": "AEOS C05",
+      "source": "SSCTR-BIND Q1 + PUX S4",
+      "from": "| C05 Availability/equipment | Dia/turno escolhido ou equipamento necessários incompatíveis; SUBSTITUTE apenas repertório aprovado e MOVE apenas dentro dos dias escolhidos ou por ato da pessoa (DR-112), senão ASK/HOLD dependente. |",
+      "to": "| C05 Availability/equipment | Dia/turno escolhido ou equipamento necessários incompatíveis; SUBSTITUTE apenas repertório aprovado; MOVE do motor só entre dias escolhidos daquele esporte sem deixar dia escolhido sem sessão, ou por ato da pessoa (DR-112); outro dia só como opção explícita, de uma vez e rotulada como exceção daquele dia; senão ASK/HOLD dependente. |"
+    },
+    {
+      "n": 28,
+      "file": "product/ADAPTIVE_ENGINE_OPERATIONAL_SPEC.md",
+      "where": "AEOS practice_context",
+      "source": "PUX S2",
+      "from": "**dias e turno escolhidos por esporte, dia do longão e tempo por treino** (UXS ONB-09;",
+      "to": "**dias e turno escolhidos por esporte (Manhã/Almoço/Noite, com faixa preferida de início que posiciona o horário sem travar), dia do longão e tempo por treino** (UXS ONB-09;"
+    },
+    {
+      "n": 29,
+      "file": "product/ADAPTIVE_ENGINE_OPERATIONAL_SPEC.md",
+      "where": "AEOS HC05",
+      "source": "PUX S3",
+      "from": "| HC05 Goal/feasibility | Objetivos/trade-offs autorizados, disponibilidade/equipamento e propósito mínimo da receita preservados.",
+      "to": "| HC05 Goal/feasibility | Objetivos/trade-offs autorizados, dias e turnos escolhidos por esporte (DR-112, restrição dura de alocação), equipamento e propósito mínimo da receita preservados."
+    },
+    {
+      "n": 30,
+      "file": "product/ADAPTIVE_ENGINE_CONTRACT.md",
+      "where": "AEC move rule",
+      "source": "PUX S4",
+      "from": "mover para outro dia só por ato da pessoa.",
+      "to": "mover para outro dia só por ato da pessoa: o motor pode oferecer outro dia apenas como opção explícita, de uma vez e rotulada como exceção daquele dia (EDT-02), nunca aplicada sem a escolha da pessoa."
+    },
+    {
+      "n": 31,
+      "file": "product/SPORT_INTELLIGENCE_SPEC.md",
+      "where": "SIS Dias escolhidos",
+      "source": "SSCTR-BIND Q2 (optional completion)",
+      "from": "No mesmo turno, primeiro o treino-chave do dia pela prioridade; em Balanced com os dois chave, ASK; a pessoa pode inverter. Sem regra de horas (POL-07).",
+      "to": "No mesmo turno, primeiro o treino-chave do dia pela prioridade; em Balanced com os dois chave, ASK; a pessoa pode inverter. Em corrida principal com corrida leve, a força pode vir antes, com explicação. Quando os dias permitem, o coach evita dois treinos-chave exigentes seguidos pelo conteúdo; se inevitável, reduz a demanda do não prioritário e explica. Sem regra de horas (POL-07)."
+    },
+    {
+      "n": 32,
+      "file": "product/STRENGTH_INTELLIGENCE_SPEC.md",
+      "where": "STIL Troca de exercicios",
+      "source": "SSCTR-BIND Q3 (optional completion)",
+      "from": "Troca que cairia em taper ou semana de prova é adiada com explicação.",
+      "to": "Troca que cairia em taper ou semana de prova é adiada com explicação. A primeira exposição de uma troca fica, pelo conteúdo, longe do longão ou da corrida-chave quando os dias permitem; mudança de cadência nunca é apresentada como descanso ou deload."
+    },
+    {
+      "n": 33,
+      "file": "product/CORE_FLOWS.md",
+      "where": "CORE_FLOWS F01",
+      "source": "PUX S3",
+      "from": "experiência/prática recente, disponibilidade/equipamento e limitação relevante mínima.",
+      "to": "experiência/prática recente, dias e turnos escolhidos por esporte (DR-112)/equipamento e limitação relevante mínima."
+    },
+    {
+      "n": 34,
+      "file": "product/PRODUCT_ARCHITECTURE.md",
+      "where": "PRODUCT_ARCHITECTURE Voce",
+      "source": "PUX S3",
+      "from": "| Você | Contexto/objetivos/prioridades/disponibilidade/equipamento,",
+      "to": "| Você | Contexto/objetivos/prioridades/rotina (dias e turnos por esporte)/equipamento,"
+    },
+    {
+      "n": 35,
+      "file": "product/PRODUCT_DECISION_REGISTER.md",
+      "where": "PDR-1.7 DR-113",
+      "source": "Founder decision 2026-10-26 (SSCTR Q3 option a)",
+      "from": "Open (Founder + Product/UX): whether the 2-week option rotates only accessories and close variants of the main lifts, or everything with progress shown by block.",
+      "to": "Decided by the Founder on 2026-10-26 (SSCTR Q3 option a): every 2 weeks keeps the main exercises and rotates only accessories and close variants of the main lifts, so progress stays readable on the main lifts; its helper text says so."
+    },
+    {
+      "n": 36,
+      "file": "product/PRODUCT_DECISION_REGISTER.md",
+      "where": "PDR-1.7 Open / owner",
+      "source": "Founder decision 2026-10-26 (SSCTR Q3 option a)",
+      "from": "; scope of the 2-week rotation → Founder + Product/UX;",
+      "to": ";"
+    },
+    {
+      "n": 37,
+      "file": "product/UX_SPECIFICATION.md",
+      "where": "UXS ONB-22",
+      "source": "Founder decision 2026-10-26 (SSCTR Q3 option a)",
+      "from": "“Fixo” mantém a seleção; substituição por equipamento",
+      "to": "“A cada 2 semanas” mantém os exercícios principais e troca só os acessórios e as variações próximas deles; o texto de ajuda diz isso (Founder, 2026-10-26; SSCTR Q3, opção a). “Fixo” mantém a seleção; substituição por equipamento"
+    },
+    {
+      "n": 38,
+      "file": "product/STRENGTH_INTELLIGENCE_SPEC.md",
+      "where": "STIL Troca de exercicios",
+      "source": "Founder decision 2026-10-26 (SSCTR Q3 option a)",
+      "from": "Cadências de 2 e 6 semanas são preferência, não ótimo científico;",
+      "to": "Cadências de 2 e 6 semanas são preferência, não ótimo científico; a de 2 semanas mantém os exercícios principais e troca só os acessórios e as variações próximas deles, para o progresso continuar legível nos principais (Founder, 2026-10-26; SSCTR Q3, opção a);"
+    }
+  ]
+}

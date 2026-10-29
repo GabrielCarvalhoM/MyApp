@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "objective": "Offline whole-program, horizon-aware deterministic coaching and honest independent capability evidence",
+  "contract_revision": "R5-1",
+  "artifact_revision": "R5-1",
+  "plan_revision": "R5-PLAN-1",
+  "accepted_direction_ref": "Direct user mission DOMAIN_COACHING_R5",
+  "inspection_ref": "TASK_CONTRACT.md",
+  "inspected_files": ["CoachingCore/package.json", "CoachingCore/src/r4-runtime.mjs", "CoachingCore/src/r4-authority.mjs", "CoachingCore/src/r4-athlete-model.mjs", "CoachingCore/src/value.mjs", "CoachingCore/test/r4-coaching.test.mjs", "CoachingCore/r4/PRESCRIPTION_ENVELOPE_REGISTRY.json", "CoachingCore/scripts/verify-r4.mjs", "CURRENT_MISSION.md", "canon/CANONICAL_INDEX.md", "product/ADAPTIVE_ENGINE_CONTRACT.md", "product/RUN_INTELLIGENCE_SPEC.md", "product/STRENGTH_INTELLIGENCE_SPEC.md"],
+  "preconditions": ["Node 24.19.0 available", "Existing dirty files preserved", "New science boundaries fail closed until independent approval"],
+  "files": ["CoachingCore/src/r5-*.mjs (new)", "CoachingCore/test/r5-*.test.mjs (new)", "CoachingCore/scripts/*-r5.mjs (new)", "CoachingCore/r5 (new)", "audits/domain-coaching-r5-2026-10-25 (new)", "CURRENT_MISSION.md (append locator only)"],
+  "steps": [
+    {"id":"S1","change":"Freeze preexisting bytes and write program/policy/interface contracts","test":"node --test --test-reporter=tap","expected_outcome":"239 baseline tests pass; immutable input manifest","checkpoint":"BASELINE"},
+    {"id":"S2","change":"Implement validated program compiler and schedulable prescriptions with tests before logic","test":"node --test test/r5-program.test.mjs","expected_outcome":"RED behavior failure then GREEN hierarchy, feasibility and safety","checkpoint":"PROGRAM"},
+    {"id":"S3","change":"Implement actual-only learning and MEC program adaptation; compare feasible counterfactuals","test":"node --test test/r5-*.test.mjs","expected_outcome":"deterministic stable plans, evidence-sensitive decisions, no causal overfit","checkpoint":"LONGITUDINAL"},
+    {"id":"S4","change":"Simulate 4/8/12/16-week trajectories and scenarios A–G, regression and SSCTR binding","test":"node scripts/simulate-r5.mjs; node --test","expected_outcome":"bounded trajectories/provenance, current tests; scientific gaps explicit","checkpoint":"PRE_FREEZE"},
+    {"id":"S5","change":"Hash freeze, fresh independent sealed holdout, one first evaluation and independent quality/security-of-invariants review","test":"node scripts/holdout-r5.mjs; node scripts/verify-r5.mjs","expected_outcome":"immutable first evidence, independently judged goal quality, current hashes","checkpoint":"REVIEW"},
+    {"id":"S6","change":"Integrate disposition, gaps, reports and separate verdicts","test":"node scripts/verify-r5.mjs","expected_outcome":"current objective evidence supports every delivery claim","checkpoint":"DELIVERY"}
+  ],
+  "risks": ["Whole-program assembly may exceed R4 local boundary scope", "Static future dose can masquerade as adaptive coaching", "Synthetic outcomes are fixtures, not physiology", "Holdout contamination or retuning must not be hidden", "Finite anchor repertory cannot establish general V1 optimality"],
+  "stop_conditions": ["No real athlete use", "No unsupported positive output", "No stale independent gate claimed current"],
+  "rollback_relevant": true,
+  "rollback": "New modules are separate versioned entrypoints; preserve R4 commands/bytes and all first-evaluation evidence. No destructive reset or deletion."
+}

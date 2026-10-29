@@ -1,0 +1,19 @@
+# Independent scientific binding recheck — SSCTR-BINDING-r2
+
+2026-10-24 · `/root/ssctr_adversarial` · same independent fresh SSCTR reviewer instance. Disposition: **PASS_BOUNDED_SCIENTIFIC_BINDING** for the exact targets now pinned in `ssctr-review.json`.
+
+The frozen registry raw hash remains `3e5b6af1e9561ee54ae01c02adf06256b0629a258274a0d10b17f6bb58b63abe`. All scientific domain/source artifact hashes and the fifteen policy decision records remain unchanged. The twelve conditional approvals and three taper abstentions are not expanded. No new approval or human-queue entry results from this recheck.
+
+The reviewer read the current R2 implementation, dispatch/output wrapper and strict input schema. The examined corrections preserve unrelated and completed sessions in the candidate, reject ignored recipe parameters, prevent calibration from replacing concrete Strength or a different concrete Run stimulus, reject contradictory minor age and impossible calendar dates, and retain explicit current provenance. The output wrapper visibly labels necessity, sufficiency and tolerance as adjudicated synthetic premises. These changes improve conformity to the existing conditions; they do not prove inference from raw athlete data.
+
+The added first-week → observed response → week-two consumer is limited to the exact establishment recipes and current context. It requires explicit complete actual facts with athlete/session identity, executed plan revision, parameters, current compatible response and nonfuture valid time. Missing uploads remain ASK. Its supported output is KEEP of the same dose; no automatic progression or positive coverage is earned.
+
+During this recheck, the reviewer found that this new consumer initially returned KEEP even with one-minute current time availability, unavailable chosen days or all sessions on one day. That violates the existing finite-schedule/current-context conditions. The finding was returned to the implementation owner. The reviewer read the resulting explicit current time/availability and allowed-schedule guards and reran both Run and Strength controls. They now fail closed.
+
+`ssctr-binding-r2-probes.json` records **52/52 targeted checks passing**: the fifteen policy bindings, original scientific failure controls, current preservation/parameter/calibration/age/calendar corrections, and complete/missing/mismatched establishment observations including the schedule correction. Probes also check deterministic output, unchanged input, unchanged official/applied state and no applied effect. This is a targeted reviewer check using development facts, separate from the independent representative corpus and its denominator.
+
+The current baseline records development12/15 and independent representative1/42 positive actions. The other representative outcomes remain visible, including schema/transport gaps. A raw ASK caused by an invalid input contract is not automatically a useful scientific question and cannot inflate USEFUL_ASK or positive coverage. The designed representative corpus is not a real-world prevalence estimate; its23 target opportunities are not23 achieved closures.
+
+The official record-consistency helper again validates15 policy records and the exact12 approval-to-queue correspondences using an explicitly labelled in-memory R2 projection of the existing100-entry queue. No second authoritative queue is created. Historical global queue consistency and broader runtime quality remain owned by their current independent judges/Chief.
+
+No human validation, empirical product validation, clinical clearance, full-domain readiness, real-athlete autonomy, production deployment, UI/Figma work or KMP migration is approved. Any later material code/schema/policy/recipe change needs a proportional current binding review; the preserved earlier target hashes remain in the JSON index as history.

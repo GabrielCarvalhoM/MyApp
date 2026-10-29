@@ -1,0 +1,2261 @@
+{
+  "revision": "ACF-BASELINE-r1",
+  "captured_at": "2026-10-23T22:43:44.985Z",
+  "head": "1d25c73e56661c8feac780aa814cc26aef51c9fc",
+  "status": " M AGENTS.md\n M CLAUDE.md\n M CURRENT_MISSION.md\n M MISSION_LEDGER.md\n M canon/CANONICAL_INDEX.md\n M canon/VILUMO_FIT_PRODUCT_THESIS_CONTRACT.md\n M product/ADAPTIVE_ENGINE_CONTRACT.md\n M product/ADAPTIVE_ENGINE_OPERATIONAL_SPEC.md\n M product/ADAPTIVE_ENGINE_SCENARIO_LAB.md\n M product/CORE_FLOWS.md\n M product/EXPERIENCE_MODEL.md\n M product/PRODUCT_ARCHITECTURE.md\n M product/PRODUCT_DECISION_REGISTER.md\n M product/PRODUCT_DOMAIN_MODEL.md\n M product/PRODUCT_TRUTH_MAP.md\n M product/RUN_INTELLIGENCE_SPEC.md\n M product/SPORT_INTELLIGENCE_SPEC.md\n M product/STRENGTH_INTELLIGENCE_SPEC.md\n M product/UX_SPECIFICATION.md\n M product/V1_RELEASE_SCOPE.md\n?? .agents/\n?? .claude/\n?? .codex/\n?? audits/autonomous-coaching-foundation-2026-10-23/\n?? audits/experience-decontamination-2026-10-22/\n?? audits/sports-domain-closure-2026-10-23/\n?? audits/sports-science-agent-2026-10-23/\n?? governance/agents/\n?? governance/snapshots/2026-10-22-pre-experience-decontamination/\n?? product/DESIGNER_PRODUCT_CONTEXT.md\n?? reviews/provisional-sports-science/\n?? reviews/sports-domain-closure/\n",
+  "files": [
+    {
+      "path": ".agents/skills/sports-science-review/SKILL.md",
+      "sha256": "67374297e275d2ec9ded1a8653baf6dc078fbe3d1fd1002e61a13cd6f34065bf"
+    },
+    {
+      "path": ".agents/skills/sports-science-review/scripts/__pycache__/validate_records.cpython-312.pyc",
+      "sha256": "20de9d86751f6e9dc02ecc09c4699b12d618ae1070ee684041d475902f89e5c1"
+    },
+    {
+      "path": ".agents/skills/sports-science-review/scripts/validate_records.py",
+      "sha256": "62927a13346b38290b3d2cbcc0e1275ad5b16f03f2208c28643647f908eca826"
+    },
+    {
+      "path": ".claude/agents/sports-science-concurrent-training-reviewer.md",
+      "sha256": "021b59519c9df2a95fbca91cd553a5cdc2b1ce3719d2364ed431ef3fa8c6c52d"
+    },
+    {
+      "path": ".codex/agents/sports-science-concurrent-training-reviewer.toml",
+      "sha256": "7f19c827094f91687f5e3b7372e808e6daa53c7b25f4772dde40e18d21c57b4a"
+    },
+    {
+      "path": "audits/experience-decontamination-2026-10-22/BASELINE_MANIFEST.json",
+      "sha256": "56f531b2da39447c4438f25427a44789226ff4a8bf2ca920aa75df1574e13240"
+    },
+    {
+      "path": "audits/experience-decontamination-2026-10-22/CLOSURE_VERIFICATION.json",
+      "sha256": "655be7810ea6081890f8413aaad748955454247f784963ab7e9c54a28aabd926"
+    },
+    {
+      "path": "audits/experience-decontamination-2026-10-22/DOCTRINE_EVIDENCE_REVIEWED.json",
+      "sha256": "05bb992ceeb4f2a749dff8003783bc7dac300f81b94ee03b07d90c1209e0becc"
+    },
+    {
+      "path": "audits/experience-decontamination-2026-10-22/DOCTRINE_INTERPRETABLE.json",
+      "sha256": "b006c141e26f88d5dadafbd6274dfe7b14772de58185dffe03f64965c735236e"
+    },
+    {
+      "path": "audits/experience-decontamination-2026-10-22/FINAL_DISPOSITION.md",
+      "sha256": "9b5bb3bc799bed447fabfe21d81d95de4379026d9f322dbebdc5781b35ac10a5"
+    },
+    {
+      "path": "audits/experience-decontamination-2026-10-22/FOUNDER_REQUEST.md",
+      "sha256": "9d4d56cf30d25d52361c122f318b6bc1978218e481396dafb49f8021dcd7e651"
+    },
+    {
+      "path": "audits/experience-decontamination-2026-10-22/PREEXISTING_STATUS.txt",
+      "sha256": "1135f830157bed5ec56953101c0bab58336535114032c0b7e45324029a7e5e75"
+    },
+    {
+      "path": "audits/experience-decontamination-2026-10-22/REVIEW_PACKAGE.json",
+      "sha256": "921577846052d6966979e9ccc154d9b05fbdafc86b18b431889fa3bf980037fd"
+    },
+    {
+      "path": "audits/experience-decontamination-2026-10-22/VERIFICATION.final.json",
+      "sha256": "cd2c5c550bdee1eb18cdd22a4865a3571ea1469fafc0a2f7c528e5257d982433"
+    },
+    {
+      "path": "audits/experience-decontamination-2026-10-22/VERIFICATION.initial.json",
+      "sha256": "580a2085473d31c3d3c1ebea9b0f8f01a936ab38306c8f8ca21cbcac859a6687"
+    },
+    {
+      "path": "audits/experience-decontamination-2026-10-22/VERIFICATION.json",
+      "sha256": "1cf49ff4a81a051b9517e93b00bb3ea5a0eb8998391da1972badc7f9a84e682a"
+    },
+    {
+      "path": "audits/experience-decontamination-2026-10-22/verify-decontamination.ps1",
+      "sha256": "59034a8faff8b10d19dc17ff9799794ae2f9b01d1c1991d17173b6367c210f8c"
+    },
+    {
+      "path": "audits/sports-domain-closure-2026-10-23/BASELINE.json",
+      "sha256": "22202b6e0f9344b31d70dca423442249d19403d96ecb05e674535e24e01edea8"
+    },
+    {
+      "path": "audits/sports-domain-closure-2026-10-23/REVIEW_MANIFEST.json",
+      "sha256": "39bc280225288fb6bf631c2e1de91e0c3541459faf3bef74ac689c7d6d69b5fe"
+    },
+    {
+      "path": "audits/sports-domain-closure-2026-10-23/TASK_CONTRACT.md",
+      "sha256": "f0d5ba2ae95fcd79f49b1a936096f59e569c1f20348a663fb4b6d0b47e4b9c75"
+    },
+    {
+      "path": "audits/sports-domain-closure-2026-10-23/before/CURRENT_MISSION.md",
+      "sha256": "7a84732c3bb34606434a4a1413f1d487bfe9ff5088e0cb58959a3123d05c00e4"
+    },
+    {
+      "path": "audits/sports-domain-closure-2026-10-23/before/MISSION_LEDGER.md",
+      "sha256": "434bc86391bc8c4a987a5f01cf5515918231996271d1315e5e9081cbd9f55dde"
+    },
+    {
+      "path": "audits/sports-domain-closure-2026-10-23/before/reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json",
+      "sha256": "4004445bda14c3284324818c5d57c95e1ef97209dceea242e8f6c9e8796a12f1"
+    },
+    {
+      "path": "audits/sports-domain-closure-2026-10-23/final_verify.py",
+      "sha256": "e85efcbc17ed4d563f02744bab3b7ea56f159cd31a5af738d5e4911a83582c9a"
+    },
+    {
+      "path": "audits/sports-domain-closure-2026-10-23/routing.json",
+      "sha256": "a560e5159e05786f74b9b713946204d703c2fa61f0aa2813212342da5230df67"
+    },
+    {
+      "path": "audits/sports-domain-closure-2026-10-23/verify_delivery.py",
+      "sha256": "abe25eed4cb05ccfd761113f0a380c0284ac8b3361d85b65f3b6ecf7a18ae64e"
+    },
+    {
+      "path": "audits/sports-science-agent-2026-10-23/ADVERSARIAL_EVAL.md",
+      "sha256": "59d776af9951c014fba1cd925f4f5f8dcd2589f3eb3133c329fc28fb8b0bfbad"
+    },
+    {
+      "path": "audits/sports-science-agent-2026-10-23/AUTHOR_HANDOFF.md",
+      "sha256": "d247f01a910f4405155b9cdc18d2779f05d4bdef4718ba8ce09bd03a1eb20e4a"
+    },
+    {
+      "path": "audits/sports-science-agent-2026-10-23/BASELINE.json",
+      "sha256": "b36b2fe245fd2b85d10f8418a2a23b79047ea5871a5521e233eaafa610bb61ed"
+    },
+    {
+      "path": "audits/sports-science-agent-2026-10-23/DOCTRINE_INTERPRETABLE.md",
+      "sha256": "87796d2979b11096aa78ba5cc08d2eff55211b25257ad32b2f168b1550628a48"
+    },
+    {
+      "path": "audits/sports-science-agent-2026-10-23/FINAL_CLOSURE_CHECKS.json",
+      "sha256": "68e8fba006d02a563b015de470ed05bc287e0e280d44af22e9b149cef4d93278"
+    },
+    {
+      "path": "audits/sports-science-agent-2026-10-23/FINAL_REPORT.md",
+      "sha256": "736ae52d1015cd806c4bf766b90e948a3b7f99c2597b6fc4135252229ba5a9cb"
+    },
+    {
+      "path": "audits/sports-science-agent-2026-10-23/FOUNDER_REQUEST.md",
+      "sha256": "68e3f814d884290eada3225b28bbb5894f50c5dbdd76ac89a06f9c9ae8e26f25"
+    },
+    {
+      "path": "audits/sports-science-agent-2026-10-23/PUBLICATION_EVENT.json",
+      "sha256": "9fde88fa99b3946d6b2fab15c5a19e861d3b9daa4068081d4e5d51ce120310ec"
+    },
+    {
+      "path": "audits/sports-science-agent-2026-10-23/REVIEW_MANIFEST.json",
+      "sha256": "3de2e86e3e5ed8bfeaefc70966bdc0c9a95bb40504cbd5811cab95dd9c30396a"
+    },
+    {
+      "path": "audits/sports-science-agent-2026-10-23/TASK_CONTRACT.md",
+      "sha256": "a96845cc58a8acbdd28648c2b1d3fb13384b439b1ea2bd0dfcc9fb93da4487fb"
+    },
+    {
+      "path": "audits/sports-science-agent-2026-10-23/TOOL_CHECKS.json",
+      "sha256": "ee72044812cdda834ea8fdea1a6b4859f520f820c8201f854433ef5f3ca0640c"
+    },
+    {
+      "path": "audits/sports-science-agent-2026-10-23/VERIFICATION.json",
+      "sha256": "2c089cb02e12584ebd6d10557b8414e5dffd499bf20b8b6f752bb6d818948054"
+    },
+    {
+      "path": "audits/sports-science-agent-2026-10-23/before/AGENTS.md",
+      "sha256": "033e7e20f0e771b64d2df05067cfb531b9b9d40aa1a8978a3f24681f16594254"
+    },
+    {
+      "path": "audits/sports-science-agent-2026-10-23/before/CLAUDE.md",
+      "sha256": "d0af60b361851632a63994638fbf3b11ecf10f7a3fd2f749a798f148cf9778b0"
+    },
+    {
+      "path": "audits/sports-science-agent-2026-10-23/before/CURRENT_MISSION.md",
+      "sha256": "736ad69164d03b5f821754aede14b55ebcf21105eeddfe8e6bfaba3e150cd4dd"
+    },
+    {
+      "path": "audits/sports-science-agent-2026-10-23/before/MANIFEST.json",
+      "sha256": "1f7f61224deaa07a367106a78dee539be4cd600c305919dcf3757774f56f059d"
+    },
+    {
+      "path": "audits/sports-science-agent-2026-10-23/before/MISSION_LEDGER.md",
+      "sha256": "80c7914a19781352d560de9f95d346b9d4ee28ac86343b20a7a2708b49efcc9f"
+    },
+    {
+      "path": "audits/sports-science-agent-2026-10-23/before/canon/CANONICAL_INDEX.md",
+      "sha256": "6adbe0cdf921bd6fadc7f360bd904597e434c27bbff971f833feb7c05a61f3b2"
+    },
+    {
+      "path": "audits/sports-science-agent-2026-10-23/before/product/PRODUCT_DECISION_REGISTER.md",
+      "sha256": "d8f30b7c546976acb366641cc2651c994f415ea7ab4a2c5815ddc5d63c1e149a"
+    },
+    {
+      "path": "audits/sports-science-agent-2026-10-23/behavioral-results.json",
+      "sha256": "2bc9f1815f4e3938e14a9c6912234614908c5fb6be1ffda361ea3e3d0b3dcae1"
+    },
+    {
+      "path": "audits/sports-science-agent-2026-10-23/verify_delivery.py",
+      "sha256": "582dedd9a85989261487ca3526f1f0bf23a824ccb89b1b2bc13167270cd68994"
+    },
+    {
+      "path": "governance/agents/sports-science-reviewer/CONSTITUTION.md",
+      "sha256": "9de27b4d6ab0879419a92c218b98acc7ef3df63b73b3325010f033d403122180"
+    },
+    {
+      "path": "governance/agents/sports-science-reviewer/ESCALATION_AND_HUMAN_REVALIDATION.md",
+      "sha256": "12ae588e7691b7864a1f0354dadfa7e27277ac2b893df6aaf47730142450f446"
+    },
+    {
+      "path": "governance/agents/sports-science-reviewer/EVIDENCE_PROTOCOL.md",
+      "sha256": "7885c126a724716a24c1e270b4d6983c7b8cd5a9797514830d1ea4d0b77e6f31"
+    },
+    {
+      "path": "governance/agents/sports-science-reviewer/REVIEW_TEMPLATE.md",
+      "sha256": "17bba6dbfb1fef46623973e691e2351f4d7ff3157fb38626126e14802283c14c"
+    },
+    {
+      "path": "governance/agents/sports-science-reviewer/decision.schema.json",
+      "sha256": "46c45e87fea53b7b1712de17a9bcc4ef02f40d9dd1f6483bce510a0a21689cc9"
+    },
+    {
+      "path": "governance/agents/sports-science-reviewer/registry.json",
+      "sha256": "7843a0c7921bc09d03f573ae56221b6b583d2b9f3d397625a5b2ace1d4871382"
+    },
+    {
+      "path": "governance/snapshots/2026-10-22-pre-experience-decontamination/CURRENT_MISSION.md",
+      "sha256": "341da57ad9aa06c8c469177d1ff837bbe381c0c51192035ab1aa35af1fdc84a9"
+    },
+    {
+      "path": "governance/snapshots/2026-10-22-pre-experience-decontamination/README.md",
+      "sha256": "61410742847e7dcd060c6e66af6ce1c9ec26df5eff3807bb68f7cefa8f44c3d5"
+    },
+    {
+      "path": "product/DESIGNER_PRODUCT_CONTEXT.md",
+      "sha256": "2f6dab87006ba2753a63faa9545d23d69e46c73658d8fac83a3052b266bfa6ad"
+    },
+    {
+      "path": "reviews/provisional-sports-science/2026-10-23/COVERAGE_BACKLOG.md",
+      "sha256": "414d4e8af4f79dae016238aee546598603258e6e91a186386ea3e31131bf426a"
+    },
+    {
+      "path": "reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json",
+      "sha256": "a6a74e5f42acd4ec61359208bf352e03dd34820b3d4bd13e5bfadda7830c8563"
+    },
+    {
+      "path": "reviews/provisional-sports-science/2026-10-23/LITERATURE_SNAPSHOT.json",
+      "sha256": "f7d067521a255e954e9acf575605082be4f3f14f8fe9b39444ee5f80a09f97a6"
+    },
+    {
+      "path": "reviews/provisional-sports-science/2026-10-23/PILOT_REVIEW.md",
+      "sha256": "5a5ac375dce3d2ce5f76cd5ca16eaa7ae2951f339d733bf3ed967a7db512d0ae"
+    },
+    {
+      "path": "reviews/provisional-sports-science/2026-10-23/SEARCH_LOG.md",
+      "sha256": "2910ad51c69bfc9297868e25c0a9d3aa329bbc88720a890d5d3d2c1de2edcf52"
+    },
+    {
+      "path": "reviews/provisional-sports-science/2026-10-23/decisions.json",
+      "sha256": "cf0265cb76447261e424fd961d211996e29749f08984ea2fdc80bed77f7e382a"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/AE_SUPPLEMENTAL_ASSESSMENTS.json",
+      "sha256": "b2dbcbbea594ca88cfe2cd7f788893509a7fb6fce10bd781a48d2ccebdfe909c"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/AE_VALIDATION_RERUN.json",
+      "sha256": "0ff9acffe094299a46f88665335b5fb77265f3045c908acecaebcf0f76394127"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/AE_VALIDATION_RERUN.md",
+      "sha256": "38c438cbc0b0f04c24c781dcab66311ac57a0dd7d5e594e2d54e643a4a476f7b"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/DECISION_REGISTRY.json",
+      "sha256": "39e8796af7449a65fecd8377ca9eee44ac5025b860b6347c8b6c396e05fff6b2"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/DECISION_REGISTRY.md",
+      "sha256": "c5f39ab443fcacdae7945942e4d05c19d9ac0b46c274c736c56702fc9414444e"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/GATE_DISPOSITION.json",
+      "sha256": "5ffa37ad54b537a727e3b3cf8d931075b13b7dc2e8e2a1b2f21402101d3b8ca7"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/GOLDEN_DOMAIN_FIXTURES/BASELINE_INVENTORY.json",
+      "sha256": "db33e020d75187696718f80385390f6bc72e651433c7d02cb4fda9c23bc759f5"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/GOLDEN_DOMAIN_FIXTURES/FZ-S03.json",
+      "sha256": "b77c613decc1eff7727312eb0264c4d507fb09c790eb97811b44a8d63e6885bf"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/GOLDEN_DOMAIN_FIXTURES/FZ-S06.json",
+      "sha256": "7737893912144c062f745b14421ddd4d8637f9a1051e10d7eb734866f5e098d3"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/GOLDEN_DOMAIN_FIXTURES/README.md",
+      "sha256": "33b1dcb0cfb9609d86953667f35c6f6e61c70c7fe528015081772a3667f537b5"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/GOLDEN_DOMAIN_FIXTURES/S01.json",
+      "sha256": "6fad75b1b5a1bc9e07149cafb91ae401c2c414ee953afd0d90534f27b607fba6"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/GOLDEN_DOMAIN_FIXTURES/S02.json",
+      "sha256": "c48090f246a4bca06e0dba5f7938c2297863c1cfeecf8eaca67c537a46612937"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/GOLDEN_DOMAIN_FIXTURES/S05.json",
+      "sha256": "e584d7412429a7f6d5abc8035a9967901a54ca794bea5e6b0d60be77253c232a"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/GOLDEN_DOMAIN_FIXTURES/S06.json",
+      "sha256": "001669d1e066a11309a5a4430b410f05937af0df09ee9f2a7bbb112936c5604b"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/GOLDEN_DOMAIN_FIXTURES/S09.json",
+      "sha256": "c8769804ffc268c0990af2a82af0b0a9e79f8467e2929f12ca8703698e40c1b5"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/GOLDEN_DOMAIN_FIXTURES/S12-supplemental.json",
+      "sha256": "f4a54ab05c83b53607c29d277abf1623b1d108aa18dd16a7efc182847f09cdbd"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/GOLDEN_DOMAIN_FIXTURES/S13-supplemental.json",
+      "sha256": "c9adee60c17397247a83d210a13d759457d37ecc18f4162d13c55109d469b8c4"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/GOLDEN_DOMAIN_FIXTURES/S14-supplemental.json",
+      "sha256": "2a34aacbf021150d2a23da33223b175f3c3e381d89c243017dd58e9ef6c30229"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/GOLDEN_DOMAIN_FIXTURES/S28.json",
+      "sha256": "edeb934bd074f9d131845977b4a843ab39f6c934f057beb89492643eb913f5d5"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/GOLDEN_DOMAIN_FIXTURES/S29-supplemental.json",
+      "sha256": "043970789007458b2701ea0c800de8017a392e51f22de7540ebb7da733a8ca7f"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/GOLDEN_DOMAIN_FIXTURES/SIL-S09.json",
+      "sha256": "a71969dfd80a32bd019422ca3dee6ecf811e049dbd592df6f157c117c74ef85c"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/GOLDEN_DOMAIN_FIXTURES/SIL-S10.json",
+      "sha256": "fde07c09fd2b7747e15cfd30f9d196fa18feeb67c690ea6ddb95dda70a734413"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/PRE_REVIEW_VERIFICATION.json",
+      "sha256": "da069d8da831f7ebae4788f925ecd58b1b56f44ec1752569a4492635ea21cce1"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/QUEUE_PROJECTION.json",
+      "sha256": "a6a74e5f42acd4ec61359208bf352e03dd34820b3d4bd13e5bfadda7830c8563"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/README.md",
+      "sha256": "5555690aec502fc113c8a3384b1f989ee5a10f18482e6c0cb1a05b056311739d"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/SPORTS_DOMAIN_CLOSURE_REPORT.md",
+      "sha256": "59e6390584c816527f75a2ada0ddb3e56b78bcda5e50f50721a7e7de925344fa"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/VERIFICATION.json",
+      "sha256": "26d38241e8f7f0b35c015c6b63f519c74f969f355e1b14a905e0790842516ee7"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/reviews/GOVERNANCE_REVIEW.json",
+      "sha256": "19005a003c13bbd4726b0f019ca67784d9585c7f3af507b9eef2790da51adc07"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/reviews/GOVERNANCE_REVIEW.md",
+      "sha256": "25e4d5772585395f96222de8b9b832d1a7181bdc39917a6512cd7b5f5c43ef8f"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/reviews/INDEPENDENT_DECISIONS.json",
+      "sha256": "c9e8f1c7a1ed18637a1b30c031daed24e220dbdd5efc503a42efd2c9b3cd77d4"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/reviews/SCIENCE_FIDELITY_REVIEW.json",
+      "sha256": "dadca7b8472ccefb3b2ba183b4047be1dfdb6d0736a15979c7303d8ea5e81ad6"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/reviews/SCIENCE_FIDELITY_REVIEW.md",
+      "sha256": "afce36d23ef37c9dc8af434c36513e5f97d7b40e0c7d7d83bd7ce9a33774a877"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/reviews/fidelity-checks.json",
+      "sha256": "209ebeed7ca599742f22225a59af109455a63a7322de68b710e6ab13f6a1546b"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/reviews/fidelity-draft-findings.md",
+      "sha256": "8e8a8c2cb5fca61145914da120226db542ec19011476df546144504e8175ff36"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/reviews/fidelity-emit-review.py",
+      "sha256": "6c016d9389284a5cc4f8ca83025be99691ed47cffc4d6bea813ee1fa69abf741"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/reviews/fidelity-precheck.md",
+      "sha256": "9f2afce88b053d6e91434fd28572f5104fbae80b9d93a9ba8d44bed420dcd590"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/reviews/fidelity-semantics-review.json",
+      "sha256": "edbe8c17378bbc06305aa0784cb167a81c41a51c144353c76d84217f2bd54935"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/scientific/AUTHOR_CORRECTIONS.json",
+      "sha256": "00bb73b7cb54be9c02eeac2d9b73cb14c28573d747c07c2169fef0c2e88a2a11"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/scientific/AUTHOR_VERIFICATION.json",
+      "sha256": "c7b189285518fbcea530bd20b0d22b62de0cfdb0e5d91d3cdba59c131e4120f3"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/scientific/C1_C6_REVIEWS.json",
+      "sha256": "b0472c2e9ad24812875f59516e47a2bcc6ad923f81885626b0e1be6f794bd808"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/scientific/C1_C6_REVIEWS.md",
+      "sha256": "649b02ef0fd00cc1da9ebbd6162bfc829754ffeae198f15a06841f7c029af9bd"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/scientific/CASE_REVIEWS_S01_S29.json",
+      "sha256": "1e01c5231855ce61b4a26abd150ddbfc2fa0d02359c542aca17d8b0f068fb06e"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/scientific/CASE_REVIEWS_S01_S29.md",
+      "sha256": "9ba6c2280fc97d6ff80c95fced2e16574b2e980b61d6b12b4eb218c49ffd97b5"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/scientific/DECISIONS.json",
+      "sha256": "1df9f690dba4391cabfa9bdf3b06926db74a15960004100632893f77fcf16489"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/scientific/G01_COVERAGE_MATRIX.json",
+      "sha256": "55a7cc0873aacd81f76507eaccffdc21f849b84046f4a4220b1a360916e84535"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/scientific/G01_COVERAGE_MATRIX.md",
+      "sha256": "5dfcac63d4c8f09e1dd7feb7216342915cac4f272c10ff01502d712479c3f540"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/scientific/G02_POLICY_REGISTRY.json",
+      "sha256": "58a85d9bb4a47325dcae7fe37df342eaf2cbffbc0e76af8d52532e8ebca59215"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/scientific/G02_POLICY_REGISTRY.md",
+      "sha256": "f0370b8f078ff98f06cac02bd01426cd07dd86532600c75e6eedae9d0f7e3ddc"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/scientific/LITERATURE_SNAPSHOT.json",
+      "sha256": "09a81b3daa2db1af9dc9395858a76e49a1ff27a515db1354ecf9278e0239bced"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/scientific/SEARCH_LOG.md",
+      "sha256": "6479cfa8f2438e891581a7fe53dd5ce4a994b304294204fd6115be6e1ce0168c"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/scientific/build_author_package.py",
+      "sha256": "078375f098574faae2e47ab74a51ff4eadb741a0ff9a5fedcabfeffd3c82ab2e"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/semantics/G03_REVIEW.json",
+      "sha256": "ffec11412a7e69e3d8236772424d665297f987f6a54ea14de7b4241a7104c82e"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/semantics/G03_REVIEW.md",
+      "sha256": "0c682e6876f81095902adb4f814d1df5d766dbbf3472479b09b57e5c6a40725d"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/semantics/G04_NONCLINICAL_REVIEW.json",
+      "sha256": "f593f159e96d40c6596ec235921e9373832aa8520995b808977f5b8129786caa"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/semantics/G04_NONCLINICAL_REVIEW.md",
+      "sha256": "980604559d6db5eae7b1ab718afd604fb5c0410fb6e8f8dff1405aaa517cc67c"
+    },
+    {
+      "path": "reviews/sports-domain-closure/2026-10-23/semantics/SEMANTICS_WITNESSES.json",
+      "sha256": "9645eb1f8e8719655a381b677f8b0e12533da85a7fff0830c507025d803e2b60"
+    },
+    {
+      "path": ".gitattributes",
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "42f2d349224281391468bf364115e0bbf77d17d7b24d3015807969ae83628bde"
+    },
+    {
+      "path": "CLAUDE.md",
+      "sha256": "e657d059e06fd1a21613250753a8c79ac605b69d955191d634966b3c8fc922e6"
+    },
+    {
+      "path": "CURRENT_MISSION.md",
+      "sha256": "812882d341ea3630650525509c1f0170d122b94e410778025deb09bca25ae57d"
+    },
+    {
+      "path": "MISSION_LEDGER.md",
+      "sha256": "b2869de6d9f0c7027fce28254aa9d4c67742129abca60d3c6a6fdc829bc36a8b"
+    },
+    {
+      "path": "audits/CLAUDE_CANON_UPDATE_2026-10-10.md",
+      "sha256": "b70d8cb94fc198db4d0d843342d6c403b66796a5506e3485457f9d4dff05368e"
+    },
+    {
+      "path": "audits/adaptive-engine-2026-10-15/AI_REVIEW_r1.md",
+      "sha256": "a8c9f07659dae1588e1050013a44d74e3253e06bdc65baa0396e2f644c66686a"
+    },
+    {
+      "path": "audits/adaptive-engine-2026-10-15/AI_REVIEW_r2.md",
+      "sha256": "67cbc0a8d6e07f1455ad11cc8b42ee0962057880a1570c275113811875feeb41"
+    },
+    {
+      "path": "audits/adaptive-engine-2026-10-15/BASELINE_MANIFEST.json",
+      "sha256": "51373b672577f43c734e0d0d134a7da00480bad9396fd5dd8f3dabbb5a8452a0"
+    },
+    {
+      "path": "audits/adaptive-engine-2026-10-15/ENGINEERING_REVIEW_r1.md",
+      "sha256": "fd65c4b4a1ac840b7a138898c2ce1bc1f84df3278b431bfd41959c2496254fa7"
+    },
+    {
+      "path": "audits/adaptive-engine-2026-10-15/ENGINEERING_REVIEW_r2.md",
+      "sha256": "8347e557c3f182d42ea3146f3615a1925b642e8d94cd48bf465b20d04b8e57da"
+    },
+    {
+      "path": "audits/adaptive-engine-2026-10-15/FINAL_CONSOLIDATION.md",
+      "sha256": "d7350ff874ae58ea2af3b73f0741f12a9c397c909d7ebf8bea9e131cf21f50ac"
+    },
+    {
+      "path": "audits/adaptive-engine-2026-10-15/FINAL_VERIFICATION.json",
+      "sha256": "fa4952dbd36d08e2499822c5d9d0771eedb2427ecf89a652e26a74309436e919"
+    },
+    {
+      "path": "audits/adaptive-engine-2026-10-15/FINAL_VERIFICATION_PRE_CLOSURE.json",
+      "sha256": "5ccf0941318f8296119b7f93ed1817ded6ad3a86f03f15f3f872a469e34c5511"
+    },
+    {
+      "path": "audits/adaptive-engine-2026-10-15/FINAL_VERIFICATION_PRE_CLOSURE_20261018.json",
+      "sha256": "2f8668456bf701a829fa10dba37aa3a5c5dd3e49976d4f0f90478c76c908724f"
+    },
+    {
+      "path": "audits/adaptive-engine-2026-10-15/FINAL_VERIFICATION_PRE_CLOSURE_attempt1.json",
+      "sha256": "e22934952b3b283f88738a366e0cacefd1a9cf7b5b022c4a6320629cebb6cdc1"
+    },
+    {
+      "path": "audits/adaptive-engine-2026-10-15/MISSION_RECORD.md",
+      "sha256": "feac6ca1098148e3b69fcb2c73184da899cfc336ec224f2dfd9f44e9c54045b3"
+    },
+    {
+      "path": "audits/adaptive-engine-2026-10-15/PRE_REVIEW_VERIFICATION.json",
+      "sha256": "f6cd81641eb4317a6bd8e64175c38aea30e0998d9eaee70e2b00dcc72f28126f"
+    },
+    {
+      "path": "audits/adaptive-engine-2026-10-15/PRODUCT_UX_REVIEW_r1.md",
+      "sha256": "11e6544cea85eafe21d8046462eb9b796cf6587381cd18ffb90251f829573724"
+    },
+    {
+      "path": "audits/adaptive-engine-2026-10-15/PUBLICATION_EVENT.json",
+      "sha256": "a4a10d9d146aa3944fc8264c1a875ffc7a8afe87d3cc23f08b3896296bcceba5"
+    },
+    {
+      "path": "audits/adaptive-engine-2026-10-15/ROUTING_INPUT.json",
+      "sha256": "59f04a07d914d936a75418285723381d2dba0f3c4263e179d8918598022bb3ed"
+    },
+    {
+      "path": "audits/adaptive-engine-2026-10-15/ROUTING_RESULT.json",
+      "sha256": "417adf9f5828c824760938659dee023e9363422f29d1d25c70d53d2301ecc34c"
+    },
+    {
+      "path": "audits/adaptive-engine-2026-10-15/SECURITY_REVIEW_r1.md",
+      "sha256": "92d584e0498bbec4a1ce56dfc1ab672ca0efc2fc396c335c90c73b05da5b2a6d"
+    },
+    {
+      "path": "audits/adaptive-engine-2026-10-15/baseline/CURRENT_MISSION.PREUX_COMPLETE.md",
+      "sha256": "7336e90487ae1b3e48f964a7059d83b260f5896639e3c3582421cb692f9d90c6"
+    },
+    {
+      "path": "audits/adaptive-engine-2026-10-15/review-inputs-r1/MANIFEST.json",
+      "sha256": "3671db3413925cb28154f602e0c244bd48565e8e14fe2cd21614a4a516802361"
+    },
+    {
+      "path": "audits/adaptive-engine-2026-10-15/review-inputs-r1/PRE_REVIEW_VERIFICATION.json",
+      "sha256": "5c485711ea4aa427b2cb88a567709e3dbbb29dd75455c123ba33b77422713c12"
+    },
+    {
+      "path": "audits/adaptive-engine-2026-10-15/review-inputs-r1/product/ADAPTIVE_ENGINE_OPERATIONAL_SPEC.md",
+      "sha256": "6dbb398302cfd55266cf4addacd071091807f7531a84cc04c8bc2de781c0e8ff"
+    },
+    {
+      "path": "audits/adaptive-engine-2026-10-15/review-inputs-r1/product/ADAPTIVE_ENGINE_SCENARIO_LAB.md",
+      "sha256": "00c60192a7452a1980c68d9e9e581f1fefa546ccf376f58243ec37b0656b94f0"
+    },
+    {
+      "path": "audits/canon-2.2.0-reviews/DOCTRINE_EVIDENCE_REVIEWED_r1.md",
+      "sha256": "dce0aef464d911c65a0187f584f9f56b56260a64c0125d101319367bb026d9a6"
+    },
+    {
+      "path": "audits/canon-2.2.0-reviews/DOCTRINE_INTERPRETABLE_r1.md",
+      "sha256": "32b779b94bc37989e8f0d2d5e7f1cf947d6345b1b09cee5672c6dd40fe4f0030"
+    },
+    {
+      "path": "audits/canon-2.2.0-reviews/canon-gate-2.2.0.json",
+      "sha256": "2bbacf5d09899c858e51ac988b4ea825a05da2fb2e18d156490a58216c12190d"
+    },
+    {
+      "path": "audits/canon-2.2.0-reviews/publication-event-2.2.0.json",
+      "sha256": "690482f225ed04c4333721ad92d6d82c3393c594db3ea8f7ad92a7fabc5c3c2c"
+    },
+    {
+      "path": "audits/canon-2.3.0-reviews/DOCTRINE_EVIDENCE_REVIEWED_r1.md",
+      "sha256": "a9787c2c1df5a0515569054d64436c066d42b3694112a5fad7ab4dd863cbbe56"
+    },
+    {
+      "path": "audits/canon-2.3.0-reviews/DOCTRINE_INTERPRETABLE_r1.md",
+      "sha256": "edaf1242f951c08f92eec259cb6943a2ee4f34bd85ae0e53fc8a7af10e494afe"
+    },
+    {
+      "path": "audits/canon-2.3.0-reviews/canon-gate-2.3.0.json",
+      "sha256": "07054c6458d7be637135d0a30b02f834226b35f997853191a114e4aa1f0b52a6"
+    },
+    {
+      "path": "audits/canon-2.3.0-reviews/publication-event-2.3.0.json",
+      "sha256": "722c160dee279a9597423a3e75da71cb4f5823d048d3f717d4560c748d750426"
+    },
+    {
+      "path": "audits/claude-canon-update-2026-10-10/CURRENT_TARGET_DELTA.md",
+      "sha256": "ffb7a594daab9ad1c93f6a5c430793f17c664c802d634d13421ae920ed03fa39"
+    },
+    {
+      "path": "audits/claude-canon-update-2026-10-10/after-policy-evals.json",
+      "sha256": "38971dfe3ce997f29b34cb27cddc99626e33a41f49d5150a76a7c53811d1c137"
+    },
+    {
+      "path": "audits/claude-canon-update-2026-10-10/effort-observations.jsonl",
+      "sha256": "f79edd489c2de23abb6c401e84029dc220af570b1a8a5670758d280a229f910f"
+    },
+    {
+      "path": "audits/claude-canon-update-2026-10-10/execution-evals.json",
+      "sha256": "b2845876887bd614383258f97c21ed169e5b966264b96ccc57c2cd25e729e428"
+    },
+    {
+      "path": "audits/claude-canon-update-2026-10-10/final-state-verification.json",
+      "sha256": "d4e5940616db7627c7220598f1d75953b427aef86dd82328c01c119a462037ac"
+    },
+    {
+      "path": "audits/claude-canon-update-2026-10-10/installation-validation.json",
+      "sha256": "cf227418af13ff85bb7b30dc3b20e42056f2cecf8d1311aac4e26f3c3fc1bd2c"
+    },
+    {
+      "path": "audits/claude-canon-update-2026-10-10/native-bounded-ux-review-summary.json",
+      "sha256": "695724e5fd4999f4ad37a4a94c4c35a71c517e43855bc1d05999d5466cf18300"
+    },
+    {
+      "path": "audits/claude-canon-update-2026-10-10/native-bounded-ux-review.jsonl",
+      "sha256": "d4c7fb662da8130721281789d6a4760603390ce0341875c5e221a8cb9e1a1c18"
+    },
+    {
+      "path": "audits/claude-canon-update-2026-10-10/native-mechanical.jsonl",
+      "sha256": "1a45c19ef9e5ddf70b662dfa9a50ccb8cf7a3b0f9033eab9bc3239e511fbebb9"
+    },
+    {
+      "path": "audits/claude-canon-update-2026-10-10/native-smoke.jsonl",
+      "sha256": "5f97c1b71f64d29d35436169f626f66ce1b0de37adc1ae82679a1107fe64b882"
+    },
+    {
+      "path": "audits/claude-canon-update-2026-10-10/native-ux-agent-review.jsonl",
+      "sha256": "a8f32005a2b185b0cbd116dc9595ea04813907f2a6a9bdb54d5d5a93d6c4c1bb"
+    },
+    {
+      "path": "audits/claude-canon-update-2026-10-10/publication-state.json",
+      "sha256": "cfe4e875f15e28910e9bf26b80ea3bc0a5c86518b9e5cdfcf6864f96a21ca155"
+    },
+    {
+      "path": "audits/claude-canon-update-2026-10-10/reviews/canon-gate.json",
+      "sha256": "950434edd9ab5c4142843792d55e78df00b9e9afb1c0b6eceae14811d8f93df9"
+    },
+    {
+      "path": "audits/claude-canon-update-2026-10-10/reviews/doctrine-fidelity.json",
+      "sha256": "0ae0c87631c8a89fb7eda85cb36e8876eefb466925ec470f3b6807cbb5057d33"
+    },
+    {
+      "path": "audits/claude-canon-update-2026-10-10/reviews/doctrine-interpretability.json",
+      "sha256": "162b787048675badb2386cd952f50a2dbf996981ffdeb4bf3a67ed73e0c691a5"
+    },
+    {
+      "path": "audits/claude-canon-update-2026-10-10/reviews/engineering-routing.json",
+      "sha256": "445d1c6f97492108b32b4250e0e08a62d880821b7d62ad0671e09c23f28e4979"
+    },
+    {
+      "path": "audits/claude-canon-update-2026-10-10/scoped-verification.json",
+      "sha256": "7ee36d3a613a7ca04f99bfddb8cb3cce4757a7298afd0ed778537afdba865ba4"
+    },
+    {
+      "path": "audits/claude-canon-update-2026-10-10/shareability-founder-decision.md",
+      "sha256": "bec754e8f15cd335eff0e9d998dfdb579fd2a4c2b9dd807511ffe45349fce0ce"
+    },
+    {
+      "path": "audits/claude-canon-update-2026-10-10/sports-founder-decision.md",
+      "sha256": "5ec6f29a6a7f3d10c76120d8e02082d1728d4ed831255af355f9f5fc7945332a"
+    },
+    {
+      "path": "audits/founder-decisions/2026-10-11_hybrid-experience-founder-decision.md",
+      "sha256": "1db720f2a77593a8771b0473ddb9379bcbe392bbcd4dea7bfd0040edff08ef27"
+    },
+    {
+      "path": "audits/phase-1-3-reviews/PCG-J_canon-ingestion-domain-decisions.md",
+      "sha256": "4702aafaf93d96a4ded8ea91e27cf1678d912b9b89322b10a682ea4326140c0a"
+    },
+    {
+      "path": "audits/phase-1-3-reviews/SEC-J_domain-model-boundaries.md",
+      "sha256": "4dd735198f8243532b1f5c29ce87ec4189aceaa0a9638ad72a76004227133451"
+    },
+    {
+      "path": "audits/phase-1-3-reviews/UX-J_domain-model-structure.md",
+      "sha256": "3472b10ddff0ffdc9dba27f25c35dbdb2ce38c644886d14468b7ce0442a1756a"
+    },
+    {
+      "path": "audits/phase-1-3-reviews/founder-gate-phase3-decisions.md",
+      "sha256": "bd1758a617ad98644dabce4a35310eecfb1d0dba5354b46f1912fa66efc38159"
+    },
+    {
+      "path": "audits/pre-ux-2026-10-15/COMMERCIAL_EVIDENCE_AND_TESTS.md",
+      "sha256": "d98d9ba8db915522f1ff8ceaff50273d29e8d3976394c372595bc79b9445a42a"
+    },
+    {
+      "path": "audits/pre-ux-2026-10-15/ENGINEERING_REVIEW_r1.md",
+      "sha256": "a8c3372a22cf1481716fc3970329c1c1d88bb7590c16f983ed95220beb5114d5"
+    },
+    {
+      "path": "audits/pre-ux-2026-10-15/ENGINEERING_REVIEW_r2.md",
+      "sha256": "46c580c01b07ef2c020559c8452124a19f41570aa5fd6fda64d4e844118e85b8"
+    },
+    {
+      "path": "audits/pre-ux-2026-10-15/FINAL_READINESS_AUDIT.md",
+      "sha256": "06fa298cb7823f12cf7de76021e51602ce5d1df2109f67b36554d7ef2031d727"
+    },
+    {
+      "path": "audits/pre-ux-2026-10-15/FINAL_VERIFICATION.json",
+      "sha256": "338fdf5691a516de162d824ed414de06110c493c347b76b34846faf696db571f"
+    },
+    {
+      "path": "audits/pre-ux-2026-10-15/MISSION_RECORD.md",
+      "sha256": "d46b7ef144c13f4680ca8bf56266d9bb201fb1824818ac963f19509759cb106d"
+    },
+    {
+      "path": "audits/pre-ux-2026-10-15/PRE_REVIEW_VERIFICATION.json",
+      "sha256": "d9d68e98bfbd16aaa44ec316afb01eb4ceff06b34b90566995e77491fc5d1ea9"
+    },
+    {
+      "path": "audits/pre-ux-2026-10-15/PROFESSIONAL_BOUNDARIES.md",
+      "sha256": "97b128fdaca6b149da75fc41a1d3600f9f01dd9b351db94dd71355763dd47aaa"
+    },
+    {
+      "path": "audits/pre-ux-2026-10-15/PUBLICATION_EVENT.json",
+      "sha256": "e3a4fea9d2352085bd19b753aa4340adea9bc521add7e7b2fa994cae0db490e1"
+    },
+    {
+      "path": "audits/pre-ux-2026-10-15/RESEARCH_REVIEW_r1.md",
+      "sha256": "83c016fe1d00a2ff447dff0283ba125aabe0eccf8e062afdde825d9bda707218"
+    },
+    {
+      "path": "audits/pre-ux-2026-10-15/SCIENCE_EVIDENCE.md",
+      "sha256": "dca8943e290881b1317fc02ed697d3543b9d5fd8ae5522cbbf3b7acc40271618"
+    },
+    {
+      "path": "audits/pre-ux-2026-10-15/SECURITY_REVIEW_r1.md",
+      "sha256": "d7040eceb1fcbbd084bed128e616af9183b3ed19c027a73ff03e83d139ec7c27"
+    },
+    {
+      "path": "audits/pre-ux-2026-10-15/WEARABLE_EVIDENCE.md",
+      "sha256": "5f741d8586e5a25397280b2178126c90e6044a780cf312a8a19e3fd3d7f6c902"
+    },
+    {
+      "path": "audits/pre-ux-2026-10-15/review-inputs-r1/MANIFEST.json",
+      "sha256": "9df96088718934414fcf12f066ecb606192a1aeffe518fc6ca01855208153039"
+    },
+    {
+      "path": "audits/pre-ux-2026-10-15/review-inputs-r1/PRE_REVIEW_VERIFICATION.json",
+      "sha256": "b41491aa07572523084aacec3e0f47b642de6c8223032d62d8265b0063074568"
+    },
+    {
+      "path": "audits/pre-ux-2026-10-15/review-inputs-r1/product/ADAPTIVE_ENGINE_CONTRACT.md",
+      "sha256": "03a5787bb267f0d318782ffa404d150c735e64b1bd176963220dfb89a7b8fe73"
+    },
+    {
+      "path": "audits/pre-ux-2026-10-15/review-inputs-r1/product/CORE_FLOWS.md",
+      "sha256": "edc410a76fee0643453446d94117aa54b78215ccb92e886d0e8f2beeb4fe5dbb"
+    },
+    {
+      "path": "audits/pre-ux-2026-10-15/review-inputs-r1/product/PRODUCT_DOMAIN_MODEL.md",
+      "sha256": "44e86ddbbbcaaf809b457d6b48d32b8ae8bbf0b1f1c664ed416cd07873e5763f"
+    },
+    {
+      "path": "audits/rebaseline-3.0.0/CLOSED_LOOP_CONTRACT_REVIEWED_r1.md",
+      "sha256": "c2327103791b75cf17eb7c19078cd91daff37fe886cd9789fa0c7f08384427f5"
+    },
+    {
+      "path": "audits/rebaseline-3.0.0/DOCTRINE_EVIDENCE_REVIEWED_r1.md",
+      "sha256": "3ee3bf6b4487e8abc76dad4c8d0d1ee2ea3969d9f83d6a91add3dabe686d2ef8"
+    },
+    {
+      "path": "audits/rebaseline-3.0.0/DOCTRINE_INTERPRETABLE_r1.md",
+      "sha256": "fbd57a189c736a364918be17c13e84d777a12df7c4c1b768610efbb56d5e4003"
+    },
+    {
+      "path": "audits/rebaseline-3.0.0/FINAL_VERIFICATION.json",
+      "sha256": "b212ba93efc07f87ea5c31540fc9cdcd48a93c236d7b9a782e2681d851d36552"
+    },
+    {
+      "path": "audits/rebaseline-3.0.0/NORMATIVE_PRECHECK.json",
+      "sha256": "b3f71c6e21f09f5d9418bece4b6b8b6b03ae0facc2fb871089e8e764428316aa"
+    },
+    {
+      "path": "audits/rebaseline-3.0.0/PRE_REVIEW_VERIFICATION.json",
+      "sha256": "49c65d9a5d0f2af9f861e4ebbeae739649873d1eefe28ec92a63be05840d0ffc"
+    },
+    {
+      "path": "audits/rebaseline-3.0.0/PRE_REVIEW_VERIFICATION_r1.json",
+      "sha256": "aa2297547feacb4b26b8be331e48377f90002bdb4e0b5417a584f3b74e6168a3"
+    },
+    {
+      "path": "audits/rebaseline-3.0.0/PRE_REVIEW_VERIFICATION_r2.json",
+      "sha256": "49c65d9a5d0f2af9f861e4ebbeae739649873d1eefe28ec92a63be05840d0ffc"
+    },
+    {
+      "path": "audits/rebaseline-3.0.0/PRIVACY_BOUNDARIES_REVIEWED_r1.md",
+      "sha256": "87a1b6f217901f09feb2e6ae0e6232be60cbb7e301f193a7671dbd54286d6775"
+    },
+    {
+      "path": "audits/rebaseline-3.0.0/PRIVACY_BOUNDARIES_REVIEWED_r2.md",
+      "sha256": "0d62c54f509ba7d738c18462777cda56f9a4eb184d2df0392c47ff0e2e8f57e3"
+    },
+    {
+      "path": "audits/rebaseline-3.0.0/PRODUCT_UX_CONSISTENCY_r1.md",
+      "sha256": "ea1cb5fffba4cc827adeccf795560cb3fb98efcc8d97f9b91aefff3908d9d922"
+    },
+    {
+      "path": "audits/rebaseline-3.0.0/PRODUCT_UX_CONSISTENCY_r2.md",
+      "sha256": "66845fbdeddc2bdb87f4a159fa84b7207a9f0a16221edaa58dec937816265743"
+    },
+    {
+      "path": "audits/rebaseline-3.0.0/PUBLICATION_EVENT.json",
+      "sha256": "0b1a103aca68c4ea733f78aaa43424c77aa31e91449285aee514b0757a94b739"
+    },
+    {
+      "path": "audits/rebaseline-3.0.0/REBASELINE_RECORD.md",
+      "sha256": "93457147e29bd9b0ef62fa14b3c157156dfdbe5e993e286d97c785a7c52c2c46"
+    },
+    {
+      "path": "audits/specialist-layers-2026-10-19/AUTHOR_RESPONSE.md",
+      "sha256": "a3d341717fe83e6d38824958aaa447cef932a36dc8b7b4d9c303eb580898e218"
+    },
+    {
+      "path": "audits/specialist-layers-2026-10-19/CONSOLIDATION.md",
+      "sha256": "242e0f25d73e4cfd5b333a6e5dd3e74180b0f6c5bbb022a0a8f65be7f31649b7"
+    },
+    {
+      "path": "audits/specialist-layers-2026-10-19/DELIVERY_VERIFICATION.json",
+      "sha256": "e962f198ad6829acfda15e0b6c5c26a6a1dfbe64e926ae167f29bd840881e377"
+    },
+    {
+      "path": "audits/specialist-layers-2026-10-19/ENGINEERING_REVIEW.md",
+      "sha256": "ab37c2bdcf92f5f655ad1563457960884bba872ec9fdf178320ca9c9b6e8244f"
+    },
+    {
+      "path": "audits/specialist-layers-2026-10-19/ENGINEERING_REVIEW_r1.md",
+      "sha256": "ab37c2bdcf92f5f655ad1563457960884bba872ec9fdf178320ca9c9b6e8244f"
+    },
+    {
+      "path": "audits/specialist-layers-2026-10-19/ENGINEERING_REVIEW_r2.md",
+      "sha256": "6e0746a8a7d17c2f6257ccd0cc4ce662a0c1f77ed89fa44a6cb63d5e0048387a"
+    },
+    {
+      "path": "audits/specialist-layers-2026-10-19/FOUNDER_REQUEST.md",
+      "sha256": "3c1d1032c900e5f255c4a145838ced754169eed37380c896b456ad55376c5e6b"
+    },
+    {
+      "path": "audits/specialist-layers-2026-10-19/HANDOFF_CLAUDE.md",
+      "sha256": "6c3044a34e799dcef01c09dd32789ba2704c85e90bfd8ca19b8d431898276f85"
+    },
+    {
+      "path": "audits/specialist-layers-2026-10-19/MISSION_RECORD.md",
+      "sha256": "17ee5a104234685ef06f5f7a411e54b4552c510e950438ac5cb7cfa42a8ad002"
+    },
+    {
+      "path": "audits/specialist-layers-2026-10-19/PRE_REVIEW_VERIFICATION.json",
+      "sha256": "d34689d8d2869870bba1056176e7e318c895c6f3aa8ab5b6b764561c286f0768"
+    },
+    {
+      "path": "audits/specialist-layers-2026-10-19/PRE_REVIEW_VERIFICATION_r2.json",
+      "sha256": "7ad6da22e29680fd8c1634e16979116e40f94ba26845f36ff9d8f331bfee2877"
+    },
+    {
+      "path": "audits/specialist-layers-2026-10-19/RESEARCH_REVIEW.md",
+      "sha256": "bc182b3318aeeba1320bfff9bc1550bc2edbb224d206a34d1534c9bac953ee3f"
+    },
+    {
+      "path": "audits/specialist-layers-2026-10-19/RESEARCH_REVIEW_r1.md",
+      "sha256": "bc182b3318aeeba1320bfff9bc1550bc2edbb224d206a34d1534c9bac953ee3f"
+    },
+    {
+      "path": "audits/specialist-layers-2026-10-19/RESEARCH_REVIEW_r2.md",
+      "sha256": "6365ef34bcc8cdb3e1587e5b88608e30a9e838ca4c51a86065779fb4721bba84"
+    },
+    {
+      "path": "audits/specialist-layers-2026-10-19/REVIEW_INPUTS.json",
+      "sha256": "45f5e20bd0a4eb9d39be53ff97e045b9bdb0c3e613c0fab47edae77192c1b82c"
+    },
+    {
+      "path": "audits/specialist-layers-2026-10-19/SOURCE_BASELINE.json",
+      "sha256": "72292929b4c45d938a61fe50268324e4ba5c2a365a0a04e9a2e999710761964d"
+    },
+    {
+      "path": "audits/specialist-layers-2026-10-19/UX_BASELINE_VERIFICATION.json",
+      "sha256": "bebe8a7f46161e9f3bd0d1d93a5b710b9a3050290d0c656eed568e4404fe9fdf"
+    },
+    {
+      "path": "audits/specialist-layers-2026-10-19/UX_REVIEW.md",
+      "sha256": "93f11e8bc965442e9790c45a752644190decc1d89096b322dab75486f8fad389"
+    },
+    {
+      "path": "audits/specialist-layers-2026-10-19/UX_REVIEW_r1.md",
+      "sha256": "93f11e8bc965442e9790c45a752644190decc1d89096b322dab75486f8fad389"
+    },
+    {
+      "path": "audits/specialist-layers-2026-10-19/UX_REVIEW_r2.md",
+      "sha256": "573e4a4e33591ffb112263adca1bc9497a275774b226972e657bd22da0aab98d"
+    },
+    {
+      "path": "audits/specialist-layers-2026-10-19/review-inputs-r1/MISSION_RECORD.md",
+      "sha256": "641513083bc5aa5ac5c0f7031f8aa548b49dc8c3eae2cb4fe8cd7726983030d5"
+    },
+    {
+      "path": "audits/specialist-layers-2026-10-19/review-inputs-r1/PRE_REVIEW_VERIFICATION.json",
+      "sha256": "d34689d8d2869870bba1056176e7e318c895c6f3aa8ab5b6b764561c286f0768"
+    },
+    {
+      "path": "audits/specialist-layers-2026-10-19/review-inputs-r1/REVIEW_INPUTS.json",
+      "sha256": "acfb725ea50767c183b5759ec4bab9b99e6f5948e2d687ef13c09dc6dfb0bc50"
+    },
+    {
+      "path": "audits/specialist-layers-2026-10-19/review-inputs-r1/canon/CANONICAL_INDEX.md",
+      "sha256": "a008b59b2e83ffc95c573cea77c9c244881cf055510aa8d7603a0ed6c7fd599d"
+    },
+    {
+      "path": "audits/specialist-layers-2026-10-19/review-inputs-r1/product/ADAPTIVE_ENGINE_OPERATIONAL_SPEC.md",
+      "sha256": "09598e4af623a8c240bf88b3e6dc410bdd5c19cd7e5bc19d9b5369a01ce9ca0c"
+    },
+    {
+      "path": "audits/specialist-layers-2026-10-19/review-inputs-r1/product/ADAPTIVE_ENGINE_SCENARIO_LAB.md",
+      "sha256": "4067af83aa3ab0b16a32b54d76004eab303b9cb661998bfb1f9bb36eb7c2a32f"
+    },
+    {
+      "path": "audits/specialist-layers-2026-10-19/review-inputs-r1/product/PRODUCT_DECISION_REGISTER.md",
+      "sha256": "cb5cef59518accc3e2f5dcafccd4339d3b75f0cfeecbd0ee2c39956c6893e196"
+    },
+    {
+      "path": "audits/specialist-layers-2026-10-19/review-inputs-r1/product/SPORT_INTELLIGENCE_SPEC.md",
+      "sha256": "231b601dd5e699848a859bfd93a4bc0ceed2a738cd560d5214c7c0edf15934b5"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/BASELINE.json",
+      "sha256": "af262301631d5029ff97770eee6d8107e256a2eb27eefb8feff3898883e1f560"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/DOCUMENTARY_REVIEW.md",
+      "sha256": "683e204a7010612b7b257fa37117203c7c3fcbf0f80f208aa5e2ec1a517104d7"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/MISSION_RECORD.md",
+      "sha256": "d549753170ff248c7cd870dae84161f229b838a0704b7a3be39d98aceee38236"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/README.md",
+      "sha256": "cf116ac4f88c30dac507c42602ea3283bd57861ce6a58830a35e15997c611442"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/SOURCE_MANIFEST.json",
+      "sha256": "2190ce45b3843fc09e6a1835706e9df90816d95fd69adf7f0dfc22b6826f67e4"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/VERIFICATION.json",
+      "sha256": "0bd65b0779c0dd26f099ea4d603c84ed5f7e3e33a7255a67c31952a6b6e2c5c6"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/RELATORIO_AUDITORIA.md",
+      "sha256": "89613e74b7fd80b36936e5fc96152df077e703e06c0146a7e36916ac6f8864d7"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/REVIEW_DISPOSITION.md",
+      "sha256": "e08a6f6ec691b51da753b071a4ee19291be49eebcf12ced08aafe4b194f9f456"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/authority-check.json",
+      "sha256": "499ae9c04caab51b31d3f5c763ed4bffc46c105d9446c1db0053b0f073b09a82"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/checks-0.2-submission1.json",
+      "sha256": "c9b5dc69216c5a46e5db922024550d7af2afe3977721f7ee6c5abdca9111cf63"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/checks-0.2.json",
+      "sha256": "5cdfcf1e49c9780ce243907ba5225c7d5d5d8b9a665cd69ce4b5e7fa5cc7f693"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/input-draft-0.1/DATA_MODEL_CONTRACTS.md",
+      "sha256": "27033c4dc03ff29bd60dcb4ece355cd9e41b48c448bb48981ce3ebc210d519aa"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/input-draft-0.1/EVIDENCE_AND_PROVENANCE.md",
+      "sha256": "38186a8f4edf7297014289b0d85f68cfdf126604c70c9ab9668d85ee5d4cc1c2"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/input-draft-0.1/FOUNDATION_OVERVIEW.md",
+      "sha256": "3bce38eba3ae6cbaa4d944fda561ee43dc85b2044a9414dc08d79a916ea17168"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/input-draft-0.1/G01_G04_REVIEW_PREP.md",
+      "sha256": "b1c225fdc0a748c416c86e92baada295ab66b94c182a60fde707e541ccd742a6"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/input-draft-0.1/README.md",
+      "sha256": "e72c78025f58531efdff658b59bafaef3d6e0aa3fa61f283359899c81b8273eb"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/input-draft-0.1/RUN_SESSION_ONTOLOGY.md",
+      "sha256": "61b98a6d3975106283af07cd15fb715a7ea0c4d3e9715a9e8e3d5330025bee24"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/input-draft-0.1/SCENARIO_DOMAIN_MAPPING.md",
+      "sha256": "0483c51cb54c819cf0c5c0df39b42eaccee050db6a8ac1746b52bd758cfb18b5"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/input-draft-0.1/SEED_DATASET_RUN.json",
+      "sha256": "ff9be50554ae1c55904640ee5d7eca6abadca2c4a664f375100f052bf2052c27"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/input-draft-0.1/SEED_DATASET_STRENGTH.json",
+      "sha256": "392040f6e08be881581bd6074c7bf3f327783d8820edadf014aa6c357f5a0914"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/input-draft-0.1/SHARED_TRAINING_DEMAND_MODEL.md",
+      "sha256": "d839fe1a16ba7743dae601aae822b3bdc5cc446432000688bd63e06f8141a5ac"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/input-draft-0.1/STRENGTH_EXERCISE_ONTOLOGY.md",
+      "sha256": "a85deae7936ff3d9a9303fa284ecbbe503f24947048f795e2254951c071c6cd3"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/input-draft-0.1/VALIDATION_REPORT.md",
+      "sha256": "dd61a06fa602c8d299380560092fbc2cd20aff7f4205549280585661dcf2d6dc"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/reference-inputs/AGENTS.md",
+      "sha256": "033e7e20f0e771b64d2df05067cfb531b9b9d40aa1a8978a3f24681f16594254"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/reference-inputs/CLAUDE.md",
+      "sha256": "d0af60b361851632a63994638fbf3b11ecf10f7a3fd2f749a798f148cf9778b0"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/reference-inputs/CURRENT_MISSION.md",
+      "sha256": "34fb629f780abc5325ff91fb61439b8e2f3b2fab2b699dfd128d278f3f84c68f"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/reference-inputs/audits/v1-freeze-sync-2026-10-19/INTEGRATION_RECORD.md",
+      "sha256": "17c5d0defa1150c1e17a6016cc6775a2373ffd451cd5755cd8c35d28cb7beee7"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/reference-inputs/canon/CANONICAL_INDEX.md",
+      "sha256": "6adbe0cdf921bd6fadc7f360bd904597e434c27bbff971f833feb7c05a61f3b2"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/reference-inputs/manifest.json",
+      "sha256": "629b1c50688a1597d1e80ff4aba01162634778b247964da5d7170ebc4aded11e"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/reference-inputs/product/ADAPTIVE_ENGINE_CONTRACT.md",
+      "sha256": "3746823201b62144d6d4ac106647609a3509412627cb758b0a10e7a95f56ab37"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/reference-inputs/product/ADAPTIVE_ENGINE_OPERATIONAL_SPEC.md",
+      "sha256": "56534c1bbe80c9b805ef3d7f94c63d0dced293ae79ffd0220c5fb1315744a610"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/reference-inputs/product/ADAPTIVE_ENGINE_SCENARIO_LAB.md",
+      "sha256": "196309752ed75cc1d002595ad78dfb169bfaa94ffcd179f746dcca93356c25bf"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/reference-inputs/product/PRODUCT_DECISION_REGISTER.md",
+      "sha256": "d8f30b7c546976acb366641cc2651c994f415ea7ab4a2c5815ddc5d63c1e149a"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/reference-inputs/product/PRODUCT_DOMAIN_MODEL.md",
+      "sha256": "fc93eee97a749eb4acd95de033f2f782b18b0771be02772027a1fe739dd49e72"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/reference-inputs/product/RUN_INTELLIGENCE_SPEC.md",
+      "sha256": "1a70c3b865f40105b1537c3674e8da1f2aaac27ede7878b38d85f8ac5e607880"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/reference-inputs/product/SPORT_INTELLIGENCE_SPEC.md",
+      "sha256": "1c7290f99063d1d1914fb563df029ee00724f96c54196721b71dfa0b5994a312"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/reference-inputs/product/STRENGTH_INTELLIGENCE_SPEC.md",
+      "sha256": "17b156b7ee26c2020b79c54ad627b2d87e95c3a9a0b77373c62652a055c95f40"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/review-input-manifest-0.2-submission1.json",
+      "sha256": "b33c0f8242a50121c51faf01eb6344384bbadfe02bdb0f17573a3db13b915de0"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/review-input-manifest-0.2.json",
+      "sha256": "b3e4cff7afc1cd9efc1a64dff51595bce258f65712e1a8003284177e0489ac0b"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/review-snapshot-0.2-submission1.zip",
+      "sha256": "e73b5027d5777bb86b2582295ed40c47a3791f83c20569c9323d98398dde07e4"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/reviews/foundation-data-governance-0.1.md",
+      "sha256": "9f1ce9471fe69560a652cd2fe96ac4f96ca96c88b65db891bc90be3fcf6148ca"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/reviews/foundation-data-governance-0.2.md",
+      "sha256": "a1b7710a3aaf8713e827ef03605f630e7e6633cf077a8865b9e83975b82632d3"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/reviews/foundation-hybrid-0.1.md",
+      "sha256": "4a300d948ab88cf8d9fab5cb48cb580839f0d2a80335e740394c9ee63bda017e"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/reviews/foundation-hybrid-0.2.md",
+      "sha256": "9b65caaea18cec595f11d35476c9035ee6a3f59fa5a08da4f8c4d7cbe0ba07ed"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/reviews/foundation-running-0.1.md",
+      "sha256": "e60e1d326e03fb6f424ac5eb955ae7ab4c52b4d9d3fce5428db911e88cbc04a0"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/reviews/foundation-running-0.2.md",
+      "sha256": "a43faead4a63c7b7b09c480239f70412ee0abdfaef752d6a29d34c35d36fd3cd"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/reviews/foundation-strength-0.1.md",
+      "sha256": "bc9f41ead76549922d1fbb294c19230cdce99601d0fb44a54cb7ebb23d40c7be"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/reviews/foundation-strength-0.2.md",
+      "sha256": "9ef1730113f081115689ad4468e83921996fd9fbb99657933bb258ecac257418"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/structural-check-0.1.json",
+      "sha256": "95241c87f5e43efa3834ead2db2dc28fe85e822271c08375436c7f9195c224cb"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/v1-training-domain-foundation-0.2/CHANGELOG.md",
+      "sha256": "7bb11187f169c460f12cae78b5657dbe955f314d282513abf9b3ec1a0f0e3228"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/v1-training-domain-foundation-0.2/DATA_MODEL_CONTRACTS.md",
+      "sha256": "ad9008a8b35cefd748a148c6cc17dc5aa7551973e9d250e8c8bfd7e6ac8d6bec"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/v1-training-domain-foundation-0.2/DOMAIN_REVIEW_FIXTURES.json",
+      "sha256": "25afe0a483caacc2931bb09d5925ee319ab552302d79acf879318e5056153adb"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/v1-training-domain-foundation-0.2/EVIDENCE_AND_PROVENANCE.md",
+      "sha256": "735179775f6dc04b2ee31f342fc6aadc6c93de2f3b021eb690284c852dc3ca2d"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/v1-training-domain-foundation-0.2/EVIDENCE_LEDGER.json",
+      "sha256": "68cf32238a9d983d193ad8c8c571eeebef0ef3f1c51d355d4a78518418d02806"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/v1-training-domain-foundation-0.2/FOUNDATION_OVERVIEW.md",
+      "sha256": "f48b63b897a6ec36e2662719be96ac356452512312a54cd351abf604203d36df"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/v1-training-domain-foundation-0.2/G01_G04_REVIEW_PREP.md",
+      "sha256": "5d1b2a8ec49b86a90463c7b09eba6fab61d9b23f3f21cf572b4f775332c31bc4"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/v1-training-domain-foundation-0.2/README.md",
+      "sha256": "49b90fa970a6f6358f4070d2d261178f2397430f612c335c48311ca091fa58ee"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/v1-training-domain-foundation-0.2/RUN_SESSION_ONTOLOGY.md",
+      "sha256": "6d39a17723b11043ed0cf491a9e8c40676112deea495fd73eacef2c50ea13763"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/v1-training-domain-foundation-0.2/SCENARIO_DOMAIN_MAPPING.md",
+      "sha256": "3a29f4facf670676bbce83af735062eafad4ecb87eff9339307af2a4f0f13fdc"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/v1-training-domain-foundation-0.2/SEED_DATASET_RUN.json",
+      "sha256": "fcdd5b026f44772b993479e99af62bdfaaa2e50ecca51440771a4d6fc8fcabb8"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/v1-training-domain-foundation-0.2/SEED_DATASET_STRENGTH.json",
+      "sha256": "070d5d9bccafc3794c3280d413007af457f6f51f3cc9d776f9122764b5d6147a"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/v1-training-domain-foundation-0.2/SHARED_TRAINING_DEMAND_MODEL.md",
+      "sha256": "5ab091d10166055e2b84185bc48cb7e3f684954e095081a2d0113866a957f887"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/v1-training-domain-foundation-0.2/STRENGTH_EXERCISE_ONTOLOGY.md",
+      "sha256": "8d99537bf18b9310dc7b6043b97be453a701d192fd92b2834a876d03e9b4b641"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/v1-training-domain-foundation-0.2/VALIDATION_REPORT.md",
+      "sha256": "bde4854942a028dd651bee5031980ad3494b44844f23ea9eab5a4c92dd2afe0e"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/audit-original/v1-training-domain-foundation-draft-0.1.zip",
+      "sha256": "1233e63e7706d76455e78b2c8205dd5c8238c4f205a511f54b62b0f754dfe1a9"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/DESIGN.md",
+      "sha256": "938677fa86a08a0c246a8a1e5632aeb1245de0305368f5cc6d3b8caf746aaccb"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/PRODUCT.md",
+      "sha256": "376f3d2bdc662b453e472051a3410f1395017d393240af1df5845f29673b44f6"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/README.md",
+      "sha256": "d3356371484421a884e4edfdf0fd13f0efebde6d8f43b61bb565b3196f738fbd"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/TASK_CONTRACT.md",
+      "sha256": "b0b4978147b74ffbab108d864831afd8e518f1d994fdb3d794b229de9d966ce2"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/inputs/AGENTS.md",
+      "sha256": "033e7e20f0e771b64d2df05067cfb531b9b9d40aa1a8978a3f24681f16594254"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/inputs/CLAUDE.md",
+      "sha256": "d0af60b361851632a63994638fbf3b11ecf10f7a3fd2f749a798f148cf9778b0"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/inputs/CURRENT_MISSION.md",
+      "sha256": "34fb629f780abc5325ff91fb61439b8e2f3b2fab2b699dfd128d278f3f84c68f"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/inputs/audits/v1-freeze-sync-2026-10-19/INTEGRATION_RECORD.md",
+      "sha256": "17c5d0defa1150c1e17a6016cc6775a2373ffd451cd5755cd8c35d28cb7beee7"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/inputs/canon/CANONICAL_INDEX.md",
+      "sha256": "6adbe0cdf921bd6fadc7f360bd904597e434c27bbff971f833feb7c05a61f3b2"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/inputs/manifest.json",
+      "sha256": "629b1c50688a1597d1e80ff4aba01162634778b247964da5d7170ebc4aded11e"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/inputs/product/ADAPTIVE_ENGINE_CONTRACT.md",
+      "sha256": "3746823201b62144d6d4ac106647609a3509412627cb758b0a10e7a95f56ab37"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/inputs/product/ADAPTIVE_ENGINE_OPERATIONAL_SPEC.md",
+      "sha256": "56534c1bbe80c9b805ef3d7f94c63d0dced293ae79ffd0220c5fb1315744a610"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/inputs/product/ADAPTIVE_ENGINE_SCENARIO_LAB.md",
+      "sha256": "196309752ed75cc1d002595ad78dfb169bfaa94ffcd179f746dcca93356c25bf"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/inputs/product/PRODUCT_DECISION_REGISTER.md",
+      "sha256": "d8f30b7c546976acb366641cc2651c994f415ea7ab4a2c5815ddc5d63c1e149a"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/inputs/product/PRODUCT_DOMAIN_MODEL.md",
+      "sha256": "fc93eee97a749eb4acd95de033f2f782b18b0771be02772027a1fe739dd49e72"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/inputs/product/RUN_INTELLIGENCE_SPEC.md",
+      "sha256": "1a70c3b865f40105b1537c3674e8da1f2aaac27ede7878b38d85f8ac5e607880"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/inputs/product/SPORT_INTELLIGENCE_SPEC.md",
+      "sha256": "1c7290f99063d1d1914fb563df029ee00724f96c54196721b71dfa0b5994a312"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/inputs/product/STRENGTH_INTELLIGENCE_SPEC.md",
+      "sha256": "17b156b7ee26c2020b79c54ad627b2d87e95c3a9a0b77373c62652a055c95f40"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/BROWSER_QA.json",
+      "sha256": "4e358fc040e096bc26f828830c4ed7519ed06e51cfb0b2fff85eb5e332cb2c79"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/RELATORIO_EXECUTIVO.md",
+      "sha256": "9fb7f31659a6f52e68e7f1c72b72983c3289590d8d6e12ed1edf463b8087344a"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/REVISION_DISPOSITION.md",
+      "sha256": "77226bcb83f74d03c51d16dd4aa44ce098629b567d260afdcfe02abe5805193a"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/VERIFICATION.json",
+      "sha256": "5db73a65a4dbcf263c7ca868f57b9ae64ff84bb6c2ebee6eabcb8ec5ea758fad"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/audit-context.json",
+      "sha256": "515be19e9f1073e26def5432446623f9bb2a0e075dd5bea83aef6b0f38b1848e"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/cases.csv",
+      "sha256": "21258263b9b0a9c49858cd4f7cd3d29f0f2b7922ea986a88fdedcbff69618c4d"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/closure-r4/BROWSER_QA.json",
+      "sha256": "ba8d77ca384f95722993a47eab5b79f95d0fa42a5dbcce4d1c360afe96eac2a6"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/closure-r4/COMPLETION_STATUS.json",
+      "sha256": "859e63e05cceb3f1fed994f042cd10fa3ef1333a6d3f53aa60c028de515b8f21"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/closure-r4/COVERAGE.md",
+      "sha256": "18e5b49ebe43cfd22e4d76b251f97dca98b064ba9be1b2d54121823ddbf562ef"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/closure-r4/DELIVERY_MANIFEST.json",
+      "sha256": "5b35cebceb04ce433a5407d65cd2593581f988261a1678da91b3a0701c1497cb"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/closure-r4/FIX01.md",
+      "sha256": "4cd41e02a5e59bf0dbe8cb3a6776ee4df7d3ccb491248dca3ada0454d212562b"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/closure-r4/POLICY_EVIDENCE.md",
+      "sha256": "16ae3b2defc6f528b26a7c5aa4f776aa503c5360d2d14accebe07549e049130f"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/closure-r4/RELATORIO_EXECUTIVO.md",
+      "sha256": "6e9434b41805dd27a1c895ec812f300293911da0e8aa90715a0d2d6b9f1db4ac"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/closure-r4/REVISION_DISPOSITION.md",
+      "sha256": "1e1b7d2f5647fe9a58b82f0728867b58208d5f8b5c6bd40428c565445b1aa174"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/closure-r4/VERIFICATION.json",
+      "sha256": "e47ed323a33e862993059d5ad8661429f073f5c1121adfafa2121a556c539a21"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/closure-r4/cases.csv",
+      "sha256": "75fc75f531764ad0b30f39e70dfb2694637727f2d5dd09b7c659697fbad6583a"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/closure-r4/checks-before-review.json",
+      "sha256": "e0e798914dfe114134002fe35976129fbbb48d0bac14e81d73a017da6874c7ff"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/closure-r4/coverage.json",
+      "sha256": "ee8a4209b9e788cb16de49ce463a0face51e10d488b0a05f9d7eb5f345992e73"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/closure-r4/dashboard-case.png",
+      "sha256": "f528446d347573b8a2c64f64c636c643c098ae4184bf7d9a76bb711565fc6309"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/closure-r4/dashboard-desktop.png",
+      "sha256": "0f01994a31bf7c295d523e16ee1c4f2d0e8554cb95666bddb7c03372999fb3bc"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/closure-r4/dashboard-mobile.png",
+      "sha256": "83174eae8426cd1f351eb32f092efb522014f1851d46bc93274867f200861566"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/closure-r4/dashboard-review.png",
+      "sha256": "8f9bc5c98f7736b834c5b65736f2a9b1655456df84a48bc9303fbcec157abd37"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/closure-r4/dashboard.html",
+      "sha256": "8b71596285e76a493c2e47a58fae79937d6bdc2bd85920918d2afed2bda9eeb0"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/closure-r4/fix01.json",
+      "sha256": "9e6e68ad3dae33fd304a82503dcf69c795f28d4c3735a32681c940da68a247c5"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/closure-r4/golden-fixtures.json",
+      "sha256": "da8ce03564ebf0283291bc8e3199b4693f1a65f45ac8904435eca7e7d6819497"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/closure-r4/policy.json",
+      "sha256": "a019e2d25ca165dc13e9bc7061b713c55f48705fa44e4095e11350e5826d9968"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/closure-r4/review-index.json",
+      "sha256": "baf78ac0c83a9e3660b126318d90aa4e31833d492fcb3a06035400e3f5ed031a"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/closure-r4/review-input-manifest.json",
+      "sha256": "2a5a6de34afa188b0aabaeff4ce8544c0926c3bb824e4c72fc1f0929973687e0"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/closure-r4/supplemental-assessments.json",
+      "sha256": "81dc8d72eb5df49a84f485c7371729267ab87716e7cc8a69dda044d7ac0dd719"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/closure-r4/validation-final.json",
+      "sha256": "27c1e3104999ac5b363197c8ea21b53dc0fc942c0afa28c8becd80b794fe4268"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/dashboard-case.png",
+      "sha256": "1bb77ae5fb28c8939d61f37c436e5ae7e6a4b1b6ab10cdefbcf689fb51483031"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/dashboard-method.png",
+      "sha256": "974f311334c6196fdb4ecc27e35856c954152d3edf5bde24984f9500509b153c"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/dashboard-mobile.png",
+      "sha256": "dd10878db28d8c636fecf4eac3ff8f7484565f039711c708d9579fda8a978f59"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/dashboard-overview.png",
+      "sha256": "5b99be3860a27fdec74b2bd1616c81f11bbe37cd31cea1ceb2c72d6fcb3a618a"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/dashboard.html",
+      "sha256": "70402b9c78324ff273df51c80294d7aeb5857cdbd8e7ae90dbe30d1dfc05ce75"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/validation-data.json",
+      "sha256": "68e369b12e81b033be000c8a6853283087dba9afa8ee627368ee675ae64fe2f9"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/outputs/validation-final.json",
+      "sha256": "da766309897df660f7ca6096aa9fac19cbd1125ed62cf2528602102697622d91"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/reviews/closure-r4/governance.md",
+      "sha256": "204ab6849a4af38d49480f21abe7f01e3fb27e0163889dc24697e7130702df43"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/reviews/closure-r4/safety-session-record.md",
+      "sha256": "70e050aeda108783d82011639230dd8ce206c640014b89ac423510f37814c4dd"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/reviews/closure-r4/sports.md",
+      "sha256": "a421f31b7f5971568dab8091bcb6b12bdb3596db114940c12932d73069a28917"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/reviews/governance.md",
+      "sha256": "58ddf76202bc6ee35b24a8e395b6c89dc517d3b7feafd7ee720c822c321ff1e5"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/reviews/safety.md",
+      "sha256": "fa6a5735eae3deab85831570a47c0430facdb6f54b86f96acdec19070e0aa40b"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/reviews/sports.md",
+      "sha256": "273ed5179c7fed15972a3242a3acd1293e8d7a73d3a681dbee0d3d726f226623"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/work/closure/COVERAGE.md",
+      "sha256": "18e5b49ebe43cfd22e4d76b251f97dca98b064ba9be1b2d54121823ddbf562ef"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/work/closure/FIX01.md",
+      "sha256": "4cd41e02a5e59bf0dbe8cb3a6776ee4df7d3ccb491248dca3ada0454d212562b"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/work/closure/POLICY_EVIDENCE.md",
+      "sha256": "16ae3b2defc6f528b26a7c5aa4f776aa503c5360d2d14accebe07549e049130f"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/work/closure/author-input-precheck.json",
+      "sha256": "56c970b550924b05f5e513bc9c637b76116157507a9f5e1a0eded57c3197a00d"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/work/closure/baseline-lock.json",
+      "sha256": "26430a4f54a00f18dc93c92f739d4ef9668a8c328ce2ad336a0f3c63611c8ce2"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/work/closure/build_closure.py",
+      "sha256": "5311bff7b08d2ffd8329ff58d9d1a2c482b161157eab5f2e78e0ae722884883a"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/work/closure/build_golden.py",
+      "sha256": "49b73f42f7fb97207989a6e0564766894d76208c329a99ffbc470bf39f2f2528"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/work/closure/coverage.json",
+      "sha256": "ee8a4209b9e788cb16de49ce463a0face51e10d488b0a05f9d7eb5f345992e73"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/work/closure/dashboard.js",
+      "sha256": "f03014950f7a152c77c5830f5812823e38e4405746a02b59512c8a38238753f5"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/work/closure/finalize_delivery.py",
+      "sha256": "a45c8f3a99bf99aafd74b0abcbc687f8cdc8dbe6780c192fe13edc7d76ea56a8"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/work/closure/fix01.json",
+      "sha256": "9e6e68ad3dae33fd304a82503dcf69c795f28d4c3735a32681c940da68a247c5"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/work/closure/package_delivery.py",
+      "sha256": "0bf9a8634fc5a23603d313dcc293e51278bdc7df2433a3e0152d8a7de60de269"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/work/closure/policy.json",
+      "sha256": "a019e2d25ca165dc13e9bc7061b713c55f48705fa44e4095e11350e5826d9968"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/work/closure/render_dashboard.py",
+      "sha256": "18c634ce6d2b57ebfc7dd009a03c705b1776d6dea60a30bea1a583f1940a1b13"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/work/closure/supplemental_audit.py",
+      "sha256": "2229eda2a535e940d13c466d9831f47ec07a3ca40d0ec30f380478e40fd0e5dd"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/work/closure/verify_closure.py",
+      "sha256": "f5813d6512b721be1f51ff7bf5f5503fcc740d64688f5a229ce0ae1c7b4591ea"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/closure-r4-original/work/dashboard.template.html",
+      "sha256": "b89b044ec321ee35323c486d92b6ef226970d4967b13d62912113afb1746136e"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/source-zips/v1-training-domain-foundation-0.2.zip",
+      "sha256": "f77a7f7819c4ebb2cec1098fc65a5bf0de866819f5b14beace819eb81d8888d2"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/source-zips/v1-training-domain-foundation-audit.zip",
+      "sha256": "fb834cda77dbef57919517e4ef1bf2518655817007113c00c861b799b76320bd"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/source-zips/vilumo-ae-closure-r4.zip",
+      "sha256": "c4c03e53745a23170625fe8875c93e3d6a8d8f89bc6ede2bb5e61473f478f2a9"
+    },
+    {
+      "path": "audits/training-domain-foundation-0.2/verify_integration.py",
+      "sha256": "69ce349ec463900ed0629d6930b9edbcee2f8ba9d1126db4132074275f196af8"
+    },
+    {
+      "path": "audits/ux-spec-2026-10-18/AI_REVIEW_r1.md",
+      "sha256": "bbe035be20837cacbffe0cc98b41578a92540a15cd6ac902678da41460b44f1e"
+    },
+    {
+      "path": "audits/ux-spec-2026-10-18/AI_REVIEW_r2.md",
+      "sha256": "510d05596d3778efa2afb0d79fbb0c39cc5c0b418ed120dc599a3bbd165950c8"
+    },
+    {
+      "path": "audits/ux-spec-2026-10-18/AI_REVIEW_r3.md",
+      "sha256": "99df750754dc30ef814c2a4ec115bb518b5ca7c46dba91b2ba78f3ddd547f0bd"
+    },
+    {
+      "path": "audits/ux-spec-2026-10-18/AUTHOR_RESPONSE_r1.md",
+      "sha256": "f819d69c066d9ede17b48b80575b6a9f6c65fb2bd84c379034a38d59f785f58d"
+    },
+    {
+      "path": "audits/ux-spec-2026-10-18/AUTHOR_RESPONSE_r2.md",
+      "sha256": "3e729465b8c155bfafe27db244c7f33f2306524893bae08761546ebb5df9a159"
+    },
+    {
+      "path": "audits/ux-spec-2026-10-18/BASELINE_MANIFEST.json",
+      "sha256": "725784c9bf9ecbcd6d5d25ba90408642bd397b9ba1e6d65b8a18582d6013ca0b"
+    },
+    {
+      "path": "audits/ux-spec-2026-10-18/ENGINEERING_REVIEW_r1.md",
+      "sha256": "35d101aab7fdc30c5a556b4886aeb36b976812760beb444b257ed1ff5ba25926"
+    },
+    {
+      "path": "audits/ux-spec-2026-10-18/ENGINEERING_REVIEW_r2.md",
+      "sha256": "cdf5587af91094a630feba24afe0efc6aa95b41b5c5ae3a5db647d3379dda0d6"
+    },
+    {
+      "path": "audits/ux-spec-2026-10-18/ENGINEERING_REVIEW_r3.md",
+      "sha256": "faceedbb88cb0ae3737df54c8d20608f73e9f2040080e17ce26e3bb878a12065"
+    },
+    {
+      "path": "audits/ux-spec-2026-10-18/FINAL_CONSOLIDATION.md",
+      "sha256": "bb496e319a2ccc81010a569d09b637bf0a9cba5a52141b2e3c45642fbff3af5f"
+    },
+    {
+      "path": "audits/ux-spec-2026-10-18/FINAL_VERIFICATION.json",
+      "sha256": "59417ef3f26214606bde38315f5370c3f60ee1ad4077731bc769bf12e3cc32b6"
+    },
+    {
+      "path": "audits/ux-spec-2026-10-18/FOUNDER_REQUEST_2026-10-18.md",
+      "sha256": "bc83268108f19f2456b2e82e5d4edf49d1b5b5eb76016480bc16134dae3511d4"
+    },
+    {
+      "path": "audits/ux-spec-2026-10-18/MISSION_RECORD.md",
+      "sha256": "72ab6ba78ebecdfef4efc5f79430e1507909e961eadab687030a778a1919a501"
+    },
+    {
+      "path": "audits/ux-spec-2026-10-18/PRE_REVIEW_VERIFICATION.json",
+      "sha256": "5a8e97912800c4688476dabec8754f6d7e5ba64ff29fcadab7654b04b9a87fe6"
+    },
+    {
+      "path": "audits/ux-spec-2026-10-18/PRE_REVIEW_VERIFICATION_r2.json",
+      "sha256": "3ad1c12bd94b9598bd81f6f34e4eac2a51e173b2e71eb9b2da304f701bd8fadb"
+    },
+    {
+      "path": "audits/ux-spec-2026-10-18/PRE_REVIEW_VERIFICATION_r3.json",
+      "sha256": "f81c11b529ad2a14a4797c3a0ea4bebbf389650e7d034e7ad55a962e56e5cc59"
+    },
+    {
+      "path": "audits/ux-spec-2026-10-18/SECURITY_REVIEW_r1.md",
+      "sha256": "27fe5437bcf5249bbc2bec35148fc2d0d4adfde4a673580177ad13d7e009920b"
+    },
+    {
+      "path": "audits/ux-spec-2026-10-18/SECURITY_REVIEW_r2.md",
+      "sha256": "20d5df2c6349b03fd6d2856de28d734c1a6969723c3f880f9bcd87ad8d9d8cae"
+    },
+    {
+      "path": "audits/ux-spec-2026-10-18/SECURITY_REVIEW_r3.md",
+      "sha256": "43bc25d8c4988a739959c8d3485562d07cc2d724c59bf0fb5a69d98df86b7b16"
+    },
+    {
+      "path": "audits/ux-spec-2026-10-18/UX_REVIEW_r1.md",
+      "sha256": "631e709ba9e24dcdffac3319f43f65af1d77e146377d73aa9d8e2c40fbaa6a97"
+    },
+    {
+      "path": "audits/ux-spec-2026-10-18/UX_REVIEW_r2.md",
+      "sha256": "bc0ca515fc013d66ca523624eb1f94c641ecaba0ed8f901bff9f62ec2356138d"
+    },
+    {
+      "path": "audits/ux-spec-2026-10-18/UX_REVIEW_r3.md",
+      "sha256": "c33eb0b0618c5d53c49b67b4fd485d5c8d9abdbfb506beaaa7588e64b2d6aa56"
+    },
+    {
+      "path": "audits/ux-spec-2026-10-18/baseline/CURRENT_MISSION.AEOS_COMPLETE.md",
+      "sha256": "aa31d509599972d160fdaa7d7fbb07b152a7485ec8ef820eff36dd4747b842ad"
+    },
+    {
+      "path": "audits/ux-spec-2026-10-18/review-inputs-r1/MANIFEST.json",
+      "sha256": "a8f41b63fcca4f1e5b38365638ca39e3488f35d827204c83b6fea7454852b1b7"
+    },
+    {
+      "path": "audits/ux-spec-2026-10-18/review-inputs-r1/UX_SPECIFICATION.md",
+      "sha256": "08ac2f964791f1b9903ca435174a4d660ad74d2abb9a55cd2e9e2df42afc5d8c"
+    },
+    {
+      "path": "audits/ux-spec-2026-10-18/review-inputs-r2/DIFF_r1_r2.patch",
+      "sha256": "d4cac7a11c05acea23160974e306284b27809beb20d37b862908cab3e85d962f"
+    },
+    {
+      "path": "audits/ux-spec-2026-10-18/review-inputs-r2/MANIFEST.json",
+      "sha256": "455df76d293139b6a1e8d207cbcbed8db5f1acbee5a0497512b8cf40683b8764"
+    },
+    {
+      "path": "audits/ux-spec-2026-10-18/review-inputs-r2/UX_SPECIFICATION.md",
+      "sha256": "092ec0336ddaf6bee5257d3c45a5f34ad5ac232beb9cb26ee1a2604d4b410bec"
+    },
+    {
+      "path": "audits/ux-spec-2026-10-18/review-inputs-r3/DIFF_r2_r3.patch",
+      "sha256": "cc6c6e9a906698441e287254a7093709038adb1929168fab8a9e307b5c7e645d"
+    },
+    {
+      "path": "audits/ux-spec-2026-10-18/review-inputs-r3/MANIFEST.json",
+      "sha256": "2f2d38b01167b02f1f8650f8a8b4edee1c6091fd5fa81e493fc2573ba96d9200"
+    },
+    {
+      "path": "audits/ux-spec-2026-10-18/review-inputs-r3/UX_SPECIFICATION.md",
+      "sha256": "598b055d8df6cf67cafe0365e88d0ba694164d00c7ab6576fc2643eff5dcfcdb"
+    },
+    {
+      "path": "audits/ux-spec-2026-10-18/verify_uxspec.ps1",
+      "sha256": "87e53f63c9f9c372e3c7cdcd8ff779e28386d205f1f1c657b514b904d2385b3f"
+    },
+    {
+      "path": "audits/v1-freeze-2026-10-19/CLAUDE_HANDOFF.md",
+      "sha256": "d6ebe2e77fb68a3855b68c4b451fb59220eed7650c01b9615fabf078e40bc1b7"
+    },
+    {
+      "path": "audits/v1-freeze-2026-10-19/CONSOLIDATION.md",
+      "sha256": "fc200e4411ec0329765f9fc9f8a57ed3e542d4b80876bae21c85cd3efec02e95"
+    },
+    {
+      "path": "audits/v1-freeze-2026-10-19/ENGINEERING_REVIEW-r1.md",
+      "sha256": "327318c63ef0a7045fdd462e9d7ca538b0bef3c93f568d3adfeab5072733b363"
+    },
+    {
+      "path": "audits/v1-freeze-2026-10-19/ENGINEERING_REVIEW.md",
+      "sha256": "19798d9530d1d56a7571af732e1102eeda938b425dee3422fc421369f35580b9"
+    },
+    {
+      "path": "audits/v1-freeze-2026-10-19/EXISTING_UX_CHECK.json",
+      "sha256": "4f3c2600594c6e422bafb9e4d93fc5fe805114404d2bd46680f1d7b3606a424b"
+    },
+    {
+      "path": "audits/v1-freeze-2026-10-19/EXISTING_UX_FINAL_CHECK.json",
+      "sha256": "07d5f86c786c963ca49f8c1649a8004fcd5acd7b24bfce08f08e14c5fb3a0c41"
+    },
+    {
+      "path": "audits/v1-freeze-2026-10-19/FOUNDER_REQUEST.txt",
+      "sha256": "82d6f5ca736da3e9bbc126c78be9a137851ed8282d7f7451ffe622b15f01249b"
+    },
+    {
+      "path": "audits/v1-freeze-2026-10-19/INPUT_BASELINE.json",
+      "sha256": "ba9ed6a946ea1be34acaca5aae9cc10c6ac6ec931dab3fa74ef369e96b779691"
+    },
+    {
+      "path": "audits/v1-freeze-2026-10-19/MISSION_RECORD.md",
+      "sha256": "ef22832c9a3c6f2dd1b30f5b48949e2cfd906189223531b08ad534de9b5724e2"
+    },
+    {
+      "path": "audits/v1-freeze-2026-10-19/PACKAGE_INPUTS.json",
+      "sha256": "35309abb1c685240bbc64ab33517d4db8534596a4da1ea10530bda2ba79d8ec3"
+    },
+    {
+      "path": "audits/v1-freeze-2026-10-19/PATCH_PREFLIGHT.json",
+      "sha256": "59b7887c2bef1401c097bc0bd06ef3bcf49b5c1345dc3493a7736ed22505719e"
+    },
+    {
+      "path": "audits/v1-freeze-2026-10-19/PATCH_RAW_PREFLIGHT.json",
+      "sha256": "8011a10edfb3f50cc6b7ec96d3498b3b521295a7c85a685a82110f5f66dd0354"
+    },
+    {
+      "path": "audits/v1-freeze-2026-10-19/RESEARCH_REVIEW-r1.md",
+      "sha256": "9f37fffe1bf59030826e48aa25515cd844c571e7462999b61e62206865b37bce"
+    },
+    {
+      "path": "audits/v1-freeze-2026-10-19/RESEARCH_REVIEW.md",
+      "sha256": "0d712c7b1a5dfb3b5f9db32d14894033e6d4be14a4bb580f065132191dad0422"
+    },
+    {
+      "path": "audits/v1-freeze-2026-10-19/REVIEW_INPUTS-r1.json",
+      "sha256": "7a03710ec7d760613bd6c13a490dfba35cfc1fbaa4ee4a41633d45610959141f"
+    },
+    {
+      "path": "audits/v1-freeze-2026-10-19/REVIEW_INPUTS.json",
+      "sha256": "1a0ee6e52d52d658b0fcf30be234644e3e607cd9ae2bcfb61b31c0fa0552f22e"
+    },
+    {
+      "path": "audits/v1-freeze-2026-10-19/SECURITY_REVIEW.md",
+      "sha256": "39c093ce016c70c71990013f162a841c4163a8617968bec9e489bbe82e1a84bb"
+    },
+    {
+      "path": "audits/v1-freeze-2026-10-19/SOURCE_PROGRESS.json",
+      "sha256": "d53e7aae13183e3fa5d4e539f6dcf09e55cc856a0a53d98526ff00a941ec1412"
+    },
+    {
+      "path": "audits/v1-freeze-2026-10-19/TRAINING_ADDENDUM.md",
+      "sha256": "085376041fab18bf5c7655da2992fafc2b36277e25267bae1cc6b34431588a5a"
+    },
+    {
+      "path": "audits/v1-freeze-2026-10-19/TRAINING_ADDENDUM_RAW.txt",
+      "sha256": "a3fa48a8acf74bcf99816e2fdbca9eb3fccfe76e8fa01a198010881e97fa70b7"
+    },
+    {
+      "path": "audits/v1-freeze-2026-10-19/UX_REVIEW-r1.md",
+      "sha256": "bebadeb30c52d88257a83fb7b34de602f33df6708e3b309ccad45f6279b78410"
+    },
+    {
+      "path": "audits/v1-freeze-2026-10-19/UX_REVIEW.md",
+      "sha256": "130da561ad10a3859d997f59597c831b3a191933a507196326c7e62fe6280dff"
+    },
+    {
+      "path": "audits/v1-freeze-2026-10-19/VERIFICATION-r1.json",
+      "sha256": "b458819a98cf9c9a7f2b1f442672114f9bccf5484d6b2a899c818727fdaaeb30"
+    },
+    {
+      "path": "audits/v1-freeze-2026-10-19/VERIFICATION.json",
+      "sha256": "db308f574428ac5be828b3024543d447ab24d8107173470123db26dc8f8875f4"
+    },
+    {
+      "path": "audits/v1-freeze-sync-2026-10-19/INTEGRATION_RECORD.md",
+      "sha256": "17c5d0defa1150c1e17a6016cc6775a2373ffd451cd5755cd8c35d28cb7beee7"
+    },
+    {
+      "path": "audits/v1-freeze-sync-2026-10-19/LEGACY_UX_VERIFIER_POST_SYNC.json",
+      "sha256": "23bf4f55db7822cbb25b11ae2bb551bc3aa3410d9853899c4282a4196b114302"
+    },
+    {
+      "path": "audits/v1-freeze-sync-2026-10-19/UX_DELTA.md",
+      "sha256": "8040ed0e2e00c5104149787a8c8a2f1600433874c5a55c8d82664c5edbfcebce"
+    },
+    {
+      "path": "canon/CANONICAL_INDEX.md",
+      "sha256": "ef5b35c17020bb925afd572130ed094a447e793be4f22372b054895d9219ec91"
+    },
+    {
+      "path": "canon/VILUMO_FIT_PRODUCT_THESIS_CONTRACT.md",
+      "sha256": "2ebaf7fb6897bca8dfce7332e59012a7f7c9f817e348da22fa3fb7dd81760e80"
+    },
+    {
+      "path": "explorations/visual-v1/project/FirstValue.dc.html",
+      "sha256": "d670edee0f5be99760d32cbb6d22357cc452cb1aee8912220f71d5c64f75747b"
+    },
+    {
+      "path": "explorations/visual-v1/project/Main.dc.html",
+      "sha256": "51a8fa39176ea183b20d1c4f8adb364aeb7679a4511a623c18d1d7ccb0d0bb8e"
+    },
+    {
+      "path": "explorations/visual-v1/project/Paywall.dc.html",
+      "sha256": "eaf2fc359a37ed860aa44ad4624b3a1ad0f4542daedde34c2cd37c92f377202b"
+    },
+    {
+      "path": "explorations/visual-v1/project/Today.dc.html",
+      "sha256": "85f70d9b935549686f0a2c6979b9bc336c6ee1ddfcf47c9c2d7f05b5b54395cd"
+    },
+    {
+      "path": "explorations/visual-v1/project/canvas.json",
+      "sha256": "9302277b44559bf83c59b171629960513b22c6948009117b7bc0d27346a2f410"
+    },
+    {
+      "path": "governance/drafts/VILUMO-PTC-2.2.0/DELTA_2.1.0_TO_2.2.0.md",
+      "sha256": "d86d8c93774651d80f0b9b20ffadfb2efeb40233a6606bfe2b0330ca29175878"
+    },
+    {
+      "path": "governance/drafts/VILUMO-PTC-2.2.0/VILUMO_FIT_PRODUCT_THESIS_CONTRACT.2.1.0.snapshot.md",
+      "sha256": "4d4ccb65b341efc45b88bbf5aa173bb34c2f39452e5f6b85dd3beb6b8ee6dbd1"
+    },
+    {
+      "path": "governance/drafts/VILUMO-PTC-2.2.0/VILUMO_FIT_PRODUCT_THESIS_CONTRACT.md",
+      "sha256": "724834fbe39cd1467a5e61fd54d9aae3e025e4afffbcb0945a9db49027ae810e"
+    },
+    {
+      "path": "governance/drafts/VILUMO-PTC-2.3.0/DELTA_2.2.0_TO_2.3.0.md",
+      "sha256": "74384a8053edd5ce4bdae888a64ed911aa90b338a2965c01002c6577b6e44177"
+    },
+    {
+      "path": "governance/drafts/VILUMO-PTC-2.3.0/VILUMO_FIT_PRODUCT_THESIS_CONTRACT.2.2.0.snapshot.md",
+      "sha256": "5c780fdc336166066edbc9ed62dfa0e947efdb5177898faf6c934346f6e35601"
+    },
+    {
+      "path": "governance/drafts/VILUMO-PTC-2.3.0/VILUMO_FIT_PRODUCT_THESIS_CONTRACT.md",
+      "sha256": "13f3116d494b7885d2877118210312bf6af10cf942c8ce06cac288ac974fd65f"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/AGENTS.md",
+      "sha256": "79a20cc1527d876bf5d2170c2eb0ecd15e82bf1e258c1f271cd5681ad5de9848"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/CLAUDE.md",
+      "sha256": "3605413a3a06c0e1e8df2ff0c014cfb165b5822f5fde96ca481d062fd22bdc88"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/CURRENT_MISSION.md",
+      "sha256": "7da945f69e524cce0ef4403bad14b5a84a48011d38173d043e02c4e9de269e69"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/MISSION_LEDGER.md",
+      "sha256": "58de5edafba6aa0ccc1f1a8b98737f06ca828f4d84d280230a373beee58fac3b"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/SNAPSHOT_MANIFEST.json",
+      "sha256": "4ecd9b58156e791355232ae36610cf15607f8c7f76c3a72718ab65ee8274b928"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/audits/CLAUDE_CANON_UPDATE_2026-10-10.md",
+      "sha256": "b70d8cb94fc198db4d0d843342d6c403b66796a5506e3485457f9d4dff05368e"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/audits/canon-2.2.0-reviews/DOCTRINE_EVIDENCE_REVIEWED_r1.md",
+      "sha256": "dce0aef464d911c65a0187f584f9f56b56260a64c0125d101319367bb026d9a6"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/audits/canon-2.2.0-reviews/DOCTRINE_INTERPRETABLE_r1.md",
+      "sha256": "32b779b94bc37989e8f0d2d5e7f1cf947d6345b1b09cee5672c6dd40fe4f0030"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/audits/canon-2.2.0-reviews/canon-gate-2.2.0.json",
+      "sha256": "2bbacf5d09899c858e51ac988b4ea825a05da2fb2e18d156490a58216c12190d"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/audits/canon-2.2.0-reviews/publication-event-2.2.0.json",
+      "sha256": "690482f225ed04c4333721ad92d6d82c3393c594db3ea8f7ad92a7fabc5c3c2c"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/audits/canon-2.3.0-reviews/DOCTRINE_EVIDENCE_REVIEWED_r1.md",
+      "sha256": "a9787c2c1df5a0515569054d64436c066d42b3694112a5fad7ab4dd863cbbe56"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/audits/canon-2.3.0-reviews/DOCTRINE_INTERPRETABLE_r1.md",
+      "sha256": "edaf1242f951c08f92eec259cb6943a2ee4f34bd85ae0e53fc8a7af10e494afe"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/audits/canon-2.3.0-reviews/canon-gate-2.3.0.json",
+      "sha256": "07054c6458d7be637135d0a30b02f834226b35f997853191a114e4aa1f0b52a6"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/audits/canon-2.3.0-reviews/publication-event-2.3.0.json",
+      "sha256": "722c160dee279a9597423a3e75da71cb4f5823d048d3f717d4560c748d750426"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/audits/claude-canon-update-2026-10-10/CURRENT_TARGET_DELTA.md",
+      "sha256": "ffb7a594daab9ad1c93f6a5c430793f17c664c802d634d13421ae920ed03fa39"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/audits/claude-canon-update-2026-10-10/after-policy-evals.json",
+      "sha256": "38971dfe3ce997f29b34cb27cddc99626e33a41f49d5150a76a7c53811d1c137"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/audits/claude-canon-update-2026-10-10/effort-observations.jsonl",
+      "sha256": "f79edd489c2de23abb6c401e84029dc220af570b1a8a5670758d280a229f910f"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/audits/claude-canon-update-2026-10-10/execution-evals.json",
+      "sha256": "b2845876887bd614383258f97c21ed169e5b966264b96ccc57c2cd25e729e428"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/audits/claude-canon-update-2026-10-10/final-state-verification.json",
+      "sha256": "d4e5940616db7627c7220598f1d75953b427aef86dd82328c01c119a462037ac"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/audits/claude-canon-update-2026-10-10/installation-validation.json",
+      "sha256": "cf227418af13ff85bb7b30dc3b20e42056f2cecf8d1311aac4e26f3c3fc1bd2c"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/audits/claude-canon-update-2026-10-10/native-bounded-ux-review-summary.json",
+      "sha256": "695724e5fd4999f4ad37a4a94c4c35a71c517e43855bc1d05999d5466cf18300"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/audits/claude-canon-update-2026-10-10/native-bounded-ux-review.jsonl",
+      "sha256": "d4c7fb662da8130721281789d6a4760603390ce0341875c5e221a8cb9e1a1c18"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/audits/claude-canon-update-2026-10-10/native-mechanical.jsonl",
+      "sha256": "1a45c19ef9e5ddf70b662dfa9a50ccb8cf7a3b0f9033eab9bc3239e511fbebb9"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/audits/claude-canon-update-2026-10-10/native-smoke.jsonl",
+      "sha256": "5f97c1b71f64d29d35436169f626f66ce1b0de37adc1ae82679a1107fe64b882"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/audits/claude-canon-update-2026-10-10/native-ux-agent-review.jsonl",
+      "sha256": "a8f32005a2b185b0cbd116dc9595ea04813907f2a6a9bdb54d5d5a93d6c4c1bb"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/audits/claude-canon-update-2026-10-10/publication-state.json",
+      "sha256": "cfe4e875f15e28910e9bf26b80ea3bc0a5c86518b9e5cdfcf6864f96a21ca155"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/audits/claude-canon-update-2026-10-10/reviews/canon-gate.json",
+      "sha256": "950434edd9ab5c4142843792d55e78df00b9e9afb1c0b6eceae14811d8f93df9"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/audits/claude-canon-update-2026-10-10/reviews/doctrine-fidelity.json",
+      "sha256": "0ae0c87631c8a89fb7eda85cb36e8876eefb466925ec470f3b6807cbb5057d33"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/audits/claude-canon-update-2026-10-10/reviews/doctrine-interpretability.json",
+      "sha256": "162b787048675badb2386cd952f50a2dbf996981ffdeb4bf3a67ed73e0c691a5"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/audits/claude-canon-update-2026-10-10/reviews/engineering-routing.json",
+      "sha256": "445d1c6f97492108b32b4250e0e08a62d880821b7d62ad0671e09c23f28e4979"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/audits/claude-canon-update-2026-10-10/scoped-verification.json",
+      "sha256": "7ee36d3a613a7ca04f99bfddb8cb3cce4757a7298afd0ed778537afdba865ba4"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/audits/claude-canon-update-2026-10-10/shareability-founder-decision.md",
+      "sha256": "bec754e8f15cd335eff0e9d998dfdb579fd2a4c2b9dd807511ffe45349fce0ce"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/audits/claude-canon-update-2026-10-10/sports-founder-decision.md",
+      "sha256": "5ec6f29a6a7f3d10c76120d8e02082d1728d4ed831255af355f9f5fc7945332a"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/audits/founder-decisions/2026-10-11_hybrid-experience-founder-decision.md",
+      "sha256": "1db720f2a77593a8771b0473ddb9379bcbe392bbcd4dea7bfd0040edff08ef27"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/audits/phase-1-3-reviews/PCG-J_canon-ingestion-domain-decisions.md",
+      "sha256": "4702aafaf93d96a4ded8ea91e27cf1678d912b9b89322b10a682ea4326140c0a"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/audits/phase-1-3-reviews/SEC-J_domain-model-boundaries.md",
+      "sha256": "4dd735198f8243532b1f5c29ce87ec4189aceaa0a9638ad72a76004227133451"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/audits/phase-1-3-reviews/UX-J_domain-model-structure.md",
+      "sha256": "3472b10ddff0ffdc9dba27f25c35dbdb2ce38c644886d14468b7ce0442a1756a"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/audits/phase-1-3-reviews/founder-gate-phase3-decisions.md",
+      "sha256": "bd1758a617ad98644dabce4a35310eecfb1d0dba5354b46f1912fa66efc38159"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/canon/CANONICAL_INDEX.md",
+      "sha256": "7d93940a82589d7f559176102693f7d4656ad0563291d02d46b485259aa26da7"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/canon/VILUMO_FIT_PRODUCT_THESIS_CONTRACT.md",
+      "sha256": "dc0c5c53b2860af79633b9830b4d7f3890f0aedca5310aef810209246cecfd0b"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/governance/drafts/VILUMO-PTC-2.2.0/DELTA_2.1.0_TO_2.2.0.md",
+      "sha256": "d86d8c93774651d80f0b9b20ffadfb2efeb40233a6606bfe2b0330ca29175878"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/governance/drafts/VILUMO-PTC-2.2.0/VILUMO_FIT_PRODUCT_THESIS_CONTRACT.2.1.0.snapshot.md",
+      "sha256": "4d4ccb65b341efc45b88bbf5aa173bb34c2f39452e5f6b85dd3beb6b8ee6dbd1"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/governance/drafts/VILUMO-PTC-2.2.0/VILUMO_FIT_PRODUCT_THESIS_CONTRACT.md",
+      "sha256": "724834fbe39cd1467a5e61fd54d9aae3e025e4afffbcb0945a9db49027ae810e"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/governance/drafts/VILUMO-PTC-2.3.0/DELTA_2.2.0_TO_2.3.0.md",
+      "sha256": "74384a8053edd5ce4bdae888a64ed911aa90b338a2965c01002c6577b6e44177"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/governance/drafts/VILUMO-PTC-2.3.0/VILUMO_FIT_PRODUCT_THESIS_CONTRACT.2.2.0.snapshot.md",
+      "sha256": "5c780fdc336166066edbc9ed62dfa0e947efdb5177898faf6c934346f6e35601"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/governance/drafts/VILUMO-PTC-2.3.0/VILUMO_FIT_PRODUCT_THESIS_CONTRACT.md",
+      "sha256": "13f3116d494b7885d2877118210312bf6af10cf942c8ce06cac288ac974fd65f"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/product/PRODUCT_ARCHITECTURE.md",
+      "sha256": "1e62be947d338f223efcfb6b1276aa0d9ce5de62f1e45242281441f024170d3d"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/product/PRODUCT_DECISION_REGISTER.md",
+      "sha256": "f63e38668934222167f888818272915bb8d844df24c75fece54e909b94f77f45"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/product/PRODUCT_DOMAIN_MODEL.md",
+      "sha256": "af3692601d6ee3f549a299d3bb3e8693ce68c665cad0a1a83d8ad617348d416c"
+    },
+    {
+      "path": "governance/snapshots/2026-10-14-pre-3.0.0/product/PRODUCT_TRUTH_MAP.md",
+      "sha256": "5048e0a08bb6ad836d8f5ce6ecea3353601f1da4d131a42927aed93945100b7b"
+    },
+    {
+      "path": "governance/snapshots/2026-10-15-pre-ux-closure/AGENTS.md",
+      "sha256": "79a20cc1527d876bf5d2170c2eb0ecd15e82bf1e258c1f271cd5681ad5de9848"
+    },
+    {
+      "path": "governance/snapshots/2026-10-15-pre-ux-closure/CLAUDE.md",
+      "sha256": "3605413a3a06c0e1e8df2ff0c014cfb165b5822f5fde96ca481d062fd22bdc88"
+    },
+    {
+      "path": "governance/snapshots/2026-10-15-pre-ux-closure/CURRENT_MISSION.md",
+      "sha256": "42c1eac395188839bd865ad61cc6f7ee990bd50401d28a449057df5960ee1512"
+    },
+    {
+      "path": "governance/snapshots/2026-10-15-pre-ux-closure/MANIFEST.json",
+      "sha256": "c635fa7470b9bc60684df01edb6d49f1a38e18b1194a44173c2c08ff04fb510e"
+    },
+    {
+      "path": "governance/snapshots/2026-10-15-pre-ux-closure/MISSION_LEDGER.md",
+      "sha256": "091c309f3093488463764ec73ee6bafbd921fa6835e89c5b28c82e7afa818c42"
+    },
+    {
+      "path": "governance/snapshots/2026-10-15-pre-ux-closure/canon/CANONICAL_INDEX.md",
+      "sha256": "7b8979e90609b7a1037fdbc11f07c8f3389b5828cb6c265165923fdeba73ea9c"
+    },
+    {
+      "path": "governance/snapshots/2026-10-15-pre-ux-closure/canon/VILUMO_FIT_PRODUCT_THESIS_CONTRACT.md",
+      "sha256": "dde1b81a57a3ee208279f2b7c4ed80d4fb2b986005f575a4b56631e150082614"
+    },
+    {
+      "path": "governance/snapshots/2026-10-15-pre-ux-closure/product/ADAPTIVE_ENGINE_CONTRACT.md",
+      "sha256": "9ab5094e88150c84ef42eafbb1d6ee8738d4ef2ac2cc540bd5772ab418d883b1"
+    },
+    {
+      "path": "governance/snapshots/2026-10-15-pre-ux-closure/product/CORE_FLOWS.md",
+      "sha256": "623ec34f4470436210ec3203683d6c0c805825a119770cf3e013265edaefc2aa"
+    },
+    {
+      "path": "governance/snapshots/2026-10-15-pre-ux-closure/product/EXPERIENCE_MODEL.md",
+      "sha256": "6ac21890e7db63458ce0f4d267f1a6c00e765501aca5bdf8049cde1745ef50b3"
+    },
+    {
+      "path": "governance/snapshots/2026-10-15-pre-ux-closure/product/PRODUCT_ARCHITECTURE.md",
+      "sha256": "85daeedaab12da02144c70855caf93b02c3c09505f1e34af1d4c300a393eaeba"
+    },
+    {
+      "path": "governance/snapshots/2026-10-15-pre-ux-closure/product/PRODUCT_DECISION_REGISTER.md",
+      "sha256": "824b85f3f3e9f97dbc8de81111a260a50d8751b03cc4c6ac514bed12e43b3189"
+    },
+    {
+      "path": "governance/snapshots/2026-10-15-pre-ux-closure/product/PRODUCT_DOMAIN_MODEL.md",
+      "sha256": "8719d9ff1cf6240c9ea33455b578bd6e0d4126b140c3cdb7aab6a2edb5c2b5b2"
+    },
+    {
+      "path": "governance/snapshots/2026-10-15-pre-ux-closure/product/PRODUCT_TRUTH_MAP.md",
+      "sha256": "1ac6d4ced8cb23482f6a369c8160da220867c7a3f9c66a4470c9c27077c0cb48"
+    },
+    {
+      "path": "governance/snapshots/2026-10-15-pre-ux-closure/product/V1_RELEASE_SCOPE.md",
+      "sha256": "9256c94c348712ce92a5d43af925622ceb9c0fbc6d4b44a68a8d7c95b7bcf7a5"
+    },
+    {
+      "path": "product/ADAPTIVE_ENGINE_CONTRACT.md",
+      "sha256": "3746823201b62144d6d4ac106647609a3509412627cb758b0a10e7a95f56ab37"
+    },
+    {
+      "path": "product/ADAPTIVE_ENGINE_OPERATIONAL_SPEC.md",
+      "sha256": "56534c1bbe80c9b805ef3d7f94c63d0dced293ae79ffd0220c5fb1315744a610"
+    },
+    {
+      "path": "product/ADAPTIVE_ENGINE_SCENARIO_LAB.md",
+      "sha256": "196309752ed75cc1d002595ad78dfb169bfaa94ffcd179f746dcca93356c25bf"
+    },
+    {
+      "path": "product/CORE_FLOWS.md",
+      "sha256": "9ffe2101ab53972253577f8e469063fe36aac262828c1feea6ac24a7685d0774"
+    },
+    {
+      "path": "product/EXPERIENCE_MODEL.md",
+      "sha256": "9467114509c4b284192855689e6761871ec97ab15708a0f751d542840a5fdeed"
+    },
+    {
+      "path": "product/PRODUCT_ARCHITECTURE.md",
+      "sha256": "7d26933fa6904aef9c93505f9cfe9d09051c1a888393e40eac2a70aa1d3dcd57"
+    },
+    {
+      "path": "product/PRODUCT_DECISION_REGISTER.md",
+      "sha256": "d1bf963747f06dc981478450a38fb4c29f45319024172d2c27ae42d1f3fae09a"
+    },
+    {
+      "path": "product/PRODUCT_DOMAIN_MODEL.md",
+      "sha256": "fc93eee97a749eb4acd95de033f2f782b18b0771be02772027a1fe739dd49e72"
+    },
+    {
+      "path": "product/PRODUCT_TRUTH_MAP.md",
+      "sha256": "8422581b58a95abce3a11276474443ab893b819a5c3e78761b823b2d112dccc2"
+    },
+    {
+      "path": "product/RUN_INTELLIGENCE_SPEC.md",
+      "sha256": "1a70c3b865f40105b1537c3674e8da1f2aaac27ede7878b38d85f8ac5e607880"
+    },
+    {
+      "path": "product/SPORT_INTELLIGENCE_SPEC.md",
+      "sha256": "1c7290f99063d1d1914fb563df029ee00724f96c54196721b71dfa0b5994a312"
+    },
+    {
+      "path": "product/STRENGTH_INTELLIGENCE_SPEC.md",
+      "sha256": "17b156b7ee26c2020b79c54ad627b2d87e95c3a9a0b77373c62652a055c95f40"
+    },
+    {
+      "path": "product/UX_SPECIFICATION.md",
+      "sha256": "9e27860883861e347d0294673c42b2017f3eb00116ffd8e3e49c31db0ab06a16"
+    },
+    {
+      "path": "product/V1_RELEASE_SCOPE.md",
+      "sha256": "f4b921ae58819bffe74695c4477ea91ed5eacf30ee4a786be5ef6201c44d89fe"
+    },
+    {
+      "path": "product/candidates/training-domain-foundation/0.2/README.md",
+      "sha256": "3e55fc60f439a7de27e4a207196c748c688b3b1732bab491e4a87cb15c82bb8e"
+    },
+    {
+      "path": "product/candidates/training-domain-foundation/0.2/foundation/CHANGELOG.md",
+      "sha256": "7bb11187f169c460f12cae78b5657dbe955f314d282513abf9b3ec1a0f0e3228"
+    },
+    {
+      "path": "product/candidates/training-domain-foundation/0.2/foundation/DATA_MODEL_CONTRACTS.md",
+      "sha256": "ad9008a8b35cefd748a148c6cc17dc5aa7551973e9d250e8c8bfd7e6ac8d6bec"
+    },
+    {
+      "path": "product/candidates/training-domain-foundation/0.2/foundation/DOMAIN_REVIEW_FIXTURES.json",
+      "sha256": "25afe0a483caacc2931bb09d5925ee319ab552302d79acf879318e5056153adb"
+    },
+    {
+      "path": "product/candidates/training-domain-foundation/0.2/foundation/EVIDENCE_AND_PROVENANCE.md",
+      "sha256": "735179775f6dc04b2ee31f342fc6aadc6c93de2f3b021eb690284c852dc3ca2d"
+    },
+    {
+      "path": "product/candidates/training-domain-foundation/0.2/foundation/EVIDENCE_LEDGER.json",
+      "sha256": "68cf32238a9d983d193ad8c8c571eeebef0ef3f1c51d355d4a78518418d02806"
+    },
+    {
+      "path": "product/candidates/training-domain-foundation/0.2/foundation/FOUNDATION_OVERVIEW.md",
+      "sha256": "f48b63b897a6ec36e2662719be96ac356452512312a54cd351abf604203d36df"
+    },
+    {
+      "path": "product/candidates/training-domain-foundation/0.2/foundation/G01_G04_REVIEW_PREP.md",
+      "sha256": "5d1b2a8ec49b86a90463c7b09eba6fab61d9b23f3f21cf572b4f775332c31bc4"
+    },
+    {
+      "path": "product/candidates/training-domain-foundation/0.2/foundation/README.md",
+      "sha256": "49b90fa970a6f6358f4070d2d261178f2397430f612c335c48311ca091fa58ee"
+    },
+    {
+      "path": "product/candidates/training-domain-foundation/0.2/foundation/RUN_SESSION_ONTOLOGY.md",
+      "sha256": "6d39a17723b11043ed0cf491a9e8c40676112deea495fd73eacef2c50ea13763"
+    },
+    {
+      "path": "product/candidates/training-domain-foundation/0.2/foundation/SCENARIO_DOMAIN_MAPPING.md",
+      "sha256": "3a29f4facf670676bbce83af735062eafad4ecb87eff9339307af2a4f0f13fdc"
+    },
+    {
+      "path": "product/candidates/training-domain-foundation/0.2/foundation/SEED_DATASET_RUN.json",
+      "sha256": "fcdd5b026f44772b993479e99af62bdfaaa2e50ecca51440771a4d6fc8fcabb8"
+    },
+    {
+      "path": "product/candidates/training-domain-foundation/0.2/foundation/SEED_DATASET_STRENGTH.json",
+      "sha256": "070d5d9bccafc3794c3280d413007af457f6f51f3cc9d776f9122764b5d6147a"
+    },
+    {
+      "path": "product/candidates/training-domain-foundation/0.2/foundation/SHARED_TRAINING_DEMAND_MODEL.md",
+      "sha256": "5ab091d10166055e2b84185bc48cb7e3f684954e095081a2d0113866a957f887"
+    },
+    {
+      "path": "product/candidates/training-domain-foundation/0.2/foundation/STRENGTH_EXERCISE_ONTOLOGY.md",
+      "sha256": "8d99537bf18b9310dc7b6043b97be453a701d192fd92b2834a876d03e9b4b641"
+    },
+    {
+      "path": "product/candidates/training-domain-foundation/0.2/foundation/VALIDATION_REPORT.md",
+      "sha256": "bde4854942a028dd651bee5031980ad3494b44844f23ea9eab5a4c92dd2afe0e"
+    },
+    {
+      "path": "reviews/human-domain-review/training-domain-foundation-0.2/00_REVIEW_BRIEF.md",
+      "sha256": "2428c954a06c983bb401b2c6da656b3008b7fa0af07d2f4686f062361c4c3725"
+    },
+    {
+      "path": "reviews/human-domain-review/training-domain-foundation-0.2/01_G01_SCOPE_REVIEW.md",
+      "sha256": "927457dd5ce0428b9801e6cf085574fbc5ec7ce5be8a8b383023dbc3c28c48c9"
+    },
+    {
+      "path": "reviews/human-domain-review/training-domain-foundation-0.2/02_G02_LOWER_THRESHOLD_RUN_FIRST.md",
+      "sha256": "08a04b22a46ca9f6dca14fccc3c23756eecc6aab7e9d275a946492351dc13746"
+    },
+    {
+      "path": "reviews/human-domain-review/training-domain-foundation-0.2/03_G02_LOWER_THRESHOLD_STRENGTH_FIRST.md",
+      "sha256": "fc0b7bb1780289178a1b382dc3e8f261dbac1e87e5f18b86216ab360bc376f0c"
+    },
+    {
+      "path": "reviews/human-domain-review/training-domain-foundation-0.2/04_POLICY_CANDIDATES.md",
+      "sha256": "d67b6d1c8247587b28d3b9355535e996ee7aaaf3b70e7b3d80409747e2ecc2f7"
+    },
+    {
+      "path": "reviews/human-domain-review/training-domain-foundation-0.2/05_REVIEW_FORM.md",
+      "sha256": "0e3a3d319e05555045507d6f5f18813e88eb89bfffef7e2401533a0192ddd15d"
+    },
+    {
+      "path": "reviews/human-domain-review/training-domain-foundation-0.2/06_EVIDENCE_SUMMARY.md",
+      "sha256": "d3741ec833207e8ee7815f347b72ac6dc5d095bf797c75db5a1898efac1d91b9"
+    },
+    {
+      "path": "reviews/human-domain-review/training-domain-foundation-0.2/07_TRACEABILITY.md",
+      "sha256": "e0744b4623e788e698f509fb88db5ada619cd0535dd6e5598488d228d14dce50"
+    },
+    {
+      "path": "reviews/human-domain-review/training-domain-foundation-0.2/CASE_INPUTS.json",
+      "sha256": "ca24085d708ee9cadb975030a60a72b685971ddc29c01224619d02831e6c58d7"
+    },
+    {
+      "path": "reviews/human-domain-review/training-domain-foundation-0.2/REVIEW_MANIFEST.json",
+      "sha256": "ba90f5b2491c7e36ee0430d6d06f01ca9068aa5f957ca20b63f4577d6d31e1d0"
+    }
+  ],
+  "permitted_mutations": [
+    "CURRENT_MISSION.md",
+    "MISSION_LEDGER.md",
+    "reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json"
+  ]
+}

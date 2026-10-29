@@ -1,0 +1,99 @@
+{
+ "revision": "R7ASE-READINESS-1",
+ "generatedAt": "2026-10-28T23:10:00.000Z",
+ "mission": "COACHING CORE — STATE EVIDENCE MODEL (value-scoped fact vs projection closure)",
+ "phase": "The architectural decision the R7-A Final Boundary Closure routed to (FOUNDER_ARCHITECTURAL_DECISION, QE-R7AB-01); not R7-B0 or R7-B",
+ "scope": "OFFLINE_SYNTHETIC_NODE24_REFERENCE",
+ "founderDecision": "STATE_EVIDENCE_AUTHORITY = VALUE_SCOPED (Founder request §0, applied as given)",
+ "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+ "freezeRevision": "STATE-EVIDENCE-FREEZE-1",
+ "sourceDigest": "692483ce5147d90797441baf2ac73c9d433197bd40047f147202ca4e4bff2cc1",
+ "freezeFileSha256": "a8683cbad60fd7f7b9da8b09e5c44bc74a55c6a2445e744606d37dbc6fde69f7",
+ "delivery": "CLOSED_WITH_EXPLICIT_BLOCKER",
+ "noForcedReady": true,
+ "noCorrectionCycle": "Founder §27: the freeze is not corrected after its reviews; no second freeze",
+ "notEmitted": [
+  "R7A_EXIT_READINESS = READY",
+  "AUTONOMOUS_COACH_READY",
+  "COACHING_DECISION_QUALITY = READY",
+  "KMP_READY",
+  "PRODUCTION_READY",
+  "HUMAN_VALIDATED",
+  "CLINICALLY_VALIDATED"
+ ],
+ "blockers": {
+  "QE-R7AB-01": "CLOSED on its recorded path (P40 at four time zones, P40b, P40c, P41, P44, P47b); the class stays open through QE-R7ASE-01, a material equivalent manifestation (Founder §29)",
+  "QE-R7ASE-01": "OPEN (MEDIUM, material, engineering review R7ASE-QE-r1): a lifted projected dose promotes the projection's load tick",
+  "QE-R7ASE-02": "OPEN (MEDIUM, material, engineering review R7ASE-QE-r1): the planner's D52 predicate reads a projected last-performed date as the last executed exposure",
+  "QE-R7ASE-03": "OPEN (LOW, not material): E2 keeps a reviewed run step ahead of its control through an unreviewed week",
+  "QE-R7ASE-04": "OPEN (LOW, not material): a fresh substitute exercise inherits the planning view's entry-week flag",
+  "QE-R7AF-01": "CLOSED",
+  "QE-R7AF-02": "CLOSED",
+  "QE-R7A-01": "CLOSED",
+  "QE-R7A1-09": "CLOSED",
+  "QE-R7A1-10": "CLOSED",
+  "QE-R7A2-01": "CLOSED",
+  "QE-R7A2-02": "CLOSED (engineering side)",
+  "QE-R7A2-03": "CLOSED",
+  "D53": "CLOSED (holds, SSCTR R7ASE-SSCTR-r1)",
+  "D56": "HOLDS",
+  "D57": "HOLDS",
+  "D58": "HOLDS",
+  "D59": "CLOSED (holds)"
+ },
+ "verdicts": {
+  "STATE_EVIDENCE_MODEL": "NOT_READY",
+  "VALUE_SCOPED_EVIDENCE_AUTHORITY": "NOT_READY",
+  "HISTORICAL_STATE_INTEGRITY": "NOT_READY",
+  "PLANNING_PROJECTION_INTEGRITY": "NOT_READY",
+  "STATE_PRESERVATION_INTEGRITY": "NOT_READY",
+  "WEEK_START_STATE_AUTHORITY": "NOT_READY",
+  "RETURN_RECOVERY_CEILING_INTEGRITY": "NOT_READY",
+  "STATE_EVIDENCE_ENGINEERING_REVIEW": "NOT_READY",
+  "STATE_EVIDENCE_SCIENTIFIC_REGRESSION": "READY",
+  "WEEK_COMPOSITION_INTEGRITY": "READY",
+  "EVENT_SUPERSESSION_INTEGRITY": "READY",
+  "EXERCISE_MERGE_INTEGRITY": "READY",
+  "R7A_EXIT_READINESS": "NOT_READY"
+ },
+ "reasons": {
+  "STATE_EVIDENCE_MODEL": {
+   "blockedBy": ["QE-R7ASE-01", "QE-R7ASE-02"],
+   "why": "The engineering judge answered Founder §28 yes: two normal V1 paths consume as historical fact a value only a projection made, without evidence pertinent to it (one in history, one in a planner predicate defined on history). A material blocker closes the mission NOT_READY (Founder §27, §32)"
+  },
+  "VALUE_SCOPED_EVIDENCE_AUTHORITY": {
+   "blockedBy": ["QE-R7ASE-01", "QE-R7ASE-02"],
+   "why": "QE-R7ASE-01: one load fact promotes the whole dose (load, repetitions, load tick) of the projection, a container-level promotion inside one value. QE-R7ASE-02: the planner evaluates a predicate defined on executed history against the planning view"
+  },
+  "HISTORICAL_STATE_INTEGRITY": {
+   "blockedBy": ["QE-R7ASE-01"],
+   "why": "Identical ledgers give load tick 1 against 0 on a value marked rebuilt (reviews/qe-r7ase-P51d-identical-ledgers.mjs); after a SHORT return the next load step comes one successful exposure early. The SSCTR does not approve that tick as history (NF-R7ASE-3, SE-D condition)"
+  },
+  "PLANNING_PROJECTION_INTEGRITY": {
+   "blockedBy": ["QE-R7ASE-02"],
+   "why": "The planner keeps projecting (P40: 22 kg prescribed while history is 20), as §15 allows, but a projection stands in for a fact inside a history-defined predicate: 35 days after the last real exposure the plan prescribes a known 22 kg never lifted where the same facts reviewed prescribe the D52 re-establishment (reviews/qe-r7ase-P50-reestablish-projected-date.mjs)"
+  },
+  "STATE_PRESERVATION_INTEGRITY": {"blockedBy": ["QE-R7ASE-01"], "why": "Identical facts give a different state at a return depending only on whether a week was reviewed (P51d)"},
+  "WEEK_START_STATE_AUTHORITY": {"blockedBy": ["QE-R7ASE-01"], "why": "A rebuilt WEEK_EVIDENCE value carries a projected tick"},
+  "RETURN_RECOVERY_CEILING_INTEGRITY": {
+   "blockedBy": ["QE-R7ASE-01"],
+   "why": "Engineering: a SHORT return resumes a projected tick (P51d); load ceilings hold (P40c: 20 kg). SSCTR: return entry, restoration, progression rules, ceilings and phase behaviour not unduly altered (ACCEPT)"
+  },
+  "STATE_EVIDENCE_ENGINEERING_REVIEW": {"basis": "R7ASE-QE-r1, fresh quality-reliability-engineer (claude-opus-5-5, effort max): NOT_READY; digest 692483ce… at start and end"},
+  "STATE_EVIDENCE_SCIENTIFIC_REGRESSION": {"basis": "R7ASE-SSCTR-r1, native SSCTR: ACCEPT; SE-A, SE-C, SE-E, SE-F, SE-G approved; SE-B and SE-D approved with conditions (NF-R7ASE-1 as R41; NF-R7ASE-3 as R42, the load tick not approved as history); SE-H approved as declared boundaries (NF-R7ASE-2); D53 and D56–D59 hold; digest 692483ce… at start and end"},
+  "WEEK_COMPOSITION_INTEGRITY": {"basis": "Engineering recommends READY: P01-P10, P15, P16, P09 (two seeds; O1-O4, O6, O7 empty) and the R7-A.1 grids byte-identical to R7A-BOUNDARY-FINAL-FREEZE; 555/555"},
+  "EVENT_SUPERSESSION_INTEGRITY": {"basis": "Engineering recommends READY: P31 at four time zones and P34 byte-identical"},
+  "EXERCISE_MERGE_INTEGRITY": {"basis": "Engineering recommends READY: P07 byte-identical"},
+  "R7A_EXIT_READINESS": {"blockedBy": ["QE-R7ASE-01", "QE-R7ASE-02"], "why": "Founder §29 requires QE-R7AB-01 closed with no material equivalent manifestation known; two are known"}
+ },
+ "evidence": {
+  "tests": "555/555 (node --test, Node v24.19.0): 540 earlier (three cases of test/r7ab-week-start-authority.test.mjs edited in place, marked State evidence) and 15 new; 10 of the 15 fail on the R7A-BOUNDARY-FINAL-FREEZE copy",
+  "mutation": "23/23 caught, all applied (author check; the judge notes no mutant promotes a projected tick at the new load)",
+  "selfChallenge": "12 classes: 0 violations on the freeze, 52 on the R7A-BOUNDARY-FINAL-FREEZE copy",
+  "regression": "R5 24/24, profiles 16/16, simulations 14/14 identical; R6 holdout 33/35 (R6-H17, R6-H26 named: return entries after unreported weeks)",
+  "evidenceRuns": "96 runs, 0 failed, each bound to 692483ce… before and after; 75 of 95 byte-identical to R7A-BOUNDARY-FINAL-FREEZE, 20 named",
+  "consumerAudit": "audits/domain-coaching-r7a-state-evidence-2026-10-28/dossier/CONSUMER_AUDIT_R7ASE.md (its E1 rationale is partly rejected by the judge: QE-R7ASE-02)"
+ },
+ "humanQueue": {"before": 187, "after": 199, "appended": 12, "record": "audits/domain-coaching-r7a-state-evidence-2026-10-28/QUEUE_INTEGRATION_R7ASE.json", "funding": "NOT_DECLARED"},
+ "next": {"STATE_EVIDENCE_MODEL": "NOT_READY", "NEXT_MISSION": "FOUNDER_ARCHITECTURAL_DECISION", "handoff": "none (NOT_READY); DOMAIN_COACHING_R7-B0 not started"}
+}

@@ -1,0 +1,249 @@
+{
+  "revision": "R6-QRE-1",
+  "reviewDate": "2026-10-26",
+  "evaluator": "quality-reliability-engineer 1.3.0 (independent judge instance, claude-opus-5-5); did not author the runtime, policy, tests or holdout",
+  "independent": true,
+  "freezeDigest": "507f35fc66f4d1e105e19ce513dc067f9fee5fdc35c039ad52a8c825e46bf857",
+  "freezeVerified": {
+    "atStart": true,
+    "atEnd": true,
+    "entries": 53,
+    "mismatches": 0,
+    "unlistedRuntimeFiles": 0,
+    "evidence": "reviews/quality-engineering/q1-freeze-integrity.out.json"
+  },
+  "policyHash": "af2779fe0fc0e0a52f4b6371d3b360996687e57931b9b3feb878e9652f464910",
+  "authorityUsed": "REAL r6Authority() (no override) for every check and reproduction. Fail-closed probes inject a copy of the real authority with one boundary removed via options.authority. The development authority (r6/fixtures/dev-authority.mjs) was not used.",
+  "scopeAndLimits": [
+    "Offline synthetic Node 24 reference only; no production effect evaluated.",
+    "Holdout corpus, independence manifest, holdout builder and FIRST_EVALUATION were not read.",
+    "No file under CoachingCore/, product/, canon/, CURRENT_MISSION.md or MISSION_LEDGER.md was modified; no verify-r* script and no npm run verify was run. Files in CoachingCore/r6 dated after the freeze (README.md, R5_HOLDOUT_REGRESSION_R6.md, *_R6.json results, scripts/document-r6.mjs) were written by other authors, not by this review.",
+    "The legacy R5-INPUT-1 path (r6-legacy.mjs) was exercised only through the existing regression tests, not fuzzed.",
+    "Scientific adequacy of policy values belongs to SSCTR; this review judges engineering conformance to the SSCTR conditions and the R6 interface."
+  ],
+  "checks": [
+    {
+      "id": "Q1-freeze-and-authority",
+      "pass": true,
+      "evidence": "All 53 frozen files match their SHA-256 at start and end; recomputed digest 507f35fc... equals the manifest; the freeze file-selection rule finds no unlisted runtime data file. Real authority: policy hash af2779fe... equals the SSCTR review; approved set equals the ten APPROVE_WITH_CONDITIONS records (independent, bound to the hash, sourced); conditions travel with each record. A one-value policy change disables all ten; a record bound to another hash, a non-independent record or a REJECT disposition disables only that boundary. Fail-closed with one boundary removed: COLD-START, PLANNED-PROGRESSION (generate and evaluate), LOAD-ESTABLISHMENT (unknown loads UNSUPPORTED; known-load program has 0 ESTABLISH rows), EVENT-TRANSITION (intake and GOAL_CHANGE), NONCLINICAL-RETURN (restart intake and RETURN_AFTER_PAUSE), SUBSTITUTION and policy-hash mismatch all UNSUPPORTED; RUN-QUALITY off gives 0 quality/strides over a 16-week HM simulation (control: 12 quality, 1 race touch, 12 strides); ROTATION off keeps accessory sets fixed; HYBRID-ARRANGEMENT off asks; PARTIAL-NOISY-LEARNING off leaves the model empty while the ledger is kept.",
+      "files": ["reviews/quality-engineering/q1-freeze-integrity.mjs", "reviews/quality-engineering/q1-freeze-integrity.out.json", "reviews/quality-engineering/q1-authority.mjs", "reviews/quality-engineering/q1-authority.out.json"]
+    },
+    {
+      "id": "Q2-determinism-no-clock-no-randomness",
+      "pass": true,
+      "evidence": "25 cases (all dev profiles, two generated intakes, an evaluation with tied observation times, six full trajectory simulations) hash identically in-process, in fresh processes and under TZ=UTC, America/Sao_Paulo, Pacific/Kiritimati and Pacific/Honolulu. Source scan of r6-*.mjs and value.mjs: no Date.now, argument-less new Date(), Math.random, crypto random, performance.now, hrtime or process.env. Caveat (finding QRE-R6-22, LOW): default-locale localeCompare makes ledger order and updatedModel.hash depend on the host ICU collation (et, sv differ); the decision and proposal were identical.",
+      "files": ["reviews/quality-engineering/q2-determinism.mjs", "reviews/quality-engineering/q2-determinism.out.json", "reviews/quality-engineering/q2b-collation-detail.mjs", "reviews/quality-engineering/q2b-collation-detail.out.json"]
+    },
+    {
+      "id": "Q3-contract-robustness",
+      "pass": false,
+      "evidence": "Fuzz of 3,466 cases (1,826 R6-INTAKE-1, 1,640 R6-REVIEW-1; 20 malformed values per field across 104 intake and 40 review paths plus kind-specific payloads for 10 event kinds, plus 26 contradictions): 132 cases throw (86 intake, 46 review) instead of returning INVALID_INPUT/ASK/HOLD/UNSUPPORTED. Many malformed or contradictory values yield a prescription: load unit LB accepted as KG; review eligibility.assessedAt that is not a date treated as current (gate bypass); interruption days contradicting its dates resolved to SHORT; non-boolean clinicalReason ignored; SCHEDULE_CHANGE days outside 0-6, duplicated or fractional and minutes of 1.5/true accepted; GOAL_CHANGE with event date 'abc' or goal 'FOO' accepted; intake pause.weeks 200/'abc' silently ignored; implausible known-run work moves the threshold ladder to its top step.",
+      "files": ["reviews/quality-engineering/q3-contract-robustness.mjs", "reviews/quality-engineering/q3-contract-robustness.out.json", "reviews/quality-engineering/q3b-targeted-contract.mjs", "reviews/quality-engineering/q3b-targeted-contract.out.json", "reviews/quality-engineering/q8a-pound-load.mjs", "reviews/quality-engineering/q8e-misc.mjs"]
+    },
+    {
+      "id": "Q4-provenance-and-time",
+      "pass": false,
+      "evidence": "21 of 24 checks pass: clock skew (120 s quarantined, 1 h future excluded), future reports excluded, local-day binding at UTC-3 (22:30 local = 01:30Z binds to the session date, dateShift 0), day-precision facts take the latest causal instant, review week resolved by local day, shuffled and split-across-ledger arrival give the same decision, manual+wearable duplicate merged once, exact replay merged, same id with different facts quarantined (session CONFLICTED, HOLD), corrections supersede and future/cross-identity corrections are rejected, a late correction changes no past week or past decision, stale facts leave learning but stay in the ledger, all-UNKNOWN responses advance running and hold strength without regression, reports across reviews counted once, foreign-athlete observations excluded. Failures: one wearable activity bound to two sessions counts as two completed sessions (QRE-R6-13); a later report reusing an accepted event id with different facts removes earlier completed work from the returned ledger (QRE-R6-14); a report timestamp earlier than the activity is accepted (QRE-R6-23).",
+      "files": ["reviews/quality-engineering/q4-provenance-time.mjs", "reviews/quality-engineering/q4-provenance-time.out.json"]
+    },
+    {
+      "id": "Q5-immutability",
+      "pass": false,
+      "evidence": "486 reviews (18 kinds x 3 programs x 3 weeks x 3 days) on unfrozen JSON copies: 0 throws, 206 proposals; inputs never mutated (program, review, and generateProgram input); officialPlanState/appliedState/completedWork carried unchanged, applied=false; no past prescription rewritten, removed or added; past decisions are a prefix; no duplicate ids or out-of-week sessions; every proposal hash valid. Not met in two cases: a contradictory MISSED_SESSION relabels an executed past session SKIPPED and repeats its content later that week (QRE-R6-15), and the completed-work ledger can lose an executed session (QRE-R6-14).",
+      "files": ["reviews/quality-engineering/q5-immutability.mjs", "reviews/quality-engineering/q5-immutability.out.json", "reviews/quality-engineering/q5b-missed-but-completed.mjs", "reviews/quality-engineering/q5b-missed-but-completed.out.json"]
+    },
+    {
+      "id": "Q6-envelope-adherence",
+      "pass": false,
+      "evidence": "Seeded generator over the interface vocabulary (2 seeds x 400 athletes; 798 PROPOSED, 2 ASK, 0 throws) with checks written from the SSCTR conditions; 336 adapted simulations (6 adherence scripts) checked on every adopted proposal against the completed-work ledger; 840 event programs over every race weekday; 279 structured clinical-routing cases; substitution persistence through later reviews and a schedule change. Held: quality/strides/race touch never in week 1 except a fitting familiar task; at most one quality per week and not beside the long run when another day exists; long-run share held, never grown; ESTABLISH rows <= 2 sets at RIR >= 3; known loads only from known doses; novice first strength is practice; strength never steps without a logged set meeting reserve (HARDER script); sex/height/weight and time goal never change dose; 279/279 structured clinical cases route correctly and free text or flags alone never confirm a break; post-race ASK with a valid pre-race date; substitutions persist. Violated: lower-body MODERATE/HEAVY strength 1-2 days and a 45-65 min long run the day before the race when the race falls on day 0-1 of the race week (QRE-R6-03); strides unlocked after the race for an athlete with zero executed runs (QRE-R6-04); week 1 above reported running, week-1 long run above the longest run, 5-minute easy runs and a +10 min easy step for EASY_LOW athletes with small reported running (QRE-R6-09, about 5% of generated athletes); 26 of 36 clinical free-text probes with a nonclinical category proceed to a return recipe (QRE-R6-07).",
+      "files": ["reviews/quality-engineering/q6-envelope.mjs", "reviews/quality-engineering/q6-envelope-gen.mjs", "reviews/quality-engineering/q6-envelope.seed20261026.out.json", "reviews/quality-engineering/q6-envelope.seed777.out.json", "reviews/quality-engineering/q6b-race-proximity.mjs", "reviews/quality-engineering/q6b-race-proximity.out.json", "reviews/quality-engineering/q6c-clinical-routing.mjs", "reviews/quality-engineering/q6c-clinical-routing.out.json", "reviews/quality-engineering/q6d-substitution-persistence.mjs", "reviews/quality-engineering/q6d-substitution-persistence.out.json", "reviews/quality-engineering/q8c-missing-gate-default.mjs", "reviews/quality-engineering/q8c-missing-gate-default-2026-12-07.out.json"]
+    },
+    {
+      "id": "Q7-simulator-invariants-and-test-suite",
+      "pass": true,
+      "evidence": "node --test in CoachingCore: 373 tests, 373 pass, 0 fail (R6 subset 93/93). All 14 development trajectories satisfy every simulator invariant under the REAL authority; 336 generated-athlete simulations (offsets <= +60 min) show no invariant failure. Simulator defects that limit this evidence: reviews are stamped 21:00Z, so every review HOLDs for timezoneOffsetMinutes >= +180 (QRE-R6-20), and summary.maxWeeklyRunIncrease is NaN in every run (QRE-R6-21). The invariants did not detect QRE-R6-03/-04/-09, so a passing invariant set is not evidence of envelope adherence.",
+      "files": ["reviews/quality-engineering/q7-node-test.out.txt", "reviews/quality-engineering/q7-simulator.mjs", "reviews/quality-engineering/q7-simulator.out.json"]
+    },
+    {
+      "id": "Q8-code-level-defects",
+      "pass": false,
+      "evidence": "Read r6-index, -intake, -program, -adaptation, -provenance, -clinical, -learning, -prescription, -balanced, -catalogue, -simulator and -authority; every defect below was reproduced by an executed probe (q8a-q8e and the probes above). Main code causes: unit dropped between intake/log and prescription; logged loads adopted unbounded; event rules keyed to calendar week instead of days to race; advanceRun gate default 'ADVANCE' for absent dimensions; NaN date comparisons pass eligibility gates; handler try/catch catches only TypeError while normalizeObservations/bindObservations/dayGap run outside it; provenance isoDay lacks a finiteness guard; review payloads (changes, interruption, goals) not validated like the intake; learned rearrangement ignores learning consent.",
+      "files": ["reviews/quality-engineering/q8a-pound-load.mjs", "reviews/quality-engineering/q8b-logged-load-bound.mjs", "reviews/quality-engineering/q8c-missing-gate-default.mjs", "reviews/quality-engineering/q8d-learning-consent.mjs", "reviews/quality-engineering/q8e-misc.mjs"]
+    }
+  ],
+  "findings": [
+    {
+      "id": "QRE-R6-01",
+      "severity": "CRITICAL",
+      "summary": "Load units are not honoured. The intake canonicalizer accepts a known load in LB as complete, and review logs accept any unit, but both values become KNOWN kilogram prescriptions with no conversion: 135 LB known back squat is prescribed as 135 KG (2.2x the athlete's load), and a logged 176 LB set (the prescribed 80 kg) becomes next week's 176 KG.",
+      "reproduction": "node reviews/quality-engineering/q8a-pound-load.mjs -> intake_LB.week0Squat load {mode:KNOWN,value:135,unit:KG}; reviewLogLB.proposedWeek1 load 176 KG (action INSTANTIATE_LOGGED_LOADS, status KEEP).",
+      "affected": ["CoachingCore/src/r6-intake.mjs knownExercise (loadComplete accepts 'LB', line 38)", "CoachingCore/src/r6-program.mjs initialStrengthState (unit dropped) and advanceStrength (log.load adopted, line 327)", "CoachingCore/src/r6-prescription.mjs exerciseRow (unit derived from convention)", "CoachingCore/src/r6-adaptation.mjs strengthLogs / loggedLoads (unit ignored)"]
+    },
+    {
+      "id": "QRE-R6-02",
+      "severity": "HIGH",
+      "summary": "Logged loads replace the plan without bound or step limit. A logged 800 kg (typo) for a squat prescribed at 80 kg becomes next week's KNOWN 800 kg and 802.5 kg the week after; 200 kg likewise. The result is reported as status KEEP with a proposal (instantiation only), so a consumer reading status alone sees no change.",
+      "reproduction": "node reviews/quality-engineering/q8b-logged-load-bound.mjs -> logged_800.next [{week:1,load:800},{week:2,load:802.5}], status KEEP, gate ADVANCE.",
+      "affected": ["CoachingCore/src/r6-program.mjs advanceStrength (log.load replaces ex.load)", "CoachingCore/src/r6-adaptation.mjs weeklyReview (INSTANTIATE_LOGGED_LOADS status KEEP)", "CoachingCore/src/r6-prescription.mjs validateR6Prescription (no upper bound for KNOWN load)"]
+    },
+    {
+      "id": "QRE-R6-03",
+      "severity": "HIGH",
+      "summary": "Event-proximity rules are applied per calendar week, not per days to the race. When the race falls on day 0-1 of the race week, the preceding TAPER or SPECIFIC week keeps a 45-65 min long run the day before the race and lower-body MODERATE/HEAVY strength (e.g. barbell RDL 2-3 sets at 90-92.5 kg) 1-2 days before it. Across 840 event programs there are 48 long-run-the-day-before and 36 lower-body-strength-within-3-days violations, all with raceDay 0-1; with raceDay 0 the race week has no pre-race session at all. Conflicts with the EVENT-TRANSITION condition (strength no later than raceWeekStrengthMinDaysBeforeRace days before the race) and the hybrid HIGH-cost rule.",
+      "reproduction": "node reviews/quality-engineering/q6b-race-proximity.mjs -> counts keyRunDayBeforeRace 48, lowerStrengthWithinMinDaysBeforeRace 36; example: HM on 2026-12-21 (Monday, raceDay 0): TAPER week has barbell-rdl x2 @92.5 on 12-18 and LONG 45 min on 12-20; with raceDay 1, barbell-rdl x2 @92.5 two days before the race.",
+      "affected": ["CoachingCore/src/r6-program.mjs buildWeek (race-week strength rule only when phase==='RACE_WEEK', line 419)", "CoachingCore/src/r6-program.mjs eventWeekSessions / distributeRun (no days-to-race guard outside RACE_WEEK)", "CoachingCore/src/r6-program.mjs planPhases (race week by calendar week)"]
+    },
+    {
+      "id": "QRE-R6-04",
+      "severity": "HIGH",
+      "summary": "A run dimension with no gated row in the week defaults to ADVANCE (g=k=>gate[k]??gate.ALL??'ADVANCE'), so race week (race on day 0), post-event and walk-only weeks count as executed established easy weeks. An EASY_CURRENT 10K athlete who misses every run of the program gets strides on every NEXT_BLOCK easy run with 0 executed runs in the ledger; walk-to-run conversions at block starts also fire without executed running. Violates 'quality/strides activation counts executed weeks, never calendar weeks'.",
+      "reproduction": "node reviews/quality-engineering/q8c-missing-gate-default.mjs 2026-12-07 -> executedRunsInLedger 0; easyWeeksDone 0->1 (RACE_WEEK, no run gates) ->2 (POST_EVENT); finalIntensity weeks 7-11 EASY+strides. Also q6 seed 20261026 athlete 316 (allRunsMissed).",
+      "affected": ["CoachingCore/src/r6-program.mjs advanceRun (line 176 gate default; easyWeeksDone/devCount/blockStart use g('EASY'))", "CoachingCore/src/r6-adaptation.mjs weeklyGates (no gate emitted for roles RACE, RECOVERY_EASY, SHAKEOUT, WALK)"]
+    },
+    {
+      "id": "QRE-R6-05",
+      "severity": "HIGH",
+      "summary": "A review eligibility.assessedAt that is not a date (e.g. 'not-a-date', 'xx') is treated as a current assessment because dayGap returns NaN and every NaN comparison is false. This bypasses the 'eligibility assessed on or after the interruption end' gate (REESTABLISH instead of ASK) and the post-race 'assessed on or after race day' gate (KEEP instead of ASK). A non-string assessedAt (number, boolean, object) throws a TypeError instead.",
+      "reproduction": "node reviews/quality-engineering/q3b-targeted-contract.mjs -> R4_eligibility_assessedAt_garbage MODIFY; R4_return_assessedAt_garbage_bypasses_onOrAfterEnd MODIFY/REESTABLISH (control with a date before the end: ASK); R5_postRace_garbage KEEP (control beforeRace: ASK). q3 fuzz: eligibility.assessedAt -1/true/{} -> TypeError start.slice.",
+      "affected": ["CoachingCore/src/r6-adaptation.mjs evaluateProgram eligibility check (line 215) and post-race guard (line 219)", "CoachingCore/src/r6-adaptation.mjs returnAfterPause (line 446)", "CoachingCore/src/r6-intake.mjs dayGap (no isoDay validation)"]
+    },
+    {
+      "id": "QRE-R6-06",
+      "severity": "HIGH",
+      "summary": "RETURN_AFTER_PAUSE resolves contradictory or out-of-range interruption facts to the least conservative path: days:2 with startDate..endDate spanning 40 days is classed SHORT (resume prior doses) while the same dates alone give LONG (restart); negative days or a start after the end give SHORT; a non-boolean clinical flag (clinicalReason 'true' or 1) is ignored and a nonclinical return is prescribed; days 1e9 throws RangeError.",
+      "reproduction": "node reviews/quality-engineering/q3b-targeted-contract.mjs -> R3_return_days2_dates40 REESTABLISH class SHORT; R3_return_dates40_only class LONG; R3_return_days_negative SHORT (-5 days); R3_return_startAfterEnd SHORT (-4 days); R3_return_clinicalReason_string_true / _1 MODIFY REESTABLISH; R3_return_days_1e9 threw RangeError.",
+      "affected": ["CoachingCore/src/r6-adaptation.mjs returnAfterPause (line 444 days precedence, no consistency/range check)", "CoachingCore/src/r6-clinical.mjs screenInterruptionReason (clinicalReason===true only, line 93)"]
+    },
+    {
+      "id": "QRE-R6-07",
+      "severity": "HIGH",
+      "summary": "Clinical free text is missed by the whole-word lexicon when a nonclinical category is given: 26 of 36 probes proceed to a nonclinical REESTABLISH, including 'heart attack', 'broke my leg', 'chemotherapy', 'cancer treatment', 'appendicitis', 'kidney stones', 'hernia', 'tendon rupture', 'quebrei a perna', 'fraturei o pulso', 'nausea'. All 279 structured routing cases pass and current eligibility flags were false in the probes, so this is a defense-in-depth gap, but a reported clinical event receives an automated return recipe.",
+      "reproduction": "node reviews/quality-engineering/q6c-clinical-routing.mjs -> lexiconMissesProceeding (26 entries, review status MODIFY).",
+      "affected": ["CoachingCore/src/r6-clinical.mjs CLINICAL lexicon / phrases (lines 27-45)"]
+    },
+    {
+      "id": "QRE-R6-08",
+      "severity": "HIGH",
+      "summary": "SCHEDULE_CHANGE (and DOUBLE_CONFLICT, which delegates to it) does not validate changes like the intake does. Duplicate days create duplicate session ids and two identical QUALITY runs on one date; days 7/8 put a 55-60 min LONG run on the next week's date that already holds a QUALITY run; days -1 or 1.5 are accepted; runMinutes 1.5/true produce 1-1.5 minute runs; strengthMinutes 'abc'/5 silently replaces all strength with rest. The runtime's own complete validation passes every one of these and the proposal hash is valid.",
+      "reproduction": "node reviews/quality-engineering/q8e-misc.mjs -> schedule_dupes duplicateIds [w2-run-d1,...], date 2026-11-24 two QUALITY 34 min; schedule_days7_8 2026-11-24 LONG 55 + QUALITY 34. node reviews/quality-engineering/q3b-targeted-contract.mjs -> R1_schedule_* cases.",
+      "affected": ["CoachingCore/src/r6-adaptation.mjs scheduleChange (line 358, no day/minute validation)", "CoachingCore/src/r6-program.mjs validateWeeks (checks membership in the new runDays only)"]
+    },
+    {
+      "id": "QRE-R6-09",
+      "severity": "MEDIUM",
+      "summary": "Week-1 caps lose to the 15-minute minimum session for EASY_LOW athletes with small reported running. The LONG run is floored at 15 min above both the week-1 ceiling and the reported longest run, while EASY runs honour the ceiling and become 5-minute runs that jump to 15 min the next week (+10, two steps). Week 1 exceeds reported weekly running (15 > 10) and the week-1 long run exceeds the longest run (15 > 5 or 10). Seen in about 5% of generated athletes (seed 20261026: 21 long, 12 weekly, 18 ceiling, 7 step; seed 777: 17, 8, 18, 2). Separately, after the first projected week the single-run ceiling is unbounded (runCeiling null) when no run is in the window, e.g. a 30-min post-event run after a walk-only preparation.",
+      "reproduction": "node reviews/quality-engineering/q3b-targeted-contract.mjs -> I4_lowWeekly_10 week0 [WALK 20, WALK 20, LONG 15], reported 10/longest 10. node reviews/quality-engineering/q6-envelope.mjs 400 40 20261026 -> week1LongAboveLongest, week1AboveReportedWeekly, singleRunCeiling, easyStepTooLarge examples (EASY 5 -> 15).",
+      "affected": ["CoachingCore/src/r6-program.mjs distributeRun long-run minimum (line 263)", "CoachingCore/src/r6-program.mjs firstWeekGuard (never shortens or converts LONG, line 442)", "CoachingCore/src/r6-program.mjs projectWeeks runCeiling null for w>fromWeek (line 472)"]
+    },
+    {
+      "id": "QRE-R6-10",
+      "severity": "MEDIUM",
+      "summary": "Uncaught exceptions on malformed input instead of INVALID_INPUT/ASK/HOLD (132 of 3,466 fuzz cases). Intake: missing or non-string asOf; athlete.event or goals.run.event given as a primitive; strengthPreferences.emphasis, movementPriorities or specialPopulation not an array. Review: observations not an array or with a null element; actual.exercises not iterable; an observation date such as '2026-13-45' (RangeError: provenance isoDay lacks a finiteness guard); athleteModel '', 0 or false; SCHEDULE_CHANGE day 'x' and interruption days 1e9 (RangeError escapes because the handler catch only accepts TypeError; normalizeObservations and bindObservations run outside the try). Non-JSON values (BigInt, functions, cycles) also throw; those are outside the JSON contract.",
+      "reproduction": "node reviews/quality-engineering/q3-contract-robustness.mjs -> crashes[] (86 intake, 46 review) with path, value and error.",
+      "affected": ["CoachingCore/src/r6-intake.mjs canonicalizeIntake (lines 63, 77, 135; asOf null reaches dayGap via currentFamiliar, line 33)", "CoachingCore/src/r6-provenance.mjs isoDay (line 8), normalizeObservations sort/availability", "CoachingCore/src/r6-adaptation.mjs evaluateProgram (lines 224-235)"]
+    },
+    {
+      "id": "QRE-R6-11",
+      "severity": "MEDIUM",
+      "summary": "GOAL_CHANGE and EVENT_DATE_CHANGE accept an invalid event date ('abc', '', '2026-13-45') and unknown goal values ('FOO', 'XYZ'). The result is a MODIFY proposal with a RACE goal and no race week (every future phase NEXT_BLOCK/CONSOLIDATION) or a goal kind outside the vocabulary; validateWeeks does not notice because raceWeek is null, and the post-race eligibility guard is disabled for that program.",
+      "reproduction": "node reviews/quality-engineering/q3b-targeted-contract.mjs -> R2_eventDate_abc, R2_eventDate_month13, R2_eventDateChange_abc (raceWeek null, hasRaceSession false), R2_goalRun_FOO, R2_goalStrength_XYZ (MODIFY).",
+      "affected": ["CoachingCore/src/r6-adaptation.mjs goalChange (line 420, no isoDay/vocabulary check)", "CoachingCore/src/r6-program.mjs planPhases (NaN offsets)"]
+    },
+    {
+      "id": "QRE-R6-12",
+      "severity": "MEDIUM",
+      "summary": "Out-of-range or unknown intake values silently degrade to defaults instead of ASK/INVALID_INPUT: pause.weeks 200, 'abc' or missing drops the restart class and programs from the reported recent exposure (120 min/week week 1 instead of a restart); a familiar quality task whose work is implausible or inconsistent with its duration (1e9 repetitions, 600-min repetitions) starts the threshold ladder at its top step (3 x 10 min) in week 2; goals.run given as a number, object or array silently disables running although run days were chosen; known dose with 7-10 sets (accepted) fails the 6-set validator and makes the whole program UNSUPPORTED.",
+      "reproduction": "node reviews/quality-engineering/q3b-targeted-contract.mjs -> I3_pauseWeeks_200/abc/undefined (EASY_CURRENT, restart false), I1_knownRunWork_implausible_* (THRESHOLD_STEP 5 in week 1), I5_goalRun_* (runProgrammed false), I2_knownSets8 (UNSUPPORTED).",
+      "affected": ["CoachingCore/src/r6-intake.mjs pause (line 128), goals parsing, knownRuns (no work validation), knownExercise sets range", "CoachingCore/src/r6-program.mjs initialRunState familiarStep (line 151)"]
+    },
+    {
+      "id": "QRE-R6-13",
+      "severity": "MEDIUM",
+      "summary": "The same wearable activity (same source activityId) attached to two different sessions counts as two completed sessions; identity is session-first and activityId is not de-duplicated across sessions, so both sessions gate ADVANCE.",
+      "reproduction": "node reviews/quality-engineering/q4-provenance-time.mjs -> dup.sameActivityTwoSessionsNotDoubleCounted: boundCount 2, both COMPLETED.",
+      "affected": ["CoachingCore/src/r6-provenance.mjs normalizeObservations identity (line 56)"]
+    },
+    {
+      "id": "QRE-R6-14",
+      "severity": "MEDIUM",
+      "summary": "The completed-work ledger is not append-only: a later report that reuses an accepted event id with different facts quarantines the identity and removes the earlier accepted completed session from the returned actualLedger (5 -> 4 rows) and therefore from completedRuns. Past decisions do not change, but executed work disappears from the record.",
+      "reproduction": "node reviews/quality-engineering/q4-provenance-time.mjs -> conflict.laterConflictDoesNotEraseCompletedLedger: priorHad true, afterHas false, ledger 5 -> 4.",
+      "affected": ["CoachingCore/src/r6-provenance.mjs normalizeObservations same-event branch (line 67)"]
+    },
+    {
+      "id": "QRE-R6-15",
+      "severity": "MEDIUM",
+      "summary": "A MISSED_SESSION event naming a session that the ledger shows COMPLETED is not reconciled: the runtime MOVEs the key strength session to a later chosen day (FULL_A twice that week, FULL_B dropped) and relabels the executed past session SKIPPED. The past prescription is unchanged, but the plan record contradicts executed work and repeats its content.",
+      "reproduction": "node reviews/quality-engineering/q5b-missed-but-completed.mjs -> week 3: ledgerStatus COMPLETED, action MOVE, w3-str-d0 SKIPPED + moved copy on w3-str-d4.",
+      "affected": ["CoachingCore/src/r6-adaptation.mjs moveCandidates and missedSession (lines 277-305)"]
+    },
+    {
+      "id": "QRE-R6-16",
+      "severity": "MEDIUM",
+      "summary": "The athlete-specific learned rearrangement (learnedInterference over the completed-work ledger) runs when learningConsent is false. The athlete model is correctly empty without consent, but the learned pattern still changes the arrangement. Consent scope for this path is a Product/Data/privacy decision; the engineering behaviour should match whatever is decided.",
+      "reproduction": "node reviews/quality-engineering/q8d-learning-consent.mjs -> consent_false: LEARNED_REARRANGEMENT at week 4, modelObservations 0, purposeAllowed false.",
+      "affected": ["CoachingCore/src/r6-adaptation.mjs weeklyReview learned-pattern branch (line 251)"]
+    },
+    {
+      "id": "QRE-R6-17",
+      "severity": "LOW",
+      "summary": "After an exercise is re-established by effort (rotation back after more than moderateMaxDays), the next week restores the old known set count in one step (db-calf-raise 2 -> 5 sets).",
+      "reproduction": "node reviews/quality-engineering/q6-envelope.mjs 400 16 777 -> setStepTooLarge athlete 277 week 13 db-calf-raise 2 -> 5 (q6-envelope.seed777.out.json).",
+      "affected": ["CoachingCore/src/r6-program.mjs strengthDose (sets from ex.sets after re-establishment)"]
+    },
+    {
+      "id": "QRE-R6-18",
+      "severity": "LOW",
+      "summary": "EVENT_WEEK_CONFLICT that names the race date as unavailable silently keeps the race (KEEP, no ASK about the event date).",
+      "reproduction": "node reviews/quality-engineering/q8e-misc.mjs -> raceDateUnavailable status KEEP.",
+      "affected": ["CoachingCore/src/r6-adaptation.mjs eventWeekConflict (line 482)"]
+    },
+    {
+      "id": "QRE-R6-19",
+      "severity": "LOW",
+      "summary": "An EASY_LOW athlete with one run day and an event can be planned with walks only before the race (no preparatory running), flagged only as TOO_FEW_RUN_DAYS_FOR_EVENT. Coaching adequacy belongs to SSCTR; recorded for routing.",
+      "reproduction": "node reviews/quality-engineering/q6-debug2.mjs 777 98 -> weeks 0-2 WALK only, week 3 RACE 10K.",
+      "affected": ["CoachingCore/src/r6-program.mjs initialRunState walks / negotiation for events"]
+    },
+    {
+      "id": "QRE-R6-20",
+      "severity": "LOW",
+      "summary": "The runtime simulator stamps every review at 21:00Z, which is the next local day for timezoneOffsetMinutes >= +180, so every review HOLDs on chronology and the simulator reports deadlock for athletes east of UTC+3. Development trajectories use offset 0 and are unaffected; simulator evidence does not cover those time zones.",
+      "reproduction": "node reviews/quality-engineering/q7-simulator.mjs -> timezone {180,240,330,540}: decisions HOLD 16, noDeadlock false; {0,-300}: KEEP 16.",
+      "affected": ["CoachingCore/src/r6-simulator.mjs review() (line 35)"]
+    },
+    {
+      "id": "QRE-R6-21",
+      "severity": "LOW",
+      "summary": "simulateProgram summary.maxWeeklyRunIncrease is always NaN (Math.max over {ratio, base} objects).",
+      "reproduction": "node reviews/quality-engineering/q7-simulator.mjs -> every trajectory maxWeeklyRunIncrease NaN.",
+      "affected": ["CoachingCore/src/r6-simulator.mjs summary (line 84)"]
+    },
+    {
+      "id": "QRE-R6-22",
+      "severity": "LOW",
+      "summary": "Default-locale localeCompare in provenance, balanced and catalogue sorting makes the returned ledger order and updatedModel.hash depend on the host ICU collation locale (et and sv differ from the default); decisions and proposals were identical in the probe.",
+      "reproduction": "node reviews/quality-engineering/q2b-collation-detail.mjs -> sameDecision true, ledgerOrderDiffers true, modelHashDiffers true.",
+      "affected": ["CoachingCore/src/r6-provenance.mjs (lines 38, 86)", "CoachingCore/src/r6-balanced.mjs (lines 108-110)", "CoachingCore/src/r6-catalogue.mjs (line 58)"]
+    },
+    {
+      "id": "QRE-R6-23",
+      "severity": "LOW",
+      "summary": "An observation whose reportedAt is earlier than the activity itself is accepted (impossible provenance is not rejected).",
+      "reproduction": "node reviews/quality-engineering/q4-provenance-time.mjs -> time.reportBeforeObservationRejected: accepted true.",
+      "affected": ["CoachingCore/src/r6-provenance.mjs normalizeObservations (reportedAt checks)"]
+    }
+  ],
+  "verdict": {
+    "engineeringStatus": "FAIL",
+    "qualityState": "QUALITY_BLOCKED",
+    "rationale": "Freeze integrity, authority binding and fail-closed behaviour, determinism, input immutability, the full test suite and the simulator invariants hold on digest 507f35fc.... The frozen runtime nevertheless lets unsafe prescriptions through on inputs it accepts as valid: pound loads become kilograms (CRITICAL QRE-R6-01), implausible logged loads are adopted without bound (QRE-R6-02), heavy lower-body strength and a long run land 1-2 days before races that fall early in the race week (QRE-R6-03), strides unlock without any executed run (QRE-R6-04), malformed eligibility dates bypass the return and post-race gates (QRE-R6-05), contradictory interruption facts take the least conservative return class (QRE-R6-06), clinical free text outside the lexicon proceeds to a return recipe (QRE-R6-07), and unvalidated schedule changes stack two key runs on one date (QRE-R6-08). These are engineering defects inside the frozen runtime; fixing them is a runtime change, which invalidates this freeze and any evidence generated on it (including a first holdout evaluation) for the affected behaviours.",
+    "readinessUnsafeIf": [
+      "Any readiness or 'envelope adherence' claim is made on digest 507f35fc... without carrying QRE-R6-01 to -08 as open blockers.",
+      "Holdout or simulation results on this digest are read as evidence for load prescription, event-week structure, intensity activation, return-after-pause or schedule-change behaviour.",
+      "Simulator invariants (all passing) are cited as proof of envelope adherence; they did not detect QRE-R6-03, -04 or -09.",
+      "The runtime is fed real (non-synthetic) logs or onboarding answers, where unit mix-ups, typos and malformed dates occur."
+    ],
+    "returnTo": "Runtime author (CoachingCore R6 worker) for QRE-R6-01..15, -17, -18, -20..23 with a new freeze; SSCTR for QRE-R6-03 event-week semantics, -07 lexicon coverage and -19 coaching adequacy; Product/Data (privacy) for QRE-R6-16 consent scope. Re-evaluation by an independent judge on the new digest."
+  }
+}

@@ -796,9 +796,237 @@ The Founder opened the hardening phase. VISUAL DIRECTION IS LOCKED. Only polish,
 - Motion and haptics are specified, not animated.
 - Legal text and trial length are still slots; the price is provisional.
 
+## 2026-10-22 — Experience authority decontamination / MISSION-EXPERIENCE-1.0
+
+**Decision provenance:** current direct Founder request, preserved in `audits/experience-decontamination-2026-10-22/FOUNDER_REQUEST.md`; imported ChatGPT preview is context only. Contract `EXP-20261022-r1`; artifact `EXP-AUTH-r1`; inputs = pre-mission bodies/snapshot + current request. PCG is the documentation worker; Chief coordinates independent Research fidelity and Product/UX interpretability review. T3/R1/L2, A4 authorized; evidence_policy=doctrine_audit. No validation of physiology, market or implemented capability is claimed.
+
+**Current → target:** MISSION-VISUAL-1.0 plus 1.1/1.2 and old final-source/locked-design instructions are superseded as active experience authority. Product identity, all invariants, domain intelligence, valid behavioral principles, evidence, privacy/security and business constraints remain. Old mission exact bytes—including uncommitted addenda—are in `governance/snapshots/2026-10-22-pre-experience-decontamination/CURRENT_MISSION.md`, SHA-256 `341da57ad9aa06c8c469177d1ff837bbe381c0c51192035ab1aa35af1fdc84a9`. All preexisting product/canon text is retained in place with scoped overlays; this ledger is append-only. The freeze integration at `32b7fb6` is acknowledged without transferring historical gates.
+
+**Delta:** entry files select a clean rehydration route; CI-3.3.0 applies A product/domain / B independent behavioral principles / C legacy experience at responsibility level; PDR-1.4 DR-93–97 and PTM-1.3 S10 record authority, supersession and impacts. Each mixed/standalone canonical consumer has an EXP-AUTH-r1 filter so old placement text cannot revive IA/style through file rank. The single derived `product/DESIGNER_PRODUCT_CONTEXT.md` explains actual specified product depth, data/states and claim limits, subordinate to existing authorities; it is not a parallel contract.
+
+**Design status:** old file `NeaZKGCzHMy6IHc47cVEHs` = LEGACY / SUPERSEDED AS ACTIVE UX AUTHORITY. Independent new Figma = NEW EXPERIENCE CANDIDATE / ACTIVE DESIGN EXPLORATION; identity/link not supplied. No final Experience/Design Source of Truth designated before intellectual reconciliation, claims audit and explicit promotion. No Figma file has been read, compared or edited in this mission; no visual/structural solution is imposed.
+
+**Preserved semantics:** Inspect≠Execute; progressive disclosure; agency and current version before material mutation; model learning≠plan mutation; no false insight/evidence-aware copy; historical continuity and planned/chosen/executing/observed distinctions; external own share V1; current route/photo explicit-choice privacy limits (DR-91); DR-92 history/session/rescheduling/block continuity without inherited placement; primary mobile/iPhone/iOS; provisional prices and still-open trial/legal text. G01–G11 remain unchanged as the single approval-gap inventory. Claims review covers readiness/regional scores/interference/e1RM/volume/progress/recovery/learning without inventing instruments or proving implementation.
+
+**PCG self-check (author, not approval):** current human authority and recoverable history identified; no invariant/domain body removed; two epistemic/normative axes explicit in PDR; A/B/C split and design space distinguishable; material overrides scoped with IDs/sources/dependents; no layout requirement added; snapshot and append-only history retained; open candidate identity and existing G01–G11 assigned to their owners/triggers. Deterministic proof and independent reviews/consolidation are recorded by Chief in the mission audit at the evaluated revisions.
+
+**Author handoff:** GOVERNANCE_READY_FOR_REVIEW. Consumers: Chief → fresh independent fidelity/interpretability reviewers → Chief consolidation; after accepted documentary handoff, future designer reads entry → index current filter → derived context → optional narrow domain sections. Prior visual/UX gate coverage no longer grants active experience authority; prior domain reviews remain historical evidence only for their hashes. No PRODUCT_CONSTITUTION_READY, final design promotion, consumer acceptance, implementation or release approval is self-declared here. Stop after the current documentary gates/disposition; no design continuation is authorized by this entry.
+
+<!-- EXP_CLOSURE_METADATA_START: EXP-CLOSE-r1 -->
+## 2026-10-22 — Chief consolidation and documentary closure / EXP-CLOSE-r1
+
+**COMPLETE_DOCUMENTARY_DECONTAMINATION.** Chief /root consolidated PRODUCT_CONSTITUTION_READY for EXP-AUTH-r1 documentary authority formalization only. Fresh fidelity and interpretability reviewers both returned PASS with zero findings; 118 objective checks passed. Publication EXP-PUBLISH-20261022-001 applies the authorized documentary classification in the live index and consumers. [Final disposition](audits/experience-decontamination-2026-10-22/FINAL_DISPOSITION.md) retains the frozen package/review hashes, final closure-only proof, remaining inventory gaps and future approval triggers. This appendix records completion and handoff emitted through the live entry path; it changes no domain/experience scope and does not claim future designer acceptance or final design promotion. No Figma edits, new visual solution, product implementation, commit or branch change. STOP.
+<!-- EXP_CLOSURE_METADATA_END: EXP-CLOSE-r1 -->
+
 
 ## 2026-10-22 — Training Domain Foundation 0.2 candidate + bounded human G01/G02 review / TDF-HR-0.2-r1
 
 Direct Founder request: preserve supplied 0.2 and audit, integrate candidate and prepare scope/population plus lower × threshold for a real qualified professional. [Candidate](product/candidates/training-domain-foundation/0.2/README.md) = CANDIDATE / NON-AUTHORITATIVE; READY WITH FIXES FOR DELIMITED HUMAN REVIEW; NOT PRODUCT/DOMAIN TRUTH. [Review brief](reviews/human-domain-review/training-domain-foundation-0.2/00_REVIEW_BRIEF.md) leads to G01, two controlled priority cases, policy candidates, blank decision form, bounded evidence and traceability. [Audit/provenance](audits/training-domain-foundation-0.2/README.md) preserves both input ZIPs and closure r4 separately, SHA-256 and preexisting repository state.
 
 Routing T2/R1/L2; current instance authors, one fresh Research/Evidence judge checks documentary fidelity after deterministic checks; no physiological approval. The original 15 foundation files stay byte-identical. CURRENT_MISSION receives an additive locator; active canon and Product Truth, PDR, AE/Run/Strength, runtime and Figma are untouched. Preexisting changes are preserved and excluded from this mission's commit. Next gate: human G01 scope and G02 rule/case decisions by artifact/version with credentials, rationale and conditions. G01–G04 = HUMAN_REVIEW_REQUIRED; eight QUESTIONABLE (S01/S02/S05/S12/S13/S14/S28/S29) unchanged; C1–C6 sporting-open. No new r5, catalog expansion, runtime or automatic promotion. Completion proof and documentary review are recorded in the audit; preparing review is not approval.
+
+
+## 2026-10-23 — Provisional scientific domain reviewer / SSCTR-AUTH-r1
+
+Direct [Founder authorization](audits/sports-science-agent-2026-10-23/FOUNDER_REQUEST.md), not imported conversation authority. Current→target: the existing blank human packet/Foundation candidate stay intact; human-only administrative review eligibility is superseded for bounded evidence-supported nonclinical internal sporting items by a permanent project **PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY**. No human credentials, clinical/legal equivalence, empirical validation or runtime sovereignty. Clinical dependencies remain human-only. PDR DR-98–102 records the authority delta; current mission and canonical index hold narrow pointers, not policy promotion.
+
+PCG created [constitution/role registry](governance/agents/sports-science-reviewer/CONSTITUTION.md), versioned scientific protocol, project skill/native thin adapters, template/decision schema, escalation and future human revalidation rules. Routing T3/R2/L3/A4; [Task Contract](audits/sports-science-agent-2026-10-23/TASK_CONTRACT.md). Six edited entry/PDR/ledger files retain exact preexisting dirty bytes in [before snapshot](audits/sports-science-agent-2026-10-23/before/MANIFEST.json); original human/Foundation and Product Truth/AE/Run/Strength bodies remain protected. No Figma/runtime/global-state work.
+
+Author handoff **GOVERNANCE_READY_FOR_REVIEW**, not self-approved. Chief owns deterministic and behavioral validation, distinct scientific pilot, fresh Research fidelity/ProductUX interpretability review and final consolidation/publication evidence for current revisions. Scientific pilot evidence sufficiency is separate from doctrine_audit; cases/claims may remain open. Every approved prescriptive decision must link a future funded-human queue item; no AI veto over later qualified human review. Completion and actual pilot dispositions are recorded separately by Chief, never inferred from this author log.
+
+
+<!-- SDC_LEDGER: SDC-20261023-r1 -->
+## 2026-10-23 — Sports Domain Closure Round
+
+Direct Founder authorization executed as offline provisional internal review, with separate authors, SSCTR source/policy judge and governance consistency judge. Mission completed with explicit retained gaps; SPORTS_DOMAIN_READINESS=NOT_READY and AE_RUNTIME_IMPLEMENTATION_READINESS=NO_GO. 48 independent scientific dispositions (31 conditional approvals); 13 prior queue entries preserved, 33 new entries, 46 total; funding not declared. Strict 89/890 audit remains62PASS/19ACCEPTABLE/8QUESTIONABLE; 43 new sporting variants and29 semantic witnesses have distinct denominators. No runtime/Figma/Truth/clinical/human validation. Report and current proofs: [SDC](reviews/sports-domain-closure/2026-10-23/SPORTS_DOMAIN_CLOSURE_REPORT.md), [audit](audits/sports-domain-closure-2026-10-23/TASK_CONTRACT.md). Earlier mission states and working-tree changes are preserved.
+
+
+## 2026-10-23 — ACF-1.0.0-r1 — candidate foundation delivered with retained blockers
+
+Direct Founder mission produced7pillars,16Run/8Strength recipes,20consumed policies,9synthetic athletes/weeks,4week block and24documentary E2E scenarios. Separate authors/synthesis/SSCTR adversarial/governance;57scientific records(42conditional approvals/15limited); queue46+42=88 with funding NOT_DECLARED. Candidate/non-authoritative only. Four full-target verdicts NOT_READY/NOT_READY/NO_GO/NO_GO; bounded-contract supplemental readiness separate. Full autonomous-coaching definition of done not met while essential positive gaps remain. See product/candidates/autonomous-coaching-foundation/1.0.0/FINAL_REPORT.md and GATE_DISPOSITION.json; provenance/baseline in audits/autonomous-coaching-foundation-2026-10-23. No runtime/UI/Figma/Truth promotion;0.2and historical89/890/eightQUESTIONABLE unchanged. Current mission entry links the authorized next owners; no automatic implementation authorization.
+
+
+<!-- NFV1_LEDGER: NFV1-20261023-r1 -->
+## 2026-10-24 — New Figma V1 completion / NFV1-20261023-r1
+
+Direct [Founder request](audits/new-figma-v1-completion-2026-10-23/FOUNDER_REQUEST.md): complete the independent new Figma `TYR10AIrquCpKvKL3eyXyO` as the sole experience authority. Delivered pages 1–9 (all V1 flows, adaptations, recovery, sharing, settings, race, states, languages, stress, navigation map and adversarial audit) with truth corrections to pre-existing screens. Figma-only; no runtime, legacy Figma untouched, no Product Truth promotion. Open items (ES scope delta, G10/G07 subscription, ACF-G04 taper, RRM-03 personal ranges, G06 integrations, deletion timelines, "Rotas no app" default) are recorded in the [delivery report](audits/new-figma-v1-completion-2026-10-23/DELIVERY_REPORT.md).
+
+
+## 2026-10-24 — BSR-0.1.0 first executable bounded shadow core
+
+Direct Founder implementation mission authorizes a pure offline synthetic core and current conformance/simulation/review only. New module lives in CoachingCore; existing dirty documentary sources and88-item human queue remain protected. T3/R2/L2: root authors/integrates, a disjoint semantics worker implements G03/G04, fresh independent SSCTR fallback and Quality judges review current hashes. No UI/Figma/release/real-user/official-plan effect or Product Truth promotion. Exact supported future proposals, KEEP/control branches and failure-closed gaps are measured separately. See CoachingCore/artifacts/FINAL_REPORT.md, VERIFICATION.json and audits/bounded-shadow-runtime-2026-10-24 for final current evidence and retained blockers; this entry is a mission locator, not self-approval.
+
+
+<!-- NFV1_LEDGER: NFV1-GATES-r1 -->
+## 2026-10-24 — New Figma V1 gate decisions / NFV1-GATES-r1
+
+Direct [Founder decisions](audits/new-figma-v1-completion-2026-10-23/FOUNDER_DECISIONS_2026-10-24.md) closed the seven NFV1 open items: ES joins the V1 languages; displayed prices are provisional and post-expiry access stays open (G10); taper and race week only under approved policy (ACF-G04); no sleep/HRV personal-range claims without an approved rule (RRM-03); integrations follow product authority (Garmin, COROS and Polar as candidate routes under G06); deletion legal parts stay G07; route display and sharing off by default, separate from GPS permission. Formalized as PDR DR-103–109 with scope, index, designer-context and language-list sync. Minimal edits applied in the new Figma TYR10AIrquCpKvKL3eyXyO (no visual redesign, legacy Figma untouched, no runtime); see the [gate closure](audits/new-figma-v1-completion-2026-10-23/GATE_CLOSURE_2026-10-24.md). Promotion to final Experience/Design Source of Truth and UI implementation remain Founder acts.
+
+
+<!-- DOMAIN_CLOSURE_R2_LEDGER: DCR2-20261024-r1 -->
+## 2026-10-24 — DOMAIN CLOSURE R2 positive prescription expansion
+
+Direct Founder request authorizes bounded offline Node reference expansion of ACF-G01–G05, without UI/Figma/KMP/production/real-athlete effects or Truth promotion. Root authors/integrates; separate scientific synthesis, representative corpus, adversarial SSCTR, runtime Quality and governance instances provide independent evidence. Fifteen policy requests yield12 exact conditional approvals and3 taper abstentions; all approved prescriptions have runtime bindings, development fixtures/tests/traces and new entries in the single future-human queue (88preserved+12=100). Independent corpus42 remains separate from development:1 positive,6 substantiveASK,33 unsupported,2 clinical; transport failures do not become usefulASK. Full V1readiness remains NOT_READY; next engineering step DOMAIN_CLOSURE_R3. See [current report](CoachingCore/r2/FINAL_REPORT.md) and [verification](CoachingCore/r2/VERIFICATION.json). This locator records the bounded mission, not real-person efficacy or runtime activation.
+
+
+<!-- NFV1_LEDGER: IDV-1 -->
+## 2026-10-24 — New Figma identity refinement pass / IDV-1
+
+Direct [Founder request](audits/new-figma-identity-pass-2026-10-24/FOUNDER_REQUEST.md): raise identity, life and personality with maturity, preserving the experience. The critical reading and three real variants (A Instrumento, B Editorial, C Assinatura) were built on the same surfaces; the Founder rejected serif and chose C. Applied across the new Figma TYR10AIrquCpKvKL3eyXyO: Sofia Sans Semi Condensed brand voice for titles, numbers and eyebrows; Inter for reading; sport light only in sport-scoped contexts; a day marker. These are systemized as text styles, paint styles, tokens and the components Marcador do dia and Luz de esporte. Visual only (T2/R1/L2); no structure, content, state, runtime or legacy-Figma change. An independent UI judge (Opus 5.5 max, read-only) gave PASS WITH CONDITIONS (contrast MUST on lit labels plus four SHOULDs), then PASS / UI_READY after fixes; its six COULD polish items were applied. See the [identity pass record](audits/new-figma-identity-pass-2026-10-24/IDENTITY_PASS.md).
+
+
+<!-- NFV1_LEDGER: NFV1-ACCESS-r2 -->
+## 2026-10-25 — New Figma account access completed for Founder review / NFV1-ACCESS-r2
+
+Direct [Founder request](audits/new-figma-account-access-2026-10-24/FOUNDER_REQUEST.md): V1 account access offers Apple, Google and e-mail + password. The work resumed from the persisted [checkpoint](audits/new-figma-account-access-2026-10-24/CHECKPOINT.md) after a Founder pause, and no decision was reopened.
+
+Scope: Figma `TYR10AIrquCpKvKL3eyXyO` only. The legacy Figma is untouched. No runtime, no Product Truth promotion.
+
+The current instance owned the design as UI & Experience Designer on Opus 5.5 at max effort. Fresh read-only instances judged it:
+- **Security**, until PASS for the design;
+- **UI**, until UI_READY in round 4.
+
+A **Product/UX Architect** instance (ARCH-ACX-r1) decided the Apple/Google branches:
+- Apple/Google with no account creates one only by explicit choice, with the terms, through AC-04f;
+- signing in to an existing account lands where the account is (AC-11 → Hoje), never back in onboarding;
+- AC-04g is reserved for G08 item 5.
+
+The Chief accepted 18+ before any identity (ON-01b; option 8B) as conformance with ONB-03, DEG-24 and DR-53. That closes the design side of Security item 8; the alternative 8A would need a Founder/legal decision.
+
+Delivered in the Figma:
+- AC-01–11 with their states;
+- ON-01b, the neutral ON-V6, AC-04f and ON-02b;
+- CF-17–19 with CF-18b/c;
+- the account e-mails (a)–(g) in PT-BR (section 2.5); their PT-BR/EN/ES copy is in [ACCOUNT_EMAILS](audits/new-figma-account-access-2026-10-24/ACCOUNT_EMAILS.md).
+- A shared Apple/Google provider button, wordmark and field components, and a `texto/placeholder` token.
+- A file-wide fix of in-field label contrast, from 4.40:1 to at least 5.02:1.
+
+Still open:
+- G08/G09 security parameters and the G07 legal parts;
+- Founder/legal item 9 (deletion after an account takeover);
+- PDR DR-110, written in the checkpoint but not applied while DOMAIN CLOSURE R3 runs R2's verifier, which hashes the PDR.
+
+Promotion and implementation still need explicit Founder authorization.
+
+
+## 2026-10-25 — DOMAIN CLOSURE R3 / DCR3-CLOSE-20261025-r1
+
+Closed bounded offline reference mission with retained V1 gaps. [Report](CoachingCore/r3/FINAL_REPORT.md) · [verification](CoachingCore/r3/VERIFICATION.json) · [gate consolidation](audits/domain-closure-r3-2026-10-24/FINAL_DISPOSITION.json).42 frozen logical cases,42schema-valid,40normal material-consumable,2positive/2KEEP/15usefulASK/2correctHOLD/16domain/3science/2clinical.209/209tests;13/13checks;365exact historical unique-input replays;84scripted canonical multiweek rows. Independent current Quality=QUALITY_READY; SSCTR=PASS_BOUNDED_SCIENTIFIC_BINDING (126/126probes); one new conditional steady approval, strides ABSTAIN, queue100preserved+1=101, fundingNOT_DECLARED. Source facts/expectations and legacy/R2 runtime/scientific source bytes preserved. Historical R2 verifier hash staleness is explicit; fresh R3 gates supersede only the reviewed descendant scope. Full V1 coverage/autonomy staysNOT_READY/NO_GO. Next stepDOMAIN_CLOSURE_R4; no KMP/UI/production/real effects or Product Truth promotion. Other concurrent mission state remains its own authority.
+
+## DCR4-20261025-r1 — 2026-10-25
+
+Founder-authorized offline Node24 Coaching Intelligence mission. Reusable envelopes replace exact-dose paper matching within approved scientific boundaries. R3 frozen40 unchanged; independent holdout and scientific/coaching-quality review required. See audits/domain-closure-r4-2026-10-25/TASK_CONTRACT.md and CoachingCore/r4/FINAL_REPORT.md. No UI/Figma/KMP/production/real-user effect or Product Truth promotion. Status initially IN_PROGRESS; final closure is recorded in the linked verification/report, not inferred from this append.
+
+## DCR4-CLOSE-20261025-r1 — 2026-10-25
+
+DOMAIN CLOSURE R4 delivered with retained V1 capability gaps. Coaching Intelligence/envelopes/ordinal selection and bounded athlete evidence implemented offline in Node24; original frozen40 and sealed independent24 preserved. Current independent scientific/Quality gates and final13-check verification are linked by CoachingCore/r4/FINAL_REPORT.md. 239tests pass;365historical inputs replay exactly. Raw frozen positives2→18, domain gaps16→0, but all18 frozen positives are only ACCEPTABLE_ALTERNATIVE; holdout has7BEST_SUPPORTED and1ACCEPTABLE positive. No autonomous/quality/coverage readiness inflation. Human queue101+9=110, no per-workout queue explosion. NextDOMAIN_COACHING_R5 under separate authorization. No UI/Figma/KMP/production/real-user or Truth mutation. Historical dirty checkout preserved.
+
+
+<!-- DCR5-DELIVERY-20261026-r1 -->
+2026-10-26 · DOMAIN_COACHING_R5: local offline Node24 reference and required evaluation artifacts delivered with retained capability gaps. Full autonomous Definition of Done=false; coaching QUALITY_BLOCKED/NOT_READY.280tests;14/14 objective checks; fresh24 first raw preserved;4BEST/4ACCEPTABLE/3SUBOPTIMAL/6INSUFFICIENT/7UNSUPPORTED. Next DOMAIN_COACHING_R6, not started. [Disposition](audits/domain-coaching-r5-2026-10-25/FINAL_DISPOSITION.json). No UI/Figma/KMP/production/real-plan effect or commit/merge/deploy.
+
+## OB2-20261025-r1 — 2026-10-25/26
+
+Founder-requested onboarding, account and paywall revision on the new Figma `TYR10AIrquCpKvKL3eyXyO`, with documentary sync. Decisions in PDR-1.7 (DR-110–116):
+- DR-111: the questionnaire comes before the account and stays on the device until then; the pending DR-110 was applied with it.
+- DR-112: the chosen training days and shift for each sport are binding, and the long run falls on one of the run days.
+- DR-113: a strength exercise-rotation preference; load keeps progressing on the exercises that stay.
+- DR-114: optional sex and a units switch.
+- DR-115: "Recomendado" only where it comes from the person's answers.
+- DR-116: the annual plan is emphasized on the paywall.
+
+Gates for the Figma revision of 2026-10-26:
+- Product/UX: Architecture Eval PASS, with VISUAL_READY;
+- UI_READY;
+- Security PASS (SECURITY_READY_WITH_CONDITIONS);
+- SSCTR binding Q1–Q5 BOUND.
+
+SSCTR and Security reviewed before drawing. The four judges then ran round 1, a re-check and a spot check.
+
+Thirteen product/canon files were synced on 2026-10-25. The pre-change copies are in the audit, and R4's historical verifier reports these files as changed, as expected. DOMAIN_COACHING_R6 opened on 2026-10-26 at 10:08 and binds every product/ and canon/ file, so two things wait:
+- the 34 round-2 doc corrections, held in PENDING_DOC_CORRECTIONS_R2.json (r2), with an apply script that refuses while R6 is open;
+- three SSCTR queue items in QUEUE_ADDITIONS_PROPOSED.json, because verify-r5 asserts 114 items.
+
+Open:
+- what "A cada 2 semanas" rotates (Founder);
+- where a return after illness goes (G04 + Product/UX);
+- the DR-112–114 mapping into CoachingCore, for the next coaching mission that takes it;
+- G07, G08, G09 and G10.
+
+No runtime change, no promotion. [Checkpoint](audits/new-figma-onboarding-v2-2026-10-25/CHECKPOINT.md).
+
+<!-- OB2-ROTATION-20261026 -->
+2026-10-26 · OB-2: the Founder decided that "A cada 2 semanas" keeps the main exercises and rotates only the accessories and close variants of the main lifts (SSCTR Q3 option a). The ON-14b helper and notes were updated, and SSCTR checked the change as BOUND. Four ops were added to the held doc corrections, now r3 with 38 ops (ops 1–34 unchanged); they are still held while DOMAIN_COACHING_R6 is open. Which exercises count as main ones and what counts as a close variant stays with the rotation recipe (training policy + SSCTR).
+
+<!-- DCR6-CLOSE-20261027-r1 -->
+2026-10-27 · DOMAIN_COACHING_R6: closed with an explicit blocker under the Founder bound (SSCTR round 12 refused FREEZE-2 on D53, from-log path, and D54; runtime not frozen). Coaching QUALITY_BLOCKED/NOT_READY; first evaluation 4BEST/14ACCEPTABLE/9SUBOPTIMAL/1INSUFFICIENT/4UNSUPPORTED/2CLINICAL/1CORPUS_ERROR of 35; 443 tests; queue 114→127. Next DOMAIN_COACHING_R7, not started. [Disposition](audits/domain-coaching-r6-2026-10-26/FINAL_DISPOSITION.json). No UI/Figma/KMP/production/real-plan effect or commit/merge/deploy.
+
+<!-- VWS-20261027-r1 -->
+2026-10-27 · V1 wearable scope (post-R6 product scope supersession, direct Founder request). PDR-1.8 DR-117–119 records three decisions:
+- Apple Health/HealthKit (iOS, read-only) is the only V1 external layer;
+- direct Garmin/COROS/Polar, vendor OAuth, FIT ingestion and watch outbound are V2/POST_V1 and never a V1 blocker;
+- generic external-data semantics are preserved, and the Coaching Core stays vendor-agnostic.
+
+Overlays in index, thesis, RS, AEC §5, PDM, UXS, PTM and the designer context; pre-change copies are in the audit. R6 is untouched (606 files hash-verified). Open: OPEN_PRODUCT_PLATFORM_DECISION-01 (Android); the OB-2 held corrections need their owner's re-check. Next coaching mission: rehydrate from RECORD §6. No implementation, Figma or R7 start. [Record](audits/v1-wearable-scope-2026-10-27/RECORD.md).
+
+<!-- VWS-20261027-r2 -->
+2026-10-27 · V1 platform and wearable clarifications, r2 (direct Founder request). PDR-1.9 DR-120–123:
+- V1 is iOS only, and Android is POST_V1 / FUTURE_PLATFORM_EXPANSION (OPEN_PRODUCT_PLATFORM_DECISION-01 RESOLVED — V1_IOS_ONLY);
+- HealthKit inbound is required, and write-back is an OPEN_TECHNICAL_PRODUCT_DECISION that is not a blocker;
+- Apple Watch structured delivery and direct Garmin/COROS/Polar are POST_V1;
+- the Coaching Core is platform-agnostic, and R7 evaluates it through canonical inputs.
+
+Overlays revised to r2; r1 bytes are kept in the audit. R6 is untouched. No implementation, Figma or R7 start. [Record](audits/v1-wearable-scope-2026-10-27/RECORD.md).
+
+<!-- DCR7A-20261027-open-r1 -->
+2026-10-27 · DOMAIN_COACHING_R7-A opened (direct Founder request; R7-A only of R7-A–D): semantic core hardening and state-composition stability in the offline synthetic Coaching Core, starting with D53 and D54. Baseline 443/443 tests; 1,007 files bound; R6 closure runtime copied byte-exact. R6 stays closed and untouched. No UI/Figma/KMP/production/real-plan effect or commit/merge/deploy. [Contract](audits/domain-coaching-r7a-2026-10-27/TASK_CONTRACT.md).
+<!-- DCR7A-20261027-closed-r1 -->
+2026-10-27 · DOMAIN_COACHING_R7-A closed with an explicit blocker (R7A_EXIT_READINESS = NOT_READY): R7A-FREEZE-2 (`f56ae974…`), policy `18ec48f3…` unchanged, 476/476 tests, verification 11/11. D54, D55 and the original D53 paths resolved; seven blockers named after the single re-checks (engineering QE-R7A-01, 02, 03, 05, 12 partly fixed and QE-R7A-19 new; SSCTR D56 new). Cycle bound used (two cycles); no further cycle. Human queue 127 → 132 (append-only). No handoff; R7-B not started; the next step is the Founder's. No UI/Figma/KMP/production/real-plan effect or commit/merge/deploy. [Disposition](audits/domain-coaching-r7a-2026-10-27/FINAL_DISPOSITION.json) · [Report](CoachingCore/r7/FINAL_REPORT_R7A.md).
+<!-- DCR7A1-20261027-open-r1 -->
+2026-10-27 · DOMAIN_COACHING_R7-A.1 opened (direct Founder request; blocker-only continuation of R7-A, not R7-B): one weekly-composition model for the seven R7-A blockers (QE-R7A-01, 02, 03, 05, 12, 19, D56; D53 with them). Baseline 476/476 tests on R7A-FREEZE-2; 1,266 files bound; FREEZE-2 copied byte-exact. Ten equivalent paths of the same class confirmed before any edit. R6 and R7-A stay closed and untouched. No UI/Figma/KMP/HealthKit/production/real-plan effect or commit/merge/deploy. [Contract](audits/domain-coaching-r7a1-2026-10-27/TASK_CONTRACT.md).
+<!-- DCR7A1-20261027-closed-r1 -->
+2026-10-27 · DOMAIN_COACHING_R7-A.1 closed with explicit blockers (R7A_EXIT_READINESS = NOT_READY): R7A1-FREEZE-A2 (`71edc245…`), policy `18ec48f3…` unchanged, 505/505 tests, mutation 88/89. One composition model for every handler; QE-R7A-02, 03, 05, 12, 19 and D56 closed (with D57, D58). QE-R7A-01 and D53 open through QE-R7A1-09/10 (engineering re-check) and D59 (SSCTR re-check): the return baseline has no break identity and misses the pause week’s executed exposures. One correction cycle used; no third cycle. Human queue 132 → 151 (append-only). No handoff; R7-B not started; the next step is the Founder’s. No UI/Figma/KMP/production/real-plan effect or commit/merge/deploy. [Disposition](audits/domain-coaching-r7a1-2026-10-27/FINAL_DISPOSITION.json) · [Report](CoachingCore/r7/a1/FINAL_REPORT_R7A1.md).
+<!-- DCR7A2-20261028-open-r1 -->
+2026-10-28 · DOMAIN_COACHING_R7-A.2 opened (direct Founder request; the last bounded closure of R7-A, not R7-B0 or R7-B): interruption identity and the state at the break for QE-R7A1-09, QE-R7A1-10 and D59 (QE-R7A-01 and D53 with them). Baseline on R7A1-FREEZE-A2 (`71edc245…`): verify-r7a1 read-only 17/17, 505/505 tests, P13, P14 and the first-week grid byte-identical to the recorded re-checks; 1,674 files bound; FREEZE-A2 copied byte-exact. One freeze, both re-checks, no correction cycle. R6, R7-A and R7-A.1 stay closed and untouched. No UI/Figma/KMP/HealthKit/production/real-plan effect or commit/merge/deploy. [Contract](audits/domain-coaching-r7a2-2026-10-28/TASK_CONTRACT.md).
+<!-- DCR7A2-20261028-closed-r1 -->
+2026-10-28 · DOMAIN_COACHING_R7-A.2 closed with an explicit blocker (R7A_EXIT_READINESS = NOT_READY): single freeze R7A2-FREEZE-1 (`e0637ec2…`), policy `18ec48f3…` unchanged, 519/519 tests, mutation 19/19. Break identity and the state at the break added; P13 and P14 closed; SSCTR ACCEPT (D59 closed; D56–D58 hold). Engineering re-check NOT_READY on QE-R7A2-01 (HIGH, same class): a late report of an earlier break makes a separate later break the same break, starting from before the first. QE-R7A1-09/10, QE-R7A-01 and D53 stay open. No correction cycle, no handoff; R7-B0 and R7-B not started. NEXT_MISSION = FOUNDER_ARCHITECTURAL_DECISION. Human queue 151 → 163 (append-only). No UI/Figma/KMP/production/real-plan effect or commit/merge/deploy. [Disposition](audits/domain-coaching-r7a2-2026-10-28/FINAL_DISPOSITION.json) · [Report](CoachingCore/r7/a2/FINAL_REPORT_R7A2.md).
+<!-- DCR7AF-20261028-open-r1 -->
+2026-10-28 · DOMAIN_COACHING_R7-A Final Closure opened (direct Founder request: the architectural decision R7-A.2 routed to; the last micro-closure of R7-A, not R7-B0 or R7-B): interruption episode identity and the state executed when an interruption began, for QE-R7A-01 through QE-R7A1-09/10 and QE-R7A2-01, with D53. Baseline on R7A2-FREEZE-1 (`e0637ec2…`): verify-r7a2 read-only 19/19, 519/519 tests, P17, P19, P20 and P21 byte-identical to the judge’s outputs; 1,952 files bound; FREEZE-1 copied byte-exact. One freeze, both re-checks, no correction cycle. R6, R7-A, R7-A.1 and R7-A.2 stay closed and untouched. No UI/Figma/KMP/HealthKit/production/real-plan effect or commit/merge/deploy. [Contract](audits/domain-coaching-r7a-final-2026-10-28/TASK_CONTRACT.md).
+<!-- DCR7AF-20261028-closed-r1 -->
+2026-10-28 · DOMAIN_COACHING_R7-A Final Closure closed with an explicit blocker (R7A_EXIT_READINESS = NOT_READY): single freeze R7A-FINAL-FREEZE (`ec2debe7…`), policy `18ec48f3…` unchanged, 528/528 tests, mutation 21/21, self-challenge 0/43. Interruption episode identity added (explicit name, duplicate, new after re-entry or training, otherwise asked) and the state at an interruption read from the decisions in force when it began; QE-R7A-01, QE-R7A1-09/10, QE-R7A2-01/02/03 and D53 closed; SSCTR ACCEPT (D56–D59 hold). Engineering re-check NOT_READY on QE-R7AF-01 (MEDIUM, new class): after an unfinished, unreviewed re-entry week, an unrelated decision makes the earned-week check accept the stored planned start, so a later break starts from an unexecuted return step. No correction cycle, no handoff; R7-B0 and R7-B not started. NEXT_MISSION = FOUNDER_ARCHITECTURAL_DECISION. Human queue 163 → 175 (append-only). No UI/Figma/KMP/production/real-plan effect or commit/merge/deploy. [Disposition](audits/domain-coaching-r7a-final-2026-10-28/FINAL_DISPOSITION.json) · [Report](CoachingCore/r7/final/FINAL_REPORT_R7AF.md).
+<!-- DCR7AB-20261028-open-r1 -->
+2026-10-28 · DOMAIN_COACHING_R7-A Final Boundary Closure opened (direct Founder request: the architectural decision the R7-A Final Closure routed to; the last micro-closure of R7-A, not R7-B0 or R7-B): week-start state authority (planned state is not historical state) for QE-R7AF-01, and a correction that contradicts its own executed re-entry asked. Baseline on R7A-FINAL-FREEZE (`ec2debe7…`): verify-r7af read-only 18/18, 528/528 tests, the judge's P30c and P30b byte-identical; 2,366 files bound; R7A-FINAL-FREEZE copied byte-exact. One freeze, both re-checks, no correction cycle. R6, R7-A, R7-A.1, R7-A.2 and the R7-A Final Closure stay closed and untouched. No UI/Figma/KMP/HealthKit/production/real-plan effect or commit/merge/deploy. [Contract](audits/domain-coaching-r7a-boundary-2026-10-28/TASK_CONTRACT.md).
+<!-- DCR7AB-20261028-closed-r1 -->
+2026-10-28 · DOMAIN_COACHING_R7-A Final Boundary Closure closed with an explicit blocker (R7A_EXIT_READINESS = NOT_READY): single freeze R7A-BOUNDARY-FINAL-FREEZE (`36a71ca8…`), policy `18ec48f3…` unchanged, 540/540 tests, mutation 20/21 plus 1 documented, self-challenge 0 violations (56 on R7A-FINAL-FREEZE). Week-start authority added (each start records why it holds its state; history only through evidence, before any return too); QE-R7AF-01 closed on its path; a named correction that contradicts its own executed re-entry is asked (§11, QE-R7AF-02). SSCTR ACCEPT (D53 closed; D56–D59 hold). Engineering re-check NOT_READY on QE-R7AB-01 (MEDIUM, a new manifestation): outside a return, a weekly review carries unverified projected values into an evidence-anchored start. No correction cycle, no handoff; R7-B0 and R7-B not started. NEXT_MISSION = FOUNDER_ARCHITECTURAL_DECISION. Human queue 175 → 187 (append-only). No UI/Figma/KMP/production/real-plan effect or commit/merge/deploy. [Disposition](audits/domain-coaching-r7a-boundary-2026-10-28/FINAL_DISPOSITION.json) · [Report](CoachingCore/r7/boundary/FINAL_REPORT_R7AB.md).
+<!-- DCR7ASE-20261028-open-r1 -->
+2026-10-28 · COACHING CORE — State Evidence Model opened (direct Founder request: the architectural decision the R7-A Final Boundary Closure routed to; value-scoped fact vs projection, not R7-B0 or R7-B): QE-R7AB-01 (a review carries unverified projected values into an evidence-anchored start). Baseline on R7A-BOUNDARY-FINAL-FREEZE (`36a71ca8…`): verify-r7ab read-only 17/17, 540/540 tests, the judge's P40 byte-identical (`b76b8259…`) with P40b, P40c, P41 and P47b; 2,862 files bound; R7A-BOUNDARY-FINAL-FREEZE copied byte-exact. One freeze, both reviews, no correction cycle. R6 and every R7-A mission stay closed and untouched. No UI/Figma/KMP/HealthKit/production/real-plan effect or commit/merge/deploy. [Contract](audits/domain-coaching-r7a-state-evidence-2026-10-28/TASK_CONTRACT.md).
+
+<!-- DCR7ASE-20261028-closed-r1 -->
+2026-10-28 · COACHING CORE — State Evidence Model closed with an explicit blocker (STATE_EVIDENCE_MODEL = NOT_READY; R7A_EXIT_READINESS = NOT_READY): single freeze STATE-EVIDENCE-FREEZE-1 (`692483ce…`), policy `18ec48f3…` unchanged, 555/555 tests, mutation 23/23, self-challenge 0 violations (52 on R7A-BOUNDARY-FINAL-FREEZE), regression identical on R5, profiles and simulations (R6 holdout 33/35, named). Value-scoped history added (the planner unchanged; history reads each value from a start only with evidence and rebuilds what a review carried from a projection); QE-R7AB-01 closed on its recorded path. SSCTR ACCEPT (D53 and D56–D59 hold). Engineering NOT_READY on QE-R7ASE-01 (a lifted projected dose promotes the projection's load tick) and QE-R7ASE-02 (the D52 predicate reads a projected last-performed date), both MEDIUM and material. No correction cycle, no handoff; R7-B0 not started. NEXT_MISSION = FOUNDER_ARCHITECTURAL_DECISION. Human queue 187 → 199 (append-only). No UI/Figma/KMP/production/real-plan effect or commit/merge/deploy. [Disposition](audits/domain-coaching-r7a-state-evidence-2026-10-28/FINAL_DISPOSITION.json) · [Report](CoachingCore/r7/state-evidence/FINAL_REPORT_R7ASE.md).
+
+<!-- DCR7ASM-20261028-open-r1 -->
+2026-10-28 · COACHING CORE — State Model Closure opened (direct Founder request: the architectural decision the State Evidence Model mission routed to; HistoricalState vs PlanningProjection, not R7-B0 or R7-B): QE-R7ASE-01 (a lifted projected dose promotes the projection's load tick) and QE-R7ASE-02 (the D52 predicate reads a projected last-performed date), with R42. Baseline on STATE-EVIDENCE-FREEZE-1 (`692483ce…`): verify-r7ase read-only 17/17, 555/555 tests, the judge's P51d and P50 byte-identical (`e0268648…`, `2c4a48f7…`) with P51c, P52 and I02; 3,513 files bound; STATE-EVIDENCE-FREEZE-1 copied byte-exact. One freeze, both reviews, no correction cycle. R6 and every R7-A mission stay closed and untouched. No UI/Figma/KMP/HealthKit/production/real-plan effect or commit/merge/deploy. [Contract](audits/domain-coaching-r7a-state-model-2026-10-28/TASK_CONTRACT.md).
+
+<!-- DCR7ASM-20261028-frozen-r1 -->
+2026-10-28 · COACHING CORE — State Model Closure frozen for independent review (Founder's operational adjustment: freeze, prove integrity, prepare packets, stop): single freeze HISTORICAL-PROJECTION-FREEZE-1, source digest `0db72d0e…`, manifest `39b326ac…`, 83 files, policy `18ec48f3…` unchanged, zero post-freeze change, verification 16/16 read-only. HistoricalState / PlanningProjection / PlanningView separated with one evidence reducer and a public read-only reader; R42 resolved (EARNED_PROGRESS vs PROJECTED_PROGRESS); `lastPerformed` factual only. 589/589 tests; T1–T17, P1–P7; T1/T2 fail on the predecessor and pass here; self-challenge 0 violations (42 on the predecessor); mutation 20/29 with 9 survivors justified; 29 evidence runs bound to the digest; regression R5 24/24, profiles 16/16, simulations 12/14, R6 holdout 20/35, every difference classified, 3 dose fields risen (all effort-guided establishment rows) against 113 fallen. QE-R7ASE-01, QE-R7ASE-02 and QE-R7AB-01 closed on the judges' own probes. No reviewer dispatched, no readiness verdict, R7-B0 not started. No UI/Figma/KMP/production/real-plan effect or commit/merge/deploy. [Handoff](audits/domain-coaching-r7a-state-model-2026-10-28/REVIEW_HANDOFF.md).
+
+<!-- DCR7ASM-20261029-closed-r1 -->
+2026-10-29 · COACHING CORE — State Model Closure closed with an explicit blocker (STATE_MODEL_CLOSURE = NOT_READY; R7A_EXIT_READINESS not issued): both independent reviews on HISTORICAL-PROJECTION-FREEZE-1 (`0db72d0e…`, unchanged after the freeze). Engineering NOT_READY (R7ASM-QE-r1): QE-R7ASM-01 blocking (a KNOWN row's load sets up an exercise history does not hold, after the evidence that established it is retracted), QE-R7ASM-02, 03 and 04 material; QE-R7ASE-01, QE-R7ASE-02 and QE-R7AB-01 closed. SSCTR NOT_READY (R7ASM-SSCTR-r1): F1 (D53, D57), F2 and F3 blocking; D56, D58 and D59 hold. Routed by the Founder's decision of 2026-10-29 (keep the three structures, close the consumers) to the State Model Consumer Closure. The SSCTR queue proposal (8 items) is not integrated; the queue stays at 199. No UI/Figma/KMP/production/real-plan effect or commit/merge/deploy. [Disposition](audits/domain-coaching-r7a-state-model-2026-10-28/FINAL_DISPOSITION.json).
+
+<!-- DCR7ASC-20261029-open-r1 -->
+2026-10-29 · COACHING CORE — State Model Consumer Closure opened (direct Founder request: keep HistoricalState / PlanningProjection / PlanningView, close only the consumers that cross the boundary; not R7-B0 or R7-B): QE-R7ASM-01 to 04 and SSCTR F1 to F3, with D53 and D57 to restore. Baseline on HISTORICAL-PROJECTION-FREEZE-1 (`0db72d0e…`, 0 of 83 files drift): verify-r7asm read-only 15/16 (reviews-not-dispatched, by design), 589/589 tests, and every judge's probe for the seven findings byte-identical (the SSCTR grids B = 2, as recorded); 3,851 files bound; the freeze copied byte-exact. One freeze, then stop for two independent reviews in new sessions. No UI/Figma/KMP/HealthKit/production/real-plan effect or commit/merge/deploy. [Contract](audits/domain-coaching-r7a-state-consumer-2026-10-29/TASK_CONTRACT.md).
+
+<!-- GRW-20261029-r1 -->
+2026-10-29 · Growth Layer decided (direct Founder request; documentary product strategy, not a Coaching Core mission): PDR-1.10, DR-124–132. Adaptive Hybrid Coach plus light distribution/retention loops; "Distribution is a product capability, but social networking is not required for V1 distribution"; Training/Safety prevails over Growth; five V1 capabilities (shareability as acquisition, consistency without naive daily streaks, history as proof of value, minimal referral, pre-launch website/SEO); North Star proposed (Weekly Adapted Plan Completion Rate, definition open under O001/G03); Crew/social stays out of V1. The canonical sync of 8 product/canon files is HELD as one additive patch until the State Model Consumer Closure closes, because its baseline binds them. No training rule, freeze, review, blocker, readiness or queue change; no Figma, implementation or commit. [Record](audits/growth-layer-2026-10-29/RECORD.md).
+
+<!-- GRW-20261029-r2 -->
+2026-10-29 · Map Share Privacy V1 decided (direct Founder request r2; documentary): PDR-1.11, DR-133, resolving GRW-04. Real maps are allowed in external shareables of GPS activities: user-initiated, exact preview, first and last 200 m hidden by default and editable per activity, options Map/Route/Photo-Overlay/no route, raw GPS never in sharing, the private activity unchanged, no automatic sharing; Privacy Zones planned without infrastructure. For external shareables only, it supersedes DR-91's abstract-only trace and SHR-09's 500 m cut. Added to the same held patch (r2); the trigger is unchanged. No training rule, freeze, review, blocker, readiness or queue change; no Figma, implementation or commit. [Record](audits/growth-layer-2026-10-29/RECORD.md).
+
+<!-- GLF-20261029-open-r1 -->
+2026-10-29 · Growth Layer UX/Figma integration opened (direct Founder request; design delta + refinement in `TYR10AIrquCpKvKL3eyXyO`, parallel to and independent of the State Model Consumer Closure): share system with Map Share Privacy (DR-133), post-workout, history/progress, consistency, minimal referral, Home audit. Figma edits in that file only; no implementation, no product/canon edit, `PENDING_CANON_SYNC.patch` not applied, no Adaptive Engine semantics, freeze, blocker, review, readiness or queue change; Crew/social stays out. [Record](audits/growth-layer-figma-2026-10-29/RECORD.md).
+
+<!-- DCR7ASC-20261029-frozen-r1 -->
+2026-10-29 · COACHING CORE — State Model Consumer Closure frozen for independent review (CURRENT_MISSION = STATE_MODEL_CONSUMER_CLOSURE_FROZEN; NEXT_STEP = INDEPENDENT_REVIEWS). Single freeze STATE-MODEL-CONSUMER-FREEZE-1: source digest `adab3716…`, manifest `4f11f4b4…`, 84 files, policy `18ec48f3…` unchanged, zero post-freeze change, verification 25/25 read-only. The four consumer fronts are closed: history ingress, the correction boundary, the resolved prescription, evidence through time. QE-R7ASM-01 to 04 are closed on the engineering judge's own probes, F1 to F3 on the SSCTR's own kit (grids B = 0, every differing row named); D53 and D57 restored; D56, D58, D59 and the earlier blockers hold. 632/632 tests; self-challenge 0 violations in 16 classes (84 on the predecessor); mutation 25 of 26 mutants caught, 1 survivor documented with its equivalence evidence; 62 evidence runs and 43 kit runs bound to the digest; regression R5 24/24, profiles 12/16, simulations 10/14, R6 holdout 25/35, 0 unclassified, no corpus status change. No reviewer dispatched, no readiness verdict, R7A_EXIT_READINESS not emitted, R7-B0 not started. The Growth Layer's held canon patch waits for this mission's closure. No UI/Figma/KMP/production/real-plan effect or commit/merge/deploy. [Handoff](audits/domain-coaching-r7a-state-consumer-2026-10-29/REVIEW_HANDOFF.md).
+
+<!-- GLF-20261029-delivered-r1 -->
+2026-10-29 · Growth Layer UX/Figma integration delivered for Founder review (design delta + refinement in `TYR10AIrquCpKvKL3eyXyO`): reusable share system with Map Share Privacy (5 formats × 2 proportions, protected route, protection sheet, map states), post-workout highlight, History "Desde o início do plano", plan-week consistency, one Home reflex, minimal referral; page 11 holds before → after. Independent reviews after one fix round: Product/UX PASS_WITH_CONDITIONS (VISUAL_READY), UI UI_READY, Security PASS_WITH_CONDITIONS (C1–C9 into implementation). No product/canon edit, `PENDING_CANON_SYNC.patch` not applied, no Adaptive Engine semantics, freeze, blocker, review, readiness or queue change; Crew/social out. [Record](audits/growth-layer-figma-2026-10-29/RECORD.md).

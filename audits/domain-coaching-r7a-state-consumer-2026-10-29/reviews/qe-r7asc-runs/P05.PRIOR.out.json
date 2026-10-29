@@ -1,0 +1,317 @@
+{
+ "probe": "qe-r7asc-P05-reentry-run-gate",
+ "root": "C:\\Users\\carva\\Desktop\\myApp\\MyApp\\audits\\domain-coaching-r7a-state-consumer-2026-10-29\\state-model-freeze-source\\CoachingCore",
+ "cases": {
+  "MODERATE": {
+   "EXEC": {
+    "class": "MODERATE",
+    "reportWeek": 4,
+    "fromWeek": 4,
+    "entryRun": {
+     "mode": "RETURN",
+     "returnStep": 0,
+     "restart": 15,
+     "easy": 40,
+     "long": 70,
+     "longestContinuous": 65
+    },
+    "returnWeekRunRows": "QUALITY:41:THRESHOLD_STEP=1 EASY:15:RETURN_STEP=0 LONG:20:RETURN_STEP=0",
+    "thursday": [
+     "EASY"
+    ],
+    "sunday": [
+     "LONG"
+    ],
+    "historyRunThu2200": {
+     "mode": "RETURN",
+     "returnStep": 1,
+     "restart": 15,
+     "easy": 40,
+     "long": 70,
+     "longestContinuous": 65
+    },
+    "closingReview": {
+     "action": "GATED_NEXT_STEP",
+     "gates": {
+      "EASY": "ADVANCE"
+     },
+     "reasons": [
+      "ADVANCE: LONG: executed without adverse signal",
+      "HOLD: QUALITY: not executed as planned this week (MISSED); repeat the dose, no debt",
+      "ADVANCE: EASY: executed without adverse signal"
+     ]
+    },
+    "historyRunNextMonday": {
+     "mode": "RETURN",
+     "returnStep": 1,
+     "restart": 15,
+     "easy": 40,
+     "long": 70,
+     "longestContinuous": 65
+    },
+    "nextWeekRunRows": "EASY:30:RETURN_STEP=1 EASY:30:RETURN_STEP=1 LONG:45:RETURN_STEP=1"
+   },
+   "MISSED": {
+    "class": "MODERATE",
+    "reportWeek": 4,
+    "fromWeek": 4,
+    "entryRun": {
+     "mode": "RETURN",
+     "returnStep": 0,
+     "restart": 15,
+     "easy": 40,
+     "long": 70,
+     "longestContinuous": 65
+    },
+    "returnWeekRunRows": "QUALITY:41:THRESHOLD_STEP=1 EASY:15:RETURN_STEP=0 LONG:20:RETURN_STEP=0",
+    "thursday": [
+     "EASY"
+    ],
+    "sunday": [
+     "LONG"
+    ],
+    "historyRunThu2200": {
+     "mode": "RETURN",
+     "returnStep": 1,
+     "restart": 15,
+     "easy": 40,
+     "long": 70,
+     "longestContinuous": 65
+    },
+    "closingReview": {
+     "action": "GATED_NEXT_STEP",
+     "gates": {
+      "EASY": "ADVANCE"
+     },
+     "reasons": [
+      "HOLD: LONG: not executed as planned this week (NOT_REPORTED); repeat the dose, no debt",
+      "HOLD: QUALITY: not executed as planned this week (MISSED); repeat the dose, no debt",
+      "ADVANCE: EASY: executed without adverse signal"
+     ]
+    },
+    "historyRunNextMonday": {
+     "mode": "RETURN",
+     "returnStep": 1,
+     "restart": 15,
+     "easy": 40,
+     "long": 70,
+     "longestContinuous": 65
+    },
+    "nextWeekRunRows": "EASY:30:RETURN_STEP=1 EASY:30:RETURN_STEP=1 LONG:45:RETURN_STEP=1"
+   },
+   "EASY_MISSED": {
+    "class": "MODERATE",
+    "reportWeek": 4,
+    "fromWeek": 4,
+    "entryRun": {
+     "mode": "RETURN",
+     "returnStep": 0,
+     "restart": 15,
+     "easy": 40,
+     "long": 70,
+     "longestContinuous": 65
+    },
+    "returnWeekRunRows": "QUALITY:41:THRESHOLD_STEP=1 EASY:15:RETURN_STEP=0 LONG:20:RETURN_STEP=0",
+    "thursday": [
+     "EASY"
+    ],
+    "sunday": [
+     "LONG"
+    ],
+    "historyRunThu2200": {
+     "mode": "RETURN",
+     "returnStep": 0,
+     "restart": 15,
+     "easy": 40,
+     "long": 70,
+     "longestContinuous": 65
+    },
+    "closingReview": {
+     "action": "GATED_NEXT_STEP",
+     "gates": {
+      "EASY": "HOLD"
+     },
+     "reasons": [
+      "ADVANCE: LONG: executed without adverse signal",
+      "HOLD: QUALITY: not executed as planned this week (MISSED); repeat the dose, no debt",
+      "HOLD: EASY: not executed as planned this week (MISSED); repeat the dose, no debt"
+     ]
+    },
+    "historyRunNextMonday": {
+     "mode": "RETURN",
+     "returnStep": 0,
+     "restart": 15,
+     "easy": 40,
+     "long": 70,
+     "longestContinuous": 65
+    },
+    "nextWeekRunRows": "EASY:15:RETURN_STEP=0 EASY:15:RETURN_STEP=0 LONG:20:RETURN_STEP=0"
+   },
+   "missedLongStillSteps": true,
+   "missedEasyHolds": true,
+   "creditedBeforeSundayExists": true
+  },
+  "LONG": {
+   "EXEC": {
+    "class": "LONG",
+    "reportWeek": 6,
+    "fromWeek": 6,
+    "entryRun": {
+     "mode": "RESTART",
+     "returnStep": null,
+     "restart": 15,
+     "easy": 40,
+     "long": 70,
+     "longestContinuous": 0
+    },
+    "returnWeekRunRows": "QUALITY:43:THRESHOLD_STEP=3 EASY:15:RESTART_MINUTES=15 EASY:15:RESTART_MINUTES=15",
+    "thursday": [
+     "EASY"
+    ],
+    "sunday": [
+     "EASY"
+    ],
+    "historyRunThu2200": {
+     "mode": "RESTART",
+     "returnStep": null,
+     "restart": 15,
+     "easy": 40,
+     "long": 70,
+     "longestContinuous": 0
+    },
+    "closingReview": {
+     "action": "GATED_NEXT_STEP",
+     "gates": {
+      "EASY": "ADVANCE"
+     },
+     "reasons": [
+      "HOLD: QUALITY: not executed as planned this week (MISSED); repeat the dose, no debt",
+      "ADVANCE: EASY: executed without adverse signal"
+     ]
+    },
+    "historyRunNextMonday": {
+     "mode": "RESTART",
+     "returnStep": null,
+     "restart": 20,
+     "easy": 40,
+     "long": 70,
+     "longestContinuous": 15
+    },
+    "nextWeekRunRows": "EASY:20:RESTART_MINUTES=20 EASY:20:RESTART_MINUTES=20 EASY:20:RESTART_MINUTES=20"
+   },
+   "MISSED": {
+    "class": "LONG",
+    "reportWeek": 6,
+    "fromWeek": 6,
+    "entryRun": {
+     "mode": "RESTART",
+     "returnStep": null,
+     "restart": 15,
+     "easy": 40,
+     "long": 70,
+     "longestContinuous": 0
+    },
+    "returnWeekRunRows": "QUALITY:43:THRESHOLD_STEP=3 EASY:15:RESTART_MINUTES=15 EASY:15:RESTART_MINUTES=15",
+    "thursday": [
+     "EASY"
+    ],
+    "sunday": [
+     "EASY"
+    ],
+    "historyRunThu2200": {
+     "mode": "RESTART",
+     "returnStep": null,
+     "restart": 15,
+     "easy": 40,
+     "long": 70,
+     "longestContinuous": 0
+    },
+    "closingReview": {
+     "action": "GATED_NEXT_STEP",
+     "gates": {
+      "EASY": "HOLD"
+     },
+     "reasons": [
+      "HOLD: QUALITY: not executed as planned this week (MISSED); repeat the dose, no debt",
+      "HOLD: EASY: not executed as planned this week (COMPLETED,NOT_REPORTED); repeat the dose, no debt"
+     ]
+    },
+    "historyRunNextMonday": {
+     "mode": "RESTART",
+     "returnStep": null,
+     "restart": 15,
+     "easy": 40,
+     "long": 70,
+     "longestContinuous": 0
+    },
+    "nextWeekRunRows": "EASY:15:RESTART_MINUTES=15 EASY:15:RESTART_MINUTES=15 EASY:15:RESTART_MINUTES=15"
+   },
+   "EASY_MISSED": {
+    "class": "LONG",
+    "reportWeek": 6,
+    "fromWeek": 6,
+    "entryRun": {
+     "mode": "RESTART",
+     "returnStep": null,
+     "restart": 15,
+     "easy": 40,
+     "long": 70,
+     "longestContinuous": 0
+    },
+    "returnWeekRunRows": "QUALITY:43:THRESHOLD_STEP=3 EASY:15:RESTART_MINUTES=15 EASY:15:RESTART_MINUTES=15",
+    "thursday": [
+     "EASY"
+    ],
+    "sunday": [
+     "EASY"
+    ],
+    "historyRunThu2200": {
+     "mode": "RESTART",
+     "returnStep": null,
+     "restart": 15,
+     "easy": 40,
+     "long": 70,
+     "longestContinuous": 0
+    },
+    "closingReview": {
+     "action": "GATED_NEXT_STEP",
+     "gates": {
+      "EASY": "HOLD"
+     },
+     "reasons": [
+      "HOLD: QUALITY: not executed as planned this week (MISSED); repeat the dose, no debt",
+      "HOLD: EASY: not executed as planned this week (MISSED,COMPLETED); repeat the dose, no debt"
+     ]
+    },
+    "historyRunNextMonday": {
+     "mode": "RESTART",
+     "returnStep": null,
+     "restart": 15,
+     "easy": 40,
+     "long": 70,
+     "longestContinuous": 0
+    },
+    "nextWeekRunRows": "EASY:15:RESTART_MINUTES=15 EASY:15:RESTART_MINUTES=15 EASY:15:RESTART_MINUTES=15"
+   },
+   "missedLongStillSteps": false,
+   "missedEasyHolds": true,
+   "creditedBeforeSundayExists": false
+  }
+ },
+ "controlEasyMode": {
+  "gates": {
+   "LONG": "HOLD",
+   "QUALITY": "ADVANCE",
+   "EASY": "ADVANCE"
+  },
+  "historyRun": {
+   "mode": "EASY",
+   "returnStep": null,
+   "restart": 15,
+   "easy": 40,
+   "long": 70,
+   "longestContinuous": 65
+  },
+  "rows4": "QUALITY:41:THRESHOLD_STEP=1 EASY:45:EASY_MINUTES=45 LONG:70:LONG_MINUTES=70"
+ }
+}

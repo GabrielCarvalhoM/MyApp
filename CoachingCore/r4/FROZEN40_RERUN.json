@@ -1,0 +1,2002 @@
+{
+  "revision": "DCR4-RESULTS-1",
+  "referenceNode": "v24.19.0",
+  "frozenSourceHash": "efd521341252db0413ea9dbac0b28df83ef5b7606cad1b99fd025ea024f07971",
+  "frozenCasesUnchanged": true,
+  "baselineR3": {
+    "POSITIVE": 2,
+    "KEEP": 2,
+    "USEFUL_ASK": 15,
+    "HOLD": 2,
+    "NOT_SUPPORTED_DOMAIN": 16,
+    "NOT_SUPPORTED_SCIENCE": 3
+  },
+  "frozen40": {
+    "POSITIVE": 18,
+    "KEEP": 2,
+    "USEFUL_ASK": 15,
+    "HOLD": 2,
+    "NOT_SUPPORTED_DOMAIN": 0,
+    "NOT_SUPPORTED_SCIENCE": 3,
+    "CLINICAL_OUT_OF_SCOPE": 0,
+    "SOFTWARE_CONTRACT": 0
+  },
+  "holdout24": {
+    "POSITIVE": 8,
+    "KEEP": 0,
+    "USEFUL_ASK": 2,
+    "HOLD": 4,
+    "NOT_SUPPORTED_DOMAIN": 4,
+    "NOT_SUPPORTED_SCIENCE": 1,
+    "CLINICAL_OUT_OF_SCOPE": 0,
+    "SOFTWARE_CONTRACT": 5
+  },
+  "qualityStatus": "Independent reviewer classifications in COACHING_DECISION_QUALITY_R4; runtime self-assessments never counted as independent quality",
+  "interpretation": "Designed-case fractions only; no V1 population, physiological optimality, efficacy, safety-rate or autonomous-readiness estimate",
+  "positiveMeaning": "Concrete whole requested task inside current approved envelope; quality evaluated separately",
+  "results": [
+    {
+      "caseId": "REP-R2-01",
+      "sourceFactsHash": "b8f34f8b4cf8e4b075099a1765422ab303aa0aaa0b1c49c711590c41f0115638",
+      "coverage": "POSITIVE",
+      "decisionType": "MODIFY",
+      "candidate": {
+        "recipe": {
+          "scope": "ESTABLISHMENT_WEEK",
+          "sessions": [
+            {
+              "day": "TUE",
+              "capacityMinutes": 35,
+              "session": {
+                "modality": "RUN_WALK",
+                "totalMinutes": 20,
+                "preparation": {
+                  "method": "Comfortable walking",
+                  "minutes": 12.5
+                },
+                "work": {
+                  "repetitions": 3,
+                  "jogSecondsEach": 30,
+                  "walkRecoveryMinutes": 2,
+                  "effort": "Comfortable complete sentences; exploratory jog, never a pace test",
+                  "walkInsteadIfTalkOrFunctionDeteriorates": true
+                },
+                "previouslyReported": null,
+                "stop": "New pain, unusual symptoms or altered function ends dependent work; clinical concern routes to qualified human",
+                "intent": "Establish tolerable running exposure; current run capacity is not presumed"
+              }
+            },
+            {
+              "day": "THU",
+              "capacityMinutes": 35,
+              "session": {
+                "modality": "STRENGTH",
+                "exercises": [
+                  {
+                    "exercise": "unloaded sit-to-stand",
+                    "sets": 1,
+                    "reps": 5,
+                    "loadSelection": {
+                      "method": "LOWEST_FAMILIAR_OR_UNLOADED_THEN_EASY_TECHNIQUE_CHECK",
+                      "targetRirAtLeast": 3,
+                      "stopBeforeTechniqueChange": true,
+                      "noLoadConversion": true
+                    },
+                    "rest": "Until comfortable and technique ready; do not shorten rest to meet a volume target",
+                    "load": "BODYWEIGHT"
+                  }
+                ],
+                "preparation": "Unloaded rehearsal then easy familiar movement"
+              }
+            },
+            {
+              "day": "SAT",
+              "capacityMinutes": 45,
+              "session": {
+                "modality": "RUN_WALK",
+                "totalMinutes": 20,
+                "preparation": {
+                  "method": "Comfortable walking",
+                  "minutes": 12.5
+                },
+                "work": {
+                  "repetitions": 3,
+                  "jogSecondsEach": 30,
+                  "walkRecoveryMinutes": 2,
+                  "effort": "Comfortable complete sentences; exploratory jog, never a pace test",
+                  "walkInsteadIfTalkOrFunctionDeteriorates": true
+                },
+                "previouslyReported": null,
+                "stop": "New pain, unusual symptoms or altered function ends dependent work; clinical concern routes to qualified human",
+                "intent": "Establish tolerable running exposure; current run capacity is not presumed"
+              }
+            }
+          ],
+          "priority": "BALANCED",
+          "noAutomaticProgression": true
+        },
+        "scope": "FIRST_WEEK",
+        "confirmation": "REQUIRED_FOR_ANY_FUTURE_EFFECT"
+      },
+      "reasoning": {
+        "goal": {
+          "stated": [
+            "participate consistently in running and strength"
+          ],
+          "primary": [
+            "participate consistently in running and strength"
+          ],
+          "secondary": null,
+          "priority": "BALANCED",
+          "requestIntent": "FIRST_WEEK",
+          "phase": "UNKNOWN",
+          "unknownPhaseIsNotInferred": true
+        },
+        "phase": "UNKNOWN",
+        "intendedStimulus": "Consistent entry exposure in both modalities",
+        "candidates": [
+          {
+            "id": "ENTRY_WEEK",
+            "admissible": true,
+            "why": "Use known movements and conversational exposure within available days; establish response before increasing work",
+            "goalTradeOff": {
+              "essential": "PREFERRED",
+              "goal": "PREFERRED",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": true
+          },
+          {
+            "id": "RUN_ONLY_WEEK",
+            "admissible": true,
+            "why": "Omits the stated hybrid strength objective",
+            "goalTradeOff": {
+              "essential": "PREFERRED",
+              "goal": "POOR",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": false
+          },
+          {
+            "id": "FILL_ALL_AVAILABLE_TIME",
+            "admissible": false,
+            "why": "Availability is a ceiling, not a training dose target",
+            "goalTradeOff": {
+              "essential": "INADMISSIBLE",
+              "goal": "PREFERRED",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": false
+          }
+        ],
+        "selectedOption": "ENTRY_WEEK",
+        "whyPreferred": "Use known movements and conversational exposure within available days; establish response before increasing work",
+        "preserved": "Essential training intent, all completed work, official plan and unselected dose dimensions",
+        "tradeOff": "A low-demand first week prioritizes learning tolerance over mature training volume",
+        "uncertainty": "This is the best-supported available option under stated facts, not guaranteed physiological efficacy or universal optimality. Goal/phase remain explicitly unknown where not supplied.",
+        "nextObservation": "Actual execution, effort, technique/function and same-day/next-day recovery; reassess on incompatible response, clinical signal, changed goal/availability or authority revision"
+      },
+      "missingInputs": [],
+      "unsupportedDependency": null
+    },
+    {
+      "caseId": "REP-R2-02",
+      "sourceFactsHash": "1845ff8b414d88165068f34abe52d664da886a52f9667ddb04aa4553614e421a",
+      "coverage": "USEFUL_ASK",
+      "decisionType": "ASK",
+      "candidate": null,
+      "reasoning": null,
+      "missingInputs": [
+        "/reportedExposure/strength/completeConfiguration"
+      ],
+      "unsupportedDependency": "SUBSTANTIVE_MISSING_INPUT"
+    },
+    {
+      "caseId": "REP-R2-03",
+      "sourceFactsHash": "70b9ac00a2dda671ad635be82c4a18e505adfa3f2cc5af7e16a7ec7a55544cfa",
+      "coverage": "POSITIVE",
+      "decisionType": "MODIFY",
+      "candidate": {
+        "recipe": {
+          "scope": "FIRST_STRENGTH_SESSION",
+          "exercises": [
+            {
+              "exercise": "unloaded sit-to-stand",
+              "sets": 1,
+              "reps": 5,
+              "loadSelection": {
+                "method": "LOWEST_FAMILIAR_OR_UNLOADED_THEN_EASY_TECHNIQUE_CHECK",
+                "targetRirAtLeast": 3,
+                "stopBeforeTechniqueChange": true,
+                "noLoadConversion": true
+              },
+              "rest": "Until comfortable and technique ready; do not shorten rest to meet a volume target",
+              "load": "BODYWEIGHT"
+            },
+            {
+              "exercise": "chest-supported row",
+              "sets": 1,
+              "reps": 5,
+              "loadSelection": {
+                "method": "LOWEST_FAMILIAR_OR_UNLOADED_THEN_EASY_TECHNIQUE_CHECK",
+                "targetRirAtLeast": 3,
+                "stopBeforeTechniqueChange": true,
+                "noLoadConversion": true
+              },
+              "rest": "Until comfortable and technique ready; do not shorten rest to meet a volume target"
+            }
+          ],
+          "preparation": "Rehearse each known movement unloaded before easy work",
+          "availableMinutes": 35,
+          "preserveOfficialRunWeek": "two easy 30 min runs and familiar 50 min long run",
+          "progression": "None until execution, technique, effort and next-day response are observed"
+        },
+        "scope": "FIRST_STRENGTH_SESSION",
+        "confirmation": "REQUIRED_FOR_ANY_FUTURE_EFFECT"
+      },
+      "reasoning": {
+        "goal": {
+          "stated": [
+            "maintain running",
+            "learn basic strength"
+          ],
+          "primary": [
+            "maintain running",
+            "learn basic strength"
+          ],
+          "secondary": null,
+          "priority": "RUN_FIRST",
+          "requestIntent": "FIRST_STRENGTH_SESSION",
+          "phase": "UNKNOWN",
+          "unknownPhaseIsNotInferred": true
+        },
+        "phase": "UNKNOWN",
+        "intendedStimulus": "Movement practice with productive low-demand resistance exposure",
+        "candidates": [
+          {
+            "id": "FAMILIAR_LOW_DEMAND_ENTRY",
+            "admissible": true,
+            "why": "Practice known movements at easy effort while protecting established running",
+            "goalTradeOff": {
+              "essential": "PREFERRED",
+              "goal": "PREFERRED",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": true
+          },
+          {
+            "id": "OMIT_ALL_STRENGTH",
+            "admissible": true,
+            "why": "Defers the stated learn-strength goal despite demonstrated supported alternatives",
+            "goalTradeOff": {
+              "essential": "PREFERRED",
+              "goal": "POOR",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": false
+          },
+          {
+            "id": "REQUEST_UNESTABLISHED_LOADED_HINGE",
+            "admissible": false,
+            "why": "Unknown loaded-hinge competence cannot be inferred from equipment",
+            "goalTradeOff": {
+              "essential": "INADMISSIBLE",
+              "goal": "PREFERRED",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": false
+          }
+        ],
+        "selectedOption": "FAMILIAR_LOW_DEMAND_ENTRY",
+        "whyPreferred": "Practice known movements at easy effort while protecting established running",
+        "preserved": "Essential training intent, all completed work, official plan and unselected dose dimensions",
+        "tradeOff": "Initial exposure is intentionally below a mature strength program; increase only after observed response",
+        "uncertainty": "This is the best-supported available option under stated facts, not guaranteed physiological efficacy or universal optimality. Goal/phase remain explicitly unknown where not supplied.",
+        "nextObservation": "Actual execution, effort, technique/function and same-day/next-day recovery; reassess on incompatible response, clinical signal, changed goal/availability or authority revision"
+      },
+      "missingInputs": [],
+      "unsupportedDependency": null
+    },
+    {
+      "caseId": "REP-R2-04",
+      "sourceFactsHash": "1249f0cd701d3d2602b0ab6e3e6c10ccd9ae5f2c8d735ba57abf85b56fc0924e",
+      "coverage": "USEFUL_ASK",
+      "decisionType": "ASK",
+      "candidate": null,
+      "reasoning": null,
+      "missingInputs": [
+        "/onboarding/movementKnowledge",
+        "/reportedExposure/strength"
+      ],
+      "unsupportedDependency": "SUBSTANTIVE_MISSING_INPUT"
+    },
+    {
+      "caseId": "REP-R2-05",
+      "sourceFactsHash": "c59084a0b55757900936a15f12ec1497ea937becbf153e0e78529db06af40117",
+      "coverage": "USEFUL_ASK",
+      "decisionType": "ASK",
+      "candidate": null,
+      "reasoning": null,
+      "missingInputs": [
+        "/currentDemand/calibration"
+      ],
+      "unsupportedDependency": "SUBSTANTIVE_MISSING_INPUT"
+    },
+    {
+      "caseId": "REP-R2-06",
+      "sourceFactsHash": "b2b058dc5b68dfb755d9aab5386bce1d3864c5c6503d0a08c39cb6aade9b7bdd",
+      "coverage": "POSITIVE",
+      "decisionType": "MODIFY",
+      "candidate": {
+        "recipe": {
+          "scope": "ESTABLISHMENT_WEEK",
+          "sessions": [
+            {
+              "day": "TUE",
+              "capacityMinutes": 35,
+              "session": {
+                "modality": "RUN",
+                "family": "EASY",
+                "minutes": 20,
+                "effort": "Reported familiar conversational talk anchor",
+                "stopIfUnusualResponse": true
+              }
+            },
+            {
+              "day": "THU",
+              "capacityMinutes": 45,
+              "session": {
+                "modality": "STRENGTH",
+                "exercises": [
+                  {
+                    "exercise": "chest-supported row",
+                    "sets": 1,
+                    "reps": 5,
+                    "loadSelection": {
+                      "method": "LOWEST_FAMILIAR_OR_UNLOADED_THEN_EASY_TECHNIQUE_CHECK",
+                      "targetRirAtLeast": 3,
+                      "stopBeforeTechniqueChange": true,
+                      "noLoadConversion": true
+                    },
+                    "rest": "Until comfortable and technique ready; do not shorten rest to meet a volume target"
+                  },
+                  {
+                    "exercise": "goblet squat",
+                    "sets": 1,
+                    "reps": 5,
+                    "loadSelection": {
+                      "method": "LOWEST_FAMILIAR_OR_UNLOADED_THEN_EASY_TECHNIQUE_CHECK",
+                      "targetRirAtLeast": 3,
+                      "stopBeforeTechniqueChange": true,
+                      "noLoadConversion": true
+                    },
+                    "rest": "Until comfortable and technique ready; do not shorten rest to meet a volume target"
+                  }
+                ],
+                "preparation": "Unloaded rehearsal then easy familiar movement"
+              }
+            },
+            {
+              "day": "SUN",
+              "capacityMinutes": 50,
+              "session": {
+                "modality": "RUN",
+                "family": "EASY",
+                "minutes": 20,
+                "effort": "Reported familiar conversational talk anchor",
+                "stopIfUnusualResponse": true
+              }
+            }
+          ],
+          "priority": "BALANCED",
+          "noAutomaticProgression": true
+        },
+        "scope": "FIRST_PRODUCT_WEEK",
+        "confirmation": "REQUIRED_FOR_ANY_FUTURE_EFFECT"
+      },
+      "reasoning": {
+        "goal": {
+          "stated": [
+            "balanced recreational training"
+          ],
+          "primary": [
+            "balanced recreational training"
+          ],
+          "secondary": null,
+          "priority": "BALANCED",
+          "requestIntent": "FIRST_PRODUCT_WEEK",
+          "phase": "UNKNOWN",
+          "unknownPhaseIsNotInferred": true
+        },
+        "phase": "UNKNOWN",
+        "intendedStimulus": "Consistent entry exposure in both modalities",
+        "candidates": [
+          {
+            "id": "ENTRY_WEEK",
+            "admissible": true,
+            "why": "Use known movements and conversational exposure within available days; establish response before increasing work",
+            "goalTradeOff": {
+              "essential": "PREFERRED",
+              "goal": "PREFERRED",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": true
+          },
+          {
+            "id": "RUN_ONLY_WEEK",
+            "admissible": true,
+            "why": "Omits the stated hybrid strength objective",
+            "goalTradeOff": {
+              "essential": "PREFERRED",
+              "goal": "POOR",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": false
+          },
+          {
+            "id": "FILL_ALL_AVAILABLE_TIME",
+            "admissible": false,
+            "why": "Availability is a ceiling, not a training dose target",
+            "goalTradeOff": {
+              "essential": "INADMISSIBLE",
+              "goal": "PREFERRED",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": false
+          }
+        ],
+        "selectedOption": "ENTRY_WEEK",
+        "whyPreferred": "Use known movements and conversational exposure within available days; establish response before increasing work",
+        "preserved": "Essential training intent, all completed work, official plan and unselected dose dimensions",
+        "tradeOff": "A low-demand first week prioritizes learning tolerance over mature training volume",
+        "uncertainty": "This is the best-supported available option under stated facts, not guaranteed physiological efficacy or universal optimality. Goal/phase remain explicitly unknown where not supplied.",
+        "nextObservation": "Actual execution, effort, technique/function and same-day/next-day recovery; reassess on incompatible response, clinical signal, changed goal/availability or authority revision"
+      },
+      "missingInputs": [],
+      "unsupportedDependency": null
+    },
+    {
+      "caseId": "REP-R2-07",
+      "sourceFactsHash": "4c2ce1adf6cdea71d1ba87cd85be22d5ca89f82a1f490e64ae5d9aad59322de4",
+      "coverage": "POSITIVE",
+      "decisionType": "MODIFY",
+      "candidate": {
+        "recipe": {
+          "modality": "RUN_WALK",
+          "totalMinutes": 20,
+          "preparation": {
+            "method": "Comfortable walking",
+            "minutes": 12.5
+          },
+          "work": {
+            "repetitions": 3,
+            "jogSecondsEach": 30,
+            "walkRecoveryMinutes": 2,
+            "effort": "Comfortable complete sentences; exploratory jog, never a pace test",
+            "walkInsteadIfTalkOrFunctionDeteriorates": true
+          },
+          "previouslyReported": null,
+          "stop": "New pain, unusual symptoms or altered function ends dependent work; clinical concern routes to qualified human",
+          "intent": "Establish tolerable running exposure; current run capacity is not presumed"
+        },
+        "scope": "FIRST_RUN_SESSION",
+        "confirmation": "REQUIRED_FOR_ANY_FUTURE_EFFECT"
+      },
+      "reasoning": {
+        "goal": {
+          "stated": [
+            "learn run/walk"
+          ],
+          "primary": [
+            "learn run/walk"
+          ],
+          "secondary": null,
+          "priority": "BALANCED",
+          "requestIntent": "FIRST_RUN_SESSION",
+          "phase": "UNKNOWN",
+          "unknownPhaseIsNotInferred": true
+        },
+        "phase": "UNKNOWN",
+        "intendedStimulus": "Establish comfortable run/walk exposure",
+        "candidates": [
+          {
+            "id": "GOVERNED_RUN_WALK_ENTRY",
+            "admissible": true,
+            "why": "A small exploratory jog exposure serves learn-run/walk without presuming running capacity",
+            "goalTradeOff": {
+              "essential": "PREFERRED",
+              "goal": "PREFERRED",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": true
+          },
+          {
+            "id": "WALK_ONLY",
+            "admissible": true,
+            "why": "Comfortable walking is admissible, but does not test the requested learn-run/walk stimulus",
+            "goalTradeOff": {
+              "essential": "PREFERRED",
+              "goal": "ACCEPTABLE",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": false
+          },
+          {
+            "id": "UNFAMILIAR_HARD_RUN",
+            "admissible": false,
+            "why": "No established hard-running tolerance or calibration",
+            "goalTradeOff": {
+              "essential": "INADMISSIBLE",
+              "goal": "PREFERRED",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": false
+          }
+        ],
+        "selectedOption": "GOVERNED_RUN_WALK_ENTRY",
+        "whyPreferred": "A small exploratory jog exposure serves learn-run/walk without presuming running capacity",
+        "preserved": "Essential training intent, all completed work, official plan and unselected dose dimensions",
+        "tradeOff": "The smallest supported change is chosen before additional dose or disruption",
+        "uncertainty": "This is the best-supported available option under stated facts, not guaranteed physiological efficacy or universal optimality. Goal/phase remain explicitly unknown where not supplied.",
+        "nextObservation": "Actual execution, effort, technique/function and same-day/next-day recovery; reassess on incompatible response, clinical signal, changed goal/availability or authority revision"
+      },
+      "missingInputs": [],
+      "unsupportedDependency": null
+    },
+    {
+      "caseId": "REP-R2-08",
+      "sourceFactsHash": "d8f0a82d58c2c2a107264bde2c807d16488e4cae8202b6b938f4a13a201bf993",
+      "coverage": "USEFUL_ASK",
+      "decisionType": "ASK",
+      "candidate": null,
+      "reasoning": null,
+      "missingInputs": [
+        "/eligibility/status"
+      ],
+      "unsupportedDependency": "SUBSTANTIVE_MISSING_INPUT"
+    },
+    {
+      "caseId": "REP-R2-09",
+      "sourceFactsHash": "74c6c0328f9a384311ca6f69cacbf0ecae53699fced363a034cb5b3806078509",
+      "coverage": "POSITIVE",
+      "decisionType": "MODIFY",
+      "candidate": {
+        "recipe": {
+          "scope": "UNCOMPLETED_SUFFIX_ONLY",
+          "essential": [
+            {
+              "exercise": "goblet squat",
+              "sets": 2,
+              "reps": 8,
+              "loadKg": 18,
+              "targetRir": 3
+            },
+            {
+              "exercise": "chest-supported row",
+              "sets": 2,
+              "reps": 10,
+              "loadKgPerHand": 12,
+              "targetRir": 3
+            }
+          ],
+          "optional": [],
+          "remainingEssential": [
+            {
+              "exercise": "goblet squat",
+              "sets": 2,
+              "reps": 8,
+              "loadKg": 18,
+              "targetRir": 3
+            },
+            {
+              "exercise": "chest-supported row",
+              "sets": 2,
+              "reps": 10,
+              "loadKgPerHand": 12,
+              "targetRir": 3
+            }
+          ],
+          "completed": [],
+          "omittedRemaining": [
+            {
+              "exercise": "standing calf raise",
+              "sets": 2,
+              "reps": 10,
+              "loadKg": 20,
+              "targetRir": 3
+            }
+          ]
+        },
+        "scope": "LOCAL_FATIGUE",
+        "confirmation": "REQUIRED_FOR_ANY_FUTURE_EFFECT"
+      },
+      "reasoning": {
+        "goal": {
+          "stated": null,
+          "primary": null,
+          "secondary": null,
+          "priority": "STRENGTH_FIRST",
+          "requestIntent": "LOCAL_FATIGUE",
+          "phase": "UNKNOWN",
+          "unknownPhaseIsNotInferred": true
+        },
+        "phase": "UNKNOWN",
+        "intendedStimulus": "Preserve current essential strength stimuli and recovery for upcoming key work",
+        "candidates": [
+          {
+            "id": "OMIT_AFFECTED_OPTIONAL",
+            "admissible": true,
+            "why": "Omit only the affected optional accessory remainder; preserve all tolerated essential work and completed facts",
+            "goalTradeOff": {
+              "essential": "PREFERRED",
+              "goal": "PREFERRED",
+              "continuity": "PREFERRED",
+              "recovery": "PREFERRED",
+              "change": "PREFERRED"
+            },
+            "selected": true
+          },
+          {
+            "id": "KEEP_ALL",
+            "admissible": true,
+            "why": "Known recipe remains possible but adds unnecessary local fatigue despite a legitimate request",
+            "goalTradeOff": {
+              "essential": "PREFERRED",
+              "goal": "PREFERRED",
+              "continuity": "PREFERRED",
+              "recovery": "POOR",
+              "change": "ACCEPTABLE"
+            },
+            "selected": false
+          },
+          {
+            "id": "CANCEL_SESSION",
+            "admissible": true,
+            "why": "Needlessly removes essential strength stimulus",
+            "goalTradeOff": {
+              "essential": "POOR",
+              "goal": "POOR",
+              "continuity": "PREFERRED",
+              "recovery": "PREFERRED",
+              "change": "ACCEPTABLE"
+            },
+            "selected": false
+          }
+        ],
+        "selectedOption": "OMIT_AFFECTED_OPTIONAL",
+        "whyPreferred": "Omit only the affected optional accessory remainder; preserve all tolerated essential work and completed facts",
+        "preserved": "Essential training intent, all completed work, official plan and unselected dose dimensions",
+        "tradeOff": "Skip a dispensable accessory stimulus today; do not compensate later",
+        "uncertainty": "This is the best-supported available option under stated facts, not guaranteed physiological efficacy or universal optimality. Goal/phase remain explicitly unknown where not supplied.",
+        "nextObservation": "Actual execution, effort, technique/function and same-day/next-day recovery; reassess on incompatible response, clinical signal, changed goal/availability or authority revision"
+      },
+      "missingInputs": [],
+      "unsupportedDependency": null
+    },
+    {
+      "caseId": "REP-R2-10",
+      "sourceFactsHash": "a78ced31366cb38abb6b8a646da283626aa65772686bff32e6655836254b838f",
+      "coverage": "POSITIVE",
+      "decisionType": "MODIFY",
+      "candidate": {
+        "recipe": {
+          "scope": "UNCOMPLETED_SUFFIX_ONLY",
+          "completedPrefix": {
+            "repetitions": 2,
+            "actualWorkMinutes": [
+              5,
+              3
+            ]
+          },
+          "remainingHardRepetitions": 0,
+          "easyExit": {
+            "maximumMinutes": 5,
+            "method": "Comfortable walking or very easy jogging only if current function remains normal; otherwise end session"
+          },
+          "restoreMissedWork": false
+        },
+        "scope": "SYSTEMIC_FATIGUE",
+        "confirmation": "REQUIRED_FOR_ANY_FUTURE_EFFECT"
+      },
+      "reasoning": {
+        "goal": {
+          "stated": null,
+          "primary": null,
+          "secondary": null,
+          "priority": "RUN_FIRST",
+          "requestIntent": "SYSTEMIC_FATIGUE",
+          "phase": "UNKNOWN",
+          "unknownPhaseIsNotInferred": true
+        },
+        "phase": "UNKNOWN",
+        "intendedStimulus": "Protect future key training while retaining the actual useful work already completed",
+        "candidates": [
+          {
+            "id": "END_HARD_WORK",
+            "admissible": true,
+            "why": "A voluntarily early-ended rep plus converging systemic response makes more hard work an avoidable cost; preserve future quality",
+            "goalTradeOff": {
+              "essential": "PREFERRED",
+              "goal": "PREFERRED",
+              "continuity": "PREFERRED",
+              "recovery": "PREFERRED",
+              "change": "PREFERRED"
+            },
+            "selected": true
+          },
+          {
+            "id": "FORCE_ANOTHER_FULL_REPETITION",
+            "admissible": false,
+            "why": "The last repetition could not sustain usual effort; deleting a later rep does not justify forcing the next one",
+            "goalTradeOff": {
+              "essential": "INADMISSIBLE",
+              "goal": "PREFERRED",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": false
+          },
+          {
+            "id": "RESTORE_COMPLETED_TO_PLANNED",
+            "admissible": false,
+            "why": "Completed work cannot be rewritten",
+            "goalTradeOff": {
+              "essential": "INADMISSIBLE",
+              "goal": "PREFERRED",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": false
+          }
+        ],
+        "selectedOption": "END_HARD_WORK",
+        "whyPreferred": "A voluntarily early-ended rep plus converging systemic response makes more hard work an avoidable cost; preserve future quality",
+        "preserved": "Essential training intent, all completed work, official plan and unselected dose dimensions",
+        "tradeOff": "Less cruise work today is accepted to avoid low-quality additional stress; no completion-at-any-cost rule",
+        "uncertainty": "This is the best-supported available option under stated facts, not guaranteed physiological efficacy or universal optimality. Goal/phase remain explicitly unknown where not supplied.",
+        "nextObservation": "Current symptoms/function and next-day recovery before resuming future key work"
+      },
+      "missingInputs": [],
+      "unsupportedDependency": null
+    },
+    {
+      "caseId": "REP-R2-11",
+      "sourceFactsHash": "cbd424a296d809668a2dd1f089a5fb856ce6fbf57d284a33131e3b7359d0fbf7",
+      "coverage": "POSITIVE",
+      "decisionType": "MODIFY",
+      "candidate": {
+        "recipe": {
+          "exercise": "chest-supported dumbbell row",
+          "sets": 2,
+          "reps": 9,
+          "loadKgPerHand": 12,
+          "targetRir": 3,
+          "restSeconds": 120
+        },
+        "scope": "NEXT_STRENGTH_SESSION",
+        "confirmation": "REQUIRED_FOR_ANY_FUTURE_EFFECT"
+      },
+      "reasoning": {
+        "goal": {
+          "stated": null,
+          "primary": null,
+          "secondary": null,
+          "priority": "STRENGTH_FIRST",
+          "requestIntent": "NEXT_STRENGTH_SESSION",
+          "phase": "UNKNOWN",
+          "unknownPhaseIsNotInferred": true
+        },
+        "phase": "UNKNOWN",
+        "intendedStimulus": "Progress the familiar strength stimulus without unnecessary disruption",
+        "candidates": [
+          {
+            "id": "EARNED_MINIMUM_PROGRESSION",
+            "admissible": true,
+            "why": "Repeated easy comparable completion and prior compatible candidate support a one-dimension step",
+            "goalTradeOff": {
+              "essential": "PREFERRED",
+              "goal": "PREFERRED",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": true
+          },
+          {
+            "id": "KEEP_BASE",
+            "admissible": true,
+            "why": "Admissible continuity, but repeated excess reserve under-serves the requested strength progression",
+            "goalTradeOff": {
+              "essential": "PREFERRED",
+              "goal": "ACCEPTABLE",
+              "continuity": "PREFERRED",
+              "recovery": "PREFERRED",
+              "change": "PREFERRED"
+            },
+            "selected": false
+          },
+          {
+            "id": "CHANGE_MULTIPLE_DIMENSIONS",
+            "admissible": false,
+            "why": "More disruption than the available sufficient one-dimension change",
+            "goalTradeOff": {
+              "essential": "INADMISSIBLE",
+              "goal": "PREFERRED",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": false
+          }
+        ],
+        "selectedOption": "EARNED_MINIMUM_PROGRESSION",
+        "whyPreferred": "Repeated easy comparable completion and prior compatible candidate support a one-dimension step",
+        "preserved": "Essential training intent, all completed work, official plan and unselected dose dimensions",
+        "tradeOff": "Slightly more work; no extra set, load or concurrent run escalation",
+        "uncertainty": "This is the best-supported available option under stated facts, not guaranteed physiological efficacy or universal optimality. Goal/phase remain explicitly unknown where not supplied.",
+        "nextObservation": "Actual execution, effort, technique/function and same-day/next-day recovery; reassess on incompatible response, clinical signal, changed goal/availability or authority revision"
+      },
+      "missingInputs": [],
+      "unsupportedDependency": null
+    },
+    {
+      "caseId": "REP-R2-12",
+      "sourceFactsHash": "33c7212f9bd29179d3f9e4537ca33e3207623d6d9755afc7fad255f40146e257",
+      "coverage": "POSITIVE",
+      "decisionType": "MODIFY",
+      "candidate": {
+        "recipe": {
+          "exercise": "goblet squat",
+          "sets": 3,
+          "reps": 8,
+          "loadKg": 22,
+          "targetRir": 3,
+          "rest": "Plan approximately 2 minutes between work sets, then wait until effort and technique are ready; extend rest or reassess remaining work if actual time no longer fits. This is an operational choice, not a physiological threshold."
+        },
+        "scope": "NEXT_STRENGTH_SESSION",
+        "confirmation": "REQUIRED_FOR_ANY_FUTURE_EFFECT"
+      },
+      "reasoning": {
+        "goal": {
+          "stated": null,
+          "primary": null,
+          "secondary": null,
+          "priority": "STRENGTH_FIRST",
+          "requestIntent": "NEXT_STRENGTH_SESSION",
+          "phase": "UNKNOWN",
+          "unknownPhaseIsNotInferred": true
+        },
+        "phase": "UNKNOWN",
+        "intendedStimulus": "Restore intended quality and reserve for future strength development",
+        "candidates": [
+          {
+            "id": "SMALLEST_FAMILIAR_REGRESSION",
+            "admissible": true,
+            "why": "Convergent target misses warrant the smallest familiar load reduction while preserving sets/reps",
+            "goalTradeOff": {
+              "essential": "PREFERRED",
+              "goal": "PREFERRED",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": true
+          },
+          {
+            "id": "KEEP_BASE",
+            "admissible": true,
+            "why": "Repeated mismatch would remain unresolved",
+            "goalTradeOff": {
+              "essential": "PREFERRED",
+              "goal": "POOR",
+              "continuity": "PREFERRED",
+              "recovery": "POOR",
+              "change": "PREFERRED"
+            },
+            "selected": false
+          },
+          {
+            "id": "CHANGE_MULTIPLE_DIMENSIONS",
+            "admissible": false,
+            "why": "More disruption than the available sufficient one-dimension change",
+            "goalTradeOff": {
+              "essential": "INADMISSIBLE",
+              "goal": "PREFERRED",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": false
+          }
+        ],
+        "selectedOption": "SMALLEST_FAMILIAR_REGRESSION",
+        "whyPreferred": "Convergent target misses warrant the smallest familiar load reduction while preserving sets/reps",
+        "preserved": "Essential training intent, all completed work, official plan and unselected dose dimensions",
+        "tradeOff": "Lower external load preserves useful execution and recovery rather than forcing missed targets",
+        "uncertainty": "This is the best-supported available option under stated facts, not guaranteed physiological efficacy or universal optimality. Goal/phase remain explicitly unknown where not supplied.",
+        "nextObservation": "Actual execution, effort, technique/function and same-day/next-day recovery; reassess on incompatible response, clinical signal, changed goal/availability or authority revision"
+      },
+      "missingInputs": [],
+      "unsupportedDependency": null
+    },
+    {
+      "caseId": "REP-R2-13",
+      "sourceFactsHash": "c6d6b3d74d826971ddd74ca16dbeefc83a5cb20e9e399dcb2ca3474933bbe9b5",
+      "coverage": "KEEP",
+      "decisionType": "KEEP",
+      "candidate": null,
+      "reasoning": null,
+      "missingInputs": [],
+      "unsupportedDependency": null
+    },
+    {
+      "caseId": "REP-R2-14",
+      "sourceFactsHash": "0ad64e3961241376a21609679f4c99cc8987fadfd5b591dc337427e43914d107",
+      "coverage": "KEEP",
+      "decisionType": "KEEP",
+      "candidate": null,
+      "reasoning": null,
+      "missingInputs": [],
+      "unsupportedDependency": null
+    },
+    {
+      "caseId": "REP-R2-15",
+      "sourceFactsHash": "067ea884bec795283dffa48fd7349dd567b7feef168980ce59b46334022f629b",
+      "coverage": "POSITIVE",
+      "decisionType": "MODIFY",
+      "candidate": {
+        "recipe": {
+          "scope": "SCHEDULE_ONLY",
+          "sessions": [
+            {
+              "modality": "run",
+              "day": "THU",
+              "start": "18:00",
+              "durationMinutes": 40,
+              "family": "CRUISE",
+              "sourcePrescription": "UNCHANGED_ORIGINAL_RUN",
+              "role": "KEY"
+            },
+            {
+              "modality": "strength",
+              "day": "FRI",
+              "start": "17:00",
+              "durationMinutes": 45,
+              "family": "LOWER",
+              "sourcePrescription": "UNCHANGED_ORIGINAL_STRENGTH",
+              "role": "MAINTENANCE"
+            }
+          ],
+          "noDoseChange": true
+        },
+        "scope": "ACUTE_INTERFERENCE_AND_SCHEDULE_CONFLICT",
+        "confirmation": "REQUIRED_FOR_ANY_FUTURE_EFFECT"
+      },
+      "reasoning": {
+        "goal": {
+          "stated": null,
+          "primary": null,
+          "secondary": null,
+          "priority": "RUN_FIRST",
+          "requestIntent": "ACUTE_INTERFERENCE_AND_SCHEDULE_CONFLICT",
+          "phase": "UNKNOWN",
+          "unknownPhaseIsNotInferred": true
+        },
+        "phase": "UNKNOWN",
+        "intendedStimulus": "Retain both familiar stimuli while preserving priority key placement",
+        "candidates": [
+          {
+            "id": "MOVE_STRENGTH_FRI",
+            "admissible": true,
+            "why": "Preserve priority/key placement and move the secondary familiar session into a valid window",
+            "goalTradeOff": {
+              "essential": "PREFERRED",
+              "goal": "PREFERRED",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "PREFERRED"
+            },
+            "selected": true
+          },
+          {
+            "id": "MOVE_RUN_FRI",
+            "admissible": true,
+            "why": "Feasible, but moves the key priority session despite a valid secondary-session move",
+            "goalTradeOff": {
+              "essential": "PREFERRED",
+              "goal": "ACCEPTABLE",
+              "continuity": "ACCEPTABLE",
+              "recovery": "ACCEPTABLE",
+              "change": "PREFERRED"
+            },
+            "selected": false
+          }
+        ],
+        "selectedOption": "MOVE_STRENGTH_FRI",
+        "whyPreferred": "Preserve priority/key placement and move the secondary familiar session into a valid window",
+        "preserved": "Essential training intent, all completed work, official plan and unselected dose dimensions",
+        "tradeOff": "Move the secondary session by a day; no universal spacing threshold or guaranteed interference benefit",
+        "uncertainty": "This is the best-supported available option under stated facts, not guaranteed physiological efficacy or universal optimality. Goal/phase remain explicitly unknown where not supplied.",
+        "nextObservation": "Execution quality and recovery after the rearranged pair"
+      },
+      "missingInputs": [],
+      "unsupportedDependency": null
+    },
+    {
+      "caseId": "REP-R2-16",
+      "sourceFactsHash": "a39f41e64a56c743f33f2b6914947a414844015c01d63d85ef0f692fca44cc3d",
+      "coverage": "POSITIVE",
+      "decisionType": "MODIFY",
+      "candidate": {
+        "recipe": {
+          "scope": "SCHEDULE_ONLY",
+          "sessions": [
+            {
+              "modality": "run",
+              "day": "FRI",
+              "start": "17:00",
+              "durationMinutes": 40,
+              "family": "CRUISE",
+              "sourcePrescription": "UNCHANGED_ORIGINAL_RUN",
+              "role": "SECONDARY"
+            },
+            {
+              "modality": "strength",
+              "day": "THU",
+              "start": "18:00",
+              "durationMinutes": 45,
+              "family": "LOWER",
+              "sourcePrescription": "UNCHANGED_ORIGINAL_STRENGTH",
+              "role": "KEY"
+            }
+          ],
+          "noDoseChange": true
+        },
+        "scope": "ACUTE_INTERFERENCE_AND_SCHEDULE_CONFLICT",
+        "confirmation": "REQUIRED_FOR_ANY_FUTURE_EFFECT"
+      },
+      "reasoning": {
+        "goal": {
+          "stated": null,
+          "primary": null,
+          "secondary": null,
+          "priority": "STRENGTH_FIRST",
+          "requestIntent": "ACUTE_INTERFERENCE_AND_SCHEDULE_CONFLICT",
+          "phase": "UNKNOWN",
+          "unknownPhaseIsNotInferred": true
+        },
+        "phase": "UNKNOWN",
+        "intendedStimulus": "Retain both familiar stimuli while preserving priority key placement",
+        "candidates": [
+          {
+            "id": "MOVE_RUN_FRI",
+            "admissible": true,
+            "why": "Preserve priority/key placement and move the secondary familiar session into a valid window",
+            "goalTradeOff": {
+              "essential": "PREFERRED",
+              "goal": "PREFERRED",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "PREFERRED"
+            },
+            "selected": true
+          },
+          {
+            "id": "MOVE_STRENGTH_FRI",
+            "admissible": true,
+            "why": "Feasible, but moves the key priority session despite a valid secondary-session move",
+            "goalTradeOff": {
+              "essential": "PREFERRED",
+              "goal": "ACCEPTABLE",
+              "continuity": "ACCEPTABLE",
+              "recovery": "ACCEPTABLE",
+              "change": "PREFERRED"
+            },
+            "selected": false
+          }
+        ],
+        "selectedOption": "MOVE_RUN_FRI",
+        "whyPreferred": "Preserve priority/key placement and move the secondary familiar session into a valid window",
+        "preserved": "Essential training intent, all completed work, official plan and unselected dose dimensions",
+        "tradeOff": "Move the secondary session by a day; no universal spacing threshold or guaranteed interference benefit",
+        "uncertainty": "This is the best-supported available option under stated facts, not guaranteed physiological efficacy or universal optimality. Goal/phase remain explicitly unknown where not supplied.",
+        "nextObservation": "Execution quality and recovery after the rearranged pair"
+      },
+      "missingInputs": [],
+      "unsupportedDependency": null
+    },
+    {
+      "caseId": "REP-R2-17",
+      "sourceFactsHash": "a762d778563e435fc500388fc2104764d349aaa1328d8c6d5821d78d279fab96",
+      "coverage": "USEFUL_ASK",
+      "decisionType": "ASK",
+      "candidate": null,
+      "reasoning": null,
+      "missingInputs": [
+        "/population/dataTier",
+        "/wearable/type"
+      ],
+      "unsupportedDependency": "SUBSTANTIVE_MISSING_INPUT"
+    },
+    {
+      "caseId": "REP-R2-18",
+      "sourceFactsHash": "3255f8ff5b0c427fa7ef09e680974cc2f926d4a036ebb2f5271bca888e7f4525",
+      "coverage": "USEFUL_ASK",
+      "decisionType": "ASK",
+      "candidate": null,
+      "reasoning": null,
+      "missingInputs": [
+        "/currentDemand/requested/loadKgPerHand"
+      ],
+      "unsupportedDependency": "SUBSTANTIVE_MISSING_INPUT"
+    },
+    {
+      "caseId": "REP-R2-19",
+      "sourceFactsHash": "85772a0ae5bfd6ed9f092943a39c0cbd00178bc3b9b013e22531f9d3f1e4fd15",
+      "coverage": "POSITIVE",
+      "decisionType": "MODIFY",
+      "candidate": {
+        "recipe": {
+          "family": "EASY_REESTABLISHMENT",
+          "maximumMinutes": 15,
+          "effort": "Comfortable complete sentences; begin walking, introduce short easy jogs only while comfortable",
+          "walkBreaks": "As needed; total time is a ceiling, not an obligation",
+          "noRestoredCapacityClaim": true,
+          "noAutomaticProgression": true
+        },
+        "scope": "FIRST_RETURN_SESSION",
+        "confirmation": "REQUIRED_FOR_ANY_FUTURE_EFFECT"
+      },
+      "reasoning": {
+        "goal": {
+          "stated": null,
+          "primary": null,
+          "secondary": null,
+          "priority": "RUN_FIRST",
+          "requestIntent": "FIRST_RETURN_SESSION",
+          "phase": "UNKNOWN",
+          "unknownPhaseIsNotInferred": true
+        },
+        "phase": "UNKNOWN",
+        "intendedStimulus": "Re-establish current easy tolerance without restoring prior capacity",
+        "candidates": [
+          {
+            "id": "GOVERNED_LOW_DEMAND_REENTRY",
+            "admissible": true,
+            "why": "Use a lower-demand reversible trial instead of requiring current performance before any safe establishment action",
+            "goalTradeOff": {
+              "essential": "PREFERRED",
+              "goal": "PREFERRED",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": true
+          },
+          {
+            "id": "DEFER_ALL_TRAINING",
+            "admissible": true,
+            "why": "No clinical dependency or impaired ordinary function supports complete deferral",
+            "goalTradeOff": {
+              "essential": "PREFERRED",
+              "goal": "POOR",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": false
+          },
+          {
+            "id": "RESTORE_FORMER_LONG_OR_CRUISE",
+            "admissible": false,
+            "why": "Former tolerance and elapsed days do not establish current readiness",
+            "goalTradeOff": {
+              "essential": "INADMISSIBLE",
+              "goal": "PREFERRED",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": false
+          }
+        ],
+        "selectedOption": "GOVERNED_LOW_DEMAND_REENTRY",
+        "whyPreferred": "Use a lower-demand reversible trial instead of requiring current performance before any safe establishment action",
+        "preserved": "Essential training intent, all completed work, official plan and unselected dose dimensions",
+        "tradeOff": "Lower training stimulus today purchases current individual response evidence",
+        "uncertainty": "This is the best-supported available option under stated facts, not guaranteed physiological efficacy or universal optimality. Goal/phase remain explicitly unknown where not supplied.",
+        "nextObservation": "Actual execution, effort, technique/function and same-day/next-day recovery; reassess on incompatible response, clinical signal, changed goal/availability or authority revision"
+      },
+      "missingInputs": [],
+      "unsupportedDependency": null
+    },
+    {
+      "caseId": "REP-R2-20",
+      "sourceFactsHash": "13f2f14cde5dbcb734805fbf1285e8718da2d2207f98ea0eccbe5399b32630d0",
+      "coverage": "POSITIVE",
+      "decisionType": "MODIFY",
+      "candidate": {
+        "recipe": {
+          "exercise": "goblet squat",
+          "sets": 1,
+          "reps": 8,
+          "targetRirAtLeast": 4,
+          "loadSelection": {
+            "method": "Begin unloaded rehearsal, then select easy familiar load only if technique and reserve remain appropriate",
+            "ceilingKg": 16,
+            "noAutomaticRestoration": true
+          },
+          "stopIfTechniqueOrFunctionChanges": true
+        },
+        "scope": "FIRST_RETURN_STRENGTH",
+        "confirmation": "REQUIRED_FOR_ANY_FUTURE_EFFECT"
+      },
+      "reasoning": {
+        "goal": {
+          "stated": null,
+          "primary": null,
+          "secondary": null,
+          "priority": "STRENGTH_FIRST",
+          "requestIntent": "FIRST_RETURN_STRENGTH",
+          "phase": "UNKNOWN",
+          "unknownPhaseIsNotInferred": true
+        },
+        "phase": "UNKNOWN",
+        "intendedStimulus": "Re-establish technically controlled strength exposure",
+        "candidates": [
+          {
+            "id": "LOW_DEMAND_STRENGTH_REENTRY",
+            "admissible": true,
+            "why": "Use the previously familiar low-demand configuration as a ceiling, not proof of current capacity",
+            "goalTradeOff": {
+              "essential": "PREFERRED",
+              "goal": "PREFERRED",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": true
+          },
+          {
+            "id": "RESTORE_FORMER_LOADS",
+            "admissible": false,
+            "why": "No current compatible execution supports restoration",
+            "goalTradeOff": {
+              "essential": "INADMISSIBLE",
+              "goal": "PREFERRED",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": false
+          }
+        ],
+        "selectedOption": "LOW_DEMAND_STRENGTH_REENTRY",
+        "whyPreferred": "Use the previously familiar low-demand configuration as a ceiling, not proof of current capacity",
+        "preserved": "Essential training intent, all completed work, official plan and unselected dose dimensions",
+        "tradeOff": "The smallest supported change is chosen before additional dose or disruption",
+        "uncertainty": "This is the best-supported available option under stated facts, not guaranteed physiological efficacy or universal optimality. Goal/phase remain explicitly unknown where not supplied.",
+        "nextObservation": "Actual execution, effort, technique/function and same-day/next-day recovery; reassess on incompatible response, clinical signal, changed goal/availability or authority revision"
+      },
+      "missingInputs": [],
+      "unsupportedDependency": null
+    },
+    {
+      "caseId": "REP-R2-21",
+      "sourceFactsHash": "6c1049078998f4670c456017b28fb69dc2776d236d116839036af21c03a8569a",
+      "coverage": "POSITIVE",
+      "decisionType": "MODIFY",
+      "candidate": {
+        "recipe": {
+          "scope": "RETURN_WEEK",
+          "sessions": [
+            {
+              "day": "TUE",
+              "capacityMinutes": 30,
+              "requires": "Current nonclinical eligibility",
+              "session": {
+                "modality": "RUN_WALK",
+                "maximumMinutes": 15,
+                "effort": "Comfortable conversational; walk freely"
+              }
+            },
+            {
+              "day": "THU",
+              "capacityMinutes": 30,
+              "requires": "Compatible response to first entry and current normal function",
+              "session": {
+                "modality": "STRENGTH",
+                "exercise": "supported row and unloaded sit-to-stand",
+                "setsEach": 1,
+                "reps": 5,
+                "loadSelection": "Unloaded or lowest familiar load maintaining easy technique and at least 4 repetitions in reserve"
+              }
+            }
+          ],
+          "remainingDays": "Rest or ordinary comfortable walking; review before adding training",
+          "noAutomaticRestoration": true
+        },
+        "scope": "RETURN_WEEK",
+        "confirmation": "REQUIRED_FOR_ANY_FUTURE_EFFECT"
+      },
+      "reasoning": {
+        "goal": {
+          "stated": null,
+          "primary": null,
+          "secondary": null,
+          "priority": "BALANCED",
+          "requestIntent": "RETURN_WEEK",
+          "phase": "UNKNOWN",
+          "unknownPhaseIsNotInferred": true
+        },
+        "phase": "UNKNOWN",
+        "intendedStimulus": "Re-establish response to both familiar modalities",
+        "candidates": [
+          {
+            "id": "CONDITIONAL_REENTRY_WEEK",
+            "admissible": true,
+            "why": "Re-establish both modalities with response checkpoints rather than jumping to former frequency",
+            "goalTradeOff": {
+              "essential": "PREFERRED",
+              "goal": "PREFERRED",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": true
+          },
+          {
+            "id": "RESTORE_FORMER_WEEK",
+            "admissible": false,
+            "why": "Former frequency does not establish current capacity",
+            "goalTradeOff": {
+              "essential": "INADMISSIBLE",
+              "goal": "PREFERRED",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": false
+          }
+        ],
+        "selectedOption": "CONDITIONAL_REENTRY_WEEK",
+        "whyPreferred": "Re-establish both modalities with response checkpoints rather than jumping to former frequency",
+        "preserved": "Essential training intent, all completed work, official plan and unselected dose dimensions",
+        "tradeOff": "A staged entry week provides less dose than the former plan and avoids claiming restored capacity",
+        "uncertainty": "This is the best-supported available option under stated facts, not guaranteed physiological efficacy or universal optimality. Goal/phase remain explicitly unknown where not supplied.",
+        "nextObservation": "Actual execution, effort, technique/function and same-day/next-day recovery; reassess on incompatible response, clinical signal, changed goal/availability or authority revision"
+      },
+      "missingInputs": [],
+      "unsupportedDependency": null
+    },
+    {
+      "caseId": "REP-R2-22",
+      "sourceFactsHash": "30880ba52a7fd390dbdcda591903cb94724201e554db8f3859a7e9e9d8ce2f90",
+      "coverage": "USEFUL_ASK",
+      "decisionType": "ASK",
+      "candidate": null,
+      "reasoning": null,
+      "missingInputs": [
+        "/interruption/reason",
+        "/interruption/nonclinical",
+        "/observations/currentRestrictions"
+      ],
+      "unsupportedDependency": "SUBSTANTIVE_MISSING_INPUT"
+    },
+    {
+      "caseId": "REP-R2-23",
+      "sourceFactsHash": "d0ab3ce512308d23f408f5d4b7e116045044d4115c5ed99a61c05d34746d3d5b",
+      "coverage": "HOLD",
+      "decisionType": "HOLD",
+      "candidate": null,
+      "reasoning": null,
+      "missingInputs": [],
+      "unsupportedDependency": "CURRENT_REENTRY_REASSESSMENT"
+    },
+    {
+      "caseId": "REP-R2-25",
+      "sourceFactsHash": "97612d911214115cf99c180fa656a6152e24aebcc46661a1b4e7eae12daf6990",
+      "coverage": "NOT_SUPPORTED_SCIENCE",
+      "decisionType": "HOLD",
+      "candidate": null,
+      "reasoning": null,
+      "missingInputs": [],
+      "unsupportedDependency": "JOINT_HYBRID_TAPER_RECIPE"
+    },
+    {
+      "caseId": "REP-R2-26",
+      "sourceFactsHash": "d3c6bdbf97da23d3e860e0fecef4f1ace214cecfbf8e96af476070ddce67b1c2",
+      "coverage": "NOT_SUPPORTED_SCIENCE",
+      "decisionType": "HOLD",
+      "candidate": null,
+      "reasoning": null,
+      "missingInputs": [],
+      "unsupportedDependency": "JOINT_HYBRID_TAPER_RECIPE"
+    },
+    {
+      "caseId": "REP-R2-27",
+      "sourceFactsHash": "134120bf3188c57757d7736242c095eca69a2a916cfb88a05226beff1e184d6a",
+      "coverage": "NOT_SUPPORTED_SCIENCE",
+      "decisionType": "HOLD",
+      "candidate": null,
+      "reasoning": null,
+      "missingInputs": [],
+      "unsupportedDependency": "JOINT_HYBRID_TAPER_RECIPE"
+    },
+    {
+      "caseId": "REP-R2-28",
+      "sourceFactsHash": "ba614a298237b3a6a35249827f34f33d2f63b85b5836896cdff56da00835c8ed",
+      "coverage": "USEFUL_ASK",
+      "decisionType": "ASK",
+      "candidate": null,
+      "reasoning": null,
+      "missingInputs": [
+        "/priorHistory/run/longestRecentRun",
+        "/calibration/halfMarathonPace"
+      ],
+      "unsupportedDependency": "SUBSTANTIVE_MISSING_INPUT"
+    },
+    {
+      "caseId": "REP-R2-29",
+      "sourceFactsHash": "2f4f205712a8524b41e91d320979a433a1a6a70aeb236797bbbee6c7f6b00487",
+      "coverage": "USEFUL_ASK",
+      "decisionType": "ASK",
+      "candidate": null,
+      "reasoning": null,
+      "missingInputs": [
+        "/observations/postEventSymptoms",
+        "/observations/currentFunction",
+        "/observations/subjectiveRecovery"
+      ],
+      "unsupportedDependency": "SUBSTANTIVE_MISSING_INPUT"
+    },
+    {
+      "caseId": "REP-R2-31",
+      "sourceFactsHash": "f1b38621f88aa8975f20d498b31462ba6e63c74a452eeb8a74a7f74f7077dda1",
+      "coverage": "POSITIVE",
+      "decisionType": "MODIFY",
+      "candidate": {
+        "recipe": {
+          "family": "EASY",
+          "minutes": 20,
+          "target": {
+            "method": "TALK_RPE",
+            "anchor": "comfortable full sentences",
+            "noPhysiologicalZoneClaim": true
+          }
+        },
+        "scope": "RUN_CALIBRATION",
+        "confirmation": "REQUIRED_FOR_ANY_FUTURE_EFFECT"
+      },
+      "reasoning": {
+        "goal": {
+          "stated": null,
+          "primary": null,
+          "secondary": null,
+          "priority": "STRENGTH_FIRST",
+          "requestIntent": "RUN_CALIBRATION",
+          "phase": "UNKNOWN",
+          "unknownPhaseIsNotInferred": true
+        },
+        "phase": "UNKNOWN",
+        "intendedStimulus": "Comfortable familiar aerobic exposure",
+        "candidates": [
+          {
+            "id": "FAMILIAR_CONVERSATIONAL_EASY",
+            "admissible": true,
+            "why": "Repeat recent compatible exposure using the athlete’s familiar effort anchor",
+            "goalTradeOff": {
+              "essential": "PREFERRED",
+              "goal": "PREFERRED",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": true
+          },
+          {
+            "id": "INVENT_HR_OR_LAB_ZONE",
+            "admissible": false,
+            "why": "No measured individual physiological calibration",
+            "goalTradeOff": {
+              "essential": "INADMISSIBLE",
+              "goal": "PREFERRED",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": false
+          }
+        ],
+        "selectedOption": "FAMILIAR_CONVERSATIONAL_EASY",
+        "whyPreferred": "Repeat recent compatible exposure using the athlete’s familiar effort anchor",
+        "preserved": "Essential training intent, all completed work, official plan and unselected dose dimensions",
+        "tradeOff": "The smallest supported change is chosen before additional dose or disruption",
+        "uncertainty": "This is the best-supported available option under stated facts, not guaranteed physiological efficacy or universal optimality. Goal/phase remain explicitly unknown where not supplied.",
+        "nextObservation": "Actual execution, effort, technique/function and same-day/next-day recovery; reassess on incompatible response, clinical signal, changed goal/availability or authority revision"
+      },
+      "missingInputs": [],
+      "unsupportedDependency": null
+    },
+    {
+      "caseId": "REP-R2-32",
+      "sourceFactsHash": "a7ae3766825cdd3269c7ac748917183ad79110828280a139f69f3bf49f8359f0",
+      "coverage": "USEFUL_ASK",
+      "decisionType": "ASK",
+      "candidate": null,
+      "reasoning": null,
+      "missingInputs": [
+        "/calibration/recoveryDistinctConstruct",
+        "/observations/needForSeparateRecoveryIntent"
+      ],
+      "unsupportedDependency": "SUBSTANTIVE_MISSING_INPUT"
+    },
+    {
+      "caseId": "REP-R2-33",
+      "sourceFactsHash": "f2e5b3e9378e8f5632fb53daf9029720f3329c5a8c4a398ecd6f2534d12235c1",
+      "coverage": "POSITIVE",
+      "decisionType": "MODIFY",
+      "candidate": {
+        "recipe": {
+          "family": "STEADY",
+          "warmup": {
+            "minutes": 10,
+            "effort": "Comfortable conversational; walk if needed"
+          },
+          "work": {
+            "warmupMinutes": 10,
+            "workMinutes": 15,
+            "cooldownMinutes": 5,
+            "paceSecondsPerKm": 355,
+            "subjective": "purposeful but controlled, shorter comfortable phrases",
+            "response": "compatible"
+          },
+          "cooldown": {
+            "minutes": 5,
+            "effort": "Very easy conversational or walk"
+          },
+          "calibration": {
+            "method": "familiar pace cross-checked with familiar effort",
+            "claim": "Familiar task/effort anchor, not a measured physiological boundary"
+          },
+          "stopIfEffortPaceDiverge": true
+        },
+        "scope": "RUN_CALIBRATION",
+        "confirmation": "REQUIRED_FOR_ANY_FUTURE_EFFECT"
+      },
+      "reasoning": {
+        "goal": {
+          "stated": null,
+          "primary": null,
+          "secondary": null,
+          "priority": "RUN_FIRST",
+          "requestIntent": "RUN_CALIBRATION",
+          "phase": "UNKNOWN",
+          "unknownPhaseIsNotInferred": true
+        },
+        "phase": "UNKNOWN",
+        "intendedStimulus": "Controlled familiar steady work",
+        "candidates": [
+          {
+            "id": "COMPOSE_FAMILIAR_WORK_SESSION",
+            "admissible": true,
+            "why": "Retain the familiar compatible task and compose reviewed easy preparation/cooldown rather than demand a paper for exact minutes",
+            "goalTradeOff": {
+              "essential": "PREFERRED",
+              "goal": "PREFERRED",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": true
+          },
+          {
+            "id": "EASY_ONLY",
+            "admissible": true,
+            "why": "Useful aerobic exposure but omits the requested supported specific stimulus",
+            "goalTradeOff": {
+              "essential": "PREFERRED",
+              "goal": "POOR",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": false
+          },
+          {
+            "id": "AUTOMATIC_WORK_PROGRESSION",
+            "admissible": false,
+            "why": "No explicit earned progression or need is supplied",
+            "goalTradeOff": {
+              "essential": "INADMISSIBLE",
+              "goal": "PREFERRED",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": false
+          }
+        ],
+        "selectedOption": "COMPOSE_FAMILIAR_WORK_SESSION",
+        "whyPreferred": "Retain the familiar compatible task and compose reviewed easy preparation/cooldown rather than demand a paper for exact minutes",
+        "preserved": "Essential training intent, all completed work, official plan and unselected dose dimensions",
+        "tradeOff": "Preparation/cooldown are new governed selections where history is silent; no claim of previously demonstrated full-session tolerance",
+        "uncertainty": "Familiar work does not guarantee today’s response; preparation is an active checkpoint",
+        "nextObservation": "Actual execution, effort, technique/function and same-day/next-day recovery; reassess on incompatible response, clinical signal, changed goal/availability or authority revision"
+      },
+      "missingInputs": [],
+      "unsupportedDependency": null
+    },
+    {
+      "caseId": "REP-R2-34",
+      "sourceFactsHash": "62ccba3d51af52531880bb46440cf39a1692ce040551e8080f81a4a64d5c2395",
+      "coverage": "POSITIVE",
+      "decisionType": "MODIFY",
+      "candidate": {
+        "recipe": {
+          "family": "THRESHOLD_CRUISE",
+          "warmup": {
+            "minutes": 10,
+            "effort": "Comfortable conversational; walk if needed"
+          },
+          "work": {
+            "repetitions": 3,
+            "workMinutesEach": 5,
+            "recoveryMinutes": 2,
+            "paceSecondsPerKm": 330,
+            "effort": "familiar controlled hard",
+            "response": "compatible"
+          },
+          "cooldown": {
+            "minutes": 5,
+            "effort": "Very easy conversational or walk"
+          },
+          "calibration": {
+            "method": "recent comparable protocol + pace/effort cross-check",
+            "claim": "Familiar task/effort anchor, not a measured physiological boundary"
+          },
+          "stopIfEffortPaceDiverge": true
+        },
+        "scope": "RUN_CALIBRATION",
+        "confirmation": "REQUIRED_FOR_ANY_FUTURE_EFFECT"
+      },
+      "reasoning": {
+        "goal": {
+          "stated": null,
+          "primary": null,
+          "secondary": null,
+          "priority": "RUN_FIRST",
+          "requestIntent": "RUN_CALIBRATION",
+          "phase": "UNKNOWN",
+          "unknownPhaseIsNotInferred": true
+        },
+        "phase": "UNKNOWN",
+        "intendedStimulus": "Controlled familiar threshold-intent work",
+        "candidates": [
+          {
+            "id": "COMPOSE_FAMILIAR_WORK_SESSION",
+            "admissible": true,
+            "why": "Retain the familiar compatible task and compose reviewed easy preparation/cooldown rather than demand a paper for exact minutes",
+            "goalTradeOff": {
+              "essential": "PREFERRED",
+              "goal": "PREFERRED",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": true
+          },
+          {
+            "id": "EASY_ONLY",
+            "admissible": true,
+            "why": "Useful aerobic exposure but omits the requested supported specific stimulus",
+            "goalTradeOff": {
+              "essential": "PREFERRED",
+              "goal": "POOR",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": false
+          },
+          {
+            "id": "AUTOMATIC_WORK_PROGRESSION",
+            "admissible": false,
+            "why": "No explicit earned progression or need is supplied",
+            "goalTradeOff": {
+              "essential": "INADMISSIBLE",
+              "goal": "PREFERRED",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": false
+          }
+        ],
+        "selectedOption": "COMPOSE_FAMILIAR_WORK_SESSION",
+        "whyPreferred": "Retain the familiar compatible task and compose reviewed easy preparation/cooldown rather than demand a paper for exact minutes",
+        "preserved": "Essential training intent, all completed work, official plan and unselected dose dimensions",
+        "tradeOff": "Preparation/cooldown are new governed selections where history is silent; no claim of previously demonstrated full-session tolerance",
+        "uncertainty": "Familiar work does not guarantee today’s response; preparation is an active checkpoint",
+        "nextObservation": "Actual execution, effort, technique/function and same-day/next-day recovery; reassess on incompatible response, clinical signal, changed goal/availability or authority revision"
+      },
+      "missingInputs": [],
+      "unsupportedDependency": null
+    },
+    {
+      "caseId": "REP-R2-35",
+      "sourceFactsHash": "59954e9feff4513421742012d0549d0760c7192bc48fda4947963f9c2068fab2",
+      "coverage": "USEFUL_ASK",
+      "decisionType": "ASK",
+      "candidate": null,
+      "reasoning": null,
+      "missingInputs": [
+        "/calibration/recentTaskAnchor",
+        "/priorHistory/currentComparableResponse"
+      ],
+      "unsupportedDependency": "SUBSTANTIVE_MISSING_INPUT"
+    },
+    {
+      "caseId": "REP-R2-36",
+      "sourceFactsHash": "9b31ff9baf712240236dd7efff1fe513afbd74010b2f1c63ecc4d2cfc9b79de4",
+      "coverage": "USEFUL_ASK",
+      "decisionType": "ASK",
+      "candidate": null,
+      "reasoning": null,
+      "missingInputs": [
+        "/calibration/recentTaskAnchor",
+        "/priorHistory/currentComparableResponse"
+      ],
+      "unsupportedDependency": "SUBSTANTIVE_MISSING_INPUT"
+    },
+    {
+      "caseId": "REP-R2-37",
+      "sourceFactsHash": "a6efcc17ccd9fbb39b38ef61f6985297578acccc711786c364d850143a83de1a",
+      "coverage": "POSITIVE",
+      "decisionType": "MODIFY",
+      "candidate": {
+        "recipe": {
+          "family": "LONG_RUN",
+          "minutes": 60,
+          "effort": "Familiar easy conversational talk anchor",
+          "noPaceIncrease": true
+        },
+        "scope": "RUN_NEXT_SESSION",
+        "confirmation": "REQUIRED_FOR_ANY_FUTURE_EFFECT"
+      },
+      "reasoning": {
+        "goal": {
+          "stated": "maintain gradual recreational long-run exposure",
+          "primary": "maintain gradual recreational long-run exposure",
+          "secondary": null,
+          "priority": "RUN_FIRST",
+          "requestIntent": "RUN_NEXT_SESSION",
+          "phase": "UNKNOWN",
+          "unknownPhaseIsNotInferred": true
+        },
+        "phase": "UNKNOWN",
+        "intendedStimulus": "Gradually extend goal-specific familiar easy endurance",
+        "candidates": [
+          {
+            "id": "FAMILIAR_SINGLE_DIMENSION_PROGRESSION",
+            "admissible": true,
+            "why": "Repeated compatible current exposure plus a previously compatible longer candidate serve gradual long-run development",
+            "goalTradeOff": {
+              "essential": "PREFERRED",
+              "goal": "PREFERRED",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": true
+          },
+          {
+            "id": "KEEP_CURRENT",
+            "admissible": true,
+            "why": "Safe continuity but forgoes a supported progression opportunity",
+            "goalTradeOff": {
+              "essential": "PREFERRED",
+              "goal": "ACCEPTABLE",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "PREFERRED"
+            },
+            "selected": false
+          },
+          {
+            "id": "SIMULTANEOUS_PACE_AND_DURATION_INCREASE",
+            "admissible": false,
+            "why": "Unnecessary extra dimension without supporting response",
+            "goalTradeOff": {
+              "essential": "INADMISSIBLE",
+              "goal": "PREFERRED",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": false
+          }
+        ],
+        "selectedOption": "FAMILIAR_SINGLE_DIMENSION_PROGRESSION",
+        "whyPreferred": "Repeated compatible current exposure plus a previously compatible longer candidate serve gradual long-run development",
+        "preserved": "Essential training intent, all completed work, official plan and unselected dose dimensions",
+        "tradeOff": "A small additional duration cost; other training remains stable",
+        "uncertainty": "This is the best-supported available option under stated facts, not guaranteed physiological efficacy or universal optimality. Goal/phase remain explicitly unknown where not supplied.",
+        "nextObservation": "Actual execution, effort, technique/function and same-day/next-day recovery; reassess on incompatible response, clinical signal, changed goal/availability or authority revision"
+      },
+      "missingInputs": [],
+      "unsupportedDependency": null
+    },
+    {
+      "caseId": "REP-R2-38",
+      "sourceFactsHash": "5b456ff88da7868cda51278d1c4994f07828965a73ca1c7ee065fae8a6d3ba24",
+      "coverage": "USEFUL_ASK",
+      "decisionType": "ASK",
+      "candidate": null,
+      "reasoning": null,
+      "missingInputs": [
+        "/calibration/currentComparableTaskAnchor"
+      ],
+      "unsupportedDependency": "SUBSTANTIVE_MISSING_INPUT"
+    },
+    {
+      "caseId": "REP-R2-39",
+      "sourceFactsHash": "eced840577f54f9faa4bac07c49ca18713950fc885b2cd2e8bfed159b0661d68",
+      "coverage": "POSITIVE",
+      "decisionType": "MODIFY",
+      "candidate": {
+        "recipe": {
+          "family": "STRIDES",
+          "warmup": {
+            "minutes": 10,
+            "effort": "Comfortable conversational; walk if needed"
+          },
+          "work": {
+            "repetitions": 4,
+            "secondsEach": 15,
+            "effort": "relaxed quick running; not all-out",
+            "recovery": "walk until comfortable before next repetition",
+            "surface": "flat dry path",
+            "response": "compatible"
+          },
+          "cooldown": {
+            "minutes": 5,
+            "effort": "Very easy conversational or walk"
+          },
+          "calibration": {
+            "method": "familiar movement/effort cue",
+            "claim": "Familiar task/effort anchor, not a measured physiological boundary"
+          },
+          "stopIfEffortPaceDiverge": true
+        },
+        "scope": "RUN_CALIBRATION",
+        "confirmation": "REQUIRED_FOR_ANY_FUTURE_EFFECT"
+      },
+      "reasoning": {
+        "goal": {
+          "stated": null,
+          "primary": null,
+          "secondary": null,
+          "priority": "RUN_FIRST",
+          "requestIntent": "RUN_CALIBRATION",
+          "phase": "UNKNOWN",
+          "unknownPhaseIsNotInferred": true
+        },
+        "phase": "UNKNOWN",
+        "intendedStimulus": "Relaxed familiar neuromuscular practice",
+        "candidates": [
+          {
+            "id": "COMPOSE_FAMILIAR_WORK_SESSION",
+            "admissible": true,
+            "why": "Retain the familiar compatible task and compose reviewed easy preparation/cooldown rather than demand a paper for exact minutes",
+            "goalTradeOff": {
+              "essential": "PREFERRED",
+              "goal": "PREFERRED",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": true
+          },
+          {
+            "id": "EASY_ONLY",
+            "admissible": true,
+            "why": "Useful aerobic exposure but omits the requested supported specific stimulus",
+            "goalTradeOff": {
+              "essential": "PREFERRED",
+              "goal": "POOR",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": false
+          },
+          {
+            "id": "AUTOMATIC_WORK_PROGRESSION",
+            "admissible": false,
+            "why": "No explicit earned progression or need is supplied",
+            "goalTradeOff": {
+              "essential": "INADMISSIBLE",
+              "goal": "PREFERRED",
+              "continuity": "PREFERRED",
+              "recovery": "ACCEPTABLE",
+              "change": "ACCEPTABLE"
+            },
+            "selected": false
+          }
+        ],
+        "selectedOption": "COMPOSE_FAMILIAR_WORK_SESSION",
+        "whyPreferred": "Retain the familiar compatible task and compose reviewed easy preparation/cooldown rather than demand a paper for exact minutes",
+        "preserved": "Essential training intent, all completed work, official plan and unselected dose dimensions",
+        "tradeOff": "Preparation/cooldown are new governed selections where history is silent; no claim of previously demonstrated full-session tolerance",
+        "uncertainty": "Familiar work does not guarantee today’s response; preparation is an active checkpoint",
+        "nextObservation": "Actual execution, effort, technique/function and same-day/next-day recovery; reassess on incompatible response, clinical signal, changed goal/availability or authority revision"
+      },
+      "missingInputs": [],
+      "unsupportedDependency": null
+    },
+    {
+      "caseId": "REP-R2-40",
+      "sourceFactsHash": "4006418520b809b02cfe1696b17f706d92be0bdb32c78b640fc6c0819e89e116",
+      "coverage": "USEFUL_ASK",
+      "decisionType": "ASK",
+      "candidate": null,
+      "reasoning": null,
+      "missingInputs": [
+        "/calibration/recentTaskAnchor",
+        "/priorHistory/currentComparableResponse"
+      ],
+      "unsupportedDependency": "SUBSTANTIVE_MISSING_INPUT"
+    },
+    {
+      "caseId": "REP-R2-41",
+      "sourceFactsHash": "5b59c706da456a60b7bd1222f3949f1ef137de467cdc3567f96479b462b7ed11",
+      "coverage": "USEFUL_ASK",
+      "decisionType": "ASK",
+      "candidate": null,
+      "reasoning": null,
+      "missingInputs": [
+        "/currentDemand/availability",
+        "/currentDemand/options/schedule",
+        "/currentDemand/options/prescriptions"
+      ],
+      "unsupportedDependency": "SUBSTANTIVE_MISSING_INPUT"
+    },
+    {
+      "caseId": "REP-R2-42",
+      "sourceFactsHash": "cda190a0894c222add6384ffc92d8d17c3683cd12b47e579b1a3cd7e23ff243e",
+      "coverage": "HOLD",
+      "decisionType": "HOLD",
+      "candidate": null,
+      "reasoning": null,
+      "missingInputs": [],
+      "unsupportedDependency": "NO_SUPPORTED_INDIVIDUAL_RULE"
+    }
+  ]
+}

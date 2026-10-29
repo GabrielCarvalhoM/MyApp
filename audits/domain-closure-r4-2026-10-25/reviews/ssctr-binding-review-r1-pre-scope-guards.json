@@ -1,0 +1,285 @@
+{
+  "revision": "DCR4-SSCTR-BINDING-r1",
+  "reviewDate": "2026-10-25",
+  "reviewer": "/root/ssctr",
+  "independent": true,
+  "independentOfRuntimeAndEnvelopeAuthors": true,
+  "reviewerRole": "Fresh fallback provisional internal SSCTR; native specialist role unavailable",
+  "humanValidation": false,
+  "empiricalProductValidation": false,
+  "clinicalClearance": false,
+  "verdict": "PASS_WITH_CONDITIONS",
+  "scope": "Current scientific-boundary/runtime binding only; not whole-domain, autonomous-coach, production or clinical readiness",
+  "reviewedFiles": [
+    {
+      "path": "CoachingCore/src/r4-runtime.mjs",
+      "sha256": "3e520d69598879ad06606c53a79cbc1d98ca7d6055eec43edf79a979876f1485"
+    },
+    {
+      "path": "CoachingCore/src/r4-candidates.mjs",
+      "sha256": "d13ef202efedf2b6ca923b68a038750fe049cf0ee9b2e77f3df1b090bd2dabee"
+    },
+    {
+      "path": "CoachingCore/src/r4-context.mjs",
+      "sha256": "f7873e30333a34335e8f315ea29cabcefff6e2c5277d46cda73e8c8d39b0282c"
+    },
+    {
+      "path": "CoachingCore/src/r4-athlete-model.mjs",
+      "sha256": "e87fd3343a7c82f70be1603396080f61939201f43e33c96b74b5aa46ffa9e8c8"
+    },
+    {
+      "path": "CoachingCore/src/r4-authority.mjs",
+      "sha256": "8e39bbb54b7978ca1c0ac9c4cfc8986985e7bb61ecdf3e4f00c5d6716ad7e9b9"
+    },
+    {
+      "path": "CoachingCore/r4/PRESCRIPTION_ENVELOPE_REGISTRY.json",
+      "sha256": "0e8f6c29dc75d6dc68c047f5bd3974de88fd7eeed724564d5183ece7b0db57b6"
+    },
+    {
+      "path": "audits/domain-closure-r4-2026-10-25/reviews/ssctr-envelope-review.json",
+      "sha256": "6ae5e2b6f8f41168e99779e0f22f124ffe05af873214ec31c19b20a502aac055"
+    },
+    {
+      "path": "CoachingCore/src/r4-index.mjs",
+      "sha256": "4440316641c01a987dc1c8fc7562e970c45bb7c4c03c57b8e8186ede7dc01a7e"
+    },
+    {
+      "path": "CoachingCore/src/value.mjs",
+      "sha256": "5bd765f68aa9e1f39ff0ce1366c7ac08e4b092bf281b49e2caa12c7c4bdb3a3b"
+    },
+    {
+      "path": "audits/domain-closure-r4-2026-10-25/reviews/ssctr-records.json",
+      "sha256": "1c0822d2b218bb91c42cebc4ed77bdecc16036981022aafab32164a49bef6486"
+    },
+    {
+      "path": "audits/domain-closure-r4-2026-10-25/reviews/ssctr-schema-validation.json",
+      "sha256": "871a546e85dbdf3daffbb7712dcc68613279e5a2cce7bdcf8bfef4c191f96a09"
+    },
+    {
+      "path": "audits/domain-closure-r4-2026-10-25/reviews/ssctr-binding-probes.json",
+      "sha256": "5df06ccc859efa1f89b56a597e92b32f207ff9e2f0d92fd34c066bec7c13a094"
+    },
+    {
+      "path": "reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json",
+      "sha256": "16714a7a018a09d2ce6e632c525ff01f387d1771e67b019fae8ce97c70e61788"
+    },
+    {
+      "path": "audits/domain-closure-r4-2026-10-25/evidence/SCIENTIFIC_EVIDENCE_SNAPSHOT_R4.json",
+      "sha256": "787f205b2ce065d05771368545af3891460049b64b38f260921c2bc312ac17b9"
+    },
+    {
+      "path": "audits/domain-closure-r4-2026-10-25/evidence/SCIENTIFIC_CLAIM_MAP_R4.json",
+      "sha256": "422a9feadb79080788a2acc6b8d94fdfa69083a7331348bea9444a815829a953"
+    }
+  ],
+  "findings": [
+    {
+      "id": "SSCTR-R4-B01",
+      "title": "Current effort and contradictory response cannot be overwritten by historical familiarity",
+      "status": "CLOSED_BY_VERIFIED_FIX",
+      "blocking": false,
+      "previouslyBlocking": true,
+      "proofProbes": [
+        "strides-all-out",
+        "cruise-maximal-effort",
+        "familiar-response-negation",
+        "familiar-response-adversative",
+        "strength-recovery-incompatible",
+        "strength-technique-negated",
+        "strength-history-response-negated",
+        "strength-history-context-different"
+      ],
+      "description": "Current code gives adverse/negated information precedence, rejects maximal familiar work outside the envelope and checks recovery, technique and comparability before progression."
+    },
+    {
+      "id": "SSCTR-R4-B02",
+      "title": "Complete task must fit actual available time",
+      "status": "CLOSED_BY_VERIFIED_FIX",
+      "blocking": false,
+      "previouslyBlocking": true,
+      "proofProbes": [
+        "cruise-insufficient-total-window",
+        "strides-insufficient-total-window",
+        "schedule-no-secondary-window"
+      ],
+      "description": "Run planning includes preparation, work, recoveries and cooldown. Unknown self-paced stride recovery cannot falsely fit a supplied tight window. Same-dose placement is checked against actual local-time windows. Strength reservations are logistical estimates, not physiological requirements or forced cadence."
+    },
+    {
+      "id": "SSCTR-R4-B03",
+      "title": "Re-establishment uses current compatible easy evidence rather than hard or contradictory demonstrations",
+      "status": "CLOSED_BY_VERIFIED_FIX",
+      "blocking": false,
+      "previouslyBlocking": true,
+      "proofProbes": [
+        "return-abnormal-current-function",
+        "return-hard-current-demonstration",
+        "return-normal-demo-cue-contradiction",
+        "return-unknown-reason",
+        "baseline-logistics-return"
+      ],
+      "description": "Known nonclinical logistics return can use a bounded easy entry. Current demonstrated reuse is limited by current function, a nonmaximal effort cue, correct family and available time; elapsed days do not restore former capacity."
+    },
+    {
+      "id": "SSCTR-R4-B04",
+      "title": "Changed environment cannot silently retain an old controlled pace or stride task",
+      "status": "CLOSED_BY_VERIFIED_FIX",
+      "blocking": false,
+      "previouslyBlocking": true,
+      "proofProbes": [
+        "steady-changed-environment",
+        "strides-unsafe-surface"
+      ],
+      "description": "Explicit noncomparable terrain/conditions or unsafe/unestablished surface prevents positive reuse of the familiar anchor. No flat-pace or remote-race crosswalk is approved."
+    },
+    {
+      "id": "SSCTR-R4-B05",
+      "title": "Minimal supported change uses the actual known equipment increment",
+      "status": "CLOSED_BY_VERIFIED_FIX",
+      "blocking": false,
+      "previouslyBlocking": true,
+      "proofProbes": [
+        "strength-nonminimum-known-load-increment",
+        "single-noisy-strength-result"
+      ],
+      "description": "Larger load changes are rejected when a smaller actual increment is supplied; one noisy strength observation does not earn a progression. This is contextual equipment logic, not a universal numeric progression rule."
+    },
+    {
+      "id": "SSCTR-R4-B06",
+      "title": "Substitution and equipment need an unambiguous executable basis",
+      "status": "CLOSED_BY_VERIFIED_FIX",
+      "blocking": false,
+      "previouslyBlocking": true,
+      "proofProbes": [
+        "substitution-incomplete-effort-rest",
+        "substitution-unknown-load-units",
+        "strength-explicit-missing-dumbbells"
+      ],
+      "description": "Separately familiar alternatives require their own effort/rest and unambiguous dumbbell per-hand basis. Explicit bodyweight-only/no-dumbbell constraints cannot produce a loaded dumbbell row. No automatic kilogram conversion is used."
+    },
+    {
+      "id": "SSCTR-R4-B07",
+      "title": "Clinical and scientific authority boundaries remain binding",
+      "status": "CLOSED_BY_VERIFIED_FIX",
+      "blocking": false,
+      "previouslyBlocking": true,
+      "proofProbes": [
+        "clinical-guard",
+        "missing-eligibility",
+        "stale-envelope"
+      ],
+      "description": "Clinical/current eligibility guards and exact independent envelope authority prevent unsupported positive binding. All 28 probes preserve official/applied plan equality; generated recommendations remain offline proposals."
+    },
+    {
+      "id": "SSCTR-R4-L01",
+      "title": "Finite source vocabulary and designed-case evidence",
+      "status": "RETAINED_LIMITATION",
+      "blocking": false,
+      "description": "The controlled narrative/source adapter and synthetic cases do not establish arbitrary natural-language interpretation, V1 population coverage or real-world coaching effectiveness. New source vocabulary, live data and population expansion require their own validation."
+    },
+    {
+      "id": "SSCTR-R4-L02",
+      "title": "No universal optimality or precise individual physiological learner",
+      "status": "RETAINED_LIMITATION",
+      "blocking": false,
+      "description": "Ordinal goal/phase/context ranking is reviewable coaching judgment inside the bounded alternatives. It does not prove universal optimality, individual causal response traits, exact RIR accuracy or validated future adaptation gains."
+    },
+    {
+      "id": "SSCTR-R4-L03",
+      "title": "Retained substantive domain/science gaps",
+      "status": "RETAINED_LIMITATION",
+      "blocking": false,
+      "description": "Novel uncalibrated VO2/hills/race targets, reviewed complete combined taper, broader week programming and clinical/special-population scope remain outside this approval. Their persistence must remain explicit in R4 readiness and open-gap reports."
+    }
+  ],
+  "conditions": [
+    "Applies only to the current exact nine r2 envelope authorities and reviewed offline synthetic adult nonclinical recreational novice/intermediate scope; no production, KMP, UI/Figma or real-person plan mutation.",
+    "Scientific review constrains the principles and admissible option space. Concrete selection within those bounds may use defensible coaching composition without a separate exact-dose paper or queue entry for every instance.",
+    "Keep approximate RIR, current effort/function and technique checkpoints, walk/stop options, contextual MEC, scheduling feasibility and future response review explicit. Operational timing reservations never force completion or cadence.",
+    "Maintain the reusable-rule future-human queue: 110 current entries, nine R4 approvals at exact r2 targets/conditions, funding NOT_DECLARED; qualified-human and clinical boundaries remain unchanged.",
+    "Do not treat runtime COACHING_BEST_SUPPORTED self-check labels or this scientific binding review as the independent full coaching-quality verdict. Use the separate quality review and report residual gaps without forced GO.",
+    "Material changes to reviewed envelope, selector, authority binding, source interpretation, scope or decisive evidence invalidate affected conclusions. Preserve historical decisions and obtain fresh review for those changes."
+  ],
+  "proof": {
+    "scientificBoundaryProbes": {
+      "total": 28,
+      "passing": 28,
+      "passed": true,
+      "artifact": "audits/domain-closure-r4-2026-10-25/reviews/ssctr-binding-probes.json"
+    },
+    "scientificRecordsAndActualQueue": {
+      "records": 9,
+      "totalQueueEntries": 110,
+      "currentR4Entries": 9,
+      "passed": true,
+      "artifact": "audits/domain-closure-r4-2026-10-25/reviews/ssctr-schema-validation.json"
+    },
+    "historicalFailureEvidence": "audits/domain-closure-r4-2026-10-25/reviews/ssctr-binding-probes-r1-before-fixes.json",
+    "independentSourceAuthorship": "Reviewer did not author or edit judged envelope/runtime. Reviewer authored the targeted supporting source synthesis; no separate source-fidelity judge is implied."
+  },
+  "retainedScientificAuthority": [
+    {
+      "envelopeId": "R4-ESTABLISHMENT",
+      "envelopeHash": "8e39292a650e1823804455f52478fe35e6066bd21839f334902b4016cee9dffa",
+      "reviewId": "R4-SSCTR-ESTABLISHMENT",
+      "reviewRevision": "r2",
+      "disposition": "APPROVE_WITH_CONDITIONS"
+    },
+    {
+      "envelopeId": "R4-FAMILIAR-RUN",
+      "envelopeHash": "8b4173a28ed8d3541f4dff5a33a9afe7511943d7a5eee6a4bd0dc6cb7ebf1ec1",
+      "reviewId": "R4-SSCTR-FAMILIAR-RUN",
+      "reviewRevision": "r2",
+      "disposition": "APPROVE_WITH_CONDITIONS"
+    },
+    {
+      "envelopeId": "R4-STRENGTH-ADAPTATION",
+      "envelopeHash": "e07d1fcbdd2f3957ca2838a2e6bf10e6c41d942f066847b7197caf6782c10a5d",
+      "reviewId": "R4-SSCTR-STRENGTH-ADAPTATION",
+      "reviewRevision": "r2",
+      "disposition": "APPROVE_WITH_CONDITIONS"
+    },
+    {
+      "envelopeId": "R4-LOCAL-FATIGUE",
+      "envelopeHash": "04563ca3375786ed70d6412ee349b973de38eb94ffae34e045ce30c0d567ba9f",
+      "reviewId": "R4-SSCTR-LOCAL-FATIGUE",
+      "reviewRevision": "r2",
+      "disposition": "APPROVE_WITH_CONDITIONS"
+    },
+    {
+      "envelopeId": "R4-SYSTEMIC-SUFFIX",
+      "envelopeHash": "541a42bacae2ae623516ce0f7f4bc5feb00492689cd9659cdc6cd980d4f8ed14",
+      "reviewId": "R4-SSCTR-SYSTEMIC-SUFFIX",
+      "reviewRevision": "r2",
+      "disposition": "APPROVE_WITH_CONDITIONS"
+    },
+    {
+      "envelopeId": "R4-SCHEDULE",
+      "envelopeHash": "d1a8f8ddf301c6e7d4cffb9812f59725a5d97bae4edc7394f0b8f31ee957da17",
+      "reviewId": "R4-SSCTR-SCHEDULE",
+      "reviewRevision": "r2",
+      "disposition": "APPROVE_WITH_CONDITIONS"
+    },
+    {
+      "envelopeId": "R4-OBSERVATIONAL-RANKING",
+      "envelopeHash": "996298f6a75607a5ba95f996ba558a223e495e78a6aa09e3fa11255228716d3b",
+      "reviewId": "R4-SSCTR-OBSERVATIONAL-RANKING",
+      "reviewRevision": "r2",
+      "disposition": "APPROVE_WITH_CONDITIONS"
+    },
+    {
+      "envelopeId": "R4-RETURN",
+      "envelopeHash": "4fdabd6b17d1af58703e5e198876f939f1797656efc4d693a6361a8450656f8a",
+      "reviewId": "R4-SSCTR-RETURN",
+      "reviewRevision": "r2",
+      "disposition": "APPROVE_WITH_CONDITIONS"
+    },
+    {
+      "envelopeId": "R4-SUBSTITUTION",
+      "envelopeHash": "4ad3c8fb1c244cd1b4d1f230fda3e1e3b3447150d2cbace1491a49fb74fc594a",
+      "reviewId": "R4-SSCTR-SUBSTITUTION",
+      "reviewRevision": "r2",
+      "disposition": "APPROVE_WITH_CONDITIONS"
+    }
+  ],
+  "expiry": "Immediate for a material change to any reviewed scientific target or dependent selector/context/population; funded-human revalidation follows actual Founder declaration."
+}

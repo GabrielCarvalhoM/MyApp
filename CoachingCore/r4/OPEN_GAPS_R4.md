@@ -1,0 +1,11 @@
+# Open gaps R4
+
+- FULL_INITIAL_PLAN: All eligible V1 athletes and complete goal-specific multiweek programs are not demonstrated by low-demand entry fixtures. Owner: COACHING_DOMAIN. Closure: Complete feasible modality/session/block generation, independent unseen cases and current reviews.
+- CALIBRATION_AND_NOVEL_TASKS: Novel VO2/hills/race work cannot be derived from easy pace, proprietary prediction or noncomparable old race. Owner: RUN_INTELLIGENCE. Closure: Current task establishment and scientifically defensible intensity/envelope binding.
+- JOINT_TAPER: No approved combined baseline-relative hybrid race week; event evidence does not uniquely supply the whole program. Owner: SSCTR_AND_HYBRID_POLICY. Closure: Reusable bounded combined taper with goal and strength trade-off review.
+- LEARNED_OPTION_ADMISSIBILITY_CONTRACT: Individual associations remain advisory; complete independently envelope-validated candidate prescriptions and actual cross-option dose equivalence are not yet established. Owner: ENGINEERING_AND_SSCTR. Closure: Reusable structural/admissibility contract with positive and adversarial independent proof; no self-declared sameDose authority.
+- MODEL_GENERALITY: Individual model is consented deterministic evidence association/proposal, not calibrated causal/persistent production learning. Owner: ATHLETE_MODEL. Closure: Comparable longitudinal response evaluation, recency/contradiction handling and later separately authorized integration.
+- HORIZON_AND_MISSED_ESSENTIAL: Arbitrary missed essential move/merge/discard and future whole-block optimization remain limited by implemented request vocabulary. Owner: COACHING_DOMAIN. Closure: Reusable horizon selector and independent capability proof.
+- GENERALIZATION: Final holdout evaluation after findings/fixes is a reused challenge set; first evaluation remains preserved. Owner: QUALITY. Closure: Fresh independent unseen expansion after implementation freeze; not another retuned denominator.
+
+All unresolved designed cases, actual missing facts and dependencies are in OPEN_GAPS_R4.json. A legitimate question is not a science failure; an unknown alias/request contract is not useful coaching. Clinical cases remain outside the normal40 denominator.

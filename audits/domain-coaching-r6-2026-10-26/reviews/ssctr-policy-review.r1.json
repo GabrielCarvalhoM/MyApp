@@ -1,0 +1,568 @@
+{
+  "revision": "R6-SSCTR-POLICY-r1",
+  "reviewDate": "2026-10-26",
+  "reviewer": "ssctr-native-claude-r6-2026-10-26 (project agent type sports-science-concurrent-training-reviewer; native, not fallback)",
+  "reviewerRole": "Native project Sports Science & Concurrent Training Reviewer (SSCTR-1.0.0, PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY); not the policy or runtime author; no human credentials, clinical equivalence or runtime sovereignty.",
+  "independent": true,
+  "humanValidation": false,
+  "empiricalProductValidation": false,
+  "clinicalClearance": false,
+  "policyHash": "81114d89c2a855294bbea3a677eddd336a364c7a9cf9b04a5401d06a9f2de6c3",
+  "policySha256": "0be56df9f6d3c7dbb1c16c47901dfe125c6c7d1644c67c15ab5e555d092b80bb",
+  "hashSemantics": "CoachingCore/src/value.mjs hash(policy): recursive key-sorted canonical JSON, SHA-256; policySha256 is the file-byte SHA-256.",
+  "scope": "Reusable envelope dispositions and runtime-binding findings for the ten R6 boundaries; offline synthetic Node24 reference only.",
+  "enablingSummary": {
+    "enabled": [
+      "R6-LOAD-ESTABLISHMENT",
+      "R6-SUBSTITUTION",
+      "R6-ROTATION"
+    ],
+    "disabled": [
+      "R6-COLD-START",
+      "R6-PLANNED-PROGRESSION",
+      "R6-RUN-QUALITY",
+      "R6-HYBRID-ARRANGEMENT",
+      "R6-NONCLINICAL-RETURN",
+      "R6-EVENT-TRANSITION",
+      "R6-PARTIAL-NOISY-LEARNING"
+    ],
+    "effect": "R6-COLD-START and R6-PLANNED-PROGRESSION are not enabled, so cold-start program generation fails closed (UNSUPPORTED) until a delta review of a corrected hash; the three enabled boundaries have no effect on generation while those stay disabled."
+  },
+  "records": [
+    {
+      "boundaryId": "R6-COLD-START",
+      "policyHash": "81114d89c2a855294bbea3a677eddd336a364c7a9cf9b04a5401d06a9f2de6c3",
+      "disposition": "REVISE",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "independent": true,
+      "sourceIds": [
+        "R6-S01",
+        "R6-S21",
+        "R6-S17",
+        "R6-S28",
+        "R6-S29",
+        "R6-S24",
+        "R6-S22"
+      ],
+      "reviewId": "R6-SSCTR-COLD-START",
+      "reviewRevision": "r1",
+      "conditions": [
+        "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+        "Binding: this record binds canonical policy hash 81114d89c2a855294bbea3a677eddd336a364c7a9cf9b04a5401d06a9f2de6c3 (value.mjs hash). Any policy byte change invalidates it; any change to the runtime functions named in requiredRuntimeChanges needs a delta binding review before runtime freeze.",
+        "Operational values are reversible coaching choices inside the envelope, never physiological thresholds, injury-prevention rules, readiness scores, finish-time promises or individual-response predictions.",
+        "Steps advance only on executed comparable work without an adverse signal; nothing progresses from elapsed calendar time alone; completed history and official plan state stay immutable.",
+        "Week-1 planned running minutes (walks excluded) <= current reported or wearable-conservative weekly running minutes; when current exposure is zero or unknown, only the listed establishment entries (walk/jog ladder step 0, the 15-20 minute easy entry) are used.",
+        "Week-1 long run <= the longest current run reported; rounding may not exceed it.",
+        "No quality, strides or race-effort work in week 1 except a current familiar quality task that fits inside the week-1 running ceiling.",
+        "Unknowns are emitted with one of the four categories; ASK only for facts that change the first program (eligibility, goal, chosen days and session time, event date); clinical flags route to a human.",
+        "A restart-after-pause class requires R6-NONCLINICAL-RETURN authority and a pause reason that passes the clinical-reason check of that boundary.",
+        "Load-establishment rows appear only when R6-LOAD-ESTABLISHMENT is enabled.",
+        "Sex, height and weight never enter dose; an event time goal never sets pace."
+      ],
+      "limitations": [
+        "Onboarding facts are self-report; wearable history may be partial.",
+        "No evidence validates the exact starter doses or establishment length.",
+        "Profiles outside V1 (elite, adolescent, pregnancy/postpartum, clinical) are excluded, not evaluated."
+      ],
+      "runtimeBindingStatus": "BLOCKING_DEFECTS_CHANGE_REQUIRED",
+      "requiredRuntimeChanges": [
+        "D21 r6-program.mjs initialRunState/distributeRun: when a current familiar quality task is placed in week 0, reduce the remaining easy minutes (or convert one easy day to an optional walk) so week-0 planned running <= recentRun.runMinutesPerWeek, or defer the familiar task to week 1 (probe: 140 vs 120 min).",
+        "D22 r6-program.mjs generateProgram (+ r6-intake.mjs canonicalizeIntake pause): reject with UNSUPPORTED/ASK when cap.restartAfterPause or a pause-driven RESTART class exists and allows(authority,\"R6-NONCLINICAL-RETURN\") is false; apply the same clinical-reason check as D08 to athlete.pause.reason (probe: pause \"Pneumonia, recovered now\" with nonclinical:true produced a RESTART program).",
+        "D23 r6-program.mjs generateProgram: if any planned row has load.mode ESTABLISH (or is derived from an establishment) and allows(authority,\"R6-LOAD-ESTABLISHMENT\") is false, reject or restrict templates to exercises with a current known dose (probe: KNOWN_LOAD athlete still received ESTABLISH rows).",
+        "Policy text: principle 2 should state that the walk/jog ladder and the reviewed easy entry are the only exceptions when current exposure is zero."
+      ]
+    },
+    {
+      "boundaryId": "R6-LOAD-ESTABLISHMENT",
+      "policyHash": "81114d89c2a855294bbea3a677eddd336a364c7a9cf9b04a5401d06a9f2de6c3",
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "independent": true,
+      "sourceIds": [
+        "R6-S01",
+        "R6-S11",
+        "R6-S12",
+        "R6-S13"
+      ],
+      "reviewId": "R6-SSCTR-LOAD-ESTABLISHMENT",
+      "reviewRevision": "r1",
+      "conditions": [
+        "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+        "Binding: this record binds canonical policy hash 81114d89c2a855294bbea3a677eddd336a364c7a9cf9b04a5401d06a9f2de6c3 (value.mjs hash). Any policy byte change invalidates it; any change to the runtime functions named in requiredRuntimeChanges needs a delta binding review before runtime freeze.",
+        "Operational values are reversible coaching choices inside the envelope, never physiological thresholds, injury-prevention rules, readiness scores, finish-time promises or individual-response predictions.",
+        "Steps advance only on executed comparable work without an adverse signal; nothing progresses from elapsed calendar time alone; completed history and official plan state stay immutable.",
+        "Athletes with strength class NONE complete unloaded or light-implement practice before any effort-guided loaded set; the first loaded exposure is at most 2 sets at RIR >= 3.",
+        "The establishment instruction describes an ascending ramp: start with the lightest available load and add the smallest increment between preparatory sets while at least the target reserve remains with stable technique; the working load is the heaviest such load; load and convention are recorded.",
+        "No kilogram is derived from sex, body mass, another exercise or implement; a stale or differently configured known load is only a hint or ceiling.",
+        "After establishment, a load or repetition step requires a logged set record meeting target repetitions with reserve >= prescribed RIR - 1; otherwise the dose holds.",
+        "RIR is treated as approximate (about one repetition of error); technique and comfort govern continuation and stopping.",
+        "Fail-closed: no ESTABLISH rows are emitted when this boundary is not enabled."
+      ],
+      "limitations": [
+        "Evidence for RIR accuracy in never-trained adults is thin.",
+        "Self-selected loads by novices tend to be conservative; early weeks may under-dose."
+      ],
+      "runtimeBindingStatus": "CONDITIONAL_REQUIRED_CHANGES_BEFORE_FREEZE",
+      "requiredRuntimeChanges": [
+        "D23 r6-program.mjs generateProgram: fail closed for any ESTABLISH row without this authority (class-level check misses KNOWN_LOAD athletes with unknown accessories).",
+        "D29 r6-prescription.mjs exerciseRow (ESTABLISH instructions) and policy claim wording: replace \"Choose the lightest available load that leaves at least N in reserve\" with an ascending-ramp instruction; the literal text prescribes the lightest implement."
+      ]
+    },
+    {
+      "boundaryId": "R6-PLANNED-PROGRESSION",
+      "policyHash": "81114d89c2a855294bbea3a677eddd336a364c7a9cf9b04a5401d06a9f2de6c3",
+      "disposition": "REVISE",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "independent": true,
+      "sourceIds": [
+        "R6-S21",
+        "R6-S01",
+        "R6-S11",
+        "R6-S02",
+        "R6-S29",
+        "R6-S28",
+        "R6-S13",
+        "R6-S12"
+      ],
+      "reviewId": "R6-SSCTR-PLANNED-PROGRESSION",
+      "reviewRevision": "r1",
+      "conditions": [
+        "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+        "Binding: this record binds canonical policy hash 81114d89c2a855294bbea3a677eddd336a364c7a9cf9b04a5401d06a9f2de6c3 (value.mjs hash). Any policy byte change invalidates it; any change to the runtime functions named in requiredRuntimeChanges needs a delta binding review before runtime freeze.",
+        "Operational values are reversible coaching choices inside the envelope, never physiological thresholds, injury-prevention rules, readiness scores, finish-time promises or individual-response predictions.",
+        "Steps advance only on executed comparable work without an adverse signal; nothing progresses from elapsed calendar time alone; completed history and official plan state stay immutable.",
+        "One progression dimension per session type per week; EARNED may release a step the cadence would otherwise hold or skip a consolidation hold, but never adds more than one step on any dimension in a week, and is unavailable in WALK_JOG, RESTART and RETURN modes.",
+        "Every step requires executed comparable sessions without an adverse signal in the gating week; quality/strides activation, block-boundary set increases and ladder steps count executed weeks, never calendar weeks.",
+        "Single-run ceiling: no planned run other than the race exceeds the longest completed run of the preceding 30 days by more than one longRunStepMinutes; this applies to long-run steps, RESTART->EASY and WALK_JOG->EASY transitions and return steps; with no completed run in 30 days, the reviewed entry is the start.",
+        "When the 30-day reference run is under 50 minutes, the 5-minute step exceeds 10% of it; the step stays response-gated, is disclosed, and is never combined with another single-session increase in the same week.",
+        "Strength ADVANCE requires logged target repetitions and minimum logged RIR >= prescribed RIR - 1; otherwise HOLD. EARNED requires minimum logged RIR >= prescribed RIR + 2 on two comparable exposures. Any KNOWN-load repetition or load step requires a logged set record at the current load in the gating week; missing logs hold the dose without regression.",
+        "The long run stays <= longRunShareOfWeeklyMinutesMax of planned weekly running in every week, unless the policy is amended to define this ratio as week-1 only.",
+        "Transition magnitudes (restart step and switch point, walk/jog exit dose, consolidation reduction, post-event redevelopment) are declared in the policy, not hard-coded.",
+        "Repeated adverse responses (two comparable within 14 days at the current dose after any regression) regress one step; a single adverse response holds."
+      ],
+      "limitations": [
+        "Step sizes, cadence and consolidation are operational, not evidence-derived optima.",
+        "Single-session injury association is observational and distance-based.",
+        "Strength progression evidence is from trained lifters over 8 weeks."
+      ],
+      "runtimeBindingStatus": "BLOCKING_DEFECTS_CHANGE_REQUIRED",
+      "requiredRuntimeChanges": [
+        "D11/D12 r6-program.mjs advanceRun: replace {ADVANCE:1,EARNED:2} increments (long run, quality/specific ladders, walk/jog, restart +10, return +2) with at most one step per dimension per week; EARNED -> ADVANCE in WALK_JOG, RESTART and RETURN modes. advanceStrength: remove the two-iteration EARNED loop.",
+        "D13 r6-program.mjs initialRunState/runRow/advanceRun: replace calendar qualityFrom/stridesFrom with a counter of executed established easy weeks incremented only when EASY/LONG gates are ADVANCE or EARNED (probe: threshold 3x5 and strides in week 3 after weeks 0-2 entirely missed).",
+        "D14 r6-program.mjs advanceStrength: increment completedBlocks only when the block's final comparable exposures for the exercise were ADVANCE/EARNED (probe: +1 set at week 5 after five missed weeks).",
+        "D15 r6-adaptation.mjs weeklyGates (strength): gate on prescribed RIR (row.rir) rather than goalDose.targetRir - 1; HOLD when minRir < prescribed RIR - 1; EARNED threshold prescribed RIR + 2 (probe: prescribed RIR 3, logged RIR 1 -> ADVANCE +2 reps).",
+        "D16 r6-adaptation.mjs weeklyGates / r6-program.mjs advanceStrength: no KNOWN-mode rep, load-tick or load step for an exercise without a logged set record in the gating week (probe: squat 100 -> 102.5 -> 105 kg on completion flags only).",
+        "D17 r6-program.mjs advanceRun RESTART/WALK_JOG branches: move +5/+10 restart steps, the 30-minute switch, long = restart + 10 and easy = 25 at walk/jog exit into the policy; cap the first long run after a switch by the single-run ceiling (probe: 25-minute runs followed by a 40-minute long run).",
+        "D18 r6-adaptation.mjs reproject / r6-program.mjs advanceRun: enforce the single-run ceiling against completed (ledger) runs, not planned ones.",
+        "D19 r6-program.mjs advanceRun/distributeRun: enforce longRunShareOfWeeklyMinutesMax in all weeks or amend the policy semantics (probe: share 0.49 in specific weeks of profile A).",
+        "D20 r6-program.mjs runRow: the consolidation long-run reduction (2 x longRunStepMinutes) must be a declared policy value."
+      ]
+    },
+    {
+      "boundaryId": "R6-RUN-QUALITY",
+      "policyHash": "81114d89c2a855294bbea3a677eddd336a364c7a9cf9b04a5401d06a9f2de6c3",
+      "disposition": "REVISE",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "independent": true,
+      "sourceIds": [
+        "R6-S22",
+        "R6-S23",
+        "R6-S21",
+        "R6-S24"
+      ],
+      "reviewId": "R6-SSCTR-RUN-QUALITY",
+      "reviewRevision": "r1",
+      "conditions": [
+        "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+        "Binding: this record binds canonical policy hash 81114d89c2a855294bbea3a677eddd336a364c7a9cf9b04a5401d06a9f2de6c3 (value.mjs hash). Any policy byte change invalidates it; any change to the runtime functions named in requiredRuntimeChanges needs a delta binding review before runtime freeze.",
+        "Operational values are reversible coaching choices inside the envelope, never physiological thresholds, injury-prevention rules, readiness scores, finish-time promises or individual-response predictions.",
+        "Steps advance only on executed comparable work without an adverse signal; nothing progresses from elapsed calendar time alone; completed history and official plan state stay immutable.",
+        "Quality and strides activate only after qualityRequiresEstablishedEasyWeeks / strides.requiresEstablishedEasyWeeks executed established easy weeks, never calendar weeks.",
+        "At most one quality session per week, not on the day before or after the long run when another chosen run day can hold it.",
+        "Effort cues only; the first exposure to each intensity family is a calibration that records observed pace; no pace from goal time or easy pace.",
+        "Event-specific ladders start only after >= specificRequiresCompatibleThresholdSessions executed compatible threshold sessions.",
+        "For EASY_LOW or NOVICE runners, strides are optional with an explicit easy-only alternative.",
+        "Race-week touch and shakeout strides require this boundary and an executed comparable quality (respectively strides) exposure in the preceding build or specific weeks; otherwise the session stays easy.",
+        "No VO2max, threshold-pace or hill prescriptions; hills only with declared terrain under a separate review."
+      ],
+      "limitations": [
+        "Effort-only prescription is approximate; first-exposure pace is observational.",
+        "Evidence for strides in novices is absent.",
+        "Ladders and ladder steps are operational choices."
+      ],
+      "runtimeBindingStatus": "BLOCKING_DEFECTS_CHANGE_REQUIRED",
+      "requiredRuntimeChanges": [
+        "D13 r6-program.mjs initialRunState/runRow (qualityActive, strides): count executed established easy weeks; see PLANNED-PROGRESSION.",
+        "D01 r6-program.mjs eventWeekSessions: gate RACE_TOUCH on allows(authority,\"R6-RUN-QUALITY\") and on an executed comparable quality session; gate SHAKEOUT strides on executed strides; currently both use cap.run.class only (probes P1 and TAPER_AFTER_ALL_QUALITY_MISSED).",
+        "D31 r6-program.mjs distributeRun: mark strides optional for EASY_LOW/NOVICE runners with an easy-only alternative."
+      ]
+    },
+    {
+      "boundaryId": "R6-HYBRID-ARRANGEMENT",
+      "policyHash": "81114d89c2a855294bbea3a677eddd336a364c7a9cf9b04a5401d06a9f2de6c3",
+      "disposition": "REVISE",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "independent": true,
+      "sourceIds": [
+        "R6-S09",
+        "R6-S10",
+        "R6-S30",
+        "R6-S03",
+        "R6-S07",
+        "R6-S06",
+        "R6-S04",
+        "R6-S05",
+        "R6-S08",
+        "R6-S31"
+      ],
+      "reviewId": "R6-SSCTR-HYBRID-ARRANGEMENT",
+      "reviewRevision": "r1",
+      "conditions": [
+        "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+        "Binding: this record binds canonical policy hash 81114d89c2a855294bbea3a677eddd336a364c7a9cf9b04a5401d06a9f2de6c3 (value.mjs hash). Any policy byte change invalidates it; any change to the runtime functions named in requiredRuntimeChanges needs a delta binding review before runtime freeze.",
+        "Operational values are reversible coaching choices inside the envelope, never physiological thresholds, injury-prevention rules, readiness scores, finish-time promises or individual-response predictions.",
+        "Steps advance only on executed comparable work without an adverse signal; nothing progresses from elapsed calendar time alone; completed history and official plan state stay immutable.",
+        "Severity is ordinal only: compare Pareto first, then by leximax of the sorted severity multiset (worst first); counts or sums of costs are not used.",
+        "Any run, easy included, within sameSessionGapHours before MODERATE/HEAVY lower-body work carries a strength-axis cost when strength has a development role; no tie-break depends on candidate identifier strings; equal-harm opposing trade-offs under a JOINT lead are ASKed.",
+        "Quality-run-first may be the default for an equal-standing athlete only when the alternative places MODERATE/HEAVY lower-body work within nextDayGapHours before the key run; the choice is disclosed as a reversible population-based default, the athlete may choose otherwise, and repeated comparable athlete evidence may override it; for accustomed lifters the asymmetry is weaker and must be disclosed as such.",
+        "Unknown arrangement-level response is admissible only when current whole-week tolerance covers the same task set and frequency, the candidate's worst H0 severity is <= LOW, and it introduces no same-day pairing absent from the athlete's reported routine; otherwise it needs arrangement evidence or ASK; adverse arrangement evidence excludes it.",
+        "The trace names the decisive comparison (for example LOWEST_WORST_CASE_JOINT_HARM) whenever non-identical candidates were compared.",
+        "No universal spacing minimum; the gap bins rank options and never forbid a feasible arrangement by themselves."
+      ],
+      "limitations": [
+        "Asymmetry evidence is acute and partly from unaccustomed lifters; chronic consequences of next-day arrangements are inferred.",
+        "Gap bins are operational.",
+        "Upper-body interaction claim relies on the local nature of interference, not a dedicated trial."
+      ],
+      "runtimeBindingStatus": "BLOCKING_DEFECTS_CHANGE_REQUIRED",
+      "requiredRuntimeChanges": [
+        "D24 r6-balanced.mjs interferenceCosts: add a strength-axis cost (>= LOW) for any run within sameSessionGapHours before MODERATE/HEAVY lower-body work when strength development is a role; chooseBalanced EQUIVALENT_NO_TRADE_OFF tie-break must not depend on id strings such as \"run-first\" (probe P11).",
+        "D25 r6-balanced.mjs horizonCosts/jointKey: replace H1 counts with ordinal leximax over sorted severities; report LOWEST_WORST_CASE_JOINT_HARM as basis when the decisive comparison involved non-identical candidates (probe P12, re-run after the label change: a same-day 11-h run-then-strength pair is still labelled \"the day before\").",
+        "D26 r6-legacy.mjs legacyCandidates: admit UNKNOWN_WITH_WEEKLY_TOLERANCE only when the candidate's interferenceCosts worst severity <= LOW and no new same-day pairing is introduced; otherwise ASK or require arrangement evidence."
+      ]
+    },
+    {
+      "boundaryId": "R6-SUBSTITUTION",
+      "policyHash": "81114d89c2a855294bbea3a677eddd336a364c7a9cf9b04a5401d06a9f2de6c3",
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "independent": true,
+      "sourceIds": [
+        "R6-S01",
+        "R6-S26",
+        "R6-S27"
+      ],
+      "reviewId": "R6-SSCTR-SUBSTITUTION",
+      "reviewRevision": "r1",
+      "conditions": [
+        "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+        "Binding: this record binds canonical policy hash 81114d89c2a855294bbea3a677eddd336a364c7a9cf9b04a5401d06a9f2de6c3 (value.mjs hash). Any policy byte change invalidates it; any change to the runtime functions named in requiredRuntimeChanges needs a delta binding review before runtime freeze.",
+        "Operational values are reversible coaching choices inside the envelope, never physiological thresholds, injury-prevention rules, readiness scores, finish-time promises or individual-response predictions.",
+        "Steps advance only on executed comparable work without an adverse signal; nothing progresses from elapsed calendar time alone; completed history and official plan state stay immutable.",
+        "Candidates keep the movement pattern first, then the variant family; equipment must be available; skill must not exceed declared experience unless the exercise is familiar.",
+        "An unfamiliar substitute uses effort-guided establishment, at most 2 sets at RIR >= 3, with no load converted; a bodyweight-for-load swap is disclosed as a different stimulus.",
+        "No progression step on a substituted exercise in its first exposure; the substitution persists through every reprojection inside its window; after a temporary window the original exercise resumes with its last logged load as a ceiling.",
+        "A pattern without a substitute is omitted and disclosed as an essential-stimulus loss where applicable.",
+        "Without this authority an equipment change returns UNSUPPORTED."
+      ],
+      "limitations": [
+        "Transfer between exercises is partial; specificity trade-offs are disclosed, not quantified."
+      ],
+      "runtimeBindingStatus": "CONDITIONAL_REQUIRED_CHANGES_BEFORE_FREEZE",
+      "requiredRuntimeChanges": [
+        "D27 r6-adaptation.mjs equipmentChange / weeklyReview -> reproject: persist the equipment window (canonical athlete.equipment for permanent changes, an equipment override with dates for temporary ones) and make buildWeek use templatesFor(equipment) inside the window; mark substituted exercises so advanceStrength does not progress them in their first exposure (probe P10)."
+      ]
+    },
+    {
+      "boundaryId": "R6-NONCLINICAL-RETURN",
+      "policyHash": "81114d89c2a855294bbea3a677eddd336a364c7a9cf9b04a5401d06a9f2de6c3",
+      "disposition": "REVISE",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "independent": true,
+      "sourceIds": [
+        "R6-S19",
+        "R6-S20",
+        "R6-S01",
+        "R6-S17",
+        "R6-S02",
+        "R6-S10"
+      ],
+      "reviewId": "R6-SSCTR-NONCLINICAL-RETURN",
+      "reviewRevision": "r1",
+      "conditions": [
+        "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+        "Binding: this record binds canonical policy hash 81114d89c2a855294bbea3a677eddd336a364c7a9cf9b04a5401d06a9f2de6c3 (value.mjs hash). Any policy byte change invalidates it; any change to the runtime functions named in requiredRuntimeChanges needs a delta binding review before runtime freeze.",
+        "Operational values are reversible coaching choices inside the envelope, never physiological thresholds, injury-prevention rules, readiness scores, finish-time promises or individual-response predictions.",
+        "Steps advance only on executed comparable work without an adverse signal; nothing progresses from elapsed calendar time alone; completed history and official plan state stay immutable.",
+        "Interruption reasons are structured; any illness, injury, pain or clinical category, or a whole-word clinical-lexicon match in free text, routes CLINICAL_HUMAN_REQUIRED regardless of nonclinical or clinicalReason flags; an ambiguous or missing reason is ASK; the same rule applies to the intake pause and the legacy path.",
+        "Current eligibility must be assessed on or after the interruption end date.",
+        "SHORT (<= shortMaxDays): resume the last executed doses; the first quality slot runs easy; the next step waits for executed sessions.",
+        "MODERATE (<= moderateMaxDays): run entry from a current demonstration (modality RUN, easy/long/recovery-easy family, completed, conversational effort, compatible response, ordinary and next-day function, observed after the interruption began and within currentDemonstrationMaxAgeDays) or the reviewed 15-minute entry; at most moderateStepsToPrior conditional steps to the prior executed dose, each within the single-run ceiling of R6-PLANNED-PROGRESSION.",
+        "Strength return: entry is one effort-guided set at RIR >= strengthEntryMinimumRir with the prior load only as a ceiling; the prior KNOWN load is prescribed only after a post-interruption logged entry load supports it; otherwise use FROM_LOG from the entry log.",
+        "LONG (> moderateMaxDays): restart class for running; strength re-establishes by effort; no prior-load KNOWN prescription until a post-interruption log exists.",
+        "EARNED is unavailable during RETURN/RESTART; surplus counts only observations after the return started.",
+        "No universal percentage rollback; historical maxima are ceilings, not current proof."
+      ],
+      "limitations": [
+        "Direct evidence on nonclinical pause-length dosing is sparse; length classes are operational.",
+        "Cause verification relies on self-report."
+      ],
+      "runtimeBindingStatus": "BLOCKING_DEFECTS_CHANGE_REQUIRED",
+      "requiredRuntimeChanges": [
+        "D08 r6-adaptation.mjs returnAfterPause: replace the substring regex with structured reasonCategory plus whole-word clinical lexicon; a clinical match routes CLINICAL_HUMAN_REQUIRED even when nonclinical:true or clinicalReason:false; ambiguous text is ASK (probe P5). Same change in r6-legacy.mjs selectLegacyAction RETURN branch (it checks only clinicalReason) and r6-intake.mjs pause handling (D22).",
+        "D09 r6-adaptation.mjs returnAfterPause (demoOk): require demonstration modality RUN, an easy/long/recovery-easy family, completed, conversational effort, compatible response, ordinary and next-day function, and observedAt after the interruption start (probe P6: STRENGTH demonstration set a 35-minute run entry).",
+        "D10 r6-program.mjs strengthDose RETURN branch: step 1 uses mode KNOWN only when ex.source is LOGGED_ACTUAL with a post-interruption log; otherwise FROM_LOG/ESTABLISH with the prior load as ceiling note; for LONG interruptions never prescribe the prior KNOWN load before a post-interruption log (probe P7: 20 and 90 days).",
+        "D11 r6-program.mjs advanceRun RETURN branch and r6-adaptation.mjs weeklyGates: EARNED treated as ADVANCE in RETURN/RESTART; recent()/s21 counts only observations after the return decision (probe RETURN_WITH_EASIER_RESPONSES).",
+        "Return steps must also respect D18 (single-run ceiling against completed runs)."
+      ]
+    },
+    {
+      "boundaryId": "R6-EVENT-TRANSITION",
+      "policyHash": "81114d89c2a855294bbea3a677eddd336a364c7a9cf9b04a5401d06a9f2de6c3",
+      "disposition": "REVISE",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "independent": true,
+      "sourceIds": [
+        "R6-S14",
+        "R6-S15",
+        "R6-S16",
+        "R6-S17",
+        "R6-S09",
+        "R6-S30",
+        "R6-S18"
+      ],
+      "reviewId": "R6-SSCTR-EVENT-TRANSITION",
+      "reviewRevision": "r1",
+      "conditions": [
+        "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+        "Binding: this record binds canonical policy hash 81114d89c2a855294bbea3a677eddd336a364c7a9cf9b04a5401d06a9f2de6c3 (value.mjs hash). Any policy byte change invalidates it; any change to the runtime functions named in requiredRuntimeChanges needs a delta binding review before runtime freeze.",
+        "Operational values are reversible coaching choices inside the envelope, never physiological thresholds, injury-prevention rules, readiness scores, finish-time promises or individual-response predictions.",
+        "Steps advance only on executed comparable work without an adverse signal; nothing progresses from elapsed calendar time alone; completed history and official plan state stay immutable.",
+        "Supported events are 10K and half-marathon only; one taper week plus the race week, progressive: taper-week easy runs within taperWeekRunVolumeRange and the long run within taperWeekLongRunRange of the executed peak; taper quality total work minutes within taperQualityWorkRange; race-week easy runs within raceWeekRunVolumeRange; the policy states these are per-session fractions.",
+        "Frequency is maintained; intensity is maintained only through work already executed in build/specific weeks; a race-effort touch at the policy dose >= raceWeekTouchMinDaysBeforeRace days before the race requires R6-RUN-QUALITY and an executed comparable quality session; shakeout strides require executed strides; otherwise easy.",
+        "Strength stays at a reduced dose: taper sets about taperStrengthSetFraction of the preceding dose at RIR >= 3; race week one session of raceWeekStrengthSets at RIR >= raceWeekStrengthMinimumRir no later than raceWeekStrengthMinDaysBeforeRace days before the race; no new exercise, load increase or rotation.",
+        "Post-event: no running before postEventFirstRunMinDaysAfterRace days; runs optional and easy within postEventEasyMinutes; one light strength session; redevelopment (NEXT_BLOCK) requires an eligibility and function assessment dated after the race; redevelopment fractions are declared in the policy.",
+        "The legacy path uses the athlete's event kind and only policy-declared fractions.",
+        "No finish-time, readiness or peak-performance claim."
+      ],
+      "limitations": [
+        "Taper evidence is from trained athletes; recreational evidence observational.",
+        "Combined run+strength taper evidence is indirect.",
+        "Post-event recovery evidence is from a simulated half-marathon."
+      ],
+      "runtimeBindingStatus": "BLOCKING_DEFECTS_CHANGE_REQUIRED",
+      "requiredRuntimeChanges": [
+        "D01 r6-program.mjs eventWeekSessions: RACE_TOUCH and shakeout strides gated by R6-RUN-QUALITY and executed comparable work (probes P1, TAPER_AFTER_ALL_QUALITY_MISSED).",
+        "D02 r6-prescription.mjs reducedWork (used by eventWeekSessions TAPER): a 3-repetition peak still becomes 2 repetitions (0.67 of work, outside taperQualityWorkRange 0.5-0.6; re-run probe P15 after the reducedWork change); compute the reduction on total work minutes (repetitions x workMinutes) so the result lies inside the range, and declare minimumRepetitions/minimumWorkMinutes in the policy or amend the range.",
+        "D03 r6-program.mjs peakOf/eventWeekSessions: derive taper long/easy/quality/strides from executed sessions in the ledger, not planned weeks; with no executed quality the taper is easy-only.",
+        "D04 r6-adaptation.mjs evaluateProgram/weeklyReview: when the reviewed week is RACE_WEEK or POST_EVENT, or the next week is NEXT_BLOCK, require eligibility.assessedAt on or after the race date; otherwise ASK (probe P13).",
+        "D05 r6-legacy.mjs generateLegacyProgram: pass the athlete's goal kind to eventTransform (currently hard-coded \"HALF_MARATHON\" for TAPER and EVENT weeks).",
+        "D06 r6-legacy.mjs eventTransform: reducedWork(p.work, 0.4) uses a race-week quality fraction 0.4 that is not in the policy; use raceWeekTouch or declare a reviewed value.",
+        "D07 r6-program.mjs advanceRun (next === \"NEXT_BLOCK\"): post-event redevelopment reuses taper fractions and qualityStep - 3 without policy declaration; declare in operational.event.",
+        "D32/D33 policy hygiene: state per-session semantics of taperWeekRunVolumeRange/raceWeekRunVolumeRange; declare race-day window and warm-up values used by racePrescription."
+      ]
+    },
+    {
+      "boundaryId": "R6-PARTIAL-NOISY-LEARNING",
+      "policyHash": "81114d89c2a855294bbea3a677eddd336a364c7a9cf9b04a5401d06a9f2de6c3",
+      "disposition": "REVISE",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "independent": true,
+      "sourceIds": [
+        "R6-S32",
+        "R6-S33",
+        "R6-S21"
+      ],
+      "reviewId": "R6-SSCTR-PARTIAL-NOISY-LEARNING",
+      "reviewRevision": "r1",
+      "conditions": [
+        "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+        "Binding: this record binds canonical policy hash 81114d89c2a855294bbea3a677eddd336a364c7a9cf9b04a5401d06a9f2de6c3 (value.mjs hash). Any policy byte change invalidates it; any change to the runtime functions named in requiredRuntimeChanges needs a delta binding review before runtime freeze.",
+        "Operational values are reversible coaching choices inside the envelope, never physiological thresholds, injury-prevention rules, readiness scores, finish-time promises or individual-response predictions.",
+        "Steps advance only on executed comparable work without an adverse signal; nothing progresses from elapsed calendar time alone; completed history and official plan state stay immutable.",
+        "Causal time: no future or future-reported facts; day-precision facts receive the latest causal instant of that local day; clock skew beyond futureClockSkewSeconds is excluded.",
+        "Duplicates merge; the same event identifier with different facts and disagreeing duplicates are quarantined; stale facts beyond maximumAgeDays leave learning and gating but stay in the completed-work ledger.",
+        "Partial executions count only for adherence and hold the step; missing effort or heart rate is unknown, never adverse.",
+        "Comparability: identical prescription hash and arrangement pool across FOUNDATION/BUILD/DEVELOPMENT/SPECIFIC/CONSOLIDATION/ESTABLISHMENT labels; TAPER, EVENT/RACE_WEEK, POST_EVENT, REVIEW and RETURN/RESTART-mode observations never pool with build-class observations.",
+        "Consolidation-week observations may support HOLD or REGRESS but not EARNED surplus.",
+        "Arrangement-preference queries include the phase class and a dose key; outputs are associative ranking among admissible options only, never dose authority, causal or clinical inference.",
+        "G03 adherence/comparability semantics remain jointly owned by Product/UX and Data; this record does not close G03."
+      ],
+      "limitations": [
+        "Pooling assumption is unverified; evidence supports the general approach, not the specific counts and windows.",
+        "Self-report quality varies."
+      ],
+      "runtimeBindingStatus": "BLOCKING_DEFECTS_CHANGE_REQUIRED",
+      "requiredRuntimeChanges": [
+        "D28 r6-adaptation.mjs bindObservations: add context.mode (RETURN, RESTART, WALK_JOG, EASY from program.stateTrace) and context.phaseClass via operational.learning.comparablePhaseClasses; weeklyGates recent() and evidenceFor queries exclude RETURN/RESTART and non-build classes from build pools; rebuild's preferredArrangement query adds phaseClass and plannedHash (or family and ladder step); consolidation observations excluded from EARNED surplus."
+      ]
+    },
+    {
+      "boundaryId": "R6-ROTATION",
+      "policyHash": "81114d89c2a855294bbea3a677eddd336a364c7a9cf9b04a5401d06a9f2de6c3",
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "independent": true,
+      "sourceIds": [
+        "R6-S26",
+        "R6-S01",
+        "R6-S27"
+      ],
+      "reviewId": "R6-SSCTR-ROTATION",
+      "reviewRevision": "r1",
+      "conditions": [
+        "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+        "Binding: this record binds canonical policy hash 81114d89c2a855294bbea3a677eddd336a364c7a9cf9b04a5401d06a9f2de6c3 (value.mjs hash). Any policy byte change invalidates it; any change to the runtime functions named in requiredRuntimeChanges needs a delta binding review before runtime freeze.",
+        "Operational values are reversible coaching choices inside the envelope, never physiological thresholds, injury-prevention rules, readiness scores, finish-time promises or individual-response predictions.",
+        "Steps advance only on executed comparable work without an adverse signal; nothing progresses from elapsed calendar time alone; completed history and official plan state stay immutable.",
+        "Main lifts stay; COACH_DECIDES/EVERY_6_WEEKS/EVERY_2_WEEKS rotate accessories on the stated cadence; close variants of main lifts rotate only if implemented within the same pattern and variant family and reviewed in the delta.",
+        "No rotation in ESTABLISHMENT, SPECIFIC, TAPER, RACE_WEEK or POST_EVENT weeks.",
+        "Each newly rotated exercise starts with effort-guided establishment; no load is transferred; no progression step in its first exposure.",
+        "A rotated-back exercise not performed for more than return.moderateMaxDays restarts effort-guided with its last logged load as a ceiling.",
+        "FIXED never rotates except for needed substitutions."
+      ],
+      "limitations": [
+        "Evidence is from trained men over 8 weeks; frequent accessory rotation outcomes in hybrid athletes are not studied.",
+        "Policy scope (accessories and close variants) is broader than the code (accessories only); the narrower code is acceptable."
+      ],
+      "runtimeBindingStatus": "CONDITIONAL_NO_BLOCKING_DEFECT_OBSERVED",
+      "requiredRuntimeChanges": [
+        "D30 r6-program.mjs skeletonOf().rotation and policy operational.rotation.scope: reconcile scope (code rotates accessories only); if close variants of main lifts are added, require same pattern and variant family, ESTABLISH on first exposure and delta review. Implement the rotated-back ceiling rule (condition 4) in strengthDose."
+      ]
+    }
+  ],
+  "reviewedFiles": [
+    {
+      "path": "CoachingCore/r6/PROGRAM_POLICY_R6.json",
+      "sha256": "0be56df9f6d3c7dbb1c16c47901dfe125c6c7d1644c67c15ab5e555d092b80bb"
+    },
+    {
+      "path": "CoachingCore/src/value.mjs",
+      "sha256": "5bd765f68aa9e1f39ff0ce1366c7ac08e4b092bf281b49e2caa12c7c4bdb3a3b"
+    },
+    {
+      "path": "CoachingCore/src/r6-authority.mjs",
+      "sha256": "916b601ade47966557bafc29f134a45f7497380949c584e9be773f4beba63f69"
+    },
+    {
+      "path": "CoachingCore/src/r6-index.mjs",
+      "sha256": "8316ff218814b39060b17b1720fca08349bbac8e7c954327424f4df691ceb098"
+    },
+    {
+      "path": "CoachingCore/src/r6-intake.mjs",
+      "sha256": "1a1479c0e304c6ed6897729e74c5cdc5391fc25d98091ca97d8e3afb033ef8d2"
+    },
+    {
+      "path": "CoachingCore/src/r6-catalogue.mjs",
+      "sha256": "6bd8963cf27e357dc74d2180a8fed60efedf02a419902aea22c8739896fdf6e9"
+    },
+    {
+      "path": "CoachingCore/src/r6-prescription.mjs",
+      "sha256": "4824715c9a09f27317caeef3a7752d713fbb2869ebef4fa4235607acaa7f1755"
+    },
+    {
+      "path": "CoachingCore/src/r6-program.mjs",
+      "sha256": "baefe3cbaa9eb8f9f901ff884cae353bde3c9d105fe97cac019c4408094c095d"
+    },
+    {
+      "path": "CoachingCore/src/r6-balanced.mjs",
+      "sha256": "e0755b253307f2c72643be4e3d46f32a9cff6785b22b5b1289fb6e28b49c8bfe"
+    },
+    {
+      "path": "CoachingCore/src/r6-adaptation.mjs",
+      "sha256": "e9658e8a2b6d9c6326c76eece54375177178498b270d080a7b78b2e370bc4622"
+    },
+    {
+      "path": "CoachingCore/src/r6-learning.mjs",
+      "sha256": "dced0698ebbee06f81208b9fb9e404d3d6bb534a689fe0572c7d9949c9a22a10"
+    },
+    {
+      "path": "CoachingCore/src/r6-provenance.mjs",
+      "sha256": "a001605ee152e265de093bf3e273da8d94da44e59824ef0db9ece8530c989c76"
+    },
+    {
+      "path": "CoachingCore/src/r6-legacy.mjs",
+      "sha256": "d476340480e729f9ed4a4fb079439a58808bc14b1d7ccd60724d5b68489d3adf"
+    },
+    {
+      "path": "CoachingCore/r6/fixtures/dev-authority.mjs",
+      "sha256": "7b0dbcd49777436b56980afdc36308d22a088125fa8c9cfe9595df3ca2ca3d2b"
+    },
+    {
+      "path": "CoachingCore/r6/fixtures/profiles.mjs",
+      "sha256": "3ff05e0ae24a7ccc4d98d88116f5421b86121242e985d9b32f506294b192dfc5"
+    },
+    {
+      "path": "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-dossier/RUNTIME_BINDING.md",
+      "sha256": "4df657ef239556dde8279c73eb5d06361394649ffb307ada10232e459b64921c"
+    },
+    {
+      "path": "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-dossier/DEV_OUTPUTS.json",
+      "sha256": "9b16471850b124ce3e56cd7afa360d0386a712a142d4e8d58c076ea209e0d0a8"
+    },
+    {
+      "path": "audits/domain-closure-r4-2026-10-25/reviews/ssctr-envelope-review.json",
+      "sha256": "6ae5e2b6f8f41168e99779e0f22f124ffe05af873214ec31c19b20a502aac055"
+    },
+    {
+      "path": "audits/domain-coaching-r5-2026-10-25/reviews/ssctr-policy-review.json",
+      "sha256": "2eb990ab0b9ff2c740bfeb0fe998b84a8f29ee19c88b4259f3ba359d6d5ea903"
+    },
+    {
+      "path": "governance/agents/sports-science-reviewer/decision.schema.json",
+      "sha256": "46c45e87fea53b7b1712de17a9bcc4ef02f40d9dd1f6483bce510a0a21689cc9"
+    }
+  ],
+  "probes": {
+    "note": "Reviewer-authored probes use a DEV_TEST_ONLY authority to observe what approval would allow; all were re-run on the runtime after the coordinator's later runtime-only changes (r6-adaptation 14:11, r6-balanced 14:09, r6-program 14:02 local) with the policy hash unchanged.",
+    "files": [
+      {
+        "path": "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-probe-trajectories.mjs",
+        "sha256": "e1c870b05ab8cf3b6826f468738b7acdae829c965c6a437ec63e8549484decf0"
+      },
+      {
+        "path": "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-probe-trajectories.out.json",
+        "sha256": "31e909b29c753224df29f1cda17012b8790f097f29da0a5bfa79dcc7445bb213"
+      },
+      {
+        "path": "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-probe-binding.mjs",
+        "sha256": "9fcf284e29250db434da24c434e443d0720bda7d84a91da2faad667136601cb2"
+      },
+      {
+        "path": "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-probe-binding.out.json",
+        "sha256": "9272dea53f9d135ff3cc66e216dfae13a5077c4d46d57258612c24318b3c47fd"
+      },
+      {
+        "path": "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-probe-binding-2.mjs",
+        "sha256": "e59bc91b18c8c7fb9999e0901b26a04e0d0472a9a25ff8b9dc3d9f2a666d0971"
+      },
+      {
+        "path": "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-probe-binding-2.out.json",
+        "sha256": "fc33740daa03314a6e5528ef1adecaa5ec3865ae9b874f29ace194a6a4b0d9df"
+      },
+      {
+        "path": "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-probe-binding-3.mjs",
+        "sha256": "fc28c1813522e22e1270677d20b7d66a776979aed58ea3481917e65e3c400638"
+      },
+      {
+        "path": "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-probe-binding-3.out.json",
+        "sha256": "86a8a8e8d3cc29926899c929e24dcde01391a3f7d462db6e0a93a7b44e038cac"
+      }
+    ]
+  },
+  "retainedGaps": [
+    "No human, empirical product or clinical validation; queue items wait for the funding trigger.",
+    "Exact operational magnitudes (steps, fractions, gap bins, cadences) remain operational choices without direct comparative evidence.",
+    "Single-session progression evidence is observational and distance-based.",
+    "Recreational 10K/HM and combined run+strength taper evidence is indirect.",
+    "Novice strides and true-beginner RIR accuracy lack direct evidence.",
+    "Pooling across build labels is an unverified assumption.",
+    "Hills, VO2max-calibrated work, marathon/ultra, adolescents, pregnancy/postpartum, elite and clinical return remain out of scope.",
+    "Legacy-path findings D05, D06 and the legacy part of D08 come from code inspection, not executed probes.",
+    "The full R6 test suite and verify scripts were not run by this reviewer (verify scripts are prohibited)."
+  ],
+  "escalations": [
+    "Clinical-boundary binding defect (D08/D22): illness- or injury-named interruptions can receive a nonclinical return or restart recipe in the cold, intake and legacy paths. No clinical judgment is requested; the runtime must route these to CLINICAL_HUMAN_REQUIRED before R6-NONCLINICAL-RETURN or R6-COLD-START can be enabled."
+  ],
+  "validation": "See ssctr-schema-validation.json (schema/record consistency only)."
+}

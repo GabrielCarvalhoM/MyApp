@@ -1,0 +1,241 @@
+{
+  "revision": "R7A2-DISPOSITION-1",
+  "date": "2026-10-28T14:08:14.310Z",
+  "owner": "Claude Code R7-A.2 session (Chief / current instance)",
+  "mission": "DOMAIN_COACHING_R7-A.2",
+  "delivery": "CLOSED_WITH_EXPLICIT_BLOCKER",
+  "exitReadiness": "NOT_READY",
+  "completeDefinitionOfDone": false,
+  "freeze": {
+    "revision": "R7A2-FREEZE-1",
+    "file": "CoachingCore/r7/a2/RUNTIME_FREEZE_R7A2_FREEZE_1.json",
+    "fileSha256": "14fd8efe294354810b8fe19f12dba0486883c43f3c140792c079cb7947d730b0",
+    "sourceDigest": "e0637ec2613acde1132d70fc64a5a6f0f1062b74d6c5cfafb6654dc1a54c7a28",
+    "files": 79,
+    "deltaFromR7A1FreezeA2": {
+      "changed": ["src/r6-adaptation.mjs", "src/r6-composition.mjs", "src/r6-program.mjs"],
+      "added": ["test/r7a2-interruption.test.mjs"],
+      "removed": []
+    }
+  },
+  "baselineFreeze": {
+    "revision": "R7A1-FREEZE-A2",
+    "sourceDigest": "71edc245cfe06a376732ec8054f2e09f277066f2ee4004f34827b2c90a1c4024",
+    "copy": "audits/domain-coaching-r7a2-2026-10-28/freezeA2-source/"
+  },
+  "baseline": {
+    "file": "audits/domain-coaching-r7a2-2026-10-28/BASELINE.json",
+    "boundFiles": 1674,
+    "verifyR7A1ReadOnly": "17/17",
+    "tests": "505/505",
+    "reproduced": "P13 (QE-R7A1-09), P14 (QE-R7A1-10) and the first-week grid (D59) byte-identical to the recorded re-check outputs (probes/baseline/)"
+  },
+  "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+  "policyChanged": false,
+  "contract": "audits/domain-coaching-r7a2-2026-10-28/INTERRUPTION_CONTRACT.md (R7A2-COMPOSITION-3, successor of the C5 return sentences of WEEK_COMPOSITION_CONTRACT.md R7A1-COMPOSITION-2)",
+  "tests": {
+    "suite": "519/519 (node --test, Node v24.19.0): 505 earlier and 14 new",
+    "r7a2": "CoachingCore/test/r7a2-interruption.test.mjs (14; all fail on a byte-exact FREEZE-A2 copy: audits/domain-coaching-r7a2-2026-10-28/probes/r7a2-tests.on-FREEZE-A2.out.txt)",
+    "mutation": "audits/domain-coaching-r7a2-2026-10-28/probes/mutation-check-r7a2.out.json (19/19 mutants of the new invariants caught; the first run, 11/15, led to one code change and tests before the freeze)",
+    "selfChallenge": "audits/domain-coaching-r7a2-2026-10-28/probes/r7a2-self-challenge.mjs (42 cases, 0 violations on the freeze, 16 on FREEZE-A2)"
+  },
+  "evidence": {
+    "runner": "audits/domain-coaching-r7a2-2026-10-28/probes/run-evidence-r7a2.mjs",
+    "record": "audits/domain-coaching-r7a2-2026-10-28/probes/EVIDENCE_RUNS_R7A2.json",
+    "runs": 38,
+    "failed": 0,
+    "boundDigest": "e0637ec2613acde1132d70fc64a5a6f0f1062b74d6c5cfafb6654dc1a54c7a28 before and after every run"
+  },
+  "objectiveVerification": {
+    "script": "CoachingCore/scripts/verify-r7a2.mjs",
+    "output": "CoachingCore/r7/a2/VERIFICATION_R7A2.json",
+    "note": "The verifier proves the evidence chain (baseline, freeze, tests, the baseline reproduction, the evidence runs and their digests, the closed P13/P14 paths, the first-week grid, the judges' and the SSCTR's probes and grids, the R7-A.1 author probes, the self-challenge, mutation, regression, judge bindings, queue, deliverables); it does not make the mission READY"
+  },
+  "independentJudgments": {
+    "engineering": {
+      "file": "audits/domain-coaching-r7a2-2026-10-28/reviews/quality-engineering-r7a2-recheck.json",
+      "revision": "R7A2-QE-r1",
+      "reviewer": "fresh quality-reliability-engineer (claude-opus-5-5, effort xhigh)",
+      "freeze": "R7A2-FREEZE-1",
+      "digestAtStartAndEnd": "e0637ec2…, 0 of 79 files drift",
+      "verdict": "NOT_READY",
+      "material": ["QE-R7A2-01"],
+      "notMaterial": ["QE-R7A2-02 (MEDIUM)", "QE-R7A2-03 (LOW)"],
+      "boundaries": "All six declared boundaries accepted; boundary 1 is not a composition regression, but its consequence is larger than the brief stated (QE-R7A2-02)",
+      "recommendations": {
+        "WEEK_COMPOSITION_INTEGRITY": "READY",
+        "STATE_PRESERVATION_INTEGRITY": "NOT_READY",
+        "EVENT_SUPERSESSION_INTEGRITY": "READY",
+        "EXERCISE_MERGE_INTEGRITY": "READY",
+        "RETURN_RECOVERY_CEILING_INTEGRITY_engineering": "NOT_READY"
+      }
+    },
+    "ssctr": {
+      "file": "audits/domain-coaching-r7a2-2026-10-28/reviews/ssctr-r7a2-recheck.json",
+      "revision": "R7A2-SSCTR-r1",
+      "reviewer": "native sports-science-concurrent-training-reviewer (claude-opus-5-5, effort xhigh)",
+      "freeze": "R7A2-FREEZE-1",
+      "digestAtStartAndEnd": "e0637ec2…, 79 of 79 files match",
+      "verdict": "ACCEPT",
+      "closed": ["D59", "D53 (in its sporting scope)"],
+      "holds": ["D56", "D57", "D58"],
+      "rulings": "S-A to S-H approved (S-C as the declared reading, S-D with a recorded cost, S-H as a declared boundary)",
+      "records": "13 records R7A2-SSCTR-r1 (12 re-bound, D59's record now APPROVE_WITH_CONDITIONS, 1 new: R7A2-SSCTR-INTERRUPTION-STATE); Node validator 0 errors, negative control caught",
+      "nonBlocking": ["NF-1", "R35", "R36", "NF-4", "NF-5", "R37"]
+    }
+  },
+  "cycleBound": {
+    "rule": "Build, candidate evidence, one freeze, both re-checks in parallel on the same bytes, stop. No correction cycle after the freeze: no FREEZE-2, no A.2.1, no third judge, no new round (Founder request §19)",
+    "correctionCyclesRun": 0,
+    "furtherCycle": false
+  },
+  "blockers": [
+    {
+      "id": "QE-R7A1-09",
+      "status": "OPEN",
+      "by": "engineering re-check R7A2-QE-r1",
+      "basis": "Its reproductions (P13 X, X2, S) are closed. Its statement holds on another normal path: a separate, later break is read as the same break as the earlier one and the re-entry is erased (QE-R7A2-01)"
+    },
+    {
+      "id": "QE-R7A1-10",
+      "status": "OPEN",
+      "by": "engineering re-check R7A2-QE-r1",
+      "basis": "P14 is closed. Its outcome returns through QE-R7A2-01: the second short break, read as the first, finds the first break's slot already run and records none (P20: week 4 Tuesday QUALITY THRESHOLD 41)"
+    },
+    {
+      "id": "D59",
+      "status": "CLOSED",
+      "by": "SSCTR re-check R7A2-SSCTR-r1",
+      "basis": "Founder §13 met: first-week grid E = O = B = 0 for NONE, FAMILIAR and KNOWN (306 cases); the entry happens; the block in progress earns no set; the ceiling equals the last whole count executed before the break in 4,330 of 4,330 exercises; no count rises faster than the rules allow"
+    },
+    {
+      "id": "QE-R7A-01",
+      "status": "OPEN",
+      "by": "engineering re-check R7A2-QE-r1",
+      "basis": "Through QE-R7A1-09 and QE-R7A1-10: a valid future state is destroyed by a later report on a normal path"
+    },
+    {
+      "id": "D53",
+      "status": "OPEN",
+      "by": "Chief consolidation (SSCTR closed it within its scope)",
+      "basis": "The SSCTR found no equivalent mode in its grids and noted that the engineering judge rules on identity in parallel. That judge found one: on the QE-R7A2-01 path a separate break restores the pre-break dose at once (back-squat 3x5 @RIR3 at the pre-break known load, a 70-minute long run). Founder §22 closes D53 only as a consequence of QE-R7A1-09 and D59; QE-R7A1-09 is open"
+    }
+  ],
+  "remaining": [
+    {
+      "id": "QE-R7A2-01",
+      "source": "engineering re-check R7A2-QE-r1",
+      "severity": "HIGH",
+      "material": true,
+      "what": "A report of an earlier break A (the same dates again, or a corrected first day) made after a separate break B began, and before B is reported, turns B into SAME_BREAK of A. B supersedes A's newer report, takes A's identity and starts from the week start before A: six strength rows at the pre-break dose and a 70-minute long run, where the re-entry gave 1x5 @RIR4 and 20 minutes. With B reported first, or alone, B is NEW and starts from A's re-entry",
+      "origin": "Inherited from R7A1-FREEZE-A2 (the same rows on the byte-exact copy); R7A2-FREEZE-1 closed C2 and the P13 paths, not this ordering",
+      "evidence": [
+        "audits/domain-coaching-r7a2-2026-10-28/reviews/qe-r7a2-P17-late-correction-then-separate-break.mjs",
+        "audits/domain-coaching-r7a2-2026-10-28/reviews/qe-r7a2-P17.out.json",
+        "audits/domain-coaching-r7a2-2026-10-28/reviews/qe-r7a2-P17.FREEZE-A2.out.json",
+        "audits/domain-coaching-r7a2-2026-10-28/reviews/qe-r7a2-P19-identity-interleaving-grid.mjs",
+        "audits/domain-coaching-r7a2-2026-10-28/reviews/qe-r7a2-P20-late-correction-easy-slot.mjs"
+      ],
+      "reproducedByAuthor": "P17 re-run on R7A2-FREEZE-1: byte-identical to the judge's output"
+    },
+    {
+      "id": "QE-R7A2-02",
+      "source": "engineering re-check R7A2-QE-r1",
+      "severity": "MEDIUM",
+      "material": false,
+      "what": "Declared boundary 1 (the record as reported) has a larger effect than the brief stated: in the first-week setting, pre-break sessions logged one hour after the return give higher rows than logged before it (NONE 30 of 40, FAMILIAR 36 of 40, KNOWN 9 of 40); a newer report of the same break restores the in-order rows. SSCTR S-H approves the boundary with R37 (prompt a same-break report)"
+    },
+    {
+      "id": "QE-R7A2-03",
+      "source": "engineering re-check R7A2-QE-r1",
+      "severity": "LOW",
+      "material": false,
+      "what": "A late first report that states an end before its report day opens the same window as QE-R7A2-01 from another side (P21)"
+    }
+  ],
+  "notReadyRecord": {
+    "blocker": "QE-R7A2-01 (HIGH, material); QE-R7A1-09, QE-R7A1-10, QE-R7A-01 and D53 stay open through it",
+    "rootCause": "Interruption identity and the state point are read from the record's current supersession (the latest live report and its clock), not from the record as it stood on the break's first day",
+    "sameArchitectureOrNewClass": "The same architecture and the same class as QE-R7A1-09 and QE-R7A1-10; a residual interleaving of the R7-A.2 model, inherited from FREEZE-A2; not a new class",
+    "smallestArchitecturalDecision": "Decide a report's break and its starting point from the record as it stood on the break's first day: (1) the same break only when its stated days overlap or adjoin that break's days, or it begins before that break's first report; (2) the starting point is the return in force on that day, even if superseded later. Related decisions for the Founder: QE-R7A2-02 / SSCTR R37 (a late execution log of a break's week: re-derive its return, or prompt a same-break report) and SSCTR NF-1 (a session on a break's stated first day: ask)"
+  },
+  "verdicts": {
+    "WEEK_COMPOSITION_INTEGRITY": "READY",
+    "STATE_PRESERVATION_INTEGRITY": "NOT_READY",
+    "EVENT_SUPERSESSION_INTEGRITY": "READY",
+    "EXERCISE_MERGE_INTEGRITY": "READY",
+    "RETURN_RECOVERY_CEILING_INTEGRITY": "NOT_READY",
+    "R7A2_ENGINEERING_RECHECK": "NOT_READY",
+    "R7A2_SCIENTIFIC_RECHECK": "READY",
+    "R7A_EXIT_READINESS": "NOT_READY"
+  },
+  "queue": {
+    "integration": "audits/domain-coaching-r7a2-2026-10-28/QUEUE_INTEGRATION_R7A2.json",
+    "before": 151,
+    "after": 163,
+    "appended": [
+      "HQ-R7A2-SSCTR-QUALITY-SLOT-READINGS",
+      "HQ-R7A2-SSCTR-D59-PAUSE-WEEK-START",
+      "HQ-R7A2-SSCTR-D56-FORMULATION",
+      "HQ-R7A2-SSCTR-SAME-DAY",
+      "HQ-R7A2-SSCTR-DOSE-READING",
+      "HQ-R7A2-SSCTR-COMPOSITION",
+      "HQ-R7A2-SSCTR-REGAIN-BASE",
+      "HQ-R7A2-SSCTR-REESTABLISH-PHASE",
+      "HQ-R7A2-SSCTR-SPLIT-WEEK",
+      "HQ-R7A2-SSCTR-ITEMS-5-8",
+      "HQ-R7A2-SSCTR-CYCLE2-COMPOSITIONS",
+      "HQ-R7A2-SSCTR-INTERRUPTION-STATE"
+    ],
+    "earlierItemsByteIdentical": true,
+    "fundingState": "NOT_DECLARED",
+    "supersedes": "R7-A.1's 151-item pin (audits/domain-coaching-r7a1-2026-10-27/QUEUE_INTEGRATION_R7A1.json), without rewriting it; the closed verify-r7a1 check queue-append-only now reports the later append, as R6's and R7-A's pins did"
+  },
+  "regression": {
+    "file": "CoachingCore/r7/a2/REGRESSION_R7A2.json",
+    "againstFreezeA2": {
+      "r5": "24/24",
+      "profiles": "16/16",
+      "simulations": "14/14",
+      "r6Holdout": "34/35"
+    },
+    "named": {
+      "R6-H17": "State at the break: the Monday exposures before the Wednesday break keep their last performed date and db-calf-raise its last executed whole count (2 after the block set); rows and statuses unchanged"
+    },
+    "classification": "REGRESSION / CHALLENGE REUSE; not generalization evidence"
+  },
+  "supersededVerifierChecks": "verify-r7a1.mjs (read-only) now fails freeze-current, baseline-preserved and queue-append-only by design: R7-A.2 supersedes R7A1-FREEZE-A2 and appended to the queue; its recorded VERIFICATION_R7A1.json is not rewritten",
+  "handoff": "Not written: R7A_EXIT_READINESS is NOT_READY (Founder request §24, §26)",
+  "nextEngineeringStep": {
+    "decision": "FOUNDER",
+    "nextMission": "FOUNDER_ARCHITECTURAL_DECISION",
+    "notStarted": true
+  },
+  "r7b0Started": false,
+  "r7bStarted": false,
+  "nextMissionStarted": false,
+  "productionOrRealAthleteAuthority": false,
+  "uiFigmaKmpChanges": false,
+  "integrationsImplemented": false,
+  "commitMergeDeployPerformed": false,
+  "deliverables": [
+    "audits/domain-coaching-r7a2-2026-10-28/FOUNDER_REQUEST.md",
+    "audits/domain-coaching-r7a2-2026-10-28/TASK_CONTRACT.md",
+    "audits/domain-coaching-r7a2-2026-10-28/INTERRUPTION_CONTRACT.md",
+    "audits/domain-coaching-r7a2-2026-10-28/BASELINE.json",
+    "audits/domain-coaching-r7a2-2026-10-28/CHECKPOINT.md",
+    "audits/domain-coaching-r7a2-2026-10-28/QUEUE_INTEGRATION_R7A2.json",
+    "audits/domain-coaching-r7a2-2026-10-28/dossier/",
+    "audits/domain-coaching-r7a2-2026-10-28/probes/",
+    "audits/domain-coaching-r7a2-2026-10-28/reviews/",
+    "CoachingCore/r7/a2/RUNTIME_FREEZE_R7A2_FREEZE_1.json",
+    "CoachingCore/r7/a2/REGRESSION_R7A2.json",
+    "CoachingCore/r7/a2/READINESS_R7A2.json",
+    "CoachingCore/r7/a2/FINAL_REPORT_R7A2.md",
+    "CoachingCore/r7/a2/VERIFICATION_R7A2.json",
+    "CoachingCore/src/r6-adaptation.mjs",
+    "CoachingCore/src/r6-composition.mjs",
+    "CoachingCore/src/r6-program.mjs",
+    "CoachingCore/test/r7a2-interruption.test.mjs"
+  ]
+}

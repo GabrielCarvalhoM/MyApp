@@ -1,0 +1,998 @@
+{
+ "revision": "R7AF-COMPARE-1",
+ "comparedAt": "2026-10-28T16:20:27.861Z",
+ "against": "R7A2-FREEZE-1 outputs recorded by R7-A.2 (author runs, engineering judge, SSCTR runs)",
+ "identical": [
+  "qe-P01",
+  "qe-P01b",
+  "qe-P03",
+  "qe-P04",
+  "qe-P05",
+  "qe-P06",
+  "qe-P07",
+  "qe-P08",
+  "qe-P10",
+  "qe-P13",
+  "qe-P14",
+  "qe-P15",
+  "qe-P16",
+  "r7a1-d56-grid",
+  "r7a1-d58-combinations",
+  "r7a1-representation-three-step",
+  "ssctr-caps-ext.shard0",
+  "ssctr-caps-ext.shard1",
+  "ssctr-caps.shard0",
+  "ssctr-caps.shard1",
+  "ssctr-caps.shard2",
+  "ssctr-caps.shard3",
+  "ssctr-d58",
+  "ssctr-firstweek",
+  "ssctr-grid.shard0",
+  "ssctr-grid.shard1",
+  "ssctr-grid.shard2",
+  "ssctr-grid.shard3",
+  "ssctr-short",
+  "ssctr2-x-ceiling",
+  "ssctr2-x-firstweek.shard0",
+  "ssctr2-x-firstweek.shard1",
+  "ssctr2-x-firstweek.shard2",
+  "ssctr2-x-firstweek.shard3",
+  "ssctr2-x-firstweek.shard4",
+  "ssctr2-x-firstweek.shard5",
+  "ssctr2-x-firstweek.shard6",
+  "ssctr2-x-firstweek.shard7",
+  "ssctr2-x-rotation",
+  "ssctr2-x-trace-rot",
+  "ssctr2-x-trace-sd"
+ ],
+ "different": [
+  "qe-P02",
+  "qe-P09.seed1013",
+  "qe-P09.seed7",
+  "qe2-P17",
+  "qe2-P18",
+  "qe2-P19",
+  "qe2-P20",
+  "qe2-P21",
+  "r7a1-composition-probes",
+  "r7a1-handler-grid",
+  "r7a1-handler-grid-midweek",
+  "r7a2-self-challenge",
+  "ssctr-instrument",
+  "ssctr-probe",
+  "ssctr2-x-items",
+  "ssctr2-x-sameday"
+ ],
+ "noReference": [
+  "r7af-P02-named",
+  "r7af-self-challenge"
+ ],
+ "instrument": {
+  "sections": 43,
+  "differentFromFreeze1": []
+ },
+ "rows": [
+  {
+   "name": "qe-P01",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/qe-P01.out.json",
+   "identical": true
+  },
+  {
+   "name": "qe-P01b",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/qe-P01b.out.json",
+   "identical": true
+  },
+  {
+   "name": "qe-P02",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/qe-P02.out.json",
+   "identical": false,
+   "differences": [
+    {
+     "path": "/cases/A1/correctionSundayNight/log/2",
+     "before": "\"MODIFY/REESTABLISH\"",
+     "now": "\"ASK/ASK\""
+    },
+    {
+     "path": "/cases/A1/correctionSundayNight/w6/runMode",
+     "before": "\"EASY\"",
+     "now": "\"RETURN\""
+    },
+    {
+     "path": "/cases/A1/correctionSundayNight/w6/runReturnStep",
+     "before": "null",
+     "now": "0"
+    },
+    {
+     "path": "/cases/A1/correctionSundayNight/w6/strengthSteps/back-squat",
+     "before": "null",
+     "now": "0"
+    },
+    {
+     "path": "/cases/A1/correctionSundayNight/w6/strengthSteps/db-bench-press",
+     "before": "null",
+     "now": "0"
+    },
+    {
+     "path": "/cases/A1/correctionSundayNight/w6/strengthSteps/db-row",
+     "before": "null",
+     "now": "0"
+    },
+    {
+     "path": "/cases/A1/correctionSundayNight/w6/strengthSteps/db-calf-raise",
+     "before": "null",
+     "now": "0"
+    },
+    {
+     "path": "/cases/A1/correctionSundayNight/w6/strengthSteps/dead-bug",
+     "before": "null",
+     "now": "0"
+    },
+    {
+     "path": "/cases/A1/correctionSundayNight/w6/strengthSteps/db-rdl",
+     "before": "null",
+     "now": "1"
+    },
+    {
+     "path": "/cases/A1/correctionSundayNight/w6/strengthSteps/db-split-squat",
+     "before": "null",
+     "now": "1"
+    },
+    {
+     "path": "/cases/A1/correctionSundayNight/w6/rows/0",
+     "before": "\"d1AM RUN EASY EASY:48\"",
+     "now": "\"d1AM RUN EASY EASY:15\""
+    },
+    {
+     "path": "/cases/A1/correctionSundayNight/w6/rows/1",
+     "before": "\"d2PM STRENGTH STRENGTH_FULL_A back-squat:4x5@3/KNOWN85,db-bench-press:4x6@3/KNOWN22,db-row:4x5@3/KNOWN24,db-calf-raise:3x6@3/KNOWN22,dead-bug:3x10@3/BODYWEIGHT\"",
+     "now": "\"d2PM STRENGTH STRENGTH_FULL_A back-squat:1x5@4/ESTABLISH,db-bench-press:1x6@4/ESTABLISH,db-row:1x5@4/ESTABLISH,db-calf-raise:1x7@4/ESTABLISH,dead-bug:1x10@4/BODYWEIGHT\""
+    }
+   ]
+  },
+  {
+   "name": "qe-P03",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/qe-P03.out.json",
+   "identical": true
+  },
+  {
+   "name": "qe-P04",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/qe-P04.out.json",
+   "identical": true
+  },
+  {
+   "name": "qe-P05",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/qe-P05.out.json",
+   "identical": true
+  },
+  {
+   "name": "qe-P06",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/qe-P06.out.json",
+   "identical": true
+  },
+  {
+   "name": "qe-P07",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/qe-P07.out.json",
+   "identical": true
+  },
+  {
+   "name": "qe-P08",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/qe-P08.out.json",
+   "identical": true
+  },
+  {
+   "name": "qe-P09.seed1013",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/qe-P09.seed1013.out.json",
+   "identical": false,
+   "differences": [
+    {
+     "path": "/steps",
+     "before": "7458",
+     "now": "7461"
+    }
+   ]
+  },
+  {
+   "name": "qe-P09.seed7",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/qe-P09.seed7.out.json",
+   "identical": false,
+   "differences": [
+    {
+     "path": "/steps",
+     "before": "7485",
+     "now": "7482"
+    }
+   ]
+  },
+  {
+   "name": "qe-P10",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/qe-P10.out.json",
+   "identical": true
+  },
+  {
+   "name": "qe-P13",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/qe-P13.out.json",
+   "identical": true
+  },
+  {
+   "name": "qe-P14",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/qe-P14.out.json",
+   "identical": true
+  },
+  {
+   "name": "qe-P15",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/qe-P15.out.json",
+   "identical": true
+  },
+  {
+   "name": "qe-P16",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/qe-P16.out.json",
+   "identical": true
+  },
+  {
+   "name": "qe2-P17",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/reviews/qe-r7a2-P17.out.json",
+   "identical": false,
+   "differences": [
+    {
+     "path": "/cases/L1_fixMon_then_B/reports/1/decision/relation",
+     "before": "\"SAME_BREAK\"",
+     "now": "\"NEW\""
+    },
+    {
+     "path": "/cases/L1_fixMon_then_B/reports/1/decision/episode",
+     "before": "\"qa1-20\"",
+     "now": "\"qa1-25\""
+    },
+    {
+     "path": "/cases/L1_fixMon_then_B/reports/1/decision/supersedes",
+     "before": "\"qa1-24\"",
+     "now": "null"
+    },
+    {
+     "path": "/cases/L1_fixMon_then_B/reports/1/decision/stateAt/kind",
+     "before": "\"WEEK_START\"",
+     "now": "\"RETURN\""
+    },
+    {
+     "path": "/cases/L1_fixMon_then_B/reports/1/decision/stateAt/eventId",
+     "before": "null",
+     "now": "\"qa1-20\""
+    },
+    {
+     "path": "/cases/L1_fixMon_then_B/liveReturns/0",
+     "before": "\"qa1-25\"",
+     "now": "\"qa1-24\""
+    },
+    {
+     "path": "/cases/L1_fixMon_then_B/liveReturns/1",
+     "before": null,
+     "now": "\"qa1-25\""
+    },
+    {
+     "path": "/cases/L1_fixMon_then_B/afterB/rowsWeekB/0",
+     "before": "\"d1AM RUN EASY EASY:41\"",
+     "now": "\"d1AM RUN EASY EASY:15\""
+    },
+    {
+     "path": "/cases/L1_fixMon_then_B/afterB/rowsWeekB/1",
+     "before": "\"d2PM STRENGTH STRENGTH_FULL_A back-squat:3x5@3/KNOWN82.5,db-bench-press:3x6@3/KNOWN20,db-row:3x5@3/KNOWN22,db-calf-raise:2x6@3/KNOWN22,dead-bug:2x10@3/BODYWEIGHT\"",
+     "now": "\"d2PM STRENGTH STRENGTH_FULL_A back-squat:1x5@4/ESTABLISH,db-bench-press:1x6@4/ESTABLISH,db-row:1x5@4/ESTABLISH,db-calf-raise:1x7@4/ESTABLISH,dead-bug:1x10@4/BODYWEIGHT\""
+    },
+    {
+     "path": "/cases/L1_fixMon_then_B/afterB/rowsWeekB/2",
+     "before": "\"d3AM RUN EASY EASY:45\"",
+     "now": "\"d3AM RUN EASY EASY:15\""
+    },
+    {
+     "path": "/cases/L1_fixMon_then_B/afterB/rowsWeekB/3",
+     "before": "\"d5PM STRENGTH STRENGTH_FULL_B db-rdl:3x5@3/KNOWN22,db-row:3x5@3/KNOWN22,db-bench-press:3x6@3/KNOWN20,db-split-squat:2x6@3/KNOWN22,dead-bug:2x10@3/BODYWEIGHT\"",
+     "now": "\"d5PM STRENGTH STRENGTH_FULL_B db-rdl:1x5@4/ESTABLISH,db-row:1x5@4/ESTABLISH,db-bench-press:1x6@4/ESTABLISH,db-split-squat:1x7@4/ESTABLISH,dead-bug:1x10@4/BODYWEIGHT\""
+    },
+    {
+     "path": "/cases/L1_fixMon_then_B/afterB/rowsWeekB/4",
+     "before": "\"d6AM RUN LONG LONG:70\"",
+     "now": "\"d6AM RUN LONG LONG:20\""
+    }
+   ]
+  },
+  {
+   "name": "qe2-P18",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/reviews/qe-r7a2-P18.out.json",
+   "identical": false,
+   "differences": [
+    {
+     "path": "/classes/NONE/logs/b/2",
+     "before": "\"late log KEEP/KEEP\"",
+     "now": "\"late log ASK/ASK\""
+    },
+    {
+     "path": "/classes/NONE/logs/c/2",
+     "before": "\"late log KEEP/KEEP\"",
+     "now": "\"late log ASK/ASK\""
+    },
+    {
+     "path": "/classes/NONE/lateAboveInOrder/10",
+     "before": "\"w5-str-d0:goblet-squat late 4x5@3/KNOWN20 vs in-order 2x5@3/KNOWN20\"",
+     "now": "\"w5-str-d0:goblet-squat late 4x5@3/FROM_LOG vs in-order 2x5@3/KNOWN20\""
+    },
+    {
+     "path": "/classes/NONE/lateAboveInOrder/13",
+     "before": "\"w5-str-d0:db-calf-raise late 3x6@3/KNOWN20 vs in-order 2x5@3/KNOWN20\"",
+     "now": "\"w5-str-d0:db-calf-raise late 3x7@3/FROM_LOG vs in-order 2x5@3/KNOWN20\""
+    },
+    {
+     "path": "/classes/NONE/lateAboveInOrder/18",
+     "before": "\"w5-str-d3:db-step-up late 3x6@3/KNOWN20 vs in-order 2x6@3/KNOWN20\"",
+     "now": "\"w5-str-d3:db-step-up late 3x7@3/FROM_LOG vs in-order 2x6@3/KNOWN20\""
+    },
+    {
+     "path": "/classes/NONE/lateAboveInOrder/21",
+     "before": "\"w6-str-d0:db-floor-press late 4x5@3/KNOWN22 vs in-order 2x6@3/KNOWN20\"",
+     "now": "\"w6-str-d0:db-floor-press late 4x5@3/KNOWN20 vs in-order 2x6@3/KNOWN20\""
+    },
+    {
+     "path": "/classes/NONE/lateAboveInOrder/22",
+     "before": "\"w6-str-d0:db-row late 4x5@3/KNOWN22 vs in-order 2x6@3/KNOWN20\"",
+     "now": "\"w6-str-d0:db-row late 4x5@3/KNOWN20 vs in-order 2x6@3/KNOWN20\""
+    },
+    {
+     "path": "/classes/NONE/lateAboveInOrder/26",
+     "before": "\"w6-str-d3:db-row late 4x5@3/KNOWN22 vs in-order 2x6@3/KNOWN20\"",
+     "now": "\"w6-str-d3:db-row late 4x5@3/KNOWN20 vs in-order 2x6@3/KNOWN20\""
+    },
+    {
+     "path": "/classes/NONE/lateAboveInOrder/27",
+     "before": "\"w6-str-d3:db-floor-press late 4x5@3/KNOWN22 vs in-order 2x6@3/KNOWN20\"",
+     "now": "\"w6-str-d3:db-floor-press late 4x5@3/KNOWN20 vs in-order 2x6@3/KNOWN20\""
+    },
+    {
+     "path": "/classes/FAMILIAR/logs/b/2",
+     "before": "\"late log KEEP/KEEP\"",
+     "now": "\"late log ASK/ASK\""
+    },
+    {
+     "path": "/classes/FAMILIAR/logs/c/2",
+     "before": "\"late log KEEP/KEEP\"",
+     "now": "\"late log ASK/ASK\""
+    },
+    {
+     "path": "/classes/FAMILIAR/lateAboveInOrder/11",
+     "before": "\"w4-str-d0:db-bench-press late 2x5@3/KNOWN20 vs in-order 1x5@3/KNOWN20\"",
+     "now": "\"w4-str-d0:db-bench-press late 2x5@3/FROM_LOG vs in-order 1x5@3/KNOWN20\""
+    }
+   ]
+  },
+  {
+   "name": "qe2-P19",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/reviews/qe-r7a2-P19.out.json",
+   "identical": false,
+   "differences": [
+    {
+     "path": "/tally/sameBreakB",
+     "before": "12",
+     "now": "0"
+    },
+    {
+     "path": "/tally/preBreakDose",
+     "before": "6",
+     "now": "0"
+    },
+    {
+     "path": "/tally/longAbove45",
+     "before": "24",
+     "now": "0"
+    },
+    {
+     "path": "/byTiming/BEFORE_B/violating",
+     "before": "6",
+     "now": "0"
+    },
+    {
+     "path": "/byTiming/AFTER_B/violating",
+     "before": "12",
+     "now": "0"
+    },
+    {
+     "path": "/byTiming/AFTER_B_REPORT/violating",
+     "before": "6",
+     "now": "0"
+    },
+    {
+     "path": "/cells/2/steps/1/relation",
+     "before": "\"SAME_BREAK\"",
+     "now": "\"NEW\""
+    },
+    {
+     "path": "/cells/2/steps/1/stateAt",
+     "before": "\"WEEK_START/w5\"",
+     "now": "\"RETURN/w5\""
+    },
+    {
+     "path": "/cells/2/preBreakDose/0",
+     "before": "\"w5-str-d5:db-rdl 3x5@3/KNOWN22\"",
+     "now": null
+    },
+    {
+     "path": "/cells/2/preBreakDose/1",
+     "before": "\"w5-str-d5:db-row 3x5@3/KNOWN22\"",
+     "now": null
+    },
+    {
+     "path": "/cells/2/preBreakDose/2",
+     "before": "\"w5-str-d5:db-bench-press 3x6@3/KNOWN20\"",
+     "now": null
+    },
+    {
+     "path": "/cells/2/preBreakDose/3",
+     "before": "\"w6-str-d2:back-squat 3x5@3/KNOWN82.5\"",
+     "now": null
+    }
+   ]
+  },
+  {
+   "name": "qe2-P20",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/reviews/qe-r7a2-P20.out.json",
+   "identical": false,
+   "differences": [
+    {
+     "path": "/cases/FIX_THEN_B/B/relation",
+     "before": "\"SAME_BREAK\"",
+     "now": "\"NEW\""
+    },
+    {
+     "path": "/cases/FIX_THEN_B/B/episode",
+     "before": "\"qa1-18\"",
+     "now": "\"qa1-22\""
+    },
+    {
+     "path": "/cases/FIX_THEN_B/B/supersedes",
+     "before": "\"qa1-21\"",
+     "now": "null"
+    },
+    {
+     "path": "/cases/FIX_THEN_B/easySlots/1",
+     "before": null,
+     "now": "\"w4:w4-run-d1:qa1-22\""
+    },
+    {
+     "path": "/cases/FIX_THEN_B/week4Tuesday/role",
+     "before": "\"QUALITY\"",
+     "now": "\"EASY\""
+    },
+    {
+     "path": "/cases/FIX_THEN_B/week4Tuesday/family",
+     "before": "\"THRESHOLD\"",
+     "now": "\"EASY\""
+    },
+    {
+     "path": "/cases/FIX_THEN_B/week4Tuesday/minutes",
+     "before": "41",
+     "now": "34"
+    },
+    {
+     "path": "/cases/FIX_THEN_B/week4Tuesday/easedFor",
+     "before": "null",
+     "now": "\"qa1-22\""
+    },
+    {
+     "path": "/cases/FIX_THEN_B/week4/0",
+     "before": "\"d1AM RUN QUALITY THRESHOLD:41\"",
+     "now": "\"d1AM RUN EASY EASY:34\""
+    },
+    {
+     "path": "/cases/FIX_THEN_B/week4/1",
+     "before": "\"d2PM STRENGTH STRENGTH_FULL_A back-squat:3x5@3/KNOWN82.5,db-bench-press:3x6@3/KNOWN20,db-row:3x5@3/KNOWN22,db-calf-raise:2x6@3/KNOWN22,dead-bug:2x10@3/BODYWEIGHT\"",
+     "now": "\"d2PM STRENGTH STRENGTH_FULL_A back-squat:3x5@3/KNOWN82.5,db-bench-press:3x6@3/KNOWN20,db-row:3x5@3/KNOWN22,db-calf-raise:2x6@3/KNOWN20,dead-bug:2x10@3/BODYWEIGHT\""
+    },
+    {
+     "path": "/cases/FIX_THEN_B/week4/3",
+     "before": "\"d5PM STRENGTH STRENGTH_FULL_B db-rdl:4x5@3/KNOWN22,db-row:3x5@3/KNOWN22,db-bench-press:3x6@3/KNOWN20,db-split-squat:3x6@3/KNOWN22,dead-bug:2x10@3/BODYWEIGHT\"",
+     "now": "\"d5PM STRENGTH STRENGTH_FULL_B db-rdl:4x5@3/KNOWN20,db-row:3x5@3/KNOWN22,db-bench-press:3x6@3/KNOWN20,db-split-squat:3x6@3/KNOWN20,dead-bug:2x10@3/BODYWEIGHT\""
+    },
+    {
+     "path": "/cases/FIX_THEN_B/week4/4",
+     "before": "\"d6AM RUN LONG LONG:70\"",
+     "now": "\"d6AM RUN LONG LONG:65\""
+    }
+   ]
+  },
+  {
+   "name": "qe2-P21",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/reviews/qe-r7a2-P21.out.json",
+   "identical": false,
+   "differences": [
+    {
+     "path": "/cases/G1/B/relation",
+     "before": "\"SAME_BREAK\"",
+     "now": "\"NEW\""
+    },
+    {
+     "path": "/cases/G1/B/supersedes",
+     "before": "\"qa1-20\"",
+     "now": "null"
+    },
+    {
+     "path": "/cases/G1/B/episode",
+     "before": "\"qa1-20\"",
+     "now": "\"qa1-21\""
+    },
+    {
+     "path": "/cases/G1/B/stateAt",
+     "before": "\"WEEK_START/w3\"",
+     "now": "\"RETURN/w3\""
+    }
+   ]
+  },
+  {
+   "name": "r7a1-composition-probes",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/r7a1-composition-probes.out.json",
+   "identical": false,
+   "differences": [
+    {
+     "path": "/results/E14_scheduleNextWeekThenReturnThisWeek/decisions/1",
+     "before": "\"MODIFY/REESTABLISH\"",
+     "now": "\"ASK/ASK\""
+    }
+   ]
+  },
+  {
+   "name": "r7a1-d56-grid",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/r7a1-d56-grid.out.json",
+   "identical": true
+  },
+  {
+   "name": "r7a1-d58-combinations",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/r7a1-d58-combinations.out.json",
+   "identical": true
+  },
+  {
+   "name": "r7a1-handler-grid",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/r7a1-handler-grid.out.json",
+   "identical": false,
+   "differences": [
+    {
+     "path": "/same",
+     "before": "150",
+     "now": "151"
+    },
+    {
+     "path": "/expected/3/pair",
+     "before": "\"RETURN_MODERATE x RETURN_SHORT\"",
+     "now": "\"EVENT_REACHING x EVENT_LATER\""
+    },
+    {
+     "path": "/expected/3/aThenB",
+     "before": "\"MODIFY/REESTABLISH then MODIFY/REESTABLISH\"",
+     "now": "\"MODIFY/REPLAN_FUTURE_PHASES then MODIFY/REPLAN_FUTURE_PHASES\""
+    },
+    {
+     "path": "/expected/3/bThenA",
+     "before": "\"MODIFY/REESTABLISH then MODIFY/REESTABLISH\"",
+     "now": "\"MODIFY/REPLAN_FUTURE_PHASES then MODIFY/REPLAN_FUTURE_PHASES\""
+    },
+    {
+     "path": "/expected/3/aThenBWeek/0",
+     "before": "\"d0PM STRENGTH STRENGTH_FULL_A back-squat:4x5@3/KNOWN85,db-bench-press:4x6@3/KNOWN22,db-row:4x5@3/KNOWN24,db-calf-raise:3x6@3/KNOWN22,dead-bug:3x10@3/BODYWEIGHT\"",
+     "now": "\"d0PM STRENGTH STRENGTH_FULL_A back-squat:4x5@3/KNOWN85,db-bench-press:4x6@3/KNOWN22,db-row:4x5@3/KNOWN24,db-calf-raise:3x6@3/KNOWN24,dead-bug:3x10@3/BODYWEIGHT\""
+    },
+    {
+     "path": "/expected/3/aThenBWeek/2",
+     "before": "\"d3AM RUN EASY EASY:48\"",
+     "now": "\"d3AM RUN QUALITY THRESHOLD:43\""
+    },
+    {
+     "path": "/expected/3/aThenBWeek/3",
+     "before": "\"d3PM STRENGTH STRENGTH_FULL_B db-rdl:4x5@3/KNOWN22,db-row:4x5@3/KNOWN24,db-bench-press:4x6@3/KNOWN22,db-split-squat:3x6@3/KNOWN22,dead-bug:3x10@3/BODYWEIGHT\"",
+     "now": "\"d3PM STRENGTH STRENGTH_FULL_B db-rdl:4x5@3/KNOWN24,db-row:4x5@3/KNOWN24,db-bench-press:4x6@3/KNOWN22,db-split-squat:3x6@3/KNOWN24,dead-bug:3x10@3/BODYWEIGHT\""
+    },
+    {
+     "path": "/expected/3/bThenAWeek/0",
+     "before": "\"d0PM STRENGTH STRENGTH_FULL_A back-squat:1x5@4/ESTABLISH,db-bench-press:1x6@4/ESTABLISH,db-row:1x5@4/ESTABLISH,db-calf-raise:1x7@4/ESTABLISH,dead-bug:1x10@4/BODYWEIGHT\"",
+     "now": "\"d0PM STRENGTH STRENGTH_FULL_A back-squat:2x5@3/KNOWN85,db-bench-press:2x6@3/KNOWN22,db-row:2x5@3/KNOWN24,db-calf-raise:1x6@3/KNOWN24,dead-bug:1x10@3/BODYWEIGHT\""
+    },
+    {
+     "path": "/expected/3/bThenAWeek/1",
+     "before": "\"d1AM RUN EASY EASY:15\"",
+     "now": "\"d1AM RUN EASY EASY:25\""
+    },
+    {
+     "path": "/expected/3/bThenAWeek/2",
+     "before": "\"d3AM RUN EASY EASY:15\"",
+     "now": "\"d3AM RUN RACE_TOUCH RACE_TOUCH:25\""
+    },
+    {
+     "path": "/expected/3/bThenAWeek/3",
+     "before": "\"d3PM STRENGTH STRENGTH_FULL_B db-rdl:1x5@4/ESTABLISH,db-row:1x5@4/ESTABLISH,db-bench-press:1x6@4/ESTABLISH,db-split-squat:1x7@4/ESTABLISH,dead-bug:1x10@4/BODYWEIGHT\"",
+     "now": "\"d3PM STRENGTH STRENGTH_FULL_B db-rdl:1x5@4/KNOWN24,db-row:1x5@4/KNOWN24,db-bench-press:1x6@4/KNOWN22\""
+    },
+    {
+     "path": "/expected/3/bThenAWeek/4",
+     "before": "\"d6AM RUN LONG LONG:20\"",
+     "now": "\"d6AM RUN SHAKEOUT SHAKEOUT:15\""
+    }
+   ]
+  },
+  {
+   "name": "r7a1-handler-grid-midweek",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/r7a1-handler-grid-midweek.out.json",
+   "identical": false,
+   "differences": [
+    {
+     "path": "/same",
+     "before": "1164",
+     "now": "1167"
+    },
+    {
+     "path": "/expected/2/pair",
+     "before": "\"RETURN_MODERATE x RETURN_SHORT\"",
+     "now": "\"RETURN_SHORT x EVENT_WEEK_CONFLICT\""
+    },
+    {
+     "path": "/expected/2/aThenB",
+     "before": "\"MODIFY/REESTABLISH then MODIFY/REESTABLISH\"",
+     "now": "\"MODIFY/REESTABLISH then MODIFY/SKIP_NO_CATCH_UP\""
+    },
+    {
+     "path": "/expected/2/bThenA",
+     "before": "\"MODIFY/REESTABLISH then MODIFY/REESTABLISH\"",
+     "now": "\"MODIFY/SKIP_NO_CATCH_UP then MODIFY/REESTABLISH\""
+    },
+    {
+     "path": "/expected/2/nextStartDiffers",
+     "before": "true",
+     "now": "false"
+    },
+    {
+     "path": "/expected/2/aThenBWeek/2",
+     "before": "\"d3AM RUN EASY EASY:48\"",
+     "now": "\"d3AM RUN EASY SKIPPED EASY:48\""
+    },
+    {
+     "path": "/expected/2/aThenBWeek/3",
+     "before": "\"d3PM STRENGTH STRENGTH_FULL_B db-rdl:4x5@3/KNOWN22,db-row:4x5@3/KNOWN24,db-bench-press:4x6@3/KNOWN22,db-split-squat:3x6@3/KNOWN22,dead-bug:3x10@3/BODYWEIGHT\"",
+     "now": "\"d3PM STRENGTH STRENGTH_FULL_B SKIPPED db-rdl:4x5@3/KNOWN22,db-row:4x5@3/KNOWN24,db-bench-press:4x6@3/KNOWN22,db-split-squat:3x6@3/KNOWN22,dead-bug:3x10@3/BODYWEIGHT\""
+    },
+    {
+     "path": "/expected/2/bThenAWeek/2",
+     "before": "\"d3AM RUN EASY EASY:15\"",
+     "now": "\"d3AM RUN QUALITY SKIPPED THRESHOLD:48\""
+    },
+    {
+     "path": "/expected/2/bThenAWeek/3",
+     "before": "\"d3PM STRENGTH STRENGTH_FULL_B db-rdl:1x5@4/ESTABLISH,db-row:1x5@4/ESTABLISH,db-bench-press:1x6@4/ESTABLISH,db-split-squat:1x7@4/ESTABLISH,dead-bug:1x10@4/BODYWEIGHT\"",
+     "now": "\"d3PM STRENGTH STRENGTH_FULL_B SKIPPED db-rdl:4x5@3/KNOWN22,db-row:4x5@3/KNOWN24,db-bench-press:4x6@3/KNOWN22,db-split-squat:3x6@3/KNOWN22,dead-bug:3x10@3/BODYWEIGHT\""
+    },
+    {
+     "path": "/expected/2/bThenAWeek/4",
+     "before": "\"d6AM RUN LONG LONG:20\"",
+     "now": "\"d6AM RUN LONG LONG:70\""
+    },
+    {
+     "path": "/expected/2/reason",
+     "before": "\"Two return reports of the same break: the later report replaces the earlier (C5), so the order decides which applies; checked: each order equals its later statement alone\"",
+     "now": "\"Two adaptations of the week: the order decides which slot carries a move or a skip; checked: next start, fatigue, unavailable dates, short return, doses\""
+    },
+    {
+     "path": "/expected/3/pair",
+     "before": "\"RETURN_SHORT x EVENT_WEEK_CONFLICT\"",
+     "now": "\"EVENT_REACHING x EVENT_LATER\""
+    }
+   ]
+  },
+  {
+   "name": "r7a1-representation-three-step",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/r7a1-representation-three-step.out.json",
+   "identical": true
+  },
+  {
+   "name": "r7a2-self-challenge",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/r7a2-self-challenge.out.json",
+   "identical": false,
+   "differences": [
+    {
+     "path": "/cases/C3 A, B new, C corrects B, D new/log/2",
+     "before": "\"RETURN_AFTER_PAUSE@w5:MODIFY/REESTABLISH\"",
+     "now": "\"RETURN_AFTER_PAUSE@w5:ASK/ASK\""
+    },
+    {
+     "path": "/cases/C4 A, A corrected, B new/log/1",
+     "before": "\"RETURN_AFTER_PAUSE@w5:MODIFY/REESTABLISH\"",
+     "now": "\"RETURN_AFTER_PAUSE@w5:ASK/ASK\""
+    },
+    {
+     "path": "/violations/0",
+     "before": null,
+     "now": "\"C3 A, B new, C corrects B, D new: C not SAME_BREAK\""
+    },
+    {
+     "path": "/violations/1",
+     "before": null,
+     "now": "\"C4 A, A corrected, B new: A2 not SAME_BREAK\""
+    }
+   ]
+  },
+  {
+   "name": "r7af-P02-named",
+   "reference": null,
+   "identical": null
+  },
+  {
+   "name": "r7af-self-challenge",
+   "reference": null,
+   "identical": null
+  },
+  {
+   "name": "ssctr-caps-ext.shard0",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/ssctr-caps-ext.shard0.out.json",
+   "identical": true
+  },
+  {
+   "name": "ssctr-caps-ext.shard1",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/ssctr-caps-ext.shard1.out.json",
+   "identical": true
+  },
+  {
+   "name": "ssctr-caps.shard0",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/ssctr-caps.shard0.out.json",
+   "identical": true
+  },
+  {
+   "name": "ssctr-caps.shard1",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/ssctr-caps.shard1.out.json",
+   "identical": true
+  },
+  {
+   "name": "ssctr-caps.shard2",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/ssctr-caps.shard2.out.json",
+   "identical": true
+  },
+  {
+   "name": "ssctr-caps.shard3",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/ssctr-caps.shard3.out.json",
+   "identical": true
+  },
+  {
+   "name": "ssctr-d58",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/ssctr-d58.out.json",
+   "identical": true
+  },
+  {
+   "name": "ssctr-firstweek",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/ssctr-firstweek.out.json",
+   "identical": true
+  },
+  {
+   "name": "ssctr-grid.shard0",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/ssctr-grid.shard0.out.json",
+   "identical": true
+  },
+  {
+   "name": "ssctr-grid.shard1",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/ssctr-grid.shard1.out.json",
+   "identical": true
+  },
+  {
+   "name": "ssctr-grid.shard2",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/ssctr-grid.shard2.out.json",
+   "identical": true
+  },
+  {
+   "name": "ssctr-grid.shard3",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/ssctr-grid.shard3.out.json",
+   "identical": true
+  },
+  {
+   "name": "ssctr-instrument",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/ssctr-instrument.out.json",
+   "identical": false,
+   "differences": [
+    {
+     "path": "/AHb/r11",
+     "before": "\"Error: current r6-adaptation.mjs differs from my round-11 record\\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-coaching-r7a2-2026-10-28/probes/ssctr-r12-instrument.mjs:894:125\"",
+     "now": "\"Error: current r6-adaptation.mjs differs from my round-11 record\\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-coaching-r7a-final-2026-10-28/probes/ssctr-r12-instrument.mjs:894:125\""
+    }
+   ]
+  },
+  {
+   "name": "ssctr-probe",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/ssctr-probe.out.json",
+   "identical": false,
+   "differences": [
+    {
+     "path": "/sections/S5_returnSupersedesPreBreak/corrected/corrected",
+     "before": "\"MODIFY/REESTABLISH\"",
+     "now": "\"ASK/ASK\""
+    },
+    {
+     "path": "/sections/S5_returnSupersedesPreBreak/corrected/equalToFiveDayAlone",
+     "before": "true",
+     "now": "false"
+    },
+    {
+     "path": "/sections/S5_returnSupersedesPreBreak/corrected/correctedSat/0",
+     "before": "\"d5 barbell-rdl 4x6@RIR3 95kg KNOWN [4/4]\"",
+     "now": "\"d5 barbell-rdl 1x6@RIR4 ESTABLISH RETURN_ENTRY [1/1]\""
+    },
+    {
+     "path": "/sections/S5_returnSupersedesPreBreak/corrected/correctedSat/1",
+     "before": "\"d5 db-row 4x5@RIR3 24kg KNOWN [4/4]\"",
+     "now": "\"d5 db-row 1x5@RIR4 ESTABLISH RETURN_ENTRY [1/1]\""
+    },
+    {
+     "path": "/sections/S5_returnSupersedesPreBreak/corrected/correctedSat/2",
+     "before": "\"d5 db-bench-press 4x6@RIR3 22kg KNOWN [4/4]\"",
+     "now": "\"d5 db-bench-press 1x6@RIR4 ESTABLISH RETURN_ENTRY [1/1]\""
+    },
+    {
+     "path": "/sections/S5_returnSupersedesPreBreak/corrected/correctedSat/3",
+     "before": "\"d5 db-split-squat 3x6@RIR3 24kg KNOWN [3/3]\"",
+     "now": "\"d5 db-split-squat 1x7@RIR4 ESTABLISH RETURN_ENTRY [1/1]\""
+    },
+    {
+     "path": "/sections/S5_returnSupersedesPreBreak/corrected/correctedSat/4",
+     "before": "\"d5 dead-bug 3x10@RIR3 BODYWEIGHT BODYWEIGHT [3/3]\"",
+     "now": "\"d5 dead-bug 1x10@RIR4 BODYWEIGHT RETURN_ENTRY [1/1]\""
+    },
+    {
+     "path": "/sections/S5_returnSupersedesPreBreak/corrected/correctedSat/5",
+     "before": "\"d6 LONG LONG:75\"",
+     "now": "\"d6 LONG LONG:20\""
+    }
+   ]
+  },
+  {
+   "name": "ssctr-short",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/probes/runs/ssctr-short.out.json",
+   "identical": true
+  },
+  {
+   "name": "ssctr2-x-ceiling",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/reviews/runs/x-ceiling.out.json",
+   "identical": true
+  },
+  {
+   "name": "ssctr2-x-firstweek.shard0",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/reviews/runs/x-firstweek.shard0.out.json",
+   "identical": true
+  },
+  {
+   "name": "ssctr2-x-firstweek.shard1",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/reviews/runs/x-firstweek.shard1.out.json",
+   "identical": true
+  },
+  {
+   "name": "ssctr2-x-firstweek.shard2",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/reviews/runs/x-firstweek.shard2.out.json",
+   "identical": true
+  },
+  {
+   "name": "ssctr2-x-firstweek.shard3",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/reviews/runs/x-firstweek.shard3.out.json",
+   "identical": true
+  },
+  {
+   "name": "ssctr2-x-firstweek.shard4",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/reviews/runs/x-firstweek.shard4.out.json",
+   "identical": true
+  },
+  {
+   "name": "ssctr2-x-firstweek.shard5",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/reviews/runs/x-firstweek.shard5.out.json",
+   "identical": true
+  },
+  {
+   "name": "ssctr2-x-firstweek.shard6",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/reviews/runs/x-firstweek.shard6.out.json",
+   "identical": true
+  },
+  {
+   "name": "ssctr2-x-firstweek.shard7",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/reviews/runs/x-firstweek.shard7.out.json",
+   "identical": true
+  },
+  {
+   "name": "ssctr2-x-items",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/reviews/runs/x-items.out.json",
+   "identical": false,
+   "differences": [
+    {
+     "path": "/SE/sameBreakCorrection/B",
+     "before": "\"it-5-RETURN_AFTER_PAUSE-374\"",
+     "now": "\"it-5-RETURN_AFTER_PAUSE-373\""
+    },
+    {
+     "path": "/SE/sameBreakCorrection/relation",
+     "before": "\"SAME_BREAK\"",
+     "now": "\"NEW\""
+    },
+    {
+     "path": "/SE/sameBreakCorrection/supersedes",
+     "before": "\"it-5-RETURN_AFTER_PAUSE-373\"",
+     "now": "null"
+    }
+   ]
+  },
+  {
+   "name": "ssctr2-x-rotation",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/reviews/runs/x-rotation.out.json",
+   "identical": true
+  },
+  {
+   "name": "ssctr2-x-sameday",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/reviews/runs/x-sameday.out.json",
+   "identical": false,
+   "differences": [
+    {
+     "path": "/cases",
+     "before": "72",
+     "now": "0"
+    },
+    {
+     "path": "/skipped/0",
+     "before": "\"sd-NONE-STRENGTH-2-20-b0:no exercise only on the first day\"",
+     "now": "\"sd-NONE-STRENGTH-1-20-b0:ASK/ASK\""
+    },
+    {
+     "path": "/skipped/1",
+     "before": "\"sd-NONE-STRENGTH-2-30-b0:no exercise only on the first day\"",
+     "now": "\"sd-NONE-STRENGTH-1-30-b0:ASK/ASK\""
+    },
+    {
+     "path": "/skipped/2",
+     "before": "\"sd-NONE-STRENGTH-2-40-b0:no exercise only on the first day\"",
+     "now": "\"sd-NONE-STRENGTH-1-40-b0:ASK/ASK\""
+    },
+    {
+     "path": "/skipped/3",
+     "before": "\"sd-NONE-HYPERTROPHY-2-20-b0:no exercise only on the first day\"",
+     "now": "\"sd-NONE-STRENGTH-2-20-b0:no exercise only on the first day\""
+    },
+    {
+     "path": "/skipped/4",
+     "before": "\"sd-NONE-HYPERTROPHY-2-30-b0:no exercise only on the first day\"",
+     "now": "\"sd-NONE-STRENGTH-2-20-b3:ASK/ASK\""
+    },
+    {
+     "path": "/skipped/5",
+     "before": "\"sd-NONE-HYPERTROPHY-2-40-b0:no exercise only on the first day\"",
+     "now": "\"sd-NONE-STRENGTH-2-30-b0:no exercise only on the first day\""
+    },
+    {
+     "path": "/skipped/6",
+     "before": "\"sd-NONE-RUNNING_SUPPORT-2-20-b0:no exercise only on the first day\"",
+     "now": "\"sd-NONE-STRENGTH-2-30-b3:ASK/ASK\""
+    },
+    {
+     "path": "/skipped/7",
+     "before": "\"sd-NONE-RUNNING_SUPPORT-2-30-b0:no exercise only on the first day\"",
+     "now": "\"sd-NONE-STRENGTH-2-40-b0:no exercise only on the first day\""
+    },
+    {
+     "path": "/skipped/8",
+     "before": "\"sd-NONE-RUNNING_SUPPORT-2-40-b0:no exercise only on the first day\"",
+     "now": "\"sd-NONE-STRENGTH-2-40-b3:ASK/ASK\""
+    },
+    {
+     "path": "/skipped/9",
+     "before": null,
+     "now": "\"sd-NONE-HYPERTROPHY-1-20-b0:ASK/ASK\""
+    },
+    {
+     "path": "/skipped/10",
+     "before": null,
+     "now": "\"sd-NONE-HYPERTROPHY-1-30-b0:ASK/ASK\""
+    }
+   ]
+  },
+  {
+   "name": "ssctr2-x-trace-rot",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/reviews/runs/x-trace-rot.out.json",
+   "identical": true
+  },
+  {
+   "name": "ssctr2-x-trace-sd",
+   "reference": "audits/domain-coaching-r7a2-2026-10-28/reviews/runs/x-trace-sd.out.json",
+   "identical": true
+  }
+ ]
+}

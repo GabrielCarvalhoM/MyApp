@@ -1,0 +1,1097 @@
+{
+  "evaluator": "/root/quality",
+  "purpose": "INDEPENDENT_DEV_SIMULATION_REPLAY_NOT_HOLDOUT",
+  "runtime": "v24.19.0",
+  "generatedAt": "2026-10-26T11:57:28.844Z",
+  "sourceHashes": {
+    "CoachingCore/src/r5-adaptation.mjs": "434769da56d05618da7cfc757dfbfd5e96ffb2c2777a224e329a8f7b8de52220",
+    "CoachingCore/src/r5-authority.mjs": "0eafe07af8c04bc67bf7268ac791d003b1c823241ea2e8a6dd22cd60b10954ad",
+    "CoachingCore/src/r5-contract.mjs": "39b2ce74a199bd269ce507a74de87b7d375f9d996488f43dd1c242f633735c77",
+    "CoachingCore/src/r5-index.mjs": "2d2482122f695fe9c0a3faee72418d3eb723eed39c9f9bf9e87482826a58b8f7",
+    "CoachingCore/src/r5-learning.mjs": "a78b220c6d140418a8f9f5401e616496f7a2042c06bdabf274302e01918af334",
+    "CoachingCore/src/r5-observation.mjs": "91e9607a18702b6d47487369bd5ab823ffc1542b298a85f19423fa1c6ef43b8e",
+    "CoachingCore/src/r5-program.mjs": "05795bab7967bca751ebb1fa0eb18c3ff6939b6204188b5d2fbbd6e7189ee7ad",
+    "CoachingCore/src/r5-review-context.mjs": "c392a2ac7ab02ad74f3259a8a66ef657bb748e98458810816a4bcb7100384f3e",
+    "CoachingCore/src/r5-schedule.mjs": "600d0f67bda6b9e57f3aab65f0e77deac1961676ceef0e940d43d83bb09a90e6",
+    "CoachingCore/src/r5-selectors.mjs": "a4d755cdc8fad1bcd265fac7a2967a545db5a3f17781d62e9dfad2d33764c156",
+    "CoachingCore/src/r5-simulator.mjs": "e18ac696baff3dcf47305846a8b9b4c078453ca2841f8652835997a4e59d70c0",
+    "CoachingCore/src/r5-validity.mjs": "ef19dfb0a59c7c024d1e63c960bf2ece864b0e509b345766f5ede37ce1628867"
+  },
+  "rows": [
+    {
+      "id": "A",
+      "storedResultHash": "d11b11d5120a017381da88721f10f404b5c8cb7c5bdf0bef00450a691cf94297",
+      "replayResultHash": "d11b11d5120a017381da88721f10f404b5c8cb7c5bdf0bef00450a691cf94297",
+      "exactReplay": true,
+      "summary": {
+        "weeksExecuted": 16,
+        "sessionsPlanned": 75,
+        "actualExecutions": 75,
+        "decisions": {
+          "KEEP": 15,
+          "MODIFY": 1
+        },
+        "mutations": 1,
+        "unsupportedWeeks": 1,
+        "officialMutations": 0,
+        "completedRewrites": 0,
+        "maximumRunMinutes": 139,
+        "populationOutcomePrediction": false
+      },
+      "materialDecisions": [
+        {
+          "weekIndex": 0,
+          "phase": "FOUNDATION",
+          "event": "OVERPERFORMANCE",
+          "status": "KEEP",
+          "action": "KEEP",
+          "reason": "Current evidence does not justify a stronger intervention; preserve the population prior, adequate week and next observation",
+          "mutation": false,
+          "missing": [],
+          "modelCount": 5,
+          "exclusionCount": 0,
+          "targetSessionId": "w0-easy",
+          "athleteEvidence": {
+            "direction": "UNKNOWN",
+            "confidence": "PRIOR",
+            "count": 1,
+            "sourceEventIds": [
+              "sim-SYNTHETIC-HALF_MARATHON-w0-easy"
+            ],
+            "causal": false,
+            "populationPriorRetained": true,
+            "automaticDoseAuthority": false,
+            "rankingInfluence": "POPULATION_PRIOR",
+            "reason": "INSUFFICIENT_RECURRENT_EVIDENCE",
+            "informativeCount": 1,
+            "compatibleCount": 1,
+            "adverseCount": 0,
+            "unknownCount": 0,
+            "spanDays": 0,
+            "responseSummary": {
+              "under": 0,
+              "over": 1,
+              "easier": 1,
+              "harder": 0,
+              "adverseRecovery": 0
+            }
+          }
+        },
+        {
+          "weekIndex": 1,
+          "phase": "FOUNDATION",
+          "event": "OVERPERFORMANCE",
+          "status": "KEEP",
+          "action": "KEEP",
+          "reason": "Current evidence does not justify a stronger intervention; preserve the population prior, adequate week and next observation",
+          "mutation": false,
+          "missing": [],
+          "modelCount": 10,
+          "exclusionCount": 0,
+          "targetSessionId": "w1-easy",
+          "athleteEvidence": {
+            "direction": "UNKNOWN",
+            "confidence": "PRIOR",
+            "count": 2,
+            "sourceEventIds": [
+              "sim-SYNTHETIC-HALF_MARATHON-w0-easy",
+              "sim-SYNTHETIC-HALF_MARATHON-w1-easy"
+            ],
+            "causal": false,
+            "populationPriorRetained": true,
+            "automaticDoseAuthority": false,
+            "rankingInfluence": "POPULATION_PRIOR",
+            "reason": "INSUFFICIENT_RECURRENT_EVIDENCE",
+            "informativeCount": 2,
+            "compatibleCount": 2,
+            "adverseCount": 0,
+            "unknownCount": 0,
+            "spanDays": 7,
+            "responseSummary": {
+              "under": 0,
+              "over": 2,
+              "easier": 2,
+              "harder": 0,
+              "adverseRecovery": 0
+            }
+          }
+        },
+        {
+          "weekIndex": 2,
+          "phase": "FOUNDATION",
+          "event": "OVERPERFORMANCE",
+          "status": "MODIFY",
+          "action": "PROGRESS",
+          "reason": "Repeated comparable overperformance and recovery earn one familiar dose dimension at the next horizon",
+          "mutation": true,
+          "missing": [],
+          "modelCount": 15,
+          "exclusionCount": 0,
+          "targetSessionId": "w2-easy",
+          "athleteEvidence": {
+            "direction": "COMPATIBLE",
+            "confidence": "EMERGING",
+            "count": 3,
+            "sourceEventIds": [
+              "sim-SYNTHETIC-HALF_MARATHON-w0-easy",
+              "sim-SYNTHETIC-HALF_MARATHON-w1-easy",
+              "sim-SYNTHETIC-HALF_MARATHON-w2-easy"
+            ],
+            "causal": false,
+            "populationPriorRetained": true,
+            "automaticDoseAuthority": false,
+            "rankingInfluence": "POPULATION_PRIOR",
+            "reason": "EMERGING_NOT_DECISIVE",
+            "informativeCount": 3,
+            "compatibleCount": 3,
+            "adverseCount": 0,
+            "unknownCount": 0,
+            "spanDays": 14,
+            "responseSummary": {
+              "under": 0,
+              "over": 3,
+              "easier": 3,
+              "harder": 0,
+              "adverseRecovery": 0
+            }
+          }
+        }
+      ],
+      "wholeProgramCoverage": {
+        "phases": [
+          "FOUNDATION",
+          "DEVELOPMENT",
+          "SPECIFIC",
+          "EVENT"
+        ],
+        "eventGapCount": 1
+      }
+    },
+    {
+      "id": "B",
+      "storedResultHash": "d651238a9ddc9950828da47a80fd5b902b8d11a4b59ffa4f34c7613d68a447fa",
+      "replayResultHash": "d651238a9ddc9950828da47a80fd5b902b8d11a4b59ffa4f34c7613d68a447fa",
+      "exactReplay": true,
+      "summary": {
+        "weeksExecuted": 12,
+        "sessionsPlanned": 60,
+        "actualExecutions": 60,
+        "decisions": {
+          "KEEP": 11,
+          "MODIFY": 1
+        },
+        "mutations": 1,
+        "unsupportedWeeks": 0,
+        "officialMutations": 0,
+        "completedRewrites": 0,
+        "maximumRunMinutes": 55,
+        "populationOutcomePrediction": false
+      },
+      "materialDecisions": [
+        {
+          "weekIndex": 0,
+          "phase": "FOUNDATION",
+          "event": "OVERPERFORMANCE",
+          "status": "KEEP",
+          "action": "KEEP",
+          "reason": "Current evidence does not justify a stronger intervention; preserve the population prior, adequate week and next observation",
+          "mutation": false,
+          "missing": [],
+          "modelCount": 5,
+          "exclusionCount": 0,
+          "targetSessionId": "w0-strength-a",
+          "athleteEvidence": {
+            "direction": "UNKNOWN",
+            "confidence": "PRIOR",
+            "count": 2,
+            "sourceEventIds": [
+              "sim-SYNTHETIC-STRENGTH-w0-strength-a",
+              "sim-SYNTHETIC-STRENGTH-w0-strength-b"
+            ],
+            "causal": false,
+            "populationPriorRetained": true,
+            "automaticDoseAuthority": false,
+            "rankingInfluence": "POPULATION_PRIOR",
+            "reason": "INSUFFICIENT_RECURRENT_EVIDENCE",
+            "informativeCount": 2,
+            "compatibleCount": 2,
+            "adverseCount": 0,
+            "unknownCount": 0,
+            "spanDays": 3,
+            "responseSummary": {
+              "under": 0,
+              "over": 1,
+              "easier": 1,
+              "harder": 0,
+              "adverseRecovery": 0
+            }
+          }
+        },
+        {
+          "weekIndex": 1,
+          "phase": "FOUNDATION",
+          "event": "OVERPERFORMANCE",
+          "status": "KEEP",
+          "action": "KEEP",
+          "reason": "Current evidence does not justify a stronger intervention; preserve the population prior, adequate week and next observation",
+          "mutation": false,
+          "missing": [],
+          "modelCount": 10,
+          "exclusionCount": 0,
+          "targetSessionId": "w1-strength-a",
+          "athleteEvidence": {
+            "direction": "COMPATIBLE",
+            "confidence": "EMERGING",
+            "count": 4,
+            "sourceEventIds": [
+              "sim-SYNTHETIC-STRENGTH-w0-strength-a",
+              "sim-SYNTHETIC-STRENGTH-w0-strength-b",
+              "sim-SYNTHETIC-STRENGTH-w1-strength-a",
+              "sim-SYNTHETIC-STRENGTH-w1-strength-b"
+            ],
+            "causal": false,
+            "populationPriorRetained": true,
+            "automaticDoseAuthority": false,
+            "rankingInfluence": "POPULATION_PRIOR",
+            "reason": "EMERGING_NOT_DECISIVE",
+            "informativeCount": 4,
+            "compatibleCount": 4,
+            "adverseCount": 0,
+            "unknownCount": 0,
+            "spanDays": 10,
+            "responseSummary": {
+              "under": 0,
+              "over": 2,
+              "easier": 2,
+              "harder": 0,
+              "adverseRecovery": 0
+            }
+          }
+        },
+        {
+          "weekIndex": 2,
+          "phase": "FOUNDATION",
+          "event": "OVERPERFORMANCE",
+          "status": "MODIFY",
+          "action": "PROGRESS",
+          "reason": "Repeated comparable overperformance and recovery earn one familiar dose dimension at the next horizon",
+          "mutation": true,
+          "missing": [],
+          "modelCount": 15,
+          "exclusionCount": 0,
+          "targetSessionId": "w2-strength-a",
+          "athleteEvidence": {
+            "direction": "COMPATIBLE",
+            "confidence": "STRONG",
+            "count": 6,
+            "sourceEventIds": [
+              "sim-SYNTHETIC-STRENGTH-w0-strength-a",
+              "sim-SYNTHETIC-STRENGTH-w0-strength-b",
+              "sim-SYNTHETIC-STRENGTH-w1-strength-a",
+              "sim-SYNTHETIC-STRENGTH-w1-strength-b",
+              "sim-SYNTHETIC-STRENGTH-w2-strength-a",
+              "sim-SYNTHETIC-STRENGTH-w2-strength-b"
+            ],
+            "causal": false,
+            "populationPriorRetained": true,
+            "automaticDoseAuthority": false,
+            "rankingInfluence": "CONTEXTUAL_ASSOCIATION",
+            "reason": "RECURRENT_COMPARABLE_ASSOCIATION",
+            "informativeCount": 6,
+            "compatibleCount": 6,
+            "adverseCount": 0,
+            "unknownCount": 0,
+            "spanDays": 17,
+            "responseSummary": {
+              "under": 0,
+              "over": 3,
+              "easier": 3,
+              "harder": 0,
+              "adverseRecovery": 0
+            }
+          }
+        }
+      ],
+      "wholeProgramCoverage": {
+        "phases": [
+          "FOUNDATION",
+          "DEVELOPMENT",
+          "SPECIFIC"
+        ],
+        "eventGapCount": 0
+      }
+    },
+    {
+      "id": "C",
+      "storedResultHash": "65c7f397995233110766623ef229f6ca3d00260f3e5c161451db0c3990e7b9ee",
+      "replayResultHash": "65c7f397995233110766623ef229f6ca3d00260f3e5c161451db0c3990e7b9ee",
+      "exactReplay": true,
+      "summary": {
+        "weeksExecuted": 8,
+        "sessionsPlanned": 40,
+        "actualExecutions": 40,
+        "decisions": {
+          "KEEP": 7,
+          "MODIFY": 1
+        },
+        "mutations": 1,
+        "unsupportedWeeks": 0,
+        "officialMutations": 0,
+        "completedRewrites": 0,
+        "maximumRunMinutes": 134,
+        "populationOutcomePrediction": false
+      },
+      "materialDecisions": [
+        {
+          "weekIndex": 2,
+          "phase": "DEVELOPMENT",
+          "event": "SCHEDULE_CHANGE",
+          "status": "MODIFY",
+          "action": "MOVE",
+          "reason": "A feasible Pareto option preserves essential work in both modalities; priority creates no necessity",
+          "mutation": true,
+          "missing": [],
+          "modelCount": 15,
+          "exclusionCount": 0,
+          "targetSessionId": "w2-strength-a",
+          "selectedScheduleId": "familiar-travel-week"
+        }
+      ],
+      "wholeProgramCoverage": {
+        "phases": [
+          "FOUNDATION",
+          "DEVELOPMENT",
+          "SPECIFIC"
+        ],
+        "eventGapCount": 0
+      }
+    },
+    {
+      "id": "D",
+      "storedResultHash": "ea62494a4bfba4149cc1005a64e604607e2957ea8635a9252e4555810c7d20f8",
+      "replayResultHash": "ea62494a4bfba4149cc1005a64e604607e2957ea8635a9252e4555810c7d20f8",
+      "exactReplay": true,
+      "summary": {
+        "weeksExecuted": 16,
+        "sessionsPlanned": 75,
+        "actualExecutions": 74,
+        "decisions": {
+          "KEEP": 15,
+          "MODIFY": 1
+        },
+        "mutations": 1,
+        "unsupportedWeeks": 1,
+        "officialMutations": 0,
+        "completedRewrites": 0,
+        "maximumRunMinutes": 134,
+        "populationOutcomePrediction": false
+      },
+      "materialDecisions": [
+        {
+          "weekIndex": 10,
+          "phase": "SPECIFIC",
+          "event": "MISSED_ESSENTIAL",
+          "status": "MODIFY",
+          "action": "MOVE",
+          "reason": "A feasible Pareto option preserves essential work in both modalities; priority creates no necessity",
+          "mutation": true,
+          "missing": [],
+          "modelCount": 54,
+          "exclusionCount": 0,
+          "targetSessionId": "w10-long",
+          "selectedScheduleId": "protect-next-long"
+        }
+      ],
+      "wholeProgramCoverage": {
+        "phases": [
+          "FOUNDATION",
+          "DEVELOPMENT",
+          "SPECIFIC",
+          "EVENT"
+        ],
+        "eventGapCount": 1
+      }
+    },
+    {
+      "id": "E",
+      "storedResultHash": "ffbecfc7bc2fc0a9318f3bdc71482faca7663cbc2deffb00f37bf9df57bf14a7",
+      "replayResultHash": "ffbecfc7bc2fc0a9318f3bdc71482faca7663cbc2deffb00f37bf9df57bf14a7",
+      "exactReplay": true,
+      "summary": {
+        "weeksExecuted": 16,
+        "sessionsPlanned": 75,
+        "actualExecutions": 75,
+        "decisions": {
+          "KEEP": 15,
+          "MODIFY": 1
+        },
+        "mutations": 1,
+        "unsupportedWeeks": 1,
+        "officialMutations": 0,
+        "completedRewrites": 0,
+        "maximumRunMinutes": 134,
+        "populationOutcomePrediction": false
+      },
+      "materialDecisions": [
+        {
+          "weekIndex": 0,
+          "phase": "FOUNDATION",
+          "event": "UNDERPERFORMANCE",
+          "status": "KEEP",
+          "action": "KEEP",
+          "reason": "Current evidence does not justify a stronger intervention; preserve the population prior, adequate week and next observation",
+          "mutation": false,
+          "missing": [],
+          "modelCount": 5,
+          "exclusionCount": 0,
+          "targetSessionId": "w0-easy",
+          "athleteEvidence": {
+            "direction": "UNKNOWN",
+            "confidence": "PRIOR",
+            "count": 1,
+            "sourceEventIds": [
+              "sim-SYNTHETIC-HALF_MARATHON-w0-easy"
+            ],
+            "causal": false,
+            "populationPriorRetained": true,
+            "automaticDoseAuthority": false,
+            "rankingInfluence": "POPULATION_PRIOR",
+            "reason": "INSUFFICIENT_RECURRENT_EVIDENCE",
+            "informativeCount": 1,
+            "compatibleCount": 0,
+            "adverseCount": 1,
+            "unknownCount": 0,
+            "spanDays": 0,
+            "responseSummary": {
+              "under": 1,
+              "over": 0,
+              "easier": 0,
+              "harder": 1,
+              "adverseRecovery": 0
+            }
+          }
+        },
+        {
+          "weekIndex": 1,
+          "phase": "FOUNDATION",
+          "event": "UNDERPERFORMANCE",
+          "status": "KEEP",
+          "action": "KEEP",
+          "reason": "Current evidence does not justify a stronger intervention; preserve the population prior, adequate week and next observation",
+          "mutation": false,
+          "missing": [],
+          "modelCount": 10,
+          "exclusionCount": 0,
+          "targetSessionId": "w1-easy",
+          "athleteEvidence": {
+            "direction": "UNKNOWN",
+            "confidence": "PRIOR",
+            "count": 2,
+            "sourceEventIds": [
+              "sim-SYNTHETIC-HALF_MARATHON-w0-easy",
+              "sim-SYNTHETIC-HALF_MARATHON-w1-easy"
+            ],
+            "causal": false,
+            "populationPriorRetained": true,
+            "automaticDoseAuthority": false,
+            "rankingInfluence": "POPULATION_PRIOR",
+            "reason": "INSUFFICIENT_RECURRENT_EVIDENCE",
+            "informativeCount": 2,
+            "compatibleCount": 0,
+            "adverseCount": 2,
+            "unknownCount": 0,
+            "spanDays": 7,
+            "responseSummary": {
+              "under": 2,
+              "over": 0,
+              "easier": 0,
+              "harder": 2,
+              "adverseRecovery": 0
+            }
+          }
+        },
+        {
+          "weekIndex": 2,
+          "phase": "FOUNDATION",
+          "event": "UNDERPERFORMANCE",
+          "status": "MODIFY",
+          "action": "REGRESS",
+          "reason": "Repeated comparable actual mismatch favors a familiar minimum regression before a wider block adjustment",
+          "mutation": true,
+          "missing": [],
+          "modelCount": 15,
+          "exclusionCount": 0,
+          "targetSessionId": "w2-easy",
+          "athleteEvidence": {
+            "direction": "ADVERSE",
+            "confidence": "EMERGING",
+            "count": 3,
+            "sourceEventIds": [
+              "sim-SYNTHETIC-HALF_MARATHON-w0-easy",
+              "sim-SYNTHETIC-HALF_MARATHON-w1-easy",
+              "sim-SYNTHETIC-HALF_MARATHON-w2-easy"
+            ],
+            "causal": false,
+            "populationPriorRetained": true,
+            "automaticDoseAuthority": false,
+            "rankingInfluence": "POPULATION_PRIOR",
+            "reason": "EMERGING_NOT_DECISIVE",
+            "informativeCount": 3,
+            "compatibleCount": 0,
+            "adverseCount": 3,
+            "unknownCount": 0,
+            "spanDays": 14,
+            "responseSummary": {
+              "under": 3,
+              "over": 0,
+              "easier": 0,
+              "harder": 3,
+              "adverseRecovery": 0
+            }
+          }
+        }
+      ],
+      "wholeProgramCoverage": {
+        "phases": [
+          "FOUNDATION",
+          "DEVELOPMENT",
+          "SPECIFIC",
+          "EVENT"
+        ],
+        "eventGapCount": 1
+      }
+    },
+    {
+      "id": "F",
+      "storedResultHash": "2474bc58d49a67d0b3814913b96ae18b6044868f1a6fa22a40d4878d68c36c30",
+      "replayResultHash": "2474bc58d49a67d0b3814913b96ae18b6044868f1a6fa22a40d4878d68c36c30",
+      "exactReplay": true,
+      "summary": {
+        "weeksExecuted": 16,
+        "sessionsPlanned": 75,
+        "actualExecutions": 75,
+        "decisions": {
+          "KEEP": 15,
+          "MODIFY": 1
+        },
+        "mutations": 1,
+        "unsupportedWeeks": 1,
+        "officialMutations": 0,
+        "completedRewrites": 0,
+        "maximumRunMinutes": 134,
+        "populationOutcomePrediction": false
+      },
+      "materialDecisions": [
+        {
+          "weekIndex": 0,
+          "phase": "FOUNDATION",
+          "event": "OVERPERFORMANCE",
+          "status": "KEEP",
+          "action": "KEEP",
+          "reason": "Current evidence does not justify a stronger intervention; preserve the population prior, adequate week and next observation",
+          "mutation": false,
+          "missing": [],
+          "modelCount": 5,
+          "exclusionCount": 0,
+          "targetSessionId": "w0-strength-a",
+          "athleteEvidence": {
+            "direction": "UNKNOWN",
+            "confidence": "PRIOR",
+            "count": 2,
+            "sourceEventIds": [
+              "sim-SYNTHETIC-HALF_MARATHON-w0-strength-a",
+              "sim-SYNTHETIC-HALF_MARATHON-w0-strength-b"
+            ],
+            "causal": false,
+            "populationPriorRetained": true,
+            "automaticDoseAuthority": false,
+            "rankingInfluence": "POPULATION_PRIOR",
+            "reason": "INSUFFICIENT_RECURRENT_EVIDENCE",
+            "informativeCount": 2,
+            "compatibleCount": 2,
+            "adverseCount": 0,
+            "unknownCount": 0,
+            "spanDays": 3,
+            "responseSummary": {
+              "under": 0,
+              "over": 1,
+              "easier": 1,
+              "harder": 0,
+              "adverseRecovery": 0
+            }
+          }
+        },
+        {
+          "weekIndex": 1,
+          "phase": "FOUNDATION",
+          "event": "OVERPERFORMANCE",
+          "status": "KEEP",
+          "action": "KEEP",
+          "reason": "Current evidence does not justify a stronger intervention; preserve the population prior, adequate week and next observation",
+          "mutation": false,
+          "missing": [],
+          "modelCount": 10,
+          "exclusionCount": 0,
+          "targetSessionId": "w1-strength-a",
+          "athleteEvidence": {
+            "direction": "COMPATIBLE",
+            "confidence": "EMERGING",
+            "count": 4,
+            "sourceEventIds": [
+              "sim-SYNTHETIC-HALF_MARATHON-w0-strength-a",
+              "sim-SYNTHETIC-HALF_MARATHON-w0-strength-b",
+              "sim-SYNTHETIC-HALF_MARATHON-w1-strength-a",
+              "sim-SYNTHETIC-HALF_MARATHON-w1-strength-b"
+            ],
+            "causal": false,
+            "populationPriorRetained": true,
+            "automaticDoseAuthority": false,
+            "rankingInfluence": "POPULATION_PRIOR",
+            "reason": "EMERGING_NOT_DECISIVE",
+            "informativeCount": 4,
+            "compatibleCount": 4,
+            "adverseCount": 0,
+            "unknownCount": 0,
+            "spanDays": 10,
+            "responseSummary": {
+              "under": 0,
+              "over": 2,
+              "easier": 2,
+              "harder": 0,
+              "adverseRecovery": 0
+            }
+          }
+        },
+        {
+          "weekIndex": 2,
+          "phase": "FOUNDATION",
+          "event": "OVERPERFORMANCE",
+          "status": "MODIFY",
+          "action": "PROGRESS",
+          "reason": "Repeated comparable overperformance and recovery earn one familiar dose dimension at the next horizon",
+          "mutation": true,
+          "missing": [],
+          "modelCount": 15,
+          "exclusionCount": 0,
+          "targetSessionId": "w2-strength-a",
+          "athleteEvidence": {
+            "direction": "COMPATIBLE",
+            "confidence": "STRONG",
+            "count": 6,
+            "sourceEventIds": [
+              "sim-SYNTHETIC-HALF_MARATHON-w0-strength-a",
+              "sim-SYNTHETIC-HALF_MARATHON-w0-strength-b",
+              "sim-SYNTHETIC-HALF_MARATHON-w1-strength-a",
+              "sim-SYNTHETIC-HALF_MARATHON-w1-strength-b",
+              "sim-SYNTHETIC-HALF_MARATHON-w2-strength-a",
+              "sim-SYNTHETIC-HALF_MARATHON-w2-strength-b"
+            ],
+            "causal": false,
+            "populationPriorRetained": true,
+            "automaticDoseAuthority": false,
+            "rankingInfluence": "CONTEXTUAL_ASSOCIATION",
+            "reason": "RECURRENT_COMPARABLE_ASSOCIATION",
+            "informativeCount": 6,
+            "compatibleCount": 6,
+            "adverseCount": 0,
+            "unknownCount": 0,
+            "spanDays": 17,
+            "responseSummary": {
+              "under": 0,
+              "over": 3,
+              "easier": 3,
+              "harder": 0,
+              "adverseRecovery": 0
+            }
+          }
+        }
+      ],
+      "wholeProgramCoverage": {
+        "phases": [
+          "FOUNDATION",
+          "DEVELOPMENT",
+          "SPECIFIC",
+          "EVENT"
+        ],
+        "eventGapCount": 1
+      }
+    },
+    {
+      "id": "GENERAL4",
+      "storedResultHash": "5f467ac4c6ec50a4b2bd816a7969d42c5a0777861061269ddb8601c98ad1f875",
+      "replayResultHash": "5f467ac4c6ec50a4b2bd816a7969d42c5a0777861061269ddb8601c98ad1f875",
+      "exactReplay": true,
+      "summary": {
+        "weeksExecuted": 4,
+        "sessionsPlanned": 20,
+        "actualExecutions": 19,
+        "decisions": {
+          "KEEP": 4
+        },
+        "mutations": 0,
+        "unsupportedWeeks": 0,
+        "officialMutations": 0,
+        "completedRewrites": 0,
+        "maximumRunMinutes": 134,
+        "populationOutcomePrediction": false
+      },
+      "materialDecisions": [
+        {
+          "weekIndex": 1,
+          "phase": "DEVELOPMENT",
+          "event": "MISSED_OPTIONAL",
+          "status": "KEEP",
+          "action": "DISCARD",
+          "reason": "Discard the missed optional exposure; no load debt and no compensatory training",
+          "mutation": false,
+          "missing": [],
+          "modelCount": 9,
+          "exclusionCount": 0,
+          "targetSessionId": "w1-easy"
+        }
+      ],
+      "wholeProgramCoverage": {
+        "phases": [
+          "FOUNDATION",
+          "DEVELOPMENT",
+          "SPECIFIC"
+        ],
+        "eventGapCount": 0
+      }
+    },
+    {
+      "id": "NOVICE_RUN8",
+      "storedResultHash": "d17f1c92a3451d147cc8803b7d156ee6024131dd184d639a155fde97f08e8e53",
+      "replayResultHash": "d17f1c92a3451d147cc8803b7d156ee6024131dd184d639a155fde97f08e8e53",
+      "exactReplay": true,
+      "summary": {
+        "weeksExecuted": 8,
+        "sessionsPlanned": 40,
+        "actualExecutions": 40,
+        "decisions": {
+          "KEEP": 8
+        },
+        "mutations": 0,
+        "unsupportedWeeks": 0,
+        "officialMutations": 0,
+        "completedRewrites": 0,
+        "maximumRunMinutes": 60,
+        "populationOutcomePrediction": false
+      },
+      "materialDecisions": [],
+      "wholeProgramCoverage": {
+        "phases": [
+          "FOUNDATION",
+          "DEVELOPMENT",
+          "SPECIFIC"
+        ],
+        "eventGapCount": 0
+      }
+    },
+    {
+      "id": "NOVICE_STRENGTH8",
+      "storedResultHash": "a53c8eaa1462547ad99c5464820d8b6036df3009fc91536faf2a72d239203031",
+      "replayResultHash": "a53c8eaa1462547ad99c5464820d8b6036df3009fc91536faf2a72d239203031",
+      "exactReplay": true,
+      "summary": {
+        "weeksExecuted": 8,
+        "sessionsPlanned": 40,
+        "actualExecutions": 40,
+        "decisions": {
+          "KEEP": 8
+        },
+        "mutations": 0,
+        "unsupportedWeeks": 0,
+        "officialMutations": 0,
+        "completedRewrites": 0,
+        "maximumRunMinutes": 134,
+        "populationOutcomePrediction": false
+      },
+      "materialDecisions": [],
+      "wholeProgramCoverage": {
+        "phases": [
+          "FOUNDATION",
+          "DEVELOPMENT",
+          "SPECIFIC"
+        ],
+        "eventGapCount": 0
+      }
+    },
+    {
+      "id": "RETURN8",
+      "storedResultHash": "4a1f0eaae911711e867ca52b6b7ae3f169edce1cfbc898bf5a28170b089d9a69",
+      "replayResultHash": "4a1f0eaae911711e867ca52b6b7ae3f169edce1cfbc898bf5a28170b089d9a69",
+      "exactReplay": true,
+      "summary": {
+        "weeksExecuted": 8,
+        "sessionsPlanned": 40,
+        "actualExecutions": 12,
+        "decisions": {
+          "KEEP": 2,
+          "ASK": 6
+        },
+        "mutations": 0,
+        "unsupportedWeeks": 0,
+        "officialMutations": 0,
+        "completedRewrites": 0,
+        "maximumRunMinutes": 134,
+        "populationOutcomePrediction": false
+      },
+      "materialDecisions": [
+        {
+          "weekIndex": 2,
+          "phase": "DEVELOPMENT",
+          "event": "RETURN",
+          "status": "ASK",
+          "action": "ASK",
+          "reason": "Nonclinical interruption still requires known nonclinical reason, current capacity and compatible task evidence; historical maxima do not restore automatically",
+          "mutation": false,
+          "missing": [
+            "interruption.nonclinicalReason",
+            "currentCapacityConfirmed",
+            "currentCompatiblePrescription"
+          ],
+          "modelCount": 12,
+          "exclusionCount": 0,
+          "targetSessionId": "w2-easy"
+        },
+        {
+          "weekIndex": 3,
+          "phase": "DEVELOPMENT",
+          "event": "RECOVERED",
+          "status": "ASK",
+          "action": "ASK",
+          "reason": "Return/goal dependency requires its specific current facts and reviewed task path, or a newly validated rebased program; generic recovery cannot clear it",
+          "mutation": false,
+          "missing": [
+            "specificDependencyOrValidatedRebasedProgram"
+          ],
+          "modelCount": 12,
+          "exclusionCount": 0,
+          "targetSessionId": "w3-easy"
+        },
+        {
+          "weekIndex": 4,
+          "phase": "DEVELOPMENT",
+          "event": "REVIEW",
+          "status": "ASK",
+          "action": "ASK",
+          "reason": "Return/goal dependency requires its specific current facts and reviewed task path, or a newly validated rebased program; generic recovery cannot clear it",
+          "mutation": false,
+          "missing": [
+            "specificDependencyOrValidatedRebasedProgram"
+          ],
+          "modelCount": 12,
+          "exclusionCount": 0,
+          "targetSessionId": "w4-easy"
+        },
+        {
+          "weekIndex": 5,
+          "phase": "SPECIFIC",
+          "event": "REVIEW",
+          "status": "ASK",
+          "action": "ASK",
+          "reason": "Return/goal dependency requires its specific current facts and reviewed task path, or a newly validated rebased program; generic recovery cannot clear it",
+          "mutation": false,
+          "missing": [
+            "specificDependencyOrValidatedRebasedProgram"
+          ],
+          "modelCount": 12,
+          "exclusionCount": 0,
+          "targetSessionId": "w5-easy"
+        },
+        {
+          "weekIndex": 6,
+          "phase": "SPECIFIC",
+          "event": "REVIEW",
+          "status": "ASK",
+          "action": "ASK",
+          "reason": "Return/goal dependency requires its specific current facts and reviewed task path, or a newly validated rebased program; generic recovery cannot clear it",
+          "mutation": false,
+          "missing": [
+            "specificDependencyOrValidatedRebasedProgram"
+          ],
+          "modelCount": 12,
+          "exclusionCount": 0,
+          "targetSessionId": "w6-easy"
+        },
+        {
+          "weekIndex": 7,
+          "phase": "SPECIFIC",
+          "event": "REVIEW",
+          "status": "ASK",
+          "action": "ASK",
+          "reason": "Return/goal dependency requires its specific current facts and reviewed task path, or a newly validated rebased program; generic recovery cannot clear it",
+          "mutation": false,
+          "missing": [
+            "specificDependencyOrValidatedRebasedProgram"
+          ],
+          "modelCount": 12,
+          "exclusionCount": 0,
+          "targetSessionId": "w7-easy"
+        }
+      ],
+      "wholeProgramCoverage": {
+        "phases": [
+          "FOUNDATION",
+          "DEVELOPMENT",
+          "SPECIFIC"
+        ],
+        "eventGapCount": 0
+      }
+    },
+    {
+      "id": "FATIGUE8",
+      "storedResultHash": "6b745a9d9641668f912eb95fe144b1d198e3c358b869a041f3a67ef9c30986ae",
+      "replayResultHash": "6b745a9d9641668f912eb95fe144b1d198e3c358b869a041f3a67ef9c30986ae",
+      "exactReplay": true,
+      "summary": {
+        "weeksExecuted": 8,
+        "sessionsPlanned": 40,
+        "actualExecutions": 40,
+        "decisions": {
+          "KEEP": 7,
+          "ASK": 1
+        },
+        "mutations": 0,
+        "unsupportedWeeks": 0,
+        "officialMutations": 0,
+        "completedRewrites": 0,
+        "maximumRunMinutes": 134,
+        "populationOutcomePrediction": false
+      },
+      "materialDecisions": [
+        {
+          "weekIndex": 2,
+          "phase": "DEVELOPMENT",
+          "event": "SYSTEMIC_FATIGUE",
+          "status": "ASK",
+          "action": "ASK",
+          "reason": "No covered optional reduction can restore the session; reconcile current performance, recovery and compatible reduced task rather than continue hard work",
+          "mutation": false,
+          "missing": [
+            "currentCompatibleReducedTask"
+          ],
+          "modelCount": 15,
+          "exclusionCount": 0,
+          "targetSessionId": "w2-easy"
+        },
+        {
+          "weekIndex": 3,
+          "phase": "DEVELOPMENT",
+          "event": "RECOVERED",
+          "status": "KEEP",
+          "action": "KEEP",
+          "reason": "Current evidence does not justify a stronger intervention; preserve the population prior, adequate week and next observation",
+          "mutation": false,
+          "missing": [],
+          "modelCount": 20,
+          "exclusionCount": 0,
+          "targetSessionId": "w3-easy",
+          "athleteEvidence": {
+            "direction": "MIXED",
+            "confidence": "PRIOR",
+            "count": 2,
+            "sourceEventIds": [
+              "sim-SYNTHETIC-GENERAL_FITNESS-w2-easy",
+              "sim-SYNTHETIC-GENERAL_FITNESS-w3-easy"
+            ],
+            "causal": false,
+            "populationPriorRetained": true,
+            "automaticDoseAuthority": false,
+            "rankingInfluence": "POPULATION_PRIOR",
+            "reason": "INCONSISTENT_COMPARABLE_RESPONSE",
+            "informativeCount": 2,
+            "compatibleCount": 1,
+            "adverseCount": 1,
+            "unknownCount": 0,
+            "spanDays": 7,
+            "responseSummary": {
+              "under": 0,
+              "over": 0,
+              "easier": 0,
+              "harder": 0,
+              "adverseRecovery": 1
+            }
+          }
+        }
+      ],
+      "wholeProgramCoverage": {
+        "phases": [
+          "FOUNDATION",
+          "DEVELOPMENT",
+          "SPECIFIC"
+        ],
+        "eventGapCount": 0
+      }
+    }
+  ],
+  "G": {
+    "exactReplay": true,
+    "status": "MODIFY",
+    "action": "MOVE",
+    "reason": "Strong comparable athlete-specific association changes future same-dose scheduling preference; causal effect remains unknown",
+    "evidence": {
+      "preferredId": "reported-alternate",
+      "evidence": [
+        {
+          "optionId": "reported-week",
+          "direction": "ADVERSE",
+          "confidence": "STRONG",
+          "count": 4,
+          "sourceEventIds": [
+            "actual-historical-reported-week-0-reported-week",
+            "actual-historical-reported-week-1-reported-week",
+            "actual-historical-reported-week-2-reported-week",
+            "actual-historical-reported-week-3-reported-week"
+          ],
+          "causal": false,
+          "populationPriorRetained": true,
+          "automaticDoseAuthority": false,
+          "rankingInfluence": "CONTEXTUAL_ASSOCIATION",
+          "reason": "RECURRENT_COMPARABLE_ASSOCIATION",
+          "informativeCount": 4,
+          "compatibleCount": 0,
+          "adverseCount": 4,
+          "unknownCount": 0,
+          "spanDays": 21,
+          "responseSummary": {
+            "under": 4,
+            "over": 0,
+            "easier": 0,
+            "harder": 4,
+            "adverseRecovery": 0
+          }
+        },
+        {
+          "optionId": "reported-alternate",
+          "direction": "UNKNOWN",
+          "confidence": "PRIOR",
+          "count": 0,
+          "sourceEventIds": [],
+          "causal": false,
+          "populationPriorRetained": true,
+          "automaticDoseAuthority": false,
+          "rankingInfluence": "POPULATION_PRIOR",
+          "reason": "INSUFFICIENT_RECURRENT_EVIDENCE",
+          "informativeCount": 0,
+          "compatibleCount": 0,
+          "adverseCount": 0,
+          "unknownCount": 0,
+          "spanDays": 0,
+          "responseSummary": {
+            "under": 0,
+            "over": 0,
+            "easier": 0,
+            "harder": 0,
+            "adverseRecovery": 0
+          }
+        }
+      ],
+      "reason": "AVOID_RECURRENT_ADVERSE_ARRANGEMENT",
+      "causal": false,
+      "automaticDoseAuthority": false
+    },
+    "officialUnchanged": true
+  }
+}

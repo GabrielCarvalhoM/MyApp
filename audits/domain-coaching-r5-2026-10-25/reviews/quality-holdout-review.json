@@ -1,0 +1,1416 @@
+{
+  "revision": "R5-QUALITY-HOLDOUT-1",
+  "taskId": "DOMAIN_COACHING_R5",
+  "contractRevision": "R5-1",
+  "reviewDate": "2026-10-26T12:21:18.013Z",
+  "evaluator": "/root/quality",
+  "agentVersion": "Quality & Reliability Engineer1.3.0",
+  "rubric": "QUALITY1.1.0",
+  "independent": true,
+  "runtimeOrCorpusAuthorship": false,
+  "sourceDigest": "1590d1aaa6cb5cb5259d2fc86e77191f3e1a60f1dd5411fc4c34bb9748f839d3",
+  "firstEvaluationSha256": "c202e0ab2b5e1217a85ce2e174b35130b731c03d8dc2c053a3aa75d8bf4357d4",
+  "corpusSha256": "9557f4bf539073301cde242172cd019983ebf8997fc16b91aae37e634f0cf5c5",
+  "reviewedFiles": [
+    {
+      "path": "CoachingCore/r4/PRESCRIPTION_ENVELOPE_REGISTRY.json",
+      "sha256": "0e8f6c29dc75d6dc68c047f5bd3974de88fd7eeed724564d5183ece7b0db57b6"
+    },
+    {
+      "path": "CoachingCore/r5/PROGRAM_POLICY_R5.json",
+      "sha256": "307a09213230baca8fe7802ae7eb271825dcd7346d29b5d8c7ba7632571eca12"
+    },
+    {
+      "path": "CoachingCore/r5/holdout/INTERFACE_ONLY.md",
+      "sha256": "88aaecd5db66bfae30d28b2acb429c030d20b706508b54772fa7dc9029f6143c"
+    },
+    {
+      "path": "CoachingCore/scripts/evaluate-holdout-r5.mjs",
+      "sha256": "8207f9787f32e7badb9a6d245dba0f589831cb1c927d85ff1b39fe5bbac0173b"
+    },
+    {
+      "path": "CoachingCore/src/r5-adaptation.mjs",
+      "sha256": "434769da56d05618da7cfc757dfbfd5e96ffb2c2777a224e329a8f7b8de52220"
+    },
+    {
+      "path": "CoachingCore/src/r5-authority.mjs",
+      "sha256": "0eafe07af8c04bc67bf7268ac791d003b1c823241ea2e8a6dd22cd60b10954ad"
+    },
+    {
+      "path": "CoachingCore/src/r5-contract.mjs",
+      "sha256": "39b2ce74a199bd269ce507a74de87b7d375f9d996488f43dd1c242f633735c77"
+    },
+    {
+      "path": "CoachingCore/src/r5-index.mjs",
+      "sha256": "2d2482122f695fe9c0a3faee72418d3eb723eed39c9f9bf9e87482826a58b8f7"
+    },
+    {
+      "path": "CoachingCore/src/r5-learning.mjs",
+      "sha256": "a78b220c6d140418a8f9f5401e616496f7a2042c06bdabf274302e01918af334"
+    },
+    {
+      "path": "CoachingCore/src/r5-observation.mjs",
+      "sha256": "91e9607a18702b6d47487369bd5ab823ffc1542b298a85f19423fa1c6ef43b8e"
+    },
+    {
+      "path": "CoachingCore/src/r5-program.mjs",
+      "sha256": "05795bab7967bca751ebb1fa0eb18c3ff6939b6204188b5d2fbbd6e7189ee7ad"
+    },
+    {
+      "path": "CoachingCore/src/r5-review-context.mjs",
+      "sha256": "c392a2ac7ab02ad74f3259a8a66ef657bb748e98458810816a4bcb7100384f3e"
+    },
+    {
+      "path": "CoachingCore/src/r5-schedule.mjs",
+      "sha256": "600d0f67bda6b9e57f3aab65f0e77deac1961676ceef0e940d43d83bb09a90e6"
+    },
+    {
+      "path": "CoachingCore/src/r5-selectors.mjs",
+      "sha256": "a4d755cdc8fad1bcd265fac7a2967a545db5a3f17781d62e9dfad2d33764c156"
+    },
+    {
+      "path": "CoachingCore/src/r5-simulator.mjs",
+      "sha256": "e18ac696baff3dcf47305846a8b9b4c078453ca2841f8652835997a4e59d70c0"
+    },
+    {
+      "path": "CoachingCore/src/r5-validity.mjs",
+      "sha256": "ef19dfb0a59c7c024d1e63c960bf2ece864b0e509b345766f5ede37ce1628867"
+    },
+    {
+      "path": "CoachingCore/src/value.mjs",
+      "sha256": "5bd765f68aa9e1f39ff0ce1366c7ac08e4b092bf281b49e2caa12c7c4bdb3a3b"
+    },
+    {
+      "path": "audits/domain-coaching-r5-2026-10-25/reviews/ssctr-policy-review.json",
+      "sha256": "2eb990ab0b9ff2c740bfeb0fe998b84a8f29ee19c88b4259f3ba359d6d5ea903"
+    },
+    {
+      "path": "CoachingCore/r5/holdout/R5_INDEPENDENT_HOLDOUT.json",
+      "sha256": "9557f4bf539073301cde242172cd019983ebf8997fc16b91aae37e634f0cf5c5"
+    },
+    {
+      "path": "CoachingCore/r5/holdout/FIRST_EVALUATION.json",
+      "sha256": "c202e0ab2b5e1217a85ce2e174b35130b731c03d8dc2c053a3aa75d8bf4357d4"
+    },
+    {
+      "path": "CoachingCore/r5/holdout/INDEPENDENCE_MANIFEST.json",
+      "sha256": "e55c17577b9d103feb4d76a33fe2bc28bf4f7fa9989ed7cca516a491fd1149cf"
+    },
+    {
+      "path": "CoachingCore/r5/holdout/INDEPENDENCE_MANIFEST.original.json",
+      "sha256": "37edd88fdf2c3a654df1d0bc6f453aef6dca19a5d20447243e3b735d76a67fc5"
+    },
+    {
+      "path": "CoachingCore/r5/RUNTIME_FREEZE_R5.json",
+      "sha256": "0088d657f2b8ac70e72fc75bcafd8c0dde4a6e455506015f386471f480cfcc94"
+    },
+    {
+      "path": "audits/domain-coaching-r5-2026-10-25/HOLDOUT_PREFLIGHT_NORMALIZATION.md",
+      "sha256": "ea1db6281628ff89c3f2d5fdf343fef8d345e391109cf84f27413059b7654fee"
+    }
+  ],
+  "integrity": {
+    "frozenEntriesMatch": true,
+    "sourceDigestMatches": true,
+    "firstDigestMatches": true,
+    "corpusDigestMatches": true,
+    "caseCount": 24,
+    "errors": 0,
+    "manifestOriginalPreserved": true,
+    "metadataNormalization": "Preflight stopped before any case; exact original manifest preserved; identical corpus digest alias added. No runtime/corpus/output retuning or discarded first-case result.",
+    "allShadowOfficialStatesEqual": true,
+    "sourceChecks": [
+      {
+        "path": "CoachingCore/r4/PRESCRIPTION_ENVELOPE_REGISTRY.json",
+        "expectedSha256": "0e8f6c29dc75d6dc68c047f5bd3974de88fd7eeed724564d5183ece7b0db57b6",
+        "sha256": "0e8f6c29dc75d6dc68c047f5bd3974de88fd7eeed724564d5183ece7b0db57b6",
+        "matches": true
+      },
+      {
+        "path": "CoachingCore/r5/PROGRAM_POLICY_R5.json",
+        "expectedSha256": "307a09213230baca8fe7802ae7eb271825dcd7346d29b5d8c7ba7632571eca12",
+        "sha256": "307a09213230baca8fe7802ae7eb271825dcd7346d29b5d8c7ba7632571eca12",
+        "matches": true
+      },
+      {
+        "path": "CoachingCore/r5/holdout/INTERFACE_ONLY.md",
+        "expectedSha256": "88aaecd5db66bfae30d28b2acb429c030d20b706508b54772fa7dc9029f6143c",
+        "sha256": "88aaecd5db66bfae30d28b2acb429c030d20b706508b54772fa7dc9029f6143c",
+        "matches": true
+      },
+      {
+        "path": "CoachingCore/scripts/evaluate-holdout-r5.mjs",
+        "expectedSha256": "8207f9787f32e7badb9a6d245dba0f589831cb1c927d85ff1b39fe5bbac0173b",
+        "sha256": "8207f9787f32e7badb9a6d245dba0f589831cb1c927d85ff1b39fe5bbac0173b",
+        "matches": true
+      },
+      {
+        "path": "CoachingCore/src/r5-adaptation.mjs",
+        "expectedSha256": "434769da56d05618da7cfc757dfbfd5e96ffb2c2777a224e329a8f7b8de52220",
+        "sha256": "434769da56d05618da7cfc757dfbfd5e96ffb2c2777a224e329a8f7b8de52220",
+        "matches": true
+      },
+      {
+        "path": "CoachingCore/src/r5-authority.mjs",
+        "expectedSha256": "0eafe07af8c04bc67bf7268ac791d003b1c823241ea2e8a6dd22cd60b10954ad",
+        "sha256": "0eafe07af8c04bc67bf7268ac791d003b1c823241ea2e8a6dd22cd60b10954ad",
+        "matches": true
+      },
+      {
+        "path": "CoachingCore/src/r5-contract.mjs",
+        "expectedSha256": "39b2ce74a199bd269ce507a74de87b7d375f9d996488f43dd1c242f633735c77",
+        "sha256": "39b2ce74a199bd269ce507a74de87b7d375f9d996488f43dd1c242f633735c77",
+        "matches": true
+      },
+      {
+        "path": "CoachingCore/src/r5-index.mjs",
+        "expectedSha256": "2d2482122f695fe9c0a3faee72418d3eb723eed39c9f9bf9e87482826a58b8f7",
+        "sha256": "2d2482122f695fe9c0a3faee72418d3eb723eed39c9f9bf9e87482826a58b8f7",
+        "matches": true
+      },
+      {
+        "path": "CoachingCore/src/r5-learning.mjs",
+        "expectedSha256": "a78b220c6d140418a8f9f5401e616496f7a2042c06bdabf274302e01918af334",
+        "sha256": "a78b220c6d140418a8f9f5401e616496f7a2042c06bdabf274302e01918af334",
+        "matches": true
+      },
+      {
+        "path": "CoachingCore/src/r5-observation.mjs",
+        "expectedSha256": "91e9607a18702b6d47487369bd5ab823ffc1542b298a85f19423fa1c6ef43b8e",
+        "sha256": "91e9607a18702b6d47487369bd5ab823ffc1542b298a85f19423fa1c6ef43b8e",
+        "matches": true
+      },
+      {
+        "path": "CoachingCore/src/r5-program.mjs",
+        "expectedSha256": "05795bab7967bca751ebb1fa0eb18c3ff6939b6204188b5d2fbbd6e7189ee7ad",
+        "sha256": "05795bab7967bca751ebb1fa0eb18c3ff6939b6204188b5d2fbbd6e7189ee7ad",
+        "matches": true
+      },
+      {
+        "path": "CoachingCore/src/r5-review-context.mjs",
+        "expectedSha256": "c392a2ac7ab02ad74f3259a8a66ef657bb748e98458810816a4bcb7100384f3e",
+        "sha256": "c392a2ac7ab02ad74f3259a8a66ef657bb748e98458810816a4bcb7100384f3e",
+        "matches": true
+      },
+      {
+        "path": "CoachingCore/src/r5-schedule.mjs",
+        "expectedSha256": "600d0f67bda6b9e57f3aab65f0e77deac1961676ceef0e940d43d83bb09a90e6",
+        "sha256": "600d0f67bda6b9e57f3aab65f0e77deac1961676ceef0e940d43d83bb09a90e6",
+        "matches": true
+      },
+      {
+        "path": "CoachingCore/src/r5-selectors.mjs",
+        "expectedSha256": "a4d755cdc8fad1bcd265fac7a2967a545db5a3f17781d62e9dfad2d33764c156",
+        "sha256": "a4d755cdc8fad1bcd265fac7a2967a545db5a3f17781d62e9dfad2d33764c156",
+        "matches": true
+      },
+      {
+        "path": "CoachingCore/src/r5-simulator.mjs",
+        "expectedSha256": "e18ac696baff3dcf47305846a8b9b4c078453ca2841f8652835997a4e59d70c0",
+        "sha256": "e18ac696baff3dcf47305846a8b9b4c078453ca2841f8652835997a4e59d70c0",
+        "matches": true
+      },
+      {
+        "path": "CoachingCore/src/r5-validity.mjs",
+        "expectedSha256": "ef19dfb0a59c7c024d1e63c960bf2ece864b0e509b345766f5ede37ce1628867",
+        "sha256": "ef19dfb0a59c7c024d1e63c960bf2ece864b0e509b345766f5ede37ce1628867",
+        "matches": true
+      },
+      {
+        "path": "CoachingCore/src/value.mjs",
+        "expectedSha256": "5bd765f68aa9e1f39ff0ce1366c7ac08e4b092bf281b49e2caa12c7c4bdb3a3b",
+        "sha256": "5bd765f68aa9e1f39ff0ce1366c7ac08e4b092bf281b49e2caa12c7c4bdb3a3b",
+        "matches": true
+      },
+      {
+        "path": "audits/domain-coaching-r5-2026-10-25/reviews/ssctr-policy-review.json",
+        "expectedSha256": "2eb990ab0b9ff2c740bfeb0fe998b84a8f29ee19c88b4259f3ba359d6d5ea903",
+        "sha256": "2eb990ab0b9ff2c740bfeb0fe998b84a8f29ee19c88b4259f3ba359d6d5ea903",
+        "matches": true
+      }
+    ]
+  },
+  "qualityDefinitions": {
+    "BEST_SUPPORTED": "Best-supported covered decision against actual supplied goal/context and alternatives; does not imply broad physiological or whole-program optimum.",
+    "ACCEPTABLE_ALTERNATIVE": "Reasonable goal-compatible output without proof it wins against all material alternatives.",
+    "SUBOPTIMAL": "A material better-supported decision or unresolved trade-off is omitted; admissibility does not repair the quality defect.",
+    "INSUFFICIENT_INFORMATION": "Genuine missing facts or invalid represented observation chronology prevents judging the intended coaching. Correct ASK/HOLD is distinguished from positive prescription.",
+    "UNSUPPORTED": "Requested task is unserved or intentionally outside frozen contract/domain. This label does not by itself mean an unsafe positive output; see category/routing/subdecisions."
+  },
+  "cases": [
+    {
+      "caseId": "R5-H01",
+      "family": "whole-program-run-first",
+      "operation": "GENERATE",
+      "quality": "ACCEPTABLE_ALTERNATIVE",
+      "rationale": "Supplied complete current work becomes an inspectable conditional16-week hierarchy without invented pace or fitness. Repeating the supported baseline is allowed by the independent assessment, but the event transition is explicitly unsupported and whole-goal optimality is not demonstrated.",
+      "category": "PARTIAL_PROGRAM_REFERENCE",
+      "primaryEvaluationUnit": "Full requested case, including a material initial prescriptive defect when present; abstention is not a positive prescription",
+      "primaryNewPrescription": true,
+      "safetyRoutingCorrect": null,
+      "unsafePositiveIdentified": false,
+      "intendedReviewSteps": 0,
+      "executedReviewSteps": 0,
+      "subdecisions": [
+        {
+          "stage": "GENERATION",
+          "status": "PROPOSED",
+          "quality": "ACCEPTABLE_ALTERNATIVE",
+          "prescriptionPositive": true,
+          "requestedScopeSatisfied": false,
+          "errors": [],
+          "missingInputs": [],
+          "unsupportedProgramDecisions": 1
+        }
+      ]
+    },
+    {
+      "caseId": "R5-H02",
+      "family": "whole-program-strength-first",
+      "operation": "GENERATE",
+      "quality": "UNSUPPORTED",
+      "rationale": "Generation rejects lower-less-volume because both duration and sets change in a REGRESS alternative. This is safe fail-closed behavior under the frozen one-dimension contract; it prevents the otherwise complete strength-first request from being evaluated. No whole-strength-program competence is established.",
+      "category": "CONTRACT_COVERAGE_GAP",
+      "primaryEvaluationUnit": "Full requested case, including a material initial prescriptive defect when present; abstention is not a positive prescription",
+      "primaryNewPrescription": false,
+      "safetyRoutingCorrect": null,
+      "unsafePositiveIdentified": false,
+      "intendedReviewSteps": 0,
+      "executedReviewSteps": 0,
+      "subdecisions": [
+        {
+          "stage": "GENERATION",
+          "status": "INVALID_INPUT",
+          "quality": "UNSUPPORTED",
+          "prescriptionPositive": false,
+          "requestedScopeSatisfied": false,
+          "errors": [
+            "alternative.demandDirection"
+          ],
+          "missingInputs": [],
+          "unsupportedProgramDecisions": null
+        }
+      ]
+    },
+    {
+      "caseId": "R5-H03",
+      "family": "balanced-pareto-conflict",
+      "operation": "GENERATE",
+      "quality": "SUBOPTIMAL",
+      "rationale": "Both protect-run and protect-strength remain admissible and nondominated. The selected protect-run is first in input order; the trace says both goals are preserved without explaining the expressly unresolved fresh-day cost or asking preference. That fails the independent Balanced trade-off criterion despite admissibility.",
+      "category": "BALANCED_TRADEOFF_NOT_RESOLVED",
+      "primaryEvaluationUnit": "Full requested case, including a material initial prescriptive defect when present; abstention is not a positive prescription",
+      "primaryNewPrescription": true,
+      "safetyRoutingCorrect": null,
+      "unsafePositiveIdentified": false,
+      "intendedReviewSteps": 0,
+      "executedReviewSteps": 0,
+      "subdecisions": [
+        {
+          "stage": "GENERATION",
+          "status": "PROPOSED",
+          "quality": "SUBOPTIMAL",
+          "prescriptionPositive": true,
+          "requestedScopeSatisfied": true,
+          "errors": [],
+          "missingInputs": [],
+          "unsupportedProgramDecisions": 0
+        }
+      ]
+    },
+    {
+      "caseId": "R5-H04",
+      "family": "novice-asymmetry",
+      "operation": "GENERATE",
+      "quality": "ACCEPTABLE_ALTERNATIVE",
+      "rationale": "The four-week proposal retains the small demonstrated novice-running tasks and physically specified familiar loaded strength. It does not infer running capacity from strength experience or claim event readiness. The phase/compiler output is a reasonable conservative alternative, not evidence of an optimal novice trajectory.",
+      "category": "CONSERVATIVE_SUPPORTED_PROGRAM",
+      "primaryEvaluationUnit": "Full requested case, including a material initial prescriptive defect when present; abstention is not a positive prescription",
+      "primaryNewPrescription": true,
+      "safetyRoutingCorrect": null,
+      "unsafePositiveIdentified": false,
+      "intendedReviewSteps": 0,
+      "executedReviewSteps": 0,
+      "subdecisions": [
+        {
+          "stage": "GENERATION",
+          "status": "PROPOSED",
+          "quality": "ACCEPTABLE_ALTERNATIVE",
+          "prescriptionPositive": true,
+          "requestedScopeSatisfied": true,
+          "errors": [],
+          "missingInputs": [],
+          "unsupportedProgramDecisions": 0
+        }
+      ]
+    },
+    {
+      "caseId": "R5-H05",
+      "family": "general-fitness-consent",
+      "operation": "GENERATE",
+      "quality": "ACCEPTABLE_ALTERNATIVE",
+      "rationale": "The general-fitness proposal retains easy running and modest novice strength with no invented event or learning claim. Declined learning consent does not block describing current supported work. Longer-term development superiority is unestablished.",
+      "category": "CONSERVATIVE_SUPPORTED_PROGRAM",
+      "primaryEvaluationUnit": "Full requested case, including a material initial prescriptive defect when present; abstention is not a positive prescription",
+      "primaryNewPrescription": true,
+      "safetyRoutingCorrect": null,
+      "unsafePositiveIdentified": false,
+      "intendedReviewSteps": 0,
+      "executedReviewSteps": 0,
+      "subdecisions": [
+        {
+          "stage": "GENERATION",
+          "status": "PROPOSED",
+          "quality": "ACCEPTABLE_ALTERNATIVE",
+          "prescriptionPositive": true,
+          "requestedScopeSatisfied": true,
+          "errors": [],
+          "missingInputs": [],
+          "unsupportedProgramDecisions": 0
+        }
+      ]
+    },
+    {
+      "caseId": "R5-H06",
+      "family": "cold-start-limited-facts",
+      "operation": "GENERATE",
+      "quality": "INSUFFICIENT_INFORMATION",
+      "rationale": "Current task tolerance is expressly absent, so the targeted ASK for current tolerated exposures preserves unknown capacity. This is an appropriate material-data request; it is not a positive prescription or a demonstration of first-program generation from low data.",
+      "category": "CORRECT_MATERIAL_ASK",
+      "primaryEvaluationUnit": "Full requested case, including a material initial prescriptive defect when present; abstention is not a positive prescription",
+      "primaryNewPrescription": false,
+      "safetyRoutingCorrect": true,
+      "unsafePositiveIdentified": false,
+      "intendedReviewSteps": 0,
+      "executedReviewSteps": 0,
+      "subdecisions": [
+        {
+          "stage": "GENERATION",
+          "status": "ASK",
+          "quality": "INSUFFICIENT_INFORMATION",
+          "prescriptionPositive": false,
+          "requestedScopeSatisfied": false,
+          "errors": [],
+          "missingInputs": [
+            "anchor.conversational-run.currentToleratedExposure",
+            "anchor.longer-easy.currentToleratedExposure",
+            "anchor.practice-a.currentToleratedExposure",
+            "anchor.practice-b.currentToleratedExposure"
+          ],
+          "unsupportedProgramDecisions": null
+        }
+      ]
+    },
+    {
+      "caseId": "R5-H07",
+      "family": "rich-history-mixed-evidence",
+      "operation": "REVIEW",
+      "quality": "INSUFFICIENT_INFORMATION",
+      "rationale": "The executed current long-run observation is22:00 on the review date while asOf is20:00, so the provenance HOLD is justified. Four explicit historical strength stimuli also lack the aggregate sets/reps that the adapter only supplies for AS_PRESCRIBED. Rich-history coaching is therefore not evaluated; no durable decline or progression is prescribed.",
+      "category": "REPRESENTATION_CHRONOLOGY_BLOCK",
+      "primaryEvaluationUnit": "Full requested case, including a material initial prescriptive defect when present; abstention is not a positive prescription",
+      "primaryNewPrescription": false,
+      "safetyRoutingCorrect": null,
+      "unsafePositiveIdentified": false,
+      "intendedReviewSteps": 1,
+      "executedReviewSteps": 1,
+      "subdecisions": [
+        {
+          "stage": "GENERATION",
+          "status": "PROPOSED",
+          "quality": "ACCEPTABLE_ALTERNATIVE",
+          "prescriptionPositive": true,
+          "requestedScopeSatisfied": false,
+          "errors": [],
+          "missingInputs": [],
+          "unsupportedProgramDecisions": 1
+        },
+        {
+          "stage": "REVIEW",
+          "stepIndex": 0,
+          "status": "HOLD",
+          "action": "HOLD",
+          "quality": "INSUFFICIENT_INFORMATION",
+          "prescriptionPositive": false,
+          "reason": "Material context/provenance failed validation",
+          "errors": [
+            "planned/actual provenance binding R5-H07-w1-long-run"
+          ],
+          "missingInputs": [],
+          "proposalPresent": false,
+          "modelObservationCount": 0,
+          "actualLedgerCount": 8,
+          "excludedObservations": [
+            {
+              "eventId": "R5-H07-w1-long-run",
+              "reason": "Actual observation does not bind the planned task, context and chronology"
+            },
+            {
+              "eventId": "R5-H07-rich-strength-0",
+              "reason": "ACTUAL_DOSE_NOT_COMPARABLE"
+            },
+            {
+              "eventId": "R5-H07-rich-strength-1",
+              "reason": "ACTUAL_DOSE_NOT_COMPARABLE"
+            },
+            {
+              "eventId": "R5-H07-rich-strength-2",
+              "reason": "ACTUAL_DOSE_NOT_COMPARABLE"
+            },
+            {
+              "eventId": "R5-H07-rich-strength-3",
+              "reason": "ACTUAL_DOSE_NOT_COMPARABLE"
+            }
+          ],
+          "futureObservations": [
+            {
+              "eventId": "R5-H07-w1-long-run",
+              "observedAt": "2026-11-15T22:00:00Z",
+              "reviewAsOf": "2026-11-15T20:00:00Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caseId": "R5-H08",
+      "family": "run-progression-sequence",
+      "operation": "SEQUENCE",
+      "quality": "INSUFFICIENT_INFORMATION",
+      "rationale": "All three long-run observations are materialized at22:00 after their20:00 review clocks. Each HOLD correctly rejects future evidence. No progression or athlete-learning sequence is demonstrated, and the result cannot be advertised as successful sports reasoning about the intended recurring surplus.",
+      "category": "REPRESENTATION_CHRONOLOGY_BLOCK",
+      "primaryEvaluationUnit": "Full requested case, including a material initial prescriptive defect when present; abstention is not a positive prescription",
+      "primaryNewPrescription": false,
+      "safetyRoutingCorrect": null,
+      "unsafePositiveIdentified": false,
+      "intendedReviewSteps": 3,
+      "executedReviewSteps": 3,
+      "subdecisions": [
+        {
+          "stage": "GENERATION",
+          "status": "PROPOSED",
+          "quality": "ACCEPTABLE_ALTERNATIVE",
+          "prescriptionPositive": true,
+          "requestedScopeSatisfied": false,
+          "errors": [],
+          "missingInputs": [],
+          "unsupportedProgramDecisions": 1
+        },
+        {
+          "stage": "REVIEW",
+          "stepIndex": 0,
+          "status": "HOLD",
+          "action": "HOLD",
+          "quality": "INSUFFICIENT_INFORMATION",
+          "prescriptionPositive": false,
+          "reason": "Material context/provenance failed validation",
+          "errors": [
+            "planned/actual provenance binding R5-H08-w0-long-run"
+          ],
+          "missingInputs": [],
+          "proposalPresent": false,
+          "modelObservationCount": 0,
+          "actualLedgerCount": 0,
+          "excludedObservations": [
+            {
+              "eventId": "R5-H08-w0-long-run",
+              "reason": "Actual observation does not bind the planned task, context and chronology"
+            }
+          ],
+          "futureObservations": [
+            {
+              "eventId": "R5-H08-w0-long-run",
+              "observedAt": "2026-11-08T22:00:00Z",
+              "reviewAsOf": "2026-11-08T20:00:00Z"
+            }
+          ]
+        },
+        {
+          "stage": "REVIEW",
+          "stepIndex": 1,
+          "status": "HOLD",
+          "action": "HOLD",
+          "quality": "INSUFFICIENT_INFORMATION",
+          "prescriptionPositive": false,
+          "reason": "Material context/provenance failed validation",
+          "errors": [
+            "planned/actual provenance binding R5-H08-w1-long-run"
+          ],
+          "missingInputs": [],
+          "proposalPresent": false,
+          "modelObservationCount": 0,
+          "actualLedgerCount": 0,
+          "excludedObservations": [
+            {
+              "eventId": "R5-H08-w1-long-run",
+              "reason": "Actual observation does not bind the planned task, context and chronology"
+            }
+          ],
+          "futureObservations": [
+            {
+              "eventId": "R5-H08-w1-long-run",
+              "observedAt": "2026-11-15T22:00:00Z",
+              "reviewAsOf": "2026-11-15T20:00:00Z"
+            }
+          ]
+        },
+        {
+          "stage": "REVIEW",
+          "stepIndex": 2,
+          "status": "HOLD",
+          "action": "HOLD",
+          "quality": "INSUFFICIENT_INFORMATION",
+          "prescriptionPositive": false,
+          "reason": "Material context/provenance failed validation",
+          "errors": [
+            "planned/actual provenance binding R5-H08-w2-long-run"
+          ],
+          "missingInputs": [],
+          "proposalPresent": false,
+          "modelObservationCount": 0,
+          "actualLedgerCount": 0,
+          "excludedObservations": [
+            {
+              "eventId": "R5-H08-w2-long-run",
+              "reason": "Actual observation does not bind the planned task, context and chronology"
+            }
+          ],
+          "futureObservations": [
+            {
+              "eventId": "R5-H08-w2-long-run",
+              "observedAt": "2026-11-22T22:00:00Z",
+              "reviewAsOf": "2026-11-22T20:00:00Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caseId": "R5-H09",
+      "family": "strength-progression-physical-dose",
+      "operation": "REVIEW",
+      "quality": "UNSUPPORTED",
+      "rationale": "The generation-level multidimensional lower-less-volume alternative rejects the whole program before the lower-load progression review executes. The supplied load-bearing historical evidence and familiar+2.5kg option are not judged by this first evaluation.",
+      "category": "CONTRACT_COVERAGE_GAP",
+      "primaryEvaluationUnit": "Full requested case, including a material initial prescriptive defect when present; abstention is not a positive prescription",
+      "primaryNewPrescription": false,
+      "safetyRoutingCorrect": null,
+      "unsafePositiveIdentified": false,
+      "intendedReviewSteps": 1,
+      "executedReviewSteps": 0,
+      "subdecisions": [
+        {
+          "stage": "GENERATION",
+          "status": "INVALID_INPUT",
+          "quality": "UNSUPPORTED",
+          "prescriptionPositive": false,
+          "requestedScopeSatisfied": false,
+          "errors": [
+            "alternative.demandDirection"
+          ],
+          "missingInputs": [],
+          "unsupportedProgramDecisions": null
+        }
+      ]
+    },
+    {
+      "caseId": "R5-H10",
+      "family": "essential-session-missed",
+      "operation": "REVIEW",
+      "quality": "INSUFFICIENT_INFORMATION",
+      "rationale": "The zero-work missed long-run record receives the adapter default22:00 after asOf20:00. HOLD is appropriate to the executed chronology, but missed-essential adaptation and no-debt behavior are not actually reached in this holdout case.",
+      "category": "REPRESENTATION_CHRONOLOGY_BLOCK",
+      "primaryEvaluationUnit": "Full requested case, including a material initial prescriptive defect when present; abstention is not a positive prescription",
+      "primaryNewPrescription": false,
+      "safetyRoutingCorrect": null,
+      "unsafePositiveIdentified": false,
+      "intendedReviewSteps": 1,
+      "executedReviewSteps": 1,
+      "subdecisions": [
+        {
+          "stage": "GENERATION",
+          "status": "PROPOSED",
+          "quality": "ACCEPTABLE_ALTERNATIVE",
+          "prescriptionPositive": true,
+          "requestedScopeSatisfied": false,
+          "errors": [],
+          "missingInputs": [],
+          "unsupportedProgramDecisions": 1
+        },
+        {
+          "stage": "REVIEW",
+          "stepIndex": 0,
+          "status": "HOLD",
+          "action": "HOLD",
+          "quality": "INSUFFICIENT_INFORMATION",
+          "prescriptionPositive": false,
+          "reason": "Material context/provenance failed validation",
+          "errors": [
+            "planned/actual provenance binding R5-H10-w2-long-run"
+          ],
+          "missingInputs": [],
+          "proposalPresent": false,
+          "modelObservationCount": 0,
+          "actualLedgerCount": 0,
+          "excludedObservations": [
+            {
+              "eventId": "R5-H10-w2-long-run",
+              "reason": "Actual observation does not bind the planned task, context and chronology"
+            }
+          ],
+          "futureObservations": [
+            {
+              "eventId": "R5-H10-w2-long-run",
+              "observedAt": "2026-11-22T22:00:00Z",
+              "reviewAsOf": "2026-11-22T20:00:00Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caseId": "R5-H11",
+      "family": "optional-session-missed",
+      "operation": "REVIEW",
+      "quality": "SUBOPTIMAL",
+      "rationale": "The requested missed-optional review itself is blocked by the22:00/20:00 observation chronology. Separately, the positive initial generation repeats the same explicitly unresolved Balanced protect-run/protect-strength choice asH03 without stating its cost. The safe later HOLD must not hide that material initial prescriptive shortcoming.",
+      "category": "BALANCED_GENERATION_PLUS_REVIEW_BLOCK",
+      "primaryEvaluationUnit": "Full requested case, including a material initial prescriptive defect when present; abstention is not a positive prescription",
+      "primaryNewPrescription": false,
+      "safetyRoutingCorrect": null,
+      "unsafePositiveIdentified": false,
+      "intendedReviewSteps": 1,
+      "executedReviewSteps": 1,
+      "subdecisions": [
+        {
+          "stage": "GENERATION",
+          "status": "PROPOSED",
+          "quality": "SUBOPTIMAL",
+          "prescriptionPositive": true,
+          "requestedScopeSatisfied": true,
+          "errors": [],
+          "missingInputs": [],
+          "unsupportedProgramDecisions": 0
+        },
+        {
+          "stage": "REVIEW",
+          "stepIndex": 0,
+          "status": "HOLD",
+          "action": "HOLD",
+          "quality": "INSUFFICIENT_INFORMATION",
+          "prescriptionPositive": false,
+          "reason": "Material context/provenance failed validation",
+          "errors": [
+            "planned/actual provenance binding R5-H11-w1-optional-easy"
+          ],
+          "missingInputs": [],
+          "proposalPresent": false,
+          "modelObservationCount": 0,
+          "actualLedgerCount": 0,
+          "excludedObservations": [
+            {
+              "eventId": "R5-H11-w1-optional-easy",
+              "reason": "Actual observation does not bind the planned task, context and chronology"
+            }
+          ],
+          "futureObservations": [
+            {
+              "eventId": "R5-H11-w1-optional-easy",
+              "observedAt": "2026-11-15T22:00:00Z",
+              "reviewAsOf": "2026-11-15T20:00:00Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caseId": "R5-H12",
+      "family": "isolated-underperformance",
+      "operation": "REVIEW",
+      "quality": "BEST_SUPPORTED",
+      "rationale": "One complete matched controlled-run underperformance with compatible recovery supports KEEP and another comparable observation. The engine retains the adverse fact, preserves uncertainty, rejects unsupported progression/regression and avoids a broader diagnosis or replan.",
+      "category": "APPROPRIATE_KEEP",
+      "primaryEvaluationUnit": "Full requested case, including a material initial prescriptive defect when present; abstention is not a positive prescription",
+      "primaryNewPrescription": false,
+      "safetyRoutingCorrect": null,
+      "unsafePositiveIdentified": false,
+      "intendedReviewSteps": 1,
+      "executedReviewSteps": 1,
+      "subdecisions": [
+        {
+          "stage": "GENERATION",
+          "status": "PROPOSED",
+          "quality": "ACCEPTABLE_ALTERNATIVE",
+          "prescriptionPositive": true,
+          "requestedScopeSatisfied": false,
+          "errors": [],
+          "missingInputs": [],
+          "unsupportedProgramDecisions": 1
+        },
+        {
+          "stage": "REVIEW",
+          "stepIndex": 0,
+          "status": "KEEP",
+          "action": "KEEP",
+          "quality": "BEST_SUPPORTED",
+          "prescriptionPositive": false,
+          "reason": "Current evidence does not justify a stronger intervention; preserve the population prior, adequate week and next observation",
+          "missingInputs": [],
+          "proposalPresent": false,
+          "modelObservationCount": 1,
+          "actualLedgerCount": 1,
+          "excludedObservations": [],
+          "futureObservations": []
+        }
+      ]
+    },
+    {
+      "caseId": "R5-H13",
+      "family": "repeated-underperformance-sequence",
+      "operation": "SEQUENCE",
+      "quality": "UNSUPPORTED",
+      "rationale": "Generation rejects the multidimensional strength regression alternative before any of the three intended adverse-response reviews can execute. Safe contract rejection is observed; repeated-underperformance adaptation, history accumulation and regression quality are not tested by the raw result.",
+      "category": "CONTRACT_COVERAGE_GAP",
+      "primaryEvaluationUnit": "Full requested case, including a material initial prescriptive defect when present; abstention is not a positive prescription",
+      "primaryNewPrescription": false,
+      "safetyRoutingCorrect": null,
+      "unsafePositiveIdentified": false,
+      "intendedReviewSteps": 3,
+      "executedReviewSteps": 0,
+      "subdecisions": [
+        {
+          "stage": "GENERATION",
+          "status": "INVALID_INPUT",
+          "quality": "UNSUPPORTED",
+          "prescriptionPositive": false,
+          "requestedScopeSatisfied": false,
+          "errors": [
+            "alternative.demandDirection"
+          ],
+          "missingInputs": [],
+          "unsupportedProgramDecisions": null
+        }
+      ]
+    },
+    {
+      "caseId": "R5-H14",
+      "family": "isolated-overperformance",
+      "operation": "REVIEW",
+      "quality": "BEST_SUPPORTED",
+      "rationale": "After one easier controlled run, KEEP preserves the valid week and population prior. No familiar faster task or repeated evidence exists; the output declines unsupported speed/fitness inference and asks for the next comparable response through its trace.",
+      "category": "APPROPRIATE_KEEP",
+      "primaryEvaluationUnit": "Full requested case, including a material initial prescriptive defect when present; abstention is not a positive prescription",
+      "primaryNewPrescription": false,
+      "safetyRoutingCorrect": null,
+      "unsafePositiveIdentified": false,
+      "intendedReviewSteps": 1,
+      "executedReviewSteps": 1,
+      "subdecisions": [
+        {
+          "stage": "GENERATION",
+          "status": "PROPOSED",
+          "quality": "ACCEPTABLE_ALTERNATIVE",
+          "prescriptionPositive": true,
+          "requestedScopeSatisfied": false,
+          "errors": [],
+          "missingInputs": [],
+          "unsupportedProgramDecisions": 1
+        },
+        {
+          "stage": "REVIEW",
+          "stepIndex": 0,
+          "status": "KEEP",
+          "action": "KEEP",
+          "quality": "BEST_SUPPORTED",
+          "prescriptionPositive": false,
+          "reason": "Current evidence does not justify a stronger intervention; preserve the population prior, adequate week and next observation",
+          "missingInputs": [],
+          "proposalPresent": false,
+          "modelObservationCount": 1,
+          "actualLedgerCount": 1,
+          "excludedObservations": [],
+          "futureObservations": []
+        }
+      ]
+    },
+    {
+      "caseId": "R5-H15",
+      "family": "return-current-capacity-unknown",
+      "operation": "REVIEW",
+      "quality": "INSUFFICIENT_INFORMATION",
+      "rationale": "The stale UNKNOWN eligibility makes a current-assessment ASK necessary. The former healthy program is not used to resume automatically, and pending RETURN remains explicit. This is correct safety/data routing rather than a successful return prescription.",
+      "category": "CORRECT_MATERIAL_ASK",
+      "primaryEvaluationUnit": "Full requested case, including a material initial prescriptive defect when present; abstention is not a positive prescription",
+      "primaryNewPrescription": false,
+      "safetyRoutingCorrect": true,
+      "unsafePositiveIdentified": false,
+      "intendedReviewSteps": 1,
+      "executedReviewSteps": 1,
+      "subdecisions": [
+        {
+          "stage": "GENERATION",
+          "status": "PROPOSED",
+          "quality": "ACCEPTABLE_ALTERNATIVE",
+          "prescriptionPositive": true,
+          "requestedScopeSatisfied": true,
+          "errors": [],
+          "missingInputs": [],
+          "unsupportedProgramDecisions": 0
+        },
+        {
+          "stage": "REVIEW",
+          "stepIndex": 0,
+          "status": "ASK",
+          "action": "ASK",
+          "quality": "INSUFFICIENT_INFORMATION",
+          "prescriptionPositive": false,
+          "reason": "Current eligibility must be assessed; unknown remains unknown",
+          "missingInputs": [
+            "eligibility.currentAssessment"
+          ],
+          "proposalPresent": false,
+          "modelObservationCount": 0,
+          "actualLedgerCount": 0,
+          "excludedObservations": [],
+          "futureObservations": []
+        }
+      ]
+    },
+    {
+      "caseId": "R5-H16",
+      "family": "return-confirmed-nonclinical",
+      "operation": "REVIEW",
+      "quality": "UNSUPPORTED",
+      "rationale": "The supplied20-minute regression changes duration and preparation relative to the28-minute anchor; generation rejects it before the return review runs. The current demonstration is not denied as a fact, but the frozen contract does not serve this staged-return request. Its broader return conditions also cannot be inferred as satisfied from one easy run.",
+      "category": "CONTRACT_AND_RETURN_SCOPE_GAP",
+      "primaryEvaluationUnit": "Full requested case, including a material initial prescriptive defect when present; abstention is not a positive prescription",
+      "primaryNewPrescription": false,
+      "safetyRoutingCorrect": null,
+      "unsafePositiveIdentified": false,
+      "intendedReviewSteps": 1,
+      "executedReviewSteps": 0,
+      "subdecisions": [
+        {
+          "stage": "GENERATION",
+          "status": "INVALID_INPUT",
+          "quality": "UNSUPPORTED",
+          "prescriptionPositive": false,
+          "requestedScopeSatisfied": false,
+          "errors": [
+            "alternative.demandDirection"
+          ],
+          "missingInputs": [],
+          "unsupportedProgramDecisions": null
+        }
+      ]
+    },
+    {
+      "caseId": "R5-H17",
+      "family": "clinical-return-outside-scope",
+      "operation": "REVIEW",
+      "quality": "UNSUPPORTED",
+      "rationale": "The explicitly clinical injury/persistent-pain/ordinary-function request routes to CLINICAL_HUMAN_REQUIRED without a return proposal. That is the correct intentional scope exclusion; it is reported separately from positive coaching and is not an unsafe unsupported prescription.",
+      "category": "CORRECT_CLINICAL_SCOPE_EXCLUSION",
+      "primaryEvaluationUnit": "Full requested case, including a material initial prescriptive defect when present; abstention is not a positive prescription",
+      "primaryNewPrescription": false,
+      "safetyRoutingCorrect": true,
+      "unsafePositiveIdentified": false,
+      "intendedReviewSteps": 1,
+      "executedReviewSteps": 1,
+      "subdecisions": [
+        {
+          "stage": "GENERATION",
+          "status": "PROPOSED",
+          "quality": "ACCEPTABLE_ALTERNATIVE",
+          "prescriptionPositive": true,
+          "requestedScopeSatisfied": false,
+          "errors": [],
+          "missingInputs": [],
+          "unsupportedProgramDecisions": 1
+        },
+        {
+          "stage": "REVIEW",
+          "stepIndex": 0,
+          "status": "CLINICAL_HUMAN_REQUIRED",
+          "action": "CLINICAL_HUMAN_REQUIRED",
+          "quality": "UNSUPPORTED",
+          "prescriptionPositive": false,
+          "reason": "Clinical concern routes to qualified human assessment; no dependent prescription",
+          "missingInputs": [],
+          "proposalPresent": false,
+          "modelObservationCount": 0,
+          "actualLedgerCount": 0,
+          "excludedObservations": [],
+          "futureObservations": []
+        }
+      ]
+    },
+    {
+      "caseId": "R5-H18",
+      "family": "schedule-change-feasible-double",
+      "operation": "REVIEW",
+      "quality": "BEST_SUPPORTED",
+      "rationale": "The new windows make the original arrangement infeasible. The supplied compatible double-day alternative fits each distinct window, retains all physical run/strength work and changes only future placement. MOVE is the best supported covered response among the supplied options.",
+      "category": "APPROPRIATE_MODIFY",
+      "primaryEvaluationUnit": "Full requested case, including a material initial prescriptive defect when present; abstention is not a positive prescription",
+      "primaryNewPrescription": true,
+      "safetyRoutingCorrect": null,
+      "unsafePositiveIdentified": false,
+      "intendedReviewSteps": 1,
+      "executedReviewSteps": 1,
+      "subdecisions": [
+        {
+          "stage": "GENERATION",
+          "status": "PROPOSED",
+          "quality": "ACCEPTABLE_ALTERNATIVE",
+          "prescriptionPositive": true,
+          "requestedScopeSatisfied": true,
+          "errors": [],
+          "missingInputs": [],
+          "unsupportedProgramDecisions": 0
+        },
+        {
+          "stage": "REVIEW",
+          "stepIndex": 0,
+          "status": "MODIFY",
+          "action": "MOVE",
+          "quality": "BEST_SUPPORTED",
+          "prescriptionPositive": true,
+          "reason": "A feasible Pareto option preserves essential work in both modalities; priority creates no necessity",
+          "missingInputs": [],
+          "proposalPresent": true,
+          "modelObservationCount": 0,
+          "actualLedgerCount": 0,
+          "excludedObservations": [],
+          "futureObservations": []
+        }
+      ]
+    },
+    {
+      "caseId": "R5-H19",
+      "family": "travel-equipment-substitution",
+      "operation": "REVIEW",
+      "quality": "UNSUPPORTED",
+      "rationale": "The engine rejects the dumbbell tasks in bodyweight-only travel windows, which is safe. It does not evaluate the supplied familiar bodyweight SUBSTITUTE alternatives or an explicit scoped omission, so the requested useful travel adaptation remains unserved. The generic infeasibility reason is also less informative than the known equipment/substitution gap.",
+      "category": "ADAPTIVE_SUBSTITUTION_CAPABILITY_GAP",
+      "primaryEvaluationUnit": "Full requested case, including a material initial prescriptive defect when present; abstention is not a positive prescription",
+      "primaryNewPrescription": false,
+      "safetyRoutingCorrect": null,
+      "unsafePositiveIdentified": false,
+      "intendedReviewSteps": 1,
+      "executedReviewSteps": 1,
+      "subdecisions": [
+        {
+          "stage": "GENERATION",
+          "status": "PROPOSED",
+          "quality": "ACCEPTABLE_ALTERNATIVE",
+          "prescriptionPositive": true,
+          "requestedScopeSatisfied": true,
+          "errors": [],
+          "missingInputs": [],
+          "unsupportedProgramDecisions": 0
+        },
+        {
+          "stage": "REVIEW",
+          "stepIndex": 0,
+          "status": "UNSUPPORTED",
+          "action": "UNSUPPORTED",
+          "quality": "UNSUPPORTED",
+          "prescriptionPositive": false,
+          "reason": "All feasible alternatives lose essential work; stated priority resolves necessary trade-off",
+          "missingInputs": [],
+          "proposalPresent": false,
+          "modelObservationCount": 0,
+          "actualLedgerCount": 0,
+          "excludedObservations": [],
+          "futureObservations": []
+        }
+      ]
+    },
+    {
+      "caseId": "R5-H20",
+      "family": "double-infeasible-pareto-first",
+      "operation": "REVIEW",
+      "quality": "SUBOPTIMAL",
+      "rationale": "The adaptive MOVE itself correctly excludes the duplicate-window/adverse candidate and selects the compatible spread week with unchanged doses. However the positive initial generation inheritsH03’s unresolved Balanced allocation and chooses protect-run by order without explaining the cost. Whole-case classification retains that defect; the final good MOVE is separately BEST_SUPPORTED.",
+      "category": "BALANCED_GENERATION_WITH_APPROPRIATE_MODIFY",
+      "primaryEvaluationUnit": "Full requested case, including a material initial prescriptive defect when present; abstention is not a positive prescription",
+      "primaryNewPrescription": true,
+      "safetyRoutingCorrect": null,
+      "unsafePositiveIdentified": false,
+      "intendedReviewSteps": 1,
+      "executedReviewSteps": 1,
+      "subdecisions": [
+        {
+          "stage": "GENERATION",
+          "status": "PROPOSED",
+          "quality": "SUBOPTIMAL",
+          "prescriptionPositive": true,
+          "requestedScopeSatisfied": true,
+          "errors": [],
+          "missingInputs": [],
+          "unsupportedProgramDecisions": 0
+        },
+        {
+          "stage": "REVIEW",
+          "stepIndex": 0,
+          "status": "MODIFY",
+          "action": "MOVE",
+          "quality": "BEST_SUPPORTED",
+          "prescriptionPositive": true,
+          "reason": "A feasible Pareto option preserves essential work in both modalities; priority creates no necessity",
+          "missingInputs": [],
+          "proposalPresent": true,
+          "modelObservationCount": 0,
+          "actualLedgerCount": 0,
+          "excludedObservations": [],
+          "futureObservations": []
+        }
+      ]
+    },
+    {
+      "caseId": "R5-H21",
+      "family": "learned-response-arrangement",
+      "operation": "REVIEW",
+      "quality": "INSUFFICIENT_INFORMATION",
+      "rationale": "Both schedule options explicitly have UNKNOWN combined-week recovery. The generation-level refusal correctly avoids promoting three matched running responses into tolerance of every strength task or the complete week. It never reaches learned ranking, and its generic UNSUPPORTED reason does not identify the missing combined configuration as a focused ASK.",
+      "category": "GENERATION_BLOCKS_LEARNING_EVALUATION",
+      "primaryEvaluationUnit": "Full requested case, including a material initial prescriptive defect when present; abstention is not a positive prescription",
+      "primaryNewPrescription": false,
+      "safetyRoutingCorrect": true,
+      "unsafePositiveIdentified": false,
+      "intendedReviewSteps": 1,
+      "executedReviewSteps": 0,
+      "subdecisions": [
+        {
+          "stage": "GENERATION",
+          "status": "UNSUPPORTED",
+          "quality": "INSUFFICIENT_INFORMATION",
+          "prescriptionPositive": false,
+          "requestedScopeSatisfied": false,
+          "errors": [],
+          "missingInputs": [],
+          "unsupportedProgramDecisions": null
+        }
+      ]
+    },
+    {
+      "caseId": "R5-H22",
+      "family": "event-horizon-supported-event-week",
+      "operation": "GENERATE",
+      "quality": "ACCEPTABLE_ALTERNATIVE",
+      "rationale": "The short horizon includes the supplied familiar reduced event-week configuration, physically specified sessions and explicit future conditionality without a finish-time/readiness claim. This is an acceptable event reference; neither optimal tapering nor whole-half-marathon preparedness is established.",
+      "category": "SUPPORTED_EVENT_REFERENCE",
+      "primaryEvaluationUnit": "Full requested case, including a material initial prescriptive defect when present; abstention is not a positive prescription",
+      "primaryNewPrescription": true,
+      "safetyRoutingCorrect": null,
+      "unsafePositiveIdentified": false,
+      "intendedReviewSteps": 0,
+      "executedReviewSteps": 0,
+      "subdecisions": [
+        {
+          "stage": "GENERATION",
+          "status": "PROPOSED",
+          "quality": "ACCEPTABLE_ALTERNATIVE",
+          "prescriptionPositive": true,
+          "requestedScopeSatisfied": true,
+          "errors": [],
+          "missingInputs": [],
+          "unsupportedProgramDecisions": 0
+        }
+      ]
+    },
+    {
+      "caseId": "R5-H23",
+      "family": "unknown-and-partial-observation",
+      "operation": "REVIEW",
+      "quality": "BEST_SUPPORTED",
+      "rationale": "KEEP preserves the24-minute incomplete actual and UNKNOWN response without adding the missing18minutes or deriving tolerance/decline. The complete but noncomparable/unknown-response strength task remains separate. No dose change or causal learning follows.",
+      "category": "APPROPRIATE_KEEP",
+      "primaryEvaluationUnit": "Full requested case, including a material initial prescriptive defect when present; abstention is not a positive prescription",
+      "primaryNewPrescription": false,
+      "safetyRoutingCorrect": null,
+      "unsafePositiveIdentified": false,
+      "intendedReviewSteps": 1,
+      "executedReviewSteps": 1,
+      "subdecisions": [
+        {
+          "stage": "GENERATION",
+          "status": "PROPOSED",
+          "quality": "ACCEPTABLE_ALTERNATIVE",
+          "prescriptionPositive": true,
+          "requestedScopeSatisfied": true,
+          "errors": [],
+          "missingInputs": [],
+          "unsupportedProgramDecisions": 0
+        },
+        {
+          "stage": "REVIEW",
+          "stepIndex": 0,
+          "status": "KEEP",
+          "action": "KEEP",
+          "quality": "BEST_SUPPORTED",
+          "prescriptionPositive": false,
+          "reason": "Current evidence does not justify a stronger intervention; preserve the population prior, adequate week and next observation",
+          "missingInputs": [],
+          "proposalPresent": false,
+          "modelObservationCount": 0,
+          "actualLedgerCount": 2,
+          "excludedObservations": [
+            {
+              "eventId": "R5-H23-w0-longer-easy",
+              "reason": "ACTUAL_DOSE_NOT_COMPARABLE"
+            }
+          ],
+          "futureObservations": []
+        }
+      ]
+    },
+    {
+      "caseId": "R5-H24",
+      "family": "stale-duplicate-conflicting-provenance",
+      "operation": "SEQUENCE",
+      "quality": "UNSUPPORTED",
+      "rationale": "Stale alternative support and the same multidimensional regression reject generation before the three intended source-identity reviews execute. This correctly avoids unsupported current-dose use, but it does not test duplicate replay, contradictory-identity quarantine or the new unknown-recovery execution in this holdout.",
+      "category": "CONTRACT_REJECTION_PREVENTS_PROVENANCE_TEST",
+      "primaryEvaluationUnit": "Full requested case, including a material initial prescriptive defect when present; abstention is not a positive prescription",
+      "primaryNewPrescription": false,
+      "safetyRoutingCorrect": true,
+      "unsafePositiveIdentified": false,
+      "intendedReviewSteps": 3,
+      "executedReviewSteps": 0,
+      "subdecisions": [
+        {
+          "stage": "GENERATION",
+          "status": "INVALID_INPUT",
+          "quality": "UNSUPPORTED",
+          "prescriptionPositive": false,
+          "requestedScopeSatisfied": false,
+          "errors": [
+            "alternative.currentFamiliarTolerance",
+            "alternative.combinedWeekContext",
+            "alternative.currentFamiliarTolerance",
+            "alternative.demandDirection",
+            "alternative.combinedWeekContext"
+          ],
+          "missingInputs": [],
+          "unsupportedProgramDecisions": null
+        }
+      ]
+    }
+  ],
+  "metrics": {
+    "primaryCases": {
+      "count": 24,
+      "qualityCounts": {
+        "ACCEPTABLE_ALTERNATIVE": 4,
+        "UNSUPPORTED": 7,
+        "SUBOPTIMAL": 3,
+        "INSUFFICIENT_INFORMATION": 6,
+        "BEST_SUPPORTED": 4
+      },
+      "note": "24cases once each; no generation/review double-counting."
+    },
+    "primaryNewPrescriptionTasks": {
+      "count": 7,
+      "qualityCounts": {
+        "ACCEPTABLE_ALTERNATIVE": 4,
+        "SUBOPTIMAL": 2,
+        "BEST_SUPPORTED": 1
+      },
+      "caseIds": [
+        "R5-H01",
+        "R5-H03",
+        "R5-H04",
+        "R5-H05",
+        "R5-H18",
+        "R5-H20",
+        "R5-H22"
+      ],
+      "note": "5GENERATE proposals plus2REVIEW modifications. A material initial generation defect remains in the full-case quality label."
+    },
+    "generationStages": {
+      "count": 24,
+      "statusCounts": {
+        "PROPOSED": 17,
+        "INVALID_INPUT": 5,
+        "ASK": 1,
+        "UNSUPPORTED": 1
+      },
+      "positiveProposalCount": 17,
+      "positiveQualityCounts": {
+        "ACCEPTABLE_ALTERNATIVE": 14,
+        "SUBOPTIMAL": 3
+      },
+      "note": "These are intermediate outputs for REVIEW/SEQUENCE cases, not24additional tasks or necessarily complete goal-ready programs."
+    },
+    "reviewStages": {
+      "intended": 23,
+      "executed": 14,
+      "blockedBeforeReviewCases": [
+        "R5-H09",
+        "R5-H13",
+        "R5-H16",
+        "R5-H21",
+        "R5-H24"
+      ],
+      "statusCounts": {
+        "HOLD": 6,
+        "KEEP": 3,
+        "ASK": 1,
+        "CLINICAL_HUMAN_REQUIRED": 1,
+        "MODIFY": 2,
+        "UNSUPPORTED": 1
+      },
+      "qualityCounts": {
+        "INSUFFICIENT_INFORMATION": 7,
+        "BEST_SUPPORTED": 5,
+        "UNSUPPORTED": 2
+      },
+      "positiveModifyCount": 2,
+      "positiveModifyQualityCounts": {
+        "BEST_SUPPORTED": 2
+      },
+      "futureObservationHolds": 6,
+      "noEarnedDoseProgressionDemonstrated": true
+    },
+    "unsupportedPositivePrescriptions": {
+      "observed": 0,
+      "evaluatedNewPrescriptionStages": 19,
+      "limit": "No unsafe/unsupported physical prescription identified in these19positive stages. Three generation stages are nevertheless SUBOPTIMAL for Balanced decision quality. This is not evidence of zero risk outside the observed cases."
+    }
+  },
+  "adaptationMetrics": {
+    "unit": "Executed review decisions only",
+    "appropriateKeep": {
+      "count": 3,
+      "cases": [
+        "R5-H12",
+        "R5-H14",
+        "R5-H23"
+      ]
+    },
+    "appropriateModify": {
+      "count": 2,
+      "cases": [
+        "R5-H18",
+        "R5-H20"
+      ],
+      "changeType": "Same-dose placement only"
+    },
+    "unnecessaryMutation": {
+      "observed": 0,
+      "denominator": 2
+    },
+    "excessiveChange": {
+      "observed": 0,
+      "denominator": 2
+    },
+    "insufficientChange": {
+      "count": 1,
+      "cases": [
+        "R5-H19"
+      ],
+      "reason": "Known supplied hotel substitutions are not evaluated; requested useful adaptation is unserved."
+    },
+    "notSportJudgable": {
+      "futureChronologyHolds": 6,
+      "genuineEligibilityAsk": 1,
+      "clinicalScopeExclusion": 1
+    },
+    "limit": "The two MODIFY outputs do not establish progression, regression, whole-block adaptation or return breadth."
+  },
+  "learningMetrics": {
+    "validAthleteSpecificUpdate": {
+      "count": 2,
+      "cases": [
+        "R5-H12",
+        "R5-H14"
+      ],
+      "meaning": "Each stores one complete comparable actual observation and retains the prior; no hard trait or earned dose is inferred."
+    },
+    "learnedFutureRankingEffect": {
+      "demonstrated": 0,
+      "reason": "Rich-history and arrangement cases do not reach the intended learner/ranking path; sequence progression is blocked by chronology or input contract."
+    },
+    "ignoredRelevantHistory": {
+      "assessment": "NOT_EVALUABLE_AS_COACHING_FAILURE",
+      "cases": [
+        "R5-H07",
+        "R5-H09",
+        "R5-H21",
+        "R5-H24"
+      ],
+      "reason": "Critical source/contract/generation rejection precedes the intended matched-history comparison."
+    },
+    "overfit": {
+      "assessment": "NOT_EVALUABLE",
+      "reason": "No fresh holdout learned dose or schedule decision reaches a usable longitudinal comparison."
+    },
+    "falseCausality": {
+      "assessment": "NOT_EVALUABLE_FOR_LONGITUDINAL_EFFECT",
+      "observedCausalPersonalizationClaims": 0,
+      "reason": "No causal athlete trait or physiological gain is claimed in the observed outputs; this is not a validated zero-false-causality rate."
+    }
+  },
+  "findings": [
+    {
+      "id": "QH-BALANCED-ORDER",
+      "severity": "P2",
+      "cases": [
+        "R5-H03",
+        "R5-H11",
+        "R5-H20"
+      ],
+      "criterion": "Balanced must preserve an unresolved material trade-off or justify its costs, rather than use input order.",
+      "evidence": "Both schedules remain on the Pareto set; protect-run selected first without cost/preference trace.",
+      "owner": "/root",
+      "resolution": "Retain as DOMAIN_COACHING_R6 gap; do not retune frozen runtime on this holdout."
+    },
+    {
+      "id": "QH-REPRESENTATION-CLOCK",
+      "severity": "EVIDENCE_GAP",
+      "cases": [
+        "R5-H07",
+        "R5-H08",
+        "R5-H10",
+        "R5-H11"
+      ],
+      "criterion": "Observation chronology must represent intended actuals before review.",
+      "evidence": "Frozen adapter defaultobservedAt22:00 versus corpusreviewasOf20:00 causes6safeHOLDoutputs.",
+      "owner": "/root",
+      "resolution": "Preserve first raw; improve future interface/author validation and obtain a new independent corpus for any successor, without replacing these results."
+    },
+    {
+      "id": "QH-CONTRACT-BREADTH",
+      "severity": "CAPABILITY_GAP",
+      "cases": [
+        "R5-H02",
+        "R5-H09",
+        "R5-H13",
+        "R5-H16",
+        "R5-H19",
+        "R5-H24"
+      ],
+      "criterion": "Useful complete program/adaptation breadth cannot be inferred from fail-closed rejection.",
+      "evidence": "One-dimension contract rejects full requests with multidimensional alternatives; SUBSTITUTEs are not selected; intended review paths are unexecuted.",
+      "owner": "/root",
+      "resolution": "Explicit retained gaps; no broad READY or KMP promotion."
+    }
+  ],
+  "verdict": {
+    "freshHoldoutEvidence": "REVIEWED_FIRST_RAW_WITH_INTEGRITY",
+    "qualityStatus": "QUALITY_BLOCKED",
+    "scope": "Broad whole-program, hybrid decision quality, adaptive breadth and longitudinal-learning readiness remain unproven or materially deficient.",
+    "boundedEngineeringReview": "Prior frozen bounded engineering PASS remains scoped to its27probes/280tests; it does not override this independent coaching-quality result.",
+    "broadReadiness": "NOT_READY",
+    "nextEngineeringStep": "DOMAIN_COACHING_R6",
+    "noRetuningPerformed": true
+  },
+  "limitations": [
+    "Offline synthetic inputs and outcomes only; no human/clinical/empirical or production validation.",
+    "Best-supported KEEP decisions and correct ASK/clinical routing are not counted as newly prescribed programs.",
+    "Material positive generation defects propagate to primaryH11/H20 even where the later HOLD/MOVE is separately appropriate.",
+    "No arbitrary percentage threshold or score is used to obtain READY."
+  ]
+}

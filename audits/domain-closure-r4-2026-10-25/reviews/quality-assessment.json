@@ -1,0 +1,1076 @@
+{
+  "revision": "DCR4-INDEPENDENT-QUALITY-r3",
+  "reviewer": "/root/holdout_quality",
+  "independent": true,
+  "agentVersion": "QUALITY_RELIABILITY_ENGINEER-1.3.0",
+  "rubric": "QUALITY-1.1.0",
+  "node": "v24.19.0",
+  "reviewedFiles": [
+    {
+      "path": "CoachingCore/src/r4-index.mjs",
+      "sha256": "4440316641c01a987dc1c8fc7562e970c45bb7c4c03c57b8e8186ede7dc01a7e"
+    },
+    {
+      "path": "CoachingCore/src/r4-runtime.mjs",
+      "sha256": "557efc5b96c0fcaff70f1cf296f69b294129525d5519950a63741c1c096591af"
+    },
+    {
+      "path": "CoachingCore/src/r4-candidates.mjs",
+      "sha256": "d963de2ebb9700eb87cce4ed0a86e8a07b3c4fe5e1926e541928bf6296b0ab11"
+    },
+    {
+      "path": "CoachingCore/src/r4-context.mjs",
+      "sha256": "f7873e30333a34335e8f315ea29cabcefff6e2c5277d46cda73e8c8d39b0282c"
+    },
+    {
+      "path": "CoachingCore/src/r4-athlete-model.mjs",
+      "sha256": "e87fd3343a7c82f70be1603396080f61939201f43e33c96b74b5aa46ffa9e8c8"
+    },
+    {
+      "path": "CoachingCore/src/r4-authority.mjs",
+      "sha256": "8e39bbb54b7978ca1c0ac9c4cfc8986985e7bb61ecdf3e4f00c5d6716ad7e9b9"
+    },
+    {
+      "path": "CoachingCore/src/value.mjs",
+      "sha256": "5bd765f68aa9e1f39ff0ce1366c7ac08e4b092bf281b49e2caa12c7c4bdb3a3b"
+    },
+    {
+      "path": "CoachingCore/src/r3-input.mjs",
+      "sha256": "35320aac23badeab919ee6eb7479c5b6e1ff050596ca30a681f95f7d84b63b3b"
+    },
+    {
+      "path": "CoachingCore/src/r3-consumption.mjs",
+      "sha256": "a0526a8954d1a27fe90ad5c5779d72bf05841306232df75e573f61935a5ae398"
+    },
+    {
+      "path": "CoachingCore/src/r3-runtime.mjs",
+      "sha256": "34ec4622b6511d33323c3bc2fb388692659d5617958233243470494a1a1718b7"
+    },
+    {
+      "path": "CoachingCore/test/r4-coaching.test.mjs",
+      "sha256": "c16f531e33dd21d8501c1fcac96e4f877c73df29fa905079cc4a8e0e308a6992"
+    },
+    {
+      "path": "CoachingCore/r3/CANONICAL_COACHING_INPUT_R3_SCHEMA.json",
+      "sha256": "7d924267b84772ab03586b0301a16e6072117713669b01635771f5cd602fb4aa"
+    },
+    {
+      "path": "CoachingCore/r4/PRESCRIPTION_ENVELOPE_REGISTRY.json",
+      "sha256": "0e8f6c29dc75d6dc68c047f5bd3974de88fd7eeed724564d5183ece7b0db57b6"
+    },
+    {
+      "path": "audits/domain-closure-r4-2026-10-25/reviews/ssctr-envelope-review.json",
+      "sha256": "6ae5e2b6f8f41168e99779e0f22f124ffe05af873214ec31c19b20a502aac055"
+    },
+    {
+      "path": "CoachingCore/r2/evaluation/REPRESENTATIVE_CORPUS_R2.json",
+      "sha256": "10fe324dee5ad9f20aa33f28b118a63dbf82e8bd3da6dd44e0d51d506279d0bf"
+    },
+    {
+      "path": "CoachingCore/r4/holdout/R4_INDEPENDENT_HOLDOUT.json",
+      "sha256": "6c81410c36dbef9772bacb762c48bdd12d43210ad0370875c1a30d6134024a2a"
+    }
+  ],
+  "cases": [
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-01",
+      "qualityClass": "COACHING_ACCEPTABLE_ALTERNATIVE",
+      "reason": "Complete low-demand entry fits three supplied windows and uses demonstrated unloaded movement plus effort-governed run/walk; a reasonable productive starting week.",
+      "betterAlternativeIgnored": null,
+      "limitations": [
+        "Phase and secondary trade-offs are not fully established; this familiarization is not a complete performance program."
+      ],
+      "actualDecisionType": "MODIFY",
+      "actualCoverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "positiveCoverage": true,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-01"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-02",
+      "qualityClass": "COACHING_BEST_SUPPORTED",
+      "reason": "ASK seeks a complete familiar strength configuration before claiming an entire hybrid week. The single example squat is not a complete two-session plan.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "ASK",
+      "actualCoverage": "USEFUL_ASK",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-02"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-03",
+      "qualityClass": "COACHING_ACCEPTABLE_ALTERNATIVE",
+      "reason": "Productive known-movement familiarization preserves the established run week and avoids unknown loaded-hinge competence.",
+      "betterAlternativeIgnored": null,
+      "limitations": [
+        "Phase/longer-term strength objective and response are not established; initial practice cannot prove an optimal development dose."
+      ],
+      "actualDecisionType": "MODIFY",
+      "actualCoverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "positiveCoverage": true,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-03"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-04",
+      "qualityClass": "COACHING_BEST_SUPPORTED",
+      "reason": "Targeted ASK correctly refuses to turn requested barbell kilograms into movement competence or a safe starting load.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "ASK",
+      "actualCoverage": "USEFUL_ASK",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-04"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-05",
+      "qualityClass": "COACHING_BEST_SUPPORTED",
+      "reason": "ASK correctly separates lifting experience from novice fast-run competence and calibration; a VO2 label cannot create a usable pace anchor.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "ASK",
+      "actualCoverage": "USEFUL_ASK",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-05"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-06",
+      "qualityClass": "COACHING_ACCEPTABLE_ALTERNATIVE",
+      "reason": "Familiar conversational runs and low-demand familiar strength are a defensible first-product entry without wearable history.",
+      "betterAlternativeIgnored": null,
+      "limitations": [
+        "The generic one-set strength reduction is not compared against the reported familiar two-set configuration; phase and development goal are unspecified."
+      ],
+      "actualDecisionType": "MODIFY",
+      "actualCoverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "positiveCoverage": true,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-06"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-07",
+      "qualityClass": "COACHING_ACCEPTABLE_ALTERNATIVE",
+      "reason": "Concrete conversational run/walk entry with walking exit serves the stated learn-run/walk intent without presuming continuous-run tolerance.",
+      "betterAlternativeIgnored": null,
+      "limitations": [
+        "No explicit phase or broader secondary-goal horizon; judge approves a bounded familiarization alternative only."
+      ],
+      "actualDecisionType": "MODIFY",
+      "actualCoverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "positiveCoverage": true,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-07"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-08",
+      "qualityClass": "COACHING_BEST_SUPPORTED",
+      "reason": "Current eligibility is genuinely unknown. ASK preserves unknown status without inventing disease or clearance; onboarding follows after routing.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "ASK",
+      "actualCoverage": "USEFUL_ASK",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-08"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-09",
+      "qualityClass": "COACHING_ACCEPTABLE_ALTERNATIVE",
+      "reason": "Removing affected optional calf work preserves compatible essential squat/row and is smaller than cancelling the session.",
+      "betterAlternativeIgnored": null,
+      "limitations": [
+        "Detailed goal, phase and future horizon are absent in the frozen facts; this is defensible narrow request handling, not proof of goal-optimal programming."
+      ],
+      "actualDecisionType": "MODIFY",
+      "actualCoverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "positiveCoverage": true,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-09"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-10",
+      "qualityClass": "COACHING_ACCEPTABLE_ALTERNATIVE",
+      "reason": "Systemic convergence plus early termination supports ending only remaining hard work, preserving actual [5,3] and offering a conditional easy exit.",
+      "betterAlternativeIgnored": null,
+      "limitations": [
+        "Detailed goal, phase and future horizon are absent in the frozen facts; this is defensible narrow request handling, not proof of goal-optimal programming."
+      ],
+      "actualDecisionType": "MODIFY",
+      "actualCoverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "positiveCoverage": true,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-10"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-11",
+      "qualityClass": "COACHING_ACCEPTABLE_ALTERNATIVE",
+      "reason": "Prior compatible candidate and repeated excess reserve support one-repetition progression while preserving sets, load and rest.",
+      "betterAlternativeIgnored": null,
+      "limitations": [
+        "Detailed goal, phase and future horizon are absent in the frozen facts; this is defensible narrow request handling, not proof of goal-optimal programming."
+      ],
+      "actualDecisionType": "MODIFY",
+      "actualCoverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "positiveCoverage": true,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-11"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-12",
+      "qualityClass": "COACHING_ACCEPTABLE_ALTERNATIVE",
+      "reason": "Familiar small-load regression now composes an explicit effort-governed rest choice, preserves sets/reps/RIR and addresses repeated target misses.",
+      "betterAlternativeIgnored": null,
+      "limitations": [
+        "Detailed goal, phase and future horizon are absent in the frozen facts; this is defensible narrow request handling, not proof of goal-optimal programming.",
+        "The approximate rest reservation is an operational choice, not a measured individual optimum."
+      ],
+      "actualDecisionType": "MODIFY",
+      "actualCoverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "positiveCoverage": true,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-12"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-13",
+      "qualityClass": "COACHING_BEST_SUPPORTED",
+      "reason": "KEEP is appropriate for an isolated one-minute comfortable deviation with otherwise ordinary training; no unsupported universal noise threshold or plan rewrite.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "KEEP",
+      "actualCoverage": "SUPPORTED_KEEP",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-13"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-14",
+      "qualityClass": "COACHING_BEST_SUPPORTED",
+      "reason": "KEEP/discard optional missed work protects feasible essential cruise/long stimuli and supplied preference without catch-up overload.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "KEEP",
+      "actualCoverage": "SUPPORTED_KEEP",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-14"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-15",
+      "qualityClass": "COACHING_ACCEPTABLE_ALTERNATIVE",
+      "reason": "Concrete nonoverlapping same-dose move protects Run-first key placement and preserves the secondary maintenance session.",
+      "betterAlternativeIgnored": null,
+      "limitations": [
+        "Detailed goal, phase and future horizon are absent in the frozen facts; this is defensible narrow request handling, not proof of goal-optimal programming."
+      ],
+      "actualDecisionType": "MODIFY",
+      "actualCoverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "positiveCoverage": true,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-15"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-16",
+      "qualityClass": "COACHING_ACCEPTABLE_ALTERNATIVE",
+      "reason": "Concrete nonoverlapping same-dose move protects Strength-first key placement and preserves the secondary run.",
+      "betterAlternativeIgnored": null,
+      "limitations": [
+        "Detailed goal, phase and future horizon are absent in the frozen facts; this is defensible narrow request handling, not proof of goal-optimal programming."
+      ],
+      "actualDecisionType": "MODIFY",
+      "actualCoverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "positiveCoverage": true,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-16"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-17",
+      "qualityClass": "COACHING_ACCEPTABLE_ALTERNATIVE",
+      "reason": "Reconciling conflicting data-tier/device facts before dependent interpretation is defensible.",
+      "betterAlternativeIgnored": null,
+      "limitations": [
+        "This is system-owned provenance reconciliation; repeatedly asking the athlete is not a demonstrated learning/retrieval solution."
+      ],
+      "actualDecisionType": "ASK",
+      "actualCoverage": "USEFUL_ASK",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-17"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-18",
+      "qualityClass": "COACHING_BEST_SUPPORTED",
+      "reason": "ASK correctly rejects barbell-to-dumbbell load conversion and requests separately familiar movement/configuration, own load, effort and rest.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "ASK",
+      "actualCoverage": "USEFUL_ASK",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-18"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-19",
+      "qualityClass": "COACHING_ACCEPTABLE_ALTERNATIVE",
+      "reason": "A reversible conversational entry after a known nonclinical logistics pause is productive without requiring a prior run test or restoring old dose.",
+      "betterAlternativeIgnored": null,
+      "limitations": [
+        "Detailed goal, phase and future horizon are absent in the frozen facts; this is defensible narrow request handling, not proof of goal-optimal programming."
+      ],
+      "actualDecisionType": "MODIFY",
+      "actualCoverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "positiveCoverage": true,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-19"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-20",
+      "qualityClass": "COACHING_ACCEPTABLE_ALTERNATIVE",
+      "reason": "A familiar low-demand configuration provides a controlled return ceiling rather than automatic restoration of prior heavy work.",
+      "betterAlternativeIgnored": null,
+      "limitations": [
+        "Detailed goal, phase and future horizon are absent in the frozen facts; this is defensible narrow request handling, not proof of goal-optimal programming."
+      ],
+      "actualDecisionType": "MODIFY",
+      "actualCoverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "positiveCoverage": true,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-20"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-21",
+      "qualityClass": "COACHING_ACCEPTABLE_ALTERNATIVE",
+      "reason": "A staged two-modality return week with response checkpoints is a defensible alternative to restoring former volume.",
+      "betterAlternativeIgnored": null,
+      "limitations": [
+        "Goals/phase/future stimulus are unspecified, later work is conditional, and the output does not prove a full performance program."
+      ],
+      "actualDecisionType": "MODIFY",
+      "actualCoverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "positiveCoverage": true,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-21"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-22",
+      "qualityClass": "COACHING_BEST_SUPPORTED",
+      "reason": "ASK addresses interruption cause, actual exposure and current restrictions that materially determine nonclinical versus clinical return routing.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "ASK",
+      "actualCoverage": "USEFUL_ASK",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-22"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-23",
+      "qualityClass": "COACHING_BEST_SUPPORTED",
+      "reason": "HOLD concerns restoration of former loads after early-ended entry with uncertain comparability and no supported smaller alternative; it does not erase actual work.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "HOLD",
+      "actualCoverage": "CORRECT_ABSTAIN_OR_HOLD",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-23"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-25",
+      "qualityClass": "UNSUPPORTED",
+      "reason": "Joint hybrid race-week/taper recipe remains explicitly scientifically unsupported; withholding positive coverage is correct.",
+      "betterAlternativeIgnored": null,
+      "limitations": [
+        "Correct fail-closed handling is not completed race-week coaching or scientific closure."
+      ],
+      "actualDecisionType": "HOLD",
+      "actualCoverage": "NOT_SUPPORTED_SCIENCE_GAP",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-25"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-26",
+      "qualityClass": "UNSUPPORTED",
+      "reason": "Joint hybrid race-week/taper recipe remains explicitly scientifically unsupported; withholding positive coverage is correct.",
+      "betterAlternativeIgnored": null,
+      "limitations": [
+        "Correct fail-closed handling is not completed race-week coaching or scientific closure."
+      ],
+      "actualDecisionType": "HOLD",
+      "actualCoverage": "NOT_SUPPORTED_SCIENCE_GAP",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-26"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-27",
+      "qualityClass": "UNSUPPORTED",
+      "reason": "Joint hybrid race-week/taper recipe remains explicitly scientifically unsupported; withholding positive coverage is correct.",
+      "betterAlternativeIgnored": null,
+      "limitations": [
+        "Correct fail-closed handling is not completed race-week coaching or scientific closure."
+      ],
+      "actualDecisionType": "HOLD",
+      "actualCoverage": "NOT_SUPPORTED_SCIENCE_GAP",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-27"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-28",
+      "qualityClass": "COACHING_BEST_SUPPORTED",
+      "reason": "ASK requests missing long-run exposure and distance-specific context before claiming first-half-marathon readiness; no 5K-to-half pace equivalence.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "ASK",
+      "actualCoverage": "USEFUL_ASK",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-28"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-29",
+      "qualityClass": "COACHING_BEST_SUPPORTED",
+      "reason": "Targeted current symptom/function/recovery ASK is essential after a hard event; historic completion alone is not current capacity.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "ASK",
+      "actualCoverage": "USEFUL_ASK",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-29"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-31",
+      "qualityClass": "COACHING_ACCEPTABLE_ALTERNATIVE",
+      "reason": "Familiar 20-minute conversational effort is concrete and usable without wearable/lab calibration.",
+      "betterAlternativeIgnored": null,
+      "limitations": [
+        "Detailed goal, phase and future horizon are absent in the frozen facts; this is defensible narrow request handling, not proof of goal-optimal programming."
+      ],
+      "actualDecisionType": "MODIFY",
+      "actualCoverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "positiveCoverage": true,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-31"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-32",
+      "qualityClass": "COACHING_ACCEPTABLE_ALTERNATIVE",
+      "reason": "Clarifying why a distinct recovery intent is desired can alter the choice; the engine does not invent a separate physiological pace.",
+      "betterAlternativeIgnored": null,
+      "limitations": [
+        "Asking the athlete for a scientific recovery construct is not useful; the remaining policy gap should be explained and a familiar easy alternative considered."
+      ],
+      "actualDecisionType": "ASK",
+      "actualCoverage": "USEFUL_ASK",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-32"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-33",
+      "qualityClass": "COACHING_ACCEPTABLE_ALTERNATIVE",
+      "reason": "Familiar steady work with reviewed easy preparation/cooldown avoids exact-output paper matching and preserves personal effort calibration.",
+      "betterAlternativeIgnored": null,
+      "limitations": [
+        "Detailed goal, phase and future horizon are absent in the frozen facts; this is defensible narrow request handling, not proof of goal-optimal programming."
+      ],
+      "actualDecisionType": "MODIFY",
+      "actualCoverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "positiveCoverage": true,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-33"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-34",
+      "qualityClass": "COACHING_ACCEPTABLE_ALTERNATIVE",
+      "reason": "Concrete familiar cruise work and governed preparation/cooldown use task-specific pace/effort without LT2/CS equivalence.",
+      "betterAlternativeIgnored": null,
+      "limitations": [
+        "Detailed goal, phase and future horizon are absent in the frozen facts; this is defensible narrow request handling, not proof of goal-optimal programming."
+      ],
+      "actualDecisionType": "MODIFY",
+      "actualCoverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "positiveCoverage": true,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-34"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-35",
+      "qualityClass": "COACHING_BEST_SUPPORTED",
+      "reason": "ASK appropriately refuses proprietary watch VO2 prediction as a pace prescription for an unexposed fast task; current comparable task evidence is material.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "ASK",
+      "actualCoverage": "USEFUL_ASK",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-35"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-36",
+      "qualityClass": "COACHING_BEST_SUPPORTED",
+      "reason": "ASK correctly refuses to derive novel short-interval speed from easy pace without fast-task exposure/anchor.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "ASK",
+      "actualCoverage": "USEFUL_ASK",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-36"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-37",
+      "qualityClass": "COACHING_ACCEPTABLE_ALTERNATIVE",
+      "reason": "Repeated compatible long exposure plus supplied familiar 60-minute candidate supports a single-dimension duration step.",
+      "betterAlternativeIgnored": null,
+      "limitations": [
+        "Broad goal is known but block, availability and future essential horizon are not; best whole-program selection cannot be established."
+      ],
+      "actualDecisionType": "MODIFY",
+      "actualCoverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "positiveCoverage": true,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-37"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-38",
+      "qualityClass": "COACHING_BEST_SUPPORTED",
+      "reason": "ASK for actual terrain/surface/task conditions is material for an unfamiliar hill; flat pace cannot prescribe this new task.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "ASK",
+      "actualCoverage": "USEFUL_ASK",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-38"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-39",
+      "qualityClass": "COACHING_ACCEPTABLE_ALTERNATIVE",
+      "reason": "Familiar nonmaximal strides with self-paced recovery and governed preparation are a defensible concrete session.",
+      "betterAlternativeIgnored": null,
+      "limitations": [
+        "Phase/goal/available window and full recovery timing are unknown; no full goal-optimal or window-fit proof."
+      ],
+      "actualDecisionType": "MODIFY",
+      "actualCoverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "positiveCoverage": true,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-39"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-40",
+      "qualityClass": "COACHING_BEST_SUPPORTED",
+      "reason": "ASK correctly refuses old downhill race performance as current hilly/warm-weather race-pace calibration.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "ASK",
+      "actualCoverage": "USEFUL_ASK",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-40"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-41",
+      "qualityClass": "COACHING_BEST_SUPPORTED",
+      "reason": "Observed soft preference alone does not supply actual availability, schedule or unchanged prescriptions. ASK correctly distinguishes learned ranking from executable rearrangement.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "ASK",
+      "actualCoverage": "USEFUL_ASK",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-41"
+    },
+    {
+      "set": "frozen40",
+      "caseId": "REP-R2-42",
+      "qualityClass": "COACHING_BEST_SUPPORTED",
+      "reason": "HOLD of the proposed new causal rule correctly avoids learning a hard dose rule from one confounded association; existing plan/prior remain intact.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "HOLD",
+      "actualCoverage": "CORRECT_ABSTAIN_OR_HOLD",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#REP-R2-42"
+    },
+    {
+      "set": "holdout",
+      "caseId": "R4-HO-01",
+      "qualityClass": "COACHING_BEST_SUPPORTED",
+      "reason": "Concrete bounded run/walk entry fits the 25-minute window, serves the explicit establishment goal and preserves a walking exit instead of demanding wearable history.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "MODIFY",
+      "actualCoverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "positiveCoverage": true,
+      "evidenceRef": "quality-runtime-snapshot.json#R4-HO-01"
+    },
+    {
+      "set": "holdout",
+      "caseId": "R4-HO-02",
+      "qualityClass": "COACHING_ACCEPTABLE_ALTERNATIVE",
+      "reason": "Known-movement practice fits the available window and preserves established easy running without inventing hinge competence.",
+      "betterAlternativeIgnored": null,
+      "limitations": [
+        "The supplied familiar 4-kg/8-repetition row is not compared with the generic 5-repetition entry; the selected familiarization is defensible but superiority is not shown."
+      ],
+      "actualDecisionType": "MODIFY",
+      "actualCoverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "positiveCoverage": true,
+      "evidenceRef": "quality-runtime-snapshot.json#R4-HO-02"
+    },
+    {
+      "set": "holdout",
+      "caseId": "R4-HO-03",
+      "qualityClass": "UNSUPPORTED",
+      "reason": "The inflated generic week was removed, but current ASK requests currentWeeklyConfiguration despite supplied run/strength frequencies, families and strength doses. Complete balanced-week composition is still a disclosed capability gap.",
+      "betterAlternativeIgnored": null,
+      "limitations": [
+        "No longer an unsafe positive; not an achieved first prescription for the supplied intermediate athlete."
+      ],
+      "actualDecisionType": "ASK",
+      "actualCoverage": "USEFUL_ASK",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#R4-HO-03"
+    },
+    {
+      "set": "holdout",
+      "caseId": "R4-HO-04",
+      "qualityClass": "COACHING_BEST_SUPPORTED",
+      "reason": "The actual same-dose move preserves Tuesday key run and fits Thursday maintenance strength; it follows explicit Run-first build goal with less disruption than moving the key run.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "MODIFY",
+      "actualCoverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "positiveCoverage": true,
+      "evidenceRef": "quality-runtime-snapshot.json#R4-HO-04"
+    },
+    {
+      "set": "holdout",
+      "caseId": "R4-HO-05",
+      "qualityClass": "COACHING_BEST_SUPPORTED",
+      "reason": "The actual same-dose move preserves Tuesday key strength and fits Thursday secondary run; it follows explicit Strength-first goal.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "MODIFY",
+      "actualCoverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "positiveCoverage": true,
+      "evidenceRef": "quality-runtime-snapshot.json#R4-HO-05"
+    },
+    {
+      "set": "holdout",
+      "caseId": "R4-HO-06",
+      "qualityClass": "UNSUPPORTED",
+      "reason": "Software contract requires legacy-shaped fields and never uses supplied Balanced preference/availability to choose the feasible social-run arrangement.",
+      "betterAlternativeIgnored": null,
+      "limitations": [
+        "No positive credit; unsupported input shape is not an essential athlete question."
+      ],
+      "actualDecisionType": "ASK",
+      "actualCoverage": "NOT_SUPPORTED_SOFTWARE_CONTRACT_GAP",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#R4-HO-06"
+    },
+    {
+      "set": "holdout",
+      "caseId": "R4-HO-07",
+      "qualityClass": "COACHING_BEST_SUPPORTED",
+      "reason": "The familiar one-repetition row progression serves the strength-build goal, preserves load/sets/rest, and avoids unnecessary larger load jump.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "MODIFY",
+      "actualCoverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "positiveCoverage": true,
+      "evidenceRef": "quality-runtime-snapshot.json#R4-HO-07"
+    },
+    {
+      "set": "holdout",
+      "caseId": "R4-HO-08",
+      "qualityClass": "COACHING_BEST_SUPPORTED",
+      "reason": "Known 2-kg regression preserves intended sets/reps/rest under repeated comparable mismatch and normal systemic state; broader cancellation or KEEP would under-serve quality.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "MODIFY",
+      "actualCoverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "positiveCoverage": true,
+      "evidenceRef": "quality-runtime-snapshot.json#R4-HO-08"
+    },
+    {
+      "set": "holdout",
+      "caseId": "R4-HO-09",
+      "qualityClass": "UNSUPPORTED",
+      "reason": "Legacy easy-run-only REVIEW_NEXT_SESSION contract cannot consume supplied strength-specific noisy-session facts; no unsupported chronic regression occurs, but competent KEEP is absent.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "ASK",
+      "actualCoverage": "NOT_SUPPORTED_SOFTWARE_CONTRACT_GAP",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#R4-HO-09"
+    },
+    {
+      "set": "holdout",
+      "caseId": "R4-HO-10",
+      "qualityClass": "UNSUPPORTED",
+      "reason": "Optional omission with feasible core and supplied continue preference is understood but lacks the generalized KEEP binding; it remains a domain capability gap.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "NOT_SUPPORTED_YET",
+      "actualCoverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#R4-HO-10"
+    },
+    {
+      "set": "holdout",
+      "caseId": "R4-HO-11",
+      "qualityClass": "UNSUPPORTED",
+      "reason": "Missed essential-session request has no executable move/discard/horizon selector despite supplied familiar Thursday alternative and future Sunday key stimulus.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "NOT_SUPPORTED_YET",
+      "actualCoverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#R4-HO-11"
+    },
+    {
+      "set": "holdout",
+      "caseId": "R4-HO-12",
+      "qualityClass": "COACHING_BEST_SUPPORTED",
+      "reason": "Omitting only unperformed optional calf remainder preserves compatible essential row and the primary future run stimulus, with the smallest sufficient intervention.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "MODIFY",
+      "actualCoverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "positiveCoverage": true,
+      "evidenceRef": "quality-runtime-snapshot.json#R4-HO-12"
+    },
+    {
+      "set": "holdout",
+      "caseId": "R4-HO-13",
+      "qualityClass": "COACHING_BEST_SUPPORTED",
+      "reason": "Systemic convergence and actual partial [6,4] prefix now select termination of only remaining hard work, preserve completed facts and protect the future long-run goal; easy exit is conditional.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "MODIFY",
+      "actualCoverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "positiveCoverage": true,
+      "evidenceRef": "quality-runtime-snapshot.json#R4-HO-13"
+    },
+    {
+      "set": "holdout",
+      "caseId": "R4-HO-14",
+      "qualityClass": "UNSUPPORTED",
+      "reason": "The material contract specifically demands candidate60PreviouslyFamiliar and cannot consume the equally explicit 75-minute familiar candidate. Generic long progression is not established by the 55→60 witness.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "ASK",
+      "actualCoverage": "NOT_SUPPORTED_SOFTWARE_CONTRACT_GAP",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#R4-HO-14"
+    },
+    {
+      "set": "holdout",
+      "caseId": "R4-HO-15",
+      "qualityClass": "UNSUPPORTED",
+      "reason": "The RUN_NEXT_SESSION contract only supports easy-duration operands and cannot consume supplied controlled-cruise base/candidate and comparable work progression.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "ASK",
+      "actualCoverage": "NOT_SUPPORTED_SOFTWARE_CONTRACT_GAP",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#R4-HO-15"
+    },
+    {
+      "set": "holdout",
+      "caseId": "R4-HO-16",
+      "qualityClass": "UNSUPPORTED",
+      "reason": "EXERCISE_SUBSTITUTION alias and candidate/configuration representation have no binding; no familiar cable-row substitution is selected.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "NOT_SUPPORTED_YET",
+      "actualCoverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#R4-HO-16"
+    },
+    {
+      "set": "holdout",
+      "caseId": "R4-HO-17",
+      "qualityClass": "UNSUPPORTED",
+      "reason": "RETURN_RUN alias is reconciled into HOLD despite explicit current 25-minute compatible exposure; this is missing binding, not a scientifically necessary abstention.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "HOLD",
+      "actualCoverage": "CORRECT_ABSTAIN_OR_HOLD",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#R4-HO-17"
+    },
+    {
+      "set": "holdout",
+      "caseId": "R4-HO-18",
+      "qualityClass": "UNSUPPORTED",
+      "reason": "RETURN_STRENGTH alias is reconciled into HOLD despite explicit current demonstrated 20-kg dose and normal response; no complete current-capacity return decision is made.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "HOLD",
+      "actualCoverage": "CORRECT_ABSTAIN_OR_HOLD",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#R4-HO-18"
+    },
+    {
+      "set": "holdout",
+      "caseId": "R4-HO-19",
+      "qualityClass": "COACHING_BEST_SUPPORTED",
+      "reason": "ASK correctly requests missing actual schedule, windows and prescriptions before turning a contextual response association into an executable plan; no causal assertion is made.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "ASK",
+      "actualCoverage": "USEFUL_ASK",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#R4-HO-19"
+    },
+    {
+      "set": "holdout",
+      "caseId": "R4-HO-20",
+      "qualityClass": "COACHING_BEST_SUPPORTED",
+      "reason": "HOLD of a new hard rule correctly preserves stable training and population prior under one confounded event; this is not a hold on all training.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "HOLD",
+      "actualCoverage": "CORRECT_ABSTAIN_OR_HOLD",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#R4-HO-20"
+    },
+    {
+      "set": "holdout",
+      "caseId": "R4-HO-21",
+      "qualityClass": "UNSUPPORTED",
+      "reason": "Joint race-week recipe still has no independent scientific approval; correctly disclosed science gap earns zero positive coverage.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "HOLD",
+      "actualCoverage": "NOT_SUPPORTED_SCIENCE_GAP",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#R4-HO-21"
+    },
+    {
+      "set": "holdout",
+      "caseId": "R4-HO-22",
+      "qualityClass": "UNSUPPORTED",
+      "reason": "DOUBLE_SESSION_PLACEMENT has no runtime binding, so explicit priority and comparable personal ordering history cannot select the familiar feasible double.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "NOT_SUPPORTED_YET",
+      "actualCoverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#R4-HO-22"
+    },
+    {
+      "set": "holdout",
+      "caseId": "R4-HO-23",
+      "qualityClass": "UNSUPPORTED",
+      "reason": "Legacy easy-run review shape rejects supplied isolated wearable alert/current compatible state; it does not implement the expected corroborated-signal KEEP.",
+      "betterAlternativeIgnored": null,
+      "limitations": [],
+      "actualDecisionType": "ASK",
+      "actualCoverage": "NOT_SUPPORTED_SOFTWARE_CONTRACT_GAP",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#R4-HO-23"
+    },
+    {
+      "set": "holdout",
+      "caseId": "R4-HO-24",
+      "qualityClass": "INSUFFICIENT_INFORMATION",
+      "reason": "Current capacity/function/recovery are genuinely missing, but alias reconciliation returns HOLD without a targeted material question; prescription remains unresolved.",
+      "betterAlternativeIgnored": null,
+      "limitations": [
+        "A correct targeted current-state ASK could be best-supported; the actual output does not perform it."
+      ],
+      "actualDecisionType": "HOLD",
+      "actualCoverage": "CORRECT_ABSTAIN_OR_HOLD",
+      "positiveCoverage": false,
+      "evidenceRef": "quality-runtime-snapshot.json#R4-HO-24"
+    }
+  ],
+  "counts": {
+    "frozen40": {
+      "COACHING_ACCEPTABLE_ALTERNATIVE": 20,
+      "COACHING_BEST_SUPPORTED": 17,
+      "UNSUPPORTED": 3
+    },
+    "holdout": {
+      "COACHING_BEST_SUPPORTED": 9,
+      "COACHING_ACCEPTABLE_ALTERNATIVE": 1,
+      "UNSUPPORTED": 13,
+      "INSUFFICIENT_INFORMATION": 1
+    }
+  },
+  "positiveQuality": {
+    "COACHING_ACCEPTABLE_ALTERNATIVE": 19,
+    "COACHING_BEST_SUPPORTED": 7
+  },
+  "findings": [
+    {
+      "id": "Q01",
+      "severity": "MUST",
+      "status": "RESOLVED",
+      "reason": "Complete run and strength task timing now blocks positive output when it does not fit explicit availability.",
+      "evidence": "quality-probes.raw.json#LONG_WINDOW_TOO_SHORT,CRUISE_WINDOW_TOO_SHORT,STRENGTH_WINDOW_TOO_SHORT"
+    },
+    {
+      "id": "Q02",
+      "severity": "MUST",
+      "status": "RESOLVED",
+      "reason": "Restrictive narrative equipment no longer permits unavailable load progression; original13kg reproduction now retains available base.",
+      "evidence": "quality-probes.raw.json#BAD_EQUIPMENT_INCREMENT"
+    },
+    {
+      "id": "Q03",
+      "severity": "MUST",
+      "status": "RESOLVED",
+      "reason": "Negated/incompatible tolerance no longer earns progression.",
+      "evidence": "quality-probes.raw.json#NEGATED_FAMILIAR_RESPONSE"
+    },
+    {
+      "id": "Q04",
+      "severity": "MUST",
+      "status": "RESOLVED",
+      "reason": "Primary goal is separate from secondary maintenance, preventing an unrelated maintenance phrase from vetoing earned primary progression.",
+      "evidence": "quality-probes.raw.json#STRENGTH_MAINTENANCE_SECONDARY"
+    },
+    {
+      "id": "Q05",
+      "severity": "MUST",
+      "status": "RESOLVED",
+      "capabilityGapRetained": true,
+      "reason": "Inflated generic intermediate week is no longer emitted. Current output is ASK; complete intermediate balanced-week composition remains UNSUPPORTED in holdout03.",
+      "evidence": "quality-runtime-snapshot.json#R4-HO-03"
+    },
+    {
+      "id": "Q06",
+      "severity": "MUST",
+      "status": "RESOLVED",
+      "reason": "Easy-duration tolerance cannot authorize a different fast-run family.",
+      "evidence": "quality-probes.raw.json#WRONG_FAMILY_TOLERANCE"
+    },
+    {
+      "id": "Q07",
+      "severity": "MUST",
+      "status": "RESOLVED",
+      "reason": "Already-completed affected accessory yields KEEP; partial remainder is explicitly separated from completed work.",
+      "evidence": "quality-probes.raw.json#EMPTY_LOCAL_REMAINDER"
+    },
+    {
+      "id": "Q08",
+      "severity": "MUST",
+      "status": "RESOLVED",
+      "reason": "Strength regression now composes an explicit approximate effort-governed rest choice rather than omitting rest context.",
+      "evidence": "quality-runtime-snapshot.json#REP-R2-12"
+    },
+    {
+      "id": "Q09",
+      "severity": "MUST",
+      "status": "RESOLVED",
+      "reason": "Actual partial work and stopped-early description now support the approved suffix stop without repeating an answered question.",
+      "evidence": "quality-runtime-snapshot.json#R4-HO-13"
+    },
+    {
+      "id": "Q10",
+      "severity": "MUST",
+      "status": "RESOLVED",
+      "reason": "Unreviewed material population/eligibility context is reconciled instead of silently extending scientific applicability; persistent pain still routes clinically.",
+      "evidence": "quality-probes.raw.json#UNREVIEWED_SPECIAL_POPULATION,CLINICAL_OVERRIDE"
+    },
+    {
+      "id": "Q11",
+      "severity": "MUST",
+      "status": "RESOLVED",
+      "reason": "Known supplied facts are no longer repeated as usefulASK; remaining unsupported prescription is disclosed as domain gap.",
+      "evidence": "quality-probes.raw.json#ASK_FACTS_ALREADY_SUPPLIED"
+    },
+    {
+      "id": "Q12",
+      "severity": "MUST",
+      "status": "RESOLVED",
+      "reason": "Specific60-minute tolerance flag no longer licenses a70-minute candidate; numerical source anchors must match the proposed task.",
+      "evidence": "quality-probes.raw.json#NUMERIC_TOLERANCE_ANCHOR_MISMATCH"
+    },
+    {
+      "id": "G01",
+      "severity": "LIMITATION",
+      "status": "RETAINED",
+      "reason": "Thirteen holdout cases remain unsupported and one has unresolved current-state information; broad V1 coaching readiness remains NOT_READY.",
+      "owner": "/root / DOMAIN_COACHING_R5",
+      "trigger": "Before broad coverage, autonomy or production claims."
+    },
+    {
+      "id": "G02",
+      "severity": "LIMITATION",
+      "status": "RETAINED",
+      "reason": "Most frozen positive decisions lack explicit goal/phase/horizon, so they are acceptable alternatives rather than best-supported full programming.",
+      "owner": "/root / DOMAIN_COACHING_R5",
+      "trigger": "Before claiming goal-optimal autonomous programming."
+    }
+  ],
+  "verdict": "QUALITY_READY_WITH_CONDITIONS",
+  "reviewEvent": "REVIEW_APPROVED_WITH_SCOPE_LIMITS",
+  "scope": "Current offline synthetic Node24 reference, sealed frozen40 and holdout24, fifteen adverse probes and239 current tests; no broad V1, autonomous-coach, production, clinical or empirical readiness.",
+  "broadReadiness": "NOT_READY",
+  "invariants": {
+    "cases": 64,
+    "allCurrent": true,
+    "adverseProbesPassed": 15,
+    "adverseProbesTotal": 15,
+    "testsPassed": 239,
+    "testsTotal": 239
+  },
+  "conditions": [
+    {
+      "id": "C1",
+      "owner": "/root / DOMAIN_COACHING_R5",
+      "trigger": "Before expanding domain/positive coverage or claiming complete eligible-athlete/goal-optimal autonomy.",
+      "condition": "Resolve unsupported input aliases, complete intermediate establishment, goal/phase/horizon use, missed essential work, threshold progression, double placement, learned-option admissibility and combined race-week gaps.",
+      "stop": "Retain broad NOT_READY; no KMP production preparation or autonomous activation inferred from this review.",
+      "resolutionEvidence": "Fresh independent executable coverage and quality review for the added capabilities."
+    },
+    {
+      "id": "C2",
+      "owner": "/root / independent evaluation author",
+      "trigger": "Before any claim of unseen/out-of-sample generalization.",
+      "condition": "Use a new separately authored unseen challenge set; the current sealed holdout has been exposed and reused for correction.",
+      "stop": "Do not describe final corrected results as an unseen holdout pass.",
+      "resolutionEvidence": "New corpus seal before implementation exposure and independent execution."
+    },
+    {
+      "id": "C3",
+      "owner": "/root",
+      "trigger": "Any material change to reviewed runtime, envelopes, scientific conditions or source inputs.",
+      "condition": "Invalidate only affected dependent evidence and rerun current independent quality/scientific checks.",
+      "stop": "Do not reuse this verdict for changed artifact hashes.",
+      "resolutionEvidence": "Matching reviewed-file hashes and current test/probe results."
+    }
+  ],
+  "evidenceRefs": [
+    "quality-runtime-snapshot.json",
+    "quality-probes.raw.json",
+    "quality-final-tests.tap",
+    "quality-initial-findings.json",
+    "quality-initial-runtime-snapshot.json",
+    "quality-initial-probes.raw.json",
+    "quality-criteria.md"
+  ],
+  "limits": [
+    "Designed synthetic cases are not V1 population coverage or empirical efficacy.",
+    "All runtime self classifications were ignored.",
+    "Unknown phase/goal/horizon prevents unsupported best-supported programming claims.",
+    "Holdout was independently sealed before engine inspection; after first exposure and corrections, later results are challenge-set reuse, not unseen generalization.",
+    "Correct ASK/KEEP/HOLD can be BEST_SUPPORTED but never contributes positive prescription coverage.",
+    "Final broad readiness remains constrained by software/domain/science gaps.",
+    "Final scientific binding review is separate and must also match current source hashes before aggregate closure."
+  ],
+  "nextAction": "Chief consolidates current independent gates and reports the retained gaps/readiness limits; next domain work is DOMAIN_COACHING_R5 rather than autonomous or production promotion."
+}

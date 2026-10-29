@@ -1,0 +1,765 @@
+{
+ "revision": "R7ASC-REGRESSION-NAMED-1",
+ "generatedAt": "2026-10-29T14:10:52.541Z",
+ "source": {
+  "regression": {
+   "path": "CoachingCore/r7/state-consumer/REGRESSION_R7ASC.json",
+   "sha256": "11f131dedad1c541bd1b76c54f1249b133d3e37bb49583946ae8d430a97721e4"
+  },
+  "classifier": {
+   "path": "audits/domain-coaching-r7a-state-consumer-2026-10-29/probes/runs/r7asc-classify-regression.out.json",
+   "sha256": "cba6c3f3618c6792a82289726f75c430c2b6938a466c0363f6574deff2f385f9",
+   "prior": {
+    "snapshot": "audits/domain-coaching-r7a-state-consumer-2026-10-29/state-model-freeze-source",
+    "sourceDigest": "0db72d0edd9fd7f1382e1ed8622d29e2ff3356699da18872b0670615956e2eb8"
+   }
+  }
+ },
+ "summary": {
+  "r6FreshHoldout": {
+   "cases": 35,
+   "identical": 25,
+   "different": [
+    "R6-H02",
+    "R6-H03",
+    "R6-H05",
+    "R6-H18",
+    "R6-H22",
+    "R6-H24",
+    "R6-H25",
+    "R6-H26",
+    "R6-H27",
+    "R6-H33"
+   ],
+   "statusChanged": []
+  },
+  "r5Corpus": {
+   "cases": 24,
+   "identical": 24,
+   "different": [],
+   "statusChanged": []
+  },
+  "profiles": {
+   "cases": 16,
+   "identical": 12,
+   "different": [
+    "D_NOVICE_RUNNER_EXPERIENCED_STRENGTH",
+    "G_LOW_DATA_NO_WEARABLE",
+    "WALK_JOG_FIVE_DAYS",
+    "RESTART_AFTER_PAUSE"
+   ],
+   "statusChanged": []
+  },
+  "simulations": {
+   "cases": 14,
+   "identical": 10,
+   "different": [
+    "T04_STRENGTH12_REPEATED_UNDERPERFORMANCE",
+    "T05_10K8_SHORT_INTERRUPTION",
+    "T08_NOVICE8_MODERATE_INTERRUPTION",
+    "T13_HM16_FATIGUE_SIGNALS"
+   ],
+   "statusChanged": []
+  }
+ },
+ "againstApprovedFreeze": {
+  "r6FreshHoldout": {
+   "cases": 35,
+   "identical": 16,
+   "different": [
+    "R6-H02",
+    "R6-H03",
+    "R6-H05",
+    "R6-H17",
+    "R6-H18",
+    "R6-H19",
+    "R6-H22",
+    "R6-H23",
+    "R6-H24",
+    "R6-H25",
+    "R6-H26",
+    "R6-H27",
+    "R6-H29",
+    "R6-H30",
+    "R6-H31",
+    "R6-H32",
+    "R6-H33",
+    "R6-H34",
+    "R6-H35"
+   ],
+   "statusChanged": [
+    "R6-H18: MODIFY/MOVE KEEP/KEEP MODIFY/GATED_NEXT_STEP -> KEEP/KEEP KEEP/KEEP MODIFY/GATED_NEXT_STEP",
+    "R6-H26: KEEP/KEEP MODIFY/REESTABLISH MODIFY/GATED_NEXT_STEP -> KEEP/INSTANTIATE_LOGGED_LOADS MODIFY/REESTABLISH MODIFY/GATED_NEXT_STEP"
+   ]
+  },
+  "r5Corpus": {
+   "cases": 24,
+   "identical": 24,
+   "different": [],
+   "statusChanged": []
+  },
+  "profiles": {
+   "cases": 16,
+   "identical": 12,
+   "different": [
+    "D_NOVICE_RUNNER_EXPERIENCED_STRENGTH",
+    "G_LOW_DATA_NO_WEARABLE",
+    "WALK_JOG_FIVE_DAYS",
+    "RESTART_AFTER_PAUSE"
+   ],
+   "statusChanged": []
+  },
+  "simulations": {
+   "cases": 14,
+   "identical": 12,
+   "different": [
+    "T05_10K8_SHORT_INTERRUPTION",
+    "T08_NOVICE8_MODERATE_INTERRUPTION"
+   ],
+   "statusChanged": []
+  }
+ },
+ "classes": [
+  {
+   "id": "EARNED_REPETITIONS",
+   "finding": "F2; R42",
+   "why": "A new load starts with the repetitions its gate allows: ADVANCE the logged repetitions, HOLD and REGRESS the row's target, so HOLD repeats the dose it held. The credit restarts at 0 whoever set the higher load (R42)",
+   "cases": [
+    "R6-H22",
+    "R6-H24",
+    "R6-H33"
+   ],
+   "risen": 4,
+   "fallen": 44
+  },
+  {
+   "id": "GOAL_RANGE_CUT",
+   "finding": "F3",
+   "why": "Every row of a known dose carries a repetition target inside the current goal's range, as the KNOWN row already did: a goal change to MAINTAIN (8-8) or STRENGTH (4-6) no longer leaves a from-log 10 or 12",
+   "cases": [
+    "R6-H18",
+    "R6-H25",
+    "sim:T08_NOVICE8_MODERATE_INTERRUPTION"
+   ],
+   "risen": 0,
+   "fallen": 37
+  },
+  {
+   "id": "HOLD_REPEATS_DOSE",
+   "finding": "F2; Property D",
+   "why": "Restored to the rows of STATE-EVIDENCE-FREEZE-1: a past week's gate counts only the logs up to its own clock, so later short sets no longer regress an earlier week, and a held dose is repeated",
+   "cases": [
+    "sim:T04_STRENGTH12_REPEATED_UNDERPERFORMANCE",
+    "sim:T13_HM16_FATIGUE_SIGNALS"
+   ],
+   "risen": 56,
+   "fallen": 1
+  },
+  {
+   "id": "RETURN_WEEK_SUMMARY",
+   "finding": "NF-R7ASM-1; Property A",
+   "why": "A return's own week is read with the summary of the sessions after the return's point: runs planned inside the pause (here pre-return strides) are never credited as run, so the next decision instantiates the logged loads instead of keeping",
+   "cases": [
+    "sim:T05_10K8_SHORT_INTERRUPTION"
+   ],
+   "risen": 0,
+   "fallen": 0
+  },
+  {
+   "id": "PLANNED_SUMMARY_BOOKKEEPING",
+   "finding": "none (record only)",
+   "why": "Only the stored prescription summary differs: plannedOf now states the re-entry dose a week prescribed (planned.returnStep / restart / walkStep) so the run steps can read it; no prescription, row or decision changes",
+   "cases": [
+    "R6-H02",
+    "R6-H03",
+    "R6-H05",
+    "R6-H26",
+    "R6-H27",
+    "profile:D_NOVICE_RUNNER_EXPERIENCED_STRENGTH",
+    "profile:G_LOW_DATA_NO_WEARABLE",
+    "profile:WALK_JOG_FIVE_DAYS",
+    "profile:RESTART_AFTER_PAUSE"
+   ],
+   "risen": 0,
+   "fallen": 0
+  }
+ ],
+ "unclassified": [],
+ "staleClassEntries": [],
+ "bookkeepingNotIdentical": [],
+ "dose": {
+  "EARNED_REPETITIONS": {
+   "risen": [
+    {
+     "case": "R6-H22",
+     "row": "w9-str-d2:goblet-squat",
+     "field": "reps",
+     "before": 6,
+     "now": 10,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "R6-H22",
+     "row": "w9-str-d2:db-row",
+     "field": "reps",
+     "before": 6,
+     "now": 10,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "R6-H22",
+     "row": "w9-str-d5:db-rdl",
+     "field": "reps",
+     "before": 6,
+     "now": 10,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "R6-H22",
+     "row": "w9-str-d5:db-row",
+     "field": "reps",
+     "before": 6,
+     "now": 10,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    }
+   ],
+   "fallen": 44
+  },
+  "GOAL_RANGE_CUT": {
+   "risen": [],
+   "fallen": 37
+  },
+  "HOLD_REPEATS_DOSE": {
+   "risen": [
+    {
+     "case": "sim:T04_STRENGTH12_REPEATED_UNDERPERFORMANCE",
+     "row": "w5-str-d0:back-squat",
+     "field": "reps",
+     "before": 6,
+     "now": 8,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T04_STRENGTH12_REPEATED_UNDERPERFORMANCE",
+     "row": "w5-str-d0:db-calf-raise",
+     "field": "reps",
+     "before": 6,
+     "now": 8,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T04_STRENGTH12_REPEATED_UNDERPERFORMANCE",
+     "row": "w6-str-d0:back-squat",
+     "field": "reps",
+     "before": 6,
+     "now": 8,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T04_STRENGTH12_REPEATED_UNDERPERFORMANCE",
+     "row": "w7-str-d0:back-squat",
+     "field": "reps",
+     "before": 8,
+     "now": 10,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T04_STRENGTH12_REPEATED_UNDERPERFORMANCE",
+     "row": "w8-str-d0:back-squat",
+     "field": "reps",
+     "before": 8,
+     "now": 10,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T04_STRENGTH12_REPEATED_UNDERPERFORMANCE",
+     "row": "w9-str-d0:back-squat",
+     "field": "reps",
+     "before": 10,
+     "now": 12,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T04_STRENGTH12_REPEATED_UNDERPERFORMANCE",
+     "row": "w10-str-d0:back-squat",
+     "field": "load",
+     "before": 60,
+     "now": 62.5,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T04_STRENGTH12_REPEATED_UNDERPERFORMANCE",
+     "row": "w11-str-d0:back-squat",
+     "field": "reps",
+     "before": 8,
+     "now": 10,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w9-str-d2:goblet-squat",
+     "field": "sets",
+     "before": 1,
+     "now": 2,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w9-str-d2:db-bench-press",
+     "field": "sets",
+     "before": 1,
+     "now": 2,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w9-str-d2:db-bench-press",
+     "field": "reps",
+     "before": 6,
+     "now": 8,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w9-str-d2:db-row",
+     "field": "sets",
+     "before": 1,
+     "now": 2,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w9-str-d2:db-row",
+     "field": "reps",
+     "before": 6,
+     "now": 8,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w9-str-d4:db-rdl",
+     "field": "sets",
+     "before": 1,
+     "now": 2,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w9-str-d4:db-row",
+     "field": "sets",
+     "before": 1,
+     "now": 2,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w9-str-d4:db-row",
+     "field": "reps",
+     "before": 6,
+     "now": 8,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w9-str-d4:db-bench-press",
+     "field": "sets",
+     "before": 1,
+     "now": 2,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w9-str-d4:db-bench-press",
+     "field": "reps",
+     "before": 6,
+     "now": 8,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w10-str-d2:goblet-squat",
+     "field": "sets",
+     "before": 1,
+     "now": 2,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w10-str-d2:db-bench-press",
+     "field": "sets",
+     "before": 1,
+     "now": 2,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w10-str-d2:db-bench-press",
+     "field": "reps",
+     "before": 6,
+     "now": 8,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w10-str-d2:db-row",
+     "field": "sets",
+     "before": 1,
+     "now": 2,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w10-str-d2:db-row",
+     "field": "reps",
+     "before": 6,
+     "now": 8,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w10-str-d4:db-rdl",
+     "field": "sets",
+     "before": 1,
+     "now": 2,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w10-str-d4:db-row",
+     "field": "sets",
+     "before": 1,
+     "now": 2,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w10-str-d4:db-row",
+     "field": "reps",
+     "before": 6,
+     "now": 8,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w10-str-d4:db-bench-press",
+     "field": "sets",
+     "before": 1,
+     "now": 2,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w10-str-d4:db-bench-press",
+     "field": "reps",
+     "before": 6,
+     "now": 8,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w11-str-d2:goblet-squat",
+     "field": "sets",
+     "before": 1,
+     "now": 2,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w11-str-d2:db-bench-press",
+     "field": "sets",
+     "before": 1,
+     "now": 2,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w11-str-d2:db-bench-press",
+     "field": "reps",
+     "before": 6,
+     "now": 8,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w11-str-d2:db-row",
+     "field": "sets",
+     "before": 1,
+     "now": 2,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w11-str-d2:db-row",
+     "field": "reps",
+     "before": 6,
+     "now": 8,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w11-str-d4:db-rdl",
+     "field": "sets",
+     "before": 1,
+     "now": 2,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w11-str-d4:db-row",
+     "field": "sets",
+     "before": 1,
+     "now": 2,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w11-str-d4:db-row",
+     "field": "reps",
+     "before": 6,
+     "now": 8,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w11-str-d4:db-bench-press",
+     "field": "sets",
+     "before": 1,
+     "now": 2,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w11-str-d4:db-bench-press",
+     "field": "reps",
+     "before": 6,
+     "now": 8,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w12-str-d2:goblet-squat",
+     "field": "sets",
+     "before": 1,
+     "now": 2,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w12-str-d2:db-bench-press",
+     "field": "sets",
+     "before": 1,
+     "now": 2,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w12-str-d2:db-bench-press",
+     "field": "reps",
+     "before": 6,
+     "now": 8,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w12-str-d2:db-row",
+     "field": "sets",
+     "before": 1,
+     "now": 2,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w12-str-d2:db-row",
+     "field": "reps",
+     "before": 6,
+     "now": 8,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w12-str-d4:db-rdl",
+     "field": "sets",
+     "before": 1,
+     "now": 2,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w12-str-d4:db-row",
+     "field": "sets",
+     "before": 1,
+     "now": 2,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w12-str-d4:db-row",
+     "field": "reps",
+     "before": 6,
+     "now": 8,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w12-str-d4:db-bench-press",
+     "field": "sets",
+     "before": 1,
+     "now": 2,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w12-str-d4:db-bench-press",
+     "field": "reps",
+     "before": 6,
+     "now": 8,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w13-str-d2:db-bench-press",
+     "field": "reps",
+     "before": 6,
+     "now": 8,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w13-str-d2:db-row",
+     "field": "reps",
+     "before": 6,
+     "now": 8,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w13-str-d4:db-row",
+     "field": "reps",
+     "before": 6,
+     "now": 8,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w13-str-d4:db-bench-press",
+     "field": "reps",
+     "before": 6,
+     "now": 8,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w14-str-d2:db-bench-press",
+     "field": "reps",
+     "before": 6,
+     "now": 8,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w14-str-d2:db-row",
+     "field": "reps",
+     "before": 6,
+     "now": 8,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w15-str-d2:db-bench-press",
+     "field": "reps",
+     "before": 6,
+     "now": 8,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    },
+    {
+     "case": "sim:T13_HM16_FATIGUE_SIGNALS",
+     "row": "w15-str-d2:db-row",
+     "field": "reps",
+     "before": 6,
+     "now": 8,
+     "beforeKind": "KNOWN",
+     "nowKind": "KNOWN"
+    }
+   ],
+   "fallen": 1
+  },
+  "RETURN_WEEK_SUMMARY": {
+   "risen": [],
+   "fallen": 0
+  },
+  "PLANNED_SUMMARY_BOOKKEEPING": {
+   "risen": [],
+   "fallen": 0
+  }
+ },
+ "statusChanged": [
+  "sim:T05_10K8_SHORT_INTERRUPTION: KEEP/KEEP KEEP/KEEP MODIFY/REESTABLISH KEEP/INSTANTIATE_LOGGED_LOADS KEEP/KEEP KEEP/KEEP KEEP/KEEP KEEP/KEEP -> KEEP/KEEP KEEP/KEEP MODIFY/REESTABLISH KEEP/INSTANTIATE_LOGGED_LOADS KEEP/INSTANTIATE_LOGGED_LOADS KEEP/KEEP KEEP/KEEP KEEP/KEEP"
+ ],
+ "verdict": {
+  "casesTotal": 89,
+  "casesDifferentRaw": 18,
+  "casesDifferentAfterBookkeeping": 9,
+  "doseFieldsRisen": 60,
+  "doseFieldsFallen": 82,
+  "unclassifiedDifferences": 0
+ }
+}

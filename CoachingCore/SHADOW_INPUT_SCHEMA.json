@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:vilumo:bounded-shadow:input:1",
+  "type": "object",
+  "required": ["inputVersion", "purpose", "synthetic", "evaluatedAt", "athleteFixtureId", "athleteState", "officialPlanState", "event", "observation", "observedExecutionState", "recoveryContext", "policyContext", "provenance"],
+  "additionalProperties": false,
+  "properties": {
+    "inputVersion": {"type": "string", "minLength": 1},
+    "purpose": {"type": "string"},
+    "synthetic": {"type": "boolean"},
+    "evaluatedAt": {"type": "string", "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(?:\\.\\d+)?(?:Z|[+-]\\d\\d:\\d\\d)$"},
+    "athleteFixtureId": {"type": "string", "minLength": 1},
+    "athleteState": {"type": "object", "required": ["athlete_id"], "properties": {"athlete_id": {"type": "string", "minLength": 1}}},
+    "officialPlanState": {"type": ["object", "null"], "required": ["plan_id", "plan_revision", "athlete_id", "sessions"], "properties": {"plan_id": {"type": "string", "minLength": 1}, "plan_revision": {"type": "string", "minLength": 1}, "athlete_id": {"type": "string", "minLength": 1}, "sessions": {"type": "array", "items": {"type": "object"}}}},
+    "event": {"type": "object", "required": ["event_id", "type"], "properties": {"event_id": {"type": "string", "minLength": 1}, "type": {"type": "string", "minLength": 1}, "facts": {"type": ["object", "array"]}}, "allOf": [{"if": {"properties": {"type": {"const": "SDC_REVIEWED_EVENT"}}}, "then": {"required": ["facts"], "properties": {"facts": {"type": "object"}}}}]},
+    "observation": {"type": "object"},
+    "preacceptedBranch": {"type": ["object", "null"]},
+    "athleteResponseHistory": {"type": ["object", "null"]},
+    "planContext": {"type": ["string", "null"]},
+    "observedExecutionState": {
+      "type": "object", "required": ["events", "completed", "inferred"], "additionalProperties": false,
+      "properties": {
+        "events": {"type": "array", "items": {"type": "object"}},
+        "inferred": {"type": "array", "items": {"type": "object"}},
+        "completed": {"type": "array", "items": {
+          "type": "object", "required": ["sessionId", "athleteId", "executedRevision", "actualPrescription", "status", "factId", "sourceRevision", "sourceRef", "coverage", "observedAt"], "additionalProperties": false,
+          "properties": {
+            "sessionId": {"type": "string", "minLength": 1}, "athleteId": {"type": "string", "minLength": 1}, "executedRevision": {"type": "string", "minLength": 1},
+            "actualPrescription": {"type": "object"}, "status": {"type": "string"}, "factId": {"type": "string", "minLength": 1}, "sourceRevision": {"type": "string", "minLength": 1}, "sourceRef": {"type": "string", "minLength": 1}, "coverage": {"type": "string"},
+            "observedAt": {"type": "string", "minLength": 1}, "sourceConflict": {"type": "boolean"}, "source_conflict": {"type": "boolean"}
+          }
+        }}
+      }
+    },
+    "recoveryContext": {
+      "type": "object", "required": ["eligibilityStatus", "clinicalConcern", "interrupted", "sourceRef", "contextChanged"], "additionalProperties": false,
+      "properties": {
+        "eligibilityStatus": {"type": "string"}, "clinicalConcern": {"type": "boolean"}, "interrupted": {"type": "boolean"}, "interruptionReason": {"type": "string"}, "actualExposureKnown": {"type": "boolean"}, "reentryRecipe": {"type": ["object", "null"]}, "sourceRef": {"type": "string", "minLength": 1}, "contextChanged": {"type": "boolean"},
+        "clinicalFlags": {"oneOf": [{"type": "array", "items": {"type": ["string", "boolean"]}}, {"type": "object", "additionalProperties": {"type": "boolean"}}]},
+        "clinicalDependency": {"type": "boolean"}, "persistentPain": {"type": "boolean"}, "injury": {"type": "boolean"}, "illness": {"type": "boolean"}, "pathology": {"type": "boolean"}, "functionalLimitation": {"type": "boolean"}, "clearanceRequired": {"type": "boolean"}, "rehabilitation": {"type": "boolean"}, "eligibilityCurrent": {"type": "boolean"}, "relevantContextChanged": {"type": "boolean"}
+      }
+    },
+    "policyContext": {
+      "type": "object", "required": ["registryVersion", "registryHash", "revokedReviewIds", "holds", "longitudinalPurposeAllowed"], "additionalProperties": false,
+      "properties": {"registryVersion": {"type": "string"}, "registryHash": {"type": "string"}, "revokedReviewIds": {"type": "array", "items": {"type": "string"}}, "holds": {"type": "array", "items": {"type": "string"}}, "longitudinalPurposeAllowed": {"type": "boolean"}, "requestedPolicyIds": {"type": "array", "items": {"type": "string"}}}
+    },
+    "provenance": {
+      "type": "object", "required": ["dataClass", "sourceRef", "sourceRevision", "coverage", "association"], "additionalProperties": false,
+      "properties": {"dataClass": {"type": "string"}, "sourceRef": {"type": "string", "minLength": 1}, "sourceRevision": {"type": "string", "minLength": 1}, "coverage": {"type": "string"}, "association": {"type": "string"}}
+    }
+  }
+}

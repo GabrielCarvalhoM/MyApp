@@ -1,0 +1,129 @@
+{
+ "revision": "R7A2-QE-r1",
+ "gate": "R7A2_ENGINEERING_RECHECK",
+ "verdict": "NOT_READY",
+ "date": "2026-10-28",
+ "reviewer": {
+  "role": "Quality & Reliability Engineer (constitution 1.3.0), fresh instance",
+  "model": "claude-opus-5-5",
+  "independence": "Did not write this runtime; changed nothing under CoachingCore/; rules no sporting dose (dose effects are reported to the SSCTR)."
+ },
+ "freezeReviewed": {
+  "revision": "R7A2-FREEZE-1",
+  "sourceDigest": "e0637ec2613acde1132d70fc64a5a6f0f1062b74d6c5cfafb6654dc1a54c7a28",
+  "freezeFile": "CoachingCore/r7/a2/RUNTIME_FREEZE_R7A2_FREEZE_1.json",
+  "freezeFileSha256": "14fd8efe294354810b8fe19f12dba0486883c43f3c140792c079cb7947d730b0",
+  "policyRevision": "R6-POLICY-5",
+  "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+  "boundFiles": 79,
+  "start": {"at": "2026-10-28T13:33:41Z", "sourceDigest": "e0637ec2613acde1132d70fc64a5a6f0f1062b74d6c5cfafb6654dc1a54c7a28", "driftingFiles": 0, "verifyR7a2ReadOnly": "17/19 (open: independent-reviews, deliverables)"},
+  "end": {"at": "2026-10-28T13:50:27Z", "sourceDigest": "e0637ec2613acde1132d70fc64a5a6f0f1062b74d6c5cfafb6654dc1a54c7a28", "driftingFiles": 0, "verifyR7a2ReadOnly": "17/19 (open: independent-reviews, deliverables)"},
+  "method": "hash() of src/value.mjs over the SHA-256 map of src/*.mjs, as scripts/freeze-r7a2.mjs; every bound file re-hashed (qe-r7a2-digest.mjs)"
+ },
+ "question": "Is there any normal V1 path in which one interruption is confused with another, or in which a return starts from a temporally incorrect state? (Founder request §20)",
+ "answer": "Yes. A report of an earlier break made after a later, separate break began (and before that break is reported) makes the runtime read the later break as the same break: it supersedes the earlier one, the earlier break's re-entry is erased and, when the later break starts in the week the first return re-planned, the plan goes back to the dose from before the first break (QE-R7A2-01). The same path gives the second short break no easy slot of its own. The predecessor's P13, P14 and P02 paths are closed.",
+ "blockers": {
+  "QE-R7A1-09": {"status": "OPEN", "why": "Its reproductions (P13 X, X2, S) are closed on R7A2-FREEZE-1, byte-identical to the author's runs. Its statement still holds on a normal path: a separate, later break is read as a correction of the earlier one and the re-entry is erased (QE-R7A2-01; P17 L1-L4, P19 AFTER_B 12/12)."},
+  "QE-R7A1-10": {"status": "OPEN", "why": "Its reproduction (P14) is closed: week 4 Tuesday runs EASY 34 for the second break. Its outcome comes back through QE-R7A2-01: when a report of the first short break is made after the second ended and before it is reported, the second is read as the first, finds the first break's slot already run and records none; week 4 Tuesday runs QUALITY THRESHOLD 41 (P20), the FREEZE-A2 output of P14."},
+  "QE-R7A-01": {"status": "OPEN", "why": "Through QE-R7A1-09 and QE-R7A1-10: a valid future state (the re-entry the athlete executed, a second break's own slot) is destroyed by a later report on a normal path."}
+ },
+ "findings": [
+  {
+   "id": "QE-R7A2-01",
+   "severity": "HIGH",
+   "material": true,
+   "class": "Interruption identity and temporal causality of the record (Founder I1, I3, I4/I6 applied to reports, I9, P6). Same class as QE-R7A1-09 and QE-R7A1-10; a residual path of the new identity model.",
+   "title": "A same-break report made after a separate, later break began turns that later break into the same break, and its return starts from before the first break",
+   "mechanism": [
+    "interruptionEpisode (src/r6-adaptation.mjs:615-620) decides the relation against the latest live return: NEW only when the new break begins on or after that return's report day (`start >= last.day`, :617); SAME_BREAK when it begins before that day and does not end before that break began (:618). A newer report of the same break keeps the break's dates but has a later report day, so after a late same-break report A' the SAME_BREAK window [A.start, A'.day) covers the re-entry the athlete executed after A's first report and any separate break that began before A' was made.",
+    "stateAtBreak (src/r6-adaptation.mjs:632-648) takes a return as the state point only if it is live now (liveReturns, :600) and was reported in the break's week on or before the break's first day (:635-638). The report whose re-entry the athlete executed (A) is superseded by A', and A' was made after B began, so no point covers the re-entry: the point falls back to the week's startBeforeReturn, the start from before A. A scratch mutant that reads B as NEW (relation fixed alone) still starts B from WEEK_START of that week with 6 pre-break-dose rows and a 70-minute long run, so both readings are involved.",
+    "returnAfterPause `slotRun` (src/r6-adaptation.mjs:707): with the relation wrong, the later short break inherits the earlier break's identity, finds that break's eased slot already run and records no slot (I9 broken through I1).",
+    "One cause: the relation and the state point are read from the record's current supersession and the latest report's clock, not from the record as it stood when the break began. A report made after a break began reaches back and changes which break that is and what was in force when it began."
+   ],
+   "reproduction": {
+    "script": "audits/domain-coaching-r7a2-2026-10-28/reviews/qe-r7a2-P17-late-correction-then-separate-break.mjs (output qe-r7a2-P17.out.json; FREEZE-A2 copy: qe-r7a2-P17.FREEZE-A2.out.json)",
+    "steps": [
+     "Default synthetic profile (runs Tue/Thu/Sun, strength Wed/Sat); weeks 0-2 trained and reviewed; weeks 3-4 not trained.",
+     "A: 16-day break (2026-11-21 to 2026-12-06), reported Monday 2026-12-07 06:00 (week 5): MODERATE, re-entry this week (back-squat 1x5@4 ESTABLISH, runs 15/15/20).",
+     "Mon-Wed of week 5 executed and reported (Thursday 05:00).",
+     "B: a separate trip Thursday 2026-12-10 to Sunday 2026-12-13 (4 days, SHORT).",
+     "Monday 2026-12-14 06:00: A' = A reported again (same dates, another reason text; or its first day one day earlier, L4). Recorded SAME_BREAK of A (correct).",
+     "Monday 2026-12-14 07:00: B reported."
+    ],
+    "observed": "B recorded relation SAME_BREAK, episode A, supersedes A'; stateAt WEEK_START/w5; the only live return is B. Week 6: back-squat 3x5@3 KNOWN 82.5, db-bench-press 3x6@3 KNOWN 20, db-row 3x5@3 KNOWN 22 (six rows at the pre-break dose), long run 70; week 7 starts KNOWN 85, no return step, run EASY 45/75.",
+    "expected": "B NEW (or ASK), starting from A's re-entry plus the Mon-Wed facts: week 6 at the re-entry (1x5@4, long 20), as in the controls.",
+    "controls": "Same reports with B before A': B NEW (stateAt RETURN A), A' ASK, week 6 at 1x5@4 and long 20. B alone: the same. Every input is a valid synthetic review through evaluateProgram; every status is MODIFY.",
+    "variants": "L2 (week 5 reviewed on Sunday) and L3 (A' made on Friday, during B) give the same rows. P19 grid (48 cells: A' timing x 3 report kinds x B in week 5 or 6 x 2 or 4 days): every cell with A' made after B ended and before B's report reads B as SAME_BREAK (12/12); with B in A's re-entry week the rows go back to the pre-break dose (6/6); with B in the next week the rows equal the B-first control (45/60) and only the identity is wrong (6/6). A' before B, on B's first day, or after B's report: B NEW or A' ASK, no violation. P20 (short + short): week 4 Tuesday QUALITY THRESHOLD 41 instead of EASY 34. P21: the same window from a late first report whose stated end is before its report day (B between them read as SAME_BREAK)."
+   },
+   "origin": "Inherited from FREEZE-A2 (P17 L1-L4 give the same rows on the byte-exact FREEZE-A2 copy, where C2 also fails as QE-R7A1-09). R7A2-FREEZE-1 closed C2 and the P13 paths, not this ordering.",
+   "notCaughtBy": "test/r7a2-interruption.test.mjs (the three-break and identity tests make every same-break report before the next break begins); the author's self-challenge (C4 corrects A before B; C3 corrects B before D); the mutation check (no mutant can measure a condition that is not written); P09 (its returns always end the day before their report, so the window never opens).",
+   "founderInvariantsViolated": ["I1", "I3", "I9", "P6 (moving only A''s report time from before B's report to after it turns B into another entity)"]
+  },
+  {
+   "id": "QE-R7A2-02",
+   "severity": "MEDIUM",
+   "material": false,
+   "materialNote": "Not a blocker of this gate: it follows the runtime's append-only, no-replay rule, which every transition shares. Its dose effect bears on D59 and is the SSCTR's to rule.",
+   "class": "Declared boundary 1 (the record as reported): its consequence is larger than the brief states",
+   "mechanism": "A return reads the executions recorded by its report (stateAtBreak reads ctx.fullLedger at the return). When the first loaded week's sessions before the break are logged after the return, the return's state does not have those first exposures, and nothing re-derives it; a same-break report made after the log reads them.",
+   "reproduction": {
+    "script": "audits/domain-coaching-r7a2-2026-10-28/reviews/qe-r7a2-P18-record-as-reported.mjs (output qe-r7a2-P18.out.json)",
+    "setup": "First loaded week (strength Mon/Thu), a 14-day break from Saturday; (a) sessions logged before the return; (b) logged the same morning, one hour after the return; (c) as (b), then the same break reported again. Five weeks of rows from the return.",
+    "observed": "(b) prescribes more than (a) on NONE 30 of 40 rows, FAMILIAR 36 of 40, KNOWN 9 of 40 (e.g. goblet-squat 2x5@3 ESTABLISH against the return entry 1x5@4). (c) gives (a)'s rows (0 of 40 differ)."
+   },
+   "brief": "The brief states that the two orders give equal rows and differ only in last performed dates. That holds for the R7-A.1 evening-grid pair; in the D59 setting the rows differ, in the less conservative direction.",
+   "forSsctr": "Whether a return whose pre-break first exposures are logged after it may prescribe the first-establishment dose instead of the return entry (D59 E under late logging).",
+   "decision": "Product/Founder: whether a late fact of a break's week re-derives that break's return or prompts a same-break report (the runtime already supports the latter)."
+  },
+  {
+   "id": "QE-R7A2-03",
+   "severity": "LOW",
+   "material": false,
+   "class": "Part of QE-R7A2-01's window, the less likely source",
+   "mechanism": "A return reported late with its break's end date stated: a separate break that lies between that end and the report day is read as SAME_BREAK (interruptionEpisode :618).",
+   "reproduction": "qe-r7a2-P21-gap-before-late-report.mjs: A (Mon-Tue of week 3) reported Saturday 06:00 after Wednesday was trained; B (Thu-Fri) reported Sunday 06:00 is SAME_BREAK of A and supersedes it. Less likely, because the athlete knew of B when reporting A. A fix of QE-R7A2-01 should cover it."
+  }
+ ],
+ "boundaries": [
+  {"n": 1, "title": "The record as reported", "ruling": "ACCEPTED as an engineering rule; not a regression of WEEK_COMPOSITION_INTEGRITY", "why": "Append-only and no replay is the runtime's rule for every transition, and a same-break report re-reads the record (P18 (c): 0 of 40 rows differ). Composition rows are not involved. Its consequence is understated (QE-R7A2-02): in the first-week setting, logging after the return changes the rows and bypasses the entry for first exposures. That dose is the SSCTR's."},
+  {"n": 2, "title": "ASK for a report that ends before the latest reported break began, or that spans an earlier re-entry", "ruling": "ACCEPTED", "why": "Asked as declared (test; P19 AFTER_B_REPORT 12/12, P17 C1). The defect is in the complementary SAME_BREAK window, not in this ASK (QE-R7A2-01)."},
+  {"n": 3, "title": "The point is the plan's start of the week (the conditional plan when the week was not reviewed)", "ruling": "ACCEPTED", "why": "Consistent with C3 for every week. Observation: it assumes the unreviewed week was executed as planned (P19, B from Monday of week 6: the return step reached by the conditional plan, 45/60). This is pre-existing C3 behaviour."},
+  {"n": 4, "title": "The plan before a return: a session executed after a break ended but before its return was reported is never a fact of that return or of a later break", "ruling": "ACCEPTED", "why": "Consistent with C5 and tested. Observation, not probed further: beforeReturn judges a same-day session at the report clock without the ledger (pre-existing C5 reading), so a session of the report day logged before the report counts as after it. In reading, the effect is limited to last performed dates."},
+  {"n": 5, "title": "A break's first day is a whole day", "ruling": "ACCEPTED", "why": "Consistent with I6, and P5 and P6 hold for report time (tests; P19 same-day cells). A session executed on the stated first day leaves the state, as a late log does (QE-R7A2-02 effect when nothing else is in the return)."},
+  {"n": 6, "title": "Two pre-freeze refinements (a newer report of a short break after its slot ran eases no second slot; a conflicted report executes nothing before the break)", "ruling": "ACCEPTED", "why": "Both are correct for a true same-break report and for QRE-R6-14. The slot rule is the step through which QE-R7A2-01 reproduces QE-R7A1-10's outcome when the relation is wrong (P20); the defect is the relation, not the refinement."}
+ ],
+ "integrity": {
+  "WEEK_COMPOSITION_INTEGRITY": {"recommendation": "READY", "scope": "engineering", "why": "Composition is unaffected: P01, P01b, P03, P04, P05, P07, P08, P10, P15 and P16 byte-identical to FREEZE-A2 and to the author's runs; P06 differs only by the declared entry-rep row; P09 O1-O7 0 in 5,000 sequences; 519/519 tests."},
+  "STATE_PRESERVATION_INTEGRITY": {"recommendation": "NOT_READY", "why": "QE-R7A2-01: a later report erases the re-entry state the athlete executed and the second break's own slot; QE-R7A1-09, QE-R7A1-10 and QE-R7A-01 stay open through it."},
+  "EVENT_SUPERSESSION_INTEGRITY": {"recommendation": "READY", "scope": "engineering", "why": "Race-event supersession untouched by the delta: P09 O6 0 in 5,000 sequences; outputs byte-identical to FREEZE-A2."},
+  "EXERCISE_MERGE_INTEGRITY": {"recommendation": "READY", "why": "P07 byte-identical to FREEZE-A2 (merge of agreeing reports in either order); the delta does not touch the merge."},
+  "RETURN_RECOVERY_CEILING_INTEGRITY": {"recommendation": "NOT_READY", "scope": "engineering side", "why": "QE-R7A2-01 bypasses the return steps: after a 16-day break and three days of re-entry, a 4-day break resumes 3x5 @RIR3 at the pre-break known load and a 70-minute long run. D59 and D53 are the SSCTR's. QE-R7A2-02 reports a D59 dose effect under late logging. D56 holds (P08 0/0)."}
+ },
+ "preservation": {
+  "earlierReady": "WEEK_COMPOSITION, EVENT_SUPERSESSION and EXERCISE_MERGE are preserved on the engineering side.",
+  "closedEarlierBlockers": "QE-R7A-02, 03, 05, 12, 19 and D56 (engineering side): no regression found (P03, P04, P06, P07, P08, P09, P15 as above)."
+ },
+ "ran": [
+  "qe-r7a2-digest.mjs at start and end (0 of 79 files drift; digest and policy as bound)",
+  "node CoachingCore/scripts/verify-r7a2.mjs (read-only) at start and end: 17/19, open independent-reviews and deliverables",
+  "node --test in CoachingCore: 519/519",
+  "Predecessor probes from audits/domain-coaching-r7a1-2026-10-27/reviews, unchanged: P13, P14, P02, P09 (seeds 7 and 1013, N=2,500 each), P01, P01b, P03, P04, P05, P06, P07, P08, P10, P15, P16. All byte-identical to the author's runs; all byte-identical to FREEZE-A2 except P13 and P14 (the blocker reproductions) and P06 (the declared row). Record: qe-r7a2-preservation.compare.txt",
+  "New probes: P17 (late same-break report then a separate break; also on the FREEZE-A2 copy), P18 (record as reported, NONE/FAMILIAR/KNOWN), P19 (48-cell interleaving grid), P20 (short + short with the late report), P21 (late-report gap)",
+  "One scratch mutant in the session scratchpad (relation-only fix in interruptionEpisode), P17 run on it"
+ ],
+ "notRun": [
+  "npm run verify, npm run simulate, npm run demonstrations:r6",
+  "any CoachingCore/scripts/verify-r*.mjs with --write; verify-r7a1.mjs",
+  "regress-r7a*.mjs, freeze-r7a2.mjs, prepare-r7a2.mjs, any queue-*.mjs",
+  "probes/mutation-check-r7a2.mjs and probes/ssctr-r12-instrument.mjs (the author's mutation and the SSCTR instrument; the evidence record covers them)",
+  "the SSCTR grids (first-week, restoration, cap, short): sporting content, the SSCTR's re-check"
+ ],
+ "evidenceAdequacy": "The author's evidence is accurate for every claim I re-ran. It does not include a same-break report made after a later break began: no test, self-challenge case, mutant, grid or P09 sequence makes one, so the window that QE-R7A2-01 uses is unobserved in the evidence.",
+ "notReadyRecord": {
+  "blocker": "QE-R7A2-01 (HIGH, material); QE-R7A1-09, QE-R7A1-10 and QE-R7A-01 stay OPEN through it.",
+  "rootCause": "Interruption identity and the state point are read from the record's current supersession (the latest live report and its clock), not from the record as it stood when the break began. A report of an earlier break made after a later break began moves the latest report clock past that later break and removes the report whose re-entry the athlete executed from the returns in force.",
+  "reproduction": "reviews/qe-r7a2-P17-late-correction-then-separate-break.mjs (L1-L4 against controls C1, C2); reviews/qe-r7a2-P19-identity-interleaving-grid.mjs; reviews/qe-r7a2-P20-late-correction-easy-slot.mjs.",
+  "sameArchitectureOrNewClass": "The same architecture and the same class (break identity, QE-R7A1-09/10). The R7-A.2 model added identity and the state at the break, but it decides both against the latest report, so an interleaving it did not anticipate reproduces both earlier outcomes.",
+  "smallestArchitecturalDecision": "Decide a report's break and its starting point from the record as it stood at the break's first day. (1) A report is the same break only when its stated days overlap or adjoin the days that episode states, or it begins before the episode's first report (its re-entry). A break that begins after an episode's re-entry and after its stated days is a new break, whenever a later report of the earlier one was made. (2) The state point is the return that was in force on the break's first day by report time, including a report that a later same-break report superseded after the break began. Both parts are needed: the scratch mutant shows that fixing the relation alone still starts the later break from before the first one. A narrower variant of (1) asks instead of deciding NEW when a report begins after the first report of the episode it would supersede; (2) is still needed when the answer is a new break. Choosing between them is the Founder's decision; there is no correction cycle after this freeze."
+ }
+}

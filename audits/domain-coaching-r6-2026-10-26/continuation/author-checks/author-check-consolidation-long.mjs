@@ -1,0 +1,16 @@
+// Author check (round-9 answers, D50 side effect): consolidation weeks whose long run is shorter than an easy run. Author material, not evidence.
+// Uses the DEV_TEST_ONLY authority. Run from this folder: node author-check-consolidation-long.mjs [file URL of a CoachingCore copy; default: the current runtime]
+const base=process.argv[2]??new URL('../../../../CoachingCore',import.meta.url).href;
+const {generateProgram}=await import(base+'/src/r6-index.mjs');
+const {devAuthority}=await import(base+'/r6/fixtures/dev-authority.mjs');
+const opts={authority:devAuthority()};
+const elig=d=>({status:'NONCLINICAL_CONFIRMED',assessedAt:d,pain:false,persistentPain:false,injury:false,illness:false,functionalLimitation:false,clinicalConcern:false});
+const addDays=(d,n)=>new Date(Date.parse(d+'T00:00:00Z')+n*864e5).toISOString().slice(0,10);
+function intake({id,weeks=16,athlete={},schedule={}}){return {version:'R6-INTAKE-1',synthetic:true,purpose:'SHADOW_REFERENCE',asOf:'2026-11-01',startDate:'2026-11-02',weeks,learningConsent:true,athlete:{id,ageEligible:true,eligibility:elig('2026-11-01'),goals:{run:'REGULAR',strength:'GENERAL'},runExperience:'INTERMEDIATE',strengthExperience:'INTERMEDIATE',recent:{runDaysPerWeek:3,runMinutesPerWeek:120,longestRunMinutes:50,strengthDaysPerWeek:2},equipment:['DUMBBELLS','BENCH','BARBELL','RACK'],knownExercises:[],...athlete},schedule:{runDays:[1,3,6],strengthDays:[2,4],runTurn:'AM',strengthTurn:'PM',runMinutes:60,strengthMinutes:45,longRunDay:6,longRunMinutes:100,...schedule}};}
+const profile=(id,W,Lg,days,goal={run:'REGULAR',strength:'GENERAL'},exp='INTERMEDIATE')=>intake({id,athlete:{goals:goal,runExperience:exp,recent:{runDaysPerWeek:days.length,runMinutesPerWeek:W,longestRunMinutes:Lg,strengthDaysPerWeek:2}},schedule:{runDays:days,strengthDays:[2,5].filter(d=>!days.includes(d)).concat([3,0]).filter((d,i,a)=>!days.includes(d)&&a.indexOf(d)===i).slice(0,2),longRunDay:days.at(-1)}});
+let cons=0,shorter=0,programs=0,ex=[];
+const check=(id,P)=>{programs++;for(const w of P.weeks){if(w.phase!=='CONSOLIDATION')continue;const L=w.sessions.find(s=>s.role==='LONG'&&s.prescription)?.prescription.durationMinutes,E=Math.max(0,...w.sessions.filter(s=>s.role==='EASY'&&s.prescription).map(s=>s.prescription.durationMinutes));if(L==null)continue;cons++;if(L<E){shorter++;ex.push(`${id} w${w.index}: L${L} < E${E}`);}}};
+for(const W of [30,45,60,75,90,120,150])for(const Lg of [15,25,35,45,60])for(const days of [[1,3,6],[0,2,4,6]]){if(Lg>W)continue;const id=`S-${W}-${Lg}-${days.length}`,g=generateProgram(profile(id,W,Lg,days),opts);if(g.program)check(id,g.program);}
+for(const [W,Lg] of [[45,25],[60,35],[90,45]]){const id=`10K-${W}-${Lg}`,g=generateProgram(profile(id,W,Lg,[1,3,6],{run:{kind:'RACE',event:{kind:'10K',date:addDays('2026-11-02',13*7+6)}},strength:'RUNNING_SUPPORT'}),opts);if(g.program)check(id,g.program);}
+for(const [W,Lg] of [[90,40],[120,50],[150,60],[200,90],[240,100]]){const id=`Q-${W}-${Lg}`,g=generateProgram(profile(id,W,Lg,[1,3,6],{run:'PERFORMANCE',strength:'GENERAL'},'EXPERIENCED'),opts);if(g.program)check(id,g.program);}
+console.log(base.split('/').slice(-2).join('/'),'programs',programs,'consolidation weeks with a long run',cons,'long shorter than an easy run',shorter);console.log(ex.join('\n'));

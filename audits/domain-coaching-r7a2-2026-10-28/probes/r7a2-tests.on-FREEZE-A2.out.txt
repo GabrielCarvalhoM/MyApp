@@ -1,0 +1,261 @@
+R7-A.2 tests run on a byte-exact R7A1-FREEZE-A2 copy (audits/domain-coaching-r7a2-2026-10-28/freezeA2-source) with the test file CoachingCore/test/r7a2-interruption.test.mjs sha256 5a60d264bc3dcf4af0f27e6ccc6f23e2bdf2d169d69a8674df77e789769d7a48
+✖ R7-A.2 I1/I3 (QE-R7A1-09): a separate break in the same week starts from the re-entry, never from before the first break (215.1754ms)
+✖ R7-A.2 I3 (QE-R7A1-09): a separate break across the week boundary keeps the return steps and the run return (237.3635ms)
+✖ R7-A.2 I2: a newer report of the same break supersedes the earlier one, in the same week or a later one, and creates no new break (187.8126ms)
+✖ R7-A.2 I9 (QE-R7A1-10): a second short break never adopts the first one’s easy slot; a newer report of the same break keeps it (158.0901ms)
+✖ R7-A.2 I4/I5/I8 (SSCTR D59): exercises first executed in the break’s week enter the return steps with their executed count as the ceiling (97.0058ms)
+✖ R7-A.2 I4/I6 (§11): an exercise not executed, or executed only from the break’s first day, is not in the state at the break (90.2905ms)
+✖ R7-A.2 P3/P4: an exposure before the break adds to the state at the break; moved to the break’s first day it no longer counts (232.5285ms)
+✖ R7-A.2 I7: a week’s executed exposures before the break earn no step, no block set and no load adoption (89.0568ms)
+✖ R7-A.2 P1/P6: the same break reported again, or only at another time, is the same break with the same plan (189.5026ms)
+✖ R7-A.2 P5: a break reported at 23:30 on Sunday or at 00:30 on Monday is the same break with the same next week (187.0089ms)
+✖ R7-A.2 I2/I3: three breaks; a correction after a separate break starts from that break’s re-entry, never from before the first (232.6134ms)
+✖ R7-A.2 I4: a return reads the executions recorded by its report; a newer report of the same break reads the ones recorded later (55.8497ms)
+✖ R7-A.2 I4/C5: a session of the plan before a return is never a fact of a later, separate break (195.1225ms)
+✖ R7-A.2 I1: a report of a break that ended before the latest reported one began is asked, never guessed (189.4413ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 0
+ℹ fail 14
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2471.6922
+
+✖ failing tests:
+
+test at test\r7a2-interruption.test.mjs:44:1
+✖ R7-A.2 I1/I3 (QE-R7A1-09): a separate break in the same week starts from the re-entry, never from before the first break (215.1754ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  undefined !== 'NEW'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/C--Users-carva-Desktop-myApp-MyApp/30ebaf1f-f607-4e78-9c1e-3326505d7352/scratchpad/f2copy/CoachingCore/test/r7a2-interruption.test.mjs:46:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'NEW',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7a2-interruption.test.mjs:59:1
+✖ R7-A.2 I3 (QE-R7A1-09): a separate break across the week boundary keeps the return steps and the run return (237.3635ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  undefined !== 'NEW'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/C--Users-carva-Desktop-myApp-MyApp/30ebaf1f-f607-4e78-9c1e-3326505d7352/scratchpad/f2copy/CoachingCore/test/r7a2-interruption.test.mjs:65:47)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'NEW',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7a2-interruption.test.mjs:74:1
+✖ R7-A.2 I2: a newer report of the same break supersedes the earlier one, in the same week or a later one, and creates no new break (187.8126ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - 'SAME_BREAK'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/C--Users-carva-Desktop-myApp-MyApp/30ebaf1f-f607-4e78-9c1e-3326505d7352/scratchpad/f2copy/CoachingCore/test/r7a2-interruption.test.mjs:81:47)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'SAME_BREAK',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7a2-interruption.test.mjs:89:1
+✖ R7-A.2 I9 (QE-R7A1-10): a second short break never adopts the first one’s easy slot; a newer report of the same break keeps it (158.0901ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  undefined !== 'NEW'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/C--Users-carva-Desktop-myApp-MyApp/30ebaf1f-f607-4e78-9c1e-3326505d7352/scratchpad/f2copy/CoachingCore/test/r7a2-interruption.test.mjs:95:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'NEW',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7a2-interruption.test.mjs:133:1
+✖ R7-A.2 I4/I5/I8 (SSCTR D59): exercises first executed in the break’s week enter the return steps with their executed count as the ceiling (97.0058ms)
+  TypeError: Cannot read properties of undefined (reading 'strength')
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/C--Users-carva-Desktop-myApp-MyApp/30ebaf1f-f607-4e78-9c1e-3326505d7352/scratchpad/f2copy/CoachingCore/test/r7a2-interruption.test.mjs:138:36)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\r7a2-interruption.test.mjs:153:1
+✖ R7-A.2 I4/I6 (§11): an exercise not executed, or executed only from the break’s first day, is not in the state at the break (90.2905ms)
+  TypeError: Cannot read properties of undefined (reading 'strength')
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/C--Users-carva-Desktop-myApp-MyApp/30ebaf1f-f607-4e78-9c1e-3326505d7352/scratchpad/f2copy/CoachingCore/test/r7a2-interruption.test.mjs:157:39)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\r7a2-interruption.test.mjs:176:1
+✖ R7-A.2 P3/P4: an exposure before the break adds to the state at the break; moved to the break’s first day it no longer counts (232.5285ms)
+  TypeError: Cannot read properties of undefined (reading 'strength')
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/C--Users-carva-Desktop-myApp-MyApp/30ebaf1f-f607-4e78-9c1e-3326505d7352/scratchpad/f2copy/CoachingCore/test/r7a2-interruption.test.mjs:178:38)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\r7a2-interruption.test.mjs:187:1
+✖ R7-A.2 I7: a week’s executed exposures before the break earn no step, no block set and no load adoption (89.0568ms)
+  TypeError: Cannot read properties of undefined (reading 'strength')
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/C--Users-carva-Desktop-myApp-MyApp/30ebaf1f-f607-4e78-9c1e-3326505d7352/scratchpad/f2copy/CoachingCore/test/r7a2-interruption.test.mjs:189:79)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\r7a2-interruption.test.mjs:199:1
+✖ R7-A.2 P1/P6: the same break reported again, or only at another time, is the same break with the same plan (189.5026ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  undefined !== 'NEW'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/C--Users-carva-Desktop-myApp-MyApp/30ebaf1f-f607-4e78-9c1e-3326505d7352/scratchpad/f2copy/CoachingCore/test/r7a2-interruption.test.mjs:204:55)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'NEW',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7a2-interruption.test.mjs:211:1
+✖ R7-A.2 P5: a break reported at 23:30 on Sunday or at 00:30 on Monday is the same break with the same next week (187.0089ms)
+  TypeError: Cannot read properties of undefined (reading 'kind')
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/C--Users-carva-Desktop-myApp-MyApp/30ebaf1f-f607-4e78-9c1e-3326505d7352/scratchpad/f2copy/CoachingCore/test/r7a2-interruption.test.mjs:216:35)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\r7a2-interruption.test.mjs:221:1
+✖ R7-A.2 I2/I3: three breaks; a correction after a separate break starts from that break’s re-entry, never from before the first (232.6134ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - 'SAME_BREAK'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/C--Users-carva-Desktop-myApp-MyApp/30ebaf1f-f607-4e78-9c1e-3326505d7352/scratchpad/f2copy/CoachingCore/test/r7a2-interruption.test.mjs:227:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'SAME_BREAK',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7a2-interruption.test.mjs:236:1
+✖ R7-A.2 I4: a return reads the executions recorded by its report; a newer report of the same break reads the ones recorded later (55.8497ms)
+  TypeError: Cannot read properties of undefined (reading 'strength')
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/C--Users-carva-Desktop-myApp-MyApp/30ebaf1f-f607-4e78-9c1e-3326505d7352/scratchpad/f2copy/CoachingCore/test/r7a2-interruption.test.mjs:239:56)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\r7a2-interruption.test.mjs:251:1
+✖ R7-A.2 I4/C5: a session of the plan before a return is never a fact of a later, separate break (195.1225ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  undefined !== 'NEW'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/C--Users-carva-Desktop-myApp-MyApp/30ebaf1f-f607-4e78-9c1e-3326505d7352/scratchpad/f2copy/CoachingCore/test/r7a2-interruption.test.mjs:258:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'NEW',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7a2-interruption.test.mjs:262:1
+✖ R7-A.2 I1: a report of a break that ended before the latest reported one began is asked, never guessed (189.4413ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  'MODIFY' !== 'ASK'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/C--Users-carva-Desktop-myApp-MyApp/30ebaf1f-f607-4e78-9c1e-3326505d7352/scratchpad/f2copy/CoachingCore/test/r7a2-interruption.test.mjs:265:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'MODIFY',
+    expected: 'ASK',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

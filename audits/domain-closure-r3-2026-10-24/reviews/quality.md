@@ -1,0 +1,17 @@
+# DCR3 independent Quality final review
+
+**QUALITY_READY** for the current bounded offline synthetic adapter, material consumer,42-case measurement and specified regression/conservation evidence. This is not V1 readiness, clinical clearance, sporting approval or production authority. Evaluator /root/quality_r3 is independent of runtime/adapter authors; only quality review/probe files were authored by the judge. Exact targets and rubric/contract/environment are in quality.json.
+
+The final209/209 automated suite passes. Independent99 probe variants with57 explicit expectations pass; initial RED results and quality-r1/r2 reviews remain preserved. The judge also executed exact saved205 R2 +160 legacy replay,42 current canonical/result replay,84 labelled multiweek evaluations, queue preservation and source/corpus independence checks. Inputs/official/completed state remain immutable, applied==official, and no effects were applied.
+
+The accepted designed-case result is42 schema-valid,40 material-consumable normal cases and2 separate clinical boundaries. Whole-request positive coverage is2/40 and2/23 positive opportunities;2KEEP,15usefulASK,2HOLD,16domain gaps and3science-primary gaps are distinct. Transport ASK=0 in frozen42. No partial hybrid-week or incomplete strides block is counted as positive.
+
+Resolved findings: parent/kind proxies were replaced by explicit request/family material field schemas; source-derived partial-work rationale replaces fixed invented5+3; actual supplied ASK paths advance to the remaining domain gap; exact positive scope/context guards reject altered terrain/dose/current history; clinical positive narratives override historical eligibility while negative/unknown narratives do not invent disease; provenance/warning/trace integrity and array-window conflicts are validated. Source facts and all independent expectations remain unchanged.
+
+Consumption40 is accepted **only** as typed source-vocabulary eligibility/missing/policy/gap understanding. It does not imply arbitrary prose interpretation, dose readiness, general athlete understanding or autonomous competent coaching. R3 authors saw this reused challenge set.84 stream rows have explicitly supplied next contexts and model no physiological response or automatic return. Scientific approval remains separately owned by the fresh independent SSCTR gate.
+
+Reports, simulator, new verifier, current baseline and SSCTR targets were inspected. The draft verifier actually returned12/13PASS; its sole remaining failure was absence of this Quality record. **Root must run the verifier again after gate registration and obtain13/13PASS before claiming overall mission closure.** This Quality gate itself has no unresolved behavioral blocker or pending condition. Any material target change invalidates the affected hash-pinned evidence.
+
+The historical R2 verifier's stale-target result remains visible; exact unchanged source and365 saved-input replays provide current descendant regression evidence. No old review was rewritten to pretend freshness. Full autonomous/V1 readiness remains NOT_READY/NO_GO; next engineering step remains DOMAIN_CLOSURE_R4.
+
+Raw evidence: quality-probes.raw.json, quality-regression-final.tap, quality-artifact-checks.raw.json and quality-legacy-replay.raw.json. Older RED artifacts remain available for the correction trace. No author implementation was modified by this judge.

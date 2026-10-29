@@ -1,0 +1,15 @@
+# DOMAIN_COACHING_R5 — contract R5-1
+
+Direct Founder request in this session authorizes offline synthetic Node24 whole-program coaching. It supersedes historical implementation restrictions only here. No UI/Figma/KMP/production/real plan or Product Truth changes. Existing dirty work is input, never discarded. No commit on main.
+
+Root owns coordination, program/horizon/simulator integration. T3/R2/L2, A4 within the requested reference mission. Impact medium (new bounded executable behavior), reversibility low risk (additive modules), uncertainty high in sporting extrapolation, dependencies medium between longitudinal state, scheduling, boundaries and evaluations. Flags: code_changed, domain_logic, behavior, data_model, significant_state, complex_implementation, independent_review, external_assumption. No changed trust boundary, real sensitive data, integration, UI, doctrine or runtime LLM; deterministic athlete associations are not an AI model service.
+
+Graph: inspected R4 + direct requirements → program/policy contracts → root implementation and disjoint learning worker → deterministic regression/simulation → independent SSCTR binding and Quality/coaching review. Fresh holdout author is a separate instance started only AFTER freeze, with interface/schema and mission but no implementation/expected outputs. Sealed first evaluation is immutable. Reviewer has no implementation authorship. SSCTR uses project constitution via fresh default fallback (native type absent), reviews reusable boundaries; root cannot approve science. No universal optimum or physiological predictions inferred from fixtures.
+
+Required outcomes: all named R5 documents; executable program/block/week/session hierarchy; eligibility/cold-start; protected stimuli and all four horizons; stable-by-default constrained scheduling/counterfactuals/MEC; earned progression and scoped adaptation; actual-only longitudinal evidence; 4/8/12/16-week simulations; A–G end-to-end demonstrations; freeze, unseen holdout/first raw evaluation/independent review; current verification, gaps and twelve separate verdicts. Broad unsupported families remain explicit gaps, never self-declared READY.
+
+STOP_WHEN: requested deliverables and current independent evidence exist with honest bounded verdicts and no required work hidden. ESCALATE_IF: missing authority/evidence, contradictory upstream requirement, or same material failure survives two fixes; diagnose root cause before another correction. No new dependency needed. Existing BSR/R2/R3/R4 behavior is preserved byte-for-byte except expressly documented integration pointers. Approved new reusable science rules enter the existing single future human queue, not each session instance.
+
+
+<!-- R5-OUTCOME -->
+Reference artifacts and independent evaluation delivered. Objective checks are current; full autonomous capability Definition of Done remains unsatisfied, with the coaching judge retaining QUALITY_BLOCKED. Scope, owned gaps, raw first holdout, dispositions and next-step choice are explicit in FINAL_DISPOSITION.json and CoachingCore/r5/FINAL_REPORT.md. No next mission starts by implication.

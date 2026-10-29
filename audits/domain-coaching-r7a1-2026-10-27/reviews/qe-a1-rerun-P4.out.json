@@ -1,0 +1,230 @@
+{
+ "probe": "P4",
+ "runtime": "CURRENT",
+ "4a_nextWeekSquat": {
+  "manualOnly": [
+   "w1-str-d0 3x5@3 KNOWN 80"
+  ],
+  "fieldUnionOfBothReports": [
+   "w1-str-d0 3x5@3 KNOWN 80"
+  ],
+  "mergedByRuntime": [
+   "w1-str-d0 3x5@3 KNOWN 80"
+  ],
+  "unionDecision": "KEEP/INSTANTIATE_LOGGED_LOADS",
+  "unionSquatGate": "ADVANCE",
+  "mergedEqualsUnion": true,
+  "squatStateMerged": {
+   "status": "ESTABLISHED",
+   "mode": "KNOWN",
+   "load": 80,
+   "convention": "TOTAL",
+   "reps": 5,
+   "sets": 3,
+   "rir": 2,
+   "loadTick": 1,
+   "source": "LOGGED_ACTUAL",
+   "lastPerformed": "2026-11-02",
+   "lastExecutedSets": 3
+  },
+  "squatStateUnion": {
+   "status": "ESTABLISHED",
+   "mode": "KNOWN",
+   "load": 80,
+   "convention": "TOTAL",
+   "reps": 5,
+   "sets": 3,
+   "rir": 2,
+   "loadTick": 1,
+   "source": "LOGGED_ACTUAL",
+   "lastPerformed": "2026-11-02",
+   "lastExecutedSets": 3
+  }
+ },
+ "4a_knownLoadDroppedByWholeEntryMerge": {
+  "manualOnly": {
+   "decision": "MODIFY/GATED_NEXT_STEP",
+   "squatLog": {
+    "load": 80,
+    "loggedRaw": 80,
+    "unitUnknown": false,
+    "convention": "TOTAL",
+    "reps": 5,
+    "setsDone": 3,
+    "plannedSets": 3,
+    "plannedReps": 5,
+    "plannedRir": 3,
+    "minRir": null,
+    "repsMet": true
+   },
+   "squatNextState": 80
+  },
+  "withAgreeingWatch": {
+   "duplicates": [
+    {
+     "eventId": "qe-rc-4a-W",
+     "mergedInto": "qe-qe-rc-P4-w0-str-d0-0",
+     "reason": "SAME_EXECUTION_DIFFERENT_SOURCE"
+    }
+   ],
+   "conflicts": 0,
+   "decision": "KEEP/INSTANTIATE_LOGGED_LOADS",
+   "squatLog": {
+    "load": 80,
+    "loggedRaw": 80,
+    "unitUnknown": false,
+    "convention": "TOTAL",
+    "reps": 5,
+    "setsDone": 3,
+    "plannedSets": 3,
+    "plannedReps": 5,
+    "plannedRir": 3,
+    "minRir": 3,
+    "repsMet": true
+   },
+   "squatGate": "ADVANCE",
+   "loadQuestions": [
+    "db-calf-raise:ESTABLISHMENT_LOG_UNCONFIRMED",
+    "db-rdl:ESTABLISHMENT_LOG_UNCONFIRMED",
+    "db-split-squat:ESTABLISHMENT_LOG_UNCONFIRMED"
+   ]
+  },
+  "mergedSquatEntry": {
+   "id": "back-squat",
+   "sets": [
+    {
+     "reps": 5,
+     "rir": 3,
+     "load": {
+      "value": 80,
+      "unit": "KG",
+      "convention": "TOTAL"
+     }
+    },
+    {
+     "reps": 5,
+     "rir": 3,
+     "load": {
+      "value": 80,
+      "unit": "KG",
+      "convention": "TOTAL"
+     }
+    },
+    {
+     "reps": 5,
+     "rir": 3,
+     "load": {
+      "value": 80,
+      "unit": "KG",
+      "convention": "TOTAL"
+     }
+    }
+   ]
+  },
+  "loadLostInMerge": false,
+  "decisionUnchanged": false
+ },
+ "4b_threeReportsArrivalOrder": {
+  "plannedMinutes": 35,
+  "agreeingTriple": {
+   "MWS": {
+    "mergedMinutes": 36,
+    "keptSourceQuality": "MANUAL",
+    "duplicates": [
+     "qe-rc-4b-W>qe-rc-4b-M",
+     "qe-rc-4b-S>qe-rc-4b-M"
+    ],
+    "conflicts": 0
+   },
+   "WMS": {
+    "mergedMinutes": 37,
+    "keptSourceQuality": "WEARABLE_FULL",
+    "duplicates": [
+     "qe-rc-4b-M>qe-rc-4b-W",
+     "qe-rc-4b-S>qe-rc-4b-W"
+    ],
+    "conflicts": 0
+   },
+   "SWM": {
+    "mergedMinutes": 35,
+    "keptSourceQuality": "SELF_REPORT",
+    "duplicates": [
+     "qe-rc-4b-W>qe-rc-4b-S",
+     "qe-rc-4b-M>qe-rc-4b-S"
+    ],
+    "conflicts": 0
+   }
+  },
+  "sameMergedMinutesInEveryOrder": false,
+  "nonTransitiveTriple": {
+   "A_B_C": {
+    "conflicts": [
+     "CONFLICTING_PHYSICAL_OR_RESPONSE_REPORTS"
+    ],
+    "duplicates": [
+     "qe-rc-4b-B>qe-rc-4b-A"
+    ],
+    "runRow": "CONFLICTED",
+    "gate": "HOLD",
+    "decision": "MODIFY/GATED_NEXT_STEP"
+   },
+   "B_C_A": {
+    "conflicts": [],
+    "duplicates": [
+     "qe-rc-4b-C>qe-rc-4b-B",
+     "qe-rc-4b-A>qe-rc-4b-B"
+    ],
+    "runRow": "COMPLETED",
+    "gate": "ADVANCE",
+    "decision": "KEEP/INSTANTIATE_LOGGED_LOADS"
+   }
+  },
+  "sameDecisionEitherOrder": false
+ },
+ "4c_newReportClaimsForeignEventIds": {
+  "withClientMergeProvenance": {
+   "accepted": [
+    "qe-rc-4c-X"
+   ],
+   "excluded": [],
+   "conflicts": [],
+   "quarantined": []
+  },
+  "withoutIt": {
+   "accepted": [
+    "qe-rc-4c-X",
+    "qe-rc-4c-Y"
+   ],
+   "excluded": []
+  },
+  "reviewWithout": {
+   "decision": "KEEP/INSTANTIATE_LOGGED_LOADS",
+   "gates": {
+    "LONG": "ADVANCE",
+    "EASY": "ADVANCE",
+    "back-squat": "ADVANCE",
+    "db-bench-press": "ADVANCE",
+    "db-row": "ADVANCE",
+    "db-calf-raise": "ADVANCE",
+    "dead-bug": "ADVANCE",
+    "db-rdl": "ADVANCE",
+    "db-split-squat": "ADVANCE"
+   }
+  },
+  "reviewWith": {
+   "decision": "MODIFY/GATED_NEXT_STEP",
+   "gates": {
+    "LONG": "ADVANCE",
+    "EASY": "HOLD",
+    "back-squat": "ADVANCE",
+    "db-bench-press": "ADVANCE",
+    "db-row": "ADVANCE",
+    "db-calf-raise": "ADVANCE",
+    "dead-bug": "ADVANCE",
+    "db-rdl": "ADVANCE",
+    "db-split-squat": "ADVANCE"
+   }
+  },
+  "decisionChanged": true
+ }
+}

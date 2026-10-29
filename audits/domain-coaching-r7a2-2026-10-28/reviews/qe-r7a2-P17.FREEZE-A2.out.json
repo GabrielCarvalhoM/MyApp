@@ -1,0 +1,619 @@
+{
+ "probe": "R7A2-QE-P17",
+ "runtime": "QE_LIVE_ROOT",
+ "cases": {
+  "L1_fixMon_then_B": {
+   "log": [
+    "A MODIFY/REESTABLISH",
+    "Mon-Wed reported KEEP/KEEP",
+    "A_FIX w6d0 06:00 MODIFY/REESTABLISH",
+    "B w6d0 07:00 MODIFY/REESTABLISH"
+   ],
+   "A": {
+    "eventId": "qa1-20",
+    "asOf": "2026-12-07T06:00:00.000Z",
+    "relation": null,
+    "episode": null,
+    "supersedes": null,
+    "class": "MODERATE",
+    "stateAt": null
+   },
+   "reentry": {
+    "rows": [
+     "d1AM RUN EASY EASY:15",
+     "d2PM STRENGTH STRENGTH_FULL_A back-squat:1x5@4/ESTABLISH,db-bench-press:1x6@4/ESTABLISH,db-row:1x5@4/ESTABLISH,db-calf-raise:1x7@4/ESTABLISH,dead-bug:1x10@4/BODYWEIGHT",
+     "d3AM RUN EASY EASY:15",
+     "d5PM STRENGTH STRENGTH_FULL_B db-rdl:1x5@4/ESTABLISH,db-row:1x5@4/ESTABLISH,db-bench-press:1x6@4/ESTABLISH,db-split-squat:1x7@4/ESTABLISH,dead-bug:1x10@4/BODYWEIGHT",
+     "d6AM RUN LONG LONG:20"
+    ],
+    "longs": [
+     "w5-run-d6 20"
+    ]
+   },
+   "reports": [
+    {
+     "what": "A_FIX",
+     "result": "MODIFY/REESTABLISH",
+     "decision": {
+      "eventId": "qa1-24",
+      "asOf": "2026-12-14T06:00:00.000Z",
+      "relation": null,
+      "episode": null,
+      "supersedes": null,
+      "class": "MODERATE",
+      "stateAt": null
+     },
+     "missingInputs": []
+    },
+    {
+     "what": "B",
+     "result": "MODIFY/REESTABLISH",
+     "decision": {
+      "eventId": "qa1-25",
+      "asOf": "2026-12-14T07:00:00.000Z",
+      "relation": null,
+      "episode": null,
+      "supersedes": null,
+      "class": "SHORT",
+      "stateAt": null
+     },
+     "missingInputs": []
+    }
+   ],
+   "liveReturns": [
+    "qa1-20",
+    "qa1-24",
+    "qa1-25"
+   ],
+   "afterB": {
+    "weekB": 6,
+    "rowsWeekB": [
+     "d1AM RUN EASY EASY:41",
+     "d2PM STRENGTH STRENGTH_FULL_A back-squat:3x5@3/KNOWN82.5,db-bench-press:3x6@3/KNOWN20,db-row:3x5@3/KNOWN22,db-calf-raise:2x6@3/KNOWN22,dead-bug:2x10@3/BODYWEIGHT",
+     "d3AM RUN EASY EASY:45",
+     "d5PM STRENGTH STRENGTH_FULL_B db-rdl:3x5@3/KNOWN22,db-row:3x5@3/KNOWN22,db-bench-press:3x6@3/KNOWN20,db-split-squat:2x6@3/KNOWN22,dead-bug:2x10@3/BODYWEIGHT",
+     "d6AM RUN LONG LONG:70"
+    ],
+    "rowsNext": [
+     "d1AM RUN QUALITY THRESHOLD:41",
+     "d2PM STRENGTH STRENGTH_FULL_A back-squat:2x5@3/KNOWN85,db-bench-press:2x6@3/KNOWN22,db-row:2x5@3/KNOWN24,db-calf-raise:1x6@3/KNOWN22,dead-bug:1x10@3/BODYWEIGHT",
+     "d3AM RUN EASY EASY:45",
+     "d5PM STRENGTH STRENGTH_FULL_B db-rdl:2x5@3/KNOWN22,db-row:2x5@3/KNOWN24,db-bench-press:2x6@3/KNOWN22,db-split-squat:1x6@3/KNOWN22,dead-bug:1x10@3/BODYWEIGHT",
+     "d6AM RUN LONG LONG:65"
+    ],
+    "strengthStartNext": {
+     "back-squat": "KNOWN85 sets 3 step -",
+     "db-bench-press": "KNOWN22 sets 3 step -",
+     "db-row": "KNOWN24 sets - step -",
+     "db-calf-raise": "KNOWN22 sets - step -",
+     "dead-bug": "BODYWEIGHT sets - step -",
+     "db-rdl": "KNOWN22 sets - step -",
+     "db-split-squat": "KNOWN22 sets - step -"
+    },
+    "runStartNext": "EASY easy 45 long 75 step -"
+   },
+   "oracle": {
+    "preBreakDoseRows": [
+     "w6-str-d2:back-squat 3x5@3/KNOWN82.5",
+     "w6-str-d2:db-bench-press 3x6@3/KNOWN20",
+     "w6-str-d2:db-row 3x5@3/KNOWN22",
+     "w6-str-d5:db-rdl 3x5@3/KNOWN22",
+     "w6-str-d5:db-row 3x5@3/KNOWN22",
+     "w6-str-d5:db-bench-press 3x6@3/KNOWN20"
+    ],
+    "longRunsAfterB": [
+     "w6-run-d6 70",
+     "w7-run-d6 65"
+    ],
+    "bRelation": "MODIFY/REESTABLISH"
+   }
+  },
+  "L2_reviewed_fixMon_then_B": {
+   "log": [
+    "A MODIFY/REESTABLISH",
+    "weekly w5 (Mon-Wed executed) MODIFY/GATED_NEXT_STEP",
+    "A_FIX w6d0 06:00 MODIFY/REESTABLISH",
+    "B w6d0 07:00 MODIFY/REESTABLISH"
+   ],
+   "A": {
+    "eventId": "qa1-46",
+    "asOf": "2026-12-07T06:00:00.000Z",
+    "relation": null,
+    "episode": null,
+    "supersedes": null,
+    "class": "MODERATE",
+    "stateAt": null
+   },
+   "reentry": {
+    "rows": [
+     "d1AM RUN EASY EASY:15",
+     "d2PM STRENGTH STRENGTH_FULL_A back-squat:1x5@4/ESTABLISH,db-bench-press:1x6@4/ESTABLISH,db-row:1x5@4/ESTABLISH,db-calf-raise:1x7@4/ESTABLISH,dead-bug:1x10@4/BODYWEIGHT",
+     "d3AM RUN EASY EASY:15",
+     "d5PM STRENGTH STRENGTH_FULL_B db-rdl:1x5@4/ESTABLISH,db-row:1x5@4/ESTABLISH,db-bench-press:1x6@4/ESTABLISH,db-split-squat:1x7@4/ESTABLISH,dead-bug:1x10@4/BODYWEIGHT",
+     "d6AM RUN LONG LONG:20"
+    ],
+    "longs": [
+     "w5-run-d6 20"
+    ]
+   },
+   "reports": [
+    {
+     "what": "A_FIX",
+     "result": "MODIFY/REESTABLISH",
+     "decision": {
+      "eventId": "qa1-50",
+      "asOf": "2026-12-14T06:00:00.000Z",
+      "relation": null,
+      "episode": null,
+      "supersedes": null,
+      "class": "MODERATE",
+      "stateAt": null
+     },
+     "missingInputs": []
+    },
+    {
+     "what": "B",
+     "result": "MODIFY/REESTABLISH",
+     "decision": {
+      "eventId": "qa1-51",
+      "asOf": "2026-12-14T07:00:00.000Z",
+      "relation": null,
+      "episode": null,
+      "supersedes": null,
+      "class": "SHORT",
+      "stateAt": null
+     },
+     "missingInputs": []
+    }
+   ],
+   "liveReturns": [
+    "qa1-46",
+    "qa1-50",
+    "qa1-51"
+   ],
+   "afterB": {
+    "weekB": 6,
+    "rowsWeekB": [
+     "d1AM RUN EASY EASY:41",
+     "d2PM STRENGTH STRENGTH_FULL_A back-squat:3x5@3/KNOWN82.5,db-bench-press:3x6@3/KNOWN20,db-row:3x5@3/KNOWN22,db-calf-raise:2x6@3/KNOWN22,dead-bug:2x10@3/BODYWEIGHT",
+     "d3AM RUN EASY EASY:45",
+     "d5PM STRENGTH STRENGTH_FULL_B db-rdl:3x5@3/KNOWN22,db-row:3x5@3/KNOWN22,db-bench-press:3x6@3/KNOWN20,db-split-squat:2x6@3/KNOWN22,dead-bug:2x10@3/BODYWEIGHT",
+     "d6AM RUN LONG LONG:70"
+    ],
+    "rowsNext": [
+     "d1AM RUN QUALITY THRESHOLD:41",
+     "d2PM STRENGTH STRENGTH_FULL_A back-squat:2x5@3/KNOWN85,db-bench-press:2x6@3/KNOWN22,db-row:2x5@3/KNOWN24,db-calf-raise:1x6@3/KNOWN22,dead-bug:1x10@3/BODYWEIGHT",
+     "d3AM RUN EASY EASY:45",
+     "d5PM STRENGTH STRENGTH_FULL_B db-rdl:2x5@3/KNOWN22,db-row:2x5@3/KNOWN24,db-bench-press:2x6@3/KNOWN22,db-split-squat:1x6@3/KNOWN22,dead-bug:1x10@3/BODYWEIGHT",
+     "d6AM RUN LONG LONG:65"
+    ],
+    "strengthStartNext": {
+     "back-squat": "KNOWN85 sets 3 step -",
+     "db-bench-press": "KNOWN22 sets 3 step -",
+     "db-row": "KNOWN24 sets - step -",
+     "db-calf-raise": "KNOWN22 sets - step -",
+     "dead-bug": "BODYWEIGHT sets - step -",
+     "db-rdl": "KNOWN22 sets - step -",
+     "db-split-squat": "KNOWN22 sets - step -"
+    },
+    "runStartNext": "EASY easy 45 long 75 step -"
+   },
+   "oracle": {
+    "preBreakDoseRows": [
+     "w6-str-d2:back-squat 3x5@3/KNOWN82.5",
+     "w6-str-d2:db-bench-press 3x6@3/KNOWN20",
+     "w6-str-d2:db-row 3x5@3/KNOWN22",
+     "w6-str-d5:db-rdl 3x5@3/KNOWN22",
+     "w6-str-d5:db-row 3x5@3/KNOWN22",
+     "w6-str-d5:db-bench-press 3x6@3/KNOWN20"
+    ],
+    "longRunsAfterB": [
+     "w6-run-d6 70",
+     "w7-run-d6 65"
+    ],
+    "bRelation": "MODIFY/REESTABLISH"
+   }
+  },
+  "L3_fixDuringB_then_B": {
+   "log": [
+    "A MODIFY/REESTABLISH",
+    "Mon-Wed reported KEEP/KEEP",
+    "A_FIX w5d4 12:00 MODIFY/REESTABLISH",
+    "B w6d0 07:00 MODIFY/REESTABLISH"
+   ],
+   "A": {
+    "eventId": "qa1-72",
+    "asOf": "2026-12-07T06:00:00.000Z",
+    "relation": null,
+    "episode": null,
+    "supersedes": null,
+    "class": "MODERATE",
+    "stateAt": null
+   },
+   "reentry": {
+    "rows": [
+     "d1AM RUN EASY EASY:15",
+     "d2PM STRENGTH STRENGTH_FULL_A back-squat:1x5@4/ESTABLISH,db-bench-press:1x6@4/ESTABLISH,db-row:1x5@4/ESTABLISH,db-calf-raise:1x7@4/ESTABLISH,dead-bug:1x10@4/BODYWEIGHT",
+     "d3AM RUN EASY EASY:15",
+     "d5PM STRENGTH STRENGTH_FULL_B db-rdl:1x5@4/ESTABLISH,db-row:1x5@4/ESTABLISH,db-bench-press:1x6@4/ESTABLISH,db-split-squat:1x7@4/ESTABLISH,dead-bug:1x10@4/BODYWEIGHT",
+     "d6AM RUN LONG LONG:20"
+    ],
+    "longs": [
+     "w5-run-d6 20"
+    ]
+   },
+   "reports": [
+    {
+     "what": "A_FIX",
+     "result": "MODIFY/REESTABLISH",
+     "decision": {
+      "eventId": "qa1-76",
+      "asOf": "2026-12-11T12:00:00.000Z",
+      "relation": null,
+      "episode": null,
+      "supersedes": null,
+      "class": "MODERATE",
+      "stateAt": null
+     },
+     "missingInputs": []
+    },
+    {
+     "what": "B",
+     "result": "MODIFY/REESTABLISH",
+     "decision": {
+      "eventId": "qa1-77",
+      "asOf": "2026-12-14T07:00:00.000Z",
+      "relation": null,
+      "episode": null,
+      "supersedes": null,
+      "class": "SHORT",
+      "stateAt": null
+     },
+     "missingInputs": []
+    }
+   ],
+   "liveReturns": [
+    "qa1-72",
+    "qa1-76",
+    "qa1-77"
+   ],
+   "afterB": {
+    "weekB": 6,
+    "rowsWeekB": [
+     "d1AM RUN EASY EASY:41",
+     "d2PM STRENGTH STRENGTH_FULL_A back-squat:3x5@3/KNOWN82.5,db-bench-press:3x6@3/KNOWN20,db-row:3x5@3/KNOWN22,db-calf-raise:2x6@3/KNOWN22,dead-bug:2x10@3/BODYWEIGHT",
+     "d3AM RUN EASY EASY:45",
+     "d5PM STRENGTH STRENGTH_FULL_B db-rdl:3x5@3/KNOWN22,db-row:3x5@3/KNOWN22,db-bench-press:3x6@3/KNOWN20,db-split-squat:2x6@3/KNOWN22,dead-bug:2x10@3/BODYWEIGHT",
+     "d6AM RUN LONG LONG:70"
+    ],
+    "rowsNext": [
+     "d1AM RUN QUALITY THRESHOLD:41",
+     "d2PM STRENGTH STRENGTH_FULL_A back-squat:2x5@3/KNOWN85,db-bench-press:2x6@3/KNOWN22,db-row:2x5@3/KNOWN24,db-calf-raise:1x6@3/KNOWN22,dead-bug:1x10@3/BODYWEIGHT",
+     "d3AM RUN EASY EASY:45",
+     "d5PM STRENGTH STRENGTH_FULL_B db-rdl:2x5@3/KNOWN22,db-row:2x5@3/KNOWN24,db-bench-press:2x6@3/KNOWN22,db-split-squat:1x6@3/KNOWN22,dead-bug:1x10@3/BODYWEIGHT",
+     "d6AM RUN LONG LONG:65"
+    ],
+    "strengthStartNext": {
+     "back-squat": "KNOWN85 sets 3 step -",
+     "db-bench-press": "KNOWN22 sets 3 step -",
+     "db-row": "KNOWN24 sets - step -",
+     "db-calf-raise": "KNOWN22 sets - step -",
+     "dead-bug": "BODYWEIGHT sets - step -",
+     "db-rdl": "KNOWN22 sets - step -",
+     "db-split-squat": "KNOWN22 sets - step -"
+    },
+    "runStartNext": "EASY easy 45 long 75 step -"
+   },
+   "oracle": {
+    "preBreakDoseRows": [
+     "w6-str-d2:back-squat 3x5@3/KNOWN82.5",
+     "w6-str-d2:db-bench-press 3x6@3/KNOWN20",
+     "w6-str-d2:db-row 3x5@3/KNOWN22",
+     "w6-str-d5:db-rdl 3x5@3/KNOWN22",
+     "w6-str-d5:db-row 3x5@3/KNOWN22",
+     "w6-str-d5:db-bench-press 3x6@3/KNOWN20"
+    ],
+    "longRunsAfterB": [
+     "w6-run-d6 70",
+     "w7-run-d6 65"
+    ],
+    "bRelation": "MODIFY/REESTABLISH"
+   }
+  },
+  "L4_fixShift_then_B": {
+   "log": [
+    "A MODIFY/REESTABLISH",
+    "Mon-Wed reported KEEP/KEEP",
+    "A_FIX w6d0 06:00 MODIFY/REESTABLISH",
+    "B w6d0 07:00 MODIFY/REESTABLISH"
+   ],
+   "A": {
+    "eventId": "qa1-98",
+    "asOf": "2026-12-07T06:00:00.000Z",
+    "relation": null,
+    "episode": null,
+    "supersedes": null,
+    "class": "MODERATE",
+    "stateAt": null
+   },
+   "reentry": {
+    "rows": [
+     "d1AM RUN EASY EASY:15",
+     "d2PM STRENGTH STRENGTH_FULL_A back-squat:1x5@4/ESTABLISH,db-bench-press:1x6@4/ESTABLISH,db-row:1x5@4/ESTABLISH,db-calf-raise:1x7@4/ESTABLISH,dead-bug:1x10@4/BODYWEIGHT",
+     "d3AM RUN EASY EASY:15",
+     "d5PM STRENGTH STRENGTH_FULL_B db-rdl:1x5@4/ESTABLISH,db-row:1x5@4/ESTABLISH,db-bench-press:1x6@4/ESTABLISH,db-split-squat:1x7@4/ESTABLISH,dead-bug:1x10@4/BODYWEIGHT",
+     "d6AM RUN LONG LONG:20"
+    ],
+    "longs": [
+     "w5-run-d6 20"
+    ]
+   },
+   "reports": [
+    {
+     "what": "A_FIX",
+     "result": "MODIFY/REESTABLISH",
+     "decision": {
+      "eventId": "qa1-102",
+      "asOf": "2026-12-14T06:00:00.000Z",
+      "relation": null,
+      "episode": null,
+      "supersedes": null,
+      "class": "MODERATE",
+      "stateAt": null
+     },
+     "missingInputs": []
+    },
+    {
+     "what": "B",
+     "result": "MODIFY/REESTABLISH",
+     "decision": {
+      "eventId": "qa1-103",
+      "asOf": "2026-12-14T07:00:00.000Z",
+      "relation": null,
+      "episode": null,
+      "supersedes": null,
+      "class": "SHORT",
+      "stateAt": null
+     },
+     "missingInputs": []
+    }
+   ],
+   "liveReturns": [
+    "qa1-98",
+    "qa1-102",
+    "qa1-103"
+   ],
+   "afterB": {
+    "weekB": 6,
+    "rowsWeekB": [
+     "d1AM RUN EASY EASY:41",
+     "d2PM STRENGTH STRENGTH_FULL_A back-squat:3x5@3/KNOWN82.5,db-bench-press:3x6@3/KNOWN20,db-row:3x5@3/KNOWN22,db-calf-raise:2x6@3/KNOWN22,dead-bug:2x10@3/BODYWEIGHT",
+     "d3AM RUN EASY EASY:45",
+     "d5PM STRENGTH STRENGTH_FULL_B db-rdl:3x5@3/KNOWN22,db-row:3x5@3/KNOWN22,db-bench-press:3x6@3/KNOWN20,db-split-squat:2x6@3/KNOWN22,dead-bug:2x10@3/BODYWEIGHT",
+     "d6AM RUN LONG LONG:70"
+    ],
+    "rowsNext": [
+     "d1AM RUN QUALITY THRESHOLD:41",
+     "d2PM STRENGTH STRENGTH_FULL_A back-squat:2x5@3/KNOWN85,db-bench-press:2x6@3/KNOWN22,db-row:2x5@3/KNOWN24,db-calf-raise:1x6@3/KNOWN22,dead-bug:1x10@3/BODYWEIGHT",
+     "d3AM RUN EASY EASY:45",
+     "d5PM STRENGTH STRENGTH_FULL_B db-rdl:2x5@3/KNOWN22,db-row:2x5@3/KNOWN24,db-bench-press:2x6@3/KNOWN22,db-split-squat:1x6@3/KNOWN22,dead-bug:1x10@3/BODYWEIGHT",
+     "d6AM RUN LONG LONG:65"
+    ],
+    "strengthStartNext": {
+     "back-squat": "KNOWN85 sets 3 step -",
+     "db-bench-press": "KNOWN22 sets 3 step -",
+     "db-row": "KNOWN24 sets - step -",
+     "db-calf-raise": "KNOWN22 sets - step -",
+     "dead-bug": "BODYWEIGHT sets - step -",
+     "db-rdl": "KNOWN22 sets - step -",
+     "db-split-squat": "KNOWN22 sets - step -"
+    },
+    "runStartNext": "EASY easy 45 long 75 step -"
+   },
+   "oracle": {
+    "preBreakDoseRows": [
+     "w6-str-d2:back-squat 3x5@3/KNOWN82.5",
+     "w6-str-d2:db-bench-press 3x6@3/KNOWN20",
+     "w6-str-d2:db-row 3x5@3/KNOWN22",
+     "w6-str-d5:db-rdl 3x5@3/KNOWN22",
+     "w6-str-d5:db-row 3x5@3/KNOWN22",
+     "w6-str-d5:db-bench-press 3x6@3/KNOWN20"
+    ],
+    "longRunsAfterB": [
+     "w6-run-d6 70",
+     "w7-run-d6 65"
+    ],
+    "bRelation": "MODIFY/REESTABLISH"
+   }
+  },
+  "C1_B_then_fix": {
+   "log": [
+    "A MODIFY/REESTABLISH",
+    "Mon-Wed reported KEEP/KEEP",
+    "B w6d0 06:00 MODIFY/REESTABLISH",
+    "A_FIX w6d0 07:00 MODIFY/REESTABLISH"
+   ],
+   "A": {
+    "eventId": "qa1-124",
+    "asOf": "2026-12-07T06:00:00.000Z",
+    "relation": null,
+    "episode": null,
+    "supersedes": null,
+    "class": "MODERATE",
+    "stateAt": null
+   },
+   "reentry": {
+    "rows": [
+     "d1AM RUN EASY EASY:15",
+     "d2PM STRENGTH STRENGTH_FULL_A back-squat:1x5@4/ESTABLISH,db-bench-press:1x6@4/ESTABLISH,db-row:1x5@4/ESTABLISH,db-calf-raise:1x7@4/ESTABLISH,dead-bug:1x10@4/BODYWEIGHT",
+     "d3AM RUN EASY EASY:15",
+     "d5PM STRENGTH STRENGTH_FULL_B db-rdl:1x5@4/ESTABLISH,db-row:1x5@4/ESTABLISH,db-bench-press:1x6@4/ESTABLISH,db-split-squat:1x7@4/ESTABLISH,dead-bug:1x10@4/BODYWEIGHT",
+     "d6AM RUN LONG LONG:20"
+    ],
+    "longs": [
+     "w5-run-d6 20"
+    ]
+   },
+   "reports": [
+    {
+     "what": "B",
+     "result": "MODIFY/REESTABLISH",
+     "decision": {
+      "eventId": "qa1-128",
+      "asOf": "2026-12-14T06:00:00.000Z",
+      "relation": null,
+      "episode": null,
+      "supersedes": null,
+      "class": "SHORT",
+      "stateAt": null
+     },
+     "missingInputs": []
+    },
+    {
+     "what": "A_FIX",
+     "result": "MODIFY/REESTABLISH",
+     "decision": {
+      "eventId": "qa1-129",
+      "asOf": "2026-12-14T07:00:00.000Z",
+      "relation": null,
+      "episode": null,
+      "supersedes": null,
+      "class": "MODERATE",
+      "stateAt": null
+     },
+     "missingInputs": []
+    }
+   ],
+   "liveReturns": [
+    "qa1-124",
+    "qa1-128",
+    "qa1-129"
+   ],
+   "afterB": {
+    "weekB": 6,
+    "rowsWeekB": [
+     "d1AM RUN EASY EASY:15",
+     "d2PM STRENGTH STRENGTH_FULL_A back-squat:1x5@4/ESTABLISH,db-bench-press:1x6@4/ESTABLISH,db-row:1x5@4/ESTABLISH,db-calf-raise:1x7@4/ESTABLISH,dead-bug:1x10@4/BODYWEIGHT",
+     "d3AM RUN EASY EASY:15",
+     "d5PM STRENGTH STRENGTH_FULL_B db-rdl:1x5@4/ESTABLISH,db-row:1x5@4/ESTABLISH,db-bench-press:1x6@4/ESTABLISH,db-split-squat:1x7@4/ESTABLISH,dead-bug:1x10@4/BODYWEIGHT",
+     "d6AM RUN LONG LONG:20"
+    ],
+    "rowsNext": [
+     "d1AM RUN EASY EASY:30",
+     "d2PM STRENGTH STRENGTH_FULL_A back-squat:1x5@3/FROM_LOG,db-bench-press:1x6@3/FROM_LOG,db-row:1x5@3/FROM_LOG,db-calf-raise:1x7@3/FROM_LOG,dead-bug:1x10@3/BODYWEIGHT",
+     "d3AM RUN EASY EASY:30",
+     "d5PM STRENGTH STRENGTH_FULL_B db-rdl:1x5@3/FROM_LOG,db-row:1x5@3/FROM_LOG,db-bench-press:1x6@3/FROM_LOG,db-split-squat:1x7@3/FROM_LOG,dead-bug:1x10@3/BODYWEIGHT",
+     "d6AM RUN LONG LONG:45"
+    ],
+    "strengthStartNext": {
+     "back-squat": "KNOWN82.5 sets 3 step 1",
+     "db-bench-press": "KNOWN20 sets 3 step 1",
+     "db-row": "KNOWN22 sets - step 1",
+     "db-calf-raise": "KNOWN20 sets - step 1",
+     "dead-bug": "BODYWEIGHT sets - step 1",
+     "db-rdl": "KNOWN20 sets - step 1",
+     "db-split-squat": "KNOWN20 sets - step 1"
+    },
+    "runStartNext": "RETURN easy 40 long 70 step 1"
+   },
+   "oracle": {
+    "preBreakDoseRows": [],
+    "longRunsAfterB": [
+     "w6-run-d6 20",
+     "w7-run-d6 45"
+    ],
+    "bRelation": "MODIFY/REESTABLISH"
+   }
+  },
+  "C2_B_only": {
+   "log": [
+    "A MODIFY/REESTABLISH",
+    "Mon-Wed reported KEEP/KEEP",
+    "B w6d0 07:00 MODIFY/REESTABLISH"
+   ],
+   "A": {
+    "eventId": "qa1-150",
+    "asOf": "2026-12-07T06:00:00.000Z",
+    "relation": null,
+    "episode": null,
+    "supersedes": null,
+    "class": "MODERATE",
+    "stateAt": null
+   },
+   "reentry": {
+    "rows": [
+     "d1AM RUN EASY EASY:15",
+     "d2PM STRENGTH STRENGTH_FULL_A back-squat:1x5@4/ESTABLISH,db-bench-press:1x6@4/ESTABLISH,db-row:1x5@4/ESTABLISH,db-calf-raise:1x7@4/ESTABLISH,dead-bug:1x10@4/BODYWEIGHT",
+     "d3AM RUN EASY EASY:15",
+     "d5PM STRENGTH STRENGTH_FULL_B db-rdl:1x5@4/ESTABLISH,db-row:1x5@4/ESTABLISH,db-bench-press:1x6@4/ESTABLISH,db-split-squat:1x7@4/ESTABLISH,dead-bug:1x10@4/BODYWEIGHT",
+     "d6AM RUN LONG LONG:20"
+    ],
+    "longs": [
+     "w5-run-d6 20"
+    ]
+   },
+   "reports": [
+    {
+     "what": "B",
+     "result": "MODIFY/REESTABLISH",
+     "decision": {
+      "eventId": "qa1-154",
+      "asOf": "2026-12-14T07:00:00.000Z",
+      "relation": null,
+      "episode": null,
+      "supersedes": null,
+      "class": "SHORT",
+      "stateAt": null
+     },
+     "missingInputs": []
+    }
+   ],
+   "liveReturns": [
+    "qa1-150",
+    "qa1-154"
+   ],
+   "afterB": {
+    "weekB": 6,
+    "rowsWeekB": [
+     "d1AM RUN EASY EASY:41",
+     "d2PM STRENGTH STRENGTH_FULL_A back-squat:3x5@3/KNOWN82.5,db-bench-press:3x6@3/KNOWN20,db-row:3x5@3/KNOWN22,db-calf-raise:2x6@3/KNOWN22,dead-bug:2x10@3/BODYWEIGHT",
+     "d3AM RUN EASY EASY:45",
+     "d5PM STRENGTH STRENGTH_FULL_B db-rdl:3x5@3/KNOWN22,db-row:3x5@3/KNOWN22,db-bench-press:3x6@3/KNOWN20,db-split-squat:2x6@3/KNOWN22,dead-bug:2x10@3/BODYWEIGHT",
+     "d6AM RUN LONG LONG:70"
+    ],
+    "rowsNext": [
+     "d1AM RUN QUALITY THRESHOLD:41",
+     "d2PM STRENGTH STRENGTH_FULL_A back-squat:2x5@3/KNOWN85,db-bench-press:2x6@3/KNOWN22,db-row:2x5@3/KNOWN24,db-calf-raise:1x6@3/KNOWN22,dead-bug:1x10@3/BODYWEIGHT",
+     "d3AM RUN EASY EASY:45",
+     "d5PM STRENGTH STRENGTH_FULL_B db-rdl:2x5@3/KNOWN22,db-row:2x5@3/KNOWN24,db-bench-press:2x6@3/KNOWN22,db-split-squat:1x6@3/KNOWN22,dead-bug:1x10@3/BODYWEIGHT",
+     "d6AM RUN LONG LONG:65"
+    ],
+    "strengthStartNext": {
+     "back-squat": "KNOWN85 sets 3 step -",
+     "db-bench-press": "KNOWN22 sets 3 step -",
+     "db-row": "KNOWN24 sets - step -",
+     "db-calf-raise": "KNOWN22 sets - step -",
+     "dead-bug": "BODYWEIGHT sets - step -",
+     "db-rdl": "KNOWN22 sets - step -",
+     "db-split-squat": "KNOWN22 sets - step -"
+    },
+    "runStartNext": "EASY easy 45 long 75 step -"
+   },
+   "oracle": {
+    "preBreakDoseRows": [
+     "w6-str-d2:back-squat 3x5@3/KNOWN82.5",
+     "w6-str-d2:db-bench-press 3x6@3/KNOWN20",
+     "w6-str-d2:db-row 3x5@3/KNOWN22",
+     "w6-str-d5:db-rdl 3x5@3/KNOWN22",
+     "w6-str-d5:db-row 3x5@3/KNOWN22",
+     "w6-str-d5:db-bench-press 3x6@3/KNOWN20"
+    ],
+    "longRunsAfterB": [
+     "w6-run-d6 70",
+     "w7-run-d6 65"
+    ],
+    "bRelation": "MODIFY/REESTABLISH"
+   }
+  }
+ }
+}

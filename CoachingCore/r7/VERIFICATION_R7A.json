@@ -1,0 +1,247 @@
+{
+  "revision": "R7A-VERIFICATION-1",
+  "verifiedAt": "2026-10-27T17:28:17.808Z",
+  "node": "v24.19.0",
+  "passing": 11,
+  "total": 11,
+  "checks": [
+    {
+      "id": "baseline-preserved",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "entries": 1007,
+        "changed": [
+          "CoachingCore/src/r6-adaptation.mjs",
+          "CoachingCore/src/r6-intake.mjs",
+          "CoachingCore/src/r6-prescription.mjs",
+          "CoachingCore/src/r6-program.mjs",
+          "CoachingCore/src/r6-provenance.mjs",
+          "CURRENT_MISSION.md",
+          "MISSION_LEDGER.md",
+          "reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json"
+        ],
+        "unexpected": [],
+        "insertOnly": [
+          {
+            "file": "CURRENT_MISSION.md",
+            "snapshotEqualsBaseline": true,
+            "prefixPreserved": true,
+            "appendedBytes": 2845
+          },
+          {
+            "file": "MISSION_LEDGER.md",
+            "snapshotEqualsBaseline": true,
+            "prefixPreserved": true,
+            "appendedBytes": 1252
+          }
+        ],
+        "addedFiles": 16,
+        "addedOutsideR7A": []
+      }
+    },
+    {
+      "id": "freeze-current",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "revision": "R7A-FREEZE-2",
+        "sourceDigest": "f56ae974762523b1efacd9ad7a9046cc7f6b7d33e42a7c2c955e758ef0f7821c",
+        "drift": [],
+        "unfrozen": []
+      }
+    },
+    {
+      "id": "policy-unchanged",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+        "revision": "R6-POLICY-5"
+      }
+    },
+    {
+      "id": "tests",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "tests": 476,
+        "pass_": 476,
+        "fail": 0,
+        "node": "v24.19.0"
+      }
+    },
+    {
+      "id": "regression",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "sourcesBoundToCurrentRuntime": true,
+        "r5": "24/24",
+        "profiles": "15/16",
+        "simulationTrajectoriesDifferent": [
+          "T04_STRENGTH12_REPEATED_UNDERPERFORMANCE",
+          "T05_10K8_SHORT_INTERRUPTION",
+          "T08_NOVICE8_MODERATE_INTERRUPTION",
+          "T13_HM16_FATIGUE_SIGNALS"
+        ],
+        "r6Holdout": "24/35",
+        "unexplained": {
+          "holdout": [],
+          "profiles": [],
+          "simulations": []
+        },
+        "statusChanged": [
+          "R6-H23: MODIFY/REARRANGE_FUTURE_WEEKS MODIFY/GATED_NEXT_STEP -> ASK/ASK MODIFY/GATED_NEXT_STEP"
+        ],
+        "classification": "REGRESSION / CHALLENGE REUSE; not generalization evidence"
+      }
+    },
+    {
+      "id": "class-probes",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "before": {
+          "C03_phaseBoundsAllRowKinds": "REPRODUCED",
+          "C04_splitWeekExecutedExposure": "REPRODUCED",
+          "C05_C07_intakeStrengthRecords": "REPRODUCED",
+          "C06_provenanceLabelEquivalence": "NOT_REPRODUCED",
+          "C08_C09_duplicatesAndContradictions": "REPRODUCED",
+          "C10_correctionIdempotence": "REPRODUCED",
+          "C11_inactiveExerciseReturnStep": "REPRODUCED",
+          "C12_bodyweightRepetitions": "REPRODUCED",
+          "C14_staleLateReport": "NOT_REPRODUCED",
+          "C15_unreviewedWeeks": "REPRODUCED",
+          "C16_scopedScheduleChange": "REPRODUCED",
+          "C18_raceCompletion": "REPRODUCED"
+        },
+        "after": {
+          "C03_phaseBoundsAllRowKinds": "NOT_REPRODUCED",
+          "C04_splitWeekExecutedExposure": "NOT_REPRODUCED",
+          "C05_C07_intakeStrengthRecords": "NOT_REPRODUCED",
+          "C06_provenanceLabelEquivalence": "NOT_REPRODUCED",
+          "C08_C09_duplicatesAndContradictions": "NOT_REPRODUCED",
+          "C10_correctionIdempotence": "NOT_REPRODUCED",
+          "C11_inactiveExerciseReturnStep": "NOT_REPRODUCED",
+          "C12_bodyweightRepetitions": "NOT_REPRODUCED",
+          "C14_staleLateReport": "NOT_REPRODUCED",
+          "C15_unreviewedWeeks": "REPRODUCED",
+          "C16_scopedScheduleChange": "NOT_REPRODUCED",
+          "C18_raceCompletion": "NOT_REPRODUCED"
+        },
+        "routed": [
+          "C15_unreviewedWeeks"
+        ],
+        "open": []
+      }
+    },
+    {
+      "id": "ssctr-instrument",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "beforeIsOfficialRound12Output": true,
+        "akAboveThePhaseDose": "70 -> 0",
+        "aiNoisyNextExposureJumps": "48 -> 0",
+        "aiViolationsAsPrescribed": "0 -> 370",
+        "aiViolationsNoisy": "48 -> 146",
+        "note": "AI violations after R7-A are the regain-base question Q1, ruled by the SSCTR review"
+      }
+    },
+    {
+      "id": "mutation-check",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "caught": 33,
+        "total": 34,
+        "documentedSurvivors": [
+          "Counts from the first executed exposure"
+        ],
+        "open": []
+      }
+    },
+    {
+      "id": "independent-reviews",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "latestFreeze": "RUNTIME_FREEZE_R7A_2.json",
+        "RUNTIME_FREEZE_R7A_1.json:ssctr": {
+          "present": true,
+          "file": "audits/domain-coaching-r7a-2026-10-27/reviews/ssctr-r7a-review.json",
+          "revision": "R7A-SSCTR-r1",
+          "reviewedFiles": 9,
+          "digest": "1f2bb1d807825a6027f994ff36b8adb4c42705273c37f800cfa64c03a4e07d65",
+          "digestMatches": true,
+          "mismatch": [],
+          "bound": true
+        },
+        "RUNTIME_FREEZE_R7A_1.json:engineering": {
+          "present": true,
+          "file": "audits/domain-coaching-r7a-2026-10-27/reviews/quality-engineering-r7a-review.json",
+          "revision": "R7A-QE-r1",
+          "reviewedFiles": 0,
+          "digest": "1f2bb1d807825a6027f994ff36b8adb4c42705273c37f800cfa64c03a4e07d65",
+          "digestMatches": true,
+          "mismatch": [],
+          "bound": true
+        },
+        "RUNTIME_FREEZE_R7A_2.json:ssctr": {
+          "present": true,
+          "file": "audits/domain-coaching-r7a-2026-10-27/reviews/ssctr-r7a-recheck.json",
+          "revision": "R7A-SSCTR-r2",
+          "reviewedFiles": 13,
+          "digest": "f56ae974762523b1efacd9ad7a9046cc7f6b7d33e42a7c2c955e758ef0f7821c",
+          "digestMatches": true,
+          "mismatch": [],
+          "bound": true
+        },
+        "RUNTIME_FREEZE_R7A_2.json:engineering": {
+          "present": true,
+          "file": "audits/domain-coaching-r7a-2026-10-27/reviews/quality-engineering-r7a-recheck.json",
+          "revision": "R7A-QE-r2",
+          "reviewedFiles": 0,
+          "digest": "f56ae974762523b1efacd9ad7a9046cc7f6b7d33e42a7c2c955e758ef0f7821c",
+          "digestMatches": true,
+          "mismatch": [],
+          "bound": true
+        }
+      }
+    },
+    {
+      "id": "queue-append-only",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "before": {
+          "revision": "SSCTR-HRQ-20261026-R6-r1",
+          "items": 127,
+          "sha256": "74c7b6f64a25f2eed46276ec8e9ebd3aa83df7c4f5c4b0e2c77a62e746e5b841"
+        },
+        "after": {
+          "items": 132,
+          "sha256": "af713bb86718920ce077c53b750c235f5035af022722e6e249aa0e9d0bb83cc0"
+        },
+        "appended": [
+          "HQ-R7A-SSCTR-REGAIN-BASE",
+          "HQ-R7A-SSCTR-REESTABLISH-PHASE",
+          "HQ-R7A-SSCTR-SPLIT-WEEK",
+          "HQ-R7A-SSCTR-ITEMS-5-8",
+          "HQ-R7A-SSCTR-CYCLE2-COMPOSITIONS"
+        ],
+        "earlierItemsByteIdentical": true
+      }
+    },
+    {
+      "id": "deliverables",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "missing": [],
+        "exit": "NOT_READY"
+      }
+    }
+  ]
+}

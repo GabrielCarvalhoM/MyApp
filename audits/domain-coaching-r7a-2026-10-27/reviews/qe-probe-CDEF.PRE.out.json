@@ -1,0 +1,300 @@
+{
+ "probe": "C",
+ "runtime": "PRE_R7A",
+ "session": "w0-str-d0",
+ "prescribed": [
+  "back-squat",
+  "db-bench-press",
+  "db-row",
+  "db-calf-raise",
+  "dead-bug"
+ ],
+ "baseline": {
+  "status": "KEEP",
+  "action": "INSTANTIATE_LOGGED_LOADS",
+  "gates": {
+   "LONG": "ADVANCE",
+   "EASY": "ADVANCE",
+   "back-squat": "ADVANCE",
+   "db-bench-press": "ADVANCE",
+   "db-row": "ADVANCE",
+   "db-calf-raise": "ADVANCE",
+   "dead-bug": "ADVANCE",
+   "db-rdl": "ADVANCE",
+   "db-split-squat": "ADVANCE"
+  },
+  "logs": {
+   "back-squat": {
+    "load": 80,
+    "reps": 5,
+    "setsDone": 3
+   },
+   "db-bench-press": {
+    "load": 18,
+    "reps": 6,
+    "setsDone": 3
+   },
+   "db-row": {
+    "load": 20,
+    "reps": 5,
+    "setsDone": 2
+   },
+   "db-calf-raise": {
+    "load": 20,
+    "reps": 7,
+    "setsDone": 2
+   },
+   "dead-bug": {
+    "load": null,
+    "reps": 7,
+    "setsDone": 2
+   }
+  }
+ },
+ "withAgreeingSubsetWatchReport": {
+  "duplicates": [
+   {
+    "eventId": "qe-c-watch-subset",
+    "mergedInto": "qe-c-0",
+    "reason": "SAME_EXECUTION_DIFFERENT_SOURCE"
+   }
+  ],
+  "conflicts": 0,
+  "status": "MODIFY",
+  "action": "GATED_NEXT_STEP",
+  "gates": {
+   "LONG": "ADVANCE",
+   "EASY": "ADVANCE",
+   "back-squat": "ADVANCE",
+   "db-bench-press": "HOLD",
+   "db-row": "HOLD",
+   "db-calf-raise": "HOLD",
+   "dead-bug": "HOLD",
+   "db-rdl": "ADVANCE",
+   "db-split-squat": "ADVANCE"
+  },
+  "logs": {
+   "back-squat": {
+    "load": 80,
+    "reps": 5,
+    "setsDone": 3
+   }
+  },
+  "decisionUnchanged": false
+ },
+ "withAgreeingNoLoadWatchReport": {
+  "duplicates": [
+   {
+    "eventId": "qe-c-watch-noload",
+    "mergedInto": "qe-c-0",
+    "reason": "SAME_EXECUTION_DIFFERENT_SOURCE"
+   }
+  ],
+  "conflicts": 0,
+  "status": "MODIFY",
+  "action": "ADOPT_LOGGED_LOADS",
+  "gates": {
+   "LONG": "ADVANCE",
+   "EASY": "ADVANCE",
+   "back-squat": "ADVANCE",
+   "db-bench-press": "ADVANCE",
+   "db-row": "ADVANCE",
+   "db-calf-raise": "ADVANCE",
+   "dead-bug": "ADVANCE",
+   "db-rdl": "ADVANCE",
+   "db-split-squat": "ADVANCE"
+  },
+  "logs": {
+   "back-squat": {
+    "load": null,
+    "reps": 5,
+    "setsDone": 3
+   },
+   "db-bench-press": {
+    "load": null,
+    "reps": 6,
+    "setsDone": 3
+   },
+   "db-row": {
+    "load": null,
+    "reps": 5,
+    "setsDone": 2
+   },
+   "db-calf-raise": {
+    "load": null,
+    "reps": 7,
+    "setsDone": 2
+   },
+   "dead-bug": {
+    "load": null,
+    "reps": 7,
+    "setsDone": 2
+   }
+  },
+  "decisionUnchanged": false
+ }
+}
+{
+ "probe": "D",
+ "reps": {
+  "threeArrivesFirst": {
+   "conflicts": 0,
+   "duplicates": [
+    "SAME_EXECUTION_DIFFERENT_SOURCE"
+   ],
+   "gateSquat": "HOLD",
+   "squatLog": {
+    "load": 80,
+    "reps": 3,
+    "setsDone": 3
+   }
+  },
+  "fiveArrivesFirst": {
+   "conflicts": 0,
+   "duplicates": [
+    "SAME_EXECUTION_DIFFERENT_SOURCE"
+   ],
+   "gateSquat": "ADVANCE",
+   "squatLog": {
+    "load": 80,
+    "reps": 5,
+    "setsDone": 3
+   }
+  },
+  "sameDecisionEitherOrder": false
+ },
+ "rir": {
+  "zeroArrivesFirst": {
+   "conflicts": 0,
+   "duplicates": [
+    "SAME_EXECUTION_DIFFERENT_SOURCE"
+   ],
+   "gateSquat": "HOLD",
+   "squatLog": {
+    "load": 80,
+    "reps": 5,
+    "setsDone": 3
+   }
+  },
+  "threeArrivesFirst": {
+   "conflicts": 0,
+   "duplicates": [
+    "SAME_EXECUTION_DIFFERENT_SOURCE"
+   ],
+   "gateSquat": "ADVANCE",
+   "squatLog": {
+    "load": 80,
+    "reps": 5,
+    "setsDone": 3
+   }
+  },
+  "sameDecisionEitherOrder": false
+ }
+}
+{
+ "probe": "E",
+ "normalize": {
+  "firstReview": {
+   "live": [
+    [
+     "qe-e-C",
+     55
+    ]
+   ],
+   "superseded": [
+    {
+     "eventId": "qe-e-M",
+     "supersededBy": "qe-e-C",
+     "correctedAt": "2026-11-03T12:00:00.000Z"
+    }
+   ],
+   "duplicates": [
+    [
+     "qe-e-W",
+     "qe-e-M"
+    ]
+   ],
+   "excluded": []
+  },
+  "carriedReview": {
+   "live": [],
+   "excluded": [
+    [
+     "qe-e-C",
+     "INVALID_CORRECTION_CHAIN"
+    ]
+   ]
+  },
+  "idempotent": false
+ },
+ "endToEnd": {
+  "week0Review": {
+   "live": [
+    [
+     "qe-e-C",
+     55
+    ]
+   ]
+  },
+  "week1Review": {
+   "live": [],
+   "excluded": [
+    [
+     "qe-e-C",
+     "INVALID_CORRECTION_CHAIN"
+    ]
+   ]
+  }
+ }
+}
+{
+ "probe": "F",
+ "review1": {
+  "duplicates": [
+   [
+    "qe-e-W",
+    "qe-e-M",
+    "SAME_EXECUTION_DIFFERENT_SOURCE"
+   ]
+  ],
+  "runRow": "COMPLETED"
+ },
+ "review2WithoutReplay": {
+  "conflicts": [],
+  "runRow": "COMPLETED",
+  "status": "KEEP",
+  "action": "INSTANTIATE_LOGGED_LOADS"
+ },
+ "review2WithExactReplayOfM": {
+  "conflicts": [
+   {
+    "identity": "session:w0-run-d1",
+    "eventIds": [
+     "qe-e-M"
+    ],
+    "reason": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS"
+   }
+  ],
+  "excluded": [
+   [
+    "qe-e-M",
+    "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS"
+   ]
+  ],
+  "runRow": "CONFLICTED",
+  "status": "MODIFY",
+  "action": "GATED_NEXT_STEP",
+  "gates": {
+   "LONG": "ADVANCE",
+   "EASY": "HOLD",
+   "back-squat": "ADVANCE",
+   "db-bench-press": "ADVANCE",
+   "db-row": "ADVANCE",
+   "db-calf-raise": "ADVANCE",
+   "dead-bug": "ADVANCE",
+   "db-rdl": "ADVANCE",
+   "db-split-squat": "ADVANCE"
+  }
+ },
+ "replayChangesDecision": true
+}

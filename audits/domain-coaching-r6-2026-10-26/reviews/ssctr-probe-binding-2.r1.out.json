@@ -1,0 +1,234 @@
+{
+  "WALK_JOG_COMPATIBLE": [
+    {
+      "w": 0,
+      "ladderStep": 0,
+      "work": {
+        "repetitions": 3,
+        "workSeconds": 30,
+        "recoverySeconds": 120
+      },
+      "role": "WALK_JOG"
+    },
+    {
+      "w": 1,
+      "ladderStep": 1,
+      "work": {
+        "repetitions": 5,
+        "workSeconds": 30,
+        "recoverySeconds": 120
+      },
+      "role": "WALK_JOG"
+    },
+    {
+      "w": 2,
+      "ladderStep": 2,
+      "work": {
+        "repetitions": 5,
+        "workSeconds": 60,
+        "recoverySeconds": 120
+      },
+      "role": "WALK_JOG"
+    },
+    {
+      "w": 3,
+      "ladderStep": 3,
+      "work": {
+        "repetitions": 5,
+        "workSeconds": 90,
+        "recoverySeconds": 120
+      },
+      "role": "WALK_JOG"
+    },
+    {
+      "w": 4,
+      "ladderStep": 4,
+      "work": {
+        "repetitions": 5,
+        "workSeconds": 120,
+        "recoverySeconds": 120
+      },
+      "role": "WALK_JOG"
+    },
+    {
+      "w": 5,
+      "ladderStep": 4,
+      "work": {
+        "repetitions": 5,
+        "workSeconds": 120,
+        "recoverySeconds": 120
+      },
+      "role": "WALK_JOG"
+    }
+  ],
+  "WALK_JOG_EASIER": [
+    {
+      "w": 0,
+      "ladderStep": 0,
+      "work": {
+        "repetitions": 3,
+        "workSeconds": 30,
+        "recoverySeconds": 120
+      },
+      "role": "WALK_JOG"
+    },
+    {
+      "w": 1,
+      "ladderStep": 1,
+      "work": {
+        "repetitions": 5,
+        "workSeconds": 30,
+        "recoverySeconds": 120
+      },
+      "role": "WALK_JOG"
+    },
+    {
+      "w": 2,
+      "ladderStep": 3,
+      "work": {
+        "repetitions": 5,
+        "workSeconds": 90,
+        "recoverySeconds": 120
+      },
+      "role": "WALK_JOG"
+    },
+    {
+      "w": 3,
+      "ladderStep": 5,
+      "work": {
+        "repetitions": 4,
+        "workSeconds": 180,
+        "recoverySeconds": 90
+      },
+      "role": "WALK_JOG"
+    },
+    {
+      "w": 4,
+      "ladderStep": 7,
+      "work": {
+        "repetitions": 2,
+        "workSeconds": 480,
+        "recoverySeconds": 60
+      },
+      "role": "WALK_JOG"
+    },
+    {
+      "w": 5,
+      "ladderStep": 7,
+      "work": {
+        "repetitions": 2,
+        "workSeconds": 480,
+        "recoverySeconds": 60
+      },
+      "role": "WALK_JOG"
+    }
+  ],
+  "RESTART_WITHOUT_RETURN_AUTHORITY": {
+    "status": "PROPOSED",
+    "runClass": "RESTART",
+    "week0": [
+      "EASY:15",
+      "EASY:15",
+      "EASY:15"
+    ],
+    "week3": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:40"
+    ]
+  },
+  "ESTABLISH_ROWS_WITHOUT_LOAD_AUTHORITY": {
+    "status": "PROPOSED",
+    "establishRows": [
+      "db-bench-press",
+      "db-row",
+      "db-calf-raise",
+      "db-split-squat",
+      "db-step-up"
+    ]
+  },
+  "RETURN_WITH_EASIER_RESPONSES": {
+    "returnStatus": "MODIFY",
+    "from": 4,
+    "trail": [
+      {
+        "w": 4,
+        "phase": "DEVELOPMENT",
+        "runs": [
+          "EASY:40",
+          "EASY:15",
+          "LONG:20"
+        ],
+        "gates": {
+          "EASY": "EARNED",
+          "back-squat": "ADVANCE",
+          "db-bench-press": "ADVANCE",
+          "db-row": "ADVANCE",
+          "db-calf-raise": "ADVANCE",
+          "barbell-rdl": "ADVANCE",
+          "db-split-squat": "ADVANCE",
+          "dead-bug": "ADVANCE"
+        }
+      },
+      {
+        "w": 5,
+        "phase": "DEVELOPMENT",
+        "runs": [
+          "EASY:40",
+          "QUALITY:34",
+          "LONG:60"
+        ],
+        "gates": {
+          "LONG": "ADVANCE",
+          "QUALITY": "ADVANCE",
+          "EASY": "EARNED",
+          "back-squat": "ADVANCE",
+          "db-bench-press": "ADVANCE",
+          "db-row": "ADVANCE",
+          "db-calf-raise": "ADVANCE",
+          "dead-bug": "ADVANCE",
+          "barbell-rdl": "ADVANCE",
+          "db-split-squat": "ADVANCE"
+        }
+      },
+      {
+        "w": 6,
+        "phase": "DEVELOPMENT",
+        "runs": [
+          "EASY:40",
+          "QUALITY:41",
+          "LONG:65"
+        ],
+        "gates": {
+          "LONG": "EARNED",
+          "QUALITY": "ADVANCE",
+          "EASY": "EARNED",
+          "back-squat": "ADVANCE",
+          "db-bench-press": "ADVANCE",
+          "db-row": "ADVANCE",
+          "standing-calf-raise": "ADVANCE",
+          "side-plank": "ADVANCE",
+          "barbell-rdl": "ADVANCE",
+          "db-step-up": "ADVANCE"
+        }
+      }
+    ]
+  },
+  "WEEK1_FAMILIAR_QUALITY": {
+    "E": {
+      "reported": 200,
+      "week0": 190,
+      "week1": 196
+    },
+    "qualityFamiliar120": {
+      "status": "PROPOSED",
+      "reported": 120,
+      "week0": 140,
+      "week0Sessions": [
+        "QUALITY:55",
+        "EASY:35",
+        "LONG:50"
+      ]
+    }
+  }
+}

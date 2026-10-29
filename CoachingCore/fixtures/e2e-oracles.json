@@ -1,0 +1,697 @@
+[
+  {
+    "id": "E2E-01",
+    "source": "product/candidates/autonomous-coaching-foundation/1.0.0/END_TO_END_COACHING_SCENARIOS.json#E2E-01",
+    "expected": {
+      "action_class": "KEEP",
+      "effect": "NONE",
+      "adequacy": "ADEQUATE",
+      "necessity": "NOT_REQUIRED",
+      "change_set": []
+    },
+    "autonomy": "A",
+    "mec": 0,
+    "preserve": [
+      "Executed prefix and canonical history",
+      "Accepted target revision",
+      "Unaffected adequate sessions"
+    ],
+    "modify": [],
+    "nextCheck": {
+      "trigger": "Next relevant comparable execution or material context change",
+      "question": "Does current plan remain adequate under the current policy and source quality?"
+    }
+  },
+  {
+    "id": "E2E-02",
+    "source": "product/candidates/autonomous-coaching-foundation/1.0.0/END_TO_END_COACHING_SCENARIOS.json#E2E-02",
+    "expected": {
+      "action_class": "KEEP",
+      "effect": "NONE",
+      "adequacy": "ADEQUATE",
+      "necessity": "NOT_REQUIRED",
+      "change_set": []
+    },
+    "autonomy": "A",
+    "mec": 0,
+    "preserve": [
+      "Executed prefix and canonical history",
+      "Accepted target revision",
+      "Unaffected adequate sessions"
+    ],
+    "modify": [],
+    "nextCheck": {
+      "trigger": "Next relevant comparable execution or material context change",
+      "question": "Does current plan remain adequate under the current policy and source quality?"
+    }
+  },
+  {
+    "id": "E2E-03",
+    "source": "product/candidates/autonomous-coaching-foundation/1.0.0/END_TO_END_COACHING_SCENARIOS.json#E2E-03",
+    "expected": {
+      "action_class": "KEEP",
+      "effect": "NONE",
+      "adequacy": "ADEQUATE",
+      "necessity": "NOT_REQUIRED",
+      "change_set": []
+    },
+    "autonomy": "A",
+    "mec": 0,
+    "preserve": [
+      "Executed prefix and canonical history",
+      "Accepted target revision",
+      "Unaffected adequate sessions"
+    ],
+    "modify": [],
+    "nextCheck": {
+      "trigger": "Next relevant comparable execution or material context change",
+      "question": "Does current plan remain adequate under the current policy and source quality?"
+    }
+  },
+  {
+    "id": "E2E-04",
+    "source": "product/candidates/autonomous-coaching-foundation/1.0.0/END_TO_END_COACHING_SCENARIOS.json#E2E-04",
+    "expected": {
+      "action_class": "REPLAN",
+      "scope": "NEXT_HORIZON",
+      "effect": "PROPOSE_ONLY",
+      "adequacy": "ADEQUATE_CURRENT_WEEK",
+      "necessity": "NOT_APPLICABLE_TO_MUTATING_CURRENT_WEEK",
+      "candidate_ref": "BLOCK-4W/weeks/3",
+      "change_set": [
+        {
+          "session_id": "RF-MON-R",
+          "path": "prescription.steps[1].duration_minutes",
+          "from": 20,
+          "to": 25,
+          "unit": "minutes"
+        },
+        {
+          "session_id": "RF-MON-R",
+          "path": "prescription.total_duration_minutes",
+          "from": 30,
+          "to": 35,
+          "unit": "minutes",
+          "derived": true
+        }
+      ]
+    },
+    "autonomy": "B",
+    "mec": 1,
+    "preserve": [
+      "Executed prefix and canonical history",
+      "Accepted target revision",
+      "Unaffected adequate sessions"
+    ],
+    "modify": [
+      "Next horizon Monday easy30→35 candidate only"
+    ],
+    "nextCheck": {
+      "trigger": "First easy35 execution and next strength session",
+      "question": "Was the added duration compatible while all other dimensions and key quality remained acceptable?"
+    }
+  },
+  {
+    "id": "E2E-05",
+    "source": "product/candidates/autonomous-coaching-foundation/1.0.0/END_TO_END_COACHING_SCENARIOS.json#E2E-05",
+    "expected": {
+      "action_class": "REPLAN",
+      "scope": "NEXT_HORIZON",
+      "effect": "PROPOSE_ONLY",
+      "candidate_ref": "BLOCK-4W/weeks/3",
+      "change_set": [
+        {
+          "session_id": "RF-MON-R",
+          "from_minutes": 30,
+          "to_minutes": 35,
+          "target_unchanged": true
+        }
+      ]
+    },
+    "autonomy": "B",
+    "mec": 1,
+    "preserve": [
+      "Executed prefix and canonical history",
+      "Accepted target revision",
+      "Unaffected adequate sessions"
+    ],
+    "modify": [
+      "Monday easy duration only; warmup/cooldown5+5 retained"
+    ],
+    "nextCheck": {
+      "trigger": "Next relevant comparable execution or material context change",
+      "question": "Does current plan remain adequate under the current policy and source quality?"
+    }
+  },
+  {
+    "id": "E2E-06",
+    "source": "product/candidates/autonomous-coaching-foundation/1.0.0/END_TO_END_COACHING_SCENARIOS.json#E2E-06",
+    "expected": {
+      "action_class": "REPLAN",
+      "scope": "NEXT_HORIZON",
+      "effect": "PROPOSE_ONLY",
+      "candidate": {
+        "exercise": "back_squat",
+        "sets": 3,
+        "reps": 5,
+        "load_kg": 62.5,
+        "target_rir": 2,
+        "rest_seconds": 180
+      },
+      "change_set": [
+        {
+          "path": "back_squat/load_kg",
+          "from": 60,
+          "to": 62.5,
+          "reason": "Smallest supplied available plate pair increment, design choice not physiological threshold"
+        }
+      ]
+    },
+    "autonomy": "B",
+    "mec": 1,
+    "preserve": [
+      "Executed prefix and canonical history",
+      "Accepted target revision",
+      "Unaffected adequate sessions"
+    ],
+    "modify": [
+      "Next horizon squat load only"
+    ],
+    "nextCheck": {
+      "trigger": "Next relevant comparable execution or material context change",
+      "question": "Does current plan remain adequate under the current policy and source quality?"
+    }
+  },
+  {
+    "id": "E2E-07",
+    "source": "product/candidates/autonomous-coaching-foundation/1.0.0/END_TO_END_COACHING_SCENARIOS.json#E2E-07",
+    "expected": {
+      "action_class": "KEEP",
+      "effect": "NONE",
+      "adequacy": "ADEQUATE",
+      "necessity": "NOT_REQUIRED",
+      "change_set": []
+    },
+    "autonomy": "A",
+    "mec": 0,
+    "preserve": [
+      "Next cruise and lower sessions",
+      "Completed160min fact",
+      "Optional20 not completed"
+    ],
+    "modify": [],
+    "nextCheck": {
+      "trigger": "Next scheduling choice or repeated availability conflict",
+      "question": "Is optional work still useful and feasible? Never add make-up by default."
+    }
+  },
+  {
+    "id": "E2E-08",
+    "source": "product/candidates/autonomous-coaching-foundation/1.0.0/END_TO_END_COACHING_SCENARIOS.json#E2E-08",
+    "expected": {
+      "action_class": "MOVE",
+      "effect": "PROPOSE_ONLY",
+      "adequacy": "INADEQUATE_FOR_TODAY_LOWER",
+      "necessity": "REQUIRED_IF_PRESERVING_THIS_WEEK_LOWER",
+      "change_set": [
+        {
+          "session_id": "RF-THU-S",
+          "from": "THU18:00",
+          "to": "FRI18:00",
+          "dose": "UNCHANGED"
+        }
+      ],
+      "candidate_conditions": [
+        "Saturday long is not automatically adequate after move; supplied compatible response/history or revised jointly reviewed candidate required",
+        "If that condition absent HOLD candidate; not infer safety from24h"
+      ]
+    },
+    "autonomy": "D",
+    "mec": 3,
+    "preserve": [
+      "Executed prefix and canonical history",
+      "Accepted target revision",
+      "Unaffected adequate sessions"
+    ],
+    "modify": [
+      "Only lower-session window candidate"
+    ],
+    "nextCheck": {
+      "trigger": "Before candidate lower and long session",
+      "question": "Is function/current context compatible with reviewed dose; do not treat elapsed time as recovery?"
+    }
+  },
+  {
+    "id": "E2E-09",
+    "source": "product/candidates/autonomous-coaching-foundation/1.0.0/END_TO_END_COACHING_SCENARIOS.json#E2E-09",
+    "expected": {
+      "action_class": "ASK",
+      "effect": "NONE",
+      "question": "Is the unusual limitation still present in ordinary movement and familiar easy warmup, and has any illness/pain concern appeared?",
+      "branches": {
+        "recovered_and_context_resolved": "KEEP only if reviewed current adequacy established",
+        "persistent_nonclinical": "HOLD exact long-dose choice; compare reviewed20/30min alternative or omission, not universal reduction",
+        "clinical": "CLINICAL_HUMAN_REQUIRED"
+      },
+      "change_set": []
+    },
+    "autonomy": "C",
+    "mec": 0,
+    "preserve": [
+      "Executed prefix and canonical history",
+      "Accepted target revision",
+      "Unaffected adequate sessions"
+    ],
+    "modify": [],
+    "nextCheck": {
+      "trigger": "Next relevant comparable execution or material context change",
+      "question": "Does current plan remain adequate under the current policy and source quality?"
+    }
+  },
+  {
+    "id": "E2E-10",
+    "source": "product/candidates/autonomous-coaching-foundation/1.0.0/END_TO_END_COACHING_SCENARIOS.json#E2E-10",
+    "expected": {
+      "action_class": "KEEP",
+      "effect": "NONE",
+      "adequacy": "ADEQUATE",
+      "necessity": "NOT_REQUIRED",
+      "change_set": []
+    },
+    "autonomy": "A",
+    "mec": 0,
+    "preserve": [
+      "Actual35min does not rewrite planned30min",
+      "Remaining key sessions",
+      "No inferred new capacity"
+    ],
+    "modify": [
+      "Observation ledger only; no plan delta"
+    ],
+    "nextCheck": {
+      "trigger": "Next comparable key session and reported response",
+      "question": "Any material changed response? One extra easy exposure does not earn volume progression."
+    }
+  },
+  {
+    "id": "E2E-11",
+    "source": "product/candidates/autonomous-coaching-foundation/1.0.0/END_TO_END_COACHING_SCENARIOS.json#E2E-11",
+    "expected": {
+      "action_class": "RECONCILE",
+      "effect": "NONE",
+      "affected_scope": "Cruise actual interpretation/progression only",
+      "change_set": [],
+      "next_fact": "User confirms actual third6min interval with same target intent; append correction, retain device raw record"
+    },
+    "autonomy": "C",
+    "mec": 0,
+    "preserve": [
+      "Executed prefix and canonical history",
+      "Accepted target revision",
+      "Unaffected adequate sessions"
+    ],
+    "modify": [],
+    "nextCheck": {
+      "trigger": "Canonical actual revision corrected",
+      "question": "Re-run comparator against actual3x6; no double count of replacement fact."
+    }
+  },
+  {
+    "id": "E2E-12",
+    "source": "product/candidates/autonomous-coaching-foundation/1.0.0/END_TO_END_COACHING_SCENARIOS.json#E2E-12",
+    "expected": {
+      "action_class": "KEEP",
+      "effect": "NONE",
+      "adequacy": "ADEQUATE",
+      "necessity": "NOT_REQUIRED",
+      "change_set": []
+    },
+    "autonomy": "A",
+    "mec": 0,
+    "preserve": [
+      "Executed prefix and canonical history",
+      "Accepted target revision",
+      "Unaffected adequate sessions"
+    ],
+    "modify": [],
+    "nextCheck": {
+      "trigger": "Comparable later double or material context change",
+      "question": "Does the learned pattern remain scope-matched without new confounding?"
+    }
+  },
+  {
+    "id": "E2E-13",
+    "source": "product/candidates/autonomous-coaching-foundation/1.0.0/END_TO_END_COACHING_SCENARIOS.json#E2E-13",
+    "expected": {
+      "action_class": "HOLD",
+      "effect": "NONE",
+      "candidate_ref": "WEEK-RACE-CANDIDATE",
+      "change_set": [],
+      "reason": "Exact combined race-week prescription remains independently reviewable candidate; no runtime adoption from endurance meta alone"
+    },
+    "autonomy": "D",
+    "mec": 5,
+    "preserve": [
+      "Executed prefix and canonical history",
+      "Accepted target revision",
+      "Unaffected adequate sessions"
+    ],
+    "modify": [
+      "Candidate only: familiar non-event run75min + maintenance strength40min +10km event; no applied change"
+    ],
+    "nextCheck": {
+      "trigger": "SSCTR/human combined witness review or actual event-context change",
+      "question": "Can this exact event/priority/recipe combination be supported with clear trade-off and follow-up?"
+    }
+  },
+  {
+    "id": "E2E-14",
+    "source": "product/candidates/autonomous-coaching-foundation/1.0.0/END_TO_END_COACHING_SCENARIOS.json#E2E-14",
+    "expected": {
+      "action_class": "ASK",
+      "effect": "NONE",
+      "question": "Is comfortable ordinary movement and a familiar easy/walk start currently feasible without new concern?",
+      "branches": {
+        "current_context_known_and_recipe_supported": "Propose named20min reassessment; B, no claim old capacity restored",
+        "unknown_or_unsupported": "D HOLD dependent return dose",
+        "clinical_concern": "E CLINICAL_HUMAN_REQUIRED"
+      },
+      "change_set": []
+    },
+    "autonomy": "C",
+    "mec": 0,
+    "preserve": [
+      "Executed prefix and canonical history",
+      "Accepted target revision",
+      "Unaffected adequate sessions"
+    ],
+    "modify": [],
+    "nextCheck": {
+      "trigger": "Before and after first reviewed reassessment",
+      "question": "Interpret actual response before constructing next horizon; no automatic ramp."
+    }
+  },
+  {
+    "id": "E2E-15",
+    "source": "product/candidates/autonomous-coaching-foundation/1.0.0/END_TO_END_COACHING_SCENARIOS.json#E2E-15",
+    "expected": {
+      "action_class": "KEEP",
+      "effect": "NONE",
+      "execution_branch": "CRUISE-END-AFTER2",
+      "actual_suffix": {
+        "cooldown_minutes": 8,
+        "unperformed_third_repetition_minutes": 6,
+        "unperformed_second_recovery_minutes": 2
+      },
+      "actual_total_minutes": 32,
+      "actual_work_minutes": 12,
+      "change_set": [],
+      "interpretation": "Executing preaccepted option; original3x6 and chosen branch remain distinct from actual2x6. Not new mutation or failure against rejected target."
+    },
+    "autonomy": "A",
+    "mec": 0,
+    "preserve": [
+      "Immutable24min prefix",
+      "Original planned3x6",
+      "Executed branch and actual2x6",
+      "User may stop at any time"
+    ],
+    "modify": [
+      "Actual observation only; plan content not rewritten"
+    ],
+    "nextCheck": {
+      "trigger": "Reconciled session response and next relevant run",
+      "question": "Is future plan still adequate? No progression inferred from reduced execution."
+    }
+  },
+  {
+    "id": "E2E-16",
+    "source": "product/candidates/autonomous-coaching-foundation/1.0.0/END_TO_END_COACHING_SCENARIOS.json#E2E-16",
+    "expected": {
+      "action_class": "MOVE",
+      "scope": "NEXT_HORIZON",
+      "effect": "PROPOSE_ONLY",
+      "without_pattern": {
+        "decision": "C ASK_OR_COMPARE",
+        "reason": "No priority-only interference conclusion"
+      },
+      "with_pattern": {
+        "decision": "B SUGGEST_AND_CONFIRM",
+        "candidate": "Retain lowerMON18:00 and cruiseTHU07:00; move affected availability commitment rather than weaken either goal if user can choose",
+        "reason": "Use repeated personal compatibility to rank admissible candidate; if Monday unavailable, ASK explicit copriority trade-off"
+      },
+      "change_set": [
+        {
+          "session_id": "future_lower",
+          "from": "WED18:00 candidate",
+          "to": "MON18:00 admissible candidate",
+          "dose": "UNCHANGED"
+        }
+      ]
+    },
+    "autonomy": "B",
+    "mec": 3,
+    "preserve": [
+      "Both coprimary stimuli",
+      "Lower and cruise doses",
+      "Current adequate week until next-horizon adoption"
+    ],
+    "modify": [
+      "Future schedule proposal and scoped Athlete Model; not a physiological rule"
+    ],
+    "nextCheck": {
+      "trigger": "Next matched exposures, or any pattern invalidation event",
+      "question": "Does the narrower pattern still predict compatibility, and are source/confounder conditions stable?"
+    }
+  },
+  {
+    "id": "E2E-17",
+    "source": "product/candidates/autonomous-coaching-foundation/1.0.0/END_TO_END_COACHING_SCENARIOS.json#E2E-17",
+    "expected": {
+      "action_class": "ASK",
+      "effect": "NONE",
+      "question": "Choose a feasible later rack window, or explicitly trade this session development intent for the reviewed support configuration?",
+      "admissible_candidates": [
+        "Move unchanged lower to feasible reviewed window B",
+        "Separate accepted support intent goblet2x8@16kg/RIR3/rest120 plus familiar accessories only after exact review B"
+      ],
+      "change_set": []
+    },
+    "autonomy": "C",
+    "mec": 0,
+    "preserve": [
+      "Executed prefix and canonical history",
+      "Accepted target revision",
+      "Unaffected adequate sessions"
+    ],
+    "modify": [],
+    "nextCheck": {
+      "trigger": "Equipment window/goal choice supplied",
+      "question": "Recheck horizon and substitute-specific response; never equate kg across configurations."
+    }
+  },
+  {
+    "id": "E2E-18",
+    "source": "product/candidates/autonomous-coaching-foundation/1.0.0/END_TO_END_COACHING_SCENARIOS.json#E2E-18",
+    "expected": {
+      "action_class": "ASK",
+      "effect": "NONE",
+      "question": "Is another40min window feasible, or should this occurrence lose threshold-intent work with an explicit reviewed alternate?",
+      "candidates": [
+        {
+          "name": "Move unchanged40min recipe",
+          "mec": 3
+        },
+        {
+          "name": "Separately reviewed easy30 with disclosed lost threshold stimulus",
+          "mec": 4
+        }
+      ],
+      "change_set": []
+    },
+    "autonomy": "C",
+    "mec": 0,
+    "preserve": [
+      "Executed prefix and canonical history",
+      "Accepted target revision",
+      "Unaffected adequate sessions"
+    ],
+    "modify": [],
+    "nextCheck": {
+      "trigger": "Next relevant comparable execution or material context change",
+      "question": "Does current plan remain adequate under the current policy and source quality?"
+    }
+  },
+  {
+    "id": "E2E-19",
+    "source": "product/candidates/autonomous-coaching-foundation/1.0.0/END_TO_END_COACHING_SCENARIOS.json#E2E-19",
+    "expected": {
+      "action_class": "KEEP",
+      "effect": "NONE",
+      "adequacy": "ADEQUATE_FOR_NARROW_FAMILIAR_SCOPE",
+      "necessity": "NOT_REQUIRED",
+      "change_set": []
+    },
+    "autonomy": "A",
+    "mec": 0,
+    "preserve": [
+      "Executed prefix and canonical history",
+      "Accepted target revision",
+      "Unaffected adequate sessions"
+    ],
+    "modify": [],
+    "nextCheck": {
+      "trigger": "Next relevant comparable execution or material context change",
+      "question": "Does current plan remain adequate under the current policy and source quality?"
+    }
+  },
+  {
+    "id": "E2E-20",
+    "source": "product/candidates/autonomous-coaching-foundation/1.0.0/END_TO_END_COACHING_SCENARIOS.json#E2E-20",
+    "expected": {
+      "action_class": "REPLAN",
+      "scope": "INITIAL_NOVICE_SPECIFIC",
+      "effect": "PROPOSE_ONLY",
+      "change_set": [],
+      "candidate_refs": [
+        "E2E-20/candidate_weeks/ATH-RN",
+        "E2E-20/candidate_weeks/ATH-SN"
+      ]
+    },
+    "autonomy": "B",
+    "mec": 0,
+    "preserve": [
+      "Executed prefix and canonical history",
+      "Accepted target revision",
+      "Unaffected adequate sessions"
+    ],
+    "modify": [],
+    "nextCheck": {
+      "trigger": "Each familiar learning session response",
+      "question": "Is technique/effort interpretation sufficient for this same configuration? Never infer from other modality."
+    }
+  },
+  {
+    "id": "E2E-21",
+    "source": "product/candidates/autonomous-coaching-foundation/1.0.0/END_TO_END_COACHING_SCENARIOS.json#E2E-21",
+    "expected": {
+      "action_class": "ASK",
+      "effect": "NONE",
+      "question": "For this affected horizon, which named key stimulus may yield, or can a new compatible window be opened?",
+      "candidates": [
+        {
+          "preserve": "Lower strength",
+          "lose": "Cruise intent"
+        },
+        {
+          "preserve": "Cruise intent",
+          "lose": "Lower development"
+        }
+      ],
+      "change_set": []
+    },
+    "autonomy": "C",
+    "mec": 0,
+    "preserve": [
+      "Executed prefix and canonical history",
+      "Accepted target revision",
+      "Unaffected adequate sessions"
+    ],
+    "modify": [],
+    "nextCheck": {
+      "trigger": "Next relevant comparable execution or material context change",
+      "question": "Does current plan remain adequate under the current policy and source quality?"
+    }
+  },
+  {
+    "id": "E2E-22",
+    "source": "product/candidates/autonomous-coaching-foundation/1.0.0/END_TO_END_COACHING_SCENARIOS.json#E2E-22",
+    "expected": {
+      "action_class": "KEEP",
+      "effect": "NONE",
+      "adequacy": "ADEQUATE",
+      "necessity": "NOT_REQUIRED",
+      "change_set": []
+    },
+    "autonomy": "A",
+    "mec": 0,
+    "preserve": [
+      "Executed prefix and canonical history",
+      "Accepted target revision",
+      "Unaffected adequate sessions"
+    ],
+    "modify": [],
+    "nextCheck": {
+      "trigger": "Next relevant comparable execution or material context change",
+      "question": "Does current plan remain adequate under the current policy and source quality?"
+    }
+  },
+  {
+    "id": "E2E-23",
+    "source": "product/candidates/autonomous-coaching-foundation/1.0.0/END_TO_END_COACHING_SCENARIOS.json#E2E-23",
+    "expected": {
+      "action_class": "REPLAN",
+      "scope": "NEXT_HORIZON",
+      "effect": "PROPOSE_ONLY",
+      "candidate": {
+        "exercise": "back_squat",
+        "sets": 3,
+        "reps": 5,
+        "load_kg": 57.5,
+        "target_rir": 2,
+        "rest_seconds": 180
+      },
+      "change_set": [
+        {
+          "path": "back_squat/load_kg",
+          "from": 60,
+          "to": 57.5,
+          "reason": "One supplied equipment decrement, exact reversible candidate; target effort not guaranteed"
+        }
+      ],
+      "current_week": "Completed work unchanged; no retroactive target rewrite"
+    },
+    "autonomy": "B",
+    "mec": 2,
+    "preserve": [
+      "Actual5/5/3 and5/4/3 histories",
+      "Other exercises and running",
+      "Intended controlled nonfailure effort"
+    ],
+    "modify": [
+      "Next horizon squat60→57.5kg candidate only"
+    ],
+    "nextCheck": {
+      "trigger": "First57.5kg3x5 execution",
+      "question": "Was intended technique/effort restored? Hold progression/reassess if not; no endless automatic load decrements."
+    }
+  },
+  {
+    "id": "E2E-24",
+    "source": "product/candidates/autonomous-coaching-foundation/1.0.0/END_TO_END_COACHING_SCENARIOS.json#E2E-24",
+    "expected": {
+      "action_class": "KEEP",
+      "effect": "NONE",
+      "execution_branch": "LOWER-OPTIONAL-CALF-OMIT",
+      "change_set": [],
+      "actual_work_sets": 7,
+      "planned_work_sets": 9,
+      "interpretation": "Branch execution, not new plan mutation or equivalent complete original9sets"
+    },
+    "autonomy": "A",
+    "mec": 0,
+    "preserve": [
+      "Actual7work sets",
+      "Original9set plan and exact accepted branch",
+      "Squat/hinge intent",
+      "No invented return/clinical clearance"
+    ],
+    "modify": [
+      "Execution record only; calf2sets remain unperformed"
+    ],
+    "nextCheck": {
+      "trigger": "Before next calf-demanding or running session",
+      "question": "Is relevant function still limited and is planned dose adequate? Do not infer recovered from hours elapsed."
+    }
+  }
+]

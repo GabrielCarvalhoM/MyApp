@@ -1,0 +1,295 @@
+{
+  "revision": "R6-DELIVERABLE-1",
+  "topic": "PROVENANCE_TIME_R6",
+  "generatedAt": "2026-10-27T05:03:30.462Z",
+  "authority": "CURRENT_INDEPENDENT_REVIEW",
+  "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+  "sourceDigest": "507f35fc66f4d1e105e19ce513dc067f9fee5fdc35c039ad52a8c825e46bf857",
+  "freezeRevision": "R6-FREEZE-1",
+  "runtimeState": "NOT_FROZEN_AFTER_FREEZE_1: the SSCTR refused FREEZE-2 in round 12 and R6 closed with an explicit blocker (OPEN_GAPS_R6); the runtime files listed are the current, unfrozen ones, while the simulation, demonstration and R5 replay outputs cited are the FREEZE-1 ones",
+  "boundaries": [
+    {
+      "boundaryId": "R6-PARTIAL-NOISY-LEARNING",
+      "enabled": "APPROVED",
+      "ssctr": {
+        "disposition": "APPROVE_WITH_CONDITIONS",
+        "evidence": null,
+        "conditions": [
+          "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+          "Binding: this record binds canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c (value.mjs hash). Any policy byte change invalidates it; any change to the runtime functions named in requiredRuntimeChanges needs a delta binding review before runtime freeze.",
+          "Operational values are reversible coaching choices inside the envelope, never physiological thresholds, injury-prevention rules, readiness scores, finish-time promises or individual-response predictions.",
+          "Steps advance only on executed comparable work without an adverse signal; nothing progresses from elapsed calendar time alone; completed history and official plan state stay immutable.",
+          "Causal time: no future or future-reported facts; day-precision facts receive the latest causal instant of that local day; clock skew beyond futureClockSkewSeconds is excluded.",
+          "Duplicates merge; the same event identifier with different facts and disagreeing duplicates are quarantined; stale facts beyond maximumAgeDays leave learning and gating but stay in the completed-work ledger.",
+          "Partial executions count only for adherence and hold the step; missing effort or heart rate is unknown, never adverse.",
+          "Comparability: identical prescription hash and arrangement pool across FOUNDATION/BUILD/DEVELOPMENT/SPECIFIC/CONSOLIDATION/ESTABLISHMENT labels; TAPER, EVENT/RACE_WEEK, POST_EVENT, REVIEW and RETURN/RESTART-mode observations never pool with build-class observations.",
+          "Consolidation-week observations may support HOLD or REGRESS but not EARNED surplus.",
+          "Arrangement-preference queries include the phase class and a dose key; outputs are associative ranking among admissible options only, never dose authority, causal or clinical inference.",
+          "G03 adherence/comparability semantics remain jointly owned by Product/UX and Data; this record does not close G03.",
+          "The completed-work record is append-only: a report conflicting with another for the same session (same event identifier with different facts, different physical facts or responses, or one wearable activity bound to two sessions) stays recorded, flagged and quarantined; the session is CONFLICTED for gating and its facts count for neither capacity, learning, load adoption or confirmation, nor the strength resume clock until a correction resolves them (author-found with D52); a report dated before its activity is rejected.",
+          "Without learning consent the athlete model stays empty and no athlete-specific pattern changes the plan; gating on the plan's own completed-work record does not depend on learning consent; the privacy scope of consent stays with Product/Data.",
+          "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+        ]
+      },
+      "envelope": {
+        "claim": "Imperfect real-world observations can inform near-term coaching (hold, advance, regress, rank) when provenance, comparability, recency, consistency and hysteresis are kept, without causal or physiological claims.",
+        "limits": [
+          "partial work informs only the observed component and adherence",
+          "missing effort or heart rate is unknown, not adverse",
+          "duplicates merge, conflicts quarantine, stale data expires",
+          "Build-phase labels (foundation, development, specific, consolidation) are operational partitions: observations of the identical prescription and arrangement stay comparable across them; taper, race week, post-event and return phases never pool with build phases"
+        ]
+      }
+    }
+  ],
+  "policyValues": {
+    "learning": {
+      "maximumAgeDays": 56,
+      "emergingSessions": 3,
+      "emergingSpanDays": 7,
+      "strongSessions": 4,
+      "strongSpanDays": 14,
+      "repeatedAdverseForRegression": 2,
+      "repeatedAdverseWindowDays": 14,
+      "earnedProgressionSessions": 3,
+      "futureClockSkewSeconds": 300,
+      "comparablePhaseClasses": {
+        "BUILD": [
+          "FOUNDATION",
+          "DEVELOPMENT",
+          "SPECIFIC",
+          "BUILD",
+          "CONSOLIDATION",
+          "ESTABLISHMENT"
+        ],
+        "TAPER": [
+          "TAPER"
+        ],
+        "EVENT": [
+          "EVENT",
+          "RACE_WEEK"
+        ],
+        "POST_EVENT": [
+          "POST_EVENT"
+        ],
+        "REVIEW": [
+          "REVIEW",
+          "NEXT_BLOCK"
+        ]
+      },
+      "pooling": {
+        "buildClassModesExcluded": [
+          "RETURN",
+          "RESTART"
+        ],
+        "separateClasses": [
+          "TAPER",
+          "EVENT",
+          "POST_EVENT",
+          "REVIEW"
+        ],
+        "consolidationFeedsEarned": false,
+        "arrangementPreferenceQuery": "sessionType + phaseClass + doseKey (quality family, ladder and step of the current quality session); no query without a current quality dose"
+      },
+      "missingGate": "A run dimension or exercise with no executed session in the reviewed week has no gate and holds; in a conditional projection a run dimension advances only when the week plans a session of it (SSCTR D46), and restart and return sessions of any role gate on EASY there, as in reviews (SSCTR R13). Such a dimension never counts as an executed week, never unlocks quality or strides and never converts a walk. A week with no easy run planned (every easy day a walk) uses the executed long run for the development-week count and the walk conversion instead; the first converted walk becomes an easy run at run.minimumSessionMinutes that then progresses like the others (SSCTR R12).",
+      "conflicts": "A report that conflicts with another for the same session (same event id with different facts, different physical facts or responses, or one wearable activity bound to two sessions) stays in the completed-work record, flagged, and is quarantined: the session is CONFLICTED for gating and the facts count for neither capacity nor learning until a correction resolves them. A report dated before the activity it reports is rejected.",
+      "consentScope": "Without learning consent the athlete model stays empty and no athlete-specific pattern (learned rearrangement or learned preference) changes the plan; gating on the plan’s own completed-work record does not depend on learning consent."
+    }
+  },
+  "runtime": [
+    {
+      "file": "CoachingCore/src/r6-provenance.mjs",
+      "functions": [
+        "utcTimestamp",
+        "normalizeObservations",
+        "localDate"
+      ],
+      "sha256": "3fc773b2bb6296b562c6251fda6cce7ce323d787b3bb369e9ff133c1dc1979d0"
+    },
+    {
+      "file": "CoachingCore/scripts/evaluate-holdout-r6.mjs",
+      "functions": [
+        "factObservation",
+        "nativeObservation"
+      ],
+      "sha256": "6d08d2021cb5aba597821b6544d6472b96a341f74a450229f2d12a07e2b2ce4c"
+    }
+  ],
+  "evidence": {
+    "tests": [
+      {
+        "file": "CoachingCore/test/r6-adaptation.test.mjs",
+        "name": "Adaptation: invalid chronology, missing timezone or stale eligibility hold or ask rather than guess"
+      },
+      {
+        "file": "CoachingCore/test/r6-adaptation.test.mjs",
+        "name": "Adaptation: duplicates, conflicts and future facts never double-count or change a past decision"
+      },
+      {
+        "file": "CoachingCore/test/r6-balanced-provenance.test.mjs",
+        "name": "Provenance: a future observation never informs a past decision; small clock skew is quarantined"
+      },
+      {
+        "file": "CoachingCore/test/r6-balanced-provenance.test.mjs",
+        "name": "Provenance: a report made after the decision clock is not available even for an earlier execution"
+      },
+      {
+        "file": "CoachingCore/test/r6-balanced-provenance.test.mjs",
+        "name": "Provenance: timezone offsets normalize to UTC and bind to the local day; day precision uses the latest causal instant"
+      },
+      {
+        "file": "CoachingCore/test/r6-balanced-provenance.test.mjs",
+        "name": "Provenance: out-of-order arrival is ordered by event time; corrections supersede"
+      },
+      {
+        "file": "CoachingCore/test/r6-balanced-provenance.test.mjs",
+        "name": "Provenance: manual + wearable duplicates merge without double counting; contradictory reports quarantine"
+      },
+      {
+        "file": "CoachingCore/test/r6-balanced-provenance.test.mjs",
+        "name": "Provenance: stale observations expire for learning windows"
+      },
+      {
+        "file": "CoachingCore/test/r6-intake-program.test.mjs",
+        "name": "R6 intake: partial wearable history is a conservative lower bound with provenance; duplicates removed"
+      },
+      {
+        "file": "CoachingCore/test/r6-r5-regression.test.mjs",
+        "name": "Root cause STALE_ALTERNATIVE_POISONS_BASELINE (H24): stale alternatives are excluded individually; replays and contradictions never count"
+      },
+      {
+        "file": "CoachingCore/test/r6-r5-regression.test.mjs",
+        "name": "Root cause ADAPTER_CLOCK (H07/H08/H10/H11): an omitted time never becomes a clock after the review"
+      },
+      {
+        "file": "CoachingCore/test/r6-r5-regression.test.mjs",
+        "name": "Adapter: day-precision facts take the latest causal instant of the session day"
+      }
+    ],
+    "demonstrations": [
+      {
+        "id": "G",
+        "title": "Partial session → learning update without overreaction",
+        "selected": "GATED_NEXT_STEP"
+      }
+    ],
+    "trajectories": [
+      {
+        "id": "T09_PARTIAL_WEARABLE12_NOISY",
+        "horizon": 12,
+        "allInvariantsHold": true,
+        "actions": {
+          "INSTANTIATE_LOGGED_LOADS": 2,
+          "KEEP": 8,
+          "GATED_NEXT_STEP": 2
+        }
+      }
+    ],
+    "r5Regression": [
+      {
+        "caseId": "R5-H07",
+        "r5Classification": "INSUFFICIENT_INFORMATION",
+        "rootCause": "ADAPTER_CLOCK_AND_STRUCTURED_TOTALS",
+        "resultR6": "KEEP",
+        "classificationR6": "BEST_SUPPORTED"
+      },
+      {
+        "caseId": "R5-H08",
+        "r5Classification": "INSUFFICIENT_INFORMATION",
+        "rootCause": "ADAPTER_CLOCK_AND_PHASE_COMPARABILITY",
+        "resultR6": "MODIFY",
+        "classificationR6": "BEST_SUPPORTED"
+      },
+      {
+        "caseId": "R5-H10",
+        "r5Classification": "INSUFFICIENT_INFORMATION",
+        "rootCause": "ADAPTER_CLOCK",
+        "resultR6": "KEEP",
+        "classificationR6": "BEST_SUPPORTED"
+      },
+      {
+        "caseId": "R5-H11",
+        "r5Classification": "SUBOPTIMAL",
+        "rootCause": "BALANCED_INPUT_ORDER_AND_ADAPTER_CLOCK",
+        "resultR6": "KEEP",
+        "classificationR6": "BEST_SUPPORTED"
+      },
+      {
+        "caseId": "R5-H24",
+        "r5Classification": "UNSUPPORTED",
+        "rootCause": "STALE_ALTERNATIVE_POISONS_BASELINE",
+        "resultR6": "KEEP",
+        "classificationR6": "ACCEPTABLE_ALTERNATIVE"
+      }
+    ],
+    "freshHoldout": [
+      {
+        "caseId": "R6-H03",
+        "family": "COLD_START",
+        "classification": "UNSUPPORTED"
+      },
+      {
+        "caseId": "R6-H09",
+        "family": "COLD_START",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H16",
+        "family": "BALANCED_CONFLICT",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H20",
+        "family": "ADAPTATION",
+        "classification": "CORPUS_ERROR"
+      },
+      {
+        "caseId": "R6-H32",
+        "family": "DATA_QUALITY",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H33",
+        "family": "DATA_QUALITY",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      }
+    ]
+  },
+  "coverage": {
+    "clockSkew": [
+      "Provenance: a future observation never informs a past decision; small clock skew is quarantined"
+    ],
+    "timezone": [
+      "Adaptation: invalid chronology, missing timezone or stale eligibility hold or ask rather than guess",
+      "Provenance: timezone offsets normalize to UTC and bind to the local day; day precision uses the latest causal instant"
+    ],
+    "outOfOrder": [
+      "Provenance: out-of-order arrival is ordered by event time; corrections supersede"
+    ],
+    "futureObservation": [
+      "Adaptation: mid-week reviews never gate next week as if future sessions were missed",
+      "Adaptation: a schedule change re-arranges future weeks on the new chosen days only",
+      "Adaptation: duplicates, conflicts and future facts never double-count or change a past decision",
+      "Provenance: a future observation never informs a past decision; small clock skew is quarantined"
+    ],
+    "duplicates": [
+      "Adaptation: duplicates, conflicts and future facts never double-count or change a past decision",
+      "Provenance: manual + wearable duplicates merge without double counting; contradictory reports quarantine",
+      "QRE-R6-08: an invalid schedule change is asked about; validation rejects duplicate sessions and key runs sharing a date",
+      "R6 intake: partial wearable history is a conservative lower bound with provenance; duplicates removed"
+    ],
+    "staleEvents": [
+      "Adaptation: invalid chronology, missing timezone or stale eligibility hold or ask rather than guess",
+      "Provenance: stale observations expire for learning windows",
+      "Root cause STALE_ALTERNATIVE_POISONS_BASELINE (H24): stale alternatives are excluded individually; replays and contradictions never count"
+    ]
+  },
+  "inputs": {
+    "simulation": "CoachingCore/r6/SIMULATION_RESULTS_R6.json",
+    "demonstrations": "CoachingCore/r6/DEMONSTRATIONS_R6.json",
+    "r5Replay": "CoachingCore/r6/R5_HOLDOUT_REPLAY_R6.json",
+    "ssctrReview": "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-policy-review.json",
+    "r5RegressionReview": "audits/domain-coaching-r6-2026-10-26/reviews/r5-regression-review.json",
+    "coachingReview": "audits/domain-coaching-r6-2026-10-26/reviews/coaching-quality-holdout-review.json"
+  }
+}

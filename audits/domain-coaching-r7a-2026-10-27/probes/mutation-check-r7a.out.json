@@ -1,0 +1,291 @@
+{
+ "check": "R7A-MUTATION-2",
+ "runAt": "2026-10-27T17:19:57.788Z",
+ "scope": "test/r7a-semantic-core.test.mjs + test/r7a-cycle2.test.mjs against single-fix reverts in a temporary copy",
+ "caught": 33,
+ "total": 34,
+ "documentedSurvivors": 1,
+ "undocumentedSurvivors": [],
+ "results": [
+  {
+   "mutation": "D53 regain only for a known-load state",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A state composition (D53): after a performed re-establishment the count rises at most one set per week for every state mode"
+   ]
+  },
+  {
+   "mutation": "D54 re-establishment skips the phase reduction",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A phase integrity (D54 metamorphic): a re-establishment due in a taper, race-window or post-event session never exceeds the twin executed throughout"
+   ]
+  },
+  {
+   "mutation": "C17 validation without the phase-dose check",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: an event change in the middle of a week validates with its executed sessions as they were done (QE-R7A-04; INV-02, INV-10)",
+    "R7-A phase integrity (C17): the final validation rejects a strength row above its day phase dose, whatever produced it"
+   ]
+  },
+  {
+   "mutation": "R19 the last prescribed exposure decides the week",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A state composition (R19): the week follows the executed exposure, not the last prescribed one"
+   ]
+  },
+  {
+   "mutation": "Counts from the first executed exposure",
+   "applied": true,
+   "caught": false,
+   "failingTests": [],
+   "documented": "Not pinned by any R7-A test: a known test gap, not an equivalent mutant. The engineering re-check (QE-R7A-22, R7A-QE-r2) reached it: after a return, a systemic-fatigue reduction in the middle of a set-cap week; R7A-FREEZE-2 keeps the cap there (correct) and the revert releases it. The author's reach search (probes/r7a-mutant-reach-search.out.json, A = 0) was too narrow. Pinned in the first cycle (13/13) while the ceiling read the last exposure; carried open and non-blocking"
+  },
+  {
+   "mutation": "C11 every exercise in the state decides the entry week",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A state composition (C11): an exercise not in use carries no weight in the return-entry decision"
+   ]
+  },
+  {
+   "mutation": "C12 a set without reps counts as zero reps",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A canonical input (C12, gates.missingLogs): sets logged without repetitions hold the step and never regress it"
+   ]
+  },
+  {
+   "mutation": "C16 a dated change is applied from next week",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A canonical input (C16): a change stated for dates is never applied beyond them"
+   ]
+  },
+  {
+   "mutation": "C18 a race is complete only near its window",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A reconstruction (C18): a race finished faster than its window is a completed race (operational.event.raceDay window)"
+   ]
+  },
+  {
+   "mutation": "C10 the carried record drops superseded facts",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: the carried record round-trips: a correction of a merged report and an exact replay change nothing in the next review (QE-R7A-08, QE-R7A-09; INV-10)",
+    "R7-A canonical input (C10): a correction survives the carried record; normalization of the carried record is idempotent"
+   ]
+  },
+  {
+   "mutation": "C10 normalizer forgets carried history",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: the carried record round-trips: a correction of a merged report and an exact replay change nothing in the next review (QE-R7A-08, QE-R7A-09; INV-10)",
+    "R7-A cycle 2: only a carried row can be history; a new report flagged superseded is a live report and passes every check (QE-R7A-16; INV-10)",
+    "R7-A canonical input (C10): a correction survives the carried record; normalization of the carried record is idempotent"
+   ]
+  },
+  {
+   "mutation": "C09 exercise logs ignored when two reports agree on time",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: two reports of one session that disagree on repetitions, reserve or load are a conflict in any order and units (QE-R7A-06, QE-R7A-07; INV-08, INV-09)",
+    "R7-A canonical input (C09): two reports of one strength session with contradictory loads are a conflict in either order; agreeing ones merge"
+   ]
+  },
+  {
+   "mutation": "C07 last record wins",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: intake records of one exercise merge by what they say: a label never decides, instants compare as instants, a record without a load keeps the hint (QE-R7A-13; INV-06, INV-07)",
+    "R7-A canonical input (C07): strength records merge independently of order and source; an incomplete record never displaces a complete dose"
+   ]
+  },
+  {
+   "mutation": "QE-01 a same-week review ignores the return stored for next week",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "test\\r7a-cycle2.test.mjs",
+    "test\\r7a-semantic-core.test.mjs"
+   ]
+  },
+  {
+   "mutation": "QE-02 a session later the same day is not ahead",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: a return reported on the morning of a session re-doses that unreported session; one already reported keeps its dose (QE-R7A-02; return policy; INV-04)",
+    "R7-A cycle 2: an event date that reaches this week re-plans its remaining days under the new phases, later same-week proposals validate, and a postponed race leaves no old race (QE-R7A-03, QE-R7A-04; operational.event; INV-02)"
+   ]
+  },
+  {
+   "mutation": "QE-03 an event change never reaches this week",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: an event date that reaches this week re-plans its remaining days under the new phases, later same-week proposals validate, and a postponed race leaves no old race (QE-R7A-03, QE-R7A-04; operational.event; INV-02)",
+    "R7-A cycle 2: an event change in the middle of a week validates with its executed sessions as they were done (QE-R7A-04; INV-02, INV-10)"
+   ]
+  },
+  {
+   "mutation": "QE-04 executed history re-validated against new phases",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: an event change in the middle of a week validates with its executed sessions as they were done (QE-R7A-04; INV-02, INV-10)"
+   ]
+  },
+  {
+   "mutation": "QE-05 a second report replaces the exercise list",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: an agreeing second report of a strength session changes nothing, whatever it lists, omits or is labelled (QE-R7A-05; INV-07, INV-08)"
+   ]
+  },
+  {
+   "mutation": "QE-06 repetitions and reserve not compared per exercise",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: two reports of one session that disagree on repetitions, reserve or load are a conflict in any order and units (QE-R7A-06, QE-R7A-07; INV-08, INV-09)"
+   ]
+  },
+  {
+   "mutation": "QE-07 a load in pounds is no load",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: two reports of one session that disagree on repetitions, reserve or load are a conflict in any order and units (QE-R7A-06, QE-R7A-07; INV-08, INV-09)"
+   ]
+  },
+  {
+   "mutation": "QE-08 a carried superseded row answers only to its own id",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: the carried record round-trips: a correction of a merged report and an exact replay change nothing in the next review (QE-R7A-08, QE-R7A-09; INV-10)"
+   ]
+  },
+  {
+   "mutation": "QE-09 an exact replay compared with the merged row",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: the carried record round-trips: a correction of a merged report and an exact replay change nothing in the next review (QE-R7A-08, QE-R7A-09; INV-10)"
+   ]
+  },
+  {
+   "mutation": "QE-10 a move ignores the dose its new date allows",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: a session moved to another date is never prescribed a dose that date does not allow (QE-R7A-10; SSCTR D52; principle 8)"
+   ]
+  },
+  {
+   "mutation": "QE-11 malformed window dates read as a window",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: a dated change with dates the plan cannot use is asked, never applied (QE-R7A-11; INV-11)"
+   ]
+  },
+  {
+   "mutation": "QE-12 logged repetitions replace the target on any gate",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: HOLD and REGRESS repeat the planned repetitions; a short set never becomes the target (QE-R7A-12; strength gates)"
+   ]
+  },
+  {
+   "mutation": "QE-12 a newly established load keeps the old repetition target",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: HOLD and REGRESS repeat the planned repetitions; a short set never becomes the target (QE-R7A-12; strength gates)"
+   ]
+  },
+  {
+   "mutation": "QE-13 the label breaks a same-date tie",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: intake records of one exercise merge by what they say: a label never decides, instants compare as instants, a record without a load keeps the hint (QE-R7A-13; INV-06, INV-07)"
+   ]
+  },
+  {
+   "mutation": "QE-14 the projection reads the untrimmed count",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: only a time-budget fit is not a reduction; a fatigue reduction after a re-establishment keeps the regain cap (QE-R7A-14; SSCTR D53 Q1, item 7; INV-03)"
+   ]
+  },
+  {
+   "mutation": "R20 the ceiling reads the last exposure, not the largest whole count",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: only a time-budget fit is not a reduction; a fatigue reduction after a re-establishment keeps the regain cap (QE-R7A-14; SSCTR D53 Q1, item 7; INV-03)"
+   ]
+  },
+  {
+   "mutation": "QE-14 a fatigue reduction is not a reduction",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: only a time-budget fit is not a reduction; a fatigue reduction after a re-establishment keeps the regain cap (QE-R7A-14; SSCTR D53 Q1, item 7; INV-03)"
+   ]
+  },
+  {
+   "mutation": "QE-15 a rebuild forgets the entry week",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: a return-entry week stays one when its remaining days are rebuilt, whatever the time budget (QE-R7A-15; SSCTR D49, D55)"
+   ]
+  },
+  {
+   "mutation": "QE-16 a new report can claim to be history",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: only a carried row can be history; a new report flagged superseded is a live report and passes every check (QE-R7A-16; INV-10)"
+   ]
+  },
+  {
+   "mutation": "QE-17 the review reads a practice row by its role",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: a practice exercise is practice in the plan and in the review (QE-R7A-17; INV-04)"
+   ]
+  },
+  {
+   "mutation": "D55 a fresh exercise in a returning week starts outside the return",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A cycle 2: an exercise first set up during a return regains at most one set per executed week and earns no block set (SSCTR D55; D49; INV-03)"
+   ]
+  }
+ ]
+}

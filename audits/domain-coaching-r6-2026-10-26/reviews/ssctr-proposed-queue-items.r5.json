@@ -1,0 +1,407 @@
+{
+  "revision": "R6-SSCTR-QUEUE-PROPOSAL-r5",
+  "destination": "reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json",
+  "preserveAllHistoricalEntries": true,
+  "fundingState": "NOT_DECLARED",
+  "note": "Proposed items only; the queue file was not edited. One item per enabled prescriptive boundary at hash f9f89b7f...; supersedes the unmerged R6-SSCTR-QUEUE-PROPOSAL-r4 to r1 (preserved with .r4/.r3/.r2/.r1 suffixes).",
+  "items": [
+    {
+      "queue_id": "HQ-R6-COLD-START",
+      "decision_id": "R6-SSCTR-COLD-START",
+      "decision_revision": "r5",
+      "target": {
+        "project": "MyApp / Vilumo Fit",
+        "artifact": "CoachingCore/r6/PROGRAM_POLICY_R6.json",
+        "artifact_revision": "R6-POLICY-2",
+        "sha256": "f4c7e05354b745c5f72b5a9e322b043e2bc235dfbe9e830f809fad6d9de6f030",
+        "rule_ids": [
+          "R6-COLD-START"
+        ]
+      },
+      "approved_scope": "Reusable R6-COLD-START envelope only under every listed condition, bound to canonical policy hash f9f89b7f6f49c4946332dc7447eeaea9477308a777cabfd7bab38f1627c977ac; no generated-workout queue row.",
+      "conditions": [
+        "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+        "Binding: this record binds canonical policy hash f9f89b7f6f49c4946332dc7447eeaea9477308a777cabfd7bab38f1627c977ac (value.mjs hash). Any policy byte change invalidates it; any change to the runtime functions named in requiredRuntimeChanges needs a delta binding review before runtime freeze.",
+        "Operational values are reversible coaching choices inside the envelope, never physiological thresholds, injury-prevention rules, readiness scores, finish-time promises or individual-response predictions.",
+        "Steps advance only on executed comparable work without an adverse signal; nothing progresses from elapsed calendar time alone; completed history and official plan state stay immutable.",
+        "Week-1 planned running minutes (walks excluded) <= current reported or wearable-conservative weekly running minutes; when current exposure is zero or unknown, only the listed establishment entries (walk/jog ladder step 0, the 15-20 minute easy entry) are used.",
+        "Week-1 long run <= the longest current run reported; rounding may not exceed it.",
+        "No quality, strides or race-effort work in week 1 except a current familiar quality task that fits inside the week-1 running ceiling.",
+        "Unknowns are emitted with one of the four categories; ASK only for facts that change the first program (eligibility, goal, chosen days and session time, event date); clinical flags route to a human.",
+        "A restart-after-pause class requires R6-NONCLINICAL-RETURN authority and a pause reason that passes the clinical-reason check of that boundary.",
+        "Load-establishment rows appear only when R6-LOAD-ESTABLISHMENT is enabled.",
+        "Sex, height and weight never enter dose; an event time goal never sets pace.",
+        "An intake pause needs a structured nonclinical reason category; free text alone is ASK and can only add CLINICAL or ASK outcomes."
+      ],
+      "approval_date": "2026-10-26",
+      "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+      "owner": "Chief / Founder",
+      "human_review": null,
+      "re_review_triggers": [
+        "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+        "Change to a runtime function named in requiredRuntimeChanges or failure of a delta probe.",
+        "New or corrected systematic review/meta-analysis or trial on the boundary topic.",
+        "Population, event-distance or V1 scope change.",
+        "Adverse event, runtime inconsistency or contrary comparable observations.",
+        "Founder funding declaration (move approved items to HUMAN_REVALIDATION_REQUIRED)."
+      ]
+    },
+    {
+      "queue_id": "HQ-R6-LOAD-ESTABLISHMENT",
+      "decision_id": "R6-SSCTR-LOAD-ESTABLISHMENT",
+      "decision_revision": "r5",
+      "target": {
+        "project": "MyApp / Vilumo Fit",
+        "artifact": "CoachingCore/r6/PROGRAM_POLICY_R6.json",
+        "artifact_revision": "R6-POLICY-2",
+        "sha256": "f4c7e05354b745c5f72b5a9e322b043e2bc235dfbe9e830f809fad6d9de6f030",
+        "rule_ids": [
+          "R6-LOAD-ESTABLISHMENT"
+        ]
+      },
+      "approved_scope": "Reusable R6-LOAD-ESTABLISHMENT envelope only under every listed condition, bound to canonical policy hash f9f89b7f6f49c4946332dc7447eeaea9477308a777cabfd7bab38f1627c977ac; no generated-workout queue row.",
+      "conditions": [
+        "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+        "Binding: this record binds canonical policy hash f9f89b7f6f49c4946332dc7447eeaea9477308a777cabfd7bab38f1627c977ac (value.mjs hash). Any policy byte change invalidates it; any change to the runtime functions named in requiredRuntimeChanges needs a delta binding review before runtime freeze.",
+        "Operational values are reversible coaching choices inside the envelope, never physiological thresholds, injury-prevention rules, readiness scores, finish-time promises or individual-response predictions.",
+        "Steps advance only on executed comparable work without an adverse signal; nothing progresses from elapsed calendar time alone; completed history and official plan state stay immutable.",
+        "Athletes with strength class NONE complete unloaded or light-implement practice before any effort-guided loaded set; the first loaded exposure is at most 2 sets at RIR >= 3.",
+        "The establishment instruction describes an ascending ramp: start with the lightest available load and add the smallest increment between preparatory sets while at least the target reserve remains with stable technique; the working load is the heaviest such load; load and convention are recorded.",
+        "No kilogram is derived from sex, body mass, another exercise or implement; a stale or differently configured known load is only a hint or ceiling.",
+        "After establishment, a load or repetition step requires a logged set record meeting target repetitions with reserve >= prescribed RIR - 1; otherwise the dose holds.",
+        "RIR is treated as approximate (about one repetition of error); technique and comfort govern continuation and stopping.",
+        "Fail-closed: no ESTABLISH rows are emitted when this boundary is not enabled."
+      ],
+      "approval_date": "2026-10-26",
+      "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+      "owner": "Chief / Founder",
+      "human_review": null,
+      "re_review_triggers": [
+        "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+        "Change to a runtime function named in requiredRuntimeChanges or failure of a delta probe.",
+        "New or corrected systematic review/meta-analysis or trial on the boundary topic.",
+        "Population, event-distance or V1 scope change.",
+        "Adverse event, runtime inconsistency or contrary comparable observations.",
+        "Founder funding declaration (move approved items to HUMAN_REVALIDATION_REQUIRED)."
+      ]
+    },
+    {
+      "queue_id": "HQ-R6-PLANNED-PROGRESSION",
+      "decision_id": "R6-SSCTR-PLANNED-PROGRESSION",
+      "decision_revision": "r5",
+      "target": {
+        "project": "MyApp / Vilumo Fit",
+        "artifact": "CoachingCore/r6/PROGRAM_POLICY_R6.json",
+        "artifact_revision": "R6-POLICY-2",
+        "sha256": "f4c7e05354b745c5f72b5a9e322b043e2bc235dfbe9e830f809fad6d9de6f030",
+        "rule_ids": [
+          "R6-PLANNED-PROGRESSION"
+        ]
+      },
+      "approved_scope": "Reusable R6-PLANNED-PROGRESSION envelope only under every listed condition, bound to canonical policy hash f9f89b7f6f49c4946332dc7447eeaea9477308a777cabfd7bab38f1627c977ac; no generated-workout queue row.",
+      "conditions": [
+        "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+        "Binding: this record binds canonical policy hash f9f89b7f6f49c4946332dc7447eeaea9477308a777cabfd7bab38f1627c977ac (value.mjs hash). Any policy byte change invalidates it; any change to the runtime functions named in requiredRuntimeChanges needs a delta binding review before runtime freeze.",
+        "Operational values are reversible coaching choices inside the envelope, never physiological thresholds, injury-prevention rules, readiness scores, finish-time promises or individual-response predictions.",
+        "Steps advance only on executed comparable work without an adverse signal; nothing progresses from elapsed calendar time alone; completed history and official plan state stay immutable.",
+        "One progression dimension per session type per week; EARNED may release a step the cadence would otherwise hold or skip a consolidation hold, but never adds more than one step on any dimension in a week, and is unavailable in WALK_JOG, RESTART and RETURN modes.",
+        "Every step requires executed comparable sessions without an adverse signal in the gating week; quality/strides activation, block-boundary set increases and ladder steps count executed weeks, never calendar weeks.",
+        "Single-run ceiling (operational.run.singleRunCeiling): no planned run other than the race exceeds the longest completed run of the preceding 30 days (completed-work ledger, the intake-reported longest current run while within 30 days of intake, a valid return demonstration) by more than one stepMinutes; walk/jog ladder sessions and walks follow the ladder; with nothing completed in the window the reviewed entry is the start.",
+        "When the 30-day reference run is under 50 minutes, the 5-minute step exceeds 10% of it; the step stays response-gated, is disclosed, and is never combined with another single-session increase in the same week.",
+        "Strength ADVANCE requires logged target repetitions and minimum logged RIR >= prescribed RIR - 1; EARNED requires minimum logged RIR >= prescribed RIR + 2 on two comparable exposures outside consolidation; a known-load or bodyweight repetition or load step requires a logged set for that exercise in the gating week; missing logs or unknown logged RIR hold the dose without regression.",
+        "longRunShareOfWeeklyMinutesMax limits long-run growth in weeks with at least three running sessions; the cap holds the long run and never shortens it below the typical easy run or the last build week's long run; consolidation, taper and return reductions are separate rules.",
+        "Transition magnitudes (restart step and switch point, walk/jog exit dose, consolidation reduction, post-event redevelopment) are declared in the policy, not hard-coded.",
+        "Repeated adverse responses (two comparable within 14 days at the current dose after any regression) regress one step; a single adverse response holds."
+      ],
+      "approval_date": "2026-10-26",
+      "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+      "owner": "Chief / Founder",
+      "human_review": null,
+      "re_review_triggers": [
+        "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+        "Change to a runtime function named in requiredRuntimeChanges or failure of a delta probe.",
+        "New or corrected systematic review/meta-analysis or trial on the boundary topic.",
+        "Population, event-distance or V1 scope change.",
+        "Adverse event, runtime inconsistency or contrary comparable observations.",
+        "Founder funding declaration (move approved items to HUMAN_REVALIDATION_REQUIRED)."
+      ]
+    },
+    {
+      "queue_id": "HQ-R6-RUN-QUALITY",
+      "decision_id": "R6-SSCTR-RUN-QUALITY",
+      "decision_revision": "r5",
+      "target": {
+        "project": "MyApp / Vilumo Fit",
+        "artifact": "CoachingCore/r6/PROGRAM_POLICY_R6.json",
+        "artifact_revision": "R6-POLICY-2",
+        "sha256": "f4c7e05354b745c5f72b5a9e322b043e2bc235dfbe9e830f809fad6d9de6f030",
+        "rule_ids": [
+          "R6-RUN-QUALITY"
+        ]
+      },
+      "approved_scope": "Reusable R6-RUN-QUALITY envelope only under every listed condition, bound to canonical policy hash f9f89b7f6f49c4946332dc7447eeaea9477308a777cabfd7bab38f1627c977ac; no generated-workout queue row.",
+      "conditions": [
+        "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+        "Binding: this record binds canonical policy hash f9f89b7f6f49c4946332dc7447eeaea9477308a777cabfd7bab38f1627c977ac (value.mjs hash). Any policy byte change invalidates it; any change to the runtime functions named in requiredRuntimeChanges needs a delta binding review before runtime freeze.",
+        "Operational values are reversible coaching choices inside the envelope, never physiological thresholds, injury-prevention rules, readiness scores, finish-time promises or individual-response predictions.",
+        "Steps advance only on executed comparable work without an adverse signal; nothing progresses from elapsed calendar time alone; completed history and official plan state stay immutable.",
+        "Quality and strides activate only after qualityRequiresEstablishedEasyWeeks / strides.requiresEstablishedEasyWeeks executed established easy weeks, never calendar weeks.",
+        "At most one quality session per week, not on the day before or after the long run when another chosen run day can hold it.",
+        "Effort cues only; the first exposure to each intensity family is a calibration that records observed pace; no pace from goal time or easy pace.",
+        "Event-specific ladders start only after >= specificRequiresCompatibleThresholdSessions executed compatible threshold sessions.",
+        "For EASY_LOW or NOVICE runners, strides are optional with an explicit easy-only alternative.",
+        "Race-week touch and shakeout strides require this boundary and an executed comparable quality (respectively strides) exposure in the preceding build or specific weeks; otherwise the session stays easy.",
+        "No VO2max, threshold-pace or hill prescriptions; hills only with declared terrain under a separate review."
+      ],
+      "approval_date": "2026-10-26",
+      "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+      "owner": "Chief / Founder",
+      "human_review": null,
+      "re_review_triggers": [
+        "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+        "Change to a runtime function named in requiredRuntimeChanges or failure of a delta probe.",
+        "New or corrected systematic review/meta-analysis or trial on the boundary topic.",
+        "Population, event-distance or V1 scope change.",
+        "Adverse event, runtime inconsistency or contrary comparable observations.",
+        "Founder funding declaration (move approved items to HUMAN_REVALIDATION_REQUIRED)."
+      ]
+    },
+    {
+      "queue_id": "HQ-R6-HYBRID-ARRANGEMENT",
+      "decision_id": "R6-SSCTR-HYBRID-ARRANGEMENT",
+      "decision_revision": "r5",
+      "target": {
+        "project": "MyApp / Vilumo Fit",
+        "artifact": "CoachingCore/r6/PROGRAM_POLICY_R6.json",
+        "artifact_revision": "R6-POLICY-2",
+        "sha256": "f4c7e05354b745c5f72b5a9e322b043e2bc235dfbe9e830f809fad6d9de6f030",
+        "rule_ids": [
+          "R6-HYBRID-ARRANGEMENT"
+        ]
+      },
+      "approved_scope": "Reusable R6-HYBRID-ARRANGEMENT envelope only under every listed condition, bound to canonical policy hash f9f89b7f6f49c4946332dc7447eeaea9477308a777cabfd7bab38f1627c977ac; no generated-workout queue row.",
+      "conditions": [
+        "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+        "Binding: this record binds canonical policy hash f9f89b7f6f49c4946332dc7447eeaea9477308a777cabfd7bab38f1627c977ac (value.mjs hash). Any policy byte change invalidates it; any change to the runtime functions named in requiredRuntimeChanges needs a delta binding review before runtime freeze.",
+        "Operational values are reversible coaching choices inside the envelope, never physiological thresholds, injury-prevention rules, readiness scores, finish-time promises or individual-response predictions.",
+        "Steps advance only on executed comparable work without an adverse signal; nothing progresses from elapsed calendar time alone; completed history and official plan state stay immutable.",
+        "Severity is ordinal only: compare Pareto first, then by leximax of the sorted severity multiset (worst first); counts or sums of costs are not used.",
+        "Any run, easy included, within sameSessionGapHours before MODERATE/HEAVY lower-body work carries a strength-axis cost when strength has a development role; no tie-break depends on candidate identifier strings; equal-harm opposing trade-offs under a JOINT lead are ASKed.",
+        "Quality-run-first may be the default for an equal-standing athlete only when the alternative places MODERATE/HEAVY lower-body work within nextDayGapHours before the key run; the choice is disclosed as a reversible population-based default, the athlete may choose otherwise, and repeated comparable athlete evidence may override it; for accustomed lifters the asymmetry is weaker and must be disclosed as such.",
+        "Unknown arrangement-level response is admissible only when current whole-week tolerance covers the same task set and frequency, the candidate's worst H0 severity is <= LOW, and it introduces no same-day pairing absent from the athlete's reported routine; otherwise it needs arrangement evidence or ASK; adverse arrangement evidence excludes it.",
+        "The trace names the decisive comparison (for example LOWEST_WORST_CASE_JOINT_HARM) whenever non-identical candidates were compared.",
+        "No universal spacing minimum; the gap bins rank options and never forbid a feasible arrangement by themselves.",
+        "Cold start: same-day pairings arising from the athlete's own chosen days and shifts are admissible and ranked; when the selected arrangement carries a MODERATE or higher H0 cost the program discloses it and offers the shift or day change as a negotiation option."
+      ],
+      "approval_date": "2026-10-26",
+      "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+      "owner": "Chief / Founder",
+      "human_review": null,
+      "re_review_triggers": [
+        "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+        "Change to a runtime function named in requiredRuntimeChanges or failure of a delta probe.",
+        "New or corrected systematic review/meta-analysis or trial on the boundary topic.",
+        "Population, event-distance or V1 scope change.",
+        "Adverse event, runtime inconsistency or contrary comparable observations.",
+        "Founder funding declaration (move approved items to HUMAN_REVALIDATION_REQUIRED)."
+      ]
+    },
+    {
+      "queue_id": "HQ-R6-SUBSTITUTION",
+      "decision_id": "R6-SSCTR-SUBSTITUTION",
+      "decision_revision": "r5",
+      "target": {
+        "project": "MyApp / Vilumo Fit",
+        "artifact": "CoachingCore/r6/PROGRAM_POLICY_R6.json",
+        "artifact_revision": "R6-POLICY-2",
+        "sha256": "f4c7e05354b745c5f72b5a9e322b043e2bc235dfbe9e830f809fad6d9de6f030",
+        "rule_ids": [
+          "R6-SUBSTITUTION"
+        ]
+      },
+      "approved_scope": "Reusable R6-SUBSTITUTION envelope only under every listed condition, bound to canonical policy hash f9f89b7f6f49c4946332dc7447eeaea9477308a777cabfd7bab38f1627c977ac; no generated-workout queue row.",
+      "conditions": [
+        "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+        "Binding: this record binds canonical policy hash f9f89b7f6f49c4946332dc7447eeaea9477308a777cabfd7bab38f1627c977ac (value.mjs hash). Any policy byte change invalidates it; any change to the runtime functions named in requiredRuntimeChanges needs a delta binding review before runtime freeze.",
+        "Operational values are reversible coaching choices inside the envelope, never physiological thresholds, injury-prevention rules, readiness scores, finish-time promises or individual-response predictions.",
+        "Steps advance only on executed comparable work without an adverse signal; nothing progresses from elapsed calendar time alone; completed history and official plan state stay immutable.",
+        "Candidates keep the movement pattern first, then the variant family; equipment must be available; skill must not exceed declared experience unless the exercise is familiar.",
+        "An unfamiliar substitute uses effort-guided establishment, at most 2 sets at RIR >= 3, with no load converted; a bodyweight-for-load swap is disclosed as a different stimulus.",
+        "No progression step on a substituted exercise in its first exposure; the substitution persists through every reprojection inside its window; after a temporary window the original exercise resumes with its last logged load as a ceiling.",
+        "A pattern without a substitute is omitted and disclosed as an essential-stimulus loss where applicable.",
+        "Without this authority an equipment change returns UNSUPPORTED."
+      ],
+      "approval_date": "2026-10-26",
+      "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+      "owner": "Chief / Founder",
+      "human_review": null,
+      "re_review_triggers": [
+        "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+        "Change to a runtime function named in requiredRuntimeChanges or failure of a delta probe.",
+        "New or corrected systematic review/meta-analysis or trial on the boundary topic.",
+        "Population, event-distance or V1 scope change.",
+        "Adverse event, runtime inconsistency or contrary comparable observations.",
+        "Founder funding declaration (move approved items to HUMAN_REVALIDATION_REQUIRED)."
+      ]
+    },
+    {
+      "queue_id": "HQ-R6-NONCLINICAL-RETURN",
+      "decision_id": "R6-SSCTR-NONCLINICAL-RETURN",
+      "decision_revision": "r5",
+      "target": {
+        "project": "MyApp / Vilumo Fit",
+        "artifact": "CoachingCore/r6/PROGRAM_POLICY_R6.json",
+        "artifact_revision": "R6-POLICY-2",
+        "sha256": "f4c7e05354b745c5f72b5a9e322b043e2bc235dfbe9e830f809fad6d9de6f030",
+        "rule_ids": [
+          "R6-NONCLINICAL-RETURN"
+        ]
+      },
+      "approved_scope": "Reusable R6-NONCLINICAL-RETURN envelope only under every listed condition, bound to canonical policy hash f9f89b7f6f49c4946332dc7447eeaea9477308a777cabfd7bab38f1627c977ac; no generated-workout queue row.",
+      "conditions": [
+        "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+        "Binding: this record binds canonical policy hash f9f89b7f6f49c4946332dc7447eeaea9477308a777cabfd7bab38f1627c977ac (value.mjs hash). Any policy byte change invalidates it; any change to the runtime functions named in requiredRuntimeChanges needs a delta binding review before runtime freeze.",
+        "Operational values are reversible coaching choices inside the envelope, never physiological thresholds, injury-prevention rules, readiness scores, finish-time promises or individual-response predictions.",
+        "Steps advance only on executed comparable work without an adverse signal; nothing progresses from elapsed calendar time alone; completed history and official plan state stay immutable.",
+        "Interruption reasons are structured; any illness, injury, pain or clinical category, or a whole-word clinical-lexicon match in free text, routes CLINICAL_HUMAN_REQUIRED regardless of nonclinical or clinicalReason flags; an ambiguous or missing reason is ASK; the same rule applies to the intake pause and the legacy path.",
+        "Current eligibility must be assessed on or after the interruption end date.",
+        "SHORT (<= shortMaxDays): resume the last executed doses; the first quality slot runs easy; the next step waits for executed sessions.",
+        "MODERATE (<= moderateMaxDays): run entry from a current demonstration (modality RUN, easy/long/recovery-easy family, completed, conversational effort, compatible response, ordinary and next-day function, observed after the interruption began and within currentDemonstrationMaxAgeDays) or the reviewed 15-minute entry; at most moderateStepsToPrior conditional steps to the prior executed dose, each within the single-run ceiling of R6-PLANNED-PROGRESSION.",
+        "Strength return: entry is one effort-guided set at RIR >= strengthEntryMinimumRir with the prior load only as a ceiling; the prior KNOWN load is prescribed only after a post-interruption logged entry load supports it; otherwise use FROM_LOG from the entry log.",
+        "LONG (> moderateMaxDays): restart class for running; strength re-establishes by effort; no prior-load KNOWN prescription until a post-interruption log exists.",
+        "EARNED is unavailable during RETURN/RESTART; surplus counts only observations after the return started.",
+        "No universal percentage rollback; historical maxima are ceilings, not current proof.",
+        "A nonclinical return requires a structured nonclinical reason category (legacy R5 contract: clinicalReason=false) and current eligibility assessed on or after the interruption end with every clinical flag false; free text can only add CLINICAL or ASK outcomes."
+      ],
+      "approval_date": "2026-10-26",
+      "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+      "owner": "Chief / Founder",
+      "human_review": null,
+      "re_review_triggers": [
+        "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+        "Change to a runtime function named in requiredRuntimeChanges or failure of a delta probe.",
+        "New or corrected systematic review/meta-analysis or trial on the boundary topic.",
+        "Population, event-distance or V1 scope change.",
+        "Adverse event, runtime inconsistency or contrary comparable observations.",
+        "Founder funding declaration (move approved items to HUMAN_REVALIDATION_REQUIRED)."
+      ]
+    },
+    {
+      "queue_id": "HQ-R6-EVENT-TRANSITION",
+      "decision_id": "R6-SSCTR-EVENT-TRANSITION",
+      "decision_revision": "r5",
+      "target": {
+        "project": "MyApp / Vilumo Fit",
+        "artifact": "CoachingCore/r6/PROGRAM_POLICY_R6.json",
+        "artifact_revision": "R6-POLICY-2",
+        "sha256": "f4c7e05354b745c5f72b5a9e322b043e2bc235dfbe9e830f809fad6d9de6f030",
+        "rule_ids": [
+          "R6-EVENT-TRANSITION"
+        ]
+      },
+      "approved_scope": "Reusable R6-EVENT-TRANSITION envelope only under every listed condition, bound to canonical policy hash f9f89b7f6f49c4946332dc7447eeaea9477308a777cabfd7bab38f1627c977ac; no generated-workout queue row.",
+      "conditions": [
+        "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+        "Binding: this record binds canonical policy hash f9f89b7f6f49c4946332dc7447eeaea9477308a777cabfd7bab38f1627c977ac (value.mjs hash). Any policy byte change invalidates it; any change to the runtime functions named in requiredRuntimeChanges needs a delta binding review before runtime freeze.",
+        "Operational values are reversible coaching choices inside the envelope, never physiological thresholds, injury-prevention rules, readiness scores, finish-time promises or individual-response predictions.",
+        "Steps advance only on executed comparable work without an adverse signal; nothing progresses from elapsed calendar time alone; completed history and official plan state stay immutable.",
+        "Supported events are 10K and half-marathon only; one taper week plus the race week, progressive: taper-week easy runs within taperWeekRunVolumeRange and the long run within taperWeekLongRunRange of the executed peak; taper quality total work minutes within taperQualityWorkRange; race-week easy runs within raceWeekRunVolumeRange; the policy states these are per-session fractions.",
+        "Frequency is maintained; intensity is maintained only through work already executed in build/specific weeks; a race-effort touch at the policy dose >= raceWeekTouchMinDaysBeforeRace days before the race requires R6-RUN-QUALITY and an executed comparable quality session; shakeout strides require executed strides; otherwise easy.",
+        "Strength stays at a reduced dose: taper sets about taperStrengthSetFraction of the preceding dose at RIR >= 3; race week one session of raceWeekStrengthSets at RIR >= raceWeekStrengthMinimumRir no later than raceWeekStrengthMinDaysBeforeRace days before the race; no new exercise, load increase or rotation.",
+        "Post-event: no running before postEventFirstRunMinDaysAfterRace days; runs optional and easy within postEventEasyMinutes; one light strength session; redevelopment (NEXT_BLOCK) requires an eligibility and function assessment dated after the race; redevelopment fractions are declared in the policy.",
+        "The legacy path uses the athlete's event kind and only policy-declared fractions.",
+        "No finish-time, readiness or peak-performance claim."
+      ],
+      "approval_date": "2026-10-26",
+      "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+      "owner": "Chief / Founder",
+      "human_review": null,
+      "re_review_triggers": [
+        "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+        "Change to a runtime function named in requiredRuntimeChanges or failure of a delta probe.",
+        "New or corrected systematic review/meta-analysis or trial on the boundary topic.",
+        "Population, event-distance or V1 scope change.",
+        "Adverse event, runtime inconsistency or contrary comparable observations.",
+        "Founder funding declaration (move approved items to HUMAN_REVALIDATION_REQUIRED)."
+      ]
+    },
+    {
+      "queue_id": "HQ-R6-PARTIAL-NOISY-LEARNING",
+      "decision_id": "R6-SSCTR-PARTIAL-NOISY-LEARNING",
+      "decision_revision": "r5",
+      "target": {
+        "project": "MyApp / Vilumo Fit",
+        "artifact": "CoachingCore/r6/PROGRAM_POLICY_R6.json",
+        "artifact_revision": "R6-POLICY-2",
+        "sha256": "f4c7e05354b745c5f72b5a9e322b043e2bc235dfbe9e830f809fad6d9de6f030",
+        "rule_ids": [
+          "R6-PARTIAL-NOISY-LEARNING"
+        ]
+      },
+      "approved_scope": "Reusable R6-PARTIAL-NOISY-LEARNING envelope only under every listed condition, bound to canonical policy hash f9f89b7f6f49c4946332dc7447eeaea9477308a777cabfd7bab38f1627c977ac; no generated-workout queue row.",
+      "conditions": [
+        "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+        "Binding: this record binds canonical policy hash f9f89b7f6f49c4946332dc7447eeaea9477308a777cabfd7bab38f1627c977ac (value.mjs hash). Any policy byte change invalidates it; any change to the runtime functions named in requiredRuntimeChanges needs a delta binding review before runtime freeze.",
+        "Operational values are reversible coaching choices inside the envelope, never physiological thresholds, injury-prevention rules, readiness scores, finish-time promises or individual-response predictions.",
+        "Steps advance only on executed comparable work without an adverse signal; nothing progresses from elapsed calendar time alone; completed history and official plan state stay immutable.",
+        "Causal time: no future or future-reported facts; day-precision facts receive the latest causal instant of that local day; clock skew beyond futureClockSkewSeconds is excluded.",
+        "Duplicates merge; the same event identifier with different facts and disagreeing duplicates are quarantined; stale facts beyond maximumAgeDays leave learning and gating but stay in the completed-work ledger.",
+        "Partial executions count only for adherence and hold the step; missing effort or heart rate is unknown, never adverse.",
+        "Comparability: identical prescription hash and arrangement pool across FOUNDATION/BUILD/DEVELOPMENT/SPECIFIC/CONSOLIDATION/ESTABLISHMENT labels; TAPER, EVENT/RACE_WEEK, POST_EVENT, REVIEW and RETURN/RESTART-mode observations never pool with build-class observations.",
+        "Consolidation-week observations may support HOLD or REGRESS but not EARNED surplus.",
+        "Arrangement-preference queries include the phase class and a dose key; outputs are associative ranking among admissible options only, never dose authority, causal or clinical inference.",
+        "G03 adherence/comparability semantics remain jointly owned by Product/UX and Data; this record does not close G03."
+      ],
+      "approval_date": "2026-10-26",
+      "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+      "owner": "Chief / Founder",
+      "human_review": null,
+      "re_review_triggers": [
+        "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+        "Change to a runtime function named in requiredRuntimeChanges or failure of a delta probe.",
+        "New or corrected systematic review/meta-analysis or trial on the boundary topic.",
+        "Population, event-distance or V1 scope change.",
+        "Adverse event, runtime inconsistency or contrary comparable observations.",
+        "Founder funding declaration (move approved items to HUMAN_REVALIDATION_REQUIRED)."
+      ]
+    },
+    {
+      "queue_id": "HQ-R6-ROTATION",
+      "decision_id": "R6-SSCTR-ROTATION",
+      "decision_revision": "r5",
+      "target": {
+        "project": "MyApp / Vilumo Fit",
+        "artifact": "CoachingCore/r6/PROGRAM_POLICY_R6.json",
+        "artifact_revision": "R6-POLICY-2",
+        "sha256": "f4c7e05354b745c5f72b5a9e322b043e2bc235dfbe9e830f809fad6d9de6f030",
+        "rule_ids": [
+          "R6-ROTATION"
+        ]
+      },
+      "approved_scope": "Reusable R6-ROTATION envelope only under every listed condition, bound to canonical policy hash f9f89b7f6f49c4946332dc7447eeaea9477308a777cabfd7bab38f1627c977ac; no generated-workout queue row.",
+      "conditions": [
+        "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+        "Binding: this record binds canonical policy hash f9f89b7f6f49c4946332dc7447eeaea9477308a777cabfd7bab38f1627c977ac (value.mjs hash). Any policy byte change invalidates it; any change to the runtime functions named in requiredRuntimeChanges needs a delta binding review before runtime freeze.",
+        "Operational values are reversible coaching choices inside the envelope, never physiological thresholds, injury-prevention rules, readiness scores, finish-time promises or individual-response predictions.",
+        "Steps advance only on executed comparable work without an adverse signal; nothing progresses from elapsed calendar time alone; completed history and official plan state stay immutable.",
+        "Main lifts stay; COACH_DECIDES, EVERY_6_WEEKS and EVERY_2_WEEKS rotate accessories only on the stated cadence; close variants of main lifts are not rotated in R6.",
+        "No rotation in ESTABLISHMENT, SPECIFIC, TAPER, RACE_WEEK or POST_EVENT weeks.",
+        "Each newly rotated exercise starts with effort-guided establishment; no load is transferred; no progression step in its first exposure.",
+        "A rotated-back exercise not performed for more than return.moderateMaxDays restarts effort-guided with its last logged load as a ceiling.",
+        "FIXED never rotates except for needed substitutions."
+      ],
+      "approval_date": "2026-10-26",
+      "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+      "owner": "Chief / Founder",
+      "human_review": null,
+      "re_review_triggers": [
+        "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+        "Change to a runtime function named in requiredRuntimeChanges or failure of a delta probe.",
+        "New or corrected systematic review/meta-analysis or trial on the boundary topic.",
+        "Population, event-distance or V1 scope change.",
+        "Adverse event, runtime inconsistency or contrary comparable observations.",
+        "Founder funding declaration (move approved items to HUMAN_REVALIDATION_REQUIRED)."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+# First prescription and cold start — R5
+
+No Vilumo history is required. Current self-reported complete familiar run/strength tasks, combined-week tolerance and actual availability can produce an initial conditional program. Unknown performance predictions or perfect history are not requested. Missing current eligibility, task competence, combined configuration or goal material to the request yields a targeted ASK.
+
+Scope: OFFLINE_SYNTHETIC_NODE24_REFERENCE. Candidate implementation; not Product Truth, production, clinical or empirical validation.
+
+## sufficient
+
+- Adult recreational population and current explicit nonclinical assessment
+- Goal/priority/event date when relevant
+- Current demonstrated run and strength tasks
+- Complete compatible weekly configuration
+- Feasible actual availability/equipment
+
+## learnableWithoutBlocking
+
+- Individual response association
+- Performance drift
+- Arrangement preference
+- Unmeasured physiological parameters
+
+## familiarizationOnly
+
+- Low-demand currently demonstrated novice tasks within reviewed scope
+
+## limits
+
+- True zero-repertoire cold start is not yet full autonomous prescription
+- Input burden is greater than the intended install-and-go product
+- Self-report is provenance-bearing input, not authenticated measurement

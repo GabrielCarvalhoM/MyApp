@@ -1,0 +1,70 @@
+{
+ "probe": "R7A1-QE-P11",
+ "tests": [
+  "test/r7a-semantic-core.test.mjs",
+  "test/r7a-cycle2.test.mjs",
+  "test/r7a1-composition.test.mjs"
+ ],
+ "results": [
+  {
+   "mutation": "unmutated copy",
+   "caught": false,
+   "failed": []
+  },
+  {
+   "mutation": "author: A1 C7 two races ahead pass validation (recorded: survives, documented)",
+   "applied": true,
+   "caught": false,
+   "failingTests": []
+  },
+  {
+   "mutation": "author: A1 C4 recorded adaptations are not applied again (recorded: caught)",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C5/C7: a moved race replaces the earlier one in either order, never two races (QE-R7A-03)",
+    "R7-A.1 C4: same-week adaptations and a later re-plan of the week compose in either order (QE-R7A-19, E03, E04)",
+    "R7-A.1 C1: same-day eligibility follows the chosen shift (QE-R7A-02, QE-R7A-23)",
+    "R7-A.1 C4/C5: a short return’s easy slot survives the review; a pre-break session never moves into a re-entry (E01, E10)"
+   ]
+  },
+  {
+   "mutation": "author: A1 QE-05 an agreeing report does not fill unknown fields (recorded: caught)",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 QE-R7A-05: an agreeing report never makes a known field unknown, in either arrival order"
+   ]
+  },
+  {
+   "mutation": "author: A1 C5 a newer return starts from the start an earlier return replaced (recorded: caught)",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C4/C6: a re-applied adaptation changes only the re-planned rows; a move whose slot is history is consumed; a newer return replaces the earlier one"
+   ]
+  },
+  {
+   "mutation": "own: C4 a missed-session move is never re-applied",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C4/C5: a short return’s easy slot survives the review; a pre-break session never moves into a re-entry (E01, E10)"
+   ]
+  },
+  {
+   "mutation": "own: SYSTEMIC_SIGNAL ignored by the weekly review",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C4: a later adaptation keeps the week’s earlier ones on what it moves; a move never uses a skipped slot; a late fatigue signal survives the review"
+   ]
+  },
+  {
+   "mutation": "own: fatigue uses aheadOf alone (same-day PM session adapted)",
+   "applied": true,
+   "caught": false,
+   "failingTests": []
+  }
+ ]
+}

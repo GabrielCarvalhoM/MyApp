@@ -1,0 +1,765 @@
+{
+ "probe": "R7AF-QE-P32",
+ "runtime": "LIVE",
+ "cases": {
+  "FAMILIAR": {
+   "L0": {
+    "r": "MODIFY/REESTABLISH",
+    "ret": {
+     "eventId": "qa1-2",
+     "asOf": "2026-11-07T06:00:00.000Z",
+     "fromWeek": 1,
+     "relation": "NEW",
+     "basis": "FIRST",
+     "episode": "qa1-2",
+     "revision": 1,
+     "supersedes": null,
+     "start": "2026-11-04",
+     "end": "2026-11-06",
+     "class": "SHORT",
+     "stateAt": {
+      "kind": "WEEK_START",
+      "week": 0,
+      "eventId": null,
+      "sameDay": false,
+      "reportedAfterStart": false
+     }
+    },
+    "entry": {
+     "run": "EASY step - easy 40 long 65",
+     "strength": {
+      "db-bench-press": "FROM_LOG sets - step - ceil -",
+      "db-calf-raise": "FROM_LOG sets - step - ceil -",
+      "db-row": "FROM_LOG sets - step - ceil -",
+      "dead-bug": "BODYWEIGHT sets - step - ceil -",
+      "goblet-squat": "FROM_LOG sets - step - ceil -"
+     }
+    }
+   },
+   "L1": {
+    "sync": "KEEP/KEEP",
+    "r": "MODIFY/REESTABLISH",
+    "entry": {
+     "run": "EASY step - easy 40 long 65",
+     "strength": {
+      "db-bench-press": "FROM_LOG sets - step - ceil -",
+      "db-calf-raise": "FROM_LOG sets - step - ceil -",
+      "db-row": "FROM_LOG sets - step - ceil -",
+      "dead-bug": "BODYWEIGHT sets - step - ceil -",
+      "goblet-squat": "FROM_LOG sets - step - ceil -"
+     }
+    }
+   },
+   "L2a_sameDates": {
+    "entryBefore": {
+     "run": "EASY step - easy 40 long 65",
+     "strength": {}
+    },
+    "sync": "ASK/ASK",
+    "missing": [
+     "interruption.episodeId"
+    ],
+    "question": {
+     "episodeId": "qa1-6",
+     "startDate": "2026-11-04",
+     "endDate": "2026-11-06",
+     "reportedOn": "2026-11-07"
+    },
+    "replanned": false,
+    "recorded": true,
+    "confirm": "MODIFY/REESTABLISH",
+    "confirmed": {
+     "eventId": "qa1-9",
+     "asOf": "2026-11-07T08:00:00.000Z",
+     "fromWeek": 1,
+     "relation": "SAME_BREAK",
+     "basis": "DUPLICATE",
+     "episode": "qa1-6",
+     "revision": 2,
+     "supersedes": "qa1-6",
+     "start": "2026-11-04",
+     "end": "2026-11-06",
+     "class": "SHORT",
+     "stateAt": {
+      "kind": "WEEK_START",
+      "week": 0,
+      "eventId": null,
+      "sameDay": false,
+      "reportedAfterStart": false
+     }
+    },
+    "entryAfter": {
+     "run": "EASY step - easy 40 long 65",
+     "strength": {
+      "db-bench-press": "FROM_LOG sets - step - ceil -",
+      "db-calf-raise": "FROM_LOG sets - step - ceil -",
+      "db-row": "FROM_LOG sets - step - ceil -",
+      "dead-bug": "BODYWEIGHT sets - step - ceil -",
+      "goblet-squat": "FROM_LOG sets - step - ceil -"
+     }
+    },
+    "nextWeekly": "KEEP/KEEP",
+    "nextWeeklyMissing": []
+   },
+   "L2b_named": {
+    "entryBefore": {
+     "run": "EASY step - easy 40 long 65",
+     "strength": {}
+    },
+    "sync": "ASK/ASK",
+    "missing": [
+     "interruption.episodeId"
+    ],
+    "question": {
+     "episodeId": "qa1-12",
+     "startDate": "2026-11-04",
+     "endDate": "2026-11-06",
+     "reportedOn": "2026-11-07"
+    },
+    "replanned": false,
+    "recorded": true,
+    "confirm": "MODIFY/REESTABLISH",
+    "confirmed": {
+     "eventId": "qa1-15",
+     "asOf": "2026-11-07T08:00:00.000Z",
+     "fromWeek": 1,
+     "relation": "SAME_BREAK",
+     "basis": "EXPLICIT",
+     "episode": "qa1-12",
+     "revision": 2,
+     "supersedes": "qa1-12",
+     "start": "2026-11-04",
+     "end": "2026-11-06",
+     "class": "SHORT",
+     "stateAt": {
+      "kind": "WEEK_START",
+      "week": 0,
+      "eventId": null,
+      "sameDay": false,
+      "reportedAfterStart": false
+     }
+    },
+    "entryAfter": {
+     "run": "EASY step - easy 40 long 65",
+     "strength": {
+      "db-bench-press": "FROM_LOG sets - step - ceil -",
+      "db-calf-raise": "FROM_LOG sets - step - ceil -",
+      "db-row": "FROM_LOG sets - step - ceil -",
+      "dead-bug": "BODYWEIGHT sets - step - ceil -",
+      "goblet-squat": "FROM_LOG sets - step - ceil -"
+     }
+    },
+    "nextWeekly": "KEEP/KEEP",
+    "nextWeeklyMissing": []
+   },
+   "L2c_weeklyFirst": {
+    "entryBefore": {
+     "run": "EASY step - easy 40 long 65",
+     "strength": {}
+    },
+    "sync": "ASK/ASK",
+    "missing": [
+     "interruption.episodeId"
+    ],
+    "question": {
+     "episodeId": "qa1-18",
+     "startDate": "2026-11-04",
+     "endDate": "2026-11-06",
+     "reportedOn": "2026-11-07"
+    },
+    "replanned": false,
+    "recorded": true,
+    "weekly": "ASK/ASK",
+    "weeklyMissing": [
+     "interruption.episodeId"
+    ],
+    "confirm": "MODIFY/REESTABLISH",
+    "confirmed": {
+     "eventId": "qa1-23",
+     "asOf": "2026-11-07T08:00:00.000Z",
+     "fromWeek": 1,
+     "relation": "SAME_BREAK",
+     "basis": "DUPLICATE",
+     "episode": "qa1-18",
+     "revision": 2,
+     "supersedes": "qa1-18",
+     "start": "2026-11-04",
+     "end": "2026-11-06",
+     "class": "SHORT",
+     "stateAt": {
+      "kind": "WEEK_START",
+      "week": 0,
+      "eventId": null,
+      "sameDay": false,
+      "reportedAfterStart": false
+     }
+    },
+    "entryAfter": {
+     "run": "EASY step - easy 40 long 65",
+     "strength": {
+      "db-bench-press": "FROM_LOG sets - step - ceil -",
+      "db-calf-raise": "FROM_LOG sets - step - ceil -",
+      "db-row": "FROM_LOG sets - step - ceil -",
+      "dead-bug": "BODYWEIGHT sets - step - ceil -",
+      "goblet-squat": "FROM_LOG sets - step - ceil -"
+     }
+    },
+    "nextWeekly": "KEEP/KEEP",
+    "nextWeeklyMissing": []
+   },
+   "L3": {
+    "sync": "KEEP/KEEP",
+    "missing": [],
+    "entryUnchanged": true
+   },
+   "L4reviewed": {
+    "r": "MODIFY/REESTABLISH",
+    "stateAt": {
+     "kind": "WEEK_START",
+     "week": 1,
+     "eventId": null,
+     "sameDay": false,
+     "reportedAfterStart": false
+    },
+    "sync": "KEEP/KEEP",
+    "missing": []
+   },
+   "L4unreviewed": {
+    "r": "MODIFY/REESTABLISH",
+    "stateAt": {
+     "kind": "WEEK_START",
+     "week": 1,
+     "eventId": null,
+     "sameDay": false,
+     "reportedAfterStart": false
+    },
+    "sync": "KEEP/KEEP",
+    "missing": []
+   },
+   "L6": {
+    "thursdayAlsoOnMonday": [
+     "db-row",
+     "db-bench-press",
+     "dead-bug"
+    ],
+    "thursdayOnly": [
+     "db-rdl",
+     "db-split-squat"
+    ],
+    "sync": "ASK/ASK",
+    "missing": [
+     "interruption.episodeId"
+    ],
+    "entryBefore": {
+     "run": "EASY step - easy 40 long 65",
+     "strength": {
+      "db-bench-press": "FROM_LOG sets - step - ceil -",
+      "db-calf-raise": "FROM_LOG sets - step - ceil -",
+      "db-row": "FROM_LOG sets - step - ceil -",
+      "dead-bug": "BODYWEIGHT sets - step - ceil -",
+      "goblet-squat": "FROM_LOG sets - step - ceil -"
+     }
+    }
+   }
+  },
+  "KNOWN": {
+   "L0": {
+    "r": "MODIFY/REESTABLISH",
+    "ret": {
+     "eventId": "qa1-58",
+     "asOf": "2026-11-07T06:00:00.000Z",
+     "fromWeek": 1,
+     "relation": "NEW",
+     "basis": "FIRST",
+     "episode": "qa1-58",
+     "revision": 1,
+     "supersedes": null,
+     "start": "2026-11-04",
+     "end": "2026-11-06",
+     "class": "SHORT",
+     "stateAt": {
+      "kind": "WEEK_START",
+      "week": 0,
+      "eventId": null,
+      "sameDay": false,
+      "reportedAfterStart": false
+     }
+    },
+    "entry": {
+     "run": "EASY step - easy 40 long 65",
+     "strength": {
+      "back-squat": "KNOWN80 sets 3 step - ceil -",
+      "db-bench-press": "KNOWN18 sets 3 step - ceil -",
+      "db-calf-raise": "FROM_LOG sets - step - ceil -",
+      "db-row": "FROM_LOG sets - step - ceil -",
+      "dead-bug": "BODYWEIGHT sets - step - ceil -"
+     }
+    }
+   },
+   "L1": {
+    "sync": "KEEP/KEEP",
+    "r": "MODIFY/REESTABLISH",
+    "entry": {
+     "run": "EASY step - easy 40 long 65",
+     "strength": {
+      "back-squat": "KNOWN80 sets 3 step - ceil -",
+      "db-bench-press": "KNOWN18 sets 3 step - ceil -",
+      "db-calf-raise": "FROM_LOG sets - step - ceil -",
+      "db-row": "FROM_LOG sets - step - ceil -",
+      "dead-bug": "BODYWEIGHT sets - step - ceil -"
+     }
+    }
+   },
+   "L2a_sameDates": {
+    "entryBefore": {
+     "run": "EASY step - easy 40 long 65",
+     "strength": {
+      "back-squat": "KNOWN80 sets 3 step - ceil -",
+      "db-bench-press": "KNOWN18 sets 3 step - ceil -"
+     }
+    },
+    "sync": "ASK/ASK",
+    "missing": [
+     "interruption.episodeId"
+    ],
+    "question": {
+     "episodeId": "qa1-62",
+     "startDate": "2026-11-04",
+     "endDate": "2026-11-06",
+     "reportedOn": "2026-11-07"
+    },
+    "replanned": false,
+    "recorded": true,
+    "confirm": "MODIFY/REESTABLISH",
+    "confirmed": {
+     "eventId": "qa1-65",
+     "asOf": "2026-11-07T08:00:00.000Z",
+     "fromWeek": 1,
+     "relation": "SAME_BREAK",
+     "basis": "DUPLICATE",
+     "episode": "qa1-62",
+     "revision": 2,
+     "supersedes": "qa1-62",
+     "start": "2026-11-04",
+     "end": "2026-11-06",
+     "class": "SHORT",
+     "stateAt": {
+      "kind": "WEEK_START",
+      "week": 0,
+      "eventId": null,
+      "sameDay": false,
+      "reportedAfterStart": false
+     }
+    },
+    "entryAfter": {
+     "run": "EASY step - easy 40 long 65",
+     "strength": {
+      "back-squat": "KNOWN80 sets 3 step - ceil -",
+      "db-bench-press": "KNOWN18 sets 3 step - ceil -",
+      "db-calf-raise": "FROM_LOG sets - step - ceil -",
+      "db-row": "FROM_LOG sets - step - ceil -",
+      "dead-bug": "BODYWEIGHT sets - step - ceil -"
+     }
+    },
+    "nextWeekly": "KEEP/KEEP",
+    "nextWeeklyMissing": []
+   },
+   "L2b_named": {
+    "entryBefore": {
+     "run": "EASY step - easy 40 long 65",
+     "strength": {
+      "back-squat": "KNOWN80 sets 3 step - ceil -",
+      "db-bench-press": "KNOWN18 sets 3 step - ceil -"
+     }
+    },
+    "sync": "ASK/ASK",
+    "missing": [
+     "interruption.episodeId"
+    ],
+    "question": {
+     "episodeId": "qa1-68",
+     "startDate": "2026-11-04",
+     "endDate": "2026-11-06",
+     "reportedOn": "2026-11-07"
+    },
+    "replanned": false,
+    "recorded": true,
+    "confirm": "MODIFY/REESTABLISH",
+    "confirmed": {
+     "eventId": "qa1-71",
+     "asOf": "2026-11-07T08:00:00.000Z",
+     "fromWeek": 1,
+     "relation": "SAME_BREAK",
+     "basis": "EXPLICIT",
+     "episode": "qa1-68",
+     "revision": 2,
+     "supersedes": "qa1-68",
+     "start": "2026-11-04",
+     "end": "2026-11-06",
+     "class": "SHORT",
+     "stateAt": {
+      "kind": "WEEK_START",
+      "week": 0,
+      "eventId": null,
+      "sameDay": false,
+      "reportedAfterStart": false
+     }
+    },
+    "entryAfter": {
+     "run": "EASY step - easy 40 long 65",
+     "strength": {
+      "back-squat": "KNOWN80 sets 3 step - ceil -",
+      "db-bench-press": "KNOWN18 sets 3 step - ceil -",
+      "db-calf-raise": "FROM_LOG sets - step - ceil -",
+      "db-row": "FROM_LOG sets - step - ceil -",
+      "dead-bug": "BODYWEIGHT sets - step - ceil -"
+     }
+    },
+    "nextWeekly": "KEEP/KEEP",
+    "nextWeeklyMissing": []
+   },
+   "L2c_weeklyFirst": {
+    "entryBefore": {
+     "run": "EASY step - easy 40 long 65",
+     "strength": {
+      "back-squat": "KNOWN80 sets 3 step - ceil -",
+      "db-bench-press": "KNOWN18 sets 3 step - ceil -"
+     }
+    },
+    "sync": "ASK/ASK",
+    "missing": [
+     "interruption.episodeId"
+    ],
+    "question": {
+     "episodeId": "qa1-74",
+     "startDate": "2026-11-04",
+     "endDate": "2026-11-06",
+     "reportedOn": "2026-11-07"
+    },
+    "replanned": false,
+    "recorded": true,
+    "weekly": "ASK/ASK",
+    "weeklyMissing": [
+     "interruption.episodeId"
+    ],
+    "confirm": "MODIFY/REESTABLISH",
+    "confirmed": {
+     "eventId": "qa1-79",
+     "asOf": "2026-11-07T08:00:00.000Z",
+     "fromWeek": 1,
+     "relation": "SAME_BREAK",
+     "basis": "DUPLICATE",
+     "episode": "qa1-74",
+     "revision": 2,
+     "supersedes": "qa1-74",
+     "start": "2026-11-04",
+     "end": "2026-11-06",
+     "class": "SHORT",
+     "stateAt": {
+      "kind": "WEEK_START",
+      "week": 0,
+      "eventId": null,
+      "sameDay": false,
+      "reportedAfterStart": false
+     }
+    },
+    "entryAfter": {
+     "run": "EASY step - easy 40 long 65",
+     "strength": {
+      "back-squat": "KNOWN80 sets 3 step - ceil -",
+      "db-bench-press": "KNOWN18 sets 3 step - ceil -",
+      "db-calf-raise": "FROM_LOG sets - step - ceil -",
+      "db-row": "FROM_LOG sets - step - ceil -",
+      "dead-bug": "BODYWEIGHT sets - step - ceil -"
+     }
+    },
+    "nextWeekly": "KEEP/KEEP",
+    "nextWeeklyMissing": []
+   },
+   "L3": {
+    "sync": "KEEP/KEEP",
+    "missing": [],
+    "entryUnchanged": true
+   },
+   "L4reviewed": {
+    "r": "MODIFY/REESTABLISH",
+    "stateAt": {
+     "kind": "WEEK_START",
+     "week": 1,
+     "eventId": null,
+     "sameDay": false,
+     "reportedAfterStart": false
+    },
+    "sync": "KEEP/KEEP",
+    "missing": []
+   },
+   "L4unreviewed": {
+    "r": "MODIFY/REESTABLISH",
+    "stateAt": {
+     "kind": "WEEK_START",
+     "week": 1,
+     "eventId": null,
+     "sameDay": false,
+     "reportedAfterStart": false
+    },
+    "sync": "KEEP/KEEP",
+    "missing": []
+   },
+   "L6": {
+    "thursdayAlsoOnMonday": [
+     "db-row",
+     "db-bench-press",
+     "dead-bug"
+    ],
+    "thursdayOnly": [
+     "db-rdl",
+     "db-split-squat"
+    ],
+    "sync": "ASK/ASK",
+    "missing": [
+     "interruption.episodeId"
+    ],
+    "entryBefore": {
+     "run": "EASY step - easy 40 long 65",
+     "strength": {
+      "back-squat": "KNOWN80 sets 3 step - ceil -",
+      "db-bench-press": "KNOWN18 sets 3 step - ceil -",
+      "db-calf-raise": "FROM_LOG sets - step - ceil -",
+      "db-row": "FROM_LOG sets - step - ceil -",
+      "dead-bug": "BODYWEIGHT sets - step - ceil -"
+     }
+    }
+   }
+  },
+  "L5": {
+   "B": "MODIFY/REESTABLISH",
+   "Bdec": {
+    "eventId": "qa1-136",
+    "asOf": "2026-12-16T06:00:00.000Z",
+    "fromWeek": 6,
+    "relation": "NEW",
+    "basis": "AFTER_REENTRY",
+    "episode": "qa1-136",
+    "revision": 1,
+    "supersedes": null,
+    "start": "2026-12-14",
+    "end": "2026-12-15",
+    "class": "SHORT",
+    "stateAt": {
+     "kind": "RETURN",
+     "week": 5,
+     "eventId": "qa1-132",
+     "sameDay": false,
+     "reportedAfterStart": false
+    }
+   },
+   "Bentry": {
+    "run": "RETURN step 0 easy 40 long 70",
+    "strength": {
+     "back-squat": "KNOWN82.5 sets 3 step 0 ceil 3",
+     "db-bench-press": "KNOWN20 sets 3 step 0 ceil 3",
+     "db-calf-raise": "KNOWN20 sets - step 0 ceil 2",
+     "db-rdl": "KNOWN20 sets - step 0 ceil 3",
+     "db-row": "KNOWN22 sets - step 0 ceil 3",
+     "db-split-squat": "KNOWN20 sets - step 0 ceil 2",
+     "dead-bug": "BODYWEIGHT sets - step 0 ceil 2"
+    }
+   },
+   "sync": "ASK/ASK",
+   "missing": [
+    "interruption.episodeId"
+   ],
+   "question": {
+    "episodeId": "qa1-136",
+    "startDate": "2026-12-14",
+    "endDate": "2026-12-15",
+    "reportedOn": "2026-12-16"
+   },
+   "confirm": "MODIFY/REESTABLISH",
+   "B2": {
+    "eventId": "qa1-139",
+    "asOf": "2026-12-16T08:00:00.000Z",
+    "fromWeek": 6,
+    "relation": "SAME_BREAK",
+    "basis": "DUPLICATE",
+    "episode": "qa1-136",
+    "revision": 2,
+    "supersedes": "qa1-136",
+    "start": "2026-12-14",
+    "end": "2026-12-15",
+    "class": "SHORT",
+    "stateAt": {
+     "kind": "RETURN",
+     "week": 5,
+     "eventId": "qa1-132",
+     "sameDay": false,
+     "reportedAfterStart": false
+    }
+   },
+   "B2entry": {
+    "run": "RETURN step 0 easy 40 long 70",
+    "strength": {
+     "back-squat": "KNOWN82.5 sets 3 step 0 ceil 3",
+     "db-bench-press": "KNOWN20 sets 3 step 0 ceil 3",
+     "db-calf-raise": "KNOWN20 sets - step 0 ceil 2",
+     "db-rdl": "KNOWN20 sets - step 0 ceil 3",
+     "db-row": "KNOWN22 sets - step 0 ceil 3",
+     "db-split-squat": "KNOWN20 sets - step 0 ceil 2",
+     "dead-bug": "BODYWEIGHT sets - step 0 ceil 2"
+    }
+   }
+  }
+ },
+ "checks": [
+  {
+   "name": "FAMILIAR L1 sync before return = in time",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "FAMILIAR L2a_sameDates sync asked",
+   "ok": true,
+   "detail": "ASK/ASK"
+  },
+  {
+   "name": "FAMILIAR L2a_sameDates confirmed = in time",
+   "ok": true,
+   "detail": "MODIFY/REESTABLISH SAME_BREAK/DUPLICATE"
+  },
+  {
+   "name": "FAMILIAR L2a_sameDates no loop after confirmation",
+   "ok": true,
+   "detail": "KEEP/KEEP"
+  },
+  {
+   "name": "FAMILIAR L2b_named sync asked",
+   "ok": true,
+   "detail": "ASK/ASK"
+  },
+  {
+   "name": "FAMILIAR L2b_named confirmed = in time",
+   "ok": true,
+   "detail": "MODIFY/REESTABLISH SAME_BREAK/EXPLICIT"
+  },
+  {
+   "name": "FAMILIAR L2b_named no loop after confirmation",
+   "ok": true,
+   "detail": "KEEP/KEEP"
+  },
+  {
+   "name": "FAMILIAR L2c_weeklyFirst sync asked",
+   "ok": true,
+   "detail": "ASK/ASK"
+  },
+  {
+   "name": "FAMILIAR L2c_weeklyFirst confirmed = in time",
+   "ok": true,
+   "detail": "MODIFY/REESTABLISH SAME_BREAK/DUPLICATE"
+  },
+  {
+   "name": "FAMILIAR L2c_weeklyFirst no loop after confirmation",
+   "ok": true,
+   "detail": "KEEP/KEEP"
+  },
+  {
+   "name": "FAMILIAR L2c weekly before confirmation still asked",
+   "ok": true,
+   "detail": "ASK/ASK"
+  },
+  {
+   "name": "FAMILIAR L3 after the re-entry week: no question (B1)",
+   "ok": true,
+   "detail": "KEEP/KEEP"
+  },
+  {
+   "name": "FAMILIAR L4 reviewed week before the point: late log not asked (B2)",
+   "ok": true,
+   "detail": "KEEP/KEEP"
+  },
+  {
+   "name": "FAMILIAR L4 unreviewed week before the point: late log not asked (B2)",
+   "ok": true,
+   "detail": "KEEP/KEEP"
+  },
+  {
+   "name": "KNOWN L1 sync before return = in time",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "KNOWN L2a_sameDates sync asked",
+   "ok": true,
+   "detail": "ASK/ASK"
+  },
+  {
+   "name": "KNOWN L2a_sameDates confirmed = in time",
+   "ok": true,
+   "detail": "MODIFY/REESTABLISH SAME_BREAK/DUPLICATE"
+  },
+  {
+   "name": "KNOWN L2a_sameDates no loop after confirmation",
+   "ok": true,
+   "detail": "KEEP/KEEP"
+  },
+  {
+   "name": "KNOWN L2b_named sync asked",
+   "ok": true,
+   "detail": "ASK/ASK"
+  },
+  {
+   "name": "KNOWN L2b_named confirmed = in time",
+   "ok": true,
+   "detail": "MODIFY/REESTABLISH SAME_BREAK/EXPLICIT"
+  },
+  {
+   "name": "KNOWN L2b_named no loop after confirmation",
+   "ok": true,
+   "detail": "KEEP/KEEP"
+  },
+  {
+   "name": "KNOWN L2c_weeklyFirst sync asked",
+   "ok": true,
+   "detail": "ASK/ASK"
+  },
+  {
+   "name": "KNOWN L2c_weeklyFirst confirmed = in time",
+   "ok": true,
+   "detail": "MODIFY/REESTABLISH SAME_BREAK/DUPLICATE"
+  },
+  {
+   "name": "KNOWN L2c_weeklyFirst no loop after confirmation",
+   "ok": true,
+   "detail": "KEEP/KEEP"
+  },
+  {
+   "name": "KNOWN L2c weekly before confirmation still asked",
+   "ok": true,
+   "detail": "ASK/ASK"
+  },
+  {
+   "name": "KNOWN L3 after the re-entry week: no question (B1)",
+   "ok": true,
+   "detail": "KEEP/KEEP"
+  },
+  {
+   "name": "KNOWN L4 reviewed week before the point: late log not asked (B2)",
+   "ok": true,
+   "detail": "KEEP/KEEP"
+  },
+  {
+   "name": "KNOWN L4 unreviewed week before the point: late log not asked (B2)",
+   "ok": true,
+   "detail": "KEEP/KEEP"
+  },
+  {
+   "name": "L5 late lift before B (after A) asks to confirm B",
+   "ok": true,
+   "detail": "ASK/ASK"
+  },
+  {
+   "name": "L5 confirmation keeps B identity",
+   "ok": true,
+   "detail": "SAME_BREAK/DUPLICATE"
+  }
+ ]
+}

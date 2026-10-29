@@ -1,0 +1,253 @@
+{
+ "check": "R7AF-MUTATION-1",
+ "runAt": "2026-10-28T16:04:58.431Z",
+ "scope": "test/r7af-episode-identity.test.mjs + test/r7a2-interruption.test.mjs + test/r7a1-correction.test.mjs + test/r7a1-composition.test.mjs against single-piece removals of the R7-A final interruption episode model in a temporary copy",
+ "caught": 21,
+ "applied": 21,
+ "total": 21,
+ "documentedSurvivors": 0,
+ "undocumentedSurvivors": 0,
+ "notApplied": 0,
+ "results": [
+  {
+   "mutation": "§16 identity removed: every report is a new interruption",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C4/C6: a re-applied adaptation changes only the re-planned rows; a move whose slot is history is consumed; a newer return replaces the earlier one",
+    "R7-A.2 I2: a newer report of the same break supersedes the earlier one, in the same week or a later one, and creates no new break",
+    "R7-A.2 I9 (QE-R7A1-10): a second short break never adopts the first one’s easy slot; a newer report of the same break keeps it",
+    "R7-A.2 P1/P6: the same break reported again, or only at another time, is the same break with the same plan",
+    "R7-A.2 I2/I3: three breaks; a correction after a separate break starts from that break’s re-entry, never from before the first",
+    "R7-A.2 I4: a return reads the executions recorded by its report; a newer report of the same break reads the ones recorded later",
+    "R7-A.2 I1: a report of a break that ended before the latest reported one began is asked, never guessed",
+    "R7-A final I1/I3 (§13 same episode, 0.6): a correction names its interruption, keeps its identity and reads the state at its new start",
+    "R7-A final I2/I4/P1 (QE-R7A2-01): a report of the first break made after a separate break began never turns that break into the first",
+    "R7-A final I8 (§13 short + short, QE-R7A1-10): a second short break after the first one’s slot was run has its own slot, whatever came between",
+    "R7-A final I6 (§13 late session, 0.7, QE-R7A2-02, SSCTR R37): Monday’s lifting synced after a Wednesday break began counts; after its return it is confirmed first",
+    "R7-A final P6: the same report twice adds nothing; the same record again is the same interruption",
+    "R7-A final I9"
+   ]
+  },
+  {
+   "mutation": "§16 a later interruption after the re-entry is read as the same one",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.2 I1/I3 (QE-R7A1-09): a separate break in the same week starts from the re-entry, never from before the first break",
+    "R7-A.2 I3 (QE-R7A1-09): a separate break across the week boundary keeps the return steps and the run return",
+    "R7-A.2 I9 (QE-R7A1-10): a second short break never adopts the first one’s easy slot; a newer report of the same break keeps it",
+    "R7-A.2 I2/I3: three breaks; a correction after a separate break starts from that break’s re-entry, never from before the first",
+    "R7-A.2 I4/C5: a session of the plan before a return is never a fact of a later, separate break",
+    "R7-A.2 I1: a report of a break that ended before the latest reported one began is asked, never guessed",
+    "R7-A final I2/I4/P1 (QE-R7A2-01): a report of the first break made after a separate break began never turns that break into the first",
+    "R7-A final P3: a second break after the re-entry leaves the first break’s identity, record and state untouched",
+    "R7-A final P5 (§13 cross week): a separate break gives the same start in the re-entry week or the next one when nothing else was decided",
+    "R7-A final I8 (§13 short + short, QE-R7A1-10): a second short break after the first one’s slot was run has its own slot, whatever came between",
+    "R7-A final I9"
+   ]
+  },
+  {
+   "mutation": "§16 a named correction is read as a new interruption",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C4/C6: a re-applied adaptation changes only the re-planned rows; a move whose slot is history is consumed; a newer return replaces the earlier one",
+    "R7-A.2 I2: a newer report of the same break supersedes the earlier one, in the same week or a later one, and creates no new break",
+    "R7-A.2 I9 (QE-R7A1-10): a second short break never adopts the first one’s easy slot; a newer report of the same break keeps it",
+    "R7-A.2 I2/I3: three breaks; a correction after a separate break starts from that break’s re-entry, never from before the first",
+    "R7-A final I1/I3 (§13 same episode, 0.6): a correction names its interruption, keeps its identity and reads the state at its new start",
+    "R7-A final I2/I4/P1 (QE-R7A2-01): a report of the first break made after a separate break began never turns that break into the first",
+    "R7-A final I9"
+   ]
+  },
+  {
+   "mutation": "§16 the same record again is read as a new interruption",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.2 P1/P6: the same break reported again, or only at another time, is the same break with the same plan",
+    "R7-A.2 I4: a return reads the executions recorded by its report; a newer report of the same break reads the ones recorded later",
+    "R7-A final I2/I4/P1 (QE-R7A2-01): a report of the first break made after a separate break began never turns that break into the first",
+    "R7-A final I6 (§13 late session, 0.7, QE-R7A2-02, SSCTR R37): Monday’s lifting synced after a Wednesday break began counts; after its return it is confirmed first"
+   ]
+  },
+  {
+   "mutation": "§16 the point is the report in force now, not at the start (QE-R7A2-01)",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A final I2/I4/P1 (QE-R7A2-01): a report of the first break made after a separate break began never turns that break into the first"
+   ]
+  },
+  {
+   "mutation": "§16 re-entry read from the latest report, not the first (QE-R7A2-01)",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A final I2/I4/P1 (QE-R7A2-01): a report of the first break made after a separate break began never turns that break into the first"
+   ]
+  },
+  {
+   "mutation": "§16 an execution placed by its report time",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A final I6 (§13 late session, 0.7, QE-R7A2-02, SSCTR R37): Monday’s lifting synced after a Wednesday break began counts; after its return it is confirmed first"
+   ]
+  },
+  {
+   "mutation": "§16 a short return adopts any eased slot",
+   "file": "src/r6-composition.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.2 I9 (QE-R7A1-10): a second short break never adopts the first one’s easy slot; a newer report of the same break keeps it",
+    "R7-A final I8 (§13 short + short, QE-R7A1-10): a second short break after the first one’s slot was run has its own slot, whatever came between"
+   ]
+  },
+  {
+   "mutation": "§16 late evidence after the return is never confirmed",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A final I6 (§13 late session, 0.7, QE-R7A2-02, SSCTR R37): Monday’s lifting synced after a Wednesday break began counts; after its return it is confirmed first"
+   ]
+  },
+  {
+   "mutation": "I9 a correction of an earlier interruption is applied",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A final I9"
+   ]
+  },
+  {
+   "mutation": "I9 a correction reaches back across the earlier re-entry",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A final I9"
+   ]
+  },
+  {
+   "mutation": "I9 overlapping days without a name are read as a correction",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C4/C6: a re-applied adaptation changes only the re-planned rows; a move whose slot is history is consumed; a newer return replaces the earlier one",
+    "R7-A.2 I2: a newer report of the same break supersedes the earlier one, in the same week or a later one, and creates no new break",
+    "R7-A final I1/I3 (§13 same episode, 0.6): a correction names its interruption, keeps its identity and reads the state at its new start",
+    "R7-A final I9"
+   ]
+  },
+  {
+   "mutation": "I2 training between two interruptions is ignored",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A final I9"
+   ]
+  },
+  {
+   "mutation": "P6 the same report replayed is applied again",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A final P6: the same report twice adds nothing; the same record again is the same interruption"
+   ]
+  },
+  {
+   "mutation": "0.6 a correction may start from its own earlier report",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A final I1/I3 (§13 same episode, 0.6): a correction names its interruption, keeps its identity and reads the state at its new start"
+   ]
+  },
+  {
+   "mutation": "0.7 a break reported after the later one began is not its point",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A final I9"
+   ]
+  },
+  {
+   "mutation": "P5 an unearned week start after a return is the point",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A final P5 (§13 cross week): a separate break gives the same start in the re-entry week or the next one when nothing else was decided"
+   ]
+  },
+  {
+   "mutation": "0.8 a stated start time is ignored",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A final I7/P4 (§13 same day, 0.8, SSCTR NF-1): a session on the first day counts by the stated start time, and is asked without one"
+   ]
+  },
+  {
+   "mutation": "0.8 a material first-day order is guessed",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.2 I4/I6 (§11): an exercise not executed, or executed only from the break’s first day, is not in the state at the break",
+    "R7-A final I7/P4 (§13 same day, 0.8, SSCTR NF-1): a session on the first day counts by the stated start time, and is asked without one"
+   ]
+  },
+  {
+   "mutation": "0.8 a last performed date alone is material",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A.1 C3: re-planning this week keeps the next-week start a decision of this week set (QE-R7A-01, SSCTR O-1/R28)",
+    "R7-A.2 I1/I3 (QE-R7A1-09): a separate break in the same week starts from the re-entry, never from before the first break",
+    "R7-A.2 I3 (QE-R7A1-09): a separate break across the week boundary keeps the return steps and the run return",
+    "R7-A.2 I2: a newer report of the same break supersedes the earlier one, in the same week or a later one, and creates no new break",
+    "R7-A.2 I9 (QE-R7A1-10): a second short break never adopts the first one’s easy slot; a newer report of the same break keeps it",
+    "R7-A.2 P1/P6: the same break reported again, or only at another time, is the same break with the same plan",
+    "R7-A.2 P5: a break reported at 23:30 on Sunday or at 00:30 on Monday is the same break with the same next week",
+    "R7-A.2 I2/I3: three breaks; a correction after a separate break starts from that break’s re-entry, never from before the first",
+    "R7-A.2 I1: a report of a break that ended before the latest reported one began is asked, never guessed",
+    "R7-A final I1/I3 (§13 same episode, 0.6): a correction names its interruption, keeps its identity and reads the state at its new start",
+    "R7-A final I2/I4/P1 (QE-R7A2-01): a report of the first break made after a separate break began never turns that break into the first",
+    "R7-A final P3: a second break after the re-entry leaves the first break’s identity, record and state untouched",
+    "R7-A final P5 (§13 cross week): a separate break gives the same start in the re-entry week or the next one when nothing else was decided",
+    "R7-A final I7/P4 (§13 same day, 0.8, SSCTR NF-1): a session on the first day counts by the stated start time, and is asked without one",
+    "R7-A final P6: the same report twice adds nothing; the same record again is the same interruption",
+    "R7-A final I9"
+   ]
+  },
+  {
+   "mutation": "I6 a late fact that makes the first-day order material is not confirmed",
+   "file": "src/r6-adaptation.mjs",
+   "applied": true,
+   "caught": true,
+   "failingTests": [
+    "R7-A final I6 (§13 late session, 0.7, QE-R7A2-02, SSCTR R37): Monday’s lifting synced after a Wednesday break began counts; after its return it is confirmed first"
+   ]
+  }
+ ]
+}

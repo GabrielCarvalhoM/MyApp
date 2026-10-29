@@ -1,5 +1,18 @@
 # Vilumo Fit — Product Domain Model
 
+<!-- EXPERIENCE_AUTHORITY_OVERLAY_START: EXP-AUTH-r1 -->
+> **Domain authority retained · 2026-10-22 · EXP-AUTH-r1.** Objects, ownership, states, permissions and scientific/privacy/business limits below remain intact. [DR-93–97](PRODUCT_DECISION_REGISTER.md) / [index filter](../canon/CANONICAL_INDEX.md) retire only inherited presentation/placement prescriptions and historical experience reading sequences; capabilities do not require surfaces. DR-91 narrowly qualifies blanket location/route exclusions; other sensitive-data exclusions remain. Old isolated-state metadata is historical after integration `32b7fb6`, not a transferred gate. For clean rehydration start with the [derived context](DESIGNER_PRODUCT_CONTEXT.md).
+<!-- EXPERIENCE_AUTHORITY_OVERLAY_END: EXP-AUTH-r1 -->
+
+<!-- V1_WEARABLE_SCOPE_OVERLAY_START: VWS-20261027-r2 -->
+> **External-data boundary · 2026-10-27 · post-R6 product scope supersession · [PDR DR-117–123](PRODUCT_DECISION_REGISTER.md).** V1 sources of activity facts are HealthKit inbound (iOS, required), manual records and in-app workout execution. HealthKit write-back is an OPEN_TECHNICAL_PRODUCT_DECISION. Conceptual path: `HealthKit → iOS platform adapter → canonical athlete/workout data → Coaching Core`.
+> - **Ownership.** The Integration context owns the platform adapter and canonicalization. Source-specific types, identifiers, permissions and loss stay there. Coaching Intelligence consumes only canonical facts with their provenance and capability flags. It is platform- and vendor-agnostic and never coupled to HealthKit: no sport rule depends on the source.
+> - **Future sources.** Generic contracts never assume HealthKit is the only possible source; a future Android layer would add its own adapter. No abstraction is built ahead of a consumer.
+> - **Canonical semantics.** The §3 observation semantics are the canonical contract for every source: raw/declared/derived, source identity, occurred/measured/received + timezone, unit/method/window, quality/freshness/coverage, lineage, dedupe of facts, conflicts, corrections and suppression. Each field of an imported workout is known, unknown or not applicable. A HealthKit strength workout without exercise, sets, reps, load or RIR keeps those fields unknown; they are never zero, defaults or inferred.
+> - **Release split.** In the Integration row, "export opcional/intenção/cópia/recibos" and W2 (session/revision → optional export) are V2/POST_V1 specification, inert in V1. W1 and W3 hold for V1.
+> - **Platform.** V1 is iOS only (DR-120). The "iOS+Android" of §2 reads as iOS for V1; Android is POST_V1 / FUTURE_PLATFORM_EXPANSION.
+<!-- V1_WEARABLE_SCOPE_OVERLAY_END: VWS-20261027-r2 -->
+
 Revisão **PDM-1.3** · 2026-10-19 · **CANDIDATE_IN_ISOLATION / FREEZE-20261019-r1**.
 Autoridade: [PTC-3.2.1](../canon/VILUMO_FIT_PRODUCT_THESIS_CONTRACT.md), [Scope](V1_RELEASE_SCOPE.md), [AEC](ADAPTIVE_ENGINE_CONTRACT.md), [SIS](SPORT_INTELLIGENCE_SPEC.md). Significado/ownership/estados, não schema/API/banco/novos serviços. Baseline e impacto em [registro](../audits/v1-freeze-2026-10-19/MISSION_RECORD.md).
 
@@ -9,14 +22,14 @@ V1 pessoal Run + Strength coordenado; Crew/M2/M3 e suas entidades são DEFERRED,
 
 ## 2. Pessoa e objetivos
 
-Pessoa adulta 18+, Brasil/PT-BR+EN/iOS+Android, dona de contexto, registros, permissões e escolhas. GoalPriorityModel guarda objetivo concreto por modalidade, priority_mode RUN_FIRST/STRENGTH_FIRST/BALANCED_HYBRID/UNKNOWN, evento/janela e trade-off confirmado. Balanced tem coprioridades; unknown não autoriza arbitragem dependente. M1 descreve experiência pessoal; M2/M3 só histórico/roadmap, nenhum caminho V1.
+Pessoa adulta 18+, Brasil/PT-BR+EN+ES/iOS+Android, dona de contexto, registros, permissões e escolhas. GoalPriorityModel guarda objetivo concreto por modalidade, priority_mode RUN_FIRST/STRENGTH_FIRST/BALANCED_HYBRID/UNKNOWN, evento/janela e trade-off confirmado. Balanced tem coprioridades; unknown não autoriza arbitragem dependente. M1 descreve experiência pessoal; M2/M3 só histórico/roadmap, nenhum caminho V1.
 
 ## 3. Ownership e entidades
 
 | Owner | Possui | Limite |
 |---|---|---|
 | Pessoa & Permissões | Identidade, conta, contexto declarado, consentimentos/finalidade/escopo, direitos, idioma/unidades. | Consentimento não é entitlement, clearance ou execução. |
-| Athlete Context / AthleteState | Fatos confirmados/reconciliados, goals/prioridades, agenda, equipamento, exposição/observações/qualidade e projeções necessárias. | Não mantém plano por esporte ou inferência clínica como fato. |
+| Athlete Context / AthleteState | Fatos confirmados/reconciliados, goals/prioridades, agenda escolhida por esporte (dias, turnos e longão — DR-112), preferência de troca de exercícios (DR-113), equipamento, exposição/observações/qualidade e projeções necessárias. | Não mantém plano por esporte ou inferência clínica como fato. |
 | Run / Strength Intelligence | SpecialistProposal/Assessment, progressão/performance/programação/repertório e analytics semânticos de cada domínio. | Propõe/avalia; não aplica plano ou muda finalidade/objetivo. |
 | Recovery / Load | ExposureContributions e sinais locais/sistêmicos com refs/limites. | Sem dupla contagem ou novo treino por estimativa, nenhum score universal/diagnóstico. |
 | Adaptive Engine / Interference | Sessão planejada, único plano/decisão e trace, adequacy/necessity/change-cost/agency constraints, HOLD e validação conjunta. | Única prescrição final; JEV SHADOW/LLM sem autoridade de mutação. |

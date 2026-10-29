@@ -1,0 +1,1405 @@
+{
+ "revision": "R7A-REGRESSION-1",
+ "generatedAt": "2026-10-27T16:03:41.491Z",
+ "classification": "REGRESSION / CHALLENGE REUSE; not generalization evidence",
+ "authority": "DEV_TEST_ONLY devAuthority() bound to the current policy hash",
+ "preRuntime": {
+  "snapshot": "audits/domain-coaching-r7a-2026-10-27/pre-r7a-source",
+  "r6ProgramSha256": "57973e9735388d3d5f194b37ff7f5080669d2c1c3fb228b59873ac7adf6fe3ec"
+ },
+ "currentSources": {
+  "CoachingCore/src/r6-adaptation.mjs": "2f7c339e646388c7f142d24c4a72296d87f32d4cc249eb3468745bab3755d6f1",
+  "CoachingCore/src/r6-authority.mjs": "916b601ade47966557bafc29f134a45f7497380949c584e9be773f4beba63f69",
+  "CoachingCore/src/r6-balanced.mjs": "e7433199e89cb267fe7fa23297c2ceea45a37e9df365eec63e32e64f9e86dd04",
+  "CoachingCore/src/r6-catalogue.mjs": "cdad88cb67ba7164030c900648079946e70bb10778120886d25476718dbf3d5f",
+  "CoachingCore/src/r6-clinical.mjs": "51449486b4cb7acaaae6c7c915d52b150c420b4f49c14cdfe9f896febff7f681",
+  "CoachingCore/src/r6-index.mjs": "8316ff218814b39060b17b1720fca08349bbac8e7c954327424f4df691ceb098",
+  "CoachingCore/src/r6-intake.mjs": "99a8683e3fb0b163380bd0376a2be605660f4d3eebedee50b3e269cba793933a",
+  "CoachingCore/src/r6-learning.mjs": "dced0698ebbee06f81208b9fb9e404d3d6bb534a689fe0572c7d9949c9a22a10",
+  "CoachingCore/src/r6-legacy.mjs": "4312aeef7fa1fee67bc9a617ee7d189bd14da7486f0a3a47b38275306d9ca36b",
+  "CoachingCore/src/r6-prescription.mjs": "a61a372ce9f45d167097f93ee046c7569af01803d0cb27fc91a5036221002a28",
+  "CoachingCore/src/r6-program.mjs": "963130bb96470610783fd867a2ded64fbbb916546637bfbfe1b37360888a16e2",
+  "CoachingCore/src/r6-provenance.mjs": "ad203342a36aaf447eb120596f512c23c4bb7c0224fc8b78e8f129c68274d41c",
+  "CoachingCore/src/r6-simulator.mjs": "11dc73ff7f7e85b63e000bcd665d2d5073260755eb3c3980f47d186dead8c2b5"
+ },
+ "inputs": {
+  "CoachingCore/r6/holdout/R6_INDEPENDENT_HOLDOUT.json": {
+   "sha256": "49a85b8c3c413a0d2f5a7fabbdf212b629ef1b66613420d08e494e5a04bf0708",
+   "boundByBaseline": true
+  },
+  "CoachingCore/r5/holdout/R5_INDEPENDENT_HOLDOUT.json": {
+   "sha256": "9557f4bf539073301cde242172cd019983ebf8997fc16b91aae37e634f0cf5c5",
+   "boundByBaseline": true
+  },
+  "CoachingCore/scripts/evaluate-holdout-r6.mjs": {
+   "sha256": "6d08d2021cb5aba597821b6544d6472b96a341f74a450229f2d12a07e2b2ce4c",
+   "boundByBaseline": true
+  },
+  "CoachingCore/scripts/simulate-r6.mjs": {
+   "sha256": "34e62e3c1193127c1b670fbf17280f0983b98b7358774d358e6ad2d7d7156a72",
+   "boundByBaseline": true
+  },
+  "CoachingCore/r5/PROGRAM_POLICY_R5.json": {
+   "sha256": "307a09213230baca8fe7802ae7eb271825dcd7346d29b5d8c7ba7632571eca12",
+   "boundByBaseline": true
+  },
+  "CoachingCore/r6/PROGRAM_POLICY_R6.json": {
+   "sha256": "a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100",
+   "boundByBaseline": true
+  },
+  "CoachingCore/r6/fixtures/profiles.mjs": {
+   "sha256": "d36d0e6d1336648d4bd27946d90981666446c2328ac98dfebf48aa91b89a354d",
+   "boundByBaseline": true
+  },
+  "CoachingCore/r6/fixtures/trajectories.mjs": {
+   "sha256": "0bae601e92b53d5dcea83d1b4d53112ed0c3fddc2abe2437eb01301bbaddf2ea",
+   "boundByBaseline": true
+  },
+  "audits/domain-coaching-r5-2026-10-25/reviews/ssctr-policy-review.json": {
+   "sha256": "2eb990ab0b9ff2c740bfeb0fe998b84a8f29ee19c88b4259f3ba359d6d5ea903",
+   "boundByBaseline": false
+  }
+ },
+ "ignoredAsByteLevel": [
+  "exercise row field exposure",
+  "*Hash, *Digest, hash, digest, doseKey (a strength doseKey is the prescription hash)",
+  "re-establishment note wording \"as of the last review\""
+ ],
+ "summary": {
+  "r6FreshHoldout": {
+   "cases": 35,
+   "identical": 24,
+   "different": [
+    "R6-H05",
+    "R6-H07",
+    "R6-H17",
+    "R6-H18",
+    "R6-H23",
+    "R6-H25",
+    "R6-H26",
+    "R6-H29",
+    "R6-H30",
+    "R6-H32",
+    "R6-H35"
+   ],
+   "statusChanged": [
+    "R6-H23: MODIFY/REARRANGE_FUTURE_WEEKS MODIFY/GATED_NEXT_STEP -> ASK/ASK MODIFY/GATED_NEXT_STEP"
+   ]
+  },
+  "r5Corpus": {
+   "cases": 24,
+   "identical": 24,
+   "different": [],
+   "statusChanged": []
+  },
+  "profiles": {
+   "cases": 16,
+   "identical": 15,
+   "different": [
+    "WALK_JOG_FIVE_DAYS"
+   ],
+   "statusChanged": []
+  },
+  "simulations": {
+   "identical": false
+  }
+ },
+ "r6FreshHoldout": [
+  {
+   "caseId": "R6-H01",
+   "operation": "GENERATE",
+   "identical": true,
+   "pre": "PROPOSED",
+   "current": "PROPOSED"
+  },
+  {
+   "caseId": "R6-H02",
+   "operation": "GENERATE",
+   "identical": true,
+   "pre": "PROPOSED",
+   "current": "PROPOSED"
+  },
+  {
+   "caseId": "R6-H03",
+   "operation": "GENERATE",
+   "identical": true,
+   "pre": "PROPOSED",
+   "current": "PROPOSED"
+  },
+  {
+   "caseId": "R6-H04",
+   "operation": "GENERATE",
+   "identical": true,
+   "pre": "PROPOSED",
+   "current": "PROPOSED"
+  },
+  {
+   "caseId": "R6-H05",
+   "operation": "GENERATE",
+   "identical": false,
+   "pre": "PROPOSED",
+   "current": "PROPOSED",
+   "differences": [
+    {
+     "path": "/generation/program/stateTrace/5/strength/exercises/reverse-lunge/lastExecutedSets",
+     "pre": "2",
+     "current": "1"
+    }
+   ]
+  },
+  {
+   "caseId": "R6-H06",
+   "operation": "GENERATE",
+   "identical": true,
+   "pre": "PROPOSED",
+   "current": "PROPOSED"
+  },
+  {
+   "caseId": "R6-H07",
+   "operation": "GENERATE",
+   "identical": false,
+   "pre": "PROPOSED",
+   "current": "PROPOSED",
+   "differences": [
+    {
+     "path": "/generation/program/id",
+     "pre": "\"program-8493effaa9470b43\"",
+     "current": "\"program-527c87c8b3cc3415\""
+    },
+    {
+     "path": "/generation/program/canonical/athlete/knownExercises/1/dose",
+     "pre": "null",
+     "current": "{\"sets\":3,\"reps\":10,\"rir\":2,\"load\":{\"value\":18,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"restSeconds\":null}"
+    },
+    {
+     "path": "/generation/program/canonical/athlete/knownExercises/1/source",
+     "pre": "\"polar\"",
+     "current": "\"SELF_REPORT\""
+    },
+    {
+     "path": "/generation/program/canonical/athlete/knownExercises/2/observedAt",
+     "pre": "\"2027-05-20\"",
+     "current": "\"2027-05-14\""
+    },
+    {
+     "path": "/generation/program/canonical/athlete/knownExercises/2/dose",
+     "pre": "null",
+     "current": "{\"sets\":3,\"reps\":8,\"rir\":2,\"load\":{\"value\":18,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"restSeconds\":null}"
+    },
+    {
+     "path": "/generation/program/canonical/athlete/knownExercises/2/source",
+     "pre": "\"polar\"",
+     "current": "\"SELF_REPORT\""
+    },
+    {
+     "path": "/generation/program/canonical/uncertainty/3",
+     "pre": null,
+     "current": "{\"field\":\"knownExercises.goblet-squat\",\"category\":\"LEARN_DURING_FIRST_SESSIONS\",\"action\":\"Two current records of this exercise disagree; the latest one is used "
+    },
+    {
+     "path": "/generation/program/capability/strength/known/1",
+     "pre": null,
+     "current": "{\"id\":\"db-row\",\"pattern\":\"PULL\",\"equipment\":[\"DUMBBELLS\"],\"familiar\":true,\"current\":true,\"observedAt\":\"2027-06-01\",\"dose\":{\"sets\":3,\"reps\":10,\"rir\":2,\"load\":{\"v"
+    },
+    {
+     "path": "/generation/program/capability/strength/known/2",
+     "pre": null,
+     "current": "{\"id\":\"db-rdl\",\"pattern\":\"HINGE\",\"equipment\":[\"DUMBBELLS\"],\"familiar\":true,\"current\":true,\"observedAt\":\"2027-05-14\",\"dose\":{\"sets\":3,\"reps\":8,\"rir\":2,\"load\":{\"v"
+    },
+    {
+     "path": "/generation/program/weeks/0/sessions/0/prescription/durationMinutes",
+     "pre": "30",
+     "current": "32"
+    },
+    {
+     "path": "/generation/program/weeks/0/sessions/0/prescription/exercises/2/sets",
+     "pre": "2",
+     "current": "3"
+    },
+    {
+     "path": "/generation/program/weeks/0/sessions/0/prescription/exercises/2/load/mode",
+     "pre": "\"ESTABLISH\"",
+     "current": "\"KNOWN\""
+    },
+    {
+     "path": "/generation/program/weeks/0/sessions/0/prescription/exercises/2/load/value",
+     "pre": null,
+     "current": "18"
+    },
+    {
+     "path": "/generation/program/weeks/0/sessions/0/prescription/exercises/2/establishment",
+     "pre": "true",
+     "current": "false"
+    },
+    {
+     "path": "/generation/program/weeks/0/sessions/0/prescription/exercises/2/instructions/0",
+     "pre": "\"Practise the movement with no or minimal load first\"",
+     "current": "\"Use the stated load only while technique and reps in reserve hold; otherwise reduce it\""
+    },
+    {
+     "path": "/generation/program/weeks/0/sessions/0/prescription/exercises/2/instructions/1",
+     "pre": "\"Ramp up: start with the lightest available load and add the smallest increment between preparatory sets while at least 3 repetitions stay in reserve at 8 repet",
+     "current": null
+    },
+    {
+     "path": "/generation/program/weeks/0/sessions/0/prescription/exercises/2/instructions/2",
+     "pre": "\"Do not reuse a load from another exercise or implement; record the load and its convention\"",
+     "current": null
+    },
+    {
+     "path": "/generation/program/weeks/0/sessions/0/prescription/exercises/2/instructions/3",
+     "pre": "\"An earlier 18 KG at another rep target is a starting hint only\"",
+     "current": null
+    },
+    {
+     "path": "/generation/program/weeks/0/sessions/4/prescription/durationMinutes",
+     "pre": "27",
+     "current": "32"
+    },
+    {
+     "path": "/generation/program/weeks/0/sessions/4/prescription/exercises/0/sets",
+     "pre": "2",
+     "current": "3"
+    },
+    {
+     "path": "/generation/program/weeks/0/sessions/4/prescription/exercises/0/load/mode",
+     "pre": "\"ESTABLISH\"",
+     "current": "\"KNOWN\""
+    },
+    {
+     "path": "/generation/program/weeks/0/sessions/4/prescription/exercises/0/load/value",
+     "pre": null,
+     "current": "18"
+    },
+    {
+     "path": "/generation/program/weeks/0/sessions/4/prescription/exercises/0/establishment",
+     "pre": "true",
+     "current": "false"
+    },
+    {
+     "path": "/generation/program/weeks/0/sessions/4/prescription/exercises/0/instructions/0",
+     "pre": "\"Practise the movement with no or minimal load first\"",
+     "current": "\"Use the stated load only while technique and reps in reserve hold; otherwise reduce it\""
+    }
+   ]
+  },
+  {
+   "caseId": "R6-H08",
+   "operation": "GENERATE",
+   "identical": true,
+   "pre": "PROPOSED",
+   "current": "PROPOSED"
+  },
+  {
+   "caseId": "R6-H09",
+   "operation": "GENERATE",
+   "identical": true,
+   "pre": "PROPOSED",
+   "current": "PROPOSED"
+  },
+  {
+   "caseId": "R6-H10",
+   "operation": "GENERATE",
+   "identical": true,
+   "pre": "ASK",
+   "current": "ASK"
+  },
+  {
+   "caseId": "R6-H11",
+   "operation": "GENERATE",
+   "identical": true,
+   "pre": "CLINICAL_HUMAN_REQUIRED",
+   "current": "CLINICAL_HUMAN_REQUIRED"
+  },
+  {
+   "caseId": "R6-H12",
+   "operation": "GENERATE",
+   "identical": true,
+   "pre": "UNSUPPORTED",
+   "current": "UNSUPPORTED"
+  },
+  {
+   "caseId": "R6-H13",
+   "operation": "GENERATE",
+   "identical": true,
+   "pre": "UNSUPPORTED",
+   "current": "UNSUPPORTED"
+  },
+  {
+   "caseId": "R6-H14",
+   "operation": "GENERATE",
+   "identical": true,
+   "pre": "INVALID_INPUT",
+   "current": "INVALID_INPUT"
+  },
+  {
+   "caseId": "R6-H15",
+   "operation": "GENERATE",
+   "identical": true,
+   "pre": "PROPOSED",
+   "current": "PROPOSED"
+  },
+  {
+   "caseId": "R6-H16",
+   "operation": "GENERATE",
+   "identical": true,
+   "pre": "PROPOSED",
+   "current": "PROPOSED"
+  },
+  {
+   "caseId": "R6-H17",
+   "operation": "SEQUENCE",
+   "identical": false,
+   "pre": "KEEP/KEEP MODIFY/GATED_NEXT_STEP MODIFY/REESTABLISH",
+   "current": "KEEP/KEEP MODIFY/GATED_NEXT_STEP MODIFY/REESTABLISH",
+   "differences": [
+    {
+     "path": "/steps/2/result/proposal/weeks/6/sessions/0/prescription/exercises/0/reps",
+     "pre": "8",
+     "current": "6"
+    },
+    {
+     "path": "/steps/2/result/proposal/weeks/6/sessions/0/prescription/exercises/2/reps",
+     "pre": "8",
+     "current": "6"
+    },
+    {
+     "path": "/steps/2/result/proposal/weeks/6/sessions/0/prescription/exercises/3/load/mode",
+     "pre": "\"FROM_LOG\"",
+     "current": "\"ESTABLISH\""
+    },
+    {
+     "path": "/steps/2/result/proposal/weeks/6/sessions/0/prescription/exercises/3/load/rule",
+     "pre": "\"Use the last logged load; no increase in this phase\"",
+     "current": null
+    },
+    {
+     "path": "/steps/2/result/proposal/weeks/6/sessions/0/prescription/exercises/3/establishment",
+     "pre": "false",
+     "current": "true"
+    },
+    {
+     "path": "/steps/2/result/proposal/weeks/6/sessions/0/prescription/exercises/3/instructions/0",
+     "pre": "\"Use the load you logged last time for this exercise\"",
+     "current": "\"Practise the movement with no or minimal load first\""
+    },
+    {
+     "path": "/steps/2/result/proposal/weeks/6/sessions/0/prescription/exercises/3/instructions/1",
+     "pre": "\"Use the last logged load; no increase in this phase\"",
+     "current": "\"Ramp up: start with the lightest available load and add the smallest increment between preparatory sets while at least 3 repetitions stay in reserve at 10 repe"
+    },
+    {
+     "path": "/steps/2/result/proposal/weeks/6/sessions/0/prescription/exercises/3/instructions/2",
+     "pre": null,
+     "current": "\"Do not reuse a load from another exercise or implement; record the load and its convention\""
+    },
+    {
+     "path": "/steps/2/result/proposal/weeks/6/sessions/0/prescription/exercises/3/instructions/3",
+     "pre": null,
+     "current": "\"No usable load was logged last time: establish the load by effort again\""
+    },
+    {
+     "path": "/steps/2/result/proposal/weeks/6/sessions/0/prescription/establishment",
+     "pre": "false",
+     "current": "true"
+    }
+   ]
+  },
+  {
+   "caseId": "R6-H18",
+   "operation": "SEQUENCE",
+   "identical": false,
+   "pre": "MODIFY/MOVE KEEP/KEEP MODIFY/GATED_NEXT_STEP",
+   "current": "MODIFY/MOVE KEEP/KEEP MODIFY/GATED_NEXT_STEP",
+   "differences": [
+    {
+     "path": "/steps/2/result/proposal/stateTrace/4/strength/exercises/db-split-squat/reps",
+     "pre": "6",
+     "current": "8"
+    },
+    {
+     "path": "/steps/2/result/proposal/stateTrace/5/strength/exercises/db-split-squat/reps",
+     "pre": "6",
+     "current": "8"
+    },
+    {
+     "path": "/steps/2/result/proposal/stateTrace/6/strength/exercises/db-split-squat/reps",
+     "pre": "6",
+     "current": "8"
+    },
+    {
+     "path": "/steps/2/result/proposal/stateTrace/7/strength/exercises/db-split-squat/reps",
+     "pre": "6",
+     "current": "8"
+    },
+    {
+     "path": "/steps/2/result/proposal/stateTrace/8/strength/exercises/db-split-squat/reps",
+     "pre": "6",
+     "current": "8"
+    },
+    {
+     "path": "/steps/2/result/proposal/stateTrace/9/strength/exercises/db-split-squat/reps",
+     "pre": "6",
+     "current": "8"
+    },
+    {
+     "path": "/steps/2/result/proposal/stateTrace/10/strength/exercises/db-split-squat/reps",
+     "pre": "6",
+     "current": "8"
+    },
+    {
+     "path": "/steps/2/result/proposal/stateTrace/11/strength/exercises/db-split-squat/reps",
+     "pre": "6",
+     "current": "8"
+    }
+   ]
+  },
+  {
+   "caseId": "R6-H19",
+   "operation": "SEQUENCE",
+   "identical": true,
+   "pre": "KEEP/KEEP MODIFY/GATED_NEXT_STEP KEEP/KEEP KEEP/KEEP",
+   "current": "KEEP/KEEP MODIFY/GATED_NEXT_STEP KEEP/KEEP KEEP/KEEP"
+  },
+  {
+   "caseId": "R6-H20",
+   "operation": "SEQUENCE",
+   "identical": true,
+   "pre": "KEEP/INSTANTIATE_LOGGED_LOADS KEEP/INSTANTIATE_LOGGED_LOADS KEEP/KEEP",
+   "current": "KEEP/INSTANTIATE_LOGGED_LOADS KEEP/INSTANTIATE_LOGGED_LOADS KEEP/KEEP"
+  },
+  {
+   "caseId": "R6-H21",
+   "operation": "SEQUENCE",
+   "identical": true,
+   "pre": "MODIFY/REDUCE MODIFY/REDUCE KEEP/KEEP",
+   "current": "MODIFY/REDUCE MODIFY/REDUCE KEEP/KEEP"
+  },
+  {
+   "caseId": "R6-H22",
+   "operation": "SEQUENCE",
+   "identical": true,
+   "pre": "MODIFY/RESCHEDULE_WITHIN_WEEK MODIFY/GATED_NEXT_STEP MODIFY/REARRANGE_FUTURE_WEEKS KEEP/INSTANTIATE_LOGGED_LOADS",
+   "current": "MODIFY/RESCHEDULE_WITHIN_WEEK MODIFY/GATED_NEXT_STEP MODIFY/REARRANGE_FUTURE_WEEKS KEEP/INSTANTIATE_LOGGED_LOADS"
+  },
+  {
+   "caseId": "R6-H23",
+   "operation": "SEQUENCE",
+   "identical": false,
+   "pre": "MODIFY/REARRANGE_FUTURE_WEEKS MODIFY/GATED_NEXT_STEP",
+   "current": "ASK/ASK MODIFY/GATED_NEXT_STEP",
+   "differences": [
+    {
+     "path": "/steps/0/result/proposal",
+     "pre": "{\"version\":\"R6-PROGRAM-1\",\"id\":\"program-9ff2192a7e3f4ae3\",\"athleteId\":\"h23-otto\",\"revision\":1,\"proposalOnly\":true,\"official\":false,\"startDate\":\"2027-08-30\",\"wee",
+     "current": "null"
+    },
+    {
+     "path": "/steps/0/result/missingInputs/0",
+     "pre": null,
+     "current": "\"changes.permanentFrom|sessionMove\""
+    },
+    {
+     "path": "/steps/0/result/counterfactuals/0/id",
+     "pre": "\"KEEP\"",
+     "current": "\"REARRANGE_FUTURE_WEEKS\""
+    },
+    {
+     "path": "/steps/0/result/counterfactuals/0/action",
+     "pre": "\"KEEP\"",
+     "current": "\"REARRANGE_FUTURE_WEEKS\""
+    },
+    {
+     "path": "/steps/0/result/counterfactuals/0/reason",
+     "pre": "\"The current plan no longer fits the stated facts\"",
+     "current": "\"Applying a change stated for some dates to every later week would change days and shifts the athlete did not mention\""
+    },
+    {
+     "path": "/steps/0/result/counterfactuals/1/id",
+     "pre": "\"REARRANGE_FUTURE_WEEKS\"",
+     "current": "\"ASK\""
+    },
+    {
+     "path": "/steps/0/result/counterfactuals/1/action",
+     "pre": "\"REARRANGE_FUTURE_WEEKS\"",
+     "current": "\"ASK\""
+    },
+    {
+     "path": "/steps/0/result/counterfactuals/1/reason",
+     "pre": "\"New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the athlete removed\"",
+     "current": "\"The scope of the change is the athlete’s statement\""
+    },
+    {
+     "path": "/steps/0/result/counterfactuals/1/changeCount",
+     "pre": "31",
+     "current": null
+    },
+    {
+     "path": "/steps/0/result/status",
+     "pre": "\"MODIFY\"",
+     "current": "\"ASK\""
+    },
+    {
+     "path": "/steps/0/result/action",
+     "pre": "\"REARRANGE_FUTURE_WEEKS\"",
+     "current": "\"ASK\""
+    },
+    {
+     "path": "/steps/0/result/reason",
+     "pre": "\"New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the athlete removed\"",
+     "current": "\"The change is stated for 2027-09-28 only; a dated window of days or shifts is not re-planned automatically. Say whether the change is permanent from a date, or"
+    },
+    {
+     "path": "/steps/0/result/gates",
+     "pre": "{\"ALL\":\"HOLD\"}",
+     "current": "null"
+    },
+    {
+     "path": "/steps/0/result/horizons",
+     "pre": "{\"H0_SESSION\":\"31 future session prescription(s) differ; completed sessions unchanged\",\"H1_WEEK\":\"Week 5: planned run 45 min (was 163), strength sets 27 (was 27",
+     "current": "null"
+    },
+    {
+     "path": "/steps/0/result/planValidity/status",
+     "pre": "\"VALID_WITHIN_CURRENT_BOUNDED_SCOPE\"",
+     "current": "\"REQUIRES_RECONCILIATION\""
+    },
+    {
+     "path": "/steps/0/result/referenceState/pending",
+     "pre": "null",
+     "current": "{\"status\":\"ASK\",\"reason\":\"The change is stated for 2027-09-28 only; a dated window of days or shifts is not re-planned automatically. Say whether the change is "
+    },
+    {
+     "path": "/steps/1/review/referenceState/pending",
+     "pre": "null",
+     "current": "{\"status\":\"ASK\",\"reason\":\"The change is stated for 2027-09-28 only; a dated window of days or shifts is not re-planned automatically. Say whether the change is "
+    },
+    {
+     "path": "/steps/1/result/proposal/revision",
+     "pre": "2",
+     "current": "1"
+    },
+    {
+     "path": "/steps/1/result/proposal/canonical/schedule/strengthTurn",
+     "pre": "\"AM\"",
+     "current": "\"PM\""
+    },
+    {
+     "path": "/steps/1/result/proposal/schedule/strengthTurn",
+     "pre": "\"AM\"",
+     "current": "\"PM\""
+    },
+    {
+     "path": "/steps/1/result/proposal/weeks/5/arrangementId",
+     "pre": "\"q3|FULL_A,FULL_B|strength-first\"",
+     "current": "\"q1|FULL_A,FULL_B|separate\""
+    },
+    {
+     "path": "/steps/1/result/proposal/weeks/5/sessions/0/id",
+     "pre": "\"w5-str-d1\"",
+     "current": "\"w5-run-d1\""
+    },
+    {
+     "path": "/steps/1/result/proposal/weeks/5/sessions/0/sport",
+     "pre": "\"STRENGTH\"",
+     "current": "\"RUN\""
+    },
+    {
+     "path": "/steps/1/result/proposal/weeks/5/sessions/0/role",
+     "pre": "\"STRENGTH_FULL_A\"",
+     "current": "\"QUALITY\""
+    }
+   ]
+  },
+  {
+   "caseId": "R6-H24",
+   "operation": "SEQUENCE",
+   "identical": true,
+   "pre": "MODIFY/SUBSTITUTE KEEP/KEEP MODIFY/GATED_NEXT_STEP",
+   "current": "MODIFY/SUBSTITUTE KEEP/KEEP MODIFY/GATED_NEXT_STEP"
+  },
+  {
+   "caseId": "R6-H25",
+   "operation": "SEQUENCE",
+   "identical": false,
+   "pre": "MODIFY/REPLAN_FUTURE_PHASES MODIFY/REPLAN_FUTURE_PHASES",
+   "current": "MODIFY/REPLAN_FUTURE_PHASES MODIFY/REPLAN_FUTURE_PHASES",
+   "differences": [
+    {
+     "path": "/generation/program/stateTrace/12/strength/planned/db-calf-raise/normalSets",
+     "pre": "null",
+     "current": "3"
+    },
+    {
+     "path": "/generation/program/stateTrace/13/strength/exercises/db-calf-raise/source",
+     "pre": "\"PLANNED_ESTABLISHMENT\"",
+     "current": "\"RE_ESTABLISHED\""
+    },
+    {
+     "path": "/generation/program/stateTrace/13/strength/exercises/db-calf-raise/regainCap",
+     "pre": null,
+     "current": "3"
+    },
+    {
+     "path": "/generation/program/stateTrace/14/strength/exercises/db-calf-raise/source",
+     "pre": "\"PLANNED_ESTABLISHMENT\"",
+     "current": "\"RE_ESTABLISHED\""
+    },
+    {
+     "path": "/generation/program/stateTrace/15/strength/exercises/db-calf-raise/source",
+     "pre": "\"PLANNED_ESTABLISHMENT\"",
+     "current": "\"RE_ESTABLISHED\""
+    }
+   ]
+  },
+  {
+   "caseId": "R6-H26",
+   "operation": "SEQUENCE",
+   "identical": false,
+   "pre": "KEEP/KEEP MODIFY/REESTABLISH MODIFY/GATED_NEXT_STEP",
+   "current": "KEEP/KEEP MODIFY/REESTABLISH MODIFY/GATED_NEXT_STEP",
+   "differences": [
+    {
+     "path": "/steps/1/result/proposal/weeks/8/sessions/2/role",
+     "pre": "\"QUALITY\"",
+     "current": "\"EASY\""
+    },
+    {
+     "path": "/steps/1/result/proposal/weeks/8/sessions/2/key",
+     "pre": "true",
+     "current": "false"
+    },
+    {
+     "path": "/steps/1/result/proposal/weeks/8/sessions/2/essential",
+     "pre": "true",
+     "current": "false"
+    },
+    {
+     "path": "/steps/1/result/proposal/weeks/8/sessions/2/prescription/family",
+     "pre": "\"THRESHOLD\"",
+     "current": "\"EASY\""
+    },
+    {
+     "path": "/steps/1/result/proposal/weeks/8/sessions/2/prescription/durationMinutes",
+     "pre": "49",
+     "current": "15"
+    },
+    {
+     "path": "/steps/1/result/proposal/weeks/8/sessions/2/prescription/warmupMinutes",
+     "pre": "10",
+     "current": "3"
+    },
+    {
+     "path": "/steps/1/result/proposal/weeks/8/sessions/2/prescription/cooldownMinutes",
+     "pre": "5",
+     "current": "3"
+    },
+    {
+     "path": "/steps/1/result/proposal/weeks/8/sessions/2/prescription/effortDomain",
+     "pre": "\"THRESHOLD_CONTROLLED\"",
+     "current": "\"EASY_CONVERSATIONAL\""
+    },
+    {
+     "path": "/steps/1/result/proposal/weeks/8/sessions/2/prescription/effort",
+     "pre": "\"Comfortably hard and controlled (about 6-7 of 10): short phrases only; you could hold it much longer than the repetition\"",
+     "current": "\"Conversational effort (about 2-4 of 10): full sentences are possible; walk breaks are allowed\""
+    },
+    {
+     "path": "/steps/1/result/proposal/weeks/8/sessions/2/prescription/work",
+     "pre": "{\"repetitions\":3,\"workMinutes\":10,\"recoveryMinutes\":2}",
+     "current": null
+    },
+    {
+     "path": "/steps/1/result/proposal/weeks/8/sessions/2/prescription/calibration/basis",
+     "pre": "\"EFFORT_ANCHORED\"",
+     "current": "\"CURRENT_EASY_EFFORT\""
+    },
+    {
+     "path": "/steps/1/result/proposal/weeks/8/sessions/2/prescription/calibration/firstExposure",
+     "pre": "false",
+     "current": null
+    },
+    {
+     "path": "/steps/1/result/proposal/weeks/8/sessions/2/prescription/calibration/paceFromGoalTime",
+     "pre": "false",
+     "current": null
+    },
+    {
+     "path": "/steps/1/result/proposal/weeks/8/sessions/2/prescription/calibration/paceFromEasyRuns",
+     "pre": "false",
+     "current": null
+    },
+    {
+     "path": "/steps/1/result/proposal/weeks/8/sessions/2/prescription/instructions/0",
+     "pre": "\"Warm up 10 minutes easy\"",
+     "current": "\"Keep a conversational effort; slow down or walk briefly when needed\""
+    },
+    {
+     "path": "/steps/1/result/proposal/weeks/8/sessions/2/prescription/instructions/1",
+     "pre": "\"3 × 10 min — Comfortably hard and controlled (about 6-7 of 10): short phrases only; you could hold it much longer than the repetition; 2 min easy jog or walk b",
+     "current": "\"Shorten the run if easy effort cannot be maintained\""
+    },
+    {
+     "path": "/steps/1/result/proposal/weeks/8/sessions/2/prescription/instructions/2",
+     "pre": "\"Cool down 5 minutes easy\"",
+     "current": "\"Record actual minutes and effort\""
+    },
+    {
+     "path": "/steps/1/result/proposal/weeks/8/sessions/2/prescription/instructions/3",
+     "pre": "\"Hold form and effort; if effort climbs above the cue, end the hard part early — an easy finish is fine\"",
+     "current": null
+    },
+    {
+     "path": "/steps/1/result/proposal/weeks/8/sessions/2/prescription/instructions/4",
+     "pre": "\"Record repetitions completed, effort and next-day function\"",
+     "current": null
+    },
+    {
+     "path": "/steps/1/result/proposal/weeks/8/sessions/2/progression/dimension",
+     "pre": "\"THRESHOLD_STEP\"",
+     "current": "\"RETURN_STEP\""
+    },
+    {
+     "path": "/steps/1/result/proposal/weeks/8/sessions/2/progression/value",
+     "pre": "5",
+     "current": "0"
+    },
+    {
+     "path": "/steps/1/result/proposal/weeks/8/sessions/2/progression/ladder",
+     "pre": "\"THRESHOLD\"",
+     "current": null
+    },
+    {
+     "path": "/steps/1/result/proposal/weeks/8/sessions/2/explanation",
+     "pre": "null",
+     "current": "\"Return step 1: easy only; prior dose is the ceiling, reached in conditional steps\""
+    },
+    {
+     "path": "/steps/1/result/proposal/weeks/8/sessions/3/key",
+     "pre": "true",
+     "current": "false"
+    }
+   ]
+  },
+  {
+   "caseId": "R6-H27",
+   "operation": "GENERATE",
+   "identical": true,
+   "pre": "PROPOSED",
+   "current": "PROPOSED"
+  },
+  {
+   "caseId": "R6-H28",
+   "operation": "SEQUENCE",
+   "identical": true,
+   "pre": "ASK/ASK CLINICAL_HUMAN_REQUIRED/CLINICAL_HUMAN_REQUIRED",
+   "current": "ASK/ASK CLINICAL_HUMAN_REQUIRED/CLINICAL_HUMAN_REQUIRED"
+  },
+  {
+   "caseId": "R6-H29",
+   "operation": "SEQUENCE",
+   "identical": false,
+   "pre": "MODIFY/GATED_NEXT_STEP MODIFY/SKIP_NO_CATCH_UP MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP",
+   "current": "MODIFY/GATED_NEXT_STEP MODIFY/SKIP_NO_CATCH_UP MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP",
+   "differences": [
+    {
+     "path": "/steps/2/result/actualLedger/5/partial",
+     "pre": "true",
+     "current": "false"
+    },
+    {
+     "path": "/steps/2/result/actualLedger/5/comparable",
+     "pre": "false",
+     "current": "true"
+    },
+    {
+     "path": "/steps/2/result/weekEvidence/rows/3/status",
+     "pre": "\"PARTIAL\"",
+     "current": "\"COMPLETED\""
+    },
+    {
+     "path": "/steps/2/result/weekEvidence/rows/3/kind",
+     "pre": "\"PARTIAL\"",
+     "current": "\"COMPATIBLE\""
+    },
+    {
+     "path": "/steps/2/result/weekEvidence/completed",
+     "pre": "1",
+     "current": "2"
+    },
+    {
+     "path": "/steps/2/result/weekEvidence/partial",
+     "pre": "1",
+     "current": "0"
+    },
+    {
+     "path": "/steps/3/review/actualLedger/5/partial",
+     "pre": "true",
+     "current": "false"
+    },
+    {
+     "path": "/steps/3/review/actualLedger/5/comparable",
+     "pre": "false",
+     "current": "true"
+    },
+    {
+     "path": "/steps/3/result/actualLedger/5/partial",
+     "pre": "true",
+     "current": "false"
+    },
+    {
+     "path": "/steps/3/result/actualLedger/5/comparable",
+     "pre": "false",
+     "current": "true"
+    }
+   ]
+  },
+  {
+   "caseId": "R6-H30",
+   "operation": "SEQUENCE",
+   "identical": false,
+   "pre": "MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP KEEP/KEEP MODIFY/GATED_NEXT_STEP",
+   "current": "MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP KEEP/KEEP MODIFY/GATED_NEXT_STEP",
+   "differences": [
+    {
+     "path": "/steps/2/result/actualLedger/10/partial",
+     "pre": "true",
+     "current": "false"
+    },
+    {
+     "path": "/steps/2/result/actualLedger/10/comparable",
+     "pre": "false",
+     "current": "true"
+    },
+    {
+     "path": "/steps/2/result/weekEvidence/rows/4/status",
+     "pre": "\"PARTIAL\"",
+     "current": "\"COMPLETED\""
+    },
+    {
+     "path": "/steps/2/result/weekEvidence/rows/4/kind",
+     "pre": "\"PARTIAL\"",
+     "current": "\"COMPATIBLE\""
+    },
+    {
+     "path": "/steps/2/result/weekEvidence/completed",
+     "pre": "1",
+     "current": "2"
+    },
+    {
+     "path": "/steps/2/result/weekEvidence/partial",
+     "pre": "1",
+     "current": "0"
+    },
+    {
+     "path": "/steps/3/review/actualLedger/10/partial",
+     "pre": "true",
+     "current": "false"
+    },
+    {
+     "path": "/steps/3/review/actualLedger/10/comparable",
+     "pre": "false",
+     "current": "true"
+    },
+    {
+     "path": "/steps/3/result/actualLedger/10/partial",
+     "pre": "true",
+     "current": "false"
+    },
+    {
+     "path": "/steps/3/result/actualLedger/10/comparable",
+     "pre": "false",
+     "current": "true"
+    },
+    {
+     "path": "/steps/3/result/actualLedger/11",
+     "pre": null,
+     "current": "{\"eventId\":\"R6-H30-RACE\",\"athleteId\":\"h30-xenia\",\"sessionId\":\"w13-race\",\"actual\":{\"completed\":true,\"minutes\":112},\"response\":{\"performance\":\"COMPATIBLE\",\"recove"
+    },
+    {
+     "path": "/steps/4/review/actualLedger/10/partial",
+     "pre": "true",
+     "current": "false"
+    },
+    {
+     "path": "/steps/4/review/actualLedger/10/comparable",
+     "pre": "false",
+     "current": "true"
+    },
+    {
+     "path": "/steps/4/review/actualLedger/11",
+     "pre": null,
+     "current": "{\"eventId\":\"R6-H30-RACE\",\"athleteId\":\"h30-xenia\",\"sessionId\":\"w13-race\",\"actual\":{\"completed\":true,\"minutes\":112},\"response\":{\"performance\":\"COMPATIBLE\",\"recove"
+    },
+    {
+     "path": "/steps/4/result/updatedModel/excluded/47/eventId",
+     "pre": "\"R6-H30-w14-run-d1\"",
+     "current": "\"R6-H30-RACE-C1\""
+    },
+    {
+     "path": "/steps/4/result/updatedModel/excluded/48",
+     "pre": null,
+     "current": "{\"eventId\":\"R6-H30-w14-run-d1\",\"reason\":\"PURPOSE_NOT_ALLOWED\"}"
+    },
+    {
+     "path": "/steps/4/result/actualLedger/10/eventId",
+     "pre": "\"R6-H30-w14-run-d1\"",
+     "current": "\"R6-H30-RACE-C1\""
+    },
+    {
+     "path": "/steps/4/result/actualLedger/10/sessionId",
+     "pre": "\"w14-run-d1\"",
+     "current": "\"w13-race\""
+    },
+    {
+     "path": "/steps/4/result/actualLedger/10/actual/minutes",
+     "pre": "20",
+     "current": "112"
+    },
+    {
+     "path": "/steps/4/result/actualLedger/10/response/recovery",
+     "pre": "\"COMPATIBLE\"",
+     "current": "\"ADVERSE\""
+    },
+    {
+     "path": "/steps/4/result/actualLedger/10/response/nextDayFunction",
+     "pre": "\"NORMAL\"",
+     "current": "\"IMPAIRED\""
+    },
+    {
+     "path": "/steps/4/result/actualLedger/10/occurrenceDate",
+     "pre": "\"2027-09-14\"",
+     "current": "\"2027-09-12\""
+    },
+    {
+     "path": "/steps/4/result/actualLedger/10/observedAt",
+     "pre": "\"2027-09-15T02:59:59.000Z\"",
+     "current": "\"2027-09-13T02:59:59.000Z\""
+    },
+    {
+     "path": "/steps/4/result/actualLedger/10/localDate",
+     "pre": "\"2027-09-14\"",
+     "current": "\"2027-09-12\""
+    }
+   ]
+  },
+  {
+   "caseId": "R6-H31",
+   "operation": "SEQUENCE",
+   "identical": true,
+   "pre": "KEEP/INSTANTIATE_LOGGED_LOADS MODIFY/GATED_NEXT_STEP",
+   "current": "KEEP/INSTANTIATE_LOGGED_LOADS MODIFY/GATED_NEXT_STEP"
+  },
+  {
+   "caseId": "R6-H32",
+   "operation": "SEQUENCE",
+   "identical": false,
+   "pre": "MODIFY/GATED_NEXT_STEP KEEP/KEEP",
+   "current": "MODIFY/GATED_NEXT_STEP KEEP/KEEP",
+   "differences": [
+    {
+     "path": "/steps/1/result/actualLedger/5",
+     "pre": null,
+     "current": "{\"eventId\":\"R6-H32-Q-MANUAL\",\"athleteId\":\"h32-zeca\",\"sessionId\":\"w4-run-d3\",\"actual\":{\"completed\":true,\"minutes\":43},\"response\":{\"performance\":\"COMPATIBLE\",\"rec"
+    }
+   ]
+  },
+  {
+   "caseId": "R6-H33",
+   "operation": "SEQUENCE",
+   "identical": true,
+   "pre": "MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP",
+   "current": "MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP"
+  },
+  {
+   "caseId": "R6-H34",
+   "operation": "SEQUENCE",
+   "identical": true,
+   "pre": "MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP",
+   "current": "MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP"
+  },
+  {
+   "caseId": "R6-H35",
+   "operation": "SEQUENCE",
+   "identical": false,
+   "pre": "MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP",
+   "current": "MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP",
+   "differences": [
+    {
+     "path": "/steps/2/result/counterfactuals/1/changeCount",
+     "pre": "5",
+     "current": "8"
+    },
+    {
+     "path": "/steps/2/result/counterfactuals/2/changeCount",
+     "pre": "8",
+     "current": "11"
+    },
+    {
+     "path": "/steps/2/result/horizons/H0_SESSION",
+     "pre": "\"5 future session prescription(s) differ; completed sessions unchanged\"",
+     "current": "\"8 future session prescription(s) differ; completed sessions unchanged\""
+    }
+   ]
+  }
+ ],
+ "r5Corpus": [
+  {
+   "caseId": "R5-H01",
+   "operation": "GENERATE",
+   "identical": true,
+   "pre": "PROPOSED",
+   "current": "PROPOSED"
+  },
+  {
+   "caseId": "R5-H02",
+   "operation": "GENERATE",
+   "identical": true,
+   "pre": "PROPOSED",
+   "current": "PROPOSED"
+  },
+  {
+   "caseId": "R5-H03",
+   "operation": "GENERATE",
+   "identical": true,
+   "pre": "PROPOSED",
+   "current": "PROPOSED"
+  },
+  {
+   "caseId": "R5-H04",
+   "operation": "GENERATE",
+   "identical": true,
+   "pre": "PROPOSED",
+   "current": "PROPOSED"
+  },
+  {
+   "caseId": "R5-H05",
+   "operation": "GENERATE",
+   "identical": true,
+   "pre": "PROPOSED",
+   "current": "PROPOSED"
+  },
+  {
+   "caseId": "R5-H06",
+   "operation": "GENERATE",
+   "identical": true,
+   "pre": "ASK",
+   "current": "ASK"
+  },
+  {
+   "caseId": "R5-H07",
+   "operation": "REVIEW",
+   "identical": true,
+   "pre": "KEEP/KEEP",
+   "current": "KEEP/KEEP"
+  },
+  {
+   "caseId": "R5-H08",
+   "operation": "SEQUENCE",
+   "identical": true,
+   "pre": "KEEP/KEEP KEEP/KEEP MODIFY/PROGRESS",
+   "current": "KEEP/KEEP KEEP/KEEP MODIFY/PROGRESS"
+  },
+  {
+   "caseId": "R5-H09",
+   "operation": "REVIEW",
+   "identical": true,
+   "pre": "MODIFY/PROGRESS",
+   "current": "MODIFY/PROGRESS"
+  },
+  {
+   "caseId": "R5-H10",
+   "operation": "REVIEW",
+   "identical": true,
+   "pre": "KEEP/DISCARD",
+   "current": "KEEP/DISCARD"
+  },
+  {
+   "caseId": "R5-H11",
+   "operation": "REVIEW",
+   "identical": true,
+   "pre": "KEEP/DISCARD",
+   "current": "KEEP/DISCARD"
+  },
+  {
+   "caseId": "R5-H12",
+   "operation": "REVIEW",
+   "identical": true,
+   "pre": "KEEP/KEEP",
+   "current": "KEEP/KEEP"
+  },
+  {
+   "caseId": "R5-H13",
+   "operation": "SEQUENCE",
+   "identical": true,
+   "pre": "KEEP/KEEP KEEP/KEEP MODIFY/REGRESS",
+   "current": "KEEP/KEEP KEEP/KEEP MODIFY/REGRESS"
+  },
+  {
+   "caseId": "R5-H14",
+   "operation": "REVIEW",
+   "identical": true,
+   "pre": "KEEP/KEEP",
+   "current": "KEEP/KEEP"
+  },
+  {
+   "caseId": "R5-H15",
+   "operation": "REVIEW",
+   "identical": true,
+   "pre": "ASK/ASK",
+   "current": "ASK/ASK"
+  },
+  {
+   "caseId": "R5-H16",
+   "operation": "REVIEW",
+   "identical": true,
+   "pre": "MODIFY/REESTABLISH",
+   "current": "MODIFY/REESTABLISH"
+  },
+  {
+   "caseId": "R5-H17",
+   "operation": "REVIEW",
+   "identical": true,
+   "pre": "CLINICAL_HUMAN_REQUIRED/CLINICAL_HUMAN_REQUIRED",
+   "current": "CLINICAL_HUMAN_REQUIRED/CLINICAL_HUMAN_REQUIRED"
+  },
+  {
+   "caseId": "R5-H18",
+   "operation": "REVIEW",
+   "identical": true,
+   "pre": "MODIFY/MOVE",
+   "current": "MODIFY/MOVE"
+  },
+  {
+   "caseId": "R5-H19",
+   "operation": "REVIEW",
+   "identical": true,
+   "pre": "MODIFY/SUBSTITUTE",
+   "current": "MODIFY/SUBSTITUTE"
+  },
+  {
+   "caseId": "R5-H20",
+   "operation": "REVIEW",
+   "identical": true,
+   "pre": "MODIFY/MOVE",
+   "current": "MODIFY/MOVE"
+  },
+  {
+   "caseId": "R5-H21",
+   "operation": "REVIEW",
+   "identical": true,
+   "pre": "KEEP/KEEP",
+   "current": "KEEP/KEEP"
+  },
+  {
+   "caseId": "R5-H22",
+   "operation": "GENERATE",
+   "identical": true,
+   "pre": "PROPOSED",
+   "current": "PROPOSED"
+  },
+  {
+   "caseId": "R5-H23",
+   "operation": "REVIEW",
+   "identical": true,
+   "pre": "KEEP/KEEP",
+   "current": "KEEP/KEEP"
+  },
+  {
+   "caseId": "R5-H24",
+   "operation": "SEQUENCE",
+   "identical": true,
+   "pre": "KEEP/KEEP KEEP/KEEP KEEP/KEEP",
+   "current": "KEEP/KEEP KEEP/KEEP KEEP/KEEP"
+  }
+ ],
+ "profiles": [
+  {
+   "label": "A_RUN_FIRST_HALF_MARATHON",
+   "identical": true
+  },
+  {
+   "label": "B_STRENGTH_FIRST",
+   "identical": true
+  },
+  {
+   "label": "C_BALANCED_HYBRID",
+   "identical": true
+  },
+  {
+   "label": "D_NOVICE_RUNNER_EXPERIENCED_STRENGTH",
+   "identical": true
+  },
+  {
+   "label": "E_EXPERIENCED_RUNNER_NOVICE_STRENGTH",
+   "identical": true
+  },
+  {
+   "label": "F_GENERAL_HYBRID",
+   "identical": true
+  },
+  {
+   "label": "G_LOW_DATA_NO_WEARABLE",
+   "identical": true
+  },
+  {
+   "label": "H_PARTIAL_WEARABLE",
+   "identical": true
+  },
+  {
+   "label": "WALK_JOG_FIVE_DAYS",
+   "identical": false,
+   "differences": [
+    {
+     "path": "/program/stateTrace/6/strength/exercises/db-row/lastExecutedSets",
+     "pre": "3",
+     "current": "2"
+    },
+    {
+     "path": "/program/stateTrace/7/strength/exercises/db-row/lastExecutedSets",
+     "pre": "3",
+     "current": "2"
+    }
+   ]
+  },
+  {
+   "label": "TEN_K_EIGHT_WEEKS",
+   "identical": true
+  },
+  {
+   "label": "SHARED_SAME_TURN",
+   "identical": true
+  },
+  {
+   "label": "CLINICAL_PAIN",
+   "identical": true
+  },
+  {
+   "label": "ELIGIBILITY_UNKNOWN",
+   "identical": true
+  },
+  {
+   "label": "MARATHON_OUT_OF_SCOPE",
+   "identical": true
+  },
+  {
+   "label": "BODYWEIGHT_ONLY_NOVICE",
+   "identical": true
+  },
+  {
+   "label": "RESTART_AFTER_PAUSE",
+   "identical": true
+  }
+ ],
+ "simulations": {
+  "label": "SIMULATIONS",
+  "identical": false,
+  "differences": [
+   {
+    "path": "/3/finalWeeks/4/sessions/0",
+    "pre": "\"0:STRENGTH_LOWER:back-squat@3x6+barbell-rdl@3x8+db-split-squat@2x10+db-calf-raise@2x6+dead-bug@2x16\"",
+    "current": "\"0:STRENGTH_LOWER:back-squat@3x8+barbell-rdl@3x8+db-split-squat@2x10+db-calf-raise@2x8+dead-bug@2x16\""
+   },
+   {
+    "path": "/3/finalWeeks/5/sessions/0",
+    "pre": "\"0:STRENGTH_LOWER:back-squat@3x4+barbell-rdl@3x8+db-split-squat@2x10+db-calf-raise@2x4+dead-bug@2x14\"",
+    "current": "\"0:STRENGTH_LOWER:back-squat@3x8+barbell-rdl@3x8+db-split-squat@2x10+db-calf-raise@2x8+dead-bug@2x14\""
+   },
+   {
+    "path": "/3/finalWeeks/6/sessions/0",
+    "pre": "\"0:STRENGTH_LOWER:back-squat@3x2+barbell-rdl@3x8+db-step-up@2x10+standing-calf-raise@2x10+side-plank@2x10\"",
+    "current": "\"0:STRENGTH_LOWER:back-squat@3x8+barbell-rdl@3x8+db-step-up@2x10+standing-calf-raise@2x10+side-plank@2x10\""
+   },
+   {
+    "path": "/3/finalWeeks/7/sessions/0",
+    "pre": "\"0:STRENGTH_LOWER:back-squat@2x4+barbell-rdl@2x10+db-step-up@1x12+standing-calf-raise@1x12+side-plank@1x12\"",
+    "current": "\"0:STRENGTH_LOWER:back-squat@2x10+barbell-rdl@2x10+db-step-up@1x12+standing-calf-raise@1x12+side-plank@1x12\""
+   },
+   {
+    "path": "/3/finalWeeks/8/sessions/0",
+    "pre": "\"0:STRENGTH_LOWER:back-squat@4x4+barbell-rdl@4x10+db-step-up@3x12+standing-calf-raise@3x12+side-plank@3x12\"",
+    "current": "\"0:STRENGTH_LOWER:back-squat@4x10+barbell-rdl@4x10+db-step-up@3x12+standing-calf-raise@3x12+side-plank@3x12\""
+   },
+   {
+    "path": "/3/finalWeeks/9/sessions/0",
+    "pre": "\"0:STRENGTH_LOWER:back-squat@4x6+barbell-rdl@4x12+db-step-up@3x8+standing-calf-raise@3x14+side-plank@3x14\"",
+    "current": "\"0:STRENGTH_LOWER:back-squat@4x12+barbell-rdl@4x12+db-step-up@3x8+standing-calf-raise@3x14+side-plank@3x14\""
+   },
+   {
+    "path": "/4/finalWeeks/3/sessions/0",
+    "pre": "\"0:EASY:45\"",
+    "current": "\"0:EASY:40\""
+   },
+   {
+    "path": "/7/finalWeeks/5/sessions/0",
+    "pre": "\"0:STRENGTH_LOWER:back-squat@4x5+barbell-rdl@4x6+db-split-squat@3x6+db-calf-raise@3x6+dead-bug@3x10\"",
+    "current": "\"0:STRENGTH_LOWER:back-squat@1x5+barbell-rdl@1x6+db-split-squat@1x6+db-calf-raise@1x7+dead-bug@1x9\""
+   },
+   {
+    "path": "/7/finalWeeks/6/sessions/0",
+    "pre": "\"0:STRENGTH_LOWER:back-squat@2x5+barbell-rdl@2x6+db-split-squat@1x6+db-calf-raise@1x6+dead-bug@1x9\"",
+    "current": "\"0:STRENGTH_LOWER:back-squat@2x5+barbell-rdl@2x6+db-split-squat@1x6+db-calf-raise@1x7+dead-bug@1x9\""
+   },
+   {
+    "path": "/12/finalWeeks/9/sessions/1",
+    "pre": "\"2:STRENGTH_FULL_A:goblet-squat@2x6+db-bench-press@2x6+db-row@2x6+standing-calf-raise@1x14+side-plank@1x14\"",
+    "current": "\"2:STRENGTH_FULL_A:goblet-squat@2x8+db-bench-press@2x8+db-row@2x8+standing-calf-raise@1x14+side-plank@1x14\""
+   },
+   {
+    "path": "/12/finalWeeks/9/sessions/3",
+    "pre": "\"4:STRENGTH_FULL_B:db-rdl@2x6+db-row@2x6+db-bench-press@2x6+db-step-up@1x6+side-plank@1x14\"",
+    "current": "\"4:STRENGTH_FULL_B:db-rdl@2x8+db-row@2x8+db-bench-press@2x8+db-step-up@1x6+side-plank@1x14\""
+   },
+   {
+    "path": "/12/finalWeeks/10/sessions/1",
+    "pre": "\"2:STRENGTH_FULL_A:goblet-squat@2x6+db-bench-press@2x6+db-row@2x6+standing-calf-raise@1x14+side-plank@1x14\"",
+    "current": "\"2:STRENGTH_FULL_A:goblet-squat@2x8+db-bench-press@2x8+db-row@2x8+standing-calf-raise@1x14+side-plank@1x14\""
+   },
+   {
+    "path": "/12/finalWeeks/10/sessions/3",
+    "pre": "\"4:STRENGTH_FULL_B:db-rdl@2x6+db-row@2x6+db-bench-press@2x6+db-step-up@1x6+side-plank@1x14\"",
+    "current": "\"4:STRENGTH_FULL_B:db-rdl@2x8+db-row@2x8+db-bench-press@2x8+db-step-up@1x6+side-plank@1x14\""
+   },
+   {
+    "path": "/12/finalWeeks/11/sessions/1",
+    "pre": "\"2:STRENGTH_FULL_A:goblet-squat@2x6+db-bench-press@2x6+db-row@2x6+standing-calf-raise@1x14+side-plank@1x14\"",
+    "current": "\"2:STRENGTH_FULL_A:goblet-squat@2x8+db-bench-press@2x8+db-row@2x8+standing-calf-raise@1x14+side-plank@1x14\""
+   },
+   {
+    "path": "/12/finalWeeks/11/sessions/3",
+    "pre": "\"4:STRENGTH_FULL_B:db-rdl@2x6+db-row@2x6+db-bench-press@2x6+db-step-up@1x6+side-plank@1x14\"",
+    "current": "\"4:STRENGTH_FULL_B:db-rdl@2x8+db-row@2x8+db-bench-press@2x8+db-step-up@1x6+side-plank@1x14\""
+   },
+   {
+    "path": "/12/finalWeeks/12/sessions/1",
+    "pre": "\"2:STRENGTH_FULL_A:goblet-squat@2x6+db-bench-press@2x6+db-row@2x6+standing-calf-raise@1x14+side-plank@1x14\"",
+    "current": "\"2:STRENGTH_FULL_A:goblet-squat@2x8+db-bench-press@2x8+db-row@2x8+standing-calf-raise@1x14+side-plank@1x14\""
+   },
+   {
+    "path": "/12/finalWeeks/12/sessions/3",
+    "pre": "\"4:STRENGTH_FULL_B:db-rdl@2x6+db-row@2x6+db-bench-press@2x6+db-step-up@1x6+side-plank@1x14\"",
+    "current": "\"4:STRENGTH_FULL_B:db-rdl@2x8+db-row@2x8+db-bench-press@2x8+db-step-up@1x6+side-plank@1x14\""
+   },
+   {
+    "path": "/12/finalWeeks/13/sessions/1",
+    "pre": "\"2:STRENGTH_FULL_A:goblet-squat@1x6+db-bench-press@1x6+db-row@1x6+standing-calf-raise@1x14+side-plank@1x14\"",
+    "current": "\"2:STRENGTH_FULL_A:goblet-squat@1x8+db-bench-press@1x8+db-row@1x8+standing-calf-raise@1x14+side-plank@1x14\""
+   },
+   {
+    "path": "/12/finalWeeks/13/sessions/3",
+    "pre": "\"4:STRENGTH_FULL_B:db-rdl@1x6+db-row@1x6+db-bench-press@1x6+db-step-up@1x6+side-plank@1x14\"",
+    "current": "\"4:STRENGTH_FULL_B:db-rdl@1x8+db-row@1x8+db-bench-press@1x8+db-step-up@1x6+side-plank@1x14\""
+   },
+   {
+    "path": "/12/finalWeeks/14/sessions/1",
+    "pre": "\"2:STRENGTH_FULL_A:goblet-squat@1x6+db-bench-press@1x6+db-row@1x6\"",
+    "current": "\"2:STRENGTH_FULL_A:goblet-squat@1x8+db-bench-press@1x8+db-row@1x8\""
+   },
+   {
+    "path": "/12/finalWeeks/15/sessions/1",
+    "pre": "\"2:STRENGTH_FULL_A:goblet-squat@1x6+db-bench-press@1x6+db-row@1x6\"",
+    "current": "\"2:STRENGTH_FULL_A:goblet-squat@1x8+db-bench-press@1x8+db-row@1x8\""
+   }
+  ]
+ }
+}

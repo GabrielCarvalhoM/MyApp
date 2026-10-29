@@ -1,0 +1,2466 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:vilumo:bounded-shadow:input:r2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "inputVersion",
+    "purpose",
+    "synthetic",
+    "evaluatedAt",
+    "athleteFixtureId",
+    "athleteState",
+    "officialPlanState",
+    "event",
+    "observation",
+    "observedExecutionState",
+    "recoveryContext",
+    "policyContext",
+    "provenance"
+  ],
+  "properties": {
+    "inputVersion": {
+      "enum": [
+        "BSR-INPUT-R2"
+      ]
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1
+    },
+    "synthetic": {
+      "type": "boolean"
+    },
+    "evaluatedAt": {
+      "type": "string",
+      "minLength": 1
+    },
+    "athleteFixtureId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "athleteState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "athlete_id",
+        "adult",
+        "priority",
+        "runLevel",
+        "strengthLevel",
+        "dataMode",
+        "history",
+        "movementCompetence"
+      ],
+      "properties": {
+        "athlete_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "adult": {
+          "type": "boolean"
+        },
+        "priority": {
+          "enum": [
+            "RUN_FIRST",
+            "STRENGTH_FIRST",
+            "BALANCED"
+          ]
+        },
+        "runLevel": {
+          "enum": [
+            "NOVICE",
+            "INTERMEDIATE"
+          ]
+        },
+        "strengthLevel": {
+          "enum": [
+            "NOVICE",
+            "INTERMEDIATE"
+          ]
+        },
+        "dataMode": {
+          "enum": [
+            "NONE",
+            "PARTIAL",
+            "RICH"
+          ]
+        },
+        "history": {
+          "enum": [
+            "NONE",
+            "LIMITED",
+            "KNOWN"
+          ]
+        },
+        "movementCompetence": {
+          "enum": [
+            "KNOWN",
+            "UNKNOWN"
+          ]
+        },
+        "ageYears": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 120
+        }
+      }
+    },
+    "officialPlanState": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "plan_id",
+            "plan_revision",
+            "athlete_id",
+            "sessions"
+          ],
+          "properties": {
+            "plan_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "plan_revision": {
+              "type": "string",
+              "minLength": 1
+            },
+            "athlete_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sessions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "session_id",
+                  "day",
+                  "recipeId",
+                  "status",
+                  "optional",
+                  "parameters"
+                ],
+                "properties": {
+                  "session_id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "day": {
+                    "enum": [
+                      "MON",
+                      "TUE",
+                      "WED",
+                      "THU",
+                      "FRI",
+                      "SAT",
+                      "SUN"
+                    ]
+                  },
+                  "recipeId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "status": {
+                    "enum": [
+                      "PLANNED",
+                      "COMPLETED"
+                    ]
+                  },
+                  "optional": {
+                    "type": "boolean"
+                  },
+                  "parameters": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [],
+                    "properties": {
+                      "loadKg": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "targetRir": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "loadsKg": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "paceSecondsPerKm": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "racePaceSecondsPerKm": {
+                        "type": "number",
+                        "minimum": 0
+                      }
+                    }
+                  }
+                }
+              },
+              "minItems": 0,
+              "uniqueItems": true
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "event": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "event_id",
+            "type",
+            "request",
+            "sessionId",
+            "facts"
+          ],
+          "properties": {
+            "event_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "type": {
+              "enum": [
+                "R2_REQUEST"
+              ]
+            },
+            "request": {
+              "enum": [
+                "ESTABLISH_RUN"
+              ]
+            },
+            "sessionId": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "facts": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "walkMinutes",
+                "comfortableTalk",
+                "runExposure",
+                "timeBudgetMinutes",
+                "availableDays"
+              ],
+              "properties": {
+                "walkMinutes": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "comfortableTalk": {
+                  "type": "boolean"
+                },
+                "runExposure": {
+                  "enum": [
+                    "NEVER",
+                    "REPORTED",
+                    "KNOWN"
+                  ]
+                },
+                "timeBudgetMinutes": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "availableDays": {
+                  "type": "array",
+                  "items": {
+                    "enum": [
+                      "MON",
+                      "TUE",
+                      "WED",
+                      "THU",
+                      "FRI",
+                      "SAT",
+                      "SUN"
+                    ]
+                  },
+                  "minItems": 1,
+                  "uniqueItems": true
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "event_id",
+            "type",
+            "request",
+            "sessionId",
+            "facts"
+          ],
+          "properties": {
+            "event_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "type": {
+              "enum": [
+                "R2_REQUEST"
+              ]
+            },
+            "request": {
+              "enum": [
+                "ESTABLISH_STRENGTH"
+              ]
+            },
+            "sessionId": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "facts": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "configurationFamiliar",
+                "techniqueDemonstrated",
+                "loadEstablished",
+                "loadsKg",
+                "timeBudgetMinutes",
+                "availableDays"
+              ],
+              "properties": {
+                "configurationFamiliar": {
+                  "type": "boolean"
+                },
+                "techniqueDemonstrated": {
+                  "type": "boolean"
+                },
+                "loadEstablished": {
+                  "type": "boolean"
+                },
+                "loadsKg": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "legPress",
+                    "machineChestPress",
+                    "seatedCableRow",
+                    "seatedLegCurl"
+                  ],
+                  "properties": {
+                    "legPress": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "machineChestPress": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "seatedCableRow": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "seatedLegCurl": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  }
+                },
+                "timeBudgetMinutes": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "availableDays": {
+                  "type": "array",
+                  "items": {
+                    "enum": [
+                      "MON",
+                      "TUE",
+                      "WED",
+                      "THU",
+                      "FRI",
+                      "SAT",
+                      "SUN"
+                    ]
+                  },
+                  "minItems": 1,
+                  "uniqueItems": true
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "event_id",
+            "type",
+            "request",
+            "sessionId",
+            "facts"
+          ],
+          "properties": {
+            "event_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "type": {
+              "enum": [
+                "R2_REQUEST"
+              ]
+            },
+            "request": {
+              "enum": [
+                "PROGRESS_STRENGTH"
+              ]
+            },
+            "sessionId": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "facts": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "episodes",
+                "relevantContextUnchanged",
+                "loadKg",
+                "rirCalibratedForTask",
+                "establishedTargetRir",
+                "nextHorizonNeedConfirmed",
+                "smallestIncrementAvailable"
+              ],
+              "properties": {
+                "episodes": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "factId",
+                      "athleteId",
+                      "observedAt",
+                      "sourceRef",
+                      "sourceRevision",
+                      "coverage",
+                      "comparable",
+                      "recipeId",
+                      "result",
+                      "completed",
+                      "technique",
+                      "actualReps",
+                      "setsCompleted",
+                      "uniformRepsAcrossAllSets",
+                      "actualRir",
+                      "actualLoadKg"
+                    ],
+                    "properties": {
+                      "factId": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "athleteId": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "observedAt": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "sourceRef": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "sourceRevision": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "coverage": {
+                        "enum": [
+                          "COMPLETE",
+                          "PARTIAL"
+                        ]
+                      },
+                      "comparable": {
+                        "type": "boolean"
+                      },
+                      "recipeId": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "result": {
+                        "enum": [
+                          "COMPATIBLE",
+                          "OVER_TARGET",
+                          "UNDER_TARGET",
+                          "ADVERSE"
+                        ]
+                      },
+                      "completed": {
+                        "type": "boolean"
+                      },
+                      "technique": {
+                        "enum": [
+                          "ACCEPTABLE",
+                          "DEGRADED",
+                          "UNKNOWN"
+                        ]
+                      },
+                      "actualReps": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "setsCompleted": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "uniformRepsAcrossAllSets": {
+                        "type": "boolean"
+                      },
+                      "actualRir": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "actualLoadKg": {
+                        "type": "number",
+                        "minimum": 0
+                      }
+                    }
+                  },
+                  "minItems": 0,
+                  "uniqueItems": true
+                },
+                "relevantContextUnchanged": {
+                  "type": "boolean"
+                },
+                "loadKg": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "rirCalibratedForTask": {
+                  "type": "boolean"
+                },
+                "establishedTargetRir": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "nextHorizonNeedConfirmed": {
+                  "type": "boolean"
+                },
+                "smallestIncrementAvailable": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "event_id",
+            "type",
+            "request",
+            "sessionId",
+            "facts"
+          ],
+          "properties": {
+            "event_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "type": {
+              "enum": [
+                "R2_REQUEST"
+              ]
+            },
+            "request": {
+              "enum": [
+                "LOCAL_FATIGUE"
+              ]
+            },
+            "sessionId": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "facts": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "loadKg",
+                "rirCalibratedForTask",
+                "establishedTargetRir",
+                "fatigueScope",
+                "affectedComponent",
+                "essentialPerformance",
+                "optionalComponentUnperformed",
+                "oneOptionalSetStillInadequate",
+                "materialProblem"
+              ],
+              "properties": {
+                "loadKg": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "rirCalibratedForTask": {
+                  "type": "boolean"
+                },
+                "establishedTargetRir": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "fatigueScope": {
+                  "enum": [
+                    "LOCAL",
+                    "SYSTEMIC",
+                    "UNKNOWN"
+                  ]
+                },
+                "affectedComponent": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "essentialPerformance": {
+                  "enum": [
+                    "COMPATIBLE",
+                    "DEGRADED",
+                    "UNKNOWN"
+                  ]
+                },
+                "optionalComponentUnperformed": {
+                  "type": "boolean"
+                },
+                "oneOptionalSetStillInadequate": {
+                  "type": "boolean"
+                },
+                "materialProblem": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "event_id",
+            "type",
+            "request",
+            "sessionId",
+            "facts"
+          ],
+          "properties": {
+            "event_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "type": {
+              "enum": [
+                "R2_REQUEST"
+              ]
+            },
+            "request": {
+              "enum": [
+                "SYSTEMIC_FATIGUE"
+              ]
+            },
+            "sessionId": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "facts": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "subjectiveFatigue",
+                "performanceDecline",
+                "contextComparable",
+                "branchAuthorized",
+                "branchFamiliar",
+                "branchWindowAllowed",
+                "easyCurrentlyTolerated",
+                "optionalRemovalSufficient",
+                "materialProblem"
+              ],
+              "properties": {
+                "subjectiveFatigue": {
+                  "type": "boolean"
+                },
+                "performanceDecline": {
+                  "type": "boolean"
+                },
+                "contextComparable": {
+                  "type": "boolean"
+                },
+                "branchAuthorized": {
+                  "type": "boolean"
+                },
+                "branchFamiliar": {
+                  "type": "boolean"
+                },
+                "branchWindowAllowed": {
+                  "type": "boolean"
+                },
+                "easyCurrentlyTolerated": {
+                  "type": "boolean"
+                },
+                "optionalRemovalSufficient": {
+                  "type": "boolean"
+                },
+                "materialProblem": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "event_id",
+            "type",
+            "request",
+            "sessionId",
+            "facts"
+          ],
+          "properties": {
+            "event_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "type": {
+              "enum": [
+                "R2_REQUEST"
+              ]
+            },
+            "request": {
+              "enum": [
+                "UNDER_TARGET_STRENGTH"
+              ]
+            },
+            "sessionId": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "facts": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "episodes",
+                "relevantContextUnchanged",
+                "loadKg",
+                "rirCalibratedForTask",
+                "establishedTargetRir",
+                "reducedCandidateTolerated",
+                "essentialIntentPreserved",
+                "smallerRestChangeSufficient",
+                "materialProblem"
+              ],
+              "properties": {
+                "episodes": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "factId",
+                      "athleteId",
+                      "observedAt",
+                      "sourceRef",
+                      "sourceRevision",
+                      "coverage",
+                      "comparable",
+                      "recipeId",
+                      "result",
+                      "completed",
+                      "technique",
+                      "actualReps",
+                      "setsCompleted",
+                      "uniformRepsAcrossAllSets",
+                      "actualRir",
+                      "actualLoadKg"
+                    ],
+                    "properties": {
+                      "factId": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "athleteId": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "observedAt": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "sourceRef": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "sourceRevision": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "coverage": {
+                        "enum": [
+                          "COMPLETE",
+                          "PARTIAL"
+                        ]
+                      },
+                      "comparable": {
+                        "type": "boolean"
+                      },
+                      "recipeId": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "result": {
+                        "enum": [
+                          "COMPATIBLE",
+                          "OVER_TARGET",
+                          "UNDER_TARGET",
+                          "ADVERSE"
+                        ]
+                      },
+                      "completed": {
+                        "type": "boolean"
+                      },
+                      "technique": {
+                        "enum": [
+                          "ACCEPTABLE",
+                          "DEGRADED",
+                          "UNKNOWN"
+                        ]
+                      },
+                      "actualReps": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "setsCompleted": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "uniformRepsAcrossAllSets": {
+                        "type": "boolean"
+                      },
+                      "actualRir": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "actualLoadKg": {
+                        "type": "number",
+                        "minimum": 0
+                      }
+                    }
+                  },
+                  "minItems": 0,
+                  "uniqueItems": true
+                },
+                "relevantContextUnchanged": {
+                  "type": "boolean"
+                },
+                "loadKg": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "rirCalibratedForTask": {
+                  "type": "boolean"
+                },
+                "establishedTargetRir": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "reducedCandidateTolerated": {
+                  "type": "boolean"
+                },
+                "essentialIntentPreserved": {
+                  "type": "boolean"
+                },
+                "smallerRestChangeSufficient": {
+                  "type": "boolean"
+                },
+                "materialProblem": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "event_id",
+            "type",
+            "request",
+            "sessionId",
+            "facts"
+          ],
+          "properties": {
+            "event_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "type": {
+              "enum": [
+                "R2_REQUEST"
+              ]
+            },
+            "request": {
+              "enum": [
+                "REDUCE_RUN_REPETITION"
+              ]
+            },
+            "sessionId": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "facts": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "episodes",
+                "relevantContextUnchanged",
+                "paceSecondsPerKm",
+                "fifthRepDegrades",
+                "fourRepsTolerated",
+                "targetCalibrated",
+                "essentialIntentPreserved",
+                "smallerRestChangeSufficient",
+                "materialProblem"
+              ],
+              "properties": {
+                "episodes": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "factId",
+                      "athleteId",
+                      "observedAt",
+                      "sourceRef",
+                      "sourceRevision",
+                      "coverage",
+                      "comparable",
+                      "recipeId",
+                      "result",
+                      "completed",
+                      "technique",
+                      "actualReps",
+                      "setsCompleted",
+                      "uniformRepsAcrossAllSets",
+                      "actualRir",
+                      "actualLoadKg"
+                    ],
+                    "properties": {
+                      "factId": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "athleteId": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "observedAt": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "sourceRef": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "sourceRevision": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "coverage": {
+                        "enum": [
+                          "COMPLETE",
+                          "PARTIAL"
+                        ]
+                      },
+                      "comparable": {
+                        "type": "boolean"
+                      },
+                      "recipeId": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "result": {
+                        "enum": [
+                          "COMPATIBLE",
+                          "OVER_TARGET",
+                          "UNDER_TARGET",
+                          "ADVERSE"
+                        ]
+                      },
+                      "completed": {
+                        "type": "boolean"
+                      },
+                      "technique": {
+                        "enum": [
+                          "ACCEPTABLE",
+                          "DEGRADED",
+                          "UNKNOWN"
+                        ]
+                      },
+                      "actualReps": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "setsCompleted": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "uniformRepsAcrossAllSets": {
+                        "type": "boolean"
+                      },
+                      "actualRir": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "actualLoadKg": {
+                        "type": "number",
+                        "minimum": 0
+                      }
+                    }
+                  },
+                  "minItems": 0,
+                  "uniqueItems": true
+                },
+                "relevantContextUnchanged": {
+                  "type": "boolean"
+                },
+                "paceSecondsPerKm": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "fifthRepDegrades": {
+                  "type": "boolean"
+                },
+                "fourRepsTolerated": {
+                  "type": "boolean"
+                },
+                "targetCalibrated": {
+                  "type": "boolean"
+                },
+                "essentialIntentPreserved": {
+                  "type": "boolean"
+                },
+                "smallerRestChangeSufficient": {
+                  "type": "boolean"
+                },
+                "materialProblem": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "event_id",
+            "type",
+            "request",
+            "sessionId",
+            "facts"
+          ],
+          "properties": {
+            "event_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "type": {
+              "enum": [
+                "R2_REQUEST"
+              ]
+            },
+            "request": {
+              "enum": [
+                "PROGRESS_RUN"
+              ]
+            },
+            "sessionId": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "facts": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "episodes",
+                "relevantContextUnchanged",
+                "family",
+                "candidatePreviouslyTolerated",
+                "nextHorizonNeedConfirmed"
+              ],
+              "properties": {
+                "episodes": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "factId",
+                      "athleteId",
+                      "observedAt",
+                      "sourceRef",
+                      "sourceRevision",
+                      "coverage",
+                      "comparable",
+                      "recipeId",
+                      "result",
+                      "completed",
+                      "technique",
+                      "actualReps",
+                      "setsCompleted",
+                      "uniformRepsAcrossAllSets",
+                      "actualRir",
+                      "actualLoadKg"
+                    ],
+                    "properties": {
+                      "factId": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "athleteId": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "observedAt": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "sourceRef": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "sourceRevision": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "coverage": {
+                        "enum": [
+                          "COMPLETE",
+                          "PARTIAL"
+                        ]
+                      },
+                      "comparable": {
+                        "type": "boolean"
+                      },
+                      "recipeId": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "result": {
+                        "enum": [
+                          "COMPATIBLE",
+                          "OVER_TARGET",
+                          "UNDER_TARGET",
+                          "ADVERSE"
+                        ]
+                      },
+                      "completed": {
+                        "type": "boolean"
+                      },
+                      "technique": {
+                        "enum": [
+                          "ACCEPTABLE",
+                          "DEGRADED",
+                          "UNKNOWN"
+                        ]
+                      },
+                      "actualReps": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "setsCompleted": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "uniformRepsAcrossAllSets": {
+                        "type": "boolean"
+                      },
+                      "actualRir": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "actualLoadKg": {
+                        "type": "number",
+                        "minimum": 0
+                      }
+                    }
+                  },
+                  "minItems": 0,
+                  "uniqueItems": true
+                },
+                "relevantContextUnchanged": {
+                  "type": "boolean"
+                },
+                "family": {
+                  "enum": [
+                    "EASY",
+                    "LONG"
+                  ]
+                },
+                "candidatePreviouslyTolerated": {
+                  "type": "boolean"
+                },
+                "nextHorizonNeedConfirmed": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "event_id",
+            "type",
+            "request",
+            "sessionId",
+            "facts"
+          ],
+          "properties": {
+            "event_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "type": {
+              "enum": [
+                "R2_REQUEST"
+              ]
+            },
+            "request": {
+              "enum": [
+                "RETURN_RUN"
+              ]
+            },
+            "sessionId": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "facts": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "reason",
+                "interruptionDays",
+                "priorFamiliar",
+                "currentRunMinutes",
+                "capacityEstablishedToday",
+                "currentComfortableTalk",
+                "timeBudgetMinutes",
+                "availableDays"
+              ],
+              "properties": {
+                "reason": {
+                  "enum": [
+                    "TRAVEL",
+                    "SCHEDULE",
+                    "INJURY",
+                    "ILLNESS",
+                    "UNKNOWN"
+                  ]
+                },
+                "interruptionDays": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "priorFamiliar": {
+                  "type": "boolean"
+                },
+                "currentRunMinutes": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "capacityEstablishedToday": {
+                  "type": "boolean"
+                },
+                "currentComfortableTalk": {
+                  "type": "boolean"
+                },
+                "timeBudgetMinutes": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "availableDays": {
+                  "type": "array",
+                  "items": {
+                    "enum": [
+                      "MON",
+                      "TUE",
+                      "WED",
+                      "THU",
+                      "FRI",
+                      "SAT",
+                      "SUN"
+                    ]
+                  },
+                  "minItems": 1,
+                  "uniqueItems": true
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "event_id",
+            "type",
+            "request",
+            "sessionId",
+            "facts"
+          ],
+          "properties": {
+            "event_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "type": {
+              "enum": [
+                "R2_REQUEST"
+              ]
+            },
+            "request": {
+              "enum": [
+                "RETURN_STRENGTH"
+              ]
+            },
+            "sessionId": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "facts": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "reason",
+                "interruptionDays",
+                "priorFamiliar",
+                "currentConfigurationDemonstrated",
+                "currentLoadEstablished",
+                "loadsKg",
+                "timeBudgetMinutes",
+                "availableDays"
+              ],
+              "properties": {
+                "reason": {
+                  "enum": [
+                    "TRAVEL",
+                    "SCHEDULE",
+                    "INJURY",
+                    "ILLNESS",
+                    "UNKNOWN"
+                  ]
+                },
+                "interruptionDays": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "priorFamiliar": {
+                  "type": "boolean"
+                },
+                "currentConfigurationDemonstrated": {
+                  "type": "boolean"
+                },
+                "currentLoadEstablished": {
+                  "type": "boolean"
+                },
+                "loadsKg": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "legPress",
+                    "machineChestPress",
+                    "seatedCableRow",
+                    "seatedLegCurl"
+                  ],
+                  "properties": {
+                    "legPress": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "machineChestPress": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "seatedCableRow": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "seatedLegCurl": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  }
+                },
+                "timeBudgetMinutes": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "availableDays": {
+                  "type": "array",
+                  "items": {
+                    "enum": [
+                      "MON",
+                      "TUE",
+                      "WED",
+                      "THU",
+                      "FRI",
+                      "SAT",
+                      "SUN"
+                    ]
+                  },
+                  "minItems": 1,
+                  "uniqueItems": true
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "event_id",
+            "type",
+            "request",
+            "sessionId",
+            "facts"
+          ],
+          "properties": {
+            "event_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "type": {
+              "enum": [
+                "R2_REQUEST"
+              ]
+            },
+            "request": {
+              "enum": [
+                "TAPER_10K"
+              ]
+            },
+            "sessionId": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "facts": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "daysToRace",
+                "eventDistance",
+                "eventPriorityConfirmed",
+                "allRecipesFamiliar",
+                "runTargetsCalibrated",
+                "racePaceSecondsPerKm",
+                "loadsKg",
+                "essentialRunFeasible",
+                "strengthIntent",
+                "scheduleConfirmed"
+              ],
+              "properties": {
+                "daysToRace": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "eventDistance": {
+                  "enum": [
+                    "10K"
+                  ]
+                },
+                "eventPriorityConfirmed": {
+                  "type": "boolean"
+                },
+                "allRecipesFamiliar": {
+                  "type": "boolean"
+                },
+                "runTargetsCalibrated": {
+                  "type": "boolean"
+                },
+                "racePaceSecondsPerKm": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "loadsKg": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "legPress",
+                    "machineChestPress",
+                    "seatedCableRow"
+                  ],
+                  "properties": {
+                    "legPress": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "machineChestPress": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "seatedCableRow": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  }
+                },
+                "essentialRunFeasible": {
+                  "type": "boolean"
+                },
+                "strengthIntent": {
+                  "enum": [
+                    "MAINTAIN_FAMILIAR",
+                    "OMIT",
+                    "INTRODUCE_NEW"
+                  ]
+                },
+                "scheduleConfirmed": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "event_id",
+            "type",
+            "request",
+            "sessionId",
+            "facts"
+          ],
+          "properties": {
+            "event_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "type": {
+              "enum": [
+                "R2_REQUEST"
+              ]
+            },
+            "request": {
+              "enum": [
+                "TAPER_HALF"
+              ]
+            },
+            "sessionId": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "facts": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "daysToRace",
+                "eventDistance",
+                "eventPriorityConfirmed",
+                "allRecipesFamiliar",
+                "runTargetsCalibrated",
+                "racePaceSecondsPerKm",
+                "loadsKg",
+                "essentialRunFeasible",
+                "strengthIntent",
+                "scheduleConfirmed"
+              ],
+              "properties": {
+                "daysToRace": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "eventDistance": {
+                  "enum": [
+                    "HALF_MARATHON"
+                  ]
+                },
+                "eventPriorityConfirmed": {
+                  "type": "boolean"
+                },
+                "allRecipesFamiliar": {
+                  "type": "boolean"
+                },
+                "runTargetsCalibrated": {
+                  "type": "boolean"
+                },
+                "racePaceSecondsPerKm": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "loadsKg": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "legPress",
+                    "machineChestPress",
+                    "seatedCableRow"
+                  ],
+                  "properties": {
+                    "legPress": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "machineChestPress": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "seatedCableRow": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  }
+                },
+                "essentialRunFeasible": {
+                  "type": "boolean"
+                },
+                "strengthIntent": {
+                  "enum": [
+                    "MAINTAIN_FAMILIAR",
+                    "OMIT",
+                    "INTRODUCE_NEW"
+                  ]
+                },
+                "scheduleConfirmed": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "event_id",
+            "type",
+            "request",
+            "sessionId",
+            "facts"
+          ],
+          "properties": {
+            "event_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "type": {
+              "enum": [
+                "R2_REQUEST"
+              ]
+            },
+            "request": {
+              "enum": [
+                "TAPER_BALANCED"
+              ]
+            },
+            "sessionId": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "facts": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "daysToRace",
+                "eventDistance",
+                "eventPriorityConfirmed",
+                "allRecipesFamiliar",
+                "runTargetsCalibrated",
+                "racePaceSecondsPerKm",
+                "loadsKg",
+                "essentialRunFeasible",
+                "strengthIntent",
+                "scheduleConfirmed"
+              ],
+              "properties": {
+                "daysToRace": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "eventDistance": {
+                  "enum": [
+                    "10K"
+                  ]
+                },
+                "eventPriorityConfirmed": {
+                  "type": "boolean"
+                },
+                "allRecipesFamiliar": {
+                  "type": "boolean"
+                },
+                "runTargetsCalibrated": {
+                  "type": "boolean"
+                },
+                "racePaceSecondsPerKm": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "loadsKg": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "legPress",
+                    "machineChestPress",
+                    "seatedCableRow"
+                  ],
+                  "properties": {
+                    "legPress": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "machineChestPress": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "seatedCableRow": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  }
+                },
+                "essentialRunFeasible": {
+                  "type": "boolean"
+                },
+                "strengthIntent": {
+                  "enum": [
+                    "MAINTAIN_FAMILIAR",
+                    "OMIT",
+                    "INTRODUCE_NEW"
+                  ]
+                },
+                "scheduleConfirmed": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "event_id",
+            "type",
+            "request",
+            "sessionId",
+            "facts"
+          ],
+          "properties": {
+            "event_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "type": {
+              "enum": [
+                "R2_REQUEST"
+              ]
+            },
+            "request": {
+              "enum": [
+                "CALIBRATE_RUN"
+              ]
+            },
+            "sessionId": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "facts": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "family",
+                "targetMethod",
+                "construct",
+                "paceSecondsPerKm",
+                "familyFamiliar",
+                "targetEstablished",
+                "conditionsComparable",
+                "toleranceKnown",
+                "toleratedRecipeId",
+                "toleranceFactId",
+                "noLab"
+              ],
+              "properties": {
+                "family": {
+                  "enum": [
+                    "EASY",
+                    "RECOVERY",
+                    "STEADY",
+                    "THRESHOLD",
+                    "VO2",
+                    "SHORT_INTERVALS",
+                    "LONG",
+                    "HILLS",
+                    "STRIDES",
+                    "RACE_PACE"
+                  ]
+                },
+                "targetMethod": {
+                  "enum": [
+                    "TALK_RPE",
+                    "PACE",
+                    "HR",
+                    "POWER",
+                    "LAB",
+                    "FIELD"
+                  ]
+                },
+                "construct": {
+                  "enum": [
+                    "EASY_EFFORT",
+                    "STEADY_EFFORT",
+                    "LT2",
+                    "CS",
+                    "VO2_STYLE",
+                    "SHORT_FAST",
+                    "LONG_EASY",
+                    "HILL_EFFORT",
+                    "RELAXED_STRIDE",
+                    "FIELD_SESSION_TARGET",
+                    "RACE_PACE",
+                    "UNKNOWN"
+                  ]
+                },
+                "paceSecondsPerKm": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "familyFamiliar": {
+                  "type": "boolean"
+                },
+                "targetEstablished": {
+                  "type": "boolean"
+                },
+                "conditionsComparable": {
+                  "type": "boolean"
+                },
+                "toleranceKnown": {
+                  "type": "boolean"
+                },
+                "toleratedRecipeId": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "toleranceFactId": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "noLab": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "event_id",
+            "type",
+            "request",
+            "sessionId",
+            "facts"
+          ],
+          "properties": {
+            "event_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "type": {
+              "enum": [
+                "R2_REQUEST"
+              ]
+            },
+            "request": {
+              "enum": [
+                "RANK_OPTIONS"
+              ]
+            },
+            "sessionId": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "facts": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "necessityEstablished",
+                "candidatesAdmissible",
+                "alternatives",
+                "episodes",
+                "counterevidenceConsidered",
+                "relevantContextUnchanged"
+              ],
+              "properties": {
+                "necessityEstablished": {
+                  "type": "boolean"
+                },
+                "candidatesAdmissible": {
+                  "type": "boolean"
+                },
+                "alternatives": {
+                  "type": "array",
+                  "items": {
+                    "enum": [
+                      "MON_LOWER",
+                      "WED_LOWER"
+                    ]
+                  },
+                  "minItems": 2,
+                  "uniqueItems": true
+                },
+                "episodes": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "factId",
+                      "athleteId",
+                      "observedAt",
+                      "sourceRef",
+                      "sourceRevision",
+                      "coverage",
+                      "comparable",
+                      "placement",
+                      "response"
+                    ],
+                    "properties": {
+                      "factId": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "athleteId": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "observedAt": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "sourceRef": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "sourceRevision": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "coverage": {
+                        "enum": [
+                          "COMPLETE",
+                          "PARTIAL"
+                        ]
+                      },
+                      "comparable": {
+                        "type": "boolean"
+                      },
+                      "placement": {
+                        "enum": [
+                          "MON_LOWER",
+                          "WED_LOWER"
+                        ]
+                      },
+                      "response": {
+                        "enum": [
+                          "COMPATIBLE",
+                          "DEGRADED",
+                          "UNKNOWN"
+                        ]
+                      }
+                    }
+                  },
+                  "minItems": 0,
+                  "uniqueItems": true
+                },
+                "counterevidenceConsidered": {
+                  "type": "boolean"
+                },
+                "relevantContextUnchanged": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sourceRef",
+        "sourceRevision",
+        "observedAt",
+        "coverage",
+        "association",
+        "response",
+        "contextComparable"
+      ],
+      "properties": {
+        "sourceRef": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceRevision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "observedAt": {
+          "type": "string",
+          "minLength": 1
+        },
+        "coverage": {
+          "enum": [
+            "COMPLETE",
+            "PARTIAL",
+            "UNKNOWN"
+          ]
+        },
+        "association": {
+          "enum": [
+            "CONFIRMED",
+            "UNCERTAIN"
+          ]
+        },
+        "response": {
+          "enum": [
+            "COMPATIBLE",
+            "ADVERSE",
+            "UNKNOWN"
+          ]
+        },
+        "contextComparable": {
+          "type": "boolean"
+        }
+      }
+    },
+    "observedExecutionState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "events",
+        "completed",
+        "inferred"
+      ],
+      "properties": {
+        "events": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "event_id"
+            ],
+            "properties": {
+              "event_id": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "completed": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "sessionId",
+              "athleteId",
+              "factId",
+              "sourceRef",
+              "sourceRevision",
+              "observedAt",
+              "recipeId",
+              "coverage",
+              "executedRevision",
+              "parameters"
+            ],
+            "properties": {
+              "sessionId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "athleteId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "factId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sourceRef": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sourceRevision": {
+                "type": "string",
+                "minLength": 1
+              },
+              "observedAt": {
+                "type": "string",
+                "minLength": 1
+              },
+              "recipeId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "coverage": {
+                "enum": [
+                  "COMPLETE",
+                  "PARTIAL"
+                ]
+              },
+              "executedRevision": {
+                "type": "string",
+                "minLength": 1
+              },
+              "parameters": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [],
+                "properties": {
+                  "loadKg": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "targetRir": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "loadsKg": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "paceSecondsPerKm": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "racePaceSecondsPerKm": {
+                    "type": "number",
+                    "minimum": 0
+                  }
+                }
+              }
+            }
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "inferred": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "description"
+            ],
+            "properties": {
+              "description": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        }
+      }
+    },
+    "recoveryContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "eligibilityStatus",
+        "clinicalConcern",
+        "interrupted",
+        "sourceRef",
+        "contextChanged",
+        "clinicalFlags",
+        "persistentPain",
+        "injury",
+        "illness",
+        "functionalLimitation",
+        "clearanceRequired"
+      ],
+      "properties": {
+        "eligibilityStatus": {
+          "enum": [
+            "NONCLINICAL_CONFIRMED",
+            "ELIGIBILITY_UNASSESSED",
+            "CLINICAL_CONCERN"
+          ]
+        },
+        "clinicalConcern": {
+          "type": "boolean"
+        },
+        "interrupted": {
+          "type": "boolean"
+        },
+        "sourceRef": {
+          "type": "string",
+          "minLength": 1
+        },
+        "contextChanged": {
+          "type": "boolean"
+        },
+        "clinicalFlags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "persistentPain": {
+          "type": "boolean"
+        },
+        "injury": {
+          "type": "boolean"
+        },
+        "illness": {
+          "type": "boolean"
+        },
+        "functionalLimitation": {
+          "type": "boolean"
+        },
+        "clearanceRequired": {
+          "type": "boolean"
+        }
+      }
+    },
+    "policyContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "registryVersion",
+        "registryHash",
+        "revokedReviewIds",
+        "holds",
+        "longitudinalPurposeAllowed",
+        "requestedPolicyIds"
+      ],
+      "properties": {
+        "registryVersion": {
+          "type": "string",
+          "minLength": 1
+        },
+        "registryHash": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revokedReviewIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "holds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "longitudinalPurposeAllowed": {
+          "type": "boolean"
+        },
+        "requestedPolicyIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dataClass",
+        "sourceRef",
+        "sourceRevision",
+        "coverage",
+        "association"
+      ],
+      "properties": {
+        "dataClass": {
+          "enum": [
+            "SYNTHETIC",
+            "REAL"
+          ]
+        },
+        "sourceRef": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceRevision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "coverage": {
+          "enum": [
+            "EXPLICIT_FIXTURE_FACTS",
+            "PARTIAL",
+            "UNKNOWN"
+          ]
+        },
+        "association": {
+          "enum": [
+            "CONFIRMED",
+            "UNCERTAIN"
+          ]
+        }
+      }
+    }
+  }
+}

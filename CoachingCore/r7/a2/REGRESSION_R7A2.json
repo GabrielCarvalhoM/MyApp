@@ -1,0 +1,709 @@
+{
+ "revision": "R7A2-REGRESSION-1",
+ "generatedAt": "2026-10-28T13:14:47.259Z",
+ "classification": "REGRESSION / CHALLENGE REUSE; not generalization evidence",
+ "authority": "DEV_TEST_ONLY devAuthority() bound to the current policy hash",
+ "runtimes": {
+  "freezeA2": {
+   "snapshot": "audits/domain-coaching-r7a2-2026-10-28/freezeA2-source",
+   "sourceDigest": "71edc245cfe06a376732ec8054f2e09f277066f2ee4004f34827b2c90a1c4024"
+  },
+  "current": {
+   "sources": {
+    "CoachingCore/src/r6-adaptation.mjs": "a670e33b1fdd0892d049931f5413d98dc5e10e88cd8ac2ab32c82a177142dbe5",
+    "CoachingCore/src/r6-authority.mjs": "916b601ade47966557bafc29f134a45f7497380949c584e9be773f4beba63f69",
+    "CoachingCore/src/r6-balanced.mjs": "e7433199e89cb267fe7fa23297c2ceea45a37e9df365eec63e32e64f9e86dd04",
+    "CoachingCore/src/r6-catalogue.mjs": "cdad88cb67ba7164030c900648079946e70bb10778120886d25476718dbf3d5f",
+    "CoachingCore/src/r6-clinical.mjs": "51449486b4cb7acaaae6c7c915d52b150c420b4f49c14cdfe9f896febff7f681",
+    "CoachingCore/src/r6-composition.mjs": "e6604c74fb9ed0a8cf22a33f345af8123017501644f11a23a610178599fff780",
+    "CoachingCore/src/r6-index.mjs": "8316ff218814b39060b17b1720fca08349bbac8e7c954327424f4df691ceb098",
+    "CoachingCore/src/r6-intake.mjs": "99a8683e3fb0b163380bd0376a2be605660f4d3eebedee50b3e269cba793933a",
+    "CoachingCore/src/r6-learning.mjs": "dced0698ebbee06f81208b9fb9e404d3d6bb534a689fe0572c7d9949c9a22a10",
+    "CoachingCore/src/r6-legacy.mjs": "4312aeef7fa1fee67bc9a617ee7d189bd14da7486f0a3a47b38275306d9ca36b",
+    "CoachingCore/src/r6-prescription.mjs": "a61a372ce9f45d167097f93ee046c7569af01803d0cb27fc91a5036221002a28",
+    "CoachingCore/src/r6-program.mjs": "6134c930aa4abe827b2af1e72527e7ec53826945cb1215785cf86fb9f0f4af29",
+    "CoachingCore/src/r6-provenance.mjs": "6a292c14c1f82e52fdf6f764bc9a0070fa0e1cabaaf55dd78108831ea854a4d6",
+    "CoachingCore/src/r6-simulator.mjs": "11dc73ff7f7e85b63e000bcd665d2d5073260755eb3c3980f47d186dead8c2b5"
+   }
+  }
+ },
+ "inputs": {
+  "CoachingCore/r6/holdout/R6_INDEPENDENT_HOLDOUT.json": {
+   "sha256": "49a85b8c3c413a0d2f5a7fabbdf212b629ef1b66613420d08e494e5a04bf0708",
+   "boundByBaseline": true
+  },
+  "CoachingCore/r5/holdout/R5_INDEPENDENT_HOLDOUT.json": {
+   "sha256": "9557f4bf539073301cde242172cd019983ebf8997fc16b91aae37e634f0cf5c5",
+   "boundByBaseline": true
+  },
+  "CoachingCore/scripts/evaluate-holdout-r6.mjs": {
+   "sha256": "6d08d2021cb5aba597821b6544d6472b96a341f74a450229f2d12a07e2b2ce4c",
+   "boundByBaseline": true
+  },
+  "CoachingCore/scripts/simulate-r6.mjs": {
+   "sha256": "34e62e3c1193127c1b670fbf17280f0983b98b7358774d358e6ad2d7d7156a72",
+   "boundByBaseline": true
+  },
+  "CoachingCore/r5/PROGRAM_POLICY_R5.json": {
+   "sha256": "307a09213230baca8fe7802ae7eb271825dcd7346d29b5d8c7ba7632571eca12",
+   "boundByBaseline": true
+  },
+  "CoachingCore/r6/PROGRAM_POLICY_R6.json": {
+   "sha256": "a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100",
+   "boundByBaseline": true
+  },
+  "CoachingCore/r6/fixtures/profiles.mjs": {
+   "sha256": "d36d0e6d1336648d4bd27946d90981666446c2328ac98dfebf48aa91b89a354d",
+   "boundByBaseline": true
+  },
+  "CoachingCore/r6/fixtures/trajectories.mjs": {
+   "sha256": "0bae601e92b53d5dcea83d1b4d53112ed0c3fddc2abe2437eb01301bbaddf2ea",
+   "boundByBaseline": true
+  },
+  "audits/domain-coaching-r5-2026-10-25/reviews/ssctr-policy-review.json": {
+   "sha256": "2eb990ab0b9ff2c740bfeb0fe998b84a8f29ee19c88b4259f3ba359d6d5ea903",
+   "boundByBaseline": false
+  }
+ },
+ "ignoredAsByteLevel": [
+  "exposure",
+  "hash",
+  "doseKey",
+  "entryWeek",
+  "inputHashes",
+  "digest",
+  "adaptations",
+  "contextBefore",
+  "startBeforeReturn",
+  "easedFor",
+  "*Hash, *Digest",
+  "re-establishment note wording \"as of the last review\"",
+  "interruption.startDate|endDate|episode|relation|supersedes|stateAt|entry"
+ ],
+ "summary": {
+  "r6FreshHoldout": {
+   "cases": 35,
+   "identical": 34,
+   "different": [
+    "R6-H17"
+   ],
+   "statusChanged": []
+  },
+  "r5Corpus": {
+   "cases": 24,
+   "identical": 24,
+   "different": [],
+   "statusChanged": []
+  },
+  "profiles": {
+   "cases": 16,
+   "identical": 16,
+   "different": [],
+   "statusChanged": []
+  },
+  "simulations": {
+   "cases": 14,
+   "identical": 14,
+   "different": [],
+   "statusChanged": []
+  }
+ },
+ "r6FreshHoldout": [
+  {
+   "caseId": "R6-H01",
+   "operation": "GENERATE",
+   "identical": true,
+   "before": "PROPOSED",
+   "current": "PROPOSED"
+  },
+  {
+   "caseId": "R6-H02",
+   "operation": "GENERATE",
+   "identical": true,
+   "before": "PROPOSED",
+   "current": "PROPOSED"
+  },
+  {
+   "caseId": "R6-H03",
+   "operation": "GENERATE",
+   "identical": true,
+   "before": "PROPOSED",
+   "current": "PROPOSED"
+  },
+  {
+   "caseId": "R6-H04",
+   "operation": "GENERATE",
+   "identical": true,
+   "before": "PROPOSED",
+   "current": "PROPOSED"
+  },
+  {
+   "caseId": "R6-H05",
+   "operation": "GENERATE",
+   "identical": true,
+   "before": "PROPOSED",
+   "current": "PROPOSED"
+  },
+  {
+   "caseId": "R6-H06",
+   "operation": "GENERATE",
+   "identical": true,
+   "before": "PROPOSED",
+   "current": "PROPOSED"
+  },
+  {
+   "caseId": "R6-H07",
+   "operation": "GENERATE",
+   "identical": true,
+   "before": "PROPOSED",
+   "current": "PROPOSED"
+  },
+  {
+   "caseId": "R6-H08",
+   "operation": "GENERATE",
+   "identical": true,
+   "before": "PROPOSED",
+   "current": "PROPOSED"
+  },
+  {
+   "caseId": "R6-H09",
+   "operation": "GENERATE",
+   "identical": true,
+   "before": "PROPOSED",
+   "current": "PROPOSED"
+  },
+  {
+   "caseId": "R6-H10",
+   "operation": "GENERATE",
+   "identical": true,
+   "before": "ASK",
+   "current": "ASK"
+  },
+  {
+   "caseId": "R6-H11",
+   "operation": "GENERATE",
+   "identical": true,
+   "before": "CLINICAL_HUMAN_REQUIRED",
+   "current": "CLINICAL_HUMAN_REQUIRED"
+  },
+  {
+   "caseId": "R6-H12",
+   "operation": "GENERATE",
+   "identical": true,
+   "before": "UNSUPPORTED",
+   "current": "UNSUPPORTED"
+  },
+  {
+   "caseId": "R6-H13",
+   "operation": "GENERATE",
+   "identical": true,
+   "before": "UNSUPPORTED",
+   "current": "UNSUPPORTED"
+  },
+  {
+   "caseId": "R6-H14",
+   "operation": "GENERATE",
+   "identical": true,
+   "before": "INVALID_INPUT",
+   "current": "INVALID_INPUT"
+  },
+  {
+   "caseId": "R6-H15",
+   "operation": "GENERATE",
+   "identical": true,
+   "before": "PROPOSED",
+   "current": "PROPOSED"
+  },
+  {
+   "caseId": "R6-H16",
+   "operation": "GENERATE",
+   "identical": true,
+   "before": "PROPOSED",
+   "current": "PROPOSED"
+  },
+  {
+   "caseId": "R6-H17",
+   "operation": "SEQUENCE",
+   "identical": false,
+   "before": "KEEP/KEEP MODIFY/GATED_NEXT_STEP MODIFY/REESTABLISH",
+   "current": "KEEP/KEEP MODIFY/GATED_NEXT_STEP MODIFY/REESTABLISH",
+   "differences": [
+    {
+     "path": "/steps/2/result/proposal/stateTrace/6/strength/exercises/goblet-squat/lastPerformed",
+     "before": "\"2027-03-29\"",
+     "current": "\"2027-04-05\""
+    },
+    {
+     "path": "/steps/2/result/proposal/stateTrace/6/strength/exercises/db-row/lastPerformed",
+     "before": "\"2027-04-01\"",
+     "current": "\"2027-04-05\""
+    },
+    {
+     "path": "/steps/2/result/proposal/stateTrace/6/strength/exercises/push-up/lastPerformed",
+     "before": "\"2027-04-01\"",
+     "current": "\"2027-04-05\""
+    },
+    {
+     "path": "/steps/2/result/proposal/stateTrace/6/strength/exercises/db-calf-raise/lastPerformed",
+     "before": "\"2027-03-29\"",
+     "current": "\"2027-04-05\""
+    },
+    {
+     "path": "/steps/2/result/proposal/stateTrace/6/strength/exercises/db-calf-raise/lastExecutedSets",
+     "before": "1",
+     "current": "2"
+    },
+    {
+     "path": "/steps/2/result/proposal/stateTrace/6/strength/exercises/dead-bug/lastPerformed",
+     "before": "\"2027-04-01\"",
+     "current": "\"2027-04-05\""
+    },
+    {
+     "path": "/steps/2/result/proposal/stateTrace/7/strength/exercises/db-calf-raise/lastExecutedSets",
+     "before": "1",
+     "current": "2"
+    },
+    {
+     "path": "/steps/2/result/proposal/stateTrace/8/strength/exercises/db-calf-raise/lastExecutedSets",
+     "before": "1",
+     "current": "2"
+    },
+    {
+     "path": "/steps/2/result/proposal/stateTrace/9/strength/exercises/db-calf-raise/lastExecutedSets",
+     "before": "1",
+     "current": "2"
+    },
+    {
+     "path": "/steps/2/result/proposal/stateTrace/10/strength/exercises/db-calf-raise/lastExecutedSets",
+     "before": "1",
+     "current": "2"
+    },
+    {
+     "path": "/steps/2/result/proposal/stateTrace/11/strength/exercises/db-calf-raise/lastExecutedSets",
+     "before": "1",
+     "current": "2"
+    }
+   ]
+  },
+  {
+   "caseId": "R6-H18",
+   "operation": "SEQUENCE",
+   "identical": true,
+   "before": "MODIFY/MOVE KEEP/KEEP MODIFY/GATED_NEXT_STEP",
+   "current": "MODIFY/MOVE KEEP/KEEP MODIFY/GATED_NEXT_STEP"
+  },
+  {
+   "caseId": "R6-H19",
+   "operation": "SEQUENCE",
+   "identical": true,
+   "before": "KEEP/KEEP MODIFY/GATED_NEXT_STEP KEEP/KEEP KEEP/KEEP",
+   "current": "KEEP/KEEP MODIFY/GATED_NEXT_STEP KEEP/KEEP KEEP/KEEP"
+  },
+  {
+   "caseId": "R6-H20",
+   "operation": "SEQUENCE",
+   "identical": true,
+   "before": "KEEP/INSTANTIATE_LOGGED_LOADS KEEP/INSTANTIATE_LOGGED_LOADS KEEP/KEEP",
+   "current": "KEEP/INSTANTIATE_LOGGED_LOADS KEEP/INSTANTIATE_LOGGED_LOADS KEEP/KEEP"
+  },
+  {
+   "caseId": "R6-H21",
+   "operation": "SEQUENCE",
+   "identical": true,
+   "before": "MODIFY/REDUCE MODIFY/REDUCE KEEP/KEEP",
+   "current": "MODIFY/REDUCE MODIFY/REDUCE KEEP/KEEP"
+  },
+  {
+   "caseId": "R6-H22",
+   "operation": "SEQUENCE",
+   "identical": true,
+   "before": "MODIFY/RESCHEDULE_WITHIN_WEEK MODIFY/GATED_NEXT_STEP MODIFY/REARRANGE_FUTURE_WEEKS KEEP/INSTANTIATE_LOGGED_LOADS",
+   "current": "MODIFY/RESCHEDULE_WITHIN_WEEK MODIFY/GATED_NEXT_STEP MODIFY/REARRANGE_FUTURE_WEEKS KEEP/INSTANTIATE_LOGGED_LOADS"
+  },
+  {
+   "caseId": "R6-H23",
+   "operation": "SEQUENCE",
+   "identical": true,
+   "before": "ASK/ASK MODIFY/GATED_NEXT_STEP",
+   "current": "ASK/ASK MODIFY/GATED_NEXT_STEP"
+  },
+  {
+   "caseId": "R6-H24",
+   "operation": "SEQUENCE",
+   "identical": true,
+   "before": "MODIFY/SUBSTITUTE KEEP/KEEP MODIFY/GATED_NEXT_STEP",
+   "current": "MODIFY/SUBSTITUTE KEEP/KEEP MODIFY/GATED_NEXT_STEP"
+  },
+  {
+   "caseId": "R6-H25",
+   "operation": "SEQUENCE",
+   "identical": true,
+   "before": "MODIFY/REPLAN_FUTURE_PHASES MODIFY/REPLAN_FUTURE_PHASES",
+   "current": "MODIFY/REPLAN_FUTURE_PHASES MODIFY/REPLAN_FUTURE_PHASES"
+  },
+  {
+   "caseId": "R6-H26",
+   "operation": "SEQUENCE",
+   "identical": true,
+   "before": "KEEP/KEEP MODIFY/REESTABLISH MODIFY/GATED_NEXT_STEP",
+   "current": "KEEP/KEEP MODIFY/REESTABLISH MODIFY/GATED_NEXT_STEP"
+  },
+  {
+   "caseId": "R6-H27",
+   "operation": "GENERATE",
+   "identical": true,
+   "before": "PROPOSED",
+   "current": "PROPOSED"
+  },
+  {
+   "caseId": "R6-H28",
+   "operation": "SEQUENCE",
+   "identical": true,
+   "before": "ASK/ASK CLINICAL_HUMAN_REQUIRED/CLINICAL_HUMAN_REQUIRED",
+   "current": "ASK/ASK CLINICAL_HUMAN_REQUIRED/CLINICAL_HUMAN_REQUIRED"
+  },
+  {
+   "caseId": "R6-H29",
+   "operation": "SEQUENCE",
+   "identical": true,
+   "before": "MODIFY/GATED_NEXT_STEP MODIFY/SKIP_NO_CATCH_UP MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP",
+   "current": "MODIFY/GATED_NEXT_STEP MODIFY/SKIP_NO_CATCH_UP MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP"
+  },
+  {
+   "caseId": "R6-H30",
+   "operation": "SEQUENCE",
+   "identical": true,
+   "before": "MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP KEEP/KEEP MODIFY/GATED_NEXT_STEP",
+   "current": "MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP KEEP/KEEP MODIFY/GATED_NEXT_STEP"
+  },
+  {
+   "caseId": "R6-H31",
+   "operation": "SEQUENCE",
+   "identical": true,
+   "before": "KEEP/INSTANTIATE_LOGGED_LOADS MODIFY/GATED_NEXT_STEP",
+   "current": "KEEP/INSTANTIATE_LOGGED_LOADS MODIFY/GATED_NEXT_STEP"
+  },
+  {
+   "caseId": "R6-H32",
+   "operation": "SEQUENCE",
+   "identical": true,
+   "before": "MODIFY/GATED_NEXT_STEP KEEP/KEEP",
+   "current": "MODIFY/GATED_NEXT_STEP KEEP/KEEP"
+  },
+  {
+   "caseId": "R6-H33",
+   "operation": "SEQUENCE",
+   "identical": true,
+   "before": "MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP",
+   "current": "MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP"
+  },
+  {
+   "caseId": "R6-H34",
+   "operation": "SEQUENCE",
+   "identical": true,
+   "before": "MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP",
+   "current": "MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP"
+  },
+  {
+   "caseId": "R6-H35",
+   "operation": "SEQUENCE",
+   "identical": true,
+   "before": "MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP",
+   "current": "MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP MODIFY/GATED_NEXT_STEP"
+  }
+ ],
+ "r5Corpus": [
+  {
+   "caseId": "R5-H01",
+   "operation": "GENERATE",
+   "identical": true,
+   "before": "PROPOSED",
+   "current": "PROPOSED"
+  },
+  {
+   "caseId": "R5-H02",
+   "operation": "GENERATE",
+   "identical": true,
+   "before": "PROPOSED",
+   "current": "PROPOSED"
+  },
+  {
+   "caseId": "R5-H03",
+   "operation": "GENERATE",
+   "identical": true,
+   "before": "PROPOSED",
+   "current": "PROPOSED"
+  },
+  {
+   "caseId": "R5-H04",
+   "operation": "GENERATE",
+   "identical": true,
+   "before": "PROPOSED",
+   "current": "PROPOSED"
+  },
+  {
+   "caseId": "R5-H05",
+   "operation": "GENERATE",
+   "identical": true,
+   "before": "PROPOSED",
+   "current": "PROPOSED"
+  },
+  {
+   "caseId": "R5-H06",
+   "operation": "GENERATE",
+   "identical": true,
+   "before": "ASK",
+   "current": "ASK"
+  },
+  {
+   "caseId": "R5-H07",
+   "operation": "REVIEW",
+   "identical": true,
+   "before": "KEEP/KEEP",
+   "current": "KEEP/KEEP"
+  },
+  {
+   "caseId": "R5-H08",
+   "operation": "SEQUENCE",
+   "identical": true,
+   "before": "KEEP/KEEP KEEP/KEEP MODIFY/PROGRESS",
+   "current": "KEEP/KEEP KEEP/KEEP MODIFY/PROGRESS"
+  },
+  {
+   "caseId": "R5-H09",
+   "operation": "REVIEW",
+   "identical": true,
+   "before": "MODIFY/PROGRESS",
+   "current": "MODIFY/PROGRESS"
+  },
+  {
+   "caseId": "R5-H10",
+   "operation": "REVIEW",
+   "identical": true,
+   "before": "KEEP/DISCARD",
+   "current": "KEEP/DISCARD"
+  },
+  {
+   "caseId": "R5-H11",
+   "operation": "REVIEW",
+   "identical": true,
+   "before": "KEEP/DISCARD",
+   "current": "KEEP/DISCARD"
+  },
+  {
+   "caseId": "R5-H12",
+   "operation": "REVIEW",
+   "identical": true,
+   "before": "KEEP/KEEP",
+   "current": "KEEP/KEEP"
+  },
+  {
+   "caseId": "R5-H13",
+   "operation": "SEQUENCE",
+   "identical": true,
+   "before": "KEEP/KEEP KEEP/KEEP MODIFY/REGRESS",
+   "current": "KEEP/KEEP KEEP/KEEP MODIFY/REGRESS"
+  },
+  {
+   "caseId": "R5-H14",
+   "operation": "REVIEW",
+   "identical": true,
+   "before": "KEEP/KEEP",
+   "current": "KEEP/KEEP"
+  },
+  {
+   "caseId": "R5-H15",
+   "operation": "REVIEW",
+   "identical": true,
+   "before": "ASK/ASK",
+   "current": "ASK/ASK"
+  },
+  {
+   "caseId": "R5-H16",
+   "operation": "REVIEW",
+   "identical": true,
+   "before": "MODIFY/REESTABLISH",
+   "current": "MODIFY/REESTABLISH"
+  },
+  {
+   "caseId": "R5-H17",
+   "operation": "REVIEW",
+   "identical": true,
+   "before": "CLINICAL_HUMAN_REQUIRED/CLINICAL_HUMAN_REQUIRED",
+   "current": "CLINICAL_HUMAN_REQUIRED/CLINICAL_HUMAN_REQUIRED"
+  },
+  {
+   "caseId": "R5-H18",
+   "operation": "REVIEW",
+   "identical": true,
+   "before": "MODIFY/MOVE",
+   "current": "MODIFY/MOVE"
+  },
+  {
+   "caseId": "R5-H19",
+   "operation": "REVIEW",
+   "identical": true,
+   "before": "MODIFY/SUBSTITUTE",
+   "current": "MODIFY/SUBSTITUTE"
+  },
+  {
+   "caseId": "R5-H20",
+   "operation": "REVIEW",
+   "identical": true,
+   "before": "MODIFY/MOVE",
+   "current": "MODIFY/MOVE"
+  },
+  {
+   "caseId": "R5-H21",
+   "operation": "REVIEW",
+   "identical": true,
+   "before": "KEEP/KEEP",
+   "current": "KEEP/KEEP"
+  },
+  {
+   "caseId": "R5-H22",
+   "operation": "GENERATE",
+   "identical": true,
+   "before": "PROPOSED",
+   "current": "PROPOSED"
+  },
+  {
+   "caseId": "R5-H23",
+   "operation": "REVIEW",
+   "identical": true,
+   "before": "KEEP/KEEP",
+   "current": "KEEP/KEEP"
+  },
+  {
+   "caseId": "R5-H24",
+   "operation": "SEQUENCE",
+   "identical": true,
+   "before": "KEEP/KEEP KEEP/KEEP KEEP/KEEP",
+   "current": "KEEP/KEEP KEEP/KEEP KEEP/KEEP"
+  }
+ ],
+ "profiles": [
+  {
+   "label": "A_RUN_FIRST_HALF_MARATHON",
+   "identical": true
+  },
+  {
+   "label": "B_STRENGTH_FIRST",
+   "identical": true
+  },
+  {
+   "label": "C_BALANCED_HYBRID",
+   "identical": true
+  },
+  {
+   "label": "D_NOVICE_RUNNER_EXPERIENCED_STRENGTH",
+   "identical": true
+  },
+  {
+   "label": "E_EXPERIENCED_RUNNER_NOVICE_STRENGTH",
+   "identical": true
+  },
+  {
+   "label": "F_GENERAL_HYBRID",
+   "identical": true
+  },
+  {
+   "label": "G_LOW_DATA_NO_WEARABLE",
+   "identical": true
+  },
+  {
+   "label": "H_PARTIAL_WEARABLE",
+   "identical": true
+  },
+  {
+   "label": "WALK_JOG_FIVE_DAYS",
+   "identical": true
+  },
+  {
+   "label": "TEN_K_EIGHT_WEEKS",
+   "identical": true
+  },
+  {
+   "label": "SHARED_SAME_TURN",
+   "identical": true
+  },
+  {
+   "label": "CLINICAL_PAIN",
+   "identical": true
+  },
+  {
+   "label": "ELIGIBILITY_UNKNOWN",
+   "identical": true
+  },
+  {
+   "label": "MARATHON_OUT_OF_SCOPE",
+   "identical": true
+  },
+  {
+   "label": "BODYWEIGHT_ONLY_NOVICE",
+   "identical": true
+  },
+  {
+   "label": "RESTART_AFTER_PAUSE",
+   "identical": true
+  }
+ ],
+ "simulations": [
+  {
+   "label": "T01_HM16_STRONG_ADHERENCE",
+   "identical": true
+  },
+  {
+   "label": "T02_HM16_IRREGULAR_ADHERENCE",
+   "identical": true
+  },
+  {
+   "label": "T03_BALANCED12_OVERPERFORMANCE",
+   "identical": true
+  },
+  {
+   "label": "T04_STRENGTH12_REPEATED_UNDERPERFORMANCE",
+   "identical": true
+  },
+  {
+   "label": "T05_10K8_SHORT_INTERRUPTION",
+   "identical": true
+  },
+  {
+   "label": "T06_LOWDATA8_WALKJOG_EARNED",
+   "identical": true
+  },
+  {
+   "label": "T07_GENERAL8_SCHEDULE_AND_EQUIPMENT",
+   "identical": true
+  },
+  {
+   "label": "T08_NOVICE8_MODERATE_INTERRUPTION",
+   "identical": true
+  },
+  {
+   "label": "T09_PARTIAL_WEARABLE12_NOISY",
+   "identical": true
+  },
+  {
+   "label": "T10_10K12_SPECIFIC_MISSED_AND_POST_EVENT",
+   "identical": true
+  },
+  {
+   "label": "T11_BODYWEIGHT4_ESTABLISHMENT",
+   "identical": true
+  },
+  {
+   "label": "T12_RESTART8",
+   "identical": true
+  },
+  {
+   "label": "T13_HM16_FATIGUE_SIGNALS",
+   "identical": true
+  },
+  {
+   "label": "T14_WALKJOG4_FIVE_DAYS",
+   "identical": true
+  }
+ ]
+}

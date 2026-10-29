@@ -1,0 +1,570 @@
+{
+  "revision": "DCR3-SSCTR-BINDING-r2",
+  "reviewDate": "2026-10-25",
+  "reviewer": "/root/ssctr_r3",
+  "independentOfPolicyAndRuntimeAuthors": true,
+  "provisionalInternalAuthority": true,
+  "humanValidation": false,
+  "empiricalProductValidation": false,
+  "clinicalClearance": false,
+  "verdict": "PASS_BOUNDED_SCIENTIFIC_BINDING",
+  "targets": [
+    {
+      "path": "CoachingCore/src/r3-runtime.mjs",
+      "sha256": "34ec4622b6511d33323c3bc2fb388692659d5617958233243470494a1a1718b7"
+    },
+    {
+      "path": "CoachingCore/src/r3-consumption.mjs",
+      "sha256": "a0526a8954d1a27fe90ad5c5779d72bf05841306232df75e573f61935a5ae398"
+    },
+    {
+      "path": "CoachingCore/src/r3-input.mjs",
+      "sha256": "35320aac23badeab919ee6eb7479c5b6e1ff050596ca30a681f95f7d84b63b3b"
+    },
+    {
+      "path": "CoachingCore/r3/CANONICAL_COACHING_INPUT_R3_SCHEMA.json",
+      "sha256": "7d924267b84772ab03586b0301a16e6072117713669b01635771f5cd602fb4aa"
+    },
+    {
+      "path": "CoachingCore/r3/INPUT_CONTRACT_R3.md",
+      "sha256": "af6844624c4cd744cd01a3ee7bc94695853ee33b4e8e392e58bb7c83fb89ee39"
+    },
+    {
+      "path": "CoachingCore/r3/BOUNDED_POLICY_CANDIDATES_R3.json",
+      "sha256": "4d9044923ac05160db928a464466d5d6491c22cd496c9f43429cf6a9594c35fb"
+    },
+    {
+      "path": "CoachingCore/r3/domain/STEADY.json",
+      "sha256": "90df77d15faea1200c294120695e8af4a6c2dfd389c1639cb6ec77c97a502f5d"
+    },
+    {
+      "path": "CoachingCore/r3/domain/STRIDES.json",
+      "sha256": "457f5c546557d375b677cb6df8868599bb722c20383b0f6177643e0bd7e870b6"
+    },
+    {
+      "path": "CoachingCore/r2/evaluation/REPRESENTATIVE_CORPUS_R2.json",
+      "sha256": "10fe324dee5ad9f20aa33f28b118a63dbf82e8bd3da6dd44e0d51d506279d0bf"
+    },
+    {
+      "path": "CoachingCore/r2/SSCTR_RUNTIME_AUTHORITY.json",
+      "sha256": "74bb320b13183cf02e6803debc071b1e628478fe2b41f364cf6c9a59ae8592cd"
+    },
+    {
+      "path": "audits/domain-closure-r3-2026-10-24/reviews/ssctr-records.json",
+      "sha256": "009ac1b374109f788331bbfd2020cf18284540d0f80e72e0cba2f8f4703aece4"
+    },
+    {
+      "path": "reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json",
+      "sha256": "87b0c07357b71d921d10fd58544ae8094f3ebb1581abd74c2ecbe97a0cabbb78"
+    }
+  ],
+  "probeTargetsCurrent": true,
+  "recordConsistency": true,
+  "probes": {
+    "total": 126,
+    "passing": 126,
+    "passed": true,
+    "original109Repeated": true,
+    "additionalAffectedChangeChecks": 17
+  },
+  "records": [
+    {
+      "reviewId": "R3-SSCTR-STEADY",
+      "revision": "r1",
+      "policy": "R3-STEADY",
+      "sha256": "90df77d15faea1200c294120695e8af4a6c2dfd389c1639cb6ec77c97a502f5d",
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS"
+    },
+    {
+      "reviewId": "R3-SSCTR-STRIDES",
+      "revision": "r1",
+      "policy": "R3-STRIDES",
+      "sha256": "457f5c546557d375b677cb6df8868599bb722c20383b0f6177643e0bd7e870b6",
+      "disposition": "ABSTAIN",
+      "evidenceStatus": "INSUFFICIENT_EVIDENCE"
+    }
+  ],
+  "counts": {
+    "NOT_SUPPORTED_DOMAIN_GAP": 16,
+    "USEFUL_ASK": 15,
+    "SUPPORTED_KEEP": 2,
+    "CORRECT_ABSTAIN_OR_HOLD": 2,
+    "CLINICAL_OR_OUT_OF_SCOPE": 2,
+    "NOT_SUPPORTED_SCIENCE_GAP": 3,
+    "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED": 2
+  },
+  "caseReview": [
+    {
+      "caseId": "REP-R2-01",
+      "decision": "NOT_SUPPORTED_YET",
+      "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "scientificReview": "First week requires an exact integrated bodyweight/run establishment package; a comfortable walk is not a loaded-hinge demonstration.",
+      "missingInputs": [],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-02",
+      "decision": "NOT_SUPPORTED_YET",
+      "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "scientificReview": "Familiar run segments and one squat example do not provide a complete current strength week; no run-subtask inflation.",
+      "missingInputs": [],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-03",
+      "decision": "NOT_SUPPORTED_YET",
+      "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "scientificReview": "Supported-row/sit-to-stand familiarization does not specify a complete exact first loaded session.",
+      "missingInputs": [],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-04",
+      "decision": "ASK",
+      "coverage": "USEFUL_ASK",
+      "scientificReview": "Explicit unknown barbell competence/load requires substantive clarification.",
+      "missingInputs": [
+        "/onboarding/movementKnowledge",
+        "/reportedExposure/strength"
+      ],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-05",
+      "decision": "ASK",
+      "coverage": "USEFUL_ASK",
+      "scientificReview": "Strength experience does not establish first VO2-style task competence or calibration.",
+      "missingInputs": [
+        "/currentDemand/calibration"
+      ],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-06",
+      "decision": "NOT_SUPPORTED_YET",
+      "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "scientificReview": "Familiar20min easy is a partial witness; the requested integrated product week still lacks a complete strength/schedule binding.",
+      "missingInputs": [],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-07",
+      "decision": "NOT_SUPPORTED_YET",
+      "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "scientificReview": "First walk/run needs its own complete approved establishment path; walking history is preserved without inferring run tolerance.",
+      "missingInputs": [],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-08",
+      "decision": "ASK",
+      "coverage": "USEFUL_ASK",
+      "scientificReview": "Unknown current eligibility and onboarding remain unknown; no clinical diagnosis inferred.",
+      "missingInputs": [
+        "/eligibility/status"
+      ],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-09",
+      "decision": "NOT_SUPPORTED_YET",
+      "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "scientificReview": "Optional calf omission may be bounded but its exact goblet/row/calves context needs reviewed necessity/MEC binding.",
+      "missingInputs": [],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-10",
+      "decision": "NOT_SUPPORTED_YET",
+      "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "scientificReview": "Completed5+3min stays immutable; no entire3x5 replacement can erase the executed prefix or invent suffix dosing.",
+      "missingInputs": [],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-11",
+      "decision": "NOT_SUPPORTED_YET",
+      "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "scientificReview": "Repeated row response and a familiar9rep candidate are understood; RIR uncertainty and exact necessity remain item-specific.",
+      "missingInputs": [],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-12",
+      "decision": "NOT_SUPPORTED_YET",
+      "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "scientificReview": "A familiar22kg alternative is not automatically the smallest sufficient change from the current24kg configuration.",
+      "missingInputs": [],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-13",
+      "decision": "KEEP",
+      "coverage": "SUPPORTED_KEEP",
+      "scientificReview": "Original case supports bounded KEEP of25planned/26actual; no universal1min noise threshold.",
+      "missingInputs": [],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-14",
+      "decision": "KEEP",
+      "coverage": "SUPPORTED_KEEP",
+      "scientificReview": "Confirmed optional omission, feasible essential work and preference support KEEP without catch-up debt.",
+      "missingInputs": [],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-15",
+      "decision": "NOT_SUPPORTED_YET",
+      "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "scientificReview": "Overlapping windows create a schedule conflict; Run-first does not independently certify moved strength admissibility.",
+      "missingInputs": [],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-16",
+      "decision": "NOT_SUPPORTED_YET",
+      "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "scientificReview": "Strength-first changes priority context without making either schedule alternative independently admissible.",
+      "missingInputs": [],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-17",
+      "decision": "ASK",
+      "coverage": "USEFUL_ASK",
+      "scientificReview": "NO_WEARABLE conflicts with explicit HRV/sleep device; clarify source provenance before endorsing a recovery interpretation.",
+      "missingInputs": [
+        "/population/dataTier",
+        "/wearable/type"
+      ],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-18",
+      "decision": "ASK",
+      "coverage": "USEFUL_ASK",
+      "scientificReview": "Barbell load cannot be converted arithmetically into an unfamiliar dumbbell configuration.",
+      "missingInputs": [
+        "/currentDemand/requested/loadKgPerHand"
+      ],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-19",
+      "decision": "ASK",
+      "coverage": "USEFUL_ASK",
+      "scientificReview": "Travel reason is nonclinical; ordinary walking and historical running do not establish current exact return capacity.",
+      "missingInputs": [
+        "/observations/currentTaskDemonstration"
+      ],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-20",
+      "decision": "ASK",
+      "coverage": "USEFUL_ASK",
+      "scientificReview": "Prior low-demand strength configuration does not erase unknown current capacity after the pause.",
+      "missingInputs": [
+        "/observations/currentTaskDemonstration"
+      ],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-21",
+      "decision": "ASK",
+      "coverage": "USEFUL_ASK",
+      "scientificReview": "Integrated return needs modality-specific current entry/context and complete configurations; no former-week restoration.",
+      "missingInputs": [
+        "/observations/currentTaskDemonstration"
+      ],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-22",
+      "decision": "ASK",
+      "coverage": "USEFUL_ASK",
+      "scientificReview": "Missing interruption reason/exposure/restrictions require ASK, not disease inference.",
+      "missingInputs": [
+        "/interruption/reason",
+        "/interruption/nonclinical",
+        "/observations/currentCapacity"
+      ],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-23",
+      "decision": "HOLD",
+      "coverage": "CORRECT_ABSTAIN_OR_HOLD",
+      "scientificReview": "Incompatible entry response supports holding old-load restoration; no new smaller dose invented.",
+      "missingInputs": [],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-24",
+      "decision": "CLINICAL_HUMAN_REQUIRED",
+      "coverage": "CLINICAL_OR_OUT_OF_SCOPE",
+      "scientificReview": "Injury/persistent pain/functional limitation requires qualified clinical human; no conservative substitute dose.",
+      "missingInputs": [],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-25",
+      "decision": "HOLD",
+      "coverage": "NOT_SUPPORTED_SCIENCE_GAP",
+      "scientificReview": "10K Run-first profile is understood; joint race-week recipe and baseline-relative dose remain unapproved.",
+      "missingInputs": [],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-26",
+      "decision": "HOLD",
+      "coverage": "NOT_SUPPORTED_SCIENCE_GAP",
+      "scientificReview": "Half-marathon profile is understood; prior same-distance completion cannot supply the missing joint taper recipe.",
+      "missingInputs": [],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-27",
+      "decision": "HOLD",
+      "coverage": "NOT_SUPPORTED_SCIENCE_GAP",
+      "scientificReview": "Temporary event-priority confirmation is preserved; no automatic strength deletion or universal hybrid taper.",
+      "missingInputs": [],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-28",
+      "decision": "ASK",
+      "coverage": "USEFUL_ASK",
+      "scientificReview": "First half-marathon with absent long-run/pace context requires ASK; no5K cross-distance converter.",
+      "missingInputs": [
+        "/priorHistory/run/longestRecentRun",
+        "/calibration/halfMarathonPace"
+      ],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-29",
+      "decision": "ASK",
+      "coverage": "USEFUL_ASK",
+      "scientificReview": "Post-event symptoms/function/recovery are unknown; absolute date without evaluation anchor is not repaired by assumption.",
+      "missingInputs": [
+        "/observations/postEventSymptoms",
+        "/observations/currentFunction",
+        "/observations/subjectiveRecovery"
+      ],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-30",
+      "decision": "CLINICAL_HUMAN_REQUIRED",
+      "coverage": "CLINICAL_OR_OUT_OF_SCOPE",
+      "scientificReview": "Current illness overrides event preference and requires qualified clinical human.",
+      "missingInputs": [],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-31",
+      "decision": "MODIFY",
+      "coverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "scientificReview": "Exact familiar20min conversational walk/jog reuses existing R2-P14 authority; no wearable or physiological-zone fabrication.",
+      "missingInputs": [],
+      "policyRefs": [
+        {
+          "id": "R2-P14",
+          "version": "R2-POLICY-1",
+          "hash": "2a54d9d64492aa2d117112abe1cc7d04c7dce9c94258a5be0a038a219dae6f87"
+        }
+      ]
+    },
+    {
+      "caseId": "REP-R2-32",
+      "decision": "ASK",
+      "coverage": "USEFUL_ASK",
+      "scientificReview": "Recovery label lacks a separately established construct/intent; do not invent a distinct pace.",
+      "missingInputs": [
+        "/calibration/recoveryDistinctConstruct",
+        "/observations/needForSeparateRecoveryIntent"
+      ],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-33",
+      "decision": "MODIFY",
+      "coverage": "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED",
+      "scientificReview": "One exact familiar10/15/5min steady task conditionally approved;355s/km remains a field anchor, not LT2/CS/MLSS.",
+      "missingInputs": [],
+      "policyRefs": [
+        {
+          "id": "R3-STEADY",
+          "version": "DCR3-POLICY-1",
+          "hash": "90df77d15faea1200c294120695e8af4a6c2dfd389c1639cb6ec77c97a502f5d"
+        }
+      ]
+    },
+    {
+      "caseId": "REP-R2-34",
+      "decision": "ASK",
+      "coverage": "USEFUL_ASK",
+      "scientificReview": "3x5 work/recovery familiarity alone does not fill missing preparation/cooldown for a complete R2 recipe.",
+      "missingInputs": [
+        "/priorHistory/sameFamily/warmupMinutes",
+        "/priorHistory/sameFamily/cooldownMinutes"
+      ],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-35",
+      "decision": "NOT_SUPPORTED_YET",
+      "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "scientificReview": "Watch VO2 estimate cannot create a current never-exposed interval target; concrete calibration/protocol inputs are absent.",
+      "missingInputs": [],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-36",
+      "decision": "NOT_SUPPORTED_YET",
+      "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "scientificReview": "Easy430s/km does not calibrate10x200m; task exposure, protocol and fast target are missing.",
+      "missingInputs": [],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-37",
+      "decision": "NOT_SUPPORTED_YET",
+      "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "scientificReview": "55to60min request differs from reviewed40to45min selection; no relabelled progress approval.",
+      "missingInputs": [],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-38",
+      "decision": "ASK",
+      "coverage": "USEFUL_ASK",
+      "scientificReview": "Unknown hills grade/bout/footing/downhill exposure are substantive gaps; no flat-pace crosswalk.",
+      "missingInputs": [
+        "/calibration/grade",
+        "/calibration/duration",
+        "/calibration/downhillExposure",
+        "/environment/surface"
+      ],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-39",
+      "decision": "ASK",
+      "coverage": "USEFUL_ASK",
+      "scientificReview": "Familiar4x15s block is preserved; full-session preparation/envelope absent, so ABSTAIN/ASK rather than invented warmup or fixed rest.",
+      "missingInputs": [
+        "/priorHistory/sameFamily/preparation",
+        "/currentDemand/sessionEnvelope"
+      ],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-40",
+      "decision": "NOT_SUPPORTED_YET",
+      "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "scientificReview": "An old downhill10K in cool weather does not establish a current hilly/warm target; ask for same-context task evidence.",
+      "missingInputs": [],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-41",
+      "decision": "NOT_SUPPORTED_YET",
+      "coverage": "NOT_SUPPORTED_DOMAIN_GAP",
+      "scientificReview": "Repeated observational arrangements are not causal proof and cannot make unreviewed options admissible.",
+      "missingInputs": [],
+      "policyRefs": []
+    },
+    {
+      "caseId": "REP-R2-42",
+      "decision": "HOLD",
+      "coverage": "CORRECT_ABSTAIN_OR_HOLD",
+      "scientificReview": "Single confounded observation supports HOLD on causal-rule creation, without creating a new dose.",
+      "missingInputs": [],
+      "policyRefs": []
+    }
+  ],
+  "limits": [
+    "Designed corpus reused after author inspection; no blinded holdout or population estimate.",
+    "Understanding40normal requests includes missing-input/domain/science abstentions and is not40competent prescriptions.",
+    "Clinical2 are schema-valid and evaluated but excluded from normal40.",
+    "Approval of exact STEADY candidate does not validate an autonomous coach, whole week, new population or real-user prescription.",
+    "Original pre-expansion baseline is historical; current guarded unexpanded baseline may differ after classification corrections."
+  ],
+  "supersedesBindingReview": "ssctr-binding-r1-review.json",
+  "recheckScope": "Affected implementation binding after material-consumption leaf validation and responsive missing-input routing; original two scientific records and approvals unchanged.",
+  "toleranceBindingFidelity": {
+    "scope": "REP-R2-31 only, not a generic R2-to-canonical equivalence claim",
+    "sourceFactsHash": "f1b38621f88aa8975f20d498b31462ba6e63c74a452eeb8a74a7f74f7077dda1",
+    "sourcePaths": [
+      {
+        "path": "/currentDemand/requestedMinutes",
+        "cell": {
+          "status": "KNOWN",
+          "origin": "EXPLICIT_SYNTHETIC",
+          "sourcePath": "/currentDemand/requestedMinutes",
+          "value": 20
+        }
+      },
+      {
+        "path": "/priorHistory/sameRoute",
+        "cell": {
+          "status": "KNOWN",
+          "origin": "EXPLICIT_SYNTHETIC",
+          "sourcePath": "/priorHistory/sameRoute",
+          "value": "two comfortable 20 min walk/jog sessions"
+        }
+      },
+      {
+        "path": "/priorHistory/talkAnchor",
+        "cell": {
+          "status": "KNOWN",
+          "origin": "EXPLICIT_SYNTHETIC",
+          "sourcePath": "/priorHistory/talkAnchor",
+          "value": "comfortable full sentences"
+        }
+      },
+      {
+        "path": "/priorHistory/response",
+        "cell": {
+          "status": "KNOWN",
+          "origin": "EXPLICIT_SYNTHETIC",
+          "sourcePath": "/priorHistory/response",
+          "value": "compatible"
+        }
+      },
+      {
+        "path": "/calibration/construct",
+        "cell": {
+          "status": "KNOWN",
+          "origin": "EXPLICIT_SYNTHETIC",
+          "sourcePath": "/calibration/construct",
+          "value": "comfortable easy effort, not a measured physiological zone"
+        }
+      },
+      {
+        "path": "/environment/terrain",
+        "cell": {
+          "status": "KNOWN",
+          "origin": "EXPLICIT_SYNTHETIC",
+          "sourcePath": "/environment/terrain",
+          "value": "flat"
+        }
+      },
+      {
+        "path": "/environment/conditions",
+        "cell": {
+          "status": "KNOWN",
+          "origin": "EXPLICIT_SYNTHETIC",
+          "sourcePath": "/environment/conditions",
+          "value": "similar to reported exposure"
+        }
+      }
+    ],
+    "r2Authority": "Existing SSCTR-R2-P14 / R2-EASY-20 with unchanged policy/recipe bytes",
+    "interpretation": "Original R2 toleranceFactId/toleratedRecipeId are transport-specific association guards. R3 uses the exact immutable source-facts hash and traceable source paths to associate the explicitly supplied same20min route/talk/compatible response with the exact same20min recipe. It does not fabricate old IDs or infer generic tolerance from experience; this independently reviewed semantic association is limited to this precise source/context."
+  }
+}

@@ -1,0 +1,444 @@
+{
+  "probe": "R6-SSCTR-DELTA-POLICY2",
+  "authority": "DEV_TEST_ONLY",
+  "SCREEN": [
+    {
+      "reason": "Not sick - injured on holiday",
+      "flags": {
+        "nonclinical": true
+      },
+      "status": "NONCLINICAL",
+      "basis": "NONCLINICAL_MENTION",
+      "matched": [
+        "holiday"
+      ]
+    },
+    {
+      "reason": "No pain, injury during work travel",
+      "flags": {
+        "nonclinical": true
+      },
+      "status": "NONCLINICAL",
+      "basis": "NONCLINICAL_MENTION",
+      "matched": [
+        "work",
+        "travel"
+      ]
+    },
+    {
+      "reason": "No pain or injury, work travel",
+      "flags": {
+        "nonclinical": true
+      },
+      "status": "NONCLINICAL",
+      "basis": "NONCLINICAL_MENTION",
+      "matched": [
+        "work",
+        "travel"
+      ]
+    },
+    {
+      "reason": "Not ill, injured my knee at work",
+      "flags": {},
+      "status": "ASK",
+      "basis": "AMBIGUOUS_REASON",
+      "matched": [
+        "knee"
+      ]
+    },
+    {
+      "reason": "no fever; sprained ankle on vacation",
+      "flags": {
+        "nonclinical": true
+      },
+      "status": "ASK",
+      "basis": "AMBIGUOUS_REASON",
+      "matched": [
+        "ankle"
+      ]
+    },
+    {
+      "reason": "pain free now after the flu",
+      "flags": {
+        "nonclinical": true
+      },
+      "status": "CLINICAL",
+      "basis": "CLINICAL_MENTION",
+      "matched": [
+        "flu"
+      ]
+    },
+    {
+      "reason": "Work travel, will resume Monday",
+      "flags": {},
+      "status": "NONCLINICAL",
+      "basis": "NONCLINICAL_MENTION",
+      "matched": [
+        "work",
+        "travel"
+      ]
+    },
+    {
+      "reason": "My mother was ill, I was caring for her",
+      "flags": {
+        "nonclinical": true
+      },
+      "status": "CLINICAL",
+      "basis": "CLINICAL_MENTION",
+      "matched": [
+        "ill"
+      ]
+    },
+    {
+      "reason": "Viagem de trabalho, sem dor",
+      "flags": {
+        "nonclinical": true
+      },
+      "status": "NONCLINICAL",
+      "basis": "NONCLINICAL_MENTION",
+      "matched": [
+        "viagem",
+        "trabalho"
+      ]
+    },
+    {
+      "reason": "Fiquei doente, gripe",
+      "flags": {
+        "nonclinical": true
+      },
+      "status": "CLINICAL",
+      "basis": "CLINICAL_MENTION",
+      "matched": [
+        "doente",
+        "gripe"
+      ]
+    },
+    {
+      "reason": "Machuquei o tornozelo na viagem",
+      "flags": {
+        "nonclinical": true
+      },
+      "status": "CLINICAL",
+      "basis": "CLINICAL_MENTION",
+      "matched": [
+        "machuquei"
+      ]
+    },
+    {
+      "reason": "Estuve enfermo con fiebre",
+      "flags": {
+        "nonclinical": true
+      },
+      "status": "ASK",
+      "basis": "UNRECOGNIZED_REASON",
+      "matched": []
+    },
+    {
+      "reason": "Ocupado y enfermo",
+      "flags": {
+        "nonclinical": true
+      },
+      "status": "NONCLINICAL",
+      "basis": "NONCLINICAL_MENTION",
+      "matched": [
+        "ocupado"
+      ]
+    },
+    {
+      "reason": "Familia, estuve con fiebre",
+      "flags": {
+        "nonclinical": true
+      },
+      "status": "NONCLINICAL",
+      "basis": "NONCLINICAL_MENTION",
+      "matched": [
+        "familia"
+      ]
+    },
+    {
+      "reason": "Hacía mucho calor y me lesioné la rodilla",
+      "flags": {
+        "nonclinical": true
+      },
+      "status": "NONCLINICAL",
+      "basis": "NONCLINICAL_MENTION",
+      "matched": [
+        "calor"
+      ]
+    },
+    {
+      "reason": "Me torcí el tobillo, viaje de trabajo",
+      "flags": {
+        "nonclinical": true
+      },
+      "status": "ASK",
+      "basis": "UNRECOGNIZED_REASON",
+      "matched": []
+    },
+    {
+      "reason": "Vacaciones con dolor de espalda",
+      "flags": {
+        "nonclinical": true
+      },
+      "status": "ASK",
+      "basis": "UNRECOGNIZED_REASON",
+      "matched": []
+    },
+    {
+      "reason": "Busy at work, also had covid",
+      "flags": {
+        "nonclinical": true
+      },
+      "status": "CLINICAL",
+      "basis": "CLINICAL_MENTION",
+      "matched": [
+        "covid"
+      ]
+    },
+    {
+      "reason": "Holiday",
+      "flags": {
+        "nonclinical": true
+      },
+      "status": "NONCLINICAL",
+      "basis": "NONCLINICAL_MENTION",
+      "matched": [
+        "holiday"
+      ]
+    },
+    {
+      "reason": "Holiday",
+      "flags": {
+        "nonclinical": false
+      },
+      "status": "ASK",
+      "basis": "CONTRADICTORY_FLAGS",
+      "matched": [
+        "holiday"
+      ]
+    },
+    {
+      "reason": null,
+      "flags": {
+        "nonclinical": true,
+        "reasonCategory": "TRAVEL"
+      },
+      "status": "NONCLINICAL",
+      "basis": "NONCLINICAL_CATEGORY",
+      "matched": [
+        "TRAVEL"
+      ]
+    },
+    {
+      "reason": "Flu",
+      "flags": {
+        "reasonCategory": "TRAVEL",
+        "nonclinical": true
+      },
+      "status": "CLINICAL",
+      "basis": "CLINICAL_MENTION",
+      "matched": [
+        "flu"
+      ]
+    }
+  ],
+  "RETURN_E2E": [
+    {
+      "reason": "Not sick - injured on holiday",
+      "status": "MODIFY",
+      "missing": []
+    },
+    {
+      "reason": "Ocupado y enfermo",
+      "status": "MODIFY",
+      "missing": []
+    },
+    {
+      "reason": "Hacía mucho calor y me lesioné la rodilla",
+      "status": "MODIFY",
+      "missing": []
+    },
+    {
+      "reason": "Work travel, will resume Monday",
+      "status": "MODIFY",
+      "missing": []
+    }
+  ],
+  "RETURN_ELIGIBILITY_BEFORE_END": {
+    "status": "ASK",
+    "missing": [
+      "eligibility.assessedOnOrAfterInterruptionEnd"
+    ]
+  },
+  "INTAKE_E2E": [
+    {
+      "reason": "Not sick - injured on holiday",
+      "status": "PROPOSED",
+      "missing": []
+    },
+    {
+      "reason": "Ocupado y enfermo",
+      "status": "PROPOSED",
+      "missing": []
+    },
+    {
+      "reason": "Vacation",
+      "status": "PROPOSED",
+      "missing": []
+    }
+  ],
+  "TAPER_WORK_FRACTION": {
+    "A": {
+      "peak": {
+        "repetitions": 3,
+        "workMinutes": 12,
+        "recoveryMinutes": 2
+      },
+      "taper": {
+        "repetitions": 2,
+        "workMinutes": 10,
+        "recoveryMinutes": 2
+      },
+      "workFraction": 0.56,
+      "range": [
+        0.5,
+        0.6
+      ]
+    },
+    "TEN_K": {
+      "peak": {
+        "repetitions": 5,
+        "workMinutes": 3,
+        "recoveryMinutes": 2
+      },
+      "taper": {
+        "repetitions": 3,
+        "workMinutes": 3,
+        "recoveryMinutes": 2
+      },
+      "workFraction": 0.6,
+      "range": [
+        0.5,
+        0.6
+      ]
+    },
+    "E": {
+      "peak": {
+        "repetitions": 6,
+        "workMinutes": 3,
+        "recoveryMinutes": 2
+      },
+      "taper": {
+        "repetitions": 3,
+        "workMinutes": 3,
+        "recoveryMinutes": 2
+      },
+      "workFraction": 0.5,
+      "range": [
+        0.5,
+        0.6
+      ]
+    }
+  },
+  "LONG_RUN_DROPS_OUTSIDE_PLANNED_REDUCTIONS": {},
+  "UNKNOWN_RIR_TRAIL": [
+    {
+      "w": 1,
+      "gate": "HOLD",
+      "squat": "3x8@60",
+      "question": "Record actual execution, effort if known and next-day function; the next step advances only on that evidence"
+    },
+    {
+      "w": 2,
+      "gate": "HOLD",
+      "squat": "3x8@60",
+      "question": "Record actual execution, effort if known and next-day function; the next step advances only on that evidence"
+    },
+    {
+      "w": 3,
+      "gate": "HOLD",
+      "squat": "2x8@60",
+      "question": "Record actual execution, effort if known and next-day function; the next step advances only on that evidence"
+    },
+    {
+      "w": 4,
+      "gate": "HOLD",
+      "squat": "3x8@60",
+      "question": "Record actual execution, effort if known and next-day function; the next step advances only on that evidence"
+    },
+    {
+      "w": 5,
+      "gate": "HOLD",
+      "squat": "3x8@60",
+      "question": "Record actual execution, effort if known and next-day function; the next step advances only on that evidence"
+    },
+    {
+      "w": 6,
+      "gate": "HOLD",
+      "squat": "3x8@60",
+      "question": "Record actual execution, effort if known and next-day function; the next step advances only on that evidence"
+    }
+  ],
+  "COLD_START_SAME_DAY": {
+    "status": "PROPOSED",
+    "arrangement": {
+      "DEVELOPMENT": {
+        "basis": "PARETO_THEN_EQUIVALENT",
+        "selected": "q1|FULL_A,FULL_B|separate",
+        "costs": [
+          "strength:LOW:Key run the day before heavy lower-body work",
+          "run:LOW:Heavy lower-body work two days before a key run"
+        ]
+      }
+    },
+    "negotiation": [],
+    "week3": [
+      "0AM:STRENGTH_FULL_A:FULL_BODY",
+      "1PM:QUALITY:THRESHOLD",
+      "3PM:EASY:EASY",
+      "3AM:STRENGTH_FULL_B:FULL_BODY",
+      "6PM:LONG:LONG"
+    ]
+  },
+  "CEILING_WITH_SHORT_LONG_RUNS": {
+    "intakeLongest": 60,
+    "executedLong": 40,
+    "trail": [
+      {
+        "w": 1,
+        "longPlannedNext": 60,
+        "gateLong": "HOLD"
+      },
+      {
+        "w": 2,
+        "longPlannedNext": 60,
+        "gateLong": "HOLD"
+      },
+      {
+        "w": 3,
+        "longPlannedNext": 60,
+        "gateLong": "HOLD"
+      },
+      {
+        "w": 4,
+        "longPlannedNext": 50,
+        "gateLong": "HOLD"
+      },
+      {
+        "w": 5,
+        "longPlannedNext": 55,
+        "gateLong": "HOLD"
+      }
+    ],
+    "note": "Intake-reported longest (60) stays a reference for 30 days from intake; afterwards only executed runs count."
+  },
+  "POST_EVENT_WITH_POST_RACE_ELIGIBILITY": {
+    "status": "MODIFY",
+    "action": "GATED_NEXT_STEP",
+    "nextWeek": [
+      "QUALITY:34(3x5)",
+      "EASY:25",
+      "LONG:40"
+    ]
+  }
+}

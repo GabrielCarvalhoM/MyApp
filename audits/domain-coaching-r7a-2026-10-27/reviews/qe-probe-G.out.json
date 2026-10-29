@@ -1,0 +1,65 @@
+{
+ "probe": "G",
+ "runtime": "CURRENT",
+ "review": {
+  "status": "MODIFY",
+  "action": "MOVE",
+  "reason": "Do the missed lower on 2026-12-09 instead of the upper session planned there; no new day, no added interference",
+  "candidates": [
+   "SKIP_NO_DEBT:true",
+   "MOVE_TO_w5-str-d2:true",
+   "STACK_OR_CATCH_UP:false"
+  ]
+ },
+ "target": {
+  "id": "w5-str-d0",
+  "date": "2026-12-07",
+  "key": true,
+  "rows": [
+   "back-squat 3x5@3 KNOWN 82.5 kind=KNOWN daysSinceLast=28",
+   "db-rdl 3x5@3 KNOWN 22 kind=KNOWN daysSinceLast=24",
+   "db-split-squat 2x6@3 KNOWN 22 kind=KNOWN daysSinceLast=24",
+   "db-calf-raise 2x6@3 KNOWN 20 kind=KNOWN daysSinceLast=28",
+   "dead-bug 2x10@3 BODYWEIGHT kind=BODYWEIGHT daysSinceLast=24"
+  ]
+ },
+ "moved": {
+  "id": "w5-str-d2",
+  "date": "2026-12-09",
+  "rows": [
+   "back-squat 3x5@3 KNOWN 82.5 kind=KNOWN daysSinceLast=30 (> 28?)",
+   "db-rdl 3x5@3 KNOWN 22 kind=KNOWN daysSinceLast=26 (> 28?)",
+   "db-split-squat 2x6@3 KNOWN 22 kind=KNOWN daysSinceLast=26 (> 28?)",
+   "db-calf-raise 2x6@3 KNOWN 20 kind=KNOWN daysSinceLast=30 (> 28?)",
+   "dead-bug 2x10@3 BODYWEIGHT kind=BODYWEIGHT daysSinceLast=26 (> 28?)"
+  ]
+ },
+ "plannerOnSameDates": [
+  "2026-12-09 d2 w5-str-d2 db-bench-press 3x6@3 KNOWN 20 kind=KNOWN phase=DEVELOPMENT/3 daysSinceLast=26",
+  "2026-12-09 d2 w5-str-d2 db-row 3x5@3 KNOWN 22 kind=KNOWN phase=DEVELOPMENT/3 daysSinceLast=26",
+  "2026-12-09 d2 w5-str-d2 db-overhead-press 2x6@3 KNOWN 20 kind=KNOWN phase=DEVELOPMENT/2 daysSinceLast=28",
+  "2026-12-09 d2 w5-str-d2 one-arm-db-row 2x6@3 KNOWN 20 kind=KNOWN phase=DEVELOPMENT/2 daysSinceLast=28",
+  "2026-12-09 d2 w5-str-d2 dead-bug 2x10@3 BODYWEIGHT kind=BODYWEIGHT phase=DEVELOPMENT/2 daysSinceLast=26",
+  "2026-12-11 d4 w5-str-d4 db-rdl 3x5@3 KNOWN 22 kind=KNOWN phase=DEVELOPMENT/3 daysSinceLast=28",
+  "2026-12-11 d4 w5-str-d4 db-row 3x5@3 KNOWN 22 kind=KNOWN phase=DEVELOPMENT/3 daysSinceLast=28",
+  "2026-12-11 d4 w5-str-d4 db-bench-press 3x6@3 KNOWN 20 kind=KNOWN phase=DEVELOPMENT/3 daysSinceLast=28",
+  "2026-12-11 d4 w5-str-d4 db-split-squat 2x6@3 KNOWN 22 kind=KNOWN phase=DEVELOPMENT/2 daysSinceLast=28",
+  "2026-12-11 d4 w5-str-d4 dead-bug 2x10@3 BODYWEIGHT kind=BODYWEIGHT phase=DEVELOPMENT/2 daysSinceLast=28"
+ ]
+}
+{
+ "probe": "G2",
+ "performedOn": "2026-12-09",
+ "daysSinceLastBackSquat": 30,
+ "review": "MODIFY/GATED_NEXT_STEP",
+ "backSquatStateNextWeek": {
+  "mode": "KNOWN",
+  "load": 82.5,
+  "source": "LOGGED_ACTUAL",
+  "lastPerformed": "2026-12-09",
+  "regainCap": null
+ },
+ "nextWeekBackSquat": [
+  "2026-12-14 d0 w6-str-d0 back-squat 3x5@3 KNOWN 82.5 kind=KNOWN phase=DEVELOPMENT/3"
+ ]
+}

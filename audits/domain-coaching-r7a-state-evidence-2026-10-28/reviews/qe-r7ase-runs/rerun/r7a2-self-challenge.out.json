@@ -1,0 +1,261 @@
+{
+ "probe": "R7A2-SELF-CHALLENGE-1",
+ "runtime": "live tree (check the digest)",
+ "cases": {
+  "C1-2 second break d2 2d": {
+   "second": "REESTABLISH",
+   "relation": "NEW",
+   "log": [
+    "RETURN_AFTER_PAUSE@w5:MODIFY/REESTABLISH",
+    "WEEKLY_REVIEW@w5:KEEP/KEEP",
+    "RETURN_AFTER_PAUSE@w5:MODIFY/REESTABLISH"
+   ]
+  },
+  "C1-2 second break d3 4d": {
+   "second": "REESTABLISH",
+   "relation": "NEW",
+   "log": [
+    "WEEKLY_REVIEW@w5:KEEP/KEEP",
+    "WEEKLY_REVIEW@w5:MODIFY/GATED_NEXT_STEP",
+    "RETURN_AFTER_PAUSE@w6:MODIFY/REESTABLISH"
+   ]
+  },
+  "C1-2 second break d4 5d": {
+   "second": "REESTABLISH",
+   "relation": "NEW",
+   "log": [
+    "WEEKLY_REVIEW@w5:KEEP/KEEP",
+    "WEEKLY_REVIEW@w5:MODIFY/GATED_NEXT_STEP",
+    "RETURN_AFTER_PAUSE@w6:MODIFY/REESTABLISH"
+   ]
+  },
+  "C1-2 second break d4 14d": {
+   "second": "REESTABLISH",
+   "relation": "NEW",
+   "log": [
+    "WEEKLY_REVIEW@w5:MODIFY/GATED_NEXT_STEP",
+    "WEEKLY_REVIEW@w6:MODIFY/GATED_NEXT_STEP",
+    "RETURN_AFTER_PAUSE@w7:MODIFY/REESTABLISH"
+   ]
+  },
+  "C1-2 second break d6 3d": {
+   "second": "REESTABLISH",
+   "relation": "NEW",
+   "log": [
+    "WEEKLY_REVIEW@w5:MODIFY/ADOPT_LOGGED_LOADS",
+    "WEEKLY_REVIEW@w5:KEEP/KEEP",
+    "RETURN_AFTER_PAUSE@w6:MODIFY/REESTABLISH"
+   ]
+  },
+  "C3 A, B new, C corrects B, D new": {
+   "log": [
+    "WEEKLY_REVIEW@w5:KEEP/KEEP",
+    "RETURN_AFTER_PAUSE@w5:MODIFY/REESTABLISH",
+    "RETURN_AFTER_PAUSE@w5:ASK/ASK",
+    "WEEKLY_REVIEW@w5:MODIFY/ADOPT_LOGGED_LOADS",
+    "WEEKLY_REVIEW@w6:KEEP/KEEP",
+    "RETURN_AFTER_PAUSE@w6:MODIFY/REESTABLISH"
+   ]
+  },
+  "C4 A, A corrected, B new": {
+   "log": [
+    "RETURN_AFTER_PAUSE@w5:MODIFY/REESTABLISH",
+    "RETURN_AFTER_PAUSE@w5:ASK/ASK",
+    "WEEKLY_REVIEW@w5:KEEP/KEEP",
+    "RETURN_AFTER_PAUSE@w5:MODIFY/REESTABLISH"
+   ]
+  },
+  "C5 late earlier break": {
+   "status": "ASK"
+  },
+  "C6 NONE first week, break d3 5d": {
+   "class": "SHORT",
+   "exercises": 0,
+   "violations": 0
+  },
+  "C6 NONE first week, break d5 5d": {
+   "class": "SHORT",
+   "exercises": 5,
+   "violations": 0
+  },
+  "C6 NONE first week, break d3 10d": {
+   "class": "SHORT",
+   "exercises": 0,
+   "violations": 0
+  },
+  "C6 NONE first week, break d5 10d": {
+   "class": "SHORT",
+   "exercises": 5,
+   "violations": 0
+  },
+  "C6 NONE first week, break d3 14d": {
+   "class": "MODERATE",
+   "exercises": 0,
+   "violations": 0
+  },
+  "C6 NONE first week, break d5 14d": {
+   "class": "MODERATE",
+   "exercises": 5,
+   "violations": 0
+  },
+  "C6 NONE first week, break d3 35d": {
+   "class": "LONG",
+   "exercises": 0,
+   "violations": 0
+  },
+  "C6 NONE first week, break d5 35d": {
+   "class": "LONG",
+   "exercises": 5,
+   "violations": 0
+  },
+  "C6 FAMILIAR first week, break d3 5d": {
+   "class": "SHORT",
+   "exercises": 5,
+   "violations": 0
+  },
+  "C6 FAMILIAR first week, break d5 5d": {
+   "class": "SHORT",
+   "exercises": 7,
+   "violations": 0
+  },
+  "C6 FAMILIAR first week, break d3 10d": {
+   "class": "SHORT",
+   "exercises": 5,
+   "violations": 0
+  },
+  "C6 FAMILIAR first week, break d5 10d": {
+   "class": "SHORT",
+   "exercises": 7,
+   "violations": 0
+  },
+  "C6 FAMILIAR first week, break d3 14d": {
+   "class": "MODERATE",
+   "exercises": 5,
+   "violations": 0
+  },
+  "C6 FAMILIAR first week, break d5 14d": {
+   "class": "MODERATE",
+   "exercises": 7,
+   "violations": 0
+  },
+  "C6 FAMILIAR first week, break d3 35d": {
+   "class": "LONG",
+   "exercises": 5,
+   "violations": 0
+  },
+  "C6 FAMILIAR first week, break d5 35d": {
+   "class": "LONG",
+   "exercises": 7,
+   "violations": 0
+  },
+  "C6 KNOWN first week, break d3 5d": {
+   "class": "SHORT",
+   "exercises": 5,
+   "violations": 0
+  },
+  "C6 KNOWN first week, break d5 5d": {
+   "class": "SHORT",
+   "exercises": 7,
+   "violations": 0
+  },
+  "C6 KNOWN first week, break d3 10d": {
+   "class": "SHORT",
+   "exercises": 5,
+   "violations": 0
+  },
+  "C6 KNOWN first week, break d5 10d": {
+   "class": "SHORT",
+   "exercises": 7,
+   "violations": 0
+  },
+  "C6 KNOWN first week, break d3 14d": {
+   "class": "MODERATE",
+   "exercises": 5,
+   "violations": 0
+  },
+  "C6 KNOWN first week, break d5 14d": {
+   "class": "MODERATE",
+   "exercises": 7,
+   "violations": 0
+  },
+  "C6 KNOWN first week, break d3 35d": {
+   "class": "LONG",
+   "exercises": 5,
+   "violations": 0
+  },
+  "C6 KNOWN first week, break d5 35d": {
+   "class": "LONG",
+   "exercises": 7,
+   "violations": 0
+  },
+  "C7 week boundary tz0": {
+   "same": true
+  },
+  "C7 week boundary tz-180": {
+   "same": true
+  },
+  "C7 week boundary tz330": {
+   "same": true
+  },
+  "C8 break starts on an executed session day": {
+   "action": "REESTABLISH",
+   "executed": []
+  },
+  "C11 between the breaks: none": {
+   "action": "REESTABLISH",
+   "relation": "NEW",
+   "log": [
+    "WEEKLY_REVIEW@w4:MODIFY/GATED_NEXT_STEP",
+    "RETURN_AFTER_PAUSE@w5:MODIFY/REESTABLISH",
+    "RETURN_AFTER_PAUSE@w5:MODIFY/REESTABLISH"
+   ]
+  },
+  "C11 between the breaks: equipment": {
+   "action": "REESTABLISH",
+   "relation": "NEW",
+   "log": [
+    "EQUIPMENT_CHANGE@w5:MODIFY/SUBSTITUTE",
+    "WEEKLY_REVIEW@w5:KEEP/KEEP",
+    "RETURN_AFTER_PAUSE@w5:MODIFY/REESTABLISH"
+   ]
+  },
+  "C11 between the breaks: fatigue": {
+   "action": "REESTABLISH",
+   "relation": "NEW",
+   "log": [
+    "SYSTEMIC_FATIGUE@w5:MODIFY/REDUCE",
+    "WEEKLY_REVIEW@w5:KEEP/KEEP",
+    "RETURN_AFTER_PAUSE@w5:MODIFY/REESTABLISH"
+   ]
+  },
+  "C11 between the breaks: missed": {
+   "action": "REESTABLISH",
+   "relation": "NEW",
+   "log": [
+    "MISSED_SESSION@w5:KEEP/KEEP",
+    "WEEKLY_REVIEW@w5:KEEP/KEEP",
+    "RETURN_AFTER_PAUSE@w5:MODIFY/REESTABLISH"
+   ]
+  },
+  "C12 re-established then 5d break": {
+   "kinds": [
+    "REESTABLISH",
+    "BODYWEIGHT"
+   ],
+   "action": "REESTABLISH",
+   "violations": 0
+  },
+  "C12 re-established then 14d break": {
+   "kinds": [
+    "REESTABLISH",
+    "BODYWEIGHT"
+   ],
+   "action": "REESTABLISH",
+   "violations": 0
+  }
+ },
+ "violations": [
+  "C3 A, B new, C corrects B, D new: C not SAME_BREAK",
+  "C4 A, A corrected, B new: A2 not SAME_BREAK"
+ ]
+}

@@ -1,0 +1,138 @@
+{
+  "purpose": "INDEPENDENT_DEV_ADVERSARIAL_PROBES_NOT_HOLDOUT",
+  "evaluator": "/root/quality",
+  "node": "v24.19.0",
+  "generatedAt": "2026-10-25T21:40:18.721Z",
+  "sourceHashes": {
+    "CoachingCore/src/r5-adaptation.mjs": "d9b0ecc80e8dcf54b22011c82af4cd0c7f95b32d118d8d6ad3084577040b7cb4",
+    "CoachingCore/src/r5-authority.mjs": "0eafe07af8c04bc67bf7268ac791d003b1c823241ea2e8a6dd22cd60b10954ad",
+    "CoachingCore/src/r5-contract.mjs": "5423f8853ff1ab60016382d6066cf28138b6cb79541e9e6d1ffbd8b37cea6aee",
+    "CoachingCore/src/r5-index.mjs": "a8faf66c5b5c16b5134e435ac25879537ecda5e0e7bb14e4e6d9d24fa27e1e8d",
+    "CoachingCore/src/r5-learning.mjs": "a78b220c6d140418a8f9f5401e616496f7a2042c06bdabf274302e01918af334",
+    "CoachingCore/src/r5-program.mjs": "fa642abb1ad323e26a43fd5793f28f6862e51c0207cf336b1f604aa0a7822525",
+    "CoachingCore/src/r5-review-context.mjs": "fe186d57d0872ed3214c08d9ec3a65a26ee3b418051e102571ef609fe8384c28",
+    "CoachingCore/src/r5-schedule.mjs": "991a0e0efe36860cb49d16e1d32c255c527f1f25006e5556d3056a9c132d6d3f",
+    "CoachingCore/src/r5-selectors.mjs": "198bd9e95d81cbe66e27365cfc7729e0da767abb3601ac0efccb1949d718bf48",
+    "CoachingCore/src/r5-simulator.mjs": "0844164dfe68698b8ac88ee06888e5e443d653cfb6fe093217311da9ca09592f"
+  },
+  "authorityMode": "TEST_ONLY (production authority/binding separately reviewed)",
+  "rows": [
+    {
+      "id": "Q01",
+      "criterion": "Direction of PROGRESS is validated",
+      "status": "MODIFY",
+      "action": "PROGRESS",
+      "originalMinutes": 30,
+      "proposalMinutes": 20,
+      "selectedAlternative": "easy-35"
+    },
+    {
+      "id": "Q02",
+      "criterion": "Direction of REGRESS is validated",
+      "status": "MODIFY",
+      "action": "REGRESS",
+      "originalMinutes": 30,
+      "proposalMinutes": 50,
+      "selectedAlternative": "easy-25"
+    },
+    {
+      "id": "Q03",
+      "criterion": "Schedule movement preserves the current progressed dose",
+      "status": "MODIFY",
+      "action": "MOVE",
+      "beforeMinutes": 35,
+      "afterMinutes": 30,
+      "followingWeekMinutes": 35
+    },
+    {
+      "id": "Q04",
+      "criterion": "Review chronology cannot rewrite already executed sessions",
+      "status": "MODIFY",
+      "action": "MOVE",
+      "observedAt": "2026-11-02T20:00:00Z",
+      "oldDate": "2026-11-02",
+      "newDate": "2026-11-04",
+      "actualPreserved": true,
+      "changedPastWeek": true
+    },
+    {
+      "id": "Q05",
+      "criterion": "Malformed calendar date fails closed without crash",
+      "dateValid": true,
+      "status": "PROPOSED",
+      "inputStart": "2026-02-30",
+      "actualFirstDate": "2026-03-02"
+    },
+    {
+      "id": "Q06",
+      "criterion": "Invalid review date returns structured rejection without crash",
+      "threw": {
+        "name": "TypeError",
+        "message": "An explicit valid asOf timestamp with timezone is required"
+      }
+    },
+    {
+      "id": "Q07",
+      "criterion": "Backward model clock is structured HOLD rather than exception",
+      "threw": {
+        "name": "TypeError",
+        "message": "Learning update time cannot precede the model clock"
+      }
+    },
+    {
+      "id": "Q08",
+      "criterion": "Clinical routing does not learn a dose-compatible response during clinical concern",
+      "status": "CLINICAL_HUMAN_REQUIRED",
+      "modelObservationCount": 1,
+      "actualLedgerCount": 1,
+      "modelResponse": {
+        "performance": "OVER",
+        "recovery": "COMPATIBLE",
+        "effort": "EASIER"
+      }
+    },
+    {
+      "id": "Q09",
+      "criterion": "Progression must fit the actual available window",
+      "status": "MODIFY",
+      "action": "PROGRESS",
+      "windowMinutes": 30,
+      "proposalMinutes": 35
+    },
+    {
+      "id": "Q10",
+      "criterion": "Alternatives cannot introduce unavailable equipment under one-dimensional progression",
+      "status": "MODIFY",
+      "action": "PROGRESS",
+      "available": [
+        "BARBELL"
+      ],
+      "proposalEquipment": [
+        "TREADMILL"
+      ]
+    },
+    {
+      "id": "Q11",
+      "criterion": "Current fatigue targets the affected optional session rather than all optional work",
+      "status": "MODIFY",
+      "action": "REDUCE",
+      "removed": [
+        "w0-easy",
+        "w0-strength-b"
+      ],
+      "remaining": [
+        "strength-a",
+        "cruise",
+        "long"
+      ]
+    },
+    {
+      "id": "Q12",
+      "criterion": "Malformed nested input returns validation result rather than uncaught TypeError",
+      "threw": {
+        "name": "TypeError",
+        "message": "Cannot read properties of null (reading 'id')"
+      }
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+import fs from 'node:fs';
+import {createHash} from 'node:crypto';
+import {evaluateCoachingShadow,normalizeRepresentative,fact} from '../../../CoachingCore/src/r4-index.mjs';
+import {clone,hash} from '../../../CoachingCore/src/value.mjs';
+
+const corpus=JSON.parse(fs.readFileSync('CoachingCore/r3/NORMALIZED_REPRESENTATIVE_CORPUS_R3.json','utf8'));
+const holdout=JSON.parse(fs.readFileSync('CoachingCore/r4/holdout/R4_INDEPENDENT_HOLDOUT.json','utf8'));
+const base=id=>clone(id.startsWith('R4-HO-')?holdout.cases.find(x=>x.caseId===id).scenarioFacts:fact(corpus.inputs.find(x=>x.source.caseId===id),''));
+const probes=[];
+function probe(id,sourceId,mutate,{expectPositive=false,expectedDecision=null,accept=null,options={}}={}){
+ const s=base(sourceId);mutate(s);
+ const input=normalizeRepresentative({caseId:'SSCTR-'+id,scenarioFacts:s,corpusId:'R4-INDEPENDENT-SCIENTIFIC-BINDING',corpusVersion:'DCR4-SSCTR-PROBES-1'});
+ const r=evaluateCoachingShadow(input,options),d=r.shadowDecision;
+ const positive=d.decisionType==='MODIFY';
+ const matched=accept?accept(d):expectPositive?positive:expectedDecision?d.decisionType===expectedDecision:!positive;
+ const immutable=hash(r.officialPlanState)===hash(r.appliedState);
+ probes.push({id,sourceId,passed:matched&&immutable,expected:accept?'NO_HARD_DEMONSTRATION_REUSE; APPROVED_LOW_DEMAND_FALLBACK_ALLOWED':expectPositive?'POSITIVE_WITHIN_REVIEWED_SCOPE':expectedDecision??'NO_POSITIVE_OUTSIDE_REVIEWED_SCOPE',actualDecision:d.decisionType,coverage:d.coverage,selected:d.ranking?.selectedId??null,reason:d.rationale,immutable,inputHash:hash(input),recipe:d.candidate?.recipe??null,scientificConditions:d.scientificConditions??[]});
+}
+probe('baseline-familiar-cruise','REP-R2-34',()=>{},{expectPositive:true});
+probe('baseline-relaxed-strides','REP-R2-39',()=>{},{expectPositive:true});
+probe('baseline-logistics-return','REP-R2-19',()=>{},{expectPositive:true});
+probe('strides-all-out','REP-R2-39',s=>{s.priorHistory.sameFamily.effort='all-out maximal sprint';});
+probe('cruise-maximal-effort','REP-R2-34',s=>{s.priorHistory.sameFamily.effort='maximal unsustainable all-out';});
+probe('cruise-insufficient-total-window','REP-R2-34',s=>{s.currentDemand.availabilityMinutes=10;});
+probe('strides-insufficient-total-window','REP-R2-39',s=>{s.currentDemand.availabilityMinutes=5;});
+probe('familiar-response-negation','REP-R2-34',s=>{s.priorHistory.sameFamily.response='not compatible';});
+probe('familiar-response-adversative','REP-R2-34',s=>{s.priorHistory.sameFamily.response='compatible previously but now incompatible';});
+probe('strength-recovery-incompatible','REP-R2-11',s=>{s.observations.nextDay='incompatible';});
+probe('strength-technique-negated','REP-R2-11',s=>{s.observations.recentComparableSessions.forEach(x=>x.technique='not usual; deteriorating');});
+probe('strength-history-response-negated','REP-R2-11',s=>{s.history.knownResponse='not compatible';});
+probe('strength-history-context-different','REP-R2-11',s=>{s.history.contextComparability='different movement, equipment, range and role';});
+probe('return-abnormal-current-function','REP-R2-19',s=>{s.observations.currentFunction='not normal';});
+probe('return-hard-current-demonstration','REP-R2-19',s=>{s.observations.currentTaskDemonstration={current:true,comparable:true,response:'compatible',recipe:{family:'HARD_RUN',minutes:30,effort:'all-out'}};},{accept:d=>d.decisionType!=='MODIFY'||d.ranking?.selectedId==='GOVERNED_LOW_DEMAND_REENTRY'});
+probe('return-normal-demo-cue-contradiction','REP-R2-19',s=>{s.observations.currentTaskDemonstration={current:true,comparable:true,response:'compatible',recipe:{family:'EASY',minutes:15,effort:'maximal effort not conversational'}};},{accept:d=>d.decisionType!=='MODIFY'||d.ranking?.selectedId==='GOVERNED_LOW_DEMAND_REENTRY'});
+probe('return-unknown-reason','REP-R2-19',s=>{s.interruption.reason=null;});
+probe('substitution-incomplete-effort-rest','REP-R2-18',s=>{s.history.requestedMovementFamiliar=true;s.history.completeAlternativeRecipe={exercise:'dumbbell bench press',sets:2,reps:8,loadKgPerHand:10};});
+probe('substitution-unknown-load-units','REP-R2-18',s=>{s.history.requestedMovementFamiliar=true;s.history.completeAlternativeRecipe={exercise:'dumbbell bench press',sets:2,reps:8,loadKg:20,targetRir:3,restSeconds:120};});
+probe('clinical-guard','REP-R2-34',s=>{s.eligibility.pain=true;});
+probe('missing-eligibility','REP-R2-34',s=>{s.eligibility.status='ELIGIBILITY_UNASSESSED';});
+probe('stale-envelope','REP-R2-34',()=>{},{options:{registry:{envelopes:[]},authority:{records:[]}}});
+probe('single-noisy-strength-result','REP-R2-11',s=>{s.observations.recentComparableSessions=s.observations.recentComparableSessions.slice(0,1);},{expectedDecision:'KEEP'});
+probe('schedule-no-secondary-window','REP-R2-15',s=>{s.currentDemand.availability.FRI=[['17:00','17:10']];});
+probe('steady-changed-environment','REP-R2-33',s=>{s.environment={terrain:'steep hilly',conditions:'hot humid; not comparable'};});
+probe('strides-unsafe-surface','REP-R2-39',s=>{s.environment.surface='icy uneven path, not comparable to prior dry path';});
+probe('strength-nonminimum-known-load-increment','REP-R2-11',s=>{s.currentDemand.candidate.reps=s.currentDemand.base.reps;s.currentDemand.candidate.loadKgPerHand=18;s.history.equipmentIncrementKg=2;});
+probe('strength-explicit-missing-dumbbells','REP-R2-11',s=>{s.equipment=['bodyweight only; no dumbbells'];});
+probe('excluded-pregnancy-context','REP-R2-34',s=>{s.population.pregnant=true;});
+probe('learned-self-declared-dose-admissibility','REP-R2-41',s=>{
+ s.constraints.availability={MON:[['08:00','09:00']],WED:[['08:00','09:00']],THU:[['08:00','09:00']]};
+ s.currentDemand.options.forEach(option=>{option.schedule={label:option.id};option.prescriptions=[{day:option.id.includes('_MON_')?'MON':'WED',start:'08:00',durationMinutes:30,recipe:{family:'NOVEL_MAXIMAL_TASK',arbitraryLoadKg:999,source:'SELF_DECLARED_ADMISSIBLE'}}];});
+});
+probe('candidate60-alias-cannot-anchor70','REP-R2-37',s=>{s.currentDemand.candidateMinutes=70;});
+const targets=['CoachingCore/src/r4-runtime.mjs','CoachingCore/src/r4-candidates.mjs','CoachingCore/src/r4-context.mjs','CoachingCore/src/r4-athlete-model.mjs','CoachingCore/src/r4-authority.mjs','CoachingCore/r4/PRESCRIPTION_ENVELOPE_REGISTRY.json','audits/domain-closure-r4-2026-10-25/reviews/ssctr-envelope-review.json'].map(path=>({path,sha256:createHash('sha256').update(fs.readFileSync(path)).digest('hex')}));
+const result={revision:'DCR4-SSCTR-BINDING-PROBES-1',date:'2026-10-25',reviewer:'/root/ssctr',independentOfRuntimeAuthor:true,passed:probes.every(x=>x.passed),total:probes.length,passing:probes.filter(x=>x.passed).length,targets,probes,limits:'Synthetic scientific-boundary/adversarial checks only. Not a human, clinical, empirical effectiveness or complete V1 coaching-quality validation.'};
+fs.writeFileSync('audits/domain-closure-r4-2026-10-25/reviews/ssctr-binding-probes.json',JSON.stringify(result,null,2)+'\n');
+console.log(JSON.stringify({passed:result.passed,total:result.total,passing:result.passing,failures:probes.filter(x=>!x.passed).map(({id,actualDecision,reason})=>({id,actualDecision,reason}))},null,2));

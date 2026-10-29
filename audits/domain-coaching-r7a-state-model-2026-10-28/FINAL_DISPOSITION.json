@@ -1,0 +1,50 @@
+{
+ "revision": "R7ASM-DISPOSITION-1",
+ "date": "2026-10-29",
+ "owner": "Chief (current Claude Code instance, the session that opens the State Model Consumer Closure); judges independent",
+ "mission": "COACHING CORE — STATE MODEL CLOSURE — HistoricalState vs PlanningProjection",
+ "founderDecision": "HistoricalState and PlanningProjection separated, with a derived PlanningView; planning never writes history (FOUNDER_REQUEST.md §0)",
+ "delivery": "CLOSED_WITH_EXPLICIT_BLOCKER",
+ "stateModelClosure": "NOT_READY",
+ "exitReadiness": "NOT_ISSUED",
+ "completeDefinitionOfDone": false,
+ "closedBy": "The Founder's decision of 2026-10-29 (audits/domain-coaching-r7a-state-consumer-2026-10-29/FOUNDER_REQUEST.md §0) is the architectural decision this mission's §28/§33 routed to: KEEP HistoricalState / PlanningProjection / PlanningView and close only the consumers that still cross the boundary. No closing review cycle, no second freeze and no runtime change were made in this mission.",
+ "nextMission": "COACHING CORE — STATE MODEL CONSUMER CLOSURE: history ingress, semantic PlanningView & temporal evidence (audits/domain-coaching-r7a-state-consumer-2026-10-29/)",
+ "freeze": {
+  "revision": "HISTORICAL-PROJECTION-FREEZE-1",
+  "file": "CoachingCore/r7/state-model/RUNTIME_FREEZE_HISTORICAL_PROJECTION.json",
+  "fileSha256": "39b326ac11b2faa3c316fefeeb1d332cc5043d2f552067151e336a4fb6ca41a4",
+  "sourceDigest": "0db72d0edd9fd7f1382e1ed8622d29e2ff3356699da18872b0670615956e2eb8",
+  "files": 83,
+  "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+  "postFreezeChanges": "none (both reviews recomputed the digest at their start and end)"
+ },
+ "reviews": {
+  "engineering": {
+   "revision": "R7ASM-QE-r1",
+   "files": {"audits/domain-coaching-r7a-state-model-2026-10-28/reviews/quality-engineering-r7asm-review.json": "4adf99284d366852bfc39988cf7f9a2eff357a110967ca36a99fd3a880a959a7", "audits/domain-coaching-r7a-state-model-2026-10-28/reviews/quality-engineering-r7asm-review.md": "22971bf2ae04ec8d36d28c55b65ec636da5b7aba38e8032e0835fbbc094099fd"},
+   "verdict": "STATE_MODEL_ENGINEERING_REVIEW = NOT_READY",
+   "blocking": ["QE-R7ASM-01 MEDIUM: a KNOWN row's prescribed load sets up an exercise history does not hold (setUp), after a correction or conflict retracts its establishing evidence"],
+   "material": ["QE-R7ASM-02 MEDIUM: in a LONG return (RESTART) the PlanningView takes the run from the projection", "QE-R7ASM-03 MEDIUM: in REPS_THEN_LOAD goals the PlanningView takes the repetition step from the projection", "QE-R7ASM-04 MEDIUM: historicalStateOf reads superseded rows, so corrections never reach the public reader"],
+   "nonBlocking": ["QE-R7ASM-05 LOW-MEDIUM: earned credit depends on whether a decision closed an incomplete week (E1/E3)", "QE-R7ASM-06 LOW: lastExecuted* hold the settled reference, lifted* the execution", "QE-R7ASM-07 LOW: T15, P7 and the self-challenge's correction class use supersedes:, which the normalizer reads as a conflict"],
+   "closedOnJudgeProbes": ["QE-R7ASE-01", "QE-R7ASE-02", "QE-R7AB-01", "QE-R7AF-01", "QE-R7AF-02", "QE-R7A-01", "QE-R7A1-09", "QE-R7A1-10", "QE-R7A2-01", "QE-R7A2-02", "QE-R7A2-03"]
+  },
+  "ssctr": {
+   "revision": "R7ASM-SSCTR-r1",
+   "files": {"audits/domain-coaching-r7a-state-model-2026-10-28/reviews/ssctr-r7asm-regression.json": "d7c9d248864068ea9ad3b8feb67fd428f193806ba4cb2d70982b1b548e0086ce", "audits/domain-coaching-r7a-state-model-2026-10-28/reviews/ssctr-r7asm-regression.md": "381b51b6b4b149b698ac56f3442acd8ee0ef9d9e0e6e7fe4c5ca1fa771206c17"},
+   "verdict": "STATE_MODEL_SCIENTIFIC_REGRESSION = NOT_READY",
+   "blocking": ["F1: a return-covered count comes back two sets at once (restoration grid B = 2): D53 and D57 do not hold", "F2: on the R42 path HOLD no longer repeats the dose (earnedAt copies the logged repetitions whatever the gate)", "F3: R6-H25 under MAINTAIN prescribes from-log 70 kg x 12 after 70 kg x 10 was executed"],
+   "nonBlocking": ["NF-R7ASM-1 (the D47 statement after a restart)", "NF-R7ASM-2 (R6-H26 return back to its entry)", "NF-R7ASM-3 (the view below history stalls progression)", "R41 extended", "R43 new"],
+   "holds": ["D56", "D58", "D59", "E6", "the return base", "the R42 credit part"]
+  }
+ },
+ "queue": {
+  "file": "reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json",
+  "items": 199,
+  "sha256": "221a03651e103e82636c42b37fe263dd61ce1bde2e6b73f552e6dc6b10b50218",
+  "ssctrProposal": "audits/domain-coaching-r7a-state-model-2026-10-28/reviews/ssctr-r7asm-regression-queue-items.json (8 items HQ-R7ASM-SSCTR-*, sha256 cb294bbe80252552b41bb3d20bfb44d02e4b8964e7c772dd7fc4ff6fedd9b591)",
+  "decision": "NOT_INTEGRATED (Chief, as the SSCTR left it to the Chief): the 8 items only re-bind approvals already queued at STATE-EVIDENCE-FREEZE-1 to a freeze that closed NOT_READY and that the next mission supersedes; the queue stays at 199, byte-identical. The next SSCTR regression review, on the next freeze, proposes what carries."
+ },
+ "verification": "node CoachingCore/scripts/verify-r7asm.mjs (read-only, 2026-10-29): 15/16; the failing check is reviews-not-dispatched, by design now that both reviews exist. VERIFICATION_R7ASM.json (written at the freeze, 16/16) is left as recorded; --write was not run.",
+ "notDone": "No UI, Figma, KMP, HealthKit, integration, production or real-plan effect; no commit, merge or deploy; no handoff CoachingCore/r7/R7A_FINAL_HANDOFF.md; R7A_EXIT_READINESS not issued; DOMAIN_COACHING_R7-B0 not started."
+}

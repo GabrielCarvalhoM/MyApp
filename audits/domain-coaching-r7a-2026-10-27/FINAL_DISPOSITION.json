@@ -1,0 +1,213 @@
+{
+  "revision": "R7A-DISPOSITION-1",
+  "date": "2026-10-27T17:24:05.203Z",
+  "owner": "Claude Code R7-A session (Chief / current instance)",
+  "mission": "DOMAIN_COACHING_R7-A",
+  "delivery": "CLOSED_WITH_EXPLICIT_BLOCKER",
+  "exitReadiness": "NOT_READY",
+  "completeDefinitionOfDone": false,
+  "freeze": {
+    "revision": "R7A-FREEZE-2",
+    "file": "CoachingCore/r7/RUNTIME_FREEZE_R7A_2.json",
+    "fileSha256": "15be6a40875a8ce5ba833db542ee85a7e227736ed0997b0c3cf1072485189d07",
+    "sourceDigest": "f56ae974762523b1efacd9ad7a9046cc7f6b7d33e42a7c2c955e758ef0f7821c",
+    "frozenAt": "2026-10-27T16:27:18.356Z",
+    "files": 75
+  },
+  "firstFreeze": {
+    "revision": "R7A-FREEZE-1",
+    "sourceDigest": "1f2bb1d807825a6027f994ff36b8adb4c42705273c37f800cfa64c03a4e07d65",
+    "frozenAt": "2026-10-27T13:52:53.780Z"
+  },
+  "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+  "policyChanged": false,
+  "tests": {
+    "suite": "476/476 (node --test, Node v24.19.0)",
+    "r7a": [
+      "CoachingCore/test/r7a-semantic-core.test.mjs (17)",
+      "CoachingCore/test/r7a-cycle2.test.mjs (16)"
+    ],
+    "mutation": "audits/domain-coaching-r7a-2026-10-27/probes/mutation-check-r7a.out.json (33/34; one known, documented test gap: QE-R7A-22)"
+  },
+  "objectiveVerification": {
+    "script": "CoachingCore/scripts/verify-r7a.mjs",
+    "output": "CoachingCore/r7/VERIFICATION_R7A.json",
+    "verifiedAt": "2026-10-27T17:28:17.808Z",
+    "passing": 11,
+    "total": 11,
+    "failing": []
+  },
+  "independentJudgments": {
+    "ssctr": {
+      "first": {
+        "file": "audits/domain-coaching-r7a-2026-10-27/reviews/ssctr-r7a-review.json",
+        "revision": "R7A-SSCTR-r1",
+        "freeze": "R7A-FREEZE-1",
+        "runtimeAccepted": false,
+        "blocking": [
+          "D55"
+        ]
+      },
+      "recheck": {
+        "file": "audits/domain-coaching-r7a-2026-10-27/reviews/ssctr-r7a-recheck.json",
+        "revision": "R7A-SSCTR-r2",
+        "freeze": "R7A-FREEZE-2",
+        "runtimeAccepted": false,
+        "blocking": [
+          "D56"
+        ],
+        "resolved": [
+          "D55"
+        ]
+      }
+    },
+    "engineering": {
+      "first": {
+        "file": "audits/domain-coaching-r7a-2026-10-27/reviews/quality-engineering-r7a-review.json",
+        "revision": "R7A-QE-r1",
+        "freeze": "R7A-FREEZE-1",
+        "verdict": "NOT_READY"
+      },
+      "recheck": {
+        "file": "audits/domain-coaching-r7a-2026-10-27/reviews/quality-engineering-r7a-recheck.json",
+        "revision": "R7A-QE-r2",
+        "freeze": "R7A-FREEZE-2",
+        "verdict": "NOT_READY"
+      }
+    }
+  },
+  "cycleBound": {
+    "rule": "One review and at most one narrow re-check per judge, the re-check only for blockers that are new, narrow and runtime-only",
+    "cyclesRun": 2,
+    "furtherCycle": false
+  },
+  "blockers": [
+    {
+      "id": "QE-R7A-01",
+      "source": "engineering re-check R7A-QE-r2",
+      "severity": "HIGH",
+      "class": "C20",
+      "what": "An EQUIPMENT_CHANGE of the same week still erases a return that starts next week (the handler re-projects from the pre-break state and never reads the stored return); the opposite order keeps it. SSCTR O-1/R28 is the same handler after a weekly review",
+      "status": "PARTIAL (weekly review, schedule change, goal change fixed)"
+    },
+    {
+      "id": "QE-R7A-02",
+      "source": "engineering re-check R7A-QE-r2",
+      "severity": "MEDIUM",
+      "class": "C21",
+      "what": "SHORT-class return: reported on the morning of a quality day, the first run back stays the quality run (the SHORT rule still compares dates only); the SSCTR's R27 (non-blocking for the science) is the same case",
+      "status": "PARTIAL (MODERATE and longer returns fixed)"
+    },
+    {
+      "id": "QE-R7A-03",
+      "source": "engineering re-check R7A-QE-r2",
+      "severity": "HIGH",
+      "class": "C22",
+      "what": "After a return in race week that re-plans from next week, postponing the race leaves the old race in place: two races; the opposite order gives one",
+      "status": "PARTIAL (race moved earlier and race postponed in race week fixed)"
+    },
+    {
+      "id": "QE-R7A-05",
+      "source": "engineering re-check R7A-QE-r2",
+      "severity": "MEDIUM",
+      "class": "C08",
+      "what": "The per-exercise merge keeps one whole entry, so a known load is replaced by an unknown one when the other entry has as many known values; over ten weeks four exercises are never established (field-by-field merge needed)",
+      "status": "PARTIAL (subset report, no-load report, label prefix, drift fixed)"
+    },
+    {
+      "id": "QE-R7A-12",
+      "source": "engineering re-check R7A-QE-r2",
+      "severity": "MEDIUM",
+      "class": "C12",
+      "what": "A shortfall logged one or two increments lighter than the plan still becomes the repetition target (3x3 at 77.5 kg, 3x2 at 75 kg, below the goal range [4, 6])",
+      "status": "PARTIAL (shortfall at the planned load fixed)"
+    },
+    {
+      "id": "QE-R7A-19",
+      "source": "engineering re-check R7A-QE-r2",
+      "severity": "MEDIUM",
+      "class": "C22, C20",
+      "what": "An event change that reaches this week discards that week's earlier same-week adaptations (systemic-fatigue reduction, unavailable-day reschedule): the rebuild from the current week re-projects from the week-start state",
+      "status": "NEW, introduced by the second cycle (QE-R7A-03 fix)"
+    },
+    {
+      "id": "D56",
+      "source": "SSCTR re-check R7A-SSCTR-r2",
+      "severity": "BLOCKER",
+      "class": "C04, C01",
+      "what": "A week whose executed exposures were all fitted to the time budget below their count counts as a whole executed week, so it raises or ends the regain cap; with a later budget increase the count rises more than one set above the largest executed count (2, 2, then 4 sets). Required: the caps rise or end only after a week in which an executed exposure did its whole count after its time fit",
+      "status": "NEW, introduced by the second cycle (QE-R7A-14 reading for the caps); under Founder §16 it also keeps D53 from closing"
+    }
+  ],
+  "verdicts": {
+    "STATE_COMPOSITION_STABILITY": "NOT_READY",
+    "PHASE_MODIFIER_INTEGRITY": "NOT_READY",
+    "PRESCRIPTION_RECONSTRUCTION_INTEGRITY": "NOT_READY",
+    "CANONICAL_INPUT_SEMANTIC_STABILITY": "NOT_READY",
+    "R7A_ENGINEERING_REVIEW": "NOT_READY",
+    "R7A_SCIENTIFIC_REVIEW": "NOT_READY",
+    "R7A_EXIT_READINESS": "NOT_READY"
+  },
+  "queue": {
+    "integration": "audits/domain-coaching-r7a-2026-10-27/QUEUE_INTEGRATION_R7A.json",
+    "before": 127,
+    "after": 132,
+    "appended": [
+      "HQ-R7A-SSCTR-REGAIN-BASE",
+      "HQ-R7A-SSCTR-REESTABLISH-PHASE",
+      "HQ-R7A-SSCTR-SPLIT-WEEK",
+      "HQ-R7A-SSCTR-ITEMS-5-8",
+      "HQ-R7A-SSCTR-CYCLE2-COMPOSITIONS"
+    ],
+    "earlierItemsByteIdentical": true,
+    "fundingState": "NOT_DECLARED",
+    "supersedesR6Pin": {
+      "record": "audits/domain-coaching-r6-2026-10-26/QUEUE_INTEGRATION_R6.json",
+      "items": 127,
+      "sha256": "74c7b6f64a25f2eed46276ec8e9ebd3aa83df7c4f5c4b0e2c77a62e746e5b841"
+    }
+  },
+  "dispositions": {
+    "file": "CoachingCore/r7/CLASS_DISPOSITIONS_R7A.json",
+    "revision": "R7A-DISPOSITIONS-2",
+    "r6ItemCounts": {
+      "OPEN_R7A_BLOCKER": 2,
+      "FIXED_R7A": 7,
+      "R7D_GENERALIZATION": 3,
+      "R7C_LONGITUDINAL": 16,
+      "R7B_COLD_START": 21,
+      "CLINICAL_OUT_OF_SCOPE": 1,
+      "PROVEN_NOT_APPLICABLE": 2,
+      "STANDING_LIMIT": 3
+    }
+  },
+  "regression": {
+    "file": "CoachingCore/r7/REGRESSION_R7A.json",
+    "firstFreezeFile": "CoachingCore/r7/REGRESSION_R7A_FREEZE1.json",
+    "classification": "REGRESSION / CHALLENGE REUSE; not generalization evidence"
+  },
+  "handoff": "Not written: R7A_EXIT_READINESS is NOT_READY (Founder §22)",
+  "nextEngineeringStep": {
+    "decision": "FOUNDER",
+    "recommended": "A bounded, Founder-authorized follow-up for the seven named blockers before R7-B: one same-week composition model (every same-week handler starts from the week as currently prescribed and from the stored return state), a field-by-field merge of agreeing reports, a fit-aware whole-count test for the caps, and the lighter-load shortfall and SHORT-return cases; then a new freeze with a narrow re-check by both judges",
+    "notStarted": true
+  },
+  "r7bStarted": false,
+  "nextMissionStarted": false,
+  "productionOrRealAthleteAuthority": false,
+  "uiFigmaKmpChanges": false,
+  "integrationsImplemented": false,
+  "commitMergeDeployPerformed": false,
+  "deliverables": [
+    "CoachingCore/r7/README.md",
+    "CoachingCore/r7/CLASS_DISPOSITIONS_R7A.json",
+    "CoachingCore/r7/READINESS_R7A.json",
+    "CoachingCore/r7/FINAL_REPORT_R7A.md",
+    "CoachingCore/r7/REGRESSION_R7A.json",
+    "CoachingCore/r7/RUNTIME_FREEZE_R7A_1.json",
+    "CoachingCore/r7/RUNTIME_FREEZE_R7A_2.json",
+    "CoachingCore/r7/VERIFICATION_R7A.json",
+    "audits/domain-coaching-r7a-2026-10-27/QUEUE_INTEGRATION_R7A.json",
+    "audits/domain-coaching-r7a-2026-10-27/CHECKPOINT.md"
+  ]
+}

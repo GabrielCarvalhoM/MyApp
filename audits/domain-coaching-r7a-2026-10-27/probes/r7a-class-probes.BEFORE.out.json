@@ -1,0 +1,510 @@
+{
+ "probe": "R7A-CLASS-PROBES",
+ "runtime": "PRE_R7A (R6 closure snapshot)",
+ "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+ "sections": {
+  "C03_phaseBoundsAllRowKinds": {
+   "reproduced": true,
+   "rowsChecked": 3360,
+   "rowKindsInReducedDays": {
+    "TAPER KNOWN": 192,
+    "TAPER BODYWEIGHT": 120,
+    "RACE_WINDOW KNOWN": 72,
+    "POST_EVENT KNOWN": 132,
+    "TAPER Not done for more than 2": 192,
+    "RACE_WINDOW Not done for more than 2": 72,
+    "POST_EVENT Not done for more than 2": 48,
+    "TAPER Return entry": 96,
+    "RACE_WINDOW Return step 2": 36
+   },
+   "violations": 120,
+   "examples": [
+    "c03-10K-STRENGTH-missBeforeRaceWeek-known w13 2027-02-01 RACE_WINDOW back-squat: 2x5@3 ESTABLISH | Not done for more than 28 days: establis",
+    "c03-10K-STRENGTH-missBeforeRaceWeek-known w13 2027-02-01 RACE_WINDOW db-bench-press: 2x5@3 ESTABLISH | Not done for more than 28 days: establis",
+    "c03-10K-STRENGTH-missBeforeRaceWeek-known w13 2027-02-01 RACE_WINDOW db-row: 2x5@3 ESTABLISH | Not done for more than 28 days: establis",
+    "c03-10K-STRENGTH-missBeforeRaceWeek-known w14 2027-02-11 POST_EVENT db-rdl: 2x5@3 ESTABLISH | Not done for more than 28 days: establis",
+    "c03-10K-STRENGTH-missBeforeRaceWeek-none w13 2027-02-01 RACE_WINDOW goblet-squat: 2x5@3 ESTABLISH | Not done for more than 28 days: establis",
+    "c03-10K-STRENGTH-missBeforeRaceWeek-none w13 2027-02-01 RACE_WINDOW db-bench-press: 2x5@3 ESTABLISH | Not done for more than 28 days: establis",
+    "c03-10K-STRENGTH-missBeforeRaceWeek-none w13 2027-02-01 RACE_WINDOW db-row: 2x5@3 ESTABLISH | Not done for more than 28 days: establis",
+    "c03-10K-STRENGTH-missBeforeRaceWeek-none w14 2027-02-11 POST_EVENT db-rdl: 2x5@3 ESTABLISH | Not done for more than 28 days: establis",
+    "c03-10K-STRENGTH-missBeforePostEvent-known w13 2027-02-01 RACE_WINDOW back-squat: 2x5@3 ESTABLISH | Not done for more than 28 days: establis",
+    "c03-10K-STRENGTH-missBeforePostEvent-known w13 2027-02-01 RACE_WINDOW db-bench-press: 2x5@3 ESTABLISH | Not done for more than 28 days: establis",
+    "c03-10K-STRENGTH-missBeforePostEvent-known w13 2027-02-01 RACE_WINDOW db-row: 2x5@3 ESTABLISH | Not done for more than 28 days: establis",
+    "c03-10K-STRENGTH-missBeforePostEvent-known w14 2027-02-11 POST_EVENT db-rdl: 2x5@3 ESTABLISH | Not done for more than 28 days: establis"
+   ]
+  },
+  "C04_splitWeekExecutedExposure": {
+   "reproduced": true,
+   "exercise": "db-bench-press",
+   "log": "0:KEEP/INSTANTIATE_LOGGED_LOADS 1:MODIFY/GATED_NEXT_STEP 2:MODIFY/GATED_NEXT_STEP 3:MODIFY/GATED_NEXT_STEP 4:MODIFY/GATED_NEXT_STEP 5:MODIFY/GATED_NEXT_STEP 6:KEEP/INSTANTIATE_LOGGED_LOADS",
+   "stateBeforeWeek5": {
+    "mode": "KNOWN",
+    "load": 18,
+    "ceiling": null,
+    "sets": 3,
+    "priorSets": null,
+    "regainCap": null,
+    "lastPerformed": "2026-11-11",
+    "source": "LOGGED_ACTUAL"
+   },
+   "week5": [
+    "2026-12-09 3x10@3 KNOWN 18/h",
+    "2026-12-11 2x8@3 ESTABLISH | Not done for more than 28 days"
+   ],
+   "executedInWeek5": "2026-12-09 3x10@3 KNOWN 18/h",
+   "stateAfterWeek5": {
+    "mode": "KNOWN",
+    "load": 18,
+    "ceiling": null,
+    "sets": 2,
+    "priorSets": 3,
+    "regainCap": 2,
+    "lastPerformed": "2026-12-09",
+    "source": "LOGGED_ACTUAL"
+   },
+   "week6": [
+    "2x10@3 KNOWN 18/h",
+    "2x10@3 KNOWN 18/h"
+   ]
+  },
+  "C05_C07_intakeStrengthRecords": {
+   "reproduced": true,
+   "selfReportOnly": {
+    "dose": {
+     "sets": 3,
+     "reps": 10,
+     "rir": 2,
+     "load": {
+      "value": 20,
+      "unit": "KG",
+      "convention": "TOTAL"
+     }
+    },
+    "source": "SELF_REPORT"
+   },
+   "withWearableRecord": {
+    "dose": null,
+    "source": "WEARABLE"
+   },
+   "wearableRecordDisplacesSelfReport": true,
+   "conventionRelabelled": false,
+   "bareNumberLoad": {
+    "value": 20,
+    "unit": "KG",
+    "convention": "PER_HAND"
+   },
+   "duplicateSelfReportsOrderDependent": true,
+   "completeThenIncomplete": {
+    "dose": null,
+    "source": "SELF_REPORT"
+   },
+   "incompleteThenComplete": {
+    "dose": {
+     "sets": 3,
+     "reps": 10,
+     "rir": 2,
+     "load": {
+      "value": 20,
+      "unit": "KG",
+      "convention": "TOTAL"
+     }
+    },
+    "source": "SELF_REPORT"
+   }
+  },
+  "C06_provenanceLabelEquivalence": {
+   "reproduced": false,
+   "reviewDecisionVariants": 1,
+   "intakeExposureVariants": 1,
+   "intakeExposure": {
+    "runDaysPerWeek": 3,
+    "runMinutesPerWeek": 120,
+    "longestRunMinutes": 40,
+    "strengthDaysPerWeek": null,
+    "basis": "WEARABLE_FULL"
+   }
+  },
+  "C08_C09_duplicatesAndContradictions": {
+   "reproduced": true,
+   "exactReplayInvariant": true,
+   "sameExecutionSecondSourceInvariant": true,
+   "contradictoryLogs": {
+    "orderAB": {
+     "conflicts": 0,
+     "duplicates": [
+      "SAME_EXECUTION_DIFFERENT_SOURCE"
+     ],
+     "pendingLoads": {
+      "goblet-squat": 20,
+      "db-calf-raise": 20,
+      "db-rdl": 20,
+      "db-split-squat": 20
+     }
+    },
+    "orderBA": {
+     "conflicts": 0,
+     "duplicates": [
+      "SAME_EXECUTION_DIFFERENT_SOURCE"
+     ],
+     "pendingLoads": {
+      "goblet-squat": 40,
+      "db-bench-press": 20,
+      "db-row": 20,
+      "db-calf-raise": 40,
+      "db-rdl": 20,
+      "db-split-squat": 20
+     }
+    }
+   }
+  },
+  "C10_correctionIdempotence": {
+   "reproduced": true,
+   "firstReview": {
+    "accepted": [
+     [
+      "e2",
+      45
+     ]
+    ],
+    "superseded": [
+     "e1"
+    ]
+   },
+   "carriedLedgerReview": {
+    "accepted": [],
+    "excluded": [
+     "e2:INVALID_CORRECTION_CHAIN"
+    ]
+   },
+   "endToEnd": {
+    "week0Facts": [
+     [
+      "c10-b",
+      35
+     ]
+    ],
+    "week1Facts": [],
+    "week1Excluded": [
+     "c10-b:INVALID_CORRECTION_CHAIN"
+    ]
+   }
+  },
+  "C11_inactiveExerciseReturnStep": {
+   "reproduced": true,
+   "rotation": {
+    "w1": 2,
+    "w2": 4,
+    "rotatedIn": [
+     "standing-calf-raise",
+     "side-plank",
+     "db-step-up"
+    ]
+   },
+   "returnReview": "MODIFY/REESTABLISH",
+   "entryWeek": {
+    "w": 6,
+    "returnSteps": {
+     "back-squat": 0,
+     "db-bench-press": 0,
+     "db-row": 0,
+     "db-calf-raise": 0,
+     "dead-bug": 0,
+     "db-rdl": 0,
+     "db-split-squat": 0,
+     "standing-calf-raise": 0,
+     "side-plank": 0,
+     "db-step-up": 0
+    },
+    "inUse": [
+     "back-squat",
+     "db-bench-press",
+     "db-row",
+     "db-calf-raise",
+     "dead-bug",
+     "db-rdl",
+     "db-split-squat"
+    ]
+   },
+   "step2Week": {
+    "w": 7,
+    "returnSteps": {
+     "back-squat": 1,
+     "db-bench-press": 1,
+     "db-row": 1,
+     "db-calf-raise": 1,
+     "dead-bug": 1,
+     "db-rdl": 1,
+     "db-split-squat": 1,
+     "standing-calf-raise": 0,
+     "side-plank": 0,
+     "db-step-up": 0
+    },
+    "inUse": [
+     "back-squat",
+     "db-bench-press",
+     "db-row",
+     "db-calf-raise",
+     "dead-bug",
+     "db-rdl",
+     "db-split-squat"
+    ]
+   },
+   "inactiveExercisesStillAtEntryStepInStep2": [
+    "standing-calf-raise",
+    "side-plank",
+    "db-step-up"
+   ],
+   "newExerciseRowsInStep2": [
+    "goblet-squat 1x8@4 ESTABLISH | Return entry: lowest dem"
+   ],
+   "step2RowsAfterSubstitution": [
+    "2026-12-21 goblet-squat 1x8@4 ESTABLISH | Return entry: lowest",
+    "2026-12-21 db-bench-press 1x8@3 FROM_LOG",
+    "2026-12-21 db-row 1x8@3 FROM_LOG",
+    "2026-12-21 db-calf-raise 1x12@3 FROM_LOG",
+    "2026-12-21 dead-bug 1x14@3 BODYWEIGHT",
+    "2026-12-25 db-rdl 1x12@3 FROM_LOG",
+    "2026-12-25 db-row 1x8@3 FROM_LOG",
+    "2026-12-25 db-bench-press 1x8@3 FROM_LOG",
+    "2026-12-25 db-split-squat 1x12@3 FROM_LOG",
+    "2026-12-25 dead-bug 1x14@3 BODYWEIGHT"
+   ],
+   "substitution": "MODIFY/SUBSTITUTE"
+  },
+  "C12_bodyweightRepetitions": {
+   "reproduced": true,
+   "asPrescribedRepsFall": false,
+   "setsWithoutRepsRepsFall": true,
+   "knownLoadFallsWhenRepsUnlogged": false,
+   "asPrescribed": {
+    "log": "0:KEEP/INSTANTIATE_LOGGED_LOADS 1:KEEP/KEEP 2:KEEP/KEEP 3:KEEP/KEEP 4:KEEP/KEEP 5:KEEP/KEEP 6:KEEP/KEEP",
+    "reps": {
+     "sit-to-stand": [
+      5,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+     ],
+     "hip-hinge-practice": [
+      5,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+     ],
+     "split-squat-bodyweight": [
+      5,
+      null,
+      null,
+      null,
+      null,
+      null,
+      5,
+      7
+     ],
+     "incline-push-up": [
+      10,
+      10,
+      12,
+      14,
+      16,
+      16,
+      16,
+      16
+     ],
+     "dead-bug": [
+      12,
+      12,
+      14,
+      16,
+      16,
+      16,
+      null,
+      null
+     ],
+     "glute-bridge": [
+      10,
+      10,
+      12,
+      14,
+      16,
+      16,
+      16,
+      16
+     ],
+     "reverse-lunge": [
+      12,
+      12,
+      14,
+      16,
+      16,
+      null,
+      null,
+      null
+     ]
+    }
+   },
+   "setsWithoutReps": {
+    "log": "0:MODIFY/GATED_NEXT_STEP 1:MODIFY/GATED_NEXT_STEP 2:MODIFY/GATED_NEXT_STEP 3:MODIFY/GATED_NEXT_STEP 4:MODIFY/GATED_NEXT_STEP 5:MODIFY/GATED_NEXT_STEP 6:MODIFY/GATED_NEXT_STEP",
+    "reps": {
+     "sit-to-stand": [
+      5,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+     ],
+     "hip-hinge-practice": [
+      5,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+     ],
+     "split-squat-bodyweight": [
+      5,
+      null,
+      null,
+      null,
+      null,
+      null,
+      5,
+      8
+     ],
+     "incline-push-up": [
+      10,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8
+     ],
+     "dead-bug": [
+      12,
+      12,
+      10,
+      10,
+      8,
+      8,
+      null,
+      null
+     ],
+     "glute-bridge": [
+      10,
+      10,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8
+     ],
+     "reverse-lunge": [
+      12,
+      12,
+      10,
+      8,
+      8,
+      8,
+      null,
+      null
+     ]
+    }
+   },
+   "knownLifterWithoutReps": {
+    "log": "0:UNSUPPORTED/UNSUPPORTED 1:UNSUPPORTED/UNSUPPORTED 2:UNSUPPORTED/UNSUPPORTED 3:UNSUPPORTED/UNSUPPORTED 4:UNSUPPORTED/UNSUPPORTED 5:UNSUPPORTED/UNSUPPORTED 6:UNSUPPORTED/UNSUPPORTED",
+    "backSquat": [
+     "80x5",
+     "80x5",
+     "82.5x5",
+     "82.5x5",
+     "82.5x5",
+     "85x5",
+     "85x5",
+     "87.5x5"
+    ],
+    "bench": [
+     "18x6",
+     "18x6",
+     "20x6",
+     "20x6",
+     "20x6",
+     "22x6",
+     "22x6",
+     "24x6"
+    ]
+   }
+  },
+  "C14_staleLateReport": {
+   "reproduced": false,
+   "same": true,
+   "lateReportOutcome": "ACCEPTED"
+  },
+  "C15_unreviewedWeeks": {
+   "reproduced": true,
+   "reviewedWeeks": "0-2 only",
+   "projectionStateWeek7": {
+    "long": 70,
+    "easy": 45
+   },
+   "weeklyReviewWeek7": "KEEP/INSTANTIATE_LOGGED_LOADS",
+   "week8AfterWeekly": [
+    "EASY:50",
+    "QUALITY:43",
+    "LONG:70"
+   ],
+   "scheduleChangeWeek7": "MODIFY/REARRANGE_FUTURE_WEEKS",
+   "week8AfterScheduleChange": [
+    "EASY:15",
+    "EASY:15",
+    "LONG:15"
+   ],
+   "week9AfterScheduleChange": [
+    "EASY:15",
+    "EASY:15",
+    "LONG:20"
+   ]
+  },
+  "C16_scopedScheduleChange": {
+   "reproduced": true,
+   "change": "MODIFY/REARRANGE_FUTURE_WEEKS",
+   "conflictDate": "2026-11-10",
+   "week1Day1": [
+    "RUN:AM",
+    "STRENGTH:PM"
+   ],
+   "week2Day1": [
+    "RUN:AM",
+    "STRENGTH:AM"
+   ],
+   "week4Day1": [
+    "RUN:AM",
+    "STRENGTH:AM"
+   ],
+   "canonicalStrengthTurnAfter": "AM"
+  },
+  "C18_raceCompletion": {
+   "reproduced": true,
+   "raceWindowMinutes": 75,
+   "reportedMinutes": 52,
+   "evidenceStatus": "PARTIAL",
+   "ledgerPartial": true,
+   "comparable": false
+  }
+ }
+}

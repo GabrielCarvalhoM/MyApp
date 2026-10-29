@@ -1,0 +1,32 @@
+# Hybrid coordination — R5
+
+Validate combined weekly exposure before composing candidates. Eliminate infeasible or unsupported configurations, find Pareto alternatives preserving both essential goals, then use stated priority only for a real unavoidable trade-off. Balanced returns ASK for nondominating essential-goal losses rather than silently acting Run-first.
+
+Scope: OFFLINE_SYNTHETIC_NODE24_REFERENCE. Candidate implementation; not Product Truth, production, clinical or empirical validation.
+
+## ordering
+
+- Clinical/input/authority guards
+- Complete combined configuration
+- Window/equipment/conflict/physical-dose feasibility
+- Pareto preservation of both goals
+- Necessary explicit priority trade-off
+- MEC/disruption/reversibility
+- Next observation
+
+## doubles
+
+Allowed only in complete supplied currently compatible nonoverlapping windows; no universal spacing number
+
+## demonstrated
+
+- Run-first16
+- Strength-first12 with three strength sessions and two secondary runs
+- Balanced8 travel rearrangement preserving both
+- Asymmetric novice modalities
+
+## limits
+
+- No novel interference threshold
+- Schedules are supplied familiar alternatives; no unrestricted search over untested combinations
+- Race-week hybrid adequacy remains bounded

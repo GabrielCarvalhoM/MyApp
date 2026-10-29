@@ -1,0 +1,361 @@
+{
+  "revision": "R6-DELIVERABLE-1",
+  "topic": "RETURN_ENGINE_R6",
+  "generatedAt": "2026-10-27T05:03:30.457Z",
+  "authority": "CURRENT_INDEPENDENT_REVIEW",
+  "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+  "sourceDigest": "507f35fc66f4d1e105e19ce513dc067f9fee5fdc35c039ad52a8c825e46bf857",
+  "freezeRevision": "R6-FREEZE-1",
+  "runtimeState": "NOT_FROZEN_AFTER_FREEZE_1: the SSCTR refused FREEZE-2 in round 12 and R6 closed with an explicit blocker (OPEN_GAPS_R6); the runtime files listed are the current, unfrozen ones, while the simulation, demonstration and R5 replay outputs cited are the FREEZE-1 ones",
+  "boundaries": [
+    {
+      "boundaryId": "R6-NONCLINICAL-RETURN",
+      "enabled": "APPROVED",
+      "ssctr": {
+        "disposition": "APPROVE_WITH_CONDITIONS",
+        "evidence": null,
+        "conditions": [
+          "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+          "Binding: this record binds canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c (value.mjs hash). Any policy byte change invalidates it; any change to the runtime functions named in requiredRuntimeChanges needs a delta binding review before runtime freeze.",
+          "Operational values are reversible coaching choices inside the envelope, never physiological thresholds, injury-prevention rules, readiness scores, finish-time promises or individual-response predictions.",
+          "Steps advance only on executed comparable work without an adverse signal; nothing progresses from elapsed calendar time alone; completed history and official plan state stay immutable.",
+          "Interruption reasons are structured; any illness, injury, pain or clinical category, or a whole-word clinical-lexicon match in free text, routes CLINICAL_HUMAN_REQUIRED regardless of nonclinical or clinicalReason flags; an ambiguous or missing reason is ASK; the same rule applies to the intake pause and the legacy path.",
+          "Current eligibility must be assessed on or after the interruption end date.",
+          "SHORT (<= shortMaxDays): resume the last executed doses; the first quality slot runs easy; the next step waits for executed sessions.",
+          "MODERATE (<= moderateMaxDays): run entry from a current demonstration (modality RUN, easy/long/recovery-easy family, completed, conversational effort, compatible response, ordinary and next-day function, observed after the interruption began and within currentDemonstrationMaxAgeDays) or the reviewed 15-minute entry; at most moderateStepsToPrior conditional steps to the prior executed dose, each within the single-run ceiling of R6-PLANNED-PROGRESSION.",
+          "Strength return: every strength exposure of the return-entry week, including exercises first set up in it, is strengthEntrySets set(s) at RIR >= strengthEntryMinimumRir with the prior load only as a ceiling. Return step 2 is max(1, min(ceiling - 1, strengthEntrySets + 1)) sets at RIR 3, the ceiling being the last set count executed before the break outside a return step and outside a phase reduction (else the known count, else the normal count). Afterwards the count comes back at most one set per executed week without a phase reduction, up to the ceiling (a phase-reduced step 2 is followed by the step-2 count itself), and goes above it only through a later development block with no return-step exposure. Consolidation, specific, taper, race-week and post-event reductions apply on top, in the return steps too. Return-entry and return-step exposures never count toward a block-boundary set increase. During the return steps a logged load is capped at the current return reference (the load before the break until an entry log is adopted, then the adopted entry load) and asked about; the prior KNOWN load is prescribed only after a post-interruption logged entry load supports it, otherwise FROM_LOG from the entry log (D49; operational.return.strengthReturnSets, returnLoadCap).",
+          "LONG (> moderateMaxDays): restart class for running, with the achieved run peaks and the longest continuous run cleared so that taper, race-week, race-day and next-block doses and the race-day statement come only from runs executed after the restart (operational.return.restartRunHistory); strength re-establishes by effort; no prior-load KNOWN prescription until a post-interruption log exists.",
+          "EARNED is unavailable during RETURN/RESTART; surplus counts only observations after the return started.",
+          "No universal percentage rollback; historical maxima are ceilings, not current proof.",
+          "A nonclinical return requires a structured nonclinical reason category (legacy R5 contract: clinicalReason=false) and current eligibility assessed on or after the interruption end with every clinical flag false; free text can only add CLINICAL or ASK outcomes.",
+          "Interruption facts out of range or contradicting each other (days outside 1-3650 or not whole, unreal dates, start after end, dates after the review, days and dates disagreeing by more than one day) are asked, never resolved to the least conservative class; a clinical flag that means yes in any form routes to a human, one that is neither yes nor no is asked.",
+          "A run demonstration shorter than run.minimumSessionMinutes is not used as a demonstration.",
+          "Additions to the free-text screen (clinical terms, phrases, the damage-verb plus body-part rule) may only add CLINICAL or ASK outcomes; body parts alone stay ASK; a damage statement whose every damage verb is locally negated is ASK, never NONCLINICAL; a negation elsewhere in the clause never hides an affirmed damage statement.",
+          "A clinical eligibility flag that means yes in any form routes CLINICAL_HUMAN_REQUIRED in the intake, the review and the legacy path, as does a clinical status in any letter case; any other non-boolean flag leaves eligibility unassessed (ASK), never clearance and never assumed illness.",
+          "The round-8 lexical additions (R11) only add CLINICAL or ASK outcomes; 'Paternity leave' and 'Funeral and grief' stay nonclinical; conservative false positives are owned-gap residuals.",
+          "The return ends for every exercise: an exercise not used during the return steps carries no return step once the exercises in use complete theirs, and rotation resumes on its cadence afterwards. In use means prescribed in the week, executed or not: a missed in-use exposure keeps its exercise at its step and the return open, and a week without strength exposure ends nothing (D51, resolved in round 10; dossier Q2).",
+          "An exercise that reappears after a return without having been performed during it is established by effort when it was never performed (including one first prescribed in a session dated inside the pause) and re-established by effort when it was last performed more than return.moderateMaxDays earlier, counted from its last executed exposure (D52, resolved in round 11).",
+          "A never-performed exercise prescribed during a return gets the return-entry dose while any exercise in use is at the entry step and, once performed, joins the return at that step; if every exercise in use has passed the entry step, it is established by effort (at most 2 sets at RIR >= 3) and then progresses as a new exercise. The second case is to be declared in the next policy revision (R17).",
+          "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+        ]
+      },
+      "envelope": {
+        "claim": "After a known nonclinical interruption with current ordinary function, re-entry starts from current evidence (a current demonstration or the R4 entry) and returns to the prior tolerated dose in conditional steps, scaled by interruption length.",
+        "limits": [
+          "no universal percentage rollback",
+          "historical maxima are a ceiling, not current proof",
+          "illness, pain, injury or unknown cause never receive this recipe"
+        ]
+      }
+    }
+  ],
+  "policyValues": {
+    "return": {
+      "shortMaxDays": 10,
+      "moderateMaxDays": 28,
+      "entryRunMinutes": 15,
+      "currentDemonstrationMaxAgeDays": 7,
+      "strengthEntrySets": 1,
+      "strengthEntryMinimumRir": 4,
+      "moderateStepsToPrior": 2,
+      "shortHoldWeeks": 1,
+      "interruptionReasonCategories": {
+        "nonclinical": [
+          "TRAVEL",
+          "WORK",
+          "FAMILY",
+          "SCHEDULE",
+          "VACATION",
+          "WEATHER",
+          "EQUIPMENT",
+          "MOTIVATION",
+          "STUDY",
+          "MOVING",
+          "OTHER_NONCLINICAL"
+        ],
+        "clinical": [
+          "ILLNESS",
+          "INJURY",
+          "PAIN",
+          "MEDICAL",
+          "SURGERY",
+          "PREGNANCY",
+          "POSTPARTUM",
+          "CLINICAL"
+        ]
+      },
+      "reasonScreen": "A nonclinical break needs a structured nonclinical reason category (in the legacy R5 contract, clinicalReason=false is that structured answer); free text alone never confirms one and the category is asked. Free text in English, Portuguese and Spanish can only add CLINICAL or ASK outcomes: it is split into clauses at punctuation, dashes, slashes and but/mas/pero; an explicit denial (\"no pain\", \"nothing clinical\", \"didn't feel any pain\", \"não senti dor\", \"no tuve dolor\") covers the clinical words it governs and further ones joined only by or/nor (ou/nem, o/ni), and is honoured only when no earlier negation or inability word in the same clause makes it an affirmation (\"couldn't run without pain\" names pain); a without/sem/sin denial counts only at the start of its clause and is asked about elsewhere (\"it was hard to run without pain\"). No denial counts in a clause that also carries a time or contrast condition (until, before, after, except, unless, only when; até, antes, depois, exceto, salvo, só quando; hasta, antes, después, excepto, salvo, solo cuando): it is asked about (\"didn't feel any pain until I ran\"). The clinical lexicon covers common medical conditions, procedures, treatments and symptoms in the three languages (for example heart attack, stroke, cancer, chemotherapy, fracture, hernia, kidney stones, dengue, nausea, headache, bleeding, stitches, dislocation, panic attack, high blood pressure), and a damage verb with a body part in the same clause is a clinical mention (\"broke my leg\", \"quebrei a perna\", \"me rompí la pierna\"); body parts alone and words such as sore, cramps, anxiety or treatment are ambiguous. Any clinical category or mention routes to CLINICAL_HUMAN_REQUIRED regardless of nonclinical flags; ambiguous words (body parts, fatigue, not feeling well, falls in all three languages) and unrecognized or missing reasons are ASK. Round-7 additions (SSCTR R7): birth and road or animal accident phrases (had a baby, tive um bebê, tuve un bebé, hit by a car, car crash, bike crash, car accident) and words (parto, atropelado/atropelada, atropellado/atropellada, bitten, mordida/mordido, mordedura) are clinical mentions; baby, bebê, crash, crashed, collision, bite, slipped, escorreguei/escorregou and resbalé/resbaló are ambiguous. A damage statement whose every damage verb is locally negated (the nearest word before the verb, past articles, possessives, clitics, auxiliaries and body parts, is a negation: \"No broken bones\", \"Didn't break my leg\", \"Não quebrei a perna\") is asked about instead of named clinical; a negation elsewhere in the clause does not hide it (\"couldn't run because I broke my leg\" stays clinical). The same screen applies to the intake pause and the legacy path. Round-8 additions (SSCTR R11): birth and pregnancy-loss words (cesarean, caesarean, C-section, cesariana, cesarea, miscarriage, aborto) and procedures (vasectomy, colonoscopy, endoscopy, LASIK, root canal; vasectomia, colonoscopia, endoscopia, tratamento de canal, endodoncia) are clinical mentions; maternity, newborn and breastfeeding words (maternity, maternidade, maternidad, newborn, recem-nascido, recien nacido, breastfeeding, amamentando, amamentacao, lactancia, amamantando), assault words (assault, assaulted, mugged, beaten, agredido, agredida, agressao, agresion, assaltado, asaltado), stings (stung, sting, picada, picadura, ferroada) and bruises (bruise, bruised, bruising, hematoma) are ambiguous; burned, burnt, cut, queimei, queimou, cortei, cortou, queme and corte are damage verbs; hand, hands, thumb, nose, eye, eyes and face, with mao, maos, polegar, nariz, olho, olhos, rosto, mano, manos, pulgar, ojo and ojos, are body parts; C-section and recem-nascido written with a hyphen or a space are joined before the clause split. Asking pregnancy and postpartum status again at reviews and returns belongs to the structured intake design (an open gap).",
+      "eligibilityOnOrAfterInterruptionEnd": true,
+      "demonstration": {
+        "sport": "RUN",
+        "families": [
+          "EASY",
+          "LONG",
+          "RECOVERY_EASY"
+        ],
+        "requires": [
+          "completed",
+          "conversational effort",
+          "response COMPATIBLE",
+          "ordinary function COMPATIBLE",
+          "next-day function NORMAL",
+          "observed after the interruption began and within currentDemonstrationMaxAgeDays"
+        ],
+        "minimumDuration": "A demonstration shorter than run.minimumSessionMinutes demonstrates no easy-run capacity and is not used."
+      },
+      "strengthKnownLoadAfterReturnLog": "The prior KNOWN load is prescribed only after a post-interruption logged entry supports it; otherwise FROM_LOG from the entry log with the prior load as a ceiling.",
+      "earnedDuringReturn": false,
+      "surplusCountsFromReturnStart": true,
+      "interruptionFacts": "Interruption days must be a whole number from 1 to 3650; start and end dates real dates with the start not after the end and neither after the review; days and dates that disagree by more than one day are a contradiction. Anything else is asked, never resolved to the least conservative class. A clinical flag that means yes in any form (true, 1, yes, sim, sí) routes to a human; one that is neither yes nor no is asked.",
+      "eligibilityFlags": "A clinical eligibility flag (pain, persistentPain, injury, illness, functionalLimitation, clinicalConcern) that means yes in any form (true, 1, yes, y, sim, si or sí; trimmed, letter case and accents ignored) routes to CLINICAL_HUMAN_REQUIRED in the intake, the review and the legacy R5 path, and so does a clinical eligibility status in any letter case. Any other non-boolean value leaves eligibility unassessed and is asked: unknown is neither clearance nor illness (SSCTR R6).",
+      "strengthEntryWeek": "Every strength exposure in a return-entry week is at the entry dose (strengthEntrySets at strengthEntryMinimumRir or more reps in reserve), including a later exposure in that week of an exercise first set up in it; an exercise first set up in a return-entry week then follows the return steps like the others (author-found in R6-POLICY-4).",
+      "strengthReturnSets": "Strength sets in a moderate or long return (SSCTR D49). The entry is strengthEntrySets at strengthEntryMinimumRir or more reps in reserve. Return step 2 is one set above the entry and at least one below the ceiling: max(1, min(ceiling - 1, strengthEntrySets + 1)) sets at 3 reps in reserve. The ceiling is the last set count executed before the break outside a return step and outside a phase reduction; without one, the known count; without that, the normal count. After the return steps the count comes back at most one set per executed week without a phase reduction, up to the ceiling (a step 2 reduced by its phase is followed by the step-2 count itself). It goes above the ceiling only through a development block completed with no return-step exposure of that exercise: each such block lifts the ceiling by one, still at most one set per executed week. Consolidation, specific, taper, race-week and post-event reductions apply on top, in the return steps too. Return-entry and return-step exposures never count toward a block-boundary set increase, and the block in progress at the break earns no set.",
+      "returnLoadCap": "During the return steps a logged load is capped at the current return reference and asked about: the load before the break until an entry log is adopted, then the adopted entry load (no increase in step 2). After the return steps the usual adoption rules apply (SSCTR D45, Q3 and D49).",
+      "restartRunHistory": "A restart after a long interruption starts the run history again: the achieved long, easy, quality and strides peaks and the longest continuous run are cleared, so the race-day statement and the taper, race-week, race-day and next-block doses come only from runs executed after the restart. A moderate return keeps them, since it returns to the prior dose (author-found with SSCTR D47)."
+    }
+  },
+  "runtime": [
+    {
+      "file": "CoachingCore/src/r6-adaptation.mjs",
+      "functions": [
+        "returnAfterPause"
+      ],
+      "sha256": "d6a1d6fc74b7ef5b02a389dba3429cb25a00b16a2df97120b64314e96a6ba6f4"
+    },
+    {
+      "file": "CoachingCore/src/r6-program.mjs",
+      "functions": [
+        "initialRunState",
+        "advanceRun",
+        "strengthDose"
+      ],
+      "sha256": "57973e9735388d3d5f194b37ff7f5080669d2c1c3fb228b59873ac7adf6fe3ec"
+    }
+  ],
+  "evidence": {
+    "tests": [
+      {
+        "file": "CoachingCore/test/r6-adaptation.test.mjs",
+        "name": "Adaptation: nonclinical return is staged from current evidence; clinical or unknown cause is never given a recipe"
+      },
+      {
+        "file": "CoachingCore/test/r6-adaptation.test.mjs",
+        "name": "Adaptation: clinical flags route to a human and stay sticky through generic recovered labels"
+      },
+      {
+        "file": "CoachingCore/test/r6-adaptation.test.mjs",
+        "name": "Adaptation: interruption reasons are screened by category and whole words; illness never gets a nonclinical recipe (SSCTR D08)"
+      },
+      {
+        "file": "CoachingCore/test/r6-adaptation.test.mjs",
+        "name": "Adaptation: return eligibility must postdate the interruption; only a conversational easy run counts as a demonstration (SSCTR C6, D09)"
+      },
+      {
+        "file": "CoachingCore/test/r6-engineering-fixes.test.mjs",
+        "name": "QRE-R6-06: contradictory or out-of-range interruption facts are asked about; a truthy clinical flag routes to a human"
+      },
+      {
+        "file": "CoachingCore/test/r6-engineering-fixes.test.mjs",
+        "name": "QRE-R6-07: clinical events named in free text are never given a nonclinical return, whatever the category"
+      },
+      {
+        "file": "CoachingCore/test/r6-engineering-fixes.test.mjs",
+        "name": "QRE-R6-17: after an exercise is re-established, sets return one per executed week"
+      },
+      {
+        "file": "CoachingCore/test/r6-intake-program.test.mjs",
+        "name": "R6 intake: eligibility unknown is ASK, pain is clinical, out-of-V1 events are unsupported"
+      },
+      {
+        "file": "CoachingCore/test/r6-intake-program.test.mjs",
+        "name": "Cold start: an intake pause reason is screened; a pause-driven restart needs the nonclinical-return authority (SSCTR D22)"
+      },
+      {
+        "file": "CoachingCore/test/r6-r5-regression.test.mjs",
+        "name": "Root cause RETURN_PREPARATION_DIMENSION (H16): a known nonclinical return reuses the current demonstration and stages strength"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r10-fixes.test.mjs",
+        "name": "SSCTR D52: after a return, an exercise first prescribed in a session dated inside the pause establishes by effort, and one last done more than 28 days earlier re-establishes (strength)"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r11-fixes.test.mjs",
+        "name": "SSCTR D53: strength — a return replaces the regain after a re-establishment: its cap is cleared and the return steps govern the sets"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r7-fixes.test.mjs",
+        "name": "SSCTR D45: a return-entry log never sets a load above the one before the break"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r7-fixes.test.mjs",
+        "name": "Author-found (R6-POLICY-4): a return-entry week holds the entry dose in every session, and exercises first set up in it follow the return steps"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r7-fixes.test.mjs",
+        "name": "SSCTR R6: a clinical flag that means yes in any form routes to a human in the intake, the review and the legacy path"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r7-fixes.test.mjs",
+        "name": "SSCTR R7: the round-7 residuals route to CLINICAL or ASK, and a locally negated damage statement is asked, not clinical"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r8-fixes.test.mjs",
+        "name": "SSCTR D49: probe-U timeline s1-d35: strength sets come back one per executed week to the count before the break; return weeks earn no block set"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r8-fixes.test.mjs",
+        "name": "SSCTR D49: probe-U timeline s3-d21: strength sets come back one per executed week to the count before the break; return weeks earn no block set"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r8-fixes.test.mjs",
+        "name": "SSCTR D49: probe-U timeline s5-d14: strength sets come back one per executed week to the count before the break; return weeks earn no block set"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r8-fixes.test.mjs",
+        "name": "SSCTR D49: the strength return ceiling, step 2 and the phase reductions on top"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r8-fixes.test.mjs",
+        "name": "SSCTR D49: from a five-set strength dose, return step 2 is one set above the entry and the climb waits through a phase-reduced week"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r8-fixes.test.mjs",
+        "name": "SSCTR D49: a return step close to a race keeps the race-window strength light"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r8-fixes.test.mjs",
+        "name": "SSCTR R11: the round-8 lexical residuals are no longer screened nonclinical"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r8-fixes.test.mjs",
+        "name": "SSCTR R13: a return with a single long-run day advances its steps in projection"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r9-fixes.test.mjs",
+        "name": "SSCTR D51: after a return the strength state leaves the return and rotation resumes on its cadence (every 2 weeks)"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r9-fixes.test.mjs",
+        "name": "SSCTR D51: after a return the strength state leaves the return and rotation resumes on its cadence (coach decides)"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-revision.test.mjs",
+        "name": "D30: an exercise unused for more than the moderate return window restarts effort-guided with its last load as a ceiling"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-revision.test.mjs",
+        "name": "D17: the restart to easy switch keeps the restart frequency; extra chosen days return one at a time"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-revision.test.mjs",
+        "name": "D34/D35: the clinical screen splits clauses and reads English, Portuguese and Spanish"
+      }
+    ],
+    "demonstrations": [
+      {
+        "id": "K",
+        "title": "Short nonclinical interruption → re-entry trajectory",
+        "selected": "REESTABLISH"
+      }
+    ],
+    "trajectories": [
+      {
+        "id": "T05_10K8_SHORT_INTERRUPTION",
+        "horizon": 8,
+        "allInvariantsHold": true,
+        "actions": {
+          "INSTANTIATE_LOGGED_LOADS": 2,
+          "REESTABLISH": 1,
+          "KEEP": 5
+        }
+      },
+      {
+        "id": "T08_NOVICE8_MODERATE_INTERRUPTION",
+        "horizon": 8,
+        "allInvariantsHold": true,
+        "actions": {
+          "INSTANTIATE_LOGGED_LOADS": 2,
+          "KEEP": 4,
+          "REESTABLISH": 1
+        }
+      },
+      {
+        "id": "T12_RESTART8",
+        "horizon": 8,
+        "allInvariantsHold": true,
+        "actions": {
+          "INSTANTIATE_LOGGED_LOADS": 2,
+          "KEEP": 6
+        }
+      }
+    ],
+    "r5Regression": [
+      {
+        "caseId": "R5-H15",
+        "r5Classification": "INSUFFICIENT_INFORMATION",
+        "rootCause": "BOUNDED_R5_BEHAVIOR",
+        "resultR6": "ASK",
+        "classificationR6": "INSUFFICIENT_INFORMATION"
+      },
+      {
+        "caseId": "R5-H16",
+        "r5Classification": "UNSUPPORTED",
+        "rootCause": "RETURN_PREPARATION_DIMENSION",
+        "resultR6": "MODIFY",
+        "classificationR6": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R5-H17",
+        "r5Classification": "UNSUPPORTED",
+        "rootCause": "BOUNDED_R5_BEHAVIOR",
+        "resultR6": "CLINICAL_HUMAN_REQUIRED",
+        "classificationR6": "CLINICAL_OUT_OF_SCOPE"
+      }
+    ],
+    "freshHoldout": [
+      {
+        "caseId": "R6-H11",
+        "family": "INTAKE_SAFETY_SCOPE",
+        "classification": "CLINICAL_OUT_OF_SCOPE"
+      },
+      {
+        "caseId": "R6-H17",
+        "family": "ADAPTATION",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H24",
+        "family": "ADAPTATION",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H26",
+        "family": "RETURN_AFTER_PAUSE",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H27",
+        "family": "RETURN_AFTER_PAUSE",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H28",
+        "family": "RETURN_AFTER_PAUSE",
+        "classification": "CLINICAL_OUT_OF_SCOPE"
+      },
+      {
+        "caseId": "R6-H31",
+        "family": "DATA_QUALITY",
+        "classification": "BEST_SUPPORTED"
+      }
+    ]
+  },
+  "inputs": {
+    "simulation": "CoachingCore/r6/SIMULATION_RESULTS_R6.json",
+    "demonstrations": "CoachingCore/r6/DEMONSTRATIONS_R6.json",
+    "r5Replay": "CoachingCore/r6/R5_HOLDOUT_REPLAY_R6.json",
+    "ssctrReview": "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-policy-review.json",
+    "r5RegressionReview": "audits/domain-coaching-r6-2026-10-26/reviews/r5-regression-review.json",
+    "coachingReview": "audits/domain-coaching-r6-2026-10-26/reviews/coaching-quality-holdout-review.json"
+  }
+}

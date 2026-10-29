@@ -1,0 +1,371 @@
+{
+ "probe": "Q1b-authority",
+ "authorityUsed": "REAL r6Authority() baseline; per-boundary disabling by injected copy of the real authority (options.authority)",
+ "policyHash": "af2779fe0fc0e0a52f4b6371d3b360996687e57931b9b3feb878e9652f464910",
+ "approvedBoundaries": [
+  "R6-COLD-START",
+  "R6-LOAD-ESTABLISHMENT",
+  "R6-PLANNED-PROGRESSION",
+  "R6-RUN-QUALITY",
+  "R6-HYBRID-ARRANGEMENT",
+  "R6-SUBSTITUTION",
+  "R6-NONCLINICAL-RETURN",
+  "R6-EVENT-TRANSITION",
+  "R6-PARTIAL-NOISY-LEARNING",
+  "R6-ROTATION"
+ ],
+ "checks": [
+  {
+   "id": "policyHashMatchesReview",
+   "pass": true,
+   "detail": {
+    "policyHash": "af2779fe0fc0e0a52f4b6371d3b360996687e57931b9b3feb878e9652f464910",
+    "reviewPolicyHash": "af2779fe0fc0e0a52f4b6371d3b360996687e57931b9b3feb878e9652f464910"
+   }
+  },
+  {
+   "id": "realAuthorityValid",
+   "pass": true,
+   "detail": {
+    "valid": true,
+    "policyHash": "af2779fe0fc0e0a52f4b6371d3b360996687e57931b9b3feb878e9652f464910",
+    "source": "CURRENT_INDEPENDENT_REVIEW"
+   }
+  },
+  {
+   "id": "approvedEqualsRecords",
+   "pass": true,
+   "detail": {
+    "approved": {
+     "R6-COLD-START": "APPROVED",
+     "R6-LOAD-ESTABLISHMENT": "APPROVED",
+     "R6-PLANNED-PROGRESSION": "APPROVED",
+     "R6-RUN-QUALITY": "APPROVED",
+     "R6-HYBRID-ARRANGEMENT": "APPROVED",
+     "R6-SUBSTITUTION": "APPROVED",
+     "R6-NONCLINICAL-RETURN": "APPROVED",
+     "R6-EVENT-TRANSITION": "APPROVED",
+     "R6-PARTIAL-NOISY-LEARNING": "APPROVED",
+     "R6-ROTATION": "APPROVED"
+    },
+    "expected": {
+     "R6-COLD-START": "APPROVED",
+     "R6-LOAD-ESTABLISHMENT": "APPROVED",
+     "R6-PLANNED-PROGRESSION": "APPROVED",
+     "R6-RUN-QUALITY": "APPROVED",
+     "R6-HYBRID-ARRANGEMENT": "APPROVED",
+     "R6-SUBSTITUTION": "APPROVED",
+     "R6-NONCLINICAL-RETURN": "APPROVED",
+     "R6-EVENT-TRANSITION": "APPROVED",
+     "R6-PARTIAL-NOISY-LEARNING": "APPROVED",
+     "R6-ROTATION": "APPROVED"
+    }
+   }
+  },
+  {
+   "id": "everyRecordBoundToPolicyHash",
+   "pass": true,
+   "detail": [
+    [
+     "R6-COLD-START",
+     "af2779fe0fc0",
+     "APPROVE_WITH_CONDITIONS",
+     "SUPPORTED_WITH_LIMITS",
+     true
+    ],
+    [
+     "R6-LOAD-ESTABLISHMENT",
+     "af2779fe0fc0",
+     "APPROVE_WITH_CONDITIONS",
+     "SUPPORTED_WITH_LIMITS",
+     true
+    ],
+    [
+     "R6-PLANNED-PROGRESSION",
+     "af2779fe0fc0",
+     "APPROVE_WITH_CONDITIONS",
+     "SUPPORTED_WITH_LIMITS",
+     true
+    ],
+    [
+     "R6-RUN-QUALITY",
+     "af2779fe0fc0",
+     "APPROVE_WITH_CONDITIONS",
+     "SUPPORTED_WITH_LIMITS",
+     true
+    ],
+    [
+     "R6-HYBRID-ARRANGEMENT",
+     "af2779fe0fc0",
+     "APPROVE_WITH_CONDITIONS",
+     "SUPPORTED_WITH_LIMITS",
+     true
+    ],
+    [
+     "R6-SUBSTITUTION",
+     "af2779fe0fc0",
+     "APPROVE_WITH_CONDITIONS",
+     "SUPPORTED_WITH_LIMITS",
+     true
+    ],
+    [
+     "R6-NONCLINICAL-RETURN",
+     "af2779fe0fc0",
+     "APPROVE_WITH_CONDITIONS",
+     "SUPPORTED_WITH_LIMITS",
+     true
+    ],
+    [
+     "R6-EVENT-TRANSITION",
+     "af2779fe0fc0",
+     "APPROVE_WITH_CONDITIONS",
+     "SUPPORTED_WITH_LIMITS",
+     true
+    ],
+    [
+     "R6-PARTIAL-NOISY-LEARNING",
+     "af2779fe0fc0",
+     "APPROVE_WITH_CONDITIONS",
+     "SUPPORTED_WITH_LIMITS",
+     true
+    ],
+    [
+     "R6-ROTATION",
+     "af2779fe0fc0",
+     "APPROVE_WITH_CONDITIONS",
+     "SUPPORTED_WITH_LIMITS",
+     true
+    ]
+   ]
+  },
+  {
+   "id": "conditionsTravelWithRecords",
+   "pass": true,
+   "detail": [
+    [
+     "R6-COLD-START",
+     12
+    ],
+    [
+     "R6-LOAD-ESTABLISHMENT",
+     10
+    ],
+    [
+     "R6-PLANNED-PROGRESSION",
+     12
+    ],
+    [
+     "R6-RUN-QUALITY",
+     11
+    ],
+    [
+     "R6-HYBRID-ARRANGEMENT",
+     11
+    ],
+    [
+     "R6-SUBSTITUTION",
+     9
+    ],
+    [
+     "R6-NONCLINICAL-RETURN",
+     13
+    ],
+    [
+     "R6-EVENT-TRANSITION",
+     10
+    ],
+    [
+     "R6-PARTIAL-NOISY-LEARNING",
+     11
+    ],
+    [
+     "R6-ROTATION",
+     9
+    ]
+   ]
+  },
+  {
+   "id": "policyByteChangeDisablesAll",
+   "pass": true,
+   "detail": {
+    "approved": {},
+    "valid": false
+   }
+  },
+  {
+   "id": "recordWithOtherHashDisablesOnlyThatBoundary",
+   "pass": true,
+   "detail": {
+    "R6-COLD-START": "APPROVED",
+    "R6-LOAD-ESTABLISHMENT": "APPROVED",
+    "R6-PLANNED-PROGRESSION": "APPROVED",
+    "R6-HYBRID-ARRANGEMENT": "APPROVED",
+    "R6-SUBSTITUTION": "APPROVED",
+    "R6-NONCLINICAL-RETURN": "APPROVED",
+    "R6-EVENT-TRANSITION": "APPROVED",
+    "R6-PARTIAL-NOISY-LEARNING": "APPROVED",
+    "R6-ROTATION": "APPROVED"
+   }
+  },
+  {
+   "id": "nonIndependentRecordDisables",
+   "pass": true,
+   "detail": null
+  },
+  {
+   "id": "rejectDispositionDisables",
+   "pass": true,
+   "detail": null
+  },
+  {
+   "id": "missingReviewDisablesAll",
+   "pass": true,
+   "detail": null
+  },
+  {
+   "id": "failClosed.coldStart",
+   "pass": true,
+   "detail": "UNSUPPORTED"
+  },
+  {
+   "id": "failClosed.plannedProgression",
+   "pass": true,
+   "detail": [
+    "UNSUPPORTED",
+    "UNSUPPORTED"
+   ]
+  },
+  {
+   "id": "failClosed.loadEstablishment",
+   "pass": true,
+   "detail": [
+    "UNSUPPORTED",
+    "PROPOSED",
+    0
+   ]
+  },
+  {
+   "id": "failClosed.eventTransition",
+   "pass": true,
+   "detail": [
+    "UNSUPPORTED",
+    "UNSUPPORTED"
+   ]
+  },
+  {
+   "id": "failClosed.nonclinicalReturn",
+   "pass": true,
+   "detail": [
+    "UNSUPPORTED",
+    "UNSUPPORTED"
+   ]
+  },
+  {
+   "id": "failClosed.substitution",
+   "pass": true,
+   "detail": "UNSUPPORTED"
+  },
+  {
+   "id": "failClosed.policyMismatch",
+   "pass": true,
+   "detail": "UNSUPPORTED"
+  },
+  {
+   "id": "failClosed.runQuality",
+   "pass": true,
+   "detail": {
+    "off": {
+     "generated": "PROPOSED",
+     "quality": 0,
+     "strides": 0,
+     "decisions": {
+      "KEEP": 16
+     }
+    },
+    "on": {
+     "quality": 12,
+     "raceTouch": 1,
+     "strides": 12,
+     "decisions": {
+      "KEEP": 16
+     }
+    }
+   }
+  },
+  {
+   "id": "failClosed.rotation",
+   "pass": true,
+   "detail": {
+    "off": {
+     "FULL_A": 2,
+     "FULL_B": 2
+    },
+    "on": {
+     "FULL_A": 3,
+     "FULL_B": 5
+    }
+   }
+  },
+  {
+   "id": "failClosed.hybridArrangement",
+   "pass": true,
+   "detail": "ASK"
+  },
+  {
+   "id": "failClosed.learning",
+   "pass": true,
+   "detail": {
+    "modelObsEnabled": 5,
+    "modelObsDisabled": 0,
+    "ledgerDisabled": 5,
+    "status": "KEEP"
+   }
+  }
+ ],
+ "results": {
+  "coldStart": "UNSUPPORTED",
+  "plannedProgressionGenerate": "UNSUPPORTED",
+  "loadEstablishmentUnknown": "UNSUPPORTED",
+  "loadEstablishmentKnownStatus": "PROPOSED",
+  "loadEstablishmentKnownEstablishRows": 0,
+  "eventTransition": "UNSUPPORTED",
+  "nonclinicalReturnRestart": "UNSUPPORTED",
+  "plannedProgressionEvaluate": "UNSUPPORTED",
+  "substitution": "UNSUPPORTED",
+  "returnAfterPause": "UNSUPPORTED",
+  "goalChangeToEvent": "UNSUPPORTED",
+  "programPolicyMismatch": "UNSUPPORTED",
+  "runQualityDisabled": {
+   "generated": "PROPOSED",
+   "quality": 0,
+   "strides": 0,
+   "decisions": {
+    "KEEP": 16
+   }
+  },
+  "runQualityEnabledControl": {
+   "quality": 12,
+   "raceTouch": 1,
+   "strides": 12,
+   "decisions": {
+    "KEEP": 16
+   }
+  },
+  "rotationDisabledDistinctSets": {
+   "FULL_A": 2,
+   "FULL_B": 2
+  },
+  "rotationEnabledDistinctSets": {
+   "FULL_A": 3,
+   "FULL_B": 5
+  },
+  "hybridDisabled": "ASK",
+  "learningDisabled": {
+   "modelObsEnabled": 5,
+   "modelObsDisabled": 0,
+   "ledgerDisabled": 5,
+   "status": "KEEP"
+  }
+ },
+ "pass": true
+}

@@ -1,0 +1,591 @@
+{
+  "revision": "R6-DELIVERABLE-1",
+  "topic": "RUN_PROGRAMMING_R6",
+  "generatedAt": "2026-10-27T05:03:30.453Z",
+  "authority": "CURRENT_INDEPENDENT_REVIEW",
+  "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+  "sourceDigest": "507f35fc66f4d1e105e19ce513dc067f9fee5fdc35c039ad52a8c825e46bf857",
+  "freezeRevision": "R6-FREEZE-1",
+  "runtimeState": "NOT_FROZEN_AFTER_FREEZE_1: the SSCTR refused FREEZE-2 in round 12 and R6 closed with an explicit blocker (OPEN_GAPS_R6); the runtime files listed are the current, unfrozen ones, while the simulation, demonstration and R5 replay outputs cited are the FREEZE-1 ones",
+  "boundaries": [
+    {
+      "boundaryId": "R6-PLANNED-PROGRESSION",
+      "enabled": "APPROVED",
+      "ssctr": {
+        "disposition": "APPROVE_WITH_CONDITIONS",
+        "evidence": null,
+        "conditions": [
+          "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+          "Binding: this record binds canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c (value.mjs hash). Any policy byte change invalidates it; any change to the runtime functions named in requiredRuntimeChanges needs a delta binding review before runtime freeze.",
+          "Operational values are reversible coaching choices inside the envelope, never physiological thresholds, injury-prevention rules, readiness scores, finish-time promises or individual-response predictions.",
+          "Steps advance only on executed comparable work without an adverse signal; nothing progresses from elapsed calendar time alone; completed history and official plan state stay immutable.",
+          "One progression dimension per session type per week; EARNED may release a step the cadence would otherwise hold or skip a consolidation hold, but never adds more than one step on any dimension in a week, and is unavailable in WALK_JOG, RESTART and RETURN modes.",
+          "Every step requires executed comparable sessions without an adverse signal in the gating week; quality/strides activation, block-boundary set increases and ladder steps count executed weeks, never calendar weeks.",
+          "Single-run ceiling (operational.run.singleRunCeiling): no planned run other than the race exceeds the longest completed run of the preceding 30 days (completed-work ledger, the intake-reported longest current run while within 30 days of intake, a valid return demonstration) by more than one stepMinutes; walk/jog ladder sessions and walks follow the ladder, whose start never holds more jogging per session than the longest current run (D42); with nothing completed in the window the reviewed entry (return.entryRunMinutes) is the ceiling in every week, not only the first.",
+          "When the 30-day reference run is under 50 minutes, the 5-minute step exceeds 10% of it; the step stays response-gated, is disclosed, and is never combined with another single-session increase in the same week. A long-run step that the long-run share cap holds is not a single-session increase: that week the easy step and the quality step proceed under their own gates and cadence, and if either steps the long-run target waits where it was prescribed. In such a week the stepped easy run may equal the long run prescribed that week, never exceed it. A long run held at the single-run ceiling is still a step beyond the 30-day reference (D50, resolved in round 10).",
+          "Strength ADVANCE requires logged target repetitions and minimum logged RIR >= prescribed RIR - 1; EARNED requires minimum logged RIR >= prescribed RIR + 2 on two comparable exposures outside consolidation; a known-load or bodyweight repetition or load step requires a logged set for that exercise in the gating week; missing logs or unknown logged RIR hold the dose without regression; a logged load above the plan never becomes the reference unless that exposure met the ADVANCE criterion (D44).",
+          "longRunShareOfWeeklyMinutesMax limits long-run growth in weeks with at least three running sessions; the cap holds the long run and never shortens it below the typical easy run or the last build week's long run; consolidation, taper and return reductions are separate rules.",
+          "Transition magnitudes (restart step and switch point, walk/jog exit dose, consolidation reduction, post-event redevelopment) are declared in the policy, not hard-coded.",
+          "Repeated adverse responses (two comparable within 14 days at the current dose after any regression) regress one step; a single adverse response holds.",
+          "A run dimension or exercise with no executed session in the reviewed week holds: it never counts as an executed week, never advances a walk/jog step, never unlocks quality or strides and never converts a walk. In a conditional projection a week with no planned session of a dimension likewise never counts as executed for it (D46).",
+          "After an exercise is re-established by effort, its prescribed set count, including any block-boundary set, returns at most one set per executed week without a phase reduction, never two at once, whatever the state's mode at the re-establishment (D53: resolved in round 12 for a known-load state, still open for a from-log state; required before FREEZE-2).",
+          "Return-entry and return-step exposures never count toward a block-boundary set increase: a development block with any such exposure of the exercise earns no set, including the block in progress at the break. After the return steps the set count comes back at most one set per executed week without a phase reduction, up to the ceiling (the last set count executed before the break outside a phase reduction), with phase reductions on top; it goes above the ceiling only through a later development block with no return-step exposure (operational.return.strengthReturnSets; D49, shared with R6-NONCLINICAL-RETURN).",
+          "With no easy run planned in a week (every easy day a walk), the executed long run gates the development-week count and the walk-to-run conversion; a converted walk becomes an easy run at run.minimumSessionMinutes that then progresses like the others (R12). In a conditional projection, restart and return sessions of any role gate on EASY, as in reviews (R13).",
+          "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+        ]
+      },
+      "envelope": {
+        "claim": "A planned, response-gated trajectory with one progression dimension per session type per step, small absolute steps and periodic consolidation weeks is a defensible recreational progression model.",
+        "limits": [
+          "no ten-percent or other universal injury rule is claimed",
+          "planned future doses are conditional proposals, not predictions",
+          "no progression from elapsed calendar alone"
+        ]
+      }
+    },
+    {
+      "boundaryId": "R6-RUN-QUALITY",
+      "enabled": "APPROVED",
+      "ssctr": {
+        "disposition": "APPROVE_WITH_CONDITIONS",
+        "evidence": null,
+        "conditions": [
+          "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+          "Binding: this record binds canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c (value.mjs hash). Any policy byte change invalidates it; any change to the runtime functions named in requiredRuntimeChanges needs a delta binding review before runtime freeze.",
+          "Operational values are reversible coaching choices inside the envelope, never physiological thresholds, injury-prevention rules, readiness scores, finish-time promises or individual-response predictions.",
+          "Steps advance only on executed comparable work without an adverse signal; nothing progresses from elapsed calendar time alone; completed history and official plan state stay immutable.",
+          "Quality and strides activate only after qualityRequiresEstablishedEasyWeeks / strides.requiresEstablishedEasyWeeks executed established easy weeks, never calendar weeks.",
+          "At most one quality session per week, not on the day before or after the long run when another chosen run day can hold it.",
+          "Effort cues only; the first exposure to each intensity family is a calibration that records observed pace; no pace from goal time or easy pace.",
+          "Event-specific ladders start only after >= specificRequiresCompatibleThresholdSessions executed compatible threshold sessions.",
+          "For EASY_LOW or NOVICE runners, strides are optional with an explicit easy-only alternative.",
+          "Race-week touch and shakeout strides require this boundary and an executed comparable quality (respectively strides) exposure in the preceding build or specific weeks; otherwise the session stays easy.",
+          "No VO2max, threshold-pace or hill prescriptions; hills only with declared terrain under a separate review.",
+          "A week with no executed easy session never counts toward qualityRequiresEstablishedEasyWeeks or strides.requiresEstablishedEasyWeeks, in reviews and in conditional projections (D46).",
+          "Race-day warm-up strides and shakeout strides appear only after strides were executed in the build (D43c).",
+          "A quality step is never blocked by a long-run step that the long-run share cap holds; when it steps, the long-run target waits that week (D50, resolved in round 10).",
+          "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+        ]
+      },
+      "envelope": {
+        "claim": "Recreational runners with established current easy running can be introduced to relaxed strides and to effort-anchored controlled-hard (threshold/cruise) work, and event-specific work later, with volume progressed by repetitions or duration at stable effort.",
+        "limits": [
+          "not for walk/jog establishment or the first two established weeks",
+          "at most one quality session per week",
+          "never on the day before or after the long run when another chosen run day can hold it",
+          "no VO2max/threshold pace prediction, no pace from goal time or easy pace",
+          "hills only when terrain is declared"
+        ]
+      }
+    }
+  ],
+  "policyValues": {
+    "run": {
+      "minimumSessionMinutes": 15,
+      "easyStepMinutes": 5,
+      "easyStepEveryDevelopmentWeeks": 2,
+      "longRunStepMinutes": 5,
+      "consolidationEveryNthDevelopmentWeek": 4,
+      "longRunTargets": {
+        "HALF_MARATHON": 105,
+        "10K": 70,
+        "PERFORMANCE": 75,
+        "REGULAR": 60,
+        "GENERAL": 50
+      },
+      "longRunShareOfWeeklyMinutesMax": 0.45,
+      "qualityWarmupMinutes": 10,
+      "qualityCooldownMinutes": 5,
+      "qualityRequiresEstablishedEasyWeeks": 2,
+      "thresholdLadder": [
+        {
+          "repetitions": 3,
+          "workMinutes": 5,
+          "recoveryMinutes": 2
+        },
+        {
+          "repetitions": 4,
+          "workMinutes": 5,
+          "recoveryMinutes": 2
+        },
+        {
+          "repetitions": 5,
+          "workMinutes": 5,
+          "recoveryMinutes": 2
+        },
+        {
+          "repetitions": 3,
+          "workMinutes": 8,
+          "recoveryMinutes": 2
+        },
+        {
+          "repetitions": 4,
+          "workMinutes": 8,
+          "recoveryMinutes": 2
+        },
+        {
+          "repetitions": 3,
+          "workMinutes": 10,
+          "recoveryMinutes": 2
+        }
+      ],
+      "tenKSpecificLadder": [
+        {
+          "repetitions": 5,
+          "workMinutes": 3,
+          "recoveryMinutes": 2
+        },
+        {
+          "repetitions": 6,
+          "workMinutes": 3,
+          "recoveryMinutes": 2
+        },
+        {
+          "repetitions": 5,
+          "workMinutes": 4,
+          "recoveryMinutes": 2
+        },
+        {
+          "repetitions": 6,
+          "workMinutes": 4,
+          "recoveryMinutes": 2
+        }
+      ],
+      "halfMarathonSpecificLadder": [
+        {
+          "repetitions": 2,
+          "workMinutes": 12,
+          "recoveryMinutes": 3
+        },
+        {
+          "repetitions": 3,
+          "workMinutes": 10,
+          "recoveryMinutes": 2
+        },
+        {
+          "repetitions": 2,
+          "workMinutes": 15,
+          "recoveryMinutes": 3
+        },
+        {
+          "repetitions": 3,
+          "workMinutes": 12,
+          "recoveryMinutes": 2
+        }
+      ],
+      "specificRequiresCompatibleThresholdSessions": 2,
+      "strides": {
+        "entryRepetitions": 4,
+        "maxRepetitions": 6,
+        "workSeconds": 20,
+        "recoverySeconds": 90,
+        "requiresEstablishedEasyWeeks": 2,
+        "optionalFor": [
+          "EASY_LOW",
+          "NOVICE"
+        ],
+        "optionalNote": "For EASY_LOW or novice runners strides are optional; the easy run without them is an equal alternative."
+      },
+      "effortCues": {
+        "EASY_CONVERSATIONAL": "Conversational effort (about 2-4 of 10): full sentences are possible; walk breaks are allowed",
+        "STRIDE_RELAXED_FAST": "Relaxed fast strides (about 7 of 10): smooth and controlled, never a sprint",
+        "THRESHOLD_CONTROLLED": "Comfortably hard and controlled (about 6-7 of 10): short phrases only; you could hold it much longer than the repetition",
+        "TEN_K_EFFORT": "Hard but controlled (about 7-8 of 10): a few words at a time; finish every repetition with form intact",
+        "HALF_MARATHON_EFFORT": "Steady-hard (about 6-7 of 10): sustainable, controlled breathing"
+      },
+      "singleRunCeiling": {
+        "windowDays": 30,
+        "stepMinutes": 5,
+        "appliesTo": "Every planned run except the race, including long-run steps, RESTART->EASY and WALK_JOG->EASY transitions and return steps",
+        "reference": "Longest completed run in the preceding windowDays from the completed-work ledger; in a conditional projection, earlier projected weeks count as executed. Walk/jog sessions count their jogging minutes. With no completed run in the window, the reviewed entry (return.entryRunMinutes) is the ceiling in every week, not only the first projected week; in the first cold-start week the intake ceiling applies.",
+        "disclosure": "When the reference run is under 50 minutes a 5-minute step exceeds 10% of it; the step stays response-gated, is disclosed and is never combined with another single-session increase in the same week."
+      },
+      "firstWeek": {
+        "longRunNotAboveReportedLongest": true,
+        "rounding": "down to 5 minutes",
+        "familiarQualityOnlyInsideReportedMinutes": true
+      },
+      "restart": {
+        "stepMinutes": 5,
+        "switchToEasyAtMinutes": 30,
+        "longRunOffsetMinutes": 10,
+        "longRunCappedBySingleRunCeiling": true
+      },
+      "walkJogExit": {
+        "easyMinutes": 25,
+        "maxRunsPerWeek": 3
+      },
+      "consolidationLongRunReductionSteps": 2,
+      "longRunShareSemantics": "longRunShareOfWeeklyMinutesMax applies in every week with at least three running sessions (walks excluded). The cap holds the long run, it never shortens it: the long run is never reduced below the typical easy run of that week, nor below the long run prescribed in the last build week (a shorter quality session on the ladder does not shorten the long run).",
+      "earned": "At most one step per progression dimension per week. EARNED may release a step the cadence would hold (easy-run cadence, load tick) or skip a consolidation hold, never more. Unavailable in WALK_JOG, RESTART and RETURN modes, where it counts as ADVANCE.",
+      "activationCounts": "qualityRequiresEstablishedEasyWeeks and strides.requiresEstablishedEasyWeeks count executed non-establishment easy weeks (EASY and LONG gates ADVANCE or EARNED); stride repetitions add one every two further executed easy weeks."
+    }
+  },
+  "runtime": [
+    {
+      "file": "CoachingCore/src/r6-program.mjs",
+      "functions": [
+        "initialRunState",
+        "advanceRun",
+        "distributeRun",
+        "familiarQualityTask"
+      ],
+      "sha256": "57973e9735388d3d5f194b37ff7f5080669d2c1c3fb228b59873ac7adf6fe3ec"
+    },
+    {
+      "file": "CoachingCore/src/r6-prescription.mjs",
+      "functions": [
+        "walkPrescription",
+        "walkJogPrescription",
+        "easyPrescription",
+        "qualityPrescription",
+        "reducedWork"
+      ],
+      "sha256": "6d223c285fb5e1595086dcd6be275956a2cfb122e036060ace369b4bc83cb4ed"
+    }
+  ],
+  "evidence": {
+    "tests": [
+      {
+        "file": "CoachingCore/test/r6-adaptation.test.mjs",
+        "name": "Adaptation: a missed long run is zero work, no debt; only that step repeats (H0–H3 traced)"
+      },
+      {
+        "file": "CoachingCore/test/r6-adaptation.test.mjs",
+        "name": "Adaptation: a missed key run in the specific phase moves only to a later chosen day without added interference"
+      },
+      {
+        "file": "CoachingCore/test/r6-intake-program.test.mjs",
+        "name": "R6 run programming: quality only after established easy weeks, effort cues without goal pace, never next to the long run"
+      },
+      {
+        "file": "CoachingCore/test/r6-intake-program.test.mjs",
+        "name": "Cold start: a self-reported familiar quality task keeps its own work; missing effort text comes from the family cue"
+      },
+      {
+        "file": "CoachingCore/test/r6-simulation.test.mjs",
+        "name": "Simulation: irregular adherence holds affected steps without debt; the missed key run is moved once"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r7-fixes.test.mjs",
+        "name": "SSCTR D42: a raised walk/jog start never puts more jogging into one session than the longest current run"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r7-fixes.test.mjs",
+        "name": "SSCTR D46: in projection a dimension without a planned session holds"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r8-fixes.test.mjs",
+        "name": "SSCTR D47: an athlete who built running from walk/jog or a restart in this program completes the race, with the negotiation stating the longest continuous run reached"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r8-fixes.test.mjs",
+        "name": "SSCTR R12: when every easy day is a walk, the executed long run gates the walk conversion, in projection and under executed reviews"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r9-fixes.test.mjs",
+        "name": "SSCTR D50: probe-S 45/25 and 60/35 runners keep progressing when the share cap holds the long run"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r9-fixes.test.mjs",
+        "name": "SSCTR D50: the quality ladder advances while the share cap holds the long run"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r9-fixes.test.mjs",
+        "name": "SSCTR D50: the all-walk athlete keeps progressing under the share cap after its walks convert, in projection and under executed reviews"
+      },
+      {
+        "file": "CoachingCore/test/r6-ssctr-r9-fixes.test.mjs",
+        "name": "SSCTR D50: an executed 45/25 runner progresses past a long run the share cap holds"
+      }
+    ],
+    "demonstrations": [
+      {
+        "id": "A",
+        "title": "Cold-start Run-first half marathon → 16-week plan → week 1",
+        "selected": null
+      },
+      {
+        "id": "E",
+        "title": "Missed key run → horizon-preserving adaptation",
+        "selected": "MOVE_TO_w4-run-d2"
+      },
+      {
+        "id": "I",
+        "title": "Overperformance → earned progression",
+        "selected": "GATED_NEXT_STEP"
+      },
+      {
+        "id": "L",
+        "title": "Half-marathon build → taper → race week → race → post-event",
+        "selected": "KEEP"
+      }
+    ],
+    "trajectories": [
+      {
+        "id": "T01_HM16_STRONG_ADHERENCE",
+        "horizon": 16,
+        "allInvariantsHold": true,
+        "actions": {
+          "INSTANTIATE_LOGGED_LOADS": 2,
+          "KEEP": 14
+        }
+      },
+      {
+        "id": "T02_HM16_IRREGULAR_ADHERENCE",
+        "horizon": 16,
+        "allInvariantsHold": true,
+        "actions": {
+          "INSTANTIATE_LOGGED_LOADS": 1,
+          "KEEP": 10,
+          "GATED_NEXT_STEP": 5,
+          "MOVE": 1
+        }
+      },
+      {
+        "id": "T06_LOWDATA8_WALKJOG_EARNED",
+        "horizon": 8,
+        "allInvariantsHold": true,
+        "actions": {
+          "INSTANTIATE_LOGGED_LOADS": 3,
+          "KEEP": 5
+        }
+      },
+      {
+        "id": "T10_10K12_SPECIFIC_MISSED_AND_POST_EVENT",
+        "horizon": 12,
+        "allInvariantsHold": true,
+        "actions": {
+          "INSTANTIATE_LOGGED_LOADS": 1,
+          "KEEP": 10,
+          "MOVE": 1,
+          "GATED_NEXT_STEP": 1
+        }
+      },
+      {
+        "id": "T14_WALKJOG4_FIVE_DAYS",
+        "horizon": 4,
+        "allInvariantsHold": true,
+        "actions": {
+          "KEEP": 3,
+          "INSTANTIATE_LOGGED_LOADS": 1
+        }
+      }
+    ],
+    "r5Regression": [
+      {
+        "caseId": "R5-H08",
+        "r5Classification": "INSUFFICIENT_INFORMATION",
+        "rootCause": "ADAPTER_CLOCK_AND_PHASE_COMPARABILITY",
+        "resultR6": "MODIFY",
+        "classificationR6": "BEST_SUPPORTED"
+      },
+      {
+        "caseId": "R5-H10",
+        "r5Classification": "INSUFFICIENT_INFORMATION",
+        "rootCause": "ADAPTER_CLOCK",
+        "resultR6": "KEEP",
+        "classificationR6": "BEST_SUPPORTED"
+      },
+      {
+        "caseId": "R5-H12",
+        "r5Classification": "BEST_SUPPORTED",
+        "rootCause": "BOUNDED_R5_BEHAVIOR",
+        "resultR6": "KEEP",
+        "classificationR6": "BEST_SUPPORTED"
+      },
+      {
+        "caseId": "R5-H14",
+        "r5Classification": "BEST_SUPPORTED",
+        "rootCause": "BOUNDED_R5_BEHAVIOR",
+        "resultR6": "KEEP",
+        "classificationR6": "BEST_SUPPORTED"
+      }
+    ],
+    "freshHoldout": [
+      {
+        "caseId": "R6-H01",
+        "family": "COLD_START",
+        "classification": "UNSUPPORTED"
+      },
+      {
+        "caseId": "R6-H02",
+        "family": "COLD_START",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H03",
+        "family": "COLD_START",
+        "classification": "UNSUPPORTED"
+      },
+      {
+        "caseId": "R6-H04",
+        "family": "COLD_START",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H05",
+        "family": "COLD_START",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H06",
+        "family": "COLD_START",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H07",
+        "family": "COLD_START",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H08",
+        "family": "COLD_START",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H09",
+        "family": "COLD_START",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H10",
+        "family": "INTAKE_SAFETY_SCOPE",
+        "classification": "INSUFFICIENT_INFORMATION"
+      },
+      {
+        "caseId": "R6-H11",
+        "family": "INTAKE_SAFETY_SCOPE",
+        "classification": "CLINICAL_OUT_OF_SCOPE"
+      },
+      {
+        "caseId": "R6-H12",
+        "family": "INTAKE_SAFETY_SCOPE",
+        "classification": "BEST_SUPPORTED"
+      },
+      {
+        "caseId": "R6-H13",
+        "family": "INTAKE_SAFETY_SCOPE",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H14",
+        "family": "INTAKE_SAFETY_SCOPE",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H15",
+        "family": "BALANCED_CONFLICT",
+        "classification": "BEST_SUPPORTED"
+      },
+      {
+        "caseId": "R6-H16",
+        "family": "BALANCED_CONFLICT",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H17",
+        "family": "ADAPTATION",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H18",
+        "family": "ADAPTATION",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H19",
+        "family": "ADAPTATION",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H20",
+        "family": "ADAPTATION",
+        "classification": "CORPUS_ERROR"
+      },
+      {
+        "caseId": "R6-H21",
+        "family": "ADAPTATION",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H22",
+        "family": "ADAPTATION",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H23",
+        "family": "ADAPTATION",
+        "classification": "UNSUPPORTED"
+      },
+      {
+        "caseId": "R6-H24",
+        "family": "ADAPTATION",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H25",
+        "family": "ADAPTATION",
+        "classification": "UNSUPPORTED"
+      },
+      {
+        "caseId": "R6-H26",
+        "family": "RETURN_AFTER_PAUSE",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H27",
+        "family": "RETURN_AFTER_PAUSE",
+        "classification": "SUBOPTIMAL"
+      },
+      {
+        "caseId": "R6-H28",
+        "family": "RETURN_AFTER_PAUSE",
+        "classification": "CLINICAL_OUT_OF_SCOPE"
+      },
+      {
+        "caseId": "R6-H29",
+        "family": "EVENT_TRANSITION",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H30",
+        "family": "EVENT_TRANSITION",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H31",
+        "family": "DATA_QUALITY",
+        "classification": "BEST_SUPPORTED"
+      },
+      {
+        "caseId": "R6-H32",
+        "family": "DATA_QUALITY",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H33",
+        "family": "DATA_QUALITY",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H34",
+        "family": "ATHLETE_LEARNING",
+        "classification": "ACCEPTABLE_ALTERNATIVE"
+      },
+      {
+        "caseId": "R6-H35",
+        "family": "ATHLETE_LEARNING",
+        "classification": "BEST_SUPPORTED"
+      }
+    ]
+  },
+  "inputs": {
+    "simulation": "CoachingCore/r6/SIMULATION_RESULTS_R6.json",
+    "demonstrations": "CoachingCore/r6/DEMONSTRATIONS_R6.json",
+    "r5Replay": "CoachingCore/r6/R5_HOLDOUT_REPLAY_R6.json",
+    "ssctrReview": "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-policy-review.json",
+    "r5RegressionReview": "audits/domain-coaching-r6-2026-10-26/reviews/r5-regression-review.json",
+    "coachingReview": "audits/domain-coaching-r6-2026-10-26/reviews/coaching-quality-holdout-review.json"
+  }
+}

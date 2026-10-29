@@ -1,0 +1,214 @@
+{
+  "review": "R7ASM-QE-r1",
+  "role": "Quality & Reliability Engineering Reviewer (independent; not the author)",
+  "date": "2026-10-29",
+  "brief": "audits/domain-coaching-r7a-state-model-2026-10-28/reviews/ENGINEERING_REVIEW_BRIEF.md",
+  "freeze": {
+    "revision": "HISTORICAL-PROJECTION-FREEZE-1",
+    "manifest": "CoachingCore/r7/state-model/RUNTIME_FREEZE_HISTORICAL_PROJECTION.json",
+    "manifestSha256": "39b326ac11b2faa3c316fefeeb1d332cc5043d2f552067151e336a4fb6ca41a4",
+    "sourceDigestRecorded": "0db72d0edd9fd7f1382e1ed8622d29e2ff3356699da18872b0670615956e2eb8",
+    "sourceDigestRecomputedStart": "0db72d0edd9fd7f1382e1ed8622d29e2ff3356699da18872b0670615956e2eb8",
+    "sourceDigestRecomputedEnd": "0db72d0edd9fd7f1382e1ed8622d29e2ff3356699da18872b0670615956e2eb8",
+    "recomputation": "independent canonical serializer (qe-r7asm-integrity.mjs), not the runtime's hash()",
+    "filesBound": 83,
+    "filesMatching": 83,
+    "drift": 0,
+    "unboundSourceOrTest": 0,
+    "freezeFiles": 1,
+    "policy": {"revision": "R6-POLICY-5", "hash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c", "unchanged": true},
+    "unboundRuntimeInputsUnchangedSinceBaseline": ["audits/domain-coaching-r6-2026-10-26/reviews/ssctr-policy-review.json", "CoachingCore/fixtures/authority-bundle.json", "CoachingCore/SHADOW_INPUT_SCHEMA.json"],
+    "baselineDriftOnlyDeclaredDelta": true,
+    "predecessorCopyIntact": {"files": 82, "drift": 0},
+    "verifyR7asmReadOnly": "16/16",
+    "nodeTest": "589/589 (Node v24.19.0)",
+    "runtimeChangedByReview": false,
+    "REVIEW_INVALID": "NO"
+  },
+  "centralQuestion": "Is there any material V1 path on which PlanningProjection can alter HistoricalState without passing through factual evidence?",
+  "answer": "YES, through the prescription rows read as state by the evidence reducer (QE-R7ASM-01). The stored-start channel is closed (Q6).",
+  "verdict": "STATE_MODEL_ENGINEERING_REVIEW = NOT_READY",
+  "blocking": ["QE-R7ASM-01"],
+  "material": ["QE-R7ASM-01", "QE-R7ASM-02", "QE-R7ASM-03", "QE-R7ASM-04"],
+  "targetBlockers": {
+    "QE-R7ASE-01": {
+      "status": "CLOSED_ON_ITS_MECHANISM",
+      "evidence": ["qe-r7asm-runs/judge-reruns/qe-r7ase-P51d.out.json (tz 0, 540, -600)", "qe-r7ase-P51c", "qe-r7ase-P51b", "Q6"],
+      "residual": "P51d's general oracle fails on back-squat and db-calf-raise (U tick 0, R6 tick 1): conservative, caused by E1/E3; see QE-R7ASM-05"
+    },
+    "QE-R7ASE-02": {
+      "status": "CLOSED",
+      "evidence": ["qe-r7asm-runs/judge-reruns/qe-r7ase-P50.out.json (tz 0, 540, -300): week 6 REESTABLISH in both cells; view lastPerformed 2026-11-14", "qe-r7ase-P52"]
+    },
+    "QE-R7AB-01": {
+      "status": "CLOSED",
+      "evidence": ["qe-r7ab-P40 (tz 0, 540)", "P40b", "P40c", "P41 (U/R difference = executed loads, Q7; lastExecutedSets 3 and 2)", "P47b"]
+    },
+    "QE-R7AF-01, QE-R7AF-02, QE-R7A-01, QE-R7A1-09, QE-R7A1-10, QE-R7A2-01, QE-R7A2-02, QE-R7A2-03": {
+      "status": "STAY_CLOSED_ON_THEIR_PROBES",
+      "evidence": ["P30c, P31 (18 V6 conservative, pre-existing; V3 10 -> 0), P32, P37, P17, P19, P07: byte-identical to the author's runs"]
+    }
+  },
+  "findings": [
+    {
+      "id": "QE-R7ASM-01",
+      "severity": "MEDIUM",
+      "material": true,
+      "blocking": true,
+      "class": "SAME_CLASS: projection consumed as history (QE-R7ASE-01, QE-R7AB-01); NEW_CHANNEL: prescription rows -> reducer state",
+      "historicalStateContaminated": true,
+      "summary": "The evidence reducer sets up an exercise history does not hold from the row that prescribed it (setUp: load = u.value for KNOWN rows). advanceStrength keeps a fresh KNOWN exercise without any log, and strengthAtBreak sets it up unconditionally. After the establishing evidence is retracted (correctionOf, or conflict quarantine) and the next exposure is executed without a readable load, HistoricalState holds the exercise KNOWN at the prescribed load (source PLANNED_ESTABLISHMENT) with zero usable load logs. With an identical record, history differs only by when the retraction reached the plan. A return resumes that load, and an unconfirmed first log is adopted against the retracted row's planned value (D45 bypass).",
+      "reproduction": [
+        "qe-r7asm-Q3-known-row-setup.mjs -> qe-r7asm-runs/Q3-known-row-setup.out.json (4 variants, sameRecordEarlyLate true)",
+        "qe-r7asm-Q3b-known-row-conflict.mjs -> qe-r7asm-runs/Q3b-known-row-conflict.out.json (sameRecord true) and Q3b-known-row-conflict.prior-freeze.out.json",
+        "qe-r7asm-Q12-robustness.mjs (a): facts-only path"
+      ],
+      "cause": [
+        "CoachingCore/src/r6-program.mjs:456 setUp",
+        "CoachingCore/src/r6-program.mjs:569 and :576 (the fresh-exercise guard covers FROM_LOG only)",
+        "CoachingCore/src/r6-program.mjs:505 strengthAtBreak setUp",
+        "CoachingCore/src/r6-program.mjs:406 planned reference = KNOWN row value",
+        "CoachingCore/src/r6-adaptation.mjs:717 the reducer passes usedInWeek(rows)"
+      ],
+      "invariants": ["I1", "I7", "I13", "P5", "contract §4 (an exercise never established is absent; a prescription establishes nothing)", "contract §5 (a known load lifted is the load; an effort-guided row adopts nothing)", "SSCTR D45, D52"],
+      "boundaryFailed": "The reducer reads the week's rows not only as what was prescribed but as a source of state values for exercises it does not hold"
+    },
+    {
+      "id": "QE-R7ASM-02",
+      "severity": "MEDIUM",
+      "material": true,
+      "blocking": false,
+      "class": "SAME_CLASS as QE-R7ASE-02: a planner rule defined on executed history reads the projection after the facts (run, LONG return)",
+      "historicalStateContaminated": false,
+      "summary": "planningBase takes the run from history only when mode === 'RETURN'. A LONG return runs in RESTART, so the view takes the restart minutes and the EASY switch from the projection. With identical ledgers, U's plan holds restart 20 against C's 15 (history 15 in both cells). U then leaves the restart a week early (week 12, LONG:25) and unlocks QUALITY a week early (week 14).",
+      "reproduction": ["qe-r7asm-Q4-restart-view.mjs", "qe-r7asm-Q4b-restart-rows.mjs"],
+      "cause": ["CoachingCore/src/r6-adaptation.mjs:746"],
+      "invariants": ["contract §4 (the run in a return comes from history)", "E2", "I13"],
+      "inferred": "Walk/jog returns take the same branch"
+    },
+    {
+      "id": "QE-R7ASM-03",
+      "severity": "MEDIUM",
+      "material": true,
+      "blocking": false,
+      "class": "SAME_CLASS as QE-R7ASE-01's planning consequence / R42: the projection's progression credit reaches decisions (REPS_THEN_LOAD goals)",
+      "historicalStateContaminated": false,
+      "declared": "Contract §4 row 2 (repetition targets from the projection). Ruling: rejected for REPS_THEN_LOAD goals",
+      "summary": "planningExercise caps only the load. In REPS_THEN_LOAD goals the repetition count is the progression credit, and the view takes it from PROJECTED_PROGRESS. Identical ledgers, two empty weeks, the first unreviewed in U: the decision made after the facts prescribes +2 reps per set (HYPERTROPHY 20 kg x10 against x8; GENERAL x12 against x10; RUNNING_SUPPORT back-squat 82.5 kg x8 against x6). History is equal in both cells.",
+      "reproduction": ["qe-r7asm-Q11c-reps-identical.mjs", "qe-r7asm-Q12-robustness.mjs (b)"],
+      "cause": ["CoachingCore/src/r6-adaptation.mjs:773", "CoachingCore/src/r6-program.mjs:619"],
+      "invariants": ["R42 / contract §7 (every decision steps on EARNED_PROGRESS)", "Founder §6, §22 (no single ambiguous progression field)"]
+    },
+    {
+      "id": "QE-R7ASM-04",
+      "severity": "MEDIUM",
+      "material": true,
+      "blocking": false,
+      "class": "NEW_CLASS: retracted evidence read as live by the public HistoricalState reader (not projection -> history)",
+      "historicalStateContaminated": "Public reader only; the internal reducer is correct",
+      "summary": "historicalStateOf reads actualLedger as evaluateProgram returns it, which appends superseded rows last. The reducer never filters superseded, and weekEvidence takes the last row per session, so a valid correctionOf never reaches the public HistoricalState. It reports lastPerformedAt 2026-12-05 for a session corrected to not done, and lastExecutedLoad, liftedLoad and the state load at 22 for a lift corrected to 20.",
+      "reproduction": ["qe-r7asm-Q2-correction.mjs", "qe-r7asm-Q2b-correction-load.mjs"],
+      "cause": ["CoachingCore/src/r6-adaptation.mjs:792", "CoachingCore/src/r6-adaptation.mjs:328", "CoachingCore/src/r6-adaptation.mjs:678", "CoachingCore/src/r6-adaptation.mjs:130"],
+      "invariants": ["I12", "T15", "P7", "contract §5 (a correction replaces what it corrects at every later read)"],
+      "consumers": "No consumer inside CoachingCore src/ or scripts/ today; it is the mission's public HistoricalState and the author's test oracle"
+    },
+    {
+      "id": "QE-R7ASM-05",
+      "severity": "LOW-MEDIUM",
+      "material": false,
+      "blocking": false,
+      "class": "DECLARED_BOUNDARY_CONSEQUENCE (E1/E3); ruling requested",
+      "historicalStateContaminated": false,
+      "summary": "EARNED_PROGRESS depends on whether a decision closed an incomplete week, on identical facts. On the week's last day, each of these credits +1 tick to exercises executed with their target met: an equipment statement (action KEEP), a schedule change for next week, a local-fatigue report, RECOVERED, or a review with no facts. Mid-week nothing changes. The P51d residual is the same mechanism. No unexecuted value enters; it breaks the letter of Founder §2 and P1.",
+      "reproduction": ["qe-r7asm-Q10-noop-sweep.mjs (10 of 21 cells, all on the last day)", "qe-r7asm-runs/judge-reruns/qe-r7ase-P51d*.out.json"],
+      "cause": ["CoachingCore/src/r6-adaptation.mjs:684 closedBy", "CoachingCore/src/r6-adaptation.mjs:711 complete"]
+    },
+    {
+      "id": "QE-R7ASM-06",
+      "severity": "LOW",
+      "material": false,
+      "blocking": false,
+      "class": "REPRESENTATIONAL",
+      "summary": "lastExecutedLoad and lastExecutedReps hold the reference dose the adoption rule settled (20x5) when the athlete executed 22x3, 24x5 or 20x3; the executed values are in liftedLoad and liftedReps. No unexecuted value is invented, but the name conflicts with Founder I5's canonical meaning.",
+      "reproduction": ["qe-r7asm-Q9-executed-atoms.mjs"],
+      "cause": ["CoachingCore/src/r6-adaptation.mjs:801", "CoachingCore/src/r6-program.mjs:483"]
+    },
+    {
+      "id": "QE-R7ASM-07",
+      "severity": "LOW",
+      "material": false,
+      "blocking": false,
+      "class": "EVIDENCE",
+      "summary": "T15, P7 and the self-challenge's correction class use `supersedes:`, which the normalizer does not recognise (it recognises only correctionOf, r6-provenance.mjs:100). They exercise conflict quarantine, not a correction. No test covers a fresh exercise prescribed by a KNOWN row, the view in a RESTART return, any REPS_THEN_LOAD goal, or a no-op handler on the week's last day.",
+      "reproduction": ["qe-r7asm-Q2-correction.mjs (the supersedes form gives CONFLICTING_PHYSICAL_OR_RESPONSE_REPORTS)"],
+      "cause": ["CoachingCore/test/r7asm-state-model.test.mjs:326 and :414", "audits/domain-coaching-r7a-state-model-2026-10-28/probes/r7asm-self-challenge.mjs:176"]
+    }
+  ],
+  "proven": [
+    "Stored-start values never reach history (Q6: 6 states, 76 cuts; the what-if return's stateAt and entry are invariant under a full rewrite of stateTrace[k>=1], a phantom exercise included)",
+    "The intake is stable under week-0 re-plans (Q11a)",
+    "Late evidence for a reviewed week is read as fact (Q11b)",
+    "Cross-sport and cross-exercise isolation (T16, T17; Q6)",
+    "QE-R7ASE-01's mechanism, QE-R7ASE-02 and QE-R7AB-01 are closed on the judges' probes; 23 reruns are byte-identical to the author's"
+  ],
+  "inferred": [
+    "QE-R7ASM-02 reaches walk/jog returns",
+    "QE-R7ASM-01 is also reachable through a newer report of the same break",
+    "QE-R7ASM-01 to QE-R7ASM-03 are clock-independent"
+  ],
+  "notTested": [
+    "The reviewer's probes at other time zones",
+    "Real data, athletes, human or clinical validation",
+    "HealthKit, KMP, UI, production",
+    "The SSCTR's dose claims (113 fell, 3 rose; allRisenAreEffortGuided)"
+  ],
+  "rulings": {
+    "E1": "Accepted as a planning rule; its effect on history is QE-R7ASM-05 (ruling requested)",
+    "E2": "Accepted in principle; violated by planningBase in LONG returns (QE-R7ASM-02) and by REPS_THEN_LOAD repetition targets (QE-R7ASM-03)",
+    "E3": "Accepted; with E1 it makes history depend on whether a decision occurred (QE-R7ASM-05)",
+    "E4": "Accepted",
+    "E5": "Accepted for stored values; the facts-only reading still sets up a fresh exercise from a KNOWN row (QE-R7ASM-01)",
+    "E6": "Engineering-neutral; an SSCTR regression question",
+    "contract §4 targets row": "Accepted for LOAD goals; rejected for REPS_THEN_LOAD (QE-R7ASM-03)",
+    "contract §4 run-in-return row": "Implemented for mode RETURN only (QE-R7ASM-02)",
+    "contract §4 never-established row": "Holds in the view; fails in the reducer (QE-R7ASM-01)"
+  },
+  "founderSection33EngineeringInput": {
+    "1_whichProjection": "The prescribed KNOWN load (with its reps and sets) of a row planned from evidence later retracted; in the view, LONG-return restart minutes and REPS_THEN_LOAD repetition steps",
+    "2_whichPath": "evidenceState -> advanceStrength(evidenceMode) (r6-program.mjs:569/576) or strengthAtBreak(evidenceMode) (:505) -> setUp(u) (:456). It reaches historicalStateOf, stateAtBreak (every return entry) and planningBase (every decision). View: planningBase (r6-adaptation.mjs:746), planningExercise (:773). Reader: historicalStateOf (:792)",
+    "3_separationIncomplete": "YES, at the permitted read of the week's rows: reading prescribed values as state for an exercise history does not hold is projection -> history. The stored-start channel is closed (Q6)",
+    "4_replaceMixedStateEntirely": "Not shown by the engineering evidence: the stored-start channel is closed and the open defects are enumerable (one reducer channel, two view atoms, one reader filter). The choice is the Founder's"
+  },
+  "gateInputsEngineeringScope": {
+    "HISTORICAL_STATE_INTEGRITY": "NOT_READY (QE-R7ASM-01, QE-R7ASM-04)",
+    "PLANNING_PROJECTION_INTEGRITY": "NOT_READY (QE-R7ASM-02, QE-R7ASM-03)",
+    "FACT_PROJECTION_SEPARATION": "NOT_READY (QE-R7ASM-01; QE-R7ASM-02 and QE-R7ASM-03 in the view)",
+    "VALUE_SCOPED_EVIDENCE_AUTHORITY": "NOT_READY (QE-R7ASM-01)",
+    "WEEK_START_STATE_AUTHORITY": "READY on its own path (Q6, P40 family); QE-R7ASM-05 to rule on",
+    "STATE_PRESERVATION_INTEGRITY": "READY within what was checked (the mission files' append-only property was not verified)",
+    "RETURN_RECOVERY_CEILING_INTEGRITY": "NOT_READY (QE-R7ASM-01, QE-R7ASM-02)",
+    "STATE_MODEL_ENGINEERING_REVIEW": "NOT_READY",
+    "STATE_MODEL_SCIENTIFIC_REGRESSION": "Not this reviewer's (SSCTR)"
+  },
+  "routing": "Founder §28/§33: a material projection -> history case found after the freeze routes the mission to STATE_MODEL_CLOSURE = NOT_READY and NEXT_MISSION = FOUNDER_ARCHITECTURAL_DECISION. That record, and any R7A exit readiness, belong to the closing session after the SSCTR regression review. Neither is issued here.",
+  "filesWritten": [
+    "reviews/quality-engineering-r7asm-review.md",
+    "reviews/quality-engineering-r7asm-review.json",
+    "reviews/qe-r7asm-lib.mjs",
+    "reviews/qe-r7asm-integrity.mjs",
+    "reviews/qe-r7asm-Q2-correction.mjs",
+    "reviews/qe-r7asm-Q2b-correction-load.mjs",
+    "reviews/qe-r7asm-Q3-known-row-setup.mjs",
+    "reviews/qe-r7asm-Q3b-known-row-conflict.mjs",
+    "reviews/qe-r7asm-Q4-restart-view.mjs",
+    "reviews/qe-r7asm-Q4b-restart-rows.mjs",
+    "reviews/qe-r7asm-Q6-perturb-projection.mjs",
+    "reviews/qe-r7asm-Q7-p41-facts.mjs",
+    "reviews/qe-r7asm-Q9-executed-atoms.mjs",
+    "reviews/qe-r7asm-Q10-noop-sweep.mjs",
+    "reviews/qe-r7asm-Q11-misc.mjs",
+    "reviews/qe-r7asm-Q11c-reps-identical.mjs",
+    "reviews/qe-r7asm-Q12-robustness.mjs",
+    "reviews/qe-r7asm-runs/"
+  ]
+}

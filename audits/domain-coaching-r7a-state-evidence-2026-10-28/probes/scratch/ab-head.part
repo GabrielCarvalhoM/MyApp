@@ -1,0 +1,20 @@
+// DOMAIN_COACHING_R7-A boundary closure author self-challenge (Founder request §17): equivalence classes that try to make a projected week
+// start count as history. Each class states its oracle; the probe prints the cases and the violations. Built on the R7-A final engineering
+// judge's helpers (qe-r7af-lib.mjs): synthetic data, DEV_TEST_ONLY authority, read-only, prints only. QE_LIVE_ROOT=<a CoachingCore copy>
+// runs another runtime (for example ../final-freeze-source/CoachingCore, the byte-exact R7A-FINAL-FREEZE). Usage: node r7ab-self-challenge.mjs
+//
+// Base history (the judge's P30c): A, a 16-day break reported Monday 06:00 of week 5 (re-entry that week; A stores the conditional start of
+// week 6, return step 1). Week 5 rows: Tue run, Wed lift (squat, bench, row, calf raise, dead bug), Thu run, Sat lift (RDL, row, bench, split
+// squat, dead bug), Sun long run. B: a separate 2-day trip, Tuesday-Wednesday of week 6, reported Thursday 06:00 (or as each class states).
+import {H,R,opts,afterA,at,on,obs,addDays,brk,lastR,copy,stateSummary,preBreakDose,live,print,tzOf} from '../../domain-coaching-r7a-final-2026-10-28/reviews/qe-r7af-lib.mjs';
+const out={probe:'R7AB-SELF-CHALLENGE-1',runtime:process.env.QE_LIVE_ROOT?'QE_LIVE_ROOT':'LIVE',classes:{},violations:[]};
+const flag=(c,what)=>out.violations.push(`${c}: ${what}`),expect=(c,ok,what)=>{if(!ok)flag(c,what);return ok;};
+const steps=st=>({run:st?.run?.returnStep??null,mode:st?.run?.mode??null,strength:Object.fromEntries(Object.entries(st?.strength?.exercises??{}).map(([k,e])=>[k,e.returnStep??null]))});
+const point=d=>{const s=d?.interruption?.stateAt;return s?`${s.kind}/w${s.week}/${s.eventId??'-'}`:null;};
+const facts=st=>JSON.stringify({run:{...st.run,planned:undefined},strength:{...st.strength,planned:undefined,entryWeek:undefined,exercises:Object.fromEntries(Object.entries(st.strength.exercises).sort().map(([k,{lastPerformed,...e}])=>[k,e]))}});
+const WED=new Set(['back-squat','db-bench-press','db-row','db-calf-raise','dead-bug']);
+// Reports: each session of week w chosen by `keep`, observed on its own day, sent the same evening (a mid-week review: no consolidation)
+// or at `hm` on `day`. `edit` changes an observation (not completed, adverse, a lighter load).
+const report=(t,w,{keep=()=>true,day=null,hm='21:00',kind='WEEKLY_REVIEW',edit=o=>o}={})=>{const ss=t.p.weeks[w].sessions.filter(s=>live(s)&&keep(s));if(day!==null)return H.ev(t,at(t.p,w,day,hm,{kind,observations:ss.map(s=>edit(obs(t.p,s),s))}));for(const s of ss)H.ev(t,at(t.p,w,s.day,hm,{kind,observations:[edit(obs(t.p,s),s)]}));return 'per-day';};
+const B=(t,d0,{from=8,to=9,said=10,hm='06:00',extra={}}={})=>{const r=H.ev(t,on(t,addDays(d0,said),hm,brk(addDays(d0,from),addDays(d0,to),extra)));if(r!=='MODIFY/REESTABLISH')flag('harness',`B (${addDays(d0,from)}..${addDays(d0,to)}) is ${r}: ${t.last.reason}`);return {r,d:lastR(t.p)};};
+const base=(id,o={})=>afterA(id,o);

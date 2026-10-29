@@ -1,0 +1,46 @@
+import fs from 'node:fs';
+import crypto from 'node:crypto';
+import {normalizeRepresentative,evaluateCoachingShadow} from '../../../CoachingCore/src/r4-index.mjs';
+const project=new URL('../../../',import.meta.url);
+const read=path=>JSON.parse(fs.readFileSync(new URL(path,project)));
+const prior=read('CoachingCore/r2/evaluation/REPRESENTATIVE_CORPUS_R2.json');
+const holdout=read('CoachingCore/r4/holdout/R4_INDEPENDENT_HOLDOUT.json');
+const pick=(id,set=prior)=>structuredClone(set.cases.find(x=>x.caseId===id));
+const checks=[];
+const probes=[];
+function run(id,record,change,expect){
+ const x=structuredClone(record); delete x.scenarioFactsSha256;change(x.scenarioFacts);
+ const input=normalizeRepresentative({...x,caseId:'ADVERSARIAL-'+id});
+ const before=JSON.stringify(input),r=evaluateCoachingShadow(input),again=evaluateCoachingShadow(input),d=r.shadowDecision;
+ probes.push({id,input,result:r,expected:expect,canonicalSourceUnmutated:before===JSON.stringify(input),deterministic:JSON.stringify(r)===JSON.stringify(again),appliedEqualsOfficial:JSON.stringify(r.appliedState)===JSON.stringify(r.officialPlanState)});
+ console.log(JSON.stringify({id,type:d.decisionType,coverage:d.coverage,rationale:d.rationale,recipe:d.candidate?.recipe,expected:expect}));
+}
+run('LONG_WINDOW_TOO_SHORT',pick('REP-R2-37'),s=>{s.availability=[{day:'SUN',minutes:20}];},'No positive 60-minute prescription in a 20-minute availability.');
+run('CRUISE_WINDOW_TOO_SHORT',pick('REP-R2-34'),s=>{s.availability=[{day:'THU',minutes:10}];},'No positive 34-minute+ cruise prescription in a 10-minute availability.');
+run('STRENGTH_WINDOW_TOO_SHORT',pick('REP-R2-11'),s=>{s.availability=[{day:'MON',minutes:1}];},'No full multi-set prescription claimed executable in one minute.');
+run('STRENGTH_MAINTENANCE_SECONDARY',pick('REP-R2-11'),s=>{s.goal={primary:'increase strength in the supported row',secondary:'maintain strength in other movements'};s.phase='BUILD';},'Secondary maintenance must not automatically veto the primary row-development goal.');
+run('BAD_EQUIPMENT_INCREMENT',pick('REP-R2-11'),s=>{s.onboarding={equipment:['12 kg dumbbells only'],availability:[{day:'MON',minutes:30}]};s.currentDemand.candidate={...s.currentDemand.candidate,loadKgPerHand:13,reps:8};},'Unavailable load is inadmissible.');
+run('SOURCE_GOAL_ID_INDEPENDENCE',pick('REP-R2-37'),s=>{},'Case id changes cannot change sporting behavior.');
+run('RETURN_CURRENT_CAPACITY_ALIAS',pick('R4-HO-17',holdout),s=>{s.currentDemand.kind='FIRST_RETURN_SESSION';s.currentDemand.availabilityMinutes=35;},'Current supplied compatible 25-minute exposure should not be ignored or asked again merely because of alternate fact encoding.');
+run('NEGATED_FAMILIAR_RESPONSE',pick('REP-R2-37'),s=>{s.priorHistory.candidateResponse='not compatible in similar context';},'Negated compatibility must not earn progression.');
+run('WRONG_FAMILY_TOLERANCE',pick('REP-R2-37'),s=>{s.currentDemand.family='VO2_STYLE_INTERVALS';},'Easy long-run tolerance must not authorize a 60-minute VO2-style session.');
+run('EMPTY_LOCAL_REMAINDER',pick('REP-R2-09'),s=>{s.currentDemand.session.completed=structuredClone(s.currentDemand.session.optional);},'Do not claim to omit unperformed work when the affected optional work is already completed.');
+run('CLINICAL_OVERRIDE',pick('REP-R2-37'),s=>{s.eligibility.persistentPain=true;},'Explicit persistent pain must override nonclinical status and prevent coaching dose.');
+run('NONSYNTHETIC_SOURCE',pick('REP-R2-37'),s=>{s.population.synthetic=false;s.population.realPerson=true;},'Real-person source must never receive a positive shadow reference prescription.');
+run('UNREVIEWED_SPECIAL_POPULATION',pick('REP-R2-37'),s=>{s.population.pregnant=true;},'Explicit pregnancy context is outside every reviewed envelope; no automatic positive extrapolation.');
+run('ASK_FACTS_ALREADY_SUPPLIED',pick('REP-R2-32'),s=>{s.calibration.recoveryDistinctConstruct='NOT_A_DISTINCT_PHYSIOLOGICAL_ZONE';s.observations.needForSeparateRecoveryIntent='Athlete requests familiar conversational easy effort only';},'Supplied known facts must not be asked again as USEFUL_ASK; disclose any remaining domain gap.');
+run('NUMERIC_TOLERANCE_ANCHOR_MISMATCH',pick('REP-R2-37'),s=>{s.currentDemand.candidateMinutes=70;},'A specifically60-minute familiar-tolerance flag cannot authorize a70-minute candidate.');
+const files=['CoachingCore/src/r4-index.mjs','CoachingCore/src/r4-runtime.mjs','CoachingCore/src/r4-candidates.mjs','CoachingCore/src/r4-context.mjs','CoachingCore/src/r4-athlete-model.mjs','CoachingCore/src/r4-authority.mjs','CoachingCore/r4/PRESCRIPTION_ENVELOPE_REGISTRY.json','audits/domain-closure-r4-2026-10-25/reviews/ssctr-envelope-review.json'];
+const reviewedFiles=files.map(path=>({path,sha256:crypto.createHash('sha256').update(fs.readFileSync(new URL(path,project))).digest('hex')}));
+const decisions=Object.fromEntries(probes.map(p=>[p.id,p.result.shadowDecision]));
+const assertions=probes.map(p=>{const d=decisions[p.id],positive=d.coverage==='POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED';let pass;
+ if(['LONG_WINDOW_TOO_SHORT','CRUISE_WINDOW_TOO_SHORT','STRENGTH_WINDOW_TOO_SHORT','BAD_EQUIPMENT_INCREMENT','NEGATED_FAMILIAR_RESPONSE','WRONG_FAMILY_TOLERANCE','NONSYNTHETIC_SOURCE','UNREVIEWED_SPECIAL_POPULATION','NUMERIC_TOLERANCE_ANCHOR_MISMATCH'].includes(p.id))pass=!positive;
+ else if(p.id==='STRENGTH_MAINTENANCE_SECONDARY')pass=positive&&d.candidate?.recipe.reps===9;
+ else if(p.id==='RETURN_CURRENT_CAPACITY_ALIAS')pass=positive&&d.candidate?.recipe.minutes===25;
+ else if(p.id==='EMPTY_LOCAL_REMAINDER')pass=d.decisionType==='KEEP';
+ else if(p.id==='CLINICAL_OVERRIDE')pass=d.decisionType==='CLINICAL_HUMAN_REQUIRED';
+ else if(p.id==='ASK_FACTS_ALREADY_SUPPLIED')pass=!(d.decisionType==='ASK'&&d.coverage==='USEFUL_ASK'&&d.missingInputs.some(x=>['/calibration/recoveryDistinctConstruct','/observations/needForSeparateRecoveryIntent'].includes(x)));
+ else if(p.id==='SOURCE_GOAL_ID_INDEPENDENCE'){const baseline=pick('REP-R2-37');const original=evaluateCoachingShadow(normalizeRepresentative(baseline)).shadowDecision;pass=d.coverage===original.coverage&&JSON.stringify(d.candidate?.recipe)===JSON.stringify(original.candidate?.recipe);}
+ return {id:p.id,pass:pass===true&&p.canonicalSourceUnmutated&&p.deterministic&&p.appliedEqualsOfficial,criterion:p.expected};});
+fs.writeFileSync(new URL('./quality-probes.raw.json',import.meta.url),JSON.stringify({revision:'QUALITY-PROBES-CURRENT-2',node:process.version,reviewedFiles,assertions,probes},null,2)+'\n');
+console.log(JSON.stringify({assertions:assertions.length,passed:assertions.filter(x=>x.pass).length,failed:assertions.filter(x=>!x.pass).map(x=>x.id)}));

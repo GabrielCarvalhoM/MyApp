@@ -1,0 +1,3865 @@
+{
+  "corpusId": "INDEPENDENT-HOLDOUT-R4",
+  "version": "R4-HO-1.0.0",
+  "authoredAt": "2026-10-25",
+  "status": "SEALED_BEFORE_R4_IMPLEMENTATION_INSPECTION",
+  "purpose": "Independent designed-case challenge of goal-aligned coaching quality; not sampled V1 coverage or human efficacy evidence.",
+  "authorInstance": "/root/holdout_quality",
+  "independence": {
+    "authorDidNotImplementRuntime": true,
+    "r4RuntimeInspectedBeforeSealing": false,
+    "onlyPriorInputSourcesRead": [
+      "CoachingCore/src/r3-input.mjs",
+      "CoachingCore/src/r2-fixtures.mjs (vocabulary only)",
+      "CoachingCore/r2/evaluation/REPRESENTATIVE_CORPUS_R2.json",
+      "CoachingCore/r3/INPUT_CONTRACT_R3.md"
+    ],
+    "runtimeMustNotImportThisCorpus": true,
+    "expectationsMustNotSelectRuntimeBehavior": true,
+    "resultsBelongInSeparateArtifact": true
+  },
+  "limits": [
+    "Candidate values are synthetic scenario anchors, not universal physiological laws.",
+    "Author judgment defines challenge quality criteria, not scientific envelope approval.",
+    "Independent SSCTR must establish applicable scientific admissibility.",
+    "Positive count requires executable proposal inside approved boundaries; fixtures do not grant approval.",
+    "All cases are normal synthetic nonclinical adults; clinical adversarial probes are separate.",
+    "A safe action can still be materially suboptimal for the stated goal."
+  ],
+  "evaluationContract": {
+    "unit": "one frozen logical case",
+    "noArbitraryPercentageGate": true,
+    "normalizer": "normalizeRepresentative({ ...record, corpusId: corpus.corpusId, corpusVersion: corpus.version })",
+    "qualityClasses": [
+      "COACHING_BEST_SUPPORTED",
+      "COACHING_ACCEPTABLE_ALTERNATIVE",
+      "COACHING_SUBOPTIMAL",
+      "INSUFFICIENT_INFORMATION",
+      "UNSUPPORTED",
+      "CLINICAL_OUT_OF_SCOPE"
+    ],
+    "requiredInvariants": [
+      "SHADOW_ONLY and applied false",
+      "appliedState equals officialPlanState",
+      "facts immutable",
+      "deterministic replay",
+      "no clinical autoprescription",
+      "no hidden calibration",
+      "no single-event learned hard rule",
+      "no expected-output import"
+    ]
+  },
+  "cases": [
+    {
+      "caseId": "R4-HO-01",
+      "title": "New runner starts from a comfortable walking anchor",
+      "tags": [
+        "NEW_RUNNER",
+        "FIRST_PRESCRIPTION"
+      ],
+      "decisionQuestion": "Which admissible option best advances the stated goal in this context, and what would change that judgment?",
+      "scenarioFacts": {
+        "population": {
+          "synthetic": true,
+          "realPerson": false,
+          "ageBand": "ADULT",
+          "ageYears": 34,
+          "participation": "RECREATIONAL_HYBRID",
+          "priority": "RUN_FIRST",
+          "runExperience": "NOVICE",
+          "strengthExperience": "NOVICE",
+          "dataTier": "NO_WEARABLE",
+          "historyOrigin": "LIMITED_SELF_REPORT"
+        },
+        "eligibility": {
+          "status": "NONCLINICAL_CONFIRMED",
+          "source": "EXPLICIT_SYNTHETIC_CURRENT_CONTEXT",
+          "clinicalConcern": false,
+          "pain": false,
+          "persistentPain": false,
+          "injury": false,
+          "illness": false,
+          "functionalLimitation": false,
+          "clearanceClaim": false
+        },
+        "goal": {
+          "primary": "build consistent recreational running",
+          "secondary": "retain basic strength"
+        },
+        "phase": "ESTABLISHMENT",
+        "onboarding": {
+          "goals": [
+            "build consistent recreational running",
+            "retain basic strength"
+          ],
+          "availability": [
+            {
+              "day": "TUE",
+              "minutes": 25
+            },
+            {
+              "day": "SAT",
+              "minutes": 30
+            }
+          ],
+          "equipment": [
+            "flat dry path",
+            "bodyweight"
+          ],
+          "movementKnowledge": "walking and unloaded sit-to-stand comfortable",
+          "preferences": "walk breaks welcome"
+        },
+        "reportedExposure": {
+          "walk": {
+            "minutes": 22,
+            "talk": "comfortable complete sentences",
+            "response": "normal afterwards and next day",
+            "recent": true
+          },
+          "run": "no systematic running",
+          "strength": "no loaded training"
+        },
+        "currentDemand": {
+          "kind": "FIRST_RUN_SESSION",
+          "officialPlan": null
+        },
+        "history": [],
+        "observationPlan": {
+          "during": [
+            "comfortable speech",
+            "walk when needed",
+            "unusual symptoms"
+          ],
+          "after": [
+            "completion",
+            "ordinary next-day function"
+          ]
+        }
+      },
+      "scenarioFactsSha256": "638df7bfc1b7b2732bbf9962d5fdf381be839479bdb54651ca2913c8656d0b44",
+      "independentExpectation": {
+        "allowedDispositions": [
+          "POSITIVE"
+        ],
+        "preferredOption": "BOUNDED_RUN_WALK_ESTABLISHMENT",
+        "candidateComparisons": [
+          {
+            "option": "bounded run/walk or walking-led familiarization",
+            "judgment": "preferred",
+            "reason": "creates goal-relevant exposure using current capacity and explicit uncertainty"
+          },
+          {
+            "option": "continuous 25 minute run at guessed pace",
+            "judgment": "invalid",
+            "reason": "walking capacity does not establish continuous running tolerance"
+          },
+          {
+            "option": "HOLD pending wearable history",
+            "judgment": "dominated",
+            "reason": "device history is unnecessary for this establishment intent"
+          }
+        ],
+        "admissibilityBounds": [
+          "total session fits 25 minutes",
+          "running bouts optional/short and bounded by comfortable effort",
+          "no speed target or hard interval family"
+        ],
+        "requiredMaterialFacts": [
+          "recent comfortable walk anchor",
+          "run novice status",
+          "availability",
+          "eligibility",
+          "walk preference"
+        ],
+        "mustPreserve": [
+          "shadow official state",
+          "clinical boundaries",
+          "modality-specific competence",
+          "no application of proposed week"
+        ],
+        "unacceptable": [
+          "invent physiological calibration",
+          "claim individual certainty",
+          "count unsupported output as positive"
+        ],
+        "rationaleMustExplain": [
+          "primary and secondary goal",
+          "phase",
+          "essential stimulus",
+          "valid and rejected alternatives",
+          "goal-priority trade-off",
+          "minimum effective change",
+          "individual uncertainty",
+          "next observation"
+        ],
+        "uncertainty": "Population evidence cannot establish individual optimality; compare next execution and recovery before escalating.",
+        "reviewTrigger": "Next comparable session: execution, effort, ordinary function and recovery.",
+        "qualityRule": "A concrete admissible but materially dominated choice is COACHING_SUBOPTIMAL; lack of a reviewed envelope is UNSUPPORTED, not invented scientific approval.",
+        "exactDoseOracle": null
+      },
+      "independence": {
+        "authorInstance": "/root/holdout_quality",
+        "implementedRuntime": false,
+        "derivedFromRuntimeOutput": false,
+        "copiedDevelopmentFixture": false
+      }
+    },
+    {
+      "caseId": "R4-HO-02",
+      "title": "Strength novice receives productive familiarization without invented load",
+      "tags": [
+        "NEW_STRENGTH_TRAINEE",
+        "FIRST_PRESCRIPTION"
+      ],
+      "decisionQuestion": "Which admissible option best advances the stated goal in this context, and what would change that judgment?",
+      "scenarioFacts": {
+        "population": {
+          "synthetic": true,
+          "realPerson": false,
+          "ageBand": "ADULT",
+          "ageYears": 34,
+          "participation": "RECREATIONAL_HYBRID",
+          "priority": "STRENGTH_FIRST",
+          "runExperience": "INTERMEDIATE",
+          "strengthExperience": "NOVICE",
+          "dataTier": "NO_WEARABLE",
+          "historyOrigin": "RECENT_COMPARABLE_RECORDS"
+        },
+        "eligibility": {
+          "status": "NONCLINICAL_CONFIRMED",
+          "source": "EXPLICIT_SYNTHETIC_CURRENT_CONTEXT",
+          "clinicalConcern": false,
+          "pain": false,
+          "persistentPain": false,
+          "injury": false,
+          "illness": false,
+          "functionalLimitation": false,
+          "clearanceClaim": false
+        },
+        "goal": {
+          "primary": "learn sustainable basic strength",
+          "secondary": "maintain easy running"
+        },
+        "phase": "ESTABLISHMENT",
+        "onboarding": {
+          "goals": [
+            "learn sustainable basic strength",
+            "maintain easy running"
+          ],
+          "availability": [
+            {
+              "day": "MON",
+              "minutes": 30
+            },
+            {
+              "day": "THU",
+              "minutes": 30
+            }
+          ],
+          "equipment": [
+            "stable bench",
+            "adjustable dumbbells"
+          ],
+          "movementKnowledge": {
+            "sitToStand": "current comfortable unloaded demonstration",
+            "supportedRow": "current familiar light demonstration at 4 kg per hand",
+            "loadedHinge": "unknown"
+          },
+          "preferences": "start with familiar configurations"
+        },
+        "reportedExposure": {
+          "run": {
+            "sessionsPerWeek": 3,
+            "easyMinutes": 25,
+            "response": "usual"
+          },
+          "strength": {
+            "history": "no structured loaded program",
+            "supportedRow": {
+              "exercise": "chest-supported dumbbell row",
+              "sets": 1,
+              "reps": 8,
+              "loadKgPerHand": 4,
+              "effort": "easy and technically comfortable",
+              "response": "normal"
+            }
+          }
+        },
+        "currentDemand": {
+          "kind": "FIRST_STRENGTH_SESSION",
+          "officialRunWeek": "three familiar easy runs; no interval escalation"
+        }
+      },
+      "scenarioFactsSha256": "2e6ff464858f75106736d6ab916614cceae015c570762c0625cc9f39c286775a",
+      "independentExpectation": {
+        "allowedDispositions": [
+          "POSITIVE"
+        ],
+        "preferredOption": "FAMILIAR_STRENGTH_ESTABLISHMENT",
+        "candidateComparisons": [
+          {
+            "option": "small familiar sit-to-stand and supported-row exposure",
+            "judgment": "preferred",
+            "reason": "develops strength practice within demonstrated competence"
+          },
+          {
+            "option": "barbell squat and loaded hinge at inferred loads",
+            "judgment": "invalid",
+            "reason": "unknown configurations and transferable load are unestablished"
+          },
+          {
+            "option": "cancel strength until perfect history",
+            "judgment": "dominated",
+            "reason": "competence and an executable bounded starting option exist"
+          }
+        ],
+        "admissibilityBounds": [
+          "fit 30 minute window",
+          "use demonstrated movement/configuration",
+          "do not force failure or infer 1RM"
+        ],
+        "requiredMaterialFacts": [
+          "current movement demonstrations",
+          "4 kg per hand row anchor",
+          "run priority burden",
+          "equipment"
+        ],
+        "mustPreserve": [
+          "shadow official state",
+          "clinical boundaries",
+          "existing easy running",
+          "per-hand load unit"
+        ],
+        "unacceptable": [
+          "invent physiological calibration",
+          "claim individual certainty",
+          "count unsupported output as positive"
+        ],
+        "rationaleMustExplain": [
+          "primary and secondary goal",
+          "phase",
+          "essential stimulus",
+          "valid and rejected alternatives",
+          "goal-priority trade-off",
+          "minimum effective change",
+          "individual uncertainty",
+          "next observation"
+        ],
+        "uncertainty": "Population evidence cannot establish individual optimality; compare next execution and recovery before escalating.",
+        "reviewTrigger": "Next comparable session: execution, effort, ordinary function and recovery.",
+        "qualityRule": "A concrete admissible but materially dominated choice is COACHING_SUBOPTIMAL; lack of a reviewed envelope is UNSUPPORTED, not invented scientific approval.",
+        "exactDoseOracle": null
+      },
+      "independence": {
+        "authorInstance": "/root/holdout_quality",
+        "implementedRuntime": false,
+        "derivedFromRuntimeOutput": false,
+        "copiedDevelopmentFixture": false
+      }
+    },
+    {
+      "caseId": "R4-HO-03",
+      "title": "Balanced intermediate begins product use with sufficient reported history",
+      "tags": [
+        "HYBRID_INTERMEDIATE",
+        "BALANCED",
+        "FIRST_PRESCRIPTION"
+      ],
+      "decisionQuestion": "Which admissible option best advances the stated goal in this context, and what would change that judgment?",
+      "scenarioFacts": {
+        "population": {
+          "synthetic": true,
+          "realPerson": false,
+          "ageBand": "ADULT",
+          "ageYears": 34,
+          "participation": "RECREATIONAL_HYBRID",
+          "priority": "BALANCED",
+          "runExperience": "INTERMEDIATE",
+          "strengthExperience": "INTERMEDIATE",
+          "dataTier": "NO_WEARABLE",
+          "historyOrigin": "RECENT_COMPARABLE_RECORDS"
+        },
+        "eligibility": {
+          "status": "NONCLINICAL_CONFIRMED",
+          "source": "EXPLICIT_SYNTHETIC_CURRENT_CONTEXT",
+          "clinicalConcern": false,
+          "pain": false,
+          "persistentPain": false,
+          "injury": false,
+          "illness": false,
+          "functionalLimitation": false,
+          "clearanceClaim": false
+        },
+        "goal": {
+          "primary": "improve recreational running and strength together",
+          "secondary": "maintain consistency"
+        },
+        "phase": "BASE",
+        "onboarding": {
+          "goals": [
+            "improve recreational running and strength together",
+            "maintain consistency"
+          ],
+          "availability": [
+            {
+              "day": "MON",
+              "minutes": 45
+            },
+            {
+              "day": "WED",
+              "minutes": 40
+            },
+            {
+              "day": "FRI",
+              "minutes": 45
+            },
+            {
+              "day": "SUN",
+              "minutes": 65
+            }
+          ],
+          "equipment": [
+            "familiar gym",
+            "flat path"
+          ],
+          "movementKnowledge": "familiar goblet squat and supported row",
+          "preferences": "retain a familiar weekly rhythm"
+        },
+        "reportedExposure": {
+          "run": {
+            "recentSessions": [
+              {
+                "family": "EASY",
+                "minutes": 30,
+                "talk": "comfortable",
+                "nextDay": "normal"
+              },
+              {
+                "family": "LONG_RUN",
+                "minutes": 60,
+                "talk": "comfortable",
+                "nextDay": "normal"
+              }
+            ],
+            "sessionsPerWeek": 2,
+            "response": "stable"
+          },
+          "strength": {
+            "sessionsPerWeek": 2,
+            "configuration": [
+              {
+                "exercise": "goblet squat",
+                "sets": 2,
+                "reps": 8,
+                "loadKg": 16,
+                "targetRir": 3
+              },
+              {
+                "exercise": "chest-supported dumbbell row",
+                "sets": 2,
+                "reps": 10,
+                "loadKgPerHand": 10,
+                "targetRir": 3
+              }
+            ],
+            "response": "compatible"
+          }
+        },
+        "currentDemand": {
+          "kind": "FIRST_PRODUCT_WEEK",
+          "officialPlan": null
+        },
+        "history": []
+      },
+      "scenarioFactsSha256": "3ce365de433a9cdf9ef3c2df1cc2a7642f8beb8821c2b2ac097b9d19c84de125",
+      "independentExpectation": {
+        "allowedDispositions": [
+          "POSITIVE"
+        ],
+        "preferredOption": "REESTABLISH_FAMILIAR_BALANCED_WEEK",
+        "candidateComparisons": [
+          {
+            "option": "retain familiar run and strength exposure within four windows",
+            "judgment": "preferred",
+            "reason": "uses adequate self-report without unnecessary cold-start abstention"
+          },
+          {
+            "option": "add threshold and extra strength volume immediately",
+            "judgment": "suboptimal",
+            "reason": "novel concurrent escalation adds avoidable uncertainty"
+          },
+          {
+            "option": "ask for wearable import before any plan",
+            "judgment": "dominated",
+            "reason": "reported anchors are sufficient for bounded familiar work"
+          }
+        ],
+        "admissibilityBounds": [
+          "all sessions fit windows",
+          "no novel intensity",
+          "balance both primary components"
+        ],
+        "requiredMaterialFacts": [
+          "two run and two strength exposures",
+          "reported doses and response",
+          "availability"
+        ],
+        "mustPreserve": [
+          "shadow official state",
+          "clinical boundaries",
+          "two modality goals",
+          "familiar rhythm"
+        ],
+        "unacceptable": [
+          "invent physiological calibration",
+          "claim individual certainty",
+          "count unsupported output as positive"
+        ],
+        "rationaleMustExplain": [
+          "primary and secondary goal",
+          "phase",
+          "essential stimulus",
+          "valid and rejected alternatives",
+          "goal-priority trade-off",
+          "minimum effective change",
+          "individual uncertainty",
+          "next observation"
+        ],
+        "uncertainty": "Population evidence cannot establish individual optimality; compare next execution and recovery before escalating.",
+        "reviewTrigger": "Next comparable session: execution, effort, ordinary function and recovery.",
+        "qualityRule": "A concrete admissible but materially dominated choice is COACHING_SUBOPTIMAL; lack of a reviewed envelope is UNSUPPORTED, not invented scientific approval.",
+        "exactDoseOracle": null
+      },
+      "independence": {
+        "authorInstance": "/root/holdout_quality",
+        "implementedRuntime": false,
+        "derivedFromRuntimeOutput": false,
+        "copiedDevelopmentFixture": false
+      }
+    },
+    {
+      "caseId": "R4-HO-04",
+      "title": "Run-first conflict protects current key run",
+      "tags": [
+        "RUN_FIRST",
+        "SCHEDULE_CONFLICT"
+      ],
+      "decisionQuestion": "Which admissible option best advances the stated goal in this context, and what would change that judgment?",
+      "scenarioFacts": {
+        "population": {
+          "synthetic": true,
+          "realPerson": false,
+          "ageBand": "ADULT",
+          "ageYears": 34,
+          "participation": "RECREATIONAL_HYBRID",
+          "priority": "RUN_FIRST",
+          "runExperience": "INTERMEDIATE",
+          "strengthExperience": "INTERMEDIATE",
+          "dataTier": "NO_WEARABLE",
+          "historyOrigin": "RECENT_COMPARABLE_RECORDS"
+        },
+        "eligibility": {
+          "status": "NONCLINICAL_CONFIRMED",
+          "source": "EXPLICIT_SYNTHETIC_CURRENT_CONTEXT",
+          "clinicalConcern": false,
+          "pain": false,
+          "persistentPain": false,
+          "injury": false,
+          "illness": false,
+          "functionalLimitation": false,
+          "clearanceClaim": false
+        },
+        "goal": {
+          "primary": "improve 10K durability",
+          "secondary": "maintain the other modality"
+        },
+        "phase": "BUILD",
+        "onboarding": {
+          "goals": [
+            "improve 10K durability",
+            "maintain the other modality"
+          ]
+        },
+        "currentDemand": {
+          "kind": "ACUTE_INTERFERENCE_AND_SCHEDULE_CONFLICT",
+          "day": "TUE",
+          "planned": {
+            "run": {
+              "family": "CRUISE",
+              "start": "18:00",
+              "durationMinutes": 35,
+              "role": "KEY"
+            },
+            "strength": {
+              "family": "LOWER",
+              "start": "18:10",
+              "durationMinutes": 40,
+              "role": "MAINTENANCE"
+            }
+          },
+          "availability": {
+            "TUE": [
+              [
+                "18:00",
+                "18:50"
+              ]
+            ],
+            "THU": [
+              [
+                "18:00",
+                "19:00"
+              ]
+            ]
+          }
+        },
+        "observations": {
+          "necessity": "the original sessions overlap",
+          "recovery": "normal"
+        },
+        "alternatives": [
+          {
+            "id": "MOVE_STRENGTH_THU",
+            "run": "TUE original",
+            "strength": "THU familiar original configuration"
+          },
+          {
+            "id": "MOVE_RUN_THU",
+            "run": "THU original",
+            "strength": "TUE original"
+          }
+        ],
+        "history": {
+          "bothArrangementsFamiliar": true,
+          "noSpacingThresholdClaim": true
+        },
+        "constraints": {
+          "sameDoseCandidates": true
+        }
+      },
+      "scenarioFactsSha256": "f38104d52c3d8b3c87f1c2e1a4550cbeb7c002fc3a64b18204a603e8e91d847d",
+      "independentExpectation": {
+        "allowedDispositions": [
+          "POSITIVE"
+        ],
+        "preferredOption": "MOVE_STRENGTH_THU",
+        "candidateComparisons": [
+          {
+            "option": "MOVE_STRENGTH_THU",
+            "judgment": "preferred",
+            "reason": "keeps key run at established location and changes maintenance placement"
+          },
+          {
+            "option": "MOVE_RUN_THU",
+            "judgment": "suboptimal",
+            "reason": "needlessly disrupts the primary key stimulus when equally feasible alternative preserves it"
+          },
+          {
+            "option": "perform overlap",
+            "judgment": "invalid",
+            "reason": "violates one available window"
+          }
+        ],
+        "admissibilityBounds": [
+          "no overlap",
+          "same doses retained",
+          "no universal spacing threshold"
+        ],
+        "requiredMaterialFacts": [
+          "RUN_FIRST",
+          "key vs maintenance roles",
+          "two feasible windows"
+        ],
+        "mustPreserve": [
+          "shadow official state",
+          "clinical boundaries",
+          "key run prescription",
+          "strength maintenance intent"
+        ],
+        "unacceptable": [
+          "invent physiological calibration",
+          "claim individual certainty",
+          "count unsupported output as positive"
+        ],
+        "rationaleMustExplain": [
+          "primary and secondary goal",
+          "phase",
+          "essential stimulus",
+          "valid and rejected alternatives",
+          "goal-priority trade-off",
+          "minimum effective change",
+          "individual uncertainty",
+          "next observation"
+        ],
+        "uncertainty": "Population evidence cannot establish individual optimality; compare next execution and recovery before escalating.",
+        "reviewTrigger": "Next comparable session: execution, effort, ordinary function and recovery.",
+        "qualityRule": "A concrete admissible but materially dominated choice is COACHING_SUBOPTIMAL; lack of a reviewed envelope is UNSUPPORTED, not invented scientific approval.",
+        "exactDoseOracle": null
+      },
+      "independence": {
+        "authorInstance": "/root/holdout_quality",
+        "implementedRuntime": false,
+        "derivedFromRuntimeOutput": false,
+        "copiedDevelopmentFixture": false
+      }
+    },
+    {
+      "caseId": "R4-HO-05",
+      "title": "Strength-first conflict protects current key lifting",
+      "tags": [
+        "STRENGTH_FIRST",
+        "SCHEDULE_CONFLICT"
+      ],
+      "decisionQuestion": "Which admissible option best advances the stated goal in this context, and what would change that judgment?",
+      "scenarioFacts": {
+        "population": {
+          "synthetic": true,
+          "realPerson": false,
+          "ageBand": "ADULT",
+          "ageYears": 34,
+          "participation": "RECREATIONAL_HYBRID",
+          "priority": "STRENGTH_FIRST",
+          "runExperience": "INTERMEDIATE",
+          "strengthExperience": "INTERMEDIATE",
+          "dataTier": "NO_WEARABLE",
+          "historyOrigin": "RECENT_COMPARABLE_RECORDS"
+        },
+        "eligibility": {
+          "status": "NONCLINICAL_CONFIRMED",
+          "source": "EXPLICIT_SYNTHETIC_CURRENT_CONTEXT",
+          "clinicalConcern": false,
+          "pain": false,
+          "persistentPain": false,
+          "injury": false,
+          "illness": false,
+          "functionalLimitation": false,
+          "clearanceClaim": false
+        },
+        "goal": {
+          "primary": "improve squat strength",
+          "secondary": "maintain the other modality"
+        },
+        "phase": "BUILD",
+        "onboarding": {
+          "goals": [
+            "improve squat strength",
+            "maintain the other modality"
+          ]
+        },
+        "currentDemand": {
+          "kind": "ACUTE_INTERFERENCE_AND_SCHEDULE_CONFLICT",
+          "day": "TUE",
+          "planned": {
+            "run": {
+              "family": "CRUISE",
+              "start": "18:00",
+              "durationMinutes": 35,
+              "role": "SECONDARY"
+            },
+            "strength": {
+              "family": "LOWER",
+              "start": "18:10",
+              "durationMinutes": 40,
+              "role": "KEY"
+            }
+          },
+          "availability": {
+            "TUE": [
+              [
+                "18:00",
+                "18:50"
+              ]
+            ],
+            "THU": [
+              [
+                "18:00",
+                "19:00"
+              ]
+            ]
+          }
+        },
+        "observations": {
+          "necessity": "the original sessions overlap",
+          "recovery": "normal"
+        },
+        "alternatives": [
+          {
+            "id": "MOVE_STRENGTH_THU",
+            "run": "TUE original",
+            "strength": "THU familiar original configuration"
+          },
+          {
+            "id": "MOVE_RUN_THU",
+            "run": "THU original",
+            "strength": "TUE original"
+          }
+        ],
+        "history": {
+          "bothArrangementsFamiliar": true,
+          "noSpacingThresholdClaim": true
+        },
+        "constraints": {
+          "sameDoseCandidates": true
+        }
+      },
+      "scenarioFactsSha256": "ae80662b3ba047eaf84a475a5562b0b55f7fcd531b773ea4e0264a8dfeba6982",
+      "independentExpectation": {
+        "allowedDispositions": [
+          "POSITIVE"
+        ],
+        "preferredOption": "MOVE_RUN_THU",
+        "candidateComparisons": [
+          {
+            "option": "MOVE_RUN_THU",
+            "judgment": "preferred",
+            "reason": "preserves primary strength stimulus and moves secondary run"
+          },
+          {
+            "option": "MOVE_STRENGTH_THU",
+            "judgment": "suboptimal",
+            "reason": "unnecessary disruption to strength goal"
+          },
+          {
+            "option": "shorten both without comparison",
+            "judgment": "dominated",
+            "reason": "full familiar sessions fit by moving one"
+          }
+        ],
+        "admissibilityBounds": [
+          "no overlap",
+          "retain familiar doses"
+        ],
+        "requiredMaterialFacts": [
+          "STRENGTH_FIRST",
+          "key role",
+          "availability"
+        ],
+        "mustPreserve": [
+          "shadow official state",
+          "clinical boundaries",
+          "primary strength stimulus",
+          "secondary run"
+        ],
+        "unacceptable": [
+          "invent physiological calibration",
+          "claim individual certainty",
+          "count unsupported output as positive"
+        ],
+        "rationaleMustExplain": [
+          "primary and secondary goal",
+          "phase",
+          "essential stimulus",
+          "valid and rejected alternatives",
+          "goal-priority trade-off",
+          "minimum effective change",
+          "individual uncertainty",
+          "next observation"
+        ],
+        "uncertainty": "Population evidence cannot establish individual optimality; compare next execution and recovery before escalating.",
+        "reviewTrigger": "Next comparable session: execution, effort, ordinary function and recovery.",
+        "qualityRule": "A concrete admissible but materially dominated choice is COACHING_SUBOPTIMAL; lack of a reviewed envelope is UNSUPPORTED, not invented scientific approval.",
+        "exactDoseOracle": null
+      },
+      "independence": {
+        "authorInstance": "/root/holdout_quality",
+        "implementedRuntime": false,
+        "derivedFromRuntimeOutput": false,
+        "copiedDevelopmentFixture": false
+      }
+    },
+    {
+      "caseId": "R4-HO-06",
+      "title": "Balanced conflict respects a genuine athlete preference",
+      "tags": [
+        "BALANCED",
+        "USER_AGENCY",
+        "SCHEDULE_CONFLICT"
+      ],
+      "decisionQuestion": "Which admissible option best advances the stated goal in this context, and what would change that judgment?",
+      "scenarioFacts": {
+        "population": {
+          "synthetic": true,
+          "realPerson": false,
+          "ageBand": "ADULT",
+          "ageYears": 34,
+          "participation": "RECREATIONAL_HYBRID",
+          "priority": "BALANCED",
+          "runExperience": "INTERMEDIATE",
+          "strengthExperience": "INTERMEDIATE",
+          "dataTier": "NO_WEARABLE",
+          "historyOrigin": "RECENT_COMPARABLE_RECORDS"
+        },
+        "eligibility": {
+          "status": "NONCLINICAL_CONFIRMED",
+          "source": "EXPLICIT_SYNTHETIC_CURRENT_CONTEXT",
+          "clinicalConcern": false,
+          "pain": false,
+          "persistentPain": false,
+          "injury": false,
+          "illness": false,
+          "functionalLimitation": false,
+          "clearanceClaim": false
+        },
+        "goal": {
+          "primary": "maintain equivalent progress in run and strength",
+          "secondary": "sustain adherence"
+        },
+        "phase": "BASE",
+        "onboarding": {
+          "goals": [
+            "maintain equivalent progress in run and strength",
+            "sustain adherence"
+          ]
+        },
+        "currentDemand": {
+          "kind": "ACUTE_INTERFERENCE_AND_SCHEDULE_CONFLICT",
+          "planned": {
+            "run": {
+              "family": "EASY",
+              "start": "18:00",
+              "durationMinutes": 30,
+              "role": "ESSENTIAL"
+            },
+            "strength": {
+              "family": "FULL_BODY",
+              "start": "18:00",
+              "durationMinutes": 35,
+              "role": "ESSENTIAL"
+            }
+          },
+          "availability": {
+            "WED": [
+              [
+                "18:00",
+                "18:45"
+              ]
+            ],
+            "FRI": [
+              [
+                "18:00",
+                "18:45"
+              ]
+            ]
+          }
+        },
+        "alternatives": [
+          {
+            "id": "RUN_WED_STRENGTH_FRI",
+            "run": "WED",
+            "strength": "FRI"
+          },
+          {
+            "id": "STRENGTH_WED_RUN_FRI",
+            "run": "FRI",
+            "strength": "WED"
+          }
+        ],
+        "history": {
+          "bothArrangementsFamiliar": true,
+          "equivalentCompatibleResponses": true
+        },
+        "observations": {
+          "recovery": "normal"
+        },
+        "athletePreference": "keep Wednesday social run; move strength to Friday",
+        "constraints": {
+          "sameDoseCandidates": true
+        }
+      },
+      "scenarioFactsSha256": "61f7547e20e64a91578ec65b05f2f0eadd1edf2bea646c9e7920210ab5f11df7",
+      "independentExpectation": {
+        "allowedDispositions": [
+          "POSITIVE"
+        ],
+        "preferredOption": "RUN_WED_STRENGTH_FRI",
+        "candidateComparisons": [
+          {
+            "option": "RUN_WED_STRENGTH_FRI",
+            "judgment": "preferred",
+            "reason": "equally admissible physiology plus explicit adherence preference"
+          },
+          {
+            "option": "STRENGTH_WED_RUN_FRI",
+            "judgment": "suboptimal",
+            "reason": "ignores a material supplied preference"
+          },
+          {
+            "option": "ask preference again",
+            "judgment": "dominated",
+            "reason": "the answer is already supplied"
+          }
+        ],
+        "admissibilityBounds": [
+          "no invented physiological superiority"
+        ],
+        "requiredMaterialFacts": [
+          "BALANCED",
+          "equivalent response",
+          "supplied preference"
+        ],
+        "mustPreserve": [
+          "shadow official state",
+          "clinical boundaries",
+          "both essential sessions",
+          "athlete agency"
+        ],
+        "unacceptable": [
+          "invent physiological calibration",
+          "claim individual certainty",
+          "count unsupported output as positive"
+        ],
+        "rationaleMustExplain": [
+          "primary and secondary goal",
+          "phase",
+          "essential stimulus",
+          "valid and rejected alternatives",
+          "goal-priority trade-off",
+          "minimum effective change",
+          "individual uncertainty",
+          "next observation"
+        ],
+        "uncertainty": "Population evidence cannot establish individual optimality; compare next execution and recovery before escalating.",
+        "reviewTrigger": "Next comparable session: execution, effort, ordinary function and recovery.",
+        "qualityRule": "A concrete admissible but materially dominated choice is COACHING_SUBOPTIMAL; lack of a reviewed envelope is UNSUPPORTED, not invented scientific approval.",
+        "exactDoseOracle": null
+      },
+      "independence": {
+        "authorInstance": "/root/holdout_quality",
+        "implementedRuntime": false,
+        "derivedFromRuntimeOutput": false,
+        "copiedDevelopmentFixture": false
+      }
+    },
+    {
+      "caseId": "R4-HO-07",
+      "title": "Repeated overperformance earns smallest available progression",
+      "tags": [
+        "OVERPERFORMANCE",
+        "STRENGTH_PROGRESSION"
+      ],
+      "decisionQuestion": "Which admissible option best advances the stated goal in this context, and what would change that judgment?",
+      "scenarioFacts": {
+        "population": {
+          "synthetic": true,
+          "realPerson": false,
+          "ageBand": "ADULT",
+          "ageYears": 34,
+          "participation": "RECREATIONAL_HYBRID",
+          "priority": "STRENGTH_FIRST",
+          "runExperience": "INTERMEDIATE",
+          "strengthExperience": "INTERMEDIATE",
+          "dataTier": "NO_WEARABLE",
+          "historyOrigin": "RECENT_COMPARABLE_RECORDS"
+        },
+        "eligibility": {
+          "status": "NONCLINICAL_CONFIRMED",
+          "source": "EXPLICIT_SYNTHETIC_CURRENT_CONTEXT",
+          "clinicalConcern": false,
+          "pain": false,
+          "persistentPain": false,
+          "injury": false,
+          "illness": false,
+          "functionalLimitation": false,
+          "clearanceClaim": false
+        },
+        "goal": {
+          "primary": "increase familiar row strength",
+          "secondary": "maintain comfortable running"
+        },
+        "phase": "BUILD",
+        "onboarding": {
+          "equipment": [
+            "14 kg dumbbells",
+            "18 kg dumbbells"
+          ],
+          "availability": [
+            {
+              "day": "MON",
+              "minutes": 35
+            }
+          ]
+        },
+        "currentDemand": {
+          "kind": "NEXT_STRENGTH_SESSION",
+          "exercise": "chest-supported dumbbell row",
+          "base": {
+            "sets": 2,
+            "reps": 8,
+            "loadKgPerHand": 14,
+            "targetRir": 3,
+            "restSeconds": 120
+          },
+          "candidate": {
+            "sets": 2,
+            "reps": 9,
+            "loadKgPerHand": 14,
+            "targetRir": 3,
+            "restSeconds": 120
+          },
+          "otherCandidate": {
+            "sets": 2,
+            "reps": 8,
+            "loadKgPerHand": 18,
+            "targetRir": 3,
+            "restSeconds": 120
+          }
+        },
+        "observations": {
+          "recentComparableSessions": [
+            {
+              "reps": [
+                8,
+                8
+              ],
+              "reportedRir": [
+                5,
+                4
+              ],
+              "technique": "usual"
+            },
+            {
+              "reps": [
+                8,
+                8
+              ],
+              "reportedRir": [
+                4,
+                4
+              ],
+              "technique": "usual"
+            }
+          ],
+          "nextDay": "compatible",
+          "otherTraining": "unchanged"
+        },
+        "history": {
+          "candidatePreviouslyExposed": true,
+          "knownResponse": "compatible",
+          "contextComparability": "same movement equipment range and role"
+        }
+      },
+      "scenarioFactsSha256": "e5ce4d7bdec34049bef97513addeabec6ab8ca5d7faad095f0f543b073599242",
+      "independentExpectation": {
+        "allowedDispositions": [
+          "POSITIVE"
+        ],
+        "preferredOption": "BOUNDED_REPETITION_PROGRESSION",
+        "candidateComparisons": [
+          {
+            "option": "add one repetition per set at same load",
+            "judgment": "preferred",
+            "reason": "goal-relevant familiar progression with the smallest available dose change"
+          },
+          {
+            "option": "increase to 18 kg per hand immediately",
+            "judgment": "suboptimal",
+            "reason": "larger unnecessary increment without corresponding exposure support"
+          },
+          {
+            "option": "KEEP indefinitely despite comparable positive response",
+            "judgment": "suboptimal",
+            "reason": "ignores an earned goal-relevant progression"
+          }
+        ],
+        "admissibilityBounds": [
+          "progress one dimension",
+          "preserve technique and RIR intent",
+          "no arbitrary one-event progress rule"
+        ],
+        "requiredMaterialFacts": [
+          "repeated comparable execution",
+          "same load/technique",
+          "compatible recovery",
+          "prior candidate familiarity"
+        ],
+        "mustPreserve": [
+          "shadow official state",
+          "clinical boundaries",
+          "rest",
+          "sets",
+          "other modality schedule"
+        ],
+        "unacceptable": [
+          "invent physiological calibration",
+          "claim individual certainty",
+          "count unsupported output as positive"
+        ],
+        "rationaleMustExplain": [
+          "primary and secondary goal",
+          "phase",
+          "essential stimulus",
+          "valid and rejected alternatives",
+          "goal-priority trade-off",
+          "minimum effective change",
+          "individual uncertainty",
+          "next observation"
+        ],
+        "uncertainty": "Population evidence cannot establish individual optimality; compare next execution and recovery before escalating.",
+        "reviewTrigger": "Next comparable session: execution, effort, ordinary function and recovery.",
+        "qualityRule": "A concrete admissible but materially dominated choice is COACHING_SUBOPTIMAL; lack of a reviewed envelope is UNSUPPORTED, not invented scientific approval.",
+        "exactDoseOracle": null
+      },
+      "independence": {
+        "authorInstance": "/root/holdout_quality",
+        "implementedRuntime": false,
+        "derivedFromRuntimeOutput": false,
+        "copiedDevelopmentFixture": false
+      }
+    },
+    {
+      "caseId": "R4-HO-08",
+      "title": "Repeated underperformance calls for bounded regression",
+      "tags": [
+        "UNDERPERFORMANCE",
+        "STRENGTH_REGRESSION"
+      ],
+      "decisionQuestion": "Which admissible option best advances the stated goal in this context, and what would change that judgment?",
+      "scenarioFacts": {
+        "population": {
+          "synthetic": true,
+          "realPerson": false,
+          "ageBand": "ADULT",
+          "ageYears": 34,
+          "participation": "RECREATIONAL_HYBRID",
+          "priority": "STRENGTH_FIRST",
+          "runExperience": "INTERMEDIATE",
+          "strengthExperience": "INTERMEDIATE",
+          "dataTier": "NO_WEARABLE",
+          "historyOrigin": "RECENT_COMPARABLE_RECORDS"
+        },
+        "eligibility": {
+          "status": "NONCLINICAL_CONFIRMED",
+          "source": "EXPLICIT_SYNTHETIC_CURRENT_CONTEXT",
+          "clinicalConcern": false,
+          "pain": false,
+          "persistentPain": false,
+          "injury": false,
+          "illness": false,
+          "functionalLimitation": false,
+          "clearanceClaim": false
+        },
+        "goal": {
+          "primary": "develop squat strength with repeatable quality",
+          "secondary": "maintain run base"
+        },
+        "phase": "BUILD",
+        "onboarding": {
+          "goals": [
+            "develop squat strength with repeatable quality",
+            "maintain run base"
+          ]
+        },
+        "currentDemand": {
+          "kind": "NEXT_STRENGTH_SESSION",
+          "exercise": "goblet squat",
+          "base": {
+            "sets": 3,
+            "reps": 8,
+            "loadKg": 26,
+            "targetRir": 3,
+            "restSeconds": 150
+          },
+          "availableAlternative": {
+            "sets": 3,
+            "reps": 8,
+            "loadKg": 24,
+            "targetRir": 3,
+            "restSeconds": 150
+          }
+        },
+        "observations": {
+          "lastSession": {
+            "actualReps": [
+              8,
+              6,
+              6
+            ],
+            "reportedRir": [
+              1,
+              0,
+              0
+            ],
+            "technique": "stopped before technique deteriorated"
+          },
+          "recentTrend": "second comparable session below target",
+          "systemic": "normal",
+          "clinicalConcern": false
+        },
+        "history": {
+          "alternativeFamiliar": true,
+          "alternativeResponse": "compatible",
+          "equipmentIncrementKg": 2,
+          "restLongerPreviouslyTried": true,
+          "restLongerSufficient": false
+        }
+      },
+      "scenarioFactsSha256": "30ebf6c421db51ff3b492e037e12b97c6214f661a22214eb078613e1f6abd33f",
+      "independentExpectation": {
+        "allowedDispositions": [
+          "POSITIVE"
+        ],
+        "preferredOption": "FAMILIAR_SMALL_LOAD_REGRESSION",
+        "candidateComparisons": [
+          {
+            "option": "24 kg same sets/reps/intent",
+            "judgment": "preferred",
+            "reason": "restores intended quality while preserving strength stimulus"
+          },
+          {
+            "option": "KEEP 26 kg unchanged",
+            "judgment": "suboptimal",
+            "reason": "repeated comparable underperformance is material"
+          },
+          {
+            "option": "cancel all lower work or cut whole week",
+            "judgment": "suboptimal",
+            "reason": "broader than needed with familiar adequate alternative"
+          }
+        ],
+        "admissibilityBounds": [
+          "no clinical diagnosis",
+          "one sufficient dose change",
+          "preserve essential movement intent"
+        ],
+        "requiredMaterialFacts": [
+          "comparable repeat under-target",
+          "alternative familiarity",
+          "systemic normal",
+          "rest insufficiency"
+        ],
+        "mustPreserve": [
+          "shadow official state",
+          "clinical boundaries",
+          "strength stimulus",
+          "run week"
+        ],
+        "unacceptable": [
+          "invent physiological calibration",
+          "claim individual certainty",
+          "count unsupported output as positive"
+        ],
+        "rationaleMustExplain": [
+          "primary and secondary goal",
+          "phase",
+          "essential stimulus",
+          "valid and rejected alternatives",
+          "goal-priority trade-off",
+          "minimum effective change",
+          "individual uncertainty",
+          "next observation"
+        ],
+        "uncertainty": "Population evidence cannot establish individual optimality; compare next execution and recovery before escalating.",
+        "reviewTrigger": "Next comparable session: execution, effort, ordinary function and recovery.",
+        "qualityRule": "A concrete admissible but materially dominated choice is COACHING_SUBOPTIMAL; lack of a reviewed envelope is UNSUPPORTED, not invented scientific approval.",
+        "exactDoseOracle": null
+      },
+      "independence": {
+        "authorInstance": "/root/holdout_quality",
+        "implementedRuntime": false,
+        "derivedFromRuntimeOutput": false,
+        "copiedDevelopmentFixture": false
+      }
+    },
+    {
+      "caseId": "R4-HO-09",
+      "title": "A noisy under-target session does not justify chronic regression",
+      "tags": [
+        "NOISY_SESSION",
+        "KEEP"
+      ],
+      "decisionQuestion": "Which admissible option best advances the stated goal in this context, and what would change that judgment?",
+      "scenarioFacts": {
+        "population": {
+          "synthetic": true,
+          "realPerson": false,
+          "ageBand": "ADULT",
+          "ageYears": 34,
+          "participation": "RECREATIONAL_HYBRID",
+          "priority": "BALANCED",
+          "runExperience": "INTERMEDIATE",
+          "strengthExperience": "INTERMEDIATE",
+          "dataTier": "NO_WEARABLE",
+          "historyOrigin": "RECENT_COMPARABLE_RECORDS"
+        },
+        "eligibility": {
+          "status": "NONCLINICAL_CONFIRMED",
+          "source": "EXPLICIT_SYNTHETIC_CURRENT_CONTEXT",
+          "clinicalConcern": false,
+          "pain": false,
+          "persistentPain": false,
+          "injury": false,
+          "illness": false,
+          "functionalLimitation": false,
+          "clearanceClaim": false
+        },
+        "goal": {
+          "primary": "progress recreational hybrid fitness",
+          "secondary": "maintain stable practice"
+        },
+        "phase": "BASE",
+        "onboarding": {
+          "goals": [
+            "progress recreational hybrid fitness",
+            "maintain stable practice"
+          ]
+        },
+        "currentDemand": {
+          "kind": "REVIEW_NEXT_SESSION",
+          "officialWeek": {
+            "easyMinutes": 30,
+            "longMinutes": 60,
+            "strengthSessions": 2
+          },
+          "requestedRule": "reduce all strength loads after yesterday"
+        },
+        "observations": {
+          "lastSession": {
+            "actualReps": [
+              8,
+              7
+            ],
+            "plannedReps": [
+              8,
+              8
+            ],
+            "confounders": [
+              "hot room",
+              "short rest due to appointment"
+            ]
+          },
+          "currentCapacity": "ordinary function and warm-up usual",
+          "systemic": "normal"
+        },
+        "history": {
+          "pattern": "otherwise recent compatible comparable training",
+          "repeatedIncompatibleResponse": false
+        },
+        "learningConsent": {
+          "purposeAllowed": true
+        }
+      },
+      "scenarioFactsSha256": "8a52df5d506b7960ed262d4f6775913eecbfcc3969c8c1fa7a530661434bf93d",
+      "independentExpectation": {
+        "allowedDispositions": [
+          "KEEP"
+        ],
+        "preferredOption": "KEEP_WITH_OBSERVATION",
+        "candidateComparisons": [
+          {
+            "option": "retain planned familiar next exposure with observation",
+            "judgment": "preferred",
+            "reason": "isolated noisy miss does not establish chronic mismatch"
+          },
+          {
+            "option": "hard persistent regression rule",
+            "judgment": "invalid",
+            "reason": "single confounded event cannot establish learned tolerance"
+          },
+          {
+            "option": "replan full week",
+            "judgment": "suboptimal",
+            "reason": "unnecessary change"
+          }
+        ],
+        "admissibilityBounds": [
+          "no hard learned rule",
+          "reassess if repeated comparable mismatch"
+        ],
+        "requiredMaterialFacts": [
+          "confounders",
+          "otherwise stable history",
+          "normal current state"
+        ],
+        "mustPreserve": [
+          "shadow official state",
+          "clinical boundaries",
+          "plan stability"
+        ],
+        "unacceptable": [
+          "invent physiological calibration",
+          "claim individual certainty",
+          "count unsupported output as positive"
+        ],
+        "rationaleMustExplain": [
+          "primary and secondary goal",
+          "phase",
+          "essential stimulus",
+          "valid and rejected alternatives",
+          "goal-priority trade-off",
+          "minimum effective change",
+          "individual uncertainty",
+          "next observation"
+        ],
+        "uncertainty": "Population evidence cannot establish individual optimality; compare next execution and recovery before escalating.",
+        "reviewTrigger": "Next comparable session: execution, effort, ordinary function and recovery.",
+        "qualityRule": "A concrete admissible but materially dominated choice is COACHING_SUBOPTIMAL; lack of a reviewed envelope is UNSUPPORTED, not invented scientific approval.",
+        "exactDoseOracle": null
+      },
+      "independence": {
+        "authorInstance": "/root/holdout_quality",
+        "implementedRuntime": false,
+        "derivedFromRuntimeOutput": false,
+        "copiedDevelopmentFixture": false
+      }
+    },
+    {
+      "caseId": "R4-HO-10",
+      "title": "Missed optional run is discarded while key work remains feasible",
+      "tags": [
+        "MISSED_SESSION",
+        "KEEP"
+      ],
+      "decisionQuestion": "Which admissible option best advances the stated goal in this context, and what would change that judgment?",
+      "scenarioFacts": {
+        "population": {
+          "synthetic": true,
+          "realPerson": false,
+          "ageBand": "ADULT",
+          "ageYears": 34,
+          "participation": "RECREATIONAL_HYBRID",
+          "priority": "RUN_FIRST",
+          "runExperience": "INTERMEDIATE",
+          "strengthExperience": "INTERMEDIATE",
+          "dataTier": "NO_WEARABLE",
+          "historyOrigin": "RECENT_COMPARABLE_RECORDS"
+        },
+        "eligibility": {
+          "status": "NONCLINICAL_CONFIRMED",
+          "source": "EXPLICIT_SYNTHETIC_CURRENT_CONTEXT",
+          "clinicalConcern": false,
+          "pain": false,
+          "persistentPain": false,
+          "injury": false,
+          "illness": false,
+          "functionalLimitation": false,
+          "clearanceClaim": false
+        },
+        "goal": {
+          "primary": "improve 10K performance",
+          "secondary": "maintain strength"
+        },
+        "phase": "BUILD",
+        "onboarding": {
+          "goals": [
+            "improve 10K performance",
+            "maintain strength"
+          ]
+        },
+        "currentDemand": {
+          "kind": "MISSED_OPTIONAL_SESSION",
+          "session": {
+            "family": "EASY",
+            "minutes": 15,
+            "optional": true
+          },
+          "remainingWeek": {
+            "core": "familiar cruise and long run",
+            "status": "feasible"
+          }
+        },
+        "observations": {
+          "omission": "family commitment",
+          "notMissingUpload": true,
+          "coreWork": "compatible",
+          "recovery": "usual"
+        },
+        "athletePreference": "continue planned week"
+      },
+      "scenarioFactsSha256": "7b42c12ecd175cfbc0ea9c5d35c7199cf99da9bd4451226794d23b0d85e7cde4",
+      "independentExpectation": {
+        "allowedDispositions": [
+          "KEEP"
+        ],
+        "preferredOption": "DISCARD_OPTIONAL_NO_COMPENSATION",
+        "candidateComparisons": [
+          {
+            "option": "leave optional session missed and continue key work",
+            "judgment": "preferred",
+            "reason": "preserves goal-critical load without compensation cost"
+          },
+          {
+            "option": "add 15 minutes to long run automatically",
+            "judgment": "suboptimal",
+            "reason": "missed volume is not a debt"
+          },
+          {
+            "option": "double tomorrow to catch up",
+            "judgment": "suboptimal",
+            "reason": "avoidable fatigue and schedule disruption"
+          }
+        ],
+        "admissibilityBounds": [
+          "no compensatory overload"
+        ],
+        "requiredMaterialFacts": [
+          "optional role",
+          "confirmed skip",
+          "remaining core feasible",
+          "preference"
+        ],
+        "mustPreserve": [
+          "shadow official state",
+          "clinical boundaries",
+          "essential cruise and long run"
+        ],
+        "unacceptable": [
+          "invent physiological calibration",
+          "claim individual certainty",
+          "count unsupported output as positive"
+        ],
+        "rationaleMustExplain": [
+          "primary and secondary goal",
+          "phase",
+          "essential stimulus",
+          "valid and rejected alternatives",
+          "goal-priority trade-off",
+          "minimum effective change",
+          "individual uncertainty",
+          "next observation"
+        ],
+        "uncertainty": "Population evidence cannot establish individual optimality; compare next execution and recovery before escalating.",
+        "reviewTrigger": "Next comparable session: execution, effort, ordinary function and recovery.",
+        "qualityRule": "A concrete admissible but materially dominated choice is COACHING_SUBOPTIMAL; lack of a reviewed envelope is UNSUPPORTED, not invented scientific approval.",
+        "exactDoseOracle": null
+      },
+      "independence": {
+        "authorInstance": "/root/holdout_quality",
+        "implementedRuntime": false,
+        "derivedFromRuntimeOutput": false,
+        "copiedDevelopmentFixture": false
+      }
+    },
+    {
+      "caseId": "R4-HO-11",
+      "title": "Missed essential session moves to a genuinely feasible alternative",
+      "tags": [
+        "MISSED_KEY_SESSION",
+        "FUTURE_HORIZON"
+      ],
+      "decisionQuestion": "Which admissible option best advances the stated goal in this context, and what would change that judgment?",
+      "scenarioFacts": {
+        "population": {
+          "synthetic": true,
+          "realPerson": false,
+          "ageBand": "ADULT",
+          "ageYears": 34,
+          "participation": "RECREATIONAL_HYBRID",
+          "priority": "RUN_FIRST",
+          "runExperience": "INTERMEDIATE",
+          "strengthExperience": "INTERMEDIATE",
+          "dataTier": "NO_WEARABLE",
+          "historyOrigin": "RECENT_COMPARABLE_RECORDS"
+        },
+        "eligibility": {
+          "status": "NONCLINICAL_CONFIRMED",
+          "source": "EXPLICIT_SYNTHETIC_CURRENT_CONTEXT",
+          "clinicalConcern": false,
+          "pain": false,
+          "persistentPain": false,
+          "injury": false,
+          "illness": false,
+          "functionalLimitation": false,
+          "clearanceClaim": false
+        },
+        "goal": {
+          "primary": "improve 10K threshold endurance",
+          "secondary": "maintain strength"
+        },
+        "phase": "BUILD",
+        "onboarding": {
+          "goals": [
+            "improve 10K threshold endurance",
+            "maintain strength"
+          ]
+        },
+        "currentDemand": {
+          "kind": "MISSED_KEY_SESSION",
+          "session": {
+            "family": "THRESHOLD_CRUISE",
+            "day": "TUE",
+            "repetitions": 3,
+            "workMinutesEach": 6,
+            "recoveryMinutes": 2,
+            "role": "KEY"
+          },
+          "remainingWeek": {
+            "strength": {
+              "day": "WED",
+              "role": "MAINTENANCE",
+              "optionalLowerAccessory": true
+            },
+            "longRun": {
+              "day": "SUN",
+              "minutes": 65,
+              "role": "ESSENTIAL"
+            }
+          },
+          "availability": {
+            "THU": [
+              [
+                "18:00",
+                "19:00"
+              ]
+            ],
+            "SAT": [
+              [
+                "08:00",
+                "09:00"
+              ]
+            ]
+          }
+        },
+        "observations": {
+          "omission": "work conflict, not fatigue",
+          "notMissingUpload": true,
+          "recovery": "normal"
+        },
+        "alternatives": [
+          {
+            "id": "MOVE_KEY_THU",
+            "run": "familiar cruise THU; long remains SUN"
+          },
+          {
+            "id": "MOVE_KEY_SAT",
+            "run": "cruise SAT; long SUN"
+          },
+          {
+            "id": "DISCARD_KEY",
+            "run": "no cruise this week"
+          }
+        ],
+        "history": {
+          "thursdayCruiseSundayLongFamiliar": true,
+          "saturdayCruiseSundayLong": "previously harder than intended"
+        },
+        "constraints": {
+          "noAddedVolume": true,
+          "noMerge": true
+        }
+      },
+      "scenarioFactsSha256": "83ac536546531404a28db475edad239256e549a55152f21792d37fb5660366ba",
+      "independentExpectation": {
+        "allowedDispositions": [
+          "POSITIVE"
+        ],
+        "preferredOption": "MOVE_KEY_THU",
+        "candidateComparisons": [
+          {
+            "option": "MOVE_KEY_THU",
+            "judgment": "preferred",
+            "reason": "preserves essential threshold and long-run stimuli using familiar tolerated arrangement"
+          },
+          {
+            "option": "MOVE_KEY_SAT",
+            "judgment": "suboptimal",
+            "reason": "ignores known response and burdens next essential run"
+          },
+          {
+            "option": "DISCARD_KEY",
+            "judgment": "suboptimal",
+            "reason": "a feasible goal-serving move exists"
+          },
+          {
+            "option": "merge missed cruise into long",
+            "judgment": "invalid",
+            "reason": "changes intended stimuli without supporting envelope"
+          }
+        ],
+        "admissibilityBounds": [
+          "retain dose",
+          "no compensation",
+          "respect future long run"
+        ],
+        "requiredMaterialFacts": [
+          "miss not fatigue",
+          "THU feasibility",
+          "history of arrangement",
+          "Sunday essential long"
+        ],
+        "mustPreserve": [
+          "shadow official state",
+          "clinical boundaries",
+          "threshold intent",
+          "long run",
+          "no added volume"
+        ],
+        "unacceptable": [
+          "invent physiological calibration",
+          "claim individual certainty",
+          "count unsupported output as positive"
+        ],
+        "rationaleMustExplain": [
+          "primary and secondary goal",
+          "phase",
+          "essential stimulus",
+          "valid and rejected alternatives",
+          "goal-priority trade-off",
+          "minimum effective change",
+          "individual uncertainty",
+          "next observation"
+        ],
+        "uncertainty": "Population evidence cannot establish individual optimality; compare next execution and recovery before escalating.",
+        "reviewTrigger": "Next comparable session: execution, effort, ordinary function and recovery.",
+        "qualityRule": "A concrete admissible but materially dominated choice is COACHING_SUBOPTIMAL; lack of a reviewed envelope is UNSUPPORTED, not invented scientific approval.",
+        "exactDoseOracle": null
+      },
+      "independence": {
+        "authorInstance": "/root/holdout_quality",
+        "implementedRuntime": false,
+        "derivedFromRuntimeOutput": false,
+        "copiedDevelopmentFixture": false
+      }
+    },
+    {
+      "caseId": "R4-HO-12",
+      "title": "Local calf fatigue protects tomorrow key run with minimum accessory change",
+      "tags": [
+        "LOCAL_FATIGUE",
+        "RUN_FIRST",
+        "MEC"
+      ],
+      "decisionQuestion": "Which admissible option best advances the stated goal in this context, and what would change that judgment?",
+      "scenarioFacts": {
+        "population": {
+          "synthetic": true,
+          "realPerson": false,
+          "ageBand": "ADULT",
+          "ageYears": 34,
+          "participation": "RECREATIONAL_HYBRID",
+          "priority": "RUN_FIRST",
+          "runExperience": "INTERMEDIATE",
+          "strengthExperience": "INTERMEDIATE",
+          "dataTier": "NO_WEARABLE",
+          "historyOrigin": "RECENT_COMPARABLE_RECORDS"
+        },
+        "eligibility": {
+          "status": "NONCLINICAL_CONFIRMED",
+          "source": "EXPLICIT_SYNTHETIC_CURRENT_CONTEXT",
+          "clinicalConcern": false,
+          "pain": false,
+          "persistentPain": false,
+          "injury": false,
+          "illness": false,
+          "functionalLimitation": false,
+          "clearanceClaim": false
+        },
+        "goal": {
+          "primary": "improve race-specific endurance",
+          "secondary": "maintain strength practice"
+        },
+        "phase": "SPECIFIC_BUILD",
+        "onboarding": {
+          "goals": [
+            "improve race-specific endurance",
+            "maintain strength practice"
+          ]
+        },
+        "currentDemand": {
+          "kind": "LOCAL_FATIGUE",
+          "session": {
+            "essential": [
+              {
+                "exercise": "supported row",
+                "sets": 2,
+                "reps": 10,
+                "loadKg": 20,
+                "targetRir": 3
+              }
+            ],
+            "optional": [
+              {
+                "exercise": "standing calf raise",
+                "sets": 2,
+                "reps": 12,
+                "loadKg": 18,
+                "targetRir": 3
+              }
+            ],
+            "completed": []
+          },
+          "futureKey": {
+            "family": "THRESHOLD_CRUISE",
+            "day": "TOMORROW",
+            "role": "ESSENTIAL",
+            "familiar": true
+          }
+        },
+        "observations": {
+          "local": "calves fatigued after unfamiliar hilly walk",
+          "systemic": "normal",
+          "pain": false,
+          "performance": "row warm-up usual",
+          "athleteRequest": "omit calf accessory today"
+        },
+        "alternatives": {
+          "omitOptional": "retains essential upper work and key run",
+          "cancelWholeSession": "removes unaffected upper stimulus",
+          "keep": "adds optional local fatigue"
+        },
+        "history": {
+          "calfAccessoryOptional": true
+        }
+      },
+      "scenarioFactsSha256": "0c49720b34e302f7d869124d9c45f73f570b10c2cd4daef79f035aecf9e1f3e7",
+      "independentExpectation": {
+        "allowedDispositions": [
+          "POSITIVE"
+        ],
+        "preferredOption": "OMIT_UNPERFORMED_OPTIONAL_CALF",
+        "candidateComparisons": [
+          {
+            "option": "omit optional calf accessory only",
+            "judgment": "preferred",
+            "reason": "smallest sufficient goal-preserving intervention"
+          },
+          {
+            "option": "cancel whole strength session",
+            "judgment": "suboptimal",
+            "reason": "unaffected essential upper stimulus can remain"
+          },
+          {
+            "option": "keep accessory and reduce tomorrow run",
+            "judgment": "suboptimal",
+            "reason": "sacrifices primary stimulus for optional secondary work"
+          }
+        ],
+        "admissibilityBounds": [
+          "modify unperformed work only",
+          "no pain diagnosis",
+          "no mandatory run cancellation"
+        ],
+        "requiredMaterialFacts": [
+          "local vs systemic distinction",
+          "optional role",
+          "future key run",
+          "unaffected upper performance"
+        ],
+        "mustPreserve": [
+          "shadow official state",
+          "clinical boundaries",
+          "essential upper work",
+          "future run stimulus"
+        ],
+        "unacceptable": [
+          "invent physiological calibration",
+          "claim individual certainty",
+          "count unsupported output as positive"
+        ],
+        "rationaleMustExplain": [
+          "primary and secondary goal",
+          "phase",
+          "essential stimulus",
+          "valid and rejected alternatives",
+          "goal-priority trade-off",
+          "minimum effective change",
+          "individual uncertainty",
+          "next observation"
+        ],
+        "uncertainty": "Population evidence cannot establish individual optimality; compare next execution and recovery before escalating.",
+        "reviewTrigger": "Next comparable session: execution, effort, ordinary function and recovery.",
+        "qualityRule": "A concrete admissible but materially dominated choice is COACHING_SUBOPTIMAL; lack of a reviewed envelope is UNSUPPORTED, not invented scientific approval.",
+        "exactDoseOracle": null
+      },
+      "independence": {
+        "authorInstance": "/root/holdout_quality",
+        "implementedRuntime": false,
+        "derivedFromRuntimeOutput": false,
+        "copiedDevelopmentFixture": false
+      }
+    },
+    {
+      "caseId": "R4-HO-13",
+      "title": "Systemic convergence changes only remaining in-session work",
+      "tags": [
+        "SYSTEMIC_FATIGUE",
+        "IN_SESSION",
+        "COMPLETED_PREFIX"
+      ],
+      "decisionQuestion": "Which admissible option best advances the stated goal in this context, and what would change that judgment?",
+      "scenarioFacts": {
+        "population": {
+          "synthetic": true,
+          "realPerson": false,
+          "ageBand": "ADULT",
+          "ageYears": 34,
+          "participation": "RECREATIONAL_HYBRID",
+          "priority": "RUN_FIRST",
+          "runExperience": "INTERMEDIATE",
+          "strengthExperience": "INTERMEDIATE",
+          "dataTier": "NO_WEARABLE",
+          "historyOrigin": "RECENT_COMPARABLE_RECORDS"
+        },
+        "eligibility": {
+          "status": "NONCLINICAL_CONFIRMED",
+          "source": "EXPLICIT_SYNTHETIC_CURRENT_CONTEXT",
+          "clinicalConcern": false,
+          "pain": false,
+          "persistentPain": false,
+          "injury": false,
+          "illness": false,
+          "functionalLimitation": false,
+          "clearanceClaim": false
+        },
+        "goal": {
+          "primary": "improve repeatable threshold endurance",
+          "secondary": "retain recovery for long run"
+        },
+        "phase": "BUILD",
+        "onboarding": {
+          "goals": [
+            "improve repeatable threshold endurance",
+            "retain recovery for long run"
+          ]
+        },
+        "currentDemand": {
+          "kind": "SYSTEMIC_FATIGUE",
+          "session": {
+            "family": "CRUISE_INTERVALS",
+            "repetitions": 4,
+            "workMinutesEach": 6,
+            "recoveryMinutes": 2,
+            "effortAnchor": "familiar controlled hard"
+          },
+          "essentialStimulus": "bounded cruise exposure without completion at any cost",
+          "futureKey": {
+            "family": "LONG_RUN",
+            "day": "SUN",
+            "role": "ESSENTIAL"
+          }
+        },
+        "observations": {
+          "severalDays": "unusually poor recovery under work stress; no illness symptoms",
+          "warmup": "comfortable",
+          "firstTwoRepetitions": "usual pace much harder; second voluntarily stopped early",
+          "local": "no isolated concern",
+          "clinicalConcern": false,
+          "currentCapacity": "easy running remains comfortable"
+        },
+        "completedPrefix": {
+          "repetitions": 2,
+          "actualWorkMinutes": [
+            6,
+            4
+          ]
+        },
+        "alternatives": {
+          "keep4": "continue full remaining dose",
+          "reduceRemaining": "bounded reduced remainder if effort normalizes",
+          "easyOnly": "end cruise work and use familiar easy cooldown"
+        },
+        "history": {
+          "easyCooldown": {
+            "family": "EASY",
+            "minutes": 8,
+            "talk": "comfortable",
+            "response": "compatible"
+          }
+        }
+      },
+      "scenarioFactsSha256": "0a729e098f39fa24cb119fa0eabe3e185bc1875ca5aa4bed2ee544a3f1de3f7b",
+      "independentExpectation": {
+        "allowedDispositions": [
+          "POSITIVE"
+        ],
+        "preferredOption": "REDUCE_OR_END_REMAINING_QUALITY",
+        "candidateComparisons": [
+          {
+            "option": "end cruise and use familiar comfortable easy remainder",
+            "judgment": "preferred",
+            "reason": "converging effort mismatch and future essential stimulus outweigh nominal completion"
+          },
+          {
+            "option": "additional bounded cruise only after explicit normalization check",
+            "judgment": "acceptable conditional alternative",
+            "reason": "must demonstrate adequacy rather than blindly use one-fewer rule"
+          },
+          {
+            "option": "rewrite completed prefix as two full six-minute reps",
+            "judgment": "invalid",
+            "reason": "violates execution facts"
+          },
+          {
+            "option": "force all planned remaining work",
+            "judgment": "suboptimal",
+            "reason": "ignores systemic convergence"
+          }
+        ],
+        "admissibilityBounds": [
+          "do not edit [6,4] completed minutes",
+          "remaining work only",
+          "no guessed new pace",
+          "stop/clinical route if symptoms arise"
+        ],
+        "requiredMaterialFacts": [
+          "systemic convergence",
+          "effort divergence",
+          "completed partial rep",
+          "easy capacity",
+          "future key run"
+        ],
+        "mustPreserve": [
+          "shadow official state",
+          "clinical boundaries",
+          "completed execution facts",
+          "future recovery"
+        ],
+        "unacceptable": [
+          "invent physiological calibration",
+          "claim individual certainty",
+          "count unsupported output as positive"
+        ],
+        "rationaleMustExplain": [
+          "primary and secondary goal",
+          "phase",
+          "essential stimulus",
+          "valid and rejected alternatives",
+          "goal-priority trade-off",
+          "minimum effective change",
+          "individual uncertainty",
+          "next observation"
+        ],
+        "uncertainty": "Population evidence cannot establish individual optimality; compare next execution and recovery before escalating.",
+        "reviewTrigger": "Next comparable session: execution, effort, ordinary function and recovery.",
+        "qualityRule": "A concrete admissible but materially dominated choice is COACHING_SUBOPTIMAL; lack of a reviewed envelope is UNSUPPORTED, not invented scientific approval.",
+        "exactDoseOracle": null
+      },
+      "independence": {
+        "authorInstance": "/root/holdout_quality",
+        "implementedRuntime": false,
+        "derivedFromRuntimeOutput": false,
+        "copiedDevelopmentFixture": false
+      }
+    },
+    {
+      "caseId": "R4-HO-14",
+      "title": "Long-run progression preserves easy intent and future strength recovery",
+      "tags": [
+        "LONG_RUN_PROGRESSION",
+        "GOAL_SELECTION"
+      ],
+      "decisionQuestion": "Which admissible option best advances the stated goal in this context, and what would change that judgment?",
+      "scenarioFacts": {
+        "population": {
+          "synthetic": true,
+          "realPerson": false,
+          "ageBand": "ADULT",
+          "ageYears": 34,
+          "participation": "RECREATIONAL_HYBRID",
+          "priority": "RUN_FIRST",
+          "runExperience": "INTERMEDIATE",
+          "strengthExperience": "INTERMEDIATE",
+          "dataTier": "NO_WEARABLE",
+          "historyOrigin": "RECENT_COMPARABLE_RECORDS"
+        },
+        "eligibility": {
+          "status": "NONCLINICAL_CONFIRMED",
+          "source": "EXPLICIT_SYNTHETIC_CURRENT_CONTEXT",
+          "clinicalConcern": false,
+          "pain": false,
+          "persistentPain": false,
+          "injury": false,
+          "illness": false,
+          "functionalLimitation": false,
+          "clearanceClaim": false
+        },
+        "goal": {
+          "primary": "build half-marathon endurance",
+          "secondary": "maintain strength"
+        },
+        "phase": "BUILD",
+        "onboarding": {
+          "goals": [
+            "build half-marathon endurance",
+            "maintain strength"
+          ]
+        },
+        "currentDemand": {
+          "kind": "RUN_NEXT_SESSION",
+          "family": "LONG_RUN",
+          "currentMinutes": 70,
+          "candidateMinutes": 75,
+          "otherCandidateMinutes": 90
+        },
+        "priorHistory": {
+          "recentComparable": [
+            {
+              "minutes": 70,
+              "talk": "comfortable",
+              "nextDay": "usual"
+            },
+            {
+              "minutes": 70,
+              "talk": "comfortable",
+              "nextDay": "usual"
+            }
+          ],
+          "candidate75PreviouslyFamiliar": true,
+          "candidateResponse": "compatible in similar context"
+        },
+        "calibration": {
+          "method": "familiar comfortable talk effort"
+        },
+        "observations": {
+          "weekContext": "ordinary, no new strength escalation",
+          "athleteGoal": "gradual long-run endurance",
+          "recovery": "usual"
+        },
+        "availability": [
+          {
+            "day": "SUN",
+            "minutes": 85
+          }
+        ],
+        "futureKey": {
+          "day": "TUE",
+          "family": "LOWER",
+          "role": "MAINTENANCE"
+        }
+      },
+      "scenarioFactsSha256": "5d925f0c055ffdcc9d4a4b27738f839ef1b415d85f76a172e74a8195f6aad17e",
+      "independentExpectation": {
+        "allowedDispositions": [
+          "POSITIVE"
+        ],
+        "preferredOption": "FAMILIAR_75_MINUTE_LONG",
+        "candidateComparisons": [
+          {
+            "option": "75 minutes familiar easy long run",
+            "judgment": "preferred",
+            "reason": "small goal-relevant progression with known tolerance and schedule fit"
+          },
+          {
+            "option": "90 minutes",
+            "judgment": "invalid",
+            "reason": "exceeds availability and supplied familiar progression context"
+          },
+          {
+            "option": "increase pace as well as duration",
+            "judgment": "suboptimal",
+            "reason": "unnecessary second dimension changes stimulus/recovery cost"
+          }
+        ],
+        "admissibilityBounds": [
+          "fit 85-minute window",
+          "same easy effort",
+          "do not universalize a weekly percentage"
+        ],
+        "requiredMaterialFacts": [
+          "repeated 70-minute response",
+          "75-minute familiarity",
+          "half-marathon build",
+          "availability"
+        ],
+        "mustPreserve": [
+          "shadow official state",
+          "clinical boundaries",
+          "easy endurance stimulus",
+          "other modality"
+        ],
+        "unacceptable": [
+          "invent physiological calibration",
+          "claim individual certainty",
+          "count unsupported output as positive"
+        ],
+        "rationaleMustExplain": [
+          "primary and secondary goal",
+          "phase",
+          "essential stimulus",
+          "valid and rejected alternatives",
+          "goal-priority trade-off",
+          "minimum effective change",
+          "individual uncertainty",
+          "next observation"
+        ],
+        "uncertainty": "Population evidence cannot establish individual optimality; compare next execution and recovery before escalating.",
+        "reviewTrigger": "Next comparable session: execution, effort, ordinary function and recovery.",
+        "qualityRule": "A concrete admissible but materially dominated choice is COACHING_SUBOPTIMAL; lack of a reviewed envelope is UNSUPPORTED, not invented scientific approval.",
+        "exactDoseOracle": null
+      },
+      "independence": {
+        "authorInstance": "/root/holdout_quality",
+        "implementedRuntime": false,
+        "derivedFromRuntimeOutput": false,
+        "copiedDevelopmentFixture": false
+      }
+    },
+    {
+      "caseId": "R4-HO-15",
+      "title": "Threshold progression chooses work duration before unsupported speed escalation",
+      "tags": [
+        "THRESHOLD_PROGRESSION",
+        "OVERPERFORMANCE"
+      ],
+      "decisionQuestion": "Which admissible option best advances the stated goal in this context, and what would change that judgment?",
+      "scenarioFacts": {
+        "population": {
+          "synthetic": true,
+          "realPerson": false,
+          "ageBand": "ADULT",
+          "ageYears": 34,
+          "participation": "RECREATIONAL_HYBRID",
+          "priority": "RUN_FIRST",
+          "runExperience": "INTERMEDIATE",
+          "strengthExperience": "INTERMEDIATE",
+          "dataTier": "NO_WEARABLE",
+          "historyOrigin": "RECENT_COMPARABLE_RECORDS"
+        },
+        "eligibility": {
+          "status": "NONCLINICAL_CONFIRMED",
+          "source": "EXPLICIT_SYNTHETIC_CURRENT_CONTEXT",
+          "clinicalConcern": false,
+          "pain": false,
+          "persistentPain": false,
+          "injury": false,
+          "illness": false,
+          "functionalLimitation": false,
+          "clearanceClaim": false
+        },
+        "goal": {
+          "primary": "improve sustained 10K effort durability",
+          "secondary": "maintain strength"
+        },
+        "phase": "SPECIFIC_BUILD",
+        "onboarding": {
+          "goals": [
+            "improve sustained 10K effort durability",
+            "maintain strength"
+          ]
+        },
+        "currentDemand": {
+          "kind": "RUN_NEXT_SESSION",
+          "family": "THRESHOLD_CRUISE",
+          "base": {
+            "repetitions": 3,
+            "workMinutesEach": 6,
+            "recoveryMinutes": 2,
+            "paceSecondsPerKm": 345
+          },
+          "candidate": {
+            "repetitions": 3,
+            "workMinutesEach": 7,
+            "recoveryMinutes": 2,
+            "paceSecondsPerKm": 345
+          },
+          "otherCandidate": {
+            "repetitions": 3,
+            "workMinutesEach": 6,
+            "recoveryMinutes": 2,
+            "paceSecondsPerKm": 325
+          }
+        },
+        "priorHistory": {
+          "recentComparable": [
+            {
+              "repetitions": 3,
+              "workMinutesEach": 6,
+              "paceSecondsPerKm": 345,
+              "effort": "controlled hard, stable across repetitions",
+              "nextDay": "usual"
+            },
+            {
+              "repetitions": 3,
+              "workMinutesEach": 6,
+              "paceSecondsPerKm": 345,
+              "effort": "controlled hard, stable across repetitions",
+              "nextDay": "usual"
+            }
+          ],
+          "candidatePreviouslyExposed": true,
+          "candidateResponse": "compatible at 345 in similar context"
+        },
+        "calibration": {
+          "method": "familiar pace plus effort cross-check",
+          "construct": "threshold intent, not measured LT2"
+        },
+        "observations": {
+          "recovery": "usual",
+          "weekContext": "no other progression"
+        },
+        "availability": [
+          {
+            "day": "THU",
+            "minutes": 50
+          }
+        ]
+      },
+      "scenarioFactsSha256": "5599ef34d8dd74ad838ad90b73cd8149e62309af355eabc1ec5cf96df9686bfb",
+      "independentExpectation": {
+        "allowedDispositions": [
+          "POSITIVE"
+        ],
+        "preferredOption": "FAMILIAR_CRUISE_DURATION_PROGRESSION",
+        "candidateComparisons": [
+          {
+            "option": "3 x 7 minutes at familiar 345 sec/km effort cross-check",
+            "judgment": "preferred",
+            "reason": "goal-specific durability progression within familiar tolerance"
+          },
+          {
+            "option": "faster 325 sec/km",
+            "judgment": "unsupported",
+            "reason": "no current anchor for increased speed or equivalent physiological intent"
+          },
+          {
+            "option": "increase both speed and duration",
+            "judgment": "suboptimal",
+            "reason": "adds avoidable dose uncertainty"
+          }
+        ],
+        "admissibilityBounds": [
+          "single dimension",
+          "no LT2/critical-speed equivalence",
+          "effort overrides guessed pace"
+        ],
+        "requiredMaterialFacts": [
+          "goal and phase",
+          "familiar candidate",
+          "comparable responses",
+          "no other escalation"
+        ],
+        "mustPreserve": [
+          "shadow official state",
+          "clinical boundaries",
+          "cruise intent",
+          "recovery interval"
+        ],
+        "unacceptable": [
+          "invent physiological calibration",
+          "claim individual certainty",
+          "count unsupported output as positive"
+        ],
+        "rationaleMustExplain": [
+          "primary and secondary goal",
+          "phase",
+          "essential stimulus",
+          "valid and rejected alternatives",
+          "goal-priority trade-off",
+          "minimum effective change",
+          "individual uncertainty",
+          "next observation"
+        ],
+        "uncertainty": "Population evidence cannot establish individual optimality; compare next execution and recovery before escalating.",
+        "reviewTrigger": "Next comparable session: execution, effort, ordinary function and recovery.",
+        "qualityRule": "A concrete admissible but materially dominated choice is COACHING_SUBOPTIMAL; lack of a reviewed envelope is UNSUPPORTED, not invented scientific approval.",
+        "exactDoseOracle": null
+      },
+      "independence": {
+        "authorInstance": "/root/holdout_quality",
+        "implementedRuntime": false,
+        "derivedFromRuntimeOutput": false,
+        "copiedDevelopmentFixture": false
+      }
+    },
+    {
+      "caseId": "R4-HO-16",
+      "title": "Equipment substitution preserves familiar movement without transferring kilograms",
+      "tags": [
+        "EXERCISE_SUBSTITUTION",
+        "EQUIPMENT"
+      ],
+      "decisionQuestion": "Which admissible option best advances the stated goal in this context, and what would change that judgment?",
+      "scenarioFacts": {
+        "population": {
+          "synthetic": true,
+          "realPerson": false,
+          "ageBand": "ADULT",
+          "ageYears": 34,
+          "participation": "RECREATIONAL_HYBRID",
+          "priority": "STRENGTH_FIRST",
+          "runExperience": "INTERMEDIATE",
+          "strengthExperience": "INTERMEDIATE",
+          "dataTier": "NO_WEARABLE",
+          "historyOrigin": "RECENT_COMPARABLE_RECORDS"
+        },
+        "eligibility": {
+          "status": "NONCLINICAL_CONFIRMED",
+          "source": "EXPLICIT_SYNTHETIC_CURRENT_CONTEXT",
+          "clinicalConcern": false,
+          "pain": false,
+          "persistentPain": false,
+          "injury": false,
+          "illness": false,
+          "functionalLimitation": false,
+          "clearanceClaim": false
+        },
+        "goal": {
+          "primary": "maintain upper pulling stimulus",
+          "secondary": "preserve run recovery"
+        },
+        "phase": "BASE",
+        "onboarding": {
+          "equipment": [
+            "familiar cable row",
+            "unfamiliar lever row"
+          ],
+          "availability": [
+            {
+              "day": "MON",
+              "minutes": 35
+            }
+          ]
+        },
+        "currentDemand": {
+          "kind": "EXERCISE_SUBSTITUTION",
+          "session": {
+            "exercise": "chest-supported dumbbell row",
+            "sets": 2,
+            "reps": 10,
+            "loadKgPerHand": 12,
+            "targetRir": 3
+          },
+          "problem": "dumbbells unavailable",
+          "options": [
+            {
+              "id": "FAMILIAR_CABLE_ROW",
+              "exercise": "seated cable row",
+              "sets": 2,
+              "reps": 10,
+              "loadKg": 25,
+              "targetRir": 3
+            },
+            {
+              "id": "NOVEL_MACHINE",
+              "exercise": "unfamiliar lever row",
+              "loadKg": 24
+            },
+            {
+              "id": "OMIT_PULL",
+              "exercise": null
+            }
+          ]
+        },
+        "history": {
+          "cableRow": {
+            "exercise": "seated cable row",
+            "sets": 2,
+            "reps": 10,
+            "loadKg": 25,
+            "targetRir": 3,
+            "response": "compatible",
+            "configurationFamiliar": true
+          },
+          "machine": "never exposed"
+        },
+        "observations": {
+          "systemic": "normal",
+          "pain": false
+        }
+      },
+      "scenarioFactsSha256": "6ee46f608d895c71fb0352a651d5e49690c113cde443f51c6dcb9f830e583674",
+      "independentExpectation": {
+        "allowedDispositions": [
+          "POSITIVE"
+        ],
+        "preferredOption": "FAMILIAR_CABLE_ROW",
+        "candidateComparisons": [
+          {
+            "option": "FAMILIAR_CABLE_ROW",
+            "judgment": "preferred",
+            "reason": "preserves pulling intent with configuration-specific known load"
+          },
+          {
+            "option": "NOVEL_MACHINE using sum of dumbbell kilograms",
+            "judgment": "invalid",
+            "reason": "loads do not transfer between configurations"
+          },
+          {
+            "option": "OMIT_PULL",
+            "judgment": "suboptimal",
+            "reason": "available familiar substitute preserves essential stimulus"
+          }
+        ],
+        "admissibilityBounds": [
+          "no kg equivalence",
+          "same movement intent",
+          "configuration-specific anchor"
+        ],
+        "requiredMaterialFacts": [
+          "equipment problem",
+          "familiar substitute dose",
+          "unfamiliar machine status"
+        ],
+        "mustPreserve": [
+          "shadow official state",
+          "clinical boundaries",
+          "essential pulling stimulus",
+          "unit distinctions"
+        ],
+        "unacceptable": [
+          "invent physiological calibration",
+          "claim individual certainty",
+          "count unsupported output as positive"
+        ],
+        "rationaleMustExplain": [
+          "primary and secondary goal",
+          "phase",
+          "essential stimulus",
+          "valid and rejected alternatives",
+          "goal-priority trade-off",
+          "minimum effective change",
+          "individual uncertainty",
+          "next observation"
+        ],
+        "uncertainty": "Population evidence cannot establish individual optimality; compare next execution and recovery before escalating.",
+        "reviewTrigger": "Next comparable session: execution, effort, ordinary function and recovery.",
+        "qualityRule": "A concrete admissible but materially dominated choice is COACHING_SUBOPTIMAL; lack of a reviewed envelope is UNSUPPORTED, not invented scientific approval.",
+        "exactDoseOracle": null
+      },
+      "independence": {
+        "authorInstance": "/root/holdout_quality",
+        "implementedRuntime": false,
+        "derivedFromRuntimeOutput": false,
+        "copiedDevelopmentFixture": false
+      }
+    },
+    {
+      "caseId": "R4-HO-17",
+      "title": "Nonclinical running return uses current capacity rather than pre-travel dose",
+      "tags": [
+        "RETURN_REESTABLISHMENT",
+        "RUN"
+      ],
+      "decisionQuestion": "Which admissible option best advances the stated goal in this context, and what would change that judgment?",
+      "scenarioFacts": {
+        "population": {
+          "synthetic": true,
+          "realPerson": false,
+          "ageBand": "ADULT",
+          "ageYears": 34,
+          "participation": "RECREATIONAL_HYBRID",
+          "priority": "RUN_FIRST",
+          "runExperience": "INTERMEDIATE",
+          "strengthExperience": "INTERMEDIATE",
+          "dataTier": "NO_WEARABLE",
+          "historyOrigin": "RECENT_COMPARABLE_RECORDS"
+        },
+        "eligibility": {
+          "status": "NONCLINICAL_CONFIRMED",
+          "source": "EXPLICIT_SYNTHETIC_CURRENT_CONTEXT",
+          "clinicalConcern": false,
+          "pain": false,
+          "persistentPain": false,
+          "injury": false,
+          "illness": false,
+          "functionalLimitation": false,
+          "clearanceClaim": false
+        },
+        "goal": {
+          "primary": "resume recreational endurance progression",
+          "secondary": "retain strength consistency"
+        },
+        "phase": "REESTABLISHMENT",
+        "onboarding": {
+          "goals": [
+            "resume recreational endurance progression",
+            "retain strength consistency"
+          ]
+        },
+        "currentDemand": {
+          "kind": "RETURN_RUN",
+          "family": "EASY",
+          "priorMinutes": 50,
+          "candidateMinutes": 25
+        },
+        "interruption": {
+          "reason": "TRAVEL",
+          "durationDays": 18,
+          "nonclinical": true,
+          "actualExposureKnown": true,
+          "exposureDuringPause": "walking, no structured running"
+        },
+        "priorHistory": {
+          "run": {
+            "family": "EASY",
+            "minutes": 50,
+            "talk": "comfortable",
+            "response": "compatible before travel"
+          }
+        },
+        "observations": {
+          "currentCapacity": {
+            "family": "EASY",
+            "minutes": 25,
+            "talk": "comfortable",
+            "response": "normal during and next day",
+            "establishedToday": true
+          },
+          "ordinaryFunction": "usual",
+          "clinicalConcern": false
+        },
+        "availability": [
+          {
+            "day": "WED",
+            "minutes": 35
+          }
+        ],
+        "calibration": {
+          "method": "comfortable talk effort"
+        }
+      },
+      "scenarioFactsSha256": "a80ece3fb56b82bc2ab3114fd72768c39288191a9a3ea2c176ac755a23bcff00",
+      "independentExpectation": {
+        "allowedDispositions": [
+          "POSITIVE"
+        ],
+        "preferredOption": "CURRENT_25_MINUTE_REESTABLISHMENT",
+        "candidateComparisons": [
+          {
+            "option": "25 minutes at current comfortable anchor",
+            "judgment": "preferred",
+            "reason": "productive restart anchored to current exposure"
+          },
+          {
+            "option": "automatic 50 minutes from old history",
+            "judgment": "suboptimal",
+            "reason": "ignores current reestablishment evidence"
+          },
+          {
+            "option": "fixed percentage reduction based solely on 18 days",
+            "judgment": "unsupported",
+            "reason": "elapsed time is not capacity"
+          }
+        ],
+        "admissibilityBounds": [
+          "do not infer detraining percentage",
+          "fit 35 minutes",
+          "next response governs progression"
+        ],
+        "requiredMaterialFacts": [
+          "nonclinical interruption",
+          "current 25-minute exposure",
+          "prior 50-minute distinction"
+        ],
+        "mustPreserve": [
+          "shadow official state",
+          "clinical boundaries",
+          "nonclinical boundary",
+          "goal-directed return"
+        ],
+        "unacceptable": [
+          "invent physiological calibration",
+          "claim individual certainty",
+          "count unsupported output as positive"
+        ],
+        "rationaleMustExplain": [
+          "primary and secondary goal",
+          "phase",
+          "essential stimulus",
+          "valid and rejected alternatives",
+          "goal-priority trade-off",
+          "minimum effective change",
+          "individual uncertainty",
+          "next observation"
+        ],
+        "uncertainty": "Population evidence cannot establish individual optimality; compare next execution and recovery before escalating.",
+        "reviewTrigger": "Next comparable session: execution, effort, ordinary function and recovery.",
+        "qualityRule": "A concrete admissible but materially dominated choice is COACHING_SUBOPTIMAL; lack of a reviewed envelope is UNSUPPORTED, not invented scientific approval.",
+        "exactDoseOracle": null
+      },
+      "independence": {
+        "authorInstance": "/root/holdout_quality",
+        "implementedRuntime": false,
+        "derivedFromRuntimeOutput": false,
+        "copiedDevelopmentFixture": false
+      }
+    },
+    {
+      "caseId": "R4-HO-18",
+      "title": "Strength return keeps the newly demonstrated load",
+      "tags": [
+        "RETURN_REESTABLISHMENT",
+        "STRENGTH"
+      ],
+      "decisionQuestion": "Which admissible option best advances the stated goal in this context, and what would change that judgment?",
+      "scenarioFacts": {
+        "population": {
+          "synthetic": true,
+          "realPerson": false,
+          "ageBand": "ADULT",
+          "ageYears": 34,
+          "participation": "RECREATIONAL_HYBRID",
+          "priority": "STRENGTH_FIRST",
+          "runExperience": "INTERMEDIATE",
+          "strengthExperience": "INTERMEDIATE",
+          "dataTier": "NO_WEARABLE",
+          "historyOrigin": "RECENT_COMPARABLE_RECORDS"
+        },
+        "eligibility": {
+          "status": "NONCLINICAL_CONFIRMED",
+          "source": "EXPLICIT_SYNTHETIC_CURRENT_CONTEXT",
+          "clinicalConcern": false,
+          "pain": false,
+          "persistentPain": false,
+          "injury": false,
+          "illness": false,
+          "functionalLimitation": false,
+          "clearanceClaim": false
+        },
+        "goal": {
+          "primary": "reestablish familiar full-body strength",
+          "secondary": "maintain easy run routine"
+        },
+        "phase": "REESTABLISHMENT",
+        "onboarding": {
+          "equipment": [
+            "20 kg goblet implement",
+            "28 kg goblet implement"
+          ]
+        },
+        "currentDemand": {
+          "kind": "RETURN_STRENGTH",
+          "exercise": "goblet squat",
+          "prior": {
+            "sets": 3,
+            "reps": 8,
+            "loadKg": 28
+          },
+          "current": {
+            "sets": 2,
+            "reps": 8,
+            "loadKg": 20,
+            "targetRir": 4
+          }
+        },
+        "interruption": {
+          "reason": "SCHEDULE",
+          "durationDays": 24,
+          "nonclinical": true,
+          "actualExposureKnown": true,
+          "exposureDuringPause": "normal activities, no loaded squat"
+        },
+        "history": {
+          "configurationFamiliar": true,
+          "priorLoadKnown": true
+        },
+        "observations": {
+          "currentCapacity": {
+            "exercise": "goblet squat",
+            "sets": 2,
+            "reps": 8,
+            "loadKg": 20,
+            "targetRir": 4,
+            "technique": "acceptable current demonstration",
+            "response": "ordinary next-day function"
+          },
+          "systemic": "normal"
+        },
+        "availability": [
+          {
+            "day": "MON",
+            "minutes": 30
+          }
+        ]
+      },
+      "scenarioFactsSha256": "ecf8a36902ab39eaed3d9a87047b8e9ed4943011169078153fb3c7b74eb6dc04",
+      "independentExpectation": {
+        "allowedDispositions": [
+          "POSITIVE"
+        ],
+        "preferredOption": "DEMONSTRATED_20_KG_REESTABLISHMENT",
+        "candidateComparisons": [
+          {
+            "option": "current 2 x 8 at 20 kg familiar configuration",
+            "judgment": "preferred",
+            "reason": "productive current anchor without guessing retained maximal capacity"
+          },
+          {
+            "option": "old 3 x 8 at 28 kg immediately",
+            "judgment": "suboptimal",
+            "reason": "larger unearned increase in two dose dimensions"
+          },
+          {
+            "option": "HOLD because pause exceeds a fixed day threshold",
+            "judgment": "dominated",
+            "reason": "current competence and load have been demonstrated"
+          }
+        ],
+        "admissibilityBounds": [
+          "no percentage detraining rule",
+          "current configuration and units",
+          "fit availability"
+        ],
+        "requiredMaterialFacts": [
+          "current technique/load response",
+          "nonclinical reason",
+          "old dose separate"
+        ],
+        "mustPreserve": [
+          "shadow official state",
+          "clinical boundaries",
+          "movement practice",
+          "next response review"
+        ],
+        "unacceptable": [
+          "invent physiological calibration",
+          "claim individual certainty",
+          "count unsupported output as positive"
+        ],
+        "rationaleMustExplain": [
+          "primary and secondary goal",
+          "phase",
+          "essential stimulus",
+          "valid and rejected alternatives",
+          "goal-priority trade-off",
+          "minimum effective change",
+          "individual uncertainty",
+          "next observation"
+        ],
+        "uncertainty": "Population evidence cannot establish individual optimality; compare next execution and recovery before escalating.",
+        "reviewTrigger": "Next comparable session: execution, effort, ordinary function and recovery.",
+        "qualityRule": "A concrete admissible but materially dominated choice is COACHING_SUBOPTIMAL; lack of a reviewed envelope is UNSUPPORTED, not invented scientific approval.",
+        "exactDoseOracle": null
+      },
+      "independence": {
+        "authorInstance": "/root/holdout_quality",
+        "implementedRuntime": false,
+        "derivedFromRuntimeOutput": false,
+        "copiedDevelopmentFixture": false
+      }
+    },
+    {
+      "caseId": "R4-HO-19",
+      "title": "Repeated comparable personal response ranks two same-dose schedules",
+      "tags": [
+        "ATHLETE_SPECIFIC_LEARNED_RESPONSE",
+        "RUN_FIRST"
+      ],
+      "decisionQuestion": "Which admissible option best advances the stated goal in this context, and what would change that judgment?",
+      "scenarioFacts": {
+        "population": {
+          "synthetic": true,
+          "realPerson": false,
+          "ageBand": "ADULT",
+          "ageYears": 34,
+          "participation": "RECREATIONAL_HYBRID",
+          "priority": "RUN_FIRST",
+          "runExperience": "INTERMEDIATE",
+          "strengthExperience": "INTERMEDIATE",
+          "dataTier": "NO_WEARABLE",
+          "historyOrigin": "RECENT_COMPARABLE_RECORDS"
+        },
+        "eligibility": {
+          "status": "NONCLINICAL_CONFIRMED",
+          "source": "EXPLICIT_SYNTHETIC_CURRENT_CONTEXT",
+          "clinicalConcern": false,
+          "pain": false,
+          "persistentPain": false,
+          "injury": false,
+          "illness": false,
+          "functionalLimitation": false,
+          "clearanceClaim": false
+        },
+        "goal": {
+          "primary": "improve cruise-session execution quality",
+          "secondary": "retain lower strength maintenance"
+        },
+        "phase": "BUILD",
+        "onboarding": {
+          "goals": [
+            "improve cruise-session execution quality",
+            "retain lower strength maintenance"
+          ]
+        },
+        "currentDemand": {
+          "kind": "RANK_EXISTING_ADMISSIBLE_OPTIONS",
+          "options": [
+            {
+              "id": "LOWER_MON_CRUISE_FRI",
+              "admissibility": "requires independent envelope review"
+            },
+            {
+              "id": "LOWER_THU_CRUISE_FRI",
+              "admissibility": "requires independent envelope review"
+            }
+          ]
+        },
+        "priorHistory": {
+          "observations": [
+            {
+              "factId": "HO19-A",
+              "arrangement": "LOWER_THU_CRUISE_FRI",
+              "cruiseResponse": "harder than intended",
+              "context": "similar dose, route, work and sleep; no measured confounder"
+            },
+            {
+              "factId": "HO19-B",
+              "arrangement": "LOWER_MON_CRUISE_FRI",
+              "cruiseResponse": "usual effort",
+              "context": "similar dose, route, work and sleep; no measured confounder"
+            },
+            {
+              "factId": "HO19-C",
+              "arrangement": "LOWER_THU_CRUISE_FRI",
+              "cruiseResponse": "harder than intended",
+              "context": "similar dose, route, work and sleep; no measured confounder"
+            },
+            {
+              "factId": "HO19-D",
+              "arrangement": "LOWER_MON_CRUISE_FRI",
+              "cruiseResponse": "usual effort",
+              "context": "similar dose, route, work and sleep; no measured confounder"
+            }
+          ],
+          "observational": true,
+          "causalityEstablished": false,
+          "confounders": "not all measured",
+          "relevantContextUnchanged": true
+        },
+        "learningConsent": {
+          "purposeAllowed": true
+        },
+        "constraints": {
+          "sameDoseCandidates": true,
+          "noNewOption": true,
+          "populationPriorVisible": true
+        },
+        "observations": {
+          "necessity": "a new work schedule requires choosing one of the two placements",
+          "recovery": "normal"
+        }
+      },
+      "scenarioFactsSha256": "89d9891290269f917af2e3065f38203bfe33171df09036cca9d4dff98eeb2ad8",
+      "independentExpectation": {
+        "allowedDispositions": [
+          "POSITIVE"
+        ],
+        "preferredOption": "LOWER_MON_CRUISE_FRI",
+        "candidateComparisons": [
+          {
+            "option": "LOWER_MON_CRUISE_FRI",
+            "judgment": "preferred",
+            "reason": "same admissible dose and consistently better comparable goal-critical response"
+          },
+          {
+            "option": "LOWER_THU_CRUISE_FRI",
+            "judgment": "suboptimal",
+            "reason": "ignores supplied individual evidence"
+          },
+          {
+            "option": "claim Thursday always causes interference",
+            "judgment": "invalid",
+            "reason": "observational preference is not a universal causal rule"
+          }
+        ],
+        "admissibilityBounds": [
+          "rank only already admissible options",
+          "no causal proof claim",
+          "no arbitrary count threshold"
+        ],
+        "requiredMaterialFacts": [
+          "multiple independent IDs",
+          "comparability",
+          "consent",
+          "same doses",
+          "selection necessity"
+        ],
+        "mustPreserve": [
+          "shadow official state",
+          "clinical boundaries",
+          "same doses",
+          "primary cruise quality"
+        ],
+        "unacceptable": [
+          "invent physiological calibration",
+          "claim individual certainty",
+          "count unsupported output as positive"
+        ],
+        "rationaleMustExplain": [
+          "primary and secondary goal",
+          "phase",
+          "essential stimulus",
+          "valid and rejected alternatives",
+          "goal-priority trade-off",
+          "minimum effective change",
+          "individual uncertainty",
+          "next observation"
+        ],
+        "uncertainty": "Observational association may be confounded; use reversible scheduling preference and revisit after contrary comparable responses.",
+        "reviewTrigger": "Next comparable session: execution, effort, ordinary function and recovery.",
+        "qualityRule": "A concrete admissible but materially dominated choice is COACHING_SUBOPTIMAL; lack of a reviewed envelope is UNSUPPORTED, not invented scientific approval.",
+        "exactDoseOracle": null
+      },
+      "independence": {
+        "authorInstance": "/root/holdout_quality",
+        "implementedRuntime": false,
+        "derivedFromRuntimeOutput": false,
+        "copiedDevelopmentFixture": false
+      }
+    },
+    {
+      "caseId": "R4-HO-20",
+      "title": "Single confounded association cannot overturn stable plan",
+      "tags": [
+        "ATHLETE_LEARNING",
+        "SINGLE_OBSERVATION",
+        "KEEP"
+      ],
+      "decisionQuestion": "Which admissible option best advances the stated goal in this context, and what would change that judgment?",
+      "scenarioFacts": {
+        "population": {
+          "synthetic": true,
+          "realPerson": false,
+          "ageBand": "ADULT",
+          "ageYears": 34,
+          "participation": "RECREATIONAL_HYBRID",
+          "priority": "BALANCED",
+          "runExperience": "INTERMEDIATE",
+          "strengthExperience": "INTERMEDIATE",
+          "dataTier": "NO_WEARABLE",
+          "historyOrigin": "RECENT_COMPARABLE_RECORDS"
+        },
+        "eligibility": {
+          "status": "NONCLINICAL_CONFIRMED",
+          "source": "EXPLICIT_SYNTHETIC_CURRENT_CONTEXT",
+          "clinicalConcern": false,
+          "pain": false,
+          "persistentPain": false,
+          "injury": false,
+          "illness": false,
+          "functionalLimitation": false,
+          "clearanceClaim": false
+        },
+        "goal": {
+          "primary": "maintain balanced progressive training",
+          "secondary": "avoid unnecessary disruption"
+        },
+        "phase": "BASE",
+        "onboarding": {
+          "goals": [
+            "maintain balanced progressive training",
+            "avoid unnecessary disruption"
+          ]
+        },
+        "currentDemand": {
+          "kind": "LEARN_NEW_RULE",
+          "requestedRule": "always remove lower strength after any subjective fatigue"
+        },
+        "priorHistory": {
+          "observations": [
+            {
+              "factId": "HO20-ONE",
+              "fatigue": "high",
+              "performance": "under target",
+              "confounders": [
+                "heat",
+                "different machine",
+                "short warm-up"
+              ]
+            }
+          ],
+          "otherwise": "stable compatible familiar training",
+          "causalityEstablished": false
+        },
+        "learningConsent": {
+          "purposeAllowed": true
+        },
+        "observations": {
+          "currentFunction": "usual",
+          "systemic": "normal"
+        },
+        "availableAdmissibleDoseAlternatives": null
+      },
+      "scenarioFactsSha256": "74ae3006c61153db8a7aa35bf3153d37fc45e4489a1ec49cf60ea672357f1a3c",
+      "independentExpectation": {
+        "allowedDispositions": [
+          "KEEP",
+          "HOLD"
+        ],
+        "preferredOption": "KEEP_NO_NEW_HARD_RULE",
+        "candidateComparisons": [
+          {
+            "option": "decline new persistent rule and preserve plan with observation",
+            "judgment": "preferred",
+            "reason": "one confounded observation provides insufficient stable individual evidence"
+          },
+          {
+            "option": "always remove lower work after fatigue",
+            "judgment": "invalid",
+            "reason": "overfits noisy event and harms strength objective"
+          }
+        ],
+        "admissibilityBounds": [
+          "no hard rule from one event",
+          "HOLD may only refer to learning, not cancel all training"
+        ],
+        "requiredMaterialFacts": [
+          "one event",
+          "multiple confounders",
+          "stable context",
+          "current normal state"
+        ],
+        "mustPreserve": [
+          "shadow official state",
+          "clinical boundaries",
+          "plan stability",
+          "uncertainty"
+        ],
+        "unacceptable": [
+          "invent physiological calibration",
+          "claim individual certainty",
+          "count unsupported output as positive"
+        ],
+        "rationaleMustExplain": [
+          "primary and secondary goal",
+          "phase",
+          "essential stimulus",
+          "valid and rejected alternatives",
+          "goal-priority trade-off",
+          "minimum effective change",
+          "individual uncertainty",
+          "next observation"
+        ],
+        "uncertainty": "Population evidence cannot establish individual optimality; compare next execution and recovery before escalating.",
+        "reviewTrigger": "Next comparable session: execution, effort, ordinary function and recovery.",
+        "qualityRule": "A concrete admissible but materially dominated choice is COACHING_SUBOPTIMAL; lack of a reviewed envelope is UNSUPPORTED, not invented scientific approval.",
+        "exactDoseOracle": null
+      },
+      "independence": {
+        "authorInstance": "/root/holdout_quality",
+        "implementedRuntime": false,
+        "derivedFromRuntimeOutput": false,
+        "copiedDevelopmentFixture": false
+      }
+    },
+    {
+      "caseId": "R4-HO-21",
+      "title": "Familiar 10K event week avoids a new build stimulus",
+      "tags": [
+        "EVENT_RACE_CONTEXT",
+        "TAPER",
+        "RUN_FIRST"
+      ],
+      "decisionQuestion": "Which admissible option best advances the stated goal in this context, and what would change that judgment?",
+      "scenarioFacts": {
+        "population": {
+          "synthetic": true,
+          "realPerson": false,
+          "ageBand": "ADULT",
+          "ageYears": 34,
+          "participation": "RECREATIONAL_HYBRID",
+          "priority": "RUN_FIRST",
+          "runExperience": "INTERMEDIATE",
+          "strengthExperience": "INTERMEDIATE",
+          "dataTier": "NO_WEARABLE",
+          "historyOrigin": "RECENT_COMPARABLE_RECORDS"
+        },
+        "eligibility": {
+          "status": "NONCLINICAL_CONFIRMED",
+          "source": "EXPLICIT_SYNTHETIC_CURRENT_CONTEXT",
+          "clinicalConcern": false,
+          "pain": false,
+          "persistentPain": false,
+          "injury": false,
+          "illness": false,
+          "functionalLimitation": false,
+          "clearanceClaim": false
+        },
+        "goal": {
+          "primary": "arrive prepared for familiar recreational 10K",
+          "secondary": "maintain strength practice"
+        },
+        "phase": "TAPER",
+        "onboarding": {
+          "goals": [
+            "arrive prepared for familiar recreational 10K",
+            "maintain strength practice"
+          ]
+        },
+        "event": {
+          "distanceKm": 10,
+          "day": "SUN",
+          "priority": "PRIMARY_THIS_WEEK",
+          "goal": "run familiar 10K well",
+          "athleteConfirmed": true
+        },
+        "currentDemand": {
+          "kind": "RACE_WEEK"
+        },
+        "priorHistory": {
+          "run": {
+            "easy": {
+              "family": "EASY",
+              "minutes": 25,
+              "response": "compatible"
+            },
+            "shortRacePace": {
+              "repetitions": 2,
+              "workMinutesEach": 3,
+              "paceSecondsPerKm": 335,
+              "response": "familiar compatible cue"
+            },
+            "long": {
+              "minutes": 70,
+              "familiar": true
+            }
+          },
+          "strength": {
+            "maintenance": {
+              "exercise": "supported row",
+              "sets": 1,
+              "reps": 8,
+              "loadKg": 18,
+              "targetRir": 4,
+              "response": "compatible"
+            }
+          },
+          "previousEvent": "same-distance event with known compatible response"
+        },
+        "availability": [
+          {
+            "day": "MON",
+            "minutes": 30
+          },
+          {
+            "day": "WED",
+            "minutes": 25
+          },
+          {
+            "day": "FRI",
+            "minutes": 20
+          },
+          {
+            "day": "SUN",
+            "minutes": 90
+          }
+        ],
+        "constraints": {
+          "noNovelSession": true,
+          "strengthIntent": "maintain familiar movement exposure",
+          "noNewStrengthGainThisWeek": true
+        },
+        "observations": {
+          "recovery": "usual"
+        }
+      },
+      "scenarioFactsSha256": "66398ded1f1c5bd0855db7997e1d9e35cd264a412b78cbf476c8bf4e22d2c2a8",
+      "independentExpectation": {
+        "allowedDispositions": [
+          "POSITIVE"
+        ],
+        "preferredOption": "FAMILIAR_LOW_DISRUPTION_RACE_WEEK",
+        "candidateComparisons": [
+          {
+            "option": "reduce nonessential burden while preserving familiar easy and short specific cue",
+            "judgment": "preferred",
+            "reason": "event performance is current essential goal"
+          },
+          {
+            "option": "progress long run or lower strength this week",
+            "judgment": "suboptimal",
+            "reason": "adds fatigue without time for useful event adaptation"
+          },
+          {
+            "option": "invent exact universal taper percentage",
+            "judgment": "unsupported",
+            "reason": "context supports bounded familiar pattern, not false precision"
+          }
+        ],
+        "admissibilityBounds": [
+          "no new exercises/intensity",
+          "event consumes window",
+          "no joint hybrid efficacy claim without review"
+        ],
+        "requiredMaterialFacts": [
+          "event priority and familiarity",
+          "TAPER phase",
+          "known familiar cues",
+          "available windows"
+        ],
+        "mustPreserve": [
+          "shadow official state",
+          "clinical boundaries",
+          "event readiness",
+          "strength maintenance intent"
+        ],
+        "unacceptable": [
+          "invent physiological calibration",
+          "claim individual certainty",
+          "count unsupported output as positive"
+        ],
+        "rationaleMustExplain": [
+          "primary and secondary goal",
+          "phase",
+          "essential stimulus",
+          "valid and rejected alternatives",
+          "goal-priority trade-off",
+          "minimum effective change",
+          "individual uncertainty",
+          "next observation"
+        ],
+        "uncertainty": "Population evidence cannot establish individual optimality; compare next execution and recovery before escalating.",
+        "reviewTrigger": "Next comparable session: execution, effort, ordinary function and recovery.",
+        "qualityRule": "A concrete admissible but materially dominated choice is COACHING_SUBOPTIMAL; lack of a reviewed envelope is UNSUPPORTED, not invented scientific approval.",
+        "exactDoseOracle": null
+      },
+      "independence": {
+        "authorInstance": "/root/holdout_quality",
+        "implementedRuntime": false,
+        "derivedFromRuntimeOutput": false,
+        "copiedDevelopmentFixture": false
+      }
+    },
+    {
+      "caseId": "R4-HO-22",
+      "title": "Same-day double ordering uses goal and personal tolerance",
+      "tags": [
+        "DOUBLE_SESSION_PLACEMENT",
+        "RUN_FIRST"
+      ],
+      "decisionQuestion": "Which admissible option best advances the stated goal in this context, and what would change that judgment?",
+      "scenarioFacts": {
+        "population": {
+          "synthetic": true,
+          "realPerson": false,
+          "ageBand": "ADULT",
+          "ageYears": 34,
+          "participation": "RECREATIONAL_HYBRID",
+          "priority": "RUN_FIRST",
+          "runExperience": "INTERMEDIATE",
+          "strengthExperience": "INTERMEDIATE",
+          "dataTier": "NO_WEARABLE",
+          "historyOrigin": "RECENT_COMPARABLE_RECORDS"
+        },
+        "eligibility": {
+          "status": "NONCLINICAL_CONFIRMED",
+          "source": "EXPLICIT_SYNTHETIC_CURRENT_CONTEXT",
+          "clinicalConcern": false,
+          "pain": false,
+          "persistentPain": false,
+          "injury": false,
+          "illness": false,
+          "functionalLimitation": false,
+          "clearanceClaim": false
+        },
+        "goal": {
+          "primary": "improve key threshold execution",
+          "secondary": "retain strength maintenance"
+        },
+        "phase": "BUILD",
+        "onboarding": {
+          "goals": [
+            "improve key threshold execution",
+            "retain strength maintenance"
+          ]
+        },
+        "currentDemand": {
+          "kind": "DOUBLE_SESSION_PLACEMENT",
+          "planned": {
+            "run": {
+              "family": "THRESHOLD_CRUISE",
+              "durationMinutes": 35,
+              "role": "KEY"
+            },
+            "strength": {
+              "family": "FULL_BODY_MAINTENANCE",
+              "durationMinutes": 25,
+              "role": "SECONDARY"
+            }
+          },
+          "availability": {
+            "SAT": [
+              [
+                "08:00",
+                "09:10"
+              ]
+            ]
+          }
+        },
+        "alternatives": [
+          {
+            "id": "RUN_THEN_STRENGTH",
+            "order": [
+              "RUN",
+              "STRENGTH"
+            ]
+          },
+          {
+            "id": "STRENGTH_THEN_RUN",
+            "order": [
+              "STRENGTH",
+              "RUN"
+            ]
+          }
+        ],
+        "history": {
+          "bothOrdersFamiliar": true,
+          "recentComparableResponses": [
+            {
+              "order": "RUN_THEN_STRENGTH",
+              "runResponse": "usual controlled effort",
+              "strengthResponse": "compatible"
+            },
+            {
+              "order": "STRENGTH_THEN_RUN",
+              "runResponse": "harder than intended",
+              "strengthResponse": "compatible"
+            },
+            {
+              "order": "RUN_THEN_STRENGTH",
+              "runResponse": "usual controlled effort",
+              "strengthResponse": "compatible"
+            }
+          ],
+          "observational": true,
+          "causalityEstablished": false
+        },
+        "learningConsent": {
+          "purposeAllowed": true
+        },
+        "observations": {
+          "systemic": "normal"
+        },
+        "constraints": {
+          "onlySingleCombinedWindow": true,
+          "noNewDose": true,
+          "noMandatorySeparationThreshold": true
+        }
+      },
+      "scenarioFactsSha256": "bc1ae5735cbbe03238115a05f0e4afed27afcc1ac4d5053a3fc2b3069e2ec0e3",
+      "independentExpectation": {
+        "allowedDispositions": [
+          "POSITIVE"
+        ],
+        "preferredOption": "RUN_THEN_STRENGTH",
+        "candidateComparisons": [
+          {
+            "option": "RUN_THEN_STRENGTH",
+            "judgment": "preferred",
+            "reason": "goal-critical run first and personal compatible observations support this familiar ordering"
+          },
+          {
+            "option": "STRENGTH_THEN_RUN",
+            "judgment": "suboptimal",
+            "reason": "ignores primary goal and comparable history"
+          },
+          {
+            "option": "HOLD because no six-hour separation exists",
+            "judgment": "dominated",
+            "reason": "unjustified universal separation threshold excludes a familiar feasible option"
+          }
+        ],
+        "admissibilityBounds": [
+          "fit 70 minutes",
+          "no universal separation law",
+          "no chronic causality claim"
+        ],
+        "requiredMaterialFacts": [
+          "priority",
+          "key vs secondary",
+          "personal responses",
+          "single window"
+        ],
+        "mustPreserve": [
+          "shadow official state",
+          "clinical boundaries",
+          "both familiar sessions",
+          "run quality"
+        ],
+        "unacceptable": [
+          "invent physiological calibration",
+          "claim individual certainty",
+          "count unsupported output as positive"
+        ],
+        "rationaleMustExplain": [
+          "primary and secondary goal",
+          "phase",
+          "essential stimulus",
+          "valid and rejected alternatives",
+          "goal-priority trade-off",
+          "minimum effective change",
+          "individual uncertainty",
+          "next observation"
+        ],
+        "uncertainty": "Population evidence cannot establish individual optimality; compare next execution and recovery before escalating.",
+        "reviewTrigger": "Next comparable session: execution, effort, ordinary function and recovery.",
+        "qualityRule": "A concrete admissible but materially dominated choice is COACHING_SUBOPTIMAL; lack of a reviewed envelope is UNSUPPORTED, not invented scientific approval.",
+        "exactDoseOracle": null
+      },
+      "independence": {
+        "authorInstance": "/root/holdout_quality",
+        "implementedRuntime": false,
+        "derivedFromRuntimeOutput": false,
+        "copiedDevelopmentFixture": false
+      }
+    },
+    {
+      "caseId": "R4-HO-23",
+      "title": "Current compatible execution outweighs isolated wearable alert",
+      "tags": [
+        "CONFLICTING_SIGNALS",
+        "KEEP",
+        "UNCERTAINTY"
+      ],
+      "decisionQuestion": "Which admissible option best advances the stated goal in this context, and what would change that judgment?",
+      "scenarioFacts": {
+        "population": {
+          "synthetic": true,
+          "realPerson": false,
+          "ageBand": "ADULT",
+          "ageYears": 34,
+          "participation": "RECREATIONAL_HYBRID",
+          "priority": "BALANCED",
+          "runExperience": "INTERMEDIATE",
+          "strengthExperience": "INTERMEDIATE",
+          "dataTier": "RICH",
+          "historyOrigin": "RECENT_COMPARABLE_RECORDS"
+        },
+        "eligibility": {
+          "status": "NONCLINICAL_CONFIRMED",
+          "source": "EXPLICIT_SYNTHETIC_CURRENT_CONTEXT",
+          "clinicalConcern": false,
+          "pain": false,
+          "persistentPain": false,
+          "injury": false,
+          "illness": false,
+          "functionalLimitation": false,
+          "clearanceClaim": false
+        },
+        "goal": {
+          "primary": "sustain balanced training progression",
+          "secondary": "maintain repeatable practice"
+        },
+        "phase": "BASE",
+        "onboarding": {
+          "goals": [
+            "sustain balanced training progression",
+            "maintain repeatable practice"
+          ]
+        },
+        "currentDemand": {
+          "kind": "REVIEW_NEXT_SESSION",
+          "officialWeek": {
+            "easyMinutes": 30,
+            "longMinutes": 55,
+            "strengthSessions": 2
+          }
+        },
+        "observations": {
+          "wearable": "one unusually low readiness estimate; validation uncertain",
+          "subjectiveRecovery": "usual",
+          "ordinaryFunction": "usual",
+          "warmup": "usual comfortable",
+          "performance": "recent familiar sessions compatible",
+          "clinicalConcern": false
+        },
+        "history": {
+          "pattern": "no repeated incompatible response"
+        },
+        "wearable": {
+          "type": "readiness watch",
+          "individualModelValidated": false
+        },
+        "constraints": {
+          "noReadinessScoreSovereignty": true
+        }
+      },
+      "scenarioFactsSha256": "be3766d2ef358b6cfb478ff71630a8a71083ba14071d0978c147ba8f911000f5",
+      "independentExpectation": {
+        "allowedDispositions": [
+          "KEEP"
+        ],
+        "preferredOption": "KEEP_WITH_CROSS_CHECK",
+        "candidateComparisons": [
+          {
+            "option": "retain familiar plan and observe execution/effort",
+            "judgment": "preferred",
+            "reason": "one unvalidated alert without convergence does not justify disruption"
+          },
+          {
+            "option": "automatic systemic-fatigue reduction",
+            "judgment": "suboptimal",
+            "reason": "treats uncertain proxy as physiological authority"
+          },
+          {
+            "option": "ignore all future subjective or performance changes",
+            "judgment": "invalid",
+            "reason": "future convergence should change assessment"
+          }
+        ],
+        "admissibilityBounds": [
+          "do not fabricate readiness score",
+          "no hidden clinical diagnosis"
+        ],
+        "requiredMaterialFacts": [
+          "isolated alert",
+          "unvalidated model",
+          "compatible subjective/current execution"
+        ],
+        "mustPreserve": [
+          "shadow official state",
+          "clinical boundaries",
+          "plan stability",
+          "review trigger"
+        ],
+        "unacceptable": [
+          "invent physiological calibration",
+          "claim individual certainty",
+          "count unsupported output as positive"
+        ],
+        "rationaleMustExplain": [
+          "primary and secondary goal",
+          "phase",
+          "essential stimulus",
+          "valid and rejected alternatives",
+          "goal-priority trade-off",
+          "minimum effective change",
+          "individual uncertainty",
+          "next observation"
+        ],
+        "uncertainty": "Population evidence cannot establish individual optimality; compare next execution and recovery before escalating.",
+        "reviewTrigger": "Next comparable session: execution, effort, ordinary function and recovery.",
+        "qualityRule": "A concrete admissible but materially dominated choice is COACHING_SUBOPTIMAL; lack of a reviewed envelope is UNSUPPORTED, not invented scientific approval.",
+        "exactDoseOracle": null
+      },
+      "independence": {
+        "authorInstance": "/root/holdout_quality",
+        "implementedRuntime": false,
+        "derivedFromRuntimeOutput": false,
+        "copiedDevelopmentFixture": false
+      }
+    },
+    {
+      "caseId": "R4-HO-24",
+      "title": "Return after interruption legitimately asks for missing current capacity",
+      "tags": [
+        "ESSENTIAL_LIVE_ATHLETE_INPUT",
+        "RETURN",
+        "ASK"
+      ],
+      "decisionQuestion": "Which admissible option best advances the stated goal in this context, and what would change that judgment?",
+      "scenarioFacts": {
+        "population": {
+          "synthetic": true,
+          "realPerson": false,
+          "ageBand": "ADULT",
+          "ageYears": 34,
+          "participation": "RECREATIONAL_HYBRID",
+          "priority": "RUN_FIRST",
+          "runExperience": "INTERMEDIATE",
+          "strengthExperience": "INTERMEDIATE",
+          "dataTier": "NO_WEARABLE",
+          "historyOrigin": "RECENT_COMPARABLE_RECORDS"
+        },
+        "eligibility": {
+          "status": "NONCLINICAL_CONFIRMED",
+          "source": "EXPLICIT_SYNTHETIC_CURRENT_CONTEXT",
+          "clinicalConcern": false,
+          "pain": false,
+          "persistentPain": false,
+          "injury": false,
+          "illness": false,
+          "functionalLimitation": false,
+          "clearanceClaim": false
+        },
+        "goal": {
+          "primary": "resume familiar recreational running",
+          "secondary": "maintain strength"
+        },
+        "phase": "REESTABLISHMENT",
+        "onboarding": {
+          "goals": [
+            "resume familiar recreational running",
+            "maintain strength"
+          ]
+        },
+        "currentDemand": {
+          "kind": "RETURN_RUN",
+          "requested": "restore prior 60-minute easy run"
+        },
+        "interruption": {
+          "reason": "TRAVEL",
+          "durationDays": 20,
+          "nonclinical": true,
+          "actualExposureKnown": false,
+          "exposureDuringPause": null
+        },
+        "priorHistory": {
+          "run": {
+            "family": "EASY",
+            "minutes": 60,
+            "response": "compatible before interruption"
+          }
+        },
+        "observations": {
+          "currentCapacity": null,
+          "currentFunction": null,
+          "subjectiveRecovery": null,
+          "clinicalConcern": false
+        },
+        "availability": [
+          {
+            "day": "WED",
+            "minutes": 70
+          }
+        ]
+      },
+      "scenarioFactsSha256": "42114607b9974b086091c7ea602b7b8ef93adf6ca07a787381d72f6fc39ea2e2",
+      "independentExpectation": {
+        "allowedDispositions": [
+          "USEFUL_ASK"
+        ],
+        "preferredOption": "ASK_CURRENT_CAPACITY_AND_STATE",
+        "candidateComparisons": [
+          {
+            "option": "ask current comfortable recent exposure/function and recovery",
+            "judgment": "preferred",
+            "reason": "answers materially change the appropriate return prescription"
+          },
+          {
+            "option": "restore 60 minutes from old history",
+            "judgment": "unsupported",
+            "reason": "current capacity is unknown"
+          },
+          {
+            "option": "declare clinical illness from missing capacity",
+            "judgment": "invalid",
+            "reason": "explicit interruption is nonclinical"
+          },
+          {
+            "option": "ask wearable import",
+            "judgment": "dominated",
+            "reason": "does not resolve the missing live state"
+          }
+        ],
+        "admissibilityBounds": [
+          "question must resolve material decision",
+          "no fixed detraining formula"
+        ],
+        "requiredMaterialFacts": [
+          "missing current function",
+          "old exposure vs current capacity",
+          "nonclinical reason"
+        ],
+        "mustPreserve": [
+          "shadow official state",
+          "clinical boundaries",
+          "useful ASK legitimacy"
+        ],
+        "unacceptable": [
+          "invent physiological calibration",
+          "claim individual certainty",
+          "count unsupported output as positive"
+        ],
+        "rationaleMustExplain": [
+          "primary and secondary goal",
+          "phase",
+          "essential stimulus",
+          "valid and rejected alternatives",
+          "goal-priority trade-off",
+          "minimum effective change",
+          "individual uncertainty",
+          "next observation"
+        ],
+        "uncertainty": "Population evidence cannot establish individual optimality; compare next execution and recovery before escalating.",
+        "reviewTrigger": "Next comparable session: execution, effort, ordinary function and recovery.",
+        "qualityRule": "A concrete admissible but materially dominated choice is COACHING_SUBOPTIMAL; lack of a reviewed envelope is UNSUPPORTED, not invented scientific approval.",
+        "exactDoseOracle": null
+      },
+      "independence": {
+        "authorInstance": "/root/holdout_quality",
+        "implementedRuntime": false,
+        "derivedFromRuntimeOutput": false,
+        "copiedDevelopmentFixture": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+{
+ "probe": "B",
+ "runtime": "CURRENT",
+ "eventDateChange": {
+  "status": "MODIFY",
+  "action": "REPLAN_FUTURE_PHASES",
+  "newRace": "2026-12-21",
+  "fromWeek": 6,
+  "newRaceWeek": 7,
+  "weekPhaseKept": "TAPER"
+ },
+ "currentWeekRemainingSessions": [
+  {
+   "date": "2026-12-15",
+   "day": 1,
+   "sport": "RUN",
+   "role": "EASY",
+   "dayPhaseNow": "RACE_WEEK",
+   "daysToRace": 6,
+   "dose": "EASY 25 min"
+  },
+  {
+   "date": "2026-12-17",
+   "day": 3,
+   "sport": "RUN",
+   "role": "RACE_TOUCH",
+   "dayPhaseNow": "RACE_WEEK",
+   "daysToRace": 4,
+   "dose": "RACE_TOUCH 25 min"
+  },
+  {
+   "date": "2026-12-17",
+   "day": 3,
+   "sport": "STRENGTH",
+   "role": "STRENGTH_FULL_B",
+   "dayPhaseNow": "RACE_WEEK",
+   "daysToRace": 4,
+   "dose": [
+    "db-rdl MAIN 1x5@4 KNOWN 24 rowPhase=RACE_WEEK",
+    "db-row MAIN 1x5@4 KNOWN 24 rowPhase=RACE_WEEK",
+    "db-bench-press MAIN 1x6@4 KNOWN 22 rowPhase=RACE_WEEK"
+   ]
+  },
+  {
+   "date": "2026-12-20",
+   "day": 6,
+   "sport": "RUN",
+   "role": "SHAKEOUT",
+   "dayPhaseNow": "RACE_WEEK",
+   "daysToRace": 1,
+   "dose": "SHAKEOUT 15 min"
+  }
+ ],
+ "phaseDoseErrorsInCurrentWeekUnderNewSkeleton": [],
+ "twinGeneratedWithNewDate_week6AfterDay0": [
+  {
+   "day": 1,
+   "sport": "RUN",
+   "role": "EASY",
+   "dose": "EASY 25 min"
+  },
+  {
+   "day": 3,
+   "sport": "RUN",
+   "role": "RACE_TOUCH",
+   "dose": "RACE_TOUCH 25 min"
+  },
+  {
+   "day": 3,
+   "sport": "STRENGTH",
+   "role": "STRENGTH_FULL_B",
+   "dose": [
+    "db-rdl 1x@4",
+    "db-row 1x@4",
+    "db-bench-press 1x@4"
+   ]
+  },
+  {
+   "day": 6,
+   "sport": "RUN",
+   "role": "SHAKEOUT",
+   "dose": "SHAKEOUT 15 min"
+  }
+ ],
+ "laterSameWeekProposal_unavailableTuesdayRun": {
+  "status": "MODIFY",
+  "action": "RESCHEDULE_WITHIN_WEEK",
+  "reason": "Sessions on the unavailable date are moved within chosen days when that adds no interference, otherwise skipped without debt",
+  "errors": []
+ },
+ "laterSameWeekProposal_systemicFatigue": {
+  "status": "MODIFY",
+  "action": "REDUCE",
+  "errors": []
+ }
+}

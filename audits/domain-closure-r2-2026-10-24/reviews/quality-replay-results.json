@@ -1,0 +1,85 @@
+{
+  "task": "DOMAIN_CLOSURE_R2",
+  "evaluator": "/root/runtime_quality",
+  "independent": true,
+  "executedAt": "2026-10-24T23:08:06.833Z",
+  "node": "v24.19.0",
+  "targetHashes": {
+    "CoachingCore/src/runtime.mjs": "b52b1bbe9c8742a5a27eee9cec548cc06ac33d312713a02be6c24730737ebe9c",
+    "CoachingCore/src/r2-runtime.mjs": "2dc76442339fadf3ddfbf0fb1f67dd2e9d6101cb2eb785a02171b70ad45902c8",
+    "CoachingCore/r2/SHADOW_INPUT_R2_SCHEMA.json": "10da9ae20f7a946852a6ce9f2de73db23fc1d325b404f3d8b09667a52b2929a7",
+    "CoachingCore/r2/POSITIVE_PRESCRIPTION_REGISTRY.json": "3e5b6af1e9561ee54ae01c02adf06256b0629a258274a0d10b17f6bb58b63abe",
+    "CoachingCore/r2/SSCTR_RUNTIME_AUTHORITY.json": "74bb320b13183cf02e6803debc071b1e628478fe2b41f364cf6c9a59ae8592cd",
+    "CoachingCore/scripts/simulate-r2.mjs": "4e4a359b1be0e315f3988c426caf62cdd2768fa2fd0cf3b24bd0a97cf666d5db",
+    "CoachingCore/r2/RUNTIME_R2_RESULTS.json": "467582ad3d4bc21f896ae88c2eebf1448f8894e62246115de9d4c52cbdefa5e0",
+    "CoachingCore/r2/COVERAGE_BASELINE_R2.json": "98c5cc7459d311f0582bfa87dc98d6a04f70b39c3cc7cabca8803763c90de8c1",
+    "CoachingCore/r2/RUNTIME_R2_TRACES.json": "513d67fd9679755011d073533ee26b6749bfa92a51cfdddfc57b5e2b843c0f44",
+    "CoachingCore/r2/legacy-replay/RUNTIME_TRACE_EXAMPLES.json": "cc6888602898487772c6372ee5d92f6c84595a40f5a5a57d10da6fdc1e236895",
+    "audits/domain-closure-r2-2026-10-24/reviews/quality-replay.mjs": "12d97795990d0b59fe9e7ca48edd60ddbcb34cea96e09bef4cfe4b17e3480d21"
+  },
+  "summary": {
+    "checks": 6,
+    "pass": 6,
+    "fail": 0
+  },
+  "checks": [
+    {
+      "id": "replay-CoachingCore/r2/RUNTIME_R2_TRACES.json",
+      "status": "PASS",
+      "evidence": {
+        "uniqueReplayed": 205,
+        "indexRows": 209,
+        "inputOutputAgreement": true
+      }
+    },
+    {
+      "id": "replay-CoachingCore/r2/legacy-replay/RUNTIME_TRACE_EXAMPLES.json",
+      "status": "PASS",
+      "evidence": {
+        "uniqueReplayed": 160,
+        "indexRows": 164,
+        "inputOutputAgreement": true
+      }
+    },
+    {
+      "id": "coverage-accounting",
+      "status": "PASS",
+      "evidence": {
+        "rows": 209,
+        "unique": 205,
+        "corpora": 9
+      }
+    },
+    {
+      "id": "frozen-independent-evaluation-not-repaired",
+      "status": "PASS",
+      "evidence": {
+        "frozen": 42,
+        "positive": 1,
+        "schemaValid": 8,
+        "schemaInvalid": 34,
+        "clinicalBeforeContract": 2,
+        "positiveOpportunityCount": 23
+      }
+    },
+    {
+      "id": "runtime-corpus-separation",
+      "status": "PASS",
+      "evidence": {
+        "developmentAndRepresentativeImportsInRuntime": false
+      }
+    },
+    {
+      "id": "scripted-trajectories-and-next-check-holds",
+      "status": "PASS",
+      "evidence": {
+        "fourWeekStreams": 3,
+        "positiveSelectionsPerStream": 1,
+        "stressStreams": 4,
+        "heldAfterFirstDay": 24,
+        "observedWeek2Keeps": 2,
+        "scriptedPremisesAreNotPhysiology": true
+      }
+    }
+  ]
+}

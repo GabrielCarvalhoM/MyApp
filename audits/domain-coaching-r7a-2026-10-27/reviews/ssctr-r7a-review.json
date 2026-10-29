@@ -1,0 +1,2096 @@
+{
+ "revision": "R7A-SSCTR-r1",
+ "reviewDate": "2026-10-27",
+ "mission": "DOMAIN_COACHING_R7-A",
+ "gate": "R7A_SCIENTIFIC_REVIEW",
+ "reviewer": {
+  "agent": "SSCTR-1.0.0",
+  "constitution": "SSCTR-CONST-1.0.0",
+  "protocol": "SSCTR-EP-1.0.0",
+  "skill": "sports-science-review 1.0.0",
+  "authority": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY",
+  "instance": "ssctr-r7a-2026-10-27 (fresh instance; its instructions are the body of .claude/agents/sports-science-concurrent-training-reviewer.md verbatim, sha256 021b5951...; no Agent tool, as the adapter requires; the dispatch mechanism itself is as reported by the caller)",
+  "model": "claude-opus-5-5 (inherited)",
+  "independentOfTargetAuthor": true,
+  "authoredPolicyRuntimeOrTests": false
+ },
+ "humanValidation": false,
+ "empiricalProductValidation": false,
+ "clinicalClearance": false,
+ "runtimeSovereignty": false,
+ "target": {
+  "freeze": "R7A-FREEZE-1",
+  "freezeFile": "CoachingCore/r7/RUNTIME_FREEZE_R7A_1.json",
+  "freezeFileSha256": "f7574eba3a4c6c30a1fd5edfd36680833bb7005cd86a635153f214601b0966a4",
+  "sourceDigest": "1f2bb1d807825a6027f994ff36b8adb4c42705273c37f800cfa64c03a4e07d65",
+  "policyRevision": "R6-POLICY-5",
+  "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+  "policyHashRecomputed": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c (src/value.mjs hash of the policy JSON)",
+  "policyFileSha256": "a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100",
+  "baseline": "pre-R7A snapshot (the runtime SSCTR round 12 reviewed, r6-program.mjs 57973e97...)",
+  "bindingCheck": {
+   "freezeFilesChecked": 74,
+   "freezeMismatches": [],
+   "preSnapshotFilesChecked": 73,
+   "preSnapshotMismatches": [],
+   "checkedAtStartAndAfterTests": true,
+   "myDiffEqualsAuthorDiff": true,
+   "changedFiles": [
+    "src/r6-adaptation.mjs",
+    "src/r6-intake.mjs",
+    "src/r6-prescription.mjs",
+    "src/r6-program.mjs",
+    "src/r6-provenance.mjs"
+   ],
+   "addedFiles": [
+    "test/r7a-semantic-core.test.mjs"
+   ]
+  }
+ },
+ "reviewedFiles": {
+  "CoachingCore/r7/RUNTIME_FREEZE_R7A_1.json": "f7574eba3a4c6c30a1fd5edfd36680833bb7005cd86a635153f214601b0966a4",
+  "CoachingCore/r6/PROGRAM_POLICY_R6.json": "a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100",
+  "CoachingCore/r6/fixtures/dev-authority.mjs": "7b0dbcd49777436b56980afdc36308d22a088125fa8c9cfe9595df3ca2ca3d2b",
+  "CoachingCore/src/r6-program.mjs": "b7be1778ac69e6c13726a78b21ccd36a707df557709f96246c4878c30a69b48a",
+  "CoachingCore/src/r6-adaptation.mjs": "c5fa03cb6cf7b6a16a698a6b590fd494a2f57b89bbc7a9d3a4d4d19977d45a56",
+  "CoachingCore/src/r6-provenance.mjs": "0fa247bb3768bc085d60509ac2eaddb21655229c1bd1beccada65d1cf5fd5abd",
+  "CoachingCore/src/r6-intake.mjs": "dfb683543a130b863b3a09c8b025c91b1919c7259db62126140789ada9a29d71",
+  "CoachingCore/src/r6-prescription.mjs": "a61a372ce9f45d167097f93ee046c7569af01803d0cb27fc91a5036221002a28",
+  "CoachingCore/test/r7a-semantic-core.test.mjs": "f8da503e345dde7990a154757ef5f256694db56e0e99252addcc4beae67cfd22",
+  "audits/domain-coaching-r7a-2026-10-27/dossier/SSCTR_DOSSIER_R7A.md": "169f8bf063e3f5c9f600cf6762ac4edd0ebe6105c0ebd0057b1b9254c98383ea",
+  "audits/domain-coaching-r7a-2026-10-27/dossier/RUNTIME_DELTA_R7A.diff": "fae3c8a6b33ec78c1129cc684065d43d2c1e15df024a50a4acd78141cbcde574",
+  "audits/domain-coaching-r7a-2026-10-27/pre-r7a-source/MANIFEST.json": "6daa33970c9c1097cd907de182490070e9adb7c748bed459bc135dec5adfb3c2",
+  "audits/domain-coaching-r7a-2026-10-27/pre-r7a-source/CoachingCore/src/r6-program.mjs": "57973e9735388d3d5f194b37ff7f5080669d2c1c3fb228b59873ac7adf6fe3ec",
+  "audits/domain-coaching-r7a-2026-10-27/probes/ssctr-r12-instrument.mjs": "618c110f77625a8fcdc9a682955398e78ed304c40c3b3d04539f4dad50aff10c",
+  "audits/domain-coaching-r7a-2026-10-27/probes/ssctr-r12-instrument.AFTER.out.json": "a2b7b38b2fbc4d1923dcdd2017794ff315a2c56e9d7b9f09431a8fa03ea98355",
+  "audits/domain-coaching-r7a-2026-10-27/probes/ssctr-r12-instrument.BEFORE.out.json": "df4b19fdd26a27aca976d4710372b4cd4cc41463b2ae03acbc8ae4c4cd237a67",
+  "audits/domain-coaching-r7a-2026-10-27/probes/r7a-class-probes.mjs": "d662b6d22ffd2954e38f41c623c88baffc9ae9e5af5f0de676cab470a2c27d28",
+  "audits/domain-coaching-r7a-2026-10-27/probes/r7a-class-probes.AFTER.out.json": "8baec455ee6e8330a56aeb86ab659163f44df55ae771c82e0fa365a42647a836",
+  "audits/domain-coaching-r7a-2026-10-27/probes/r7a-class-probes.BEFORE.out.json": "2f46983645446e45f5c9c8e787bdd86ed73711dd54932a748089d8afdc1fc794",
+  "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-review.r12.md": "f51c2024774b1ee93ab1eeba25c52f6d89eadbd397169bfed7dd219d825deb8f",
+  "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-records.json": "93c2a7bd467df729124ad4c6c06a5e9cfb773f59ac2bce2f101f1019bdb58211",
+  "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-probe-runtime-d53-r12.mjs": "72a79b106a5cd02df6801c6a204db15b062d30eeb5dde514282461eaa8e2dcb0",
+  "governance/agents/sports-science-reviewer/CONSTITUTION.md": "9de27b4d6ab0879419a92c218b98acc7ef3df63b73b3325010f033d403122180",
+  "governance/agents/sports-science-reviewer/EVIDENCE_PROTOCOL.md": "7885c126a724716a24c1e270b4d6983c7b8cd5a9797514830d1ea4d0b77e6f31",
+  "governance/agents/sports-science-reviewer/decision.schema.json": "46c45e87fea53b7b1712de17a9bcc4ef02f40d9dd1f6483bce510a0a21689cc9",
+  ".agents/skills/sports-science-review/SKILL.md": "67374297e275d2ec9ded1a8653baf6dc078fbe3d1fd1002e61a13cd6f34065bf",
+  ".claude/agents/sports-science-concurrent-training-reviewer.md": "021b59519c9df2a95fbca91cd553a5cdc2b1ce3719d2364ed431ef3fa8c6c52d"
+ },
+ "myOutputs": {
+  "audits/domain-coaching-r7a-2026-10-27/reviews/ssctr-r7a-instrument-rerun.mjs": "618c110f77625a8fcdc9a682955398e78ed304c40c3b3d04539f4dad50aff10c",
+  "audits/domain-coaching-r7a-2026-10-27/reviews/ssctr-r7a-instrument-rerun.out.json": "d244def0c7f7f729504fa18b5593fbefcfd3c6af0e265114759844bf2fcbd144",
+  "audits/domain-coaching-r7a-2026-10-27/reviews/ssctr-r7a-delta-probe.mjs": "648d2f59ad0b038d40a979c2dd0c025cba3d8411d23841f25af48c9f0e542c47",
+  "audits/domain-coaching-r7a-2026-10-27/reviews/ssctr-r7a-delta-probe.out.json": "c7fd703247ec6c77da55501acc8f36dd7fc0e2b27c0ec1d111802927393d94eb",
+  "audits/domain-coaching-r7a-2026-10-27/reviews/ssctr-r7a-delta-probe-2.mjs": "3b87c85d0f5d2e4176dacea7a508b1a85ce0c4ad71ea2e204e44c5d6b47ed3ab",
+  "audits/domain-coaching-r7a-2026-10-27/reviews/ssctr-r7a-delta-probe-2.out.json": "c8e65c150139f359c35d81d9eb7585107473946361d81b020ad4707bd4b6979a",
+  "audits/domain-coaching-r7a-2026-10-27/reviews/ssctr-r7a-literature.mjs": "1ffd841d57cf7fe7e41614485206976a4b83e93bb8f2d4aa676f54df99c8e34d",
+  "audits/domain-coaching-r7a-2026-10-27/reviews/ssctr-r7a-literature-pubmed.mjs": "c68cebfcc48551b431a262891ab7bd8bef2256bae02fb0e9b02eb365d24e3ddb",
+  "audits/domain-coaching-r7a-2026-10-27/reviews/ssctr-r7a-literature.out.json": "6d658f7b7c7734fda7c69fe17caf9ed7ef505efd3c066749b53ce8ba69859708",
+  "audits/domain-coaching-r7a-2026-10-27/reviews/ssctr-r7a-abstracts.mjs": "55e7396f509a80ec63bf79bfae74d697a554a7e0909749736f1fedbe4db305f3",
+  "audits/domain-coaching-r7a-2026-10-27/reviews/ssctr-r7a-abstracts.out.txt": "f6868ae6f82ea2c95211ead3cc30884eabbca7791a72af5425badfd0c47f1233",
+  "audits/domain-coaching-r7a-2026-10-27/reviews/ssctr-r7a-validate.mjs": "8781984cb5dd90345abba51b6b48880908d04505b5ccb3904f4d68f35cfe2080"
+ },
+ "remit": "Dose, phase behaviour, return, progression and establishment semantics of the R7-A delta (dossier items 1-8). Items 9-12, naming, code style, parsing, hashes and purely technical dedupe are outside my remit; I saw no sporting effect in them that needs a ruling.",
+ "verdict": {
+  "runtimeAccepted": false,
+  "freezeEligibleFromSSCTR": false,
+  "blocking": [
+   {
+    "id": "D55",
+    "status": "OPEN",
+    "new": true,
+    "narrow": true,
+    "runtimeOnly": true,
+    "boundaries": [
+     "R6-NONCLINICAL-RETURN",
+     "R6-SUBSTITUTION",
+     "R6-PLANNED-PROGRESSION"
+    ],
+    "what": "A never-performed exercise first set up while the exercises in use are in the return steps (in R7-A: a substitute in return step 2, now reached also when rotated-out exercises are parked at the entry step) earns a block-boundary set from that single establishment exposure when the step-2 week ends a block, and rises two sets in the first week after the return steps, while the exercises in use come back one set at a time.",
+    "evidence": "Probe RS2, freeze, real review path, EVERY_2_WEEKS: HYPERTROPHY w7 CONSO 2x8@3 ESTABLISH FIRST_ESTABLISH / w8 DEVEL 4x8@3 FROM_LOG FROM_LOG / w9 DEVEL -; STRENGTH w7 CONSO 2x5@3 ESTABLISH FIRST_ESTABLISH / w8 DEVEL 4x5@3 FROM_LOG FROM_LOG / w9 DEVEL -; RUNNING_SUPPORT w7 CONSO 1x8@3 ESTABLISH FIRST_ESTABLISH / w8 DEVEL 3x8@3 FROM_LOG FROM_LOG / w9 DEVEL -; blocksDone 1 after the step-2 week; the exercises in use are at 2 sets in that week. Pre-R7A runtime, same scenario: w7 CONSO 1x8@4 ESTABLISH RETURN_ENTRY / w8 DEVEL 2x8@3 FROM_LOG FROM_LOG / w9 DEVEL -. FIXED rotation (nothing parked): w7 CONSO 2x8@3 ESTABLISH FIRST_ESTABLISH / w8 DEVEL 4x8@3 FROM_LOG FROM_LOG / w9 DEVEL - on the freeze and w7 CONSO 2x8@3 ESTABLISH ESTABLISH / w8 DEVEL 4x8@3 FROM_LOG FROM_LOG / w9 DEVEL - on the pre-R7A runtime, so the path predates R7-A and item 5 widens it to the common rotation case.",
+    "contradicts": "operational.return.strengthReturnSets (\"Strength sets in a moderate or long return ... the ceiling ... without that, the normal count. After the return steps the count comes back at most one set per executed week\"); NONCLINICAL-RETURN conditions 9 and 21; the task contract class C13 (establishment x progression), which the class probes did not cover.",
+    "requiredChange": "Runtime only: an exercise first set up while an exercise in use is in the return steps earns no block-boundary set for the block of the return (as return-entry and return-step exposures do not), and after the return steps its count rises at most one set per executed week, up to its normal count, with phase reductions on top. Regression tests: the RS2 scenario for HYPERTROPHY, STRENGTH and RUNNING_SUPPORT with EVERY_2_WEEKS and FIXED rotation.",
+    "sportingWeight": "Modest: a two-set rise on a novel exercise in the third week after a 16-day break, in the window the return rule exists for; the pattern has had only two low-volume bouts.",
+    "ifReadDifferently": "If the Chief or the author reads strengthReturnSets as not covering an exercise first set up after the entry week, D55 needs a policy declaration (R17(b)) instead; that is a policy text change and, under the cycle bound, closes R7-A with an explicit blocker. My reading is that the declared text already covers it, so the fix is runtime-only."
+   }
+  ],
+  "cycleBound": "This is the one SSCTR review of R7A-FREEZE-1. The only blocker is new, narrow and runtime-only, so one narrow re-check is allowed: D55 alone on the new freeze revision at policy hash 18ec48f3..., with the files changed by the fix. Applying the bound is the Chief's."
+ },
+ "d53": {
+  "status": "RESOLVED",
+  "evidence": [
+   "AJ (my instrument rerun on the freeze): pending through a block end, pending and adopted, pending once, unlogged through the gap: 0 violations and 0 next exposures more than one set above the re-establishment (round 12: 2 -> 4 sets); the goblet squat goes 2, 2, then 3 sets.",
+   "AI: 2,448 re-establishments as prescribed and 1,224 with noisy logs (pending states 592); next exposure more than one set above: 0 and 0 (round 12: 0 and 48).",
+   "My reading-A audit of the same grid: 0 and 0 violations, 0 and 0 exposures more than one set above every count executed since the re-establishment; on the pre-R7A runtime the noisy-log grid has 48 violations and 24 such jumps (D53 reproduced).",
+   "AH: 0 of 584 next exposures more than one set above the re-establishment.",
+   "Phase grid: 2,350 re-establishments in race and no-event programs, every state mode: reading A violations 0, executed jumps 0 (pre-R7A: 40 and 22)."
+  ]
+ },
+ "d54": {
+  "status": "RESOLVED",
+  "evidence": [
+   "AK (my instrument rerun): 0 re-establishment rows above the twin's phase dose (round 12: 70).",
+   "My phase grid on the freeze: 400 timelines, 3,520 re-establishment rows in every phase; above the declared bounds 0, below the phase minimum RIR 0, above min(goal sets, 2) 0, above my own reduction of the stated count 0, above the twin 0; programs not produced 0. Race week and post-event rows are all 1 set of a main lift at RIR 4 (150 and 240).",
+   "The same grid on the pre-R7A runtime: 390 rows above the declared bounds and 832 above the twin (D54 reproduced).",
+   "Author class probe C03 (3,360 rows in reduced day phases, 0 violations) agrees; I did not rerun it."
+  ]
+ },
+ "answers": {
+  "Q1": {
+   "answer": "Option A (implemented) is acceptable and Option B is not required.",
+   "ruling": "The regain starts from the re-establishment count before its phase reduction, as strengthReturnSets does for a phase-reduced return step 2 and as my round-12 wording \"with phase reductions on top\" reads. A reduced week never raises the cap; a phase week whose reduction did not bring the row below that count counts as a whole executed week (the operational definition my round-12 audit used). Reading A never prescribes more than the approved first-bout dose (at most 2 sets at RIR >= 3) and never more than one set above a count actually executed.",
+   "evidence": "All 370 as-prescribed and 146 noisy-log flags of my round-12 audit (reading B) follow a phase-reduced re-establishment (0 and 0 otherwise); reading A gives 0 and 0; the phase grid gives 1590 reading-B flags, all of the same pattern, and 0 under A. A strict variant that never counts a phase week would flag 662 + 456 (AI grid) and 1098 (phase grid) later counts; I do not require it.",
+   "record": "R7A-SSCTR-REGAIN-BASE"
+  },
+  "Q2": {
+   "answer": "Confirmed.",
+   "ruling": "A re-establishment row may be below min(goal sets, 2) outside event phases when the phase dose or the exercise's own count is lower (consolidation and specific weeks; a known dose of 1 set). It is never above min(goal sets for its role, 2) nor above the phase dose of its own count that day.",
+   "evidence": "Phase grid on the freeze: consolidation re-establishments 227 main rows and 210 accessory rows at 1 set, specific 200 and 168, build 18 main rows at 1 set (a known dose of 1 set); none above the twin, the goal cap or my own reduction of the stated count.",
+   "record": "R7A-SSCTR-REESTABLISH-PHASE"
+  },
+  "Q3": {
+   "answer": "Confirmed.",
+   "ruling": "The first executed exposure decides whether the week re-established; the last executed exposure gives the week's counts. A known-dose exposure executed first keeps the state known, with no conversion and no regain cap; an unexecuted row decides nothing.",
+   "evidence": "Split-week probe (db-bench-press): known row first only: week 6 2026-12-16 3x10@3 KNOWN 18 + 2026-12-18 3x10@3 KNOWN 18 (round-12 runtime 2026-12-16 2x10@3 KNOWN 18 + 2026-12-18 2x10@3 KNOWN 18); re-establishment only: regain from 2 (2026-12-16 2x8@3 KNOWN 18 + 2026-12-18 2x8@3 KNOWN 18); both: known, no cap (2026-12-16 3x10@3 KNOWN 18 + 2026-12-18 3x10@3 KNOWN 18); neither: re-established the next week. Non-blocking R20: with both executed the return ceiling is set from the later 2-set row for one week (2 instead of 3).",
+   "record": "R7A-SSCTR-SPLIT-WEEK"
+  },
+  "Q4": {
+   "answer": "No sporting objection to items 6, 7 and 8. Item 5 is right for its own week, but its next week exposes D55, which blocks.",
+   "item5": "The entry-week definition (exercises in use) and the step-2 dose of a substitute (effort-guided, at most 2 sets at RIR >= 3) follow NR-21 and SUB-6; the week after rises two sets (D55).",
+   "item6": "Agreed: on the freeze sets without repetitions HOLD (HOLD, HOLD) with load and reps unchanged; missed reps and a low logged reserve still regress (control). On the pre-R7A runtime the same weeks returned no gates and the projection stepped the load to 82.5 kg, a contradiction of PP-9 that I had not flagged.",
+   "item7": "Agreed: a fatigue-reduced development week keeps the cap (barbell RDL w7 2x5@3 KNOWN 22.5 [KNOWN 3] / w8 3x5@3 KNOWN 22.5 [KNOWN 3] against the twin's w7 2x5@3 KNOWN 22.5 [KNOWN 3] / w8 4x5@3 KNOWN 22.5 [KNOWN 4]); one set lower for one week, consistent with \"a week without a phase reduction executed its whole count\".",
+   "item8": "Agreed: no move into taper days ([] on the freeze; the pre-R7A runtime offered [\"MOVE_TO_w11-str-d4 admissible false selected false\"]); moves in taper and race week, of race touches and of shakeouts remain barred.",
+   "record": "R7A-SSCTR-ITEMS-5-8"
+  }
+ },
+ "boundaryConditionsAtUnchangedHash": [
+  {
+   "boundary": "R6-COLD-START",
+   "disposition": "APPROVE_WITH_CONDITIONS",
+   "round12Binding": "none",
+   "status": "MET",
+   "note": "Not touched by the dose delta; item 9 (intake merge keeps the complete current dose) has no adverse sporting effect."
+  },
+  {
+   "boundary": "R6-LOAD-ESTABLISHMENT",
+   "disposition": "APPROVE_WITH_CONDITIONS",
+   "round12Binding": "D53 (from-log), D54 in condition 15",
+   "status": "MET",
+   "note": "D53 for every state mode and D54 resolved; Q1 and Q2 rulings added as conditions (records R7A-SSCTR-REGAIN-BASE, R7A-SSCTR-REESTABLISH-PHASE)."
+  },
+  {
+   "boundary": "R6-PLANNED-PROGRESSION",
+   "disposition": "APPROVE_WITH_CONDITIONS",
+   "round12Binding": "D53 (from-log) in condition 14",
+   "status": "NOT_MET (D55)",
+   "note": "Condition 14 met; condition 9 now also met for sets logged without repetitions (item 6); D55 is a block-boundary set progression of a return-period establishment."
+  },
+  {
+   "boundary": "R6-RUN-QUALITY",
+   "disposition": "APPROVE_WITH_CONDITIONS",
+   "round12Binding": "none",
+   "status": "MET",
+   "note": "Item 8 only restricts moves further."
+  },
+  {
+   "boundary": "R6-HYBRID-ARRANGEMENT",
+   "disposition": "APPROVE_WITH_CONDITIONS",
+   "round12Binding": "none",
+   "status": "MET",
+   "note": "Item 12 (a dated change is asked, never applied beyond its dates) preserves agency."
+  },
+  {
+   "boundary": "R6-SUBSTITUTION",
+   "disposition": "APPROVE_WITH_CONDITIONS",
+   "round12Binding": "none",
+   "status": "NOT_MET (D55)",
+   "note": "Condition 6 met (the substitute is established by effort at most 2 sets at RIR >= 3); D55 lets a substitute set up during the return steps rise two sets the week after."
+  },
+  {
+   "boundary": "R6-NONCLINICAL-RETURN",
+   "disposition": "APPROVE_WITH_CONDITIONS",
+   "round12Binding": "none",
+   "status": "NOT_MET (D55)",
+   "note": "Condition 21 now met in the parked-exercise case (item 5); conditions 9 and 21 are not met by the week after a return-period establishment (D55)."
+  },
+  {
+   "boundary": "R6-EVENT-TRANSITION",
+   "disposition": "APPROVE_WITH_CONDITIONS",
+   "round12Binding": "D54 in condition 18",
+   "status": "MET",
+   "note": "D54 resolved; item 8 keeps sessions inside their day phase; item 12 (a race finished faster than its window is complete) is correct."
+  },
+  {
+   "boundary": "R6-PARTIAL-NOISY-LEARNING",
+   "disposition": "APPROVE_WITH_CONDITIONS",
+   "round12Binding": "none",
+   "status": "MET",
+   "note": "Item 6 agrees with condition 7 (missing data is unknown, never adverse); items 10 and 11 are technical."
+  },
+  {
+   "boundary": "R6-ROTATION",
+   "disposition": "APPROVE_WITH_CONDITIONS",
+   "round12Binding": "D53 (from-log) in condition 10",
+   "status": "MET",
+   "note": "D53 resolved for every state mode; Q3 ruling added (record R7A-SSCTR-SPLIT-WEEK)."
+  }
+ ],
+ "boundaryNote": "Dispositions and evidence status (SUPPORTED_WITH_LIMITS) of all ten boundaries are unchanged at the unchanged hash. The weekly-review contract (R18) stays the last condition of every boundary and is not a freeze blocker; it must be closed before any use beyond the offline reference.",
+ "nonBlockingRecommendations": [
+  {
+   "id": "R20",
+   "kind": "new",
+   "owner": "runtime author",
+   "text": "Split week with both exposures executed (known row first, re-establishment row later): the return ceiling is set from the later, lower row for one week (2 instead of 3). Prefer the larger whole count executed in the week for lastExecutedSets."
+  },
+  {
+   "id": "R21",
+   "kind": "new",
+   "owner": "runtime author with Product Constitution & Governance (with R17(b))",
+   "text": "A new exercise first set up in return step 2 is established at up to 2 sets while the exercises in use are at the step-2 count (1 set in my probes). When R17(b) is declared, consider capping it at the return-step count of its slot."
+  },
+  {
+   "id": "R22",
+   "kind": "new",
+   "owner": "runtime author with Product Constitution & Governance (next policy revision)",
+   "text": "Declare the Q1 ruling in strength.setsAfterReestablishment: the regain starts from the re-establishment count before its phase reduction (a reduced re-establishment is followed by that count itself) and rises only after a week that executed its whole count, a phase week whose reduction did not bite included."
+  },
+  {
+   "id": "R23",
+   "kind": "new (pre-existing behaviour, both runtimes; not probed beyond RS2)",
+   "owner": "runtime author",
+   "text": "An exercise substituted during the return steps resumes at its full count when the window ends (back squat 1 set at the entry, then 3 sets in week 9 after two substitute weeks), because it carries no return step once the exercises in use complete theirs (D51). With D55 fixed the slot rises one set per week; check this after the fix."
+  },
+  {
+   "id": "R24",
+   "kind": "new (from reading the code, not probed)",
+   "owner": "runtime author",
+   "text": "A moved key strength session keeps the rows its original date produced; LE-15 judges each session on its own date, so a move across the 28-day resume boundary could keep a known row that its new date would re-establish. Weight negligible (days around an operational value); re-derive the rows of a moved session or record why not."
+  },
+  {
+   "id": "R17",
+   "kind": "retained (amended)",
+   "owner": "runtime author with Product Constitution & Governance",
+   "text": "(a), (c) and (d) as recorded in round 12; (c), a first establishment in a block-end consolidation week followed by a two-set rise outside a return, is unchanged on the freeze (24 + 12 cases in the AI grid, as in round 12) and stays non-blocking; the D55 fix may cover it. (b) is the NR-21 second case, now with R21."
+  },
+  {
+   "id": "R18",
+   "kind": "retained",
+   "owner": "Engineering with Product/Data",
+   "text": "Weekly-review contract; close before any use beyond the offline reference."
+  },
+  {
+   "id": "F-ACCESSORY-REPS",
+   "kind": "acknowledged, routed to R7-B by the author",
+   "owner": "R7-B",
+   "text": "Accessory repetitions that depend on the load mode under STRENGTH and MAINTAIN are unchanged by R7-A and not in the policy text; a sporting choice for R7-B, not a blocker here."
+  }
+ ],
+ "newPrescriptiveRuleDecided": {
+  "decided": true,
+  "what": "Q1: the regain base after a phase-reduced re-establishment is the count before the reduction, and a phase week whose reduction did not bite counts as a whole executed week. Q2, Q3 and Q4 confirm composition and state readings of declared rules and of my round-12 conditions, each with prescriptive impact; D55 states a required runtime behaviour under the declared return rule.",
+  "queue": "Four proposed funded-human revalidation items, one per record (items below, queue proposal R7A-SSCTR-QUEUE-PROPOSAL-r1). Proposal only: the queue file was not edited. Funding NOT_DECLARED."
+ },
+ "literatureAccess": {
+  "tools": "Node fetch to Europe PMC REST (HTTP 503 twice in this session) and PubMed E-utilities (HTTP 200); WebSearch/WebFetch not used.",
+  "newSearches": 1,
+  "newSourcesRead": "2 abstracts (R7A-S01, R7A-S02); no new full text",
+  "reused": "Round-1 to round-12 sources as recorded in my R6 records (verbatim objects)."
+ },
+ "checksRun": [
+  "node --test in CoachingCore on Node 24.19.0: 460/460 pass (run by me; no file written by the suite).",
+  "Freeze binding: all 74 files of RUNTIME_FREEZE_R7A_1.json match, before and after my runs; policy canonical hash recomputed 18ec48f3...; the pre-R7A snapshot matches its 73-file manifest and my round-12 record; my diff of the five changed files equals RUNTIME_DELTA_R7A.diff.",
+  "My round-12 instrument, byte copy run from reviews/: all 43 sections equal the author's AFTER output apart from file paths in error text; the author's BEFORE output equals my official round-12 output.",
+  "My delta probes (two files) on the freeze and on the pre-R7A snapshot."
+ ],
+ "notRunOrRead": [
+  "npm run verify, scripts/verify-r*.mjs, the mutation-check scripts, the R6 holdout and the R5 corpus replay (author material: REGRESSION_R7A.json and mutation-check-r7a.out.json read only as claims, not verified).",
+  "The author class probes were read, not rerun (C03 agrees with my phase grid; C04, C11 and C12 agree with my SW, RS and MR2 probes).",
+  "The independent engineering judge's qe-* files in this folder were not read, to keep the two judgments independent."
+ ],
+ "authorClaimsChecked": {
+  "agreed": [
+   "D53 for every state mode, D54, Q1 classification of the 370 and 146 flags, R19 split weeks, items 6-8, AD/AM/Z_D52/AA explanations, the AHb/AM instrument limitation"
+  ],
+  "disagreed": [
+   "Item 5 is presented as a step-2 dose change only; its next week rises two sets (D55)."
+  ]
+ },
+ "validation": {
+  "gap": "The project validator (.agents/skills/sports-science-review/scripts/validate_records.py) needs Python 3.11+ and jsonschema, which are not installed in this session, so it was not run.",
+  "substitute": "Declared substitute: reviews/ssctr-r7a-validate.mjs (Node 24.19.0 + CoachingCore/node_modules/ajv 8.20.0, Ajv2020 draft 2020-12, allErrors, strict except the Ajv-only strictTypes lint; local date and uri format checks, the uri check weaker than jsonschema FormatChecker) against governance/agents/sports-science-reviewer/decision.schema.json, with every cross-check of validate_records.py ported: duplicate ids, source identity across records, claim-source links, verified eligible full text for decisive claims, AE answers 1-10, current target hash, queue correspondence.",
+  "command": "node audits/domain-coaching-r7a-2026-10-27/reviews/ssctr-r7a-validate.mjs audits/domain-coaching-r7a-2026-10-27/reviews/ssctr-r7a-review.json --queue audits/domain-coaching-r7a-2026-10-27/reviews/ssctr-r7a-review.json",
+  "result": {
+   "passed": true,
+   "records": 4,
+   "errors": []
+  },
+  "calibration": "The substitute passes my round-12 records (which passed the real validator in R6) on every schema and cross-check, and catches all seven defects injected into a copy of them (missing field, impossible date, unresolved source, short AE list, stale hash, bad URL, invalid disposition).",
+  "limits": "Record consistency only; never citation truth, scientific safety or LLM behaviour."
+ },
+ "records": [
+  {
+   "schema_version": "1.0.0",
+   "review_id": "R7A-SSCTR-REGAIN-BASE",
+   "review_revision": "R7A-SSCTR-r1",
+   "review_date": "2026-10-27",
+   "agent_version": "SSCTR-1.0.0",
+   "constitution_revision": "SSCTR-CONST-1.0.0",
+   "protocol_revision": "SSCTR-EP-1.0.0",
+   "reviewer": {
+    "actor_type": "AI_AGENT",
+    "instance_id": "ssctr-r7a-2026-10-27 (fresh instance; its instructions are the body of .claude/agents/sports-science-concurrent-training-reviewer.md verbatim, sha256 021b5951...; no Agent tool, as the adapter requires; the dispatch mechanism itself is as reported by the caller)",
+    "human_credentials_claimed": false,
+    "independent_of_target_author": true
+   },
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/RUNTIME_FREEZE_R7A_1.json",
+    "artifact_revision": "R7A-FREEZE-1",
+    "sha256": "f7574eba3a4c6c30a1fd5edfd36680833bb7005cd86a635153f214601b0966a4",
+    "rule_ids": [
+     "strength.setsAfterReestablishment",
+     "strength.resumeAfterDays",
+     "return.strengthReturnSets (D49 analogue)",
+     "R6-LOAD-ESTABLISHMENT condition 15",
+     "R6-PLANNED-PROGRESSION condition 14",
+     "R6-ROTATION condition 10",
+     "r6-program.mjs advanceStrength (re-establishment branch, regainCap)",
+     "r6-program.mjs strengthCandidate/strengthDose (REESTABLISH row, baseSets)"
+    ]
+   },
+   "question": "After a performed re-establishment by effort, does the earlier set count now come back at most one set per executed week for every state mode (D53), and when the day phase reduced the re-establishment row (for example 1 of 2 sets in a consolidation week), may the regain start from the re-establishment count before that reduction (reading A, implemented: 1, then 2, then 3) or must it start from the reduced count (reading B: 1, 1, 2, 3) (Q1)?",
+   "population_context": {
+    "population": "Explicitly nonclinical eligible adult (18+) recreational hybrid runners and strength trainees of PROGRAM_POLICY_R6.population (V1); offline synthetic Node24 reference only. No elite, adolescent, pregnancy/postpartum, frailty, rehabilitation or clinical-clearance extrapolation.",
+    "eligibility_status": "SCOPE_DEFINITION_ONLY",
+    "facts": [
+     "Policy R6-POLICY-5 unchanged (canonical hash recomputed 18ec48f3...): \"After an exercise is re-established by effort, its earlier set count comes back one set per executed week, never at once.\" strengthReturnSets, for returns: \"a step 2 reduced by its phase is followed by the step-2 count itself\".",
+     "Runtime R7A-FREEZE-1: the regain starts at every performed re-establishment whatever the state mode; its base is the row's baseSets, the re-establishment count before the phase reduction (min(goal sets for the role, 2, the exercise's count that day)); the cap rises one set per executed week whose last executed row equals its baseSets.",
+     "My instrument rerun on the freeze (byte copy of the round-12 instrument, all 43 sections equal to the author's AFTER output apart from file paths): AJ from-log scripts 0 violations (pending through a block end 2 then 3 sets where round 12 had 4); AI 2,448 re-establishments as prescribed and 1,224 with noisy logs, next exposure more than one set above the re-establishment: 0 and 0; flags under my round-12 reading (reduced count as base): 370 and 146.",
+     "My delta probe, the same AI grid on the freeze: reading A violations 0 (as prescribed) and 0 (noisy logs); reading B flags 370 and 146, of which 0 and 0 do not follow a phase-reduced re-establishment; exposures more than one set above every count executed since the re-establishment: 0 and 0. Phase grid (race and no-event programs, five goals, known/none/noisy, two schedules): reading A violations 0, executed jumps 0."
+    ],
+    "unknowns": [
+     "No trial compares set-count regain schedules after a training gap; the one-set-per-week rule is a conservative heuristic.",
+     "How much protection a single reduced bout leaves for a given athlete is unknown (group means only)."
+    ]
+   },
+   "scope": {
+    "gate": "G02",
+    "item_ids": [
+     "D53",
+     "Q1",
+     "R6-LOAD-ESTABLISHMENT",
+     "R6-PLANNED-PROGRESSION",
+     "R6-ROTATION"
+    ],
+    "prescriptive_impact": true,
+    "whole_gate_closure": false
+   },
+   "literature_snapshot": {
+    "as_of": "2026-10-27",
+    "searches": [
+     {
+      "query": "(\"repeated bout effect\"[tiab] OR \"repeated-bout effect\"[tiab]) AND (\"low-intensity\"[tiab] OR \"low volume\"[tiab] OR \"low-volume\"[tiab] OR \"number of contractions\"[tiab] OR \"submaximal\"[tiab] OR \"fewer\"[tiab])",
+      "site": "PubMed E-utilities esearch/esummary (relevance)",
+      "searched_on": "2026-10-27",
+      "purpose": "R7A-SSCTR-r1 (Q1): counterevidence that a reduced (low-volume, low-intensity or submaximal) first bout fails to protect against a later, larger bout, which would favour restarting the regain from the reduced count (reading B).",
+      "result_notes": "18 hits (raw list in reviews/ssctr-r7a-literature.out.json). Two read at abstract level: Mavropalias 2020 (R7A-S01) and Da Silva 2023 (R7A-S02). Doma 2015 and 2017 (R6-S54, R6-S55) re-found. Electromyography, older-adult, maturation, blood-flow-restriction, cycling-efficiency and animal studies not applicable. Europe PMC returned HTTP 503 twice before this PubMed search; the access gap is disclosed."
+     },
+     {
+      "query": "Round-12 search reused, not re-run: (TITLE_ABS:\"taper\" OR TITLE_ABS:\"tapering\" OR TITLE_ABS:\"pre-competition\" OR TITLE_ABS:\"precompetition\") AND (TITLE_ABS:\"strength training\" OR TITLE_ABS:\"resistance training\" OR TITLE_ABS:\"concurrent training\") AND (TITLE_ABS:\"endurance\" OR TITLE_ABS:\"running\" OR TITLE_ABS:\"runners\" OR TITLE_ABS:\"cyclists\")",
+      "site": "Europe PMC REST search API (lite, relevance)",
+      "searched_on": "2026-10-27",
+      "purpose": "Round 12 (D54), reused for the D54 and Q2 rulings: how strength is dosed in a taper or the last week before an endurance event.",
+      "result_notes": "Round-12 result: 18 hits; no study tests a strength re-establishment or any strength dose inside a running taper (a negative search). Not re-run in R7A-SSCTR-r1."
+     }
+    ],
+    "sources": [
+     {
+      "source_id": "R6-S48",
+      "access": "FULL_TEXT",
+      "accessed_on": "2026-10-26",
+      "verified": true,
+      "prescriptive_support_eligible": true,
+      "title": "The Duration of the Repeated-Bout Effect After Eccentric Exercise",
+      "authors": "Theodorou AA, Margaritelis NV, Karyofyllidou AV, Christodoulou F, Jamurtas AZ, et al.",
+      "year": 2026,
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC13674372/fullTextXML",
+      "doi": "10.1111/sms.70381",
+      "pmid": "42886157",
+      "source_type": "RCT",
+      "population_design_dose": "48 young recreationally active men; two identical bouts of maximal eccentric knee-extensor exercise (5 x 15 repetitions); after the first bout participants were randomly allocated to repeat it after 3, 6, 9 or 12 weeks (12 completers per group).",
+      "findings": "The repeated-bout effect (smaller losses of torque and range of motion, less soreness and muscle damage) was evident at 3 and 6 weeks for most outcomes, remained detectable at 9 weeks for selected markers, and was no longer meaningfully present at 12 weeks.",
+      "locator": "Abstract; Methods 2.2 (random allocation to the interval groups); Results (Table 2, model-estimated contrasts by interval); Discussion (earlier downhill-running and elbow-flexor studies); Limitations (ssctr-evidence/PMC13674372.xml).",
+      "limitations": [
+       "Maximal unaccustomed eccentric knee-extensor work in young men; resistance training at 2-3 reps in reserve damages muscle far less; markers assessed on days 2 and 4 only; activity between bouts not monitored."
+      ],
+      "counterevidence": [
+       "Earlier studies cited in the discussion found protection that faded by 9 weeks after downhill running and persisted partly to 10 weeks for the elbow flexors."
+      ]
+     },
+     {
+      "source_id": "R6-S50",
+      "access": "ABSTRACT_ONLY",
+      "accessed_on": "2026-10-27",
+      "verified": true,
+      "prescriptive_support_eligible": false,
+      "title": "Low-intensity eccentric contractions of the knee extensors and flexors protect against muscle damage",
+      "authors": "Lin MJ, Chen TC, Chen HL, Wu BH, Nosaka K",
+      "year": 2015,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/26319562/",
+      "doi": "10.1139/apnm-2015-0107",
+      "pmid": "26319562",
+      "source_type": "RCT",
+      "population_design_dose": "Young men in 8 experimental and 2 control groups (13 per group); 30 or 60 low-intensity eccentric contractions (10% of maximal isometric strength) of the knee flexors or extensors 2 days, 1, 2 or 3 weeks before maximal eccentric contractions of the same muscles.",
+      "findings": "The low-intensity bout caused no measurable damage itself and gave 30-66% protection against damage from the maximal bout when it came 2 days or 1 week before; there was no protection at 2 or 3 weeks.",
+      "locator": "Abstract (ssctr-evidence/abstracts-r11.json).",
+      "limitations": [
+       "Abstract only; maximal isokinetic eccentric contractions damage muscle far more than effort-guided training at 3 reps in reserve; young men only."
+      ],
+      "counterevidence": [
+       "The protective window of a low-dose bout was about one week, shorter than after a damaging bout (R6-S48)."
+      ]
+     },
+     {
+      "source_id": "R6-S51",
+      "access": "ABSTRACT_ONLY",
+      "accessed_on": "2026-10-27",
+      "verified": true,
+      "prescriptive_support_eligible": false,
+      "title": "Damage protective effects conferred by low-intensity eccentric contractions on arm, leg and trunk muscles",
+      "authors": "Huang MJ, Nosaka K, Wang HS, Tseng KW, Chen HL, Chou TY, Chen TC",
+      "year": 2019,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/30778759/",
+      "doi": "10.1007/s00421-019-04095-9",
+      "pmid": "30778759",
+      "source_type": "RCT",
+      "population_design_dose": "24 untrained young men (12 per group); 50 eccentric contractions at 10% of maximal isometric strength 2 days before 50 at 80%, for nine muscle groups, against a group without the low-intensity bout.",
+      "findings": "With the low-intensity bout 2 days before, strength recovered faster (6-31% greater at 5 days) and peak soreness was 36-54% lower after the high-intensity bout, in all nine muscle groups.",
+      "locator": "Abstract (ssctr-evidence/abstracts-r11.json).",
+      "limitations": [
+       "Abstract only; the allocation method is not stated in the abstract; eccentric-only protocols in untrained young men."
+      ],
+      "counterevidence": [
+       "The size of the protection differed between muscles."
+      ]
+     },
+     {
+      "source_id": "R6-S52",
+      "access": "FULL_TEXT",
+      "accessed_on": "2026-10-27",
+      "verified": true,
+      "prescriptive_support_eligible": true,
+      "title": "Comparative effects of single vs. multiple-set resistance training on neuromuscular performance and muscle morphology in sedentary men",
+      "authors": "Coskun IA, Kafkas ME",
+      "year": 2026,
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC13670784/fullTextXML",
+      "doi": "10.1186/s13102-026-01874-8",
+      "pmid": "42471717",
+      "source_type": "RCT",
+      "population_design_dose": "34 sedentary young men randomized (computer-generated sequence, sealed opaque envelopes) to single-set, three-set or control; 8 weeks, twice weekly, seven exercises of up to 10 repetitions.",
+      "findings": "Both single-set and three-set training improved strength, power and muscle size over 8 weeks; three sets gave larger gains (squat 1-RM +14.8% and leg cross-sectional area +11.3%, against about 6-8% with one set), a volume dose-response from the first weeks.",
+      "locator": "Abstract; Methods (randomization, concealed allocation, training programme); Results; Conclusions (ssctr-evidence/PMC13670784.xml).",
+      "limitations": [
+       "Small sample; men only; participants and trainers not blinded; retrospectively registered; eight weeks."
+      ],
+      "counterevidence": [
+       "A lower set count costs some adaptation if it persists, so a reduction is acceptable only when it is short."
+      ]
+     },
+     {
+      "source_id": "R6-S54",
+      "access": "ABSTRACT_ONLY",
+      "accessed_on": "2026-10-27",
+      "verified": true,
+      "prescriptive_support_eligible": false,
+      "title": "The repeated bout effect of typical lower body strength training sessions on sub-maximal running performance and hormonal response",
+      "authors": "Doma K, Schumann M, Sinclair WH, Leicht AS, Deakin GB, Hakkinen K",
+      "year": 2015,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/25828143/",
+      "doi": "10.1007/s00421-015-3159-z",
+      "pmid": "25828143",
+      "source_type": "ACUTE_STUDY",
+      "population_design_dose": "14 resistance-untrained men; two lower-body 6RM sessions one week apart; muscle damage markers and submaximal running at 24 and 48 h after each.",
+      "findings": "The second bout attenuated creatine kinase, soreness and the loss of jump height at 48 h; submaximal running was impaired for about 24 h after both bouts.",
+      "locator": "Abstract (ssctr-evidence/abstracts-r12.json).",
+      "limitations": [
+       "Abstract only; untrained men; 6RM sessions, far harder than 2 sets at RIR 3."
+      ],
+      "counterevidence": [
+       "Running was impaired only up to about 24 h."
+      ]
+     },
+     {
+      "source_id": "R6-S55",
+      "access": "ABSTRACT_ONLY",
+      "accessed_on": "2026-10-27",
+      "verified": true,
+      "prescriptive_support_eligible": false,
+      "title": "The repeated bout effect of traditional resistance exercises on running performance across 3 bouts",
+      "authors": "Doma K, Schumann M, Leicht AS, Heilbronn BE, Damas F, Burt D",
+      "year": 2017,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/28553994/",
+      "doi": "10.1139/apnm-2017-0214",
+      "pmid": "28553994",
+      "source_type": "ACUTE_STUDY",
+      "population_design_dose": "12 resistance-untrained men; three lower-body 6RM sessions; damage markers and submaximal and maximal running at 24 and 48 h.",
+      "findings": "The first bout raised creatine kinase most; at least two bouts were needed before soreness, range of motion and submaximal running were protected; the authors advise avoiding submaximal running for at least 48 h after resistance training until the third bout.",
+      "locator": "Abstract (ssctr-evidence/abstracts-r12.json).",
+      "limitations": [
+       "Abstract only; untrained men; 6RM sessions."
+      ],
+      "counterevidence": [
+       "Protection appeared after two bouts, so a single earlier block of training may already have conferred some."
+      ]
+     },
+     {
+      "source_id": "R7A-S01",
+      "access": "ABSTRACT_ONLY",
+      "accessed_on": "2026-10-27",
+      "verified": true,
+      "prescriptive_support_eligible": false,
+      "title": "Comparison between high- and low-intensity eccentric cycling of equal mechanical work for muscle damage and the repeated bout effect",
+      "authors": "Mavropalias G, Koeda T, Barley OR, Poon WCK, Fisher AJ, Blazevich AJ, Nosaka K",
+      "year": 2020,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/32170443/",
+      "doi": "10.1007/s00421-020-04341-5",
+      "pmid": "32170443",
+      "source_type": "ACUTE_STUDY",
+      "population_design_dose": "20 men; two eccentric cycling bouts 2 weeks apart: high-intensity twice (1 min x 5 at 20% of peak power, n = 11) or low-intensity first (4 min x 5 at 5% of peak power, matched mechanical work) then high-intensity (n = 9).",
+      "findings": "Both first bouts lowered knee-extensor torque and jump height similarly at 24 h, and both groups lost less function after the second bout. Soreness after the first bout was greater after high intensity (peak 4.2 vs 1.4), but after the second, high-intensity bout it was greater in the group whose first bout was low-intensity (3.6 vs 1.5).",
+      "locator": "Abstract (PubMed efetch, reviews/ssctr-r7a-abstracts.out.txt).",
+      "limitations": [
+       "Abstract only; eccentric cycling, not resistance training; allocation method not stated in the abstract; small groups; men only."
+      ],
+      "counterevidence": [
+       "A low-intensity first bout protected function but gave less protection against soreness than a full first bout; soreness after the second bout (3.6) stayed below that after an unprotected high-intensity first bout (4.2)."
+      ]
+     },
+     {
+      "source_id": "R7A-S02",
+      "access": "ABSTRACT_ONLY",
+      "accessed_on": "2026-10-27",
+      "verified": true,
+      "prescriptive_support_eligible": false,
+      "title": "Knee position sense and knee flexor neuromuscular function are similarly altered after two submaximal eccentric bouts",
+      "authors": "Da Silva F, Monjo F, Gioda J, Blain GM, Piponnier E, Corcelle B, Colson SS",
+      "year": 2023,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/36273044/",
+      "doi": "10.1007/s00421-022-05063-6",
+      "pmid": "36273044",
+      "source_type": "ACUTE_STUDY",
+      "population_design_dose": "16 participants; two submaximal unilateral knee-flexor eccentric bouts one week apart, each to a 20% loss of maximal isometric force.",
+      "findings": "No repeated-bout effect on neuromuscular function or position sense; soreness was present at 24 h.",
+      "locator": "Abstract (PubMed efetch, reviews/ssctr-r7a-abstracts.out.txt).",
+      "limitations": [
+       "Abstract only; fatigue-limited isolated eccentric bouts; outcomes are neuromuscular function and proprioception, not training adaptation; small sample."
+      ],
+      "counterevidence": [
+       "A submaximal first bout need not protect at all on these outcomes."
+      ]
+     }
+    ],
+    "counterevidence_search": "Directed PubMed search for evidence that a reduced first bout does not protect (two abstracts read, both recorded as counterevidence); round-1 to round-12 sources and searches reused as recorded there. Search snippets were discovery only; findings are taken from full text or, where labelled, abstracts."
+   },
+   "claims": [
+    {
+     "claim_id": "RB-1",
+     "statement": "Under reading A no exposure after a phase-reduced re-establishment exceeds the dose the approved rule already gives an exercise re-established with no recent bout at all (at most 2 sets at RIR >= 3, effort-guided under the earlier ceiling), and every later count is at most one set above the largest count executed since the re-establishment; the athlete has meanwhile had one more recent bout, whose protection persists for weeks (R6-S48) and is at least partial after a low-intensity bout (R6-S50, R6-S51). Reading A is therefore never less conservative than the approved first-bout rule.",
+     "basis": "INFERRED",
+     "role": "DECISION_SUPPORT",
+     "evidence_status": "SUPPORTED_WITH_LIMITS",
+     "source_ids": [
+      "R6-S48",
+      "R6-S50",
+      "R6-S51"
+     ],
+     "applicability": "Recreational adults returning to an exercise after more than return.moderateMaxDays without it; low set counts at RIR >= 3.",
+     "limitations": [
+      "Repeated-bout studies use eccentric or maximal protocols, mostly in young men; no study tests re-establishment schedules.",
+      "R6-S50 and R6-S51 are abstract-only and context only."
+     ],
+     "counterevidence": [
+      "A reduced first bout protects less than a full one (R7A-S01) and a submaximal bout may not protect at all on some outcomes (R7A-S02); the dominance argument holds even with no protection."
+     ]
+    },
+    {
+     "claim_id": "RB-2",
+     "statement": "A low-intensity first bout protected function but gave less protection against soreness than a full first bout; soreness after the second, larger bout stayed below that after an unprotected first bout (R7A-S01). Two submaximal eccentric bouts a week apart showed no repeated-bout effect on neuromuscular function and position sense (R7A-S02).",
+     "basis": "OBSERVED",
+     "role": "COUNTEREVIDENCE",
+     "evidence_status": "PLAUSIBLE_BUT_UNCERTAIN",
+     "source_ids": [
+      "R7A-S01",
+      "R7A-S02"
+     ],
+     "applicability": "Indirect: eccentric cycling and isolated eccentric bouts, not resistance training sets.",
+     "limitations": [
+      "Abstract only; small samples; different modalities."
+     ],
+     "counterevidence": [
+      "R6-S50 and R6-S51 found 30-66% protection after low-intensity eccentric bouts."
+     ]
+    },
+    {
+     "claim_id": "RB-3",
+     "statement": "In resistance-untrained men two or more bouts were needed before submaximal running was protected (R6-S55), and running was impaired for about 24 h after each early bout (R6-S54); this applies to the early exposures under both readings and does not distinguish them.",
+     "basis": "OBSERVED",
+     "role": "CONTEXT",
+     "evidence_status": "SUPPORTED_WITH_LIMITS",
+     "source_ids": [
+      "R6-S54",
+      "R6-S55"
+     ],
+     "applicability": "Hybrid athletes whose strength and running days are close.",
+     "limitations": [
+      "Abstract only; 6RM bouts, heavier than an RIR >= 3 re-establishment."
+     ],
+     "counterevidence": [
+      "Submaximal running physiology is little changed after a strength session (R6-S53, recorded in round 12)."
+     ]
+    },
+    {
+     "claim_id": "RB-4",
+     "statement": "Reading B would let a phase reduction meant for one week also lower the counts of the following unreduced weeks, a double reduction that neither the policy text nor strengthReturnSets states; the extra week at the reduced count has no evidence of benefit.",
+     "basis": "INFERRED",
+     "role": "CONTEXT",
+     "evidence_status": "SUPPORTED_WITH_LIMITS",
+     "source_ids": [
+      "R6-S52"
+     ],
+     "applicability": "Set-count trajectories after consolidation, specific, taper, race-window and post-event weeks.",
+     "limitations": [
+      "Structural argument; R6-S52 shows single sets give smaller gains than three, not the cost of one extra week."
+     ],
+     "counterevidence": [
+      "Conservatism alone could favour B; SSCTR-04 rules that conservative does not mean automatically reducing training."
+     ]
+    },
+    {
+     "claim_id": "RB-5",
+     "statement": "No study tests how fast the number of sets should return after weeks without an exercise; the regain rule stays a conservative heuristic, not a physiological threshold.",
+     "basis": "OBSERVED",
+     "role": "OPEN_QUESTION",
+     "evidence_status": "INSUFFICIENT_EVIDENCE",
+     "source_ids": [],
+     "applicability": "All re-establishments.",
+     "limitations": [
+      "Negative searches in rounds 11 and 12."
+     ],
+     "counterevidence": [
+      "None located."
+     ]
+    }
+   ],
+   "evidence_status": "SUPPORTED_WITH_LIMITS",
+   "applicability": "Runtime composition rule inside the approved LOAD-ESTABLISHMENT, PLANNED-PROGRESSION and ROTATION envelopes, offline synthetic Node24 reference, stated adult recreational nonclinical V1 population; no real-athlete effect.",
+   "disposition": "APPROVE_WITH_CONDITIONS",
+   "proposed_action": "KEEP",
+   "decision": {
+    "rationale": "D53 is resolved: the regain starts at every performed re-establishment whatever the state mode, and no next exposure is more than one set above the re-establishment in the known-load, pending, adopted, unlogged and re-established cases. All flags of my round-12 audit on the freeze come from one pattern: it measured the regain from the reduced count of a phase-reduced re-establishment, a case that could not exist before D54. Reading A, implemented, starts from the count before the reduction, as strengthReturnSets does for a phase-reduced return step 2 and as my round-12 wording (\"with phase reductions on top\") reads; it never prescribes more than the approved first-bout dose and never more than one set above a count actually executed. Reading B is more conservative but not required.",
+    "preserve": [
+     "strength.setsAfterReestablishment and the round-12 regain cap for every state mode",
+     "The re-establishment row: effort-guided load under the earlier ceiling, at most 2 sets at RIR >= 3"
+    ],
+    "modify": [],
+    "mec_change_level": "No runtime or policy change; reading A as implemented in R7A-FREEZE-1.",
+    "trade_off": "One week sooner back to the re-establishment count after a phase-reduced re-establishment, against an extra week at one set under reading B; protects progression without exceeding the approved first-bout dose.",
+    "must_not": [
+     "Present any value as validated physiology, an injury-prevention threshold, a readiness score or a guarantee.",
+     "Substitute a training dose for clinical assessment.",
+     "Treat missing data as adverse or as tolerance.",
+     "Change official plan state or completed history."
+    ],
+    "conditions": [
+     "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+     "Binding: this record binds runtime R7A-FREEZE-1 (CoachingCore/r7/RUNTIME_FREEZE_R7A_1.json, sha256 f7574eba3a4c6c30a1fd5edfd36680833bb7005cd86a635153f214601b0966a4; r6-program.mjs b7be1778ac69e6c13726a78b21ccd36a707df557709f96246c4878c30a69b48a, r6-adaptation.mjs c5fa03cb6cf7b6a16a698a6b590fd494a2f57b89bbc7a9d3a4d4d19977d45a56) at the unchanged canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c. Any change to a bound file needs a new freeze revision and a narrow runtime delta check; any policy byte change needs a delta binding review.",
+     "After a performed re-establishment by effort (more than return.moderateMaxDays since the last executed exposure), the earlier count, block-boundary set included, comes back at most one set per executed week, never at once, whatever the state mode at the re-establishment (known load, pending establishment log, unlogged or re-established) (D53, resolved).",
+     "The regain base is the re-establishment count before its phase reduction: min(goal sets for the role, 2, the count the exercise would otherwise have that day). A re-establishment reduced by its phase is followed by that count itself, as a phase-reduced return step 2 is followed by the step-2 count (Q1, reading A).",
+     "The cap rises by one set only after a week whose last executed exposure of the exercise executed its whole count (executed sets equal to its count before the phase reduction, gate ADVANCE or EARNED, a logged set); a week whose executed row was below that count, by its phase or by an in-week fatigue reduction, never raises it. A phase week whose reduction did not bring the row below that count counts as a whole executed week.",
+     "Every later count stays at or below the cap, with phase reductions on top, and is never more than one set above the largest count executed since the re-establishment.",
+     "Load: a logged load at or after the re-establishment becomes the reference only by the existing adoption rules, never above the re-establishment ceiling (D44, D45).",
+     "To be declared in the next policy revision: setsAfterReestablishment states the base before the phase reduction and the whole-count rule, in the words of strengthReturnSets.",
+     "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+    ]
+   },
+   "confidence": {
+    "level": "MODERATE",
+    "rationale": "The runtime behaviour is verified on both runtimes over the round-12 AI grid and a wider phase grid; the ruling rests on a dominance argument plus indirect repeated-bout evidence, with directed counterevidence read at abstract level."
+   },
+   "limitations": [
+    "Synthetic timelines only; no real-athlete outcome.",
+    "Repeated-bout evidence is indirect (eccentric protocols, young men).",
+    "Literature access: Europe PMC returned HTTP 503; PubMed used; two abstracts read, no new full text."
+   ],
+   "ae_review": {
+    "applicable": true,
+    "answers": [
+     {
+      "question_number": 1,
+      "answer": "Yes: the re-establishment envelope is adequate at this runtime for every state mode; the one-set-per-week regain holds and the event doses hold (record R7A-SSCTR-REESTABLISH-PHASE)."
+     },
+     {
+      "question_number": 2,
+      "answer": "The material fact is a performed re-establishment after more than return.moderateMaxDays without the exercise, with its executed count and logged set from the weekly review (completed-work ledger)."
+     },
+     {
+      "question_number": 3,
+      "answer": "KEEP of the runtime is defensible; unknown is how much protection a reduced first bout leaves for this athlete."
+     },
+     {
+      "question_number": 4,
+      "answer": "Against reading B, reading A changes the count one week sooner after a phase-reduced re-establishment; neither changes the re-establishment dose itself."
+     },
+     {
+      "question_number": 5,
+      "answer": "The smallest sufficient rule is reading A with the whole-count condition; no runtime change."
+     },
+     {
+      "question_number": 6,
+      "answer": "Reading B adds a week at one set with no evidence of benefit and double-counts a one-week phase reduction; a fixed hold would ignore executed work."
+     },
+     {
+      "question_number": 7,
+      "answer": "It protects progression and the stated priority: the count returns at most one set per executed week and never above the approved first-bout dose."
+     },
+     {
+      "question_number": 8,
+      "answer": "Applicable evidence supports a gradual return after a gap and partial protection from a recent bout (R6-S48, R6-S50, R6-S51); counterevidence (R7A-S01, R7A-S02) does not defeat the dominance argument; no dose number is invented."
+     },
+     {
+      "question_number": 9,
+      "answer": "Uncertain: individual protection after a 1-set bout; the regain schedule itself is a heuristic (RB-5)."
+     },
+     {
+      "question_number": 10,
+      "answer": "No ASK, HOLD or clinical routing is needed for this nonclinical rule; clinical pauses route as before."
+     }
+    ],
+    "not_applicable_reason": null
+   },
+   "governance": {
+    "gate_status": "NOT_CLOSED_BY_THIS_RECORD",
+    "publication_status": "NOT_PUBLISHED",
+    "human_validation": false,
+    "empirical_product_validation": false,
+    "clinical_clearance": false,
+    "next_owner": "Chief: apply the R7-A cycle bound with this verdict (one blocker, D55: new, narrow, runtime-only, so one narrow re-check is allowed); runtime author: fix D55 with its regression tests in a new freeze revision; merge the proposed queue items; route R20-R23 and the declarations (R16, R17, the Q1 wording) to the runtime author with Product Constitution & Governance in the next policy revision; Engineering with Product/Data for R18 before any use beyond the offline reference",
+    "next_action": "Carry this record's conditions into the R7-A disposition and the queue. The one narrow SSCTR re-check covers D55 only, at policy hash 18ec48f3..., on the new freeze revision; any other bound-file change re-opens this record."
+   },
+   "expiry": {
+    "owner": "Chief / SSCTR",
+    "review_by": "2027-04-27",
+    "event_based_expiry": "Expires immediately on any policy hash change, any change to a file bound by R7A-FREEZE-1, or a failed delta probe of strengthCandidate, strengthDose, phaseDose, advanceStrength, validateWeeks or the review gates.",
+    "triggers": [
+     "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+     "Any change to a file listed in RUNTIME_FREEZE_R7A_1.json (new freeze revision).",
+     "New or corrected systematic review/meta-analysis or trial on repeated-bout protection, re-establishment after a training gap or strength dosing near endurance events.",
+     "Population, event-distance or V1 scope change.",
+     "Adverse event, runtime inconsistency or contrary comparable observations.",
+     "Founder funding declaration (move approved items to HUMAN_REVALIDATION_REQUIRED)."
+    ]
+   },
+   "human_revalidation": {
+    "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+    "queue_ref": "audits/domain-coaching-r7a-2026-10-27/reviews/ssctr-r7a-review.json#HQ-R7A-SSCTR-REGAIN-BASE",
+    "human_review": null
+   }
+  },
+  {
+   "schema_version": "1.0.0",
+   "review_id": "R7A-SSCTR-REESTABLISH-PHASE",
+   "review_revision": "R7A-SSCTR-r1",
+   "review_date": "2026-10-27",
+   "agent_version": "SSCTR-1.0.0",
+   "constitution_revision": "SSCTR-CONST-1.0.0",
+   "protocol_revision": "SSCTR-EP-1.0.0",
+   "reviewer": {
+    "actor_type": "AI_AGENT",
+    "instance_id": "ssctr-r7a-2026-10-27 (fresh instance; its instructions are the body of .claude/agents/sports-science-concurrent-training-reviewer.md verbatim, sha256 021b5951...; no Agent tool, as the adapter requires; the dispatch mechanism itself is as reported by the caller)",
+    "human_credentials_claimed": false,
+    "independent_of_target_author": true
+   },
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/RUNTIME_FREEZE_R7A_1.json",
+    "artifact_revision": "R7A-FREEZE-1",
+    "sha256": "f7574eba3a4c6c30a1fd5edfd36680833bb7005cd86a635153f214601b0966a4",
+    "rule_ids": [
+     "Policy principle 8",
+     "operational.event (raceWeekStrengthSets, raceWeekStrengthMinimumRir, postEventStrengthSets, taperStrengthSetFraction, raceWeekStrengthMinDaysBeforeRace, proximitySemantics)",
+     "strength.consolidationSetReduction",
+     "strength.resumeAfterDays",
+     "R6-EVENT-TRANSITION conditions 7, 8 and 18",
+     "R6-LOAD-ESTABLISHMENT condition 15",
+     "r6-program.mjs strengthCandidate, strengthDose, phaseDose, phaseMinimumRir, dayPhaseOf, validateWeeks"
+    ]
+   },
+   "question": "Does the re-establishment row now take its day phase like every other strength row (taper, race window, post-event, consolidation, specific): never more sets than the phase dose of the count the exercise would otherwise have that day and never fewer reps in reserve than the phase minimum (D54); and may it fall below min(goal sets, 2) outside event phases when that phase dose or the exercise's own count is lower (Q2)?",
+   "population_context": {
+    "population": "Explicitly nonclinical eligible adult (18+) recreational hybrid runners and strength trainees of PROGRAM_POLICY_R6.population (V1); offline synthetic Node24 reference only. No elite, adolescent, pregnancy/postpartum, frailty, rehabilitation or clinical-clearance extrapolation.",
+    "eligibility_status": "SCOPE_DEFINITION_ONLY",
+    "facts": [
+     "Runtime R7A-FREEZE-1: strengthDose builds one candidate per state and applies the day phase once to every row: sets = min(row cap, phase dose of the count the exercise would otherwise have that day), reps in reserve = max(row floor, phase minimum); the final validation rejects any row above its day phase dose.",
+     "Instrument AK on the freeze: 0 re-establishment rows above the phase dose of the twin executed throughout (round 12: 70).",
+     "My phase grid on the freeze: 400 timelines, 3,520 re-establishment rows in their first two weeks; above the declared bounds 0, above min(goal sets, 2) 0, above my own phase reduction of the stated count 0, above the twin in a reduced phase 0, in a build week 0; programs not produced 0. The same grid on the pre-R7A runtime: 390 rows above the declared bounds and 832 above the twin."
+    ],
+    "unknowns": [
+     "No study tests a strength re-establishment, or any strength dose, inside a running taper (round-12 negative search)."
+    ]
+   },
+   "scope": {
+    "gate": "G02",
+    "item_ids": [
+     "D54",
+     "Q2",
+     "R6-EVENT-TRANSITION",
+     "R6-LOAD-ESTABLISHMENT"
+    ],
+    "prescriptive_impact": true,
+    "whole_gate_closure": false
+   },
+   "literature_snapshot": {
+    "as_of": "2026-10-27",
+    "searches": [
+     {
+      "query": "(\"repeated bout effect\"[tiab] OR \"repeated-bout effect\"[tiab]) AND (\"low-intensity\"[tiab] OR \"low volume\"[tiab] OR \"low-volume\"[tiab] OR \"number of contractions\"[tiab] OR \"submaximal\"[tiab] OR \"fewer\"[tiab])",
+      "site": "PubMed E-utilities esearch/esummary (relevance)",
+      "searched_on": "2026-10-27",
+      "purpose": "R7A-SSCTR-r1 (Q1): counterevidence that a reduced (low-volume, low-intensity or submaximal) first bout fails to protect against a later, larger bout, which would favour restarting the regain from the reduced count (reading B).",
+      "result_notes": "18 hits (raw list in reviews/ssctr-r7a-literature.out.json). Two read at abstract level: Mavropalias 2020 (R7A-S01) and Da Silva 2023 (R7A-S02). Doma 2015 and 2017 (R6-S54, R6-S55) re-found. Electromyography, older-adult, maturation, blood-flow-restriction, cycling-efficiency and animal studies not applicable. Europe PMC returned HTTP 503 twice before this PubMed search; the access gap is disclosed."
+     },
+     {
+      "query": "Round-12 search reused, not re-run: (TITLE_ABS:\"taper\" OR TITLE_ABS:\"tapering\" OR TITLE_ABS:\"pre-competition\" OR TITLE_ABS:\"precompetition\") AND (TITLE_ABS:\"strength training\" OR TITLE_ABS:\"resistance training\" OR TITLE_ABS:\"concurrent training\") AND (TITLE_ABS:\"endurance\" OR TITLE_ABS:\"running\" OR TITLE_ABS:\"runners\" OR TITLE_ABS:\"cyclists\")",
+      "site": "Europe PMC REST search API (lite, relevance)",
+      "searched_on": "2026-10-27",
+      "purpose": "Round 12 (D54), reused for the D54 and Q2 rulings: how strength is dosed in a taper or the last week before an endurance event.",
+      "result_notes": "Round-12 result: 18 hits; no study tests a strength re-establishment or any strength dose inside a running taper (a negative search). Not re-run in R7A-SSCTR-r1."
+     }
+    ],
+    "sources": [
+     {
+      "source_id": "R6-S53",
+      "access": "FULL_TEXT",
+      "accessed_on": "2026-10-27",
+      "verified": true,
+      "prescriptive_support_eligible": true,
+      "title": "Acute Neuromuscular, Physiological and Performance Responses After Strength Training in Runners: A Systematic Review and Meta-Analysis",
+      "authors": "de Carvalho e Silva GI, Brandao LHA, dos Santos Silva D, de Jesus Alves MD, Aidar FJ, et al.",
+      "year": 2022,
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC9385928/fullTextXML",
+      "doi": "10.1186/s40798-022-00497-w",
+      "pmid": "35976540",
+      "source_type": "META_ANALYSIS",
+      "population_design_dose": "19 studies (13 meta-analysed) of male runners; one strength session (traditional, explosive, plyometric or combined) before running tests, mostly 24-48 h later.",
+      "findings": "After a strength session peak torque fell and soreness, creatine kinase and perceived exertion rose; jump height, ventilation, oxygen uptake, lactate and heart rate were not different, and submaximal running was little affected; time to exhaustion fell in three of the four studies that measured it. The authors advise care to limit muscle damage before competition.",
+      "locator": "Abstract; Key Points; Results (time to exhaustion in four studies); Discussion; Practical Implications (ssctr-evidence/PMC9385928.xml).",
+      "limitations": [
+       "Male participants only; small heterogeneous studies, several with damaging or 6RM protocols; no study of a taper or of a low-dose session."
+      ],
+      "counterevidence": [
+       "Submaximal running physiology at 24 h was largely unchanged after strength sessions, even after damaging protocols."
+      ]
+     },
+     {
+      "source_id": "R6-S14",
+      "access": "FULL_TEXT",
+      "accessed_on": "2026-10-26",
+      "verified": true,
+      "prescriptive_support_eligible": true,
+      "title": "Effects of tapering on performance in endurance athletes: A systematic review and meta-analysis",
+      "authors": "Wang Z, Wang YT, Gao W, Zhong Y",
+      "year": 2023,
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC10171681/fullTextXML",
+      "doi": "10.1371/journal.pone.0282838",
+      "pmid": "37163550",
+      "source_type": "META_ANALYSIS",
+      "population_design_dose": "14 studies in well-trained endurance athletes (VO2max >55 ml/kg/min).",
+      "findings": "Taper improved time-trial (SMD -0.45) and time-to-exhaustion performance; volume reductions of 41-60% with maintained intensity and frequency, durations <=7, 8-14 or 15-21 days and progressive or step tapers were effective.",
+      "locator": "Abstract; Introduction; subgroup results.",
+      "limitations": [
+       "Trained, not recreational, athletes; few studies per subgroup."
+      ],
+      "counterevidence": [
+       "No change in VO2max or economy; benefits depend on prior overload."
+      ]
+     },
+     {
+      "source_id": "R6-S48",
+      "access": "FULL_TEXT",
+      "accessed_on": "2026-10-26",
+      "verified": true,
+      "prescriptive_support_eligible": true,
+      "title": "The Duration of the Repeated-Bout Effect After Eccentric Exercise",
+      "authors": "Theodorou AA, Margaritelis NV, Karyofyllidou AV, Christodoulou F, Jamurtas AZ, et al.",
+      "year": 2026,
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC13674372/fullTextXML",
+      "doi": "10.1111/sms.70381",
+      "pmid": "42886157",
+      "source_type": "RCT",
+      "population_design_dose": "48 young recreationally active men; two identical bouts of maximal eccentric knee-extensor exercise (5 x 15 repetitions); after the first bout participants were randomly allocated to repeat it after 3, 6, 9 or 12 weeks (12 completers per group).",
+      "findings": "The repeated-bout effect (smaller losses of torque and range of motion, less soreness and muscle damage) was evident at 3 and 6 weeks for most outcomes, remained detectable at 9 weeks for selected markers, and was no longer meaningfully present at 12 weeks.",
+      "locator": "Abstract; Methods 2.2 (random allocation to the interval groups); Results (Table 2, model-estimated contrasts by interval); Discussion (earlier downhill-running and elbow-flexor studies); Limitations (ssctr-evidence/PMC13674372.xml).",
+      "limitations": [
+       "Maximal unaccustomed eccentric knee-extensor work in young men; resistance training at 2-3 reps in reserve damages muscle far less; markers assessed on days 2 and 4 only; activity between bouts not monitored."
+      ],
+      "counterevidence": [
+       "Earlier studies cited in the discussion found protection that faded by 9 weeks after downhill running and persisted partly to 10 weeks for the elbow flexors."
+      ]
+     },
+     {
+      "source_id": "R6-S52",
+      "access": "FULL_TEXT",
+      "accessed_on": "2026-10-27",
+      "verified": true,
+      "prescriptive_support_eligible": true,
+      "title": "Comparative effects of single vs. multiple-set resistance training on neuromuscular performance and muscle morphology in sedentary men",
+      "authors": "Coskun IA, Kafkas ME",
+      "year": 2026,
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC13670784/fullTextXML",
+      "doi": "10.1186/s13102-026-01874-8",
+      "pmid": "42471717",
+      "source_type": "RCT",
+      "population_design_dose": "34 sedentary young men randomized (computer-generated sequence, sealed opaque envelopes) to single-set, three-set or control; 8 weeks, twice weekly, seven exercises of up to 10 repetitions.",
+      "findings": "Both single-set and three-set training improved strength, power and muscle size over 8 weeks; three sets gave larger gains (squat 1-RM +14.8% and leg cross-sectional area +11.3%, against about 6-8% with one set), a volume dose-response from the first weeks.",
+      "locator": "Abstract; Methods (randomization, concealed allocation, training programme); Results; Conclusions (ssctr-evidence/PMC13670784.xml).",
+      "limitations": [
+       "Small sample; men only; participants and trainers not blinded; retrospectively registered; eight weeks."
+      ],
+      "counterevidence": [
+       "A lower set count costs some adaptation if it persists, so a reduction is acceptable only when it is short."
+      ]
+     },
+     {
+      "source_id": "R6-S56",
+      "access": "FULL_TEXT",
+      "accessed_on": "2026-10-27",
+      "verified": true,
+      "prescriptive_support_eligible": false,
+      "title": "Effects of Short-Term Concurrent Training Cessation on the Energy Cost of Running and Neuromuscular Performances in Middle-Distance Runners",
+      "authors": "Berryman N, Mujika I, Bosquet L",
+      "year": 2020,
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC7821917/fullTextXML",
+      "doi": "10.3390/sports9010001",
+      "pmid": "33374897",
+      "source_type": "OTHER_OBSERVATIONAL",
+      "population_design_dose": "8 middle-distance runners; 8 weeks of plyometric or dynamic weight training added to running, then 4 weeks of running only; no control group.",
+      "findings": "The improved energy cost of running was kept after 4 weeks without strength training, and the 3000 m time trial improved further (-4.4% from baseline); the authors suggest that stopping explosive strength training could serve as a taper strategy.",
+      "locator": "Abstract; Discussion (limitations: small sample, no control intervention); Conclusions (ssctr-evidence/PMC7821917.xml).",
+      "limitations": [
+       "Brief report; 8 runners; no control group; explosive strength only."
+      ],
+      "counterevidence": [
+       "Strength kept at a low dose through the taper is not tested against stopping it."
+      ]
+     }
+    ],
+    "counterevidence_search": "Directed PubMed search for evidence that a reduced first bout does not protect (two abstracts read, both recorded as counterevidence); round-1 to round-12 sources and searches reused as recorded there. Search snippets were discovery only; findings are taken from full text or, where labelled, abstracts."
+   },
+   "claims": [
+    {
+     "claim_id": "RP-1",
+     "statement": "A strength session lowers peak torque and raises soreness, creatine kinase and perceived exertion in runners for 24-48 h (R6-S53), and tapers that cut volume while keeping intensity improve endurance performance (R6-S14); a re-establishment near an event therefore takes the reduced event dose like any other row, and a first bout after more than four weeks, whose repeated-bout protection has partly faded (R6-S48), never gets more.",
+     "basis": "INFERRED",
+     "role": "DECISION_SUPPORT",
+     "evidence_status": "SUPPORTED_WITH_LIMITS",
+     "source_ids": [
+      "R6-S53",
+      "R6-S14",
+      "R6-S48"
+     ],
+     "applicability": "Taper, race-window and post-event strength sessions of recreational hybrid runners.",
+     "limitations": [
+      "Trained endurance athletes in R6-S14; male runners in R6-S53; no taper study of strength re-establishment."
+     ],
+     "counterevidence": [
+      "Submaximal running physiology was little changed after a strength session (R6-S53)."
+     ]
+    },
+    {
+     "claim_id": "RP-2",
+     "statement": "Single-set training still improved strength, power and muscle size, with smaller gains than three sets (R6-S52); a 1-set re-establishment in a consolidation or specific week, or for an exercise whose own count is 1, is a lower but real stimulus inside a planned step-back, so taking the phase dose costs at most a small, temporary stimulus.",
+     "basis": "INFERRED",
+     "role": "DECISION_SUPPORT",
+     "evidence_status": "SUPPORTED_WITH_LIMITS",
+     "source_ids": [
+      "R6-S52"
+     ],
+     "applicability": "Re-establishment rows outside event phases (Q2).",
+     "limitations": [
+      "Sedentary young men over 8 weeks; chronic adaptation, not a single week."
+     ],
+     "counterevidence": [
+      "Three sets gave larger gains (R6-S52)."
+     ]
+    },
+    {
+     "claim_id": "RP-3",
+     "statement": "Stopping strength training for the final weeks did not hurt running economy or a 3000 m time in a small uncontrolled study (R6-S56).",
+     "basis": "OBSERVED",
+     "role": "CONTEXT",
+     "evidence_status": "PLAUSIBLE_BUT_UNCERTAIN",
+     "source_ids": [
+      "R6-S56"
+     ],
+     "applicability": "Event phases.",
+     "limitations": [
+      "8 runners, no control group; not eligible as prescriptive support."
+     ],
+     "counterevidence": [
+      "None located."
+     ]
+    },
+    {
+     "claim_id": "RP-4",
+     "statement": "No study tests a strength re-establishment or any strength dose inside a running taper.",
+     "basis": "OBSERVED",
+     "role": "OPEN_QUESTION",
+     "evidence_status": "INSUFFICIENT_EVIDENCE",
+     "source_ids": [],
+     "applicability": "Taper and race-window re-establishments.",
+     "limitations": [
+      "Round-12 negative search, reused."
+     ],
+     "counterevidence": [
+      "None located."
+     ]
+    }
+   ],
+   "evidence_status": "SUPPORTED_WITH_LIMITS",
+   "applicability": "Runtime composition rule inside the approved EVENT-TRANSITION and LOAD-ESTABLISHMENT envelopes, offline synthetic Node24 reference; no real-athlete effect.",
+   "disposition": "APPROVE_WITH_CONDITIONS",
+   "proposed_action": "KEEP",
+   "decision": {
+    "rationale": "D54 is resolved: in race week and post-event a re-establishment is 1 set of a main lift at RIR 4, in a taper it is the taper dose of the exercise's own count at RIR >= 3, and no re-establishment row in any phase is above the twin executed throughout or my own reduction of its stated count. Q2: the same single composition makes the row fall below min(goal sets, 2) only when the phase dose or the exercise's own count is lower; that is the declared phase reduction and the D54 wording (\"like the other establishment rows\"), and a lower dose inside a planned step-back is acceptable.",
+    "preserve": [
+     "Effort-guided load under the earlier ceiling at a re-establishment",
+     "The event doses of operational.event and the consolidation reduction"
+    ],
+    "modify": [],
+    "mec_change_level": "No runtime or policy change; the single phase composition point as implemented.",
+    "trade_off": "A smaller re-establishment stimulus in reduced weeks, against a first bout after a gap at the full re-establishment dose in the window the reduced dose exists for.",
+    "must_not": [
+     "Present any value as validated physiology, an injury-prevention threshold, a readiness score or a guarantee.",
+     "Substitute a training dose for clinical assessment.",
+     "Treat missing data as adverse or as tolerance.",
+     "Change official plan state or completed history."
+    ],
+    "conditions": [
+     "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+     "Binding: this record binds runtime R7A-FREEZE-1 (CoachingCore/r7/RUNTIME_FREEZE_R7A_1.json, sha256 f7574eba3a4c6c30a1fd5edfd36680833bb7005cd86a635153f214601b0966a4; r6-program.mjs b7be1778ac69e6c13726a78b21ccd36a707df557709f96246c4878c30a69b48a, r6-adaptation.mjs c5fa03cb6cf7b6a16a698a6b590fd494a2f57b89bbc7a9d3a4d4d19977d45a56) at the unchanged canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c. Any change to a bound file needs a new freeze revision and a narrow runtime delta check; any policy byte change needs a delta binding review.",
+     "Every strength row, the re-establishment row included, takes its day phase once: sets = min(row cap, phase dose of the count the exercise would otherwise have that day), reps in reserve >= max(row floor, phase minimum); the day phase follows days to the race (proximitySemantics).",
+     "Race window and post-event: main lifts only, at most raceWeekStrengthSets / postEventStrengthSets set(s) at RIR >= raceWeekStrengthMinimumRir; one race-window session at most, on the strength day furthest from the race and none in the last raceWeekStrengthMinDaysBeforeRace days. Taper and specific rows keep RIR >= 3 (D54, resolved).",
+     "A re-establishment row is never above min(goal sets for its role, 2) and never above the phase dose of the exercise's own count that day; it may be below min(goal sets, 2) when that phase dose or the exercise's own count is lower (consolidation, specific, a known dose of 1 set) (Q2).",
+     "At a re-establishment the load stays effort-guided under the earlier ceiling; no load increase, new exercise or rotation in taper or race week.",
+     "The final validation rejects any strength row above its day phase dose or below the phase minimum reps in reserve, whatever branch built it.",
+     "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+    ]
+   },
+   "confidence": {
+    "level": "MODERATE",
+    "rationale": "Behaviour verified on both runtimes over a wider grid than round 12, with twins and an independent reduction formula; the dose rationale rests on indirect acute and taper evidence."
+   },
+   "limitations": [
+    "Synthetic timelines only.",
+    "No direct study of strength re-establishment near an event."
+   ],
+   "ae_review": {
+    "applicable": true,
+    "answers": [
+     {
+      "question_number": 1,
+      "answer": "Yes: with the event doses applied to the re-establishment row the event envelope is adequate at this runtime."
+     },
+     {
+      "question_number": 2,
+      "answer": "The material facts are the session date relative to the race (day phase) and the exercise's own count that day."
+     },
+     {
+      "question_number": 3,
+      "answer": "KEEP of the runtime is defensible; unknown is the individual response to a first bout after a gap near a race."
+     },
+     {
+      "question_number": 4,
+      "answer": "The comparator is the round-12 runtime (2 sets at RIR 3 in race week, post-event and taper); the reduced dose is necessary to meet principle 8 and operational.event."
+     },
+     {
+      "question_number": 5,
+      "answer": "The smallest sufficient change is the one composition point already implemented; no new rule."
+     },
+     {
+      "question_number": 6,
+      "answer": "Leaving the row unreduced contradicts the declared event doses; skipping the exercise would lose the movement for the event block with no evidence that a light set harms."
+     },
+     {
+      "question_number": 7,
+      "answer": "It protects the event priority and keeps strength at a reduced maintenance dose."
+     },
+     {
+      "question_number": 8,
+      "answer": "Acute-effect and taper evidence support the reduced dose; no number is invented beyond the declared doses."
+     },
+     {
+      "question_number": 9,
+      "answer": "Uncertain: the effect of a re-establishment inside a running taper (RP-4)."
+     },
+     {
+      "question_number": 10,
+      "answer": "No ASK, HOLD or clinical routing is needed for this nonclinical rule."
+     }
+    ],
+    "not_applicable_reason": null
+   },
+   "governance": {
+    "gate_status": "NOT_CLOSED_BY_THIS_RECORD",
+    "publication_status": "NOT_PUBLISHED",
+    "human_validation": false,
+    "empirical_product_validation": false,
+    "clinical_clearance": false,
+    "next_owner": "Chief: apply the R7-A cycle bound with this verdict (one blocker, D55: new, narrow, runtime-only, so one narrow re-check is allowed); runtime author: fix D55 with its regression tests in a new freeze revision; merge the proposed queue items; route R20-R23 and the declarations (R16, R17, the Q1 wording) to the runtime author with Product Constitution & Governance in the next policy revision; Engineering with Product/Data for R18 before any use beyond the offline reference",
+    "next_action": "Carry this record's conditions into the R7-A disposition and the queue. The one narrow SSCTR re-check covers D55 only, at policy hash 18ec48f3..., on the new freeze revision; any other bound-file change re-opens this record."
+   },
+   "expiry": {
+    "owner": "Chief / SSCTR",
+    "review_by": "2027-04-27",
+    "event_based_expiry": "Expires immediately on any policy hash change, any change to a file bound by R7A-FREEZE-1, or a failed delta probe of strengthCandidate, strengthDose, phaseDose, advanceStrength, validateWeeks or the review gates.",
+    "triggers": [
+     "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+     "Any change to a file listed in RUNTIME_FREEZE_R7A_1.json (new freeze revision).",
+     "New or corrected systematic review/meta-analysis or trial on repeated-bout protection, re-establishment after a training gap or strength dosing near endurance events.",
+     "Population, event-distance or V1 scope change.",
+     "Adverse event, runtime inconsistency or contrary comparable observations.",
+     "Founder funding declaration (move approved items to HUMAN_REVALIDATION_REQUIRED)."
+    ]
+   },
+   "human_revalidation": {
+    "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+    "queue_ref": "audits/domain-coaching-r7a-2026-10-27/reviews/ssctr-r7a-review.json#HQ-R7A-SSCTR-REESTABLISH-PHASE",
+    "human_review": null
+   }
+  },
+  {
+   "schema_version": "1.0.0",
+   "review_id": "R7A-SSCTR-SPLIT-WEEK",
+   "review_revision": "R7A-SSCTR-r1",
+   "review_date": "2026-10-27",
+   "agent_version": "SSCTR-1.0.0",
+   "constitution_revision": "SSCTR-CONST-1.0.0",
+   "protocol_revision": "SSCTR-EP-1.0.0",
+   "reviewer": {
+    "actor_type": "AI_AGENT",
+    "instance_id": "ssctr-r7a-2026-10-27 (fresh instance; its instructions are the body of .claude/agents/sports-science-concurrent-training-reviewer.md verbatim, sha256 021b5951...; no Agent tool, as the adapter requires; the dispatch mechanism itself is as reported by the caller)",
+    "human_credentials_claimed": false,
+    "independent_of_target_author": true
+   },
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/RUNTIME_FREEZE_R7A_1.json",
+    "artifact_revision": "R7A-FREEZE-1",
+    "sha256": "f7574eba3a4c6c30a1fd5edfd36680833bb7005cd86a635153f214601b0966a4",
+    "rule_ids": [
+     "strength.resumeAfterDays",
+     "strength.setsAfterReestablishment",
+     "return.strengthReturnSets (\"the last set count executed\")",
+     "R6-LOAD-ESTABLISHMENT condition 15 (\"each session is judged on its own date, and no unexecuted exposure counts\")",
+     "r6-program.mjs advanceStrength (first and last executed exposure)"
+    ]
+   },
+   "question": "When an exercise has two exposures in one week, the first prescribed at its known dose (within return.moderateMaxDays of its last executed exposure) and a later one prescribed as a re-establishment (beyond it), does the first executed exposure decide whether the week re-established, and the last executed one give the week's counts (Q3, R19)?",
+   "population_context": {
+    "population": "Explicitly nonclinical eligible adult (18+) recreational hybrid runners and strength trainees of PROGRAM_POLICY_R6.population (V1); offline synthetic Node24 reference only. No elite, adolescent, pregnancy/postpartum, frailty, rehabilitation or clinical-clearance extrapolation.",
+    "eligibility_status": "SCOPE_DEFINITION_ONLY",
+    "facts": [
+     "My split-week probe on the freeze (db-bench-press, HYPERTROPHY, Mon/Wed/Fri): first only executed: 2026-12-16 3x10@3 KNOWN 18 / 2026-12-18 3x10@3 KNOWN 18; second only: 2026-12-16 2x8@3 KNOWN 18 / 2026-12-18 2x8@3 KNOWN 18; both: 2026-12-16 3x10@3 KNOWN 18 / 2026-12-18 3x10@3 KNOWN 18; neither: 2026-12-16 2x8@3 ESTABLISH RE / 2026-12-18 2x8@3 ESTABLISH RE.",
+     "The same on the pre-R7A runtime: first only 2026-12-16 2x10@3 KNOWN 18 / 2026-12-18 2x10@3 KNOWN 18; both 2026-12-16 3x10@3 KNOWN 18 / 2026-12-18 3x10@3 KNOWN 18."
+    ],
+    "unknowns": [
+     "Whether a later re-establishment row in the same week adds useful information beyond the known exposure executed first."
+    ]
+   },
+   "scope": {
+    "gate": "G02",
+    "item_ids": [
+     "Q3",
+     "R19",
+     "R6-LOAD-ESTABLISHMENT",
+     "R6-ROTATION"
+    ],
+    "prescriptive_impact": true,
+    "whole_gate_closure": false
+   },
+   "literature_snapshot": {
+    "as_of": "2026-10-27",
+    "searches": [
+     {
+      "query": "(\"repeated bout effect\"[tiab] OR \"repeated-bout effect\"[tiab]) AND (\"low-intensity\"[tiab] OR \"low volume\"[tiab] OR \"low-volume\"[tiab] OR \"number of contractions\"[tiab] OR \"submaximal\"[tiab] OR \"fewer\"[tiab])",
+      "site": "PubMed E-utilities esearch/esummary (relevance)",
+      "searched_on": "2026-10-27",
+      "purpose": "R7A-SSCTR-r1 (Q1): counterevidence that a reduced (low-volume, low-intensity or submaximal) first bout fails to protect against a later, larger bout, which would favour restarting the regain from the reduced count (reading B).",
+      "result_notes": "18 hits (raw list in reviews/ssctr-r7a-literature.out.json). Two read at abstract level: Mavropalias 2020 (R7A-S01) and Da Silva 2023 (R7A-S02). Doma 2015 and 2017 (R6-S54, R6-S55) re-found. Electromyography, older-adult, maturation, blood-flow-restriction, cycling-efficiency and animal studies not applicable. Europe PMC returned HTTP 503 twice before this PubMed search; the access gap is disclosed."
+     },
+     {
+      "query": "Round-12 search reused, not re-run: (TITLE_ABS:\"taper\" OR TITLE_ABS:\"tapering\" OR TITLE_ABS:\"pre-competition\" OR TITLE_ABS:\"precompetition\") AND (TITLE_ABS:\"strength training\" OR TITLE_ABS:\"resistance training\" OR TITLE_ABS:\"concurrent training\") AND (TITLE_ABS:\"endurance\" OR TITLE_ABS:\"running\" OR TITLE_ABS:\"runners\" OR TITLE_ABS:\"cyclists\")",
+      "site": "Europe PMC REST search API (lite, relevance)",
+      "searched_on": "2026-10-27",
+      "purpose": "Round 12 (D54), reused for the D54 and Q2 rulings: how strength is dosed in a taper or the last week before an endurance event.",
+      "result_notes": "Round-12 result: 18 hits; no study tests a strength re-establishment or any strength dose inside a running taper (a negative search). Not re-run in R7A-SSCTR-r1."
+     }
+    ],
+    "sources": [
+     {
+      "source_id": "R6-S48",
+      "access": "FULL_TEXT",
+      "accessed_on": "2026-10-26",
+      "verified": true,
+      "prescriptive_support_eligible": true,
+      "title": "The Duration of the Repeated-Bout Effect After Eccentric Exercise",
+      "authors": "Theodorou AA, Margaritelis NV, Karyofyllidou AV, Christodoulou F, Jamurtas AZ, et al.",
+      "year": 2026,
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC13674372/fullTextXML",
+      "doi": "10.1111/sms.70381",
+      "pmid": "42886157",
+      "source_type": "RCT",
+      "population_design_dose": "48 young recreationally active men; two identical bouts of maximal eccentric knee-extensor exercise (5 x 15 repetitions); after the first bout participants were randomly allocated to repeat it after 3, 6, 9 or 12 weeks (12 completers per group).",
+      "findings": "The repeated-bout effect (smaller losses of torque and range of motion, less soreness and muscle damage) was evident at 3 and 6 weeks for most outcomes, remained detectable at 9 weeks for selected markers, and was no longer meaningfully present at 12 weeks.",
+      "locator": "Abstract; Methods 2.2 (random allocation to the interval groups); Results (Table 2, model-estimated contrasts by interval); Discussion (earlier downhill-running and elbow-flexor studies); Limitations (ssctr-evidence/PMC13674372.xml).",
+      "limitations": [
+       "Maximal unaccustomed eccentric knee-extensor work in young men; resistance training at 2-3 reps in reserve damages muscle far less; markers assessed on days 2 and 4 only; activity between bouts not monitored."
+      ],
+      "counterevidence": [
+       "Earlier studies cited in the discussion found protection that faded by 9 weeks after downhill running and persisted partly to 10 weeks for the elbow flexors."
+      ]
+     }
+    ],
+    "counterevidence_search": "Directed PubMed search for evidence that a reduced first bout does not protect (two abstracts read, both recorded as counterevidence); round-1 to round-12 sources and searches reused as recorded there. Search snippets were discovery only; findings are taken from full text or, where labelled, abstracts."
+   },
+   "claims": [
+    {
+     "claim_id": "SW-1",
+     "statement": "An exposure executed at the known dose within return.moderateMaxDays of the previous one keeps the athlete exposed: the repeated-bout protection of a bout persists for weeks (R6-S48), so a later row of that week dated beyond the window does not turn the week into a first bout after a gap; the known state and count stand.",
+     "basis": "INFERRED",
+     "role": "DECISION_SUPPORT",
+     "evidence_status": "SUPPORTED_WITH_LIMITS",
+     "source_ids": [
+      "R6-S48"
+     ],
+     "applicability": "Exercises prescribed more than once a week.",
+     "limitations": [
+      "Eccentric protocol in young men; the 28-day window is a declared operational value, not a threshold."
+     ],
+     "counterevidence": [
+      "Protection fades over weeks and differs by outcome (R6-S48)."
+     ]
+    },
+    {
+     "claim_id": "SW-2",
+     "statement": "Reading the week's counts from its last executed exposure makes the most reduced executed row of the week govern the whole-count check and the return ceiling, the conservative direction, since later days are closer to an event.",
+     "basis": "INFERRED",
+     "role": "CONTEXT",
+     "evidence_status": "SUPPORTED_WITH_LIMITS",
+     "source_ids": [],
+     "applicability": "Split weeks in every phase.",
+     "limitations": [
+      "Structural reasoning on the declared rule."
+     ],
+     "counterevidence": [
+      "When the known row (3 sets) is executed first and the re-establishment row (2 sets) later, the return ceiling becomes 2 sets: one set conservative (R20)."
+     ]
+    }
+   ],
+   "evidence_status": "SUPPORTED_WITH_LIMITS",
+   "applicability": "Runtime state-transition rule inside the approved LOAD-ESTABLISHMENT and ROTATION envelopes, offline synthetic Node24 reference; no real-athlete effect.",
+   "disposition": "APPROVE_WITH_CONDITIONS",
+   "proposed_action": "KEEP",
+   "decision": {
+    "rationale": "R19 is resolved as I asked: the conversion and the regain cap follow the executed exposure. A known-dose exposure executed first shows the exercise was performed inside the window, so the state stays known at its count; a re-establishment executed first starts the regain; an unexecuted row decides nothing. Reading the counts from the last executed exposure follows the declared \"last executed count\" and errs one set low in the both-executed case (R20, non-blocking).",
+    "preserve": [
+     "Each session judged on its own date; no unexecuted exposure counts (LE-15)"
+    ],
+    "modify": [],
+    "mec_change_level": "No runtime or policy change.",
+    "trade_off": "A known count kept after a demonstrated exposure, against a possible one-set-low return ceiling when both rows are executed.",
+    "must_not": [
+     "Present any value as validated physiology, an injury-prevention threshold, a readiness score or a guarantee.",
+     "Substitute a training dose for clinical assessment.",
+     "Treat missing data as adverse or as tolerance.",
+     "Change official plan state or completed history."
+    ],
+    "conditions": [
+     "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+     "Binding: this record binds runtime R7A-FREEZE-1 (CoachingCore/r7/RUNTIME_FREEZE_R7A_1.json, sha256 f7574eba3a4c6c30a1fd5edfd36680833bb7005cd86a635153f214601b0966a4; r6-program.mjs b7be1778ac69e6c13726a78b21ccd36a707df557709f96246c4878c30a69b48a, r6-adaptation.mjs c5fa03cb6cf7b6a16a698a6b590fd494a2f57b89bbc7a9d3a4d4d19977d45a56) at the unchanged canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c. Any change to a bound file needs a new freeze revision and a narrow runtime delta check; any policy byte change needs a delta binding review.",
+     "A week re-established an exercise only when its first executed exposure that week was a re-establishment row; a known-dose exposure executed first keeps the state known at its count, with no conversion and no regain cap, whatever later rows of that week prescribe (R19, resolved).",
+     "The week's counts (the whole-count check, the return ceiling and the regain or return-cap rise) come from its last executed exposure; a prescribed but unexecuted row never decides.",
+     "A logged load is judged against the exposure it was logged in, under the earlier ceiling when that exposure was a re-establishment (D44, D45).",
+     "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+    ]
+   },
+   "confidence": {
+    "level": "MODERATE",
+    "rationale": "All four execution cases probed on both runtimes; the sporting basis is indirect."
+   },
+   "limitations": [
+    "Synthetic timelines only; one schedule family (three strength days)."
+   ],
+   "ae_review": {
+    "applicable": true,
+    "answers": [
+     {
+      "question_number": 1,
+      "answer": "Yes: the known dose stays adequate after a known exposure executed inside the window."
+     },
+     {
+      "question_number": 2,
+      "answer": "The material fact is which exposure of the week was executed first, from the weekly review."
+     },
+     {
+      "question_number": 3,
+      "answer": "KEEP of the known state is defensible; unknown is whether the later effort-guided row was needed at all."
+     },
+     {
+      "question_number": 4,
+      "answer": "Against the round-12 runtime, which converted the state on the last prescribed row, no change is necessary after a demonstrated known exposure."
+     },
+     {
+      "question_number": 5,
+      "answer": "The smallest sufficient rule is the executed-exposure reading already implemented."
+     },
+     {
+      "question_number": 6,
+      "answer": "A conversion or cap after a demonstrated known exposure would cut the count with no gap to justify it."
+     },
+     {
+      "question_number": 7,
+      "answer": "It protects progression without skipping the regain when the re-establishment is the exposure actually performed."
+     },
+     {
+      "question_number": 8,
+      "answer": "Repeated-bout evidence supports treating a recent executed exposure as protective; no number is invented."
+     },
+     {
+      "question_number": 9,
+      "answer": "Uncertain: individual protection; the one-set-low ceiling in the both-executed case (R20)."
+     },
+     {
+      "question_number": 10,
+      "answer": "No ASK, HOLD or clinical routing is needed."
+     }
+    ],
+    "not_applicable_reason": null
+   },
+   "governance": {
+    "gate_status": "NOT_CLOSED_BY_THIS_RECORD",
+    "publication_status": "NOT_PUBLISHED",
+    "human_validation": false,
+    "empirical_product_validation": false,
+    "clinical_clearance": false,
+    "next_owner": "Chief: apply the R7-A cycle bound with this verdict (one blocker, D55: new, narrow, runtime-only, so one narrow re-check is allowed); runtime author: fix D55 with its regression tests in a new freeze revision; merge the proposed queue items; route R20-R23 and the declarations (R16, R17, the Q1 wording) to the runtime author with Product Constitution & Governance in the next policy revision; Engineering with Product/Data for R18 before any use beyond the offline reference",
+    "next_action": "Carry this record's conditions into the R7-A disposition and the queue. The one narrow SSCTR re-check covers D55 only, at policy hash 18ec48f3..., on the new freeze revision; any other bound-file change re-opens this record."
+   },
+   "expiry": {
+    "owner": "Chief / SSCTR",
+    "review_by": "2027-04-27",
+    "event_based_expiry": "Expires immediately on any policy hash change, any change to a file bound by R7A-FREEZE-1, or a failed delta probe of strengthCandidate, strengthDose, phaseDose, advanceStrength, validateWeeks or the review gates.",
+    "triggers": [
+     "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+     "Any change to a file listed in RUNTIME_FREEZE_R7A_1.json (new freeze revision).",
+     "New or corrected systematic review/meta-analysis or trial on repeated-bout protection, re-establishment after a training gap or strength dosing near endurance events.",
+     "Population, event-distance or V1 scope change.",
+     "Adverse event, runtime inconsistency or contrary comparable observations.",
+     "Founder funding declaration (move approved items to HUMAN_REVALIDATION_REQUIRED)."
+    ]
+   },
+   "human_revalidation": {
+    "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+    "queue_ref": "audits/domain-coaching-r7a-2026-10-27/reviews/ssctr-r7a-review.json#HQ-R7A-SSCTR-SPLIT-WEEK",
+    "human_review": null
+   }
+  },
+  {
+   "schema_version": "1.0.0",
+   "review_id": "R7A-SSCTR-ITEMS-5-8",
+   "review_revision": "R7A-SSCTR-r1",
+   "review_date": "2026-10-27",
+   "agent_version": "SSCTR-1.0.0",
+   "constitution_revision": "SSCTR-CONST-1.0.0",
+   "protocol_revision": "SSCTR-EP-1.0.0",
+   "reviewer": {
+    "actor_type": "AI_AGENT",
+    "instance_id": "ssctr-r7a-2026-10-27 (fresh instance; its instructions are the body of .claude/agents/sports-science-concurrent-training-reviewer.md verbatim, sha256 021b5951...; no Agent tool, as the adapter requires; the dispatch mechanism itself is as reported by the caller)",
+    "human_credentials_claimed": false,
+    "independent_of_target_author": true
+   },
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/RUNTIME_FREEZE_R7A_1.json",
+    "artifact_revision": "R7A-FREEZE-1",
+    "sha256": "f7574eba3a4c6c30a1fd5edfd36680833bb7005cd86a635153f214601b0966a4",
+    "rule_ids": [
+     "return.strengthEntryWeek",
+     "R6-NONCLINICAL-RETURN condition 21",
+     "R6-SUBSTITUTION condition 6",
+     "strength.gates.missingLogs (\"HOLD without regression\")",
+     "R6-PLANNED-PROGRESSION condition 9",
+     "R6-PARTIAL-NOISY-LEARNING condition 7",
+     "return.strengthReturnSets (\"a week without a phase reduction executed its whole count\")",
+     "operational.event.proximitySemantics",
+     "r6-program.mjs buildWeek (in-use entry week), advanceStrength",
+     "r6-adaptation.mjs strengthLogs, strength gates, moveCandidates"
+    ]
+   },
+   "question": "Items 5-8 of the R7-A dossier: (5) a return-entry week is one in which an exercise in use that week is at the entry step; (6) sets logged without repetitions are unknown: the dose holds, never a regression, and repetitions are never adopted from a missing value; (7) a week whose executed row was fatigue-reduced earns no regain or return-cap set; (8) a moved session never crosses a day phase. Any sporting objection (Q4)?",
+   "population_context": {
+    "population": "Explicitly nonclinical eligible adult (18+) recreational hybrid runners and strength trainees of PROGRAM_POLICY_R6.population (V1); offline synthetic Node24 reference only. No elite, adolescent, pregnancy/postpartum, frailty, rehabilitation or clinical-clearance extrapolation.",
+    "eligibility_status": "SCOPE_DEFINITION_ONLY",
+    "facts": [
+     "Item 5 (my probe RS2, freeze, real review path, EVERY_2_WEEKS rotation, 16-day TRAVEL break, barbell window from return step 2): goblet squat (substitute for the back squat) in return step 2 (week 7, a block-end consolidation week): w7 CONSO 2x8@3 ESTABLISH FIRST_ESTABLISH / w8 DEVEL 4x8@3 FROM_LOG FROM_LOG / w9 DEVEL -; db-bench-press in use: w7 CONSO 1x8@3 FROM_LOG RETURN_STEP + 1x8@3 FROM_LOG RETURN_STEP / w8 DEVEL 2x8@3 KNOWN 20 KNOWN + 2x8@3 KNOWN 20 KNOWN / w9 DEVEL 3x10@3 KNOWN 20 KNOWN + 3x10@3 KNOWN 20 KNOWN. Substitute state after week 7: blocksDone 1. STRENGTH: w7 CONSO 2x5@3 ESTABLISH FIRST_ESTABLISH / w8 DEVEL 4x5@3 FROM_LOG FROM_LOG / w9 DEVEL -; RUNNING_SUPPORT: w7 CONSO 1x8@3 ESTABLISH FIRST_ESTABLISH / w8 DEVEL 3x8@3 FROM_LOG FROM_LOG / w9 DEVEL -.",
+     "Item 5 on the pre-R7A runtime (same scenario): w7 CONSO 1x8@4 ESTABLISH RETURN_ENTRY / w8 DEVEL 2x8@3 FROM_LOG FROM_LOG / w9 DEVEL - (entry dose, then the return steps). FIXED rotation (no parked exercise), both runtimes: w7 CONSO 2x8@3 ESTABLISH FIRST_ESTABLISH / w8 DEVEL 4x8@3 FROM_LOG FROM_LOG / w9 DEVEL - (freeze) and w7 CONSO 2x8@3 ESTABLISH ESTABLISH / w8 DEVEL 4x8@3 FROM_LOG FROM_LOG / w9 DEVEL - (pre-R7A).",
+     "Item 6 (my probe MR2, freeze): sets without reps: gates weeks 1-3 HOLD, HOLD, ADVANCE, squat load 80/80/80 kg; without reps or RIR: HOLD, HOLD, ADVANCE; reps 2 below target (control): HOLD, REGRESS, ADVANCE; without reps and RIR 2 below the prescription: HOLD, REGRESS, ADVANCE. Pre-R7A, sets without reps: NO_GATES, NO_GATES, ADVANCE with the load stepped to 82.5 kg.",
+     "Item 7 (my probe FR2, freeze; re-establishment in development week 5, systemic-fatigue reduction of Thursday in development week 6): barbell RDL w5 2x5@3 ESTABLISH [REESTABLISH 2] / w6 2x5@4 KNOWN 22.5 [KNOWN 3] / w7 2x5@3 KNOWN 22.5 [KNOWN 3] / w8 3x5@3 KNOWN 22.5 [KNOWN 3] / w9 4x5@3 KNOWN 25 [KNOWN 4]; twin without the fatigue review: w5 2x5@3 ESTABLISH [REESTABLISH 2] / w6 3x5@3 KNOWN 22.5 [KNOWN 3] / w7 2x5@3 KNOWN 22.5 [KNOWN 3] / w8 4x5@3 KNOWN 22.5 [KNOWN 4] / w9 4x5@3 KNOWN 25 [KNOWN 4]; pre-R7A with the fatigue review: w5 2x5@3 ESTABLISH / w6 2x5@4 KNOWN 22.5 / w7 2x5@3 KNOWN 22.5 / w8 4x5@3 KNOWN 22.5 / w9 4x5@3 KNOWN 25.",
+     "Item 8 (my probe MV, freeze, 10K on a Wednesday, so the last specific week ends with taper days): the missed key strength session of Monday has move candidates [] (decision KEEP/KEEP); pre-R7A [\"MOVE_TO_w11-str-d4 admissible false selected false\"]."
+    ],
+    "unknowns": [
+     "Item 5: whether a new exercise first set up during the return steps should also be capped at the return-step count of its slot (R21).",
+     "How much soreness a two-set rise on a novel exercise in the third week after a break adds for a given athlete."
+    ]
+   },
+   "scope": {
+    "gate": "G02",
+    "item_ids": [
+     "Q4",
+     "item 5",
+     "item 6",
+     "item 7",
+     "item 8",
+     "R6-NONCLINICAL-RETURN",
+     "R6-SUBSTITUTION",
+     "R6-PLANNED-PROGRESSION",
+     "R6-EVENT-TRANSITION"
+    ],
+    "prescriptive_impact": true,
+    "whole_gate_closure": false
+   },
+   "literature_snapshot": {
+    "as_of": "2026-10-27",
+    "searches": [
+     {
+      "query": "(\"repeated bout effect\"[tiab] OR \"repeated-bout effect\"[tiab]) AND (\"low-intensity\"[tiab] OR \"low volume\"[tiab] OR \"low-volume\"[tiab] OR \"number of contractions\"[tiab] OR \"submaximal\"[tiab] OR \"fewer\"[tiab])",
+      "site": "PubMed E-utilities esearch/esummary (relevance)",
+      "searched_on": "2026-10-27",
+      "purpose": "R7A-SSCTR-r1 (Q1): counterevidence that a reduced (low-volume, low-intensity or submaximal) first bout fails to protect against a later, larger bout, which would favour restarting the regain from the reduced count (reading B).",
+      "result_notes": "18 hits (raw list in reviews/ssctr-r7a-literature.out.json). Two read at abstract level: Mavropalias 2020 (R7A-S01) and Da Silva 2023 (R7A-S02). Doma 2015 and 2017 (R6-S54, R6-S55) re-found. Electromyography, older-adult, maturation, blood-flow-restriction, cycling-efficiency and animal studies not applicable. Europe PMC returned HTTP 503 twice before this PubMed search; the access gap is disclosed."
+     },
+     {
+      "query": "Round-12 search reused, not re-run: (TITLE_ABS:\"taper\" OR TITLE_ABS:\"tapering\" OR TITLE_ABS:\"pre-competition\" OR TITLE_ABS:\"precompetition\") AND (TITLE_ABS:\"strength training\" OR TITLE_ABS:\"resistance training\" OR TITLE_ABS:\"concurrent training\") AND (TITLE_ABS:\"endurance\" OR TITLE_ABS:\"running\" OR TITLE_ABS:\"runners\" OR TITLE_ABS:\"cyclists\")",
+      "site": "Europe PMC REST search API (lite, relevance)",
+      "searched_on": "2026-10-27",
+      "purpose": "Round 12 (D54), reused for the D54 and Q2 rulings: how strength is dosed in a taper or the last week before an endurance event.",
+      "result_notes": "Round-12 result: 18 hits; no study tests a strength re-establishment or any strength dose inside a running taper (a negative search). Not re-run in R7A-SSCTR-r1."
+     }
+    ],
+    "sources": [
+     {
+      "source_id": "R6-S01",
+      "access": "FULL_TEXT",
+      "accessed_on": "2026-10-26",
+      "verified": true,
+      "prescriptive_support_eligible": true,
+      "title": "American College of Sports Medicine Position Stand. Resistance Training Prescription for Muscle Function, Hypertrophy, and Physical Performance in Healthy Adults: An Overview of Reviews",
+      "authors": "Currier BS, D'Souza AC, Singh MAF, Lowisz CV, Rawson ES, Schoenfeld BJ, Smith-Ryan AE, et al.",
+      "year": 2026,
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC12965823/fullTextXML",
+      "doi": "10.1249/mss.0000000000003897",
+      "pmid": "41843416",
+      "source_type": "CONSENSUS_POSITION_STAND",
+      "population_design_dose": "Overview of 137 systematic reviews of randomized trials in healthy adults (>=18 y), resistance training >=6 wk; most evidence from novice trainees.",
+      "findings": "Resistance training improves strength and hypertrophy versus control; strength enhanced by heavier loads, 2-3 sets, >=2 sessions/wk and exercise at session start; hypertrophy by >=10 sets/muscle/wk; training to failure and periodization not consistently influential; perceived-exertion scales can raise absolute load with strength gains; individualization encouraged for adherence.",
+      "locator": "Abstract; Results (strength, hypertrophy); Discussion subsections Progressive overload, Specificity/Individualization, Variation.",
+      "limitations": [
+       "Overview of reviews dominated by novice trainees; not concurrent-training or runner specific.",
+       "No per-session increment, establishment or return procedure is specified."
+      ],
+      "counterevidence": [
+       "States progression is not always necessary for benefit, so planned progression is a choice, not a requirement."
+      ]
+     },
+     {
+      "source_id": "R6-S32",
+      "access": "FULL_TEXT",
+      "accessed_on": "2026-10-26",
+      "verified": true,
+      "prescriptive_support_eligible": true,
+      "title": "Monitoring the athlete training response: subjective self-reported measures trump commonly used objective measures: a systematic review",
+      "authors": "Saw AE, Main LC, Gastin PB",
+      "year": 2016,
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC4789708/fullTextXML",
+      "doi": "10.1136/bjsports-2015-094758",
+      "pmid": "26423706",
+      "source_type": "SYSTEMATIC_REVIEW",
+      "population_design_dose": "56 studies reporting concurrent subjective and objective athlete well-being measures.",
+      "findings": "Subjective measures reflected acute and chronic training load with better sensitivity and consistency than objective measures.",
+      "locator": "Abstract.",
+      "limitations": [
+       "Athletes; measure heterogeneity."
+      ],
+      "counterevidence": [
+       "Subjective and objective measures often did not correlate."
+      ]
+     },
+     {
+      "source_id": "R6-S53",
+      "access": "FULL_TEXT",
+      "accessed_on": "2026-10-27",
+      "verified": true,
+      "prescriptive_support_eligible": true,
+      "title": "Acute Neuromuscular, Physiological and Performance Responses After Strength Training in Runners: A Systematic Review and Meta-Analysis",
+      "authors": "de Carvalho e Silva GI, Brandao LHA, dos Santos Silva D, de Jesus Alves MD, Aidar FJ, et al.",
+      "year": 2022,
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC9385928/fullTextXML",
+      "doi": "10.1186/s40798-022-00497-w",
+      "pmid": "35976540",
+      "source_type": "META_ANALYSIS",
+      "population_design_dose": "19 studies (13 meta-analysed) of male runners; one strength session (traditional, explosive, plyometric or combined) before running tests, mostly 24-48 h later.",
+      "findings": "After a strength session peak torque fell and soreness, creatine kinase and perceived exertion rose; jump height, ventilation, oxygen uptake, lactate and heart rate were not different, and submaximal running was little affected; time to exhaustion fell in three of the four studies that measured it. The authors advise care to limit muscle damage before competition.",
+      "locator": "Abstract; Key Points; Results (time to exhaustion in four studies); Discussion; Practical Implications (ssctr-evidence/PMC9385928.xml).",
+      "limitations": [
+       "Male participants only; small heterogeneous studies, several with damaging or 6RM protocols; no study of a taper or of a low-dose session."
+      ],
+      "counterevidence": [
+       "Submaximal running physiology at 24 h was largely unchanged after strength sessions, even after damaging protocols."
+      ]
+     },
+     {
+      "source_id": "R6-S45",
+      "access": "FULL_TEXT",
+      "accessed_on": "2026-10-26",
+      "verified": true,
+      "prescriptive_support_eligible": true,
+      "title": "Gaining more from doing less? The effects of a one-week deload period during supervised resistance training on muscular adaptations",
+      "authors": "Coleman M, Burke R, Augustin F, Pinero A, Maldonado J, Fisher JP, Israetel M, et al.",
+      "year": 2024,
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC10809978/fullTextXML",
+      "doi": "10.7717/peerj.16777",
+      "pmid": "38274324",
+      "source_type": "RCT",
+      "population_design_dose": "39 resistance-trained young men and women; 9-week high-volume program; one group abstained from training for 1 week at the midpoint and then resumed the same program, the other trained continuously.",
+      "findings": "No appreciable between-group differences in lower-body muscle size, local endurance or power; the continuous group improved isometric and dynamic lower-body strength more than the deload group.",
+      "locator": "Abstract; Methods (group allocation, deload at the midpoint); Results; Limitations (ssctr-evidence/PMC10809978.xml).",
+      "limitations": [
+       "The deload was complete cessation, not a set reduction; resistance-trained young adults; upper-body training unsupervised."
+      ],
+      "counterevidence": [
+       "Strength gains were smaller after one week without training, so breaks are not neutral for strength."
+      ]
+     },
+     {
+      "source_id": "R6-S14",
+      "access": "FULL_TEXT",
+      "accessed_on": "2026-10-26",
+      "verified": true,
+      "prescriptive_support_eligible": true,
+      "title": "Effects of tapering on performance in endurance athletes: A systematic review and meta-analysis",
+      "authors": "Wang Z, Wang YT, Gao W, Zhong Y",
+      "year": 2023,
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC10171681/fullTextXML",
+      "doi": "10.1371/journal.pone.0282838",
+      "pmid": "37163550",
+      "source_type": "META_ANALYSIS",
+      "population_design_dose": "14 studies in well-trained endurance athletes (VO2max >55 ml/kg/min).",
+      "findings": "Taper improved time-trial (SMD -0.45) and time-to-exhaustion performance; volume reductions of 41-60% with maintained intensity and frequency, durations <=7, 8-14 or 15-21 days and progressive or step tapers were effective.",
+      "locator": "Abstract; Introduction; subgroup results.",
+      "limitations": [
+       "Trained, not recreational, athletes; few studies per subgroup."
+      ],
+      "counterevidence": [
+       "No change in VO2max or economy; benefits depend on prior overload."
+      ]
+     },
+     {
+      "source_id": "R6-S48",
+      "access": "FULL_TEXT",
+      "accessed_on": "2026-10-26",
+      "verified": true,
+      "prescriptive_support_eligible": true,
+      "title": "The Duration of the Repeated-Bout Effect After Eccentric Exercise",
+      "authors": "Theodorou AA, Margaritelis NV, Karyofyllidou AV, Christodoulou F, Jamurtas AZ, et al.",
+      "year": 2026,
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC13674372/fullTextXML",
+      "doi": "10.1111/sms.70381",
+      "pmid": "42886157",
+      "source_type": "RCT",
+      "population_design_dose": "48 young recreationally active men; two identical bouts of maximal eccentric knee-extensor exercise (5 x 15 repetitions); after the first bout participants were randomly allocated to repeat it after 3, 6, 9 or 12 weeks (12 completers per group).",
+      "findings": "The repeated-bout effect (smaller losses of torque and range of motion, less soreness and muscle damage) was evident at 3 and 6 weeks for most outcomes, remained detectable at 9 weeks for selected markers, and was no longer meaningfully present at 12 weeks.",
+      "locator": "Abstract; Methods 2.2 (random allocation to the interval groups); Results (Table 2, model-estimated contrasts by interval); Discussion (earlier downhill-running and elbow-flexor studies); Limitations (ssctr-evidence/PMC13674372.xml).",
+      "limitations": [
+       "Maximal unaccustomed eccentric knee-extensor work in young men; resistance training at 2-3 reps in reserve damages muscle far less; markers assessed on days 2 and 4 only; activity between bouts not monitored."
+      ],
+      "counterevidence": [
+       "Earlier studies cited in the discussion found protection that faded by 9 weeks after downhill running and persisted partly to 10 weeks for the elbow flexors."
+      ]
+     },
+     {
+      "source_id": "R6-S54",
+      "access": "ABSTRACT_ONLY",
+      "accessed_on": "2026-10-27",
+      "verified": true,
+      "prescriptive_support_eligible": false,
+      "title": "The repeated bout effect of typical lower body strength training sessions on sub-maximal running performance and hormonal response",
+      "authors": "Doma K, Schumann M, Sinclair WH, Leicht AS, Deakin GB, Hakkinen K",
+      "year": 2015,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/25828143/",
+      "doi": "10.1007/s00421-015-3159-z",
+      "pmid": "25828143",
+      "source_type": "ACUTE_STUDY",
+      "population_design_dose": "14 resistance-untrained men; two lower-body 6RM sessions one week apart; muscle damage markers and submaximal running at 24 and 48 h after each.",
+      "findings": "The second bout attenuated creatine kinase, soreness and the loss of jump height at 48 h; submaximal running was impaired for about 24 h after both bouts.",
+      "locator": "Abstract (ssctr-evidence/abstracts-r12.json).",
+      "limitations": [
+       "Abstract only; untrained men; 6RM sessions, far harder than 2 sets at RIR 3."
+      ],
+      "counterevidence": [
+       "Running was impaired only up to about 24 h."
+      ]
+     },
+     {
+      "source_id": "R6-S55",
+      "access": "ABSTRACT_ONLY",
+      "accessed_on": "2026-10-27",
+      "verified": true,
+      "prescriptive_support_eligible": false,
+      "title": "The repeated bout effect of traditional resistance exercises on running performance across 3 bouts",
+      "authors": "Doma K, Schumann M, Leicht AS, Heilbronn BE, Damas F, Burt D",
+      "year": 2017,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/28553994/",
+      "doi": "10.1139/apnm-2017-0214",
+      "pmid": "28553994",
+      "source_type": "ACUTE_STUDY",
+      "population_design_dose": "12 resistance-untrained men; three lower-body 6RM sessions; damage markers and submaximal and maximal running at 24 and 48 h.",
+      "findings": "The first bout raised creatine kinase most; at least two bouts were needed before soreness, range of motion and submaximal running were protected; the authors advise avoiding submaximal running for at least 48 h after resistance training until the third bout.",
+      "locator": "Abstract (ssctr-evidence/abstracts-r12.json).",
+      "limitations": [
+       "Abstract only; untrained men; 6RM sessions."
+      ],
+      "counterevidence": [
+       "Protection appeared after two bouts, so a single earlier block of training may already have conferred some."
+      ]
+     },
+     {
+      "source_id": "R7A-S01",
+      "access": "ABSTRACT_ONLY",
+      "accessed_on": "2026-10-27",
+      "verified": true,
+      "prescriptive_support_eligible": false,
+      "title": "Comparison between high- and low-intensity eccentric cycling of equal mechanical work for muscle damage and the repeated bout effect",
+      "authors": "Mavropalias G, Koeda T, Barley OR, Poon WCK, Fisher AJ, Blazevich AJ, Nosaka K",
+      "year": 2020,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/32170443/",
+      "doi": "10.1007/s00421-020-04341-5",
+      "pmid": "32170443",
+      "source_type": "ACUTE_STUDY",
+      "population_design_dose": "20 men; two eccentric cycling bouts 2 weeks apart: high-intensity twice (1 min x 5 at 20% of peak power, n = 11) or low-intensity first (4 min x 5 at 5% of peak power, matched mechanical work) then high-intensity (n = 9).",
+      "findings": "Both first bouts lowered knee-extensor torque and jump height similarly at 24 h, and both groups lost less function after the second bout. Soreness after the first bout was greater after high intensity (peak 4.2 vs 1.4), but after the second, high-intensity bout it was greater in the group whose first bout was low-intensity (3.6 vs 1.5).",
+      "locator": "Abstract (PubMed efetch, reviews/ssctr-r7a-abstracts.out.txt).",
+      "limitations": [
+       "Abstract only; eccentric cycling, not resistance training; allocation method not stated in the abstract; small groups; men only."
+      ],
+      "counterevidence": [
+       "A low-intensity first bout protected function but gave less protection against soreness than a full first bout; soreness after the second bout (3.6) stayed below that after an unprotected high-intensity first bout (4.2)."
+      ]
+     }
+    ],
+    "counterevidence_search": "Directed PubMed search for evidence that a reduced first bout does not protect (two abstracts read, both recorded as counterevidence); round-1 to round-12 sources and searches reused as recorded there. Search snippets were discovery only; findings are taken from full text or, where labelled, abstracts."
+   },
+   "claims": [
+    {
+     "claim_id": "Q4-5",
+     "statement": "A never-performed exercise (a substitute included) first set up after every exercise in use has passed the entry step is established by effort at the low establishment dose (at most 2 sets at RIR >= 3), which the approved envelopes already use for unfamiliar exercises (SUB-6, NR-21); low-volume effort-guided entries are consistent with the position stand (R6-S01).",
+     "basis": "INFERRED",
+     "role": "DECISION_SUPPORT",
+     "evidence_status": "SUPPORTED_WITH_LIMITS",
+     "source_ids": [
+      "R6-S01"
+     ],
+     "applicability": "Substitutes and new exercises during return step 2.",
+     "limitations": [
+      "Position-stand evidence is mostly from novices; no study of new exercises during a return."
+     ],
+     "counterevidence": [
+      "A new main-lift substitute can get 2 sets while the exercises in use are at 1 set in return step 2 (R21)."
+     ]
+    },
+    {
+     "claim_id": "Q4-5b",
+     "statement": "D55: after its establishment in return step 2, the substitute earns a block-boundary set from that single exposure and rises two sets in the first week after the return steps (2 to 4, or 1 to 3), while the exercises in use come back one set at a time. Its repeated-bout protection is least developed exactly then: a novel exercise, two low-volume bouts of the pattern behind it, protection of running needing two or more bouts (R6-S55) and fading over weeks (R6-S48), and a lower-intensity first bout protecting less against soreness after a larger second one (R7A-S01). The declared return rule brings strength sets back at most one set per executed week after the return steps; a two-set rise contradicts it.",
+     "basis": "INFERRED",
+     "role": "DECISION_SUPPORT",
+     "evidence_status": "SUPPORTED_WITH_LIMITS",
+     "source_ids": [
+      "R6-S48",
+      "R6-S55",
+      "R7A-S01"
+     ],
+     "applicability": "A never-performed exercise, a substitute included, first set up while the exercises in use are in the return steps of a moderate or long return.",
+     "limitations": [
+      "The sporting weight is modest: by the jump week the pattern has had two low-volume bouts; no study tests set progression of a substitute during a return.",
+      "R6-S55 and R7A-S01 are abstract-only and support the direction, not a number."
+     ],
+     "counterevidence": [
+      "Two bouts of the pattern before the jump week can already give some protection (R6-S54, R6-S55)."
+     ]
+    },
+    {
+     "claim_id": "Q4-6",
+     "statement": "A missing repetition count is unknown, not a missed target and not tolerance: the declared rule holds the dose without regression (gates.missingLogs, PP-9, PNL-7); a logged reserve below the prescription minus one is still a missed target.",
+     "basis": "DECIDED",
+     "role": "CONTEXT",
+     "evidence_status": "SUPPORTED_WITH_LIMITS",
+     "source_ids": [
+      "R6-S32"
+     ],
+     "applicability": "All logged strength sets.",
+     "limitations": [
+      "Measurement semantics shared with Product/Data (G03); R6-S32 supports self-reported monitoring, not this rule specifically."
+     ],
+     "counterevidence": [
+      "None located."
+     ]
+    },
+    {
+     "claim_id": "Q4-7",
+     "statement": "Holding the set count for one week after an in-week fatigue reduction is conservative and cheap: acute strength-session effects last 24-48 h (R6-S53) and a one-week break in resistance training did not impair adaptations (R6-S45).",
+     "basis": "INFERRED",
+     "role": "DECISION_SUPPORT",
+     "evidence_status": "SUPPORTED_WITH_LIMITS",
+     "source_ids": [
+      "R6-S53",
+      "R6-S45"
+     ],
+     "applicability": "Weeks with a converging- or local-fatigue reduction.",
+     "limitations": [
+      "Trained young adults in R6-S45; no study of holding a set count after a fatigue signal."
+     ],
+     "counterevidence": [
+      "None located."
+     ]
+    },
+    {
+     "claim_id": "Q4-8",
+     "statement": "Tapers work by cutting volume while keeping intensity (R6-S14); a missed key session moved into taper or race-window days would add volume there, so moves stay inside one day phase.",
+     "basis": "INFERRED",
+     "role": "DECISION_SUPPORT",
+     "evidence_status": "SUPPORTED_WITH_LIMITS",
+     "source_ids": [
+      "R6-S14"
+     ],
+     "applicability": "Missed key sessions in the last specific week.",
+     "limitations": [
+      "Trained endurance athletes."
+     ],
+     "counterevidence": [
+      "The key stimulus of that session is lost rather than moved."
+     ]
+    }
+   ],
+   "evidence_status": "SUPPORTED_WITH_LIMITS",
+   "applicability": "Runtime rules inside the approved NONCLINICAL-RETURN, SUBSTITUTION, PLANNED-PROGRESSION, PARTIAL-NOISY-LEARNING and EVENT-TRANSITION envelopes, offline synthetic Node24 reference; no real-athlete effect.",
+   "disposition": "APPROVE_WITH_CONDITIONS",
+   "proposed_action": "KEEP",
+   "decision": {
+    "rationale": "Items 6, 7 and 8: no objection. Item 6 removes a contradiction of PP-9 that I had not flagged: on the pre-R7A runtime a week logged without repetitions returned no gates and the projection stepped the load. Item 7 is the conservative reading of \"a week that executed its whole count\". Item 8 keeps a missed session from carrying a full dose into taper days. Item 5: the entry-week definition and the step-2 dose are right (NR-21, SUB-6), but its next week is not: the substitute earns a block-boundary set from its single establishment exposure and rises two sets at once right after the return steps, where the pre-R7A runtime gave one (D55, new; the same path already existed with FIXED rotation on both runtimes). D55 is binding and runtime-only: strengthReturnSets brings strength sets in a return back at most one set per executed week, with the normal count as the ceiling of an exercise without an earlier count.",
+    "preserve": [
+     "Return entry and step 2 for the exercises in use (D49)",
+     "Effort-guided establishment of a substitute, at most 2 sets at RIR >= 3 (SUB-6, NR-21)",
+     "HOLD without regression for missing logs",
+     "No move in taper or race week; no move of a race touch or shakeout"
+    ],
+    "modify": [
+     "D55 (runtime only): an exercise first set up while the exercises in use are in the return steps earns no block-boundary set for the block of the return, and its count rises at most one set per executed week afterwards, up to its normal count."
+    ],
+    "mec_change_level": "One narrow runtime change (D55); no policy change.",
+    "trade_off": "Item 5: a new exercise gets the ordinary establishment dose one week after the entry, then one set per week (with D55); item 8: a missed key session in the last specific week is lost instead of moved into taper days.",
+    "must_not": [
+     "Present any value as validated physiology, an injury-prevention threshold, a readiness score or a guarantee.",
+     "Substitute a training dose for clinical assessment.",
+     "Treat missing data as adverse or as tolerance.",
+     "Change official plan state or completed history."
+    ],
+    "conditions": [
+     "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+     "Binding: this record binds runtime R7A-FREEZE-1 (CoachingCore/r7/RUNTIME_FREEZE_R7A_1.json, sha256 f7574eba3a4c6c30a1fd5edfd36680833bb7005cd86a635153f214601b0966a4; r6-program.mjs b7be1778ac69e6c13726a78b21ccd36a707df557709f96246c4878c30a69b48a, r6-adaptation.mjs c5fa03cb6cf7b6a16a698a6b590fd494a2f57b89bbc7a9d3a4d4d19977d45a56) at the unchanged canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c. Any change to a bound file needs a new freeze revision and a narrow runtime delta check; any policy byte change needs a delta binding review.",
+     "Item 5: a return-entry week is one in which an exercise in use that week is at the entry step; an exercise not in use (rotated out and still parked at the entry step) has no weight. A never-performed exercise, a substitute included, first prescribed after every exercise in use has passed the entry step is established by effort, at most 2 sets at RIR >= 3, with no load converted, and then progresses as a new exercise (NR-21, SUB-6).",
+     "D55 (required before freeze; not met at R7A-FREEZE-1): an exercise first set up while the exercises in use are in the return steps of a moderate or long return earns no block-boundary set for the block of the return, as return-entry and return-step exposures do not; after the return steps its count rises at most one set per executed week, up to its normal count (its ceiling under strengthReturnSets), with phase reductions on top. Regression tests: the RS2 scenario (return step 2 in a block-end week, a substitution window) for HYPERTROPHY, STRENGTH and RUNNING_SUPPORT, with EVERY_2_WEEKS (parked exercises) and FIXED rotation.",
+     "Item 6: sets logged without repetitions leave the repetition target neither met nor missed; the dose holds without a regression step and repetitions are never adopted from a missing value; a logged reserve below the prescription minus one, or fewer sets than prescribed, remains a missed target.",
+     "Item 7: a week whose last executed row of an exercise is below its count before the phase reduction, by its phase or by an in-week fatigue reduction, earns no regain, return-cap or return-ceiling set.",
+     "Item 8: a missed session moves only to a later chosen day of the same sport whose day phase, by days to the race, equals its own; no move in taper or race week; race touches and shakeouts never move.",
+     "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+    ]
+   },
+   "confidence": {
+    "level": "MODERATE",
+    "rationale": "Each item probed on both runtimes, item 5 through the real review path with and without parked exercises; the sporting basis is indirect; D55 rests on the declared return rule and on directional repeated-bout evidence."
+   },
+   "limitations": [
+    "Synthetic timelines only.",
+    "Item 6 semantics are shared with Product/Data (G03); this record does not close G03."
+   ],
+   "ae_review": {
+    "applicable": true,
+    "answers": [
+     {
+      "question_number": 1,
+      "answer": "Items 6-8 keep the progression, learning and event envelopes adequate. Item 5 keeps the step-2 week adequate but not the week after: the substitute rises two sets at once right after the return steps (D55)."
+     },
+     {
+      "question_number": 2,
+      "answer": "Material facts: which exercises are in use and at which return step; a substitution window; block ends; logged sets with or without repetitions and reserve; in-week fatigue reductions; the day phase by days to the race."
+     },
+     {
+      "question_number": 3,
+      "answer": "KEEP is defensible for items 6-8 and for the item-5 step-2 dose; it is not defensible for the week after a return-period establishment until D55 is fixed. Unknowns are listed per item (R21)."
+     },
+     {
+      "question_number": 4,
+      "answer": "Against the pre-R7A runtime items 6 and 7 restore or tighten declared rules and item 8 is more conservative; item 5 makes a two-set rise reachable in the common rotation case where the pre-R7A runtime rose one set."
+     },
+     {
+      "question_number": 5,
+      "answer": "The smallest sufficient change is D55 alone: no block-boundary set from a return-period establishment and at most one set per executed week afterwards; no policy change."
+     },
+     {
+      "question_number": 6,
+      "answer": "Keeping the entry dose for every new exercise in step 2 would contradict NR-21; capping the substitute at its slot's return-step count is a larger, undeclared change (R21); removing block credit for every first establishment outside returns is the undeclared R17(c) question."
+     },
+     {
+      "question_number": 7,
+      "answer": "The D55 fix protects the return principle without slowing the exercises in use, and keeps the substitute's progression as a new exercise at one set per week."
+     },
+     {
+      "question_number": 8,
+      "answer": "Applicable evidence supports low establishment doses, gradual set increases while repeated-bout protection builds, short holds after fatigue and reduced taper volume; no number is invented."
+     },
+     {
+      "question_number": 9,
+      "answer": "Uncertain: the individual soreness cost of a two-set rise; whether new exercises during return steps should be capped at their slot's return-step count (R21)."
+     },
+     {
+      "question_number": 10,
+      "answer": "No ASK, HOLD or clinical routing is needed; clinical pauses route as before."
+     }
+    ],
+    "not_applicable_reason": null
+   },
+   "governance": {
+    "gate_status": "NOT_CLOSED_BY_THIS_RECORD",
+    "publication_status": "NOT_PUBLISHED",
+    "human_validation": false,
+    "empirical_product_validation": false,
+    "clinical_clearance": false,
+    "next_owner": "Chief: apply the R7-A cycle bound with this verdict (one blocker, D55: new, narrow, runtime-only, so one narrow re-check is allowed); runtime author: fix D55 with its regression tests in a new freeze revision; merge the proposed queue items; route R20-R23 and the declarations (R16, R17, the Q1 wording) to the runtime author with Product Constitution & Governance in the next policy revision; Engineering with Product/Data for R18 before any use beyond the offline reference",
+    "next_action": "Carry this record's conditions into the R7-A disposition and the queue. The one narrow SSCTR re-check covers D55 only, at policy hash 18ec48f3..., on the new freeze revision; any other bound-file change re-opens this record."
+   },
+   "expiry": {
+    "owner": "Chief / SSCTR",
+    "review_by": "2027-04-27",
+    "event_based_expiry": "Expires immediately on any policy hash change, any change to a file bound by R7A-FREEZE-1, or a failed delta probe of strengthCandidate, strengthDose, phaseDose, advanceStrength, validateWeeks or the review gates.",
+    "triggers": [
+     "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+     "Any change to a file listed in RUNTIME_FREEZE_R7A_1.json (new freeze revision).",
+     "New or corrected systematic review/meta-analysis or trial on repeated-bout protection, re-establishment after a training gap or strength dosing near endurance events.",
+     "Population, event-distance or V1 scope change.",
+     "Adverse event, runtime inconsistency or contrary comparable observations.",
+     "Founder funding declaration (move approved items to HUMAN_REVALIDATION_REQUIRED)."
+    ]
+   },
+   "human_revalidation": {
+    "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+    "queue_ref": "audits/domain-coaching-r7a-2026-10-27/reviews/ssctr-r7a-review.json#HQ-R7A-SSCTR-ITEMS-5-8",
+    "human_review": null
+   }
+  }
+ ],
+ "funding_trigger": {
+  "state": "NOT_DECLARED",
+  "declaration_ref": null,
+  "declared_at": null
+ },
+ "queueProposal": {
+  "revision": "R7A-SSCTR-QUEUE-PROPOSAL-r1",
+  "destination": "reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json",
+  "note": "Proposed items only, carried in \"items\" below; the queue file was not edited (it holds 127 entries). One item per approved prescriptive decision of this review. On merge the Chief re-points each record's queue_ref to the queue file. These items refine, and do not replace, HQ-R6-LOAD-ESTABLISHMENT, HQ-R6-PLANNED-PROGRESSION, HQ-R6-ROTATION, HQ-R6-EVENT-TRANSITION, HQ-R6-NONCLINICAL-RETURN and HQ-R6-SUBSTITUTION (round 12).",
+  "preserveAllHistoricalEntries": true
+ },
+ "items": [
+  {
+   "queue_id": "HQ-R7A-SSCTR-REGAIN-BASE",
+   "decision_id": "R7A-SSCTR-REGAIN-BASE",
+   "decision_revision": "R7A-SSCTR-r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/RUNTIME_FREEZE_R7A_1.json",
+    "artifact_revision": "R7A-FREEZE-1",
+    "sha256": "f7574eba3a4c6c30a1fd5edfd36680833bb7005cd86a635153f214601b0966a4",
+    "rule_ids": [
+     "strength.setsAfterReestablishment",
+     "strength.resumeAfterDays",
+     "return.strengthReturnSets (D49 analogue)",
+     "R6-LOAD-ESTABLISHMENT condition 15",
+     "R6-PLANNED-PROGRESSION condition 14",
+     "R6-ROTATION condition 10",
+     "r6-program.mjs advanceStrength (re-establishment branch, regainCap)",
+     "r6-program.mjs strengthCandidate/strengthDose (REESTABLISH row, baseSets)"
+    ]
+   },
+   "approved_scope": "Bounded R7A-SSCTR-REGAIN-BASE runtime composition ruling only, under every listed condition, bound to R7A-FREEZE-1 and canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c; refines the round-12 boundary items named in queueProposal.note; no generated-workout queue row.",
+   "conditions": [
+    "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+    "Binding: this record binds runtime R7A-FREEZE-1 (CoachingCore/r7/RUNTIME_FREEZE_R7A_1.json, sha256 f7574eba3a4c6c30a1fd5edfd36680833bb7005cd86a635153f214601b0966a4; r6-program.mjs b7be1778ac69e6c13726a78b21ccd36a707df557709f96246c4878c30a69b48a, r6-adaptation.mjs c5fa03cb6cf7b6a16a698a6b590fd494a2f57b89bbc7a9d3a4d4d19977d45a56) at the unchanged canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c. Any change to a bound file needs a new freeze revision and a narrow runtime delta check; any policy byte change needs a delta binding review.",
+    "After a performed re-establishment by effort (more than return.moderateMaxDays since the last executed exposure), the earlier count, block-boundary set included, comes back at most one set per executed week, never at once, whatever the state mode at the re-establishment (known load, pending establishment log, unlogged or re-established) (D53, resolved).",
+    "The regain base is the re-establishment count before its phase reduction: min(goal sets for the role, 2, the count the exercise would otherwise have that day). A re-establishment reduced by its phase is followed by that count itself, as a phase-reduced return step 2 is followed by the step-2 count (Q1, reading A).",
+    "The cap rises by one set only after a week whose last executed exposure of the exercise executed its whole count (executed sets equal to its count before the phase reduction, gate ADVANCE or EARNED, a logged set); a week whose executed row was below that count, by its phase or by an in-week fatigue reduction, never raises it. A phase week whose reduction did not bring the row below that count counts as a whole executed week.",
+    "Every later count stays at or below the cap, with phase reductions on top, and is never more than one set above the largest count executed since the re-establishment.",
+    "Load: a logged load at or after the re-establishment becomes the reference only by the existing adoption rules, never above the re-establishment ceiling (D44, D45).",
+    "To be declared in the next policy revision: setsAfterReestablishment states the base before the phase reduction and the whole-count rule, in the words of strengthReturnSets.",
+    "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+   ],
+   "approval_date": "2026-10-27",
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Chief / Founder",
+   "human_review": null,
+   "re_review_triggers": [
+    "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+    "Any change to a file listed in RUNTIME_FREEZE_R7A_1.json (new freeze revision).",
+    "New or corrected systematic review/meta-analysis or trial on repeated-bout protection, re-establishment after a training gap or strength dosing near endurance events.",
+    "Population, event-distance or V1 scope change.",
+    "Adverse event, runtime inconsistency or contrary comparable observations.",
+    "Founder funding declaration (move approved items to HUMAN_REVALIDATION_REQUIRED)."
+   ]
+  },
+  {
+   "queue_id": "HQ-R7A-SSCTR-REESTABLISH-PHASE",
+   "decision_id": "R7A-SSCTR-REESTABLISH-PHASE",
+   "decision_revision": "R7A-SSCTR-r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/RUNTIME_FREEZE_R7A_1.json",
+    "artifact_revision": "R7A-FREEZE-1",
+    "sha256": "f7574eba3a4c6c30a1fd5edfd36680833bb7005cd86a635153f214601b0966a4",
+    "rule_ids": [
+     "Policy principle 8",
+     "operational.event (raceWeekStrengthSets, raceWeekStrengthMinimumRir, postEventStrengthSets, taperStrengthSetFraction, raceWeekStrengthMinDaysBeforeRace, proximitySemantics)",
+     "strength.consolidationSetReduction",
+     "strength.resumeAfterDays",
+     "R6-EVENT-TRANSITION conditions 7, 8 and 18",
+     "R6-LOAD-ESTABLISHMENT condition 15",
+     "r6-program.mjs strengthCandidate, strengthDose, phaseDose, phaseMinimumRir, dayPhaseOf, validateWeeks"
+    ]
+   },
+   "approved_scope": "Bounded R7A-SSCTR-REESTABLISH-PHASE runtime composition ruling only, under every listed condition, bound to R7A-FREEZE-1 and canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c; refines the round-12 boundary items named in queueProposal.note; no generated-workout queue row.",
+   "conditions": [
+    "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+    "Binding: this record binds runtime R7A-FREEZE-1 (CoachingCore/r7/RUNTIME_FREEZE_R7A_1.json, sha256 f7574eba3a4c6c30a1fd5edfd36680833bb7005cd86a635153f214601b0966a4; r6-program.mjs b7be1778ac69e6c13726a78b21ccd36a707df557709f96246c4878c30a69b48a, r6-adaptation.mjs c5fa03cb6cf7b6a16a698a6b590fd494a2f57b89bbc7a9d3a4d4d19977d45a56) at the unchanged canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c. Any change to a bound file needs a new freeze revision and a narrow runtime delta check; any policy byte change needs a delta binding review.",
+    "Every strength row, the re-establishment row included, takes its day phase once: sets = min(row cap, phase dose of the count the exercise would otherwise have that day), reps in reserve >= max(row floor, phase minimum); the day phase follows days to the race (proximitySemantics).",
+    "Race window and post-event: main lifts only, at most raceWeekStrengthSets / postEventStrengthSets set(s) at RIR >= raceWeekStrengthMinimumRir; one race-window session at most, on the strength day furthest from the race and none in the last raceWeekStrengthMinDaysBeforeRace days. Taper and specific rows keep RIR >= 3 (D54, resolved).",
+    "A re-establishment row is never above min(goal sets for its role, 2) and never above the phase dose of the exercise's own count that day; it may be below min(goal sets, 2) when that phase dose or the exercise's own count is lower (consolidation, specific, a known dose of 1 set) (Q2).",
+    "At a re-establishment the load stays effort-guided under the earlier ceiling; no load increase, new exercise or rotation in taper or race week.",
+    "The final validation rejects any strength row above its day phase dose or below the phase minimum reps in reserve, whatever branch built it.",
+    "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+   ],
+   "approval_date": "2026-10-27",
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Chief / Founder",
+   "human_review": null,
+   "re_review_triggers": [
+    "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+    "Any change to a file listed in RUNTIME_FREEZE_R7A_1.json (new freeze revision).",
+    "New or corrected systematic review/meta-analysis or trial on repeated-bout protection, re-establishment after a training gap or strength dosing near endurance events.",
+    "Population, event-distance or V1 scope change.",
+    "Adverse event, runtime inconsistency or contrary comparable observations.",
+    "Founder funding declaration (move approved items to HUMAN_REVALIDATION_REQUIRED)."
+   ]
+  },
+  {
+   "queue_id": "HQ-R7A-SSCTR-SPLIT-WEEK",
+   "decision_id": "R7A-SSCTR-SPLIT-WEEK",
+   "decision_revision": "R7A-SSCTR-r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/RUNTIME_FREEZE_R7A_1.json",
+    "artifact_revision": "R7A-FREEZE-1",
+    "sha256": "f7574eba3a4c6c30a1fd5edfd36680833bb7005cd86a635153f214601b0966a4",
+    "rule_ids": [
+     "strength.resumeAfterDays",
+     "strength.setsAfterReestablishment",
+     "return.strengthReturnSets (\"the last set count executed\")",
+     "R6-LOAD-ESTABLISHMENT condition 15 (\"each session is judged on its own date, and no unexecuted exposure counts\")",
+     "r6-program.mjs advanceStrength (first and last executed exposure)"
+    ]
+   },
+   "approved_scope": "Bounded R7A-SSCTR-SPLIT-WEEK runtime composition ruling only, under every listed condition, bound to R7A-FREEZE-1 and canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c; refines the round-12 boundary items named in queueProposal.note; no generated-workout queue row.",
+   "conditions": [
+    "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+    "Binding: this record binds runtime R7A-FREEZE-1 (CoachingCore/r7/RUNTIME_FREEZE_R7A_1.json, sha256 f7574eba3a4c6c30a1fd5edfd36680833bb7005cd86a635153f214601b0966a4; r6-program.mjs b7be1778ac69e6c13726a78b21ccd36a707df557709f96246c4878c30a69b48a, r6-adaptation.mjs c5fa03cb6cf7b6a16a698a6b590fd494a2f57b89bbc7a9d3a4d4d19977d45a56) at the unchanged canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c. Any change to a bound file needs a new freeze revision and a narrow runtime delta check; any policy byte change needs a delta binding review.",
+    "A week re-established an exercise only when its first executed exposure that week was a re-establishment row; a known-dose exposure executed first keeps the state known at its count, with no conversion and no regain cap, whatever later rows of that week prescribe (R19, resolved).",
+    "The week's counts (the whole-count check, the return ceiling and the regain or return-cap rise) come from its last executed exposure; a prescribed but unexecuted row never decides.",
+    "A logged load is judged against the exposure it was logged in, under the earlier ceiling when that exposure was a re-establishment (D44, D45).",
+    "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+   ],
+   "approval_date": "2026-10-27",
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Chief / Founder",
+   "human_review": null,
+   "re_review_triggers": [
+    "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+    "Any change to a file listed in RUNTIME_FREEZE_R7A_1.json (new freeze revision).",
+    "New or corrected systematic review/meta-analysis or trial on repeated-bout protection, re-establishment after a training gap or strength dosing near endurance events.",
+    "Population, event-distance or V1 scope change.",
+    "Adverse event, runtime inconsistency or contrary comparable observations.",
+    "Founder funding declaration (move approved items to HUMAN_REVALIDATION_REQUIRED)."
+   ]
+  },
+  {
+   "queue_id": "HQ-R7A-SSCTR-ITEMS-5-8",
+   "decision_id": "R7A-SSCTR-ITEMS-5-8",
+   "decision_revision": "R7A-SSCTR-r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/RUNTIME_FREEZE_R7A_1.json",
+    "artifact_revision": "R7A-FREEZE-1",
+    "sha256": "f7574eba3a4c6c30a1fd5edfd36680833bb7005cd86a635153f214601b0966a4",
+    "rule_ids": [
+     "return.strengthEntryWeek",
+     "R6-NONCLINICAL-RETURN condition 21",
+     "R6-SUBSTITUTION condition 6",
+     "strength.gates.missingLogs (\"HOLD without regression\")",
+     "R6-PLANNED-PROGRESSION condition 9",
+     "R6-PARTIAL-NOISY-LEARNING condition 7",
+     "return.strengthReturnSets (\"a week without a phase reduction executed its whole count\")",
+     "operational.event.proximitySemantics",
+     "r6-program.mjs buildWeek (in-use entry week), advanceStrength",
+     "r6-adaptation.mjs strengthLogs, strength gates, moveCandidates"
+    ]
+   },
+   "approved_scope": "Bounded R7A-SSCTR-ITEMS-5-8 runtime composition ruling only, under every listed condition, bound to R7A-FREEZE-1 and canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c; refines the round-12 boundary items named in queueProposal.note; no generated-workout queue row.",
+   "conditions": [
+    "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+    "Binding: this record binds runtime R7A-FREEZE-1 (CoachingCore/r7/RUNTIME_FREEZE_R7A_1.json, sha256 f7574eba3a4c6c30a1fd5edfd36680833bb7005cd86a635153f214601b0966a4; r6-program.mjs b7be1778ac69e6c13726a78b21ccd36a707df557709f96246c4878c30a69b48a, r6-adaptation.mjs c5fa03cb6cf7b6a16a698a6b590fd494a2f57b89bbc7a9d3a4d4d19977d45a56) at the unchanged canonical policy hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c. Any change to a bound file needs a new freeze revision and a narrow runtime delta check; any policy byte change needs a delta binding review.",
+    "Item 5: a return-entry week is one in which an exercise in use that week is at the entry step; an exercise not in use (rotated out and still parked at the entry step) has no weight. A never-performed exercise, a substitute included, first prescribed after every exercise in use has passed the entry step is established by effort, at most 2 sets at RIR >= 3, with no load converted, and then progresses as a new exercise (NR-21, SUB-6).",
+    "D55 (required before freeze; not met at R7A-FREEZE-1): an exercise first set up while the exercises in use are in the return steps of a moderate or long return earns no block-boundary set for the block of the return, as return-entry and return-step exposures do not; after the return steps its count rises at most one set per executed week, up to its normal count (its ceiling under strengthReturnSets), with phase reductions on top. Regression tests: the RS2 scenario (return step 2 in a block-end week, a substitution window) for HYPERTROPHY, STRENGTH and RUNNING_SUPPORT, with EVERY_2_WEEKS (parked exercises) and FIXED rotation.",
+    "Item 6: sets logged without repetitions leave the repetition target neither met nor missed; the dose holds without a regression step and repetitions are never adopted from a missing value; a logged reserve below the prescription minus one, or fewer sets than prescribed, remains a missed target.",
+    "Item 7: a week whose last executed row of an exercise is below its count before the phase reduction, by its phase or by an in-week fatigue reduction, earns no regain, return-cap or return-ceiling set.",
+    "Item 8: a missed session moves only to a later chosen day of the same sport whose day phase, by days to the race, equals its own; no move in taper or race week; race touches and shakeouts never move.",
+    "Weekly-review contract: these bindings hold when every elapsed week receives a gating weekly review, in order and after its last session, with unreported sessions reviewed as missed. A week that receives no gating review keeps the projection's assumption that it was executed and logged (establishment, progression, block credit, achieved peaks and the strength resume clock); that path is outside this approval and must be closed before any use beyond the offline reference (R18)."
+   ],
+   "approval_date": "2026-10-27",
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Chief / Founder",
+   "human_review": null,
+   "re_review_triggers": [
+    "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+    "Any change to a file listed in RUNTIME_FREEZE_R7A_1.json (new freeze revision).",
+    "New or corrected systematic review/meta-analysis or trial on repeated-bout protection, re-establishment after a training gap or strength dosing near endurance events.",
+    "Population, event-distance or V1 scope change.",
+    "Adverse event, runtime inconsistency or contrary comparable observations.",
+    "Founder funding declaration (move approved items to HUMAN_REVALIDATION_REQUIRED)."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,160 @@
+{
+  "documentVersion": "R5-LEARNING-CONTRACT-1",
+  "modelVersion": "R5-LEARNING-1",
+  "scope": "OFFLINE_SYNTHETIC_NODE24_REFERENCE",
+  "status": "IMPLEMENTATION_DESCRIPTION_NOT_INDEPENDENT_APPROVAL",
+  "implementation": "../src/r5-learning.mjs",
+  "tests": "../test/r5-learning.test.mjs",
+  "api": {
+    "createLearningModel": {
+      "arguments": ["athleteId", "purposeAllowed=false", "asOf"],
+      "returns": "deeply frozen revision-zero model",
+      "invalidArguments": "TypeError"
+    },
+    "updateLearningModel": {
+      "arguments": ["model", "observations[]", "{asOf,purposeAllowed=model.purposeAllowed}"],
+      "returns": "deeply frozen model with accepted observations, exclusions, revision and hash",
+      "backwardsClock": "TypeError",
+      "exactReplayAtSameClockAndPermission": "same model and hash",
+      "unchangedCallerInputs": true
+    },
+    "validateLearningModel": {
+      "arguments": ["model"],
+      "returns": "boolean",
+      "externalSourceAuthentication": false
+    },
+    "evidenceFor": {
+      "arguments": ["model", "context", "{asOf}"],
+      "invalidOrUnconsentedModel": "UNKNOWN_PRIOR",
+      "preModelOrInvalidClock": "UNKNOWN_PRIOR",
+      "directions": ["COMPATIBLE", "ADVERSE", "MIXED", "UNKNOWN"],
+      "confidence": ["PRIOR", "EMERGING", "STRONG"],
+      "fields": ["direction", "confidence", "count", "sourceEventIds", "informativeCount", "compatibleCount", "adverseCount", "unknownCount", "spanDays", "rankingInfluence", "responseSummary", "reason", "causal", "populationPriorRetained", "automaticDoseAuthority"],
+      "responseSummary": ["under", "over", "easier", "harder", "adverseRecovery"],
+      "emptyFailClosedOutputHasOnlyCommonFields": true
+    },
+    "preferredArrangement": {
+      "arguments": ["model", "options[]", "context", "{asOf}"],
+      "optionShape": {"id": "nonempty string", "arrangement": "optional nonempty string, defaults to id", "admissible": true},
+      "returns": ["preferredId", "evidence", "reason", "causal", "automaticDoseAuthority"],
+      "scientificAdmissibilityGranted": false,
+      "selectionOrder": ["unique STRONG COMPATIBLE option", "sole remaining admissible alternative after STRONG ADVERSE options", "null if unresolved"]
+    }
+  },
+  "clock": {
+    "explicit": true,
+    "timestampFormat": "ISO date-time with seconds and explicit Z or numeric offset",
+    "modelTimestampNormalization": "UTC ISO string",
+    "observationFutureAllowed": false,
+    "updateBeforeModelClockAllowed": false
+  },
+  "authorityInvariants": {
+    "populationPriorRetained": true,
+    "causalityEstablished": false,
+    "causal": false,
+    "automaticDoseAuthority": false,
+    "officialPlanMutation": false,
+    "completedWorkMutation": false,
+    "newPrescriptionEnvelopeAuthority": false
+  },
+  "observation": {
+    "required": ["eventId", "athleteId", "sessionId", "observedAt", "origin", "sourceHash", "plannedPrescriptionHash", "actual", "response", "context", "comparable", "confounded"],
+    "origin": "ACTUAL_EXECUTION",
+    "comparable": true,
+    "confounded": false,
+    "hashFormat": "64 lowercase hexadecimal characters",
+    "actual": {
+      "completed": true,
+      "positiveWorkRequired": "minutes > 0 OR sets > 0 OR reps > 0",
+      "optionalFiniteNonnegativeFields": ["minutes", "sets", "reps", "loadKg"],
+      "integerFields": ["sets", "reps"],
+      "loadAloneProvesWork": false,
+      "plannedWorkCanBecomeActualByInference": false
+    },
+    "response": {
+      "performance": ["COMPATIBLE", "UNDER", "OVER", "UNKNOWN"],
+      "recovery": ["COMPATIBLE", "ADVERSE", "UNKNOWN"],
+      "effort": ["ON_TARGET", "EASIER", "HARDER", "UNKNOWN"]
+    },
+    "contextRequired": ["family", "modality", "phase", "doseKey"],
+    "contextOptional": ["arrangement", "equipment", "priority"]
+  },
+  "comparability": {
+    "exactMatchingKeys": ["family", "modality", "phase", "doseKey", "equipment", "priority"],
+    "missingVersusPresentOptionalValuesMatch": false,
+    "equipmentArrayOrderSensitive": true,
+    "arrangement": "exact when requested; otherwise matching arrangements are pooled",
+    "phaseTransfer": false,
+    "doseTransfer": false,
+    "callerDeclarationIsIndependentlyVerified": false,
+    "perSessionEvidence": "latest matching report contributes at most one row"
+  },
+  "evidenceBookkeeping": {
+    "isPhysiologicalLaw": false,
+    "maximumAgeDays": 56,
+    "recencyMechanism": "bounded eligibility window, no continuous decay weighting",
+    "emergingSessions": 3,
+    "emergingSpanDays": 7,
+    "strongSessions": 4,
+    "strongSpanDays": 14,
+    "strongRequiresEverySelectedRowInformative": true,
+    "strongRequiresEveryResponseDimensionKnown": true,
+    "strongAllowsCompatibleAdverseMixture": false,
+    "singleEventCanChangeLearnedPreference": false,
+    "hysteresisMechanism": "recurrence and elapsed-span thresholds; no stateful latch",
+    "adverseDefinition": "performance UNDER OR recovery ADVERSE OR effort HARDER",
+    "compatibleDefinition": "no adverse signal AND performance known AND recovery COMPATIBLE AND effort known",
+    "unknownDefinition": "neither adverse nor compatible classification established",
+    "mixedDefinition": "at least one compatible and at least one adverse selected row",
+    "mixedConfidence": "at most EMERGING, possibly PRIOR when recurrence/span insufficient",
+    "rankingInfluence": "CONTEXTUAL_ASSOCIATION only for STRONG; otherwise POPULATION_PRIOR",
+    "expiredAcceptedObservationsRemainStored": true
+  },
+  "exclusions": {
+    "storedFields": ["eventId", "reason", "inputHash"],
+    "reasons": ["PURPOSE_NOT_ALLOWED", "EVENT_ID_REQUIRED", "ATHLETE_MISMATCH", "SESSION_ID_REQUIRED", "ACTUAL_SOURCE_PROVENANCE_REQUIRED", "INVALID_OBSERVED_AT", "FUTURE_OBSERVATION", "STALE_OBSERVATION", "COMPARABILITY_UNESTABLISHED", "CONFOUNDED", "CONFOUNDING_UNASSESSED", "ACTUAL_STIMULUS_REQUIRED", "INVALID_ACTUAL_STIMULUS", "NOT_COMPLETED", "INVALID_RESPONSE", "COMPARABLE_CONTEXT_REQUIRED", "EVENT_ID_CONFLICT", "SOURCE_REUSED"],
+    "identicalAcceptedReplayAddsObservation": false,
+    "identicalExclusionReplayAccumulates": false,
+    "uncloneableOrUnhashableInput": "TypeError"
+  },
+  "consent": {
+    "defaultPurposeAllowed": false,
+    "noConsentModelCanBeValid": true,
+    "noConsentSuppressesIndividualEvidenceAndPreference": true,
+    "noConsentPreventsNewObservationAcceptance": true,
+    "updateInheritsPriorPermissionWhenOmitted": true,
+    "revocationDeletesPreviouslyStoredObservations": false,
+    "productionConsentLedger": false
+  },
+  "coveredResponseDimensions": {
+    "performance": "descriptive compatible/under/over/unknown history",
+    "recovery": "descriptive compatible/adverse/unknown history",
+    "subjectiveEffort": "descriptive on-target/easier/harder/unknown history",
+    "adherence": "completed-work eligibility only; no rate or omission preference learning"
+  },
+  "retainedLimitations": [
+    "hash integrity does not authenticate the external execution source",
+    "provided planned-prescription hash is not verified against an official plan body",
+    "caller-supplied comparability and confounder declarations are not externally verified",
+    "partial and noncompleted work do not generate tolerance evidence",
+    "no schedule-preference learning from missed sessions",
+    "no continuous recovery trajectory or physiological adaptation model",
+    "no performance-drift estimator or outcome prediction",
+    "exercise-specific separation depends on caller-supplied distinct context",
+    "no causal attribution or new dose authority",
+    "revocation suppresses use but is not deletion or retention-policy enforcement"
+  ],
+  "authorChecks": {
+    "runtime": "Node v24.19.0",
+    "testCommand": "node --test --test-reporter=tap CoachingCore/test/r5-learning.test.mjs",
+    "testCount": 16,
+    "passed": 16,
+    "failed": 0,
+    "rawEvidence": "../../audits/domain-coaching-r5-2026-10-25/learning-final.tap",
+    "syntaxCommand": "node --check CoachingCore/src/r5-learning.mjs",
+    "syntaxPassed": true,
+    "independentReview": false,
+    "sourceSha256": "a78b220c6d140418a8f9f5401e616496f7a2042c06bdabf274302e01918af334",
+    "testSha256": "d89ab51b6865f4fc34f9c9dc1066ac168dda79a3b4a3e1a7cac196e3b226f3ef"
+  }
+}

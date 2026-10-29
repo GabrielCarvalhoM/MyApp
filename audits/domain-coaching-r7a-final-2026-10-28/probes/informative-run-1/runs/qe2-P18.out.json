@@ -1,0 +1,255 @@
+{
+ "probe": "R7A2-QE-P18",
+ "runtime": "LIVE",
+ "classes": {
+  "NONE": {
+   "logs": {
+    "a": [
+     "F reported MODIFY/GATED_NEXT_STEP",
+     "return MODIFY/REESTABLISH"
+    ],
+    "b": [
+     "F unreported MODIFY/GATED_NEXT_STEP",
+     "return MODIFY/REESTABLISH",
+     "late log ASK/ASK"
+    ],
+    "c": [
+     "F unreported MODIFY/GATED_NEXT_STEP",
+     "return MODIFY/REESTABLISH",
+     "late log ASK/ASK",
+     "same break again MODIFY/REESTABLISH"
+    ]
+   },
+   "rowsCompared": 40,
+   "lateAboveInOrder": [
+    "w3-str-d0:goblet-squat late 2x5@3/ESTABLISH vs in-order 1x5@4/ESTABLISH",
+    "w3-str-d0:db-floor-press late 2x5@3/ESTABLISH vs in-order 1x8@4/ESTABLISH",
+    "w3-str-d0:db-row late 2x5@3/ESTABLISH vs in-order 1x8@4/ESTABLISH",
+    "w3-str-d0:db-calf-raise late 2x7@3/ESTABLISH vs in-order 1x5@4/ESTABLISH",
+    "w3-str-d0:dead-bug late 2x7@3/BODYWEIGHT vs in-order 1x7@4/BODYWEIGHT",
+    "w3-str-d3:glute-bridge late 2x5@3/BODYWEIGHT vs in-order 1x5@4/BODYWEIGHT",
+    "w3-str-d3:db-row late 2x5@3/ESTABLISH vs in-order 1x8@4/ESTABLISH",
+    "w3-str-d3:db-floor-press late 2x5@3/ESTABLISH vs in-order 1x8@4/ESTABLISH",
+    "w3-str-d3:db-step-up late 2x7@3/ESTABLISH vs in-order 1x8@4/ESTABLISH",
+    "w3-str-d3:dead-bug late 2x7@3/BODYWEIGHT vs in-order 1x7@4/BODYWEIGHT",
+    "w5-str-d0:goblet-squat late 4x5@3/FROM_LOG vs in-order 2x5@3/KNOWN20",
+    "w5-str-d0:db-floor-press late 4x5@3/KNOWN20 vs in-order 2x6@3/KNOWN20",
+    "w5-str-d0:db-row late 4x5@3/KNOWN20 vs in-order 2x6@3/KNOWN20",
+    "w5-str-d0:db-calf-raise late 3x7@3/FROM_LOG vs in-order 2x5@3/KNOWN20",
+    "w5-str-d0:dead-bug late 3x9@3/BODYWEIGHT vs in-order 2x7@3/BODYWEIGHT",
+    "w5-str-d3:glute-bridge late 4x7@3/BODYWEIGHT vs in-order 2x5@3/BODYWEIGHT",
+    "w5-str-d3:db-row late 4x5@3/KNOWN20 vs in-order 2x6@3/KNOWN20",
+    "w5-str-d3:db-floor-press late 4x5@3/KNOWN20 vs in-order 2x6@3/KNOWN20",
+    "w5-str-d3:db-step-up late 3x7@3/FROM_LOG vs in-order 2x6@3/KNOWN20",
+    "w5-str-d3:dead-bug late 3x9@3/BODYWEIGHT vs in-order 2x7@3/BODYWEIGHT",
+    "w6-str-d0:goblet-squat late 4x5@3/KNOWN20 vs in-order 3x5@3/KNOWN20",
+    "w6-str-d0:db-floor-press late 4x5@3/KNOWN20 vs in-order 2x6@3/KNOWN20",
+    "w6-str-d0:db-row late 4x5@3/KNOWN20 vs in-order 2x6@3/KNOWN20",
+    "w6-str-d0:db-calf-raise late 3x6@3/KNOWN20 vs in-order 2x5@3/KNOWN20",
+    "w6-str-d0:dead-bug late 3x10@3/BODYWEIGHT vs in-order 2x9@3/BODYWEIGHT",
+    "w6-str-d3:glute-bridge late 4x9@3/BODYWEIGHT vs in-order 2x7@3/BODYWEIGHT",
+    "w6-str-d3:db-row late 4x5@3/KNOWN20 vs in-order 2x6@3/KNOWN20",
+    "w6-str-d3:db-floor-press late 4x5@3/KNOWN20 vs in-order 2x6@3/KNOWN20",
+    "w6-str-d3:db-step-up late 3x6@3/KNOWN20 vs in-order 2x6@3/KNOWN20",
+    "w6-str-d3:dead-bug late 3x10@3/BODYWEIGHT vs in-order 2x9@3/BODYWEIGHT"
+   ],
+   "rowsDifferInOrderVsLate": 40,
+   "reReportDiffersFromInOrder": [],
+   "sample": {
+    "a": [
+     [
+      "d0PM STRENGTH STRENGTH_FULL_A goblet-squat:2x5@3/ESTABLISH,db-floor-press:2x8@3/FROM_LOG,db-row:2x8@3/FROM_LOG,db-calf-raise:2x7@3/ESTABLISH,dead-bug:2x7@3/BODYWEIGHT",
+      "d1AM RUN EASY EASY:40",
+      "d3PM STRENGTH STRENGTH_FULL_B glute-bridge:2x5@3/BODYWEIGHT,db-row:2x8@3/FROM_LOG,db-floor-press:2x8@3/FROM_LOG,db-step-up:2x8@3/FROM_LOG,dead-bug:2x7@3/BODYWEIGHT",
+      "d4AM RUN EASY EASY:40",
+      "d6AM RUN REST_BY_DESIGN -"
+     ],
+     [
+      "d0PM STRENGTH STRENGTH_FULL_A goblet-squat:1x5@4/ESTABLISH,db-floor-press:1x8@4/ESTABLISH,db-row:1x8@4/ESTABLISH,db-calf-raise:1x5@4/ESTABLISH,dead-bug:1x7@4/BODYWEIGHT",
+      "d1AM RUN EASY EASY:15",
+      "d3PM STRENGTH STRENGTH_FULL_B glute-bridge:1x5@4/BODYWEIGHT,db-row:1x8@4/ESTABLISH,db-floor-press:1x8@4/ESTABLISH,db-step-up:1x8@4/ESTABLISH,dead-bug:1x7@4/BODYWEIGHT",
+      "d4AM RUN EASY EASY:15",
+      "d6AM RUN LONG LONG:20"
+     ]
+    ],
+    "b": [
+     [
+      "d0PM STRENGTH STRENGTH_FULL_A goblet-squat:2x5@3/ESTABLISH,db-floor-press:2x5@3/ESTABLISH,db-row:2x5@3/ESTABLISH,db-calf-raise:2x7@3/ESTABLISH,dead-bug:2x7@3/BODYWEIGHT",
+      "d1AM RUN EASY EASY:40",
+      "d3PM STRENGTH STRENGTH_FULL_B glute-bridge:2x5@3/BODYWEIGHT,db-row:2x5@3/ESTABLISH,db-floor-press:2x5@3/ESTABLISH,db-step-up:2x7@3/ESTABLISH,dead-bug:2x7@3/BODYWEIGHT",
+      "d4AM RUN EASY EASY:40",
+      "d6AM RUN REST_BY_DESIGN -"
+     ],
+     [
+      "d0PM STRENGTH STRENGTH_FULL_A goblet-squat:2x5@3/ESTABLISH,db-floor-press:2x5@3/ESTABLISH,db-row:2x5@3/ESTABLISH,db-calf-raise:2x7@3/ESTABLISH,dead-bug:2x7@3/BODYWEIGHT",
+      "d1AM RUN EASY EASY:15",
+      "d3PM STRENGTH STRENGTH_FULL_B glute-bridge:2x5@3/BODYWEIGHT,db-row:2x5@3/ESTABLISH,db-floor-press:2x5@3/ESTABLISH,db-step-up:2x7@3/ESTABLISH,dead-bug:2x7@3/BODYWEIGHT",
+      "d4AM RUN EASY EASY:15",
+      "d6AM RUN LONG LONG:20"
+     ]
+    ]
+   }
+  },
+  "FAMILIAR": {
+   "logs": {
+    "a": [
+     "F reported MODIFY/GATED_NEXT_STEP",
+     "return MODIFY/REESTABLISH"
+    ],
+    "b": [
+     "F unreported MODIFY/GATED_NEXT_STEP",
+     "return MODIFY/REESTABLISH",
+     "late log ASK/ASK"
+    ],
+    "c": [
+     "F unreported MODIFY/GATED_NEXT_STEP",
+     "return MODIFY/REESTABLISH",
+     "late log ASK/ASK",
+     "same break again MODIFY/REESTABLISH"
+    ]
+   },
+   "rowsCompared": 40,
+   "lateAboveInOrder": [
+    "w3-str-d0:goblet-squat late 2x5@3/ESTABLISH vs in-order 1x5@4/ESTABLISH",
+    "w3-str-d0:db-bench-press late 2x5@3/ESTABLISH vs in-order 1x5@4/ESTABLISH",
+    "w3-str-d0:db-row late 2x5@3/ESTABLISH vs in-order 1x5@4/ESTABLISH",
+    "w3-str-d0:db-calf-raise late 2x7@3/ESTABLISH vs in-order 1x7@4/ESTABLISH",
+    "w3-str-d0:dead-bug late 2x7@3/BODYWEIGHT vs in-order 1x7@4/BODYWEIGHT",
+    "w3-str-d3:db-rdl late 2x5@3/ESTABLISH vs in-order 1x5@4/ESTABLISH",
+    "w3-str-d3:db-row late 2x5@3/ESTABLISH vs in-order 1x5@4/ESTABLISH",
+    "w3-str-d3:db-bench-press late 2x5@3/ESTABLISH vs in-order 1x5@4/ESTABLISH",
+    "w3-str-d3:db-split-squat late 2x7@3/ESTABLISH vs in-order 1x7@4/ESTABLISH",
+    "w3-str-d3:dead-bug late 2x7@3/BODYWEIGHT vs in-order 1x7@4/BODYWEIGHT",
+    "w4-str-d0:goblet-squat late 2x5@3/FROM_LOG vs in-order 1x5@3/FROM_LOG",
+    "w4-str-d0:db-bench-press late 2x5@3/FROM_LOG vs in-order 1x5@3/KNOWN20",
+    "w4-str-d0:db-row late 2x5@3/FROM_LOG vs in-order 1x5@3/KNOWN20",
+    "w4-str-d3:db-rdl late 2x5@3/FROM_LOG vs in-order 1x5@3/FROM_LOG",
+    "w4-str-d3:db-row late 2x5@3/FROM_LOG vs in-order 1x5@3/KNOWN20",
+    "w4-str-d3:db-bench-press late 2x5@3/FROM_LOG vs in-order 1x5@3/KNOWN20",
+    "w5-str-d0:goblet-squat late 4x5@3/FROM_LOG vs in-order 2x5@3/KNOWN20",
+    "w5-str-d0:db-bench-press late 4x5@3/KNOWN20 vs in-order 2x5@3/KNOWN20",
+    "w5-str-d0:db-row late 4x5@3/KNOWN20 vs in-order 2x5@3/KNOWN20",
+    "w5-str-d0:db-calf-raise late 3x7@3/FROM_LOG vs in-order 2x6@3/KNOWN20",
+    "w5-str-d0:dead-bug late 3x9@3/BODYWEIGHT vs in-order 2x7@3/BODYWEIGHT",
+    "w5-str-d3:db-rdl late 4x5@3/FROM_LOG vs in-order 2x5@3/KNOWN20",
+    "w5-str-d3:db-row late 4x5@3/KNOWN20 vs in-order 2x5@3/KNOWN20",
+    "w5-str-d3:db-bench-press late 4x5@3/KNOWN20 vs in-order 2x5@3/KNOWN20",
+    "w5-str-d3:db-split-squat late 3x7@3/FROM_LOG vs in-order 2x6@3/KNOWN20",
+    "w5-str-d3:dead-bug late 3x9@3/BODYWEIGHT vs in-order 2x7@3/BODYWEIGHT",
+    "w6-str-d0:goblet-squat late 4x5@3/KNOWN20 vs in-order 2x5@3/KNOWN20",
+    "w6-str-d0:db-bench-press late 4x5@3/KNOWN20 vs in-order 2x5@3/KNOWN20",
+    "w6-str-d0:db-row late 4x5@3/KNOWN20 vs in-order 2x5@3/KNOWN20",
+    "w6-str-d0:db-calf-raise late 3x6@3/KNOWN20 vs in-order 2x6@3/KNOWN20",
+    "w6-str-d0:dead-bug late 3x10@3/BODYWEIGHT vs in-order 2x9@3/BODYWEIGHT",
+    "w6-str-d3:db-rdl late 4x5@3/KNOWN20 vs in-order 2x5@3/KNOWN20",
+    "w6-str-d3:db-row late 4x5@3/KNOWN20 vs in-order 2x5@3/KNOWN20",
+    "w6-str-d3:db-bench-press late 4x5@3/KNOWN20 vs in-order 2x5@3/KNOWN20",
+    "w6-str-d3:db-split-squat late 3x6@3/KNOWN20 vs in-order 2x6@3/KNOWN20",
+    "w6-str-d3:dead-bug late 3x10@3/BODYWEIGHT vs in-order 2x9@3/BODYWEIGHT"
+   ],
+   "rowsDifferInOrderVsLate": 40,
+   "reReportDiffersFromInOrder": [],
+   "sample": {
+    "a": [
+     [
+      "d0PM STRENGTH STRENGTH_FULL_A goblet-squat:3x5@3/FROM_LOG,db-bench-press:3x5@3/KNOWN20,db-row:3x5@3/KNOWN20,db-calf-raise:2x7@3/FROM_LOG,dead-bug:2x7@3/BODYWEIGHT",
+      "d1AM RUN EASY EASY:40",
+      "d3PM STRENGTH STRENGTH_FULL_B db-rdl:3x5@3/FROM_LOG,db-row:3x5@3/KNOWN20,db-bench-press:3x5@3/KNOWN20,db-split-squat:2x7@3/FROM_LOG,dead-bug:2x7@3/BODYWEIGHT",
+      "d4AM RUN EASY EASY:40",
+      "d6AM RUN REST_BY_DESIGN -"
+     ],
+     [
+      "d0PM STRENGTH STRENGTH_FULL_A goblet-squat:1x5@4/ESTABLISH,db-bench-press:1x5@4/ESTABLISH,db-row:1x5@4/ESTABLISH,db-calf-raise:1x7@4/ESTABLISH,dead-bug:1x7@4/BODYWEIGHT",
+      "d1AM RUN EASY EASY:15",
+      "d3PM STRENGTH STRENGTH_FULL_B db-rdl:1x5@4/ESTABLISH,db-row:1x5@4/ESTABLISH,db-bench-press:1x5@4/ESTABLISH,db-split-squat:1x7@4/ESTABLISH,dead-bug:1x7@4/BODYWEIGHT",
+      "d4AM RUN EASY EASY:15",
+      "d6AM RUN LONG LONG:20"
+     ]
+    ],
+    "b": [
+     [
+      "d0PM STRENGTH STRENGTH_FULL_A goblet-squat:2x5@3/ESTABLISH,db-bench-press:2x5@3/ESTABLISH,db-row:2x5@3/ESTABLISH,db-calf-raise:2x7@3/ESTABLISH,dead-bug:2x7@3/BODYWEIGHT",
+      "d1AM RUN EASY EASY:40",
+      "d3PM STRENGTH STRENGTH_FULL_B db-rdl:2x5@3/ESTABLISH,db-row:2x5@3/ESTABLISH,db-bench-press:2x5@3/ESTABLISH,db-split-squat:2x7@3/ESTABLISH,dead-bug:2x7@3/BODYWEIGHT",
+      "d4AM RUN EASY EASY:40",
+      "d6AM RUN REST_BY_DESIGN -"
+     ],
+     [
+      "d0PM STRENGTH STRENGTH_FULL_A goblet-squat:2x5@3/ESTABLISH,db-bench-press:2x5@3/ESTABLISH,db-row:2x5@3/ESTABLISH,db-calf-raise:2x7@3/ESTABLISH,dead-bug:2x7@3/BODYWEIGHT",
+      "d1AM RUN EASY EASY:15",
+      "d3PM STRENGTH STRENGTH_FULL_B db-rdl:2x5@3/ESTABLISH,db-row:2x5@3/ESTABLISH,db-bench-press:2x5@3/ESTABLISH,db-split-squat:2x7@3/ESTABLISH,dead-bug:2x7@3/BODYWEIGHT",
+      "d4AM RUN EASY EASY:15",
+      "d6AM RUN LONG LONG:20"
+     ]
+    ]
+   }
+  },
+  "KNOWN": {
+   "logs": {
+    "a": [
+     "F reported MODIFY/GATED_NEXT_STEP",
+     "return MODIFY/REESTABLISH"
+    ],
+    "b": [
+     "F unreported MODIFY/GATED_NEXT_STEP",
+     "return MODIFY/REESTABLISH",
+     "late log ASK/ASK"
+    ],
+    "c": [
+     "F unreported MODIFY/GATED_NEXT_STEP",
+     "return MODIFY/REESTABLISH",
+     "late log ASK/ASK",
+     "same break again MODIFY/REESTABLISH"
+    ]
+   },
+   "rowsCompared": 40,
+   "lateAboveInOrder": [
+    "w4-str-d0:db-row late 2x5@3/FROM_LOG vs in-order 1x5@3/KNOWN20",
+    "w4-str-d3:db-rdl late 2x5@3/FROM_LOG vs in-order 1x5@3/FROM_LOG",
+    "w4-str-d3:db-row late 2x5@3/FROM_LOG vs in-order 1x5@3/KNOWN20",
+    "w5-str-d0:db-row late 3x5@3/KNOWN20 vs in-order 2x5@3/KNOWN20",
+    "w5-str-d3:db-rdl late 3x5@3/FROM_LOG vs in-order 2x5@3/KNOWN20",
+    "w5-str-d3:db-row late 3x5@3/KNOWN20 vs in-order 2x5@3/KNOWN20",
+    "w6-str-d0:db-row late 3x5@3/KNOWN20 vs in-order 2x5@3/KNOWN20",
+    "w6-str-d3:db-rdl late 3x5@3/KNOWN20 vs in-order 2x5@3/KNOWN20",
+    "w6-str-d3:db-row late 3x5@3/KNOWN20 vs in-order 2x5@3/KNOWN20"
+   ],
+   "rowsDifferInOrderVsLate": 28,
+   "reReportDiffersFromInOrder": [],
+   "sample": {
+    "a": [
+     [
+      "d0PM STRENGTH STRENGTH_FULL_A back-squat:3x5@3/KNOWN80,db-bench-press:3x6@3/KNOWN18,db-row:3x5@3/KNOWN20,db-calf-raise:2x7@3/FROM_LOG,dead-bug:2x9@3/BODYWEIGHT",
+      "d1AM RUN EASY EASY:40",
+      "d3PM STRENGTH STRENGTH_FULL_B db-rdl:3x5@3/FROM_LOG,db-row:3x5@3/KNOWN20,db-bench-press:3x6@3/KNOWN18,db-split-squat:2x7@3/FROM_LOG,dead-bug:2x9@3/BODYWEIGHT",
+      "d4AM RUN EASY EASY:40",
+      "d6AM RUN REST_BY_DESIGN -"
+     ],
+     [
+      "d0PM STRENGTH STRENGTH_FULL_A back-squat:1x5@4/ESTABLISH,db-bench-press:1x8@4/ESTABLISH,db-row:1x5@4/ESTABLISH,db-calf-raise:1x7@4/ESTABLISH,dead-bug:1x7@4/BODYWEIGHT",
+      "d1AM RUN EASY EASY:15",
+      "d3PM STRENGTH STRENGTH_FULL_B db-rdl:1x5@4/ESTABLISH,db-row:1x5@4/ESTABLISH,db-bench-press:1x8@4/ESTABLISH,db-split-squat:1x7@4/ESTABLISH,dead-bug:1x7@4/BODYWEIGHT",
+      "d4AM RUN EASY EASY:15",
+      "d6AM RUN LONG LONG:20"
+     ]
+    ],
+    "b": [
+     [
+      "d0PM STRENGTH STRENGTH_FULL_A back-squat:3x5@3/KNOWN80,db-bench-press:3x6@3/KNOWN18,db-row:2x5@3/ESTABLISH,db-calf-raise:2x7@3/ESTABLISH,dead-bug:2x7@3/BODYWEIGHT",
+      "d1AM RUN EASY EASY:40",
+      "d3PM STRENGTH STRENGTH_FULL_B db-rdl:2x5@3/ESTABLISH,db-row:2x5@3/ESTABLISH,db-bench-press:3x6@3/KNOWN18,db-split-squat:2x7@3/ESTABLISH,dead-bug:2x7@3/BODYWEIGHT",
+      "d4AM RUN EASY EASY:40",
+      "d6AM RUN REST_BY_DESIGN -"
+     ],
+     [
+      "d0PM STRENGTH STRENGTH_FULL_A back-squat:1x5@4/ESTABLISH,db-bench-press:1x8@4/ESTABLISH,db-row:1x5@4/ESTABLISH,db-calf-raise:1x5@4/ESTABLISH,dead-bug:1x5@4/BODYWEIGHT",
+      "d1AM RUN EASY EASY:15",
+      "d3PM STRENGTH STRENGTH_FULL_B db-rdl:1x5@4/ESTABLISH,db-row:1x5@4/ESTABLISH,db-bench-press:1x8@4/ESTABLISH,db-split-squat:1x5@4/ESTABLISH,dead-bug:1x5@4/BODYWEIGHT",
+      "d4AM RUN EASY EASY:15",
+      "d6AM RUN LONG LONG:20"
+     ]
+    ]
+   }
+  }
+ }
+}

@@ -1,0 +1,128 @@
+{
+  "revision": "BSR-COVERAGE-0.1.0",
+  "measuredAt": "2026-10-24T12:34:58.341Z",
+  "classDefinitions": {
+    "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED": "Concrete supported proposal only, never applied; acceptance required",
+    "SUPPORTED_KEEP": "Adequate no-op or exact previously accepted execution branch, no new prescription",
+    "USEFUL_ASK": "Choice-changing missing information; not a positive dose",
+    "CORRECT_ABSTAIN_OR_HOLD": "Dependent action retained for missing authority/evidence; not a positive dose",
+    "NOT_SUPPORTED_YET": "Required behavior outside the executable approved subset",
+    "CLINICAL_OR_OUT_OF_SCOPE": "Clinical or explicitly unauthorized real-service use"
+  },
+  "denominatorPolicy": "Report each designed corpus separately. No efficacy/safety/general-population coverage inference. Replays excluded from unique totals.",
+  "corpora": {
+    "ACF_24": {
+      "count": 24,
+      "classes": {
+        "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED": 6,
+        "SUPPORTED_KEEP": 10,
+        "USEFUL_ASK": 6,
+        "CORRECT_ABSTAIN_OR_HOLD": 2,
+        "NOT_SUPPORTED_YET": 0,
+        "CLINICAL_OR_OUT_OF_SCOPE": 0
+      }
+    },
+    "NOVICE_COUNTERPART": {
+      "count": 1,
+      "classes": {
+        "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED": 1,
+        "SUPPORTED_KEEP": 0,
+        "USEFUL_ASK": 0,
+        "CORRECT_ABSTAIN_OR_HOLD": 0,
+        "NOT_SUPPORTED_YET": 0,
+        "CLINICAL_OR_OUT_OF_SCOPE": 0
+      }
+    },
+    "SDC_SUCCESSORS": {
+      "count": 7,
+      "classes": {
+        "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED": 3,
+        "SUPPORTED_KEEP": 3,
+        "USEFUL_ASK": 0,
+        "CORRECT_ABSTAIN_OR_HOLD": 0,
+        "NOT_SUPPORTED_YET": 0,
+        "CLINICAL_OR_OUT_OF_SCOPE": 1
+      }
+    },
+    "NINE_WEEKS": {
+      "count": 63,
+      "classes": {
+        "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED": 0,
+        "SUPPORTED_KEEP": 63,
+        "USEFUL_ASK": 0,
+        "CORRECT_ABSTAIN_OR_HOLD": 0,
+        "NOT_SUPPORTED_YET": 0,
+        "CLINICAL_OR_OUT_OF_SCOPE": 0
+      }
+    },
+    "STRESS_WEEKS": {
+      "count": 28,
+      "classes": {
+        "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED": 1,
+        "SUPPORTED_KEEP": 19,
+        "USEFUL_ASK": 1,
+        "CORRECT_ABSTAIN_OR_HOLD": 7,
+        "NOT_SUPPORTED_YET": 0,
+        "CLINICAL_OR_OUT_OF_SCOPE": 0
+      }
+    },
+    "FOUR_WEEK_STREAM": {
+      "count": 28,
+      "classes": {
+        "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED": 0,
+        "SUPPORTED_KEEP": 28,
+        "USEFUL_ASK": 0,
+        "CORRECT_ABSTAIN_OR_HOLD": 0,
+        "NOT_SUPPORTED_YET": 0,
+        "CLINICAL_OR_OUT_OF_SCOPE": 0
+      }
+    },
+    "FOUR_WEEK_PROPOSALS": {
+      "count": 2,
+      "classes": {
+        "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED": 2,
+        "SUPPORTED_KEEP": 0,
+        "USEFUL_ASK": 0,
+        "CORRECT_ABSTAIN_OR_HOLD": 0,
+        "NOT_SUPPORTED_YET": 0,
+        "CLINICAL_OR_OUT_OF_SCOPE": 0
+      }
+    },
+    "FAILURE_CLOSED_PROBES": {
+      "count": 7,
+      "classes": {
+        "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED": 0,
+        "SUPPORTED_KEEP": 0,
+        "USEFUL_ASK": 1,
+        "CORRECT_ABSTAIN_OR_HOLD": 1,
+        "NOT_SUPPORTED_YET": 4,
+        "CLINICAL_OR_OUT_OF_SCOPE": 1
+      }
+    },
+    "NOISE_PROBES": {
+      "count": 4,
+      "classes": {
+        "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED": 0,
+        "SUPPORTED_KEEP": 0,
+        "USEFUL_ASK": 0,
+        "CORRECT_ABSTAIN_OR_HOLD": 0,
+        "NOT_SUPPORTED_YET": 4,
+        "CLINICAL_OR_OUT_OF_SCOPE": 0
+      }
+    }
+  },
+  "unique": {
+    "count": 160,
+    "classes": {
+      "POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED": 11,
+      "SUPPORTED_KEEP": 123,
+      "USEFUL_ASK": 8,
+      "CORRECT_ABSTAIN_OR_HOLD": 10,
+      "NOT_SUPPORTED_YET": 6,
+      "CLINICAL_OR_OUT_OF_SCOPE": 2
+    }
+  },
+  "acf24PositiveCount": 6,
+  "fullV1PositiveCoverage": "NOT_READY",
+  "positiveNumeratorRule": "Only POSITIVE_PRESCRIPTION_OR_ADAPTATION_SUPPORTED. Never add KEEP/ASK/ABSTAIN. Branch withdrawal counts SUPPORTED_KEEP."
+}

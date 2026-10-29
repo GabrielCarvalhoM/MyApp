@@ -1,0 +1,575 @@
+--- a/CoachingCore/src/r6-adaptation.mjs
++++ b/CoachingCore/src/r6-adaptation.mjs
+@@ -1,10 +1,10 @@
+ import {clone,freeze,hash} from './value.mjs';
+ import {r6Authority,allows} from './r6-authority.mjs';
+-import {validProgram,programHash,skeletonOf,advanceRun,advanceStrength,loggedLoadDecision,adoptionBasis,dayPhaseOf,startStrengthReturn,eventCompletionItem,validateWeeks,peakOf,contextOf,arrangementCandidates,arrangementDisclosures,strengthTemplates,planPhases,buildGoalModel,blocksFrom,goalDose,runTarget,runMinutesOf,EVENT_PHASES,DEVELOPMENT,BLOCK_INTENT} from './r6-program.mjs';
++import {validProgram,programHash,skeletonOf,advanceRun,advanceStrength,strengthAtBreak,loggedLoadDecision,adoptionBasis,dayPhaseOf,startStrengthReturn,eventCompletionItem,validateWeeks,peakOf,contextOf,arrangementCandidates,arrangementDisclosures,strengthTemplates,planPhases,buildGoalModel,blocksFrom,goalDose,runTarget,runMinutesOf,EVENT_PHASES,DEVELOPMENT,BLOCK_INTENT} from './r6-program.mjs';
+ import {chooseBalanced,interferenceCosts,SEVERITY} from './r6-balanced.mjs';
+ import {substitutesFor,catalogueEntry} from './r6-catalogue.mjs';
+ import {exerciseRow,fitStrengthSession,strengthPrescription,easyPrescription,validateR6Prescription} from './r6-prescription.mjs';
+-import {aheadOf,usedInWeek,rebasedNext,returnOf,moveCandidates,choose,counter,rank,fatigueSessions,unavailableSessions,missedMove,conflictSessions,waitSessions,adaptThisWeek,adaptation,withContextChange,composeWeeks,weekAsPlanned,conditionalNext} from './r6-composition.mjs';
++import {aheadOf,usedInWeek,rebasedNext,returnOf,beforeReturn,moveCandidates,choose,counter,rank,fatigueSessions,unavailableSessions,missedMove,conflictSessions,waitSessions,adaptThisWeek,adaptation,withContextChange,composeWeeks,weekAsPlanned,conditionalNext} from './r6-composition.mjs';
+ import {createLearningModel,updateLearningModel,validateLearningModel,evidenceFor,preferredArrangement,classify} from './r6-learning.mjs';
+ import {normalizeObservations,utcTimestamp,localDate} from './r6-provenance.mjs';
+ import {onDate,dayGap,isoDay,LB_TO_KG,toKilograms,RUN_GOALS,STRENGTH_GOALS,EVENTS} from './r6-intake.mjs';
+@@ -317,7 +317,7 @@
+   const confirmations=loadConfirmationsOf(review.loadConfirmations);
+   // The carried record is append-only: facts a correction replaced travel with it as inert history (R7-A).
+   out={...base,updatedModel:model,actualLedger:[...ledger,...n.supersededRows],provenance:{excluded:n.excluded,duplicates:n.duplicates,conflicts:n.conflicts,superseded:n.superseded,causalCutoff:n.causalCutoff},weekEvidence:ev,loadQuestions:[],inputHash:hash({programHash:program.hash,review})};
+-  const ctx={program,sk,review,kind,w,week,asOf,asOfLocal,ev,ledger:usable,fullLedger:ledger,model,consent,authority,out,confirmations,completedRuns:completedRuns(program,usable)};
++  const ctx={program,sk,review,kind,w,week,asOf,asOfLocal,ev,ledger:usable,fullLedger:ledger,quarantined:n.quarantinedIdentities,model,consent,authority,out,confirmations,completedRuns:completedRuns(program,usable)};
+   // This week's own context (R7-A.1 C2), the one test of what is still ahead (C1) and the day of a return reported this week (C5).
+   Object.assign(ctx,{skw:sk.at(w)??sk,ahead:aheadOf(ctx),returned:returnOf(program,w)});
+   // A review's load confirmations are facts of its week, recorded on it so every later handler reads them as this review does (QE-R7A1-02).
+@@ -595,6 +595,57 @@
+  if(statedFrom<0)return {action:'KEEP',reason:'The goal change starts after the last week of this program; the current weeks keep their goals',counterfactuals:[counter('KEEP','KEEP',true,'Nothing in this program falls on or after the stated date',{selected:true})]};
+  return rebuild(ctx,{canonical:x=>({...x,goals:stated(x.goals)}),goals:true,fromWeek:reachesThisWeek?ctx.w:statedFrom,reason:'Goal or event date changed: future phases, priorities and arrangements are re-planned from the current state'+(reachesThisWeek?', including this week\u2019s remaining sessions; completed sessions stay as they were':'; completed weeks stay as they were'),action:'REPLAN_FUTURE_PHASES'});
+ }
++// ---------- the break a return reports (R7-A.2) ----------
++/** The returns still in force, oldest first: a newer report of the same break supersedes its earlier report (R7-A.2 I2). */
++function liveReturns(program){const all=program.decisions.filter(d=>d.action==='REESTABLISH'),gone=new Set(all.map(d=>d.interruption?.supersedes).filter(Boolean));return all.filter(d=>!gone.has(d.eventId)).sort((a,b)=>Date.parse(a.asOf)-Date.parse(b.asOf));}
++/** A recorded return's break: its days, the local day it was reported and the start it set. A return recorded before R7-A.2 states no dates:
++ * its break is read as the days that ended the day before its report, and its start as the start of its re-entry week. */
++function breakOf(program,d){
++ const i=d.interruption??{},day=localDate(d.asOf,program.timezoneOffsetMinutes??0),end=i.endDate??onDate(day,-1);
++ return {eventId:d.eventId,episode:i.episode??d.eventId,start:i.startDate??onDate(end,-((i.days??1)-1)),end,day,asOf:d.asOf,entry:i.entry??program.stateTrace[d.fromWeek]??null};
++}
++/**
++ * Which break a return report is about (R7-A.2 I1–I3), its days running from `start` to `end`, against the latest return still in force:
++ * - NEW: it begins on or after the day that return was reported, so after its re-entry: a break of its own (I1, I3);
++ * - SAME_BREAK: it begins before that report and does not end before that break began, so that return was reported while this break went
++ *   on: a newer report of the same break, which it supersedes and whose identity it keeps (I2);
++ * - otherwise it is asked, never guessed: it ends before the latest reported break began (an earlier break, which the later return already
++ *   covers), or it reaches back across the re-entry of the return before.
++ */
++function interruptionEpisode(ctx,{start,end}){
++ const live=liveReturns(ctx.program).map(d=>breakOf(ctx.program,d)),last=live.at(-1),before=live.at(-2);
++ if(!last||start>=last.day)return {relation:'NEW',episode:ctx.review.event.id,supersedes:null};
++ if(end>=last.start&&!(before&&start<before.day))return {relation:'SAME_BREAK',episode:last.episode,supersedes:last.eventId};
++ return {ask:`This interruption ends before the one reported on ${last.day} began, or spans an earlier return: say when it started and ended, as one period`,missingInputs:['interruption.startDate','interruption.endDate']};
++}
++/**
++ * The state the athlete had when a break began (R7-A.2 I4–I7; SSCTR D59). It starts from the latest state-setting point at or before the
++ * break's first day: the start of the break's week as it stood before any return of that week replaced it (C5), or, when a return still in
++ * force was reported in that week on or before that day, the start that return set from its report on (I3). A report that this one
++ * supersedes was made after this break began, so it is never that point. The strength exposures the record shows executed after that point
++ * and before the break are then applied as facts only (strengthAtBreak), their gate read as the weekly review reads the sessions of the week
++ * before the break (those planned before it, or executed before it; a conflicted report executes nothing until it is corrected, QRE-R6-14).
++ * Nothing from the break's first day on counts (I6): no execution
++ * observed then or later, no session planned then or later and not executed before it, no review decided then or later. Runs keep that
++ * point's state; what they executed counts through the completed-work record.
++ */
++function stateAtBreak(ctx,{start}){
++ const {program}=ctx,tz=program.timezoneOffsetMinutes??0,p=Math.max(0,Math.min(ctx.w,Math.floor(dayGap(program.startDate,start)/7))),week=program.weeks[p];
++ let point={kind:'WEEK_START',day:week.startDate,asOf:null,eventId:null,state:week.startBeforeReturn??program.stateTrace[p]};
++ for(const d of liveReturns(program)){
++  const b=breakOf(program,d);
++  if(b.day>=week.startDate&&b.day<=start&&b.entry&&(point.asOf===null||Date.parse(b.asOf)>Date.parse(point.asOf)))point={kind:'RETURN',day:b.day,asOf:b.asOf,eventId:d.eventId,state:b.entry};
++ }
++ const cut=new Date(Date.parse(start+'T00:00:00Z')-tz*60000).toISOString(),after=point.asOf?s=>!beforeReturn(program,{day:point.day,asOf:point.asOf})(s):()=>true;
++ const ledger=(ctx.fullLedger??ctx.ledger).filter(o=>(o.localDate??localDate(o.observedAt,tz))<start),executed=new Set(ledger.filter(o=>!o.conflicted).map(o=>o.sessionId));
++ const sessions=week.sessions.filter(s=>after(s)&&(s.date<start||executed.has(s.id)));
++ const view={...program,weeks:program.weeks.map((x,i)=>i===p?{...x,sessions}:x),stateTrace:program.stateTrace.map((x,i)=>i===p?point.state:x),decisions:program.decisions.filter(d=>Date.parse(d.asOf)<Date.parse(cut))};
++ const ev=weekEvidence(view,p,start,ledger,ctx.quarantined??[]),skp=ctx.sk.at?.(p)??ctx.sk;
++ const systemic=!!ev.systemicConvergence||(week.adaptations??[]).some(a=>a.kind==='SYSTEMIC_SIGNAL'&&Date.parse(a.asOf)<Date.parse(cut));
++ const {gates}=weeklyGates(view,skp,p,ev,ledger.filter(o=>!o.conflicted),cut,{systemic}),performed=performedInWeek(ev,ledger);
++ const strength=strengthAtBreak(skp,point.state.strength,usedInWeek(view.weeks[p]),{ALL:'HOLD',...gates},{performed});
++ return {state:{run:clone(point.state.run),strength},point:{kind:point.kind,week:p,day:point.day,asOf:point.asOf,eventId:point.eventId,executed:Object.keys(performed).sort()}};
++}
+ /** Nonclinical return: current evidence is the start, prior tolerated dose the ceiling; no universal percentage rollback. */
+ function returnAfterPause(ctx){
+  const {program,sk,w,review,asOfLocal}=ctx,i=review.interruption&&typeof review.interruption==='object'&&!Array.isArray(review.interruption)?review.interruption:{},R=sk.op.return;
+@@ -622,8 +673,12 @@
+  // A demonstration shorter than the minimum easy session demonstrates no easy-run capacity (QRE-R6-06: out-of-range return facts).
+  const demoOk=!!demo&&(demo.sport??demo.modality??demo.prescription?.modality)==='RUN'&&R.demonstration.families.includes(demo.family??demo.prescription?.family)&&demo.completed===true&&(demo.minutes??demo.prescription?.durationMinutes)>=sk.op.run.minimumSessionMinutes&&(['CONVERSATIONAL','EASY','ON_TARGET'].includes(String(demo.effort??'').toUpperCase())||demo.prescription?.effortDomain==='EASY_CONVERSATIONAL')&&demo.response==='COMPATIBLE'&&demo.ordinaryFunction==='COMPATIBLE'&&demo.nextDayFunction==='NORMAL'&&isoDay(demoDay)&&dayGap(pauseStart,demoDay)>=0&&dayGap(demoDay,asOfLocal)>=0&&dayGap(demoDay,asOfLocal)<=R.currentDemonstrationMaxAgeDays;
+  const cls=days<=R.shortMaxDays?'SHORT':days<=R.moderateMaxDays?'MODERATE':'LONG';
+- // A newer report of a break starts from the start the break's own week had before an earlier return replaced it (C5, QE-R7A1-03).
+- const pauseWeek=Math.max(0,Math.min(w,Math.floor(dayGap(program.startDate,pauseStart)/7))),prior=program.weeks[pauseWeek]?.startBeforeReturn??program.stateTrace[pauseWeek]??program.stateTrace[0];
++ // The break this report is about, and the state the athlete had when it began (R7-A.2): a newer report of the same break supersedes the
++ // earlier one and starts from what preceded that break, whichever week it comes in (C5, QE-R7A1-03); a separate, later break starts from
++ // what the athlete had then, after any re-entry, with the exposures executed before it.
++ const ep=interruptionEpisode(ctx,{start:pauseStart,end});
++ if(ep.ask)return {action:'ASK',reason:ep.ask,missingInputs:ep.missingInputs,screen};
++ const at=stateAtBreak(ctx,{start:pauseStart}),prior=at.state;
+  let runState=clone(prior.run),strengthState=clone(prior.strength);
+  const demoMinutes=demoOk&&Number.isFinite(demo.minutes??demo.prescription?.durationMinutes)?Math.min(demo.minutes??demo.prescription.durationMinutes,prior.run.easy??R.entryRunMinutes*2):null;
+  if(cls==='SHORT'){/* resume last completed doses; the next step waits for observed execution */}
+@@ -639,21 +694,26 @@
+  }
+  const returnRuns=[...ctx.completedRuns,...(demoMinutes?[{date:demoDay,minutes:demo.minutes??demoMinutes,source:'CURRENT_DEMONSTRATION'}]:[])];
+  const ahead=ctx.ahead,futureThisWeek=program.weeks[w].sessions.filter(s=>s.prescription&&ahead(s)).length,fromWeek=futureThisWeek>=2||w+1>=program.weeks.length?w:w+1;
+- // This report replaces the adaptations an earlier return recorded on these weeks (R7-A.1 C5) and records its own (C4): the wait of the
+- // sessions still ahead when re-entry starts next week, and, after a short break, the easy first quality slot still ahead (SSCTR R27).
+- const fact=kind=>adaptation(ctx,kind,{past:program.weeks[w].sessions.filter(s=>s.date===asOfLocal&&!ahead(s)).map(s=>s.id)});
+- const strip=x=>{const list=(x.adaptations??[]).filter(a=>!['RETURN_WAIT','SHORT_RETURN_EASY'].includes(a.kind)),y={...x};if(list.length)y.adaptations=list;else delete y.adaptations;return y;};
++ // A newer report of the same break replaces the adaptations its earlier report recorded on these weeks (R7-A.1 C5); a separate break's
++ // stay with that break (R7-A.2 I9). This report records its own, with its break (C4): the wait of the sessions still ahead when re-entry
++ // starts next week, and, after a short break, the easy first quality slot still ahead (SSCTR R27).
++ const fact=kind=>adaptation(ctx,kind,{episode:ep.episode,past:program.weeks[w].sessions.filter(s=>s.date===asOfLocal&&!ahead(s)).map(s=>s.id)});
++ const strip=x=>{const list=(x.adaptations??[]).filter(a=>!(['RETURN_WAIT','SHORT_RETURN_EASY'].includes(a.kind)&&(a.episode??a.eventId)===ep.episode)),y={...x};if(list.length)y.adaptations=list;else delete y.adaptations;return y;};
+  let base={...program,weeks:program.weeks.map((x,k)=>k>=w?strip(x):x)};
+  if(fromWeek===w+1){const a=fact('RETURN_WAIT');base={...base,...adaptThisWeek(ctx,base,w,waitSessions({...ctx,sk:ctx.skw},base.weeks[w].sessions,a),a)};}
+  // After a short break the first quality slot still ahead of this report runs easy (SSCTR R27, D58): recorded on the week re-entry starts,
+- // the composition moves it on to the first week that holds such a slot, so later re-plans and the weekly review keep exactly one.
+- if(cls==='SHORT')base={...base,weeks:base.weeks.map((x,k)=>k!==fromWeek?x:{...x,adaptations:[...(x.adaptations??[]),fact('SHORT_RETURN_EASY')]})};
++ // the composition moves it on to the first week that holds such a slot, so later re-plans and the weekly review keep exactly one. A newer
++ // report of the same break whose slot is already history keeps that slot: nothing else changes (R7-A.2 I2, I9).
++ const slotRun=ep.relation==='SAME_BREAK'&&program.weeks.some(x=>x.sessions.some(s=>s.easedFor===ep.episode&&!ahead(s)));
++ if(cls==='SHORT'&&!slotRun)base={...base,weeks:base.weeks.map((x,k)=>k!==fromWeek?x:{...x,adaptations:[...(x.adaptations??[]),fact('SHORT_RETURN_EASY')]})};
+  if(fromWeek===w)base={...base,weeks:base.weeks.map((x,k)=>k!==w?x:{...x,startBeforeReturn:clone(program.weeks[w].startBeforeReturn??program.stateTrace[w])})};
+  // Re-entry this week starts the week again from the return; re-entry next week is next week's start (C3).
+  const next=composeWeeks(ctx,base,{fromWeek,start:{runState,strengthState},completedRuns:returnRuns,returnDay:asOfLocal,evidence:evidenceRule(ctx)});
+  if(next.ask)return {action:'ASK',reason:next.ask,missingInputs:next.missingInputs};
+  const eventSoon=sk.plan.raceWeek!==null&&sk.plan.raceWeek-fromWeek<=3&&sk.plan.raceWeek>=fromWeek;
+- const proposal=finishProposal(program,sk,next,{eventId:review.event.id,asOf:ctx.asOf,action:'REESTABLISH',fromWeek,interruption:{days,class:cls,nonclinical:true,screen},demonstrationUsed:!!demoMinutes,horizonsConsidered:HORIZONS});
++ // The report records its break (R7-A.2): its days, its identity, how it relates to the report before, the point its state came from and the
++ // start it set, which a later, separate break starts from.
++ const proposal=finishProposal(program,sk,next,{eventId:review.event.id,asOf:ctx.asOf,action:'REESTABLISH',fromWeek,interruption:{days,class:cls,nonclinical:true,screen,startDate:pauseStart,endDate:end,episode:ep.episode,relation:ep.relation,supersedes:ep.supersedes,stateAt:at.point,entry:{run:clone(runState),strength:clone(strengthState)}},demonstrationUsed:!!demoMinutes,horizonsConsidered:HORIZONS});
+  return {action:'REESTABLISH',reason:`${cls.toLowerCase()} nonclinical interruption (${days} days): ${cls==='SHORT'?'resume the last completed doses; no step until execution is observed':cls==='MODERATE'?`re-entry from ${demoMinutes?'the current demonstration':'the reviewed entry dose'}, returning to the prior tolerated dose in ${R.moderateStepsToPrior} conditional steps`:'restart from current capacity; prior doses are only a ceiling'}`,proposal,counterfactuals:[counter('RESUME_PRIOR_PLAN','KEEP',cls==='SHORT','Resuming the planned (higher) week restores dose by elapsed time',{selected:false}),counter('PERCENT_ROLLBACK','ROLLBACK',false,'A universal percentage rollback is not an approved rule'),counter('REESTABLISH','REESTABLISH',true,'Current evidence first, prior tolerance as ceiling',{selected:true}),counter('CLINICAL_ROUTE','CLINICAL',false,'The interruption reason screened nonclinical ('+screen.matched.join(', ')+') and no current clinical flag is present')],horizons:{H0_SESSION:'First sessions back are easy and effort-governed',H1_WEEK:'No quality or heavy loading in the entry step',H2_BLOCK:`Prior dose reached in ${cls==='SHORT'?1:R.moderateStepsToPrior} conditional step(s)`,H3_GOAL_EVENT:eventSoon?'The event is close: the plan aims at completion and cannot catch up missed preparation':'Goal trajectory continues after re-establishment'},missingInputs:[],nextObservation:'Record minutes, effort and next-day function after each return session; any pain, illness or abnormal symptom routes to qualified assessment'};
+ }
+ function eventWeekConflict(ctx){
+--- a/CoachingCore/src/r6-composition.mjs
++++ b/CoachingCore/src/r6-composition.mjs
+@@ -43,7 +43,7 @@
+ const bySlot=(a,b)=>a.day-b.day||(a.backToBackOrder??0)-(b.backToBackOrder??0);
+ const withWeek=(program,w,sessions)=>({...program,weeks:program.weeks.map((x,i)=>i===w?{...x,sessions}:x)});
+ // ---------- adaptations (C4): each changes only sessions still ahead of the review that applies it ----------
+-const easyRun=(sk,s,explanation)=>{const p=easyPrescription(Math.min(s.prescription.durationMinutes,sk.c.schedule.runMinutes),{cue:sk.op.run.effortCues.EASY_CONVERSATIONAL});return {...s,role:'EASY',key:false,prescription:p,plannedPrescriptionHash:hash(p),explanation};};
++const easyRun=(sk,s,explanation,extra={})=>{const p=easyPrescription(Math.min(s.prescription.durationMinutes,sk.c.schedule.runMinutes),{cue:sk.op.run.effortCues.EASY_CONVERSATIONAL});return {...s,role:'EASY',key:false,prescription:p,plannedPrescriptionHash:hash(p),explanation,...extra};};
+ /**
+  * Same-week rearrangement among chosen days of the same sport: the coach reallocates content, never the athlete's days. A session keeps its
+  * meaning where it moves: never into a day with another phase (taper or race-window days), nor to a date where one of its exercises falls
+@@ -107,11 +107,13 @@
+ /** A return that re-plans from next week: every session still ahead of its report waits, the race excepted, so nothing after the break keeps the earlier dose. */
+ export const waitSessions=(env,sessions,a)=>{const ahead=aheadAt(a);return sessions.map(s=>s.prescription&&ahead(s)&&env.ahead(s)&&s.role!=='RACE'?{...(({status,movedTo,...row})=>row)(s),role:'REST_BY_DESIGN',key:false,essential:false,optional:true,prescription:null,progression:null,plannedPrescriptionHash:null,explanation:'Re-entry after the break starts next week; this session waits so that nothing after the break keeps the earlier dose'}:s);};
+ /**
+- * A short return: its slot is the one it already made easy, else the first quality slot still ahead of its report in the week as it stands
+- * (SSCTR R27, D58). The slot runs easy while it is ahead; once it is history nothing else changes. No slot: the week holds none (D58).
++ * A short return: its slot is the one its break already made easy, else the first quality slot still ahead of its report in the week as it
++ * stands (SSCTR R27, D58). The slot runs easy while it is ahead; once it is history nothing else changes. No slot: the week holds none (D58).
++ * The slot belongs to its break (R7-A.2 I9): it carries the break's identity, so a newer report of the same break keeps it and a separate
++ * break never adopts it. A slot or a fact recorded before R7-A.2 carries none, and the two are read together as before.
+  */
+ const EASY_SLOT='First quality slot after a short break runs easy';
+-export function shortReturnEasy(env,sessions,a){const ahead=aheadAt(a),q=sessions.find(s=>s.explanation===EASY_SLOT)??sessions.find(s=>s.role==='QUALITY'&&s.prescription&&s.status!=='SKIPPED'&&ahead(s));return {slot:q??null,sessions:q?.role==='QUALITY'&&env.ahead(q)?sessions.map(s=>s===q?easyRun(env.sk,s,EASY_SLOT):s):sessions};}
++export function shortReturnEasy(env,sessions,a){const ahead=aheadAt(a),own=s=>s.explanation===EASY_SLOT&&(s.easedFor??null)===(a.episode??null),q=sessions.find(own)??sessions.find(s=>s.role==='QUALITY'&&s.prescription&&s.status!=='SKIPPED'&&ahead(s));return {slot:q??null,sessions:q?.role==='QUALITY'&&env.ahead(q)?sessions.map(s=>s===q?easyRun(env.sk,s,EASY_SLOT,a.episode?{easedFor:a.episode}:{}):s):sessions};}
+ /** Applies a recorded adaptation again to a re-planned week, with its own clock (C4); {ask} when the new plan contradicts it. */
+ function reapply(env,sessions,a){
+  const own=aheadAt(a),e={...env,asOfLocal:a.asOfLocal,ahead:s=>env.ahead(s)&&own(s)};
+@@ -197,10 +199,11 @@
+  */
+ export function composeWeeks(ctx,next,{fromWeek,start=null,sports=SPORTS,completedRuns=ctx.completedRuns??[],returnDay=null,evidence=null}){
+  const {w,authority}=ctx,ahead=aheadOf(ctx),sk=skeletonOf(next,authority),at=i=>sk.at(i)??sk,N=sk.c.weeks,inScope=s=>sports.includes(s.sport),all=sports.length===SPORTS.length,fresh=s=>ahead(s)&&inScope(s);
+- // A short return's easy slot not found in its week, carried to the next week placed (D58). So is one that the week before the first week
+- // placed, this week or later, no longer holds (a later change of that week skipped or replaced it); it leaves that week.
+- const prior=fromWeek>w?next.weeks[fromWeek-1]:null,held=prior?.adaptations?.find(a=>a.kind==='SHORT_RETURN_EASY');
+- let carry=held&&!shortReturnEasy({ahead:()=>false},prior.sessions,held).slot?held:null;
++ // A short return's easy slot not found in its week, carried to the next week placed (D58), each with its own break (R7-A.2 I9). So is one
++ // that the week before the first week placed, this week or later, no longer holds (a later change of that week skipped or replaced it); it
++ // leaves that week.
++ const prior=fromWeek>w?next.weeks[fromWeek-1]:null,held=(prior?.adaptations??[]).filter(a=>a.kind==='SHORT_RETURN_EASY'&&!shortReturnEasy({ahead:()=>false},prior.sessions,a).slot);
++ let carry=[...held];
+  // The return of a week: the one this composition re-plans for (its own clock), else one recorded earlier (C5).
+  const returned=i=>i===w&&returnDay?{day:returnDay,asOf:ctx.asOf}:returnOf(next,i);
+  // The weeks between next week and a later fromWeek stay as planned: earlier weeks of the conditional plan count as executed for the run
+@@ -212,15 +215,15 @@
+  const own=(i,state)=>all?state:{run:sports.includes('RUN')?state.run:next.stateTrace[i].run,strength:sports.includes('STRENGTH')?state.strength:next.stateTrace[i].strength};
+  const totals=(i,sessions)=>{const t=weekSummary(sessions);return all?t:{...t,plannedRunMinutes:next.weeks[i].plannedRunMinutes,restDays:next.weeks[i].restDays};};
+  const weeks=next.weeks.slice(0,fromWeek),stateTrace=next.stateTrace.slice(0,fromWeek);
+- if(carry){const left=prior.adaptations.filter(a=>a!==held);weeks[fromWeek-1]={...prior};if(left.length)weeks[fromWeek-1].adaptations=left;else delete weeks[fromWeek-1].adaptations;}
++ if(held.length){const left=prior.adaptations.filter(a=>!held.includes(a));weeks[fromWeek-1]={...prior};if(left.length)weeks[fromWeek-1].adaptations=left;else delete weeks[fromWeek-1].adaptations;}
+  // Places week i: its rows as planned, then its recorded adaptations applied again; {ask} when the new plan contradicts one.
+  const place=(i,rows,state)=>{
+   const merged=mergeRows(ctx,next,i,rows,sports),planned={...weeks[i]??{},sessions:merged,...totals(i,merged)};weeks[i]=planned;stateTrace[i]=own(i,state);
+   const list=[];let sessions=merged;
+-  for(const a of [...(next.weeks[i].adaptations??[]),...(carry?[carry]:[])]){
++  for(const a of [...(next.weeks[i].adaptations??[]),...carry]){
+    const env={program:{...next,weeks:weeks.map((x,k)=>k===i?{...x,sessions}:x),stateTrace},sk:at(i),w:i,ahead:fresh,authority,returned:returned(i)},r=reapply(env,sessions,a);if(r.ask)return r;
+    // A short return's easy slot that this week does not hold moves on to the next week placed (SSCTR D58).
+-   if(a.kind==='SHORT_RETURN_EASY'){if(a===carry)carry=null;if(!r.slot){carry=a;continue;}}
++   if(a.kind==='SHORT_RETURN_EASY'){carry=carry.filter(x=>x!==a);if(!r.slot){carry.push(a);continue;}}
+    list.push(a);sessions=r.sessions;
+   }
+   if(list.length)weeks[i]={...planned,sessions,adaptations:clone(list)};else if(next.weeks[i].adaptations)weeks[i]={...planned,sessions};
+--- a/CoachingCore/src/r6-program.mjs
++++ b/CoachingCore/src/r6-program.mjs
+@@ -442,6 +442,49 @@
+  return n;
+ }
+ const advancedGate=k=>['ADVANCE','EARNED'].includes(k);
++// One reading of a week's executed strength exposures, shared by the week's transition and the state at a break (R7-A.2).
++/** The exposures of one exercise a review saw executed: `p` gives the local date it was last performed and the sessions that performed it
++ * ({date, sessions}; a bare date is read as that date); a conditional projection assumes every planned exposure performed on its date. */
++const executedOf=(list,p,assumeLogged)=>{if(assumeLogged)return {date:list.map(x=>x.date).filter(Boolean).sort().at(-1)??null,executed:list};const date=typeof p==='string'?p:p?.date??null,sessions=p&&typeof p==='object'&&Array.isArray(p.sessions)?p.sessions:null;return {date,executed:date===null?[]:sessions?list.filter(x=>sessions.includes(x.session)):list.filter(x=>x.date===date)};};
++/** An executed exposure's count before the phase reduction, after it and after the time fit, whatever wrote it (R7-A QE-R7A-14; R7-A.1). A
++ * row written before R7-A states no counts: the week's planned counts `pl` stand in, and its sets are its count after the fit. */
++const countsOf=(x,pl)=>{const base=Number.isInteger(x.baseSets)?x.baseSets:Number.isInteger(pl?.baseSets)?pl.baseSets:null,phased=Number.isInteger(x.phasedSets)?x.phasedSets:!Number.isInteger(x.baseSets)&&Number.isInteger(pl?.sets)?pl.sets:x.sets;return {base,phased,afterFit:Math.min(phased,Number.isInteger(x.fittedSets)?x.fittedSets:x.sets)};};
++/** The whole counts executed outside a phase reduction, each after its time fit: the last executed count of a later return reads them (SSCTR D49, R20). */
++const wholeCounts=(done,pl)=>done.map(x=>countsOf(x,pl)).filter(c=>Number.isInteger(c.base)&&c.phased===c.base).map(c=>c.afterFit);
++/** An exercise set up by its first executed exposure; set up in a return-entry week it starts the return steps (R6-POLICY-4), set up while an
++ * exercise in use is in them its count comes back from its own (SSCTR D55). */
++const setUp=(u,{entryWeek,returningWeek})=>({status:'ESTABLISHED',mode:u.mode==='BODYWEIGHT'?'BODYWEIGHT':u.mode==='KNOWN'?'KNOWN':'FROM_LOG',load:u.mode==='KNOWN'?u.value:null,convention:u.convention??null,reps:u.reps,sets:u.mode==='KNOWN'?u.sets:null,rir:u.rir,loadTick:0,source:'PLANNED_ESTABLISHMENT',...(entryWeek?{returnStep:0}:returningWeek?{returnInBlock:true,...(Number.isInteger(u.baseSets??u.sets)?{regainCap:u.baseSets??u.sets}:{})}:{})});
++/** Re-established by effort once performed, whatever the state's mode: the earlier load becomes a ceiling and the earlier count comes back one
++ * set per executed week from the re-establishment count before its phase reduction, never at once (QRE-R6-17, SSCTR D49, D53). */
++const reEstablish=(ex,u)=>{const c0=Number.isInteger(u.baseSets)?u.baseSets:u.sets;if(ex.mode==='KNOWN'){ex.ceiling=ex.load;ex.mode='FROM_LOG';}ex.source='RE_ESTABLISHED';if(Number.isInteger(ex.sets)&&Number.isInteger(c0)&&ex.sets>c0){ex.priorSets=ex.sets;ex.sets=c0;}if(Number.isInteger(c0))ex.regainCap=c0;};
++const entryWeekOf=(ss0,used)=>typeof ss0.entryWeek==='boolean'?ss0.entryWeek:used.some(x=>!x.practice&&ss0.exercises[x.id]?.returnStep===0);
++const returningWeekOf=(ss0,used)=>used.some(x=>!x.practice&&Number.isInteger(ss0.exercises[x.id]?.returnStep));
++const byExercise=used=>{const m=new Map();for(const x of used){if(!m.has(x.id))m.set(x.id,[]);m.get(x.id).push(x);}return m;};
++/**
++ * The strength state when a break began (R7-A.2 I4–I7; SSCTR D59). `ss0` is the state in force at the last point before the break, `used`
++ * the exposures prescribed after that point and before the break, `gate` their weekly gate reading and `performed` what the record shows
++ * executed. Each executed exposure is read as the week's transition reads it, as facts only: the exercise is in use (set up as a review sets
++ * it up, or recorded as re-established), with its last performed date and, outside a return, the last executed whole count after the time fit
++ * when its logged target was met (the ceiling of a return, SSCTR D49, R20). What a review of the week decides is not applied: no load is
++ * adopted (an exercise left without a usable load is unlogged, so outside a return its next exposure establishes the load by effort again,
++ * SSCTR D52), and no gate step, cap rise or end, return step or block set (strengthReturnSets: the block in progress earns no set). An
++ * exercise not executed is unchanged.
++ */
++export function strengthAtBreak(sk,ss0,used,gate={},{performed={}}={}){
++ const ss=clone(ss0),planned=ss0.planned??{},entryWeek=entryWeekOf(ss0,used),returningWeek=returningWeekOf(ss0,used);delete ss.planned;delete ss.entryWeek;
++ for(const [id,list] of byExercise(used)){
++  const {date:on,executed:done}=executedOf(list,performed?.[id],false);if(!on)continue;
++  const u=done[0]??list.at(-1),k=gate[id]??gate.STRENGTH??gate.ALL??'HOLD';
++  let ex=ss.exercises[id];
++  if(!ex)ex=ss.exercises[id]=setUp(u,{entryWeek,returningWeek});else if(exposureKindOf(sk,ss0,u)==='REESTABLISH')reEstablish(ex,u);
++  if(!(ex.lastPerformed>=on))ex.lastPerformed=on;
++  if(u.practice)continue;
++  if(ex.mode==='FROM_LOG'&&!Number.isFinite(ex.pendingLoad))ex.unlogged=true;else delete ex.unlogged;
++  const whole=wholeCounts(done,planned[id]);
++  if(!Number.isInteger(ex.returnStep)&&advancedGate(k)&&whole.length)ex.lastExecutedSets=Math.max(...whole);
++ }
++ return ss;
++}
+ /** Transition after week w for exercises used that week. gate per exercise id or 'STRENGTH'. Logged loads replace planned ones before the gate.
+  * A step needs a logged set at the current load in the gating week; a conditional projection assumes the planned logs.
+  * `performed` maps an exercise to the local date a review saw it last performed in the week and the sessions that performed it
+@@ -454,26 +497,24 @@
+  const planned=ss0.planned??{};delete ss.planned;
+  // An exercise first established in a return-entry week continues through the return steps like the others (author-found, R6-POLICY-4);
+  // the week is an entry week when an exercise in use is at the entry step (R7-A).
+- const entryWeek=typeof ss0.entryWeek==='boolean'?ss0.entryWeek:used.some(x=>!x.practice&&ss0.exercises[x.id]?.returnStep===0);delete ss.entryWeek;let finished=false;
++ const entryWeek=entryWeekOf(ss0,used);delete ss.entryWeek;let finished=false;
+  // SSCTR D55: an exercise first set up while an exercise in use is in the return steps earns no block-boundary set for the block of the
+  // return (strengthReturnSets: the block in progress at the break earns no set), and its count rises at most one set per executed week.
+- const returningWeek=used.some(x=>!x.practice&&Number.isInteger(ss0.exercises[x.id]?.returnStep));
+- const byId=new Map();for(const x of used){if(!byId.has(x.id))byId.set(x.id,[]);byId.get(x.id).push(x);}
+- const doneOf=(id,list)=>{if(assumeLogged)return {date:list.map(x=>x.date).filter(Boolean).sort().at(-1)??null,executed:list};const p=performed?.[id],date=typeof p==='string'?p:p?.date??null,sessions=p&&typeof p==='object'&&Array.isArray(p.sessions)?p.sessions:null;return {date,executed:date===null?[]:sessions?list.filter(x=>sessions.includes(x.session)):list.filter(x=>x.date===date)};};
+- for(const [id,list] of byId){
++ const returningWeek=returningWeekOf(ss0,used);
++ for(const [id,list] of byExercise(used)){
+   // The gate is known before the adoption: an above-plan load is adopted only when this exposure met the ADVANCE criterion (SSCTR D44).
+   // The first executed exposure decides what the week was (a re-establishment or not); the last executed one gives its counts, as
+   // "the last executed count" reads (SSCTR D49, R19; R7-A).
+-  const {date:on,executed:done}=doneOf(id,list),u=done[0]??list.at(-1),uc=done.at(-1)??list.at(-1),kind=exposureKindOf(sk,ss0,u),k=gate[id]??gate.STRENGTH??gate.ALL??'ADVANCE',log=logged[id];
++  const {date:on,executed:done}=executedOf(list,performed?.[id],assumeLogged),u=done[0]??list.at(-1),uc=done.at(-1)??list.at(-1),kind=exposureKindOf(sk,ss0,u),k=gate[id]??gate.STRENGTH??gate.ALL??'ADVANCE',log=logged[id];
+   // A logged load is judged against the exposure it was logged in (SSCTR D44).
+   const uLog=log?.sessionId?list.find(x=>x.session===log.sessionId)??u:u;
+   let ex=ss.exercises[id];const fresh=!ex;
+   // A prescription that was not executed establishes nothing: an exercise gets its state once it is performed (SSCTR D52).
+-  if(fresh){if(!on)continue;ex={status:'ESTABLISHED',mode:u.mode==='BODYWEIGHT'?'BODYWEIGHT':u.mode==='KNOWN'?'KNOWN':'FROM_LOG',load:u.mode==='KNOWN'?u.value:null,convention:u.convention??null,reps:u.reps,sets:u.mode==='KNOWN'?u.sets:null,rir:u.rir,loadTick:0,source:'PLANNED_ESTABLISHMENT',...(entryWeek?{returnStep:0}:returningWeek?{returnInBlock:true,...(Number.isInteger(u.baseSets??u.sets)?{regainCap:u.baseSets??u.sets}:{})}:{})};}
++  if(fresh){if(!on)continue;ex=setUp(u,{entryWeek,returningWeek});}
+   // Re-established by effort once performed, whatever the state's mode (known load, pending or unlogged log, re-established): the earlier
+   // count comes back one set per executed week, never at once (QRE-R6-17, SSCTR D53). The regain starts from the re-establishment count
+   // before its phase reduction, with phase reductions on top (SSCTR D49, D53).
+-  else if(on&&kind==='REESTABLISH'){const c0=Number.isInteger(u.baseSets)?u.baseSets:u.sets;if(ex.mode==='KNOWN'){ex.ceiling=ex.load;ex.mode='FROM_LOG';}ex.source='RE_ESTABLISHED';if(Number.isInteger(ex.sets)&&Number.isInteger(c0)&&ex.sets>c0){ex.priorSets=ex.sets;ex.sets=c0;}if(Number.isInteger(c0))ex.regainCap=c0;}
++  else if(on&&kind==='REESTABLISH')reEstablish(ex,u);
+   const adoption=!uLog.practice&&log?loggedLoadDecision(S,adoptionBasis(ex,uLog),uLog,log,{advanced:advancedGate(k),hint:sk.cap?.strength?.loadHints?.[id]??null}):null;
+   // At a review a loaded exercise is established only by a logged load, adopted or awaiting confirmation (SSCTR D52).
+   if(fresh){if(!assumeLogged&&!u.practice&&ex.mode==='FROM_LOG'&&!adoption?.adopted&&!adoption?.pending)continue;ss.exercises[u.id]=ex;}
+@@ -495,19 +536,14 @@
+   if(returning)ex.returnInBlock=true;
+   const blockSet=blockEnd&&executed&&!ex.returnInBlock;
+   if(blockEnd){if(blockSet){ex.blocksDone=(ex.blocksDone??0)+1;if(Number.isInteger(ex.setCeiling))ex.setCeiling++;}delete ex.returnInBlock;}
+-  // One reading of each executed exposure whatever wrote it (R7-A QE-R7A-14; R7-A.1): its count before the phase reduction, after it and after
+-  // the time fit. A row written before R7-A states no counts: the week's planned counts stand in, and its sets are its count after the fit.
+-  const baseOf=x=>Number.isInteger(x.baseSets)?x.baseSets:Number.isInteger(planned[id]?.baseSets)?planned[id].baseSets:null;
+-  const phasedOf=x=>Number.isInteger(x.phasedSets)?x.phasedSets:!Number.isInteger(x.baseSets)&&Number.isInteger(planned[id]?.sets)?planned[id].sets:x.sets;
+-  const afterFit=x=>Math.min(phasedOf(x),Number.isInteger(x.fittedSets)?x.fittedSets:x.sets);
+   // The last executed count outside a return and outside a phase reduction is the ceiling of a later return (SSCTR D49): the largest whole
+-  // count the week executed outside a phase reduction, each after its time fit (SSCTR R20).
+-  const whole=done.filter(x=>Number.isInteger(baseOf(x))&&phasedOf(x)===baseOf(x)).map(afterFit);
++  // count the week executed outside a phase reduction, each after its time fit (SSCTR R20; one reading of each exposure, countsOf).
++  const whole=wholeCounts(done,planned[id]);
+   if(!returning&&executed&&whole.length)ex.lastExecutedSets=Math.max(...whole);
+   // The return and regain caps rise or end only after a week whose last executed exposure, the one that gives the week's counts (R19), did
+   // its whole count after its time fit: a time fit is no phase reduction, but a week trimmed to the time budget is no whole week either
+   // (R7-A.1, SSCTR D56). Without any count the week's plan reading stays.
+-  const wholeWeek=Number.isInteger(baseOf(uc))?afterFit(uc)===baseOf(uc):unreduced;
++  const last=countsOf(uc,planned[id]),wholeWeek=Number.isInteger(last.base)?last.afterFit===last.base:unreduced;
+   // After the return steps the cap rises one set per executed whole week up to the ceiling. It ends only after such a week, once it covers
+   // the count the exercise would otherwise have next week (its normal count with the block set this transition earns), so no count comes
+   // back more than one set above the last whole one (R7-A.1, SSCTR D57).
+--- a/CoachingCore/test/r7a2-interruption.test.mjs
++++ b/CoachingCore/test/r7a2-interruption.test.mjs
+@@ -0,0 +1,270 @@
++// DOMAIN_COACHING_R7-A.2: the break a return reports and the state the athlete had when it began (Founder request I1–I9, P1–P6). Each test
++// names the invariant and the blocker it covers (QE-R7A1-09, QE-R7A1-10, SSCTR D59). Development authority only; synthetic data.
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {generateProgram,evaluateProgram} from '../src/r6-index.mjs';
++import {devAuthority} from '../r6/fixtures/dev-authority.mjs';
++
++const opts={authority:devAuthority()};
++const addDays=(d,n)=>new Date(Date.parse(d+'T00:00:00Z')+n*864e5).toISOString().slice(0,10);
++const elig=d=>({status:'NONCLINICAL_CONFIRMED',assessedAt:d,pain:false,persistentPain:false,injury:false,illness:false,functionalLimitation:false,clinicalConcern:false});
++const OK={performance:'COMPATIBLE',recovery:'COMPATIBLE',effort:'ON_TARGET',nextDayFunction:'NORMAL'};
++const K=(id,sets,reps,kg,convention='TOTAL')=>({id,sets,reps,load:{value:kg,unit:'KG',convention},rir:2,current:true,familiar:true,tolerated:true,observedAt:'2026-10-29'});
++const KNOWN=[K('back-squat',3,5,80),K('db-bench-press',3,8,18,'PER_HAND')];
++const intake=({id,cls='KNOWN',athlete={},schedule={}})=>({version:'R6-INTAKE-1',synthetic:true,purpose:'SHADOW_REFERENCE',asOf:'2026-11-01',startDate:'2026-11-02',weeks:16,learningConsent:true,
++ athlete:{id,ageEligible:true,eligibility:elig('2026-11-01'),goals:{run:'PERFORMANCE',strength:'STRENGTH'},runExperience:'INTERMEDIATE',strengthExperience:cls==='NONE'?'NONE':'INTERMEDIATE',recent:{runDaysPerWeek:3,runMinutesPerWeek:150,longestRunMinutes:70,strengthDaysPerWeek:cls==='NONE'?0:2},equipment:['DUMBBELLS','BENCH','BARBELL','RACK'],knownExercises:cls==='KNOWN'?KNOWN:[],exerciseRotationPreference:'FIXED',...athlete},
++ schedule:{runDays:[1,3,6],strengthDays:[2,5],runTurn:'AM',strengthTurn:'PM',runMinutes:60,strengthMinutes:60,longRunDay:6,longRunMinutes:100,...schedule}});
++let N=0;
++const at=(p,w,day,hour,x={})=>{const d=addDays(p.weeks[w].startDate,day);return {version:'R6-REVIEW-1',synthetic:true,purpose:'SHADOW_REFERENCE',asOf:`${d}T${hour}Z`,weekIndex:w,event:{id:`t7a2-${w}-${x.kind??'WEEKLY_REVIEW'}-${N++}`,kind:x.kind??'WEEKLY_REVIEW'},eligibility:elig(d),observations:[],...x};};
++/** An as-prescribed report observed on the session's day, or on `day` when given; `short` exercises miss their repetition target by two. */
++function obs(p,s,day=s.date,short=[]){const pr=s.prescription,actual={completed:true,minutes:pr.durationMinutes};
++ if(pr.modality==='STRENGTH')actual.exercises=pr.exercises.map(e=>({id:e.id,sets:Array.from({length:e.sets},()=>({load:{value:e.load.mode==='KNOWN'?e.load.value:e.load.mode==='BODYWEIGHT'?0:20,unit:e.load.mode==='BODYWEIGHT'?'BODYWEIGHT':'KG',convention:e.load.convention},reps:short.includes(e.id)?e.reps-2:e.reps,rir:e.rir}))}));
++ return {eventId:`t7a2-o-${N++}`,athleteId:p.athleteId,sessionId:s.id,observedAt:day+(s.turn==='PM'?'T19:00:00Z':'T08:00:00Z'),actual,response:{...OK}};}
++const step=(t,review)=>{const r=evaluateProgram(t.p,{...review,actualLedger:t.ledger},opts);assert.ok(!['UNSUPPORTED','HOLD'].includes(r.status),`${review.event.kind}: ${r.status} ${r.reason} ${JSON.stringify(r.errors??[])}`);t.ledger=r.actualLedger??t.ledger;if(r.proposal)t.p=r.proposal;return r;};
++const live=s=>s.prescription&&s.status!=='SKIPPED';
++const weekly=(t,w,keep=()=>true,hour='21:00:00')=>step(t,at(t.p,w,6,hour,{observations:t.p.weeks[w].sessions.filter(s=>live(s)&&keep(s)).map(s=>obs(t.p,s))}));
++const report=(t,w,day,hour,keep)=>step(t,at(t.p,w,day,hour,{observations:t.p.weeks[w].sessions.filter(s=>live(s)&&keep(s)).map(s=>obs(t.p,s))}));
++const start=(ia,weeks)=>{const g=generateProgram(intake(ia),opts);assert.ok(g.program,`${ia.id}: ${g.status} ${g.reason}`);const t={p:g.program,ledger:[]};for(let w=0;w<weeks;w++)weekly(t,w);return t;};
++const copy=t=>({p:t.p,ledger:t.ledger});
++const brk=(start,end,extra={})=>({kind:'RETURN_AFTER_PAUSE',interruption:{days:Math.round((Date.parse(end)-Date.parse(start))/864e5)+1,startDate:start,endDate:end,reasonCategory:'TRAVEL',reason:'Work travel',...extra}});
++const line=(P,w)=>P.weeks[w].sessions.map(s=>`d${s.day} ${s.sport} ${s.role}${s.status==='SKIPPED'?' SKIPPED':''} ${s.prescription?(s.sport==='STRENGTH'?s.prescription.exercises.map(e=>`${e.id}:${e.sets}x${e.reps}@${e.rir}/${e.load.mode}${e.load.value??''}`).join(','):`${s.prescription.family}:${s.prescription.durationMinutes}`):'-'}`);
++const whole=(P,w)=>JSON.stringify({rows:P.weeks.slice(w).map((x,k)=>line(P,w+k)),states:P.stateTrace.slice(w+1)});
++const strengthRows=(P,w,from=null)=>P.weeks[w].sessions.filter(s=>s.sport==='STRENGTH'&&live(s)&&(!from||s.date>=from)).flatMap(s=>s.prescription.exercises.map(e=>({date:s.date,e})));
++const lastReturn=P=>P.decisions.filter(d=>d.action==='REESTABLISH').at(-1);
++const liveReturns=P=>{const all=P.decisions.filter(d=>d.action==='REESTABLISH'),gone=new Set(all.map(d=>d.interruption?.supersedes).filter(Boolean));return all.filter(d=>!gone.has(d.eventId));};
++/** Weeks 0-2 trained and reviewed, 3-4 untrained (the first break), then a 16-day return on Monday 06:00 of week 5 (re-entry that week). */
++function afterFirstReturn(id){
++ const t=start({id},3);weekly(t,3,()=>false);weekly(t,4,()=>false);
++ const d0=t.p.weeks[5].startDate;step(t,at(t.p,5,0,'06:00:00',brk(addDays(d0,-16),addDays(d0,-1))));
++ return {t,d0,A:lastReturn(t.p)};
++}
++/** No strength row back at the dose before the first break: the pre-break known load at three sets or more. */
++const preBreakDose=(P,w,from)=>strengthRows(P,w,from).filter(({e})=>e.load.mode==='KNOWN'&&e.sets>=3);
++
++test('R7-A.2 I1/I3 (QE-R7A1-09): a separate break in the same week starts from the re-entry, never from before the first break',()=>{
++ const {t,d0,A}=afterFirstReturn('t7a2-i3s');
++ assert.equal(A.interruption.relation,'NEW');
++ report(t,5,2,'05:00:00',s=>s.day<2);
++ // A second break, Wednesday-Thursday, reported on Friday morning: a break of its own.
++ const r=step(t,at(t.p,5,4,'06:00:00',brk(addDays(d0,2),addDays(d0,3)))),B=lastReturn(t.p);
++ assert.equal(r.action,'REESTABLISH');assert.equal(B.interruption.relation,'NEW');assert.equal(B.interruption.supersedes,null);assert.equal(B.interruption.episode,B.eventId);
++ assert.equal(B.interruption.stateAt.kind,'RETURN');assert.equal(B.interruption.stateAt.eventId,A.eventId,'the re-entry the first return set');
++ assert.equal(liveReturns(t.p).length,2,'two breaks, two episodes');
++ // Saturday's strength is still the return entry; the run stays in its return; nothing comes back at the pre-break dose.
++ assert.ok(strengthRows(t.p,5,addDays(d0,5)).every(({e})=>e.exposure.kind==='RETURN_ENTRY'&&e.sets<=1&&e.rir>=4));
++ assert.equal(t.p.stateTrace[6].run.mode,'RETURN');
++ for(const w of [5,6])assert.deepEqual(preBreakDose(t.p,w,addDays(d0,5)),[],`week ${w}`);
++});
++
++test('R7-A.2 I3 (QE-R7A1-09): a separate break across the week boundary keeps the return steps and the run return',()=>{
++ for(const [endWeek,endDay,reportDay] of [[6,1,2],[5,6,0]]){
++  const {t,d0,A}=afterFirstReturn('t7a2-i3x');
++  // Re-entry sessions before Friday executed; the week is reviewed; then a break from Friday.
++  weekly(t,5,s=>s.day<4);
++  const r=step(t,at(t.p,6,reportDay,'06:00:00',brk(addDays(d0,4),addDays(t.p.weeks[endWeek].startDate,endDay)))),B=lastReturn(t.p);
++  assert.equal(r.action,'REESTABLISH');assert.equal(B.interruption.relation,'NEW');assert.equal(B.interruption.stateAt.eventId,A.eventId);
++  // A short second break resumes the last completed doses: the re-entry, not the dose before the first break.
++  assert.deepEqual(preBreakDose(t.p,6,t.p.weeks[6].startDate),[]);assert.deepEqual(preBreakDose(t.p,7,t.p.weeks[7].startDate),[]);
++  assert.ok(Object.values(t.p.stateTrace[7].strength.exercises).some(e=>Number.isInteger(e.returnStep)),'the return steps go on');
++  assert.equal(t.p.stateTrace[7].run.mode,'RETURN');assert.ok(Number.isInteger(t.p.stateTrace[7].run.returnStep));
++  assert.ok(t.p.weeks[6].sessions.filter(s=>s.role==='LONG'&&live(s)).every(s=>s.prescription.durationMinutes<=25),'no long run back at the pre-break length');
++ }
++});
++
++test('R7-A.2 I2: a newer report of the same break supersedes the earlier one, in the same week or a later one, and creates no new break',()=>{
++ const t=start({id:'t7a2-i2'},5),w=5,d0=t.p.weeks[w].startDate;
++ const first=brk(addDays(d0,-12),addDays(d0,3)),fix=brk(d0,addDays(d0,3));
++ step(t,at(t.p,w,4,'21:00:00',first));const A=lastReturn(t.p);
++ for(const [fw,day,hour] of [[w,5,'08:00:00'],[w+1,0,'07:00:00']]){
++  const T=copy(t);if(fw>w)weekly(T,w,s=>s.day>=5);
++  const r=step(T,at(T.p,fw,day,hour,fix)),B=lastReturn(T.p);
++  assert.equal(r.action,'REESTABLISH');assert.equal(B.interruption.relation,'SAME_BREAK');assert.equal(B.interruption.supersedes,A.eventId);assert.equal(B.interruption.episode,A.eventId);
++  assert.equal(liveReturns(T.p).length,1,'one break');
++  // What preceded that break: the start of its week as it stood before the first report replaced it.
++  assert.equal(B.interruption.stateAt.kind,'WEEK_START');assert.equal(B.interruption.stateAt.week,w);
++  assert.ok(T.p.weeks.every(x=>(x.adaptations??[]).filter(a=>['RETURN_WAIT','SHORT_RETURN_EASY'].includes(a.kind)).every(a=>a.eventId===B.eventId||a.episode!==A.eventId)),'the earlier report’s adaptations are replaced');
++ }
++});
++
++test('R7-A.2 I9 (QE-R7A1-10): a second short break never adopts the first one’s easy slot; a newer report of the same break keeps it',()=>{
++ const slots=(P,w0)=>P.weeks.slice(w0,w0+3).flatMap(x=>x.sessions.filter(s=>/short break runs easy/.test(s.explanation??'')).map(s=>`${s.id}:${s.easedFor}`));
++ const t=start({id:'t7a2-i9'},3),w=3,d0=t.p.weeks[w].startDate;
++ step(t,at(t.p,w,0,'06:00:00',brk(addDays(d0,-6),addDays(d0,-1))));const A=lastReturn(t.p);
++ report(t,w,2,'05:00:00',s=>s.day<=1);
++ step(t,at(t.p,w,5,'06:00:00',brk(addDays(d0,2),addDays(d0,4))));const B=lastReturn(t.p);
++ assert.equal(B.interruption.relation,'NEW');
++ weekly(t,w,s=>s.day>=5);
++ const tue=t.p.weeks[w+1].sessions.find(s=>s.sport==='RUN'&&s.day===1);
++ assert.equal(tue.role,'EASY');assert.equal(tue.easedFor,B.eventId,'the second break’s own slot');
++ assert.deepEqual(slots(t.p,w).sort(),[`w${w}-run-d1:${A.eventId}`,`w${w+1}-run-d1:${B.eventId}`].sort(),'one slot per break');
++ // A newer report of the first break the same morning keeps its slot: one slot, the first break's.
++ const c=start({id:'t7a2-i9c'},3),e0=c.p.weeks[w].startDate;
++ step(c,at(c.p,w,0,'06:00:00',brk(addDays(e0,-6),addDays(e0,-1))));const C1=lastReturn(c.p);
++ step(c,at(c.p,w,0,'07:00:00',brk(addDays(e0,-5),addDays(e0,-1),{reason:'Business trip'})));
++ assert.equal(lastReturn(c.p).interruption.relation,'SAME_BREAK');assert.deepEqual(slots(c.p,w),[`w${w}-run-d1:${C1.eventId}`]);
++ // A newer report of the first break made the next week, after its slot was run, keeps that slot: no second slot for one break.
++ const n=start({id:'t7a2-i9n'},3),n0=n.p.weeks[w].startDate;
++ step(n,at(n.p,w,0,'06:00:00',brk(addDays(n0,-6),addDays(n0,-1))));const N1=lastReturn(n.p);weekly(n,w);
++ step(n,at(n.p,w+1,0,'07:00:00',brk(addDays(n0,-5),addDays(n0,-1),{reason:'Business trip'})));
++ assert.equal(lastReturn(n.p).interruption.relation,'SAME_BREAK');assert.deepEqual(slots(n.p,w),[`w${w}-run-d1:${N1.eventId}`]);
++ // A separate short break reported while the first one's slot is still ahead: that slot stays the first break's; the new break takes the
++ // next quality slot (a run eased by another adaptation is no longer a quality slot, SSCTR R7A1-r2 reading a).
++ const s=start({id:'t7a2-i9s'},3),s0=s.p.weeks[w].startDate;
++ step(s,at(s.p,w,0,'06:00:00',brk(addDays(s0,-6),addDays(s0,-1))));const S1=lastReturn(s.p);
++ step(s,at(s.p,w,1,'05:00:00',brk(s0,s0)));const S2=lastReturn(s.p);assert.equal(S2.interruption.relation,'NEW');
++ assert.deepEqual(slots(s.p,w).sort(),[`w${w}-run-d1:${S1.eventId}`,`w${w+1}-run-d1:${S2.eventId}`].sort());
++});
++
++/** First loaded week: strength on Monday and Thursday; the break starts on Saturday, after both, and lasts 14 days. */
++function firstWeekBreak(cls,{breakDay=5,report=true,observedOn=null,short=[],include=null,twice=()=>false}={}){
++ const t={p:generateProgram(intake({id:`t7a2-fw-${cls}`,cls,schedule:{strengthDays:[0,3],runDays:[1,4,6],longRunDay:6}}),opts).program,ledger:[]};
++ const F=t.p.weeks.findIndex(x=>strengthRows(t.p,x.index).some(({e})=>e.load.mode!=='BODYWEIGHT'&&e.exposure?.kind!=='PRACTICE'));
++ for(let w=0;w<F;w++)weekly(t,w);
++ const bStart=addDays(t.p.weeks[F].startDate,breakDay),bEnd=addDays(bStart,13),back=addDays(bEnd,1);
++ const before=strengthRows(t.p,F).filter(({date,e})=>date<bStart&&e.load.mode!=='BODYWEIGHT'&&e.exposure?.kind!=='PRACTICE');
++ // `twice` sessions are reported twice under one event id with different loads (a conflict).
++ const reports=s=>{const o=obs(t.p,s,observedOn?.(s)??s.date,short);if(!twice(s))return [o];const b=structuredClone(o);for(const e of b.actual.exercises??[])for(const x of e.sets)if(x.load?.unit==='KG')x.load.value+=10;return [o,b];};
++ if(report)step(t,at(t.p,F,6,'21:00:00',{observations:t.p.weeks[F].sessions.filter(s=>live(s)&&(include?include(s):s.date<bStart)).flatMap(reports)}));
++ const rw=Math.floor((Date.parse(back)-Date.parse(t.p.startDate))/(7*864e5));for(let w=F+1;w<rw;w++)weekly(t,w,()=>false);
++ const r=step(t,at(t.p,rw,(Date.parse(back)-Date.parse(t.p.weeks[rw].startDate))/864e5,'06:00:00',brk(bStart,bEnd)));
++ return {t,F,rw,back,before,r,R:lastReturn(t.p)};
++}
++
++test('R7-A.2 I4/I5/I8 (SSCTR D59): exercises first executed in the break’s week enter the return steps with their executed count as the ceiling',()=>{
++ for(const cls of ['NONE','FAMILIAR','KNOWN']){
++  const {t,rw,back,before,r,R}=firstWeekBreak(cls);
++  assert.equal(r.action,'REESTABLISH',cls);assert.ok(before.length,cls+': exercises before the break');
++  const ceiling={};for(const {e} of before)ceiling[e.id]=e.sets;
++  const entry=R.interruption.entry.strength.exercises;
++  for(const [id,n] of Object.entries(ceiling)){assert.equal(entry[id]?.returnStep,0,`${cls} ${id} at the entry`);assert.equal(entry[id]?.setCeiling,n,`${cls} ${id} ceiling`);}
++  // The first exposure after the return is the entry; no count goes above the ceiling or more than one set above the largest since.
++  const seen=new Set(),largest={};
++  for(let w=rw;w<rw+5;w++){
++   for(const {date,e} of strengthRows(t.p,w,back)){if(!(e.id in ceiling))continue;
++    if(!seen.has(e.id)){seen.add(e.id);assert.equal(e.exposure.kind,'RETURN_ENTRY',`${cls} ${e.id}`);assert.ok(e.sets<=1&&e.rir>=4,`${cls} ${e.id} ${e.sets}@${e.rir}`);}
++    assert.ok(e.sets<=ceiling[e.id],`${cls} ${e.id} w${w} ${e.sets} > ${ceiling[e.id]}`);
++    if(Number.isInteger(largest[e.id]))assert.ok(e.sets<=largest[e.id]+1,`${cls} ${e.id} w${w}`);
++   }
++   weekly(t,w);for(const {e} of strengthRows(t.p,w,back))if(e.id in ceiling)largest[e.id]=Math.max(largest[e.id]??0,e.sets);
++  }
++ }
++});
++
++test('R7-A.2 I4/I6 (§11): an exercise not executed, or executed only from the break’s first day, is not in the state at the break',()=>{
++ // Thursday's session is on the break's first day: reported or not, it is not before the break.
++ const thu=firstWeekBreak('FAMILIAR',{breakDay:3}),bStart=addDays(thu.t.p.weeks[thu.F].startDate,3),ids=new Set(thu.before.map(({e})=>e.id));
++ const monday=new Set(strengthRows(thu.t.p,thu.F).filter(({date})=>date<bStart).map(({e})=>e.id));
++ const entry=thu.R.interruption.entry.strength.exercises,thursdayOnly=strengthRows(thu.t.p,thu.F).filter(({date,e})=>date===bStart&&!monday.has(e.id)).map(({e})=>e.id);
++ assert.ok(thursdayOnly.length,'an exercise only on Thursday');
++ for(const id of thursdayOnly)assert.equal(entry[id],undefined,id+' was not executed before the break');
++ for(const id of ids)assert.equal(entry[id]?.returnStep,0,id);
++ // Thursday's unexecuted rows are not part of the week before the break: Monday's executed counts stay the ceilings.
++ for(const {e} of thu.before)assert.equal(entry[e.id].setCeiling,e.sets,e.id);
++ // A session planned on the break's first day but executed the day before it is an exposure before the break.
++ const early=firstWeekBreak('FAMILIAR',{breakDay:3,observedOn:s=>s.date===bStart?addDays(s.date,-1):s.date,include:s=>s.date<=bStart});
++ for(const id of thursdayOnly)assert.equal(early.R.interruption.entry.strength.exercises[id]?.returnStep,0,id+' executed on Wednesday');
++ // Two contradicting reports of that session (one event id, different loads) are a conflict: it executes nothing until corrected (QRE-R6-14).
++ const conflict=firstWeekBreak('FAMILIAR',{breakDay:3,observedOn:s=>s.date===bStart?addDays(s.date,-1):s.date,include:s=>s.date<=bStart,twice:s=>s.date===bStart});
++ const ce=conflict.R.interruption.entry.strength.exercises;
++ for(const id of thursdayOnly)assert.equal(ce[id],undefined,id+' conflicted');
++ for(const {e} of conflict.before)assert.equal(ce[e.id].setCeiling,e.sets,e.id+' keeps its Monday count');
++ // Monday's session observed only on the break's first day or later is not an execution before it.
++ const late=firstWeekBreak('FAMILIAR',{observedOn:s=>addDays(s.date,5)});
++ for(const id of new Set(late.before.map(({e})=>e.id)))assert.equal(late.R.interruption.entry.strength.exercises[id],undefined,id);
++});
++
++test('R7-A.2 P3/P4: an exposure before the break adds to the state at the break; moved to the break’s first day it no longer counts',()=>{
++ const withIt=firstWeekBreak('KNOWN'),without=firstWeekBreak('KNOWN',{report:false}),moved=firstWeekBreak('KNOWN',{breakDay:0});
++ const a=withIt.R.interruption.entry.strength.exercises,b=without.R.interruption.entry.strength.exercises,c=moved.R.interruption.entry.strength.exercises;
++ // P3: every exercise known without the report is known with it, and never less recently performed.
++ for(const [id,e] of Object.entries(b)){assert.ok(a[id],id);assert.ok(!(e.lastPerformed>(a[id].lastPerformed??'')),id);}
++ assert.ok(Object.keys(a).length>Object.keys(b).length,'the executed first exposures are added');
++ // P4: with the break from Monday, Monday's exposures are after its start and leave no trace; the state is the one without the report.
++ assert.deepEqual(Object.keys(c).sort(),Object.keys(b).sort());
++ for(const id of Object.keys(b))assert.equal(c[id].lastPerformed,b[id].lastPerformed,id);
++});
++
++test('R7-A.2 I7: a week’s executed exposures before the break earn no step, no block set and no load adoption',()=>{
++ const {t,F,R}=firstWeekBreak('KNOWN');
++ const before=t.p.stateTrace[F].strength.exercises,entry=R.interruption.entry.strength.exercises;
++ for(const [id,e] of Object.entries(before)){
++  for(const k of ['load','reps','sets','loadTick','blocksDone','mode'])assert.deepEqual(entry[id][k],e[k],`${id}.${k}`);
++ }
++ // An exposure that missed its logged target is performed, but gives no executed count: the ceiling falls back as declared (SSCTR D49).
++ const all=firstWeekBreak('FAMILIAR'),missed=all.before[0].e.id,one=firstWeekBreak('FAMILIAR',{short:[missed]});
++ assert.equal(all.R.interruption.entry.strength.exercises[missed].setCeiling,all.before[0].e.sets);
++ const m=one.R.interruption.entry.strength.exercises[missed];assert.ok(m.lastPerformed&&m.returnStep===0,'in use');assert.equal(m.setCeiling,undefined,'no executed count');
++});
++
++test('R7-A.2 P1/P6: the same break reported again, or only at another time, is the same break with the same plan',()=>{
++ const t=start({id:'t7a2-p16'},3);weekly(t,3,()=>false);weekly(t,4,()=>false);const d0=t.p.weeks[5].startDate;
++ const one=copy(t);step(one,at(one.p,5,0,'06:00:00',brk(addDays(d0,-16),addDays(d0,-1))));
++ // P6: reported at another time of the same morning.
++ const later=copy(t);step(later,at(later.p,5,0,'07:00:00',brk(addDays(d0,-16),addDays(d0,-1))));
++ assert.equal(whole(later.p,5),whole(one.p,5));assert.equal(lastReturn(later.p).interruption.relation,'NEW');
++ // P1: the same break reported again with another reason text: no new break, the same plan.
++ const again=copy(one);step(again,at(again.p,5,0,'07:00:00',brk(addDays(d0,-16),addDays(d0,-1),{reason:'Long work trip'})));
++ const B=lastReturn(again.p);assert.equal(B.interruption.relation,'SAME_BREAK');assert.equal(B.interruption.episode,lastReturn(one.p).eventId);
++ assert.equal(liveReturns(again.p).length,1);assert.equal(whole(again.p,5),whole(one.p,5));
++});
++
++test('R7-A.2 P5: a break reported at 23:30 on Sunday or at 00:30 on Monday is the same break with the same next week',()=>{
++ const t=start({id:'t7a2-p5'},3);weekly(t,3,()=>false);weekly(t,4,()=>false);const d0=t.p.weeks[5].startDate,b=brk(addDays(d0,-16),addDays(d0,-2));
++ const sun=copy(t);step(sun,at(sun.p,4,6,'23:30:00',b));const mon=copy(t);step(mon,at(mon.p,5,0,'00:30:00',b));
++ const S=lastReturn(sun.p).interruption,M=lastReturn(mon.p).interruption;
++ for(const k of ['relation','startDate','endDate','days','class'])assert.equal(S[k],M[k],k);
++ assert.deepEqual({kind:S.stateAt.kind,week:S.stateAt.week},{kind:M.stateAt.kind,week:M.stateAt.week});
++ assert.deepEqual(line(sun.p,5),line(mon.p,5));
++ assert.equal(JSON.stringify(sun.p.stateTrace[6]),JSON.stringify(mon.p.stateTrace[6]));
++});
++
++test('R7-A.2 I2/I3: three breaks; a correction after a separate break starts from that break’s re-entry, never from before the first',()=>{
++ const {t,d0,A}=afterFirstReturn('t7a2-three');
++ report(t,5,2,'05:00:00',s=>s.day<2);
++ step(t,at(t.p,5,4,'06:00:00',brk(addDays(d0,2),addDays(d0,3))));const B=lastReturn(t.p);
++ // B corrected: it began on Tuesday, not Wednesday (still after A's re-entry): the same break as B, from A's re-entry.
++ step(t,at(t.p,5,4,'07:00:00',brk(addDays(d0,1),addDays(d0,3))));const C=lastReturn(t.p);
++ assert.equal(C.interruption.relation,'SAME_BREAK');assert.equal(C.interruption.supersedes,B.eventId);assert.equal(C.interruption.episode,B.eventId);
++ assert.equal(C.interruption.stateAt.eventId,A.eventId);assert.deepEqual(liveReturns(t.p).map(d=>d.eventId),[A.eventId,C.eventId]);
++ assert.deepEqual(preBreakDose(t.p,5,addDays(d0,5)),[]);assert.deepEqual(preBreakDose(t.p,6,t.p.weeks[6].startDate),[]);
++ // A third, separate break after the correction's re-entry starts from that re-entry.
++ weekly(t,5);
++ step(t,at(t.p,6,4,'06:00:00',brk(addDays(t.p.weeks[6].startDate,2),addDays(t.p.weeks[6].startDate,3))));const D=lastReturn(t.p);
++ assert.equal(D.interruption.relation,'NEW');assert.deepEqual(preBreakDose(t.p,6,addDays(t.p.weeks[6].startDate,4)),[]);assert.deepEqual(preBreakDose(t.p,7,t.p.weeks[7].startDate),[]);
++});
++
++test('R7-A.2 I4: a return reads the executions recorded by its report; a newer report of the same break reads the ones recorded later',()=>{
++ // The first loaded week's sessions are logged only after the return: the return did not know them; reporting the break again reads them.
++ const {t,F,rw,back,before,R}=firstWeekBreak('FAMILIAR',{report:false}),ids=[...new Set(before.map(({e})=>e.id))];
++ for(const id of ids)assert.equal(R.interruption.entry.strength.exercises[id],undefined,id+' unknown at the return');
++ const bStart=R.interruption.startDate,day=(Date.parse(back)-Date.parse(t.p.weeks[rw].startDate))/864e5;
++ step(t,at(t.p,rw,day,'07:00:00',{kind:'PARTIAL_SESSION',observations:t.p.weeks[F].sessions.filter(s=>live(s)&&s.date<bStart).map(s=>obs(t.p,s))}));
++ step(t,at(t.p,rw,day,'08:00:00',brk(bStart,R.interruption.endDate)));const again=lastReturn(t.p);
++ assert.equal(again.interruption.relation,'SAME_BREAK');
++ for(const id of ids)assert.equal(again.interruption.entry.strength.exercises[id]?.returnStep,0,id+' in the return steps');
++ // The order of a return and a report of the week's earlier sessions decides only what that return read: the rows agree.
++ const base=start({id:'t7a2-order'},3),w=3,d0=base.p.weeks[w].startDate,ret=p=>at(p,w,6,'20:00:00',brk(addDays(d0,1),addDays(d0,5))),rep=(p,h)=>at(p,w,6,h,{kind:'PARTIAL_SESSION',observations:p.weeks[w].sessions.filter(s=>live(s)&&s.day===0).map(s=>obs(p,s))});
++ const A=copy(base);step(A,ret(A.p));step(A,rep(A.p,'21:00:00'));const B=copy(base);step(B,rep(B.p,'20:00:00'));step(B,{...ret(B.p),asOf:`${addDays(d0,6)}T21:00:00Z`});
++ for(const k of [w,w+1,w+2])assert.deepEqual(line(A.p,k),line(B.p,k),`week ${k}`);
++});
++
++test('R7-A.2 I4/C5: a session of the plan before a return is never a fact of a later, separate break',()=>{
++ // The first break ends on Tuesday, Wednesday's lifting is done under the old plan, and the return is reported on Thursday: that session
++ // belongs to the plan before the break (C5). A second break from Friday starts from the return's re-entry, without it.
++ const t=start({id:'t7a2-gap'},3);weekly(t,3,()=>false);weekly(t,4,()=>false);const d0=t.p.weeks[5].startDate;
++ report(t,5,2,'20:00:00',s=>s.day===2&&s.sport==='STRENGTH');
++ step(t,at(t.p,5,3,'06:00:00',brk(addDays(d0,-17),addDays(d0,1))));const A=lastReturn(t.p);
++ step(t,at(t.p,5,6,'06:00:00',brk(addDays(d0,4),addDays(d0,5))));const B=lastReturn(t.p);
++ assert.equal(B.interruption.relation,'NEW');assert.equal(B.interruption.stateAt.eventId,A.eventId);
++ for(const [id,e] of Object.entries(A.interruption.entry.strength.exercises))assert.equal(B.interruption.entry.strength.exercises[id].lastPerformed,e.lastPerformed,id);
++});
++
++test('R7-A.2 I1: a report of a break that ended before the latest reported one began is asked, never guessed',()=>{
++ const {t,d0}=afterFirstReturn('t7a2-late');
++ const r=evaluateProgram(t.p,{...at(t.p,5,1,'06:00:00',brk(addDays(d0,-30),addDays(d0,-25))),actualLedger:t.ledger},opts);
++ assert.equal(r.status,'ASK');assert.deepEqual(r.missingInputs,['interruption.startDate','interruption.endDate']);
++ // A report that would correct a later, separate break but begins before the earlier re-entry spans that re-entry: asked as well.
++ report(t,5,2,'05:00:00',s=>s.day<2);step(t,at(t.p,5,4,'06:00:00',brk(addDays(d0,2),addDays(d0,3))));
++ const x=evaluateProgram(t.p,{...at(t.p,5,4,'07:00:00',brk(addDays(d0,-1),addDays(d0,3))),actualLedger:t.ledger},opts);
++ assert.equal(x.status,'ASK');assert.deepEqual(x.missingInputs,['interruption.startDate','interruption.endDate']);
++});

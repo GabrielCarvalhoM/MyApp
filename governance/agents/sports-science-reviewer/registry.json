@@ -1,0 +1,41 @@
+{
+  "registry_revision": "SSCTR-REG-1.0.0",
+  "project": "MyApp / Vilumo Fit",
+  "date": "2026-10-23",
+  "agent": {
+    "id": "sports-science-concurrent-training-reviewer",
+    "name": "Sports Science & Concurrent Training Reviewer",
+    "version": "SSCTR-1.0.0",
+    "authority": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY",
+    "constitution": "governance/agents/sports-science-reviewer/CONSTITUTION.md",
+    "skill": ".agents/skills/sports-science-review/SKILL.md",
+    "codex_adapter": ".codex/agents/sports-science-concurrent-training-reviewer.toml",
+    "claude_adapter": ".claude/agents/sports-science-concurrent-training-reviewer.md",
+    "protocol": "governance/agents/sports-science-reviewer/EVIDENCE_PROTOCOL.md",
+    "review_template": "governance/agents/sports-science-reviewer/REVIEW_TEMPLATE.md",
+    "decision_schema": "governance/agents/sports-science-reviewer/decision.schema.json",
+    "record_consistency_validator": ".agents/skills/sports-science-review/scripts/validate_records.py",
+    "escalation_human_policy": "governance/agents/sports-science-reviewer/ESCALATION_AND_HUMAN_REVALIDATION.md"
+  },
+  "routing": {
+    "owner": "Chief / Orchestrator",
+    "required_when": ["training_policy_change", "G01", "G02", "G03", "G04", "material_run_intelligence", "material_strength_intelligence", "interference_or_adaptation_rule", "recovery_or_load_claim", "taper_or_deload", "substitution_policy", "readiness_claim", "any_rule_that_can_change_prescribed_training"],
+    "not_for": ["pixel_or_visual_design", "pure_editorial_copy", "no_sporting_impact"],
+    "clinical_route": "CLINICAL_HUMAN_REQUIRED",
+    "missing_eligibility_route": "ASK / ELIGIBILITY_UNASSESSED",
+    "G03_joint_owners": ["Product/UX", "Data semantics"],
+    "independence": "Reviewer is distinct from the target-policy author; required independent evidence auditors are distinct from synthesis authors.",
+    "native_availability": "Project adapters are discoverable on runtime reload; current sessions must confirm actual availability. If native type is unavailable, Chief can dispatch a permitted fresh default instance explicitly loading these exact project files and must label that fallback honestly.",
+    "inherit": ["model", "tools", "permissions"],
+    "enable_global_state_or_access": false,
+    "specialist_delegation": false
+  },
+  "approval_flow": ["bounded scientific record", "applicable independent reviews", "competent Chief/governance item closure", "explicit authorized publication if later required"],
+  "whole_gate_closure_by_installation": false,
+  "runtime_authority": false,
+  "human_credentials": false,
+  "pilot_root": "reviews/provisional-sports-science/2026-10-23",
+  "human_revalidation_queue": "reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json",
+  "publication_owner": "Chief under current Founder authorization and existing gates",
+  "author_status": "GOVERNANCE_READY_FOR_REVIEW"
+}

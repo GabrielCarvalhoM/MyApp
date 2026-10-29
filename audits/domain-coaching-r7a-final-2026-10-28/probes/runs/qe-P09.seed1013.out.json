@@ -1,0 +1,86 @@
+{
+ "probe": "R7A1-QE-P09",
+ "runtime": "A1",
+ "seed": 1013,
+ "sequences": 2500,
+ "steps": 7461,
+ "refusals": [
+  {
+   "program": "race",
+   "seq": "EQUIPMENT_CHANGE@w6d0 11:30 > EQUIPMENT_CHANGE@w6d1 20:00 > EVENT_DATE_CHANGE@w6d1 23:30",
+   "status": "UNSUPPORTED",
+   "reason": "Counterfactual failed complete validation; no partial change is presented as valid",
+   "errors": [
+    "w6-str-d3:phaseDose:glute-bridge:accessory"
+   ]
+  },
+  {
+   "program": "race",
+   "seq": "EQUIPMENT_CHANGE@w6d0 11:30 > EQUIPMENT_CHANGE@w6d1 20:00 > EVENT_DATE_CHANGE@w6d1 23:30 > EVENT_DATE_CHANGE@w6d2 05:00",
+   "status": "UNSUPPORTED",
+   "reason": "Counterfactual failed complete validation; no partial change is presented as valid",
+   "errors": [
+    "w6-str-d3:phaseDose:glute-bridge:accessory"
+   ]
+  },
+  {
+   "program": "race",
+   "seq": "EQUIPMENT_CHANGE@w6d0 05:00 > EVENT_DATE_CHANGE@w6d0 07:00",
+   "status": "UNSUPPORTED",
+   "reason": "Counterfactual failed complete validation; no partial change is presented as valid",
+   "errors": [
+    "w6-str-d3:phaseDose:glute-bridge:accessory"
+   ]
+  },
+  {
+   "program": "race",
+   "seq": "EQUIPMENT_CHANGE@w6d0 05:00 > EVENT_DATE_CHANGE@w6d0 07:00",
+   "status": "UNSUPPORTED",
+   "reason": "Counterfactual failed complete validation; no partial change is presented as valid",
+   "errors": [
+    "w6-str-d3:phaseDose:glute-bridge:accessory"
+   ]
+  }
+ ],
+ "violations": {
+  "O1": [],
+  "O2": [],
+  "O3": [],
+  "O4": [],
+  "O6": [],
+  "O7": [],
+  "O9": [
+   {
+    "program": "race",
+    "seq": "EQUIPMENT_CHANGE {\"equipment\":[\"BODYWEIGHT\"],\"from\":\"2026-12-14\",\"to\":\"2026-12-23\"}@w6d0 11:30 MODIFY/SUBSTITUTE > EQUIPMENT_CHANGE {\"equipment\":[\"DUMBBELLS\",\"BENCH\"],\"from\":\"2026-12-15\",\"to\":\"2026-12-16\"}@w6d1 20:00 KEEP/KEEP > EVENT_DATE_CHANGE {\"eventDate\":\"2026-12-22\"}@w6d1 23:30 UNSUPPORTED/UNSUPPORTED > EVENT_DATE_CHANGE {\"eventDate\":\"2026-12-23\"}@w6d2 05:00 UNSUPPORTED/UNSUPPORTED",
+    "detail": "EVENT_DATE_CHANGE: w6-str-d3:phaseDose:glute-bridge:accessory"
+   },
+   {
+    "program": "race",
+    "seq": "EQUIPMENT_CHANGE {\"equipment\":[\"BODYWEIGHT\"],\"from\":\"2026-12-14\",\"to\":\"2026-12-23\"}@w6d0 11:30 MODIFY/SUBSTITUTE > EQUIPMENT_CHANGE {\"equipment\":[\"DUMBBELLS\",\"BENCH\"],\"from\":\"2026-12-15\",\"to\":\"2026-12-16\"}@w6d1 20:00 KEEP/KEEP > EVENT_DATE_CHANGE {\"eventDate\":\"2026-12-22\"}@w6d1 23:30 UNSUPPORTED/UNSUPPORTED > EVENT_DATE_CHANGE {\"eventDate\":\"2026-12-23\"}@w6d2 05:00 UNSUPPORTED/UNSUPPORTED",
+    "detail": "EVENT_DATE_CHANGE: w6-str-d3:phaseDose:glute-bridge:accessory"
+   },
+   {
+    "program": "race",
+    "seq": "EQUIPMENT_CHANGE {\"equipment\":[\"BODYWEIGHT\"],\"from\":\"2026-12-16\",\"to\":\"2026-12-17\"}@w6d0 05:00 MODIFY/SUBSTITUTE > EVENT_DATE_CHANGE {\"eventDate\":\"2026-12-23\"}@w6d0 07:00 UNSUPPORTED/UNSUPPORTED > GOAL_CHANGE {\"goals\":{\"strength\":\"HYPERTROPHY\"}}@w6d1 11:30 MODIFY/REPLAN_FUTURE_PHASES",
+    "detail": "EVENT_DATE_CHANGE: w6-str-d3:phaseDose:glute-bridge:accessory"
+   },
+   {
+    "program": "race",
+    "seq": "EQUIPMENT_CHANGE {\"equipment\":[\"BODYWEIGHT\"],\"from\":\"2026-12-16\",\"to\":\"2026-12-17\"}@w6d0 05:00 MODIFY/SUBSTITUTE > EVENT_DATE_CHANGE {\"eventDate\":\"2026-12-23\"}@w6d0 07:00 UNSUPPORTED/UNSUPPORTED > GOAL_CHANGE {\"goals\":{\"strength\":\"HYPERTROPHY\"}}@w6d1 11:30 MODIFY/REPLAN_FUTURE_PHASES",
+    "detail": "EVENT_DATE_CHANGE: w6-str-d3:phaseDose:glute-bridge:accessory"
+   }
+  ]
+ },
+ "errors": [],
+ "summary": {
+  "O1": 0,
+  "O2": 0,
+  "O3": 0,
+  "O4": 0,
+  "O6": 0,
+  "O7": 0,
+  "O9": 4
+ },
+ "refusalCount": 4
+}

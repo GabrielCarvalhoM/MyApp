@@ -1,0 +1,93 @@
+{
+  "revision": "R7A2-READINESS-1",
+  "generatedAt": "2026-10-28T14:07:18.562Z",
+  "mission": "DOMAIN_COACHING_R7-A.2",
+  "phase": "R7-A.2, the last bounded closure of R7-A (not R7-B0 or R7-B)",
+  "scope": "OFFLINE_SYNTHETIC_NODE24_REFERENCE",
+  "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+  "freezeRevision": "R7A2-FREEZE-1",
+  "sourceDigest": "e0637ec2613acde1132d70fc64a5a6f0f1062b74d6c5cfafb6654dc1a54c7a28",
+  "freezeFileSha256": "14fd8efe294354810b8fe19f12dba0486883c43f3c140792c079cb7947d730b0",
+  "delivery": "CLOSED_WITH_EXPLICIT_BLOCKER",
+  "noForcedReady": true,
+  "notEmitted": [
+    "AUTONOMOUS_COACHING_READY",
+    "COACHING_DECISION_QUALITY",
+    "KMP_READY",
+    "PRODUCTION_READY",
+    "REAL_USER_VALIDATION"
+  ],
+  "verdicts": {
+    "WEEK_COMPOSITION_INTEGRITY": "READY",
+    "STATE_PRESERVATION_INTEGRITY": "NOT_READY",
+    "EVENT_SUPERSESSION_INTEGRITY": "READY",
+    "EXERCISE_MERGE_INTEGRITY": "READY",
+    "RETURN_RECOVERY_CEILING_INTEGRITY": "NOT_READY",
+    "R7A2_ENGINEERING_RECHECK": "NOT_READY",
+    "R7A2_SCIENTIFIC_RECHECK": "READY",
+    "R7A_EXIT_READINESS": "NOT_READY"
+  },
+  "reasons": {
+    "WEEK_COMPOSITION_INTEGRITY": {
+      "basis": "Engineering recommends READY (R7A2-QE-r1): P01-P16 and P09 byte-identical to the author's runs and to FREEZE-A2 except the fixed P13/P14 and the declared P06 row; P09 0 violations of O1-O7 in 5,000 sequences. The declared boundary 1 (the record as reported) is accepted and is not a composition regression. SSCTR: D58 holds."
+    },
+    "STATE_PRESERVATION_INTEGRITY": {
+      "blockedBy": ["QE-R7A2-01", "QE-R7A1-09", "QE-R7A1-10", "QE-R7A-01"],
+      "why": "A report of an earlier break made after a separate, later break began turns that later break into the same break; its return starts from before the first break and the re-entry the athlete executed is erased (P17 L1-L4, P19 12 of 12 cells, P20)",
+      "holds": "Every path the earlier reviews named: P13 X, X2 and S keep the re-entry; P14 gives the second short break its own slot; a same-break correction in the same or a later week starts from what preceded the break"
+    },
+    "EVENT_SUPERSESSION_INTEGRITY": {
+      "basis": "Unchanged by the delta; P09 O6 0 in 5,000 sequences; engineering recommends READY"
+    },
+    "EXERCISE_MERGE_INTEGRITY": {
+      "basis": "Unchanged by the delta; P07 byte-identical; engineering recommends READY"
+    },
+    "RETURN_RECOVERY_CEILING_INTEGRITY": {
+      "blockedBy": ["QE-R7A2-01"],
+      "why": "On the QE-R7A2-01 path a separate break restores the pre-break dose at once (back-squat 3x5 @RIR3 at the pre-break known load, a 70-minute long run) and bypasses the return steps: the restoration class D53 forbids",
+      "holds": "SSCTR (R7A2-SSCTR-r1): D59 closed on its Founder §13 criterion (first-week grid E = O = B = 0 for NONE, FAMILIAR and KNOWN); the entry happens, the block in progress earns no set, the ceiling is the last whole executed count; D56, D57 and D58 hold (restoration grid A, B, C 0; 0 unexplained binding cap-weeks; short grid 0/315)"
+    },
+    "R7A2_ENGINEERING_RECHECK": {
+      "file": "audits/domain-coaching-r7a2-2026-10-28/reviews/quality-engineering-r7a2-recheck.json",
+      "revision": "R7A2-QE-r1",
+      "verdict": "NOT_READY",
+      "blocking": ["QE-R7A2-01"]
+    },
+    "R7A2_SCIENTIFIC_RECHECK": {
+      "file": "audits/domain-coaching-r7a2-2026-10-28/reviews/ssctr-r7a2-recheck.json",
+      "revision": "R7A2-SSCTR-r1",
+      "verdict": "ACCEPT",
+      "blocking": []
+    },
+    "R7A_EXIT_READINESS": {
+      "why": "Founder request §22 is not met: the engineering re-check of the single freeze found a material blocker of the same class (QE-R7A2-01), so QE-R7A1-09, QE-R7A1-10 and QE-R7A-01 stay open and D53 cannot close by consequence. §19 allows no correction cycle after the freeze: no FREEZE-2, no A.2.1, no third judge. The decision returns to the Founder (§26)."
+    }
+  },
+  "acceptance": {
+    "blockers": {
+      "QE-R7A1-09": "OPEN",
+      "QE-R7A1-10": "OPEN",
+      "D59": "CLOSED",
+      "QE-R7A-01": "OPEN",
+      "D53": "OPEN"
+    },
+    "d53Note": "The SSCTR closed D53 within its sporting scope (no equivalent mode in its grids) and stated that the engineering judge rules on identity and causality in parallel. The engineering re-check found such a mode: on the QE-R7A2-01 path a separate break restores the pre-break dose at once. Founder §22 closes D53 only as a consequence of QE-R7A1-09 and D59; QE-R7A1-09 is open, so the consolidated D53 stays OPEN.",
+    "regression": "Against R7A1-FREEZE-A2: R5 24/24, profiles 16/16, simulations 14/14, R6 holdout 34/35 (R6-H17: state facts only, no row or status); every R7-A.1 probe and grid equal or with a named difference and no violation",
+    "mutation": "19/19 mutants of the new invariants caught",
+    "tests": "519/519 (505 earlier and 14 new); the 14 new tests all fail on a byte-exact FREEZE-A2 copy",
+    "reviews": "Engineering NOT_READY (QE-R7A2-01 HIGH, material); SSCTR ACCEPT"
+  },
+  "notReadyRecord": {
+    "blocker": "QE-R7A2-01 (HIGH, material, engineering re-check R7A2-QE-r1); QE-R7A1-09, QE-R7A1-10 and QE-R7A-01 stay open through it, and D53 with them",
+    "rootCause": "Interruption identity (interruptionEpisode) and the state point (stateAtBreak) are decided against the record's current supersession, the latest live report and its clock, not against the record as it stood on the break's first day. A report of an earlier break made after a later break began moves the latest report day past that later break, and it supersedes the report whose re-entry the athlete executed, so that report is no longer a starting point.",
+    "reproduction": [
+      "audits/domain-coaching-r7a2-2026-10-28/reviews/qe-r7a2-P17-late-correction-then-separate-break.mjs (L1-L4 against controls C1 and C2; reproduced byte for byte by the author; the FREEZE-A2 copy gives the same rows)",
+      "audits/domain-coaching-r7a2-2026-10-28/reviews/qe-r7a2-P19-identity-interleaving-grid.mjs (12 of 12 cells where the re-report falls after the later break ended and before it is reported)",
+      "audits/domain-coaching-r7a2-2026-10-28/reviews/qe-r7a2-P20-late-correction-easy-slot.mjs (QE-R7A1-10's outcome returns)"
+    ],
+    "sameArchitectureOrNewClass": "The same architecture and the same class as QE-R7A1-09 and QE-R7A1-10 (break identity): a residual interleaving the R7-A.2 model did not anticipate, inherited from FREEZE-A2. Not a new class.",
+    "whyNotClosed": "The author's tests, the self-challenge and P09 always made a same-break report before the next break began, and P09's returns always end the day before their report; the mutation check cannot measure a condition that is not written.",
+    "smallestArchitecturalDecision": "Decide a report's break and its starting point from the record as it stood on the break's first day. (1) A report is the same break only when its stated days overlap or adjoin the days that break states, or when it begins before that break's first report (its re-entry); a break that begins after an earlier break's re-entry and after its days is a new break, whenever a later report of the earlier one was made. (2) The starting point is the return in force on the break's first day, even if a later report superseded it. Also for the Founder, from QE-R7A2-02 and SSCTR R37/NF-1: whether a late execution log of a break's week re-derives its return or prompts a same-break report, and whether a session on a break's stated first day is asked about."
+  },
+  "nextMission": "FOUNDER_ARCHITECTURAL_DECISION"
+}

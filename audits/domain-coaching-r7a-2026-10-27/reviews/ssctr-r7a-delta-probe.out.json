@@ -1,0 +1,1250 @@
+{
+ "probe": "R7A-SSCTR-r1-delta-probe",
+ "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+ "authorityUsed": "DEV_TEST_ONLY devAuthority() of each runtime, bound to the unchanged policy hash",
+ "node": "v24.19.0",
+ "sections": {
+  "BIND": {
+   "freeze": "R7A-FREEZE-1",
+   "freezeFiles": 74,
+   "freezeMismatches": [],
+   "policyFileSha256": "a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100",
+   "preSnapshotFiles": 73,
+   "preSnapshotMismatches": [],
+   "preR6Program": "57973e9735388d3d5f194b37ff7f5080669d2c1c3fb228b59873ac7adf6fe3ec",
+   "ms": 19
+  },
+  "PG_phaseGrid": {
+   "cur": {
+    "timelines": 400,
+    "noProgram": [],
+    "rows": 3520,
+    "byPhaseDose": {
+     "BUILD MAIN 2@3": 402,
+     "BUILD ACCESSORY 2@3": 72,
+     "CONSOLIDATION MAIN 2@3": 263,
+     "CONSOLIDATION ACCESSORY 1@3": 210,
+     "SPECIFIC MAIN 2@3": 220,
+     "SPECIFIC ACCESSORY 2@3": 12,
+     "TAPER MAIN 2@3": 156,
+     "TAPER ACCESSORY 1@3": 180,
+     "RACE_WEEK MAIN 1@4": 150,
+     "POST_EVENT MAIN 1@4": 240,
+     "NEXT_BLOCK MAIN 2@3": 132,
+     "NEXT_BLOCK ACCESSORY 2@3": 72,
+     "CONSOLIDATION MAIN 1@3": 227,
+     "TAPER MAIN 1@3": 264,
+     "SPECIFIC ACCESSORY 1@3": 168,
+     "SPECIFIC MAIN 1@3": 200,
+     "BUILD ACCESSORY 1@3": 108,
+     "NEXT_BLOCK ACCESSORY 1@3": 108,
+     "BUILD MAIN 1@3": 18,
+     "NEXT_BLOCK MAIN 1@3": 18,
+     "DEVELOPMENT MAIN 2@3": 201,
+     "DEVELOPMENT ACCESSORY 2@3": 36,
+     "DEVELOPMENT ACCESSORY 1@3": 54,
+     "DEVELOPMENT MAIN 1@3": 9
+    },
+    "violations": {
+     "bounds": [],
+     "aboveGoalCap": [],
+     "aboveOwnPhaseDose": [],
+     "aboveTwin": [],
+     "rirBelowTwinPhaseMinimum": []
+    },
+    "buildRowsAboveTwin": [],
+    "twinMissing": 0,
+    "violationCounts": {
+     "bounds": 0,
+     "aboveGoalCap": 0,
+     "aboveOwnPhaseDose": 0,
+     "aboveTwin": 0,
+     "rirBelowTwinPhaseMinimum": 0
+    },
+    "buildRowsAboveTwinCount": 0,
+    "regain": {
+     "timelines": 400,
+     "reestablishments": 2350,
+     "reducedReestablishments": 968,
+     "maskedReducedWeeksCountedAsUnreduced": 920,
+     "violationsReadingA": 0,
+     "violationsReadingAstrict": 1098,
+     "violationsReadingB": 1590,
+     "readingBViolationsNotFromAReducedReestablishment": 0,
+     "executedJumpsAboveOneSet": 0,
+     "stop": {
+      "REACHED_NORMAL": 1608,
+      "END": 742
+     },
+     "examplesA": [],
+     "examplesAstrict": [
+      "pg-cur-10K-STRENGTH-known-03-CONSOLIDATION back-squat: w7 RE 2/2 CONSO | w8 3/3/4 BUILD > Astrict 2",
+      "pg-cur-10K-STRENGTH-known-03-CONSOLIDATION back-squat: w7 RE 2/2 CONSO | w8 3/3 BUILD | w9 3/4/4 SPECI > Astrict 3",
+      "pg-cur-10K-STRENGTH-known-03-CONSOLIDATION db-bench-press: w7 RE 2/2 CONSO+2/2 CONSO | w8 3/3/4 BUILD > Astrict 2",
+      "pg-cur-10K-STRENGTH-known-03-CONSOLIDATION db-bench-press: w7 RE 2/2 CONSO+2/2 CONSO | w8 3/3 BUILD | w9 3/4/4 SPECI > Astrict 3",
+      "pg-cur-10K-STRENGTH-known-03-CONSOLIDATION db-row: w7 RE 2/2 CONSO+2/2 CONSO | w8 3/3/4 BUILD > Astrict 2",
+      "pg-cur-10K-STRENGTH-known-03-CONSOLIDATION db-row: w7 RE 2/2 CONSO+2/2 CONSO | w8 3/3 BUILD | w9 3/4/4 SPECI > Astrict 3",
+      "pg-cur-10K-STRENGTH-known-03-CONSOLIDATION barbell-rdl: w7 RE 2/2 CONSO | w8 3/3/4 BUILD > Astrict 2",
+      "pg-cur-10K-STRENGTH-known-03-CONSOLIDATION barbell-rdl: w7 RE 2/2 CONSO | w8 3/3 BUILD | w9 3/4/4 SPECI > Astrict 3"
+     ],
+     "examplesB": [
+      "pg-cur-10K-STRENGTH-known-03-CONSOLIDATION db-calf-raise: w7 RE 1/2 CONSO reduced | w8 2/2/3 BUILD > B 1",
+      "pg-cur-10K-STRENGTH-known-03-CONSOLIDATION db-calf-raise: w7 RE 1/2 CONSO reduced | w8 2/2 BUILD | w9 2/3/3 SPECI > B 2",
+      "pg-cur-10K-STRENGTH-known-03-CONSOLIDATION db-split-squat: w7 RE 1/2 CONSO reduced | w8 2/2/3 BUILD > B 1",
+      "pg-cur-10K-STRENGTH-known-03-CONSOLIDATION db-split-squat: w7 RE 1/2 CONSO reduced | w8 2/2 BUILD | w9 2/3/3 SPECI > B 2"
+     ],
+     "examplesBnotReduced": [],
+     "examplesExecutedJump": [],
+     "sampleTraces": [
+      "pg-cur-10K-STRENGTH-known-03-CONSOLIDATION db-calf-raise: w7 RE 1/2 CONSO reduced | w8 2/2 BUILD | w9 2/3 SPECI reduced [REACHED_NORMAL]",
+      "pg-cur-10K-STRENGTH-known-03-CONSOLIDATION db-split-squat: w7 RE 1/2 CONSO reduced | w8 2/2 BUILD | w9 2/3 SPECI reduced [REACHED_NORMAL]",
+      "pg-cur-10K-STRENGTH-known-03-TAPER db-calf-raise: w12 RE 1/2 TAPER reduced | w15 2/2 NEXT_ notExecuted [END]",
+      "pg-cur-10K-STRENGTH-known-03-TAPER db-split-squat: w12 RE 1/2 TAPER reduced | w15 2/2 NEXT_ notExecuted [END]",
+      "pg-cur-10K-STRENGTH-known-03-RACE_WEEK back-squat: w13 RE 1/2 RACE_ reduced | w15 2/2 NEXT_ notExecuted [END]",
+      "pg-cur-10K-STRENGTH-known-03-RACE_WEEK db-bench-press: w13 RE 1/2 RACE_ reduced | w14 1/2 POST_ reduced | w15 2/2 NEXT_ notExecuted [END]"
+     ]
+    }
+   },
+   "pre": {
+    "timelines": 400,
+    "noProgram": [],
+    "rows": 3520,
+    "byPhaseDose": {
+     "BUILD MAIN 2@3": 402,
+     "BUILD ACCESSORY 2@3": 72,
+     "CONSOLIDATION MAIN 2@3": 469,
+     "CONSOLIDATION ACCESSORY 2@3": 84,
+     "SPECIFIC MAIN 2@3": 402,
+     "SPECIFIC ACCESSORY 2@3": 72,
+     "TAPER MAIN 2@3": 402,
+     "TAPER ACCESSORY 2@3": 72,
+     "RACE_WEEK MAIN 2@3": 150,
+     "POST_EVENT MAIN 2@3": 240,
+     "NEXT_BLOCK MAIN 2@3": 132,
+     "NEXT_BLOCK ACCESSORY 2@3": 72,
+     "BUILD ACCESSORY 1@3": 108,
+     "CONSOLIDATION ACCESSORY 1@3": 126,
+     "SPECIFIC ACCESSORY 1@3": 108,
+     "TAPER ACCESSORY 1@3": 108,
+     "NEXT_BLOCK ACCESSORY 1@3": 108,
+     "BUILD MAIN 1@3": 18,
+     "CONSOLIDATION MAIN 1@3": 21,
+     "SPECIFIC MAIN 1@3": 18,
+     "TAPER MAIN 1@3": 18,
+     "NEXT_BLOCK MAIN 1@3": 18,
+     "DEVELOPMENT MAIN 2@3": 201,
+     "DEVELOPMENT ACCESSORY 2@3": 36,
+     "DEVELOPMENT ACCESSORY 1@3": 54,
+     "DEVELOPMENT MAIN 1@3": 9
+    },
+    "violations": {
+     "bounds": [
+      "pg-pre-10K-STRENGTH-known-03 w13 2027-02-01 RACE_WEEK back-squat (MAIN): 2x5@3 ESTABLISH",
+      "pg-pre-10K-STRENGTH-known-03 w13 2027-02-01 RACE_WEEK db-bench-press (MAIN): 2x5@3 ESTABLISH",
+      "pg-pre-10K-STRENGTH-known-03 w13 2027-02-01 RACE_WEEK db-row (MAIN): 2x5@3 ESTABLISH",
+      "pg-pre-10K-STRENGTH-known-03 w14 2027-02-11 POST_EVENT barbell-rdl (MAIN): 2x5@3 ESTABLISH",
+      "pg-pre-10K-STRENGTH-known-03 w14 2027-02-11 POST_EVENT barbell-rdl (MAIN): 2x5@3 ESTABLISH",
+      "pg-pre-10K-STRENGTH-known-03 w14 2027-02-11 POST_EVENT db-row (MAIN): 2x5@3 ESTABLISH",
+      "pg-pre-10K-STRENGTH-known-03 w14 2027-02-11 POST_EVENT db-bench-press (MAIN): 2x5@3 ESTABLISH",
+      "pg-pre-10K-STRENGTH-known-024 w13 2027-02-01 RACE_WEEK back-squat (MAIN): 2x5@3 ESTABLISH",
+      "pg-pre-10K-STRENGTH-known-024 w13 2027-02-01 RACE_WEEK barbell-rdl (MAIN): 2x5@3 ESTABLISH",
+      "pg-pre-10K-STRENGTH-known-024 w14 2027-02-10 POST_EVENT db-bench-press (MAIN): 2x5@3 ESTABLISH"
+     ],
+     "aboveGoalCap": [],
+     "aboveOwnPhaseDose": [],
+     "aboveTwin": [
+      "pg-pre-10K-STRENGTH-known-03 w12 2027-01-25 TAPER db-calf-raise (ACCESSORY): 2x7@3 ESTABLISH vs twin 1x6@3 KNOWN 26",
+      "pg-pre-10K-STRENGTH-known-03 w12 2027-01-28 TAPER db-split-squat (ACCESSORY): 2x7@3 ESTABLISH vs twin 1x6@3 KNOWN 26",
+      "pg-pre-10K-STRENGTH-known-03 w13 2027-02-01 RACE_WEEK back-squat (MAIN): 2x5@3 ESTABLISH vs twin 1x5@4 KNOWN 87.5",
+      "pg-pre-10K-STRENGTH-known-03 w13 2027-02-01 RACE_WEEK db-bench-press (MAIN): 2x5@3 ESTABLISH vs twin 1x6@4 KNOWN 24",
+      "pg-pre-10K-STRENGTH-known-03 w13 2027-02-01 RACE_WEEK db-row (MAIN): 2x5@3 ESTABLISH vs twin 1x5@4 KNOWN 26",
+      "pg-pre-10K-STRENGTH-known-03 w14 2027-02-11 POST_EVENT barbell-rdl (MAIN): 2x5@3 ESTABLISH vs twin 1x6@4 KNOWN 97.5",
+      "pg-pre-10K-STRENGTH-known-03 w14 2027-02-11 POST_EVENT barbell-rdl (MAIN): 2x5@3 ESTABLISH vs twin 1x6@4 KNOWN 97.5",
+      "pg-pre-10K-STRENGTH-known-03 w14 2027-02-11 POST_EVENT db-row (MAIN): 2x5@3 ESTABLISH vs twin 1x5@4 KNOWN 26",
+      "pg-pre-10K-STRENGTH-known-03 w14 2027-02-11 POST_EVENT db-bench-press (MAIN): 2x5@3 ESTABLISH vs twin 1x6@4 KNOWN 24",
+      "pg-pre-10K-STRENGTH-known-024 w12 2027-01-25 TAPER db-split-squat (ACCESSORY): 2x7@3 ESTABLISH vs twin 1x6@3 KNOWN 26"
+     ],
+     "rirBelowTwinPhaseMinimum": [
+      "pg-pre-10K-STRENGTH-known-03 w13 2027-02-01 RACE_WEEK back-squat (MAIN): 2x5@3 ESTABLISH vs twin 1x5@4 KNOWN 87.5",
+      "pg-pre-10K-STRENGTH-known-03 w13 2027-02-01 RACE_WEEK db-bench-press (MAIN): 2x5@3 ESTABLISH vs twin 1x6@4 KNOWN 24",
+      "pg-pre-10K-STRENGTH-known-03 w13 2027-02-01 RACE_WEEK db-row (MAIN): 2x5@3 ESTABLISH vs twin 1x5@4 KNOWN 26",
+      "pg-pre-10K-STRENGTH-known-03 w14 2027-02-11 POST_EVENT barbell-rdl (MAIN): 2x5@3 ESTABLISH vs twin 1x6@4 KNOWN 97.5",
+      "pg-pre-10K-STRENGTH-known-03 w14 2027-02-11 POST_EVENT barbell-rdl (MAIN): 2x5@3 ESTABLISH vs twin 1x6@4 KNOWN 97.5",
+      "pg-pre-10K-STRENGTH-known-03 w14 2027-02-11 POST_EVENT db-row (MAIN): 2x5@3 ESTABLISH vs twin 1x5@4 KNOWN 26",
+      "pg-pre-10K-STRENGTH-known-03 w14 2027-02-11 POST_EVENT db-bench-press (MAIN): 2x5@3 ESTABLISH vs twin 1x6@4 KNOWN 24",
+      "pg-pre-10K-STRENGTH-known-024 w13 2027-02-01 RACE_WEEK back-squat (MAIN): 2x5@3 ESTABLISH vs twin 1x5@4 KNOWN 87.5",
+      "pg-pre-10K-STRENGTH-known-024 w13 2027-02-01 RACE_WEEK barbell-rdl (MAIN): 2x5@3 ESTABLISH vs twin 1x6@4 KNOWN 97.5",
+      "pg-pre-10K-STRENGTH-known-024 w14 2027-02-10 POST_EVENT db-bench-press (MAIN): 2x5@3 ESTABLISH vs twin 1x6@4 KNOWN 24"
+     ]
+    },
+    "buildRowsAboveTwin": [],
+    "twinMissing": 0,
+    "violationCounts": {
+     "bounds": 390,
+     "aboveGoalCap": 0,
+     "aboveOwnPhaseDose": 0,
+     "aboveTwin": 832,
+     "rirBelowTwinPhaseMinimum": 390
+    },
+    "buildRowsAboveTwinCount": 0,
+    "regain": {
+     "timelines": 400,
+     "reestablishments": 2350,
+     "reducedReestablishments": 0,
+     "maskedReducedWeeksCountedAsUnreduced": 1888,
+     "violationsReadingA": 40,
+     "violationsReadingAstrict": 1744,
+     "violationsReadingB": 40,
+     "readingBViolationsNotFromAReducedReestablishment": 40,
+     "executedJumpsAboveOneSet": 22,
+     "stop": {
+      "REACHED_NORMAL": 2068,
+      "END": 282
+     },
+     "examplesA": [
+      "pg-pre-10K-STRENGTH-noisy-03-CONSOLIDATION goblet-squat: w8 RE 2/2 CONSO | w9 3/4/4 SPECI > A 3",
+      "pg-pre-10K-STRENGTH-noisy-03-CONSOLIDATION db-rdl: w8 RE 2/2 CONSO | w9 3/4/4 SPECI > A 3",
+      "pg-pre-10K-STRENGTH-noisy-03-TAPER goblet-squat: w12 RE 2/2 TAPER | w13 1/4/4 RACE_ > A 3",
+      "pg-pre-10K-STRENGTH-noisy-03-TAPER db-rdl: w12 RE 2/2 TAPER | w14 1/4/4 POST_ > A 3",
+      "pg-pre-10K-STRENGTH-noisy-03-RACE_WEEK goblet-squat: w13 RE 2/2 RACE_ | w15 4/4/4 NEXT_ > A 3",
+      "pg-pre-10K-STRENGTH-noisy-03-RACE_WEEK db-rdl: w14 RE 2/2 POST_ | w15 4/4/4 NEXT_ > A 3",
+      "pg-pre-10K-STRENGTH-noisy-03-POST_EVENT db-rdl: w14 RE 2/2 POST_ | w15 4/4/4 NEXT_ > A 3",
+      "pg-pre-10K-STRENGTH-noisy-024-CONSOLIDATION goblet-squat: w8 RE 2/2 CONSO | w9 3/4/4 SPECI > A 3"
+     ],
+     "examplesAstrict": [
+      "pg-pre-10K-STRENGTH-known-03-CONSOLIDATION back-squat: w7 RE 2/2 CONSO | w8 3/3/4 BUILD > Astrict 2",
+      "pg-pre-10K-STRENGTH-known-03-CONSOLIDATION back-squat: w7 RE 2/2 CONSO | w8 3/3 BUILD | w9 3/4/4 SPECI > Astrict 3",
+      "pg-pre-10K-STRENGTH-known-03-CONSOLIDATION db-bench-press: w7 RE 2/2 CONSO+2/2 CONSO | w8 3/3/4 BUILD > Astrict 2",
+      "pg-pre-10K-STRENGTH-known-03-CONSOLIDATION db-bench-press: w7 RE 2/2 CONSO+2/2 CONSO | w8 3/3 BUILD | w9 3/4/4 SPECI > Astrict 3",
+      "pg-pre-10K-STRENGTH-known-03-CONSOLIDATION db-row: w7 RE 2/2 CONSO+2/2 CONSO | w8 3/3/4 BUILD > Astrict 2",
+      "pg-pre-10K-STRENGTH-known-03-CONSOLIDATION db-row: w7 RE 2/2 CONSO+2/2 CONSO | w8 3/3 BUILD | w9 3/4/4 SPECI > Astrict 3",
+      "pg-pre-10K-STRENGTH-known-03-CONSOLIDATION db-calf-raise: w7 RE 2/2 CONSO | w8 3/3/3 BUILD > Astrict 2",
+      "pg-pre-10K-STRENGTH-known-03-CONSOLIDATION barbell-rdl: w7 RE 2/2 CONSO | w8 3/3/4 BUILD > Astrict 2"
+     ],
+     "examplesB": [
+      "pg-pre-10K-STRENGTH-noisy-03-CONSOLIDATION goblet-squat: w8 RE 2/2 CONSO | w9 3/4/4 SPECI > B 3",
+      "pg-pre-10K-STRENGTH-noisy-03-CONSOLIDATION db-rdl: w8 RE 2/2 CONSO | w9 3/4/4 SPECI > B 3",
+      "pg-pre-10K-STRENGTH-noisy-03-TAPER goblet-squat: w12 RE 2/2 TAPER | w13 1/4/4 RACE_ > B 3",
+      "pg-pre-10K-STRENGTH-noisy-03-TAPER db-rdl: w12 RE 2/2 TAPER | w14 1/4/4 POST_ > B 3"
+     ],
+     "examplesBnotReduced": [
+      "pg-pre-10K-STRENGTH-noisy-03-CONSOLIDATION goblet-squat: w8 RE 2/2 CONSO | w9 3/4/4 SPECI > B 3",
+      "pg-pre-10K-STRENGTH-noisy-03-CONSOLIDATION db-rdl: w8 RE 2/2 CONSO | w9 3/4/4 SPECI > B 3",
+      "pg-pre-10K-STRENGTH-noisy-03-TAPER goblet-squat: w12 RE 2/2 TAPER | w13 1/4/4 RACE_ > B 3",
+      "pg-pre-10K-STRENGTH-noisy-03-TAPER db-rdl: w12 RE 2/2 TAPER | w14 1/4/4 POST_ > B 3",
+      "pg-pre-10K-STRENGTH-noisy-03-RACE_WEEK goblet-squat: w13 RE 2/2 RACE_ | w15 4/4/4 NEXT_ > B 3",
+      "pg-pre-10K-STRENGTH-noisy-03-RACE_WEEK db-rdl: w14 RE 2/2 POST_ | w15 4/4/4 NEXT_ > B 3",
+      "pg-pre-10K-STRENGTH-noisy-03-POST_EVENT db-rdl: w14 RE 2/2 POST_ | w15 4/4/4 NEXT_ > B 3",
+      "pg-pre-10K-STRENGTH-noisy-024-CONSOLIDATION goblet-squat: w8 RE 2/2 CONSO | w9 3/4/4 SPECI > B 3"
+     ],
+     "examplesExecutedJump": [
+      "pg-pre-10K-STRENGTH-noisy-03-RACE_WEEK goblet-squat: w13 RE 2/2 RACE_ | w15 4/4/4 NEXT_: 4 sets > 2+1",
+      "pg-pre-10K-STRENGTH-noisy-03-RACE_WEEK db-rdl: w14 RE 2/2 POST_ | w15 4/4/4 NEXT_: 4 sets > 2+1",
+      "pg-pre-10K-STRENGTH-noisy-03-POST_EVENT db-rdl: w14 RE 2/2 POST_ | w15 4/4/4 NEXT_: 4 sets > 2+1",
+      "pg-pre-10K-STRENGTH-noisy-024-RACE_WEEK goblet-squat: w13 RE 2/2 RACE_ | w15 4/4/4 NEXT_: 4 sets > 2+1",
+      "pg-pre-10K-HYPERTROPHY-noisy-03-RACE_WEEK goblet-squat: w13 RE 2/2 RACE_ | w15 4/4/4 NEXT_: 4 sets > 2+1",
+      "pg-pre-10K-HYPERTROPHY-noisy-03-RACE_WEEK db-rdl: w14 RE 2/2 POST_ | w15 4/4/4 NEXT_: 4 sets > 2+1",
+      "pg-pre-10K-HYPERTROPHY-noisy-03-POST_EVENT db-rdl: w14 RE 2/2 POST_ | w15 4/4/4 NEXT_: 4 sets > 2+1",
+      "pg-pre-10K-HYPERTROPHY-noisy-024-RACE_WEEK goblet-squat: w13 RE 2/2 RACE_ | w15 4/4/4 NEXT_: 4 sets > 2+1"
+     ],
+     "sampleTraces": [
+      "pg-pre-10K-RUNNING_SUPPORT-known-03-BUILD db-calf-raise: w6 RE 1/1 BUILD | w7 1/1 CONSO [REACHED_NORMAL]",
+      "pg-pre-10K-RUNNING_SUPPORT-known-03-BUILD db-split-squat: w6 RE 1/1 BUILD | w7 1/1 CONSO [REACHED_NORMAL]",
+      "pg-pre-10K-RUNNING_SUPPORT-known-03-CONSOLIDATION db-calf-raise: w7 RE 1/1 CONSO | w8 2/2 BUILD [REACHED_NORMAL]",
+      "pg-pre-10K-RUNNING_SUPPORT-known-03-CONSOLIDATION db-split-squat: w7 RE 1/1 CONSO | w8 2/2 BUILD [REACHED_NORMAL]",
+      "pg-pre-10K-RUNNING_SUPPORT-known-03-SPECIFIC db-calf-raise: w9 RE 1/1 SPECI | w10 1/2 SPECI reduced [REACHED_NORMAL]",
+      "pg-pre-10K-RUNNING_SUPPORT-known-03-SPECIFIC db-split-squat: w9 RE 1/1 SPECI | w10 1/2 SPECI reduced [REACHED_NORMAL]"
+     ]
+    }
+   },
+   "ms": 0
+  },
+  "RA_regainReadings": {
+   "cur": {
+    "noProgram": [],
+    "asPrescribed": {
+     "timelines": 384,
+     "reestablishments": 2448,
+     "reducedReestablishments": 194,
+     "maskedReducedWeeksCountedAsUnreduced": 522,
+     "violationsReadingA": 0,
+     "violationsReadingAstrict": 662,
+     "violationsReadingB": 370,
+     "readingBViolationsNotFromAReducedReestablishment": 0,
+     "executedJumpsAboveOneSet": 0,
+     "stop": {
+      "REACHED_NORMAL": 2382,
+      "END": 66
+     },
+     "examplesA": [],
+     "examplesAstrict": [
+      "ra-cur-FIXED-STRENGTH-known-04-2-5 back-squat: w7 RE 2/2 CONSO | w8 3/3/4 DEVEL > Astrict 2",
+      "ra-cur-FIXED-STRENGTH-known-04-2-5 back-squat: w7 RE 2/2 CONSO | w8 3/3 DEVEL | w9 4/4/4 DEVEL > Astrict 3",
+      "ra-cur-FIXED-STRENGTH-known-04-2-5 db-bench-press: w7 RE 2/2 CONSO+2/2 CONSO | w8 3/3/4 DEVEL > Astrict 2",
+      "ra-cur-FIXED-STRENGTH-known-04-2-5 db-bench-press: w7 RE 2/2 CONSO+2/2 CONSO | w8 3/3 DEVEL | w9 4/4/4 DEVEL > Astrict 3",
+      "ra-cur-FIXED-STRENGTH-known-04-2-5 db-row: w7 RE 2/2 CONSO+2/2 CONSO | w8 3/3/4 DEVEL > Astrict 2",
+      "ra-cur-FIXED-STRENGTH-known-04-2-5 db-row: w7 RE 2/2 CONSO+2/2 CONSO | w8 3/3 DEVEL | w9 4/4/4 DEVEL > Astrict 3",
+      "ra-cur-FIXED-STRENGTH-known-04-2-5 db-rdl: w7 RE 2/2 CONSO | w8 3/3/4 DEVEL > Astrict 2",
+      "ra-cur-FIXED-STRENGTH-known-04-2-5 db-rdl: w7 RE 2/2 CONSO | w8 3/3 DEVEL | w9 4/4/4 DEVEL > Astrict 3"
+     ],
+     "examplesB": [
+      "ra-cur-FIXED-STRENGTH-known-04-2-5 db-calf-raise: w7 RE 1/2 CONSO reduced | w8 2/2/3 DEVEL > B 1",
+      "ra-cur-FIXED-STRENGTH-known-04-2-5 db-calf-raise: w7 RE 1/2 CONSO reduced | w8 2/2 DEVEL | w9 3/3/3 DEVEL > B 2",
+      "ra-cur-FIXED-STRENGTH-known-04-2-5 db-split-squat: w7 RE 1/2 CONSO reduced | w8 2/2/3 DEVEL > B 1",
+      "ra-cur-FIXED-STRENGTH-known-04-2-5 db-split-squat: w7 RE 1/2 CONSO reduced | w8 2/2 DEVEL | w9 3/3/3 DEVEL > B 2"
+     ],
+     "examplesBnotReduced": [],
+     "examplesExecutedJump": [],
+     "sampleTraces": [
+      "ra-cur-FIXED-STRENGTH-known-04-2-5 db-calf-raise: w7 RE 1/2 CONSO reduced | w8 2/2 DEVEL | w9 3/3 DEVEL [REACHED_NORMAL]",
+      "ra-cur-FIXED-STRENGTH-known-04-2-5 db-split-squat: w7 RE 1/2 CONSO reduced | w8 2/2 DEVEL | w9 3/3 DEVEL [REACHED_NORMAL]",
+      "ra-cur-FIXED-STRENGTH-known-024-2-5 db-split-squat: w7 RE 1/2 CONSO+1/2 CONSO reduced | w8 2/2 DEVEL | w9 3/3 DEVEL [REACHED_NORMAL]",
+      "ra-cur-FIXED-STRENGTH-known-024-2-5 db-calf-raise: w7 RE 1/2 CONSO reduced | w8 2/2 DEVEL | w9 3/3 DEVEL [REACHED_NORMAL]",
+      "ra-cur-FIXED-STRENGTH-known-024-2-5 db-overhead-press: w7 RE 1/2 CONSO reduced | w8 2/2 DEVEL | w9 3/3 DEVEL [REACHED_NORMAL]",
+      "ra-cur-FIXED-STRENGTH-known-024-2-5 one-arm-db-row: w7 RE 1/2 CONSO reduced | w8 2/2 DEVEL | w9 3/3 DEVEL [REACHED_NORMAL]"
+     ]
+    },
+    "noisyLogs": {
+     "timelines": 192,
+     "reestablishments": 1224,
+     "reducedReestablishments": 76,
+     "maskedReducedWeeksCountedAsUnreduced": 362,
+     "violationsReadingA": 0,
+     "violationsReadingAstrict": 456,
+     "violationsReadingB": 146,
+     "readingBViolationsNotFromAReducedReestablishment": 0,
+     "executedJumpsAboveOneSet": 0,
+     "stop": {
+      "REACHED_NORMAL": 1170,
+      "END": 54
+     },
+     "examplesA": [],
+     "examplesAstrict": [
+      "ra-cur-noisy-FIXED-STRENGTH-known-04-2 back-squat: w7 RE 2/2 CONSO | w8 3/3/4 DEVEL > Astrict 2",
+      "ra-cur-noisy-FIXED-STRENGTH-known-04-2 back-squat: w7 RE 2/2 CONSO | w8 3/3 DEVEL | w9 4/4/4 DEVEL > Astrict 3",
+      "ra-cur-noisy-FIXED-STRENGTH-known-04-2 db-bench-press: w7 RE 2/2 CONSO+2/2 CONSO | w8 3/3/4 DEVEL > Astrict 2",
+      "ra-cur-noisy-FIXED-STRENGTH-known-04-2 db-bench-press: w7 RE 2/2 CONSO+2/2 CONSO | w8 3/3 DEVEL | w9 4/4/4 DEVEL > Astrict 3",
+      "ra-cur-noisy-FIXED-STRENGTH-known-04-2 db-row: w7 RE 2/2 CONSO+2/2 CONSO | w8 3/3/4 DEVEL > Astrict 2",
+      "ra-cur-noisy-FIXED-STRENGTH-known-04-2 db-row: w7 RE 2/2 CONSO+2/2 CONSO | w8 3/3 DEVEL | w9 4/4/4 DEVEL > Astrict 3",
+      "ra-cur-noisy-FIXED-STRENGTH-known-04-2 db-rdl: w7 RE 2/2 CONSO | w8 3/3/4 DEVEL > Astrict 2",
+      "ra-cur-noisy-FIXED-STRENGTH-known-04-2 db-rdl: w7 RE 2/2 CONSO | w8 3/3 DEVEL | w9 4/4/4 DEVEL > Astrict 3"
+     ],
+     "examplesB": [
+      "ra-cur-noisy-FIXED-STRENGTH-known-04-2 db-calf-raise: w7 RE 1/2 CONSO reduced | w8 2/2/3 DEVEL > B 1",
+      "ra-cur-noisy-FIXED-STRENGTH-known-04-2 db-calf-raise: w7 RE 1/2 CONSO reduced | w8 2/2 DEVEL | w9 3/3/3 DEVEL > B 2",
+      "ra-cur-noisy-FIXED-STRENGTH-known-04-2 db-split-squat: w7 RE 1/2 CONSO reduced | w8 2/2/3 DEVEL > B 1",
+      "ra-cur-noisy-FIXED-STRENGTH-known-04-2 db-split-squat: w7 RE 1/2 CONSO reduced | w8 2/2 DEVEL | w9 3/3/3 DEVEL > B 2"
+     ],
+     "examplesBnotReduced": [],
+     "examplesExecutedJump": [],
+     "sampleTraces": [
+      "ra-cur-noisy-FIXED-STRENGTH-known-04-2 db-calf-raise: w7 RE 1/2 CONSO reduced | w8 2/2 DEVEL | w9 3/3 DEVEL [REACHED_NORMAL]",
+      "ra-cur-noisy-FIXED-STRENGTH-known-04-2 db-split-squat: w7 RE 1/2 CONSO reduced | w8 2/2 DEVEL | w9 3/3 DEVEL [REACHED_NORMAL]",
+      "ra-cur-noisy-FIXED-STRENGTH-known-024-2 db-split-squat: w7 RE 1/2 CONSO+1/2 CONSO reduced | w8 2/2 DEVEL | w9 3/3 DEVEL [REACHED_NORMAL]",
+      "ra-cur-noisy-FIXED-STRENGTH-known-024-2 db-calf-raise: w7 RE 1/2 CONSO reduced | w8 2/2 DEVEL | w9 3/3 DEVEL [REACHED_NORMAL]",
+      "ra-cur-noisy-FIXED-STRENGTH-known-024-2 db-overhead-press: w7 RE 1/2 CONSO reduced | w8 2/2 DEVEL | w9 3/3 DEVEL [REACHED_NORMAL]",
+      "ra-cur-noisy-FIXED-STRENGTH-known-024-2 one-arm-db-row: w7 RE 1/2 CONSO reduced | w8 2/2 DEVEL | w9 3/3 DEVEL [REACHED_NORMAL]"
+     ]
+    }
+   },
+   "pre": {
+    "noProgram": [],
+    "asPrescribed": {
+     "timelines": 384,
+     "reestablishments": 2448,
+     "reducedReestablishments": 0,
+     "maskedReducedWeeksCountedAsUnreduced": 716,
+     "violationsReadingA": 0,
+     "violationsReadingAstrict": 856,
+     "violationsReadingB": 0,
+     "readingBViolationsNotFromAReducedReestablishment": 0,
+     "executedJumpsAboveOneSet": 0,
+     "stop": {
+      "REACHED_NORMAL": 2400,
+      "END": 48
+     },
+     "examplesA": [],
+     "examplesAstrict": [
+      "ra-pre-FIXED-STRENGTH-known-04-2-5 back-squat: w7 RE 2/2 CONSO | w8 3/3/4 DEVEL > Astrict 2",
+      "ra-pre-FIXED-STRENGTH-known-04-2-5 back-squat: w7 RE 2/2 CONSO | w8 3/3 DEVEL | w9 4/4/4 DEVEL > Astrict 3",
+      "ra-pre-FIXED-STRENGTH-known-04-2-5 db-bench-press: w7 RE 2/2 CONSO+2/2 CONSO | w8 3/3/4 DEVEL > Astrict 2",
+      "ra-pre-FIXED-STRENGTH-known-04-2-5 db-bench-press: w7 RE 2/2 CONSO+2/2 CONSO | w8 3/3 DEVEL | w9 4/4/4 DEVEL > Astrict 3",
+      "ra-pre-FIXED-STRENGTH-known-04-2-5 db-row: w7 RE 2/2 CONSO+2/2 CONSO | w8 3/3/4 DEVEL > Astrict 2",
+      "ra-pre-FIXED-STRENGTH-known-04-2-5 db-row: w7 RE 2/2 CONSO+2/2 CONSO | w8 3/3 DEVEL | w9 4/4/4 DEVEL > Astrict 3",
+      "ra-pre-FIXED-STRENGTH-known-04-2-5 db-calf-raise: w7 RE 2/2 CONSO | w8 3/3/3 DEVEL > Astrict 2",
+      "ra-pre-FIXED-STRENGTH-known-04-2-5 db-rdl: w7 RE 2/2 CONSO | w8 3/3/4 DEVEL > Astrict 2"
+     ],
+     "examplesB": [],
+     "examplesBnotReduced": [],
+     "examplesExecutedJump": [],
+     "sampleTraces": [
+      "ra-pre-FIXED-GENERAL-known-04-2-4 db-calf-raise: w6 RE 1/1 DEVEL | w7 1/1 CONSO [REACHED_NORMAL]",
+      "ra-pre-FIXED-GENERAL-known-04-2-4 db-split-squat: w6 RE 1/1 DEVEL | w7 1/1 CONSO [REACHED_NORMAL]",
+      "ra-pre-FIXED-GENERAL-known-04-2-5 db-calf-raise: w7 RE 1/1 CONSO | w8 2/2 DEVEL [REACHED_NORMAL]",
+      "ra-pre-FIXED-GENERAL-known-04-2-5 db-split-squat: w7 RE 1/1 CONSO | w8 2/2 DEVEL [REACHED_NORMAL]",
+      "ra-pre-FIXED-GENERAL-known-04-4-4 db-calf-raise: w8 RE 1/1 DEVEL | w9 2/2 DEVEL [REACHED_NORMAL]",
+      "ra-pre-FIXED-GENERAL-known-04-4-4 db-split-squat: w8 RE 1/1 DEVEL | w9 2/2 DEVEL [REACHED_NORMAL]"
+     ]
+    },
+    "noisyLogs": {
+     "timelines": 192,
+     "reestablishments": 1224,
+     "reducedReestablishments": 0,
+     "maskedReducedWeeksCountedAsUnreduced": 438,
+     "violationsReadingA": 48,
+     "violationsReadingAstrict": 548,
+     "violationsReadingB": 48,
+     "readingBViolationsNotFromAReducedReestablishment": 48,
+     "executedJumpsAboveOneSet": 24,
+     "stop": {
+      "REACHED_NORMAL": 1176,
+      "END": 48
+     },
+     "examplesA": [
+      "ra-pre-noisy-FIXED-STRENGTH-known-04-2 db-rdl: w7 RE 2/2 CONSO | w8 4/4/4 DEVEL > A 3",
+      "ra-pre-noisy-FIXED-STRENGTH-known-04-4 db-rdl: w9 RE 2/2 DEVEL | w10 4/4/4 DEVEL > A 3",
+      "ra-pre-noisy-FIXED-STRENGTH-known-04-6 db-rdl: w11 RE 2/2 CONSO | w12 4/4/4 DEVEL > A 3",
+      "ra-pre-noisy-FIXED-STRENGTH-none-04-6 goblet-squat: w11 RE 2/2 DEVEL | w12 3/4/4 CONSO > A 3",
+      "ra-pre-noisy-FIXED-STRENGTH-none-04-6 db-rdl: w11 RE 2/2 DEVEL | w12 3/4/4 CONSO > A 3",
+      "ra-pre-noisy-FIXED-STRENGTH-none-024-6 goblet-squat: w11 RE 2/2 DEVEL | w12 3/4/4 CONSO > A 3",
+      "ra-pre-noisy-FIXED-HYPERTROPHY-known-04-2 db-rdl: w7 RE 2/2 CONSO | w8 4/4/4 DEVEL > A 3",
+      "ra-pre-noisy-FIXED-HYPERTROPHY-known-04-4 db-rdl: w9 RE 2/2 DEVEL | w10 4/4/4 DEVEL > A 3"
+     ],
+     "examplesAstrict": [
+      "ra-pre-noisy-FIXED-STRENGTH-known-04-2 back-squat: w7 RE 2/2 CONSO | w8 3/3/4 DEVEL > Astrict 2",
+      "ra-pre-noisy-FIXED-STRENGTH-known-04-2 back-squat: w7 RE 2/2 CONSO | w8 3/3 DEVEL | w9 4/4/4 DEVEL > Astrict 3",
+      "ra-pre-noisy-FIXED-STRENGTH-known-04-2 db-bench-press: w7 RE 2/2 CONSO+2/2 CONSO | w8 3/3/4 DEVEL > Astrict 2",
+      "ra-pre-noisy-FIXED-STRENGTH-known-04-2 db-bench-press: w7 RE 2/2 CONSO+2/2 CONSO | w8 3/3 DEVEL | w9 4/4/4 DEVEL > Astrict 3",
+      "ra-pre-noisy-FIXED-STRENGTH-known-04-2 db-row: w7 RE 2/2 CONSO+2/2 CONSO | w8 3/3/4 DEVEL > Astrict 2",
+      "ra-pre-noisy-FIXED-STRENGTH-known-04-2 db-row: w7 RE 2/2 CONSO+2/2 CONSO | w8 3/3 DEVEL | w9 4/4/4 DEVEL > Astrict 3",
+      "ra-pre-noisy-FIXED-STRENGTH-known-04-2 db-calf-raise: w7 RE 2/2 CONSO | w8 3/3/3 DEVEL > Astrict 2",
+      "ra-pre-noisy-FIXED-STRENGTH-known-04-2 db-rdl: w7 RE 2/2 CONSO | w8 4/4/4 DEVEL > Astrict 2"
+     ],
+     "examplesB": [
+      "ra-pre-noisy-FIXED-STRENGTH-known-04-2 db-rdl: w7 RE 2/2 CONSO | w8 4/4/4 DEVEL > B 3",
+      "ra-pre-noisy-FIXED-STRENGTH-known-04-4 db-rdl: w9 RE 2/2 DEVEL | w10 4/4/4 DEVEL > B 3",
+      "ra-pre-noisy-FIXED-STRENGTH-known-04-6 db-rdl: w11 RE 2/2 CONSO | w12 4/4/4 DEVEL > B 3",
+      "ra-pre-noisy-FIXED-STRENGTH-none-04-6 goblet-squat: w11 RE 2/2 DEVEL | w12 3/4/4 CONSO > B 3"
+     ],
+     "examplesBnotReduced": [
+      "ra-pre-noisy-FIXED-STRENGTH-known-04-2 db-rdl: w7 RE 2/2 CONSO | w8 4/4/4 DEVEL > B 3",
+      "ra-pre-noisy-FIXED-STRENGTH-known-04-4 db-rdl: w9 RE 2/2 DEVEL | w10 4/4/4 DEVEL > B 3",
+      "ra-pre-noisy-FIXED-STRENGTH-known-04-6 db-rdl: w11 RE 2/2 CONSO | w12 4/4/4 DEVEL > B 3",
+      "ra-pre-noisy-FIXED-STRENGTH-none-04-6 goblet-squat: w11 RE 2/2 DEVEL | w12 3/4/4 CONSO > B 3",
+      "ra-pre-noisy-FIXED-STRENGTH-none-04-6 db-rdl: w11 RE 2/2 DEVEL | w12 3/4/4 CONSO > B 3",
+      "ra-pre-noisy-FIXED-STRENGTH-none-024-6 goblet-squat: w11 RE 2/2 DEVEL | w12 3/4/4 CONSO > B 3",
+      "ra-pre-noisy-FIXED-HYPERTROPHY-known-04-2 db-rdl: w7 RE 2/2 CONSO | w8 4/4/4 DEVEL > B 3",
+      "ra-pre-noisy-FIXED-HYPERTROPHY-known-04-4 db-rdl: w9 RE 2/2 DEVEL | w10 4/4/4 DEVEL > B 3"
+     ],
+     "examplesExecutedJump": [
+      "ra-pre-noisy-FIXED-STRENGTH-known-04-2 db-rdl: w7 RE 2/2 CONSO | w8 4/4/4 DEVEL: 4 sets > 2+1",
+      "ra-pre-noisy-FIXED-STRENGTH-known-04-4 db-rdl: w9 RE 2/2 DEVEL | w10 4/4/4 DEVEL: 4 sets > 2+1",
+      "ra-pre-noisy-FIXED-STRENGTH-known-04-6 db-rdl: w11 RE 2/2 CONSO | w12 4/4/4 DEVEL: 4 sets > 2+1",
+      "ra-pre-noisy-FIXED-HYPERTROPHY-known-04-2 db-rdl: w7 RE 2/2 CONSO | w8 4/4/4 DEVEL: 4 sets > 2+1",
+      "ra-pre-noisy-FIXED-HYPERTROPHY-known-04-4 db-rdl: w9 RE 2/2 DEVEL | w10 4/4/4 DEVEL: 4 sets > 2+1",
+      "ra-pre-noisy-FIXED-HYPERTROPHY-known-04-6 db-rdl: w11 RE 2/2 CONSO | w12 4/4/4 DEVEL: 4 sets > 2+1",
+      "ra-pre-noisy-EVERY_2_WEEKS-STRENGTH-known-04-2 db-rdl: w7 RE 2/2 CONSO | w8 4/4/4 DEVEL: 4 sets > 2+1",
+      "ra-pre-noisy-EVERY_2_WEEKS-STRENGTH-known-04-4 db-rdl: w9 RE 2/2 DEVEL | w10 4/4/4 DEVEL: 4 sets > 2+1"
+     ],
+     "sampleTraces": [
+      "ra-pre-noisy-FIXED-GENERAL-known-04-2 db-calf-raise: w7 RE 1/1 CONSO | w8 2/2 DEVEL [REACHED_NORMAL]",
+      "ra-pre-noisy-FIXED-GENERAL-known-04-2 db-split-squat: w7 RE 1/1 CONSO | w8 2/2 DEVEL [REACHED_NORMAL]",
+      "ra-pre-noisy-FIXED-GENERAL-known-04-4 db-calf-raise: w9 RE 1/1 DEVEL | w10 2/2 DEVEL [REACHED_NORMAL]",
+      "ra-pre-noisy-FIXED-GENERAL-known-04-4 db-split-squat: w9 RE 1/1 DEVEL | w10 2/2 DEVEL [REACHED_NORMAL]",
+      "ra-pre-noisy-FIXED-GENERAL-known-04-6 db-calf-raise: w11 RE 1/1 CONSO | w12 2/2 DEVEL [REACHED_NORMAL]",
+      "ra-pre-noisy-FIXED-GENERAL-known-04-6 db-split-squat: w11 RE 1/1 CONSO | w12 2/2 DEVEL [REACHED_NORMAL]"
+     ]
+    }
+   },
+   "ms": 506181
+  },
+  "SW_splitWeeks": {
+   "cur": {
+    "exercise": "db-bench-press",
+    "firstOnly": {
+     "log": "4:MODIFY/GATED_NEXT_STEP 5:MODIFY/GATED_NEXT_STEP 6:KEEP/INSTANTIATE_LOGGED_LOADS 7:KEEP/KEEP",
+     "week5": [
+      "2026-12-09 3x10@3 KNOWN 18",
+      "2026-12-11 2x8@3 ESTABLISH RE"
+     ],
+     "stateAfterWeek5": {
+      "mode": "KNOWN",
+      "load": 18,
+      "ceiling": null,
+      "reps": 10,
+      "sets": 3,
+      "priorSets": null,
+      "regainCap": null,
+      "lastExecutedSets": 3,
+      "lastPerformed": "2026-12-09",
+      "source": "LOGGED_ACTUAL"
+     },
+     "week6": [
+      "2026-12-16 3x10@3 KNOWN 18",
+      "2026-12-18 3x10@3 KNOWN 18"
+     ],
+     "week7": [
+      "2026-12-23 2x12@3 KNOWN 18",
+      "2026-12-25 2x12@3 KNOWN 18"
+     ],
+     "stateAfterWeek6": {
+      "mode": "KNOWN",
+      "load": 18,
+      "ceiling": null,
+      "reps": 12,
+      "sets": 3,
+      "priorSets": null,
+      "regainCap": null,
+      "lastExecutedSets": 3,
+      "lastPerformed": "2026-12-18",
+      "source": "LOGGED_ACTUAL"
+     }
+    },
+    "secondOnly": {
+     "log": "4:MODIFY/GATED_NEXT_STEP 5:MODIFY/GATED_NEXT_STEP 6:KEEP/INSTANTIATE_LOGGED_LOADS 7:KEEP/KEEP",
+     "week5": [
+      "2026-12-09 3x10@3 KNOWN 18",
+      "2026-12-11 2x8@3 ESTABLISH RE"
+     ],
+     "stateAfterWeek5": {
+      "mode": "KNOWN",
+      "load": 18,
+      "ceiling": null,
+      "reps": 8,
+      "sets": 2,
+      "priorSets": 3,
+      "regainCap": 2,
+      "lastExecutedSets": 3,
+      "lastPerformed": "2026-12-11",
+      "source": "LOGGED_ACTUAL"
+     },
+     "week6": [
+      "2026-12-16 2x8@3 KNOWN 18",
+      "2026-12-18 2x8@3 KNOWN 18"
+     ],
+     "week7": [
+      "2026-12-23 2x10@3 KNOWN 18",
+      "2026-12-25 2x10@3 KNOWN 18"
+     ],
+     "stateAfterWeek6": {
+      "mode": "KNOWN",
+      "load": 18,
+      "ceiling": null,
+      "reps": 10,
+      "sets": 3,
+      "priorSets": null,
+      "regainCap": 3,
+      "lastExecutedSets": 2,
+      "lastPerformed": "2026-12-18",
+      "source": "LOGGED_ACTUAL"
+     }
+    },
+    "both": {
+     "log": "4:MODIFY/GATED_NEXT_STEP 5:MODIFY/GATED_NEXT_STEP 6:KEEP/INSTANTIATE_LOGGED_LOADS 7:KEEP/KEEP",
+     "week5": [
+      "2026-12-09 3x10@3 KNOWN 18",
+      "2026-12-11 2x8@3 ESTABLISH RE"
+     ],
+     "stateAfterWeek5": {
+      "mode": "KNOWN",
+      "load": 18,
+      "ceiling": null,
+      "reps": 10,
+      "sets": 3,
+      "priorSets": null,
+      "regainCap": null,
+      "lastExecutedSets": 2,
+      "lastPerformed": "2026-12-11",
+      "source": "LOGGED_ACTUAL"
+     },
+     "week6": [
+      "2026-12-16 3x10@3 KNOWN 18",
+      "2026-12-18 3x10@3 KNOWN 18"
+     ],
+     "week7": [
+      "2026-12-23 2x12@3 KNOWN 18",
+      "2026-12-25 2x12@3 KNOWN 18"
+     ],
+     "stateAfterWeek6": {
+      "mode": "KNOWN",
+      "load": 18,
+      "ceiling": null,
+      "reps": 12,
+      "sets": 3,
+      "priorSets": null,
+      "regainCap": null,
+      "lastExecutedSets": 3,
+      "lastPerformed": "2026-12-18",
+      "source": "LOGGED_ACTUAL"
+     }
+    },
+    "neither": {
+     "log": "4:MODIFY/GATED_NEXT_STEP 5:MODIFY/GATED_NEXT_STEP 6:KEEP/INSTANTIATE_LOGGED_LOADS 7:KEEP/KEEP",
+     "week5": [
+      "2026-12-09 3x10@3 KNOWN 18",
+      "2026-12-11 2x8@3 ESTABLISH RE"
+     ],
+     "stateAfterWeek5": {
+      "mode": "KNOWN",
+      "load": 18,
+      "ceiling": null,
+      "reps": 10,
+      "sets": 3,
+      "priorSets": null,
+      "regainCap": null,
+      "lastExecutedSets": 3,
+      "lastPerformed": "2026-11-11",
+      "source": "LOGGED_ACTUAL"
+     },
+     "week6": [
+      "2026-12-16 2x8@3 ESTABLISH RE",
+      "2026-12-18 2x8@3 ESTABLISH RE"
+     ],
+     "week7": [
+      "2026-12-23 2x10@3 KNOWN 18",
+      "2026-12-25 2x10@3 KNOWN 18"
+     ],
+     "stateAfterWeek6": {
+      "mode": "KNOWN",
+      "load": 18,
+      "ceiling": null,
+      "reps": 10,
+      "sets": 3,
+      "priorSets": null,
+      "regainCap": 3,
+      "lastExecutedSets": 2,
+      "lastPerformed": "2026-12-18",
+      "source": "LOGGED_ACTUAL"
+     }
+    }
+   },
+   "pre": {
+    "exercise": "db-bench-press",
+    "firstOnly": {
+     "log": "4:MODIFY/GATED_NEXT_STEP 5:MODIFY/GATED_NEXT_STEP 6:KEEP/INSTANTIATE_LOGGED_LOADS 7:KEEP/KEEP",
+     "week5": [
+      "2026-12-09 3x10@3 KNOWN 18",
+      "2026-12-11 2x8@3 ESTABLISH RE"
+     ],
+     "stateAfterWeek5": {
+      "mode": "KNOWN",
+      "load": 18,
+      "ceiling": null,
+      "reps": 10,
+      "sets": 2,
+      "priorSets": 3,
+      "regainCap": 2,
+      "lastExecutedSets": 3,
+      "lastPerformed": "2026-12-09",
+      "source": "LOGGED_ACTUAL"
+     },
+     "week6": [
+      "2026-12-16 2x10@3 KNOWN 18",
+      "2026-12-18 2x10@3 KNOWN 18"
+     ],
+     "week7": [
+      "2026-12-23 2x12@3 KNOWN 18",
+      "2026-12-25 2x12@3 KNOWN 18"
+     ],
+     "stateAfterWeek6": {
+      "mode": "KNOWN",
+      "load": 18,
+      "ceiling": null,
+      "reps": 12,
+      "sets": 3,
+      "priorSets": null,
+      "regainCap": 3,
+      "lastExecutedSets": 2,
+      "lastPerformed": "2026-12-18",
+      "source": "LOGGED_ACTUAL"
+     }
+    },
+    "secondOnly": {
+     "log": "4:MODIFY/GATED_NEXT_STEP 5:MODIFY/GATED_NEXT_STEP 6:KEEP/INSTANTIATE_LOGGED_LOADS 7:KEEP/KEEP",
+     "week5": [
+      "2026-12-09 3x10@3 KNOWN 18",
+      "2026-12-11 2x8@3 ESTABLISH RE"
+     ],
+     "stateAfterWeek5": {
+      "mode": "KNOWN",
+      "load": 18,
+      "ceiling": null,
+      "reps": 8,
+      "sets": 2,
+      "priorSets": 3,
+      "regainCap": 2,
+      "lastExecutedSets": 3,
+      "lastPerformed": "2026-12-11",
+      "source": "LOGGED_ACTUAL"
+     },
+     "week6": [
+      "2026-12-16 2x8@3 KNOWN 18",
+      "2026-12-18 2x8@3 KNOWN 18"
+     ],
+     "week7": [
+      "2026-12-23 2x10@3 KNOWN 18",
+      "2026-12-25 2x10@3 KNOWN 18"
+     ],
+     "stateAfterWeek6": {
+      "mode": "KNOWN",
+      "load": 18,
+      "ceiling": null,
+      "reps": 10,
+      "sets": 3,
+      "priorSets": null,
+      "regainCap": 3,
+      "lastExecutedSets": 2,
+      "lastPerformed": "2026-12-18",
+      "source": "LOGGED_ACTUAL"
+     }
+    },
+    "both": {
+     "log": "4:MODIFY/GATED_NEXT_STEP 5:MODIFY/GATED_NEXT_STEP 6:KEEP/INSTANTIATE_LOGGED_LOADS 7:KEEP/KEEP",
+     "week5": [
+      "2026-12-09 3x10@3 KNOWN 18",
+      "2026-12-11 2x8@3 ESTABLISH RE"
+     ],
+     "stateAfterWeek5": {
+      "mode": "KNOWN",
+      "load": 18,
+      "ceiling": null,
+      "reps": 10,
+      "sets": 3,
+      "priorSets": null,
+      "regainCap": 3,
+      "lastExecutedSets": 2,
+      "lastPerformed": "2026-12-11",
+      "source": "LOGGED_ACTUAL"
+     },
+     "week6": [
+      "2026-12-16 3x10@3 KNOWN 18",
+      "2026-12-18 3x10@3 KNOWN 18"
+     ],
+     "week7": [
+      "2026-12-23 2x12@3 KNOWN 18",
+      "2026-12-25 2x12@3 KNOWN 18"
+     ],
+     "stateAfterWeek6": {
+      "mode": "KNOWN",
+      "load": 18,
+      "ceiling": null,
+      "reps": 12,
+      "sets": 3,
+      "priorSets": null,
+      "regainCap": null,
+      "lastExecutedSets": 3,
+      "lastPerformed": "2026-12-18",
+      "source": "LOGGED_ACTUAL"
+     }
+    },
+    "neither": {
+     "log": "4:MODIFY/GATED_NEXT_STEP 5:MODIFY/GATED_NEXT_STEP 6:KEEP/INSTANTIATE_LOGGED_LOADS 7:KEEP/KEEP",
+     "week5": [
+      "2026-12-09 3x10@3 KNOWN 18",
+      "2026-12-11 2x8@3 ESTABLISH RE"
+     ],
+     "stateAfterWeek5": {
+      "mode": "KNOWN",
+      "load": 18,
+      "ceiling": null,
+      "reps": 10,
+      "sets": 3,
+      "priorSets": null,
+      "regainCap": null,
+      "lastExecutedSets": 3,
+      "lastPerformed": "2026-11-11",
+      "source": "LOGGED_ACTUAL"
+     },
+     "week6": [
+      "2026-12-16 2x8@3 ESTABLISH RE",
+      "2026-12-18 2x8@3 ESTABLISH RE"
+     ],
+     "week7": [
+      "2026-12-23 2x10@3 KNOWN 18",
+      "2026-12-25 2x10@3 KNOWN 18"
+     ],
+     "stateAfterWeek6": {
+      "mode": "KNOWN",
+      "load": 18,
+      "ceiling": null,
+      "reps": 10,
+      "sets": 3,
+      "priorSets": null,
+      "regainCap": 3,
+      "lastExecutedSets": 2,
+      "lastPerformed": "2026-12-18",
+      "source": "LOGGED_ACTUAL"
+     }
+    }
+   },
+   "ms": 1345
+  },
+  "RS_returnSubstitute": {
+   "cur-HYPERTROPHY": {
+    "returnReview": "MODIFY/REESTABLISH",
+    "substitution": "MODIFY/SUBSTITUTE",
+    "step2Week": 7,
+    "step2BeforeSubstitution": [
+     "2026-12-21 back-squat (MAIN) 1x11@3 KNOWN 20 RETURN_STEP",
+     "2026-12-21 db-bench-press (MAIN) 1x8@3 KNOWN 20 RETURN_STEP",
+     "2026-12-21 db-row (MAIN) 1x8@3 KNOWN 20 RETURN_STEP",
+     "2026-12-21 db-calf-raise (ACCESSORY) 1x12@3 KNOWN 20 RETURN_STEP",
+     "2026-12-21 dead-bug (ACCESSORY) 1x14@3 BODYWEIGHT RETURN_STEP",
+     "2026-12-25 db-rdl (MAIN) 1x12@3 KNOWN 20 RETURN_STEP",
+     "2026-12-25 db-row (MAIN) 1x8@3 KNOWN 20 RETURN_STEP",
+     "2026-12-25 db-bench-press (MAIN) 1x8@3 KNOWN 20 RETURN_STEP",
+     "2026-12-25 db-split-squat (ACCESSORY) 1x12@3 KNOWN 20 RETURN_STEP",
+     "2026-12-25 dead-bug (ACCESSORY) 1x14@3 BODYWEIGHT RETURN_STEP"
+    ],
+    "step2AfterSubstitution": [
+     "2026-12-21 goblet-squat (MAIN) 2x8@3 ESTABLISH FIRST_ESTABLISH",
+     "2026-12-21 db-bench-press (MAIN) 1x8@3 FROM_LOG RETURN_STEP",
+     "2026-12-21 db-row (MAIN) 1x8@3 FROM_LOG RETURN_STEP",
+     "2026-12-21 db-calf-raise (ACCESSORY) 1x12@3 FROM_LOG RETURN_STEP",
+     "2026-12-21 dead-bug (ACCESSORY) 1x14@3 BODYWEIGHT RETURN_STEP",
+     "2026-12-25 db-rdl (MAIN) 1x12@3 FROM_LOG RETURN_STEP",
+     "2026-12-25 db-row (MAIN) 1x8@3 FROM_LOG RETURN_STEP",
+     "2026-12-25 db-bench-press (MAIN) 1x8@3 FROM_LOG RETURN_STEP",
+     "2026-12-25 db-split-squat (ACCESSORY) 1x12@3 FROM_LOG RETURN_STEP",
+     "2026-12-25 dead-bug (ACCESSORY) 1x14@3 BODYWEIGHT RETURN_STEP"
+    ],
+    "newExercises": [
+     "goblet-squat"
+    ],
+    "newExerciseNextWeek": [
+     "2026-12-28 goblet-squat 4x8@3 FROM_LOG FROM_LOG"
+    ]
+   },
+   "cur-RUNNING_SUPPORT": {
+    "returnReview": "MODIFY/REESTABLISH",
+    "substitution": "MODIFY/SUBSTITUTE",
+    "step2Week": 7,
+    "step2BeforeSubstitution": [
+     "2026-12-21 back-squat (MAIN) 1x6@3 KNOWN 20 RETURN_STEP",
+     "2026-12-21 db-bench-press (MAIN) 1x8@3 KNOWN 20 RETURN_STEP",
+     "2026-12-21 db-row (MAIN) 1x8@3 KNOWN 20 RETURN_STEP",
+     "2026-12-21 db-calf-raise (ACCESSORY) 1x6@3 KNOWN 20 RETURN_STEP",
+     "2026-12-21 dead-bug (ACCESSORY) 1x14@3 BODYWEIGHT RETURN_STEP",
+     "2026-12-25 db-rdl (MAIN) 1x6@3 KNOWN 20 RETURN_STEP",
+     "2026-12-25 db-row (MAIN) 1x8@3 KNOWN 20 RETURN_STEP",
+     "2026-12-25 db-bench-press (MAIN) 1x8@3 KNOWN 20 RETURN_STEP",
+     "2026-12-25 db-split-squat (ACCESSORY) 1x6@3 KNOWN 20 RETURN_STEP",
+     "2026-12-25 dead-bug (ACCESSORY) 1x14@3 BODYWEIGHT RETURN_STEP"
+    ],
+    "step2AfterSubstitution": [
+     "2026-12-21 goblet-squat (MAIN) 1x8@3 ESTABLISH FIRST_ESTABLISH",
+     "2026-12-21 db-bench-press (MAIN) 1x8@3 FROM_LOG RETURN_STEP",
+     "2026-12-21 db-row (MAIN) 1x8@3 FROM_LOG RETURN_STEP",
+     "2026-12-21 db-calf-raise (ACCESSORY) 1x6@3 FROM_LOG RETURN_STEP",
+     "2026-12-21 dead-bug (ACCESSORY) 1x14@3 BODYWEIGHT RETURN_STEP",
+     "2026-12-25 db-rdl (MAIN) 1x6@3 FROM_LOG RETURN_STEP",
+     "2026-12-25 db-row (MAIN) 1x8@3 FROM_LOG RETURN_STEP",
+     "2026-12-25 db-bench-press (MAIN) 1x8@3 FROM_LOG RETURN_STEP",
+     "2026-12-25 db-split-squat (ACCESSORY) 1x6@3 FROM_LOG RETURN_STEP",
+     "2026-12-25 dead-bug (ACCESSORY) 1x14@3 BODYWEIGHT RETURN_STEP"
+    ],
+    "newExercises": [
+     "goblet-squat"
+    ],
+    "newExerciseNextWeek": [
+     "2026-12-28 goblet-squat 3x8@3 FROM_LOG FROM_LOG"
+    ]
+   },
+   "cur-STRENGTH": {
+    "returnReview": "MODIFY/REESTABLISH",
+    "substitution": "MODIFY/SUBSTITUTE",
+    "step2Week": 7,
+    "step2BeforeSubstitution": [
+     "2026-12-21 back-squat (MAIN) 1x5@3 KNOWN 20 RETURN_STEP",
+     "2026-12-21 db-bench-press (MAIN) 1x6@3 KNOWN 20 RETURN_STEP",
+     "2026-12-21 db-row (MAIN) 1x5@3 KNOWN 20 RETURN_STEP",
+     "2026-12-21 db-calf-raise (ACCESSORY) 1x7@3 KNOWN 20 RETURN_STEP",
+     "2026-12-21 dead-bug (ACCESSORY) 1x10@3 BODYWEIGHT RETURN_STEP",
+     "2026-12-25 db-rdl (MAIN) 1x5@3 KNOWN 20 RETURN_STEP",
+     "2026-12-25 db-row (MAIN) 1x5@3 KNOWN 20 RETURN_STEP",
+     "2026-12-25 db-bench-press (MAIN) 1x6@3 KNOWN 20 RETURN_STEP",
+     "2026-12-25 db-split-squat (ACCESSORY) 1x7@3 KNOWN 20 RETURN_STEP",
+     "2026-12-25 dead-bug (ACCESSORY) 1x10@3 BODYWEIGHT RETURN_STEP"
+    ],
+    "step2AfterSubstitution": [
+     "2026-12-21 goblet-squat (MAIN) 2x5@3 ESTABLISH FIRST_ESTABLISH",
+     "2026-12-21 db-bench-press (MAIN) 1x6@3 FROM_LOG RETURN_STEP",
+     "2026-12-21 db-row (MAIN) 1x5@3 FROM_LOG RETURN_STEP",
+     "2026-12-21 db-calf-raise (ACCESSORY) 1x7@3 FROM_LOG RETURN_STEP",
+     "2026-12-21 dead-bug (ACCESSORY) 1x10@3 BODYWEIGHT RETURN_STEP",
+     "2026-12-25 db-rdl (MAIN) 1x5@3 FROM_LOG RETURN_STEP",
+     "2026-12-25 db-row (MAIN) 1x5@3 FROM_LOG RETURN_STEP",
+     "2026-12-25 db-bench-press (MAIN) 1x6@3 FROM_LOG RETURN_STEP",
+     "2026-12-25 db-split-squat (ACCESSORY) 1x7@3 FROM_LOG RETURN_STEP",
+     "2026-12-25 dead-bug (ACCESSORY) 1x10@3 BODYWEIGHT RETURN_STEP"
+    ],
+    "newExercises": [
+     "goblet-squat"
+    ],
+    "newExerciseNextWeek": [
+     "2026-12-28 goblet-squat 4x5@3 FROM_LOG FROM_LOG"
+    ]
+   },
+   "pre-HYPERTROPHY": {
+    "returnReview": "MODIFY/REESTABLISH",
+    "substitution": "MODIFY/SUBSTITUTE",
+    "step2Week": 7,
+    "step2BeforeSubstitution": [
+     "2026-12-21 back-squat (MAIN) 1x11@3 KNOWN 20 RETURN_STEP",
+     "2026-12-21 db-bench-press (MAIN) 1x8@3 KNOWN 20 RETURN_STEP",
+     "2026-12-21 db-row (MAIN) 1x8@3 KNOWN 20 RETURN_STEP",
+     "2026-12-21 db-calf-raise (ACCESSORY) 1x12@3 KNOWN 20 RETURN_STEP",
+     "2026-12-21 dead-bug (ACCESSORY) 1x14@3 BODYWEIGHT BODYWEIGHT",
+     "2026-12-25 db-rdl (MAIN) 1x12@3 KNOWN 20 RETURN_STEP",
+     "2026-12-25 db-row (MAIN) 1x8@3 KNOWN 20 RETURN_STEP",
+     "2026-12-25 db-bench-press (MAIN) 1x8@3 KNOWN 20 RETURN_STEP",
+     "2026-12-25 db-split-squat (ACCESSORY) 1x12@3 KNOWN 20 RETURN_STEP",
+     "2026-12-25 dead-bug (ACCESSORY) 1x14@3 BODYWEIGHT BODYWEIGHT"
+    ],
+    "step2AfterSubstitution": [
+     "2026-12-21 goblet-squat (MAIN) 1x8@4 ESTABLISH RETURN_ENTRY",
+     "2026-12-21 db-bench-press (MAIN) 1x8@3 FROM_LOG FROM_LOG",
+     "2026-12-21 db-row (MAIN) 1x8@3 FROM_LOG FROM_LOG",
+     "2026-12-21 db-calf-raise (ACCESSORY) 1x12@3 FROM_LOG FROM_LOG",
+     "2026-12-21 dead-bug (ACCESSORY) 1x14@3 BODYWEIGHT BODYWEIGHT",
+     "2026-12-25 db-rdl (MAIN) 1x12@3 FROM_LOG FROM_LOG",
+     "2026-12-25 db-row (MAIN) 1x8@3 FROM_LOG FROM_LOG",
+     "2026-12-25 db-bench-press (MAIN) 1x8@3 FROM_LOG FROM_LOG",
+     "2026-12-25 db-split-squat (ACCESSORY) 1x12@3 FROM_LOG FROM_LOG",
+     "2026-12-25 dead-bug (ACCESSORY) 1x14@3 BODYWEIGHT BODYWEIGHT"
+    ],
+    "newExercises": [
+     "goblet-squat"
+    ],
+    "newExerciseNextWeek": [
+     "2026-12-28 goblet-squat 2x8@3 FROM_LOG FROM_LOG"
+    ]
+   },
+   "pre-RUNNING_SUPPORT": {
+    "returnReview": "MODIFY/REESTABLISH",
+    "substitution": "MODIFY/SUBSTITUTE",
+    "step2Week": 7,
+    "step2BeforeSubstitution": [
+     "2026-12-21 back-squat (MAIN) 1x6@3 KNOWN 20 RETURN_STEP",
+     "2026-12-21 db-bench-press (MAIN) 1x8@3 KNOWN 20 RETURN_STEP",
+     "2026-12-21 db-row (MAIN) 1x8@3 KNOWN 20 RETURN_STEP",
+     "2026-12-21 db-calf-raise (ACCESSORY) 1x6@3 KNOWN 20 RETURN_STEP",
+     "2026-12-21 dead-bug (ACCESSORY) 1x14@3 BODYWEIGHT BODYWEIGHT",
+     "2026-12-25 db-rdl (MAIN) 1x6@3 KNOWN 20 RETURN_STEP",
+     "2026-12-25 db-row (MAIN) 1x8@3 KNOWN 20 RETURN_STEP",
+     "2026-12-25 db-bench-press (MAIN) 1x8@3 KNOWN 20 RETURN_STEP",
+     "2026-12-25 db-split-squat (ACCESSORY) 1x6@3 KNOWN 20 RETURN_STEP",
+     "2026-12-25 dead-bug (ACCESSORY) 1x14@3 BODYWEIGHT BODYWEIGHT"
+    ],
+    "step2AfterSubstitution": [
+     "2026-12-21 goblet-squat (MAIN) 1x8@4 ESTABLISH RETURN_ENTRY",
+     "2026-12-21 db-bench-press (MAIN) 1x8@3 FROM_LOG FROM_LOG",
+     "2026-12-21 db-row (MAIN) 1x8@3 FROM_LOG FROM_LOG",
+     "2026-12-21 db-calf-raise (ACCESSORY) 1x6@3 FROM_LOG FROM_LOG",
+     "2026-12-21 dead-bug (ACCESSORY) 1x14@3 BODYWEIGHT BODYWEIGHT",
+     "2026-12-25 db-rdl (MAIN) 1x6@3 FROM_LOG FROM_LOG",
+     "2026-12-25 db-row (MAIN) 1x8@3 FROM_LOG FROM_LOG",
+     "2026-12-25 db-bench-press (MAIN) 1x8@3 FROM_LOG FROM_LOG",
+     "2026-12-25 db-split-squat (ACCESSORY) 1x6@3 FROM_LOG FROM_LOG",
+     "2026-12-25 dead-bug (ACCESSORY) 1x14@3 BODYWEIGHT BODYWEIGHT"
+    ],
+    "newExercises": [
+     "goblet-squat"
+    ],
+    "newExerciseNextWeek": [
+     "2026-12-28 goblet-squat 1x8@3 FROM_LOG FROM_LOG"
+    ]
+   },
+   "pre-STRENGTH": {
+    "returnReview": "MODIFY/REESTABLISH",
+    "substitution": "MODIFY/SUBSTITUTE",
+    "step2Week": 7,
+    "step2BeforeSubstitution": [
+     "2026-12-21 back-squat (MAIN) 1x5@3 KNOWN 20 RETURN_STEP",
+     "2026-12-21 db-bench-press (MAIN) 1x6@3 KNOWN 20 RETURN_STEP",
+     "2026-12-21 db-row (MAIN) 1x5@3 KNOWN 20 RETURN_STEP",
+     "2026-12-21 db-calf-raise (ACCESSORY) 1x7@3 KNOWN 20 RETURN_STEP",
+     "2026-12-21 dead-bug (ACCESSORY) 1x10@3 BODYWEIGHT BODYWEIGHT",
+     "2026-12-25 db-rdl (MAIN) 1x5@3 KNOWN 20 RETURN_STEP",
+     "2026-12-25 db-row (MAIN) 1x5@3 KNOWN 20 RETURN_STEP",
+     "2026-12-25 db-bench-press (MAIN) 1x6@3 KNOWN 20 RETURN_STEP",
+     "2026-12-25 db-split-squat (ACCESSORY) 1x7@3 KNOWN 20 RETURN_STEP",
+     "2026-12-25 dead-bug (ACCESSORY) 1x10@3 BODYWEIGHT BODYWEIGHT"
+    ],
+    "step2AfterSubstitution": [
+     "2026-12-21 goblet-squat (MAIN) 1x5@4 ESTABLISH RETURN_ENTRY",
+     "2026-12-21 db-bench-press (MAIN) 1x6@3 FROM_LOG FROM_LOG",
+     "2026-12-21 db-row (MAIN) 1x5@3 FROM_LOG FROM_LOG",
+     "2026-12-21 db-calf-raise (ACCESSORY) 1x7@3 FROM_LOG FROM_LOG",
+     "2026-12-21 dead-bug (ACCESSORY) 1x10@3 BODYWEIGHT BODYWEIGHT",
+     "2026-12-25 db-rdl (MAIN) 1x5@3 FROM_LOG FROM_LOG",
+     "2026-12-25 db-row (MAIN) 1x5@3 FROM_LOG FROM_LOG",
+     "2026-12-25 db-bench-press (MAIN) 1x6@3 FROM_LOG FROM_LOG",
+     "2026-12-25 db-split-squat (ACCESSORY) 1x7@3 FROM_LOG FROM_LOG",
+     "2026-12-25 dead-bug (ACCESSORY) 1x10@3 BODYWEIGHT BODYWEIGHT"
+    ],
+    "newExercises": [
+     "goblet-squat"
+    ],
+    "newExerciseNextWeek": [
+     "2026-12-28 goblet-squat 2x5@3 FROM_LOG FROM_LOG"
+    ]
+   },
+   "ms": 1291
+  },
+  "MR_missingReps": {
+   "error": "TypeError: Cannot read properties of undefined (reading 'map')\n    at loads (file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-coaching-r7a-2026-10-27/reviews/ssctr-r7a-delta-probe.mjs:276:135)\n    at run (file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-coaching-r7a-2026-10-27/reviews/ssctr-r7a-delta-probe.mjs:68:36)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-coaching-r7a-2026-10-27/reviews/ssctr-r7a-delta-probe.mjs:276:11\n    at guard (file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-coaching-r7a-2026-10-27/reviews/ssctr-r7a-delta-probe.mjs:29:68)\n    at file:///C:/Users/carva/Desktop/myApp/MyApp/audits/domain-coaching-r7a-2026-10-27/reviews/ssctr-r7a-delta-probe.mjs:272:1",
+   "ms": 18
+  },
+  "FR_fatigueReducedWeek": {
+   "cur-twin": {
+    "log": "5:MODIFY/GATED_NEXT_STEP 6:KEEP/INSTANTIATE_LOGGED_LOADS 7:KEEP/KEEP 8:KEEP/KEEP 9:KEEP/KEEP",
+    "extras": [],
+    "rows": {
+     "barbell-rdl": [
+      "w6 2x5@3 ESTABLISH [REESTABLISH 2]",
+      "w7 2x5@3 KNOWN 22.5 [KNOWN 3]",
+      "w8 3x5@3 KNOWN 22.5 [KNOWN 3]",
+      "w9 4x5@3 KNOWN 22.5 [KNOWN 4]"
+     ],
+     "db-row": [
+      "w6 2x5@3 ESTABLISH [REESTABLISH 2] + 2x5@3 ESTABLISH [REESTABLISH 2]",
+      "w7 2x5@3 KNOWN 22 [KNOWN 3] + 2x5@3 KNOWN 22 [KNOWN 3]",
+      "w8 3x5@3 KNOWN 22 [KNOWN 3] + 3x5@3 KNOWN 22 [KNOWN 3]",
+      "w9 4x5@3 KNOWN 22 [KNOWN 4] + 4x5@3 KNOWN 22 [KNOWN 4]"
+     ],
+     "db-bench-press": [
+      "w6 2x5@3 ESTABLISH [REESTABLISH 2] + 2x5@3 ESTABLISH [REESTABLISH 2]",
+      "w7 2x5@3 KNOWN 20 [KNOWN 3] + 2x5@3 KNOWN 20 [KNOWN 3]",
+      "w8 3x5@3 KNOWN 20 [KNOWN 3] + 3x5@3 KNOWN 20 [KNOWN 3]",
+      "w9 4x5@3 KNOWN 20 [KNOWN 4] + 4x5@3 KNOWN 20 [KNOWN 4]"
+     ]
+    },
+    "regainCap": {
+     "barbell-rdl": [
+      3,
+      3,
+      null,
+      null
+     ],
+     "db-row": [
+      3,
+      3,
+      null,
+      null
+     ],
+     "db-bench-press": [
+      3,
+      3,
+      null,
+      null
+     ]
+    }
+   },
+   "cur-fatigue": {
+    "log": "5:MODIFY/GATED_NEXT_STEP 6:KEEP/INSTANTIATE_LOGGED_LOADS 7+:MODIFY/REDUCE 7:KEEP/INSTANTIATE_LOGGED_LOADS 8:KEEP/KEEP",
+    "extras": [
+     "7:MODIFY/REDUCE"
+    ],
+    "rows": {
+     "barbell-rdl": [
+      "w6 2x5@3 ESTABLISH [REESTABLISH 2]",
+      "w7 1x5@4 KNOWN 22.5 [KNOWN 3]",
+      "w8 3x5@3 KNOWN 22.5 [KNOWN 3]",
+      "w9 4x5@3 KNOWN 22.5 [KNOWN 4]"
+     ],
+     "db-row": [
+      "w6 2x5@3 ESTABLISH [REESTABLISH 2] + 2x5@3 ESTABLISH [REESTABLISH 2]",
+      "w7 2x5@3 KNOWN 22 [KNOWN 3] + 1x5@4 KNOWN 22 [KNOWN 3]",
+      "w8 3x5@3 KNOWN 22 [KNOWN 3] + 3x5@3 KNOWN 22 [KNOWN 3]",
+      "w9 4x5@3 KNOWN 22 [KNOWN 4] + 4x5@3 KNOWN 22 [KNOWN 4]"
+     ],
+     "db-bench-press": [
+      "w6 2x5@3 ESTABLISH [REESTABLISH 2] + 2x5@3 ESTABLISH [REESTABLISH 2]",
+      "w7 2x5@3 KNOWN 20 [KNOWN 3] + 1x5@4 KNOWN 20 [KNOWN 3]",
+      "w8 3x5@3 KNOWN 20 [KNOWN 3] + 3x5@3 KNOWN 20 [KNOWN 3]",
+      "w9 4x5@3 KNOWN 20 [KNOWN 4] + 4x5@3 KNOWN 20 [KNOWN 4]"
+     ]
+    },
+    "regainCap": {
+     "barbell-rdl": [
+      3,
+      3,
+      null,
+      null
+     ],
+     "db-row": [
+      3,
+      3,
+      null,
+      null
+     ],
+     "db-bench-press": [
+      3,
+      3,
+      null,
+      null
+     ]
+    }
+   },
+   "pre-twin": {
+    "log": "5:MODIFY/GATED_NEXT_STEP 6:KEEP/INSTANTIATE_LOGGED_LOADS 7:KEEP/KEEP 8:KEEP/KEEP 9:KEEP/KEEP",
+    "extras": [],
+    "rows": {
+     "barbell-rdl": [
+      "w6 2x5@3 ESTABLISH",
+      "w7 2x5@3 KNOWN 22.5",
+      "w8 3x5@3 KNOWN 22.5",
+      "w9 4x5@3 KNOWN 22.5"
+     ],
+     "db-row": [
+      "w6 2x5@3 ESTABLISH + 2x5@3 ESTABLISH",
+      "w7 2x5@3 KNOWN 22 + 2x5@3 KNOWN 22",
+      "w8 3x5@3 KNOWN 22 + 3x5@3 KNOWN 22",
+      "w9 4x5@3 KNOWN 22 + 4x5@3 KNOWN 22"
+     ],
+     "db-bench-press": [
+      "w6 2x5@3 ESTABLISH + 2x5@3 ESTABLISH",
+      "w7 2x5@3 KNOWN 20 + 2x5@3 KNOWN 20",
+      "w8 3x5@3 KNOWN 20 + 3x5@3 KNOWN 20",
+      "w9 4x5@3 KNOWN 20 + 4x5@3 KNOWN 20"
+     ]
+    },
+    "regainCap": {
+     "barbell-rdl": [
+      3,
+      3,
+      null,
+      null
+     ],
+     "db-row": [
+      3,
+      3,
+      null,
+      null
+     ],
+     "db-bench-press": [
+      3,
+      3,
+      null,
+      null
+     ]
+    }
+   },
+   "pre-fatigue": {
+    "log": "5:MODIFY/GATED_NEXT_STEP 6:KEEP/INSTANTIATE_LOGGED_LOADS 7+:MODIFY/REDUCE 7:KEEP/INSTANTIATE_LOGGED_LOADS 8:KEEP/KEEP",
+    "extras": [
+     "7:MODIFY/REDUCE"
+    ],
+    "rows": {
+     "barbell-rdl": [
+      "w6 2x5@3 ESTABLISH",
+      "w7 1x5@4 KNOWN 22.5",
+      "w8 3x5@3 KNOWN 22.5",
+      "w9 4x5@3 KNOWN 22.5"
+     ],
+     "db-row": [
+      "w6 2x5@3 ESTABLISH + 2x5@3 ESTABLISH",
+      "w7 2x5@3 KNOWN 22 + 1x5@4 KNOWN 22",
+      "w8 3x5@3 KNOWN 22 + 3x5@3 KNOWN 22",
+      "w9 4x5@3 KNOWN 22 + 4x5@3 KNOWN 22"
+     ],
+     "db-bench-press": [
+      "w6 2x5@3 ESTABLISH + 2x5@3 ESTABLISH",
+      "w7 2x5@3 KNOWN 20 + 1x5@4 KNOWN 20",
+      "w8 3x5@3 KNOWN 20 + 3x5@3 KNOWN 20",
+      "w9 4x5@3 KNOWN 20 + 4x5@3 KNOWN 20"
+     ]
+    },
+    "regainCap": {
+     "barbell-rdl": [
+      3,
+      3,
+      null,
+      null
+     ],
+     "db-row": [
+      3,
+      3,
+      null,
+      null
+     ],
+     "db-bench-press": [
+      3,
+      3,
+      null,
+      null
+     ]
+    }
+   },
+   "ms": 762
+  },
+  "MV_movesAcrossDayPhases": {
+   "cur-10K": {
+    "phases": "BUILD,BUILD,BUILD,CONSOLIDATION,BUILD,BUILD,BUILD,CONSOLIDATION,BUILD,SPECIFIC,SPECIFIC,SPECIFIC,TAPER,RACE_WEEK,POST_EVENT,NEXT_BLOCK",
+    "lastSpecificWeek": 11,
+    "target": "w11-str-d0 STRENGTH_FULL_A d0 SPECIFIC",
+    "dayPhases": [
+     "d0 STRENGTH STRENGTH_FULL_A SPECIFIC",
+     "d1 RUN EASY SPECIFIC",
+     "d3 RUN QUALITY TAPER",
+     "d4 STRENGTH STRENGTH_FULL_B TAPER",
+     "d5 RUN LONG TAPER"
+    ],
+    "decision": "KEEP/KEEP",
+    "moveCandidates": [],
+    "moved": []
+   },
+   "cur-HALF_MARATHON": {
+    "phases": "BUILD,BUILD,BUILD,CONSOLIDATION,BUILD,BUILD,BUILD,CONSOLIDATION,SPECIFIC,SPECIFIC,SPECIFIC,SPECIFIC,TAPER,RACE_WEEK,POST_EVENT,NEXT_BLOCK",
+    "lastSpecificWeek": 11,
+    "target": "w11-str-d0 STRENGTH_FULL_A d0 SPECIFIC",
+    "dayPhases": [
+     "d0 STRENGTH STRENGTH_FULL_A SPECIFIC",
+     "d1 RUN EASY SPECIFIC",
+     "d3 RUN QUALITY TAPER",
+     "d4 STRENGTH STRENGTH_FULL_B TAPER",
+     "d5 RUN LONG TAPER"
+    ],
+    "decision": "KEEP/KEEP",
+    "moveCandidates": [],
+    "moved": []
+   },
+   "pre-10K": {
+    "phases": "BUILD,BUILD,BUILD,CONSOLIDATION,BUILD,BUILD,BUILD,CONSOLIDATION,BUILD,SPECIFIC,SPECIFIC,SPECIFIC,TAPER,RACE_WEEK,POST_EVENT,NEXT_BLOCK",
+    "lastSpecificWeek": 11,
+    "target": "w11-str-d0 STRENGTH_FULL_A d0 SPECIFIC",
+    "dayPhases": [
+     "d0 STRENGTH STRENGTH_FULL_A SPECIFIC",
+     "d1 RUN EASY SPECIFIC",
+     "d3 RUN QUALITY TAPER",
+     "d4 STRENGTH STRENGTH_FULL_B TAPER",
+     "d5 RUN LONG TAPER"
+    ],
+    "decision": "KEEP/KEEP",
+    "moveCandidates": [
+     "MOVE_TO_w11-str-d4 admissible false selected false"
+    ],
+    "moved": []
+   },
+   "pre-HALF_MARATHON": {
+    "phases": "BUILD,BUILD,BUILD,CONSOLIDATION,BUILD,BUILD,BUILD,CONSOLIDATION,SPECIFIC,SPECIFIC,SPECIFIC,SPECIFIC,TAPER,RACE_WEEK,POST_EVENT,NEXT_BLOCK",
+    "lastSpecificWeek": 11,
+    "target": "w11-str-d0 STRENGTH_FULL_A d0 SPECIFIC",
+    "dayPhases": [
+     "d0 STRENGTH STRENGTH_FULL_A SPECIFIC",
+     "d1 RUN EASY SPECIFIC",
+     "d3 RUN QUALITY TAPER",
+     "d4 STRENGTH STRENGTH_FULL_B TAPER",
+     "d5 RUN LONG TAPER"
+    ],
+    "decision": "KEEP/KEEP",
+    "moveCandidates": [
+     "MOVE_TO_w11-str-d4 admissible false selected false"
+    ],
+    "moved": []
+   },
+   "ms": 1045
+  }
+ }
+}

@@ -1,0 +1,141 @@
+{
+  "revision": "R5-SSCTR-BINDING-r1-PRE-FIXES",
+  "reviewDate": "2026-10-25",
+  "independent": true,
+  "reviewer": "/root/ssctr (fresh fallback provisional internal SSCTR)",
+  "scope": "Pre-freeze adversarial runtime-binding review only; policy-level conditional approvals do not waive these executable failures.",
+  "verdict": "REVISE",
+  "finalFrozenRuntimeReview": false,
+  "humanValidation": false,
+  "empiricalProductValidation": false,
+  "clinicalClearance": false,
+  "reviewedFiles": [
+    {
+      "path": "CoachingCore/src/r5-adaptation.mjs",
+      "sha256": "d9b0ecc80e8dcf54b22011c82af4cd0c7f95b32d118d8d6ad3084577040b7cb4"
+    },
+    {
+      "path": "CoachingCore/src/r5-authority.mjs",
+      "sha256": "0eafe07af8c04bc67bf7268ac791d003b1c823241ea2e8a6dd22cd60b10954ad"
+    },
+    {
+      "path": "CoachingCore/src/r5-contract.mjs",
+      "sha256": "5423f8853ff1ab60016382d6066cf28138b6cb79541e9e6d1ffbd8b37cea6aee"
+    },
+    {
+      "path": "CoachingCore/src/r5-index.mjs",
+      "sha256": "a8faf66c5b5c16b5134e435ac25879537ecda5e0e7bb14e4e6d9d24fa27e1e8d"
+    },
+    {
+      "path": "CoachingCore/src/r5-learning.mjs",
+      "sha256": "a78b220c6d140418a8f9f5401e616496f7a2042c06bdabf274302e01918af334"
+    },
+    {
+      "path": "CoachingCore/src/r5-program.mjs",
+      "sha256": "fa642abb1ad323e26a43fd5793f28f6862e51c0207cf336b1f604aa0a7822525"
+    },
+    {
+      "path": "CoachingCore/src/r5-review-context.mjs",
+      "sha256": "fe186d57d0872ed3214c08d9ec3a65a26ee3b418051e102571ef609fe8384c28"
+    },
+    {
+      "path": "CoachingCore/src/r5-schedule.mjs",
+      "sha256": "991a0e0efe36860cb49d16e1d32c255c527f1f25006e5556d3056a9c132d6d3f"
+    },
+    {
+      "path": "CoachingCore/src/r5-selectors.mjs",
+      "sha256": "198bd9e95d81cbe66e27365cfc7729e0da767abb3601ac0efccb1949d718bf48"
+    }
+  ],
+  "findings": [
+    {
+      "id": "progress-direction",
+      "expected": "Reject lower-demand alternative mislabeled PROGRESS",
+      "actual": "PROGRESS",
+      "passed": false,
+      "detail": {
+        "selectedMinutes": 25
+      },
+      "blocking": true
+    },
+    {
+      "id": "regression-direction",
+      "expected": "Reject higher-demand alternative mislabeled REGRESS",
+      "actual": "REGRESS",
+      "passed": false,
+      "detail": {
+        "selectedMinutes": 120
+      },
+      "blocking": true
+    },
+    {
+      "id": "progression-window-fit",
+      "expected": "Future complete task must fit actual window",
+      "actual": "PROGRESS",
+      "passed": false,
+      "detail": {
+        "selectedMinutes": 35,
+        "availableMinutes": 30
+      },
+      "blocking": true
+    },
+    {
+      "id": "actual-dose-comparability",
+      "expected": "A one-minute actual cannot earn full thirty-minute task progression",
+      "actual": "PROGRESS",
+      "passed": false,
+      "detail": {
+        "selectedMinutes": 35,
+        "actualMinutes": 1
+      },
+      "blocking": true
+    },
+    {
+      "id": "earned-dose-does-not-overwrite-event",
+      "expected": "Earlier ordinary-week progression must preserve separately bound complete event week",
+      "actual": "PROGRESS",
+      "passed": false,
+      "detail": {
+        "eventMinutesBefore": 20,
+        "eventMinutesAfter": 35
+      },
+      "blocking": true
+    },
+    {
+      "id": "unknown-return-reason",
+      "expected": "Unknown interruption reason cannot receive prescriptive return",
+      "actual": "REGRESS",
+      "passed": false,
+      "detail": {
+        "selectedMinutes": 25
+      },
+      "blocking": true
+    },
+    {
+      "id": "excluded-population-context",
+      "expected": "Pregnancy metadata cannot inherit ordinary adult scope",
+      "actual": "PROPOSED",
+      "passed": false,
+      "detail": {},
+      "blocking": true
+    }
+  ],
+  "inspectionFindings": [
+    {
+      "id": "same-dose-after-patch",
+      "blocking": true,
+      "description": "Scheduling rebuilds from original anchors after earned regression/progression, allowing silent dose restoration/change."
+    },
+    {
+      "id": "persist-original-constraints",
+      "blocking": true,
+      "description": "Original forbiddenPairs not persisted to program; later scheduling can forget established incompatibility."
+    }
+  ],
+  "proof": {
+    "artifact": "audits/domain-coaching-r5-2026-10-25/reviews/ssctr-binding-probes-r1-before-fixes.json",
+    "total": 8,
+    "passing": 1
+  },
+  "nextAction": "Implementation author fixes; independent SSCTR reruns expanded probes and reads exact final runtime before replacement binding review."
+}

@@ -1,0 +1,1981 @@
+{
+ "probe": "R6-SSCTR-DELTA-R7",
+ "policyHash": "e9c87e09d35496791c6d6894639652a4c7bd6cbf6f0b01299d57dd7352373f87",
+ "authorityUsed": "DEV_TEST_ONLY devAuthority() bound to the current policy hash",
+ "sections": {
+  "A_eventProximity": {
+   "stats": {
+    "programs": 840,
+    "statuses": {
+     "PROPOSED": 840
+    },
+    "touches": 720,
+    "windowStrengthSessions": 840,
+    "progressive": {
+     "windowBelowTaper": 630,
+     "taperNotAbovePreTaper": 630,
+     "checked": 630
+    }
+   },
+   "violations": {},
+   "examples": {}
+  },
+  "B_walkJogStart": {
+   "summary": {
+    "programs": 432,
+    "byClass": {
+     "WALK_JOG": 368,
+     "EASY_UNKNOWN": 16,
+     "RESTART": 16,
+     "EASY_LOW": 32
+    },
+    "nonNoviceRaisedStarts": 128
+   },
+   "violations": {
+    "sessionJogAboveLongestCurrentRun": 56
+   },
+   "examples": {
+    "sessionJogAboveLongestCurrentRun": [
+     {
+      "id": "s7-wj-INTERMEDIATE-5-3-1",
+      "exp": "INTERMEDIATE",
+      "W": 5,
+      "L": 3,
+      "days": 1,
+      "cls": "WALK_JOG",
+      "walkStep": 2,
+      "jogPerSession": 5,
+      "segment": 1,
+      "weeklyJog": 5,
+      "week0ContinuousRuns": []
+     },
+     {
+      "id": "s7-wj-INTERMEDIATE-10-3-1",
+      "exp": "INTERMEDIATE",
+      "W": 10,
+      "L": 3,
+      "days": 1,
+      "cls": "WALK_JOG",
+      "walkStep": 4,
+      "jogPerSession": 10,
+      "segment": 2,
+      "weeklyJog": 10,
+      "week0ContinuousRuns": []
+     },
+     {
+      "id": "s7-wj-INTERMEDIATE-10-3-2",
+      "exp": "INTERMEDIATE",
+      "W": 10,
+      "L": 3,
+      "days": 2,
+      "cls": "WALK_JOG",
+      "walkStep": 2,
+      "jogPerSession": 5,
+      "segment": 1,
+      "weeklyJog": 10,
+      "week0ContinuousRuns": []
+     },
+     {
+      "id": "s7-wj-INTERMEDIATE-10-5-1",
+      "exp": "INTERMEDIATE",
+      "W": 10,
+      "L": 5,
+      "days": 1,
+      "cls": "WALK_JOG",
+      "walkStep": 4,
+      "jogPerSession": 10,
+      "segment": 2,
+      "weeklyJog": 10,
+      "week0ContinuousRuns": []
+     },
+     {
+      "id": "s7-wj-INTERMEDIATE-14-3-1",
+      "exp": "INTERMEDIATE",
+      "W": 14,
+      "L": 3,
+      "days": 1,
+      "cls": "WALK_JOG",
+      "walkStep": 5,
+      "jogPerSession": 12,
+      "segment": 3,
+      "weeklyJog": 12,
+      "week0ContinuousRuns": []
+     }
+    ]
+   },
+   "sample": [
+    {
+     "id": "s7-wj-INTERMEDIATE-5-3-1",
+     "exp": "INTERMEDIATE",
+     "W": 5,
+     "L": 3,
+     "days": 1,
+     "cls": "WALK_JOG",
+     "walkStep": 2,
+     "jogPerSession": 5,
+     "segment": 1,
+     "weeklyJog": 5,
+     "week0ContinuousRuns": []
+    },
+    {
+     "id": "s7-wj-INTERMEDIATE-5-3-2",
+     "exp": "INTERMEDIATE",
+     "W": 5,
+     "L": 3,
+     "days": 2,
+     "cls": "WALK_JOG",
+     "walkStep": 1,
+     "jogPerSession": 2.5,
+     "segment": 0.5,
+     "weeklyJog": 5,
+     "week0ContinuousRuns": []
+    },
+    {
+     "id": "s7-wj-INTERMEDIATE-5-5-1",
+     "exp": "INTERMEDIATE",
+     "W": 5,
+     "L": 5,
+     "days": 1,
+     "cls": "WALK_JOG",
+     "walkStep": 2,
+     "jogPerSession": 5,
+     "segment": 1,
+     "weeklyJog": 5,
+     "week0ContinuousRuns": []
+    },
+    {
+     "id": "s7-wj-INTERMEDIATE-5-5-2",
+     "exp": "INTERMEDIATE",
+     "W": 5,
+     "L": 5,
+     "days": 2,
+     "cls": "WALK_JOG",
+     "walkStep": 1,
+     "jogPerSession": 2.5,
+     "segment": 0.5,
+     "weeklyJog": 5,
+     "week0ContinuousRuns": []
+    },
+    {
+     "id": "s7-wj-INTERMEDIATE-10-3-1",
+     "exp": "INTERMEDIATE",
+     "W": 10,
+     "L": 3,
+     "days": 1,
+     "cls": "WALK_JOG",
+     "walkStep": 4,
+     "jogPerSession": 10,
+     "segment": 2,
+     "weeklyJog": 10,
+     "week0ContinuousRuns": []
+    },
+    {
+     "id": "s7-wj-INTERMEDIATE-10-3-2",
+     "exp": "INTERMEDIATE",
+     "W": 10,
+     "L": 3,
+     "days": 2,
+     "cls": "WALK_JOG",
+     "walkStep": 2,
+     "jogPerSession": 5,
+     "segment": 1,
+     "weeklyJog": 10,
+     "week0ContinuousRuns": []
+    },
+    {
+     "id": "s7-wj-INTERMEDIATE-10-3-3",
+     "exp": "INTERMEDIATE",
+     "W": 10,
+     "L": 3,
+     "days": 3,
+     "cls": "WALK_JOG",
+     "walkStep": 1,
+     "jogPerSession": 2.5,
+     "segment": 0.5,
+     "weeklyJog": 7.5,
+     "week0ContinuousRuns": []
+    },
+    {
+     "id": "s7-wj-INTERMEDIATE-10-3-4",
+     "exp": "INTERMEDIATE",
+     "W": 10,
+     "L": 3,
+     "days": 4,
+     "cls": "WALK_JOG",
+     "walkStep": 1,
+     "jogPerSession": 2.5,
+     "segment": 0.5,
+     "weeklyJog": 7.5,
+     "week0ContinuousRuns": []
+    },
+    {
+     "id": "s7-wj-INTERMEDIATE-10-5-1",
+     "exp": "INTERMEDIATE",
+     "W": 10,
+     "L": 5,
+     "days": 1,
+     "cls": "WALK_JOG",
+     "walkStep": 4,
+     "jogPerSession": 10,
+     "segment": 2,
+     "weeklyJog": 10,
+     "week0ContinuousRuns": []
+    },
+    {
+     "id": "s7-wj-INTERMEDIATE-10-5-2",
+     "exp": "INTERMEDIATE",
+     "W": 10,
+     "L": 5,
+     "days": 2,
+     "cls": "WALK_JOG",
+     "walkStep": 2,
+     "jogPerSession": 5,
+     "segment": 1,
+     "weeklyJog": 10,
+     "week0ContinuousRuns": []
+    },
+    {
+     "id": "s7-wj-INTERMEDIATE-10-5-3",
+     "exp": "INTERMEDIATE",
+     "W": 10,
+     "L": 5,
+     "days": 3,
+     "cls": "WALK_JOG",
+     "walkStep": 1,
+     "jogPerSession": 2.5,
+     "segment": 0.5,
+     "weeklyJog": 7.5,
+     "week0ContinuousRuns": []
+    },
+    {
+     "id": "s7-wj-INTERMEDIATE-10-5-4",
+     "exp": "INTERMEDIATE",
+     "W": 10,
+     "L": 5,
+     "days": 4,
+     "cls": "WALK_JOG",
+     "walkStep": 1,
+     "jogPerSession": 2.5,
+     "segment": 0.5,
+     "weeklyJog": 7.5,
+     "week0ContinuousRuns": []
+    }
+   ]
+  },
+  "C_walkJogEvent": [
+   {
+    "name": "QRE-R6-19 judge case",
+    "status": "PROPOSED",
+    "class": "WALK_JOG",
+    "raceWeek": 3,
+    "phases": [
+     "ESTABLISHMENT",
+     "BUILD",
+     "SPECIFIC",
+     "RACE_WEEK",
+     "POST_EVENT",
+     "NEXT_BLOCK",
+     "NEXT_BLOCK",
+     "NEXT_BLOCK"
+    ],
+    "negotiation": [
+     {
+      "id": "TOO_FEW_RUN_DAYS_FOR_EVENT",
+      "blocking": false,
+      "detail": "1 run day(s) for a 10K; the trajectory stays conservative and completion-focused"
+     },
+     {
+      "id": "LONG_RUN_TIME_LIMITS_EVENT",
+      "blocking": false,
+      "detail": "Long-run time is limited to 30 minutes"
+     },
+     {
+      "id": "EVENT_AMBITIOUS_FOR_CURRENT_RUNNING",
+      "blocking": false,
+      "detail": "The race comes early relative to current running: the plan builds toward completion with walk breaks and cannot promise readiness"
+     }
+    ],
+    "modeByWeek": [
+     "WALK_JOG:4",
+     "WALK_JOG:5",
+     "WALK_JOG:6",
+     "WALK_JOG:7",
+     "WALK_JOG:8",
+     "EASY",
+     "EASY",
+     "EASY"
+    ],
+    "runsByWeek": [
+     {
+      "w": 0,
+      "phase": "ESTABLISHMENT",
+      "runs": [
+       "2026-11-22:WALK_JOG:WALK_JOG:28(5x120)"
+      ]
+     },
+     {
+      "w": 1,
+      "phase": "BUILD",
+      "runs": [
+       "2026-11-29:WALK_JOG:WALK_JOG:26(4x180)"
+      ]
+     },
+     {
+      "w": 2,
+      "phase": "SPECIFIC",
+      "runs": [
+       "2026-12-06:WALK_JOG:WALK_JOG:28(3x300)"
+      ]
+     },
+     {
+      "w": 3,
+      "phase": "RACE_WEEK",
+      "runs": [
+       "2026-12-13:RACE:RACE:75"
+      ]
+     },
+     {
+      "w": 4,
+      "phase": "POST_EVENT",
+      "runs": [
+       "2026-12-20:RECOVERY_EASY:RECOVERY_EASY:20"
+      ]
+     },
+     {
+      "w": 5,
+      "phase": "NEXT_BLOCK",
+      "runs": [
+       "2026-12-27:EASY:EASY:25"
+      ]
+     },
+     {
+      "w": 6,
+      "phase": "NEXT_BLOCK",
+      "runs": [
+       "2027-01-03:EASY:EASY:15"
+      ]
+     },
+     {
+      "w": 7,
+      "phase": "NEXT_BLOCK",
+      "runs": [
+       "2027-01-10:EASY:EASY:20+strides"
+      ]
+     }
+    ],
+    "race": {
+     "date": "2026-12-13",
+     "duration": 75,
+     "effortDomain": "TEN_K_EFFORT",
+     "instructions": [
+      "Race day: easy warm-up with a few relaxed strides",
+      "Start controlled; hold hard but controlled effort and decide in the final part whether to press",
+      "No finish time is promised; effort and how you feel govern the pace",
+      "Stop for pain, dizziness or unusual symptoms",
+      "Afterwards: easy walking; note how you feel today and tomorrow"
+     ]
+    }
+   },
+   {
+    "name": "novice 10K in 8 weeks, 3 run days",
+    "status": "PROPOSED",
+    "class": "WALK_JOG",
+    "raceWeek": 7,
+    "phases": [
+     "ESTABLISHMENT",
+     "BUILD",
+     "BUILD",
+     "SPECIFIC",
+     "SPECIFIC",
+     "SPECIFIC",
+     "TAPER",
+     "RACE_WEEK"
+    ],
+    "negotiation": [
+     {
+      "id": "EVENT_AMBITIOUS_FOR_CURRENT_RUNNING",
+      "blocking": false,
+      "detail": "The race comes early relative to current running: the plan builds toward completion with walk breaks and cannot promise readiness"
+     }
+    ],
+    "modeByWeek": [
+     "WALK_JOG:0",
+     "WALK_JOG:1",
+     "WALK_JOG:2",
+     "WALK_JOG:3",
+     "WALK_JOG:4",
+     "WALK_JOG:5",
+     "WALK_JOG:6",
+     "WALK_JOG:7"
+    ],
+    "runsByWeek": [
+     {
+      "w": 0,
+      "phase": "ESTABLISHMENT",
+      "runs": [
+       "2026-11-03:WALK_JOG:WALK_JOG:20(3x30)",
+       "2026-11-05:WALK_JOG:WALK_JOG:20(3x30)",
+       "2026-11-08:WALK_JOG:WALK_JOG:20(3x30)"
+      ]
+     },
+     {
+      "w": 1,
+      "phase": "BUILD",
+      "runs": [
+       "2026-11-10:WALK_JOG:WALK_JOG:21(5x30)",
+       "2026-11-12:WALK_JOG:WALK_JOG:21(5x30)",
+       "2026-11-15:WALK_JOG:WALK_JOG:21(5x30)"
+      ]
+     },
+     {
+      "w": 2,
+      "phase": "BUILD",
+      "runs": [
+       "2026-11-17:WALK_JOG:WALK_JOG:23(5x60)",
+       "2026-11-19:WALK_JOG:WALK_JOG:23(5x60)",
+       "2026-11-22:WALK_JOG:WALK_JOG:23(5x60)"
+      ]
+     },
+     {
+      "w": 3,
+      "phase": "SPECIFIC",
+      "runs": [
+       "2026-11-24:WALK_JOG:WALK_JOG:26(5x90)",
+       "2026-11-26:WALK_JOG:WALK_JOG:26(5x90)",
+       "2026-11-29:WALK_JOG:WALK_JOG:26(5x90)"
+      ]
+     },
+     {
+      "w": 4,
+      "phase": "SPECIFIC",
+      "runs": [
+       "2026-12-01:WALK_JOG:WALK_JOG:28(5x120)",
+       "2026-12-03:WALK_JOG:WALK_JOG:28(5x120)",
+       "2026-12-06:WALK_JOG:WALK_JOG:28(5x120)"
+      ]
+     },
+     {
+      "w": 5,
+      "phase": "SPECIFIC",
+      "runs": [
+       "2026-12-08:WALK_JOG:WALK_JOG:26(4x180)",
+       "2026-12-10:WALK_JOG:WALK_JOG:26(4x180)",
+       "2026-12-13:WALK_JOG:WALK_JOG:26(4x180)"
+      ]
+     },
+     {
+      "w": 6,
+      "phase": "TAPER",
+      "runs": [
+       "2026-12-15:EASY:EASY:15",
+       "2026-12-17:EASY:EASY:15",
+       "2026-12-20:EASY:EASY:15"
+      ]
+     },
+     {
+      "w": 7,
+      "phase": "RACE_WEEK",
+      "runs": [
+       "2026-12-22:EASY:EASY:15",
+       "2026-12-24:EASY:EASY:15",
+       "2026-12-27:RACE:RACE:75"
+      ]
+     }
+    ],
+    "race": {
+     "date": "2026-12-27",
+     "duration": 75,
+     "effortDomain": "TEN_K_EFFORT",
+     "instructions": [
+      "Race day: easy warm-up with a few relaxed strides",
+      "Start controlled; hold hard but controlled effort and decide in the final part whether to press",
+      "No finish time is promised; effort and how you feel govern the pace",
+      "Stop for pain, dizziness or unusual symptoms",
+      "Afterwards: easy walking; note how you feel today and tomorrow"
+     ]
+    }
+   },
+   {
+    "name": "restart after a 6-week nonclinical pause, 10K in 6 weeks",
+    "status": "PROPOSED",
+    "class": "RESTART",
+    "raceWeek": 5,
+    "phases": [
+     "ESTABLISHMENT",
+     "BUILD",
+     "SPECIFIC",
+     "SPECIFIC",
+     "TAPER",
+     "RACE_WEEK",
+     "POST_EVENT",
+     "NEXT_BLOCK"
+    ],
+    "negotiation": [
+     {
+      "id": "EVENT_AMBITIOUS_FOR_CURRENT_RUNNING",
+      "blocking": false,
+      "detail": "The race comes early relative to current running: the plan builds toward completion with walk breaks and cannot promise readiness"
+     }
+    ],
+    "modeByWeek": [
+     "RESTART",
+     "RESTART",
+     "RESTART",
+     "EASY",
+     "EASY",
+     "EASY",
+     "EASY",
+     "EASY"
+    ],
+    "runsByWeek": [
+     {
+      "w": 0,
+      "phase": "ESTABLISHMENT",
+      "runs": [
+       "2026-11-03:EASY:EASY:15",
+       "2026-11-05:EASY:EASY:15",
+       "2026-11-08:EASY:EASY:15"
+      ]
+     },
+     {
+      "w": 1,
+      "phase": "BUILD",
+      "runs": [
+       "2026-11-10:EASY:EASY:20",
+       "2026-11-12:EASY:EASY:20",
+       "2026-11-15:EASY:EASY:20"
+      ]
+     },
+     {
+      "w": 2,
+      "phase": "SPECIFIC",
+      "runs": [
+       "2026-11-17:EASY:EASY:25",
+       "2026-11-19:EASY:EASY:25",
+       "2026-11-22:EASY:EASY:25"
+      ]
+     },
+     {
+      "w": 3,
+      "phase": "SPECIFIC",
+      "runs": [
+       "2026-11-24:EASY:EASY:30",
+       "2026-11-26:EASY:EASY:30",
+       "2026-11-29:LONG:LONG:30"
+      ]
+     },
+     {
+      "w": 4,
+      "phase": "TAPER",
+      "runs": [
+       "2026-12-01:EASY:EASY:25",
+       "2026-12-03:EASY:EASY:25",
+       "2026-12-06:LONG:LONG:20"
+      ]
+     },
+     {
+      "w": 5,
+      "phase": "RACE_WEEK",
+      "runs": [
+       "2026-12-08:EASY:EASY:15",
+       "2026-12-10:EASY:EASY:15",
+       "2026-12-13:RACE:RACE:75"
+      ]
+     },
+     {
+      "w": 6,
+      "phase": "POST_EVENT",
+      "runs": [
+       "2026-12-15:RECOVERY_EASY:RECOVERY_EASY:20",
+       "2026-12-17:RECOVERY_EASY:RECOVERY_EASY:30",
+       "2026-12-20:RECOVERY_EASY:RECOVERY_EASY:30"
+      ]
+     },
+     {
+      "w": 7,
+      "phase": "NEXT_BLOCK",
+      "runs": [
+       "2026-12-22:EASY:EASY:20+strides",
+       "2026-12-24:EASY:EASY:20",
+       "2026-12-27:LONG:LONG:15"
+      ]
+     }
+    ],
+    "race": {
+     "date": "2026-12-13",
+     "duration": 75,
+     "effortDomain": "TEN_K_EFFORT",
+     "instructions": [
+      "Race day: easy warm-up with a few relaxed strides",
+      "Start controlled; hold hard but controlled effort and decide in the final part whether to press",
+      "No finish time is promised; effort and how you feel govern the pace",
+      "Stop for pain, dizziness or unusual symptoms",
+      "Afterwards: easy walking; note how you feel today and tomorrow"
+     ]
+    }
+   },
+   {
+    "name": "non-novice below minimum, HM in 12 weeks",
+    "status": "PROPOSED",
+    "class": "WALK_JOG",
+    "raceWeek": 11,
+    "phases": [
+     "ESTABLISHMENT",
+     "BUILD",
+     "BUILD",
+     "BUILD",
+     "CONSOLIDATION",
+     "BUILD",
+     "SPECIFIC",
+     "SPECIFIC",
+     "SPECIFIC",
+     "SPECIFIC",
+     "TAPER",
+     "RACE_WEEK"
+    ],
+    "negotiation": [
+     {
+      "id": "LONG_RUN_TIME_LIMITS_EVENT",
+      "blocking": false,
+      "detail": "Long-run time is limited to 80 minutes"
+     },
+     {
+      "id": "EVENT_AMBITIOUS_FOR_CURRENT_RUNNING",
+      "blocking": false,
+      "detail": "The race comes early relative to current running: the plan builds toward completion with walk breaks and cannot promise readiness"
+     }
+    ],
+    "modeByWeek": [
+     "WALK_JOG:1",
+     "WALK_JOG:2",
+     "WALK_JOG:3",
+     "WALK_JOG:4",
+     "WALK_JOG:5",
+     "WALK_JOG:5",
+     "WALK_JOG:6",
+     "WALK_JOG:7",
+     "WALK_JOG:8",
+     "EASY",
+     "EASY",
+     "EASY"
+    ],
+    "runsByWeek": [
+     {
+      "w": 0,
+      "phase": "ESTABLISHMENT",
+      "runs": [
+       "2026-11-03:WALK_JOG:WALK_JOG:21(5x30)",
+       "2026-11-05:WALK_JOG:WALK_JOG:21(5x30)",
+       "2026-11-08:WALK_JOG:WALK_JOG:21(5x30)"
+      ]
+     },
+     {
+      "w": 1,
+      "phase": "BUILD",
+      "runs": [
+       "2026-11-10:WALK_JOG:WALK_JOG:23(5x60)",
+       "2026-11-12:WALK_JOG:WALK_JOG:23(5x60)",
+       "2026-11-15:WALK_JOG:WALK_JOG:23(5x60)"
+      ]
+     },
+     {
+      "w": 2,
+      "phase": "BUILD",
+      "runs": [
+       "2026-11-17:WALK_JOG:WALK_JOG:26(5x90)",
+       "2026-11-19:WALK_JOG:WALK_JOG:26(5x90)",
+       "2026-11-22:WALK_JOG:WALK_JOG:26(5x90)"
+      ]
+     },
+     {
+      "w": 3,
+      "phase": "BUILD",
+      "runs": [
+       "2026-11-24:WALK_JOG:WALK_JOG:28(5x120)",
+       "2026-11-26:WALK_JOG:WALK_JOG:28(5x120)",
+       "2026-11-29:WALK_JOG:WALK_JOG:28(5x120)"
+      ]
+     },
+     {
+      "w": 4,
+      "phase": "CONSOLIDATION",
+      "runs": [
+       "2026-12-01:WALK_JOG:WALK_JOG:26(4x180)",
+       "2026-12-03:WALK_JOG:WALK_JOG:26(4x180)",
+       "2026-12-06:WALK_JOG:WALK_JOG:26(4x180)"
+      ]
+     },
+     {
+      "w": 5,
+      "phase": "BUILD",
+      "runs": [
+       "2026-12-08:WALK_JOG:WALK_JOG:26(4x180)",
+       "2026-12-10:WALK_JOG:WALK_JOG:26(4x180)",
+       "2026-12-13:WALK_JOG:WALK_JOG:26(4x180)"
+      ]
+     },
+     {
+      "w": 6,
+      "phase": "SPECIFIC",
+      "runs": [
+       "2026-12-15:WALK_JOG:WALK_JOG:28(3x300)",
+       "2026-12-17:WALK_JOG:WALK_JOG:28(3x300)",
+       "2026-12-20:WALK_JOG:WALK_JOG:28(3x300)"
+      ]
+     },
+     {
+      "w": 7,
+      "phase": "SPECIFIC",
+      "runs": [
+       "2026-12-22:WALK_JOG:WALK_JOG:26(2x480)",
+       "2026-12-24:WALK_JOG:WALK_JOG:26(2x480)",
+       "2026-12-27:WALK_JOG:WALK_JOG:26(2x480)"
+      ]
+     },
+     {
+      "w": 8,
+      "phase": "SPECIFIC",
+      "runs": [
+       "2026-12-29:WALK_JOG:WALK_JOG:28(1x1200)",
+       "2026-12-31:WALK_JOG:WALK_JOG:28(1x1200)",
+       "2027-01-03:WALK_JOG:WALK_JOG:28(1x1200)"
+      ]
+     },
+     {
+      "w": 9,
+      "phase": "SPECIFIC",
+      "runs": [
+       "2027-01-05:EASY:EASY:25",
+       "2027-01-07:EASY:EASY:25",
+       "2027-01-10:EASY:EASY:25"
+      ]
+     },
+     {
+      "w": 10,
+      "phase": "TAPER",
+      "runs": [
+       "2027-01-12:EASY:EASY:20",
+       "2027-01-14:EASY:EASY:20",
+       "2027-01-17:EASY:EASY:20"
+      ]
+     },
+     {
+      "w": 11,
+      "phase": "RACE_WEEK",
+      "runs": [
+       "2027-01-19:EASY:EASY:15",
+       "2027-01-21:EASY:EASY:15",
+       "2027-01-24:RACE:RACE:150"
+      ]
+     }
+    ],
+    "race": {
+     "date": "2027-01-24",
+     "duration": 150,
+     "effortDomain": "HALF_MARATHON_EFFORT",
+     "instructions": [
+      "Race day: easy warm-up with a few relaxed strides",
+      "Start controlled; hold steady-hard effort and decide in the final part whether to press",
+      "No finish time is promised; effort and how you feel govern the pace",
+      "Stop for pain, dizziness or unusual symptoms",
+      "Afterwards: easy walking; note how you feel today and tomorrow"
+     ]
+    }
+   }
+  ],
+  "D_loggedLoad": {
+   "planned": {
+    "session": "w0-str-d0",
+    "sets": 3,
+    "reps": 5,
+    "rir": 3,
+    "load": {
+     "mode": "KNOWN",
+     "value": 80,
+     "unit": "KG",
+     "convention": "TOTAL"
+    }
+   },
+   "asPlanned_80": {
+    "status": "KEEP",
+    "action": "INSTANTIATE_LOGGED_LOADS",
+    "gate": "ADVANCE",
+    "week1": [
+     80
+    ],
+    "week2": [
+     82.5
+    ],
+    "loadQuestions": []
+   },
+   "oneIncrementUp_82.5_rirOnTarget": {
+    "status": "MODIFY",
+    "action": "ADOPT_LOGGED_LOADS",
+    "gate": "ADVANCE",
+    "week1": [
+     82.5
+    ],
+    "week2": [
+     85
+    ],
+    "loadQuestions": []
+   },
+   "oneIncrementUp_82.5_rir0_repsMet": {
+    "status": "MODIFY",
+    "action": "GATED_NEXT_STEP",
+    "gate": "HOLD",
+    "week1": [
+     82.5
+    ],
+    "week2": [
+     82.5
+    ],
+    "loadQuestions": []
+   },
+   "oneIncrementUp_82.5_repsMissed": {
+    "status": "MODIFY",
+    "action": "GATED_NEXT_STEP",
+    "gate": "HOLD",
+    "week1": [
+     82.5
+    ],
+    "week2": [
+     82.5
+    ],
+    "loadQuestions": []
+   },
+   "twoIncrementsUp_85": {
+    "status": "KEEP",
+    "action": "INSTANTIATE_LOGGED_LOADS",
+    "gate": "ADVANCE",
+    "week1": [
+     80
+    ],
+    "week2": [
+     82.5
+    ],
+    "loadQuestions": [
+     "LOGGED_LOAD_ABOVE_PLAN"
+    ]
+   },
+   "typoLow_8": {
+    "status": "MODIFY",
+    "action": "ADOPT_LOGGED_LOADS",
+    "gate": "ADVANCE",
+    "week1": [
+     8
+    ],
+    "week2": [
+     10.5
+    ],
+    "loadQuestions": []
+   },
+   "lb_181_is_82": {
+    "status": "MODIFY",
+    "action": "ADOPT_LOGGED_LOADS",
+    "gate": "ADVANCE",
+    "week1": [
+     82
+    ],
+    "week2": [
+     84.5
+    ],
+    "loadQuestions": []
+   },
+   "establish_log_16_per_hand": {
+    "status": "KEEP",
+    "action": "INSTANTIATE_LOGGED_LOADS",
+    "week0Row": {
+     "session": "w0-str-d0",
+     "id": "goblet-squat",
+     "load": {
+      "mode": "ESTABLISH",
+      "unit": "KG",
+      "convention": "PER_HAND"
+     },
+     "sets": 2,
+     "reps": 5,
+     "rir": 3
+    },
+    "week1": [
+     {
+      "mode": "KNOWN",
+      "value": 16,
+      "unit": "KG",
+      "convention": "PER_HAND"
+     }
+    ],
+    "week2": [
+     {
+      "mode": "KNOWN",
+      "value": 16,
+      "unit": "KG",
+      "convention": "PER_HAND"
+     }
+    ],
+    "loadQuestions": []
+   },
+   "establish_log_160_per_hand_typo": {
+    "status": "KEEP",
+    "action": "INSTANTIATE_LOGGED_LOADS",
+    "week0Row": {
+     "session": "w0-str-d0",
+     "id": "goblet-squat",
+     "load": {
+      "mode": "ESTABLISH",
+      "unit": "KG",
+      "convention": "PER_HAND"
+     },
+     "sets": 2,
+     "reps": 5,
+     "rir": 3
+    },
+    "week1": [
+     {
+      "mode": "KNOWN",
+      "value": 160,
+      "unit": "KG",
+      "convention": "PER_HAND"
+     }
+    ],
+    "week2": [
+     {
+      "mode": "KNOWN",
+      "value": 160,
+      "unit": "KG",
+      "convention": "PER_HAND"
+     }
+    ],
+    "loadQuestions": []
+   }
+  },
+  "G_conflicts": {
+   "sessionStatuses": [
+    {
+     "id": "w0-run-d1",
+     "status": "CONFLICTED"
+    },
+    {
+     "id": "w0-run-d3",
+     "status": "CONFLICTED"
+    }
+   ],
+   "conflicts": [
+    {
+     "identity": "session:w0-run-d3",
+     "eventIds": [
+      "s7-a",
+      "s7-b"
+     ],
+     "activityId": "act-SAME",
+     "reason": "ACTIVITY_BOUND_TO_TWO_SESSIONS"
+    }
+   ],
+   "ledgerRows": [
+    {
+     "sessionId": "w0-run-d1",
+     "conflicted": true
+    }
+   ]
+  },
+  "I_return": {
+   "moderate_demo10": {
+    "status": "MODIFY",
+    "class": "MODERATE",
+    "demo": false,
+    "missing": []
+   },
+   "moderate_demo25": {
+    "status": "MODIFY",
+    "class": "MODERATE",
+    "demo": true,
+    "missing": []
+   },
+   "clinicalReason_sim": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "class": null,
+    "demo": null,
+    "missing": []
+   },
+   "clinicalReason_maybe": {
+    "status": "ASK",
+    "class": null,
+    "demo": null,
+    "missing": [
+     "interruption.reasonCategory"
+    ]
+   },
+   "eligibilityPainStringTrue": {
+    "status": "ASK",
+    "class": null,
+    "demo": null,
+    "missing": [
+     "eligibility.currentAssessment"
+    ]
+   },
+   "eligibilityPainOne": {
+    "status": "ASK",
+    "class": null,
+    "demo": null,
+    "missing": [
+     "eligibility.currentAssessment"
+    ]
+   }
+  },
+  "J_clinicalScreen": {
+   "results": [
+    {
+     "reason": "It was hard to run without pain",
+     "category": "WORK",
+     "expect": "X",
+     "status": "ASK",
+     "basis": "AMBIGUOUS_REASON",
+     "matched": [
+      "denial that depends on its clause (mid-clause without/sem/sin, or a time or contrast condition)"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "Without pain, just travel",
+     "category": "WORK",
+     "expect": "N",
+     "status": "NONCLINICAL",
+     "basis": "NONCLINICAL_CATEGORY",
+     "matched": [
+      "WORK"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "Sem dor, só trabalho",
+     "category": "WORK",
+     "expect": "N",
+     "status": "NONCLINICAL",
+     "basis": "NONCLINICAL_CATEGORY",
+     "matched": [
+      "WORK"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "Sin dolor, solo trabajo",
+     "category": "WORK",
+     "expect": "N",
+     "status": "NONCLINICAL",
+     "basis": "NONCLINICAL_CATEGORY",
+     "matched": [
+      "WORK"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "nothing clinical, just a busy month",
+     "category": "WORK",
+     "expect": "N",
+     "status": "NONCLINICAL",
+     "basis": "NONCLINICAL_CATEGORY",
+     "matched": [
+      "WORK"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "Didn't feel any pain",
+     "category": "WORK",
+     "expect": "N",
+     "status": "NONCLINICAL",
+     "basis": "NONCLINICAL_CATEGORY",
+     "matched": [
+      "WORK"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "Não senti dor nenhuma",
+     "category": "WORK",
+     "expect": "N",
+     "status": "NONCLINICAL",
+     "basis": "NONCLINICAL_CATEGORY",
+     "matched": [
+      "WORK"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "No tuve dolor",
+     "category": "WORK",
+     "expect": "N",
+     "status": "NONCLINICAL",
+     "basis": "NONCLINICAL_CATEGORY",
+     "matched": [
+      "WORK"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "Never had any injury",
+     "category": "WORK",
+     "expect": "N",
+     "status": "NONCLINICAL",
+     "basis": "NONCLINICAL_CATEGORY",
+     "matched": [
+      "WORK"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "didn't feel well on the trip",
+     "category": "WORK",
+     "expect": "A",
+     "status": "ASK",
+     "basis": "AMBIGUOUS_REASON",
+     "matched": [
+      "didnt feel well"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "Didn't feel any pain until I tried to run",
+     "category": "WORK",
+     "expect": "X",
+     "status": "ASK",
+     "basis": "AMBIGUOUS_REASON",
+     "matched": [
+      "denial that depends on its clause (mid-clause without/sem/sin, or a time or contrast condition)"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "No tuve dolor hasta que corrí",
+     "category": "WORK",
+     "expect": "X",
+     "status": "ASK",
+     "basis": "AMBIGUOUS_REASON",
+     "matched": [
+      "denial that depends on its clause (mid-clause without/sem/sin, or a time or contrast condition)"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "couldn't run without pain",
+     "category": "WORK",
+     "expect": "C",
+     "status": "CLINICAL",
+     "basis": "CLINICAL_MENTION",
+     "matched": [
+      "pain"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "No pude correr sin dolor en el viaje",
+     "category": "WORK",
+     "expect": "C",
+     "status": "CLINICAL",
+     "basis": "CLINICAL_MENTION",
+     "matched": [
+      "dolor"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "Not sick - injured on holiday",
+     "category": "WORK",
+     "expect": "C",
+     "status": "CLINICAL",
+     "basis": "CLINICAL_MENTION",
+     "matched": [
+      "injured"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "Ocupado y enfermo",
+     "category": "WORK",
+     "expect": "C",
+     "status": "CLINICAL",
+     "basis": "CLINICAL_MENTION",
+     "matched": [
+      "enfermo"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "Me caí en el viaje",
+     "category": "WORK",
+     "expect": "X",
+     "status": "ASK",
+     "basis": "AMBIGUOUS_REASON",
+     "matched": [
+      "cai",
+      "me cai"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "Work travel, will resume Monday",
+     "category": null,
+     "expect": "A",
+     "status": "ASK",
+     "basis": "CATEGORY_REQUIRED",
+     "matched": [
+      "work",
+      "travel"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "heart attack",
+     "category": "WORK",
+     "expect": "C",
+     "status": "CLINICAL",
+     "basis": "CLINICAL_MENTION",
+     "matched": [
+      "heart attack"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "broke my leg",
+     "category": "WORK",
+     "expect": "C",
+     "status": "CLINICAL",
+     "basis": "CLINICAL_MENTION",
+     "matched": [
+      "broke leg"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "chemotherapy",
+     "category": "WORK",
+     "expect": "C",
+     "status": "CLINICAL",
+     "basis": "CLINICAL_MENTION",
+     "matched": [
+      "chemotherapy"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "quebrei a perna",
+     "category": "WORK",
+     "expect": "C",
+     "status": "CLINICAL",
+     "basis": "CLINICAL_MENTION",
+     "matched": [
+      "quebrei perna"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "me rompí la pierna",
+     "category": "WORK",
+     "expect": "C",
+     "status": "CLINICAL",
+     "basis": "CLINICAL_MENTION",
+     "matched": [
+      "rompi pierna"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "fraturei o pulso",
+     "category": "WORK",
+     "expect": "C",
+     "status": "CLINICAL",
+     "basis": "CLINICAL_MENTION",
+     "matched": [
+      "fraturei"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "kidney stones",
+     "category": "WORK",
+     "expect": "C",
+     "status": "CLINICAL",
+     "basis": "CLINICAL_MENTION",
+     "matched": [
+      "kidney stones"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "tendon rupture",
+     "category": "WORK",
+     "expect": "C",
+     "status": "CLINICAL",
+     "basis": "CLINICAL_MENTION",
+     "matched": [
+      "rupture"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "Broke my phone, busy at work",
+     "category": "WORK",
+     "expect": "N",
+     "status": "NONCLINICAL",
+     "basis": "NONCLINICAL_CATEGORY",
+     "matched": [
+      "WORK"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "Took a break from work travel",
+     "category": "WORK",
+     "expect": "N",
+     "status": "NONCLINICAL",
+     "basis": "NONCLINICAL_CATEGORY",
+     "matched": [
+      "WORK"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "Spring break with the kids",
+     "category": "WORK",
+     "expect": "N",
+     "status": "NONCLINICAL",
+     "basis": "NONCLINICAL_CATEGORY",
+     "matched": [
+      "WORK"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "Didn't break anything, just travel",
+     "category": "WORK",
+     "expect": "N",
+     "status": "NONCLINICAL",
+     "basis": "NONCLINICAL_CATEGORY",
+     "matched": [
+      "WORK"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "No broken bones, just a work trip",
+     "category": "WORK",
+     "expect": "X",
+     "status": "CLINICAL",
+     "basis": "CLINICAL_MENTION",
+     "matched": [
+      "broken bones"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "Didn't break my leg, just busy",
+     "category": "WORK",
+     "expect": "X",
+     "status": "CLINICAL",
+     "basis": "CLINICAL_MENTION",
+     "matched": [
+      "break leg"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "Took a break, my back is fine",
+     "category": "WORK",
+     "expect": "X",
+     "status": "ASK",
+     "basis": "AMBIGUOUS_REASON",
+     "matched": [
+      "back"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "Back from vacation",
+     "category": "VACATION",
+     "expect": "X",
+     "status": "ASK",
+     "basis": "AMBIGUOUS_REASON",
+     "matched": [
+      "back"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "Back to work after the holidays",
+     "category": "WORK",
+     "expect": "X",
+     "status": "ASK",
+     "basis": "AMBIGUOUS_REASON",
+     "matched": [
+      "back"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "Family emergency, my heart was elsewhere",
+     "category": "FAMILY",
+     "expect": "X",
+     "status": "ASK",
+     "basis": "AMBIGUOUS_REASON",
+     "matched": [
+      "heart"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "Had a baby",
+     "category": "FAMILY",
+     "expect": "X",
+     "status": "NONCLINICAL",
+     "basis": "NONCLINICAL_CATEGORY",
+     "matched": [
+      "FAMILY"
+     ],
+     "ok": false
+    },
+    {
+     "reason": "Tive um bebê",
+     "category": "FAMILY",
+     "expect": "X",
+     "status": "NONCLINICAL",
+     "basis": "NONCLINICAL_CATEGORY",
+     "matched": [
+      "FAMILY"
+     ],
+     "ok": false
+    },
+    {
+     "reason": "Tuve un bebé",
+     "category": "FAMILY",
+     "expect": "X",
+     "status": "NONCLINICAL",
+     "basis": "NONCLINICAL_CATEGORY",
+     "matched": [
+      "FAMILY"
+     ],
+     "ok": false
+    },
+    {
+     "reason": "Hit by a car on the way to work",
+     "category": "WORK",
+     "expect": "X",
+     "status": "NONCLINICAL",
+     "basis": "NONCLINICAL_CATEGORY",
+     "matched": [
+      "WORK"
+     ],
+     "ok": false
+    },
+    {
+     "reason": "Car crash",
+     "category": "TRAVEL",
+     "expect": "X",
+     "status": "NONCLINICAL",
+     "basis": "NONCLINICAL_CATEGORY",
+     "matched": [
+      "TRAVEL"
+     ],
+     "ok": false
+    },
+    {
+     "reason": "Pulled a hamstring",
+     "category": "WORK",
+     "expect": "X",
+     "status": "ASK",
+     "basis": "AMBIGUOUS_REASON",
+     "matched": [
+      "hamstring"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "Twisted my ankle on the trip",
+     "category": "WORK",
+     "expect": "X",
+     "status": "ASK",
+     "basis": "AMBIGUOUS_REASON",
+     "matched": [
+      "ankle"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "Knee gave out",
+     "category": "WORK",
+     "expect": "X",
+     "status": "ASK",
+     "basis": "AMBIGUOUS_REASON",
+     "matched": [
+      "knee"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "Got COVID on the trip",
+     "category": "TRAVEL",
+     "expect": "C",
+     "status": "CLINICAL",
+     "basis": "CLINICAL_MENTION",
+     "matched": [
+      "covid"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "Long covid",
+     "category": "WORK",
+     "expect": "C",
+     "status": "CLINICAL",
+     "basis": "CLINICAL_MENTION",
+     "matched": [
+      "covid"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "Burnout at work",
+     "category": "WORK",
+     "expect": "X",
+     "status": "ASK",
+     "basis": "AMBIGUOUS_REASON",
+     "matched": [
+      "burnout"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "Bitten by a dog",
+     "category": "WORK",
+     "expect": "X",
+     "status": "NONCLINICAL",
+     "basis": "NONCLINICAL_CATEGORY",
+     "matched": [
+      "WORK"
+     ],
+     "ok": false
+    },
+    {
+     "reason": "Bike crash on holiday",
+     "category": "VACATION",
+     "expect": "X",
+     "status": "NONCLINICAL",
+     "basis": "NONCLINICAL_CATEGORY",
+     "matched": [
+      "VACATION"
+     ],
+     "ok": false
+    },
+    {
+     "reason": "Slipped on ice",
+     "category": "WEATHER",
+     "expect": "X",
+     "status": "NONCLINICAL",
+     "basis": "NONCLINICAL_CATEGORY",
+     "matched": [
+      "WEATHER"
+     ],
+     "ok": false
+    },
+    {
+     "reason": "Torn meniscus",
+     "category": "WORK",
+     "expect": "C",
+     "status": "CLINICAL",
+     "basis": "CLINICAL_MENTION",
+     "matched": [
+      "torn"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "Lesão no joelho",
+     "category": "WORK",
+     "expect": "C",
+     "status": "CLINICAL",
+     "basis": "CLINICAL_MENTION",
+     "matched": [
+      "lesao"
+     ],
+     "ok": true
+    },
+    {
+     "reason": "Esguince de tobillo",
+     "category": "WORK",
+     "expect": "C",
+     "status": "CLINICAL",
+     "basis": "CLINICAL_MENTION",
+     "matched": [
+      "esguince"
+     ],
+     "ok": true
+    }
+   ],
+   "mismatches": [
+    "Had a baby [FAMILY] -> NONCLINICAL (expected X)",
+    "Tive um bebê [FAMILY] -> NONCLINICAL (expected X)",
+    "Tuve un bebé [FAMILY] -> NONCLINICAL (expected X)",
+    "Hit by a car on the way to work [WORK] -> NONCLINICAL (expected X)",
+    "Car crash [TRAVEL] -> NONCLINICAL (expected X)",
+    "Bitten by a dog [WORK] -> NONCLINICAL (expected X)",
+    "Bike crash on holiday [VACATION] -> NONCLINICAL (expected X)",
+    "Slipped on ice [WEATHER] -> NONCLINICAL (expected X)"
+   ]
+  },
+  "K_missingGate": {
+   "walkStepByWeek": [
+    "WALK_JOG:2",
+    "WALK_JOG:2",
+    "WALK_JOG:2",
+    "WALK_JOG:2",
+    "WALK_JOG:2",
+    "WALK_JOG:2",
+    "WALK_JOG:2",
+    "WALK_JOG:2"
+   ],
+   "executedRuns": 0
+  },
+  "L_projectionMissingGate": [
+   {
+    "id": "s7-L-wj",
+    "weeks": [
+     {
+      "w": 0,
+      "phase": "ESTABLISHMENT",
+      "runRoles": [
+       "WALK_JOG"
+      ],
+      "mode": "WALK_JOG",
+      "walkStep": 4,
+      "easyWeeksDone": 0,
+      "next": {
+       "mode": "WALK_JOG",
+       "walkStep": 5,
+       "easyWeeksDone": 0
+      },
+      "stepWithoutSession": false
+     },
+     {
+      "w": 1,
+      "phase": "BUILD",
+      "runRoles": [
+       "WALK_JOG"
+      ],
+      "mode": "WALK_JOG",
+      "walkStep": 5,
+      "easyWeeksDone": 0,
+      "next": {
+       "mode": "WALK_JOG",
+       "walkStep": 6,
+       "easyWeeksDone": 0
+      },
+      "stepWithoutSession": false
+     },
+     {
+      "w": 2,
+      "phase": "SPECIFIC",
+      "runRoles": [
+       "WALK_JOG"
+      ],
+      "mode": "WALK_JOG",
+      "walkStep": 6,
+      "easyWeeksDone": 0,
+      "next": {
+       "mode": "WALK_JOG",
+       "walkStep": 7,
+       "easyWeeksDone": 0
+      },
+      "stepWithoutSession": false
+     },
+     {
+      "w": 3,
+      "phase": "RACE_WEEK",
+      "runRoles": [
+       "RACE"
+      ],
+      "mode": "WALK_JOG",
+      "walkStep": 7,
+      "easyWeeksDone": 0,
+      "next": {
+       "mode": "WALK_JOG",
+       "walkStep": 8,
+       "easyWeeksDone": 0
+      },
+      "stepWithoutSession": true
+     },
+     {
+      "w": 4,
+      "phase": "POST_EVENT",
+      "runRoles": [
+       "RECOVERY_EASY"
+      ],
+      "mode": "WALK_JOG",
+      "walkStep": 8,
+      "easyWeeksDone": 0,
+      "next": {
+       "mode": "EASY",
+       "walkStep": 9,
+       "easyWeeksDone": 0
+      },
+      "stepWithoutSession": true
+     },
+     {
+      "w": 5,
+      "phase": "NEXT_BLOCK",
+      "runRoles": [
+       "EASY"
+      ],
+      "mode": "EASY",
+      "walkStep": 9,
+      "easyWeeksDone": 0,
+      "next": {
+       "mode": "EASY",
+       "walkStep": 9,
+       "easyWeeksDone": 1
+      },
+      "stepWithoutSession": false
+     },
+     {
+      "w": 6,
+      "phase": "NEXT_BLOCK",
+      "runRoles": [
+       "EASY"
+      ],
+      "mode": "EASY",
+      "walkStep": 9,
+      "easyWeeksDone": 1,
+      "next": {
+       "mode": "EASY",
+       "walkStep": 9,
+       "easyWeeksDone": 2
+      },
+      "stepWithoutSession": false
+     },
+     {
+      "w": 7,
+      "phase": "NEXT_BLOCK",
+      "runRoles": [
+       "EASY"
+      ],
+      "mode": "EASY",
+      "walkStep": 9,
+      "easyWeeksDone": 2,
+      "next": null,
+      "stepWithoutSession": false
+     }
+    ]
+   },
+   {
+    "id": "s7-L-easy-mon",
+    "weeks": [
+     {
+      "w": 0,
+      "phase": "BUILD",
+      "runRoles": [
+       "EASY",
+       "LONG"
+      ],
+      "mode": "EASY",
+      "walkStep": 0,
+      "easyWeeksDone": 0,
+      "next": {
+       "mode": "EASY",
+       "walkStep": 0,
+       "easyWeeksDone": 1
+      },
+      "stepWithoutSession": false
+     },
+     {
+      "w": 1,
+      "phase": "BUILD",
+      "runRoles": [
+       "EASY",
+       "LONG"
+      ],
+      "mode": "EASY",
+      "walkStep": 0,
+      "easyWeeksDone": 1,
+      "next": {
+       "mode": "EASY",
+       "walkStep": 0,
+       "easyWeeksDone": 2
+      },
+      "stepWithoutSession": false
+     },
+     {
+      "w": 2,
+      "phase": "BUILD",
+      "runRoles": [
+       "EASY",
+       "QUALITY",
+       "LONG"
+      ],
+      "mode": "EASY",
+      "walkStep": 0,
+      "easyWeeksDone": 2,
+      "next": {
+       "mode": "EASY",
+       "walkStep": 0,
+       "easyWeeksDone": 3
+      },
+      "stepWithoutSession": false
+     },
+     {
+      "w": 3,
+      "phase": "SPECIFIC",
+      "runRoles": [
+       "EASY",
+       "QUALITY",
+       "LONG"
+      ],
+      "mode": "EASY",
+      "walkStep": 0,
+      "easyWeeksDone": 3,
+      "next": {
+       "mode": "EASY",
+       "walkStep": 0,
+       "easyWeeksDone": 4
+      },
+      "stepWithoutSession": false
+     },
+     {
+      "w": 4,
+      "phase": "SPECIFIC",
+      "runRoles": [
+       "EASY",
+       "QUALITY",
+       "LONG"
+      ],
+      "mode": "EASY",
+      "walkStep": 0,
+      "easyWeeksDone": 4,
+      "next": {
+       "mode": "EASY",
+       "walkStep": 0,
+       "easyWeeksDone": 5
+      },
+      "stepWithoutSession": false
+     },
+     {
+      "w": 5,
+      "phase": "SPECIFIC",
+      "runRoles": [
+       "EASY",
+       "QUALITY",
+       "LONG"
+      ],
+      "mode": "EASY",
+      "walkStep": 0,
+      "easyWeeksDone": 5,
+      "next": {
+       "mode": "EASY",
+       "walkStep": 0,
+       "easyWeeksDone": 6
+      },
+      "stepWithoutSession": false
+     },
+     {
+      "w": 6,
+      "phase": "TAPER",
+      "runRoles": [
+       "EASY",
+       "RACE_TOUCH",
+       "SHAKEOUT"
+      ],
+      "mode": "EASY",
+      "walkStep": 0,
+      "easyWeeksDone": 6,
+      "next": {
+       "mode": "EASY",
+       "walkStep": 0,
+       "easyWeeksDone": 7
+      },
+      "stepWithoutSession": false
+     },
+     {
+      "w": 7,
+      "phase": "RACE_WEEK",
+      "runRoles": [
+       "RACE",
+       "RECOVERY_EASY"
+      ],
+      "mode": "EASY",
+      "walkStep": 0,
+      "easyWeeksDone": 7,
+      "next": {
+       "mode": "EASY",
+       "walkStep": 0,
+       "easyWeeksDone": 8
+      },
+      "stepWithoutSession": true
+     },
+     {
+      "w": 8,
+      "phase": "POST_EVENT",
+      "runRoles": [
+       "RECOVERY_EASY"
+      ],
+      "mode": "EASY",
+      "walkStep": 0,
+      "easyWeeksDone": 8,
+      "next": {
+       "mode": "EASY",
+       "walkStep": 0,
+       "easyWeeksDone": 9
+      },
+      "stepWithoutSession": true
+     },
+     {
+      "w": 9,
+      "phase": "NEXT_BLOCK",
+      "runRoles": [
+       "EASY",
+       "QUALITY",
+       "LONG"
+      ],
+      "mode": "EASY",
+      "walkStep": 0,
+      "easyWeeksDone": 9,
+      "next": {
+       "mode": "EASY",
+       "walkStep": 0,
+       "easyWeeksDone": 10
+      },
+      "stepWithoutSession": false
+     },
+     {
+      "w": 10,
+      "phase": "NEXT_BLOCK",
+      "runRoles": [
+       "EASY",
+       "QUALITY",
+       "LONG"
+      ],
+      "mode": "EASY",
+      "walkStep": 0,
+      "easyWeeksDone": 10,
+      "next": {
+       "mode": "EASY",
+       "walkStep": 0,
+       "easyWeeksDone": 11
+      },
+      "stepWithoutSession": false
+     },
+     {
+      "w": 11,
+      "phase": "NEXT_BLOCK",
+      "runRoles": [
+       "EASY",
+       "QUALITY",
+       "LONG"
+      ],
+      "mode": "EASY",
+      "walkStep": 0,
+      "easyWeeksDone": 11,
+      "next": null,
+      "stepWithoutSession": false
+     }
+    ]
+   }
+  ]
+ }
+}

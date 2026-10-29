@@ -1,0 +1,458 @@
+{
+  "revision": "R7A1-VERIFICATION-1",
+  "verifiedAt": "2026-10-28T02:56:18.698Z",
+  "node": "v24.19.0",
+  "passing": 17,
+  "total": 17,
+  "checks": [
+    {
+      "id": "baseline-preserved",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "entries": 1266,
+        "changed": [
+          "CoachingCore/src/r6-adaptation.mjs",
+          "CoachingCore/src/r6-program.mjs",
+          "CoachingCore/src/r6-provenance.mjs",
+          "CoachingCore/test/r7a-semantic-core.test.mjs",
+          "CURRENT_MISSION.md",
+          "MISSION_LEDGER.md",
+          "reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json"
+        ],
+        "unexpected": [],
+        "insertOnly": [
+          {
+            "file": "CURRENT_MISSION.md",
+            "prefixPreserved": true,
+            "prefixBytes": 42045,
+            "appendedBytes": 2637,
+            "carriageReturnsAppended": 0
+          },
+          {
+            "file": "MISSION_LEDGER.md",
+            "prefixPreserved": true,
+            "prefixBytes": 112044,
+            "appendedBytes": 1458,
+            "carriageReturnsAppended": 0
+          }
+        ],
+        "addedFiles": [
+          "CoachingCore/r7/a1/FINAL_REPORT_R7A1.md",
+          "CoachingCore/r7/a1/READINESS_R7A1.json",
+          "CoachingCore/r7/a1/REGRESSION_R7A1.json",
+          "CoachingCore/r7/a1/RUNTIME_FREEZE_R7A1_FREEZE_A1.json",
+          "CoachingCore/r7/a1/RUNTIME_FREEZE_R7A1_FREEZE_A2.json",
+          "CoachingCore/r7/a1/VERIFICATION_R7A1.json",
+          "CoachingCore/scripts/freeze-r7a1.mjs",
+          "CoachingCore/scripts/prepare-r7a1.mjs",
+          "CoachingCore/scripts/queue-r7a1.mjs",
+          "CoachingCore/scripts/regress-r7a1.mjs",
+          "CoachingCore/scripts/verify-r7a1.mjs",
+          "CoachingCore/src/r6-composition.mjs",
+          "CoachingCore/test/r7a1-composition.test.mjs",
+          "CoachingCore/test/r7a1-correction.test.mjs"
+        ],
+        "addedOutsideR7A1": []
+      }
+    },
+    {
+      "id": "freeze-current",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "revision": "R7A1-FREEZE-A2",
+        "sourceDigest": "71edc245cfe06a376732ec8054f2e09f277066f2ee4004f34827b2c90a1c4024",
+        "deltaFromR7AFreeze2": {
+          "changed": [
+            "src/r6-adaptation.mjs",
+            "src/r6-program.mjs",
+            "src/r6-provenance.mjs",
+            "test/r7a-semantic-core.test.mjs"
+          ],
+          "added": [
+            "src/r6-composition.mjs",
+            "test/r7a1-composition.test.mjs",
+            "test/r7a1-correction.test.mjs"
+          ],
+          "removed": [],
+          "baseline": "audits/domain-coaching-r7a1-2026-10-27/freeze2-source/MANIFEST.json",
+          "freeze2SourceDigest": "f56ae974762523b1efacd9ad7a9046cc7f6b7d33e42a7c2c955e758ef0f7821c"
+        },
+        "drift": [],
+        "unfrozen": []
+      }
+    },
+    {
+      "id": "policy-unchanged",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+        "revision": "R6-POLICY-5"
+      }
+    },
+    {
+      "id": "tests",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "tests": 505,
+        "pass_": 505,
+        "fail": 0,
+        "node": "v24.19.0"
+      }
+    },
+    {
+      "id": "regression",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "sourcesBoundToCurrentRuntime": true,
+        "againstFreeze2": {
+          "r5": "24/24",
+          "profiles": "16/16",
+          "simulations": "12/14",
+          "r6Holdout": "30/35",
+          "statusChanged": [],
+          "unexplained": {
+            "holdout": [],
+            "profiles": [],
+            "simulations": []
+          }
+        },
+        "againstR6Closure": {
+          "r5": "24/24",
+          "profiles": "15/16",
+          "simulations": "10/14",
+          "r6Holdout": "22/35",
+          "statusChanged": [
+            "R6-H23: MODIFY/REARRANGE_FUTURE_WEEKS MODIFY/GATED_NEXT_STEP -> ASK/ASK MODIFY/GATED_NEXT_STEP"
+          ],
+          "unexplained": {
+            "holdout": [],
+            "profiles": [],
+            "simulations": []
+          }
+        },
+        "explained": {
+          "againstFreeze2": {
+            "holdout": {
+              "R6-H22": "C3 a re-plan from next week while the week is under way starts next week from the conditional plan of the week as now planned, not from HOLD (accessories 1 -> 2 sets in week 8)",
+              "R6-H24": "C3 a change once the week is complete starts next week from the week's evidence; an unreported complete week holds (one accessory 2 -> 1 set in weeks 4-5)",
+              "R6-H25": "C3 as R6-H22 (repetitions and strides of weeks 3-4)",
+              "R6-H26": "C5 a session dated before a return of the same week never counts as done in next week's conditional plan (goblet squat enters at the return entry in week 9); the return week's totals are the sum of its rows (rows unchanged)",
+              "R6-H29": "C4 an event-period conflict skips sessions only: the race-week strength rest on a conflict date keeps its rest (no session to skip; same decision and doses)"
+            },
+            "profiles": {},
+            "simulations": {
+              "T05_10K8_SHORT_INTERRUPTION": "C1 an evening return no longer rewrites that morning's run (it stays ahead only until its shift ends): 45 instead of 40 minutes, +5 minutes on two later easy runs",
+              "T13_HM16_FATIGUE_SIGNALS": "C1 (QE-R7A1-04) an evening local-fatigue report reaches that day's unreported PM session: its optional lower-body accessory (calf raise) is removed, so that week gives no gate for it"
+            }
+          },
+          "againstR6Closure": {
+            "holdout": {
+              "R6-H05": "QE-R7A-14 projected return ceiling after a time-fitted week",
+              "R6-H07": "C07 intake records merge by content",
+              "R6-H17": "QE-R7A-02 a same-day session re-planned by the return",
+              "R6-H18": "QE-R7A-12 HOLD keeps the repetition target (state only)",
+              "R6-H23": "C16 a dated schedule change is asked",
+              "R6-H25": "D53 regain after any re-establishment; C3 as R6-H22 (repetitions and strides of weeks 3-4)",
+              "R6-H26": "D53/D54 rows state the post-return set cap (same visible dose); QE-R7A-02 the return-day session; C5 a session dated before a return of the same week never counts as done in next week's conditional plan (goblet squat enters at the return entry in week 9); the return week's totals are the sum of its rows (rows unchanged)",
+              "R6-H29": "C18 a finished race is complete; C4 an event-period conflict skips sessions only: the race-week strength rest on a conflict date keeps its rest (no session to skip; same decision and doses)",
+              "R6-H30": "C18 a finished race is complete",
+              "R6-H32": "C10 the carried record keeps corrections",
+              "R6-H35": "D53/D54 rows state the post-return set cap (same visible dose)",
+              "R6-H22": "C3 a re-plan from next week while the week is under way starts next week from the conditional plan of the week as now planned, not from HOLD (accessories 1 -> 2 sets in week 8)",
+              "R6-H24": "C3 a change once the week is complete starts next week from the week's evidence; an unreported complete week holds (one accessory 2 -> 1 set in weeks 4-5)"
+            },
+            "profiles": {
+              "WALK_JOG_FIVE_DAYS": "QE-R7A-14 projected return ceiling after a time-fitted week"
+            },
+            "simulations": {
+              "T04_STRENGTH12_REPEATED_UNDERPERFORMANCE": "QE-R7A-12",
+              "T05_10K8_SHORT_INTERRUPTION": "QE-R7A-02; R7-A.1 C1",
+              "T08_NOVICE8_MODERATE_INTERRUPTION": "QE-R7A-02",
+              "T13_HM16_FATIGUE_SIGNALS": "QE-R7A-12; R7-A.1 C1 (QE-R7A1-04)"
+            }
+          }
+        },
+        "classification": "REGRESSION / CHALLENGE REUSE; not generalization evidence"
+      }
+    },
+    {
+      "id": "composition-probes",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "recordedMatches": true,
+        "before": {
+          "E01_shortReturnNextWeekThenWeeklyReview": "DEFECT",
+          "E02_datedScheduleChangeThenReview": "DEFECT",
+          "E03_fatigueThenEquipmentChange": "DEFECT",
+          "E04_unavailableDayThenEquipmentChange": "DEFECT",
+          "E06_weeklyReviewThenEquipmentChange": "DEFECT",
+          "E10_returnThisWeekThenMissedPreBreakMove": "DEFECT",
+          "E11_scheduleNextWeekThenEventReachingThisWeek": "DEFECT",
+          "E12_goalNextWeekThenEquipmentChange": "DEFECT",
+          "E13_permanentEquipmentFromNextWeek": "DEFECT",
+          "E14_scheduleNextWeekThenReturnThisWeek": "DEFECT",
+          "D56_timeTrimmedRegain": "DEFECT"
+        },
+        "after": {
+          "E01_shortReturnNextWeekThenWeeklyReview": "NO_DEFECT",
+          "E02_datedScheduleChangeThenReview": "NO_DEFECT",
+          "E03_fatigueThenEquipmentChange": "NO_DEFECT",
+          "E04_unavailableDayThenEquipmentChange": "NO_DEFECT",
+          "E06_weeklyReviewThenEquipmentChange": "NO_DEFECT",
+          "E10_returnThisWeekThenMissedPreBreakMove": "NO_DEFECT",
+          "E11_scheduleNextWeekThenEventReachingThisWeek": "NO_DEFECT",
+          "E12_goalNextWeekThenEquipmentChange": "NO_DEFECT",
+          "E13_permanentEquipmentFromNextWeek": "NO_DEFECT",
+          "E14_scheduleNextWeekThenReturnThisWeek": "NO_DEFECT",
+          "D56_timeTrimmedRegain": "NO_DEFECT"
+        },
+        "open": []
+      }
+    },
+    {
+      "id": "r7a1-handler-grid",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "recordedMatches": true,
+        "pairs": 157,
+        "same": 150,
+        "representationOnly": 18,
+        "expected": [
+          "race: SYSTEMIC_FATIGUE x UNAVAILABLE_THU",
+          "race: SYSTEMIC_FATIGUE x RETURN_SHORT",
+          "race: UNAVAILABLE_THU x RETURN_SHORT",
+          "race: RETURN_MODERATE x RETURN_SHORT",
+          "race: EVENT_REACHING x EVENT_LATER",
+          "plain: SYSTEMIC_FATIGUE x RETURN_SHORT",
+          "plain: RETURN_MODERATE x RETURN_SHORT"
+        ],
+        "defects": "84 -> 0",
+        "errors": 0
+      }
+    },
+    {
+      "id": "r7a1-handler-grid-midweek",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "recordedMatches": true,
+        "pairs": 1188,
+        "same": 1166,
+        "representationOnly": 64,
+        "expected": [
+          "race: SYSTEMIC_FATIGUE x RETURN_SHORT",
+          "race: UNAVAILABLE_LATE x RETURN_SHORT",
+          "race: RETURN_MODERATE x RETURN_SHORT",
+          "race: RETURN_SHORT x EVENT_WEEK_CONFLICT",
+          "race: EVENT_REACHING x EVENT_LATER",
+          "race: SYSTEMIC_FATIGUE x RETURN_SHORT",
+          "race: UNAVAILABLE_LATE x RETURN_SHORT",
+          "race: RETURN_MODERATE x RETURN_SHORT",
+          "race: RETURN_SHORT x EVENT_WEEK_CONFLICT",
+          "race: EVENT_REACHING x EVENT_LATER",
+          "race: RETURN_MODERATE x RETURN_SHORT",
+          "race: RETURN_MODERATE x RETURN_SHORT",
+          "race: RETURN_MODERATE x RETURN_SHORT",
+          "race: RETURN_MODERATE x RETURN_SHORT",
+          "plain: SYSTEMIC_FATIGUE x MISSED_KEY",
+          "plain: RETURN_MODERATE x RETURN_SHORT",
+          "plain: UNAVAILABLE_LATE x MISSED_KEY",
+          "plain: RETURN_MODERATE x RETURN_SHORT",
+          "plain: RETURN_MODERATE x RETURN_SHORT",
+          "plain: RETURN_MODERATE x RETURN_SHORT",
+          "plain: RETURN_MODERATE x RETURN_SHORT",
+          "plain: RETURN_MODERATE x RETURN_SHORT"
+        ],
+        "defects": "384 -> 0",
+        "errors": 0
+      }
+    },
+    {
+      "id": "d56-grid",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "recordedMatches": true,
+        "timelines": 144,
+        "riseOrEndAfterTrimmed": "54/70 -> 0/206",
+        "cappedJumps": "20 -> 0",
+        "uncoveredJumps": "30 -> 30",
+        "uncoveredByExercise": {
+          "dead-bug/BODYWEIGHT": 18,
+          "db-calf-raise/FROM_LOG": 8,
+          "db-split-squat/FROM_LOG": 4
+        }
+      }
+    },
+    {
+      "id": "representation-three-step",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "recordedMatches": true,
+        "sequences": 172,
+        "differing": 0
+      }
+    },
+    {
+      "id": "d58-combinations",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "recordedMatches": true,
+        "cases": 136,
+        "defects": "103 -> 0",
+        "errors": 0
+      }
+    },
+    {
+      "id": "correction-tests-fail-on-freeze-a1",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "boundToCurrentTestFile": true,
+        "tests": 10,
+        "failingOnFreezeA1": 10
+      }
+    },
+    {
+      "id": "ssctr-instrument",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "sameScript": true,
+        "sections": 43,
+        "namedDifferences": [
+          "V_D47reviews.goalChange.moveDate stated/fromSessions 25 -> 30 (S9)",
+          "U_returnSets traces 1 and 3 and X_D49extras q4 trace 2 check 3 climb weeks instead of 2; AG s5-d20 week 4 rows show their return cap, counts unchanged (D57)"
+        ],
+        "otherDifferences": [],
+        "akAboveThePhaseDose": 0,
+        "ahMoreThanOneSetAbove": 0
+      }
+    },
+    {
+      "id": "mutation-check",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "caught": 88,
+        "total": 89,
+        "r7aSurvivor": {
+          "mutation": "Counts from the first executed exposure (R7-A survivor, QE-R7A-22)",
+          "caught": true,
+          "failingTests": [
+            "R7-A.1 D56/R19: the last executed exposure gives the week’s counts; a whole first session does not lift a cap the week then reduced (QE-R7A-22)"
+          ]
+        },
+        "documentedSurvivors": [
+          "A1 C7 two races ahead pass validation"
+        ],
+        "open": []
+      }
+    },
+    {
+      "id": "independent-reviews",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "latestFreeze": "RUNTIME_FREEZE_R7A1_FREEZE_A2.json",
+        "RUNTIME_FREEZE_R7A1_FREEZE_A1.json:ssctr": {
+          "present": true,
+          "file": "audits/domain-coaching-r7a1-2026-10-27/reviews/ssctr-r7a1-review.json",
+          "verdict": {
+            "R7A1_SCIENTIFIC_REVIEW": "NOT_READY",
+            "reason": "Two material findings in my scope block R7A1-FREEZE-A1, both narrow, runtime-only and pre-existing on R7A-FREEZE-2, both needing no policy text: D57 (the return cap ends against the ending week’s count and after weeks fitted below their count, so a count comes back 1 to 3 at a block boundary: a known equivalent path of D53, so D53 and D56 stay open) and D58 (a short return’s easy first quality slot does not reach the next week when this week’s quality slot is past: the QE-R7A-02 class is not closed). Everything else in my remit holds: the D56 formulation (\"last\") is approved, and S2 and S4-S10 are approved or ruled."
+          },
+          "digest": "2de8681f13e5cb499df6a5a3dc443d52877850528ceb298b598d03de6ec2141a",
+          "bound": true
+        },
+        "RUNTIME_FREEZE_R7A1_FREEZE_A1.json:engineering": {
+          "present": true,
+          "file": "audits/domain-coaching-r7a1-2026-10-27/reviews/quality-engineering-r7a1-review.json",
+          "verdict": {
+            "R7A1_ENGINEERING_REVIEW": "NOT_READY",
+            "reason": "Three of the seven blockers are not closed by their mechanism (QE-R7A-01, QE-R7A-02, QE-R7A-05). Five material equivalent paths were found (QE-R7A1-01 to 05, two HIGH): a re-applied move keeps the equipment of its history; the weekly review's next-week start is re-derived without its systemic hold and confirmed loads; a return correction across the week boundary does not supersede; same-day eligibility differs between the adaptation handlers and the rest; the merge still loses a known load behind an unreadable one. Each has a minimal reproduction and a required change for the single correction cycle."
+          },
+          "digest": "2de8681f13e5cb499df6a5a3dc443d52877850528ceb298b598d03de6ec2141a",
+          "bound": true
+        },
+        "RUNTIME_FREEZE_R7A1_FREEZE_A2.json:ssctr": {
+          "present": true,
+          "file": "audits/domain-coaching-r7a1-2026-10-27/reviews/ssctr-r7a1-recheck.json",
+          "verdict": {
+            "R7A1_SCIENTIFIC_REVIEW": "NOT_READY",
+            "reason": "One blocking finding in my scope: D59 (new in this re-check, pre-existing since at least R7A-FREEZE-2, outside the FREEZE-A1 to A2 delta), a known equivalent state mode of D53. A moderate return whose pause week holds the first executed exposures of an exercise starts from a state that predates them; when that week is the athlete's first loaded week, every exercise executed before the break restarts as a first establishment: no return entry (672 of 672 exercises), the block in progress earns its set, 1,582 rows above the declared ceiling and 226 counts two sets above the largest since the return (NONE and FAMILIAR athletes, every case of the configuration). Under Founder request §10, D53 cannot be CLOSED while a known equivalent state mode allows a restoration jump, and §13 requires D53 CLOSED. Both findings of my first review are closed: D57 and D58. D56 is closed. S1 and S4-S10 hold at FREEZE-A2. The fix is runtime-only: no policy text, clinical semantics or Founder decision is needed for the ruling."
+          },
+          "digest": "71edc245cfe06a376732ec8054f2e09f277066f2ee4004f34827b2c90a1c4024",
+          "bound": true
+        },
+        "RUNTIME_FREEZE_R7A1_FREEZE_A2.json:engineering": {
+          "present": true,
+          "file": "audits/domain-coaching-r7a1-2026-10-27/reviews/quality-engineering-r7a1-recheck.json",
+          "verdict": {
+            "R7A1_ENGINEERING_REVIEW": "NOT_READY",
+            "reason": "All five findings of the first review are closed by their mechanism, with a test that fails on FREEZE-A1 and passes on FREEZE-A2. But the mechanism of the QE-R7A1-03 fix (and the C5 rule of FREEZE-A1 it extends) does not check that a newer return reports the same break. A second, separate break that begins in a week an earlier return re-planned is treated as a correction of the first: its return starts from the state before the first break. The first return's re-entry is erased (return steps, run RETURN mode), and the athlete goes back to pre-break doses after a 16-day break: 1 set at RIR 4 becomes 3 sets at RIR 3 at the pre-break known load, and the long run goes from 20-45 to 70-75 minutes (QE-R7A1-09, HIGH, material). The same missing identity makes a second short break reuse the first one's easy slot, so its own first quality run stays hard (QE-R7A1-10, MEDIUM, material). Across the week boundary the defect is new in FREEZE-A2; inside the same week it is already present in FREEZE-A1, and my first review missed it. FREEZE-2 has neither. A new HIGH blocks under FOUNDER_REQUEST §13."
+          },
+          "digest": "71edc245cfe06a376732ec8054f2e09f277066f2ee4004f34827b2c90a1c4024",
+          "bound": true
+        }
+      }
+    },
+    {
+      "id": "queue-append-only",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "before": {
+          "revision": "SSCTR-HRQ-20261027-R7A-r1",
+          "items": 132,
+          "sha256": "af713bb86718920ce077c53b750c235f5035af022722e6e249aa0e9d0bb83cc0"
+        },
+        "after": {
+          "items": 151,
+          "sha256": "28e001ff99ee1d47e21b84f14eb5a8437fda1163b37a1a92616fa41813e045b9"
+        },
+        "appended": [
+          "HQ-R7A1-SSCTR-D56-FORMULATION",
+          "HQ-R7A1-SSCTR-SAME-DAY",
+          "HQ-R7A1-SSCTR-DOSE-READING",
+          "HQ-R7A1-SSCTR-COMPOSITION",
+          "HQ-R7A1-SSCTR-REGAIN-BASE",
+          "HQ-R7A1-SSCTR-REESTABLISH-PHASE",
+          "HQ-R7A1-SSCTR-SPLIT-WEEK",
+          "HQ-R7A1-SSCTR-ITEMS-5-8",
+          "HQ-R7A1-SSCTR-CYCLE2-COMPOSITIONS",
+          "HQ-R7A1-SSCTR-R2-QUALITY-SLOT-READINGS",
+          "HQ-R7A1-SSCTR-R2-D56-FORMULATION",
+          "HQ-R7A1-SSCTR-R2-SAME-DAY",
+          "HQ-R7A1-SSCTR-R2-DOSE-READING",
+          "HQ-R7A1-SSCTR-R2-COMPOSITION",
+          "HQ-R7A1-SSCTR-R2-REGAIN-BASE",
+          "HQ-R7A1-SSCTR-R2-REESTABLISH-PHASE",
+          "HQ-R7A1-SSCTR-R2-SPLIT-WEEK",
+          "HQ-R7A1-SSCTR-R2-ITEMS-5-8",
+          "HQ-R7A1-SSCTR-R2-CYCLE2-COMPOSITIONS"
+        ],
+        "earlierItemsByteIdentical": true
+      }
+    },
+    {
+      "id": "deliverables",
+      "pass": true,
+      "detail": {
+        "pass": true,
+        "missing": [],
+        "handoffWithoutReady": false,
+        "exit": "NOT_READY"
+      }
+    }
+  ]
+}
