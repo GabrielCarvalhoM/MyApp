@@ -568,3 +568,59 @@ The Growth Layer (DR-124–132) and Map Share Privacy (DR-133) are manifested in
 - **Left open, marked in the file:** protection values below 200 m or off, minimum route, repeated-share inference and Privacy Zones (Product/UX + Security); map provider, extent and tiles (Engineering + Security, G07); consistency criteria (G03); reward (G10).
 
 No product/canon edit (the 70 files bound by the State Model Consumer Closure baseline are byte-identical), `PENDING_CANON_SYNC.patch` not applied, no Adaptive Engine semantics, freeze, blocker, review, readiness or queue change; Crew/social stays out of V1. [Record](audits/growth-layer-figma-2026-10-29/RECORD.md) · before → after: Figma page 11.
+
+<!-- DOMAIN_COACHING_R7ADA: DCR7ADA-20261029-inprogress-r1 -->
+## COACHING CORE — R7-A Decision Authority Final Closure (Cloud implementation mission) — in progress / 2026-10-29
+
+The direct [Founder request](audits/domain-coaching-r7a-decision-authority-2026-10-29/FOUNDER_REQUEST.md) follows the two independent reviews of STATE-MODEL-CONSUMER-FREEZE-1. Both closed NOT_READY: Engineering on QE-R7ASC-01 to 04, SSCTR on F4. The mission closes the last known decision-resolution paths. HistoricalState, PlanningProjection and PlanningView are kept as they are. It is **not** R7-B0 or R7-B.
+
+- **Targets:**
+  - factual authority (QE-R7ASC-01);
+  - coherent decision context (QE-R7ASC-04);
+  - evidence-based progression authority (QE-R7ASC-02, QE-R7ASC-03);
+  - the walk/jog return ceiling (F4).
+
+  Preserved: F1–F3, D53/D56–D59, HOLD, MAINTAIN and every earlier blocker.
+- **Authorized:** IMPLEMENTATION_AUTHORIZED = SHADOW_REFERENCE_ONLY, on the Cloud branch `claude/trusting-euler-04la8t`. It was created from `r7/decision-authority-closure-base` (`ffc11366…`), which stays unchanged and unmerged.
+- **Not authorized:**
+  - UI, Figma, KMP, HealthKit, Android, iOS, Admin, production or real-user plan effects;
+  - R7-B0, repertoires, archetypes, pace, Athlete Learning or the Growth Layer.
+
+  The held `PENDING_CANON_SYNC.patch` stays unapplied.
+
+Scope: one freeze (R7A-DECISION-AUTHORITY-FREEZE-1), committed and pushed on the Cloud branch, with the handoff and both reviewer briefs; then stop. [Task contract](audits/domain-coaching-r7a-decision-authority-2026-10-29/TASK_CONTRACT.md).
+
+<!-- DOMAIN_COACHING_R7ADA: DCR7ADA-20261029-frozen-r1 -->
+## COACHING CORE — R7-A Decision Authority Final Closure — frozen, awaiting two independent reviews / 2026-10-29
+
+`CURRENT_MISSION = R7A_DECISION_AUTHORITY_FROZEN` · `NEXT_STEP = INDEPENDENT_REVIEWS`
+
+- **Freeze:** R7A-DECISION-AUTHORITY-FREEZE-1.
+  - Source digest `3a7166b2…`, manifest `a500cdd9…`, 85 files; policy `18ec48f3…` unchanged.
+  - Committed and pushed on `claude/trusting-euler-04la8t` (commit in the handoff), not merged.
+  - Verification 14/14 read-only (`CoachingCore/scripts/verify-r7ada.mjs`).
+  - Changed: `src/r6-adaptation.mjs` and `src/r6-program.mjs`. Three earlier test files are edited in place (marked `Decision authority closure`). Added: `test/r7ada-decision-authority.test.mjs`.
+- **Contracts** ([rules](audits/domain-coaching-r7a-decision-authority-2026-10-29/DECISION_AUTHORITY_CONTRACT.md)):
+  - A: a planned KNOWN load never establishes history; a correction re-plans the rows planned from the fact it removes.
+  - B: one PLAN reading per decision, each transition under the context of the week it enters, and E7 for a return's own week.
+  - C: the decision's run is earned in every mode (E10 withdrawn); an open week earns nothing; the most restrictive gate stands.
+  - C′: walk/jog HOLD and consolidation repeat the step run, and a return starts at the step last run at most.
+- **Findings, on the reviewers' own probes:**
+  - QE-R7ASC-01, 03, 04 and F4 absent.
+  - QE-R7ASC-02 absent by its mechanism: 0 of 44 cells with the plan ahead of history (31 on the predecessor). Its literal sweep flags one cell, where the unreviewed plan is lower (E1/E3 class).
+  - All five reproduce on the predecessor.
+- **Pre-freeze evidence:**
+  - 663/663 tests. In the mission's four test files, 34 of 100 fail on the predecessor: every finding regression and P1, P3–P7.
+  - Self-challenge: 16 classes, 228 cases, 0 violations (160 on the predecessor).
+  - Mutation: 16 of 16 bounded mutants killed.
+  - Consumer audit: 8 consumers × 5 questions.
+  - Regression against the predecessor: R5 24/24, profiles 16/16, simulations 13/14, R6 holdout 20/35. Every difference is named by ablation; no strength dose rose; R6-H35 is a recorded runner error.
+  - SSCTR kit: 43 instruments, of which 37 are identical, 1 differs in its clock only, and 5 are named.
+  - Earlier judges: 35 probes, of which 31 are identical (path aside) and 4 are named.
+- **Declared for the reviews:**
+  - R1, the standing projection between re-plans (Founder-owned);
+  - R2, a mid-week return holds its first week (SSCTR);
+  - R3, plan versus history after a return week (SSCTR).
+- **Next:** two new, independent sessions review exactly these bytes, from [the handoff](audits/domain-coaching-r7a-decision-authority-2026-10-29/REVIEW_HANDOFF.md) and the two briefs. Readiness is decided only after both. `R7A_EXIT_READINESS` is not declared.
+- **Held:** the Growth Layer's [PENDING_CANON_SYNC.patch](audits/growth-layer-2026-10-29/PENDING_CANON_SYNC.patch) waits for its closure or sync.
+- No UI, Figma, KMP, HealthKit, integration, production or real-plan effect. No merge, deploy or reviewer run. The human queue is untouched.
