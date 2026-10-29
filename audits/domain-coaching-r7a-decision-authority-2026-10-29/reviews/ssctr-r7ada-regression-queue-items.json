@@ -1,0 +1,110 @@
+{
+ "revision": "R7ADA-SSCTR-QUEUE-PROPOSAL-r1",
+ "reviewRevision": "R7ADA-SSCTR-r1",
+ "destination": "reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json",
+ "note": "Proposal only: one item per prescriptive approval of R7ADA-SSCTR-r1, each bound to R7A-DECISION-AUTHORITY-FREEZE-1, a freeze this review finds NOT_READY (F4-X). The queue file was not edited; the Chief decides whether to integrate them append-only. Funding NOT_DECLARED.",
+ "funding_trigger": {
+  "state": "NOT_DECLARED",
+  "declaration_ref": null,
+  "declared_at": null
+ },
+ "preserveAllHistoricalEntries": true,
+ "items": [
+  {
+   "queue_id": "HQ-R7ADA-SSCTR-R2-MIDWEEK-RETURN",
+   "decision_id": "R7ADA-SSCTR-R2-MIDWEEK-RETURN",
+   "decision_revision": "R7ADA-SSCTR-r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/decision-authority/RUNTIME_FREEZE_R7A_DECISION_AUTHORITY.json",
+    "artifact_revision": "R7A-DECISION-AUTHORITY-FREEZE-1",
+    "sha256": "8d5c7146b0a254fb7b9a689174731c967f39ae4888720bc5f927a81cf71e9f00",
+    "rule_ids": [
+     "r6-adaptation.mjs weeklyGates (setGate: the most restrictive verdict per key, GATE_ORDER)",
+     "r6-adaptation.mjs evidenceState PLAN reading (E7 for a return's own week)",
+     "r6-program.mjs advanceRun RETURN"
+    ]
+   },
+   "approved_scope": "Mid-week moderate returns whose return week contains rows planned inside the declared pause.",
+   "conditions": [
+    "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+    "Binding: this record binds runtime R7A-DECISION-AUTHORITY-FREEZE-1 (CoachingCore/r7/decision-authority/RUNTIME_FREEZE_R7A_DECISION_AUTHORITY.json, sha256 8d5c7146b0a254fb7b9a689174731c967f39ae4888720bc5f927a81cf71e9f00; source digest 3a7166b25aaf550f7692cc058f0e582b42e9eb7f74b9e361f23733b5e74ab244; manifest a500cdd94b8a4994a718029d4ee6efdc703e4f54de59d0855b5598c0d1afb224; src/r6-adaptation.mjs 61ef0cbeaea18014ec9e4998794b373f676d877094bf01df9224a48c1bb07138, src/r6-program.mjs f186b70c5727523a13d60bab467a0d1efdc0832897415fa223f538989a20d669; runtime commit d4631cd03fb27bbc1857532500748476ab764987) at the unchanged policy R6-POLICY-5 (canonical hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c). Any change to a bound file or to the policy hash expires it.",
+    "Applies only when the return's own week holds rows planned inside the declared pause; the entry repeats at most one additional week; history keeps crediting the executed sessions (C5).",
+    "An exception for rows inside the declared pause would be new policy (a one-condition change in weeklyGates) and needs a policy decision; it is not required for safety."
+   ],
+   "approval_date": "2026-10-29",
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Future qualified human reviewer (funding NOT_DECLARED)",
+   "human_review": null,
+   "re_review_triggers": [
+    "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+    "Any change to a file listed in RUNTIME_FREEZE_R7A_DECISION_AUTHORITY.json (new freeze revision).",
+    "A correction of F4-X (the walk/jog exit return): a new freeze needs this regression check again on ssctr-r7ada-continuous-probe.mjs, the walk/jog matrix, my 12-cell R7ASC walk/jog probe and the kit grids.",
+    "A Founder decision on R1 (the standing projection between re-plans).",
+    "A new systematic review or meta-analysis on detraining, retraining or return after a break."
+   ]
+  },
+  {
+   "queue_id": "HQ-R7ADA-SSCTR-R3-PLAN-HISTORY",
+   "decision_id": "R7ADA-SSCTR-R3-PLAN-HISTORY",
+   "decision_revision": "R7ADA-SSCTR-r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/decision-authority/RUNTIME_FREEZE_R7A_DECISION_AUTHORITY.json",
+    "artifact_revision": "R7A-DECISION-AUTHORITY-FREEZE-1",
+    "sha256": "8d5c7146b0a254fb7b9a689174731c967f39ae4888720bc5f927a81cf71e9f00",
+    "rule_ids": [
+     "r6-adaptation.mjs evidenceState PLAN reading (E7) and HISTORY reading (C5)",
+     "r6-program.mjs advanceStrength (load tick), regain caps (D56)"
+    ]
+   },
+   "approved_scope": "Short returns after a week inside a return; strength rows.",
+   "conditions": [
+    "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+    "Binding: this record binds runtime R7A-DECISION-AUTHORITY-FREEZE-1 (CoachingCore/r7/decision-authority/RUNTIME_FREEZE_R7A_DECISION_AUTHORITY.json, sha256 8d5c7146b0a254fb7b9a689174731c967f39ae4888720bc5f927a81cf71e9f00; source digest 3a7166b25aaf550f7692cc058f0e582b42e9eb7f74b9e361f23733b5e74ab244; manifest a500cdd94b8a4994a718029d4ee6efdc703e4f54de59d0855b5598c0d1afb224; src/r6-adaptation.mjs 61ef0cbeaea18014ec9e4998794b373f676d877094bf01df9224a48c1bb07138, src/r6-program.mjs f186b70c5727523a13d60bab467a0d1efdc0832897415fa223f538989a20d669; runtime commit d4631cd03fb27bbc1857532500748476ab764987) at the unchanged policy R6-POLICY-5 (canonical hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c). Any change to a bound file or to the policy hash expires it."
+   ],
+   "approval_date": "2026-10-29",
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Future qualified human reviewer (funding NOT_DECLARED)",
+   "human_review": null,
+   "re_review_triggers": [
+    "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+    "Any change to a file listed in RUNTIME_FREEZE_R7A_DECISION_AUTHORITY.json (new freeze revision).",
+    "A correction of F4-X (the walk/jog exit return): a new freeze needs this regression check again on ssctr-r7ada-continuous-probe.mjs, the walk/jog matrix, my 12-cell R7ASC walk/jog probe and the kit grids.",
+    "A Founder decision on R1 (the standing projection between re-plans).",
+    "A new systematic review or meta-analysis on detraining, retraining or return after a break."
+   ]
+  },
+  {
+   "queue_id": "HQ-R7ADA-SSCTR-H35-QUALITY-EVIDENCE",
+   "decision_id": "R7ADA-SSCTR-H35-QUALITY-EVIDENCE",
+   "decision_revision": "R7ADA-SSCTR-r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/decision-authority/RUNTIME_FREEZE_R7A_DECISION_AUTHORITY.json",
+    "artifact_revision": "R7A-DECISION-AUTHORITY-FREEZE-1",
+    "sha256": "8d5c7146b0a254fb7b9a689174731c967f39ae4888720bc5f927a81cf71e9f00",
+    "rule_ids": [
+     "r6-adaptation.mjs planningBase (the run from the PLAN reading in every mode; E10 withdrawn)",
+     "r6-program.mjs runRow (qualityActive on executed established easy weeks)"
+    ]
+   },
+   "approved_scope": "Holdout and real use alike: unreported weeks earn nothing.",
+   "conditions": [
+    "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+    "Binding: this record binds runtime R7A-DECISION-AUTHORITY-FREEZE-1 (CoachingCore/r7/decision-authority/RUNTIME_FREEZE_R7A_DECISION_AUTHORITY.json, sha256 8d5c7146b0a254fb7b9a689174731c967f39ae4888720bc5f927a81cf71e9f00; source digest 3a7166b25aaf550f7692cc058f0e582b42e9eb7f74b9e361f23733b5e74ab244; manifest a500cdd94b8a4994a718029d4ee6efdc703e4f54de59d0855b5598c0d1afb224; src/r6-adaptation.mjs 61ef0cbeaea18014ec9e4998794b373f676d877094bf01df9224a48c1bb07138, src/r6-program.mjs f186b70c5727523a13d60bab467a0d1efdc0832897415fa223f538989a20d669; runtime commit d4631cd03fb27bbc1857532500748476ab764987) at the unchanged policy R6-POLICY-5 (canonical hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c). Any change to a bound file or to the policy hash expires it."
+   ],
+   "approval_date": "2026-10-29",
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Future qualified human reviewer (funding NOT_DECLARED)",
+   "human_review": null,
+   "re_review_triggers": [
+    "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+    "Any change to a file listed in RUNTIME_FREEZE_R7A_DECISION_AUTHORITY.json (new freeze revision).",
+    "A correction of F4-X (the walk/jog exit return): a new freeze needs this regression check again on ssctr-r7ada-continuous-probe.mjs, the walk/jog matrix, my 12-cell R7ASC walk/jog probe and the kit grids.",
+    "A Founder decision on R1 (the standing projection between re-plans).",
+    "A new systematic review or meta-analysis on detraining, retraining or return after a break."
+   ]
+  }
+ ]
+}
