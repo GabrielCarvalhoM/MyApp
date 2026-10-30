@@ -16,6 +16,16 @@ const sha=p=>createHash('sha256').update(fs.readFileSync(p)).digest('hex');
 const digest=()=>hash(Object.fromEntries(fs.readdirSync(path.join(cc,'src')).filter(f=>f.endsWith('.mjs')).sort().map(f=>['src/'+f,sha(path.join(cc,'src',f))])));
 const AU='audits/domain-coaching-r7a-residual-authority-2026-10-30/',P=AU+'probes/',J=P+'judges/';
 const TREES={cand:'CoachingCore',pred:AU+'decision-authority-freeze-source/CoachingCore'},abs=p=>path.join(repo,p);
+// A probe that reads the holdout corpus and its evaluator from its tree (the SSCTR's R6-H25 trace) gets, on the predecessor, a rebuild in TMPDIR: the
+// predecessor copy (every file its MANIFEST binds, checked byte for byte) plus those unchanged inputs from this tree, each checked against BASELINE.json,
+// as the reviewers rebuilt their trees. Built once, when such a job runs.
+const SUPPORT=['CoachingCore/scripts/evaluate-holdout-r6.mjs','CoachingCore/r6/holdout/R6_INDEPENDENT_HOLDOUT.json'];
+let predSupport=null;
+const predSupportTree=()=>{if(predSupport)return predSupport;const man=JSON.parse(fs.readFileSync(abs(AU+'decision-authority-freeze-source/MANIFEST.json'),'utf8')),base=Object.fromEntries(JSON.parse(fs.readFileSync(abs(AU+'BASELINE.json'),'utf8')).entries.map(e=>[e.path,e.sha256]));
+ const root=fs.mkdtempSync(path.join(process.env.TMPDIR??'/tmp','r7ara-pred-support-')),put=(from,rel)=>{fs.mkdirSync(path.dirname(path.join(root,rel)),{recursive:true});fs.copyFileSync(from,path.join(root,rel));};
+ for(const [rel,d] of Object.entries(man.files)){const f=abs(AU+'decision-authority-freeze-source/'+rel);if(sha(f)!==d)throw Error('predecessor copy drift '+rel);put(f,rel);}
+ for(const rel of SUPPORT){if(sha(abs(rel))!==base[rel])throw Error('support input changed since the baseline '+rel);put(abs(rel),rel);}
+ return predSupport=path.join(root,'CoachingCore');};
 const ASC='audits/domain-coaching-r7a-state-consumer-2026-10-29/reviews/',SMR='audits/domain-coaching-r7a-state-model-2026-10-28/reviews';
 const JOBS=[];
 const job=(group,name,script,{args=[],env={},cwd='.',stdout=null,why}={})=>JOBS.push({group,name,script,args,env,cwd,stdout:stdout??`runs/${group}/${name}.out.json`,why});
@@ -26,7 +36,7 @@ for(const r of [...kit].sort((a,b)=>b.seconds-a.seconds)){const env={...r.env};i
 for(const [tree,root] of Object.entries(TREES)){
  for(const q of ['Q01-correction-via-handlers','Q01b-correction-via-handlers-robustness','Q04-temporal-and-order','Q05-decision-context','Q06-return-ceiling','Q06b-short-return-entry','Q06c-return-base-run','Q06d-moderate-return-target'])
   job('findings',`${q.split('-')[0]}.${tree}`,J+`qe/qe-r7ada-${q}.mjs`,{env:{QE_ROOT:root},why:'§8, §17: the engineering judge\'s own probes for QE-R7ADA-01/02 and the A/B/C/E classes they cover'});
- for(const s of ['continuous','walkjog-matrix','progression','returnwalks','h25run'])job('findings',`ssctr-${s}.${tree}`,J+`ssctr/ssctr-r7ada-${s}-probe.mjs`,{env:{SSCTR_CC:root},why:'§17: the SSCTR\'s own probes (F4-X, F4 matrix, progression authority, return walk days, R6-H25)'});
+ for(const s of ['continuous','walkjog-matrix','progression','returnwalks','h25run'])job('findings',`ssctr-${s}.${tree}`,J+`ssctr/ssctr-r7ada-${s}-probe.mjs`,{env:{SSCTR_CC:s==='h25run'&&tree==='pred'?'pred+support':root},why:'§17: the SSCTR\'s own probes (F4-X, F4 matrix, progression authority, return walk days, R6-H25)'});
  for(const s of ['hold','maintain','temporal','walkjog','walkjog-trace','easyreturn'])job('asc',`${s}.${tree}`,ASC+`ssctr-r7asc-${s}${s==='walkjog-trace'?'':'-probe'}.mjs`,{env:{SSCTR_CC:root},cwd:ASC,why:'§19, §27: the SSCTR\'s R7ASC probes (HOLD, MAINTAIN, temporal evidence, walk/jog F4, easy return)'});
  for(const [n,s,e] of [['P01','qe-r7asc-P01-stale-known-row-adoption.mjs',{}],['P01.w3kg24','qe-r7asc-P01-stale-known-row-adoption.mjs',{QE_W3KG:'24'}],['P01b','qe-r7asc-P01b-stale-known-row-robustness.mjs',{}],['P02','qe-r7asc-P02-run-view-e10.mjs',{}],['P02b','qe-r7asc-P02b-run-view-sweep.mjs',{}],['P03','qe-r7asc-P03-correction-boundary.mjs',{}],['P03b','qe-r7asc-P03b-correction-plan-diff.mjs',{}],['P04','qe-r7asc-P04-temporal.mjs',{}],['P05','qe-r7asc-P05-reentry-run-gate.mjs',{}],['P05b','qe-r7asc-P05b-reentry-basis.mjs',{}],['P06','qe-r7asc-P06-strength-dose-sweep.mjs',{}],['P07','qe-r7asc-P07-goal-change-two-readings.mjs',{}]])
   job('r7asc-qe',`${n}.${tree}`,ASC+s,{env:{QE_ROOT:root,...e},cwd:ASC,why:'§2: QE-R7ASC-01..04 stay closed (the predecessor judge\'s probes, unchanged)'});
@@ -41,7 +51,7 @@ job('mutation','mutation',P+'r7ara-mutation.mjs',{stdout:'runs/mutation.out.json
 const want=process.argv.slice(2),jobs=JOBS.filter(j=>!want.length||want.includes(j.group)||want.includes(j.name)||want.includes(`${j.group}/${j.name}`));
 const recPath=path.join(here,'EVIDENCE_RUNS_R7ARA.json'),record=fs.existsSync(recPath)?JSON.parse(fs.readFileSync(recPath,'utf8')):{revision:'R7ARA-EVIDENCE-RUNS',runs:[]};
 const run=j=>new Promise(resolve=>{
- const start=digest(),t0=Date.now(),o=[],e=[],env=Object.fromEntries(Object.entries(j.env).map(([k,v])=>[k,['QE_ROOT','SSCTR_CC','R7ADA_ROOT'].includes(k)?abs(v):v]));
+ const start=digest(),t0=Date.now(),o=[],e=[],env=Object.fromEntries(Object.entries(j.env).map(([k,v])=>[k,['QE_ROOT','SSCTR_CC','R7ADA_ROOT'].includes(k)?(v==='pred+support'?predSupportTree():abs(v)):v]));
  const p=spawn(process.execPath,[abs(j.script),...j.args],{cwd:abs(j.cwd),env:{...process.env,...env}});
  p.stdout.on('data',d=>o.push(d));p.stderr.on('data',d=>e.push(d));
  p.on('close',code=>{const out=path.join(here,j.stdout);fs.mkdirSync(path.dirname(out),{recursive:true});fs.writeFileSync(out,Buffer.concat(o));const err=Buffer.concat(e).toString(),end=digest();
