@@ -19,7 +19,7 @@ const a3=predA.slice(predA.indexOf(' if(ev.pending){\n  // Evidence about an ear
 const curA=fs.readFileSync(path.join(core,'src/r6-adaptation.mjs'),'utf8'),midweek=curA.slice(curA.indexOf(' // Mid-week the week continues as planned'),curA.indexOf(END));
 const P={
  A5:[['src/r6-adaptation.mjs','const factual=factualReplan(ctx);','const factual=null;'],['src/r6-adaptation.mjs',midweek,a3]],
- E1:[['src/r6-adaptation.mjs','const run=historicalRun(clone(H.state.run),ran,{stateOf:k=>at(k)?.state?.run??null,easyStepMinutes:ctx.sk.op.run.easyStepMinutes});',"const run=H.state.run.mode==='WALK_JOG'?historicalRun(clone(H.state.run),ran.filter(x=>x.dimension==='WALK_JOG_STEP')):clone(H.state.run);"]],
+ E1:[['src/r6-adaptation.mjs',"const run=historicalRun(clone(H.state.run),ran,{stateOf:k=>at(k)?.state?.run??null,easyStepMinutes:ctx.sk.op.run.easyStepMinutes,undo:m=>!cls||cls==='SHORT'||m==='WALK_JOG'});","const run=H.state.run.mode==='WALK_JOG'?historicalRun(clone(H.state.run),ran.filter(x=>x.dimension==='WALK_JOG_STEP')):clone(H.state.run);"]],
 };
 const SETS={A5:['A5'],E1:['E1'],ALL:['A5','E1']},STAGES=['E1','A5','ALL'];
 const cmp=JSON.parse(fs.readFileSync(path.join(here,'COMPARISON_R7ARA.json'),'utf8')),ev=JSON.parse(fs.readFileSync(path.join(here,'EVIDENCE_RUNS_R7ARA.json'),'utf8'));

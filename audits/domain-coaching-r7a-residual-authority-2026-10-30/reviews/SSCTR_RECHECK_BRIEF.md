@@ -9,8 +9,8 @@
 | | |
 |---|---|
 | Freeze | R7A-RESIDUAL-AUTHORITY-FREEZE-1, record `CoachingCore/r7/residual-authority/RUNTIME_FREEZE_R7A_RESIDUAL_AUTHORITY.json` |
-| Source digest | `259ab3eff431d2381d50904be7594d9fa122c7d8d2fc369e20d67b5419f84cb6` |
-| Manifest digest | `d530846b515c99ff9b0b9c6bdf36dd28f8f908c49ee6be2544a131b051192ff2` (86 files) |
+| Source digest | `e7172eb2e65bfb1da4c102a7efa2bae64bf1c70b06562fd3ce9896defd6dc17d` |
+| Manifest digest | `3d214fb53f62e45ca7d99f39f2c562d358719a2264c2de46098d39b318c85125` (86 files) |
 | Policy | R6-POLICY-5, `18ec48f3…`, unchanged. No sporting rule is added |
 | Predecessor | R7A-DECISION-AUTHORITY-FREEZE-1 (`3a7166b2…`), byte-exact in `audits/domain-coaching-r7a-residual-authority-2026-10-30/decision-authority-freeze-source/`. Your regression of it: `review/r7ada-decision-authority-ssctr`, `6f5d40c` |
 | Branch and commits | In [REVIEW_HANDOFF.md](../REVIEW_HANDOFF.md) |
@@ -33,8 +33,10 @@ No science is reopened.
 
 The rules are in [RESIDUAL_AUTHORITY_CONTRACT.md](../RESIDUAL_AUTHORITY_CONTRACT.md).
 - **E1 (your items 1–2).** The state a return reads is HistoricalState's run, with every release the athlete has not run undone (condition 7: "resume the last executed doses; … the next step waits for executed sessions").
-  - A released mode that no run has used is undone: the walk/jog exit, the restart's switch, a return's completion.
-  - Within the mode, no dose is above the one last run.
+  - A released mode that no run has used is undone where the recipe reads the state last run:
+    - a SHORT break undoes the walk/jog exit, the restart's switch and a return's completion;
+    - a MODERATE or LONG break undoes only the walk/jog exit (your R46: step 7, step 0). For a continuous runner, the moderate recipe re-enters from the entry and the long one restarts, from the released easy state with its doses capped at the executed ones.
+  - Within the mode, no dose is above the one reached by execution: on a ladder, the step last run; in easy running, the largest long and easy runs executed and tolerated since the entry.
 - **A5 (engineering scope).** A correction, retraction or newly quarantined conflict re-plans the sessions still ahead before any review kind decides. It is the weekly review's existing rule (A3), now applied in one place. Strength rows planned from a retracted fact are re-planned; the D44/D45 questions are kept.
 
 ## Ruling points this change creates (inside your items 2–3; please rule)
@@ -46,6 +48,7 @@ The rules are in [RESIDUAL_AUTHORITY_CONTRACT.md](../RESIDUAL_AUTHORITY_CONTRACT
 | E1-c | MODERATE: `returnTo` is the last executed dose. Example: long 70, the predecessor 75, released but never run | "Conditional steps to the prior executed dose" |
 | E1-d | A return completed by the evidence, then a short pause before any easy-mode run: RETURN at the step last run. With an easy-mode run executed first: EASY, with the long run capped at the last long run (the return step's) | The same rule. Self-challenge class `E1.return-completion` |
 | E1-e | A restart switched to easy running, then a short pause before any easy-mode run: RESTART at the minutes last run | The same rule. Class `E1.restart-switch` |
+| E1-f | The same two cases with a MODERATE pause (14 days) re-enter from the 15-minute entry. After the completion (your kit's `changes` A_E6: steps 0 and 1 run at 15/15/20 and 30/30/45): a new return 15/15/20, then towards the 30/45 executed since the first return's entry, where the predecessor stepped towards the first return's target, 40/70, released and never run since. After the switch (restart minutes run 15, 20, 25): towards easy 25, not the switch's 30; its long-run target, 40, is the switch's offset (E1-B3), as on the predecessor | Moderate recipe: re-entry from a current demonstration or the 15-minute entry, "conditional steps to the prior executed dose"; "historical maxima are a ceiling, not current proof". A first cut resumed return step 1 (30/30/45) after the 14 days, skipping the entry. This mission's direction check found it on the first evidence round (R7ARA-SELF-01, [probes/SUPERSEDED_ROUND_R7ARA.json](../probes/SUPERSEDED_ROUND_R7ARA.json)), and it was corrected before the freeze |
 
 **Declared and not changed:**
 - **E1-B1, the quality ladder after a short break.** D58: the first quality slot runs easy, and the next quality session follows the evidence's step, as approved.
@@ -55,7 +58,7 @@ The rules are in [RESIDUAL_AUTHORITY_CONTRACT.md](../RESIDUAL_AUTHORITY_CONTRACT
 
 ## Evidence on these bytes
 
-Every run is bound to `259ab3ef…` in `probes/EVIDENCE_RUNS_R7ARA.json`. Outputs are in `probes/runs/`.
+Every run is bound to `e7172eb2…` in `probes/EVIDENCE_RUNS_R7ARA.json`. Outputs are in `probes/runs/`.
 
 - **Your R7ADA probes, byte-exact copies in `probes/judges/ssctr/`** (git blob ids equal to your branch's), on both trees, in `runs/findings/`:
   - continuous running (F4-X);
@@ -65,8 +68,9 @@ Every run is bound to `259ab3ef…` in `probes/EVIDENCE_RUNS_R7ARA.json`. Output
 - **Your kit**, the same 43 jobs as the decision authority closure's `kit-final`, compared with that run on the predecessor bytes (`runs/kit/`, `COMPARISON_R7ARA.json`).
   - It covers F1–F3, D53/D56–D59, HOLD and MAINTAIN.
   - Every difference has a named cause (`NAMED_DIFFERENCES_R7ARA.json`).
+  - No named difference raises a dose against the predecessor (`DIRECTION_R7ARA.json`). The check counts a session that stepped down in kind (walk/jog for a continuous run, an easy run for a quality one) as no rise, and lists the cases it counted that way.
 - **This mission's own checks:**
-  - tests: `test/r7ara-residual-authority.test.mjs` (F4-X on your continuous-running profile and timeline; the EASY ceiling; P3, P4);
+  - tests: `test/r7ara-residual-authority.test.mjs` (F4-X on your continuous-running profile and timeline; the EASY ceiling; the moderate repeated pause, E1-f; P3, P4);
   - the self-challenge (`runs/self-challenge/`);
   - the regression against the predecessor (`CoachingCore/r7/residual-authority/REGRESSION_R7ARA.json`).
 

@@ -1,0 +1,125 @@
+{
+ "probe": "qe-r7asc-P03b-correction-plan-diff",
+ "root": "/home/user/MyApp/CoachingCore",
+ "decisions": {
+  "CONTROL": [
+   "KEEP",
+   "KEEP"
+  ],
+  "CORRECTED": [
+   "KEEP",
+   "GATED_NEXT_STEP",
+   "INSTANTIATE_LOGGED_LOADS"
+  ]
+ },
+ "closingCounterfactuals": {
+  "CONTROL": [
+   {
+    "id": "KEEP",
+    "admissible": true,
+    "reason": "Every gated session executed without adverse signal: the planned next step stands",
+    "changeCount": 0
+   },
+   {
+    "id": "GATED_NEXT_STEP",
+    "admissible": false,
+    "reason": "No difference from the plan",
+    "changeCount": 0
+   },
+   {
+    "id": "REBASE_BLOCK",
+    "admissible": false,
+    "reason": "A wider rebase is justified only by repeated converging adverse evidence",
+    "changeCount": 3
+   }
+  ],
+  "CORRECTED": [
+   {
+    "id": "KEEP",
+    "admissible": false,
+    "reason": "Logged loads differ from the planned loads or placeholders; keeping them would ignore executed evidence",
+    "changeCount": 0
+   },
+   {
+    "id": "GATED_NEXT_STEP",
+    "admissible": true,
+    "reason": "Smallest valid change: repeat or step back only the affected session types; everything else proceeds",
+    "changeCount": 3
+   },
+   {
+    "id": "REBASE_BLOCK",
+    "admissible": false,
+    "reason": "A wider rebase is justified only by repeated converging adverse evidence",
+    "changeCount": 6
+   }
+  ]
+ },
+ "sessionsDifferingAfterClose": [],
+ "sessionsDifferingBeforeClose": [
+  "w5-run-d6",
+  "w6-run-d3",
+  "w6-run-d6"
+ ],
+ "programHashBeforeClose": {
+  "CONTROL": "9f4c5e9e186f56df136e85b9ff11122164c2739e38e0a1294a268052b7f9114f",
+  "CORRECTED": "763ceceb2400fd8768f1897621b335a5aae03181866c6baacb82ff275edb1d54"
+ },
+ "stateTraceWeek5": {
+  "CONTROL": {
+   "status": "ESTABLISHED",
+   "mode": "KNOWN",
+   "load": 22,
+   "convention": "PER_HAND",
+   "reps": 5,
+   "sets": null,
+   "rir": 3,
+   "loadTick": 1,
+   "source": "LOGGED_ACTUAL",
+   "lastPerformed": "2026-12-05",
+   "lastExecutedSets": 4,
+   "blocksDone": 1
+  },
+  "CORRECTED": {
+   "status": "ESTABLISHED",
+   "mode": "KNOWN",
+   "load": 22,
+   "convention": "PER_HAND",
+   "reps": 5,
+   "sets": null,
+   "rir": 3,
+   "loadTick": 1,
+   "source": "LOGGED_ACTUAL",
+   "lastPerformed": "2026-12-05",
+   "lastExecutedSets": 4,
+   "blocksDone": 1
+  },
+  "CONTROLbefore": {
+   "status": "ESTABLISHED",
+   "mode": "KNOWN",
+   "load": 22,
+   "convention": "PER_HAND",
+   "reps": 5,
+   "sets": null,
+   "rir": 3,
+   "loadTick": 1,
+   "source": "LOGGED_ACTUAL",
+   "lastPerformed": "2026-12-05",
+   "lastExecutedSets": 4,
+   "blocksDone": 1
+  },
+  "CORRECTEDbefore": {
+   "status": "ESTABLISHED",
+   "mode": "KNOWN",
+   "load": 22,
+   "convention": "PER_HAND",
+   "reps": 5,
+   "sets": null,
+   "rir": 3,
+   "loadTick": 1,
+   "source": "LOGGED_ACTUAL",
+   "lastPerformed": "2026-12-05",
+   "lastExecutedSets": 4,
+   "blocksDone": 1
+  }
+ }
+}

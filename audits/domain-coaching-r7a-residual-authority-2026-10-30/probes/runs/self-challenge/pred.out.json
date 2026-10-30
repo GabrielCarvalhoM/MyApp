@@ -1,0 +1,921 @@
+{
+ "probe": "r7ara-self-challenge",
+ "tree": "audits/domain-coaching-r7a-residual-authority-2026-10-30/decision-authority-freeze-source/CoachingCore",
+ "classes": {
+  "A5.delivery-day-and-kind": {
+   "cases": 32,
+   "violations": 24,
+   "examples": [
+    {
+     "kind": "UNAVAILABLE_FRI",
+     "day": 1,
+     "EARLY": {
+      "status": "KEEP",
+      "action": "KEEP",
+      "questions": [
+       "LOGGED_LOAD_ABOVE_PLAN:24/20"
+      ],
+      "history": {
+       "mode": "KNOWN",
+       "load": 20,
+       "reps": 5,
+       "pending": null
+      },
+      "next": [
+       "KNOWN22 2x5@3"
+      ]
+     },
+     "LATE": {
+      "status": "KEEP",
+      "action": "KEEP",
+      "questions": [],
+      "history": {
+       "mode": "KNOWN",
+       "load": 24,
+       "reps": 5,
+       "pending": null
+      },
+      "next": [
+       "KNOWN24 2x5@3"
+      ]
+     },
+     "violation": true
+    },
+    {
+     "kind": "LOCAL_FATIGUE",
+     "day": 1,
+     "EARLY": {
+      "status": "MODIFY",
+      "action": "REDUCE",
+      "questions": [
+       "LOGGED_LOAD_ABOVE_PLAN:24/20"
+      ],
+      "history": {
+       "mode": "KNOWN",
+       "load": 20,
+       "reps": 5,
+       "pending": null
+      },
+      "next": [
+       "KNOWN22 2x5@3"
+      ]
+     },
+     "LATE": {
+      "status": "MODIFY",
+      "action": "REDUCE",
+      "questions": [],
+      "history": {
+       "mode": "KNOWN",
+       "load": 24,
+       "reps": 5,
+       "pending": null
+      },
+      "next": [
+       "KNOWN24 2x5@3"
+      ]
+     },
+     "violation": true
+    },
+    {
+     "kind": "SYSTEMIC_FATIGUE",
+     "day": 1,
+     "EARLY": {
+      "status": "MODIFY",
+      "action": "REDUCE",
+      "questions": [
+       "LOGGED_LOAD_ABOVE_PLAN:24/20"
+      ],
+      "history": {
+       "mode": "KNOWN",
+       "load": 20,
+       "reps": 5,
+       "pending": null
+      },
+      "next": [
+       "KNOWN22 2x5@3"
+      ]
+     },
+     "LATE": {
+      "status": "MODIFY",
+      "action": "REDUCE",
+      "questions": [],
+      "history": {
+       "mode": "KNOWN",
+       "load": 24,
+       "reps": 5,
+       "pending": null
+      },
+      "next": [
+       "KNOWN24 2x5@3"
+      ]
+     },
+     "violation": true
+    },
+    {
+     "kind": "SCHEDULE_NEXT_WEEK",
+     "day": 1,
+     "EARLY": {
+      "status": "MODIFY",
+      "action": "REARRANGE_FUTURE_WEEKS",
+      "questions": [
+       "LOGGED_LOAD_ABOVE_PLAN:24/20"
+      ],
+      "history": {
+       "mode": "KNOWN",
+       "load": 20,
+       "reps": 5,
+       "pending": null
+      },
+      "next": [
+       "KNOWN22 2x5@3"
+      ]
+     },
+     "LATE": {
+      "status": "MODIFY",
+      "action": "REARRANGE_FUTURE_WEEKS",
+      "questions": [],
+      "history": {
+       "mode": "KNOWN",
+       "load": 24,
+       "reps": 5,
+       "pending": null
+      },
+      "next": [
+       "KNOWN24 2x5@3"
+      ]
+     },
+     "violation": true
+    },
+    {
+     "kind": "GOAL_NEXT_WEEK",
+     "day": 1,
+     "EARLY": {
+      "status": "MODIFY",
+      "action": "REPLAN_FUTURE_PHASES",
+      "questions": [
+       "LOGGED_LOAD_ABOVE_PLAN:24/20"
+      ],
+      "history": {
+       "mode": "KNOWN",
+       "load": 20,
+       "reps": 5,
+       "pending": null
+      },
+      "next": [
+       "KNOWN20 2x7@3"
+      ]
+     },
+     "LATE": {
+      "status": "MODIFY",
+      "action": "REPLAN_FUTURE_PHASES",
+      "questions": [],
+      "history": {
+       "mode": "KNOWN",
+       "load": 24,
+       "reps": 5,
+       "pending": null
+      },
+      "next": [
+       "KNOWN24 2x7@3"
+      ]
+     },
+     "violation": true
+    },
+    {
+     "kind": "TURN_CONFLICT",
+     "day": 1,
+     "EARLY": {
+      "status": "KEEP",
+      "action": "KEEP",
+      "questions": [
+       "LOGGED_LOAD_ABOVE_PLAN:24/20"
+      ],
+      "history": {
+       "mode": "KNOWN",
+       "load": 20,
+       "reps": 5,
+       "pending": null
+      },
+      "next": [
+       "KNOWN22 2x5@3"
+      ]
+     },
+     "LATE": {
+      "status": "KEEP",
+      "action": "KEEP",
+      "questions": [],
+      "history": {
+       "mode": "KNOWN",
+       "load": 24,
+       "reps": 5,
+       "pending": null
+      },
+      "next": [
+       "KNOWN24 2x5@3"
+      ]
+     },
+     "violation": true
+    }
+   ]
+  },
+  "A5.last-day": {
+   "cases": 14,
+   "violations": 12,
+   "examples": [
+    {
+     "kind": "WEEKLY_REVIEW",
+     "hour": "07:00:00",
+     "EARLY": {
+      "status": "MODIFY",
+      "action": "GATED_NEXT_STEP",
+      "row": [
+       "KNOWN20 3x5@3"
+      ],
+      "questions": [
+       "LOGGED_LOAD_ABOVE_PLAN"
+      ],
+      "history": {
+       "mode": "KNOWN",
+       "load": 20,
+       "reps": 5,
+       "pending": null
+      }
+     },
+     "LATE": {
+      "status": "MODIFY",
+      "action": "GATED_NEXT_STEP",
+      "row": [
+       "KNOWN24 3x5@3"
+      ],
+      "questions": [],
+      "history": {
+       "mode": "KNOWN",
+       "load": 24,
+       "reps": 5,
+       "pending": null
+      }
+     },
+     "violation": true
+    },
+    {
+     "kind": "UNAVAILABLE_LATER",
+     "hour": "07:00:00",
+     "EARLY": {
+      "status": "KEEP",
+      "action": "KEEP",
+      "row": [
+       "KNOWN20 3x5@3"
+      ],
+      "questions": [
+       "LOGGED_LOAD_ABOVE_PLAN"
+      ],
+      "history": {
+       "mode": "KNOWN",
+       "load": 20,
+       "reps": 5,
+       "pending": null
+      }
+     },
+     "LATE": {
+      "status": "KEEP",
+      "action": "KEEP",
+      "row": [
+       "KNOWN24 3x5@3"
+      ],
+      "questions": [],
+      "history": {
+       "mode": "KNOWN",
+       "load": 24,
+       "reps": 5,
+       "pending": null
+      }
+     },
+     "violation": true
+    },
+    {
+     "kind": "SCHEDULE_NOOP",
+     "hour": "07:00:00",
+     "EARLY": {
+      "status": "KEEP",
+      "action": "KEEP",
+      "row": [
+       "KNOWN20 3x5@3"
+      ],
+      "questions": [
+       "LOGGED_LOAD_ABOVE_PLAN"
+      ],
+      "history": {
+       "mode": "KNOWN",
+       "load": 20,
+       "reps": 5,
+       "pending": null
+      }
+     },
+     "LATE": {
+      "status": "KEEP",
+      "action": "KEEP",
+      "row": [
+       "KNOWN24 3x5@3"
+      ],
+      "questions": [],
+      "history": {
+       "mode": "KNOWN",
+       "load": 24,
+       "reps": 5,
+       "pending": null
+      }
+     },
+     "violation": true
+    },
+    {
+     "kind": "GOAL_NEXT_WEEK",
+     "hour": "07:00:00",
+     "EARLY": {
+      "status": "MODIFY",
+      "action": "REPLAN_FUTURE_PHASES",
+      "row": [
+       "KNOWN20 3x5@3"
+      ],
+      "questions": [
+       "LOGGED_LOAD_ABOVE_PLAN"
+      ],
+      "history": {
+       "mode": "KNOWN",
+       "load": 20,
+       "reps": 5,
+       "pending": null
+      }
+     },
+     "LATE": {
+      "status": "MODIFY",
+      "action": "REPLAN_FUTURE_PHASES",
+      "row": [
+       "KNOWN24 3x5@3"
+      ],
+      "questions": [],
+      "history": {
+       "mode": "KNOWN",
+       "load": 24,
+       "reps": 5,
+       "pending": null
+      }
+     },
+     "violation": true
+    },
+    {
+     "kind": "LOCAL_FATIGUE_UPPER",
+     "hour": "07:00:00",
+     "EARLY": {
+      "status": "MODIFY",
+      "action": "GATED_NEXT_STEP",
+      "row": [
+       "KNOWN20 3x5@3"
+      ],
+      "questions": [
+       "LOGGED_LOAD_ABOVE_PLAN"
+      ],
+      "history": {
+       "mode": "KNOWN",
+       "load": 20,
+       "reps": 5,
+       "pending": null
+      }
+     },
+     "LATE": {
+      "status": "MODIFY",
+      "action": "GATED_NEXT_STEP",
+      "row": [
+       "KNOWN24 3x5@3"
+      ],
+      "questions": [],
+      "history": {
+       "mode": "KNOWN",
+       "load": 24,
+       "reps": 5,
+       "pending": null
+      }
+     },
+     "violation": true
+    },
+    {
+     "kind": "TURN_CONFLICT",
+     "hour": "07:00:00",
+     "EARLY": {
+      "status": "KEEP",
+      "action": "KEEP",
+      "row": [
+       "KNOWN20 3x5@3"
+      ],
+      "questions": [
+       "LOGGED_LOAD_ABOVE_PLAN"
+      ],
+      "history": {
+       "mode": "KNOWN",
+       "load": 20,
+       "reps": 5,
+       "pending": null
+      }
+     },
+     "LATE": {
+      "status": "KEEP",
+      "action": "KEEP",
+      "row": [
+       "KNOWN24 3x5@3"
+      ],
+      "questions": [],
+      "history": {
+       "mode": "KNOWN",
+       "load": 24,
+       "reps": 5,
+       "pending": null
+      }
+     },
+     "violation": true
+    }
+   ]
+  },
+  "E1.walkjog-ladder-and-exit": {
+   "cases": 20,
+   "violations": 4,
+   "examples": [
+    {
+     "A": 8,
+     "days": 3,
+     "cls": "SHORT",
+     "entry": {
+      "mode": "EASY",
+      "walkStep": 9
+     },
+     "steps": [],
+     "continuous": [
+      {
+       "role": "EASY",
+       "minutes": 25,
+       "dim": "EASY_MINUTES",
+       "value": 25
+      },
+      {
+       "role": "EASY",
+       "minutes": 25,
+       "dim": "EASY_MINUTES",
+       "value": 25
+      }
+     ],
+     "violation": true
+    },
+    {
+     "A": 8,
+     "days": 6,
+     "cls": "SHORT",
+     "entry": {
+      "mode": "EASY",
+      "walkStep": 9
+     },
+     "steps": [],
+     "continuous": [
+      {
+       "role": "EASY",
+       "minutes": 25,
+       "dim": "EASY_MINUTES",
+       "value": 25
+      },
+      {
+       "role": "EASY",
+       "minutes": 25,
+       "dim": "EASY_MINUTES",
+       "value": 25
+      },
+      {
+       "role": "EASY",
+       "minutes": 25,
+       "dim": "EASY_MINUTES",
+       "value": 25
+      }
+     ],
+     "violation": true
+    },
+    {
+     "A": 8,
+     "days": 10,
+     "cls": "SHORT",
+     "entry": {
+      "mode": "EASY",
+      "walkStep": 9
+     },
+     "steps": [],
+     "continuous": [
+      {
+       "role": "EASY",
+       "minutes": 25,
+       "dim": "EASY_MINUTES",
+       "value": 25
+      },
+      {
+       "role": "EASY",
+       "minutes": 25,
+       "dim": "EASY_MINUTES",
+       "value": 25
+      }
+     ],
+     "violation": true
+    },
+    {
+     "A": 8,
+     "days": 17,
+     "cls": "MODERATE",
+     "entry": {
+      "mode": "RETURN",
+      "walkStep": 9
+     },
+     "steps": [],
+     "continuous": [
+      {
+       "role": "EASY",
+       "minutes": 15,
+       "dim": "RETURN_STEP",
+       "value": 0
+      },
+      {
+       "role": "EASY",
+       "minutes": 15,
+       "dim": "RETURN_STEP",
+       "value": 0
+      }
+     ],
+     "violation": true
+    }
+   ]
+  },
+  "E1.easy-short": {
+   "cases": 27,
+   "violations": 18,
+   "examples": [
+    {
+     "k": 1,
+     "days": 3,
+     "cls": "SHORT",
+     "long": 65,
+     "easy": 40,
+     "entryLong": 70,
+     "entryEasy": 40,
+     "entryExtra": 0,
+     "violation": true,
+     "rowsAbove": []
+    },
+    {
+     "k": 1,
+     "days": 6,
+     "cls": "SHORT",
+     "long": 65,
+     "easy": 40,
+     "entryLong": 70,
+     "entryEasy": 40,
+     "entryExtra": 0,
+     "violation": true,
+     "rowsAbove": []
+    },
+    {
+     "k": 1,
+     "days": 10,
+     "cls": "SHORT",
+     "long": 65,
+     "easy": 40,
+     "entryLong": 70,
+     "entryEasy": 40,
+     "entryExtra": 0,
+     "violation": true,
+     "rowsAbove": []
+    },
+    {
+     "k": 2,
+     "days": 3,
+     "cls": "SHORT",
+     "long": 65,
+     "easy": 40,
+     "entryLong": 70,
+     "entryEasy": 40,
+     "entryExtra": 1,
+     "violation": true,
+     "rowsAbove": [
+      {
+       "role": "EASY",
+       "minutes": 45,
+       "dim": "EASY_MINUTES",
+       "value": 45
+      }
+     ]
+    },
+    {
+     "k": 2,
+     "days": 6,
+     "cls": "SHORT",
+     "long": 65,
+     "easy": 40,
+     "entryLong": 70,
+     "entryEasy": 40,
+     "entryExtra": 1,
+     "violation": true,
+     "rowsAbove": [
+      {
+       "role": "EASY",
+       "minutes": 45,
+       "dim": "EASY_MINUTES",
+       "value": 45
+      }
+     ]
+    },
+    {
+     "k": 2,
+     "days": 10,
+     "cls": "SHORT",
+     "long": 65,
+     "easy": 40,
+     "entryLong": 70,
+     "entryEasy": 40,
+     "entryExtra": 1,
+     "violation": true,
+     "rowsAbove": [
+      {
+       "role": "EASY",
+       "minutes": 45,
+       "dim": "EASY_MINUTES",
+       "value": 45
+      }
+     ]
+    }
+   ]
+  },
+  "E1.easy-moderate": {
+   "cases": 9,
+   "violations": 5,
+   "examples": [
+    {
+     "k": 1,
+     "days": 17,
+     "cls": "MODERATE",
+     "long": 65,
+     "easy": 40,
+     "entryLong": 70,
+     "entryEasy": 40,
+     "entryExtra": 0,
+     "violation": true,
+     "rowsAbove": []
+    },
+    {
+     "k": 2,
+     "days": 17,
+     "cls": "MODERATE",
+     "long": 65,
+     "easy": 40,
+     "entryLong": 70,
+     "entryEasy": 40,
+     "entryExtra": 0,
+     "violation": true,
+     "rowsAbove": []
+    },
+    {
+     "k": 3,
+     "days": 17,
+     "cls": "MODERATE",
+     "long": 65,
+     "easy": 45,
+     "entryLong": 70,
+     "entryEasy": 40,
+     "entryExtra": 0,
+     "violation": true,
+     "rowsAbove": []
+    },
+    {
+     "k": 4,
+     "days": 17,
+     "cls": "MODERATE",
+     "long": 65,
+     "easy": 45,
+     "entryLong": 70,
+     "entryEasy": 40,
+     "entryExtra": 0,
+     "violation": true,
+     "rowsAbove": []
+    },
+    {
+     "k": 5,
+     "days": 17,
+     "cls": "MODERATE",
+     "long": 70,
+     "easy": 45,
+     "entryLong": 75,
+     "entryEasy": 45,
+     "entryExtra": 0,
+     "violation": true,
+     "rowsAbove": []
+    }
+   ]
+  },
+  "E1.easy-repeated-pause": {
+   "cases": 4,
+   "violations": 2,
+   "examples": [
+    {
+     "k": 3,
+     "days2": 6,
+     "cls": "SHORT",
+     "long": 70,
+     "easy": 45,
+     "entryLong": 75,
+     "entryEasy": 45,
+     "entryExtra": 0,
+     "violation": true
+    },
+    {
+     "k": 6,
+     "days2": 10,
+     "cls": "SHORT",
+     "long": 65,
+     "easy": 45,
+     "entryLong": 75,
+     "entryEasy": 45,
+     "entryExtra": 0,
+     "violation": true
+    }
+   ]
+  },
+  "E1.return-completion": {
+   "cases": 4,
+   "violations": 4,
+   "examples": [
+    {
+     "after": "NONE",
+     "days2": 4,
+     "cls": "SHORT",
+     "historyMode": "EASY",
+     "lastRun": {
+      "role": "LONG",
+      "minutes": 45,
+      "dim": "RETURN_STEP",
+      "value": 1,
+      "week": 6
+     },
+     "entry": {
+      "mode": "EASY",
+      "returnStep": null,
+      "long": 70,
+      "easy": 40,
+      "returnFrom": null,
+      "returnTo": null
+     },
+     "violation": true
+    },
+    {
+     "after": "NONE",
+     "days2": 14,
+     "cls": "MODERATE",
+     "historyMode": "EASY",
+     "lastRun": {
+      "role": "LONG",
+      "minutes": 45,
+      "dim": "RETURN_STEP",
+      "value": 1,
+      "week": 6
+     },
+     "entry": {
+      "mode": "RETURN",
+      "returnStep": 0,
+      "long": 70,
+      "easy": 40,
+      "returnFrom": {
+       "easy": 15,
+       "long": 20
+      },
+      "returnTo": {
+       "mode": "EASY",
+       "easy": 40,
+       "long": 70,
+       "walks": 0,
+       "qualityStep": 0,
+       "specificStep": 0
+      }
+     },
+     "violation": true
+    },
+    {
+     "after": "TUESDAY_EASY",
+     "days2": 4,
+     "cls": "SHORT",
+     "historyMode": "EASY",
+     "lastRun": {
+      "role": "LONG",
+      "minutes": 45,
+      "dim": "RETURN_STEP",
+      "value": 1,
+      "week": 6
+     },
+     "entry": {
+      "mode": "EASY",
+      "returnStep": null,
+      "long": 70,
+      "easy": 40,
+      "returnFrom": null,
+      "returnTo": null
+     },
+     "violation": true
+    },
+    {
+     "after": "TUESDAY_EASY",
+     "days2": 14,
+     "cls": "MODERATE",
+     "historyMode": "EASY",
+     "lastRun": {
+      "role": "LONG",
+      "minutes": 45,
+      "dim": "RETURN_STEP",
+      "value": 1,
+      "week": 6
+     },
+     "entry": {
+      "mode": "RETURN",
+      "returnStep": 0,
+      "long": 70,
+      "easy": 40,
+      "returnFrom": {
+       "easy": 15,
+       "long": 20
+      },
+      "returnTo": {
+       "mode": "EASY",
+       "easy": 40,
+       "long": 70,
+       "walks": 0,
+       "qualityStep": 0,
+       "specificStep": 0
+      }
+     },
+     "violation": true
+    }
+   ]
+  },
+  "E1.restart-switch": {
+   "cases": 2,
+   "violations": 2,
+   "examples": [
+    {
+     "days2": 4,
+     "cls": "SHORT",
+     "historyMode": "EASY",
+     "lastRun": {
+      "role": "EASY",
+      "minutes": 25,
+      "dim": "RESTART_MINUTES",
+      "value": 25,
+      "week": 9
+     },
+     "entry": {
+      "mode": "EASY",
+      "restart": 30,
+      "easy": 30,
+      "long": 40,
+      "returnStep": null,
+      "returnFrom": null,
+      "returnTo": null
+     },
+     "violation": true
+    },
+    {
+     "days2": 14,
+     "cls": "MODERATE",
+     "historyMode": "EASY",
+     "lastRun": {
+      "role": "EASY",
+      "minutes": 25,
+      "dim": "RESTART_MINUTES",
+      "value": 25,
+      "week": 9
+     },
+     "entry": {
+      "mode": "RETURN",
+      "restart": 30,
+      "easy": 30,
+      "long": 40,
+      "returnStep": 0,
+      "returnFrom": {
+       "easy": 15,
+       "long": 20
+      },
+      "returnTo": {
+       "mode": "EASY",
+       "easy": 30,
+       "long": 40,
+       "walks": 0,
+       "qualityStep": 0,
+       "specificStep": 0
+      }
+     },
+     "violation": true
+    }
+   ]
+  }
+ },
+ "total": {
+  "cases": 112,
+  "violations": 71
+ }
+}

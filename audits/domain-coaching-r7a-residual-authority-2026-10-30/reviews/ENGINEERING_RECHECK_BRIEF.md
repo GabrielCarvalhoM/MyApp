@@ -9,8 +9,8 @@
 | | |
 |---|---|
 | Freeze | R7A-RESIDUAL-AUTHORITY-FREEZE-1, record `CoachingCore/r7/residual-authority/RUNTIME_FREEZE_R7A_RESIDUAL_AUTHORITY.json` |
-| Source digest | `259ab3eff431d2381d50904be7594d9fa122c7d8d2fc369e20d67b5419f84cb6` |
-| Manifest digest | `d530846b515c99ff9b0b9c6bdf36dd28f8f908c49ee6be2544a131b051192ff2`. 86 files: runtime, tests, policy, dev fixtures, `package.json` |
+| Source digest | `e7172eb2e65bfb1da4c102a7efa2bae64bf1c70b06562fd3ce9896defd6dc17d` |
+| Manifest digest | `3d214fb53f62e45ca7d99f39f2c562d358719a2264c2de46098d39b318c85125`. 86 files: runtime, tests, policy, dev fixtures, `package.json` |
 | Policy | R6-POLICY-5, `18ec48f3…`, unchanged |
 | Predecessor | R7A-DECISION-AUTHORITY-FREEZE-1 (`3a7166b2…`), byte-exact in `audits/domain-coaching-r7a-residual-authority-2026-10-30/decision-authority-freeze-source/`. Its review is yours: `review/r7ada-decision-authority-engineering`, `17e7285` |
 | Branch and commits | In [REVIEW_HANDOFF.md](../REVIEW_HANDOFF.md) |
@@ -48,15 +48,18 @@ The rules are in [RESIDUAL_AUTHORITY_CONTRACT.md](../RESIDUAL_AUTHORITY_CONTRACT
   - A proposal with the re-plan is validated from this week.
 - **E1 — `src/r6-program.mjs`: `historicalRun` generalized, and `src/r6-adaptation.mjs` `stateAtBreak` feeds it.**
   - The input: the runs executed completely since the latest return's report (else the intake) and before the interruption.
-  - The mode: a mode the evidence released that no run has used is undone to the state that prescribed the last run.
+  - The mode: a mode the evidence released that no run has used is undone to the state that prescribed the last run, where the return's recipe reads the state last run. `stateAtBreak` passes the break class:
+    - a SHORT break undoes every such release;
+    - a MODERATE or LONG break undoes only the walk/jog exit. A continuous runner's moderate recipe re-enters from the entry, and the long recipe restarts, both from the released easy state with its doses capped as below.
+    - Undoing a return's completion or a restart's switch there resumed a return step or restart minutes without the entry: R7ARA-SELF-01, found on the first evidence round by this mission's direction check and corrected before the freeze ([probes/SUPERSEDED_ROUND_R7ARA.json](../probes/SUPERSEDED_ROUND_R7ARA.json)).
   - The doses within the mode:
     - the walk/jog step, restart minutes and return step: never above the last run;
     - the long and easy runs: never above the largest executed and tolerated since the entry. Easy rows are phase-modulated from the state, so a consolidation week's reduced row is no lower tolerance. Your Q06b reads the week before the pause and flags k=4 and k=8 after consolidation weeks for this reason (named in the report); Q06c, the largest executed, is clean.
-- **Tests:** `test/r7ara-residual-authority.test.mjs` is new. `test/r7ab-week-start-authority.test.mjs` I5/P3, §13 premise and I6 are re-expressed in place (marked `Residual authority closure`): a short trip after an executed MODERATE re-entry week resumes return step 0, while history credits step 1.
+- **Tests:** `test/r7ara-residual-authority.test.mjs` is new; `QE-R7ADA-02 repeated pause, moderate` pins R7ARA-SELF-01. `test/r7ab-week-start-authority.test.mjs` I5/P3, §13 premise and I6 are re-expressed in place (marked `Residual authority closure`): a short trip after an executed MODERATE re-entry week resumes return step 0, while history credits step 1.
 
 ## Evidence on these bytes
 
-Every run is bound to `259ab3ef…` in `probes/EVIDENCE_RUNS_R7ARA.json`. Outputs are in `probes/runs/`.
+Every run is bound to `e7172eb2…` in `probes/EVIDENCE_RUNS_R7ARA.json`. Outputs are in `probes/runs/`.
 
 - **Your probes, byte-exact copies in `probes/judges/qe/`** (git blob ids equal to your branch's), run on both trees. In `runs/findings/`:
   - Q01: 0 of 78 on the candidate, 14 on the predecessor;
@@ -71,7 +74,11 @@ Every run is bound to `259ab3ef…` in `probes/EVIDENCE_RUNS_R7ARA.json`. Output
   - the self-challenge (`runs/self-challenge/`);
   - the four mutants (`runs/mutation.out.json`);
   - the regression (`CoachingCore/r7/residual-authority/REGRESSION_R7ARA.json`).
-- **Named differences:** `probes/NAMED_DIFFERENCES_R7ARA.json`.
+- **Named differences:** `probes/NAMED_DIFFERENCES_R7ARA.json`. Each one is attributed by ablation (`runs/ablation.out.json`): A5 or E1 reverted alone, or both, restores the predecessor's output.
+- **Direction:** `probes/DIRECTION_R7ARA.json`. No named difference raises a dose against the predecessor.
+  - A rise counts as explained only when the session stepped down in kind (walk/jog for a continuous run, an easy run for a quality one, without more minutes than the higher kind lost).
+  - A probe's LATE reading that now equals its EARLY one also counts as explained.
+  - The record lists every rise it explained.
 
 ## Declared, for this recheck (not changed)
 

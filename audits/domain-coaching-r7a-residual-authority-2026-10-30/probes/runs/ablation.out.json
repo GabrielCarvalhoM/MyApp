@@ -1,0 +1,597 @@
+{
+ "probe": "r7ara-ablation",
+ "patches": {
+  "A5": [
+   {
+    "file": "src/r6-adaptation.mjs",
+    "fromSha256": "81df849e2fff88389b894df55c85f25e62d5803769696c236de71412aacbf9f9",
+    "toSha256": "e86655dfb36388e46348d7cd6f13cebf368e04363efd52b35cd377e282e0544f"
+   },
+   {
+    "file": "src/r6-adaptation.mjs",
+    "fromSha256": "31fe6b809fed8a56ece9796f055d5bfd86be01a51d6df83426be069b4eea9994",
+    "toSha256": "be6a4ad97ed42531530fd48e7bd1ce6a6b5798091d0b168f2e59e9e334ec5ef0"
+   }
+  ],
+  "E1": [
+   {
+    "file": "src/r6-adaptation.mjs",
+    "fromSha256": "f3e066a47fc671fd6657636165056ff78dc2d3b44786975cf9c73a6a0c7d1504",
+    "toSha256": "b5a382481e52f09ae624b5ed7052b8f575a86876332d2a127863463729995afc"
+   }
+  ]
+ },
+ "stages": [
+  "E1",
+  "A5",
+  "ALL"
+ ],
+ "jobs": {
+  "asc/easyreturn": {
+   "restoredBy": [
+    "E1"
+   ],
+   "touchedBy": [
+    "E1"
+   ],
+   "runs": {
+    "E1": {
+     "exit": 0,
+     "restoresPredecessor": true,
+     "sameAsCandidate": false
+    }
+   }
+  },
+  "asc/temporal": {
+   "restoredBy": [
+    "E1"
+   ],
+   "touchedBy": [
+    "E1"
+   ],
+   "runs": {
+    "E1": {
+     "exit": 0,
+     "restoresPredecessor": true,
+     "sameAsCandidate": false
+    }
+   }
+  },
+  "findings/Q01": {
+   "restoredBy": [
+    "A5"
+   ],
+   "touchedBy": [
+    "A5"
+   ],
+   "runs": {
+    "E1": {
+     "exit": 0,
+     "restoresPredecessor": false,
+     "sameAsCandidate": true
+    },
+    "A5": {
+     "exit": 0,
+     "restoresPredecessor": true,
+     "sameAsCandidate": false
+    }
+   }
+  },
+  "findings/Q01b": {
+   "restoredBy": [
+    "A5"
+   ],
+   "touchedBy": [
+    "A5"
+   ],
+   "runs": {
+    "E1": {
+     "exit": 0,
+     "restoresPredecessor": false,
+     "sameAsCandidate": true
+    },
+    "A5": {
+     "exit": 0,
+     "restoresPredecessor": true,
+     "sameAsCandidate": false
+    }
+   }
+  },
+  "findings/Q04": {
+   "restoredBy": [
+    "E1"
+   ],
+   "touchedBy": [
+    "E1"
+   ],
+   "runs": {
+    "E1": {
+     "exit": 0,
+     "restoresPredecessor": true,
+     "sameAsCandidate": false
+    }
+   }
+  },
+  "findings/Q06": {
+   "restoredBy": [
+    "E1"
+   ],
+   "touchedBy": [
+    "E1"
+   ],
+   "runs": {
+    "E1": {
+     "exit": 0,
+     "restoresPredecessor": true,
+     "sameAsCandidate": false
+    }
+   }
+  },
+  "findings/Q06b": {
+   "restoredBy": [
+    "E1"
+   ],
+   "touchedBy": [
+    "E1"
+   ],
+   "runs": {
+    "E1": {
+     "exit": 0,
+     "restoresPredecessor": true,
+     "sameAsCandidate": false
+    }
+   }
+  },
+  "findings/Q06c": {
+   "restoredBy": [
+    "E1"
+   ],
+   "touchedBy": [
+    "E1"
+   ],
+   "runs": {
+    "E1": {
+     "exit": 0,
+     "restoresPredecessor": true,
+     "sameAsCandidate": false
+    }
+   }
+  },
+  "findings/Q06d": {
+   "restoredBy": [
+    "E1"
+   ],
+   "touchedBy": [
+    "E1"
+   ],
+   "runs": {
+    "E1": {
+     "exit": 0,
+     "restoresPredecessor": true,
+     "sameAsCandidate": false
+    }
+   }
+  },
+  "findings/ssctr-continuous": {
+   "restoredBy": [
+    "E1"
+   ],
+   "touchedBy": [
+    "E1"
+   ],
+   "runs": {
+    "E1": {
+     "exit": 0,
+     "restoresPredecessor": true,
+     "sameAsCandidate": false
+    }
+   }
+  },
+  "findings/ssctr-returnwalks": {
+   "restoredBy": [
+    "E1"
+   ],
+   "touchedBy": [
+    "E1"
+   ],
+   "runs": {
+    "E1": {
+     "exit": 0,
+     "restoresPredecessor": true,
+     "sameAsCandidate": false
+    }
+   }
+  },
+  "judges/qe-r7a2-P17": {
+   "restoredBy": [
+    "E1"
+   ],
+   "touchedBy": [
+    "E1"
+   ],
+   "runs": {
+    "E1": {
+     "exit": 0,
+     "restoresPredecessor": true,
+     "sameAsCandidate": false
+    }
+   }
+  },
+  "judges/qe-r7ab-P40": {
+   "restoredBy": [
+    "E1"
+   ],
+   "touchedBy": [
+    "E1"
+   ],
+   "runs": {
+    "E1": {
+     "exit": 0,
+     "restoresPredecessor": true,
+     "sameAsCandidate": false
+    }
+   }
+  },
+  "judges/qe-r7ab-P40.tz540": {
+   "restoredBy": [
+    "E1"
+   ],
+   "touchedBy": [
+    "E1"
+   ],
+   "runs": {
+    "E1": {
+     "exit": 0,
+     "restoresPredecessor": true,
+     "sameAsCandidate": false
+    }
+   }
+  },
+  "judges/qe-r7ab-P40b": {
+   "restoredBy": [
+    "E1"
+   ],
+   "touchedBy": [
+    "E1"
+   ],
+   "runs": {
+    "E1": {
+     "exit": 0,
+     "restoresPredecessor": true,
+     "sameAsCandidate": false
+    }
+   }
+  },
+  "judges/qe-r7ab-P41": {
+   "restoredBy": [
+    "E1"
+   ],
+   "touchedBy": [
+    "E1"
+   ],
+   "runs": {
+    "E1": {
+     "exit": 0,
+     "restoresPredecessor": true,
+     "sameAsCandidate": false
+    }
+   }
+  },
+  "judges/qe-r7af-P30c": {
+   "restoredBy": [
+    "E1"
+   ],
+   "touchedBy": [
+    "E1"
+   ],
+   "runs": {
+    "E1": {
+     "exit": 0,
+     "restoresPredecessor": true,
+     "sameAsCandidate": false
+    }
+   }
+  },
+  "judges/qe-r7af-P31": {
+   "restoredBy": [
+    "E1"
+   ],
+   "touchedBy": [
+    "E1"
+   ],
+   "runs": {
+    "E1": {
+     "exit": 0,
+     "restoresPredecessor": true,
+     "sameAsCandidate": false
+    }
+   }
+  },
+  "judges/qe-r7af-P32": {
+   "restoredBy": [
+    "E1"
+   ],
+   "touchedBy": [
+    "E1"
+   ],
+   "runs": {
+    "E1": {
+     "exit": 0,
+     "restoresPredecessor": true,
+     "sameAsCandidate": false
+    }
+   }
+  },
+  "judges/qe-r7af-P37": {
+   "restoredBy": [
+    "E1"
+   ],
+   "touchedBy": [
+    "E1"
+   ],
+   "runs": {
+    "E1": {
+     "exit": 0,
+     "restoresPredecessor": true,
+     "sameAsCandidate": false
+    }
+   }
+  },
+  "judges/qe-r7ase-I01": {
+   "restoredBy": [
+    "E1"
+   ],
+   "touchedBy": [
+    "E1"
+   ],
+   "runs": {
+    "E1": {
+     "exit": 0,
+     "restoresPredecessor": true,
+     "sameAsCandidate": false
+    }
+   }
+  },
+  "judges/qe-r7asm-Q4-restart-view": {
+   "restoredBy": [
+    "E1"
+   ],
+   "touchedBy": [
+    "E1"
+   ],
+   "runs": {
+    "E1": {
+     "exit": 0,
+     "restoresPredecessor": true,
+     "sameAsCandidate": false
+    }
+   }
+  },
+  "judges/qe-r7asm-Q4b-restart-rows": {
+   "restoredBy": [
+    "E1"
+   ],
+   "touchedBy": [
+    "E1"
+   ],
+   "runs": {
+    "E1": {
+     "exit": 0,
+     "restoresPredecessor": true,
+     "sameAsCandidate": false
+    }
+   }
+  },
+  "judges/qe-r7asm-Q6-perturb-projection": {
+   "restoredBy": [
+    "E1"
+   ],
+   "touchedBy": [
+    "E1"
+   ],
+   "runs": {
+    "E1": {
+     "exit": 0,
+     "restoresPredecessor": true,
+     "sameAsCandidate": false
+    }
+   }
+  },
+  "kit/b-probe": {
+   "restoredBy": [
+    "E1"
+   ],
+   "touchedBy": [
+    "E1"
+   ],
+   "runs": {
+    "E1": {
+     "exit": 0,
+     "restoresPredecessor": true,
+     "sameAsCandidate": false
+    }
+   }
+  },
+  "kit/changes": {
+   "restoredBy": [
+    "E1"
+   ],
+   "touchedBy": [
+    "E1"
+   ],
+   "runs": {
+    "E1": {
+     "exit": 0,
+     "restoresPredecessor": true,
+     "sameAsCandidate": false
+    }
+   }
+  },
+  "kit/d58": {
+   "restoredBy": [
+    "E1"
+   ],
+   "touchedBy": [
+    "E1"
+   ],
+   "runs": {
+    "E1": {
+     "exit": 0,
+     "restoresPredecessor": true,
+     "sameAsCandidate": false
+    }
+   }
+  },
+  "kit/f-probe": {
+   "restoredBy": [
+    "E1"
+   ],
+   "touchedBy": [
+    "E1"
+   ],
+   "runs": {
+    "E1": {
+     "exit": 0,
+     "restoresPredecessor": true,
+     "sameAsCandidate": false
+    }
+   }
+  },
+  "kit/holdout-detail": {
+   "restoredBy": [
+    "E1"
+   ],
+   "touchedBy": [
+    "E1"
+   ],
+   "runs": {
+    "E1": {
+     "exit": 0,
+     "restoresPredecessor": true,
+     "sameAsCandidate": false
+    }
+   }
+  },
+  "kit/probe": {
+   "restoredBy": [
+    "E1"
+   ],
+   "touchedBy": [
+    "E1"
+   ],
+   "runs": {
+    "E1": {
+     "exit": 0,
+     "restoresPredecessor": true,
+     "sameAsCandidate": false
+    }
+   }
+  },
+  "kit/systemic": {
+   "restoredBy": [
+    "E1"
+   ],
+   "touchedBy": [
+    "E1"
+   ],
+   "runs": {
+    "E1": {
+     "exit": 0,
+     "restoresPredecessor": true,
+     "sameAsCandidate": false
+    }
+   }
+  },
+  "kit/x-items": {
+   "restoredBy": [
+    "E1"
+   ],
+   "touchedBy": [
+    "E1"
+   ],
+   "runs": {
+    "E1": {
+     "exit": 0,
+     "restoresPredecessor": true,
+     "sameAsCandidate": false
+    }
+   }
+  },
+  "r7asc-qe/P03": {
+   "restoredBy": [
+    "E1"
+   ],
+   "touchedBy": [
+    "E1"
+   ],
+   "runs": {
+    "E1": {
+     "exit": 0,
+     "restoresPredecessor": true,
+     "sameAsCandidate": false
+    }
+   }
+  },
+  "r7asc-qe/P05": {
+   "restoredBy": [
+    "E1"
+   ],
+   "touchedBy": [
+    "E1"
+   ],
+   "runs": {
+    "E1": {
+     "exit": 0,
+     "restoresPredecessor": true,
+     "sameAsCandidate": false
+    }
+   }
+  }
+ },
+ "regression": {},
+ "summary": {
+  "items": 34,
+  "byCause": {
+   "E1": [
+    "asc/easyreturn",
+    "asc/temporal",
+    "findings/Q04",
+    "findings/Q06",
+    "findings/Q06b",
+    "findings/Q06c",
+    "findings/Q06d",
+    "findings/ssctr-continuous",
+    "findings/ssctr-returnwalks",
+    "judges/qe-r7a2-P17",
+    "judges/qe-r7ab-P40",
+    "judges/qe-r7ab-P40.tz540",
+    "judges/qe-r7ab-P40b",
+    "judges/qe-r7ab-P41",
+    "judges/qe-r7af-P30c",
+    "judges/qe-r7af-P31",
+    "judges/qe-r7af-P32",
+    "judges/qe-r7af-P37",
+    "judges/qe-r7ase-I01",
+    "judges/qe-r7asm-Q4-restart-view",
+    "judges/qe-r7asm-Q4b-restart-rows",
+    "judges/qe-r7asm-Q6-perturb-projection",
+    "kit/b-probe",
+    "kit/changes",
+    "kit/d58",
+    "kit/f-probe",
+    "kit/holdout-detail",
+    "kit/probe",
+    "kit/systemic",
+    "kit/x-items",
+    "r7asc-qe/P03",
+    "r7asc-qe/P05"
+   ],
+   "A5": [
+    "findings/Q01",
+    "findings/Q01b"
+   ],
+   "ALL": []
+  },
+  "notRestored": []
+ }
+}

@@ -1,0 +1,90 @@
+{
+ "probe": "r7ara-mutation",
+ "mutants": [
+  {
+   "id": "M1",
+   "root": "A5",
+   "what": "the canonical correction is bypassed before the handler (no factual re-plan before dispatch)",
+   "file": "src/r6-adaptation.mjs",
+   "from": "if(!(ctx.ev.pending||ctx.program.weeks[ctx.w].sessions.some(s=>s.prescription&&ctx.ahead(s)))||!viewMovedBy(ctx))return null;",
+   "to": "return null;",
+   "applied": true,
+   "killed": true,
+   "stage": "own-test-file",
+   "testsRun": 10,
+   "failing": 4,
+   "killingTests": [
+    "QE-R7ADA-01: a correction delivered with any review kind is applied before that review decides (24 -> 20 kg, logged 24)",
+    "QE-R7ADA-01 last day: a correction on the week's last day re-plans that day's session still ahead, whatever the review kind",
+    "QE-R7ADA-01 robustness: removed load, wearable conflict and a correction upward give EARLY = LATE whatever the review kind",
+    "P2 a retracted value cannot come back through a planned row: removed or lowered, history moves only on a new valid execution"
+   ]
+  },
+  {
+   "id": "M2",
+   "root": "A5",
+   "what": "the handler decides on the rows planned from the retracted load (a stale planned load resurrects the corrected one)",
+   "file": "src/r6-adaptation.mjs",
+   "from": "withFactualReplan(factual,decide(factual?.ctx??ctx))",
+   "to": "withFactualReplan(factual,decide(ctx))",
+   "applied": true,
+   "killed": true,
+   "stage": "own-test-file",
+   "testsRun": 10,
+   "failing": 5,
+   "killingTests": [
+    "QE-R7ADA-01: a correction delivered with any review kind is applied before that review decides (24 -> 20 kg, logged 24)",
+    "QE-R7ADA-01 last day: a correction on the week's last day re-plans that day's session still ahead, whatever the review kind",
+    "QE-R7ADA-01 robustness: removed load, wearable conflict and a correction upward give EARLY = LATE whatever the review kind",
+    "P1 factual correction globality: the same corrected evidence through different review kinds gives the same factual state",
+    "P2 a retracted value cannot come back through a planned row: removed or lowered, history moves only on a new valid execution"
+   ]
+  },
+  {
+   "id": "M3",
+   "root": "E1",
+   "what": "the walk/jog exit the evidence projected is the return baseline (no mode is undone)",
+   "file": "src/r6-program.mjs",
+   "from": "if(mode&&mode!==run.mode&&undo(mode)){",
+   "to": "if(false){",
+   "applied": true,
+   "killed": true,
+   "stage": "own-test-file",
+   "testsRun": 10,
+   "failing": 2,
+   "killingTests": [
+    "SSCTR F4-X: step 8 executed, the exit to continuous running released but never run, a pause: the return is the walk/jog recipe",
+    "QE-R7ADA-02 repeated pause, moderate: a return completion or restart switch released and never run re-enters from the entry towards the doses executed"
+   ]
+  },
+  {
+   "id": "M4",
+   "root": "E1",
+   "what": "the EASY dose the evidence released is the return baseline (no long or easy cap)",
+   "file": "src/r6-program.mjs",
+   "from": "else if(st.mode==='EASY'){\n  // The easy runs a quality slot became",
+   "to": "else if(false){\n  // The easy runs a quality slot became",
+   "applied": true,
+   "killed": true,
+   "stage": "own-test-file",
+   "testsRun": 10,
+   "failing": 2,
+   "killingTests": [
+    "QE-R7ADA-02 / EASY return factual ceiling: 70 executed, 75 released, a short pause never resumes 75 (nor an easy run above the one executed)",
+    "QE-R7ADA-02 repeated pause, moderate: a return completion or restart switch released and never run re-enters from the entry towards the doses executed"
+   ]
+  }
+ ],
+ "baseline": {
+  "ownTestFile": {
+   "total": 10,
+   "failing": []
+  }
+ },
+ "summary": {
+  "mutants": 4,
+  "applied": 4,
+  "killed": 4,
+  "survivors": []
+ }
+}

@@ -11,7 +11,7 @@
 | Contract | Findings | Runtime change |
 |---|---|---|
 | A5. The canonical factual state comes before every decision | QE-R7ADA-01 | `factualReplan` and `withFactualReplan`, called once in `evaluateProgram` before dispatch (r6-adaptation). The weekly review's mid-week A3 branch moves there; it is not duplicated |
-| E1. A return never starts above the running state or dose last executed | QE-R7ADA-02, SSCTR F4-X | `historicalRun` generalized (r6-program). `stateAtBreak` passes it the record of the runs executed since the latest entry (r6-adaptation) |
+| E1. A return never starts above the running state or dose last executed | QE-R7ADA-02, SSCTR F4-X | `historicalRun` generalized (r6-program). `stateAtBreak` passes it the record of the runs executed since the latest entry, and the releases the return's class undoes (r6-adaptation) |
 
 ## A5. The canonical factual state before every decision (QE-R7ADA-01)
 
@@ -73,7 +73,11 @@ Nothing is adopted to avoid a question. Example: after 24 → 20 kg, a logged 24
 Each run carries its row's role, progression dimension and value, minutes and week.
 
 **E1.3 Mode.** Some modes are released by the evidence: the walk/jog exit to continuous running, the restart's switch to easy running, a return's completion.
-- Such a mode that no executed run has used yet is undone. The state becomes the one that prescribed the last executed run (HistoricalState at the start of its week).
+- Such a mode that no executed run has used yet is undone where the return's recipe reads the state last run. The state becomes the one that prescribed the last executed run (HistoricalState at the start of its week).
+  - **SHORT** resumes the last executed doses, so every such release is undone.
+  - **MODERATE and LONG** undo only the walk/jog exit: a walk/jog athlete's recipes are the ladder's own (one step back, step 0; SSCTR R46).
+  - For a continuous runner, the moderate recipe re-enters from a current demonstration or the 15-minute entry, and the long one restarts. Both read the released easy state with its doses capped at the executed ones (E1.4), so a released step is never their target.
+  - Undoing a return's completion or a restart's switch there would resume a return step or restart minutes after up to 28 days, without the entry. The moderate recipe keeps a RETURN or RESTART state as it is (R7ARA-SELF-01 below).
 - The records the evidence accumulated are kept: `achieved`, `longestContinuous`, `longByWeek`, `modeHistory`, `resumed`.
 - A run's mode is read from its progression dimension. Quality steps exist only in easy running. A walk, the race or an event-window run states no mode.
 
@@ -95,14 +99,23 @@ The two kinds of rule differ because the rows differ.
 
 **E1.6 Recipes unchanged.** The return recipes apply on that state:
 - SHORT resumes it;
-- MODERATE steps to it (`returnTo` is the executed dose);
+- MODERATE steps to it (`returnTo` is the executed dose); a walk/jog athlete steps back one step;
 - LONG restarts: a walk/jog athlete at step 0, a runner with restart minutes.
 
 **Coverage (§15).**
 - Walk/jog to walk/jog, and walk/jog to continuous running (F4-X).
 - Easy to easy, and the long run.
 - Short and moderate returns.
-- A repeated pause, including a pause inside or right after a return's steps, and after a restart's switch.
+- A repeated pause, including a pause inside or right after a return's steps, and after a restart's switch, short and moderate.
+
+**R7ARA-SELF-01, found and corrected before the freeze.** The first complete evidence round ran on source digest `259ab3ef…`. Its record is [probes/SUPERSEDED_ROUND_R7ARA.json](probes/SUPERSEDED_ROUND_R7ARA.json); the round's outputs are not kept.
+- How it was found: this mission's direction check of the named differences (`probes/direction-r7ara.mjs`) found a dose rise in the SSCTR kit's `changes` probe, case A_E6.
+- The case: a moderate first break; return steps 0 and 1 executed; the evidence completes the return; then a 14-day break before any run of the completed state.
+- The defect: that first cut undid the completion for every break class. The return resumed step 1 (30/30/45 min) instead of re-entering from the 15-minute entry (15/15/20) as the predecessor did. The same happened after a restart's switch: the restart minutes resumed.
+- Why it mattered: it stayed under the ceiling, since 30/45 had been executed, but it broke the approved moderate recipe.
+- The fix: the class rule of E1.3.
+- Now: the moderate return re-enters at 15/15/20 and steps to the 30/45 executed since the first return's entry. The predecessor stepped to the first return's target, 40/70, released and never run since.
+- Pinned by: the test `QE-R7ADA-02 repeated pause, moderate`, the self-challenge classes `E1.return-completion` and `E1.restart-switch` (now with a moderate second pause), and the freeze gates REPEATED_PAUSE_RECIPES and direction.
 
 **Properties.**
 - **P3, return factual ceiling:** a released or projected run state above the factual one is never the baseline.
