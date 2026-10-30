@@ -4,7 +4,16 @@ import os from 'node:os';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { test } from 'node:test';
-import { changedPaths, checkFreeze, freezeRecord, freezeVerifier, requiresCoaching } from './coaching.mjs';
+import { changedPaths, checkFreeze, freezeRecord, freezeVerifier, requiresCoaching, requiresQuality } from './coaching.mjs';
+
+test('quality selection covers tooling, dependencies and JavaScript; docs and future UI skip it', () => {
+  for (const file of ['scripts/ci/new.mjs', 'backend/new.js', 'eslint.config.mjs', 'package-lock.json',
+    'CoachingCore/package-lock.json', '.github/workflows/ci.yml', '.github/dependabot.yml', '.gitleaksignore']) {
+    assert.equal(requiresQuality([file]), true, file);
+  }
+  assert.equal(requiresQuality(['docs/engineering/README.md', 'app/Screen.swift',
+    'audits/historical/probe.mjs', 'reviews/evidence.json', 'governance/snapshots/old/script.js']), false);
+});
 
 test('docs and app UI skip the suite; runtime, policy, evidence and CI changes trigger it', () => {
   assert.equal(requiresCoaching(['CONTRIBUTING.md', 'docs/setup.md', 'app/Screen.swift', '.github/pull_request_template.md']), false);

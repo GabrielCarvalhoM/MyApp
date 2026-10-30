@@ -16,6 +16,11 @@ export function requiresCoaching(files) {
     || ['CURRENT_MISSION.md', 'MISSION_LEDGER.md', 'AGENTS.md', 'CLAUDE.md', '.gitattributes', '.gitignore', '.npmrc', 'package.json', 'package-lock.json', '.nvmrc', '.node-version'].includes(file));
 }
 
+export function requiresQuality(files) {
+  return files.some(file => /\.(?:[cm]?js|json)$/.test(file) && !/^(audits\/|reviews\/|governance\/snapshots\/)/.test(file)
+    || /^(\.github\/workflows\/|\.github\/dependabot\.yml$|\.gitleaks|\.npmrc$)/.test(file));
+}
+
 export function changedPaths(base, head, repo = root) {
   // Disable rename detection so moving a Core file out of its directory still triggers CI.
   // A new branch has no before SHA: inspect its complete tree conservatively.
@@ -45,9 +50,10 @@ export function checkFreeze(base, repo = root) {
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const [command, base, head] = process.argv.slice(2);
   if (command === 'changes' && head) {
-    const coaching = requiresCoaching(changedPaths(base, head));
-    console.log(`coaching=${coaching}`);
-    if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `coaching=${coaching}\n`);
+    const files = changedPaths(base, head);
+    const outputs = `coaching=${requiresCoaching(files)}\nquality=${requiresQuality(files)}\n`;
+    console.log(outputs.trim());
+    if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, outputs);
   } else if (command === 'freeze') {
     checkFreeze(base);
   } else {

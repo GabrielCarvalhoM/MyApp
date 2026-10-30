@@ -1,0 +1,18 @@
+{
+  "name": "vilumo-repository-tooling",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "lint": "eslint . --max-warnings 0",
+    "test": "node --test scripts/ci/*.test.mjs",
+    "check:freeze": "node scripts/ci/frozen-tree.mjs",
+    "check:secrets": "node scripts/ci/secrets.mjs",
+    "audit:dependencies": "npm audit --ignore-scripts --audit-level=high && npm --prefix CoachingCore audit --ignore-scripts --audit-level=high"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "eslint": "10.14.0",
+    "globals": "17.13.0"
+  }
+}

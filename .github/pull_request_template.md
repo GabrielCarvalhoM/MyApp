@@ -9,6 +9,17 @@ Problem, resulting behavior, explicit exclusions, and base branch/commit (identi
 - [ ] Coaching runtime / sporting policy / fixtures / tests / freeze / evidence
 - [ ] Other (describe)
 
+## Security and privacy flags — complete for implementation/tooling changes
+
+Write **N/A with reason**, or identify affected trust/data boundaries and link the competent independent review. This is a human review flag, not automated approval.
+
+- [ ] Identity / sessions / authz / admin / secrets / CI privileges
+- [ ] Entitlements / payments / external providers / dependency supply chain
+- [ ] Sensitive data / HealthKit permissions / backend sync / telemetry
+- [ ] Storage / migrations / retention / correction / export / deletion / backups
+
+For flagged changes, update the [threat model](../docs/engineering/SECURITY.md) and [inventory](../docs/engineering/PRIVACY.md) where affected. Follow the [engineering DoD](../docs/engineering/README.md); include relevant build, lint, tests and measured performance evidence, or explain N/A/TBD prerequisites. No secrets/real athlete data in PR artifacts.
+
 ## Tests and evidence
 
 Commands, results and exact commit/freeze; link applicable independent reviews. Explain skipped checks.

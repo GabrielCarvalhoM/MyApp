@@ -18,6 +18,7 @@ jobs:
     timeout-minutes: 10
     outputs:
       coaching: ${{ steps.changes.outputs.coaching }}
+      quality: ${{ steps.changes.outputs.quality }}
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
@@ -27,8 +28,26 @@ jobs:
         with:
           node-version: '24'
           package-manager-cache: false
-      - name: Test CI path selection and freeze guard
-        run: node --test scripts/ci/coaching.test.mjs
+      - name: Install pinned workflow and secret scanners
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/foundation-tools"
+          cd "$RUNNER_TEMP/foundation-tools"
+          curl --fail --silent --show-error --location https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz -o actionlint.tar.gz
+          echo '8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8  actionlint.tar.gz' | sha256sum --check
+          curl --fail --silent --show-error --location https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz -o gitleaks.tar.gz
+          echo '551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb  gitleaks.tar.gz' | sha256sum --check
+          tar -xzf actionlint.tar.gz actionlint
+          tar -xzf gitleaks.tar.gz gitleaks
+          echo "$RUNNER_TEMP/foundation-tools" >> "$GITHUB_PATH"
+      - name: Validate workflow syntax and expressions
+        run: actionlint .github/workflows/ci.yml
+      - name: Test CI path selection and freeze guards
+        run: npm test
+      - name: Reject secrets in checkout and reachable commit history
+        run: |
+          npm run check:secrets
+          gitleaks git --redact --no-banner --ignore-gitleaks-allow .
       - name: Select Coaching Core checks
         id: changes
         env:
@@ -39,6 +58,8 @@ jobs:
         env:
           CI_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
         run: node scripts/ci/coaching.mjs freeze "$CI_BASE"
+      - name: Compare frozen tree and actual bytes with the fixed R7ARA commit
+        run: npm run check:freeze
       - name: Confirm checks did not modify tracked or untracked files
         run: test -z "$(git status --porcelain --untracked-files=all)"
 
@@ -67,10 +88,34 @@ jobs:
       - name: Confirm suite did not modify tracked or untracked files
         run: test -z "$(git status --porcelain --untracked-files=all)"
 
+  quality:
+    name: Lint and dependency security
+    needs: workflow
+    if: needs.workflow.outputs.quality == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: package-lock.json
+      - name: Install locked tooling without lifecycle scripts
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Lint live JavaScript with zero warnings
+        run: npm run lint
+      - name: Audit tooling and frozen Core lockfiles (high and critical block)
+        run: npm run audit:dependencies
+      - name: Confirm checks did not modify tracked or untracked files
+        run: test -z "$(git status --porcelain --untracked-files=all)"
+
   ci:
     name: CI
     if: always()
-    needs: [workflow, coaching]
+    needs: [workflow, coaching, quality]
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
@@ -79,6 +124,8 @@ jobs:
           WORKFLOW_RESULT: ${{ needs.workflow.result }}
           COACHING_RESULT: ${{ needs.coaching.result }}
           COACHING_REQUIRED: ${{ needs.workflow.outputs.coaching }}
+          QUALITY_RESULT: ${{ needs.quality.result }}
+          QUALITY_REQUIRED: ${{ needs.workflow.outputs.quality }}
         run: |
           test "$WORKFLOW_RESULT" = success
           if [ "$COACHING_REQUIRED" = true ]; then
@@ -86,4 +133,10 @@ jobs:
           else
             test "$COACHING_REQUIRED" = false
             test "$COACHING_RESULT" = skipped
+          fi
+          if [ "$QUALITY_REQUIRED" = true ]; then
+            test "$QUALITY_RESULT" = success
+          else
+            test "$QUALITY_REQUIRED" = false
+            test "$QUALITY_RESULT" = skipped
           fi

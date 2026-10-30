@@ -2,6 +2,8 @@
 
 Use a small GitHub Flow: one focused branch, a reviewable PR, current evidence, then merge and delete the branch. Product authority remains in [AGENTS.md](AGENTS.md), [CURRENT_MISSION.md](CURRENT_MISSION.md) and the [Canon](canon/CANONICAL_INDEX.md). This workflow grants no product, sporting-policy or deployment authorization.
 
+Future implementation also follows the [Engineering Constitution / Definition of Done](docs/engineering/README.md), with [runtime boundaries](docs/engineering/decisions/0001-runtime-boundaries.md), [coding/lint/tests/performance](docs/engineering/QUALITY.md), [security](docs/engineering/SECURITY.md) and [privacy inventory](docs/engineering/PRIVACY.md). These extend this delivery workflow without changing the current mission or authorizing product implementation.
+
 ## Baseline and branches
 
 `main` is conceptually sacred: integrated, reviewed work only; no direct feature work, force pushes or casual history rewrites. **As of this foundation, the remote has no `main`; its default is `r7/decision-authority-closure-base`.** Creating/promoting `main` is a separate Founder decision. Do not rename, merge into or repurpose the current default, closure or review branches to adopt this workflow.
@@ -35,13 +37,14 @@ No `CODEOWNERS` is added: assigning every path to the sole Founder adds no indep
 
 | Check | Automatic behavior |
 | --- | --- |
-| `Workflow checks` | Runs the small CI-adapter tests, selects paths, protects the existing candidate record/verifier against the event base, and runs the existing read-only R7ARA verifier when its record exists. Checks worktree cleanliness. |
+| `Workflow checks` | Always: actionlint syntax validation; CI-adapter tests; redacted Gitleaks checkout and reachable HEAD history scans; path selection; existing read-only R7ARA verifier/record protection; all 459 CoachingCore files compared with fixed commit `7d2da36` using unfiltered raw blob hashes and tree identity. Checks worktree cleanliness. |
 | `Coaching Core` | On relevant changes: Node **24** (the documented reference major, satisfying `engines.node >=24`), cached npm downloads keyed by `CoachingCore/package-lock.json`, locked install without lifecycle scripts, then `npm test`. Checks worktree cleanliness. |
-| `CI` | Always evaluates preceding job results. Fails if workflow checks fail or the required Core suite fails/cancels. Accepts a suite skipped by the selector. This is the recommended future required status check. |
+| `Lint and dependency security` | On live JS/tooling/dependency/workflow changes: locked root install without lifecycle scripts, ESLint with zero warnings, npm audit of root and frozen Core lockfiles (high/critical block), then cleanliness. Historical evidence JS alone does not trigger this job. |
+| `CI` | Always evaluates preceding job results. Fails if workflow checks fail or either selected Core/quality job fails/cancels. Accepts jobs skipped by the selector. This is the recommended future required status check. |
 
 The suite runs for any `CoachingCore/` change (including runtime, policy, fixtures, tests, lockfile and freeze), `canon/`, `product/`, sports-review authorities, coaching/domain-closure/science audits, mission/agent entry points, CI scripts/workflows, and dependency/byte-handling configuration listed in [the selector](scripts/ci/coaching.mjs). Renames are evaluated as removal plus addition. New unrelated `docs/`, root workflow documentation, PR-template and app/UI-only changes skip the full suite. Policy/authority documents are deliberately relevant. Add new external Core inputs to the selector when introducing them.
 
-Freeze verification is cheap and always runs when applicable, even for unrelated changes: the existing verifier binds 86 runtime/test/policy/package files, evidence and closed historical files. Editing a historically bound document may therefore fail integrity without running the full suite. It is not a generic documentation lint. When neither the baseline nor checkout declares this R7ARA freeze, this specific verifier is explicitly not applicable; the adapter must be reviewed when adopting another mission baseline/freeze.
+Freeze verification always runs, even for unrelated changes: the existing verifier binds 86 runtime/test/policy/package files, evidence and closed historical files. The additional fixed-commit guard checks the complete CoachingCore tree and raw checkout bytes, including historical outputs and tests, against `7d2da3603e224124696a2290766ec448080f3264`; it rejects extra non-ignored files too. Editing a historically bound document may therefore fail integrity without running the full suite. This foundation is deliberately bound to R7ARA: a future authorized successor must preserve old records and review both guards rather than bypass them. It is not a generic documentation lint.
 
 From the repository root, on Node 24:
 
@@ -49,6 +52,10 @@ From the repository root, on Node 24:
 node --check scripts/ci/coaching.mjs
 node --check scripts/ci/coaching.test.mjs
 node --test scripts/ci/coaching.test.mjs
+npm ci --ignore-scripts --no-audit --no-fund
+npm run lint
+npm test
+npm run check:freeze
 node scripts/ci/coaching.mjs changes <base-sha> HEAD
 node scripts/ci/coaching.mjs freeze <base-sha>
 npm --prefix CoachingCore ci --ignore-scripts --no-audit --no-fund
@@ -57,7 +64,7 @@ git diff --check
 git status --short
 ```
 
-Syntax-check workflow changes with `actionlint .github/workflows/ci.yml` when available. Existing mission-specific probes remain required where their mission says so; this foundation does not rerun all historical probe kits or create a replacement governance system. Official references: [checkout](https://github.com/actions/checkout), [setup-node](https://github.com/actions/setup-node), [skipped workflows and required checks](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/troubleshooting-required-status-checks).
+The complete [local quality commands and pinned scanner installation details](docs/engineering/QUALITY.md#exact-local-commands) also include `npm run check:secrets`, the Gitleaks history scan, `npm run audit:dependencies` and `actionlint .github/workflows/ci.yml`. Workflow validation now runs automatically. Swift/Kotlin lint tools enter with their first real target; no automatic reformat touches frozen source. Existing mission-specific probes remain required where their mission says so; this foundation does not rerun all historical probe kits or create a replacement governance system. Official references: [checkout](https://github.com/actions/checkout), [setup-node](https://github.com/actions/setup-node), [skipped workflows and required checks](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/troubleshooting-required-status-checks).
 
 ## Coaching Core freeze and gates
 

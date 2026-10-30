@@ -1,0 +1,34 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { execFileSync } from 'node:child_process';
+import test from 'node:test';
+import { verifyFrozenTree } from './frozen-tree.mjs';
+
+test('fixed freeze guard detects checkout drift, extra files, and committed changes', t => {
+  const repo = fs.mkdtempSync(path.join(os.tmpdir(), 'vilumo-freeze-'));
+  t.after(() => fs.rmSync(repo, { recursive: true, force: true }));
+  const git = (...args) => execFileSync('git', args, { cwd: repo, stdio: ['ignore', 'pipe', 'pipe'] }).toString().trim();
+  const file = path.join(repo, 'CoachingCore/example.mjs');
+  git('init', '--quiet');
+  git('config', 'user.name', 'CI fixture');
+  git('config', 'user.email', 'ci@example.invalid');
+  git('config', 'commit.gpgsign', 'false');
+  git('config', 'core.autocrlf', 'false');
+  fs.mkdirSync(path.dirname(file));
+  fs.writeFileSync(file, 'export const value = 1;\n');
+  git('add', '.');
+  git('commit', '--quiet', '-m', 'baseline');
+  const base = git('rev-parse', 'HEAD');
+  assert.equal(verifyFrozenTree(repo, base), 1);
+  fs.writeFileSync(file, 'export const value = 1;\r\n');
+  assert.throws(() => verifyFrozenTree(repo, base), /checkout bytes/);
+  fs.writeFileSync(file, 'export const value = 1;\n');
+  fs.writeFileSync(path.join(repo, 'CoachingCore/new.mjs'), '// extra\n');
+  assert.throws(() => verifyFrozenTree(repo, base), /Untracked/);
+  git('add', '.');
+  assert.throws(() => verifyFrozenTree(repo, base), /staged index/);
+  git('commit', '--quiet', '-m', 'extra file');
+  assert.throws(() => verifyFrozenTree(repo, base), /committed tree/);
+});

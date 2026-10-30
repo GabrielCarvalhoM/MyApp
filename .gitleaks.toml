@@ -1,0 +1,54 @@
+title = "Vilumo: default detection with narrow synthetic-history exceptions"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "generic-api-key"
+
+# Owner: Engineering + Security. Reviewed 2026-10-30; revisit on scanner upgrade
+# or authorized change to these frozen fixtures. These are SHA-256 identifiers,
+# not credentials (r5-review-context.mjs hashes the prescription into doseKey).
+[[rules.allowlists]]
+description = "Frozen synthetic prescription hashes, exact field + fixed evidence files"
+condition = "AND"
+regexTarget = "match"
+# Gitleaks fragments large files at chunk boundaries: the 30 remaining checkout
+# hits were verified against full source lines, all the same 64-hex doseKey.
+# Permit only the observed truncated field/match forms, still in fixed files.
+regexes = ['''^(doseKey|oseKey|seKey)": "[0-9a-f]{16,64}"?$''']
+paths = [
+  '''(^|/)CoachingCore/r5/(PROGRAM_FIXTURES_R5|DEMONSTRATIONS_R5|SIMULATION_RESULTS_R5)\.json$''',
+  '''(^|/)CoachingCore/r5/holdout/FIRST_EVALUATION\.json$''',
+  '''(^|/)CoachingCore/r6/R5_HOLDOUT_REPLAY_R6(\.dev)?\.json$''',
+  '''(^|/)CoachingCore/r6/holdout/FIRST_EVALUATION\.json$''',
+  '''(^|/)audits/domain-coaching-r6-2026-10-26/freeze-1-outputs/R5_HOLDOUT_REPLAY_R6\.json$''',
+]
+
+[[rules.allowlists]]
+description = "Frozen evaluation schema checksum, exact field + file"
+condition = "AND"
+regexTarget = "match"
+regexes = ['''^apiSchemaSha256": "[0-9a-f]{64}"$''']
+paths = ['''(^|/)CoachingCore/r2/evaluation/R2_EVAL_INPUTS\.json$''']
+
+[[rules.allowlists]]
+description = "Historical file checksum map, exact checksum keys + file"
+condition = "AND"
+regexTarget = "match"
+regexes = ['''^ssctr-(access-trace\.json|r6-access-trace\.json|source-access\.mjs)": "[0-9a-f]{64}"$''']
+paths = ['''(^|/)audits/v1-wearable-scope-2026-10-27/before\.json$''']
+
+[[rules.allowlists]]
+description = "Synthetic race label in historical author package, exact text + file"
+condition = "AND"
+regexTarget = "match"
+regexes = ["^nextkey':'10kmraceNov8;$"]
+paths = ['''(^|/)reviews/sports-domain-closure/2026-10-23/scientific/build_author_package\.py$''']
+
+[[rules.allowlists]]
+description = "Historical audit case identifier, exact comparison + file"
+condition = "AND"
+regexTarget = "match"
+regexes = ["^key=='FZ-S06-NO-DOMINANCE'$"]
+paths = ['''(^|/)audits/training-domain-foundation-0\.2/closure-r4-original/work/closure/supplemental_audit\.py$''']
