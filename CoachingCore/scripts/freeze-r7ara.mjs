@@ -84,7 +84,12 @@ if(regDrift.length)refuse('the regression ran on other sources: '+regDrift.join(
 // The Cloud git state (§31), recorded before the freeze commit.
 const gitState={branch:git('branch','--show-current'),head:git('rev-parse','HEAD'),base:{branch:BASE_BRANCH,commit:git('rev-parse',BASE_BRANCH)},statusShort:git('status','--short').split('\n').filter(Boolean),diffStat:git('diff','--stat').split('\n').filter(Boolean)};
 if(gitState.branch!==BRANCH)refuse('not on the Cloud session branch: '+gitState.branch);
-if(gitState.head!==gitState.base.commit)refuse('HEAD moved from the baseline commit before the freeze: '+gitState.head);
+// The session's checkpoint commits since the baseline (pushed so the work survives the container) touch only this mission's own paths and the
+// append-only mission files; the frozen bytes are those of the working tree, checked above.
+if(spawnSync('git',['merge-base','--is-ancestor',gitState.base.commit,gitState.head],{cwd:repo}).status!==0)refuse('the baseline commit is not an ancestor of HEAD: '+gitState.head);
+const committed=git('diff','--name-only',gitState.base.commit,gitState.head).split('\n').filter(Boolean),foreign=committed.filter(p=>!ownPrefixes.some(x=>p.startsWith(x))&&!['CURRENT_MISSION.md','MISSION_LEDGER.md'].includes(p));
+if(foreign.length)refuse('commits since the baseline touch other paths: '+foreign.join(', '));
+gitState.commitsSinceBase=git('log','--format=%H %s',`${gitState.base.commit}..${gitState.head}`).split('\n').filter(Boolean);
 const bind=p=>({path:p,sha256:shaRepo(p)});
 const out={revision,frozenAt:new Date().toISOString(),node:process.version,
  sourceRevision:{baseline:AUDIT+'BASELINE.json',baselineSha256:shaRepo(AUDIT+'BASELINE.json'),predecessor:pred.revision,predecessorSourceDigest:pred.sourceDigest,predecessorManifestDigest:pred.manifestDigest,predecessorFreezeFile:{path:pred.file,sha256:pred.fileSha256},predecessorCommits:{freeze:'d4631cd03fb27bbc1857532500748476ab764987',handoff:'5434b3265f5634d1e7c796426cd9d8415b3b1af2'}},
