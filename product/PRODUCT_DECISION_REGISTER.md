@@ -1,3 +1,33 @@
+<!-- TWO_WEEK_ROTATION_START: TWR-CANON-1 -->
+## Current amendment — PDR-1.12 / contextual two-week strength exercise rotation · 2026-10-30
+
+**DR-134 · DECIDED / CURRENT_PRODUCT_DECISION.** Source/decisor: the current direct [Founder decision](../audits/two-week-rotation-policy-2026-10-30/FOUNDER_DECISION.md), FOUNDER_DECISION = APPROVED. This operationalizes/refines the prior OB-2 choice of option (a), recorded in [CHECKPOINT](../audits/new-figma-onboarding-v2-2026-10-25/CHECKPOINT.md) and [SSCTR rotation binding r4](../audits/new-figma-onboarding-v2-2026-10-25/reviews/SSCTR_ROTATION_CHECK.md); it is not a contradiction or a reopened choice. The historical DR-113 text and OB-2 held edits are preserved. This amendment prevails over their unresolved scope wording. Numbering skips the held Growth reservations DR-124–133 / PDR-1.10–1.11; that patch remains unapplied and unchanged.
+
+| ID | Current decision / rationale | Scope, supersession, dependents |
+|---|---|---|
+| DR-134 | **The two-week option is an opportunity for eligible accessory/variation changes, not automatic exercise replacement or a mini-redesign.** Main configurations stay within the block; a broader configuration/program review occurs around the block boundary (~6 weeks). | Closes only the Founder-dependent scope/structural question in DR-113, the OB-2 refinement and readiness D04. Repertoire/configuration mapping remains for a separately authorized DOMAIN_COACHING_R7-B0; no new pre-B0 Founder decision is required for this scope. No B0 start, exercise catalogue, archetype, actual prescription or implementation is authorized. |
+
+**Role is contextual and separate from rotation eligibility.** Exercise + configuration + program context determine the role and then permitted behavior. The same exercise can have different roles in valid programs; do not canonize name-based rules such as squat always MAIN or split squat/hip thrust always ACCESSORY. Keep the role taxonomy small:
+
+| Contextual role | Approved selection semantics |
+|---|---|
+| MAIN | Main/anchor configuration remains stable within the block, supporting continuity, technical learning, progression measurement and stimulus consistency. No automatic two-week rotation; broader review around ~6 weeks. Earlier change requires an explicit justified reason. |
+| ACCESSORY | May be TWO_WEEK_ELIGIBLE. Rotation is permitted, never mandatory, only when an admissible alternative preserves objective, covered pattern/need, intended stimulus, athlete constraints, equipment, interference/recovery cost and safety/policy. No variation merely for aesthetic variety. |
+| PRACTICE | No calendar-driven automatic rotation while technical continuity remains important to its learning/skill purpose. |
+
+Use a separate minimum eligibility taxonomy: **REASON_ONLY** (no scheduled rotation; justified reason path), **BLOCK_BOUNDARY_ELIGIBLE** (eligible for broader block-boundary review, not an obligatory swap), **TWO_WEEK_ELIGIBLE** (eligible for the two-week opportunity, subject to context/admissible alternatives). Nomenclature may change only for demonstrated technical consistency while preserving this meaning. Role alone is not a permanent global exercise property or a complete eligibility decision; do not add categories without a real consumer.
+
+**Close variation** is a directed relation between configurations/exercises, not a fourth role. It can help identify admissible replacements, but effective permission still depends on context and the separate eligibility. A configuration serving MAIN cannot evade its stability rule by being called a close variation. **Running-/sport-specific strengthening is purpose/context**, not automatically another role; it can serve MAIN, ACCESSORY or PRACTICE. Existing coverage limits apply; no new sport or exercise family is approved here.
+
+**Justified reason-based substitution overrides nominal cadence**, including MAIN retention and a fixed selection preference, but never coverage, safety/policy, clinical boundaries or applicable athlete agency. Reasons under applicable policy/metadata may include nonclinical discomfort signals, unavailable equipment, skill mismatch, intolerance/recovery issue, conflict with protected run stimulus, valid context change, policy-supported stagnation or deliberate block transition. Do not invent a plateau threshold, diagnose pain or prescribe rehabilitation; persistent pain/clinical dependencies retain the existing qualified-human route. Selection changes preserve essential stimulus and existing new-exercise effort establishment/no cross-exercise load-transfer constraints. No dose, exercise pair or recovery rule is approved by this documentary decision.
+
+**UI semantics, recorded for later reconciliation only:** label **“A cada 2 semanas”** may remain; approved description **“Revisamos acessórios e variações próximas; os principais ficam.”** No Figma action. The approximate six-week review is broader selection/program review, not an optimal scientific cadence or mandatory change.
+
+**OPEN_FOR_B0 = operational configuration mapping.** Future B0 owns concrete configurations, role assignment by archetype/context, close-variation relations, eligibility metadata, concrete pairs/families and admissible alternatives, under the approved structure and applicable domain review. Curl, tibialis, Copenhagen, plyometrics, split squat, hip thrust, calf raise, hamstring curl, core and runner-specific movements receive no universal role or recipe here. They are not a pre-B0 structural Founder blocker. B0 must not reopen this structural decision.
+
+**Boundary/history:** only the approved structural semantics above are current authority; the original [proposal](../audits/two-week-rotation-policy-2026-10-30/PROPOSAL.md), matrix, examples, exact timing suggestions and prior review/verification remain historical noncanonical artifacts. R6 operational rotation remains the unchanged frozen implementation boundary, not evidence that this product decision is implemented. No new research, sporting efficacy approval, G01–G04 closure, queue change, R7-A exit judgment, Growth application or runtime/policy/test/freeze change follows. Current evidence, publication event and handoff: [canonicalization record](../audits/two-week-rotation-policy-2026-10-30/CANONICALIZATION_RECORD.md).
+<!-- TWO_WEEK_ROTATION_END: TWR-CANON-1 -->
+
 <!-- V1_PLATFORM_SCOPE_START: VWS-20261027-r2 -->
 ## Current amendment — PDR-1.9 / V1 iOS only, HealthKit inbound required, write-back open · 2026-10-27
 

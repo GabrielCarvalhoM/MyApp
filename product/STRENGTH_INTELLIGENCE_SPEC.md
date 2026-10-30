@@ -1,3 +1,17 @@
+<!-- TWO_WEEK_ROTATION_DOMAIN_START: TWR-CANON-1 -->
+## Current structural amendment — Founder-approved rotation semantics / 2026-10-30
+
+[PDR DR-134](PRODUCT_DECISION_REGISTER.md), based on the current [Founder decision](../audits/two-week-rotation-policy-2026-10-30/FOUNDER_DECISION.md), refines the prior OB-2 choice and the rotation paragraph in §4 below. It closes the structural scope question without altering any frozen sports policy or implementation.
+
+- Role belongs to exercise + configuration + program context: MAIN / ACCESSORY / PRACTICE. Keep it distinct from rotation eligibility: REASON_ONLY / BLOCK_BOUNDARY_ELIGIBLE / TWO_WEEK_ELIGIBLE. No universal role by exercise name; no extra taxonomy without a real consumer.
+- MAIN stays within block, with no automatic two-week rotation; broader configuration/program review is around ~6 weeks. Earlier change needs an explicit justified reason. ACCESSORY may vary at the two-week opportunity only with an admissible alternative preserving the intended contribution, athlete/equipment constraints, interference/recovery cost and safety/policy; rotation is allowed, not required. PRACTICE has no calendar-driven automatic change while technical continuity serves its purpose.
+- Close variation is a directed relation between configurations, not an exercise role or permission to replace MAIN automatically. Running-/sport-specific strengthening is purpose/context, not a fourth role. Effective permission depends on contextual eligibility, covered alternatives and existing agency.
+- Justified reason-based substitution overrides nominal cadence, subject to existing policy, coverage, clinical limits and agency. No new pain/rehabilitation, plateau, recovery or dose rule is created; existing effort establishment/no cross-exercise load-transfer semantics remain.
+- Label “A cada 2 semanas” may remain with approved description “Revisamos acessórios e variações próximas; os principais ficam.” This records copy for future reconciliation, with no Figma edit.
+
+**CONCRETE_CONFIGURATION_MAPPING = DOMAIN_COACHING_R7-B0 responsibility; not a pre-B0 Founder blocker.** B0 will materialize configurations, contextual role assignment, relations, eligibility metadata and admissible pairs/alternatives without reopening the structure. No concrete family, repertoire or archetype is approved or created now. Original proposal/examples and the R6 accessory-only implementation remain historical/scoped evidence; they are not silently promoted by this amendment. Publication/review evidence: [canonicalization record](../audits/two-week-rotation-policy-2026-10-30/CANONICALIZATION_RECORD.md).
+<!-- TWO_WEEK_ROTATION_DOMAIN_END: TWR-CANON-1 -->
+
 # Strength Intelligence Layer
 
 <!-- EXPERIENCE_AUTHORITY_OVERLAY_START: EXP-AUTH-r1 -->

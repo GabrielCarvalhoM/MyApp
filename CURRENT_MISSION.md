@@ -682,3 +682,11 @@ Scope: one freeze (R7A-RESIDUAL-AUTHORITY-FREEZE-1), committed and pushed on the
 - **Next:** two new, independent sessions recheck exactly these bytes, from [the handoff](audits/domain-coaching-r7a-residual-authority-2026-10-30/REVIEW_HANDOFF.md) and the two briefs. `R7A_EXIT_READINESS` is not declared, and R7-B0 is not started.
 - **Held:** the Growth Layer's [PENDING_CANON_SYNC.patch](audits/growth-layer-2026-10-29/PENDING_CANON_SYNC.patch).
 - No UI, Figma, KMP, HealthKit, integration, production or real-plan effect. No merge, deploy or reviewer run. The human queue is untouched.
+
+
+<!-- TWO_WEEK_ROTATION_CANONICALIZATION: TWR-CANON-1 -->
+## Documentary follow-up — Founder-approved two-week rotation structure / 2026-10-30
+
+The current direct [Founder decision](audits/two-week-rotation-policy-2026-10-30/FOUNDER_DECISION.md) approves the structural refinement recorded in [PDR-1.12 / DR-134](product/PRODUCT_DECISION_REGISTER.md): contextual MAIN/ACCESSORY/PRACTICE, separate reason/block/two-week eligibility, conditional accessory variation, stable MAIN within block, practice continuity, directed close-variation relation, running purpose and reason-based substitution precedence. Approved copy is recorded for later reconciliation only. **R7_B0_ROTATION_FOUNDER_BLOCKER = CLOSED; OPEN_FOR_B0 = operational configuration mapping.** No structural rotation decision remains Founder-dependent before B0; B0 is not started or authorized by this follow-up.
+
+This is a documentary authority update, not a change to CURRENT_MISSION = R7A_RESIDUAL_AUTHORITY_FROZEN, its pending narrow rechecks or R7A_EXIT_READINESS. No new research, runtime/policy/tests/freeze/Figma/Growth/queue change, repertoire, archetype, catalogue or engine is authorized. The held Growth canon patch remains unapplied; DR-124–133 remain reserved. [Contract, exact integrity evidence, independent reviews and publication/handoff record](audits/two-week-rotation-policy-2026-10-30/CANONICALIZATION_RECORD.md).

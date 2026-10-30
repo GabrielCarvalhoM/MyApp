@@ -1,3 +1,11 @@
+<!-- TWO_WEEK_ROTATION_INDEX_START: TWR-CANON-1 -->
+## Current pointer — Founder-approved two-week rotation structure / 2026-10-30
+
+[PDR DR-134 / PDR-1.12](../product/PRODUCT_DECISION_REGISTER.md) is the current **DECIDED / CURRENT_PRODUCT_DECISION** for the [Founder-approved refinement](../audits/two-week-rotation-policy-2026-10-30/FOUNDER_DECISION.md) of OB-2/DR-113: contextual MAIN/ACCESSORY/PRACTICE is separate from REASON_ONLY/BLOCK_BOUNDARY_ELIGIBLE/TWO_WEEK_ELIGIBLE; MAIN stays within block, ACCESSORY may vary conditionally, PRACTICE has no calendar-driven automatic rotation; broad review ~6 weeks. Close variation is a directed configuration relation; running-specific strength is purpose/context. Justified substitutions override cadence subject to coverage, safety/clinical boundaries and agency. Copy recorded: “Revisamos acessórios e variações próximas; os principais ficam.”
+
+**R7_B0_ROTATION_FOUNDER_BLOCKER = CLOSED.** Only concrete operational configuration mapping remains OPEN_FOR_B0, under the approved structure; B0 is not started. This pointer supersedes only earlier unresolved rotation-scope wording, not sporting/frozen implementation authority. No Figma, runtime, policy, test, freeze or Growth edits are authorized. [Readiness handoff](../audits/domain-coaching-r7-b0-readiness-2026-10-30/CLAUDE_HANDOFF.md) and [publication/review record](../audits/two-week-rotation-policy-2026-10-30/CANONICALIZATION_RECORD.md). Held Growth IDs/patch remain reserved and unapplied; this independent amendment uses DR-134.
+<!-- TWO_WEEK_ROTATION_INDEX_END: TWR-CANON-1 -->
+
 <!-- V1_WEARABLE_SCOPE_INDEX_START: VWS-20261027-r2 -->
 ## Current pointer — V1 iOS only, Apple Health inbound, direct vendor integrations and watch delivery POST_V1 / 2026-10-27
 
