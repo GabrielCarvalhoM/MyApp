@@ -1,0 +1,658 @@
+{
+  "revision": "TWR-1",
+  "status": "PROPOSAL_NON_CANONICAL",
+  "runtime_authority": false,
+  "B0_started": false,
+  "source_document": "PROPOSAL.md",
+  "role_vocabulary": [
+    "MAIN",
+    "ACCESSORY",
+    "PRACTICE"
+  ],
+  "close_variation": "DIRECTED_CONFIGURATION_RELATION_NOT_EXCLUSIVE_ROLE",
+  "running_specific": "PURPOSE_NOT_EXCLUSIVE_ROLE",
+  "rotation_eligibility": [
+    "REASON_ONLY",
+    "BLOCK_BOUNDARY_ELIGIBLE",
+    "TWO_WEEK_ELIGIBLE"
+  ],
+  "preferences": [
+    "FIXED",
+    "EVERY_2_WEEKS",
+    "EVERY_6_WEEKS",
+    "COACH_DECIDES"
+  ],
+  "precedence": [
+    "COVERAGE_CLINICAL_FACTUAL_GATES",
+    "MATERIAL_REASON_WITH_VALIDITY_AND_AGENCY",
+    "PHASE_LEARNING_CONTEXT_VETO_FOR_ELECTIVE_CHANGE",
+    "ROLE_X_PREFERENCE",
+    "DIRECTED_CANDIDATE_AND_JOINT_HORIZON_VALIDATION",
+    "AGENCY_ADOPTION"
+  ],
+  "cadence": {
+    "unit": "ACCEPTED_BLOCK_WEEKS",
+    "fortnight_review_examples": [
+      3,
+      5
+    ],
+    "whole_block_review": "AFTER_WEEK_6_BEFORE_WEEK_7",
+    "per_slot_minimum_selection_period": "TWO_ACCEPTED_CALENDAR_WEEKS_PLUS_CONTEXT_GATES_NOT_A_SKILL_THRESHOLD",
+    "missed_or_deferred": "NO_DEBT_NO_BATCH_CATCH_UP",
+    "reason_substitution": "REBASE_ONLY_AFFECTED_SLOT_SELECTION_PERIOD",
+    "no_execution_credit_from_calendar": true
+  },
+  "base_rows": [
+    {
+      "id": "BASE-MAIN-FIXED",
+      "role": "MAIN",
+      "athlete_context": "CURRENT_TASK_ELIGIBLE_ESTABLISHED_AND_JOINTLY_VALID",
+      "preference": "FIXED",
+      "effective_eligibility": "REASON_ONLY",
+      "behavior": "RETAIN_VALID_SELECTION_REASON_PATH_AVAILABLE",
+      "mandatory_replacement": false
+    },
+    {
+      "id": "BASE-MAIN-EVERY_2_WEEKS",
+      "role": "MAIN",
+      "athlete_context": "CURRENT_TASK_ELIGIBLE_ESTABLISHED_AND_JOINTLY_VALID",
+      "preference": "EVERY_2_WEEKS",
+      "effective_eligibility": "BLOCK_BOUNDARY_ELIGIBLE",
+      "behavior": "RETAIN_WITHIN_BLOCK_REVIEW_AT_TRANSITION_KEEP_ALLOWED",
+      "mandatory_replacement": false
+    },
+    {
+      "id": "BASE-MAIN-EVERY_6_WEEKS",
+      "role": "MAIN",
+      "athlete_context": "CURRENT_TASK_ELIGIBLE_ESTABLISHED_AND_JOINTLY_VALID",
+      "preference": "EVERY_6_WEEKS",
+      "effective_eligibility": "BLOCK_BOUNDARY_ELIGIBLE",
+      "behavior": "RETAIN_WITHIN_BLOCK_REVIEW_AT_TRANSITION_KEEP_ALLOWED",
+      "mandatory_replacement": false
+    },
+    {
+      "id": "BASE-MAIN-COACH_DECIDES",
+      "role": "MAIN",
+      "athlete_context": "CURRENT_TASK_ELIGIBLE_ESTABLISHED_AND_JOINTLY_VALID",
+      "preference": "COACH_DECIDES",
+      "effective_eligibility": "BLOCK_BOUNDARY_ELIGIBLE",
+      "behavior": "RETAIN_WITHIN_BLOCK_REVIEW_AT_TRANSITION_KEEP_ALLOWED",
+      "mandatory_replacement": false
+    },
+    {
+      "id": "BASE-ACCESSORY-FIXED",
+      "role": "ACCESSORY",
+      "athlete_context": "CURRENT_TASK_ELIGIBLE_ESTABLISHED_AND_JOINTLY_VALID",
+      "preference": "FIXED",
+      "effective_eligibility": "REASON_ONLY",
+      "behavior": "RETAIN_VALID_SELECTION_REASON_PATH_AVAILABLE",
+      "mandatory_replacement": false
+    },
+    {
+      "id": "BASE-ACCESSORY-EVERY_2_WEEKS",
+      "role": "ACCESSORY",
+      "athlete_context": "CURRENT_TASK_ELIGIBLE_ESTABLISHED_AND_JOINTLY_VALID",
+      "preference": "EVERY_2_WEEKS",
+      "effective_eligibility": "TWO_WEEK_ELIGIBLE",
+      "behavior": "CONDITIONAL_FORTNIGHT_OPPORTUNITY_KEEP_ALLOWED",
+      "mandatory_replacement": false
+    },
+    {
+      "id": "BASE-ACCESSORY-EVERY_6_WEEKS",
+      "role": "ACCESSORY",
+      "athlete_context": "CURRENT_TASK_ELIGIBLE_ESTABLISHED_AND_JOINTLY_VALID",
+      "preference": "EVERY_6_WEEKS",
+      "effective_eligibility": "BLOCK_BOUNDARY_ELIGIBLE",
+      "behavior": "RETAIN_WITHIN_BLOCK_REVIEW_AT_TRANSITION_KEEP_ALLOWED",
+      "mandatory_replacement": false
+    },
+    {
+      "id": "BASE-ACCESSORY-COACH_DECIDES",
+      "role": "ACCESSORY",
+      "athlete_context": "CURRENT_TASK_ELIGIBLE_ESTABLISHED_AND_JOINTLY_VALID",
+      "preference": "COACH_DECIDES",
+      "effective_eligibility": "BLOCK_BOUNDARY_ELIGIBLE",
+      "behavior": "RETAIN_WITHIN_BLOCK_REVIEW_AT_TRANSITION_KEEP_ALLOWED",
+      "mandatory_replacement": false
+    },
+    {
+      "id": "BASE-PRACTICE-FIXED",
+      "role": "PRACTICE",
+      "athlete_context": "CURRENT_TASK_ELIGIBLE_ESTABLISHED_AND_JOINTLY_VALID",
+      "preference": "FIXED",
+      "effective_eligibility": "REASON_ONLY",
+      "behavior": "RETAIN_VALID_SELECTION_REASON_PATH_AVAILABLE",
+      "mandatory_replacement": false
+    },
+    {
+      "id": "BASE-PRACTICE-EVERY_2_WEEKS",
+      "role": "PRACTICE",
+      "athlete_context": "CURRENT_TASK_ELIGIBLE_ESTABLISHED_AND_JOINTLY_VALID",
+      "preference": "EVERY_2_WEEKS",
+      "effective_eligibility": "REASON_ONLY",
+      "behavior": "RETAIN_VALID_SELECTION_REASON_PATH_AVAILABLE",
+      "mandatory_replacement": false
+    },
+    {
+      "id": "BASE-PRACTICE-EVERY_6_WEEKS",
+      "role": "PRACTICE",
+      "athlete_context": "CURRENT_TASK_ELIGIBLE_ESTABLISHED_AND_JOINTLY_VALID",
+      "preference": "EVERY_6_WEEKS",
+      "effective_eligibility": "REASON_ONLY",
+      "behavior": "RETAIN_VALID_SELECTION_REASON_PATH_AVAILABLE",
+      "mandatory_replacement": false
+    },
+    {
+      "id": "BASE-PRACTICE-COACH_DECIDES",
+      "role": "PRACTICE",
+      "athlete_context": "CURRENT_TASK_ELIGIBLE_ESTABLISHED_AND_JOINTLY_VALID",
+      "preference": "COACH_DECIDES",
+      "effective_eligibility": "REASON_ONLY",
+      "behavior": "RETAIN_VALID_SELECTION_REASON_PATH_AVAILABLE",
+      "mandatory_replacement": false
+    }
+  ],
+  "context_overlays": [
+    {
+      "id": "O01",
+      "context": "clinical_or_authority_dependent",
+      "roles": "ALL",
+      "preferences": "ALL",
+      "behavior": "CLINICAL_HUMAN_REQUIRED_OR_HOLD_DEPENDENT_SCOPE",
+      "limit": "Outer gate; no candidate inferred safe; no cadence bypass"
+    },
+    {
+      "id": "O02",
+      "context": "critical_context_unknown_or_conflicted",
+      "roles": "ALL",
+      "preferences": "ALL",
+      "behavior": "ASK_OR_HOLD_DEPENDENT_CHANGE",
+      "limit": "Missing eligibility is not clinical diagnosis or clearance"
+    },
+    {
+      "id": "O03",
+      "context": "material_reason_based_substitution",
+      "roles": "ALL",
+      "preferences": "ALL",
+      "behavior": "CADENCE_OVERRIDE_SUBJECT_TO_ALL_VALIDITY_AND_AGENCY_GATES",
+      "limit": "MAIN and FIXED may change; completed history preserved"
+    },
+    {
+      "id": "O04",
+      "context": "SPECIFIC_TAPER_RACE_WEEK_POST_EVENT",
+      "roles": "ALL",
+      "preferences": "ALL",
+      "behavior": "DEFER_ELECTIVE_ROTATION",
+      "limit": "Current R6 protected phases retained, including block boundaries"
+    },
+    {
+      "id": "O05",
+      "context": "unresolved_establishment_confirmation_learning_or_return_dependency",
+      "roles": "ALL",
+      "preferences": "ALL",
+      "behavior": "DEFER_ELECTIVE_ROTATION",
+      "limit": "Actual exposures under latest R7 factual semantics; no calendar credit"
+    },
+    {
+      "id": "O06",
+      "context": "beginner_or_new_to_task",
+      "roles": "ALL",
+      "preferences": "ALL",
+      "behavior": "TASK_SPECIFIC_LEARNING_AND_COMPETENCE_CHECK",
+      "limit": "No global forced preference override; established accessories may qualify"
+    },
+    {
+      "id": "O07",
+      "context": "intermediate_advanced_specific_lift_goal",
+      "roles": "ALL",
+      "preferences": "ALL",
+      "behavior": "PROTECT_EXACT_MAIN_CONFIGURATION",
+      "limit": "Block review may retain beyond six weeks"
+    },
+    {
+      "id": "O08",
+      "context": "strength_two_days_per_week",
+      "roles": "ALL",
+      "preferences": "ALL",
+      "behavior": "USE_ACTUAL_PER_SLOT_EXPOSURES",
+      "limit": "Not every task occurs twice per week; no universal minimum count"
+    },
+    {
+      "id": "O09",
+      "context": "strength_three_to_four_days_per_week",
+      "roles": "ALL",
+      "preferences": "ALL",
+      "behavior": "SAME_CALENDAR_CADENCE_AND_JOINT_WEEK_CHECK",
+      "limit": "More frequency adds no load; day-specific references may coexist"
+    },
+    {
+      "id": "O10",
+      "context": "hybrid_protected_key_run_or_strength_session",
+      "roles": "ALL",
+      "preferences": "ALL",
+      "behavior": "VALIDATE_DIRECTIONAL_DEMAND_AND_CONTEXTUAL_PRIORITY",
+      "limit": "No overlap penalty, fixed fatigue score or universal hours"
+    },
+    {
+      "id": "O11",
+      "context": "no_admissible_directed_alternative_or_fixed_equipment",
+      "roles": "ALL",
+      "preferences": "ALL",
+      "behavior": "RETAIN_IF_ADEQUATE_ELSE_REASON_PATH_OR_ASK_HOLD",
+      "limit": "No compulsory novelty or fabricated pair"
+    },
+    {
+      "id": "O12",
+      "context": "essential_laterality_ROM_contraction_or_task_contribution",
+      "roles": "ALL",
+      "preferences": "ALL",
+      "behavior": "PRESERVE_REQUIREMENT_OR_SEPARATE_JUSTIFIED_CHANGE",
+      "limit": "Same muscle, broad pattern or variantOf does not prove closeness"
+    },
+    {
+      "id": "O13",
+      "context": "recent_reason_based_replacement",
+      "roles": "ALL",
+      "preferences": "ALL",
+      "behavior": "RESTART_SLOT_SELECTION_PERIOD_FROM_ACCEPTED_CHANGE",
+      "limit": "No global reset; no immediate rotation at next tick"
+    },
+    {
+      "id": "O14",
+      "context": "plateau_label_without_comparable_material_evidence",
+      "roles": "ALL",
+      "preferences": "ALL",
+      "behavior": "NO_REASON_OVERRIDE_FROM_LABEL",
+      "limit": "No PR does not prove stagnation"
+    },
+    {
+      "id": "O15",
+      "context": "configuration_or_loading_convention_changes",
+      "roles": "ALL",
+      "preferences": "ALL",
+      "behavior": "ESTABLISH_NEW_COMPARABLE_BASELINE_BY_APPROVED_METHOD",
+      "limit": "No cross-exercise load transfer or simultaneous new-exercise progression"
+    }
+  ],
+  "witnesses": [
+    {
+      "id": "W01",
+      "role": "MAIN",
+      "preference": "EVERY_2_WEEKS",
+      "context": "beginner_goblet_squat_primary_reference",
+      "expected": "RETAIN_MAIN",
+      "base_rule": "BASE-MAIN-EVERY_2_WEEKS",
+      "overlay": "O06",
+      "kind": "SYNTHETIC_SEMANTIC_WITNESS_NOT_RUNTIME_TEST",
+      "assumptions": "Only named hypothetical conditions; no patient facts, dose, reviewed pair or general recipe approval inferred"
+    },
+    {
+      "id": "W02",
+      "role": "ACCESSORY",
+      "preference": "EVERY_2_WEEKS",
+      "context": "beginner_learning_split_squat",
+      "expected": "DEFER_ELECTIVE_ROTATION",
+      "base_rule": "BASE-ACCESSORY-EVERY_2_WEEKS",
+      "overlay": "O05",
+      "kind": "SYNTHETIC_SEMANTIC_WITNESS_NOT_RUNTIME_TEST",
+      "assumptions": "Only named hypothetical conditions; no patient facts, dose, reviewed pair or general recipe approval inferred"
+    },
+    {
+      "id": "W03",
+      "role": "ACCESSORY",
+      "preference": "EVERY_2_WEEKS",
+      "context": "beginner_established_simple_accessory_valid_pair_due",
+      "expected": "CONDITIONAL_ROTATION_ALLOWED",
+      "base_rule": "BASE-ACCESSORY-EVERY_2_WEEKS",
+      "overlay": "O06",
+      "kind": "SYNTHETIC_SEMANTIC_WITNESS_NOT_RUNTIME_TEST",
+      "assumptions": "Only named hypothetical conditions; no patient facts, dose, reviewed pair or general recipe approval inferred"
+    },
+    {
+      "id": "W04",
+      "role": "MAIN",
+      "preference": "EVERY_2_WEEKS",
+      "context": "intermediate_leg_press_primary_squat_task",
+      "expected": "RETAIN_EXACT_MACHINE_CONFIGURATION",
+      "base_rule": "BASE-MAIN-EVERY_2_WEEKS",
+      "overlay": "O07",
+      "kind": "SYNTHETIC_SEMANTIC_WITNESS_NOT_RUNTIME_TEST",
+      "assumptions": "Only named hypothetical conditions; no patient facts, dose, reviewed pair or general recipe approval inferred"
+    },
+    {
+      "id": "W05",
+      "role": "ACCESSORY",
+      "preference": "EVERY_2_WEEKS",
+      "context": "complementary_close_squat_variation_valid_pair_due",
+      "expected": "CONDITIONAL_ROTATION_WITHOUT_REMOVING_MAIN",
+      "base_rule": "BASE-ACCESSORY-EVERY_2_WEEKS",
+      "overlay": "O12",
+      "kind": "SYNTHETIC_SEMANTIC_WITNESS_NOT_RUNTIME_TEST",
+      "assumptions": "Only named hypothetical conditions; no patient facts, dose, reviewed pair or general recipe approval inferred"
+    },
+    {
+      "id": "W06",
+      "role": "MAIN",
+      "preference": "EVERY_2_WEEKS",
+      "context": "barbell_RDL_primary_hinge",
+      "expected": "RETAIN_MAIN",
+      "base_rule": "BASE-MAIN-EVERY_2_WEEKS",
+      "overlay": "O07",
+      "kind": "SYNTHETIC_SEMANTIC_WITNESS_NOT_RUNTIME_TEST",
+      "assumptions": "Only named hypothetical conditions; no patient facts, dose, reviewed pair or general recipe approval inferred"
+    },
+    {
+      "id": "W07",
+      "role": "ACCESSORY",
+      "preference": "EVERY_2_WEEKS",
+      "context": "RDL_complement_unknown_eccentric_cost_before_key_run",
+      "expected": "ASK_HOLD_CHANGE_NO_INFERRED_SAFE_SWAP",
+      "base_rule": "BASE-ACCESSORY-EVERY_2_WEEKS",
+      "overlay": "O10",
+      "kind": "SYNTHETIC_SEMANTIC_WITNESS_NOT_RUNTIME_TEST",
+      "assumptions": "Only named hypothetical conditions; no patient facts, dose, reviewed pair or general recipe approval inferred"
+    },
+    {
+      "id": "W08",
+      "role": "MAIN",
+      "preference": "EVERY_2_WEEKS",
+      "context": "advanced_bench_specific_goal_four_strength_days",
+      "expected": "RETAIN_DAY_SPECIFIC_MAIN_REFERENCES",
+      "base_rule": "BASE-MAIN-EVERY_2_WEEKS",
+      "overlay": "O09",
+      "kind": "SYNTHETIC_SEMANTIC_WITNESS_NOT_RUNTIME_TEST",
+      "assumptions": "Only named hypothetical conditions; no patient facts, dose, reviewed pair or general recipe approval inferred"
+    },
+    {
+      "id": "W09",
+      "role": "ACCESSORY",
+      "preference": "EVERY_2_WEEKS",
+      "context": "row_to_pulldown_without_task_equivalence",
+      "expected": "NO_AUTOMATIC_ROTATION",
+      "base_rule": "BASE-ACCESSORY-EVERY_2_WEEKS",
+      "overlay": "O12",
+      "kind": "SYNTHETIC_SEMANTIC_WITNESS_NOT_RUNTIME_TEST",
+      "assumptions": "Only named hypothetical conditions; no patient facts, dose, reviewed pair or general recipe approval inferred"
+    },
+    {
+      "id": "W10",
+      "role": "MAIN",
+      "preference": "EVERY_2_WEEKS",
+      "context": "split_squat_essential_unilateral_reference",
+      "expected": "RETAIN_MAIN",
+      "base_rule": "BASE-MAIN-EVERY_2_WEEKS",
+      "overlay": "O12",
+      "kind": "SYNTHETIC_SEMANTIC_WITNESS_NOT_RUNTIME_TEST",
+      "assumptions": "Only named hypothetical conditions; no patient facts, dose, reviewed pair or general recipe approval inferred"
+    },
+    {
+      "id": "W11",
+      "role": "ACCESSORY",
+      "preference": "EVERY_2_WEEKS",
+      "context": "split_squat_to_step_up_reviewed_purpose_dose_skill_pair_due",
+      "expected": "CONDITIONAL_ROTATION_ALLOWED",
+      "base_rule": "BASE-ACCESSORY-EVERY_2_WEEKS",
+      "overlay": "O12",
+      "kind": "SYNTHETIC_SEMANTIC_WITNESS_NOT_RUNTIME_TEST",
+      "assumptions": "Only named hypothetical conditions; no patient facts, dose, reviewed pair or general recipe approval inferred"
+    },
+    {
+      "id": "W12",
+      "role": "MAIN",
+      "preference": "EVERY_2_WEEKS",
+      "context": "hip_thrust_specific_tracked_primary_task",
+      "expected": "RETAIN_DESPITE_STATIC_CATALOGUE_ACCESSORY_HINT",
+      "base_rule": "BASE-MAIN-EVERY_2_WEEKS",
+      "overlay": "O07",
+      "kind": "SYNTHETIC_SEMANTIC_WITNESS_NOT_RUNTIME_TEST",
+      "assumptions": "Only named hypothetical conditions; no patient facts, dose, reviewed pair or general recipe approval inferred"
+    },
+    {
+      "id": "W13",
+      "role": "ACCESSORY",
+      "preference": "EVERY_2_WEEKS",
+      "context": "hamstring_curl_exact_R6_recipe_absent",
+      "expected": "UNSUPPORTED_DEPENDENT_RECIPE",
+      "base_rule": "BASE-ACCESSORY-EVERY_2_WEEKS",
+      "overlay": "O01",
+      "kind": "SYNTHETIC_SEMANTIC_WITNESS_NOT_RUNTIME_TEST",
+      "assumptions": "Only named hypothetical conditions; no patient facts, dose, reviewed pair or general recipe approval inferred"
+    },
+    {
+      "id": "W14",
+      "role": "ACCESSORY",
+      "preference": "EVERY_2_WEEKS",
+      "context": "calf_knee_position_support_change_unreviewed",
+      "expected": "NO_AUTOMATIC_CALF_EQUIVALENCE",
+      "base_rule": "BASE-ACCESSORY-EVERY_2_WEEKS",
+      "overlay": "O12",
+      "kind": "SYNTHETIC_SEMANTIC_WITNESS_NOT_RUNTIME_TEST",
+      "assumptions": "Only named hypothetical conditions; no patient facts, dose, reviewed pair or general recipe approval inferred"
+    },
+    {
+      "id": "W15",
+      "role": "MAIN",
+      "preference": "EVERY_2_WEEKS",
+      "context": "calf_raise_primary_tracked_task",
+      "expected": "RETAIN_MAIN",
+      "base_rule": "BASE-MAIN-EVERY_2_WEEKS",
+      "overlay": "O07",
+      "kind": "SYNTHETIC_SEMANTIC_WITNESS_NOT_RUNTIME_TEST",
+      "assumptions": "Only named hypothetical conditions; no patient facts, dose, reviewed pair or general recipe approval inferred"
+    },
+    {
+      "id": "W16",
+      "role": "ACCESSORY",
+      "preference": "EVERY_2_WEEKS",
+      "context": "tibialis_or_Copenhagen_exact_coverage_absent",
+      "expected": "UNSUPPORTED_DEPENDENT_RECIPE",
+      "base_rule": "BASE-ACCESSORY-EVERY_2_WEEKS",
+      "overlay": "O01",
+      "kind": "SYNTHETIC_SEMANTIC_WITNESS_NOT_RUNTIME_TEST",
+      "assumptions": "Only named hypothetical conditions; no patient facts, dose, reviewed pair or general recipe approval inferred"
+    },
+    {
+      "id": "W17",
+      "role": "ACCESSORY",
+      "preference": "EVERY_2_WEEKS",
+      "context": "side_plank_to_dead_bug_essential_trunk_purpose_not_preserved",
+      "expected": "NO_AUTOMATIC_CORE_EQUIVALENCE",
+      "base_rule": "BASE-ACCESSORY-EVERY_2_WEEKS",
+      "overlay": "O12",
+      "kind": "SYNTHETIC_SEMANTIC_WITNESS_NOT_RUNTIME_TEST",
+      "assumptions": "Only named hypothetical conditions; no patient facts, dose, reviewed pair or general recipe approval inferred"
+    },
+    {
+      "id": "W18",
+      "role": "ACCESSORY",
+      "preference": "EVERY_2_WEEKS",
+      "context": "runner_support_established_unilateral_valid_pair_due",
+      "expected": "CONDITIONAL_ROTATION_IF_JOINT_HORIZON_VALID",
+      "base_rule": "BASE-ACCESSORY-EVERY_2_WEEKS",
+      "overlay": "O10",
+      "kind": "SYNTHETIC_SEMANTIC_WITNESS_NOT_RUNTIME_TEST",
+      "assumptions": "Only named hypothetical conditions; no patient facts, dose, reviewed pair or general recipe approval inferred"
+    },
+    {
+      "id": "W19",
+      "role": "ACCESSORY",
+      "preference": "EVERY_2_WEEKS",
+      "context": "plyometric_hops_recipe_absent",
+      "expected": "OUTSIDE_CURRENT_REVIEWED_COVERAGE",
+      "base_rule": "BASE-ACCESSORY-EVERY_2_WEEKS",
+      "overlay": "O01",
+      "kind": "SYNTHETIC_SEMANTIC_WITNESS_NOT_RUNTIME_TEST",
+      "assumptions": "Only named hypothetical conditions; no patient facts, dose, reviewed pair or general recipe approval inferred"
+    },
+    {
+      "id": "W20",
+      "role": "ACCESSORY",
+      "preference": "EVERY_2_WEEKS",
+      "context": "two_strength_days_one_weekly_exposure_to_task",
+      "expected": "ASSESS_REAL_ESTABLISHMENT_NOT_ASSUMED_FREQUENCY",
+      "base_rule": "BASE-ACCESSORY-EVERY_2_WEEKS",
+      "overlay": "O08",
+      "kind": "SYNTHETIC_SEMANTIC_WITNESS_NOT_RUNTIME_TEST",
+      "assumptions": "Only named hypothetical conditions; no patient facts, dose, reviewed pair or general recipe approval inferred"
+    },
+    {
+      "id": "W21",
+      "role": "ACCESSORY",
+      "preference": "EVERY_2_WEEKS",
+      "context": "four_strength_days_valid_pair_due",
+      "expected": "NO_ACCELERATED_CADENCE_OR_EXTRA_WEEKLY_LOAD",
+      "base_rule": "BASE-ACCESSORY-EVERY_2_WEEKS",
+      "overlay": "O09",
+      "kind": "SYNTHETIC_SEMANTIC_WITNESS_NOT_RUNTIME_TEST",
+      "assumptions": "Only named hypothetical conditions; no patient facts, dose, reviewed pair or general recipe approval inferred"
+    },
+    {
+      "id": "W22",
+      "role": "ACCESSORY",
+      "preference": "EVERY_2_WEEKS",
+      "context": "hybrid_important_long_run_no_jointly_valid_new_option",
+      "expected": "RETAIN_IF_ADEQUATE_OR_RESOLVE_ACTUAL_CONFLICT",
+      "base_rule": "BASE-ACCESSORY-EVERY_2_WEEKS",
+      "overlay": "O10",
+      "kind": "SYNTHETIC_SEMANTIC_WITNESS_NOT_RUNTIME_TEST",
+      "assumptions": "Only named hypothetical conditions; no patient facts, dose, reviewed pair or general recipe approval inferred"
+    },
+    {
+      "id": "W23",
+      "role": "MAIN",
+      "preference": "FIXED",
+      "context": "bench_unavailable_valid_covered_substitute_agency_pending",
+      "expected": "CADENCE_OVERRIDE_PROPOSAL_REQUIRES_AGENCY",
+      "base_rule": "BASE-MAIN-FIXED",
+      "overlay": "O03",
+      "kind": "SYNTHETIC_SEMANTIC_WITNESS_NOT_RUNTIME_TEST",
+      "assumptions": "Only named hypothetical conditions; no patient facts, dose, reviewed pair or general recipe approval inferred"
+    },
+    {
+      "id": "W24",
+      "role": "ACCESSORY",
+      "preference": "EVERY_2_WEEKS",
+      "context": "single_machine_no_valid_alternative_current_task_adequate",
+      "expected": "KEEP_EXPLAIN_LIMITED_VARIATION",
+      "base_rule": "BASE-ACCESSORY-EVERY_2_WEEKS",
+      "overlay": "O11",
+      "kind": "SYNTHETIC_SEMANTIC_WITNESS_NOT_RUNTIME_TEST",
+      "assumptions": "Only named hypothetical conditions; no patient facts, dose, reviewed pair or general recipe approval inferred"
+    },
+    {
+      "id": "W25",
+      "role": "ACCESSORY",
+      "preference": "EVERY_2_WEEKS",
+      "context": "taper_fortnight_due",
+      "expected": "DEFER_ELECTIVE_CHANGE",
+      "base_rule": "BASE-ACCESSORY-EVERY_2_WEEKS",
+      "overlay": "O04",
+      "kind": "SYNTHETIC_SEMANTIC_WITNESS_NOT_RUNTIME_TEST",
+      "assumptions": "Only named hypothetical conditions; no patient facts, dose, reviewed pair or general recipe approval inferred"
+    },
+    {
+      "id": "W26",
+      "role": "MAIN",
+      "preference": "EVERY_6_WEEKS",
+      "context": "block_boundary_in_race_week",
+      "expected": "DEFER_ELECTIVE_MAIN_CHANGE",
+      "base_rule": "BASE-MAIN-EVERY_6_WEEKS",
+      "overlay": "O04",
+      "kind": "SYNTHETIC_SEMANTIC_WITNESS_NOT_RUNTIME_TEST",
+      "assumptions": "Only named hypothetical conditions; no patient facts, dose, reviewed pair or general recipe approval inferred"
+    },
+    {
+      "id": "W27",
+      "role": "MAIN",
+      "preference": "FIXED",
+      "context": "persistent_pain_or_new_functional_limitation",
+      "expected": "CLINICAL_HUMAN_REQUIRED_DEPENDENT_SCOPE",
+      "base_rule": "BASE-MAIN-FIXED",
+      "overlay": "O01",
+      "kind": "SYNTHETIC_SEMANTIC_WITNESS_NOT_RUNTIME_TEST",
+      "assumptions": "Only named hypothetical conditions; no patient facts, dose, reviewed pair or general recipe approval inferred"
+    },
+    {
+      "id": "W28",
+      "role": "MAIN",
+      "preference": "EVERY_2_WEEKS",
+      "context": "one_non_PR_session_labelled_plateau",
+      "expected": "NO_CADENCE_OR_REASON_OVERRIDE",
+      "base_rule": "BASE-MAIN-EVERY_2_WEEKS",
+      "overlay": "O14",
+      "kind": "SYNTHETIC_SEMANTIC_WITNESS_NOT_RUNTIME_TEST",
+      "assumptions": "Only named hypothetical conditions; no patient facts, dose, reviewed pair or general recipe approval inferred"
+    },
+    {
+      "id": "W29",
+      "role": "PRACTICE",
+      "preference": "EVERY_6_WEEKS",
+      "context": "skill_still_unresolved_at_block_boundary",
+      "expected": "NO_AUTOMATIC_GRADUATION_OR_ROTATION",
+      "base_rule": "BASE-PRACTICE-EVERY_6_WEEKS",
+      "overlay": "O05",
+      "kind": "SYNTHETIC_SEMANTIC_WITNESS_NOT_RUNTIME_TEST",
+      "assumptions": "Only named hypothetical conditions; no patient facts, dose, reviewed pair or general recipe approval inferred"
+    },
+    {
+      "id": "W30",
+      "role": "ACCESSORY",
+      "preference": "EVERY_2_WEEKS",
+      "context": "unavailable_equipment_replacement_just_adopted_before_global_tick",
+      "expected": "NO_IMMEDIATE_SCHEDULED_REPLACEMENT",
+      "base_rule": "BASE-ACCESSORY-EVERY_2_WEEKS",
+      "overlay": "O13",
+      "kind": "SYNTHETIC_SEMANTIC_WITNESS_NOT_RUNTIME_TEST",
+      "assumptions": "Only named hypothetical conditions; no patient facts, dose, reviewed pair or general recipe approval inferred"
+    },
+    {
+      "id": "W31",
+      "role": "ACCESSORY",
+      "preference": "FIXED",
+      "context": "clear_nonclinical_intolerance_valid_covered_alternative",
+      "expected": "MATERIAL_REASON_PATH_AGENCY_AND_VALIDITY",
+      "base_rule": "BASE-ACCESSORY-FIXED",
+      "overlay": "O03",
+      "kind": "SYNTHETIC_SEMANTIC_WITNESS_NOT_RUNTIME_TEST",
+      "assumptions": "Only named hypothetical conditions; no patient facts, dose, reviewed pair or general recipe approval inferred"
+    },
+    {
+      "id": "W32",
+      "role": "MAIN",
+      "preference": "COACH_DECIDES",
+      "context": "deliberate_block_transition_valid_new_goal_reference",
+      "expected": "CONDITIONAL_CHANGE_OR_RETENTION_WITH_PURPOSE",
+      "base_rule": "BASE-MAIN-COACH_DECIDES",
+      "overlay": "O15",
+      "kind": "SYNTHETIC_SEMANTIC_WITNESS_NOT_RUNTIME_TEST",
+      "assumptions": "Only named hypothetical conditions; no patient facts, dose, reviewed pair or general recipe approval inferred"
+    },
+    {
+      "id": "W33",
+      "role": "ACCESSORY",
+      "preference": "EVERY_6_WEEKS",
+      "context": "valid_current_accessory_no_admissible_alternative_fortnight_only_not_block_boundary",
+      "expected": "RETAIN_UNTIL_BLOCK_REVIEW_OR_REASON",
+      "base_rule": "BASE-ACCESSORY-EVERY_6_WEEKS",
+      "overlay": "O11",
+      "kind": "SYNTHETIC_SEMANTIC_WITNESS_NOT_RUNTIME_TEST",
+      "assumptions": "Only named hypothetical conditions; no patient facts, dose, reviewed pair or general recipe approval inferred"
+    },
+    {
+      "id": "W34",
+      "role": "ACCESSORY",
+      "preference": "COACH_DECIDES",
+      "context": "valid_current_accessory_no_admissible_alternative_or_material_purpose_within_block",
+      "expected": "RETAIN_WITHIN_BLOCK",
+      "base_rule": "BASE-ACCESSORY-COACH_DECIDES",
+      "overlay": "O11",
+      "kind": "SYNTHETIC_SEMANTIC_WITNESS_NOT_RUNTIME_TEST",
+      "assumptions": "Only named hypothetical conditions; no patient facts, dose, reviewed pair or general recipe approval inferred"
+    }
+  ],
+  "limitations": [
+    "Not an executable policy, formal schema, exercise repertoire, archetype or sporting approval",
+    "Witnesses are manual semantic walkthroughs, not physiological validation or current runtime behavior",
+    "A valid relation and dose require their own authority before future prescription"
+  ]
+}
