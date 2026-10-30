@@ -624,3 +624,29 @@ Scope: one freeze (R7A-DECISION-AUTHORITY-FREEZE-1), committed and pushed on the
 - **Next:** two new, independent sessions review exactly these bytes, from [the handoff](audits/domain-coaching-r7a-decision-authority-2026-10-29/REVIEW_HANDOFF.md) and the two briefs. Readiness is decided only after both. `R7A_EXIT_READINESS` is not declared.
 - **Held:** the Growth Layer's [PENDING_CANON_SYNC.patch](audits/growth-layer-2026-10-29/PENDING_CANON_SYNC.patch) waits for its closure or sync.
 - No UI, Figma, KMP, HealthKit, integration, production or real-plan effect. No merge, deploy or reviewer run. The human queue is untouched.
+
+<!-- DOMAIN_COACHING_R7ARA: DCR7ARA-20261030-open-r1 -->
+## COACHING CORE — R7-A Residual Authority Closure (final bounded implementation mission) — in progress / 2026-10-30
+
+The direct [Founder request](audits/domain-coaching-r7a-residual-authority-2026-10-30/FOUNDER_REQUEST.md) follows the two independent reviews of R7A-DECISION-AUTHORITY-FREEZE-1. Both are NOT_READY, and both were read on their own branches, which are not merged:
+- Engineering, `review/r7ada-decision-authority-engineering` at `17e7285`: QE-R7ADA-01 and QE-R7ADA-02;
+- SSCTR, `review/r7ada-decision-authority-ssctr` at `6f5d40c`: F4-X.
+
+The mission closes exactly two root causes. It is **not** R7-B0.
+
+- **Founder decisions recorded:**
+  - `R1_R7A_BLOCKER = NO`, `R1_PRE_TESTFLIGHT_GATE = YES`;
+  - closed and not reopened: QE-R7ASC-01 to 04, F1–F3, D53/D56–D59, HOLD and MAINTAIN;
+  - accepted: R2 and R3 (ACCEPT_WITH_REASON), R6-H35 (EXPECTED_CORRECTION);
+  - NF-R7ADA-2 stays in the backlog.
+- **Targets:**
+  - A, the canonical factual correction before every material decision handler (QE-R7ADA-01);
+  - B, a return baseline never above the factual tolerated running dose or state (QE-R7ADA-02, F4-X, the EASY return).
+- **Authorized:** IMPLEMENTATION_AUTHORIZED = SHADOW_REFERENCE_ONLY, on the session's own branch `claude/r7a-residual-authority-closure`. It was created from the baseline `claude/trusting-euler-04la8t` (`5434b32`), which stays unchanged and unmerged.
+- **Not authorized:**
+  - UI, Figma, KMP, HealthKit, Android, iOS, Admin, production or real-user plan effects;
+  - R7-B0, a general R1 solution, NF-R7ADA-2, new science or reviewer runs.
+
+  The held `PENDING_CANON_SYNC.patch` stays unapplied.
+
+Scope: one freeze (R7A-RESIDUAL-AUTHORITY-FREEZE-1), committed and pushed on the session branch, with the handoff and two narrow recheck briefs; then stop. [Task contract](audits/domain-coaching-r7a-residual-authority-2026-10-30/TASK_CONTRACT.md).

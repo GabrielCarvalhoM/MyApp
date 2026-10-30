@@ -340,12 +340,17 @@ export function evaluateProgram(program,review,options={}){
   ctx.base=planningBase(ctx);
   // A review's load confirmations are facts of its week, recorded on it so every later handler reads them as this review does (QE-R7A1-02).
   if(Object.keys(confirmations).length)ctx.program={...program,weeks:program.weeks.map((x,i)=>i!==w?x:{...x,adaptations:[...(x.adaptations??[]),adaptation(ctx,'LOAD_CONFIRMATIONS',{confirmations})]})};
+  // The canonical factual state comes before any decision (residual authority closure, QE-R7ADA-01): evidence that moved this week's PlanningView
+  // re-plans the sessions still ahead first, and the handler, whatever its kind, decides on that program.
+  const factual=factualReplan(ctx);
   // Training before the latest interruption that its return did not read is confirmed first (R7-A final I6); a return report decides it itself.
-  const decision=(kind!=='RETURN_AFTER_PAUSE'&&staleReturn(ctx))||(HANDLERS[kind]??weeklyReview)(ctx);
+  const decide=c=>(kind!=='RETURN_AFTER_PAUSE'&&staleReturn(c))||(HANDLERS[kind]??weeklyReview)(c);
+  const decision=factual?.ask??withFactualReplan(factual,decide(factual?.ctx??ctx));
   // Load questions follow the decision's own gates, so they never contradict the adoption the transition made (SSCTR D44).
   out.loadQuestions=loggedLoadQuestions(program,sk,w,ev,{gates:decision.gates??null,confirmations:confirmationsOf(ctx),base:ctx.base});
   if(decision.proposal){
-   const from=decision.proposal.decisions.at(-1)?.fromWeek??w;
+   // A factual re-plan of this week is validated with the handler's own change, from this week (residual authority closure).
+   const from=Math.min(decision.proposal.decisions.at(-1)?.fromWeek??w,factual?.proposal?w:Infinity);
    const ahead=ctx.ahead,kept=new Map(program.weeks.flatMap(x=>x.sessions).filter(s=>!ahead(s)).map(s=>[s.id,hash(s.prescription)])),history=new Set(decision.proposal.weeks.flatMap(x=>x.sessions).filter(s=>kept.get(s.id)===hash(s.prescription)).map(s=>s.id));
    // Each week is validated under its own context (C2), and an event is never planned twice: at most one race still ahead (C5, C7).
    const races=decision.proposal.weeks.flatMap(x=>x.sessions).filter(s=>s.role==='RACE'&&s.prescription&&s.status!=='SKIPPED'&&ahead(s));
@@ -372,17 +377,9 @@ function weeklyReview(ctx,{extraReason=null,systemicSignal=false}={}){
    if(r.proposal&&hash(r.proposal.arrangementSessions)!==hash(program.arrangementSessions))return {...r,learnedPatterns:patterns};
   }
  }
- if(ev.pending){
-  // Evidence about an earlier week (a correction, a retraction, a conflict or a late record) that moved this week's PlanningView re-plans the
-  // sessions still ahead from it (decision authority closure, QE-R7ASC-01, Property B): no row planned from a retracted fact stays the reference a
-  // later log is judged against, whenever the correction arrived. Otherwise the week continues as planned.
-  const moved=viewMovedBy(ctx),replan=moved?composeWeeks(ctx,program,{fromWeek:w,evidence:evidenceRule(ctx)}):null;
-  if(replan?.ask)return {action:'ASK',reason:replan.ask,missingInputs:replan.missingInputs};
-  const changed=replan?changedSessions(program,replan):0;
-  if(changed){const decision={eventId:ctx.review.event.id,asOf,action:'REPLAN_FROM_EVIDENCE',fromWeek:w,horizonsConsidered:HORIZONS},proposal=finishProposal(program,sk,replan,decision);
-   return {action:'REPLAN_FROM_EVIDENCE',reason:(extraReason?extraReason+'; ':'')+'Evidence about an earlier week changed what this week starts from; the sessions still ahead are planned again from it, completed sessions stay as they were',proposal,horizons:horizonSummary(sk,program,proposal,{w,changed}),counterfactuals:[counter('KEEP','KEEP',false,'Keeping rows planned from evidence that has since been corrected would judge the next logs against facts that no longer stand'),counter('REPLAN_FROM_EVIDENCE','REPLAN_FROM_EVIDENCE',true,'The sessions still ahead follow the evidence as it now stands',{selected:true,changeCount:changed})]};}
-  return {action:'KEEP',reason:(extraReason?extraReason+'; ':'')+'next-week steps are gated when this week’s remaining sessions are complete',counterfactuals:[counter('KEEP','KEEP',true,'Smallest effective decision mid-week',{selected:true}),counter('EARLY_GATE','HOLD_NEXT_STEP',false,'Gating before the week ends would treat future sessions as missed')]};
- }
+ // Mid-week the week continues as planned: evidence about an earlier week that moved this week's PlanningView has already re-planned the sessions
+ // still ahead before any handler decides (factualReplan).
+ if(ev.pending)return {action:'KEEP',reason:(extraReason?extraReason+'; ':'')+'next-week steps are gated when this week’s remaining sessions are complete',counterfactuals:[counter('KEEP','KEEP',true,'Smallest effective decision mid-week',{selected:true}),counter('EARLY_GATE','HOLD_NEXT_STEP',false,'Gating before the week ends would treat future sessions as missed')]};
  const {gates,reasons}=weeklyGates(program,sk,w,ev,ledger,asOf,{systemic,base:ctx.base});
  const logs=loggedLoads(ev,confirmationsOf(ctx)),allAdvance=Object.values(gates).every(g=>g==='ADVANCE');
  const rebased=rebasedNext(program,w),skn=sk.at(w+1)??sk;
@@ -804,6 +801,39 @@ function viewMovedBy(ctx){
  return hash(planningBase({...ctx,fullLedger:ledger,ledger:ledger.filter(o=>!o.conflicted),quarantined,evidence:undefined}))!==hash(ctx.base);
 }
 /**
+ * The canonical factual state before any decision (residual authority closure, QE-R7ADA-01; Founder: raw evidence, dedupe, corrections, retractions
+ * and conflicts, the canonical factual state, then the decision). A review under way whose evidence about an earlier week moved this week's
+ * PlanningView (viewMovedBy: a correction, a retraction, a newly quarantined conflict) re-plans the sessions still ahead from that view (A3) whatever
+ * kind of review carries it; completed sessions keep their rows. A week is under way while any session is still ahead by the one C1 test (a later
+ * date, or later today), so a correction on the week's last day re-plans that day's sessions too. The re-plan projects the weeks after this one
+ * from the same view and never closes the week: only a review of the complete week applies its evidence. It is a recorded decision
+ * (REPLAN_FROM_EVIDENCE) and the handler decides on the program it gives, with the PlanningView read on that program (`ctx`). The same facts
+ * therefore give the same factual history whichever review carried them, and no row planned from a retracted fact is the reference a later log is
+ * judged against (A1, SSCTR D44). Null when nothing ahead moved; {ask} when the re-plan cannot be composed.
+ */
+function factualReplan(ctx){
+ if(!(ctx.ev.pending||ctx.program.weeks[ctx.w].sessions.some(s=>s.prescription&&ctx.ahead(s)))||!viewMovedBy(ctx))return null;
+ const replan=composeWeeks(ctx,ctx.program,{fromWeek:ctx.w});
+ if(replan.ask)return {ask:{action:'ASK',reason:replan.ask,missingInputs:replan.missingInputs}};
+ const changed=changedSessions(ctx.program,replan);if(!changed)return null;
+ const proposal=finishProposal(ctx.program,ctx.sk,replan,{eventId:ctx.review.event.id,asOf:ctx.asOf,action:'REPLAN_FROM_EVIDENCE',fromWeek:ctx.w,horizonsConsidered:HORIZONS});
+ const own={...ctx,program:proposal,evidence:undefined};own.base=planningBase(own);
+ return {proposal,changed,ctx:own,horizons:horizonSummary(ctx.sk,ctx.program,proposal,{w:ctx.w,changed}),counterfactuals:[counter('KEEP','KEEP',false,'Keeping rows planned from evidence that has since been corrected would judge the next logs against facts that no longer stand'),counter('REPLAN_FROM_EVIDENCE','REPLAN_FROM_EVIDENCE',true,'The sessions still ahead follow the evidence as it now stands',{selected:true,changeCount:changed})]};
+}
+const FACTUAL_REPLAN='Evidence about an earlier week changed what this week starts from; the sessions still ahead are planned again from it, completed sessions stay as they were';
+/**
+ * A decision taken on the factually re-planned program (residual authority closure): a handler's own proposal already carries the re-plan; a decision
+ * that changes nothing else proposes the re-plan (REPLAN_FROM_EVIDENCE); a question or a refusal is still asked or refused, with the re-plan proposed,
+ * because the facts it follows stand. A clinical route proposes nothing (no dependent prescription).
+ */
+function withFactualReplan(f,d){
+ if(!f||d.status==='CLINICAL_HUMAN_REQUIRED')return d;
+ const note=FACTUAL_REPLAN.charAt(0).toLowerCase()+FACTUAL_REPLAN.slice(1);
+ if(d.action==='KEEP')return {...d,action:'REPLAN_FROM_EVIDENCE',instantiationOnly:false,proposal:d.proposal??f.proposal,reason:FACTUAL_REPLAN+(d.reason?'; '+d.reason:''),horizons:d.proposal?d.horizons:f.horizons,counterfactuals:[...f.counterfactuals,...(d.counterfactuals??[]).filter(c=>c.id!=='KEEP')]};
+ if(d.proposal)return {...d,instantiationOnly:false,reason:d.reason+'; '+note};
+ return {...d,status:d.status??(d.action==='ASK'?'ASK':undefined),proposal:f.proposal,reason:d.reason+'; meanwhile '+note,horizons:d.horizons??f.horizons};
+}
+/**
  * HistoricalState (Founder §1, §3, §13): what is known to have happened by a cut, read from canonical evidence only. Public and read-only: it
  * runs the evidence reducer on a program and its completed-work record (`actualLedger`, as evaluateProgram returns it) and reports the state as
  * of the cut: the reducer's own reading of the week the cut falls in, which is that week's facts while it is under way and its closed or complete
@@ -866,7 +896,8 @@ function canonicalRecord(program,actualLedger,{authority,cut}){
  *    after the start (the first day is a whole day of the interruption, R7-A.2 §5), the other reading is recorded (`point.sameDay`), and
  *    `material` says whether the order changes the state the return starts from (then the return asks).
  * The state returned is history as a return reads it (I13, T13): historicalStrength undoes a step the evidence released but the athlete never
- * executed, so a return starts from the dose last executed; historicalRun does the same for the walk/jog ladder (the step last run, SSCTR F4).
+ * executed, so a return starts from the dose last executed; historicalRun does the same for the run (the running state and doses last executed:
+ * SSCTR F4, F4-X; QE-R7ADA-02).
  */
 function stateAtBreak(ctx,{start,startedAt=null,episode=null}){
  const {program}=ctx,tz=program.timezoneOffsetMinutes??0,p=Math.max(0,Math.min(ctx.w,Math.floor(dayGap(program.startDate,start)/7)));
@@ -897,10 +928,14 @@ function stateAtBreak(ctx,{start,startedAt=null,episode=null}){
  // Why the point holds authority as history (Founder §7): per sport, the basis of the evidence it reads, and per value its basis and the week it
  // comes from. The point recorded is the earliest of those weeks (a return's entry when that is the point).
  const point=at.pointOf(Math.min(H.sport.RUN.week,H.sport.STRENGTH.week)),authority={RUN:H.sport.RUN.basis,STRENGTH:H.sport.STRENGTH.basis};
- // The run as a return reads it (decision authority closure, SSCTR F4): a walk/jog step never above the step of the last walk/jog session executed
- // completely before the interruption began (historicalRun); a step the evidence released but the athlete never ran is not tolerated yet.
- const byId=new Map(program.weeks.flatMap(x=>x.sessions.map(s=>[s.id,s]))),stepsRun=all.filter(o=>!o.conflicted&&!o.partial&&o.context?.sport==='RUN'&&o.context.role==='WALK_JOG'&&Date.parse(o.observedAt)<Date.parse(cut)).sort((a,b)=>Date.parse(a.observedAt)-Date.parse(b.observedAt)).map(o=>byId.get(o.context.sessionId)?.progression?.value).filter(Number.isInteger);
- return {state:{run:historicalRun(clone(H.state.run),stepsRun.at(-1)??null),strength:base.strength},material,point:{...point,authority,values:clone(H.values),executed:[...new Set([...H.executed,...Object.keys(base.performed)])].sort(),...(late?{reportedAfterStart:true}:{}),...(other?{sameDay:other}:{})}};
+ // The run as a return reads it (decision authority closure, SSCTR F4; residual authority closure, QE-R7ADA-02, F4-X): never above the running
+ // state or dose of the runs executed completely since the state's latest entry (the report of the latest return in force, which set the plan from
+ // it; else the intake) and before this interruption began (historicalRun): a mode or step the evidence released but the athlete never ran is not
+ // tolerated yet. Runs before that report belong to the plan before its break (C5), which the return's entry already read.
+ const byId=new Map(program.weeks.flatMap(x=>x.sessions.map(s=>[s.id,s]))),since=R?Date.parse(R.asOf):-Infinity;
+ const ran=all.filter(o=>!o.conflicted&&!o.partial&&o.context?.sport==='RUN'&&Date.parse(o.observedAt)<Date.parse(cut)&&Date.parse(o.observedAt)>since).sort((a,b)=>Date.parse(a.observedAt)-Date.parse(b.observedAt)).map(o=>{const s=byId.get(o.context.sessionId);return s?.prescription?{role:s.role,dimension:s.progression?.dimension??null,value:s.progression?.value??null,minutes:s.prescription.durationMinutes,week:o.context.weekIndex}:null;}).filter(Boolean);
+ const run=historicalRun(clone(H.state.run),ran,{stateOf:k=>at(k)?.state?.run??null,easyStepMinutes:ctx.sk.op.run.easyStepMinutes});
+ return {state:{run,strength:base.strength},material,point:{...point,authority,values:clone(H.values),executed:[...new Set([...H.executed,...Object.keys(base.performed)])].sort(),...(late?{reportedAfterStart:true}:{}),...(other?{sameDay:other}:{})}};
 }
 /** The strength start of a return from the state at its interruption: a short one resumes it; a moderate or long one starts the return steps
  * from it, its last executed count the ceiling (SSCTR D49). */

@@ -1,0 +1,35 @@
+// Development-only synthetic facts. The evaluator never imports this adapter or its oracles.
+import registry from '../r2/POSITIVE_PRESCRIPTION_REGISTRY.json' with {type:'json'};
+import {clone,hash} from './value.mjs';
+export const r2RegistryInfo=()=>({registryVersion:registry.revision,registryHash:hash(registry)});
+const loadsKg={legPress:40,machineChestPress:15,seatedCableRow:20,seatedLegCurl:15};
+const session=(session_id,day,recipeId,parameters={},optional=false)=>({session_id,day,recipeId,status:'PLANNED',optional,parameters});
+const episode=(n,recipeId,result='COMPATIBLE',actualReps=8,actualRir=2)=>({factId:'DEV-F-'+n,athleteId:'R2-DEV',observedAt:`2026-10-${n===1?'18':'21'}T10:00:00-03:00`,sourceRef:'DEV-COMPARABLE-RESPONSE',sourceRevision:'1',coverage:'COMPLETE',comparable:true,recipeId,result,completed:true,technique:'ACCEPTABLE',actualReps,actualRir,actualLoadKg:60,setsCompleted:result==='UNDER_TARGET'?2:3,uniformRepsAcrossAllSets:true});
+const h=(recipe,result,reps=8)=>({episodes:[episode(1,recipe,result,reps),episode(2,recipe,result,reps)],relevantContextUnchanged:true});
+const taper=(distance='10K')=>({daysToRace:6,eventDistance:distance,eventPriorityConfirmed:true,allRecipesFamiliar:true,runTargetsCalibrated:true,racePaceSecondsPerKm:distance==='10K'?330:360,loadsKg:{legPress:40,machineChestPress:15,seatedCableRow:20},essentialRunFeasible:true,strengthIntent:'MAINTAIN_FAMILIAR',scheduleConfirmed:true});
+const facts={
+ESTABLISH_RUN:{walkMinutes:30,comfortableTalk:true,runExposure:'NEVER',timeBudgetMinutes:30,availableDays:['MON','WED','SAT']},
+ESTABLISH_STRENGTH:{configurationFamiliar:true,techniqueDemonstrated:true,loadEstablished:true,loadsKg,timeBudgetMinutes:30,availableDays:['MON','THU']},
+PROGRESS_STRENGTH:{...h('R2-SQUAT-3X8','OVER_TARGET',10),loadKg:60,rirCalibratedForTask:true,establishedTargetRir:2,nextHorizonNeedConfirmed:true,smallestIncrementAvailable:true},
+LOCAL_FATIGUE:{loadKg:60,rirCalibratedForTask:true,establishedTargetRir:2,fatigueScope:'LOCAL',affectedComponent:'calf_raise_familiar_bodyweight',essentialPerformance:'COMPATIBLE',optionalComponentUnperformed:true,oneOptionalSetStillInadequate:true,materialProblem:true},
+SYSTEMIC_FATIGUE:{subjectiveFatigue:true,performanceDecline:true,contextComparable:true,branchAuthorized:true,branchFamiliar:true,branchWindowAllowed:true,easyCurrentlyTolerated:true,optionalRemovalSufficient:false,materialProblem:true},
+UNDER_TARGET_STRENGTH:{...h('R2-SQUAT-3X8','UNDER_TARGET'),loadKg:60,rirCalibratedForTask:true,establishedTargetRir:2,reducedCandidateTolerated:true,essentialIntentPreserved:true,smallerRestChangeSufficient:false,materialProblem:true},
+REDUCE_RUN_REPETITION:{...h('R2-RUN-5X3','UNDER_TARGET'),paceSecondsPerKm:300,fifthRepDegrades:true,fourRepsTolerated:true,targetCalibrated:true,essentialIntentPreserved:true,smallerRestChangeSufficient:false,materialProblem:true},
+PROGRESS_RUN:{...h('R2-EASY-45','COMPATIBLE'),family:'EASY',candidatePreviouslyTolerated:true,nextHorizonNeedConfirmed:true},
+RETURN_RUN:{reason:'TRAVEL',interruptionDays:9,priorFamiliar:true,currentRunMinutes:20,capacityEstablishedToday:true,currentComfortableTalk:true,timeBudgetMinutes:20,availableDays:['MON','WED','SAT']},
+RETURN_STRENGTH:{reason:'SCHEDULE',interruptionDays:21,priorFamiliar:true,currentConfigurationDemonstrated:true,currentLoadEstablished:true,loadsKg,timeBudgetMinutes:30,availableDays:['MON','THU']},
+TAPER_10K:taper(),TAPER_HALF:taper('HALF_MARATHON'),TAPER_BALANCED:taper(),
+CALIBRATE_RUN:{family:'EASY',targetMethod:'TALK_RPE',construct:'EASY_EFFORT',paceSecondsPerKm:null,familyFamiliar:true,targetEstablished:true,conditionsComparable:true,toleranceKnown:true,toleratedRecipeId:'R2-EASY-20',toleranceFactId:'DEV-EASY20-TOLERANCE',noLab:true},
+RANK_OPTIONS:{necessityEstablished:true,candidatesAdmissible:true,alternatives:['MON_LOWER','WED_LOWER'],episodes:[['MON_LOWER','DEGRADED'],['WED_LOWER','COMPATIBLE'],['MON_LOWER','DEGRADED'],['WED_LOWER','COMPATIBLE']].map(([placement,response],n)=>({factId:'RANK-'+n,athleteId:'R2-DEV',observedAt:`2026-10-${10+n*3}T10:00:00-03:00`,sourceRef:'DEV-PLACEMENT-OBSERVATION',sourceRevision:'1',coverage:'COMPLETE',comparable:true,placement,response})),counterevidenceConsidered:true,relevantContextUnchanged:true}
+};
+export const r2Requests=()=>Object.keys(facts);
+export function r2Input(request){
+ if(!facts[request])throw new Error('Unknown R2 development request '+request);
+ const baseRecipes={PROGRESS_STRENGTH:'R2-SQUAT-3X8',LOCAL_FATIGUE:'R2-LOWER-CALF',UNDER_TARGET_STRENGTH:'R2-SQUAT-3X8',REDUCE_RUN_REPETITION:'R2-RUN-5X3',PROGRESS_RUN:'R2-EASY-40',CALIBRATE_RUN:'R2-LABEL-EASY',RANK_OPTIONS:'R2-LOWER-CALF'};
+ const params=request==='REDUCE_RUN_REPETITION'?{paceSecondsPerKm:300}:['PROGRESS_STRENGTH','LOCAL_FATIGUE','UNDER_TARGET_STRENGTH','RANK_OPTIONS'].includes(request)?{loadKg:60,targetRir:2}:{};
+ let sessions=[session('target','MON',baseRecipes[request]??'R2-EASY-40',params)];
+ if(request==='SYSTEMIC_FATIGUE')sessions=[session('key','THU','R2-RUN-5X3',{paceSecondsPerKm:300}),session('easy','SAT','R2-EASY-20')];
+ if(request.startsWith('TAPER'))sessions=[session('normal-easy','MON','R2-EASY-40'),session('normal-strength','MON','R2-ST-EST-1X8',{loadsKg}),session('normal-key','TUE','R2-RUN-5X3',{paceSecondsPerKm:300}),session('normal-long','THU','R2-EASY-45'),session('normal-easy2','SAT','R2-EASY-40'),session('event','SUN',request==='TAPER_HALF'?'R2-RACE-HALF':'R2-RACE-10K')];
+ const first=['ESTABLISH_RUN','ESTABLISH_STRENGTH'].includes(request);
+ return {inputVersion:'BSR-INPUT-R2',purpose:'SYNTHETIC_SHADOW',synthetic:true,evaluatedAt:'2026-10-24T12:00:00-03:00',athleteFixtureId:'R2-DEV',athleteState:{athlete_id:'R2-DEV',adult:true,ageYears:35,priority:request==='TAPER_BALANCED'?'BALANCED':'RUN_FIRST',runLevel:request==='ESTABLISH_RUN'?'NOVICE':'INTERMEDIATE',strengthLevel:request==='ESTABLISH_STRENGTH'?'NOVICE':'INTERMEDIATE',dataMode:'NONE',history:first?'NONE':'KNOWN',movementCompetence:'KNOWN'},officialPlanState:first?null:{plan_id:'R2-DEV-PLAN',plan_revision:'1',athlete_id:'R2-DEV',sessions},event:{event_id:'DEV-'+request,type:'R2_REQUEST',request,sessionId:first||request.startsWith('TAPER')||request.startsWith('RETURN')?null:request==='SYSTEMIC_FATIGUE'?'key':'target',facts:clone(facts[request])},observation:{sourceRef:'DEVELOPMENT-SYNTHETIC',sourceRevision:'1',observedAt:'2026-10-24T11:00:00-03:00',coverage:'COMPLETE',association:'CONFIRMED',response:'COMPATIBLE',contextComparable:true},observedExecutionState:{events:[],completed:[],inferred:[]},recoveryContext:{eligibilityStatus:'NONCLINICAL_CONFIRMED',clinicalConcern:false,interrupted:request.startsWith('RETURN'),sourceRef:'DEVELOPMENT-ELIGIBILITY',contextChanged:false,clinicalFlags:[],persistentPain:false,injury:false,illness:false,functionalLimitation:false,clearanceRequired:false},policyContext:{...r2RegistryInfo(),revokedReviewIds:[],holds:[],longitudinalPurposeAllowed:true,requestedPolicyIds:[]},provenance:{dataClass:'SYNTHETIC',sourceRef:'R2-DEVELOPMENT',sourceRevision:'1',coverage:'EXPLICIT_FIXTURE_FACTS',association:'CONFIRMED'}};
+}

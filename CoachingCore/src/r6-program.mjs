@@ -590,12 +590,41 @@ export function historicalStrength(ss){
  return {...rest,exercises};
 }
 /**
- * The run as a return reads it (decision authority closure, SSCTR F4; R6-NONCLINICAL-RETURN: re-entry returns to the prior tolerated dose, and
- * historical maxima are a ceiling, not current proof): a walk/jog step the evidence released but the athlete has not run yet waits for a run, so
- * the return starts from the step of the last walk/jog session executed (`lastStepRun`), never above it. Without a walk/jog session on the
- * record the state stands (the intake's reported step). Once the athlete runs the next step, that step is the one a later return reads.
+ * The run as a return reads it (decision authority closure, SSCTR F4; residual authority closure, QE-R7ADA-02, SSCTR F4-X; R6-NONCLINICAL-RETURN:
+ * "SHORT: resume the last executed doses; ... the next step waits for executed sessions", MODERATE: "conditional steps to the prior executed dose",
+ * historical maxima are a ceiling, not current proof): HistoricalState's run with every release the athlete has not run yet undone, so a return
+ * never starts above the running state or dose last executed. Released is not executed: a dose or mode the evidence released, or the plan projects,
+ * is no tolerance until a run executes it. `ran` is the record of the runs executed completely since the state's latest entry (the report of the
+ * latest return, else the intake) and before this interruption began, in order: each with the role, progression dimension and value, and minutes
+ * its row prescribed, and its week; `stateOf(week)` is HistoricalState's run at the start of a week (the state that prescribed that week's rows).
+ * - A mode the evidence released that no run has used yet (the walk/jog exit to continuous running, the restart's switch to easy running, a
+ *   return's completion) is undone: the run is the state that prescribed the last run executed, with the records the evidence accumulated.
+ * - Within its mode no dose is above the one last executed: the walk/jog step (the step last run), the restart minutes, the return step, the long
+ *   run (the last long run) and the easy run (the largest easy run of the last week that executed one).
+ * Without a run of the dimension on the record since the entry the state stands (the intake's, or the entry's). Once the athlete runs the next dose
+ * or mode, that is the one a later return reads.
  */
-export const historicalRun=(run,lastStepRun)=>run?.mode==='WALK_JOG'&&Number.isInteger(lastStepRun)&&Number.isInteger(run.walkStep)&&run.walkStep>lastStepRun?{...run,walkStep:lastStepRun}:run;
+// The mode a run's row was prescribed in, by its progression dimension: quality steps exist in easy running only. A row without one (a walk, the
+// race, an event-window run) states no mode.
+const MODE_OF_DIMENSION={WALK_JOG_STEP:'WALK_JOG',RESTART_MINUTES:'RESTART',RETURN_STEP:'RETURN',LONG_MINUTES:'EASY',EASY_MINUTES:'EASY',THRESHOLD_STEP:'EASY',SPECIFIC_STEP:'EASY'};
+const RUN_RECORDS=['achieved','longestContinuous','longByWeek','modeHistory','resumed'];
+export function historicalRun(run,ran=[],{stateOf=null,easyStepMinutes=0}={}){
+ if(!run)return run;
+ const stated=ran.filter(x=>MODE_OF_DIMENSION[x.dimension]),last=stated.at(-1),mode=last?MODE_OF_DIMENSION[last.dimension]:null;
+ let st=run;
+ if(mode&&mode!==run.mode){const b=stateOf?.(last.week);if(b?.mode===mode){st=clone(b);for(const k of RUN_RECORDS)if(k in run)st[k]=clone(run[k]);else delete st[k];}}
+ const lastValue=dim=>stated.filter(x=>x.dimension===dim).at(-1)?.value??null,above=(v,x)=>Number.isFinite(v)&&Number.isFinite(x)&&x>v;
+ if(st.mode==='WALK_JOG'){const v=lastValue('WALK_JOG_STEP');if(Number.isInteger(v)&&above(v,st.walkStep))st={...st,walkStep:v};}
+ else if(st.mode==='RESTART'){const v=lastValue('RESTART_MINUTES');if(above(v,st.restart))st={...st,restart:v};}
+ else if(st.mode==='RETURN'){const v=lastValue('RETURN_STEP');if(Number.isInteger(v)&&above(v,st.returnStep))st={...st,returnStep:v};}
+ else if(st.mode==='EASY'){
+  const long=ran.filter(x=>x.role==='LONG').at(-1)?.minutes,week=ran.filter(x=>x.role==='EASY').at(-1)?.week,easy=week===undefined?null:Math.max(...ran.filter(x=>x.role==='EASY'&&x.week===week).map(x=>x.minutes));
+  if(above(long,st.long))st={...st,long};
+  // No easy run above the largest one executed: the rotating extra step waits too.
+  if(Number.isFinite(easy)&&Number.isFinite(st.easy)&&st.easy+((st.easyExtra??0)>0?easyStepMinutes:0)>easy)st={...st,easy:Math.min(st.easy,easy),easyExtra:0};
+ }
+ return st;
+}
 /** Transition after week w for exercises used that week. gate per exercise id or 'STRENGTH'. Logged loads replace planned ones before the gate.
  * A step needs a logged set at the current load in the gating week; a conditional projection assumes the planned logs.
  * `performed` maps an exercise to the local date a review saw it last performed in the week and the sessions that performed it

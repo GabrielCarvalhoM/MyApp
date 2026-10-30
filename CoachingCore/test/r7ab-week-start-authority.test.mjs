@@ -5,6 +5,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {generateProgram,evaluateProgram} from '../src/r6-index.mjs';
+import {historicalStateOf} from '../src/r6-adaptation.mjs';
 import {devAuthority} from '../r6/fixtures/dev-authority.mjs';
 
 const opts={authority:devAuthority()};
@@ -51,6 +52,8 @@ const tripB=(t,d0,{from=8,to=9,said=10}={})=>{const r=step(t,at(t.p,Math.floor((
 const sundayOnMonday=(t,o={})=>step(t,at(t.p,6,0,'06:00:00',{observations:t.p.weeks[5].sessions.filter(s=>live(s)&&s.day===6).map(s=>obs(t.p,s,o))}));
 // The loads the re-entry rows keep as their ceiling: logging them is executing the week exactly as its projection assumed.
 const atKnown=t=>({kg:id=>t.p.stateTrace[5].strength.exercises[id]?.load??20});
+/** Residual authority closure (QE-R7ADA-02): the run return step HistoricalState holds when trip B begins (Tuesday of week 6). */
+const historyStep=(t,d0,from=8)=>historicalStateOf(t.p,{asOf:`${addDays(d0,from)}T00:00:00Z`,actualLedger:t.ledger},opts).state.run.returnStep??null;
 
 test('R7-A boundary §14 QE-R7AF-01: after an unfinished, unreviewed re-entry week, no later decision makes the projected week start history',()=>{
  const {t,d0,A}=afterReturn('t7ab-qe');perDay(t,5,s=>s.day<3);
@@ -87,9 +90,13 @@ test('R7-A boundary I5/P3 (families D, E): execution promotes authority only thr
  const b=copy(t);perDay(b,5,s=>s.day<6,atKnown(b));weekly(b,5,s=>s.day===6);
  const B6=tripB(b,d0);assert.equal(B6.interruption.stateAt.week,6);assert.ok(['WEEK_EVIDENCE','COMPLETED_SESSIONS'].includes(B6.interruption.stateAt.authority.RUN));
  assert.deepEqual(stepsOf(A6.interruption.entry),stepsOf(B6.interruption.entry),'executed and reviewed give the same steps');
- assert.equal(A6.interruption.entry.run.returnStep,1);
+ // Residual authority closure (QE-R7ADA-02, P3): the executed week credits return step 1 in history, and trip B, a short break, resumes the step
+ // last run (0); step 1 was released by the evidence but never run (R6-NONCLINICAL-RETURN: "the next step waits for executed sessions"). The
+ // earlier version of this cell expected B to resume step 1.
+ assert.equal(historyStep(a,d0),1,'history credits the executed week');
+ assert.equal(A6.interruption.entry.run.returnStep,0,'the return resumes the step last run');
  const m=copy(t);perDay(m,5,s=>s.day<6,atKnown(m));weekly(m,5,()=>false);
- assert.equal(tripB(m,d0).interruption.entry.run.returnStep,0,'a long run missed holds the return step');
+ assert.equal(historyStep(m,d0),0,'a long run missed holds the return step');assert.equal(tripB(m,d0).interruption.entry.run.returnStep,0,'a long run missed holds the return step');
  // State model: lifting lighter than the rows kept is still a week the athlete executed, so it is evidence: the next start is anchored on the
  // athlete's own executed state, and the known load is the 20 kg lifted, never the 82.5 the return rows carried as a ceiling.
  const c=copy(t);perDay(c,5,s=>s.day<6,{kg:()=>20});sundayOnMonday(c);
@@ -119,8 +126,10 @@ test('R7-A boundary §13 premise: a week executed, but not as its projection ass
  // State model (per sport, SSCTR R40): a sport whose week was not executed as prescribed goes back to the re-entry; a sport that executed every
  // row as finally prescribed is evidence, whoever reduced those rows. The systemic report reduced only strength rows, and the athlete executed
  // the reduced week, so both sports are evidence there; in every other case the session that was not executed holds its sport.
- for(const [label,fn] of Object.entries(cases)){const u=copy(t);fn(u);sundayOnMonday(u,atKnown(u));const B=tripB(u,d0),executed=label==='reduced (systemic fatigue)';
-  assert.equal(B.interruption.stateAt.kind,executed?'WEEK_START':'RETURN',label);assert.equal(B.interruption.entry.run.returnStep,executed?1:0,label);
+ // Residual authority closure (QE-R7ADA-02, P3): history credits return step 1 only for the executed week, and trip B resumes the step last run (0)
+ // in every case; the earlier version of this cell expected B to resume step 1 after the executed week.
+ for(const [label,fn] of Object.entries(cases)){const u=copy(t);fn(u);sundayOnMonday(u,atKnown(u));const step1=historyStep(u,d0),B=tripB(u,d0),executed=label==='reduced (systemic fatigue)';
+  assert.equal(B.interruption.stateAt.kind,executed?'WEEK_START':'RETURN',label);assert.equal(step1,executed?1:0,label);assert.equal(B.interruption.entry.run.returnStep,0,label);
   if(executed)assert.deepEqual(B.interruption.stateAt.authority,{RUN:'COMPLETED_SESSIONS',STRENGTH:'COMPLETED_SESSIONS'},label);
   else assert.equal(B.interruption.stateAt.authority.RUN,'RETURN_ENTRY',label);
   // Whatever the case, no load above what the athlete lifted in that week reaches the return.
@@ -199,7 +208,9 @@ test('R7-A boundary I6: evidence synced late counts by the time it was executed'
  // Every session of week 5 executed at the projected loads but synced only on Wednesday of week 6, during B: it was executed before B.
  const late=t.p.weeks[5].sessions.filter(s=>live(s)).map(s=>obs(t.p,s,atKnown(t)));
  step(t,at(t.p,6,2,'20:00:00',{observations:late}));
- const B=tripB(t,d0);assert.equal(B.interruption.stateAt.week,6);assert.equal(B.interruption.entry.run.returnStep,1);
+ // Residual authority closure (QE-R7ADA-02, P3): history credits return step 1, and the short trip resumes the step last run (0); the earlier version
+ // of this cell expected step 1.
+ const step1=historyStep(t,d0),B=tripB(t,d0);assert.equal(B.interruption.stateAt.week,6);assert.equal(step1,1);assert.equal(B.interruption.entry.run.returnStep,0);
 });
 test('R7-A boundary I7 (Founder §11): a named correction that contradicts its own executed re-entry is asked; a consistent one applies',()=>{
  const {t,d0,A}=afterReturn('t7ab-i7');perDay(t,5,s=>s.day<3);
