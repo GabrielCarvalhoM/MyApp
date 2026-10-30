@@ -1,0 +1,24 @@
+// Re-execute unchanged, previously independent probes. Never invokes the author's writing runner.
+import fs from 'node:fs';
+import path from 'node:path';
+import {spawn} from 'node:child_process';
+import {createHash} from 'node:crypto';
+const root=path.resolve(import.meta.dirname,'../../..'),audit='audits/domain-coaching-r7a-residual-authority-2026-10-30/';
+const original=JSON.parse(fs.readFileSync(path.join(root,audit,'probes/EVIDENCE_RUNS_R7ARA.json'),'utf8'));
+const selected=new Set(['Q01.cand','Q01b.cand','Q04.cand','Q05.cand','Q06c.cand','Q06d.cand','ssctr-continuous.cand','ssctr-walkjog-matrix.cand']);
+const jobs=original.runs.filter(r=>r.group==='kit'&&!['r12-instrument','regression'].includes(r.name)||r.group==='findings'&&selected.has(r.name)||r.group==='asc'&&r.name.endsWith('.cand')||r.group==='self-challenge'&&r.name==='cand');
+const outDir=path.join(import.meta.dirname,'codex-runs');fs.mkdirSync(outDir,{recursive:true});
+const sha=x=>createHash('sha256').update(x).digest('hex');
+const canon=v=>v===null||typeof v!=='object'?JSON.stringify(v):Array.isArray(v)?'['+v.map(canon).join(',')+']':'{'+Object.keys(v).sort().map(k=>JSON.stringify(k)+':'+canon(v[k])).join(',')+'}';
+const digest=()=>sha(canon(Object.fromEntries(fs.readdirSync(path.join(root,'CoachingCore/src')).filter(f=>f.endsWith('.mjs')).sort().map(f=>['src/'+f,sha(fs.readFileSync(path.join(root,'CoachingCore/src',f)))]))));
+const queue=jobs.slice().sort((a,b)=>b.seconds-a.seconds),runs=[];
+const run=r=>new Promise(resolve=>{const start=digest(),now=Date.now(),chunks=[],errors=[];
+ const env=Object.fromEntries(Object.entries(r.env??{}).map(([k,v])=>[k,['QE_ROOT','SSCTR_CC','R7ADA_ROOT'].includes(k)?path.resolve(root,v):v]));
+ const p=spawn(process.execPath,[path.join(root,r.script)],{cwd:path.resolve(root,r.cwd??'.'),env:{...process.env,...env}});
+ p.stdout.on('data',d=>chunks.push(d));p.stderr.on('data',d=>errors.push(d));
+ p.on('error',e=>errors.push(Buffer.from(String(e))));
+ p.on('close',exit=>{const output=path.join(outDir,r.group+'-'+r.name+'.json'),stdout=Buffer.concat(chunks),stderr=Buffer.concat(errors).toString();fs.writeFileSync(output,stdout);
+ const row={group:r.group,name:r.name,script:r.script,scriptSha256:sha(fs.readFileSync(path.join(root,r.script))),env:r.env,cwd:r.cwd,exit,seconds:(Date.now()-now)/1000,sourceDigestStart:start,sourceDigestEnd:digest(),output:path.relative(root,output).replaceAll('\\','/'),outSha256:sha(stdout),stderr,originalOutput:r.output};
+ runs.push(row);fs.writeFileSync(path.join(import.meta.dirname,'codex-reruns.json'),JSON.stringify({node:process.version,at:new Date().toISOString(),requested:jobs.length,completed:runs.length,runs},null,2)+'\n');console.log(r.group+'/'+r.name+' exit='+exit+' seconds='+row.seconds);resolve();});});
+await Promise.all(Array.from({length:3},async()=>{while(queue.length)await run(queue.shift());}));
+process.exitCode=runs.some(r=>r.exit!==0||r.sourceDigestStart!==original.sourceDigest||r.sourceDigestEnd!==original.sourceDigest)?1:0;
