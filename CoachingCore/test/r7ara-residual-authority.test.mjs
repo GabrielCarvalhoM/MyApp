@@ -159,24 +159,29 @@ function pauseFrom(t,k,days,d0=0){
  const rows=t.p.weeks[d.fromWeek].sessions.filter(s=>live(s)&&s.sport==='RUN'&&s.date>=report).map(s=>({role:s.role,minutes:s.prescription.durationMinutes,dim:s.progression?.dimension??null,value:s.progression?.value??null}));
  return {r,entry:d.interruption.entry.run,cls:d.interruption.class,rows,report,fromWeek:d.fromWeek};
 }
-/** Runs the record shows executed completely before a day: the dose its row prescribed, by role, with its week. */
-const executedRuns=(t,before)=>t.p.weeks.flatMap(w=>w.sessions.filter(s=>live(s)&&s.sport==='RUN'&&s.date<before&&t.ledger.some(o=>o.sessionId===s.id&&!o.partial&&!o.conflicted&&o.actual?.completed)).map(s=>({role:s.role,minutes:s.prescription.durationMinutes,date:s.date,week:w.index})));
+/** Runs the record shows executed completely before a day: the dose its row prescribed, by role, with its dimension and week. */
+const executedRuns=(t,before)=>t.p.weeks.flatMap(w=>w.sessions.filter(s=>live(s)&&s.sport==='RUN'&&s.date<before&&t.ledger.some(o=>o.sessionId===s.id&&!o.partial&&!o.conflicted&&o.actual?.completed)).map(s=>({role:s.role,minutes:s.prescription.durationMinutes,dim:s.progression?.dimension??null,date:s.date,week:w.index})));
+/** The largest long run and easy run executed (an eased quality slot is no easy-run dose). */
+const largestRuns=ran=>({long:Math.max(...ran.filter(x=>x.role==='LONG').map(x=>x.minutes)),easy:Math.max(...ran.filter(x=>x.role==='EASY'&&!['THRESHOLD_STEP','SPECIFIC_STEP'].includes(x.dim)).map(x=>x.minutes))});
 /** A MODERATE break of 14 days (weeks 3-4) after three executed weeks, reported Monday 06:00 of week 5: a full re-entry week at return step 0. */
 const reentry=id=>{N=0;const e=gen(intake({id}));for(let w=0;w<3;w++)weekly(e,w);const first=pauseFrom(e,3,14);assert.deepEqual([first.cls,first.entry.mode,first.fromWeek],['MODERATE','RETURN',5]);return e;};
 
 test('QE-R7ADA-02 / EASY return factual ceiling: 70 executed, 75 released, a short pause never resumes 75 (nor an easy run above the one executed)',()=>{
- for(const [k,days] of [[5,6],[5,10],[3,6],[2,6]]){
+ // The athlete's long runs: 65 (weeks 0-2, the share cap holding 70), 60 in the consolidation week 3, 70 in week 4, 75 in week 5. The state after
+ // a week the evidence closed is the next step, released and not yet run.
+ for(const [k,days] of [[5,6],[5,10],[3,6],[2,6],[4,6]]){
   N=0;const t=gen(intake({id:'t7ara-easy'}));for(let w=0;w<k;w++)weekly(t,w);
-  const H=history(t,k,0).state.run,ran=executedRuns(t,t.p.weeks[k].startDate),lastLong=ran.filter(x=>x.role==='LONG').at(-1).minutes,lastWeek=ran.filter(x=>x.role==='EASY').at(-1).week;
-  const lastEasy=Math.max(...ran.filter(x=>x.role==='EASY'&&x.week===lastWeek).map(x=>x.minutes)),{entry,cls,rows}=pauseFrom(t,k,days);
-  assert.equal(cls,'SHORT');assert.ok(H.long>lastLong||k!==5,'the evidence released the next long run (the case under test)');
-  assert.ok(entry.long<=lastLong,`k=${k} ${days}d: the return's long run ${entry.long} above the last executed ${lastLong}`);
-  for(const x of rows.filter(x=>x.role==='LONG'))assert.ok(x.minutes<=lastLong,`k=${k}: long ${x.minutes} > ${lastLong}`);
-  for(const x of rows.filter(x=>x.role==='EASY'&&x.dim==='EASY_MINUTES'))assert.ok(x.minutes<=lastEasy,`k=${k}: easy ${x.minutes} > ${lastEasy}`);
-  if(k===5)assert.equal(entry.long,70,'resumes the 70 executed, never the 75 only released');}
- // Moderate: the conditional steps go back to the prior executed dose, never to the step only released.
- N=0;const m=gen(intake({id:'t7ara-easy-mod'}));for(let w=0;w<5;w++)weekly(m,w);const {entry,cls}=pauseFrom(m,5,17);
- assert.equal(cls,'MODERATE');assert.equal(entry.mode,'RETURN');assert.equal(entry.returnTo.long,70);
+  const H=history(t,k,0).state.run,ran=executedRuns(t,t.p.weeks[k].startDate),{long,easy}=largestRuns(ran),{entry,cls,rows}=pauseFrom(t,k,days);
+  assert.equal(cls,'SHORT');if(k===5)assert.ok(H.long>long,'the evidence released the next long run (the case under test)');
+  assert.ok(entry.long<=long,`k=${k} ${days}d: the return's long run ${entry.long} above the largest executed ${long}`);
+  for(const x of rows.filter(x=>x.role==='LONG'))assert.ok(x.minutes<=long,`k=${k}: long ${x.minutes} > ${long}`);
+  for(const x of rows.filter(x=>x.role==='EASY'&&x.dim==='EASY_MINUTES'))assert.ok(x.minutes<=easy,`k=${k}: easy ${x.minutes} > ${easy}`);
+  if(k===5)assert.equal(entry.long,70,'resumes the 70 executed, never the 75 only released');
+  // After a consolidation week (60, a planned reduction from the same state) it resumes the 65 executed, never the released 70.
+  if(k===4)assert.equal(entry.long,65,'resumes the dose reached by execution, not the reduced row nor the released step');}
+ // Moderate: the conditional steps go back to the prior executed dose, never to the step only released, and never below a dose executed.
+ for(const [k,to] of [[5,70],[8,75]]){N=0;const m=gen(intake({id:'t7ara-easy-mod'}));for(let w=0;w<k;w++)weekly(m,w);const {entry,cls}=pauseFrom(m,k,17);
+  assert.equal(cls,'MODERATE');assert.equal(entry.mode,'RETURN');assert.equal(entry.returnTo.long,to,`k=${k}`);}
 });
 // The SSCTR's continuous-running probe (R7ADA-SSCTR-r1), its profile and timeline: WALK_JOG_FIVE_DAYS, walk/jog Mon, Wed, Fri and walks Tue, Sat.
 // TOP5 is a non-novice starting at step 5 (SSCTR D42, the exit in a CONSOLIDATION week), FULL the fixture novice from step 0 (16 weeks, the exit in a

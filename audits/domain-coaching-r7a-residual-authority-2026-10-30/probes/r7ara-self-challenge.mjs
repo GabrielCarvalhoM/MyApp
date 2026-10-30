@@ -92,8 +92,10 @@ function pause(t,k,days,d0=0){
  return {r,cls:d.interruption.class,entry:d.interruption.entry.run,fromWeek:d.fromWeek,report,cut:Date.parse(start+'T00:00:00Z'),reportedAt:Date.parse(d.asOf),rows:runsAfter(t,d.fromWeek,report)};
 }
 const lastOf=(ran,pred)=>ran.filter(pred).at(-1);
-const easyCap=ran=>{const w=lastOf(ran,x=>x.role==='EASY')?.week;return w===undefined?null:Math.max(...ran.filter(x=>x.role==='EASY'&&x.week===w).map(x=>x.minutes));};
-const easyCheck=(entry,ran,{step=5}={})=>{const long=lastOf(ran,x=>x.role==='LONG')?.minutes??null,easy=easyCap(ran),e=entry.mode==='RETURN'?entry.returnTo:entry;
+// The ceiling the reviewers' probes read (Q06c, the SSCTR's easy return): the largest long and easy run executed; an eased quality slot is no easy-run dose.
+const largestOf=(ran,pred)=>{const v=ran.filter(pred).map(x=>x.minutes);return v.length?Math.max(...v):null;};
+const easyCap=ran=>largestOf(ran,x=>x.role==='EASY'&&!['THRESHOLD_STEP','SPECIFIC_STEP'].includes(x.dim));
+const easyCheck=(entry,ran,{step=5}={})=>{const long=largestOf(ran,x=>x.role==='LONG'),easy=easyCap(ran),e=entry.mode==='RETURN'?entry.returnTo:entry;
  return {long,easy,entryLong:e.long,entryEasy:e.easy,entryExtra:e.easyExtra??0,violation:(long!==null&&e.long>long)||(easy!==null&&(e.easy+(entry.mode==='RETURN'?0:((e.easyExtra??0)>0?step:0)))>easy)};};
 // E1.1 walk/jog ladder (W2 preserved) and its exit (F4-X): the engineering walk/jog fixture.
 const wjTo=(t,step)=>{for(let w=0;w<t.p.weeks.length-3;w++){if(t.p.weeks[w].sessions.some(s=>L.live(s)&&s.role==='WALK_JOG'&&s.progression?.value===step))return w;L.weekly(t,w);}return -1;};

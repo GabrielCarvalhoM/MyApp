@@ -9,8 +9,8 @@
 | | |
 |---|---|
 | Freeze | R7A-RESIDUAL-AUTHORITY-FREEZE-1, record `CoachingCore/r7/residual-authority/RUNTIME_FREEZE_R7A_RESIDUAL_AUTHORITY.json` |
-| Source digest | `cd7e60b1830b9f374bdea2036509b01636de0c62ccc0e66c181aa1f664fbfe60` |
-| Manifest digest | `9e21ca0e70bfb77380980ca8e1093509f3f781025cc7a10f85f3ba912d30db7f`. 86 files: runtime, tests, policy, dev fixtures, `package.json` |
+| Source digest | `259ab3eff431d2381d50904be7594d9fa122c7d8d2fc369e20d67b5419f84cb6` |
+| Manifest digest | `d530846b515c99ff9b0b9c6bdf36dd28f8f908c49ee6be2544a131b051192ff2`. 86 files: runtime, tests, policy, dev fixtures, `package.json` |
 | Policy | R6-POLICY-5, `18ec48f3…`, unchanged |
 | Predecessor | R7A-DECISION-AUTHORITY-FREEZE-1 (`3a7166b2…`), byte-exact in `audits/domain-coaching-r7a-residual-authority-2026-10-30/decision-authority-freeze-source/`. Its review is yours: `review/r7ada-decision-authority-engineering`, `17e7285` |
 | Branch and commits | In [REVIEW_HANDOFF.md](../REVIEW_HANDOFF.md) |
@@ -51,13 +51,12 @@ The rules are in [RESIDUAL_AUTHORITY_CONTRACT.md](../RESIDUAL_AUTHORITY_CONTRACT
   - The mode: a mode the evidence released that no run has used is undone to the state that prescribed the last run.
   - The doses within the mode:
     - the walk/jog step, restart minutes and return step: never above the last run;
-    - the long run: never above the last long run;
-    - the easy run: never above the largest easy run of the last week with one.
+    - the long and easy runs: never above the largest executed and tolerated since the entry. Easy rows are phase-modulated from the state, so a consolidation week's reduced row is no lower tolerance. Your Q06b reads the week before the pause and flags k=4 and k=8 after consolidation weeks for this reason (named in the report); Q06c, the largest executed, is clean.
 - **Tests:** `test/r7ara-residual-authority.test.mjs` is new. `test/r7ab-week-start-authority.test.mjs` I5/P3, §13 premise and I6 are re-expressed in place (marked `Residual authority closure`): a short trip after an executed MODERATE re-entry week resumes return step 0, while history credits step 1.
 
 ## Evidence on these bytes
 
-Every run is bound to `cd7e60b1…` in `probes/EVIDENCE_RUNS_R7ARA.json`. Outputs are in `probes/runs/`.
+Every run is bound to `259ab3ef…` in `probes/EVIDENCE_RUNS_R7ARA.json`. Outputs are in `probes/runs/`.
 
 - **Your probes, byte-exact copies in `probes/judges/qe/`** (git blob ids equal to your branch's), run on both trees. In `runs/findings/`:
   - Q01: 0 of 78 on the candidate, 14 on the predecessor;

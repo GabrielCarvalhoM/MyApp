@@ -59,10 +59,12 @@ const C=out_('findings','ssctr-continuous.cand'),Cp=out_('findings','ssctr-conti
 // Q06's remaining flags are the two declared readings (RESIDUAL_AUTHORITY_CONTRACT.md): W-ADVERSE (OBS-2, W2 unchanged) and the moderate E-RELEASED
 // cell, whose first long run is a row inside the pause, planned before it (the rows after the report are return step 0).
 const q06Other=Q06.cases.filter(c=>c.violation&&!(c.shape==='W-ADVERSE'||c.shape==='E-RELEASED'&&c.days===17&&(c.r?.firstRows??[]).every(x=>x.dim==='RETURN_STEP'&&x.value<=1))).map(c=>`${c.shape} ${c.A??c.k??''} ${c.days}`);
-// Q06b's remaining easy flags are the eased first quality slot after a short break (D58, its progression is the quality step) and its quality flags
-// the quality ladder (E1-B1); no long run and no easy-minutes run is above the last executed.
+// Q06b's remaining flags are declared readings (RESIDUAL_AUTHORITY_CONTRACT.md): its easy flags are the eased first quality slot after a short break
+// (D58: its progression is the quality step), its quality flags the quality ladder (E1-B1), and its long flags after a consolidation week (E1-a)
+// the long run the athlete reached by execution, against that week's planned reduction. No other long run and no easy-minutes run is above the
+// week before the pause.
 const q06bOther=Q06b.cases.filter(c=>c.shape==='EASY_SHORT').filter(c=>{const last=c.lastExecuted,lastLong=last.find(x=>x.role==='LONG')?.minutes,lastEasy=Math.max(...last.filter(x=>x.role==='EASY'&&x.dim==='EASY_MINUTES').map(x=>x.minutes));
- return c.return.first.some(x=>x.role==='LONG'&&x.minutes>lastLong||x.role==='EASY'&&x.dim==='EASY_MINUTES'&&x.minutes>lastEasy);}).map(c=>'k='+c.k).concat(Q06b.cases.filter(c=>c.shape==='WALKJOG_EXIT_SHORT'&&c.aboveLastCompleted.continuousMinutes).map(c=>'exit '+c.days));
+ return c.return.first.some(x=>x.role==='LONG'&&x.minutes>lastLong&&c.phases[0]!=='CONSOLIDATION'||x.role==='EASY'&&x.dim==='EASY_MINUTES'&&x.minutes>lastEasy);}).map(c=>'k='+c.k).concat(Q06b.cases.filter(c=>c.shape==='WALKJOG_EXIT_SHORT'&&c.aboveLastCompleted.continuousMinutes).map(c=>'exit '+c.days));
 const sc=out_('self-challenge','cand'),scp=out_('self-challenge','pred'),mut=json(PROBES+'runs/mutation.out.json'),tp=json(PROBES+'runs/tests-on-predecessor.out.json');
 const MUST_FAIL_ON_PREDECESSOR=NAMES.slice(0,8);
 const gates={
@@ -97,7 +99,7 @@ const out={revision,frozenAt:new Date().toISOString(),node:process.version,
  policyRevision:policy.revision,policyHash:hash(policy),policyFileSha256:files['r6/PROGRAM_POLICY_R6.json'],sourceDigest,manifestDigest,runtimeFiles:Object.keys(files).filter(p=>p.startsWith('src/')),files,
  deltaFromPredecessorFreeze:{changed,added,removed,baseline:AUDIT+'decision-authority-freeze-source/MANIFEST.json',priorFreezeSourceDigest:pred.sourceDigest},
  tests:{...tests,findingRegressionsAndProperties:properties,onPredecessor:{...bind(PROBES+'runs/tests-on-predecessor.out.json'),total:tp.total,passing:tp.passing,failing:tp.failing.length}},
- preFreezeGates:{...gates,declaredReadings:{q06:'W-ADVERSE (OBS-2: W2 reads any complete execution, consistent with HOLD; SSCTR question) and E-RELEASED moderate 17 days (its first long run is a row inside the pause, planned before it; the rows after the report are return step 0)',q06b:'the easy flags are the eased first quality slot after a short break (D58), the quality flags the quality ladder (E1-B1)'},
+ preFreezeGates:{...gates,declaredReadings:{q06:'W-ADVERSE (OBS-2: W2 reads any complete execution, consistent with HOLD; SSCTR question) and E-RELEASED moderate 17 days (its first long run is a row inside the pause, planned before it; the rows after the report are return step 0)',q06b:'the easy flags are the eased first quality slot after a short break (D58), the quality flags the quality ladder (E1-B1), the long flags after a consolidation week the long run reached by execution against that week\'s planned reduction (E1-a)'},
   findings:{Q01:{candidate:Q01.summary.violations.length,predecessor:Q01p.summary.violations.length,cells:Q01.summary.cases},Q01b:{candidate:Q01b.summary.violations.length,predecessor:Q01bp.summary.violations.length,cells:Q01b.summary.cases},Q06c:{candidate:Q06c.summary.violations.length,predecessor:Q06cp.summary.violations.length,cells:Q06c.summary.cases},continuous:{candidate:{ladder:C.totals.ladderViewAbove,duration:C.totals.durationViewAbove,weekly:C.totals.weeklyAboveExecutedAndPrior},predecessor:{ladder:Cp.totals.ladderViewAbove,duration:Cp.totals.durationViewAbove,weekly:Cp.totals.weeklyAboveExecutedAndPrior},cells:C.totals.cells},walkjogMatrix:M.totals},
   selfChallenge:{candidate:sc.total,predecessor:scp.total},mutation:mut.summary,namedDifferences:named.summary,closedHistory:{baselineFilesChecked:baseline.entries.length,drift:0,growthPatch:'unchanged, not applied',missionFiles:'append-only against '+baseCommit}},
  evidence:{

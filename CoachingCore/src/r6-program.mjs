@@ -596,11 +596,14 @@ export function historicalStrength(ss){
  * never starts above the running state or dose last executed. Released is not executed: a dose or mode the evidence released, or the plan projects,
  * is no tolerance until a run executes it. `ran` is the record of the runs executed completely since the state's latest entry (the report of the
  * latest return, else the intake) and before this interruption began, in order: each with the role, progression dimension and value, and minutes
- * its row prescribed, and its week; `stateOf(week)` is HistoricalState's run at the start of a week (the state that prescribed that week's rows).
+ * its row prescribed, its week, and whether its response was tolerated (no adverse or conflicting signal); `stateOf(week)` is HistoricalState's
+ * run at the start of a week (the state that prescribed that week's rows).
  * - A mode the evidence released that no run has used yet (the walk/jog exit to continuous running, the restart's switch to easy running, a
  *   return's completion) is undone: the run is the state that prescribed the last run executed, with the records the evidence accumulated.
- * - Within its mode no dose is above the one last executed: the walk/jog step (the step last run), the restart minutes, the return step, the long
- *   run (the last long run) and the easy run (the largest easy run of the last week that executed one).
+ * - Within its mode no dose is above the one the athlete reached by execution. On a ladder (walk/jog steps, restart minutes, return steps), whose
+ *   consolidation and HOLD weeks repeat the step, that is the step last run (W2). Easy running is phase-modulated from the state (a consolidation
+ *   or event week runs shorter rows from the same state), so there it is the largest long run, and the largest easy run, executed and tolerated
+ *   since the entry: a planned reduction is no lower tolerance, and a released step is no tolerance.
  * Without a run of the dimension on the record since the entry the state stands (the intake's, or the entry's). Once the athlete runs the next dose
  * or mode, that is the one a later return reads.
  */
@@ -618,7 +621,9 @@ export function historicalRun(run,ran=[],{stateOf=null,easyStepMinutes=0}={}){
  else if(st.mode==='RESTART'){const v=lastValue('RESTART_MINUTES');if(above(v,st.restart))st={...st,restart:v};}
  else if(st.mode==='RETURN'){const v=lastValue('RETURN_STEP');if(Number.isInteger(v)&&above(v,st.returnStep))st={...st,returnStep:v};}
  else if(st.mode==='EASY'){
-  const long=ran.filter(x=>x.role==='LONG').at(-1)?.minutes,week=ran.filter(x=>x.role==='EASY').at(-1)?.week,easy=week===undefined?null:Math.max(...ran.filter(x=>x.role==='EASY'&&x.week===week).map(x=>x.minutes));
+  // The easy runs a quality slot became after a short break (D58) keep that slot's dimension and are no easy-run dose.
+  const largest=pred=>{const v=ran.filter(x=>x.tolerated&&pred(x)).map(x=>x.minutes);return v.length?Math.max(...v):null;};
+  const long=largest(x=>x.role==='LONG'),easy=largest(x=>x.role==='EASY'&&!['THRESHOLD_STEP','SPECIFIC_STEP'].includes(x.dimension));
   if(above(long,st.long))st={...st,long};
   // No easy run above the largest one executed: the rotating extra step waits too.
   if(Number.isFinite(easy)&&Number.isFinite(st.easy)&&st.easy+((st.easyExtra??0)>0?easyStepMinutes:0)>easy)st={...st,easy:Math.min(st.easy,easy),easyExtra:0};

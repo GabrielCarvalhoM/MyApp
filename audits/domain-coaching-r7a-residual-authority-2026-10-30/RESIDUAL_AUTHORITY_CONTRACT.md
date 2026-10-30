@@ -84,7 +84,12 @@ Each run carries its row's role, progression dimension and value, minutes and we
 | Walk/jog | The step last run (W2, unchanged in effect) |
 | Restart | The restart minutes last run |
 | Return | The return step last run |
-| Easy | The long run last run. For the easy runs, the largest easy run of the last week that executed one; the rotating extra step waits too |
+| Easy | The largest long run, and the largest easy run, executed and tolerated (no adverse or conflicting response) since the entry. The rotating extra step waits too, and an eased quality slot (D58) is no easy-run dose |
+
+The two kinds of rule differ because the rows differ.
+- On a ladder, a consolidation or HOLD week repeats the step, so the step last run is the step reached.
+- Easy running is phase-modulated from an unchanged state: a consolidation or event week runs shorter rows. A planned reduction is no lower tolerance, so the dose reached is the largest one tolerated. The return week's own phase then reduces its rows again.
+- A first cut capped easy running at the last run. In engineering Q06d k=8 it brought a moderate return back to 65 minutes, although the athlete ran 75 two weeks earlier and nothing above 75 was released: an under-dose. It was corrected before the freeze.
 
 **E1.5 Nothing run since the entry.** Without a run of a dimension on the record since the entry, that dimension stands: the intake's reported state, or the return's entry.
 

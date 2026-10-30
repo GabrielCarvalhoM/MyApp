@@ -4,7 +4,7 @@
 
 **Labels:** COMPROVADO means proven by a run recorded on the frozen bytes; INFERIDO means inferred by reading or by argument; NÃO TESTADO means not tested.
 
-Every run named here is in `probes/EVIDENCE_RUNS_R7ARA.json`, bound to source digest `cd7e60b1…` at its start and its end. Outputs are in `probes/runs/`.
+Every run named here is in `probes/EVIDENCE_RUNS_R7ARA.json`, bound to source digest `259ab3ef…` at its start and its end. Outputs are in `probes/runs/`.
 
 | # | Item | COMPROVADO | INFERIDO | NÃO TESTADO |
 |---|---|---|---|---|

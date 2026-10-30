@@ -9,8 +9,8 @@
 | | |
 |---|---|
 | Freeze | R7A-RESIDUAL-AUTHORITY-FREEZE-1, record `CoachingCore/r7/residual-authority/RUNTIME_FREEZE_R7A_RESIDUAL_AUTHORITY.json` |
-| Source digest | `cd7e60b1830b9f374bdea2036509b01636de0c62ccc0e66c181aa1f664fbfe60` |
-| Manifest digest | `9e21ca0e70bfb77380980ca8e1093509f3f781025cc7a10f85f3ba912d30db7f` (86 files) |
+| Source digest | `259ab3eff431d2381d50904be7594d9fa122c7d8d2fc369e20d67b5419f84cb6` |
+| Manifest digest | `d530846b515c99ff9b0b9c6bdf36dd28f8f908c49ee6be2544a131b051192ff2` (86 files) |
 | Policy | R6-POLICY-5, `18ec48f3…`, unchanged. No sporting rule is added |
 | Predecessor | R7A-DECISION-AUTHORITY-FREEZE-1 (`3a7166b2…`), byte-exact in `audits/domain-coaching-r7a-residual-authority-2026-10-30/decision-authority-freeze-source/`. Your regression of it: `review/r7ada-decision-authority-ssctr`, `6f5d40c` |
 | Branch and commits | In [REVIEW_HANDOFF.md](../REVIEW_HANDOFF.md) |
@@ -41,7 +41,7 @@ The rules are in [RESIDUAL_AUTHORITY_CONTRACT.md](../RESIDUAL_AUTHORITY_CONTRACT
 
 | Id | Behavior on these bytes | Reading |
 |---|---|---|
-| E1-a | A SHORT return after a consolidation week resumes the consolidation week's executed long run. Example (engineering Q06b, k=4): long 60, the predecessor 70; the peak executed was 65, held by the share cap | Condition 7 read literally ("the last executed doses"). Conservative: one more week to the development dose |
+| E1-a | Easy running resumes the largest long run, and the largest easy run, executed and tolerated since the entry, never a step only released. After a consolidation week the return is not held to that week's reduced row. Examples: engineering Q06b k=4, a SHORT return resumes 65 (week 2's), not the consolidation 60 nor the released 70 (the predecessor 70). Q06d k=8, a MODERATE return steps back to the 75 executed in week 6 (the predecessor 75). A first cut that capped at the last run gave 65 there; it was corrected before the freeze | A planned reduction is no lower tolerance; the return week's own phase reduces its rows again. Engineering Q06b's last-week criterion flags k=4 and k=8 for this reason; Q06c (the largest executed) is clean |
 | E1-b | A repeated pause. A MODERATE re-entry week is executed at return step 0, then a short trip: the trip resumes step 0, while history credits step 1. Three earlier tests (`r7ab` I5/P3, §13 premise, I6) are re-expressed in place | "The next step waits for executed sessions." Once step 1 is run, a later break resumes step 1 (P4) |
 | E1-c | MODERATE: `returnTo` is the last executed dose. Example: long 70, the predecessor 75, released but never run | "Conditional steps to the prior executed dose" |
 | E1-d | A return completed by the evidence, then a short pause before any easy-mode run: RETURN at the step last run. With an easy-mode run executed first: EASY, with the long run capped at the last long run (the return step's) | The same rule. Self-challenge class `E1.return-completion` |
@@ -55,7 +55,7 @@ The rules are in [RESIDUAL_AUTHORITY_CONTRACT.md](../RESIDUAL_AUTHORITY_CONTRACT
 
 ## Evidence on these bytes
 
-Every run is bound to `cd7e60b1…` in `probes/EVIDENCE_RUNS_R7ARA.json`. Outputs are in `probes/runs/`.
+Every run is bound to `259ab3ef…` in `probes/EVIDENCE_RUNS_R7ARA.json`. Outputs are in `probes/runs/`.
 
 - **Your R7ADA probes, byte-exact copies in `probes/judges/ssctr/`** (git blob ids equal to your branch's), on both trees, in `runs/findings/`:
   - continuous running (F4-X);
