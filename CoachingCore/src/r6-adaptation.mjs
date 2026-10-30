@@ -897,9 +897,9 @@ function canonicalRecord(program,actualLedger,{authority,cut}){
  *    `material` says whether the order changes the state the return starts from (then the return asks).
  * The state returned is history as a return reads it (I13, T13): historicalStrength undoes a step the evidence released but the athlete never
  * executed, so a return starts from the dose last executed; historicalRun does the same for the run (the running state and doses last executed:
- * SSCTR F4, F4-X; QE-R7ADA-02).
+ * SSCTR F4, F4-X; QE-R7ADA-02), with the releases the return's class `cls` undoes (none given: every one).
  */
-function stateAtBreak(ctx,{start,startedAt=null,episode=null}){
+function stateAtBreak(ctx,{start,startedAt=null,episode=null,cls=null}){
  const {program}=ctx,tz=program.timezoneOffsetMinutes??0,p=Math.max(0,Math.min(ctx.w,Math.floor(dayGap(program.startDate,start)/7)));
  const inForce=b=>startedAt?Date.parse(b.asOf)<Date.parse(startedAt):b.day<=start;
  const E=episodesOf(program).filter(e=>e.id!==episode&&e.live.end<start).reduce((m,e)=>!m||e.live.end>m.live.end||e.live.end===m.live.end&&Date.parse(e.first.asOf)>Date.parse(m.first.asOf)?e:m,null);
@@ -932,9 +932,13 @@ function stateAtBreak(ctx,{start,startedAt=null,episode=null}){
  // state or dose of the runs executed completely since the state's latest entry (the report of the latest return in force, which set the plan from
  // it; else the intake) and before this interruption began (historicalRun): a mode or step the evidence released but the athlete never ran is not
  // tolerated yet. Runs before that report belong to the plan before its break (C5), which the return's entry already read.
+ // Which release is undone follows the return's recipe. A short break resumes the last executed doses: every release is undone. A moderate break
+ // re-enters a continuous runner from the entry towards the doses executed, and a long one restarts it, so they read the released easy state with
+ // its doses capped at the executed ones; an undone return completion or restart switch would resume a return step or restart minutes without the
+ // entry. A walk/jog athlete's recipes are the ladder's own (one step back, step 0), so the exit is undone for every break (SSCTR R46).
  const byId=new Map(program.weeks.flatMap(x=>x.sessions.map(s=>[s.id,s]))),since=R?Date.parse(R.asOf):-Infinity;
  const ran=all.filter(o=>!o.conflicted&&!o.partial&&o.context?.sport==='RUN'&&Date.parse(o.observedAt)<Date.parse(cut)&&Date.parse(o.observedAt)>since).sort((a,b)=>Date.parse(a.observedAt)-Date.parse(b.observedAt)).map(o=>{const s=byId.get(o.context.sessionId);return s?.prescription?{role:s.role,dimension:s.progression?.dimension??null,value:s.progression?.value??null,minutes:s.prescription.durationMinutes,week:o.context.weekIndex,tolerated:!['ADVERSE','CONFLICTING'].includes(kindOf(o))}:null;}).filter(Boolean);
- const run=historicalRun(clone(H.state.run),ran,{stateOf:k=>at(k)?.state?.run??null,easyStepMinutes:ctx.sk.op.run.easyStepMinutes});
+ const run=historicalRun(clone(H.state.run),ran,{stateOf:k=>at(k)?.state?.run??null,easyStepMinutes:ctx.sk.op.run.easyStepMinutes,undo:m=>!cls||cls==='SHORT'||m==='WALK_JOG'});
  return {state:{run,strength:base.strength},material,point:{...point,authority,values:clone(H.values),executed:[...new Set([...H.executed,...Object.keys(base.performed)])].sort(),...(late?{reportedAfterStart:true}:{}),...(other?{sameDay:other}:{})}};
 }
 /** The strength start of a return from the state at its interruption: a short one resumes it; a moderate or long one starts the return steps
@@ -999,7 +1003,7 @@ function returnAfterPause(ctx){
  // A new interruption starts from the latest one's return, so that return must have read the training before it (I6, confirmation-first).
  const stale=ep.relation==='NEW'?staleReturn(ctx):null;
  if(stale)return {...stale,screen};
- const at=stateAtBreak(ctx,{start:pauseStart,startedAt,episode:ep.episode});
+ const at=stateAtBreak(ctx,{start:pauseStart,startedAt,episode:ep.episode,cls});
  // A strength session on the first day without a stated start time, whose order changes the state the return starts from: asked (0.8).
  if(at.material)return {action:'ASK',reason:`A strength session was recorded on ${pauseStart}, the day the interruption began, and whether it came before the interruption changes the state the return starts from: say the time the interruption began (interruption.startedAt)`,missingInputs:['interruption.startedAt'],screen};
  const prior=at.state;

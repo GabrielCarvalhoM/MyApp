@@ -119,22 +119,27 @@ for(const [k,days2] of [[3,6],[5,6],[5,3],[6,10]]){
  const ran=executed(t,p1.reportedAt,p2.cut),c=easyCheck(p2.entry,ran.length?ran:executed(t,-Infinity,p1.cut));
  add('E1.easy-repeated-pause',{k,days2,cls:p2.cls,...c,violation:c.violation});
 }
-// E1.5 a return's completion: MODERATE (weeks 3-4), re-entry weeks 5 and 6 executed (steps 0 and 1), the evidence completes the return; then a short
-// pause before any easy run (the return state at the step last run), or after Tuesday's easy run only (EASY, the long run at the last one run).
-for(const after of ['NONE','TUESDAY_EASY']){
+// E1.5 a return's completion: MODERATE (weeks 3-4), re-entry weeks 5 and 6 executed (steps 0 and 1), the evidence completes the return; then a
+// pause before any easy run, or after Tuesday's easy run only. A short pause resumes the state last run (the return step, or easy running with the
+// long run at the largest one run); a moderate one re-enters from the entry towards the doses executed (R6-NONCLINICAL-RETURN's moderate recipe).
+const ENTRY=15,RUNNING=['EASY','LONG','QUALITY'];// R6-NONCLINICAL-RETURN entryRunMinutes
+const moderateOk=(p,ran)=>p.entry.mode==='RETURN'&&p.entry.returnStep===0&&p.entry.returnFrom.easy<=ENTRY&&!easyCheck(p.entry,ran).violation&&p.rows.filter(x=>RUNNING.includes(x.role)).every(x=>x.minutes<=(x.role==='LONG'?p.entry.returnFrom.long:p.entry.returnFrom.easy));
+for(const after of ['NONE','TUESDAY_EASY'])for(const days2 of [4,14]){
  L.resetIds();const t=L.gen({id:'r7ara-sc-done'});for(let w=0;w<3;w++)L.weekly(t,w);const p1=pause(t,3,14);if(!p1||p1.error)continue;
  L.weekly(t,5);L.weekly(t,6);const H=L.history(t,7,0).state.run;
  if(after==='TUESDAY_EASY'){const s=t.p.weeks[7].sessions.find(x=>L.live(x)&&x.sport==='RUN'&&x.day===1);allow(t,L.at(t.p,7,1,'21:00:00',{observations:[L.obs(t.p,s)]}));}
- const p2=pause(t,7,4,after==='NONE'?0:2);if(!p2||p2.error)continue;const ran=executed(t,p1.reportedAt,p2.cut),last=ran.filter(x=>['RETURN_STEP','EASY_MINUTES','LONG_MINUTES'].includes(x.dim)).at(-1);
- const v=after==='NONE'?!(p2.entry.mode==='RETURN'&&p2.entry.returnStep<=last.value):easyCheck(p2.entry,ran).violation;
- add('E1.return-completion',{after,historyMode:H.mode,lastRun:last,entry:{mode:p2.entry.mode,returnStep:p2.entry.returnStep??null,long:p2.entry.long,easy:p2.entry.easy},violation:v});
+ const p2=pause(t,7,days2,after==='NONE'?0:2);if(!p2||p2.error)continue;const ran=executed(t,p1.reportedAt,p2.cut),last=ran.filter(x=>['RETURN_STEP','EASY_MINUTES','LONG_MINUTES'].includes(x.dim)).at(-1);
+ const v=p2.cls==='MODERATE'?!moderateOk(p2,ran):after==='NONE'?!(p2.entry.mode==='RETURN'&&p2.entry.returnStep<=last.value):easyCheck(p2.entry,ran).violation;
+ add('E1.return-completion',{after,days2,cls:p2.cls,historyMode:H.mode,lastRun:last,entry:{mode:p2.entry.mode,returnStep:p2.entry.returnStep??null,long:p2.entry.long,easy:p2.entry.easy,returnFrom:p2.entry.returnFrom??null,returnTo:p2.entry.returnTo??null},violation:v});
 }
-// E1.6 a restart (LONG pause) executed until the switch to easy running, then a short pause before any easy-mode run.
-{
+// E1.6 a restart (LONG pause) executed until the switch to easy running, then a pause before any easy-mode run: a short one resumes the restart
+// minutes last run, a moderate one re-enters from the entry towards the minutes executed.
+for(const days2 of [4,14]){
  L.resetIds();const t=L.gen({id:'r7ara-sc-restart'});for(let w=0;w<2;w++)L.weekly(t,w);const p1=pause(t,2,33);
  if(p1&&!p1.error){let w=p1.fromWeek,H=null;L.weekly(t,w,s=>s.date>=p1.report);for(w=w+1;w<t.p.weeks.length-2;w++){H=L.history(t,w,0).state.run;if(H.mode!=='RESTART')break;L.weekly(t,w);}
-  const p2=pause(t,w,4);if(p2&&!p2.error){const ran=executed(t,p1.reportedAt,p2.cut),last=ran.filter(x=>x.dim).at(-1);
-   add('E1.restart-switch',{historyMode:H?.mode,lastRun:last,entry:{mode:p2.entry.mode,restart:p2.entry.restart,easy:p2.entry.easy,long:p2.entry.long},violation:last?.dim==='RESTART_MINUTES'&&!(p2.entry.mode==='RESTART'&&p2.entry.restart<=last.value)});}}
+  const p2=pause(t,w,days2);if(p2&&!p2.error){const ran=executed(t,p1.reportedAt,p2.cut),last=ran.filter(x=>x.dim).at(-1);
+   const v=p2.cls==='MODERATE'?!moderateOk(p2,ran):last?.dim==='RESTART_MINUTES'&&!(p2.entry.mode==='RESTART'&&p2.entry.restart<=last.value);
+   add('E1.restart-switch',{days2,cls:p2.cls,historyMode:H?.mode,lastRun:last,entry:{mode:p2.entry.mode,restart:p2.entry.restart,easy:p2.entry.easy,long:p2.entry.long,returnStep:p2.entry.returnStep??null,returnFrom:p2.entry.returnFrom??null,returnTo:p2.entry.returnTo??null},violation:v});}}
 }
 out.total={cases:Object.values(out.classes).reduce((n,c)=>n+c.cases,0),violations:Object.values(out.classes).reduce((n,c)=>n+c.violations,0)};
 console.log(JSON.stringify(out,null,1));

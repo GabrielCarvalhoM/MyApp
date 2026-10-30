@@ -600,6 +600,7 @@ export function historicalStrength(ss){
  * run at the start of a week (the state that prescribed that week's rows).
  * - A mode the evidence released that no run has used yet (the walk/jog exit to continuous running, the restart's switch to easy running, a
  *   return's completion) is undone: the run is the state that prescribed the last run executed, with the records the evidence accumulated.
+ *   `undo(mode)` says whether a release out of the last run's mode is undone; the return's recipe decides it (stateAtBreak).
  * - Within its mode no dose is above the one the athlete reached by execution. On a ladder (walk/jog steps, restart minutes, return steps), whose
  *   consolidation and HOLD weeks repeat the step, that is the step last run (W2). Easy running is phase-modulated from the state (a consolidation
  *   or event week runs shorter rows from the same state), so there it is the largest long run, and the largest easy run, executed and tolerated
@@ -611,11 +612,11 @@ export function historicalStrength(ss){
 // race, an event-window run) states no mode.
 const MODE_OF_DIMENSION={WALK_JOG_STEP:'WALK_JOG',RESTART_MINUTES:'RESTART',RETURN_STEP:'RETURN',LONG_MINUTES:'EASY',EASY_MINUTES:'EASY',THRESHOLD_STEP:'EASY',SPECIFIC_STEP:'EASY'};
 const RUN_RECORDS=['achieved','longestContinuous','longByWeek','modeHistory','resumed'];
-export function historicalRun(run,ran=[],{stateOf=null,easyStepMinutes=0}={}){
+export function historicalRun(run,ran=[],{stateOf=null,easyStepMinutes=0,undo=()=>true}={}){
  if(!run)return run;
  const stated=ran.filter(x=>MODE_OF_DIMENSION[x.dimension]),last=stated.at(-1),mode=last?MODE_OF_DIMENSION[last.dimension]:null;
  let st=run;
- if(mode&&mode!==run.mode){const b=stateOf?.(last.week);if(b?.mode===mode){st=clone(b);for(const k of RUN_RECORDS)if(k in run)st[k]=clone(run[k]);else delete st[k];}}
+ if(mode&&mode!==run.mode&&undo(mode)){const b=stateOf?.(last.week);if(b?.mode===mode){st=clone(b);for(const k of RUN_RECORDS)if(k in run)st[k]=clone(run[k]);else delete st[k];}}
  const lastValue=dim=>stated.filter(x=>x.dimension===dim).at(-1)?.value??null,above=(v,x)=>Number.isFinite(v)&&Number.isFinite(x)&&x>v;
  if(st.mode==='WALK_JOG'){const v=lastValue('WALK_JOG_STEP');if(Number.isInteger(v)&&above(v,st.walkStep))st={...st,walkStep:v};}
  else if(st.mode==='RESTART'){const v=lastValue('RESTART_MINUTES');if(above(v,st.restart))st={...st,restart:v};}

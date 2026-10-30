@@ -10,7 +10,7 @@ const root=path.resolve(import.meta.dirname,'../../..'),core=path.join(root,'Coa
 const MUTANTS=[
  {id:'M1',root:'A5',what:'the canonical correction is bypassed before the handler (no factual re-plan before dispatch)',file:'src/r6-adaptation.mjs',from:'if(!(ctx.ev.pending||ctx.program.weeks[ctx.w].sessions.some(s=>s.prescription&&ctx.ahead(s)))||!viewMovedBy(ctx))return null;',to:'return null;'},
  {id:'M2',root:'A5',what:'the handler decides on the rows planned from the retracted load (a stale planned load resurrects the corrected one)',file:'src/r6-adaptation.mjs',from:'withFactualReplan(factual,decide(factual?.ctx??ctx))',to:'withFactualReplan(factual,decide(ctx))'},
- {id:'M3',root:'E1',what:'the walk/jog exit the evidence projected is the return baseline (no mode is undone)',file:'src/r6-program.mjs',from:'if(mode&&mode!==run.mode){',to:'if(false){'},
+ {id:'M3',root:'E1',what:'the walk/jog exit the evidence projected is the return baseline (no mode is undone)',file:'src/r6-program.mjs',from:'if(mode&&mode!==run.mode&&undo(mode)){',to:'if(false){'},
  {id:'M4',root:'E1',what:'the EASY dose the evidence released is the return baseline (no long or easy cap)',file:'src/r6-program.mjs',from:"else if(st.mode==='EASY'){\n  // The easy runs a quality slot became",to:"else if(false){\n  // The easy runs a quality slot became"},
 ];
 const only=process.argv.slice(2),list=only.length?MUTANTS.filter(m=>only.includes(m.id)):MUTANTS;

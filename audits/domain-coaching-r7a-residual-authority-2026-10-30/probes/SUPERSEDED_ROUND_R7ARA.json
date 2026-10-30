@@ -1,0 +1,99 @@
+{
+ "revision": "R7ARA-SUPERSEDED-ROUND-1",
+ "note": "The first complete evidence round, on source digest 259ab3eff431d2381d50904be7594d9fa122c7d8d2fc369e20d67b5419f84cb6. Its outputs are not kept: the round found a dose rise in a named difference (below), the runtime was corrected, and the evidence round ran again on the corrected bytes (EVIDENCE_RUNS_R7ARA.json). Kept here: the summaries and the finding.",
+ "sourceDigest": "259ab3eff431d2381d50904be7594d9fa122c7d8d2fc369e20d67b5419f84cb6",
+ "evidence": {
+  "runs": 146,
+  "failed": [
+   "kit/regression"
+  ],
+  "unbound": []
+ },
+ "suite": {
+  "tests": 672,
+  "pass": 672,
+  "fail": 0
+ },
+ "mutation": {
+  "mutants": 4,
+  "applied": 4,
+  "killed": 4,
+  "survivors": []
+ },
+ "namedDifferences": {
+  "groups": {
+   "asc": "0/6 identical, 6 named",
+   "findings": "0/13 identical, 13 named",
+   "judges": "22/35 identical, 13 named",
+   "kit": "34/43 identical, 9 named",
+   "r7asc-qe": "0/12 identical, 12 named"
+  },
+  "regression": {
+   "r6FreshHoldout": "35/35 identical, 0 named, 0 with a dose risen",
+   "r5Corpus": "24/24 identical, 0 named, 0 with a dose risen",
+   "profiles": "16/16 identical, 0 named, 0 with a dose risen",
+   "simulations": "14/14 identical, 0 named, 0 with a dose risen"
+  },
+  "unnamed": 0
+ },
+ "ablation": {
+  "items": 34,
+  "byCause": {
+   "E1": [
+    "asc/easyreturn",
+    "asc/temporal",
+    "findings/Q04",
+    "findings/Q06",
+    "findings/Q06b",
+    "findings/Q06c",
+    "findings/Q06d",
+    "findings/ssctr-continuous",
+    "findings/ssctr-returnwalks",
+    "judges/qe-r7a2-P17",
+    "judges/qe-r7ab-P40",
+    "judges/qe-r7ab-P40.tz540",
+    "judges/qe-r7ab-P40b",
+    "judges/qe-r7ab-P41",
+    "judges/qe-r7af-P30c",
+    "judges/qe-r7af-P31",
+    "judges/qe-r7af-P32",
+    "judges/qe-r7af-P37",
+    "judges/qe-r7ase-I01",
+    "judges/qe-r7asm-Q4-restart-view",
+    "judges/qe-r7asm-Q4b-restart-rows",
+    "judges/qe-r7asm-Q6-perturb-projection",
+    "kit/b-probe",
+    "kit/changes",
+    "kit/d58",
+    "kit/f-probe",
+    "kit/holdout-detail",
+    "kit/probe",
+    "kit/systemic",
+    "kit/x-items",
+    "r7asc-qe/P03",
+    "r7asc-qe/P05"
+   ],
+   "A5": [
+    "findings/Q01",
+    "findings/Q01b"
+   ],
+   "ALL": []
+  },
+  "notRestored": []
+ },
+ "finding": {
+  "id": "R7ARA-SELF-01",
+  "found": "probes/direction-r7ara.mjs (dry run on this round)",
+  "what": "kit/changes A_E6 (the SSCTR R7ASM changes probe): after a moderate first break, return steps 0 and 1 executed and the completion released but never run, a moderate second break (14 days) resumed return step 1 (30/30/45 min) instead of re-entering from the 15-minute entry (15/15/20) as the predecessor did. Cause: E1 undid the released completion for every break class, and the moderate recipe keeps a RETURN or RESTART state as it is. The same held after a restart switch released and never run (restart minutes resumed). Under the ceiling (30/45 had been executed) but against R6-NONCLINICAL-RETURN's moderate recipe (re-entry from a current demonstration or the 15-minute entry).",
+  "fix": "stateAtBreak passes the break class: a short break undoes every release (resume the last executed doses), a moderate or long one only the walk/jog exit (SSCTR R46); the released easy state, capped at the doses executed since the entry, then takes the moderate or long recipe.",
+  "unexplainedRises": 16,
+  "examples": [
+   "kit/changes A_E6.exact.MODERATE.U.entry.run.returnStep: 0 -> 1",
+   "kit/changes A_E6.exact.MODERATE.U.after.runRows: continuous sum 200 -> 235, max 45 -> 50; quality n 1 -> 2, sum 34 -> 75, max 34 -> 41",
+   "kit/changes A_E6.exact.MODERATE.R.entry.run.returnStep: 0 -> 1",
+   "kit/changes A_E6.exact.MODERATE.R.after.runRows: continuous sum 200 -> 235, max 45 -> 50; quality n 1 -> 2, sum 34 -> 75, max 34 -> 41"
+  ],
+  "regressionTest": "QE-R7ADA-02 repeated pause, moderate (test/r7ara-residual-authority.test.mjs)",
+  "selfChallenge": "E1.return-completion and E1.restart-switch now also run a moderate second pause"
+ }
+}

@@ -41,7 +41,7 @@ const t=spawnSync(process.execPath,['--test','--test-reporter=spec'],{cwd:cc,enc
 const tests={tests:n('tests'),pass:n('pass'),fail:n('fail'),node:process.version};
 if(t.status!==0||tests.fail!==0||!(tests.pass>0))refuse('the suite does not pass on these bytes: '+JSON.stringify(tests));
 // The finding regressions and properties of this mission, and the earlier ones they must not break, by name, in the passing suite.
-const NAMES=['QE-R7ADA-01: a correction','QE-R7ADA-01 last day','QE-R7ADA-01 robustness','QE-R7ADA-02 / EASY return factual ceiling','SSCTR F4-X','P1 factual correction globality','P2 a retracted value','P3 return factual ceiling','P4 execution promotes','SSCTR F4','P6 walk/jog ceiling','P7 execution promotion','QE-R7ASC-01','QE-R7ASC-02','QE-R7ASC-03','QE-R7ASC-04','HOLD (Founder 1.3)','MAINTAIN (Founder §23)'];
+const NAMES=['QE-R7ADA-01: a correction','QE-R7ADA-01 last day','QE-R7ADA-01 robustness','QE-R7ADA-02 / EASY return factual ceiling','SSCTR F4-X','QE-R7ADA-02 repeated pause, moderate','P1 factual correction globality','P2 a retracted value','P3 return factual ceiling','P4 execution promotes','SSCTR F4','P6 walk/jog ceiling','P7 execution promotion','QE-R7ASC-01','QE-R7ASC-02','QE-R7ASC-03','QE-R7ASC-04','HOLD (Founder 1.3)','MAINTAIN (Founder §23)'];
 const passed=[...t.stdout.matchAll(/^✔ (.+?) \(\d/gm)].map(m=>m[1]),properties=Object.fromEntries(NAMES.map(k=>[k,passed.filter(x=>x.startsWith(k)).length]));
 if(Object.values(properties).some(v=>!v))refuse('a finding regression, property or preserved test is not in the passing suite: '+JSON.stringify(properties));
 // The evidence recorded before the freeze, each run bound to this source digest; the only failing run is the kit's named R6-H35 runner error.
@@ -66,12 +66,15 @@ const q06Other=Q06.cases.filter(c=>c.violation&&!(c.shape==='W-ADVERSE'||c.shape
 const q06bOther=Q06b.cases.filter(c=>c.shape==='EASY_SHORT').filter(c=>{const last=c.lastExecuted,lastLong=last.find(x=>x.role==='LONG')?.minutes,lastEasy=Math.max(...last.filter(x=>x.role==='EASY'&&x.dim==='EASY_MINUTES').map(x=>x.minutes));
  return c.return.first.some(x=>x.role==='LONG'&&x.minutes>lastLong&&c.phases[0]!=='CONSOLIDATION'||x.role==='EASY'&&x.dim==='EASY_MINUTES'&&x.minutes>lastEasy);}).map(c=>'k='+c.k).concat(Q06b.cases.filter(c=>c.shape==='WALKJOG_EXIT_SHORT'&&c.aboveLastCompleted.continuousMinutes).map(c=>'exit '+c.days));
 const sc=out_('self-challenge','cand'),scp=out_('self-challenge','pred'),mut=json(PROBES+'runs/mutation.out.json'),tp=json(PROBES+'runs/tests-on-predecessor.out.json');
-const MUST_FAIL_ON_PREDECESSOR=NAMES.slice(0,8);
+const MUST_FAIL_ON_PREDECESSOR=NAMES.slice(0,9);
 const gates={
  'QE-R7ADA-01':Q01.summary.violations.length===0&&Q01.summary.errors===0&&Q01b.summary.violations.length===0,
  'QE-R7ADA-02':Q06c.summary.violations.length===0&&!q06Other.length&&!q06bOther.length,
  'F4-X':C.totals.ladderViewAbove===0&&C.totals.durationViewAbove===0,
  EASY_RETURN_FACTUAL_CEILING:Q06c.cases.filter(c=>c.shape==='EASY_SHORT').every(c=>!c.violation)&&['E1.easy-short','E1.easy-moderate','E1.easy-repeated-pause'].every(k=>sc.classes[k]?.violations===0),
+ // A repeated pause keeps each recipe: after a return's completion or a restart's switch released and never run, a short pause resumes the state last
+ // run and a moderate one re-enters from the entry (both pause lengths ran).
+ REPEATED_PAUSE_RECIPES:['E1.return-completion','E1.restart-switch'].every(k=>sc.classes[k]?.violations===0&&sc.classes[k]?.cases>=2),
  F4_LADDER:M.totals.entryAbove===0&&M.totals.spanAbove===0&&M.totals.continuousInSpan===0&&WJ.totals.aboveRecipeAfterSecondReturn===0,
  reproducedOnPredecessor:Q01p.summary.violations.length>0&&Q01bp.summary.violations.length>0&&Q06cp.summary.violations.length>0&&Cp.totals.ladderViewAbove>0,
  testsFailOnPredecessor:MUST_FAIL_ON_PREDECESSOR.every(k=>tp.failing.some(x=>x.startsWith(k)))&&tp.passingNames.some(x=>x.startsWith('P4 execution promotes')),
@@ -81,6 +84,10 @@ if(Object.values(gates).some(v=>!v))refuse('a pre-freeze gate is open: '+JSON.st
 // Every difference against the predecessor has a named cause (§27).
 const named=json(PROBES+'NAMED_DIFFERENCES_R7ARA.json');
 if(named.unnamed.length)refuse('differences without a named cause: '+JSON.stringify(named.unnamed));
+// No named difference raises a dose against the predecessor, unless the session stepped down in kind with it or a probe's LATE reading now equals its
+// EARLY one (probes/direction-r7ara.mjs).
+const direction=json(PROBES+'DIRECTION_R7ARA.json');
+if(direction.sourceDigest!==sourceDigest||direction.unexplainedRises.length)refuse('a named difference raises a dose, or the direction ran on other evidence: '+JSON.stringify(direction.unexplainedRises.slice(0,20)));
 const reg=json('CoachingCore/r7/residual-authority/REGRESSION_R7ARA.json'),regDrift=Object.entries(reg.runtimes.current.sources).filter(([p,h])=>shaRepo(p)!==h).map(([p])=>p);
 if(regDrift.length)refuse('the regression ran on other sources: '+regDrift.join(', '));
 // The Cloud git state (§31), recorded before the freeze commit.
@@ -101,10 +108,10 @@ const out={revision,frozenAt:new Date().toISOString(),node:process.version,
  tests:{...tests,findingRegressionsAndProperties:properties,onPredecessor:{...bind(PROBES+'runs/tests-on-predecessor.out.json'),total:tp.total,passing:tp.passing,failing:tp.failing.length}},
  preFreezeGates:{...gates,declaredReadings:{q06:'W-ADVERSE (OBS-2: W2 reads any complete execution, consistent with HOLD; SSCTR question) and E-RELEASED moderate 17 days (its first long run is a row inside the pause, planned before it; the rows after the report are return step 0)',q06b:'the easy flags are the eased first quality slot after a short break (D58), the quality flags the quality ladder (E1-B1), the long flags after a consolidation week the long run reached by execution against that week\'s planned reduction (E1-a)'},
   findings:{Q01:{candidate:Q01.summary.violations.length,predecessor:Q01p.summary.violations.length,cells:Q01.summary.cases},Q01b:{candidate:Q01b.summary.violations.length,predecessor:Q01bp.summary.violations.length,cells:Q01b.summary.cases},Q06c:{candidate:Q06c.summary.violations.length,predecessor:Q06cp.summary.violations.length,cells:Q06c.summary.cases},continuous:{candidate:{ladder:C.totals.ladderViewAbove,duration:C.totals.durationViewAbove,weekly:C.totals.weeklyAboveExecutedAndPrior},predecessor:{ladder:Cp.totals.ladderViewAbove,duration:Cp.totals.durationViewAbove,weekly:Cp.totals.weeklyAboveExecutedAndPrior},cells:C.totals.cells},walkjogMatrix:M.totals},
-  selfChallenge:{candidate:sc.total,predecessor:scp.total},mutation:mut.summary,namedDifferences:named.summary,closedHistory:{baselineFilesChecked:baseline.entries.length,drift:0,growthPatch:'unchanged, not applied',missionFiles:'append-only against '+baseCommit}},
+  selfChallenge:{candidate:sc.total,predecessor:scp.total},mutation:mut.summary,namedDifferences:named.summary,direction:direction.summary,closedHistory:{baselineFilesChecked:baseline.entries.length,drift:0,growthPatch:'unchanged, not applied',missionFiles:'append-only against '+baseCommit}},
  evidence:{
   probes:{...bind(PROBES+'EVIDENCE_RUNS_R7ARA.json'),runs:ev.runs.length,boundTo:sourceDigest,namedFailure:NAMED_FAILURE},
-  comparison:bind(PROBES+'COMPARISON_R7ARA.json'),namedDifferences:bind(PROBES+'NAMED_DIFFERENCES_R7ARA.json'),mutation:bind(PROBES+'runs/mutation.out.json'),
+  comparison:bind(PROBES+'COMPARISON_R7ARA.json'),namedDifferences:bind(PROBES+'NAMED_DIFFERENCES_R7ARA.json'),direction:bind(PROBES+'DIRECTION_R7ARA.json'),mutation:bind(PROBES+'runs/mutation.out.json'),
   regression:{...bind('CoachingCore/r7/residual-authority/REGRESSION_R7ARA.json'),summary:reg.summary},
   documents:['FOUNDER_REQUEST.md','TASK_CONTRACT.md','RESIDUAL_AUTHORITY_CONTRACT.md'].map(p=>bind(AUDIT+p))},
  rule:'The runtime is frozen: both rechecks read these bytes, and no reviewer runs in the session that froze it (Founder request §32). The rechecks are narrow (§33, §34): QE-R7ADA-01 and QE-R7ADA-02 with the A/B/E properties they touch; F4-X, the EASY return ceiling, F1-F4, D53/D56-D59, HOLD and MAINTAIN. A finding outside the two root causes does not reopen phase A by itself (§35).'};

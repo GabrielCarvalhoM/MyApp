@@ -31,7 +31,7 @@ check('mission-files-append-only',appendOnly.every(x=>x.ok),appendOnly);
 const ev=json(AUDIT+'probes/EVIDENCE_RUNS_R7ARA.json'),key=r=>r.group+'/'+r.name,named=F.evidence.probes.namedFailure??[];
 const evBad=ev.runs.filter(r=>r.exit!==0&&!named.includes(key(r))||r.sourceDigestStart!==F.sourceDigest||r.sourceDigestEnd!==F.sourceDigest||shaRepo(r.output)!==r.outSha256).map(key);
 check('evidence-bound',!evBad.length,{runs:ev.runs.length,bad:evBad,namedFailure:named});
-const binds=[{path:F.sourceRevision.baseline,sha256:F.sourceRevision.baselineSha256},F.evidence.probes,F.evidence.comparison,F.evidence.namedDifferences,F.evidence.mutation,F.evidence.regression,F.tests.onPredecessor,...F.evidence.documents],bindBad=binds.filter(b=>shaRepo(b.path)!==b.sha256).map(b=>b.path);
+const binds=[{path:F.sourceRevision.baseline,sha256:F.sourceRevision.baselineSha256},F.evidence.probes,F.evidence.comparison,F.evidence.namedDifferences,F.evidence.direction,F.evidence.mutation,F.evidence.regression,F.tests.onPredecessor,...F.evidence.documents],bindBad=binds.filter(b=>shaRepo(b.path)!==b.sha256).map(b=>b.path);
 check('evidence-bindings',!bindBad.length,{bound:binds.length,changed:bindBad});
 const reviews=exists(AUDIT+'reviews')?fs.readdirSync(path.join(repo,AUDIT,'reviews')):[];
 check('reviews-not-dispatched',reviews.every(f=>['ENGINEERING_RECHECK_BRIEF.md','SSCTR_RECHECK_BRIEF.md'].includes(f)),reviews);

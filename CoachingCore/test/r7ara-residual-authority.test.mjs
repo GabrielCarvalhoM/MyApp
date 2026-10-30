@@ -238,3 +238,24 @@ test('P4 execution promotes: once the athlete runs the next state or dose, it is
  const tue=e.p.weeks[6].sessions.find(s=>live(s)&&s.sport==='RUN'&&s.day===1);assert.deepEqual([tue.progression.dimension,tue.progression.value],['RETURN_STEP',1],'week 6 runs return step 1');
  step(e,at(e.p,6,1,'21:00:00',{observations:[obs(e.p,tue)]}));const second=pauseFrom(e,6,3,2);assert.equal(second.entry.returnStep,1);
 });
+test('QE-R7ADA-02 repeated pause, moderate: a return completion or restart switch released and never run re-enters from the entry towards the doses executed',()=>{
+ // The moderate recipe (R6-NONCLINICAL-RETURN): re-entry from a current demonstration or the 15-minute entry, conditional steps to the prior executed
+ // dose. Undoing the release would resume a return step or restart minutes without the entry; the released easy state, capped at the doses executed
+ // since the entry, keeps the recipe. A short break resumes the step last run (P3).
+ const R=opts.authority.policy?.operational?.return?.entryRunMinutes??15,since=(t,from,before)=>executedRuns(t,before).filter(x=>x.date>=from);
+ const check=(t,p,ran,label)=>{const {long,easy}=largestRuns(ran);
+  assert.deepEqual([p.cls,p.entry.mode,p.entry.returnStep],['MODERATE','RETURN',0],label+': re-entry at the first return step');
+  assert.ok(p.entry.returnFrom.easy<=R,`${label}: entry ${p.entry.returnFrom.easy} above the ${R}-minute entry`);
+  if(Number.isFinite(long))assert.ok(p.entry.returnTo.long<=long,`${label}: target long ${p.entry.returnTo.long} above the largest executed ${long}`);
+  assert.ok(p.entry.returnTo.easy<=easy,`${label}: target easy ${p.entry.returnTo.easy} above the largest executed ${easy}`);
+  for(const x of p.rows)assert.ok(x.minutes<=(x.role==='LONG'?p.entry.returnFrom.long:p.entry.returnFrom.easy),`${label}: ${x.role} ${x.minutes} above the entry`);};
+ // A return's completion: steps 0 and 1 executed (weeks 5 and 6), the evidence completes the return; a moderate break before any run of it.
+ const e=reentry('t7ara-done');weekly(e,5);weekly(e,6);assert.equal(history(e,7).state.run.mode,'EASY','the evidence released the completion');
+ const short=structuredClone(e),s=pauseFrom(short,7,4);assert.deepEqual([s.cls,s.entry.mode,s.entry.returnStep],['SHORT','RETURN',1],'a short break resumes the step last run');
+ check(e,pauseFrom(e,7,14),since(e,e.p.weeks[5].startDate,e.p.weeks[7].startDate),'completion');
+ // A restart's switch: a long break, the restart run until the evidence switches to easy running; a moderate break before any easy-mode run.
+ N=0;const t=gen(intake({id:'t7ara-switch'}));for(let w=0;w<2;w++)weekly(t,w);const first=pauseFrom(t,2,33);assert.equal(first.entry.mode,'RESTART');
+ weekly(t,first.fromWeek,x=>x.date>=first.report);let w=first.fromWeek+1;for(;w<t.p.weeks.length-3&&history(t,w).state.run.mode==='RESTART';w++)weekly(t,w);
+ assert.equal(history(t,w).state.run.mode,'EASY','the evidence released the switch');
+ check(t,pauseFrom(t,w,14),since(t,first.report,t.p.weeks[w].startDate),'switch');
+});
