@@ -650,3 +650,35 @@ The mission closes exactly two root causes. It is **not** R7-B0.
   The held `PENDING_CANON_SYNC.patch` stays unapplied.
 
 Scope: one freeze (R7A-RESIDUAL-AUTHORITY-FREEZE-1), committed and pushed on the session branch, with the handoff and two narrow recheck briefs; then stop. [Task contract](audits/domain-coaching-r7a-residual-authority-2026-10-30/TASK_CONTRACT.md).
+
+<!-- DOMAIN_COACHING_R7ARA: DCR7ARA-20261030-frozen-r1 -->
+## COACHING CORE — R7-A Residual Authority Closure — frozen, awaiting two narrow rechecks / 2026-10-30
+
+`CURRENT_MISSION = R7A_RESIDUAL_AUTHORITY_FROZEN` · `NEXT_STEP = NARROW_RECHECKS`
+
+- **Freeze:** R7A-RESIDUAL-AUTHORITY-FREEZE-1.
+  - Source digest `e7172eb2…`, manifest `3d214fb5…`, 86 files; policy `18ec48f3…` unchanged.
+  - Committed and pushed on `claude/r7a-residual-authority-closure` (freeze commit `7d2da36`), not merged. The baseline `claude/trusting-euler-04la8t` (`5434b32`) is unchanged.
+  - Verification 13/13 read-only (`CoachingCore/scripts/verify-r7ara.mjs`).
+  - Changed: `src/r6-adaptation.mjs` and `src/r6-program.mjs`. Added: `test/r7ara-residual-authority.test.mjs`. Three `r7ab` tests re-expressed in place.
+- **Contracts** ([rules](audits/domain-coaching-r7a-residual-authority-2026-10-30/RESIDUAL_AUTHORITY_CONTRACT.md)):
+  - A5: the canonical factual correction re-plans the sessions still ahead before every review kind decides, in one place; D44 and D45 are kept.
+  - E1: a return never starts above the running state or dose last executed; released is not executed. A short break undoes every release; a moderate or long one undoes only the walk/jog exit (the moderate recipe re-enters from the entry).
+- **Findings, on the reviewers' own probes:**
+  - QE-R7ADA-01 absent: Q01 0/78, Q01b 0/45 (14 and 12 on the predecessor).
+  - QE-R7ADA-02 absent: Q06c 0/21 (11).
+  - F4-X absent: continuous probe ladder 0, duration 0 (10 and 4).
+  - The EASY return factual ceiling holds; the F4 ladder holds (walk/jog matrix 0/99).
+- **Pre-freeze evidence:**
+  - 673/673 tests; 12 fail on the predecessor.
+  - Self-challenge: 112 cases, 0 violations (71 on the predecessor).
+  - Mutation: 4 of 4 killed.
+  - Regression against the predecessor: identical (R6-H35 runner error on both).
+  - SSCTR kit: 43 jobs, 34 identical, 1 clock-only, 8 named.
+  - Earlier judges: 35, of which 22 are identical and 13 named.
+  - Every difference is named by ablation (32 E1, 2 A5), and none raises a dose.
+  - R7ARA-SELF-01 (a moderate break after a released return completion skipped the entry) was found on the first evidence round and corrected before the freeze.
+- **Declared for the rechecks:** A5-B1 (R1), E1-B1 to E1-B5.
+- **Next:** two new, independent sessions recheck exactly these bytes, from [the handoff](audits/domain-coaching-r7a-residual-authority-2026-10-30/REVIEW_HANDOFF.md) and the two briefs. `R7A_EXIT_READINESS` is not declared, and R7-B0 is not started.
+- **Held:** the Growth Layer's [PENDING_CANON_SYNC.patch](audits/growth-layer-2026-10-29/PENDING_CANON_SYNC.patch).
+- No UI, Figma, KMP, HealthKit, integration, production or real-plan effect. No merge, deploy or reviewer run. The human queue is untouched.
