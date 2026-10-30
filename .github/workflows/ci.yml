@@ -1,0 +1,89 @@
+name: Repository CI
+
+on:
+  pull_request:
+  push:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  workflow:
+    name: Workflow checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      coaching: ${{ steps.changes.outputs.coaching }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Test CI path selection and freeze guard
+        run: node --test scripts/ci/coaching.test.mjs
+      - name: Select Coaching Core checks
+        id: changes
+        env:
+          CI_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+          CI_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: node scripts/ci/coaching.mjs changes "$CI_BASE" "$CI_HEAD"
+      - name: Verify declared freeze (read-only)
+        env:
+          CI_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: node scripts/ci/coaching.mjs freeze "$CI_BASE"
+      - name: Confirm checks did not modify tracked or untracked files
+        run: test -z "$(git status --porcelain --untracked-files=all)"
+
+  coaching:
+    name: Coaching Core
+    needs: workflow
+    if: needs.workflow.outputs.coaching == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: CoachingCore
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: CoachingCore/package-lock.json
+      - name: Install locked dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Run reference suite
+        run: npm test
+      - name: Confirm suite did not modify tracked or untracked files
+        run: test -z "$(git status --porcelain --untracked-files=all)"
+
+  ci:
+    name: CI
+    if: always()
+    needs: [workflow, coaching]
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Require workflow checks and the applicable suite
+        env:
+          WORKFLOW_RESULT: ${{ needs.workflow.result }}
+          COACHING_RESULT: ${{ needs.coaching.result }}
+          COACHING_REQUIRED: ${{ needs.workflow.outputs.coaching }}
+        run: |
+          test "$WORKFLOW_RESULT" = success
+          if [ "$COACHING_REQUIRED" = true ]; then
+            test "$COACHING_RESULT" = success
+          else
+            test "$COACHING_REQUIRED" = false
+            test "$COACHING_RESULT" = skipped
+          fi
