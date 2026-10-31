@@ -76,3 +76,11 @@ Engineering recheck probes: N1, N1b, N3, N5, A10, A13, N7a–c, N7d, N8-N1 FAIL 
 1. Mutation probes read-only, then `scripts/freeze-r7b1-2.mjs` → commit → `verify-r7b1.mjs --tests --write` → commit → push.
 2. One narrow recheck per gate by the same judges (SendMessage), outputs under `reviews/*/recheck/`; request files in `reviews/*_RECHECK_REQUEST.md`.
 3. Close: if a blocker remains, R7B_RUNTIME_REPERTOIRE_READY = NO; never V1_COACHING_AUTHORITY_READY = YES. Closure records, queue integration only if the SSCTR approves records bound to FREEZE-2, insert-only closed blocks, memory, commit, push, remote HEAD check. Stop; no R7-C.
+
+## Closed — 2026-10-31 (CLOSED NOT_READY with one explicit blocker)
+
+- Rechecks on R7B1-FREEZE-2 (committed at `80602bd`): SSCTR **ACCEPT_WITH_CONDITIONS** (R7B1-SSCTR-r2, seven records re-bound to FREEZE-2); Engineering **NOT_READY** (QE-R7B1-04 MAJOR, pre-existing: R7-A's late-evidence question precedes the substitution's clinical screen in a return's re-entry week; reproduced by the author from a mirror); Quality **READY**.
+- R7B_RUNTIME_REPERTOIRE_READY = NO; V1_COACHING_AUTHORITY_READY = NO; one correction cycle consumed of one; no further cycle.
+- Queue 223 → 230 (seven HQ-R7B1-SSCTR-* items, append-only; `QUEUE_INTEGRATION_R7B1.json`).
+- Closure records: `FINAL_DISPOSITION.json`, `CoachingCore/r7/b1/R7B1_CLOSURE_HANDOFF.md`, insert-only closed blocks in CURRENT_MISSION.md and MISSION_LEDGER.md.
+- Next: a narrow runtime mission with QE-R7B1-04 first, on its own Founder authorization. R7-C not started.

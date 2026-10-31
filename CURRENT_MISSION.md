@@ -788,3 +788,35 @@ The direct Founder request closes **NOT_READY with explicit blockers** under the
 The direct [Founder request](audits/domain-coaching-r7-b1-2026-10-31/FOUNDER_REQUEST.md) authorizes **R7-B.1**, a deliberately narrow mission on its own branch `claude/domain-coaching-r7-b1`, created in an isolated worktree from the R7-B closure `4230034` (the closed R7-B branch was published unchanged first). R7-B is not reopened, R7-B0 is not reopened and R7-C is not started. IMPLEMENTATION_AUTHORIZED = SHADOW_REFERENCE_RUNTIME (`CoachingCore/`); UI / FIGMA / KMP / IOS / HEALTHKIT / WORKOUTKIT / BACKEND / GROWTH / PRODUCTION = NO; V1_COACHING_AUTHORITY_READY is not declared.
 
 Scope: close the explicit R7-B blockers on R7B-RUNTIME-REPERTOIRE-FREEZE-2 (`10b26d6`, source `d2c73014…`): QE-R7B-OBS-04 (event-week substitution), QE-R7B-R2-01 (stored novice templates), QE-R7B-R2-02 (the block-choice question keeps the factual re-plan), QE-R7B-R2-03 (the SKILL_MISMATCH fallback never climbs), and the QE-R7B-01/-05 residuals only through those paths; a new freeze R7B1-FREEZE-1; one review per required gate (SSCTR, Engineering; Quality inherited unless the delta touches its properties); at most one correction cycle for a narrow blocker the correction itself creates. R6-POLICY-5, R7B0-CATALOG-2 and the 13 B0 r2 records are not changed. Continue from the [task contract](audits/domain-coaching-r7-b1-2026-10-31/TASK_CONTRACT.md) and [checkpoint](audits/domain-coaching-r7-b1-2026-10-31/CHECKPOINT.md). Closure will be recorded in a later block of this file and in `audits/domain-coaching-r7-b1-2026-10-31/FINAL_DISPOSITION.json`.
+
+<!-- DOMAIN_COACHING_R7B1: DCR7B1-20261031-closed-r1 -->
+## DOMAIN_COACHING_R7-B.1 — Residual Runtime Blocker Closure — CLOSED NOT_READY / 2026-10-31
+
+The direct Founder request closes **NOT_READY with one explicit blocker** under its own loop bound (request §17): one review per gate on R7B1-FREEZE-1, the one correction cycle, R7B1-FREEZE-2 and its one narrow recheck. No further cycle; no verdict forced.
+
+- **States:**
+  - R7B_RUNTIME_REPERTOIRE_READY = NO.
+  - R7B1_SSCTR_GATE = ACCEPT_WITH_CONDITIONS.
+  - R7B1_ENGINEERING_GATE = NOT_READY, on QE-R7B1-04 (MAJOR, pre-existing since R7-A + R7-B): in a return's re-entry week with late pre-break evidence, R7-A's late-evidence question runs before the substitution's clinical screen, so a pain report gets a pending ASK instead of CLINICAL_HUMAN_REQUIRED.
+  - R7B1_QUALITY_GATE = READY.
+  - V1_COACHING_AUTHORITY_READY = NO. PRODUCTION_READY = NO.
+- **R7-B blockers closed:**
+  - QE-R7B-OBS-04: the event-week rule, extended on FREEZE-2 to every row.
+  - QE-R7B-R2-01, -R2-02 and -R2-03.
+  - The residuals of QE-R7B-01 (R2-04 and rotation slots) and -05 (R2-01 path); R2-05 stays the R18 path.
+- **Correction cycle:** QE-R7B1-01 (clinical screen before any block-choice question), QR7B1-01 (the no-lower-skill question acts), QR7B1-02 with SSCTR F11 (event-week rule for every row), QR7B1-03, -04 and -05.
+- **Runtime to start from:** R7B1-FREEZE-2 (`146ebb8`, record sha256 `e75a2799…`, source `f54e5c03…`, manifest `980d8301…`, 114 files). Evidence on these bytes:
+  - suite 786/786;
+  - R7-B conformance PASS, delta revision 2 PASS;
+  - intake differential 83/83 identical;
+  - timeline differential PASS (PRESERVE 98/98);
+  - adversarial 3,228 checks, 0 failed;
+  - mutation 32/32, and R7-B 24/25 with M13 equivalent;
+  - verification 25/25.
+
+  R7B1-FREEZE-1 (`d41df8b`) is superseded and verifies at its own commit.
+- **SSCTR R7B1-SSCTR-r2:** seven records APPROVE_WITH_CONDITIONS bound to FREEZE-2; the human queue goes 223 → 230, append-only, funding NOT_DECLARED. F12 (decision half), F13 (narrowed) and F14 are routed with owners.
+- **Unchanged:** R6-POLICY-5, R7B0-CATALOG-2 with its schema and foundation, the B0 r2 records, the R7-A freeze record, the Growth patch, R7-B's records and FREEZE-2. R7-A, B0 and R7-B are not reopened. No UI, Figma, KMP, iOS, HealthKit/WorkoutKit, backend, Growth or production change. Nothing merged; branch `claude/domain-coaching-r7-b1` pushed.
+- **Next:** a narrow runtime mission on R7B1-FREEZE-2 (proposed DOMAIN_COACHING_R7-B.2) with QE-R7B1-04 first. It needs its own Founder authorization, or the Founder accepts that risk. R7-C is not started.
+
+[Disposition](audits/domain-coaching-r7-b1-2026-10-31/FINAL_DISPOSITION.json) · [Handoff](CoachingCore/r7/b1/R7B1_CLOSURE_HANDOFF.md)

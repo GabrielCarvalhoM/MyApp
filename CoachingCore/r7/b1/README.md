@@ -4,6 +4,7 @@ DOMAIN_COACHING_R7-B.1 (2026-10-31): the narrow follow-up of R7-B, which closed 
 
 | File | What it is |
 |---|---|
+| [R7B1_CLOSURE_HANDOFF.md](R7B1_CLOSURE_HANDOFF.md) | **Closure (2026-10-31): CLOSED NOT_READY** with one explicit blocker (QE-R7B1-04); the runtime to start from, the routed items with owners, the next mission |
 | [BLOCKER_CLOSURE_R7B1.md](BLOCKER_CLOSURE_R7B1.md) | Per blocker: finding, root cause, authority, runtime path, fix, regression test, preservation; then the correction cycle after the reviews of R7B1-FREEZE-1 (C1–C6) |
 | [CONFORMANCE_R7B1_DELTA.json](CONFORMANCE_R7B1_DELTA.json) | The catalog rules whose runtime materialization changed, with consumers and tests (revision 2 since the cycle; checked by `scripts/conformance-r7b1.mjs`) |
 | `RUNTIME_FREEZE_R7B1_1.json` | **R7B1-FREEZE-1** (`d41df8b`): bound bytes, digests, predecessor FREEZE-2, runtime and test delta, policy and catalog identity, evidence (written by `scripts/freeze-r7b1.mjs`). Superseded by FREEZE-2; it verifies at its own commit (`scripts/verify-r7b1.mjs --freeze 1`) |

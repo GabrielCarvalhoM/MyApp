@@ -1,0 +1,169 @@
+{
+ "mission": "DOMAIN_COACHING_R7-B.1 — Residual Runtime Blocker Closure",
+ "revision": "R7B1-FINAL-1",
+ "date": "2026-10-31",
+ "timezone": "America/Sao_Paulo",
+ "founderAuthority": "audits/domain-coaching-r7-b1-2026-10-31/FOUNDER_REQUEST.md",
+ "contract": "audits/domain-coaching-r7-b1-2026-10-31/TASK_CONTRACT.md (R7B1-CONTRACT-r1)",
+ "loopBound": "Request §17, applied by the task contract §3: one review per required gate; at most one correction cycle (correction, new freeze, narrow recheck) for a narrow blocker the mission's own correction created; then stop. Consumed: the one cycle.",
+ "branch": "claude/domain-coaching-r7-b1",
+ "worktree": ".claude/worktrees/domain-coaching-r7-b1 (the main checkout was not used for the mission's work)",
+ "baseline": {
+  "ref": "claude/domain-coaching-r7-b (the R7-B closure)",
+  "commit": "4230034d8819eb384c393a921db7eb3938c3440c",
+  "predecessorRuntime": "R7B-RUNTIME-REPERTOIRE-FREEZE-2, commit 10b26d6e40542a066f7f100fbf16060b66e15aee, source d2c730140973c9037de8729387012f830204072053729fbf9bdebf1bc5fe7241, 733 tests",
+  "consumed": {
+   "catalog": "R7B0-CATALOG-2 ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9",
+   "records": "audits/domain-coaching-r7-b0-2026-10-31/reviews/SSCTR_RECHECK_B0.json (13 r2 records, unchanged)",
+   "policy": "R6-POLICY-5 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c"
+  }
+ },
+ "commits": {
+  "closure": ["480c64d", "ee53cad", "2454fb9", "f8e3b2a", "b82d758"],
+  "freeze1": "d41df8b129495e32fe2923087d665798854609e9",
+  "verification1": "7b285f2",
+  "reviewsOfFreeze1": "2e874f1",
+  "correctionCycle": ["dec8397", "f6525e7"],
+  "freeze2": "146ebb80c51d302ef3518a61c1cab208c7778632",
+  "verification2": "ea940df",
+  "rechecks": "80602bd",
+  "closure_commit": "The commit containing this file; resolve with: git log -1 --format=%H -- audits/domain-coaching-r7-b1-2026-10-31/FINAL_DISPOSITION.json"
+ },
+ "merged": false,
+ "pushed": "Yes: claude/domain-coaching-r7-b1 to git@github.com:GabrielCarvalhoM/MyApp.git (the remote HEAD is checked at closure); no merge into main, no force push, no history rewrite",
+ "status": {
+  "R7B1_STATUS": "CLOSED",
+  "R7B_RUNTIME_REPERTOIRE_READY": "NO",
+  "R7B1_SSCTR_GATE": "ACCEPT_WITH_CONDITIONS",
+  "R7B1_ENGINEERING_GATE": "NOT_READY",
+  "R7B1_QUALITY_GATE": "READY",
+  "V1_COACHING_AUTHORITY_READY": "NO",
+  "PRODUCTION_READY": "NO",
+  "CORRECTION_CYCLES_CONSUMED": "1 of 1",
+  "FOUNDER_DECISION": "Needed only for what comes next: authorize a narrow runtime mission with QE-R7B1-04 first, or accept that risk. No strategic choice was needed inside this mission.",
+  "R7B_REOPENED": false,
+  "R7B0_REOPENED": false,
+  "R7A_REOPENED": false,
+  "R7C_STARTED": false
+ },
+ "why": "R7-B.1 closed the four R7-B blockers (QE-R7B-OBS-04, QE-R7B-R2-01, -R2-02, -R2-03) and the residuals of QE-R7B-01 and -05 on R7B1-FREEZE-1. One review per gate found two MAJORs created by the mission's own corrections (QE-R7B1-01: a block choice skipped the clinical screen and, after the R2-02 fix, carried a prescription; QR7B1-01: the no-lower-skill question of the R2-03 fix was a dead end) and the rotation and rebuild residual of OBS-04 (QR7B1-02). The one correction cycle closed them, with SSCTR F11, in R7B1-FREEZE-2. The one narrow recheck confirmed every fix, with no regression: SSCTR ACCEPT_WITH_CONDITIONS and Quality READY. Engineering found QE-R7B1-04, a pre-existing MAJOR on R7-A's late-evidence path: a pain report in a return's re-entry week with late pre-break evidence skips the clinical screen. The bound allows no further cycle, so R7-B.1 closes NOT_READY with that explicit blocker, routed to the next mission. No verdict is forced.",
+ "freezes": {
+  "R7B1-FREEZE-1": {
+   "record": "CoachingCore/r7/b1/RUNTIME_FREEZE_R7B1_1.json",
+   "sha256": "01c146f92cf1728b21efed9983ee5855f14365eec93cb64393627c36e319920f",
+   "commit": "d41df8b129495e32fe2923087d665798854609e9",
+   "sourceDigest": "976a13351f0b40ee363e9e4d6d1592e2653306ac018e3cf143d2d16968d366c9",
+   "manifestDigest": "2fc0a59a7b919b6b7a039981cd995c2d511437481a713a5c74a97c57c84d614b",
+   "files": 112,
+   "tests": 762,
+   "verification": {"record": "CoachingCore/r7/b1/VERIFICATION_R7B1_1.json", "sha256": "cea7bf01abe4acff90c350665979c1f556185189c75a01200e57cc15d2f08e8a", "result": "24/24 PASS"},
+   "state": "Superseded by R7B1-FREEZE-2; verifies at its own commit (scripts/verify-r7b1.mjs --freeze 1)"
+  },
+  "R7B1-FREEZE-2": {
+   "record": "CoachingCore/r7/b1/RUNTIME_FREEZE_R7B1_2.json",
+   "sha256": "e75a2799ae1b9387e7c8831646cb877967262c19aa11c18c8d54c2a7b94f27d5",
+   "commit": "146ebb80c51d302ef3518a61c1cab208c7778632",
+   "bytesOf": "f6525e7907680990ecbdbaf067c34fb0ec641d13",
+   "sourceDigest": "f54e5c0345aa9c1dbd9743a78127b59720b3cf4d68c1b53ed11bfdbf40ed1612",
+   "manifestDigest": "980d830106f3c75722126a8c0bffb5e5aafa9a261b411c30a4779d6d3e08fae8",
+   "files": 114,
+   "tests": 786,
+   "evidence": {
+    "suite": "786/786",
+    "conformanceR7B": "PASS (r7/b1/CONFORMANCE_R7B_ON_R7B1_2.report.json)",
+    "conformanceDelta": "PASS, revision R7B1-CONFORMANCE-DELTA-2 (r7/b1/CONFORMANCE_R7B1_DELTA_2.report.json)",
+    "intakeVsR7BFreeze2": "83/83 identical (r7/b1/REGRESSION_INTAKE_R7B1_2_VS_FREEZE2.json)",
+    "timelineVsR7BFreeze2": "PASS: PRESERVE 98/98 identical; substitution grid inconsistent 8 -> 0; envelope 0; run rises 0 (r7/b1/REGRESSION_R7B1_2.json)",
+    "adversarial": "3228 checks, 0 failed (audits/domain-coaching-r7-b1-2026-10-31/probes/out/adversarial-R7B1-2.json)",
+    "mutationR7B1": "32/32 killed (r7/b1/MUTATION_R7B1_2.json)",
+    "mutationR7B": "24/25, M13 documented equivalent (r7/b1/MUTATION_R7B_ON_R7B1_2.json)"
+   },
+   "verification": {"record": "CoachingCore/r7/b1/VERIFICATION_R7B1_2.json", "sha256": "2636500443f06da673c5b931792ee53d1c87b2de4d801aceac1219a601ee5359", "result": "25/25 PASS with the suite"},
+   "state": "The runtime to start from"
+  }
+ },
+ "reviews": {
+  "round1_on_FREEZE1": {
+   "SSCTR": {"file": "audits/domain-coaching-r7-b1-2026-10-31/reviews/ssctr/SSCTR_REVIEW_R7B1.json", "sha256": "38c993b6191cd3d425ff6fe46ac31978fce3cbb77c03ebec469c72a406427ecf", "summary": {"file": "audits/domain-coaching-r7-b1-2026-10-31/reviews/ssctr/SSCTR_REVIEW_R7B1.md", "sha256": "26aadf0d0dc480d9ad6a5f5a43325e856046b83b409300f645aa37b0d8af65c2"}, "revision": "R7B1-SSCTR-r1", "gate": "ACCEPT_WITH_CONDITIONS"},
+   "ENGINEERING": {"file": "audits/domain-coaching-r7-b1-2026-10-31/reviews/engineering/ENGINEERING_REVIEW_R7B1.json", "sha256": "095d52f9af409ad9a676b3570620c133e78a9f3025fbeb026e9ff3d47f6e6561", "summary": {"file": "audits/domain-coaching-r7-b1-2026-10-31/reviews/engineering/ENGINEERING_REVIEW_R7B1.md", "sha256": "a4adbd2762b86e16ad8586816e59b841351c9f20e2663850e3b11aa433efafbb"}, "revision": "R7B1-ENG-r1", "gate": "NOT_READY"},
+   "QUALITY": {"file": "audits/domain-coaching-r7-b1-2026-10-31/reviews/quality/QUALITY_REVIEW_R7B1.json", "sha256": "6bb577376b1a341a855b108fd0a185d3474681665852409e9defaef1391dda18", "summary": {"file": "audits/domain-coaching-r7-b1-2026-10-31/reviews/quality/QUALITY_REVIEW_R7B1.md", "sha256": "4e566a697f2dd7a03fdf61ec17abc2f9835992401352e9eec45b6730301740a2"}, "gate": "NOT_READY"}
+  },
+  "recheck_on_FREEZE2": {
+   "SSCTR": {"file": "audits/domain-coaching-r7-b1-2026-10-31/reviews/ssctr/recheck/SSCTR_RECHECK_R7B1.json", "sha256": "6e03afa3d927422d2108223f6111ea70e7eac02c13d39cd5931d6ac2f35b3b57", "summary": {"file": "audits/domain-coaching-r7-b1-2026-10-31/reviews/ssctr/recheck/SSCTR_RECHECK_R7B1.md", "sha256": "2503f343e5bf31bb37b6d9cc82dd43a84b18562a2c18805abcdd63d9c9ae0d81"}, "revision": "R7B1-SSCTR-r2", "gate": "ACCEPT_WITH_CONDITIONS"},
+   "ENGINEERING": {"file": "audits/domain-coaching-r7-b1-2026-10-31/reviews/engineering/recheck/ENGINEERING_RECHECK_R7B1.json", "sha256": "4c0aa2402449b88d11620a59402ecbeb22b0ddeb6e9e244c7c300ea6302c1d03", "summary": {"file": "audits/domain-coaching-r7-b1-2026-10-31/reviews/engineering/recheck/ENGINEERING_RECHECK_R7B1.md", "sha256": "dc405c604adbe3a9c172cc2596a79bf7eec029f286646fa30d04caae36334a28"}, "revision": "R7B1-ENG-r2-RECHECK", "gate": "NOT_READY"},
+   "QUALITY": {"file": "audits/domain-coaching-r7-b1-2026-10-31/reviews/quality/recheck/QUALITY_RECHECK_R7B1.json", "sha256": "7aafc8cd91f482c0530bf3752c87d018875ce0e392df644470050c72736fad54", "summary": {"file": "audits/domain-coaching-r7-b1-2026-10-31/reviews/quality/recheck/QUALITY_RECHECK_R7B1.md", "sha256": "9f3a42d0ca4ceadade205d08802a2c020a31064914b2ea4583872950ee0cd5a6"}, "gate": "READY"}
+  },
+  "judges": "The same three independent instances for the review and the recheck: sports-science-concurrent-training-reviewer (SSCTR), quality-reliability-engineer (Engineering), quality-reliability-engineer (Quality); none authored the runtime; each wrote only under its own folder and committed nothing"
+ },
+ "r7bBlockers": {
+  "QE-R7B-OBS-04": "Closed: SSCTR met on FREEZE-1 (reason-based substitutions); extended to every row on FREEZE-2 (rotation, rebuilds, equipment-forced substitutes, intake), SSCTR r2",
+  "QE-R7B-R2-01": "Resolved (Engineering r1; no regression in the recheck)",
+  "QE-R7B-R2-02": "Resolved (Engineering r1); the unrecognised-choices question also keeps the factual re-plan on FREEZE-2 (Engineering j1u)",
+  "QE-R7B-R2-03": "Resolved (Engineering r1; SSCTR r1/r2); its no-lower-skill question acts on FREEZE-2 (QR7B1-01)",
+  "QE-R7B-01 residual (QE-R7B-R2-04)": "Resolved: grid inconsistent 8 -> 0 on FREEZE-1; rotation slots not taken 6 -> 0 on FREEZE-2 (Quality q09c, Engineering k3)",
+  "QE-R7B-05 residual": "Closed on the R2-01 path; R2-05 stays recorded as the R18 path (request §9), unchanged"
+ },
+ "correctionCycle": {
+  "opened_by": "QE-R7B1-01 and QR7B1-01 (narrow blockers created by the mission's own R2-02 and R2-03 corrections)",
+  "closed": ["QE-R7B1-01", "QR7B1-01", "QR7B1-02 (with R7B1-SSCTR-F11)", "QR7B1-03", "QR7B1-04 (with the review half of R7B1-SSCTR-F12)", "QR7B1-05"],
+  "record": "CoachingCore/r7/b1/BLOCKER_CLOSURE_R7B1.md (section: correction cycle, C1-C6)",
+  "tests": "CoachingCore/test/r7b1-correction-cycle.test.mjs: 24 tests, 19 RED on FREEZE-1, 5 preservation"
+ },
+ "explicitBlockers": [
+  {
+   "id": "QE-R7B1-04",
+   "gate": "Engineering (NOT_READY)",
+   "severity": "MAJOR",
+   "origin": "Pre-existing: the R7-A residual authority change (ecd623b) with R7-B's substitution clinical screen (8d32f7d); identical on R7-B FREEZE-2 and R7B1-FREEZE-1; not introduced by R7-B.1 or its cycle",
+   "text": "In a return's re-entry week, once a late report of training before the break is recorded, decide() asks R7-A's late-evidence question (staleReturn, src/r6-adaptation.mjs:359) before the handler, so a review reporting pain with an exercise gets 'confirm that interruption' with a pending ASK instead of CLINICAL_HUMAN_REQUIRED; with a block choice, the block-choice question comes back. An illness return is not affected.",
+   "requiredChange": "The handler's clinical screen comes before R7-A's late-evidence confirmation, as R7-B.1 made it come before the block-choice question: a pain, injury or illness report routes CLINICAL_HUMAN_REQUIRED with no proposal whatever else the review carries (B0-C06 condition 8, D08).",
+   "reproduction": ["audits/domain-coaching-r7-b1-2026-10-31/reviews/engineering/recheck/probes/k6-stale-return-clinical.mjs", "audits/domain-coaching-r7-b1-2026-10-31/reviews/engineering/recheck/probes/k6b-stale-return-two-step.mjs"],
+   "authorCheck": "Reproduced by the author from a mirror of the FREEZE-2 bytes: K6 and K6b FAIL (pending ASK, no clinical route)"
+  }
+ ],
+ "nonBlocking": [
+  {"id": "R7B1-SSCTR-F12 (decision half)", "severity": "MINOR", "owner": "Next runtime mission (Engineering); Product/UX for presentation; SSCTR re-review", "text": "A substitute planned before the event weeks is disclosed only by the review that keeps it out; the deciding decision says nothing about that condition (68 decisions in s01)."},
+  {"id": "R7B1-SSCTR-F13 (narrowed)", "severity": "MINOR", "owner": "Next runtime mission with Product/UX; the SSCTR decides the resolution", "text": "The question when every candidate is already in the session never offers leaving the slot out; after a SKILL_MISMATCH, keeping the exercise is offered alone when nothing else fits."},
+  {"id": "R7B1-SSCTR-F14", "severity": "MINOR", "owner": "Next runtime mission with Product/UX", "text": "In 6 of 18 confirmed permanent losses (2-day programs) no pull exercise remains in weeks 4-7; the confirmed disclosure does not name the lost stimulus (R6-SUBSTITUTION C8)."},
+  {"id": "QE-R7B1-02", "severity": "MINOR", "owner": "Next runtime mission (Engineering)", "text": "A short return in the capped period re-plans the rest of that week uncapped (pre-existing)."},
+  {"id": "QE-R7B1-03", "severity": "MINOR", "owner": "Next runtime mission; suitability is the SSCTR's", "text": "A knock-on slot moves to pike-push-up without a disclosure (pre-existing; 64 of 160 knock-on rows)."},
+  {"id": "QR7B1-06", "severity": "MINOR", "owner": "Next runtime mission", "text": "Knock-on changes are not listed in substitutions (pre-existing); event-week knock-ons are now disclosed."},
+  {"id": "QR7B1-07", "severity": "OBSERVATION", "owner": "Done at closure", "text": "Owners named in this disposition and in CoachingCore/r7/b1/R7B1_CLOSURE_HANDOFF.md."},
+  {"id": "Engineering observations", "severity": "OBSERVATION", "owner": "Next runtime mission (SSCTR for suitability)", "text": "A capped novice's day layout after a substitution; a one-arm-db-row mismatch landing on band-face-pull; one lost item with two gaps names only the first (recheck OBS-03); the keep-only question asks for nothing and a later RECOVERED review asks again (recheck OBS-04)."},
+  {"id": "Quality observation", "severity": "OBSERVATION", "owner": "Next runtime mission", "text": "Under EVERY_2_WEEKS the selected exercise alternates after the event (the rotation's own cadence, outside the delta)."},
+  {"id": "Carried from R7-B, not pulled", "severity": "—", "owner": "As in CoachingCore/r7/b/R7B_CLOSURE_HANDOFF.md", "text": "QE-R7B-R2-05 (R18 path), QE-R7B-R2-OBS-01, QE-R7B-OBS-01..03, F6, F7, F8, F10, R18, running-ceiling units and the rest of the R7-B backlog (request: no backlog pulled)."}
+ ],
+ "ssctrRecords": {
+  "revision": "R7B1-SSCTR-r2",
+  "boundTo": "CoachingCore/r7/b1/RUNTIME_FREEZE_R7B1_2.json (e75a2799...)",
+  "FIDELITY": "APPROVE_WITH_CONDITIONS",
+  "NOVICE": "APPROVE_WITH_CONDITIONS",
+  "HYBRID": "APPROVE_WITH_CONDITIONS",
+  "TAPER": "APPROVE_WITH_CONDITIONS (the every-row event-week rule; the SSCTR's earlier planned-taper statement corrected: FREEZE-1 did not meet it on the wider intake grid, FREEZE-2 does)",
+  "RETURN": "APPROVE_WITH_CONDITIONS",
+  "DOSE": "APPROVE_WITH_CONDITIONS",
+  "DECLARED": "APPROVE_WITH_CONDITIONS",
+  "evidence": "SUPPORTED_WITH_LIMITS",
+  "confidence": "MODERATE",
+  "behaviourNote": "FREEZE-2 also removes 222 first exposures from the taper of 144 of 2,560 intake programs (25- and 35-minute sessions) and none of the 216 changed sessions gains a set (SSCTR s14); the 83-program intake corpus of the differential holds none of them."
+ },
+ "queue": {
+  "file": "reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json",
+  "before": 223,
+  "after": 230,
+  "added": ["HQ-R7B1-SSCTR-FIDELITY", "HQ-R7B1-SSCTR-NOVICE", "HQ-R7B1-SSCTR-HYBRID", "HQ-R7B1-SSCTR-TAPER", "HQ-R7B1-SSCTR-RETURN", "HQ-R7B1-SSCTR-DOSE", "HQ-R7B1-SSCTR-DECLARED"],
+  "appendOnly": true,
+  "funding": "NOT_DECLARED",
+  "sha256Before": "8b79df2189aaefe9fc179b7fb12ee8b9e6f1543a6f531cbe4ae5bf87025752d0",
+  "sha256After": "95ea4b92819455a7176e43e7a856dcff872b2ecf9cd575174468829f186099c8",
+  "integration": {"file": "audits/domain-coaching-r7-b1-2026-10-31/QUEUE_INTEGRATION_R7B1.json", "sha256": "eb84cfec3b7bb1eb317daca85d58d0aed80677e5b61300a4520d852f2f98777a"},
+  "script": "audits/domain-coaching-r7-b1-2026-10-31/integrate-queue-r7b1.mjs (binds the latest R7-B.1 freeze record)",
+  "supersession": "The R7-B 223-item pin (audits/domain-coaching-r7-b-2026-10-31/QUEUE_INTEGRATION_R7B.json) is superseded, not rewritten. Earlier closed checks that pin the queue bytes (for example R7ASC's queue-untouched) already failed by design after the earlier appends."
+ },
+ "unchanged": "R6-POLICY-5, R7B0-CATALOG-2 with its schema and foundation, the 13 B0 SSCTR r2 records, the R7-A residual-authority freeze record and the Growth pending patch are byte-identical to the B0 closure (both R7-B.1 freezes refuse otherwise); R7-B's records and R7B-RUNTIME-REPERTOIRE-FREEZE-2 unchanged; CURRENT_MISSION.md and MISSION_LEDGER.md append-only; no UI, Figma, KMP, iOS, HealthKit/WorkoutKit, backend, Growth, social or production change; the main checkout and the Founder's local files untouched.",
+ "next": {
+  "mission": "A narrow runtime mission on R7B1-FREEZE-2 (proposed name DOMAIN_COACHING_R7-B.2): QE-R7B1-04 first, then the owned minors; a new freeze; one review per gate.",
+  "authorization": "Needs its own Founder authorization; accepting the QE-R7B1-04 risk instead is the Founder's decision. R7-C is not started.",
+  "handoff": "CoachingCore/r7/b1/R7B1_CLOSURE_HANDOFF.md"
+ }
+}
