@@ -4,7 +4,7 @@ import {r6Authority,allows} from './r6-authority.mjs';
 import {catalogueEntry} from './r6-catalogue.mjs';
 import {walkPrescription,walkJogPrescription,easyPrescription,qualityPrescription,racePrescription,exerciseRow,fitStrengthSession,strengthPrescription,validateR6Prescription,roundTo5,reducedWork} from './r6-prescription.mjs';
 import {chooseBalanced,hourOf} from './r6-balanced.mjs';
-import {admitted,repertoireAuthority,DEFAULT_REPERTOIRE,repertoireOf,repertoireBinding,allowsCandidate,buildTemplates,templateTypesFor,noviceTemplateTypes,PRACTICE_FOR,RUN_CLASS_THRESHOLDS,archetypeOf,noExternalLoad,ordinalResistance,incrementFor,kgText,pullCoverageDisclosure,lowerStimulusDisclosure,runRepertoireOf,ROTATION_DEFERRED_PHASES,rotationEligibility,configurationOf,novelOrEccentricLower,I11_PROTECTED_FAMILIES,demandRank,familiarRunCategory,familiarBoutsInputs,laterGateRunItem,laterGateItem} from './r7b-repertoire.mjs';
+import {admitted,repertoireAuthority,DEFAULT_REPERTOIRE,repertoireOf,repertoireBinding,allowsCandidate,buildTemplates,templateTypesFor,noviceTemplateTypes,PRACTICE_FOR,RUN_CLASS_THRESHOLDS,archetypeOf,noExternalLoad,ordinalResistance,incrementFor,kgText,pullCoverageDisclosure,lowerStimulusDisclosure,runRepertoireOf,ROTATION_DEFERRED_PHASES,rotationEligibility,configurationOf,novelOrEccentricLower,I11_PROTECTED_FAMILIES,demandRank,familiarRunCategory,familiarBoutsInputs,laterGateRunItem,laterGateItem,CONFIGURATIONS,TEMPLATE_DEFS,REASON_BASED_SUBSTITUTION,admissibleAlternative,followsSkillMismatch,skillRank} from './r7b-repertoire.mjs';
 
 export const PROGRAM_VERSION='R6-PROGRAM-1';
 export function programHash(p){const c=clone(p);delete c.hash;return hash(c);}
@@ -857,18 +857,49 @@ function slotEntries(sk,template,w,ss){
  const returning=Object.values(ss.exercises).some(e=>Number.isInteger(e.returnStep)),rotation=returning?{}:sk.rotation(w,template);
  return template.rows.map(r=>({r,entry:catalogueEntry(rotation[r.slot]??r.entry.id)??r.entry}));
 }
+/**
+ * QE-R7B-OBS-04 (R6-EVENT-TRANSITION condition 7, B0-C05 condition 1, R6-SUBSTITUTION condition 8; the SSCTR R7B-SSCTR-r2 required change): no new
+ * exercise starts in the taper, the race window or the post-event week. On such a day a slot whose configuration a reason-based substitution placed
+ * there (its decision, or the fallback of the configuration it set aside) and which this program has not performed takes a configuration the
+ * program has performed: not set aside, an admissible alternative of the configuration set aside (same pattern and subpattern group, a shared
+ * primary muscle, within one demand step: B0-C06 condition 1) in the slot's role and MAIN subpatterns, with the equipment of the date and an
+ * admissible skill, after a SKILL_MISMATCH in the direction of that reason and never above the substitute, and not already in the session; the
+ * most recently performed first. Without one the slot is left out of that session (null), which the substitution discloses. The substitute starts
+ * after the post-event week with its own establishment. Performed means executed in this program: the week's start state holds an execution date
+ * on or after the program start (a conditional projection assumes the planned exposures executed, as it does for every step).
+ */
+export const NO_NEW_EXERCISE_PHASES=freeze(['TAPER','RACE_WEEK','POST_EVENT']);
+const performedInProgram=(sk,ss,id)=>{const e=ss?.exercises?.[id];return !!e&&typeof e.lastPerformed==='string'&&e.lastPerformed>=sk.c.startDate;};
+const reasonPlaced=r=>REASON_BASED_SUBSTITUTION.includes(r.directive?.reason)||!!r.fallbackFor;
+function eventWeekStandIn(sk,template,r,entry,ss,{date,taken}){
+ const a=sk.c.athlete,lineage=r.directive??r.fallbackFor,X=configurationOf(lineage?.from),reason=r.directive?.reason??r.fallbackFor?.reason??null;
+ if(!X)return null;
+ const setAside=new Set((a.strengthSelections??[]).filter(s=>s.setAside!==false&&REASON_BASED_SUBSTITUTION.includes(s.reason)).map(s=>s.from));
+ const familiar=new Set((a.knownExercises??[]).filter(k=>k.familiar!==false).map(k=>k.id)),reached=new Set([...(a.ladderReached??[]),...(a.strengthSelections??[]).filter(s=>s.reason==='SKILL_PROGRESSION'&&s.to).map(s=>s.to)]),maxSkill=['NONE','NOVICE'].includes(a.strengthExperience)?0:1;
+ const available=new Set([...(sk.equipmentForDate?.(date)??a.equipment??[]),'BODYWEIGHT']),subpatterns=r.role==='MAIN'?TEMPLATE_DEFS[template.type]?.slots?.[r.slot]?.subpatterns??null:null,current=configurationOf(entry.id);
+ const ok=e=>performedInProgram(sk,ss,e.id)&&!setAside.has(e.id)&&!taken.has(e.id)&&(!subpatterns||subpatterns.includes(e.subpattern))&&admissibleAlternative(X,e,{role:r.role,available,skillOk:x=>familiar.has(x.id)||reached.has(x.id)||skillRank(x.skill)<=maxSkill,auth:sk.repertoire??DEFAULT_REPERTOIRE})&&(reason!=='SKILL_MISMATCH'||followsSkillMismatch(X,e,current));
+ return CONFIGURATIONS.filter(ok).sort((p,q)=>ss.exercises[q.id].lastPerformed.localeCompare(ss.exercises[p.id].lastPerformed)||(p.id<q.id?-1:p.id>q.id?1:0))[0]??null;
+}
 function strengthRowsFor(sk,template,w,ss,{firstOfWeek,phase=null,date=null,entryWeek=false}){
- const {op,goal}=sk,S=op.strength,rows=[],used=[];
- for(const {r,entry} of slotEntries(sk,template,w,ss)){
+ const {op,goal}=sk,S=op.strength,rows=[],used=[],standIns=[],entries=slotEntries(sk,template,w,ss),dayPhase=phase??sk.plan.phases[w];
+ for(const {r,entry:slotEntry} of entries){
+  let entry=slotEntry,standNote=null;
+  // QE-R7B-OBS-04: a configuration a reason-based substitution brought in is not new in an event week (the rows the phase keeps; see above).
+  if(NO_NEW_EXERCISE_PHASES.includes(dayPhase)&&(r.role==='MAIN'||dayPhase==='TAPER')&&reasonPlaced(r)&&!performedInProgram(sk,ss,entry.id)){
+   const stand=eventWeekStandIn(sk,template,r,entry,ss,{date,taken:new Set([...entries.map(x=>x.entry.id),...rows.map(x=>x.id)])}),from=(r.directive??r.fallbackFor).from;
+   standIns.push({slot:r.slot,pattern:r.pattern,role:r.role,selected:entry.id,setAside:from,inEventWeeks:stand?.id??null});
+   if(!stand)continue;
+   standNote=`No new exercise in the taper, race or post-event weeks: ${stand.id}, already done in this program, stands in for ${from}; ${entry.id} starts after the post-event week`;entry=stand;
+  }
   const restKey=r.role==='MAIN'?(goal.strength.kind==='STRENGTH'?'MAIN_STRENGTH_GOAL':'MAIN'):'ACCESSORY',common={restSeconds:S.restSeconds[restKey],preparationMinutes:S.preparationMinutes[r.role==='MAIN'?'MAIN':'ACCESSORY']};
   const dose=strengthDose(sk,ss,w,r,entry,{firstOfWeek,phase,date,entryWeek});
   if(dose.skip)continue;
   // A configuration is used at most once per session (catalog rule; Q-R7B-05): two slots of one pattern at practice dose give one practice row.
   if(dose.practice){const practice=catalogueEntry(PRACTICE_ID[r.slotPattern??r.pattern])??entry;if(rows.some(x=>x.id===practice.id))continue;rows.push(exerciseRow(practice,{role:'PRACTICE',sets:dose.sets,reps:dose.reps,rir:dose.rir,mode:'BODYWEIGHT',restSeconds:S.restSeconds.PRACTICE,preparationMinutes:S.preparationMinutes.PRACTICE,establishment:true,note:'Movement practice: learn the pattern; this is not a strength test',exposure:dose.exposure}));used.push({id:practice.id,practice:true,kind:dose.kind,date});continue;}
-  rows.push(exerciseRow(entry,{...common,role:r.role,sets:dose.sets,reps:dose.reps,rir:Math.max(2,dose.rir),mode:dose.mode,value:dose.value??null,convention:dose.convention??null,establishment:!!dose.establishment,rule:dose.rule??null,note:dose.note??null,pending:!!dose.pending,exposure:dose.exposure}));
+  rows.push(exerciseRow(entry,{...common,role:r.role,sets:dose.sets,reps:dose.reps,rir:Math.max(2,dose.rir),mode:dose.mode,value:dose.value??null,convention:dose.convention??null,establishment:!!dose.establishment,rule:dose.rule??null,note:[dose.note,standNote].filter(Boolean).join('; ')||null,pending:!!dose.pending,exposure:dose.exposure}));
   used.push({id:entry.id,kind:dose.kind,mode:dose.mode,value:dose.value??null,convention:dose.convention??entry.convention,reps:dose.reps,sets:dose.sets,phasedSets:dose.sets,rir:dose.rir,baseSets:dose.baseSets??null,normalSets:dose.normalSets??null,date});
  }
- return {rows,used};
+ return {rows,used,standIns};
 }
 /**
  * Event proximity counts days to the race, never calendar weeks (QRE-R6-03): the last raceWindowDays before the race follow
@@ -1010,6 +1041,9 @@ export function buildWeek(sk,w,rs,ss,priorWeeks,{arrangementOverride=null,equipm
   if(phase==='POST_EVENT'){const since=7-plan.raceDay+r.day;if(since<op.event.postEventFirstRunMinDaysAfterRace||sessions.some(x=>x.sport==='STRENGTH'&&x.prescription)){sessions.push(restByDesign(common,'Post-event week: one light strength session is enough; this day is rest or mobility by design'));continue;}}
   // B0-C08: a TPL.CORE day under the novice cap runs at practice dose in the establishment week (practice first), accessory dose after it.
   const built=t?strengthRowsFor(sk,t,w,strengthState,{firstOfWeek:firstStrength||!!t.densityCapped&&t.type==='CORE',phase:strengthPhase,date:common.date,entryWeek}):{rows:[],used:[]};firstStrength=false;
+  // What stood in for, or was left out of, an event-week slot (QE-R7B-OBS-04) travels with the session, so the plan states it.
+  const standIns=built.standIns?.length?{eventStandIns:built.standIns}:{};
+  if(!built.rows.length&&built.standIns?.length){sessions.push({...restByDesign(common,'No new exercise in the taper, race or post-event weeks: the exercises of this session start after the post-event week'),...standIns});continue;}
   let fitted=built.rows.length?fitStrengthSession(built.rows,{budget:s.strengthMinutes,warmup:op.strength.warmupMinutes,cooldown:op.strength.cooldownMinutes,secondsPerRep:op.strength.secondsPerRep,maxExercises:s.strengthMinutes<35?op.strength.maxExercises.MAIN_ONLY_BUDGET:op.strength.maxExercises.DEFAULT,minimumExercises:Math.min(2,built.rows.length)}):null;
   if(!fitted){sessions.push(restByDesign(common,'The chosen time cannot hold a supported strength session; more time on this day is needed'));continue;}
   // B0-C11 / CMP.P04: under a RUN lead, a non-MAIN HIGH-eccentric lower row in a session within about a day before the long run or the week's
@@ -1029,7 +1063,7 @@ export function buildWeek(sk,w,rs,ss,priorWeeks,{arrangementOverride=null,equipm
   const family=['RACE_WEEK','POST_EVENT','TAPER'].includes(strengthPhase)?'MAINTENANCE':fitted.every(e=>e.load.mode==='BODYWEIGHT'&&e.establishment)?'PRACTICE':t.family;
   const p=strengthPrescription(family,fitted,{budget:s.strengthMinutes,warmup:op.strength.warmupMinutes,cooldown:op.strength.cooldownMinutes,secondsPerRep:op.strength.secondsPerRep,goalMode:goalDose(sk).mode,instructions:strengthPhase==='RACE_WEEK'?['Final days before the race: one short session to keep the movement pattern; nothing new or heavy']:strengthPhase==='TAPER'?['Taper: fewer sets at familiar loads; no new exercises or heavier loads']:[]});
   const heavy=fitted.some(e=>e.region==='LOWER'&&['HEAVY','MODERATE'].includes(e.lowerDemand)&&e.sets>=2);
-  sessions.push({...common,role:'STRENGTH_'+t.type,key:heavy&&t.rows.some(x=>x.role==='MAIN'&&['SQUAT','HINGE'].includes(x.pattern)),essential:true,optional:false,prescription:p,status:'PLANNED',plannedPrescriptionHash:hash(p),templateType:t.type,templateId:t.templateId??'TPL.'+t.type,...(t.densityCapped&&t.type==='CORE'?{lighterByDesign:true,explanation:'Lighter by design while strength is being established: trunk and calf work only; two full sessions a week until the first block review (keep this day lighter or choose fewer strength days)'}:{}),...(arr?.orderFlexible&&s.sharedDays.includes(r.day)?{orderFlexible:true,explanation:'Either order on this day: the two sessions carry no interference difference'}:{})});
+  sessions.push({...common,role:'STRENGTH_'+t.type,key:heavy&&t.rows.some(x=>x.role==='MAIN'&&['SQUAT','HINGE'].includes(x.pattern)),essential:true,optional:false,prescription:p,status:'PLANNED',plannedPrescriptionHash:hash(p),templateType:t.type,templateId:t.templateId??'TPL.'+t.type,...standIns,...(t.densityCapped&&t.type==='CORE'?{lighterByDesign:true,explanation:'Lighter by design while strength is being established: trunk and calf work only; two full sessions a week until the first block review (keep this day lighter or choose fewer strength days)'}:{}),...(arr?.orderFlexible&&s.sharedDays.includes(r.day)?{orderFlexible:true,explanation:'Either order on this day: the two sessions carry no interference difference'}:{})});
  }
  if(phase==='RACE_WEEK'){
   const onChosen=s.runDays.includes(plan.raceDay),completion=raceDayCompletion(sk,rs),ladder=op.establishment.walkJogLadder,step=rs.mode==='WALK_JOG'?ladder[Math.max(0,Math.min(rs.walkStep,ladder.length-1))]:null;

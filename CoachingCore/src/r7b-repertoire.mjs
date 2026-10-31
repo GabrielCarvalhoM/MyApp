@@ -204,6 +204,15 @@ export const ladderNext=id=>[...new Set(LADDERS.flatMap(c=>{const i=c.indexOf(id
 export const ladderPrevious=id=>[...new Set(LADDERS.flatMap(c=>{const i=c.indexOf(id);return i>0?[c[i-1]]:[];}))];
 /** Every configuration below `id` on the chains that contain it (B0-C07): what an athlete who reached `id` has stepped past. */
 export const ladderBelow=id=>[...new Set(LADDERS.flatMap(c=>{const i=c.indexOf(id);return i>0?c.slice(0,i):[];}))];
+/** The rungs below `id`, nearest first (the previous rungs, then theirs): the order of a SKILL_MISMATCH regression along its chains. */
+export function ladderDown(id){const out=[];let frontier=[id];while(frontier.length){const next=[...new Set(frontier.flatMap(ladderPrevious))].filter(x=>x!==id&&!out.includes(x));out.push(...next);frontier=next;}return out;}
+/**
+ * The direction of a SKILL_MISMATCH (catalog strength.substitution: "the previous configuration on its skill ladder"; B0-C07 condition 1): once
+ * `aside` is set aside because it cannot be done with steady technique, a configuration follows that reason only when it is a rung below it on a
+ * ladder or of a lower skill, and never of a higher skill than `inUse`, the substitute the decision selected (QE-R7B-R2-03: losing equipment never
+ * raises the skill demand).
+ */
+export const followsSkillMismatch=(aside,e,inUse=null)=>!!aside&&!!e&&e.id!==aside.id&&(ladderBelow(aside.id).includes(e.id)||skillRank(e.skill)<skillRank(aside.skill))&&skillRank(e.skill)<=skillRank((inUse??aside).skill);
 /** A ladder link that changes the subpattern (push-up → pike-push-up) is a variation, not a progression of the same movement (B0-C07 condition 6). */
 export const ladderChangesSubpattern=(from,to)=>{const a=configurationOf(from),b=configurationOf(to);return !!a&&!!b&&a.subpattern!==b.subpattern;};
 
@@ -217,6 +226,8 @@ export function rotationEligibility(preference,role,{phase=null,returning=false,
 }
 
 // ---------- template selection (B0-C05, B0-C09, catalog templateRules) ----------
+/** The reasons of a reason-based substitution (catalog strength.substitution; DR-134): the configuration they replace is set aside. */
+export const REASON_BASED_SUBSTITUTION=freeze(['SKILL_MISMATCH','NONCLINICAL_DISCOMFORT_OR_PREFERENCE']);
 const GOAL_PURPOSE={STRENGTH:'STRENGTH_DEVELOPMENT',HYPERTROPHY:'HYPERTROPHY',RUNNING_SUPPORT:'RUNNING_SUPPORT',GENERAL:'GENERAL',MAINTAIN:'GENERAL'};
 /** The goal-context keys in force (catalog goalContextKeys): HYPERTROPHY or RUNNING_SUPPORT by strength goal; EVENT when a 10K/half marathon is programmed. */
 export function goalContextKeys(goal){
@@ -245,7 +256,7 @@ export function selectionCompare(ctx,preferredSubpattern){
  */
 export function buildTemplates({types,equipment=[],experience='NOVICE',knownExercises=[],established=[],goal,auth,knownOnly=false,emphasis=[],selections=[],ladderReached=[]}){
  const available=new Set([...equipment,'BODYWEIGHT']),familiar=new Set(knownExercises.filter(k=>k.familiar!==false).map(k=>k.id)),withDose=new Set(knownExercises.filter(k=>k.dose).map(k=>k.id));
- const reached=new Set([...ladderReached,...selections.filter(s=>s.reason==='SKILL_PROGRESSION'&&s.to).map(s=>s.to)]),setAside=new Set(selections.filter(s=>s.setAside!==false&&['SKILL_MISMATCH','NONCLINICAL_DISCOMFORT_OR_PREFERENCE'].includes(s.reason)).map(s=>s.from));
+ const reached=new Set([...ladderReached,...selections.filter(s=>s.reason==='SKILL_PROGRESSION'&&s.to).map(s=>s.to)]),setAside=new Set(selections.filter(s=>s.setAside!==false&&REASON_BASED_SUBSTITUTION.includes(s.reason)).map(s=>s.from));
  const maxSkill=['NONE','NOVICE'].includes(experience)?0:1,skillOk=e=>familiar.has(e.id)||reached.has(e.id)||skillRank(e.skill)<=maxSkill;
  // A configuration below a reached one on the same skill ladder (B0-C07) is never a calendar alternative: stepping back along a chain is a
  // reason-based substitution (SKILL_MISMATCH), never rotation (QE-R7B-02, Q-R7B-01).
@@ -260,7 +271,7 @@ export function buildTemplates({types,equipment=[],experience='NOVICE',knownExer
  const calfSub=new Map();let bent=0;
  alternating.forEach((x,i)=>{const want=i%2===1&&bent<bentAllowed?'BENT_KNEE':'STRAIGHT_KNEE';if(want==='BENT_KNEE')bent++;calfSub.set(x.ti+':'+x.si,want);});
  const templates=defs.map((def,index)=>{
-  const used=new Set(),rows=[],missing=[],missingLimits={};
+  const used=new Set(),rows=[],missing=[],missingLimits={},asideGaps=[];
   (def?.slots??[]).forEach((slot,si)=>{
    const role=slot.role,rolePurposes=role==='ACCESSORY'?accessoryPurposes:purposes;
    // A goal-context slot (B0-C05): the listed alternative pattern least chosen so far this week that has an admissible configuration.
@@ -273,10 +284,11 @@ export function buildTemplates({types,equipment=[],experience='NOVICE',knownExer
     if(pick){pattern=pick;altCount[pick]=(altCount[pick]??0)+1;preferred=DEFAULT_SUBPATTERN[pick]??null;}
    }
    if(slot.pattern==='CALF'&&calfSub.has(index+':'+si))preferred=calfSub.get(index+':'+si);
-   const optionsFor=aside=>{
-    let list=CONFIGURATIONS.filter(e=>usable(e,role,{pattern,subpatterns:slot.subpatterns??null,used,aside})).sort(order(rolePurposes,preferred)),r=role,down=false;
+   // `keep` narrows the candidates (the direction of a SKILL_MISMATCH fallback, QE-R7B-R2-03), in the MAIN list and in its B0-C09 downgrade alike.
+   const optionsFor=(aside,keep=()=>true)=>{
+    let list=CONFIGURATIONS.filter(e=>usable(e,role,{pattern,subpatterns:slot.subpatterns??null,used,aside})&&keep(e)).sort(order(rolePurposes,preferred)),r=role,down=false;
     // B0-C09: a MAIN pull slot without a MAIN-admissible pull takes the best ACCESSORY-admissible pull, as an ACCESSORY row, disclosed.
-    if(!list.length&&role==='MAIN'&&pattern==='PULL'&&allowsCandidate(auth,'B0-C09')){const within=e=>(slot.subpatterns??[]).includes(e.subpattern)?0:1,cmp=order(accessoryPurposes,preferred);list=CONFIGURATIONS.filter(e=>usable(e,'ACCESSORY',{pattern,used,aside})).sort((a,b)=>within(a)-within(b)||cmp(a,b));if(list.length){r='ACCESSORY';down=true;}}
+    if(!list.length&&role==='MAIN'&&pattern==='PULL'&&allowsCandidate(auth,'B0-C09')){const within=e=>(slot.subpatterns??[]).includes(e.subpattern)?0:1,cmp=order(accessoryPurposes,preferred);list=CONFIGURATIONS.filter(e=>usable(e,'ACCESSORY',{pattern,used,aside})&&keep(e)).sort((a,b)=>within(a)-within(b)||cmp(a,b));if(list.length){r='ACCESSORY';down=true;}}
     return {list,r,down};
    };
    // Selection directives (QE-R7B-01): the slot's natural pick, as if nothing had been set aside, then every recorded decision on it in the order
@@ -285,24 +297,36 @@ export function buildTemplates({types,equipment=[],experience='NOVICE',knownExer
    // decision moves the slot off it, the slot takes its best configuration not set aside.
    const open=optionsFor(false),natural=setAside.size?optionsFor(true):open;
    const options=open.list;
-   let rowRole=natural.r,downgraded=natural.down,pick=natural.list[0]??null,directive=null;
+   let rowRole=natural.r,downgraded=natural.down,pick=natural.list[0]??null,directive=null,fallbackFor=null;
    const fits=to=>!!to&&admitted(to,auth)&&to.roles.includes(rowRole)&&to.equipment.every(q=>available.has(q))&&skillOk(to)&&!used.has(to.id)&&(to.pattern===pick.pattern||to.pattern===slot.pattern)&&(rowRole!=='MAIN'||!slot.subpatterns||slot.subpatterns.includes(to.subpattern))&&(!knownOnly||noExternalLoad(to)||withDose.has(to.id));
    // A decision names the slots where its configuration was in use (rotation included); one without them applies where the slot picks it.
    const located=d=>Array.isArray(d.slots)&&d.slots.some(x=>x?.template===types[index]&&x?.slot===si);
-   for(const d of selections){if(!pick||!d.to||d.to===pick.id||d.from!==pick.id&&!located(d))continue;const to=configurationOf(d.to);if(!fits(to))continue;pick=to;directive={reason:d.reason,from:d.from,since:d.fromWeek??null};}
-   if(pick&&setAside.has(pick.id)){pick=open.list[0]??null;rowRole=open.r;downgraded=open.down;directive=null;}
+   // Every SKILL_MISMATCH decision on this slot sets the direction a later fallback of the slot must follow (QE-R7B-R2-03).
+   const mismatch=[];
+   for(const d of selections){if(!pick||!d.to||d.to===pick.id||d.from!==pick.id&&!located(d))continue;const to=configurationOf(d.to);if(d.reason==='SKILL_MISMATCH'&&setAside.has(d.from)&&configurationOf(d.from))mismatch.push({aside:configurationOf(d.from),inUse:to});if(!fits(to))continue;pick=to;directive={reason:d.reason,from:d.from,since:d.fromWeek??null};}
+   // The slot ends on a configuration set aside and no decision moves it off (the substitute no longer fits: its equipment went). The fallback follows
+   // the direction of the reason (QE-R7B-R2-03): after a SKILL_MISMATCH a rung below on its ladder (nearest first) or a lower skill, never above the
+   // substitute the decision selected; without one the slot stays unfilled (asideGaps), so the decision that removed the equipment asks. After a
+   // nonclinical preference, the slot's best configuration not set aside, as before. The row records what it stands in for (fallbackFor; OBS-04).
+   if(pick&&setAside.has(pick.id)){
+    const from=pick,reason=selections.findLast(s=>s.from===from.id&&s.setAside!==false&&REASON_BASED_SUBSTITUTION.includes(s.reason))?.reason??null;
+    const fb=mismatch.length?optionsFor(false,e=>mismatch.every(m=>followsSkillMismatch(m.aside,e,m.inUse))):open;
+    if(mismatch.length){const down=ladderDown(mismatch.at(-1).aside.id),rank=e=>{const i=down.indexOf(e.id);return i<0?Infinity:i;};fb.list.sort((a,b)=>rank(a)-rank(b));}
+    pick=fb.list[0]??null;rowRole=fb.r;downgraded=fb.down;directive=null;fallbackFor={from:from.id,reason};
+    if(!pick&&mismatch.length)asideGaps.push({slot:si,pattern:slot.pattern,setAside:from.id,substitute:mismatch.at(-1).inUse?.id??null,reason:'SKILL_MISMATCH'});
+   }
    // Q-R7B-07: what limits an unfilled or downgraded slot, skill or equipment: skill when a configuration that fits the equipment and the role
    // fails only the skill gate.
    const fitsSlot=(e,r)=>e.pattern===pattern&&(!slot.subpatterns||slot.subpatterns.includes(e.subpattern))&&admitted(e,auth)&&e.roles.includes(r);
    const skillLimited=r=>CONFIGURATIONS.some(e=>fitsSlot(e,r)&&e.equipment.every(q=>available.has(q))&&!skillOk(e));
    const helpFor=r=>[...new Set(CONFIGURATIONS.filter(e=>fitsSlot(e,r)&&skillOk(e)&&!e.equipment.every(q=>available.has(q))).flatMap(e=>e.equipment.filter(q=>!available.has(q))))].sort();
-   if(!pick){missing.push(slot.pattern);missingLimits[slot.pattern]=helpFor(role).length?'EQUIPMENT':skillLimited(role)?'SKILL':'EQUIPMENT';return;}
+   if(!pick){missing.push(slot.pattern);missingLimits[slot.pattern]=asideGaps.some(g=>g.slot===si)?'SKILL':helpFor(role).length?'EQUIPMENT':skillLimited(role)?'SKILL':'EQUIPMENT';return;}
    used.add(pick.id);
    const alternatives=options.filter(o=>o.id!==pick.id&&!surpassed.has(o.id)&&admissibleAlternative(pick,o,{role:rowRole,goalPatterns,available,skillOk,auth})).slice(0,3).map(o=>o.id);
-   rows.push({slot:si,pattern:pick.pattern,slotPattern:slot.pattern,role:rowRole,entry:clone(pick),alternatives,emphasized:emph.has(pick.pattern)||emph.has(slot.pattern)||emph.has(pick.region),...(pattern!==slot.pattern?{goalContextPattern:pattern}:{}),...(slot.pattern==='CALF'&&calfSub.has(index+':'+si)?{calfAlternation:calfSub.get(index+':'+si)}:{}),...(downgraded?{downgradedFrom:'MAIN',coverage:'PULL_LIMITED_FOR_EQUIPMENT',limit:skillLimited('MAIN')?'SKILL':'EQUIPMENT',addEquipment:helpFor('MAIN')}:{}),...(directive?{directive}:{}),familiar:familiar.has(pick.id)});
+   rows.push({slot:si,pattern:pick.pattern,slotPattern:slot.pattern,role:rowRole,entry:clone(pick),alternatives,emphasized:emph.has(pick.pattern)||emph.has(slot.pattern)||emph.has(pick.region),...(pattern!==slot.pattern?{goalContextPattern:pattern}:{}),...(slot.pattern==='CALF'&&calfSub.has(index+':'+si)?{calfAlternation:calfSub.get(index+':'+si)}:{}),...(downgraded?{downgradedFrom:'MAIN',coverage:'PULL_LIMITED_FOR_EQUIPMENT',limit:skillLimited('MAIN')?'SKILL':'EQUIPMENT',addEquipment:helpFor('MAIN')}:{}),...(directive?{directive}:{}),...(fallbackFor?{fallbackFor}:{}),familiar:familiar.has(pick.id)});
   });
   rows.sort((x,y)=>Number(y.role==='MAIN')-Number(x.role==='MAIN')||Number(y.emphasized)-Number(x.emphasized)||x.slot-y.slot);
-  return {index,type:types[index],templateId:'TPL.'+types[index],family:STRENGTH_PRESCRIPTION_FAMILY[types[index]]??null,sessionFamily:FAMILY_OF_TEMPLATE[types[index]]??null,rows,missingPatterns:missing,missingLimits};
+  return {index,type:types[index],templateId:'TPL.'+types[index],family:STRENGTH_PRESCRIPTION_FAMILY[types[index]]??null,sessionFamily:FAMILY_OF_TEMPLATE[types[index]]??null,rows,missingPatterns:missing,missingLimits,...(asideGaps.length?{asideGaps}:{})};
  });
  return templates;
 }

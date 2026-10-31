@@ -9,7 +9,7 @@ import {createLearningModel,updateLearningModel,validateLearningModel,evidenceFo
 import {normalizeObservations,utcTimestamp,localDate} from './r6-provenance.mjs';
 import {onDate,dayGap,isoDay,LB_TO_KG,toKilograms,RUN_GOALS,STRENGTH_GOALS,EVENTS} from './r6-intake.mjs';
 import {screenInterruptionReason,isYes} from './r6-clinical.mjs';
-import {repertoireAuthority,repertoireBinding,allowsCandidate,NO_KG_CONVENTIONS,incrementFor,kgText,configurationOf,ladderNext,ladderPrevious,ladderChangesSubpattern,admitted,skillRank,RUN_CLASS_THRESHOLDS,ROTATION_DEFERRED_PHASES} from './r7b-repertoire.mjs';
+import {repertoireAuthority,repertoireBinding,allowsCandidate,NO_KG_CONVENTIONS,incrementFor,kgText,configurationOf,ladderNext,ladderDown,ladderChangesSubpattern,admitted,skillRank,RUN_CLASS_THRESHOLDS,ROTATION_DEFERRED_PHASES} from './r7b-repertoire.mjs';
 
 export const REVIEW_VERSION='R6-REVIEW-1';
 const KIND_ALIASES={REVIEW:'WEEKLY_REVIEW',MISSED_ESSENTIAL:'MISSED_SESSION',MISSED_OPTIONAL:'MISSED_SESSION',RETURN:'RETURN_AFTER_PAUSE',CONFLICT:'DOUBLE_CONFLICT',DOUBLE_INFEASIBLE:'DOUBLE_CONFLICT',EVENT_NEAR:'EVENT_WEEK_CONFLICT',SESSION_MOVED:'UNAVAILABLE_DAY',TRAVEL:'EQUIPMENT_CHANGE',SUBSTITUTION_NEED:'EQUIPMENT_CHANGE'};
@@ -266,6 +266,9 @@ function finishProposal(program,sk,next,decision){
  const proposal=clone(program);proposal.weeks=next.weeks;proposal.stateTrace=next.stateTrace??program.stateTrace;
  // The earlier contexts still in force for some weeks travel with the program (R7-A.1 C2).
  if('contextBefore' in next){if(next.contextBefore)proposal.contextBefore=clone(next.contextBefore);else delete proposal.contextBefore;}
+ // So do the novice (density-capped) templates of the context in force (B0-C08; QE-R7B-R2-01): a change that rebuilt them stores them, one whose
+ // context has none removes them; whether a week is capped stays the state's (densityCappedAt). Nothing else is copied.
+ if('noviceTemplates' in next){if(next.noviceTemplates)proposal.noviceTemplates=clone(next.noviceTemplates);else delete proposal.noviceTemplates;}
  if(next.schedule)proposal.schedule=clone(next.schedule);if(next.canonical)proposal.canonical=clone(next.canonical);if(next.templates)proposal.templates=clone(next.templates);if(next.arrangementSessions){proposal.arrangementSessions=clone(next.arrangementSessions);proposal.arrangement=Object.fromEntries(Object.entries(next.arrangementSessions).map(([k,v])=>[k,{id:v.id,quality:v.quality,perm:v.perm,runFirstOnShared:v.runFirstOnShared}]));}if(next.phases)proposal.phases=clone(next.phases);if(next.negotiation)proposal.negotiation=clone(next.negotiation);if(next.blocks)proposal.blocks=clone(next.blocks);if(next.goal)proposal.goal=clone(next.goal);
  // The completion negotiation follows the proposal's own race-week state, so a restart or a goal change applied by a review carries it (SSCTR D47).
  const rw=proposal.phases?.raceWeek,raceState=proposal.goal?.run?.event&&Number.isInteger(rw)?proposal.stateTrace[rw]?.run:null;
@@ -354,9 +357,12 @@ export function evaluateProgram(program,review,options={}){
   const factual0=factualReplan(ctx),factual=factual0?.ask?factual0:graduationWithdrawal(factual0?.ctx??ctx)??factual0;
   // Training before the latest interruption that its return did not read is confirmed first (R7-A final I6); a return report decides it itself.
   const decide=c=>(kind!=='RETURN_AFTER_PAUSE'&&staleReturn(c))||(HANDLERS[kind]??weeklyReview)(c);
-  if(blockChoices.length&&(kind!=='WEEKLY_REVIEW'||ev.pending))return finish('ASK','ASK','Block choices are made in the weekly review of a block\'s last week, once its sessions are complete',{...out,missingInputs:['choices']});
-  const decision0=factual?.ask??withFactualReplan(factual,decide(factual?.ctx??ctx));
-  const decision=blockChoices.length&&!out.choicesHandled&&decision0.action!=='ASK'&&decision0.status!=='CLINICAL_HUMAN_REQUIRED'?{action:'ASK',reason:'The block choices could not be applied in this review; they are made at the block boundary review',missingInputs:['choices']}:decision0;
+  // A question about block choices is a decision like any other (QE-R7B-R2-02; R7-A A5): it never drops the canonical factual state computed above. A
+  // question the factual re-plan itself raises keeps precedence; otherwise the block-choice question carries the factual re-plan and any graduation
+  // withdrawal (withFactualReplan), because the facts it follows stand whatever is still asked.
+  const choiceAsk=blockChoices.length&&(kind!=='WEEKLY_REVIEW'||ev.pending)?{action:'ASK',reason:'Block choices are made in the weekly review of a block\'s last week, once its sessions are complete',missingInputs:['choices']}:null;
+  const decision0=factual?.ask??withFactualReplan(factual,choiceAsk??decide(factual?.ctx??ctx));
+  const decision=blockChoices.length&&!choiceAsk&&!out.choicesHandled&&decision0.action!=='ASK'&&decision0.status!=='CLINICAL_HUMAN_REQUIRED'?withFactualReplan(factual,{action:'ASK',reason:'The block choices could not be applied in this review; they are made at the block boundary review',missingInputs:['choices']}):decision0;
   // Load questions follow the decision's own gates, so they never contradict the adoption the transition made (SSCTR D44).
   out.loadQuestions=loggedLoadQuestions(program,sk,w,ev,{gates:decision.gates??null,confirmations:confirmationsOf(ctx),base:ctx.base});
   if(decision.proposal){
@@ -539,21 +545,74 @@ function exerciseSubstitution(ctx){
  const fits=e=>!!e&&admitted(e,rep)&&e.pattern===X.pattern&&e.roles.includes(role)&&e.equipment.every(q=>available.has(q))&&!setAside.has(e.id)&&(familiar.has(e.id)||ladder.has(e.id)||skillRank(e.skill)<=maxSkill);
  // A named target that is not in the repertoire is asked, never replaced by an automatic pick (QE-R7B-08).
  if(sub.to!==undefined&&sub.to!==null&&!configurationOf(sub.to))return {action:'ASK',reason:String(sub.to)+' is not an exercise of the repertoire; name another exercise of the same pattern, or leave the choice to the plan',missingInputs:['substitution.to']};
- let to=sub.to?configurationOf(sub.to):null;if(to&&!fits(to))return {action:'ASK',reason:sub.to+' cannot replace '+X.id+' here (pattern, role, skill or equipment)',missingInputs:['substitution.to']};
- if(!to&&reason==='SKILL_MISMATCH')to=ladderPrevious(X.id).map(configurationOf).find(fits)??CONFIGURATIONS_SAME(X).filter(fits).filter(e=>skillRank(e.skill)<skillRank(X.skill)||e.kind!==X.kind).sort((a,b)=>skillRank(a.skill)-skillRank(b.skill)||(a.id<b.id?-1:1))[0]??null;
- if(!to&&reason!=='SKILL_MISMATCH')to=substitutesFor(X.id,{equipment:[...available],experience:c.athlete.strengthExperience,known:c.athlete.knownExercises.filter(k=>k.familiar!==false),role,auth:rep}).map(e=>configurationOf(e.id)).find(fits)??null;
- if(!to)return {action:'ASK',reason:'No admissible alternative of the same pattern fits your equipment and skill; options: add equipment, or keep '+X.id,missingInputs:['substitution.to'],disclosures:[{id:'NO_ADMISSIBLE_ALTERNATIVE',blocking:false,pattern:X.pattern,options:['Add equipment','Keep '+X.id]}]};
+ const named=sub.to?configurationOf(sub.to):null;if(named&&!fits(named))return {action:'ASK',reason:sub.to+' cannot replace '+X.id+' here (pattern, role, skill or equipment)',missingInputs:['substitution.to']};
+ // The candidates in the order of the reason's rule: the athlete's named exercise; after a SKILL_MISMATCH the rungs below on its ladder (nearest
+ // first: the previous rung, then the chain below it, B0-C07 condition 1), then a lower skill or another kind of the same pattern (lowest first);
+ // after a nonclinical preference the best same-pattern alternatives (familiar, close variation, subpattern, pattern).
+ const order=named?[named]:reason==='SKILL_MISMATCH'?[...ladderDown(X.id).map(configurationOf).filter(fits),...CONFIGURATIONS_SAME(X).filter(fits).filter(e=>skillRank(e.skill)<skillRank(X.skill)||e.kind!==X.kind).sort((a,b)=>skillRank(a.skill)-skillRank(b.skill)||(a.id<b.id?-1:1))]:substitutesFor(X.id,{equipment:[...available],experience:c.athlete.strengthExperience,known:c.athlete.knownExercises.filter(k=>k.familiar!==false),role,auth:rep}).map(e=>configurationOf(e.id)).filter(fits);
+ const candidates=[...new Map(order.map(e=>[e.id,e])).values()];
+ if(!candidates.length)return {action:'ASK',reason:'No admissible alternative of the same pattern fits your equipment and skill; options: add equipment, or keep '+X.id,missingInputs:['substitution.to'],disclosures:[{id:'NO_ADMISSIBLE_ALTERNATIVE',blocking:false,pattern:X.pattern,options:['Add equipment','Keep '+X.id]}]};
  // The slots where X is next in use (rotation included) take the new configuration from this week (QE-R7B-01).
  const kX=program.weeks.findIndex((x,i)=>i>=w&&x.sessions.some(s=>ctx.ahead(s)&&(s.prescription?.exercises??[]).some(e=>e.id===X.id))),slots=kX<0?[]:slotsInUse(ctx.sk.at(kX)??ctx.sk,kX,program.stateTrace[kX]?.strength??ctx.base.strength,X.id);
- const selection={from:X.id,to:to.id,reason,fromWeek:w,setAside:true,decidedBy:review.event.id,slots,...(sub.text?{statedReason:String(sub.text).slice(0,200)}:{})};
- const r=rebuild(ctx,{canonical:x=>({...x,athlete:{...x.athlete,strengthSelections:[...(x.athlete.strengthSelections??[]),selection]}}),fromWeek:w,reason:X.id+' is replaced by '+to.id+' ('+(reason==='SKILL_MISMATCH'?'cannot be done with steady technique':'a nonclinical preference')+'); the new exercise starts with effort-guided establishment, nothing is converted',action:'SUBSTITUTE_FOR_REASON'});
- // The plan prescribes what the decision selects (QE-R7B-01): the replaced exercise leaves every session ahead and the selected one takes its
- // place; otherwise nothing is proposed and the athlete is asked.
- if(r.proposal){const later=r.proposal.weeks.slice(w).flatMap(x=>x.sessions).filter(s=>ctx.ahead(s)&&s.status!=='SKIPPED'&&s.prescription?.modality==='STRENGTH'),has=id=>later.some(s=>s.prescription.exercises.some(e=>e.id===id));
-  if(has(X.id)||!has(to.id))return {action:'ASK',reason:to.id+' cannot take the place of '+X.id+' in the sessions ahead; name another exercise of the same pattern',missingInputs:['substitution.to']};}
- return r.proposal?{...r,substitutions:[{exerciseId:X.id,selected:to.id,reason,requiresEstablishment:true,stimulusChange:X.loading==='EXTERNAL'&&to.loading!=='EXTERNAL'?'A bodyweight or band exercise in place of a loaded one is a different stimulus, not an equivalent':null}]}:r;
+ for(const to of candidates){
+  const selection={from:X.id,to:to.id,reason,fromWeek:w,setAside:true,decidedBy:review.event.id,slots,...(sub.text?{statedReason:String(sub.text).slice(0,200)}:{})};
+  const r=rebuild(ctx,{canonical:x=>({...x,athlete:{...x.athlete,strengthSelections:[...(x.athlete.strengthSelections??[]),selection]}}),fromWeek:w,reason:X.id+' is replaced by '+to.id+' ('+(reason==='SKILL_MISMATCH'?'cannot be done with steady technique':'a nonclinical preference')+'); the new exercise starts with effort-guided establishment, nothing is converted',action:'SUBSTITUTE_FOR_REASON'});
+  if(!r.proposal)return r;
+  // The plan prescribes what the decision selects in every slot of X (QE-R7B-01; its residual QE-R7B-R2-04): a candidate that cannot take X's place in a
+  // slot (it is already in that session) leaves the slot to a fallback, so the next candidate is tried; the athlete's named exercise is asked about.
+  if(slipsFrom(ctx,r.proposal,X.id,to.id)){if(named)return {action:'ASK',reason:to.id+' is already in a session with '+X.id+', so it cannot take its place there; name another exercise of the same pattern, or leave the choice to the plan',missingInputs:['substitution.to']};continue;}
+  // A substitute that an equipment window ahead leaves without a lower option is asked about, never replaced by a harder one (QE-R7B-R2-03).
+  const gap=skillMismatchGap(ctx,r.proposal);if(gap)return gap;
+  // The replaced exercise leaves every session ahead and the selected one takes its place; otherwise nothing is proposed and the athlete is asked.
+  const proposed=r.proposal.weeks.slice(w).flatMap(x=>x.sessions).filter(s=>ctx.ahead(s)&&s.status!=='SKIPPED'),later=proposed.filter(s=>s.prescription?.modality==='STRENGTH'),has=id=>later.some(s=>s.prescription.exercises.some(e=>e.id===id));
+  // QE-R7B-OBS-04: in the taper, race and post-event weeks the planner keeps a substitute this program has not performed out of the sessions (a
+  // configuration already performed stands in, or the slot is left out), so the substitute may first appear after the post-event week.
+  const stands=proposed.flatMap(s=>(s.eventStandIns??[]).filter(g=>g.setAside===X.id&&g.selected===to.id).map(g=>({...g,week:s.weekIndex,sessionId:s.id})));
+  if(has(X.id)||!has(to.id)&&!stands.length)return {action:'ASK',reason:to.id+' cannot take the place of '+X.id+' in the sessions ahead; name another exercise of the same pattern',missingInputs:['substitution.to']};
+  const event=stands.length?eventWeekDisclosure(X,to,stands,has(to.id)):null;
+  return {...r,...(event?{reason:r.reason+'; no new exercise starts in the taper, race or post-event weeks, so '+to.id+' starts after the post-event week',disclosures:[...(r.disclosures??[]),event]}:{}),substitutions:[{exerciseId:X.id,selected:to.id,reason,requiresEstablishment:true,stimulusChange:X.loading==='EXTERNAL'&&to.loading!=='EXTERNAL'?'A bodyweight or band exercise in place of a loaded one is a different stimulus, not an equivalent':null,...(event?{eventWeeks:{standIns:event.standIns,omittedSessions:event.omittedSessions,weeks:event.weeks,startsAfterEvent:has(to.id)}}:{})}]};
+ }
+ return {action:'ASK',reason:'Every admissible alternative of the same pattern ('+candidates.map(e=>e.id).join(', ')+') is already in a session with '+X.id+', so none can take its place there; options: add equipment, or keep '+X.id,missingInputs:['substitution.to'],disclosures:[{id:'NO_ADMISSIBLE_ALTERNATIVE',blocking:false,pattern:X.pattern,options:['Add equipment','Keep '+X.id]}]};
+}
+/** QE-R7B-01 (its residual QE-R7B-R2-04): a template slot that held the replaced configuration, in a context in force from this week, that does not
+ * hold the decision's configuration after it (that configuration is already in the session, so the slot fell back or stayed unfilled). */
+function slipsFrom(ctx,proposal,xId,toId){
+ const before=skeletonOf(ctx.program,ctx.authority),after=skeletonOf(proposal,ctx.authority),seen=new Set();
+ for(let k=ctx.w;k<proposal.weeks.length;k++){
+  const b=before.at(k)??before,a=after.at(k)??after;if(seen.has(a))continue;seen.add(a);
+  for(const key of ['templates','noviceTemplates'])for(const t of b[key]??[]){
+   const t2=(a[key]??[]).find(x=>x.type===t.type&&x.index===t.index)??(a[key]??[]).find(x=>x.type===t.type);
+   for(const row of t.rows.filter(r=>r.entry.id===xId))if(t2?.rows.find(r=>r.slot===row.slot)?.entry.id!==toId)return true;
+  }
+ }
+ return false;
+}
+/** The disclosure of a substitution whose new configuration waits for the end of the event weeks (QE-R7B-OBS-04; R6-SUBSTITUTION condition 8). */
+function eventWeekDisclosure(X,to,stands,startsAfter){
+ const standIns=[...new Set(stands.map(g=>g.inEventWeeks).filter(Boolean))].sort(),left=stands.filter(g=>!g.inEventWeeks),weeks=[...new Set(stands.map(g=>g.week))].sort((a,b)=>a-b);
+ const instead=standIns.length?`${standIns.join(' or ')}, already done in this program, takes the place of ${X.id}${left.length?' where it fits, and the slot is left out of the other sessions':''}`:`the place of ${X.id} is left out of those sessions (no exercise already done in this program fits it)`;
+ return {id:'NO_NEW_EXERCISE_IN_EVENT_WEEKS',blocking:false,exerciseId:X.id,selected:to.id,standIns,omittedSessions:[...new Set(left.map(g=>g.sessionId))],weeks,
+  detail:`${to.id} is new in this program, and no new exercise starts in the taper, race week or post-event week: in those weeks ${instead}. ${to.id} starts after the post-event week${startsAfter?' with effort-guided establishment':', beyond this program'}`,
+  options:['Keep this plan',`Keep ${X.id} until after the event instead: make this change after the post-event week`],basis:'R6-EVENT-TRANSITION condition 7; B0-C05 condition 1; R6-SUBSTITUTION condition 8 (QE-R7B-OBS-04)'};
 }
 const CONFIGURATIONS_SAME=X=>CATALOG_CONFIGURATIONS.filter(e=>e.pattern===X.pattern&&e.id!==X.id);
+/**
+ * QE-R7B-R2-03: a slot whose configuration was set aside for a SKILL_MISMATCH, whose substitute no longer fits and which has no configuration in the
+ * direction of that reason (buildTemplates `asideGaps`), in a context in force from this week or an equipment window still ahead. The plan never
+ * climbs the ladder in its place: the decision asks (keep the equipment, or name the exercise). Null when there is none.
+ */
+function skillMismatchGap(ctx,next){
+ const sk=skeletonOf(next,ctx.authority),seen=new Set(),gaps=[],collect=(list,on)=>{for(const t of list??[])for(const g of t.asideGaps??[])gaps.push({...g,on});};
+ for(let k=ctx.w;k<next.weeks.length;k++){
+  const s=sk.at(k)??sk;if(seen.has(s))continue;seen.add(s);collect(s.templates,null);collect(s.noviceTemplates,null);
+  for(const win of (s.c.equipmentWindows??[]).filter(x=>!x.to||x.to>=ctx.asOfLocal)){collect(s.templatesFor(win.equipment),win);if(s.noviceTemplates)collect(s.templatesFor(win.equipment,{capped:true}),win);}
+ }
+ const g=gaps[0];if(!g)return null;
+ const need=[...new Set((configurationOf(g.substitute)?.equipment??[]).filter(q=>q!=='BODYWEIGHT'))].map(q=>q.toLowerCase().replace(/_/g,' ')),when=g.on?` from ${g.on.from}${g.on.to?' to '+g.on.to:''}`:'',p=g.pattern.toLowerCase();
+ return {action:'ASK',reason:`${g.substitute} needs ${need.join(' and ')||'equipment'} that is not available${when}, and ${g.setAside} was set aside because it could not be done with steady technique; no lower ${p} exercise fits the equipment left, and the plan never moves to a harder one in its place: keep that equipment, or name the ${p} exercise to use (an exercise substitution)`,missingInputs:['changes.equipment','substitution.to'],
+  disclosures:[{id:'NO_LOWER_SKILL_ALTERNATIVE',blocking:false,pattern:g.pattern,setAside:g.setAside,substitute:g.substitute,...(g.on?{window:{from:g.on.from,to:g.on.to??null}}:{}),options:['Keep the equipment',`Name a ${p} exercise`],basis:'Catalog SKILL_MISMATCH rule; B0-C07 condition 1; QE-R7B-R2-03'}],
+  counterfactuals:[counter('HARDER_FALLBACK','SUBSTITUTE',false,'A configuration above the one the athlete could do would raise the skill demand when equipment is lost'),counter('ASK','ASK',true,'Keeping the equipment or naming the exercise is the athlete’s decision',{selected:true})]};
+}
 function targetSession(ctx){const id=ctx.review.targetSessionId??ctx.review.event.sessionId;return ctx.program.weeks.flatMap(x=>x.sessions).find(s=>s.id===id)??null;}
 function missedSession(ctx){
  const {program,sk,w,review}=ctx,target=targetSession(ctx);
@@ -650,7 +709,7 @@ function rebuild(ctx,{canonical=null,goals=false,fromWeek=ctx.w+1,reason,action,
  const projected=composeWeeks(own,next,{fromWeek,start,startAuthority,evidence:evidenceRule(own)});
  if(projected.ask)return {action:'ASK',reason:projected.ask,missingInputs:projected.missingInputs};
  const disclosures=arrangementDisclosures(trace.choices),negotiation=[...(program.negotiation??[]).filter(n=>n.id!=='ARRANGEMENT_COST_DISCLOSED'||!trace.contexts.includes(n.context)),...disclosures];
- const fields={weeks:projected.weeks,stateTrace:projected.stateTrace,schedule:next.canonical.schedule,canonical:next.canonical,templates:next.templates,arrangementSessions:next.arrangementSessions,phases:next.phases,blocks:next.blocks,goal:next.goal,negotiation,contextBefore:next.contextBefore??null};
+ const fields={weeks:projected.weeks,stateTrace:projected.stateTrace,schedule:next.canonical.schedule,canonical:next.canonical,templates:next.templates,noviceTemplates:next.noviceTemplates??null,arrangementSessions:next.arrangementSessions,phases:next.phases,blocks:next.blocks,goal:next.goal,negotiation,contextBefore:next.contextBefore??null};
  const applied=fromWeek===ctx.w+1?gates:null;
  const proposal=finishProposal(program,sk,fields,{eventId:review.event.id,asOf:ctx.asOf,action,fromWeek,reason,arrangement:trace.traces,horizonsConsidered:HORIZONS,...(applied?{gates:applied}:{})});
  return {action,reason,proposal,sk,gates:applied,disclosures,counterfactuals:[counter('KEEP','KEEP',false,'The current plan no longer fits the stated facts'),counter(action,action,true,reason,{selected:true,changeCount:changedSessions(program,proposal)})],horizons:horizonSummary(sk,program,proposal,{w:ctx.w,changed:changedSessions(program,proposal)})};
@@ -730,8 +789,10 @@ function equipmentChange(ctx){
  // A newer statement wins (C5): a permanent change ends every earlier window on the day before it starts.
  const before=list=>list.filter(x=>x.from<from).map(x=>!x.to||x.to>=from?{...x,to:onDate(from,-1)}:x);
  const changed=withContextChange(ctx,program,w,base=>{const canonical=clone(base.canonical);if(permanent){canonical.athlete.equipment=equipment;const kept=before(canonical.equipmentWindows??[]);if(kept.length)canonical.equipmentWindows=kept;else delete canonical.equipmentWindows;}else canonical.equipmentWindows=[...(canonical.equipmentWindows??[]),{from,to,equipment}];const established=Object.keys((ctx.base??program.stateTrace[w])?.strength?.exercises??{});return {...base,canonical,templates:permanent?strengthTemplates(canonical,base.goal,{knownOnly,auth:authority.repertoire,established}):base.templates,...(base.noviceTemplates?{noviceTemplates:permanent?strengthTemplates(canonical,base.goal,{knownOnly,auth:authority.repertoire,established,capped:true}).map(t=>({...t,densityCapped:true})):base.noviceTemplates}:{})};});
+ // After a SKILL_MISMATCH the plan never climbs in place of a substitute whose equipment goes: without a lower option it asks (QE-R7B-R2-03).
+ const next=changed.program,gap=skillMismatchGap(ctx,next);if(gap)return gap;
  // Only strength is re-planned, from the sessions still ahead (C1, C6), keeping next week's start and this week's adaptations (C3, C4).
- const next=changed.program,composed=composeWeeks(ctx,next,{fromWeek:w,sports:['STRENGTH'],evidence:evidenceRule(ctx)});
+ const composed=composeWeeks(ctx,next,{fromWeek:w,sports:['STRENGTH'],evidence:evidenceRule(ctx)});
  if(composed.ask)return {action:'ASK',reason:composed.ask,missingInputs:composed.missingInputs};
  const swaps=[],omitted=[];
  for(const wk of program.weeks.slice(w))for(const s of wk.sessions){
@@ -743,11 +804,11 @@ function equipmentChange(ctx){
  // Nothing to substitute now: the statement is still the athlete's equipment on its dates, recorded so a later plan or move keeps it (QE-R7A1-01).
  if(!inWindow.length&&!omitted.length){
   const keep=[counter('KEEP','KEEP',true,'No change needed',{selected:true})];if(hash(next.canonical)===hash(program.canonical))return {action:'KEEP',reason:'Planned exercises already fit the available equipment',counterfactuals:keep};
-  const recorded=finishProposal(program,composed.sk,{weeks:composed.weeks,stateTrace:composed.stateTrace,canonical:next.canonical,templates:next.templates,contextBefore:next.contextBefore??null},{eventId:review.event.id,asOf:ctx.asOf,action:'KEEP',fromWeek:w,window:{from,to},permanent,swaps:[],omitted:[],horizonsConsidered:HORIZONS});
+  const recorded=finishProposal(program,composed.sk,{weeks:composed.weeks,stateTrace:composed.stateTrace,canonical:next.canonical,templates:next.templates,noviceTemplates:next.noviceTemplates??null,contextBefore:next.contextBefore??null},{eventId:review.event.id,asOf:ctx.asOf,action:'KEEP',fromWeek:w,window:{from,to},permanent,swaps:[],omitted:[],horizonsConsidered:HORIZONS});
   return {action:'KEEP',instantiationOnly:true,reason:'Planned exercises already fit the available equipment; the equipment is recorded for the dates stated',proposal:recorded,counterfactuals:keep};
  }
  const substitutions=[...new Map(inWindow.map(x=>[x.from+'>'+x.to,{exerciseId:x.from,selected:x.to,pattern:x.pattern,requiresEstablishment:x.requiresEstablishment,stimulusChange:x.stimulusChange,reason:`Same ${x.pattern.toLowerCase()} intent with available equipment${x.requiresEstablishment?'; the new task starts with effort-guided establishment':''}; no load is converted`}])).values()];
- const proposal=finishProposal(program,composed.sk,{weeks:composed.weeks,stateTrace:composed.stateTrace,canonical:next.canonical,templates:next.templates,contextBefore:next.contextBefore??null},{eventId:review.event.id,asOf:ctx.asOf,action:'SUBSTITUTE',fromWeek:w,window:{from,to},permanent,swaps:inWindow,omitted,horizonsConsidered:HORIZONS});
+ const proposal=finishProposal(program,composed.sk,{weeks:composed.weeks,stateTrace:composed.stateTrace,canonical:next.canonical,templates:next.templates,noviceTemplates:next.noviceTemplates??null,contextBefore:next.contextBefore??null},{eventId:review.event.id,asOf:ctx.asOf,action:'SUBSTITUTE',fromWeek:w,window:{from,to},permanent,swaps:inWindow,omitted,horizonsConsidered:HORIZONS});
  return {action:'SUBSTITUTE',reason:'Equipment changed: same-intent substitutes '+(permanent?'from now on':to?`from ${from} to ${to}`:`from ${from} on`)+'; unfamiliar ones are established by effort; the stimulus change is disclosed',proposal,sk:composed.sk,substitutions,counterfactuals:[counter('KEEP','KEEP',false,'Prescribing unavailable equipment is never valid'),counter('OMIT_STRENGTH','OMIT',false,'Omitting the session loses the strength stimulus when a same-intent substitute exists'),counter('SUBSTITUTE','SUBSTITUTE',true,'Same-intent substitutes that persist through later reviews',{selected:true})],horizons:{H0_SESSION:`${inWindow.length} exercise substitution(s)${omitted.length?`, ${omitted.length} pattern(s) without a substitute disclosed`:''}`,H1_WEEK:'Session count and days unchanged; running unchanged',H2_BLOCK:'No progression on a substitute in its first exposure; originals resume after a temporary window from their last logged load',H3_GOAL_EVENT:'Strength goal continues through same-intent movements'}};
 }
 function goalChange(ctx){
