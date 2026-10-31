@@ -2,17 +2,18 @@ import {clone,freeze,hash} from './value.mjs';
 import {r6Authority,allows} from './r6-authority.mjs';
 import {validProgram,programHash,skeletonOf,advanceRun,advanceStrength,strengthAtBreak,historicalStrength,historicalRun,loggedLoadDecision,adoptionBasis,asEstablishment,heldKnownLoad,resolveExercisePrescription,dayPhaseOf,startStrengthReturn,eventCompletionItem,validateWeeks,peakOf,contextOf,arrangementCandidates,arrangementDisclosures,strengthTemplates,planPhases,buildGoalModel,blocksFrom,goalDose,runTarget,runMinutesOf,plannedOf,plannedStrengthOf,anchoredStart,projectedStart,WEEK_START,EVENT_PHASES,DEVELOPMENT,BLOCK_INTENT} from './r6-program.mjs';
 import {chooseBalanced,interferenceCosts,SEVERITY} from './r6-balanced.mjs';
-import {substitutesFor,catalogueEntry} from './r6-catalogue.mjs';
+import {substitutesFor,catalogueEntry,CATALOGUE as CATALOG_CONFIGURATIONS} from './r6-catalogue.mjs';
 import {exerciseRow,fitStrengthSession,strengthPrescription,easyPrescription,validateR6Prescription} from './r6-prescription.mjs';
 import {aheadOf,usedInWeek,rebasedNext,returnOf,beforeReturn,moveCandidates,choose,counter,rank,fatigueSessions,unavailableSessions,missedMove,conflictSessions,waitSessions,adaptThisWeek,adaptation,withContextChange,composeWeeks,weekAsPlanned,conditionalNext} from './r6-composition.mjs';
 import {createLearningModel,updateLearningModel,validateLearningModel,evidenceFor,preferredArrangement,classify} from './r6-learning.mjs';
 import {normalizeObservations,utcTimestamp,localDate} from './r6-provenance.mjs';
 import {onDate,dayGap,isoDay,LB_TO_KG,toKilograms,RUN_GOALS,STRENGTH_GOALS,EVENTS} from './r6-intake.mjs';
 import {screenInterruptionReason,isYes} from './r6-clinical.mjs';
+import {repertoireAuthority,repertoireBinding,allowsCandidate,NO_KG_CONVENTIONS,incrementFor,kgText,configurationOf,ladderNext,ladderPrevious,ladderChangesSubpattern,admitted,skillRank,RUN_CLASS_THRESHOLDS,ROTATION_DEFERRED_PHASES} from './r7b-repertoire.mjs';
 
 export const REVIEW_VERSION='R6-REVIEW-1';
 const KIND_ALIASES={REVIEW:'WEEKLY_REVIEW',MISSED_ESSENTIAL:'MISSED_SESSION',MISSED_OPTIONAL:'MISSED_SESSION',RETURN:'RETURN_AFTER_PAUSE',CONFLICT:'DOUBLE_CONFLICT',DOUBLE_INFEASIBLE:'DOUBLE_CONFLICT',EVENT_NEAR:'EVENT_WEEK_CONFLICT',SESSION_MOVED:'UNAVAILABLE_DAY',TRAVEL:'EQUIPMENT_CHANGE',SUBSTITUTION_NEED:'EQUIPMENT_CHANGE'};
-export const REVIEW_KINDS=['WEEKLY_REVIEW','MISSED_SESSION','PARTIAL_SESSION','UNDERPERFORMANCE','OVERPERFORMANCE','PROGRESSION_NOT_TOLERATED','PROGRESSION_TOO_EASY','LOCAL_FATIGUE','SYSTEMIC_FATIGUE','SCHEDULE_CHANGE','UNAVAILABLE_DAY','DOUBLE_CONFLICT','EQUIPMENT_CHANGE','GOAL_CHANGE','EVENT_DATE_CHANGE','RETURN_AFTER_PAUSE','EVENT_WEEK_CONFLICT','RECOVERED'];
+export const REVIEW_KINDS=['WEEKLY_REVIEW','MISSED_SESSION','PARTIAL_SESSION','UNDERPERFORMANCE','OVERPERFORMANCE','PROGRESSION_NOT_TOLERATED','PROGRESSION_TOO_EASY','LOCAL_FATIGUE','SYSTEMIC_FATIGUE','SCHEDULE_CHANGE','UNAVAILABLE_DAY','DOUBLE_CONFLICT','EQUIPMENT_CHANGE','GOAL_CHANGE','EVENT_DATE_CHANGE','RETURN_AFTER_PAUSE','EVENT_WEEK_CONFLICT','RECOVERED','EXERCISE_SUBSTITUTION'];
 const HORIZONS=['H0_SESSION','H1_WEEK','H2_BLOCK','H3_GOAL_EVENT'];
 const CLINICAL_KEYS=['pain','persistentPain','injury','illness','functionalLimitation','clinicalConcern'];
 export const sessionType=s=>s.sport==='RUN'?'RUN:'+s.role:'STRENGTH:'+(s.templateType??s.prescription?.family??'SESSION');
@@ -54,9 +55,10 @@ function strengthLogs(o,s){
   if(!e||typeof e!=='object')continue;
   const planned=s.prescription.exercises.find(x=>x.id===e.id),sets=Array.isArray(e.sets)?e.sets.filter(x=>x&&typeof x==='object'):[];
   if(!planned||!sets.length)continue;
-  const conv=planned.load.convention,raw=sets.map(x=>typeof x.load==='number'?x.load:x.load?.value).filter(Number.isFinite);
+  const conv=planned.load.convention,raw=NO_KG_CONVENTIONS.includes(conv)?[]:sets.map(x=>typeof x.load==='number'?x.load:x.load?.value).filter(Number.isFinite);
   // Unit and convention decide whether a value can be read; its size is judged later (an implausible value is asked, not unknown).
-  const read=x=>{const l=x.load;if(l===undefined||l===null||conv==='BODYWEIGHT')return {kg:null,unknown:false};if(typeof l==='number')return Number.isFinite(l)?{kg:l,unknown:false}:{kg:null,unknown:true};
+  // Bodyweight, band and assistance rows carry no kilogram: a logged band or assistance value is never read as a load (B0-C04).
+  const read=x=>{const l=x.load;if(l===undefined||l===null||NO_KG_CONVENTIONS.includes(conv))return {kg:null,unknown:false};if(typeof l==='number')return Number.isFinite(l)?{kg:l,unknown:false}:{kg:null,unknown:true};
    const c=l.convention??conv,u=typeof l.unit==='string'?l.unit.trim().toUpperCase():null;if(c!==conv||!Number.isFinite(l.value))return {kg:null,unknown:true};
    return u==='KG'?{kg:l.value,unknown:false}:u==='LB'?{kg:Math.round(l.value*LB_TO_KG*2)/2,unknown:false}:{kg:null,unknown:true};};
   const readings=sets.map(read),unitUnknown=readings.some(r=>r.unknown);
@@ -97,7 +99,7 @@ function loggedLoadQuestions(program,sk,w,ev,{gates=null,confirmations={},base=n
   const k=G?G[id]??G.STRENGTH??G.ALL:null,own=deciding[id]?.sessionId===row.sessionId;
   const d=loggedLoadDecision(sk.op.strength,adoptionBasis(state[id],u),u,{load,convention:l.convention,confirmed:!!c,earlier:own?deciding[id].earlier:null},{advanced:k?['ADVANCE','EARNED'].includes(k):null,hint:sk.cap?.strength?.loadHints?.[id]??null});
   if(d.adopted&&!d.capped||d.pending&&!own)continue;
-  const kg=`${load} kg${l.convention==='PER_HAND'?' per hand':''}`;
+  const kg=kgText(load,l.convention);
   out.push({exerciseId:id,sessionId:row.sessionId,logged:load,planned:d.planned??null,reason:d.reason,...(c?{confirmed:true}:{}),question:`${c?'The confirmed':'Confirm the'} ${kg} ${c?'for':'logged for'} ${id}${d.planned!=null?` (planned ${d.planned} kg)`:''}: ${d.capped?'the next load stays at the earlier ceiling':WHY_NOT_USED[d.reason]??'it was not used to set the next load'}`});
  }
  return out;
@@ -289,8 +291,10 @@ export function evaluateProgram(program,review,options={}){
  const base={runtimeVersion:'R6-1',mode:'SHADOW',applied:false,proposal:null,officialPlanState:official,appliedState:clone(official),completedWork:clone(program?.completedWork??[]),horizonsConsidered:HORIZONS,qualityAssessment:{assessor:'RUNTIME_SELF_CHECK',independent:false,class:'UNREVIEWED'},missingInputs:[],counterfactuals:[]};
  const finish=(status,action,reason,extra={})=>freeze(withReference(program,review,{...base,status,action,reason,...extra}));
  if(!validProgram(program))return finish('HOLD','HOLD','Program integrity or version is invalid');
- const authority=r6Authority(options);
+ // The repertoire authority is read at the review's date; the program must have been planned under the same catalog (R7-B, fail closed).
+ const authority0=r6Authority(options),authority={...authority0,repertoire:authority0.repertoire??repertoireAuthority({...options,asOf:typeof review?.asOf==='string'?review.asOf:null})};
  if(!authority.policy||authority.policyHash!==program.policyHash||!allows(authority,'R6-PLANNED-PROGRESSION'))return finish('UNSUPPORTED','UNSUPPORTED','Current independent program authority is missing or does not match the program policy');
+ if(!authority.repertoire.valid||program.repertoire?.catalogSha256!==authority.repertoire.catalogSha256)return finish('UNSUPPORTED','UNSUPPORTED','The program was not planned under the bound repertoire catalog, or that catalog and its SSCTR records are unavailable');
  const errors=[],missing=[],kind=KIND_ALIASES[review?.event?.kind]??review?.event?.kind,tz=program.timezoneOffsetMinutes??0,asOf=utcTimestamp(review?.asOf);
  if(review?.version!==REVIEW_VERSION||review?.synthetic!==true||review?.purpose!=='SHADOW_REFERENCE')errors.push('syntheticReviewContract');
  if(!asOf)errors.push('asOf.timezoneAwareTimestamp');
@@ -323,7 +327,7 @@ export function evaluateProgram(program,review,options={}){
  try{
   // Causal provenance: only facts observed and reported by the decision clock count; the actual ledger is append-only.
   const priorLedger=Array.isArray(review.actualLedger)?clone(review.actualLedger):[];
-  const n=normalizeObservations(review.observations??[],{athleteId:program.athleteId,asOf,prior:priorLedger,maximumAgeDays:36500,futureSkewSeconds:authority.policy.operational.learning.futureClockSkewSeconds,timezoneOffsetMinutes:tz,loadIncrements:authority.policy.operational.strength.smallestIncrement});
+  const n=normalizeObservations(review.observations??[],{athleteId:program.athleteId,asOf,prior:priorLedger,maximumAgeDays:36500,futureSkewSeconds:authority.policy.operational.learning.futureClockSkewSeconds,timezoneOffsetMinutes:tz,loadIncrements:{...authority.policy.operational.strength.smallestIncrement,SINGLE_IMPLEMENT:incrementFor(authority.policy.operational.strength,'SINGLE_IMPLEMENT')}});
   const {bound,unbound}=bindObservations(program,n.accepted,authority.policy.operational.hybrid,authority.policy),ledger=[...bound,...unbound];
   // Conflicted facts stay in the record but never count for gating counts, capacity or learning until corrected (QRE-R6-14).
   const usable=ledger.filter(o=>!o.conflicted),usableBound=bound.filter(o=>!o.conflicted);
@@ -358,7 +362,7 @@ export function evaluateProgram(program,review,options={}){
    if(v.length)return finish('UNSUPPORTED','UNSUPPORTED','Counterfactual failed complete validation; no partial change is presented as valid',{...out,errors:v,counterfactuals:decision.counterfactuals??[]});
   }
   const status=decision.status??(decision.proposal&&!decision.instantiationOnly?'MODIFY':decision.action==='ASK'?'ASK':'KEEP');
-  return finish(status,decision.action,decision.reason,{...out,proposal:decision.proposal??null,disclosures:decision.disclosures??[],learnedPatterns:decision.learnedPatterns??null,substitutions:decision.substitutions??null,instantiationOnly:!!decision.instantiationOnly,gates:decision.gates??null,counterfactuals:decision.counterfactuals??[],horizons:decision.horizons??null,missingInputs:decision.missingInputs??[],question:decision.question??null,trace:{sourceProgramHash:program.hash,reviewHash:hash(review),policyHash:authority.policyHash,modelBeforeHash:review.athleteModel?.hash??null,modelAfterHash:model.hash,ledgerSize:ledger.length,authoritySplit:'Reusable boundaries constrain; coaching compares concrete feasible options',noCausalClaim:true},nextObservation:decision.nextObservation??'Record actual execution, effort if known and next-day function; the next step advances only on that evidence'});
+  return finish(status,decision.action,decision.reason,{...out,proposal:decision.proposal??null,disclosures:decision.disclosures??[],offers:decision.offers??[],learnedPatterns:decision.learnedPatterns??null,substitutions:decision.substitutions??null,instantiationOnly:!!decision.instantiationOnly,gates:decision.gates??null,counterfactuals:decision.counterfactuals??[],horizons:decision.horizons??null,missingInputs:decision.missingInputs??[],question:decision.question??null,trace:{sourceProgramHash:program.hash,reviewHash:hash(review),policyHash:authority.policyHash,modelBeforeHash:review.athleteModel?.hash??null,modelAfterHash:model.hash,ledgerSize:ledger.length,authoritySplit:'Reusable boundaries constrain; coaching compares concrete feasible options',noCausalClaim:true},nextObservation:decision.nextObservation??'Record actual execution, effort if known and next-day function; the next step advances only on that evidence'});
  }catch(e){return finish('HOLD','HOLD','Malformed review facts: '+e.message,{...(out??{}),errors:['malformed:'+(e?.constructor?.name??'Error')]});}
 }
 const dayOf=v=>typeof v==='string'&&isoDay(v.slice(0,10))?v.slice(0,10):null;
@@ -381,6 +385,12 @@ function weeklyReview(ctx,{extraReason=null,systemicSignal=false}={}){
  // still ahead before any handler decides (factualReplan).
  if(ev.pending)return {action:'KEEP',reason:(extraReason?extraReason+'; ':'')+'next-week steps are gated when this week’s remaining sessions are complete',counterfactuals:[counter('KEEP','KEEP',true,'Smallest effective decision mid-week',{selected:true}),counter('EARLY_GATE','HOLD_NEXT_STEP',false,'Gating before the week ends would treat future sessions as missed')]};
  const {gates,reasons}=weeklyGates(program,sk,w,ev,ledger,asOf,{systemic,base:ctx.base});
+ // R7-B block boundary (B0-C01, B0-C06, B0-C07): graduation, ladder offers, MAIN changes with a recorded reason and the block summary, all on
+ // executed evidence at the boundary of a development block; accepted changes re-plan from next week through the context (the evidence reducer
+ // replays them). Nothing changes on the calendar alone.
+ const boundary=blockBoundary(ctx,gates);
+ if(boundary.ask)return boundary.ask;
+ if(boundary.changes){const r=rebuild(ctx,{canonical:boundary.changes,fromWeek:w+1,reason:boundary.reason,action:boundary.action});return r.proposal?{...r,offers:boundary.offers,disclosures:[...(r.disclosures??[]),...boundary.disclosures]}:r;}
  const logs=loggedLoads(ev,confirmationsOf(ctx)),allAdvance=Object.values(gates).every(g=>g==='ADVANCE');
  const rebased=rebasedNext(program,w),skn=sk.at(w+1)??sk;
  // A dimension with no executed session this week has no gate: it holds, it never counts as executed (QRE-R6-04). The review's rule applies to
@@ -396,7 +406,7 @@ function weeklyReview(ctx,{extraReason=null,systemicSignal=false}={}){
  const keep=counter('KEEP','KEEP',keepOk,keepOk?'Every gated session executed without adverse signal: the planned next step stands':allAdvance?'Logged loads differ from the planned loads or placeholders; keeping them would ignore executed evidence':'Planned next step would advance work that was not executed or tolerated as planned',{h3Loss:0,changeCount:0,order:0});
  const gated=counter('GATED_NEXT_STEP',allAdvance?(knownChanged?'ADOPT_LOGGED_LOADS':Object.keys(logs).length?'INSTANTIATE_LOGGED_LOADS':'KEEP'):'HOLD_OR_REGRESS_NEXT_STEP',true,'Smallest valid change: repeat or step back only the affected session types; everything else proceeds',{changeCount:changed,order:1,gates});
  const replan=counter('REBASE_BLOCK','LARGER_REPLAN',systemic&&Object.values(gates).filter(g=>g==='REGRESS').length>=2,'A wider rebase is justified only by repeated converging adverse evidence',{changeCount:changed+3,order:2});
- if(keepOk)return {action:'KEEP',reason:extraReason??(rebased&&!allAdvance?'The return reported this week already plans next week; this review keeps it':'Executed as planned without adverse signal; the planned progression step stands'),gates,counterfactuals:[{...keep,selected:true},{...gated,admissible:false,reason:'No difference from the plan'},replan],nextObservation:'Execute next week as planned; record actual minutes, sets, reps, loads, effort and next-day function'};
+ if(keepOk)return {action:'KEEP',offers:boundary.offers,disclosures:boundary.disclosures,reason:extraReason??(rebased&&!allAdvance?'The return reported this week already plans next week; this review keeps it':'Executed as planned without adverse signal; the planned progression step stands'),gates,counterfactuals:[{...keep,selected:true},{...gated,admissible:false,reason:'No difference from the plan'},replan],nextObservation:'Execute next week as planned; record actual minutes, sets, reps, loads, effort and next-day function'};
  const action=allAdvance?(knownChanged?'ADOPT_LOGGED_LOADS':'INSTANTIATE_LOGGED_LOADS'):'GATED_NEXT_STEP';
  const decision={eventId:ctx.review.event.id,asOf,action,fromWeek:w+1,gates,reasons,horizonsConsidered:HORIZONS};
  const proposal=finishProposal(program,sk,projected,decision);
@@ -404,8 +414,123 @@ function weeklyReview(ctx,{extraReason=null,systemicSignal=false}={}){
  gated.selected=true;
  const wait=pending.length?`first logged loads wait for confirmation before they become numbers (${pending.join(', ')})`:null,instantiated=Object.keys(logs).some(id=>Number.isFinite(logs[id].load)&&!pending.includes(id));
  const why=extraReason??(action==='ADOPT_LOGGED_LOADS'?'Executed loads differ from the planned known loads; the plan continues from what was lifted, one step at a time':action==='INSTANTIATE_LOGGED_LOADS'?(instantiated||!wait?'Logged loads replace planned placeholders; the progression rule is unchanged':'The progression rule is unchanged'):'Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation');
- return {action,instantiationOnly:allAdvance&&!knownChanged,reason:wait?why+'; '+wait:why,proposal,gates,horizons,counterfactuals:[{...keep,whyLost:keep.admissible?null:keep.reason},gated,replan]};
+ return {action,offers:boundary.offers,disclosures:boundary.disclosures,instantiationOnly:allAdvance&&!knownChanged,reason:wait?why+'; '+wait:why,proposal,gates,horizons,counterfactuals:[{...keep,whyLost:keep.admissible?null:keep.reason},gated,replan]};
 }
+// ---------- R7-B: block boundary and reason-based substitution ----------
+const DEV_FAMILIES=['BUILD','DEVELOPMENT','NEXT_BLOCK'];
+/** The executed continuous running minutes and days of a week's easy and long runs, from the completed-work ledger (walks excluded). */
+function runningMinutes(ctx,rows){
+ const by=new Map();for(const r of rows){const o=ctx.ledger.filter(x=>x.sessionId===r.sessionId).at(-1),m=Number(o?.actual?.minutes);if(Number.isFinite(m)&&m>0)by.set(r.date,(by.get(r.date)??0)+m);}
+ return {minutes:[...by.values()].reduce((n,x)=>n+x,0),days:by.size};
+}
+/**
+ * B0-C01 graduation evidence for week k: a non-establishment week that started in EASY mode, every easy and long run completed and reported, no
+ * adverse or conflicting run report, the weekly rule's EASY and LONG gates ADVANCE or EARNED, and at least the EASY_CURRENT boundary of executed
+ * continuous running (RUN_CLASS_THRESHOLDS: 60 minutes on 2 days). A week without that complete evidence has no gating review (R18).
+ */
+function graduationWeek(ctx,k){
+ const {program,sk}=ctx,T=RUN_CLASS_THRESHOLDS;
+ if(k<0)return {week:k,ok:false,why:'NO_WEEK'};
+ if(program.phases.phases[k]==='ESTABLISHMENT')return {week:k,ok:false,why:'ESTABLISHMENT_WEEK'};
+ const start=k===ctx.w?ctx.base:program.stateTrace[k];if(start?.run?.mode!=='EASY')return {week:k,ok:false,why:'NOT_EASY_MODE'};
+ const ev=weekEvidence(program,k,ctx.asOfLocal,ctx.ledger,ctx.quarantined??[]),run=ev.rows.filter(r=>r.sport==='RUN'),running=run.filter(r=>['EASY','LONG'].includes(r.role));
+ if(!running.length||running.some(r=>r.status!=='COMPLETED'))return {week:k,ok:false,why:'NOT_ALL_REPORTED'};
+ if(run.some(r=>['ADVERSE','CONFLICTING'].includes(r.kind)||r.status==='CONFLICTED'))return {week:k,ok:false,why:'ADVERSE_OR_CONFLICTED'};
+ const {gates}=weeklyGates(program,sk.at(k)??sk,k,ev,ctx.ledger,ctx.asOf,{base:start});
+ if(['EASY','LONG'].some(key=>running.some(r=>r.role===key)&&!['ADVANCE','EARNED'].includes(gates[key])))return {week:k,ok:false,why:'GATE_NOT_ADVANCE'};
+ const m=runningMinutes(ctx,running);
+ return {week:k,ok:m.minutes>=T.easyLowWeeklyMinutesBelow&&m.days>=T.easyLowRunDaysBelow,why:m.minutes>=T.easyLowWeeklyMinutesBelow&&m.days>=T.easyLowRunDaysBelow?'QUALIFIES':'BELOW_RUNNING_THRESHOLD',...m};
+}
+const choicesOf=review=>(Array.isArray(review?.choices)?review.choices:[]).filter(c=>c&&typeof c==='object');
+/**
+ * The boundary of a development block (the reviewed week ends one): graduation (B0-C01), skill-ladder offers and accepted steps (B0-C07), MAIN
+ * changes with a recorded reason (B0-C06) and the block summary. Returns the context change to apply from next week, if any.
+ */
+function blockBoundary(ctx,gates){
+ const {program,sk,w,review}=ctx,rep=sk.repertoire,P=program.phases.phases,next=P[w+1],out={offers:[],disclosures:[]};
+ const boundary=next!==undefined&&program.blocks.some(b=>DEV_FAMILIES.includes(b.family)&&b.endWeekExclusive===w+1);
+ const choices=choicesOf(review);
+ if(!boundary){if(choices.some(c=>['LADDER_STEP','MAIN_CHANGE'].includes(c.type)))return {ask:{action:'ASK',reason:'Exercise changes for a block are made at a block boundary review; this week does not end a block',missingInputs:['choices']}};return out;}
+ const c=program.canonical,goal=program.goal,cap=program.capability,base=ctx.base,returning=Object.values(base?.strength?.exercises??{}).some(e=>Number.isInteger(e.returnStep))||base?.run?.mode==='RETURN';
+ const nextDeferred=ROTATION_DEFERRED_PHASES.includes(next)||!DEV_FAMILIES.includes(next)&&next!=='CONSOLIDATION';
+ let graduation=null;const selections=[],reached=[],invalid=[],notes=[];
+ // B0-C01: graduation of a WALK_JOG-, RESTART- or EASY_LOW-started athlete, from executed evidence only, under every R6 quality gate.
+ const candidate=allowsCandidate(rep,'B0-C01')&&['WALK_JOG','RESTART','EASY_LOW'].includes(cap.run.class)&&!c.athlete.runGraduation&&['RACE','PERFORMANCE'].includes(goal.run.kind)&&c.schedule.runDays.length>=3&&allows(ctx.authority,'R6-RUN-QUALITY')&&DEV_FAMILIES.includes(next)&&base?.run?.mode==='EASY'&&!base.run.qualityRunner;
+ if(candidate){
+  const ending=program.blocks.find(b=>DEV_FAMILIES.includes(b.family)&&b.endWeekExclusive===w+1);
+  // Walk/jog and restart starters: the qualifying weeks lie in a block executed entirely in EASY mode after the exit.
+  const wholeEasy=!['WALK_JOG','RESTART'].includes(cap.run.class)||[...Array(w+1-ending.startWeek).keys()].map(i=>ending.startWeek+i).every(k=>(k===w?base:program.stateTrace[k])?.run?.mode==='EASY');
+  const weeks=[graduationWeek(ctx,w-1),graduationWeek(ctx,w)],declined=choices.some(x=>x.offer==='RUN_QUALITY_GRADUATION'&&String(x.decision).toUpperCase()==='DECLINE');
+  if(wholeEasy&&weeks.every(x=>x.ok)){
+   if(declined)out.disclosures.push({id:'RUN_QUALITY_GRADUATION_DECLINED',blocking:false,informational:true,detail:'You kept easy running; the harder session can be offered again at the next block review',basis:'B0-C01'});
+   else{graduation={fromWeek:w+1,decidedBy:review.event.id,asOf:ctx.asOf,qualifyingWeeks:weeks.map(({week,minutes,days})=>({week,minutes,days})),basis:'B0-C01'};out.disclosures.push({id:'RUN_QUALITY_INTRODUCED',blocking:false,detail:'Your last two weeks of running went well, so one harder threshold session a week starts next week at its first step and by feel (talk test about 6–7 of 10); the first one is a calibration with no pace target. In that week the other runs stay as they were. An easy run of the usual length is an equal alternative you can keep without penalty',options:['Keep the new session','Keep easy runs (no penalty; offered again at the next block review)'],basis:'B0-C01'});}
+  }else if(['WALK_JOG','RESTART','EASY_LOW'].includes(cap.run.class))out.disclosures.push({id:'RUN_QUALITY_NOT_YET',blocking:false,informational:true,weeks:weeks.map(({week,why,minutes,days})=>({week,why,minutes:minutes??null,days:days??null})),blockEntirelyEasy:wholeEasy,detail:'A harder session is introduced only after two complete weeks of easy running reach about an hour on at least two days without an adverse response, in a block run entirely as easy running',basis:'B0-C01'});
+ }
+ // B0-C07: one ladder step per configuration, offered (never applied) after final exposures ADVANCE or EARNED; never in deferred phases or returns.
+ const inUse=new Map();for(const s of program.weeks[w].sessions)for(const e of s.prescription?.exercises??[])if(e.role!=='PRACTICE')inUse.set(e.id,e.role);
+ const pref=c.athlete.strengthPreferences.rotation,available=new Set([...(sk.equipmentForDate?.(program.weeks[w+1]?.startDate??program.weeks[w].startDate)??c.athlete.equipment),'BODYWEIGHT']);
+ const horizontalPushKept=to=>[...inUse].some(([id])=>configurationOf(id)?.subpattern==='HORIZONTAL_PUSH'&&id!==to);
+ const stepOk=(x,y,role)=>{const e=configurationOf(y);return !!e&&admitted(e,rep)&&e.roles.includes(role)&&e.equipment.every(q=>available.has(q))&&!inUse.has(y)&&ladderNext(x).includes(y)&&(!ladderChangesSubpattern(x,y)||configurationOf(x)?.pattern!=='PUSH'||horizontalPushKept(x));};
+ const ladderOpen=allowsCandidate(rep,'B0-C07')&&!nextDeferred&&!returning;
+ if(ladderOpen&&pref!=='FIXED')for(const [x,role] of inUse)if(['ADVANCE','EARNED'].includes(gates[x]))for(const y of ladderNext(x))if(stepOk(x,y,role))out.offers.push({id:'LADDER_STEP',type:'LADDER_STEP',from:x,to:y,role,detail:`Next step on your skill ladder: ${y} instead of ${x}, from next week; it starts with effort-guided establishment from the lightest load (the empty bar for barbell lifts), technique first; you can always step back`,basis:'B0-C07'});
+ const MAIN_REASONS=['DELIBERATE_BLOCK_TRANSITION','EQUIPMENT_CHANGE','ATHLETE_PREFERENCE'],PURPOSES=['PHASE','GOAL_SPECIFICITY','EQUIPMENT','TECHNIQUE'];
+ const familiar=new Set((c.athlete.knownExercises??[]).filter(k=>k.familiar!==false).map(k=>k.id)),ladder=new Set([...(c.athlete.ladderReached??[])]),maxSkill=['NONE','NOVICE'].includes(c.athlete.strengthExperience)?0:1;
+ const skillOk=e=>familiar.has(e.id)||ladder.has(e.id)||skillRank(e.skill)<=maxSkill;
+ for(const ch of choices){
+  if(ch.type==='LADDER_STEP'){
+   const role=inUse.get(ch.from);
+   if(!ladderOpen||!role||!['ADVANCE','EARNED'].includes(gates[ch.from])||!stepOk(ch.from,ch.to,role)){invalid.push({choice:ch,why:!ladderOpen?'Ladder steps are not offered in this phase or during a return':!role?'The exercise is not in use':!['ADVANCE','EARNED'].includes(gates[ch.from])?'The exercise did not end the block progressing':'Not the next step on its ladder, or not available'});continue;}
+   selections.push({from:ch.from,to:ch.to,reason:'SKILL_PROGRESSION',fromWeek:w+1,decidedBy:review.event.id});reached.push(ch.to);
+  }else if(ch.type==='MAIN_CHANGE'){
+   const from=configurationOf(ch.from),to=configurationOf(ch.to),reason=String(ch.reason??'').toUpperCase(),purpose=ch.purpose==null?null:String(ch.purpose).toUpperCase();
+   const why=!allowsCandidate(rep,'B0-C06')?'MAIN changes at a block boundary are not available':nextDeferred||returning?'No MAIN change in this phase or during a return':inUse.get(ch.from)!=='MAIN'?'The exercise is not a main lift in use':!to||to.id===from?.id||to.pattern!==from.pattern||!to.primary.some(m=>from.primary.includes(m))||!to.roles.includes('MAIN')?'The new main lift must fill the same slot pattern and share a primary muscle':!admitted(to,rep)||!skillOk(to)||!to.equipment.every(q=>available.has(q))?'The new main lift is not admissible (skill or equipment)':!MAIN_REASONS.includes(reason)?'A main lift changes only with a recorded reason':reason==='DELIBERATE_BLOCK_TRANSITION'&&!PURPOSES.includes(purpose)?'A deliberate block transition states its training purpose (phase, goal specificity, equipment or technique), never variety alone':null;
+   if(why){invalid.push({choice:ch,why});continue;}
+   selections.push({from:from.id,to:to.id,reason,purpose,fromWeek:w+1,decidedBy:review.event.id});
+   if(goal.strength.kind==='STRENGTH')notes.push({id:'MAIN_CHANGE_LOAD_RESTARTS',blocking:false,informational:true,detail:`${to.id} replaces ${from.id}: its load starts again by effort, so progress is shown by block and by effort, not by the old lift's numbers`,basis:'B0-C06'});
+  }
+ }
+ if(invalid.length)return {ask:{action:'ASK',reason:'Some block choices cannot be applied: '+invalid.map(x=>x.why).join('; '),missingInputs:['choices'],invalidChoices:invalid}};
+ // The block summary: which doses moved across the block and which held through it (information only; no plateau threshold, LATER.STR.STAGNATION_RULE).
+ const ending=program.blocks.find(b=>DEV_FAMILIES.includes(b.family)&&b.endWeekExclusive===w+1),first=program.stateTrace[ending.startWeek];
+ if(first&&base){const held=[],moved=[];for(const [id,e] of Object.entries(base.strength?.exercises??{})){const f0=first.strength?.exercises?.[id];if(!f0||!inUse.has(id))continue;(f0.load===e.load&&f0.reps===e.reps&&(f0.sets??null)===(e.sets??null)?held:moved).push(id);}
+  for(const k of ['long','easy','qualityStep']){const a=first.run?.[k],b=base.run?.[k];if(Number.isFinite(a)&&Number.isFinite(b))(a===b?held:moved).push('run.'+k);}
+  out.disclosures.push({id:'BLOCK_REVIEW',blocking:false,informational:true,block:ending.id,moved,held,detail:held.length?'Some doses held through the whole block; that can be the right dose. At a block boundary a main lift can change for a stated reason, or an exercise can step back on its ladder':'Every dose moved during the block',options:['Keep the plan','Change a main lift with a reason','Step back on a skill ladder']});}
+ out.disclosures.push(...notes);
+ if(!graduation&&!selections.length)return out;
+ out.changes=x=>({...x,athlete:{...x.athlete,...(graduation?{runGraduation:graduation}:{}),...(selections.length?{strengthSelections:[...(x.athlete.strengthSelections??[]),...selections],ladderReached:[...new Set([...(x.athlete.ladderReached??[]),...reached])]}:{})}});
+ out.action=graduation&&selections.length?'BLOCK_BOUNDARY_CHANGES':graduation?'RUN_QUALITY_GRADUATION':'BLOCK_EXERCISE_CHANGES';
+ out.reason=[graduation?'Two complete weeks of easy running met the graduation evidence: the threshold ladder starts next week at its first step':null,selections.length?'Block-boundary exercise changes recorded with their reasons: '+selections.map(x=>x.from+' → '+x.to+' ('+x.reason.toLowerCase().replace(/_/g,' ')+')').join(', '):null].filter(Boolean).join('; ');
+ return out;
+}
+/**
+ * Reason-based substitution (DR-134; B0-C06 condition 8, B0-C07, B0-C09): it overrides the cadence, MAIN retention and a FIXED preference,
+ * never safety, policy or agency. The clinical screen comes first: pain, injury, illness or a functional limitation route to a human for the
+ * dependent scope; an unclear report is asked. SKILL_MISMATCH steps back along the skill ladder (or to a lower-skill configuration of the same
+ * pattern); a confirmed nonclinical dislike or discomfort takes the best same-pattern alternative (familiar, close variation, subpattern, pattern).
+ * The configuration set aside is never selected or rotated back; the new one starts with establishment; nothing is converted.
+ */
+function exerciseSubstitution(ctx){
+ const {program,review,w,sk}=ctx,sub=review.substitution&&typeof review.substitution==='object'?review.substitution:null,rep=sk.repertoire;
+ if(!sub||typeof sub.exerciseId!=='string')return {action:'ASK',reason:'Say which exercise should change and why',missingInputs:['substitution.exerciseId','substitution.reason']};
+ const text=typeof sub.text==='string'?sub.text:'',screen=text?screenInterruptionReason({reason:text,reasonCategory:null,nonclinical:null,clinicalReason:null}):null;
+ if(screen?.status==='CLINICAL'||isYes(sub.pain)||isYes(sub.injury))return {action:'CLINICAL_HUMAN_REQUIRED',status:'CLINICAL_HUMAN_REQUIRED',reason:'Pain, injury, illness or a functional limitation with '+sub.exerciseId+' routes to qualified human assessment; no exercise is substituted as a remedy',scope:{exerciseId:sub.exerciseId}};
+ const reason=String(sub.reason??'').toUpperCase();
+ if(!['SKILL_MISMATCH','NONCLINICAL_DISCOMFORT_OR_PREFERENCE'].includes(reason))return {action:'ASK',reason:'Say why the exercise should change: it cannot be done with steady technique, or a dislike or discomfort without pain',missingInputs:['substitution.reason']};
+ if(reason==='NONCLINICAL_DISCOMFORT_OR_PREFERENCE'&&sub.nonclinicalConfirmed!==true)return {action:'ASK',reason:'Confirm there is no pain, injury or functional limitation with this exercise; with pain it goes to a qualified person instead',missingInputs:['substitution.nonclinicalConfirmed']};
+ const X=configurationOf(sub.exerciseId),ahead=program.weeks.slice(w).flatMap(x=>x.sessions).filter(s=>ctx.ahead(s)),rows=ahead.flatMap(s=>s.prescription?.exercises??[]).filter(e=>e.id===sub.exerciseId);
+ if(!X||!rows.length)return {action:'ASK',reason:sub.exerciseId+' is not in the sessions still ahead',missingInputs:['substitution.exerciseId']};
+ const role=rows[0].role,c=program.canonical,available=new Set([...(c.athlete.equipment??[]),'BODYWEIGHT']),setAside=new Set([...(c.athlete.strengthSelections??[]).filter(x=>x.setAside).map(x=>x.from),X.id]);
+ const familiar=new Set((c.athlete.knownExercises??[]).filter(k=>k.familiar!==false).map(k=>k.id)),ladder=new Set(c.athlete.ladderReached??[]),maxSkill=['NONE','NOVICE'].includes(c.athlete.strengthExperience)?0:1;
+ const fits=e=>!!e&&admitted(e,rep)&&e.pattern===X.pattern&&e.roles.includes(role)&&e.equipment.every(q=>available.has(q))&&!setAside.has(e.id)&&(familiar.has(e.id)||ladder.has(e.id)||skillRank(e.skill)<=maxSkill);
+ let to=sub.to?configurationOf(sub.to):null;if(to&&!fits(to))return {action:'ASK',reason:sub.to+' cannot replace '+X.id+' here (pattern, role, skill or equipment)',missingInputs:['substitution.to']};
+ if(!to&&reason==='SKILL_MISMATCH')to=ladderPrevious(X.id).map(configurationOf).find(fits)??CONFIGURATIONS_SAME(X).filter(fits).filter(e=>skillRank(e.skill)<skillRank(X.skill)||e.kind!==X.kind).sort((a,b)=>skillRank(a.skill)-skillRank(b.skill)||(a.id<b.id?-1:1))[0]??null;
+ if(!to&&reason!=='SKILL_MISMATCH')to=substitutesFor(X.id,{equipment:[...available],experience:c.athlete.strengthExperience,known:c.athlete.knownExercises.filter(k=>k.familiar!==false),role,auth:rep}).map(e=>configurationOf(e.id)).find(fits)??null;
+ if(!to)return {action:'ASK',reason:'No admissible alternative of the same pattern fits your equipment and skill; options: add equipment, or keep '+X.id,missingInputs:['substitution.to'],disclosures:[{id:'NO_ADMISSIBLE_ALTERNATIVE',blocking:false,pattern:X.pattern,options:['Add equipment','Keep '+X.id]}]};
+ const selection={from:X.id,to:to.id,reason,fromWeek:w,setAside:true,decidedBy:review.event.id,...(sub.text?{statedReason:String(sub.text).slice(0,200)}:{})};
+ const r=rebuild(ctx,{canonical:x=>({...x,athlete:{...x.athlete,strengthSelections:[...(x.athlete.strengthSelections??[]),selection]}}),fromWeek:w,reason:X.id+' is replaced by '+to.id+' ('+(reason==='SKILL_MISMATCH'?'cannot be done with steady technique':'a nonclinical preference')+'); the new exercise starts with effort-guided establishment, nothing is converted',action:'SUBSTITUTE_FOR_REASON'});
+ return r.proposal?{...r,substitutions:[{exerciseId:X.id,selected:to.id,reason,requiresEstablishment:true,stimulusChange:X.loading==='EXTERNAL'&&to.loading!=='EXTERNAL'?'A bodyweight or band exercise in place of a loaded one is a different stimulus, not an equivalent':null}]}:r;
+}
+const CONFIGURATIONS_SAME=X=>CATALOG_CONFIGURATIONS.filter(e=>e.pattern===X.pattern&&e.id!==X.id);
 function targetSession(ctx){const id=ctx.review.targetSessionId??ctx.review.event.sessionId;return ctx.program.weeks.flatMap(x=>x.sessions).find(s=>s.id===id)??null;}
 function missedSession(ctx){
  const {program,sk,w,review}=ctx,target=targetSession(ctx);
@@ -452,21 +577,29 @@ function contextAfter(ctx,base,start,{canonical:change=null,goals=false,athleteS
  const phases=goal.run.event?.date!==base.goal.run.event?.date||goal.run.kind!==base.goal.run.kind?planPhases({...canonical,goals:{run:{kind:goal.run.kind},strength:{kind:goal.strength.kind},event:goal.run.event}},cap,authority.policy.operational):base.phases;
  // The phases are one timeline of weeks: every context takes them from the change's first week on, whichever weeks it is in force for.
  const mergedPhases={...phases,phases:[...base.phases.phases.slice(0,changeStart),...phases.phases.slice(changeStart)]},blocks=blocksFrom(mergedPhases.phases,goal.priorityByPhase);
- const templates=strengthTemplates(canonical,goal,{knownOnly:!allows(authority,'R6-LOAD-ESTABLISHMENT')});
- const view={...program,canonical,goal,phases:mergedPhases,blocks,templates,arrangementSessions:{}};delete view.contextBefore;
+ // Templates from the bound catalog; exercises already in use are kept for continuity (catalog selection order) and the novice variant
+ // is rebuilt with them (B0-C08).
+ const knownOnly=!allows(authority,'R6-LOAD-ESTABLISHMENT'),established=Object.keys((ctx.base??program.stateTrace[ctx.w])?.strength?.exercises??{}),rep=authority.repertoire;
+ const templates=strengthTemplates(canonical,goal,{knownOnly,auth:rep,established});
+ const noviceTemplates=base.noviceTemplates?strengthTemplates(canonical,goal,{knownOnly,auth:rep,established,capped:true}).map(t=>({...t,densityCapped:true})):null;
+ const view={...program,canonical,goal,phases:mergedPhases,blocks,templates,noviceTemplates,arrangementSessions:{}};delete view.contextBefore;
  const sk=skeletonOf(view,authority),severityAuthority=allows(authority,'R6-HYBRID-ARRANGEMENT'),contexts=[...new Set(mergedPhases.phases.slice(start).map((p,i)=>contextOf(mergedPhases.phases,start+i)))],arrangementSessions={};
- for(const context of contexts){
-  const candidates=arrangementCandidates(canonical,cap,goal,context,sk,templates),lead=goal.priorityByPhase[context]?.lead??goal.baseLead;
+ const variants=contexts.flatMap(context=>[[context,false],...(noviceTemplates&&sk.noviceTemplates?[[context,true]]:[])]),cmpI11=severityAuthority&&allowsCandidate(rep,'B0-C11');
+ for(const [context,capped] of variants){
+  const key=capped?context+'@B0-C08':context;
+  const candidates=arrangementCandidates(canonical,cap,goal,context,sk,capped?noviceTemplates:templates),lead=goal.priorityByPhase[context]?.lead??goal.baseLead;
   const doseKey=doseKeyOf(program.weeks[ctx.w]?.sessions.find(s=>s.role==='QUALITY'));
   const pref=ctx.model?.purposeAllowed&&doseKey?preferredArrangement(ctx.model,candidates,{sessionType:'RUN:QUALITY',phaseClass:phaseClassOf(authority.policy,context,'EASY'),doseKey},{asOf:ctx.asOf}):null;
-  const choice=chooseBalanced(candidates,{lead,temporaryPreference:canonical.schedule.temporaryPreference??goal.temporaryPreference,severityAuthority,hybrid:authority.policy.operational.hybrid,athleteSeverity,athleteEvidence:pref?.preferredId?pref:null,currentId:base.arrangementSessions?.[context]?.id??null,context:{eventPhase:EVENT_PHASES.includes(context),strengthDevelopment:goal.strength.development,runDevelopment:goal.run.development,runRole:goal.run.kind==='NONE'?'MAINTAIN':'PRIMARY',strengthRole:EVENT_PHASES.includes(context)||goal.strength.kind==='MAINTAIN'?'MAINTAIN':'PRIMARY'}});
-  trace.traces[context]={basis:choice.basis,reason:choice.reason,selectedId:choice.selected?.id??null};trace.choices[context]=choice;
+  const choice=chooseBalanced(candidates,{lead,temporaryPreference:canonical.schedule.temporaryPreference??goal.temporaryPreference,severityAuthority,cmpI11,hybrid:authority.policy.operational.hybrid,athleteSeverity,athleteEvidence:pref?.preferredId?pref:null,currentId:base.arrangementSessions?.[key]?.id??base.arrangementSessions?.[context]?.id??null,context:{eventPhase:EVENT_PHASES.includes(context),strengthDevelopment:goal.strength.development,runDevelopment:goal.run.development,runRole:goal.run.kind==='NONE'?'MAINTAIN':'PRIMARY',strengthRole:EVENT_PHASES.includes(context)||goal.strength.kind==='MAINTAIN'?'MAINTAIN':'PRIMARY'}});
+  trace.traces[key]={basis:choice.basis,reason:choice.reason,selectedId:choice.selected?.id??null};
+  if(capped&&(choice.askRequired||!choice.selected)){trace.traces[key].fallback='CONTEXT_ARRANGEMENT';continue;}
+  trace.choices[key]=choice;
   if(choice.askRequired)return {ask:{action:'ASK',reason:'The new agenda creates a genuine run/strength trade-off; a temporary preference is needed',missingInputs:['schedule.temporaryPreference'],question:choice.question,counterfactuals:choice.counterfactuals.slice(0,8)}};
   if(!choice.selected)return {ask:{action:'ASK',reason:'No admissible arrangement for the new agenda',missingInputs:['schedule'],counterfactuals:choice.counterfactuals.slice(0,8)}};
-  arrangementSessions[context]=choice.selected;
+  arrangementSessions[key]=choice.selected;
  }
  trace.contexts.push(...contexts);
- return {canonical,goal,phases:mergedPhases,blocks,templates,arrangementSessions:{...base.arrangementSessions,...arrangementSessions}};
+ return {canonical,goal,phases:mergedPhases,blocks,templates,...(noviceTemplates?{noviceTemplates}:{}),arrangementSessions:{...base.arrangementSessions,...arrangementSessions}};
 }
 /** Re-plans the weeks from `fromWeek` after an agenda, goal or learned-arrangement change: the new context from that week (C2), then the one
  * composition (C1–C6) with the same state machines. */
@@ -570,7 +703,7 @@ function equipmentChange(ctx){
  const permanent=!to&&from<=asOfLocal,knownOnly=!allows(authority,'R6-LOAD-ESTABLISHMENT');
  // A newer statement wins (C5): a permanent change ends every earlier window on the day before it starts.
  const before=list=>list.filter(x=>x.from<from).map(x=>!x.to||x.to>=from?{...x,to:onDate(from,-1)}:x);
- const changed=withContextChange(ctx,program,w,base=>{const canonical=clone(base.canonical);if(permanent){canonical.athlete.equipment=equipment;const kept=before(canonical.equipmentWindows??[]);if(kept.length)canonical.equipmentWindows=kept;else delete canonical.equipmentWindows;}else canonical.equipmentWindows=[...(canonical.equipmentWindows??[]),{from,to,equipment}];return {...base,canonical,templates:permanent?strengthTemplates(canonical,base.goal,{knownOnly}):base.templates};});
+ const changed=withContextChange(ctx,program,w,base=>{const canonical=clone(base.canonical);if(permanent){canonical.athlete.equipment=equipment;const kept=before(canonical.equipmentWindows??[]);if(kept.length)canonical.equipmentWindows=kept;else delete canonical.equipmentWindows;}else canonical.equipmentWindows=[...(canonical.equipmentWindows??[]),{from,to,equipment}];const established=Object.keys((ctx.base??program.stateTrace[w])?.strength?.exercises??{});return {...base,canonical,templates:permanent?strengthTemplates(canonical,base.goal,{knownOnly,auth:authority.repertoire,established}):base.templates,...(base.noviceTemplates?{noviceTemplates:permanent?strengthTemplates(canonical,base.goal,{knownOnly,auth:authority.repertoire,established,capped:true}).map(t=>({...t,densityCapped:true})):base.noviceTemplates}:{})};});
  // Only strength is re-planned, from the sessions still ahead (C1, C6), keeping next week's start and this week's adaptations (C3, C4).
  const next=changed.program,composed=composeWeeks(ctx,next,{fromWeek:w,sports:['STRENGTH'],evidence:evidenceRule(ctx)});
  if(composed.ask)return {action:'ASK',reason:composed.ask,missingInputs:composed.missingInputs};
@@ -873,7 +1006,7 @@ export const HISTORICAL_STATE_VERSION='R7-HISTORICAL-STATE-1';
 function canonicalRecord(program,actualLedger,{authority,cut}){
  const rows=(Array.isArray(actualLedger)?actualLedger:[]).filter(o=>o&&typeof o==='object'),op=authority.policy.operational;
  const latest=rows.reduce((m,o)=>Math.max(m,...[o.correctedAt,o.reportedAt,o.supersededAt,o.observedAt].map(utcTimestamp).filter(Boolean).map(Date.parse)),Date.parse(cut));
- const n=normalizeObservations([],{athleteId:program.athleteId,asOf:new Date(latest).toISOString(),prior:rows,maximumAgeDays:36500,futureSkewSeconds:op.learning.futureClockSkewSeconds,timezoneOffsetMinutes:program.timezoneOffsetMinutes??0,loadIncrements:op.strength.smallestIncrement});
+ const n=normalizeObservations([],{athleteId:program.athleteId,asOf:new Date(latest).toISOString(),prior:rows,maximumAgeDays:36500,futureSkewSeconds:op.learning.futureClockSkewSeconds,timezoneOffsetMinutes:program.timezoneOffsetMinutes??0,loadIncrements:{...op.strength.smallestIncrement,SINGLE_IMPLEMENT:incrementFor(op.strength,'SINGLE_IMPLEMENT')}});
  const {bound,unbound}=bindObservations(program,n.accepted,op.hybrid,authority.policy);
  return {ledger:[...bound,...unbound],quarantined:n.quarantinedIdentities};
 }
@@ -939,7 +1072,7 @@ function stateAtBreak(ctx,{start,startedAt=null,episode=null,cls=null}){
  const byId=new Map(program.weeks.flatMap(x=>x.sessions.map(s=>[s.id,s]))),since=R?Date.parse(R.asOf):-Infinity;
  const ran=all.filter(o=>!o.conflicted&&!o.partial&&o.context?.sport==='RUN'&&Date.parse(o.observedAt)<Date.parse(cut)&&Date.parse(o.observedAt)>since).sort((a,b)=>Date.parse(a.observedAt)-Date.parse(b.observedAt)).map(o=>{const s=byId.get(o.context.sessionId);return s?.prescription?{role:s.role,dimension:s.progression?.dimension??null,value:s.progression?.value??null,minutes:s.prescription.durationMinutes,week:o.context.weekIndex,tolerated:!['ADVERSE','CONFLICTING'].includes(kindOf(o))}:null;}).filter(Boolean);
  const run=historicalRun(clone(H.state.run),ran,{stateOf:k=>at(k)?.state?.run??null,easyStepMinutes:ctx.sk.op.run.easyStepMinutes,undo:m=>!cls||cls==='SHORT'||m==='WALK_JOG'});
- return {state:{run,strength:base.strength},material,point:{...point,authority,values:clone(H.values),executed:[...new Set([...H.executed,...Object.keys(base.performed)])].sort(),...(late?{reportedAfterStart:true}:{}),...(other?{sameDay:other}:{})}};
+ return {state:{run:run&&(ctx.program.capability?.run?.familiarBouts??[]).length?{...run,familiarBoutsLapsed:true}:run,strength:base.strength},material,point:{...point,authority,values:clone(H.values),executed:[...new Set([...H.executed,...Object.keys(base.performed)])].sort(),...(late?{reportedAfterStart:true}:{}),...(other?{sameDay:other}:{})}};
 }
 /** The strength start of a return from the state at its interruption: a short one resumes it; a moderate or long one starts the return steps
  * from it, its last executed count the ceiling (SSCTR D49). */
@@ -1067,4 +1200,4 @@ function eventWeekConflict(ctx){
  return {action:'SKIP_NO_CATCH_UP',reason:'Event period conflict: the affected session is skipped, the race and freshness are protected, nothing is stacked',proposal,counterfactuals:[counter('MOVE_INTO_TAPER','MOVE',false,'Moving work closer to the race adds fatigue when it should fall'),counter('SKIP_NO_CATCH_UP','SKIP',true,'Smallest safe change',{selected:true})]};
 }
 function recovered(ctx){return weeklyReview(ctx,{extraReason:'Recovered label noted; the next step still follows executed evidence'});}
-const HANDLERS={WEEKLY_REVIEW:weeklyReview,MISSED_SESSION:missedSession,PARTIAL_SESSION:ctx=>weeklyReview(ctx,{extraReason:'Partial execution counts only what was done; the next comparable step repeats'}),UNDERPERFORMANCE:performanceSignal,PROGRESSION_NOT_TOLERATED:performanceSignal,OVERPERFORMANCE:performanceSignal,PROGRESSION_TOO_EASY:performanceSignal,LOCAL_FATIGUE:fatigue,SYSTEMIC_FATIGUE:fatigue,SCHEDULE_CHANGE:scheduleChange,UNAVAILABLE_DAY:unavailableDay,DOUBLE_CONFLICT:doubleConflict,EQUIPMENT_CHANGE:equipmentChange,GOAL_CHANGE:goalChange,EVENT_DATE_CHANGE:goalChange,RETURN_AFTER_PAUSE:returnAfterPause,EVENT_WEEK_CONFLICT:eventWeekConflict,RECOVERED:recovered};
+const HANDLERS={EXERCISE_SUBSTITUTION:exerciseSubstitution,WEEKLY_REVIEW:weeklyReview,MISSED_SESSION:missedSession,PARTIAL_SESSION:ctx=>weeklyReview(ctx,{extraReason:'Partial execution counts only what was done; the next comparable step repeats'}),UNDERPERFORMANCE:performanceSignal,PROGRESSION_NOT_TOLERATED:performanceSignal,OVERPERFORMANCE:performanceSignal,PROGRESSION_TOO_EASY:performanceSignal,LOCAL_FATIGUE:fatigue,SYSTEMIC_FATIGUE:fatigue,SCHEDULE_CHANGE:scheduleChange,UNAVAILABLE_DAY:unavailableDay,DOUBLE_CONFLICT:doubleConflict,EQUIPMENT_CHANGE:equipmentChange,GOAL_CHANGE:goalChange,EVENT_DATE_CHANGE:goalChange,RETURN_AFTER_PAUSE:returnAfterPause,EVENT_WEEK_CONFLICT:eventWeekConflict,RECOVERED:recovered};

@@ -1,9 +1,10 @@
 import {clone,freeze,hash} from './value.mjs';
 import {canonicalizeIntake,onDate,dayGap} from './r6-intake.mjs';
 import {r6Authority,allows} from './r6-authority.mjs';
-import {candidatesFor,catalogueEntry} from './r6-catalogue.mjs';
+import {catalogueEntry} from './r6-catalogue.mjs';
 import {walkPrescription,walkJogPrescription,easyPrescription,qualityPrescription,racePrescription,exerciseRow,fitStrengthSession,strengthPrescription,validateR6Prescription,roundTo5,reducedWork} from './r6-prescription.mjs';
-import {chooseBalanced} from './r6-balanced.mjs';
+import {chooseBalanced,hourOf} from './r6-balanced.mjs';
+import {admitted,repertoireAuthority,DEFAULT_REPERTOIRE,repertoireOf,repertoireBinding,allowsCandidate,buildTemplates,templateTypesFor,noviceTemplateTypes,PRACTICE_FOR,RUN_CLASS_THRESHOLDS,archetypeOf,noExternalLoad,ordinalResistance,incrementFor,kgText,pullCoverageDisclosure,lowerStimulusDisclosure,runRepertoireOf,ROTATION_DEFERRED_PHASES,rotationEligibility,configurationOf,novelOrEccentricLower,I11_PROTECTED_FAMILIES,demandRank,familiarRunCategory,familiarBoutsInputs,laterGateRunItem,laterGateItem} from './r7b-repertoire.mjs';
 
 export const PROGRAM_VERSION='R6-PROGRAM-1';
 export function programHash(p){const c=clone(p);delete c.hash;return hash(c);}
@@ -17,17 +18,23 @@ const floor5=n=>Math.max(5,Math.floor(n/5)*5);
 
 /** Capacity per modality from onboarding-like facts; unknown stays unknown and selects establishment. */
 export function assessCapability(c,op=null){
- const a=c.athlete,r=a.recentRun,s=c.schedule,runGoal=c.goals.run.kind,strengthGoal=c.goals.strength.kind,pause=a.pause,longPause=pause?.screen?.status==='NONCLINICAL'&&(pause.weeks??0)>=4;
- const run={programmed:runGoal!=='NONE'&&s.runDays.length>0,experience:a.runExperience,basis:r.basis,weeklyMinutes:r.runMinutesPerWeek,daysPerWeek:r.runDaysPerWeek,longestMinutes:r.longestRunMinutes,familiarQuality:a.knownRuns.filter(t=>t.current&&['THRESHOLD','CRUISE','TEN_K_SPECIFIC','HALF_MARATHON_SPECIFIC'].includes(t.prescription?.family))};
+ // The run-class thresholds are the reviewed runtime constants, exposed with their provenance (B0-F05); never changed or re-invented here.
+ const T=RUN_CLASS_THRESHOLDS,a=c.athlete,r=a.recentRun,s=c.schedule,runGoal=c.goals.run.kind,strengthGoal=c.goals.strength.kind,pause=a.pause,longPause=pause?.screen?.status==='NONCLINICAL'&&(pause.weeks??0)>=T.longPauseWeeksAtLeast;
+ const current=a.knownRuns.filter(t=>t.current&&!t.implausible);
+ const run={programmed:runGoal!=='NONE'&&s.runDays.length>0,experience:a.runExperience,basis:r.basis,weeklyMinutes:r.runMinutesPerWeek,daysPerWeek:r.runDaysPerWeek,longestMinutes:r.longestRunMinutes,familiarQuality:a.knownRuns.filter(t=>t.current&&['THRESHOLD','CRUISE','TEN_K_SPECIFIC','HALF_MARATHON_SPECIFIC'].includes(t.prescription?.family)),
+  // B0-C02 / B0-C10: other current familiar tasks by category; they never change the run class (classification equals the reviewed binding).
+  familiarBouts:current.filter(t=>familiarRunCategory(t)==='VO2_STYLE').map(t=>({task:clone(t),missing:familiarBoutsInputs(t)})),laterGateTasks:current.filter(t=>familiarRunCategory(t)==='LATER_GATE').map(t=>({task:clone(t),laterGate:laterGateRunItem(t)})),ambiguousTasks:current.filter(t=>familiarRunCategory(t)==='AMBIGUOUS').map(t=>clone(t))};
  // Current running below the minimum easy session (longest run or weekly total) cannot hold a continuous easy run: walk/jog (QRE-R6-09).
  const minimum=op?.run?.minimumSessionMinutes??15,belowSession=v=>Number.isFinite(v)&&v>0&&v<minimum;
  run.belowMinimumSession=belowSession(r.longestRunMinutes)||belowSession(r.runMinutesPerWeek);
- if(!run.programmed)run.class='NOT_PROGRAMMED';
- else if(a.runExperience==='NONE'||a.runExperience==='NOVICE'&&(r.runMinutesPerWeek===null||r.runMinutesPerWeek<45||r.runDaysPerWeek===0)||run.belowMinimumSession&&!longPause)run.class='WALK_JOG';
- else if(r.runDaysPerWeek===0||r.runMinutesPerWeek===0||longPause)run.class='RESTART';
- else if(r.runMinutesPerWeek===null)run.class='EASY_UNKNOWN';
- else if(a.runExperience==='NOVICE'||r.runMinutesPerWeek<60||(r.runDaysPerWeek??0)<2)run.class='EASY_LOW';
- else run.class=run.familiarQuality.length?'QUALITY_FAMILIAR':'EASY_CURRENT';
+ const why=(cls,predicate)=>{run.class=cls;run.classification={predicate,thresholds:'RUN_CLASS_THRESHOLDS',policyDeclaration:T.policyDeclaration};};
+ if(!run.programmed)why('NOT_PROGRAMMED','Run goal NONE or no chosen run days');
+ else if(a.runExperience==='NONE'||a.runExperience==='NOVICE'&&(r.runMinutesPerWeek===null||r.runMinutesPerWeek<T.noviceWeeklyMinutesBelow||r.runDaysPerWeek===0)||run.belowMinimumSession&&!longPause)why('WALK_JOG',a.runExperience==='NONE'?'Experience NONE':run.belowMinimumSession&&!longPause&&a.runExperience!=='NOVICE'?'Current longest run or weekly running below run.minimumSessionMinutes':`NOVICE with weekly minutes unknown, below ${T.noviceWeeklyMinutesBelow} or 0 run days`);
+ else if(r.runDaysPerWeek===0||r.runMinutesPerWeek===0||longPause)why('RESTART',longPause?`Structured nonclinical pause of ${T.longPauseWeeksAtLeast} weeks or more`:'0 run days or 0 weekly minutes');
+ else if(r.runMinutesPerWeek===null)why('EASY_UNKNOWN','Weekly running minutes unknown');
+ else if(a.runExperience==='NOVICE'||r.runMinutesPerWeek<T.easyLowWeeklyMinutesBelow||(r.runDaysPerWeek??0)<T.easyLowRunDaysBelow)why('EASY_LOW',a.runExperience==='NOVICE'?'NOVICE':`Below ${T.easyLowWeeklyMinutesBelow} weekly minutes or ${T.easyLowRunDaysBelow} run days`);
+ else if(run.familiarQuality.length)why('QUALITY_FAMILIAR','A current familiar THRESHOLD/CRUISE/TEN_K_SPECIFIC/HALF_MARATHON_SPECIFIC task');
+ else why('EASY_CURRENT','Otherwise');
  const known=longPause?[]:a.knownExercises.filter(e=>e.dose);
  const strength={programmed:strengthGoal!=='NONE'&&s.strengthDays.length>0,experience:a.strengthExperience,known,familiarIds:a.knownExercises.filter(e=>e.familiar).map(e=>e.id),loadHints:Object.fromEntries(a.knownExercises.filter(e=>e.loadHint).map(e=>[e.id,e.loadHint]))};
  if(!strength.programmed)strength.class='NOT_PROGRAMMED';
@@ -71,36 +78,28 @@ export function blocksFrom(phases,priorityByPhase){
  phases.forEach((phase,i)=>{const family=phase==='CONSOLIDATION'?(blocks.at(-1)?.family??'DEVELOPMENT'):phase,prev=blocks.at(-1);if(prev&&prev.family===family&&prev.endWeekExclusive===i&&!(phase!=='CONSOLIDATION'&&phases[i-1]==='CONSOLIDATION'))prev.endWeekExclusive=i+1;else blocks.push({id:'block-'+blocks.length,family,phase:family,startWeek:i,endWeekExclusive:i+1});});
  return blocks.map(b=>({...b,intent:BLOCK_INTENT[b.family],contextualPriority:priorityByPhase[b.family]??null,exitCriteria:['Planned steps advance only after comparable executed sessions without adverse response','Missed key work or a single adverse response repeats the step; repeated adverse response regresses one step','Eligibility, function and schedule remain current'],progressionAutomatic:false}));
 }
-const TYPES={1:['FULL_A'],2:['FULL_A','FULL_B'],3:['LOWER','UPPER','FULL_B'],4:['LOWER','UPPER','LOWER_B','UPPER_B']};
-const SLOTS={FULL_A:[['SQUAT','MAIN'],['PUSH','MAIN'],['PULL','MAIN'],['CALF','ACCESSORY'],['TRUNK','ACCESSORY']],FULL_B:[['HINGE','MAIN'],['PULL','MAIN'],['PUSH','MAIN'],['LUNGE','ACCESSORY'],['TRUNK','ACCESSORY']],LOWER:[['SQUAT','MAIN'],['HINGE','MAIN'],['LUNGE','ACCESSORY'],['CALF','ACCESSORY'],['TRUNK','ACCESSORY']],UPPER:[['PUSH','MAIN'],['PULL','MAIN'],['PUSH','ACCESSORY'],['PULL','ACCESSORY'],['TRUNK','ACCESSORY']],LOWER_B:[['HINGE','MAIN'],['LUNGE','MAIN'],['CALF','ACCESSORY'],['TRUNK','ACCESSORY']],UPPER_B:[['PULL','MAIN'],['PUSH','MAIN'],['TRUNK','ACCESSORY']],CORE:[['TRUNK','ACCESSORY'],['CALF','ACCESSORY'],['TRUNK','ACCESSORY']]};
-const FAMILY_OF={FULL_A:'FULL_BODY',FULL_B:'FULL_BODY',LOWER:'LOWER',UPPER:'UPPER',LOWER_B:'LOWER',UPPER_B:'UPPER',CORE:'PRACTICE'};
-export const PRACTICE_ID={SQUAT:'sit-to-stand',HINGE:'hip-hinge-practice',LUNGE:'split-squat-bodyweight',PUSH:'wall-pushup',PULL:'prone-row-practice',CALF:'supported-calf-raise',TRUNK:'dead-bug-practice'};
-/** Session templates: which exercise fills each slot, from facts and equipment. Emphasis reorders, never invents competence. */
-export function strengthTemplates(c,goal,{equipment=c.athlete.equipment,knownOnly=false}={}){
- const a=c.athlete,count=Math.min(4,c.schedule.strengthDays.length),types=[...(TYPES[count]??[])];
- for(let i=4;i<c.schedule.strengthDays.length;i++)types.push('CORE');
- const known=a.knownExercises,emphasis=new Set([...a.strengthPreferences.emphasis,...a.strengthPreferences.movementPriorities]);
- const runningSupport=goal.strength.kind==='RUNNING_SUPPORT'||!!goal.run.event;
- return types.map((type,index)=>{
-  const used=[];
-  const rows=SLOTS[type].map(([pattern,role],slot)=>{
-   let options=candidatesFor(pattern,{equipment,experience:a.strengthExperience,known,role:'ANY',exclude:used});
-   if(knownOnly)options=options.filter(o=>o.loading==='BODYWEIGHT'||known.some(k=>k.id===o.id&&k.dose));
-   if(runningSupport&&role==='ACCESSORY')options=[...options.filter(o=>o.runningSupport),...options.filter(o=>!o.runningSupport)];
-   if(role==='MAIN')options=[...options.filter(o=>o.role==='MAIN'||o.familiar),...options.filter(o=>!(o.role==='MAIN'||o.familiar))];
-   const pick=options[0]??null;if(pick)used.push(pick.id);
-   return pick?{slot,pattern,role,entry:pick,alternatives:options.slice(1,4).map(o=>o.id),emphasized:emphasis.has(pattern)||emphasis.has(pick.region)}:{slot,pattern,role,entry:null,missing:true};
-  });
-  const present=rows.filter(r=>r.entry);
-  present.sort((x,y)=>Number(y.role==='MAIN')-Number(x.role==='MAIN')||Number(y.emphasized)-Number(x.emphasized)||x.slot-y.slot);
-  return {index,type,family:FAMILY_OF[type],rows:present,missingPatterns:rows.filter(r=>r.missing).map(r=>r.pattern)};
- });
+/** The practice configuration of each slot pattern (catalog skillLadders.practiceFor, equal to the R6 PRACTICE_ID). */
+export const PRACTICE_ID=PRACTICE_FOR;
+/**
+ * Session templates (R7-B binding of the catalog templates, B0-C05/B0-C09/B0-C08): which configuration fills each slot of each chosen strength
+ * day, from facts, equipment and the bound repertoire; the row's role is the slot's (DR-134). `capped` builds the novice-density set (two full
+ * templates, TPL.CORE on further days; B0-C08); `established` lists exercises already in use, kept for continuity. Emphasis reorders, never
+ * invents competence.
+ */
+export function strengthTemplates(c,goal,{equipment=c.athlete.equipment,knownOnly=false,auth=null,capped=false,established=[]}={}){
+ const a=c.athlete,days=c.schedule.strengthDays.length,types=capped?noviceTemplateTypes(days):templateTypesFor(days);
+ return buildTemplates({types,equipment,experience:a.strengthExperience,knownExercises:a.knownExercises,established,goal,auth:auth??DEFAULT_REPERTOIRE,knownOnly,emphasis:[...a.strengthPreferences.emphasis,...a.strengthPreferences.movementPriorities],selections:a.strengthSelections??[],ladderReached:a.ladderReached??[]});
 }
+/** B0-C08: strength class NONE with more than two chosen strength days keeps two full templates until the first block boundary. */
+export const noviceDensityApplies=(sk,cap=sk.cap)=>allowsCandidate(sk.repertoire??DEFAULT_REPERTOIRE,'B0-C08')&&cap.strength.programmed&&cap.strength.class==='NONE'&&sk.c.schedule.strengthDays.length>2;
 const turnOf=(c,sport)=>sport==='RUN'?c.schedule.runTurn:c.schedule.strengthTurn;
 /** Candidate weekly arrangements: quality day × strength-type permutation × back-to-back order on shared same-turn days. */
 export function arrangementCandidates(c,cap,goal,context,ctx,templates){
  const s=c.schedule,runDays=cap.run.programmed?s.runDays:[],strengthDays=cap.strength.programmed?s.strengthDays:[];
- const qualityAllowed=['EASY_CURRENT','QUALITY_FAMILIAR'].includes(cap.run.class)&&['RACE','PERFORMANCE'].includes(goal.run.kind)&&['BUILD','SPECIFIC','NEXT_BLOCK','DEVELOPMENT'].includes(context)&&runDays.length>=3&&allows(ctx.authority,'R6-RUN-QUALITY');
+ // The R6 quality gates stay whole (B0-FIDELITY M1–M3): run goal RACE or PERFORMANCE, at least three chosen run days, a development or
+ // specific context and R6-RUN-QUALITY. A graduated novice (B0-C01, decided on executed evidence at a block boundary) meets the class gate only.
+ const qualityClass=['EASY_CURRENT','QUALITY_FAMILIAR'].includes(cap.run.class)||!!c.athlete.runGraduation&&allowsCandidate(ctx.repertoire??DEFAULT_REPERTOIRE,'B0-C01');
+ const qualityAllowed=qualityClass&&['RACE','PERFORMANCE'].includes(goal.run.kind)&&['BUILD','SPECIFIC','NEXT_BLOCK','DEVELOPMENT'].includes(context)&&runDays.length>=3&&allows(ctx.authority,'R6-RUN-QUALITY');
  const longDay=cap.run.class==='WALK_JOG'?null:s.longRunDay,qualityOptions=qualityAllowed?runDays.filter(d=>d!==longDay):[null];
  const types=templates.map(t=>t.type),perms=types.length>5?[types]:permutations(types),out=[];
  const sameTurnShared=s.sharedDays.filter(d=>!s.runTurn||!s.strengthTurn||s.runTurn===s.strengthTurn);
@@ -109,7 +108,7 @@ export function arrangementCandidates(c,cap,goal,context,ctx,templates){
   const sessions=[];
   for(const d of runDays){const role=d===longDay?'LONG':d===q?'QUALITY':'EASY';sessions.push({id:'RUN-'+d,sport:'RUN',role,day:d,turn:turnOf(c,'RUN'),backToBackOrder:sameTurnShared.includes(d)?(runFirst?0:1):0,prescription:{modality:'RUN',family:role==='QUALITY'?specificFamily:role}});}
   const taken=new Set();
-  strengthDays.forEach((d,i)=>{const t=templates.find(x=>x.type===perm[i]&&!taken.has(x.index))??templates[i];taken.add(t.index);sessions.push({id:'STR-'+d,sport:'STRENGTH',role:'STRENGTH_'+t.type,templateIndex:t.index,day:d,turn:turnOf(c,'STRENGTH'),backToBackOrder:sameTurnShared.includes(d)?(runFirst?1:0):0,prescription:{modality:'STRENGTH',exercises:t.rows.map(r=>({id:r.entry.id,pattern:r.pattern,sets:context==='ESTABLISHMENT'&&cap.strength.class==='NONE'?1:cap.strength.known.find(k=>k.id===r.entry.id)?.dose?.sets??(r.role==='MAIN'?3:2),load:{mode:r.entry.loading==='BODYWEIGHT'?'BODYWEIGHT':'ESTABLISH',unit:r.entry.loading==='BODYWEIGHT'?'BODYWEIGHT':'KG'}}))}});});
+  strengthDays.forEach((d,i)=>{const t=templates.find(x=>x.type===perm[i]&&!taken.has(x.index))??templates[i];taken.add(t.index);sessions.push({id:'STR-'+d,sport:'STRENGTH',role:'STRENGTH_'+t.type,templateIndex:t.index,day:d,turn:turnOf(c,'STRENGTH'),backToBackOrder:sameTurnShared.includes(d)?(runFirst?1:0):0,prescription:{modality:'STRENGTH',exercises:t.rows.map(r=>({id:r.entry.id,pattern:r.pattern,sets:context==='ESTABLISHMENT'&&cap.strength.class==='NONE'?1:cap.strength.known.find(k=>k.id===r.entry.id)?.dose?.sets??(r.role==='MAIN'?3:2),load:{mode:noExternalLoad(r.entry)?'BODYWEIGHT':'ESTABLISH',unit:noExternalLoad(r.entry)?'BODYWEIGHT':'KG'},...(context==='ESTABLISHMENT'&&!cap.strength.known.some(k=>k.id===r.entry.id)?{firstExposure:true}:{})}))}});});
   const adjacentToLong=q!==null&&longDay!==null&&[1,6].includes(Math.abs(q-longDay));
   out.push({id:`q${q??'-'}|${perm.join(',')}|${sameTurnShared.length?(runFirst?'run-first':'strength-first'):'separate'}`,quality:q,perm,runFirstOnShared:runFirst,sessions,admissible:true,adjacentToLong,preservesRun:true,preservesStrength:true,signature:hash(sessions.map(x=>[x.sport,x.role,x.day,x.backToBackOrder]))});
  }
@@ -120,12 +119,61 @@ export function arrangementCandidates(c,cap,goal,context,ctx,templates){
 /** Arrangement costs of MODERATE or higher that the chosen layout keeps are disclosed with alternatives (R6-HYBRID-ARRANGEMENT). */
 export function arrangementDisclosures(choices){
  const out=[];
- for(const [context,choice] of Object.entries(choices)){
-  const selected=(choice?.counterfactuals??[]).find(c=>c.selected),heavy=(selected?.costs??[]).filter(c=>['MODERATE','HIGH'].includes(c.severity));
+ for(const [key,choice] of Object.entries(choices)){
+  const [context,variant]=key.split('@'),selected=(choice?.counterfactuals??[]).find(c=>c.selected),heavy=(selected?.costs??[]).filter(c=>['MODERATE','HIGH'].includes(c.severity));
   if(!heavy.length)continue;
-  out.push({id:'ARRANGEMENT_COST_DISCLOSED',blocking:false,informational:true,context,costs:heavy.map(c=>({axis:c.axis,severity:c.severity,cause:c.cause})),detail:`In ${context.toLowerCase()} weeks this layout keeps ${[...new Set(heavy.map(c=>c.cause.charAt(0).toLowerCase()+c.cause.slice(1)))].join('; ')}. It was the least costly option on the chosen days and shifts.`,options:['Keep this layout','Swap the shifts on that day','Move one of the sessions to another chosen day']});
+  out.push({id:'ARRANGEMENT_COST_DISCLOSED',blocking:false,informational:true,context,...(variant?{variant:'NOVICE_DENSITY'}:{}),costs:heavy.map(c=>({axis:c.axis,severity:c.severity,cause:c.cause})),detail:`In ${context.toLowerCase()} weeks this layout keeps ${[...new Set(heavy.map(c=>c.cause.charAt(0).toLowerCase()+c.cause.slice(1)))].join('; ')}. It was the least costly option on the chosen days and shifts.`,options:['Keep this layout','Swap the shifts on that day','Move one of the sessions to another chosen day']});
  }
  return out;
+}
+/**
+ * Repertoire disclosures and negotiations of a program (R7-B; B0-C02, B0-C03, B0-C08, B0-C09, B0-C10): computed from what was selected, never
+ * blocking. A later-gate or unsupported request is never prescribed: its fallback is used and disclosed as a different stimulus.
+ */
+export function repertoireNegotiation(sk,{templates=[],noviceTemplates=null}={}){
+ const {cap,goal,c,repertoire:rep}=sk,out=[],all=[...templates,...(noviceTemplates??[])];
+ const pull=pullCoverageDisclosure(all);if(pull)out.push(pull);
+ const lower=lowerStimulusDisclosure(all,goalDose(sk));if(lower)out.push(lower);
+ if(noviceTemplates&&noviceTemplates.length>2)out.push({id:'STRENGTH_DAYS_ABOVE_CURRENT_PRACTICE',blocking:false,days:c.schedule.strengthDays.length,detail:`${c.schedule.strengthDays.length} strength days chosen: until the first block review two of them are full sessions and the others are lighter trunk and calf sessions by design, so new work is spread rather than added; the full split starts once your first block shows the loads established and well tolerated`,options:['Keep the days with lighter sessions','Choose fewer strength days'],basis:'B0-C08 (a reversible coaching choice, not a physiological limit)'});
+ for(const x of cap.run.laterGateTasks??[]){const g=laterGateItem(x.laterGate);out.push({id:'LATER_GATE_RUN_TASK',blocking:false,informational:true,laterGate:x.laterGate,detail:`Your familiar ${String(x.task.category??x.task.prescription?.family??'session').toLowerCase().replace(/_/g,' ')} is not part of the V1 plan yet; ${g?.fallback??'the nearest supported session'} is used instead and is a different stimulus, not an equivalent`,options:['Keep the plan']});}
+ for(const t of cap.run.ambiguousTasks??[])out.push({id:'FAMILIAR_RUN_TASK_CATEGORY_ASK',blocking:false,question:'What kind of session is your familiar run task (easy, threshold, harder repeated intervals of a few minutes, short fast intervals, hills, a time trial)?',detail:'Until it is clear, the task is kept as history and does not change the plan',task:t.prescription?.family??null});
+ const bouts=cap.run.familiarBouts??[];
+ if(bouts.length&&['RACE','PERFORMANCE'].includes(goal.run.kind)){
+  if(!allowsCandidate(rep,'B0-C02'))out.push({id:'LATER_GATE_RUN_TASK',blocking:false,informational:true,laterGate:'LATER.RUN.VO2_DE_NOVO',detail:'Continuing your familiar harder intervals is not available in this plan; the threshold ladder is used instead and is a different stimulus',options:['Keep the plan']});
+  else if(bouts.every(b=>b.missing.length))out.push({id:'FAMILIAR_HARDER_INTERVALS_DETAILS',blocking:false,missingInputs:[...new Set(bouts.flatMap(b=>b.missing))],detail:'Your familiar harder intervals can continue exactly as you do them once the plan knows the exact session, its current target and how that target was measured, your recent sessions of it and that conditions are comparable; until then the quality day uses the threshold ladder from its first step',options:['Add the details','Use the threshold ladder']});
+ }
+ // Feasibility: a running quality session needs at least three chosen run days (R6-RUN-QUALITY gate, B0-FIDELITY M1–M3).
+ if(cap.run.programmed&&['RACE','PERFORMANCE'].includes(goal.run.kind)&&c.schedule.runDays.length<3)out.push({id:'QUALITY_NEEDS_THREE_RUN_DAYS',blocking:false,detail:`With ${c.schedule.runDays.length} run day(s) the plan keeps easy and long running only: a harder quality session needs at least three chosen run days so it never crowds the long run`,options:['Add a run day','Keep easy and long running only'],authority:'R6-RUN-QUALITY'});
+ if(c.goals.contextEvent?.kind==='5K')out.push({id:'EVENT_5K_PERFORMANCE_FALLBACK',blocking:false,informational:true,detail:'5K races have no event recipe in V1: the plan is a performance plan without specific, taper or race-week phases, and the race date and any time goal are context only',options:['Keep the performance plan','Choose a 10K or half marathon'],laterGate:'LATER.EVENT.5K'});
+ return out;
+}
+/**
+ * Feasibility negotiation trace (R7-B; request §18; catalog composition.protectedStimuli, infeasibleOrIncomparable; DR-112): the ideal week of
+ * this goal model, what the chosen days and times allow, the stimuli protected first under each lead, and every reduction with the rule that made
+ * it. Reductions use only existing authorities (walk conversion, the quality gates, the novice cap, the time fit that drops accessories before
+ * main sets, rest by design when no supported session fits); chosen days are never dropped and nothing is removed at random.
+ */
+export function feasibilityOf(sk,weeks,negotiation=[]){
+ const {c,cap,goal}=sk,s=c.schedule,ideal={run:cap.run.programmed?{longRun:s.longRunDay!==null,qualitySession:['RACE','PERFORMANCE'].includes(goal.run.kind),easyDays:Math.max(0,s.runDays.length-(s.longRunDay!==null?1:0)-(['RACE','PERFORMANCE'].includes(goal.run.kind)?1:0))}:null,strength:cap.strength.programmed?{templates:templateTypesFor(s.strengthDays.length).map(t=>'TPL.'+t)}:null};
+ const order={RUN:['RUN.LONG','quality KEY run','RUN.EASY','strength MAIN at goal or phase dose','strength ACCESSORY'],STRENGTH:['strength MAIN (key SQUAT/HINGE sessions)','strength ACCESSORY','RUN.EASY participation on chosen days','RUN.LONG (content may yield)'],JOINT:['Pareto, then lowest worst-case joint harm; a genuine equal-harm trade-off is asked once']};
+ const reductions=[],first=weeks.find(w=>DEVELOPMENT.includes(w.phase))??weeks[0];
+ const q=['RACE','PERFORMANCE'].includes(goal.run.kind)&&cap.run.programmed;
+ if(q&&!['EASY_CURRENT','QUALITY_FAMILIAR'].includes(cap.run.class))reductions.push({id:'QUALITY_AFTER_EVIDENCE',authority:'R6-RUN-QUALITY / B0-C01',detail:'No harder session yet: it needs current running at the easy-current level, or two complete weeks of easy running that reach it (graduation at a block review)'});
+ if(q&&s.runDays.length<3)reductions.push({id:'QUALITY_NEEDS_THREE_RUN_DAYS',authority:'R6-RUN-QUALITY',detail:'Fewer than three run days: easy and long running only'});
+ const walks=(first?.sessions??[]).filter(x=>x.converted==='TOO_MANY_RUN_DAYS_FOR_CURRENT_PRACTICE'||x.converted==='TOO_MANY_RUN_DAYS_FOR_ESTABLISHMENT');
+ if(walks.length)reductions.push({id:'RUN_DAYS_AS_WALKS',authority:'R6-COLD-START / DR-112',days:walks.map(x=>x.day),detail:'Chosen run days beyond current running carry brisk walks that convert one at a time at block starts'});
+ if(negotiation.some(n=>n.id==='STRENGTH_DAYS_ABOVE_CURRENT_PRACTICE'))reductions.push({id:'STRENGTH_DAYS_LIGHTER',authority:'B0-C08 / DR-112',detail:'Two full sessions until the first block review; the other chosen days are lighter by design'});
+ const rest=weeks.flatMap(w=>w.sessions.filter(x=>x.sport==='STRENGTH'&&x.role==='REST_BY_DESIGN'&&/chosen time cannot hold/.test(x.explanation??'')).map(x=>x.id));
+ if(rest.length)reductions.push({id:'STRENGTH_DAY_TIME_TOO_SHORT',authority:'R6-COLD-START (minimum supported session)',sessions:rest.length,detail:'The chosen time cannot hold a supported strength session on some days; they stay rest by design'});
+ const dropped=[];for(const x of (first?.sessions??[]).filter(x=>x.sport==='STRENGTH'&&x.prescription)){const t=(sk.templates??[]).find(t=>t.type===x.templateType);if(!t)continue;const have=new Set(x.prescription.exercises.map(e=>e.id));for(const r of t.rows)if(!have.has(r.entry.id)&&r.role!=='MAIN')dropped.push(r.entry.id);}
+ if(dropped.length)reductions.push({id:'STRENGTH_TIME_FIT',authority:'R6 fitting (accessories go before main sets)',exercises:[...new Set(dropped)],detail:'The chosen time per session keeps the main lifts; some accessories are left out'});
+ for(const n of negotiation)if(['LONG_RUN_TIME_LIMITS_EVENT','TOO_FEW_RUN_DAYS_FOR_EVENT','EVENT_AMBITIOUS_FOR_CURRENT_RUNNING','MOVEMENT_PATTERN_UNAVAILABLE','PULL_LIMITED_FOR_EQUIPMENT','EQUIPMENT_LIMITS_STRENGTH_SESSION'].includes(n.id))reductions.push({id:n.id,authority:'negotiation',detail:n.detail??null});
+ return {basis:'catalog composition.protectedStimuli, infeasibleOrIncomparable; DR-112 (chosen days and shifts are hard constraints)',lead:goal.baseLead,ideal,protectedOrder:order[goal.baseLead]??order.JOINT,chosenDaysKept:true,reductions};
+}
+/** Program-level progression (request §19): each block's intent, lead and the planned run and strength doses at its first and last week. */
+export function progressionOf(weeks,blocks){
+ const run=w=>w?{long:w.sessions.find(s=>s.role==='LONG'&&s.prescription)?.prescription.durationMinutes??null,easy:Math.max(0,...w.sessions.filter(s=>s.role==='EASY'&&s.prescription).map(s=>s.prescription.durationMinutes))||null,quality:w.sessions.find(s=>s.role==='QUALITY'&&s.prescription)?.prescription.family??null,plannedRunMinutes:w.plannedRunMinutes}:null;
+ return blocks.map(b=>{const ws=weeks.filter(w=>w.index>=b.startWeek&&w.index<b.endWeekExclusive);return {block:b.id,family:b.family,weeks:[b.startWeek,b.endWeekExclusive-1],lead:b.contextualPriority?.lead??null,intent:b.intent,run:{first:run(ws[0]),last:run(ws.at(-1))},strength:{firstSets:ws[0]?.plannedStrengthSets??null,lastSets:ws.at(-1)?.plannedStrengthSets??null},advances:'Each step needs the previous comparable exposure executed without an adverse response; nothing advances on the calendar'};});
 }
 /** Days that keep a brisk walk instead of a run: adjacent to key runs first, then the latest days. */
 export function walkDays(roles,walks){
@@ -179,7 +227,7 @@ export function runRow(sk,st,w){
  if(st.mode==='RETURN'){const f=st.returnFrom,to=st.returnTo,mix=(a,b)=>a===null||b===null?a??b:roundTo5((a+b)/2),step=st.returnStep;return {week:w,phase,mode:'RETURN',returnStep:step,long:step===0?f.long:mix(f.long,to.long),easy:step===0?f.easy:mix(f.easy,to.easy),walks:to.walks??0,qualityStep:0,specificStep:0,thresholdDone:st.thresholdDone,qualityActive:false,strides:0};}
  // Quality and strides unlock on executed established easy weeks, never on calendar weeks.
  const done=st.easyWeeksDone??0,stridesReady=st.stridesEligible&&st.mode==='EASY'&&done>=R.strides.requiresEstablishedEasyWeeks&&allows(sk.authority,'R6-RUN-QUALITY');
- return {week:w,phase,mode:st.mode,walkStep:Math.min(st.walkStep,sk.op.establishment.walkJogLadder.length-1),restart:st.restart,long:cons&&st.long!==null?Math.max(R.minimumSessionMinutes,st.long-R.consolidationLongRunReductionSteps*R.longRunStepMinutes):st.long,easy:st.easy,easyExtra:st.easyExtra??0,walks:st.walks,qualityStep:st.qualityStep,specificStep:st.specificStep,thresholdDone:st.thresholdDone,qualityActive:st.qualityRunner&&st.mode==='EASY'&&done>=(st.qualityNeeds??0),familiarStep:st.familiarStep??0,strides:stridesReady?Math.min(R.strides.maxRepetitions,R.strides.entryRepetitions+Math.floor((done-R.strides.requiresEstablishedEasyWeeks)/2)):0};
+ return {week:w,phase,mode:st.mode,...(st.familiarBoutsLapsed?{familiarBoutsLapsed:true}:{}),...(st.familiarBoutsWithdrawn?{familiarBoutsWithdrawn:true}:{}),...(st.graduatedAt===w?{qualityIntroduction:true}:{}),walkStep:Math.min(st.walkStep,sk.op.establishment.walkJogLadder.length-1),restart:st.restart,long:cons&&st.long!==null?Math.max(R.minimumSessionMinutes,st.long-R.consolidationLongRunReductionSteps*R.longRunStepMinutes):st.long,easy:st.easy,easyExtra:st.easyExtra??0,walks:st.walks,qualityStep:st.qualityStep,specificStep:st.specificStep,thresholdDone:st.thresholdDone,qualityActive:st.qualityRunner&&st.mode==='EASY'&&done>=(st.qualityNeeds??0),familiarStep:st.familiarStep??0,strides:stridesReady?Math.min(R.strides.maxRepetitions,R.strides.entryRepetitions+Math.floor((done-R.strides.requiresEstablishedEasyWeeks)/2)):0};
 }
 /** Transition after week w. gate: {LONG,EASY,QUALITY,WALK_JOG} ∈ ADVANCE|HOLD|REGRESS|EARNED; planning assumes ADVANCE. */
 export function advanceRun(sk,st0,w,gate={}){
@@ -212,13 +260,17 @@ export function advanceRun(sk,st0,w,gate={}){
   if(phase!=='CONSOLIDATION'&&st0.planned){if(st.long!==null&&Number.isFinite(P.long)&&P.long<row.long)st.long=P.long;if(st.easy!==null&&Number.isFinite(P.easy)&&P.easy<row.easy){st.easy=P.easy;st.easyExtra=0;}}
   if(g('LONG')==='REGRESS'&&st.long!==null)st.long=regressable(st.long);
   if(g('EASY')==='REGRESS'&&st.easy!==null)st.easy=regressable(st.easy);
-  if(g('QUALITY')==='REGRESS'){if(phase==='SPECIFIC'&&st.specificStep>0)st.specificStep--;else st.qualityStep=Math.max(0,st.qualityStep-1);}
+  // B0-C02: the familiar repeated bouts never step the ladder, never become the taper's or race touch's executed peak and never count as executed
+  // threshold sessions for the event-specific prerequisite; repeated adverse responses withdraw them (the threshold ladder from its first step, or
+  // easy running, disclosed as a different stimulus; the fewer-repetition regression of SSCTR-R2-P07 is not used without its degradation record).
+  const bouts=P.quality?.family==='FAMILIAR_REPEATED_BOUTS';
+  if(g('QUALITY')==='REGRESS'){if(bouts)st.familiarBoutsWithdrawn=true;else if(phase==='SPECIFIC'&&st.specificStep>0)st.specificStep--;else st.qualityStep=Math.max(0,st.qualityStep-1);}
   // Executed weeks unlock quality and strides and set the achieved peaks the taper and redevelopment use.
   if(done('EASY')&&(!P.long||done('LONG'))&&phase!=='ESTABLISHMENT')st.easyWeeksDone=(st.easyWeeksDone??0)+1;
   if(P.long&&done('LONG'))st.achieved.long=Math.max(st.achieved.long??0,P.long);
   if(P.easy&&done('EASY'))st.achieved.easy=Math.max(st.achieved.easy??0,P.easy);
   if(P.strides&&done('EASY')){st.stridesDone=(st.stridesDone??0)+1;st.achieved.strides=Math.max(st.achieved.strides??0,P.strides);}
-  if(P.quality&&done('QUALITY')){st.qualityDone=(st.qualityDone??0)+1;st.achieved.quality=clone(P.quality);}
+  if(P.quality&&done('QUALITY')&&!bouts){st.qualityDone=(st.qualityDone??0)+1;st.achieved.quality=clone(P.quality);}
   let smallReferenceStep=false,waitLong=false,otherStep=false,longBefore=null;
   // With no easy run planned (every easy day a walk), the executed long run gates the walk-to-run conversion (SSCTR R12).
   const easyGate=P.easy||!P.long?'EASY':'LONG';
@@ -237,16 +289,38 @@ export function advanceRun(sk,st0,w,gate={}){
     const running=Math.max(1,st.nEasy-st.walks);
     if(!smallReferenceStep&&st.easy!==null&&(g('EASY')==='EARNED'||g('EASY')==='ADVANCE'&&st.devCount%R.easyStepEveryDevelopmentWeeks===0)&&st.easy+R.easyStepMinutes<=Math.min(budget,(st.long??budget+5)-5)){st.easyExtra=(st.easyExtra??0)+1;if(st.easyExtra>=running){st.easy+=R.easyStepMinutes;st.easyExtra=0;}otherStep=true;}
    }
-   if(P.quality&&done('QUALITY')&&!smallReferenceStep){
+   if(P.quality&&done('QUALITY')&&!smallReferenceStep&&!bouts){
     if(phase==='SPECIFIC'&&st.thresholdDone>=R.specificRequiresCompatibleThresholdSessions)st.specificStep++;
     else{st.qualityStep++;st.thresholdDone++;}
     otherStep=true;
    }
    if(waitLong&&otherStep)st.long=longBefore;
   }
-  if(next==='NEXT_BLOCK'&&!st.resumed){const N=op.event.nextBlock;st.resumed=true;if(st.long!==null)st.long=Math.max(R.minimumSessionMinutes,floor5((st.achieved.long??st.long)*N.longRunFractionOfAchievedPeak));if(st.easy!==null)st.easy=Math.max(R.minimumSessionMinutes,floor5((st.achieved.easy??st.easy)*N.easyFractionOfAchievedPeak));if(st.long!==null&&st.easy!==null)st.long=Math.max(st.long,st.easy);st.qualityStep=Math.max(0,st.qualityStep-N.qualityStepsBack);}
+  // B0-C01: the block-boundary review that graduated a WALK_JOG-, RESTART- or EASY_LOW-started athlete on executed evidence states the week the
+ // threshold ladder enters (the context of that week carries it): ladder step 0 at the effort cue (a calibration), and in that week no other run
+ // dimension steps: easy, long and walk conversion hold where the reviewed week had them.
+ const grad=sk.c.athlete.runGraduation;
+ if(grad?.fromWeek===w+1&&st.mode==='EASY'&&!st.qualityRunner&&allowsCandidate(sk.repertoire??DEFAULT_REPERTOIRE,'B0-C01')){st.qualityRunner=true;st.qualityNeeds=0;st.qualityStep=0;st.graduatedAt=w+1;st.long=st0.long;st.easy=st0.easy;st.easyExtra=st0.easyExtra??0;st.walks=st0.walks;}
+ if(next==='NEXT_BLOCK'&&!st.resumed){const N=op.event.nextBlock;st.resumed=true;if(st.long!==null)st.long=Math.max(R.minimumSessionMinutes,floor5((st.achieved.long??st.long)*N.longRunFractionOfAchievedPeak));if(st.easy!==null)st.easy=Math.max(R.minimumSessionMinutes,floor5((st.achieved.easy??st.easy)*N.easyFractionOfAchievedPeak));if(st.long!==null&&st.easy!==null)st.long=Math.max(st.long,st.easy);st.qualityStep=Math.max(0,st.qualityStep-N.qualityStepsBack);}
  }
  return st;
+}
+/**
+ * Strides stay optional, with an equal easy-only alternative, for every athlete who started in WALK_JOG, RESTART or EASY_LOW mode, who used
+ * walk/jog or a restart in this program, or whose run experience is NONE or NOVICE (B0-C01 condition 8; extends R6-RUN-QUALITY C9).
+ */
+export const stridesOptional=(sk,rs=null)=>['EASY_LOW','WALK_JOG','RESTART'].includes(sk.cap.run.class)||['NONE','NOVICE'].includes(sk.c.athlete.runExperience)||(rs?.modeHistory??[]).some(m=>['WALK_JOG','RESTART'].includes(m));
+/** B0-C02: the athlete's current familiar harder repeated-bout task, fully specified, while its familiar status holds and the path is approved. */
+export function familiarBoutsTask(sk,st=null){
+ if(!allowsCandidate(sk.repertoire??DEFAULT_REPERTOIRE,'B0-C02')||st?.familiarBoutsLapsed||st?.familiarBoutsWithdrawn||!['RACE','PERFORMANCE'].includes(sk.goal.run.kind))return null;
+ return (sk.cap.run.familiarBouts??[]).find(b=>!b.missing.length)?.task??null;
+}
+/** The familiar repeated bouts exactly as the athlete does them, at the familiar field-session target; held, never progressed (B0-C02). */
+export function familiarBoutsPrescription(task,R,budget){
+ const p=task.prescription,w=p.work,warm=p.warmupMinutes??R.qualityWarmupMinutes,cool=p.cooldownMinutes??R.qualityCooldownMinutes,duration=Math.ceil(Math.max(p.durationMinutes,warm+cool+w.repetitions*w.workMinutes+Math.max(0,w.repetitions-1)*w.recoveryMinutes));
+ if(duration>budget)return null;
+ const t=task.target,pace=String(t.method).toUpperCase()==='PACE',targetText=pace?'your current field-session target for this exact session ('+Math.floor(t.paceSecondsPerKm/60)+':'+String(Math.round(t.paceSecondsPerKm%60)).padStart(2,'0')+' per km)':'the talk-test effort you hold in this exact session';
+ return {modality:'RUN',family:'FAMILIAR_REPEATED_BOUTS',durationMinutes:duration,warmupMinutes:warm,cooldownMinutes:cool,effortDomain:'FAMILIAR_HARDER_BOUTS',effort:'Your familiar harder intervals at the effort you already know for them; ease off if they feel harder than usual',equipment:[],work:{repetitions:w.repetitions,workMinutes:w.workMinutes,recoveryMinutes:w.recoveryMinutes},target:{method:String(t.method).toUpperCase(),construct:'FIELD_SESSION_TARGET',...(pace?{paceSecondsPerKm:t.paceSecondsPerKm}:{}),provenance:t.provenance,observedAt:task.observedAt??null},calibration:{basis:'CURRENT_FAMILIAR_TASK',observedAt:task.observedAt??null,paceFromGoalTime:false,paceFromEasyRuns:false},progressionAllowed:false,instructions:['Warm up '+warm+' minutes easy','Your familiar harder intervals exactly as you do them: '+w.repetitions+' × '+w.workMinutes+' min with '+w.recoveryMinutes+' min easy between','Target: '+targetText+'; effort counts as much as the target, and a session that feels harder than usual ends early','Kept as it is: no extra repetition, time or speed is added','Cool down '+cool+' minutes easy','Record repetitions completed, effort and next-day function']};
 }
 /** A self-reported familiar quality task keeps its own work; missing effort text comes from its family's cue, never a pace. */
 const FAMILY_CUE={THRESHOLD:'THRESHOLD_CONTROLLED',TEN_K_SPECIFIC:'TEN_K_EFFORT',HALF_MARATHON_SPECIFIC:'HALF_MARATHON_EFFORT'};
@@ -258,6 +332,10 @@ function familiarQualityTask(p,R){
 function qualityFor(sk,row,budget){
  const R=sk.op.run,ev=sk.goal.run.event,specific=row.phase==='SPECIFIC'&&!!ev&&row.thresholdDone>=R.specificRequiresCompatibleThresholdSessions,ladder=specific?(ev.kind==='10K'?R.tenKSpecificLadder:R.halfMarathonSpecificLadder):R.thresholdLadder;
  const step=Math.max(0,Math.min(ladder.length-1,specific?row.specificStep:row.qualityStep)-(row.phase==='CONSOLIDATION'?1:0));
+ // B0-C02: a current familiar repeated-bout task is the week's single quality session in BUILD, DEVELOPMENT and NEXT_BLOCK weeks (and their
+ // consolidation), held exactly; never in SPECIFIC, taper or event weeks (event ladders and rules replace it), never after an interruption.
+ const bouts=!specific&&['BUILD','DEVELOPMENT','NEXT_BLOCK','CONSOLIDATION'].includes(row.phase)?familiarBoutsTask(sk,row):null;
+ if(bouts){const p=familiarBoutsPrescription(bouts,R,budget);if(p)return {prescription:p,progression:{dimension:'FAMILIAR_BOUTS',value:0,ladder:'FAMILIAR_BOUTS'},familiar:true,bouts:true};}
  const familiar=sk.cap.run.familiarQuality[0],fp=familiar?familiarQualityTask(familiar.prescription,R):null;
  if(fp&&row.qualityStep===(row.familiarStep??0)&&!specific&&fp.durationMinutes<=budget&&!validateR6Prescription({...fp,calibration:{basis:'CURRENT_FAMILIAR_TASK'}}).length)return {prescription:{...fp,calibration:{basis:'CURRENT_FAMILIAR_TASK',observedAt:familiar.observedAt}},progression:{dimension:'THRESHOLD_STEP',value:row.familiarStep??0,ladder:'FAMILIAR'},familiar:true};
  const p=qualityPrescription(specific?(ev.kind==='10K'?'TEN_K':'HALF_MARATHON'):'THRESHOLD',ladder[step],{cues:R.effortCues,warmup:R.qualityWarmupMinutes,cooldown:R.qualityCooldownMinutes,budget,firstExposure:specific?row.specificStep===0:row.qualityStep===0});
@@ -270,7 +348,7 @@ function spacedExposures(op,runDays){
  for(const r of runDays)if(spaced.length<Math.min(max,runDays.length)&&!spaced.includes(r))spaced.push(r);
  return new Set(spaced.map(r=>r.id));
 }
-function distributeRun(sk,row,roles,{ceiling=null,firstWeek=false,previousLong=null}={}){
+function distributeRun(sk,row,roles,{ceiling=null,firstWeek=false,previousLong=null,modeHistory=[]}={}){
  const {c,op}=sk,R=op.run,s=c.schedule,out={},cue=R.effortCues.EASY_CONVERSATIONAL;
  // Single-run ceiling: no planned run exceeds the longest recent completed run by more than one step.
  // Walks and walk/jog ladder steps keep the full session time: the ladder is the reviewed progression and walking is not running.
@@ -296,10 +374,10 @@ function distributeRun(sk,row,roles,{ceiling=null,firstWeek=false,previousLong=n
  }
  const asRoles=roles.map(r=>r.id===quality?.id&&!qp?{...r,role:'EASY'}:r),walkSet=walkDays(asRoles,row.walks);
  if(longRole){const minutes=Math.max(R.minimumSessionMinutes,Math.min(longBudget,row.long??R.minimumSessionMinutes)),reference=ceiling===null?null:ceiling-R.singleRunCeiling.stepMinutes;out[longRole.id]={role:'LONG',prescription:easyPrescription(minutes,{family:'LONG',cue}),key:true,essential:true,progression:{dimension:'LONG_MINUTES',value:row.long},...(reference!==null&&reference<50&&minutes>reference?{explanation:'Five minutes beyond your longest recent run, which is more than 10% of it: planned only after last week went well, and no other session grows this week'}:{})};}
- if(quality&&qp)out[quality.id]={role:'QUALITY',prescription:qp,key:true,essential:true,progression:qProgress};
+ if(quality&&qp)out[quality.id]={role:'QUALITY',prescription:qp,key:true,essential:true,progression:qProgress,...(row.qualityIntroduction?{introduction:true,alternative:{role:'EASY',minutes:Math.min(budget,row.easy??R.minimumSessionMinutes)},explanation:'New harder session, introduced because your last two weeks of running went well: an easy run of the usual length is an equal alternative you can keep without any penalty or catch-up'}:{})};
  const easyRoles=runDays.filter(r=>r.role==='EASY'||r.id===quality?.id&&!qp);
  const nextIsKey=r=>runDays.some(k=>(k.role==='LONG'||k.id===quality?.id&&qp)&&(k.day===r.day+1||r.day===6&&k.day===0));
- const optionalStrides=sk.cap.run.class==='EASY_LOW'||c.athlete.runExperience==='NOVICE';
+ const optionalStrides=stridesOptional(sk,{modeHistory});
  const stridesDay=row.strides?easyRoles.filter(r=>!walkSet.has(r.id)).sort((a,b)=>Number(nextIsKey(a))-Number(nextIsKey(b))||a.day-b.day)[0]:null;
  const extended=new Set(easyRoles.filter(r=>!walkSet.has(r.id)).sort((a,b)=>a.day-b.day).slice(0,row.easyExtra??0).map(r=>r.id));
  for(const r of easyRoles){
@@ -321,7 +399,8 @@ export function initialStrengthState(sk){
  const exercises={};
  // A known dose was last performed when it was observed: the resume clock starts there (SSCTR D52).
  for(const k of sk.cap.strength.known)exercises[k.id]={status:'ESTABLISHED',mode:'KNOWN',load:k.dose.load.value,convention:k.dose.load.convention,reps:k.dose.reps,sets:k.dose.sets,rir:k.dose.rir,loadTick:0,source:'CURRENT_FAMILIAR_KNOWN_DOSE',...(typeof k.observedAt==='string'?{lastPerformed:k.observedAt.slice(0,10)}:{})};
- return {exercises,devCount:0,completedBlocks:0};
+ // B0-C08: strength class NONE starts under the novice density cap (two full templates until the first block boundary).
+ return {exercises,devCount:0,completedBlocks:0,...(noviceDensityApplies(sk)?{density:{capped:true}}:{})};
 }
 const PENDING_RULE='Choose the load by effort as in your first session; the load you logged becomes your reference once you confirm it or log it again';
 /** Return step 2 (SSCTR D49): one set above the entry and at least one below the count the sets come back to. */
@@ -339,13 +418,13 @@ export function phaseDose(op,phase,n,r){
 /** The lowest reps in reserve a phase allows, whatever the row (operational.event; SSCTR D49). */
 export const phaseMinimumRir=(op,phase)=>['RACE_WEEK','POST_EVENT'].includes(phase)?op.event.raceWeekStrengthMinimumRir:['SPECIFIC','TAPER'].includes(phase)?3:null;
 /** Not performed for more than the moderate return window on `date`, outside a return step: established by effort again (SSCTR D52). */
-export const needsReestablishment=(op,ex,entry,date)=>!!ex&&entry?.loading!=='BODYWEIGHT'&&!Number.isInteger(ex.returnStep)&&!!ex.lastPerformed&&!!date&&dayGap(ex.lastPerformed,date)>op.return.moderateMaxDays;
+export const needsReestablishment=(op,ex,entry,date)=>!!ex&&!noExternalLoad(entry)&&!Number.isInteger(ex.returnStep)&&!!ex.lastPerformed&&!!date&&dayGap(ex.lastPerformed,date)>op.return.moderateMaxDays;
 /**
  * The row an exercise state calls for, before the phase: its kind, the count the phase reduction applies to (`basis`, the count the
  * exercise would otherwise have that day), a row cap and a reps-in-reserve floor. Each row keeps the rule that defines it.
  */
 function strengthCandidate(sk,ss,w,slot,entry,{firstOfWeek,phase,date,entryWeek}){
- const {op,cap}=sk,S=op.strength,g=goalDose(sk),main=slot.role==='MAIN',[lo,hi]=g.repRange,ex=ss.exercises[entry.id],bodyweight=entry.loading==='BODYWEIGHT',R=op.return,e=op.establishment.effortGuidedLoad;
+ const {op,cap}=sk,S=op.strength,g=goalDose(sk),main=slot.role==='MAIN',[lo,hi]=g.repRange,ex=ss.exercises[entry.id],bodyweight=noExternalLoad(entry),R=op.return,e=op.establishment.effortGuidedLoad;
  // The current goal's contract (state model consumer closure, Property C; SSCTR F3): the repetition target of an exercise with a known load (known,
  // or re-established, returning or unlogged under one) is never above the goal's range, whichever row carries it, as the KNOWN row already cuts it;
  // so a goal change to MAINTAIN (8-8) never leaves a from-log 12. Below the range the executed dose stands: an increase needs evidence. A row
@@ -373,10 +452,12 @@ function strengthCandidate(sk,ss,w,slot,entry,{firstOfWeek,phase,date,entryWeek}
  // by effort again under the earlier load, and like the other establishment rows never above the count the phase allows (SSCTR D54).
  if(needsReestablishment(op,ex,entry,date))return {kind:'REESTABLISH',...counts,cap:Math.min(main?g.sets:Math.max(1,g.sets-1),2),rirFloor:Math.max(e.minimumRir,g.startRir),row:{reps:main?g.reps:Math.min(15,g.reps+2),mode:'ESTABLISH',establishment:true,note:`Not done for more than ${R.moderateMaxDays} days as of the last review: establish the load again by effort${ex.load!=null?`; do not exceed ${ex.load} ${ex.convention==='PER_HAND'?'kg per hand':'kg'}`:''}`}};
  const hold=['SPECIFIC','TAPER','RACE_WEEK','POST_EVENT','CONSOLIDATION'].includes(phase);
- if(bodyweight)return {kind:'BODYWEIGHT',...counts,...(ex?{}:{cap:2}),rirFloor:3,row:{reps:ex?.reps??reps,mode:'BODYWEIGHT',establishment:!ex}};
+ // A band or assistance level progresses by repetitions inside the goal range and is never a kilogram (B0-C04): at the top the level is the athlete's.
+ if(bodyweight)return {kind:'BODYWEIGHT',...counts,...(ex?{}:{cap:2}),rirFloor:3,row:{reps:ex?.reps??reps,mode:'BODYWEIGHT',establishment:!ex,note:ordinalResistance(entry)&&(ex?.reps??reps)>=hi?'At the top of the repetition range the dose holds; a harder level is your choice, reported when you make it':null}};
  if(!ex){
   const hint=cap.strength.loadHints[entry.id],novice=cap.strength.class==='NONE'&&phase==='ESTABLISHMENT';
-  return {kind:'FIRST_ESTABLISH',...counts,cap:novice?e.sets:2,rirFloor:e.minimumRir,row:{reps:novice?e.reps:reps,mode:'ESTABLISH',establishment:true,note:hint?`An earlier ${hint.value} ${hint.unit} at another rep target is a starting hint only`:null}};
+  const ladder=slot.directive?.reason==='SKILL_PROGRESSION'?'New step on your skill ladder: technique first, from the lightest load (the empty bar for barbell lifts); you can always step back':null;
+  return {kind:'FIRST_ESTABLISH',...counts,cap:novice?e.sets:2,rirFloor:e.minimumRir,row:{reps:novice?e.reps:reps,mode:'ESTABLISH',establishment:true,note:ladder??(hint?`An earlier ${hint.value} ${hint.unit} at another rep target is a starting hint only`:null)}};
  }
  // A from-log row needs a logged load: an exercise a review saw performed without one is established by effort again (SSCTR D52).
  if(ex.unlogged&&ex.mode==='FROM_LOG')return {kind:'UNLOGGED',...counts,cap:e.sets,rirFloor:e.minimumRir,row:{reps:inRange(ex.reps??reps),mode:'ESTABLISH',establishment:true,note:`No usable load was logged last time: establish the load by effort again${Number.isFinite(ex.ceiling)?`; do not exceed ${ex.ceiling} ${ex.convention==='PER_HAND'?'kg per hand':'kg'}`:''}`}};
@@ -431,7 +512,7 @@ export function loggedLoadDecision(S,ex,u,log,{advanced=null,hint=null}={}){
  const A=S.loggedLoadAdoption??{};
  if(!Number.isFinite(log?.load))return {adopted:false,reason:'LOGGED_LOAD_MISSING'};
  if(log.load<=0||log.load>(A.maximumKilograms??500))return {adopted:false,reason:'LOGGED_LOAD_IMPLAUSIBLE'};
- const conv=log.convention??ex?.convention,step=S.smallestIncrement[conv]??0,planned=u?.mode==='KNOWN'&&Number.isFinite(u.value)?u.value:u?.mode==='FROM_LOG'&&Number.isFinite(ex?.load)?ex.load:null;
+ const conv=log.convention??ex?.convention,step=incrementFor(S,conv),planned=u?.mode==='KNOWN'&&Number.isFinite(u.value)?u.value:u?.mode==='FROM_LOG'&&Number.isFinite(ex?.load)?ex.load:null;
  if(planned!==null&&log.load>planned+(A.maximumIncrementsAbovePlanned??1)*step+1e-9)return {adopted:false,reason:'LOGGED_LOAD_ABOVE_PLAN',planned};
  if(planned!==null&&log.load>planned+1e-9&&advanced===false)return {adopted:false,reason:'LOGGED_LOAD_ABOVE_PLAN_TARGET_NOT_MET',planned};
  const ceiling=Number.isFinite(ex?.ceiling)?ex.ceiling:Number.isInteger(ex?.returnStep)&&Number.isFinite(ex?.load)?ex.load:null;
@@ -683,7 +764,7 @@ export function advanceStrength(sk,ss0,w,used,gate={},logged={},{assumeLogged=fa
   // The dose executed, as the evidence settled it before any step (HistoricalState; evidence mode only).
   if(evidenceMode&&on&&log)facts[id]=executedDose(ex,log,on);
   // The counts are those its row prescribed (R7-A); a row without them falls back to the week's plan.
-  const step=S.smallestIncrement[ex.convention]??0,evidence=assumeLogged||!!log,executed=advancedGate(k)&&evidence,returning=Number.isInteger(ex.returnStep),p=Number.isInteger(uc.baseSets)?{sets:uc.sets,phasedSets:Number.isInteger(uc.phasedSets)?uc.phasedSets:uc.sets,baseSets:uc.baseSets,normalSets:Number.isInteger(uc.normalSets)?uc.normalSets:null}:planned[id];
+  const step=incrementFor(S,ex.convention),evidence=assumeLogged||!!log,executed=advancedGate(k)&&evidence,returning=Number.isInteger(ex.returnStep),p=Number.isInteger(uc.baseSets)?{sets:uc.sets,phasedSets:Number.isInteger(uc.phasedSets)?uc.phasedSets:uc.sets,baseSets:uc.baseSets,normalSets:Number.isInteger(uc.normalSets)?uc.normalSets:null}:planned[id];
   // A week without a phase reduction executed its whole count; only such a week moves the return count up (SSCTR D49).
   const unreduced=!p||!Number.isInteger(p.sets)||(p.phasedSets??p.sets)===p.baseSets,ceiling=Number.isInteger(ex.setCeiling)?ex.setCeiling:Infinity;
   // A block earns its set only when no exposure in it was a return step; each such block also lifts the return ceiling by one (SSCTR D49).
@@ -711,7 +792,7 @@ export function advanceStrength(sk,ss0,w,used,gate={},logged={},{assumeLogged=fa
   if(k==='REGRESS'){if(ex.mode==='KNOWN'&&ex.load>=step&&step>0)ex.load=Math.round((ex.load-step)*10)/10;else ex.reps=Math.max(lo,(ex.reps??lo)-S.repStep);continue;}
   if(!dev||!executed)continue;
   // One step per week; EARNED may release the load tick but never adds a second step.
-  if(ex.mode==='BODYWEIGHT'){ex.reps=Math.min(hi+4,(ex.reps??lo)+S.repStep);continue;}
+  if(ex.mode==='BODYWEIGHT'){ex.reps=ordinalResistance(catalogueEntry(id))?Math.max(ex.reps??lo,Math.min(hi,(ex.reps??lo)+S.repStep)):Math.min(hi+4,(ex.reps??lo)+S.repStep);continue;}
   if(ex.mode!=='KNOWN'||g.mode==='HOLD')continue;
   if(g.mode==='LOAD'){ex.loadTick=(ex.loadTick??0)+1;if(k==='EARNED'||ex.loadTick%2===0){ex.load=Math.round((ex.load+step)*10)/10;ex.loadTick=0;}}
   else if((ex.reps??lo)+S.repStep<=hi)ex.reps=(ex.reps??lo)+S.repStep;else{ex.load=Math.round((ex.load+step)*10)/10;ex.reps=Math.max(lo,Math.min(hi,ex.repsBase??lo));}
@@ -719,6 +800,14 @@ export function advanceStrength(sk,ss0,w,used,gate={},logged={},{assumeLogged=fa
  // The return ends with the exercises in use: one not used during it carries no return step once they complete theirs, so rotation
  // resumes on its cadence and later new exercises start normally (SSCTR D51).
  if(finished&&!used.some(u=>Number.isInteger(ss.exercises[u.id]?.returnStep)))for(const e of Object.values(ss.exercises))if(Number.isInteger(e.returnStep)){delete e.returnStep;delete e.returnInBlock;delete e.setCeiling;delete e.returnLogged;}
+ // B0-C08: the novice cap releases at a block boundary only on executed evidence: every exercise of the week's last exposures ADVANCE or EARNED
+ // (no repeated adverse response) and every loaded one established with a usable load (adopted from a log, or known). Otherwise it holds and
+ // is re-assessed at the next boundary. A conditional projection assumes the planned evidence, as it does for every step.
+ if(ss.density?.capped&&blockEnd){
+  const ids=[...byExercise(used)].filter(([,rows])=>!rows.every(x=>x.practice)).map(([id])=>id),gateOf=id=>gate[id]??gate.STRENGTH??gate.ALL??'HOLD';
+  const ok=assumeLogged||ids.length>0&&ids.every(id=>advancedGate(gateOf(id)))&&ids.filter(id=>!noExternalLoad(catalogueEntry(id))).every(id=>ss.exercises[id]?.mode==='KNOWN'&&Number.isFinite(ss.exercises[id]?.load));
+  ss.density=ok?{capped:false,releasedAfterWeek:w}:{capped:true,heldAt:[...(ss.density.heldAt??[]),w]};
+ }
  if(dev)ss.devCount++;
  if(evidenceMode)ss.facts=facts;
  return ss;
@@ -734,8 +823,8 @@ function strengthRowsFor(sk,template,w,ss,{firstOfWeek,phase=null,date=null,entr
   const restKey=r.role==='MAIN'?(goal.strength.kind==='STRENGTH'?'MAIN_STRENGTH_GOAL':'MAIN'):'ACCESSORY',common={restSeconds:S.restSeconds[restKey],preparationMinutes:S.preparationMinutes[r.role==='MAIN'?'MAIN':'ACCESSORY']};
   const dose=strengthDose(sk,ss,w,r,entry,{firstOfWeek,phase,date,entryWeek});
   if(dose.skip)continue;
-  if(dose.practice){const practice=catalogueEntry(PRACTICE_ID[r.pattern])??entry;rows.push(exerciseRow(practice,{sets:dose.sets,reps:dose.reps,rir:dose.rir,mode:'BODYWEIGHT',restSeconds:S.restSeconds.PRACTICE,preparationMinutes:S.preparationMinutes.PRACTICE,establishment:true,note:'Movement practice: learn the pattern; this is not a strength test',exposure:dose.exposure}));used.push({id:practice.id,practice:true,kind:dose.kind,date});continue;}
-  rows.push(exerciseRow(entry,{...common,sets:dose.sets,reps:dose.reps,rir:Math.max(2,dose.rir),mode:dose.mode,value:dose.value??null,convention:dose.convention??null,establishment:!!dose.establishment,rule:dose.rule??null,note:dose.note??null,pending:!!dose.pending,exposure:dose.exposure}));
+  if(dose.practice){const practice=catalogueEntry(PRACTICE_ID[r.slotPattern??r.pattern])??entry;rows.push(exerciseRow(practice,{role:'PRACTICE',sets:dose.sets,reps:dose.reps,rir:dose.rir,mode:'BODYWEIGHT',restSeconds:S.restSeconds.PRACTICE,preparationMinutes:S.preparationMinutes.PRACTICE,establishment:true,note:'Movement practice: learn the pattern; this is not a strength test',exposure:dose.exposure}));used.push({id:practice.id,practice:true,kind:dose.kind,date});continue;}
+  rows.push(exerciseRow(entry,{...common,role:r.role,sets:dose.sets,reps:dose.reps,rir:Math.max(2,dose.rir),mode:dose.mode,value:dose.value??null,convention:dose.convention??null,establishment:!!dose.establishment,rule:dose.rule??null,note:dose.note??null,pending:!!dose.pending,exposure:dose.exposure}));
   used.push({id:entry.id,kind:dose.kind,mode:dose.mode,value:dose.value??null,convention:dose.convention??entry.convention,reps:dose.reps,sets:dose.sets,phasedSets:dose.sets,rir:dose.rir,baseSets:dose.baseSets??null,normalSets:dose.normalSets??null,date});
  }
  return {rows,used};
@@ -764,7 +853,7 @@ export function dayPhaseOf(sk,w,day){
 function eventWeekSessions(sk,w,roles,{achieved={},walks=0,ceiling=null,runState=null}={}){
  const {c,op,goal}=sk,R=op.run,E=op.event,ev=goal.run.event,out={},ed=eventDays(sk),cue=R.effortCues.EASY_CONVERSATIONAL;
  const capped=x=>ceiling===null?x:Math.min(x,ceiling),budget=capped(c.schedule.runMinutes),qualityOk=allows(sk.authority,'R6-RUN-QUALITY');
- const runs=roles.filter(r=>r.sport==='RUN').sort((a,b)=>a.day-b.day),strides=qualityOk&&(achieved.strides??0)>0;
+ const runs=roles.filter(r=>r.sport==='RUN').sort((a,b)=>a.day-b.day),strides=qualityOk&&(achieved.strides??0)>0,optionalStrides=stridesOptional(sk,runState)?{optional:true}:{};
  // Walk/jog, restart and return athletes keep or reduce what they have reached; never a continuous run they have not done (SSCTR D43).
  const mode=runState?.mode??'EASY',ladder=op.establishment.walkJogLadder,entry=op.return.entryRunMinutes;
  const exposures=mode==='EASY'?null:spacedExposures(op,runs),walkSet=mode==='EASY'?walkDays(roles,walks):new Set(runs.filter(r=>!exposures.has(r.id)).map(r=>r.id));
@@ -790,7 +879,7 @@ function eventWeekSessions(sk,w,roles,{achieved={},walks=0,ceiling=null,runState
   if(b<=ed.windowDays){
    if(mode==='WALK_JOG'){out[r.id]=b===1?{role:'WALK',prescription:walkPrescription(Math.min(c.schedule.runMinutes,E.keptWalkMinutes),{reason:'Day before the race: an easy walk if you like; no running'}),optional:true,converted:'RACE_EVE_WALK'}:walkJog(runState.walkStep-1,'Final days before the race: an easier walk/jog than your current step');continue;}
    if(mode!=='EASY'){out[r.id]=b===1?{role:'SHAKEOUT',prescription:{...easyPrescription(Math.min(budget,E.shakeoutMinutes[0],current),{family:'SHAKEOUT',cue}),optionalByDesign:true},optional:true,explanation:'Optional short easy run the day before the race'}:{role:'EASY',prescription:easyPrescription(heldMinutes(mid(E.raceWeekRunVolumeRange)),{cue}),explanation:'Final days before the race: shorter than your current runs'};continue;}
-   if(b===1){out[r.id]={role:'SHAKEOUT',prescription:{...easyPrescription(Math.min(budget,E.shakeoutMinutes[0]),{family:'SHAKEOUT',cue,strides:strides?{repetitions:Math.min(E.shakeoutStrideRepetitions,achieved.strides),workSeconds:R.strides.workSeconds,recoverySeconds:R.strides.recoverySeconds}:null}),optionalByDesign:true},optional:true,explanation:'Optional short shakeout the day before the race'};continue;}
+   if(b===1){out[r.id]={role:'SHAKEOUT',prescription:{...easyPrescription(Math.min(budget,E.shakeoutMinutes[0]),{family:'SHAKEOUT',cue,strides:strides?{repetitions:Math.min(E.shakeoutStrideRepetitions,achieved.strides),workSeconds:R.strides.workSeconds,recoverySeconds:R.strides.recoverySeconds,...optionalStrides}:null}),optionalByDesign:true},optional:true,explanation:'Optional short shakeout the day before the race'};continue;}
    if(r.day===touchDay){const p=qualityPrescription('TOUCH',E.raceWeekTouch[ev.kind],{cues:R.effortCues,warmup:R.qualityWarmupMinutes,cooldown:R.qualityCooldownMinutes,budget,touchCue:ev.kind==='10K'?'TEN_K_EFFORT':'HALF_MARATHON_EFFORT'});if(p){out[r.id]={role:'RACE_TOUCH',prescription:p,key:true,essential:false,explanation:'Brief race-effort touch to stay sharp; only work already done in the build'};continue;}}
    out[r.id]={role:'EASY',prescription:easyPrescription(easyMinutes(mid(E.raceWeekRunVolumeRange)),{cue}),explanation:'Final days before the race: short and easy'};
    continue;
@@ -800,7 +889,7 @@ function eventWeekSessions(sk,w,roles,{achieved={},walks=0,ceiling=null,runState
   // R10: the taper long run is never shorter than that week's easy run.
   if(r.role==='LONG'&&achieved.long){const minutes=Math.max(roundTo5(achieved.long*mid(E.taperWeekLongRunRange)),easyMinutes(taperVolume));out[r.id]={role:'LONG',prescription:easyPrescription(Math.min(budget,Math.max(R.minimumSessionMinutes,minutes)),{family:'LONG',cue}),key:true,essential:true,explanation:'Taper: shorter long run relative to the achieved peak, never shorter than the easy runs'};continue;}
   if(r.role==='QUALITY'&&qualityOk&&achieved.quality?.work){const q=achieved.quality,work=reducedWork(q.work,E.taperQualityWorkRange,E.reducedWorkMinimums);const p=qualityPrescription(kindOf(q.family),{repetitions:work.repetitions,workMinutes:work.workMinutes,recoveryMinutes:q.work.recoveryMinutes},{cues:R.effortCues,warmup:R.qualityWarmupMinutes,cooldown:R.qualityCooldownMinutes,budget});if(p){out[r.id]={role:'QUALITY',prescription:p,key:true,essential:true,explanation:'Taper: same effort, less work than the achieved peak session'};continue;}}
-  out[r.id]={role:'EASY',prescription:easyPrescription(easyMinutes(taperVolume),{cue,strides:strides?{repetitions:Math.max(R.strides.entryRepetitions,achieved.strides-1),workSeconds:R.strides.workSeconds,recoverySeconds:R.strides.recoverySeconds}:null})};
+  out[r.id]={role:'EASY',prescription:easyPrescription(easyMinutes(taperVolume),{cue,strides:strides?{repetitions:Math.max(R.strides.entryRepetitions,achieved.strides-1),workSeconds:R.strides.workSeconds,recoverySeconds:R.strides.recoverySeconds,...optionalStrides}:null})};
  }
  return out;
 }
@@ -847,16 +936,16 @@ export function eventCompletionItem(sk,rs){
 }
 /** Builds one week from the run row, the strength state and the context arrangement. */
 export function buildWeek(sk,w,rs,ss,priorWeeks,{arrangementOverride=null,equipmentOverride=null,runCeiling=null,firstWeek=false}={}){
- const {c,op,plan,goal,blocks}=sk,s=c.schedule,phase=plan.phases[w],context=contextOf(plan.phases,w),arr=arrangementOverride??sk.arrangement[context]??Object.values(sk.arrangement)[0];
+ const {c,op,plan,goal,blocks}=sk,s=c.schedule,phase=plan.phases[w],context=contextOf(plan.phases,w),capped=!!ss?.density?.capped&&noviceDensityApplies(sk),arr=arrangementOverride??arrangementFor(sk,context,capped);
  const row=runRow(sk,rs,w),roles=clone(arr?.sessions??[]),ed=eventDays(sk),eventWeek=['TAPER','RACE_WEEK','POST_EVENT'].includes(phase);
  const eventContext={achieved:rs.achieved??{},walks:peakOf(priorWeeks).walks,ceiling:runCeiling,runState:rs},nearRace=r=>!!ed&&ed.before(w,r.day)>=1&&ed.before(w,r.day)<=ed.taperDays;
- let runOut=eventWeek?eventWeekSessions(sk,w,roles,eventContext):distributeRun(sk,row,roles,{ceiling:runCeiling,firstWeek,previousLong:previousBuildLong(priorWeeks)});
+ let runOut=eventWeek?eventWeekSessions(sk,w,roles,eventContext):distributeRun(sk,row,roles,{ceiling:runCeiling,firstWeek,previousLong:previousBuildLong(priorWeeks),modeHistory:rs.modeHistory??[]});
  // A build or specific week whose last days fall in the taper or race window takes the event rules for those days (QRE-R6-03).
  if(!eventWeek&&roles.some(r=>r.sport==='RUN'&&nearRace(r))){const near=eventWeekSessions(sk,w,roles,eventContext);runOut={...runOut,...Object.fromEntries(roles.filter(r=>r.sport==='RUN'&&nearRace(r)&&near[r.id]).map(r=>[r.id,near[r.id]]))};}
  const windowStrengthDay=ed?roles.filter(x=>x.sport==='STRENGTH'&&ed.windowB(x.day)>=op.event.raceWeekStrengthMinDaysBeforeRace).sort((a,b)=>ed.windowB(b.day)-ed.windowB(a.day))[0]?.day??null:null;
  if(firstWeek)firstWeekGuard(sk,runOut);
  const blockId=blocks.find(b=>w>=b.startWeek&&w<b.endWeekExclusive)?.id,sessions=[],used=[];let firstStrength=true,strengthState=ss;
- const templates=equipmentOverride?sk.templatesFor(equipmentOverride):sk.templates,templatesOn=date=>equipmentOverride?templates:sk.templatesForDate?sk.templatesForDate(date):templates;
+ const templates=equipmentOverride?sk.templatesFor(equipmentOverride,{capped}):capped&&sk.noviceTemplates?sk.noviceTemplates:sk.templates,templatesOn=date=>equipmentOverride?templates:sk.templatesForDate?sk.templatesForDate(date,{capped}):templates;
  // A return-entry week is one in which an exercise in use this week is at the entry step; a rotated-out exercise still parked at
  // that step does not make one (R7-A).
  const inUse=new Set(roles.filter(x=>x.sport==='STRENGTH').flatMap(x=>{const t=templatesOn(onDate(c.startDate,w*7+x.day))[x.templateIndex];return t?slotEntries(sk,t,w,ss).map(y=>y.entry.id):[];}));
@@ -878,10 +967,17 @@ export function buildWeek(sk,w,rs,ss,priorWeeks,{arrangementOverride=null,equipm
    if(b>=1&&b<=ed.windowDays&&(b<op.event.raceWeekStrengthMinDaysBeforeRace||r.day!==windowStrengthDay)){sessions.push(restByDesign(common,'Final days before the race: no strength in the last '+op.event.raceWeekStrengthMinDaysBeforeRace+' days, and one short light session at most before that'));continue;}
   }
   if(phase==='POST_EVENT'){const since=7-plan.raceDay+r.day;if(since<op.event.postEventFirstRunMinDaysAfterRace||sessions.some(x=>x.sport==='STRENGTH'&&x.prescription)){sessions.push(restByDesign(common,'Post-event week: one light strength session is enough; this day is rest or mobility by design'));continue;}}
-  const built=t?strengthRowsFor(sk,t,w,strengthState,{firstOfWeek:firstStrength,phase:strengthPhase,date:common.date,entryWeek}):{rows:[],used:[]};firstStrength=false;
-  const fitted=built.rows.length?fitStrengthSession(built.rows,{budget:s.strengthMinutes,warmup:op.strength.warmupMinutes,cooldown:op.strength.cooldownMinutes,secondsPerRep:op.strength.secondsPerRep,maxExercises:s.strengthMinutes<35?op.strength.maxExercises.MAIN_ONLY_BUDGET:op.strength.maxExercises.DEFAULT,minimumExercises:Math.min(2,built.rows.length)}):null;
+  // B0-C08: a TPL.CORE day under the novice cap runs at practice dose in the establishment week (practice first), accessory dose after it.
+  const built=t?strengthRowsFor(sk,t,w,strengthState,{firstOfWeek:firstStrength||!!t.densityCapped&&t.type==='CORE',phase:strengthPhase,date:common.date,entryWeek}):{rows:[],used:[]};firstStrength=false;
+  let fitted=built.rows.length?fitStrengthSession(built.rows,{budget:s.strengthMinutes,warmup:op.strength.warmupMinutes,cooldown:op.strength.cooldownMinutes,secondsPerRep:op.strength.secondsPerRep,maxExercises:s.strengthMinutes<35?op.strength.maxExercises.MAIN_ONLY_BUDGET:op.strength.maxExercises.DEFAULT,minimumExercises:Math.min(2,built.rows.length)}):null;
   if(!fitted){sessions.push(restByDesign(common,'The chosen time cannot hold a supported strength session; more time on this day is needed'));continue;}
-  const fittedIds=new Set(fitted.map(e=>e.id)),usedNow=built.used.filter(u=>fittedIds.has(u.id)).map(u=>({...u,session:common.id,fittedSets:fitted.find(e=>e.id===u.id).sets}));used.push(...usedNow);
+  // B0-C11 / CMP.P04: under a RUN lead, a non-MAIN HIGH-eccentric lower row in a session within about a day before the long run or the week's
+  // quality run falls by content (one set fewer, a planned reduction), disclosed; the arrangement came first (CMP.I11 ranking), MAIN rows keep
+  // the essential stimulus, and nothing new or HIGH-eccentric is introduced there. Under STRENGTH or JOINT lead nothing is reduced here.
+  const lead=goal.priorityByPhase[phase==='CONSOLIDATION'?context:phase]?.lead??goal.baseLead,H=op.hybrid;
+  const nearProtected=allowsCandidate(sk.repertoire??DEFAULT_REPERTOIRE,'B0-C11')&&lead==='RUN'&&roles.some(k=>{const x=runOut[k.id];if(k.sport!=='RUN'||!x?.prescription||!I11_PROTECTED_FAMILIES.includes(x.prescription.family))return false;const g=hourOf(k,H)-hourOf(r,H);return g>0&&g<=H.nextDayGapHours;});
+  if(nearProtected)fitted=fitted.map(e=>e.role!=='MAIN'&&e.region==='LOWER'&&configurationOf(e.id)?.eccentric==='HIGH'&&e.sets>1?{...e,sets:e.sets-1,...(e.exposure?{exposure:{...e.exposure,phasedSets:e.sets-1,contentReduction:'CMP.P04'}}:{}),instructions:[...e.instructions,'One set fewer this week: this session is close to your long run or harder run, which this block protects; it is not a recovery or injury measure']}:e);
+  const fittedIds=new Set(fitted.map(e=>e.id)),usedNow=built.used.filter(u=>fittedIds.has(u.id)).map(u=>{const e=fitted.find(x=>x.id===u.id);return {...u,session:common.id,fittedSets:e.sets,...(e.exposure?.contentReduction?{phasedSets:e.sets,sets:e.sets}:{})};});used.push(...usedNow);
   // An exercise first set up earlier in the week is not yet established for its later sessions: until a review sees it performed
   // with a logged load, every exposure is its establishment (SSCTR D52). In a return-entry week such an exercise keeps the entry
   // dose for the rest of the week (author-found, R6-POLICY-4).
@@ -889,7 +985,7 @@ export function buildWeek(sk,w,rs,ss,priorWeeks,{arrangementOverride=null,equipm
   const family=['RACE_WEEK','POST_EVENT','TAPER'].includes(strengthPhase)?'MAINTENANCE':fitted.every(e=>e.load.mode==='BODYWEIGHT'&&e.establishment)?'PRACTICE':t.family;
   const p=strengthPrescription(family,fitted,{budget:s.strengthMinutes,warmup:op.strength.warmupMinutes,cooldown:op.strength.cooldownMinutes,secondsPerRep:op.strength.secondsPerRep,goalMode:goalDose(sk).mode,instructions:strengthPhase==='RACE_WEEK'?['Final days before the race: one short session to keep the movement pattern; nothing new or heavy']:strengthPhase==='TAPER'?['Taper: fewer sets at familiar loads; no new exercises or heavier loads']:[]});
   const heavy=fitted.some(e=>e.region==='LOWER'&&['HEAVY','MODERATE'].includes(e.lowerDemand)&&e.sets>=2);
-  sessions.push({...common,role:'STRENGTH_'+t.type,key:heavy&&t.rows.some(x=>x.role==='MAIN'&&['SQUAT','HINGE'].includes(x.pattern)),essential:true,optional:false,prescription:p,status:'PLANNED',plannedPrescriptionHash:hash(p),templateType:t.type,...(arr?.orderFlexible&&s.sharedDays.includes(r.day)?{orderFlexible:true,explanation:'Either order on this day: the two sessions carry no interference difference'}:{})});
+  sessions.push({...common,role:'STRENGTH_'+t.type,key:heavy&&t.rows.some(x=>x.role==='MAIN'&&['SQUAT','HINGE'].includes(x.pattern)),essential:true,optional:false,prescription:p,status:'PLANNED',plannedPrescriptionHash:hash(p),templateType:t.type,templateId:t.templateId??'TPL.'+t.type,...(t.densityCapped&&t.type==='CORE'?{lighterByDesign:true,explanation:'Lighter by design while strength is being established: trunk and calf work only; two full sessions a week until the first block review (keep this day lighter or choose fewer strength days)'}:{}),...(arr?.orderFlexible&&s.sharedDays.includes(r.day)?{orderFlexible:true,explanation:'Either order on this day: the two sessions carry no interference difference'}:{})});
  }
  if(phase==='RACE_WEEK'){
   const onChosen=s.runDays.includes(plan.raceDay),completion=raceDayCompletion(sk,rs),ladder=op.establishment.walkJogLadder,step=rs.mode==='WALK_JOG'?ladder[Math.max(0,Math.min(rs.walkStep,ladder.length-1))]:null;
@@ -1039,34 +1135,84 @@ export function validateWeeks(sk,weeks,{history=null}={}){
    if(Number.isInteger(e.exposure?.phaseBasis)&&e.sets>phaseDose(sk.op,P,e.exposure.phaseBasis,e.rir)[0])bad('sets');
   }
  }
+ // R7-B guards (fail closed): every strength row is a configuration of the bound catalog admitted under its records, HIGH skill only when familiar
+ // or reached through a ladder; every run belongs to a catalog family; quality only under every R6 quality gate (B0-FIDELITY M1–M3, B0-C01);
+ // the familiar repeated bouts only on B0-C02 with a fully specified familiar task.
+ for(const wk of weeks)for(const x of wk.sessions){
+  if(!x.prescription||x.status==='SKIPPED'||history?.has(x.id))continue;
+  const skw=at(wk.index),rep=skw.repertoire??DEFAULT_REPERTOIRE;
+  if(x.sport==='STRENGTH')for(const e of x.prescription.exercises){const cfg=configurationOf(e.id);if(!cfg||!admitted(cfg,rep))errors.push(`${x.id}:notInRepertoire:${e.id}`);else if(cfg.skill==='HIGH'&&!highSkillAdmissible(skw,cfg.id))errors.push(`${x.id}:skillNotAdmissible:${e.id}`);}
+  if(x.sport!=='RUN')continue;
+  if(!runRepertoireOf(x.prescription))errors.push(`${x.id}:runNotInRepertoire`);
+  if(['THRESHOLD','TEN_K_SPECIFIC','HALF_MARATHON_SPECIFIC','FAMILIAR_REPEATED_BOUTS'].includes(x.prescription.family)&&!qualityGateOpen(skw,contextOf(skw.plan.phases,wk.index)))errors.push(`${x.id}:qualityGate`);
+  if(x.prescription.family==='FAMILIAR_REPEATED_BOUTS'&&!familiarBoutsTask(skw))errors.push(`${x.id}:familiarBoutsAuthority`);
+ }
  if(goal.run.event&&weeks.some(w=>w.index===plan.raceWeek)&&!weeks.find(w=>w.index===plan.raceWeek).sessions.some(x=>x.role==='RACE'))errors.push('raceWeekMissing');
  if(!allows(sk.authority,'R6-LOAD-ESTABLISHMENT'))for(const wk of weeks)for(const x of wk.sessions)if(x.sport==='STRENGTH'&&x.prescription)for(const e of x.prescription.exercises)if(e.load.mode==='ESTABLISH'||e.role==='PRACTICE')errors.push(x.id+':establishmentWithoutAuthority:'+e.id);
  return errors;
 }
+/** HIGH-skill admissibility (catalog classification.skillAdmissibility; B0-C03, B0-C07): familiar, or reached through a skill ladder with agency. */
+export const highSkillAdmissible=(sk,id)=>(sk.c.athlete.knownExercises??[]).some(k=>k.id===id&&k.familiar!==false)||(sk.c.athlete.ladderReached??[]).includes(id);
+/** Every R6 quality gate (src/r6-program.mjs qualityAllowed at the freeze; B0-FIDELITY M1–M3): class or graduation, goal, three run days, context, authority. */
+export const qualityGateOpen=(sk,context)=>(['EASY_CURRENT','QUALITY_FAMILIAR'].includes(sk.cap.run.class)||!!sk.c.athlete.runGraduation&&allowsCandidate(sk.repertoire??DEFAULT_REPERTOIRE,'B0-C01'))&&['RACE','PERFORMANCE'].includes(sk.goal.run.kind)&&['BUILD','SPECIFIC','NEXT_BLOCK','DEVELOPMENT'].includes(context)&&sk.c.schedule.runDays.length>=3&&allows(sk.authority,'R6-RUN-QUALITY');
 /** Rebuilds the deterministic skeleton (context) of a stored program for projection; authority is re-resolved, never stored. */
 export function skeletonOf(program,authority){
- const op=authority.policy.operational,sk={c:program.canonical,cap:program.capability,goal:program.goal,plan:program.phases,blocks:program.blocks,op,authority,templates:program.templates,arrangement:program.arrangementSessions};
- sk.templatesFor=equipment=>strengthTemplates({...sk.c,athlete:{...sk.c.athlete,equipment}},sk.goal,{equipment,knownOnly:!allows(authority,'R6-LOAD-ESTABLISHMENT')}).map((t,i)=>({...t,index:i}));
+ const op=authority.policy.operational,sk={c:program.canonical,cap:program.capability,goal:program.goal,plan:program.phases,blocks:program.blocks,op,authority,repertoire:repertoireOf(authority),templates:program.templates,noviceTemplates:program.noviceTemplates??null,arrangement:program.arrangementSessions};
+ const knownOnly=!allows(authority,'R6-LOAD-ESTABLISHMENT');
+ sk.templatesFor=(equipment,{capped=false}={})=>strengthTemplates({...sk.c,athlete:{...sk.c.athlete,equipment}},sk.goal,{equipment,knownOnly,auth:sk.repertoire,capped}).map((t,i)=>({...t,index:i,...(capped?{densityCapped:true}:{})}));
  // The latest window that covers a date is the athlete's latest statement about it (R7-A.1 C2, C5).
  const windows=sk.c.equipmentWindows??[],cache=new Map();
  const windowFor=date=>windows.findLast(x=>date>=x.from&&(!x.to||date<=x.to));
- sk.templatesForDate=date=>{const win=windowFor(date);if(!win)return sk.templates;const key=hash(win.equipment);if(!cache.has(key))cache.set(key,sk.templatesFor(win.equipment));return cache.get(key);};
+ sk.templatesForDate=(date,{capped=false}={})=>{const own=capped&&sk.noviceTemplates?sk.noviceTemplates:sk.templates,win=windowFor(date);if(!win)return own;const key=hash([win.equipment,capped]);if(!cache.has(key))cache.set(key,sk.templatesFor(win.equipment,{capped}));return cache.get(key);};
  sk.equipmentForDate=date=>windowFor(date)?.equipment??sk.c.athlete.equipment;
  // The context in force for week i when it is an earlier one: a change stated from a later week leaves the earlier context in force
  // before it (R7-A.1 C2). Null means the skeleton's own context; callers use `sk.at?.(i)??sk`.
  const before=program.contextBefore??[],versions=new Map();
  sk.at=i=>{const e=before.find(x=>i<x.untilWeek);if(!e)return null;if(!versions.has(e)){const {untilWeek,...context}=e,view={...program,...context};delete view.contextBefore;versions.set(e,skeletonOf(view,authority));}return versions.get(e);};
- const rot=op.rotation[sk.c.athlete.strengthPreferences.rotation]??op.rotation.COACH_DECIDES;
- sk.rotation=(w,template)=>{
-  if(!allows(authority,'R6-ROTATION')||!rot.everyWeeks||rot.scope==='NONE')return {};
-  let turns=0;for(let i=1;i<=w;i++)if(i%rot.everyWeeks===0&&![...op.rotation.deferInPhases,'ESTABLISHMENT'].includes(sk.plan.phases[i]))turns++;
-  return turns?Object.fromEntries(template.rows.filter(r=>r.role==='ACCESSORY'&&r.alternatives.length).map(r=>[r.slot,[r.entry.id,...r.alternatives][turns%(r.alternatives.length+1)]])):{};
- };
+ sk.rotation=(w,template)=>rotationFor(sk,w,template);
  return sk;
+}
+/** The arrangement a week is built under: the novice-density variant while the cap holds (B0-C08), else the context's own. */
+export const arrangementKey=(context,capped)=>capped?context+'@B0-C08':context;
+export const arrangementFor=(sk,context,capped)=>sk.arrangement?.[arrangementKey(context,capped)]??sk.arrangement?.[context]??Object.values(sk.arrangement??{})[0];
+/** Hours from the strength session of a template to the next protected run of its arrangement (CMP.I11 placement, B0-C06 condition 2). */
+function neighboursProtectedRun(sk,arr,template){
+ const H=sk.op.hybrid,s=(arr?.sessions??[]).find(x=>x.sport==='STRENGTH'&&x.templateIndex===template.index);if(!s)return false;
+ const at=x=>hourOf(x,H);
+ return (arr.sessions??[]).some(r=>r.sport==='RUN'&&['LONG','QUALITY'].includes(r.role)&&((at(r)-at(s)+168)%168)>0&&((at(r)-at(s)+168)%168)<=H.nextDayGapHours);
+}
+/**
+ * Calendar rotation under DR-134 (B0-C06, B0-F04): selection only, permitted never mandatory. A MAIN never changes on the calendar (default
+ * keep; only a block-boundary choice with a recorded reason changes it) and a PRACTICE row never rotates; an ACCESSORY with an admissible
+ * alternative turns every two weeks under EVERY_2_WEEKS (TWO_WEEK_ELIGIBLE), otherwise only at the first block boundary on or after its policy
+ * cadence (never at every 4-week boundary); no new turn in deferred phases (REASON_ONLY), the configuration in use stays. A turn never raises the
+ * session's lower-body or eccentric class, and a lower-body turn never lands in a session within about a day before the long run or the week's
+ * quality run (its first exposure follows B0-C11 placement). FIXED: no calendar rotation. The candidate's record off: no calendar rotation.
+ */
+export function rotationFor(sk,w,template){
+ const pref=sk.c.athlete.strengthPreferences.rotation,rot=sk.op.rotation[pref]??sk.op.rotation.COACH_DECIDES;
+ if(!allows(sk.authority,'R6-ROTATION')||!allowsCandidate(sk.repertoire,'B0-C06')||!rot.everyWeeks||rot.scope==='NONE')return {};
+ const context=contextOf(sk.plan.phases,w),arr=arrangementFor(sk,context,!!template.densityCapped),neighbours=neighboursProtectedRun(sk,arr,template),out={};
+ const deferred=i=>ROTATION_DEFERRED_PHASES.includes(sk.plan.phases[i]);
+ const blockStart=i=>sk.blocks.some(b=>DEVELOPMENT.includes(b.family)&&b.startWeek===i&&i>0);
+ for(const r of template.rows){
+  if(r.role!=='ACCESSORY'||!r.alternatives?.length)continue;
+  const base=configurationOf(r.entry.id)??r.entry,cycle=[r.entry.id,...r.alternatives.filter(id=>{const e=configurationOf(id);return e&&demandRank(e.lowerDemand)<=demandRank(base.lowerDemand)&&(e.eccentric!=='HIGH'||base.eccentric==='HIGH');})];
+  if(cycle.length<2||base.region==='LOWER'&&neighbours)continue;
+  const eligibility=rotationEligibility(pref,'ACCESSORY',{phase:null,hasAlternative:true});
+  let turns=0,last=0;
+  for(let i=1;i<=w;i++){
+   if(deferred(i))continue;
+   if(eligibility==='TWO_WEEK_ELIGIBLE'?i%rot.everyWeeks===0:blockStart(i)&&i-last>=rot.everyWeeks){turns++;last=i;}
+  }
+  if(turns)out[r.slot]=cycle[turns%cycle.length];
+ }
+ return out;
 }
 /** Generates a complete conditional program from onboarding-like input. Never requires a prebuilt week or a static priority. */
 export function generateProgram(input,options={}){
- const intake=canonicalizeIntake(input),authority=r6Authority(options),op=authority.policy?.operational;
+ // The repertoire authority is read at the intake's date (each SSCTR record's review-by date applies), and travels with the R6 authority.
+ const intake=canonicalizeIntake(input),authority0=r6Authority(options),authority={...authority0,repertoire:authority0.repertoire??repertoireAuthority({...options,asOf:intake.canonical?.asOf})},op=authority.policy?.operational;
  const base={runtimeVersion:'R6-1',mode:'SHADOW',inputHash:hash(input??null),program:null,applied:false,officialPlanState:clone(input?.officialPlanState??null),appliedState:clone(input?.officialPlanState??null),completedWork:clone(input?.completedWork??[]),missingInputs:[...intake.missing],errors:[...intake.errors],uncertainty:clone(intake.uncertainty),negotiation:clone(intake.negotiation),horizonsConsidered:['H0_SESSION','H1_WEEK','H2_BLOCK','H3_GOAL_EVENT'],qualityAssessment:{assessor:'RUNTIME_SELF_CHECK',independent:false,class:'UNREVIEWED'}};
  const reject=(status,reason,extra={})=>freeze({...base,status,reason,...extra});
  if(intake.status==='CLINICAL_HUMAN_REQUIRED')return reject('CLINICAL_HUMAN_REQUIRED','Current pain, injury, illness or functional limitation routes to qualified human assessment; no training dose is substituted');
@@ -1074,25 +1220,34 @@ export function generateProgram(input,options={}){
  if(intake.status==='INVALID_INPUT')return reject('INVALID_INPUT','Input facts are malformed or contradictory');
  if(intake.status==='ASK')return reject('ASK','Only facts that change the first program are asked; everything else is established or learned',{missingInputs:intake.missing});
  if(!op||!allows(authority,'R6-COLD-START')||!allows(authority,'R6-PLANNED-PROGRESSION'))return reject('UNSUPPORTED','Current independent cold-start/progression authority is unavailable; no program is generated');
+ // R7-B: the configurations come from the bound catalog; without its exact bytes and core SSCTR records nothing is planned (fail closed).
+ if(!authority.repertoire.valid)return reject('UNSUPPORTED','The bound repertoire (R7B0-CATALOG-2 with its SSCTR records) is unavailable or does not match; no program is generated',{repertoire:repertoireBinding(authority.repertoire)});
  const c=intake.canonical,s=c.schedule,cap=assessCapability(c,op),goal=buildGoalModel(c),plan=planPhases(c,cap,op),blocks=blocksFrom(plan.phases,goal.priorityByPhase);
  if(cap.strength.programmed&&cap.strength.class!=='KNOWN_LOAD'&&!allows(authority,'R6-LOAD-ESTABLISHMENT'))return reject('UNSUPPORTED','Load-establishment authority is unavailable; unknown strength loads cannot be established');
  if(goal.run.event&&!allows(authority,'R6-EVENT-TRANSITION'))return reject('UNSUPPORTED','Event-transition authority is unavailable; an event program would leave the race week unsupported');
  if(cap.restartAfterPause&&!allows(authority,'R6-NONCLINICAL-RETURN'))return reject('UNSUPPORTED','Nonclinical-return authority is unavailable; a restart after a pause cannot be programmed');
  const negotiation=[...base.negotiation],gaps=[];
- const templates=cap.strength.programmed?strengthTemplates(c,goal,{knownOnly:!allows(authority,'R6-LOAD-ESTABLISHMENT')}):[];
- const sk={c,cap,goal,plan,blocks,op,authority,templates,arrangement:{}};
- const program0={canonical:c,capability:cap,goal,phases:plan,blocks,templates,arrangementSessions:{}};
- Object.assign(sk,skeletonOf(program0,authority),{templates,arrangement:{}});
+ const rep=authority.repertoire,knownOnly=!allows(authority,'R6-LOAD-ESTABLISHMENT');
+ const templates=cap.strength.programmed?strengthTemplates(c,goal,{knownOnly,auth:rep}):[];
+ const sk={c,cap,goal,plan,blocks,op,authority,repertoire:rep,templates,arrangement:{}};
+ const noviceTemplates=noviceDensityApplies(sk)?strengthTemplates(c,goal,{knownOnly,auth:rep,capped:true}).map(t=>({...t,densityCapped:true})):null;
+ const program0={canonical:c,capability:cap,goal,phases:plan,blocks,templates,noviceTemplates,arrangementSessions:{}};
+ Object.assign(sk,skeletonOf(program0,authority),{templates,noviceTemplates,arrangement:{}});
  if(templates.some(t=>t.rows.length<2))negotiation.push({id:'EQUIPMENT_LIMITS_STRENGTH_SESSION',blocking:false,detail:'Available equipment supports fewer than two patterns in a session; bodyweight practice fills the gap',options:['Add equipment','Accept bodyweight practice']});
- const missingPatterns=[...new Set(templates.flatMap(t=>t.missingPatterns))];
+ const missingPatterns=[...new Set([...templates,...(noviceTemplates??[])].flatMap(t=>t.missingPatterns))];
  if(missingPatterns.length)negotiation.push({id:'MOVEMENT_PATTERN_UNAVAILABLE',blocking:false,informational:true,patterns:missingPatterns,detail:'No available equipment supports these patterns; sessions keep the patterns that can be loaded',options:['Add a band or bar','Accept the gap']});
- const severityAuthority=allows(authority,'R6-HYBRID-ARRANGEMENT'),arrangementTrace={},choices={};let previousId=null;
- for(const context of [...new Set(plan.phases.map((p,w)=>contextOf(plan.phases,w)))]){
-  const candidates=arrangementCandidates(c,cap,goal,context,sk,templates),lead=goal.priorityByPhase[context]?.lead??goal.baseLead;
-  const choice=chooseBalanced(candidates,{lead,temporaryPreference:goal.temporaryPreference,severityAuthority,currentId:previousId,hybrid:op.hybrid,context:{eventPhase:EVENT_PHASES.includes(context),strengthDevelopment:goal.strength.development,runDevelopment:goal.run.development,runRole:goal.run.kind==='NONE'?'MAINTAIN':'PRIMARY',strengthRole:EVENT_PHASES.includes(context)||goal.strength.kind==='MAINTAIN'?'MAINTAIN':'PRIMARY'}});
-  arrangementTrace[context]={lead,basis:choice.basis,reason:choice.reason,selectedId:choice.selected?.id??null,paretoIds:choice.paretoIds,candidateCount:candidates.length,counterfactuals:choice.counterfactuals.filter(x=>x.selected||choice.paretoIds.includes(x.id)).slice(0,8)};
+ const severityAuthority=allows(authority,'R6-HYBRID-ARRANGEMENT'),cmpI11=severityAuthority&&allowsCandidate(rep,'B0-C11'),arrangementTrace={},choices={};let previousId=null;
+ // Each context gets its arrangement; under the novice density cap (B0-C08) each context also gets the variant for the capped templates. A
+ // capped variant that would need a trade-off preference falls back to the context's own day assignment (same template count).
+ const variants=[...new Set(plan.phases.map((p,w)=>contextOf(plan.phases,w)))].flatMap(context=>[[context,false],...(noviceTemplates?[[context,true]]:[])]);
+ for(const [context,capped] of variants){
+  const own=capped?noviceTemplates:templates,key=arrangementKey(context,capped);
+  const candidates=arrangementCandidates(c,cap,goal,context,sk,own),lead=goal.priorityByPhase[context]?.lead??goal.baseLead;
+  const choice=chooseBalanced(candidates,{lead,temporaryPreference:goal.temporaryPreference,severityAuthority,cmpI11,currentId:capped?sk.arrangement[context]?.id??null:previousId,hybrid:op.hybrid,context:{eventPhase:EVENT_PHASES.includes(context),strengthDevelopment:goal.strength.development,runDevelopment:goal.run.development,runRole:goal.run.kind==='NONE'?'MAINTAIN':'PRIMARY',strengthRole:EVENT_PHASES.includes(context)||goal.strength.kind==='MAINTAIN'?'MAINTAIN':'PRIMARY'}});
+  arrangementTrace[key]={lead,basis:choice.basis,reason:choice.reason,selectedId:choice.selected?.id??null,paretoIds:choice.paretoIds,candidateCount:candidates.length,counterfactuals:choice.counterfactuals.filter(x=>x.selected||choice.paretoIds.includes(x.id)).slice(0,8)};
+  if(capped&&(choice.askRequired||!choice.selected)){arrangementTrace[key].fallback='CONTEXT_ARRANGEMENT';continue;}
   if(choice.askRequired)return reject('ASK','Genuine run/strength arrangement trade-off with equal worst-case joint harm; a temporary preference is needed',{missingInputs:['schedule.temporaryPreference'],question:choice.question,trace:{capability:cap,goalModel:goal,phases:plan,arrangement:arrangementTrace}});
-  sk.arrangement[context]=choice.selected;previousId=choice.selected?.id??previousId;choices[context]=choice;
+  sk.arrangement[key]=choice.selected;if(!capped)previousId=choice.selected?.id??previousId;choices[key]=choice;
  }
  const runState=initialRunState(sk),strengthState=initialStrengthState(sk),{weeks:projected,states}=projectWeeks(sk,0,{runState,strengthState},[],{coldStart:true,initialCeiling:['EASY_CURRENT','QUALITY_FAMILIAR','EASY_LOW'].includes(cap.run.class)?cap.run.longestMinutes??null:null});
  // The first week starts from the athlete's reported current state; every later week from the conditional plan of the week before.
@@ -1110,11 +1265,15 @@ export function generateProgram(input,options={}){
  }
  negotiation.push(...arrangementDisclosures(choices));
  if(s.sharedDays.length&&(!s.runTurn||!s.strengthTurn||s.runTurn===s.strengthTurn)&&!s.sameTurnConfirmed)negotiation.push({id:'BACK_TO_BACK_CONFIRMATION',blocking:false,days:s.sharedDays,detail:'Run and strength share a shift on these days and are planned back to back; confirm the order or change one shift'});
+ negotiation.push(...repertoireNegotiation(sk,{templates,noviceTemplates}));
+ // The time fit leaves accessories out before main sets lose any (R6); stated, never silent.
+ const fitFirst=weeks.find(w=>DEVELOPMENT.includes(w.phase))??weeks[0],lost=[];for(const x of (fitFirst?.sessions??[]).filter(x=>x.sport==='STRENGTH'&&x.prescription)){const t=templates.find(t=>t.type===x.templateType);if(t)for(const r of t.rows)if(!x.prescription.exercises.some(e=>e.id===r.entry.id)&&r.role!=='MAIN')lost.push(r.entry.id);}
+ if(lost.length)negotiation.push({id:'STRENGTH_TIME_LIMITS_SESSION',blocking:false,exercises:[...new Set(lost)],detail:'The chosen time per strength session keeps the main lifts and leaves some accessories out',options:['More time on strength days','Keep the shorter sessions']});
  const errors=validateWeeks(sk,weeks);
  if(errors.length)return reject('UNSUPPORTED','Generated candidate failed complete validation; no partial program is presented as complete',{errors});
  const peak=peakOf(weeks);
  if(goal.run.event&&peak.long<target)gaps.push({id:'LONG_RUN_PEAK_BELOW_TARGET',detail:`Planned long run peaks at ${peak.long} of ${target} minutes before the taper`,owner:'COACHING',materialToGoal:goal.run.event.kind==='HALF_MARATHON'&&peak.long<sk.op.event.raceDayCompletion.halfMarathonAchievedLongRunBelowMinutes});
- const program={version:PROGRAM_VERSION,id:'program-'+c.hash.slice(0,16),athleteId:c.athlete.id,revision:0,proposalOnly:true,official:false,sourceInputHash:base.inputHash,intakeHash:c.hash,policyHash:authority.policyHash,startDate:c.startDate,weeksCount:c.weeks,timezoneOffsetMinutes:c.timezoneOffsetMinutes,learningConsent:c.learningConsent,canonical:c,goal,capability:cap,schedule:clone(s),phases:plan,blocks,weeks,stateTrace:states,arrangement:Object.fromEntries(Object.entries(sk.arrangement).map(([k,v])=>[k,{id:v.id,quality:v.quality,perm:v.perm,runFirstOnShared:v.runFirstOnShared}])),arrangementSessions:clone(sk.arrangement),templates,negotiation,uncertainty:clone(intake.uncertainty),gaps,decisions:[],completedWork:clone(c.completedWork),officialPlanState:clone(c.officialPlanState),profileContextUsedForDose:false,assumptions:['Future weeks are conditional proposals, not predictions; each step needs the previous comparable exposure executed without an adverse signal','Effort cues, not paces, define running intensity; any time goal is context only','Loads come from known current loads or effort-guided establishment; nothing is derived from sex, body size or another exercise','Phase lengths are operational choices inside reviewed envelopes, not validated optimal periodization'],authorityRefs:authority.records.map(r=>({boundaryId:r.boundaryId,disposition:r.disposition}))};
+ const program={version:PROGRAM_VERSION,id:'program-'+c.hash.slice(0,16),athleteId:c.athlete.id,revision:0,proposalOnly:true,official:false,sourceInputHash:base.inputHash,intakeHash:c.hash,policyHash:authority.policyHash,startDate:c.startDate,weeksCount:c.weeks,timezoneOffsetMinutes:c.timezoneOffsetMinutes,learningConsent:c.learningConsent,canonical:c,goal,capability:cap,schedule:clone(s),phases:plan,blocks,weeks,stateTrace:states,arrangement:Object.fromEntries(Object.entries(sk.arrangement).map(([k,v])=>[k,{id:v.id,quality:v.quality,perm:v.perm,runFirstOnShared:v.runFirstOnShared}])),arrangementSessions:clone(sk.arrangement),templates,...(noviceTemplates?{noviceTemplates}:{}),repertoire:repertoireBinding(rep),archetype:allowsCandidate(rep,'B0-C12')?archetypeOf(goal):null,classification:{run:cap.run.classification??null,strength:cap.strength.class,thresholds:RUN_CLASS_THRESHOLDS},coldStart:{run:{class:cap.run.class,basis:cap.run.basis,weeklyMinutes:cap.run.weeklyMinutes,longestMinutes:cap.run.longestMinutes,entry:cap.run.class==='WALK_JOG'?'walk/jog ladder':cap.run.class==='RESTART'?'restart entry':cap.run.class==='EASY_UNKNOWN'?'reviewed easy entry':'current easy running'},strength:{class:cap.strength.class,known:cap.strength.known.map(k=>k.id),entry:cap.strength.class==='KNOWN_LOAD'?'known doses, others established by effort':cap.strength.class==='NONE'?'movement practice, then effort-guided establishment':'effort-guided establishment'},unknowns:clone(intake.uncertainty).map(u=>({field:u.field,category:u.category})),learning:'Longitudinal learning is R7-C; the first sessions only establish and confirm'},feasibility:feasibilityOf(sk,weeks,negotiation),progression:progressionOf(weeks,blocks),negotiation,uncertainty:clone(intake.uncertainty),gaps,decisions:[],completedWork:clone(c.completedWork),officialPlanState:clone(c.officialPlanState),profileContextUsedForDose:false,assumptions:['Future weeks are conditional proposals, not predictions; each step needs the previous comparable exposure executed without an adverse signal','Effort cues, not paces, define running intensity; any time goal is context only','Loads come from known current loads or effort-guided establishment; nothing is derived from sex, body size or another exercise','Phase lengths are operational choices inside reviewed envelopes, not validated optimal periodization'],authorityRefs:authority.records.map(r=>({boundaryId:r.boundaryId,disposition:r.disposition}))};
  program.hash=programHash(program);
  return freeze({...base,status:'PROPOSED',reason:'Complete conditional program generated from onboarding-like facts',program,negotiation,requestedScopeSatisfied:gaps.every(g=>!g.materialToGoal),trace:{capability:cap,goalModel:goal,phases:plan,arrangement:arrangementTrace,unknowns:intake.uncertainty},nextObservation:'Record each session: completed or not, actual minutes or sets/reps/load, effort if known and next-day function. Next week’s steps advance only on that evidence.'});
 }

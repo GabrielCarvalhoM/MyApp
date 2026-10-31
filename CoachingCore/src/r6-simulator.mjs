@@ -66,7 +66,10 @@ export function simulateProgram(intake,script={},options={}){
  const statuses=decisions.map(d=>d.result.status),asks=decisions.filter(d=>d.result.status==='ASK');
  const runMinutes=program.weeks.map(w=>w.plannedRunMinutes),eventWeek=w=>['RACE_WEEK','POST_EVENT'].includes(w.phase);
  // Week-over-week growth of planned training running; race week and the post-event week follow the event envelope.
- const increases=program.weeks.slice(1).map((w,i)=>eventWeek(w)||eventWeek(program.weeks[i])?{ratio:1,base:0}:{ratio:runMinutes[i]>0?runMinutes[i+1]/runMinutes[i]:1,base:runMinutes[i]});
+ // A consolidation week is a planned reduction (as race week and post-event are): the week after it is compared with the last full week before it,
+ // so the rebound to the held dose is not read as progression (R7-B: a graduation introduction week follows a consolidation week, B0-C01).
+ const baseOf=i=>{let j=i;while(j>0&&program.weeks[j].phase==='CONSOLIDATION')j--;return j;};
+ const increases=program.weeks.slice(1).map((w,i)=>{const b=baseOf(i);return eventWeek(w)||eventWeek(program.weeks[b])?{ratio:1,base:0}:{ratio:runMinutes[b]>0?runMinutes[i+1]/runMinutes[b]:1,base:runMinutes[b],from:b,to:i+1};});
  const sk=skeletonOf(program,authority);
  const invariants={
   generated:true,

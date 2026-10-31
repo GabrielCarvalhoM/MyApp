@@ -1,5 +1,6 @@
 import {clone,freeze,hash} from './value.mjs';
 import {catalogueEntry} from './r6-catalogue.mjs';
+import {ordinalResistance,allowsCandidate,DEFAULT_REPERTOIRE} from './r7b-repertoire.mjs';
 import {screenInterruptionReason,isYes} from './r6-clinical.mjs';
 
 export const INTAKE_VERSION='R6-INTAKE-1';
@@ -33,7 +34,7 @@ function eligibility(a,asOf){
 }
 const currentFamiliar=(t,asOf)=>t&&t.current===true&&t.familiar===true&&t.tolerated===true&&isoDay(asOf)&&isoDay(t.observedAt?.slice?.(0,10))&&dayGap(t.observedAt.slice(0,10),asOf)>=0&&dayGap(t.observedAt.slice(0,10),asOf)<=28;
 export const LB_TO_KG=0.45359237;
-export const LOAD_CONVENTIONS=['TOTAL','PER_HAND','BODYWEIGHT','MACHINE_STACK'];
+export const LOAD_CONVENTIONS=['TOTAL','PER_HAND','SINGLE_IMPLEMENT','BODYWEIGHT','MACHINE_STACK'];
 /**
  * Loads are kilograms inside the engine (QRE-R6-01). A pound value is converted at the boundary to the nearest 0.5 kg and
  * kept as reported; any other or missing unit leaves the load unknown. Bodyweight carries no external load.
@@ -51,6 +52,8 @@ function knownExercise(e,asOf,errors){
  const entry=catalogueEntry(e.id),pattern=upper(e.pattern)??entry?.pattern??null;
  let load=toKilograms(typeof e.load==='number'?{value:e.load,unit:'KG',convention:e.convention??entry?.convention??'TOTAL'}:e.load??null);
  if(load?.unit==='BODYWEIGHT'&&entry&&entry.loading!=='BODYWEIGHT')load=null;
+ // A band or assistance level is ordinal and athlete-reported: no value of it is ever a load (B0-C04).
+ if(entry&&ordinalResistance(entry))load=null;
  const loadComplete=!!load;
  // A reported dose above the prescription envelope's six sets is history; the plan starts at six (QRE-R6-12).
  const doseComplete=loadComplete&&Number.isInteger(e.sets)&&e.sets>=1&&e.sets<=10&&Number.isInteger(e.reps)&&e.reps>=1&&e.reps<=30&&number(e.rir,0,8);
@@ -93,7 +96,7 @@ export function canonicalizeIntake(input){
  if(!runGoal.kind&&!strengthGoal.kind)missing.push('athlete.goals');
  if(!runGoal.kind&&strengthGoal.kind)runGoal.kind='NONE',uncertainty.push(unknown('goals.run','SAFE_CONSERVATIVE_ESTABLISHMENT','No running goal supplied; running is not programmed without chosen run days'));
  if(!strengthGoal.kind&&runGoal.kind)strengthGoal.kind='NONE',uncertainty.push(unknown('goals.strength','SAFE_CONSERVATIVE_ESTABLISHMENT','No strength goal supplied; strength is not programmed without chosen strength days'));
- let event=clone(a.event??(rawRun&&typeof rawRun==='object'?rawRun.event:undefined)??goals.event??source.event??null);
+ let event=clone(a.event??(rawRun&&typeof rawRun==='object'?rawRun.event:undefined)??goals.event??source.event??null),contextEvent=null;
  if(typeof event==='string')event={kind:event};
  else if(event!==null&&(typeof event!=='object'||Array.isArray(event))){errors.push('event.object');event=null;}
  if(!event&&['10K','HALF_MARATHON','RACE_10K','RACE_HALF_MARATHON'].includes(runKindRaw))event={kind:runKindRaw};
@@ -101,11 +104,15 @@ export function canonicalizeIntake(input){
   event.kind=EVENTS[upper(event.kind??event.distance)]??upper(event.kind??event.distance);
   event.date=event.date??event.eventDate??rawRun?.eventDate??null;
   event.timeGoalMinutes=number(event.timeGoalMinutes,10,400)?event.timeGoalMinutes:null;
+  // B0-C10 (LATER.EVENT.5K): a 5K has no event recipe in V1; the athlete gets a performance plan without event phases, the race kept as context.
+  if(event.kind==='5K'&&allowsCandidate(DEFAULT_REPERTOIRE,'B0-C10')){contextEvent={kind:'5K',date:isoDay(event.date)?event.date:null,timeGoalMinutes:event.timeGoalMinutes};event=null;runGoal.kind='PERFORMANCE';uncertainty.push(unknown('event.kind','SAFE_CONSERVATIVE_ESTABLISHMENT','A 5K has no event recipe in V1: a performance plan without specific, taper or race-week phases; the race date and any time goal are context only'));}
+  else{
   if(['MARATHON','ULTRA'].includes(event.kind))scope=scope??'EVENT_DISTANCE_OUTSIDE_V1';
   else if(!['10K','HALF_MARATHON'].includes(event.kind))errors.push('event.supported10KOrHalfMarathon');
   if(!present(event.date))missing.push('athlete.event.date');
   else if(!isoDay(event.date)||!isoDay(startDate)||dayGap(startDate,event.date)<7||dayGap(startDate,event.date)>=weeks*7)errors.push('event.withinHorizonAndNotImmediate');
   runGoal.kind='RACE';
+  }
  }else if(runGoal.kind==='RACE')missing.push('athlete.event');
  const runExperience=EXPERIENCE[upper(a.runExperience)]??null,strengthExperience=EXPERIENCE[upper(a.strengthExperience??a.strengthTrainingAge)]??null;
  if(!runExperience&&runGoal.kind!=='NONE')uncertainty.push(unknown('runExperience','SAFE_CONSERVATIVE_ESTABLISHMENT','Treated as novice for establishment; first observed sessions update the estimate'));
@@ -176,7 +183,7 @@ export function canonicalizeIntake(input){
  const temporaryPreference=['RUN','STRENGTH'].includes(String(upper(s.temporaryPreference??s.temporaryOrderPreference)??'').replace('_FIRST',''))?String(upper(s.temporaryPreference??s.temporaryOrderPreference)).replace('_FIRST',''):null;
  const canonical={version:'R6-CANONICAL-INTAKE-1',asOf,startDate,weeks,learningConsent:source.learningConsent===true,timezoneOffsetMinutes:source.timezoneOffsetMinutes??0,
   athlete:{id:a.id??null,ageEligible:!missing.includes('athlete.ageEligibility')&&!scope,eligibility:el,runExperience:runExperience??'NOVICE',strengthExperience:strengthExperience??'NOVICE',experienceDeclared:{run:runExperience!==null,strength:strengthExperience!==null},recentRun,recentStrength:{daysPerWeek:recentSelf.strengthDaysPerWeek},historySummary:summary,knownExercises:dedupedExercises,knownRuns,performanceAnchors:clone(a.performanceAnchors??[]),equipment:Array.isArray(equipment)?[...new Set(equipment.map(upper))]:[],strengthPreferences:{emphasis:emphasis.map(upper),movementPriorities:movementPriorities.map(upper),rotation},profileContext:{sex:a.sex??a.profileContext?.sex??null,heightCm:a.heightCm??a.profileContext?.heightCm??null,weightKg:a.weightKg??a.profileContext?.weightKg??null,doseConsumer:false},wearable,pause},
-  goals:{run:runGoal,strength:strengthGoal,event},
+  goals:{run:runGoal,strength:strengthGoal,event,...(contextEvent?{contextEvent}:{})},
   schedule:{runDays,strengthDays,runTurn,strengthTurn,runMinutes,strengthMinutes,longRunMinutes:longRunMinutes??runMinutes,longRunDay,sharedDays:shared,sameTurnConfirmed:s.sameTurnConfirmed===true,temporaryPreference},
   officialPlanState:clone(source.officialPlanState??null),completedWork:clone(source.completedWork??[]),uncertainty,negotiation};
  canonical.hash=hash(canonical);

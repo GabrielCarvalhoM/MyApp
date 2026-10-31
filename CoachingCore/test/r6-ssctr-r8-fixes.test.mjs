@@ -89,7 +89,7 @@ test('SSCTR D47(a): a goal change that adds a race to a program built from walk/
 // ---------- D48: a pending row never points at the logged value ----------
 test('SSCTR D48: a pending load row instructs effort-guided selection only',()=>{
  const p=generateProgram(intake({id:'t8-d48',athlete:{knownExercises:[]}}),opts).program;
- const r=evaluateProgram(p,review(p,0,{observations:weekObs(p,0,{over:e=>e.id==='goblet-squat'?{load:{value:160,unit:'KG',convention:'PER_HAND'}}:null})}),opts);
+ const r=evaluateProgram(p,review(p,0,{observations:weekObs(p,0,{over:e=>e.id==='goblet-squat'?{load:{value:160,unit:'KG',convention:'SINGLE_IMPLEMENT'}}:null})}),opts);
  const rows=r.proposal.weeks[1].sessions.flatMap(s=>s.prescription?.exercises??[]).filter(e=>e.id==='goblet-squat');
  assert.ok(rows.length);
  for(const e of rows){
@@ -98,7 +98,7 @@ test('SSCTR D48: a pending load row instructs effort-guided selection only',()=>
   assert.ok(!e.instructions.some(i=>/use the load you logged|last logged load|load you established/i.test(i)),e.instructions.join(' | '));
  }
  // A confirmed or repeated reference keeps the from-log instruction.
- const c=evaluateProgram(p,review(p,0,{observations:weekObs(p,0,{over:e=>e.id==='goblet-squat'?{load:{value:16,unit:'KG',convention:'PER_HAND'}}:null}),loadConfirmations:[{exerciseId:'goblet-squat',value:16,unit:'KG',convention:'PER_HAND'}]}),opts);
+ const c=evaluateProgram(p,review(p,0,{observations:weekObs(p,0,{over:e=>e.id==='goblet-squat'?{load:{value:16,unit:'KG',convention:'SINGLE_IMPLEMENT'}}:null}),loadConfirmations:[{exerciseId:'goblet-squat',value:16,unit:'KG',convention:'SINGLE_IMPLEMENT'}]}),opts);
  for(const e of c.proposal.weeks[1].sessions.flatMap(s=>s.prescription?.exercises??[]).filter(e=>e.id==='goblet-squat'))assert.equal(e.load.mode,'KNOWN');
 });
 

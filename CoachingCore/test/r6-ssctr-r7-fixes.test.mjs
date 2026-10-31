@@ -88,7 +88,8 @@ function weekObs(p,w,set=()=>null){
 const loadsOf=(p,w,id)=>p.weeks[w].sessions.flatMap(s=>s.prescription?.exercises??[]).filter(e=>e.id===id).map(e=>e.load);
 const conventionIn=(p,w)=>id=>p.weeks[w].sessions.flatMap(s=>s.prescription?.exercises??[]).find(e=>e.id===id).load.convention;
 const kg=(value,convention)=>({load:{value,unit:'KG',convention}});
-const goblet=v=>e=>e.id==='goblet-squat'?kg(v,'PER_HAND'):null;
+// R7-B (B0-C04, B0-F01): one dumbbell is held in a goblet squat, so its convention is SINGLE_IMPLEMENT (was PER_HAND in R6).
+const goblet=v=>e=>e.id==='goblet-squat'?kg(v,'SINGLE_IMPLEMENT'):null;
 
 test('SSCTR D44: an above-plan logged load is adopted only when that exposure met the ADVANCE criterion',()=>{
  const p=generateProgram(strengthIntake('t-d44'),opts).program;
@@ -113,11 +114,11 @@ test('SSCTR D45: one establishment log is not a number until confirmed, logged a
  for(const l of loadsOf(r.proposal,1,'goblet-squat'))assert.ok(l.mode==='FROM_LOG'&&l.value===undefined,'no number from one unconfirmed log');
  // SSCTR D48 (round 8): the pending row instructs effort-guided selection only and never points at the logged value.
  for(const e of r.proposal.weeks[1].sessions.flatMap(s=>s.prescription?.exercises??[]).filter(e=>e.id==='goblet-squat'))assert.ok(/^Ramp up/.test(e.instructions[0])&&!e.instructions.some(i=>/use the load you logged/i.test(i)),e.instructions.join(' | '));
- assert.ok(r.loadQuestions.some(q=>q.exerciseId==='goblet-squat'&&q.reason==='ESTABLISHMENT_LOG_UNCONFIRMED'&&q.logged===160&&/per hand/.test(q.question)));
+ assert.ok(r.loadQuestions.some(q=>q.exerciseId==='goblet-squat'&&q.reason==='ESTABLISHMENT_LOG_UNCONFIRMED'&&q.logged===160&&/one implement/.test(q.question)));
  assert.equal(r.proposal.stateTrace[1].strength.exercises['goblet-squat'].pendingLoad,160);
  // (a) the athlete's confirmation, in kilograms or pounds, in the planned convention
  for(const c of [{value:16,unit:'KG'},{value:35,unit:'lb'}]){
-  const a=evaluateProgram(p,review(p,0,{observations:weekObs(p,0,goblet(160)),loadConfirmations:[{exerciseId:'goblet-squat',convention:'PER_HAND',...c}]}),opts);
+  const a=evaluateProgram(p,review(p,0,{observations:weekObs(p,0,goblet(160)),loadConfirmations:[{exerciseId:'goblet-squat',convention:'SINGLE_IMPLEMENT',...c}]}),opts);
   for(const l of loadsOf(a.proposal,1,'goblet-squat'))assert.ok(l.mode==='KNOWN'&&l.value>=16&&l.value<=18,`${c.value} ${c.unit} confirmed (${l.value})`);
   assert.ok(!a.loadQuestions.some(q=>q.exerciseId==='goblet-squat'));
  }
@@ -135,7 +136,7 @@ test('SSCTR D45: one establishment log is not a number until confirmed, logged a
  assert.ok(twice,'the fixture plans an exercise twice in week 1');
  for(const l of loadsOf(evaluateProgram(p,review(p,0,{observations:weekObs(p,0)}),opts).proposal,1,twice))assert.equal(l.mode,'KNOWN',twice);
  // (c) within one increment of the athlete's own load hint in the same convention
- const h=generateProgram(intake({id:'t-d45-hint',athlete:{knownExercises:[{id:'goblet-squat',sets:3,reps:10,load:{value:16,unit:'KG',convention:'PER_HAND'},rir:2,current:true,familiar:true,tolerated:true,observedAt:'2026-08-01'}]}}),opts).program;
+ const h=generateProgram(intake({id:'t-d45-hint',athlete:{knownExercises:[{id:'goblet-squat',sets:3,reps:10,load:{value:16,unit:'KG',convention:'SINGLE_IMPLEMENT'},rir:2,current:true,familiar:true,tolerated:true,observedAt:'2026-08-01'}]}}),opts).program;
  for(const l of loadsOf(evaluateProgram(h,review(h,0,{observations:weekObs(h,0,goblet(18))}),opts).proposal,1,'goblet-squat'))assert.ok(l.mode==='KNOWN'&&l.value>=18);
  for(const l of loadsOf(evaluateProgram(h,review(h,0,{observations:weekObs(h,0,goblet(24))}),opts).proposal,1,'goblet-squat'))assert.equal(l.mode,'FROM_LOG');
 });

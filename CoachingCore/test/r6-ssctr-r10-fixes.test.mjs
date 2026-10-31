@@ -148,8 +148,10 @@ test('SSCTR D52: strength — a known dose skipped from the first week counts it
 // ---------- after a return (probe Z3) ----------
 /** Probe Y2/Z3 timeline: weeks before the pause executed and reviewed; a nonclinical TRAVEL pause from the Monday of week s for d days;
  * the return review on the day it ends; then every later week executed (sessions dated inside the pause excluded) and reviewed. */
-function returnTimeline({pref,s,d}){
- const p0=generateProgram(intake({id:`t10-z3-${pref}-${s}-${d}`,athlete:{goals:{run:'PERFORMANCE',strength:'HYPERTROPHY'},exerciseRotationPreference:pref},schedule:{strengthDays:[0,4],runDays:[1,2,3],longRunDay:3}}),opts).program;
+// R7-B (audits/domain-coaching-r7-b-2026-10-31/TEST_CHANGES_R7B.md): an optional schedule, default unchanged, so the D52 witnesses can use a timeline
+// in which a loaded accessory rotates under the DR-134/B0-C06 cadence.
+function returnTimeline({pref,s,d,schedule={strengthDays:[0,4],runDays:[1,2,3],longRunDay:3}}){
+ const p0=generateProgram(intake({id:`t10-z3-${pref}-${s}-${d}-${schedule.strengthDays.join('')}`,athlete:{goals:{run:'PERFORMANCE',strength:'HYPERTROPHY'},exerciseRotationPreference:pref},schedule}),opts).program;
  const done=new Map(),record=(P,w,keep)=>{for(const x of P.weeks[w].sessions)if(x.prescription&&keep(x))for(const e of x.prescription.exercises??[])done.set(e.id,[...(done.get(e.id)??[]),x.date]);};
  let p=p0,ledger=[];
  for(let w=0;w<s;w++){record(p,w,()=>true);({p,ledger}=run(p,ledger,w,w+1));}
@@ -165,8 +167,11 @@ function returnTimeline({pref,s,d}){
  return {p,ew,lastRet,firstBack};
 }
 test('SSCTR D52: after a return, an exercise first prescribed in a session dated inside the pause establishes by effort, and one last done more than 28 days earlier re-establishes (strength)',()=>{
- for(const [pref,s,d] of [['COACH_DECIDES',4,15],['EVERY_6_WEEKS',5,15],['COACH_DECIDES',7,12],['EVERY_6_WEEKS',7,13]]){
-  const {firstBack,lastRet,ew}=returnTimeline({pref,s,d});
+ // R7-B: the two EVERY_2_WEEKS timelines on three strength days are where a loaded accessory rotates under the B0-C06 cadence (the R6 cadence
+ // rotated db-step-up in the four original timelines; under B0-C06 those bring back only bodyweight exercises, still checked below).
+ const S3={strengthDays:[0,2,4],runDays:[1,3,6],longRunDay:6};
+ for(const [pref,s,d,schedule] of [['COACH_DECIDES',4,15],['EVERY_6_WEEKS',5,15],['COACH_DECIDES',7,12],['EVERY_6_WEEKS',7,13],['EVERY_2_WEEKS',2,15,S3],['EVERY_2_WEEKS',3,12,S3]]){
+  const {firstBack,lastRet,ew}=returnTimeline({pref,s,d,...(schedule?{schedule}:{})});
   assert.ok(lastRet>=ew,`${pref} s${s} d${d}: the return has steps`);assert.ok(firstBack.length,`${pref} s${s} d${d}: a loaded exercise comes back after the return`);
   for(const f of firstBack){
    const label=`${pref} s${s} d${d} w${f.w} ${f.id} (last ${f.last??'never'})`;
@@ -177,8 +182,9 @@ test('SSCTR D52: after a return, an exercise first prescribed in a session dated
    else if(gap(f.last,f.date)>RET.moderateMaxDays){assert.equal(f.row.load.mode,'ESTABLISH',label);assert.match(f.row.instructions.join(' '),/Not done for more than 28 days/,label);}
   }
  }
- const pause=returnTimeline({pref:'COACH_DECIDES',s:4,d:15}).firstBack.find(f=>f.id==='db-step-up');assert.ok(pause&&pause.last===null,'db-step-up was first prescribed inside the pause');
- const late=returnTimeline({pref:'COACH_DECIDES',s:7,d:12}).firstBack.find(f=>f.id==='db-step-up');assert.ok(late&&gap(late.last,late.date)===35,`db-step-up comes back 35 days after its last performance (${late&&gap(late.last,late.date)})`);
+ const S3w={strengthDays:[0,2,4],runDays:[1,3,6],longRunDay:6},loaded=f=>f.row.load.mode!=='BODYWEIGHT';
+ const pause=returnTimeline({pref:'EVERY_2_WEEKS',s:2,d:15,schedule:S3w}).firstBack.find(f=>loaded(f)&&f.last===null);assert.ok(pause,'a loaded exercise first prescribed inside the pause comes back after the return');assertEstablishment(pause.row,pause.id);
+ const late=returnTimeline({pref:'EVERY_2_WEEKS',s:3,d:12,schedule:S3w}).firstBack.find(f=>loaded(f)&&f.last&&gap(f.last,f.date)>RET.moderateMaxDays);assert.ok(late,'a loaded exercise comes back more than 28 days after its last performance');assert.equal(late.row.load.mode,'ESTABLISH');assert.match(late.row.instructions.join(' '),/Not done for more than 28 days/);
 });
 
 // ---------- substitution (probe Z4) ----------

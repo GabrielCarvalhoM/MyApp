@@ -1,12 +1,13 @@
 import {clone,hash} from './value.mjs';
 import {catalogueEntry} from './r6-catalogue.mjs';
+import {novelOrEccentricLower,I11_PROTECTED_FAMILIES} from './r7b-repertoire.mjs';
 import {byCodePoint} from './r6-provenance.mjs';
 
 export const SEVERITY=['NONE','LOW','MODERATE','HIGH'];
 const rank=s=>SEVERITY.indexOf(s??'NONE');
 const level=n=>SEVERITY[Math.max(0,Math.min(3,n))];
 const max=(a,b)=>rank(a)>=rank(b)?a:b;
-const KEY_RUN=['THRESHOLD','TEN_K_SPECIFIC','HALF_MARATHON_SPECIFIC','RACE_TOUCH','LONG','RACE','CRUISE','FASTER','HILLS','EVENT_SPECIFIC'];
+const KEY_RUN=['THRESHOLD','TEN_K_SPECIFIC','HALF_MARATHON_SPECIFIC','RACE_TOUCH','LONG','RACE','CRUISE','FASTER','HILLS','EVENT_SPECIFIC','FAMILIAR_REPEATED_BOUTS'];
 /** Mirrors PROGRAM_POLICY_R6.operational.hybrid; callers pass the authority-bound values and a test checks equality. */
 export const DEFAULT_HYBRID=Object.freeze({sameSessionGapHours:6,nextDayGapHours:30,twoDayGapHours:54,heavyLowerRepeatGapHours:48,preRaceStrengthGapHours:72,turnHours:Object.freeze({AM:7,PM:18}),backToBackGapHours:1.2,heavyLowerMinimumSets:3,qualityAdjacentToLongForbiddenWhenAlternativeExists:true});
 /** Lower-body demand of a strength session from its rows; R5 rows without a catalogue entry use pattern and volume. */
@@ -30,13 +31,15 @@ export function loadClass(session,H=DEFAULT_HYBRID){
  if(p?.modality==='RUN')return {run:KEY_RUN.includes(p.family)?'KEY':p.family==='WALK'?'NONE':'EASY',lower:'NONE'};
  return {run:'NONE',lower:lowerDemand(p,H)};
 }
-const hourOf=(s,H)=>s.day*24+(Number.isFinite(s.startMinute)?s.startMinute/60:H.turnHours[s.turn]??12)+(s.backToBackOrder??0)*H.backToBackGapHours;
+export const hourOf=(s,H=DEFAULT_HYBRID)=>s.day*24+(Number.isFinite(s.startMinute)?s.startMinute/60:H.turnHours[s.turn]??12)+(s.backToBackOrder??0)*H.backToBackGapHours;
+/** CMP.I11 (B0-C11): the strength session holds a HIGH-eccentric lower configuration, or a lower configuration in its first or re-establishment exposure. */
+export const eccentricOrNovelLowerSession=p=>p?.modality==='STRENGTH'&&(p.exercises??[]).some(novelOrEccentricLower);
 /**
  * Ordinal residual-interference costs between sessions (R6-HYBRID-ARRANGEMENT). Direction and gap matter;
  * nothing is summed or counted into a score. Week wrap compares the last sessions with next week's first.
  * Any run, easy included, shortly before moderate or heavy lower-body work costs strength when strength develops.
  */
-export function interferenceCosts(sessions,{wrap=true,hybrid=DEFAULT_HYBRID,athleteSeverity=null,strengthDevelopment=true}={}){
+export function interferenceCosts(sessions,{wrap=true,hybrid=DEFAULT_HYBRID,athleteSeverity=null,strengthDevelopment=true,cmpI11=false}={}){
  const H=hybrid,rows=sessions.map(s=>({s,c:loadClass(s,H),h:hourOf(s,H)})),out=[];
  const pairs=[];for(const a of rows)for(const b of rows){if(a===b)continue;let gap=b.h-a.h;if(gap<=0&&wrap)gap+=168;if(gap>0&&gap<=Math.max(H.preRaceStrengthGapHours,H.twoDayGapHours))pairs.push([a,b,gap]);}
  for(const [a,b,gap] of pairs){
@@ -51,6 +54,9 @@ export function interferenceCosts(sessions,{wrap=true,hybrid=DEFAULT_HYBRID,athl
   else if(a.c.run==='EASY'&&['MODERATE','HEAVY'].includes(b.c.lower)&&sameSession&&strengthDevelopment)add('strength','LOW',`Easy run shortly before ${b.c.lower.toLowerCase()} lower-body work (same session)`);
   if(a.c.run==='KEY'&&b.c.run==='KEY'&&gap<=H.nextDayGapHours&&b.s.prescription.family!=='RACE')add('run','MODERATE','Two key runs within about a day');
   if(a.c.lower==='HEAVY'&&b.c.lower==='HEAVY'&&gap<=H.heavyLowerRepeatGapHours)add('strength','MODERATE','Two heavy lower-body sessions within two days');
+  // CMP.I11 (B0-C11): an ordinal LOW run cost, once per pair, for eccentric or new leg work within about a day before the long run or the week's
+  // quality run; never a prohibition or hour rule; race proximity stays under CMP.I01. Athlete evidence may raise it for that athlete only.
+  if(cmpI11&&b.s.prescription?.modality==='RUN'&&I11_PROTECTED_FAMILIES.includes(b.s.prescription.family)&&gap<=H.nextDayGapHours&&eccentricOrNovelLowerSession(a.s.prescription))add('run','LOW',before('Eccentric or new lower-body work')+' a protected run');
  }
  return out;
 }
@@ -85,9 +91,9 @@ const compareKey=(a,b)=>{for(let i=0;i<Math.max(a.length,b.length);i++){const d=
  * Balanced/contextual arrangement choice. Never candidate order, a fixed split, alternation or a hidden modality priority.
  * When severity classes are unavailable (authority not current), costs are UNKNOWN and any real trade-off is asked.
  */
-export function chooseBalanced(candidates,{lead='JOINT',temporaryPreference=null,athleteEvidence=null,currentId=null,severityAuthority=true,context={},hybrid=DEFAULT_HYBRID,athleteSeverity=null}={}){
+export function chooseBalanced(candidates,{lead='JOINT',temporaryPreference=null,athleteEvidence=null,currentId=null,severityAuthority=true,context={},hybrid=DEFAULT_HYBRID,athleteSeverity=null,cmpI11=false}={}){
  const rows=(candidates??[]).map(original=>{
-  const c=clone(original),costs=severityAuthority?interferenceCosts(c.sessions??[],{wrap:c.wrap!==false,hybrid,athleteSeverity,strengthDevelopment:context.strengthRole!=='MAINTAIN'}):[];
+  const c=clone(original),costs=severityAuthority?interferenceCosts(c.sessions??[],{wrap:c.wrap!==false,hybrid,athleteSeverity,strengthDevelopment:context.strengthRole!=='MAINTAIN',cmpI11}):[];
   return {...c,costs,horizons:severityAuthority?horizonCosts(costs,{lead,...context}):{H0:{run:'NONE',strength:'NONE'},H1:{run:0,strength:0},H2:{run:'NONE',strength:'NONE'},H3:{run:'NONE',strength:'NONE'}},preserves:{run:c.preservesRun!==false,strength:c.preservesStrength!==false},signature:c.signature??hash((c.sessions??[]).map(s=>[s.id??s.anchorId??s.role,s.day,s.turn??s.startMinute,s.backToBackOrder??0,s.prescription]))};
  });
  const feasible=rows.filter(c=>c.admissible!==false);

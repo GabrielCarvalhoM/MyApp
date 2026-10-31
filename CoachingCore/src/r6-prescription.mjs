@@ -1,7 +1,10 @@
 import {clone,hash} from './value.mjs';
 import {catalogueEntry} from './r6-catalogue.mjs';
+import {noExternalLoad,ordinalResistance} from './r7b-repertoire.mjs';
 
-export const RUN_FAMILIES=['WALK','WALK_JOG','EASY','LONG','THRESHOLD','TEN_K_SPECIFIC','HALF_MARATHON_SPECIFIC','RACE_TOUCH','SHAKEOUT','RACE','RECOVERY_EASY'];
+export const RUN_FAMILIES=['WALK','WALK_JOG','EASY','LONG','THRESHOLD','TEN_K_SPECIFIC','HALF_MARATHON_SPECIFIC','RACE_TOUCH','SHAKEOUT','RACE','RECOVERY_EASY','FAMILIAR_REPEATED_BOUTS'];
+/** Claims no prescription text may make (B0-C02, B0-C03, B0-C05, B0-C11; safety.productMustNot): prevention, rehabilitation, pain relief, physiological thresholds. */
+export const FORBIDDEN_CLAIM=/\bprevent\w*\s+(?:an?\s+)?(?:injur|pain)|injury[- ]?prevention|injury[- ]?proof|rehabilitat|pain relief|relieves? pain|VO2\s?max|\bLT2\b|critical speed|\bMLSS\b|lactate threshold/i;
 export const STRENGTH_FAMILIES=['PRACTICE','LOWER','UPPER','FULL_BODY','MAINTENANCE'];
 const round5=n=>Math.max(5,Math.round(n/5)*5);
 export const roundTo5=round5;
@@ -57,22 +60,29 @@ export function racePrescription(event,{cues,raceDay,completion=false,stridesWar
  if(completion)return {...base,effortDomain:'EASY_CONVERSATIONAL',effort:cues.EASY_CONVERSATIONAL,calibration:{basis:'COMPLETION',timeGoalUsedForPace:false},completion:true,instructions:['Race day: the goal is to complete the distance at a conversational effort',walkBreaks?'Use walk breaks from the start, as in training: '+walkBreaks:'Walk breaks are part of the plan: walk whenever conversation gets hard','Warm up by walking; no strides and no surges, there is nothing to press','No finish time is promised; effort and how you feel govern the pace','Stop for pain, dizziness or unusual symptoms','Afterwards: easy walking; note how you feel today and tomorrow']};
  return {...base,effortDomain:tenK?'TEN_K_EFFORT':'HALF_MARATHON_EFFORT',effort:tenK?cues.TEN_K_EFFORT:cues.HALF_MARATHON_EFFORT,calibration:{basis:'EFFORT_ANCHORED',timeGoalUsedForPace:false},instructions:[stridesWarmup?'Race day: easy warm-up with a few relaxed strides':'Race day: easy warm-up; no strides, as none were done in training','Start controlled; hold '+(tenK?'hard but controlled':'steady-hard')+' effort and decide in the final part whether to press','No finish time is promised; effort and how you feel govern the pace','Stop for pain, dizziness or unusual symptoms','Afterwards: easy walking; note how you feel today and tomorrow']};
 }
-const INCREMENT_UNITS={TOTAL:'KG',PER_HAND:'KG',MACHINE_STACK:'STACK_STEP',BODYWEIGHT:'BODYWEIGHT'};
+const INCREMENT_UNITS={TOTAL:'KG',PER_HAND:'KG',SINGLE_IMPLEMENT:'KG',MACHINE_STACK:'STACK_STEP',BODYWEIGHT:'BODYWEIGHT',BAND_TENSION:'LEVEL',ASSISTED_BODYWEIGHT:'LEVEL'};
+const CONVENTION_TEXT={SINGLE_IMPLEMENT:'One dumbbell or kettlebell: the load is the mass of that one implement'};
 /**
  * One strength exercise row. Load modes: KNOWN (supplied current dose or its planned conditional step),
  * ESTABLISH (effort-guided selection inside the session), FROM_LOG (use the last logged load under the stated rule),
- * BODYWEIGHT. A fabricated kilogram never appears outside KNOWN.
+ * BODYWEIGHT (no kilogram value: reps and reserve only, against bodyweight, a band level or an assistance level; B0-C04). A fabricated
+ * kilogram never appears outside KNOWN, and never for a band or assistance (their level is ordinal and athlete-reported).
+ * The row's role is the role of the slot it fills in this program (DR-134; B0-F03), never a property of the exercise.
  */
-export function exerciseRow(entry,{sets,reps,rir,mode,value=null,restSeconds,preparationMinutes,convention=null,establishment=false,rule=null,note=null,pending=false,exposure=null}){
- const c=convention??entry.convention??'BODYWEIGHT';
- const load=entry.loading==='BODYWEIGHT'?{mode:'BODYWEIGHT',unit:'BODYWEIGHT',convention:'BODYWEIGHT'}:mode==='KNOWN'?{mode:'KNOWN',value,unit:INCREMENT_UNITS[c]??'KG',convention:c}:{mode,unit:INCREMENT_UNITS[c]??'KG',convention:c,...(rule?{rule}:{})};
+export function exerciseRow(entry,{role,sets,reps,rir,mode,value=null,restSeconds,preparationMinutes,convention=null,establishment=false,rule=null,note=null,pending=false,exposure=null}){
+ const c=convention??entry.convention??'BODYWEIGHT',ordinal=ordinalResistance(entry);
+ const load=noExternalLoad(entry)?{mode:'BODYWEIGHT',unit:ordinal?'LEVEL':'BODYWEIGHT',convention:entry.convention??'BODYWEIGHT'}:mode==='KNOWN'?{mode:'KNOWN',value,unit:INCREMENT_UNITS[c]??'KG',convention:c}:{mode,unit:INCREMENT_UNITS[c]??'KG',convention:c,...(rule?{rule}:{})};
  const rampUp='Ramp up: start with the lightest available load and add the smallest increment between preparatory sets while at least '+rir+' repetitions stay in reserve at '+reps+' repetitions with steady technique; the working load is the heaviest such load';
  // A load waiting for confirmation is chosen by effort, as at establishment; the row never points at the logged value (SSCTR D48).
- const instructions=load.mode==='ESTABLISH'?['Practise the movement with no or minimal load first',rampUp,'Do not reuse a load from another exercise or implement; record the load and its convention']:load.mode==='FROM_LOG'&&pending?[rampUp,rule??'Choose the load by effort','Record the load and its convention']:load.mode==='FROM_LOG'?['Use the load you logged last time for this exercise',rule??'If every set reached the target with the reps in reserve shown, add the smallest available increment; otherwise repeat']:load.mode==='KNOWN'?['Use the stated load only while technique and reps in reserve hold; otherwise reduce it']:['Bodyweight: keep the reps in reserve shown'];
+ const instructions=load.mode==='ESTABLISH'?['Practise the movement with no or minimal load first',rampUp,'Do not reuse a load from another exercise or implement; record the load and its convention']:load.mode==='FROM_LOG'&&pending?[rampUp,rule??'Choose the load by effort','Record the load and its convention']:load.mode==='FROM_LOG'?['Use the load you logged last time for this exercise',rule??'If every set reached the target with the reps in reserve shown, add the smallest available increment; otherwise repeat']:load.mode==='KNOWN'?['Use the stated load only while technique and reps in reserve hold; otherwise reduce it']:ordinal?[`Choose the ${entry.loading==='BAND'?'band':'assistance'} level that leaves at least ${rir} repetitions in reserve at ${reps} repetitions; the level is yours to report and is never turned into kilograms`,'Repetitions progress inside the goal range; changing the level is your choice, confirmed when you report it']:['Bodyweight: keep the reps in reserve shown'];
+ if(CONVENTION_TEXT[load.convention]&&load.mode!=='BODYWEIGHT')instructions.push(CONVENTION_TEXT[load.convention]);
+ if(entry.unilateral)instructions.push('Repetitions are per side: do each set on both sides; sides are never added together');
+ if(entry.subpattern==='BENT_KNEE'&&entry.pattern==='CALF')instructions.push('Bent-knee calf raise: soleus emphasis; a variation, not a better exercise');
+ if(entry.id==='scapular-pull-up')instructions.push('Hang from the bar first; if you cannot hang from it, report it and the plan uses a floor pull exercise instead');
  if(note)instructions.push(note);
  // The row states what it prescribes (kind, day phase, the count the phase reduced and the counts before it), so a review reads the
  // prescription itself rather than reconstructing it (R7-A).
- return {id:entry.id,pattern:entry.pattern,region:entry.region,role:entry.role,sets,reps,rir,restSeconds,preparationMinutes,load,equipment:clone(entry.equipment.filter(e=>e!=='BODYWEIGHT')),lowerDemand:entry.lowerDemand,establishment:establishment||load.mode==='ESTABLISH',instructions,...(exposure?{exposure:clone(exposure)}:{})};
+ return {id:entry.id,pattern:entry.pattern,subpattern:entry.subpattern??null,region:entry.region,role:role??'ACCESSORY',laterality:entry.laterality??'BILATERAL',sets,reps,rir,restSeconds,preparationMinutes,load,equipment:clone(entry.equipment.filter(e=>e!=='BODYWEIGHT')),lowerDemand:entry.lowerDemand,establishment:establishment||load.mode==='ESTABLISH',instructions,...(exposure?{exposure:clone(exposure)}:{})};
 }
 export function strengthDuration(exercises,{warmup=5,cooldown=3,secondsPerRep=4}={}){
  return Math.ceil(warmup+cooldown+exercises.reduce((n,e)=>n+e.preparationMinutes+e.sets*e.reps*secondsPerRep/60+Math.max(0,e.sets-1)*e.restSeconds/60,0));
@@ -93,6 +103,7 @@ export function strengthPrescription(family,exercises,{budget,warmup=5,cooldown=
 const bad=(errors,key)=>errors.push(key);
 export function validateR6Prescription(p){
  const errors=[];if(!p||!['RUN','STRENGTH'].includes(p.modality))return ['modality'];
+ if([...(p.instructions??[]),...(p.exercises??[]).flatMap(e=>e.instructions??[]),p.effort??''].some(t=>typeof t==='string'&&FORBIDDEN_CLAIM.test(t)))bad(errors,'claim');
  if(!Number.isFinite(p.durationMinutes)||p.durationMinutes<=0||p.durationMinutes>240)bad(errors,'durationMinutes');
  if(!Array.isArray(p.equipment))bad(errors,'equipment');
  if(p.modality==='RUN'){
@@ -102,11 +113,13 @@ export function validateR6Prescription(p){
   if((p.warmupMinutes??0)+(p.cooldownMinutes??0)>p.durationMinutes)bad(errors,'run.preparation');
   if(p.calibration?.basis==='ASPIRATIONAL_GOAL'||p.calibration?.paceFromGoalTime===true||p.calibration?.paceFromEasyRuns===true)bad(errors,'run.goalOrEasyDerivedPace');
   if(['EASY','LONG','WALK','WALK_JOG','SHAKEOUT','RECOVERY_EASY'].includes(p.family)&&p.effortDomain!=='EASY_CONVERSATIONAL')bad(errors,'run.easyDomain');
-  if(['THRESHOLD','TEN_K_SPECIFIC','HALF_MARATHON_SPECIFIC','RACE_TOUCH'].includes(p.family)){
+  if(['THRESHOLD','TEN_K_SPECIFIC','HALF_MARATHON_SPECIFIC','RACE_TOUCH','FAMILIAR_REPEATED_BOUTS'].includes(p.family)){
    const w=p.work;if(!w||!Number.isInteger(w.repetitions)||w.repetitions<1||!(w.workMinutes>0)||!(w.recoveryMinutes>=0))bad(errors,'run.work');
    else if(p.warmupMinutes+p.cooldownMinutes+w.repetitions*w.workMinutes+Math.max(0,w.repetitions-1)*w.recoveryMinutes>p.durationMinutes+0.01)bad(errors,'run.workBudget');
    if(p.calibration?.basis!=='EFFORT_ANCHORED'&&p.calibration?.basis!=='CURRENT_FAMILIAR_TASK')bad(errors,'run.calibration');
   }
+  // B0-C02: the familiar repeated bouts are the athlete's exact current task, never a de novo or progressed dose.
+  if(p.family==='FAMILIAR_REPEATED_BOUTS'&&(p.calibration?.basis!=='CURRENT_FAMILIAR_TASK'||p.progressionAllowed!==false))bad(errors,'run.familiarBouts');
  }else{
   if(!STRENGTH_FAMILIES.includes(p.family))bad(errors,'strength.family');
   if(!Array.isArray(p.exercises)||!p.exercises.length)bad(errors,'strength.exercises');
@@ -116,6 +129,11 @@ export function validateR6Prescription(p){
    if(e.load?.mode==='KNOWN'&&(!Number.isFinite(e.load.value)||e.load.value<0||e.load.value>500||e.load.unit==='LB'))bad(errors,'strength.knownLoad');
    if(['ESTABLISH','FROM_LOG','BODYWEIGHT'].includes(e.load?.mode)&&e.load.value!==undefined)bad(errors,'strength.fabricatedLoad');
    const entry=catalogueEntry(e.id);if(entry&&e.load?.mode!=='BODYWEIGHT'&&e.load?.convention!==entry.convention&&e.load?.mode!=='KNOWN')bad(errors,'strength.convention');
+   // B0-C04: a band or assistance level is ordinal; it never carries kilograms or a load mode that implies them.
+   if(entry&&noExternalLoad(entry)&&(e.load?.mode!=='BODYWEIGHT'||e.load.value!==undefined||e.load.unit==='KG'))bad(errors,'strength.noKilograms');
+   // DR-134 / B0-C05: the row's contextual role must be one the configuration admits; an unknown configuration is not in the repertoire.
+   if(!entry)bad(errors,'strength.unknownConfiguration');
+   else if(!entry.roles.includes(e.role))bad(errors,'strength.roleNotAdmissible');
   }
   if(strengthDuration(p.exercises??[],{warmup:p.warmupMinutes??5,cooldown:p.cooldownMinutes??3,secondsPerRep:p.secondsPerRep??4})>p.durationMinutes+0.01)bad(errors,'strength.timeBudget');
  }

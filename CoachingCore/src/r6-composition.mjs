@@ -143,7 +143,7 @@ export function adaptThisWeek(ctx,program,w,sessions,fact){
 /** The fact an adaptation records: its kind, its review, its clock, the sessions of its day already past then, and what it needs to apply again. */
 export const adaptation=(ctx,kind,facts={})=>({kind,eventId:ctx.review.event.id,asOf:ctx.asOf,asOfLocal:ctx.asOfLocal,past:(ctx.program.weeks[ctx.w]?.sessions??[]).filter(s=>s.date===ctx.asOfLocal&&!ctx.ahead(s)).map(s=>s.id),...facts});
 // ---------- context (C2) ----------
-const CONTEXT=['canonical','goal','phases','blocks','templates','arrangementSessions'];
+const CONTEXT=['canonical','goal','phases','blocks','templates','noviceTemplates','arrangementSessions'];
 const contextOf=x=>Object.fromEntries(CONTEXT.map(k=>[k,x[k]]));
 /**
  * C2: a change of the context from week j. Every context in force from j on gets it (`apply(context, firstWeek, j)`, which may return {ask});
