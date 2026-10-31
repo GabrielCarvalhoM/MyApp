@@ -1,0 +1,145 @@
+{
+ "check": "R7B1-QUALITY-PROBES-FREEZE2-VS-R7B1",
+ "method": "The R7-B Quality recheck probes (audits/domain-coaching-r7-b-2026-10-31/reviews/quality/recheck) run unchanged from temporary mirrors of FREEZE-2 (git archive 4230034, runtime bytes of 10b26d6) and of R7B1 bytes; outputs compared with run timestamps removed. The committed probe folders were not written.",
+ "files": 22,
+ "identical": 21,
+ "different": [
+  "p04-review-driven.json"
+ ],
+ "rows": [
+  {
+   "file": "p02-config-targeted.json",
+   "identical": true
+  },
+  {
+   "file": "p03-run-families.json",
+   "identical": true
+  },
+  {
+   "file": "p04-review-driven.json",
+   "identical": false,
+   "firstDifferences": [
+    {
+     "path": "/configsSeen",
+     "freeze2": "66",
+     "r7b1": "67"
+    },
+    {
+     "path": "/configsNotSeen/9",
+     "freeze2": "\"cable-face-pull\""
+    },
+    {
+     "path": "/reachedBySubstitution/dead-bug",
+     "freeze2": "\"eq=FULL str=GENERAL days=4 exp=NOVICE SKILL_MISMATCH front-plank\""
+    },
+    {
+     "path": "/reachedBySubstitution/db-row",
+     "freeze2": "\"eq=FULL str=GENERAL days=4 exp=INTERMEDIATE SKILL_MISMATCH one-arm-db-row\"",
+     "r7b1": "\"eq=FULL str=RUNNING_SUPPORT days=2 exp=NOVICE NONCLINICAL_DISCOMFORT_OR_PREFERENCE band-row\""
+    },
+    {
+     "path": "/reachedBySubstitution/push-up",
+     "freeze2": "\"eq=BANDS_AND_BAR str=GENERAL days=4 exp=INTERMEDIATE NONCLINICAL_DISCOMFORT_OR_PREFERENCE incline-push-up\""
+    },
+    {
+     "path": "/reachedBySubstitution/band-face-pull",
+     "freeze2": "\"eq=BANDS_AND_BAR str=STRENGTH days=4 exp=INTERMEDIATE SKILL_MISMATCH band-row\"",
+     "r7b1": "\"eq=FULL str=GENERAL days=4 exp=INTERMEDIATE SKILL_MISMATCH one-arm-db-row\""
+    },
+    {
+     "path": "/reachedBySubstitution/prone-ytw-raise",
+     "freeze2": "\"eq=BANDS str=GENERAL days=4 exp=INTERMEDIATE NONCLINICAL_DISCOMFORT_OR_PREFERENCE band-face-pull\"",
+     "r7b1": "\"eq=DB_BENCH str=GENERAL days=4 exp=INTERMEDIATE SKILL_MISMATCH one-arm-db-row\""
+    },
+    {
+     "path": "/reachedBySubstitution/pike-push-up",
+     "freeze2": "\"eq=DB str=STRENGTH days=4 exp=INTERMEDIATE NONCLINICAL_DISCOMFORT_OR_PREFERENCE db-overhead-press\"",
+     "r7b1": "\"eq=BANDS_AND_BAR str=GENERAL days=4 exp=INTERMEDIATE NONCLINICAL_DISCOMFORT_OR_PREFERENCE incline-push-up\""
+    }
+   ]
+  },
+  {
+   "file": "p05-emphasis.json",
+   "identical": true
+  },
+  {
+   "file": "p05b-emphasis-fitting.json",
+   "identical": true
+  },
+  {
+   "file": "p06-rotation-sweep.json",
+   "identical": true
+  },
+  {
+   "file": "p07-pull-disclosure.json",
+   "identical": true
+  },
+  {
+   "file": "p09-dead-ends.json",
+   "identical": true
+  },
+  {
+   "file": "p09b-easy-unknown-disclosure.json",
+   "identical": true
+  },
+  {
+   "file": "p09b-easy-unknown-evidence.json",
+   "identical": true
+  },
+  {
+   "file": "p09c-quality-path.json",
+   "identical": true
+  },
+  {
+   "file": "p09d-easylow-race.json",
+   "identical": true
+  },
+  {
+   "file": "p10-witnesses.json",
+   "identical": true
+  },
+  {
+   "file": "p11-practice-patterns.json",
+   "identical": true
+  },
+  {
+   "file": "p12-ladder-targeted.json",
+   "identical": true
+  },
+  {
+   "file": "p12b-after-turn.json",
+   "identical": true
+  },
+  {
+   "file": "p13-ladder-reversal.json",
+   "identical": true
+  },
+  {
+   "file": "p13b-after-turn.json",
+   "identical": true
+  },
+  {
+   "file": "p14-duplicate-rows.json",
+   "identical": true
+  },
+  {
+   "file": "p15-block-review-options.json",
+   "identical": true
+  },
+  {
+   "file": "p17-pattern-disclosure.json",
+   "identical": true
+  },
+  {
+   "file": "p17b-option-effect.json",
+   "identical": true
+  }
+ ],
+ "notCompletedInTheMirror": {
+  "p01-sweep": "the full 27,608-program sweep exceeded the 15-minute limit of the mirror runner on both trees; it enumerates intake programs only, which are byte-identical to FREEZE-2 (intake differential and the 98 PRESERVE timelines of r7/b1/REGRESSION_R7B1.json)",
+  "p16-summary": "reads out/p01-sweep.json, so it did not run on either tree",
+  "p08-completeness": "needs CoachingCore/r7/b/CONFORMANCE_R7B.json, which the mirror did not copy; the R7-B conformance check passes on these bytes (scripts/conformance-r7b.mjs)"
+ },
+ "stdoutDifferences": "p02, p03, p06: run time (ms) only",
+ "p04": "Reachability through reviews: 66 configurations on FREEZE-2, 67 on R7-B.1 (cable-face-pull now reached), none lost; the witness programs of some substitutions changed because a first candidate that cannot take every slot of the replaced exercise now gives way to the next one (QE-R7B-R2-04)."
+}
