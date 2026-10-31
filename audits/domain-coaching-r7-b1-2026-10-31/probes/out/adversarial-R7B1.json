@@ -1,0 +1,72 @@
+{
+ "probe": "R7B1-ADVERSARIAL",
+ "label": "R7B1",
+ "tree": "this repository",
+ "ran": "2026-10-31T16:02:31.621Z",
+ "checks": 3212,
+ "failed": 0,
+ "results": {
+  "P1": {
+   "what": "event phase x reason x familiarity: no never-performed configuration enters TAPER/RACE_WEEK/POST_EVENT through a reason-based substitution; the set-aside one never returns; stand-ins are performed, admissible and in the reason's direction; the substitute starts after the event with establishment; the decision discloses it",
+   "cases": 170,
+   "checks": 2131,
+   "failures": [],
+   "projectedOnly": 105,
+   "inheritedEquipmentChangeInTaper": {
+    "status": "MODIFY",
+    "action": "SUBSTITUTE",
+    "newInEventWeeks": [
+     "w10:kb-goblet-squat",
+     "w10:push-up",
+     "w10:kb-row",
+     "w10:standing-calf-raise",
+     "w10:kb-deadlift",
+     "w10:reverse-lunge",
+     "w11:kb-goblet-squat",
+     "w11:push-up",
+     "w11:kb-row",
+     "w12:kb-deadlift",
+     "w12:kb-row",
+     "w12:push-up"
+    ],
+    "swaps": [
+     "goblet-squat->kb-goblet-squat",
+     "db-bench-press->push-up",
+     "db-row->kb-row",
+     "db-calf-raise->standing-calf-raise",
+     "db-rdl->kb-deadlift",
+     "db-split-squat->reverse-lunge"
+    ]
+   }
+  },
+  "P2": {
+   "what": "novice x weekly review x reconstructed state: after a decision that rebuilds the capped templates, every later weekly review plans capped weeks exactly when the state is capped, from templates that keep the decision (no set-aside exercise, only available equipment), and history agrees with the plan",
+   "cases": 7,
+   "checks": 639,
+   "failures": []
+  },
+  "P3": {
+   "what": "correction x ASK x block choice: whatever else a review asks, a correction it records comes with the factual re-plan the same correction gives alone; a review that records nothing proposes nothing; the follow-up review never brings the retracted plan back",
+   "cases": 40,
+   "checks": 104,
+   "failures": []
+  },
+  "P4": {
+   "what": "skill mismatch x equipment loss x ladder: once a SKILL_MISMATCH substitute loses its equipment, the replaced exercise's slots never take a configuration above the substitute's skill or above the set-aside one on its ladder; without a lower option the decision asks",
+   "cases": 52,
+   "checks": 108,
+   "failures": []
+  },
+  "RES": {
+   "what": "QE-R7B-01: every applied substitution prescribes its selection in the replaced exercise's slot (N5 grid); QE-R7B-05: a cap started by a context change holds through the next reviews, and with an elapsed week reviewed even when nothing is reported (R18)",
+   "cases": 186,
+   "checks": 230,
+   "failures": [],
+   "r18PathWeekUnreviewed": {
+    "status": "MODIFY",
+    "week2Capped": false,
+    "note": "QE-R7B-R2-05: only when an elapsed week receives no review at all (R18 condition, request §9)"
+   }
+  }
+ }
+}

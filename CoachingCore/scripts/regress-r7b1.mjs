@@ -117,15 +117,29 @@ for(const input of gridInputs){
   gridRows.push({program:input.athlete.id,exercise:id,reason,freeze2:{status:ra.status,selected:ra.substitutions?.[0]?.selected??null,consistent:consistent(ra,a.t.p)},r7b1:{status:rb.status,selected:rb.substitutions?.[0]?.selected??null,consistent:consistent(rb,b.t.p),...(rb.status==='ASK'?{reason:String(rb.reason).slice(0,200)}:{})},same});
  }
 }
+// QE-R7B-R2-02: the question carries exactly the factual re-plan the same correction gives alone on the predecessor (the approved R7-A A5 path), and the
+// later reviews continue alike: R7-B.1 with the block choice against FREEZE-2 without it, prescriptions compared after every step.
+const r202=[];
+for(const [id,input,w,pred,choice] of [['novice',NOV,5,s=>s.sport==='STRENGTH',{type:'LADDER_STEP',from:'goblet-squat',to:'kb-goblet-squat'}],['graduation',GRAD,4,s=>s.role==='LONG',{offer:'RUN_QUALITY_GRADUATION',decision:'DECLINE'}]]){
+ const a=driver(BEFORE,input,'r202:'+id),b=driver(NOW,input,'r202:'+id);for(let k=0;k<w;k++){a.weekly(k);b.weekly(k);}
+ const at=`${a.t.p.weeks[w].startDate}T05:00:00Z`,steps=[];
+ const ctl=a.run(a.review(w,{day:0,hour:'06:00:00',observations:a.fixes(w-1,pred,at)}),'correction'),ask=b.run(b.review(w,{day:0,hour:'06:00:00',observations:b.fixes(w-1,pred,at),choices:[choice]}),'correction+choice');
+ const same=()=>JSON.stringify(a.t.p.weeks.map(prescriptionsOf))===JSON.stringify(b.t.p.weeks.map(prescriptionsOf));
+ steps.push({step:'correction',freeze2WithoutChoice:{status:ctl.status,action:ctl.action},r7b1WithChoice:{status:ask.status,action:ask.action,proposal:!!ask.proposal},samePrescriptions:same()});
+ for(let k=w;k<w+3;k++){a.weekly(k);b.weekly(k);steps.push({step:'weekly:'+k,samePrescriptions:same()});}
+ r202.push({id,steps,identical:steps.every(s=>s.samePrescriptions)});
+}
 fs.rmSync(tmp,{recursive:true,force:true});
+// A run dose that differs from the predecessor's on an R2-02 timeline is its stale plan against the factual re-plan; that path is judged by r202 instead.
+for(let i=runRises.length-1;i>=0;i--)if(results.find(r=>r.id===runRises[i].timeline)?.tag==='R2-02')runRises.splice(i,1);
 const byTag={};for(const r of results){const x=byTag[r.tag]??={timelines:0,identical:0,changed:0};x.timelines++;r.identical?x.identical++:x.changed++;}
 const preserveFindings=results.filter(r=>r.tag==='PRESERVE'&&!r.identical);
 const gridChanged=gridRows.filter(r=>!r.same),gridFindings=gridChanged.filter(r=>r.freeze2.consistent!==false);
 const report={check:'R7B1-REGRESSION-TIMELINE-DIFFERENTIAL',predecessor:PRED,current:'working tree',timelines:results.length,byTag,preserveFindings,
  substitutionGrid:{decisions:gridRows.length,applied:{freeze2:gridRows.filter(r=>r.freeze2.status==='MODIFY').length,r7b1:gridRows.filter(r=>r.r7b1.status==='MODIFY').length},inconsistent:{freeze2:gridRows.filter(r=>r.freeze2.consistent===false).length,r7b1:gridRows.filter(r=>r.r7b1.consistent===false).length},changed:gridChanged.length,changedWhereFreeze2WasConsistent:gridFindings,changedRows:gridChanged},
- envelopeFindings:envelope,runRises,blockerPathDifferences:results.filter(r=>r.tag!=='PRESERVE').map(r=>({id:r.id,tag:r.tag,identical:r.identical,diffs:r.diffs})),
- result:preserveFindings.length||gridFindings.length||envelope.length||runRises.length?'FINDINGS':'PASS',
+ envelopeFindings:envelope,runRises,r202FactualReplanEqualsPredecessorCorrection:r202,blockerPathDifferences:results.filter(r=>r.tag!=='PRESERVE').map(r=>({id:r.id,tag:r.tag,identical:r.identical,diffs:r.diffs})),
+ result:preserveFindings.length||gridFindings.length||envelope.length||runRises.length||r202.some(x=>!x.identical)?'FINDINGS':'PASS',
  note:'Identical means every decision of the timeline has the same status, action, selection and resulting program hash on both runtimes. PRESERVE timelines must be identical; blocker-path timelines are listed with the steps that differ.'};
 if(process.argv.includes('--write'))fs.writeFileSync(path.join(coach,arg('--out','r7/b1/REGRESSION_R7B1.json')),JSON.stringify(report,null,1)+'\n');
-console.log(JSON.stringify({result:report.result,timelines:report.timelines,byTag,preserveFindings:preserveFindings.map(r=>({id:r.id,diffs:r.diffs.slice(0,2),errors:r.errors})),grid:{...report.substitutionGrid,changedRows:undefined},envelopeFindings:envelope.length,runRises:runRises.slice(0,5)},null,1));
+console.log(JSON.stringify({result:report.result,timelines:report.timelines,byTag,preserveFindings:preserveFindings.map(r=>({id:r.id,diffs:r.diffs.slice(0,2),errors:r.errors})),grid:{...report.substitutionGrid,changedRows:undefined},envelopeFindings:envelope.length,runRises:runRises.slice(0,5),r202},null,1));
 process.exitCode=report.result==='PASS'?0:1;

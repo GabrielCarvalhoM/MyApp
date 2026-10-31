@@ -4,7 +4,7 @@
 // Plan-level tests run the weekly reviews after the deciding review, not only the deciding review (R7-B closure lesson).
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {program,reviewed,weekly,review,evaluateProgram,opts,live,addDays,FULL as FULL_EQ} from '../r7/b/fixtures/helpers.mjs';
+import {program,reviewed,weekly,review,evaluateProgram,opts,live,addDays,K,FULL as FULL_EQ} from '../r7/b/fixtures/helpers.mjs';
 import {historicalStateOf} from '../src/r6-adaptation.mjs';
 import {dayPhaseOf,skeletonOf} from '../src/r6-program.mjs';
 import {r6Authority} from '../src/r6-authority.mjs';
@@ -63,6 +63,17 @@ test('R7-B.1 R2-02: a correction with a block choice in another review kind asks
  const {t,day,fixes}=correctedNovice();
  const r=evaluateProgram(t.p,{...review(t.p,5,{day:0,hour:'06:00:00',kind:'LOCAL_FATIGUE',signals:{region:'UPPER'},observations:fixes,choices:[{type:'LADDER_STEP',from:'goblet-squat',to:'kb-goblet-squat'}]}),actualLedger:t.ledger},opts);
  assert.equal(r.status,'ASK');assert.deepEqual(r.missingInputs,['choices']);assert.ok(r.proposal);assert.match(types(r.proposal,5,day),/CORE/);
+});
+test('R7-B.1 R2-02: a correction with a block choice in the final week\'s complete review asks and carries the factual re-plan',()=>{
+ // The complete-week path: the final week ends the horizon, so the weekly review keeps the plan without reaching the block boundary step and the
+ // choices are asked about afterwards; the strength session still ahead this evening follows the corrected strength reports of the week before.
+ const t=reviewed({id:'b1-final',equipment:['DUMBBELLS','BENCH','KETTLEBELL'],weeks:12,schedule:{strengthDays:[0,6]}},11),last=11,day=6;
+ const fixes=obsFor(t,10,s=>s.sport==='STRENGTH').map(o=>correctionOf(o,structuredClone(o.actual),`${addDays(t.p.weeks[last].startDate,day)}T05:00:00Z`,BAD));
+ const control=evaluateProgram(t.p,{...review(t.p,last,{day,hour:'06:00:00',observations:fixes}),actualLedger:t.ledger},opts);
+ assert.equal(control.action,'REPLAN_FROM_EVIDENCE');
+ const r=evaluateProgram(t.p,{...review(t.p,last,{day,hour:'06:00:00',observations:fixes,choices:[{type:'LADDER_STEP',from:'goblet-squat',to:'kb-goblet-squat'}]}),actualLedger:t.ledger},opts);
+ assert.equal(r.status,'ASK');assert.deepEqual(r.missingInputs,['choices']);assert.ok(r.proposal,'the question carries the factual re-plan');
+ assert.equal(prescriptionsFrom(r.proposal,last),prescriptionsFrom(control.proposal,last));
 });
 test('R7-B.1 R2-02: without a correction a block choice off the boundary still asks and proposes nothing',()=>{
  const t=reviewed(NOV,5);
@@ -130,6 +141,20 @@ test('R7-B.1 R2-03: a dated window without the substitute\'s equipment never cli
  const {r}=mismatchThenLoss(t=>({equipment:['DUMBBELLS','BENCH'],from:t.p.weeks[5].startDate,to:addDays(t.p.weeks[5].startDate,6)}));
  assert.equal(r.status,'MODIFY');assertNeverUp(r.proposal,[4,5,6]);
  assert.deepEqual(hingeMain(r.proposal,4),['kb-deadlift']);assert.deepEqual(hingeMain(r.proposal,6),['kb-deadlift'],'the substitute returns after the window');
+});
+test('R7-B.1 R2-03: the fallback never rises above the substitute in use, even where harder options lie below the set-aside one',()=>{
+ const t=reviewed({id:'b1-ceiling',equipment:['BARBELL','RACK','BENCH','DUMBBELLS','KETTLEBELL'],goals:{run:'PERFORMANCE',strength:'STRENGTH'},rotation:'FIXED',weeks:12,knownExercises:[K('deadlift',3,5,100)]},3);
+ assert.ok(ids(t.p,4).includes('deadlift'),'the familiar deadlift is the hinge');
+ const s=apply(t,evaluateProgram(t.p,{...review(t.p,3,{day:1,hour:'06:00:00',kind:'EXERCISE_SUBSTITUTION',substitution:{exerciseId:'deadlift',reason:'SKILL_MISMATCH'}}),actualLedger:t.ledger},opts));
+ assert.equal(s.substitutions[0].selected,'kb-deadlift');weekly(t,3);
+ const r=evaluateProgram(t.p,{...review(t.p,4,{day:0,hour:'06:00:00',kind:'EQUIPMENT_CHANGE',changes:{equipment:['BARBELL','RACK','BENCH','DUMBBELLS']}}),actualLedger:t.ledger},opts);
+ assert.equal(r.status,'MODIFY');
+ for(const w of [4,5,6]){const hinge=hingeMain(r.proposal,w);assert.ok(hinge.length);for(const id of hinge)assert.ok(skillRank(configurationOf(id).skill)<=skillRank('LOW'),`week ${w}: ${id} is harder than kb-deadlift`);}
+});
+test('R7-B.1 R2-03: a SKILL_MISMATCH substitute that held another slot is applied; that slot keeps its own fallback',()=>{
+ const t=reviewed({id:'b1-knock-on',equipment:FULL_EQ,goals:{run:'PERFORMANCE',strength:'STRENGTH'},rotation:'FIXED',weeks:12,schedule:{strengthDays:[0,2,4]}},3);
+ const r=evaluateProgram(t.p,{...review(t.p,3,{day:1,hour:'06:00:00',kind:'EXERCISE_SUBSTITUTION',substitution:{exerciseId:'db-row',reason:'SKILL_MISMATCH'}}),actualLedger:t.ledger},opts);
+ assert.equal(r.status,'MODIFY');assert.equal(r.substitutions[0].selected,'band-row');
 });
 test('R7-B.1 R2-03: with no lower option the equipment change asks instead of climbing',()=>{
  const t=reviewed({id:'b1-row',equipment:['DUMBBELLS','BANDS'],goals:{run:'PERFORMANCE',strength:'GENERAL'},rotation:'FIXED',weeks:12},3);
@@ -206,6 +231,19 @@ test('R7-B.1 OBS-04: an admissible configuration this program performed stands i
   for(const x of lunge){assert.ok(d.standIns.includes(x.e.id));assert.notEqual(x.e.exposure?.kind,'FIRST_ESTABLISH');assert.ok(x.e.instructions.some(i=>/stands in for db-split-squat/.test(i)));}
   assert.ok((r.substitutions[0].eventWeeks?.standIns??[]).length);
  }
+});
+test('R7-B.1 OBS-04: an exercise familiar at intake but never performed in this program is still new in the event weeks',()=>{
+ const t=reviewed({...EV,id:'b1-event-familiar',knownExercises:[K('goblet-squat',3,10,16,'SINGLE_IMPLEMENT'),K('kb-goblet-squat',3,10,16,'SINGLE_IMPLEMENT')]},0),wk=t.p.phases.phases.indexOf('TAPER');for(let w=0;w<wk;w++)weekly(t,w);
+ assert.ok(ids(t.p,wk).includes('goblet-squat')&&!performedIds(t).has('kb-goblet-squat'),'one familiar squat in use, the other never performed here');
+ const r=substitution(t,wk,'goblet-squat','NONCLINICAL_DISCOMFORT_OR_PREFERENCE');assert.equal(r.status,'MODIFY');assert.equal(r.substitutions[0].selected,'kb-goblet-squat');
+ assert.ok(!eventRows(t,r.proposal,wk).some(x=>x.e.id==='kb-goblet-squat'),'the intake-familiar substitute waits for the end of the event weeks');
+});
+test('R7-B.1 OBS-04: a program that ends with the post-event week still records the substitution, disclosed',()=>{
+ const t=reviewed({...EV,id:'b1-event-short',weeks:12,event:{kind:'10K',date:'2027-01-17'}},0),ph=t.p.phases.phases,wk=ph.indexOf('TAPER');assert.equal(ph.indexOf('POST_EVENT'),ph.length-1);
+ for(let w=0;w<wk;w++)weekly(t,w);
+ const r=substitution(t,wk,'goblet-squat','SKILL_MISMATCH');assert.equal(r.status,'MODIFY');
+ assert.ok(!r.proposal.weeks.slice(wk).some(w=>w.sessions.some(s=>live(s)&&s.sport==='STRENGTH'&&s.prescription.exercises.some(e=>e.id==='goblet-squat'))));
+ assert.equal(r.substitutions[0].eventWeeks?.startsAfterEvent,false);assert.ok(r.disclosures.some(d=>d.id==='NO_NEW_EXERCISE_IN_EVENT_WEEKS'&&/beyond this program/.test(d.detail)));
 });
 test('R7-B.1 OBS-04: the clinical screen and the questions still come first in event weeks',()=>{
  const {t,wk}=eventCase('TAPER');
