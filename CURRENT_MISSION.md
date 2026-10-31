@@ -682,3 +682,38 @@ Scope: one freeze (R7A-RESIDUAL-AUTHORITY-FREEZE-1), committed and pushed on the
 - **Next:** two new, independent sessions recheck exactly these bytes, from [the handoff](audits/domain-coaching-r7a-residual-authority-2026-10-30/REVIEW_HANDOFF.md) and the two briefs. `R7A_EXIT_READINESS` is not declared, and R7-B0 is not started.
 - **Held:** the Growth Layer's [PENDING_CANON_SYNC.patch](audits/growth-layer-2026-10-29/PENDING_CANON_SYNC.patch).
 - No UI, Figma, KMP, HealthKit, integration, production or real-plan effect. No merge, deploy or reviewer run. The human queue is untouched.
+
+<!-- DOMAIN_COACHING_R7ARA: DCR7ARA-20261031-closed-r1 -->
+## COACHING CORE — R7-A formally closed READY / 2026-10-31
+
+`CURRENT_MISSION = R7A_FORMALLY_CLOSED` · `R7A_EXIT_READINESS = READY` · `R7A_FORMAL_CLOSURE = COMPLETE` · `NEXT_MISSION = DOMAIN_COACHING_R7-B0` (not started)
+
+The direct [Founder closure request](audits/domain-coaching-r7a-residual-authority-2026-10-30/FOUNDER_CLOSURE_REQUEST.md) closes R7-A after the two narrow rechecks of R7A-RESIDUAL-AUTHORITY-FREEZE-1. This block supersedes the frozen block above for R7-A; no earlier block is changed.
+
+- **Same bytes:** both rechecks judged R7A-RESIDUAL-AUTHORITY-FREEZE-1 (`7d2da36`, source `e7172eb2…`, manifest `3d214fb5…`; policy `18ec48f3…` unchanged).
+  - Checked read-only from git objects, without running the runtime ([identity check](audits/domain-coaching-r7a-residual-authority-2026-10-30/closure/IDENTITY_CHECK.json)).
+  - `ENGINEERING_REVIEW_INVALID = NO`, `SSCTR_RECHECK_INVALID = NO`.
+- **Rechecks**, read on their own branches and not merged:
+  - Engineering, `review/r7ara-residual-authority-engineering` at `2dbafa3`: READY (R7ARA-QE-r1).
+  - SSCTR, `review/r7ara-residual-authority-ssctr` at `b715dfd`: READY, brief status ACCEPT (R7ARA-SSCTR-r1).
+- **Closed or preserved on the final freeze:**
+  - QE-R7ADA-01 and QE-R7ADA-02 CLOSED;
+  - F1–F4 VALID, F4-X CLOSED, R7ARA-SELF-01 CLOSED;
+  - D53, D56, D57, D58 and D59 VALID;
+  - HOLD and MAINTAIN VALID.
+- **The freeze's numbers, within their scope:**
+  - 673/673 tests, reproduced by both judges;
+  - targeted mutation 4/4, the four bounded mutants only;
+  - self-challenge 112 cases with 0 violations, author evidence.
+- **Nonblocking, recorded** ([disposition](audits/domain-coaching-r7a-residual-authority-2026-10-30/FINAL_DISPOSITION.json)):
+  - QE-R7ARA-OBS-1: `R7A_BLOCKER = NO`, `PRE_TESTFLIGHT_REVIEW = YES`;
+  - NF-R7ARA-1: `R7A_BLOCKER = NO`, `POLICY_BACKLOG = YES` (SSCTR R48);
+  - every other observation keeps its recorded classification. Nothing was fixed or re-investigated.
+- **What READY means:** the semantic authority foundation R7-A required is stable enough to leave the phase, and no known blocker remains inside its finite gate.
+  - It does not mean production authorization, a complete sports domain or autonomous V1 Adaptive Engine authority.
+  - Nor that KMP may skip later gates, that TestFlight gates are satisfied, or that future bugs are impossible.
+- **Human queue:** 199 → 204, append-only as the queue policy requires; funding NOT_DECLARED. The SSCTR's REVISE record for NF-R7ARA-1 is not an approval and is not queued.
+- **Handoff:** [CoachingCore/r7/R7A_FINAL_HANDOFF.md](CoachingCore/r7/R7A_FINAL_HANDOFF.md). The next session does not reopen R7-A unless a concrete regression violates its gate.
+- **Next:** DOMAIN_COACHING_R7-B0 is not started. It needs its own Founder-authorized mission, and it uses the canonical and readiness authorities current at its start.
+- **Held:** the Growth Layer's [PENDING_CANON_SYNC.patch](audits/growth-layer-2026-10-29/PENDING_CANON_SYNC.patch) is not applied (closure request §14).
+- No runtime, test, policy, freeze-evidence, `product/` or `canon/` change. Closure branch `closure/r7a-final`; nothing merged into `main` or any other branch. No UI, Figma, KMP, HealthKit, integration, production or real-plan effect.

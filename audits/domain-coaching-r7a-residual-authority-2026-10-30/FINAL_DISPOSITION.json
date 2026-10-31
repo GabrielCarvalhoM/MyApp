@@ -1,0 +1,197 @@
+{
+ "revision": "R7ARA-DISPOSITION-1",
+ "date": "2026-10-31",
+ "owner": "Chief (formal closure session; a new instance, neither the runtime author of this freeze nor a judge); judges independent",
+ "mission": "DOMAIN_COACHING_R7-A — Residual Authority Closure, and the formal closure of phase R7-A",
+ "authority": {
+  "closure": "audits/domain-coaching-r7a-residual-authority-2026-10-30/FOUNDER_CLOSURE_REQUEST.md (direct Founder request, 2026-10-31, verbatim)",
+  "mission": "audits/domain-coaching-r7a-residual-authority-2026-10-30/FOUNDER_REQUEST.md (2026-10-30)",
+  "stopRule": "FOUNDER_REQUEST.md §35 and FOUNDER_CLOSURE_REQUEST.md §9: if this freeze passes both narrow rechecks, the closure session may emit R7A_EXIT_READINESS = READY; findings outside the finite gate do not reopen R7-A automatically"
+ },
+ "delivery": "CLOSED_READY",
+ "declarations": {
+  "CURRENT_MISSION": "R7A_FORMALLY_CLOSED",
+  "R7A_EXIT_READINESS": "READY",
+  "R7A_FORMAL_CLOSURE": "COMPLETE",
+  "NEXT_MISSION": "DOMAIN_COACHING_R7-B0",
+  "nextMissionStatus": "NOT_STARTED: it needs its own Founder-authorized mission (closure request §10, §13)"
+ },
+ "readinessSemantics": {
+  "means": [
+   "the semantic authority foundation required by R7-A is sufficiently stable to leave this phase",
+   "no known blocker remains inside the agreed finite R7-A gate",
+   "residual nonblocking observations remain visible in backlog and later gates (residualBacklog below)"
+  ],
+  "doesNotMean": [
+   "Coaching Core is production-authorized",
+   "the sports domain is globally complete",
+   "the Adaptive Engine is ready for autonomous V1 authority",
+   "KMP implementation may skip later gates",
+   "TestFlight gates are satisfied",
+   "all future bugs are impossible"
+  ],
+  "alsoNot": "human or clinical validation, empirical product validation, Product Truth publication or real-athlete use; the runtime stays the offline synthetic Node 24 reference (IMPLEMENTATION_AUTHORIZED = SHADOW_REFERENCE_ONLY in the closed missions)"
+ },
+ "freeze": {
+  "revision": "R7A-RESIDUAL-AUTHORITY-FREEZE-1",
+  "record": "CoachingCore/r7/residual-authority/RUNTIME_FREEZE_R7A_RESIDUAL_AUTHORITY.json",
+  "recordSha256": "51e67fb05c5c0997da45366d99bbc44e5defa81405530ac86b85d3e5058379d3",
+  "runtimeCommit": "7d2da3603e224124696a2290766ec448080f3264",
+  "handoffCommit": "4917489364bb1138f8d82b46c20dd65d1bf693c7",
+  "candidateBranch": "claude/r7a-residual-authority-closure (head 4917489, unchanged by this closure)",
+  "sourceDigest": "e7172eb2e65bfb1da4c102a7efa2bae64bf1c70b06562fd3ce9896defd6dc17d",
+  "manifestDigest": "3d214fb53f62e45ca7d99f39f2c562d358719a2264c2de46098d39b318c85125",
+  "boundFiles": 86,
+  "policy": {"revision": "R6-POLICY-5", "canonicalHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c", "changed": false},
+  "predecessor": {"revision": "R7A-DECISION-AUTHORITY-FREEZE-1", "commit": "d4631cd03fb27bbc1857532500748476ab764987", "sourceDigest": "3a7166b25aaf550f7692cc058f0e582b42e9eb7f74b9e361f23733b5e74ab244"},
+  "runtimeDelta": {"changed": ["src/r6-adaptation.mjs", "src/r6-program.mjs", "test/r7ab-week-start-authority.test.mjs"], "added": ["test/r7ara-residual-authority.test.mjs"]},
+  "contract": "audits/domain-coaching-r7a-residual-authority-2026-10-30/RESIDUAL_AUTHORITY_CONTRACT.md (A5, E1)"
+ },
+ "identity": {
+  "result": "VALID: both narrow rechecks judged exactly R7A-RESIDUAL-AUTHORITY-FREEZE-1",
+  "ENGINEERING_REVIEW_INVALID": "NO (recorded by the reviewer as RECHECK_INVALID = NO)",
+  "SSCTR_RECHECK_INVALID": "NO",
+  "check": "audits/domain-coaching-r7a-residual-authority-2026-10-30/closure/identity-check.py, output closure/IDENTITY_CHECK.json; read-only, from git objects and the working tree, with its own canonical serializer; no runtime, test, probe or author script executed",
+  "results": [
+   "the 86 bound files equal the freeze record at the freeze commit, the handoff commit, both review commits and the closure working tree; no unbound src/ or test/ module",
+   "source digest e7172eb2… and manifest 3d214fb5… recomputed on all five trees; policy canonical hash 18ec48f3… recomputed",
+   "the freeze record's SHA-256 is 51e67fb0… on all five trees",
+   "each review commit's parent is the handoff 4917489, and each only adds files under reviews/ (engineering 101, SSCTR 141; no modification, no deletion, no path outside reviews/; the two sets are disjoint)",
+   "the handoff 4917489 changes only CURRENT_MISSION.md, MISSION_LEDGER.md and adds REVIEW_HANDOFF.md relative to the freeze commit",
+   "both review records name the same freeze revision, runtime commit, source digest, manifest digest and policy hash"
+  ]
+ },
+ "reviews": {
+  "engineering": {
+   "revision": "R7ARA-QE-r1",
+   "role": "independent Quality & Reliability Engineering judge, new session, not the author",
+   "branch": "review/r7ara-residual-authority-engineering",
+   "commit": "2dbafa3cebb3069b003b17506884f756b3d7e5f3",
+   "primary": {"path": "audits/domain-coaching-r7a-residual-authority-2026-10-30/reviews/ENGINEERING_RECHECK.md", "sha256": "300c8ff01fc0039ec7341965cfc682704d26c2c3641d39b882e34d2d0a6d7c6f"},
+   "record": {"path": "audits/domain-coaching-r7a-residual-authority-2026-10-30/reviews/ENGINEERING_RECHECK.json", "sha256": "f04b6d61ecb48274b382f7fce5cfbdf8be121e1531bada0503c726a330ffb8d3"},
+   "verdict": "R7A_RESIDUAL_AUTHORITY_ENGINEERING_RECHECK = READY",
+   "recheckInvalid": "NO",
+   "findingsWithinGate": [],
+   "read": "with git show on the review commit; the branch is not merged into the closure branch and is not changed"
+  },
+  "ssctr": {
+   "revision": "R7ARA-SSCTR-r1",
+   "role": "Sports Science & Concurrent Training Reviewer, narrow regression recheck, new session (PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY; no human, empirical or clinical validation)",
+   "branch": "review/r7ara-residual-authority-ssctr",
+   "commit": "b715dfd763da28b682428dbe38033d6a21ec45b8",
+   "primary": {"path": "audits/domain-coaching-r7a-residual-authority-2026-10-30/reviews/SSCTR_RECHECK.md", "sha256": "275de3bc37bcd18620e2fe82dafbb614e6cf3e2f7fadf161c5bdbac2daa9c827"},
+   "record": {"path": "audits/domain-coaching-r7a-residual-authority-2026-10-30/reviews/ssctr-recheck/ssctr-r7ara-recheck.json", "sha256": "753a48f69f965164aa7c555e68e023bbcdad02375db17ceb7162ef85d6f3f880"},
+   "verdict": "R7A_RESIDUAL_AUTHORITY_SCIENTIFIC_RECHECK = READY",
+   "briefVerdict": "R7A_RESIDUAL_AUTHORITY_SSCTR_RECHECK = ACCEPT",
+   "recheckInvalid": "NO",
+   "findingsWithinGate": ["NF-R7ARA-1 (nonblocking, backlog R48)"],
+   "rulings": {"E1-a": "ACCEPT_WITH_REASON", "E1-b": "ACCEPT_WITH_REASON", "E1-c": "ACCEPT_WITH_REASON", "E1-d": "ACCEPT", "E1-e": "ACCEPT", "E1-f": "ACCEPT_WITH_REASON", "earned/eligible vs executed/tolerated": "ACCEPT_WITH_REASON", "consolidation long run (return to the executed 60)": "ACCEPT"},
+   "read": "with git show on the review commit; the branch is not merged into the closure branch and is not changed. The SSCTR did not read the engineering recheck"
+  },
+  "bothReady": true
+ },
+ "closedOrPreserved": {
+  "QE-R7ADA-01": "CLOSED (engineering: closed as a material class)",
+  "QE-R7ADA-02": "CLOSED (engineering: closed as a material class)",
+  "F1": "VALID",
+  "F2": "VALID",
+  "F3": "VALID",
+  "F4": "VALID",
+  "F4-X": "CLOSED",
+  "EASY_RETURN_FACTUAL_CEILING": "HOLDS",
+  "R7ARA-SELF-01": "CLOSED (reproduced by the engineering judge on the superseded round 259ab3ef…, absent on the freeze; SSCTR: closed)",
+  "D53": "VALID",
+  "D56": "VALID",
+  "D57": "VALID",
+  "D58": "VALID",
+  "D59": "VALID",
+  "HOLD": "VALID",
+  "MAINTAIN": "VALID",
+  "properties": {"A": "holds", "B": "holds within A5's contracted trigger (residual QE-R7ARA-OBS-1 at the C1 noon boundary, pre-existing)", "E": "holds (reading QE-R7ARA-OBS-4 at the 90 % completion rule)"},
+  "sources": "F1–F4, F4-X, D53, D56–D59, HOLD, MAINTAIN, R7ARA-SELF-01: SSCTR rulings; QE-R7ADA-01/02, R7ARA-SELF-01 and properties A/B/E: engineering recheck; both: no material regression caused by this freeze inside the gate"
+ },
+ "evidence": {
+  "freezeRecord": {
+   "tests": "673/673 at the freeze (Node v24.19.0), independently reproduced by both rechecks (673/673; the author's verify-r7ara --tests 13/13 before any review file existed)",
+   "targetedMutation": "4/4 killed: exactly the four bounded mutants of the residual authority request §26 (bypass of the canonical correction before the handler, a stale planned load resurrecting a corrected one, the walk/jog projected exit and the EASY projected dose used as return baselines). Not a general mutation score; neither judge ran further mutants (engineering: NOT TESTED beyond the author's four)",
+   "selfChallenge": "112 cases, 0 violations (71 on the predecessor): the author's bounded classes of request §25 only; author evidence, not an independent gate",
+   "limit": "these numbers support the two root causes inside the declared scope; they are not claims about the whole coach, generalization, real athletes or production"
+  },
+  "engineeringOwn": {
+   "QE-R7ADA-01": "Q01 0/78 (predecessor 14); Q01b 0/45 (12); A01 0/856 cells over 27 entrypoints of the 18 review kinds, 8 shape-loads and 4 timings (433); A02 0/56 stale-planning chains, 0 resurrections (28)",
+   "QE-R7ADA-02": "Q06c 0/21 (11); E01 0/236 single-pause cells (65); E02 0/18 repeated-pause cells (8); Q06d returnTo equals the executed dose",
+   "preservation": "SSCTR kit subset of 22 jobs: 13 byte-identical, 9 differ, 0 dose rises (117 numeric readings fell, 0 rose); HOLD 240 cases and MAINTAIN 393 KNOWN rows identical but for the runtime label; walk/jog matrix 0/99"
+  },
+  "ssctrOwn": {
+   "F4-X": "continuous probe: ladder 0, duration 0 (predecessor 10 and 4); exit variants 0/10 (10/10)",
+   "EASY_RETURN": "0 of 416 returns above the executed and tolerated dose (388 single pauses, 8 adverse long runs, 20 in repeated pauses); the single remaining flag is the half-marathon race row the single-run ceiling excludes by policy (O-1), identical on the predecessor; 445 flags on the predecessor",
+   "kit": "43/43 jobs reproduce the author's run on the same bytes; 35 identical to the predecessor (trace-h25 clock only), 8 differ, each a return-path run dose that falls or steps down; no strength value changes"
+  }
+ },
+ "stopRule": {
+  "engineeringGate": "material violations of A factual authority, B correction/retraction consistency, C coherent decision resolution, D evidence/temporal progression, E return factual ceiling, within the declared residual scope",
+  "ssctrGate": "material regressions of F1–F4, D53/D56/D57/D58/D59, HOLD, MAINTAIN, return/restoration, evidence-based progression, return <= factual tolerated dose",
+  "result": "both rechecks READY; no item of residualBacklog is a violation inside either gate",
+  "consequence": "findings outside these gates do not reopen R7-A automatically; R7-A is reopened only by a future concrete regression that demonstrates a violation of this gate"
+ },
+ "residualBacklog": [
+  {"id": "QE-R7ARA-OBS-1", "source": "engineering R7ARA-QE-r1 §8", "severity": "LOW", "what": "a correction arriving after noon while the same day's AM session is executed later: under the accepted C1 convention that session is no longer ahead, so the stale row stays the D44 reference and a 24 kg log is adopted without a question", "introducedByFreeze": false, "predecessor": "identical for every entrypoint", "R7A_BLOCKER": "NO", "PRE_TESTFLIGHT_REVIEW": "YES", "classificationBasis": "Founder closure request §6; the reviewer routed it to BACKLOG R7-B and left the owner free to rate it TESTFLIGHT", "reproduction": "review/r7ara-residual-authority-engineering:audits/domain-coaching-r7a-residual-authority-2026-10-30/reviews/qe-r7ara-A03-am-after-noon-minimal.mjs", "reviewerDirection": "judge an exposure observed after a correction's arrival against the corrected PlanningView (a refinement of A4/C1; owner and SSCTR decision, not a fix)", "fixedHere": false},
+  {"id": "NF-R7ARA-1", "source": "SSCTR R7ARA-SSCTR-r1 §17 (record R7ARA-SSCTR-CROSS-ENTRY-CAP, REVISE / MODIFY_CANDIDATE)", "severity": "not material", "what": "after a SHORT return whose re-entry week is a CONSOLIDATION week, a second SHORT pause caps a tolerated athlete at that week's reduced long run while an adverse re-entry keeps the entry's state: two evidence paths give different conservative returns, 5–10 minutes apart for one week, both at or below the factual tolerated dose", "introducedByFreeze": true, "R7A_BLOCKER": "NO", "POLICY_BACKLOG": "YES", "route": "SSCTR backlog R48: the policy owner, with the runtime author, chooses one reading for a phase-reduced post-entry run so that a tolerated response never resumes below an adverse one; any fix must not raise a return above the executed and tolerated dose", "humanQueue": "not queued (not an approval)", "recipeChosenHere": false},
+  {"id": "QE-R7ARA-OBS-2", "source": "engineering §8", "severity": "LOW", "what": "SYSTEMIC_FATIGUE with nothing left to reduce, mid-week, records no SYSTEMIC_SIGNAL (C-class, outside A/B/E)", "introducedByFreeze": false, "classification": "NONBLOCKING / BACKLOG"},
+  {"id": "QE-R7ARA-OBS-3", "source": "engineering §8", "severity": "INFO", "what": "the moderate target after a second break depends on the state at the break (a RETURN state keeps 40/65; a released completion is capped at the 30/45 executed since the entry), both within doses executed and tolerated", "introducedByFreeze": "E1.3 design", "classification": "NONBLOCKING; route SSCTR (its E1-f ruling, ACCEPT_WITH_REASON, covers the moderate-after-completion reading; it did not read this observation)"},
+  {"id": "QE-R7ARA-OBS-4", "source": "engineering §8", "severity": "INFO", "what": "a run reported at >= 90 % of its row is complete and E1 credits the row's minutes (excess <= 10 % of the row)", "introducedByFreeze": false, "classification": "NONBLOCKING; route SSCTR / BACKLOG"},
+  {"id": "O-1 (SSCTR)", "what": "race proximity after a break: a MODERATE re-entry week before a half marathon; the race row is an event the single-run ceiling excludes by policy", "predecessor": "identical", "classification": "NONBLOCKING / LATER_GATE (event and race semantics)"},
+  {"id": "O-2 (SSCTR) = E1-B1", "what": "quality-slot inherited duration: after a SHORT break the eased first quality slot (D58) runs the released threshold step's duration; the quality ladder after a short break is outside E1", "predecessor": "identical in 388 cells", "classification": "NONBLOCKING / LATER_GATE"},
+  {"id": "O-3 (SSCTR)", "what": "easy vs walk/jog adverse-response asymmetry: an adverse easy long run is excluded from the cap, an adverse walk/jog step is resumed (OBS-2, E1-B4)", "predecessor": "walk/jog side identical; easy side new and conservative", "classification": "NONBLOCKING / BACKLOG; OBS-2 not reopened"},
+  {"id": "O-4 (SSCTR) = E1-B3", "what": "restart long-run offset: after a released, never-run restart switch, a MODERATE return targets long 40 against a longest executed 25; rows stay under the single-run ceiling", "predecessor": "identical", "classification": "NONBLOCKING / LATER_GATE; NOT TESTED under a pause"},
+  {"id": "O-5 (SSCTR) = E1-B2 = NF-R7ADA-2", "what": "RETURN weeks turn walk days into runs", "predecessor": "identical (w7 now lower)", "classification": "NONBLOCKING / BACKLOG R47 (residual authority request §21)"},
+  {"id": "O-6 (SSCTR) = O-1 (R7ADA)", "what": "MAINTAIN keeps 3 sets against maxSets 2 (99 rows)", "predecessor": "identical", "classification": "NONBLOCKING / BACKLOG"},
+  {"id": "A5-B1 = R1", "what": "standing projection: a correction after the week's last session with a review that does not close the week leaves next week's projected rows until a closing review", "classification": "Founder: R1_R7A_BLOCKER = NO, R1_PRE_TESTFLIGHT_GATE = YES; does not block B0 (request §3, §35)"},
+  {"id": "E1-B4 = OBS-2 (R7ADA engineering)", "what": "a walk/jog step executed once with an adverse response, then a short break, resumes that step (W2's reading, consistent with HOLD)", "classification": "declared, not reopened; the SSCTR's question"},
+  {"id": "E1-B5", "what": "historicalStateOf().state.run keeps the evidence's releases; the ceiling applies where a return reads it", "classification": "declared by design; HistoricalState not redesigned"},
+  {"id": "R2, R3, R6-H35", "classification": "accepted by the Founder (R2 and R3 ACCEPT_WITH_REASON; R6-H35 EXPECTED_CORRECTION, the regression runner error, byte-identical on both trees)"},
+  {"id": "earlier R7-A backlog", "classification": "unchanged and not re-investigated: each item keeps the classification recorded in its own mission record (for example NF-R7ASM-2, R41, QE-R7ASM-05 and QE-R7ASM-06 in the State Model Consumer Closure record)"}
+ ],
+ "notTestedByTheJudges": [
+  "engineering: the restart long-run offset under a pause (E1-B3); a LONG second break after a restart (beyond its horizon); time zones other than 0; the kit's sharded and r12 jobs (author outputs stand as author evidence); mutants beyond the author's four; `factual.ask` pre-empting a clinical return screen (a C-class edge outside the gate)",
+  "both: real devices, data or athletes; no new literature (the SSCTR deliberately did not search)"
+ ],
+ "humanQueue": {
+  "queue": "reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json",
+  "before": {"revision": "SSCTR-HRQ-20261028-R7ASE-r1", "items": 199, "sha256": "221a03651e103e82636c42b37fe263dd61ce1bde2e6b73f552e6dc6b10b50218"},
+  "after": {"revision": "SSCTR-HRQ-20261031-R7ARA-r1", "items": 204, "sha256": "95370383a7e14f7f14dce6e709c3a2d4c2024b485413c0871b55b9ef9e6cfd9c"},
+  "appended": ["HQ-R7ARA-SSCTR-F4X-EXIT-RETURN", "HQ-R7ARA-SSCTR-EASY-RETURN-CEILING", "HQ-R7ARA-SSCTR-E1B-SHORT-AFTER-REENTRY", "HQ-R7ARA-SSCTR-RELEASED-MODES-RETURN", "HQ-R7ARA-SSCTR-RESIDUAL-AUTHORITY-RECHECK"],
+  "basis": "ESCALATION_AND_HUMAN_REVALIDATION.md: each approved decision with prescriptive impact is appended (append-only, required by governance; closure request §15); the SSCTR routed its five proposals to the Chief",
+  "notQueued": {"R7ARA-SSCTR-CROSS-ENTRY-CAP": "REVISE / MODIFY_CANDIDATE (NF-R7ARA-1): not an approval; policy backlog R48"},
+  "ownerNormalized": "owner set to Chief / Founder, as the policy requires and all earlier entries hold; every other field verbatim from the proposal (read from the SSCTR review commit, sha256 2d95fa4e…); the proposed owner is recorded",
+  "record": "audits/domain-coaching-r7a-residual-authority-2026-10-30/QUEUE_INTEGRATION_R7ARA.json",
+  "tool": "audits/domain-coaching-r7a-residual-authority-2026-10-30/closure/queue-r7ara.mjs (run once)",
+  "earlierItemsByteIdentical": true,
+  "funding": "NOT_DECLARED"
+ },
+ "historicalVerifierAfterClosure": "node CoachingCore/scripts/verify-r7ara.mjs, read-only (no --tests, no --write; Node v22.23.4, which only hashes here), run on the closure working tree: 11/12. The only failure is closed-history, by design: it binds the human queue the closure appends to as governance requires; closure/IDENTITY_CHECK.json shows that queue is the only closed-history file moved. reviews-not-dispatched passes on the closure branch because the review branches are not merged into it. The suite was not rerun here: both judges reproduced 673/673 on Node v24.19.0",
+ "notChanged": [
+  "runtime: the 86 bound files (src, tests, policy, dev fixtures, package.json) equal the freeze record on the closure branch",
+  "policy R6-POLICY-5 (18ec48f3…)",
+  "frozen tests",
+  "freeze evidence: the freeze record, BASELINE.json, probes/, decision-authority-freeze-source/, PRE_FREEZE_REPORT.md, RESIDUAL_AUTHORITY_CONTRACT.md, TASK_CONTRACT.md, REVIEW_HANDOFF.md and the two recheck briefs",
+  "product/ and canon/",
+  "the candidate branch claude/r7a-residual-authority-closure (head 4917489), both review branches, main",
+  "audits/growth-layer-2026-10-29/PENDING_CANON_SYNC.patch (sha256 6b737179873535dac0ebc950aa0637866ea2c32df396cf9b93a80654940820d6), not applied"
+ ],
+ "notDone": [
+  "no new adversarial probe, broad regression campaign, test-suite rerun, sports-science reopening, fix or new freeze (closure request §4)",
+  "no merge: the review branches are referenced by commit and not merged into the closure branch; nothing is merged into main",
+  "chore/r7-b0-readiness-pack and chore/two-week-rotation-policy not merged or consumed (closure request §13)",
+  "repository/delivery foundation, engineering quality/security foundation, HealthKit/WorkoutKit roadmap, Growth Layer patch, Figma explorations and other product-documentation branches untouched (closure request §14)",
+  "DOMAIN_COACHING_R7-B0 not started",
+  "no UI, Figma, KMP, HealthKit, integration, production or real-user plan effect"
+ ],
+ "heldGrowthCanonSync": "Still HELD and not applied here (closure request §14). Its record (audits/growth-layer-2026-10-29/RECORD.md §6) asks that it be applied before any later mission captures a baseline binding product/ or canon/, and that a mission opener finding it HELD apply it first: a Founder-owned step for the next mission's opening",
+ "closure": {
+  "branch": "closure/r7a-final, created from claude/r7a-residual-authority-closure at 4917489",
+  "commit": "the single commit after 4917489 on closure/r7a-final that adds this file (git log -1 --format=%H -- audits/domain-coaching-r7a-residual-authority-2026-10-30/FINAL_DISPOSITION.json)",
+  "handoff": "CoachingCore/r7/R7A_FINAL_HANDOFF.md",
+  "missionFiles": "one insert-only block appended to CURRENT_MISSION.md and one entry to MISSION_LEDGER.md; earlier bytes unchanged"
+ }
+}
