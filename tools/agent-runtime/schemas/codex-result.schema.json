@@ -1,0 +1,26 @@
+{
+  "$comment": "Final message of a delegated Codex job (codex exec --output-schema). Strict-mode compatible: every object closes additionalProperties and requires all its properties.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["status", "summary", "files_changed", "commands_run", "open_issues", "notes_for_reviewer"],
+  "properties": {
+    "status": { "type": "string", "enum": ["DONE", "PARTIAL", "FAILED"] },
+    "summary": { "type": "string" },
+    "files_changed": { "type": "array", "items": { "type": "string" } },
+    "commands_run": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["command", "exit_code", "summary"],
+        "properties": {
+          "command": { "type": "string" },
+          "exit_code": { "type": "integer" },
+          "summary": { "type": "string" }
+        }
+      }
+    },
+    "open_issues": { "type": "array", "items": { "type": "string" } },
+    "notes_for_reviewer": { "type": "string" }
+  }
+}
