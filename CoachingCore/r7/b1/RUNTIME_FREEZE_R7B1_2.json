@@ -1,0 +1,437 @@
+{
+ "revision": "R7B1-FREEZE-2",
+ "mission": "DOMAIN_COACHING_R7-B.1",
+ "date": "2026-10-31T20:08:11.213Z",
+ "branch": "claude/domain-coaching-r7-b1",
+ "baseCommitOfBytes": "f6525e7907680990ecbdbaf067c34fb0ec641d13",
+ "freezeCommit": "the commit that adds this record (resolve with: git log -1 --format=%H -- CoachingCore/r7/b1/RUNTIME_FREEZE_R7B1_2.json)",
+ "previousFreeze": {
+  "freeze": "R7B1-FREEZE-1",
+  "record": "CoachingCore/r7/b1/RUNTIME_FREEZE_R7B1_1.json",
+  "sha256": "01c146f92cf1728b21efed9983ee5855f14365eec93cb64393627c36e319920f",
+  "commit": "d41df8b129495e32fe2923087d665798854609e9",
+  "verification": {
+   "record": "CoachingCore/r7/b1/VERIFICATION_R7B1_1.json",
+   "commit": "7b285f28e8bda8a014a2cf3045e21ce5e2a66be8"
+  },
+  "sourceDigest": "976a13351f0b40ee363e9e4d6d1592e2653306ac018e3cf143d2d16968d366c9",
+  "manifestDigest": "2fc0a59a7b919b6b7a039981cd995c2d511437481a713a5c74a97c57c84d614b",
+  "fileCount": 112,
+  "tests": 762,
+  "reviews": {
+   "commit": "2e874f1",
+   "SSCTR": "ACCEPT_WITH_CONDITIONS (R7B1-SSCTR-r1)",
+   "ENGINEERING": "NOT_READY (R7B1-ENG-r1: QE-R7B1-01 MAJOR)",
+   "QUALITY": "NOT_READY (QR7B1-01, QR7B1-02 MAJOR)"
+  },
+  "state": "superseded by this freeze; it verifies at its own commit with its own evidence"
+ },
+ "predecessorFreeze": {
+  "freeze": "R7B-RUNTIME-REPERTOIRE-FREEZE-2",
+  "record": "CoachingCore/r7/b/RUNTIME_FREEZE_R7B_2.json",
+  "sha256": "e49d80ec029d3a3aae3b4d251243fd8979d90a09397b423e25b74201cfb7153e",
+  "commit": "10b26d6e40542a066f7f100fbf16060b66e15aee",
+  "sourceDigest": "d2c730140973c9037de8729387012f830204072053729fbf9bdebf1bc5fe7241",
+  "manifestDigest": "d509452e4ad2aa98bce2889bd723c0faa22d2394aa5630d9f5a56588c9e6c23a",
+  "fileCount": 105,
+  "tests": 733,
+  "closure": "4230034d8819eb384c393a921db7eb3938c3440c",
+  "gatesAtClosure": {
+   "SSCTR": "BLOCK",
+   "ENGINEERING": "NOT_READY",
+   "QUALITY": "READY"
+  },
+  "state": "unchanged; it verifies at its own commit (scripts/verify-r7b.mjs --freeze 2)"
+ },
+ "correctionCycle": {
+  "request": "request §17: at most one cycle (correction, new freeze, narrow recheck), then stop",
+  "closed": [
+   "QE-R7B1-01 (Engineering MAJOR: the clinical screen before any block-choice question)",
+   "QR7B1-01 (Quality MAJOR: the no-lower-skill question acts)",
+   "QR7B1-02 (Quality MAJOR: the event-week rule for every row; rotation slots), with R7B1-SSCTR-F11",
+   "QR7B1-03 (Quality MINOR: the exhaustion question offers what acts)",
+   "QR7B1-04 (Quality MINOR: a decision that keeps an event-week slot out discloses it), with the review half of R7B1-SSCTR-F12",
+   "QR7B1-05 (Quality observation: a program that ends with the post-event week says so)"
+  ],
+  "routed": [
+   "R7B1-SSCTR-F12 (decision-time half: a substitute planned before the event weeks)",
+   "R7B1-SSCTR-F13 (leaving the slot out offered by the questions; keeping the exercise after a SKILL_MISMATCH)",
+   "QE-R7B1-02 (Engineering MINOR, pre-existing: a short return in the capped period re-plans uncapped)",
+   "QE-R7B1-03 (Engineering MINOR, pre-existing: a knock-on slot moves up its ladder without a disclosure)",
+   "QR7B1-06 (pre-existing: knock-on changes are not listed in substitutions)",
+   "QR7B1-07 (owners at closure)"
+  ],
+  "record": "CoachingCore/r7/b1/BLOCKER_CLOSURE_R7B1.md (section: correction cycle)",
+  "reviews": "audits/domain-coaching-r7-b1-2026-10-31/reviews/"
+ },
+ "blockers": {
+  "closed": [
+   "QE-R7B-OBS-04",
+   "QE-R7B-R2-01",
+   "QE-R7B-R2-02",
+   "QE-R7B-R2-03",
+   "QE-R7B-01 residual (incl. QE-R7B-R2-04)",
+   "QE-R7B-05 residual"
+  ],
+  "recordedNotChanged": [
+   "QE-R7B-R2-05 (R18 path, request §9)",
+   "QE-R7B-R2-OBS-01",
+   "QE-R7B-OBS-01..03"
+  ],
+  "record": "CoachingCore/r7/b1/BLOCKER_CLOSURE_R7B1.md"
+ },
+ "loopBound": "audits/domain-coaching-r7-b1-2026-10-31/TASK_CONTRACT.md §3 (request §17): one review per required gate; at most one correction cycle for a narrow blocker created by this mission's own correction",
+ "sourceDigest": "f54e5c0345aa9c1dbd9743a78127b59720b3cf4d68c1b53ed11bfdbf40ed1612",
+ "manifestDigest": "980d830106f3c75722126a8c0bffb5e5aafa9a261b411c30a4779d6d3e08fae8",
+ "fileCount": 114,
+ "files": {
+  "package-lock.json": "a6ea7b32bb5071e05f41f5e92cb81e06bdf1c74bc9bd87808fbbad4f57735417",
+  "package.json": "9e2c8a8aab0bfd4c523d3c4094fe6d5387bfb675bccf8c0012a1f023d4890828",
+  "r6/PROGRAM_POLICY_R6.json": "a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100",
+  "r6/fixtures/dev-authority.mjs": "7b0dbcd49777436b56980afdc36308d22a088125fa8c9cfe9595df3ca2ca3d2b",
+  "r6/fixtures/profiles.mjs": "d36d0e6d1336648d4bd27946d90981666446c2328ac98dfebf48aa91b89a354d",
+  "r6/fixtures/trajectories.mjs": "0bae601e92b53d5dcea83d1b4d53112ed0c3fddc2abe2437eb01301bbaddf2ea",
+  "r7/b/CONFORMANCE_R7B.json": "32b3fde1ecb933b526b4aa3dabc4d0eaebd3dd3976c6f5bee4520ae0a49529e0",
+  "r7/b/fixtures/helpers.mjs": "33caefbf5aff2f93e7ad21785d65a8ebf07c4521216d689954f04d9011161241",
+  "r7/b0/REPERTOIRE_CATALOG_B0.json": "ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9",
+  "r7/b0/REPERTOIRE_CATALOG_B0.schema.json": "8b51b80b5861cea189489db28f2c15125269f4d3a4eb1c937a30590184dcffd8",
+  "r7/b1/CONFORMANCE_R7B1_DELTA.json": "64815d65bb603bb6457e2a0428ffce50ab7f677015e0aeec8a1420d2ead3d772",
+  "scripts/conformance-r7b.mjs": "6ffcba1ea0b1feaa7ebf2d61d1491a9cac8ae9dbdd1bd3e554650e4aa4fba2e6",
+  "scripts/conformance-r7b1.mjs": "52cbcac64067885a6f1406c8448e9fecf7affb191011b55b886181e2fe36ecc6",
+  "scripts/freeze-r7b-2.mjs": "1226fab8b6eda6d93a010a5e4acb5f1b128308652651f93b4723ff3a10441afb",
+  "scripts/freeze-r7b.mjs": "de36237f647c052f6126ff47fb9a9d0fbcb9c46c4cd19b0778ea096ec8ae48b0",
+  "scripts/freeze-r7b1-2.mjs": "9d04e4c218b3f46462f36750c75d72e43575266d6bf3ea1fdd49f46837643844",
+  "scripts/freeze-r7b1.mjs": "ef61be28eb2206792265372789796bac37cddc15e177a929527e32b8911ce7c3",
+  "scripts/mutate-r7b.mjs": "15d4d9e571504a4a1ff64078b5bef27943e3fdc2ceb4a914d234b93fabb86ba2",
+  "scripts/mutate-r7b1.mjs": "1bacc039e38eaa5b3d30d18aefe2c3774e06d6fd456176f476c334ed43ac685f",
+  "scripts/regress-r7b.mjs": "612c847b2ef3f646d0f20ffc869a880a347521aa48170f407e6bc9079aff21ef",
+  "scripts/regress-r7b1.mjs": "f3af62646e58be883f08f87b392ff58c80c0c2543e512c9ab67a7ee88fb645ba",
+  "scripts/verify-r7b.mjs": "51b5a20f796c85b46b6930e4fb00d52107aed6aa7d8f65893d635a49718f2708",
+  "scripts/verify-r7b1.mjs": "df545742e7b6d37b99f4e383dc8ebd376392a8ad11a4c7d08cde116e8653e5e4",
+  "src/fixtures.mjs": "b615c3db0022f0125e36f5ae573964de2863d587c3b9631dc48dddad581f2d13",
+  "src/index.mjs": "f65801d023d69a5f2f4af7308a998b7771fc27bfd230d8a479748c200b3edc13",
+  "src/r2-fixtures.mjs": "2c57aa5b9a9e473843790e17532108001b7bf600d1b07c091794a0dc9c95e302",
+  "src/r2-runtime.mjs": "2dc76442339fadf3ddfbf0fb1f67dd2e9d6101cb2eb785a02171b70ad45902c8",
+  "src/r3-consumption.mjs": "a0526a8954d1a27fe90ad5c5779d72bf05841306232df75e573f61935a5ae398",
+  "src/r3-index.mjs": "7476017a5a9f4b21ce9cf546ecbf611751cc6e4a21b0887bd0e98ca6e90e50dc",
+  "src/r3-input.mjs": "35320aac23badeab919ee6eb7479c5b6e1ff050596ca30a681f95f7d84b63b3b",
+  "src/r3-runtime.mjs": "34ec4622b6511d33323c3bc2fb388692659d5617958233243470494a1a1718b7",
+  "src/r4-athlete-model.mjs": "e87fd3343a7c82f70be1603396080f61939201f43e33c96b74b5aa46ffa9e8c8",
+  "src/r4-authority.mjs": "8e39bbb54b7978ca1c0ac9c4cfc8986985e7bb61ecdf3e4f00c5d6716ad7e9b9",
+  "src/r4-candidates.mjs": "d963de2ebb9700eb87cce4ed0a86e8a07b3c4fe5e1926e541928bf6296b0ab11",
+  "src/r4-context.mjs": "f7873e30333a34335e8f315ea29cabcefff6e2c5277d46cda73e8c8d39b0282c",
+  "src/r4-index.mjs": "4440316641c01a987dc1c8fc7562e970c45bb7c4c03c57b8e8186ede7dc01a7e",
+  "src/r4-runtime.mjs": "557efc5b96c0fcaff70f1cf296f69b294129525d5519950a63741c1c096591af",
+  "src/r5-adaptation.mjs": "434769da56d05618da7cfc757dfbfd5e96ffb2c2777a224e329a8f7b8de52220",
+  "src/r5-authority.mjs": "0eafe07af8c04bc67bf7268ac791d003b1c823241ea2e8a6dd22cd60b10954ad",
+  "src/r5-contract.mjs": "39b2ce74a199bd269ce507a74de87b7d375f9d996488f43dd1c242f633735c77",
+  "src/r5-index.mjs": "2d2482122f695fe9c0a3faee72418d3eb723eed39c9f9bf9e87482826a58b8f7",
+  "src/r5-learning.mjs": "a78b220c6d140418a8f9f5401e616496f7a2042c06bdabf274302e01918af334",
+  "src/r5-observation.mjs": "91e9607a18702b6d47487369bd5ab823ffc1542b298a85f19423fa1c6ef43b8e",
+  "src/r5-program.mjs": "05795bab7967bca751ebb1fa0eb18c3ff6939b6204188b5d2fbbd6e7189ee7ad",
+  "src/r5-review-context.mjs": "c392a2ac7ab02ad74f3259a8a66ef657bb748e98458810816a4bcb7100384f3e",
+  "src/r5-schedule.mjs": "600d0f67bda6b9e57f3aab65f0e77deac1961676ceef0e940d43d83bb09a90e6",
+  "src/r5-selectors.mjs": "a4d755cdc8fad1bcd265fac7a2967a545db5a3f17781d62e9dfad2d33764c156",
+  "src/r5-simulator.mjs": "e18ac696baff3dcf47305846a8b9b4c078453ca2841f8652835997a4e59d70c0",
+  "src/r5-validity.mjs": "ef19dfb0a59c7c024d1e63c960bf2ece864b0e509b345766f5ede37ce1628867",
+  "src/r6-adaptation.mjs": "f2a4f4f71e847c902cb9667dfe088044bf2a660fb00dd27a1ee43d04574761da",
+  "src/r6-authority.mjs": "916b601ade47966557bafc29f134a45f7497380949c584e9be773f4beba63f69",
+  "src/r6-balanced.mjs": "e50fd557a1a7d2de3126adfbbec24ac69bb4fad1b7f709a6bee1d3b30967ac00",
+  "src/r6-catalogue.mjs": "1345682e5579293248fdb537510519344b9102e6a75ef0db3ea1ca61783dde5c",
+  "src/r6-clinical.mjs": "51449486b4cb7acaaae6c7c915d52b150c420b4f49c14cdfe9f896febff7f681",
+  "src/r6-composition.mjs": "5fec6b6c46e6160d17a34dfec8850d43964e0f1442c7da32a9e312787eaba5e4",
+  "src/r6-index.mjs": "8316ff218814b39060b17b1720fca08349bbac8e7c954327424f4df691ceb098",
+  "src/r6-intake.mjs": "8becd1c6dcfa357c4e7f957068265d3a0cad5036f74a0d23b78711d3936e3c56",
+  "src/r6-learning.mjs": "dced0698ebbee06f81208b9fb9e404d3d6bb534a689fe0572c7d9949c9a22a10",
+  "src/r6-legacy.mjs": "4312aeef7fa1fee67bc9a617ee7d189bd14da7486f0a3a47b38275306d9ca36b",
+  "src/r6-prescription.mjs": "41d90e32b9976d92156e0b9a1e8eca92df2597d83475e80d670391923bbf532f",
+  "src/r6-program.mjs": "32a7b3cfb862faf7ee2789c76f09e85b5bc027d271ae3d82a211a1ccf165a407",
+  "src/r6-provenance.mjs": "6a292c14c1f82e52fdf6f764bc9a0070fa0e1cabaaf55dd78108831ea854a4d6",
+  "src/r6-simulator.mjs": "8a78e3015f834801e3a88eca7c42376ce04bd6b648029bb86bd37386a41c7f0f",
+  "src/r7b-repertoire.mjs": "dd16691f41014df415e2ddd494e3dca88947cdd9f43bb9805811ff517cd62fe4",
+  "src/runtime.mjs": "b52b1bbe9c8742a5a27eee9cec548cc06ac33d312713a02be6c24730737ebe9c",
+  "src/semantics.mjs": "e1ef468c4eaf304a85fb5173a89d71dcaf094ab9712663c16e5fffadae588d8c",
+  "src/value.mjs": "5bd765f68aa9e1f39ff0ce1366c7ac08e4b092bf281b49e2caa12c7c4bdb3a3b",
+  "test/conformance.test.mjs": "3360a7cf9e814f1c9b7389e33c6c45d0eda508316382267748255acce8830692",
+  "test/r2.test.mjs": "d4ce81b0c42fdfd40ea7445e55c730b2f4df21bc5eabe97a27be7969154a1dc7",
+  "test/r3-input.test.mjs": "a18b3aeb12e3fe9179967fb8df1990aa7974ea5056d3f4e8337a481801d4305d",
+  "test/r3-runtime.test.mjs": "5f6a9bd3041658aa932a59a0078ecc43d00368abc55bfd73b483c61fc29fa856",
+  "test/r4-coaching.test.mjs": "c16f531e33dd21d8501c1fcac96e4f877c73df29fa905079cc4a8e0e308a6992",
+  "test/r5-adaptation.test.mjs": "29597a5bf91adad29a99b8c13db753e71579de707f544d06424342da67d769ca",
+  "test/r5-learning.test.mjs": "d89ab51b6865f4fc34f9c9dc1066ac168dda79a3b4a3e1a7cac196e3b226f3ef",
+  "test/r5-program.test.mjs": "ab6dd148fe75d65880ce3e8ae6b8153a38829d3726c53c4a813976198eda4385",
+  "test/r5-simulation.test.mjs": "329b25a4b7157f561218dc3f52293bc5f8e155362692909c37bd94b88beb0496",
+  "test/r6-adaptation.test.mjs": "c7f5e57b35fbd78cbffd3bcb3f84fa8b8e348d3f72db4efa1b46fc552db0a2b7",
+  "test/r6-balanced-provenance.test.mjs": "cbeaa21e9aecf347f118b89761a5912b2f96e946b979f082b3f8ec26317f7762",
+  "test/r6-engineering-fixes.test.mjs": "34b438192febd5ba58019500c2be2839f349389e546d7bbdb0c277a317a5f0f9",
+  "test/r6-holdout-runner.test.mjs": "061211c0f54e5a24848ea58e09e408326367bf3519ce5d0258169b7282e97bb5",
+  "test/r6-intake-program.test.mjs": "ec471a004a7bb3927cec7d36c2b402662ae62aa2b396abddcd84e2de0fdbe5d8",
+  "test/r6-r5-regression.test.mjs": "1340c9e6dc1ebbcf0b870f6975da8a36acc7a870f95d75a7ed04c446e1d5aca1",
+  "test/r6-simulation.test.mjs": "6fdb75bd3720e8141a108f7256543e01375949f061a4bdab1b0adce06bb59e86",
+  "test/r6-ssctr-r10-fixes.test.mjs": "ccf4683d0232e774033d4d0c300ca49be777fbef6e4525acd71f9035aa9a4de0",
+  "test/r6-ssctr-r11-fixes.test.mjs": "4d2e6114bb4b725b0482564acc9e8313ba01a11b71701bc560fa2cf32742efde",
+  "test/r6-ssctr-r7-fixes.test.mjs": "f9c645cedd29b1f0e0f7c8456139806dc1629f98bfd5f24220fbe005782aa0fa",
+  "test/r6-ssctr-r8-fixes.test.mjs": "3c91926fadfefbc91c52e492d8a79f34f2be4402e9b1ae71457fc16b9bb1dd16",
+  "test/r6-ssctr-r9-fixes.test.mjs": "244a07a07159a488b1c4a2aa9d53c7871335c01dd0b03da5b8ba45da7c53309e",
+  "test/r6-ssctr-revision.test.mjs": "e6099f1e5b5702bb9229e5bac24a8edb1ea7cb8000752c324e5b085ba2c94474",
+  "test/r7a-cycle2.test.mjs": "8a965580c5ad2644f268dbe4cd402d15bd8da726af531c8647fcf796899484ec",
+  "test/r7a-semantic-core.test.mjs": "1f1497c5c48f9e6b465d959816ba59cf586283d9badf1c58a5b35d0b4cbbe311",
+  "test/r7a1-composition.test.mjs": "f5442438572dd997af7254c2023fd74a0b7241e026349ffc81a457f9ba6251c0",
+  "test/r7a1-correction.test.mjs": "d4d8e0407cdc8d4c9c48152ddd1ba1d9133aa250ac05130ba55fe06bbb451f09",
+  "test/r7a2-interruption.test.mjs": "d852d6ad8c6cb22131807c1de526e56cc7d5840af8c4cc05e610f90bec542262",
+  "test/r7ab-week-start-authority.test.mjs": "8b5cceb74fa5097be5cca19610adf70c52cf3478657b916625d718c2f3bb8dd0",
+  "test/r7ada-decision-authority.test.mjs": "ca1bf152c0f32da028490a3316076efd0ce16675cd69afc08b542000d16b5cd2",
+  "test/r7af-episode-identity.test.mjs": "3e087d898a6dd5499553d1654c1720432fcc4327d7f9f74c7475c8372d2dec3f",
+  "test/r7ara-residual-authority.test.mjs": "91e5c9255fe56ff0ed3e69a47daf4811c712e157e0992b63f88810177ef3e687",
+  "test/r7asc-state-consumer.test.mjs": "e69420bdb1d5c7f155101d4dba6c6991d5f9c34ecc697d9b1dbfd800e2647f31",
+  "test/r7ase-state-evidence.test.mjs": "3f17dc136bd519e80403f4d68e3a46ad12bb5557f01fc0bd6ca90025e49804bb",
+  "test/r7asm-state-model.test.mjs": "65f4e7e0bba5a7910ab53297a91caf68592db0e570e06d196723ead16ca7eb5d",
+  "test/r7b-binding.test.mjs": "1d58b0d1fcdbec3295a000e3d87a73dd02a72a2079d3edd0f03968755299a0c0",
+  "test/r7b-conditions.test.mjs": "9f3b276e9a4ff1a2b45deb3003396437682df74375332e5bfc8b0facaf4f60d0",
+  "test/r7b-hybrid-program.test.mjs": "78d4905e936fae851092982a7f3f9aeffa83e906844fa5c830c6cfec173f7cae",
+  "test/r7b-review-fixes.test.mjs": "03fdf64a582625cff3c3f4013f1cbc352caf10a628aa7d10cb2d8e6bf6f4bc94",
+  "test/r7b-running.test.mjs": "1b57df6f65712034c27a3520d644ce3b9544358bd464c331703972e7e538cb5d",
+  "test/r7b-strength.test.mjs": "eec6e937f6db73b4813d6abe5167a3221650efff469f7130e16342e031063281",
+  "test/r7b1-correction-cycle.test.mjs": "7b3c838ccb472e8c59bec97790d26f86443779d81d62dd80a383c4cc521882cf",
+  "test/r7b1-residual-closure.test.mjs": "b645e164fabb2901b7e139d80d800576609bb0d2bc4d072ccc1c2b29a26d5e90",
+  "test/review-regressions.test.mjs": "62b66be420a3bd02b94bac99c64d51a099bd2562cf21cce99ea17d399416b7c6",
+  "test/runtime.test.mjs": "852f8a33acef87f20cecdef3ce60c20e2ccc96b38bbaa725c0eee5106d66aa6e",
+  "test/schema.test.mjs": "512ae0be79134a9f669d7528470841ef3f4615d9c507ed9b3c9a789f5918457b",
+  "test/semantics.test.mjs": "33260e584b4aa802cc9bc9d122a2015e504ca3397fdc74c871202c1cf4b2d769",
+  "../audits/domain-coaching-r7-b0-2026-10-31/reviews/SSCTR_RECHECK_B0.json": "6867d3e89ebd4bb309c018fb456508d3a4510038194269769b0a4ef16f23d885"
+ },
+ "policy": {
+  "revision": "R6-POLICY-5",
+  "canonicalHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+  "fileSha256": "a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100",
+  "unchangedSinceB0": true
+ },
+ "catalogBinding": {
+  "revision": "R7B0-CATALOG-2",
+  "sha256": "ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9",
+  "schemaSha256": "8b51b80b5861cea189489db28f2c15125269f4d3a4eb1c937a30590184dcffd8",
+  "records": "audits/domain-coaching-r7-b0-2026-10-31/reviews/SSCTR_RECHECK_B0.json",
+  "recordsSha256": "6867d3e89ebd4bb309c018fb456508d3a4510038194269769b0a4ef16f23d885",
+  "coreRecords": [
+   "B0-FIDELITY",
+   "B0-C04",
+   "B0-C05"
+  ],
+  "gatedCandidates": [
+   "B0-C01",
+   "B0-C02",
+   "B0-C03",
+   "B0-C06",
+   "B0-C07",
+   "B0-C08",
+   "B0-C09",
+   "B0-C10",
+   "B0-C11",
+   "B0-C12"
+  ],
+  "failClosed": "any other catalog bytes or a missing core record: no program; a missing candidate record: that feature off; a record bound to the catalog that does not enable vetoes its candidate (QE-R7B-10)"
+ },
+ "runtimeDelta": {
+  "fromPredecessor": {
+   "changed": [
+    "src/r6-adaptation.mjs",
+    "src/r6-program.mjs",
+    "src/r7b-repertoire.mjs"
+   ],
+   "added": [
+    "test/r7b1-correction-cycle.test.mjs",
+    "test/r7b1-residual-closure.test.mjs"
+   ],
+   "removed": []
+  },
+  "fromPreviousFreeze": {
+   "changed": [
+    "src/r6-adaptation.mjs",
+    "src/r6-program.mjs"
+   ],
+   "added": [
+    "test/r7b1-correction-cycle.test.mjs"
+   ],
+   "removed": []
+  }
+ },
+ "tests": {
+  "count": 786,
+  "pass": 786,
+  "fail": 0,
+  "durationMs": 45315,
+  "predecessorCount": 733
+ },
+ "evidence": {
+  "conformance": {
+   "report": "r7/b1/CONFORMANCE_R7B_ON_R7B1_2.report.json",
+   "sha256": "8937dca3181a7ad317ddccbbe7afe61616e10e8ba3501e4fb4a9f49618c2504c",
+   "result": "PASS",
+   "entries": 301,
+   "counts": {
+    "IMPLEMENTED": 222,
+    "INHERITED": 67,
+    "DESCRIPTIVE": 7,
+    "DEFERRED": 1,
+    "NOT_APPLICABLE": 4
+   },
+   "conditions": 85
+  },
+  "conformanceDelta": {
+   "report": "r7/b1/CONFORMANCE_R7B1_DELTA_2.report.json",
+   "sha256": "48ed62be2927d8a43d91c19a4ee5f512e554c99897486fcc2d9d9bed2f40f766",
+   "result": "PASS",
+   "entries": 7,
+   "blockers": [
+    "QE-R7B-01 residual (QE-R7B-R2-04)",
+    "QE-R7B-05 residual",
+    "QE-R7B-OBS-04",
+    "QE-R7B-OBS-04 (stand-ins after a SKILL_MISMATCH)",
+    "QE-R7B-R2-01",
+    "QE-R7B-R2-02",
+    "QE-R7B-R2-03",
+    "QE-R7B1-01",
+    "QE-R7B1-01 (the unrecognised-choices question keeps the factual re-plan)",
+    "QR7B1-01",
+    "QR7B1-02",
+    "QR7B1-02 (rotation slots)",
+    "QR7B1-03",
+    "QR7B1-04",
+    "QR7B1-05",
+    "R7B-SSCTR-F9",
+    "R7B1-SSCTR-F11",
+    "R7B1-SSCTR-F12 (a review that leaves an event-week slot out)"
+   ]
+  },
+  "intakeVsFreeze2": {
+   "report": "r7/b1/REGRESSION_INTAKE_R7B1_2_VS_FREEZE2.json",
+   "sha256": "5debe4dd9d087e006bd42ba8d3dbf6886ddb39242e1cf39235af3f6314adb830",
+   "against": "FREEZE-2 10b26d6e40542a066f7f100fbf16060b66e15aee",
+   "corpus": 83,
+   "changed": 0,
+   "statusDifferences": 0,
+   "doseFindings": 0
+  },
+  "timelineVsFreeze2": {
+   "report": "r7/b1/REGRESSION_R7B1_2.json",
+   "sha256": "ccc993005d663353775b7453f74213c4d7ff578ba02511694e612401ea953bde",
+   "against": "FREEZE-2 10b26d6e40542a066f7f100fbf16060b66e15aee",
+   "result": "PASS",
+   "timelines": 117,
+   "byTag": {
+    "PRESERVE": {
+     "timelines": 98,
+     "identical": 98,
+     "changed": 0
+    },
+    "OBS-04": {
+     "timelines": 12,
+     "identical": 0,
+     "changed": 12
+    },
+    "R2-01": {
+     "timelines": 3,
+     "identical": 0,
+     "changed": 3
+    },
+    "R2-02": {
+     "timelines": 2,
+     "identical": 0,
+     "changed": 2
+    },
+    "R2-03": {
+     "timelines": 2,
+     "identical": 0,
+     "changed": 2
+    }
+   },
+   "substitutionGrid": {
+    "decisions": 184,
+    "inconsistent": {
+     "freeze2": 8,
+     "r7b1": 0
+    },
+    "changed": 8
+   },
+   "envelopeFindings": 0,
+   "runRises": 0,
+   "r202": [
+    {
+     "id": "novice",
+     "identical": true
+    },
+    {
+     "id": "graduation",
+     "identical": true
+    }
+   ]
+  },
+  "adversarial": {
+   "record": "audits/domain-coaching-r7-b1-2026-10-31/probes/out/adversarial-R7B1-2.json",
+   "sha256": "8428d2cea268ebe7ced42a0b0b1c36dd1e99eb81c2c9e5951cde8cbdbe572700",
+   "checks": 3228,
+   "failed": 0,
+   "grids": {
+    "P1": {
+     "cases": 170,
+     "checks": 2131,
+     "failed": 0
+    },
+    "P2": {
+     "cases": 7,
+     "checks": 639,
+     "failed": 0
+    },
+    "P3": {
+     "cases": 40,
+     "checks": 120,
+     "failed": 0
+    },
+    "P4": {
+     "cases": 52,
+     "checks": 108,
+     "failed": 0
+    },
+    "RES": {
+     "cases": 186,
+     "checks": 230,
+     "failed": 0
+    }
+   },
+   "projectedOnly": 105,
+   "onFreeze2": "audits/domain-coaching-r7-b1-2026-10-31/probes/out/adversarial-FREEZE-2.json"
+  },
+  "mutation": {
+   "report": "r7/b1/MUTATION_R7B1_2.json",
+   "sha256": "d7c1a7e8e8ac95be00798593aee6023935da98397dc687bc19821b279368ef34",
+   "mutants": 32,
+   "killed": 32,
+   "survivedEquivalent": []
+  },
+  "mutationR7B": {
+   "report": "r7/b1/MUTATION_R7B_ON_R7B1_2.json",
+   "sha256": "13e524fcf5637f9aba618c6f88e652ac5683505e67fe051c27d99422615db4c2",
+   "mutants": 25,
+   "killed": 24,
+   "survivedEquivalent": [
+    {
+     "id": "M13",
+     "reason": "runRow never activates quality in RETURN or RESTART mode (qualityActive requires EASY), so the mode guard is redundant: no observable dose differs"
+    }
+   ]
+  }
+ },
+ "testChanges": {
+  "record": "audits/domain-coaching-r7-b1-2026-10-31/TEST_CHANGES_R7B1.md",
+  "sha256": "da5c2d80cb2226a6dae23a80c0cb346e473e1b1e05e0539bee074b3fd29c34f4"
+ },
+ "unchangedInputs": {
+  "CoachingCore/r6/PROGRAM_POLICY_R6.json": "a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100",
+  "CoachingCore/r7/b0/REPERTOIRE_CATALOG_B0.json": "ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9",
+  "CoachingCore/r7/b0/REPERTOIRE_CATALOG_B0.schema.json": "8b51b80b5861cea189489db28f2c15125269f4d3a4eb1c937a30590184dcffd8",
+  "CoachingCore/r7/b0/REPERTOIRE_FOUNDATION_B0.md": "96fdefadba7a1de5b156c6324c6103c2ee57909cfeb5b4af59fd786147d7906a",
+  "audits/domain-coaching-r7-b0-2026-10-31/reviews/SSCTR_RECHECK_B0.json": "6867d3e89ebd4bb309c018fb456508d3a4510038194269769b0a4ef16f23d885",
+  "CoachingCore/r7/residual-authority/RUNTIME_FREEZE_R7A_RESIDUAL_AUTHORITY.json": "51e67fb05c5c0997da45366d99bbc44e5defa81405530ac86b85d3e5058379d3",
+  "audits/growth-layer-2026-10-29/PENDING_CANON_SYNC.patch": "6b737179873535dac0ebc950aa0637866ea2c32df396cf9b93a80654940820d6"
+ }
+}

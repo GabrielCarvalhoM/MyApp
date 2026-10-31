@@ -1,0 +1,585 @@
+{
+ "check": "R7B1-MUTATION",
+ "mutants": 32,
+ "killed": 32,
+ "survived": [],
+ "equivalent": [],
+ "invalid": [],
+ "sourceRestored": true,
+ "results": [
+  {
+   "id": "M26",
+   "blocker": "QE-R7B-R2-02",
+   "what": "the block-choice question asked mid-week or in another review kind drops the factual re-plan",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs",
+    "test/r7b1-correction-cycle.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 5,
+   "passedTests": 48,
+   "failing": [
+    "✖ R7-B.1 cycle QE-R7B1-01: an unrecognised choice with a correction asks and still carries the factual re-plan (276.7868ms)",
+    "✖ R7-B.1 R2-02: a mid-week correction with a block choice asks and still carries the factual re-plan (346.1135ms)",
+    "✖ R7-B.1 R2-02: no stale-state resurrection after the question: later reviews keep the corrected basis (275.8232ms)",
+    "✖ R7-B.1 R2-02: a correction with a graduation answer mid-week asks and carries the withdrawal (59.2886ms)"
+   ]
+  },
+  {
+   "id": "M27",
+   "blocker": "QE-R7B-R2-02",
+   "what": "the block-choice question of a complete review that never reached the boundary step drops the factual re-plan",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs",
+    "test/r7b1-correction-cycle.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 52,
+   "failing": [
+    "✖ R7-B.1 R2-02: a correction with a block choice in the final week's complete review asks and carries the factual re-plan (358.0017ms)",
+    "✖ R7-B.1 R2-02: a correction with a block choice in the final week's complete review asks and carries the factual re-plan (358.0017ms)"
+   ]
+  },
+  {
+   "id": "M28",
+   "blocker": "QE-R7B-R2-01",
+   "what": "proposals never store the novice templates of their context",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs",
+    "test/r7b1-correction-cycle.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 6,
+   "passedTests": 47,
+   "failing": [
+    "✖ R7-B.1 cycle QR7B1-03: naming another exercise is offered when one would take its place, and it does (294.248ms)",
+    "✖ R7-B.1 cycle (preserved): a capped novice's substitution is applied when its full session moves to another day of the week (190.0641ms)",
+    "✖ R7-B.1 R2-01: a capped novice SKILL_MISMATCH substitution survives the next weekly reviews (141.6892ms)",
+    "✖ R7-B.1 R2-01: a capped novice preference substitution survives the next weekly reviews (148.4279ms)"
+   ]
+  },
+  {
+   "id": "M29",
+   "blocker": "QE-R7B-R2-01",
+   "what": "a re-plan of the context (substitution, schedule, goal, block boundary) does not state its novice templates",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs",
+    "test/r7b1-correction-cycle.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 5,
+   "passedTests": 48,
+   "failing": [
+    "✖ R7-B.1 cycle QR7B1-03: naming another exercise is offered when one would take its place, and it does (307.6009ms)",
+    "✖ R7-B.1 cycle (preserved): a capped novice's substitution is applied when its full session moves to another day of the week (197.5265ms)",
+    "✖ R7-B.1 R2-01: a capped novice SKILL_MISMATCH substitution survives the next weekly reviews (137.485ms)",
+    "✖ R7-B.1 R2-01: a capped novice preference substitution survives the next weekly reviews (143.8007ms)"
+   ]
+  },
+  {
+   "id": "M30",
+   "blocker": "QE-R7B-R2-01",
+   "what": "an equipment change does not state the novice templates it rebuilt",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs",
+    "test/r7b1-correction-cycle.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 52,
+   "failing": [
+    "✖ R7-B.1 R2-01: a kettlebell-only change while capped survives the next weekly review (93.6629ms)",
+    "✖ R7-B.1 R2-01: a kettlebell-only change while capped survives the next weekly review (93.6629ms)"
+   ]
+  },
+  {
+   "id": "M31",
+   "blocker": "QE-R7B-R2-03",
+   "what": "the set-aside fallback ignores the SKILL_MISMATCH direction (the slot's best configuration, higher skill first)",
+   "file": "src/r7b-repertoire.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs",
+    "test/r7b1-correction-cycle.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 7,
+   "passedTests": 46,
+   "failing": [
+    "✖ R7-B.1 cycle QR7B1-01: the question names only the missing equipment and its options are inputs the review reads (150.6339ms)",
+    "✖ R7-B.1 cycle QR7B1-01: confirming the loss records it with the pull slot left out, disclosed, and nothing harder takes its place through later reviews (143.8894ms)",
+    "✖ R7-B.1 cycle QR7B1-01: the question never says equipment the athlete still has is missing (345.7583ms)",
+    "✖ R7-B.1 R2-03: a permanent loss of the substitute's equipment never climbs the ladder, also after later reviews (169.732ms)"
+   ]
+  },
+  {
+   "id": "M32",
+   "blocker": "QE-R7B-R2-03",
+   "what": "the fallback may rise above the substitute in use while staying below the set-aside configuration",
+   "file": "src/r7b-repertoire.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs",
+    "test/r7b1-correction-cycle.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 52,
+   "failing": [
+    "✖ R7-B.1 R2-03: the fallback never rises above the substitute in use, even where harder options lie below the set-aside one (168.3721ms)",
+    "✖ R7-B.1 R2-03: the fallback never rises above the substitute in use, even where harder options lie below the set-aside one (168.3721ms)"
+   ]
+  },
+  {
+   "id": "M33",
+   "blocker": "QE-R7B-R2-03",
+   "what": "without a lower option the equipment change proceeds instead of asking",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs",
+    "test/r7b1-correction-cycle.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 4,
+   "passedTests": 49,
+   "failing": [
+    "✖ R7-B.1 cycle QR7B1-01: the question names only the missing equipment and its options are inputs the review reads (149.4704ms)",
+    "✖ R7-B.1 cycle QR7B1-01: confirming the loss records it with the pull slot left out, disclosed, and nothing harder takes its place through later reviews (144.8387ms)",
+    "✖ R7-B.1 cycle QR7B1-01: the question never says equipment the athlete still has is missing (354.3699ms)",
+    "✖ R7-B.1 R2-03: with no lower option the equipment change asks instead of climbing (140.2972ms)"
+   ]
+  },
+  {
+   "id": "M34",
+   "blocker": "QE-R7B-R2-03",
+   "what": "the SKILL_MISMATCH direction also binds a slot that only held the substitute (false questions)",
+   "file": "src/r7b-repertoire.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs",
+    "test/r7b1-correction-cycle.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 2,
+   "passedTests": 51,
+   "failing": [
+    "✖ R7-B.1 cycle QR7B1-01: the question never says equipment the athlete still has is missing (329.0068ms)",
+    "✖ R7-B.1 R2-03: a SKILL_MISMATCH substitute that held another slot is applied; that slot keeps its own fallback (155.3635ms)",
+    "✖ R7-B.1 cycle QR7B1-01: the question never says equipment the athlete still has is missing (329.0068ms)",
+    "✖ R7-B.1 R2-03: a SKILL_MISMATCH substitute that held another slot is applied; that slot keeps its own fallback (155.3635ms)"
+   ]
+  },
+  {
+   "id": "M35",
+   "blocker": "QE-R7B-OBS-04",
+   "what": "no event-week rule for a configuration a reason-based substitution placed",
+   "file": "src/r6-program.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs",
+    "test/r7b1-correction-cycle.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 16,
+   "passedTests": 37,
+   "failing": [
+    "✖ R7-B.1 cycle QR7B1-02: a taper substitution under a two-week rotation brings no never-performed configuration into the event weeks (W3, glute-bridge) (555.9971ms)",
+    "✖ R7-B.1 cycle QR7B1-04 (preserved): a taper substitution's own event-week disclosure is not repeated by the decision's general note (352.1704ms)",
+    "✖ R7-B.1 cycle QR7B1-02 (F11): an equipment change at the start of the taper leaves never-performed substitutes out of the event weeks, disclosed (452.086ms)",
+    "✖ R7-B.1 cycle QR7B1-02: a configuration a rebuild brings into the taper that this program has not performed gives way to a performed alternative (491.0775ms)"
+   ]
+  },
+  {
+   "id": "M36",
+   "blocker": "QE-R7B-OBS-04",
+   "what": "an exercise reported at intake counts as performed in this program",
+   "file": "src/r6-program.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs",
+    "test/r7b1-correction-cycle.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 52,
+   "failing": [
+    "✖ R7-B.1 OBS-04: an exercise familiar at intake but never performed in this program is still new in the event weeks (354.2311ms)",
+    "✖ R7-B.1 OBS-04: an exercise familiar at intake but never performed in this program is still new in the event weeks (354.2311ms)"
+   ]
+  },
+  {
+   "id": "M37",
+   "blocker": "QE-R7B-OBS-04",
+   "what": "any performed configuration may stand in, admissible alternative or not",
+   "file": "src/r6-program.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs",
+    "test/r7b1-correction-cycle.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 5,
+   "passedTests": 48,
+   "failing": [
+    "✖ R7-B.1 cycle QR7B1-02 (F11): an equipment change at the start of the taper leaves never-performed substitutes out of the event weeks, disclosed (451.3789ms)",
+    "✖ R7-B.1 cycle QR7B1-02: a configuration a rebuild brings into the taper that this program has not performed gives way to a performed alternative (520.5292ms)",
+    "✖ R7-B.1 cycle QR7B1-05: the event-week note of a decision in a program that ends with the post-event week says they start after this program (236.2572ms)",
+    "✖ R7-B.1 cycle QR7B1-05: a race-week session left with no exercise says they start after this program (351.7697ms)"
+   ]
+  },
+  {
+   "id": "M38",
+   "blocker": "QE-R7B-OBS-04",
+   "what": "a stand-in after a SKILL_MISMATCH ignores the direction of the reason",
+   "file": "src/r6-program.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs",
+    "test/r7b1-correction-cycle.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 52,
+   "failing": [
+    "✖ R7-B.1 OBS-04: after a SKILL_MISMATCH a stand-in follows the direction of the reason, or the slot is left out (552.126ms)",
+    "✖ R7-B.1 OBS-04: after a SKILL_MISMATCH a stand-in follows the direction of the reason, or the slot is left out (552.126ms)"
+   ]
+  },
+  {
+   "id": "M39",
+   "blocker": "QE-R7B-OBS-04",
+   "what": "a substitution whose substitute waits for the end of the event weeks is refused",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs",
+    "test/r7b1-correction-cycle.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 3,
+   "passedTests": 50,
+   "failing": [
+    "✖ R7-B.1 cycle QR7B1-05: in a program that ends with the post-event week the option does not promise a week after it (246.9829ms)",
+    "✖ R7-B.1 cycle QR7B1-05: a race-week session left with no exercise says they start after this program (245.6636ms)",
+    "✖ R7-B.1 OBS-04: a program that ends with the post-event week still records the substitution, disclosed (247.8326ms)",
+    "✖ R7-B.1 cycle QR7B1-05: in a program that ends with the post-event week the option does not promise a week after it (246.9829ms)"
+   ]
+  },
+  {
+   "id": "M40",
+   "blocker": "QE-R7B-01 (QE-R7B-R2-04)",
+   "what": "a candidate that cannot take every slot of the replaced exercise is still selected",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs",
+    "test/r7b1-correction-cycle.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 8,
+   "passedTests": 45,
+   "failing": [
+    "✖ R7-B.1 cycle QR7B1-01: the question never says equipment the athlete still has is missing (181.8087ms)",
+    "✖ R7-B.1 cycle QR7B1-02: under a two-week rotation the plan prescribes what the decision selects in every slot of the replaced exercise (217.0165ms)",
+    "✖ R7-B.1 cycle QR7B1-03: naming another exercise is offered when one would take its place, and it does (201.7854ms)",
+    "✖ R7-B.1 cycle QR7B1-03: with nothing that could take its place the question offers only keeping the exercise (190.4074ms)"
+   ]
+  },
+  {
+   "id": "M41",
+   "blocker": "QE-R7B1-01",
+   "what": "a block-choice question wins over the clinical route of the same review",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs",
+    "test/r7b1-correction-cycle.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 2,
+   "passedTests": 51,
+   "failing": [
+    "✖ R7-B.1 cycle QE-R7B1-01: a review reporting pain with an exercise routes to a human whatever block choice it carries, and proposes nothing (265.2334ms)",
+    "✖ R7-B.1 cycle QE-R7B1-01: a review reporting an illness interruption routes to a human whatever block choice it carries, and proposes nothing (223.7741ms)",
+    "✖ R7-B.1 cycle QE-R7B1-01: a review reporting pain with an exercise routes to a human whatever block choice it carries, and proposes nothing (265.2334ms)",
+    "✖ R7-B.1 cycle QE-R7B1-01: a review reporting an illness interruption routes to a human whatever block choice it carries, and proposes nothing (223.7741ms)"
+   ]
+  },
+  {
+   "id": "M42",
+   "blocker": "QE-R7B1-01",
+   "what": "the unrecognised-choices question is returned before the facts and the clinical screen",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs",
+    "test/r7b1-correction-cycle.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 3,
+   "passedTests": 50,
+   "failing": [
+    "✖ R7-B.1 cycle QE-R7B1-01: a review reporting pain with an exercise routes to a human whatever block choice it carries, and proposes nothing (386.3866ms)",
+    "✖ R7-B.1 cycle QE-R7B1-01: a review reporting an illness interruption routes to a human whatever block choice it carries, and proposes nothing (343.4265ms)",
+    "✖ R7-B.1 cycle QE-R7B1-01: an unrecognised choice with a correction asks and still carries the factual re-plan (246.2635ms)",
+    "✖ R7-B.1 cycle QE-R7B1-01: a review reporting pain with an exercise routes to a human whatever block choice it carries, and proposes nothing (386.3866ms)"
+   ]
+  },
+  {
+   "id": "M43",
+   "blocker": "QR7B1-01",
+   "what": "a gap the program already holds is asked about again",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs",
+    "test/r7b1-correction-cycle.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 52,
+   "failing": [
+    "✖ R7-B.1 cycle QR7B1-01: confirming the loss records it with the pull slot left out, disclosed, and nothing harder takes its place through later reviews (207.5019ms)",
+    "✖ R7-B.1 cycle QR7B1-01: confirming the loss records it with the pull slot left out, disclosed, and nothing harder takes its place through later reviews (207.5019ms)"
+   ]
+  },
+  {
+   "id": "M44",
+   "blocker": "QR7B1-01",
+   "what": "confirming the loss with the slot left out has no effect (the question comes back)",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs",
+    "test/r7b1-correction-cycle.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 52,
+   "failing": [
+    "✖ R7-B.1 cycle QR7B1-01: confirming the loss records it with the pull slot left out, disclosed, and nothing harder takes its place through later reviews (126.7327ms)",
+    "✖ R7-B.1 cycle QR7B1-01: confirming the loss records it with the pull slot left out, disclosed, and nothing harder takes its place through later reviews (126.7327ms)"
+   ]
+  },
+  {
+   "id": "M45",
+   "blocker": "QR7B1-01",
+   "what": "the question names equipment the athlete still has as missing",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs",
+    "test/r7b1-correction-cycle.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 52,
+   "failing": [
+    "✖ R7-B.1 cycle QR7B1-01: the question never says equipment the athlete still has is missing (325.5732ms)",
+    "✖ R7-B.1 cycle QR7B1-01: the question never says equipment the athlete still has is missing (325.5732ms)"
+   ]
+  },
+  {
+   "id": "M46",
+   "blocker": "QR7B1-02 (R7B1-SSCTR-F11)",
+   "what": "the event-week rule binds only rows a reason-based substitution placed (R7B1-FREEZE-1)",
+   "file": "src/r6-program.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs",
+    "test/r7b1-correction-cycle.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 4,
+   "passedTests": 49,
+   "failing": [
+    "✖ R7-B.1 cycle QR7B1-02: a taper substitution under a two-week rotation brings no never-performed configuration into the event weeks (W3, glute-bridge) (555.7464ms)",
+    "✖ R7-B.1 cycle QR7B1-02 (F11): an equipment change at the start of the taper leaves never-performed substitutes out of the event weeks, disclosed (464.7055ms)",
+    "✖ R7-B.1 cycle QR7B1-02: a configuration a rebuild brings into the taper that this program has not performed gives way to a performed alternative (500.8015ms)",
+    "✖ R7-B.1 cycle QR7B1-05: the event-week note of a decision in a program that ends with the post-event week says they start after this program (268.6177ms)"
+   ]
+  },
+  {
+   "id": "M47",
+   "blocker": "QR7B1-02 (R7B1-SSCTR-F11)",
+   "what": "a row no substitution placed gets no stand-in (its slot is always left out)",
+   "file": "src/r6-program.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs",
+    "test/r7b1-correction-cycle.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 52,
+   "failing": [
+    "✖ R7-B.1 cycle QR7B1-02: a configuration a rebuild brings into the taper that this program has not performed gives way to a performed alternative (511.2761ms)",
+    "✖ R7-B.1 cycle QR7B1-02: a configuration a rebuild brings into the taper that this program has not performed gives way to a performed alternative (511.2761ms)"
+   ]
+  },
+  {
+   "id": "M48",
+   "blocker": "QR7B1-02",
+   "what": "a row the session time leaves out anyway is recorded as kept out of an event week",
+   "file": "src/r6-program.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs",
+    "test/r7b1-correction-cycle.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 52,
+   "failing": [
+    "✖ R7-B.1 cycle QR7B1-02 (preserved): a row the session time leaves out anyway records no event-week omission (profile E at intake) (12.1617ms)",
+    "✖ R7-B.1 cycle QR7B1-02 (preserved): a row the session time leaves out anyway records no event-week omission (profile E at intake) (12.1617ms)"
+   ]
+  },
+  {
+   "id": "M49",
+   "blocker": "QR7B1-02",
+   "what": "the week of next use is not checked: a rotation slot may take another exercise than the one selected",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs",
+    "test/r7b1-correction-cycle.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 52,
+   "failing": [
+    "✖ R7-B.1 cycle QR7B1-02: under a two-week rotation the plan prescribes what the decision selects in every slot of the replaced exercise (214.5709ms)",
+    "✖ R7-B.1 cycle QR7B1-02: under a two-week rotation the plan prescribes what the decision selects in every slot of the replaced exercise (214.5709ms)"
+   ]
+  },
+  {
+   "id": "M50",
+   "blocker": "QR7B1-02",
+   "what": "a place recorded as kept out of an event week does not count as taken",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs",
+    "test/r7b1-correction-cycle.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 12,
+   "passedTests": 41,
+   "failing": [
+    "✖ R7-B.1 cycle QR7B1-02: a taper substitution under a two-week rotation brings no never-performed configuration into the event weeks (W3, glute-bridge) (562.4372ms)",
+    "✖ R7-B.1 cycle QR7B1-04 (preserved): a taper substitution's own event-week disclosure is not repeated by the decision's general note (403.756ms)",
+    "✖ R7-B.1 cycle QR7B1-05: in a program that ends with the post-event week the option does not promise a week after it (269.8459ms)",
+    "✖ R7-B.1 cycle QR7B1-05: a race-week session left with no exercise says they start after this program (268.3336ms)"
+   ]
+  },
+  {
+   "id": "M51",
+   "blocker": "QR7B1-03",
+   "what": "naming another exercise is offered even when none would take the place",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs",
+    "test/r7b1-correction-cycle.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 52,
+   "failing": [
+    "✖ R7-B.1 cycle QR7B1-03: with nothing that could take its place the question offers only keeping the exercise (180.1876ms)",
+    "✖ R7-B.1 cycle QR7B1-03: with nothing that could take its place the question offers only keeping the exercise (180.1876ms)"
+   ]
+  },
+  {
+   "id": "M52",
+   "blocker": "QR7B1-03",
+   "what": "naming another exercise is never offered",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs",
+    "test/r7b1-correction-cycle.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 52,
+   "failing": [
+    "✖ R7-B.1 cycle QR7B1-03: naming another exercise is offered when one would take its place, and it does (197.8055ms)",
+    "✖ R7-B.1 cycle QR7B1-03: naming another exercise is offered when one would take its place, and it does (197.8055ms)"
+   ]
+  },
+  {
+   "id": "M53",
+   "blocker": "QR7B1-04 (R7B1-SSCTR-F12)",
+   "what": "a decision that newly keeps event-week slots out does not disclose them (only a substitution's own slots are)",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs",
+    "test/r7b1-correction-cycle.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 4,
+   "passedTests": 49,
+   "failing": [
+    "✖ R7-B.1 cycle QR7B1-02 (F11): an equipment change at the start of the taper leaves never-performed substitutes out of the event weeks, disclosed (465.9073ms)",
+    "✖ R7-B.1 cycle QR7B1-02: a configuration a rebuild brings into the taper that this program has not performed gives way to a performed alternative (510.9618ms)",
+    "✖ R7-B.1 cycle QR7B1-04: a substitute planned in the last SPECIFIC week and not done there is left out of the taper, and the weekly review says so (377.3649ms)",
+    "✖ R7-B.1 cycle QR7B1-05: the event-week note of a decision in a program that ends with the post-event week says they start after this program (236.6425ms)"
+   ]
+  },
+  {
+   "id": "M54",
+   "blocker": "QR7B1-04",
+   "what": "the general note repeats the slots a substitution's own disclosure names",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs",
+    "test/r7b1-correction-cycle.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 52,
+   "failing": [
+    "✖ R7-B.1 cycle QR7B1-04 (preserved): a taper substitution's own event-week disclosure is not repeated by the decision's general note (350.3594ms)",
+    "✖ R7-B.1 cycle QR7B1-04 (preserved): a taper substitution's own event-week disclosure is not repeated by the decision's general note (350.3594ms)"
+   ]
+  },
+  {
+   "id": "M55",
+   "blocker": "QR7B1-05",
+   "what": "the option promises a week after the post-event week the program does not have",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs",
+    "test/r7b1-correction-cycle.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 52,
+   "failing": [
+    "✖ R7-B.1 cycle QR7B1-05: in a program that ends with the post-event week the option does not promise a week after it (253.9557ms)",
+    "✖ R7-B.1 cycle QR7B1-05: in a program that ends with the post-event week the option does not promise a week after it (253.9557ms)"
+   ]
+  },
+  {
+   "id": "M56",
+   "blocker": "QR7B1-05",
+   "what": "the rest text promises a week after the post-event week the program does not have",
+   "file": "src/r6-program.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs",
+    "test/r7b1-correction-cycle.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 52,
+   "failing": [
+    "✖ R7-B.1 cycle QR7B1-05: a race-week session left with no exercise says they start after this program (341.8229ms)",
+    "✖ R7-B.1 cycle QR7B1-05: a race-week session left with no exercise says they start after this program (341.8229ms)"
+   ]
+  },
+  {
+   "id": "M57",
+   "blocker": "QR7B1-05",
+   "what": "the event-week note promises a week after the post-event week the program does not have",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs",
+    "test/r7b1-correction-cycle.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 52,
+   "failing": [
+    "✖ R7-B.1 cycle QR7B1-05: the event-week note of a decision in a program that ends with the post-event week says they start after this program (240.7638ms)",
+    "✖ R7-B.1 cycle QR7B1-05: the event-week note of a decision in a program that ends with the post-event week says they start after this program (240.7638ms)"
+   ]
+  }
+ ]
+}
