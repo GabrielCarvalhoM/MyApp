@@ -5,6 +5,8 @@
 // that every status is one of the allowed ones; that every IMPLEMENTED entry names a runtime consumer that exists in src/ and at least one test
 // whose title exists in that test file; and that every DEFERRED entry names an owner and a gate.
 import fs from 'node:fs';
+// --out <path under CoachingCore> names the report written by --write.
+const arg=(k,d)=>{const i=process.argv.indexOf(k);return i>=0&&process.argv[i+1]?process.argv[i+1]:d;};
 const root=new URL('..',import.meta.url),read=p=>fs.readFileSync(new URL(p,root),'utf8');
 const catalog=JSON.parse(read('r7/b0/REPERTOIRE_CATALOG_B0.json')),records=JSON.parse(read('../audits/domain-coaching-r7-b0-2026-10-31/reviews/SSCTR_RECHECK_B0.json'));
 const matrix=JSON.parse(read('r7/b/CONFORMANCE_R7B.json')),entries=new Map(matrix.entries.map(e=>[e.id,e])),problems=[];
@@ -45,6 +47,6 @@ for(const id of expected){
 for(const id of entries.keys())if(!expected.includes(id))problems.push('unexpected entry: '+id);
 const counts=Object.fromEntries(STATUS.map(s=>[s,matrix.entries.filter(e=>e.status===s).length]));
 const report={check:'R7B-CONFORMANCE',catalogRevision:catalog.revision,expected:expected.length,entries:matrix.entries.length,counts,conditions:expected.filter(x=>x.startsWith('SSCTR:')).length,problems,result:problems.length?'FAIL':'PASS'};
-if(process.argv.includes('--write'))fs.writeFileSync(new URL('r7/b/CONFORMANCE_R7B.report.json',root),JSON.stringify(report,null,1)+'\n');
+if(process.argv.includes('--write'))fs.writeFileSync(new URL(arg('--out','r7/b/CONFORMANCE_R7B.report.json'),root),JSON.stringify(report,null,1)+'\n');
 console.log(JSON.stringify({...report,problems:problems.slice(0,40)},null,1));
 process.exitCode=problems.length?1:0;

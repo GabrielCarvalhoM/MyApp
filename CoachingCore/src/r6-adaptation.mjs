@@ -1,6 +1,6 @@
 import {clone,freeze,hash} from './value.mjs';
 import {r6Authority,allows} from './r6-authority.mjs';
-import {validProgram,programHash,skeletonOf,advanceRun,advanceStrength,strengthAtBreak,historicalStrength,historicalRun,loggedLoadDecision,adoptionBasis,asEstablishment,heldKnownLoad,resolveExercisePrescription,dayPhaseOf,startStrengthReturn,eventCompletionItem,validateWeeks,peakOf,contextOf,arrangementCandidates,arrangementDisclosures,strengthTemplates,planPhases,buildGoalModel,blocksFrom,goalDose,runTarget,runMinutesOf,plannedOf,plannedStrengthOf,anchoredStart,projectedStart,WEEK_START,EVENT_PHASES,DEVELOPMENT,BLOCK_INTENT} from './r6-program.mjs';
+import {validProgram,programHash,skeletonOf,noviceDensityApplies,slotsInUse,advanceRun,advanceStrength,strengthAtBreak,historicalStrength,historicalRun,loggedLoadDecision,adoptionBasis,asEstablishment,heldKnownLoad,resolveExercisePrescription,dayPhaseOf,startStrengthReturn,eventCompletionItem,validateWeeks,peakOf,contextOf,arrangementCandidates,arrangementDisclosures,strengthTemplates,planPhases,buildGoalModel,blocksFrom,goalDose,runTarget,runMinutesOf,plannedOf,plannedStrengthOf,anchoredStart,projectedStart,WEEK_START,EVENT_PHASES,DEVELOPMENT,BLOCK_INTENT} from './r6-program.mjs';
 import {chooseBalanced,interferenceCosts,SEVERITY} from './r6-balanced.mjs';
 import {substitutesFor,catalogueEntry,CATALOGUE as CATALOG_CONFIGURATIONS} from './r6-catalogue.mjs';
 import {exerciseRow,fitStrengthSession,strengthPrescription,easyPrescription,validateR6Prescription} from './r6-prescription.mjs';
@@ -319,6 +319,11 @@ export function evaluateProgram(program,review,options={}){
  if(review.observations!==undefined&&review.observations!==null&&!Array.isArray(review.observations))return finish('HOLD','HOLD','Observations must be a list of execution reports',{errors:['observations.array']});
  if(review.actualLedger!==undefined&&review.actualLedger!==null&&!Array.isArray(review.actualLedger))return finish('HOLD','HOLD','The completed-work ledger must be a list',{errors:['actualLedger.array']});
  if(review.loadConfirmations!==undefined&&review.loadConfirmations!==null&&!Array.isArray(review.loadConfirmations))return finish('HOLD','HOLD','Load confirmations must be a list',{errors:['loadConfirmations.array']});
+ // Block choices (QE-R7B-08): a list of ladder steps, main-lift changes with their reason, or keeping or declining the harder session; anything
+ // else is asked. They are applied only by the weekly review of a complete week (the block-boundary step); never silently dropped.
+ if(review.choices!==undefined&&review.choices!==null&&!Array.isArray(review.choices))return finish('HOLD','HOLD','Choices must be a list',{errors:['choices.array']});
+ const blockChoices=Array.isArray(review.choices)?review.choices:[],knownChoice=c=>!!c&&typeof c==='object'&&(['LADDER_STEP','MAIN_CHANGE'].includes(c.type)||c.offer==='RUN_QUALITY_GRADUATION'&&['ACCEPT','DECLINE'].includes(String(c.decision).toUpperCase()));
+ if(blockChoices.some(c=>!knownChoice(c)))return finish('ASK','ASK','Some choices are not recognised: a block choice is a ladder step, a main-lift change with its reason, or keeping or declining the harder session',{missingInputs:['choices']});
  const consent=(review.learningConsent??program.learningConsent)===true;
  let model=review.athleteModel;
  if(model!==undefined&&model!==null&&(typeof model!=='object'||!validateLearningModel(model)||model.athleteId!==program.athleteId||Date.parse(model.asOf)>Date.parse(asOf)))return finish('HOLD','HOLD','Athlete model integrity, ownership or clock is invalid');
@@ -346,10 +351,12 @@ export function evaluateProgram(program,review,options={}){
   if(Object.keys(confirmations).length)ctx.program={...program,weeks:program.weeks.map((x,i)=>i!==w?x:{...x,adaptations:[...(x.adaptations??[]),adaptation(ctx,'LOAD_CONFIRMATIONS',{confirmations})]})};
   // The canonical factual state comes before any decision (residual authority closure, QE-R7ADA-01): evidence that moved this week's PlanningView
   // re-plans the sessions still ahead first, and the handler, whatever its kind, decides on that program.
-  const factual=factualReplan(ctx);
+  const factual0=factualReplan(ctx),factual=factual0?.ask?factual0:graduationWithdrawal(factual0?.ctx??ctx)??factual0;
   // Training before the latest interruption that its return did not read is confirmed first (R7-A final I6); a return report decides it itself.
   const decide=c=>(kind!=='RETURN_AFTER_PAUSE'&&staleReturn(c))||(HANDLERS[kind]??weeklyReview)(c);
-  const decision=factual?.ask??withFactualReplan(factual,decide(factual?.ctx??ctx));
+  if(blockChoices.length&&(kind!=='WEEKLY_REVIEW'||ev.pending))return finish('ASK','ASK','Block choices are made in the weekly review of a block\'s last week, once its sessions are complete',{...out,missingInputs:['choices']});
+  const decision0=factual?.ask??withFactualReplan(factual,decide(factual?.ctx??ctx));
+  const decision=blockChoices.length&&!out.choicesHandled&&decision0.action!=='ASK'&&decision0.status!=='CLINICAL_HUMAN_REQUIRED'?{action:'ASK',reason:'The block choices could not be applied in this review; they are made at the block boundary review',missingInputs:['choices']}:decision0;
   // Load questions follow the decision's own gates, so they never contradict the adoption the transition made (SSCTR D44).
   out.loadQuestions=loggedLoadQuestions(program,sk,w,ev,{gates:decision.gates??null,confirmations:confirmationsOf(ctx),base:ctx.base});
   if(decision.proposal){
@@ -450,7 +457,7 @@ const choicesOf=review=>(Array.isArray(review?.choices)?review.choices:[]).filte
 function blockBoundary(ctx,gates){
  const {program,sk,w,review}=ctx,rep=sk.repertoire,P=program.phases.phases,next=P[w+1],out={offers:[],disclosures:[]};
  const boundary=next!==undefined&&program.blocks.some(b=>DEV_FAMILIES.includes(b.family)&&b.endWeekExclusive===w+1);
- const choices=choicesOf(review);
+ const choices=choicesOf(review);ctx.out.choicesHandled=true;
  if(!boundary){if(choices.some(c=>['LADDER_STEP','MAIN_CHANGE'].includes(c.type)))return {ask:{action:'ASK',reason:'Exercise changes for a block are made at a block boundary review; this week does not end a block',missingInputs:['choices']}};return out;}
  const c=program.canonical,goal=program.goal,cap=program.capability,base=ctx.base,returning=Object.values(base?.strength?.exercises??{}).some(e=>Number.isInteger(e.returnStep))||base?.run?.mode==='RETURN';
  const nextDeferred=ROTATION_DEFERRED_PHASES.includes(next)||!DEV_FAMILIES.includes(next)&&next!=='CONSOLIDATION';
@@ -471,21 +478,27 @@ function blockBoundary(ctx,gates){
  const inUse=new Map();for(const s of program.weeks[w].sessions)for(const e of s.prescription?.exercises??[])if(e.role!=='PRACTICE')inUse.set(e.id,e.role);
  const pref=c.athlete.strengthPreferences.rotation,available=new Set([...(sk.equipmentForDate?.(program.weeks[w+1]?.startDate??program.weeks[w].startDate)??c.athlete.equipment),'BODYWEIGHT']);
  const horizontalPushKept=to=>[...inUse].some(([id])=>configurationOf(id)?.subpattern==='HORIZONTAL_PUSH'&&id!==to);
- const stepOk=(x,y,role)=>{const e=configurationOf(y);return !!e&&admitted(e,rep)&&e.roles.includes(role)&&e.equipment.every(q=>available.has(q))&&!inUse.has(y)&&ladderNext(x).includes(y)&&(!ladderChangesSubpattern(x,y)||configurationOf(x)?.pattern!=='PUSH'||horizontalPushKept(x));};
+ // A configuration set aside for a stated reason is never offered or chosen again (QE-R7B-07).
+ const asideIds=new Set((c.athlete.strengthSelections??[]).filter(x=>x.setAside!==false&&['SKILL_MISMATCH','NONCLINICAL_DISCOMFORT_OR_PREFERENCE'].includes(x.reason)).map(x=>x.from));
+ const stepOk=(x,y,role)=>{const e=configurationOf(y);return !!e&&!asideIds.has(y)&&admitted(e,rep)&&e.roles.includes(role)&&e.equipment.every(q=>available.has(q))&&!inUse.has(y)&&ladderNext(x).includes(y)&&(!ladderChangesSubpattern(x,y)||configurationOf(x)?.pattern!=='PUSH'||horizontalPushKept(x));};
  const ladderOpen=allowsCandidate(rep,'B0-C07')&&!nextDeferred&&!returning;
  if(ladderOpen&&pref!=='FIXED')for(const [x,role] of inUse)if(['ADVANCE','EARNED'].includes(gates[x]))for(const y of ladderNext(x))if(stepOk(x,y,role))out.offers.push({id:'LADDER_STEP',type:'LADDER_STEP',from:x,to:y,role,detail:`Next step on your skill ladder: ${y} instead of ${x}, from next week; it starts with effort-guided establishment from the lightest load (the empty bar for barbell lifts), technique first; you can always step back`,basis:'B0-C07'});
  const MAIN_REASONS=['DELIBERATE_BLOCK_TRANSITION','EQUIPMENT_CHANGE','ATHLETE_PREFERENCE'],PURPOSES=['PHASE','GOAL_SPECIFICITY','EQUIPMENT','TECHNIQUE'];
  const familiar=new Set((c.athlete.knownExercises??[]).filter(k=>k.familiar!==false).map(k=>k.id)),ladder=new Set([...(c.athlete.ladderReached??[])]),maxSkill=['NONE','NOVICE'].includes(c.athlete.strengthExperience)?0:1;
  const skillOk=e=>familiar.has(e.id)||ladder.has(e.id)||skillRank(e.skill)<=maxSkill;
+ // One change per exercise per boundary, whatever the order of the choices (QE-R7B-06): two changes of one exercise are asked, none applied.
+ const count=new Map();for(const ch of choices)if(['LADDER_STEP','MAIN_CHANGE'].includes(ch.type))count.set(ch.from,(count.get(ch.from)??0)+1);
+ const twice=[...count].filter(([,n])=>n>1).map(([id])=>id);
+ if(twice.length)return {ask:{action:'ASK',reason:'One change per exercise at a block boundary: choose either a ladder step or a main-lift change for '+twice.join(', '),missingInputs:['choices'],invalidChoices:choices.filter(ch=>twice.includes(ch.from)).map(choice=>({choice,why:'More than one change of the same exercise'}))}};
  for(const ch of choices){
   if(ch.type==='LADDER_STEP'){
    const role=inUse.get(ch.from);
    if(selections.some(x=>x.from===ch.from)){invalid.push({choice:ch,why:'One ladder step per exercise per block boundary'});continue;}
    if(!ladderOpen||!role||!['ADVANCE','EARNED'].includes(gates[ch.from])||!stepOk(ch.from,ch.to,role)){invalid.push({choice:ch,why:!ladderOpen?'Ladder steps are not offered in this phase or during a return':!role?'The exercise is not in use':!['ADVANCE','EARNED'].includes(gates[ch.from])?'The exercise did not end the block progressing':'Not the next step on its ladder, or not available'});continue;}
-   selections.push({from:ch.from,to:ch.to,reason:'SKILL_PROGRESSION',fromWeek:w+1,decidedBy:review.event.id});reached.push(ch.to);
+   selections.push({from:ch.from,to:ch.to,reason:'SKILL_PROGRESSION',fromWeek:w+1,decidedBy:review.event.id,slots:slotsInUse(ctx.skw,w,ctx.base.strength,ch.from)});reached.push(ch.to);
   }else if(ch.type==='MAIN_CHANGE'){
    const from=configurationOf(ch.from),to=configurationOf(ch.to),reason=String(ch.reason??'').toUpperCase(),purpose=ch.purpose==null?null:String(ch.purpose).toUpperCase();
-   const why=!allowsCandidate(rep,'B0-C06')?'MAIN changes at a block boundary are not available':nextDeferred||returning?'No MAIN change in this phase or during a return':inUse.get(ch.from)!=='MAIN'?'The exercise is not a main lift in use':!to||to.id===from?.id||to.pattern!==from.pattern||!to.primary.some(m=>from.primary.includes(m))||!to.roles.includes('MAIN')?'The new main lift must fill the same slot pattern and share a primary muscle':!admitted(to,rep)||!skillOk(to)||!to.equipment.every(q=>available.has(q))?'The new main lift is not admissible (skill or equipment)':!MAIN_REASONS.includes(reason)?'A main lift changes only with a recorded reason':reason==='DELIBERATE_BLOCK_TRANSITION'&&!PURPOSES.includes(purpose)?'A deliberate block transition states its training purpose (phase, goal specificity, equipment or technique), never variety alone':null;
+   const why=!allowsCandidate(rep,'B0-C06')?'MAIN changes at a block boundary are not available':nextDeferred||returning?'No MAIN change in this phase or during a return':inUse.get(ch.from)!=='MAIN'?'The exercise is not a main lift in use':!to||to.id===from?.id||to.pattern!==from.pattern||!to.primary.some(m=>from.primary.includes(m))||!to.roles.includes('MAIN')?'The new main lift must fill the same slot pattern and share a primary muscle':asideIds.has(to.id)?'An exercise set aside for a stated reason is not chosen again':!admitted(to,rep)||!skillOk(to)||!to.equipment.every(q=>available.has(q))?'The new main lift is not admissible (skill or equipment)':!MAIN_REASONS.includes(reason)?'A main lift changes only with a recorded reason':reason==='DELIBERATE_BLOCK_TRANSITION'&&!PURPOSES.includes(purpose)?'A deliberate block transition states its training purpose (phase, goal specificity, equipment or technique), never variety alone':null;
    if(why){invalid.push({choice:ch,why});continue;}
    selections.push({from:from.id,to:to.id,reason,purpose,fromWeek:w+1,decidedBy:review.event.id});
    if(goal.strength.kind==='STRENGTH')notes.push({id:'MAIN_CHANGE_LOAD_RESTARTS',blocking:false,informational:true,detail:`${to.id} replaces ${from.id}: its load starts again by effort, so progress is shown by block and by effort, not by the old lift's numbers`,basis:'B0-C06'});
@@ -524,12 +537,20 @@ function exerciseSubstitution(ctx){
  const role=rows[0].role,c=program.canonical,available=new Set([...(c.athlete.equipment??[]),'BODYWEIGHT']),setAside=new Set([...(c.athlete.strengthSelections??[]).filter(x=>x.setAside).map(x=>x.from),X.id]);
  const familiar=new Set((c.athlete.knownExercises??[]).filter(k=>k.familiar!==false).map(k=>k.id)),ladder=new Set(c.athlete.ladderReached??[]),maxSkill=['NONE','NOVICE'].includes(c.athlete.strengthExperience)?0:1;
  const fits=e=>!!e&&admitted(e,rep)&&e.pattern===X.pattern&&e.roles.includes(role)&&e.equipment.every(q=>available.has(q))&&!setAside.has(e.id)&&(familiar.has(e.id)||ladder.has(e.id)||skillRank(e.skill)<=maxSkill);
+ // A named target that is not in the repertoire is asked, never replaced by an automatic pick (QE-R7B-08).
+ if(sub.to!==undefined&&sub.to!==null&&!configurationOf(sub.to))return {action:'ASK',reason:String(sub.to)+' is not an exercise of the repertoire; name another exercise of the same pattern, or leave the choice to the plan',missingInputs:['substitution.to']};
  let to=sub.to?configurationOf(sub.to):null;if(to&&!fits(to))return {action:'ASK',reason:sub.to+' cannot replace '+X.id+' here (pattern, role, skill or equipment)',missingInputs:['substitution.to']};
  if(!to&&reason==='SKILL_MISMATCH')to=ladderPrevious(X.id).map(configurationOf).find(fits)??CONFIGURATIONS_SAME(X).filter(fits).filter(e=>skillRank(e.skill)<skillRank(X.skill)||e.kind!==X.kind).sort((a,b)=>skillRank(a.skill)-skillRank(b.skill)||(a.id<b.id?-1:1))[0]??null;
  if(!to&&reason!=='SKILL_MISMATCH')to=substitutesFor(X.id,{equipment:[...available],experience:c.athlete.strengthExperience,known:c.athlete.knownExercises.filter(k=>k.familiar!==false),role,auth:rep}).map(e=>configurationOf(e.id)).find(fits)??null;
  if(!to)return {action:'ASK',reason:'No admissible alternative of the same pattern fits your equipment and skill; options: add equipment, or keep '+X.id,missingInputs:['substitution.to'],disclosures:[{id:'NO_ADMISSIBLE_ALTERNATIVE',blocking:false,pattern:X.pattern,options:['Add equipment','Keep '+X.id]}]};
- const selection={from:X.id,to:to.id,reason,fromWeek:w,setAside:true,decidedBy:review.event.id,...(sub.text?{statedReason:String(sub.text).slice(0,200)}:{})};
+ // The slots where X is next in use (rotation included) take the new configuration from this week (QE-R7B-01).
+ const kX=program.weeks.findIndex((x,i)=>i>=w&&x.sessions.some(s=>ctx.ahead(s)&&(s.prescription?.exercises??[]).some(e=>e.id===X.id))),slots=kX<0?[]:slotsInUse(ctx.sk.at(kX)??ctx.sk,kX,program.stateTrace[kX]?.strength??ctx.base.strength,X.id);
+ const selection={from:X.id,to:to.id,reason,fromWeek:w,setAside:true,decidedBy:review.event.id,slots,...(sub.text?{statedReason:String(sub.text).slice(0,200)}:{})};
  const r=rebuild(ctx,{canonical:x=>({...x,athlete:{...x.athlete,strengthSelections:[...(x.athlete.strengthSelections??[]),selection]}}),fromWeek:w,reason:X.id+' is replaced by '+to.id+' ('+(reason==='SKILL_MISMATCH'?'cannot be done with steady technique':'a nonclinical preference')+'); the new exercise starts with effort-guided establishment, nothing is converted',action:'SUBSTITUTE_FOR_REASON'});
+ // The plan prescribes what the decision selects (QE-R7B-01): the replaced exercise leaves every session ahead and the selected one takes its
+ // place; otherwise nothing is proposed and the athlete is asked.
+ if(r.proposal){const later=r.proposal.weeks.slice(w).flatMap(x=>x.sessions).filter(s=>ctx.ahead(s)&&s.status!=='SKIPPED'&&s.prescription?.modality==='STRENGTH'),has=id=>later.some(s=>s.prescription.exercises.some(e=>e.id===id));
+  if(has(X.id)||!has(to.id))return {action:'ASK',reason:to.id+' cannot take the place of '+X.id+' in the sessions ahead; name another exercise of the same pattern',missingInputs:['substitution.to']};}
  return r.proposal?{...r,substitutions:[{exerciseId:X.id,selected:to.id,reason,requiresEstablishment:true,stimulusChange:X.loading==='EXTERNAL'&&to.loading!=='EXTERNAL'?'A bodyweight or band exercise in place of a loaded one is a different stimulus, not an equivalent':null}]}:r;
 }
 const CONFIGURATIONS_SAME=X=>CATALOG_CONFIGURATIONS.filter(e=>e.pattern===X.pattern&&e.id!==X.id);
@@ -583,7 +604,9 @@ function contextAfter(ctx,base,start,{canonical:change=null,goals=false,athleteS
  // is rebuilt with them (B0-C08).
  const knownOnly=!allows(authority,'R6-LOAD-ESTABLISHMENT'),established=Object.keys((ctx.base??program.stateTrace[ctx.w])?.strength?.exercises??{}),rep=authority.repertoire;
  const templates=strengthTemplates(canonical,goal,{knownOnly,auth:rep,established});
- const noviceTemplates=base.noviceTemplates?strengthTemplates(canonical,goal,{knownOnly,auth:rep,established,capped:true}).map(t=>({...t,densityCapped:true})):null;
+ // The novice variant exists whenever the new context can be capped (B0-C08): also when a change raises the strength days above two before the
+ // first block boundary (QE-R7B-05); whether a week is capped is the state's (densityCappedAt).
+ const noviceTemplates=base.noviceTemplates||noviceDensityApplies({c:canonical,cap,repertoire:rep})?strengthTemplates(canonical,goal,{knownOnly,auth:rep,established,capped:true}).map(t=>({...t,densityCapped:true})):null;
  const view={...program,canonical,goal,phases:mergedPhases,blocks,templates,noviceTemplates,arrangementSessions:{}};delete view.contextBefore;
  const sk=skeletonOf(view,authority),severityAuthority=allows(authority,'R6-HYBRID-ARRANGEMENT'),contexts=[...new Set(mergedPhases.phases.slice(start).map((p,i)=>contextOf(mergedPhases.phases,start+i)))],arrangementSessions={};
  const variants=contexts.flatMap(context=>[[context,false],...(noviceTemplates&&sk.noviceTemplates?[[context,true]]:[])]),cmpI11=severityAuthority&&allowsCandidate(rep,'B0-C11');
@@ -920,7 +943,9 @@ function planningBase(ctx){
  if(modes.length)run.modeHistory=modes;else delete run.modeHistory;
  const exercises={};
  for(const [id,h] of Object.entries(V.strength.exercises)){const v=resolveExercisePrescription(h);if(v)exercises[id]=v;}
- return {run,strength:{...clone(P.strength),exercises}};
+ // The novice density cap is evidence-gated (B0-C08): a decision reads it from the reducer, never from the projection's assumed release (QE-R7B-03).
+ const strength={...clone(P.strength),exercises};if(V.strength.density!==undefined)strength.density=clone(V.strength.density);else delete strength.density;
+ return {run,strength};
 }
 /**
  * Whether this review withdrew or changed evidence the plan may have been built on, and so moved this week's PlanningView (decision authority
@@ -958,16 +983,38 @@ function factualReplan(ctx){
 }
 const FACTUAL_REPLAN='Evidence about an earlier week changed what this week starts from; the sessions still ahead are planned again from it, completed sessions stay as they were';
 /**
+ * B0-C01 with R7-A A5 (QE-R7B-04): a graduation stands only while its qualifying weeks still qualify on the canonical record, judged as the
+ * boundary review judged them (its gates' windows at its clock) with the facts as they now stand. When a correction, a retraction or a quarantine
+ * disqualifies one, the same facts known at the boundary would not have graduated: the graduation leaves the contexts from this week (or from
+ * its first week, if later), the threshold ladder leaves the sessions ahead, executed sessions stay history, and a later block review can
+ * graduate again from new executed weeks. Part of the canonical factual state, before any decision (as factualReplan). Null when it stands.
+ */
+function graduationWithdrawal(c){
+ const grad=c.program.canonical.athlete.runGraduation;
+ if(!grad||!Array.isArray(grad.qualifyingWeeks)||!grad.qualifyingWeeks.length)return null;
+ const judged={...c,asOf:typeof grad.asOf==='string'?grad.asOf:c.asOf},failed=grad.qualifyingWeeks.map(q=>graduationWeek(judged,q.week)).filter(x=>!x.ok);
+ if(!failed.length)return null;
+ const from=Math.max(c.w,grad.fromWeek),weeks=failed.map(({week,why})=>({week,why}));
+ const reason='A corrected report of week '+weeks.map(x=>x.week).join(' and ')+' no longer meets the graduation evidence: the harder session leaves the plan and easy running continues';
+ const entry={...clone(grad),withdrawnFrom:from,withdrawnBy:c.review.event.id,withdrawnAt:c.asOf,failed:weeks,basis:'B0-C01; R7-A A5'};
+ const r=rebuild(c,{canonical:x=>{const {runGraduation,...athlete}=x.athlete;return {...x,athlete:{...athlete,runGraduationWithdrawn:[...(x.athlete.runGraduationWithdrawn??[]),entry]}};},fromWeek:c.w,reason,action:'REPLAN_FROM_EVIDENCE'});
+ if(!r.proposal)return {ask:r};
+ const own={...c,program:r.proposal,evidence:undefined};own.base=planningBase(own);
+ return {proposal:r.proposal,changed:changedSessions(c.program,r.proposal),ctx:own,horizons:r.horizons,
+  counterfactuals:[counter('KEEP','KEEP',false,'Keeping the harder session would plan it on evidence that no longer stands'),counter('REPLAN_FROM_EVIDENCE','REPLAN_FROM_EVIDENCE',true,reason,{selected:true})],
+  disclosures:[{id:'RUN_QUALITY_GRADUATION_WITHDRAWN',blocking:false,informational:true,weeks,fromWeek:from,detail:reason+'; it can be offered again at a later block review from new executed weeks',basis:'B0-C01'}]};
+}
+/**
  * A decision taken on the factually re-planned program (residual authority closure): a handler's own proposal already carries the re-plan; a decision
  * that changes nothing else proposes the re-plan (REPLAN_FROM_EVIDENCE); a question or a refusal is still asked or refused, with the re-plan proposed,
  * because the facts it follows stand. A clinical route proposes nothing (no dependent prescription).
  */
 function withFactualReplan(f,d){
  if(!f||d.status==='CLINICAL_HUMAN_REQUIRED')return d;
- const note=FACTUAL_REPLAN.charAt(0).toLowerCase()+FACTUAL_REPLAN.slice(1);
- if(d.action==='KEEP')return {...d,action:'REPLAN_FROM_EVIDENCE',instantiationOnly:false,proposal:d.proposal??f.proposal,reason:FACTUAL_REPLAN+(d.reason?'; '+d.reason:''),horizons:d.proposal?d.horizons:f.horizons,counterfactuals:[...f.counterfactuals,...(d.counterfactuals??[]).filter(c=>c.id!=='KEEP')]};
- if(d.proposal)return {...d,instantiationOnly:false,reason:d.reason+'; '+note};
- return {...d,status:d.status??(d.action==='ASK'?'ASK':undefined),proposal:f.proposal,reason:d.reason+'; meanwhile '+note,horizons:d.horizons??f.horizons};
+ const note=FACTUAL_REPLAN.charAt(0).toLowerCase()+FACTUAL_REPLAN.slice(1),disclosures=[...(f.disclosures??[]),...(d.disclosures??[])],x=disclosures.length?{disclosures}:{};
+ if(d.action==='KEEP')return {...d,...x,action:'REPLAN_FROM_EVIDENCE',instantiationOnly:false,proposal:d.proposal??f.proposal,reason:FACTUAL_REPLAN+(d.reason?'; '+d.reason:''),horizons:d.proposal?d.horizons:f.horizons,counterfactuals:[...f.counterfactuals,...(d.counterfactuals??[]).filter(c=>c.id!=='KEEP')]};
+ if(d.proposal)return {...d,...x,instantiationOnly:false,reason:d.reason+'; '+note};
+ return {...d,...x,status:d.status??(d.action==='ASK'?'ASK':undefined),proposal:f.proposal,reason:d.reason+'; meanwhile '+note,horizons:d.horizons??f.horizons};
 }
 /**
  * HistoricalState (Founder §1, §3, §13): what is known to have happened by a cut, read from canonical evidence only. Public and read-only: it

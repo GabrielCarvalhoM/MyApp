@@ -1,5 +1,5 @@
 {
- "revision": "R7B-CONFORMANCE-1",
+ "revision": "R7B-CONFORMANCE-2",
  "catalogRevision": "R7B0-CATALOG-2",
  "catalogSha256": "ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9",
  "records": "audits/domain-coaching-r7-b0-2026-10-31/reviews/SSCTR_RECHECK_B0.json",
@@ -87,7 +87,11 @@
    ],
    "tests": [
     "test/r7b-running.test.mjs::B0-C01 negatives",
-    "test/r7b-running.test.mjs::B0-FIDELITY M1–M3 regression guard"
+    "test/r7b-running.test.mjs::B0-FIDELITY M1–M3 regression guard",
+    "test/r7b-review-fixes.test.mjs::SSCTR R7B-F1"
+   ],
+   "fixCycle": [
+    "SSCTR R7B-F1 (DECL-04 revised): after a restart a graduated athlete waits qualityRequiresEstablishedEasyWeeks executed easy weeks, like EASY_CURRENT"
    ]
   },
   {
@@ -107,11 +111,16 @@
    "status": "IMPLEMENTED",
    "consumers": [
     "src/r6-adaptation.mjs#graduationWeek",
-    "src/r6-adaptation.mjs#runningMinutes"
+    "src/r6-adaptation.mjs#runningMinutes",
+    "src/r6-adaptation.mjs#graduationWithdrawal"
    ],
    "tests": [
     "test/r7b-running.test.mjs::B0-C01 graduation: two complete",
-    "test/r7b-running.test.mjs::B0-C01 negatives"
+    "test/r7b-running.test.mjs::B0-C01 negatives",
+    "test/r7b-review-fixes.test.mjs::QE-R7B-04: graduation is withdrawn"
+   ],
+   "fixCycle": [
+    "QE-R7B-04: a graduation whose qualifying week a correction disqualifies is withdrawn (A5); a later block review can graduate again"
    ]
   },
   {
@@ -135,9 +144,13 @@
     "src/r6-program.mjs#distributeRun"
    ],
    "tests": [
-    "test/r7b-running.test.mjs::B0-C01 graduation: two complete"
+    "test/r7b-running.test.mjs::B0-C01 graduation: two complete",
+    "test/r7b-review-fixes.test.mjs::SSCTR R7B-F3"
    ],
-   "note": "Easy and long are held at what was executed (released is not executed). Declared R7B-DECL-01: the planned weekly total still rises because the threshold session is longer than the easy run it replaces."
+   "note": "Easy and long are held at what was executed (released is not executed). Declared R7B-DECL-01: the planned weekly total still rises because the threshold session is longer than the easy run it replaces.",
+   "fixCycle": [
+    "SSCTR R7B-F3 a: the strides keep last week's count in the introduction week"
+   ]
   },
   {
    "id": "SSCTR:B0-C01#c6",
@@ -169,7 +182,11 @@
    ],
    "tests": [
     "test/r7b-running.test.mjs::B0-C01 c8: strides stay optional",
-    "test/r7b-running.test.mjs::B0-C01 graduation: two complete"
+    "test/r7b-running.test.mjs::B0-C01 graduation: two complete",
+    "test/r7b-review-fixes.test.mjs::SSCTR R7B-F3"
+   ],
+   "fixCycle": [
+    "SSCTR R7B-F3 b: race-day warm-up strides are optional where strides are optional"
    ]
   },
   {
@@ -200,11 +217,16 @@
    "consumers": [
     "src/r7b-repertoire.mjs#familiarRunCategory",
     "src/r7b-repertoire.mjs#familiarBoutsInputs",
-    "src/r6-program.mjs#repertoireNegotiation"
+    "src/r6-program.mjs#repertoireNegotiation",
+    "src/r6-program.mjs#familiarCurrentThrough"
    ],
    "tests": [
     "test/r7b-running.test.mjs::B0-C02: a fully specified",
-    "test/r7b-running.test.mjs::B0-C10: later-gate familiar"
+    "test/r7b-running.test.mjs::B0-C10: later-gate familiar",
+    "test/r7b-review-fixes.test.mjs::SSCTR R7B-F2"
+   ],
+   "fixCycle": [
+    "SSCTR R7B-F2: the task is current through policy:operational.return.moderateMaxDays after its last performance, checked at every prescription date"
    ]
   },
   {
@@ -231,9 +253,13 @@
    ],
    "tests": [
     "test/r7b-running.test.mjs::B0-C02: a fully specified",
-    "test/r7b-running.test.mjs::B0-C02 c3"
+    "test/r7b-running.test.mjs::B0-C02 c3",
+    "test/r7b-review-fixes.test.mjs::SSCTR R7B-F5"
    ],
-   "note": "Held exactly; repeated adverse responses withdraw the bouts (threshold ladder from step 0). The P07 fewer-repetition path is not used: it needs a last-repetition degradation record the observation contract does not carry (owner Product/Data)."
+   "note": "Held exactly; repeated adverse responses withdraw the bouts (threshold ladder from step 0). The P07 fewer-repetition path is not used: it needs a last-repetition degradation record the observation contract does not carry (owner Product/Data).",
+   "fixCycle": [
+    "SSCTR R7B-F5: the threshold session that replaces paused bouts says it is a different, lower stimulus"
+   ]
   },
   {
    "id": "SSCTR:B0-C02#c4",
@@ -258,7 +284,12 @@
     "src/r6-program.mjs#familiarBoutsTask"
    ],
    "tests": [
-    "test/r7b-running.test.mjs::B0-C02 c3"
+    "test/r7b-running.test.mjs::B0-C02 c3",
+    "test/r7b-review-fixes.test.mjs::SSCTR R7B-F2",
+    "test/r7b-review-fixes.test.mjs::SSCTR R7B-F5"
+   ],
+   "fixCycle": [
+    "SSCTR R7B-F2: the bouts lapse once the task stops being current (also after an event)"
    ]
   },
   {
@@ -488,7 +519,13 @@
    ],
    "tests": [
     "test/r7b-strength.test.mjs::B0-C05: goal-context accessories"
-   ]
+   ],
+   "deviation": {
+    "finding": "SSCTR R7B-F7",
+    "text": "The calf alternation is chosen before the time fit: 570 of 10,526 weeks with calf work keep only a bent-knee exposure (4 strength days, 25-45 min sessions).",
+    "owner": "Next runtime mission (R7-C or a runtime follow-up): a week-level calf pass after the fit",
+    "status": "RECORDED_DEVIATION"
+   }
   },
   {
    "id": "SSCTR:B0-C05#c3",
@@ -546,10 +583,15 @@
    "status": "IMPLEMENTED",
    "consumers": [
     "src/r7b-repertoire.mjs#admissibleAlternative",
-    "src/r6-program.mjs#rotationFor"
+    "src/r6-program.mjs#rotationFor",
+    "src/r7b-repertoire.mjs#ladderBelow"
    ],
    "tests": [
-    "test/r7b-strength.test.mjs::DR-134 / B0-C06 rotation"
+    "test/r7b-strength.test.mjs::DR-134 / B0-C06 rotation",
+    "test/r7b-review-fixes.test.mjs::Q-R7B-01 / QE-R7B-02: an accepted ladder step"
+   ],
+   "fixCycle": [
+    "Q-R7B-01: configurations below a reached rung on its chain are never calendar alternatives"
    ]
   },
   {
@@ -586,7 +628,11 @@
     "src/r6-program.mjs#rotationFor"
    ],
    "tests": [
-    "test/r7b-strength.test.mjs::DR-134 / B0-C06 rotation"
+    "test/r7b-strength.test.mjs::DR-134 / B0-C06 rotation",
+    "test/r7b-review-fixes.test.mjs::Q-R7B-01 / QE-R7B-02: an accepted ladder step"
+   ],
+   "fixCycle": [
+    "QE-R7B-02: a configuration a decision put in a slot holds from its first week; the cadence counts from there"
    ]
   },
   {
@@ -630,10 +676,17 @@
    "rule": "Reason-based substitution keeps precedence over cadence after the clinical screen; ambiguous reports are ASK",
    "status": "IMPLEMENTED",
    "consumers": [
-    "src/r6-adaptation.mjs#exerciseSubstitution"
+    "src/r6-adaptation.mjs#exerciseSubstitution",
+    "src/r7b-repertoire.mjs#buildTemplates",
+    "src/r6-program.mjs#slotsInUse"
    ],
    "tests": [
-    "test/r7b-strength.test.mjs::DR-134 reason-based substitution"
+    "test/r7b-strength.test.mjs::DR-134 reason-based substitution",
+    "test/r7b-review-fixes.test.mjs::QE-R7B-01: a reason-based substitution",
+    "test/r7b-review-fixes.test.mjs::QE-R7B-08: block choices"
+   ],
+   "fixCycle": [
+    "QE-R7B-01: the slot replays recorded decisions from its natural pick (and the slots where the configuration was in use); the decision is ASK unless the plan prescribes what it selected"
    ]
   },
   {
@@ -643,11 +696,18 @@
    "consumers": [
     "src/r6-adaptation.mjs#blockBoundary",
     "src/r6-adaptation.mjs#exerciseSubstitution",
-    "src/r7b-repertoire.mjs#ladderPrevious"
+    "src/r7b-repertoire.mjs#ladderPrevious",
+    "src/r7b-repertoire.mjs#ladderBelow"
    ],
    "tests": [
     "test/r7b-strength.test.mjs::B0-C07: ladder steps are offered",
-    "test/r7b-strength.test.mjs::DR-134 reason-based substitution"
+    "test/r7b-strength.test.mjs::DR-134 reason-based substitution",
+    "test/r7b-review-fixes.test.mjs::QE-R7B-01: a reason-based substitution",
+    "test/r7b-review-fixes.test.mjs::Q-R7B-01 / QE-R7B-02: an accepted ladder step",
+    "test/r7b-review-fixes.test.mjs::QE-R7B-07: a configuration set aside"
+   ],
+   "fixCycle": [
+    "Q-R7B-01 / QE-R7B-02 / QE-R7B-07: an accepted step is never undone by rotation; a set-aside configuration is never offered again"
    ]
   },
   {
@@ -659,7 +719,11 @@
     "src/r7b-repertoire.mjs#ladderNext"
    ],
    "tests": [
-    "test/r7b-strength.test.mjs::B0-C07: ladder steps are offered"
+    "test/r7b-strength.test.mjs::B0-C07: ladder steps are offered",
+    "test/r7b-review-fixes.test.mjs::QE-R7B-06: two changes of one exercise"
+   ],
+   "fixCycle": [
+    "QE-R7B-06: two changes of one exercise at one boundary are ASK in any order"
    ]
   },
   {
@@ -694,7 +758,11 @@
     "src/r6-program.mjs#highSkillAdmissible"
    ],
    "tests": [
-    "test/r7b-strength.test.mjs::B0-C07: ladder steps are offered"
+    "test/r7b-strength.test.mjs::B0-C07: ladder steps are offered",
+    "test/r7b-review-fixes.test.mjs::QE-R7B-06: two changes of one exercise"
+   ],
+   "fixCycle": [
+    "QE-R7B-06: no ladder reach is recorded from a step that is not applied"
    ]
   },
   {
@@ -728,10 +796,16 @@
    "status": "IMPLEMENTED",
    "consumers": [
     "src/r6-program.mjs#noviceDensityApplies",
-    "src/r7b-repertoire.mjs#noviceTemplateTypes"
+    "src/r7b-repertoire.mjs#noviceTemplateTypes",
+    "src/r6-program.mjs#densityCappedAt",
+    "src/r6-program.mjs#firstStrengthBoundary"
    ],
    "tests": [
-    "test/r7b-strength.test.mjs::B0-C08 / B0-F08"
+    "test/r7b-strength.test.mjs::B0-C08 / B0-F08",
+    "test/r7b-review-fixes.test.mjs::QE-R7B-05: the novice density cap starts"
+   ],
+   "fixCycle": [
+    "QE-R7B-05: the cap starts when a context change raises the days above two before the first boundary"
    ]
   },
   {
@@ -739,10 +813,15 @@
    "rule": "Release at the first block boundary requires executed evidence (loads established, final exposures ADVANCE or EARNED, no repeated adverse); otherwise re-assessed at the next boundary",
    "status": "IMPLEMENTED",
    "consumers": [
-    "src/r6-program.mjs#advanceStrength"
+    "src/r6-program.mjs#advanceStrength",
+    "src/r6-adaptation.mjs#planningBase"
    ],
    "tests": [
-    "test/r7b-strength.test.mjs::B0-C08 / B0-F08"
+    "test/r7b-strength.test.mjs::B0-C08 / B0-F08",
+    "test/r7b-review-fixes.test.mjs::QE-R7B-03: a decision plans the novice density"
+   ],
+   "fixCycle": [
+    "QE-R7B-03: decisions read the density cap from the evidence reducer, never the projected release"
    ]
   },
   {
@@ -766,7 +845,11 @@
    ],
    "tests": [
     "test/r7b-strength.test.mjs::B0-C08 / B0-F08",
-    "test/r7b-hybrid-program.test.mjs::Feasibility negotiation"
+    "test/r7b-hybrid-program.test.mjs::Feasibility negotiation",
+    "test/r7b-review-fixes.test.mjs::Q-R7B-05: a configuration is used at most once"
+   ],
+   "fixCycle": [
+    "Q-R7B-05: two TRUNK slots at practice dose give one practice row (a configuration once per session)"
    ]
   },
   {
@@ -788,7 +871,11 @@
     "src/r7b-repertoire.mjs#pullCoverageDisclosure"
    ],
    "tests": [
-    "test/r7b-strength.test.mjs::B0-C09: PULL coverage"
+    "test/r7b-strength.test.mjs::B0-C09: PULL coverage",
+    "test/r7b-review-fixes.test.mjs::Q-R7B-07: equipment disclosures"
+   ],
+   "fixCycle": [
+    "Q-R7B-07: the disclosure says whether skill or equipment is the limit"
    ]
   },
   {
@@ -812,9 +899,13 @@
     "src/r7b-repertoire.mjs#pullCoverageDisclosure"
    ],
    "tests": [
-    "test/r7b-strength.test.mjs::B0-C09: PULL coverage"
+    "test/r7b-strength.test.mjs::B0-C09: PULL coverage",
+    "test/r7b-review-fixes.test.mjs::Q-R7B-07: equipment disclosures"
    ],
-   "note": "The catalog holds no improvised configuration; the disclosure options are the two stated."
+   "note": "The catalog holds no improvised configuration; the disclosure options are the two stated.",
+   "fixCycle": [
+    "Q-R7B-07: only equipment that would add a loaded pull at the athlete's skill is offered (a band, or equipment for a loaded row)"
+   ]
   },
   {
    "id": "SSCTR:B0-C09#c4",
@@ -931,7 +1022,11 @@
    ],
    "tests": [
     "test/r7b-hybrid-program.test.mjs::B0-C11 / CMP.I11",
-    "test/r7b-hybrid-program.test.mjs::B0-C11 / CMP.P04"
+    "test/r7b-hybrid-program.test.mjs::B0-C11 / CMP.P04",
+    "test/r7b-review-fixes.test.mjs::SSCTR R7B-F4"
+   ],
+   "fixCycle": [
+    "SSCTR R7B-F4: the content stage sees next week's day-0 long run or quality run across the week wrap"
    ]
   },
   {
@@ -942,7 +1037,8 @@
     "src/r6-program.mjs#buildWeek"
    ],
    "tests": [
-    "test/r7b-hybrid-program.test.mjs::B0-C11 / CMP.P04"
+    "test/r7b-hybrid-program.test.mjs::B0-C11 / CMP.P04",
+    "test/r7b-review-fixes.test.mjs::SSCTR R7B-F4"
    ],
    "note": "The runtime uses only the fewer-sets option (never a swap), the more conservative of the two."
   },
@@ -2002,7 +2098,12 @@
    ],
    "tests": [
     "test/r7b-strength.test.mjs::B0-C04 / B0-F01 / B0-F02"
-   ]
+   ],
+   "divergence": {
+    "finding": "Q-R7B-06",
+    "text": "In a bands-only travel window the runtime substitutes band-face-pull, not band-pulldown: both are admissible pull accessories and the catalog selection order ends on the id tie-break.",
+    "owner": "Next catalog revision (witness or tie-break), with the SSCTR"
+   }
   },
   {
    "id": "witness:WP-STR-07",
@@ -2967,7 +3068,11 @@
     "src/r7b-repertoire.mjs#RUN_CLASS_THRESHOLDS"
    ],
    "tests": [
-    "test/r7b-binding.test.mjs::R7-B classification equals"
+    "test/r7b-binding.test.mjs::R7-B classification equals",
+    "test/r7b-review-fixes.test.mjs::Q-R7B-02: the trace promises graduation"
+   ],
+   "fixCycle": [
+    "Q-R7B-02: EASY_UNKNOWN has no graduation path in V1 (B0-C01 covers WALK_JOG, RESTART, EASY_LOW); the feasibility trace states it (path NONE_IN_V1). Whether it should is for the SSCTR and the Founder."
    ]
   },
   {
@@ -3156,7 +3261,8 @@
    "tests": [
     "test/r7b-strength.test.mjs::DR-134 / B0-F03",
     "test/r7b-strength.test.mjs::B0-C05: goal-context accessories",
-    "test/r7b-binding.test.mjs::R7-B conformance: every planned run belongs"
+    "test/r7b-binding.test.mjs::R7-B conformance: every planned run belongs",
+    "test/r7b-review-fixes.test.mjs::Q-R7B-05: a configuration is used at most once"
    ]
   },
   {
@@ -3170,7 +3276,10 @@
    ],
    "tests": [
     "test/r7b-strength.test.mjs::B0-C07: ladder steps are offered",
-    "test/r7b-strength.test.mjs::DR-134 reason-based substitution"
+    "test/r7b-strength.test.mjs::DR-134 reason-based substitution",
+    "test/r7b-review-fixes.test.mjs::Q-R7B-01 / QE-R7B-02: an accepted ladder step",
+    "test/r7b-review-fixes.test.mjs::QE-R7B-06: two changes of one exercise",
+    "test/r7b-review-fixes.test.mjs::QE-R7B-07: a configuration set aside"
    ]
   },
   {
@@ -3194,7 +3303,8 @@
    ],
    "tests": [
     "test/r7b-strength.test.mjs::DR-134 / B0-C06 rotation",
-    "test/r7b-strength.test.mjs::B0-C06 c3: no rotation"
+    "test/r7b-strength.test.mjs::B0-C06 c3: no rotation",
+    "test/r7b-review-fixes.test.mjs::Q-R7B-01 / QE-R7B-02: an accepted ladder step"
    ]
   },
   {
@@ -3206,7 +3316,8 @@
     "src/r7b-repertoire.mjs#pullCoverageDisclosure"
    ],
    "tests": [
-    "test/r7b-strength.test.mjs::B0-C09: PULL coverage"
+    "test/r7b-strength.test.mjs::B0-C09: PULL coverage",
+    "test/r7b-review-fixes.test.mjs::Q-R7B-07: equipment disclosures"
    ]
   },
   {
@@ -3217,7 +3328,9 @@
     "src/r6-program.mjs#noviceDensityApplies"
    ],
    "tests": [
-    "test/r7b-strength.test.mjs::B0-C08 / B0-F08"
+    "test/r7b-strength.test.mjs::B0-C08 / B0-F08",
+    "test/r7b-review-fixes.test.mjs::QE-R7B-03: a decision plans the novice density",
+    "test/r7b-review-fixes.test.mjs::QE-R7B-05: the novice density cap starts"
    ]
   },
   {
@@ -3271,7 +3384,9 @@
    "tests": [
     "test/r7b-running.test.mjs::B0-C01 graduation: two complete",
     "test/r7b-running.test.mjs::B0-C01 negatives",
-    "test/r7b-running.test.mjs::B0-C01 c2: a walk/jog starter"
+    "test/r7b-running.test.mjs::B0-C01 c2: a walk/jog starter",
+    "test/r7b-review-fixes.test.mjs::QE-R7B-04: graduation is withdrawn",
+    "test/r7b-review-fixes.test.mjs::SSCTR R7B-F1"
    ]
   },
   {
@@ -3372,5 +3487,231 @@
     "test/r7b-binding.test.mjs::R7-B conformance: every planned run belongs"
    ]
   }
- ]
+ ],
+ "fixCycle": {
+  "basis": "The one bounded fix cycle after the independent reviews of R7B-RUNTIME-REPERTOIRE-FREEZE-1 (Founder loop bound): every blocking finding fixed on R7B-RUNTIME-REPERTOIRE-FREEZE-2; minors fixed or recorded with an owner.",
+  "findings": [
+   {
+    "id": "QE-R7B-01",
+    "gate": "ENGINEERING",
+    "severity": "BLOCKER",
+    "disposition": "FIXED",
+    "test": "test/r7b-review-fixes.test.mjs::QE-R7B-01: a reason-based substitution"
+   },
+   {
+    "id": "QE-R7B-02",
+    "gate": "ENGINEERING",
+    "severity": "MAJOR",
+    "disposition": "FIXED",
+    "test": "test/r7b-review-fixes.test.mjs::Q-R7B-01 / QE-R7B-02: an accepted ladder step"
+   },
+   {
+    "id": "QE-R7B-03",
+    "gate": "ENGINEERING",
+    "severity": "MAJOR",
+    "disposition": "FIXED",
+    "test": "test/r7b-review-fixes.test.mjs::QE-R7B-03: a decision plans the novice density"
+   },
+   {
+    "id": "QE-R7B-04",
+    "gate": "ENGINEERING",
+    "severity": "MAJOR",
+    "disposition": "FIXED",
+    "test": "test/r7b-review-fixes.test.mjs::QE-R7B-04: graduation is withdrawn"
+   },
+   {
+    "id": "QE-R7B-05",
+    "gate": "ENGINEERING",
+    "severity": "MAJOR",
+    "disposition": "FIXED",
+    "test": "test/r7b-review-fixes.test.mjs::QE-R7B-05: the novice density cap starts"
+   },
+   {
+    "id": "QE-R7B-06",
+    "gate": "ENGINEERING",
+    "severity": "MAJOR",
+    "disposition": "FIXED",
+    "test": "test/r7b-review-fixes.test.mjs::QE-R7B-06: two changes of one exercise"
+   },
+   {
+    "id": "QE-R7B-07",
+    "gate": "ENGINEERING",
+    "severity": "MINOR",
+    "disposition": "FIXED",
+    "test": "test/r7b-review-fixes.test.mjs::QE-R7B-07: a configuration set aside"
+   },
+   {
+    "id": "QE-R7B-08",
+    "gate": "ENGINEERING",
+    "severity": "MINOR",
+    "disposition": "FIXED",
+    "test": "test/r7b-review-fixes.test.mjs::QE-R7B-08: block choices"
+   },
+   {
+    "id": "QE-R7B-09",
+    "gate": "ENGINEERING",
+    "severity": "MINOR",
+    "disposition": "FIXED",
+    "test": "test/r7b-review-fixes.test.mjs::QE-R7B-09 / QE-R7B-10"
+   },
+   {
+    "id": "QE-R7B-10",
+    "gate": "ENGINEERING",
+    "severity": "MINOR",
+    "disposition": "FIXED",
+    "test": "test/r7b-review-fixes.test.mjs::QE-R7B-09 / QE-R7B-10"
+   },
+   {
+    "id": "QE-R7B-11",
+    "gate": "ENGINEERING",
+    "severity": "MINOR",
+    "disposition": "FIXED",
+    "test": "test/r7b-review-fixes.test.mjs::QE-R7B-11: the 5K fallback"
+   },
+   {
+    "id": "QE-R7B-12",
+    "gate": "ENGINEERING",
+    "severity": "MINOR",
+    "disposition": "FIXED",
+    "test": "(this matrix revision: plan-level tests on the contradicted entries)"
+   },
+   {
+    "id": "Q-R7B-01",
+    "gate": "QUALITY",
+    "severity": "MAJOR",
+    "disposition": "FIXED",
+    "test": "test/r7b-review-fixes.test.mjs::Q-R7B-01 / QE-R7B-02: an accepted ladder step"
+   },
+   {
+    "id": "Q-R7B-02",
+    "gate": "QUALITY",
+    "severity": "MAJOR",
+    "disposition": "FIXED",
+    "test": "test/r7b-review-fixes.test.mjs::Q-R7B-02: the trace promises graduation"
+   },
+   {
+    "id": "Q-R7B-05",
+    "gate": "QUALITY",
+    "severity": "MINOR",
+    "disposition": "FIXED",
+    "test": "test/r7b-review-fixes.test.mjs::Q-R7B-05: a configuration is used at most once"
+   },
+   {
+    "id": "Q-R7B-07",
+    "gate": "QUALITY",
+    "severity": "MINOR",
+    "disposition": "FIXED",
+    "test": "test/r7b-review-fixes.test.mjs::Q-R7B-07: equipment disclosures"
+   },
+   {
+    "id": "R7B-SSCTR-F1",
+    "gate": "SSCTR",
+    "severity": "MAJOR",
+    "disposition": "FIXED",
+    "test": "test/r7b-review-fixes.test.mjs::SSCTR R7B-F1"
+   },
+   {
+    "id": "R7B-SSCTR-F2",
+    "gate": "SSCTR",
+    "severity": "MODERATE",
+    "disposition": "FIXED",
+    "test": "test/r7b-review-fixes.test.mjs::SSCTR R7B-F2"
+   },
+   {
+    "id": "R7B-SSCTR-F3",
+    "gate": "SSCTR",
+    "severity": "MINOR",
+    "disposition": "FIXED",
+    "test": "test/r7b-review-fixes.test.mjs::SSCTR R7B-F3"
+   },
+   {
+    "id": "R7B-SSCTR-F4",
+    "gate": "SSCTR",
+    "severity": "MINOR",
+    "disposition": "FIXED",
+    "test": "test/r7b-review-fixes.test.mjs::SSCTR R7B-F4"
+   },
+   {
+    "id": "R7B-SSCTR-F5",
+    "gate": "SSCTR",
+    "severity": "MINOR",
+    "disposition": "FIXED",
+    "test": "test/r7b-review-fixes.test.mjs::SSCTR R7B-F5"
+   }
+  ],
+  "recorded": [
+   {
+    "id": "R7B-SSCTR-F6",
+    "gate": "SSCTR",
+    "severity": "MINOR",
+    "disposition": "ROUTED",
+    "owner": "Product/Data with Engineering",
+    "text": "The observation contract must record which session was executed (the easy alternative or the introduced session) before any use beyond the offline reference."
+   },
+   {
+    "id": "R7B-SSCTR-F7",
+    "gate": "SSCTR",
+    "severity": "MINOR",
+    "disposition": "RECORDED_DEVIATION",
+    "owner": "Next runtime mission",
+    "text": "Calf alternation chosen before the time fit (see SSCTR:B0-C05#c2)."
+   },
+   {
+    "id": "R7B-SSCTR-R18",
+    "gate": "SSCTR",
+    "severity": "CONDITION",
+    "disposition": "RECORDED_CONDITION",
+    "owner": "Product/Engineering (client contract)",
+    "text": "Every elapsed week receives its gating weekly review before any use beyond the offline reference; graduation stays bound to complete reported evidence."
+   },
+   {
+    "id": "R7B-SSCTR-CEILING-UNITS",
+    "gate": "SSCTR",
+    "severity": "CONDITION",
+    "disposition": "RE_REVIEW_TRIGGER",
+    "owner": "Next policy revision",
+    "text": "The time-based single-run ceiling versus distance-based spikes (Frandsen 2025) is a re-review trigger."
+   },
+   {
+    "id": "Q-R7B-03",
+    "gate": "QUALITY",
+    "severity": "MINOR",
+    "disposition": "ROUTED",
+    "owner": "Next catalog revision",
+    "text": "back-extension is accessory-only while every hinge slot is MAIN: never prescribed."
+   },
+   {
+    "id": "Q-R7B-04",
+    "gate": "QUALITY",
+    "severity": "MINOR",
+    "disposition": "ROUTED",
+    "owner": "SSCTR with the next catalog revision",
+    "text": "Movement practice only in the first strength session (TPL.FULL_A): hinge and lunge practice never prescribed."
+   },
+   {
+    "id": "Q-R7B-06",
+    "gate": "QUALITY",
+    "severity": "MINOR",
+    "disposition": "RECORDED_DIVERGENCE",
+    "owner": "Next catalog revision",
+    "text": "WP-STR-06 band-face-pull versus band-pulldown (see witness:WP-STR-06)."
+   },
+   {
+    "id": "Q-R7B-08..11",
+    "gate": "QUALITY",
+    "severity": "OBSERVATION",
+    "disposition": "ROUTED",
+    "owner": "Next matrix and catalog revision",
+    "text": "Per-configuration entries, RUNCFG.STRIDES_SET, the trajectories.return reference, the emphasis test, ladder edges from practice configurations, reach paths."
+   },
+   {
+    "id": "QE-R7B-OBS-01..05",
+    "gate": "ENGINEERING",
+    "severity": "OBSERVATION",
+    "disposition": "ROUTED",
+    "owner": "OBS-04 to the SSCTR recheck; the rest to the next runtime mission",
+    "text": "Record order and the binding hash; a MAIN change also rewriting accessory rows of the same configuration; a withdrawn B0-C01 record keeping the week's quality until the gating review; substitution in TAPER/RACE_WEEK; fail-closed after 2027-04-30."
+   }
+  ]
+ }
 }

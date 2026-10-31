@@ -73,7 +73,7 @@ test('B0-C09: PULL coverage is computed from the selected rows; scapular work is
  const bw=gen({id:'s-pull-bw',equipment:[],strengthExperience:'NOVICE'});
  const pulls=bw.program.templates.flatMap(t=>t.rows).filter(r=>r.slotPattern==='PULL');
  assert.ok(pulls.length&&pulls.every(r=>r.role==='ACCESSORY'&&r.downgradedFrom==='MAIN'),'the MAIN pull slot takes an ACCESSORY-admissible pull as an accessory row');
- const d=bw.negotiation.find(n=>n.id==='PULL_LIMITED_FOR_EQUIPMENT');assert.ok(d&&/not an equivalent/.test(d.detail));assert.deepEqual(d.options,['Add a band or a bar','Accept limited pull work']);
+ const d=bw.negotiation.find(n=>n.id==='PULL_LIMITED_FOR_EQUIPMENT');assert.ok(d&&/not an equivalent/.test(d.detail));assert.deepEqual(d.options,['Add a band','Accept limited pull work']);
  assert.ok(!bw.negotiation.some(n=>n.id==='MOVEMENT_PATTERN_UNAVAILABLE'&&n.patterns.includes('PULL')));
  const bar=gen({id:'s-pull-bar',equipment:['PULL_UP_BAR'],strengthExperience:'NOVICE'});
  assert.ok(allRows(bar.program).some(({e})=>e.id==='scapular-pull-up'&&e.instructions.some(t=>/cannot hang/.test(t))),'scapular pull-up needs a hang');

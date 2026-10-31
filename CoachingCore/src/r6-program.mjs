@@ -92,6 +92,11 @@ export function strengthTemplates(c,goal,{equipment=c.athlete.equipment,knownOnl
 }
 /** B0-C08: strength class NONE with more than two chosen strength days keeps two full templates until the first block boundary. */
 export const noviceDensityApplies=(sk,cap=sk.cap)=>allowsCandidate(sk.repertoire??DEFAULT_REPERTOIRE,'B0-C08')&&cap.strength.programmed&&cap.strength.class==='NONE'&&sk.c.schedule.strengthDays.length>2;
+/** The end of the first development-family block: the first strength block boundary of B0-C08 (R7B-DECL-06). */
+export const firstStrengthBoundary=sk=>Math.min(Infinity,...(sk.blocks??[]).filter(b=>DEVELOPMENT.includes(b.family)).map(b=>b.endWeekExclusive));
+/** The novice density cap in week w (B0-C08): the state's own cap, or, for a state that never had one (fewer days at intake), a cap that starts
+ * when the context applies it before the first block boundary (QE-R7B-05). */
+export const densityCappedAt=(sk,ss,w)=>noviceDensityApplies(sk)&&(ss?.density?!!ss.density.capped:w<firstStrengthBoundary(sk));
 const turnOf=(c,sport)=>sport==='RUN'?c.schedule.runTurn:c.schedule.strengthTurn;
 /** Candidate weekly arrangements: quality day × strength-type permutation × back-to-back order on shared same-turn days. */
 export function arrangementCandidates(c,cap,goal,context,ctx,templates,{established=null}={}){
@@ -158,7 +163,12 @@ export function feasibilityOf(sk,weeks,negotiation=[]){
  const order={RUN:['RUN.LONG','quality KEY run','RUN.EASY','strength MAIN at goal or phase dose','strength ACCESSORY'],STRENGTH:['strength MAIN (key SQUAT/HINGE sessions)','strength ACCESSORY','RUN.EASY participation on chosen days','RUN.LONG (content may yield)'],JOINT:['Pareto, then lowest worst-case joint harm; a genuine equal-harm trade-off is asked once']};
  const reductions=[],first=weeks.find(w=>DEVELOPMENT.includes(w.phase))??weeks[0];
  const q=['RACE','PERFORMANCE'].includes(goal.run.kind)&&cap.run.programmed;
- if(q&&!['EASY_CURRENT','QUALITY_FAMILIAR'].includes(cap.run.class))reductions.push({id:'QUALITY_AFTER_EVIDENCE',authority:'R6-RUN-QUALITY / B0-C01',detail:'No harder session yet: it needs current running at the easy-current level, or two complete weeks of easy running that reach it (graduation at a block review)'});
+ // The path to a harder session is stated per class (Q-R7B-02): graduation exists only for WALK_JOG-, RESTART- and EASY_LOW-started athletes
+ // (B0-C01); an unknown running start (EASY_UNKNOWN) has none in V1, and the trace never promises one.
+ if(q&&!['EASY_CURRENT','QUALITY_FAMILIAR'].includes(cap.run.class)){
+  const path=['WALK_JOG','RESTART','EASY_LOW'].includes(cap.run.class)&&allowsCandidate(sk.repertoire??DEFAULT_REPERTOIRE,'B0-C01')?'GRADUATION_AT_BLOCK_REVIEW':'NONE_IN_V1';
+  reductions.push({id:'QUALITY_AFTER_EVIDENCE',authority:'R6-RUN-QUALITY / B0-C01',path,detail:path==='GRADUATION_AT_BLOCK_REVIEW'?'No harder session yet: it is introduced at a block review after two complete weeks of easy running reach about an hour on at least two days without an adverse response (graduation)':cap.run.class==='EASY_UNKNOWN'?'No harder session in this plan: your weekly running was not known at the start, and this plan opens a harder session only from known current running at the easy-current level; easy and long runs still progress from executed weeks':'No harder session in this plan: it needs current running at the easy-current level'});
+ }
  if(q&&s.runDays.length<3)reductions.push({id:'QUALITY_NEEDS_THREE_RUN_DAYS',authority:'R6-RUN-QUALITY',detail:'Fewer than three run days: easy and long running only'});
  const walks=(first?.sessions??[]).filter(x=>x.converted==='TOO_MANY_RUN_DAYS_FOR_CURRENT_PRACTICE'||x.converted==='TOO_MANY_RUN_DAYS_FOR_ESTABLISHMENT');
  if(walks.length)reductions.push({id:'RUN_DAYS_AS_WALKS',authority:'R6-COLD-START / DR-112',days:walks.map(x=>x.day),detail:'Chosen run days beyond current running carry brisk walks that convert one at a time at block starts'});
@@ -189,6 +199,11 @@ export function initialRunState(sk){
  const st={mode:!runDays.length?'NONE':cls==='WALK_JOG'?'WALK_JOG':cls==='RESTART'?'RESTART':'EASY',walkStep:0,restart:op.return.entryRunMinutes,long:null,easy:null,easyExtra:0,walks:0,qualityStep:0,specificStep:0,thresholdDone:0,devCount:0,resumed:false,longByWeek:{},hasLong,nEasy,
   qualityRunner:['EASY_CURRENT','QUALITY_FAMILIAR'].includes(cls),qualityNeeds:cls==='QUALITY_FAMILIAR'?0:R.qualityRequiresEstablishedEasyWeeks,stridesEligible:['EASY_CURRENT','QUALITY_FAMILIAR','EASY_LOW'].includes(cls),
   easyWeeksDone:0,qualityDone:0,stridesDone:0,achieved:{long:null,easy:null,quality:null,strides:0}};
+ // B0-C02 c1/c5 (SSCTR R7B-F2): a familiar repeated-bout task stays current through policy:operational.return.moderateMaxDays after its last
+ // performance, kept as a day index from the program start (the intake's observation, then each executed bouts session); a week that ends
+ // beyond it has no familiar bouts.
+ const boutsTask=(cap.run.familiarBouts??[]).find(b=>!b.missing.length)?.task,seenGap=typeof boutsTask?.observedAt==='string'?dayGap(c.startDate,boutsTask.observedAt.slice(0,10)):NaN;
+ if(boutsTask)st.familiarCurrentThrough=Number.isFinite(seenGap)?seenGap+op.return.moderateMaxDays:-1;
  // A non-novice whose current running is below the minimum easy session starts the ladder at the step that fits it:
  // one jog segment within the longest current run, a session's jogging within its share of current weekly running.
  if(st.mode==='WALK_JOG'&&cap.run.belowMinimumSession&&!['NONE','NOVICE'].includes(cap.run.experience)){
@@ -226,8 +241,9 @@ export function runRow(sk,st,w){
  const R=sk.op.run,phase=sk.plan.phases[w],cons=phase==='CONSOLIDATION';
  if(st.mode==='RETURN'){const f=st.returnFrom,to=st.returnTo,mix=(a,b)=>a===null||b===null?a??b:roundTo5((a+b)/2),step=st.returnStep;return {week:w,phase,mode:'RETURN',returnStep:step,long:step===0?f.long:mix(f.long,to.long),easy:step===0?f.easy:mix(f.easy,to.easy),walks:to.walks??0,qualityStep:0,specificStep:0,thresholdDone:st.thresholdDone,qualityActive:false,strides:0};}
  // Quality and strides unlock on executed established easy weeks, never on calendar weeks.
- const done=st.easyWeeksDone??0,stridesReady=st.stridesEligible&&st.mode==='EASY'&&done>=R.strides.requiresEstablishedEasyWeeks&&allows(sk.authority,'R6-RUN-QUALITY');
- return {week:w,phase,mode:st.mode,...(st.familiarBoutsLapsed?{familiarBoutsLapsed:true}:{}),...(st.familiarBoutsWithdrawn?{familiarBoutsWithdrawn:true}:{}),...(st.graduatedAt===w?{qualityIntroduction:true}:{}),walkStep:Math.min(st.walkStep,sk.op.establishment.walkJogLadder.length-1),restart:st.restart,long:cons&&st.long!==null?Math.max(R.minimumSessionMinutes,st.long-R.consolidationLongRunReductionSteps*R.longRunStepMinutes):st.long,easy:st.easy,easyExtra:st.easyExtra??0,walks:st.walks,qualityStep:st.qualityStep,specificStep:st.specificStep,thresholdDone:st.thresholdDone,qualityActive:st.qualityRunner&&st.mode==='EASY'&&done>=(st.qualityNeeds??0),familiarStep:st.familiarStep??0,strides:stridesReady?Math.min(R.strides.maxRepetitions,R.strides.entryRepetitions+Math.floor((done-R.strides.requiresEstablishedEasyWeeks)/2)):0};
+ // In the week a graduation introduces the harder session no other run dimension steps (B0-C01 c5; SSCTR R7B-F3 a): the strides keep last week's count.
+ const done=st.easyWeeksDone??0,sDone=st.graduatedAt===w?Math.max(0,done-1):done,stridesReady=st.stridesEligible&&st.mode==='EASY'&&sDone>=R.strides.requiresEstablishedEasyWeeks&&allows(sk.authority,'R6-RUN-QUALITY');
+ return {week:w,phase,mode:st.mode,...(st.familiarBoutsLapsed||Number.isFinite(st.familiarCurrentThrough)&&7*w+6>st.familiarCurrentThrough?{familiarBoutsLapsed:true}:{}),...(st.familiarBoutsWithdrawn?{familiarBoutsWithdrawn:true}:{}),...(st.graduatedAt===w?{qualityIntroduction:true}:{}),walkStep:Math.min(st.walkStep,sk.op.establishment.walkJogLadder.length-1),restart:st.restart,long:cons&&st.long!==null?Math.max(R.minimumSessionMinutes,st.long-R.consolidationLongRunReductionSteps*R.longRunStepMinutes):st.long,easy:st.easy,easyExtra:st.easyExtra??0,walks:st.walks,qualityStep:st.qualityStep,specificStep:st.specificStep,thresholdDone:st.thresholdDone,qualityActive:st.qualityRunner&&st.mode==='EASY'&&done>=(st.qualityNeeds??0),familiarStep:st.familiarStep??0,strides:stridesReady?Math.min(R.strides.maxRepetitions,R.strides.entryRepetitions+Math.floor((sDone-R.strides.requiresEstablishedEasyWeeks)/2)):0};
 }
 /** Transition after week w. gate: {LONG,EASY,QUALITY,WALK_JOG} ∈ ADVANCE|HOLD|REGRESS|EARNED; planning assumes ADVANCE. */
 export function advanceRun(sk,st0,w,gate={}){
@@ -271,6 +287,7 @@ export function advanceRun(sk,st0,w,gate={}){
   if(P.easy&&done('EASY'))st.achieved.easy=Math.max(st.achieved.easy??0,P.easy);
   if(P.strides&&done('EASY')){st.stridesDone=(st.stridesDone??0)+1;st.achieved.strides=Math.max(st.achieved.strides??0,P.strides);}
   if(P.quality&&done('QUALITY')&&!bouts){st.qualityDone=(st.qualityDone??0)+1;st.achieved.quality=clone(P.quality);}
+  if(P.quality&&bouts&&done('QUALITY')&&Number.isFinite(st.familiarCurrentThrough))st.familiarCurrentThrough=Math.max(st.familiarCurrentThrough,7*w+op.return.moderateMaxDays);
   let smallReferenceStep=false,waitLong=false,otherStep=false,longBefore=null;
   // With no easy run planned (every easy day a walk), the executed long run gates the walk-to-run conversion (SSCTR R12).
   const easyGate=P.easy||!P.long?'EASY':'LONG';
@@ -300,14 +317,19 @@ export function advanceRun(sk,st0,w,gate={}){
  // threshold ladder enters (the context of that week carries it): ladder step 0 at the effort cue (a calibration), and in that week no other run
  // dimension steps: easy, long and walk conversion hold where the reviewed week had them.
  const grad=sk.c.athlete.runGraduation;
+ // A graduation withdrawn because its qualifying evidence was corrected (QE-R7B-04) leaves the contexts from its withdrawal on: a state that still
+ // carries it returns to easy running there, and the threshold ladder starts again at step 0 if a later block review graduates again.
+ if(!grad&&st.graduatedAt!==undefined&&st.graduatedAt!==null){st.qualityRunner=false;st.qualityNeeds=R.qualityRequiresEstablishedEasyWeeks;st.qualityStep=0;delete st.graduatedAt;}
  // Any later transition under a context that carries the graduation applies it too (the evidence reducer's HISTORY reading judges each week under
  // its own context, and a return restarts from that reading), keeping the ladder steps the evidence earned; the hold belongs to the introduction.
- if(grad&&grad.fromWeek<=w+1&&st.mode==='EASY'&&!st.qualityRunner&&allowsCandidate(sk.repertoire??DEFAULT_REPERTOIRE,'B0-C01')){st.qualityRunner=true;st.qualityNeeds=0;st.graduatedAt=grad.fromWeek;
+ if(grad&&grad.fromWeek<=w+1&&st.mode==='EASY'&&!st.qualityRunner&&allowsCandidate(sk.repertoire??DEFAULT_REPERTOIRE,'B0-C01')){st.qualityRunner=true;st.qualityNeeds=R.qualityRequiresEstablishedEasyWeeks;st.graduatedAt=grad.fromWeek;
   if(grad.fromWeek===w+1){st.qualityStep=0;
   // Held at what was executed (released is not executed, R7-A E1): a step the state took in the consolidation week is not run first now.
   st.long=st0.long===null?null:Math.min(st0.long,st.achieved.long??st0.long);st.easy=st0.easy===null?null:Math.min(st0.easy,st.achieved.easy??st0.easy);st.easyExtra=st.easy===st0.easy?(st0.easyExtra??0):0;st.walks=st0.walks;}}
  if(next==='NEXT_BLOCK'&&!st.resumed){const N=op.event.nextBlock;st.resumed=true;if(st.long!==null)st.long=Math.max(R.minimumSessionMinutes,floor5((st.achieved.long??st.long)*N.longRunFractionOfAchievedPeak));if(st.easy!==null)st.easy=Math.max(R.minimumSessionMinutes,floor5((st.achieved.easy??st.easy)*N.easyFractionOfAchievedPeak));if(st.long!==null&&st.easy!==null)st.long=Math.max(st.long,st.easy);st.qualityStep=Math.max(0,st.qualityStep-N.qualityStepsBack);}
  }
+ // The task stops being current once next week ends beyond its horizon: the bouts lapse for good in that state (SSCTR R7B-F2).
+ if(Number.isFinite(st.familiarCurrentThrough)&&!st.familiarBoutsLapsed&&7*(w+1)+6>st.familiarCurrentThrough)st.familiarBoutsLapsed=true;
  return st;
 }
 /**
@@ -379,7 +401,9 @@ function distributeRun(sk,row,roles,{ceiling=null,firstWeek=false,previousLong=n
  }
  const asRoles=roles.map(r=>r.id===quality?.id&&!qp?{...r,role:'EASY'}:r),walkSet=walkDays(asRoles,row.walks);
  if(longRole){const minutes=Math.max(R.minimumSessionMinutes,Math.min(longBudget,row.long??R.minimumSessionMinutes)),reference=ceiling===null?null:ceiling-R.singleRunCeiling.stepMinutes;out[longRole.id]={role:'LONG',prescription:easyPrescription(minutes,{family:'LONG',cue}),key:true,essential:true,progression:{dimension:'LONG_MINUTES',value:row.long},...(reference!==null&&reference<50&&minutes>reference?{explanation:'Five minutes beyond your longest recent run, which is more than 10% of it: planned only after last week went well, and no other session grows this week'}:{})};}
- if(quality&&qp)out[quality.id]={role:'QUALITY',prescription:qp,key:true,essential:true,progression:qProgress,...(row.qualityIntroduction?{introduction:true,alternative:{role:'EASY',minutes:Math.min(budget,row.easy??R.minimumSessionMinutes)},explanation:'New harder session, introduced because your last two weeks of running went well: an easy run of the usual length is an equal alternative you can keep without any penalty or catch-up'}:{})};
+ // B0-C02 c3 (SSCTR R7B-F5): when paused familiar intervals give way to the threshold ladder, the session says it is a different stimulus.
+ const pausedBouts=!!qp&&qp.family!=='FAMILIAR_REPEATED_BOUTS'&&(row.familiarBoutsLapsed||row.familiarBoutsWithdrawn)&&['BUILD','DEVELOPMENT','NEXT_BLOCK','CONSOLIDATION'].includes(row.phase)&&allowsCandidate(sk.repertoire??DEFAULT_REPERTOIRE,'B0-C02')&&(sk.cap.run.familiarBouts??[]).some(b=>!b.missing.length);
+ if(quality&&qp)out[quality.id]={role:'QUALITY',prescription:qp,key:true,essential:true,progression:qProgress,...(row.qualityIntroduction?{introduction:true,alternative:{role:'EASY',minutes:Math.min(budget,row.easy??R.minimumSessionMinutes)},explanation:'New harder session, introduced because your last two weeks of running went well: an easy run of the usual length is an equal alternative you can keep without any penalty or catch-up'}:pausedBouts?{replaces:'FAMILIAR_REPEATED_BOUTS',explanation:(row.familiarBoutsWithdrawn?'Your familiar harder intervals are paused after repeated harder-than-usual responses':'Your familiar harder intervals are paused because they are no longer current (a break, or more than four weeks without them)')+': this threshold session takes their place. It is a different, lower stimulus, not an equivalent'}:{})};
  const easyRoles=runDays.filter(r=>r.role==='EASY'||r.id===quality?.id&&!qp);
  const nextIsKey=r=>runDays.some(k=>(k.role==='LONG'||k.id===quality?.id&&qp)&&(k.day===r.day+1||r.day===6&&k.day===0));
  const optionalStrides=stridesOptional(sk,{modeHistory});
@@ -808,6 +832,9 @@ export function advanceStrength(sk,ss0,w,used,gate={},logged={},{assumeLogged=fa
  // B0-C08: the novice cap releases at a block boundary only on executed evidence: every exercise of the week's last exposures ADVANCE or EARNED
  // (no repeated adverse response) and every loaded one established with a usable load (adopted from a log, or known). Otherwise it holds and
  // is re-assessed at the next boundary. A conditional projection assumes the planned evidence, as it does for every step.
+ // A cap the context starts after intake (more than two days chosen before the first boundary, QE-R7B-05) enters the state here, in the
+ // planner and the evidence reducer alike.
+ if(ss.density===undefined&&noviceDensityApplies(sk)&&w<firstStrengthBoundary(sk))ss.density={capped:true};
  if(ss.density?.capped&&blockEnd){
   const ids=[...byExercise(used)].filter(([,rows])=>!rows.every(x=>x.practice)).map(([id])=>id),gateOf=id=>gate[id]??gate.STRENGTH??gate.ALL??'HOLD';
   const ok=assumeLogged||ids.length>0&&ids.every(id=>advancedGate(gateOf(id)))&&ids.filter(id=>!noExternalLoad(catalogueEntry(id))).every(id=>ss.exercises[id]?.mode==='KNOWN'&&Number.isFinite(ss.exercises[id]?.load));
@@ -816,6 +843,13 @@ export function advanceStrength(sk,ss0,w,used,gate={},logged={},{assumeLogged=fa
  if(dev)ss.devCount++;
  if(evidenceMode)ss.facts=facts;
  return ss;
+}
+/** The template slots (template type and slot index) that prescribe configuration `id` in week w, rotation applied as slotEntries resolves it: where
+ * a decision on that configuration applies (QE-R7B-01, QE-R7B-02: a step or substitution of a rotated variant replaces it in its own slot). */
+export function slotsInUse(sk,w,ss,id){
+ const out=[];
+ for(const t of [...(sk.templates??[]),...(sk.noviceTemplates??[])])for(const {r,entry} of slotEntries(sk,t,w,ss))if(entry.id===id&&!out.some(x=>x.template===t.type&&x.slot===r.slot))out.push({template:t.type,slot:r.slot});
+ return out;
 }
 /** The exercise each slot of a template uses in week w: rotation applies outside a return (SSCTR D51). One resolution for every reader. */
 function slotEntries(sk,template,w,ss){
@@ -828,7 +862,8 @@ function strengthRowsFor(sk,template,w,ss,{firstOfWeek,phase=null,date=null,entr
   const restKey=r.role==='MAIN'?(goal.strength.kind==='STRENGTH'?'MAIN_STRENGTH_GOAL':'MAIN'):'ACCESSORY',common={restSeconds:S.restSeconds[restKey],preparationMinutes:S.preparationMinutes[r.role==='MAIN'?'MAIN':'ACCESSORY']};
   const dose=strengthDose(sk,ss,w,r,entry,{firstOfWeek,phase,date,entryWeek});
   if(dose.skip)continue;
-  if(dose.practice){const practice=catalogueEntry(PRACTICE_ID[r.slotPattern??r.pattern])??entry;rows.push(exerciseRow(practice,{role:'PRACTICE',sets:dose.sets,reps:dose.reps,rir:dose.rir,mode:'BODYWEIGHT',restSeconds:S.restSeconds.PRACTICE,preparationMinutes:S.preparationMinutes.PRACTICE,establishment:true,note:'Movement practice: learn the pattern; this is not a strength test',exposure:dose.exposure}));used.push({id:practice.id,practice:true,kind:dose.kind,date});continue;}
+  // A configuration is used at most once per session (catalog rule; Q-R7B-05): two slots of one pattern at practice dose give one practice row.
+  if(dose.practice){const practice=catalogueEntry(PRACTICE_ID[r.slotPattern??r.pattern])??entry;if(rows.some(x=>x.id===practice.id))continue;rows.push(exerciseRow(practice,{role:'PRACTICE',sets:dose.sets,reps:dose.reps,rir:dose.rir,mode:'BODYWEIGHT',restSeconds:S.restSeconds.PRACTICE,preparationMinutes:S.preparationMinutes.PRACTICE,establishment:true,note:'Movement practice: learn the pattern; this is not a strength test',exposure:dose.exposure}));used.push({id:practice.id,practice:true,kind:dose.kind,date});continue;}
   rows.push(exerciseRow(entry,{...common,role:r.role,sets:dose.sets,reps:dose.reps,rir:Math.max(2,dose.rir),mode:dose.mode,value:dose.value??null,convention:dose.convention??null,establishment:!!dose.establishment,rule:dose.rule??null,note:dose.note??null,pending:!!dose.pending,exposure:dose.exposure}));
   used.push({id:entry.id,kind:dose.kind,mode:dose.mode,value:dose.value??null,convention:dose.convention??entry.convention,reps:dose.reps,sets:dose.sets,phasedSets:dose.sets,rir:dose.rir,baseSets:dose.baseSets??null,normalSets:dose.normalSets??null,date});
  }
@@ -941,7 +976,7 @@ export function eventCompletionItem(sk,rs){
 }
 /** Builds one week from the run row, the strength state and the context arrangement. */
 export function buildWeek(sk,w,rs,ss,priorWeeks,{arrangementOverride=null,equipmentOverride=null,runCeiling=null,firstWeek=false}={}){
- const {c,op,plan,goal,blocks}=sk,s=c.schedule,phase=plan.phases[w],context=contextOf(plan.phases,w),capped=!!ss?.density?.capped&&noviceDensityApplies(sk),arr=arrangementOverride??arrangementFor(sk,context,capped);
+ const {c,op,plan,goal,blocks}=sk,s=c.schedule,phase=plan.phases[w],context=contextOf(plan.phases,w),capped=densityCappedAt(sk,ss,w),arr=arrangementOverride??arrangementFor(sk,context,capped);
  const row=runRow(sk,rs,w),roles=clone(arr?.sessions??[]),ed=eventDays(sk),eventWeek=['TAPER','RACE_WEEK','POST_EVENT'].includes(phase);
  const eventContext={achieved:rs.achieved??{},walks:peakOf(priorWeeks).walks,ceiling:runCeiling,runState:rs},nearRace=r=>!!ed&&ed.before(w,r.day)>=1&&ed.before(w,r.day)<=ed.taperDays;
  let runOut=eventWeek?eventWeekSessions(sk,w,roles,eventContext):distributeRun(sk,row,roles,{ceiling:runCeiling,firstWeek,previousLong:previousBuildLong(priorWeeks),modeHistory:rs.modeHistory??[]});
@@ -960,7 +995,7 @@ export function buildWeek(sk,w,rs,ss,priorWeeks,{arrangementOverride=null,equipm
   const common={id:`w${w}-${r.sport==='RUN'?'run':'str'}-d${r.day}`,weekIndex:w,day:r.day,date:onDate(c.startDate,w*7+r.day),turn:r.turn??null,sport:r.sport,backToBackOrder:r.backToBackOrder,blockId};
   if(r.sport==='RUN'){
    const x=runOut[r.id];if(!x)continue;
-   sessions.push({...common,role:x.role,key:!!x.key,essential:!!x.essential,optional:!!x.optional,prescription:x.prescription,progression:x.progression??null,explanation:x.explanation??(x.converted?x.prescription.instructions[0]:null),converted:x.converted??null,...(x.introduction?{introduction:true,alternative:clone(x.alternative)}:{}),status:'PLANNED',plannedPrescriptionHash:x.prescription?hash(x.prescription):null,...(arr?.orderFlexible&&s.sharedDays.includes(r.day)?{orderFlexible:true}:{})});
+   sessions.push({...common,role:x.role,key:!!x.key,essential:!!x.essential,optional:!!x.optional,prescription:x.prescription,progression:x.progression??null,explanation:x.explanation??(x.converted?x.prescription.instructions[0]:null),converted:x.converted??null,...(x.introduction?{introduction:true,alternative:clone(x.alternative)}:{}),...(x.replaces?{replaces:x.replaces}:{}),status:'PLANNED',plannedPrescriptionHash:x.prescription?hash(x.prescription):null,...(arr?.orderFlexible&&s.sharedDays.includes(r.day)?{orderFlexible:true}:{})});
    continue;
   }
   const t=templatesOn(common.date)[r.templateIndex];
@@ -980,7 +1015,10 @@ export function buildWeek(sk,w,rs,ss,priorWeeks,{arrangementOverride=null,equipm
   // quality run falls by content (one set fewer, a planned reduction), disclosed; the arrangement came first (CMP.I11 ranking), MAIN rows keep
   // the essential stimulus, and nothing new or HIGH-eccentric is introduced there. Under STRENGTH or JOINT lead nothing is reduced here.
   const lead=goal.priorityByPhase[phase==='CONSOLIDATION'?context:phase]?.lead??goal.baseLead,H=op.hybrid;
-  const nearProtected=allowsCandidate(sk.repertoire??DEFAULT_REPERTOIRE,'B0-C11')&&lead==='RUN'&&roles.some(k=>{const x=runOut[k.id];if(k.sport!=='RUN'||!x?.prescription||!I11_PROTECTED_FAMILIES.includes(x.prescription.family))return false;const g=hourOf(k,H)-hourOf(r,H);return g>0&&g<=H.nextDayGapHours;});
+  // The week wrap counts (SSCTR R7B-F4): a day-6 session is also close to next week's day-0 long run, or its day-0 quality run while quality is
+  // active, from next week's own arrangement.
+  const wrap=r.day===6&&w+1<plan.phases.length&&!['RACE_WEEK','POST_EVENT'].includes(plan.phases[w+1])?(arrangementFor(sk,contextOf(plan.phases,w+1),capped)?.sessions??[]).filter(k=>k.sport==='RUN'&&k.day===0&&(k.role==='LONG'||k.role==='QUALITY'&&row.qualityActive)):[];
+  const nearProtected=allowsCandidate(sk.repertoire??DEFAULT_REPERTOIRE,'B0-C11')&&lead==='RUN'&&(roles.some(k=>{const x=runOut[k.id];if(k.sport!=='RUN'||!x?.prescription||!I11_PROTECTED_FAMILIES.includes(x.prescription.family))return false;const g=hourOf(k,H)-hourOf(r,H);return g>0&&g<=H.nextDayGapHours;})||wrap.some(k=>{const g=168+hourOf(k,H)-hourOf(r,H);return g>0&&g<=H.nextDayGapHours;}));
   if(nearProtected)fitted=fitted.map(e=>e.role!=='MAIN'&&e.region==='LOWER'&&configurationOf(e.id)?.eccentric==='HIGH'&&e.sets>1?{...e,sets:e.sets-1,...(e.exposure?{exposure:{...e.exposure,phasedSets:e.sets-1,contentReduction:'CMP.P04'}}:{}),instructions:[...e.instructions,'One set fewer this week: this session is close to your long run or harder run, which this block protects; it is not a recovery or injury measure']}:e);
   const fittedIds=new Set(fitted.map(e=>e.id)),usedNow=built.used.filter(u=>fittedIds.has(u.id)).map(u=>{const e=fitted.find(x=>x.id===u.id);return {...u,session:common.id,fittedSets:e.sets,...(e.exposure?.contentReduction?{phasedSets:e.sets,sets:e.sets}:{})};});used.push(...usedNow);
   // An exercise first set up earlier in the week is not yet established for its later sessions: until a review sees it performed
@@ -995,7 +1033,7 @@ export function buildWeek(sk,w,rs,ss,priorWeeks,{arrangementOverride=null,equipm
  if(phase==='RACE_WEEK'){
   const onChosen=s.runDays.includes(plan.raceDay),completion=raceDayCompletion(sk,rs),ladder=op.establishment.walkJogLadder,step=rs.mode==='WALK_JOG'?ladder[Math.max(0,Math.min(rs.walkStep,ladder.length-1))]:null;
   const span=x=>x>=60?(Math.round(x/6)/10)+' min':x+' s',walkBreaks=step?(step.walkSeconds?span(step.jogSeconds)+' jog, '+span(step.walkSeconds)+' walk':'continuous easy jogging, walking whenever needed'):null;
-  const race=racePrescription(goal.run.event,{cues:op.run.effortCues,raceDay:op.event.raceDay,completion,stridesWarmup:(rs.achieved?.strides??0)>0,walkBreaks});
+  const race=racePrescription(goal.run.event,{cues:op.run.effortCues,raceDay:op.event.raceDay,completion,stridesWarmup:(rs.achieved?.strides??0)>0,stridesOptional:stridesOptional(sk,rs),walkBreaks});
   sessions.push({id:`w${w}-race`,weekIndex:w,day:plan.raceDay,date:onDate(c.startDate,w*7+plan.raceDay),turn:null,sport:'RUN',role:'RACE',key:true,essential:true,optional:false,prescription:race,status:'PLANNED',plannedPrescriptionHash:hash(race),explanation:onChosen?'Race day':'Race day is the athlete’s own event date, outside the usual run days',blockId});
   sessions.sort((a,b)=>a.day-b.day||(a.backToBackOrder??0)-(b.backToBackOrder??0));
  }
@@ -1205,10 +1243,13 @@ export function rotationFor(sk,w,template){
   const base=configurationOf(r.entry.id)??r.entry,cycle=[r.entry.id,...r.alternatives.filter(id=>{const e=configurationOf(id);return e&&demandRank(e.lowerDemand)<=demandRank(base.lowerDemand)&&(e.eccentric!=='HIGH'||base.eccentric==='HIGH');})];
   if(cycle.length<2||base.region==='LOWER'&&neighbours)continue;
   const eligibility=rotationEligibility(pref,'ACCESSORY',{phase:null,hasAlternative:true});
-  let turns=0,last=0;
-  for(let i=1;i<=w;i++){
+  // A configuration a recorded decision put in this slot (ladder step, reason-based substitution) holds from the week it starts: the calendar
+  // counts its turns from that week, never from week 1 (QE-R7B-02).
+  const since=Number.isInteger(r.directive?.since)&&r.directive.since>0?r.directive.since:0;
+  let turns=0,last=since;
+  for(let i=since+1;i<=w;i++){
    if(deferred(i))continue;
-   if(eligibility==='TWO_WEEK_ELIGIBLE'?i%rot.everyWeeks===0:blockStart(i)&&i-last>=rot.everyWeeks){turns++;last=i;}
+   if(eligibility==='TWO_WEEK_ELIGIBLE'?(i-since)%rot.everyWeeks===0:blockStart(i)&&i-last>=rot.everyWeeks){turns++;last=i;}
   }
   if(turns)out[r.slot]=cycle[turns%cycle.length];
  }
@@ -1217,7 +1258,7 @@ export function rotationFor(sk,w,template){
 /** Generates a complete conditional program from onboarding-like input. Never requires a prebuilt week or a static priority. */
 export function generateProgram(input,options={}){
  // The repertoire authority is read at the intake's date (each SSCTR record's review-by date applies), and travels with the R6 authority.
- const intake=canonicalizeIntake(input),authority0=r6Authority(options),authority={...authority0,repertoire:authority0.repertoire??repertoireAuthority({...options,asOf:intake.canonical?.asOf})},op=authority.policy?.operational;
+ const authority0=r6Authority(options),repertoire=authority0.repertoire??repertoireAuthority({...options,asOf:typeof input?.asOf==='string'?input.asOf.slice(0,10):null}),intake=canonicalizeIntake(input,{repertoire}),authority={...authority0,repertoire},op=authority.policy?.operational;
  const base={runtimeVersion:'R6-1',mode:'SHADOW',inputHash:hash(input??null),program:null,applied:false,officialPlanState:clone(input?.officialPlanState??null),appliedState:clone(input?.officialPlanState??null),completedWork:clone(input?.completedWork??[]),missingInputs:[...intake.missing],errors:[...intake.errors],uncertainty:clone(intake.uncertainty),negotiation:clone(intake.negotiation),horizonsConsidered:['H0_SESSION','H1_WEEK','H2_BLOCK','H3_GOAL_EVENT'],qualityAssessment:{assessor:'RUNTIME_SELF_CHECK',independent:false,class:'UNREVIEWED'}};
  const reject=(status,reason,extra={})=>freeze({...base,status,reason,...extra});
  if(intake.status==='CLINICAL_HUMAN_REQUIRED')return reject('CLINICAL_HUMAN_REQUIRED','Current pain, injury, illness or functional limitation routes to qualified human assessment; no training dose is substituted');
@@ -1240,7 +1281,9 @@ export function generateProgram(input,options={}){
  Object.assign(sk,skeletonOf(program0,authority),{templates,noviceTemplates,arrangement:{}});
  if(templates.some(t=>t.rows.length<2))negotiation.push({id:'EQUIPMENT_LIMITS_STRENGTH_SESSION',blocking:false,detail:'Available equipment supports fewer than two patterns in a session; bodyweight practice fills the gap',options:['Add equipment','Accept bodyweight practice']});
  const missingPatterns=[...new Set([...templates,...(noviceTemplates??[])].flatMap(t=>t.missingPatterns))];
- if(missingPatterns.length)negotiation.push({id:'MOVEMENT_PATTERN_UNAVAILABLE',blocking:false,informational:true,patterns:missingPatterns,detail:'No available equipment supports these patterns; sessions keep the patterns that can be loaded',options:['Add a band or bar','Accept the gap']});
+ // Q-R7B-07: each missing pattern says what limits it; equipment is offered only for the patterns equipment would fill.
+ const limits=Object.assign({},...[...templates,...(noviceTemplates??[])].map(t=>t.missingLimits??{})),bySkill=missingPatterns.filter(p=>limits[p]==='SKILL'),byEquipment=missingPatterns.filter(p=>limits[p]!=='SKILL');
+ if(missingPatterns.length)negotiation.push({id:'MOVEMENT_PATTERN_UNAVAILABLE',blocking:false,informational:true,patterns:missingPatterns,limits:Object.fromEntries(missingPatterns.map(p=>[p,limits[p]==='SKILL'?'SKILL':'EQUIPMENT'])),detail:[byEquipment.length?'No available equipment supports '+byEquipment.join(', '):null,bySkill.length?bySkill.join(', ')+' needs more practice than this plan starts with':null].filter(Boolean).join('; ')+'; sessions keep the patterns that can be done',options:[...(byEquipment.length?['Add equipment for '+byEquipment.join(', ')]:[]),'Accept the gap']});
  const severityAuthority=allows(authority,'R6-HYBRID-ARRANGEMENT'),cmpI11=severityAuthority&&allowsCandidate(rep,'B0-C11'),arrangementTrace={},choices={};let previousId=null;
  // Each context gets its arrangement; under the novice density cap (B0-C08) each context also gets the variant for the capped templates. A
  // capped variant that would need a trade-off preference falls back to the context's own day assignment (same template count).

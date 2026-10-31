@@ -8,10 +8,12 @@ import os from 'node:os';
 import path from 'node:path';
 import {spawnSync} from 'node:child_process';
 import {pathToFileURL,fileURLToPath} from 'node:url';
-const PRED='c66966e041443b0043c6c01718e840604380c9b9';
+const arg=(k,d)=>{const i=process.argv.indexOf(k);return i>=0&&process.argv[i+1]?process.argv[i+1]:d;};
+// --base <commit> compares with another runtime (FREEZE-1 for the fix cycle); --out <path under CoachingCore> names the report written by --write.
+const PRED=arg('--base','c66966e041443b0043c6c01718e840604380c9b9');
 const coach=fileURLToPath(new URL('..',import.meta.url)),repo=path.resolve(coach,'..'),tmp=fs.mkdtempSync(path.join(os.tmpdir(),'r7b-pred-'));
 const tarFile=path.join(tmp,'pred.tar');
-const ar=spawnSync('git',['archive','--format=tar','-o',tarFile,PRED,'CoachingCore/src','CoachingCore/r5','CoachingCore/r6','audits/domain-coaching-r6-2026-10-26/reviews/ssctr-policy-review.json','audits/domain-coaching-r5-2026-10-25/reviews/ssctr-policy-review.json'],{cwd:repo,encoding:'utf8'});
+const ar=spawnSync('git',['archive','--format=tar','-o',tarFile,PRED,'CoachingCore/src','CoachingCore/r5','CoachingCore/r6','CoachingCore/r7/b0','audits/domain-coaching-r7-b0-2026-10-31/reviews/SSCTR_RECHECK_B0.json','audits/domain-coaching-r6-2026-10-26/reviews/ssctr-policy-review.json','audits/domain-coaching-r5-2026-10-25/reviews/ssctr-policy-review.json'],{cwd:repo,encoding:'utf8'});
 if(ar.status!==0)throw new Error('git archive failed: '+ar.stderr);
 const tx=spawnSync('tar',['-xf','pred.tar'],{cwd:tmp,encoding:'utf8'});if(tx.status!==0)throw new Error('tar failed: '+tx.stderr);
 const load=async root=>({gen:(await import(pathToFileURL(path.join(root,'CoachingCore/src/r6-index.mjs')))).generateProgram,dev:(await import(pathToFileURL(path.join(root,'CoachingCore/r6/fixtures/dev-authority.mjs')))).devAuthority});
@@ -62,5 +64,5 @@ for(const [id,input] of corpus){
 const causes={};for(const d of doseRises)causes[d.kind]=(causes[d.kind]??0)+1;
 const report={check:'R7B-REGRESSION-DIFFERENTIAL',doseFindings:causes,predecessor:PRED,corpus:programs,identical,changed:programs-identical,statusDifferences:statusDiff,weeksWithDifference:counts,doseRises,note:'Running is compared exactly with the predecessor (weekly minutes, longest run, every session); strength differences are classified by the B0 rule that causes them, and every R7-B strength row is checked against its slot role dose envelope. Every finding is listed with its program and week.'};
 fs.rmSync(tmp,{recursive:true,force:true});
-if(process.argv.includes('--write'))fs.writeFileSync(new URL('r7/b/REGRESSION_R7B.json',import.meta.url.replace('scripts/regress-r7b.mjs','')),JSON.stringify(report,null,1)+'\n');
+if(process.argv.includes('--write'))fs.writeFileSync(path.join(coach,arg('--out','r7/b/REGRESSION_R7B.json')),JSON.stringify(report,null,1)+'\n');
 console.log(JSON.stringify({...report,doseRises:report.doseRises.slice(0,30),doseRiseCount:report.doseRises.length},null,1));

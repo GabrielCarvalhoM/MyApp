@@ -71,7 +71,8 @@ function historySummary(history,asOf,capabilities){
  return {activities:unique.length,duplicatesRemoved:rows.length-unique.length,weeksCovered:weeks,run:runs.length?{daysPerWeek:Math.round(runDays.size/weeks*10)/10,minutesPerWeek:Math.round(runs.reduce((n,r)=>n+r.durationMinutes,0)/weeks),longestMinutes:Math.max(...runs.map(r=>r.durationMinutes))}:null,strengthSessions:strength.length,strengthExerciseRecords:strength.flatMap(s=>Array.isArray(s.exercises)?s.exercises.map(e=>({...clone(e),observedAt:s.startedAt,source:s.provider??'WEARABLE'})):[]),partialActivities:rows.filter(h=>h.completeness==='PARTIAL').length};
 }
 /** Canonical intake deliberately has no required static priority, known dose or perfect history. */
-export function canonicalizeIntake(input){
+// The repertoire authority is the planner's own (QE-R7B-11): the 5K fallback (B0-C10) follows the records the program is planned under.
+export function canonicalizeIntake(input,{repertoire=DEFAULT_REPERTOIRE}={}){
  const source=clone(input??{}),a=source.athlete??source.onboarding??{},s=source.schedule??a.schedule??{},errors=[],missing=[],uncertainty=[],negotiation=[];
  if(source.version!==INTAKE_VERSION||source.synthetic!==true||source.purpose!=='SHADOW_REFERENCE')errors.push('offlineSyntheticContract');
  const asOf=typeof source.asOf==='string'?source.asOf.slice(0,10):null,startDate=source.startDate;
@@ -105,7 +106,7 @@ export function canonicalizeIntake(input){
   event.date=event.date??event.eventDate??rawRun?.eventDate??null;
   event.timeGoalMinutes=number(event.timeGoalMinutes,10,400)?event.timeGoalMinutes:null;
   // B0-C10 (LATER.EVENT.5K): a 5K has no event recipe in V1; the athlete gets a performance plan without event phases, the race kept as context.
-  if(event.kind==='5K'&&allowsCandidate(DEFAULT_REPERTOIRE,'B0-C10')){contextEvent={kind:'5K',date:isoDay(event.date)?event.date:null,timeGoalMinutes:event.timeGoalMinutes};event=null;runGoal.kind='PERFORMANCE';uncertainty.push(unknown('event.kind','SAFE_CONSERVATIVE_ESTABLISHMENT','A 5K has no event recipe in V1: a performance plan without specific, taper or race-week phases; the race date and any time goal are context only'));}
+  if(event.kind==='5K'&&allowsCandidate(repertoire,'B0-C10')){contextEvent={kind:'5K',date:isoDay(event.date)?event.date:null,timeGoalMinutes:event.timeGoalMinutes};event=null;runGoal.kind='PERFORMANCE';uncertainty.push(unknown('event.kind','SAFE_CONSERVATIVE_ESTABLISHMENT','A 5K has no event recipe in V1: a performance plan without specific, taper or race-week phases; the race date and any time goal are context only'));}
   else{
   if(['MARATHON','ULTRA'].includes(event.kind))scope=scope??'EVENT_DISTANCE_OUTSIDE_V1';
   else if(!['10K','HALF_MARATHON'].includes(event.kind))errors.push('event.supported10KOrHalfMarathon');

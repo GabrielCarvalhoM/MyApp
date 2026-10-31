@@ -36,21 +36,25 @@ const ENABLING=new Set(['APPROVE','APPROVE_WITH_CONDITIONS']),EVIDENCE=new Set([
 /**
  * Per-record activation (fail closed): a record enables its candidate only when it targets this catalog revision and hash, its disposition
  * enables, its evidence status is supported, and the decision date is not after its review-by date. The repertoire is valid only with the
- * catalog bytes and every core record; any other candidate without a record is simply off (its conservative fallback applies).
+ * catalog bytes and every core record; any other candidate without a record is simply off (its conservative fallback applies). A record bound to
+ * this catalog that does not enable (a rejection, a revision request, unsupported evidence) vetoes its candidate whatever else approves it
+ * (QE-R7B-10). The decision date is the calendar date of the instant in UTC, whatever offset it is written with (QE-R7B-09).
  */
+const utcDayOf=v=>{if(typeof v!=='string')return null;const t=Date.parse(v);return /T/.test(v)&&Number.isFinite(t)?new Date(t).toISOString().slice(0,10):v.slice(0,10);};
 export function repertoireAuthority(options={}){
  if(options.repertoire)return options.repertoire;
- const asOf=typeof options.asOf==='string'?options.asOf.slice(0,10):null,records=options.repertoireRecords??DEFAULT_RECORDS,approved={},bound=[];
+ const asOf=utcDayOf(options.asOf),records=options.repertoireRecords??DEFAULT_RECORDS,approved={},bound=[],vetoed=new Set();
  for(const r of Array.isArray(records)?records:[]){
   const id=String(r?.review_id??'').replace(/^R7B0-SSCTR-/,'');
   if(!/^B0-(FIDELITY|C\d\d)$/.test(id)||r.target?.sha256!==CATALOG_SHA256||r.target?.artifact_revision!==CATALOG_REVISION)continue;
-  if(!ENABLING.has(r.disposition)||!EVIDENCE.has(r.evidence_status))continue;
+  if(!ENABLING.has(r.disposition)||!EVIDENCE.has(r.evidence_status)){vetoed.add(id);continue;}
   const reviewBy=typeof r.expiry?.review_by==='string'?r.expiry.review_by:null;
   if(asOf&&reviewBy&&asOf>reviewBy)continue;
   approved[id]=r.disposition;bound.push({id,reviewId:r.review_id,revision:r.review_revision,disposition:r.disposition,evidenceStatus:r.evidence_status,confidence:r.confidence?.level??null,conditionCount:(r.decision?.conditions??[]).length,reviewBy});
  }
+ for(const id of vetoed)delete approved[id];
  const valid=!!CATALOG&&CORE_RECORDS.every(id=>approved[id]);
- return {version:R7B_REPERTOIRE_VERSION,valid,catalogRevision:CATALOG?CATALOG.revision:null,catalogSha256:CATALOG_FILE_SHA256,recordsSha256:options.repertoireRecords?hash(options.repertoireRecords):RECORDS_FILE_SHA256,approved,records:bound.sort((a,b)=>a.id<b.id?-1:1)};
+ return {version:R7B_REPERTOIRE_VERSION,valid,catalogRevision:CATALOG?CATALOG.revision:null,catalogSha256:CATALOG_FILE_SHA256,recordsSha256:options.repertoireRecords?hash(options.repertoireRecords):RECORDS_FILE_SHA256,approved,records:bound.filter(b=>!vetoed.has(b.id)).sort((a,b)=>a.id<b.id?-1:1)};
 }
 export const allowsCandidate=(auth,id)=>!!auth?.valid&&!!auth.approved?.[id];
 /** The repertoire authority without a decision date (used when a caller supplies an authority object without one). */
@@ -198,6 +202,8 @@ export const SKILL_LADDERS=LADDERS;
 export const ladderNext=id=>[...new Set(LADDERS.flatMap(c=>{const i=c.indexOf(id);return i>=0&&i<c.length-1?[c[i+1]]:[];}))];
 /** The previous configurations on the skill ladders: the SKILL_MISMATCH regression along the chain. */
 export const ladderPrevious=id=>[...new Set(LADDERS.flatMap(c=>{const i=c.indexOf(id);return i>0?[c[i-1]]:[];}))];
+/** Every configuration below `id` on the chains that contain it (B0-C07): what an athlete who reached `id` has stepped past. */
+export const ladderBelow=id=>[...new Set(LADDERS.flatMap(c=>{const i=c.indexOf(id);return i>0?c.slice(0,i):[];}))];
 /** A ladder link that changes the subpattern (push-up → pike-push-up) is a variation, not a progression of the same movement (B0-C07 condition 6). */
 export const ladderChangesSubpattern=(from,to)=>{const a=configurationOf(from),b=configurationOf(to);return !!a&&!!b&&a.subpattern!==b.subpattern;};
 
@@ -241,17 +247,20 @@ export function buildTemplates({types,equipment=[],experience='NOVICE',knownExer
  const available=new Set([...equipment,'BODYWEIGHT']),familiar=new Set(knownExercises.filter(k=>k.familiar!==false).map(k=>k.id)),withDose=new Set(knownExercises.filter(k=>k.dose).map(k=>k.id));
  const reached=new Set([...ladderReached,...selections.filter(s=>s.reason==='SKILL_PROGRESSION'&&s.to).map(s=>s.to)]),setAside=new Set(selections.filter(s=>s.setAside!==false&&['SKILL_MISMATCH','NONCLINICAL_DISCOMFORT_OR_PREFERENCE'].includes(s.reason)).map(s=>s.from));
  const maxSkill=['NONE','NOVICE'].includes(experience)?0:1,skillOk=e=>familiar.has(e.id)||reached.has(e.id)||skillRank(e.skill)<=maxSkill;
+ // A configuration below a reached one on the same skill ladder (B0-C07) is never a calendar alternative: stepping back along a chain is a
+ // reason-based substitution (SKILL_MISMATCH), never rotation (QE-R7B-02, Q-R7B-01).
+ const surpassed=new Set([...reached].flatMap(ladderBelow));
  const contextKeys=goalContextKeys(goal),purposes=new Set([GOAL_PURPOSE[goal?.strength?.kind]??'GENERAL']),accessoryPurposes=new Set([...purposes,...(contextKeys.includes('EVENT')||goal?.strength?.kind==='RUNNING_SUPPORT'?['RUNNING_SUPPORT']:[])]);
  const order=(rolePurposes,sub)=>selectionCompare({familiar,established:new Set(established),purposes:rolePurposes},sub);
  const emph=new Set(emphasis.map(x=>String(x).toUpperCase())),disclosures=[];
- const usable=(e,role,{pattern,subpatterns=null,used})=>e.pattern===pattern&&(!subpatterns||subpatterns.includes(e.subpattern))&&admitted(e,auth)&&e.equipment.every(q=>available.has(q))&&e.roles.includes(role)&&skillOk(e)&&!used.has(e.id)&&!setAside.has(e.id)&&(!knownOnly||noExternalLoad(e)||withDose.has(e.id));
+ const usable=(e,role,{pattern,subpatterns=null,used,aside=false})=>e.pattern===pattern&&(!subpatterns||subpatterns.includes(e.subpattern))&&admitted(e,auth)&&e.equipment.every(q=>available.has(q))&&e.roles.includes(role)&&skillOk(e)&&!used.has(e.id)&&(aside||!setAside.has(e.id))&&(!knownOnly||noExternalLoad(e)||withDose.has(e.id));
  // Goal-context alternation across the week: count of listed alternative patterns chosen, and the calf exposures with their alternation.
  const altCount={},defs=types.map(t=>TEMPLATE_DEFS[t]),calfSlots=defs.flatMap((d,ti)=>(d?.slots??[]).map((s,si)=>({ti,si,s})).filter(x=>x.s.pattern==='CALF'));
  const alternating=calfSlots.filter(x=>contextKeys.some(k=>x.s.goalContext?.[k]?.alternateSubpatterns)),bentAllowed=calfSlots.length>=2?Math.floor(calfSlots.length/2):0;
  const calfSub=new Map();let bent=0;
  alternating.forEach((x,i)=>{const want=i%2===1&&bent<bentAllowed?'BENT_KNEE':'STRAIGHT_KNEE';if(want==='BENT_KNEE')bent++;calfSub.set(x.ti+':'+x.si,want);});
  const templates=defs.map((def,index)=>{
-  const used=new Set(),rows=[],missing=[];
+  const used=new Set(),rows=[],missing=[],missingLimits={};
   (def?.slots??[]).forEach((slot,si)=>{
    const role=slot.role,rolePurposes=role==='ACCESSORY'?accessoryPurposes:purposes;
    // A goal-context slot (B0-C05): the listed alternative pattern least chosen so far this week that has an admissible configuration.
@@ -264,23 +273,36 @@ export function buildTemplates({types,equipment=[],experience='NOVICE',knownExer
     if(pick){pattern=pick;altCount[pick]=(altCount[pick]??0)+1;preferred=DEFAULT_SUBPATTERN[pick]??null;}
    }
    if(slot.pattern==='CALF'&&calfSub.has(index+':'+si))preferred=calfSub.get(index+':'+si);
-   let options=CONFIGURATIONS.filter(e=>usable(e,role,{pattern,subpatterns:slot.subpatterns??null,used})).sort(order(rolePurposes,preferred));
-   let rowRole=role,downgraded=false;
-   // B0-C09: a MAIN pull slot without a MAIN-admissible pull takes the best ACCESSORY-admissible pull, as an ACCESSORY row, disclosed.
-   if(!options.length&&role==='MAIN'&&pattern==='PULL'&&allowsCandidate(auth,'B0-C09')){const within=e=>(slot.subpatterns??[]).includes(e.subpattern)?0:1,cmp=order(accessoryPurposes,preferred);options=CONFIGURATIONS.filter(e=>usable(e,'ACCESSORY',{pattern,used})).sort((a,b)=>within(a)-within(b)||cmp(a,b));if(options.length){rowRole='ACCESSORY';downgraded=true;}}
-   let pick=options[0]??null;
-   // Selection directives: the latest admissible replacement of the picked configuration in this slot (chained), recorded with its reason. The
-   // replacement must fit the slot as any selection does (pattern, MAIN subpatterns, role, equipment, skill or ladder reach, not set aside).
-   let directive=null;
-   const fits=to=>!!to&&admitted(to,auth)&&to.roles.includes(rowRole)&&to.equipment.every(q=>available.has(q))&&skillOk(to)&&!used.has(to.id)&&!setAside.has(to.id)&&(to.pattern===pick.pattern||to.pattern===slot.pattern)&&(rowRole!=='MAIN'||!slot.subpatterns||slot.subpatterns.includes(to.subpattern))&&(!knownOnly||noExternalLoad(to)||withDose.has(to.id));
-   for(let guard=0;pick&&guard<8;guard++){const d=[...selections].reverse().find(s=>s.from===pick.id&&s.to&&s.to!==pick.id);if(!d)break;const to=configurationOf(d.to);if(!fits(to))break;pick=to;directive={reason:d.reason,from:d.from,since:d.fromWeek??null};}
-   if(!pick){missing.push(slot.pattern);return;}
+   const optionsFor=aside=>{
+    let list=CONFIGURATIONS.filter(e=>usable(e,role,{pattern,subpatterns:slot.subpatterns??null,used,aside})).sort(order(rolePurposes,preferred)),r=role,down=false;
+    // B0-C09: a MAIN pull slot without a MAIN-admissible pull takes the best ACCESSORY-admissible pull, as an ACCESSORY row, disclosed.
+    if(!list.length&&role==='MAIN'&&pattern==='PULL'&&allowsCandidate(auth,'B0-C09')){const within=e=>(slot.subpatterns??[]).includes(e.subpattern)?0:1,cmp=order(accessoryPurposes,preferred);list=CONFIGURATIONS.filter(e=>usable(e,'ACCESSORY',{pattern,used,aside})).sort((a,b)=>within(a)-within(b)||cmp(a,b));if(list.length){r='ACCESSORY';down=true;}}
+    return {list,r,down};
+   };
+   // Selection directives (QE-R7B-01): the slot's natural pick, as if nothing had been set aside, then every recorded decision on it in the order
+   // it was made (ladder step, MAIN change, reason-based substitution), each applied when its configuration fits the slot (pattern, MAIN
+   // subpatterns, role, equipment, skill or ladder reach). A set-aside configuration is only a step on the way: the result never is one; if no
+   // decision moves the slot off it, the slot takes its best configuration not set aside.
+   const open=optionsFor(false),natural=setAside.size?optionsFor(true):open;
+   const options=open.list;
+   let rowRole=natural.r,downgraded=natural.down,pick=natural.list[0]??null,directive=null;
+   const fits=to=>!!to&&admitted(to,auth)&&to.roles.includes(rowRole)&&to.equipment.every(q=>available.has(q))&&skillOk(to)&&!used.has(to.id)&&(to.pattern===pick.pattern||to.pattern===slot.pattern)&&(rowRole!=='MAIN'||!slot.subpatterns||slot.subpatterns.includes(to.subpattern))&&(!knownOnly||noExternalLoad(to)||withDose.has(to.id));
+   // A decision names the slots where its configuration was in use (rotation included); one without them applies where the slot picks it.
+   const located=d=>Array.isArray(d.slots)&&d.slots.some(x=>x?.template===types[index]&&x?.slot===si);
+   for(const d of selections){if(!pick||!d.to||d.to===pick.id||d.from!==pick.id&&!located(d))continue;const to=configurationOf(d.to);if(!fits(to))continue;pick=to;directive={reason:d.reason,from:d.from,since:d.fromWeek??null};}
+   if(pick&&setAside.has(pick.id)){pick=open.list[0]??null;rowRole=open.r;downgraded=open.down;directive=null;}
+   // Q-R7B-07: what limits an unfilled or downgraded slot, skill or equipment: skill when a configuration that fits the equipment and the role
+   // fails only the skill gate.
+   const fitsSlot=(e,r)=>e.pattern===pattern&&(!slot.subpatterns||slot.subpatterns.includes(e.subpattern))&&admitted(e,auth)&&e.roles.includes(r);
+   const skillLimited=r=>CONFIGURATIONS.some(e=>fitsSlot(e,r)&&e.equipment.every(q=>available.has(q))&&!skillOk(e));
+   const helpFor=r=>[...new Set(CONFIGURATIONS.filter(e=>fitsSlot(e,r)&&skillOk(e)&&!e.equipment.every(q=>available.has(q))).flatMap(e=>e.equipment.filter(q=>!available.has(q))))].sort();
+   if(!pick){missing.push(slot.pattern);missingLimits[slot.pattern]=helpFor(role).length?'EQUIPMENT':skillLimited(role)?'SKILL':'EQUIPMENT';return;}
    used.add(pick.id);
-   const alternatives=options.filter(o=>o.id!==pick.id&&admissibleAlternative(pick,o,{role:rowRole,goalPatterns,available,skillOk,auth})).slice(0,3).map(o=>o.id);
-   rows.push({slot:si,pattern:pick.pattern,slotPattern:slot.pattern,role:rowRole,entry:clone(pick),alternatives,emphasized:emph.has(pick.pattern)||emph.has(slot.pattern)||emph.has(pick.region),...(pattern!==slot.pattern?{goalContextPattern:pattern}:{}),...(slot.pattern==='CALF'&&calfSub.has(index+':'+si)?{calfAlternation:calfSub.get(index+':'+si)}:{}),...(downgraded?{downgradedFrom:'MAIN',coverage:'PULL_LIMITED_FOR_EQUIPMENT'}:{}),...(directive?{directive}:{}),familiar:familiar.has(pick.id)});
+   const alternatives=options.filter(o=>o.id!==pick.id&&!surpassed.has(o.id)&&admissibleAlternative(pick,o,{role:rowRole,goalPatterns,available,skillOk,auth})).slice(0,3).map(o=>o.id);
+   rows.push({slot:si,pattern:pick.pattern,slotPattern:slot.pattern,role:rowRole,entry:clone(pick),alternatives,emphasized:emph.has(pick.pattern)||emph.has(slot.pattern)||emph.has(pick.region),...(pattern!==slot.pattern?{goalContextPattern:pattern}:{}),...(slot.pattern==='CALF'&&calfSub.has(index+':'+si)?{calfAlternation:calfSub.get(index+':'+si)}:{}),...(downgraded?{downgradedFrom:'MAIN',coverage:'PULL_LIMITED_FOR_EQUIPMENT',limit:skillLimited('MAIN')?'SKILL':'EQUIPMENT',addEquipment:helpFor('MAIN')}:{}),...(directive?{directive}:{}),familiar:familiar.has(pick.id)});
   });
   rows.sort((x,y)=>Number(y.role==='MAIN')-Number(x.role==='MAIN')||Number(y.emphasized)-Number(x.emphasized)||x.slot-y.slot);
-  return {index,type:types[index],templateId:'TPL.'+types[index],family:STRENGTH_PRESCRIPTION_FAMILY[types[index]]??null,sessionFamily:FAMILY_OF_TEMPLATE[types[index]]??null,rows,missingPatterns:missing};
+  return {index,type:types[index],templateId:'TPL.'+types[index],family:STRENGTH_PRESCRIPTION_FAMILY[types[index]]??null,sessionFamily:FAMILY_OF_TEMPLATE[types[index]]??null,rows,missingPatterns:missing,missingLimits};
  });
  return templates;
 }
@@ -288,7 +310,11 @@ export function buildTemplates({types,equipment=[],experience='NOVICE',knownExer
 export function pullCoverageDisclosure(templates){
  const rows=templates.flatMap(t=>t.rows).filter(r=>r.coverage==='PULL_LIMITED_FOR_EQUIPMENT');
  if(!rows.length)return null;
- return {id:'PULL_LIMITED_FOR_EQUIPMENT',blocking:false,informational:true,exercises:[...new Set(rows.map(r=>r.entry.id))],detail:`No loaded row or pull-down fits the equipment you have, so the pull work is ${[...new Set(rows.map(r=>r.entry.id))].join(', ')}: a lower, different stimulus than a loaded row or pull-down, not an equivalent`,options:['Add a band or a bar','Accept limited pull work']};
+ const ids=[...new Set(rows.map(r=>r.entry.id))],help=[...new Set(rows.flatMap(r=>r.addEquipment??[]))].sort(),skill=rows.some(r=>r.limit==='SKILL');
+ // Q-R7B-07: the disclosure says whether skill or equipment is the limit, and offers only the equipment that would add a loaded row or pull-down
+ // at the athlete's skill level.
+ const add=help.includes('BANDS')?'Add a band':help.length?'Add equipment for a loaded row or pull-down':null;
+ return {id:'PULL_LIMITED_FOR_EQUIPMENT',blocking:false,informational:true,limit:skill?'SKILL':'EQUIPMENT',exercises:ids,...(help.length?{addEquipment:help}:{}),detail:(skill?'The rows and pull-downs your equipment allows need more practice first':'No loaded row or pull-down fits the equipment you have')+', so the pull work is '+ids.join(', ')+': a lower, different stimulus than a loaded row or pull-down, not an equivalent'+(skill?'; harder pulls come through their skill ladder at block reviews':''),options:[...(add?[add]:[]),'Accept limited pull work']};
 }
 /** Bodyweight or band rows that cannot approach the prescribed reserve at a load-mode goal's repetitions (B0-C03 condition 6, B0-C09 condition 4). */
 export function lowerStimulusDisclosure(templates,goalDose){
