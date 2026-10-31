@@ -56,3 +56,23 @@ Engineering recheck probes: N1, N1b, N3, N5, A10, A13, N7a–c, N7d, N8-N1 FAIL 
 1. Dispatch the SSCTR, Engineering and Quality judges (one review each, in parallel, own output folders, no in-place mutation scripts).
 2. Read the verdicts; at most one correction cycle for a narrow blocker created by R7-B.1's own correction (then a new freeze and a narrow recheck); otherwise close.
 3. Closure records, queue integration if the SSCTR approves records, insert-only closed blocks, memory, commit, push, remote HEAD check.
+
+## Reviews of R7B1-FREEZE-1 (committed at `2e874f1`)
+
+- SSCTR (`aa802176c57dcc4d3`, R7B1-SSCTR-r1): **ACCEPT_WITH_CONDITIONS**. OBS-04 met; F11 (MODERATE, inherited: equipment-forced event-week substitutes), F12 and F13 (MINOR) routed; seven records APPROVE_WITH_CONDITIONS bound to FREEZE-1.
+- Engineering (`a3bb1922f1384fa4f`, R7B1-ENG-r1): **NOT_READY**. QE-R7B1-01 MAJOR (a block choice skipped the clinical screen; R7-B.1's R2-02 fix gave it a prescription); QE-R7B1-02/-03 MINOR, pre-existing.
+- Quality (`a2cd5f24b68eb2a47`): **NOT_READY**. QR7B1-01 MAJOR (the no-lower-skill question is a dead end; created by the R2-03 fix); QR7B1-02 MAJOR (rotation and rebuilt slots bring never-performed configurations into the event weeks); QR7B1-03/-04 MINOR; QR7B1-05..07 observations.
+
+## Correction cycle (request §17; the only one)
+
+- Pre-freeze commit `dec8397`: runtime (`src/r6-adaptation.mjs`, `src/r6-program.mjs`), `test/r7b1-correction-cycle.test.mjs` (24 tests: 19 RED on FREEZE-1, 5 preservation), mutation probe M41–M57 (32 R7-B.1 mutants), delta matrix revision 2, `scripts/freeze-r7b1-2.mjs`, `scripts/verify-r7b1.mjs --freeze 1|2`, records appended (`BLOCKER_CLOSURE_R7B1.md` C1–C6, `TEST_CHANGES_R7B1.md`).
+- Closed in the batch: QE-R7B1-01, QR7B1-01, QR7B1-02 (with SSCTR F11), QR7B1-03, QR7B1-04 (with the review half of F12), QR7B1-05. Routed: F12 decision-time half, F13, QE-R7B1-02/-03, QR7B1-06/-07, Engineering observations.
+- Verified on the pre-freeze bytes: suite 786/786; intake differential 83/83 identical; timeline differential PASS (PRESERVE 98/98, grid 8 → 0); adversarial 3,228 checks, 0 failed; Quality q03 statuses identical, q09c slots not taken 12 → 0; SSCTR s02 94 → 0; Engineering J1b 16/16 clinical.
+- A prototype slip check keyed on session ids made 46 false questions for capped novices (q03 41 → 87); it was keyed on the week before porting.
+- `integrate-queue-r7b1.mjs` now binds the latest R7-B.1 freeze record (FREEZE-2 once it exists).
+
+## Next (in order, after the cycle)
+
+1. Mutation probes read-only, then `scripts/freeze-r7b1-2.mjs` → commit → `verify-r7b1.mjs --tests --write` → commit → push.
+2. One narrow recheck per gate by the same judges (SendMessage), outputs under `reviews/*/recheck/`; request files in `reviews/*_RECHECK_REQUEST.md`.
+3. Close: if a blocker remains, R7B_RUNTIME_REPERTOIRE_READY = NO; never V1_COACHING_AUTHORITY_READY = YES. Closure records, queue integration only if the SSCTR approves records bound to FREEZE-2, insert-only closed blocks, memory, commit, push, remote HEAD check. Stop; no R7-C.

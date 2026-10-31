@@ -1,7 +1,8 @@
 // Append-only integration of the SSCTR-approved R7-B.1 decisions into the funded-human revalidation queue (the R7-B script, re-bound).
 // Usage: node integrate-queue-r7b1.mjs <reviews/...md holding the JSON block> [--write]
 // Without --write it only checks. With --write it appends the entries verbatim (owner normalized to the queue policy value if needed), adds
-// r7b1_queue_addendum and writes QUEUE_INTEGRATION_R7B1.json. Entries must target the R7B1-FREEZE-1 record; REVISE or REJECT records are never queued.
+// r7b1_queue_addendum and writes QUEUE_INTEGRATION_R7B1.json. Entries must target the latest R7-B.1 freeze record (R7B1-FREEZE-2 once it exists,
+// the freeze the mission closes on); REVISE or REJECT records are never queued.
 import fs from 'node:fs';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
@@ -10,7 +11,7 @@ const root = path.resolve(import.meta.dirname, '../..');
 process.chdir(root);
 const A = 'audits/domain-coaching-r7-b1-2026-10-31/';
 const Q = 'reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json';
-const FREEZE = 'CoachingCore/r7/b1/RUNTIME_FREEZE_R7B1_1.json';
+const FREEZE = ['CoachingCore/r7/b1/RUNTIME_FREEZE_R7B1_2.json', 'CoachingCore/r7/b1/RUNTIME_FREEZE_R7B1_1.json'].find(p => fs.existsSync(p)), FREEZE_NAME = path.basename(FREEZE, '.json');
 const src = process.argv[2];
 if (!src) throw Error('Pass the reviews markdown that holds the queue JSON block.');
 const sha = b => createHash('sha256').update(b).digest('hex');
@@ -30,7 +31,7 @@ for (const e of entries) {
   if (e.human_review !== null) problems.push(e.queue_id + ': human_review not null');
   if (!Array.isArray(e.conditions) || !e.conditions.length) problems.push(e.queue_id + ': no conditions');
   const t = JSON.stringify(e.target ?? {});
-  if (!t.includes(freeze.sourceDigest) && !t.includes(freezeSha) && !t.includes('RUNTIME_FREEZE_R7B1_1')) problems.push(e.queue_id + ': target is not the R7B1-FREEZE-1 record');
+  if (!t.includes(freeze.sourceDigest) && !t.includes(freezeSha) && !t.includes(FREEZE_NAME)) problems.push(e.queue_id + ': target is not the ' + freeze.revision + ' record');
   if (e.owner !== OWNER) ownersProposed[e.queue_id] = e.owner;
 }
 if (new Set(entries.map(e => e.queue_id)).size !== entries.length) problems.push('duplicate queue ids in the block');
@@ -46,7 +47,7 @@ if (process.argv.includes('--write')) {
     addedItems: entries.length,
     r7b1Items: entries.map(e => e.queue_id),
     sources: [{file: src, sha256: report.source.sha256, items: entries.length}],
-    unit: 'SSCTR-approved R7-B.1 decisions (revision R7B1-SSCTR-r1), bound to R7B1-FREEZE-1; no generated-workout rows',
+    unit: 'SSCTR-approved R7-B.1 decisions (the revision the block states), bound to ' + freeze.revision + '; no generated-workout rows',
     notQueued: {'REVISE or REJECT records': 'Not approvals; never queued', 'R7-B records': 'Their queued r2 entries stay as they are; R7-B.1 records supersede them only where they say so'},
     ownerNormalized: 'Every field verbatim from the SSCTR block except owner, set to Chief / Founder as the queue policy requires; proposed owners are recorded in QUEUE_INTEGRATION_R7B1.json',
     fundingStateUnchanged: true,
