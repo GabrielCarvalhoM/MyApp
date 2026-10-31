@@ -1,0 +1,263 @@
+{
+ "check": "R7B1-MUTATION",
+ "mutants": 15,
+ "killed": 15,
+ "survived": [],
+ "equivalent": [],
+ "invalid": [],
+ "sourceRestored": true,
+ "results": [
+  {
+   "id": "M26",
+   "blocker": "QE-R7B-R2-02",
+   "what": "the block-choice question asked mid-week or in another review kind drops the factual re-plan",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 4,
+   "passedTests": 25,
+   "failing": [
+    "✖ R7-B.1 R2-02: a mid-week correction with a block choice asks and still carries the factual re-plan (342.7543ms)",
+    "✖ R7-B.1 R2-02: no stale-state resurrection after the question: later reviews keep the corrected basis (266.04ms)",
+    "✖ R7-B.1 R2-02: a correction with a graduation answer mid-week asks and carries the withdrawal (60.2795ms)",
+    "✖ R7-B.1 R2-02: a correction with a block choice in another review kind asks and carries the factual re-plan (246.624ms)"
+   ]
+  },
+  {
+   "id": "M27",
+   "blocker": "QE-R7B-R2-02",
+   "what": "the block-choice question of a complete review that never reached the boundary step drops the factual re-plan",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 28,
+   "failing": [
+    "✖ R7-B.1 R2-02: a correction with a block choice in the final week's complete review asks and carries the factual re-plan (353.3279ms)",
+    "✖ R7-B.1 R2-02: a correction with a block choice in the final week's complete review asks and carries the factual re-plan (353.3279ms)"
+   ]
+  },
+  {
+   "id": "M28",
+   "blocker": "QE-R7B-R2-01",
+   "what": "proposals never store the novice templates of their context",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 4,
+   "passedTests": 25,
+   "failing": [
+    "✖ R7-B.1 R2-01: a capped novice SKILL_MISMATCH substitution survives the next weekly reviews (140.8593ms)",
+    "✖ R7-B.1 R2-01: a capped novice preference substitution survives the next weekly reviews (151.4208ms)",
+    "✖ R7-B.1 R2-01: a cap started by a schedule change survives the next weekly reviews (76.827ms)",
+    "✖ R7-B.1 R2-01: a kettlebell-only change while capped survives the next weekly review (94.6485ms)"
+   ]
+  },
+  {
+   "id": "M29",
+   "blocker": "QE-R7B-R2-01",
+   "what": "a re-plan of the context (substitution, schedule, goal, block boundary) does not state its novice templates",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 3,
+   "passedTests": 26,
+   "failing": [
+    "✖ R7-B.1 R2-01: a capped novice SKILL_MISMATCH substitution survives the next weekly reviews (139.135ms)",
+    "✖ R7-B.1 R2-01: a capped novice preference substitution survives the next weekly reviews (143.492ms)",
+    "✖ R7-B.1 R2-01: a cap started by a schedule change survives the next weekly reviews (80.2358ms)",
+    "✖ R7-B.1 R2-01: a capped novice SKILL_MISMATCH substitution survives the next weekly reviews (139.135ms)"
+   ]
+  },
+  {
+   "id": "M30",
+   "blocker": "QE-R7B-R2-01",
+   "what": "an equipment change does not state the novice templates it rebuilt",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 28,
+   "failing": [
+    "✖ R7-B.1 R2-01: a kettlebell-only change while capped survives the next weekly review (92.74ms)",
+    "✖ R7-B.1 R2-01: a kettlebell-only change while capped survives the next weekly review (92.74ms)"
+   ]
+  },
+  {
+   "id": "M31",
+   "blocker": "QE-R7B-R2-03",
+   "what": "the set-aside fallback ignores the SKILL_MISMATCH direction (the slot's best configuration, higher skill first)",
+   "file": "src/r7b-repertoire.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 4,
+   "passedTests": 25,
+   "failing": [
+    "✖ R7-B.1 R2-03: a permanent loss of the substitute's equipment never climbs the ladder, also after later reviews (166.8288ms)",
+    "✖ R7-B.1 R2-03: a dated window without the substitute's equipment never climbs the ladder (167.0069ms)",
+    "✖ R7-B.1 R2-03: the fallback never rises above the substitute in use, even where harder options lie below the set-aside one (166.9275ms)",
+    "✖ R7-B.1 R2-03: with no lower option the equipment change asks instead of climbing (141.5614ms)"
+   ]
+  },
+  {
+   "id": "M32",
+   "blocker": "QE-R7B-R2-03",
+   "what": "the fallback may rise above the substitute in use while staying below the set-aside configuration",
+   "file": "src/r7b-repertoire.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 28,
+   "failing": [
+    "✖ R7-B.1 R2-03: the fallback never rises above the substitute in use, even where harder options lie below the set-aside one (164.0612ms)",
+    "✖ R7-B.1 R2-03: the fallback never rises above the substitute in use, even where harder options lie below the set-aside one (164.0612ms)"
+   ]
+  },
+  {
+   "id": "M33",
+   "blocker": "QE-R7B-R2-03",
+   "what": "without a lower option the equipment change proceeds instead of asking",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 28,
+   "failing": [
+    "✖ R7-B.1 R2-03: with no lower option the equipment change asks instead of climbing (141.4471ms)",
+    "✖ R7-B.1 R2-03: with no lower option the equipment change asks instead of climbing (141.4471ms)"
+   ]
+  },
+  {
+   "id": "M34",
+   "blocker": "QE-R7B-R2-03",
+   "what": "the SKILL_MISMATCH direction also binds a slot that only held the substitute (false questions)",
+   "file": "src/r7b-repertoire.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 28,
+   "failing": [
+    "✖ R7-B.1 R2-03: a SKILL_MISMATCH substitute that held another slot is applied; that slot keeps its own fallback (155.5119ms)",
+    "✖ R7-B.1 R2-03: a SKILL_MISMATCH substitute that held another slot is applied; that slot keeps its own fallback (155.5119ms)"
+   ]
+  },
+  {
+   "id": "M35",
+   "blocker": "QE-R7B-OBS-04",
+   "what": "no event-week rule for a configuration a reason-based substitution placed",
+   "file": "src/r6-program.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 8,
+   "passedTests": 21,
+   "failing": [
+    "✖ R7-B.1 OBS-04: a substitution requested in TAPER brings no never-performed exercise into the event weeks (377.1219ms)",
+    "✖ R7-B.1 OBS-04: a substitution requested in RACE_WEEK brings no never-performed exercise into the event weeks (376.3358ms)",
+    "✖ R7-B.1 OBS-04: a substitution requested in POST_EVENT brings no never-performed exercise into the event weeks (410.5989ms)",
+    "✖ R7-B.1 OBS-04: in event weeks a configuration already performed in this program and admissible stands in; otherwise the slot is left out and disclosed (353.1514ms)"
+   ]
+  },
+  {
+   "id": "M36",
+   "blocker": "QE-R7B-OBS-04",
+   "what": "an exercise reported at intake counts as performed in this program",
+   "file": "src/r6-program.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 28,
+   "failing": [
+    "✖ R7-B.1 OBS-04: an exercise familiar at intake but never performed in this program is still new in the event weeks (352.2256ms)",
+    "✖ R7-B.1 OBS-04: an exercise familiar at intake but never performed in this program is still new in the event weeks (352.2256ms)"
+   ]
+  },
+  {
+   "id": "M37",
+   "blocker": "QE-R7B-OBS-04",
+   "what": "any performed configuration may stand in, admissible alternative or not",
+   "file": "src/r6-program.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 28,
+   "failing": [
+    "✖ R7-B.1 OBS-04: an admissible configuration this program performed stands in during the taper, at its own dose (407.1003ms)",
+    "✖ R7-B.1 OBS-04: an admissible configuration this program performed stands in during the taper, at its own dose (407.1003ms)"
+   ]
+  },
+  {
+   "id": "M38",
+   "blocker": "QE-R7B-OBS-04",
+   "what": "a stand-in after a SKILL_MISMATCH ignores the direction of the reason",
+   "file": "src/r6-program.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 28,
+   "failing": [
+    "✖ R7-B.1 OBS-04: after a SKILL_MISMATCH a stand-in follows the direction of the reason, or the slot is left out (548.3475ms)",
+    "✖ R7-B.1 OBS-04: after a SKILL_MISMATCH a stand-in follows the direction of the reason, or the slot is left out (548.3475ms)"
+   ]
+  },
+  {
+   "id": "M39",
+   "blocker": "QE-R7B-OBS-04",
+   "what": "a substitution whose substitute waits for the end of the event weeks is refused",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 28,
+   "failing": [
+    "✖ R7-B.1 OBS-04: a program that ends with the post-event week still records the substitution, disclosed (243.9732ms)",
+    "✖ R7-B.1 OBS-04: a program that ends with the post-event week still records the substitution, disclosed (243.9732ms)"
+   ]
+  },
+  {
+   "id": "M40",
+   "blocker": "QE-R7B-01 (QE-R7B-R2-04)",
+   "what": "a candidate that cannot take every slot of the replaced exercise is still selected",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 4,
+   "passedTests": 25,
+   "failing": [
+    "✖ R7-B.1 QE-R7B-01 residual: a substitution of an accessory row beside the MAIN it would duplicate never selects an exercise already in the same session (157.9905ms)",
+    "✖ R7-B.1 QE-R7B-01 residual: a substitution of a bodyweight push accessory never selects an exercise already in the same session (167.792ms)",
+    "✖ R7-B.1 QE-R7B-01 residual: a substitution of a machine press accessory never selects an exercise already in the same session (165.6384ms)",
+    "✖ R7-B.1 QE-R7B-01 residual: a named exercise already in a session with the replaced one is asked about (154.4309ms)"
+   ]
+  }
+ ]
+}
