@@ -1,0 +1,3775 @@
+{
+ "probe": "R7ADA-SSCTR-r1-CONTINUOUS-BOUNDARY",
+ "runtime": "predecessor STATE-MODEL-CONSUMER-FREEZE-1 (scratch rebuild)",
+ "walkJogExit": {
+  "easyMinutes": 25,
+  "maxRunsPerWeek": 3
+ },
+ "singleRunCeiling": {
+  "windowDays": 30,
+  "stepMinutes": 5,
+  "appliesTo": "Every planned run except the race, including long-run steps, RESTART->EASY and WALK_JOG->EASY transitions and return steps",
+  "reference": "Longest completed run in the preceding windowDays from the completed-work ledger; in a conditional projection, earlier projected weeks count as executed. Walk/jog sessions count their jogging minutes. With no completed run in the window, the reviewed entry (return.entryRunMinutes) is the ceiling in every week, not only the first projected week; in the first cold-start week the intake ceiling applies.",
+  "disclosure": "When the reference run is under 50 minutes a 5-minute step exceeds 10% of it; the step stays response-gated, is disclosed and is never combined with another single-session increase in the same week."
+ },
+ "ladderTop": {
+  "repetitions": 1,
+  "jogSeconds": 1200,
+  "walkSeconds": 0
+ },
+ "athletes": {
+  "TOP5": {
+   "weeks": 12,
+   "exitWeek": 4,
+   "exitPhase": "CONSOLIDATION",
+   "referenceLadder": [
+    "w2 DEVELOPMENT: 11-16 WALK_JOG:26 WALK_JOG_STEP=7 | 11-17 WALK:20 | 11-18 WALK_JOG:26 WALK_JOG_STEP=7 | 11-20 WALK_JOG:26 WALK_JOG_STEP=7 | 11-21 WALK:20",
+    "w3 DEVELOPMENT: 11-23 WALK_JOG:28 WALK_JOG_STEP=8 | 11-24 WALK:20 | 11-25 WALK_JOG:28 WALK_JOG_STEP=8 | 11-27 WALK_JOG:28 WALK_JOG_STEP=8 | 11-28 WALK:20",
+    "w4 CONSOLIDATION: 11-30 EASY:25 EASY_MINUTES=25 | 12-01 EASY:25 EASY_MINUTES=25 | 12-02 EASY:25 EASY_MINUTES=25 | 12-04 WALK:20 | 12-05 WALK:20",
+    "w5 DEVELOPMENT: 12-07 EASY:25 EASY_MINUTES=25 | 12-08 EASY:25 EASY_MINUTES=25 | 12-09 EASY:25 EASY_MINUTES=25 | 12-11 WALK:20 | 12-12 WALK:20"
+   ],
+   "cells": {
+    "EXIT_EARNED_REVIEWED/SHORT": {
+     "pause": "2026-11-30..2026-12-04",
+     "lastSessionRun": "2026-11-27 WALK_JOG step 8",
+     "longestContinuousExecuted": 20,
+     "lastExecutedWeek": {
+      "week": 3,
+      "runningSessions": 3,
+      "jogMinutes": 60
+     },
+     "historyAtPause": {
+      "mode": "EASY",
+      "walkStep": 9,
+      "easy": 25,
+      "long": null,
+      "returnStep": null,
+      "restart": 15,
+      "longestContinuous": 20
+     },
+     "planWeekXBeforePause": [
+      "11-30 EASY:25 EASY_MINUTES=25",
+      "12-01 EASY:25 EASY_MINUTES=25",
+      "12-02 EASY:25 EASY_MINUTES=25",
+      "12-04 WALK:20",
+      "12-05 WALK:20"
+     ],
+     "return": "MODIFY/REESTABLISH",
+     "entry": {
+      "mode": "EASY",
+      "walkStep": 9,
+      "easy": 25,
+      "restart": 15,
+      "returnStep": null,
+      "returnFromEasy": null
+     },
+     "returnSpan": [
+      "w5 12-07 EASY:25 EASY_MINUTES=25",
+      "w5 12-08 EASY:25 EASY_MINUTES=25",
+      "w5 12-09 EASY:25 EASY_MINUTES=25",
+      "w5 12-11 WALK:20",
+      "w5 12-12 WALK:20",
+      "w6 12-14 EASY:25 EASY_MINUTES=25",
+      "w6 12-15 EASY:25 EASY_MINUTES=25",
+      "w6 12-16 EASY:25 EASY_MINUTES=25",
+      "w6 12-18 WALK:20",
+      "w6 12-19 WALK:20"
+     ],
+     "returnWeeks": [
+      {
+       "week": 5,
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      {
+       "week": 6,
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      }
+     ],
+     "ladderView": {
+      "lastStep": 8,
+      "recipeAllows": 8,
+      "reentryWeek": 5,
+      "continuousSessions": [
+       "w5 12-07 EASY:25 EASY_MINUTES=25",
+       "w5 12-08 EASY:25 EASY_MINUTES=25",
+       "w5 12-09 EASY:25 EASY_MINUTES=25"
+      ],
+      "walkJogAbove": []
+     },
+     "durationView": {
+      "longestContinuousExecuted": 20,
+      "longer": [
+       "w5 12-07 EASY:25 EASY_MINUTES=25",
+       "w5 12-08 EASY:25 EASY_MINUTES=25",
+       "w5 12-09 EASY:25 EASY_MINUTES=25"
+      ]
+     },
+     "weeklyView": {
+      "largestExecutedWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 60
+      },
+      "plannedWeekBeforePause": {
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      "reentryWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      "followingWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      "above": false
+     },
+     "log": [
+      "WEEKLY_REVIEW@2026-11-08T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-15T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-22T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-29T21:00:00Z KEEP/KEEP",
+      "RETURN_AFTER_PAUSE@2026-12-05T07:00:00Z MODIFY/REESTABLISH"
+     ]
+    },
+    "EXIT_EARNED_REVIEWED/MODERATE": {
+     "pause": "2026-11-30..2026-12-13",
+     "lastSessionRun": "2026-11-27 WALK_JOG step 8",
+     "longestContinuousExecuted": 20,
+     "lastExecutedWeek": {
+      "week": 3,
+      "runningSessions": 3,
+      "jogMinutes": 60
+     },
+     "historyAtPause": {
+      "mode": "EASY",
+      "walkStep": 9,
+      "easy": 25,
+      "long": null,
+      "returnStep": null,
+      "restart": 15,
+      "longestContinuous": 20
+     },
+     "planWeekXBeforePause": [
+      "11-30 EASY:25 EASY_MINUTES=25",
+      "12-01 EASY:25 EASY_MINUTES=25",
+      "12-02 EASY:25 EASY_MINUTES=25",
+      "12-04 WALK:20",
+      "12-05 WALK:20"
+     ],
+     "return": "MODIFY/REESTABLISH",
+     "entry": {
+      "mode": "RETURN",
+      "walkStep": 9,
+      "easy": 25,
+      "restart": 15,
+      "returnStep": 0,
+      "returnFromEasy": 15
+     },
+     "returnSpan": [
+      "w6 12-14 EASY:15 RETURN_STEP=0",
+      "w6 12-15 EASY:15 RETURN_STEP=0",
+      "w6 12-16 EASY:15 RETURN_STEP=0",
+      "w6 12-18 EASY:15 RETURN_STEP=0",
+      "w6 12-19 EASY:15 RETURN_STEP=0",
+      "w7 12-21 EASY:20 RETURN_STEP=1",
+      "w7 12-22 EASY:20 RETURN_STEP=1",
+      "w7 12-23 EASY:20 RETURN_STEP=1",
+      "w7 12-25 EASY:20 RETURN_STEP=1",
+      "w7 12-26 EASY:20 RETURN_STEP=1",
+      "w8 12-28 EASY:25 EASY_MINUTES=25",
+      "w8 12-29 EASY:25 EASY_MINUTES=25",
+      "w8 12-30 EASY:25 EASY_MINUTES=25",
+      "w8 01-01 WALK:20",
+      "w8 01-02 WALK:20"
+     ],
+     "returnWeeks": [
+      {
+       "week": 6,
+       "runningSessions": 5,
+       "jogMinutes": 75,
+       "walks": 0
+      },
+      {
+       "week": 7,
+       "runningSessions": 5,
+       "jogMinutes": 100,
+       "walks": 0
+      },
+      {
+       "week": 8,
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      }
+     ],
+     "ladderView": {
+      "lastStep": 8,
+      "recipeAllows": 7,
+      "reentryWeek": 6,
+      "continuousSessions": [
+       "w6 12-14 EASY:15 RETURN_STEP=0",
+       "w6 12-15 EASY:15 RETURN_STEP=0",
+       "w6 12-16 EASY:15 RETURN_STEP=0",
+       "w6 12-18 EASY:15 RETURN_STEP=0",
+       "w6 12-19 EASY:15 RETURN_STEP=0"
+      ],
+      "walkJogAbove": []
+     },
+     "durationView": {
+      "longestContinuousExecuted": 20,
+      "longer": []
+     },
+     "weeklyView": {
+      "largestExecutedWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 60
+      },
+      "plannedWeekBeforePause": {
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      "reentryWeek": {
+       "runningSessions": 5,
+       "jogMinutes": 75,
+       "walks": 0
+      },
+      "followingWeek": {
+       "runningSessions": 5,
+       "jogMinutes": 100,
+       "walks": 0
+      },
+      "above": true
+     },
+     "log": [
+      "WEEKLY_REVIEW@2026-11-08T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-15T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-22T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-29T21:00:00Z KEEP/KEEP",
+      "RETURN_AFTER_PAUSE@2026-12-14T07:00:00Z MODIFY/REESTABLISH"
+     ]
+    },
+    "EXIT_EARNED_REVIEWED/LONG": {
+     "pause": "2026-11-30..2027-01-01",
+     "lastSessionRun": "2026-11-27 WALK_JOG step 8",
+     "longestContinuousExecuted": 20,
+     "lastExecutedWeek": {
+      "week": 3,
+      "runningSessions": 3,
+      "jogMinutes": 60
+     },
+     "historyAtPause": {
+      "mode": "EASY",
+      "walkStep": 9,
+      "easy": 25,
+      "long": null,
+      "returnStep": null,
+      "restart": 15,
+      "longestContinuous": 20
+     },
+     "planWeekXBeforePause": [
+      "11-30 EASY:25 EASY_MINUTES=25",
+      "12-01 EASY:25 EASY_MINUTES=25",
+      "12-02 EASY:25 EASY_MINUTES=25",
+      "12-04 WALK:20",
+      "12-05 WALK:20"
+     ],
+     "return": "MODIFY/REESTABLISH",
+     "entry": {
+      "mode": "RESTART",
+      "walkStep": 0,
+      "easy": 25,
+      "restart": 15,
+      "returnStep": null,
+      "returnFromEasy": null
+     },
+     "returnSpan": [
+      "w9 01-04 EASY:15 RESTART_MINUTES=15",
+      "w9 01-05 WALK:20",
+      "w9 01-06 EASY:15 RESTART_MINUTES=15",
+      "w9 01-08 EASY:15 RESTART_MINUTES=15",
+      "w9 01-09 WALK:20",
+      "w10 01-11 EASY:20 RESTART_MINUTES=20",
+      "w10 01-12 WALK:20",
+      "w10 01-13 EASY:20 RESTART_MINUTES=20",
+      "w10 01-15 EASY:20 RESTART_MINUTES=20",
+      "w10 01-16 WALK:20"
+     ],
+     "returnWeeks": [
+      {
+       "week": 9,
+       "runningSessions": 3,
+       "jogMinutes": 45,
+       "walks": 2
+      },
+      {
+       "week": 10,
+       "runningSessions": 3,
+       "jogMinutes": 60,
+       "walks": 2
+      }
+     ],
+     "ladderView": {
+      "lastStep": 8,
+      "recipeAllows": 0,
+      "reentryWeek": 9,
+      "continuousSessions": [
+       "w9 01-04 EASY:15 RESTART_MINUTES=15",
+       "w9 01-06 EASY:15 RESTART_MINUTES=15",
+       "w9 01-08 EASY:15 RESTART_MINUTES=15"
+      ],
+      "walkJogAbove": []
+     },
+     "durationView": {
+      "longestContinuousExecuted": 20,
+      "longer": []
+     },
+     "weeklyView": {
+      "largestExecutedWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 60
+      },
+      "plannedWeekBeforePause": {
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      "reentryWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 45,
+       "walks": 2
+      },
+      "followingWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 60,
+       "walks": 2
+      },
+      "above": false
+     },
+     "log": [
+      "WEEKLY_REVIEW@2026-11-08T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-15T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-22T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-29T21:00:00Z KEEP/KEEP",
+      "RETURN_AFTER_PAUSE@2027-01-02T07:00:00Z MODIFY/REESTABLISH"
+     ]
+    },
+    "EXIT_EARNED_UNREVIEWED/SHORT": {
+     "pause": "2026-11-30..2026-12-04",
+     "lastSessionRun": "2026-11-27 WALK_JOG step 8",
+     "longestContinuousExecuted": 20,
+     "lastExecutedWeek": {
+      "week": 3,
+      "runningSessions": 3,
+      "jogMinutes": 60
+     },
+     "historyAtPause": {
+      "mode": "EASY",
+      "walkStep": 9,
+      "easy": 25,
+      "long": null,
+      "returnStep": null,
+      "restart": 15,
+      "longestContinuous": 20
+     },
+     "planWeekXBeforePause": [
+      "11-30 EASY:25 EASY_MINUTES=25",
+      "12-01 EASY:25 EASY_MINUTES=25",
+      "12-02 EASY:25 EASY_MINUTES=25",
+      "12-04 WALK:20",
+      "12-05 WALK:20"
+     ],
+     "return": "MODIFY/REESTABLISH",
+     "entry": {
+      "mode": "EASY",
+      "walkStep": 9,
+      "easy": 25,
+      "restart": 15,
+      "returnStep": null,
+      "returnFromEasy": null
+     },
+     "returnSpan": [
+      "w5 12-07 EASY:25 EASY_MINUTES=25",
+      "w5 12-08 EASY:25 EASY_MINUTES=25",
+      "w5 12-09 EASY:25 EASY_MINUTES=25",
+      "w5 12-11 WALK:20",
+      "w5 12-12 WALK:20",
+      "w6 12-14 EASY:25 EASY_MINUTES=25",
+      "w6 12-15 EASY:25 EASY_MINUTES=25",
+      "w6 12-16 EASY:25 EASY_MINUTES=25",
+      "w6 12-18 WALK:20",
+      "w6 12-19 WALK:20"
+     ],
+     "returnWeeks": [
+      {
+       "week": 5,
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      {
+       "week": 6,
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      }
+     ],
+     "ladderView": {
+      "lastStep": 8,
+      "recipeAllows": 8,
+      "reentryWeek": 5,
+      "continuousSessions": [
+       "w5 12-07 EASY:25 EASY_MINUTES=25",
+       "w5 12-08 EASY:25 EASY_MINUTES=25",
+       "w5 12-09 EASY:25 EASY_MINUTES=25"
+      ],
+      "walkJogAbove": []
+     },
+     "durationView": {
+      "longestContinuousExecuted": 20,
+      "longer": [
+       "w5 12-07 EASY:25 EASY_MINUTES=25",
+       "w5 12-08 EASY:25 EASY_MINUTES=25",
+       "w5 12-09 EASY:25 EASY_MINUTES=25"
+      ]
+     },
+     "weeklyView": {
+      "largestExecutedWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 60
+      },
+      "plannedWeekBeforePause": {
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      "reentryWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      "followingWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      "above": false
+     },
+     "log": [
+      "WEEKLY_REVIEW@2026-11-08T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-15T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-22T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-23T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-24T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-25T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-26T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-27T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-28T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-30T06:00:00Z KEEP/KEEP",
+      "RETURN_AFTER_PAUSE@2026-12-05T07:00:00Z MODIFY/REESTABLISH"
+     ]
+    },
+    "EXIT_EARNED_UNREVIEWED/MODERATE": {
+     "pause": "2026-11-30..2026-12-13",
+     "lastSessionRun": "2026-11-27 WALK_JOG step 8",
+     "longestContinuousExecuted": 20,
+     "lastExecutedWeek": {
+      "week": 3,
+      "runningSessions": 3,
+      "jogMinutes": 60
+     },
+     "historyAtPause": {
+      "mode": "EASY",
+      "walkStep": 9,
+      "easy": 25,
+      "long": null,
+      "returnStep": null,
+      "restart": 15,
+      "longestContinuous": 20
+     },
+     "planWeekXBeforePause": [
+      "11-30 EASY:25 EASY_MINUTES=25",
+      "12-01 EASY:25 EASY_MINUTES=25",
+      "12-02 EASY:25 EASY_MINUTES=25",
+      "12-04 WALK:20",
+      "12-05 WALK:20"
+     ],
+     "return": "MODIFY/REESTABLISH",
+     "entry": {
+      "mode": "RETURN",
+      "walkStep": 9,
+      "easy": 25,
+      "restart": 15,
+      "returnStep": 0,
+      "returnFromEasy": 15
+     },
+     "returnSpan": [
+      "w6 12-14 EASY:15 RETURN_STEP=0",
+      "w6 12-15 EASY:15 RETURN_STEP=0",
+      "w6 12-16 EASY:15 RETURN_STEP=0",
+      "w6 12-18 EASY:15 RETURN_STEP=0",
+      "w6 12-19 EASY:15 RETURN_STEP=0",
+      "w7 12-21 EASY:20 RETURN_STEP=1",
+      "w7 12-22 EASY:20 RETURN_STEP=1",
+      "w7 12-23 EASY:20 RETURN_STEP=1",
+      "w7 12-25 EASY:20 RETURN_STEP=1",
+      "w7 12-26 EASY:20 RETURN_STEP=1",
+      "w8 12-28 EASY:25 EASY_MINUTES=25",
+      "w8 12-29 EASY:25 EASY_MINUTES=25",
+      "w8 12-30 EASY:25 EASY_MINUTES=25",
+      "w8 01-01 WALK:20",
+      "w8 01-02 WALK:20"
+     ],
+     "returnWeeks": [
+      {
+       "week": 6,
+       "runningSessions": 5,
+       "jogMinutes": 75,
+       "walks": 0
+      },
+      {
+       "week": 7,
+       "runningSessions": 5,
+       "jogMinutes": 100,
+       "walks": 0
+      },
+      {
+       "week": 8,
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      }
+     ],
+     "ladderView": {
+      "lastStep": 8,
+      "recipeAllows": 7,
+      "reentryWeek": 6,
+      "continuousSessions": [
+       "w6 12-14 EASY:15 RETURN_STEP=0",
+       "w6 12-15 EASY:15 RETURN_STEP=0",
+       "w6 12-16 EASY:15 RETURN_STEP=0",
+       "w6 12-18 EASY:15 RETURN_STEP=0",
+       "w6 12-19 EASY:15 RETURN_STEP=0"
+      ],
+      "walkJogAbove": []
+     },
+     "durationView": {
+      "longestContinuousExecuted": 20,
+      "longer": []
+     },
+     "weeklyView": {
+      "largestExecutedWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 60
+      },
+      "plannedWeekBeforePause": {
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      "reentryWeek": {
+       "runningSessions": 5,
+       "jogMinutes": 75,
+       "walks": 0
+      },
+      "followingWeek": {
+       "runningSessions": 5,
+       "jogMinutes": 100,
+       "walks": 0
+      },
+      "above": true
+     },
+     "log": [
+      "WEEKLY_REVIEW@2026-11-08T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-15T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-22T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-23T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-24T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-25T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-26T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-27T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-28T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-30T06:00:00Z KEEP/KEEP",
+      "RETURN_AFTER_PAUSE@2026-12-14T07:00:00Z MODIFY/REESTABLISH"
+     ]
+    },
+    "EXIT_EARNED_UNREVIEWED/LONG": {
+     "pause": "2026-11-30..2027-01-01",
+     "lastSessionRun": "2026-11-27 WALK_JOG step 8",
+     "longestContinuousExecuted": 20,
+     "lastExecutedWeek": {
+      "week": 3,
+      "runningSessions": 3,
+      "jogMinutes": 60
+     },
+     "historyAtPause": {
+      "mode": "EASY",
+      "walkStep": 9,
+      "easy": 25,
+      "long": null,
+      "returnStep": null,
+      "restart": 15,
+      "longestContinuous": 20
+     },
+     "planWeekXBeforePause": [
+      "11-30 EASY:25 EASY_MINUTES=25",
+      "12-01 EASY:25 EASY_MINUTES=25",
+      "12-02 EASY:25 EASY_MINUTES=25",
+      "12-04 WALK:20",
+      "12-05 WALK:20"
+     ],
+     "return": "MODIFY/REESTABLISH",
+     "entry": {
+      "mode": "RESTART",
+      "walkStep": 0,
+      "easy": 25,
+      "restart": 15,
+      "returnStep": null,
+      "returnFromEasy": null
+     },
+     "returnSpan": [
+      "w9 01-04 EASY:15 RESTART_MINUTES=15",
+      "w9 01-05 WALK:20",
+      "w9 01-06 EASY:15 RESTART_MINUTES=15",
+      "w9 01-08 EASY:15 RESTART_MINUTES=15",
+      "w9 01-09 WALK:20",
+      "w10 01-11 EASY:20 RESTART_MINUTES=20",
+      "w10 01-12 WALK:20",
+      "w10 01-13 EASY:20 RESTART_MINUTES=20",
+      "w10 01-15 EASY:20 RESTART_MINUTES=20",
+      "w10 01-16 WALK:20"
+     ],
+     "returnWeeks": [
+      {
+       "week": 9,
+       "runningSessions": 3,
+       "jogMinutes": 45,
+       "walks": 2
+      },
+      {
+       "week": 10,
+       "runningSessions": 3,
+       "jogMinutes": 60,
+       "walks": 2
+      }
+     ],
+     "ladderView": {
+      "lastStep": 8,
+      "recipeAllows": 0,
+      "reentryWeek": 9,
+      "continuousSessions": [
+       "w9 01-04 EASY:15 RESTART_MINUTES=15",
+       "w9 01-06 EASY:15 RESTART_MINUTES=15",
+       "w9 01-08 EASY:15 RESTART_MINUTES=15"
+      ],
+      "walkJogAbove": []
+     },
+     "durationView": {
+      "longestContinuousExecuted": 20,
+      "longer": []
+     },
+     "weeklyView": {
+      "largestExecutedWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 60
+      },
+      "plannedWeekBeforePause": {
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      "reentryWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 45,
+       "walks": 2
+      },
+      "followingWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 60,
+       "walks": 2
+      },
+      "above": false
+     },
+     "log": [
+      "WEEKLY_REVIEW@2026-11-08T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-15T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-22T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-23T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-24T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-25T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-26T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-27T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-28T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-30T06:00:00Z KEEP/KEEP",
+      "RETURN_AFTER_PAUSE@2027-01-02T07:00:00Z MODIFY/REESTABLISH"
+     ]
+    },
+    "EXIT_HELD/SHORT": {
+     "pause": "2026-11-30..2026-12-04",
+     "lastSessionRun": "2026-11-27 WALK_JOG step 8",
+     "longestContinuousExecuted": 20,
+     "lastExecutedWeek": {
+      "week": 3,
+      "runningSessions": 2,
+      "jogMinutes": 40
+     },
+     "historyAtPause": {
+      "mode": "WALK_JOG",
+      "walkStep": 8,
+      "easy": null,
+      "long": null,
+      "returnStep": null,
+      "restart": 15,
+      "longestContinuous": null
+     },
+     "planWeekXBeforePause": [
+      "11-30 WALK_JOG:28 WALK_JOG_STEP=8",
+      "12-01 WALK:20",
+      "12-02 WALK_JOG:28 WALK_JOG_STEP=8",
+      "12-04 WALK_JOG:28 WALK_JOG_STEP=8",
+      "12-05 WALK:20"
+     ],
+     "return": "MODIFY/REESTABLISH",
+     "entry": {
+      "mode": "WALK_JOG",
+      "walkStep": 8,
+      "easy": null,
+      "restart": 15,
+      "returnStep": null,
+      "returnFromEasy": null
+     },
+     "returnSpan": [
+      "w5 12-07 WALK_JOG:28 step 8",
+      "w5 12-08 WALK:20",
+      "w5 12-09 WALK_JOG:28 step 8",
+      "w5 12-11 WALK_JOG:28 step 8",
+      "w5 12-12 WALK:20",
+      "w6 12-14 EASY:25 EASY_MINUTES=25",
+      "w6 12-15 EASY:25 EASY_MINUTES=25",
+      "w6 12-16 EASY:25 EASY_MINUTES=25",
+      "w6 12-18 WALK:20",
+      "w6 12-19 WALK:20"
+     ],
+     "returnWeeks": [
+      {
+       "week": 5,
+       "runningSessions": 3,
+       "jogMinutes": 60,
+       "walks": 2
+      },
+      {
+       "week": 6,
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      }
+     ],
+     "ladderView": {
+      "lastStep": 8,
+      "recipeAllows": 8,
+      "reentryWeek": 5,
+      "continuousSessions": [],
+      "walkJogAbove": []
+     },
+     "durationView": {
+      "longestContinuousExecuted": 20,
+      "longer": []
+     },
+     "weeklyView": {
+      "largestExecutedWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 48
+      },
+      "plannedWeekBeforePause": {
+       "runningSessions": 3,
+       "jogMinutes": 60,
+       "walks": 2
+      },
+      "reentryWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 60,
+       "walks": 2
+      },
+      "followingWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      "above": true
+     },
+     "log": [
+      "WEEKLY_REVIEW@2026-11-08T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-15T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-22T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-29T21:00:00Z MODIFY/GATED_NEXT_STEP",
+      "RETURN_AFTER_PAUSE@2026-12-05T07:00:00Z MODIFY/REESTABLISH"
+     ]
+    },
+    "EXIT_HELD/MODERATE": {
+     "pause": "2026-11-30..2026-12-13",
+     "lastSessionRun": "2026-11-27 WALK_JOG step 8",
+     "longestContinuousExecuted": 20,
+     "lastExecutedWeek": {
+      "week": 3,
+      "runningSessions": 2,
+      "jogMinutes": 40
+     },
+     "historyAtPause": {
+      "mode": "WALK_JOG",
+      "walkStep": 8,
+      "easy": null,
+      "long": null,
+      "returnStep": null,
+      "restart": 15,
+      "longestContinuous": null
+     },
+     "planWeekXBeforePause": [
+      "11-30 WALK_JOG:28 WALK_JOG_STEP=8",
+      "12-01 WALK:20",
+      "12-02 WALK_JOG:28 WALK_JOG_STEP=8",
+      "12-04 WALK_JOG:28 WALK_JOG_STEP=8",
+      "12-05 WALK:20"
+     ],
+     "return": "MODIFY/REESTABLISH",
+     "entry": {
+      "mode": "WALK_JOG",
+      "walkStep": 7,
+      "easy": null,
+      "restart": 15,
+      "returnStep": null,
+      "returnFromEasy": null
+     },
+     "returnSpan": [
+      "w6 12-14 WALK_JOG:26 step 7",
+      "w6 12-15 WALK:20",
+      "w6 12-16 WALK_JOG:26 step 7",
+      "w6 12-18 WALK_JOG:26 step 7",
+      "w6 12-19 WALK:20",
+      "w7 12-21 WALK_JOG:28 step 8",
+      "w7 12-22 WALK:20",
+      "w7 12-23 WALK_JOG:28 step 8",
+      "w7 12-25 WALK_JOG:28 step 8",
+      "w7 12-26 WALK:20",
+      "w8 12-28 EASY:25 EASY_MINUTES=25",
+      "w8 12-29 EASY:25 EASY_MINUTES=25",
+      "w8 12-30 EASY:25 EASY_MINUTES=25",
+      "w8 01-01 WALK:20",
+      "w8 01-02 WALK:20"
+     ],
+     "returnWeeks": [
+      {
+       "week": 6,
+       "runningSessions": 3,
+       "jogMinutes": 48,
+       "walks": 2
+      },
+      {
+       "week": 7,
+       "runningSessions": 3,
+       "jogMinutes": 60,
+       "walks": 2
+      },
+      {
+       "week": 8,
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      }
+     ],
+     "ladderView": {
+      "lastStep": 8,
+      "recipeAllows": 7,
+      "reentryWeek": 6,
+      "continuousSessions": [],
+      "walkJogAbove": []
+     },
+     "durationView": {
+      "longestContinuousExecuted": 20,
+      "longer": []
+     },
+     "weeklyView": {
+      "largestExecutedWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 48
+      },
+      "plannedWeekBeforePause": {
+       "runningSessions": 3,
+       "jogMinutes": 60,
+       "walks": 2
+      },
+      "reentryWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 48,
+       "walks": 2
+      },
+      "followingWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 60,
+       "walks": 2
+      },
+      "above": false
+     },
+     "log": [
+      "WEEKLY_REVIEW@2026-11-08T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-15T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-22T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-29T21:00:00Z MODIFY/GATED_NEXT_STEP",
+      "RETURN_AFTER_PAUSE@2026-12-14T07:00:00Z MODIFY/REESTABLISH"
+     ]
+    },
+    "EXIT_HELD/LONG": {
+     "pause": "2026-11-30..2027-01-01",
+     "lastSessionRun": "2026-11-27 WALK_JOG step 8",
+     "longestContinuousExecuted": 20,
+     "lastExecutedWeek": {
+      "week": 3,
+      "runningSessions": 2,
+      "jogMinutes": 40
+     },
+     "historyAtPause": {
+      "mode": "WALK_JOG",
+      "walkStep": 8,
+      "easy": null,
+      "long": null,
+      "returnStep": null,
+      "restart": 15,
+      "longestContinuous": null
+     },
+     "planWeekXBeforePause": [
+      "11-30 WALK_JOG:28 WALK_JOG_STEP=8",
+      "12-01 WALK:20",
+      "12-02 WALK_JOG:28 WALK_JOG_STEP=8",
+      "12-04 WALK_JOG:28 WALK_JOG_STEP=8",
+      "12-05 WALK:20"
+     ],
+     "return": "MODIFY/REESTABLISH",
+     "entry": {
+      "mode": "WALK_JOG",
+      "walkStep": 0,
+      "easy": null,
+      "restart": 15,
+      "returnStep": null,
+      "returnFromEasy": null
+     },
+     "returnSpan": [
+      "w9 01-04 WALK_JOG:20 step 0",
+      "w9 01-05 WALK:20",
+      "w9 01-06 WALK_JOG:20 step 0",
+      "w9 01-08 WALK_JOG:20 step 0",
+      "w9 01-09 WALK:20",
+      "w10 01-11 WALK_JOG:21 step 1",
+      "w10 01-12 WALK:20",
+      "w10 01-13 WALK_JOG:21 step 1",
+      "w10 01-15 WALK_JOG:21 step 1",
+      "w10 01-16 WALK:20"
+     ],
+     "returnWeeks": [
+      {
+       "week": 9,
+       "runningSessions": 3,
+       "jogMinutes": 4.5,
+       "walks": 2
+      },
+      {
+       "week": 10,
+       "runningSessions": 3,
+       "jogMinutes": 7.5,
+       "walks": 2
+      }
+     ],
+     "ladderView": {
+      "lastStep": 8,
+      "recipeAllows": 0,
+      "reentryWeek": 9,
+      "continuousSessions": [],
+      "walkJogAbove": []
+     },
+     "durationView": {
+      "longestContinuousExecuted": 20,
+      "longer": []
+     },
+     "weeklyView": {
+      "largestExecutedWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 48
+      },
+      "plannedWeekBeforePause": {
+       "runningSessions": 3,
+       "jogMinutes": 60,
+       "walks": 2
+      },
+      "reentryWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 4.5,
+       "walks": 2
+      },
+      "followingWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 7.5,
+       "walks": 2
+      },
+      "above": false
+     },
+     "log": [
+      "WEEKLY_REVIEW@2026-11-08T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-15T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-22T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-29T21:00:00Z MODIFY/GATED_NEXT_STEP",
+      "RETURN_AFTER_PAUSE@2027-01-02T07:00:00Z MODIFY/REESTABLISH"
+     ]
+    },
+    "EXIT_PROJECTED_ONLY/SHORT": {
+     "pause": "2026-11-30..2026-12-04",
+     "lastSessionRun": "2026-11-20 WALK_JOG step 7",
+     "longestContinuousExecuted": 8,
+     "lastExecutedWeek": {
+      "week": 2,
+      "runningSessions": 3,
+      "jogMinutes": 48
+     },
+     "historyAtPause": {
+      "mode": "WALK_JOG",
+      "walkStep": 8,
+      "easy": null,
+      "long": null,
+      "returnStep": null,
+      "restart": 15,
+      "longestContinuous": null
+     },
+     "planWeekXBeforePause": [
+      "11-30 WALK_JOG:28 WALK_JOG_STEP=8",
+      "12-01 WALK:20",
+      "12-02 WALK_JOG:28 WALK_JOG_STEP=8",
+      "12-04 WALK_JOG:28 WALK_JOG_STEP=8",
+      "12-05 WALK:20"
+     ],
+     "return": "MODIFY/REESTABLISH",
+     "entry": {
+      "mode": "WALK_JOG",
+      "walkStep": 7,
+      "easy": null,
+      "restart": 15,
+      "returnStep": null,
+      "returnFromEasy": null
+     },
+     "returnSpan": [
+      "w5 12-07 WALK_JOG:26 step 7",
+      "w5 12-08 WALK:20",
+      "w5 12-09 WALK_JOG:26 step 7",
+      "w5 12-11 WALK_JOG:26 step 7",
+      "w5 12-12 WALK:20",
+      "w6 12-14 WALK_JOG:28 step 8",
+      "w6 12-15 WALK:20",
+      "w6 12-16 WALK_JOG:28 step 8",
+      "w6 12-18 WALK_JOG:28 step 8",
+      "w6 12-19 WALK:20"
+     ],
+     "returnWeeks": [
+      {
+       "week": 5,
+       "runningSessions": 3,
+       "jogMinutes": 48,
+       "walks": 2
+      },
+      {
+       "week": 6,
+       "runningSessions": 3,
+       "jogMinutes": 60,
+       "walks": 2
+      }
+     ],
+     "ladderView": {
+      "lastStep": 7,
+      "recipeAllows": 7,
+      "reentryWeek": 5,
+      "continuousSessions": [],
+      "walkJogAbove": []
+     },
+     "durationView": {
+      "longestContinuousExecuted": 8,
+      "longer": []
+     },
+     "weeklyView": {
+      "largestExecutedWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 48
+      },
+      "plannedWeekBeforePause": {
+       "runningSessions": 3,
+       "jogMinutes": 60,
+       "walks": 2
+      },
+      "reentryWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 48,
+       "walks": 2
+      },
+      "followingWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 60,
+       "walks": 2
+      },
+      "above": false
+     },
+     "log": [
+      "WEEKLY_REVIEW@2026-11-08T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-15T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-22T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-29T21:00:00Z MODIFY/GATED_NEXT_STEP",
+      "RETURN_AFTER_PAUSE@2026-12-05T07:00:00Z MODIFY/REESTABLISH"
+     ]
+    },
+    "EXIT_PROJECTED_ONLY/MODERATE": {
+     "pause": "2026-11-30..2026-12-13",
+     "lastSessionRun": "2026-11-20 WALK_JOG step 7",
+     "longestContinuousExecuted": 8,
+     "lastExecutedWeek": {
+      "week": 2,
+      "runningSessions": 3,
+      "jogMinutes": 48
+     },
+     "historyAtPause": {
+      "mode": "WALK_JOG",
+      "walkStep": 8,
+      "easy": null,
+      "long": null,
+      "returnStep": null,
+      "restart": 15,
+      "longestContinuous": null
+     },
+     "planWeekXBeforePause": [
+      "11-30 WALK_JOG:28 WALK_JOG_STEP=8",
+      "12-01 WALK:20",
+      "12-02 WALK_JOG:28 WALK_JOG_STEP=8",
+      "12-04 WALK_JOG:28 WALK_JOG_STEP=8",
+      "12-05 WALK:20"
+     ],
+     "return": "MODIFY/REESTABLISH",
+     "entry": {
+      "mode": "WALK_JOG",
+      "walkStep": 6,
+      "easy": null,
+      "restart": 15,
+      "returnStep": null,
+      "returnFromEasy": null
+     },
+     "returnSpan": [
+      "w6 12-14 WALK_JOG:28 step 6",
+      "w6 12-15 WALK:20",
+      "w6 12-16 WALK_JOG:28 step 6",
+      "w6 12-18 WALK_JOG:28 step 6",
+      "w6 12-19 WALK:20",
+      "w7 12-21 WALK_JOG:26 step 7",
+      "w7 12-22 WALK:20",
+      "w7 12-23 WALK_JOG:26 step 7",
+      "w7 12-25 WALK_JOG:26 step 7",
+      "w7 12-26 WALK:20",
+      "w8 12-28 WALK_JOG:28 step 8",
+      "w8 12-29 WALK:20",
+      "w8 12-30 WALK_JOG:28 step 8",
+      "w8 01-01 WALK_JOG:28 step 8",
+      "w8 01-02 WALK:20"
+     ],
+     "returnWeeks": [
+      {
+       "week": 6,
+       "runningSessions": 3,
+       "jogMinutes": 45,
+       "walks": 2
+      },
+      {
+       "week": 7,
+       "runningSessions": 3,
+       "jogMinutes": 48,
+       "walks": 2
+      },
+      {
+       "week": 8,
+       "runningSessions": 3,
+       "jogMinutes": 60,
+       "walks": 2
+      }
+     ],
+     "ladderView": {
+      "lastStep": 7,
+      "recipeAllows": 6,
+      "reentryWeek": 6,
+      "continuousSessions": [],
+      "walkJogAbove": []
+     },
+     "durationView": {
+      "longestContinuousExecuted": 8,
+      "longer": []
+     },
+     "weeklyView": {
+      "largestExecutedWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 48
+      },
+      "plannedWeekBeforePause": {
+       "runningSessions": 3,
+       "jogMinutes": 60,
+       "walks": 2
+      },
+      "reentryWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 45,
+       "walks": 2
+      },
+      "followingWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 48,
+       "walks": 2
+      },
+      "above": false
+     },
+     "log": [
+      "WEEKLY_REVIEW@2026-11-08T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-15T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-22T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-29T21:00:00Z MODIFY/GATED_NEXT_STEP",
+      "RETURN_AFTER_PAUSE@2026-12-14T07:00:00Z MODIFY/REESTABLISH"
+     ]
+    },
+    "EXIT_PROJECTED_ONLY/LONG": {
+     "pause": "2026-11-30..2027-01-01",
+     "lastSessionRun": "2026-11-20 WALK_JOG step 7",
+     "longestContinuousExecuted": 8,
+     "lastExecutedWeek": {
+      "week": 2,
+      "runningSessions": 3,
+      "jogMinutes": 48
+     },
+     "historyAtPause": {
+      "mode": "WALK_JOG",
+      "walkStep": 8,
+      "easy": null,
+      "long": null,
+      "returnStep": null,
+      "restart": 15,
+      "longestContinuous": null
+     },
+     "planWeekXBeforePause": [
+      "11-30 WALK_JOG:28 WALK_JOG_STEP=8",
+      "12-01 WALK:20",
+      "12-02 WALK_JOG:28 WALK_JOG_STEP=8",
+      "12-04 WALK_JOG:28 WALK_JOG_STEP=8",
+      "12-05 WALK:20"
+     ],
+     "return": "MODIFY/REESTABLISH",
+     "entry": {
+      "mode": "WALK_JOG",
+      "walkStep": 0,
+      "easy": null,
+      "restart": 15,
+      "returnStep": null,
+      "returnFromEasy": null
+     },
+     "returnSpan": [
+      "w9 01-04 WALK_JOG:20 step 0",
+      "w9 01-05 WALK:20",
+      "w9 01-06 WALK_JOG:20 step 0",
+      "w9 01-08 WALK_JOG:20 step 0",
+      "w9 01-09 WALK:20",
+      "w10 01-11 WALK_JOG:21 step 1",
+      "w10 01-12 WALK:20",
+      "w10 01-13 WALK_JOG:21 step 1",
+      "w10 01-15 WALK_JOG:21 step 1",
+      "w10 01-16 WALK:20"
+     ],
+     "returnWeeks": [
+      {
+       "week": 9,
+       "runningSessions": 3,
+       "jogMinutes": 4.5,
+       "walks": 2
+      },
+      {
+       "week": 10,
+       "runningSessions": 3,
+       "jogMinutes": 7.5,
+       "walks": 2
+      }
+     ],
+     "ladderView": {
+      "lastStep": 7,
+      "recipeAllows": 0,
+      "reentryWeek": 9,
+      "continuousSessions": [],
+      "walkJogAbove": []
+     },
+     "durationView": {
+      "longestContinuousExecuted": 8,
+      "longer": []
+     },
+     "weeklyView": {
+      "largestExecutedWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 48
+      },
+      "plannedWeekBeforePause": {
+       "runningSessions": 3,
+       "jogMinutes": 60,
+       "walks": 2
+      },
+      "reentryWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 4.5,
+       "walks": 2
+      },
+      "followingWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 7.5,
+       "walks": 2
+      },
+      "above": false
+     },
+     "log": [
+      "WEEKLY_REVIEW@2026-11-08T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-15T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-22T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-29T21:00:00Z MODIFY/GATED_NEXT_STEP",
+      "RETURN_AFTER_PAUSE@2027-01-02T07:00:00Z MODIFY/REESTABLISH"
+     ]
+    },
+    "EXIT_PROJECTED_OPEN/SHORT": {
+     "pause": "2026-11-30..2026-12-04",
+     "lastSessionRun": "2026-11-20 WALK_JOG step 7",
+     "longestContinuousExecuted": 8,
+     "lastExecutedWeek": {
+      "week": 2,
+      "runningSessions": 3,
+      "jogMinutes": 48
+     },
+     "historyAtPause": {
+      "mode": "WALK_JOG",
+      "walkStep": 8,
+      "easy": null,
+      "long": null,
+      "returnStep": null,
+      "restart": 15,
+      "longestContinuous": null
+     },
+     "planWeekXBeforePause": [
+      "11-30 EASY:25 EASY_MINUTES=25",
+      "12-01 EASY:25 EASY_MINUTES=25",
+      "12-02 EASY:25 EASY_MINUTES=25",
+      "12-04 WALK:20",
+      "12-05 WALK:20"
+     ],
+     "return": "MODIFY/REESTABLISH",
+     "entry": {
+      "mode": "WALK_JOG",
+      "walkStep": 7,
+      "easy": null,
+      "restart": 15,
+      "returnStep": null,
+      "returnFromEasy": null
+     },
+     "returnSpan": [
+      "w5 12-07 WALK_JOG:26 step 7",
+      "w5 12-08 WALK:20",
+      "w5 12-09 WALK_JOG:26 step 7",
+      "w5 12-11 WALK_JOG:26 step 7",
+      "w5 12-12 WALK:20",
+      "w6 12-14 WALK_JOG:28 step 8",
+      "w6 12-15 WALK:20",
+      "w6 12-16 WALK_JOG:28 step 8",
+      "w6 12-18 WALK_JOG:28 step 8",
+      "w6 12-19 WALK:20"
+     ],
+     "returnWeeks": [
+      {
+       "week": 5,
+       "runningSessions": 3,
+       "jogMinutes": 48,
+       "walks": 2
+      },
+      {
+       "week": 6,
+       "runningSessions": 3,
+       "jogMinutes": 60,
+       "walks": 2
+      }
+     ],
+     "ladderView": {
+      "lastStep": 7,
+      "recipeAllows": 7,
+      "reentryWeek": 5,
+      "continuousSessions": [],
+      "walkJogAbove": []
+     },
+     "durationView": {
+      "longestContinuousExecuted": 8,
+      "longer": []
+     },
+     "weeklyView": {
+      "largestExecutedWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 48
+      },
+      "plannedWeekBeforePause": {
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      "reentryWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 48,
+       "walks": 2
+      },
+      "followingWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 60,
+       "walks": 2
+      },
+      "above": false
+     },
+     "log": [
+      "WEEKLY_REVIEW@2026-11-08T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-15T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-22T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "RETURN_AFTER_PAUSE@2026-12-05T07:00:00Z MODIFY/REESTABLISH"
+     ]
+    },
+    "EXIT_PROJECTED_OPEN/MODERATE": {
+     "pause": "2026-11-30..2026-12-13",
+     "lastSessionRun": "2026-11-20 WALK_JOG step 7",
+     "longestContinuousExecuted": 8,
+     "lastExecutedWeek": {
+      "week": 2,
+      "runningSessions": 3,
+      "jogMinutes": 48
+     },
+     "historyAtPause": {
+      "mode": "WALK_JOG",
+      "walkStep": 8,
+      "easy": null,
+      "long": null,
+      "returnStep": null,
+      "restart": 15,
+      "longestContinuous": null
+     },
+     "planWeekXBeforePause": [
+      "11-30 EASY:25 EASY_MINUTES=25",
+      "12-01 EASY:25 EASY_MINUTES=25",
+      "12-02 EASY:25 EASY_MINUTES=25",
+      "12-04 WALK:20",
+      "12-05 WALK:20"
+     ],
+     "return": "MODIFY/REESTABLISH",
+     "entry": {
+      "mode": "WALK_JOG",
+      "walkStep": 6,
+      "easy": null,
+      "restart": 15,
+      "returnStep": null,
+      "returnFromEasy": null
+     },
+     "returnSpan": [
+      "w6 12-14 WALK_JOG:28 step 6",
+      "w6 12-15 WALK:20",
+      "w6 12-16 WALK_JOG:28 step 6",
+      "w6 12-18 WALK_JOG:28 step 6",
+      "w6 12-19 WALK:20",
+      "w7 12-21 WALK_JOG:26 step 7",
+      "w7 12-22 WALK:20",
+      "w7 12-23 WALK_JOG:26 step 7",
+      "w7 12-25 WALK_JOG:26 step 7",
+      "w7 12-26 WALK:20",
+      "w8 12-28 WALK_JOG:28 step 8",
+      "w8 12-29 WALK:20",
+      "w8 12-30 WALK_JOG:28 step 8",
+      "w8 01-01 WALK_JOG:28 step 8",
+      "w8 01-02 WALK:20"
+     ],
+     "returnWeeks": [
+      {
+       "week": 6,
+       "runningSessions": 3,
+       "jogMinutes": 45,
+       "walks": 2
+      },
+      {
+       "week": 7,
+       "runningSessions": 3,
+       "jogMinutes": 48,
+       "walks": 2
+      },
+      {
+       "week": 8,
+       "runningSessions": 3,
+       "jogMinutes": 60,
+       "walks": 2
+      }
+     ],
+     "ladderView": {
+      "lastStep": 7,
+      "recipeAllows": 6,
+      "reentryWeek": 6,
+      "continuousSessions": [],
+      "walkJogAbove": []
+     },
+     "durationView": {
+      "longestContinuousExecuted": 8,
+      "longer": []
+     },
+     "weeklyView": {
+      "largestExecutedWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 48
+      },
+      "plannedWeekBeforePause": {
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      "reentryWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 45,
+       "walks": 2
+      },
+      "followingWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 48,
+       "walks": 2
+      },
+      "above": false
+     },
+     "log": [
+      "WEEKLY_REVIEW@2026-11-08T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-15T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-22T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "RETURN_AFTER_PAUSE@2026-12-14T07:00:00Z MODIFY/REESTABLISH"
+     ]
+    },
+    "EXIT_PROJECTED_OPEN/LONG": {
+     "pause": "2026-11-30..2027-01-01",
+     "lastSessionRun": "2026-11-20 WALK_JOG step 7",
+     "longestContinuousExecuted": 8,
+     "lastExecutedWeek": {
+      "week": 2,
+      "runningSessions": 3,
+      "jogMinutes": 48
+     },
+     "historyAtPause": {
+      "mode": "WALK_JOG",
+      "walkStep": 8,
+      "easy": null,
+      "long": null,
+      "returnStep": null,
+      "restart": 15,
+      "longestContinuous": null
+     },
+     "planWeekXBeforePause": [
+      "11-30 EASY:25 EASY_MINUTES=25",
+      "12-01 EASY:25 EASY_MINUTES=25",
+      "12-02 EASY:25 EASY_MINUTES=25",
+      "12-04 WALK:20",
+      "12-05 WALK:20"
+     ],
+     "return": "MODIFY/REESTABLISH",
+     "entry": {
+      "mode": "WALK_JOG",
+      "walkStep": 0,
+      "easy": null,
+      "restart": 15,
+      "returnStep": null,
+      "returnFromEasy": null
+     },
+     "returnSpan": [
+      "w9 01-04 WALK_JOG:20 step 0",
+      "w9 01-05 WALK:20",
+      "w9 01-06 WALK_JOG:20 step 0",
+      "w9 01-08 WALK_JOG:20 step 0",
+      "w9 01-09 WALK:20",
+      "w10 01-11 WALK_JOG:21 step 1",
+      "w10 01-12 WALK:20",
+      "w10 01-13 WALK_JOG:21 step 1",
+      "w10 01-15 WALK_JOG:21 step 1",
+      "w10 01-16 WALK:20"
+     ],
+     "returnWeeks": [
+      {
+       "week": 9,
+       "runningSessions": 3,
+       "jogMinutes": 4.5,
+       "walks": 2
+      },
+      {
+       "week": 10,
+       "runningSessions": 3,
+       "jogMinutes": 7.5,
+       "walks": 2
+      }
+     ],
+     "ladderView": {
+      "lastStep": 7,
+      "recipeAllows": 0,
+      "reentryWeek": 9,
+      "continuousSessions": [],
+      "walkJogAbove": []
+     },
+     "durationView": {
+      "longestContinuousExecuted": 8,
+      "longer": []
+     },
+     "weeklyView": {
+      "largestExecutedWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 48
+      },
+      "plannedWeekBeforePause": {
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      "reentryWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 4.5,
+       "walks": 2
+      },
+      "followingWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 7.5,
+       "walks": 2
+      },
+      "above": false
+     },
+     "log": [
+      "WEEKLY_REVIEW@2026-11-08T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-15T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-22T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "RETURN_AFTER_PAUSE@2027-01-02T07:00:00Z MODIFY/REESTABLISH"
+     ]
+    },
+    "ONE_CONTINUOUS_RUN/SHORT": {
+     "pause": "2026-12-01..2026-12-04",
+     "lastSessionRun": "2026-11-30 EASY:25",
+     "longestContinuousExecuted": 25,
+     "lastExecutedWeek": {
+      "week": 4,
+      "runningSessions": 1,
+      "jogMinutes": 25
+     },
+     "historyAtPause": {
+      "mode": "EASY",
+      "walkStep": 9,
+      "easy": 25,
+      "long": null,
+      "returnStep": null,
+      "restart": 15,
+      "longestContinuous": 20
+     },
+     "planWeekXBeforePause": [
+      "11-30 EASY:25 EASY_MINUTES=25",
+      "12-01 EASY:25 EASY_MINUTES=25",
+      "12-02 EASY:25 EASY_MINUTES=25",
+      "12-04 WALK:20",
+      "12-05 WALK:20"
+     ],
+     "return": "MODIFY/REESTABLISH",
+     "entry": {
+      "mode": "EASY",
+      "walkStep": 9,
+      "easy": 25,
+      "restart": 15,
+      "returnStep": null,
+      "returnFromEasy": null
+     },
+     "returnSpan": [
+      "w5 12-07 EASY:25 EASY_MINUTES=25",
+      "w5 12-08 EASY:25 EASY_MINUTES=25",
+      "w5 12-09 EASY:25 EASY_MINUTES=25",
+      "w5 12-11 WALK:20",
+      "w5 12-12 WALK:20",
+      "w6 12-14 EASY:25 EASY_MINUTES=25",
+      "w6 12-15 EASY:25 EASY_MINUTES=25",
+      "w6 12-16 EASY:25 EASY_MINUTES=25",
+      "w6 12-18 WALK:20",
+      "w6 12-19 WALK:20"
+     ],
+     "returnWeeks": [
+      {
+       "week": 5,
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      {
+       "week": 6,
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      }
+     ],
+     "ladderView": "last session run was continuous",
+     "durationView": {
+      "longestContinuousExecuted": 25,
+      "longer": []
+     },
+     "weeklyView": {
+      "largestExecutedWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 60
+      },
+      "plannedWeekBeforePause": {
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      "reentryWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      "followingWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      "above": false
+     },
+     "log": [
+      "WEEKLY_REVIEW@2026-11-08T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-15T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-22T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-29T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-30T21:00:00Z KEEP/KEEP",
+      "RETURN_AFTER_PAUSE@2026-12-05T07:00:00Z MODIFY/REESTABLISH"
+     ]
+    },
+    "ONE_CONTINUOUS_RUN/MODERATE": {
+     "pause": "2026-12-01..2026-12-14",
+     "lastSessionRun": "2026-11-30 EASY:25",
+     "longestContinuousExecuted": 25,
+     "lastExecutedWeek": {
+      "week": 4,
+      "runningSessions": 1,
+      "jogMinutes": 25
+     },
+     "historyAtPause": {
+      "mode": "EASY",
+      "walkStep": 9,
+      "easy": 25,
+      "long": null,
+      "returnStep": null,
+      "restart": 15,
+      "longestContinuous": 20
+     },
+     "planWeekXBeforePause": [
+      "11-30 EASY:25 EASY_MINUTES=25",
+      "12-01 EASY:25 EASY_MINUTES=25",
+      "12-02 EASY:25 EASY_MINUTES=25",
+      "12-04 WALK:20",
+      "12-05 WALK:20"
+     ],
+     "return": "MODIFY/REESTABLISH",
+     "entry": {
+      "mode": "RETURN",
+      "walkStep": 9,
+      "easy": 25,
+      "restart": 15,
+      "returnStep": 0,
+      "returnFromEasy": 15
+     },
+     "returnSpan": [
+      "w6 12-15 EASY:15 RETURN_STEP=0",
+      "w6 12-16 EASY:15 RETURN_STEP=0",
+      "w6 12-18 EASY:15 RETURN_STEP=0",
+      "w6 12-19 EASY:15 RETURN_STEP=0",
+      "w7 12-21 EASY:20 RETURN_STEP=1",
+      "w7 12-22 EASY:20 RETURN_STEP=1",
+      "w7 12-23 EASY:20 RETURN_STEP=1",
+      "w7 12-25 EASY:20 RETURN_STEP=1",
+      "w7 12-26 EASY:20 RETURN_STEP=1",
+      "w8 12-28 EASY:25 EASY_MINUTES=25",
+      "w8 12-29 EASY:25 EASY_MINUTES=25",
+      "w8 12-30 EASY:25 EASY_MINUTES=25",
+      "w8 01-01 WALK:20",
+      "w8 01-02 WALK:20"
+     ],
+     "returnWeeks": [
+      {
+       "week": 6,
+       "runningSessions": 4,
+       "jogMinutes": 60,
+       "walks": 0
+      },
+      {
+       "week": 7,
+       "runningSessions": 5,
+       "jogMinutes": 100,
+       "walks": 0
+      },
+      {
+       "week": 8,
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      }
+     ],
+     "ladderView": "last session run was continuous",
+     "durationView": {
+      "longestContinuousExecuted": 25,
+      "longer": []
+     },
+     "weeklyView": {
+      "largestExecutedWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 60
+      },
+      "plannedWeekBeforePause": {
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      "reentryWeek": {
+       "runningSessions": 4,
+       "jogMinutes": 60,
+       "walks": 0
+      },
+      "followingWeek": {
+       "runningSessions": 5,
+       "jogMinutes": 100,
+       "walks": 0
+      },
+      "above": true
+     },
+     "log": [
+      "WEEKLY_REVIEW@2026-11-08T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-15T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-22T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-29T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-30T21:00:00Z KEEP/KEEP",
+      "RETURN_AFTER_PAUSE@2026-12-15T07:00:00Z MODIFY/REESTABLISH"
+     ]
+    },
+    "ONE_CONTINUOUS_RUN/LONG": {
+     "pause": "2026-12-01..2027-01-02",
+     "lastSessionRun": "2026-11-30 EASY:25",
+     "longestContinuousExecuted": 25,
+     "lastExecutedWeek": {
+      "week": 4,
+      "runningSessions": 1,
+      "jogMinutes": 25
+     },
+     "historyAtPause": {
+      "mode": "EASY",
+      "walkStep": 9,
+      "easy": 25,
+      "long": null,
+      "returnStep": null,
+      "restart": 15,
+      "longestContinuous": 20
+     },
+     "planWeekXBeforePause": [
+      "11-30 EASY:25 EASY_MINUTES=25",
+      "12-01 EASY:25 EASY_MINUTES=25",
+      "12-02 EASY:25 EASY_MINUTES=25",
+      "12-04 WALK:20",
+      "12-05 WALK:20"
+     ],
+     "return": "MODIFY/REESTABLISH",
+     "entry": {
+      "mode": "RESTART",
+      "walkStep": 0,
+      "easy": 25,
+      "restart": 15,
+      "returnStep": null,
+      "returnFromEasy": null
+     },
+     "returnSpan": [
+      "w9 01-04 EASY:15 RESTART_MINUTES=15",
+      "w9 01-05 WALK:20",
+      "w9 01-06 EASY:15 RESTART_MINUTES=15",
+      "w9 01-08 EASY:15 RESTART_MINUTES=15",
+      "w9 01-09 WALK:20",
+      "w10 01-11 EASY:20 RESTART_MINUTES=20",
+      "w10 01-12 WALK:20",
+      "w10 01-13 EASY:20 RESTART_MINUTES=20",
+      "w10 01-15 EASY:20 RESTART_MINUTES=20",
+      "w10 01-16 WALK:20"
+     ],
+     "returnWeeks": [
+      {
+       "week": 9,
+       "runningSessions": 3,
+       "jogMinutes": 45,
+       "walks": 2
+      },
+      {
+       "week": 10,
+       "runningSessions": 3,
+       "jogMinutes": 60,
+       "walks": 2
+      }
+     ],
+     "ladderView": "last session run was continuous",
+     "durationView": {
+      "longestContinuousExecuted": 25,
+      "longer": []
+     },
+     "weeklyView": {
+      "largestExecutedWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 60
+      },
+      "plannedWeekBeforePause": {
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      "reentryWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 45,
+       "walks": 2
+      },
+      "followingWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 60,
+       "walks": 2
+      },
+      "above": false
+     },
+     "log": [
+      "WEEKLY_REVIEW@2026-11-08T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-15T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-22T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-29T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-30T21:00:00Z KEEP/KEEP",
+      "RETURN_AFTER_PAUSE@2027-01-03T07:00:00Z MODIFY/REESTABLISH"
+     ]
+    },
+    "EXIT_COMPLETE_CROSSWEEK/SHORT": {
+     "pause": "2026-11-28..2026-12-02",
+     "lastSessionRun": "2026-11-27 WALK_JOG step 8",
+     "longestContinuousExecuted": 20,
+     "historyAtPause": {
+      "mode": "EASY",
+      "walkStep": 9,
+      "easy": 25,
+      "long": null,
+      "returnStep": null,
+      "restart": 15,
+      "longestContinuous": 20
+     },
+     "return": "MODIFY/REESTABLISH",
+     "entry": {
+      "mode": "WALK_JOG",
+      "walkStep": 8,
+      "easy": null,
+      "restart": 15,
+      "returnStep": null,
+      "returnFromEasy": null
+     },
+     "returnSpan": [
+      "w4 12-04 WALK_JOG:28 step 8",
+      "w4 12-05 WALK:20",
+      "w5 12-07 WALK_JOG:28 step 8",
+      "w5 12-08 WALK:20",
+      "w5 12-09 WALK_JOG:28 step 8",
+      "w5 12-11 WALK_JOG:28 step 8",
+      "w5 12-12 WALK:20",
+      "w6 12-14 EASY:25 EASY_MINUTES=25",
+      "w6 12-15 EASY:25 EASY_MINUTES=25",
+      "w6 12-16 EASY:25 EASY_MINUTES=25",
+      "w6 12-18 WALK:20",
+      "w6 12-19 WALK:20"
+     ],
+     "ladderView": {
+      "lastStep": 8,
+      "recipeAllows": 8,
+      "reentryWeek": 4,
+      "continuousSessions": [],
+      "walkJogAbove": []
+     },
+     "durationView": {
+      "longestContinuousExecuted": 20,
+      "longer": []
+     },
+     "log": [
+      "WEEKLY_REVIEW@2026-11-08T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-15T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-22T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-23T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-25T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-27T21:00:00Z KEEP/KEEP",
+      "RETURN_AFTER_PAUSE@2026-12-03T07:00:00Z MODIFY/REESTABLISH"
+     ]
+    },
+    "EXIT_INCOMPLETE_CROSSWEEK/SHORT": {
+     "pause": "2026-11-26..2026-11-30",
+     "lastSessionRun": "2026-11-25 WALK_JOG step 8",
+     "longestContinuousExecuted": 20,
+     "historyAtPause": {
+      "mode": "WALK_JOG",
+      "walkStep": 8,
+      "easy": null,
+      "long": null,
+      "returnStep": null,
+      "restart": 15,
+      "longestContinuous": null
+     },
+     "return": "MODIFY/REESTABLISH",
+     "entry": {
+      "mode": "WALK_JOG",
+      "walkStep": 8,
+      "easy": null,
+      "restart": 15,
+      "returnStep": null,
+      "returnFromEasy": null
+     },
+     "returnSpan": [
+      "w4 12-01 WALK:20",
+      "w4 12-02 WALK_JOG:28 step 8",
+      "w4 12-04 WALK_JOG:28 step 8",
+      "w4 12-05 WALK:20",
+      "w5 12-07 WALK_JOG:28 step 8",
+      "w5 12-08 WALK:20",
+      "w5 12-09 WALK_JOG:28 step 8",
+      "w5 12-11 WALK_JOG:28 step 8",
+      "w5 12-12 WALK:20",
+      "w6 12-14 EASY:25 EASY_MINUTES=25",
+      "w6 12-15 EASY:25 EASY_MINUTES=25",
+      "w6 12-16 EASY:25 EASY_MINUTES=25",
+      "w6 12-18 WALK:20",
+      "w6 12-19 WALK:20"
+     ],
+     "ladderView": {
+      "lastStep": 8,
+      "recipeAllows": 8,
+      "reentryWeek": 4,
+      "continuousSessions": [],
+      "walkJogAbove": []
+     },
+     "durationView": {
+      "longestContinuousExecuted": 20,
+      "longer": []
+     },
+     "log": [
+      "WEEKLY_REVIEW@2026-11-08T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-15T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-22T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-23T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-25T21:00:00Z KEEP/KEEP",
+      "RETURN_AFTER_PAUSE@2026-12-01T07:00:00Z MODIFY/REESTABLISH"
+     ]
+    }
+   }
+  },
+  "FULL": {
+   "weeks": 16,
+   "exitWeek": 11,
+   "exitPhase": "DEVELOPMENT",
+   "referenceLadder": [
+    "w9 DEVELOPMENT: 01-04 WALK_JOG:26 WALK_JOG_STEP=7 | 01-05 WALK:20 | 01-06 WALK_JOG:26 WALK_JOG_STEP=7 | 01-08 WALK_JOG:26 WALK_JOG_STEP=7 | 01-09 WALK:20",
+    "w10 DEVELOPMENT: 01-11 WALK_JOG:28 WALK_JOG_STEP=8 | 01-12 WALK:20 | 01-13 WALK_JOG:28 WALK_JOG_STEP=8 | 01-15 WALK_JOG:28 WALK_JOG_STEP=8 | 01-16 WALK:20",
+    "w11 DEVELOPMENT: 01-18 EASY:25 EASY_MINUTES=25 | 01-19 EASY:25 EASY_MINUTES=25 | 01-20 EASY:25 EASY_MINUTES=25 | 01-22 WALK:20 | 01-23 WALK:20",
+    "w12 CONSOLIDATION: 01-25 EASY:25 EASY_MINUTES=25 | 01-26 EASY:25 EASY_MINUTES=25 | 01-27 EASY:25 EASY_MINUTES=25 | 01-29 WALK:20 | 01-30 WALK:20"
+   ],
+   "cells": {
+    "EXIT_EARNED_REVIEWED/SHORT": {
+     "pause": "2027-01-18..2027-01-22",
+     "lastSessionRun": "2027-01-15 WALK_JOG step 8",
+     "longestContinuousExecuted": 20,
+     "lastExecutedWeek": {
+      "week": 10,
+      "runningSessions": 3,
+      "jogMinutes": 60
+     },
+     "historyAtPause": {
+      "mode": "EASY",
+      "walkStep": 9,
+      "easy": 25,
+      "long": null,
+      "returnStep": null,
+      "restart": 15,
+      "longestContinuous": 20
+     },
+     "planWeekXBeforePause": [
+      "01-18 EASY:25 EASY_MINUTES=25",
+      "01-19 EASY:25 EASY_MINUTES=25",
+      "01-20 EASY:25 EASY_MINUTES=25",
+      "01-22 WALK:20",
+      "01-23 WALK:20"
+     ],
+     "return": "MODIFY/REESTABLISH",
+     "entry": {
+      "mode": "EASY",
+      "walkStep": 9,
+      "easy": 25,
+      "restart": 15,
+      "returnStep": null,
+      "returnFromEasy": null
+     },
+     "returnSpan": [
+      "w12 01-25 EASY:25 EASY_MINUTES=25",
+      "w12 01-26 EASY:25 EASY_MINUTES=25",
+      "w12 01-27 EASY:25 EASY_MINUTES=25",
+      "w12 01-29 WALK:20",
+      "w12 01-30 WALK:20",
+      "w13 02-01 EASY:25 EASY_MINUTES=25",
+      "w13 02-02 EASY:25 EASY_MINUTES=25",
+      "w13 02-03 EASY:25 EASY_MINUTES=25",
+      "w13 02-05 WALK:20",
+      "w13 02-06 WALK:20"
+     ],
+     "returnWeeks": [
+      {
+       "week": 12,
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      {
+       "week": 13,
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      }
+     ],
+     "ladderView": {
+      "lastStep": 8,
+      "recipeAllows": 8,
+      "reentryWeek": 12,
+      "continuousSessions": [
+       "w12 01-25 EASY:25 EASY_MINUTES=25",
+       "w12 01-26 EASY:25 EASY_MINUTES=25",
+       "w12 01-27 EASY:25 EASY_MINUTES=25"
+      ],
+      "walkJogAbove": []
+     },
+     "durationView": {
+      "longestContinuousExecuted": 20,
+      "longer": [
+       "w12 01-25 EASY:25 EASY_MINUTES=25",
+       "w12 01-26 EASY:25 EASY_MINUTES=25",
+       "w12 01-27 EASY:25 EASY_MINUTES=25"
+      ]
+     },
+     "weeklyView": {
+      "largestExecutedWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 60
+      },
+      "plannedWeekBeforePause": {
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      "reentryWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      "followingWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      "above": false
+     },
+     "log": [
+      "WEEKLY_REVIEW@2026-11-08T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-15T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-22T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-29T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-06T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-13T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-20T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-27T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-03T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-10T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-17T21:00:00Z KEEP/KEEP",
+      "RETURN_AFTER_PAUSE@2027-01-23T07:00:00Z MODIFY/REESTABLISH"
+     ]
+    },
+    "EXIT_EARNED_REVIEWED/MODERATE": {
+     "pause": "2027-01-18..2027-01-31",
+     "lastSessionRun": "2027-01-15 WALK_JOG step 8",
+     "longestContinuousExecuted": 20,
+     "lastExecutedWeek": {
+      "week": 10,
+      "runningSessions": 3,
+      "jogMinutes": 60
+     },
+     "historyAtPause": {
+      "mode": "EASY",
+      "walkStep": 9,
+      "easy": 25,
+      "long": null,
+      "returnStep": null,
+      "restart": 15,
+      "longestContinuous": 20
+     },
+     "planWeekXBeforePause": [
+      "01-18 EASY:25 EASY_MINUTES=25",
+      "01-19 EASY:25 EASY_MINUTES=25",
+      "01-20 EASY:25 EASY_MINUTES=25",
+      "01-22 WALK:20",
+      "01-23 WALK:20"
+     ],
+     "return": "MODIFY/REESTABLISH",
+     "entry": {
+      "mode": "RETURN",
+      "walkStep": 9,
+      "easy": 25,
+      "restart": 15,
+      "returnStep": 0,
+      "returnFromEasy": 15
+     },
+     "returnSpan": [
+      "w13 02-01 EASY:15 RETURN_STEP=0",
+      "w13 02-02 EASY:15 RETURN_STEP=0",
+      "w13 02-03 EASY:15 RETURN_STEP=0",
+      "w13 02-05 EASY:15 RETURN_STEP=0",
+      "w13 02-06 EASY:15 RETURN_STEP=0",
+      "w14 02-08 EASY:20 RETURN_STEP=1",
+      "w14 02-09 EASY:20 RETURN_STEP=1",
+      "w14 02-10 EASY:20 RETURN_STEP=1",
+      "w14 02-12 EASY:20 RETURN_STEP=1",
+      "w14 02-13 EASY:20 RETURN_STEP=1",
+      "w15 02-15 EASY:25 EASY_MINUTES=25",
+      "w15 02-16 EASY:25 EASY_MINUTES=25",
+      "w15 02-17 EASY:25 EASY_MINUTES=25",
+      "w15 02-19 WALK:20",
+      "w15 02-20 WALK:20"
+     ],
+     "returnWeeks": [
+      {
+       "week": 13,
+       "runningSessions": 5,
+       "jogMinutes": 75,
+       "walks": 0
+      },
+      {
+       "week": 14,
+       "runningSessions": 5,
+       "jogMinutes": 100,
+       "walks": 0
+      },
+      {
+       "week": 15,
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      }
+     ],
+     "ladderView": {
+      "lastStep": 8,
+      "recipeAllows": 7,
+      "reentryWeek": 13,
+      "continuousSessions": [
+       "w13 02-01 EASY:15 RETURN_STEP=0",
+       "w13 02-02 EASY:15 RETURN_STEP=0",
+       "w13 02-03 EASY:15 RETURN_STEP=0",
+       "w13 02-05 EASY:15 RETURN_STEP=0",
+       "w13 02-06 EASY:15 RETURN_STEP=0"
+      ],
+      "walkJogAbove": []
+     },
+     "durationView": {
+      "longestContinuousExecuted": 20,
+      "longer": []
+     },
+     "weeklyView": {
+      "largestExecutedWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 60
+      },
+      "plannedWeekBeforePause": {
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      "reentryWeek": {
+       "runningSessions": 5,
+       "jogMinutes": 75,
+       "walks": 0
+      },
+      "followingWeek": {
+       "runningSessions": 5,
+       "jogMinutes": 100,
+       "walks": 0
+      },
+      "above": true
+     },
+     "log": [
+      "WEEKLY_REVIEW@2026-11-08T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-15T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-22T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-29T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-06T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-13T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-20T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-27T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-03T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-10T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-17T21:00:00Z KEEP/KEEP",
+      "RETURN_AFTER_PAUSE@2027-02-01T07:00:00Z MODIFY/REESTABLISH"
+     ]
+    },
+    "EXIT_EARNED_REVIEWED/LONG": "skipped: the pause ends beyond the program",
+    "EXIT_EARNED_UNREVIEWED/SHORT": {
+     "pause": "2027-01-18..2027-01-22",
+     "lastSessionRun": "2027-01-15 WALK_JOG step 8",
+     "longestContinuousExecuted": 20,
+     "lastExecutedWeek": {
+      "week": 10,
+      "runningSessions": 3,
+      "jogMinutes": 60
+     },
+     "historyAtPause": {
+      "mode": "EASY",
+      "walkStep": 9,
+      "easy": 25,
+      "long": null,
+      "returnStep": null,
+      "restart": 15,
+      "longestContinuous": 20
+     },
+     "planWeekXBeforePause": [
+      "01-18 EASY:25 EASY_MINUTES=25",
+      "01-19 EASY:25 EASY_MINUTES=25",
+      "01-20 EASY:25 EASY_MINUTES=25",
+      "01-22 WALK:20",
+      "01-23 WALK:20"
+     ],
+     "return": "MODIFY/REESTABLISH",
+     "entry": {
+      "mode": "EASY",
+      "walkStep": 9,
+      "easy": 25,
+      "restart": 15,
+      "returnStep": null,
+      "returnFromEasy": null
+     },
+     "returnSpan": [
+      "w12 01-25 EASY:25 EASY_MINUTES=25",
+      "w12 01-26 EASY:25 EASY_MINUTES=25",
+      "w12 01-27 EASY:25 EASY_MINUTES=25",
+      "w12 01-29 WALK:20",
+      "w12 01-30 WALK:20",
+      "w13 02-01 EASY:25 EASY_MINUTES=25",
+      "w13 02-02 EASY:25 EASY_MINUTES=25",
+      "w13 02-03 EASY:25 EASY_MINUTES=25",
+      "w13 02-05 WALK:20",
+      "w13 02-06 WALK:20"
+     ],
+     "returnWeeks": [
+      {
+       "week": 12,
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      {
+       "week": 13,
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      }
+     ],
+     "ladderView": {
+      "lastStep": 8,
+      "recipeAllows": 8,
+      "reentryWeek": 12,
+      "continuousSessions": [
+       "w12 01-25 EASY:25 EASY_MINUTES=25",
+       "w12 01-26 EASY:25 EASY_MINUTES=25",
+       "w12 01-27 EASY:25 EASY_MINUTES=25"
+      ],
+      "walkJogAbove": []
+     },
+     "durationView": {
+      "longestContinuousExecuted": 20,
+      "longer": [
+       "w12 01-25 EASY:25 EASY_MINUTES=25",
+       "w12 01-26 EASY:25 EASY_MINUTES=25",
+       "w12 01-27 EASY:25 EASY_MINUTES=25"
+      ]
+     },
+     "weeklyView": {
+      "largestExecutedWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 60
+      },
+      "plannedWeekBeforePause": {
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      "reentryWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      "followingWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      "above": false
+     },
+     "log": [
+      "WEEKLY_REVIEW@2026-11-08T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-15T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-22T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-29T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-06T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-13T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-20T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-27T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-03T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-10T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-11T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-12T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-13T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-14T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-15T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-16T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-18T06:00:00Z KEEP/KEEP",
+      "RETURN_AFTER_PAUSE@2027-01-23T07:00:00Z MODIFY/REESTABLISH"
+     ]
+    },
+    "EXIT_EARNED_UNREVIEWED/MODERATE": {
+     "pause": "2027-01-18..2027-01-31",
+     "lastSessionRun": "2027-01-15 WALK_JOG step 8",
+     "longestContinuousExecuted": 20,
+     "lastExecutedWeek": {
+      "week": 10,
+      "runningSessions": 3,
+      "jogMinutes": 60
+     },
+     "historyAtPause": {
+      "mode": "EASY",
+      "walkStep": 9,
+      "easy": 25,
+      "long": null,
+      "returnStep": null,
+      "restart": 15,
+      "longestContinuous": 20
+     },
+     "planWeekXBeforePause": [
+      "01-18 EASY:25 EASY_MINUTES=25",
+      "01-19 EASY:25 EASY_MINUTES=25",
+      "01-20 EASY:25 EASY_MINUTES=25",
+      "01-22 WALK:20",
+      "01-23 WALK:20"
+     ],
+     "return": "MODIFY/REESTABLISH",
+     "entry": {
+      "mode": "RETURN",
+      "walkStep": 9,
+      "easy": 25,
+      "restart": 15,
+      "returnStep": 0,
+      "returnFromEasy": 15
+     },
+     "returnSpan": [
+      "w13 02-01 EASY:15 RETURN_STEP=0",
+      "w13 02-02 EASY:15 RETURN_STEP=0",
+      "w13 02-03 EASY:15 RETURN_STEP=0",
+      "w13 02-05 EASY:15 RETURN_STEP=0",
+      "w13 02-06 EASY:15 RETURN_STEP=0",
+      "w14 02-08 EASY:20 RETURN_STEP=1",
+      "w14 02-09 EASY:20 RETURN_STEP=1",
+      "w14 02-10 EASY:20 RETURN_STEP=1",
+      "w14 02-12 EASY:20 RETURN_STEP=1",
+      "w14 02-13 EASY:20 RETURN_STEP=1",
+      "w15 02-15 EASY:25 EASY_MINUTES=25",
+      "w15 02-16 EASY:25 EASY_MINUTES=25",
+      "w15 02-17 EASY:25 EASY_MINUTES=25",
+      "w15 02-19 WALK:20",
+      "w15 02-20 WALK:20"
+     ],
+     "returnWeeks": [
+      {
+       "week": 13,
+       "runningSessions": 5,
+       "jogMinutes": 75,
+       "walks": 0
+      },
+      {
+       "week": 14,
+       "runningSessions": 5,
+       "jogMinutes": 100,
+       "walks": 0
+      },
+      {
+       "week": 15,
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      }
+     ],
+     "ladderView": {
+      "lastStep": 8,
+      "recipeAllows": 7,
+      "reentryWeek": 13,
+      "continuousSessions": [
+       "w13 02-01 EASY:15 RETURN_STEP=0",
+       "w13 02-02 EASY:15 RETURN_STEP=0",
+       "w13 02-03 EASY:15 RETURN_STEP=0",
+       "w13 02-05 EASY:15 RETURN_STEP=0",
+       "w13 02-06 EASY:15 RETURN_STEP=0"
+      ],
+      "walkJogAbove": []
+     },
+     "durationView": {
+      "longestContinuousExecuted": 20,
+      "longer": []
+     },
+     "weeklyView": {
+      "largestExecutedWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 60
+      },
+      "plannedWeekBeforePause": {
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      "reentryWeek": {
+       "runningSessions": 5,
+       "jogMinutes": 75,
+       "walks": 0
+      },
+      "followingWeek": {
+       "runningSessions": 5,
+       "jogMinutes": 100,
+       "walks": 0
+      },
+      "above": true
+     },
+     "log": [
+      "WEEKLY_REVIEW@2026-11-08T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-15T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-22T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-29T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-06T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-13T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-20T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-27T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-03T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-10T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-11T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-12T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-13T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-14T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-15T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-16T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-18T06:00:00Z KEEP/KEEP",
+      "RETURN_AFTER_PAUSE@2027-02-01T07:00:00Z MODIFY/REESTABLISH"
+     ]
+    },
+    "EXIT_EARNED_UNREVIEWED/LONG": "skipped: the pause ends beyond the program",
+    "EXIT_HELD/SHORT": {
+     "pause": "2027-01-18..2027-01-22",
+     "lastSessionRun": "2027-01-15 WALK_JOG step 8",
+     "longestContinuousExecuted": 20,
+     "lastExecutedWeek": {
+      "week": 10,
+      "runningSessions": 2,
+      "jogMinutes": 40
+     },
+     "historyAtPause": {
+      "mode": "WALK_JOG",
+      "walkStep": 8,
+      "easy": null,
+      "long": null,
+      "returnStep": null,
+      "restart": 15,
+      "longestContinuous": null
+     },
+     "planWeekXBeforePause": [
+      "01-18 WALK_JOG:28 WALK_JOG_STEP=8",
+      "01-19 WALK:20",
+      "01-20 WALK_JOG:28 WALK_JOG_STEP=8",
+      "01-22 WALK_JOG:28 WALK_JOG_STEP=8",
+      "01-23 WALK:20"
+     ],
+     "return": "MODIFY/REESTABLISH",
+     "entry": {
+      "mode": "WALK_JOG",
+      "walkStep": 8,
+      "easy": null,
+      "restart": 15,
+      "returnStep": null,
+      "returnFromEasy": null
+     },
+     "returnSpan": [
+      "w12 01-25 WALK_JOG:28 step 8",
+      "w12 01-26 WALK:20",
+      "w12 01-27 WALK_JOG:28 step 8",
+      "w12 01-29 WALK_JOG:28 step 8",
+      "w12 01-30 WALK:20",
+      "w13 02-01 WALK_JOG:28 step 8",
+      "w13 02-02 WALK:20",
+      "w13 02-03 WALK_JOG:28 step 8",
+      "w13 02-05 WALK_JOG:28 step 8",
+      "w13 02-06 WALK:20"
+     ],
+     "returnWeeks": [
+      {
+       "week": 12,
+       "runningSessions": 3,
+       "jogMinutes": 60,
+       "walks": 2
+      },
+      {
+       "week": 13,
+       "runningSessions": 3,
+       "jogMinutes": 60,
+       "walks": 2
+      }
+     ],
+     "ladderView": {
+      "lastStep": 8,
+      "recipeAllows": 8,
+      "reentryWeek": 12,
+      "continuousSessions": [],
+      "walkJogAbove": []
+     },
+     "durationView": {
+      "longestContinuousExecuted": 20,
+      "longer": []
+     },
+     "weeklyView": {
+      "largestExecutedWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 48
+      },
+      "plannedWeekBeforePause": {
+       "runningSessions": 3,
+       "jogMinutes": 60,
+       "walks": 2
+      },
+      "reentryWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 60,
+       "walks": 2
+      },
+      "followingWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 60,
+       "walks": 2
+      },
+      "above": false
+     },
+     "log": [
+      "WEEKLY_REVIEW@2026-11-08T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-15T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-22T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-29T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-06T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-13T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-20T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-27T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-03T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-10T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-17T21:00:00Z MODIFY/GATED_NEXT_STEP",
+      "RETURN_AFTER_PAUSE@2027-01-23T07:00:00Z MODIFY/REESTABLISH"
+     ]
+    },
+    "EXIT_HELD/MODERATE": {
+     "pause": "2027-01-18..2027-01-31",
+     "lastSessionRun": "2027-01-15 WALK_JOG step 8",
+     "longestContinuousExecuted": 20,
+     "lastExecutedWeek": {
+      "week": 10,
+      "runningSessions": 2,
+      "jogMinutes": 40
+     },
+     "historyAtPause": {
+      "mode": "WALK_JOG",
+      "walkStep": 8,
+      "easy": null,
+      "long": null,
+      "returnStep": null,
+      "restart": 15,
+      "longestContinuous": null
+     },
+     "planWeekXBeforePause": [
+      "01-18 WALK_JOG:28 WALK_JOG_STEP=8",
+      "01-19 WALK:20",
+      "01-20 WALK_JOG:28 WALK_JOG_STEP=8",
+      "01-22 WALK_JOG:28 WALK_JOG_STEP=8",
+      "01-23 WALK:20"
+     ],
+     "return": "MODIFY/REESTABLISH",
+     "entry": {
+      "mode": "WALK_JOG",
+      "walkStep": 7,
+      "easy": null,
+      "restart": 15,
+      "returnStep": null,
+      "returnFromEasy": null
+     },
+     "returnSpan": [
+      "w13 02-01 WALK_JOG:26 step 7",
+      "w13 02-02 WALK:20",
+      "w13 02-03 WALK_JOG:26 step 7",
+      "w13 02-05 WALK_JOG:26 step 7",
+      "w13 02-06 WALK:20",
+      "w14 02-08 WALK_JOG:28 step 8",
+      "w14 02-09 WALK:20",
+      "w14 02-10 WALK_JOG:28 step 8",
+      "w14 02-12 WALK_JOG:28 step 8",
+      "w14 02-13 WALK:20",
+      "w15 02-15 EASY:25 EASY_MINUTES=25",
+      "w15 02-16 EASY:25 EASY_MINUTES=25",
+      "w15 02-17 EASY:25 EASY_MINUTES=25",
+      "w15 02-19 WALK:20",
+      "w15 02-20 WALK:20"
+     ],
+     "returnWeeks": [
+      {
+       "week": 13,
+       "runningSessions": 3,
+       "jogMinutes": 48,
+       "walks": 2
+      },
+      {
+       "week": 14,
+       "runningSessions": 3,
+       "jogMinutes": 60,
+       "walks": 2
+      },
+      {
+       "week": 15,
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      }
+     ],
+     "ladderView": {
+      "lastStep": 8,
+      "recipeAllows": 7,
+      "reentryWeek": 13,
+      "continuousSessions": [],
+      "walkJogAbove": []
+     },
+     "durationView": {
+      "longestContinuousExecuted": 20,
+      "longer": []
+     },
+     "weeklyView": {
+      "largestExecutedWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 48
+      },
+      "plannedWeekBeforePause": {
+       "runningSessions": 3,
+       "jogMinutes": 60,
+       "walks": 2
+      },
+      "reentryWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 48,
+       "walks": 2
+      },
+      "followingWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 60,
+       "walks": 2
+      },
+      "above": false
+     },
+     "log": [
+      "WEEKLY_REVIEW@2026-11-08T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-15T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-22T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-29T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-06T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-13T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-20T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-27T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-03T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-10T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-17T21:00:00Z MODIFY/GATED_NEXT_STEP",
+      "RETURN_AFTER_PAUSE@2027-02-01T07:00:00Z MODIFY/REESTABLISH"
+     ]
+    },
+    "EXIT_HELD/LONG": "skipped: the pause ends beyond the program",
+    "EXIT_PROJECTED_ONLY/SHORT": {
+     "pause": "2027-01-18..2027-01-22",
+     "lastSessionRun": "2027-01-08 WALK_JOG step 7",
+     "longestContinuousExecuted": 8,
+     "lastExecutedWeek": {
+      "week": 9,
+      "runningSessions": 3,
+      "jogMinutes": 48
+     },
+     "historyAtPause": {
+      "mode": "WALK_JOG",
+      "walkStep": 8,
+      "easy": null,
+      "long": null,
+      "returnStep": null,
+      "restart": 15,
+      "longestContinuous": null
+     },
+     "planWeekXBeforePause": [
+      "01-18 WALK_JOG:28 WALK_JOG_STEP=8",
+      "01-19 WALK:20",
+      "01-20 WALK_JOG:28 WALK_JOG_STEP=8",
+      "01-22 WALK_JOG:28 WALK_JOG_STEP=8",
+      "01-23 WALK:20"
+     ],
+     "return": "MODIFY/REESTABLISH",
+     "entry": {
+      "mode": "WALK_JOG",
+      "walkStep": 7,
+      "easy": null,
+      "restart": 15,
+      "returnStep": null,
+      "returnFromEasy": null
+     },
+     "returnSpan": [
+      "w12 01-25 WALK_JOG:26 step 7",
+      "w12 01-26 WALK:20",
+      "w12 01-27 WALK_JOG:26 step 7",
+      "w12 01-29 WALK_JOG:26 step 7",
+      "w12 01-30 WALK:20",
+      "w13 02-01 WALK_JOG:26 step 7",
+      "w13 02-02 WALK:20",
+      "w13 02-03 WALK_JOG:26 step 7",
+      "w13 02-05 WALK_JOG:26 step 7",
+      "w13 02-06 WALK:20"
+     ],
+     "returnWeeks": [
+      {
+       "week": 12,
+       "runningSessions": 3,
+       "jogMinutes": 48,
+       "walks": 2
+      },
+      {
+       "week": 13,
+       "runningSessions": 3,
+       "jogMinutes": 48,
+       "walks": 2
+      }
+     ],
+     "ladderView": {
+      "lastStep": 7,
+      "recipeAllows": 7,
+      "reentryWeek": 12,
+      "continuousSessions": [],
+      "walkJogAbove": []
+     },
+     "durationView": {
+      "longestContinuousExecuted": 8,
+      "longer": []
+     },
+     "weeklyView": {
+      "largestExecutedWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 48
+      },
+      "plannedWeekBeforePause": {
+       "runningSessions": 3,
+       "jogMinutes": 60,
+       "walks": 2
+      },
+      "reentryWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 48,
+       "walks": 2
+      },
+      "followingWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 48,
+       "walks": 2
+      },
+      "above": false
+     },
+     "log": [
+      "WEEKLY_REVIEW@2026-11-08T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-15T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-22T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-29T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-06T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-13T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-20T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-27T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-03T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-10T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-17T21:00:00Z MODIFY/GATED_NEXT_STEP",
+      "RETURN_AFTER_PAUSE@2027-01-23T07:00:00Z MODIFY/REESTABLISH"
+     ]
+    },
+    "EXIT_PROJECTED_ONLY/MODERATE": {
+     "pause": "2027-01-18..2027-01-31",
+     "lastSessionRun": "2027-01-08 WALK_JOG step 7",
+     "longestContinuousExecuted": 8,
+     "lastExecutedWeek": {
+      "week": 9,
+      "runningSessions": 3,
+      "jogMinutes": 48
+     },
+     "historyAtPause": {
+      "mode": "WALK_JOG",
+      "walkStep": 8,
+      "easy": null,
+      "long": null,
+      "returnStep": null,
+      "restart": 15,
+      "longestContinuous": null
+     },
+     "planWeekXBeforePause": [
+      "01-18 WALK_JOG:28 WALK_JOG_STEP=8",
+      "01-19 WALK:20",
+      "01-20 WALK_JOG:28 WALK_JOG_STEP=8",
+      "01-22 WALK_JOG:28 WALK_JOG_STEP=8",
+      "01-23 WALK:20"
+     ],
+     "return": "MODIFY/REESTABLISH",
+     "entry": {
+      "mode": "WALK_JOG",
+      "walkStep": 6,
+      "easy": null,
+      "restart": 15,
+      "returnStep": null,
+      "returnFromEasy": null
+     },
+     "returnSpan": [
+      "w13 02-01 WALK_JOG:28 step 6",
+      "w13 02-02 WALK:20",
+      "w13 02-03 WALK_JOG:28 step 6",
+      "w13 02-05 WALK_JOG:28 step 6",
+      "w13 02-06 WALK:20",
+      "w14 02-08 WALK_JOG:26 step 7",
+      "w14 02-09 WALK:20",
+      "w14 02-10 WALK_JOG:26 step 7",
+      "w14 02-12 WALK_JOG:26 step 7",
+      "w14 02-13 WALK:20",
+      "w15 02-15 WALK_JOG:28 step 8",
+      "w15 02-16 WALK:20",
+      "w15 02-17 WALK_JOG:28 step 8",
+      "w15 02-19 WALK_JOG:28 step 8",
+      "w15 02-20 WALK:20"
+     ],
+     "returnWeeks": [
+      {
+       "week": 13,
+       "runningSessions": 3,
+       "jogMinutes": 45,
+       "walks": 2
+      },
+      {
+       "week": 14,
+       "runningSessions": 3,
+       "jogMinutes": 48,
+       "walks": 2
+      },
+      {
+       "week": 15,
+       "runningSessions": 3,
+       "jogMinutes": 60,
+       "walks": 2
+      }
+     ],
+     "ladderView": {
+      "lastStep": 7,
+      "recipeAllows": 6,
+      "reentryWeek": 13,
+      "continuousSessions": [],
+      "walkJogAbove": []
+     },
+     "durationView": {
+      "longestContinuousExecuted": 8,
+      "longer": []
+     },
+     "weeklyView": {
+      "largestExecutedWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 48
+      },
+      "plannedWeekBeforePause": {
+       "runningSessions": 3,
+       "jogMinutes": 60,
+       "walks": 2
+      },
+      "reentryWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 45,
+       "walks": 2
+      },
+      "followingWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 48,
+       "walks": 2
+      },
+      "above": false
+     },
+     "log": [
+      "WEEKLY_REVIEW@2026-11-08T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-15T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-22T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-29T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-06T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-13T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-20T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-27T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-03T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-10T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-17T21:00:00Z MODIFY/GATED_NEXT_STEP",
+      "RETURN_AFTER_PAUSE@2027-02-01T07:00:00Z MODIFY/REESTABLISH"
+     ]
+    },
+    "EXIT_PROJECTED_ONLY/LONG": "skipped: the pause ends beyond the program",
+    "EXIT_PROJECTED_OPEN/SHORT": {
+     "pause": "2027-01-18..2027-01-22",
+     "lastSessionRun": "2027-01-08 WALK_JOG step 7",
+     "longestContinuousExecuted": 8,
+     "lastExecutedWeek": {
+      "week": 9,
+      "runningSessions": 3,
+      "jogMinutes": 48
+     },
+     "historyAtPause": {
+      "mode": "WALK_JOG",
+      "walkStep": 8,
+      "easy": null,
+      "long": null,
+      "returnStep": null,
+      "restart": 15,
+      "longestContinuous": null
+     },
+     "planWeekXBeforePause": [
+      "01-18 EASY:25 EASY_MINUTES=25",
+      "01-19 EASY:25 EASY_MINUTES=25",
+      "01-20 EASY:25 EASY_MINUTES=25",
+      "01-22 WALK:20",
+      "01-23 WALK:20"
+     ],
+     "return": "MODIFY/REESTABLISH",
+     "entry": {
+      "mode": "WALK_JOG",
+      "walkStep": 7,
+      "easy": null,
+      "restart": 15,
+      "returnStep": null,
+      "returnFromEasy": null
+     },
+     "returnSpan": [
+      "w12 01-25 WALK_JOG:26 step 7",
+      "w12 01-26 WALK:20",
+      "w12 01-27 WALK_JOG:26 step 7",
+      "w12 01-29 WALK_JOG:26 step 7",
+      "w12 01-30 WALK:20",
+      "w13 02-01 WALK_JOG:26 step 7",
+      "w13 02-02 WALK:20",
+      "w13 02-03 WALK_JOG:26 step 7",
+      "w13 02-05 WALK_JOG:26 step 7",
+      "w13 02-06 WALK:20"
+     ],
+     "returnWeeks": [
+      {
+       "week": 12,
+       "runningSessions": 3,
+       "jogMinutes": 48,
+       "walks": 2
+      },
+      {
+       "week": 13,
+       "runningSessions": 3,
+       "jogMinutes": 48,
+       "walks": 2
+      }
+     ],
+     "ladderView": {
+      "lastStep": 7,
+      "recipeAllows": 7,
+      "reentryWeek": 12,
+      "continuousSessions": [],
+      "walkJogAbove": []
+     },
+     "durationView": {
+      "longestContinuousExecuted": 8,
+      "longer": []
+     },
+     "weeklyView": {
+      "largestExecutedWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 48
+      },
+      "plannedWeekBeforePause": {
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      "reentryWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 48,
+       "walks": 2
+      },
+      "followingWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 48,
+       "walks": 2
+      },
+      "above": false
+     },
+     "log": [
+      "WEEKLY_REVIEW@2026-11-08T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-15T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-22T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-29T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-06T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-13T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-20T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-27T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-03T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-10T21:00:00Z KEEP/KEEP",
+      "RETURN_AFTER_PAUSE@2027-01-23T07:00:00Z MODIFY/REESTABLISH"
+     ]
+    },
+    "EXIT_PROJECTED_OPEN/MODERATE": {
+     "pause": "2027-01-18..2027-01-31",
+     "lastSessionRun": "2027-01-08 WALK_JOG step 7",
+     "longestContinuousExecuted": 8,
+     "lastExecutedWeek": {
+      "week": 9,
+      "runningSessions": 3,
+      "jogMinutes": 48
+     },
+     "historyAtPause": {
+      "mode": "WALK_JOG",
+      "walkStep": 8,
+      "easy": null,
+      "long": null,
+      "returnStep": null,
+      "restart": 15,
+      "longestContinuous": null
+     },
+     "planWeekXBeforePause": [
+      "01-18 EASY:25 EASY_MINUTES=25",
+      "01-19 EASY:25 EASY_MINUTES=25",
+      "01-20 EASY:25 EASY_MINUTES=25",
+      "01-22 WALK:20",
+      "01-23 WALK:20"
+     ],
+     "return": "MODIFY/REESTABLISH",
+     "entry": {
+      "mode": "WALK_JOG",
+      "walkStep": 6,
+      "easy": null,
+      "restart": 15,
+      "returnStep": null,
+      "returnFromEasy": null
+     },
+     "returnSpan": [
+      "w13 02-01 WALK_JOG:28 step 6",
+      "w13 02-02 WALK:20",
+      "w13 02-03 WALK_JOG:28 step 6",
+      "w13 02-05 WALK_JOG:28 step 6",
+      "w13 02-06 WALK:20",
+      "w14 02-08 WALK_JOG:26 step 7",
+      "w14 02-09 WALK:20",
+      "w14 02-10 WALK_JOG:26 step 7",
+      "w14 02-12 WALK_JOG:26 step 7",
+      "w14 02-13 WALK:20",
+      "w15 02-15 WALK_JOG:28 step 8",
+      "w15 02-16 WALK:20",
+      "w15 02-17 WALK_JOG:28 step 8",
+      "w15 02-19 WALK_JOG:28 step 8",
+      "w15 02-20 WALK:20"
+     ],
+     "returnWeeks": [
+      {
+       "week": 13,
+       "runningSessions": 3,
+       "jogMinutes": 45,
+       "walks": 2
+      },
+      {
+       "week": 14,
+       "runningSessions": 3,
+       "jogMinutes": 48,
+       "walks": 2
+      },
+      {
+       "week": 15,
+       "runningSessions": 3,
+       "jogMinutes": 60,
+       "walks": 2
+      }
+     ],
+     "ladderView": {
+      "lastStep": 7,
+      "recipeAllows": 6,
+      "reentryWeek": 13,
+      "continuousSessions": [],
+      "walkJogAbove": []
+     },
+     "durationView": {
+      "longestContinuousExecuted": 8,
+      "longer": []
+     },
+     "weeklyView": {
+      "largestExecutedWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 48
+      },
+      "plannedWeekBeforePause": {
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      "reentryWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 45,
+       "walks": 2
+      },
+      "followingWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 48,
+       "walks": 2
+      },
+      "above": false
+     },
+     "log": [
+      "WEEKLY_REVIEW@2026-11-08T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-15T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-22T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-29T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-06T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-13T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-20T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-27T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-03T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-10T21:00:00Z KEEP/KEEP",
+      "RETURN_AFTER_PAUSE@2027-02-01T07:00:00Z MODIFY/REESTABLISH"
+     ]
+    },
+    "EXIT_PROJECTED_OPEN/LONG": "skipped: the pause ends beyond the program",
+    "ONE_CONTINUOUS_RUN/SHORT": {
+     "pause": "2027-01-19..2027-01-22",
+     "lastSessionRun": "2027-01-18 EASY:25",
+     "longestContinuousExecuted": 25,
+     "lastExecutedWeek": {
+      "week": 11,
+      "runningSessions": 1,
+      "jogMinutes": 25
+     },
+     "historyAtPause": {
+      "mode": "EASY",
+      "walkStep": 9,
+      "easy": 25,
+      "long": null,
+      "returnStep": null,
+      "restart": 15,
+      "longestContinuous": 20
+     },
+     "planWeekXBeforePause": [
+      "01-18 EASY:25 EASY_MINUTES=25",
+      "01-19 EASY:25 EASY_MINUTES=25",
+      "01-20 EASY:25 EASY_MINUTES=25",
+      "01-22 WALK:20",
+      "01-23 WALK:20"
+     ],
+     "return": "MODIFY/REESTABLISH",
+     "entry": {
+      "mode": "EASY",
+      "walkStep": 9,
+      "easy": 25,
+      "restart": 15,
+      "returnStep": null,
+      "returnFromEasy": null
+     },
+     "returnSpan": [
+      "w12 01-25 EASY:25 EASY_MINUTES=25",
+      "w12 01-26 EASY:25 EASY_MINUTES=25",
+      "w12 01-27 EASY:25 EASY_MINUTES=25",
+      "w12 01-29 WALK:20",
+      "w12 01-30 WALK:20",
+      "w13 02-01 EASY:25 EASY_MINUTES=25",
+      "w13 02-02 EASY:25 EASY_MINUTES=25",
+      "w13 02-03 EASY:25 EASY_MINUTES=25",
+      "w13 02-05 WALK:20",
+      "w13 02-06 WALK:20"
+     ],
+     "returnWeeks": [
+      {
+       "week": 12,
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      {
+       "week": 13,
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      }
+     ],
+     "ladderView": "last session run was continuous",
+     "durationView": {
+      "longestContinuousExecuted": 25,
+      "longer": []
+     },
+     "weeklyView": {
+      "largestExecutedWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 60
+      },
+      "plannedWeekBeforePause": {
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      "reentryWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      "followingWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      "above": false
+     },
+     "log": [
+      "WEEKLY_REVIEW@2026-11-08T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-15T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-22T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-29T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-06T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-13T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-20T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-27T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-03T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-10T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-17T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-18T21:00:00Z KEEP/KEEP",
+      "RETURN_AFTER_PAUSE@2027-01-23T07:00:00Z MODIFY/REESTABLISH"
+     ]
+    },
+    "ONE_CONTINUOUS_RUN/MODERATE": {
+     "pause": "2027-01-19..2027-02-01",
+     "lastSessionRun": "2027-01-18 EASY:25",
+     "longestContinuousExecuted": 25,
+     "lastExecutedWeek": {
+      "week": 11,
+      "runningSessions": 1,
+      "jogMinutes": 25
+     },
+     "historyAtPause": {
+      "mode": "EASY",
+      "walkStep": 9,
+      "easy": 25,
+      "long": null,
+      "returnStep": null,
+      "restart": 15,
+      "longestContinuous": 20
+     },
+     "planWeekXBeforePause": [
+      "01-18 EASY:25 EASY_MINUTES=25",
+      "01-19 EASY:25 EASY_MINUTES=25",
+      "01-20 EASY:25 EASY_MINUTES=25",
+      "01-22 WALK:20",
+      "01-23 WALK:20"
+     ],
+     "return": "MODIFY/REESTABLISH",
+     "entry": {
+      "mode": "RETURN",
+      "walkStep": 9,
+      "easy": 25,
+      "restart": 15,
+      "returnStep": 0,
+      "returnFromEasy": 15
+     },
+     "returnSpan": [
+      "w13 02-02 EASY:15 RETURN_STEP=0",
+      "w13 02-03 EASY:15 RETURN_STEP=0",
+      "w13 02-05 EASY:15 RETURN_STEP=0",
+      "w13 02-06 EASY:15 RETURN_STEP=0",
+      "w14 02-08 EASY:20 RETURN_STEP=1",
+      "w14 02-09 EASY:20 RETURN_STEP=1",
+      "w14 02-10 EASY:20 RETURN_STEP=1",
+      "w14 02-12 EASY:20 RETURN_STEP=1",
+      "w14 02-13 EASY:20 RETURN_STEP=1",
+      "w15 02-15 EASY:25 EASY_MINUTES=25",
+      "w15 02-16 EASY:25 EASY_MINUTES=25",
+      "w15 02-17 EASY:25 EASY_MINUTES=25",
+      "w15 02-19 WALK:20",
+      "w15 02-20 WALK:20"
+     ],
+     "returnWeeks": [
+      {
+       "week": 13,
+       "runningSessions": 4,
+       "jogMinutes": 60,
+       "walks": 0
+      },
+      {
+       "week": 14,
+       "runningSessions": 5,
+       "jogMinutes": 100,
+       "walks": 0
+      },
+      {
+       "week": 15,
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      }
+     ],
+     "ladderView": "last session run was continuous",
+     "durationView": {
+      "longestContinuousExecuted": 25,
+      "longer": []
+     },
+     "weeklyView": {
+      "largestExecutedWeek": {
+       "runningSessions": 3,
+       "jogMinutes": 60
+      },
+      "plannedWeekBeforePause": {
+       "runningSessions": 3,
+       "jogMinutes": 75,
+       "walks": 2
+      },
+      "reentryWeek": {
+       "runningSessions": 4,
+       "jogMinutes": 60,
+       "walks": 0
+      },
+      "followingWeek": {
+       "runningSessions": 5,
+       "jogMinutes": 100,
+       "walks": 0
+      },
+      "above": true
+     },
+     "log": [
+      "WEEKLY_REVIEW@2026-11-08T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-15T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-22T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-29T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-06T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-13T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-20T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-27T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-03T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-10T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-17T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-18T21:00:00Z KEEP/KEEP",
+      "RETURN_AFTER_PAUSE@2027-02-02T07:00:00Z MODIFY/REESTABLISH"
+     ]
+    },
+    "ONE_CONTINUOUS_RUN/LONG": "skipped: the pause ends beyond the program",
+    "EXIT_COMPLETE_CROSSWEEK/SHORT": {
+     "pause": "2027-01-16..2027-01-20",
+     "lastSessionRun": "2027-01-15 WALK_JOG step 8",
+     "longestContinuousExecuted": 20,
+     "historyAtPause": {
+      "mode": "EASY",
+      "walkStep": 9,
+      "easy": 25,
+      "long": null,
+      "returnStep": null,
+      "restart": 15,
+      "longestContinuous": 20
+     },
+     "return": "MODIFY/REESTABLISH",
+     "entry": {
+      "mode": "WALK_JOG",
+      "walkStep": 8,
+      "easy": null,
+      "restart": 15,
+      "returnStep": null,
+      "returnFromEasy": null
+     },
+     "returnSpan": [
+      "w11 01-22 WALK_JOG:28 step 8",
+      "w11 01-23 WALK:20",
+      "w12 01-25 EASY:25 EASY_MINUTES=25",
+      "w12 01-26 EASY:25 EASY_MINUTES=25",
+      "w12 01-27 EASY:25 EASY_MINUTES=25",
+      "w12 01-29 WALK:20",
+      "w12 01-30 WALK:20",
+      "w13 02-01 EASY:25 EASY_MINUTES=25",
+      "w13 02-02 EASY:25 EASY_MINUTES=25",
+      "w13 02-03 EASY:25 EASY_MINUTES=25",
+      "w13 02-05 WALK:20",
+      "w13 02-06 WALK:20"
+     ],
+     "ladderView": {
+      "lastStep": 8,
+      "recipeAllows": 8,
+      "reentryWeek": 11,
+      "continuousSessions": [],
+      "walkJogAbove": []
+     },
+     "durationView": {
+      "longestContinuousExecuted": 20,
+      "longer": []
+     },
+     "log": [
+      "WEEKLY_REVIEW@2026-11-08T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-15T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-22T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-29T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-06T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-13T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-20T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-27T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-03T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-10T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-11T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-13T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-15T21:00:00Z KEEP/KEEP",
+      "RETURN_AFTER_PAUSE@2027-01-21T07:00:00Z MODIFY/REESTABLISH"
+     ]
+    },
+    "EXIT_INCOMPLETE_CROSSWEEK/SHORT": {
+     "pause": "2027-01-14..2027-01-18",
+     "lastSessionRun": "2027-01-13 WALK_JOG step 8",
+     "longestContinuousExecuted": 20,
+     "historyAtPause": {
+      "mode": "WALK_JOG",
+      "walkStep": 8,
+      "easy": null,
+      "long": null,
+      "returnStep": null,
+      "restart": 15,
+      "longestContinuous": null
+     },
+     "return": "MODIFY/REESTABLISH",
+     "entry": {
+      "mode": "WALK_JOG",
+      "walkStep": 8,
+      "easy": null,
+      "restart": 15,
+      "returnStep": null,
+      "returnFromEasy": null
+     },
+     "returnSpan": [
+      "w11 01-19 WALK:20",
+      "w11 01-20 WALK_JOG:28 step 8",
+      "w11 01-22 WALK_JOG:28 step 8",
+      "w11 01-23 WALK:20",
+      "w12 01-25 EASY:25 EASY_MINUTES=25",
+      "w12 01-26 EASY:25 EASY_MINUTES=25",
+      "w12 01-27 EASY:25 EASY_MINUTES=25",
+      "w12 01-29 WALK:20",
+      "w12 01-30 WALK:20",
+      "w13 02-01 EASY:25 EASY_MINUTES=25",
+      "w13 02-02 EASY:25 EASY_MINUTES=25",
+      "w13 02-03 EASY:25 EASY_MINUTES=25",
+      "w13 02-05 WALK:20",
+      "w13 02-06 WALK:20"
+     ],
+     "ladderView": {
+      "lastStep": 8,
+      "recipeAllows": 8,
+      "reentryWeek": 11,
+      "continuousSessions": [],
+      "walkJogAbove": []
+     },
+     "durationView": {
+      "longestContinuousExecuted": 20,
+      "longer": []
+     },
+     "log": [
+      "WEEKLY_REVIEW@2026-11-08T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-11-15T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-22T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+      "WEEKLY_REVIEW@2026-11-29T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-06T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-13T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-20T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2026-12-27T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-03T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-10T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-11T21:00:00Z KEEP/KEEP",
+      "WEEKLY_REVIEW@2027-01-13T21:00:00Z KEEP/KEEP",
+      "RETURN_AFTER_PAUSE@2027-01-19T07:00:00Z MODIFY/REESTABLISH"
+     ]
+    }
+   }
+  }
+ },
+ "noPauseTwoEmptyWeeks": {
+  "lastStepRun": 6,
+  "planBefore": {
+   "week2": [
+    "11-16 WALK_JOG:26 WALK_JOG_STEP=7",
+    "11-17 WALK:20",
+    "11-18 WALK_JOG:26 WALK_JOG_STEP=7",
+    "11-20 WALK_JOG:26 WALK_JOG_STEP=7",
+    "11-21 WALK:20"
+   ],
+   "week4": [
+    "11-30 EASY:25 EASY_MINUTES=25",
+    "12-01 EASY:25 EASY_MINUTES=25",
+    "12-02 EASY:25 EASY_MINUTES=25",
+    "12-04 WALK:20",
+    "12-05 WALK:20"
+   ]
+  },
+  "afterEmptyMidWeekReport": {
+   "decision": "KEEP/KEEP",
+   "week4": [
+    "11-30 EASY:25 EASY_MINUTES=25",
+    "12-01 EASY:25 EASY_MINUTES=25",
+    "12-02 EASY:25 EASY_MINUTES=25",
+    "12-04 WALK:20",
+    "12-05 WALK:20"
+   ],
+   "week5": [
+    "12-07 EASY:25 EASY_MINUTES=25",
+    "12-08 EASY:25 EASY_MINUTES=25",
+    "12-09 EASY:25 EASY_MINUTES=25",
+    "12-11 WALK:20",
+    "12-12 WALK:20"
+   ]
+  },
+  "afterEmptyWeek4Review": {
+   "decision": "MODIFY/GATED_NEXT_STEP",
+   "week5": [
+    "12-07 WALK_JOG:26 WALK_JOG_STEP=7",
+    "12-08 WALK:20",
+    "12-09 WALK_JOG:26 WALK_JOG_STEP=7",
+    "12-11 WALK_JOG:26 WALK_JOG_STEP=7",
+    "12-12 WALK:20"
+   ],
+   "week6": [
+    "12-14 WALK_JOG:28 WALK_JOG_STEP=8",
+    "12-15 WALK:20",
+    "12-16 WALK_JOG:28 WALK_JOG_STEP=8",
+    "12-18 WALK_JOG:28 WALK_JOG_STEP=8",
+    "12-19 WALK:20"
+   ]
+  },
+  "historyWeek5": {
+   "mode": "WALK_JOG",
+   "walkStep": 7,
+   "easy": null,
+   "long": null,
+   "returnStep": null,
+   "restart": 15,
+   "longestContinuous": null
+  },
+  "week5Continuous": [],
+  "week5StepsAboveReleased": [],
+  "log": [
+   "WEEKLY_REVIEW@2026-11-08T21:00:00Z KEEP/KEEP",
+   "WEEKLY_REVIEW@2026-11-15T21:00:00Z KEEP/INSTANTIATE_LOGGED_LOADS",
+   "WEEKLY_REVIEW@2026-12-02T12:00:00Z KEEP/KEEP",
+   "WEEKLY_REVIEW@2026-12-06T21:00:00Z MODIFY/GATED_NEXT_STEP"
+  ]
+ },
+ "totals": {
+  "cells": 34,
+  "ladderViewAbove": 10,
+  "durationViewAbove": 4,
+  "weeklyAboveExecutedAndPrior": 7,
+  "byCell": {
+   "TOP5/EXIT_EARNED_REVIEWED/SHORT": [
+    "ladder",
+    "duration"
+   ],
+   "TOP5/EXIT_EARNED_REVIEWED/MODERATE": [
+    "ladder",
+    "weekly"
+   ],
+   "TOP5/EXIT_EARNED_REVIEWED/LONG": [
+    "ladder"
+   ],
+   "TOP5/EXIT_EARNED_UNREVIEWED/SHORT": [
+    "ladder",
+    "duration"
+   ],
+   "TOP5/EXIT_EARNED_UNREVIEWED/MODERATE": [
+    "ladder",
+    "weekly"
+   ],
+   "TOP5/EXIT_EARNED_UNREVIEWED/LONG": [
+    "ladder"
+   ],
+   "TOP5/EXIT_HELD/SHORT": [
+    "weekly"
+   ],
+   "TOP5/EXIT_HELD/MODERATE": [],
+   "TOP5/EXIT_HELD/LONG": [],
+   "TOP5/EXIT_PROJECTED_ONLY/SHORT": [],
+   "TOP5/EXIT_PROJECTED_ONLY/MODERATE": [],
+   "TOP5/EXIT_PROJECTED_ONLY/LONG": [],
+   "TOP5/EXIT_PROJECTED_OPEN/SHORT": [],
+   "TOP5/EXIT_PROJECTED_OPEN/MODERATE": [],
+   "TOP5/EXIT_PROJECTED_OPEN/LONG": [],
+   "TOP5/ONE_CONTINUOUS_RUN/SHORT": [],
+   "TOP5/ONE_CONTINUOUS_RUN/MODERATE": [
+    "weekly"
+   ],
+   "TOP5/ONE_CONTINUOUS_RUN/LONG": [],
+   "TOP5/EXIT_COMPLETE_CROSSWEEK/SHORT": [],
+   "TOP5/EXIT_INCOMPLETE_CROSSWEEK/SHORT": [],
+   "FULL/EXIT_EARNED_REVIEWED/SHORT": [
+    "ladder",
+    "duration"
+   ],
+   "FULL/EXIT_EARNED_REVIEWED/MODERATE": [
+    "ladder",
+    "weekly"
+   ],
+   "FULL/EXIT_EARNED_UNREVIEWED/SHORT": [
+    "ladder",
+    "duration"
+   ],
+   "FULL/EXIT_EARNED_UNREVIEWED/MODERATE": [
+    "ladder",
+    "weekly"
+   ],
+   "FULL/EXIT_HELD/SHORT": [],
+   "FULL/EXIT_HELD/MODERATE": [],
+   "FULL/EXIT_PROJECTED_ONLY/SHORT": [],
+   "FULL/EXIT_PROJECTED_ONLY/MODERATE": [],
+   "FULL/EXIT_PROJECTED_OPEN/SHORT": [],
+   "FULL/EXIT_PROJECTED_OPEN/MODERATE": [],
+   "FULL/ONE_CONTINUOUS_RUN/SHORT": [],
+   "FULL/ONE_CONTINUOUS_RUN/MODERATE": [
+    "weekly"
+   ],
+   "FULL/EXIT_COMPLETE_CROSSWEEK/SHORT": [],
+   "FULL/EXIT_INCOMPLETE_CROSSWEEK/SHORT": []
+  },
+  "examples": [
+   "TOP5/EXIT_EARNED_REVIEWED/SHORT ladder: last run step 8, recipe 8: w5 12-07 EASY:25 EASY_MINUTES=25; w5 12-08 EASY:25 EASY_MINUTES=25; w5 12-09 EASY:25 EASY_MINUTES=25",
+   "TOP5/EXIT_EARNED_REVIEWED/SHORT duration: longest continuous executed 20 min: w5 12-07 EASY:25 EASY_MINUTES=25; w5 12-08 EASY:25 EASY_MINUTES=25; w5 12-09 EASY:25 EASY_MINUTES=25",
+   "TOP5/EXIT_EARNED_REVIEWED/MODERATE ladder: last run step 8, recipe 7: w6 12-14 EASY:15 RETURN_STEP=0; w6 12-15 EASY:15 RETURN_STEP=0; w6 12-16 EASY:15 RETURN_STEP=0",
+   "TOP5/EXIT_EARNED_REVIEWED/MODERATE weekly: re-entry week 5 runs / 75 min, next 5 / 100, against the largest executed week 3 / 60 and the planned prior week 3 / 75",
+   "TOP5/EXIT_EARNED_REVIEWED/LONG ladder: last run step 8, recipe 0: w9 01-04 EASY:15 RESTART_MINUTES=15; w9 01-06 EASY:15 RESTART_MINUTES=15; w9 01-08 EASY:15 RESTART_MINUTES=15",
+   "TOP5/EXIT_EARNED_UNREVIEWED/SHORT ladder: last run step 8, recipe 8: w5 12-07 EASY:25 EASY_MINUTES=25; w5 12-08 EASY:25 EASY_MINUTES=25; w5 12-09 EASY:25 EASY_MINUTES=25",
+   "TOP5/EXIT_EARNED_UNREVIEWED/SHORT duration: longest continuous executed 20 min: w5 12-07 EASY:25 EASY_MINUTES=25; w5 12-08 EASY:25 EASY_MINUTES=25; w5 12-09 EASY:25 EASY_MINUTES=25",
+   "TOP5/EXIT_EARNED_UNREVIEWED/MODERATE ladder: last run step 8, recipe 7: w6 12-14 EASY:15 RETURN_STEP=0; w6 12-15 EASY:15 RETURN_STEP=0; w6 12-16 EASY:15 RETURN_STEP=0",
+   "TOP5/EXIT_EARNED_UNREVIEWED/MODERATE weekly: re-entry week 5 runs / 75 min, next 5 / 100, against the largest executed week 3 / 60 and the planned prior week 3 / 75",
+   "TOP5/EXIT_EARNED_UNREVIEWED/LONG ladder: last run step 8, recipe 0: w9 01-04 EASY:15 RESTART_MINUTES=15; w9 01-06 EASY:15 RESTART_MINUTES=15; w9 01-08 EASY:15 RESTART_MINUTES=15",
+   "TOP5/EXIT_HELD/SHORT weekly: re-entry week 3 runs / 60 min, next 3 / 75, against the largest executed week 3 / 48 and the planned prior week 3 / 60",
+   "TOP5/ONE_CONTINUOUS_RUN/MODERATE weekly: re-entry week 4 runs / 60 min, next 5 / 100, against the largest executed week 3 / 60 and the planned prior week 3 / 75",
+   "FULL/EXIT_EARNED_REVIEWED/SHORT ladder: last run step 8, recipe 8: w12 01-25 EASY:25 EASY_MINUTES=25; w12 01-26 EASY:25 EASY_MINUTES=25; w12 01-27 EASY:25 EASY_MINUTES=25",
+   "FULL/EXIT_EARNED_REVIEWED/SHORT duration: longest continuous executed 20 min: w12 01-25 EASY:25 EASY_MINUTES=25; w12 01-26 EASY:25 EASY_MINUTES=25; w12 01-27 EASY:25 EASY_MINUTES=25",
+   "FULL/EXIT_EARNED_REVIEWED/MODERATE ladder: last run step 8, recipe 7: w13 02-01 EASY:15 RETURN_STEP=0; w13 02-02 EASY:15 RETURN_STEP=0; w13 02-03 EASY:15 RETURN_STEP=0",
+   "FULL/EXIT_EARNED_REVIEWED/MODERATE weekly: re-entry week 5 runs / 75 min, next 5 / 100, against the largest executed week 3 / 60 and the planned prior week 3 / 75",
+   "FULL/EXIT_EARNED_UNREVIEWED/SHORT ladder: last run step 8, recipe 8: w12 01-25 EASY:25 EASY_MINUTES=25; w12 01-26 EASY:25 EASY_MINUTES=25; w12 01-27 EASY:25 EASY_MINUTES=25",
+   "FULL/EXIT_EARNED_UNREVIEWED/SHORT duration: longest continuous executed 20 min: w12 01-25 EASY:25 EASY_MINUTES=25; w12 01-26 EASY:25 EASY_MINUTES=25; w12 01-27 EASY:25 EASY_MINUTES=25",
+   "FULL/EXIT_EARNED_UNREVIEWED/MODERATE ladder: last run step 8, recipe 7: w13 02-01 EASY:15 RETURN_STEP=0; w13 02-02 EASY:15 RETURN_STEP=0; w13 02-03 EASY:15 RETURN_STEP=0",
+   "FULL/EXIT_EARNED_UNREVIEWED/MODERATE weekly: re-entry week 5 runs / 75 min, next 5 / 100, against the largest executed week 3 / 60 and the planned prior week 3 / 75",
+   "FULL/ONE_CONTINUOUS_RUN/MODERATE weekly: re-entry week 4 runs / 60 min, next 5 / 100, against the largest executed week 3 / 60 and the planned prior week 3 / 75"
+  ]
+ }
+}

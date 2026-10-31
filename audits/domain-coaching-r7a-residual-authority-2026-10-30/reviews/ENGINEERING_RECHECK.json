@@ -1,0 +1,64 @@
+{
+ "revision": "R7ARA-QE-r1",
+ "date": "2026-10-31",
+ "role": "Quality & Reliability Engineering Reviewer (independent, new session; not the author)",
+ "verdict": "R7A_RESIDUAL_AUTHORITY_ENGINEERING_RECHECK = READY",
+ "recheckInvalid": "NO",
+ "notIssued": ["R7A_EXIT_READINESS", "R7-B0", "SSCTR ruling", "fixes"],
+ "freeze": {
+  "revision": "R7A-RESIDUAL-AUTHORITY-FREEZE-1",
+  "record": "CoachingCore/r7/residual-authority/RUNTIME_FREEZE_R7A_RESIDUAL_AUTHORITY.json",
+  "freezeCommit": "7d2da3603e224124696a2290766ec448080f3264",
+  "handoffCommit": "4917489364bb1138f8d82b46c20dd65d1bf693c7",
+  "sourceDigest": "e7172eb2e65bfb1da4c102a7efa2bae64bf1c70b06562fd3ce9896defd6dc17d",
+  "manifestDigest": "3d214fb53f62e45ca7d99f39f2c562d358719a2264c2de46098d39b318c85125",
+  "boundFiles": 86,
+  "policy": {"revision": "R6-POLICY-5", "hash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c", "fileSha256": "a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100"},
+  "predecessor": {"revision": "R7A-DECISION-AUTHORITY-FREEZE-1", "commit": "d4631cd03fb27bbc1857532500748476ab764987", "sourceDigest": "3a7166b25aaf550f7692cc058f0e582b42e9eb7f74b9e361f23733b5e74ab244", "manifestDigest": "a500cdd94b8a4994a718029d4ee6efdc703e4f54de59d0855b5598c0d1afb224"},
+  "superseded": {"commit": "b9fd42d1fff90629650563a51f640d6f865943c0", "sourceDigest": "259ab3eff431d2381d50904be7594d9fa122c7d8d2fc369e20d67b5419f84cb6"}
+ },
+ "integrity": {"start": "qe-r7ara-runs/integrity.start.out.json", "end": "qe-r7ara-runs/integrity.end.out.json", "handoffTouchesBoundOrEvidence": [], "node": "v24.19.0", "tests": {"tests": 673, "pass": 673, "fail": 0}, "authorVerifier": {"start": "13/13", "end": "12/13 (reviews-not-dispatched, by design)"}},
+ "rootCauseA_QE_R7ADA_01": {
+  "closedAsMaterialClass": true,
+  "Q01": {"cells": 78, "candidate": 0, "predecessor": 14, "candidateEarlyEqualsPredecessorEarly": "78/78"},
+  "Q01b": {"cells": 45, "candidate": 0, "predecessor": 12, "candidateEarlyEqualsPredecessorEarly": "45/45"},
+  "A01_entrypointGrid": {"entrypoints": 27, "reviewKinds": 18, "shapeLoads": 8, "timings": {"MON": [208, 0, 89], "SAMEDAY": [216, 0, 88], "LASTDAY": [216, 0, 168], "AM_BEFORE": [216, 0, 88]}, "legend": "[cells, candidate violations, predecessor violations]", "total": [856, 0, 433],
+   "classification": {"AM_AFTER_A4": "216/216 differ on both trees: contract A4 (declared)", "AM_AFTER_LATE": "216/216 differ on both trees: QE-R7ARA-OBS-1 (C1 noon boundary)", "candidateEqualsPredecessor": "209/216 each; the 7 others are SYSTEMIC_FATIGUE (QE-R7ARA-OBS-2)"}},
+  "A02_staleResurrection": {"chains": 56, "candidateDivergent": 0, "candidateResurrections": 0, "predecessorDivergent": 28, "predecessorResurrections": 28},
+  "confirmationSemantics": "D44 asks above the corrected row (22 adopted; 24/26/28 asked, history KNOWN 20) on every entrypoint and timing; D45 establishment waits; a confirmation does not bypass D44"
+ },
+ "rootCauseB_QE_R7ADA_02": {
+  "closedAsMaterialClass": true,
+  "Q06c": {"cells": 21, "candidate": 0, "predecessor": 11},
+  "Q06d_returnToLong": {"k3": [65, 70], "k5": [70, 75], "k8": [75, 75], "legend": "[candidate, predecessor]; candidate equals the executed dose"},
+  "Q06": {"candidate": 3, "predecessor": 6, "candidateReadings": ["W-ADVERSE x2: OBS-2 (E1-B4, declared)", "E-RELEASED 17d: rows dated inside the pause (detector artifact, verified)"]},
+  "E01_singlePause": {"judged": 236, "releasedAboveExecutedAtPause": 100, "candidate": 0, "predecessor": 65, "skipped": "24 LAST_ADVERSE (not constructible: HOLD repeats the step)"},
+  "E02_repeatedPause": {"cells": 18, "candidate": 0, "predecessor": 8, "superseded": 2},
+  "ssctrContinuous": {"cells": 34, "candidate": {"ladder": 0, "duration": 0, "weekly": 3}, "predecessor": {"ladder": 10, "duration": 4, "weekly": 7}, "weeklyCellsIdenticalToPredecessor": true},
+  "ssctrWalkJogMatrix": {"returns": 99, "candidate": 0, "predecessor": 0}
+ },
+ "R7ARA_SELF_01": {
+  "superseded": {"entry": "RETURN step 1", "rows": "30/30/45", "target": "40/65", "reproduced": true},
+  "predecessor": {"entry": "RETURN step 0", "rows": "15/15/20", "target": "40/70 (70 never executed)"},
+  "freeze": {"entry": "RETURN step 0", "rows": "15/15/20", "target": "30/45 = executed since the entry", "reproduced": false},
+  "adjacent": {"restartSwitchModerate": "superseded resumes restart minutes; freeze re-enters at step 0 (15/15/20, target 25/40)", "completionShort": "freeze resumes return step 1 (last run)", "long": "RESTART", "walkJogP3": "SHORT 3, MODERATE 2, LONG 0"}
+ },
+ "properties": {"A": "holds", "B": "holds within A5's contracted trigger; residual QE-R7ARA-OBS-1 at the C1 noon boundary (pre-existing)", "E": "holds; reading QE-R7ARA-OBS-4 at the 90% completion rule"},
+ "preservation": {
+  "tests": "673/673; named F1-F4, F4-X, D53, D56-D59, HOLD, MAINTAIN, QE-R7ASC-01..04 pass",
+  "kitSubset": {"jobs": 22, "byteIdentical": 13, "differ": 9, "direction": {"numericFell": 117, "numericRose": 0, "rowStringsFell": 182, "rowStringsRose": 0, "kindStepDowns": 24, "modeLabelsEasyToReturn": 11, "clockOnly": ["trace-h25"]}},
+  "hold": "240 cases, all counters 0, identical but for the runtime label",
+  "maintain": "393 KNOWN rows, 0 above range or last executed, identical but for the label",
+  "Q04": "summary identical on both trees",
+  "Q05": {"cases": 58, "diverging": 0}
+ },
+ "findingsWithinGate": [],
+ "observations": [
+  {"id": "QE-R7ARA-OBS-1", "severity": "LOW", "rootCause": "A (residual)", "class": "C1 noon boundary x D44 row in force", "predecessor": "identical", "introducedByFreeze": false, "status": "NONBLOCKING", "route": "BACKLOG R7-B (owner may rate TESTFLIGHT)", "reproduction": "qe-r7ara-A03-am-after-noon-minimal.mjs"},
+  {"id": "QE-R7ARA-OBS-2", "severity": "LOW", "rootCause": "none (C-class)", "class": "SYSTEMIC_FATIGUE with nothing to reduce records no SYSTEMIC_SIGNAL mid-week", "predecessor": "identical without a late fact; persisted only via A3 with one", "introducedByFreeze": false, "status": "NONBLOCKING", "route": "BACKLOG"},
+  {"id": "QE-R7ARA-OBS-3", "severity": "INFO", "rootCause": "B (ruling point)", "class": "moderate target window: RETURN state keeps its target, a released completion is capped since the entry", "introducedByFreeze": "design of E1.3", "status": "NONBLOCKING", "route": "SSCTR"},
+  {"id": "QE-R7ARA-OBS-4", "severity": "INFO", "rootCause": "B (reading)", "class": "a run complete at >= 90% is credited with its row's minutes", "predecessor": "same definition (resumes higher)", "introducedByFreeze": false, "status": "NONBLOCKING", "route": "SSCTR / BACKLOG"}
+ ],
+ "notReopened": ["A5-B1 (R1)", "E1-B1 (quality ladder, D58)", "E1-B2 (NF-R7ADA-2)", "E1-B3 (restart long-run offset)", "E1-B4 (OBS-2)", "E1-B5 (HistoricalState)", "repertoire", "B0", "pace", "marathon", "KMP", "HealthKit", "WorkoutKit", "wearables", "UI/Figma", "document drift"],
+ "runs": {"ledger": "qe-r7ara-runs/RUNS.json", "kit": "qe-r7ara-runs/kit/KIT_RUNS.json", "direction": "qe-r7ara-runs/kit/DIRECTION.json"}
+}
