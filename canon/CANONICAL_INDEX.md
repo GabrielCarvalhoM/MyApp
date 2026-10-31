@@ -1,3 +1,11 @@
+<!-- R7_B0_BASELINE_INDEX_START: R7B0-BASELINE-1 -->
+## Consolidated B0 entry — baseline/r7-b0 / 2026-10-31 America/Sao_Paulo
+
+Read the [baseline handoff](../audits/r7-b0-baseline-2026-10-31/BASELINE_HANDOFF.md) → [current R7-A final handoff](../CoachingCore/r7/R7A_FINAL_HANDOFF.md) → [compressed authority/read order](../audits/domain-coaching-r7-b0-readiness-2026-10-30/CLAUDE_HANDOFF.md). R7-A formal closure is COMPLETE/READY; Growth DR-124–133 is canon-synchronized; DR-134 is approved and its Founder blocker CLOSED. Earlier pending/held metadata below belongs to the original branch/revision and is superseded only for those statuses. No policy, scientific scope or reviewed gate is expanded. B0 NOT started.
+
+Later approved wearable decisions DR-135–147 remain an [external pinned reference](https://github.com/GabrielCarvalhoM/MyApp/blob/993b258e792ae894a29101e9c0efd95689c5f880/product/V1_WEARABLE_EVIDENCE_STRATEGY.md), with [publication evidence](https://github.com/GabrielCarvalhoM/MyApp/blob/993b258e792ae894a29101e9c0efd95689c5f880/audits/v1-healthkit-workoutkit-evidence-2026-10-30/FINAL_DISPOSITION.md). They qualify earlier watch-delivery/missing-data wording for future B0 metadata only; the handoff states the exact scope. No wearable/foundation branch is merged. Frozen R7-A remains the runtime authority.
+<!-- R7_B0_BASELINE_INDEX_END: R7B0-BASELINE-1 -->
+
 <!-- TWO_WEEK_ROTATION_INDEX_START: TWR-CANON-1 -->
 ## Current pointer — Founder-approved two-week rotation structure / 2026-10-30
 
