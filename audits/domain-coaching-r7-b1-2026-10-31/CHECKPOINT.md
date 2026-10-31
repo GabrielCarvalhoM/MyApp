@@ -36,14 +36,22 @@ Engineering recheck probes: N1, N1b, N3, N5, A10, A13, N7a–c, N7d, N8-N1 FAIL 
 - `scripts/regress-r7b1.mjs` (timeline differential vs `10b26d6`, last run on the final bytes): PRESERVE 98/98 timelines identical. Blocker paths changed as expected (OBS-04 12, R2-01 3, R2-02 2, R2-03 2). Substitution grid: 184 decisions, 138 applied on both, inconsistent 8 → 0, changed exactly those 8. Envelope findings 0.
 - One item still to classify: two `runRises` in `R2-02:graduation-decline`, week 4. The longest run goes 34 → 35 while weekly minutes drop 89 → 80 and quality 1 → 0, which looks like the withdrawn threshold session becoming an easy run. Confirm it, then refine the script's run check so that an easy run replacing a withdrawn quality session is not counted as a rise.
 
+## Resumed (after the usage-limit pause)
+
+- Run item classified. The differential's R2-02 cross-check shows R7-B.1's question carries exactly FREEZE-2's correction-alone re-plan (the path the SSCTR approved in r02), and the next three weekly reviews are identical. `regress-r7b1.mjs` → **PASS**: PRESERVE 98/98 identical, grid inconsistent 8 → 0, envelope 0, run rises 0.
+- Suite 756/756 on the final bytes; SSCTR r06 0/20; r03/r04 unchanged.
+- Adversarial probes (`probes/adversarial-r7b1.mjs`): R7-B.1 3,212 checks, **0 failed** (P1 counts 105 projection-only appearances: a substitute planned in the last SPECIFIC week shows in the decision's projected taper; the review of that week re-plans from evidence and leaves it out). FREEZE-2: **445 failed** across all five grids. Two over-strict probe properties were corrected before this result: projected weeks are counted, not judged; the history-vs-plan cap check is skipped for day-count changes, where the R7-A HISTORY and PLAN readings differ by design.
+- Tests: 29 in the R7-B.1 file. Five were added for fix branches without a test, and one more for M38 (below). On FREEZE-2 every blocker test fails and only the preservation tests pass.
+- Mutation `scripts/mutate-r7b1.mjs`: **15/15 killed**. M38 (the stand-in's SKILL_MISMATCH direction) first survived; it was a test gap, now closed by the kb-row/one-arm-db-row test. `scripts/mutate-r7b.mjs` on the new bytes is running.
+- Conformance `conformance-r7b.mjs` PASS (301); delta matrix `r7/b1/CONFORMANCE_R7B1_DELTA.json` with `scripts/conformance-r7b1.mjs`.
+- Written: `r7/b1/BLOCKER_CLOSURE_R7B1.md`, `r7/b1/README.md`, `TEST_CHANGES_R7B1.md`, `scripts/freeze-r7b1.mjs`, `scripts/verify-r7b1.mjs`.
+
 ## Next (in order)
 
-1. Classify the run item above; run the full suite (expected 756/756); rerun SSCTR r06 on the final bytes.
-2. R7-B.1 adversarial probes (request §12) under `audits/domain-coaching-r7-b1-2026-10-31/probes/`.
-3. `scripts/mutate-r7b1.mjs` (mutants that undo each fix), plus `mutate-r7b.mjs` on the new bytes; conformance re-run and a delta matrix (B0-C05#c1, B0-C06#c8, B0-C07#c1, B0-C08#c1).
-4. Freeze `R7B1-FREEZE-1` (`scripts/freeze-r7b1.mjs`, record `CoachingCore/r7/b1/RUNTIME_FREEZE_R7B1_1.json`) and the read-only `verify-r7b1.mjs`.
-5. Review requests; independent SSCTR and Engineering gates (dispatch envelope per the route guard); Quality: assess inheritance (the delta touches substitution choice and event-week rows, so a narrow review is likely needed).
-6. Closure records, insert-only closed blocks, commit, push, remote HEAD check.
+1. Read the R7-B mutation result; run the Quality recheck probes FREEZE-2 vs R7-B.1 to decide Quality inheritance with evidence.
+2. Commit; run `scripts/freeze-r7b1.mjs` (R7B1-FREEZE-1); commit the freeze; `verify-r7b1.mjs --tests --write`.
+3. Review requests; independent SSCTR and Engineering gates (route-guard envelope); Quality inherited or narrow.
+4. Closure records, insert-only closed blocks, memory, commit, push, remote HEAD check.
 
 ## Rules for any later session
 

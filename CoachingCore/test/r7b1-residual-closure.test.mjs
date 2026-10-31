@@ -8,7 +8,7 @@ import {program,reviewed,weekly,review,evaluateProgram,opts,live,addDays,K,FULL 
 import {historicalStateOf} from '../src/r6-adaptation.mjs';
 import {dayPhaseOf,skeletonOf} from '../src/r6-program.mjs';
 import {r6Authority} from '../src/r6-authority.mjs';
-import {configurationOf,skillRank,ladderNext} from '../src/r7b-repertoire.mjs';
+import {configurationOf,skillRank,ladderNext,ladderBelow} from '../src/r7b-repertoire.mjs';
 
 const BAD={performance:'UNDER',recovery:'ADVERSE',effort:'HARDER',nextDayFunction:'IMPAIRED'};
 const correctionOf=(o,actual,correctedAt,response=null)=>({eventId:o.eventId+'-fix',athleteId:o.athleteId,sessionId:o.sessionId,observedAt:o.observedAt,correctionOf:o.eventId,correctedAt,actual,response:{...o.response,...(response??{})}});
@@ -231,6 +231,16 @@ test('R7-B.1 OBS-04: an admissible configuration this program performed stands i
   for(const x of lunge){assert.ok(d.standIns.includes(x.e.id));assert.notEqual(x.e.exposure?.kind,'FIRST_ESTABLISH');assert.ok(x.e.instructions.some(i=>/stands in for db-split-squat/.test(i)));}
   assert.ok((r.substitutions[0].eventWeeks?.standIns??[]).length);
  }
+});
+test('R7-B.1 OBS-04: after a SKILL_MISMATCH a stand-in follows the direction of the reason, or the slot is left out',()=>{
+ // kb-row cannot be done with steady technique; the rotation performed one-arm-db-row, the same kind at the same skill and not below kb-row on any
+ // ladder, so it is no answer to that reason (nor would the substitution rule select it): the event weeks leave the slot out.
+ const t=reviewed({...EV,id:'b1-event-direction',rotation:'EVERY_2_WEEKS',schedule:{...EV.schedule,strengthDays:[0,2,4]}},0),wk=t.p.phases.phases.indexOf('TAPER');for(let w=0;w<wk;w++)weekly(t,w);
+ assert.ok(ids(t.p,wk).includes('kb-row')&&performedIds(t).has('one-arm-db-row'),'kb-row in use in the taper and one-arm-db-row performed');
+ const X=configurationOf('kb-row'),r=substitution(t,wk,X.id,'SKILL_MISMATCH');assert.equal(r.status,'MODIFY');const sel=configurationOf(r.substitutions[0].selected);
+ const d=r.disclosures.find(x=>x.id==='NO_NEW_EXERCISE_IN_EVENT_WEEKS');assert.ok(d);
+ for(const id of d.standIns){const c=configurationOf(id);assert.ok((skillRank(c.skill)<skillRank(X.skill)||ladderBelow(X.id).includes(id))&&skillRank(c.skill)<=skillRank(sel.skill),`${id} does not follow the SKILL_MISMATCH direction`);}
+ assert.ok(!d.standIns.includes('one-arm-db-row'),'one-arm-db-row is no answer to a SKILL_MISMATCH on kb-row');
 });
 test('R7-B.1 OBS-04: an exercise familiar at intake but never performed in this program is still new in the event weeks',()=>{
  const t=reviewed({...EV,id:'b1-event-familiar',knownExercises:[K('goblet-squat',3,10,16,'SINGLE_IMPLEMENT'),K('kb-goblet-squat',3,10,16,'SINGLE_IMPLEMENT')]},0),wk=t.p.phases.phases.indexOf('TAPER');for(let w=0;w<wk;w++)weekly(t,w);
