@@ -820,3 +820,8 @@ The direct Founder request closes **NOT_READY with one explicit blocker** under 
 - **Next:** a narrow runtime mission on R7B1-FREEZE-2 (proposed DOMAIN_COACHING_R7-B.2) with QE-R7B1-04 first. It needs its own Founder authorization, or the Founder accepts that risk. R7-C is not started.
 
 [Disposition](audits/domain-coaching-r7-b1-2026-10-31/FINAL_DISPOSITION.json) · [Handoff](CoachingCore/r7/b1/R7B1_CLOSURE_HANDOFF.md)
+
+<!-- AGENT_EXECUTION_RUNTIME_V1: AER1-20261031-inprogress-r1 -->
+## AGENT_EXECUTION_RUNTIME_V1 — infrastructure: agent execution runtime — in progress / 2026-10-31
+
+A direct [Founder request](audits/agent-execution-runtime-v1-2026-10-31/FOUNDER_REQUEST.md) authorizes an **infrastructure/process** mission, not a Coaching Core mission, on its own branch `chore/agent-execution-runtime-v1` in an isolated worktree from the R7-B.1 closure `2c6cb93`. IMPLEMENTATION_AUTHORIZED = REPOSITORY_TOOLING (`tools/agent-runtime/`): a supervisor that runs a long mission as fresh headless sessions joined by validated checkpoints. R7-B.1 stays **CLOSED NOT_READY** with the single blocker QE-R7B1-04; QE-R7B1-04 is not fixed here and R7-B.2 and R7-C are not started. No change to `CoachingCore/`, freezes, catalog, policy, SSCTR authorities, Canon or product files. [Task contract](audits/agent-execution-runtime-v1-2026-10-31/TASK_CONTRACT.md).
