@@ -4,9 +4,9 @@ You are an independent engineering judge (`quality-reliability-engineer`). You d
 
 ## Bytes to judge
 
-- **R7B1-FREEZE-1**: record `CoachingCore/r7/b1/RUNTIME_FREEZE_R7B1_1.json` (source digest `{SOURCE}`, manifest digest `{MANIFEST}`, freeze commit `{FREEZE_COMMIT}`). Verify read-only before and after your work, from `CoachingCore/`: `node scripts/verify-r7b1.mjs` (add `--tests` once).
+- **R7B1-FREEZE-1**: record `CoachingCore/r7/b1/RUNTIME_FREEZE_R7B1_1.json` (source digest `976a13351f0b40ee363e9e4d6d1592e2653306ac018e3cf143d2d16968d366c9`, manifest digest `2fc0a59a7b919b6b7a039981cd995c2d511437481a713a5c74a97c57c84d614b`, freeze commit `d41df8b129495e32fe2923087d665798854609e9`). Verify read-only before and after your work, from `CoachingCore/`: `node scripts/verify-r7b1.mjs` (add `--tests` once).
 - Predecessor: R7B-RUNTIME-REPERTOIRE-FREEZE-2 (`10b26d6`), judged NOT_READY in R7B-ENG-r2-RECHECK (`audits/domain-coaching-r7-b-2026-10-31/reviews/engineering/recheck/`), whose findings and probes (`n-delta`, `n7`, `n8`, the copied r1 probes) are the reproductions.
-- Delta: `git diff 10b26d6 {FREEZE_COMMIT} -- CoachingCore/src CoachingCore/test`. Read `CoachingCore/r7/b1/BLOCKER_CLOSURE_R7B1.md` and the evidence the freeze record lists:
+- Delta: `git diff 10b26d6 d41df8b129495e32fe2923087d665798854609e9 -- CoachingCore/src CoachingCore/test`. Read `CoachingCore/r7/b1/BLOCKER_CLOSURE_R7B1.md` and the evidence the freeze record lists:
   - the timeline differential `r7/b1/REGRESSION_R7B1.json`;
   - the adversarial probes `audits/domain-coaching-r7-b1-2026-10-31/probes/`;
   - the mutation reports `r7/b1/MUTATION_*.json`;

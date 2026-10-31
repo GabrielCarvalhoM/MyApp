@@ -4,7 +4,7 @@ You are the project's independent sports-science reviewer (`sports-science-concu
 
 ## Bytes to judge
 
-- **R7B1-FREEZE-1**: record `CoachingCore/r7/b1/RUNTIME_FREEZE_R7B1_1.json` (source digest `{SOURCE}`, manifest digest `{MANIFEST}`, freeze commit `{FREEZE_COMMIT}`). Verify read-only before and after your work, from `CoachingCore/`: `node scripts/verify-r7b1.mjs` (add `--tests` once).
+- **R7B1-FREEZE-1**: record `CoachingCore/r7/b1/RUNTIME_FREEZE_R7B1_1.json` (source digest `976a13351f0b40ee363e9e4d6d1592e2653306ac018e3cf143d2d16968d366c9`, manifest digest `2fc0a59a7b919b6b7a039981cd995c2d511437481a713a5c74a97c57c84d614b`, freeze commit `d41df8b129495e32fe2923087d665798854609e9`). Verify read-only before and after your work, from `CoachingCore/`: `node scripts/verify-r7b1.mjs` (add `--tests` once).
 - Predecessor: R7B-RUNTIME-REPERTOIRE-FREEZE-2 (`10b26d6`), which you blocked on **QE-R7B-OBS-04** in R7B-SSCTR-r2 (`audits/domain-coaching-r7-b-2026-10-31/reviews/ssctr/recheck/`).
 - Read first: `CoachingCore/r7/b1/BLOCKER_CLOSURE_R7B1.md` (B1 is your blocker); the evidence the freeze record lists.
 

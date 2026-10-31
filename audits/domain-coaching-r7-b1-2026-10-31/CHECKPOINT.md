@@ -46,13 +46,13 @@ Engineering recheck probes: N1, N1b, N3, N5, A10, A13, N7a–c, N7d, N8-N1 FAIL 
 - Conformance `conformance-r7b.mjs` PASS (301); delta matrix `r7/b1/CONFORMANCE_R7B1_DELTA.json` with `scripts/conformance-r7b1.mjs`.
 - Written: `r7/b1/BLOCKER_CLOSURE_R7B1.md`, `r7/b1/README.md`, `TEST_CHANGES_R7B1.md`, `scripts/freeze-r7b1.mjs`, `scripts/verify-r7b1.mjs`.
 
+## Freeze
+
+- **R7B1-FREEZE-1** — record `CoachingCore/r7/b1/RUNTIME_FREEZE_R7B1_1.json`, freeze commit `d41df8b129495e32fe2923087d665798854609e9`, source `976a13351f0b40ee363e9e4d6d1592e2653306ac018e3cf143d2d16968d366c9`, manifest `2fc0a59a7b919b6b7a039981cd995c2d511437481a713a5c74a97c57c84d614b`, 112 files. Suite 762/762; conformance PASS and delta PASS; intake differential vs FREEZE-2 0 changed; timeline differential PASS; adversarial 3,212/0; mutation 15/15 and R7-B 24/25 (M13 equivalent). `node scripts/verify-r7b1.mjs --tests --write` → 24/24 PASS (`r7/b1/VERIFICATION_R7B1_1.json`).
+- Quality: a narrow review is requested, not inherited. The delta adds user-facing decision outputs and changes some substitution choices. The R7-B Quality probes from mirrors: 21 of 22 outputs identical; reachability through reviews 66 → 67 configurations.
+
 ## Next (in order)
 
-1. Read the R7-B mutation result; run the Quality recheck probes FREEZE-2 vs R7-B.1 to decide Quality inheritance with evidence.
-2. Commit; run `scripts/freeze-r7b1.mjs` (R7B1-FREEZE-1); commit the freeze; `verify-r7b1.mjs --tests --write`.
-3. Review requests; independent SSCTR and Engineering gates (route-guard envelope); Quality inherited or narrow.
-4. Closure records, insert-only closed blocks, memory, commit, push, remote HEAD check.
-
-## Rules for any later session
-
-Never run `npm run verify` or any closed `verify-r*` script with `--write`. Never edit the policy, the B0 catalog/schema/foundation, the B0 r2 records or closed evidence (R7-B's probe `out/` folders included: re-run judge probes only from a temporary mirror). Mission/ledger are insert-only (`append-block.mjs`).
+1. Dispatch the SSCTR, Engineering and Quality judges (one review each, in parallel, own output folders, no in-place mutation scripts).
+2. Read the verdicts; at most one correction cycle for a narrow blocker created by R7-B.1's own correction (then a new freeze and a narrow recheck); otherwise close.
+3. Closure records, queue integration if the SSCTR approves records, insert-only closed blocks, memory, commit, push, remote HEAD check.

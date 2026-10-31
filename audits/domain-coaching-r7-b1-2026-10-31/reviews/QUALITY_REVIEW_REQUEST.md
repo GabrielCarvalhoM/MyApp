@@ -6,8 +6,8 @@ The Founder's request (§16) does not repeat that review automatically. The R7-B
 
 ## Bytes to judge
 
-- **R7B1-FREEZE-1**: record `CoachingCore/r7/b1/RUNTIME_FREEZE_R7B1_1.json` (source digest `{SOURCE}`, manifest digest `{MANIFEST}`, freeze commit `{FREEZE_COMMIT}`). Verify read-only before and after, from `CoachingCore/`: `node scripts/verify-r7b1.mjs`.
-- Delta: `git diff 10b26d6 {FREEZE_COMMIT} -- CoachingCore/src CoachingCore/test`; read `CoachingCore/r7/b1/BLOCKER_CLOSURE_R7B1.md`.
+- **R7B1-FREEZE-1**: record `CoachingCore/r7/b1/RUNTIME_FREEZE_R7B1_1.json` (source digest `976a13351f0b40ee363e9e4d6d1592e2653306ac018e3cf143d2d16968d366c9`, manifest digest `2fc0a59a7b919b6b7a039981cd995c2d511437481a713a5c74a97c57c84d614b`, freeze commit `d41df8b129495e32fe2923087d665798854609e9`). Verify read-only before and after, from `CoachingCore/`: `node scripts/verify-r7b1.mjs`.
+- Delta: `git diff 10b26d6 d41df8b129495e32fe2923087d665798854609e9 -- CoachingCore/src CoachingCore/test`; read `CoachingCore/r7/b1/BLOCKER_CLOSURE_R7B1.md`.
 - Starting evidence: the author re-ran your R7-B recheck probes from a temporary mirror on FREEZE-2 and on these bytes. Summary in `audits/domain-coaching-r7-b1-2026-10-31/probes/out/quality-probes-freeze2-vs-r7b1.json` (21 of 22 outputs identical; p04 reachability through reviews 66 → 67 configurations, none lost; p01, p08 and p16 did not complete in the mirror, for the reasons recorded there); verify it with your own copies.
 
 ## Scope (only what the delta touches)
