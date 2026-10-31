@@ -13,6 +13,14 @@
 > - **Platform.** V1 is iOS only (DR-120). The "iOS+Android" of §2 reads as iOS for V1; Android is POST_V1 / FUTURE_PLATFORM_EXPANSION.
 <!-- V1_WEARABLE_SCOPE_OVERLAY_END: VWS-20261027-r2 -->
 
+<!-- GROWTH_LAYER_START: GRW-20261029-r1 -->
+> **Growth Layer · 2026-10-29 · [PDR DR-124–132](PRODUCT_DECISION_REGISTER.md).** No new social object.
+> - **Referral.** A minimal product referral (DR-129) is commercial attribution between an account's referral link/code and a later signup. It is not a Crew invite, link or graph, so I4/I5/I8 stand unchanged. Pre-account attribution stays on the device (DR-111).
+> - **Consistency and history.** Both read existing facts (planned, observed, honored rest/adaptation, comparability) under I12 and invariant 3, with G03 criteria. Growth never changes a plan or a rule (DR-125).
+> - **Attribution.** Share attribution is future and bound by I9 until its privacy model is decided (DR-126).
+> - **Map share (DR-133).** An external artifact carries location only as share-safe geometry derived from the route after start/end protection. The activity's full route is never changed by sharing. This qualifies the Shareability row's location exclusion for the protected map or route the person chooses only; no live location, raw GPS export or social map.
+<!-- GROWTH_LAYER_END: GRW-20261029-r1 -->
+
 Revisão **PDM-1.3** · 2026-10-19 · **CANDIDATE_IN_ISOLATION / FREEZE-20261019-r1**.
 Autoridade: [PTC-3.2.1](../canon/VILUMO_FIT_PRODUCT_THESIS_CONTRACT.md), [Scope](V1_RELEASE_SCOPE.md), [AEC](ADAPTIVE_ENGINE_CONTRACT.md), [SIS](SPORT_INTELLIGENCE_SPEC.md). Significado/ownership/estados, não schema/API/banco/novos serviços. Baseline e impacto em [registro](../audits/v1-freeze-2026-10-19/MISSION_RECORD.md).
 

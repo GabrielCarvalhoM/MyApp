@@ -216,3 +216,33 @@ Not done:
 Preserved:
 - Crew/social stays out of V1, DEFERRED, NOT REJECTED;
 - every Adaptive Engine / Coaching Core freeze, digest, review, blocker and readiness verdict is unchanged, and R7ASC is untouched.
+
+
+### Canonical sync applied — 2026-10-30 (America/Sao_Paulo) · GRW-SYNC-20261030-r1
+
+**CANONICAL_SYNC = APPLIED · GROWTH_CANON_SYNC = COMPLETE · SAFE_FOR_R7_B0_BASELINE = YES on this branch.** This entry supersedes the historical HELD sync state above and in earlier mission blocks. It records application of existing Founder decisions, with no new product decision, contract semantics or implementation authorization.
+
+- **Authorization and base:** the current direct Founder request authorizes this bounded post-R7A sync before B0, on isolated branch `chore/growth-canonical-sync`, directly from formal closure `2263d1a1a5034eea20e0bd0fa7a8db049f4a2671`. No review or unrelated foundation branch is merged.
+- **Trigger reconciliation:** §6 names an R7ASC `FINAL_DISPOSITION.json` that is absent from this tree. Its decision-authority/residual-authority successors and the entire R7-A phase are formally closed by the later disposition at `audits/domain-coaching-r7a-residual-authority-2026-10-30/FINAL_DISPOSITION.json`. That later closure plus the current explicit sync authorization releases this historical documentary hold. No successor Coaching Core mission is opened here; no earlier artifact is rewritten or fabricated.
+- **Patch:** r2 SHA-256 `6b737179873535dac0ebc950aa0637866ea2c32df396cf9b93a80654940820d6`, unchanged. All eight destination preimages equal the recorded `before/` bytes exactly; no later canonical decision intervenes on this baseline. `git apply --check` and application both succeed without conflicts or content reconciliation. The applied diff is **163 additions / 1 deletion**, correcting §5's historical 135-addition count; all eight after-hash prefixes in §5 match. The sole replacement is the derived designer-context route sentence specified by r2.
+- **Decisions synchronized:** DR-124 thesis/distribution priority; DR-125 Training/Safety over Growth; DR-126 shareability as acquisition; DR-127 plan-based consistency, no naive daily streak; DR-128 longitudinal history without unsupported causality; DR-129 minimal referral distinct from Crew; DR-130 pre-launch website/SEO after definitive naming; DR-131 acquisition/retention loops; DR-132 proposed Weekly Adapted Plan Completion Rate, operational definition OPEN under O001/G03; DR-133 protected real-map sharing, user-initiated, exact preview, first/last 200 m hidden by default, editable per activity, share-safe geometry only, private activity unchanged.
+- **Existing conflicts and open owners:** GRW-01–07 keep their recorded resolutions, including DR-133 supersession of the old abstract-only/500 m share restrictions. GRW-09, protection values/off, minimum route, repeated-share inference, map-provider/G07, Privacy Zones, attribution, reward and operational metrics remain open to their recorded owners. No new conflict or product decision. Crew/social remains OUT / DEFERRED, NOT REJECTED.
+- **Routing:** T0/R0/L0, current instance owns application and deterministic checks. This transfers already-decided policy without changing a trust boundary, prescribed training, UX structure or code. No new doctrine/evidence/visual/implementation gate is claimed; Security re-verification before implementation stays required under DR-133.
+- **Current integrity proof:** all **86/86** freeze-bound files at `7d2da3603e224124696a2290766ec448080f3264` match byte-for-byte in the working tree. Git-object checks also match the freeze, handoff, both independent review commits, closure and current HEAD. Recomputed source `e7172eb2e65bfb1da4c102a7efa2bae64bf1c70b06562fd3ce9896defd6dc17d`; manifest `3d214fb53f62e45ca7d99f39f2c562d358719a2264c2de46098d39b318c85125`; R6-POLICY-5 `18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c`. The freeze record itself is identical. Closure-created/changed artifacts and the human queue equal the closure commit; its CURRENT_MISSION/ledger bytes remain exact prefixes. R7A_EXIT_READINESS = READY; R7A_FORMAL_CLOSURE = COMPLETE; NEXT_MISSION = DOMAIN_COACHING_R7-B0, NOT_STARTED.
+- **Document checks:** reverse patch check succeeds; DR-124–133 each have exactly one decision row; Growth markers balance; all patch links resolve; all eight canonical/product files and new appends contain no CR; pre-existing mission/ledger bytes, including their two CR characters each, are preserved. The 38 held OB-2 operations still match exactly once and remain unapplied. Diff scope and whitespace checks pass.
+- **Verification method:** read-only Node standard-library byte/hash checks and Git object inspection; no CoachingCore imports, runtime, tests, probes, historical verifier/writer or OB-2 applier executed. No readiness gate is rejudged.
+- **Changed files:** the eight canonical/product destinations in §5, plus append-only entries in this existing record, CURRENT_MISSION and MISSION_LEDGER. No new repository artifact. PDR-1.10/1.11 overlays become live; existing contract revisions remain unchanged.
+- **Hard stop:** no B0, Figma, HealthKit/WorkoutKit, implementation, merge, deploy, freeze/policy/test/review/closure modification. This branch is safe to capture the later B0 baseline with these current Growth authorities; B0 itself requires its own mission.
+
+Applied canonical/product SHA-256:
+
+| File | SHA-256 |
+|---|---|
+| `canon/CANONICAL_INDEX.md` | `f7d8fbaf1f72a1e529662f2a3cb7796119b5f1bb6179c50c7c1211202f14aa70` |
+| `canon/VILUMO_FIT_PRODUCT_THESIS_CONTRACT.md` | `d7b795a1a99a4961bd091ea10c3966ee11555d0d9f778fa95a308cec84d60f38` |
+| `product/PRODUCT_DECISION_REGISTER.md` | `a81f7bbfaf56755139a0c776ed69e7f8eb9977f7c6034266464624b7e0c7dc65` |
+| `product/PRODUCT_TRUTH_MAP.md` | `e3cef9a0aafa41da650df063031bbae3c0b34463071e1647e994c3fd13aa6553` |
+| `product/V1_RELEASE_SCOPE.md` | `efc7536af0a165622878b0116481bbb717f5755b2cc54c3c9297959253f4b92b` |
+| `product/PRODUCT_ARCHITECTURE.md` | `832e6f0a23f92daa6127d5d6bc95c37c40d0311fee8a307c98f6b7610d6b2cf8` |
+| `product/PRODUCT_DOMAIN_MODEL.md` | `7e4dc9cb832dea76957c63d7ed08f6e864548eeed08eea4f09f80f6a6354b998` |
+| `product/DESIGNER_PRODUCT_CONTEXT.md` | `d0ff7de6596e28beeb9a69674dffa8abbc78932e9e8836eb49f1a3b1b3b3d01b` |

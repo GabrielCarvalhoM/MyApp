@@ -68,6 +68,20 @@ Streak e semana elegíveis incluem honrar descanso/adaptação conforme critéri
 
 Fluxo: escolher objeto/campos → artefato premium → prévia exata e destino → ato explícito → OS/native share sheet ou entrega de cópia em formato compatível. Instagram Stories/WhatsApp/TikTok são possíveis ambientes externos, sem API/social-login/upload automático/analytics de audiência. Cancelar/recusar share não perde valor. Leitura de treino/saúde ou assinatura nunca consente share. Sem feed, galeria pública, ranking ou prompts dominantes. Registro pessoal de projeção mínimo e finalidade/retention G07.
 
+> **Growth Layer · 2026-10-29 · GRW-20261029-r1 · [DR-124–132](PRODUCT_DECISION_REGISTER.md).**
+> - **AR-15 is also an acquisition capability (DR-126):** result, PR/milestone, weekly summary, evolution, map or route (DR-133), complete card, transparent overlay and Stories formats, with discreet branding, all inside the allowlist above.
+> - **Map share (DR-133, Founder r2)** supersedes, for external shareables only, the sentence above that the route enters "só como traçado abstrato aparado".
+>   - **Options:** Map (real map + protected route), Route (trace, no map), Photo/Overlay, and no route.
+>   - **Protection:** the first and last 200 m are hidden by default and can be edited per activity before sharing.
+>   - **Pipeline:** raw GPS → privacy filtering → share-safe geometry → map/artifact rendering → external share, composed on the device. Raw GPS never enters the share mechanism or an export, and the private activity keeps its full data.
+>   - **Map provider:** receives at most the share-safe area and is a recipient to declare (DR-109, G07).
+>   - **Still excluded:** place names, addresses, coordinates and times as fields and metadata.
+>   - **Privacy Zones:** planned, with no infrastructure now.
+> - **Consistency facts follow DR-127:** no naive daily streak; adherence % stays out until G03 and an allowlist decision.
+> - **Minimal referral (DR-129)** is an architectural provision, not a structure to build now: a personal referral link/code, the invite's origin, a referral → signup record and a hook for a future reward (G10). It is commercial attribution, never a social link, graph or Crew invite (§6). No contact access, no view of the other person, and pre-account data stays on the device (DR-111).
+> - **Attribution** (share generated → share completed → external visit → signup/install) is future and first-party: no imported audience metrics or viewer identity. A link/code enters an artifact only as a visible, removable field, added to the allowlist after Product/UX + Security and G07.
+> - No analytics or referral infrastructure exists before a real consumer (DR-132).
+
 ## 8. Subscription, estados e direitos
 
 Subscription-first é orientação de UX, não arquitetura de billing. Antes do hard ask, prévia de semana coordenada e benefício legível. Oferta exibe modalidade/plano comercial/trial/condição/preço/renovação/cancelamento quando efetivamente definidos; placeholders em exploração sem fingir oferta real. Trial/mensal/anual/timing/price são testáveis. Gerir/restaurar estado comercial com prova, sem assinatura inferida de clique/timeout ou sucesso no provider sem verificação.

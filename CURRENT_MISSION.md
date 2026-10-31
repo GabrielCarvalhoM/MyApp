@@ -717,3 +717,15 @@ The direct [Founder closure request](audits/domain-coaching-r7a-residual-authori
 - **Next:** DOMAIN_COACHING_R7-B0 is not started. It needs its own Founder-authorized mission, and it uses the canonical and readiness authorities current at its start.
 - **Held:** the Growth Layer's [PENDING_CANON_SYNC.patch](audits/growth-layer-2026-10-29/PENDING_CANON_SYNC.patch) is not applied (closure request §14).
 - No runtime, test, policy, freeze-evidence, `product/` or `canon/` change. Closure branch `closure/r7a-final`; nothing merged into `main` or any other branch. No UI, Figma, KMP, HealthKit, integration, production or real-plan effect.
+
+
+<!-- GROWTH_CANON_SYNC: GRW-SYNC-20261030-r1 -->
+## Growth Layer canonical sync completed before B0 — 2026-10-30 (America/Sao_Paulo)
+
+`CANONICAL_SYNC = APPLIED` · `GROWTH_CANON_SYNC = COMPLETE` · `SAFE_FOR_R7_B0_BASELINE = YES` on `chore/growth-canonical-sync`.
+
+The current direct Founder instruction authorizes application of the held [Growth patch](audits/growth-layer-2026-10-29/PENDING_CANON_SYNC.patch) after formal R7-A closure at `2263d1a1a5034eea20e0bd0fa7a8db049f4a2671`. It applied cleanly and exactly to eight product/canon documents: [PDR DR-124–133](product/PRODUCT_DECISION_REGISTER.md), thesis, truth map, V1 scope, architecture, domain model, designer context and canonical index. This block supersedes only the historical Growth-sync HELD/not-applied statements above. Decisions, trigger reconciliation, exact hashes and integrity proof: [Growth record §8](audits/growth-layer-2026-10-29/RECORD.md#8-not-done-and-preserved).
+
+`R7A_EXIT_READINESS = READY` · `R7A_FORMAL_CLOSURE = COMPLETE` · `NEXT_MISSION = DOMAIN_COACHING_R7-B0` (**NOT_STARTED**). The R7-A closure block and artifacts remain intact; all 86 freeze-bound files, runtime, policy, frozen tests and review evidence are byte-identical. No sporting rule, blocker or gate changes. Crew/social remains out of V1; Growth's open implementation/privacy/metrics decisions remain open.
+
+**STOP:** this documentary sync is complete. No B0 mission or baseline is captured here; no Figma, HealthKit/WorkoutKit, implementation, unrelated merge or deployment is authorized by this sync. A future B0 opener must use this branch/commit's current canonical authorities.

@@ -1,3 +1,22 @@
+<!-- GROWTH_LAYER_INDEX_START: GRW-20261029-r1 -->
+## Current pointer — Growth Layer: distribution and retention as product capabilities, no social network / 2026-10-29
+
+[PDR DR-124–133](../product/PRODUCT_DECISION_REGISTER.md) (DECIDED / CURRENT_PRODUCT_DECISION; Founder sources [r1](../audits/growth-layer-2026-10-29/FOUNDER_REQUEST.md) and [r2](../audits/growth-layer-2026-10-29/FOUNDER_REQUEST_R2.md)):
+- **Thesis.** Adaptive Hybrid Coach deep in running + strength, plus light distribution and retention loops built into the product. "Distribution is a product capability, but social networking is not required for V1 distribution." Priority: competent coach → mature experience → demonstrable progress → light loops → only then social/ecosystem (DR-124).
+- **Training/Safety prevails over Growth** (DR-125). No growth mechanic pressures training against rest, reduction or HOLD. Adaptive Engine readiness, freezes and blockers are unchanged.
+- **V1 capabilities:**
+  - shareability as acquisition (DR-126);
+  - consistency without naive daily streaks (DR-127);
+  - history as proof of value (DR-128);
+  - minimal referral (DR-129);
+  - pre-launch website/SEO after the definitive name (DR-130).
+- **Map Share Privacy (DR-133, r2).** Real maps are allowed in external shareables of GPS activities. Sharing is user-initiated, with an exact preview; the first and last 200 m are hidden by default and editable per activity. Options: Map, Route, Photo/Overlay, no route. Raw GPS never enters sharing. No public feed, social map, live location, residence exposure or automatic sharing.
+- **Loops and metric.** Acquisition and retention loops (DR-131). North Star proposed: Weekly Adapted Plan Completion Rate, operational definition open under O001/G03 (DR-132).
+- **Out of V1:** Crew and all internal social, DEFERRED, NOT REJECTED.
+
+Synced as overlays or notes in the thesis (C003, C041, C054), PTM, RS, PA §7, PDM and the designer context. Clause map, conflicts and checks: [GRW record](../audits/growth-layer-2026-10-29/RECORD.md).
+<!-- GROWTH_LAYER_INDEX_END: GRW-20261029-r1 -->
+
 <!-- V1_WEARABLE_SCOPE_INDEX_START: VWS-20261027-r2 -->
 ## Current pointer — V1 iOS only, Apple Health inbound, direct vendor integrations and watch delivery POST_V1 / 2026-10-27
 

@@ -13,6 +13,24 @@
 > - **Resolved.** OPEN_PRODUCT_PLATFORM_DECISION-01 is RESOLVED — V1_IOS_ONLY (DR-120). Open: HealthKit write-back (OPEN_TECHNICAL_PRODUCT_DECISION, DR-121).
 <!-- V1_WEARABLE_SCOPE_OVERLAY_END: VWS-20261027-r2 -->
 
+<!-- GROWTH_LAYER_START: GRW-20261029-r1 -->
+> **Traceability · 2026-10-29 · Growth Layer.** Source **S-GRW** = the current direct Founder requests [r1](../audits/growth-layer-2026-10-29/FOUNDER_REQUEST.md) and [r2](../audits/growth-layer-2026-10-29/FOUNDER_REQUEST_R2.md), DECIDED / CURRENT_PRODUCT_DECISION, recorded as [PDR DR-124–132 and DR-133](PRODUCT_DECISION_REGISTER.md). Same competent decisor as S8, later in time; ASSUMED for effects.
+> - **GRW-01 · C003, bounded reformulation.** "Aquisição, conversão e retenção são hipóteses" becomes: distribution is a deliberate product capability (DR-124). Effects stay H002/H007; "aquisição por audiência" stays a non-goal.
+> - **GRW-02 · C054 / AR-15 / UXS SHR-01, SHR-07, SHR-12.** "Personal streak" reads as plan-adherence consistency, and naive daily streaks are prohibited (DR-127). SHR-12's V1 exclusion of milestone, streak and broad recap is superseded (DR-126, DR-127).
+> - **GRW-03 · C041 / PDM I4, I5, I8 / RS §3 / SHR-03 / CF F08 "convites".** Not a conflict: these defer Crew invites. A product referral (DR-129) creates no social link or graph and stays inside them.
+> - **GRW-04 · "corrida com mapa/rota" vs DR-91, DR-109, PA §7, SHR-06/09, L014. Resolved by the Founder (r2, DR-133).** Real maps are allowed in external shareables of GPS activities under Map Share Privacy:
+>   - user-initiated, exact preview, no automatic sharing;
+>   - first and last 200 m hidden by default, editable per activity;
+>   - raw GPS never enters sharing, and the private activity is unchanged.
+>
+>   For external shareables only, DR-133 supersedes DR-91's abstract-only trace and fixed cut, SHR-09's 500 m cut and no-map clause, and PA §7's abstract-only sentence. It qualifies the location exclusions of the PDM Shareability row, EM §6 and CF F10/S12 for the chosen protected map/route only. Textual place, address, coordinate and time exclusions stay, as do DR-109's "Rotas no app" and map-provider-as-recipient. L014 is met, not edited. r1 had resolved this conservatively (no background map); that reading was never applied.
+> - **GRW-09 · DR-133 point 3 (editable protection) vs point 13 (no residence exposure).** Open: which protection values a person may choose, including whether protection may be turned off entirely, is set by Product/UX + Security before implementation.
+> - **GRW-05 · future attribution vs PDM I9 / SHR-08 "atribuição individual".** Planned only (DR-126): first-party, never imported audience data or viewer identity, and any link/code is a visible opted-in field. I9 and SHR-08 bind until the open privacy model (Product/UX + Security, G07) is decided.
+> - **GRW-06 · "91% de aderência" vs UXS §16.1 / PA §7.** In-app consistency labels wait for G03; adherence % stays out of share artifacts until G03 and an allowlist decision (DR-127).
+> - **GRW-07 · North Star vs O001 / G03 / L016 / L020.** The concept is decided (DR-132); unit, window, denominator and "sufficient" stay open. Honored rest, reduction and HOLD count as completion.
+> - **Dependents.** Thesis notes (C003, C041, C054), RS §2/§3, PA §7, PDM overlay, designer context, index pointer. EM, CF, UXS, AEC, AEOS, AESL, SIS, RIL and STIL are read through DR-124–132 and not edited. No invariant and no training rule changes.
+<!-- GROWTH_LAYER_END: GRW-20261029-r1 -->
+
 | Campo | Valor |
 |---|---|
 | Revisão | **PTM-1.2** · 2026-10-19 |

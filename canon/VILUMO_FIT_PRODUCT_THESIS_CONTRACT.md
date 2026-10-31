@@ -4,6 +4,17 @@
 > **Authority overlay · 2026-10-22 · EXP-AUTH-r1.** Founder decision [DR-93–97](../product/PRODUCT_DECISION_REGISTER.md) preserves every product/domain invariant and capability while superseding the old experience prescriptions. Read through the [current responsibility filter](CANONICAL_INDEX.md): C048 retains quality/anti-bloat, not inherited style; C051 retains progressive depth, not fixed levels/destinations; C028–37 retain independent behavioral meaning, not old screen allocation; C056's prior mission sequence is historical. The aesthetic reference below is **LEGACY / NO ACTIVE DESIGN AUTHORITY**. The freeze's isolated-state metadata below is historical: integration occurred in `32b7fb6`; this overlay is author submission for independent review, not a transferred PASS. Designer entry: [derived product context](../product/DESIGNER_PRODUCT_CONTEXT.md).
 <!-- EXPERIENCE_AUTHORITY_OVERLAY_END: EXP-AUTH-r1 -->
 
+<!-- GROWTH_LAYER_START: GRW-20261029-r1 -->
+> **Growth Layer · 2026-10-29 · GRW-20261029-r1/r2.** Current direct Founder decisions [r1](../audits/growth-layer-2026-10-29/FOUNDER_REQUEST.md) and [r2](../audits/growth-layer-2026-10-29/FOUNDER_REQUEST_R2.md), recorded as [PDR DR-124–133](../product/PRODUCT_DECISION_REGISTER.md) (DECIDED / CURRENT_PRODUCT_DECISION).
+> - **Thesis:** Adaptive Hybrid Coach, deep in running + strength, **plus** light distribution and retention loops built into the product. The advantage stays coaching depth and adaptive decision quality, not super-app breadth.
+> - **Principle:** "Distribution is a product capability, but social networking is not required for V1 distribution." Priority: competent coach → mature experience → demonstrable progress → light retention/acquisition loops → only then social/ecosystem expansion.
+> - **Precedence:** Training/Safety authority prevails over Growth (DR-125).
+> - **V1 Growth Layer:** shareability as acquisition, consistency without naive daily streaks, history as proof of value, minimal referral, pre-launch website/SEO. North Star proposed: Weekly Adapted Plan Completion Rate, with its operational definition open under O001 and G03 (DR-132).
+> - **Map Share Privacy (DR-133, r2):** real maps are allowed in external shareables of GPS activities. Sharing is user-initiated; the first and last 200 m are hidden by default and editable per activity; raw GPS never enters sharing; Training/Safety/Privacy prevail over Growth.
+>
+> Notes follow C003, C041 and C054. No LOCKED invariant or clause text is edited; Crew/social stays out of V1 (C041); H002/H007 stay hypotheses. Clause map: [PTM](../product/PRODUCT_TRUTH_MAP.md).
+<!-- GROWTH_LAYER_END: GRW-20261029-r1 -->
+
 ## 1. Document Status e autoridade
 
 | Campo | Valor |
@@ -64,6 +75,8 @@ O problema trabalhado na V1 é coordenar corrida e força na mesma vida, conside
 **VFT-C053 · CURRENT PRODUCT DECISION** — V1 é subscription-first; VALUE BEFORE HARD ASK. Fluxo preferencial: entender atleta → demonstrar personalização/semana e coordenação → comunicar valor → paywall claro → treinamento sob entitlement aplicável. Assinar não confirma plano, coleta extra ou envio; nenhum treinamento pago antes de autorização comercial. Trial, anual/mensal, preço e momento exato são testáveis, não decisões fundamentais abertas para UI. Sem créditos, marketplace, avulsas complexas/economia interna. Histórico próprio/direitos, correção de fatos e registro/fechamento de execução em curso não ficam reféns de expiração/cancelamento; nova geração pode exigir assinatura/trial válido conforme oferta.
 
 **VFT-C054 · CURRENT PRODUCT DECISION** — External Shareability V1 gera outputs de conquistas/evolução/identidade em completed workout, PR, race, milestone, weekly completion, meaningful evolution, personal streak, performance recap e relevant multisport achievement; distância/volume e evolução de força entram quando forem fatos próprios elegíveis. Famílias prioritárias, não nove templates/telas obrigatórios. Prévia exata, controle/inclusão/destino e ato explícito; nada auto-publicado, dashboard cru, dados de terceiros ou contexto privado de saúde. Instagram Stories, WhatsApp, TikTok quando formato couber e native share sheet são destinos possíveis de cópia escolhida, não integrações/API/contas a construir. Sem likes/audiência importados. Streak/semana respeitam descanso/adaptação e desconhecido; não pressionam volume, falha ou exposição.
+
+> **Growth Layer · 2026-10-29 · GRW-20261029-r1.** Shareables are also a strategic acquisition capability ([DR-126](../product/PRODUCT_DECISION_REGISTER.md)). V1 concepts: result, PR/milestone, weekly summary, evolution, a GPS activity's real map or route under the Map Share Privacy policy (DR-133: user-initiated, first and last 200 m hidden by default, no raw GPS), complete card, transparent overlay and Stories formats, with discreet branding. Attribution is future and first-party. "Personal streak" reads as plan-adherence consistency; a naive daily streak is prohibited (DR-127).
 
 **VFT-C055 · CURRENT PRODUCT DECISION** — Wearables têm escopo V1 ingest-first; nenhuma missão paralela de dezenas de integrações. Provider terceiro já considerado pode reduzir esforço somente se prova de custo/acesso/fidelidade sustentar, sem escolher vendor ou assumir contrato existente. Outbound condicional preserva sua especificação, mas o mínimo de release não exige todos os devices, app nativo em relógio ou um outbound universal. UX desenha limites/capabilities e fallback honesto; APIs/preços finais não bloqueiam exploração visual.
 
@@ -176,6 +189,8 @@ Aplicabilidade desta seção: L009 mantém valor solo imediato. L010–L012/C025
 
 **VFT-C041 · CURRENT PRODUCT DECISION** — Crew/social interno ficam DEFERRED, NOT REJECTED, para fase pós-validação do produto. Grupos privados, convites/membership, apoio/check-ins sociais, metas coletivas, campanhas/desafios, streaks de grupo, competição e coordenação coletiva não são escopo V1. A tese e limites sociais preservados valem quando essa expansão for autorizada; não há hub ou placeholders sociais na primeira UI. Feed público/follower graph continuam incompatíveis com L012, mesmo como hipótese de expansão.
 
+> **Growth Layer · 2026-10-29 · GRW-20261029-r1.** Unchanged. A minimal product referral ([DR-129](../product/PRODUCT_DECISION_REGISTER.md)) is not a Crew invite: no social link, graph, contact ingestion or view of the other person. Crew, feed, social graph, clubs, chat, DMs, public ranking, events and complex community challenges stay out of V1.
+
 **VFT-C004 · CURRENT PRODUCT DECISION** — Full Member e Crew Member são papéis conceituais para eventual expansão social. Na V1 há apenas experiência pessoal de treino; assinatura/entitlement é estado comercial próprio, não modo social. Entrada leve e direitos de Crew ficam preservados para a expansão, sem construir M2/M3 agora.
 
 **VFT-D008 · DESIGN SPACE** — Entrada, participação, evolução entre Crew Member e Full Member e acesso a capacidades são design space, respeitando entrada leve, valor individual e consentimento.
@@ -277,6 +292,8 @@ Esses princípios governam as capacidades em escopo; não fixam navegação, qua
 **VFT-C008 · CURRENT PRODUCT DECISION** — Socially Assisted Continuity é o valor social conceitual. Atribuir resultados ao efeito do social exige metodologia adequada; participação e correlação isoladas não demonstram causalidade.
 
 **VFT-C003 · CURRENT PRODUCT DECISION** — Distribuição da V1 deve buscar clareza da wedge, primeiro valor rápido, uso cotidiano simples, progresso mensurável, assinatura e iteração. External Shareability pode apoiar word of mouth/identidade/orgânico; aquisição, conversão e retenção são hipóteses, sem exigir social graph. Papel comercial futuro de Crew é diferido, não efeito provado.
+
+> **Growth Layer · 2026-10-29 · GRW-20261029-r1.** Bounded reformulation by [DR-124](../product/PRODUCT_DECISION_REGISTER.md): distribution is a product capability. Shareability, minimal referral and pre-launch web presence are deliberate acquisition and retention capabilities, with no social graph required. Their effect stays a hypothesis (H002, H007), measured by the DR-132 metrics and never claimed. "Aquisição por audiência" stays a §12 non-goal.
 
 **VFT-C009 · CURRENT PRODUCT DECISION — Diferenciação pretendida** — A diferenciação pretendida prioriza a coordenação Running × Strength pelo Adaptive Engine, combinando Athlete Model, contexto de carga/interferência/disponibilidade, Recovery, trajetória e Nutrition contextual. Wearables priorizam observação confiável e preparação condicional; external share próprio apoia distribuição na V1. Crew é expansão estratégica pós-validação. Aprendizado longitudinal deve servir à pessoa com privacidade e consentimento, sem exigir perfilamento social avançado ou coleta ilimitada.
 
