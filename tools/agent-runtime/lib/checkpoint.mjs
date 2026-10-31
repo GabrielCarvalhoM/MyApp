@@ -1,5 +1,3 @@
-import { commandPolicyError } from './commands.mjs';
-
 export const CHECKPOINT_SCHEMA = 'agent-runtime/checkpoint@1';
 export const FINAL_STATES = Object.freeze(['COMPLETE', 'CLOSED_READY', 'CLOSED_NOT_READY', 'CANCELLED']);
 export const HALT_STATES = Object.freeze(['BLOCKED', 'FOUNDER_REQUIRED']);
@@ -15,7 +13,8 @@ export const BOUNDARIES = Object.freeze([
   'blocker',
   'other',
 ]);
-export const EXECUTORS = Object.freeze(['claude', 'codex', 'local']);
+// The supervisor runs no code an agent selects: a unit is a Claude session or a sandboxed Codex job.
+export const EXECUTORS = Object.freeze(['claude', 'codex']);
 export const EFFORTS = Object.freeze(['low', 'medium', 'high', 'xhigh', 'max']);
 export const WORK_KINDS = Object.freeze(['mechanical', 'material_ui_ux', 'material_other', 'ui_ux_judge']);
 export const EVIDENCE_KINDS = Object.freeze(['test', 'probe', 'mutation', 'review', 'verification', 'freeze', 'other']);
@@ -27,7 +26,14 @@ const UI_FLOOR = Object.freeze({ model: 'claude-opus-5-5', effort: 'max' });
 const UI_WORK_KINDS = ['material_ui_ux', 'ui_ux_judge'];
 const COMMIT_ID = /^[0-9a-f]{40}$/;
 const SHA256 = /^[0-9a-f]{64}$/;
-const RESERVED_PREFIXES = ['.git/', '.agent-runtime/'];
+// Model ids become CLI arguments: an alias or an exact id, never something that reads as an option.
+export const MODEL_ID = /^[A-Za-z0-9][A-Za-z0-9._-]*(\[1m\])?$/;
+// A Codex job may neither touch nor be given repository, runtime or agent configuration.
+const RESERVED_PREFIXES = ['.git/', '.agent-runtime/', '.claude/', '.codex/', '.agents/', '.github/', '.mcp.json/', '.gitignore/', '.gitattributes/', '.gitmodules/'];
+export const isReserved = (entry) => {
+  const asDir = String(entry).endsWith('/') ? String(entry) : `${entry}/`;
+  return RESERVED_PREFIXES.some((prefix) => asDir.startsWith(prefix));
+};
 
 export const isFinal = (state) => FINAL_STATES.includes(state);
 export const isHalt = (state) => HALT_STATES.includes(state);
@@ -101,9 +107,14 @@ class Checker {
     return this.repoPath(isRuntime ? value.slice(RUNTIME_REF_PREFIX.length) : value, where);
   }
 
+  // A command the judging Claude unit will run: argv form, never a shell string.
   command(value, where) {
-    const problem = commandPolicyError(value);
-    return problem === null || this.fail(where, problem);
+    if (Array.isArray(value) && value.length > 0 && value.every((part) => typeof part === 'string' && part !== '')) return true;
+    return this.fail(where, 'must be a non-empty array of non-empty strings (argv form, no shell)');
+  }
+
+  model(value, where) {
+    return this.pattern(value, MODEL_ID, where, 'a model alias or exact id (letters, digits, ".", "_", "-")');
   }
 }
 
@@ -247,10 +258,7 @@ function checkUnit(c, unit, where, claudeOnly) {
     checkRoute(c, unit.route, `${where}.route`);
     return;
   }
-  if (c.object(unit.job, `${where}.job`)) {
-    if (unit.executor === 'local') c.command(unit.job.command, `${where}.job.command`);
-    else checkCodexJob(c, unit.job, `${where}.job`);
-  }
+  if (c.object(unit.job, `${where}.job`)) checkCodexJob(c, unit.job, `${where}.job`);
   if (unit.then === undefined || unit.then === null) {
     c.fail(`${where}.then`, `a claude unit must follow a ${unit.executor} job`);
   } else {
@@ -260,7 +268,7 @@ function checkUnit(c, unit, where, claudeOnly) {
 
 function checkRoute(c, route, where) {
   if (!c.object(route, where)) return;
-  c.text(route.model, `${where}.model`);
+  c.model(route.model, `${where}.model`);
   c.oneOf(route.effort, EFFORTS, `${where}.effort`);
   c.oneOf(route.work_kind, WORK_KINDS, `${where}.work_kind`);
   c.text(route.reason, `${where}.reason`);
@@ -271,21 +279,24 @@ function checkRoute(c, route, where) {
 
 function checkCodexJob(c, job, where) {
   c.text(job.brief, `${where}.brief`);
+  const noReserved = (list, at) => {
+    const reserved = list.filter(isReserved);
+    if (reserved.length) c.fail(at, `must not include reserved paths: ${reserved.join(', ')}`);
+  };
   if (c.pathList(job.allowed_paths, `${where}.allowed_paths`)) {
     if (job.allowed_paths.length === 0) c.fail(`${where}.allowed_paths`, 'must name at least one path or "dir/" prefix');
-    const reserved = job.allowed_paths.filter((entry) => {
-      const asDir = String(entry).endsWith('/') ? String(entry) : `${entry}/`;
-      return RESERVED_PREFIXES.some((prefix) => asDir.startsWith(prefix));
-    });
-    if (reserved.length) c.fail(`${where}.allowed_paths`, `must not include ${reserved.join(', ')}`);
+    noReserved(job.allowed_paths, `${where}.allowed_paths`);
   }
+  // Acceptance commands are run by the Claude unit that judges the job, never by the supervisor.
   const listed = c.list(job.acceptance, `${where}.acceptance`, (command, at) => c.command(command, at));
   if (listed && job.acceptance.length === 0) {
     c.fail(`${where}.acceptance`, 'needs at least one command: delegated work must be verifiable');
   }
-  if (job.copy_ignored !== undefined) c.pathList(job.copy_ignored, `${where}.copy_ignored`);
-  if (job.fallback_command !== undefined && job.fallback_command !== null) {
-    c.command(job.fallback_command, `${where}.fallback_command`);
+  if (job.copy_ignored !== undefined && c.pathList(job.copy_ignored, `${where}.copy_ignored`)) {
+    noReserved(job.copy_ignored, `${where}.copy_ignored`);
   }
-  if (job.model !== undefined && job.model !== null) c.text(job.model, `${where}.model`);
+  for (const removed of ['fallback_command', 'command']) {
+    if (job[removed] !== undefined) c.fail(`${where}.${removed}`, 'is not supported: the supervisor runs no command an agent selects');
+  }
+  if (job.model !== undefined && job.model !== null) c.model(job.model, `${where}.model`);
 }

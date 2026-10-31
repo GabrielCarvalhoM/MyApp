@@ -1,6 +1,5 @@
 import fs from 'node:fs';
 import { envValue, resolveExecutable, runSync, runToFiles } from './proc.mjs';
-import { commandPolicyError } from './commands.mjs';
 import { sha256 } from './files.mjs';
 
 const FLAGGED = /\b(fail(ed|ure|s)?|error|not ok|assertionerror)\b/i;
@@ -88,18 +87,7 @@ export function runCodex({ argv, env, worktree, brief, schemaFile, outputFile, m
   return runToFiles([...argv, ...args], { cwd: worktree, env, input: brief, stdoutFile: logFile, onSpawn });
 }
 
-export async function runLocal({ command, cwd, env, logFile, onSpawn }) {
-  const problem = commandPolicyError(command);
-  if (problem) return { status: null, error: new Error(`command refused: ${problem}`), durationMs: 0, ...emptySummary() };
-  const argv = resolveExecutable(command[0], env);
-  if (!argv) return { status: null, error: new Error(`${command[0]} not found on PATH`), durationMs: 0, ...emptySummary() };
-  const run = await runToFiles([...argv, ...command.slice(1)], { cwd, env, stdoutFile: logFile, onSpawn });
-  return { ...run, ...summarizeLog(logFile) };
-}
-
-const emptySummary = () => ({ bytes: 0, lines: 0, sha256: null, tail: [], flagged: [] });
-
-// The compact view a session reads instead of the full output, which stays in the log file.
+// The compact view a session reads (`runtime.mjs capture`) instead of the full output, which stays in the log file.
 export function summarizeLog(file, tailLines = 15) {
   const data = fs.readFileSync(file);
   const lines = data.toString('utf8').split(/\r?\n/);

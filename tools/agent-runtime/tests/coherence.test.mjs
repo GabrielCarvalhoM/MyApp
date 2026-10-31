@@ -132,7 +132,7 @@ test('a final state needs the branch pushed and the remote HEAD verified', (t) =
   commitFile(found.worktree, 'docs/plan.md', '# plan\n');
   const closing = (pushed) => filled(ctx, { mission_state: 'COMPLETE', boundary: 'mission_closure', next_unit: null, git: { ...buildTemplate(ctx).git, pushed } });
   assertError(check(ctx, closing(false)), 'git.pushed must be true for COMPLETE');
-  assertError(check(ctx, closing(true)), `origin/${found.mission.repo.branch} is absent`);
+  assertError(check(ctx, closing(true)), `the remote branch ${found.mission.repo.branch} is absent`);
   sh(found.worktree, 'push', '--quiet', '-u', 'origin', 'HEAD');
   assert.deepEqual(check(ctx, closing(true)).errors, []);
 });
@@ -173,6 +173,8 @@ test('continuity: settled scope, invariants, freezes, findings and blockers cann
   assert.match(fragments(next({ findings: { open: [blocker], closed: [{ id: 'F0', resolution: 'fixed' }] } })), /open finding F2 disappeared/);
   assert.match(fragments(next({ findings: { open: [{ ...blocker, blocking: false }, previous.findings.open[1]], closed: previous.findings.closed } })), /QE-1 is still open and was blocking/);
   assert.match(fragments(next({ findings: { open: previous.findings.open, closed: [] } })), /closed finding F0 cannot disappear or reopen silently/);
+  const closedWithoutEvidence = { open: [previous.findings.open[1]], closed: [{ id: 'F0', resolution: 'fixed' }, { id: 'QE-1', resolution: 'looks fine now' }] };
+  assert.match(fragments(next({ findings: closedWithoutEvidence })), /blocking finding QE-1 is closed without an evidence_ref/);
   const legitimate = next({
     do_not_reopen: ['R7-B.1 stays closed', 'R7-C not started'],
     findings: { open: [blocker], closed: [{ id: 'F0', resolution: 'fixed' }, { id: 'F2', resolution: 'fixed with a test', evidence_ref: 'test/f2.test.mjs' }] },

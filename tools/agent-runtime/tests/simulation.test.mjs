@@ -83,9 +83,12 @@ test('a three-phase mission runs to COMPLETE across fresh sessions and a verifie
   assert.equal(new Set(sessions.map((call) => call.session_id)).size, 3, 'every phase ran in a fresh session');
   assert.ok(sessions.every((call) => !call.resume));
   const [, second, third] = sessions.map((call) => call.prompt);
-  for (const fragment of ['## Delegated job U2 (codex)', 'Status: DONE', 'Job branch: `codex/test-mission-u2-r2`', 'Acceptance `node generated/probe.mjs` → exit 0', '.agent-runtime/checkpoints/0001.json', '- the plan is settled', 'F1 (MINOR) no probe yet']) {
+  for (const fragment of ['## Delegated job U2 (codex)', 'Status: DONE', 'Job branch: `codex/test-mission-u2-r2`', 'The supervisor ran none of this code', 'Acceptance to run (with capture): `node generated/probe.mjs`', '.agent-runtime/checkpoints/0001.json', '- the plan is settled', 'F1 (MINOR) no probe yet']) {
     assert.ok(second.includes(fragment), `session 2 bootstrap misses: ${fragment}`);
   }
+  const copy = path.join(found.worktree, '.agent-runtime', 'checkpoints', '0001.json');
+  assert.equal(fs.readFileSync(copy, 'utf8'), fs.readFileSync(path.join(found.paths.checkpoints, '0001.json'), 'utf8'), 'the session reads a copy of the accepted checkpoint');
+  assert.ok(!fs.existsSync(path.join(found.worktree, '.agent-runtime', 'mission.json')), 'the control state is outside the session worktree');
   for (const prompt of [second, third]) {
     assert.ok(!prompt.includes('PHASE-1-FINAL-MESSAGE'), 'no transcript or earlier output is carried over');
     assert.ok(!prompt.includes('none; this is the first session'));
@@ -97,7 +100,7 @@ test('a three-phase mission runs to COMPLETE across fresh sessions and a verifie
   assert.ok(exec.includes('--output-schema'));
   assert.notEqual(path.resolve(exec[exec.indexOf('-C') + 1]), path.resolve(found.worktree), 'Codex never works in the mission worktree');
   const job = JSON.parse(fs.readFileSync(path.join(found.paths.jobs, '2-u2', 'RESULT.json'), 'utf8'));
-  assert.deepEqual([job.status, job.changed_files], ['DONE', ['generated/probe.mjs']]);
+  assert.deepEqual([job.status, job.changed_files, job.acceptance_pending], ['DONE', ['generated/probe.mjs'], ['node generated/probe.mjs']]);
   assert.equal(sh(found.worktree, 'rev-parse', `${job.commit}^`), job.base_commit, 'the job commit sits on the mission HEAD');
   assert.ok(sh(found.worktree, 'log', '--format=%s').includes('agent-runtime: codex job U2'), 'the session integrated the judged job commit');
 
@@ -141,7 +144,7 @@ test('Codex changes outside its allowed paths are never committed and stay where
   const job = JSON.parse(fs.readFileSync(path.join(found.paths.jobs, '2-u2', 'RESULT.json'), 'utf8'));
   assert.equal(job.status, 'FAILED');
   assert.equal(job.commit, null);
-  assert.match(job.reasons.join(' '), /changes outside allowed_paths, left uncommitted in the job worktree: outside\/notes\.txt/);
+  assert.match(job.reasons.join(' '), /changes outside allowed_paths or on reserved paths, left uncommitted in the job worktree: outside\/notes\.txt/);
   assert.ok(fs.existsSync(path.join(job.job_worktree, 'outside', 'notes.txt')), 'nothing is deleted');
   assert.ok(!fs.existsSync(path.join(found.worktree, 'outside')), 'the mission worktree is untouched');
   assert.match(calls(claude)[1].prompt, /FALLBACK_TO_CLAUDE/);

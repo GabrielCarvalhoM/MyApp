@@ -106,38 +106,65 @@ test('an accepted checkpoint edited between runs blocks until the Founder accept
   assert.ok(events(found).some((event) => event.type === 'checkpoint_reanchored' && event.checkpoint === 1));
 });
 
-test('a session that rewrites the accepted checkpoint is stopped before its own checkpoint counts', async (t) => {
+test('a session that edits its copy of the accepted checkpoint changes nothing the supervisor relies on', async (t) => {
   const repo = makeRepo();
   t.after(() => cleanup(repo));
   const found = startMission(repo);
   const tamper = { write: { path: '.agent-runtime/checkpoints/0001.json', content: '{"rewritten": true}\n' } };
   const claude = script(repo, [{ actions: [{ checkpoint: running({ do_not_reopen: ['settled A'] }) }] }, { actions: [tamper, { push: true }, { checkpoint: closing() }] }]);
   const { summary } = await supervise(found, fakeEnv({ claudeScript: claude }));
-  assert.equal(summary.status, 'BLOCKED');
-  assert.match(summary.reason, /CHECKPOINT_TAMPERED.*found while validating run 2/);
-  assert.equal(state(found).last_checkpoint_seq, 1);
-  assert.notEqual(state(found).terminal_state, 'COMPLETE');
+  assert.equal(summary.status, 'COMPLETED');
+  assert.deepEqual(JSON.parse(fs.readFileSync(path.join(found.paths.checkpoints, '0002.json'), 'utf8')).do_not_reopen, ['settled A'], 'continuity came from the authoritative copy');
 });
 
 // Phase 1 asks for a Codex job; phase 2 (the Claude unit after it) closes the mission.
-function codexMission(t, codexMode) {
+function codexMission(t, codexMode, jobExtra = {}, prepare = () => {}) {
   const repo = makeRepo();
   t.after(() => cleanup(repo));
   const found = startMission(repo);
-  const job = { brief: 'Create generated/probe.mjs.', allowed_paths: ['generated/'], acceptance: [['node', 'generated/probe.mjs']] };
+  prepare(found, repo);
+  const job = { brief: 'Create generated/probe.mjs.', allowed_paths: ['generated/'], acceptance: [['node', 'generated/probe.mjs']], ...jobExtra };
   const unit = { id: 'U2', executor: 'codex', goal: 'the probe', job, then: { id: 'U3', executor: 'claude', goal: 'judge the probe', route: { ...ROUTE } } };
   const claude = script(repo, [{ actions: [{ checkpoint: running({ next_unit: unit }) }] }, { actions: [{ push: true }, { checkpoint: closing() }] }]);
-  return { found, claude, env: fakeEnv({ claudeScript: claude, codexMode }) };
+  return { repo, found, claude, env: fakeEnv({ claudeScript: claude, codexMode }) };
 }
 
-test('a Codex job whose acceptance check fails is not handed over as done', async (t) => {
-  const { found, claude, env } = codexMission(t, 'failing-check');
+const withDependency = (found) => write(found.worktree, 'node_modules/dep/index.js', 'export default 1;\n');
+
+test('a Codex job that changes ignored dependencies is not handed over as done', async (t) => {
+  const { found, claude, env } = codexMission(t, 'touch-ignored', { copy_ignored: ['node_modules'] }, withDependency);
   assert.equal((await supervise(found, env)).summary.status, 'COMPLETED');
   const job = JSON.parse(fs.readFileSync(path.join(found.paths.jobs, '2-u2', 'RESULT.json'), 'utf8'));
-  assert.equal(job.status, 'FAILED');
-  assert.match(job.reasons.join(' '), /acceptance failed: node generated\/probe\.mjs \(exit 3\)/);
-  assert.match(calls(claude)[1].prompt, /FALLBACK_TO_CLAUDE \(acceptance failed/);
-  assert.ok(events(found).some((event) => event.type === 'fallback' && event.unit_id === 'U2'));
+  assert.deepEqual([job.status, job.commit], ['FAILED', null]);
+  assert.match(job.reasons.join(' '), /ignored material changed, which no Git diff shows: node_modules\/dep\/index\.js/);
+  assert.match(calls(claude)[1].prompt, /FALLBACK_TO_CLAUDE/);
+  assert.equal(fs.readFileSync(path.join(found.worktree, 'node_modules/dep/index.js'), 'utf8'), 'export default 1;\n', 'the mission copy is untouched');
+});
+
+test('a Codex job that rewrites its worktree .git file is not handed over as done', async (t) => {
+  const { found, claude, env } = codexMission(t, 'rewrite-dotgit');
+  assert.equal((await supervise(found, env)).summary.status, 'COMPLETED');
+  const job = JSON.parse(fs.readFileSync(path.join(found.paths.jobs, '2-u2', 'RESULT.json'), 'utf8'));
+  assert.deepEqual([job.status, job.commit], ['FAILED', null]);
+  assert.match(job.reasons.join(' '), /the job worktree's \.git file was changed/);
+  assert.deepEqual(job.changed_files, ['generated/probe.mjs'], 'the supervisor still read the job through the pinned repository');
+  assert.match(calls(claude)[1].prompt, /FALLBACK_TO_CLAUDE/);
+});
+
+test('ignored material is copied into a Codex worktree without its links', async (t) => {
+  const outsideDir = (repo) => path.join(repo.root, 'outside-target');
+  const { repo, found, env } = codexMission(t, 'ok', { copy_ignored: ['node_modules'] }, (mission, repository) => {
+    withDependency(mission);
+    fs.mkdirSync(outsideDir(repository));
+    fs.symlinkSync(outsideDir(repository), path.join(mission.worktree, 'node_modules', 'link'), 'junction');
+  });
+  assert.equal((await supervise(found, env)).summary.status, 'COMPLETED');
+  const job = JSON.parse(fs.readFileSync(path.join(found.paths.jobs, '2-u2', 'RESULT.json'), 'utf8'));
+  assert.equal(job.status, 'DONE');
+  assert.deepEqual(job.skipped_links, ['node_modules/link']);
+  assert.ok(fs.existsSync(path.join(job.job_worktree, 'node_modules', 'dep', 'index.js')));
+  assert.ok(!fs.existsSync(path.join(job.job_worktree, 'node_modules', 'link')));
+  assert.ok(fs.existsSync(outsideDir(repo)));
 });
 
 test('a Codex job without a valid structured handoff is not handed over as done', async (t) => {

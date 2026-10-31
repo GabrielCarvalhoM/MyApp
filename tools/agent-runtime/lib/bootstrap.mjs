@@ -75,33 +75,28 @@ function jobLines(job) {
     `## Delegated job ${job.unit_id} (${job.executor}), as verified by the supervisor`,
     `- Status: ${job.status}${job.reasons?.length ? ` (${job.reasons.join('; ')})` : ''}`,
   ];
-  if (job.fallback_from) {
-    lines.push(`- Fallback from ${job.fallback_from.executor}: ${job.fallback_from.status} (${job.fallback_from.reasons.join('; ')})`);
-  }
   if (job.job_branch) {
     lines.push(`- Job branch: ${code(job.job_branch)} at ${code(job.commit ?? 'no commit')}, based on mission HEAD ${code(short(job.base_commit))}; worktree ${code(job.job_worktree)}.`);
   }
   if (job.changed_files) {
     lines.push(`- Changed files (${job.changed_files.length}): ${job.changed_files.slice(0, 15).join(', ') || 'none'}`);
   }
-  for (const check of job.acceptance ?? []) lines.push(`- Acceptance ${code(check.command)} → exit ${check.exit_code}`);
-  if (job.command) lines.push(`- Command ${code(job.command)} → exit ${job.exit_code}; flagged lines: ${job.flagged?.length ?? 0}`);
-  if (job.job_dir) lines.push(`- Artifacts: ${code(`${job.job_dir}/`)} (RESULT.json and the full logs; read them only as needed).`);
-  if (job.status === 'DONE' && job.executor === 'codex') {
-    lines.push('- Codex claims are in CODEX_HANDOFF.md; judge the work yourself before integrating it (for example `git merge --ff-only <job branch>` once reviewed).');
-  }
-  if (job.status !== 'DONE') {
-    lines.push('- The job did not complete. Do only the part of its brief that is still needed, yourself.');
+  if (job.job_dir) lines.push(`- Artifacts: ${code(`${job.job_dir}/`)} (RESULT.json, CODEX_HANDOFF.md, EVIDENCE.json, the Codex log; read them only as needed).`);
+  if (job.status === 'DONE') {
+    lines.push('- The supervisor ran none of this code. Judge the work, integrate it if it holds (for example `git merge --ff-only <job branch>`), then run the acceptance below in the mission worktree.');
+  } else {
+    lines.push('- The job did not complete. Do only the part of its brief that is still needed, yourself; if that part is deterministic, run the existing tool instead of reasoning it out.');
     if (job.brief) lines.push(`- Brief: ${job.brief}`);
   }
+  for (const command of job.acceptance_pending ?? []) lines.push(`- Acceptance to run (with capture): ${code(command)}`);
   lines.push('');
   return lines;
 }
 
 const RULES = (branch) => [
   '## Execution rules',
-  `- Deterministic work first: run the repository's scripts and tests yourself; wrap long output as ${code(`${CLI} capture -- <command>`)} (the full log is saved, you get a compact summary).`,
-  '- Bounded, verifiable engineering can go to Codex: make it the next unit with executor `codex` (job: brief, allowed_paths, acceptance, optional copy_ignored and fallback_command; then: the Claude unit that judges the result) and end the session. The supervisor runs it in an isolated worktree and falls back automatically when Codex is unavailable or fails. A deterministic command longer than ten minutes: executor `local`.',
+  `- Deterministic work first: run the repository's scripts and tests yourself; wrap long output as ${code(`${CLI} capture -- <command>`)} (the full log is saved, you get a compact summary). A command longer than ten minutes runs in the background and is waited for, or is split.`,
+  '- Bounded, verifiable engineering can go to Codex: make it the next unit with executor `codex` (job: brief, allowed_paths, acceptance commands, optional copy_ignored for ignored dependencies, optional model; then: the Claude unit that judges the result and runs the acceptance) and end the session. The supervisor runs Codex in an isolated worktree and hands the work back to that Claude unit when Codex is unavailable or fails. The supervisor itself never runs a command you choose.',
   "- Judgment (semantics, safety, sports science, architecture, readiness) stays with Claude. Choose each next unit's model and effort per the global model routing policy. The mission's gates, judges and authorities apply unchanged: this runtime changes how sessions run, never the quality required.",
   `- Git: commit on ${code(branch)} before checkpointing; a closing state needs the branch pushed (the validator checks the remote). Never merge into main, force-push, reset --hard, rewrite history, delete branches or tags, or touch credentials.`,
   '- The Founder only for reserved decisions (product, scope change, unresolvable authority conflict, destructive Git, credentials): set mission_state FOUNDER_REQUIRED with founder_action_required instead of asking.',

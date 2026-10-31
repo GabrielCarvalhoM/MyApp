@@ -7,7 +7,7 @@ import { randomUUID } from 'node:crypto';
 import { writeJsonAtomic } from '../lib/files.mjs';
 import { saveState } from '../lib/mission.mjs';
 import {
-  makeRepo, cleanup, startMission, script, fakeEnv, supervise, calls, events, state, sh, write,
+  makeRepo, cleanup, startMission, script, fakeEnv, sessionEnv, supervise, calls, events, state, sh, write,
   running, closing, ROUTE, RUNTIME,
 } from './helpers.mjs';
 
@@ -135,8 +135,7 @@ test('after a supervisor crash, the interrupted session’s valid checkpoint is 
   write(found.worktree, 'docs/plan.md', '# plan\n');
   sh(found.worktree, 'add', '-A');
   sh(found.worktree, 'commit', '--quiet', '-m', 'the interrupted session committed its unit');
-  const sessionEnv = { ...env, AGENT_RUNTIME_STATE_DIR: found.paths.dir };
-  assert.equal(spawnSync(process.execPath, [RUNTIME, 'checkpoint', 'template'], { cwd: found.worktree, env: sessionEnv }).status, 0);
+  assert.equal(spawnSync(process.execPath, [RUNTIME, 'checkpoint', 'template'], { cwd: found.worktree, env: sessionEnv(env, found) }).status, 0);
   const cpFile = found.paths.checkpointOut;
   writeJsonAtomic(cpFile, { ...JSON.parse(fs.readFileSync(cpFile, 'utf8')), ...running() });
   const { summary } = await supervise(found, env);
@@ -191,25 +190,6 @@ test('FOUNDER_REQUIRED stops the mission; the resolution reaches the next sessio
   assert.equal(summary.status, 'COMPLETED');
   assert.match(calls(claude)[1].prompt, /FOUNDER RESOLUTION .*Choose A\./);
   assert.match(calls(claude)[1].prompt, /## Your unit: U2\napply the Founder decision/);
-});
-
-test('a local job runs its deterministic command and hands the result to the next session', async (t) => {
-  const localUnit = {
-    id: 'U2',
-    executor: 'local',
-    goal: 'run the check',
-    job: { command: ['node', 'scripts/check.mjs'] },
-    then: { id: 'U3', executor: 'claude', goal: 'read the check result', route: { ...ROUTE } },
-  };
-  const { found, claude, env } = setup(t, [
-    { actions: [{ write: { path: 'scripts/check.mjs', content: 'console.log("all 3 checks passed");\n' } }, { commit: 'add the check' }, { checkpoint: running({ next_unit: localUnit }) }] },
-    closeStep(),
-  ]);
-  const { summary } = await supervise(found, env);
-  assert.equal(summary.status, 'COMPLETED');
-  const result = JSON.parse(fs.readFileSync(path.join(found.paths.jobs, '2-u2', 'RESULT.json'), 'utf8'));
-  assert.deepEqual([result.status, result.exit_code, result.tail.at(-1)], ['DONE', 0, 'all 3 checks passed']);
-  assert.match(calls(claude)[1].prompt, /## Delegated job U2 \(local\)[\s\S]*Command `node scripts\/check\.mjs` → exit 0/);
 });
 
 test('the run limit stops a runaway mission', async (t) => {

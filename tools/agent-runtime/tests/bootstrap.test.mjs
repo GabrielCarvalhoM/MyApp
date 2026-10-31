@@ -76,17 +76,17 @@ test('the bootstrap stays small even with a long checkpoint', () => {
 test('a delegated job result is handed over as verified facts, and a failure carries the brief', () => {
   const done = {
     executor: 'codex', unit_id: 'U3', status: 'DONE', reasons: [], job_branch: 'codex/m-u3-r4', commit: 'f'.repeat(40),
-    base_commit: head, job_worktree: 'J', changed_files: ['generated/probe.mjs'], acceptance: [{ command: 'node generated/probe.mjs', exit_code: 0 }],
+    base_commit: head, job_worktree: 'J', changed_files: ['generated/probe.mjs'], acceptance_pending: ['node generated/probe.mjs'],
     job_dir: '.agent-runtime/jobs/4-u3',
   };
   const state = { ...initialState(mission), pending: { notices: ['HEAD is ahead of the last checkpoint commit'], job_result: done } };
   const text = render({ state });
-  for (const fragment of ['## Delegated job U3 (codex)', 'Job branch: `codex/m-u3-r4`', 'Acceptance `node generated/probe.mjs` → exit 0', 'judge the work yourself', '- HEAD is ahead of the last checkpoint commit']) {
+  for (const fragment of ['## Delegated job U3 (codex)', 'Job branch: `codex/m-u3-r4`', 'The supervisor ran none of this code', 'Acceptance to run (with capture): `node generated/probe.mjs`', '- HEAD is ahead of the last checkpoint commit']) {
     assert.ok(text.includes(fragment), `missing: ${fragment}`);
   }
   const failed = { executor: 'codex', unit_id: 'U3', status: 'FALLBACK_TO_CLAUDE', reasons: ['codex unavailable: quota'], brief: 'write generated/probe.mjs' };
   const fallback = render({ state: { ...initialState(mission), pending: { notices: [], job_result: failed } } });
-  assert.ok(fallback.includes('Do only the part of its brief that is still needed, yourself.'));
+  assert.ok(fallback.includes('Do only the part of its brief that is still needed, yourself; if that part is deterministic, run the existing tool'));
   assert.ok(fallback.includes('- Brief: write generated/probe.mjs'));
 });
 

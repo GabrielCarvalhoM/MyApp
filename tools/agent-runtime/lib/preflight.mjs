@@ -7,16 +7,17 @@ export function unexpectedDirty(worktree, state) {
   return git.dirtyPaths(worktree).filter((file) => !known.has(file));
 }
 
+// Reads the remote branch tip with the URL pinned at mission start, from outside the repository, so no
+// remote, upstream or URL setting a session wrote is ever used. Nothing is fetched or changed.
 function remoteDivergence(worktree, mission, head, onWarning) {
-  const upstream = git.upstream(worktree, mission.repo.branch);
-  if (!upstream) return null;
-  const fetched = git.fetchRef(worktree, upstream.remote, upstream.ref);
-  if (!fetched.ok) {
-    onWarning(`fetch from ${upstream.remote} failed; comparing with the last known remote state: ${fetched.stderr.slice(0, 200)}`);
+  const remote = git.lsRemote(mission.repo.remote_url, mission.repo.branch);
+  if (!remote.ok) {
+    onWarning(`the mission remote could not be read; remote divergence not checked: ${remote.error}`);
+    return null;
   }
-  const remoteSha = git.remoteTrackingSha(worktree, upstream.remote, upstream.ref);
-  if (!remoteSha || git.isAncestor(worktree, remoteSha, head)) return null;
-  return `REMOTE_DIVERGED: ${upstream.remote}/${mission.repo.branch} (${short(remoteSha)}) has commits that HEAD lacks; nothing was changed. Reconcile, then run again with --resolve "<note>"`;
+  if (!remote.sha) return null; // not pushed yet
+  if (git.resolveCommit(worktree, remote.sha) && git.isAncestor(worktree, remote.sha, head)) return null;
+  return `REMOTE_DIVERGED: the remote branch ${mission.repo.branch} (${short(remote.sha)}) has commits that HEAD lacks; nothing was changed. Reconcile, then run again with --resolve "<note>"`;
 }
 
 // Git safety before every launch: the mission branch, no rewritten history, no change of unknown

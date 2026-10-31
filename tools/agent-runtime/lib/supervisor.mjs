@@ -2,31 +2,39 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { randomUUID } from 'node:crypto';
 import * as git from './git.mjs';
-import { readJson, writeText, ensureDir, nowIso, sha256File } from './files.mjs';
-import { layout, checkpointPath, saveState, appendEvent, acquireLock, pidAlive } from './mission.mjs';
-import { validateCheckpointFile } from './coherence.mjs';
-import { isFinal } from './checkpoint.mjs';
-import { renderBootstrap, renderCorrection, bootstrapListedPaths } from './bootstrap.mjs';
+import { readJson, readJsonl, writeText, ensureDir, nowIso, sha256File } from './files.mjs';
+import { openMission, checkpointPath, saveState, appendEvent, acquireLock, pidAlive } from './mission.mjs';
+import { renderBootstrap, bootstrapListedPaths } from './bootstrap.mjs';
 import { chooseExecutor } from './routing.mjs';
-import { preflight, unexpectedDirty } from './preflight.mjs';
-import { runClaude, claudeMetrics, resultExcerpt, detectCodex } from './executors.mjs';
-import { runCodexUnit, runLocalUnit } from './delegation.mjs';
+import { preflight } from './preflight.mjs';
+import { runClaude, claudeMetrics, detectCodex } from './executors.mjs';
+import { runCodexUnit } from './delegation.mjs';
+import { settleCheckpoint } from './settlement.mjs';
 
+const STATES = ['CREATED', 'RUNNING', 'CHECKPOINTING', 'READY_FOR_FRESH_SESSION', 'PAUSED', 'BLOCKED', 'FOUNDER_REQUIRED', 'COMPLETED'];
 const STOP_STATES = ['COMPLETED', 'BLOCKED', 'FOUNDER_REQUIRED', 'PAUSED'];
 const MAX_NOTICES = 6;
 const pad = (seq) => String(seq).padStart(4, '0');
 const minutes = (ms) => `${Math.round((ms ?? 0) / 60_000)} min`;
 
+// The audit log is append-only: a mission it records as terminal stays terminal, whatever state.json says.
+function assertConsistent(state, events) {
+  if (!STATES.includes(state.status)) throw new Error(`state.json has an unknown status ${JSON.stringify(state.status)}`);
+  const terminal = events.find((event) => event.type === 'mission_terminal');
+  if (terminal && (state.status !== 'COMPLETED' || state.terminal_state !== terminal.terminal_state)) {
+    throw new Error(`state.json contradicts the audit log: the mission ended ${terminal.terminal_state} at checkpoint ${terminal.checkpoint}, and a terminal mission is never reopened`);
+  }
+}
+
 // Deterministic execution lifecycle of one mission. It never judges the work: sessions decide what
-// to do next, the checkpoint validator decides whether a hand-over is acceptable.
+// to do next, the checkpoint validator decides whether a hand-over is acceptable. Its control state
+// (`control`, inside the Git common directory) is outside every worktree a session works in.
 export class Supervisor {
-  constructor({ worktree, env = process.env, log = () => {} }) {
-    this.worktree = worktree;
-    this.paths = layout(worktree);
-    this.env = env;
-    this.log = log;
-    this.mission = readJson(this.paths.mission);
-    this.state = readJson(this.paths.state);
+  constructor({ control, env = process.env, log = () => {} }) {
+    const { mission, worktree, paths } = openMission(control);
+    Object.assign(this, { mission, worktree, paths, env, log });
+    this.state = readJson(paths.state);
+    assertConsistent(this.state, readJsonl(paths.events));
     this.codex = null; // availability, detected once per supervisor run
   }
 
@@ -138,7 +146,7 @@ export class Supervisor {
     this.event({ type: 'recovered_interrupted_run', run_seq: current.run_seq, executor: current.executor, pid: current.pid ?? null });
     this.log(`recovering run ${current.run_seq} (${current.executor}), interrupted together with its supervisor`);
     if (current.executor === 'claude') {
-      await this.settleCheckpoint({ status: null, result: null });
+      await settleCheckpoint(this, { status: null, result: null });
       return;
     }
     this.state.current = null;
@@ -198,15 +206,19 @@ export class Supervisor {
 
   async runUnit(unit) {
     if (unit.executor === 'claude') return this.runClaudeUnit(unit);
-    if (unit.executor === 'local') return runLocalUnit(this, unit, unit.job.command);
     this.codex ??= detectCodex(this.env);
     const choice = chooseExecutor(unit, this.codex);
     if (choice.executor === 'codex') return runCodexUnit(this, unit);
-    this.event({ type: 'fallback', unit_id: unit.id, from: 'codex', to: choice.executor, reason: choice.reason });
+    this.event({ type: 'fallback', unit_id: unit.id, from: 'codex', to: 'claude', reason: choice.reason });
     this.log(`codex fallback for ${unit.id}: ${choice.reason}`);
-    const skipped = { executor: 'codex', unit_id: unit.id, status: 'NOT_RUN', reasons: [choice.reason], brief: unit.job.brief };
-    if (choice.executor === 'local') return runLocalUnit(this, unit, choice.command, skipped);
-    return this.continueWith(unit.then, { ...skipped, status: 'FALLBACK_TO_CLAUDE' });
+    return this.continueWith(unit.then, {
+      executor: 'codex',
+      unit_id: unit.id,
+      status: 'FALLBACK_TO_CLAUDE',
+      reasons: [choice.reason],
+      brief: unit.job.brief,
+      acceptance_pending: unit.job.acceptance.map((command) => command.join(' ')),
+    });
   }
 
   continueWith(nextUnit, jobResult) {
@@ -226,6 +238,7 @@ export class Supervisor {
       env: {
         ...this.env,
         AGENT_RUNTIME_MISSION: this.mission.mission_id,
+        AGENT_RUNTIME_CONTROL_DIR: this.paths.control,
         AGENT_RUNTIME_STATE_DIR: this.paths.dir,
         AGENT_RUNTIME_RUN_SEQ: String(current.run_seq),
       },
@@ -282,112 +295,6 @@ export class Supervisor {
     const run = await this.claude(prompt, false, files);
     this.event({ type: 'session_end', run_seq: runSeq, exit_code: run.status, duration_ms: run.durationMs, error: run.error?.message ?? null, metrics: claudeMetrics(run.result) });
     this.log(`■ run ${runSeq} ended (exit ${run.status ?? run.error?.message}, ${minutes(run.durationMs)})`);
-    await this.settleCheckpoint(run);
-  }
-
-  // checkpoint rejected → the same session receives the errors (--resume) → it corrects → validate again.
-  async settleCheckpoint(firstRun) {
-    const current = this.state.current;
-    const max = this.mission.limits.max_checkpoint_corrections;
-    let run = firstRun;
-    for (;;) {
-      this.transition('CHECKPOINTING', `validating the checkpoint of run ${current.run_seq}`);
-      const tampered = this.checkpointTampering();
-      if (tampered) {
-        this.state.current = null;
-        this.block(`${tampered} (found while validating run ${current.run_seq})`);
-        return;
-      }
-      if (!fs.existsSync(this.paths.checkpointOut)) return this.runFailed(`no checkpoint written (exit ${run.status ?? 'unknown'})`, run);
-      const verdict = validateCheckpointFile(this.paths.checkpointOut, {
-        mission: this.mission,
-        state: this.state,
-        previous: this.lastCheckpoint(),
-        worktree: this.worktree,
-        runSeq: current.run_seq,
-        stateDir: this.paths.dir,
-      });
-      if (verdict.ok) return this.accept(verdict.checkpoint);
-      const snapshot = `rejected-r${current.run_seq}-${current.corrections}.json`;
-      fs.copyFileSync(this.paths.checkpointOut, path.join(ensureDir(this.paths.checkpoints), snapshot));
-      this.event({ type: 'checkpoint_rejected', run_seq: current.run_seq, attempt: current.corrections, errors: verdict.errors.slice(0, 20), snapshot });
-      this.log(`✗ checkpoint of run ${current.run_seq} rejected (${verdict.errors.length} errors)`);
-      if (current.corrections >= max) return this.runFailed(`checkpoint still invalid after ${max} corrections`, run);
-      current.corrections += 1;
-      this.save();
-      const files = this.sessionFiles(current.run_seq, current.corrections);
-      const prompt = renderCorrection({ errors: verdict.errors, attempt: current.corrections, max });
-      writeText(files.prompt, prompt);
-      this.event({ type: 'correction_start', run_seq: current.run_seq, attempt: current.corrections });
-      run = await this.claude(prompt, true, files);
-      this.event({ type: 'correction_end', run_seq: current.run_seq, attempt: current.corrections, exit_code: run.status, duration_ms: run.durationMs, metrics: claudeMetrics(run.result) });
-    }
-  }
-
-  accept(cp) {
-    const s = this.state;
-    const { run_seq: runSeq, executor } = s.current;
-    ensureDir(this.paths.checkpoints);
-    const accepted = checkpointPath(this.paths, cp.checkpoint_seq);
-    fs.renameSync(this.paths.checkpointOut, accepted);
-    this.event({
-      type: 'checkpoint_accepted',
-      run_seq: runSeq,
-      executor,
-      checkpoint: cp.checkpoint_seq,
-      mission_state: cp.mission_state,
-      boundary: cp.boundary,
-      commit: cp.git.head_commit,
-      next_unit: cp.next_unit?.id ?? null,
-      next_executor: cp.next_unit?.executor ?? null,
-    });
-    Object.assign(s, {
-      last_checkpoint_seq: cp.checkpoint_seq,
-      last_checkpoint_head: cp.git.head_commit,
-      last_checkpoint_sha256: sha256File(accepted),
-      next_unit: cp.next_unit,
-      current: null,
-      consecutive_failures: 0,
-      pending: { notices: [], job_result: null },
-      blocked_dirty: [],
-      acknowledged_dirty: [],
-    });
-    this.log(`✓ checkpoint ${cp.checkpoint_seq} accepted: ${cp.mission_state} at ${cp.boundary}`);
-    if (isFinal(cp.mission_state)) {
-      s.terminal_state = cp.mission_state;
-      this.transition('COMPLETED', `checkpoint ${cp.checkpoint_seq}: ${cp.mission_state}`);
-      this.event({ type: 'mission_terminal', terminal_state: cp.mission_state, checkpoint: cp.checkpoint_seq, commit: cp.git.head_commit });
-    } else if (cp.mission_state === 'FOUNDER_REQUIRED') {
-      this.transition('FOUNDER_REQUIRED', `${cp.founder_action_required.decision_needed} (${cp.founder_action_required.reason})`);
-    } else if (cp.mission_state === 'BLOCKED') {
-      const blockers = cp.findings.open.filter((finding) => finding.blocking).map((finding) => finding.id);
-      this.transition('BLOCKED', `the mission declared BLOCKED: ${cp.founder_action_required?.decision_needed ?? `blocking findings ${blockers.join(', ')}`}`);
-    } else {
-      this.transition('READY_FOR_FRESH_SESSION', `checkpoint ${cp.checkpoint_seq} accepted (${cp.boundary}); next unit ${cp.next_unit.id} (${cp.next_unit.executor})`);
-    }
-  }
-
-  runFailed(reason, run) {
-    const s = this.state;
-    const current = s.current;
-    if (fs.existsSync(this.paths.checkpointOut)) this.setAside(this.paths.checkpointOut, `rejected-r${current.run_seq}-final.json`);
-    s.current = null;
-    s.consecutive_failures += 1;
-    const excerpt = resultExcerpt(run?.result);
-    this.event({ type: 'run_failed', run_seq: current.run_seq, executor: current.executor, unit_id: current.unit.id, reason, excerpt });
-    this.log(`✗ run ${current.run_seq} failed: ${reason}`);
-    const dirty = unexpectedDirty(this.worktree, this.state);
-    if (dirty.length) {
-      s.blocked_dirty = dirty;
-      this.block(`DIRTY_WORKTREE after failed run ${current.run_seq} (${reason}): ${dirty.slice(0, 10).join(', ')}; probable origin: that session. Nothing was deleted; inspect them, then run again with --resolve "<note>"`);
-      return;
-    }
-    const said = excerpt ? ` Its last message began: "${excerpt.slice(0, 160)}"` : '';
-    this.notice(`Run ${current.run_seq} (unit ${current.unit.id}) ended without a valid checkpoint: ${reason}.${said}`);
-    if (s.consecutive_failures >= this.mission.limits.max_consecutive_failures) {
-      this.transition('PAUSED', `${s.consecutive_failures} consecutive runs ended without a valid checkpoint; last: ${reason}.${said} Run the same command again to resume (for example after a usage-limit reset).`);
-      return;
-    }
-    this.transition('READY_FOR_FRESH_SESSION', `retrying unit ${current.unit.id} in a fresh session`);
+    await settleCheckpoint(this, run);
   }
 }

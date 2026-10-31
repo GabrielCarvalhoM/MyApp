@@ -77,7 +77,7 @@ export function fakeEnv({ claudeScript = '', codexMode = 'ok', codexLog = '', ex
 
 export async function supervise(found, env, options = {}) {
   const lines = [];
-  const supervisor = new Supervisor({ worktree: found.worktree, env, log: (line) => lines.push(line) });
+  const supervisor = new Supervisor({ control: found.paths.control, env, log: (line) => lines.push(line) });
   const summary = await supervisor.run(options);
   return { summary, supervisor, lines };
 }
@@ -86,6 +86,9 @@ export function calls(claudeScript) {
   const file = `${claudeScript}.calls.jsonl`;
   return fs.existsSync(file) ? readJsonl(file) : [];
 }
+
+// The environment the supervisor gives a session, for tests that play a session's CLI calls directly.
+export const sessionEnv = (env, found) => ({ ...env, AGENT_RUNTIME_CONTROL_DIR: found.paths.control, AGENT_RUNTIME_STATE_DIR: found.paths.dir });
 
 export const events = (found) => readJsonl(found.paths.events);
 export const state = (found) => readJson(found.paths.state);

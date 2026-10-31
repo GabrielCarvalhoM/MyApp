@@ -89,9 +89,9 @@ function repositoryErrors(cp, { mission, state, worktree }) {
 function pushErrors(cp, mission, worktree, head) {
   if (!cp.git.pushed && !isFinal(cp.mission_state)) return [];
   if (!cp.git.pushed) return [`git.pushed must be true for ${cp.mission_state}: push the branch, then validate again`];
-  const remote = git.lsRemote(worktree, mission.repo.remote, cp.git.branch);
-  if (!remote.ok) return [`cannot verify the push on ${mission.repo.remote}: ${remote.error}`];
-  if (remote.sha !== head) return [`${mission.repo.remote}/${cp.git.branch} is ${remote.sha ?? 'absent'}, not HEAD ${head}`];
+  const remote = git.lsRemote(mission.repo.remote_url, cp.git.branch);
+  if (!remote.ok) return [`cannot verify the push on the mission remote: ${remote.error}`];
+  if (remote.sha !== head) return [`the remote branch ${cp.git.branch} is ${remote.sha ?? 'absent'}, not HEAD ${head}`];
   return [];
 }
 
@@ -156,13 +156,16 @@ export function continuityErrors(cp, previous) {
   if (droppedInvariants.length) errors.push(`canonical_invariants cannot be dropped: ${listed(droppedInvariants)}`);
   if (previous.freeze && !cp.freeze) errors.push('freeze cannot be dropped: a new freeze replaces it');
   const openNow = new Map(cp.findings.open.map((finding) => [finding.id, finding]));
-  const closedNow = new Set(cp.findings.closed.map((finding) => finding.id));
+  const closedNow = new Map(cp.findings.closed.map((finding) => [finding.id, finding]));
   for (const finding of previous.findings.open) {
     const current = openNow.get(finding.id);
-    if (!current && !closedNow.has(finding.id)) {
+    const closed = closedNow.get(finding.id);
+    if (!current && !closed) {
       errors.push(`open finding ${finding.id} disappeared: keep it open or close it with a resolution`);
     } else if (current && finding.blocking && !current.blocking) {
       errors.push(`finding ${finding.id} is still open and was blocking: a blocker is not downgraded silently (close it with evidence, or keep it blocking)`);
+    } else if (closed && finding.blocking && !closed.evidence_ref) {
+      errors.push(`blocking finding ${finding.id} is closed without an evidence_ref: a blocker closes only on evidence`);
     }
   }
   for (const finding of previous.findings.closed) {

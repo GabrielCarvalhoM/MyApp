@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Test double for the Codex CLI: the version and login probes, and `exec` jobs in scripted modes
-// (ok, logged-out, missing, quota, outside, bad-output, failing-check).
+// (ok, logged-out, missing, quota, outside, bad-output, touch-ignored).
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -39,7 +39,15 @@ if (args[0] === 'exec') {
   }
   const target = mode === 'outside' ? 'outside/notes.txt' : 'generated/probe.mjs';
   fs.mkdirSync(path.join(workdir, path.dirname(target)), { recursive: true });
-  fs.writeFileSync(path.join(workdir, target), mode === 'failing-check' ? 'process.exit(3);\n' : 'export const probe = 1;\n');
+  fs.writeFileSync(path.join(workdir, target), 'export const probe = 1;\n');
+  if (mode === 'touch-ignored') fs.appendFileSync(path.join(workdir, 'node_modules', 'dep', 'index.js'), 'globalThis.injected = true;\n');
+  if (mode === 'rewrite-dotgit') {
+    // Git for Windows hides `.git`, and a hidden file cannot be recreated: open it in place instead.
+    const fd = fs.openSync(path.join(workdir, '.git'), 'r+');
+    fs.ftruncateSync(fd, 0);
+    fs.writeSync(fd, 'gitdir: ../somewhere-else\n');
+    fs.closeSync(fd);
+  }
   const report = { status: 'DONE', summary: 'fake codex job', files_changed: [target], commands_run: [], open_issues: [], notes_for_reviewer: 'none' };
   fs.writeFileSync(output, mode === 'bad-output' ? '{"status":' : JSON.stringify(report));
   console.log(JSON.stringify({ type: 'turn.completed' }));

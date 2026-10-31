@@ -1,8 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import path from 'node:path';
-import { chooseExecutor, fallbackFor } from '../lib/routing.mjs';
-import { commandPolicyError } from '../lib/commands.mjs';
+import { chooseExecutor } from '../lib/routing.mjs';
 import { parseCmdShim, resolveExecutable } from '../lib/proc.mjs';
 import { detectCodex } from '../lib/executors.mjs';
 import { fakeEnv, ROUTE } from './helpers.mjs';
@@ -12,35 +11,13 @@ const codexUnit = (job = {}) => ({ id: 'U3', executor: 'codex', goal: 'g', job: 
 
 test('declared tiers are kept; Codex is used only when it is available', () => {
   assert.equal(chooseExecutor({ executor: 'claude' }, { ok: true }).executor, 'claude');
-  assert.equal(chooseExecutor({ executor: 'local' }, { ok: false }).executor, 'local');
   assert.equal(chooseExecutor(codexUnit(), { ok: true }).executor, 'codex');
 });
 
-test('Codex unavailable: deterministic work runs its local command, anything else returns to Claude', () => {
+test('Codex unavailable: the work returns to the Claude unit that follows the job', () => {
   const toClaude = chooseExecutor(codexUnit(), { ok: false, reason: 'codex CLI not installed' });
   assert.equal(toClaude.executor, 'claude');
   assert.match(toClaude.reason, /codex unavailable: codex CLI not installed; the next Claude unit does the necessary work/);
-  const toLocal = chooseExecutor(codexUnit({ fallback_command: ['node', 'scripts/gen.mjs'] }), { ok: false, reason: 'quota' });
-  assert.deepEqual([toLocal.executor, toLocal.command], ['local', ['node', 'scripts/gen.mjs']]);
-  assert.equal(fallbackFor(codexUnit(), 'codex job failed: exit 1').executor, 'claude');
-});
-
-test('the command policy admits repository scripts and tests, nothing else', () => {
-  for (const ok of [['node', 'scripts/verify.mjs', '--tests'], ['node', '--test'], ['npm', 'test'], ['npm', 'run', 'verify'], ['npm', 'ci', '--prefix', 'CoachingCore']]) {
-    assert.equal(commandPolicyError(ok), null, ok.join(' '));
-  }
-  for (const [bad, why] of [
-    [['git', 'reset', '--hard'], /not allowed/],
-    [['powershell', '-c', 'x'], /not allowed/],
-    [['node', '--eval=1'], /inline or remote code/],
-    [['node', '--print', '1'], /inline or remote code/],
-    [['node', '--import', 'https://example.invalid/x.mjs'], /inline or remote code/],
-    [['node', 'C:\\Windows\\x.mjs'], /outside the repository/],
-    [['npm', 'exec', 'x'], /npm subcommand "exec"/],
-    [[], /non-empty array/],
-  ]) {
-    assert.match(commandPolicyError(bad), why, bad.join(' '));
-  }
 });
 
 test('Windows .cmd shims resolve to their JavaScript entry point (codex and npm formats)', () => {

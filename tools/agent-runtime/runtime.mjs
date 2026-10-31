@@ -6,7 +6,7 @@ import { parseArgs } from 'node:util';
 import * as git from './lib/git.mjs';
 import { Supervisor } from './lib/supervisor.mjs';
 import {
-  createMission, planMission, findMission, listMissions, layout, initialState, checkpointPath, DEFAULT_FIRST_ROUTE, STATE_DIR,
+  createMission, planMission, findMission, listMissions, openMission, initialState, checkpointPath, samePath, DEFAULT_FIRST_ROUTE, STATE_DIR,
 } from './lib/mission.mjs';
 import { readJson, readJsonIfExists, readJsonl, writeJsonAtomic, sha256File, nowIso } from './lib/files.mjs';
 import { validateCheckpointFile } from './lib/coherence.mjs';
@@ -84,7 +84,7 @@ async function cmdRun(args) {
   if (envValue(process.env, 'CLAUDECODE')) {
     console.warn('note: started from inside a Claude Code session; the supervisor lives only as long as that process. A normal terminal is the intended home.');
   }
-  const supervisor = new Supervisor({ worktree: found.worktree, env: process.env, log: (line) => console.log(line) });
+  const supervisor = new Supervisor({ control: found.paths.control, env: process.env, log: (line) => console.log(line) });
   const interrupted = () => {
     supervisor.event({ type: 'supervisor_interrupted', run_seq: supervisor.state.run_seq });
     process.exit(130);
@@ -152,13 +152,19 @@ function cmdStatus(args) {
   return 0;
 }
 
-// Inside a supervised session the supervisor sets AGENT_RUNTIME_STATE_DIR; elsewhere the worktree root is used.
+// Inside a supervised session the supervisor sets AGENT_RUNTIME_CONTROL_DIR; elsewhere the mission whose
+// worktree is the current checkout is used.
 function sessionContext() {
-  const stateDir = envValue(process.env, 'AGENT_RUNTIME_STATE_DIR');
-  const worktree = stateDir ? path.dirname(path.resolve(stateDir)) : path.resolve(git.toplevel(process.cwd()));
-  const paths = layout(worktree);
-  if (!fs.existsSync(paths.mission)) throw new Error(`no supervised mission in ${worktree} (${STATE_DIR}/mission.json is missing)`);
-  const mission = readJson(paths.mission);
+  const control = envValue(process.env, 'AGENT_RUNTIME_CONTROL_DIR');
+  let found;
+  if (control) {
+    found = openMission(path.resolve(control));
+  } else {
+    const top = path.resolve(git.toplevel(process.cwd()));
+    found = listMissions(process.cwd()).find((entry) => samePath(entry.worktree, top));
+    if (!found) throw new Error(`no supervised mission runs in ${top}`);
+  }
+  const { mission, paths, worktree } = found;
   const state = readJson(paths.state);
   if (state.current?.executor !== 'claude') throw new Error(`no supervised Claude run is in progress (status ${state.status})`);
   const previous = state.last_checkpoint_seq ? readJson(checkpointPath(paths, state.last_checkpoint_seq)) : null;
@@ -193,7 +199,8 @@ function cmdCheckpoint(args) {
 function captureFile(program) {
   let dir = path.join(os.tmpdir(), 'agent-runtime-captures');
   const top = git.git(process.cwd(), ['rev-parse', '--show-toplevel'], { allowFail: true });
-  if (top.ok && fs.existsSync(layout(path.resolve(top.stdout.trim())).dir)) dir = layout(path.resolve(top.stdout.trim())).captures;
+  const workspace = top.ok ? path.join(path.resolve(top.stdout.trim()), STATE_DIR) : null;
+  if (workspace && fs.existsSync(workspace)) dir = path.join(workspace, 'captures');
   return path.join(dir, `${nowIso().replace(/[:.]/g, '-')}-${path.basename(program).replace(/[^\w.-]/g, '_')}.log`);
 }
 

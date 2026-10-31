@@ -86,23 +86,29 @@ test('a codex unit must be bounded, verifiable and followed by a Claude unit', (
   assertError(errorsOf({ next_unit: codexUnit({}, { then: null }) }), 'next_unit.then: a claude unit must follow a codex job');
   assertError(errorsOf({ next_unit: codexUnit({ acceptance: [] }) }), 'delegated work must be verifiable');
   assertError(errorsOf({ next_unit: codexUnit({ allowed_paths: [] }) }), 'must name at least one path');
-  assertError(errorsOf({ next_unit: codexUnit({ allowed_paths: ['.git/'] }) }), 'must not include .git/');
-  assertError(errorsOf({ next_unit: codexUnit({ allowed_paths: ['.agent-runtime'] }) }), 'must not include .agent-runtime');
+  for (const reserved of ['.git/', '.agent-runtime', '.claude/', '.codex/settings', '.mcp.json', '.github/workflows/']) {
+    assertError(errorsOf({ next_unit: codexUnit({ allowed_paths: [reserved] }) }), 'must not include reserved paths');
+  }
+  assertError(errorsOf({ next_unit: codexUnit({ copy_ignored: ['.agent-runtime/'] }) }), 'next_unit.job.copy_ignored: must not include reserved paths');
+  assert.deepEqual(errorsOf({ next_unit: codexUnit({ copy_ignored: ['CoachingCore/node_modules'] }) }), []);
   const nested = codexUnit({}, { then: codexUnit() });
   assertError(errorsOf({ next_unit: nested }), 'next_unit.then.executor: must be one of claude');
 });
 
-test('supervised commands are limited to repository scripts and tests', () => {
-  const local = (command) => ({ id: 'U2', executor: 'local', goal: 'run the suite', job: { command }, then: { id: 'U3', executor: 'claude', goal: 'read it', route: { ...ROUTE } } });
-  assert.deepEqual(errorsOf({ next_unit: local(['node', '--test', 'test/']) }), []);
-  assert.deepEqual(errorsOf({ next_unit: local(['npm', 'test']) }), []);
-  assertError(errorsOf({ next_unit: local(['git', 'push', '--force']) }), 'program "git" is not allowed');
-  assertError(errorsOf({ next_unit: local(['bash', '-c', 'rm -rf .']) }), 'program "bash" is not allowed');
-  assertError(errorsOf({ next_unit: local(['node', '-e', 'process.exit(0)']) }), 'inline or remote code is not allowed');
-  assertError(errorsOf({ next_unit: local(['node', '--import=data:text/javascript,1']) }), 'inline or remote code is not allowed');
-  assertError(errorsOf({ next_unit: local(['node', '../outside.mjs']) }), 'points outside the repository');
-  assertError(errorsOf({ next_unit: local(['npm', 'publish']) }), 'npm subcommand "publish" is not allowed');
-  assertError(errorsOf({ next_unit: local('npm test') }), 'argv form, no shell');
+test('a job carries acceptance commands for the judging unit, never a command for the supervisor', () => {
+  const then = { id: 'U3', executor: 'claude', goal: 'read it', route: { ...ROUTE } };
+  assertError(errorsOf({ next_unit: { id: 'U2', executor: 'local', goal: 'run', job: { command: ['npm', 'test'] }, then } }), 'next_unit.executor: must be one of claude, codex');
+  assertError(errorsOf({ next_unit: codexUnit({ fallback_command: ['npm', 'test'] }) }), 'fallback_command: is not supported: the supervisor runs no command an agent selects');
+  assertError(errorsOf({ next_unit: codexUnit({ acceptance: ['npm test'] }) }), 'argv form, no shell');
+  assert.deepEqual(errorsOf({ next_unit: codexUnit({ acceptance: [['npm', 'test', '--prefix', 'CoachingCore']] }) }), []);
+});
+
+test('model ids are aliases or exact ids, never text that reads as an option', () => {
+  const route = (model) => ({ next_unit: { id: 'U2', executor: 'claude', goal: 'g', route: { ...ROUTE, model } } });
+  assertError(errorsOf(route('--dangerously-skip-permissions')), 'next_unit.route.model: must be a model alias or exact id');
+  assertError(errorsOf(route('opus 5')), 'next_unit.route.model');
+  assert.deepEqual(errorsOf(route('claude-opus-5-5[1m]')), []);
+  assertError(errorsOf({ next_unit: codexUnit({ model: '-c' }) }), 'next_unit.job.model: must be a model alias or exact id');
 });
 
 test('paths are normalized and repository-relative', () => {

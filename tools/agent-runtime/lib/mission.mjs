@@ -1,11 +1,14 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import * as git from './git.mjs';
-import { EFFORTS, WORK_KINDS } from './checkpoint.mjs';
-import { readJsonIfExists, writeJsonAtomic, appendJsonl, ensureDir, sha256File, nowIso } from './files.mjs';
+import { EFFORTS, WORK_KINDS, MODEL_ID } from './checkpoint.mjs';
+import { readJson, readJsonIfExists, writeJsonAtomic, appendJsonl, ensureDir, sha256File, nowIso } from './files.mjs';
 
 export const MISSION_SCHEMA = 'agent-runtime/mission@1';
 export const STATE_SCHEMA = 'agent-runtime/state@1';
+// Supervisor-owned control state lives in the Git common directory, outside every worktree a session
+// works in; the session-visible workspace (request copy, checkpoint drafts, logs) is .agent-runtime/.
+export const CONTROL_DIR = 'agent-runtime';
 export const STATE_DIR = '.agent-runtime';
 export const DEFAULT_LIMITS = Object.freeze({ max_runs: 40, max_consecutive_failures: 2, max_checkpoint_corrections: 2 });
 export const DEFAULT_FIRST_ROUTE = Object.freeze({
@@ -16,6 +19,8 @@ export const DEFAULT_FIRST_ROUTE = Object.freeze({
 });
 // bypassPermissions is deliberately absent: supervised sessions never skip permission checks.
 export const PERMISSION_MODES = Object.freeze(['auto', 'acceptEdits', 'plan', 'manual']);
+const MISSION_ID = /^[A-Za-z0-9][A-Za-z0-9._-]*$/;
+const SLUG = /^[a-z0-9][a-z0-9-]*$/;
 const FIRST_UNIT_GOAL =
   'Intake and plan. Record the Founder request in the repository per project practice, ground only what the plan needs, define the units, gates and stop conditions, then checkpoint at the planning_complete boundary.';
 const RUNTIME_ENTRY = 'tools/agent-runtime/runtime.mjs';
@@ -31,40 +36,86 @@ export function slugify(missionId) {
     .replace(/^-|-$/g, '');
 }
 
-export function layout(worktree) {
+export function layout(worktree, control) {
   const dir = path.join(worktree, STATE_DIR);
   return {
+    control,
+    mission: path.join(control, 'mission.json'),
+    state: path.join(control, 'state.json'),
+    events: path.join(control, 'events.jsonl'),
+    lock: path.join(control, 'lock.json'),
+    checkpoints: path.join(control, 'checkpoints'),
     dir,
-    mission: path.join(dir, 'mission.json'),
-    state: path.join(dir, 'state.json'),
-    events: path.join(dir, 'events.jsonl'),
-    lock: path.join(dir, 'lock.json'),
     request: path.join(dir, 'request.md'),
     checkpointOut: path.join(dir, 'checkpoint.next.json'),
-    checkpoints: path.join(dir, 'checkpoints'),
+    checkpointCopies: path.join(dir, 'checkpoints'),
     sessions: path.join(dir, 'sessions'),
     jobs: path.join(dir, 'jobs'),
     captures: path.join(dir, 'captures'),
   };
 }
 
-export const checkpointPath = (paths, seq) => path.join(paths.checkpoints, `${String(seq).padStart(4, '0')}.json`);
+const pad = (seq) => String(seq).padStart(4, '0');
+export const checkpointPath = (paths, seq) => path.join(paths.checkpoints, `${pad(seq)}.json`);
+export const checkpointCopyPath = (paths, seq) => path.join(paths.checkpointCopies, `${pad(seq)}.json`);
+export const controlRoot = (cwd) => path.join(git.commonDir(cwd), CONTROL_DIR);
 
-function samePath(a, b) {
+export function samePath(a, b) {
   const [x, y] = [path.resolve(a), path.resolve(b)];
   return process.platform === 'win32' ? x.toLowerCase() === y.toLowerCase() : x === y;
 }
 
-export function listMissions(cwd) {
-  return git.worktreeList(cwd).flatMap((worktree) => {
-    const paths = layout(worktree.path);
-    const mission = readJsonIfExists(paths.mission);
-    return mission ? [{ worktree: worktree.path, paths, mission }] : [];
-  });
+const positive = (value) => Number.isFinite(value) && value > 0;
+
+// The record is read again at every start: whatever happened to the file meanwhile, the supervisor
+// never runs a mission whose settings fall outside what a mission may be created with.
+export function validateMissionRecord(mission, control) {
+  const problems = [];
+  const repo = mission?.repo ?? {};
+  const route = mission?.first_unit?.route ?? {};
+  if (mission?.schema !== MISSION_SCHEMA) problems.push('schema');
+  if (!MISSION_ID.test(mission?.mission_id ?? '')) problems.push('mission_id');
+  if (!SLUG.test(mission?.slug ?? '') || mission.slug !== slugify(mission.mission_id ?? '') || path.basename(control) !== mission.slug) problems.push('slug');
+  if (!git.SAFE_BRANCH.test(repo.branch ?? '')) problems.push('repo.branch');
+  if (!git.COMMIT_ID.test(repo.base_commit ?? '')) problems.push('repo.base_commit');
+  if (typeof repo.remote_url !== 'string' || repo.remote_url === '' || repo.remote_url.startsWith('-') || /[\0-\x1f]/.test(repo.remote_url)) problems.push('repo.remote_url');
+  if (!path.isAbsolute(repo.worktree ?? '')) problems.push('repo.worktree');
+  if (!path.isAbsolute(repo.main_root ?? '') || !samePath(repo.main_root, git.mainRootOf(path.dirname(path.dirname(control))))) problems.push('repo.main_root');
+  if (!MODEL_ID.test(route.model ?? '') || !EFFORTS.includes(route.effort) || !WORK_KINDS.includes(route.work_kind)) problems.push('first_unit.route');
+  if (!PERMISSION_MODES.includes(mission?.claude?.permission_mode)) problems.push('claude.permission_mode');
+  const budget = mission?.claude?.max_budget_usd;
+  if (budget !== null && !positive(budget)) problems.push('claude.max_budget_usd');
+  const limits = mission?.limits ?? {};
+  if (Object.keys(DEFAULT_LIMITS).some((name) => !Number.isInteger(limits[name]) || limits[name] < 1 || limits[name] > 1000)) problems.push('limits');
+  if (problems.length) {
+    throw new Error(`mission record ${path.join(control, 'mission.json')} is invalid or was altered (${problems.join(', ')}); the supervisor will not run it`);
+  }
+  return mission;
 }
 
-export const findMission = (cwd, missionId) =>
-  listMissions(cwd).find((entry) => entry.mission.mission_id === missionId) ?? null;
+export function openMission(control) {
+  const mission = validateMissionRecord(readJson(path.join(control, 'mission.json')), control);
+  return { mission, worktree: mission.repo.worktree, paths: layout(mission.repo.worktree, control) };
+}
+
+export function listMissions(cwd) {
+  const root = controlRoot(cwd);
+  if (!fs.existsSync(root)) return [];
+  return fs
+    .readdirSync(root, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory() && fs.existsSync(path.join(root, entry.name, 'mission.json')))
+    .map((entry) => openMission(path.join(root, entry.name)));
+}
+
+export function findMission(cwd, missionId) {
+  const control = path.join(controlRoot(cwd), slugify(missionId));
+  if (!fs.existsSync(path.join(control, 'mission.json'))) return null;
+  const found = openMission(control);
+  if (found.mission.mission_id !== missionId) {
+    throw new Error(`mission ${found.mission.mission_id} already uses the folder ${found.mission.slug}; choose a distinct id`);
+  }
+  return found;
+}
 
 function ensureWorktree(cwd, worktreePath, branchName, baseCommit) {
   const existing = git.worktreeList(cwd).find((worktree) => samePath(worktree.path, worktreePath));
@@ -88,19 +139,6 @@ function ensureWorktree(cwd, worktreePath, branchName, baseCommit) {
   }
 }
 
-function checkRoute(route) {
-  if (typeof route?.model !== 'string' || route.model.trim() === '') throw new Error('the first unit needs a model');
-  if (!EFFORTS.includes(route.effort)) throw new Error(`effort must be one of ${EFFORTS.join(', ')}`);
-  if (!WORK_KINDS.includes(route.work_kind)) throw new Error(`work kind must be one of ${WORK_KINDS.join(', ')}`);
-}
-
-function checkLimits(limits) {
-  for (const [name, value] of Object.entries(limits)) {
-    if (!(name in DEFAULT_LIMITS)) throw new Error(`unknown limit ${name}`);
-    if (!Number.isInteger(value) || value < 1) throw new Error(`limit ${name} must be an integer >= 1`);
-  }
-}
-
 // Validates the start options and computes the mission record without changing anything.
 export function planMission({
   cwd,
@@ -115,21 +153,22 @@ export function planMission({
   goal = null,
   limits = {},
 }) {
-  if (!/^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(missionId ?? '')) {
-    throw new Error(`invalid mission id "${missionId}" (letters, digits, ".", "_" and "-")`);
-  }
+  if (!MISSION_ID.test(missionId ?? '')) throw new Error(`invalid mission id "${missionId}" (letters, digits, ".", "_" and "-")`);
   if (!PERMISSION_MODES.includes(permissionMode)) {
     throw new Error(`permission mode "${permissionMode}" is not allowed (allowed: ${PERMISSION_MODES.join(', ')})`);
   }
-  if (maxBudgetUsd !== null && !(Number.isFinite(maxBudgetUsd) && maxBudgetUsd > 0)) {
-    throw new Error('the session budget must be a positive number of USD');
-  }
-  if (!requestFile || !fs.existsSync(requestFile) || !fs.statSync(requestFile).isFile()) {
-    throw new Error(`request file not found: ${requestFile}`);
-  }
+  if (maxBudgetUsd !== null && !positive(maxBudgetUsd)) throw new Error('the session budget must be a positive number of USD');
+  if (!requestFile || !fs.existsSync(requestFile) || !fs.statSync(requestFile).isFile()) throw new Error(`request file not found: ${requestFile}`);
   if (fs.statSync(requestFile).size === 0) throw new Error('the request file is empty');
-  checkRoute(route);
-  checkLimits(limits);
+  if (!MODEL_ID.test(route?.model ?? '')) throw new Error('the first unit needs a valid model id');
+  if (!EFFORTS.includes(route.effort)) throw new Error(`effort must be one of ${EFFORTS.join(', ')}`);
+  if (!WORK_KINDS.includes(route.work_kind)) throw new Error(`work kind must be one of ${WORK_KINDS.join(', ')}`);
+  for (const [name, value] of Object.entries(limits)) {
+    if (!(name in DEFAULT_LIMITS) || !Number.isInteger(value) || value < 1 || value > 1000) throw new Error(`limit ${name} must be a known limit, an integer from 1 to 1000`);
+  }
+  const slug = slugify(missionId);
+  const branchName = branch ?? `claude/${slug}`;
+  if (!git.SAFE_BRANCH.test(branchName)) throw new Error(`branch name ${JSON.stringify(branchName)} is not allowed`);
   const baseCommit = git.resolveCommit(cwd, base);
   if (!baseCommit) throw new Error(`base "${base}" is not a commit`);
   if (!git.existsAt(cwd, baseCommit, RUNTIME_ENTRY)) {
@@ -141,7 +180,8 @@ export function planMission({
   if (git.head(top) === baseCommit && !git.isIgnored(top, `${STATE_DIR}/state.json`)) {
     throw new Error(`${STATE_DIR}/ is not ignored at the base ${baseCommit.slice(0, 12)}: it needs "/${STATE_DIR}/" in .gitignore`);
   }
-  const slug = slugify(missionId);
+  const remoteUrl = git.remoteUrl(cwd, 'origin');
+  if (!remoteUrl) throw new Error('the repository needs an "origin" remote: closures are verified against it');
   const root = git.mainRoot(cwd);
   return {
     schema: MISSION_SCHEMA,
@@ -153,9 +193,9 @@ export function planMission({
     repo: {
       main_root: root,
       worktree: path.resolve(worktree ?? path.join(root, '.claude', 'worktrees', slug)),
-      branch: branch ?? `claude/${slug}`,
+      branch: branchName,
       base_commit: baseCommit,
-      remote: 'origin',
+      remote_url: remoteUrl,
     },
     first_unit: { id: 'U1', executor: 'claude', goal: FIRST_UNIT_GOAL, route: { ...route } },
     claude: { permission_mode: permissionMode, max_budget_usd: maxBudgetUsd },
@@ -163,19 +203,23 @@ export function planMission({
   };
 }
 
-// Creates (or adopts) the mission worktree and branch, then the local state beside it.
+// Creates (or adopts) the mission worktree and branch, the control state and the session workspace.
 export function createMission(options) {
   const mission = planMission(options);
   const { worktree: worktreePath, branch: branchName, base_commit: baseCommit } = mission.repo;
+  const control = path.join(controlRoot(options.cwd), mission.slug);
   ensureWorktree(options.cwd, worktreePath, branchName, baseCommit);
-  const paths = layout(worktreePath);
+  const paths = layout(worktreePath, control);
   if (!git.isIgnored(worktreePath, `${STATE_DIR}/state.json`)) {
     throw new Error(`${STATE_DIR}/ is not ignored in ${worktreePath}: the base needs "/${STATE_DIR}/" in .gitignore`);
   }
   if (fs.existsSync(paths.mission)) throw new Error(`${paths.mission} already exists`);
+  ensureDir(control);
   ensureDir(paths.dir);
-  fs.copyFileSync(options.requestFile, paths.request);
-  if (sha256File(paths.request) !== mission.request.sha256) throw new Error('the request file changed while it was being copied');
+  for (const target of [path.join(control, 'request.md'), paths.request]) {
+    fs.copyFileSync(options.requestFile, target);
+    if (sha256File(target) !== mission.request.sha256) throw new Error('the request file changed while it was being copied');
+  }
   writeJsonAtomic(paths.mission, mission);
   const state = initialState(mission);
   writeJsonAtomic(paths.state, state);
@@ -184,6 +228,7 @@ export function createMission(options) {
     base_commit: baseCommit,
     branch: branchName,
     worktree: worktreePath,
+    remote_url: mission.repo.remote_url,
     request_sha256: mission.request.sha256,
   });
   return { worktree: worktreePath, paths, mission, state };
@@ -231,6 +276,7 @@ export function pidAlive(pid) {
 }
 
 // One supervisor per mission. A lock left by a supervisor that died (its pid is gone) is taken over.
+// Two supervisors racing for the same stale lock is a known, documented limit (see the README).
 export function acquireLock(paths) {
   for (let attempt = 0; attempt < 2; attempt += 1) {
     try {

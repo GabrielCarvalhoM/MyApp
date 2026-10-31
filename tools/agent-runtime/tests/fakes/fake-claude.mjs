@@ -53,6 +53,7 @@ for (const action of step.actions ?? []) {
     git('commit', '--quiet', '-m', action.commit);
   }
   if (action.push) git('push', '--quiet', '-u', 'origin', 'HEAD');
+  if (action.gitConfig) git('config', ...action.gitConfig);
   if (action.mergeJobBranch) {
     const match = prompt.match(/Job branch: `([^`]+)`/);
     if (!match) throw new Error('the bootstrap names no job branch');

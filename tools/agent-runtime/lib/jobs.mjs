@@ -2,18 +2,19 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as git from './git.mjs';
-import { covers } from './checkpoint.mjs';
+import { covers, isReserved } from './checkpoint.mjs';
 import { STATE_DIR } from './mission.mjs';
-import { ensureDir, writeJsonAtomic, writeText } from './files.mjs';
-import { runCodex, runLocal } from './executors.mjs';
+import { ensureDir, sha256, writeJsonAtomic, writeText } from './files.mjs';
+import { runCodex } from './executors.mjs';
 
 export const CODEX_SCHEMA = fileURLToPath(new URL('../schemas/codex-result.schema.json', import.meta.url));
 const JOB_RESULT_SCHEMA = 'agent-runtime/job-result@1';
 const CODEX_STATUSES = ['DONE', 'PARTIAL', 'FAILED'];
+const OUTPUT = `${STATE_DIR}/codex-output.json`;
 const TEXT_LIMIT = 2000;
 
 const safeId = (id) => id.toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-|-$/g, '') || 'unit';
-const relative = (worktree, file) => path.relative(worktree, file).split(path.sep).join('/');
+const relative = (from, file) => path.relative(from, file).split(path.sep).join('/');
 const clip = (value) => (typeof value === 'string' && value.length > TEXT_LIMIT ? `${value.slice(0, TEXT_LIMIT)} …` : value);
 
 function jobDir(paths, unit, runSeq) {
@@ -52,6 +53,37 @@ function readOutput(file) {
   }
 }
 
+// Ignored local material (dependencies) is copied without links: a link could lead outside the worktree.
+function copyIgnored(source, target) {
+  const links = [];
+  fs.cpSync(source, target, {
+    recursive: true,
+    filter: (entry) => {
+      if (!fs.lstatSync(entry).isSymbolicLink()) return true;
+      links.push(entry);
+      return false;
+    },
+  });
+  return links;
+}
+
+// Ignored files never appear in a Git diff, so they are compared by content before and after the job.
+function ignoredState(worktree, options) {
+  const state = new Map();
+  for (const file of git.ignoredFiles(worktree, options)) {
+    if (file === OUTPUT) continue;
+    const full = path.join(worktree, file);
+    const stat = fs.lstatSync(full, { throwIfNoEntry: false });
+    state.set(file, stat?.isFile() ? sha256(fs.readFileSync(full)) : 'not-a-file');
+  }
+  return state;
+}
+
+function changedIgnored(before, after) {
+  const changed = [...after].filter(([file, digest]) => before.get(file) !== digest).map(([file]) => file);
+  return [...changed, ...[...before.keys()].filter((file) => !after.has(file))];
+}
+
 export function renderCodexBrief({ mission, unit, runSeq }) {
   return [
     `# Codex job ${unit.id} · mission ${mission.mission_id} (run ${runSeq})`,
@@ -62,12 +94,12 @@ export function renderCodexBrief({ mission, unit, runSeq }) {
     unit.job.brief,
     '',
     '## Boundaries',
-    `- Change files only under: ${unit.job.allowed_paths.map((entry) => `\`${entry}\``).join(', ')}.`,
+    `- Change files only under: ${unit.job.allowed_paths.map((entry) => `\`${entry}\``).join(', ')}. Do not change dependencies or any other ignored file.`,
     '- Do not create commits, switch branches, merge, rebase, reset, push or touch remotes: the supervisor commits your changes after checking them.',
     '- Do not read or change credentials. Do not install dependencies unless the task asks for it.',
     '- Keep the change small and verifiable.',
     '',
-    '## Acceptance (the supervisor runs these after you finish)',
+    '## Acceptance (the reviewing unit runs these on your result; run them yourself before you finish)',
     ...unit.job.acceptance.map((command) => `- \`${command.join(' ')}\``),
     '',
     '## Final message',
@@ -87,8 +119,8 @@ function renderHandoff(result, output) {
     `## Changed files (${result.changed_files.length})`,
     ...list(result.changed_files),
     '',
-    '## Acceptance',
-    ...list(result.acceptance.map((check) => `\`${check.command}\` → exit ${check.exit_code}`)),
+    '## Acceptance, to be run by the judging unit in the mission worktree after integrating',
+    ...list(result.acceptance_pending.map((command) => `\`${command}\``)),
     '',
     "## Codex's own report (claims, not verified)",
     `Status: ${output?.status ?? 'none'}`,
@@ -101,8 +133,9 @@ function renderHandoff(result, output) {
   ].join('\n');
 }
 
-// Runs a Codex job in a new worktree on a job branch cut from the mission HEAD, then verifies the
-// result independently of Codex's own report: changed paths, the commit, the acceptance commands.
+// Runs a Codex job in a new worktree on a job branch cut from the mission HEAD and verifies the result
+// independently of Codex's report: changed paths, ignored material, the commit. It runs none of the
+// code Codex wrote: the acceptance commands are handed to the Claude unit that judges the job.
 export async function runCodexJob({ mission, paths, worktree, unit, runSeq, env, codexArgv, onSpawn }) {
   const job = jobDir(paths, unit, runSeq);
   const started = Date.now();
@@ -110,30 +143,28 @@ export async function runCodexJob({ mission, paths, worktree, unit, runSeq, env,
   const { branch: jobBranch, worktree: jobWorktree } = codexJobNames(mission, unit, runSeq);
   const reasons = [];
   git.addWorktree(worktree, jobWorktree, jobBranch, base);
-  const outputFile = path.join(jobWorktree, STATE_DIR, 'codex-output.json');
-  if (!git.isIgnored(jobWorktree, `${STATE_DIR}/codex-output.json`)) reasons.push(`${STATE_DIR}/ is not ignored in the job worktree`);
+  // Pinned now: a `.git` file rewritten during the job cannot redirect the supervisor's later commands.
+  const pinned = { gitDir: git.gitDirOf(jobWorktree) };
+  const dotGit = fs.readFileSync(path.join(jobWorktree, '.git'), 'utf8');
+  if (!git.isIgnored(jobWorktree, OUTPUT)) reasons.push(`${STATE_DIR}/ is not ignored in the job worktree`);
+  const skippedLinks = [];
   for (const entry of unit.job.copy_ignored ?? []) {
     const source = path.join(worktree, entry);
-    if (!fs.existsSync(source)) reasons.push(`copy_ignored ${entry} does not exist in the mission worktree`);
-    else if (!git.isIgnored(jobWorktree, entry)) reasons.push(`copy_ignored ${entry} is tracked material; only ignored local material is copied`);
-    else fs.cpSync(source, path.join(jobWorktree, entry), { recursive: true });
+    // Checked where the material exists; a trailing slash lets directory-only ignore rules match.
+    const probe = fs.existsSync(source) && fs.statSync(source).isDirectory() ? `${entry.replace(/\/+$/, '')}/` : entry;
+    if (isReserved(entry)) reasons.push(`copy_ignored ${entry} is a reserved path`);
+    else if (!fs.existsSync(source)) reasons.push(`copy_ignored ${entry} does not exist in the mission worktree`);
+    else if (!git.isIgnored(worktree, probe)) reasons.push(`copy_ignored ${entry} is tracked material; only ignored local material is copied`);
+    else skippedLinks.push(...copyIgnored(source, path.join(jobWorktree, entry)).map((link) => relative(worktree, link)));
   }
+  const outputFile = path.join(jobWorktree, OUTPUT);
   ensureDir(path.dirname(outputFile));
+  const ignoredBefore = ignoredState(jobWorktree, pinned);
   const brief = renderCodexBrief({ mission, unit, runSeq });
   writeText(path.join(job.dir, 'brief.md'), brief);
   let run = { status: null, error: null };
   if (!reasons.length) {
-    run = await runCodex({
-      argv: codexArgv,
-      env,
-      worktree: jobWorktree,
-      brief,
-      schemaFile: CODEX_SCHEMA,
-      outputFile,
-      model: unit.job.model ?? null,
-      logFile: path.join(job.dir, 'codex.log'),
-      onSpawn,
-    });
+    run = await runCodex({ argv: codexArgv, env, worktree: jobWorktree, brief, schemaFile: CODEX_SCHEMA, outputFile, model: unit.job.model ?? null, logFile: path.join(job.dir, 'codex.log'), onSpawn });
     if (run.status !== 0) reasons.push(`codex exited with ${run.status ?? run.error?.message ?? 'no status'}`);
   }
   const output = readOutput(outputFile);
@@ -142,22 +173,16 @@ export async function runCodexJob({ mission, paths, worktree, unit, runSeq, env,
     writeJsonAtomic(path.join(job.dir, 'EVIDENCE.json'), output.value);
     if (!reasons.length && output.value.status !== 'DONE') reasons.push(`codex reported ${output.value.status}`);
   }
-  const changed = git.dirtyPaths(jobWorktree);
-  const outside = changed.filter((file) => !unit.job.allowed_paths.some((entry) => covers(entry, file)));
-  if (outside.length) reasons.push(`changes outside allowed_paths, left uncommitted in the job worktree: ${outside.slice(0, 10).join(', ')}`);
+  if (fs.readFileSync(path.join(jobWorktree, '.git'), 'utf8') !== dotGit) reasons.push("the job worktree's .git file was changed");
+  const changed = git.dirtyPaths(jobWorktree, pinned);
+  const outside = changed.filter((file) => isReserved(file) || !unit.job.allowed_paths.some((entry) => covers(entry, file)));
+  if (outside.length) reasons.push(`changes outside allowed_paths or on reserved paths, left uncommitted in the job worktree: ${outside.slice(0, 10).join(', ')}`);
+  const tampered = changedIgnored(ignoredBefore, ignoredState(jobWorktree, pinned));
+  if (tampered.length) reasons.push(`ignored material changed, which no Git diff shows: ${tampered.slice(0, 10).join(', ')}`);
   let commit = null;
   if (!reasons.length && changed.length) {
-    commit = git.commitAll(jobWorktree, `agent-runtime: codex job ${unit.id} for ${mission.mission_id}\n\nAgent-Runtime-Job: ${mission.mission_id}/${job.id}`);
-    if (git.parentOf(jobWorktree, commit) !== base) reasons.push('the job commit does not sit directly on the mission HEAD');
-  }
-  const acceptance = [];
-  if (!reasons.length) {
-    for (const [index, command] of unit.job.acceptance.entries()) {
-      const logFile = path.join(job.dir, `acceptance-${index + 1}.log`);
-      const check = await runLocal({ command, cwd: jobWorktree, env, logFile });
-      acceptance.push({ command: command.join(' '), exit_code: check.status, log: path.basename(logFile), tail: check.tail.slice(-5) });
-      if (check.status !== 0) reasons.push(`acceptance failed: ${command.join(' ')} (exit ${check.status ?? check.error?.message})`);
-    }
+    commit = git.commitAll(jobWorktree, `agent-runtime: codex job ${unit.id} for ${mission.mission_id}\n\nAgent-Runtime-Job: ${mission.mission_id}/${job.id}`, pinned);
+    if (git.parentOf(jobWorktree, commit, pinned) !== base) reasons.push('the job commit does not sit directly on the mission HEAD');
   }
   const claimed = Array.isArray(output.value?.files_changed) ? output.value.files_changed : null;
   const result = {
@@ -176,37 +201,12 @@ export async function runCodexJob({ mission, paths, worktree, unit, runSeq, env,
     changed_files: changed,
     claimed_files: claimed,
     unclaimed_changes: claimed ? changed.filter((file) => !claimed.includes(file)) : null,
-    acceptance,
+    skipped_links: skippedLinks,
+    acceptance_pending: unit.job.acceptance.map((command) => command.join(' ')),
     job_dir: relative(worktree, job.dir),
     brief: unit.job.brief,
   };
   writeJsonAtomic(path.join(job.dir, 'RESULT.json'), result);
   writeText(path.join(job.dir, 'CODEX_HANDOFF.md'), renderHandoff(result, output.value));
-  return result;
-}
-
-// A deterministic command in the mission worktree; the full output stays in output.log.
-export async function runLocalJob({ paths, worktree, unit, command, runSeq, env, onSpawn }) {
-  const job = jobDir(paths, unit, runSeq);
-  const run = await runLocal({ command, cwd: worktree, env, logFile: path.join(job.dir, 'output.log'), onSpawn });
-  const result = {
-    schema: JOB_RESULT_SCHEMA,
-    executor: 'local',
-    unit_id: unit.id,
-    run_seq: runSeq,
-    status: run.status === 0 ? 'DONE' : 'FAILED',
-    reasons: run.status === 0 ? [] : [run.error?.message ?? `exit ${run.status}`],
-    command: command.join(' '),
-    exit_code: run.status,
-    duration_ms: run.durationMs,
-    log: 'output.log',
-    lines: run.lines,
-    sha256: run.sha256,
-    tail: run.tail,
-    flagged: run.flagged,
-    dirty_paths: git.dirtyPaths(worktree),
-    job_dir: relative(worktree, job.dir),
-  };
-  writeJsonAtomic(path.join(job.dir, 'RESULT.json'), result);
   return result;
 }
