@@ -136,6 +136,11 @@ export function planMission({
     throw new Error(`base ${baseCommit.slice(0, 12)} does not contain ${RUNTIME_ENTRY}: its sessions could not write or validate checkpoints`);
   }
   if (findMission(cwd, missionId)) throw new Error(`mission ${missionId} already exists`);
+  // When the base is the current checkout, its ignore rules are checked before anything is created.
+  const top = path.resolve(git.toplevel(cwd));
+  if (git.head(top) === baseCommit && !git.isIgnored(top, `${STATE_DIR}/state.json`)) {
+    throw new Error(`${STATE_DIR}/ is not ignored at the base ${baseCommit.slice(0, 12)}: it needs "/${STATE_DIR}/" in .gitignore`);
+  }
   const slug = slugify(missionId);
   const root = git.mainRoot(cwd);
   return {
@@ -195,6 +200,7 @@ export function initialState(mission) {
     run_window_start: 0,
     last_checkpoint_seq: null,
     last_checkpoint_head: mission.repo.base_commit,
+    last_checkpoint_sha256: null,
     next_unit: mission.first_unit,
     pending: { notices: [], job_result: null },
     current: null,

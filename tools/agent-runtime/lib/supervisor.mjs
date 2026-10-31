@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { randomUUID } from 'node:crypto';
 import * as git from './git.mjs';
-import { readJson, writeText, ensureDir, nowIso } from './files.mjs';
+import { readJson, writeText, ensureDir, nowIso, sha256File } from './files.mjs';
 import { layout, checkpointPath, saveState, appendEvent, acquireLock, pidAlive } from './mission.mjs';
 import { validateCheckpointFile } from './coherence.mjs';
 import { isFinal } from './checkpoint.mjs';
@@ -92,6 +92,16 @@ export class Supervisor {
     return seq ? readJson(checkpointPath(this.paths, seq)) : null;
   }
 
+  // The last accepted checkpoint anchors every continuity check, so it must still be the accepted bytes.
+  checkpointTampering() {
+    const { last_checkpoint_seq: seq, last_checkpoint_sha256: expected } = this.state;
+    if (!seq || !expected) return null;
+    const file = checkpointPath(this.paths, seq);
+    const actual = fs.existsSync(file) ? sha256File(file) : null;
+    if (actual === expected) return null;
+    return `CHECKPOINT_TAMPERED: checkpoint ${seq} is ${actual ? 'no longer the accepted version' : 'missing'}; nothing was run. Inspect ${path.basename(file)}, then run again with --resolve "<note>" to continue from it as it now is`;
+  }
+
   async run({ once = false, resolve = null, assumeDead = false } = {}) {
     const release = acquireLock(this.paths);
     try {
@@ -100,6 +110,10 @@ export class Supervisor {
       if (resolve !== null) this.applyResolution(resolve);
       for (;;) {
         if (STOP_STATES.includes(this.state.status)) return this.summary();
+        if (!this.state.next_unit) {
+          this.block('NO_NEXT_UNIT: the state names no unit to run; inspect the last checkpoint');
+          return this.summary();
+        }
         const { limits } = this.mission;
         if (this.state.run_seq - this.state.run_window_start >= limits.max_runs) {
           this.block(`MAX_RUNS: ${limits.max_runs} runs since the start or the last resolution; run again with --resolve to continue`);
@@ -148,6 +162,14 @@ export class Supervisor {
       throw new Error(`--resolve applies to a BLOCKED or FOUNDER_REQUIRED mission; this one is ${s.status}${terminal}`);
     }
     this.notice(`FOUNDER RESOLUTION (${nowIso()}), authoritative at this point: ${note.trim()}`);
+    if (this.checkpointTampering()) {
+      const file = checkpointPath(this.paths, s.last_checkpoint_seq);
+      if (!fs.existsSync(file)) throw new Error(`checkpoint ${s.last_checkpoint_seq} is missing; restore it before resolving`);
+      readJson(file);
+      s.last_checkpoint_sha256 = sha256File(file);
+      this.notice(`The Founder accepted checkpoint ${s.last_checkpoint_seq} as it now is; it had changed after it was accepted.`);
+      this.event({ type: 'checkpoint_reanchored', checkpoint: s.last_checkpoint_seq, sha256: s.last_checkpoint_sha256 });
+    }
     if (s.blocked_dirty.length) {
       s.acknowledged_dirty = [...new Set([...s.acknowledged_dirty, ...s.blocked_dirty])];
       this.notice(`Founder-acknowledged uncommitted paths: ${s.blocked_dirty.slice(0, 10).join(', ')}. Classify each one (commit what belongs to the mission, report the rest); never delete one.`);
@@ -158,6 +180,8 @@ export class Supervisor {
   }
 
   preflight() {
+    const tampered = this.checkpointTampering();
+    if (tampered) return this.block(tampered);
     const result = preflight({
       worktree: this.worktree,
       mission: this.mission,
@@ -268,6 +292,12 @@ export class Supervisor {
     let run = firstRun;
     for (;;) {
       this.transition('CHECKPOINTING', `validating the checkpoint of run ${current.run_seq}`);
+      const tampered = this.checkpointTampering();
+      if (tampered) {
+        this.state.current = null;
+        this.block(`${tampered} (found while validating run ${current.run_seq})`);
+        return;
+      }
       if (!fs.existsSync(this.paths.checkpointOut)) return this.runFailed(`no checkpoint written (exit ${run.status ?? 'unknown'})`, run);
       const verdict = validateCheckpointFile(this.paths.checkpointOut, {
         mission: this.mission,
@@ -298,7 +328,8 @@ export class Supervisor {
     const s = this.state;
     const { run_seq: runSeq, executor } = s.current;
     ensureDir(this.paths.checkpoints);
-    fs.renameSync(this.paths.checkpointOut, checkpointPath(this.paths, cp.checkpoint_seq));
+    const accepted = checkpointPath(this.paths, cp.checkpoint_seq);
+    fs.renameSync(this.paths.checkpointOut, accepted);
     this.event({
       type: 'checkpoint_accepted',
       run_seq: runSeq,
@@ -313,6 +344,7 @@ export class Supervisor {
     Object.assign(s, {
       last_checkpoint_seq: cp.checkpoint_seq,
       last_checkpoint_head: cp.git.head_commit,
+      last_checkpoint_sha256: sha256File(accepted),
       next_unit: cp.next_unit,
       current: null,
       consecutive_failures: 0,
