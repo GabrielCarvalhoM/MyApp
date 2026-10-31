@@ -1,0 +1,181 @@
+{
+ "revision": "R7ARA-SSCTR-QUEUE-PROPOSAL-r1",
+ "reviewRevision": "R7ARA-SSCTR-r1",
+ "destination": "reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json",
+ "note": "Proposal only: one item per prescriptive approval of R7ARA-SSCTR-r1, each bound to R7A-RESIDUAL-AUTHORITY-FREEZE-1. The queue file was not edited; the Chief decides whether to integrate them append-only. Funding NOT_DECLARED.",
+ "funding_trigger": {
+  "state": "NOT_DECLARED",
+  "declaration_ref": null,
+  "declared_at": null
+ },
+ "preserveAllHistoricalEntries": true,
+ "items": [
+  {
+   "queue_id": "HQ-R7ARA-SSCTR-F4X-EXIT-RETURN",
+   "decision_id": "R7ARA-SSCTR-F4X-EXIT-RETURN",
+   "decision_revision": "R7ARA-SSCTR-r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/residual-authority/RUNTIME_FREEZE_R7A_RESIDUAL_AUTHORITY.json",
+    "artifact_revision": "R7A-RESIDUAL-AUTHORITY-FREEZE-1",
+    "sha256": "51e67fb05c5c0997da45366d99bbc44e5defa81405530ac86b85d3e5058379d3",
+    "rule_ids": [
+     "r6-program.mjs historicalRun (E1.3 mode undo, E1.4 dose caps)",
+     "r6-adaptation.mjs stateAtBreak (runs since the latest entry; undo by break class)",
+     "contract E1.3 (a released walk/jog exit is undone for every break class; SSCTR R46)"
+    ]
+   },
+   "approved_scope": "Walk/jog athletes whose last executed run was a ladder step, after a nonclinical SHORT, MODERATE or LONG break.",
+   "conditions": [
+    "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+    "Binding: this record binds runtime R7A-RESIDUAL-AUTHORITY-FREEZE-1 (CoachingCore/r7/residual-authority/RUNTIME_FREEZE_R7A_RESIDUAL_AUTHORITY.json, sha256 51e67fb05c5c0997da45366d99bbc44e5defa81405530ac86b85d3e5058379d3; source digest e7172eb2e65bfb1da4c102a7efa2bae64bf1c70b06562fd3ce9896defd6dc17d; manifest 3d214fb53f62e45ca7d99f39f2c562d358719a2264c2de46098d39b318c85125; src/r6-adaptation.mjs a44142d565a8b48c430bb9c352e165ad61cbb1c0a4b0ea74c67923ee99f3599c, src/r6-program.mjs 9e49973433f8d0cd1f879cec173aff0d6f4caf04524198517a632f1a45c7c453; runtime commit 7d2da3603e224124696a2290766ec448080f3264) at the unchanged policy R6-POLICY-5 (canonical hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c). Any change to a bound file or to the policy hash expires it.",
+    "The week after the re-entry week is a conditional projection that needs the re-entry week executed; RETURN walk days (NF-R7ADA-2) stay in the backlog."
+   ],
+   "approval_date": "2026-10-31",
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Future qualified human reviewer (funding NOT_DECLARED)",
+   "human_review": null,
+   "re_review_triggers": [
+    "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+    "Any change to a file listed in RUNTIME_FREEZE_R7A_RESIDUAL_AUTHORITY.json (new freeze revision): rerun ssctr-r7ara-return-probe.mjs, ssctr-r7ara-exitvariants-probe.mjs, ssctr-r7ada-continuous-probe.mjs, the walk/jog matrix and the kit.",
+    "A policy-owner decision on NF-R7ARA-1 (the cross-entry reading of the easy-running cap).",
+    "A Founder decision on R1 or on R7-B0 scope that changes return semantics.",
+    "A new systematic review or meta-analysis on detraining, retraining or return after a break."
+   ]
+  },
+  {
+   "queue_id": "HQ-R7ARA-SSCTR-EASY-RETURN-CEILING",
+   "decision_id": "R7ARA-SSCTR-EASY-RETURN-CEILING",
+   "decision_revision": "R7ARA-SSCTR-r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/residual-authority/RUNTIME_FREEZE_R7A_RESIDUAL_AUTHORITY.json",
+    "artifact_revision": "R7A-RESIDUAL-AUTHORITY-FREEZE-1",
+    "sha256": "51e67fb05c5c0997da45366d99bbc44e5defa81405530ac86b85d3e5058379d3",
+    "rule_ids": [
+     "r6-program.mjs historicalRun (E1.3 mode undo, E1.4 dose caps)",
+     "r6-adaptation.mjs stateAtBreak (runs since the latest entry; undo by break class)",
+     "contract E1.4 (easy: the largest long and easy runs executed and tolerated since the entry)",
+     "R6-NONCLINICAL-RETURN SHORT and MODERATE"
+    ]
+   },
+   "approved_scope": "Easy runners after a nonclinical SHORT or MODERATE break.",
+   "conditions": [
+    "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+    "Binding: this record binds runtime R7A-RESIDUAL-AUTHORITY-FREEZE-1 (CoachingCore/r7/residual-authority/RUNTIME_FREEZE_R7A_RESIDUAL_AUTHORITY.json, sha256 51e67fb05c5c0997da45366d99bbc44e5defa81405530ac86b85d3e5058379d3; source digest e7172eb2e65bfb1da4c102a7efa2bae64bf1c70b06562fd3ce9896defd6dc17d; manifest 3d214fb53f62e45ca7d99f39f2c562d358719a2264c2de46098d39b318c85125; src/r6-adaptation.mjs a44142d565a8b48c430bb9c352e165ad61cbb1c0a4b0ea74c67923ee99f3599c, src/r6-program.mjs 9e49973433f8d0cd1f879cec173aff0d6f4caf04524198517a632f1a45c7c453; runtime commit 7d2da3603e224124696a2290766ec448080f3264) at the unchanged policy R6-POLICY-5 (canonical hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c). Any change to a bound file or to the policy hash expires it.",
+    "The return week's own phase applies its reduction again; the quality ladder after a SHORT break stays governed by D58 (E1-B1).",
+    "NF-R7ARA-1 (cross-entry cap after a phase-reduced re-entry week) is non-blocking and owned by the policy owner."
+   ],
+   "approval_date": "2026-10-31",
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Future qualified human reviewer (funding NOT_DECLARED)",
+   "human_review": null,
+   "re_review_triggers": [
+    "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+    "Any change to a file listed in RUNTIME_FREEZE_R7A_RESIDUAL_AUTHORITY.json (new freeze revision): rerun ssctr-r7ara-return-probe.mjs, ssctr-r7ara-exitvariants-probe.mjs, ssctr-r7ada-continuous-probe.mjs, the walk/jog matrix and the kit.",
+    "A policy-owner decision on NF-R7ARA-1 (the cross-entry reading of the easy-running cap).",
+    "A Founder decision on R1 or on R7-B0 scope that changes return semantics.",
+    "A new systematic review or meta-analysis on detraining, retraining or return after a break."
+   ]
+  },
+  {
+   "queue_id": "HQ-R7ARA-SSCTR-E1B-SHORT-AFTER-REENTRY",
+   "decision_id": "R7ARA-SSCTR-E1B-SHORT-AFTER-REENTRY",
+   "decision_revision": "R7ARA-SSCTR-r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/residual-authority/RUNTIME_FREEZE_R7A_RESIDUAL_AUTHORITY.json",
+    "artifact_revision": "R7A-RESIDUAL-AUTHORITY-FREEZE-1",
+    "sha256": "51e67fb05c5c0997da45366d99bbc44e5defa81405530ac86b85d3e5058379d3",
+    "rule_ids": [
+     "r6-program.mjs historicalRun (E1.3 mode undo, E1.4 dose caps)",
+     "r6-adaptation.mjs stateAtBreak (runs since the latest entry; undo by break class)",
+     "test/r7ab-week-start-authority.test.mjs I5/P3, section 13 premise and I6 (re-expressed in place)"
+    ]
+   },
+   "approved_scope": "A short break after an executed moderate re-entry week, before the next step is run.",
+   "conditions": [
+    "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+    "Binding: this record binds runtime R7A-RESIDUAL-AUTHORITY-FREEZE-1 (CoachingCore/r7/residual-authority/RUNTIME_FREEZE_R7A_RESIDUAL_AUTHORITY.json, sha256 51e67fb05c5c0997da45366d99bbc44e5defa81405530ac86b85d3e5058379d3; source digest e7172eb2e65bfb1da4c102a7efa2bae64bf1c70b06562fd3ce9896defd6dc17d; manifest 3d214fb53f62e45ca7d99f39f2c562d358719a2264c2de46098d39b318c85125; src/r6-adaptation.mjs a44142d565a8b48c430bb9c352e165ad61cbb1c0a4b0ea74c67923ee99f3599c, src/r6-program.mjs 9e49973433f8d0cd1f879cec173aff0d6f4caf04524198517a632f1a45c7c453; runtime commit 7d2da3603e224124696a2290766ec448080f3264) at the unchanged policy R6-POLICY-5 (canonical hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c). Any change to a bound file or to the policy hash expires it.",
+    "Once the next step is executed, a later break resumes it (P4)."
+   ],
+   "approval_date": "2026-10-31",
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Future qualified human reviewer (funding NOT_DECLARED)",
+   "human_review": null,
+   "re_review_triggers": [
+    "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+    "Any change to a file listed in RUNTIME_FREEZE_R7A_RESIDUAL_AUTHORITY.json (new freeze revision): rerun ssctr-r7ara-return-probe.mjs, ssctr-r7ara-exitvariants-probe.mjs, ssctr-r7ada-continuous-probe.mjs, the walk/jog matrix and the kit.",
+    "A policy-owner decision on NF-R7ARA-1 (the cross-entry reading of the easy-running cap).",
+    "A Founder decision on R1 or on R7-B0 scope that changes return semantics.",
+    "A new systematic review or meta-analysis on detraining, retraining or return after a break."
+   ]
+  },
+  {
+   "queue_id": "HQ-R7ARA-SSCTR-RELEASED-MODES-RETURN",
+   "decision_id": "R7ARA-SSCTR-RELEASED-MODES-RETURN",
+   "decision_revision": "R7ARA-SSCTR-r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/residual-authority/RUNTIME_FREEZE_R7A_RESIDUAL_AUTHORITY.json",
+    "artifact_revision": "R7A-RESIDUAL-AUTHORITY-FREEZE-1",
+    "sha256": "51e67fb05c5c0997da45366d99bbc44e5defa81405530ac86b85d3e5058379d3",
+    "rule_ids": [
+     "r6-program.mjs historicalRun (E1.3 mode undo, E1.4 dose caps)",
+     "r6-adaptation.mjs stateAtBreak (runs since the latest entry; undo by break class)",
+     "contract E1.3 (a MODERATE or LONG break undoes only the walk/jog exit)"
+    ]
+   },
+   "approved_scope": "Nonclinical pauses after a released return completion or restart switch.",
+   "conditions": [
+    "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+    "Binding: this record binds runtime R7A-RESIDUAL-AUTHORITY-FREEZE-1 (CoachingCore/r7/residual-authority/RUNTIME_FREEZE_R7A_RESIDUAL_AUTHORITY.json, sha256 51e67fb05c5c0997da45366d99bbc44e5defa81405530ac86b85d3e5058379d3; source digest e7172eb2e65bfb1da4c102a7efa2bae64bf1c70b06562fd3ce9896defd6dc17d; manifest 3d214fb53f62e45ca7d99f39f2c562d358719a2264c2de46098d39b318c85125; src/r6-adaptation.mjs a44142d565a8b48c430bb9c352e165ad61cbb1c0a4b0ea74c67923ee99f3599c, src/r6-program.mjs 9e49973433f8d0cd1f879cec173aff0d6f4caf04524198517a632f1a45c7c453; runtime commit 7d2da3603e224124696a2290766ec448080f3264) at the unchanged policy R6-POLICY-5 (canonical hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c). Any change to a bound file or to the policy hash expires it.",
+    "The restart switch's long-run target (offset, E1-B3) is outside this gate, identical to the predecessor, and bounded in rows by the single-run ceiling; restoration towards pre-first-break doses follows the normal executed cadence."
+   ],
+   "approval_date": "2026-10-31",
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Future qualified human reviewer (funding NOT_DECLARED)",
+   "human_review": null,
+   "re_review_triggers": [
+    "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+    "Any change to a file listed in RUNTIME_FREEZE_R7A_RESIDUAL_AUTHORITY.json (new freeze revision): rerun ssctr-r7ara-return-probe.mjs, ssctr-r7ara-exitvariants-probe.mjs, ssctr-r7ada-continuous-probe.mjs, the walk/jog matrix and the kit.",
+    "A policy-owner decision on NF-R7ARA-1 (the cross-entry reading of the easy-running cap).",
+    "A Founder decision on R1 or on R7-B0 scope that changes return semantics.",
+    "A new systematic review or meta-analysis on detraining, retraining or return after a break."
+   ]
+  },
+  {
+   "queue_id": "HQ-R7ARA-SSCTR-RESIDUAL-AUTHORITY-RECHECK",
+   "decision_id": "R7ARA-SSCTR-RESIDUAL-AUTHORITY-RECHECK",
+   "decision_revision": "R7ARA-SSCTR-r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "artifact": "CoachingCore/r7/residual-authority/RUNTIME_FREEZE_R7A_RESIDUAL_AUTHORITY.json",
+    "artifact_revision": "R7A-RESIDUAL-AUTHORITY-FREEZE-1",
+    "sha256": "51e67fb05c5c0997da45366d99bbc44e5defa81405530ac86b85d3e5058379d3",
+    "rule_ids": [
+     "r6-program.mjs historicalRun (E1.3 mode undo, E1.4 dose caps)",
+     "r6-adaptation.mjs stateAtBreak (runs since the latest entry; undo by break class)",
+     "r6-adaptation.mjs factualReplan/withFactualReplan (A5, engineering scope; read only for sporting side effects)"
+    ]
+   },
+   "approved_scope": "The finite gate of this recheck on R7A-RESIDUAL-AUTHORITY-FREEZE-1.",
+   "conditions": [
+    "Scope: offline synthetic Node24 reference only, for the adult (18+) recreational nonclinical V1 population stated in PROGRAM_POLICY_R6.population. Missing current eligibility is ASK; pain, injury, illness, functional limitation or a clinical interruption reason is CLINICAL_HUMAN_REQUIRED with no substitute dose.",
+    "Binding: this record binds runtime R7A-RESIDUAL-AUTHORITY-FREEZE-1 (CoachingCore/r7/residual-authority/RUNTIME_FREEZE_R7A_RESIDUAL_AUTHORITY.json, sha256 51e67fb05c5c0997da45366d99bbc44e5defa81405530ac86b85d3e5058379d3; source digest e7172eb2e65bfb1da4c102a7efa2bae64bf1c70b06562fd3ce9896defd6dc17d; manifest 3d214fb53f62e45ca7d99f39f2c562d358719a2264c2de46098d39b318c85125; src/r6-adaptation.mjs a44142d565a8b48c430bb9c352e165ad61cbb1c0a4b0ea74c67923ee99f3599c, src/r6-program.mjs 9e49973433f8d0cd1f879cec173aff0d6f4caf04524198517a632f1a45c7c453; runtime commit 7d2da3603e224124696a2290766ec448080f3264) at the unchanged policy R6-POLICY-5 (canonical hash 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c). Any change to a bound file or to the policy hash expires it.",
+    "The engineering recheck decides its own scope; R7A_EXIT_READINESS is the Chief's and the Founder's after both rechecks."
+   ],
+   "approval_date": "2026-10-31",
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Future qualified human reviewer (funding NOT_DECLARED)",
+   "human_review": null,
+   "re_review_triggers": [
+    "Any change to PROGRAM_POLICY_R6.json (new canonical hash).",
+    "Any change to a file listed in RUNTIME_FREEZE_R7A_RESIDUAL_AUTHORITY.json (new freeze revision): rerun ssctr-r7ara-return-probe.mjs, ssctr-r7ara-exitvariants-probe.mjs, ssctr-r7ada-continuous-probe.mjs, the walk/jog matrix and the kit.",
+    "A policy-owner decision on NF-R7ARA-1 (the cross-entry reading of the easy-running cap).",
+    "A Founder decision on R1 or on R7-B0 scope that changes return semantics.",
+    "A new systematic review or meta-analysis on detraining, retraining or return after a break."
+   ]
+  }
+ ]
+}
