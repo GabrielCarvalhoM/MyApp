@@ -193,6 +193,20 @@ test('R7-B.1 OBS-04: in event weeks a configuration already performed in this pr
  if(!d.standIns.length)assert.equal(rows.length,0,'the hinge slot is left out of the event weeks');
  assert.ok(d.options.length>=2);
 });
+test('R7-B.1 OBS-04: an admissible configuration this program performed stands in during the taper, at its own dose',()=>{
+ const t=reviewed({...EV,id:'b1-event-rotating',rotation:'EVERY_2_WEEKS'},0),wk=t.p.phases.phases.indexOf('TAPER');for(let w=0;w<wk;w++)weekly(t,w);
+ const performed=performedIds(t),X=configurationOf('db-split-squat');
+ for(const reason of ['SKILL_MISMATCH','NONCLINICAL_DISCOMFORT_OR_PREFERENCE']){
+  const r=substitution(t,wk,X.id,reason);assert.equal(r.status,'MODIFY');const sel=r.substitutions[0].selected;
+  assert.ok(!performed.has(sel),`${sel} is new in this program`);
+  const d=r.disclosures.find(x=>x.id==='NO_NEW_EXERCISE_IN_EVENT_WEEKS');assert.ok(d?.standIns.length,`${reason}: a stand-in`);
+  for(const id of d.standIns){const c=configurationOf(id);assert.ok(performed.has(id),`${id} was performed`);assert.equal(c.subpattern,X.subpattern);
+   if(reason==='SKILL_MISMATCH')assert.ok(skillRank(c.skill)<skillRank(X.skill)&&skillRank(c.skill)<=skillRank(configurationOf(sel).skill),`${id} follows the SKILL_MISMATCH direction`);}
+  const lunge=eventRows(t,r.proposal,wk).filter(x=>x.e.pattern==='LUNGE');assert.ok(lunge.length,'the slot is kept in the taper');
+  for(const x of lunge){assert.ok(d.standIns.includes(x.e.id));assert.notEqual(x.e.exposure?.kind,'FIRST_ESTABLISH');assert.ok(x.e.instructions.some(i=>/stands in for db-split-squat/.test(i)));}
+  assert.ok((r.substitutions[0].eventWeeks?.standIns??[]).length);
+ }
+});
 test('R7-B.1 OBS-04: the clinical screen and the questions still come first in event weeks',()=>{
  const {t,wk}=eventCase('TAPER');
  assert.equal(substitution(t,wk,'goblet-squat','SKILL_MISMATCH',{pain:true}).status,'CLINICAL_HUMAN_REQUIRED');

@@ -9,7 +9,7 @@ import {createLearningModel,updateLearningModel,validateLearningModel,evidenceFo
 import {normalizeObservations,utcTimestamp,localDate} from './r6-provenance.mjs';
 import {onDate,dayGap,isoDay,LB_TO_KG,toKilograms,RUN_GOALS,STRENGTH_GOALS,EVENTS} from './r6-intake.mjs';
 import {screenInterruptionReason,isYes} from './r6-clinical.mjs';
-import {repertoireAuthority,repertoireBinding,allowsCandidate,NO_KG_CONVENTIONS,incrementFor,kgText,configurationOf,ladderNext,ladderDown,ladderChangesSubpattern,admitted,skillRank,RUN_CLASS_THRESHOLDS,ROTATION_DEFERRED_PHASES} from './r7b-repertoire.mjs';
+import {repertoireAuthority,repertoireBinding,allowsCandidate,NO_KG_CONVENTIONS,incrementFor,kgText,configurationOf,ladderNext,ladderPrevious,ladderChangesSubpattern,admitted,skillRank,RUN_CLASS_THRESHOLDS,ROTATION_DEFERRED_PHASES} from './r7b-repertoire.mjs';
 
 export const REVIEW_VERSION='R6-REVIEW-1';
 const KIND_ALIASES={REVIEW:'WEEKLY_REVIEW',MISSED_ESSENTIAL:'MISSED_SESSION',MISSED_OPTIONAL:'MISSED_SESSION',RETURN:'RETURN_AFTER_PAUSE',CONFLICT:'DOUBLE_CONFLICT',DOUBLE_INFEASIBLE:'DOUBLE_CONFLICT',EVENT_NEAR:'EVENT_WEEK_CONFLICT',SESSION_MOVED:'UNAVAILABLE_DAY',TRAVEL:'EQUIPMENT_CHANGE',SUBSTITUTION_NEED:'EQUIPMENT_CHANGE'};
@@ -546,10 +546,10 @@ function exerciseSubstitution(ctx){
  // A named target that is not in the repertoire is asked, never replaced by an automatic pick (QE-R7B-08).
  if(sub.to!==undefined&&sub.to!==null&&!configurationOf(sub.to))return {action:'ASK',reason:String(sub.to)+' is not an exercise of the repertoire; name another exercise of the same pattern, or leave the choice to the plan',missingInputs:['substitution.to']};
  const named=sub.to?configurationOf(sub.to):null;if(named&&!fits(named))return {action:'ASK',reason:sub.to+' cannot replace '+X.id+' here (pattern, role, skill or equipment)',missingInputs:['substitution.to']};
- // The candidates in the order of the reason's rule: the athlete's named exercise; after a SKILL_MISMATCH the rungs below on its ladder (nearest
- // first: the previous rung, then the chain below it, B0-C07 condition 1), then a lower skill or another kind of the same pattern (lowest first);
- // after a nonclinical preference the best same-pattern alternatives (familiar, close variation, subpattern, pattern).
- const order=named?[named]:reason==='SKILL_MISMATCH'?[...ladderDown(X.id).map(configurationOf).filter(fits),...CONFIGURATIONS_SAME(X).filter(fits).filter(e=>skillRank(e.skill)<skillRank(X.skill)||e.kind!==X.kind).sort((a,b)=>skillRank(a.skill)-skillRank(b.skill)||(a.id<b.id?-1:1))]:substitutesFor(X.id,{equipment:[...available],experience:c.athlete.strengthExperience,known:c.athlete.knownExercises.filter(k=>k.familiar!==false),role,auth:rep}).map(e=>configurationOf(e.id)).filter(fits);
+ // The candidates in the order of the reason's rule (unchanged; the first one is the R7-B choice): the athlete's named exercise; after a SKILL_MISMATCH
+ // the previous rung on its ladder, then a lower skill or another kind of the same pattern (lowest first); after a nonclinical preference the best
+ // same-pattern alternatives (familiar, close variation, subpattern, pattern).
+ const order=named?[named]:reason==='SKILL_MISMATCH'?[...ladderPrevious(X.id).map(configurationOf).filter(fits),...CONFIGURATIONS_SAME(X).filter(fits).filter(e=>skillRank(e.skill)<skillRank(X.skill)||e.kind!==X.kind).sort((a,b)=>skillRank(a.skill)-skillRank(b.skill)||(a.id<b.id?-1:1))]:substitutesFor(X.id,{equipment:[...available],experience:c.athlete.strengthExperience,known:c.athlete.knownExercises.filter(k=>k.familiar!==false),role,auth:rep}).map(e=>configurationOf(e.id)).filter(fits);
  const candidates=[...new Map(order.map(e=>[e.id,e])).values()];
  if(!candidates.length)return {action:'ASK',reason:'No admissible alternative of the same pattern fits your equipment and skill; options: add equipment, or keep '+X.id,missingInputs:['substitution.to'],disclosures:[{id:'NO_ADMISSIBLE_ALTERNATIVE',blocking:false,pattern:X.pattern,options:['Add equipment','Keep '+X.id]}]};
  // The slots where X is next in use (rotation included) take the new configuration from this week (QE-R7B-01).

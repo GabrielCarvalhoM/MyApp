@@ -301,9 +301,11 @@ export function buildTemplates({types,equipment=[],experience='NOVICE',knownExer
    const fits=to=>!!to&&admitted(to,auth)&&to.roles.includes(rowRole)&&to.equipment.every(q=>available.has(q))&&skillOk(to)&&!used.has(to.id)&&(to.pattern===pick.pattern||to.pattern===slot.pattern)&&(rowRole!=='MAIN'||!slot.subpatterns||slot.subpatterns.includes(to.subpattern))&&(!knownOnly||noExternalLoad(to)||withDose.has(to.id));
    // A decision names the slots where its configuration was in use (rotation included); one without them applies where the slot picks it.
    const located=d=>Array.isArray(d.slots)&&d.slots.some(x=>x?.template===types[index]&&x?.slot===si);
-   // Every SKILL_MISMATCH decision on this slot sets the direction a later fallback of the slot must follow (QE-R7B-R2-03).
-   const mismatch=[];
-   for(const d of selections){if(!pick||!d.to||d.to===pick.id||d.from!==pick.id&&!located(d))continue;const to=configurationOf(d.to);if(d.reason==='SKILL_MISMATCH'&&setAside.has(d.from)&&configurationOf(d.from))mismatch.push({aside:configurationOf(d.from),inUse:to});if(!fits(to))continue;pick=to;directive={reason:d.reason,from:d.from,since:d.fromWeek??null};}
+   // A SKILL_MISMATCH decision sets the direction of this slot's fallback (QE-R7B-R2-03) where its configuration was in use: the slots it names, or a
+   // template it did not see. A slot that only reaches that configuration because the decision's substitute left it (the slot held the substitute)
+   // keeps its own fallback, as before.
+   const ownSlot=d=>located(d)||!Array.isArray(d.slots)||!d.slots.some(x=>x?.template===types[index]),mismatch=[];
+   for(const d of selections){if(!pick||!d.to||d.to===pick.id||d.from!==pick.id&&!located(d))continue;const to=configurationOf(d.to);if(d.reason==='SKILL_MISMATCH'&&setAside.has(d.from)&&configurationOf(d.from)&&ownSlot(d))mismatch.push({aside:configurationOf(d.from),inUse:to});if(!fits(to))continue;pick=to;directive={reason:d.reason,from:d.from,since:d.fromWeek??null};}
    // The slot ends on a configuration set aside and no decision moves it off (the substitute no longer fits: its equipment went). The fallback follows
    // the direction of the reason (QE-R7B-R2-03): after a SKILL_MISMATCH a rung below on its ladder (nearest first) or a lower skill, never above the
    // substitute the decision selected; without one the slot stays unfilled (asideGaps), so the decision that removed the equipment asks. After a

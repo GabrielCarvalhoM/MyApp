@@ -29,9 +29,21 @@ Not changed (recorded, not fixed): QE-R7B-R2-05 (only when an elapsed week gets 
 
 Engineering recheck probes: N1, N1b, N3, N5, A10, A13, N7a–c, N7d, N8-N1 FAIL → PASS; no PASS → FAIL. Still failing as on FREEZE-2: A3b and A11 (judged non-findings by the judge), B3, B6, C8, C8b (QE-R7B-OBS-01…03, routed), N2 (QE-R7B-R2-05), N6 (QE-R7B-R2-OBS-01).
 
-## Next
+## Evidence so far (paused here: session usage limit, 2026-10-31)
 
-SSCTR recheck probes before/after; R7-B.1 adversarial probes (request §12); timeline differential against FREEZE-2; mutation; conformance delta; freeze R7B1-FREEZE-1; review requests; independent SSCTR and Engineering gates; Quality inheritance assessment; closure, commit, push.
+- Two corrections made after the first commit: the SKILL_MISMATCH fallback direction applies only to the replaced exercise's own slots (`ownSlot` in `buildTemplates`). Applied to knock-on slots, it had produced two false ASKs and one lower-skill knock-on pick versus FREEZE-2. The substitution's candidate order stays FREEZE-2's (`ladderPrevious`, then the pool), only iterated. A stand-in test was added (23 tests in the file).
+- SSCTR recheck probes, FREEZE-2 vs R7-B.1: 17 of 20 byte-identical (dose sweep, graduation, bouts, return interplay, hybrid content, strides, calf, claims scan, disclosures). r03/r04 differ only by the F9 fix (weeks 2–4 capped as their state says); r06 is OBS-04 (rerun r06 on the final bytes).
+- `scripts/regress-r7b1.mjs` (timeline differential vs `10b26d6`, last run on the final bytes): PRESERVE 98/98 timelines identical. Blocker paths changed as expected (OBS-04 12, R2-01 3, R2-02 2, R2-03 2). Substitution grid: 184 decisions, 138 applied on both, inconsistent 8 → 0, changed exactly those 8. Envelope findings 0.
+- One item still to classify: two `runRises` in `R2-02:graduation-decline`, week 4. The longest run goes 34 → 35 while weekly minutes drop 89 → 80 and quality 1 → 0, which looks like the withdrawn threshold session becoming an easy run. Confirm it, then refine the script's run check so that an easy run replacing a withdrawn quality session is not counted as a rise.
+
+## Next (in order)
+
+1. Classify the run item above; run the full suite (expected 756/756); rerun SSCTR r06 on the final bytes.
+2. R7-B.1 adversarial probes (request §12) under `audits/domain-coaching-r7-b1-2026-10-31/probes/`.
+3. `scripts/mutate-r7b1.mjs` (mutants that undo each fix), plus `mutate-r7b.mjs` on the new bytes; conformance re-run and a delta matrix (B0-C05#c1, B0-C06#c8, B0-C07#c1, B0-C08#c1).
+4. Freeze `R7B1-FREEZE-1` (`scripts/freeze-r7b1.mjs`, record `CoachingCore/r7/b1/RUNTIME_FREEZE_R7B1_1.json`) and the read-only `verify-r7b1.mjs`.
+5. Review requests; independent SSCTR and Engineering gates (dispatch envelope per the route guard); Quality: assess inheritance (the delta touches substitution choice and event-week rows, so a narrow review is likely needed).
+6. Closure records, insert-only closed blocks, commit, push, remote HEAD check.
 
 ## Rules for any later session
 
