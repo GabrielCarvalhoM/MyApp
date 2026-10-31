@@ -1,0 +1,281 @@
+{
+ "probe": "j7-cap-across-return",
+ "frozen": "FREEZE-2",
+ "root": "temporary tree root",
+ "ran": "2026-10-31T18:58:55.829Z",
+ "results": [
+  {
+   "id": "J7",
+   "area": "the novice cap survives a return before the first boundary",
+   "verdict": "FAIL",
+   "expected": "a return reported before the first block boundary re-enters under the cap and later reviews keep it until the boundary, whether the cap came from intake or from a schedule change",
+   "actual": {
+    "label": "FREEZE-2",
+    "failures": [
+     {
+      "case": "schedule-capped-short",
+      "week": 2,
+      "aheadAfterReturn": "LOWER_B,UPPER_B",
+      "densityBefore": {
+       "capped": true
+      },
+      "note": "the sessions still ahead in the re-entry week are planned uncapped"
+     },
+     {
+      "case": "schedule-capped-short",
+      "week": 3,
+      "types": "LOWER,LOWER_B,UPPER,UPPER_B",
+      "density": {
+       "capped": true
+      },
+      "note": "re-entry plan uncapped before the first block boundary"
+     },
+     {
+      "case": "schedule-capped-short",
+      "week": 3,
+      "types": "LOWER,LOWER_B,UPPER,UPPER_B",
+      "density": {
+       "capped": true
+      },
+      "note": "uncapped after the weekly review"
+     },
+     {
+      "case": "schedule-capped-short",
+      "week": 4,
+      "types": "LOWER,LOWER_B,UPPER,UPPER_B",
+      "density": {
+       "capped": true
+      },
+      "note": "uncapped after the weekly review"
+     },
+     {
+      "case": "schedule-capped-moderate",
+      "week": 2,
+      "aheadAfterReturn": "LOWER_B,UPPER_B",
+      "densityBefore": {
+       "capped": true
+      },
+      "note": "the sessions still ahead in the re-entry week are planned uncapped"
+     },
+     {
+      "case": "schedule-capped-moderate",
+      "week": 3,
+      "types": "LOWER,LOWER_B,UPPER,UPPER_B",
+      "density": {
+       "capped": true
+      },
+      "note": "re-entry plan uncapped before the first block boundary"
+     },
+     {
+      "case": "schedule-capped-moderate",
+      "week": 3,
+      "types": "LOWER,LOWER_B,UPPER,UPPER_B",
+      "density": {
+       "capped": true
+      },
+      "note": "uncapped after the weekly review"
+     },
+     {
+      "case": "schedule-capped-moderate",
+      "week": 4,
+      "types": "LOWER,LOWER_B,UPPER,UPPER_B",
+      "density": {
+       "capped": true
+      },
+      "note": "uncapped after the weekly review"
+     }
+    ],
+    "cases": {
+     "intake-capped-short": {
+      "boundary": 5,
+      "before": {
+       "week2": "CORE,CORE,FULL_A,FULL_B",
+       "week3": "CORE,CORE,FULL_A,FULL_B",
+       "density2": {
+        "capped": true
+       }
+      },
+      "return": {
+       "status": "MODIFY",
+       "action": "REESTABLISH",
+       "reason": "short nonclinical interruption (3 days): resume the last completed doses; no step until execution is observed"
+      },
+      "aheadWeek2": "CORE,CORE",
+      "week3": "CORE,CORE,FULL_A,FULL_B",
+      "density3": {
+       "capped": true
+      },
+      "reviews": [
+       {
+        "reviewed": 2,
+        "next": "CORE,CORE,FULL_A,FULL_B",
+        "density": {
+         "capped": true
+        },
+        "action": "ASK"
+       },
+       {
+        "reviewed": 3,
+        "next": "CORE,CORE,FULL_A,FULL_B",
+        "density": {
+         "capped": true
+        },
+        "action": "INSTANTIATE_LOGGED_LOADS"
+       },
+       {
+        "reviewed": 4,
+        "next": "LOWER,LOWER_B,UPPER,UPPER_B",
+        "density": {
+         "capped": false,
+         "releasedAfterWeek": 4
+        },
+        "action": "KEEP"
+       }
+      ]
+     },
+     "intake-capped-moderate": {
+      "boundary": 5,
+      "before": {
+       "week2": "CORE,CORE,FULL_A,FULL_B",
+       "week3": "CORE,CORE,FULL_A,FULL_B",
+       "density2": {
+        "capped": true
+       }
+      },
+      "return": {
+       "status": "MODIFY",
+       "action": "REESTABLISH",
+       "reason": "short nonclinical interruption (9 days): resume the last completed doses; no step until execution is observed"
+      },
+      "aheadWeek2": "CORE,CORE",
+      "week3": "CORE,CORE,FULL_A,FULL_B",
+      "density3": {
+       "capped": true
+      },
+      "reviews": [
+       {
+        "reviewed": 2,
+        "next": "CORE,CORE,FULL_A,FULL_B",
+        "density": {
+         "capped": true
+        },
+        "action": "INSTANTIATE_LOGGED_LOADS"
+       },
+       {
+        "reviewed": 3,
+        "next": "CORE,CORE,FULL_A,FULL_B",
+        "density": {
+         "capped": true
+        },
+        "action": "INSTANTIATE_LOGGED_LOADS"
+       },
+       {
+        "reviewed": 4,
+        "next": "LOWER,LOWER_B,UPPER,UPPER_B",
+        "density": {
+         "capped": false,
+         "releasedAfterWeek": 4
+        },
+        "action": "KEEP"
+       }
+      ]
+     },
+     "schedule-capped-short": {
+      "boundary": 5,
+      "before": {
+       "week2": "LOWER,LOWER_B,UPPER,UPPER_B",
+       "week3": "LOWER,LOWER_B,UPPER,UPPER_B",
+       "density2": {
+        "capped": true
+       }
+      },
+      "return": {
+       "status": "MODIFY",
+       "action": "REESTABLISH",
+       "reason": "short nonclinical interruption (3 days): resume the last completed doses; no step until execution is observed"
+      },
+      "aheadWeek2": "LOWER_B,UPPER_B",
+      "week3": "LOWER,LOWER_B,UPPER,UPPER_B",
+      "density3": {
+       "capped": true
+      },
+      "reviews": [
+       {
+        "reviewed": 2,
+        "next": "LOWER,LOWER_B,UPPER,UPPER_B",
+        "density": {
+         "capped": true
+        },
+        "action": "ASK"
+       },
+       {
+        "reviewed": 3,
+        "next": "LOWER,LOWER_B,UPPER,UPPER_B",
+        "density": {
+         "capped": true
+        },
+        "action": "INSTANTIATE_LOGGED_LOADS"
+       },
+       {
+        "reviewed": 4,
+        "next": "LOWER,LOWER_B,UPPER,UPPER_B",
+        "density": {
+         "capped": false,
+         "releasedAfterWeek": 4
+        },
+        "action": "INSTANTIATE_LOGGED_LOADS"
+       }
+      ]
+     },
+     "schedule-capped-moderate": {
+      "boundary": 5,
+      "before": {
+       "week2": "LOWER,LOWER_B,UPPER,UPPER_B",
+       "week3": "LOWER,LOWER_B,UPPER,UPPER_B",
+       "density2": {
+        "capped": true
+       }
+      },
+      "return": {
+       "status": "MODIFY",
+       "action": "REESTABLISH",
+       "reason": "short nonclinical interruption (9 days): resume the last completed doses; no step until execution is observed"
+      },
+      "aheadWeek2": "LOWER_B,UPPER_B",
+      "week3": "LOWER,LOWER_B,UPPER,UPPER_B",
+      "density3": {
+       "capped": true
+      },
+      "reviews": [
+       {
+        "reviewed": 2,
+        "next": "LOWER,LOWER_B,UPPER,UPPER_B",
+        "density": {
+         "capped": true
+        },
+        "action": "INSTANTIATE_LOGGED_LOADS"
+       },
+       {
+        "reviewed": 3,
+        "next": "LOWER,LOWER_B,UPPER,UPPER_B",
+        "density": {
+         "capped": true
+        },
+        "action": "INSTANTIATE_LOGGED_LOADS"
+       },
+       {
+        "reviewed": 4,
+        "next": "LOWER,LOWER_B,UPPER,UPPER_B",
+        "density": {
+         "capped": false,
+         "releasedAfterWeek": 4
+        },
+        "action": "INSTANTIATE_LOGGED_LOADS"
+       }
+      ]
+     }
+    }
+   }
+  }
+ ]
+}

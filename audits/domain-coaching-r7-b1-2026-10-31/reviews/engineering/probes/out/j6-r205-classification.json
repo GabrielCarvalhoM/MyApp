@@ -1,0 +1,93 @@
+{
+ "probe": "j6-r205-classification",
+ "frozen": "R7B1-FREEZE-1",
+ "root": "this worktree (R7B1-FREEZE-1 bytes)",
+ "ran": "2026-10-31T18:48:20.992Z",
+ "results": [
+  {
+   "id": "J6",
+   "area": "R2-05 occurs only off the R18 contract",
+   "verdict": "PASS",
+   "expected": "with every elapsed week reviewed (nothing, part or all reported; change before or after the review), a decision in week 2 plans week 2 capped; the uncapped paths are those without a gating review of week 1 (R18)",
+   "actual": {
+    "label": "R7B1-FREEZE-1",
+    "paths": {
+     "R18:week1-skipped": {
+      "status": "MODIFY",
+      "week2": "LOWER,LOWER_B,UPPER,UPPER_B",
+      "week3": "CORE,CORE,FULL_A,FULL_B",
+      "capped2": false,
+      "plannerDensity2": null,
+      "historyDensity": null
+     },
+     "R18:week1-midweek-review-only": {
+      "status": "MODIFY",
+      "week2": "LOWER,LOWER_B,UPPER,UPPER_B",
+      "week3": "CORE,CORE,FULL_A,FULL_B",
+      "capped2": false,
+      "plannerDensity2": null,
+      "historyDensity": null
+     },
+     "R18:week1-partly-reported-unreviewed": {
+      "status": "MODIFY",
+      "week2": "LOWER,LOWER_B,UPPER,UPPER_B",
+      "week3": "CORE,CORE,FULL_A,FULL_B",
+      "capped2": false,
+      "plannerDensity2": null,
+      "historyDensity": null
+     },
+     "contract:week1-reviewed-nothing-reported": {
+      "status": "MODIFY",
+      "week2": "CORE,CORE,FULL_A,FULL_B",
+      "week3": "CORE,CORE,FULL_A,FULL_B",
+      "capped2": true,
+      "plannerDensity2": {
+       "capped": true
+      },
+      "historyDensity": null
+     },
+     "contract:week1-reviewed-partly": {
+      "status": "MODIFY",
+      "week2": "CORE,CORE,FULL_A,FULL_B",
+      "week3": "CORE,CORE,FULL_A,FULL_B",
+      "capped2": true,
+      "plannerDensity2": {
+       "capped": true
+      },
+      "historyDensity": null
+     },
+     "contract:week1-reviewed-all": {
+      "status": "MODIFY",
+      "week2": "CORE,CORE,FULL_A,FULL_B",
+      "week3": "CORE,CORE,FULL_A,FULL_B",
+      "capped2": true,
+      "plannerDensity2": {
+       "capped": true
+      },
+      "historyDensity": null
+     },
+     "contract:change-after-week1-review": {
+      "status": "MODIFY",
+      "week2": "CORE,CORE,FULL_A,FULL_B",
+      "week3": "CORE,CORE,FULL_A,FULL_B",
+      "capped2": true,
+      "plannerDensity2": {
+       "capped": true
+      },
+      "historyDensity": null
+     },
+     "other:week1-all-reported-unreviewed": {
+      "status": "MODIFY",
+      "week2": "CORE,CORE,FULL_A,FULL_B",
+      "week3": "CORE,CORE,FULL_A,FULL_B",
+      "capped2": true,
+      "plannerDensity2": {
+       "capped": true
+      },
+      "historyDensity": null
+     }
+    }
+   }
+  }
+ ]
+}

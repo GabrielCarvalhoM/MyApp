@@ -1,0 +1,153 @@
+{
+ "review_id": "R7B1-QUALITY-r1",
+ "judge": "Quality & Reliability Engineer (independent; not the author of the runtime; separate from the engineering judge and the SSCTR)",
+ "date": "2026-10-31",
+ "request": "audits/domain-coaching-r7-b1-2026-10-31/reviews/QUALITY_REVIEW_REQUEST.md",
+ "freeze": {
+  "revision": "R7B1-FREEZE-1",
+  "record": "CoachingCore/r7/b1/RUNTIME_FREEZE_R7B1_1.json",
+  "freezeCommit": "d41df8b129495e32fe2923087d665798854609e9",
+  "checkoutHead": "7b285f2",
+  "sourceDigest": "976a13351f0b40ee363e9e4d6d1592e2653306ac018e3cf143d2d16968d366c9",
+  "manifestDigest": "2fc0a59a7b919b6b7a039981cd995c2d511437481a713a5c74a97c57c84d614b",
+  "before": "node scripts/verify-r7b1.mjs (from CoachingCore/): PASS 23/23, digests as above (without --tests; the recorded 24/24 includes the test-suite check)",
+  "after": "node scripts/verify-r7b1.mjs: PASS 23/23, same digests; git status shows only untracked review folders (engineering/, quality/, ssctr/); HEAD unchanged 7b285f2"
+ },
+ "method": "Read-only. The R7-B Quality recheck probes were copied unchanged into reviews/quality/recheck-copy/ and re-run there (outputs in recheck-copy/out/), then compared with audits/domain-coaching-r7-b-2026-10-31/reviews/quality/recheck/out/ (FREEZE-2). New probes q01-q12 in reviews/quality/probes/ (outputs in probes/out/) judge the delta's decision outputs through public entry points (generateProgram, evaluateProgram) plus skeletonOf/dayPhaseOf for phase lookup. For FREEZE-2 comparisons, a mirror was extracted with git archive 10b26d6 (CoachingCore + the B0 SSCTR records file) into the session scratchpad; no git state changed. Not run: scripts/mutate-r7b.mjs, scripts/mutate-r7b1.mjs, scripts/freeze-r7b1.mjs, npm run verify, any --write.",
+ "verdict": "NOT_READY",
+ "findings": [
+  {
+   "id": "QR7B1-01",
+   "severity": "MAJOR",
+   "category": "DEAD_END / OPTION_WITHOUT_EFFECT / TRUTHFULNESS",
+   "origin": "Created by R7-B.1 (the QE-R7B-R2-03 fix adds the question; at FREEZE-2 the same change was applied, climbing the ladder). Eligible for the contract's single correction cycle.",
+   "title": "The NO_LOWER_SKILL_ALTERNATIVE question can be a dead end: 'Name a <pattern> exercise' has no effect, its missing input cannot be supplied in the review it answers, and its text can name equipment that is available",
+   "reproduction": [
+    "probes/q04-no-lower-skill.mjs -> out/q04-no-lower-skill.json: the R7-B.1 test fixture (DUMBBELLS+BANDS, GENERAL, FIXED, reviewed to week 3; db-row SKILL_MISMATCH -> band-row; week 3 reviewed). Week 4 EQUIPMENT_CHANGE {equipment:['DUMBBELLS']} -> ASK NO_LOWER_SKILL_ALTERNATIVE, options ['Keep the equipment','Name a pull exercise'], missingInputs ['changes.equipment','substitution.to']. Resubmitting the same EQUIPMENT_CHANGE with substitution.to = each of the 17 pull configurations: 17/17 ASK (the equipment change does not read substitution). An EXERCISE_SUBSTITUTION of band-row naming each pull: only band-pulldown is accepted (it needs the same bands); the equipment change after it asks again. Same for a dated window (S2) and for the substitution path with a window ahead (S3: naming any pull, 17/17 ASK).",
+    "probes/q05-no-lower-skill-grid.mjs -> out/q05-no-lower-skill-grid.json: 96 programs, 462 SKILL_MISMATCH substitutions applied, 97 equipment changes removing an item the substitute needs: 46 NO_LOWER_SKILL_ALTERNATIVE questions; 13 are dead ends (no naming of any same-pattern configuration, with either reason, lets the change be recorded afterwards); 0 of 46 are resolved by resubmitting the same review with substitution.to.",
+    "probes/q12-no-lower-full-equipment.mjs -> out/q12-no-lower-full-equipment.json: FULL equipment, RUNNING_SUPPORT, 3 strength days, INTERMEDIATE, FIXED. Control without a SKILL_MISMATCH: losing the bands -> MODIFY (band-row -> one-arm-db-row, db-row). With db-row (ACCESSORY) set aside for SKILL_MISMATCH -> band-face-pull, losing the bands -> ASK 'band-face-pull needs bands that is not available ... name the pull exercise to use'. 28 naming attempts (of band-face-pull and of band-row, 7 pulls, both reasons): 24 substitutions applied, 0 then let the equipment change be recorded. After naming one-arm-db-row the question reads 'one-arm-db-row needs dumbbells and bench that is not available' although the athlete keeps dumbbells and bench."
+   ],
+   "expected": "Every option of a question has an effect, and an athlete who has really lost the equipment can record it: the question names the slot and the equipment actually missing, its missing inputs are inputs the review it answers reads (or it says which other review to send), and when no same-pattern configuration fits, the question offers a resolution that exists (for example the R6-SUBSTITUTION condition 8 path: the pattern left out and disclosed), or the plan does so. Which resolution is allowed after a SKILL_MISMATCH is the owner's and the SSCTR's call; the Quality requirement is only that one exists and the text is true.",
+   "actual": "In 13 of 46 reachable questions (including the R7-B.1 test fixture and a full-equipment athlete) the only way out is 'Keep the equipment', i.e. not recording the real loss, after which the plan keeps prescribing exercises that need the missing equipment. The text lists all of the substitute's equipment (need = configurationOf(g.substitute).equipment, src/r6-adaptation.mjs skillMismatchGap), not the missing items, and names the latest substitute of the chain, which is not always the slot that blocks (q12: the blocking slot is the band-row MAIN row whose natural fallback is the set-aside db-row).",
+   "owner": "Runtime author (R7-B.1 correction cycle); SSCTR consulted if the resolution changes which configuration a SKILL_MISMATCH slot may take"
+  },
+  {
+   "id": "QR7B1-02",
+   "severity": "MAJOR",
+   "category": "CONTRADICTION WITH THE PLAN / TRUTHFULNESS (residual of QE-R7B-OBS-04 and QE-R7B-R2-04 under calendar rotation)",
+   "origin": "Pre-existing: identical on FREEZE-2 (q08 W1, W2, W4). Not introduced by R7-B.1, but the delta closes OBS-04 and R2-04 and this is their residual on rotation programs; the closure records and tests do not cover it.",
+   "title": "Under EVERY_2_WEEKS rotation, a reason-based substitution of a rotation-placed exercise puts an unnamed configuration in its slot; in the taper week that configuration is never performed in the program and nothing is disclosed",
+   "reproduction": [
+    "probes/q08-rotation-residual.mjs -> out/q08-rotation-residual-R7B1.json and -FREEZE2.json. W1: 10K on 2027-01-17, 12 weeks, FULL, GENERAL, strength days [0,2,4], EVERY_2_WEEKS, weekly reviews to the TAPER week (9); EXERCISE_SUBSTITUTION push-up NONCLINICAL_DISCOMFORT_OR_PREFERENCE (confirmed) on day 0 06:00 -> MODIFY 'push-up is replaced by db-bench-press', disclosures []. w9-str-d2 (TAPER, instruction 'Taper: fewer sets at familiar loads; no new exercises or heavier loads'): before db-bench-press:MAIN, db-row:MAIN, push-up:ACCESSORY, kb-row:ACCESSORY, dead-bug:ACCESSORY; after db-bench-press:MAIN, db-row:MAIN, incline-push-up:ACCESSORY, kb-row, dead-bug. incline-push-up is never performed in this program. W2 (16 weeks, inverted-row -> db-row; band-row new in w10-str-d2) and W4 (RUNNING_SUPPORT, kb-row -> db-row; inverted-row new in w10-str-d2): the same. W3 (BANDS_AND_BAR, glute-bridge -> single-leg-glute-bridge): the decision now carries NO_NEW_EXERCISE_IN_EVENT_WEEKS, but the same proposal changes the calf slot of w10-str-d0 to single-leg-calf-raise, never performed, which the disclosure does not mention.",
+    "probes/q01-event-week.mjs (3 shards) -> out/q01-event-week-*.json: C1 (a configuration new to the event weeks and never performed) fails in 24 of 6,888 applied decisions, every recorded example under EVERY_2_WEEKS.",
+    "probes/q09c-slot.mjs -> out/q09c-slot-R7B1.json / -FREEZE2.json (non-event weeks, 12-week PERFORMANCE, week-4 substitutions): decisions whose replaced slot does not take the selected exercise because it is already in the session: FREEZE-2 33 / 32 / 32 (EVERY_2_WEEKS / COACH_DECIDES / FIXED), R7-B.1 6 / 0 / 0. The 6 residual decisions are all rotation-placed ACCESSORY exercises (push-up, kb-row) beside the selected one as MAIN; slipsFrom inspects template rows only, so it does not see an exercise placed by rotation."
+   ],
+   "expected": "The plan prescribes what the decision selects in every slot of the replaced exercise, rotation slots included (QE-R7B-01); in TAPER, RACE_WEEK and POST_EVENT no configuration this program never performed enters through a reason-based substitution, and any stand-in or omission is disclosed (QE-R7B-OBS-04; the session's own taper instruction).",
+   "actual": "On EVERY_2_WEEKS programs the replaced rotation slot takes a configuration the decision does not name; in event weeks it is a new exercise, without a disclosure, in a session whose instruction says 'no new exercises'.",
+   "owner": "Runtime author; the SSCTR judges whether this keeps QE-R7B-OBS-04 open (sports-science adequacy is theirs)"
+  },
+  {
+   "id": "QR7B1-03",
+   "severity": "MINOR",
+   "category": "OPTION_WITHOUT_EFFECT / TRUTHFULNESS",
+   "origin": "Created by R7-B.1 (the new end of the candidate loop in exerciseSubstitution, QE-R7B-R2-04 path)",
+   "title": "The new 'Every admissible alternative ... is already in a session with X' question offers 'Add equipment', which has no effect in most cases, and says every alternative is taken although naming one works",
+   "reproduction": [
+    "probes/q03-all-candidates-in-session.mjs -> out/q03-all-candidates-in-session.json (the p04 grid; week-2 substitutions): 2,356 decisions, 41 such questions (front-plank SKILL_MISMATCH 27; prone-ytw-raise 14). 'Add equipment' (an EQUIPMENT_CHANGE to every catalog item, then the same substitution): no effect 26/41, impossible 3/41 (the athlete already has every item). Naming another same-pattern exercise (the question's missing input substitution.to, not listed among its options) works in 27/41 (e.g. bird-dog, side-plank, pallof-press for front-plank, although the question says 'every admissible alternative of the same pattern (dead-bug)'). Only 'Keep X' resolves 2/41.",
+    "probes/q02-p04-witness-delta.mjs -> out/q02-p04-witness-delta.json: the p04 witness FULL/GENERAL/4 days/NOVICE front-plank SKILL_MISMATCH was MODIFY -> dead-bug at FREEZE-2 (dead-bug already in a session with front-plank) and is this question now."
+   ],
+   "expected": "Options with an effect; the text states why (the alternatives of that reason's rule are already in the session) and offers naming another exercise when that works.",
+   "actual": "options ['Add equipment','Keep X'] with disclosure NO_ADMISSIBLE_ALTERNATIVE, reused from the no-candidate case where adding equipment can help.",
+   "owner": "Runtime author"
+  },
+  {
+   "id": "QR7B1-04",
+   "severity": "MINOR",
+   "category": "DISCLOSURE",
+   "origin": "R7-B.1 path (planner rule applied by a weekly review); the closure records the re-plan but not that it is undisclosed",
+   "title": "A weekly review that leaves an event-week slot out (substitute planned before the taper, then missed) discloses nothing",
+   "reproduction": [
+    "probes/q10-weekly-silent-omission.mjs -> out/q10-weekly-silent-omission.txt: 10K/16 weeks, DUMBBELLS+BENCH+KETTLEBELL, FIXED; in the last SPECIFIC week db-rdl -> single-leg-rdl-db (preference), no event-week disclosure (the substitute is planned before the taper); the session holding it is not done; the weekly review (MODIFY GATED_NEXT_STEP) leaves the hinge out of w10-str-d4 (TAPER) and w12-str-d4 (POST_EVENT). Its result has disclosures [] and the sessions no text; only the session field eventStandIns [{selected:'single-leg-rdl-db',setAside:'db-rdl',inEventWeeks:null}] records it."
+   ],
+   "expected": "An omitted pattern is disclosed (R6-SUBSTITUTION condition 8), as the decision path does with NO_NEW_EXERCISE_IN_EVENT_WEEKS.",
+   "actual": "Structured field only; no disclosure or human-readable text.",
+   "owner": "Runtime author"
+  },
+  {
+   "id": "QR7B1-05",
+   "severity": "OBSERVATION",
+   "category": "WORDING",
+   "origin": "R7-B.1",
+   "title": "In a program that ends with the post-event week, the second option and the rest-by-design text speak of 'after the post-event week'",
+   "reproduction": [
+    "probes/q07-event-option-effect.mjs -> out/q07-event-option-effect.json: 16-week program: option 2 works (the same substitution in the first week after POST_EVENT -> MODIFY, X gone, no event-week disclosure). 12-week program ending at POST_EVENT: no week follows, the same request on the last day -> ASK 'not in the sessions still ahead'; the detail correctly says 'beyond this program'.",
+    "probes/q06-rest-by-design.mjs -> out/q06-rest-by-design.json: 12-week program: the race-week session becomes rest by design with 'the exercises of this session start after the post-event week'."
+   ],
+   "expected": "Where no week follows, the option and the text say the change applies beyond this program.",
+   "actual": "'make this change after the post-event week' and 'start after the post-event week' (the decision's detail is correct).",
+   "owner": "Runtime author"
+  },
+  {
+   "id": "QR7B1-06",
+   "severity": "OBSERVATION",
+   "category": "DECISION SUMMARY",
+   "origin": "Pre-existing (FREEZE-2 identical counts); preserved by an R7-B.1 test ('a SKILL_MISMATCH substitute that held another slot is applied; that slot keeps its own fallback')",
+   "title": "When the selected exercise already held another slot, the knock-on change of that slot is not in the decision's substitutions",
+   "reproduction": [
+    "probes/q09c-slot.mjs: knock-on sessions 186 / 272 / 344 (EVERY_2_WEEKS / COACH_DECIDES / FIXED), equal on FREEZE-2. Example (q09b-fixed.mjs): FULL/GENERAL/3 days/FIXED, db-bench-press -> db-floor-press: w4-str-d2 before db-bench-press:MAIN, ..., db-floor-press:ACCESSORY; after db-floor-press:MAIN, ..., machine-chest-press:ACCESSORY. substitutions lists only db-bench-press -> db-floor-press."
+   ],
+   "expected": "The decision states every exercise it changes.",
+   "actual": "One of two changes stated.",
+   "owner": "Next runtime mission (not a delta defect)"
+  },
+  {
+   "id": "QR7B1-07",
+   "severity": "OBSERVATION",
+   "category": "RECORDED ITEMS",
+   "origin": "R7-B.1 records",
+   "title": "Recorded-not-changed items are truthful; their owner is generic",
+   "reproduction": [
+    "CoachingCore/r7/b1/BLOCKER_CLOSURE_R7B1.md lines 32, 82-83; audits/domain-coaching-r7-b1-2026-10-31/CHECKPOINT.md line 22; TASK_CONTRACT.md line 47; audits/domain-coaching-r7-b-2026-10-31/FINAL_DISPOSITION.json (owner 'Next runtime mission'); reviews/SSCTR_REVIEW_REQUEST.md item on inheritedEquipmentChangeInTaper."
+   ],
+   "expected": "Each recorded item has a named owner and trigger.",
+   "actual": "QE-R7B-R2-05 is described as the R18 path (matches the engineering N2 probe: the week neither reviewed nor reported) and R18 is excluded by request §9 (TASK_CONTRACT line 47); QE-R7B-R2-OBS-01 and QE-R7B-OBS-01 … -03 are 'routed to a later runtime mission' (R7-B had them on 'Next runtime mission', which R7-B.1 is); the inherited equipment change in the taper week is put to the SSCTR in its request. Truthful; the owner should be named when R7-B.1 closes.",
+   "owner": "Chief at R7-B.1 closure"
+  }
+ ],
+ "holds": [
+  "Frozen bytes verify read-only before and after (23/23, source 976a1335…, manifest 2fc0a59a…).",
+  "Intake reachability unchanged: p01 (27,608 programs) byte-identical to FREEZE-2 except run time; p02, p03, p06, p07, p12, p13, p14, p17b byte-identical; p16 74/76 configurations reachable, run families, templates 7/7 and archetypes 5/5 unchanged; the only classification change is cable-face-pull FAMILIAR_ONLY -> REVIEW.",
+  "Reachability through reviews (p04): 66 -> 67 configurations, none lost; ladder offers, ladder edges never offered and asks identical. dead-bug and push-up are no longer selected by a substitution of the grid (still reached otherwise); q02 confirms the changed selections are the intended R2-04 change: the FREEZE-2 choice (dead-bug, push-up, db-row) already shared a session with X and, named explicitly, is now asked about; the other witnesses select as before.",
+  "NO_NEW_EXERCISE_IN_EVENT_WEEKS (q01, 9,084 decisions, 6,888 applied, 161,979 checks; event weeks of 10K/16w, HALF/16w and 10K/12w programs): reached 3,208 times, 122 with stand-ins (42 after SKILL_MISMATCH, 80 after a preference), 3,110 with omitted sessions; its standIns, omittedSessions and weeks equal what the sessions carry (eventStandIns), every stand-in row exists with its note, stand-ins are never heavier than their heaviest logged load, startsAfterEvent and the detail ('with effort-guided establishment' / 'beyond this program') match the weeks after POST_EVENT, the first exposure after the event is an establishment, the decision's reason and substitutions[0].eventWeeks agree with it, and no proposal prescribes the selected exercise in event weeks while saying it starts after them (C2, C3, C6, C8, C9: 0 failures).",
+  "Its second option has an effect where weeks follow the event (q07): the same substitution after POST_EVENT is applied without an event-week disclosure.",
+  "Rest by design from stand-ins (q06): reached by three successive preference substitutions in the taper; the race-week session becomes rest by design only when every row is left out, the last decision lists it in omittedSessions, and in a 16-week program the substitutes are prescribed after the post-event week as the text says.",
+  "No duplicate rows: 0 sessions with an exercise twice in q01 (C5) and q02; p14 identical to FREEZE-2.",
+  "fallbackFor (q11): 96 template rows over 181 proposals (substitutions and later equipment changes): each names a configuration set aside by a recorded reason-based selection, with that selection's reason, and holds another configuration (0 violations).",
+  "Under FIXED and COACH_DECIDES rotation the replaced slot always takes the selected exercise (q09c: 0 slot violations, down from 32 and 32 at FREEZE-2).",
+  "Recorded items are recorded truthfully (QR7B1-07)."
+ ],
+ "limits": [
+  "No browser or device: the runtime is a library; judged through its public entry points, as in R7-B.",
+  "p15 was re-run but the R7-B recheck kept no output for it to compare with; p08 was re-run on CONFORMANCE_R7B.json, which is byte-identical between 10b26d6 and d41df8b, so the delta cannot change it.",
+  "Rotation alternation of the new configuration in later weeks (q09 'selectedMissing' under EVERY_2_WEEKS: 181 sessions on R7-B.1, 177 on FREEZE-2) was not judged as a defect: it is the athlete's chosen cadence and outside the delta.",
+  "Sports-science adequacy (whether a stand-in or an omission is right, the SKILL_MISMATCH direction) is the SSCTR's; state, persistence and factual authority are the engineering judge's."
+ ],
+ "probes": {
+  "copied_R7B_recheck": "reviews/quality/recheck-copy/ (unchanged copies of audits/domain-coaching-r7-b-2026-10-31/reviews/quality/recheck/*.mjs); run: p01, p02, p03, p04, p06, p07, p08, p12, p13, p14, p15, p16, p17b; outputs recheck-copy/out/",
+  "new": {
+   "q01-event-week.mjs": "NO_NEW_EXERCISE_IN_EVENT_WEEKS vs the plan (C1-C9), 3 shards",
+   "q02-p04-witness-delta.mjs": "the p04 substitution witnesses that changed",
+   "q03-all-candidates-in-session.mjs": "the new end-of-candidates question and its options",
+   "q04-no-lower-skill.mjs": "NO_LOWER_SKILL_ALTERNATIVE on the R7-B.1 fixture, three entry paths, each option",
+   "q05-no-lower-skill-grid.mjs": "NO_LOWER_SKILL_ALTERNATIVE dead ends over a grid",
+   "q06-rest-by-design.mjs": "rest-by-design text of an all-omitted event-week session",
+   "q07-event-option-effect.mjs": "the two options of NO_NEW_EXERCISE_IN_EVENT_WEEKS",
+   "q08-rotation-residual.mjs": "rotation witnesses on R7-B.1 and on the FREEZE-2 mirror",
+   "q09-rotation-slip.mjs / q09b-fixed.mjs / q09c-slot.mjs": "slot consistency of substitutions by rotation preference, both trees",
+   "q10-weekly-silent-omission.mjs": "weekly-review omission without disclosure",
+   "q11-fallbackfor-field.mjs": "the fallbackFor template-row field",
+   "q12-no-lower-full-equipment.mjs": "NO_LOWER_SKILL_ALTERNATIVE dead end with full equipment"
+  }
+ },
+ "gate": "R7B1_QUALITY_GATE = NOT_READY"
+}

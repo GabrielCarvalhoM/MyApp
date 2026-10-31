@@ -1,0 +1,34 @@
+=== A. GRAD scenario (NOVICE, 80 min/3 days, runMinutes 45, 16 weeks) ===
+class EASY_LOW phases DEVELOPMENT,DEVELOPMENT,DEVELOPMENT,CONSOLIDATION,DEVELOPMENT,DEVELOPMENT,DEVELOPMENT,CONSOLIDATION,DEVELOPMENT,DEVELOPMENT,DEVELOPMENT,CONSOLIDATION,DEVELOPMENT,DEVELOPMENT,DEVELOPMENT,CONSOLIDATION
+blocks block-0:DEVELOPMENT[0,4) block-1:DEVELOPMENT[4,8) block-2:DEVELOPMENT[8,12) block-3:DEVELOPMENT[12,16)
+w0 DEVELOPMENT planned total 70 | EASY:EASY:20 EASY:EASY:20 LONG:LONG:30
+w1 DEVELOPMENT planned total 70 | EASY:EASY:20 EASY:EASY:20 LONG:LONG:30
+w2 DEVELOPMENT planned total 75 | EASY:EASY:25+str(opt) EASY:EASY:20 LONG:LONG:30
+w3 CONSOLIDATION planned total 70 | EASY:EASY:25+str(opt) EASY:EASY:20 LONG:LONG:25
+  -> graduation decided at review of week 3: [{"week":2,"minutes":75,"days":3},{"week":3,"minutes":70,"days":3}]
+w4 DEVELOPMENT planned total 89 | QUALITY:THRESHOLD:34[INTRO alt 20] EASY:EASY:25+str(opt) LONG:LONG:30
+w5 DEVELOPMENT planned total 94 | QUALITY:THRESHOLD:34 EASY:EASY:25+str(opt) LONG:LONG:35
+w6 DEVELOPMENT planned total 99 | QUALITY:THRESHOLD:34 EASY:EASY:25+str(opt) LONG:LONG:40
+intro session: {"dur":34,"warm":10,"cool":5,"work":{"repetitions":3,"workMinutes":5,"recoveryMinutes":2},"effortDomain":"THRESHOLD_CONTROLLED","calibration":{"basis":"EFFORT_ANCHORED","firstExposure":true,"paceFromGoalTime":false,"paceFromEasyRuns":false},"target":null,"alternative":{"role":"EASY","minutes":20}}
+longest executed run before intro: 30 | intro session within single-run ceiling (longest + 5)? true
+weekly totals: last full week 75 | graduation week 70 | intro week 89
+
+=== B. R6 comparator: EASY_CURRENT intermediate, first quality week ===
+class EASY_CURRENT phases DEVELOPMENT,DEVELOPMENT,DEVELOPMENT,CONSOLIDATION,DEVELOPMENT,DEVELOPMENT,DEVELOPMENT,CONSOLIDATION,DEVELOPMENT,DEVELOPMENT,DEVELOPMENT,CONSOLIDATION
+w0 DEVELOPMENT planned total 90 | EASY:EASY:25 EASY:EASY:25 LONG:LONG:40
+w1 DEVELOPMENT planned total 90 | EASY:EASY:25 EASY:EASY:25 LONG:LONG:40
+w2 DEVELOPMENT planned total 104 | QUALITY:THRESHOLD:34 EASY:EASY:30+str LONG:LONG:40
+w3 CONSOLIDATION planned total 99 | QUALITY:THRESHOLD:34 EASY:EASY:30+str LONG:LONG:35
+w4 DEVELOPMENT planned total 109 | QUALITY:THRESHOLD:34 EASY:EASY:30+str LONG:LONG:45
+w5 DEVELOPMENT planned total 114 | QUALITY:THRESHOLD:34 EASY:EASY:30+str LONG:LONG:50
+
+=== C. Intro week: the athlete keeps the easy alternative (reports the alternative minutes on the quality session) ===
+quality 34 min; alternative 20 min; 0.9 x quality = 30.6
+review action GATED_NEXT_STEP gates {"LONG":"ADVANCE","QUALITY":"HOLD","EASY":"ADVANCE"}
+w5 QUALITY:THRESHOLD:34 EASY:EASY:25+str(opt) LONG:LONG:35
+state after: qualityStep 0 thresholdDone 0
+easy run of 31 min on the quality day -> gates {"LONG":"ADVANCE","QUALITY":"ADVANCE","EASY":"ADVANCE"} | qualityStep next 0 thresholdDone 0 | QUALITY:THRESHOLD:34 EASY:EASY:25+str(opt) LONG:LONG:35
+
+=== D. R18: week grad-1 never received its own gating weekly review ===
+review of week 3 with week 2 unreviewed -> MODIFY RUN_QUALITY_GRADUATION | RUN_QUALITY_INTRODUCED,BLOCK_REVIEW
+  graduation recorded: {"fromWeek":4,"decidedBy":"r7b-3-WEEKLY_REVIEW-70","asOf":"2026-11-29T21:00:00.000Z","qualifyingWeeks":[{"week":2,"minutes":75,"days":3},{"week":3,"minutes":70,"days":3}],"basis":"B0-C01"}

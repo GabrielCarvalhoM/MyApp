@@ -1,0 +1,178 @@
+{
+ "probe": "b-determinism",
+ "frozen": "R7B1-FREEZE-1",
+ "root": "this worktree (R7B1-FREEZE-1 bytes)",
+ "ran": "2026-10-31T18:21:30.242Z",
+ "results": [
+  {
+   "id": "B1",
+   "area": "determinism / repeat",
+   "verdict": "PASS",
+   "expected": "identical inputs give byte-identical programs and decisions",
+   "actual": {
+    "programHash": [
+     "20d814cf1d1847e7",
+     "20d814cf1d1847e7"
+    ],
+    "review": [
+     "KEEP",
+     "KEEP"
+    ],
+    "proposalWeeks": [
+     "74234e98afe7498f",
+     "74234e98afe7498f"
+    ]
+   }
+  },
+  {
+   "id": "B2",
+   "area": "determinism / input order",
+   "verdict": "PASS",
+   "expected": "no planned session or template depends on the order of input lists",
+   "actual": {
+    "weeks": [
+     "2776f1b0df1554d0",
+     "2776f1b0df1554d0"
+    ],
+    "templates": [
+     "cf598d681080fba4",
+     "cf598d681080fba4"
+    ],
+    "programHash": [
+     "50ce9b70fe1be7b1",
+     "ec6755e6f9aada4f"
+    ],
+    "canonicalEquipment": [
+     [
+      "DUMBBELLS",
+      "BENCH",
+      "KETTLEBELL",
+      "BANDS",
+      "PULL_UP_BAR"
+     ],
+     [
+      "PULL_UP_BAR",
+      "BANDS",
+      "KETTLEBELL",
+      "BENCH",
+      "DUMBBELLS"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "B3",
+   "area": "determinism / record order",
+   "verdict": "FAIL",
+   "expected": "the same set of records gives the same binding and program whatever their order",
+   "actual": {
+    "recordsSha256": [
+     "e94fc9358ad5333b",
+     "8261b944f34ea92c"
+    ],
+    "programHash": [
+     "502987296ba07969",
+     "69650558bfff94ba"
+    ],
+    "weeksEqual": true
+   }
+  },
+  {
+   "id": "B4",
+   "area": "determinism / review-by boundary",
+   "verdict": "PASS",
+   "expected": "the same instant gives the same decision whatever UTC offset it is written with (the review-by date is read on one clock)",
+   "actual": {
+    "sameInstantZ": {
+     "status": "KEEP",
+     "action": "KEEP",
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete",
+     "missingInputs": [],
+     "errors": []
+    },
+    "sameInstantPlus5": {
+     "status": "KEEP",
+     "action": "KEEP",
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete",
+     "missingInputs": [],
+     "errors": []
+    },
+    "laterInstantMinus3_isUTCMay1": {
+     "status": "UNSUPPORTED",
+     "action": "UNSUPPORTED",
+     "reason": "The program was not planned under the bound repertoire catalog, or that catalog and its SSCTR records are unavailable",
+     "missingInputs": [],
+     "errors": []
+    },
+    "programWeeks": [
+     "2027-04-19",
+     "2027-04-26",
+     "2027-05-03",
+     "2027-05-10",
+     "2027-05-17",
+     "2027-05-24",
+     "2027-05-31",
+     "2027-06-07"
+    ]
+   }
+  },
+  {
+   "id": "B5",
+   "area": "determinism / observation order",
+   "verdict": "PASS",
+   "expected": "the order of a review's observations never changes the decision",
+   "actual": {
+    "a": {
+     "status": "KEEP",
+     "action": "KEEP",
+     "reason": "Executed as planned without adverse signal; the planned progression step stands",
+     "missingInputs": [],
+     "errors": []
+    },
+    "b": {
+     "status": "KEEP",
+     "action": "KEEP",
+     "reason": "Executed as planned without adverse signal; the planned progression step stands",
+     "missingInputs": [],
+     "errors": []
+    },
+    "sameProposal": true
+   }
+  },
+  {
+   "id": "B6",
+   "area": "determinism / role lookup at the boundary",
+   "verdict": "FAIL",
+   "expected": "a MAIN change of a configuration that also fills an accessory slot is accepted from its MAIN slot (not from whichever session is read last) and changes only the MAIN slot",
+   "actual": [
+    {
+     "program": "d-dual-HYPERTROPHY-0134-DUMBBELLSBENCH",
+     "exercise": "db-split-squat",
+     "rolesThisWeek": [
+      {
+       "role": "ACCESSORY",
+       "day": 0
+      },
+      {
+       "role": "MAIN",
+       "day": 3
+      }
+     ],
+     "to": "split-squat-bodyweight",
+     "result": {
+      "status": "MODIFY",
+      "action": "BLOCK_EXERCISE_CHANGES",
+      "reason": "Block-boundary exercise changes recorded with their reasons: db-split-squat → split-squat-bodyweight (athlete preference)",
+      "missingInputs": [],
+      "errors": []
+     },
+     "lastSessionRole": "MAIN",
+     "accessoryRowAlsoChanged": [
+      "ACCESSORY",
+      "MAIN"
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,257 @@
+[
+  {
+    "queue_id": "HQ-R7B1-SSCTR-FIDELITY",
+    "decision_id": "R7B-SSCTR-FIDELITY",
+    "decision_revision": "R7B1-SSCTR-r1",
+    "target": {
+      "project": "MyApp / Vilumo Fit",
+      "artifact": "CoachingCore/r7/b1/RUNTIME_FREEZE_R7B1_1.json",
+      "artifact_revision": "R7B1-FREEZE-1 (freeze commit d41df8b129495e32fe2923087d665798854609e9, bytes of b82d75878db2bb8290847ef18abe104fba21989f; source digest 976a13351f0b40ee363e9e4d6d1592e2653306ac018e3cf143d2d16968d366c9; manifest digest 2fc0a59a7b919b6b7a039981cd995c2d511437481a713a5c74a97c57c84d614b; predecessor R7B-RUNTIME-REPERTOIRE-FREEZE-2 10b26d6e40542a066f7f100fbf16060b66e15aee, source d2c730140973c9037de8729387012f830204072053729fbf9bdebf1bc5fe7241; policy R6-POLICY-5 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c; catalog R7B0-CATALOG-2 ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9; B0 r2 records 6867d3e89ebd4bb309c018fb456508d3a4510038194269769b0a4ef16f23d885)",
+      "sha256": "01c146f92cf1728b21efed9983ee5855f14365eec93cb64393627c36e319920f",
+      "rule_ids": [
+        "R7B0-CATALOG-2 (bound paths the delta touches)",
+        "R7B0-SSCTR-r2 B0-C05 c1, B0-C06 c1 and c8, B0-C07 c1 and c6, B0-C08 conditions",
+        "R6-POLICY-5 envelope records (r12): R6-EVENT-TRANSITION C7 and C18, R6-SUBSTITUTION C5, C6 and C8",
+        "R7-B.1 delta FREEZE-2 10b26d6 -> R7B1-FREEZE-1 d41df8b: src/r6-program.mjs (strengthRowsFor, eventWeekStandIn, buildWeek), src/r6-adaptation.mjs (exerciseSubstitution, eventWeekDisclosure, slipsFrom, skillMismatchGap, finishProposal, rebuild, equipmentChange, evaluateProgram), src/r7b-repertoire.mjs (buildTemplates, ladderDown, followsSkillMismatch, REASON_BASED_SUBSTITUTION)",
+        "QE-R7B-OBS-04, QE-R7B-R2-01, QE-R7B-R2-03, QE-R7B-R2-04",
+        "CoachingCore/r7/b1/BLOCKER_CLOSURE_R7B1.md (SHA-256 a551a610...95173cab)"
+      ]
+    },
+    "approved_scope": "The R7-B.1 runtime binding on R7B1-FREEZE-1: the QE-R7B-OBS-04 event-week rule for reason-based substitutions (stand-in or slot left out, disclosure, establishment after the post-event week, clinical screen first), stored novice templates (F9), the SKILL_MISMATCH fallback direction and the next substitution candidate; the inherited equipment path on event-phase days excluded (F11); F12 and F13 as conditioned.",
+    "conditions": [
+      "F11 (owner Chief -> next runtime mission, with the SSCTR): apply the QE-R7B-OBS-04 rule to equipment-forced substitutions on event-phase days (a performed configuration that fits the equipment of the date, else the slot left out and disclosed; the substitute starts after the post-event week with its establishment) before any use beyond the offline reference; until then that path is excluded from R7B-SSCTR-TAPER",
+      "F12 (owner next runtime mission, with Product/UX for presentation): disclose the event-week handling of a substitute planned before the event weeks, and every slot a review leaves out of an event-phase session, before any use beyond the offline reference",
+      "F13 (owner next runtime mission, with Product/UX): the questions raised instead of a substitution (NO_ADMISSIBLE_ALTERNATIVE, NO_LOWER_SKILL_ALTERNATIVE) offer leaving the slot out, disclosed (R6-SUBSTITUTION C8), and only options that can apply, before any use beyond the offline reference",
+      "R18: a substitute planned before the event weeks enters them only once performed, which holds only when the week before them receives its gating review; every elapsed week receives its gating review before any use beyond the offline reference (recorded condition, unchanged)",
+      "Carried from R7B-SSCTR-r2 with their owners: F6 (Product/Data with Engineering), F7 (recorded deviation), F8 and F10 (next runtime mission), the ceiling-units re-review trigger",
+      "R6-POLICY-5, R7B0-CATALOG-2 and the B0 r2 records stay unchanged; R7-B.1 adds no dose"
+    ],
+    "approval_date": "2026-10-31",
+    "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+    "owner": "Chief / Founder",
+    "human_review": null,
+    "re_review_triggers": [
+      "Any byte change to a file bound by RUNTIME_FREEZE_R7B1_1.json, to R6-POLICY-5, to R7B0-CATALOG-2 or to the R7B0-SSCTR-r2 records",
+      "A relevant new systematic review or meta-analysis",
+      "V1 population, objective or scope change",
+      "Adverse event or runtime inconsistency observed in a later gate",
+      "Funded qualified-human revalidation (may maintain, modify or revoke without AI veto)",
+      "The runtime change that resolves R7B1-SSCTR-F11"
+    ]
+  },
+  {
+    "queue_id": "HQ-R7B1-SSCTR-NOVICE",
+    "decision_id": "R7B-SSCTR-NOVICE",
+    "decision_revision": "R7B1-SSCTR-r1",
+    "target": {
+      "project": "MyApp / Vilumo Fit",
+      "artifact": "CoachingCore/r7/b1/RUNTIME_FREEZE_R7B1_1.json",
+      "artifact_revision": "R7B1-FREEZE-1 (freeze commit d41df8b129495e32fe2923087d665798854609e9, bytes of b82d75878db2bb8290847ef18abe104fba21989f; source digest 976a13351f0b40ee363e9e4d6d1592e2653306ac018e3cf143d2d16968d366c9; manifest digest 2fc0a59a7b919b6b7a039981cd995c2d511437481a713a5c74a97c57c84d614b; predecessor R7B-RUNTIME-REPERTOIRE-FREEZE-2 10b26d6e40542a066f7f100fbf16060b66e15aee, source d2c730140973c9037de8729387012f830204072053729fbf9bdebf1bc5fe7241; policy R6-POLICY-5 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c; catalog R7B0-CATALOG-2 ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9; B0 r2 records 6867d3e89ebd4bb309c018fb456508d3a4510038194269769b0a4ef16f23d885)",
+      "sha256": "01c146f92cf1728b21efed9983ee5855f14365eec93cb64393627c36e319920f",
+      "rule_ids": [
+        "B0-C08 c1-c5 (novice density, incl. the lazy start R7B-DECL-16)",
+        "B0-C07 c1 and c6 (skill ladders; SKILL_MISMATCH regression)",
+        "B0-C01 c1-c10 (graduation, strides optionality; unchanged)",
+        "QE-R7B-R2-01 (finishProposal, rebuild, equipmentChange)",
+        "QE-R7B-R2-03 (buildTemplates, followsSkillMismatch, skillMismatchGap)",
+        "QE-R7B-R2-04 (exerciseSubstitution candidates, slipsFrom)"
+      ]
+    },
+    "approved_scope": "Novice paths on R7B1-FREEZE-1: graduation and its withdrawal, strides optionality, novice density from intake and from a context change (held through later reviews), skill ladders and the SKILL_MISMATCH direction, practice rows; F13 and F6 as conditioned.",
+    "conditions": [
+      "F13 (owner next runtime mission, with Product/UX): the questions raised instead of a substitution (NO_ADMISSIBLE_ALTERNATIVE, NO_LOWER_SKILL_ALTERNATIVE) offer leaving the slot out, disclosed (R6-SUBSTITUTION C8), and only options that can apply, before any use beyond the offline reference",
+      "F6: the observation contract records which session was run (owner Product/Data with Engineering) before any use beyond the offline reference",
+      "B0-C01, B0-C07 and B0-C08 conditions keep applying unchanged"
+    ],
+    "approval_date": "2026-10-31",
+    "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+    "owner": "Chief / Founder",
+    "human_review": null,
+    "re_review_triggers": [
+      "Any byte change to a file bound by RUNTIME_FREEZE_R7B1_1.json, to R6-POLICY-5, to R7B0-CATALOG-2 or to the R7B0-SSCTR-r2 records",
+      "A relevant new systematic review or meta-analysis",
+      "V1 population, objective or scope change",
+      "Adverse event or runtime inconsistency observed in a later gate",
+      "Funded qualified-human revalidation (may maintain, modify or revoke without AI veto)"
+    ]
+  },
+  {
+    "queue_id": "HQ-R7B1-SSCTR-HYBRID",
+    "decision_id": "R7B-SSCTR-HYBRID",
+    "decision_revision": "R7B1-SSCTR-r1",
+    "target": {
+      "project": "MyApp / Vilumo Fit",
+      "artifact": "CoachingCore/r7/b1/RUNTIME_FREEZE_R7B1_1.json",
+      "artifact_revision": "R7B1-FREEZE-1 (freeze commit d41df8b129495e32fe2923087d665798854609e9, bytes of b82d75878db2bb8290847ef18abe104fba21989f; source digest 976a13351f0b40ee363e9e4d6d1592e2653306ac018e3cf143d2d16968d366c9; manifest digest 2fc0a59a7b919b6b7a039981cd995c2d511437481a713a5c74a97c57c84d614b; predecessor R7B-RUNTIME-REPERTOIRE-FREEZE-2 10b26d6e40542a066f7f100fbf16060b66e15aee, source d2c730140973c9037de8729387012f830204072053729fbf9bdebf1bc5fe7241; policy R6-POLICY-5 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c; catalog R7B0-CATALOG-2 ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9; B0 r2 records 6867d3e89ebd4bb309c018fb456508d3a4510038194269769b0a4ef16f23d885)",
+      "sha256": "01c146f92cf1728b21efed9983ee5855f14365eec93cb64393627c36e319920f",
+      "rule_ids": [
+        "B0-C11 c1-c8 (CMP.I11, CMP.P04 content stage incl. the week wrap)",
+        "B0-C03 c3, B0-C06 c2, B0-C07 c7 placement of first exposures",
+        "src/r6-program.mjs buildWeek content stage",
+        "src/r6-balanced.mjs interferenceCosts"
+      ]
+    },
+    "approved_scope": "CMP.I11 ranking and the CMP.P04 content stage within the week and across the week wrap on R7B1-FREEZE-1 (carried forward from R7B-SSCTR-r2).",
+    "conditions": [
+      "B0-C11 c1-c8 keep applying unchanged; R7-B and R7-B.1 add no hybrid dose",
+      "First exposures that CMP.I11 does not see (a novice-density release, a mid-context re-establishment; R7B-DECL-08) stay acceptable only while CMP.I11 is a LOW ranking cost and those exposures are effort-established at most 2 sets at RIR >= 3"
+    ],
+    "approval_date": "2026-10-31",
+    "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+    "owner": "Chief / Founder",
+    "human_review": null,
+    "re_review_triggers": [
+      "Any byte change to a file bound by RUNTIME_FREEZE_R7B1_1.json, to R6-POLICY-5, to R7B0-CATALOG-2 or to the R7B0-SSCTR-r2 records",
+      "A relevant new systematic review or meta-analysis",
+      "V1 population, objective or scope change",
+      "Adverse event or runtime inconsistency observed in a later gate",
+      "Funded qualified-human revalidation (may maintain, modify or revoke without AI veto)"
+    ]
+  },
+  {
+    "queue_id": "HQ-R7B1-SSCTR-TAPER",
+    "decision_id": "R7B-SSCTR-TAPER",
+    "decision_revision": "R7B1-SSCTR-r1",
+    "target": {
+      "project": "MyApp / Vilumo Fit",
+      "artifact": "CoachingCore/r7/b1/RUNTIME_FREEZE_R7B1_1.json",
+      "artifact_revision": "R7B1-FREEZE-1 (freeze commit d41df8b129495e32fe2923087d665798854609e9, bytes of b82d75878db2bb8290847ef18abe104fba21989f; source digest 976a13351f0b40ee363e9e4d6d1592e2653306ac018e3cf143d2d16968d366c9; manifest digest 2fc0a59a7b919b6b7a039981cd995c2d511437481a713a5c74a97c57c84d614b; predecessor R7B-RUNTIME-REPERTOIRE-FREEZE-2 10b26d6e40542a066f7f100fbf16060b66e15aee, source d2c730140973c9037de8729387012f830204072053729fbf9bdebf1bc5fe7241; policy R6-POLICY-5 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c; catalog R7B0-CATALOG-2 ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9; B0 r2 records 6867d3e89ebd4bb309c018fb456508d3a4510038194269769b0a4ef16f23d885)",
+      "sha256": "01c146f92cf1728b21efed9983ee5855f14365eec93cb64393627c36e319920f",
+      "rule_ids": [
+        "R6-EVENT-TRANSITION as bound (10K, half marathon), C7 and C18",
+        "B0-C05 c1",
+        "B0-C06 c1 and c8",
+        "R6-SUBSTITUTION C5, C6 and C8",
+        "B0-C02 c2 and c6; race-day warm-up strides (B0-C01 c8)",
+        "src/r6-program.mjs strengthRowsFor, eventWeekStandIn, buildWeek, eventWeekSessions; src/r6-adaptation.mjs exerciseSubstitution, eventWeekDisclosure; src/r6-prescription.mjs racePrescription"
+      ]
+    },
+    "approved_scope": "Planned 10K and half-marathon taper, race week, post-event and combined strength taper on R7B1-FREEZE-1, and reason-based substitutions requested in or before those weeks under the QE-R7B-OBS-04 rule; equipment-forced substitutions on event-phase days excluded until R7B1-SSCTR-F11 is resolved.",
+    "conditions": [
+      "R6-EVENT-TRANSITION C4-C19, B0-C05 c1 and R6-SUBSTITUTION C5-C8 keep applying unchanged; R7-B.1 adds no event dose",
+      "Equipment-forced substitutions (EQUIPMENT_CHANGE) on TAPER, RACE_WEEK or POST_EVENT days are excluded from this approval until R7B1-SSCTR-F11 is resolved",
+      "R18: a substitute planned before the event weeks enters them only once performed, which holds only when the week before them receives its gating review; every elapsed week receives its gating review before any use beyond the offline reference (recorded condition, unchanged)",
+      "F12 (owner next runtime mission, with Product/UX for presentation): disclose the event-week handling of a substitute planned before the event weeks, and every slot a review leaves out of an event-phase session, before any use beyond the offline reference",
+      "\"Keep <exercise> until after the event\" stays available as not adopting the proposal: it schedules nothing, and the athlete makes the change after the post-event week",
+      "Race-day warm-up strides stay optional for the B0-C01 c8 population"
+    ],
+    "approval_date": "2026-10-31",
+    "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+    "owner": "Chief / Founder",
+    "human_review": null,
+    "re_review_triggers": [
+      "Any byte change to a file bound by RUNTIME_FREEZE_R7B1_1.json, to R6-POLICY-5, to R7B0-CATALOG-2 or to the R7B0-SSCTR-r2 records",
+      "A relevant new systematic review or meta-analysis",
+      "V1 population, objective or scope change",
+      "Adverse event or runtime inconsistency observed in a later gate",
+      "Funded qualified-human revalidation (may maintain, modify or revoke without AI veto)",
+      "The runtime change that resolves R7B1-SSCTR-F11"
+    ]
+  },
+  {
+    "queue_id": "HQ-R7B1-SSCTR-RETURN",
+    "decision_id": "R7B-SSCTR-RETURN",
+    "decision_revision": "R7B1-SSCTR-r1",
+    "target": {
+      "project": "MyApp / Vilumo Fit",
+      "artifact": "CoachingCore/r7/b1/RUNTIME_FREEZE_R7B1_1.json",
+      "artifact_revision": "R7B1-FREEZE-1 (freeze commit d41df8b129495e32fe2923087d665798854609e9, bytes of b82d75878db2bb8290847ef18abe104fba21989f; source digest 976a13351f0b40ee363e9e4d6d1592e2653306ac018e3cf143d2d16968d366c9; manifest digest 2fc0a59a7b919b6b7a039981cd995c2d511437481a713a5c74a97c57c84d614b; predecessor R7B-RUNTIME-REPERTOIRE-FREEZE-2 10b26d6e40542a066f7f100fbf16060b66e15aee, source d2c730140973c9037de8729387012f830204072053729fbf9bdebf1bc5fe7241; policy R6-POLICY-5 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c; catalog R7B0-CATALOG-2 ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9; B0 r2 records 6867d3e89ebd4bb309c018fb456508d3a4510038194269769b0a4ef16f23d885)",
+      "sha256": "01c146f92cf1728b21efed9983ee5855f14365eec93cb64393627c36e319920f",
+      "rule_ids": [
+        "R6-NONCLINICAL-RETURN as bound (SHORT, MODERATE, LONG)",
+        "R7-A E1",
+        "B0-C01 c1 and c7 with R7B-DECL-04 (revised)",
+        "B0-C02 c1, c3 and c5 with R7B-DECL-05 (bouts currency, withdrawal, lapse)",
+        "QE-R7B-04 (graduation withdrawal on corrected evidence)"
+      ]
+    },
+    "approved_scope": "Returns after nonclinical interruptions and evidence corrections on R7B1-FREEZE-1: E1, graduation re-entry after a restart, graduation withdrawal, familiar-bouts currency, lapse and withdrawal, and questions that carry the factual re-plan (F8 as conditioned; carried forward from R7B-SSCTR-r2).",
+    "conditions": [
+      "F8: a completed bouts session counts toward currency whatever its response, the gate decides repeat or withdrawal, and the replacing session states the actual reason (owner next runtime mission) before any use beyond the offline reference",
+      "R6-NONCLINICAL-RETURN, B0-C01 c7 and B0-C02 c3/c5 keep applying unchanged"
+    ],
+    "approval_date": "2026-10-31",
+    "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+    "owner": "Chief / Founder",
+    "human_review": null,
+    "re_review_triggers": [
+      "Any byte change to a file bound by RUNTIME_FREEZE_R7B1_1.json, to R6-POLICY-5, to R7B0-CATALOG-2 or to the R7B0-SSCTR-r2 records",
+      "A relevant new systematic review or meta-analysis",
+      "V1 population, objective or scope change",
+      "Adverse event or runtime inconsistency observed in a later gate",
+      "Funded qualified-human revalidation (may maintain, modify or revoke without AI veto)"
+    ]
+  },
+  {
+    "queue_id": "HQ-R7B1-SSCTR-DOSE",
+    "decision_id": "R7B-SSCTR-DOSE",
+    "decision_revision": "R7B1-SSCTR-r1",
+    "target": {
+      "project": "MyApp / Vilumo Fit",
+      "artifact": "CoachingCore/r7/b1/RUNTIME_FREEZE_R7B1_1.json",
+      "artifact_revision": "R7B1-FREEZE-1 (freeze commit d41df8b129495e32fe2923087d665798854609e9, bytes of b82d75878db2bb8290847ef18abe104fba21989f; source digest 976a13351f0b40ee363e9e4d6d1592e2653306ac018e3cf143d2d16968d366c9; manifest digest 2fc0a59a7b919b6b7a039981cd995c2d511437481a713a5c74a97c57c84d614b; predecessor R7B-RUNTIME-REPERTOIRE-FREEZE-2 10b26d6e40542a066f7f100fbf16060b66e15aee, source d2c730140973c9037de8729387012f830204072053729fbf9bdebf1bc5fe7241; policy R6-POLICY-5 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c; catalog R7B0-CATALOG-2 ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9; B0 r2 records 6867d3e89ebd4bb309c018fb456508d3a4510038194269769b0a4ef16f23d885)",
+      "sha256": "01c146f92cf1728b21efed9983ee5855f14365eec93cb64393627c36e319920f",
+      "rule_ids": [
+        "R6 goal doses, establishment and phase doses as bound (R6-EVENT-TRANSITION C7 and C18; R6-SUBSTITUTION C6)",
+        "B0-C03 c1, c2, c6; B0-C04 c4, c5; B0-C05 c1, c2; B0-C08; B0-C09",
+        "R7-B.1 delta: the stand-in dose (strengthDose of the stand-in configuration in the slot role and day phase), next candidates, SKILL_MISMATCH fallbacks, stored novice templates",
+        "Q-R7B-05 (one practice row per configuration per session)",
+        "Q-R7B-07 disclosures (limit and equipment offered)"
+      ]
+    },
+    "approved_scope": "Strength and run dose boundaries and B0 representation rules on R7B1-FREEZE-1, including event-week stand-ins at their own reduced dose and the establishment of next candidates and fallbacks (F7 and F10 as recorded; equipment-forced event-week first exposures excluded, F11).",
+    "conditions": [
+      "F7 stays a recorded deviation until a week-level calf pass after the fit (owner next runtime mission)",
+      "F10: promise a skill-ladder path only where one exists (owner next runtime or catalog revision)",
+      "F11: the doses of equipment-forced first exposures on event-phase days are not approved here (see R7B-SSCTR-TAPER)",
+      "B0-F07: available implement steps collected before production (owner Product/Data)",
+      "Band and assistance level changes stay athlete-reported and confirmed (B0-C04 c5)"
+    ],
+    "approval_date": "2026-10-31",
+    "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+    "owner": "Chief / Founder",
+    "human_review": null,
+    "re_review_triggers": [
+      "Any byte change to a file bound by RUNTIME_FREEZE_R7B1_1.json, to R6-POLICY-5, to R7B0-CATALOG-2 or to the R7B0-SSCTR-r2 records",
+      "A relevant new systematic review or meta-analysis",
+      "V1 population, objective or scope change",
+      "Adverse event or runtime inconsistency observed in a later gate",
+      "Funded qualified-human revalidation (may maintain, modify or revoke without AI veto)"
+    ]
+  },
+  {
+    "queue_id": "HQ-R7B1-SSCTR-DECLARED",
+    "decision_id": "R7B-SSCTR-DECLARED",
+    "decision_revision": "R7B1-SSCTR-r1",
+    "target": {
+      "project": "MyApp / Vilumo Fit",
+      "artifact": "CoachingCore/r7/b1/RUNTIME_FREEZE_R7B1_1.json",
+      "artifact_revision": "R7B1-FREEZE-1 (freeze commit d41df8b129495e32fe2923087d665798854609e9, bytes of b82d75878db2bb8290847ef18abe104fba21989f; source digest 976a13351f0b40ee363e9e4d6d1592e2653306ac018e3cf143d2d16968d366c9; manifest digest 2fc0a59a7b919b6b7a039981cd995c2d511437481a713a5c74a97c57c84d614b; predecessor R7B-RUNTIME-REPERTOIRE-FREEZE-2 10b26d6e40542a066f7f100fbf16060b66e15aee, source d2c730140973c9037de8729387012f830204072053729fbf9bdebf1bc5fe7241; policy R6-POLICY-5 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c; catalog R7B0-CATALOG-2 ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9; B0 r2 records 6867d3e89ebd4bb309c018fb456508d3a4510038194269769b0a4ef16f23d885)",
+      "sha256": "01c146f92cf1728b21efed9983ee5855f14365eec93cb64393627c36e319920f",
+      "rule_ids": [
+        "CoachingCore/r7/b/R7B_RECHECK_HANDOFF.md section 3 (SHA-256 110006b6...9acb): R7B-DECL-04 (revised), -05, -13, -14, -15, -16",
+        "CoachingCore/r7/b/R7B_REVIEW_HANDOFF.md section 4: R7B-DECL-01 ... 12",
+        "CoachingCore/r7/b1/BLOCKER_CLOSURE_R7B1.md B1 (event weeks) and B2 (stored novice templates)"
+      ]
+    },
+    "approved_scope": "Declared interpretations R7B-DECL-01 ... 16 as bindings on R7B1-FREEZE-1 (R7B-DECL-13 inside the event weeks under the QE-R7B-OBS-04 rule; F8 and F6 as conditioned).",
+    "conditions": [
+      "R7B-DECL-05: F8 before any use beyond the offline reference (owner next runtime mission)",
+      "R7B-DECL-03: F6 routed (owner Product/Data with Engineering)",
+      "R7B-DECL-13 inside the event weeks applies under the QE-R7B-OBS-04 rule as frozen, with F12 and F13 routed; equipment-forced substitutions on event-phase days stay excluded (F11)",
+      "R18: every elapsed week receives its gating review before any use beyond the offline reference (recorded condition); the ceiling-units question is a re-review trigger for the next policy revision"
+    ],
+    "approval_date": "2026-10-31",
+    "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+    "owner": "Chief / Founder",
+    "human_review": null,
+    "re_review_triggers": [
+      "Any byte change to a file bound by RUNTIME_FREEZE_R7B1_1.json, to R6-POLICY-5, to R7B0-CATALOG-2 or to the R7B0-SSCTR-r2 records",
+      "A relevant new systematic review or meta-analysis",
+      "V1 population, objective or scope change",
+      "Adverse event or runtime inconsistency observed in a later gate",
+      "Funded qualified-human revalidation (may maintain, modify or revoke without AI veto)",
+      "A policy revision of the single-run ceiling"
+    ]
+  }
+]

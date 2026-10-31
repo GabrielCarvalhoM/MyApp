@@ -1,0 +1,257 @@
+{
+ "probe": "j5-event-guard-state",
+ "frozen": "FREEZE-2",
+ "root": "temporary tree root",
+ "ran": "2026-10-31T18:46:19.747Z",
+ "results": [
+  {
+   "id": "J5",
+   "area": "event-week guard and state transitions",
+   "verdict": "FAIL",
+   "expected": "the guard reads the evidence of the decision's own week; corrections and missed sessions remove a never-performed substitute from the event weeks; history never reads the projection",
+   "actual": {
+    "failures": [
+     {
+      "label": "split-squat",
+      "case": "C",
+      "note": "after the retraction the never-performed substitute is still prescribed in the event weeks ahead",
+      "rows": [
+       {
+        "w": 10,
+        "s": "w10-str-d4",
+        "id": "bulgarian-split-squat-db"
+       }
+      ]
+     },
+     {
+      "label": "split-squat",
+      "case": "B",
+      "note": "missed substitute prescribed in the event weeks after the review",
+      "rows": [
+       {
+        "w": 10,
+        "s": "w10-str-d4",
+        "id": "bulgarian-split-squat-db"
+       }
+      ]
+     },
+     {
+      "label": "split-squat",
+      "case": "D",
+      "note": "a decision in the taper week re-plans it from the projection: the unexecuted substitute stays",
+      "rows": [
+       {
+        "w": 10,
+        "s": "w10-str-d4",
+        "id": "bulgarian-split-squat-db"
+       }
+      ]
+     },
+     {
+      "label": "row",
+      "case": "C",
+      "note": "after the retraction the never-performed substitute is still prescribed in the event weeks ahead",
+      "rows": [
+       {
+        "w": 10,
+        "s": "w10-str-d0",
+        "id": "kb-row"
+       },
+       {
+        "w": 10,
+        "s": "w10-str-d4",
+        "id": "kb-row"
+       },
+       {
+        "w": 11,
+        "s": "w11-str-d0",
+        "id": "kb-row"
+       },
+       {
+        "w": 12,
+        "s": "w12-str-d4",
+        "id": "kb-row"
+       }
+      ]
+     },
+     {
+      "label": "row",
+      "case": "B",
+      "note": "missed substitute prescribed in the event weeks after the review",
+      "rows": [
+       {
+        "w": 10,
+        "s": "w10-str-d0",
+        "id": "kb-row"
+       },
+       {
+        "w": 10,
+        "s": "w10-str-d4",
+        "id": "kb-row"
+       },
+       {
+        "w": 11,
+        "s": "w11-str-d0",
+        "id": "kb-row"
+       },
+       {
+        "w": 12,
+        "s": "w12-str-d4",
+        "id": "kb-row"
+       }
+      ]
+     },
+     {
+      "label": "row",
+      "case": "D",
+      "note": "a decision in the taper week re-plans it from the projection: the unexecuted substitute stays",
+      "rows": [
+       {
+        "w": 10,
+        "s": "w10-str-d0",
+        "id": "kb-row"
+       },
+       {
+        "w": 10,
+        "s": "w10-str-d4",
+        "id": "kb-row"
+       }
+      ]
+     },
+     {
+      "label": "rdl",
+      "case": "C",
+      "note": "after the retraction the never-performed substitute is still prescribed in the event weeks ahead",
+      "rows": [
+       {
+        "w": 10,
+        "s": "w10-str-d4",
+        "id": "single-leg-rdl-db"
+       },
+       {
+        "w": 12,
+        "s": "w12-str-d4",
+        "id": "single-leg-rdl-db"
+       }
+      ]
+     },
+     {
+      "label": "rdl",
+      "case": "B",
+      "note": "missed substitute prescribed in the event weeks after the review",
+      "rows": [
+       {
+        "w": 10,
+        "s": "w10-str-d4",
+        "id": "single-leg-rdl-db"
+       },
+       {
+        "w": 12,
+        "s": "w12-str-d4",
+        "id": "single-leg-rdl-db"
+       }
+      ]
+     },
+     {
+      "label": "rdl",
+      "case": "D",
+      "note": "a decision in the taper week re-plans it from the projection: the unexecuted substitute stays",
+      "rows": [
+       {
+        "w": 10,
+        "s": "w10-str-d4",
+        "id": "single-leg-rdl-db"
+       }
+      ]
+     }
+    ],
+    "cases": {
+     "split-squat": {
+      "A": {
+       "substitute": "bulgarian-split-squat-db",
+       "projectedInEventWeeksByTheDecision": 1,
+       "inTaperAfterReview": 1,
+       "history": "2027-01-08"
+      },
+      "C": {
+       "corrected": 1,
+       "status": "MODIFY",
+       "action": "REPLAN_FROM_EVIDENCE",
+       "substituteAheadInEventWeeks": 1,
+       "history": null
+      },
+      "B": {
+       "inEventWeeks": 1,
+       "history": null
+      },
+      "D": {
+       "projectedBeforeTheDecision": 1,
+       "decision": {
+        "status": "MODIFY",
+        "action": "SUBSTITUTE_FOR_REASON"
+       },
+       "substituteInTaperWeekAfterDecision": 1,
+       "history": null
+      }
+     },
+     "row": {
+      "A": {
+       "substitute": "kb-row",
+       "projectedInEventWeeksByTheDecision": 4,
+       "inTaperAfterReview": 4,
+       "history": "2027-01-08"
+      },
+      "C": {
+       "corrected": 2,
+       "status": "MODIFY",
+       "action": "REPLAN_FROM_EVIDENCE",
+       "substituteAheadInEventWeeks": 4,
+       "history": null
+      },
+      "B": {
+       "inEventWeeks": 4,
+       "history": null
+      },
+      "D": {
+       "projectedBeforeTheDecision": 4,
+       "decision": {
+        "status": "MODIFY",
+        "action": "SUBSTITUTE_FOR_REASON"
+       },
+       "substituteInTaperWeekAfterDecision": 2,
+       "history": null
+      }
+     },
+     "rdl": {
+      "A": {
+       "substitute": "single-leg-rdl-db",
+       "projectedInEventWeeksByTheDecision": 2,
+       "inTaperAfterReview": 2,
+       "history": "2027-01-08"
+      },
+      "C": {
+       "corrected": 1,
+       "status": "MODIFY",
+       "action": "REPLAN_FROM_EVIDENCE",
+       "substituteAheadInEventWeeks": 2,
+       "history": null
+      },
+      "B": {
+       "inEventWeeks": 2,
+       "history": null
+      },
+      "D": {
+       "projectedBeforeTheDecision": 2,
+       "decision": {
+        "status": "MODIFY",
+        "action": "SUBSTITUTE_FOR_REASON"
+       },
+       "substituteInTaperWeekAfterDecision": 1,
+       "history": null
+      }
+     }
+    }
+   }
+  }
+ ]
+}

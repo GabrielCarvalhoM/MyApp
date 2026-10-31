@@ -1,0 +1,406 @@
+{
+ "ms": 3655,
+ "familiesSeen": [
+  "RUN.WALK_JOG",
+  "RUN.EASY",
+  "RUN.STRIDES",
+  "RUN.THRESHOLD",
+  "RUN.WALK",
+  "RUN.LONG",
+  "RUN.FAMILIAR_REPEATED_BOUTS",
+  "RUN.EVENT_SPECIFIC",
+  "RUN.RACE_TOUCH",
+  "RUN.RACE"
+ ],
+ "familiesNotSeen": [],
+ "runConfigsSeen": [
+  "RUNCFG.WALK_JOG_INTERVALS",
+  "RUNCFG.EASY_CONTINUOUS",
+  "RUNCFG.THRESHOLD_INTERVALS",
+  "RUNCFG.WALK_CONTINUOUS",
+  "RUNCFG.LONG_CONTINUOUS",
+  "RUNCFG.FAMILIAR_REPEATED_BOUTS",
+  "RUNCFG.TEN_K_SPECIFIC_INTERVALS",
+  "RUNCFG.RACE_TOUCH_INTERVALS",
+  "RUNCFG.SHAKEOUT",
+  "RUNCFG.RACE_EFFORT",
+  "RUNCFG.HALF_MARATHON_SPECIFIC_INTERVALS",
+  "RUNCFG.RACE_COMPLETION"
+ ],
+ "runConfigsNotSeen": [
+  "RUNCFG.STRIDES_SET"
+ ],
+ "scenarios": {
+  "walkJog": {
+   "class": "WALK_JOG",
+   "generated": {
+    "families": [
+     "RUN.WALK_JOG",
+     "RUN.EASY",
+     "RUN.STRIDES"
+    ],
+    "configs": [
+     "RUNCFG.WALK_JOG_INTERVALS",
+     "RUNCFG.EASY_CONTINUOUS"
+    ]
+   },
+   "afterReviews": {
+    "families": [
+     "RUN.WALK_JOG",
+     "RUN.EASY",
+     "RUN.STRIDES"
+    ],
+    "configs": [
+     "RUNCFG.WALK_JOG_INTERVALS",
+     "RUNCFG.EASY_CONTINUOUS"
+    ]
+   },
+   "actions": {
+    "KEEP": 16
+   },
+   "error": null,
+   "negotiation": []
+  },
+  "walkJogIntermediate": {
+   "class": "WALK_JOG",
+   "generated": {
+    "families": [
+     "RUN.WALK_JOG",
+     "RUN.EASY",
+     "RUN.STRIDES"
+    ],
+    "configs": [
+     "RUNCFG.WALK_JOG_INTERVALS",
+     "RUNCFG.EASY_CONTINUOUS"
+    ]
+   },
+   "afterReviews": {
+    "families": [
+     "RUN.WALK_JOG",
+     "RUN.EASY",
+     "RUN.STRIDES",
+     "RUN.THRESHOLD"
+    ],
+    "configs": [
+     "RUNCFG.WALK_JOG_INTERVALS",
+     "RUNCFG.EASY_CONTINUOUS",
+     "RUNCFG.THRESHOLD_INTERVALS"
+    ]
+   },
+   "actions": {
+    "KEEP": 15,
+    "RUN_QUALITY_GRADUATION": 1
+   },
+   "error": null,
+   "negotiation": []
+  },
+  "tooManyDays": {
+   "class": "EASY_LOW",
+   "generated": {
+    "families": [
+     "RUN.WALK",
+     "RUN.EASY",
+     "RUN.LONG",
+     "RUN.STRIDES"
+    ],
+    "configs": [
+     "RUNCFG.WALK_CONTINUOUS",
+     "RUNCFG.EASY_CONTINUOUS",
+     "RUNCFG.LONG_CONTINUOUS"
+    ]
+   },
+   "afterReviews": {
+    "families": [
+     "RUN.WALK",
+     "RUN.EASY",
+     "RUN.LONG",
+     "RUN.STRIDES",
+     "RUN.THRESHOLD"
+    ],
+    "configs": [
+     "RUNCFG.WALK_CONTINUOUS",
+     "RUNCFG.EASY_CONTINUOUS",
+     "RUNCFG.LONG_CONTINUOUS",
+     "RUNCFG.THRESHOLD_INTERVALS"
+    ]
+   },
+   "actions": {
+    "KEEP": 11,
+    "RUN_QUALITY_GRADUATION": 1
+   },
+   "error": null,
+   "negotiation": [
+    "TOO_MANY_RUN_DAYS_FOR_CURRENT_PRACTICE"
+   ]
+  },
+  "easyLow": {
+   "class": "EASY_LOW",
+   "generated": {
+    "families": [
+     "RUN.EASY",
+     "RUN.LONG",
+     "RUN.STRIDES"
+    ],
+    "configs": [
+     "RUNCFG.EASY_CONTINUOUS",
+     "RUNCFG.LONG_CONTINUOUS"
+    ]
+   },
+   "afterReviews": {
+    "families": [
+     "RUN.EASY",
+     "RUN.LONG",
+     "RUN.STRIDES",
+     "RUN.THRESHOLD"
+    ],
+    "configs": [
+     "RUNCFG.EASY_CONTINUOUS",
+     "RUNCFG.LONG_CONTINUOUS",
+     "RUNCFG.THRESHOLD_INTERVALS"
+    ]
+   },
+   "actions": {
+    "KEEP": 15,
+    "RUN_QUALITY_GRADUATION": 1
+   },
+   "error": null,
+   "negotiation": []
+  },
+  "restart": {
+   "class": "RESTART",
+   "generated": {
+    "families": [
+     "RUN.EASY",
+     "RUN.LONG",
+     "RUN.STRIDES"
+    ],
+    "configs": [
+     "RUNCFG.EASY_CONTINUOUS",
+     "RUNCFG.LONG_CONTINUOUS"
+    ]
+   },
+   "afterReviews": {
+    "families": [
+     "RUN.EASY",
+     "RUN.LONG",
+     "RUN.STRIDES",
+     "RUN.THRESHOLD"
+    ],
+    "configs": [
+     "RUNCFG.EASY_CONTINUOUS",
+     "RUNCFG.LONG_CONTINUOUS",
+     "RUNCFG.THRESHOLD_INTERVALS"
+    ]
+   },
+   "actions": {
+    "KEEP": 11,
+    "RUN_QUALITY_GRADUATION": 1
+   },
+   "error": null,
+   "negotiation": []
+  },
+  "bouts": {
+   "class": "EASY_CURRENT",
+   "generated": {
+    "families": [
+     "RUN.EASY",
+     "RUN.LONG",
+     "RUN.FAMILIAR_REPEATED_BOUTS",
+     "RUN.STRIDES"
+    ],
+    "configs": [
+     "RUNCFG.EASY_CONTINUOUS",
+     "RUNCFG.LONG_CONTINUOUS",
+     "RUNCFG.FAMILIAR_REPEATED_BOUTS"
+    ]
+   },
+   "afterReviews": {
+    "families": [
+     "RUN.EASY",
+     "RUN.LONG",
+     "RUN.FAMILIAR_REPEATED_BOUTS",
+     "RUN.STRIDES"
+    ],
+    "configs": [
+     "RUNCFG.EASY_CONTINUOUS",
+     "RUNCFG.LONG_CONTINUOUS",
+     "RUNCFG.FAMILIAR_REPEATED_BOUTS"
+    ]
+   },
+   "actions": {
+    "KEEP": 12
+   },
+   "error": null,
+   "negotiation": []
+  },
+  "familiarThreshold": {
+   "class": "QUALITY_FAMILIAR",
+   "generated": {
+    "families": [
+     "RUN.THRESHOLD",
+     "RUN.EASY",
+     "RUN.LONG",
+     "RUN.STRIDES"
+    ],
+    "configs": [
+     "RUNCFG.THRESHOLD_INTERVALS",
+     "RUNCFG.EASY_CONTINUOUS",
+     "RUNCFG.LONG_CONTINUOUS"
+    ]
+   },
+   "afterReviews": {
+    "families": [
+     "RUN.THRESHOLD",
+     "RUN.EASY",
+     "RUN.LONG",
+     "RUN.STRIDES"
+    ],
+    "configs": [
+     "RUNCFG.THRESHOLD_INTERVALS",
+     "RUNCFG.EASY_CONTINUOUS",
+     "RUNCFG.LONG_CONTINUOUS"
+    ]
+   },
+   "actions": {
+    "KEEP": 12
+   },
+   "error": null,
+   "negotiation": []
+  },
+  "tenK": {
+   "class": "EASY_CURRENT",
+   "generated": {
+    "families": [
+     "RUN.EASY",
+     "RUN.LONG",
+     "RUN.STRIDES",
+     "RUN.THRESHOLD",
+     "RUN.EVENT_SPECIFIC",
+     "RUN.RACE_TOUCH",
+     "RUN.RACE"
+    ],
+    "configs": [
+     "RUNCFG.EASY_CONTINUOUS",
+     "RUNCFG.LONG_CONTINUOUS",
+     "RUNCFG.THRESHOLD_INTERVALS",
+     "RUNCFG.TEN_K_SPECIFIC_INTERVALS",
+     "RUNCFG.RACE_TOUCH_INTERVALS",
+     "RUNCFG.SHAKEOUT",
+     "RUNCFG.RACE_EFFORT"
+    ]
+   },
+   "afterReviews": {
+    "families": [
+     "RUN.EASY",
+     "RUN.LONG",
+     "RUN.STRIDES",
+     "RUN.THRESHOLD",
+     "RUN.EVENT_SPECIFIC",
+     "RUN.RACE_TOUCH",
+     "RUN.RACE"
+    ],
+    "configs": [
+     "RUNCFG.EASY_CONTINUOUS",
+     "RUNCFG.LONG_CONTINUOUS",
+     "RUNCFG.THRESHOLD_INTERVALS",
+     "RUNCFG.TEN_K_SPECIFIC_INTERVALS",
+     "RUNCFG.RACE_TOUCH_INTERVALS",
+     "RUNCFG.SHAKEOUT",
+     "RUNCFG.RACE_EFFORT"
+    ]
+   },
+   "actions": {
+    "INSTANTIATE_LOGGED_LOADS": 2,
+    "KEEP": 14
+   },
+   "error": null,
+   "negotiation": []
+  },
+  "half": {
+   "class": "EASY_CURRENT",
+   "generated": {
+    "families": [
+     "RUN.EASY",
+     "RUN.LONG",
+     "RUN.STRIDES",
+     "RUN.THRESHOLD",
+     "RUN.EVENT_SPECIFIC",
+     "RUN.RACE_TOUCH",
+     "RUN.RACE"
+    ],
+    "configs": [
+     "RUNCFG.EASY_CONTINUOUS",
+     "RUNCFG.LONG_CONTINUOUS",
+     "RUNCFG.THRESHOLD_INTERVALS",
+     "RUNCFG.HALF_MARATHON_SPECIFIC_INTERVALS",
+     "RUNCFG.RACE_TOUCH_INTERVALS",
+     "RUNCFG.SHAKEOUT",
+     "RUNCFG.RACE_EFFORT"
+    ]
+   },
+   "afterReviews": {
+    "families": [
+     "RUN.EASY",
+     "RUN.LONG",
+     "RUN.STRIDES",
+     "RUN.THRESHOLD",
+     "RUN.EVENT_SPECIFIC",
+     "RUN.RACE_TOUCH",
+     "RUN.RACE"
+    ],
+    "configs": [
+     "RUNCFG.EASY_CONTINUOUS",
+     "RUNCFG.LONG_CONTINUOUS",
+     "RUNCFG.THRESHOLD_INTERVALS",
+     "RUNCFG.HALF_MARATHON_SPECIFIC_INTERVALS",
+     "RUNCFG.RACE_TOUCH_INTERVALS",
+     "RUNCFG.SHAKEOUT",
+     "RUNCFG.RACE_EFFORT"
+    ]
+   },
+   "actions": {
+    "INSTANTIATE_LOGGED_LOADS": 2,
+    "KEEP": 14
+   },
+   "error": null,
+   "negotiation": []
+  },
+  "halfAmbitious": {
+   "class": "EASY_LOW",
+   "generated": {
+    "families": [
+     "RUN.EASY",
+     "RUN.LONG",
+     "RUN.STRIDES",
+     "RUN.RACE"
+    ],
+    "configs": [
+     "RUNCFG.EASY_CONTINUOUS",
+     "RUNCFG.LONG_CONTINUOUS",
+     "RUNCFG.RACE_COMPLETION"
+    ]
+   },
+   "afterReviews": {
+    "families": [
+     "RUN.EASY",
+     "RUN.LONG",
+     "RUN.STRIDES",
+     "RUN.RACE"
+    ],
+    "configs": [
+     "RUNCFG.EASY_CONTINUOUS",
+     "RUNCFG.LONG_CONTINUOUS",
+     "RUNCFG.RACE_COMPLETION"
+    ]
+   },
+   "actions": {
+    "KEEP": 12
+   },
+   "error": null,
+   "negotiation": [
+    "LONG_RUN_TIME_LIMITS_EVENT",
+    "EVENT_AMBITIOUS_FOR_CURRENT_RUNNING"
+   ]
+  }
+ }
+}

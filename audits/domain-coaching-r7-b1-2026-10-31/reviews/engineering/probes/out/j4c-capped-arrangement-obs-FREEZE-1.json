@@ -1,0 +1,42 @@
+{
+ "probe": "j4c-capped-arrangement-obs",
+ "frozen": "FREEZE-1",
+ "root": "temporary tree f1",
+ "ran": "2026-10-31T18:58:21.797Z",
+ "results": [
+  {
+   "id": "J4c",
+   "area": "observation: a substitution re-chooses the capped arrangement",
+   "verdict": "FAIL",
+   "expected": "a reason-based substitution changes the exercise it names and keeps the days of the full and core sessions",
+   "actual": {
+    "label": "FREEZE-1",
+    "decision": {
+     "status": "MODIFY",
+     "reason": "front-plank is replaced by dead-bug (a nonclinical preference); the new exercise starts with effort-guided establishment, nothing is converted",
+     "arrangementTrace": {
+      "DEVELOPMENT": {
+       "basis": "KEEP_CURRENT",
+       "reason": "Current arrangement is among the equal-harm options; keeping it avoids unnecessary change",
+       "selectedId": "q-|LOWER,UPPER,LOWER_B,UPPER_B|separate"
+      },
+      "DEVELOPMENT@B0-C08": {
+       "basis": "PARETO_THEN_EQUIVALENT",
+       "reason": "Dominated arrangements removed (no lower cost at any horizon and higher at one); the remaining candidates carry identical costs at every horizon, so there is no trade-off to resolve; a canonical choice is made, not a preference",
+       "selectedId": "q-|FULL_A,CORE,CORE,FULL_B|separate"
+      }
+     }
+    },
+    "before": {
+     "w1": "d0:FULL_A d2:FULL_B d4:CORE d5:CORE",
+     "w2": "d0:FULL_A d2:FULL_B d4:CORE d5:CORE"
+    },
+    "after": {
+     "w1": "d0:FULL_A d2:CORE d4:CORE d5:FULL_B",
+     "w2": "d0:FULL_A d2:CORE d4:CORE d5:FULL_B"
+    },
+    "week2AfterNextReview": "d0:FULL_A d2:CORE d4:CORE d5:FULL_B"
+   }
+  }
+ ]
+}

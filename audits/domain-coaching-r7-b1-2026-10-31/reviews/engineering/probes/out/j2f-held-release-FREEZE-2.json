@@ -1,0 +1,82 @@
+{
+ "probe": "j2f-held-release",
+ "frozen": "FREEZE-2",
+ "root": "temporary tree root",
+ "ran": "2026-10-31T18:56:05.142Z",
+ "results": [
+  {
+   "id": "J2f-kettlebell-capped",
+   "area": "held release",
+   "verdict": "ERROR",
+   "expected": "probe runs",
+   "actual": "AssertionError [ERR_ASSERTION]: week 1: UNSUPPORTED Counterfactual failed complete validation; no partial change is presented as valid [\"w2-str-d0:equipmentUnavailable:goblet-squat\",\"w2-str-d0:equipmentUnavailable:db-floor-press\",\"w2-str-d0:equipmentUnavailable:db-row\",\"w2-str-d2:equipmentUnavailable:db-row\",\"w2-str-d2:equipmentUnavailable:db-floor-press\",\"w3-str-d0:equipmentUnavailable:goblet-squat\",\"w3-str-d0:equipmentUnavailable:db-floor-press\",\"w3-str-d0:equipmentUnavailable:db-row\",\"w3-str-d2:equipmentUnavailable:db-row\",\"w3-str-d2:equipmentUnavailable:db-floor-press\",\"w4-str-d0:equipmentUnavailable:goblet-squat\",\"w4-str-d0:equipmentUnavailable:db-floor-press\",\"w4-str-d0:equipmentUnavailable:db-row\",\"w4-str-d2:equipmentUnavailable:db-row\",\"w4-str-d2:equipmentUnavailable:db-floor-press\"] |     at weekly (file:///C:/Users/carva/AppData/Local/Temp/r7b1-eng-f2-ufbUdL/root/CoachingCore/r7/b/fixtures/helpers.mjs:33:9) |     at file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/domain-coaching-r7-b1/audits/domain-coaching-r7-b1-2026-10-31/reviews/engineering/probes/j2f-held-release.mjs:17:31 |     at guard (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/domain-coaching-r7-b1/audits/domain-coaching-r7-b1-2026-10-31/reviews/engineering/probes/lib.mjs:24:39)"
+  },
+  {
+   "id": "J2f",
+   "area": "a held release plans capped weeks from the stored context",
+   "verdict": "FAIL",
+   "expected": "when the boundary week does not earn the release, the next week is capped and keeps every earlier decision (no set-aside exercise, no removed equipment)",
+   "actual": {
+    "label": "FREEZE-2",
+    "failures": [
+     {
+      "name": "schedule-cap",
+      "boundary": 5,
+      "density": {
+       "capped": true,
+       "heldAt": [
+        4
+       ]
+      },
+      "types": "LOWER,LOWER_B,UPPER,UPPER_B",
+      "bad": [],
+      "note": "held cap not planned from the stored capped templates"
+     },
+     {
+      "name": "substitution-capped",
+      "boundary": 5,
+      "density": {
+       "capped": true,
+       "heldAt": [
+        4
+       ]
+      },
+      "types": "CORE,CORE,FULL_A,FULL_B",
+      "bad": [
+       "goblet-squat"
+      ],
+      "note": "held cap not planned from the stored capped templates"
+     }
+    ],
+    "cases": {
+     "schedule-cap": {
+      "boundary": 5,
+      "review": "GATED_NEXT_STEP",
+      "density": {
+       "capped": true,
+       "heldAt": [
+        4
+       ]
+      },
+      "types": "LOWER,LOWER_B,UPPER,UPPER_B",
+      "bad": []
+     },
+     "substitution-capped": {
+      "boundary": 5,
+      "review": "GATED_NEXT_STEP",
+      "density": {
+       "capped": true,
+       "heldAt": [
+        4
+       ]
+      },
+      "types": "CORE,CORE,FULL_A,FULL_B",
+      "bad": [
+       "goblet-squat"
+      ]
+     }
+    }
+   }
+  }
+ ]
+}

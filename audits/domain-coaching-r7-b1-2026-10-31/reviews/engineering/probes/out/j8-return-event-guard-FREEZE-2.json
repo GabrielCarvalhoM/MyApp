@@ -1,0 +1,120 @@
+{
+ "probe": "j8-return-event-guard",
+ "frozen": "FREEZE-2",
+ "root": "temporary tree root",
+ "ran": "2026-10-31T18:56:04.148Z",
+ "results": [
+  {
+   "id": "J8",
+   "area": "event-week guard through a return",
+   "verdict": "FAIL",
+   "expected": "the return re-plans the event weeks with the guard: no never-performed substitute",
+   "actual": {
+    "label": "FREEZE-2",
+    "failures": [
+     {
+      "id": "db-split-squat",
+      "S": "bulgarian-split-squat-db",
+      "note": "a never-performed substitute enters the event weeks through the return",
+      "rows": [
+       {
+        "w": 10,
+        "s": "w10-str-d4",
+        "id": "bulgarian-split-squat-db"
+       }
+      ]
+     },
+     {
+      "id": "db-row",
+      "S": "kb-row",
+      "note": "a never-performed substitute enters the event weeks through the return",
+      "rows": [
+       {
+        "w": 10,
+        "s": "w10-str-d4",
+        "id": "kb-row"
+       },
+       {
+        "w": 11,
+        "s": "w11-str-d0",
+        "id": "kb-row"
+       },
+       {
+        "w": 12,
+        "s": "w12-str-d4",
+        "id": "kb-row"
+       }
+      ]
+     },
+     {
+      "id": "db-rdl",
+      "S": "single-leg-rdl-db",
+      "note": "a never-performed substitute enters the event weeks through the return",
+      "rows": [
+       {
+        "w": 10,
+        "s": "w10-str-d4",
+        "id": "single-leg-rdl-db"
+       },
+       {
+        "w": 12,
+        "s": "w12-str-d4",
+        "id": "single-leg-rdl-db"
+       }
+      ]
+     }
+    ],
+    "cases": {
+     "db-split-squat-executed": {
+      "substitute": "bulgarian-split-squat-db",
+      "return": {
+       "status": "MODIFY",
+       "action": "REESTABLISH"
+      },
+      "substituteInEventWeeksAfterReturn": 1
+     },
+     "db-split-squat-missed": {
+      "substitute": "bulgarian-split-squat-db",
+      "return": {
+       "status": "MODIFY",
+       "action": "REESTABLISH"
+      },
+      "substituteInEventWeeksAfterReturn": 1
+     },
+     "db-row-executed": {
+      "substitute": "kb-row",
+      "return": {
+       "status": "MODIFY",
+       "action": "REESTABLISH"
+      },
+      "substituteInEventWeeksAfterReturn": 3
+     },
+     "db-row-missed": {
+      "substitute": "kb-row",
+      "return": {
+       "status": "MODIFY",
+       "action": "REESTABLISH"
+      },
+      "substituteInEventWeeksAfterReturn": 3
+     },
+     "db-rdl-executed": {
+      "substitute": "single-leg-rdl-db",
+      "return": {
+       "status": "MODIFY",
+       "action": "REESTABLISH"
+      },
+      "substituteInEventWeeksAfterReturn": 2
+     },
+     "db-rdl-missed": {
+      "substitute": "single-leg-rdl-db",
+      "return": {
+       "status": "MODIFY",
+       "action": "REESTABLISH"
+      },
+      "substituteInEventWeeksAfterReturn": 2
+     }
+    }
+   }
+  }
+ ]
+}

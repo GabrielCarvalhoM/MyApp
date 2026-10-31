@@ -1,0 +1,21 @@
+=== A. strides repetitions by week (GRAD) ===
+w0 DEVELOPMENT strides [] | EASY:20 EASY:20 LONG:30
+w1 DEVELOPMENT strides [] | EASY:20 EASY:20 LONG:30
+w2 DEVELOPMENT strides ["4opt"] | EASY:25+str4 EASY:20 LONG:30
+w3 CONSOLIDATION strides ["4opt"] | EASY:25+str4 EASY:20 LONG:25
+w4 DEVELOPMENT [INTRO] strides ["4opt"] | QUALITY:34 EASY:25+str4 LONG:30
+w5 DEVELOPMENT strides ["5opt"] | QUALITY:34 EASY:25+str5 LONG:35
+w6 DEVELOPMENT strides ["6opt"] | QUALITY:34 EASY:25+str6 LONG:40
+w7 CONSOLIDATION strides ["6opt"] | QUALITY:34 EASY:25+str6 LONG:35
+w8 DEVELOPMENT strides ["6opt"] | QUALITY:34 EASY:25+str6 LONG:45
+w9 DEVELOPMENT strides ["6opt"] | QUALITY:34 EASY:25+str6 LONG:45
+w10 DEVELOPMENT strides ["6opt"] | QUALITY:41 EASY:25+str6 LONG:45
+
+=== B. short longest run at graduation: is the 34-min session within longest + 5? ===
+L20 W60 rm30: graduated at review 3; longest executed 30; intro week: QUALITY:27 EASY:20+str4 LONG:30; quality 27 min (ceiling 35)
+L25 W65 rm30: graduated at review 3; longest executed 30; intro week: QUALITY:27 EASY:25+str4 LONG:30; quality 27 min (ceiling 35)
+L25 W70 rm35: graduated at review 3; longest executed 30; intro week: QUALITY:34 EASY:20+str4 LONG:30; quality 34 min (ceiling 35)
+
+=== C. easy run >= 90% of the session reported on the introduced quality day ===
+reported 31 easy minutes on the 34-min threshold day -> QUALITY ADVANCE; qualityDone 0->1; achieved.quality {"repetitions":3,"workMinutes":5,"recoveryMinutes":2}; qualityStep 0->0; thresholdDone 0->0
+second such week -> QUALITY ADVANCE; qualityStep 0->0; thresholdDone 0->0; next quality {"repetitions":3,"workMinutes":5,"recoveryMinutes":2}

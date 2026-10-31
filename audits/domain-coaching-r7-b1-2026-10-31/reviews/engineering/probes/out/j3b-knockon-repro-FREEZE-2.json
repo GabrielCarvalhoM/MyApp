@@ -1,0 +1,55 @@
+{
+ "probe": "j3b-knockon-repro",
+ "frozen": "FREEZE-2",
+ "root": "temporary tree root",
+ "ran": "2026-10-31T18:56:57.478Z",
+ "results": [
+  {
+   "id": "J3b",
+   "area": "knock-on slot after a SKILL_MISMATCH (pre-existing; information for the SSCTR)",
+   "verdict": "FAIL",
+   "expected": "no slot takes a configuration above the set-aside one on its ladder after a SKILL_MISMATCH, and the decision states every exercise it changes",
+   "actual": {
+    "label": "FREEZE-2",
+    "decision": {
+     "status": "MODIFY",
+     "reason": "push-up is replaced by incline-push-up (cannot be done with steady technique); the new exercise starts with effort-guided establishment, nothing is converted",
+     "substitutions": [
+      {
+       "exerciseId": "push-up",
+       "selected": "incline-push-up",
+       "reason": "SKILL_MISMATCH",
+       "requiresEstablishment": true,
+       "stimulusChange": null
+      }
+     ],
+     "disclosures": []
+    },
+    "week4Before": [
+     "w4-str-d0 LOWER: box-squat-bodyweight(M), glute-bridge(M), reverse-lunge(A), standing-calf-raise(A), dead-bug(A)",
+     "w4-str-d2 UPPER: push-up(M), band-row(M), incline-push-up(A), band-assisted-pull-up(A), dead-bug(A)",
+     "w4-str-d4 FULL_B: glute-bridge(M), band-row(M), push-up(M), reverse-lunge(A), dead-bug(A)"
+    ],
+    "week4After": [
+     "w4-str-d0 LOWER: box-squat-bodyweight(M), glute-bridge(M), reverse-lunge(A), standing-calf-raise(A), dead-bug(A)",
+     "w4-str-d2 UPPER: incline-push-up(M), band-row(M), pike-push-up(A), band-assisted-pull-up(A), dead-bug(A)",
+     "w4-str-d4 FULL_B: glute-bridge(M), band-row(M), incline-push-up(M), reverse-lunge(A), dead-bug(A)"
+    ],
+    "week5AfterNextReview": [
+     "w5-str-d0 LOWER: box-squat-bodyweight(M), glute-bridge(M), reverse-lunge(A), standing-calf-raise(A), dead-bug(A)",
+     "w5-str-d2 UPPER: incline-push-up(M), band-row(M), pike-push-up(A), band-assisted-pull-up(A), dead-bug(A)",
+     "w5-str-d4 FULL_B: glute-bridge(M), band-row(M), incline-push-up(M), reverse-lunge(A), dead-bug(A)"
+    ],
+    "ladder": {
+     "pushUpNext": [
+      "pike-push-up"
+     ],
+     "pikeSkill": "MODERATE",
+     "pushUpSkill": "MODERATE",
+     "inclineSkill": "LOW",
+     "subpatternChange": true
+    }
+   }
+  }
+ ]
+}

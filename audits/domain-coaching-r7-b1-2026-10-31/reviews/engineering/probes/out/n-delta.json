@@ -1,0 +1,290 @@
+{
+ "probe": "n-delta",
+ "frozen": "R7B1-FREEZE-1",
+ "root": "this worktree (R7B1-FREEZE-1 bytes)",
+ "ran": "2026-10-31T18:21:16.479Z",
+ "results": [
+  {
+   "id": "N1",
+   "area": "correction/retraction (A5) on the block-choice ASK path",
+   "verdict": "PASS",
+   "expected": "a review that asks about block choices still proposes the factual re-plan its correction requires (as the same correction alone does); the corrected facts never leave the sessions ahead planned from retracted evidence",
+   "actual": {
+    "control": {
+     "status": "MODIFY",
+     "action": "REPLAN_FROM_EVIDENCE",
+     "reason": "Evidence about an earlier week changed what this week starts from; the sessions still ahead are planned again from it, completed sessions stay as they were; next-week steps are gated when this week’s remaining sessions are complete",
+     "missingInputs": [],
+     "errors": [],
+     "week5Ahead": "CORE,CORE,FULL_B"
+    },
+    "withChoice": {
+     "status": "ASK",
+     "action": "ASK",
+     "reason": "Block choices are made in the weekly review of a block's last week, once its sessions are complete; meanwhile evidence about an earlier week changed what this week starts from; the sessions still ahead are planned again from it, completed s",
+     "missingInputs": [
+      "choices"
+     ],
+     "errors": [],
+     "proposal": true,
+     "correctionRecordedInLedger": true
+    },
+    "followUpMidWeekReview": {
+     "status": "KEEP",
+     "action": "KEEP",
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete",
+     "missingInputs": [],
+     "errors": [],
+     "proposal": false,
+     "week5AheadAfter": "CORE,CORE,FULL_B",
+     "plannerDensityWeek5": {
+      "capped": true
+     },
+     "historyDensity": {
+      "capped": true
+     }
+    }
+   }
+  },
+  {
+   "id": "N1b",
+   "area": "correction/retraction (A5) on the block-choice ASK path (graduation)",
+   "verdict": "PASS",
+   "expected": "the withdrawal of a graduation whose qualifying week was corrected comes with the question, not only with a later review",
+   "actual": {
+    "withChoice": {
+     "status": "ASK",
+     "action": "ASK",
+     "reason": "Block choices are made in the weekly review of a block's last week, once its sessions are complete; meanwhile evidence about an earlier week changed what this week starts from; the sessions still ahead are planned again from it, completed s",
+     "missingInputs": [
+      "choices"
+     ],
+     "errors": [],
+     "proposal": true,
+     "qualityWeek4": []
+    },
+    "followUp": {
+     "status": "KEEP",
+     "action": "KEEP",
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete",
+     "missingInputs": [],
+     "errors": [],
+     "qualityWeek4After": null,
+     "withdrawn": false
+    }
+   }
+  },
+  {
+   "id": "N2",
+   "area": "state transition / lazy density start",
+   "verdict": "FAIL",
+   "expected": "the cap a context change starts before the first block boundary applies to the first week of that context in every decision path (as the weekly review of week 1 gives)",
+   "actual": {
+    "plannedAtTheChange": "CORE,CORE,FULL_A,FULL_B",
+    "decisionsInWeek2": {
+     "EXERCISE_SUBSTITUTION": {
+      "status": "MODIFY",
+      "action": "SUBSTITUTE_FOR_REASON",
+      "reason": "goblet-squat is replaced by box-squat-bodyweight (a nonclinical preference); the new exercise starts with effort-guided establishment, nothing is converted",
+      "missingInputs": [],
+      "errors": [],
+      "week2": "LOWER,LOWER_B,UPPER,UPPER_B",
+      "week3": "CORE,CORE,FULL_A,FULL_B",
+      "plannerDensityWeek2": null,
+      "historyDensity": null
+     },
+     "EQUIPMENT_CHANGE": {
+      "status": "MODIFY",
+      "action": "SUBSTITUTE",
+      "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed",
+      "missingInputs": [],
+      "errors": [],
+      "week2": "LOWER,LOWER_B,UPPER,UPPER_B",
+      "week3": "CORE,CORE,FULL_A,FULL_B",
+      "plannerDensityWeek2": null,
+      "historyDensity": null
+     }
+    },
+    "controlWeeklyReviewOfWeek1": {
+     "action": "GATED_NEXT_STEP",
+     "week2": "CORE,CORE,FULL_A,FULL_B",
+     "density": {
+      "capped": true
+     }
+    }
+   }
+  },
+  {
+   "id": "N3",
+   "area": "reason-based substitution / fallback after the substitute stops fitting",
+   "verdict": "PASS",
+   "expected": "after \"db-rdl cannot be done with steady technique\", no later re-plan prescribes a rung above db-rdl on its own ladder (barbell-rdl, single-leg-rdl-db) in its place; without a fitting lower option it asks",
+   "actual": {
+    "permanent": {
+     "substitution": {
+      "status": "MODIFY",
+      "selected": "kb-deadlift"
+     },
+     "week4BeforeChange": [
+      "kb-deadlift"
+     ],
+     "equipmentChange": {
+      "status": "MODIFY",
+      "action": "SUBSTITUTE",
+      "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed",
+      "missingInputs": [],
+      "errors": [],
+      "swaps": [
+       "kb-deadlift->glute-bridge"
+      ]
+     },
+     "weeks": [
+      {
+       "week": 4,
+       "hingeMain": [
+        "glute-bridge"
+       ]
+      },
+      {
+       "week": 5,
+       "hingeMain": [
+        "glute-bridge"
+       ]
+      },
+      {
+       "week": 6,
+       "hingeMain": [
+        "glute-bridge"
+       ]
+      }
+     ],
+     "aboveSetAsideOnItsLadder": [],
+     "skillOfReplaced": "MODERATE"
+    },
+    "window": {
+     "substitution": {
+      "status": "MODIFY",
+      "selected": "kb-deadlift"
+     },
+     "week4BeforeChange": [
+      "kb-deadlift"
+     ],
+     "equipmentChange": {
+      "status": "MODIFY",
+      "action": "SUBSTITUTE",
+      "reason": "Equipment changed: same-intent substitutes from 2026-12-07 to 2026-12-13; unfamiliar ones are established by effort; the stimulus change is disclosed",
+      "missingInputs": [],
+      "errors": [],
+      "swaps": [
+       "kb-deadlift->glute-bridge"
+      ]
+     },
+     "weeks": [
+      {
+       "week": 4,
+       "hingeMain": [
+        "kb-deadlift"
+       ]
+      },
+      {
+       "week": 5,
+       "hingeMain": [
+        "glute-bridge"
+       ]
+      },
+      {
+       "week": 6,
+       "hingeMain": [
+        "kb-deadlift"
+       ]
+      }
+     ],
+     "aboveSetAsideOnItsLadder": [],
+     "skillOfReplaced": "MODERATE"
+    }
+   }
+  },
+  {
+   "id": "N4",
+   "area": "graduation withdrawal: no false positive",
+   "verdict": "PASS",
+   "expected": "a graduation whose qualifying weeks stand is never withdrawn by later executed weeks, a later adverse session or an unrelated correction",
+   "actual": [
+    {
+     "week": 4,
+     "action": "KEEP",
+     "graduation": true,
+     "withdrawn": 0
+    },
+    {
+     "week": 5,
+     "action": "KEEP",
+     "graduation": true,
+     "withdrawn": 0
+    },
+    {
+     "week": 6,
+     "action": "GATED_NEXT_STEP",
+     "graduation": true,
+     "withdrawn": 0
+    },
+    {
+     "week": 7,
+     "action": "KEEP",
+     "graduation": true,
+     "withdrawn": 0
+    },
+    {
+     "week": 8,
+     "action": "KEEP",
+     "graduation": true,
+     "withdrawn": 0
+    },
+    {
+     "week": 9,
+     "action": "KEEP",
+     "graduation": true,
+     "withdrawn": 0
+    },
+    {
+     "week": 10,
+     "action": "KEEP",
+     "graduation": true,
+     "withdrawn": 0
+    },
+    {
+     "week": 11,
+     "action": "KEEP",
+     "graduation": true,
+     "withdrawn": 0
+    }
+   ]
+  },
+  {
+   "id": "N5",
+   "area": "reason-based substitution / decision vs plan (wider grid)",
+   "verdict": "PASS",
+   "expected": "every applied substitution prescribes its selection in the replaced exercise's slot (the decision text is what the plan does)",
+   "actual": {
+    "programs": 10,
+    "applied": 138,
+    "inconsistent": 0,
+    "harderRung": 0,
+    "examples": []
+   }
+  },
+  {
+   "id": "N6",
+   "area": "block choices off the boundary (graduation answer)",
+   "verdict": "FAIL",
+   "expected": "an answer to an offer that is not open (no block boundary) is asked, not dropped (QE-R7B-08 rule: block choices only at the boundary step)",
+   "actual": {
+    "status": "KEEP",
+    "action": "KEEP",
+    "reason": "Executed as planned without adverse signal; the planned progression step stands",
+    "missingInputs": [],
+    "errors": []
+   }
+  }
+ ]
+}

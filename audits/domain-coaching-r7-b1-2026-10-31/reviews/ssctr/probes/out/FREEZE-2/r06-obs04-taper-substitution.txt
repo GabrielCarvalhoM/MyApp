@@ -1,0 +1,25 @@
+phases ESTABLISHMENT,BUILD,BUILD,BUILD,CONSOLIDATION,BUILD,BUILD,SPECIFIC,SPECIFIC,SPECIFIC,TAPER,RACE_WEEK,POST_EVENT,NEXT_BLOCK,NEXT_BLOCK,NEXT_BLOCK | taper 10 race week 11 post event 12
+TAPER goblet-squat SKILL_MISMATCH: MODIFY -> box-squat-bodyweight (NEVER PERFORMED before) | event-phase rows: w10/TAPER box-squat-bodyweight 1x10@3 BODYWEIGHT; w11/RACE_WEEK box-squat-bodyweight 1x10@4 BODYWEIGHT
+TAPER goblet-squat NONCLINICAL_DISCOMFORT_OR_PREFERENCE: MODIFY -> kb-goblet-squat (NEVER PERFORMED before) | event-phase rows: w10/TAPER kb-goblet-squat 1x10@3 ESTABLISH; w11/RACE_WEEK kb-goblet-squat 1x10@4 FROM_LOG
+TAPER db-bench-press SKILL_MISMATCH: MODIFY -> db-floor-press (NEVER PERFORMED before) | event-phase rows: w10/TAPER db-floor-press 1x10@3 ESTABLISH; w10/TAPER db-floor-press 1x10@3 ESTABLISH; w11/RACE_WEEK db-floor-press 1x10@4 FROM_LOG; w12/POST_EVENT db-floor-press 1x10@4 FROM_LOG
+TAPER db-bench-press NONCLINICAL_DISCOMFORT_OR_PREFERENCE: MODIFY -> db-floor-press (NEVER PERFORMED before) | event-phase rows: w10/TAPER db-floor-press 1x10@3 ESTABLISH; w10/TAPER db-floor-press 1x10@3 ESTABLISH; w11/RACE_WEEK db-floor-press 1x10@4 FROM_LOG; w12/POST_EVENT db-floor-press 1x10@4 FROM_LOG
+TAPER db-row SKILL_MISMATCH: ASK No admissible alternative of the same pattern fits your equipment and skill; options: add equipment, or keep d
+TAPER db-row NONCLINICAL_DISCOMFORT_OR_PREFERENCE: MODIFY -> kb-row (NEVER PERFORMED before) | event-phase rows: w10/TAPER kb-row 1x10@3 ESTABLISH; w10/TAPER kb-row 1x10@3 ESTABLISH; w11/RACE_WEEK kb-row 1x10@4 FROM_LOG; w12/POST_EVENT kb-row 1x10@4 FROM_LOG
+TAPER db-calf-raise SKILL_MISMATCH: MODIFY -> standing-calf-raise (NEVER PERFORMED before) | event-phase rows: w10/TAPER standing-calf-raise 1x12@3 BODYWEIGHT
+TAPER db-calf-raise NONCLINICAL_DISCOMFORT_OR_PREFERENCE: MODIFY -> single-leg-calf-raise (NEVER PERFORMED before) | event-phase rows: w10/TAPER single-leg-calf-raise 1x12@3 BODYWEIGHT
+TAPER dead-bug SKILL_MISMATCH: MODIFY -> bird-dog (NEVER PERFORMED before) | event-phase rows: w10/TAPER bird-dog 1x12@3 BODYWEIGHT; w10/TAPER bird-dog 1x12@3 BODYWEIGHT
+TAPER dead-bug NONCLINICAL_DISCOMFORT_OR_PREFERENCE: MODIFY -> front-plank (NEVER PERFORMED before) | event-phase rows: w10/TAPER front-plank 1x12@3 BODYWEIGHT; w10/TAPER front-plank 1x12@3 BODYWEIGHT
+TAPER db-rdl SKILL_MISMATCH: MODIFY -> kb-deadlift (NEVER PERFORMED before) | event-phase rows: w10/TAPER kb-deadlift 1x10@3 ESTABLISH; w12/POST_EVENT kb-deadlift 1x10@4 FROM_LOG
+TAPER db-rdl NONCLINICAL_DISCOMFORT_OR_PREFERENCE: MODIFY -> single-leg-rdl-db (NEVER PERFORMED before) | event-phase rows: w10/TAPER single-leg-rdl-db 1x10@3 ESTABLISH; w12/POST_EVENT single-leg-rdl-db 1x10@4 FROM_LOG
+TAPER db-split-squat SKILL_MISMATCH: MODIFY -> split-squat-bodyweight (NEVER PERFORMED before) | event-phase rows: w10/TAPER split-squat-bodyweight 1x12@3 BODYWEIGHT
+TAPER db-split-squat NONCLINICAL_DISCOMFORT_OR_PREFERENCE: MODIFY -> bulgarian-split-squat-db (NEVER PERFORMED before) | event-phase rows: w10/TAPER bulgarian-split-squat-db 1x12@3 ESTABLISH
+RACE_WEEK goblet-squat SKILL_MISMATCH: MODIFY -> box-squat-bodyweight (NEVER PERFORMED before) | event-phase rows: w11/RACE_WEEK box-squat-bodyweight 1x10@4 BODYWEIGHT
+RACE_WEEK goblet-squat NONCLINICAL_DISCOMFORT_OR_PREFERENCE: MODIFY -> kb-goblet-squat (NEVER PERFORMED before) | event-phase rows: w11/RACE_WEEK kb-goblet-squat 1x10@4 ESTABLISH
+RACE_WEEK db-bench-press SKILL_MISMATCH: MODIFY -> db-floor-press (NEVER PERFORMED before) | event-phase rows: w11/RACE_WEEK db-floor-press 1x10@4 ESTABLISH; w12/POST_EVENT db-floor-press 1x10@4 FROM_LOG
+RACE_WEEK db-bench-press NONCLINICAL_DISCOMFORT_OR_PREFERENCE: MODIFY -> db-floor-press (NEVER PERFORMED before) | event-phase rows: w11/RACE_WEEK db-floor-press 1x10@4 ESTABLISH; w12/POST_EVENT db-floor-press 1x10@4 FROM_LOG
+RACE_WEEK db-row SKILL_MISMATCH: ASK No admissible alternative of the same pattern fits your equipment and skill; options: add equipment, or keep d
+RACE_WEEK db-row NONCLINICAL_DISCOMFORT_OR_PREFERENCE: MODIFY -> kb-row (NEVER PERFORMED before) | event-phase rows: w11/RACE_WEEK kb-row 1x10@4 ESTABLISH; w12/POST_EVENT kb-row 1x10@4 FROM_LOG
+
+substitution cases 20; never-performed configuration prescribed in TAPER/RACE_WEEK/POST_EVENT: 18 (TAPER:goblet-squat->box-squat-bodyweight, TAPER:goblet-squat->kb-goblet-squat, TAPER:db-bench-press->db-floor-press, TAPER:db-bench-press->db-floor-press, TAPER:db-row->kb-row, TAPER:db-calf-raise->standing-calf-raise, TAPER:db-calf-raise->single-leg-calf-raise, TAPER:dead-bug->bird-dog, TAPER:dead-bug->front-plank, TAPER:db-rdl->kb-deadlift, TAPER:db-rdl->single-leg-rdl-db, TAPER:db-split-squat->split-squat-bodyweight, TAPER:db-split-squat->bulgarian-split-squat-db, RACE_WEEK:goblet-squat->box-squat-bodyweight, RACE_WEEK:goblet-squat->kb-goblet-squat, RACE_WEEK:db-bench-press->db-floor-press, RACE_WEEK:db-bench-press->db-floor-press, RACE_WEEK:db-row->kb-row)
+
+inherited comparator, equipment change to kettlebell only at the taper week: KEEP KEEP; never-performed rows in event phases: none
