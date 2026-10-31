@@ -1,3 +1,17 @@
+
+<!-- V1_WEARABLE_EVIDENCE_OVERLAY_START: VWE-20261030-r1 -->
+## Current pointer — V1 HealthKit + WorkoutKit and immutable evidence / 2026-10-30
+
+[PDR-1.13 DR-135–147](../product/PRODUCT_DECISION_REGISTER.md) and [VWE-20261030-r1](../product/V1_WEARABLE_EVIDENCE_STRATEGY.md), from the current direct [Founder request](../audits/v1-healthkit-workoutkit-evidence-2026-10-30/FOUNDER_REQUEST.md), are DECIDED / CURRENT_PRODUCT_DECISION. This is the current clause-level wearable/evidence amendment; earlier VWS-r1/r2 and watch-delivery statements below remain historical where superseded.
+
+- V1 external ingestion: Apple Health/HealthKit only; manual/in-app logging remains. No direct Garmin/COROS/Polar cloud API, generic direct BLE wearable integration or push to those providers.
+- **WorkoutKit is V1** native Apple Watch structured delivery, separately authorized and distinct from HealthKit ingestion. This supersedes the Apple Watch/WorkoutKit deferral in DR-117/122, thesis C055/§6 and every downstream blanket watch-outbound deferral. HealthKit own-activity write-back stays open; iOS-only/Android POST_V1 stands.
+- Evidence is per-workout capability-based, not brand-based: conceptual SUMMARY/STANDARD/RICH; imported transport is not measurement or quality proof. Preserve MEASURED/IMPORTED, USER_REPORTED and DERIVED distinctions and minimum source metadata.
+- **EXTERNAL_EVIDENCE_IMMUTABILITY**: imported values read-only; missing-only bounded scalar/context supplements retain USER_REPORTED origin, never measured streams. Suspicious present values support field/workout analysis exclusion with original value/provenance retained, never manual overwrite.
+- Strength remains app-first. Privacy-minimized beta capability/missingness/depth/enrichment and confidence/completion/retention/friction evidence drives later provider priorities; Garmin is a candidate, not a fixed first integration. Provider Adapter → CanonicalEvidence → CoachingCore remains vendor-neutral. Direct-provider push and validated-use-case live streaming remain later.
+
+Responsibility: [Scope](../product/V1_RELEASE_SCOPE.md) owns V1/deferred selection; [PDM](../product/PRODUCT_DOMAIN_MODEL.md)/[AEC](../product/ADAPTIVE_ENGINE_CONTRACT.md) own evidence/authority; [PA](../product/PRODUCT_ARCHITECTURE.md) owns retained boundaries; VWE details the PDR decision without replacing them. Align with pinned Engineering Quality & Security Foundation privacy/security planning (VWE-12); no compliance verdict. Future UI reconciliation only; no Figma edits. Existing B0 navigation has a scoped VWE addendum; its historical reviews do not approve this revision. **Frozen R7-A runtime/policy/tests/freeze and decision-authority gate remain untouched against 7d2da3603e224124696a2290766ec448080f3264. No B0/KMP/platform/backend implementation or merge.** [Mission audit](../audits/v1-healthkit-workoutkit-evidence-2026-10-30/TASK_CONTRACT.md).
+<!-- V1_WEARABLE_EVIDENCE_OVERLAY_END: VWE-20261030-r1 -->
 <!-- V1_WEARABLE_SCOPE_INDEX_START: VWS-20261027-r2 -->
 ## Current pointer — V1 iOS only, Apple Health inbound, direct vendor integrations and watch delivery POST_V1 / 2026-10-27
 

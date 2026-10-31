@@ -682,3 +682,14 @@ Scope: one freeze (R7A-RESIDUAL-AUTHORITY-FREEZE-1), committed and pushed on the
 - **Next:** two new, independent sessions recheck exactly these bytes, from [the handoff](audits/domain-coaching-r7a-residual-authority-2026-10-30/REVIEW_HANDOFF.md) and the two briefs. `R7A_EXIT_READINESS` is not declared, and R7-B0 is not started.
 - **Held:** the Growth Layer's [PENDING_CANON_SYNC.patch](audits/growth-layer-2026-10-29/PENDING_CANON_SYNC.patch).
 - No UI, Figma, KMP, HealthKit, integration, production or real-plan effect. No merge, deploy or reviewer run. The human queue is untouched.
+
+
+<!-- V1_WEARABLE_EVIDENCE_MISSION_START: VWE-20261030-r1 -->
+## Separate documentation mission — V1 wearable/evidence canonization / 2026-10-30
+
+The current direct [Founder request](audits/v1-healthkit-workoutkit-evidence-2026-10-30/FOUNDER_REQUEST.md) authorizes documentation canonization in isolated branch chore/v1-healthkit-workoutkit-evidence and a docs-only commit/push, **without merge**. [PDR-1.13 DR-135–147](product/PRODUCT_DECISION_REGISTER.md), [VWE-01–13](product/V1_WEARABLE_EVIDENCE_STRATEGY.md), the canonical index and V1 Release Scope record HealthKit-only external ingestion, the **WorkoutKit V1 native Apple Watch exception**, capability-based evidence, EXTERNAL_EVIDENCE_IMMUTABILITY, bounded missing-only USER_REPORTED supplements, analysis exclusion and privacy-minimized beta priorities. This supersedes only earlier contradictory product scope/evidence clauses, including the 2026-10-27 Apple WorkoutKit deferral, without rewriting history.
+
+The R7-A block above remains the frozen runtime/recheck mission: this separate documentary mission does **not reopen its decision-authority gate, dispatch its narrow rechecks or declare R7A_EXIT_READINESS**. R7A-RESIDUAL-AUTHORITY-FREEZE-1 runtime/policy/tests/freeze must remain byte-identical to 7d2da3603e224124696a2290766ec448080f3264. Growth, other review branches and sporting policies stay untouched. HealthKit own-activity write-back stays OPEN; iOS-only and direct vendor POST_V1 stand. Derived B0 readiness pointers are synchronized only where relevant; B0 is not started.
+
+Contract/evidence/review status: [VWE mission audit](audits/v1-healthkit-workoutkit-evidence-2026-10-30/TASK_CONTRACT.md). Submission is GOVERNANCE_READY_FOR_REVIEW until independent current fidelity/interpretability/privacy reviews and Chief consolidation are recorded there. **IMPLEMENTATION_AUTHORIZED = NO; FIGMA_EDITS_AUTHORIZED = NO.** Stop after documentation/canonization, its verified commit and push. No B0, KMP, HealthKit/WorkoutKit code, backend, production, sporting rule or Figma change.
+<!-- V1_WEARABLE_EVIDENCE_MISSION_END: VWE-20261030-r1 -->

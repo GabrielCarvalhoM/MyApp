@@ -43,9 +43,10 @@
       "files": [
         "canon/CANONICAL_INDEX.md",
         "product/PRODUCT_DECISION_REGISTER.md",
-        "product/PRODUCT_TRUTH_MAP.md"
+        "product/PRODUCT_TRUTH_MAP.md",
+        "product/V1_WEARABLE_EVIDENCE_STRATEGY.md"
       ],
-      "scope": "Current overlays, DR-93–123, G01–G11 and provenance; avoid historical duplicated registers."
+      "scope": "Current overlays, DR-93–123 plus wearable/evidence DR-135–147, G01–G11 and provenance; avoid historical duplicated registers."
     },
     {
       "order": 3,
@@ -130,14 +131,15 @@
     "GROWTH_SEPARATE_MISSION",
     "DESIGN_RECONCILIATION",
     "POST_V1",
-    "FUNDED_HUMAN_REVALIDATION"
+    "FUNDED_HUMAN_REVALIDATION",
+    "IOS_IMPLEMENTATION_WORKOUTKIT"
   ],
   "coverage": {
     "method": "Inventory selected active authorities and their reviewed supporting/candidate/historical documentary sources; enumerate preserved copies of those active document names. Review source status/scope and relevant clauses; do not revalidate source science.",
     "all_tracked_files_at_base": 5891,
-    "classified_file_count": 446,
+    "classified_file_count": 447,
     "counts": {
-      "CANONICAL": 52,
+      "CANONICAL": 53,
       "CURRENT_SUPPORTING": 86,
       "SUPERSEDED": 91,
       "REFERENCE_ONLY": 216,
@@ -149,7 +151,8 @@
       "Unrelated commercial, UI, design, release and infrastructure evidence; only relevant retained constraints are indexed"
     ],
     "historical_family_rule": "Unindexed raw outputs remain immutable REFERENCE_ONLY for their own freeze; never preload or treat as current product/training authority.",
-    "not_claimed": "This is not an exhaustive scientific or every-line content review of all repository bytes."
+    "not_claimed": "This is not an exhaustive scientific or every-line content review of all repository bytes.",
+    "amendment_note": "Original all_tracked_files_at_base count is preserved; VWE adds one current decision-detail source and refreshes only changed document hashes/selectors."
   },
   "sources": [
     {
@@ -2835,26 +2838,30 @@
       "path": "canon/CANONICAL_INDEX.md",
       "classification": "CANONICAL",
       "reason": "Selected by the existing Canon, with later explicit Founder supersessions and clause-level experience filter.",
-      "scope": "Retained product/domain/agency clauses only; historical IA/layout, static-priority and platform/vendor clauses are filtered.",
-      "sha256": "c511018738f1a82d4fc039c39ab973d4f9c604a5cce089e45f6897120879ed1e",
+      "scope": "Retained product/domain/agency clauses only; historical IA/layout, static-priority and platform/vendor clauses are filtered. Apply VWE-20261030-r1 before earlier wearable/evidence clauses; original reviews do not cover this amendment.",
+      "sha256": "f5891ace1c383c5f1772759433babff6e4f0971296909fbae87a574f9ea6b4be",
       "read_policy": "READ_SCOPED",
       "inspection": "AUTHORITY_AND_RELEVANT_CLAUSES",
       "selectors": [
         {
+          "marker": "V1_WEARABLE_EVIDENCE_OVERLAY_START",
+          "line": 2
+        },
+        {
           "marker": "V1_WEARABLE_SCOPE_INDEX_START",
-          "line": 1
+          "line": 15
         },
         {
           "marker": "OB2_ONBOARDING_INDEX_START",
-          "line": 13
+          "line": 27
         },
         {
           "marker": "SSCTR_AUTHORITY_START",
-          "line": 34
+          "line": 48
         },
         {
           "marker": "EXPERIENCE_AUTHORITY_OVERLAY_START",
-          "line": 50
+          "line": 64
         }
       ],
       "overrides": [
@@ -2873,34 +2880,38 @@
       "path": "canon/VILUMO_FIT_PRODUCT_THESIS_CONTRACT.md",
       "classification": "CANONICAL",
       "reason": "Selected by the existing Canon, with later explicit Founder supersessions and clause-level experience filter.",
-      "scope": "Retained product/domain/agency clauses only; historical IA/layout, static-priority and platform/vendor clauses are filtered.",
-      "sha256": "de73d82638086aafae7a0f90a85e01eac93df36ac54fe357f63a0a4ea98eb1d0",
+      "scope": "Retained product/domain/agency clauses only; historical IA/layout, static-priority and platform/vendor clauses are filtered. Apply VWE-20261030-r1 before earlier wearable/evidence clauses; original reviews do not cover this amendment.",
+      "sha256": "56fb4892027852db5c6b26add94708905601be695b9d35fdeb4889a7771f0e08",
       "read_policy": "READ_SCOPED",
       "inspection": "AUTHORITY_AND_RELEVANT_CLAUSES",
       "selectors": [
         {
+          "marker": "V1_WEARABLE_EVIDENCE_OVERLAY_START",
+          "line": 3
+        },
+        {
           "marker": "VFT-C023",
-          "line": 96
+          "line": 100
         },
         {
           "marker": "VFT-C049",
-          "line": 54
-        },
-        {
-          "marker": "VFT-L024",
           "line": 58
         },
         {
-          "marker": "VFT-C057",
-          "line": 78
+          "marker": "VFT-L024",
+          "line": 62
         },
         {
-          "marker": "VFT-C059",
+          "marker": "VFT-C057",
           "line": 82
         },
         {
+          "marker": "VFT-C059",
+          "line": 86
+        },
+        {
           "marker": "VFT-C046",
-          "line": 118
+          "line": 122
         }
       ],
       "overrides": [
@@ -5219,11 +5230,15 @@
       "path": "CURRENT_MISSION.md",
       "classification": "CANONICAL",
       "reason": "Repository operational authority; latest applicable instruction controls its scope.",
-      "scope": "Process, exact baseline and boundaries only; current readiness request authorizes docs, not B0 or runtime.",
-      "sha256": "799078835881bfb10d25fbfd18606099c69b20c0729218736bbf62eee6973259",
+      "scope": "Process, exact baseline and boundaries only; current readiness request authorizes docs, not B0 or runtime. Apply VWE-20261030-r1 before earlier wearable/evidence clauses; original reviews do not cover this amendment.",
+      "sha256": "0218bc3c998114a51c81dcf9a3e6e5305405370968158190b5681c52df9c9d05",
       "read_policy": "READ_SCOPED",
       "inspection": "AUTHORITY_AND_RELEVANT_CLAUSES",
       "selectors": [
+        {
+          "marker": "V1_WEARABLE_EVIDENCE_MISSION_START",
+          "line": 687
+        },
         {
           "marker": "## COACHING CORE — R7-A Residual Authority Closure — frozen",
           "line": 655
@@ -5586,7 +5601,7 @@
       "classification": "CURRENT_SUPPORTING",
       "reason": "Append-only chronology; not a substitute for the latest mission/disposition.",
       "scope": "Historical lookup only.",
-      "sha256": "733a1cc1c386900218f01570a680914034d8c1fc84c5ecca0b343979bdc8406d",
+      "sha256": "f37c8d4255ce7103fe5ad43c4e8d88401041450e87c9030a07dab7ea84677e16",
       "read_policy": "ON_DEMAND",
       "inspection": "AUTHORITY_AND_RELEVANT_CLAUSES",
       "topics": []
@@ -5595,30 +5610,34 @@
       "path": "product/ADAPTIVE_ENGINE_CONTRACT.md",
       "classification": "CANONICAL",
       "reason": "Selected by the existing Canon, with later explicit Founder supersessions and clause-level experience filter.",
-      "scope": "Retained product/domain/agency clauses only; historical IA/layout, static-priority and platform/vendor clauses are filtered.",
-      "sha256": "68252a158c8f41e24214b3ed0fd4a3dc2cac417e90075350a05f4c698c52874a",
+      "scope": "Retained product/domain/agency clauses only; historical IA/layout, static-priority and platform/vendor clauses are filtered. Apply VWE-20261030-r1 before earlier wearable/evidence clauses; original reviews do not cover this amendment.",
+      "sha256": "7a7ff59914ad4995258b0f453bdbe5c0151a89fad07bcc57fbd15f6bd31dc7a5",
       "read_policy": "READ_SCOPED",
       "inspection": "AUTHORITY_AND_RELEVANT_CLAUSES",
       "selectors": [
         {
+          "marker": "V1_WEARABLE_EVIDENCE_OVERLAY_START",
+          "line": 3
+        },
+        {
           "marker": "### 1.2",
-          "line": 38
+          "line": 42
         },
         {
           "marker": "### 1.3",
-          "line": 55
+          "line": 59
         },
         {
           "marker": "## 4.",
-          "line": 137
+          "line": 141
         },
         {
           "marker": "### 5.2",
-          "line": 170
+          "line": 174
         },
         {
           "marker": "### 7.1",
-          "line": 252
+          "line": 256
         }
       ],
       "overrides": [
@@ -6711,8 +6730,8 @@
       "path": "product/DESIGNER_PRODUCT_CONTEXT.md",
       "classification": "CURRENT_SUPPORTING",
       "reason": "Derived designer view; not a second Product Truth.",
-      "scope": "Optional semantic overview; do not use as recipe approval.",
-      "sha256": "1dcc4d58d71a0c3ad30b17cab65686a27c33ec56afd0454521283b0a31f21b9b",
+      "scope": "Optional semantic overview; do not use as recipe approval. Apply VWE-20261030-r1 before earlier wearable/evidence clauses; original reviews do not cover this amendment.",
+      "sha256": "419d5a7694671de696872eec13113d386d5a9dc24d41c0448617bd0dc00111f4",
       "read_policy": "ON_DEMAND",
       "inspection": "AUTHORITY_AND_RELEVANT_CLAUSES",
       "overrides": [
@@ -6724,7 +6743,13 @@
         "D15"
       ],
       "authority": "product/PRODUCT_DECISION_REGISTER.md",
-      "topics": []
+      "topics": [],
+      "selectors": [
+        {
+          "marker": "V1_WEARABLE_EVIDENCE_OVERLAY_START",
+          "line": 3
+        }
+      ]
     },
     {
       "path": "product/EXPERIENCE_MODEL.md",
@@ -6748,22 +6773,26 @@
       "path": "product/PRODUCT_ARCHITECTURE.md",
       "classification": "CANONICAL",
       "reason": "Selected by the existing Canon, with later explicit Founder supersessions and clause-level experience filter.",
-      "scope": "Retained product/domain/agency clauses only; historical IA/layout, static-priority and platform/vendor clauses are filtered.",
-      "sha256": "1a7182d8fa44cdf352d0ca789d1828bcb028c6a4dcca2c3aafa35e06136a3623",
+      "scope": "Retained product/domain/agency clauses only; historical IA/layout, static-priority and platform/vendor clauses are filtered. Apply VWE-20261030-r1 before earlier wearable/evidence clauses; original reviews do not cover this amendment.",
+      "sha256": "7c76f07752afeda2a83f6b7d18ca431bfd0f1822a5d156c6b9947f49bc84cf31",
       "read_policy": "READ_SCOPED",
       "inspection": "AUTHORITY_AND_RELEVANT_CLAUSES",
       "selectors": [
         {
-          "marker": "EXPERIENCE_AUTHORITY_OVERLAY_START",
+          "marker": "V1_WEARABLE_EVIDENCE_OVERLAY_START",
           "line": 3
         },
         {
+          "marker": "EXPERIENCE_AUTHORITY_OVERLAY_START",
+          "line": 7
+        },
+        {
           "marker": "## 3. Objetos",
-          "line": 27
+          "line": 31
         },
         {
           "marker": "## 7.",
-          "line": 61
+          "line": 65
         }
       ],
       "overrides": [
@@ -6780,42 +6809,46 @@
       "path": "product/PRODUCT_DECISION_REGISTER.md",
       "classification": "CANONICAL",
       "reason": "Selected by the existing Canon, with later explicit Founder supersessions and clause-level experience filter.",
-      "scope": "Retained product/domain/agency clauses only; historical IA/layout, static-priority and platform/vendor clauses are filtered.",
-      "sha256": "8916d55423aa9cf1c4a17634235f0204cc9eb632f06cef86873254b73f3b06e1",
+      "scope": "Retained product/domain/agency clauses only; historical IA/layout, static-priority and platform/vendor clauses are filtered. Apply VWE-20261030-r1 before earlier wearable/evidence clauses; original reviews do not cover this amendment.",
+      "sha256": "a22fd1284da39b90cb2e5224c6c6c9a8f4c65e6b0e07fd9b8f98d03d56cb1173",
       "read_policy": "READ_SCOPED",
       "inspection": "AUTHORITY_AND_RELEVANT_CLAUSES",
       "selectors": [
         {
+          "marker": "V1_WEARABLE_EVIDENCE_START",
+          "line": 1
+        },
+        {
           "marker": "| DR-112 |",
-          "line": 59
+          "line": 83
         },
         {
           "marker": "| DR-113 |",
-          "line": 60
+          "line": 84
         },
         {
           "marker": "| DR-114 |",
-          "line": 61
+          "line": 85
         },
         {
           "marker": "| DR-120 |",
-          "line": 8
+          "line": 32
         },
         {
           "marker": "| DR-121 |",
-          "line": 9
+          "line": 33
         },
         {
           "marker": "| DR-122 |",
-          "line": 10
+          "line": 34
         },
         {
           "marker": "| DR-123 |",
-          "line": 11
+          "line": 35
         },
         {
           "marker": "## 5. Questões realmente abertas",
-          "line": 265
+          "line": 289
         }
       ],
       "overrides": [
@@ -6834,26 +6867,30 @@
       "path": "product/PRODUCT_DOMAIN_MODEL.md",
       "classification": "CANONICAL",
       "reason": "Selected by the existing Canon, with later explicit Founder supersessions and clause-level experience filter.",
-      "scope": "Retained product/domain/agency clauses only; historical IA/layout, static-priority and platform/vendor clauses are filtered.",
-      "sha256": "d17fb50075d21d631ff7d9e8e94c146710b66a79969da8bff0adc1c38af296e1",
+      "scope": "Retained product/domain/agency clauses only; historical IA/layout, static-priority and platform/vendor clauses are filtered. Apply VWE-20261030-r1 before earlier wearable/evidence clauses; original reviews do not cover this amendment.",
+      "sha256": "83fd2e2780f81380e92ff9dd1dc4b619a9be4a436e65fbfe15dfc410c65b241e",
       "read_policy": "READ_SCOPED",
       "inspection": "AUTHORITY_AND_RELEVANT_CLAUSES",
       "selectors": [
         {
+          "marker": "V1_WEARABLE_EVIDENCE_OVERLAY_START",
+          "line": 3
+        },
+        {
           "marker": "V1_WEARABLE_SCOPE_OVERLAY_START",
-          "line": 7
+          "line": 11
         },
         {
           "marker": "## 3. Ownership",
-          "line": 27
+          "line": 31
         },
         {
           "marker": "## 4. Contratos",
-          "line": 50
+          "line": 54
         },
         {
           "marker": "## 5. Estados",
-          "line": 69
+          "line": 73
         }
       ],
       "overrides": [
@@ -6872,18 +6909,22 @@
       "path": "product/PRODUCT_TRUTH_MAP.md",
       "classification": "CANONICAL",
       "reason": "Selected by the existing Canon, with later explicit Founder supersessions and clause-level experience filter.",
-      "scope": "Retained product/domain/agency clauses only; historical IA/layout, static-priority and platform/vendor clauses are filtered.",
-      "sha256": "2fec239046f8f05422a4614e51e972fb337e8f4e7a5a32ea4fcedcd39f964de6",
+      "scope": "Retained product/domain/agency clauses only; historical IA/layout, static-priority and platform/vendor clauses are filtered. Apply VWE-20261030-r1 before earlier wearable/evidence clauses; original reviews do not cover this amendment.",
+      "sha256": "4e66eb9d8957fcd6bcd475cdb205e3ff48b5fdc48af33fb3ec58d41572a9dd98",
       "read_policy": "READ_SCOPED",
       "inspection": "AUTHORITY_AND_RELEVANT_CLAUSES",
       "selectors": [
         {
+          "marker": "V1_WEARABLE_EVIDENCE_OVERLAY_START",
+          "line": 3
+        },
+        {
           "marker": "## 1. Fontes",
-          "line": 27
+          "line": 31
         },
         {
           "marker": "V1_WEARABLE_SCOPE_OVERLAY_START",
-          "line": 7
+          "line": 11
         }
       ],
       "overrides": [
@@ -7049,8 +7090,8 @@
       "path": "product/UX_SPECIFICATION.md",
       "classification": "CANONICAL",
       "reason": "Selected by the existing Canon, with later explicit Founder supersessions and clause-level experience filter.",
-      "scope": "Retained product/domain/agency clauses only; historical IA/layout, static-priority and platform/vendor clauses are filtered.",
-      "sha256": "4b0754261aac8a10c114b764e2b415c108d8da43c48694857e6bcb04a0a30da3",
+      "scope": "Retained product/domain/agency clauses only; historical IA/layout, static-priority and platform/vendor clauses are filtered. Apply VWE-20261030-r1 before earlier wearable/evidence clauses; original reviews do not cover this amendment.",
+      "sha256": "a79afeb71ea9ec7f9fd3823d831b8390ab85921c043d2c2570674fa841505f0d",
       "read_policy": "READ_SCOPED",
       "inspection": "AUTHORITY_AND_RELEVANT_CLAUSES",
       "overrides": [
@@ -7061,14 +7102,20 @@
         "D14",
         "D15"
       ],
-      "topics": []
+      "topics": [],
+      "selectors": [
+        {
+          "marker": "V1_WEARABLE_EVIDENCE_OVERLAY_START",
+          "line": 3
+        }
+      ]
     },
     {
       "path": "product/V1_RELEASE_SCOPE.md",
       "classification": "CANONICAL",
       "reason": "Selected by the existing Canon, with later explicit Founder supersessions and clause-level experience filter.",
-      "scope": "Retained product/domain/agency clauses only; historical IA/layout, static-priority and platform/vendor clauses are filtered.",
-      "sha256": "ef515ee18fa379f4dc30d8dde9fe328dc25bdb48a97235aefb80d3ed7993919b",
+      "scope": "Retained product/domain/agency clauses only; historical IA/layout, static-priority and platform/vendor clauses are filtered. Apply VWE-20261030-r1 before earlier wearable/evidence clauses; original reviews do not cover this amendment.",
+      "sha256": "587fd3fdb32c0ad48f366e91609acb2b3c0926e0ec0563632e600544d448e732",
       "read_policy": "READ_SCOPED",
       "inspection": "AUTHORITY_AND_RELEVANT_CLAUSES",
       "overrides": [
@@ -7079,7 +7126,13 @@
         "D14",
         "D15"
       ],
-      "topics": []
+      "topics": [],
+      "selectors": [
+        {
+          "marker": "V1_WEARABLE_EVIDENCE_OVERLAY_START",
+          "line": 3
+        }
+      ]
     },
     {
       "path": "reviews/human-domain-review/training-domain-foundation-0.2/00_REVIEW_BRIEF.md",
@@ -7976,6 +8029,34 @@
         "TEST/VALIDATION",
         "HISTORY_OR_OPTIONAL"
       ]
+    },
+    {
+      "path": "product/V1_WEARABLE_EVIDENCE_STRATEGY.md",
+      "classification": "CANONICAL",
+      "reason": "Bounded Founder decision detail selected by current PDR/Canon, not an independent governance system.",
+      "scope": "VWE-01–13 current future-facing wearable/evidence semantics only; no frozen R7-A change or B0 execution.",
+      "sha256": "566fcca561a19c08a5259ea98b32d6ed030bbe9eb6df8406eb797ad26e51f831",
+      "read_policy": "READ_SCOPED",
+      "inspection": "AUTHORITY_AND_RELEVANT_CLAUSES",
+      "selectors": [
+        {
+          "marker": "## Decision, delta and limits",
+          "line": 5
+        }
+      ],
+      "topics": [
+        "AUTHORITY",
+        "EVIDENCE/PROVENANCE"
+      ]
     }
-  ]
+  ],
+  "current_documentary_amendment": {
+    "revision": "VWE-20261030-r1",
+    "date": "2026-10-30",
+    "authority": "product/PRODUCT_DECISION_REGISTER.md",
+    "detail": "product/V1_WEARABLE_EVIDENCE_STRATEGY.md",
+    "scope": "Wearable/evidence navigation only. Original pack baseline/mission authority and review/verification remain historical for their original hashes; no B0 execution or R7-A exit judgment.",
+    "review_evidence": "audits/v1-healthkit-workoutkit-evidence-2026-10-30/TASK_CONTRACT.md",
+    "decision_ids": "DR-135–147"
+  }
 }
