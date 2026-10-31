@@ -1,0 +1,117 @@
+{
+ "review_id": "R7B-ENG-r2-RECHECK",
+ "gate": "R7B_ENGINEERING_GATE",
+ "kind": "the single narrow recheck allowed by the Founder loop bound",
+ "previousReview": "R7B-ENG-r1 (NOT_READY), committed at 0fb1339: audits/domain-coaching-r7-b-2026-10-31/reviews/engineering/",
+ "judge": {
+  "role": "quality-reliability-engineer (constitution 1.3.0), the same independent judge as R7B-ENG-r1",
+  "model": "claude-opus-5-5"
+ },
+ "date": "2026-10-31",
+ "freeze": "R7B-RUNTIME-REPERTOIRE-FREEZE-2",
+ "freezeRecord": "CoachingCore/r7/b/RUNTIME_FREEZE_R7B_2.json",
+ "freezeCommit": "10b26d6e40542a066f7f100fbf16060b66e15aee (bytes of d03025b; d03025b..10b26d6 changes no file under CoachingCore/src or CoachingCore/test)",
+ "sourceDigest": "d2c730140973c9037de8729387012f830204072053729fbf9bdebf1bc5fe7241",
+ "manifestDigest": "d509452e4ad2aa98bce2889bd723c0faa22d2394aa5630d9f5a56588c9e6c23a",
+ "delta": "git diff 4995d58 d03025b -- CoachingCore/src CoachingCore/test",
+ "identityCheck": {
+  "beforeProbes": "node scripts/verify-r7b.mjs --freeze 2: 19/19 PASS, same digests",
+  "afterProbes": "node scripts/verify-r7b.mjs --freeze 2 --tests: 20/20 PASS, same digests (the suite included)",
+  "repository": "no tracked file changed; this recheck wrote only under reviews/engineering/recheck/"
+ },
+ "verdict": "NOT_READY",
+ "verdictBasis": "QE-R7B-01 (BLOCKER) and QE-R7B-05 (MAJOR) are not resolved: novice templates are not carried in stored proposals (QE-R7B-R2-01, BLOCKER, present since FREEZE-1), so a capped novice's substitution and a cap started by a schedule change are undone at the next weekly review. The delta also introduced QE-R7B-R2-02 (MAJOR, the A5 factual re-plan dropped on the new block-choice ASK path), and the new replay fallback leaves QE-R7B-R2-03 (MAJOR, the next rung after a skill mismatch once the substitute stops fitting). There is no further cycle, so these close R7-B NOT_READY with explicit blockers.",
+ "resolved": [
+  {"id": "QE-R7B-01", "severity": "BLOCKER", "status": "NOT_RESOLVED", "evidence": "The direct path is fixed: a10-repro A10r PASS (db-rdl SKILL_MISMATCH: decision kb-deadlift, weeks 4-8 kb-deadlift; dead-bug: bird-dog; an athlete-chosen to honoured), and the FREEZE-1 grid falls from 19 to 2 inconsistent of 46 (a3-substitution A10). The property 'the plan prescribes what the decision selects' still fails on three paths: QE-R7B-R2-01 (a capped novice's substitution is reverted at the next weekly review: goblet-squat reported as SKILL_MISMATCH returns as MAIN in weeks 3 and 4), QE-R7B-R2-03 (once the substitute stops fitting, the fallback prescribes single-leg-rdl-db, the next rung above db-rdl) and QE-R7B-R2-04 (8 of 138 applied substitutions in a 10-program grid name a configuration already used in the same session)"},
+  {"id": "QE-R7B-02", "severity": "MAJOR", "status": "RESOLVED", "evidence": "a4-rotation A12 PASS: reverse-lunge -> reverse-lunge-db holds in weeks 5-6 and rotates from its own week; the replaced reverse-lunge never returns (weeks 7-8 db-split-squat, 9-10 db-step-up, 11 reverse-lunge-db)"},
+  {"id": "QE-R7B-03", "severity": "MAJOR", "status": "RESOLVED", "evidence": "a-state A3 PASS (correction: week 5 capped, planner and history agree); a2-state A3b: EXERCISE_SUBSTITUTION and EQUIPMENT_CHANGE plan week 5 capped with planner {capped:true}; a SCHEDULE_CHANGE re-plans from week 6, which is capped (week 5 is not re-planned by it, as the handoff states). The new block-choice ASK path brings the disagreement back: see QE-R7B-R2-02"},
+  {"id": "QE-R7B-04", "severity": "MAJOR", "status": "RESOLVED", "evidence": "a-state A1 and a2-state A1b PASS: after an adverse or 10-minute correction of a qualifying week the graduation is withdrawn and no threshold session remains in weeks 4-6; n-delta N4 PASS: no false withdrawal over eight executed weeks with an adverse quality session and an unrelated correction"},
+  {"id": "QE-R7B-05", "severity": "MAJOR", "status": "NOT_RESOLVED", "evidence": "a-state A4 PASS only within the schedule change's own proposal (weeks 2-4 CORE,CORE,FULL_A,FULL_B). After the next weekly review the plan returns to LOWER,LOWER_B,UPPER,UPPER_B in weeks 2, 3 and 4 while the state says {capped:true} (n7 N7a; cause QE-R7B-R2-01). With week 1 skipped, a decision in week 2 plans that week uncapped (QE-R7B-R2-05)"},
+  {"id": "QE-R7B-06", "severity": "MAJOR", "status": "RESOLVED", "evidence": "a-state A8 PASS (both orders, and two MAIN changes, are ASK); a2-state A8b PASS (no ladder reach recorded; back-squat stays inadmissible)"},
+  {"id": "QE-R7B-07", "severity": "MINOR", "status": "RESOLVED", "evidence": "a-state A7 PASS: back-squat, set aside, is not offered again; a ladder step or MAIN change to it is ASK"},
+  {"id": "QE-R7B-08", "severity": "MINOR", "status": "RESOLVED", "evidence": "a-state A9 PASS (mid-week choices, unknown type ASK; non-list HOLD); c-boundaries C6 toUnknown ASK. Residual observation QE-R7B-R2-OBS-01"},
+  {"id": "QE-R7B-09", "severity": "MINOR", "status": "RESOLVED", "evidence": "b-determinism B4 PASS: the same instant gives the same decision whatever its offset; an instant after the review-by date in UTC is UNSUPPORTED"},
+  {"id": "QE-R7B-10", "severity": "MINOR", "status": "RESOLVED", "evidence": "c-mutation C1c PASS (temp copy from git archive HEAD): an appended rejecting record turns B0-C01 off; no graduation"},
+  {"id": "QE-R7B-11", "severity": "MINOR", "status": "RESOLVED", "evidence": "c-boundaries C2 PASS: an authority without B0-C10 gives INVALID_INPUT for a 5K; c-mutation C1d unchanged"},
+  {"id": "QE-R7B-12", "severity": "MINOR", "status": "RESOLVED", "evidence": "Matrix R7B-CONFORMANCE-2: conformance-r7b.mjs PASS (301 entries); the previously contradicted entries cite the plan-level tests of test/r7b-review-fixes.test.mjs, and fixCycle lists the dispositions. Entries SSCTR:B0-C06#c8, B0-C07#c1 and B0-C08#c1 are still contradicted on the paths of QE-R7B-R2-01 and -03, whose tests do not cover them"}
+ ],
+ "findings": [
+  {
+   "id": "QE-R7B-R2-01",
+   "severity": "BLOCKER",
+   "origin": "PRE-EXISTING: reproduced identically on FREEZE-1 bytes (at-commit.mjs 4995d58). It was not covered by the R7B-ENG-r1 reproductions and was not introduced by the delta, but it defeats the QE-R7B-01 and QE-R7B-05 fixes on the core novice path",
+   "area": "stale-state resurrection / state transitions: novice (capped) templates in stored proposals",
+   "summary": "Decisions rebuild the novice templates of the new context (contextAfter, also in the QE-R7B-05 fix), and the decision's own proposal is composed with them. But rebuild's stored fields (src/r6-adaptation.mjs:653) and finishProposal (:265-269) do not carry noviceTemplates, and neither does the equipment change (:746, :750). The stored program therefore keeps the intake's novice templates, or none, and every later decision (skeletonOf) composes capped weeks from them. Consequences for a strength-NONE athlete in the first block: (a) a reason-based substitution is reverted at the next weekly review: the exercise reported as SKILL_MISMATCH comes back; (b) a cap started by a schedule change is ignored at the next weekly review: full split with state {capped:true}; (c) after a permanent equipment change the next weekly review is UNSUPPORTED (the stale templates need the removed equipment).",
+   "reproduction": "From audits/domain-coaching-r7-b-2026-10-31/reviews/engineering/recheck/probes/: node n8-labels.mjs (N7d), node n7-novice-templates.mjs (N7a, N7b, N7c); the same on FREEZE-1: node at-commit.mjs 4995d58 n7-novice-templates.mjs FREEZE-1 and node at-commit.mjs 4995d58 n8-labels.mjs FREEZE-1. Program: strength NONE, DUMBBELLS+BENCH, strength days 0/2/4/5 (N7b-d) or 0/4 then a change to 0/2/4/5 (N7a). Outputs: recheck/probes/out/n8-labels-*.json, n7-novice-templates-*.json",
+   "expected": "N7d: goblet-squat, replaced in week 2 for SKILL_MISMATCH by box-squat-bodyweight, never returns in weeks 3-4. N7a: weeks 2-3 stay capped after each weekly review. N7c: after a change to kettlebell only, the week-1 review plans kettlebell-only capped weeks",
+   "actual": "N7d: the decision's proposal has box-squat-bodyweight in week 3; after the week-2 weekly review, w3-str-d0 prescribes goblet-squat MAIN, and w4-str-d0 too (FREEZE-1 identical). N7b (preference) also returns goblet-squat; the stored noviceTemplates still hold it. N7a: the change's proposal shows CORE,CORE,FULL_A,FULL_B; after the weekly reviews of weeks 1, 2 and 3, weeks 2, 3 and 4 are LOWER,LOWER_B,UPPER,UPPER_B with density {capped:true}; storedNoviceTemplates false. N7c: the week-1 weekly review is UNSUPPORTED (w2-str-d0:equipmentUnavailable:goblet-squat, db-floor-press, db-row; w2-str-d2:db-row) (FREEZE-1 identical)"
+  },
+  {
+   "id": "QE-R7B-R2-02",
+   "severity": "MAJOR",
+   "origin": "INTRODUCED by the delta (FREEZE-1 proposed the factual re-plan for the same review)",
+   "area": "correction/retraction (R7-A A5, QE-R7ADA-01) / block-choice validation",
+   "summary": "The new block-choice checks return a bare ASK without the canonical factual re-plan. The first is the early return when choices arrive outside the weekly review of a complete week (src/r6-adaptation.mjs:357). The second replaces a decision when its choices were not handled (:359). In both cases the review's correction is recorded in the returned actualLedger but nothing is re-planned, and later reviews of the week do not recover it: viewMovedBy (:956) reacts only to a correction carried by the review itself, judged against the carried record. The sessions still ahead stay planned from retracted facts, and the planner disagrees with the evidence reducer. Every other question keeps the re-plan (withFactualReplan). A graduation withdrawal is also left out of the ASK; it is applied only at the next review.",
+   "reproduction": "recheck/probes/n-delta.mjs (N1, N1b) and n8-labels.mjs (N1; FREEZE-1 label via at-commit.mjs 4995d58 n8-labels.mjs FREEZE-1). N1: strength-NONE 4-day novice, weeks 0-4 executed and reviewed (released); week 5 day 0 06:00Z a review with the week-4 strength reports corrected to adverse plus choices [LADDER_STEP goblet-squat -> kb-goblet-squat]; then a mid-week review on day 1 with no observations",
+   "expected": "ASK with the factual re-plan proposed (as the same correction alone gives: MODIFY REPLAN_FROM_EVIDENCE, week 5 ahead CORE,CORE,FULL_B); the sessions ahead follow the corrected facts",
+   "actual": "ASK 'Block choices are made in the weekly review...', proposal null, correction recorded in actualLedger; the follow-up mid-week review is KEEP with no proposal; week 5 ahead stays LOWER_B,UPPER,UPPER_B; planner density {capped:false, releasedAfterWeek:4} vs historicalStateOf {capped:true}. N1b (graduation): ASK keeps w4-run-d1 THRESHOLD; withdrawn only by the next review. FREEZE-1, same review: MODIFY REPLAN_FROM_EVIDENCE with a proposal"
+  },
+  {
+   "id": "QE-R7B-R2-03",
+   "severity": "MAJOR",
+   "origin": "RESIDUAL of QE-R7B-01 in the new natural-pick replay: the fallback when no recorded decision fits",
+   "area": "reason-based substitution / natural-pick replay fallback",
+   "summary": "When the configuration a substitution selected stops fitting the slot (its equipment goes, permanently or in a dated window), the replay keeps the set-aside natural pick. It then falls back to the generic selection order, which ranks higher skill first (src/r7b-repertoire.mjs:293). The SKILL_MISMATCH reason is not carried, so the slot gets a rung above the configuration the athlete reported as not doable with steady technique: the QE-R7B-01 harm through an equipment change.",
+   "reproduction": "recheck/probes/n-delta.mjs (N3): DUMBBELLS+BENCH+KETTLEBELL, GENERAL, FIXED; db-rdl SKILL_MISMATCH in week 3 (plan kb-deadlift, as selected); week 4 day 0: EQUIPMENT_CHANGE to DUMBBELLS+BENCH (permanent), or the same for week 5 only (window). Output: recheck/probes/out/n-delta.json",
+   "expected": "no rung above db-rdl on its own ladder (barbell-rdl, single-leg-rdl-db) replaces it; without a fitting lower option the athlete is asked",
+   "actual": "permanent: swap 'kb-deadlift -> single-leg-rdl-db', HINGE MAIN single-leg-rdl-db in weeks 4-6; window: single-leg-rdl-db in week 5 (ladderNext(db-rdl) = barbell-rdl, single-leg-rdl-db)"
+  },
+  {
+   "id": "QE-R7B-R2-04",
+   "severity": "MINOR",
+   "origin": "RESIDUAL of QE-R7B-01: the new guard checks the whole plan, not the replaced slots",
+   "area": "reason-based substitution / decision vs plan",
+   "summary": "The substitution is ASK unless the plan prescribes the selection somewhere ahead (src/r6-adaptation.mjs:553). When the selection is already used elsewhere in the same session (typically the MAIN of the same pattern), the guard passes, the replaced exercise's slot cannot take it, and that slot gets another configuration. The decision names one exercise and the slot prescribes another; in one case the result is two rungs up.",
+   "reproduction": "recheck/probes/n-delta.mjs (N5): 10 programs x every exercise in use x both reasons, substitution in week 3, week-4 slots compared",
+   "expected": "every applied substitution prescribes its selection in the replaced exercise's slot",
+   "actual": "138 applied, 8 inconsistent, all with the selection already in the session: e.g. one-arm-db-row SKILL_MISMATCH: decision db-row, slot seated-cable-row or prone-ytw-raise; incline-push-up preference: decision push-up, slot pike-push-up (two rungs up, MODERATE)"
+  },
+  {
+   "id": "QE-R7B-R2-05",
+   "severity": "MINOR",
+   "origin": "INTRODUCED with the lazy cap start (QE-R7B-05 fix)",
+   "area": "state transition / density cap started by a context change",
+   "summary": "The cap starts in advanceStrength (src/r6-program.mjs:838). The evidence reducer's path for a week neither reviewed nor complete (strengthAtBreak) never starts it. If the last two-day week is skipped (no report, no review), a decision in the first four-day week plans that week uncapped; the planner and history both read no cap.",
+   "reproduction": "recheck/probes/n-delta.mjs (N2): strength NONE, days 0/4; SCHEDULE_CHANGE to 0/2/4/5 on week 1 day 0; week 1 skipped; EXERCISE_SUBSTITUTION on week 2 day 0",
+   "expected": "week 2 capped (CORE,CORE,FULL_A,FULL_B), as planned at the change",
+   "actual": "week 2 LOWER,LOWER_B,UPPER,UPPER_B (week 3 capped); density null in planner and history"
+  },
+  {
+   "id": "QE-R7B-R2-OBS-01",
+   "severity": "OBSERVATION",
+   "origin": "residual of QE-R7B-08",
+   "area": "block choices off the boundary",
+   "summary": "A graduation-offer answer (DECLINE) sent with the weekly review of a complete week that is not a block boundary is accepted silently (KEEP). No offer is open and nothing is planned from it.",
+   "reproduction": "recheck/probes/n-delta.mjs (N6)",
+   "expected": "ASK (choices only at the boundary step)",
+   "actual": "KEEP"
+  }
+ ],
+ "carriedForward": [
+  "QE-R7B-OBS-04 (a substitution introduces a never-performed configuration in TAPER and RACE_WEEK) still reproduces (a4-rotation A13: kb-goblet-squat new in weeks 13 and 14); routed to the SSCTR recheck by the handoff, not counted here",
+  "QE-R7B-OBS-01, -02, -03 unchanged (b-determinism B3, B6; c-boundaries C8, c2-authority C8b), routed to the next runtime mission by the handoff, not re-judged"
+ ],
+ "checked": [
+  "FREEZE-2 identity before (19/19) and after with the suite (20/20); no tracked file changed",
+  "Reproductions of R7B-ENG-r1 copied into recheck/probes and re-run on FREEZE-2: a10-repro (1/1 PASS), a-state (9/9 PASS: A1, A2, A3, A4, A5, A6, A7, A8, A9), a2-state (A1b, A8b PASS; A3b see QE-R7B-03), a3-substitution (2/46 inconsistent; A11 is not a finding, as in r1), a4-rotation (A12 PASS; A13 = OBS-04), b-determinism (B1, B2, B4, B5 PASS), c-mutation (C1a-d PASS), c-boundaries (C2, C4, C5, C6, C7, C9, C10 PASS), r-regression (R1, R4, R5 PASS)",
+  "Delta paths probed: graduation withdrawal (correction, 10-minute correction, introduction-week review, eight-week no-false-positive control); density from evidence (correction, substitution, equipment, schedule); the cap started by a context change (own proposal, next weekly reviews, skipped week); slot-located replay (substitution grids of 46 and 138, the fallback after an equipment change or window, capped novices after the next review); rotation from a decision's week; block-choice validation (unknown kind, non-list, mid-week, off-boundary answer, with a correction); record veto; UTC review-by date; the 5K fallback authority",
+  "Labels: QE-R7B-R2-01 reproduced on FREEZE-1 bytes (pre-existing); QE-R7B-R2-02 absent on FREEZE-1 (introduced)",
+  "Not re-reviewed: areas the delta does not touch; sports-science adequacy and the SSCTR items (SSCTR recheck); completeness and reachability (Quality recheck)"
+ ],
+ "probes": {
+  "folder": "audits/domain-coaching-r7-b-2026-10-31/reviews/engineering/recheck/probes",
+  "copies": ["lib.mjs (REPO one level deeper)", "a10-repro.mjs", "a3-substitution.mjs", "a4-rotation.mjs", "a-state.mjs", "a2-state.mjs", "b-determinism.mjs", "c-boundaries.mjs", "c-mutation.mjs", "c2-authority.mjs", "r-regression.mjs"],
+  "new": ["n-delta.mjs", "n7-novice-templates.mjs", "n8-labels.mjs", "at-commit.mjs (git archive of a commit into the OS temp directory, then runs a probe on it; removes the copy)"],
+  "outputs": "recheck/probes/out/*.json"
+ }
+}

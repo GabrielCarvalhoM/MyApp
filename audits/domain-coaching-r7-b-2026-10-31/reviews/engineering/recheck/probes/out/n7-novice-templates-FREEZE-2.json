@@ -1,0 +1,135 @@
+{
+ "probe": "n7-novice-templates-FREEZE-2",
+ "frozen": "R7B-RUNTIME-REPERTOIRE-FREEZE-2",
+ "ran": "2026-10-31T14:05:49.583Z",
+ "results": [
+  {
+   "id": "N7a-FREEZE-2",
+   "area": "novice cap started by a context change, after the following weekly reviews",
+   "verdict": "FAIL",
+   "expected": "weeks 2 and 3 (before the first block boundary at week 4) stay capped after each weekly review, as the state says",
+   "actual": {
+    "scheduleChange": {
+     "status": "MODIFY",
+     "action": "REARRANGE_FUTURE_WEEKS",
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the athlete removed",
+     "errors": []
+    },
+    "plannedAtTheChange": [
+     "CORE,CORE,FULL_A,FULL_B",
+     "CORE,CORE,FULL_A,FULL_B",
+     "CORE,CORE,FULL_A,FULL_B"
+    ],
+    "storedNoviceTemplates": false,
+    "afterWeeklyReviews": [
+     {
+      "reviewedWeek": 1,
+      "action": "INSTANTIATE_LOGGED_LOADS",
+      "nextWeek": 2,
+      "templates": "LOWER,LOWER_B,UPPER,UPPER_B",
+      "density": {
+       "capped": true
+      }
+     },
+     {
+      "reviewedWeek": 2,
+      "action": "INSTANTIATE_LOGGED_LOADS",
+      "nextWeek": 3,
+      "templates": "LOWER,LOWER_B,UPPER,UPPER_B",
+      "density": {
+       "capped": true
+      }
+     },
+     {
+      "reviewedWeek": 3,
+      "action": "INSTANTIATE_LOGGED_LOADS",
+      "nextWeek": 4,
+      "templates": "LOWER,LOWER_B,UPPER,UPPER_B",
+      "density": {
+       "capped": true
+      }
+     }
+    ]
+   }
+  },
+  {
+   "id": "N7b-FREEZE-2",
+   "area": "set-aside configuration in capped weeks after the next weekly reviews",
+   "verdict": "FAIL",
+   "expected": "the exercise set aside in week 2 never comes back in the capped weeks the following weekly reviews plan",
+   "actual": {
+    "replaced": "goblet-squat",
+    "substitution": {
+     "status": "MODIFY",
+     "action": "SUBSTITUTE_FOR_REASON",
+     "reason": "goblet-squat is replaced by box-squat-bodyweight (a nonclinical preference); the new exercise starts with effort-guided establishment, nothing is converted",
+     "errors": [],
+     "selected": "box-squat-bodyweight"
+    },
+    "inTheDecisionsProposal": [
+     {
+      "week": 2,
+      "templates": "CORE,CORE,FULL_A,FULL_B",
+      "hasReplaced": true
+     },
+     {
+      "week": 3,
+      "templates": "CORE,CORE,FULL_A,FULL_B",
+      "hasReplaced": false
+     },
+     {
+      "week": 4,
+      "templates": "CORE,CORE,FULL_A,FULL_B",
+      "hasReplaced": false
+     }
+    ],
+    "afterWeeklyReviews": [
+     {
+      "reviewedWeek": 2,
+      "action": "INSTANTIATE_LOGGED_LOADS",
+      "status": "KEEP",
+      "nextWeek": 3,
+      "templates": "CORE,CORE,FULL_A,FULL_B",
+      "hasReplaced": true
+     },
+     {
+      "reviewedWeek": 3,
+      "action": "KEEP",
+      "status": "KEEP",
+      "nextWeek": 4,
+      "templates": "CORE,CORE,FULL_A,FULL_B",
+      "hasReplaced": true
+     }
+    ],
+    "storedNoviceTemplatesStillHoldIt": true
+   }
+  },
+  {
+   "id": "N7c-FREEZE-2",
+   "area": "equipment change while capped, after the next weekly review",
+   "verdict": "FAIL",
+   "expected": "after a permanent change to kettlebell only, the capped weeks the next weekly review plans use only the kettlebell (and the review is not refused)",
+   "actual": {
+    "equipmentChange": {
+     "status": "MODIFY",
+     "action": "SUBSTITUTE",
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed",
+     "errors": []
+    },
+    "weeklyReviewWeek1": {
+     "status": "UNSUPPORTED",
+     "action": "UNSUPPORTED",
+     "reason": "Counterfactual failed complete validation; no partial change is presented as valid",
+     "errors": [
+      "w2-str-d0:equipmentUnavailable:goblet-squat",
+      "w2-str-d0:equipmentUnavailable:db-floor-press",
+      "w2-str-d0:equipmentUnavailable:db-row",
+      "w2-str-d2:equipmentUnavailable:db-row"
+     ]
+    },
+    "week2": "CORE,CORE,FULL_A,FULL_B",
+    "rowsNeedingRemovedEquipment": []
+   }
+  }
+ ]
+}

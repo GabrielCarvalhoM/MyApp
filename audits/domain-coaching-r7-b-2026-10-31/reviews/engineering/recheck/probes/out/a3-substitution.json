@@ -1,0 +1,83 @@
+{
+ "probe": "a3-substitution",
+ "frozen": "R7B-RUNTIME-REPERTOIRE-FREEZE-2",
+ "ran": "2026-10-31T14:01:21.661Z",
+ "results": [
+  {
+   "id": "A10",
+   "area": "reason-based substitution / decision vs plan",
+   "verdict": "FAIL",
+   "expected": "the configuration a substitution decision reports as selected is the one the plan prescribes in place of the replaced exercise",
+   "actual": {
+    "modified": 46,
+    "inconsistent": 2,
+    "asked": 16,
+    "examples": [
+     {
+      "program": "e3-sub-full",
+      "label": "SKILL_MISMATCH",
+      "sub": {
+       "exerciseId": "one-arm-db-row",
+       "reason": "SKILL_MISMATCH"
+      },
+      "status": "MODIFY",
+      "selected": "db-row",
+      "nextWeek": [
+       {
+        "session": "w4-str-d2",
+        "role": "ACCESSORY",
+        "prescribed": [
+         "seated-cable-row"
+        ]
+       }
+      ],
+      "consistent": false
+     },
+     {
+      "program": "e3-sub-full",
+      "label": "NONCLINICAL_DISCOMFORT_OR_PREFERENCE",
+      "sub": {
+       "exerciseId": "one-arm-db-row",
+       "reason": "NONCLINICAL_DISCOMFORT_OR_PREFERENCE",
+       "nonclinicalConfirmed": true
+      },
+      "status": "MODIFY",
+      "selected": "db-row",
+      "nextWeek": [
+       {
+        "session": "w4-str-d2",
+        "role": "ACCESSORY",
+        "prescribed": [
+         "seated-cable-row"
+        ]
+       }
+      ],
+      "consistent": false
+     }
+    ]
+   }
+  },
+  {
+   "id": "A11",
+   "area": "reason-based substitution after a MAIN change",
+   "verdict": "FAIL",
+   "expected": "leg-press (the MAIN chosen at the boundary) is replaced by the selected substitute; the plan never falls back to goblet-squat, the MAIN the athlete changed away from",
+   "actual": {
+    "week5Squat": [
+     "leg-press"
+    ],
+    "substitution": {
+     "status": "MODIFY",
+     "action": "SUBSTITUTE_FOR_REASON",
+     "reason": "leg-press is replaced by goblet-squat (a nonclinical preference); the new exercise starts with effort-guided establishment, nothing is converted",
+     "missingInputs": [],
+     "errors": [],
+     "selected": "goblet-squat"
+    },
+    "week7Squat": [
+     "goblet-squat"
+    ]
+   }
+  }
+ ]
+}

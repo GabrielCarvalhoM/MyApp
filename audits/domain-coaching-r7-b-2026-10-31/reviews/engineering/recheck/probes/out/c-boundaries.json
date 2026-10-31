@@ -1,0 +1,436 @@
+{
+ "probe": "c-boundaries",
+ "frozen": "R7B-RUNTIME-REPERTOIRE-FREEZE-2",
+ "ran": "2026-10-31T14:02:12.507Z",
+ "results": [
+  {
+   "id": "C2",
+   "area": "authority binding / 5K fallback",
+   "verdict": "PASS",
+   "expected": "the planner's own repertoire authority (without B0-C10) decides the 5K fallback: off, a 5K stays outside the event scope as in R6 (as when the records file lacks the record)",
+   "actual": {
+    "authorityGivenApprovesC10": false,
+    "withoutC10": {
+     "status": "INVALID_INPUT",
+     "goal": null,
+     "disclosure": false,
+     "bindingApproved": null
+    },
+    "withC10": {
+     "status": "PROPOSED"
+    }
+   }
+  },
+  {
+   "id": "C4",
+   "area": "boundaries / one-day schedules and minimal equipment",
+   "verdict": "PASS",
+   "expected": "every reviewed week of one-day and minimal-equipment programs validates and conforms to the bound catalog",
+   "actual": [
+    {
+     "id": "c-one-novice",
+     "status": "PROPOSED",
+     "weeks": 12,
+     "issues": []
+    },
+    {
+     "id": "c-one-strength",
+     "status": "PROPOSED",
+     "weeks": 12,
+     "issues": []
+    },
+    {
+     "id": "c-bands-only",
+     "status": "PROPOSED",
+     "weeks": 12,
+     "issues": []
+    },
+    {
+     "id": "c-bar-only",
+     "status": "PROPOSED",
+     "weeks": 12,
+     "issues": []
+    },
+    {
+     "id": "c-event-one-day",
+     "status": "PROPOSED",
+     "weeks": 12,
+     "issues": []
+    }
+   ]
+  },
+  {
+   "id": "C5",
+   "area": "impossible combinations / block choices",
+   "verdict": "PASS",
+   "expected": "unknown configurations, a MAIN change from an accessory or to another pattern or to an unfamiliar HIGH-skill lift, a step not on the next rung, a step from an exercise not in use, a MAIN change without a reason: asked, never planned",
+   "actual": {
+    "ladderToUnknown": {
+     "status": "ASK",
+     "action": "ASK",
+     "reason": "Some block choices cannot be applied: Not the next step on its ladder, or not available",
+     "missingInputs": [
+      "choices"
+     ],
+     "errors": [],
+     "planned": false
+    },
+    "mainToUnknown": {
+     "status": "ASK",
+     "action": "ASK",
+     "reason": "Some block choices cannot be applied: The new main lift must fill the same slot pattern and share a primary muscle",
+     "missingInputs": [
+      "choices"
+     ],
+     "errors": [],
+     "planned": false
+    },
+    "mainFromAccessory": {
+     "status": "ASK",
+     "action": "ASK",
+     "reason": "Some block choices cannot be applied: The exercise is not a main lift in use",
+     "missingInputs": [
+      "choices"
+     ],
+     "errors": [],
+     "planned": false
+    },
+    "mainToHighUnfamiliar": {
+     "status": "ASK",
+     "action": "ASK",
+     "reason": "Some block choices cannot be applied: The new main lift is not admissible (skill or equipment)",
+     "missingInputs": [
+      "choices"
+     ],
+     "errors": [],
+     "planned": false
+    },
+    "ladderSkip": {
+     "status": "ASK",
+     "action": "ASK",
+     "reason": "Some block choices cannot be applied: Not the next step on its ladder, or not available",
+     "missingInputs": [
+      "choices"
+     ],
+     "errors": [],
+     "planned": false
+    },
+    "ladderNotInUse": {
+     "status": "ASK",
+     "action": "ASK",
+     "reason": "Some block choices cannot be applied: The exercise is not in use",
+     "missingInputs": [
+      "choices"
+     ],
+     "errors": [],
+     "planned": false
+    },
+    "mainToOtherPattern": {
+     "status": "ASK",
+     "action": "ASK",
+     "reason": "Some block choices cannot be applied: The new main lift must fill the same slot pattern and share a primary muscle",
+     "missingInputs": [
+      "choices"
+     ],
+     "errors": [],
+     "planned": false
+    },
+    "mainNoReason": {
+     "status": "ASK",
+     "action": "ASK",
+     "reason": "Some block choices cannot be applied: A main lift changes only with a recorded reason",
+     "missingInputs": [
+      "choices"
+     ],
+     "errors": [],
+     "planned": false
+    }
+   }
+  },
+  {
+   "id": "C6",
+   "area": "impossible combinations / substitution",
+   "verdict": "PASS",
+   "expected": "each impossible substitution is asked (pain and injury route to a human), never planned",
+   "actual": {
+    "toHighUnfamiliar": {
+     "status": "ASK",
+     "action": "ASK",
+     "reason": "back-squat cannot replace goblet-squat here (pattern, role, skill or equipment)",
+     "missingInputs": [
+      "substitution.to"
+     ],
+     "errors": [],
+     "planned": false
+    },
+    "toOtherPattern": {
+     "status": "ASK",
+     "action": "ASK",
+     "reason": "db-rdl cannot replace goblet-squat here (pattern, role, skill or equipment)",
+     "missingInputs": [
+      "substitution.to"
+     ],
+     "errors": [],
+     "planned": false
+    },
+    "toMissingEquipment": {
+     "status": "ASK",
+     "action": "ASK",
+     "reason": "leg-press cannot replace goblet-squat here (pattern, role, skill or equipment)",
+     "missingInputs": [
+      "substitution.to"
+     ],
+     "errors": [],
+     "planned": false
+    },
+    "toItself": {
+     "status": "ASK",
+     "action": "ASK",
+     "reason": "goblet-squat cannot replace goblet-squat here (pattern, role, skill or equipment)",
+     "missingInputs": [
+      "substitution.to"
+     ],
+     "errors": [],
+     "planned": false
+    },
+    "unknownExercise": {
+     "status": "ASK",
+     "action": "ASK",
+     "reason": "no-such-lift is not in the sessions still ahead",
+     "missingInputs": [
+      "substitution.exerciseId"
+     ],
+     "errors": [],
+     "planned": false
+    },
+    "toUnknown": {
+     "status": "ASK",
+     "action": "ASK",
+     "reason": "no-such-lift is not an exercise of the repertoire; name another exercise of the same pattern, or leave the choice to the plan",
+     "missingInputs": [
+      "substitution.to"
+     ],
+     "errors": [],
+     "planned": false
+    },
+    "painText": {
+     "status": "CLINICAL_HUMAN_REQUIRED",
+     "action": "CLINICAL_HUMAN_REQUIRED",
+     "reason": "Pain, injury, illness or a functional limitation with goblet-squat routes to qualified human assessment; no exercise is substituted as a remedy",
+     "missingInputs": [],
+     "errors": [],
+     "planned": false
+    },
+    "injuryFlag": {
+     "status": "CLINICAL_HUMAN_REQUIRED",
+     "action": "CLINICAL_HUMAN_REQUIRED",
+     "reason": "Pain, injury, illness or a functional limitation with goblet-squat routes to qualified human assessment; no exercise is substituted as a remedy",
+     "missingInputs": [],
+     "errors": [],
+     "planned": false
+    },
+    "unknownReason": {
+     "status": "ASK",
+     "action": "ASK",
+     "reason": "Say why the exercise should change: it cannot be done with steady technique, or a dislike or discomfort without pain",
+     "missingInputs": [
+      "substitution.reason"
+     ],
+     "errors": [],
+     "planned": false
+    },
+    "notAnObject": {
+     "status": "ASK",
+     "action": "ASK",
+     "reason": "Say which exercise should change and why",
+     "missingInputs": [
+      "substitution.exerciseId",
+      "substitution.reason"
+     ],
+     "errors": [],
+     "planned": false
+    }
+   }
+  },
+  {
+   "id": "C7",
+   "area": "impossible combinations / kilograms for bands",
+   "verdict": "PASS",
+   "expected": "no band or assistance row and no state of one ever carries a kilogram value",
+   "actual": {
+    "bandExercises": [
+     "band-row",
+     "band-assisted-pull-up"
+    ],
+    "kgRows": [],
+    "kgState": [],
+    "questions": []
+   }
+  },
+  {
+   "id": "C8",
+   "area": "impossible combinations / quality without its gates",
+   "verdict": "FAIL",
+   "expected": "after graduation, quality disappears when a gate closes (fewer than three run days, a non-performance goal) and is never planned without the B0-C01 authority",
+   "actual": {
+    "graduation": "RUN_QUALITY_GRADUATION",
+    "twoRunDays": {
+     "status": "MODIFY",
+     "action": "REARRANGE_FUTURE_WEEKS",
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the athlete removed",
+     "missingInputs": [],
+     "errors": [],
+     "quality": []
+    },
+    "regularGoal": {
+     "status": "MODIFY",
+     "action": "REPLAN_FUTURE_PHASES",
+     "reason": "Goal or event date changed: future phases, priorities and arrangements are re-planned from the current state; completed weeks stay as they were",
+     "missingInputs": [],
+     "errors": [],
+     "quality": []
+    },
+    "withoutC01Record": {
+     "status": "KEEP",
+     "action": "KEEP",
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete",
+     "missingInputs": [],
+     "errors": []
+    }
+   }
+  },
+  {
+   "id": "C9",
+   "area": "impossible combinations / unknown configurations",
+   "verdict": "PASS",
+   "expected": "an unknown exercise id is never planned (asked or ignored)",
+   "actual": {
+    "status": "PROPOSED",
+    "unknownPlanned": [],
+    "known": [
+     "my-own-squat",
+     "back-squat"
+    ],
+    "missingInputs": []
+   }
+  },
+  {
+   "id": "C10",
+   "area": "boundaries / event windows and consolidation",
+   "verdict": "PASS",
+   "expected": "a MAIN change at the boundary into SPECIFIC is asked (no MAIN change in deferred phases)",
+   "actual": {
+    "eventPhases": [
+     "ESTABLISHMENT",
+     "BUILD",
+     "BUILD",
+     "BUILD",
+     "CONSOLIDATION",
+     "BUILD",
+     "BUILD",
+     "BUILD",
+     "CONSOLIDATION",
+     "BUILD",
+     "SPECIFIC",
+     "SPECIFIC",
+     "SPECIFIC",
+     "TAPER",
+     "RACE_WEEK",
+     "POST_EVENT"
+    ],
+    "eventBlocks": [
+     [
+      "ESTABLISHMENT",
+      0,
+      1
+     ],
+     [
+      "BUILD",
+      1,
+      5
+     ],
+     [
+      "BUILD",
+      5,
+      9
+     ],
+     [
+      "BUILD",
+      9,
+      10
+     ],
+     [
+      "SPECIFIC",
+      10,
+      13
+     ],
+     [
+      "TAPER",
+      13,
+      14
+     ],
+     [
+      "RACE_WEEK",
+      14,
+      15
+     ],
+     [
+      "POST_EVENT",
+      15,
+      16
+     ]
+    ],
+    "boundaryWeek": 9,
+    "result": {
+     "status": "ASK",
+     "action": "ASK",
+     "reason": "Some block choices cannot be applied: No MAIN change in this phase or during a return",
+     "missingInputs": [
+      "choices"
+     ],
+     "errors": []
+    },
+    "gradPhases": [
+     "DEVELOPMENT",
+     "DEVELOPMENT",
+     "DEVELOPMENT",
+     "CONSOLIDATION",
+     "DEVELOPMENT",
+     "DEVELOPMENT",
+     "DEVELOPMENT",
+     "CONSOLIDATION",
+     "DEVELOPMENT",
+     "DEVELOPMENT",
+     "DEVELOPMENT",
+     "CONSOLIDATION",
+     "DEVELOPMENT",
+     "DEVELOPMENT",
+     "DEVELOPMENT",
+     "CONSOLIDATION"
+    ],
+    "gradBlocks": [
+     [
+      "DEVELOPMENT",
+      0,
+      4
+     ],
+     [
+      "DEVELOPMENT",
+      4,
+      8
+     ],
+     [
+      "DEVELOPMENT",
+      8,
+      12
+     ],
+     [
+      "DEVELOPMENT",
+      12,
+      16
+     ]
+    ]
+   }
+  }
+ ]
+}

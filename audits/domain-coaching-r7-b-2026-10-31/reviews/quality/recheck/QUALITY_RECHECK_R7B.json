@@ -1,0 +1,50 @@
+{
+ "review_id": "R7B-QUALITY-RECHECK-1",
+ "recheckOf": "R7B-QUALITY-REVIEW-1 (FREEZE-1, NOT_READY; committed 0fb1339)",
+ "judge": "Quality & Reliability Engineer (same independent judge; not the author)",
+ "date": "2026-10-31",
+ "freeze": "R7B-RUNTIME-REPERTOIRE-FREEZE-2",
+ "freezeCommit": "10b26d6",
+ "sourceDigest": "d2c730140973c9037de8729387012f830204072053729fbf9bdebf1bc5fe7241",
+ "manifestDigest": "d509452e4ad2aa98bce2889bd723c0faa22d2394aa5630d9f5a56588c9e6c23a",
+ "frozenBytesCheck": {
+  "before": "node scripts/verify-r7b.mjs --freeze 2: PASS 19/19, digests as above",
+  "after": "node scripts/verify-r7b.mjs --freeze 2: PASS 19/19, same digests; git status shows only untracked review folders (and an untracked audits/.../integrate-queue-r7b.mjs that is not mine); nothing in reviews/quality/ outside recheck/ was touched"
+ },
+ "method": "The FREEZE-1 probes were copied unchanged into reviews/quality/recheck/ and re-run there; their outputs are in recheck/out/. Five probes are new: p09c, p09d, p12b, p13b and p17b, which check the specific changes. Only public entry points were used.",
+ "verdict": "READY",
+ "resolved": [
+  {"id": "Q-R7B-01", "status": "RESOLVED", "evidence": "recheck/p13-ladder-reversal.mjs -> out/p13-ladder-reversal.json. Under COACH_DECIDES and EVERY_6_WEEKS, pull-up holds w5-w12 and barbell-overhead-press holds w5-w15. Under EVERY_2_WEEKS, barbell-overhead-press holds w5-w15, where FREEZE-1 alternated it with db-overhead-press. FIXED is unchanged. The stepped-from configuration never comes back in any cadence. recheck/out/p12-ladder-targeted.json: all 7 accepted steps hold. recheck/out/p12b-after-turn.json: after bird-dog -> dead-bug, the week-13 turn moves to front-plank, never to the lower rung bird-dog. recheck/out/p13b-after-turn.json: the pull-up slot turns at week 13 (8 weeks after the step, per the COACH_DECIDES cadence) to band-pulldown, an alternative that is not on the chain."},
+  {"id": "Q-R7B-02", "status": "RESOLVED", "evidence": "recheck/out/p09b-easy-unknown-disclosure.json: for EASY_UNKNOWN the QUALITY_AFTER_EVIDENCE reduction now has path NONE_IN_V1 and says 'No harder session in this plan: your weekly running was not known at the start...'. This matches the runtime, which still has no graduation over 16 executed weeks (recheck/out/p09-dead-ends.json). recheck/p09c-quality-path.mjs -> out/p09c-quality-path.json: WALK_JOG and EASY_LOW state GRADUATION_AT_BLOCK_REVIEW and do graduate with 3 run days; with 2 run days the companion reduction QUALITY_NEEDS_THREE_RUN_DAYS is present; EASY_UNKNOWN states NONE_IN_V1 in all 4 cases. The matrix records the V1 gap and routes the policy question to SSCTR and the Founder (classification.runClass:EASY_UNKNOWN fixCycle)."},
+  {"id": "Q-R7B-05", "status": "FIXED", "evidence": "recheck/p14-duplicate-rows.mjs -> out/p14-duplicate-rows.json: 1,350 programs and 48,600 strength sessions with 0 duplicates (FREEZE-1 had 1,080). recheck/out/p10-witnesses.json WP-STR-10: each CORE session in week 0 is dead-bug-practice plus supported-calf-raise."},
+  {"id": "Q-R7B-07", "status": "FIXED", "evidence": "recheck/out/p07-pull-disclosure.json: for PULL_UP_BAR_ONLY, PULL_LIMITED_FOR_EQUIPMENT now says 'The rows and pull-downs your equipment allows need more practice first' (limit SKILL) and offers only 'Add a band'; adding the band removes the disclosure. Bodyweight-only athletes keep the equipment wording, which is now accurate. recheck/out/p17-pattern-disclosure.json and p17b-option-effect.json: MOVEMENT_PATTERN_UNAVAILABLE carries limits and the option 'Add equipment for PUSH'. Following it (adding dumbbells) for a novice with bands and a bar removes the disclosure (db-floor-press). See Q-R7B-R2 for the remaining wording."},
+  {"id": "Q-R7B-03", "status": "ROUTED_TRUTHFULLY", "evidence": "CONFORMANCE_R7B.json (R7B-CONFORMANCE-2) fixCycle.recorded: ROUTED, owner 'Next catalog revision'. Still unreachable on FREEZE-2 (recheck/out/p02-config-targeted.json)."},
+  {"id": "Q-R7B-04", "status": "ROUTED_TRUTHFULLY", "evidence": "fixCycle.recorded: ROUTED, owner 'SSCTR with the next catalog revision'. Unchanged: recheck/out/p11-practice-patterns.json (11,200 programs; FULL_A first in all; hinge and lunge practice never prescribed)."},
+  {"id": "Q-R7B-06", "status": "RECORDED_DIVERGENCE_TRUTHFUL", "evidence": "The matrix entry witness:WP-STR-06 now carries a divergence (finding Q-R7B-06, owner 'Next catalog revision (witness or tie-break), with the SSCTR'). Its text matches the runtime: recheck/out/p10-witnesses.json shows band-face-pull during the window and the originals returning after it."},
+  {"id": "Q-R7B-08..11", "status": "ROUTED_TRUTHFULLY", "evidence": "fixCycle.recorded 'Q-R7B-08..11': ROUTED, owner 'Next matrix and catalog revision'. It lists all six items (per-configuration entries, RUNCFG.STRIDES_SET, trajectories.return, the emphasis test, ladder edges from practice configurations, reach paths). They still hold, as recorded: STRIDES_SET is not named (recheck/out/p03-run-families.json), and classification.signal:emphasis still cites the unrelated test."}
+ ],
+ "reachability": {
+  "runFamilies": {"reachable": 10, "total": 10, "evidence": "recheck/out/p03-run-families.json (same families and actions as FREEZE-1; 12 of 13 run configurations named)"},
+  "configurations": {"reachable": 74, "total": 76, "byPath": {"generationDefault": 51, "rotationOnly": 8, "laterReviewOnly": 13, "declaredFamiliarityOnly": 2, "unreachable": 2}, "unreachable": ["back-extension", "hip-hinge-practice"], "evidence": "recheck/out/p16-summary.json. Against FREEZE-1: p01 (27,608 programs) shows identical configuration, role, template, archetype and disclosure sets. p02 shows identical reachability for all 76 configurations. p06 shows the identical rotation-seen set. p04 loses nothing (substitution targets, ladder targets and offers identical); db-step-up, chin-up and scapular-pull-up are newly seen after reviews, so db-step-up moves from familiarity-only to review."},
+  "templates": {"reachable": 7, "total": 7},
+  "archetypes": {"reachable": 5, "total": 5}
+ },
+ "findings": [
+  {
+   "id": "Q-R7B-R1",
+   "severity": "OBSERVATION",
+   "kind": "CONTRADICTION",
+   "summary": "This is not a regression. Once an accepted accessory step has held through a full cadence period, the next calendar turn may move the slot to a lower-skill alternative that is not on the chain. Example: pull-up -> band-pulldown at week 13 under COACH_DECIDES and EVERY_6_WEEKS. This matches the revised rule (only rungs below on the chain are excluded) and the catalog's rotation, which allows skill(B) <= skill(A). Recorded so that the Q-R7B-01 resolution is not read as 'a reached configuration is permanent'.",
+   "evidence": "recheck/p13b-after-turn.mjs -> out/p13b-after-turn.json (w12 pull-up/ACCESSORY; w13-w14 band-pulldown/ACCESSORY)."
+  },
+  {
+   "id": "Q-R7B-R2",
+   "severity": "OBSERVATION",
+   "kind": "CONTRADICTION",
+   "summary": "Residual wording in MOVEMENT_PATTERN_UNAVAILABLE. For a novice with bands and a bar it says 'No available equipment supports PUSH' while TPL.UPPER already prescribes incline-push-up. The gap is the second (accessory) PUSH slot. The option is now correct and effective, so only the wording is pattern-level rather than slot-level. Owner: next runtime or copy revision.",
+   "evidence": "recheck/out/p17-pattern-disclosure.json; recheck/out/p17b-option-effect.json."
+  }
+ ],
+ "outOfScope": "Not re-judged: SSCTR fidelity and the Engineering items QE-R7B-*. One SSCTR matter was seen in passing but is not part of this delta: an EASY_LOW athlete with a 10K race is not graduated in 16 weeks, because each block's last week is a consolidation week planned below the 60-minute evidence threshold. The block reviews disclose this truthfully as RUN_QUALITY_NOT_YET with the reasons (recheck/out/p09d-easylow-race.json). Whether the evidence window should skip consolidation weeks is for SSCTR.",
+ "gateLine": "R7B_QUALITY_GATE = READY"
+}

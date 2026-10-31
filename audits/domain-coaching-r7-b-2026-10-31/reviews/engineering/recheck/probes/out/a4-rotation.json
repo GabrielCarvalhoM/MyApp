@@ -1,0 +1,121 @@
+{
+ "probe": "a4-rotation",
+ "frozen": "R7B-RUNTIME-REPERTOIRE-FREEZE-2",
+ "ran": "2026-10-31T14:01:22.804Z",
+ "results": [
+  {
+   "id": "A12",
+   "area": "rotation state vs an accepted ladder step",
+   "verdict": "PASS",
+   "expected": "after an accepted accessory ladder step, the calendar rotation never puts the replaced configuration back in place of the step",
+   "actual": {
+    "program": "e4-rot-GENERAL-2",
+    "offer": "reverse-lunge -> reverse-lunge-db",
+    "decision": {
+     "status": "MODIFY",
+     "action": "BLOCK_EXERCISE_CHANGES",
+     "reason": "Block-boundary exercise changes recorded with their reasons: reverse-lunge → reverse-lunge-db (skill progression)",
+     "missingInputs": [],
+     "errors": []
+    },
+    "weeksBackToReplaced": [],
+    "weeksWithoutTheStep": [
+     7,
+     8,
+     9,
+     10
+    ],
+    "weeks": [
+     {
+      "week": 5,
+      "phase": "DEVELOPMENT",
+      "ids": [
+       "reverse-lunge-db"
+      ]
+     },
+     {
+      "week": 6,
+      "phase": "DEVELOPMENT",
+      "ids": [
+       "reverse-lunge-db"
+      ]
+     },
+     {
+      "week": 7,
+      "phase": "DEVELOPMENT",
+      "ids": [
+       "db-split-squat"
+      ]
+     },
+     {
+      "week": 8,
+      "phase": "CONSOLIDATION",
+      "ids": [
+       "db-split-squat"
+      ]
+     },
+     {
+      "week": 9,
+      "phase": "DEVELOPMENT",
+      "ids": [
+       "db-step-up"
+      ]
+     },
+     {
+      "week": 10,
+      "phase": "DEVELOPMENT",
+      "ids": [
+       "db-step-up"
+      ]
+     },
+     {
+      "week": 11,
+      "phase": "DEVELOPMENT",
+      "ids": [
+       "reverse-lunge-db"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "A13",
+   "area": "substitution inside event phases",
+   "verdict": "FAIL",
+   "expected": "observation for the SSCTR: B0-C05 c1 keeps new exercises out of TAPER, RACE_WEEK and POST_EVENT; a reason-based substitution there either asks or introduces one (disclosed)",
+   "actual": {
+    "taperWeek": 13,
+    "raceWeek": 14,
+    "replaced": "goblet-squat",
+    "decision": {
+     "status": "MODIFY",
+     "action": "SUBSTITUTE_FOR_REASON",
+     "reason": "goblet-squat is replaced by kb-goblet-squat (a nonclinical preference); the new exercise starts with effort-guided establishment, nothing is converted",
+     "missingInputs": [],
+     "errors": [],
+     "selected": "kb-goblet-squat"
+    },
+    "newConfigurationsInTaperOrRaceWeek": [
+     {
+      "week": 13,
+      "phase": "TAPER",
+      "id": "kb-goblet-squat",
+      "role": "MAIN",
+      "mode": "ESTABLISH",
+      "sets": 1,
+      "rir": 3
+     },
+     {
+      "week": 14,
+      "phase": "RACE_WEEK",
+      "id": "kb-goblet-squat",
+      "role": "MAIN",
+      "mode": "FROM_LOG",
+      "sets": 1,
+      "rir": 4
+     }
+    ]
+   }
+  }
+ ]
+}
