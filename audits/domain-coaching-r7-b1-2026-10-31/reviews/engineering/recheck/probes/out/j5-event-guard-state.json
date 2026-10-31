@@ -1,0 +1,103 @@
+{
+ "probe": "j5-event-guard-state",
+ "frozen": "R7B1-FREEZE-2",
+ "root": "this worktree (R7B1-FREEZE-2 bytes)",
+ "ran": "2026-10-31T20:19:00.862Z",
+ "results": [
+  {
+   "id": "J5",
+   "area": "event-week guard and state transitions",
+   "verdict": "PASS",
+   "expected": "the guard reads the evidence of the decision's own week; corrections and missed sessions remove a never-performed substitute from the event weeks; history never reads the projection",
+   "actual": {
+    "failures": [],
+    "cases": {
+     "split-squat": {
+      "A": {
+       "substitute": "bulgarian-split-squat-db",
+       "projectedInEventWeeksByTheDecision": 1,
+       "inTaperAfterReview": 1,
+       "history": "2027-01-08"
+      },
+      "C": {
+       "corrected": 1,
+       "status": "MODIFY",
+       "action": "REPLAN_FROM_EVIDENCE",
+       "substituteAheadInEventWeeks": 0,
+       "history": null
+      },
+      "B": {
+       "inEventWeeks": 0,
+       "history": null
+      },
+      "D": {
+       "projectedBeforeTheDecision": 1,
+       "decision": {
+        "status": "MODIFY",
+        "action": "SUBSTITUTE_FOR_REASON"
+       },
+       "substituteInTaperWeekAfterDecision": 0,
+       "history": null
+      }
+     },
+     "row": {
+      "A": {
+       "substitute": "kb-row",
+       "projectedInEventWeeksByTheDecision": 4,
+       "inTaperAfterReview": 4,
+       "history": "2027-01-08"
+      },
+      "C": {
+       "corrected": 2,
+       "status": "MODIFY",
+       "action": "REPLAN_FROM_EVIDENCE",
+       "substituteAheadInEventWeeks": 0,
+       "history": null
+      },
+      "B": {
+       "inEventWeeks": 0,
+       "history": null
+      },
+      "D": {
+       "projectedBeforeTheDecision": 4,
+       "decision": {
+        "status": "MODIFY",
+        "action": "SUBSTITUTE_FOR_REASON"
+       },
+       "substituteInTaperWeekAfterDecision": 0,
+       "history": null
+      }
+     },
+     "rdl": {
+      "A": {
+       "substitute": "single-leg-rdl-db",
+       "projectedInEventWeeksByTheDecision": 2,
+       "inTaperAfterReview": 2,
+       "history": "2027-01-08"
+      },
+      "C": {
+       "corrected": 1,
+       "status": "MODIFY",
+       "action": "REPLAN_FROM_EVIDENCE",
+       "substituteAheadInEventWeeks": 0,
+       "history": null
+      },
+      "B": {
+       "inEventWeeks": 0,
+       "history": null
+      },
+      "D": {
+       "projectedBeforeTheDecision": 2,
+       "decision": {
+        "status": "MODIFY",
+        "action": "SUBSTITUTE_FOR_REASON"
+       },
+       "substituteInTaperWeekAfterDecision": 0,
+       "history": null
+      }
+     }
+    }
+   }
+  }
+ ]
+}

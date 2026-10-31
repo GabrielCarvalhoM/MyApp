@@ -1,0 +1,95 @@
+{
+ "review_id": "R7B1-ENG-r2-RECHECK",
+ "gate": "R7B1_ENGINEERING_GATE",
+ "kind": "the one narrow recheck after the one correction cycle (request §17); no further cycle follows",
+ "request": "audits/domain-coaching-r7-b1-2026-10-31/reviews/ENGINEERING_RECHECK_REQUEST.md",
+ "previousReview": "R7B1-ENG-r1 (NOT_READY: QE-R7B1-01 MAJOR), committed at 2e874f1: audits/domain-coaching-r7-b1-2026-10-31/reviews/engineering/",
+ "judge": {
+  "role": "quality-reliability-engineer (constitution 1.3.0), the same independent instance as R7B1-ENG-r1",
+  "model": "claude-opus-5-5",
+  "independence": "did not author the runtime, the correction cycle, its tests or its freeze; judged the frozen bytes; fixed nothing"
+ },
+ "date": "2026-10-31",
+ "freeze": {
+  "revision": "R7B1-FREEZE-2",
+  "record": "CoachingCore/r7/b1/RUNTIME_FREEZE_R7B1_2.json",
+  "recordSha256": "e75a2799ae1b9387e7c8831646cb877967262c19aa11c18c8d54c2a7b94f27d5",
+  "freezeCommit": "146ebb80c51d302ef3518a61c1cab208c7778632",
+  "worktreeHead": "ea940df23f5daeff455342fa5159c7d1a2ac0879 (146ebb8..ea940df changes no runtime file)",
+  "sourceDigest": "f54e5c0345aa9c1dbd9743a78127b59720b3cf4d68c1b53ed11bfdbf40ed1612",
+  "manifestDigest": "980d830106f3c75722126a8c0bffb5e5aafa9a261b411c30a4779d6d3e08fae8",
+  "fileCount": 114,
+  "identityCheck": {
+   "before": "node scripts/verify-r7b1.mjs --tests (from CoachingCore/, default FREEZE-2): 25/25 PASS, suite 786 pass / 0 fail, same digests; record sha256 matches",
+   "after": "node scripts/verify-r7b1.mjs: 24/24 PASS, same digests",
+   "repository": "no tracked file changed; this recheck wrote only under audits/domain-coaching-r7-b1-2026-10-31/reviews/engineering/recheck/; temporary archives of d41df8b and 10b26d6 in the OS temp directory were deleted"
+  }
+ },
+ "delta": "git diff d41df8b 146ebb8 -- CoachingCore/src CoachingCore/test: src/r6-adaptation.mjs and src/r6-program.mjs changed; test/r7b1-correction-cycle.test.mjs added (24 tests); no existing test changed. Fixtures, R6-POLICY-5, R7B0-CATALOG-2, its schema and the B0 records unchanged. Record: 'Correction cycle' C1-C6 of CoachingCore/r7/b1/BLOCKER_CLOSURE_R7B1.md.",
+ "verdict": "NOT_READY",
+ "verdictBasis": "The cycle does what it set out to do and nothing it changed regresses. QE-R7B1-01's cause is removed: the block-choice question no longer decides before the handler, so a pain or illness report with any block choice routes CLINICAL_HUMAN_REQUIRED and proposes nothing, exactly as without the choice (j1b 16/16; j1 132 cases; j1u 122 cases with unrecognised, mixed and null choices). The rest of the delta passes its regression checks, and both MINORs and the observations are unchanged. But verifying the property this recheck states for QE-R7B1-01 ('routes CLINICAL_HUMAN_REQUIRED … whatever block choice it carries') turned up one state where it still fails: a return's re-entry week once a late report of training before the break is recorded (a sync the R7-A Founder rule 0.7 anticipates). There, R7-A's confirmation question ('confirm that interruption again') is decided in decide() before the handler, so the reason-based substitution's clinical screen never runs. With a block choice, the block-choice question is returned; without one, the confirmation question. The reference state records ASK, and the clinical dependency is lost. This is QE-R7B1-04, MAJOR, pre-existing since R7-B bound the substitution's screen (8d32f7d) under R7-A's precedence (ecd623b), and not created by R7-B.1 or its cycle. It violates SSCTR B0-C06 condition 8 on a realistic path. The request allows no further cycle, so it closes as an explicit blocker, routed.",
+ "blockers": [
+  {"id": "QE-R7B1-01", "severity": "MAJOR", "status": "RESOLVED (its cause: the block-choice question before the handler)", "evidence": "j1b-clinical-repro: 16/16 combinations (pain with an exercise or an illness interruption × no choice, ladder step, declined offer, unrecognised choice × with or without a correction). All give CLINICAL_HUMAN_REQUIRED with proposal null and reference pending CLINICAL_HUMAN_REQUIRED, and the correction is recorded when present. FREEZE-1: 12/16 bypassed. j1-block-choice-paths: J1a (0/132), J1b (0; 18 on FREEZE-1), J1c and J1d all PASS. j1u-unrecognised-choices (the cycle moved that question after the facts): 122 cases with unrecognised, mixed and null-entry choices. J1a: the question carries exactly the correction-alone re-plan. J1b: clinical first. J1c: path independence after the answer. J1d: no resurrection. All 0 failures; on FREEZE-1, J1b and J1c fail. The handler's only other side effect on the context is out.choicesHandled, read only when no block-choice question is raised. Residual: the property fails in one further state through a second question, recorded as QE-R7B1-04."}
+ ],
+ "regressionChecksOfTheCycle": [
+  {"item": "the unrecognised-choices question after the facts (C1)", "result": "PASS", "evidence": "j1u (above). The question records the review's facts, carries the factual re-plan, and the answer gives the plan the review without the choice gives. A clinical report with an unrecognised choice routes to a human."},
+  {"item": "the no-lower-skill question, acceptGap (C2)", "result": "PASS", "evidence": "k1-accept-gap. K1a: the question names only the missing equipment (bands) and asks for changes.acceptGap. Confirming records the change with the pull slot left out, disclosed (accepted, informational) and in the decision's omitted list. Four later weekly reviews never climb and never ask again. HistoricalState is unchanged by the confirmation, and band-row returns when the bands come back. K1c: a dated window leaves the slot out only in that week. K1d: the substitution path asks with substitution.acceptGap and applies once confirmed. j3/j3d: 116 losses, 0 climbs, 30 true questions (identical counts to FREEZE-1; only the wording changed). FREEZE-1 fails K1a-K1d (no confirmation path)."},
+  {"item": "the event-week guard on every row, stand-ins fitting the equipment of the date, what the planner records (C3)", "result": "PASS", "evidence": "k2-event-guard-all-rows. K2a: 6 event timelines (FIXED, EVERY_2_WEEKS, COACH_DECIDES; 10K, half, a program ending at the post-event week, a capped novice) executed as prescribed record no stand-in or omission, emit no note, and produce plans byte-identical to FREEZE-1. K2b: with one strength day always skipped, every event-week row is performed in this program, or a performed stand-in that is not set aside and fits the equipment of its date, or left out; each omission is disclosed once, never repeated by later reviews. K2c: a kettlebell-only window over the taper keeps every event-week row within the date's equipment and performed. K2d: HistoricalState credits only executions. FREEZE-1 fails K2b and K2c. j5 and j8 (the guard's state semantics, also through a return) identical to FREEZE-1. Timeline differential re-run: 98/98 PRESERVE identical."},
+  {"item": "the week-of-next-use slot check counted over the week (C3)", "result": "PASS", "evidence": "k3-next-use-rotation-grid: 17 programs under EVERY_2_WEEKS, COACH_DECIDES and FIXED, including two capped novices, both reasons, 298 decisions. 240 applied and 58 asked on both FREEZE-1 and FREEZE-2. FREEZE-2: 0 places in the week of next use without the selection (FREEZE-1: 4). The only 4 status-table differences are those 4 decisions, now with a consistent selection. No new question. j4 (FIXED, every week ahead) identical to FREEZE-1: 211 applied, 0 inconsistent."},
+  {"item": "the exhaustion question, attempt and nameable (C4)", "result": "PASS", "evidence": "k4-exhaustion-question: 5 such questions in a grid. An independent oracle names every other configuration of the pattern: naming is offered exactly when one is applied. A keep-only question asks for nothing and proposes nothing. The next weekly review is not blocked (KEEP, pending cleared). FREEZE-1 fails. See observation QE-R7B1-OBS-04."},
+  {"item": "the general event-week disclosure, records named slots (C5)", "result": "PASS", "evidence": "k2 (no note in timelines executed as prescribed; a note once per omission when a day is skipped). k5-guard-retraction: a correction that retracts the only execution of two exercises removes them from the event weeks ahead, disclosed by the factual re-plan's note; history stops crediting them; the same review with a block choice asks and carries the same re-plan. FREEZE-1 fails k5."},
+  {"item": "the program-end wording (C6)", "result": "PASS (text)", "evidence": "Covered by the cycle's three QR7B1-05 tests in the 786-test suite. k2 '10k-short-fixed' (program ending at the post-event week) shows no record or note when executed as prescribed."}
+ ],
+ "stateTransitionsAndR7A": [
+  "HistoricalState is not PlanningProjection on the cycle's paths. The guard reads the week's start state; history reads only executions (k2 K2d, k5, j5, j8).",
+  "Correction and retraction authority over the every-row guard (k5) and over the cap (j2d, unchanged).",
+  "QE-R7ADA-01 and EARLY = LATE path independence through every block-choice question, including the unrecognised one (j1 J1c, j1u J1c).",
+  "R2-02 with the new guard: the question carries the same factual re-plan (k5).",
+  "Timeline differential re-run read-only: PASS. 98/98 PRESERVE identical, grid 184 decisions with inconsistent 8 -> 0, envelope 0, run rises 0, r202 identical.",
+  "The adversarial probes re-run from a copy: 3,228 checks, 0 failed; the inherited equipment change in the taper now brings nothing new into the event weeks.",
+  "Conformance re-run read-only: R7-B matrix PASS (301); R7-B.1 delta PASS.",
+  "The copied R7-B and R7B1-ENG-r1 probes give results identical to FREEZE-1 except the intended J1b and the no-lower-skill question's wording: no PASS -> FAIL."
+ ],
+ "routedMinorsAndObservations": [
+  {"id": "QE-R7B1-02", "status": "UNCHANGED", "evidence": "j7 and j7b give outputs identical to FREEZE-1: the schedule-started cap is lost for the rest of the re-entry week after a short return (LOWER_B, UPPER_B on days 4-5 of week 2). The cycle made it neither better nor worse."},
+  {"id": "QE-R7B1-03", "status": "UNCHANGED", "evidence": "j3b identical to FREEZE-1 (UPPER accessory push -> pike-push-up after push-up SKILL_MISMATCH, not stated by the decision). J3b counts identical (64 of 160 knock-on rows). In event weeks only, C5 now discloses knock-on slots kept out, so it is not worse."},
+  {"id": "QE-R7B1-OBS-01", "status": "UNCHANGED", "evidence": "j4c identical: a capped novice's substitution re-chooses which days carry the full and the core sessions."},
+  {"id": "QE-R7B1-OBS-02", "status": "UNCHANGED", "evidence": "one-arm-db-row SKILL_MISMATCH -> band-face-pull (j3d, k1 K1b). The loss of the bands now offers the acceptGap confirmation."}
+ ],
+ "newFindings": [
+  {
+   "id": "QE-R7B1-04",
+   "severity": "MAJOR",
+   "origin": "PRE-EXISTING, not introduced by R7-B.1 or its cycle. R7-A residual authority (ecd623b, 2026-10-30) decides the late-evidence confirmation (staleReturn) before every handler except a return. R7-B (8d32f7d, 2026-10-31) put the reason-based substitution's clinical screen inside its handler. Identical on R7-B FREEZE-2 (10b26d6), R7B1-FREEZE-1 (d41df8b) and R7B1-FREEZE-2. The cycle's C1 restores parity with the no-choice review, and the no-choice review is itself non-clinical here.",
+   "area": "clinical screen first (QE-R7B1-01's property, scope item 1) x R7-A late-evidence confirmation; catalog/runtime binding B0-C06 condition 8",
+   "summary": "In a return's re-entry week, once a late report of training before the break is in the record (Founder rule 0.7: a session 'registrada/sincronizada posteriormente'), every review other than a return is answered by R7-A's confirmation question. decide() evaluates staleReturn before the handler (src/r6-adaptation.mjs:359), so exerciseSubstitution's clinical screen (:543: pain, injury or a clinical text -> CLINICAL_HUMAN_REQUIRED) never runs. A review reporting pain with an exercise gets ASK 'Training before the interruption … did not read it: confirm that interruption again', with no proposal and reference pending ASK, so the clinical dependency does not carry. With a block choice, handled is that ASK, not clinical, so the block-choice question is returned (:368), and QE-R7B1-01's property 'whatever block choice it carries' fails in this state. An illness return is unaffected: a return report skips staleReturn and its screen (:1260) routes to a human. The plan, including the exercise reported painful, stays as it is until the athlete confirms the interruption and sends the pain report again.",
+   "authority": "SSCTR record B0-C06 condition 8 ('Reason-based substitution keeps precedence over cadence but passes the clinical screen first: pain, injury, illness or a functional limitation routes CLINICAL_HUMAN_REQUIRED for the dependent scope'); the clinical-first rule QE-R7B1-01 restored; R7-A Founder rule 0.7 asks confirmation-first for the return's re-computation, not ahead of a clinical route.",
+   "reproduction": "probes/k6-stale-return-clinical.mjs (same review) and probes/k6b-stale-return-two-step.mjs (late report recorded first, then the pain report alone). Setup: GENERAL, DUMBBELLS and BENCH, FIXED, strength days 0/4. Weeks 0-1 executed and reviewed; week 2 reviewed with its day-4 strength session unreported. RETURN_AFTER_PAUSE on day 3 of week 3 (06:00Z; reasonCategory WORK; interruption days 0-2 of week 3). Then on day 4 of week 3: (a) EXERCISE_SUBSTITUTION {exerciseId: an exercise ahead, reason: SKILL_MISMATCH, pain: true} carrying the late report of week 2's day-4 session, with no choice, a ladder step or an unrecognised choice; or (b) the late report alone at 05:00Z (ASK, recorded), then at 06:00Z the pain report alone. Outputs: probes/out/k6-stale-return-clinical{,-R7B1-FREEZE-1,-R7B-FREEZE-2}.json and k6b-stale-return-two-step{,-R7B1-FREEZE-1,-R7B-FREEZE-2}.json.",
+   "expected": "CLINICAL_HUMAN_REQUIRED, proposal null, reference pending CLINICAL_HUMAN_REQUIRED: what the same pain report gets without the late evidence (control row 'substitution-pain-no-late'), and what an illness return gets in the same state (row 'return-illness'). The confirmation question can follow once no clinical route is taken.",
+   "actual": "R7B1-FREEZE-2. (a) No choice: ASK (confirmation question), pending ASK. Ladder step: ASK 'Block choices are made…', pending ASK. Unrecognised choice: ASK 'Some choices are not recognised…', pending ASK. (b) The pain report alone after the recorded late report: ASK (confirmation question), proposal null, pending ASK. Identical on R7B1-FREEZE-1 and R7-B FREEZE-2."
+  }
+ ],
+ "newObservations": [
+  {"id": "QE-R7B1-OBS-03", "origin": "introduced by the cycle (C2: FREEZE-1 had no confirmation path)", "summary": "Two gaps from one lost item (db-row -> band-row and one-arm-db-row -> band-face-pull, then the bands go). The question names only the first. One confirmation leaves both pull slots out. The second slot appears in the decision's omitted list and its horizon count, but not in the NO_LOWER_SKILL_ALTERNATIVE disclosure.", "reproduction": "probes/k1-accept-gap.mjs K1b", "route": "next runtime mission (question and disclosure wording; Quality)"},
+  {"id": "QE-R7B1-OBS-04", "origin": "introduced by the cycle (C4)", "summary": "The keep-only exhaustion question is status ASK with no missing input. Its plan validity is REQUIRES_RECONCILIATION and its reference pending has nothing to supply. A RECOVERED review carrying that reference is asked 'A generic recovered label does not supply the specific facts…' with nothing to supply; any other review clears it.", "reproduction": "probes/k4b-keep-only-pending.mjs", "route": "next runtime mission"}
+ ],
+ "probesRun": {
+  "folder": "audits/domain-coaching-r7-b1-2026-10-31/reviews/engineering/recheck/probes (outputs in out/; suffixes -R7B1-FREEZE-1 and -R7B-FREEZE-2 are runs on git archives of d41df8b and 10b26d6 in the OS temp directory, deleted after the recheck)",
+  "copies": "lib.mjs (REPO six levels up; FREEZE-2 the default label) and every R7B1-ENG-r1 probe (n-delta, n7, n8, a*, b, c*, r, j1-j8). Results identical to FREEZE-1 except J1b FAIL -> PASS and the no-lower-skill question's wording in J3a's list.",
+  "new": {
+   "j1u-unrecognised-choices.mjs": "PASS (122 cases); FREEZE-1: J1b, J1c FAIL",
+   "k1-accept-gap.mjs": "K1a-K1d PASS; FREEZE-1 FAIL",
+   "k2-event-guard-all-rows.mjs": "K2a-K2d PASS; plans of the K2a timelines identical to FREEZE-1; FREEZE-1: K2b, K2c FAIL",
+   "k3-next-use-rotation-grid.mjs": "PASS (240 applied, 58 asked, 0 slot failures); FREEZE-1: 4 slot failures, same 58 asks",
+   "k4-exhaustion-question.mjs": "PASS (5 questions); FREEZE-1 FAIL",
+   "k4b-keep-only-pending.mjs": "observation QE-R7B1-OBS-04",
+   "k5-guard-retraction.mjs": "PASS; FREEZE-1 FAIL",
+   "k6-stale-return-clinical.mjs": "FAIL on R7B1-FREEZE-2, R7B1-FREEZE-1 and R7-B FREEZE-2 (QE-R7B1-04)",
+   "k6b-stale-return-two-step.mjs": "FAIL on all three (QE-R7B1-04)",
+   "adversarial-r7b1-copy.mjs": "copy of the author's probes: 3,228 checks, 0 failed"
+  },
+  "scriptsRunReadOnly": ["scripts/verify-r7b1.mjs --tests (before), without (after)", "scripts/regress-r7b1.mjs", "scripts/conformance-r7b.mjs", "scripts/conformance-r7b1.mjs"],
+  "notRun": ["the freeze, mutation and integration scripts; npm run verify; any --write (prohibited). The author's mutation reports were read, not re-run."]
+ },
+ "nextAction": "No further cycle (request §17). Close with QE-R7B1-04 as an explicit blocker routed to the next runtime mission. The expected behaviour: the handler's clinical screen comes before R7-A's late-evidence confirmation, as the cycle made it come before the block-choice question. Accepting the risk instead is the Founder's decision. QE-R7B1-02, QE-R7B1-03 and the observations stay routed as before."
+}

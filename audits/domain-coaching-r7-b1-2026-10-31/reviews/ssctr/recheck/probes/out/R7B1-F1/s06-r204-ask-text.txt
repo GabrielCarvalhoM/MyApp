@@ -1,0 +1,14 @@
+s06-novice front-plank SKILL_MISMATCH: ASK
+  reason: Every admissible alternative of the same pattern (dead-bug) is already in a session with front-plank, so none can take its place there; options: add equipment, or keep front-plank
+  missing: ["substitution.to"]
+  disclosures: [{"id":"NO_ADMISSIBLE_ALTERNATIVE","options":["Add equipment","Keep front-plank"]}]
+s06-none front-plank SKILL_MISMATCH: ASK
+  reason: Every admissible alternative of the same pattern (dead-bug) is already in a session with front-plank, so none can take its place there; options: add equipment, or keep front-plank
+  missing: ["substitution.to"]
+  disclosures: [{"id":"NO_ADMISSIBLE_ALTERNATIVE","options":["Add equipment","Keep front-plank"]}]
+db-row SKILL_MISMATCH -> band-row
+equipment loss of BANDS after db-row -> band-row: ASK
+  reason: band-row needs bands that is not available, and db-row was set aside because it could not be done with steady technique; no lower pull exercise fits the equipment left, and the plan never moves to a harder one in its place: keep that equipment, or name the pull exercise to use (an exercise substitution)
+  missing: ["changes.equipment","substitution.to"]
+  disclosures: [{"id":"NO_LOWER_SKILL_ALTERNATIVE","options":["Keep the equipment","Name a pull exercise"]}]
+  program unchanged while asked: sessions ahead still prescribe band-row: true; proposal: false

@@ -1,0 +1,58 @@
+{
+ "probe": "k5-guard-retraction",
+ "frozen": "R7B1-FREEZE-1",
+ "root": "temporary tree f1",
+ "ran": "2026-10-31T20:29:27.903Z",
+ "results": [
+  {
+   "id": "K5",
+   "area": "correction/retraction authority over the event-week guard",
+   "verdict": "FAIL",
+   "expected": "a retracted only execution removes the exercise from the event weeks ahead (disclosed), history stops crediting it, and a question carries the same re-plan",
+   "actual": {
+    "label": "R7B1-FREEZE-1",
+    "failures": [
+     {
+      "note": "after the retraction a never-performed exercise stays in the event weeks ahead",
+      "still": [
+       "db-rdl",
+       "db-split-squat"
+      ]
+     },
+     {
+      "note": "the omission the correction causes is not disclosed"
+     }
+    ],
+    "info": {
+     "onlyInTheRetractedSession": [
+      "db-rdl",
+      "db-split-squat"
+     ],
+     "correction": {
+      "status": "MODIFY",
+      "action": "REPLAN_FROM_EVIDENCE",
+      "notes": []
+     },
+     "inEventWeeksBefore": [
+      "db-rdl",
+      "db-split-squat"
+     ],
+     "stillAfter": [
+      "db-rdl",
+      "db-split-squat"
+     ],
+     "historyStillCredits": [],
+     "control": {
+      "status": "KEEP",
+      "action": "KEEP"
+     },
+     "withChoice": {
+      "status": "ASK",
+      "proposal": true,
+      "same": true
+     }
+    }
+   }
+  }
+ ]
+}

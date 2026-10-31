@@ -1,0 +1,73 @@
+{
+ "review_id": "R7B1-QUALITY-RECHECK-1",
+ "recheckOf": "R7B1-QUALITY-r1 (R7B1-FREEZE-1, NOT_READY; committed 2e874f1)",
+ "judge": "Quality & Reliability Engineer (same independent judge; not the author)",
+ "date": "2026-10-31",
+ "request": "audits/domain-coaching-r7-b1-2026-10-31/reviews/QUALITY_RECHECK_REQUEST.md",
+ "freeze": {
+  "revision": "R7B1-FREEZE-2",
+  "record": "CoachingCore/r7/b1/RUNTIME_FREEZE_R7B1_2.json",
+  "recordSha256": "e75a2799ae1b9387e7c8831646cb877967262c19aa11c18c8d54c2a7b94f27d5",
+  "freezeCommit": "146ebb80c51d302ef3518a61c1cab208c7778632",
+  "checkoutHead": "ea940df",
+  "sourceDigest": "f54e5c0345aa9c1dbd9743a78127b59720b3cf4d68c1b53ed11bfdbf40ed1612",
+  "manifestDigest": "980d830106f3c75722126a8c0bffb5e5aafa9a261b411c30a4779d6d3e08fae8",
+  "before": "node scripts/verify-r7b1.mjs --tests (from CoachingCore/): R7B1-FREEZE-2 PASS 25/25, digests as above; record sha256 matches",
+  "after": "node scripts/verify-r7b1.mjs: R7B1-FREEZE-2 PASS 24/24 (without --tests), same digests; git status: only untracked recheck folders (engineering/, quality/, ssctr/); HEAD unchanged ea940df"
+ },
+ "method": "Read-only. My FREEZE-1 probes (reviews/quality/probes/q01-q12) and the R7-B probes p04, p14 (with lib.mjs) were copied into reviews/quality/recheck/ and re-run there (outputs recheck/out/). q01 was adapted to the new disclosure shapes: it picks the disclosure of the replaced exercise (exerciseId) and adds C10 (every event-week slot newly stood in or left out is disclosed, own or informational `slots`) and C3o (option text where the program ends with the post-event week). New: q13 (both options of the no-lower-skill question, incl. acceptGap, over the q05 grid, dated windows and the q04 S3 path) and q14 (equipment changes sent in the event weeks; clinical screen with block choices). The earlier FREEZE-2 (R7-B) mirror in the scratchpad was deleted; no new archive was made. Not run: mutation, freeze or integration scripts, npm run verify, any --write.",
+ "verdict": "READY",
+ "resolved": [
+  {
+   "id": "QR7B1-01",
+   "status": "RESOLVED",
+   "evidence": "recheck/q13-no-lower-accept-gap.mjs -> out/q13-no-lower-accept-gap.json: 93 questions (46 permanent losses and 46 dated windows over the q05 grid, plus the q04 S3 substitution with a window ahead), 24,224 checks, 0 failures. Each question's missingInputs is exactly the input the review reads (changes.acceptGap or substitution.acceptGap); missingEquipment and the text name only lost items; the options are 'Keep the equipment' and 'Leave the <pattern> slot out until the equipment returns'. Keep: no proposal, plan unchanged. Accept: 93/93 recorded (the equipment of a permanent change is the athlete's new list), disclosed as NO_LOWER_SKILL_ALTERNATIVE accepted:true; in the weeks ahead no exercise needs the lost equipment, the set-aside configuration never returns, nothing above the substitute's skill fills the pattern; the next two weekly reviews never ask again (laterAsks 0). recheck/q12: the full-equipment witness now reads 'band-face-pull needs bands, which is not available ... (changes.acceptGap: true)'; no false equipment claim after any naming (0/24)."
+  },
+  {
+   "id": "QR7B1-02",
+   "status": "RESOLVED",
+   "evidence": "recheck/q08 (R7B1 tree): W1 push-up -> machine-chest-press, W2 inverted-row -> kb-row, W4 kb-row -> one-arm-db-row: the taper session now holds the selected exercise in the replaced rotation slot and nothing never performed (newNeverPerformedInEventWeeks [] in all four witnesses); W3 carries its own and an informational NO_NEW_EXERCISE_IN_EVENT_WEEKS disclosure and the calf slot keeps standing-calf-raise. recheck/q01 (3 shards, 9,084 decisions, 6,890 applied, 171,197 checks): C1 (never performed in event weeks) 0 (FREEZE-1: 24); C10 every newly stood-in or omitted slot disclosed: 0 failures, 206 knock-on slots disclosed in informational `slots`. recheck/q09c (non-event weeks): replaced slot not taking the selected exercise 0/0/0 for EVERY_2_WEEKS/COACH_DECIDES/FIXED (FREEZE-1 6/0/0). recheck/q14 E: 154 equipment changes sent in TAPER, RACE_WEEK and POST_EVENT (permanent and dated; FIXED and EVERY_2_WEEKS; 10K/16w and 10K/12w), 154 applied, 1,772 checks, 0 failures: nothing new and never performed in event weeks, every new stand-in, omission and rest-by-design disclosed, and the same through the weekly reviews to POST_EVENT."
+  },
+  {
+   "id": "QR7B1-03",
+   "status": "RESOLVED",
+   "evidence": "recheck/q03 -> out/q03-all-candidates-in-session.json: statuses identical to FREEZE-1 (MODIFY 1567, ASK 789), 41 exhaustion questions: 27 offer ['Keep X','Name another exercise of the same pattern'] with missing input substitution.to, and in each of the 27 naming works; 14 offer ['Keep X'] only, with no missing input, and in each naming does not work. 'Add equipment' is no longer offered."
+  },
+  {
+   "id": "QR7B1-04",
+   "status": "RESOLVED",
+   "evidence": "recheck/q10 -> out/q10-weekly-silent-omission.txt: the weekly review that leaves single-leg-rdl-db out of w10-str-d4 (TAPER) and w12-str-d4 (POST_EVENT) now discloses NO_NEW_EXERCISE_IN_EVENT_WEEKS (informational) with both sessions and slots and the text 'not yet done in this program, is left out of …; they start after the post-event week'."
+  },
+  {
+   "id": "QR7B1-05",
+   "status": "RESOLVED",
+   "evidence": "recheck/q07: 12-week program option 'Keep X instead: this program ends with the post-event week' (16-week program unchanged and still effective: MODIFY after POST_EVENT); recheck/q06: rest-by-design text 'start after this program' in the 12-week program, 'after the post-event week' in the 16-week one; q01 C3o 0 failures."
+  }
+ ],
+ "regressions": {
+  "QE-R7B1-01_clinicalFirst": "recheck/q14 K: pain with an exercise and an illness return, each with a ladder step, a declined offer and an unrecognised choice: 6/6 CLINICAL_HUMAN_REQUIRED, no proposal, same status as the review without the choice.",
+  "weekLevelSlotCheck": "q03 statuses identical to FREEZE-1 (no false questions for capped novices); q09c slots not taken 0 in every rotation preference; q02 p04 witnesses unchanged from FREEZE-1.",
+  "reachability": "recheck/p04: 67 configurations through reviews, identical sets to FREEZE-1 (none lost or gained), substitution reach, ladder offers and asks identical.",
+  "duplicates": "recheck/p14: 1,350 programs, 48,600 strength sessions, 0 duplicates (identical); q01 C5 0; q02 0.",
+  "fallbackFor": "recheck/q11: 96 rows over 181 proposals, 0 violations (identical to FREEZE-1).",
+  "eventWeekDisclosure": "q01 C2, C3, C6, C8, C9: 0 failures; 3,209 own disclosures reached (123 with stand-ins, 3,110 with omissions)."
+ },
+ "findings": [],
+ "unchanged_observations": [
+  "QR7B1-06 (pre-existing): knock-on changes are not listed in `substitutions` (q09c knock-on sessions 186/272/344, unchanged); event-week knock-ons are now disclosed (C5). Routed with the closure.",
+  "QR7B1-07: owners to be named at closure (routing record, not runtime).",
+  "Rotation alternation of the selected configuration in later weeks under EVERY_2_WEEKS (q01 C4 122 after-event NEXT_BLOCK sessions; q09 selectedMissing 154): the rotation's cadence, outside the delta, as at FREEZE-1."
+ ],
+ "limits": [
+  "No browser or device: library judged through its public entry points.",
+  "Sports-science adequacy (stand-ins, leaving a slot out after a SKILL_MISMATCH, 'Keep X' after a SKILL_MISMATCH, R7B1-SSCTR-F13) is the SSCTR's; state, persistence and factual authority are Engineering's.",
+  "In 12 of the 14 keep-only exhaustion questions an equipment change would open an alternative; the question truthfully says none can take the place 'now' and no longer offers equipment as an option. Not a defect."
+ ],
+ "probes": {
+  "folder": "reviews/quality/recheck/ (outputs in out/)",
+  "rerun": ["q01-event-week.mjs (adapted: C10, C3o, own disclosure by exerciseId)","q02-p04-witness-delta.mjs","q03-all-candidates-in-session.mjs","q06-rest-by-design.mjs","q07-event-option-effect.mjs","q08-rotation-residual.mjs","q09c-slot.mjs","q10-weekly-silent-omission.mjs","q11-fallbackfor-field.mjs","q12-no-lower-full-equipment.mjs","p04-review-driven.mjs","p14-duplicate-rows.mjs"],
+  "new": {"q13-no-lower-accept-gap.mjs":"QR7B1-01 both options over the q05 grid, windows and the substitution path","q14-equipment-event-and-clinical.mjs":"QR7B1-02 for equipment changes in event weeks; QE-R7B1-01 clinical-first regression"},
+  "copiedNotRun": ["q04, q05 (superseded by q13: their 'name an exercise' option no longer exists)","q09-rotation-slip.mjs, q09b-fixed.mjs (superseded by q09c)"]
+ },
+ "gate": "R7B1_QUALITY_GATE = READY"
+}

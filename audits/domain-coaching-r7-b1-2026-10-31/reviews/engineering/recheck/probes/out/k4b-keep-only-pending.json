@@ -1,0 +1,43 @@
+{
+ "probe": "k4b-keep-only-pending",
+ "frozen": "R7B1-FREEZE-2",
+ "root": "this worktree (R7B1-FREEZE-2 bytes)",
+ "ran": "2026-10-31T20:30:03.433Z",
+ "results": [
+  {
+   "id": "K4b",
+   "area": "observation: keep-only question pending",
+   "verdict": "PASS",
+   "expected": "information",
+   "actual": {
+    "label": "R7B1-FREEZE-2",
+    "out": {
+     "question": {
+      "status": "ASK",
+      "missingInputs": [],
+      "options": [
+       "Keep prone-ytw-raise"
+      ],
+      "pending": {
+       "status": "ASK",
+       "reason": "Every admissible alternative of the same pattern (db-row) is already in a session with prone-ytw-raise, so none can take its place there, and no other exercise of the same pattern can take its place now, so prone-ytw-raise stays in the plan",
+       "missingInputs": [],
+       "eventKind": "EXERCISE_SUBSTITUTION",
+       "eventId": "r7b-2-EXERCISE_SUBSTITUTION-16"
+      },
+      "planValidity": "REQUIRES_RECONCILIATION"
+     },
+     "recovered": {
+      "status": "ASK",
+      "reason": "A generic recovered label does not supply the specific facts the pending decision needs",
+      "missingInputs": []
+     },
+     "midweek": {
+      "status": "KEEP",
+      "pending": null
+     }
+    }
+   }
+  }
+ ]
+}

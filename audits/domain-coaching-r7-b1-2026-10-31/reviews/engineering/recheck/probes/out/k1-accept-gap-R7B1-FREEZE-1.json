@@ -1,0 +1,298 @@
+{
+ "probe": "k1-accept-gap",
+ "frozen": "R7B1-FREEZE-1",
+ "root": "temporary tree f1",
+ "ran": "2026-10-31T20:29:19.476Z",
+ "results": [
+  {
+   "id": "K1a",
+   "area": "acceptGap",
+   "verdict": "FAIL",
+   "expected": "one gap: the question acts; confirmed, the slot is left out and disclosed; no climb, no new question, history untouched; the substitute returns with the equipment",
+   "actual": {
+    "label": "R7B1-FREEZE-1",
+    "failures": [
+     {
+      "note": "question",
+      "info": {
+       "status": "ASK",
+       "missingInputs": [
+        "changes.equipment",
+        "substitution.to"
+       ],
+       "options": [
+        "Keep the equipment",
+        "Name a pull exercise"
+       ],
+       "reason": "band-row needs bands that is not available, and db-row was set aside because it could not be done with steady technique; no lower pull exercise fits the equipment left, and the plan never moves to a harder one in its pla"
+      }
+     },
+     {
+      "note": "confirmation not applied or not disclosed",
+      "status": "ASK"
+     }
+    ],
+    "info": {
+     "ask": {
+      "status": "ASK",
+      "missingInputs": [
+       "changes.equipment",
+       "substitution.to"
+      ],
+      "options": [
+       "Keep the equipment",
+       "Name a pull exercise"
+      ],
+      "reason": "band-row needs bands that is not available, and db-row was set aside because it could not be done with steady technique; no lower pull exercise fits the equipment left, and the plan never moves to a harder one in its pla"
+     },
+     "accept": {
+      "status": "ASK",
+      "action": "ASK",
+      "disclosure": {},
+      "omittedRecord": null,
+      "pullsWeek4": [
+       "w4-str-d0:band-row(M)",
+       "w4-str-d4:band-row(M)"
+      ]
+     },
+     "historyUnchanged": true,
+     "steps": [
+      {
+       "reviewed": 4,
+       "status": "KEEP",
+       "pullsNext": [
+        "w5-str-d0:band-row(M)",
+        "w5-str-d4:band-row(M)"
+       ]
+      },
+      {
+       "reviewed": 5,
+       "status": "KEEP",
+       "pullsNext": [
+        "w6-str-d0:band-row(M)",
+        "w6-str-d4:band-row(M)"
+       ]
+      },
+      {
+       "reviewed": 6,
+       "status": "KEEP",
+       "pullsNext": [
+        "w7-str-d0:band-row(M)",
+        "w7-str-d4:band-row(M)"
+       ]
+      },
+      {
+       "reviewed": 7,
+       "status": "KEEP",
+       "pullsNext": [
+        "w8-str-d0:band-row(M)",
+        "w8-str-d4:band-row(M)"
+       ]
+      }
+     ],
+     "equipmentBack": {
+      "status": "KEEP",
+      "action": "KEEP",
+      "pullsWeek9": [
+       "w9-str-d0:band-row(M)",
+       "w9-str-d4:band-row(M)"
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "K1b",
+   "area": "acceptGap",
+   "verdict": "FAIL",
+   "expected": "every slot a confirmation leaves out is disclosed",
+   "actual": {
+    "label": "R7B1-FREEZE-1",
+    "failures": [
+     {
+      "slot": "w4-str-d2:band-face-pull(A)",
+      "note": "a slot left out by the confirmation is not disclosed",
+      "gapDisclosures": [
+       "db-row>band-row"
+      ]
+     }
+    ],
+    "info": {
+     "subs": [
+      "MODIFY:band-row",
+      "MODIFY:band-face-pull"
+     ],
+     "pullsBefore": [
+      "w4-str-d2:band-row(M)",
+      "w4-str-d2:band-face-pull(A)",
+      "w4-str-d4:band-row(M)"
+     ],
+     "ask": {
+      "status": "ASK",
+      "disclosures": [
+       "NO_LOWER_SKILL_ALTERNATIVE:db-row"
+      ],
+      "reason": "band-row needs bands that is not available, and db-row was set aside because it could not be done with steady technique; no lower pull exercise fits the equipment left, and the plan never moves to a h"
+     },
+     "accept": {
+      "status": "ASK",
+      "gapDisclosures": [
+       "db-row>band-row"
+      ],
+      "omittedRecord": null,
+      "pullsAfter": []
+     },
+     "slotsLeftOut": [
+      "w4-str-d2:band-row(M)",
+      "w4-str-d2:band-face-pull(A)",
+      "w4-str-d4:band-row(M)"
+     ]
+    }
+   }
+  },
+  {
+   "id": "K1c",
+   "area": "acceptGap",
+   "verdict": "FAIL",
+   "expected": "a window: left out only in the window",
+   "actual": {
+    "label": "R7B1-FREEZE-1",
+    "failures": [
+     {
+      "ask": {
+       "status": "ASK",
+       "missingInputs": [
+        "changes.equipment",
+        "substitution.to"
+       ]
+      },
+      "accept": {
+       "status": "ASK"
+      },
+      "week4": [
+       "w4-str-d0:band-row(M)",
+       "w4-str-d4:band-row(M)"
+      ],
+      "week5": [
+       "w5-str-d0:band-row(M)",
+       "w5-str-d4:band-row(M)"
+      ],
+      "week6": [
+       "w6-str-d0:band-row(M)",
+       "w6-str-d4:band-row(M)"
+      ]
+     },
+     {
+      "afterReview": {
+       "week5": [
+        "w5-str-d0:band-row(M)",
+        "w5-str-d4:band-row(M)"
+       ],
+       "week6": [
+        "w6-str-d0:band-row(M)",
+        "w6-str-d4:band-row(M)"
+       ]
+      }
+     }
+    ],
+    "info": {
+     "ask": {
+      "status": "ASK",
+      "missingInputs": [
+       "changes.equipment",
+       "substitution.to"
+      ]
+     },
+     "accept": {
+      "status": "ASK"
+     },
+     "week4": [
+      "w4-str-d0:band-row(M)",
+      "w4-str-d4:band-row(M)"
+     ],
+     "week5": [
+      "w5-str-d0:band-row(M)",
+      "w5-str-d4:band-row(M)"
+     ],
+     "week6": [
+      "w6-str-d0:band-row(M)",
+      "w6-str-d4:band-row(M)"
+     ]
+    }
+   }
+  },
+  {
+   "id": "K1d",
+   "area": "acceptGap",
+   "verdict": "FAIL",
+   "expected": "the substitution path asks with substitution.acceptGap and applies when confirmed",
+   "actual": {
+    "label": "R7B1-FREEZE-1",
+    "failures": [
+     {
+      "ask": {
+       "status": "ASK",
+       "missingInputs": [
+        "changes.equipment",
+        "substitution.to"
+       ],
+       "disclosures": [
+        "NO_LOWER_SKILL_ALTERNATIVE"
+       ]
+      },
+      "accept": {
+       "status": "ASK",
+       "selected": null,
+       "disclosures": [
+        "NO_LOWER_SKILL_ALTERNATIVE"
+       ]
+      },
+      "week5": [
+       "w5-str-d0:db-row(M)",
+       "w5-str-d4:db-row(M)"
+      ],
+      "week6": [
+       "w6-str-d0:db-row(M)",
+       "w6-str-d4:db-row(M)"
+      ],
+      "week7": [
+       "w7-str-d0:db-row(M)",
+       "w7-str-d4:db-row(M)"
+      ]
+     }
+    ],
+    "info": {
+     "ask": {
+      "status": "ASK",
+      "missingInputs": [
+       "changes.equipment",
+       "substitution.to"
+      ],
+      "disclosures": [
+       "NO_LOWER_SKILL_ALTERNATIVE"
+      ]
+     },
+     "accept": {
+      "status": "ASK",
+      "selected": null,
+      "disclosures": [
+       "NO_LOWER_SKILL_ALTERNATIVE"
+      ]
+     },
+     "week5": [
+      "w5-str-d0:db-row(M)",
+      "w5-str-d4:db-row(M)"
+     ],
+     "week6": [
+      "w6-str-d0:db-row(M)",
+      "w6-str-d4:db-row(M)"
+     ],
+     "week7": [
+      "w7-str-d0:db-row(M)",
+      "w7-str-d4:db-row(M)"
+     ]
+    }
+   }
+  }
+ ]
+}

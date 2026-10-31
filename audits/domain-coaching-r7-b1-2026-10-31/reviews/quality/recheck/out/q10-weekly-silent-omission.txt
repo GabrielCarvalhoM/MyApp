@@ -1,0 +1,39 @@
+ms per weekly 85.55555555555556
+ms subst 163 MODIFY single-leg-rdl-db []
+decision plan 9 SPECIFIC w9-str-d0 STRENGTH_FULL_A null goblet-squat,db-bench-press,db-row,db-calf-raise,dead-bug
+decision plan 9 SPECIFIC w9-str-d4 STRENGTH_FULL_B null single-leg-rdl-db,db-row,db-bench-press,db-split-squat,dead-bug
+decision plan 10 TAPER w10-str-d0 STRENGTH_FULL_A null goblet-squat,db-bench-press,db-row,db-calf-raise,dead-bug
+decision plan 10 TAPER w10-str-d4 STRENGTH_FULL_B null single-leg-rdl-db,db-row,db-bench-press,db-split-squat,dead-bug
+decision plan 11 RACE_WEEK w11-str-d0 STRENGTH_FULL_A null goblet-squat,db-bench-press,db-row
+decision plan 11 RACE_WEEK w11-str-d4 REST_BY_DESIGN null Final days before the race: no strength in the last 3 days, and one short light session at most before that
+decision plan 12 POST_EVENT w12-str-d0 REST_BY_DESIGN null Post-event week: one light strength session is enough; this day is rest or mobility by design
+decision plan 12 POST_EVENT w12-str-d4 STRENGTH_FULL_B null single-leg-rdl-db,db-row,db-bench-press
+weekly MODIFY GATED_NEXT_STEP Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation
+disclosures [{"id":"NO_NEW_EXERCISE_IN_EVENT_WEEKS","blocking":false,"informational":true,"sessions":["w10-str-d4","w12-str-d4"],"slots":[{"sessionId":"w10-str-d4","week":10,"selected":"single-leg-rdl-db","inEventWeeks":null,"setAside":"db-rdl"},{"sessionId":"w12-str-d4","week":12,"selected":"single-leg-rdl-db","inEventWeeks":null,"setAside":"db-rdl"}],"detail":"No new exercise starts in the taper, race week or post-event week: single-leg-rdl-db, not yet done in this program, is left out of w10-str-d4; single-leg-rdl-db, not yet done in this program, is left out of w12-str-d4; they start after the post-event week","basis":"R6-EVENT-TRANSITION condition 7; B0-C05 condition 1; R6-SUBSTITUTION condition 8 (QE-R7B-OBS-04, QR7B1-04)"}]
+after weekly 10 TAPER w10-str-d0 STRENGTH_FULL_A null goblet-squat,db-bench-press,db-row,db-calf-raise,dead-bug
+after weekly 10 TAPER w10-str-d4 STRENGTH_FULL_B [{"slot":0,"pattern":"HINGE","role":"MAIN","selected":"single-leg-rdl-db","setAside":"db-rdl","inEventWeeks":null}] db-row,db-bench-press,db-split-squat,dead-bug
+after weekly 11 RACE_WEEK w11-str-d0 STRENGTH_FULL_A null goblet-squat,db-bench-press,db-row
+after weekly 11 RACE_WEEK w11-str-d4 REST_BY_DESIGN null Final days before the race: no strength in the last 3 days, and one short light session at most before that
+after weekly 12 POST_EVENT w12-str-d0 REST_BY_DESIGN null Post-event week: one light strength session is enough; this day is rest or mobility by design
+after weekly 12 POST_EVENT w12-str-d4 STRENGTH_FULL_B [{"slot":0,"pattern":"HINGE","role":"MAIN","selected":"single-leg-rdl-db","setAside":"db-rdl","inEventWeeks":null}] db-row,db-bench-press
+after weekly 13 NEXT_BLOCK w13-str-d0 STRENGTH_FULL_A null goblet-squat,db-bench-press,db-row,db-calf-raise,dead-bug
+after weekly 13 NEXT_BLOCK w13-str-d4 STRENGTH_FULL_B null single-leg-rdl-db,db-row,db-bench-press,db-split-squat,dead-bug
+[
+  'runtimeVersion',    'mode',
+  'applied',           'proposal',
+  'officialPlanState', 'appliedState',
+  'completedWork',     'horizonsConsidered',
+  'qualityAssessment', 'missingInputs',
+  'counterfactuals',   'status',
+  'action',            'reason',
+  'updatedModel',      'actualLedger',
+  'provenance',        'weekEvidence',
+  'loadQuestions',     'inputHash',
+  'choicesHandled',    'disclosures',
+  'offers',            'learnedPatterns',
+  'substitutions',     'instantiationOnly',
+  'gates',             'horizons',
+  'question',          'trace',
+  'nextObservation',   'planValidity',
+  'referenceState'
+]

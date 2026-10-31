@@ -1,0 +1,40 @@
+{
+ "probe": "k6b-stale-return-two-step",
+ "frozen": "R7B1-FREEZE-1",
+ "root": "temporary tree f1",
+ "ran": "2026-10-31T20:29:40.550Z",
+ "results": [
+  {
+   "id": "K6b",
+   "area": "clinical first after a recorded late report in the re-entry week",
+   "verdict": "FAIL",
+   "expected": "a later review that reports pain with an exercise routes to a human",
+   "actual": {
+    "label": "R7B1-FREEZE-1",
+    "rows": [
+     {
+      "step": "return",
+      "status": "MODIFY",
+      "action": "REESTABLISH"
+     },
+     {
+      "step": "late report alone (sync)",
+      "status": "ASK",
+      "action": "ASK",
+      "recorded": true,
+      "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and the return reported on 2026-11-26 did not"
+     },
+     {
+      "step": "pain report, nothing else",
+      "exercise": "goblet-squat",
+      "status": "ASK",
+      "action": "ASK",
+      "proposal": false,
+      "pending": "ASK",
+      "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and the return reported on 2026-11-26 did not read it: confirm th"
+     }
+    ]
+   }
+  }
+ ]
+}

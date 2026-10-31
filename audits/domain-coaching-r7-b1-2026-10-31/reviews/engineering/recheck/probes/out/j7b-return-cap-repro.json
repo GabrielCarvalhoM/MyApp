@@ -1,0 +1,87 @@
+{
+ "probe": "j7b-return-cap-repro",
+ "frozen": "R7B1-FREEZE-2",
+ "root": "this worktree (R7B1-FREEZE-2 bytes)",
+ "ran": "2026-10-31T20:19:04.104Z",
+ "results": [
+  {
+   "id": "J7b",
+   "area": "a return in the capped period keeps the cap a schedule change started",
+   "verdict": "FAIL",
+   "expected": "the sessions still ahead in the re-entry week stay capped (CORE, lighter by design), as for an intake-capped athlete",
+   "actual": {
+    "label": "R7B1-FREEZE-2",
+    "intakeCappedUncappedAhead": false,
+    "scheduleCappedUncappedAhead": true,
+    "cases": {
+     "intake-capped": {
+      "week2BeforeReturn": [
+       "2026-11-16 FULL_A",
+       "2026-11-18 FULL_B",
+       "2026-11-20 CORE(lighter)",
+       "2026-11-21 CORE(lighter)"
+      ],
+      "plannerDensityWeek2": {
+       "capped": true
+      },
+      "historyDensityAtReturn": {
+       "capped": true
+      },
+      "return": {
+       "status": "MODIFY",
+       "action": "REESTABLISH"
+      },
+      "returnEntryDensity": {
+       "capped": true
+      },
+      "week2AfterReturn": [
+       "2026-11-16 FULL_A",
+       "2026-11-18 FULL_B",
+       "2026-11-20 CORE(lighter)",
+       "2026-11-21 CORE(lighter)"
+      ],
+      "week3AfterReturn": [
+       "2026-11-23 FULL_A",
+       "2026-11-25 FULL_B",
+       "2026-11-27 CORE(lighter)",
+       "2026-11-28 CORE(lighter)"
+      ],
+      "proposalDensityWeek2": {
+       "capped": true
+      }
+     },
+     "schedule-capped": {
+      "week2BeforeReturn": [
+       "2026-11-16 FULL_A",
+       "2026-11-18 CORE(lighter)",
+       "2026-11-20 CORE(lighter)",
+       "2026-11-21 FULL_B"
+      ],
+      "plannerDensityWeek2": {
+       "capped": true
+      },
+      "historyDensityAtReturn": null,
+      "return": {
+       "status": "MODIFY",
+       "action": "REESTABLISH"
+      },
+      "returnEntryDensity": null,
+      "week2AfterReturn": [
+       "2026-11-16 FULL_A",
+       "2026-11-18 CORE(lighter)",
+       "2026-11-20 LOWER_B",
+       "2026-11-21 UPPER_B"
+      ],
+      "week3AfterReturn": [
+       "2026-11-23 FULL_A",
+       "2026-11-25 CORE(lighter)",
+       "2026-11-27 CORE(lighter)",
+       "2026-11-28 FULL_B"
+      ],
+      "proposalDensityWeek2": null
+     }
+    }
+   }
+  }
+ ]
+}

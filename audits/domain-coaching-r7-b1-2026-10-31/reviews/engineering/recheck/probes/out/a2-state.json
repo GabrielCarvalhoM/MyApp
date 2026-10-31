@@ -1,0 +1,169 @@
+{
+ "probe": "a2-state",
+ "frozen": "R7B1-FREEZE-2",
+ "root": "this worktree (R7B1-FREEZE-2 bytes)",
+ "ran": "2026-10-31T20:17:02.921Z",
+ "results": [
+  {
+   "id": "A1b",
+   "area": "stale-state / correction (graduation)",
+   "verdict": "PASS",
+   "expected": "the same facts give the same decision whichever review carries them: a correction that disqualifies a qualifying week withdraws (or re-asks) the graduation; no threshold session stays planned on it",
+   "actual": {
+    "boundaryAction": "RUN_QUALITY_GRADUATION",
+    "controlSameFactsAtBoundary": {
+     "action": "GATED_NEXT_STEP",
+     "notYet": [
+      [
+       {
+        "week": 2,
+        "why": "QUALIFIES",
+        "minutes": 75,
+        "days": 3
+       },
+       {
+        "week": 3,
+        "why": "NOT_ALL_REPORTED",
+        "minutes": null,
+        "days": null
+       }
+      ]
+     ]
+    },
+    "correctionReview": {
+     "status": "MODIFY",
+     "action": "REPLAN_FROM_EVIDENCE",
+     "reason": "Evidence about an earlier week changed what this week starts from; the sessions still ahead are planned again from it, completed sessions stay as they were; next-week steps are gated when this week’s remaining sessions are complete",
+     "missingInputs": [],
+     "errors": []
+    },
+    "graduationKept": false,
+    "qualityWeek4": [],
+    "afterIntroductionWeekReview": {
+     "action": "KEEP",
+     "graduationKept": false,
+     "qualityWeek5": [],
+     "qualityWeek6": []
+    }
+   }
+  },
+  {
+   "id": "A3b",
+   "area": "stale-state / projected density release",
+   "verdict": "FAIL",
+   "expected": "without executed evidence of the boundary week, every decision plans week 5 under the novice cap (as the weekly review of the same facts does); the planner never starts from the projected release",
+   "actual": {
+    "projectedDensityWeek5": {
+     "capped": false,
+     "releasedAfterWeek": 4
+    },
+    "decisions": {
+     "SCHEDULE_CHANGE": {
+      "status": "MODIFY",
+      "action": "REARRANGE_FUTURE_WEEKS",
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the athlete removed",
+      "missingInputs": [],
+      "errors": [],
+      "week5Templates": "LOWER,LOWER_B,UPPER,UPPER_B",
+      "week6Templates": "CORE,CORE,FULL_A,FULL_B",
+      "plannerDensityWeek5": {
+       "capped": false,
+       "releasedAfterWeek": 4
+      },
+      "historyDensity": {
+       "capped": true
+      }
+     },
+     "EXERCISE_SUBSTITUTION": {
+      "status": "MODIFY",
+      "action": "SUBSTITUTE_FOR_REASON",
+      "reason": "goblet-squat is replaced by box-squat-bodyweight (a nonclinical preference); the new exercise starts with effort-guided establishment, nothing is converted",
+      "missingInputs": [],
+      "errors": [],
+      "week5Templates": "CORE,CORE,FULL_A,FULL_B",
+      "week6Templates": "CORE,CORE,FULL_A,FULL_B",
+      "plannerDensityWeek5": {
+       "capped": true
+      },
+      "historyDensity": {
+       "capped": true
+      }
+     },
+     "EQUIPMENT_CHANGE": {
+      "status": "MODIFY",
+      "action": "SUBSTITUTE",
+      "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed",
+      "missingInputs": [],
+      "errors": [],
+      "week5Templates": "CORE,CORE,FULL_A,FULL_B",
+      "week6Templates": "CORE,CORE,FULL_A,FULL_B",
+      "plannerDensityWeek5": {
+       "capped": true
+      },
+      "historyDensity": {
+       "capped": true
+      }
+     }
+    },
+    "controlWeeklyReview": {
+     "action": "GATED_NEXT_STEP",
+     "week5Templates": "CORE,CORE,FULL_A,FULL_B",
+     "density": {
+      "capped": true,
+      "heldAt": [
+       4
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "A8b",
+   "area": "impossible combinations / phantom ladder reach",
+   "verdict": "PASS",
+   "expected": "a ladder step that was never applied or executed grants no HIGH-skill admissibility (B0-C07 c5; B0-C03 c2): back-squat stays inadmissible for an athlete not familiar with it",
+   "actual": {
+    "conflictingPair": {
+     "afterBoundary": {
+      "week5Squat": [
+       "goblet-squat"
+      ],
+      "ladderReached": []
+     },
+     "substitution": {
+      "status": "ASK",
+      "action": "ASK",
+      "reason": "leg-press is not in the sessions still ahead",
+      "missingInputs": [
+       "substitution.exerciseId"
+      ],
+      "errors": [],
+      "selected": null,
+      "week7Squat": null,
+      "backSquatRow": null
+     }
+    },
+    "controlMainChangeOnly": {
+     "afterBoundary": {
+      "week5Squat": [
+       "leg-press"
+      ],
+      "ladderReached": []
+     },
+     "substitution": {
+      "status": "ASK",
+      "action": "ASK",
+      "reason": "back-squat cannot replace leg-press here (pattern, role, skill or equipment)",
+      "missingInputs": [
+       "substitution.to"
+      ],
+      "errors": [],
+      "selected": null,
+      "week7Squat": null,
+      "backSquatRow": null
+     }
+    }
+   }
+  }
+ ]
+}
