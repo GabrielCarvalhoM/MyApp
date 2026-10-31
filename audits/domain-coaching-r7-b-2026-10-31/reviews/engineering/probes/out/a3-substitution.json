@@ -1,0 +1,226 @@
+{
+ "probe": "a3-substitution",
+ "frozen": "R7B-RUNTIME-REPERTOIRE-FREEZE-1",
+ "ran": "2026-10-31T12:45:16.300Z",
+ "results": [
+  {
+   "id": "A10",
+   "area": "reason-based substitution / decision vs plan",
+   "verdict": "FAIL",
+   "expected": "the configuration a substitution decision reports as selected is the one the plan prescribes in place of the replaced exercise",
+   "actual": {
+    "modified": 46,
+    "inconsistent": 19,
+    "asked": 16,
+    "examples": [
+     {
+      "program": "e3-sub-db",
+      "label": "SKILL_MISMATCH",
+      "sub": {
+       "exerciseId": "goblet-squat",
+       "reason": "SKILL_MISMATCH"
+      },
+      "status": "MODIFY",
+      "selected": "box-squat-bodyweight",
+      "nextWeek": [
+       {
+        "session": "w4-str-d0",
+        "role": "MAIN",
+        "prescribed": [
+         "kb-goblet-squat"
+        ]
+       }
+      ],
+      "consistent": false
+     },
+     {
+      "program": "e3-sub-db",
+      "label": "NONCLINICAL_DISCOMFORT_OR_PREFERENCE",
+      "sub": {
+       "exerciseId": "db-row",
+       "reason": "NONCLINICAL_DISCOMFORT_OR_PREFERENCE",
+       "nonclinicalConfirmed": true
+      },
+      "status": "MODIFY",
+      "selected": "kb-row",
+      "nextWeek": [
+       {
+        "session": "w4-str-d0",
+        "role": "MAIN",
+        "prescribed": [
+         "one-arm-db-row"
+        ]
+       },
+       {
+        "session": "w4-str-d4",
+        "role": "MAIN",
+        "prescribed": [
+         "one-arm-db-row"
+        ]
+       }
+      ],
+      "consistent": false
+     },
+     {
+      "program": "e3-sub-db",
+      "label": "SKILL_MISMATCH",
+      "sub": {
+       "exerciseId": "dead-bug",
+       "reason": "SKILL_MISMATCH"
+      },
+      "status": "MODIFY",
+      "selected": "bird-dog",
+      "nextWeek": [
+       {
+        "session": "w4-str-d0",
+        "role": "ACCESSORY",
+        "prescribed": [
+         "front-plank"
+        ]
+       },
+       {
+        "session": "w4-str-d4",
+        "role": "ACCESSORY",
+        "prescribed": [
+         "front-plank"
+        ]
+       }
+      ],
+      "consistent": false
+     },
+     {
+      "program": "e3-sub-db",
+      "label": "SKILL_MISMATCH",
+      "sub": {
+       "exerciseId": "db-rdl",
+       "reason": "SKILL_MISMATCH"
+      },
+      "status": "MODIFY",
+      "selected": "kb-deadlift",
+      "nextWeek": [
+       {
+        "session": "w4-str-d4",
+        "role": "MAIN",
+        "prescribed": [
+         "single-leg-rdl-db"
+        ]
+       }
+      ],
+      "consistent": false
+     },
+     {
+      "program": "e3-sub-db",
+      "label": "SKILL_MISMATCH",
+      "sub": {
+       "exerciseId": "db-split-squat",
+       "reason": "SKILL_MISMATCH"
+      },
+      "status": "MODIFY",
+      "selected": "split-squat-bodyweight",
+      "nextWeek": [
+       {
+        "session": "w4-str-d4",
+        "role": "ACCESSORY",
+        "prescribed": [
+         "reverse-lunge-db"
+        ]
+       }
+      ],
+      "consistent": false
+     },
+     {
+      "program": "e3-sub-db",
+      "label": "NONCLINICAL_DISCOMFORT_OR_PREFERENCE",
+      "sub": {
+       "exerciseId": "db-split-squat",
+       "reason": "NONCLINICAL_DISCOMFORT_OR_PREFERENCE",
+       "nonclinicalConfirmed": true
+      },
+      "status": "MODIFY",
+      "selected": "bulgarian-split-squat-db",
+      "nextWeek": [
+       {
+        "session": "w4-str-d4",
+        "role": "ACCESSORY",
+        "prescribed": [
+         "reverse-lunge-db"
+        ]
+       }
+      ],
+      "consistent": false
+     },
+     {
+      "program": "e3-sub-full",
+      "label": "SKILL_MISMATCH",
+      "sub": {
+       "exerciseId": "goblet-squat",
+       "reason": "SKILL_MISMATCH"
+      },
+      "status": "MODIFY",
+      "selected": "box-squat-bodyweight",
+      "nextWeek": [
+       {
+        "session": "w4-str-d0",
+        "role": "MAIN",
+        "prescribed": [
+         "kb-goblet-squat"
+        ]
+       }
+      ],
+      "consistent": false
+     },
+     {
+      "program": "e3-sub-full",
+      "label": "NONCLINICAL_DISCOMFORT_OR_PREFERENCE",
+      "sub": {
+       "exerciseId": "db-rdl",
+       "reason": "NONCLINICAL_DISCOMFORT_OR_PREFERENCE",
+       "nonclinicalConfirmed": true
+      },
+      "status": "MODIFY",
+      "selected": "single-leg-rdl-db",
+      "nextWeek": [
+       {
+        "session": "w4-str-d0",
+        "role": "MAIN",
+        "prescribed": [
+         "kb-deadlift"
+        ]
+       },
+       {
+        "session": "w4-str-d4",
+        "role": "MAIN",
+        "prescribed": [
+         "kb-deadlift"
+        ]
+       }
+      ],
+      "consistent": false
+     }
+    ]
+   }
+  },
+  {
+   "id": "A11",
+   "area": "reason-based substitution after a MAIN change",
+   "verdict": "FAIL",
+   "expected": "leg-press (the MAIN chosen at the boundary) is replaced by the selected substitute; the plan never falls back to goblet-squat, the MAIN the athlete changed away from",
+   "actual": {
+    "week5Squat": [
+     "leg-press"
+    ],
+    "substitution": {
+     "status": "MODIFY",
+     "action": "SUBSTITUTE_FOR_REASON",
+     "reason": "leg-press is replaced by goblet-squat (a nonclinical preference); the new exercise starts with effort-guided establishment, nothing is converted",
+     "missingInputs": [],
+     "errors": [],
+     "selected": "goblet-squat"
+    },
+    "week7Squat": [
+     "goblet-squat"
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,205 @@
+{
+ "review_id": "R7B-ENG-r1",
+ "gate": "R7B_ENGINEERING_GATE",
+ "judge": {
+  "role": "quality-reliability-engineer (constitution 1.3.0)",
+  "independence": "Did not author the runtime; one bounded review; no runtime, test, catalog or policy file edited",
+  "model": "claude-opus-5-5"
+ },
+ "date": "2026-10-31",
+ "freeze": "R7B-RUNTIME-REPERTOIRE-FREEZE-1",
+ "freezeRecord": "CoachingCore/r7/b/RUNTIME_FREEZE_R7B.json",
+ "freezeCommit": "4995d58e76d250b9b1dcae7ca471d44ae1be72d0",
+ "branch": "claude/domain-coaching-r7-b",
+ "sourceDigest": "791b531100c190f6b0ed73e892f6e212d7eee5406d144fce4a188170900a2c4f",
+ "manifestDigest": "b1a1faf0a7064da99db8a33a0f04852ae3cc3a06177bcb3e4edba7cfdf222f73",
+ "identityCheck": {
+  "beforeProbes": "node scripts/verify-r7b.mjs: 18/18 PASS, sourceDigest 791b5311..., manifestDigest b1a1faf0...",
+  "afterProbes": "node scripts/verify-r7b.mjs: 18/18 PASS, same digests; git status shows only untracked review folders (no tracked file changed)",
+  "frozenBytesDifferFromRecord": false
+ },
+ "verdict": "NOT_READY",
+ "verdictBasis": "1 BLOCKER and 5 MAJOR findings inside this gate (READY requires none). Findings are reproducible with the probe scripts under reviews/engineering/probes (outputs in probes/out).",
+ "findings": [
+  {
+   "id": "QE-R7B-01",
+   "severity": "BLOCKER",
+   "area": "state transitions / reason-based substitution (EXERCISE_SUBSTITUTION, DR-134, B0-C06 c8, B0-C07 c1)",
+   "summary": "The plan does not prescribe the configuration the substitution decision selects. In 19 of 46 applied substitutions over four programs the next weeks prescribe another configuration; a SKILL_MISMATCH report ends on the NEXT rung of the same skill ladder, and even an athlete-chosen 'to' is ignored. Root cause: buildTemplates removes the set-aside configuration from the usable set (src/r7b-repertoire.mjs:242, :247) before the selection directive is looked up by pick.id === from (:276), so the substitution directive never fires and the slot falls back to the generic selection order, which ranks higher skill first (:227). The decision's 'selected' is computed by a different rule (src/r6-adaptation.mjs:527-528). The suite's substitution test asserts the decision record only, never the plan.",
+   "reproduction": "node audits/domain-coaching-r7-b-2026-10-31/reviews/engineering/probes/a10-repro.mjs (check A10r: program {equipment DUMBBELLS+BENCH+KETTLEBELL, GENERAL, FIXED, 12 weeks}, three weeks reviewed, EXERCISE_SUBSTITUTION in week 3 day 1 06:00Z); grid: probes/a3-substitution.mjs (check A10). Outputs: probes/out/a10-repro.json, probes/out/a3-substitution.json",
+   "expected": "db-rdl SKILL_MISMATCH: decision kb-deadlift (previous ladder step, LOW skill) and weeks 4-8 prescribe kb-deadlift; dead-bug SKILL_MISMATCH: bird-dog in weeks 4-8; db-rdl with to=kb-deadlift: kb-deadlift in weeks 4-8",
+   "actual": "db-rdl SKILL_MISMATCH: decision 'replaced by kb-deadlift', weeks 4-8 prescribe single-leg-rdl-db (MAIN), the next rung after db-rdl (ladderNext = barbell-rdl, single-leg-rdl-db); dead-bug SKILL_MISMATCH: decision bird-dog, weeks 4-8 front-plank (ladderNext of dead-bug); to=kb-deadlift: decision kb-deadlift, weeks 4-8 single-leg-rdl-db. Grid: 46 MODIFY, 19 inconsistent (e.g. goblet-squat -> decision box-squat-bodyweight, plan kb-goblet-squat; db-row -> decision kb-row, plan one-arm-db-row; db-split-squat -> decision split-squat-bodyweight, plan reverse-lunge-db)"
+  },
+  {
+   "id": "QE-R7B-02",
+   "severity": "MAJOR",
+   "area": "state transitions / rotation state vs an accepted ladder step (B0-C06, B0-C07, DR-134 reason over cadence)",
+   "summary": "Under EVERY_2_WEEKS the calendar rotation is applied on top of an accepted accessory ladder step: the week after the step prescribes the configuration the step replaced, then two other alternatives, and the step itself appears only in weeks 10-11. rotationFor counts turns from week 1 and cycles [pick, ...alternatives] (src/r6-program.mjs:1197, :1205) where the alternatives were computed from the pre-step options and include the replaced configuration (src/r7b-repertoire.mjs:279); slotEntries applies it over the directive (src/r6-program.mjs:821).",
+   "reproduction": "node audits/domain-coaching-r7-b-2026-10-31/reviews/engineering/probes/a4-rotation.mjs (check A12: GENERAL, DUMBBELLS+BENCH, strength days 0/2/4, EVERY_2_WEEKS, 16 weeks; offer at the week-4 boundary accepted). Output: probes/out/a4-rotation.json",
+   "expected": "reverse-lunge -> reverse-lunge-db accepted 'from next week': week 5 prescribes reverse-lunge-db; the replaced reverse-lunge never comes back on the calendar",
+   "actual": "week 5: reverse-lunge (the replaced configuration); weeks 6-7: split-squat-bodyweight; weeks 8-9: db-split-squat; weeks 10-11: reverse-lunge-db. Decision: MODIFY BLOCK_EXERCISE_CHANGES 'reverse-lunge -> reverse-lunge-db (skill progression)'"
+  },
+  {
+   "id": "QE-R7B-03",
+   "severity": "MAJOR",
+   "area": "stale-state resurrection / novice density in the PlanningView (B0-C08 c2; R7-A invariant: a projected unlock is never a start, an open week earns nothing)",
+   "summary": "planningBase takes every strength field except the exercises from the projection (src/r6-adaptation.mjs:923, strength:{...clone(P.strength),exercises}), so the B0-C08 density state of a decision is the projected release, not the evidence reducer's. The same facts give a capped week 5 through the weekly review but a released week 5 through a correction (factual re-plan), a substitution, a schedule change or an equipment statement; the reducer (historicalStateOf) says capped while the proposal says released.",
+   "reproduction": "node audits/domain-coaching-r7-b-2026-10-31/reviews/engineering/probes/a-state.mjs (check A3: strength NONE, 4 strength days, weeks 0-4 executed and reviewed, then week-4 strength reports corrected to adverse in week 5 day 0 06:00Z) and probes/a2-state.mjs (check A3b: week 4 strength not executed and not reviewed; week-5 day-0 decisions SCHEDULE_CHANGE, EXERCISE_SUBSTITUTION, EQUIPMENT_CHANGE; control: weekly review of week 4 with the same facts). Outputs: probes/out/a-state.json, probes/out/a2-state.json",
+   "expected": "no executed evidence of the boundary week (or evidence corrected to adverse): week 5 is planned under the cap (CORE,CORE,FULL_A,FULL_B), as the weekly review of the same facts plans it; planner and reducer agree",
+   "actual": "A3: after the correction (MODIFY REPLAN_FROM_EVIDENCE) week 5 stays LOWER,LOWER_B,UPPER,UPPER_B; planner density {capped:false, releasedAfterWeek:4}, historicalStateOf density {capped:true}. A3b: all three decisions plan weeks 5-6 as LOWER,LOWER_B,UPPER,UPPER_B with planner {capped:false}, history {capped:true}; control weekly review: CORE,CORE,FULL_A,FULL_B {capped:true, heldAt:[4]}"
+  },
+  {
+   "id": "QE-R7B-04",
+   "severity": "MAJOR",
+   "area": "correction/retraction / graduation (B0-C01 c3; R7-A A5: same facts, same decision whichever review carries them)",
+   "summary": "Graduation is written into the context at the boundary (src/r6-adaptation.mjs:502) and re-applied by every later transition (src/r6-program.mjs:305). When a later correction disqualifies a qualifying week, the factual re-plan re-plans from the corrected PlanningView but nothing re-evaluates or withdraws the graduation: the threshold session stays planned on retracted evidence, also after the introduction week is reviewed. With the same facts known at the boundary review, no graduation happens.",
+   "reproduction": "node audits/domain-coaching-r7-b-2026-10-31/reviews/engineering/probes/a-state.mjs (check A1: week-3 long run corrected to an adverse response on week-4 day 0) and probes/a2-state.mjs (check A1b: week-3 long run corrected to 10 executed minutes; control: the same 10-minute report in the boundary review). Outputs: probes/out/a-state.json, probes/out/a2-state.json",
+   "expected": "after a correction that makes a qualifying week adverse or below the running threshold, the graduation is withdrawn or re-asked and no threshold session is planned on it (the control boundary review with the same facts does not graduate)",
+   "actual": "A1: correction review MODIFY REPLAN_FROM_EVIDENCE; runGraduation kept; THRESHOLD planned in weeks 4 and 5 (w4-run-d1, w5-run-d1). A1b: control at the boundary GATED_NEXT_STEP (week 3 NOT_ALL_REPORTED, no graduation); correction path keeps runGraduation and THRESHOLD in weeks 4, 5 and 6, also after the week-4 weekly review (KEEP)"
+  },
+  {
+   "id": "QE-R7B-05",
+   "severity": "MAJOR",
+   "area": "state transitions / novice density cap on a schedule change (B0-C08 c1)",
+   "summary": "The density cap is created only at intake (initialStrengthState, src/r6-program.mjs:408; noviceTemplates at src/r6-program.mjs:1238) and a context change rebuilds novice templates only when the base already had them (src/r6-adaptation.mjs:586). A strength-NONE athlete who starts with two strength days and moves to four before the first block boundary gets four full templates in establishment and development weeks.",
+   "reproduction": "node audits/domain-coaching-r7-b-2026-10-31/reviews/engineering/probes/a-state.mjs (check A4: strength NONE, strength days 0/4, week 0 reviewed, SCHEDULE_CHANGE strengthDays [0,2,4,5] on week-1 day 0). Output: probes/out/a-state.json",
+   "expected": "weeks 2-4 (before the first block boundary) keep two full templates and TPL.CORE on the extra days (CORE,CORE,FULL_A,FULL_B)",
+   "actual": "MODIFY REARRANGE_FUTURE_WEEKS; weeks 2, 3 and 4: LOWER,LOWER_B,UPPER,UPPER_B; noviceTemplates absent; density state null"
+  },
+  {
+   "id": "QE-R7B-06",
+   "severity": "MAJOR",
+   "area": "impossible combinations / determinism / block choices (B0-C07 c2, c5; B0-C03 c2)",
+   "summary": "Two changes of one exercise at one boundary are applied instead of asked, and the outcome depends on choice order: the one-step check covers LADDER_STEP only (src/r6-adaptation.mjs:483), MAIN_CHANGE has no duplicate check (:486), and the later selection wins in buildTemplates. [LADDER_STEP goblet-squat->back-squat, MAIN_CHANGE goblet-squat->leg-press] is MODIFY (leg-press planned) while the reverse order is ASK. The unapplied ladder step is still written to ladderReached (:485), which then makes the HIGH-skill back squat admissible: a later substitution leg-press -> back-squat is accepted (MODIFY), while without the phantom reach the same request is ASK.",
+   "reproduction": "node audits/domain-coaching-r7-b-2026-10-31/reviews/engineering/probes/a-state.mjs (check A8) and probes/a2-state.mjs (check A8b: FULL equipment, STRENGTH goal, COACH_DECIDES, week-4 boundary; then EXERCISE_SUBSTITUTION leg-press -> back-squat on week 6). Outputs: probes/out/a-state.json, probes/out/a2-state.json",
+   "expected": "every order of [ladder step, MAIN change] or [MAIN change, MAIN change] on one exercise is ASK; no ladder reach is recorded for a step that is not applied; back-squat stays inadmissible for an athlete not familiar with it",
+   "actual": "ladder then MAIN: MODIFY, week 5 SQUAT leg-press, ladderReached [back-squat]; MAIN then ladder: ASK; two MAIN changes: MODIFY in both orders, last one wins (kb-goblet-squat vs leg-press). A8b: substitution to back-squat MODIFY (selected back-squat) after the pair; ASK ('cannot replace leg-press here') in the control"
+  },
+  {
+   "id": "QE-R7B-07",
+   "severity": "MINOR",
+   "area": "stale-state resurrection / set-aside configuration",
+   "summary": "A configuration set aside for SKILL_MISMATCH is offered again on its ladder at the next boundary (stepOk, src/r6-adaptation.mjs:474, has no set-aside check; MAIN_CHANGE validation neither). Accepting it as a LADDER_STEP or a MAIN_CHANGE returns MODIFY 'changes recorded' and records the selection and the ladder reach, while the plan does not change (buildTemplates refuses it silently). Nothing is prescribed; the offer and the decision record contradict the plan.",
+   "reproduction": "node audits/domain-coaching-r7-b-2026-10-31/reviews/engineering/probes/a-state.mjs (check A7: goblet-squat -> back-squat at week 4, back-squat SKILL_MISMATCH at week 6, boundary review at week 8). Output: probes/out/a-state.json",
+   "expected": "back-squat is not offered again; a ladder step or MAIN change to it is ASK",
+   "actual": "offers include goblet-squat -> back-squat; LADDER_STEP and MAIN_CHANGE to back-squat both MODIFY BLOCK_EXERCISE_CHANGES with the selection recorded; week 9 still prescribes goblet-squat"
+  },
+  {
+   "id": "QE-R7B-08",
+   "severity": "MINOR",
+   "area": "impossible combinations / unapplicable inputs dropped silently",
+   "summary": "Block choices that cannot be applied are dropped without an answer: a LADDER_STEP sent in a mid-week review of the boundary week (weeklyReview returns KEEP before the boundary step, src/r6-adaptation.mjs:386), an unknown choice type, and choices that are not a list (choicesOf, :445). An unknown substitution target ('to' not in the catalog) becomes null and is replaced by an automatic pick (MODIFY) instead of being asked (:527).",
+   "reproduction": "node audits/domain-coaching-r7-b-2026-10-31/reviews/engineering/probes/a-state.mjs (check A9) and probes/c-boundaries.mjs (check C6, case toUnknown). Outputs: probes/out/a-state.json, probes/out/c-boundaries.json",
+   "expected": "ASK (or HOLD for a malformed list), never a silent KEEP; an unknown 'to' is ASK",
+   "actual": "mid-week: KEEP; unknown type LADDER_JUMP: KEEP; choices as an object: KEEP; to='no-such-lift': MODIFY 'goblet-squat is replaced by box-squat-bodyweight'. (A MAIN change sent with a complete MISSED_SESSION review at the boundary is applied; judged acceptable.)"
+  },
+  {
+   "id": "QE-R7B-09",
+   "severity": "MINOR",
+   "area": "boundary behaviour / review-by date and determinism",
+   "summary": "repertoireAuthority reads the decision date as options.asOf.slice(0,10) (src/r7b-repertoire.mjs:43) and evaluateProgram passes the raw review.asOf (src/r6-adaptation.mjs:295), so the SSCTR review-by date (2027-04-30) is compared with the date as written, not with the instant on one clock: one instant gives two decisions depending on its UTC offset, and an instant after the review-by date in UTC is still accepted when written with a negative offset.",
+   "reproduction": "node audits/domain-coaching-r7-b-2026-10-31/reviews/engineering/probes/b-determinism.mjs (check B4: 8-week program from 2027-04-19, week-1 reviews). Output: probes/out/b-determinism.json",
+   "expected": "2027-04-30T21:00:00Z and 2027-05-01T02:00:00+05:00 (the same instant) give the same decision",
+   "actual": "Z: KEEP; +05:00: UNSUPPORTED ('not planned under the bound repertoire catalog...'); 2027-04-30T22:00:00-03:00 (2027-05-01T01:00Z): KEEP"
+  },
+  {
+   "id": "QE-R7B-10",
+   "severity": "MINOR",
+   "area": "catalog/runtime conformance / record binding fails open on conflicting records",
+   "summary": "repertoireAuthority skips non-enabling records (src/r7b-repertoire.mjs:47) and keeps any approving record of the same id, so a later rejecting record appended for a candidate does not disable it. The current records file holds one record per id (no effect today); the records' own expiry note foresees revocation.",
+   "reproduction": "node audits/domain-coaching-r7-b-2026-10-31/reviews/engineering/probes/c-mutation.mjs (check C1c: temp copy from git archive HEAD; B0-C01 r2 APPROVE_WITH_CONDITIONS plus an appended REJECT/NOT_SUPPORTED record). Output: probes/out/c-mutation.json",
+   "expected": "B0-C01 off (or the record set refused) when a rejecting record exists next to an approving one",
+   "actual": "B0-C01 approved; graduation still happens"
+  },
+  {
+   "id": "QE-R7B-11",
+   "severity": "MINOR",
+   "area": "catalog/runtime conformance / per-record gating of B0-C10 at intake",
+   "summary": "The 5K fallback at intake reads the default repertoire (file records, no date: src/r6-intake.mjs:108) instead of the planner's authority. Planned under an authority without B0-C10 (options.repertoireRecords), a 5K still becomes a PERFORMANCE plan with the 5K disclosure while the program's binding lists B0-C10 as not approved. The binding test comment claims this 'off' case ('a 5K stays outside the event scope') but asserts only the 'on' case. With the records file itself lacking B0-C10 the behaviour is correct (INVALID_INPUT).",
+   "reproduction": "node audits/domain-coaching-r7-b-2026-10-31/reviews/engineering/probes/c-boundaries.mjs (check C2); file variant: probes/c-mutation.mjs (check C1d). Outputs: probes/out/c-boundaries.json, probes/out/c-mutation.json",
+   "expected": "authority without B0-C10: a 5K is outside the event scope as in R6 (as with the file variant)",
+   "actual": "status PROPOSED, goal PERFORMANCE, EVENT_5K_PERFORMANCE_FALLBACK disclosed, binding approvedCandidates without B0-C10"
+  },
+  {
+   "id": "QE-R7B-12",
+   "severity": "MINOR",
+   "area": "catalog/runtime conformance / truthfulness of CONFORMANCE_R7B.json",
+   "summary": "The matrix passes its structural check (301 entries; consumers and test titles exist), but several IMPLEMENTED entries are contradicted by behaviour: SSCTR:B0-C06#c8 and B0-C07#c1 (QE-R7B-01, -02), B0-C08#c1/#c2 (QE-R7B-03, -05), B0-C01#c3 (QE-R7B-04), B0-C07#c2/#c5 (QE-R7B-06). The cited tests assert decision records rather than the plan (e.g. test/r7b-strength.test.mjs 'DR-134 reason-based substitution' checks substitutions[0].selected === 'kb-deadlift', not the prescription). Derivative of the findings above; listed so the matrix is not read as behavioural proof.",
+   "reproduction": "node CoachingCore/scripts/conformance-r7b.mjs (read-only: PASS) against the probe results of QE-R7B-01..06",
+   "expected": "an IMPLEMENTED entry is backed by behaviour and a test that checks it",
+   "actual": "structural PASS; the listed entries fail behaviourally"
+  },
+  {
+   "id": "QE-R7B-OBS-01",
+   "severity": "OBSERVATION",
+   "area": "determinism / record order",
+   "summary": "With records supplied through options.repertoireRecords, recordsSha256 is the hash of the array as given, so the same records in another order change the program binding and the program hash; the weeks are identical and evaluateProgram does not compare recordsSha256.",
+   "reproduction": "probes/b-determinism.mjs (check B3)",
+   "expected": "order-independent binding identity",
+   "actual": "recordsSha256 e94fc935... vs 8261b944...; program hash differs; weeks equal"
+  },
+  {
+   "id": "QE-R7B-OBS-02",
+   "severity": "OBSERVATION",
+   "area": "block choices / role lookup",
+   "summary": "The role of an exercise at the boundary is a map keyed by id where the last session read wins (src/r6-adaptation.mjs inUse), and a MAIN change rewrites every slot of that configuration, including its accessory rows in other templates (db-split-squat ACCESSORY day 0 and MAIN day 3: both become split-squat-bodyweight). No case in a 144-program grid where a MAIN change of a lift in use was refused because a later session used it as an accessory.",
+   "reproduction": "probes/b-determinism.mjs (check B6)",
+   "expected": "a MAIN change applies to the MAIN slot",
+   "actual": "the accessory row of the same configuration changes too"
+  },
+  {
+   "id": "QE-R7B-OBS-03",
+   "severity": "OBSERVATION",
+   "area": "authority binding / candidate withdrawn after planning",
+   "summary": "Under an authority that no longer approves B0-C01, a mid-week review returns KEEP without re-validating the week, so the planned threshold session stays for the rest of the week; the gating weekly review re-plans without quality (correct), reported as status KEEP / INSTANTIATE_LOGGED_LOADS although the run plan changed.",
+   "reproduction": "probes/c2-authority.mjs (check C8b)",
+   "expected": "fail closed at the review date",
+   "actual": "mid-week KEEP (no proposal); end of week KEEP with a proposal without quality from week 5"
+  },
+  {
+   "id": "QE-R7B-OBS-04",
+   "severity": "OBSERVATION",
+   "area": "event windows / substitution inside TAPER and RACE_WEEK (needs SSCTR classification)",
+   "summary": "A reason-based substitution of a MAIN lift in the taper week introduces a never-performed configuration in TAPER (ESTABLISH, 1 set, RIR 3) and RACE_WEEK (FROM_LOG, 1 set, RIR 4). B0-C05 c1 keeps new exercises out of TAPER, RACE_WEEK and POST_EVENT, while DR-134 gives a stated reason precedence over cadence but not over safety or policy. Whether this is admissible is a sports-science classification; escalated, not counted in this verdict.",
+   "reproduction": "probes/a4-rotation.mjs (check A13)",
+   "expected": "SSCTR decides: ASK or a disclosed introduction",
+   "actual": "MODIFY; kb-goblet-squat new in weeks 13 (TAPER) and 14 (RACE_WEEK)"
+  },
+  {
+   "id": "QE-R7B-OBS-05",
+   "severity": "OBSERVATION",
+   "area": "boundary behaviour / review-by date",
+   "summary": "All thirteen SSCTR r2 records share review_by 2027-04-30; after that date every generation and every review is UNSUPPORTED (fail closed, as declared). A 12-week program generated after about 2027-02-05 crosses it mid-program.",
+   "reproduction": "probes/b-determinism.mjs (check B4, Z case on 2027-05-01) and test/r7b-binding.test.mjs",
+   "expected": "fail closed",
+   "actual": "fail closed"
+  }
+ ],
+ "checked": [
+  "Frozen identity: node scripts/verify-r7b.mjs 18/18 PASS before and after the probes (sourceDigest 791b5311..., manifestDigest b1a1faf0...); no tracked file changed",
+  "Inherited and new suite: node --test from CoachingCore/: 714 tests, 714 pass, 0 fail (50.5 s)",
+  "Conformance: node scripts/conformance-r7b.mjs (no --write): PASS, 301 entries, 85 conditions (structural; see QE-R7B-12)",
+  "Differential regression against the predecessor: node scripts/regress-r7b.mjs (no --write): 83 programs, 77 changed, 0 dose findings, 0 status differences (reproduces REGRESSION_R7B.json)",
+  "Catalog/record binding in temp copies (git archive HEAD): catalog byte change, missing catalog, missing or unreadable records, expired core record -> generation and review UNSUPPORTED; B0-C01 rejected -> no graduation; B0-C10 removed from the records file -> 5K INVALID_INPUT (c-mutation.mjs C1a, C1b, C1d PASS)",
+  "Every planned session conforms in reviewed programs: one strength and one run day (novice and STRENGTH goal), bands only, pull-up bar only, 10K with one strength day; each week executed and reviewed; every proposal passes validateWeeks and conforms (catalog membership, admissible role, no kilogram on bodyweight, band or assisted rows, HIGH skill admissible) (c-boundaries.mjs C4 PASS)",
+  "Impossible block choices at a real boundary: unknown target, MAIN change from an accessory, to another pattern, to an unfamiliar HIGH-skill lift, without a reason, a skipped rung, a step from an exercise not in use -> ASK, none planned (C5 PASS); choices off the boundary in a complete week -> ASK (author test, re-run in the suite)",
+  "Impossible substitutions: HIGH-skill unfamiliar, other pattern, missing equipment, itself, unknown exercise, unknown reason, not an object -> ASK; pain text and injury flag -> CLINICAL_HUMAN_REQUIRED (C6 PASS except the unknown 'to', QE-R7B-08)",
+  "Kilograms for bands and assistance: kilogram and pound logs and kilogram confirmations over five reviewed weeks never reach a band or assisted row or state (C7 PASS)",
+  "Quality gates after graduation: fewer than three run days or a REGULAR goal remove quality (C8 PASS); a correction inside the boundary review prevents graduation (A2 PASS)",
+  "Familiar repeated bouts: lapse after an interruption and withdrawal after two adverse responses persist through later re-plans, in planner and history (A5, A6 PASS)",
+  "Determinism: repeated input (B1), permuted input lists (B2), permuted observations of a boundary review (B5) give identical plans and decisions (PASS); record order (OBS-01), UTC offset (QE-R7B-09), choice order (QE-R7B-06) do not",
+  "Event windows and consolidation: a MAIN change at the boundary into SPECIFIC is ASK; development blocks include their consolidation week (C10 PASS)",
+  "R7-A invariants on the new paths: HOLD after graduation with four missed weeks (R1), D52/E1 for a ladder configuration never executed then an 18-day return (R4), no load transfer on substitution (R5) PASS",
+  "Unknown configuration ids among known exercises are never planned (C9 PASS)",
+  "Out of scope, left to the other gates: sports-science adequacy of doses, interpretations R7B-DECL-01..12 (SSCTR); catalog completeness and reachability (Quality)"
+ ],
+ "probes": {
+  "folder": "audits/domain-coaching-r7-b-2026-10-31/reviews/engineering/probes",
+  "run": "node <probe>.mjs from that folder (Node 24 ESM); each writes probes/out/<probe>.json",
+  "files": ["lib.mjs", "a-state.mjs", "a2-state.mjs", "a3-substitution.mjs", "a10-repro.mjs", "a4-rotation.mjs", "b-determinism.mjs", "c-boundaries.mjs", "c2-authority.mjs", "c-mutation.mjs", "r-regression.mjs"],
+  "mutation": "c-mutation.mjs extracts the frozen tree with git archive HEAD into the OS temp directory, one copy per variant, mutates only the copies and removes them"
+ },
+ "escalations": [
+  "QE-R7B-OBS-04 needs an SSCTR classification (B0-C05 c1 against DR-134 reason precedence in TAPER and RACE_WEEK)"
+ ]
+}

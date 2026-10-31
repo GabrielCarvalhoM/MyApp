@@ -1,0 +1,88 @@
+{
+ "probe": "r-regression",
+ "frozen": "R7B-RUNTIME-REPERTOIRE-FREEZE-1",
+ "ran": "2026-10-31T12:52:41.704Z",
+ "results": [
+  {
+   "id": "R1",
+   "area": "R7-A HOLD on the graduation path",
+   "verdict": "PASS",
+   "expected": "with no executed week after the introduction, the week the last review gated (week 8) raises no quality step and no long run (HOLD; released is not executed); weeks 9+ are the conditional projection",
+   "actual": {
+    "introductionStep": 0,
+    "long4": 30,
+    "stepsAfterMissedWeeks": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "longsAfterMissedWeeks": [
+     30,
+     35,
+     40,
+     35
+    ]
+   }
+  },
+  {
+   "id": "R4",
+   "area": "R7-A D52 / E1 on the ladder path",
+   "verdict": "PASS",
+   "expected": "a configuration reached by a ladder step but never executed is established by effort after a return (no known or transferred load)",
+   "actual": {
+    "returnDecision": {
+     "status": "MODIFY",
+     "action": "REESTABLISH",
+     "reason": "moderate nonclinical interruption (18 days): re-entry from the reviewed entry dose, returning to the prior tolerated dose in 2 conditional steps",
+     "missingInputs": [],
+     "errors": []
+    },
+    "backSquatRows": [
+     {
+      "w": 7,
+      "mode": "ESTABLISH",
+      "value": null,
+      "sets": 1
+     },
+     {
+      "w": 8,
+      "mode": "FROM_LOG",
+      "value": null,
+      "sets": 1
+     },
+     {
+      "w": 9,
+      "mode": "FROM_LOG",
+      "value": null,
+      "sets": 2
+     }
+    ],
+    "historyHasBackSquat": false
+   }
+  },
+  {
+   "id": "R5",
+   "area": "R7-A no load transfer on substitution",
+   "verdict": "PASS",
+   "expected": "the first exposure of the configuration that replaces a known 24 kg goblet squat is effort-guided (no kilogram carried over)",
+   "actual": {
+    "decision": {
+     "status": "MODIFY",
+     "action": "SUBSTITUTE_FOR_REASON",
+     "reason": "goblet-squat is replaced by kb-goblet-squat (a nonclinical preference); the new exercise starts with effort-guided establishment, nothing is converted",
+     "missingInputs": [],
+     "errors": [],
+     "selected": "kb-goblet-squat"
+    },
+    "firstSquatRowAhead": {
+     "session": "w4-str-d0",
+     "date": "2026-11-30",
+     "id": "kb-goblet-squat",
+     "mode": "ESTABLISH",
+     "value": null
+    }
+   }
+  }
+ ]
+}

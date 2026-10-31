@@ -1,0 +1,104 @@
+{
+ "review_id": "R7B-QUALITY-REVIEW-1",
+ "judge": "Quality & Reliability Engineer (independent third gate; not the author; scope disjoint from SSCTR and Engineering)",
+ "date": "2026-10-31",
+ "freeze": "R7B-RUNTIME-REPERTOIRE-FREEZE-1",
+ "freezeCommit": "4995d58",
+ "sourceDigest": "791b531100c190f6b0ed73e892f6e212d7eee5406d144fce4a188170900a2c4f",
+ "manifestDigest": "b1a1faf0a7064da99db8a33a0f04852ae3cc3a06177bcb3e4edba7cfdf222f73",
+ "catalog": "R7B0-CATALOG-2 ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9",
+ "frozenBytesCheck": {
+  "before": "node scripts/verify-r7b.mjs: PASS 18/18, sourceDigest 791b5311..., manifestDigest b1a1faf0...",
+  "after": "node scripts/verify-r7b.mjs: PASS 18/18, same digests; git status shows only untracked reviews/ folders",
+  "conformanceChecker": "node scripts/conformance-r7b.mjs (no --write): PASS 301 entries; checked independently in probes/p08-completeness.mjs"
+ },
+ "verdict": "NOT_READY",
+ "reachability": {
+  "method": "Public entry points only: generateProgram on onboarding-like intakes (27,608 programs in the p01 grid, 2,250 with rotating preferences in p06, 14,273 targeted attempts in p02, 11,200 strength-class-NONE arrangements in p11), weekly and block-boundary reviews with sessions executed as prescribed (p03, p04, p09, p12, p13), LADDER_STEP and MAIN_CHANGE choices, EXERCISE_SUBSTITUTION and EQUIPMENT_CHANGE reviews (p04, p10, p15). runRepertoireOf is used only to label prescribed runs.",
+  "runFamilies": {"reachable": 10, "total": 10, "notes": "All 10 families produced (p03). 12 of 13 run configurations named by the runtime binding; RUNCFG.STRIDES_SET is never named (strides travel as component RUN.STRIDES). EASY_UNKNOWN athletes can never reach THRESHOLD, EVENT_SPECIFIC, RACE_TOUCH or STRIDES (Q-R7B-02)."},
+  "configurations": {"reachable": 74, "total": 76, "byPath": {"generationDefault": 51, "rotationOnly": 8, "laterReviewOnly": 12, "declaredFamiliarityOnly": 3, "unreachable": 2}, "unreachable": ["back-extension", "hip-hinge-practice"], "notes": "See probes/out/p16-summary.json for the per-configuration class."},
+  "templates": {"reachable": 7, "total": 7},
+  "archetypes": {"reachable": 5, "total": 5, "overlays": "EVENT_PREP produced; NOVICE and RETURNING are states, not labels, as the catalog says"}
+ },
+ "findings": [
+  {
+   "id": "Q-R7B-01",
+   "severity": "MAJOR",
+   "kind": "CONTRADICTION",
+   "summary": "An accepted ACCESSORY skill-ladder step is undone by the calendar rotation with no reason or disclosure. Under COACH_DECIDES (the intake default) and EVERY_6_WEEKS, band-assisted-pull-up -> pull-up and db-overhead-press -> barbell-overhead-press, accepted at the week-4 block boundary, revert to the configuration stepped from at week 9 and stay there. Under EVERY_2_WEEKS the slot alternates every two weeks between the new and the old configuration. Only FIXED keeps the step. MAIN steps hold. This contradicts catalog strength.skillLadders.rule (progression is never automatic; regression along a chain is a reason-based SKILL_MISMATCH substitution), strength.rotation.admissibleAlternative ('not the configuration used in the previous rotation of that slot when another alternative exists'; band-pulldown, another vertical pull, is available with that equipment), and the athlete's recorded choice. The selection stays in canonical.athlete.strengthSelections and ladderReached while the plan prescribes the old configuration.",
+   "evidence": "probes/p13-ladder-reversal.mjs -> probes/out/p13-ladder-reversal.json: COACH_DECIDES w5-w8 pull-up/ACCESSORY, w9-w15 band-assisted-pull-up/ACCESSORY; week-9 review action INSTANTIATE_LOGGED_LOADS with no disclosure; db-overhead-press case w5-w8 barbell-overhead-press then w9-w15 db-overhead-press/ESTABLISH; EVERY_2_WEEKS alternates barbell/db by 2-week turns; FIXED holds pull-up and barbell-overhead-press through w15. Also probes/out/p12-ladder-targeted.json (same reversal; MAIN steps front-squat, deadlift, barbell-hip-thrust and chin-up hold to w15)."
+  },
+  {
+   "id": "Q-R7B-02",
+   "severity": "MAJOR",
+   "kind": "CONTRADICTION",
+   "summary": "EASY_UNKNOWN athletes are promised a graduation path that the runtime never applies. Weekly running minutes are an optional onboarding answer. For EASY_UNKNOWN with a RACE or PERFORMANCE goal, the R7-B feasibility reduction QUALITY_AFTER_EVIDENCE (src/r6-program.mjs:161, authority 'R6-RUN-QUALITY / B0-C01') says a harder session comes after 'two complete weeks of easy running that reach it (graduation at a block review)', and the intake uncertainty says 'Conservative run establishment week'. blockBoundary admits only WALK_JOG, RESTART and EASY_LOW as graduation candidates, and the block reviews do not even emit RUN_QUALITY_NOT_YET. After 16 executed weeks (60-90 min per week on 3 days, all EASY mode, compatible responses), a 10K athlete still has only EASY, LONG and RACE: no threshold, event-specific work, race touch or strides. The handoff section 5 records the gap with no owner. The conformance matrix does not explain it (classification.runClass:EASY_UNKNOWN is IMPLEMENTED). Whether EASY_UNKNOWN should graduate is an SSCTR/Founder question. The contradiction between the disclosure and the runtime is objective either way.",
+   "evidence": "probes/p09-dead-ends.mjs -> out/p09-dead-ends.json (EASY_UNKNOWN PERFORMANCE, EXPERIENCED 4-day and RACE 10K: 16 x KEEP, families EASY/LONG(/WALK/RACE) only, graduation null; INTERMEDIATE WALK_JOG control graduates at week 8). probes/p09b-easy-unknown-disclosure.mjs -> out/p09b-easy-unknown-disclosure.json (feasibility.reductions QUALITY_AFTER_EVIDENCE text; reviewDisclosures only BLOCK_REVIEW; same athlete with 150 min reported: EASY_CURRENT with THRESHOLD, STRIDES, EVENT_SPECIFIC, RACE_TOUCH) and out/p09b-easy-unknown-evidence.json (executed 60-90 min/week, 3 run days, mode EASY in every week)."
+  },
+  {
+   "id": "Q-R7B-03",
+   "severity": "MINOR",
+   "kind": "ORPHAN",
+   "summary": "back-extension (B0-origin, HINGE/HIP_HINGE, MACHINES, roles ACCESSORY only) can never be prescribed. Every HINGE slot in the 7 templates is MAIN. No goalContext lists HINGE as an alternative pattern. It is on no skill ladder. Rotation, MAIN_CHANGE and EXERCISE_SUBSTITUTION all require the row's role, which is MAIN, and a hinge row is never ACCESSORY. Declaring it familiar does not help. The matrix has no per-configuration entry, so nothing records the orphan. Owner: next catalog revision (add a HINGE accessory context or drop the configuration).",
+   "evidence": "probes/p02-config-targeted.mjs -> out/p02-config-targeted.json (back-extension: 900 inputs, own equipment and FULL_GYM, familiar and not, 5 goals, 1-5 days, 3 run contexts: never prescribed); not seen in p01 (27,608 programs), p04 (ladder/substitution reviews), p06 (rotation); summary probes/out/p16-summary.json NONE."
+  },
+  {
+   "id": "Q-R7B-04",
+   "severity": "MINOR",
+   "kind": "DEAD",
+   "summary": "No novice ever receives the HINGE and LUNGE practice configurations. The PRACTICE row is given only in the first strength session of the establishment week, and under B0-C08 that session is always TPL.FULL_A (SQUAT, PUSH, PULL, CALF, TRUNK) in all 11,200 class-NONE arrangements tried. skillLadders.practiceFor.HINGE (hip-hinge-practice) is never prescribed, so the configuration is unreachable. practiceFor.LUNGE (split-squat-bodyweight) is never a practice row. The novice's first hinge and lunge exposures are establishment rows in TPL.FULL_B of week 0. The catalog's own guard ('first of week') produces this. The trajectory text 'PRACTICE configurations (practiceFor) in the establishment week' implies every pattern. Whether a hinge or lunge without practice matters for novices is for SSCTR; this gate records only that the repertoire is dead.",
+   "evidence": "probes/p11-practice-patterns.mjs -> out/p11-practice-patterns.json (11,200 programs; firstStrengthTemplateOfWeek0 STRENGTH_FULL_A 11200; practiceForNeverPrescribed HINGE:hip-hinge-practice, LUNGE:split-squat-bodyweight); probes/out/p10-witnesses.json WP-STR-01 week0 FULL_B glute-bridge/MAIN, reverse-lunge/ACCESSORY."
+  },
+  {
+   "id": "Q-R7B-05",
+   "severity": "MINOR",
+   "kind": "CONTRADICTION",
+   "summary": "Catalog templateRules.selection says 'a configuration is used at most once per session (R6 exclude-used)'. Yet every TPL.CORE session in the establishment week of a strength-class-NONE athlete with 3 or more strength days prescribes dead-bug-practice twice: both TRUNK slots map to PRACTICE_FOR.TRUNK (R7-B DECL-06 practice dose on CORE days). No other duplicate appeared in 48,600 strength sessions. This may overlap the Engineering gate's impossible-combination scope; it is reported here as a contradiction of a catalog rule.",
+   "evidence": "probes/p14-duplicate-rows.mjs -> out/p14-duplicate-rows.json (1,350 programs, 48,600 strength sessions; 'dead-bug-practice x2 in STRENGTH_CORE' 1,080 sessions, all week 0 ESTABLISHMENT, rows dead-bug-practice/PRACTICE, supported-calf-raise/PRACTICE, dead-bug-practice/PRACTICE); probes/out/p10-witnesses.json WP-STR-10 week0."
+  },
+  {
+   "id": "Q-R7B-06",
+   "severity": "MINOR",
+   "kind": "CONTRADICTION",
+   "summary": "The runtime contradicts witness WP-STR-06 and no divergence is recorded. In a 10-day bands-only travel window (EQUIPMENT_CHANGE), the witness names band-row and band-pulldown as the substitutes for the machine pulls. The runtime replaces lat-pulldown (VERTICAL_PULL) with band-face-pull (SCAPULAR isolation), although band-pulldown, of the same subpattern, is available. The cause is the id tie-break of the selection order. The matrix marks witness:WP-STR-06 IMPLEMENTED with no divergence, unlike WP-STR-04. The same order means band-pulldown is never selected by default (rotation or familiarity only). The stimulus significance is for SSCTR.",
+   "evidence": "probes/p10-witnesses.mjs -> out/p10-witnesses.json WP-STR-06: before UPPER seated-cable-row/MAIN + lat-pulldown/ACCESSORY; during the window UPPER band-row/MAIN + band-face-pull/ACCESSORY; originals return after. probes/out/p16-summary.json band-pulldown ROTATION-only."
+  },
+  {
+   "id": "Q-R7B-07",
+   "severity": "MINOR",
+   "kind": "CONTRADICTION",
+   "summary": "Two equipment disclosures blame equipment when skill is the limit, and offer options that do not help. PULL_LIMITED_FOR_EQUIPMENT for a pull-up-bar-only athlete says 'No loaded row or pull-down fits the equipment you have' and offers 'Add a band or a bar'. The athlete already has the bar; the binding limit is that pull-up and chin-up are HIGH skill and familiarity-gated. Adding a band does resolve it (band-row MAIN). MOVEMENT_PATTERN_UNAVAILABLE (wording inherited from R6) tells a NOVICE with bands and a bar 'No available equipment supports these patterns' for PUSH and offers 'Add a band or bar'. PUSH is missing because push-up is MODERATE skill, and neither a band nor a bar adds a push configuration.",
+   "evidence": "probes/p07-pull-disclosure.mjs -> out/p07-pull-disclosure.json (PULL_UP_BAR_ONLY, all experiences: disclosed, options ['Add a band or a bar','Accept limited pull work']; withBandBar stillLimited false, band-row MAIN). probes/p17-pattern-disclosure.mjs -> out/p17-pattern-disclosure.json (NOVICE ['BANDS','PULL_UP_BAR']: patterns ['PUSH'], options ['Add a band or bar','Accept the gap']; INTERMEDIATE same equipment: no disclosure)."
+  },
+  {
+   "id": "Q-R7B-08",
+   "severity": "OBSERVATION",
+   "kind": "COMPLETENESS",
+   "summary": "The conformance matrix has 301 entries but no per-item entries for the 76 strength configurations, the 13 run configurations or the 4 session families (STR.FULL_BODY, STR.LOWER, STR.UPPER, STR.TRUNK_CALF). The 20 'configuration.*' entries are configuration fields. So the matrix cannot carry per-configuration reachability or explain Q-R7B-03 and Q-R7B-04. RUNCFG.STRIDES_SET is never named by the runtime binding. archetypes.overlaysNotArchetypes.RETURNING points to 'trajectories.return', which the catalog does not contain (its trajectories are run, event, strengthExercise and novice). Every consumer and test the matrix names does resolve (0 problems).",
+   "evidence": "probes/p08-completeness.mjs -> out/p08-completeness.json (run.configurations 13 and strength.sessionFamilies 4 missing from the matrix; strength.configurations only incidentally named in notes; entryProblems []); probes/out/p03-run-families.json runConfigsNotSeen ['RUNCFG.STRIDES_SET']."
+  },
+  {
+   "id": "Q-R7B-09",
+   "severity": "OBSERVATION",
+   "kind": "COMPLETENESS",
+   "summary": "classification.signal:emphasis is IMPLEMENTED, but its only test ('R7-B conformance: every planned run belongs...') does not exercise emphasis, and no R7-B test mentions it. The catalog says emphasis drives 'slot ordering and accessory choice inside goal doses'. In the runtime, emphasis or movementPriorities reorders rows (462 of 720 cases) and changes which accessories survive time fitting (36 of 144 short-session cases). It never changes which configuration fills a slot (0 of 720 cases). The behaviour is plausible, but the evidence link is wrong.",
+   "evidence": "probes/p05-emphasis.mjs -> out/p05-emphasis.json (configurationSetChanged 0/720, rowOrderChanged 462/720); probes/p05b-emphasis-fitting.mjs -> out/p05b-emphasis-fitting.json (prescribedChanged 36/144)."
+  },
+  {
+   "id": "Q-R7B-10",
+   "severity": "OBSERVATION",
+   "kind": "DEAD",
+   "summary": "The 7 skill-ladder edges that start at a PRACTICE-only configuration never take effect. sit-to-stand->box-squat-bodyweight, hip-hinge-practice->kb-deadlift, supported-calf-raise->standing-calf-raise, wall-pushup->incline-push-up, prone-row-practice->band-row, prone-row-practice->inverted-row and dead-bug-practice->dead-bug are never offered, because offers exclude PRACTICE rows. SKILL_MISMATCH can never step back onto a PRACTICE-only configuration (role filter), so for standing-calf-raise it returns ASK 'No admissible alternative'. The BLOCK_REVIEW option 'Step back on a skill ladder' therefore cannot be met for such accessories. Practice exits go to the slot's selected configuration (sit-to-stand -> goblet-squat, skipping box-squat-bodyweight), as witness WP-STR-01 itself describes.",
+   "evidence": "probes/p04-review-driven.mjs -> out/p04-review-driven.json (ladderEdgesNeverOffered; offersSeen); probes/p15-block-review-options.mjs -> out/p15-block-review-options.json (LADDER_STEP backwards ASK; SKILL_MISMATCH standing-calf-raise ASK); probes/out/p10-witnesses.json WP-STR-01."
+  },
+  {
+   "id": "Q-R7B-11",
+   "severity": "OBSERVATION",
+   "kind": "REACHABILITY",
+   "summary": "Distribution of reachability. 51 configurations come from onboarding answers alone at generation. 8 appear only after a calendar rotation: split-squat-bodyweight, reverse-lunge-db, step-down, lateral-lunge, single-leg-calf-raise, band-pulldown, bird-dog, pallof-press. 12 appear only after a later review (ladder step or substitution), including back-squat, bench-press, pull-up and side-plank. 3 appear only when the athlete declares them familiar: db-step-up (no default path, although witness WP-STR-05 assumes it in TPL.LOWER), barbell-row (HIGH skill, on no ladder) and cable-face-pull. Informational; the catalog's familiarity and ladder gating explain these.",
+   "evidence": "probes/p16-summary.mjs -> out/p16-summary.json (classification per configuration, built from p01, p02, p04, p06, p12)."
+  }
+ ],
+ "outOfScope": "Sports-science fidelity, dose and progression semantics (SSCTR), and engineering correctness, state transitions, determinism and R7-A regression (Engineering) were not judged. Q-R7B-02, -04 and -06 name the sports-science questions they raise without deciding them.",
+ "gateLine": "R7B_QUALITY_GATE = NOT_READY"
+}

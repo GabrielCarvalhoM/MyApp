@@ -1,0 +1,136 @@
+{
+ "probe": "c-mutation",
+ "frozen": "R7B-RUNTIME-REPERTOIRE-FREEZE-1",
+ "ran": "2026-10-31T12:47:52.888Z",
+ "results": [
+  {
+   "id": "C1a",
+   "area": "catalog/records binding: fail closed",
+   "verdict": "PASS",
+   "expected": "any catalog byte change, a missing catalog or records file, unreadable records or an expired core record: no program and no review decision",
+   "actual": {
+    "baseline": {
+     "valid": true,
+     "generate": "PROPOSED",
+     "review": "MODIFY"
+    },
+    "catalogByte": {
+     "valid": false,
+     "generate": "UNSUPPORTED",
+     "review": "UNSUPPORTED"
+    },
+    "catalogMissing": {
+     "valid": false,
+     "generate": "UNSUPPORTED",
+     "review": "UNSUPPORTED"
+    },
+    "recordsMissing": {
+     "valid": false,
+     "generate": "UNSUPPORTED",
+     "review": "UNSUPPORTED"
+    },
+    "recordsCorrupt": {
+     "valid": false,
+     "generate": "UNSUPPORTED",
+     "review": "UNSUPPORTED"
+    },
+    "coreExpired": {
+     "valid": false,
+     "generate": "UNSUPPORTED",
+     "review": "UNSUPPORTED"
+    }
+   }
+  },
+  {
+   "id": "C1b",
+   "area": "per-record gating: a rejected candidate is off",
+   "verdict": "PASS",
+   "expected": "B0-C01 rejected: graduation never happens (its fallback, easy running, applies)",
+   "actual": {
+    "c01Rejected": {
+     "gradStatus": "PROPOSED",
+     "graduated": false
+    },
+    "approved": [
+     "B0-C02",
+     "B0-C03",
+     "B0-C04",
+     "B0-C05",
+     "B0-C06",
+     "B0-C07",
+     "B0-C08",
+     "B0-C09",
+     "B0-C10",
+     "B0-C11",
+     "B0-C12",
+     "B0-FIDELITY"
+    ],
+    "baseline": {
+     "gradStatus": "PROPOSED",
+     "graduated": true
+    }
+   }
+  },
+  {
+   "id": "C1c",
+   "area": "per-record gating: a later non-enabling record for the same candidate",
+   "verdict": "FAIL",
+   "expected": "fail closed: when the records hold a non-enabling (rejecting) record for a candidate next to an approving one, the candidate is off (or the set is refused)",
+   "actual": {
+    "approved": [
+     "B0-C01",
+     "B0-C02",
+     "B0-C03",
+     "B0-C04",
+     "B0-C05",
+     "B0-C06",
+     "B0-C07",
+     "B0-C08",
+     "B0-C09",
+     "B0-C10",
+     "B0-C11",
+     "B0-C12",
+     "B0-FIDELITY"
+    ],
+    "graduation": {
+     "gradStatus": "PROPOSED",
+     "graduated": true
+    }
+   }
+  },
+  {
+   "id": "C1d",
+   "area": "per-record gating: B0-C10 (5K fallback) record removed",
+   "verdict": "PASS",
+   "expected": "without the B0-C10 record the 5K fallback is off: a 5K is outside the event scope as in R6 (no PERFORMANCE plan from a 5K input)",
+   "actual": {
+    "c10Off": {
+     "approved": [
+      "B0-C01",
+      "B0-C02",
+      "B0-C03",
+      "B0-C04",
+      "B0-C05",
+      "B0-C06",
+      "B0-C07",
+      "B0-C08",
+      "B0-C09",
+      "B0-C11",
+      "B0-C12",
+      "B0-FIDELITY"
+     ],
+     "fiveK": {
+      "status": "INVALID_INPUT",
+      "reason": "Input facts are malformed or contradictory"
+     }
+    },
+    "baseline": {
+     "fiveK": {
+      "status": "PROPOSED",
+      "reason": "Complete conditional program generated from onboarding-like facts"
+     }
+    }
+   }
+  }
+ ]
+}
