@@ -1,0 +1,96 @@
+{
+  "mission": "DOMAIN_COACHING_R7-B0 — V1 Coaching Repertoire Foundation",
+  "revision": "R7B0-FINAL-1",
+  "date": "2026-10-31",
+  "timezone": "America/Sao_Paulo",
+  "founderAuthority": "audits/domain-coaching-r7-b0-2026-10-31/FOUNDER_REQUEST.md",
+  "contract": "audits/domain-coaching-r7-b0-2026-10-31/TASK_CONTRACT.md",
+  "branch": "claude/domain-coaching-r7-b0",
+  "baseline": {"ref": "baseline/r7-b0", "commit": "373a2d682a18d4f02be57299d6ab4c1493aee36f"},
+  "commits": {
+    "reviewedCandidate": "caab54ed5f0163ee00133e7e3a11bff610cc1b0f",
+    "closure": "The commit containing this file; resolve with: git log -1 --format=%H -- audits/domain-coaching-r7-b0-2026-10-31/FINAL_DISPOSITION.json"
+  },
+  "merged": false,
+  "status": {
+    "R7B0_STATUS": "CLOSED",
+    "SPECIFICATION_READY": "YES_WITH_CONDITIONS",
+    "RUNTIME_IMPLEMENTATION_READY": "NO",
+    "V1_COACHING_AUTHORITY_READY": "NO",
+    "PRODUCTION_READY": "NO",
+    "R7B0_SSCTR_GATE": "ACCEPT_WITH_CONDITIONS",
+    "FOUNDER_BLOCKER": "NONE",
+    "R7A_REOPENED": false
+  },
+  "artifacts": {
+    "CoachingCore/r7/b0/REPERTOIRE_CATALOG_B0.json": {"revision": "R7B0-CATALOG-2", "sha256": "ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9", "reviewedPredecessor": {"revision": "R7B0-CATALOG-1", "sha256": "db8a253309a440ca6c9c2a53003e82e16e074aecfa1afae72bc59f35a440c5fe", "commit": "caab54ed5f0163ee00133e7e3a11bff610cc1b0f"}},
+    "CoachingCore/r7/b0/REPERTOIRE_CATALOG_B0.schema.json": {"sha256": "8b51b80b5861cea189489db28f2c15125269f4d3a4eb1c937a30590184dcffd8"},
+    "CoachingCore/r7/b0/REPERTOIRE_FOUNDATION_B0.md": {"revision": "R7B0-SPEC-2", "sha256": "96fdefadba7a1de5b156c6324c6103c2ee57909cfeb5b4af59fd786147d7906a", "reviewedPredecessor": {"revision": "R7B0-SPEC-1", "sha256": "1fb2eb4b961a1bf1c4be86d5959a81a73dcbf5f588b27de31e1b0853f03712b6"}},
+    "CoachingCore/r7/b0/GAP_CLOSURE_B0.md": {"revision": "R7B0-GAPS-1", "sha256": "0f43f09fb3ccbe4ab2f4f71c03c82f7ea09a588a43358bd149cf64b5e4fa2b04"},
+    "CoachingCore/r7/b0/B0_HANDOFF.md": {"sha256": "a4eacc7d07447707404216e78117e7c7f9958bf4ceda27fd0860be4ec8821c6a"},
+    "CoachingCore/r7/b0/README.md": {"sha256": "2e15a416ad290635bfdae0501ccc1bad9804c060299f5ca92f099eb7ded66489"},
+    "audits/domain-coaching-r7-b0-2026-10-31/validate-b0.mjs": {"sha256": "d757e55edd433fd3fb330217b503799d38c1eafc3d3bd538ddccbe19dc7e4d05"},
+    "audits/domain-coaching-r7-b0-2026-10-31/VALIDATION_B0.json": {"sha256": "54f49a78456c3178439964a167a44ad67ed33e29c1daff4565a44724dab415b6", "result": "18/18 on R7B0-CATALOG-2"},
+    "audits/domain-coaching-r7-b0-2026-10-31/verify-b0.mjs": {"sha256": "c7529f11b0021927848d7e88bab34132ae6fc7d53a235948d50ad4aa48e82c5a"},
+    "audits/domain-coaching-r7-b0-2026-10-31/VERIFICATION.json": {"result": "8/8; written by verify-b0.mjs --write in the closure commit"},
+    "audits/domain-coaching-r7-b0-2026-10-31/integrate-queue-b0.mjs": {"sha256": "ebd300645fca9becfb22c388513be000958baec360a2f0ea6f1331cf7a1fe006"},
+    "audits/domain-coaching-r7-b0-2026-10-31/QUEUE_INTEGRATION_R7B0.json": {"sha256": "97ba29094e6ab6a283b2346d92ffd2df02a9c4277c2ff9eb3e58a284b92e755c"}
+  },
+  "ssctr": {
+    "reviewer": "Native project agent sports-science-concurrent-training-reviewer, independent of the target author; PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY; no human, empirical or clinical validation",
+    "rounds": [
+      {"id": "R7B0-SSCTR-r1", "target": "R7B0-CATALOG-1 db8a2533", "gate": "REVISE", "request": "reviews/SSCTR_REVIEW_REQUEST.md", "records": {"file": "reviews/SSCTR_REVIEW_B0.json", "sha256": "fe46285c1442aa994825cf40084dfcb11d2ea29c894ef789e2a4e42bc7099075"}, "summary": {"file": "reviews/SSCTR_REVIEW_B0.md", "sha256": "b8dcb5661f9cf6cbc91d1098acad0780daae18bdb227c4c4935c912bae4dc1a8"}},
+      {"id": "R7B0-SSCTR-r2 (narrow recheck, the one allowed)", "target": "R7B0-CATALOG-2 ceee276a", "gate": "ACCEPT_WITH_CONDITIONS", "request": "reviews/SSCTR_RECHECK_REQUEST.md", "records": {"file": "reviews/SSCTR_RECHECK_B0.json", "sha256": "6867d3e89ebd4bb309c018fb456508d3a4510038194269769b0a4ef16f23d885"}, "summary": {"file": "reviews/SSCTR_RECHECK_B0.md", "sha256": "40045f64e93de2bc68cf4ee7ccb5ff8474a7991ec7ce024f16f9eaa37a8144e2"}}
+    ],
+    "reviseChangesApplied": {"M1": "RUN.THRESHOLD quality gates", "M2": "RUN.EVENT_SPECIFIC quality gates", "M3": "RUN.FAMILIAR_REPEATED_BOUTS and classification.graduation.run quality gates", "M4": "PROTECTED_RUN_STIMULUS_CONFLICT authority to B0-C11"},
+    "decisions": [
+      {"id": "B0-FIDELITY", "r1": "REVISE", "r2": "APPROVE_WITH_CONDITIONS", "evidence": "SUPPORTED_WITH_LIMITS", "confidence": "MODERATE", "queue": "HQ-R7B0-SSCTR-B0-FIDELITY"},
+      {"id": "B0-C01", "r2": "APPROVE_WITH_CONDITIONS", "evidence": "SUPPORTED_WITH_LIMITS", "confidence": "LOW", "queue": "HQ-R7B0-SSCTR-B0-C01"},
+      {"id": "B0-C02", "r2": "APPROVE_WITH_CONDITIONS", "evidence": "SUPPORTED_WITH_LIMITS", "confidence": "MODERATE", "queue": "HQ-R7B0-SSCTR-B0-C02"},
+      {"id": "B0-C03", "r2": "APPROVE_WITH_CONDITIONS", "evidence": "SUPPORTED_WITH_LIMITS", "confidence": "MODERATE", "queue": "HQ-R7B0-SSCTR-B0-C03"},
+      {"id": "B0-C04", "r2": "APPROVE_WITH_CONDITIONS", "evidence": "SUPPORTED_WITH_LIMITS", "confidence": "MODERATE", "queue": "HQ-R7B0-SSCTR-B0-C04"},
+      {"id": "B0-C05", "r2": "APPROVE_WITH_CONDITIONS", "evidence": "SUPPORTED_WITH_LIMITS", "confidence": "MODERATE", "queue": "HQ-R7B0-SSCTR-B0-C05"},
+      {"id": "B0-C06", "r2": "APPROVE_WITH_CONDITIONS", "evidence": "SUPPORTED_WITH_LIMITS", "confidence": "MODERATE", "queue": "HQ-R7B0-SSCTR-B0-C06"},
+      {"id": "B0-C07", "r2": "APPROVE_WITH_CONDITIONS", "evidence": "SUPPORTED_WITH_LIMITS", "confidence": "LOW", "queue": "HQ-R7B0-SSCTR-B0-C07"},
+      {"id": "B0-C08", "r2": "APPROVE_WITH_CONDITIONS", "evidence": "SUPPORTED_WITH_LIMITS", "confidence": "MODERATE", "queue": "HQ-R7B0-SSCTR-B0-C08"},
+      {"id": "B0-C09", "r2": "APPROVE_WITH_CONDITIONS", "evidence": "SUPPORTED_WITH_LIMITS", "confidence": "MODERATE", "queue": "HQ-R7B0-SSCTR-B0-C09"},
+      {"id": "B0-C10", "r2": "APPROVE_WITH_CONDITIONS", "evidence": "SUPPORTED_WITH_LIMITS", "confidence": "MODERATE", "queue": "HQ-R7B0-SSCTR-B0-C10"},
+      {"id": "B0-C11", "r2": "APPROVE_WITH_CONDITIONS", "evidence": "SUPPORTED_WITH_LIMITS", "confidence": "MODERATE", "queue": "HQ-R7B0-SSCTR-B0-C11"},
+      {"id": "B0-C12", "r2": "APPROVE_WITH_CONDITIONS", "evidence": "SUPPORTED_WITH_LIMITS", "confidence": "MODERATE", "queue": "HQ-R7B0-SSCTR-B0-C12"}
+    ],
+    "conditionsBind": "The r2 record conditions (byte-identical to r1 for B0-C01..C12) bind the catalog entries and prevail where stricter.",
+    "validationTooling": "Python unavailable: records validated with the pinned ajv 2020 in Node against decision.schema.json plus a re-implementation of the helper consistency checks; disclosed by the reviewer."
+  },
+  "queue": {"file": "reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json", "before": 204, "after": 217, "added": 13, "appendOnly": true, "funding": "NOT_DECLARED", "sha256After": "9848b4fcdc3e2918add1a4e2ff8e8033d4ea7cc748184b9d3a4911849d8f374d", "supersedes": "The 204-item pin of the R7-A formal closure (QUEUE_INTEGRATION_R7ARA.json), which is preserved and not rewritten; its exact-bytes view now differs by append only."},
+  "readiness": {
+    "RUN_REPERTOIRE": "SPECIFICATION_READY",
+    "STRENGTH_REPERTOIRE": "SPECIFICATION_READY_WITH_CONDITIONS",
+    "HYBRID_COMPOSITION": "SPECIFICATION_READY_WITH_CONDITIONS",
+    "BEGINNER_PATHS": "SPECIFICATION_READY_WITH_CONDITIONS",
+    "RETURN_RECOVERY": "SPECIFICATION_READY",
+    "TAPER_10K_HALF_MARATHON": "SPECIFICATION_READY",
+    "CLASSIFICATION_ELIGIBILITY": "SPECIFICATION_READY",
+    "PARAMETERIZATION": "SPECIFICATION_READY",
+    "SAFETY_BOUNDARIES": "SPECIFICATION_READY",
+    "VALIDATION": "PASS 18/18",
+    "FREEZE_INTEGRITY": "INTACT"
+  },
+  "stopCondition": [
+    {"item": 1, "text": "V1 repertoire materialized", "met": true, "evidence": "catalog R7B0-CATALOG-2"},
+    {"item": 2, "text": "Running families and trajectories", "met": true, "evidence": "10 families; run, event and novice state machines; V09-V11"},
+    {"item": 3, "text": "Strength families and relations", "met": true, "evidence": "76 configurations, 7 templates, roles, rotation, close variation, ladders; V03-V08"},
+    {"item": 4, "text": "Hybrid composition rules explicit", "met": true, "evidence": "CMP.I01-I11, CMP.P01-P09, ranking, infeasible representations; V12"},
+    {"item": 5, "text": "Novices covered", "met": true, "evidence": "run graduation (B0-C01), skill ladders (B0-C07), novice density (B0-C08)"},
+    {"item": 6, "text": "Progression, regression, return, recovery, taper", "met": true, "evidence": "trajectories; R6 envelopes; R7-A invariants"},
+    {"item": 7, "text": "Classification and eligibility", "met": true, "evidence": "signals, classes equal to the runtime on 4,000 cases; archetypes equal to the goal model on 77 cases"},
+    {"item": 8, "text": "Parameterization implementable", "met": true, "evidence": "schema DOSE/PROGRESSION_STATE contracts with validated instances (V01)"},
+    {"item": 9, "text": "B0 gaps resolved or classified", "met": true, "evidence": "GAP_CLOSURE_B0.md: 14 readiness ids and 55 R6 ids (V16)"},
+    {"item": 10, "text": "No Founder blocker", "met": true, "evidence": "none identified"}
+  ],
+  "integrity": {"verifier": "verify-b0.mjs", "result": "8/8", "freeze": "R7A-RESIDUAL-AUTHORITY-FREEZE-1: 86 bound files and source/manifest/policy digests unchanged; every CoachingCore file of the freeze and closure commits byte-identical", "policy": "R6-POLICY-5 canonical 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c unchanged", "historicalBaselineVerifier": "read-only run fails only its baseline-scoped checks (diff scope, indexed source hashes, recorded input digest, exact queue bytes), each by design and proven by I03-I05b"},
+  "findingsForNextGate": ["B0-F01..B0-F08 (GAP_CLOSURE_B0.md section 3)", "B0-F09: lateral deltoid primary/secondary inconsistency between the two overhead presses (no decision effect)", "SSCTR: never-runner strides must be optional (B0-C01 condition 8; runtime marks EASY_LOW/NOVICE only)", "SSCTR: bodyweight dose representation under LOAD or low-repetition goals (policy backlog)", "SSCTR: B0-C01 strides half equals existing runtime behaviour; only quality graduation is new"],
+  "remainingGaps": "R7-B (cold start, whole-program progression, feasibility, planner quality), R7-C (longitudinal learning), R7-D (fresh generalization), PRE_KMP (R18), PRE_TESTFLIGHT (clinical screen, QE-R7ARA-OBS-1, R1), Product/Data (G03, pound display, load plausibility, consent scope, observedAt, implement detail), next policy revision (B0-F05, R16, R17, D49, bodyweight dose), funded human revalidation (217 items).",
+  "founderDecisions": {"required": "NONE", "optionalLater": ["5K event support", "hill sessions", "de novo VO2 work", "plyometric, Nordic or Copenhagen work", "weighted bodyweight"]},
+  "nextGate": "DOMAIN_COACHING_R7-B: runtime binding of R7B0-CATALOG-2 under the SSCTR r2 conditions (new freeze, SSCTR runtime-binding check, independent engineering and quality judges), then planner, cold start and whole-program progression. Needs its own Founder authorization.",
+  "notDone": "No runtime, test, policy, freeze, UI, Figma, KMP, HealthKit/WorkoutKit, backend, Growth or TestFlight change; no review branch touched; no merge."
+}

@@ -70,6 +70,13 @@ const keysKept = Object.keys(qBase).filter(k => k !== 'items').every(k => canoni
 const added = qNow.items.slice(qBase.items.length);
 check('I05-queue-append-only', itemsPrefix && keysKept && added.every(it => /^HQ-R7B0-/.test(it.queue_id)), {before: qBase.items.length, after: qNow.items.length, added: added.map(i => i.queue_id), newTopLevelKeys: Object.keys(qNow).filter(k => !(k in qBase))});
 
+// I05b R7-A formal-closure artifacts: byte-identical, except mission/ledger (prefix kept) and the queue (append-only, I05)
+const closurePaths = lines(git('diff-tree', '--no-commit-id', '--name-only', '-r', CLOSURE));
+const closureState = closurePaths.map(p => { const old = show(CLOSURE, p), cur = read(p); return {path: p, state: cur.equals(old) ? 'EQUAL' : cur.subarray(0, old.length).equals(old) ? 'PREFIX' : 'DIFF'}; });
+const queueAppendOnly = checks.find(c => c.id === 'I05-queue-append-only')?.pass === true;
+const closureOk = closureState.every(x => x.state === 'EQUAL' || (['CURRENT_MISSION.md', 'MISSION_LEDGER.md'].includes(x.path) && x.state === 'PREFIX') || (x.path === Q && queueAppendOnly));
+check('I05b-r7a-closure-artifacts-preserved', closureOk, {closureCommit: CLOSURE, artifacts: closureState, queueRule: 'The closure appended the queue to 204 items; this mission appends only (I05), superseding that pin as earlier missions did.'});
+
 // I06 the mission's own validation is current and complete
 const val = spawnSync(process.execPath, [A + 'validate-b0.mjs'], {encoding: 'utf8'});
 let valOut = null; try { valOut = JSON.parse(val.stdout); } catch { valOut = null; }
@@ -80,10 +87,10 @@ check('I06-validation-current', val.status === 0 && valOut && valOut.passed === 
 // I07 historical baseline verifier, read-only: only by-design differences may fail
 const hb = spawnSync(process.execPath, ['audits/r7-b0-baseline-2026-10-31/verify-baseline.mjs'], {encoding: 'utf8', maxBuffer: 64 * 1024 * 1024});
 let hbOut = null; try { hbOut = JSON.parse(hb.stdout.trim().split('\n').pop()); } catch { hbOut = null; }
-const byDesign = ['exact-bounded-diff-scope', 'current-source-hashes-and-selectors', 'recorded-evidence-inputs-current'];
+const byDesign = ['exact-bounded-diff-scope', 'current-source-hashes-and-selectors', 'recorded-evidence-inputs-current', ...(closureOk ? ['formal-closure-artifacts-byte-preserved'] : [])];
 const failedIds = hbOut ? hbOut.failed.map(x => x.id) : null;
-const mustPass = ['all-frozen-core-raw-bytes', 'entire-closed-core-unchanged', 'freeze-record-and-86-file-manifest', 'source-manifest-policy-digests', 'formal-closure-artifacts-byte-preserved'];
-check('I07-historical-baseline-verifier', !!hbOut && failedIds.every(id => byDesign.includes(id)) && mustPass.every(id => !failedIds.includes(id)), {exit: hb.status, passed: hbOut?.passed, total: hbOut?.total, failed: failedIds, failedByDesign: 'B0 appends to CURRENT_MISSION/MISSION_LEDGER/CANONICAL_INDEX and adds files: the baseline scope, its indexed source hashes and its recorded input digest describe the baseline only.', mustPass});
+const mustPass = ['all-frozen-core-raw-bytes', 'entire-closed-core-unchanged', 'freeze-record-and-86-file-manifest', 'source-manifest-policy-digests'];
+check('I07-historical-baseline-verifier', !!hbOut && failedIds.every(id => byDesign.includes(id)) && mustPass.every(id => !failedIds.includes(id)), {exit: hb.status, passed: hbOut?.passed, total: hbOut?.total, failed: failedIds, failedByDesign: 'B0 appends to CURRENT_MISSION/MISSION_LEDGER/CANONICAL_INDEX, appends 13 items to the human queue and adds files: the baseline scope, its indexed source hashes, its recorded input digest and its exact-bytes view of the queue describe the baseline only. formal-closure-artifacts-byte-preserved is accepted only when I05b proves every other closure artifact unchanged.', mustPass});
 
 const out = {revision: 'R7B0-VERIFICATION-1', checkedAt: new Date().toISOString(), branch: txt('rev-parse', '--abbrev-ref', 'HEAD'), head: txt('rev-parse', 'HEAD'), baseline: BASE, method: 'Node standard library + Git objects; read-only; no runtime test, npm script or verify-r* executed.', passed: checks.filter(c => c.pass).length, total: checks.length, checks};
 if (process.argv.includes('--write')) fs.writeFileSync(A + 'VERIFICATION.json', JSON.stringify(out, null, 2) + '\n');

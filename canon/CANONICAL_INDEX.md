@@ -1,3 +1,9 @@
+<!-- R7_B0_REPERTOIRE_INDEX_START: R7B0-CLOSE-1 -->
+## R7-B0 V1 Coaching Repertoire Foundation — specification candidate / 2026-10-31
+
+[B0 handoff](../CoachingCore/r7/b0/B0_HANDOFF.md) → [repertoire specification](../CoachingCore/r7/b0/REPERTOIRE_FOUNDATION_B0.md) → [catalog R7B0-CATALOG-2](../CoachingCore/r7/b0/REPERTOIRE_CATALOG_B0.json) with the [SSCTR r2 records](../audits/domain-coaching-r7-b0-2026-10-31/reviews/SSCTR_RECHECK_B0.json), whose conditions prevail where stricter. **SPECIFICATION_READY = YES_WITH_CONDITIONS · RUNTIME_IMPLEMENTATION_READY = NO · V1_COACHING_AUTHORITY_READY = NO.** B0 makes the approved R6-POLICY-5 envelopes and DR-134 explicit as a versioned repertoire for the next gate. It is not Product Truth, runtime authority or a new sports policy; RIL, STIL, SIS, the R7-A freeze and R6-POLICY-5 are unchanged. The "B0 NOT started" lines in the blocks below describe the baseline only. Next gate: DOMAIN_COACHING_R7-B, under its own authorization.
+<!-- R7_B0_REPERTOIRE_INDEX_END: R7B0-CLOSE-1 -->
+
 <!-- R7_B0_BASELINE_INDEX_START: R7B0-BASELINE-1 -->
 ## Consolidated B0 entry — baseline/r7-b0 / 2026-10-31 America/Sao_Paulo
 
