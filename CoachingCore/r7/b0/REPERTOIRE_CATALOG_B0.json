@@ -1,0 +1,728 @@
+{
+  "$schema": "./REPERTOIRE_CATALOG_B0.schema.json",
+  "catalogId": "VILUMO-V1-COACHING-REPERTOIRE",
+  "revision": "R7B0-CATALOG-1",
+  "mission": "DOMAIN_COACHING_R7-B0",
+  "date": "2026-10-31",
+  "status": {
+    "artifact": "SPECIFICATION_CANDIDATE",
+    "runtimeAuthority": false,
+    "productTruth": false,
+    "RUNTIME_IMPLEMENTATION_READY": "NO",
+    "V1_COACHING_AUTHORITY_READY": "NO",
+    "recordOfDisposition": "audits/domain-coaching-r7-b0-2026-10-31/FINAL_DISPOSITION.json",
+    "note": "Each entry carries its own authorityStatus. B0_CANDIDATE entries become usable only through the SSCTR disposition recorded for this exact catalog hash; anything not approved there is LATER_GATE. This file never overrides PROGRAM_POLICY_R6.json, the R7-A contracts or the frozen runtime."
+  },
+  "scope": {
+    "modalities": ["RUNNING", "STRENGTH", "HYBRID"],
+    "population": "policy:population",
+    "supportedEvents": ["10K", "HALF_MARATHON"],
+    "runGoals": ["RACE", "PERFORMANCE", "REGULAR", "GENERAL", "NONE"],
+    "strengthGoals": ["STRENGTH", "HYPERTROPHY", "RUNNING_SUPPORT", "MAINTAIN", "GENERAL", "NONE"],
+    "excluded": ["cycling", "swimming", "Crew/social", "nutrition", "marathon/ultra/triathlon", "clinical return or rehabilitation", "pregnancy/postpartum", "adolescent", "elite", "KMP/UI/backend/HealthKit/WorkoutKit implementation"]
+  },
+  "bindings": {
+    "policy": {"path": "CoachingCore/r6/PROGRAM_POLICY_R6.json", "revision": "R6-POLICY-5", "canonicalHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c"},
+    "envelopeApprovals": {"path": "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-policy-review.r12.json", "dispositions": "all ten R6 boundaries APPROVE_WITH_CONDITIONS at the policy hash; every condition of those records applies to the entries that cite them"},
+    "familiarPathApprovals": {"path": "CoachingCore/r2/SSCTR_RUNTIME_AUTHORITY.json", "records": ["SSCTR-R2-P01", "SSCTR-R2-P07", "SSCTR-R2-P08", "SSCTR-R2-P09", "SSCTR-R2-P14"], "note": "Exact bounded familiar-task reuse; no new-family calibration or physiological equivalence."},
+    "authoritySplit": "CoachingCore/r4/SSCTR_AUTHORITY_REFINEMENT.md",
+    "freeze": {"id": "R7A-RESIDUAL-AUTHORITY-FREEZE-1", "runtimeCommit": "7d2da3603e224124696a2290766ec448080f3264", "sourceDigest": "e7172eb2e65bfb1da4c102a7efa2bae64bf1c70b06562fd3ce9896defd6dc17d", "manifestDigest": "3d214fb53f62e45ca7d99f39f2c562d358719a2264c2de46098d39b318c85125"},
+    "r6Catalogue": "CoachingCore/src/r6-catalogue.mjs",
+    "productDecisions": ["DR-99", "DR-112", "DR-113", "DR-114", "DR-115", "DR-120", "DR-121", "DR-123", "DR-134"],
+    "r7aContracts": [
+      "audits/domain-coaching-r7a1-2026-10-27/WEEK_COMPOSITION_CONTRACT.md",
+      "audits/domain-coaching-r7a-final-2026-10-28/INTERRUPTION_EPISODE_CONTRACT.md",
+      "audits/domain-coaching-r7a-state-model-2026-10-28/STATE_MODEL_CONTRACT.md",
+      "audits/domain-coaching-r7a-state-consumer-2026-10-29/STATE_CONSUMER_CONTRACT.md",
+      "audits/domain-coaching-r7a-decision-authority-2026-10-29/DECISION_AUTHORITY_CONTRACT.md",
+      "audits/domain-coaching-r7a-residual-authority-2026-10-30/RESIDUAL_AUTHORITY_CONTRACT.md"
+    ],
+    "evidenceManifest": "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-evidence-manifest.r12.json"
+  },
+  "vocabulary": {
+    "authorityStatus": {
+      "APPROVED_ENVELOPE": "Explicit representation of an R6-POLICY-5 boundary approved at the policy hash; all its conditions apply. Adds no dose.",
+      "APPROVED_FAMILIAR_PATH": "Exact bounded R2 familiar-task approval; usable only with its required inputs.",
+      "APPROVED_PRODUCT_DECISION": "Structure decided in the PDR (no dose).",
+      "B0_REPRESENTATION": "Descriptive metadata or representation without dose effect (anatomy, laterality, equipment, units).",
+      "B0_CANDIDATE": "New B0 content with prescriptive impact; usable only after an SSCTR approval recorded for this catalog hash.",
+      "LATER_GATE": "Not in the V1 repertoire now; named fallback; needs its own envelope review and scope decision.",
+      "UNSUPPORTED_V1": "Outside V1 by existing authority."
+    },
+    "ruleBasis": {
+      "EVIDENCE": "Rests on reviewed scientific evidence (approved envelope or SSCTR record).",
+      "PRODUCT_POLICY": "Rests on a Founder/product decision (PDR) or a reviewed product boundary.",
+      "IMPLEMENTATION_CHOICE": "Operational choice inside an envelope; reversible; never a physiological law."
+    },
+    "compositionClass": {"NONE": "No running load (walk, rest by design)", "EASY": "Easy-class run (R6 loadClass EASY)", "KEY": "Protected run (R6 KEY_RUN families: threshold, event-specific, race touch, long, race)"},
+    "lowerBodyDemand": ["NONE", "LIGHT", "MODERATE", "HEAVY"],
+    "ordinalDemand": ["NONE", "LOW", "MODERATE", "HIGH"],
+    "skillDemand": ["LOW", "MODERATE", "HIGH"],
+    "severity": ["NONE", "LOW", "MODERATE", "HIGH"],
+    "contextualRole": ["MAIN", "ACCESSORY", "PRACTICE"],
+    "rotationEligibility": ["REASON_ONLY", "BLOCK_BOUNDARY_ELIGIBLE", "TWO_WEEK_ELIGIBLE"],
+    "loadConvention": {
+      "TOTAL": "Barbell: whole external load including the bar.",
+      "PER_HAND": "Two implements: the value is the mass of each.",
+      "SINGLE_IMPLEMENT": "One dumbbell or kettlebell held by one or both hands: the value is its mass.",
+      "MACHINE_STACK": "Stack or plate setting of one machine; never comparable across machines.",
+      "BODYWEIGHT": "No external load value; reps and reserve only.",
+      "BAND_TENSION": "Band resistance is an athlete-reported ordinal level, never kilograms.",
+      "ASSISTED_BODYWEIGHT": "Bodyweight with band assistance; assistance is an ordinal level, never kilograms."
+    },
+    "laterality": {"BILATERAL": "Both sides together; one set is one set.", "UNILATERAL": "One side at a time; reps logged per side, a set counts once per side, sides never summed into bilateral volume."},
+    "purpose": ["STRENGTH_DEVELOPMENT", "HYPERTROPHY", "RUNNING_SUPPORT", "DURABILITY_CAPACITY", "GENERAL", "SKILL_PRACTICE"],
+    "muscles": ["QUADRICEPS", "GLUTEUS_MAXIMUS", "GLUTEUS_MEDIUS", "HAMSTRINGS", "ADDUCTORS", "GASTROCNEMIUS", "SOLEUS", "TIBIALIS_ANTERIOR", "SPINAL_ERECTORS", "PECTORALS", "ANTERIOR_DELTOID", "LATERAL_DELTOID", "POSTERIOR_DELTOID", "TRICEPS", "LATISSIMUS", "UPPER_BACK", "BICEPS", "ABDOMINALS", "OBLIQUES"],
+    "equipment": ["BARBELL", "RACK", "BENCH", "DUMBBELLS", "KETTLEBELL", "MACHINES", "BANDS", "PULL_UP_BAR", "BODYWEIGHT"]
+  },
+  "parameterModel": {
+    "levels": [
+      {"id": "SESSION_FAMILY", "definition": "A training purpose with its own eligibility, boundaries, progression dimension, composition class and safety boundary.", "examples": ["RUN.THRESHOLD", "STR.LOWER"]},
+      {"id": "SESSION_CONFIGURATION", "definition": "A structural template of a family: ordered typed parameter slots and their admissible domain (a policy ladder or range). Strength: a session template with ordered slots; an exercise configuration is the exercise + implement + load convention.", "examples": ["RUNCFG.THRESHOLD_INTERVALS", "TPL.LOWER", "goblet-squat"]},
+      {"id": "DOSE", "definition": "Concrete values bound to a configuration for one planned session, each with unit, provenance (policy path or ladder index), prescribed/estimated/executed distinction and missingness.", "examples": ["4 x 5 min work / 2 min recovery, warm-up 10, cool-down 5, cue THRESHOLD_CONTROLLED", "3 x 8 at RIR 2, FROM_LOG load"]},
+      {"id": "PROGRESSION_STATE", "definition": "Per athlete x family or exercise configuration x dimension: mode, ladder index or reference load/sets, ceilings, gate history and executed-evidence counters. Written only by factual evidence through the R7-A state model; a prescription never writes it.", "examples": ["run mode EASY, thresholdStep 2, qualityDone 3", "goblet-squat FROM_LOG adopted 16 kg SINGLE_IMPLEMENT, sets 3, regainCap null"]}
+    ],
+    "rules": [
+      "A new number is a dose inside an existing configuration domain, never a new family or configuration.",
+      "Every dose value carries its policy path or ladder index; values absent from the athlete's evidence stay unknown, never defaulted from a population mean.",
+      "Canonical units are minutes, seconds, kilograms and repetitions; pace/speed, pounds and locale formats are display representations (DR-103, DR-114). A pound value is converted at the boundary under policy:operational.strength.loadUnits.",
+      "Planned, estimated and executed values are distinct classes; derived totals never become a requirement to run extra distance."
+    ]
+  },
+  "run": {
+    "effortCues": "policy:operational.run.effortCues",
+    "intensityMethods": [
+      {"id": "EFFORT_CUE", "authorityStatus": "APPROVED_ENVELOPE", "envelopes": ["R6-RUN-QUALITY"], "rule": "Default method for every run family: talk test and perceived-effort cue. The first exposure to each intensity family is a calibration that records observed pace and response."},
+      {"id": "FAMILIAR_FIELD_SESSION_TARGET", "authorityStatus": "APPROVED_FAMILIAR_PATH", "records": ["SSCTR-R2-P14"], "rule": "A pace target is admissible only when it is the athlete's current familiar target for the exact same task, with comparable conditions, provenance and known tolerance. It is not LT2, CS, MLSS or race pace, and never transfers to another family or distance."},
+      {"id": "PACE_FROM_GOAL_OR_EASY_PACE", "authorityStatus": "UNSUPPORTED_V1", "rule": "Never: an aspirational time goal or easy pace defines no training pace (policy principles; R6 request section 4)."}
+    ],
+    "families": [
+      {
+        "id": "RUN.WALK", "name": "Walk", "compositionClass": "NONE", "recoveryCost": "NONE",
+        "authorityStatus": "APPROVED_ENVELOPE", "envelopes": ["R6-COLD-START", "R6-PLANNED-PROGRESSION", "R6-EVENT-TRANSITION"], "ruleBasis": "IMPLEMENTATION_CHOICE",
+        "purpose": "Low-demand aerobic movement that keeps a chosen run day without adding running load.",
+        "configurations": [{"id": "RUNCFG.WALK_CONTINUOUS", "parameters": {"durationMinutes": {"range": "policy:operational.establishment.walkSessionMinutes"}, "keptWalkMinutes": "policy:operational.event.keptWalkMinutes"}}],
+        "eligibility": {"positive": ["Chosen run day beyond policy:operational.establishment.maxWalkJogDaysPerWeek walk/jog exposures", "More chosen run days than current running supports (negotiation TOO_MANY_RUN_DAYS_FOR_CURRENT_PRACTICE)", "Walk/jog athlete the day before the race; post-event optional day"], "negative": ["Never silently replaces a supported run that the weekly distribution needs", "Walking minutes never count as running for the single-run ceiling or weekly running"]},
+        "progression": {"dimension": "conversion", "rule": "policy:operational.learning.missingGate", "summary": "At block starts one walk converts to an easy run at run.minimumSessionMinutes when executed easy runs allow (SSCTR R12)."},
+        "regression": {"rule": "Floor of the run repertoire; after the race REST_BY_DESIGN until policy:operational.event.postEventFirstRunMinDaysAfterRace."},
+        "relations": [{"type": "CONVERTS_TO", "target": "RUN.EASY"}]
+      },
+      {
+        "id": "RUN.WALK_JOG", "name": "Walk/jog", "compositionClass": "EASY", "recoveryCost": "LOW",
+        "authorityStatus": "APPROVED_ENVELOPE", "envelopes": ["R6-COLD-START", "R6-PLANNED-PROGRESSION", "R6-EVENT-TRANSITION", "R6-NONCLINICAL-RETURN"], "familiarPath": ["SSCTR-R2-P01"], "ruleBasis": "IMPLEMENTATION_CHOICE",
+        "purpose": "Build tolerance to continuous running from zero, unknown or below-minimum current running.",
+        "configurations": [{"id": "RUNCFG.WALK_JOG_INTERVALS", "parameters": {"step": {"ladder": "policy:operational.establishment.walkJogLadder"}, "warmupWalkMinutes": "policy:operational.establishment.walkJogWarmupMinutes", "cooldownWalkMinutes": "policy:operational.establishment.walkJogCooldownMinutes"}, "intensity": "EASY_CONVERSATIONAL"}],
+        "eligibility": {"positive": ["Run class WALK_JOG (classification.runClasses)", "Entry step 0 for experience NONE/NOVICE or zero/unknown exposure; otherwise policy:operational.establishment.belowMinimumSession (SSCTR D42)"], "negative": ["At most policy:operational.establishment.maxWalkJogDaysPerWeek exposures per week", "No quality, strides, race touch or long run in this mode", "Not for athletes whose current continuous running reaches run.minimumSessionMinutes"]},
+        "progression": {"dimension": "ladderStep", "rule": "One step per executed week without an adverse signal; EARNED unavailable (counts as ADVANCE).", "refs": ["policy:operational.run.earned"]},
+        "regression": {"rule": "Single adverse response repeats the step; policy:operational.learning.repeatedAdverseForRegression adverse responses within policy:operational.learning.repeatedAdverseWindowDays days regress one step."},
+        "exit": {"to": "RUN.EASY", "rule": "policy:operational.run.walkJogExit", "summary": "After the last ladder step is executed: easy runs of walkJogExit.easyMinutes on at most walkJogExit.maxRunsPerWeek days."},
+        "phaseRules": "policy:operational.event.modeAwareSessions",
+        "returnRule": "R7-A E1: a return never starts above the ladder step last executed and tolerated (RESIDUAL_AUTHORITY_CONTRACT).",
+        "relations": [{"type": "EXITS_TO", "target": "RUN.EASY"}, {"type": "OPTIONAL_DAY", "target": "RUN.WALK"}]
+      },
+      {
+        "id": "RUN.EASY", "name": "Easy run", "compositionClass": "EASY", "recoveryCost": "LOW",
+        "authorityStatus": "APPROVED_ENVELOPE", "envelopes": ["R6-COLD-START", "R6-PLANNED-PROGRESSION", "R6-NONCLINICAL-RETURN", "R6-EVENT-TRANSITION"], "familiarPath": ["SSCTR-R2-P09"], "ruleBasis": "IMPLEMENTATION_CHOICE",
+        "purpose": "Conversational aerobic running; also the vehicle of entry, restart, return, recovery, taper and race-window doses. 'Recovery run' is a purpose of this family, not a separate physiological zone (ACF-G05 RECOVERY_EASY).",
+        "configurations": [
+          {"id": "RUNCFG.EASY_CONTINUOUS", "parameters": {"durationMinutes": {"min": "policy:operational.run.minimumSessionMinutes"}}, "intensity": "EASY_CONVERSATIONAL", "components": ["RUN.STRIDES"]},
+          {"id": "RUNCFG.SHAKEOUT", "parameters": {"durationMinutes": {"range": "policy:operational.event.shakeoutMinutes"}, "strideRepetitions": "policy:operational.event.shakeoutStrideRepetitions"}, "intensity": "EASY_CONVERSATIONAL", "rule": "Optional, the day before the race; strides only after strides were executed in training."}
+        ],
+        "doseRules": [
+          {"purpose": "BASE", "rule": "One easy run steps policy:operational.run.easyStepMinutes every policy:operational.run.easyStepEveryDevelopmentWeeks executed development weeks, rotating; one step per dimension per week."},
+          {"purpose": "ENTRY", "rule": "Unknown exposure: policy:operational.establishment.unknownExposureEasyMinutes; return/restart entry: policy:operational.return.entryRunMinutes."},
+          {"purpose": "RESTART", "rule": "policy:operational.run.restart"},
+          {"purpose": "RETURN_MODERATE", "rule": "Current demonstration (policy:operational.return.demonstration) or entry, then policy:operational.return.moderateStepsToPrior conditional steps to the prior executed dose, each within the single-run ceiling."},
+          {"purpose": "RECOVERY_POST_EVENT", "rule": "Optional policy:operational.event.postEventEasyMinutes after policy:operational.event.postEventFirstRunMinDaysAfterRace days."},
+          {"purpose": "TAPER", "rule": "policy:operational.event.taperWeekRunVolumeRange of the achieved peak easy run (per session)."},
+          {"purpose": "RACE_WINDOW", "rule": "policy:operational.event.raceWeekRunVolumeRange of the achieved easy run; restart/return never below policy:operational.return.entryRunMinutes."}
+        ],
+        "eligibility": {"positive": ["Run classes EASY_UNKNOWN, EASY_LOW, EASY_CURRENT, QUALITY_FAMILIAR", "RESTART mode", "After walk/jog exit", "Return modes"], "negative": ["Current running below run.minimumSessionMinutes (walk/jog instead)", "Never above policy:operational.run.singleRunCeiling", "Week 1 never above reported weekly running (policy:operational.run.firstWeek)"]},
+        "progression": {"dimension": "easyMinutes", "rule": "policy:operational.run.earned"},
+        "regression": {"rule": "Single adverse response repeats; repeated adverse responses regress one step; consolidation weeks hold intensity."},
+        "relations": [{"type": "HOSTS_COMPONENT", "target": "RUN.STRIDES"}, {"type": "PREREQUISITE_FOR", "target": "RUN.THRESHOLD"}]
+      },
+      {
+        "id": "RUN.LONG", "name": "Long run", "compositionClass": "KEY", "recoveryCost": "MODERATE",
+        "authorityStatus": "APPROVED_ENVELOPE", "envelopes": ["R6-PLANNED-PROGRESSION", "R6-EVENT-TRANSITION"], "familiarPath": ["SSCTR-R2-P08"], "productDecisions": ["DR-112"], "ruleBasis": "IMPLEMENTATION_CHOICE",
+        "purpose": "Prolonged easy aerobic exposure on the athlete's chosen long-run day; event durability.",
+        "configurations": [{"id": "RUNCFG.LONG_CONTINUOUS", "parameters": {"durationMinutes": {"target": "policy:operational.run.longRunTargets", "shareMax": "policy:operational.run.longRunShareOfWeeklyMinutesMax"}}, "intensity": "EASY_CONVERSATIONAL"}],
+        "eligibility": {"positive": ["EASY mode with a chosen long-run day among the run days (DR-112)", "RESTART mode: offset policy:operational.run.restart.longRunOffsetMinutes, capped by the single-run ceiling"], "negative": ["WALK_JOG mode", "Race window (policy:operational.event.proximitySemantics)", "Week 1 above the longest current run (rounded down)"]},
+        "progression": {"dimension": "longMinutes", "rule": "+policy:operational.run.longRunStepMinutes per executed development week up to the goal/event target; policy:operational.run.longRunShareSemantics; a step held by the share cap is no increase (SSCTR D50); never two sessions grow in one week; short-reference steps are disclosed (policy:operational.run.singleRunCeiling.disclosure)."},
+        "regression": {"rule": "Consolidation weeks shorten by policy:operational.run.consolidationLongRunReductionSteps steps; adverse responses repeat/regress per the gates."},
+        "phaseRules": {"taper": "policy:operational.event.taperWeekLongRunRange", "floor": "policy:operational.event.longRunFloor", "nextBlock": "policy:operational.event.nextBlock"},
+        "knownLimit": "A half-marathon long-run peak can stay below its target in a short build; disclosed LONG_RUN_PEAK_BELOW_TARGET (HM-LONG-RUN-PEAK).",
+        "relations": [{"type": "PROTECTED_KEY", "target": "composition"}, {"type": "NOT_ADJACENT_WHEN_ALTERNATIVE", "target": "RUN.THRESHOLD"}]
+      },
+      {
+        "id": "RUN.STRIDES", "name": "Strides (component)", "compositionClass": "EASY", "recoveryCost": "LOW", "component": true,
+        "authorityStatus": "APPROVED_ENVELOPE", "envelopes": ["R6-RUN-QUALITY"], "familiarPath": ["SSCTR-R2-P14"], "ruleBasis": "IMPLEMENTATION_CHOICE",
+        "purpose": "Relaxed fast coordination and speed exposure attached to an easy run; never a sprint.",
+        "configurations": [{"id": "RUNCFG.STRIDES_SET", "parameters": {"strides": "policy:operational.run.strides"}, "intensity": "STRIDE_RELAXED_FAST"}],
+        "eligibility": {"positive": ["EASY mode, classes EASY_LOW, EASY_CURRENT, QUALITY_FAMILIAR after strides.requiresEstablishedEasyWeeks executed established easy weeks (policy:operational.run.activationCounts)", "B0-C01: also after walk/jog exit, under the same executed-week count"], "negative": ["Week 1", "WALK_JOG, RESTART and RETURN modes", "Race-day warm-up and shakeout strides only after strides were executed in training"]},
+        "progression": {"dimension": "strideRepetitions", "rule": "One repetition every two further executed easy weeks up to strides.maxRepetitions."},
+        "regression": {"rule": "Optional for EASY_LOW and novices: the easy run without strides is an equal alternative (strides.optionalNote)."}
+      },
+      {
+        "id": "RUN.THRESHOLD", "name": "Threshold (cruise) intervals", "compositionClass": "KEY", "recoveryCost": "MODERATE",
+        "authorityStatus": "APPROVED_ENVELOPE", "envelopes": ["R6-RUN-QUALITY", "R6-PLANNED-PROGRESSION"], "familiarPath": ["SSCTR-R2-P14", "SSCTR-R2-P07"], "ruleBasis": "IMPLEMENTATION_CHOICE",
+        "purpose": "Controlled-hard repeated aerobic work ('comfortably hard, short phrases'). The V1 threshold/tempo family: repeated blocks, not continuous tempo.",
+        "configurations": [{"id": "RUNCFG.THRESHOLD_INTERVALS", "parameters": {"step": {"ladder": "policy:operational.run.thresholdLadder"}, "warmupMinutes": "policy:operational.run.qualityWarmupMinutes", "cooldownMinutes": "policy:operational.run.qualityCooldownMinutes"}, "intensity": "THRESHOLD_CONTROLLED", "intensityMethods": ["EFFORT_CUE", "FAMILIAR_FIELD_SESSION_TARGET"]}],
+        "eligibility": {"positive": ["Classes EASY_CURRENT and QUALITY_FAMILIAR after policy:operational.run.qualityRequiresEstablishedEasyWeeks executed established easy weeks", "Current familiar quality task: week 2, or week 1 inside the reported minutes (policy:operational.run.firstWeek)", "B0-C01: a graduated novice at a block boundary"], "negative": ["WALK_JOG, RESTART and RETURN modes; establishment and the first two established weeks", "More than one quality session per week", "The day before or after the long run when another chosen run day can hold it", "Pace from a time goal or easy pace"]},
+        "progression": {"dimension": "thresholdStep", "rule": "One ladder step per executed comparable session without an adverse signal; EARNED may release a held step (policy:operational.run.earned); a familiar task enters at the ladder step it covers."},
+        "regression": {"rule": "Single adverse response repeats the step; repeated adverse responses regress one step; SSCTR-R2-P07 permits fewer repetitions at the same familiar target when the last repetition repeatedly degrades."},
+        "phaseRules": {"taper": "policy:operational.event.taperQualitySemantics", "raceWindow": "Replaced by RUN.RACE_TOUCH or nothing", "returnShort": "The first quality slot after a short break runs easy"},
+        "relations": [{"type": "PREREQUISITE_FOR", "target": "RUN.EVENT_SPECIFIC", "rule": "policy:operational.run.specificRequiresCompatibleThresholdSessions"}]
+      },
+      {
+        "id": "RUN.EVENT_SPECIFIC", "name": "Event-specific intervals", "compositionClass": "KEY", "recoveryCost": "HIGH",
+        "authorityStatus": "APPROVED_ENVELOPE", "envelopes": ["R6-RUN-QUALITY", "R6-EVENT-TRANSITION"], "ruleBasis": "IMPLEMENTATION_CHOICE",
+        "purpose": "10K: the V1 interval family at 10K effort. Half marathon: sustained steady-hard blocks at half-marathon effort.",
+        "configurations": [
+          {"id": "RUNCFG.TEN_K_SPECIFIC_INTERVALS", "event": "10K", "parameters": {"step": {"ladder": "policy:operational.run.tenKSpecificLadder"}, "warmupMinutes": "policy:operational.run.qualityWarmupMinutes", "cooldownMinutes": "policy:operational.run.qualityCooldownMinutes"}, "intensity": "TEN_K_EFFORT"},
+          {"id": "RUNCFG.HALF_MARATHON_SPECIFIC_INTERVALS", "event": "HALF_MARATHON", "parameters": {"step": {"ladder": "policy:operational.run.halfMarathonSpecificLadder"}, "warmupMinutes": "policy:operational.run.qualityWarmupMinutes", "cooldownMinutes": "policy:operational.run.qualityCooldownMinutes"}, "intensity": "HALF_MARATHON_EFFORT"}
+        ],
+        "eligibility": {"positive": ["Event 10K or half marathon, SPECIFIC phase (policy:operational.event.specificWeeks), EASY mode, after the required executed threshold sessions"], "negative": ["No event, or an unsupported event (5K, marathon, ultra)", "Outside SPECIFIC", "WALK_JOG, RESTART, RETURN modes"]},
+        "progression": {"dimension": "specificStep", "rule": "As RUN.THRESHOLD."},
+        "regression": {"rule": "As RUN.THRESHOLD; falls back to the threshold ladder when the specific prerequisite is not met."},
+        "phaseRules": {"taper": "policy:operational.event.taperQualitySemantics"}
+      },
+      {
+        "id": "RUN.RACE_TOUCH", "name": "Race-week touch", "compositionClass": "KEY", "recoveryCost": "LOW",
+        "authorityStatus": "APPROVED_ENVELOPE", "envelopes": ["R6-EVENT-TRANSITION"], "ruleBasis": "IMPLEMENTATION_CHOICE",
+        "purpose": "One brief race-effort touch in the race window.",
+        "configurations": [{"id": "RUNCFG.RACE_TOUCH_INTERVALS", "parameters": {"touch": "policy:operational.event.raceWeekTouch", "minDaysBeforeRace": "policy:operational.event.raceWeekTouchMinDaysBeforeRace"}}],
+        "eligibility": {"positive": ["Quality executed in the build and R6-RUN-QUALITY enabled; the run day closest to the race that is still at least the minimum days before it"], "negative": ["No executed quality (easy-only window)", "WALK_JOG, RESTART, RETURN modes", "Never more than the familiar task (policy:operational.event.legacyRaceWeekQuality)"]},
+        "progression": {"dimension": "none", "rule": "Single exposure; no progression."},
+        "regression": {"rule": "Omitted when ineligible; the run is short and easy."}
+      },
+      {
+        "id": "RUN.RACE", "name": "Race day", "compositionClass": "KEY", "recoveryCost": "HIGH",
+        "authorityStatus": "APPROVED_ENVELOPE", "envelopes": ["R6-EVENT-TRANSITION"], "ruleBasis": "IMPLEMENTATION_CHOICE",
+        "purpose": "The athlete's own event on its date; effort cues; no finish-time promise.",
+        "configurations": [
+          {"id": "RUNCFG.RACE_EFFORT", "parameters": {"raceDay": "policy:operational.event.raceDay"}, "rule": "Warm-up strides only after strides were executed."},
+          {"id": "RUNCFG.RACE_COMPLETION", "parameters": {"completion": "policy:operational.event.raceDayCompletion"}, "rule": "Conversational effort with walk breaks; carries EVENT_AMBITIOUS_FOR_CURRENT_RUNNING with both options."}
+        ],
+        "eligibility": {"positive": ["Event 10K or half marathon on the athlete's date"], "negative": ["Race date unavailable: policy:operational.event.raceDateUnavailable", "Marathon, ultra or another unsupported distance"]},
+        "progression": {"dimension": "none", "rule": "Post-event rules follow by days since the race."},
+        "regression": {"rule": "RACE_COMPLETION applies under policy:operational.event.raceDayCompletion."}
+      },
+      {
+        "id": "RUN.FAMILIAR_REPEATED_BOUTS", "name": "Familiar harder repeated bouts (VO2-style, familiar only)", "compositionClass": "KEY", "recoveryCost": "HIGH",
+        "authorityStatus": "B0_CANDIDATE", "candidate": "B0-C02", "familiarPath": ["SSCTR-R2-P14", "SSCTR-R2-P07"], "ruleBasis": "EVIDENCE",
+        "purpose": "Continue a currently familiar harder repeated-bout task (for example 4 x 3 min) at its familiar field-session target. This is the only V1 VO2-oriented path.",
+        "configurations": [{"id": "RUNCFG.FAMILIAR_REPEATED_BOUTS", "parameters": {"recipe": "The athlete's exact familiar recipe: repetitions, work, recovery and mode, warm-up and cool-down", "target": "FAMILIAR_FIELD_SESSION_TARGET"}, "intensityMethods": ["FAMILIAR_FIELD_SESSION_TARGET", "EFFORT_CUE"]}],
+        "eligibility": {"positive": ["Every SSCTR-R2-P14 required input present: family/intent, current target with method/construct and provenance, same-task dose and response history, comparable surface/grade/weather, tolerance known", "EASY mode, build/development phases"], "negative": ["No de novo introduction and no progression of the familiar dose", "WALK_JOG, RESTART, RETURN modes", "SPECIFIC, TAPER, race window (event ladders and rules replace it)", "Counts as the week's single quality session", "No VO2max, LT2 or CS claim"]},
+        "progression": {"dimension": "none", "rule": "Hold the familiar dose; any progression is LATER_GATE (LATER.RUN.VO2_DE_NOVO)."},
+        "regression": {"rule": "SSCTR-R2-P07: fewer repetitions at the same target when the last repetition repeatedly degrades; otherwise the threshold ladder at its covered step, or easy, with the trade-off explained."}
+      }
+    ],
+    "modes": [
+      {"id": "NONE", "rule": "Run not programmed."},
+      {"id": "WALK_JOG", "family": "RUN.WALK_JOG"},
+      {"id": "RESTART", "family": "RUN.EASY", "rule": "policy:operational.run.restart; long interruption clears achieved peaks (policy:operational.return.restartRunHistory)."},
+      {"id": "EASY", "family": "RUN.EASY", "rule": "Development mode: easy, long, strides and quality per eligibility."},
+      {"id": "RETURN", "family": "RUN.EASY", "rule": "Moderate return steps; EARNED unavailable; surplus counts from the return start."}
+    ]
+  },
+  "strength": {
+    "sessionFamilies": [
+      {"id": "STR.FULL_BODY", "templates": ["TPL.FULL_A", "TPL.FULL_B"], "authorityStatus": "APPROVED_ENVELOPE", "envelopes": ["R6-COLD-START", "R6-PLANNED-PROGRESSION"]},
+      {"id": "STR.LOWER", "templates": ["TPL.LOWER", "TPL.LOWER_B"], "authorityStatus": "APPROVED_ENVELOPE", "envelopes": ["R6-COLD-START", "R6-PLANNED-PROGRESSION"]},
+      {"id": "STR.UPPER", "templates": ["TPL.UPPER", "TPL.UPPER_B"], "authorityStatus": "APPROVED_ENVELOPE", "envelopes": ["R6-COLD-START", "R6-PLANNED-PROGRESSION"]},
+      {"id": "STR.TRUNK_CALF", "templates": ["TPL.CORE"], "authorityStatus": "APPROVED_ENVELOPE", "envelopes": ["R6-COLD-START", "R6-PLANNED-PROGRESSION"], "note": "Fifth and later strength days (R6 FAMILY_OF CORE)."}
+    ],
+    "templatesByDayCount": {"1": ["TPL.FULL_A"], "2": ["TPL.FULL_A", "TPL.FULL_B"], "3": ["TPL.LOWER", "TPL.UPPER", "TPL.FULL_B"], "4": ["TPL.LOWER", "TPL.UPPER", "TPL.LOWER_B", "TPL.UPPER_B"], "5+": "the four-day set plus TPL.CORE per extra day"},
+    "templates": [
+      {"id": "TPL.FULL_A", "family": "STR.FULL_BODY", "slots": [
+        {"pattern": "SQUAT", "role": "MAIN"}, {"pattern": "PUSH", "role": "MAIN", "subpatterns": ["HORIZONTAL_PUSH", "VERTICAL_PUSH"]}, {"pattern": "PULL", "role": "MAIN", "subpatterns": ["HORIZONTAL_PULL", "VERTICAL_PULL"]},
+        {"pattern": "CALF", "role": "ACCESSORY", "goalContext": {"RUNNING_SUPPORT": {"alternateSubpatterns": ["STRAIGHT_KNEE", "BENT_KNEE"]}, "EVENT": {"alternateSubpatterns": ["STRAIGHT_KNEE", "BENT_KNEE"]}}},
+        {"pattern": "TRUNK", "role": "ACCESSORY"}]},
+      {"id": "TPL.FULL_B", "family": "STR.FULL_BODY", "slots": [
+        {"pattern": "HINGE", "role": "MAIN", "subpatterns": ["HIP_HINGE", "HIP_EXTENSION_BRIDGE"]}, {"pattern": "PULL", "role": "MAIN", "subpatterns": ["HORIZONTAL_PULL", "VERTICAL_PULL"]}, {"pattern": "PUSH", "role": "MAIN", "subpatterns": ["HORIZONTAL_PUSH", "VERTICAL_PUSH"]},
+        {"pattern": "LUNGE", "role": "ACCESSORY", "goalContext": {"HYPERTROPHY": {"alternativePatterns": ["KNEE_FLEXION", "LUNGE"]}}},
+        {"pattern": "TRUNK", "role": "ACCESSORY", "goalContext": {"HYPERTROPHY": {"alternativePatterns": ["ELBOW_FLEXION", "ELBOW_EXTENSION", "SHOULDER_ABDUCTION", "TRUNK"]}}}]},
+      {"id": "TPL.LOWER", "family": "STR.LOWER", "slots": [
+        {"pattern": "SQUAT", "role": "MAIN"}, {"pattern": "HINGE", "role": "MAIN", "subpatterns": ["HIP_HINGE", "HIP_EXTENSION_BRIDGE"]},
+        {"pattern": "LUNGE", "role": "ACCESSORY", "goalContext": {"HYPERTROPHY": {"alternativePatterns": ["KNEE_EXTENSION", "KNEE_FLEXION", "LUNGE"]}}},
+        {"pattern": "CALF", "role": "ACCESSORY", "goalContext": {"RUNNING_SUPPORT": {"alternateSubpatterns": ["STRAIGHT_KNEE", "BENT_KNEE"]}, "EVENT": {"alternateSubpatterns": ["STRAIGHT_KNEE", "BENT_KNEE"]}}},
+        {"pattern": "TRUNK", "role": "ACCESSORY", "goalContext": {"RUNNING_SUPPORT": {"alternativePatterns": ["HIP_ABDUCTION", "TRUNK"]}}}]},
+      {"id": "TPL.UPPER", "family": "STR.UPPER", "slots": [
+        {"pattern": "PUSH", "role": "MAIN", "subpatterns": ["HORIZONTAL_PUSH", "VERTICAL_PUSH"]}, {"pattern": "PULL", "role": "MAIN", "subpatterns": ["HORIZONTAL_PULL", "VERTICAL_PULL"]},
+        {"pattern": "PUSH", "role": "ACCESSORY", "goalContext": {"HYPERTROPHY": {"alternativePatterns": ["SHOULDER_ABDUCTION", "ELBOW_EXTENSION", "PUSH"]}}},
+        {"pattern": "PULL", "role": "ACCESSORY", "goalContext": {"HYPERTROPHY": {"alternativePatterns": ["ELBOW_FLEXION", "PULL"]}}},
+        {"pattern": "TRUNK", "role": "ACCESSORY"}]},
+      {"id": "TPL.LOWER_B", "family": "STR.LOWER", "slots": [
+        {"pattern": "HINGE", "role": "MAIN", "subpatterns": ["HIP_HINGE", "HIP_EXTENSION_BRIDGE"]}, {"pattern": "LUNGE", "role": "MAIN"},
+        {"pattern": "CALF", "role": "ACCESSORY", "goalContext": {"RUNNING_SUPPORT": {"alternateSubpatterns": ["STRAIGHT_KNEE", "BENT_KNEE"]}, "EVENT": {"alternateSubpatterns": ["STRAIGHT_KNEE", "BENT_KNEE"]}}},
+        {"pattern": "TRUNK", "role": "ACCESSORY", "goalContext": {"HYPERTROPHY": {"alternativePatterns": ["KNEE_FLEXION", "KNEE_EXTENSION", "TRUNK"]}, "RUNNING_SUPPORT": {"alternativePatterns": ["HIP_ABDUCTION", "ANKLE_DORSIFLEXION", "TRUNK"]}}}]},
+      {"id": "TPL.UPPER_B", "family": "STR.UPPER", "slots": [
+        {"pattern": "PULL", "role": "MAIN", "subpatterns": ["HORIZONTAL_PULL", "VERTICAL_PULL"]}, {"pattern": "PUSH", "role": "MAIN", "subpatterns": ["HORIZONTAL_PUSH", "VERTICAL_PUSH"]},
+        {"pattern": "TRUNK", "role": "ACCESSORY", "goalContext": {"HYPERTROPHY": {"alternativePatterns": ["ELBOW_FLEXION", "ELBOW_EXTENSION", "SHOULDER_ABDUCTION", "TRUNK"]}}}]},
+      {"id": "TPL.CORE", "family": "STR.TRUNK_CALF", "slots": [
+        {"pattern": "TRUNK", "role": "ACCESSORY"}, {"pattern": "CALF", "role": "ACCESSORY"},
+        {"pattern": "TRUNK", "role": "ACCESSORY", "goalContext": {"RUNNING_SUPPORT": {"alternativePatterns": ["HIP_ABDUCTION", "ANKLE_DORSIFLEXION", "TRUNK"]}}}]}
+    ],
+    "templateRules": {
+      "authority": "R6 TYPES/SLOTS at the freeze (APPROVED_ENVELOPE runtime binding) unchanged; goalContext alternatives, subpattern constraints and the CALF alternation are B0-C05.",
+      "slotRoleIsContextualRole": "The role of a selected configuration is the role of the slot it fills in this program context (DR-134); a configuration may fill a slot only if its admissibleRoles include that role.",
+      "selection": "Within a slot, filter by available equipment, skill admissibility (classification.skillAdmissibility) and admissible role; a configuration is used at most once per session (R6 exclude-used). Emphasis preferences reorder and choose among admissible alternatives; they never invent competence or add a dose beyond the goal dose (R6; CQ-18 representation).",
+      "selectionOrder": ["familiar to the athlete", "already established in this program (continuity)", "purpose matches the goal context (RUNNING_SUPPORT, HYPERTROPHY, STRENGTH_DEVELOPMENT, GENERAL)", "slot default subpattern (patternDefaultSubpattern), unless a goalContext alternation asks for the other", "external loading before bodyweight or band", "higher admissible skill", "R6-origin before B0-origin", "id (deterministic last resort)"],
+      "selectionOrderBasis": "IMPLEMENTATION_CHOICE for determinism; it changes no dose and no admissibility. It extends the R6 candidatesFor order (familiar, external loading, skill, id) so that the larger catalog keeps sensible defaults.",
+      "patternDefaultSubpattern": {"SQUAT": "BILATERAL_SQUAT", "HINGE": "HIP_HINGE", "LUNGE": "SPLIT_STANCE", "CALF": "STRAIGHT_KNEE", "PUSH": "HORIZONTAL_PUSH", "PULL": "HORIZONTAL_PULL", "TRUNK": "ANTI_EXTENSION"},
+      "goalContextKeys": {"EVENT": "A 10K/half-marathon event is programmed", "RUNNING_SUPPORT": "Strength goal RUNNING_SUPPORT", "HYPERTROPHY": "Strength goal HYPERTROPHY"},
+      "fitting": "Fitted to the chosen time per session: accessories go before main lifts lose sets; maxExercises policy:operational.strength.maxExercises; minimum session policy:operational.strength.minimumSessionMinutes.",
+      "doses": "Goal doses policy:operational.strength.goalDoses; rest and preparation by role policy:operational.strength.restSeconds and policy:operational.strength.preparationMinutes; the R6 strength candidate rules at the freeze set row dose by contextual role. B0 adds no dose."
+    },
+    "skillLadders": {
+      "authorityStatus": "B0_CANDIDATE", "candidate": "B0-C07",
+      "practiceFor": {"SQUAT": "sit-to-stand", "HINGE": "hip-hinge-practice", "LUNGE": "split-squat-bodyweight", "PUSH": "wall-pushup", "PULL": "prone-row-practice", "CALF": "supported-calf-raise", "TRUNK": "dead-bug-practice"},
+      "progressionOf": [
+        ["sit-to-stand", "box-squat-bodyweight", "goblet-squat", "back-squat"],
+        ["box-squat-bodyweight", "kb-goblet-squat"],
+        ["goblet-squat", "front-squat"],
+        ["hip-hinge-practice", "kb-deadlift", "db-rdl", "barbell-rdl"],
+        ["kb-deadlift", "deadlift"],
+        ["db-rdl", "single-leg-rdl-db"],
+        ["glute-bridge", "single-leg-glute-bridge", "hip-thrust-db", "barbell-hip-thrust"],
+        ["split-squat-bodyweight", "reverse-lunge", "reverse-lunge-db", "bulgarian-split-squat-db"],
+        ["split-squat-bodyweight", "db-split-squat", "bulgarian-split-squat-db"],
+        ["supported-calf-raise", "standing-calf-raise", "single-leg-calf-raise"],
+        ["standing-calf-raise", "db-calf-raise"],
+        ["wall-pushup", "incline-push-up", "push-up", "pike-push-up"],
+        ["db-floor-press", "db-bench-press", "bench-press"],
+        ["db-overhead-press", "barbell-overhead-press"],
+        ["prone-row-practice", "band-row", "db-row", "one-arm-db-row"],
+        ["prone-row-practice", "inverted-row"],
+        ["scapular-pull-up", "band-assisted-pull-up", "pull-up"],
+        ["band-assisted-pull-up", "chin-up"],
+        ["dead-bug-practice", "dead-bug", "front-plank"],
+        ["bird-dog", "dead-bug"]
+      ],
+      "rule": "A progression is never automatic: it is offered at a block boundary review, with the athlete's agency, after the earlier configuration's final exposures in the block were ADVANCE or EARNED; the new configuration starts with effort-guided establishment, no load is transferred and its earlier set count returns per policy:operational.strength.setsAfterReestablishment. HIGH skill stays familiarity-gated unless reached through this ladder. A regression along the same chain is a valid reason-based substitution (SKILL_MISMATCH)."
+    },
+    "closeVariationRule": {
+      "authorityStatus": "B0_CANDIDATE", "candidate": "B0-C06",
+      "definition": "Directed relation A -> B: same pattern and subpattern; at least one shared primary muscle; skill(B) <= skill(A); lower, axial and eccentric classes of B within one step of A; both admit the role in question. It identifies admissible replacements; effective permission still depends on rotation eligibility, equipment, phase and agency (DR-134). A configuration serving MAIN cannot evade its stability rule by being called a close variation."
+    },
+    "rotation": {
+      "authorityStatus": "B0_CANDIDATE", "candidate": "B0-C06", "productDecisions": ["DR-113", "DR-134"], "envelopes": ["R6-ROTATION"],
+      "preferenceToEligibility": {
+        "COACH_DECIDES": {"MAIN": "BLOCK_BOUNDARY_ELIGIBLE", "ACCESSORY": "BLOCK_BOUNDARY_ELIGIBLE", "PRACTICE": "REASON_ONLY", "cadence": "policy:operational.rotation.COACH_DECIDES"},
+        "EVERY_6_WEEKS": {"MAIN": "BLOCK_BOUNDARY_ELIGIBLE", "ACCESSORY": "BLOCK_BOUNDARY_ELIGIBLE", "PRACTICE": "REASON_ONLY", "cadence": "policy:operational.rotation.EVERY_6_WEEKS"},
+        "EVERY_2_WEEKS": {"MAIN": "BLOCK_BOUNDARY_ELIGIBLE", "ACCESSORY": "TWO_WEEK_ELIGIBLE when an admissible alternative exists, else BLOCK_BOUNDARY_ELIGIBLE", "PRACTICE": "REASON_ONLY", "cadence": "policy:operational.rotation.EVERY_2_WEEKS"},
+        "FIXED": {"MAIN": "REASON_ONLY", "ACCESSORY": "REASON_ONLY", "PRACTICE": "REASON_ONLY", "cadence": "policy:operational.rotation.FIXED"}
+      },
+      "admissibleAlternative": "Same slot pattern with the same subpattern or a subpattern of the same rotation group (subpatternGroups), or a listed goalContext alternative pattern; at least one shared primary muscle; lower, axial and eccentric classes within one step of the current configuration; equipment available on that date; skill admissible; admissibleRoles include the slot role; the week's arrangement cost on both axes not worse than with the current configuration (composition.ranking); not the configuration used in the previous rotation of that slot when another alternative exists.",
+      "subpatternGroups": {"LUNGE": [["SPLIT_STANCE", "STEP"]]},
+      "deferredPhases": ["ESTABLISHMENT", "SPECIFIC", "TAPER", "RACE_WEEK", "POST_EVENT"],
+      "deferredPhasesRule": "policy:operational.rotation.deferInPhases plus the R6-ROTATION condition for ESTABLISHMENT: effective eligibility is REASON_ONLY.",
+      "dose": "policy:operational.rotation.notes: a rotated exercise starts with effort-guided establishment, no load transferred, no progression step in its first exposure; rotated back after more than policy:operational.return.moderateMaxDays days it re-establishes with its last logged load as a ceiling; sets return per policy:operational.strength.setsAfterReestablishment.",
+      "permittedNotMandatory": "An eligible change is an opportunity; keeping the configuration is always valid.",
+      "mainBlockBoundaryChange": "B0-C06 extends R6's 'main lifts stay': at a block boundary a MAIN configuration may change only with a recorded reason (DELIBERATE_BLOCK_TRANSITION with its purpose, SKILL_PROGRESSION through skillLadders with agency, EQUIPMENT_CHANGE, ATHLETE_PREFERENCE); default is keep; never in deferred phases; the new MAIN starts with establishment and no load transfer."
+    },
+    "substitution": {
+      "authorityStatus": "APPROVED_ENVELOPE", "envelopes": ["R6-SUBSTITUTION", "R6-LOAD-ESTABLISHMENT"], "productDecisions": ["DR-134"],
+      "precedence": "A justified reason-based substitution overrides the nominal cadence, MAIN retention and a FIXED preference, never coverage, safety/policy, clinical limits or agency (DR-134).",
+      "reasons": [
+        {"id": "EQUIPMENT_UNAVAILABLE", "authority": "R6-SUBSTITUTION", "rule": "Dated window or permanent change; same pattern first, variant family second; established originals return after the window (SUBSTITUTION_ENGINE_R6)."},
+        {"id": "SKILL_MISMATCH", "authority": "B0-C07", "rule": "Athlete reports the configuration cannot be performed with stable technique: the previous configuration on its skill ladder."},
+        {"id": "NONCLINICAL_DISCOMFORT_OR_PREFERENCE", "authority": "DR-134", "rule": "First the clinical screen: pain, injury, illness or a functional limitation routes CLINICAL_HUMAN_REQUIRED for the dependent scope; ambiguous is ASK. Only a confirmed nonclinical dislike or discomfort without pain substitutes a same-pattern alternative, disclosed. No rehabilitation rule."},
+        {"id": "PROTECTED_RUN_STIMULUS_CONFLICT", "authority": "R6-HYBRID-ARRANGEMENT", "rule": "Choose a lower lower-body-demand or lower-eccentric alternative of the same pattern only when the arrangement cannot otherwise protect the key run; disclosed."},
+        {"id": "DELIBERATE_BLOCK_TRANSITION", "authority": "B0-C06", "rule": "Block boundary only."},
+        {"id": "POLICY_SUPPORTED_STAGNATION", "authority": "LATER_GATE", "rule": "No plateau threshold is defined in V1 (R7-B whole-program progression)."}
+      ],
+      "ranking": "Familiar first; then a close variation of the original; then the same subpattern; then the same pattern; a bodyweight-for-load swap is disclosed as a different stimulus. An unfamiliar substitute starts with establishment (at most policy:operational.establishment.effortGuidedLoad sets at its reserve), no load conversion, no progression in its first exposure.",
+      "noAlternative": "A pattern with no admissible configuration is disclosed with options, never silently omitted (B0-C09)."
+    },
+    "pullCoverage": {
+      "authorityStatus": "B0_CANDIDATE", "candidate": "B0-C09",
+      "rule": "The PULL disclosure is computed from the rows actually selected: it appears only when no MAIN-admissible pull configuration fits the equipment and skill on that date. Then the slot takes the best ACCESSORY-admissible pull (role ACCESSORY) and the program carries PULL_LIMITED_FOR_EQUIPMENT with options ['Add a band or a bar', 'Accept limited pull work']. Never 'PULL unavailable' while a pull row is programmed (JUDGE-CQ-R6-12).",
+      "byEquipmentProfile": {"BODYWEIGHT_ONLY": "prone-ytw-raise (ACCESSORY) + disclosure", "PULL_UP_BAR_ONLY_NOVICE": "scapular-pull-up (PRACTICE/ACCESSORY) + disclosure", "KETTLEBELL_ONLY": "kb-row", "BANDS": "band-row, band-pulldown, band-face-pull", "DUMBBELLS": "db-row, one-arm-db-row (with BENCH)", "BARBELL_RACK": "inverted-row; barbell-row when familiar", "MACHINES": "seated-cable-row, lat-pulldown, cable-face-pull"}
+    },
+    "noviceDensity": {
+      "authorityStatus": "B0_CANDIDATE", "candidate": "B0-C08", "productDecisions": ["DR-112"],
+      "rule": "Strength class NONE: in ESTABLISHMENT and until the first block boundary, at most two full templates (TPL.FULL_A, TPL.FULL_B) per week whatever the number of chosen strength days; further chosen strength days carry TPL.CORE at practice/accessory dose, explained as lower-demand by design (DR-112: shorter, easier sessions inside approved recipes first), and the program carries the non-blocking negotiation STRENGTH_DAYS_ABOVE_CURRENT_PRACTICE with options ['Keep the days with lighter sessions', 'Choose fewer strength days']. Reassessed at the block boundary from executed evidence.",
+      "addresses": "JUDGE-CQ-R6-10"
+    },
+    "configurationFields": {
+      "id": "Stable configuration id (R6 ids preserved).", "pattern": "Slot pattern.", "sub": "Subpattern.", "region": "LOWER, UPPER or CORE.", "eq": "Equipment required (all of).", "loading": "EXTERNAL, BODYWEIGHT, BAND or ASSISTED.", "conv": "Load convention (vocabulary.loadConvention).", "lat": "Laterality.", "skill": "Skill demand.", "lower": "Lower-body demand class at goal dose (R6 interference input; dose-adjusted by the R6 rules).", "axial": "Ordinal spinal-loading prior at the reviewed dose range.", "ecc": "Ordinal eccentric/lengthened-loading prior: muscle-damage potential when unaccustomed.", "prim": "Primary muscles.", "sec": "Secondary muscles (listed, never summed into systemic load).", "kind": "COMPOUND, ISOLATION, STABILITY or PRACTICE.", "roles": "Admissible contextual roles (not a universal role).", "purposes": "Purposes it can serve.", "variantOf": "Variant family (R6 variantOf).", "origin": "R6 (frozen catalogue id) or B0.", "r6Delta": "Declared difference from the R6 runtime representation, for R7-B."
+    },
+    "demandSemantics": "Demand classes are ordinal priors for comparing alternatives and placing sessions; they are dose-, athlete- and evidence-dependent, never a fatigue measurement, a recovery timer or an additive score (STIL sections 5 and 7; SIS section 5). recoveryCostClass(session) = HIGH if any row is HEAVY lower after the R6 dose adjustment or axial HIGH at goal dose; MODERATE if any row is MODERATE lower, axial MODERATE or eccentric HIGH; otherwise LOW.",
+    "muscleCounting": "IMPLEMENTATION_CHOICE pending G02: weekly working sets are counted once per primary muscle; secondary muscles are listed, not counted; unilateral sets count once per side; warm-up and preparation sets never count (STIL section 2; SIL-I5).",
+    "configurations": [
+      {"id": "back-squat", "name": "Barbell back squat", "pattern": "SQUAT", "sub": "BILATERAL_SQUAT", "region": "LOWER", "eq": ["BARBELL", "RACK"], "loading": "EXTERNAL", "conv": "TOTAL", "lat": "BILATERAL", "skill": "HIGH", "lower": "HEAVY", "axial": "HIGH", "ecc": "MODERATE", "prim": ["QUADRICEPS", "GLUTEUS_MAXIMUS"], "sec": ["ADDUCTORS", "SPINAL_ERECTORS"], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["STRENGTH_DEVELOPMENT", "HYPERTROPHY", "RUNNING_SUPPORT", "GENERAL"], "variantOf": "squat", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE"},
+      {"id": "front-squat", "name": "Barbell front squat", "pattern": "SQUAT", "sub": "BILATERAL_SQUAT", "region": "LOWER", "eq": ["BARBELL", "RACK"], "loading": "EXTERNAL", "conv": "TOTAL", "lat": "BILATERAL", "skill": "HIGH", "lower": "HEAVY", "axial": "HIGH", "ecc": "MODERATE", "prim": ["QUADRICEPS", "GLUTEUS_MAXIMUS"], "sec": ["SPINAL_ERECTORS", "ABDOMINALS"], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["STRENGTH_DEVELOPMENT", "HYPERTROPHY", "GENERAL"], "variantOf": "squat", "origin": "B0", "authorityStatus": "B0_CANDIDATE"},
+      {"id": "goblet-squat", "name": "Dumbbell goblet squat", "pattern": "SQUAT", "sub": "BILATERAL_SQUAT", "region": "LOWER", "eq": ["DUMBBELLS"], "loading": "EXTERNAL", "conv": "SINGLE_IMPLEMENT", "lat": "BILATERAL", "skill": "LOW", "lower": "MODERATE", "axial": "LOW", "ecc": "MODERATE", "prim": ["QUADRICEPS", "GLUTEUS_MAXIMUS"], "sec": ["ADDUCTORS", "ABDOMINALS"], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["STRENGTH_DEVELOPMENT", "HYPERTROPHY", "RUNNING_SUPPORT", "GENERAL"], "variantOf": "squat", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE", "r6Delta": {"conv": "R6 derives PER_HAND from DUMBBELLS; one implement is held: SINGLE_IMPLEMENT (JUDGE-CQ-R6-07)."}},
+      {"id": "kb-goblet-squat", "name": "Kettlebell goblet squat", "pattern": "SQUAT", "sub": "BILATERAL_SQUAT", "region": "LOWER", "eq": ["KETTLEBELL"], "loading": "EXTERNAL", "conv": "SINGLE_IMPLEMENT", "lat": "BILATERAL", "skill": "LOW", "lower": "MODERATE", "axial": "LOW", "ecc": "MODERATE", "prim": ["QUADRICEPS", "GLUTEUS_MAXIMUS"], "sec": ["ADDUCTORS", "ABDOMINALS"], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["STRENGTH_DEVELOPMENT", "HYPERTROPHY", "RUNNING_SUPPORT", "GENERAL"], "variantOf": "squat", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE", "r6Delta": {"conv": "R6 derives PER_HAND from KETTLEBELL; one implement: SINGLE_IMPLEMENT."}},
+      {"id": "leg-press", "name": "Leg press", "pattern": "SQUAT", "sub": "BILATERAL_SQUAT", "region": "LOWER", "eq": ["MACHINES"], "loading": "EXTERNAL", "conv": "MACHINE_STACK", "lat": "BILATERAL", "skill": "LOW", "lower": "MODERATE", "axial": "LOW", "ecc": "MODERATE", "prim": ["QUADRICEPS", "GLUTEUS_MAXIMUS"], "sec": ["ADDUCTORS"], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["STRENGTH_DEVELOPMENT", "HYPERTROPHY", "RUNNING_SUPPORT", "GENERAL"], "variantOf": "squat", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE"},
+      {"id": "box-squat-bodyweight", "name": "Bodyweight box squat", "pattern": "SQUAT", "sub": "BILATERAL_SQUAT", "region": "LOWER", "eq": ["BODYWEIGHT"], "loading": "BODYWEIGHT", "conv": "BODYWEIGHT", "lat": "BILATERAL", "skill": "LOW", "lower": "LIGHT", "axial": "NONE", "ecc": "LOW", "prim": ["QUADRICEPS", "GLUTEUS_MAXIMUS"], "sec": [], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["GENERAL", "RUNNING_SUPPORT"], "variantOf": "squat", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE"},
+      {"id": "sit-to-stand", "name": "Sit-to-stand", "pattern": "SQUAT", "sub": "BILATERAL_SQUAT", "region": "LOWER", "eq": ["BODYWEIGHT"], "loading": "BODYWEIGHT", "conv": "BODYWEIGHT", "lat": "BILATERAL", "skill": "LOW", "lower": "LIGHT", "axial": "NONE", "ecc": "LOW", "prim": ["QUADRICEPS", "GLUTEUS_MAXIMUS"], "sec": [], "kind": "PRACTICE", "roles": ["PRACTICE"], "purposes": ["SKILL_PRACTICE"], "variantOf": "squat", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE"},
+      {"id": "barbell-rdl", "name": "Barbell Romanian deadlift", "pattern": "HINGE", "sub": "HIP_HINGE", "region": "LOWER", "eq": ["BARBELL"], "loading": "EXTERNAL", "conv": "TOTAL", "lat": "BILATERAL", "skill": "HIGH", "lower": "HEAVY", "axial": "HIGH", "ecc": "HIGH", "prim": ["HAMSTRINGS", "GLUTEUS_MAXIMUS"], "sec": ["SPINAL_ERECTORS"], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["STRENGTH_DEVELOPMENT", "HYPERTROPHY", "RUNNING_SUPPORT"], "variantOf": "hinge", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE"},
+      {"id": "db-rdl", "name": "Dumbbell Romanian deadlift", "pattern": "HINGE", "sub": "HIP_HINGE", "region": "LOWER", "eq": ["DUMBBELLS"], "loading": "EXTERNAL", "conv": "PER_HAND", "lat": "BILATERAL", "skill": "MODERATE", "lower": "MODERATE", "axial": "MODERATE", "ecc": "HIGH", "prim": ["HAMSTRINGS", "GLUTEUS_MAXIMUS"], "sec": ["SPINAL_ERECTORS"], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["STRENGTH_DEVELOPMENT", "HYPERTROPHY", "RUNNING_SUPPORT", "GENERAL"], "variantOf": "hinge", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE"},
+      {"id": "kb-deadlift", "name": "Kettlebell deadlift", "pattern": "HINGE", "sub": "HIP_HINGE", "region": "LOWER", "eq": ["KETTLEBELL"], "loading": "EXTERNAL", "conv": "SINGLE_IMPLEMENT", "lat": "BILATERAL", "skill": "LOW", "lower": "MODERATE", "axial": "MODERATE", "ecc": "MODERATE", "prim": ["GLUTEUS_MAXIMUS", "HAMSTRINGS"], "sec": ["QUADRICEPS", "SPINAL_ERECTORS"], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["STRENGTH_DEVELOPMENT", "RUNNING_SUPPORT", "GENERAL"], "variantOf": "hinge", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE", "r6Delta": {"conv": "R6 derives PER_HAND; one kettlebell: SINGLE_IMPLEMENT."}},
+      {"id": "deadlift", "name": "Barbell deadlift", "pattern": "HINGE", "sub": "HIP_HINGE", "region": "LOWER", "eq": ["BARBELL"], "loading": "EXTERNAL", "conv": "TOTAL", "lat": "BILATERAL", "skill": "HIGH", "lower": "HEAVY", "axial": "HIGH", "ecc": "MODERATE", "prim": ["GLUTEUS_MAXIMUS", "HAMSTRINGS", "SPINAL_ERECTORS"], "sec": ["QUADRICEPS", "UPPER_BACK"], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["STRENGTH_DEVELOPMENT", "GENERAL"], "variantOf": "hinge", "origin": "B0", "authorityStatus": "B0_CANDIDATE"},
+      {"id": "single-leg-rdl-db", "name": "Single-leg Romanian deadlift (one dumbbell)", "pattern": "HINGE", "sub": "HIP_HINGE", "region": "LOWER", "eq": ["DUMBBELLS"], "loading": "EXTERNAL", "conv": "SINGLE_IMPLEMENT", "lat": "UNILATERAL", "skill": "MODERATE", "lower": "MODERATE", "axial": "LOW", "ecc": "HIGH", "prim": ["HAMSTRINGS", "GLUTEUS_MAXIMUS"], "sec": ["GLUTEUS_MEDIUS"], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["RUNNING_SUPPORT", "DURABILITY_CAPACITY", "GENERAL"], "variantOf": "hinge", "origin": "B0", "authorityStatus": "B0_CANDIDATE"},
+      {"id": "back-extension", "name": "45-degree back extension", "pattern": "HINGE", "sub": "HIP_HINGE", "region": "LOWER", "eq": ["MACHINES"], "loading": "BODYWEIGHT", "conv": "BODYWEIGHT", "lat": "BILATERAL", "skill": "LOW", "lower": "LIGHT", "axial": "LOW", "ecc": "MODERATE", "prim": ["SPINAL_ERECTORS", "GLUTEUS_MAXIMUS", "HAMSTRINGS"], "sec": [], "kind": "COMPOUND", "roles": ["ACCESSORY"], "purposes": ["HYPERTROPHY", "GENERAL", "DURABILITY_CAPACITY"], "variantOf": "hip-extension", "origin": "B0", "authorityStatus": "B0_CANDIDATE"},
+      {"id": "hip-hinge-practice", "name": "Hip-hinge practice", "pattern": "HINGE", "sub": "HIP_HINGE", "region": "LOWER", "eq": ["BODYWEIGHT"], "loading": "BODYWEIGHT", "conv": "BODYWEIGHT", "lat": "BILATERAL", "skill": "LOW", "lower": "LIGHT", "axial": "NONE", "ecc": "LOW", "prim": ["HAMSTRINGS", "GLUTEUS_MAXIMUS"], "sec": [], "kind": "PRACTICE", "roles": ["PRACTICE"], "purposes": ["SKILL_PRACTICE"], "variantOf": "hinge", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE"},
+      {"id": "glute-bridge", "name": "Glute bridge", "pattern": "HINGE", "sub": "HIP_EXTENSION_BRIDGE", "region": "LOWER", "eq": ["BODYWEIGHT"], "loading": "BODYWEIGHT", "conv": "BODYWEIGHT", "lat": "BILATERAL", "skill": "LOW", "lower": "LIGHT", "axial": "NONE", "ecc": "LOW", "prim": ["GLUTEUS_MAXIMUS"], "sec": ["HAMSTRINGS"], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["RUNNING_SUPPORT", "GENERAL"], "variantOf": "bridge", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE"},
+      {"id": "single-leg-glute-bridge", "name": "Single-leg glute bridge", "pattern": "HINGE", "sub": "HIP_EXTENSION_BRIDGE", "region": "LOWER", "eq": ["BODYWEIGHT"], "loading": "BODYWEIGHT", "conv": "BODYWEIGHT", "lat": "UNILATERAL", "skill": "LOW", "lower": "LIGHT", "axial": "NONE", "ecc": "LOW", "prim": ["GLUTEUS_MAXIMUS"], "sec": ["HAMSTRINGS", "GLUTEUS_MEDIUS"], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["RUNNING_SUPPORT", "DURABILITY_CAPACITY", "GENERAL"], "variantOf": "bridge", "origin": "B0", "authorityStatus": "B0_CANDIDATE"},
+      {"id": "hip-thrust-db", "name": "Dumbbell hip thrust", "pattern": "HINGE", "sub": "HIP_EXTENSION_BRIDGE", "region": "LOWER", "eq": ["DUMBBELLS", "BENCH"], "loading": "EXTERNAL", "conv": "SINGLE_IMPLEMENT", "lat": "BILATERAL", "skill": "MODERATE", "lower": "MODERATE", "axial": "LOW", "ecc": "LOW", "prim": ["GLUTEUS_MAXIMUS"], "sec": ["HAMSTRINGS", "QUADRICEPS"], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["HYPERTROPHY", "RUNNING_SUPPORT", "GENERAL"], "variantOf": "bridge", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE", "r6Delta": {"conv": "R6 derives PER_HAND; one dumbbell across the hips: SINGLE_IMPLEMENT."}},
+      {"id": "barbell-hip-thrust", "name": "Barbell hip thrust", "pattern": "HINGE", "sub": "HIP_EXTENSION_BRIDGE", "region": "LOWER", "eq": ["BARBELL", "BENCH"], "loading": "EXTERNAL", "conv": "TOTAL", "lat": "BILATERAL", "skill": "MODERATE", "lower": "MODERATE", "axial": "LOW", "ecc": "LOW", "prim": ["GLUTEUS_MAXIMUS"], "sec": ["HAMSTRINGS", "QUADRICEPS"], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["STRENGTH_DEVELOPMENT", "HYPERTROPHY", "RUNNING_SUPPORT"], "variantOf": "bridge", "origin": "B0", "authorityStatus": "B0_CANDIDATE"},
+      {"id": "db-split-squat", "name": "Dumbbell split squat", "pattern": "LUNGE", "sub": "SPLIT_STANCE", "region": "LOWER", "eq": ["DUMBBELLS"], "loading": "EXTERNAL", "conv": "PER_HAND", "lat": "UNILATERAL", "skill": "MODERATE", "lower": "MODERATE", "axial": "LOW", "ecc": "MODERATE", "prim": ["QUADRICEPS", "GLUTEUS_MAXIMUS"], "sec": ["ADDUCTORS", "GLUTEUS_MEDIUS"], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["RUNNING_SUPPORT", "HYPERTROPHY", "GENERAL"], "variantOf": "single-leg", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE"},
+      {"id": "split-squat-bodyweight", "name": "Bodyweight split squat", "pattern": "LUNGE", "sub": "SPLIT_STANCE", "region": "LOWER", "eq": ["BODYWEIGHT"], "loading": "BODYWEIGHT", "conv": "BODYWEIGHT", "lat": "UNILATERAL", "skill": "LOW", "lower": "LIGHT", "axial": "NONE", "ecc": "LOW", "prim": ["QUADRICEPS", "GLUTEUS_MAXIMUS"], "sec": ["GLUTEUS_MEDIUS"], "kind": "COMPOUND", "roles": ["PRACTICE", "ACCESSORY", "MAIN"], "purposes": ["SKILL_PRACTICE", "RUNNING_SUPPORT", "GENERAL"], "variantOf": "single-leg", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE"},
+      {"id": "reverse-lunge", "name": "Bodyweight reverse lunge", "pattern": "LUNGE", "sub": "SPLIT_STANCE", "region": "LOWER", "eq": ["BODYWEIGHT"], "loading": "BODYWEIGHT", "conv": "BODYWEIGHT", "lat": "UNILATERAL", "skill": "LOW", "lower": "LIGHT", "axial": "NONE", "ecc": "LOW", "prim": ["QUADRICEPS", "GLUTEUS_MAXIMUS"], "sec": ["GLUTEUS_MEDIUS"], "kind": "COMPOUND", "roles": ["ACCESSORY", "MAIN"], "purposes": ["RUNNING_SUPPORT", "GENERAL"], "variantOf": "single-leg", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE"},
+      {"id": "reverse-lunge-db", "name": "Dumbbell reverse lunge", "pattern": "LUNGE", "sub": "SPLIT_STANCE", "region": "LOWER", "eq": ["DUMBBELLS"], "loading": "EXTERNAL", "conv": "PER_HAND", "lat": "UNILATERAL", "skill": "MODERATE", "lower": "MODERATE", "axial": "LOW", "ecc": "MODERATE", "prim": ["QUADRICEPS", "GLUTEUS_MAXIMUS"], "sec": ["ADDUCTORS", "GLUTEUS_MEDIUS"], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["RUNNING_SUPPORT", "HYPERTROPHY", "GENERAL"], "variantOf": "single-leg", "origin": "B0", "authorityStatus": "B0_CANDIDATE"},
+      {"id": "bulgarian-split-squat-db", "name": "Dumbbell rear-foot-elevated split squat", "pattern": "LUNGE", "sub": "SPLIT_STANCE", "region": "LOWER", "eq": ["DUMBBELLS", "BENCH"], "loading": "EXTERNAL", "conv": "PER_HAND", "lat": "UNILATERAL", "skill": "MODERATE", "lower": "MODERATE", "axial": "LOW", "ecc": "HIGH", "prim": ["QUADRICEPS", "GLUTEUS_MAXIMUS"], "sec": ["ADDUCTORS"], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["RUNNING_SUPPORT", "HYPERTROPHY", "STRENGTH_DEVELOPMENT"], "variantOf": "single-leg", "origin": "B0", "authorityStatus": "B0_CANDIDATE"},
+      {"id": "db-step-up", "name": "Dumbbell step-up", "pattern": "LUNGE", "sub": "STEP", "region": "LOWER", "eq": ["DUMBBELLS", "BENCH"], "loading": "EXTERNAL", "conv": "PER_HAND", "lat": "UNILATERAL", "skill": "LOW", "lower": "MODERATE", "axial": "LOW", "ecc": "LOW", "prim": ["QUADRICEPS", "GLUTEUS_MAXIMUS"], "sec": ["GLUTEUS_MEDIUS"], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["RUNNING_SUPPORT", "GENERAL"], "variantOf": "single-leg", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE"},
+      {"id": "step-down", "name": "Controlled step-down", "pattern": "LUNGE", "sub": "STEP", "region": "LOWER", "eq": ["BENCH"], "loading": "BODYWEIGHT", "conv": "BODYWEIGHT", "lat": "UNILATERAL", "skill": "LOW", "lower": "LIGHT", "axial": "NONE", "ecc": "MODERATE", "prim": ["QUADRICEPS"], "sec": ["GLUTEUS_MEDIUS"], "kind": "COMPOUND", "roles": ["ACCESSORY"], "purposes": ["RUNNING_SUPPORT", "DURABILITY_CAPACITY"], "variantOf": "single-leg", "origin": "B0", "authorityStatus": "B0_CANDIDATE"},
+      {"id": "lateral-lunge", "name": "Bodyweight lateral lunge", "pattern": "LUNGE", "sub": "LATERAL", "region": "LOWER", "eq": ["BODYWEIGHT"], "loading": "BODYWEIGHT", "conv": "BODYWEIGHT", "lat": "UNILATERAL", "skill": "LOW", "lower": "LIGHT", "axial": "NONE", "ecc": "MODERATE", "prim": ["ADDUCTORS", "QUADRICEPS", "GLUTEUS_MAXIMUS"], "sec": [], "kind": "COMPOUND", "roles": ["ACCESSORY"], "purposes": ["RUNNING_SUPPORT", "GENERAL"], "variantOf": "lateral", "origin": "B0", "authorityStatus": "B0_CANDIDATE"},
+      {"id": "standing-calf-raise", "name": "Standing calf raise", "pattern": "CALF", "sub": "STRAIGHT_KNEE", "region": "LOWER", "eq": ["BODYWEIGHT"], "loading": "BODYWEIGHT", "conv": "BODYWEIGHT", "lat": "BILATERAL", "skill": "LOW", "lower": "LIGHT", "axial": "NONE", "ecc": "MODERATE", "prim": ["GASTROCNEMIUS"], "sec": ["SOLEUS"], "kind": "ISOLATION", "roles": ["ACCESSORY"], "purposes": ["RUNNING_SUPPORT", "DURABILITY_CAPACITY", "GENERAL"], "variantOf": "calf", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE"},
+      {"id": "single-leg-calf-raise", "name": "Single-leg calf raise", "pattern": "CALF", "sub": "STRAIGHT_KNEE", "region": "LOWER", "eq": ["BODYWEIGHT"], "loading": "BODYWEIGHT", "conv": "BODYWEIGHT", "lat": "UNILATERAL", "skill": "LOW", "lower": "LIGHT", "axial": "NONE", "ecc": "MODERATE", "prim": ["GASTROCNEMIUS"], "sec": ["SOLEUS"], "kind": "ISOLATION", "roles": ["ACCESSORY"], "purposes": ["RUNNING_SUPPORT", "DURABILITY_CAPACITY"], "variantOf": "calf", "origin": "B0", "authorityStatus": "B0_CANDIDATE"},
+      {"id": "db-calf-raise", "name": "Dumbbell standing calf raise", "pattern": "CALF", "sub": "STRAIGHT_KNEE", "region": "LOWER", "eq": ["DUMBBELLS"], "loading": "EXTERNAL", "conv": "PER_HAND", "lat": "BILATERAL", "skill": "LOW", "lower": "LIGHT", "axial": "LOW", "ecc": "MODERATE", "prim": ["GASTROCNEMIUS"], "sec": ["SOLEUS"], "kind": "ISOLATION", "roles": ["ACCESSORY"], "purposes": ["RUNNING_SUPPORT", "HYPERTROPHY", "DURABILITY_CAPACITY"], "variantOf": "calf", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE"},
+      {"id": "supported-calf-raise", "name": "Supported calf raise", "pattern": "CALF", "sub": "STRAIGHT_KNEE", "region": "LOWER", "eq": ["BODYWEIGHT"], "loading": "BODYWEIGHT", "conv": "BODYWEIGHT", "lat": "BILATERAL", "skill": "LOW", "lower": "LIGHT", "axial": "NONE", "ecc": "LOW", "prim": ["GASTROCNEMIUS"], "sec": ["SOLEUS"], "kind": "PRACTICE", "roles": ["PRACTICE"], "purposes": ["SKILL_PRACTICE", "RUNNING_SUPPORT"], "variantOf": "calf", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE"},
+      {"id": "bent-knee-calf-raise", "name": "Bent-knee calf raise (wall supported)", "pattern": "CALF", "sub": "BENT_KNEE", "region": "LOWER", "eq": ["BODYWEIGHT"], "loading": "BODYWEIGHT", "conv": "BODYWEIGHT", "lat": "BILATERAL", "skill": "LOW", "lower": "LIGHT", "axial": "NONE", "ecc": "MODERATE", "prim": ["SOLEUS"], "sec": ["GASTROCNEMIUS"], "kind": "ISOLATION", "roles": ["ACCESSORY"], "purposes": ["RUNNING_SUPPORT", "DURABILITY_CAPACITY"], "variantOf": "soleus-calf", "origin": "B0", "authorityStatus": "B0_CANDIDATE"},
+      {"id": "seated-calf-raise-db", "name": "Seated calf raise (dumbbell on knees)", "pattern": "CALF", "sub": "BENT_KNEE", "region": "LOWER", "eq": ["DUMBBELLS", "BENCH"], "loading": "EXTERNAL", "conv": "SINGLE_IMPLEMENT", "lat": "BILATERAL", "skill": "LOW", "lower": "LIGHT", "axial": "NONE", "ecc": "MODERATE", "prim": ["SOLEUS"], "sec": ["GASTROCNEMIUS"], "kind": "ISOLATION", "roles": ["ACCESSORY"], "purposes": ["RUNNING_SUPPORT", "DURABILITY_CAPACITY", "HYPERTROPHY"], "variantOf": "soleus-calf", "origin": "B0", "authorityStatus": "B0_CANDIDATE"},
+      {"id": "seated-calf-raise-machine", "name": "Seated calf raise machine", "pattern": "CALF", "sub": "BENT_KNEE", "region": "LOWER", "eq": ["MACHINES"], "loading": "EXTERNAL", "conv": "MACHINE_STACK", "lat": "BILATERAL", "skill": "LOW", "lower": "LIGHT", "axial": "NONE", "ecc": "MODERATE", "prim": ["SOLEUS"], "sec": ["GASTROCNEMIUS"], "kind": "ISOLATION", "roles": ["ACCESSORY"], "purposes": ["RUNNING_SUPPORT", "DURABILITY_CAPACITY", "HYPERTROPHY"], "variantOf": "soleus-calf", "origin": "B0", "authorityStatus": "B0_CANDIDATE"},
+      {"id": "tibialis-raise", "name": "Wall-supported tibialis raise", "pattern": "ANKLE_DORSIFLEXION", "sub": "DORSIFLEXION", "region": "LOWER", "eq": ["BODYWEIGHT"], "loading": "BODYWEIGHT", "conv": "BODYWEIGHT", "lat": "BILATERAL", "skill": "LOW", "lower": "LIGHT", "axial": "NONE", "ecc": "LOW", "prim": ["TIBIALIS_ANTERIOR"], "sec": [], "kind": "ISOLATION", "roles": ["ACCESSORY"], "purposes": ["DURABILITY_CAPACITY", "RUNNING_SUPPORT"], "variantOf": "ankle-dorsiflexion", "origin": "B0", "authorityStatus": "B0_CANDIDATE", "note": "Local capacity only; no injury-prevention or transfer claim."},
+      {"id": "leg-curl-machine", "name": "Leg curl machine", "pattern": "KNEE_FLEXION", "sub": "KNEE_FLEXION", "region": "LOWER", "eq": ["MACHINES"], "loading": "EXTERNAL", "conv": "MACHINE_STACK", "lat": "BILATERAL", "skill": "LOW", "lower": "LIGHT", "axial": "NONE", "ecc": "MODERATE", "prim": ["HAMSTRINGS"], "sec": ["GASTROCNEMIUS"], "kind": "ISOLATION", "roles": ["ACCESSORY"], "purposes": ["HYPERTROPHY", "RUNNING_SUPPORT", "GENERAL"], "variantOf": "knee-flexion", "origin": "B0", "authorityStatus": "B0_CANDIDATE"},
+      {"id": "leg-extension-machine", "name": "Leg extension machine", "pattern": "KNEE_EXTENSION", "sub": "KNEE_EXTENSION", "region": "LOWER", "eq": ["MACHINES"], "loading": "EXTERNAL", "conv": "MACHINE_STACK", "lat": "BILATERAL", "skill": "LOW", "lower": "LIGHT", "axial": "NONE", "ecc": "LOW", "prim": ["QUADRICEPS"], "sec": [], "kind": "ISOLATION", "roles": ["ACCESSORY"], "purposes": ["HYPERTROPHY", "GENERAL"], "variantOf": "knee-extension", "origin": "B0", "authorityStatus": "B0_CANDIDATE"},
+      {"id": "side-lying-hip-abduction", "name": "Side-lying hip abduction", "pattern": "HIP_ABDUCTION", "sub": "HIP_ABDUCTION", "region": "LOWER", "eq": ["BODYWEIGHT"], "loading": "BODYWEIGHT", "conv": "BODYWEIGHT", "lat": "UNILATERAL", "skill": "LOW", "lower": "LIGHT", "axial": "NONE", "ecc": "LOW", "prim": ["GLUTEUS_MEDIUS"], "sec": [], "kind": "ISOLATION", "roles": ["ACCESSORY"], "purposes": ["RUNNING_SUPPORT", "DURABILITY_CAPACITY"], "variantOf": "hip-abduction", "origin": "B0", "authorityStatus": "B0_CANDIDATE", "note": "No injury-prevention or rehabilitation claim."},
+      {"id": "hip-abduction-machine", "name": "Hip abduction machine", "pattern": "HIP_ABDUCTION", "sub": "HIP_ABDUCTION", "region": "LOWER", "eq": ["MACHINES"], "loading": "EXTERNAL", "conv": "MACHINE_STACK", "lat": "BILATERAL", "skill": "LOW", "lower": "LIGHT", "axial": "NONE", "ecc": "LOW", "prim": ["GLUTEUS_MEDIUS"], "sec": [], "kind": "ISOLATION", "roles": ["ACCESSORY"], "purposes": ["RUNNING_SUPPORT", "HYPERTROPHY"], "variantOf": "hip-abduction", "origin": "B0", "authorityStatus": "B0_CANDIDATE"},
+      {"id": "bench-press", "name": "Barbell bench press", "pattern": "PUSH", "sub": "HORIZONTAL_PUSH", "region": "UPPER", "eq": ["BARBELL", "BENCH", "RACK"], "loading": "EXTERNAL", "conv": "TOTAL", "lat": "BILATERAL", "skill": "HIGH", "lower": "NONE", "axial": "LOW", "ecc": "LOW", "prim": ["PECTORALS", "TRICEPS", "ANTERIOR_DELTOID"], "sec": [], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["STRENGTH_DEVELOPMENT", "HYPERTROPHY", "GENERAL"], "variantOf": "horizontal-push", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE"},
+      {"id": "db-bench-press", "name": "Dumbbell bench press", "pattern": "PUSH", "sub": "HORIZONTAL_PUSH", "region": "UPPER", "eq": ["DUMBBELLS", "BENCH"], "loading": "EXTERNAL", "conv": "PER_HAND", "lat": "BILATERAL", "skill": "MODERATE", "lower": "NONE", "axial": "LOW", "ecc": "LOW", "prim": ["PECTORALS", "TRICEPS", "ANTERIOR_DELTOID"], "sec": [], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["STRENGTH_DEVELOPMENT", "HYPERTROPHY", "GENERAL"], "variantOf": "horizontal-push", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE"},
+      {"id": "db-floor-press", "name": "Dumbbell floor press", "pattern": "PUSH", "sub": "HORIZONTAL_PUSH", "region": "UPPER", "eq": ["DUMBBELLS"], "loading": "EXTERNAL", "conv": "PER_HAND", "lat": "BILATERAL", "skill": "LOW", "lower": "NONE", "axial": "NONE", "ecc": "LOW", "prim": ["PECTORALS", "TRICEPS"], "sec": ["ANTERIOR_DELTOID"], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["STRENGTH_DEVELOPMENT", "HYPERTROPHY", "GENERAL"], "variantOf": "horizontal-push", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE"},
+      {"id": "machine-chest-press", "name": "Machine chest press", "pattern": "PUSH", "sub": "HORIZONTAL_PUSH", "region": "UPPER", "eq": ["MACHINES"], "loading": "EXTERNAL", "conv": "MACHINE_STACK", "lat": "BILATERAL", "skill": "LOW", "lower": "NONE", "axial": "NONE", "ecc": "LOW", "prim": ["PECTORALS", "TRICEPS", "ANTERIOR_DELTOID"], "sec": [], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["STRENGTH_DEVELOPMENT", "HYPERTROPHY", "GENERAL"], "variantOf": "horizontal-push", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE"},
+      {"id": "push-up", "name": "Push-up", "pattern": "PUSH", "sub": "HORIZONTAL_PUSH", "region": "UPPER", "eq": ["BODYWEIGHT"], "loading": "BODYWEIGHT", "conv": "BODYWEIGHT", "lat": "BILATERAL", "skill": "MODERATE", "lower": "NONE", "axial": "NONE", "ecc": "LOW", "prim": ["PECTORALS", "TRICEPS", "ANTERIOR_DELTOID"], "sec": ["ABDOMINALS"], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["HYPERTROPHY", "GENERAL", "RUNNING_SUPPORT"], "variantOf": "horizontal-push", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE"},
+      {"id": "incline-push-up", "name": "Incline push-up", "pattern": "PUSH", "sub": "HORIZONTAL_PUSH", "region": "UPPER", "eq": ["BODYWEIGHT"], "loading": "BODYWEIGHT", "conv": "BODYWEIGHT", "lat": "BILATERAL", "skill": "LOW", "lower": "NONE", "axial": "NONE", "ecc": "LOW", "prim": ["PECTORALS", "TRICEPS", "ANTERIOR_DELTOID"], "sec": [], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["GENERAL", "RUNNING_SUPPORT"], "variantOf": "horizontal-push", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE"},
+      {"id": "wall-pushup", "name": "Wall push-up", "pattern": "PUSH", "sub": "HORIZONTAL_PUSH", "region": "UPPER", "eq": ["BODYWEIGHT"], "loading": "BODYWEIGHT", "conv": "BODYWEIGHT", "lat": "BILATERAL", "skill": "LOW", "lower": "NONE", "axial": "NONE", "ecc": "LOW", "prim": ["PECTORALS", "TRICEPS"], "sec": [], "kind": "PRACTICE", "roles": ["PRACTICE"], "purposes": ["SKILL_PRACTICE"], "variantOf": "horizontal-push", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE"},
+      {"id": "db-overhead-press", "name": "Dumbbell overhead press", "pattern": "PUSH", "sub": "VERTICAL_PUSH", "region": "UPPER", "eq": ["DUMBBELLS"], "loading": "EXTERNAL", "conv": "PER_HAND", "lat": "BILATERAL", "skill": "MODERATE", "lower": "NONE", "axial": "LOW", "ecc": "LOW", "prim": ["ANTERIOR_DELTOID", "LATERAL_DELTOID", "TRICEPS"], "sec": ["UPPER_BACK"], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["STRENGTH_DEVELOPMENT", "HYPERTROPHY", "GENERAL"], "variantOf": "vertical-push", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE"},
+      {"id": "barbell-overhead-press", "name": "Barbell overhead press", "pattern": "PUSH", "sub": "VERTICAL_PUSH", "region": "UPPER", "eq": ["BARBELL", "RACK"], "loading": "EXTERNAL", "conv": "TOTAL", "lat": "BILATERAL", "skill": "HIGH", "lower": "NONE", "axial": "MODERATE", "ecc": "LOW", "prim": ["ANTERIOR_DELTOID", "TRICEPS"], "sec": ["LATERAL_DELTOID", "UPPER_BACK", "ABDOMINALS"], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["STRENGTH_DEVELOPMENT", "HYPERTROPHY"], "variantOf": "vertical-push", "origin": "B0", "authorityStatus": "B0_CANDIDATE"},
+      {"id": "pike-push-up", "name": "Pike push-up", "pattern": "PUSH", "sub": "VERTICAL_PUSH", "region": "UPPER", "eq": ["BODYWEIGHT"], "loading": "BODYWEIGHT", "conv": "BODYWEIGHT", "lat": "BILATERAL", "skill": "MODERATE", "lower": "NONE", "axial": "NONE", "ecc": "LOW", "prim": ["ANTERIOR_DELTOID", "TRICEPS"], "sec": ["LATERAL_DELTOID", "PECTORALS"], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["HYPERTROPHY", "GENERAL"], "variantOf": "vertical-push", "origin": "B0", "authorityStatus": "B0_CANDIDATE"},
+      {"id": "cable-triceps-pushdown", "name": "Cable triceps pushdown", "pattern": "ELBOW_EXTENSION", "sub": "ELBOW_EXTENSION", "region": "UPPER", "eq": ["MACHINES"], "loading": "EXTERNAL", "conv": "MACHINE_STACK", "lat": "BILATERAL", "skill": "LOW", "lower": "NONE", "axial": "NONE", "ecc": "LOW", "prim": ["TRICEPS"], "sec": [], "kind": "ISOLATION", "roles": ["ACCESSORY"], "purposes": ["HYPERTROPHY"], "variantOf": "elbow-extension", "origin": "B0", "authorityStatus": "B0_CANDIDATE"},
+      {"id": "db-overhead-triceps-extension", "name": "Dumbbell overhead triceps extension", "pattern": "ELBOW_EXTENSION", "sub": "ELBOW_EXTENSION", "region": "UPPER", "eq": ["DUMBBELLS"], "loading": "EXTERNAL", "conv": "SINGLE_IMPLEMENT", "lat": "BILATERAL", "skill": "LOW", "lower": "NONE", "axial": "LOW", "ecc": "MODERATE", "prim": ["TRICEPS"], "sec": [], "kind": "ISOLATION", "roles": ["ACCESSORY"], "purposes": ["HYPERTROPHY"], "variantOf": "elbow-extension", "origin": "B0", "authorityStatus": "B0_CANDIDATE"},
+      {"id": "db-lateral-raise", "name": "Dumbbell lateral raise", "pattern": "SHOULDER_ABDUCTION", "sub": "SHOULDER_ABDUCTION", "region": "UPPER", "eq": ["DUMBBELLS"], "loading": "EXTERNAL", "conv": "PER_HAND", "lat": "BILATERAL", "skill": "LOW", "lower": "NONE", "axial": "NONE", "ecc": "LOW", "prim": ["LATERAL_DELTOID"], "sec": [], "kind": "ISOLATION", "roles": ["ACCESSORY"], "purposes": ["HYPERTROPHY"], "variantOf": "shoulder-abduction", "origin": "B0", "authorityStatus": "B0_CANDIDATE"},
+      {"id": "one-arm-db-row", "name": "One-arm dumbbell row", "pattern": "PULL", "sub": "HORIZONTAL_PULL", "region": "UPPER", "eq": ["DUMBBELLS", "BENCH"], "loading": "EXTERNAL", "conv": "SINGLE_IMPLEMENT", "lat": "UNILATERAL", "skill": "LOW", "lower": "NONE", "axial": "LOW", "ecc": "LOW", "prim": ["LATISSIMUS", "UPPER_BACK"], "sec": ["BICEPS", "POSTERIOR_DELTOID"], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["STRENGTH_DEVELOPMENT", "HYPERTROPHY", "GENERAL"], "variantOf": "horizontal-pull", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE", "r6Delta": {"conv": "R6 derives PER_HAND; one dumbbell per side: SINGLE_IMPLEMENT, logged per side."}},
+      {"id": "db-row", "name": "Bent-over dumbbell row", "pattern": "PULL", "sub": "HORIZONTAL_PULL", "region": "UPPER", "eq": ["DUMBBELLS"], "loading": "EXTERNAL", "conv": "PER_HAND", "lat": "BILATERAL", "skill": "LOW", "lower": "NONE", "axial": "LOW", "ecc": "LOW", "prim": ["LATISSIMUS", "UPPER_BACK"], "sec": ["BICEPS", "POSTERIOR_DELTOID"], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["STRENGTH_DEVELOPMENT", "HYPERTROPHY", "GENERAL"], "variantOf": "horizontal-pull", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE"},
+      {"id": "barbell-row", "name": "Barbell bent-over row", "pattern": "PULL", "sub": "HORIZONTAL_PULL", "region": "UPPER", "eq": ["BARBELL"], "loading": "EXTERNAL", "conv": "TOTAL", "lat": "BILATERAL", "skill": "HIGH", "lower": "LIGHT", "axial": "MODERATE", "ecc": "LOW", "prim": ["LATISSIMUS", "UPPER_BACK"], "sec": ["BICEPS", "POSTERIOR_DELTOID", "SPINAL_ERECTORS"], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["STRENGTH_DEVELOPMENT", "HYPERTROPHY"], "variantOf": "horizontal-pull", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE"},
+      {"id": "seated-cable-row", "name": "Seated cable row", "pattern": "PULL", "sub": "HORIZONTAL_PULL", "region": "UPPER", "eq": ["MACHINES"], "loading": "EXTERNAL", "conv": "MACHINE_STACK", "lat": "BILATERAL", "skill": "LOW", "lower": "NONE", "axial": "NONE", "ecc": "LOW", "prim": ["LATISSIMUS", "UPPER_BACK"], "sec": ["BICEPS", "POSTERIOR_DELTOID"], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["STRENGTH_DEVELOPMENT", "HYPERTROPHY", "GENERAL"], "variantOf": "horizontal-pull", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE"},
+      {"id": "band-row", "name": "Band row", "pattern": "PULL", "sub": "HORIZONTAL_PULL", "region": "UPPER", "eq": ["BANDS"], "loading": "BAND", "conv": "BAND_TENSION", "lat": "BILATERAL", "skill": "LOW", "lower": "NONE", "axial": "NONE", "ecc": "LOW", "prim": ["UPPER_BACK", "LATISSIMUS"], "sec": ["BICEPS", "POSTERIOR_DELTOID"], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["GENERAL", "RUNNING_SUPPORT"], "variantOf": "horizontal-pull", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE", "r6Delta": {"conv": "R6 derives convention BODYWEIGHT and prescribes ESTABLISH rows in KG for band loading; band tension is an ordinal level: BAND_TENSION, progression by reps, never kilograms."}},
+      {"id": "kb-row", "name": "One-arm kettlebell row", "pattern": "PULL", "sub": "HORIZONTAL_PULL", "region": "UPPER", "eq": ["KETTLEBELL"], "loading": "EXTERNAL", "conv": "SINGLE_IMPLEMENT", "lat": "UNILATERAL", "skill": "LOW", "lower": "NONE", "axial": "LOW", "ecc": "LOW", "prim": ["LATISSIMUS", "UPPER_BACK"], "sec": ["BICEPS"], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["GENERAL", "STRENGTH_DEVELOPMENT", "HYPERTROPHY"], "variantOf": "horizontal-pull", "origin": "B0", "authorityStatus": "B0_CANDIDATE"},
+      {"id": "inverted-row", "name": "Inverted row (bar in a rack)", "pattern": "PULL", "sub": "HORIZONTAL_PULL", "region": "UPPER", "eq": ["BARBELL", "RACK"], "loading": "BODYWEIGHT", "conv": "BODYWEIGHT", "lat": "BILATERAL", "skill": "MODERATE", "lower": "NONE", "axial": "NONE", "ecc": "LOW", "prim": ["UPPER_BACK", "LATISSIMUS"], "sec": ["BICEPS", "POSTERIOR_DELTOID"], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["GENERAL", "HYPERTROPHY"], "variantOf": "horizontal-pull", "origin": "B0", "authorityStatus": "B0_CANDIDATE"},
+      {"id": "prone-row-practice", "name": "Prone row practice", "pattern": "PULL", "sub": "HORIZONTAL_PULL", "region": "UPPER", "eq": ["BODYWEIGHT"], "loading": "BODYWEIGHT", "conv": "BODYWEIGHT", "lat": "BILATERAL", "skill": "LOW", "lower": "NONE", "axial": "NONE", "ecc": "LOW", "prim": ["UPPER_BACK"], "sec": [], "kind": "PRACTICE", "roles": ["PRACTICE"], "purposes": ["SKILL_PRACTICE"], "variantOf": "horizontal-pull", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE"},
+      {"id": "lat-pulldown", "name": "Lat pulldown", "pattern": "PULL", "sub": "VERTICAL_PULL", "region": "UPPER", "eq": ["MACHINES"], "loading": "EXTERNAL", "conv": "MACHINE_STACK", "lat": "BILATERAL", "skill": "LOW", "lower": "NONE", "axial": "NONE", "ecc": "LOW", "prim": ["LATISSIMUS"], "sec": ["BICEPS", "UPPER_BACK"], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["STRENGTH_DEVELOPMENT", "HYPERTROPHY", "GENERAL"], "variantOf": "vertical-pull", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE"},
+      {"id": "pull-up", "name": "Pull-up", "pattern": "PULL", "sub": "VERTICAL_PULL", "region": "UPPER", "eq": ["PULL_UP_BAR"], "loading": "BODYWEIGHT", "conv": "BODYWEIGHT", "lat": "BILATERAL", "skill": "HIGH", "lower": "NONE", "axial": "NONE", "ecc": "MODERATE", "prim": ["LATISSIMUS"], "sec": ["BICEPS", "UPPER_BACK"], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["STRENGTH_DEVELOPMENT", "HYPERTROPHY", "GENERAL"], "variantOf": "vertical-pull", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE", "r6Delta": {"loading": "R6 derives loading EXTERNAL from PULL_UP_BAR; a pull-up is bodyweight: BODYWEIGHT (added load is not in V1)."}},
+      {"id": "chin-up", "name": "Chin-up", "pattern": "PULL", "sub": "VERTICAL_PULL", "region": "UPPER", "eq": ["PULL_UP_BAR"], "loading": "BODYWEIGHT", "conv": "BODYWEIGHT", "lat": "BILATERAL", "skill": "HIGH", "lower": "NONE", "axial": "NONE", "ecc": "MODERATE", "prim": ["LATISSIMUS", "BICEPS"], "sec": ["UPPER_BACK"], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["STRENGTH_DEVELOPMENT", "HYPERTROPHY", "GENERAL"], "variantOf": "vertical-pull", "origin": "B0", "authorityStatus": "B0_CANDIDATE"},
+      {"id": "band-assisted-pull-up", "name": "Band-assisted pull-up", "pattern": "PULL", "sub": "VERTICAL_PULL", "region": "UPPER", "eq": ["PULL_UP_BAR", "BANDS"], "loading": "ASSISTED", "conv": "ASSISTED_BODYWEIGHT", "lat": "BILATERAL", "skill": "MODERATE", "lower": "NONE", "axial": "NONE", "ecc": "MODERATE", "prim": ["LATISSIMUS"], "sec": ["BICEPS", "UPPER_BACK"], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["GENERAL", "STRENGTH_DEVELOPMENT"], "variantOf": "vertical-pull", "origin": "B0", "authorityStatus": "B0_CANDIDATE"},
+      {"id": "band-pulldown", "name": "Band pulldown (anchored overhead)", "pattern": "PULL", "sub": "VERTICAL_PULL", "region": "UPPER", "eq": ["BANDS"], "loading": "BAND", "conv": "BAND_TENSION", "lat": "BILATERAL", "skill": "LOW", "lower": "NONE", "axial": "NONE", "ecc": "LOW", "prim": ["LATISSIMUS"], "sec": ["BICEPS", "UPPER_BACK"], "kind": "COMPOUND", "roles": ["MAIN", "ACCESSORY"], "purposes": ["GENERAL"], "variantOf": "vertical-pull", "origin": "B0", "authorityStatus": "B0_CANDIDATE"},
+      {"id": "scapular-pull-up", "name": "Scapular pull-up (hang and depress)", "pattern": "PULL", "sub": "VERTICAL_PULL", "region": "UPPER", "eq": ["PULL_UP_BAR"], "loading": "BODYWEIGHT", "conv": "BODYWEIGHT", "lat": "BILATERAL", "skill": "LOW", "lower": "NONE", "axial": "NONE", "ecc": "LOW", "prim": ["LATISSIMUS", "UPPER_BACK"], "sec": [], "kind": "PRACTICE", "roles": ["PRACTICE", "ACCESSORY"], "purposes": ["SKILL_PRACTICE", "GENERAL"], "variantOf": "vertical-pull", "origin": "B0", "authorityStatus": "B0_CANDIDATE"},
+      {"id": "cable-face-pull", "name": "Cable face pull", "pattern": "PULL", "sub": "SCAPULAR", "region": "UPPER", "eq": ["MACHINES"], "loading": "EXTERNAL", "conv": "MACHINE_STACK", "lat": "BILATERAL", "skill": "LOW", "lower": "NONE", "axial": "NONE", "ecc": "LOW", "prim": ["POSTERIOR_DELTOID", "UPPER_BACK"], "sec": [], "kind": "ISOLATION", "roles": ["ACCESSORY"], "purposes": ["HYPERTROPHY", "GENERAL"], "variantOf": "scapular", "origin": "B0", "authorityStatus": "B0_CANDIDATE"},
+      {"id": "band-face-pull", "name": "Band face pull", "pattern": "PULL", "sub": "SCAPULAR", "region": "UPPER", "eq": ["BANDS"], "loading": "BAND", "conv": "BAND_TENSION", "lat": "BILATERAL", "skill": "LOW", "lower": "NONE", "axial": "NONE", "ecc": "LOW", "prim": ["POSTERIOR_DELTOID", "UPPER_BACK"], "sec": [], "kind": "ISOLATION", "roles": ["ACCESSORY"], "purposes": ["GENERAL", "HYPERTROPHY"], "variantOf": "scapular", "origin": "B0", "authorityStatus": "B0_CANDIDATE"},
+      {"id": "prone-ytw-raise", "name": "Prone Y-T-W raise", "pattern": "PULL", "sub": "SCAPULAR", "region": "UPPER", "eq": ["BODYWEIGHT"], "loading": "BODYWEIGHT", "conv": "BODYWEIGHT", "lat": "BILATERAL", "skill": "LOW", "lower": "NONE", "axial": "NONE", "ecc": "LOW", "prim": ["UPPER_BACK", "POSTERIOR_DELTOID"], "sec": [], "kind": "ISOLATION", "roles": ["ACCESSORY", "PRACTICE"], "purposes": ["GENERAL"], "variantOf": "scapular", "origin": "B0", "authorityStatus": "B0_CANDIDATE", "note": "Low-load scapular work; when it is the only pull option the program discloses PULL_LIMITED_FOR_EQUIPMENT."},
+      {"id": "db-biceps-curl", "name": "Dumbbell biceps curl", "pattern": "ELBOW_FLEXION", "sub": "ELBOW_FLEXION", "region": "UPPER", "eq": ["DUMBBELLS"], "loading": "EXTERNAL", "conv": "PER_HAND", "lat": "BILATERAL", "skill": "LOW", "lower": "NONE", "axial": "NONE", "ecc": "MODERATE", "prim": ["BICEPS"], "sec": [], "kind": "ISOLATION", "roles": ["ACCESSORY"], "purposes": ["HYPERTROPHY"], "variantOf": "elbow-flexion", "origin": "B0", "authorityStatus": "B0_CANDIDATE"},
+      {"id": "band-biceps-curl", "name": "Band biceps curl", "pattern": "ELBOW_FLEXION", "sub": "ELBOW_FLEXION", "region": "UPPER", "eq": ["BANDS"], "loading": "BAND", "conv": "BAND_TENSION", "lat": "BILATERAL", "skill": "LOW", "lower": "NONE", "axial": "NONE", "ecc": "LOW", "prim": ["BICEPS"], "sec": [], "kind": "ISOLATION", "roles": ["ACCESSORY"], "purposes": ["HYPERTROPHY"], "variantOf": "elbow-flexion", "origin": "B0", "authorityStatus": "B0_CANDIDATE"},
+      {"id": "dead-bug", "name": "Dead bug", "pattern": "TRUNK", "sub": "ANTI_EXTENSION", "region": "CORE", "eq": ["BODYWEIGHT"], "loading": "BODYWEIGHT", "conv": "BODYWEIGHT", "lat": "BILATERAL", "skill": "LOW", "lower": "NONE", "axial": "NONE", "ecc": "LOW", "prim": ["ABDOMINALS"], "sec": ["OBLIQUES"], "kind": "STABILITY", "roles": ["ACCESSORY"], "purposes": ["RUNNING_SUPPORT", "GENERAL"], "variantOf": "anti-extension", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE"},
+      {"id": "dead-bug-practice", "name": "Dead bug practice", "pattern": "TRUNK", "sub": "ANTI_EXTENSION", "region": "CORE", "eq": ["BODYWEIGHT"], "loading": "BODYWEIGHT", "conv": "BODYWEIGHT", "lat": "BILATERAL", "skill": "LOW", "lower": "NONE", "axial": "NONE", "ecc": "LOW", "prim": ["ABDOMINALS"], "sec": [], "kind": "PRACTICE", "roles": ["PRACTICE"], "purposes": ["SKILL_PRACTICE"], "variantOf": "anti-extension", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE"},
+      {"id": "front-plank", "name": "Front plank", "pattern": "TRUNK", "sub": "ANTI_EXTENSION", "region": "CORE", "eq": ["BODYWEIGHT"], "loading": "BODYWEIGHT", "conv": "BODYWEIGHT", "lat": "BILATERAL", "skill": "LOW", "lower": "NONE", "axial": "NONE", "ecc": "LOW", "prim": ["ABDOMINALS"], "sec": ["OBLIQUES"], "kind": "STABILITY", "roles": ["ACCESSORY"], "purposes": ["RUNNING_SUPPORT", "GENERAL"], "variantOf": "anti-extension", "origin": "B0", "authorityStatus": "B0_CANDIDATE"},
+      {"id": "bird-dog", "name": "Bird dog", "pattern": "TRUNK", "sub": "ANTI_ROTATION", "region": "CORE", "eq": ["BODYWEIGHT"], "loading": "BODYWEIGHT", "conv": "BODYWEIGHT", "lat": "UNILATERAL", "skill": "LOW", "lower": "NONE", "axial": "NONE", "ecc": "LOW", "prim": ["ABDOMINALS", "SPINAL_ERECTORS"], "sec": ["GLUTEUS_MAXIMUS"], "kind": "STABILITY", "roles": ["PRACTICE", "ACCESSORY"], "purposes": ["SKILL_PRACTICE", "RUNNING_SUPPORT", "GENERAL"], "variantOf": "anti-rotation", "origin": "B0", "authorityStatus": "B0_CANDIDATE"},
+      {"id": "side-plank", "name": "Side plank", "pattern": "TRUNK", "sub": "ANTI_LATERAL_FLEXION", "region": "CORE", "eq": ["BODYWEIGHT"], "loading": "BODYWEIGHT", "conv": "BODYWEIGHT", "lat": "UNILATERAL", "skill": "LOW", "lower": "NONE", "axial": "NONE", "ecc": "LOW", "prim": ["OBLIQUES"], "sec": ["GLUTEUS_MEDIUS"], "kind": "STABILITY", "roles": ["ACCESSORY"], "purposes": ["RUNNING_SUPPORT", "GENERAL"], "variantOf": "anti-lateral", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE", "r6Delta": {"lat": "R6 marks it bilateral; it is held one side at a time: UNILATERAL, logged per side."}},
+      {"id": "pallof-press", "name": "Band Pallof press", "pattern": "TRUNK", "sub": "ANTI_ROTATION", "region": "CORE", "eq": ["BANDS"], "loading": "BAND", "conv": "BAND_TENSION", "lat": "UNILATERAL", "skill": "LOW", "lower": "NONE", "axial": "NONE", "ecc": "LOW", "prim": ["OBLIQUES", "ABDOMINALS"], "sec": [], "kind": "STABILITY", "roles": ["ACCESSORY"], "purposes": ["RUNNING_SUPPORT", "GENERAL"], "variantOf": "anti-rotation", "origin": "R6", "authorityStatus": "APPROVED_ENVELOPE", "r6Delta": {"conv": "R6 derives convention BODYWEIGHT for band loading: BAND_TENSION.", "lat": "R6 marks it bilateral; it is resisted one side at a time: UNILATERAL, logged per side."}}
+    ],
+    "equipmentProfiles": {
+      "FULL_GYM": ["BARBELL", "RACK", "BENCH", "DUMBBELLS", "KETTLEBELL", "MACHINES", "BANDS", "PULL_UP_BAR"],
+      "MACHINES_AND_DUMBBELLS": ["DUMBBELLS", "BENCH", "MACHINES"],
+      "HOME_DUMBBELLS_BENCH": ["DUMBBELLS", "BENCH"],
+      "HOME_DUMBBELLS": ["DUMBBELLS"],
+      "KETTLEBELL_ONLY": ["KETTLEBELL"],
+      "BANDS_ONLY": ["BANDS"],
+      "BANDS_AND_BAR": ["BANDS", "PULL_UP_BAR"],
+      "PULL_UP_BAR_ONLY": ["PULL_UP_BAR"],
+      "BODYWEIGHT_ONLY": []
+    }
+  },
+  "composition": {
+    "authorityStatus": "APPROVED_ENVELOPE", "envelopes": ["R6-HYBRID-ARRANGEMENT", "R6-PLANNED-PROGRESSION", "R6-EVENT-TRANSITION"], "productDecisions": ["DR-112", "DR-115"],
+    "sessionClasses": {
+      "run": "RUN.family compositionClass: KEY for RUN.THRESHOLD, RUN.EVENT_SPECIFIC, RUN.RACE_TOUCH, RUN.LONG, RUN.RACE, RUN.FAMILIAR_REPEATED_BOUTS; EASY for RUN.EASY (all purposes), RUN.WALK_JOG and strides; NONE for RUN.WALK.",
+      "strengthLower": "Max lower-body demand of the session rows after the R6 dose adjustment: a HEAVY configuration with fewer than policy:operational.hybrid.heavyLowerMinimumSets sets counts MODERATE; a MODERATE one with fewer than 2 sets counts LIGHT; CALF rows count at most LIGHT (src/r6-balanced.mjs lowerDemand at the freeze).",
+      "strengthKey": "A strength session is key when it is heavy and contains a MAIN SQUAT or HINGE row."
+    },
+    "gaps": {"sameSession": "policy:operational.hybrid.sameSessionGapHours", "nextDay": "policy:operational.hybrid.nextDayGapHours", "twoDay": "policy:operational.hybrid.twoDayGapHours", "heavyLowerRepeat": "policy:operational.hybrid.heavyLowerRepeatGapHours", "preRaceStrength": "policy:operational.hybrid.preRaceStrengthGapHours", "turnHours": "policy:operational.hybrid.turnHours", "backToBack": "policy:operational.hybrid.backToBackGapHours"},
+    "interferenceRelations": [
+      {"id": "CMP.I01", "before": "strength lower MODERATE or HEAVY", "after": "RUN.RACE", "gap": "<= preRaceStrength", "axis": "run", "severity": "HIGH"},
+      {"id": "CMP.I02", "before": "strength lower HEAVY", "after": "KEY run", "gap": "<= nextDay", "axis": "run", "severity": "MODERATE"},
+      {"id": "CMP.I03", "before": "strength lower HEAVY", "after": "KEY run", "gap": "> nextDay and <= twoDay", "axis": "run", "severity": "LOW"},
+      {"id": "CMP.I04", "before": "strength lower MODERATE", "after": "KEY run", "gap": "<= nextDay", "axis": "run", "severity": "LOW"},
+      {"id": "CMP.I05", "before": "KEY run", "after": "strength lower HEAVY", "gap": "<= sameSession", "axis": "strength", "severity": "MODERATE"},
+      {"id": "CMP.I06", "before": "KEY run", "after": "strength lower HEAVY", "gap": "> sameSession and <= nextDay", "axis": "strength", "severity": "LOW"},
+      {"id": "CMP.I07", "before": "KEY run", "after": "strength lower MODERATE", "gap": "<= sameSession", "axis": "strength", "severity": "LOW"},
+      {"id": "CMP.I08", "before": "EASY run", "after": "strength lower MODERATE or HEAVY", "gap": "<= sameSession", "axis": "strength", "severity": "LOW", "condition": "strength has a development role (policy:operational.hybridSemantics.anyRunBeforeLowerStrengthSameSession)"},
+      {"id": "CMP.I09", "before": "KEY run", "after": "KEY run other than the race", "gap": "<= nextDay", "axis": "run", "severity": "MODERATE"},
+      {"id": "CMP.I10", "before": "strength lower HEAVY", "after": "strength lower HEAVY", "gap": "<= heavyLowerRepeat", "axis": "strength", "severity": "MODERATE"},
+      {"id": "CMP.I11", "before": "a session containing a HIGH-eccentric lower configuration or a lower configuration in its first or re-establishment exposure", "after": "RUN.LONG or a quality KEY run", "gap": "<= nextDay", "axis": "run", "severity": "LOW", "authorityStatus": "B0_CANDIDATE", "candidate": "B0-C11", "authority": "SIS section 5 (DR-112 paragraph, SSCTR OB-2 Q1/Q2): heavier, eccentric or new leg work stays away from the day before the long run and the same day before it when days allow; otherwise demand falls by content and the trade-off is explained."}
+    ],
+    "interferenceNotes": "Upper-body and trunk work carry no lower-body demand class and create no run-axis cost (R6-HYBRID-ARRANGEMENT claim). Severities are ordinal only, never summed; individual evidence may raise a cause's severity for that athlete (association, not causation).",
+    "protectedStimuli": [
+      {"lead": "RUN", "protect": ["RUN.LONG", "the week's single quality KEY run"], "strengthRole": "Support or maintain: keeps an essential stimulus (main lifts at the goal or phase dose); never removed in event phases."},
+      {"lead": "STRENGTH", "protect": ["key strength sessions (heavy MAIN SQUAT/HINGE)", "MAIN upper sessions"], "runRole": "Easy participation kept on the chosen run days; in strength-led blocks the long run's content may yield (SIS section 5)."},
+      {"lead": "JOINT", "protect": ["both"], "rule": "Pareto first, then lowest worst-case joint harm; a genuine equal-harm opposing trade-off is asked once ('which session should stay freshest this block?')."}
+    ],
+    "placementRules": [
+      {"id": "CMP.P01", "authority": "DR-112", "rule": "Chosen days and shifts are hard constraints; no session on an unchosen day; more days spread the weekly load, never add to it; missed work is never stacked."},
+      {"id": "CMP.P02", "authority": "DR-112", "rule": "Same day in both sports: two sessions. Same day and same shift: back-to-back, confirmed explicitly; the day's key session goes first by the phase lead; JOINT with both key: ASK; the person can swap. Different shifts on the same day: gap from policy:operational.hybrid.turnHours, labelled 'earlier the same day'."},
+      {"id": "CMP.P03", "authority": "R6-RUN-QUALITY", "rule": "At most one quality session per week; not on the day before or after the long run when another chosen run day can hold it."},
+      {"id": "CMP.P04", "authority": "B0-C11 under SIS section 5", "rule": "Heavier (HEAVY), HIGH-eccentric or new lower-body work is placed away from the day before the long run and the same day before it when the chosen days allow; when every strength day neighbours the long run, the lower-body demand of that session falls by content (established, non-HIGH-eccentric configurations of the same patterns) and the trade-off is disclosed; in a strength-led block the long run's content may yield instead."},
+      {"id": "CMP.P05", "authority": "R6-HYBRID-ARRANGEMENT / CMP.I10", "rule": "Two heavy lower-body sessions within policy:operational.hybrid.heavyLowerRepeatGapHours are avoided when an alternative exists; axial-HIGH configurations are the first to be replaced by a lower-axial same-pattern alternative when a heavy lower session neighbours a key run or another heavy lower session (axial is a tie-break, never an additive score)."},
+      {"id": "CMP.P06", "authority": "R6-EVENT-TRANSITION", "rule": "No lower-body strength within policy:operational.hybrid.preRaceStrengthGapHours before the race; race-window strength per policy:operational.event.proximitySemantics."},
+      {"id": "CMP.P07", "authority": "R6-PLANNED-PROGRESSION", "rule": "Consolidation (recovery) week every policy:operational.run.consolidationEveryNthDevelopmentWeek development weeks: run intensity held, long run shortened by policy:operational.run.consolidationLongRunReductionSteps steps, strength sets reduced by policy:operational.strength.consolidationSetReduction; EARNED does not skip it into progression (policy:operational.learning.pooling.consolidationFeedsEarned)."},
+      {"id": "CMP.P08", "authority": "R6-NONCLINICAL-RETURN", "rule": "Return states compose with the same relations: return runs are EASY class, no quality in return; every strength exposure of a return-entry week is at the entry dose (policy:operational.return.strengthEntryWeek)."},
+      {"id": "CMP.P09", "authority": "B0-C08 and R6-COLD-START", "rule": "Novice constraints: walk/jog at most policy:operational.establishment.maxWalkJogDaysPerWeek exposures; strength class NONE at most two full templates per week until the first block boundary (strength.noviceDensity)."}
+    ],
+    "ranking": {"rule": "policy:operational.hybridSemantics.ranking", "horizons": "H0 session, H1 week, H2 block (shifted by the phase lead and maintain roles), H3 goal/event (shifted by development and event proximity) (src/r6-balanced.mjs horizonCosts).", "equalCost": "policy:operational.hybridSemantics.equalCostOrder", "unknownArrangement": "policy:operational.hybridSemantics.unknownArrangementResponse", "disclosure": "policy:operational.hybridSemantics.disclosure", "trace": ["PARETO", "LOWEST_WORST_CASE_JOINT_HARM", "PARETO_THEN_EQUIVALENT", "EQUIVALENT_NO_TRADE_OFF", "TEMPORARY_PREFERENCE", "ATHLETE_EVIDENCE", "KEEP_CURRENT", "GENUINE_TRADE_OFF"]},
+    "infeasibleOrIncomparable": [
+      {"id": "GENUINE_TRADE_OFF", "representation": "ASK once with the options; a stated temporary preference or strong repeated athlete evidence resolves it."},
+      {"id": "TOO_MANY_RUN_DAYS_FOR_CURRENT_PRACTICE", "representation": "Non-blocking negotiation; extra days carry walks that convert at block starts."},
+      {"id": "STRENGTH_DAYS_ABOVE_CURRENT_PRACTICE", "representation": "Non-blocking negotiation (B0-C08)."},
+      {"id": "EQUIPMENT_LIMITS_STRENGTH_SESSION", "representation": "Non-blocking negotiation when fewer than two patterns fit a session."},
+      {"id": "PULL_LIMITED_FOR_EQUIPMENT", "representation": "Non-blocking disclosure (B0-C09)."},
+      {"id": "EVENT_AMBITIOUS_FOR_CURRENT_RUNNING", "representation": "Non-blocking negotiation (policy:operational.event.raceDayCompletion)."},
+      {"id": "LONG_RUN_PEAK_BELOW_TARGET", "representation": "Disclosure; material-to-goal feasibility negotiation is R7-B (JUDGE-CQ-R6-05)."},
+      {"id": "EVENT_TOO_CLOSE_OR_OUTSIDE_HORIZON", "representation": "Negotiated or asked; never compressed silently."}
+    ]
+  },
+  "classification": {
+    "authorityStatus": "APPROVED_ENVELOPE", "envelopes": ["R6-COLD-START"], "productDecisions": ["DR-112", "DR-114", "DR-115", "DR-121", "DR-123"],
+    "signals": [
+      {"id": "eligibility", "source": "intake current nonclinical eligibility, dated", "use": "Status gate", "missing": "ASK", "clinical": "CLINICAL_HUMAN_REQUIRED (policy:operational.return.eligibilityFlags)"},
+      {"id": "ageAndPopulation", "source": "18+ step; special populations", "use": "Scope", "rule": "Outside 18-80, pregnancy, postpartum, adolescent, elite: UNSUPPORTED"},
+      {"id": "runGoal", "source": "goal kind", "use": "Archetype, long-run target, development intent"},
+      {"id": "strengthGoal", "source": "goal kind", "use": "Archetype, goal dose, goal-context slots"},
+      {"id": "event", "source": "kind, date, optional time goal", "use": "Phases, time to event, feasibility; the time goal is context only", "rule": "Marathon/ultra: UNSUPPORTED; 5K: no event recipe (LATER.EVENT.5K)"},
+      {"id": "runExperience", "source": "NONE/NOVICE/INTERMEDIATE/EXPERIENCED", "use": "Run class"},
+      {"id": "recentRunning", "source": "minutes/week, days/week, longest run, basis (self-report or wearable-conservative)", "use": "Run class, week-1 ceilings", "missing": "EASY_UNKNOWN entry (SAFE_CONSERVATIVE_ESTABLISHMENT)"},
+      {"id": "familiarQuality", "source": "current known run tasks", "use": "QUALITY_FAMILIAR class; SSCTR-R2-P14 targets"},
+      {"id": "performanceAnchors", "source": "recent races", "use": "Context only; never a training pace"},
+      {"id": "strengthExperience", "source": "training age", "use": "Strength class; skill admissibility"},
+      {"id": "knownExercises", "source": "familiar flag, current dose, load hint, observedAt", "use": "KNOWN_LOAD class; HIGH-skill familiarity; dose continuation; resume clock"},
+      {"id": "equipment", "source": "declared equipment and dated windows", "use": "Configuration admissibility and disclosures"},
+      {"id": "emphasis", "source": "strength emphasis and movement priorities", "use": "Slot ordering and accessory choice inside goal doses"},
+      {"id": "schedule", "source": "run/strength days, shifts, long-run day, time per session, same-shift confirmation", "use": "Hard composition constraints (DR-112)"},
+      {"id": "statedPriority", "source": "ON-06 answer or a temporary preference", "use": "Resolves genuine trade-offs and same-shift order; never overrides event-phase leads or protections; never required (DR-115; R6 request section 4)"},
+      {"id": "rotationPreference", "source": "COACH_DECIDES/EVERY_6_WEEKS/EVERY_2_WEEKS/FIXED", "use": "Rotation eligibility (strength.rotation)"},
+      {"id": "interruption", "source": "structured reason, days, dates", "use": "Return class (SHORT/MODERATE/LONG) or clinical route (policy:operational.return.reasonScreen)"},
+      {"id": "wearableHistory", "source": "HealthKit canonical facts with provenance and capability flags (DR-121, DR-123)", "use": "Exposure lower bound, never tolerance; disagreement: LEARN_DURING_FIRST_SESSIONS", "rule": "Absent fields stay absent; never fabricated"},
+      {"id": "executedEvidence", "source": "completed-work ledger and gates (R7-A HistoricalState)", "use": "Progression state, graduation, return ceilings, adverse-response regression"},
+      {"id": "learningConsent", "source": "consent", "use": "Athlete-specific patterns only with consent (policy:operational.learning.consentScope)"},
+      {"id": "sexHeightWeight", "source": "optional body data", "use": "NONE for dose, volume, frequency, selection, progression or pace (DR-114); no numeric load prior is approved"}
+    ],
+    "statuses": ["CLINICAL_HUMAN_REQUIRED", "UNSUPPORTED", "INVALID_INPUT", "ASK", "CANONICAL"],
+    "unknownCategories": ["SAFE_CONSERVATIVE_ESTABLISHMENT", "ASK_REQUIRED", "LEARN_DURING_FIRST_SESSIONS", "CLINICAL_OUT_OF_SCOPE"],
+    "runClasses": [
+      {"id": "NOT_PROGRAMMED", "predicate": "Run goal NONE or no chosen run days"},
+      {"id": "WALK_JOG", "predicate": "Experience NONE; or NOVICE with weekly minutes unknown, < 45 or 0 run days; or current longest run or weekly running below policy:operational.run.minimumSessionMinutes without a long pause"},
+      {"id": "RESTART", "predicate": "0 run days or 0 weekly minutes, or a structured nonclinical pause of 4 weeks or more"},
+      {"id": "EASY_UNKNOWN", "predicate": "Weekly running minutes unknown"},
+      {"id": "EASY_LOW", "predicate": "NOVICE, or < 60 weekly minutes, or < 2 run days"},
+      {"id": "QUALITY_FAMILIAR", "predicate": "A current familiar THRESHOLD/CRUISE/TEN_K_SPECIFIC/HALF_MARATHON_SPECIFIC task"},
+      {"id": "EASY_CURRENT", "predicate": "Otherwise"}
+    ],
+    "runClassSource": "runtime:src/r6-program.mjs assessCapability at the freeze (reviewed runtime binding of R6-COLD-START). The 45 and 60 minute and 2-day thresholds are runtime constants, not policy fields: declare them at the next policy revision (gap B0-F05).",
+    "strengthClasses": [
+      {"id": "NOT_PROGRAMMED", "predicate": "Strength goal NONE or no chosen strength days"},
+      {"id": "KNOWN_LOAD", "predicate": "At least one current known dose (not after a long pause)"},
+      {"id": "FAMILIAR_UNKNOWN_LOAD", "predicate": "INTERMEDIATE/EXPERIENCED, or any familiar exercise"},
+      {"id": "NONE", "predicate": "Otherwise"}
+    ],
+    "skillAdmissibility": {"rule": "Experience NONE/NOVICE: LOW skill; INTERMEDIATE/EXPERIENCED: up to MODERATE; HIGH only when the configuration is familiar (R6 candidatesFor), or reached through strength.skillLadders at a block boundary with agency (B0-C07). Equipment availability never implies competence."},
+    "graduation": {
+      "authorityStatus": "B0_CANDIDATE", "candidate": "B0-C01",
+      "run": "After walk/jog exit, strides become eligible under strides.requiresEstablishedEasyWeeks executed established easy weeks. At a block boundary in a build/development phase, a WALK_JOG-, RESTART- or EASY_LOW-started athlete is re-assessed from executed evidence only: when the last policy:operational.run.qualityRequiresEstablishedEasyWeeks executed weeks each reached at least 60 executed running minutes on at least 2 run days (walks excluded) without an adverse signal, the athlete is treated as EASY_CURRENT for quality eligibility (threshold ladder step 0). Executed evidence supersedes a self-declared NOVICE label for this purpose only. Never inside SPECIFIC/TAPER/race window/post-event, never in RESTART/RETURN mode.",
+      "strength": "B0-C07 skill ladders: PRACTICE -> establishment -> goal dose per pattern; higher-skill configurations only at a block boundary with agency."
+    }
+  },
+  "archetypes": {
+    "authorityStatus": "B0_CANDIDATE", "candidate": "B0-C12", "basis": "Derived from the R6 contextual goal model (src/r6-program.mjs buildGoalModel at the freeze; R6 request section 4); no static priority flag.",
+    "consumers": ["Arrangement ranking (H2/H3 lead shift)", "Protected stimuli and session roles (composition.protectedStimuli)", "Strength goal dose role (development vs support/maintain)", "Explanations and disclosures"],
+    "derivation": "runDev = run goal RACE or PERFORMANCE; strDev = strength goal STRENGTH or HYPERTROPHY. base = STRENGTH if run not programmed; RUN if strength not programmed; with an event: JOINT if strDev else RUN; else JOINT if runDev and strDev; RUN if runDev; STRENGTH if strDev; else JOINT.",
+    "items": [
+      {"id": "ARCH.RUN_ONLY", "when": "Strength not programmed", "baseLead": "RUN"},
+      {"id": "ARCH.STRENGTH_ONLY", "when": "Run not programmed", "baseLead": "STRENGTH"},
+      {"id": "ARCH.RUN_LED", "when": "Both programmed and base RUN", "baseLead": "RUN"},
+      {"id": "ARCH.STRENGTH_LED", "when": "Both programmed and base STRENGTH", "baseLead": "STRENGTH"},
+      {"id": "ARCH.JOINT", "when": "Both programmed and base JOINT (both develop, or neither)", "baseLead": "JOINT"}
+    ],
+    "phaseLeads": {"ESTABLISHMENT": "base", "BUILD": "base", "DEVELOPMENT": "base", "CONSOLIDATION": "base", "SPECIFIC": "RUN", "TAPER": "RUN", "RACE_WEEK": "RUN", "POST_EVENT": "JOINT", "NEXT_BLOCK": "RUN if strength not programmed; STRENGTH if strDev or run not programmed; else JOINT"},
+    "overlaysNotArchetypes": {"EVENT_PREP": "Phase sequence on any archetype with a supported event (trajectories.event).", "NOVICE": "Run mode and strength class states (trajectories.novice).", "RETURNING": "Interruption episode and return modes (trajectories.return)."},
+    "temporaryPreference": "A stated priority (ON-06 or temporary) resolves genuine trade-offs and same-shift order only; it never sets the archetype."
+  },
+  "trajectories": {
+    "authorityStatus": "APPROVED_ENVELOPE", "note": "State machines; guards reference policy paths; states are PROGRESSION_STATE values written only by executed evidence (R7-A state model).",
+    "run": {
+      "states": ["NONE", "WALK_JOG(step)", "EASY", "RESTART(minutes)", "RETURN_SHORT", "RETURN_MODERATE(step)", "CLINICAL_HOLD", "ASK_HOLD"],
+      "transitions": [
+        {"from": "intake", "to": "WALK_JOG(0..)", "guard": "run class WALK_JOG"},
+        {"from": "intake", "to": "RESTART(entry)", "guard": "run class RESTART"},
+        {"from": "intake", "to": "EASY", "guard": "classes EASY_UNKNOWN, EASY_LOW, EASY_CURRENT, QUALITY_FAMILIAR"},
+        {"from": "WALK_JOG(i)", "to": "WALK_JOG(i+1)", "guard": "executed week without adverse signal"},
+        {"from": "WALK_JOG(i)", "to": "WALK_JOG(i-1)", "guard": "repeated adverse responses (policy:operational.learning.repeatedAdverseForRegression within policy:operational.learning.repeatedAdverseWindowDays)"},
+        {"from": "WALK_JOG(last)", "to": "EASY", "guard": "last step executed (policy:operational.run.walkJogExit)"},
+        {"from": "RESTART(m)", "to": "RESTART(m+step)", "guard": "executed week without adverse signal (policy:operational.run.restart)"},
+        {"from": "RESTART(m)", "to": "EASY", "guard": "m reaches policy:operational.run.restart.switchToEasyAtMinutes"},
+        {"from": "EASY", "to": "EASY+quality", "guard": "RUN.THRESHOLD eligibility (incl. B0-C01 graduation)"},
+        {"from": "any", "to": "RETURN_SHORT", "guard": "structured nonclinical interruption <= policy:operational.return.shortMaxDays days: resume last executed doses, hold policy:operational.return.shortHoldWeeks week, first quality slot easy"},
+        {"from": "any", "to": "RETURN_MODERATE(1)", "guard": "<= policy:operational.return.moderateMaxDays days: demonstration or entry, then policy:operational.return.moderateStepsToPrior steps to the prior executed dose"},
+        {"from": "any", "to": "RESTART(entry)", "guard": "> policy:operational.return.moderateMaxDays days: achieved peaks cleared (policy:operational.return.restartRunHistory)"},
+        {"from": "any", "to": "CLINICAL_HOLD", "guard": "clinical category, mention or flag: CLINICAL_HUMAN_REQUIRED, no substitute dose, dependent scope only (AEC 7.1)"},
+        {"from": "any", "to": "ASK_HOLD", "guard": "ambiguous or missing reason/eligibility: ASK"}
+      ],
+      "invariants": ["R7-A E1: a return never starts above the running state or dose last executed and tolerated", "R7-A: an interruption keeps one identity through corrections", "Nothing progresses from elapsed calendar time", "Released is not executed"]
+    },
+    "event": {
+      "phases": ["BUILD/DEVELOPMENT", "SPECIFIC", "TAPER", "RACE_WINDOW", "RACE", "POST_EVENT", "NEXT_BLOCK"],
+      "rules": {"phasePlan": "policy:operational.event.specificWeeks, policy:operational.event.taperWeeks; an event too close is negotiated", "proximity": "policy:operational.event.proximitySemantics", "dosesFromAchievedPeaks": "policy:operational.event.achievedPeakBasis", "modeAware": "policy:operational.event.modeAwareSessions", "raceDay": "policy:operational.event.raceDayCompletion", "postEvent": "policy:operational.event.postRaceEligibility", "nextBlock": "policy:operational.event.nextBlock"},
+      "combinedTaper": "Strength stays at a reduced dose: specific weeks one set fewer at RIR >= 3; taper days policy:operational.event.taperStrengthSetFraction of sets; race window none in the last policy:operational.event.raceWeekStrengthMinDaysBeforeRace days and at most one light session (policy:operational.event.raceWeekStrengthSets set, main lifts, RIR >= policy:operational.event.raceWeekStrengthMinimumRir) on the strength day furthest from the race; post-event policy:operational.event.postEventStrengthSets light session; no new exercise, load increase or rotation (R6-EVENT-TRANSITION)."
+    },
+    "strengthExercise": {
+      "states": ["NOT_PERFORMED", "PRACTICE", "ESTABLISH", "FROM_LOG_PENDING", "FROM_LOG_ADOPTED", "KNOWN", "REESTABLISH", "RETURN_ENTRY", "RETURN_STEP", "BODYWEIGHT"],
+      "transitions": [
+        {"from": "NOT_PERFORMED", "to": "PRACTICE", "guard": "strength class NONE, establishment week, first of week (policy:operational.establishment.unloadedPractice)"},
+        {"from": "NOT_PERFORMED|PRACTICE", "to": "ESTABLISH", "guard": "loaded configuration; effort-guided ramp (policy:operational.establishment.effortGuidedLoad)"},
+        {"from": "ESTABLISH", "to": "FROM_LOG_PENDING", "guard": "executed with a usable logged load"},
+        {"from": "FROM_LOG_PENDING", "to": "FROM_LOG_ADOPTED", "guard": "confirmation, agreeing second log or agreeing hint (policy:operational.strength.loggedLoadAdoption)"},
+        {"from": "KNOWN|FROM_LOG_ADOPTED", "to": "same, next step", "guard": "ADVANCE or EARNED gates (policy:operational.strength.gates)"},
+        {"from": "KNOWN|FROM_LOG_ADOPTED", "to": "same, one step back", "guard": "repeated missed-rep or adverse exposures within policy:operational.learning.repeatedAdverseWindowDays"},
+        {"from": "any loaded", "to": "REESTABLISH", "guard": "not performed for more than policy:operational.return.moderateMaxDays days (policy:operational.strength.resumeAfterDays)"},
+        {"from": "any", "to": "RETURN_ENTRY", "guard": "moderate or long return (policy:operational.return.strengthReturnSets)"},
+        {"from": "RETURN_ENTRY", "to": "RETURN_STEP", "guard": "executed entry"},
+        {"from": "rotation or substitution", "to": "ESTABLISH (new configuration)", "guard": "no load transfer"}
+      ],
+      "invariants": ["Missing logs hold, never regress", "Missing data is not poor tolerance", "MAINTAIN is goal-context specific (decision-authority section C)", "HOLD repeats the current valid dose and earns nothing", "Load is never derived from sex, body size, another exercise or implement"]
+    },
+    "novice": {
+      "run": ["WALK_JOG(0) or EASY entry", "walk/jog ladder (<= 3 exposures, extra days walks)", "exit: easy runs of walkJogExit.easyMinutes", "walk conversion one at a time at block starts", "strides after the executed-week count (B0-C01)", "quality only through the executed-evidence graduation at a block boundary (B0-C01)", "event-specific work only after executed threshold sessions; completion race day when the program history used walk/jog or restart"],
+      "strength": ["PRACTICE configurations (practiceFor) in the establishment week", "effort-guided establishment of LOW-skill loaded configurations", "goal dose with FROM_LOG adoption", "at most two full templates per week until the first block boundary (B0-C08)", "MODERATE/HIGH skill only through skill ladders at a block boundary with agency (B0-C07)"]
+    }
+  },
+  "safety": {
+    "authorityStatus": "APPROVED_PRODUCT_DECISION", "productDecisions": ["DR-99", "DR-112"], "contracts": ["product/ADAPTIVE_ENGINE_CONTRACT.md section 7.1", "policy:operational.return.reasonScreen", "policy:operational.return.eligibilityFlags"],
+    "productMay": ["Adapt inside the approved envelopes", "Reduce or hold a dose (progression HOLD repeats the current valid dose)", "Regress one step after repeated adverse responses", "Replace a session on a chosen day with an explained lower-demand option", "Ask (ASK) for missing eligibility or decisive facts", "Exclude evidence: quarantine conflicts, expire stale data, merge duplicates, preserving originals", "Recommend caution with a disclosure", "Route to a qualified human (CLINICAL_HUMAN_REQUIRED) for the dependent scope only", "Withhold dependent outputs (AEC 7.1 HOLD with cause, scope, owner and exit condition)"],
+    "productMustNot": ["Diagnose", "Treat or rehabilitate an injury; prescribe a 'safe' exercise for pain", "Infer disease, pregnancy or a clinical state", "Grant clearance by silence, time, score or checkbox", "Claim injury prevention, readiness, finish time or fitness gain", "Derive load from sex, body size or another exercise", "Derive pace from a time goal or easy pace", "Progress on missing data or elapsed time", "Create volume debt or stack missed work", "Let an LLM fill a missing policy or approval"],
+    "routes": {"clinicalCategoryMentionOrFlag": "CLINICAL_HUMAN_REQUIRED", "ambiguousOrMissing": "ASK", "unknownEligibility": "ASK (ELIGIBILITY_UNASSESSED; neither clearance nor illness)", "outOfScopePopulation": "UNSUPPORTED", "malformed": "INVALID_INPUT", "uncoveredRecipe": "LATER_GATE fallback or HOLD with owner; never an invented dose"},
+    "perFamily": "Each family's eligibility.negative and the envelope conditions it cites are its safety boundary; a B0_CANDIDATE without SSCTR approval is not prescribable."
+  },
+  "evidence": {
+    "manifest": "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-evidence-manifest.r12.json",
+    "map": [
+      {"topic": "Resistance training prescription, exercise selection, hypertrophy and strength doses", "sources": ["R6-S01", "R6-S11", "R6-S17", "R6-S38", "R6-S39", "R6-S52"], "use": "Goal doses (approved), B0-C03/C04/C05 candidates"},
+      {"topic": "Exercise variation and rotation", "sources": ["R6-S26", "R6-S27"], "use": "R6-ROTATION (approved), B0-C06"},
+      {"topic": "RIR accuracy and autoregulation", "sources": ["R6-S12", "R6-S13", "R6-S42"], "use": "Establishment and gates (approved)"},
+      {"topic": "Concurrent training interference, order and recovery duration", "sources": ["R6-S03", "R6-S04", "R6-S05", "R6-S06", "R6-S07", "R6-S08", "R6-S09", "R6-S30", "R6-S31", "R6-S53"], "use": "Composition relations (approved), B0-C11"},
+      {"topic": "Eccentric damage, repeated-bout effect and running economy", "sources": ["R6-S10", "R6-S48", "R6-S50", "R6-S51", "R6-S54", "R6-S55"], "use": "Eccentric/novelty metadata and CMP.I11 (B0-C04, B0-C11)"},
+      {"topic": "Strength training for runners", "sources": ["R6-S25", "R6-S34"], "use": "RUNNING_SUPPORT purpose and goal-context slots (B0-C05)"},
+      {"topic": "Running progression, intensity distribution, HIIT in recreational runners, talk test", "sources": ["R6-S02", "R6-S21", "R6-S22", "R6-S23", "R6-S24", "R6-S28", "R6-S29", "R6-S40", "R6-S41", "R6-S46"], "use": "Run families (approved), B0-C01, LATER_GATE classifications"},
+      {"topic": "Taper, detraining, deload, minimal dose", "sources": ["R6-S14", "R6-S15", "R6-S16", "R6-S19", "R6-S20", "R6-S36", "R6-S37", "R6-S43", "R6-S44", "R6-S45", "R6-S47", "R6-S49", "R6-S56"], "use": "Event transition and return (approved)"},
+      {"topic": "Familiar field targets, calibration constructs", "sources": ["CoachingCore/r2/domain/ACF_G05_RUN_CALIBRATION.md", "CoachingCore/r2/domain/LITERATURE_SNAPSHOT_R2.json"], "use": "SSCTR-R2-P14 path (approved), B0-C02"}
+    ],
+    "newResearch": "Owned by the SSCTR for the B0 candidates only where the project evidence is insufficient (request section 18)."
+  },
+  "candidates": [
+    {"id": "B0-C01", "title": "Run novice graduation: strides after walk/jog exit; executed-evidence quality eligibility at a block boundary", "where": ["run.families RUN.STRIDES, RUN.THRESHOLD", "classification.graduation.run"], "addresses": ["request section 14", "request section 16 novice to regular"]},
+    {"id": "B0-C02", "title": "Familiar repeated-bout (VO2-style) continuation inside the R6 week structure", "where": ["run.families RUN.FAMILIAR_REPEATED_BOUTS"], "addresses": ["request section 6 VO2-oriented when admissible"]},
+    {"id": "B0-C03", "title": "Strength configuration catalogue extension (B0-origin configurations) for the V1 population", "where": ["strength.configurations origin B0"], "addresses": ["request section 7", "readiness S1-S2"]},
+    {"id": "B0-C04", "title": "Demand and emphasis metadata as ordinal priors; load-convention corrections (SINGLE_IMPLEMENT, BAND_TENSION, ASSISTED_BODYWEIGHT, pull-up loading)", "where": ["strength.configurations fields", "strength.demandSemantics", "strength.muscleCounting", "vocabulary.loadConvention"], "addresses": ["JUDGE-CQ-R6-07", "readiness P1-P2"]},
+    {"id": "B0-C05", "title": "Contextual role admissibility and goal-context accessory slot alternatives inside the R6 templates and goal doses", "where": ["strength.templates goalContext", "strength.templateRules", "configurations roles/purposes"], "addresses": ["DR-134", "request section 7 hypertrophy, running support, durability"]},
+    {"id": "B0-C06", "title": "Rotation eligibility mapping, directed close-variation rule and MAIN block-boundary change with a recorded reason", "where": ["strength.rotation", "strength.closeVariationRule"], "addresses": ["DR-134 OPEN_FOR_B0", "ROTATION-CLOSE-VARIANTS"]},
+    {"id": "B0-C07", "title": "Skill ladders (practice-for, progression-of) and strength novice graduation", "where": ["strength.skillLadders", "classification.skillAdmissibility", "trajectories.novice.strength"], "addresses": ["request section 14"]},
+    {"id": "B0-C08", "title": "Strength novice density: at most two full templates per week until the first block boundary", "where": ["strength.noviceDensity", "composition CMP.P09"], "addresses": ["JUDGE-CQ-R6-10"]},
+    {"id": "B0-C09", "title": "PULL coverage and disclosure for equipment-limited profiles", "where": ["strength.pullCoverage"], "addresses": ["JUDGE-CQ-R6-12"]},
+    {"id": "B0-C10", "title": "LATER_GATE and UNSUPPORTED classifications with fallbacks", "where": ["laterGate"], "addresses": ["request sections 6 and 7 items outside approved envelopes"]},
+    {"id": "B0-C11", "title": "Composition: eccentric/new lower-body work before the long run or quality (CMP.I11, CMP.P04) and the axial tie-break (CMP.P05)", "where": ["composition"], "addresses": ["JUDGE-CQ-R6-08", "request section 9 high eccentric load, axial fatigue"]},
+    {"id": "B0-C12", "title": "Archetypes derived from the R6 goal model; event, novice and return as overlays", "where": ["archetypes"], "addresses": ["request section 10"]}
+  ],
+  "laterGatePolicy": {"candidate": "B0-C10", "rule": "An item listed in laterGate is never prescribed; its fallback is used. Promotion needs its own envelope review and SSCTR approval and, where it changes the V1 scope, a Founder decision."},
+  "laterGate": [
+    {"id": "LATER.RUN.STEADY", "status": "LATER_GATE", "reason": "ACF-G05: generic steady first prescription remains open; no reviewed envelope.", "fallback": "RUN.EASY (aerobic) or RUN.THRESHOLD (controlled-hard) by eligibility; RUN.EVENT_SPECIFIC half-marathon blocks cover event steady-hard work."},
+    {"id": "LATER.RUN.CONTINUOUS_TEMPO", "status": "LATER_GATE", "reason": "Not in the reviewed threshold ladder.", "fallback": "RUNCFG.THRESHOLD_INTERVALS."},
+    {"id": "LATER.RUN.VO2_DE_NOVO", "status": "LATER_GATE", "reason": "R6 known limits: no VO2max-calibrated work; ACF-G05 retains first-ever VO2 targets open.", "fallback": "RUN.THRESHOLD; RUN.EVENT_SPECIFIC in SPECIFIC; familiar tasks via RUN.FAMILIAR_REPEATED_BOUTS."},
+    {"id": "LATER.RUN.HILL_REPEATS", "status": "LATER_GATE", "reason": "R6-RUN-QUALITY: hills only when terrain is declared; no hill dose from flat pace; no reviewed grade/duration/downhill dose.", "fallback": "Easy and long runs on declared hilly terrain at the effort cue; terrain is session context."},
+    {"id": "LATER.RUN.SHORT_INTERVALS_SPEED", "status": "LATER_GATE", "reason": "ACF-G05 SHORT_INTERVALS: no protocol.", "fallback": "RUN.STRIDES."},
+    {"id": "LATER.RUN.FARTLEK_PROGRESSION_RUN", "status": "LATER_GATE", "reason": "No reviewed envelope; no consumer beyond existing families.", "fallback": "RUN.EASY."},
+    {"id": "LATER.RUN.FITNESS_TEST_TIME_TRIAL", "status": "LATER_GATE", "reason": "R6-COLD-START limits: no fitness test or maximal effort; no measured threshold.", "fallback": "Calibration by the first exposure to each family."},
+    {"id": "LATER.RUN.PACE_ZONES_DE_NOVO", "status": "LATER_GATE", "reason": "No approved pace-prediction or zone method.", "fallback": "EFFORT_CUE; FAMILIAR_FIELD_SESSION_TARGET for familiar tasks."},
+    {"id": "LATER.RUN.MULTI_WEEK_TAPER", "status": "LATER_GATE", "reason": "R6: one taper week.", "fallback": "policy:operational.event.taperWeeks."},
+    {"id": "LATER.EVENT.5K", "status": "LATER_GATE", "reason": "No reviewed event recipe (R6 covers 10K and half marathon).", "fallback": "PERFORMANCE goal without an event."},
+    {"id": "UNSUPPORTED.EVENT.MARATHON_ULTRA", "status": "UNSUPPORTED_V1", "reason": "R6 known limits and cold-start status; readiness drift D03.", "fallback": "UNSUPPORTED status at intake."},
+    {"id": "LATER.STR.NORDIC_HAMSTRING", "status": "LATER_GATE", "reason": "High eccentric dose, muscle-damage interference with running, transfer evidence mostly from team sports; needs its own dose envelope.", "fallback": "leg-curl-machine, db-rdl, single-leg-rdl-db by equipment."},
+    {"id": "LATER.STR.COPENHAGEN_ADDUCTION", "status": "LATER_GATE", "reason": "Population and dose evidence from football; no envelope.", "fallback": "lateral-lunge; adductor secondary work in squats and split squats."},
+    {"id": "LATER.STR.PLYOMETRICS", "status": "LATER_GATE", "reason": "Needs ground-contact dose, landing-competence and impact progression governance; no envelope.", "fallback": "RUN.STRIDES and the strength repertoire."},
+    {"id": "LATER.STR.BALLISTIC_OLYMPIC", "status": "LATER_GATE", "reason": "Kettlebell swings, cleans, jumps: power/ballistic family without an envelope.", "fallback": "Hinge configurations at goal dose."},
+    {"id": "LATER.STR.SUPERSET_DROPSET", "status": "LATER_GATE", "reason": "STIL section 6: admissible only when covered by a recipe; none reviewed.", "fallback": "Straight sets; the schema already represents members, order, transitions and rest."},
+    {"id": "LATER.STR.FAILURE_TRAINING", "status": "LATER_GATE", "reason": "Goal doses target RIR >= 2; no failure envelope.", "fallback": "policy:operational.strength.goalDoses."},
+    {"id": "UNSUPPORTED.STR.1RM_TESTING", "status": "UNSUPPORTED_V1", "reason": "STIL section 2: no 1RM test; R6-COLD-START: no maximal effort.", "fallback": "Effort-guided establishment."},
+    {"id": "LATER.STR.WEIGHTED_BODYWEIGHT", "status": "LATER_GATE", "reason": "Added load on pull-ups, dips or push-ups is not represented in V1.", "fallback": "Repetitions within the goal range; a loaded alternative of the same pattern."},
+    {"id": "LATER.STR.STAGNATION_RULE", "status": "LATER_GATE", "reason": "No plateau threshold may be invented (DR-134); whole-program stalls are R7-B.", "fallback": "Block-boundary review with a recorded reason."}
+  ],
+  "witnesses": {
+    "positive": [
+      {"id": "WP-RUN-01", "context": "Never-runner, run goal GENERAL, 3 run days, strength not programmed", "family": "RUN.WALK_JOG", "configuration": "RUNCFG.WALK_JOG_INTERVALS step 0", "progression": "step 1 after an executed week without adverse signal", "regression": "step 0 held on a single adverse; stays at step 0 on repeated adverse (floor)"},
+      {"id": "WP-RUN-02", "context": "Non-novice with longest current run 8 min and 20 min/week", "family": "RUN.WALK_JOG", "configuration": "RUNCFG.WALK_JOG_INTERVALS at the highest step within 8 min and 20/3 min per session (SSCTR D42)", "progression": "next step", "regression": "previous step after repeated adverse responses"},
+      {"id": "WP-RUN-03", "context": "WALK_JOG athlete executes the last ladder step", "family": "RUN.EASY", "configuration": "RUNCFG.EASY_CONTINUOUS at walkJogExit.easyMinutes", "progression": "easy step per cadence; walks convert at block starts", "regression": "repeat; one step back on repeated adverse"},
+      {"id": "WP-RUN-04", "context": "EASY_UNKNOWN athlete, 3 run days with long-run day Sunday", "family": "RUN.EASY", "configuration": "RUNCFG.EASY_CONTINUOUS at unknownExposureEasyMinutes; long run at the same entry; other days walks", "progression": "easy and long steps after executed weeks", "regression": "repeat"},
+      {"id": "WP-RUN-05", "context": "EASY_CURRENT, 150 min/week on 4 days, longest 50 min, goal PERFORMANCE", "family": "RUN.LONG", "configuration": "RUNCFG.LONG_CONTINUOUS at min(50 rounded down, share cap)", "progression": "+longRunStepMinutes per executed development week up to the PERFORMANCE target", "regression": "consolidation week -2 steps; repeat on adverse"},
+      {"id": "WP-RUN-06", "context": "EASY_CURRENT after 2 executed established easy weeks", "family": "RUN.THRESHOLD", "configuration": "RUNCFG.THRESHOLD_INTERVALS ladder step 0 (3 x 5 / 2) at THRESHOLD_CONTROLLED, first exposure is a calibration", "progression": "step 1 (4 x 5 / 2) after an executed comparable session without adverse signal", "regression": "repeat; step back on repeated adverse; fewer familiar repetitions under SSCTR-R2-P07"},
+      {"id": "WP-RUN-07", "context": "QUALITY_FAMILIAR with a current familiar 4 x 8 min task", "family": "RUN.THRESHOLD", "configuration": "Ladder step covering the familiar work (4 x 8 / 2), week 2", "progression": "3 x 10 / 2", "regression": "4 x 8 repeated; 3 x 8 on repeated adverse"},
+      {"id": "WP-RUN-08", "context": "10K event in 9 weeks, EASY mode, 2 executed threshold sessions, SPECIFIC phase", "family": "RUN.EVENT_SPECIFIC", "configuration": "RUNCFG.TEN_K_SPECIFIC_INTERVALS step 0 (5 x 3 / 2) at TEN_K_EFFORT", "progression": "6 x 3 / 2", "regression": "repeat; threshold ladder if the prerequisite is lost"},
+      {"id": "WP-RUN-09", "context": "Half marathon, SPECIFIC phase, prerequisites met", "family": "RUN.EVENT_SPECIFIC", "configuration": "RUNCFG.HALF_MARATHON_SPECIFIC_INTERVALS step 0 (2 x 12 / 3)", "progression": "3 x 10 / 2", "regression": "repeat"},
+      {"id": "WP-RUN-10", "context": "EASY_CURRENT after 2 executed established easy weeks", "family": "RUN.STRIDES", "configuration": "RUNCFG.STRIDES_SET entry repetitions after an easy run", "progression": "+1 repetition every two further executed easy weeks up to the maximum", "regression": "omitted (optional) on adverse response"},
+      {"id": "WP-RUN-11", "context": "10K race week, quality executed in the build", "family": "RUN.RACE_TOUCH", "configuration": "RUNCFG.RACE_TOUCH_INTERVALS 3 x 2 / 2 on the closest run day at least 3 days before", "progression": "none", "regression": "omitted when quality was not executed"},
+      {"id": "WP-RUN-12", "context": "Half marathon with achieved long run 70 min", "family": "RUN.RACE", "configuration": "RUNCFG.RACE_COMPLETION with EVENT_AMBITIOUS_FOR_CURRENT_RUNNING", "progression": "post-event rules", "regression": "n/a"},
+      {"id": "WP-RUN-13", "context": "Nonclinical 18-day travel break, current conversational 25-min run 3 days ago", "family": "RUN.EASY", "configuration": "RETURN_MODERATE: entry from the demonstration, two conditional steps to the prior executed dose", "progression": "step 2, then the prior executed dose", "regression": "repeat the step on adverse response; never above the prior executed dose (E1)"},
+      {"id": "WP-RUN-14", "context": "Nonclinical 6-week break", "family": "RUN.EASY", "configuration": "RESTART from the 15-min entry; achieved peaks cleared", "progression": "+5 min per executed week; EASY at 30 min", "regression": "repeat"},
+      {"id": "WP-RUN-15", "context": "Taper week for a 10K, achieved peak long 70 and peak quality 6 x 4", "family": "RUN.LONG / RUN.THRESHOLD", "configuration": "Long 0.55-0.7 of 70 min; quality 0.5-0.6 of 24 work minutes at the same effort", "progression": "race window", "regression": "easy-only when no quality was executed"},
+      {"id": "WP-RUN-16", "context": "QUALITY_FAMILIAR with an exact familiar 4 x 3 min harder task, field target, comparable conditions", "family": "RUN.FAMILIAR_REPEATED_BOUTS", "configuration": "The familiar recipe at its familiar target as the week's quality session (B0-C02)", "progression": "held (no progression)", "regression": "3 x 3 at the same target under SSCTR-R2-P07, or the threshold ladder"},
+      {"id": "WP-RUN-17", "context": "Walk/jog-started athlete, exited, then 2 executed weeks of 65 and 70 min on 3 days without adverse signal, block boundary in DEVELOPMENT", "family": "RUN.THRESHOLD", "configuration": "Ladder step 0 (B0-C01 graduation)", "progression": "step 1", "regression": "repeat; strides-only or easy if adverse"},
+      {"id": "WP-STR-01", "context": "Strength class NONE, goal GENERAL, home dumbbells, 2 days", "family": "STR.FULL_BODY", "configuration": "Week 1 PRACTICE rows (sit-to-stand, wall-pushup, prone-row-practice) then establishment of goblet-squat, db-floor-press, db-row", "progression": "FROM_LOG adoption, then reps in 8-12 then load", "regression": "repeat; one step back after repeated missed reps"},
+      {"id": "WP-STR-02", "context": "KNOWN_LOAD back squat 3 x 5 at 80 kg RIR 2, goal STRENGTH, full gym", "family": "STR.LOWER", "configuration": "back-squat MAIN at the known dose (LOAD mode)", "progression": "smallest TOTAL increment when ADVANCE gates hold", "regression": "one step back after repeated adverse; MAINTAIN dose under a goal change"},
+      {"id": "WP-STR-03", "context": "Goal HYPERTROPHY, MACHINES and DUMBBELLS, 4 days", "family": "STR.UPPER", "configuration": "TPL.UPPER with db-lateral-raise and db-biceps-curl filling the accessory alternatives (B0-C05)", "progression": "REPS_THEN_LOAD within 8-12", "regression": "repeat; previous load step"},
+      {"id": "WP-STR-04", "context": "Goal RUNNING_SUPPORT with a half-marathon event, dumbbells and bench, 2 days", "family": "STR.FULL_BODY", "configuration": "FULL_A calf slot standing-calf-raise, FULL_B lunge slot bulgarian-split-squat-db away from the day before the long run (CMP.P04)", "progression": "REPS_THEN_LOAD 6-10; specific weeks one set fewer", "regression": "db-split-squat (close variation) on SKILL_MISMATCH"},
+      {"id": "WP-STR-05", "context": "Rotation EVERY_2_WEEKS, accessory db-step-up in TPL.LOWER, BUILD phase", "family": "STR.LOWER", "configuration": "TWO_WEEK_ELIGIBLE: reverse-lunge-db as an admissible alternative, established by effort, no load transfer", "progression": "goal dose after adoption", "regression": "keep db-step-up (rotation is optional)"},
+      {"id": "WP-STR-06", "context": "Equipment window: travel with bands only for 10 days", "family": "STR.UPPER", "configuration": "band-row and band-pulldown substitute the machine pulls; disclosed; establishment; originals return after the window", "progression": "reps only (BAND_TENSION)", "regression": "n/a"},
+      {"id": "WP-STR-07", "context": "Moderate nonclinical return (3 weeks)", "family": "STR.LOWER", "configuration": "Every exposure 1 set at RIR >= 4 in the entry week", "progression": "step 2 then one set per executed week up to the ceiling", "regression": "entry repeated"},
+      {"id": "WP-STR-08", "context": "Kettlebell-only athlete", "family": "STR.FULL_BODY", "configuration": "kb-goblet-squat, kb-deadlift, push-up, kb-row (B0-C09)", "progression": "goal dose", "regression": "practice configuration of the pattern"},
+      {"id": "WP-STR-09", "context": "Bodyweight-only athlete", "family": "STR.UPPER", "configuration": "push-up MAIN; PULL slot prone-ytw-raise as ACCESSORY with PULL_LIMITED_FOR_EQUIPMENT", "progression": "reps", "regression": "prone-row-practice"},
+      {"id": "WP-STR-10", "context": "Strength class NONE with 4 chosen strength days", "family": "STR.FULL_BODY / STR.TRUNK_CALF", "configuration": "FULL_A, FULL_B and two TPL.CORE sessions with STRENGTH_DAYS_ABOVE_CURRENT_PRACTICE (B0-C08)", "progression": "templates by day count at the first block boundary when evidence supports it", "regression": "n/a"},
+      {"id": "WP-STR-11", "context": "Goblet squat completed a block with ADVANCE final exposures; athlete opts in", "family": "STR.LOWER", "configuration": "Block boundary: back-squat offered through the skill ladder (B0-C07), established by effort", "progression": "goal dose after adoption", "regression": "goblet-squat on SKILL_MISMATCH"},
+      {"id": "WP-HYB-01", "context": "Run-led, quality Tuesday, heavy lower option Monday PM or Tuesday PM", "family": "composition", "configuration": "Tuesday PM after the AM quality run: strength LOW (CMP.I06) preferred over Monday PM: run MODERATE (CMP.I02)", "progression": "n/a", "regression": "n/a"},
+      {"id": "WP-HYB-02", "context": "Strength-led, both sessions on the same shift Thursday", "family": "composition", "configuration": "Strength first (lead STRENGTH), easy run after; disclosed as either order when costs are equal", "progression": "n/a", "regression": "n/a"},
+      {"id": "WP-HYB-03", "context": "JOINT, equal worst-case harm with opposing costs", "family": "composition", "configuration": "GENUINE_TRADE_OFF: ASK once which session stays freshest", "progression": "n/a", "regression": "n/a"}
+    ],
+    "negative": [
+      {"id": "WN-01", "context": "WALK_JOG mode athlete", "request": "RUN.THRESHOLD", "expected": "NOT_ADMISSIBLE (mode)"},
+      {"id": "WN-02", "context": "Week 1, no familiar quality task", "request": "RUN.THRESHOLD or RUN.STRIDES", "expected": "NOT_ADMISSIBLE (activation counts executed weeks)"},
+      {"id": "WN-03", "context": "RESTART mode", "request": "RUN.STRIDES", "expected": "NOT_ADMISSIBLE"},
+      {"id": "WN-04", "context": "Race window", "request": "RUN.LONG", "expected": "NOT_ADMISSIBLE"},
+      {"id": "WN-05", "context": "Time goal 45:00 for a 10K", "request": "threshold pace derived from the goal", "expected": "UNSUPPORTED (PACE_FROM_GOAL_OR_EASY_PACE)"},
+      {"id": "WN-06", "context": "No familiar VO2-style task", "request": "4 x 3 min VO2 intervals", "expected": "LATER_GATE (LATER.RUN.VO2_DE_NOVO); fallback threshold"},
+      {"id": "WN-07", "context": "No declared terrain", "request": "hill repeats", "expected": "LATER_GATE (LATER.RUN.HILL_REPEATS)"},
+      {"id": "WN-08", "context": "Marathon event", "request": "event plan", "expected": "UNSUPPORTED at intake"},
+      {"id": "WN-09", "context": "Novice, no familiar barbell lift", "request": "back-squat", "expected": "NOT_ADMISSIBLE (skill) unless reached through the ladder at a block boundary with agency"},
+      {"id": "WN-10", "context": "Rotation to a new accessory", "request": "carry the old exercise's load", "expected": "FORBIDDEN (no load transfer)"},
+      {"id": "WN-11", "context": "TAPER week, EVERY_2_WEEKS", "request": "rotate an accessory", "expected": "DEFERRED (REASON_ONLY)"},
+      {"id": "WN-12", "context": "MAIN back-squat mid-block, EVERY_2_WEEKS", "request": "two-week rotation", "expected": "NOT_ELIGIBLE (MAIN is BLOCK_BOUNDARY_ELIGIBLE)"},
+      {"id": "WN-13", "context": "PRACTICE sit-to-stand", "request": "calendar rotation", "expected": "NOT_ELIGIBLE (REASON_ONLY)"},
+      {"id": "WN-14", "context": "Unknown load, sex given", "request": "starting kilograms from sex or body mass", "expected": "FORBIDDEN (DR-114)"},
+      {"id": "WN-15", "context": "Missing RIR logs", "request": "progress or regress", "expected": "HOLD without regression"},
+      {"id": "WN-16", "context": "Pause reason 'injury' or text 'broke my leg'", "request": "return recipe", "expected": "CLINICAL_HUMAN_REQUIRED, no substitute dose"},
+      {"id": "WN-17", "context": "Eligibility not answered", "request": "first program", "expected": "ASK"},
+      {"id": "WN-18", "context": "Two quality sessions requested", "request": "second quality", "expected": "NOT_ADMISSIBLE (one per week)"},
+      {"id": "WN-19", "context": "Chosen days Mon/Wed/Fri", "request": "session on Thursday", "expected": "FORBIDDEN (DR-112)"},
+      {"id": "WN-20", "context": "Missed long run", "request": "stack it into the next week", "expected": "FORBIDDEN (no volume debt)"},
+      {"id": "WN-21", "context": "Strength 2 days before a 10K", "request": "lower-body session", "expected": "NOT_ADMISSIBLE (CMP.P06)"},
+      {"id": "WN-22", "context": "Discomfort reported with the word 'pain'", "request": "swap to a 'safe' exercise", "expected": "CLINICAL_HUMAN_REQUIRED for the dependent scope; no rehabilitation rule"},
+      {"id": "WN-23", "context": "Any athlete", "request": "Nordic hamstring curls or plyometric jumps", "expected": "LATER_GATE"},
+      {"id": "WN-24", "context": "Band row", "request": "establish a kilogram load", "expected": "NOT_REPRESENTABLE (BAND_TENSION is ordinal)"},
+      {"id": "WN-25", "context": "Self-declared novice with 2 executed weeks of 40 min", "request": "threshold at the block boundary", "expected": "NOT_ELIGIBLE (graduation needs 60 executed min on 2 days in each of the counted weeks)"}
+    ]
+  }
+}

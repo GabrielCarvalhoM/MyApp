@@ -1,0 +1,2363 @@
+{
+  "revision": "R7B0-VALIDATION-1",
+  "checkedAt": "2026-10-31T03:57:19.395Z",
+  "catalog": {
+    "path": "CoachingCore/r7/b0/REPERTOIRE_CATALOG_B0.json",
+    "revision": "R7B0-CATALOG-1",
+    "sha256": "db8a253309a440ca6c9c2a53003e82e16e074aecfa1afae72bc59f35a440c5fe"
+  },
+  "schema": {
+    "path": "CoachingCore/r7/b0/REPERTOIRE_CATALOG_B0.schema.json",
+    "sha256": "8b51b80b5861cea189489db28f2c15125269f4d3a4eb1c937a30590184dcffd8"
+  },
+  "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+  "method": "Node standard library + pinned ajv 2020 from CoachingCore/node_modules; frozen runtime modules imported read-only for pure functions (assessCapability, buildGoalModel, interferenceCosts, lowerDemand, CATALOGUE); nothing written outside this report.",
+  "passed": 18,
+  "total": 18,
+  "checks": [
+    {
+      "id": "V01-schema-and-parameterization",
+      "pass": true,
+      "detail": {
+        "catalogValid": true,
+        "errors": [],
+        "instances": {
+          "runDose": true,
+          "strengthRowDose": true,
+          "progressionState": true,
+          "rejectsInvalidRow": true
+        }
+      }
+    },
+    {
+      "id": "V02-policy-binding",
+      "pass": true,
+      "detail": {
+        "policyHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+        "references": 111,
+        "unresolved": []
+      }
+    },
+    {
+      "id": "V03-r6-catalogue-fidelity",
+      "pass": true,
+      "detail": {
+        "r6Entries": 39,
+        "preserved": 39,
+        "b0Entries": 37,
+        "issues": [],
+        "declaredDeltas": [
+          {
+            "id": "goblet-squat",
+            "r6": {
+              "loading": "EXTERNAL",
+              "convention": "PER_HAND"
+            },
+            "b0": {
+              "loading": "EXTERNAL",
+              "conv": "SINGLE_IMPLEMENT"
+            }
+          },
+          {
+            "id": "kb-goblet-squat",
+            "r6": {
+              "loading": "EXTERNAL",
+              "convention": "PER_HAND"
+            },
+            "b0": {
+              "loading": "EXTERNAL",
+              "conv": "SINGLE_IMPLEMENT"
+            }
+          },
+          {
+            "id": "kb-deadlift",
+            "r6": {
+              "loading": "EXTERNAL",
+              "convention": "PER_HAND"
+            },
+            "b0": {
+              "loading": "EXTERNAL",
+              "conv": "SINGLE_IMPLEMENT"
+            }
+          },
+          {
+            "id": "hip-thrust-db",
+            "r6": {
+              "loading": "EXTERNAL",
+              "convention": "PER_HAND"
+            },
+            "b0": {
+              "loading": "EXTERNAL",
+              "conv": "SINGLE_IMPLEMENT"
+            }
+          },
+          {
+            "id": "one-arm-db-row",
+            "r6": {
+              "loading": "EXTERNAL",
+              "convention": "PER_HAND"
+            },
+            "b0": {
+              "loading": "EXTERNAL",
+              "conv": "SINGLE_IMPLEMENT"
+            }
+          },
+          {
+            "id": "pull-up",
+            "r6": {
+              "loading": "EXTERNAL",
+              "convention": "BODYWEIGHT"
+            },
+            "b0": {
+              "loading": "BODYWEIGHT",
+              "conv": "BODYWEIGHT"
+            }
+          },
+          {
+            "id": "band-row",
+            "r6": {
+              "loading": "BAND",
+              "convention": "BODYWEIGHT"
+            },
+            "b0": {
+              "loading": "BAND",
+              "conv": "BAND_TENSION"
+            }
+          },
+          {
+            "id": "side-plank",
+            "r6": {
+              "unilateral": false
+            },
+            "b0": {
+              "lat": "UNILATERAL"
+            },
+            "declared": true
+          },
+          {
+            "id": "pallof-press",
+            "r6": {
+              "unilateral": false
+            },
+            "b0": {
+              "lat": "UNILATERAL"
+            },
+            "declared": true
+          },
+          {
+            "id": "pallof-press",
+            "r6": {
+              "loading": "BAND",
+              "convention": "BODYWEIGHT"
+            },
+            "b0": {
+              "loading": "BAND",
+              "conv": "BAND_TENSION"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "V04-identity-and-references",
+      "pass": true,
+      "detail": {
+        "duplicateIds": [],
+        "unknownLadderIds": [],
+        "practiceForNotPractice": [],
+        "unknownPullIds": [],
+        "undefinedCandidates": [],
+        "unreferencedCandidates": [],
+        "b0WithoutCandidateStatus": [],
+        "badMuscles": [],
+        "badEquipment": [],
+        "primarySecondaryOverlap": []
+      }
+    },
+    {
+      "id": "V05-slot-coverage-by-equipment",
+      "pass": true,
+      "detail": {
+        "profiles": [
+          "FULL_GYM",
+          "MACHINES_AND_DUMBBELLS",
+          "HOME_DUMBBELLS_BENCH",
+          "HOME_DUMBBELLS",
+          "KETTLEBELL_ONLY",
+          "BANDS_ONLY",
+          "BANDS_AND_BAR",
+          "PULL_UP_BAR_ONLY",
+          "BODYWEIGHT_ONLY"
+        ],
+        "holes": [],
+        "pullDowngradesDisclosed": [
+          "PULL_UP_BAR_ONLY/NOVICE TPL.FULL_A",
+          "PULL_UP_BAR_ONLY/NOVICE TPL.FULL_B",
+          "PULL_UP_BAR_ONLY/NOVICE TPL.UPPER",
+          "PULL_UP_BAR_ONLY/NOVICE TPL.UPPER_B",
+          "PULL_UP_BAR_ONLY/INTERMEDIATE TPL.FULL_A",
+          "PULL_UP_BAR_ONLY/INTERMEDIATE TPL.FULL_B",
+          "PULL_UP_BAR_ONLY/INTERMEDIATE TPL.UPPER",
+          "PULL_UP_BAR_ONLY/INTERMEDIATE TPL.UPPER_B",
+          "BODYWEIGHT_ONLY/NOVICE TPL.FULL_A",
+          "BODYWEIGHT_ONLY/NOVICE TPL.FULL_B",
+          "BODYWEIGHT_ONLY/NOVICE TPL.UPPER",
+          "BODYWEIGHT_ONLY/NOVICE TPL.UPPER_B",
+          "BODYWEIGHT_ONLY/INTERMEDIATE TPL.FULL_A",
+          "BODYWEIGHT_ONLY/INTERMEDIATE TPL.FULL_B",
+          "BODYWEIGHT_ONLY/INTERMEDIATE TPL.UPPER",
+          "BODYWEIGHT_ONLY/INTERMEDIATE TPL.UPPER_B"
+        ],
+        "accessorySlotsLeftEmptyAndDisclosed": [
+          "KETTLEBELL_ONLY/NOVICE TPL.UPPER PUSH",
+          "BANDS_ONLY/NOVICE TPL.UPPER PUSH",
+          "BANDS_AND_BAR/NOVICE TPL.UPPER PUSH",
+          "PULL_UP_BAR_ONLY/NOVICE TPL.UPPER PUSH",
+          "BODYWEIGHT_ONLY/NOVICE TPL.UPPER PUSH",
+          "BODYWEIGHT_ONLY/NOVICE TPL.UPPER PULL",
+          "BODYWEIGHT_ONLY/INTERMEDIATE TPL.UPPER PULL"
+        ],
+        "matrix": {
+          "FULL_GYM/NOVICE": {
+            "TPL.FULL_A": [
+              "SQUAT:MAIN=goblet-squat",
+              "PUSH:MAIN=db-floor-press",
+              "PULL:MAIN=db-row",
+              "CALF:ACCESSORY=db-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.FULL_B": [
+              "HINGE:MAIN=kb-deadlift",
+              "PULL:MAIN=db-row",
+              "PUSH:MAIN=db-floor-press",
+              "LUNGE:ACCESSORY=reverse-lunge",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER": [
+              "SQUAT:MAIN=goblet-squat",
+              "HINGE:MAIN=kb-deadlift",
+              "LUNGE:ACCESSORY=reverse-lunge",
+              "CALF:ACCESSORY=db-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER": [
+              "PUSH:MAIN=db-floor-press",
+              "PULL:MAIN=db-row",
+              "PUSH:ACCESSORY=machine-chest-press",
+              "PULL:ACCESSORY=one-arm-db-row",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER_B": [
+              "HINGE:MAIN=kb-deadlift",
+              "LUNGE:MAIN=reverse-lunge",
+              "CALF:ACCESSORY=db-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER_B": [
+              "PULL:MAIN=db-row",
+              "PUSH:MAIN=db-floor-press",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.CORE": [
+              "TRUNK:ACCESSORY=dead-bug",
+              "CALF:ACCESSORY=db-calf-raise",
+              "TRUNK:ACCESSORY=front-plank"
+            ]
+          },
+          "FULL_GYM/INTERMEDIATE": {
+            "TPL.FULL_A": [
+              "SQUAT:MAIN=goblet-squat",
+              "PUSH:MAIN=db-bench-press",
+              "PULL:MAIN=db-row",
+              "CALF:ACCESSORY=db-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.FULL_B": [
+              "HINGE:MAIN=db-rdl",
+              "PULL:MAIN=db-row",
+              "PUSH:MAIN=db-bench-press",
+              "LUNGE:ACCESSORY=db-split-squat",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER": [
+              "SQUAT:MAIN=goblet-squat",
+              "HINGE:MAIN=db-rdl",
+              "LUNGE:ACCESSORY=db-split-squat",
+              "CALF:ACCESSORY=db-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER": [
+              "PUSH:MAIN=db-bench-press",
+              "PULL:MAIN=db-row",
+              "PUSH:ACCESSORY=db-floor-press",
+              "PULL:ACCESSORY=one-arm-db-row",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER_B": [
+              "HINGE:MAIN=db-rdl",
+              "LUNGE:MAIN=db-split-squat",
+              "CALF:ACCESSORY=db-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER_B": [
+              "PULL:MAIN=db-row",
+              "PUSH:MAIN=db-bench-press",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.CORE": [
+              "TRUNK:ACCESSORY=dead-bug",
+              "CALF:ACCESSORY=db-calf-raise",
+              "TRUNK:ACCESSORY=front-plank"
+            ]
+          },
+          "MACHINES_AND_DUMBBELLS/NOVICE": {
+            "TPL.FULL_A": [
+              "SQUAT:MAIN=goblet-squat",
+              "PUSH:MAIN=db-floor-press",
+              "PULL:MAIN=db-row",
+              "CALF:ACCESSORY=db-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.FULL_B": [
+              "HINGE:MAIN=glute-bridge",
+              "PULL:MAIN=db-row",
+              "PUSH:MAIN=db-floor-press",
+              "LUNGE:ACCESSORY=reverse-lunge",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER": [
+              "SQUAT:MAIN=goblet-squat",
+              "HINGE:MAIN=glute-bridge",
+              "LUNGE:ACCESSORY=reverse-lunge",
+              "CALF:ACCESSORY=db-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER": [
+              "PUSH:MAIN=db-floor-press",
+              "PULL:MAIN=db-row",
+              "PUSH:ACCESSORY=machine-chest-press",
+              "PULL:ACCESSORY=one-arm-db-row",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER_B": [
+              "HINGE:MAIN=glute-bridge",
+              "LUNGE:MAIN=reverse-lunge",
+              "CALF:ACCESSORY=db-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER_B": [
+              "PULL:MAIN=db-row",
+              "PUSH:MAIN=db-floor-press",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.CORE": [
+              "TRUNK:ACCESSORY=dead-bug",
+              "CALF:ACCESSORY=db-calf-raise",
+              "TRUNK:ACCESSORY=front-plank"
+            ]
+          },
+          "MACHINES_AND_DUMBBELLS/INTERMEDIATE": {
+            "TPL.FULL_A": [
+              "SQUAT:MAIN=goblet-squat",
+              "PUSH:MAIN=db-bench-press",
+              "PULL:MAIN=db-row",
+              "CALF:ACCESSORY=db-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.FULL_B": [
+              "HINGE:MAIN=db-rdl",
+              "PULL:MAIN=db-row",
+              "PUSH:MAIN=db-bench-press",
+              "LUNGE:ACCESSORY=db-split-squat",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER": [
+              "SQUAT:MAIN=goblet-squat",
+              "HINGE:MAIN=db-rdl",
+              "LUNGE:ACCESSORY=db-split-squat",
+              "CALF:ACCESSORY=db-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER": [
+              "PUSH:MAIN=db-bench-press",
+              "PULL:MAIN=db-row",
+              "PUSH:ACCESSORY=db-floor-press",
+              "PULL:ACCESSORY=one-arm-db-row",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER_B": [
+              "HINGE:MAIN=db-rdl",
+              "LUNGE:MAIN=db-split-squat",
+              "CALF:ACCESSORY=db-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER_B": [
+              "PULL:MAIN=db-row",
+              "PUSH:MAIN=db-bench-press",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.CORE": [
+              "TRUNK:ACCESSORY=dead-bug",
+              "CALF:ACCESSORY=db-calf-raise",
+              "TRUNK:ACCESSORY=front-plank"
+            ]
+          },
+          "HOME_DUMBBELLS_BENCH/NOVICE": {
+            "TPL.FULL_A": [
+              "SQUAT:MAIN=goblet-squat",
+              "PUSH:MAIN=db-floor-press",
+              "PULL:MAIN=db-row",
+              "CALF:ACCESSORY=db-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.FULL_B": [
+              "HINGE:MAIN=glute-bridge",
+              "PULL:MAIN=db-row",
+              "PUSH:MAIN=db-floor-press",
+              "LUNGE:ACCESSORY=reverse-lunge",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER": [
+              "SQUAT:MAIN=goblet-squat",
+              "HINGE:MAIN=glute-bridge",
+              "LUNGE:ACCESSORY=reverse-lunge",
+              "CALF:ACCESSORY=db-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER": [
+              "PUSH:MAIN=db-floor-press",
+              "PULL:MAIN=db-row",
+              "PUSH:ACCESSORY=incline-push-up",
+              "PULL:ACCESSORY=one-arm-db-row",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER_B": [
+              "HINGE:MAIN=glute-bridge",
+              "LUNGE:MAIN=reverse-lunge",
+              "CALF:ACCESSORY=db-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER_B": [
+              "PULL:MAIN=db-row",
+              "PUSH:MAIN=db-floor-press",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.CORE": [
+              "TRUNK:ACCESSORY=dead-bug",
+              "CALF:ACCESSORY=db-calf-raise",
+              "TRUNK:ACCESSORY=front-plank"
+            ]
+          },
+          "HOME_DUMBBELLS_BENCH/INTERMEDIATE": {
+            "TPL.FULL_A": [
+              "SQUAT:MAIN=goblet-squat",
+              "PUSH:MAIN=db-bench-press",
+              "PULL:MAIN=db-row",
+              "CALF:ACCESSORY=db-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.FULL_B": [
+              "HINGE:MAIN=db-rdl",
+              "PULL:MAIN=db-row",
+              "PUSH:MAIN=db-bench-press",
+              "LUNGE:ACCESSORY=db-split-squat",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER": [
+              "SQUAT:MAIN=goblet-squat",
+              "HINGE:MAIN=db-rdl",
+              "LUNGE:ACCESSORY=db-split-squat",
+              "CALF:ACCESSORY=db-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER": [
+              "PUSH:MAIN=db-bench-press",
+              "PULL:MAIN=db-row",
+              "PUSH:ACCESSORY=db-floor-press",
+              "PULL:ACCESSORY=one-arm-db-row",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER_B": [
+              "HINGE:MAIN=db-rdl",
+              "LUNGE:MAIN=db-split-squat",
+              "CALF:ACCESSORY=db-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER_B": [
+              "PULL:MAIN=db-row",
+              "PUSH:MAIN=db-bench-press",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.CORE": [
+              "TRUNK:ACCESSORY=dead-bug",
+              "CALF:ACCESSORY=db-calf-raise",
+              "TRUNK:ACCESSORY=front-plank"
+            ]
+          },
+          "HOME_DUMBBELLS/NOVICE": {
+            "TPL.FULL_A": [
+              "SQUAT:MAIN=goblet-squat",
+              "PUSH:MAIN=db-floor-press",
+              "PULL:MAIN=db-row",
+              "CALF:ACCESSORY=db-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.FULL_B": [
+              "HINGE:MAIN=glute-bridge",
+              "PULL:MAIN=db-row",
+              "PUSH:MAIN=db-floor-press",
+              "LUNGE:ACCESSORY=reverse-lunge",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER": [
+              "SQUAT:MAIN=goblet-squat",
+              "HINGE:MAIN=glute-bridge",
+              "LUNGE:ACCESSORY=reverse-lunge",
+              "CALF:ACCESSORY=db-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER": [
+              "PUSH:MAIN=db-floor-press",
+              "PULL:MAIN=db-row",
+              "PUSH:ACCESSORY=incline-push-up",
+              "PULL:ACCESSORY=prone-ytw-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER_B": [
+              "HINGE:MAIN=glute-bridge",
+              "LUNGE:MAIN=reverse-lunge",
+              "CALF:ACCESSORY=db-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER_B": [
+              "PULL:MAIN=db-row",
+              "PUSH:MAIN=db-floor-press",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.CORE": [
+              "TRUNK:ACCESSORY=dead-bug",
+              "CALF:ACCESSORY=db-calf-raise",
+              "TRUNK:ACCESSORY=front-plank"
+            ]
+          },
+          "HOME_DUMBBELLS/INTERMEDIATE": {
+            "TPL.FULL_A": [
+              "SQUAT:MAIN=goblet-squat",
+              "PUSH:MAIN=db-floor-press",
+              "PULL:MAIN=db-row",
+              "CALF:ACCESSORY=db-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.FULL_B": [
+              "HINGE:MAIN=db-rdl",
+              "PULL:MAIN=db-row",
+              "PUSH:MAIN=db-floor-press",
+              "LUNGE:ACCESSORY=db-split-squat",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER": [
+              "SQUAT:MAIN=goblet-squat",
+              "HINGE:MAIN=db-rdl",
+              "LUNGE:ACCESSORY=db-split-squat",
+              "CALF:ACCESSORY=db-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER": [
+              "PUSH:MAIN=db-floor-press",
+              "PULL:MAIN=db-row",
+              "PUSH:ACCESSORY=push-up",
+              "PULL:ACCESSORY=prone-ytw-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER_B": [
+              "HINGE:MAIN=db-rdl",
+              "LUNGE:MAIN=db-split-squat",
+              "CALF:ACCESSORY=db-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER_B": [
+              "PULL:MAIN=db-row",
+              "PUSH:MAIN=db-floor-press",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.CORE": [
+              "TRUNK:ACCESSORY=dead-bug",
+              "CALF:ACCESSORY=db-calf-raise",
+              "TRUNK:ACCESSORY=front-plank"
+            ]
+          },
+          "KETTLEBELL_ONLY/NOVICE": {
+            "TPL.FULL_A": [
+              "SQUAT:MAIN=kb-goblet-squat",
+              "PUSH:MAIN=incline-push-up",
+              "PULL:MAIN=kb-row",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.FULL_B": [
+              "HINGE:MAIN=kb-deadlift",
+              "PULL:MAIN=kb-row",
+              "PUSH:MAIN=incline-push-up",
+              "LUNGE:ACCESSORY=reverse-lunge",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER": [
+              "SQUAT:MAIN=kb-goblet-squat",
+              "HINGE:MAIN=kb-deadlift",
+              "LUNGE:ACCESSORY=reverse-lunge",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER": [
+              "PUSH:MAIN=incline-push-up",
+              "PULL:MAIN=kb-row",
+              "PUSH:MISSING_DISCLOSED",
+              "PULL:ACCESSORY=prone-ytw-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER_B": [
+              "HINGE:MAIN=kb-deadlift",
+              "LUNGE:MAIN=reverse-lunge",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER_B": [
+              "PULL:MAIN=kb-row",
+              "PUSH:MAIN=incline-push-up",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.CORE": [
+              "TRUNK:ACCESSORY=dead-bug",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=front-plank"
+            ]
+          },
+          "KETTLEBELL_ONLY/INTERMEDIATE": {
+            "TPL.FULL_A": [
+              "SQUAT:MAIN=kb-goblet-squat",
+              "PUSH:MAIN=push-up",
+              "PULL:MAIN=kb-row",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.FULL_B": [
+              "HINGE:MAIN=kb-deadlift",
+              "PULL:MAIN=kb-row",
+              "PUSH:MAIN=push-up",
+              "LUNGE:ACCESSORY=reverse-lunge",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER": [
+              "SQUAT:MAIN=kb-goblet-squat",
+              "HINGE:MAIN=kb-deadlift",
+              "LUNGE:ACCESSORY=reverse-lunge",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER": [
+              "PUSH:MAIN=push-up",
+              "PULL:MAIN=kb-row",
+              "PUSH:ACCESSORY=incline-push-up",
+              "PULL:ACCESSORY=prone-ytw-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER_B": [
+              "HINGE:MAIN=kb-deadlift",
+              "LUNGE:MAIN=reverse-lunge",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER_B": [
+              "PULL:MAIN=kb-row",
+              "PUSH:MAIN=push-up",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.CORE": [
+              "TRUNK:ACCESSORY=dead-bug",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=front-plank"
+            ]
+          },
+          "BANDS_ONLY/NOVICE": {
+            "TPL.FULL_A": [
+              "SQUAT:MAIN=box-squat-bodyweight",
+              "PUSH:MAIN=incline-push-up",
+              "PULL:MAIN=band-row",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.FULL_B": [
+              "HINGE:MAIN=glute-bridge",
+              "PULL:MAIN=band-row",
+              "PUSH:MAIN=incline-push-up",
+              "LUNGE:ACCESSORY=reverse-lunge",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER": [
+              "SQUAT:MAIN=box-squat-bodyweight",
+              "HINGE:MAIN=glute-bridge",
+              "LUNGE:ACCESSORY=reverse-lunge",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER": [
+              "PUSH:MAIN=incline-push-up",
+              "PULL:MAIN=band-row",
+              "PUSH:MISSING_DISCLOSED",
+              "PULL:ACCESSORY=band-face-pull",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER_B": [
+              "HINGE:MAIN=glute-bridge",
+              "LUNGE:MAIN=reverse-lunge",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER_B": [
+              "PULL:MAIN=band-row",
+              "PUSH:MAIN=incline-push-up",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.CORE": [
+              "TRUNK:ACCESSORY=dead-bug",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=front-plank"
+            ]
+          },
+          "BANDS_ONLY/INTERMEDIATE": {
+            "TPL.FULL_A": [
+              "SQUAT:MAIN=box-squat-bodyweight",
+              "PUSH:MAIN=push-up",
+              "PULL:MAIN=band-row",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.FULL_B": [
+              "HINGE:MAIN=glute-bridge",
+              "PULL:MAIN=band-row",
+              "PUSH:MAIN=push-up",
+              "LUNGE:ACCESSORY=reverse-lunge",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER": [
+              "SQUAT:MAIN=box-squat-bodyweight",
+              "HINGE:MAIN=glute-bridge",
+              "LUNGE:ACCESSORY=reverse-lunge",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER": [
+              "PUSH:MAIN=push-up",
+              "PULL:MAIN=band-row",
+              "PUSH:ACCESSORY=incline-push-up",
+              "PULL:ACCESSORY=band-face-pull",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER_B": [
+              "HINGE:MAIN=glute-bridge",
+              "LUNGE:MAIN=reverse-lunge",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER_B": [
+              "PULL:MAIN=band-row",
+              "PUSH:MAIN=push-up",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.CORE": [
+              "TRUNK:ACCESSORY=dead-bug",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=front-plank"
+            ]
+          },
+          "BANDS_AND_BAR/NOVICE": {
+            "TPL.FULL_A": [
+              "SQUAT:MAIN=box-squat-bodyweight",
+              "PUSH:MAIN=incline-push-up",
+              "PULL:MAIN=band-row",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.FULL_B": [
+              "HINGE:MAIN=glute-bridge",
+              "PULL:MAIN=band-row",
+              "PUSH:MAIN=incline-push-up",
+              "LUNGE:ACCESSORY=reverse-lunge",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER": [
+              "SQUAT:MAIN=box-squat-bodyweight",
+              "HINGE:MAIN=glute-bridge",
+              "LUNGE:ACCESSORY=reverse-lunge",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER": [
+              "PUSH:MAIN=incline-push-up",
+              "PULL:MAIN=band-row",
+              "PUSH:MISSING_DISCLOSED",
+              "PULL:ACCESSORY=band-face-pull",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER_B": [
+              "HINGE:MAIN=glute-bridge",
+              "LUNGE:MAIN=reverse-lunge",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER_B": [
+              "PULL:MAIN=band-row",
+              "PUSH:MAIN=incline-push-up",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.CORE": [
+              "TRUNK:ACCESSORY=dead-bug",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=front-plank"
+            ]
+          },
+          "BANDS_AND_BAR/INTERMEDIATE": {
+            "TPL.FULL_A": [
+              "SQUAT:MAIN=box-squat-bodyweight",
+              "PUSH:MAIN=push-up",
+              "PULL:MAIN=band-row",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.FULL_B": [
+              "HINGE:MAIN=glute-bridge",
+              "PULL:MAIN=band-row",
+              "PUSH:MAIN=push-up",
+              "LUNGE:ACCESSORY=reverse-lunge",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER": [
+              "SQUAT:MAIN=box-squat-bodyweight",
+              "HINGE:MAIN=glute-bridge",
+              "LUNGE:ACCESSORY=reverse-lunge",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER": [
+              "PUSH:MAIN=push-up",
+              "PULL:MAIN=band-row",
+              "PUSH:ACCESSORY=incline-push-up",
+              "PULL:ACCESSORY=band-assisted-pull-up",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER_B": [
+              "HINGE:MAIN=glute-bridge",
+              "LUNGE:MAIN=reverse-lunge",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER_B": [
+              "PULL:MAIN=band-row",
+              "PUSH:MAIN=push-up",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.CORE": [
+              "TRUNK:ACCESSORY=dead-bug",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=front-plank"
+            ]
+          },
+          "PULL_UP_BAR_ONLY/NOVICE": {
+            "TPL.FULL_A": [
+              "SQUAT:MAIN=box-squat-bodyweight",
+              "PUSH:MAIN=incline-push-up",
+              "PULL:DOWNGRADED_ACCESSORY=prone-ytw-raise",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.FULL_B": [
+              "HINGE:MAIN=glute-bridge",
+              "PULL:DOWNGRADED_ACCESSORY=prone-ytw-raise",
+              "PUSH:MAIN=incline-push-up",
+              "LUNGE:ACCESSORY=reverse-lunge",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER": [
+              "SQUAT:MAIN=box-squat-bodyweight",
+              "HINGE:MAIN=glute-bridge",
+              "LUNGE:ACCESSORY=reverse-lunge",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER": [
+              "PUSH:MAIN=incline-push-up",
+              "PULL:DOWNGRADED_ACCESSORY=prone-ytw-raise",
+              "PUSH:MISSING_DISCLOSED",
+              "PULL:ACCESSORY=scapular-pull-up",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER_B": [
+              "HINGE:MAIN=glute-bridge",
+              "LUNGE:MAIN=reverse-lunge",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER_B": [
+              "PULL:DOWNGRADED_ACCESSORY=prone-ytw-raise",
+              "PUSH:MAIN=incline-push-up",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.CORE": [
+              "TRUNK:ACCESSORY=dead-bug",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=front-plank"
+            ]
+          },
+          "PULL_UP_BAR_ONLY/INTERMEDIATE": {
+            "TPL.FULL_A": [
+              "SQUAT:MAIN=box-squat-bodyweight",
+              "PUSH:MAIN=push-up",
+              "PULL:DOWNGRADED_ACCESSORY=prone-ytw-raise",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.FULL_B": [
+              "HINGE:MAIN=glute-bridge",
+              "PULL:DOWNGRADED_ACCESSORY=prone-ytw-raise",
+              "PUSH:MAIN=push-up",
+              "LUNGE:ACCESSORY=reverse-lunge",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER": [
+              "SQUAT:MAIN=box-squat-bodyweight",
+              "HINGE:MAIN=glute-bridge",
+              "LUNGE:ACCESSORY=reverse-lunge",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER": [
+              "PUSH:MAIN=push-up",
+              "PULL:DOWNGRADED_ACCESSORY=prone-ytw-raise",
+              "PUSH:ACCESSORY=incline-push-up",
+              "PULL:ACCESSORY=scapular-pull-up",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER_B": [
+              "HINGE:MAIN=glute-bridge",
+              "LUNGE:MAIN=reverse-lunge",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER_B": [
+              "PULL:DOWNGRADED_ACCESSORY=prone-ytw-raise",
+              "PUSH:MAIN=push-up",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.CORE": [
+              "TRUNK:ACCESSORY=dead-bug",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=front-plank"
+            ]
+          },
+          "BODYWEIGHT_ONLY/NOVICE": {
+            "TPL.FULL_A": [
+              "SQUAT:MAIN=box-squat-bodyweight",
+              "PUSH:MAIN=incline-push-up",
+              "PULL:DOWNGRADED_ACCESSORY=prone-ytw-raise",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.FULL_B": [
+              "HINGE:MAIN=glute-bridge",
+              "PULL:DOWNGRADED_ACCESSORY=prone-ytw-raise",
+              "PUSH:MAIN=incline-push-up",
+              "LUNGE:ACCESSORY=reverse-lunge",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER": [
+              "SQUAT:MAIN=box-squat-bodyweight",
+              "HINGE:MAIN=glute-bridge",
+              "LUNGE:ACCESSORY=reverse-lunge",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER": [
+              "PUSH:MAIN=incline-push-up",
+              "PULL:DOWNGRADED_ACCESSORY=prone-ytw-raise",
+              "PUSH:MISSING_DISCLOSED",
+              "PULL:MISSING_DISCLOSED",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER_B": [
+              "HINGE:MAIN=glute-bridge",
+              "LUNGE:MAIN=reverse-lunge",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER_B": [
+              "PULL:DOWNGRADED_ACCESSORY=prone-ytw-raise",
+              "PUSH:MAIN=incline-push-up",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.CORE": [
+              "TRUNK:ACCESSORY=dead-bug",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=front-plank"
+            ]
+          },
+          "BODYWEIGHT_ONLY/INTERMEDIATE": {
+            "TPL.FULL_A": [
+              "SQUAT:MAIN=box-squat-bodyweight",
+              "PUSH:MAIN=push-up",
+              "PULL:DOWNGRADED_ACCESSORY=prone-ytw-raise",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.FULL_B": [
+              "HINGE:MAIN=glute-bridge",
+              "PULL:DOWNGRADED_ACCESSORY=prone-ytw-raise",
+              "PUSH:MAIN=push-up",
+              "LUNGE:ACCESSORY=reverse-lunge",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER": [
+              "SQUAT:MAIN=box-squat-bodyweight",
+              "HINGE:MAIN=glute-bridge",
+              "LUNGE:ACCESSORY=reverse-lunge",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER": [
+              "PUSH:MAIN=push-up",
+              "PULL:DOWNGRADED_ACCESSORY=prone-ytw-raise",
+              "PUSH:ACCESSORY=incline-push-up",
+              "PULL:MISSING_DISCLOSED",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.LOWER_B": [
+              "HINGE:MAIN=glute-bridge",
+              "LUNGE:MAIN=reverse-lunge",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.UPPER_B": [
+              "PULL:DOWNGRADED_ACCESSORY=prone-ytw-raise",
+              "PUSH:MAIN=push-up",
+              "TRUNK:ACCESSORY=dead-bug"
+            ],
+            "TPL.CORE": [
+              "TRUNK:ACCESSORY=dead-bug",
+              "CALF:ACCESSORY=standing-calf-raise",
+              "TRUNK:ACCESSORY=front-plank"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "V05b-goal-context-alternatives",
+      "pass": true,
+      "detail": {
+        "fullGymAllCovered": true,
+        "bodyweightCalfAlternationCovered": true,
+        "emptyOutsideGym": [
+          "TPL.FULL_B HYPERTROPHY KNEE_FLEXION HOME_DUMBBELLS",
+          "TPL.FULL_B HYPERTROPHY KNEE_FLEXION BODYWEIGHT_ONLY",
+          "TPL.FULL_B HYPERTROPHY ELBOW_FLEXION BODYWEIGHT_ONLY",
+          "TPL.FULL_B HYPERTROPHY ELBOW_EXTENSION BODYWEIGHT_ONLY",
+          "TPL.FULL_B HYPERTROPHY SHOULDER_ABDUCTION BODYWEIGHT_ONLY",
+          "TPL.LOWER HYPERTROPHY KNEE_EXTENSION HOME_DUMBBELLS",
+          "TPL.LOWER HYPERTROPHY KNEE_EXTENSION BODYWEIGHT_ONLY",
+          "TPL.LOWER HYPERTROPHY KNEE_FLEXION HOME_DUMBBELLS",
+          "TPL.LOWER HYPERTROPHY KNEE_FLEXION BODYWEIGHT_ONLY",
+          "TPL.UPPER HYPERTROPHY SHOULDER_ABDUCTION BODYWEIGHT_ONLY",
+          "TPL.UPPER HYPERTROPHY ELBOW_EXTENSION BODYWEIGHT_ONLY",
+          "TPL.UPPER HYPERTROPHY ELBOW_FLEXION BODYWEIGHT_ONLY",
+          "TPL.LOWER_B HYPERTROPHY KNEE_FLEXION HOME_DUMBBELLS",
+          "TPL.LOWER_B HYPERTROPHY KNEE_FLEXION BODYWEIGHT_ONLY",
+          "TPL.LOWER_B HYPERTROPHY KNEE_EXTENSION HOME_DUMBBELLS",
+          "TPL.LOWER_B HYPERTROPHY KNEE_EXTENSION BODYWEIGHT_ONLY",
+          "TPL.UPPER_B HYPERTROPHY ELBOW_FLEXION BODYWEIGHT_ONLY",
+          "TPL.UPPER_B HYPERTROPHY ELBOW_EXTENSION BODYWEIGHT_ONLY",
+          "TPL.UPPER_B HYPERTROPHY SHOULDER_ABDUCTION BODYWEIGHT_ONLY"
+        ]
+      }
+    },
+    {
+      "id": "V06-rotation-eligibility",
+      "pass": true,
+      "detail": {
+        "mappingOk": true,
+        "accessorySlotsEvaluated": 96,
+        "twoWeekEligible": 92,
+        "blockBoundaryOnly": 4,
+        "detail": [
+          {
+            "profile": "FULL_GYM",
+            "template": "TPL.FULL_A",
+            "slot": 3,
+            "current": "db-calf-raise",
+            "alternatives": [
+              "standing-calf-raise",
+              "single-leg-calf-raise"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "FULL_GYM",
+            "template": "TPL.FULL_A",
+            "slot": 4,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "FULL_GYM",
+            "template": "TPL.FULL_B",
+            "slot": 3,
+            "current": "db-split-squat",
+            "alternatives": [
+              "bulgarian-split-squat-db",
+              "reverse-lunge-db",
+              "reverse-lunge",
+              "split-squat-bodyweight",
+              "db-step-up",
+              "step-down"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "FULL_GYM",
+            "template": "TPL.FULL_B",
+            "slot": 4,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "FULL_GYM",
+            "template": "TPL.LOWER",
+            "slot": 2,
+            "current": "db-split-squat",
+            "alternatives": [
+              "bulgarian-split-squat-db",
+              "reverse-lunge-db",
+              "reverse-lunge",
+              "split-squat-bodyweight",
+              "db-step-up",
+              "step-down"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "FULL_GYM",
+            "template": "TPL.LOWER",
+            "slot": 3,
+            "current": "db-calf-raise",
+            "alternatives": [
+              "standing-calf-raise",
+              "single-leg-calf-raise"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "FULL_GYM",
+            "template": "TPL.LOWER",
+            "slot": 4,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "FULL_GYM",
+            "template": "TPL.UPPER",
+            "slot": 2,
+            "current": "db-bench-press",
+            "alternatives": [
+              "db-floor-press",
+              "machine-chest-press",
+              "push-up",
+              "incline-push-up"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "FULL_GYM",
+            "template": "TPL.UPPER",
+            "slot": 3,
+            "current": "db-row",
+            "alternatives": [
+              "one-arm-db-row",
+              "seated-cable-row",
+              "kb-row",
+              "inverted-row",
+              "band-row"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "FULL_GYM",
+            "template": "TPL.UPPER",
+            "slot": 4,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "FULL_GYM",
+            "template": "TPL.LOWER_B",
+            "slot": 2,
+            "current": "db-calf-raise",
+            "alternatives": [
+              "standing-calf-raise",
+              "single-leg-calf-raise"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "FULL_GYM",
+            "template": "TPL.LOWER_B",
+            "slot": 3,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "FULL_GYM",
+            "template": "TPL.UPPER_B",
+            "slot": 2,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "FULL_GYM",
+            "template": "TPL.CORE",
+            "slot": 0,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "FULL_GYM",
+            "template": "TPL.CORE",
+            "slot": 1,
+            "current": "db-calf-raise",
+            "alternatives": [
+              "standing-calf-raise",
+              "single-leg-calf-raise"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "FULL_GYM",
+            "template": "TPL.CORE",
+            "slot": 2,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "HOME_DUMBBELLS_BENCH",
+            "template": "TPL.FULL_A",
+            "slot": 3,
+            "current": "db-calf-raise",
+            "alternatives": [
+              "standing-calf-raise",
+              "single-leg-calf-raise"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "HOME_DUMBBELLS_BENCH",
+            "template": "TPL.FULL_A",
+            "slot": 4,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "HOME_DUMBBELLS_BENCH",
+            "template": "TPL.FULL_B",
+            "slot": 3,
+            "current": "db-split-squat",
+            "alternatives": [
+              "bulgarian-split-squat-db",
+              "reverse-lunge-db",
+              "reverse-lunge",
+              "split-squat-bodyweight",
+              "db-step-up",
+              "step-down"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "HOME_DUMBBELLS_BENCH",
+            "template": "TPL.FULL_B",
+            "slot": 4,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "HOME_DUMBBELLS_BENCH",
+            "template": "TPL.LOWER",
+            "slot": 2,
+            "current": "db-split-squat",
+            "alternatives": [
+              "bulgarian-split-squat-db",
+              "reverse-lunge-db",
+              "reverse-lunge",
+              "split-squat-bodyweight",
+              "db-step-up",
+              "step-down"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "HOME_DUMBBELLS_BENCH",
+            "template": "TPL.LOWER",
+            "slot": 3,
+            "current": "db-calf-raise",
+            "alternatives": [
+              "standing-calf-raise",
+              "single-leg-calf-raise"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "HOME_DUMBBELLS_BENCH",
+            "template": "TPL.LOWER",
+            "slot": 4,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "HOME_DUMBBELLS_BENCH",
+            "template": "TPL.UPPER",
+            "slot": 2,
+            "current": "db-bench-press",
+            "alternatives": [
+              "db-floor-press",
+              "push-up",
+              "incline-push-up"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "HOME_DUMBBELLS_BENCH",
+            "template": "TPL.UPPER",
+            "slot": 3,
+            "current": "db-row",
+            "alternatives": [
+              "one-arm-db-row"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "HOME_DUMBBELLS_BENCH",
+            "template": "TPL.UPPER",
+            "slot": 4,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "HOME_DUMBBELLS_BENCH",
+            "template": "TPL.LOWER_B",
+            "slot": 2,
+            "current": "db-calf-raise",
+            "alternatives": [
+              "standing-calf-raise",
+              "single-leg-calf-raise"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "HOME_DUMBBELLS_BENCH",
+            "template": "TPL.LOWER_B",
+            "slot": 3,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "HOME_DUMBBELLS_BENCH",
+            "template": "TPL.UPPER_B",
+            "slot": 2,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "HOME_DUMBBELLS_BENCH",
+            "template": "TPL.CORE",
+            "slot": 0,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "HOME_DUMBBELLS_BENCH",
+            "template": "TPL.CORE",
+            "slot": 1,
+            "current": "db-calf-raise",
+            "alternatives": [
+              "standing-calf-raise",
+              "single-leg-calf-raise"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "HOME_DUMBBELLS_BENCH",
+            "template": "TPL.CORE",
+            "slot": 2,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "HOME_DUMBBELLS",
+            "template": "TPL.FULL_A",
+            "slot": 3,
+            "current": "db-calf-raise",
+            "alternatives": [
+              "standing-calf-raise",
+              "single-leg-calf-raise"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "HOME_DUMBBELLS",
+            "template": "TPL.FULL_A",
+            "slot": 4,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "HOME_DUMBBELLS",
+            "template": "TPL.FULL_B",
+            "slot": 3,
+            "current": "db-split-squat",
+            "alternatives": [
+              "reverse-lunge-db",
+              "reverse-lunge",
+              "split-squat-bodyweight"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "HOME_DUMBBELLS",
+            "template": "TPL.FULL_B",
+            "slot": 4,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "HOME_DUMBBELLS",
+            "template": "TPL.LOWER",
+            "slot": 2,
+            "current": "db-split-squat",
+            "alternatives": [
+              "reverse-lunge-db",
+              "reverse-lunge",
+              "split-squat-bodyweight"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "HOME_DUMBBELLS",
+            "template": "TPL.LOWER",
+            "slot": 3,
+            "current": "db-calf-raise",
+            "alternatives": [
+              "standing-calf-raise",
+              "single-leg-calf-raise"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "HOME_DUMBBELLS",
+            "template": "TPL.LOWER",
+            "slot": 4,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "HOME_DUMBBELLS",
+            "template": "TPL.UPPER",
+            "slot": 2,
+            "current": "db-floor-press",
+            "alternatives": [
+              "push-up",
+              "incline-push-up"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "HOME_DUMBBELLS",
+            "template": "TPL.UPPER",
+            "slot": 3,
+            "current": "db-row",
+            "alternatives": [],
+            "EVERY_2_WEEKS": "BLOCK_BOUNDARY_ELIGIBLE"
+          },
+          {
+            "profile": "HOME_DUMBBELLS",
+            "template": "TPL.UPPER",
+            "slot": 4,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "HOME_DUMBBELLS",
+            "template": "TPL.LOWER_B",
+            "slot": 2,
+            "current": "db-calf-raise",
+            "alternatives": [
+              "standing-calf-raise",
+              "single-leg-calf-raise"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "HOME_DUMBBELLS",
+            "template": "TPL.LOWER_B",
+            "slot": 3,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "HOME_DUMBBELLS",
+            "template": "TPL.UPPER_B",
+            "slot": 2,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "HOME_DUMBBELLS",
+            "template": "TPL.CORE",
+            "slot": 0,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "HOME_DUMBBELLS",
+            "template": "TPL.CORE",
+            "slot": 1,
+            "current": "db-calf-raise",
+            "alternatives": [
+              "standing-calf-raise",
+              "single-leg-calf-raise"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "HOME_DUMBBELLS",
+            "template": "TPL.CORE",
+            "slot": 2,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "KETTLEBELL_ONLY",
+            "template": "TPL.FULL_A",
+            "slot": 3,
+            "current": "standing-calf-raise",
+            "alternatives": [
+              "single-leg-calf-raise"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "KETTLEBELL_ONLY",
+            "template": "TPL.FULL_A",
+            "slot": 4,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "KETTLEBELL_ONLY",
+            "template": "TPL.FULL_B",
+            "slot": 3,
+            "current": "reverse-lunge",
+            "alternatives": [
+              "split-squat-bodyweight"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "KETTLEBELL_ONLY",
+            "template": "TPL.FULL_B",
+            "slot": 4,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "KETTLEBELL_ONLY",
+            "template": "TPL.LOWER",
+            "slot": 2,
+            "current": "reverse-lunge",
+            "alternatives": [
+              "split-squat-bodyweight"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "KETTLEBELL_ONLY",
+            "template": "TPL.LOWER",
+            "slot": 3,
+            "current": "standing-calf-raise",
+            "alternatives": [
+              "single-leg-calf-raise"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "KETTLEBELL_ONLY",
+            "template": "TPL.LOWER",
+            "slot": 4,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "KETTLEBELL_ONLY",
+            "template": "TPL.UPPER",
+            "slot": 2,
+            "current": "push-up",
+            "alternatives": [
+              "incline-push-up"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "KETTLEBELL_ONLY",
+            "template": "TPL.UPPER",
+            "slot": 3,
+            "current": "kb-row",
+            "alternatives": [],
+            "EVERY_2_WEEKS": "BLOCK_BOUNDARY_ELIGIBLE"
+          },
+          {
+            "profile": "KETTLEBELL_ONLY",
+            "template": "TPL.UPPER",
+            "slot": 4,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "KETTLEBELL_ONLY",
+            "template": "TPL.LOWER_B",
+            "slot": 2,
+            "current": "standing-calf-raise",
+            "alternatives": [
+              "single-leg-calf-raise"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "KETTLEBELL_ONLY",
+            "template": "TPL.LOWER_B",
+            "slot": 3,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "KETTLEBELL_ONLY",
+            "template": "TPL.UPPER_B",
+            "slot": 2,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "KETTLEBELL_ONLY",
+            "template": "TPL.CORE",
+            "slot": 0,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "KETTLEBELL_ONLY",
+            "template": "TPL.CORE",
+            "slot": 1,
+            "current": "standing-calf-raise",
+            "alternatives": [
+              "single-leg-calf-raise"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "KETTLEBELL_ONLY",
+            "template": "TPL.CORE",
+            "slot": 2,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "BANDS_ONLY",
+            "template": "TPL.FULL_A",
+            "slot": 3,
+            "current": "standing-calf-raise",
+            "alternatives": [
+              "single-leg-calf-raise"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "BANDS_ONLY",
+            "template": "TPL.FULL_A",
+            "slot": 4,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "BANDS_ONLY",
+            "template": "TPL.FULL_B",
+            "slot": 3,
+            "current": "reverse-lunge",
+            "alternatives": [
+              "split-squat-bodyweight"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "BANDS_ONLY",
+            "template": "TPL.FULL_B",
+            "slot": 4,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "BANDS_ONLY",
+            "template": "TPL.LOWER",
+            "slot": 2,
+            "current": "reverse-lunge",
+            "alternatives": [
+              "split-squat-bodyweight"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "BANDS_ONLY",
+            "template": "TPL.LOWER",
+            "slot": 3,
+            "current": "standing-calf-raise",
+            "alternatives": [
+              "single-leg-calf-raise"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "BANDS_ONLY",
+            "template": "TPL.LOWER",
+            "slot": 4,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "BANDS_ONLY",
+            "template": "TPL.UPPER",
+            "slot": 2,
+            "current": "push-up",
+            "alternatives": [
+              "incline-push-up"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "BANDS_ONLY",
+            "template": "TPL.UPPER",
+            "slot": 3,
+            "current": "band-row",
+            "alternatives": [],
+            "EVERY_2_WEEKS": "BLOCK_BOUNDARY_ELIGIBLE"
+          },
+          {
+            "profile": "BANDS_ONLY",
+            "template": "TPL.UPPER",
+            "slot": 4,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "BANDS_ONLY",
+            "template": "TPL.LOWER_B",
+            "slot": 2,
+            "current": "standing-calf-raise",
+            "alternatives": [
+              "single-leg-calf-raise"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "BANDS_ONLY",
+            "template": "TPL.LOWER_B",
+            "slot": 3,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "BANDS_ONLY",
+            "template": "TPL.UPPER_B",
+            "slot": 2,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "BANDS_ONLY",
+            "template": "TPL.CORE",
+            "slot": 0,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "BANDS_ONLY",
+            "template": "TPL.CORE",
+            "slot": 1,
+            "current": "standing-calf-raise",
+            "alternatives": [
+              "single-leg-calf-raise"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "BANDS_ONLY",
+            "template": "TPL.CORE",
+            "slot": 2,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "BODYWEIGHT_ONLY",
+            "template": "TPL.FULL_A",
+            "slot": 3,
+            "current": "standing-calf-raise",
+            "alternatives": [
+              "single-leg-calf-raise"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "BODYWEIGHT_ONLY",
+            "template": "TPL.FULL_A",
+            "slot": 4,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "BODYWEIGHT_ONLY",
+            "template": "TPL.FULL_B",
+            "slot": 3,
+            "current": "reverse-lunge",
+            "alternatives": [
+              "split-squat-bodyweight"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "BODYWEIGHT_ONLY",
+            "template": "TPL.FULL_B",
+            "slot": 4,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "BODYWEIGHT_ONLY",
+            "template": "TPL.LOWER",
+            "slot": 2,
+            "current": "reverse-lunge",
+            "alternatives": [
+              "split-squat-bodyweight"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "BODYWEIGHT_ONLY",
+            "template": "TPL.LOWER",
+            "slot": 3,
+            "current": "standing-calf-raise",
+            "alternatives": [
+              "single-leg-calf-raise"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "BODYWEIGHT_ONLY",
+            "template": "TPL.LOWER",
+            "slot": 4,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "BODYWEIGHT_ONLY",
+            "template": "TPL.UPPER",
+            "slot": 2,
+            "current": "push-up",
+            "alternatives": [
+              "incline-push-up"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "BODYWEIGHT_ONLY",
+            "template": "TPL.UPPER",
+            "slot": 3,
+            "current": "prone-ytw-raise",
+            "alternatives": [],
+            "EVERY_2_WEEKS": "BLOCK_BOUNDARY_ELIGIBLE"
+          },
+          {
+            "profile": "BODYWEIGHT_ONLY",
+            "template": "TPL.UPPER",
+            "slot": 4,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "BODYWEIGHT_ONLY",
+            "template": "TPL.LOWER_B",
+            "slot": 2,
+            "current": "standing-calf-raise",
+            "alternatives": [
+              "single-leg-calf-raise"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "BODYWEIGHT_ONLY",
+            "template": "TPL.LOWER_B",
+            "slot": 3,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "BODYWEIGHT_ONLY",
+            "template": "TPL.UPPER_B",
+            "slot": 2,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "BODYWEIGHT_ONLY",
+            "template": "TPL.CORE",
+            "slot": 0,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "BODYWEIGHT_ONLY",
+            "template": "TPL.CORE",
+            "slot": 1,
+            "current": "standing-calf-raise",
+            "alternatives": [
+              "single-leg-calf-raise"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          },
+          {
+            "profile": "BODYWEIGHT_ONLY",
+            "template": "TPL.CORE",
+            "slot": 2,
+            "current": "dead-bug",
+            "alternatives": [
+              "front-plank"
+            ],
+            "EVERY_2_WEEKS": "TWO_WEEK_ELIGIBLE"
+          }
+        ]
+      }
+    },
+    {
+      "id": "V07-close-variation-directed",
+      "pass": true,
+      "detail": {
+        "edges": 187,
+        "directedOnly": 51,
+        "examples": [
+          [
+            "barbell-rdl",
+            "db-rdl"
+          ],
+          [
+            "barbell-rdl",
+            "kb-deadlift"
+          ],
+          [
+            "db-rdl",
+            "kb-deadlift"
+          ],
+          [
+            "db-rdl",
+            "back-extension"
+          ],
+          [
+            "deadlift",
+            "db-rdl"
+          ],
+          [
+            "deadlift",
+            "kb-deadlift"
+          ],
+          [
+            "single-leg-rdl-db",
+            "kb-deadlift"
+          ],
+          [
+            "single-leg-rdl-db",
+            "back-extension"
+          ],
+          [
+            "hip-thrust-db",
+            "glute-bridge"
+          ],
+          [
+            "hip-thrust-db",
+            "single-leg-glute-bridge"
+          ],
+          [
+            "barbell-hip-thrust",
+            "glute-bridge"
+          ],
+          [
+            "barbell-hip-thrust",
+            "single-leg-glute-bridge"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "V08-skill-ladders",
+      "pass": true,
+      "detail": {
+        "chains": 20,
+        "issues": [],
+        "practiceCovered": true
+      }
+    },
+    {
+      "id": "V09-run-classification-equals-runtime",
+      "pass": true,
+      "detail": {
+        "gridCases": 4000,
+        "mismatches": [],
+        "mismatchCount": 0
+      }
+    },
+    {
+      "id": "V10-trajectories-no-dead-ends",
+      "pass": true,
+      "detail": {
+        "missingEntries": [],
+        "deadEnds": [],
+        "exits": {
+          "walkJogToEasy": true,
+          "restartToEasy": true,
+          "easyToQuality": true,
+          "returns": true
+        },
+        "strengthPaths": true,
+        "events": {
+          "tenK": true,
+          "half": true,
+          "onlySupported": true,
+          "raceModes": true
+        }
+      }
+    },
+    {
+      "id": "V11-run-families-bound",
+      "pass": true,
+      "detail": {
+        "families": 10,
+        "approvedEnvelopes": [
+          "R6-COLD-START",
+          "R6-LOAD-ESTABLISHMENT",
+          "R6-PLANNED-PROGRESSION",
+          "R6-RUN-QUALITY",
+          "R6-HYBRID-ARRANGEMENT",
+          "R6-SUBSTITUTION",
+          "R6-NONCLINICAL-RETURN",
+          "R6-EVENT-TRANSITION",
+          "R6-PARTIAL-NOISY-LEARNING",
+          "R6-ROTATION"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "id": "V12-composition-equals-runtime",
+      "pass": true,
+      "detail": {
+        "relations": {
+          "CMP.I01": {
+            "catalog": "run/HIGH",
+            "runtime": [
+              "HIGH"
+            ],
+            "ok": true
+          },
+          "CMP.I02": {
+            "catalog": "run/MODERATE",
+            "runtime": [
+              "MODERATE"
+            ],
+            "ok": true
+          },
+          "CMP.I03": {
+            "catalog": "run/LOW",
+            "runtime": [
+              "LOW"
+            ],
+            "ok": true
+          },
+          "CMP.I04": {
+            "catalog": "run/LOW",
+            "runtime": [
+              "LOW"
+            ],
+            "ok": true
+          },
+          "CMP.I05": {
+            "catalog": "strength/MODERATE",
+            "runtime": [
+              "MODERATE"
+            ],
+            "ok": true
+          },
+          "CMP.I06": {
+            "catalog": "strength/LOW",
+            "runtime": [
+              "LOW"
+            ],
+            "ok": true
+          },
+          "CMP.I07": {
+            "catalog": "strength/LOW",
+            "runtime": [
+              "LOW"
+            ],
+            "ok": true
+          },
+          "CMP.I08": {
+            "catalog": "strength/LOW",
+            "runtime": [
+              "LOW"
+            ],
+            "ok": true
+          },
+          "CMP.I09": {
+            "catalog": "run/MODERATE",
+            "runtime": [
+              "MODERATE"
+            ],
+            "ok": true
+          },
+          "CMP.I10": {
+            "catalog": "strength/MODERATE",
+            "runtime": [
+              "MODERATE"
+            ],
+            "ok": true
+          }
+        },
+        "heavyBelowMinimumSetsCountsModerate": true,
+        "hybridConstantsEqualPolicy": true,
+        "b0Only": [
+          "CMP.I11"
+        ]
+      }
+    },
+    {
+      "id": "V13-archetypes-equal-goal-model",
+      "pass": true,
+      "detail": {
+        "cases": 77,
+        "perArchetype": {
+          "ARCH.JOINT": 26,
+          "ARCH.RUN_LED": 30,
+          "ARCH.RUN_ONLY": 12,
+          "ARCH.STRENGTH_LED": 4,
+          "ARCH.STRENGTH_ONLY": 5
+        },
+        "issues": []
+      }
+    },
+    {
+      "id": "V14-witnesses",
+      "pass": true,
+      "detail": {
+        "positive": 31,
+        "negative": 25,
+        "centralUncovered": [],
+        "executable": {
+          "WP-RUN-06": true,
+          "WP-RUN-07": true,
+          "WP-RUN-08": true,
+          "WP-RUN-09": true,
+          "WP-RUN-11": true,
+          "WP-RUN-14": true,
+          "WP-STR-05": true,
+          "WP-STR-08": true,
+          "WP-STR-09": true,
+          "WN-09": true,
+          "WN-11": true,
+          "WN-12": true,
+          "WN-13": true,
+          "WN-24": true,
+          "WN-21": true
+        }
+      }
+    },
+    {
+      "id": "V15-later-gate-separation",
+      "pass": true,
+      "detail": {
+        "laterGate": 20,
+        "inRepertoire": [],
+        "forbiddenFamilies": [],
+        "forbiddenConfigs": []
+      }
+    },
+    {
+      "id": "V16-gap-closure-coverage",
+      "pass": true,
+      "detail": {
+        "r6GapIds": 55,
+        "missingGaps": [],
+        "missingReadiness": []
+      }
+    },
+    {
+      "id": "V17-status-and-scope",
+      "pass": true,
+      "detail": {
+        "statusOk": true,
+        "runEvents": [
+          "10K",
+          "HALF_MARATHON"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,226 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vilumo.fit/schemas/coaching/repertoire-catalog-b0.json",
+  "title": "Vilumo V1 coaching repertoire catalog (R7-B0) and parameterization contract",
+  "description": "Validates REPERTOIRE_CATALOG_B0.json and defines the DOSE and PROGRESSION_STATE shapes a later Coaching Core instantiates. Specification candidate; not runtime authority. Numbers referenced as 'policy:<path>' resolve inside CoachingCore/r6/PROGRAM_POLICY_R6.json.",
+  "type": "object",
+  "required": ["catalogId", "revision", "status", "scope", "bindings", "vocabulary", "parameterModel", "run", "strength", "composition", "classification", "archetypes", "trajectories", "safety", "evidence", "candidates", "laterGate", "witnesses"],
+  "properties": {
+    "catalogId": {"const": "VILUMO-V1-COACHING-REPERTOIRE"},
+    "revision": {"type": "string", "pattern": "^R7B0-CATALOG-[0-9]+$"},
+    "status": {
+      "type": "object",
+      "required": ["artifact", "runtimeAuthority", "productTruth", "RUNTIME_IMPLEMENTATION_READY", "V1_COACHING_AUTHORITY_READY"],
+      "properties": {
+        "artifact": {"enum": ["SPECIFICATION_CANDIDATE"]},
+        "runtimeAuthority": {"const": false},
+        "productTruth": {"const": false},
+        "RUNTIME_IMPLEMENTATION_READY": {"const": "NO"},
+        "V1_COACHING_AUTHORITY_READY": {"const": "NO"}
+      }
+    },
+    "run": {
+      "type": "object",
+      "required": ["intensityMethods", "families", "modes"],
+      "properties": {
+        "families": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/runFamily"}},
+        "modes": {"type": "array", "items": {"type": "object", "required": ["id"]}}
+      }
+    },
+    "strength": {
+      "type": "object",
+      "required": ["sessionFamilies", "templatesByDayCount", "templates", "templateRules", "skillLadders", "closeVariationRule", "rotation", "substitution", "pullCoverage", "noviceDensity", "configurations", "equipmentProfiles"],
+      "properties": {
+        "templates": {"type": "array", "items": {"$ref": "#/$defs/template"}},
+        "configurations": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/strengthConfiguration"}},
+        "equipmentProfiles": {"type": "object", "additionalProperties": {"type": "array", "items": {"$ref": "#/$defs/equipment"}}}
+      }
+    },
+    "composition": {
+      "type": "object",
+      "required": ["sessionClasses", "gaps", "interferenceRelations", "protectedStimuli", "placementRules", "ranking", "infeasibleOrIncomparable"],
+      "properties": {
+        "interferenceRelations": {"type": "array", "items": {"$ref": "#/$defs/interferenceRelation"}}
+      }
+    },
+    "candidates": {"type": "array", "items": {"type": "object", "required": ["id", "title", "where", "addresses"], "properties": {"id": {"type": "string", "pattern": "^B0-C[0-9]{2}$"}}}},
+    "laterGate": {"type": "array", "items": {"type": "object", "required": ["id", "status", "reason", "fallback"], "properties": {"status": {"enum": ["LATER_GATE", "UNSUPPORTED_V1"]}}}},
+    "witnesses": {
+      "type": "object",
+      "required": ["positive", "negative"],
+      "properties": {
+        "positive": {"type": "array", "items": {"type": "object", "required": ["id", "context", "family", "configuration", "progression", "regression"]}},
+        "negative": {"type": "array", "items": {"type": "object", "required": ["id", "context", "request", "expected"]}}
+      }
+    }
+  },
+  "$defs": {
+    "authorityStatus": {"enum": ["APPROVED_ENVELOPE", "APPROVED_FAMILIAR_PATH", "APPROVED_PRODUCT_DECISION", "B0_REPRESENTATION", "B0_CANDIDATE", "LATER_GATE", "UNSUPPORTED_V1"]},
+    "ruleBasis": {"enum": ["EVIDENCE", "PRODUCT_POLICY", "IMPLEMENTATION_CHOICE"]},
+    "equipment": {"enum": ["BARBELL", "RACK", "BENCH", "DUMBBELLS", "KETTLEBELL", "MACHINES", "BANDS", "PULL_UP_BAR", "BODYWEIGHT"]},
+    "muscle": {"enum": ["QUADRICEPS", "GLUTEUS_MAXIMUS", "GLUTEUS_MEDIUS", "HAMSTRINGS", "ADDUCTORS", "GASTROCNEMIUS", "SOLEUS", "TIBIALIS_ANTERIOR", "SPINAL_ERECTORS", "PECTORALS", "ANTERIOR_DELTOID", "LATERAL_DELTOID", "POSTERIOR_DELTOID", "TRICEPS", "LATISSIMUS", "UPPER_BACK", "BICEPS", "ABDOMINALS", "OBLIQUES"]},
+    "role": {"enum": ["MAIN", "ACCESSORY", "PRACTICE"]},
+    "pattern": {"enum": ["SQUAT", "HINGE", "LUNGE", "CALF", "PUSH", "PULL", "TRUNK", "KNEE_FLEXION", "KNEE_EXTENSION", "HIP_ABDUCTION", "ANKLE_DORSIFLEXION", "ELBOW_FLEXION", "ELBOW_EXTENSION", "SHOULDER_ABDUCTION"]},
+    "policyRef": {"type": "string", "pattern": "^policy:[A-Za-z0-9_.\\-]+$"},
+    "runFamily": {
+      "type": "object",
+      "required": ["id", "name", "compositionClass", "recoveryCost", "authorityStatus", "purpose", "configurations", "eligibility", "progression", "regression"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^RUN\\.[A-Z_]+$"},
+        "compositionClass": {"enum": ["NONE", "EASY", "KEY"]},
+        "recoveryCost": {"enum": ["NONE", "LOW", "MODERATE", "HIGH"]},
+        "authorityStatus": {"$ref": "#/$defs/authorityStatus"},
+        "ruleBasis": {"$ref": "#/$defs/ruleBasis"},
+        "envelopes": {"type": "array", "items": {"type": "string", "pattern": "^R6-[A-Z\\-]+$"}},
+        "configurations": {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["id", "parameters"], "properties": {"id": {"type": "string", "pattern": "^RUNCFG\\.[A-Z_]+$"}}}},
+        "eligibility": {"type": "object", "required": ["positive", "negative"], "properties": {"positive": {"type": "array", "minItems": 1}, "negative": {"type": "array", "minItems": 1}}},
+        "progression": {"type": "object", "required": ["dimension", "rule"]},
+        "regression": {"type": "object", "required": ["rule"]}
+      }
+    },
+    "slot": {
+      "type": "object",
+      "required": ["pattern", "role"],
+      "properties": {
+        "pattern": {"$ref": "#/$defs/pattern"},
+        "role": {"$ref": "#/$defs/role"},
+        "subpatterns": {"type": "array", "items": {"type": "string"}},
+        "goalContext": {"type": "object", "additionalProperties": {"type": "object", "properties": {"alternativePatterns": {"type": "array", "items": {"$ref": "#/$defs/pattern"}}, "alternateSubpatterns": {"type": "array", "items": {"type": "string"}}}}}
+      }
+    },
+    "template": {
+      "type": "object",
+      "required": ["id", "family", "slots"],
+      "properties": {"id": {"type": "string", "pattern": "^TPL\\.[A-Z_]+$"}, "family": {"type": "string", "pattern": "^STR\\.[A-Z_]+$"}, "slots": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/slot"}}}
+    },
+    "strengthConfiguration": {
+      "type": "object",
+      "required": ["id", "name", "pattern", "sub", "region", "eq", "loading", "conv", "lat", "skill", "lower", "axial", "ecc", "prim", "sec", "kind", "roles", "purposes", "variantOf", "origin", "authorityStatus"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"},
+        "pattern": {"$ref": "#/$defs/pattern"},
+        "region": {"enum": ["LOWER", "UPPER", "CORE"]},
+        "eq": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/equipment"}},
+        "loading": {"enum": ["EXTERNAL", "BODYWEIGHT", "BAND", "ASSISTED"]},
+        "conv": {"enum": ["TOTAL", "PER_HAND", "SINGLE_IMPLEMENT", "MACHINE_STACK", "BODYWEIGHT", "BAND_TENSION", "ASSISTED_BODYWEIGHT"]},
+        "lat": {"enum": ["BILATERAL", "UNILATERAL"]},
+        "skill": {"enum": ["LOW", "MODERATE", "HIGH"]},
+        "lower": {"enum": ["NONE", "LIGHT", "MODERATE", "HEAVY"]},
+        "axial": {"enum": ["NONE", "LOW", "MODERATE", "HIGH"]},
+        "ecc": {"enum": ["LOW", "MODERATE", "HIGH"]},
+        "prim": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/muscle"}},
+        "sec": {"type": "array", "items": {"$ref": "#/$defs/muscle"}},
+        "kind": {"enum": ["COMPOUND", "ISOLATION", "STABILITY", "PRACTICE"]},
+        "roles": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/role"}},
+        "purposes": {"type": "array", "minItems": 1, "items": {"enum": ["STRENGTH_DEVELOPMENT", "HYPERTROPHY", "RUNNING_SUPPORT", "DURABILITY_CAPACITY", "GENERAL", "SKILL_PRACTICE"]}},
+        "origin": {"enum": ["R6", "B0"]},
+        "authorityStatus": {"enum": ["APPROVED_ENVELOPE", "B0_CANDIDATE"]},
+        "r6Delta": {"type": "object"}
+      },
+      "allOf": [
+        {"if": {"properties": {"origin": {"const": "R6"}}}, "then": {"properties": {"authorityStatus": {"const": "APPROVED_ENVELOPE"}}}},
+        {"if": {"properties": {"origin": {"const": "B0"}}}, "then": {"properties": {"authorityStatus": {"const": "B0_CANDIDATE"}}}},
+        {"if": {"properties": {"kind": {"const": "PRACTICE"}}}, "then": {"properties": {"roles": {"contains": {"const": "PRACTICE"}}}}}
+      ]
+    },
+    "interferenceRelation": {
+      "type": "object",
+      "required": ["id", "before", "after", "gap", "axis", "severity"],
+      "properties": {"id": {"type": "string", "pattern": "^CMP\\.I[0-9]{2}$"}, "axis": {"enum": ["run", "strength"]}, "severity": {"enum": ["NONE", "LOW", "MODERATE", "HIGH"]}}
+    },
+    "quantity": {
+      "type": "object",
+      "description": "A canonical quantity. Unknown stays null with a reason; never a population default.",
+      "required": ["value", "unit", "class"],
+      "properties": {
+        "value": {"type": ["number", "null"]},
+        "unit": {"enum": ["MINUTE", "SECOND", "REPETITION", "SET", "KILOGRAM", "RIR", "ORDINAL_LEVEL"]},
+        "class": {"enum": ["PRESCRIBED", "ESTIMATED", "EXECUTED"]},
+        "provenance": {"type": "string", "description": "policy:<path>, a ladder index, a familiar recipe id, or an executed fact id"},
+        "unknownReason": {"type": "string"}
+      }
+    },
+    "runDose": {
+      "type": "object",
+      "description": "DOSE level for a run session: one configuration instantiated for one date.",
+      "required": ["familyId", "configurationId", "date", "structure", "intensity", "authorityRefs"],
+      "properties": {
+        "familyId": {"type": "string", "pattern": "^RUN\\.[A-Z_]+$"},
+        "configurationId": {"type": "string", "pattern": "^RUNCFG\\.[A-Z_]+$"},
+        "date": {"type": "string", "format": "date"},
+        "purpose": {"enum": ["BASE", "ENTRY", "RESTART", "RETURN_MODERATE", "RECOVERY_POST_EVENT", "TAPER", "RACE_WINDOW", "QUALITY", "EVENT_SPECIFIC", "RACE"]},
+        "ladderIndex": {"type": ["integer", "null"], "minimum": 0},
+        "structure": {
+          "type": "array",
+          "description": "Ordered phases: warm-up, finite repeat blocks with an explicit total iteration count, recoveries with their own type and completion, cool-down.",
+          "items": {
+            "type": "object",
+            "required": ["phase"],
+            "properties": {
+              "phase": {"enum": ["WARMUP", "WORK", "RECOVERY", "REPEAT", "COOLDOWN", "WALK_BREAK"]},
+              "duration": {"$ref": "#/$defs/quantity"},
+              "repetitions": {"type": "integer", "minimum": 1},
+              "recoveryMode": {"enum": ["WALK", "EASY_JOG_OR_WALK", "STAND", "UNSPECIFIED"]},
+              "completion": {"enum": ["TIME", "DISTANCE", "OPEN"]},
+              "children": {"type": "array"}
+            }
+          }
+        },
+        "intensity": {
+          "type": "object",
+          "required": ["method"],
+          "properties": {
+            "method": {"enum": ["EFFORT_CUE", "FAMILIAR_FIELD_SESSION_TARGET"]},
+            "cue": {"enum": ["EASY_CONVERSATIONAL", "STRIDE_RELAXED_FAST", "THRESHOLD_CONTROLLED", "TEN_K_EFFORT", "HALF_MARATHON_EFFORT"]},
+            "familiarTarget": {"type": "object", "description": "Only with SSCTR-R2-P14 inputs: construct FAMILIAR_FIELD_SESSION_TARGET, pace range in seconds per km (display may invert), recipe id, conditions, provenance and date."}
+          }
+        },
+        "context": {"type": "object", "properties": {"terrainDeclared": {"enum": ["FLAT", "HILLY", "UNKNOWN"]}, "surface": {"type": "string"}}},
+        "optional": {"type": "boolean"},
+        "authorityRefs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "disclosures": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "strengthRowDose": {
+      "type": "object",
+      "description": "DOSE level for one exercise row of a strength session.",
+      "required": ["configurationId", "contextualRole", "sets", "repTarget", "rirTarget", "loadMode", "authorityRefs"],
+      "properties": {
+        "configurationId": {"type": "string"},
+        "contextualRole": {"$ref": "#/$defs/role"},
+        "slotIndex": {"type": "integer", "minimum": 0},
+        "sets": {"type": "integer", "minimum": 1, "maximum": 6},
+        "repTarget": {"type": "object", "required": ["min", "max"], "properties": {"min": {"type": "integer", "minimum": 1}, "max": {"type": "integer", "minimum": 1}, "perSide": {"type": "boolean"}}},
+        "rirTarget": {"type": "object", "required": ["minimum"], "properties": {"minimum": {"type": "integer", "minimum": 0}}},
+        "loadMode": {"enum": ["KNOWN", "ESTABLISH", "FROM_LOG", "BODYWEIGHT", "BAND_LEVEL", "ASSISTANCE_LEVEL", "PRACTICE"]},
+        "load": {"$ref": "#/$defs/quantity"},
+        "convention": {"enum": ["TOTAL", "PER_HAND", "SINGLE_IMPLEMENT", "MACHINE_STACK", "BODYWEIGHT", "BAND_TENSION", "ASSISTED_BODYWEIGHT"]},
+        "ceiling": {"$ref": "#/$defs/quantity"},
+        "restSeconds": {"type": "integer", "minimum": 0},
+        "preparationMinutes": {"type": "number", "minimum": 0},
+        "setType": {"enum": ["WORK", "PREPARATION"]},
+        "exposureKind": {"enum": ["PRACTICE", "RETURN_ENTRY", "RETURN_STEP", "REESTABLISH", "FIRST_ESTABLISH", "UNLOGGED", "KNOWN", "FROM_LOG", "BODYWEIGHT"]},
+        "authorityRefs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "disclosures": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "progressionState": {
+      "type": "object",
+      "description": "PROGRESSION_STATE level. Written only from executed evidence (R7-A HistoricalState); planning reads a per-decision PlanningView; a prescription never writes it.",
+      "required": ["athleteId", "subject", "mode", "asOf", "evidenceRefs"],
+      "properties": {
+        "athleteId": {"type": "string"},
+        "subject": {"type": "object", "required": ["kind", "id"], "properties": {"kind": {"enum": ["RUN_DIMENSION", "STRENGTH_CONFIGURATION"]}, "id": {"type": "string"}}},
+        "mode": {"enum": ["NONE", "WALK_JOG", "RESTART", "EASY", "RETURN", "PRACTICE", "ESTABLISH", "FROM_LOG_PENDING", "FROM_LOG_ADOPTED", "KNOWN", "REESTABLISH", "RETURN_ENTRY", "RETURN_STEP", "BODYWEIGHT"]},
+        "ladderIndex": {"type": ["integer", "null"], "minimum": 0},
+        "referenceLoad": {"$ref": "#/$defs/quantity"},
+        "sets": {"type": ["integer", "null"], "minimum": 0},
+        "ceilings": {"type": "object"},
+        "lastGate": {"enum": ["ADVANCE", "EARNED", "HOLD", "REGRESS", "MISSING", "CONFLICTED", null]},
+        "executedCounters": {"type": "object", "description": "e.g. established easy weeks, threshold sessions, strides executed"},
+        "asOf": {"type": "string"},
+        "evidenceRefs": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}
