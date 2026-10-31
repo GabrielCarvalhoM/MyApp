@@ -588,7 +588,8 @@ function contextAfter(ctx,base,start,{canonical:change=null,goals=false,athleteS
  const variants=contexts.flatMap(context=>[[context,false],...(noviceTemplates&&sk.noviceTemplates?[[context,true]]:[])]),cmpI11=severityAuthority&&allowsCandidate(rep,'B0-C11');
  for(const [context,capped] of variants){
   const key=capped?context+'@B0-C08':context;
-  const candidates=arrangementCandidates(canonical,cap,goal,context,sk,capped?noviceTemplates:templates),lead=goal.priorityByPhase[context]?.lead??goal.baseLead;
+  // A configuration not yet in use starts with its first exposure: the ranking sees it (CMP.I11; B0-C07 c7, B0-C06 c2) when a review re-plans.
+  const candidates=arrangementCandidates(canonical,cap,goal,context,sk,capped?noviceTemplates:templates,{established:new Set(established)}),lead=goal.priorityByPhase[context]?.lead??goal.baseLead;
   const doseKey=doseKeyOf(program.weeks[ctx.w]?.sessions.find(s=>s.role==='QUALITY'));
   const pref=ctx.model?.purposeAllowed&&doseKey?preferredArrangement(ctx.model,candidates,{sessionType:'RUN:QUALITY',phaseClass:phaseClassOf(authority.policy,context,'EASY'),doseKey},{asOf:ctx.asOf}):null;
   const choice=chooseBalanced(candidates,{lead,temporaryPreference:canonical.schedule.temporaryPreference??goal.temporaryPreference,severityAuthority,cmpI11,hybrid:authority.policy.operational.hybrid,athleteSeverity,athleteEvidence:pref?.preferredId?pref:null,currentId:base.arrangementSessions?.[key]?.id??base.arrangementSessions?.[context]?.id??null,context:{eventPhase:EVENT_PHASES.includes(context),strengthDevelopment:goal.strength.development,runDevelopment:goal.run.development,runRole:goal.run.kind==='NONE'?'MAINTAIN':'PRIMARY',strengthRole:EVENT_PHASES.includes(context)||goal.strength.kind==='MAINTAIN'?'MAINTAIN':'PRIMARY'}});

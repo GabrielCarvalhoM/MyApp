@@ -1,0 +1,3376 @@
+{
+ "revision": "R7B-CONFORMANCE-1",
+ "catalogRevision": "R7B0-CATALOG-2",
+ "catalogSha256": "ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9",
+ "records": "audits/domain-coaching-r7-b0-2026-10-31/reviews/SSCTR_RECHECK_B0.json",
+ "statuses": {
+  "IMPLEMENTED": "A runtime consumer implements it and a named R7-B test exercises it",
+  "INHERITED": "Equal to the frozen R6/R7-A runtime (the catalog materializes it); covered by the inherited suite",
+  "DESCRIPTIVE": "Metadata without a decision effect; no consumer by design, with the reason",
+  "DEFERRED": "Not implemented now; owner and gate named",
+  "NOT_APPLICABLE": "Governance or vacuous for the runtime, with the reason"
+ },
+ "entries": [
+  {
+   "id": "SSCTR:B0-FIDELITY#c1",
+   "rule": "Every condition of the ten R6 envelope records applies to the catalog entries, including the weekly-review contract (R18)",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-adaptation.mjs#graduationWeek",
+    "src/r6-program.mjs#qualityGateOpen"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-FIDELITY M1–M3 regression guard",
+    "test/r7b-running.test.mjs::B0-C01 negatives"
+   ],
+   "note": "R6 envelopes unchanged in the runtime (The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes).); R18 is read as a complete week judged by the weekly rule before it can qualify for graduation."
+  },
+  {
+   "id": "SSCTR:B0-FIDELITY#c2",
+   "rule": "FAMILIAR_FIELD_SESSION_TARGET only for the exact familiar recipe with all P14 inputs; every other ladder step EFFORT_CUE, its first exposure a calibration",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#familiarBoutsPrescription",
+    "src/r7b-repertoire.mjs#familiarBoutsInputs",
+    "src/r6-prescription.mjs#qualityPrescription"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C02: a fully specified",
+    "test/r7b-running.test.mjs::Running families by class"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-FIDELITY#c3",
+   "rule": "Strides after walk/jog or restart exit equal the frozen runtime; optionality from B0-C01 c8",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#stridesOptional"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C01 c8: strides stay optional"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-FIDELITY#c4",
+   "rule": "The twelve candidate decisions carry over through their r2 records; conditions prevail where stricter",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#repertoireAuthority",
+    "src/r7b-repertoire.mjs#allowsCandidate"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B binding: the catalog bytes",
+    "test/r7b-binding.test.mjs::R7-B per-record gating"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-FIDELITY#c5",
+   "rule": "Any byte change to the catalog or foundation invalidates the bindings",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CATALOG_SHA256",
+    "src/r7b-repertoire.mjs#repertoireAuthority"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B binding fails closed"
+   ],
+   "note": "The runtime consumes the catalog bytes only and refuses any other bytes; the foundation is not read at runtime (documentary)."
+  },
+  {
+   "id": "SSCTR:B0-C01#c1",
+   "rule": "Quality after graduation only under every R6 quality gate; one quality session a week, not next to the long run when another day can hold it",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-adaptation.mjs#blockBoundary",
+    "src/r6-program.mjs#arrangementCandidates",
+    "src/r6-program.mjs#qualityGateOpen"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C01 negatives",
+    "test/r7b-running.test.mjs::B0-FIDELITY M1–M3 regression guard"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C01#c2",
+   "rule": "Walk/jog and restart starters: the qualifying weeks lie in a block run entirely in EASY mode after the exit",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-adaptation.mjs#blockBoundary"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C01 c2: a walk/jog starter"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C01#c3",
+   "rule": "Qualifying weeks: executed non-establishment EASY-mode weeks, EASY and LONG ADVANCE/EARNED, executed continuous minutes from the ledger, no missing, partial, conflicted or adverse report, a gating weekly review",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-adaptation.mjs#graduationWeek",
+    "src/r6-adaptation.mjs#runningMinutes"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C01 graduation: two complete",
+    "test/r7b-running.test.mjs::B0-C01 negatives"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C01#c4",
+   "rule": "Entry at threshold step 0 with EFFORT_CUE, a calibration, no pace target; one step per executed comparable session",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#advanceRun",
+    "src/r6-prescription.mjs#qualityPrescription"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C01 graduation: two complete"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C01#c5",
+   "rule": "In the introduction week no other run dimension steps; the single-run ceiling covers the whole session",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#advanceRun",
+    "src/r6-program.mjs#distributeRun"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C01 graduation: two complete"
+   ],
+   "note": "Easy and long are held at what was executed (released is not executed). Declared R7B-DECL-01: the planned weekly total still rises because the threshold session is longer than the easy run it replaces."
+  },
+  {
+   "id": "SSCTR:B0-C01#c6",
+   "rule": "Disclosed as a new harder session with an easy alternative kept without penalty; declining keeps the easy plan, revisited at the next boundary",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-adaptation.mjs#blockBoundary",
+    "src/r6-program.mjs#distributeRun"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C01 graduation: two complete",
+    "test/r7b-running.test.mjs::B0-C01 negatives"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C01#c7",
+   "rule": "A single adverse response repeats; two within 14 days regress; clinical routes; missing eligibility is ASK",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes). Graduated athletes use the same gates."
+  },
+  {
+   "id": "SSCTR:B0-C01#c8",
+   "rule": "Strides optional for WALK_JOG-, RESTART- or EASY_LOW-started athletes and runExperience NONE/NOVICE",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#stridesOptional"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C01 c8: strides stay optional",
+    "test/r7b-running.test.mjs::B0-C01 graduation: two complete"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C01#c9",
+   "rule": "Graduation never exempts the race-day completion rule and never satisfies the event-specific prerequisite by itself",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#raceDayCompletionBasis",
+    "src/r6-program.mjs#advanceRun"
+   ],
+   "tests": [
+    "test/r7b-conditions.test.mjs::B0-C01 c9",
+    "test/r7b-running.test.mjs::B0-C02 c3"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C01#c10",
+   "rule": "Strides after walk/jog or restart exit follow the frozen runtime and R6-RUN-QUALITY C5, C9, C12, C13",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "SSCTR:B0-C02#c1",
+   "rule": "Only a current VO2_STYLE task with every P14 input; short intervals, hills, time trial and race simulation stay LATER_GATE; an ambiguous category is ASK",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#familiarRunCategory",
+    "src/r7b-repertoire.mjs#familiarBoutsInputs",
+    "src/r6-program.mjs#repertoireNegotiation"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C02: a fully specified",
+    "test/r7b-running.test.mjs::B0-C10: later-gate familiar"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C02#c2",
+   "rule": "Every R6 quality gate; BUILD, DEVELOPMENT or NEXT_BLOCK only; week 1 only inside the reported minutes; single quality session, never next to the long run",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#qualityFor",
+    "src/r6-program.mjs#qualityGateOpen"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C02: a fully specified",
+    "test/r7b-running.test.mjs::B0-FIDELITY M1–M3 regression guard"
+   ],
+   "note": "Conservative: the familiar bouts start after the two established easy weeks of the EASY_CURRENT class, never in week 1."
+  },
+  {
+   "id": "SSCTR:B0-C02#c3",
+   "rule": "The dose is held exactly; SSCTR-R2-P07 permits only fewer repetitions after repeated last-repetition degradation; otherwise threshold ladder step 0 or easy",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#familiarBoutsPrescription",
+    "src/r6-program.mjs#advanceRun"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C02: a fully specified",
+    "test/r7b-running.test.mjs::B0-C02 c3"
+   ],
+   "note": "Held exactly; repeated adverse responses withdraw the bouts (threshold ladder from step 0). The P07 fewer-repetition path is not used: it needs a last-repetition degradation record the observation contract does not carry (owner Product/Data)."
+  },
+  {
+   "id": "SSCTR:B0-C02#c4",
+   "rule": "The familiar target is a field-session anchor only (never LT2, CS, MLSS, VO2max or race pace); effort co-primary; changed conditions invalidate reuse",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#familiarBoutsPrescription",
+    "src/r6-prescription.mjs#FORBIDDEN_CLAIM"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C02: a fully specified",
+    "test/r7b-conditions.test.mjs::No program text claims"
+   ],
+   "note": "Comparable conditions are an intake input; a change of conditions inside a program needs a new intake (no in-program conditions observation exists)."
+  },
+  {
+   "id": "SSCTR:B0-C02#c5",
+   "rule": "After a SHORT break the first quality slot runs easy; no quality in RETURN or RESTART; after any interruption the familiar status lapses",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-adaptation.mjs#stateAtBreak",
+    "src/r6-program.mjs#familiarBoutsTask"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C02 c3"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C02#c6",
+   "rule": "Never an executed threshold session for the event-specific prerequisite, the taper peak or the race touch",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#advanceRun"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C02 c3"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C02#c7",
+   "rule": "Composition class KEY with recovery cost HIGH; CMP relations and B0-C11 placement apply; explanations never say VO2max",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-balanced.mjs#KEY_RUN",
+    "src/r7b-repertoire.mjs#I11_PROTECTED_FAMILIES"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C02: a fully specified"
+   ],
+   "note": "Recovery cost HIGH is descriptive (ordinal); no session cost is summed."
+  },
+  {
+   "id": "SSCTR:B0-C03#c1",
+   "rule": "Admission adds no dose: R6 goal dose by role, R6 establishment and progression; no load derived from sex, size or another exercise",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#strengthCandidate",
+    "src/r7b-repertoire.mjs#admitted"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B conformance: every planned run belongs",
+    "test/r7b-strength.test.mjs::B0-C08 / B0-F08"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C03#c2",
+   "rule": "Skill admissibility unchanged; HIGH only when familiar or reached through a ladder; equipment never implies competence",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#buildTemplates",
+    "src/r6-program.mjs#highSkillAdmissible"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C03 / skill admissibility",
+    "test/r7b-strength.test.mjs::B0-C07: ladder steps are offered"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C03#c3",
+   "rule": "HIGH-eccentric configurations and first or re-establishment lower exposures follow B0-C11 placement; never content-reduction substitutes near a protected run",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-balanced.mjs#eccentricOrNovelLowerSession",
+    "src/r6-program.mjs#rotationFor"
+   ],
+   "tests": [
+    "test/r7b-hybrid-program.test.mjs::B0-C11 / CMP.I11",
+    "test/r7b-hybrid-program.test.mjs::B0-C11 / CMP.P04",
+    "test/r7b-strength.test.mjs::DR-134 / B0-C06 rotation"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C03#c4",
+   "rule": "DURABILITY_CAPACITY and RUNNING_SUPPORT are purposes only, never injury prevention, rehabilitation or a pain remedy",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-prescription.mjs#FORBIDDEN_CLAIM"
+   ],
+   "tests": [
+    "test/r7b-conditions.test.mjs::No program text claims"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C03#c5",
+   "rule": "Hypertrophy isolation only through goal-context accessory slots, replacing the slot's sets",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#buildTemplates"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C05: goal-context accessories",
+    "test/r7b-strength.test.mjs::DR-134 / B0-F03"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C03#c6",
+   "rule": "Bodyweight configurations that cannot approach the reserve are disclosed as a lower stimulus; added load LATER_GATE",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#lowerStimulusDisclosure"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C09: PULL coverage"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C03#c7",
+   "rule": "Pain, injury, illness or a functional limitation routes CLINICAL_HUMAN_REQUIRED for the dependent scope; no safe-exercise substitution",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-adaptation.mjs#exerciseSubstitution"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 reason-based substitution"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C04#c1",
+   "rule": "Demand classes, muscles and purposes are ordinal priors for comparing and placing only; never a fatigue measure, timer, readiness or risk score; never summed",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#admissibleAlternative",
+    "src/r7b-repertoire.mjs#novelOrEccentricLower"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 / B0-C06 rotation",
+    "test/r7b-hybrid-program.test.mjs::B0-C11 / CMP.I11"
+   ],
+   "note": "Used only as ordinal comparisons (within one step, HIGH eccentric); no sum exists in the runtime."
+  },
+  {
+   "id": "SSCTR:B0-C04#c2",
+   "rule": "The derived session recovery-cost class is explanatory and a tie-break only; never double counted",
+   "status": "NOT_APPLICABLE",
+   "consumers": [],
+   "tests": [],
+   "note": "The runtime does not derive a session recovery-cost class; no consumer, so no double counting can occur. Arrangement costs come from CMP.I01–I11 only."
+  },
+  {
+   "id": "SSCTR:B0-C04#c3",
+   "rule": "Muscle counting is descriptive only until G02",
+   "status": "DESCRIPTIVE",
+   "consumers": [],
+   "tests": [],
+   "note": "No consumer by design (R7B MUSCLE_COUNTING_DESCRIPTIVE_ONLY); weekly volume is never set, gated or judged by muscle counts."
+  },
+  {
+   "id": "SSCTR:B0-C04#c4",
+   "rule": "SINGLE_IMPLEMENT progresses by the per-implement step, or by repetitions when that implement step is unavailable; never a fabricated load",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#incrementFor"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-F07: a known single-implement",
+    "test/r7b-strength.test.mjs::B0-C04 / B0-F01 / B0-F02"
+   ],
+   "note": "The repetitions-when-unavailable path needs the available implement steps, which are not collected (B0-F07: owner Product/Data); until then the policy per-implement step applies."
+  },
+  {
+   "id": "SSCTR:B0-C04#c5",
+   "rule": "BAND_TENSION and ASSISTED_BODYWEIGHT never carry kilograms; repetitions inside the goal range; a level change is athlete-reported and confirmed, never inferred",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-prescription.mjs#exerciseRow",
+    "src/r6-adaptation.mjs#strengthLogs",
+    "src/r6-intake.mjs#knownExercise",
+    "src/r6-program.mjs#advanceStrength"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C04 / B0-F01 / B0-F02",
+    "test/r7b-binding.test.mjs::R7-B conformance: every planned run belongs"
+   ],
+   "note": "The runtime never infers or converts a level; a structured level-change confirmation needs a band-level field in the logging contract (owner Product/Data)."
+  },
+  {
+   "id": "SSCTR:B0-C04#c6",
+   "rule": "Bent-knee calf work is soleus emphasis without a superiority claim; straight-knee stays the default",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-prescription.mjs#exerciseRow",
+    "src/r7b-repertoire.mjs#buildTemplates"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C05: goal-context accessories"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C04#c7",
+   "rule": "The R6 representation (PER_HAND single implements, kilogram bands, EXTERNAL pull-up, bilateral side plank and Pallof) is corrected in R7-B (B0-F01, B0-F02)",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS",
+    "src/r6-prescription.mjs#exerciseRow"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C04 / B0-F01 / B0-F02"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C04#c8",
+   "rule": "A change to a demand class, primary muscle or convention invalidates the record for that configuration",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CATALOG_SHA256"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B binding fails closed"
+   ],
+   "note": "Any byte change of the catalog disables the whole binding (stricter than per configuration)."
+  },
+  {
+   "id": "SSCTR:B0-C05#c1",
+   "rule": "Alternatives replace, never add; R6 doses, rest and preparation by role; no new exercise in TAPER, RACE_WEEK or POST_EVENT",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#buildTemplates",
+    "src/r6-program.mjs#rotationFor"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C05: goal-context accessories",
+    "test/r7b-running.test.mjs::Event taper (10K, half marathon)",
+    "test/r7b-strength.test.mjs::B0-C06 c3: no rotation"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C05#c2",
+   "rule": "Calf: straight-knee default with a single exposure; at most half bent-knee; variation not superiority",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#buildTemplates"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C05: goal-context accessories"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C05#c3",
+   "rule": "Goal-context alternatives spread across the listed patterns before any repeats; the id tie-break only within a pattern",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#buildTemplates",
+    "src/r7b-repertoire.mjs#selectionCompare"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C05: goal-context accessories"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C05#c4",
+   "rule": "Running-support alternatives carry no prevention claim; trunk work is never removed from the whole week",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#buildTemplates",
+    "src/r6-prescription.mjs#FORBIDDEN_CLAIM"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C05: goal-context accessories",
+    "test/r7b-conditions.test.mjs::No program text claims"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C05#c5",
+   "rule": "Role admissibility only narrows: PRACTICE fills PRACTICE rows, isolation ACCESSORY slots; a MAIN without a MAIN-admissible configuration follows B0-C09",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#buildTemplates",
+    "src/r6-prescription.mjs#validateR6Prescription"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 / B0-F03",
+    "test/r7b-strength.test.mjs::B0-C09: PULL coverage"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C05#c6",
+   "rule": "The selection order is an IMPLEMENTATION_CHOICE; emphasis reorders only within goal doses",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#selectionCompare"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C03 / skill admissibility",
+    "test/r7b-binding.test.mjs::R7-B conformance: every planned run belongs"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C06#c1",
+   "rule": "Rotation is selection only, permitted never mandatory, systematic: same pattern and subpattern (or group), shared primary muscle, within one step, admissible, arrangement cost not worse",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#admissibleAlternative",
+    "src/r6-program.mjs#rotationFor"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 / B0-C06 rotation"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C06#c2",
+   "rule": "A rotated configuration is a calibration exposure: establishment, no load transfer, no first-exposure progression; placed away from the long run and quality run",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#strengthCandidate",
+    "src/r6-program.mjs#rotationFor",
+    "src/r6-program.mjs#arrangementCandidates"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 / B0-C06 rotation"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C06#c3",
+   "rule": "No rotation in ESTABLISHMENT, SPECIFIC, TAPER, RACE_WEEK or POST_EVENT, nor during return steps",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#rotationFor",
+    "src/r7b-repertoire.mjs#ROTATION_DEFERRED_PHASES"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C06 c3: no rotation",
+    "test/r7b-strength.test.mjs::DR-134 / B0-C06 rotation"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C06#c4",
+   "rule": "Under COACH_DECIDES and EVERY_6_WEEKS an accessory rotates only at the first block boundary on or after six weeks",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#rotationFor"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 / B0-C06 rotation"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C06#c5",
+   "rule": "A MAIN changes only at a block boundary with a recorded reason (purpose stated for a deliberate transition); strength goals are told the load restarts",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-adaptation.mjs#blockBoundary"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C06: a MAIN changes only"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C06#c6",
+   "rule": "Under FIXED every role is REASON_ONLY; deliberate transitions and skill steps only with explicit opt-in",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#rotationFor",
+    "src/r6-adaptation.mjs#blockBoundary"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 / B0-C06 rotation",
+    "test/r7b-strength.test.mjs::B0-C07: ladder steps are offered"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C06#c7",
+   "rule": "Close variation is a ranking relation only; it grants no permission and never exempts a MAIN",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#closeVariation",
+    "src/r6-catalogue.mjs#substitutesFor"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 reason-based substitution"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C06#c8",
+   "rule": "Reason-based substitution keeps precedence over cadence after the clinical screen; ambiguous reports are ASK",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-adaptation.mjs#exerciseSubstitution"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 reason-based substitution"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C07#c1",
+   "rule": "A ladder step is offered, never automatic: at a block boundary after ADVANCE or EARNED final exposures, opt-in; SKILL_MISMATCH regression always available",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-adaptation.mjs#blockBoundary",
+    "src/r6-adaptation.mjs#exerciseSubstitution",
+    "src/r7b-repertoire.mjs#ladderPrevious"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C07: ladder steps are offered",
+    "test/r7b-strength.test.mjs::DR-134 reason-based substitution"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C07#c2",
+   "rule": "One ladder step per configuration per block boundary; no skipped step",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-adaptation.mjs#blockBoundary",
+    "src/r7b-repertoire.mjs#ladderNext"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C07: ladder steps are offered"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C07#c3",
+   "rule": "Establishment from the lightest load (the empty bar), ramped, technique first, at most 2 sets at RIR 3 or more, no load transferred",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#strengthCandidate",
+    "src/r6-prescription.mjs#exerciseRow"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C07: ladder steps are offered"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C07#c4",
+   "rule": "Not offered in deferred phases, during return steps, or under FIXED unless the athlete opts in",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-adaptation.mjs#blockBoundary"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C07: ladder steps are offered"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C07#c5",
+   "rule": "Reaching a HIGH-skill configuration through a ladder makes only that configuration admissible",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#buildTemplates",
+    "src/r6-program.mjs#highSkillAdmissible"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C07: ladder steps are offered"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C07#c6",
+   "rule": "A subpattern-changing link (push-up to pike) only while another PUSH slot keeps a horizontal push",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-adaptation.mjs#blockBoundary",
+    "src/r7b-repertoire.mjs#ladderChangesSubpattern"
+   ],
+   "tests": [
+    "test/r7b-conditions.test.mjs::B0-C07 c6"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C07#c7",
+   "rule": "First exposures after a ladder step follow B0-C11 placement when days allow",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#arrangementCandidates",
+    "src/r6-adaptation.mjs#contextAfter"
+   ],
+   "tests": [
+    "test/r7b-hybrid-program.test.mjs::B0-C11 / CMP.I11"
+   ],
+   "note": "A re-plan ranks the arrangement with configurations not yet in use as first exposures (CMP.I11)."
+  },
+  {
+   "id": "SSCTR:B0-C08#c1",
+   "rule": "Only strength class NONE, from establishment to the first strength block boundary; other classes keep the R6 day-count templates",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#noviceDensityApplies",
+    "src/r7b-repertoire.mjs#noviceTemplateTypes"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C08 / B0-F08"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C08#c2",
+   "rule": "Release at the first block boundary requires executed evidence (loads established, final exposures ADVANCE or EARNED, no repeated adverse); otherwise re-assessed at the next boundary",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#advanceStrength"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C08 / B0-F08"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C08#c3",
+   "rule": "On release new configurations start with effort-guided establishment; sets follow R6; no catch-up",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#strengthCandidate"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C08 / B0-F08"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C08#c4",
+   "rule": "TPL.CORE days at practice or accessory dose, practice first, never lower-body MAIN; disclosed lighter by design with both options; chosen days never dropped",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#buildWeek",
+    "src/r6-program.mjs#repertoireNegotiation"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C08 / B0-F08",
+    "test/r7b-hybrid-program.test.mjs::Feasibility negotiation"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C08#c5",
+   "rule": "The cap is a reversible coaching choice, not a physiological limit or prevention rule",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#repertoireNegotiation"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C08 / B0-F08"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C09#c1",
+   "rule": "PULL_LIMITED_FOR_EQUIPMENT computed from the selected rows; a lower, different stimulus, never equivalent",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#pullCoverageDisclosure"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C09: PULL coverage"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C09#c2",
+   "rule": "A scapular pull-up needs a hang; inability is SKILL_MISMATCH (prone-row-practice or prone-ytw-raise); pain routes to the clinical screen",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-prescription.mjs#exerciseRow",
+    "src/r6-adaptation.mjs#exerciseSubstitution"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C09: PULL coverage",
+    "test/r7b-strength.test.mjs::DR-134 reason-based substitution"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C09#c3",
+   "rule": "No improvised anchors or furniture; adding a band or bar is an option, never a requirement",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#pullCoverageDisclosure"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C09: PULL coverage"
+   ],
+   "note": "The catalog holds no improvised configuration; the disclosure options are the two stated."
+  },
+  {
+   "id": "SSCTR:B0-C09#c4",
+   "rule": "Band and assistance levels stay ordinal; a bodyweight-for-load swap is disclosed as a different stimulus",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-prescription.mjs#exerciseRow",
+    "src/r6-catalogue.mjs#substitutesFor"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C04 / B0-F01 / B0-F02",
+    "test/r7b-strength.test.mjs::DR-134 reason-based substitution"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C09#c5",
+   "rule": "kb-row and one-arm rows are logged per side",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-prescription.mjs#exerciseRow"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C04 / B0-F01 / B0-F02"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C10#c1",
+   "rule": "A LATER_GATE or UNSUPPORTED_V1 item is never prescribed; its fallback is used and disclosed as a different stimulus",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#repertoireNegotiation",
+    "src/r7b-repertoire.mjs#LATER_GATE"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B conformance: no later-gate",
+    "test/r7b-running.test.mjs::B0-C10: later-gate familiar"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C10#c2",
+   "rule": "Declared hilly terrain is context for easy and long runs only; never a hill dose",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#runRepertoireOf"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B conformance: no later-gate"
+   ],
+   "note": "No input generates a hill session; HILLS is not a family of the runtime (guard runNotInRepertoire)."
+  },
+  {
+   "id": "SSCTR:B0-C10#c3",
+   "rule": "5K: a PERFORMANCE programme without event phases, the absence of 5K rules disclosed; marathon and ultra UNSUPPORTED",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-intake.mjs#canonicalizeIntake",
+    "src/r6-program.mjs#repertoireNegotiation"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C10: later-gate familiar",
+    "test/r7b-binding.test.mjs::R7-B per-record gating"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C10#c4",
+   "rule": "Promotion of any item needs its own envelope review and SSCTR approval",
+   "status": "NOT_APPLICABLE",
+   "consumers": [],
+   "tests": [],
+   "note": "Governance; the runtime has no promotion path (later-gate items have no family or configuration)."
+  },
+  {
+   "id": "SSCTR:B0-C10#c5",
+   "rule": "Familiar VO2-style continuation only under B0-C02; familiar short-interval, hill or time-trial tasks stay LATER_GATE",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#familiarRunCategory"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C10: later-gate familiar",
+    "test/r7b-running.test.mjs::B0-C02: a fully specified"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C11#c1",
+   "rule": "CMP.I11 is an ordinal LOW ranking cost once per pair, never a prohibition or hour rule; athlete evidence may raise it for that athlete",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-balanced.mjs#interferenceCosts"
+   ],
+   "tests": [
+    "test/r7b-hybrid-program.test.mjs::B0-C11 / CMP.I11"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C11#c2",
+   "rule": "It applies before RUN.LONG and the protected quality KEY run; race proximity stays under CMP.I01 and CMP.P06",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#I11_PROTECTED_FAMILIES",
+    "src/r6-balanced.mjs#interferenceCosts"
+   ],
+   "tests": [
+    "test/r7b-hybrid-program.test.mjs::B0-C11 / CMP.I11"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C11#c3",
+   "rule": "Arrangement first within the chosen days and shifts; content changes only when none avoids the cost",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-balanced.mjs#chooseBalanced",
+    "src/r6-program.mjs#buildWeek"
+   ],
+   "tests": [
+    "test/r7b-hybrid-program.test.mjs::B0-C11 / CMP.I11",
+    "test/r7b-hybrid-program.test.mjs::B0-C11 / CMP.P04"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C11#c4",
+   "rule": "Content reduction uses only an established or familiar non-HIGH-eccentric same-pattern configuration or fewer sets; never a first exposure or HIGH-eccentric configuration next to the protected run",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#buildWeek"
+   ],
+   "tests": [
+    "test/r7b-hybrid-program.test.mjs::B0-C11 / CMP.P04"
+   ],
+   "note": "The runtime uses only the fewer-sets option (never a swap), the more conservative of the two."
+  },
+  {
+   "id": "SSCTR:B0-C11#c5",
+   "rule": "Under STRENGTH lead the long run yields and no MAIN is replaced; under JOINT a genuine equal-harm trade-off is asked once; under RUN lead strength keeps its essential stimulus",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#buildWeek",
+    "src/r6-balanced.mjs#chooseBalanced"
+   ],
+   "tests": [
+    "test/r7b-hybrid-program.test.mjs::B0-C11 / CMP.P04"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C11#c6",
+   "rule": "The axial tie-break is an IMPLEMENTATION_CHOICE deciding only which of equal rows is reduced first",
+   "status": "NOT_APPLICABLE",
+   "consumers": [],
+   "tests": [],
+   "note": "The content stage reduces every qualifying row by one set; no choice among equal rows arises, so no tie-break is needed."
+  },
+  {
+   "id": "SSCTR:B0-C11#c7",
+   "rule": "Every kept MODERATE-or-higher cost and every content reduction is disclosed; never presented as recovery or injury prevention",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#arrangementDisclosures",
+    "src/r6-program.mjs#buildWeek"
+   ],
+   "tests": [
+    "test/r7b-hybrid-program.test.mjs::B0-C11 / CMP.P04",
+    "test/r7b-conditions.test.mjs::No program text claims"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C11#c8",
+   "rule": "PROTECTED_RUN_STIMULUS_CONFLICT is governed by this record",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#buildWeek"
+   ],
+   "tests": [
+    "test/r7b-hybrid-program.test.mjs::B0-C11 / CMP.P04"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C12#c1",
+   "rule": "Archetypes are labels of the R6 goal-model lead: no dose, no static priority flag, no protection rule",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#archetypeOf"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B archetypes (B0-C12)",
+    "test/r7b-binding.test.mjs::R7-B per-record gating"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C12#c2",
+   "rule": "A stated priority resolves genuine trade-offs and same-shift order only; never overrides event-phase leads; never required",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "SSCTR:B0-C12#c3",
+   "rule": "Overlays keep their own trajectories and never change the base lead",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#archetypeOf"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B archetypes (B0-C12)"
+   ]
+  },
+  {
+   "id": "SSCTR:B0-C12#c4",
+   "rule": "Any change to the goal model, lead derivation or phase leads invalidates this record",
+   "status": "NOT_APPLICABLE",
+   "consumers": [],
+   "tests": [],
+   "note": "buildGoalModel is unchanged by R7-B; governance."
+  },
+  {
+   "id": "run.family:RUN.WALK",
+   "rule": "Run family RUN.WALK with its eligibility, progression and regression",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#walkPrescription",
+    "src/r7b-repertoire.mjs#runRepertoireOf"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::Running families by class",
+    "test/r7b-hybrid-program.test.mjs::Feasibility negotiation"
+   ]
+  },
+  {
+   "id": "run.family:RUN.WALK_JOG",
+   "rule": "Run family RUN.WALK_JOG with its eligibility, progression and regression",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#distributeRun",
+    "src/r7b-repertoire.mjs#runRepertoireOf"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::Running families by class",
+    "test/r7b-running.test.mjs::B0-C01 c8: strides stay optional"
+   ]
+  },
+  {
+   "id": "run.family:RUN.EASY",
+   "rule": "Run family RUN.EASY with its eligibility, progression and regression",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#distributeRun",
+    "src/r7b-repertoire.mjs#runRepertoireOf"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::Running families by class"
+   ]
+  },
+  {
+   "id": "run.family:RUN.LONG",
+   "rule": "Run family RUN.LONG with its eligibility, progression and regression",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#distributeRun",
+    "src/r7b-repertoire.mjs#runRepertoireOf"
+   ],
+   "tests": [
+    "test/r7b-hybrid-program.test.mjs::Protected stimuli",
+    "test/r7b-hybrid-program.test.mjs::Program-level progression"
+   ]
+  },
+  {
+   "id": "run.family:RUN.STRIDES",
+   "rule": "Run family RUN.STRIDES with its eligibility, progression and regression",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#stridesOptional",
+    "src/r7b-repertoire.mjs#runRepertoireOf"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C01 c8: strides stay optional"
+   ]
+  },
+  {
+   "id": "run.family:RUN.THRESHOLD",
+   "rule": "Run family RUN.THRESHOLD with its eligibility, progression and regression",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#qualityFor",
+    "src/r7b-repertoire.mjs#runRepertoireOf"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::Running families by class",
+    "test/r7b-running.test.mjs::B0-FIDELITY M1–M3 regression guard",
+    "test/r7b-running.test.mjs::B0-C01 graduation: two complete"
+   ]
+  },
+  {
+   "id": "run.family:RUN.EVENT_SPECIFIC",
+   "rule": "Run family RUN.EVENT_SPECIFIC with its eligibility, progression and regression",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#qualityFor",
+    "src/r7b-repertoire.mjs#runRepertoireOf"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::Running families by class",
+    "test/r7b-hybrid-program.test.mjs::Protected stimuli"
+   ]
+  },
+  {
+   "id": "run.family:RUN.RACE_TOUCH",
+   "rule": "Run family RUN.RACE_TOUCH with its eligibility, progression and regression",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#eventWeekSessions",
+    "src/r7b-repertoire.mjs#runRepertoireOf"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::Running families by class"
+   ]
+  },
+  {
+   "id": "run.family:RUN.RACE",
+   "rule": "Run family RUN.RACE with its eligibility, progression and regression",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#racePrescription",
+    "src/r7b-repertoire.mjs#runRepertoireOf"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::Running families by class",
+    "test/r7b-conditions.test.mjs::B0-C01 c9"
+   ]
+  },
+  {
+   "id": "run.family:RUN.FAMILIAR_REPEATED_BOUTS",
+   "rule": "Run family RUN.FAMILIAR_REPEATED_BOUTS with its eligibility, progression and regression",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#familiarBoutsPrescription",
+    "src/r7b-repertoire.mjs#runRepertoireOf"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C02: a fully specified",
+    "test/r7b-running.test.mjs::B0-C02 c3"
+   ]
+  },
+  {
+   "id": "run.intensityMethod:EFFORT_CUE",
+   "rule": "Default method for every family; first exposure a calibration",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-prescription.mjs#qualityPrescription"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::Running families by class"
+   ]
+  },
+  {
+   "id": "run.intensityMethod:FAMILIAR_FIELD_SESSION_TARGET",
+   "rule": "A pace target only for the exact familiar task (SSCTR-R2-P14)",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#familiarBoutsPrescription"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C02: a fully specified"
+   ]
+  },
+  {
+   "id": "run.intensityMethod:PACE_FROM_GOAL_OR_EASY_PACE",
+   "rule": "Never a pace from a time goal or easy pace",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-prescription.mjs#validateR6Prescription"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::Running families by class"
+   ]
+  },
+  {
+   "id": "composition.relation:CMP.I01",
+   "rule": "Interference relation CMP.I01 (equal to the frozen runtime)",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes).",
+   "consumersInherited": [
+    "src/r6-balanced.mjs#interferenceCosts"
+   ]
+  },
+  {
+   "id": "composition.relation:CMP.I02",
+   "rule": "Interference relation CMP.I02 (equal to the frozen runtime)",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes).",
+   "consumersInherited": [
+    "src/r6-balanced.mjs#interferenceCosts"
+   ]
+  },
+  {
+   "id": "composition.relation:CMP.I03",
+   "rule": "Interference relation CMP.I03 (equal to the frozen runtime)",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes).",
+   "consumersInherited": [
+    "src/r6-balanced.mjs#interferenceCosts"
+   ]
+  },
+  {
+   "id": "composition.relation:CMP.I04",
+   "rule": "Interference relation CMP.I04 (equal to the frozen runtime)",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes).",
+   "consumersInherited": [
+    "src/r6-balanced.mjs#interferenceCosts"
+   ]
+  },
+  {
+   "id": "composition.relation:CMP.I05",
+   "rule": "Interference relation CMP.I05 (equal to the frozen runtime)",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes).",
+   "consumersInherited": [
+    "src/r6-balanced.mjs#interferenceCosts"
+   ]
+  },
+  {
+   "id": "composition.relation:CMP.I06",
+   "rule": "Interference relation CMP.I06 (equal to the frozen runtime)",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes).",
+   "consumersInherited": [
+    "src/r6-balanced.mjs#interferenceCosts"
+   ]
+  },
+  {
+   "id": "composition.relation:CMP.I07",
+   "rule": "Interference relation CMP.I07 (equal to the frozen runtime)",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes).",
+   "consumersInherited": [
+    "src/r6-balanced.mjs#interferenceCosts"
+   ]
+  },
+  {
+   "id": "composition.relation:CMP.I08",
+   "rule": "Interference relation CMP.I08 (equal to the frozen runtime)",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes).",
+   "consumersInherited": [
+    "src/r6-balanced.mjs#interferenceCosts"
+   ]
+  },
+  {
+   "id": "composition.relation:CMP.I09",
+   "rule": "Interference relation CMP.I09 (equal to the frozen runtime)",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes).",
+   "consumersInherited": [
+    "src/r6-balanced.mjs#interferenceCosts"
+   ]
+  },
+  {
+   "id": "composition.relation:CMP.I10",
+   "rule": "Interference relation CMP.I10 (equal to the frozen runtime)",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes).",
+   "consumersInherited": [
+    "src/r6-balanced.mjs#interferenceCosts"
+   ]
+  },
+  {
+   "id": "composition.relation:CMP.I11",
+   "rule": "Eccentric or new lower-body work within about a day before the long or quality run: LOW run cost",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-balanced.mjs#interferenceCosts",
+    "src/r6-balanced.mjs#eccentricOrNovelLowerSession"
+   ],
+   "tests": [
+    "test/r7b-hybrid-program.test.mjs::B0-C11 / CMP.I11"
+   ]
+  },
+  {
+   "id": "composition.placement:CMP.P01",
+   "rule": "Placement rule CMP.P01",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "composition.placement:CMP.P02",
+   "rule": "Placement rule CMP.P02",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "composition.placement:CMP.P03",
+   "rule": "Placement rule CMP.P03",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "composition.placement:CMP.P04",
+   "rule": "Placement rule CMP.P04",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#buildWeek"
+   ],
+   "tests": [
+    "test/r7b-hybrid-program.test.mjs::B0-C11 / CMP.P04",
+    "test/r7b-hybrid-program.test.mjs::B0-C11 / CMP.I11"
+   ]
+  },
+  {
+   "id": "composition.placement:CMP.P05",
+   "rule": "Placement rule CMP.P05",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes). Its axial tie-break is not needed by the R7-B content stage (see SSCTR:B0-C11#c6)."
+  },
+  {
+   "id": "composition.placement:CMP.P06",
+   "rule": "Placement rule CMP.P06",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "composition.placement:CMP.P07",
+   "rule": "Placement rule CMP.P07",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "composition.placement:CMP.P08",
+   "rule": "Placement rule CMP.P08",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "composition.placement:CMP.P09",
+   "rule": "Placement rule CMP.P09",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#noviceDensityApplies",
+    "src/r6-program.mjs#spacedExposures"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C08 / B0-F08",
+    "test/r7b-running.test.mjs::Running families by class"
+   ]
+  },
+  {
+   "id": "composition.infeasible:GENUINE_TRADE_OFF",
+   "rule": "Representation of GENUINE_TRADE_OFF",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "composition.infeasible:TOO_MANY_RUN_DAYS_FOR_CURRENT_PRACTICE",
+   "rule": "Representation of TOO_MANY_RUN_DAYS_FOR_CURRENT_PRACTICE",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "composition.infeasible:STRENGTH_DAYS_ABOVE_CURRENT_PRACTICE",
+   "rule": "Representation of STRENGTH_DAYS_ABOVE_CURRENT_PRACTICE",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#repertoireNegotiation"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C08 / B0-F08"
+   ]
+  },
+  {
+   "id": "composition.infeasible:EQUIPMENT_LIMITS_STRENGTH_SESSION",
+   "rule": "Representation of EQUIPMENT_LIMITS_STRENGTH_SESSION",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "composition.infeasible:PULL_LIMITED_FOR_EQUIPMENT",
+   "rule": "Representation of PULL_LIMITED_FOR_EQUIPMENT",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#pullCoverageDisclosure"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C09: PULL coverage"
+   ]
+  },
+  {
+   "id": "composition.infeasible:EVENT_AMBITIOUS_FOR_CURRENT_RUNNING",
+   "rule": "Representation of EVENT_AMBITIOUS_FOR_CURRENT_RUNNING",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "composition.infeasible:LONG_RUN_PEAK_BELOW_TARGET",
+   "rule": "Representation of LONG_RUN_PEAK_BELOW_TARGET",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#feasibilityOf"
+   ],
+   "tests": [
+    "test/r7b-hybrid-program.test.mjs::Feasibility negotiation"
+   ]
+  },
+  {
+   "id": "composition.infeasible:EVENT_TOO_CLOSE_OR_OUTSIDE_HORIZON",
+   "rule": "Representation of EVENT_TOO_CLOSE_OR_OUTSIDE_HORIZON",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "composition.protected:RUN",
+   "rule": "Protected stimuli under a RUN lead",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-balanced.mjs#chooseBalanced",
+    "src/r6-program.mjs#feasibilityOf"
+   ],
+   "tests": [
+    "test/r7b-hybrid-program.test.mjs::Protected stimuli",
+    "test/r7b-hybrid-program.test.mjs::Feasibility negotiation",
+    "test/r7b-hybrid-program.test.mjs::B0-C11 / CMP.P04"
+   ]
+  },
+  {
+   "id": "composition.protected:STRENGTH",
+   "rule": "Protected stimuli under a STRENGTH lead",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-balanced.mjs#chooseBalanced",
+    "src/r6-program.mjs#feasibilityOf"
+   ],
+   "tests": [
+    "test/r7b-hybrid-program.test.mjs::Protected stimuli",
+    "test/r7b-hybrid-program.test.mjs::Feasibility negotiation",
+    "test/r7b-hybrid-program.test.mjs::B0-C11 / CMP.P04"
+   ]
+  },
+  {
+   "id": "composition.protected:JOINT",
+   "rule": "Protected stimuli under a JOINT lead",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-balanced.mjs#chooseBalanced",
+    "src/r6-program.mjs#feasibilityOf"
+   ],
+   "tests": [
+    "test/r7b-hybrid-program.test.mjs::Protected stimuli",
+    "test/r7b-hybrid-program.test.mjs::Feasibility negotiation",
+    "test/r7b-hybrid-program.test.mjs::B0-C11 / CMP.P04"
+   ]
+  },
+  {
+   "id": "laterGate:LATER.RUN.STEADY",
+   "rule": "Never prescribed; a familiar task of this kind falls back and is disclosed",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#LATER_GATE_RUN_CATEGORIES",
+    "src/r6-program.mjs#repertoireNegotiation"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B conformance: no later-gate",
+    "test/r7b-running.test.mjs::B0-C10: later-gate familiar"
+   ]
+  },
+  {
+   "id": "laterGate:LATER.RUN.CONTINUOUS_TEMPO",
+   "rule": "Never prescribed; a familiar task of this kind falls back and is disclosed",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#LATER_GATE_RUN_CATEGORIES",
+    "src/r6-program.mjs#repertoireNegotiation"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B conformance: no later-gate",
+    "test/r7b-running.test.mjs::B0-C10: later-gate familiar"
+   ]
+  },
+  {
+   "id": "laterGate:LATER.RUN.VO2_DE_NOVO",
+   "rule": "Never prescribed; a familiar task of this kind falls back and is disclosed",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#LATER_GATE_RUN_CATEGORIES",
+    "src/r6-program.mjs#repertoireNegotiation"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B conformance: no later-gate",
+    "test/r7b-running.test.mjs::B0-C10: later-gate familiar"
+   ]
+  },
+  {
+   "id": "laterGate:LATER.RUN.HILL_REPEATS",
+   "rule": "Never prescribed; a familiar task of this kind falls back and is disclosed",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#LATER_GATE_RUN_CATEGORIES",
+    "src/r6-program.mjs#repertoireNegotiation"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B conformance: no later-gate",
+    "test/r7b-running.test.mjs::B0-C10: later-gate familiar"
+   ]
+  },
+  {
+   "id": "laterGate:LATER.RUN.SHORT_INTERVALS_SPEED",
+   "rule": "Never prescribed; a familiar task of this kind falls back and is disclosed",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#LATER_GATE_RUN_CATEGORIES",
+    "src/r6-program.mjs#repertoireNegotiation"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B conformance: no later-gate",
+    "test/r7b-running.test.mjs::B0-C10: later-gate familiar"
+   ]
+  },
+  {
+   "id": "laterGate:LATER.RUN.FARTLEK_PROGRESSION_RUN",
+   "rule": "Never prescribed; a familiar task of this kind falls back and is disclosed",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#LATER_GATE_RUN_CATEGORIES",
+    "src/r6-program.mjs#repertoireNegotiation"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B conformance: no later-gate",
+    "test/r7b-running.test.mjs::B0-C10: later-gate familiar"
+   ]
+  },
+  {
+   "id": "laterGate:LATER.RUN.FITNESS_TEST_TIME_TRIAL",
+   "rule": "Never prescribed; a familiar task of this kind falls back and is disclosed",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#LATER_GATE_RUN_CATEGORIES",
+    "src/r6-program.mjs#repertoireNegotiation"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B conformance: no later-gate",
+    "test/r7b-running.test.mjs::B0-C10: later-gate familiar"
+   ]
+  },
+  {
+   "id": "laterGate:LATER.RUN.PACE_ZONES_DE_NOVO",
+   "rule": "No pace or zone method: effort cue, familiar target for familiar tasks only",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-prescription.mjs#validateR6Prescription"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::Running families by class"
+   ]
+  },
+  {
+   "id": "laterGate:LATER.RUN.MULTI_WEEK_TAPER",
+   "rule": "One taper week",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#planPhases"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::Running families by class",
+    "test/r7b-running.test.mjs::Event taper (10K, half marathon)"
+   ]
+  },
+  {
+   "id": "laterGate:LATER.EVENT.5K",
+   "rule": "PERFORMANCE goal without an event, disclosed",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-intake.mjs#canonicalizeIntake"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C10: later-gate familiar"
+   ]
+  },
+  {
+   "id": "laterGate:UNSUPPORTED.EVENT.MARATHON_ULTRA",
+   "rule": "UNSUPPORTED at intake",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C10: later-gate familiar"
+   ],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "laterGate:LATER.STR.NORDIC_HAMSTRING",
+   "rule": "Never prescribed: no configuration or prescription path exists; its fallback is the catalog repertoire",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS",
+    "src/r6-prescription.mjs#validateR6Prescription"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B conformance: every planned run belongs",
+    "test/r7b-binding.test.mjs::R7-B conformance: no later-gate"
+   ],
+   "note": "Strength later-gate items have no configuration in the bound catalog; validation refuses unknown configurations (strength.unknownConfiguration), RIR below 2 and any kilogram on a bodyweight row."
+  },
+  {
+   "id": "laterGate:LATER.STR.COPENHAGEN_ADDUCTION",
+   "rule": "Never prescribed: no configuration or prescription path exists; its fallback is the catalog repertoire",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS",
+    "src/r6-prescription.mjs#validateR6Prescription"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B conformance: every planned run belongs",
+    "test/r7b-binding.test.mjs::R7-B conformance: no later-gate"
+   ],
+   "note": "Strength later-gate items have no configuration in the bound catalog; validation refuses unknown configurations (strength.unknownConfiguration), RIR below 2 and any kilogram on a bodyweight row."
+  },
+  {
+   "id": "laterGate:LATER.STR.PLYOMETRICS",
+   "rule": "Never prescribed: no configuration or prescription path exists; its fallback is the catalog repertoire",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS",
+    "src/r6-prescription.mjs#validateR6Prescription"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B conformance: every planned run belongs",
+    "test/r7b-binding.test.mjs::R7-B conformance: no later-gate"
+   ],
+   "note": "Strength later-gate items have no configuration in the bound catalog; validation refuses unknown configurations (strength.unknownConfiguration), RIR below 2 and any kilogram on a bodyweight row."
+  },
+  {
+   "id": "laterGate:LATER.STR.BALLISTIC_OLYMPIC",
+   "rule": "Never prescribed: no configuration or prescription path exists; its fallback is the catalog repertoire",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS",
+    "src/r6-prescription.mjs#validateR6Prescription"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B conformance: every planned run belongs",
+    "test/r7b-binding.test.mjs::R7-B conformance: no later-gate"
+   ],
+   "note": "Strength later-gate items have no configuration in the bound catalog; validation refuses unknown configurations (strength.unknownConfiguration), RIR below 2 and any kilogram on a bodyweight row."
+  },
+  {
+   "id": "laterGate:LATER.STR.SUPERSET_DROPSET",
+   "rule": "Never prescribed: no configuration or prescription path exists; its fallback is the catalog repertoire",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS",
+    "src/r6-prescription.mjs#validateR6Prescription"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B conformance: every planned run belongs",
+    "test/r7b-binding.test.mjs::R7-B conformance: no later-gate"
+   ],
+   "note": "Strength later-gate items have no configuration in the bound catalog; validation refuses unknown configurations (strength.unknownConfiguration), RIR below 2 and any kilogram on a bodyweight row."
+  },
+  {
+   "id": "laterGate:LATER.STR.FAILURE_TRAINING",
+   "rule": "Never prescribed: no configuration or prescription path exists; its fallback is the catalog repertoire",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS",
+    "src/r6-prescription.mjs#validateR6Prescription"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B conformance: every planned run belongs",
+    "test/r7b-binding.test.mjs::R7-B conformance: no later-gate"
+   ],
+   "note": "Strength later-gate items have no configuration in the bound catalog; validation refuses unknown configurations (strength.unknownConfiguration), RIR below 2 and any kilogram on a bodyweight row."
+  },
+  {
+   "id": "laterGate:UNSUPPORTED.STR.1RM_TESTING",
+   "rule": "Never prescribed: no configuration or prescription path exists; its fallback is the catalog repertoire",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS",
+    "src/r6-prescription.mjs#validateR6Prescription"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B conformance: every planned run belongs",
+    "test/r7b-binding.test.mjs::R7-B conformance: no later-gate"
+   ],
+   "note": "Strength later-gate items have no configuration in the bound catalog; validation refuses unknown configurations (strength.unknownConfiguration), RIR below 2 and any kilogram on a bodyweight row."
+  },
+  {
+   "id": "laterGate:LATER.STR.WEIGHTED_BODYWEIGHT",
+   "rule": "Never prescribed: no configuration or prescription path exists; its fallback is the catalog repertoire",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS",
+    "src/r6-prescription.mjs#validateR6Prescription"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B conformance: every planned run belongs",
+    "test/r7b-binding.test.mjs::R7-B conformance: no later-gate"
+   ],
+   "note": "Strength later-gate items have no configuration in the bound catalog; validation refuses unknown configurations (strength.unknownConfiguration), RIR below 2 and any kilogram on a bodyweight row."
+  },
+  {
+   "id": "laterGate:LATER.STR.STAGNATION_RULE",
+   "rule": "No plateau threshold: a block-boundary review with a recorded reason",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-adaptation.mjs#blockBoundary"
+   ],
+   "tests": [
+    "test/r7b-hybrid-program.test.mjs::Program-level progression",
+    "test/r7b-strength.test.mjs::B0-C06: a MAIN changes only"
+   ]
+  },
+  {
+   "id": "witness:WP-RUN-01",
+   "rule": "Catalog witness WP-RUN-01",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::Running families by class"
+   ]
+  },
+  {
+   "id": "witness:WP-RUN-02",
+   "rule": "Catalog witness WP-RUN-02",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "witness:WP-RUN-03",
+   "rule": "Catalog witness WP-RUN-03",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "witness:WP-RUN-04",
+   "rule": "Catalog witness WP-RUN-04",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::Running families by class"
+   ]
+  },
+  {
+   "id": "witness:WP-RUN-05",
+   "rule": "Catalog witness WP-RUN-05",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "witness:WP-RUN-06",
+   "rule": "Catalog witness WP-RUN-06",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::Running families by class"
+   ]
+  },
+  {
+   "id": "witness:WP-RUN-07",
+   "rule": "Catalog witness WP-RUN-07",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "witness:WP-RUN-08",
+   "rule": "Catalog witness WP-RUN-08",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::Running families by class"
+   ]
+  },
+  {
+   "id": "witness:WP-RUN-09",
+   "rule": "Catalog witness WP-RUN-09",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "witness:WP-RUN-10",
+   "rule": "Catalog witness WP-RUN-10",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C01 c8: strides stay optional"
+   ]
+  },
+  {
+   "id": "witness:WP-RUN-11",
+   "rule": "Catalog witness WP-RUN-11",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::Running families by class"
+   ]
+  },
+  {
+   "id": "witness:WP-RUN-12",
+   "rule": "Catalog witness WP-RUN-12",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "witness:WP-RUN-13",
+   "rule": "Catalog witness WP-RUN-13",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C01 with R7-A returns"
+   ]
+  },
+  {
+   "id": "witness:WP-RUN-14",
+   "rule": "Catalog witness WP-RUN-14",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "witness:WP-RUN-15",
+   "rule": "Catalog witness WP-RUN-15",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::Event taper (10K, half marathon)"
+   ]
+  },
+  {
+   "id": "witness:WP-RUN-16",
+   "rule": "Catalog witness WP-RUN-16",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C02: a fully specified"
+   ]
+  },
+  {
+   "id": "witness:WP-RUN-17",
+   "rule": "Catalog witness WP-RUN-17",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C01 graduation: two complete",
+    "test/r7b-running.test.mjs::B0-C01 c2: a walk/jog starter"
+   ]
+  },
+  {
+   "id": "witness:WP-STR-01",
+   "rule": "Catalog witness WP-STR-01",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C08 / B0-F08"
+   ]
+  },
+  {
+   "id": "witness:WP-STR-02",
+   "rule": "Catalog witness WP-STR-02",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-F07: a known single-implement"
+   ]
+  },
+  {
+   "id": "witness:WP-STR-03",
+   "rule": "Catalog witness WP-STR-03",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C05: goal-context accessories"
+   ],
+   "divergence": "Distribution of the hypertrophy accessories across the listed patterns is tested; the specific configurations depend on equipment."
+  },
+  {
+   "id": "witness:WP-STR-04",
+   "rule": "Catalog witness WP-STR-04",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C05: goal-context accessories",
+    "test/r7b-hybrid-program.test.mjs::B0-C11 / CMP.I11"
+   ],
+   "divergence": "The witness names bulgarian-split-squat-db for the FULL_B lunge slot; under the catalog selection order (R6 origin before B0 among equal purposes) the runtime selects db-split-squat, also admissible there. The witness illustrates admissibility; the selection order (an IMPLEMENTATION_CHOICE, B0-C05 c6) decides. The CMP.P04 placement it illustrates is tested."
+  },
+  {
+   "id": "witness:WP-STR-05",
+   "rule": "Catalog witness WP-STR-05",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 / B0-C06 rotation"
+   ],
+   "divergence": "The witness names db-step-up → reverse-lunge-db; the runtime turns EVERY_2_WEEKS accessories on even weeks among the admissible alternatives of the configuration in use; the specific pair depends on equipment and selection."
+  },
+  {
+   "id": "witness:WP-STR-06",
+   "rule": "Catalog witness WP-STR-06",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C04 / B0-F01 / B0-F02"
+   ]
+  },
+  {
+   "id": "witness:WP-STR-07",
+   "rule": "Catalog witness WP-STR-07",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "witness:WP-STR-08",
+   "rule": "Catalog witness WP-STR-08",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C04 / B0-F01 / B0-F02"
+   ]
+  },
+  {
+   "id": "witness:WP-STR-09",
+   "rule": "Catalog witness WP-STR-09",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C09: PULL coverage"
+   ],
+   "divergence": "A novice gets incline-push-up (LOW skill) in place of push-up (MODERATE); the PULL coverage the witness illustrates is tested."
+  },
+  {
+   "id": "witness:WP-STR-10",
+   "rule": "Catalog witness WP-STR-10",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C08 / B0-F08"
+   ]
+  },
+  {
+   "id": "witness:WP-STR-11",
+   "rule": "Catalog witness WP-STR-11",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C07: ladder steps are offered"
+   ]
+  },
+  {
+   "id": "witness:WP-HYB-01",
+   "rule": "Catalog witness WP-HYB-01",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "witness:WP-HYB-02",
+   "rule": "Catalog witness WP-HYB-02",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "witness:WP-HYB-03",
+   "rule": "Catalog witness WP-HYB-03",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "witness:WN-01",
+   "rule": "Catalog witness WN-01",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::Running families by class"
+   ]
+  },
+  {
+   "id": "witness:WN-02",
+   "rule": "Catalog witness WN-02",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::Running families by class",
+    "test/r7b-hybrid-program.test.mjs::Cold start"
+   ]
+  },
+  {
+   "id": "witness:WN-03",
+   "rule": "Catalog witness WN-03",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "witness:WN-04",
+   "rule": "Catalog witness WN-04",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "witness:WN-05",
+   "rule": "Catalog witness WN-05",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::Running families by class"
+   ]
+  },
+  {
+   "id": "witness:WN-06",
+   "rule": "Catalog witness WN-06",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C02: a fully specified"
+   ]
+  },
+  {
+   "id": "witness:WN-07",
+   "rule": "Catalog witness WN-07",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C10: later-gate familiar"
+   ]
+  },
+  {
+   "id": "witness:WN-08",
+   "rule": "Catalog witness WN-08",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C10: later-gate familiar"
+   ]
+  },
+  {
+   "id": "witness:WN-09",
+   "rule": "Catalog witness WN-09",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C03 / skill admissibility"
+   ]
+  },
+  {
+   "id": "witness:WN-10",
+   "rule": "Catalog witness WN-10",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 / B0-C06 rotation"
+   ]
+  },
+  {
+   "id": "witness:WN-11",
+   "rule": "Catalog witness WN-11",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C06 c3: no rotation"
+   ]
+  },
+  {
+   "id": "witness:WN-12",
+   "rule": "Catalog witness WN-12",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 / B0-C06 rotation"
+   ]
+  },
+  {
+   "id": "witness:WN-13",
+   "rule": "Catalog witness WN-13",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 / B0-C06 rotation"
+   ]
+  },
+  {
+   "id": "witness:WN-14",
+   "rule": "Catalog witness WN-14",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "witness:WN-15",
+   "rule": "Catalog witness WN-15",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "witness:WN-16",
+   "rule": "Catalog witness WN-16",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "witness:WN-17",
+   "rule": "Catalog witness WN-17",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "witness:WN-18",
+   "rule": "Catalog witness WN-18",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-FIDELITY M1–M3 regression guard"
+   ]
+  },
+  {
+   "id": "witness:WN-19",
+   "rule": "Catalog witness WN-19",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-hybrid-program.test.mjs::Feasibility negotiation"
+   ]
+  },
+  {
+   "id": "witness:WN-20",
+   "rule": "Catalog witness WN-20",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-hybrid-program.test.mjs::Program-level progression"
+   ]
+  },
+  {
+   "id": "witness:WN-21",
+   "rule": "Catalog witness WN-21",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "witness:WN-22",
+   "rule": "Catalog witness WN-22",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 reason-based substitution"
+   ]
+  },
+  {
+   "id": "witness:WN-23",
+   "rule": "Catalog witness WN-23",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B conformance: no later-gate"
+   ]
+  },
+  {
+   "id": "witness:WN-24",
+   "rule": "Catalog witness WN-24",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C04 / B0-F01 / B0-F02"
+   ]
+  },
+  {
+   "id": "witness:WN-25",
+   "rule": "Catalog witness WN-25",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#CONFIGURATIONS"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C01 negatives"
+   ]
+  },
+  {
+   "id": "substitution.reason:EQUIPMENT_UNAVAILABLE",
+   "rule": "Dated window or permanent change; same pattern first; originals return",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes). Templates are re-selected from the bound catalog with continuity."
+  },
+  {
+   "id": "substitution.reason:SKILL_MISMATCH",
+   "rule": "The previous configuration on its skill ladder",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-adaptation.mjs#exerciseSubstitution",
+    "src/r7b-repertoire.mjs#ladderPrevious"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 reason-based substitution"
+   ]
+  },
+  {
+   "id": "substitution.reason:NONCLINICAL_DISCOMFORT_OR_PREFERENCE",
+   "rule": "Clinical screen first; a confirmed nonclinical reason substitutes a same-pattern alternative, disclosed",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-adaptation.mjs#exerciseSubstitution"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 reason-based substitution"
+   ]
+  },
+  {
+   "id": "substitution.reason:PROTECTED_RUN_STIMULUS_CONFLICT",
+   "rule": "Lower-demand content only when the arrangement cannot protect the key run (B0-C11)",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#buildWeek"
+   ],
+   "tests": [
+    "test/r7b-hybrid-program.test.mjs::B0-C11 / CMP.P04"
+   ]
+  },
+  {
+   "id": "substitution.reason:DELIBERATE_BLOCK_TRANSITION",
+   "rule": "Block boundary only, with a stated purpose",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-adaptation.mjs#blockBoundary"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C06: a MAIN changes only"
+   ]
+  },
+  {
+   "id": "substitution.reason:POLICY_SUPPORTED_STAGNATION",
+   "rule": "LATER_GATE: no plateau threshold in V1",
+   "status": "DEFERRED",
+   "consumers": [],
+   "tests": [],
+   "owner": "Next policy revision with the SSCTR",
+   "gate": "LATER.STR.STAGNATION_RULE",
+   "note": "Only the block review is offered (no automatic change)."
+  },
+  {
+   "id": "template:TPL.FULL_A",
+   "rule": "Session template TPL.FULL_A (R6 slots, B0-C05 goal context)",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#TEMPLATE_DEFS",
+    "src/r7b-repertoire.mjs#buildTemplates"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 / B0-F03",
+    "test/r7b-strength.test.mjs::B0-C05: goal-context accessories"
+   ]
+  },
+  {
+   "id": "template:TPL.FULL_B",
+   "rule": "Session template TPL.FULL_B (R6 slots, B0-C05 goal context)",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#TEMPLATE_DEFS",
+    "src/r7b-repertoire.mjs#buildTemplates"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 / B0-F03",
+    "test/r7b-strength.test.mjs::B0-C05: goal-context accessories"
+   ]
+  },
+  {
+   "id": "template:TPL.LOWER",
+   "rule": "Session template TPL.LOWER (R6 slots, B0-C05 goal context)",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#TEMPLATE_DEFS",
+    "src/r7b-repertoire.mjs#buildTemplates"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 / B0-F03",
+    "test/r7b-strength.test.mjs::B0-C05: goal-context accessories"
+   ]
+  },
+  {
+   "id": "template:TPL.UPPER",
+   "rule": "Session template TPL.UPPER (R6 slots, B0-C05 goal context)",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#TEMPLATE_DEFS",
+    "src/r7b-repertoire.mjs#buildTemplates"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 / B0-F03",
+    "test/r7b-strength.test.mjs::B0-C05: goal-context accessories"
+   ]
+  },
+  {
+   "id": "template:TPL.LOWER_B",
+   "rule": "Session template TPL.LOWER_B (R6 slots, B0-C05 goal context)",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#TEMPLATE_DEFS",
+    "src/r7b-repertoire.mjs#buildTemplates"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 / B0-F03",
+    "test/r7b-strength.test.mjs::B0-C05: goal-context accessories"
+   ]
+  },
+  {
+   "id": "template:TPL.UPPER_B",
+   "rule": "Session template TPL.UPPER_B (R6 slots, B0-C05 goal context)",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#TEMPLATE_DEFS",
+    "src/r7b-repertoire.mjs#buildTemplates"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 / B0-F03",
+    "test/r7b-strength.test.mjs::B0-C05: goal-context accessories"
+   ]
+  },
+  {
+   "id": "template:TPL.CORE",
+   "rule": "Session template TPL.CORE (R6 slots, B0-C05 goal context)",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#TEMPLATE_DEFS",
+    "src/r7b-repertoire.mjs#buildTemplates"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 / B0-F03",
+    "test/r7b-strength.test.mjs::B0-C05: goal-context accessories"
+   ]
+  },
+  {
+   "id": "configuration.field:id",
+   "rule": "Configuration field id",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#configurationOf"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B conformance: every planned run belongs"
+   ]
+  },
+  {
+   "id": "configuration.field:pattern",
+   "rule": "Configuration field pattern",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#buildTemplates"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 / B0-F03"
+   ]
+  },
+  {
+   "id": "configuration.field:sub",
+   "rule": "Configuration field sub",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#buildTemplates",
+    "src/r7b-repertoire.mjs#admissibleAlternative"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 / B0-F03",
+    "test/r7b-strength.test.mjs::B0-C05: goal-context accessories"
+   ]
+  },
+  {
+   "id": "configuration.field:region",
+   "rule": "Configuration field region",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#novelOrEccentricLower",
+    "src/r6-program.mjs#rotationFor"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 / B0-C06 rotation"
+   ]
+  },
+  {
+   "id": "configuration.field:eq",
+   "rule": "Configuration field eq",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#buildTemplates"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B conformance: every planned run belongs"
+   ]
+  },
+  {
+   "id": "configuration.field:loading",
+   "rule": "Configuration field loading",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#noExternalLoad"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C04 / B0-F01 / B0-F02"
+   ]
+  },
+  {
+   "id": "configuration.field:conv",
+   "rule": "Configuration field conv",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-prescription.mjs#exerciseRow",
+    "src/r7b-repertoire.mjs#incrementFor"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C04 / B0-F01 / B0-F02",
+    "test/r7b-strength.test.mjs::B0-F07: a known single-implement"
+   ]
+  },
+  {
+   "id": "configuration.field:lat",
+   "rule": "Configuration field lat",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-prescription.mjs#exerciseRow"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C04 / B0-F01 / B0-F02"
+   ]
+  },
+  {
+   "id": "configuration.field:skill",
+   "rule": "Configuration field skill",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#buildTemplates"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C03 / skill admissibility"
+   ]
+  },
+  {
+   "id": "configuration.field:lower",
+   "rule": "Configuration field lower",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-balanced.mjs#lowerDemand",
+    "src/r6-program.mjs#rotationFor"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 / B0-C06 rotation",
+    "test/r7b-hybrid-program.test.mjs::B0-C11 / CMP.I11"
+   ]
+  },
+  {
+   "id": "configuration.field:axial",
+   "rule": "Configuration field axial",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#admissibleAlternative"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 / B0-C06 rotation"
+   ],
+   "note": "Ordinal, within one step for alternatives only."
+  },
+  {
+   "id": "configuration.field:ecc",
+   "rule": "Configuration field ecc",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#novelOrEccentricLower",
+    "src/r6-program.mjs#rotationFor"
+   ],
+   "tests": [
+    "test/r7b-hybrid-program.test.mjs::B0-C11 / CMP.I11",
+    "test/r7b-hybrid-program.test.mjs::B0-C11 / CMP.P04"
+   ]
+  },
+  {
+   "id": "configuration.field:prim",
+   "rule": "Configuration field prim",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#admissibleAlternative",
+    "src/r7b-repertoire.mjs#closeVariation"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 / B0-C06 rotation"
+   ]
+  },
+  {
+   "id": "configuration.field:sec",
+   "rule": "Configuration field sec",
+   "status": "DESCRIPTIVE",
+   "consumers": [],
+   "tests": [],
+   "note": "Listed, never summed (B0-C04 c1); no consumer."
+  },
+  {
+   "id": "configuration.field:kind",
+   "rule": "Configuration field kind",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-prescription.mjs#validateR6Prescription"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 / B0-F03"
+   ],
+   "note": "Isolation and practice behaviour follow from the admissible roles; validation enforces the roles."
+  },
+  {
+   "id": "configuration.field:roles",
+   "rule": "Configuration field roles",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#buildTemplates",
+    "src/r6-prescription.mjs#validateR6Prescription"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 / B0-F03"
+   ]
+  },
+  {
+   "id": "configuration.field:purposes",
+   "rule": "Configuration field purposes",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#selectionCompare"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B conformance: every planned run belongs",
+    "test/r7b-strength.test.mjs::B0-C05: goal-context accessories"
+   ]
+  },
+  {
+   "id": "configuration.field:variantOf",
+   "rule": "Configuration field variantOf",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-catalogue.mjs#substitutesFor"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 reason-based substitution"
+   ]
+  },
+  {
+   "id": "configuration.field:origin",
+   "rule": "Configuration field origin",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#admitted"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B per-record gating"
+   ]
+  },
+  {
+   "id": "configuration.field:r6Delta",
+   "rule": "Configuration field r6Delta",
+   "status": "DESCRIPTIVE",
+   "consumers": [],
+   "tests": [],
+   "note": "Documents the R6 representation R7-B corrects (B0-F01, B0-F02); the corrected fields are what the runtime reads."
+  },
+  {
+   "id": "classification.signal:eligibility",
+   "rule": "Classification signal eligibility",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "classification.signal:ageAndPopulation",
+   "rule": "Classification signal ageAndPopulation",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "classification.signal:runGoal",
+   "rule": "Classification signal runGoal",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "classification.signal:strengthGoal",
+   "rule": "Classification signal strengthGoal",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "classification.signal:event",
+   "rule": "Classification signal event",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-intake.mjs#canonicalizeIntake"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C10: later-gate familiar"
+   ]
+  },
+  {
+   "id": "classification.signal:runExperience",
+   "rule": "Classification signal runExperience",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#assessCapability"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B classification equals"
+   ]
+  },
+  {
+   "id": "classification.signal:recentRunning",
+   "rule": "Classification signal recentRunning",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#assessCapability"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B classification equals",
+    "test/r7b-hybrid-program.test.mjs::Cold start"
+   ]
+  },
+  {
+   "id": "classification.signal:familiarQuality",
+   "rule": "Classification signal familiarQuality",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#assessCapability",
+    "src/r7b-repertoire.mjs#familiarRunCategory"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C02: a fully specified"
+   ]
+  },
+  {
+   "id": "classification.signal:performanceAnchors",
+   "rule": "Classification signal performanceAnchors",
+   "status": "DESCRIPTIVE",
+   "consumers": [],
+   "tests": [],
+   "note": "Context only; never a training pace."
+  },
+  {
+   "id": "classification.signal:strengthExperience",
+   "rule": "Classification signal strengthExperience",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#buildTemplates"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C03 / skill admissibility"
+   ]
+  },
+  {
+   "id": "classification.signal:knownExercises",
+   "rule": "Classification signal knownExercises",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#buildTemplates"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C03 / skill admissibility",
+    "test/r7b-strength.test.mjs::B0-F07: a known single-implement"
+   ]
+  },
+  {
+   "id": "classification.signal:equipment",
+   "rule": "Classification signal equipment",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#buildTemplates"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B conformance: every planned run belongs",
+    "test/r7b-strength.test.mjs::B0-C09: PULL coverage"
+   ]
+  },
+  {
+   "id": "classification.signal:emphasis",
+   "rule": "Classification signal emphasis",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#buildTemplates"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B conformance: every planned run belongs"
+   ]
+  },
+  {
+   "id": "classification.signal:schedule",
+   "rule": "Classification signal schedule",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "classification.signal:statedPriority",
+   "rule": "Classification signal statedPriority",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "classification.signal:rotationPreference",
+   "rule": "Classification signal rotationPreference",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#rotationFor"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 / B0-C06 rotation"
+   ]
+  },
+  {
+   "id": "classification.signal:interruption",
+   "rule": "Classification signal interruption",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "classification.signal:wearableHistory",
+   "rule": "Classification signal wearableHistory",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "classification.signal:executedEvidence",
+   "rule": "Classification signal executedEvidence",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-adaptation.mjs#graduationWeek",
+    "src/r6-program.mjs#advanceStrength"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C01 graduation: two complete",
+    "test/r7b-strength.test.mjs::B0-C08 / B0-F08"
+   ]
+  },
+  {
+   "id": "classification.signal:learningConsent",
+   "rule": "Classification signal learningConsent",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "classification.signal:sexHeightWeight",
+   "rule": "Classification signal sexHeightWeight",
+   "status": "DESCRIPTIVE",
+   "consumers": [],
+   "tests": [],
+   "note": "Never used for dose, volume, frequency, selection, progression or pace (DR-114)."
+  },
+  {
+   "id": "classification.runClass:NOT_PROGRAMMED",
+   "rule": "Run class NOT_PROGRAMMED with the B0-F05 thresholds exposed",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#assessCapability",
+    "src/r7b-repertoire.mjs#RUN_CLASS_THRESHOLDS"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B classification equals"
+   ]
+  },
+  {
+   "id": "classification.runClass:WALK_JOG",
+   "rule": "Run class WALK_JOG with the B0-F05 thresholds exposed",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#assessCapability",
+    "src/r7b-repertoire.mjs#RUN_CLASS_THRESHOLDS"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B classification equals"
+   ]
+  },
+  {
+   "id": "classification.runClass:RESTART",
+   "rule": "Run class RESTART with the B0-F05 thresholds exposed",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#assessCapability",
+    "src/r7b-repertoire.mjs#RUN_CLASS_THRESHOLDS"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B classification equals"
+   ]
+  },
+  {
+   "id": "classification.runClass:EASY_UNKNOWN",
+   "rule": "Run class EASY_UNKNOWN with the B0-F05 thresholds exposed",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#assessCapability",
+    "src/r7b-repertoire.mjs#RUN_CLASS_THRESHOLDS"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B classification equals"
+   ]
+  },
+  {
+   "id": "classification.runClass:EASY_LOW",
+   "rule": "Run class EASY_LOW with the B0-F05 thresholds exposed",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#assessCapability",
+    "src/r7b-repertoire.mjs#RUN_CLASS_THRESHOLDS"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B classification equals"
+   ]
+  },
+  {
+   "id": "classification.runClass:QUALITY_FAMILIAR",
+   "rule": "Run class QUALITY_FAMILIAR with the B0-F05 thresholds exposed",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#assessCapability",
+    "src/r7b-repertoire.mjs#RUN_CLASS_THRESHOLDS"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B classification equals"
+   ]
+  },
+  {
+   "id": "classification.runClass:EASY_CURRENT",
+   "rule": "Run class EASY_CURRENT with the B0-F05 thresholds exposed",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#assessCapability",
+    "src/r7b-repertoire.mjs#RUN_CLASS_THRESHOLDS"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B classification equals"
+   ]
+  },
+  {
+   "id": "classification.strengthClass:NOT_PROGRAMMED",
+   "rule": "Strength class NOT_PROGRAMMED",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "classification.strengthClass:KNOWN_LOAD",
+   "rule": "Strength class KNOWN_LOAD",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "classification.strengthClass:FAMILIAR_UNKNOWN_LOAD",
+   "rule": "Strength class FAMILIAR_UNKNOWN_LOAD",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "classification.strengthClass:NONE",
+   "rule": "Strength class NONE",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "archetype:ARCH.RUN_ONLY",
+   "rule": "Archetype ARCH.RUN_ONLY (label of the goal-model lead)",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#archetypeOf"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B archetypes (B0-C12)"
+   ]
+  },
+  {
+   "id": "archetype:ARCH.STRENGTH_ONLY",
+   "rule": "Archetype ARCH.STRENGTH_ONLY (label of the goal-model lead)",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#archetypeOf"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B archetypes (B0-C12)"
+   ]
+  },
+  {
+   "id": "archetype:ARCH.RUN_LED",
+   "rule": "Archetype ARCH.RUN_LED (label of the goal-model lead)",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#archetypeOf"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B archetypes (B0-C12)"
+   ]
+  },
+  {
+   "id": "archetype:ARCH.STRENGTH_LED",
+   "rule": "Archetype ARCH.STRENGTH_LED (label of the goal-model lead)",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#archetypeOf"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B archetypes (B0-C12)"
+   ]
+  },
+  {
+   "id": "archetype:ARCH.JOINT",
+   "rule": "Archetype ARCH.JOINT (label of the goal-model lead)",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#archetypeOf"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B archetypes (B0-C12)"
+   ]
+  },
+  {
+   "id": "safety.route:clinicalCategoryMentionOrFlag",
+   "rule": "Safety route clinicalCategoryMentionOrFlag",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes). The R7-B substitution handler applies the same clinical screen (exerciseSubstitution)."
+  },
+  {
+   "id": "safety.route:ambiguousOrMissing",
+   "rule": "Safety route ambiguousOrMissing",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "safety.route:unknownEligibility",
+   "rule": "Safety route unknownEligibility",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "safety.route:outOfScopePopulation",
+   "rule": "Safety route outOfScopePopulation",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "safety.route:malformed",
+   "rule": "Safety route malformed",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "safety.route:uncoveredRecipe",
+   "rule": "Safety route uncoveredRecipe",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#repertoireNegotiation"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C10: later-gate familiar",
+    "test/r7b-binding.test.mjs::R7-B conformance: no later-gate"
+   ]
+  },
+  {
+   "id": "section:strength.templateRules",
+   "rule": "Catalog section strength.templateRules",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#buildTemplates",
+    "src/r7b-repertoire.mjs#selectionCompare"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 / B0-F03",
+    "test/r7b-strength.test.mjs::B0-C05: goal-context accessories",
+    "test/r7b-binding.test.mjs::R7-B conformance: every planned run belongs"
+   ]
+  },
+  {
+   "id": "section:strength.skillLadders",
+   "rule": "Catalog section strength.skillLadders",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#ladderNext",
+    "src/r7b-repertoire.mjs#ladderPrevious",
+    "src/r6-adaptation.mjs#blockBoundary"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C07: ladder steps are offered",
+    "test/r7b-strength.test.mjs::DR-134 reason-based substitution"
+   ]
+  },
+  {
+   "id": "section:strength.closeVariationRule",
+   "rule": "Catalog section strength.closeVariationRule",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#closeVariation"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 reason-based substitution"
+   ]
+  },
+  {
+   "id": "section:strength.rotation",
+   "rule": "Catalog section strength.rotation",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#rotationFor",
+    "src/r7b-repertoire.mjs#rotationEligibility"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 / B0-C06 rotation",
+    "test/r7b-strength.test.mjs::B0-C06 c3: no rotation"
+   ]
+  },
+  {
+   "id": "section:strength.pullCoverage",
+   "rule": "Catalog section strength.pullCoverage",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#buildTemplates",
+    "src/r7b-repertoire.mjs#pullCoverageDisclosure"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C09: PULL coverage"
+   ]
+  },
+  {
+   "id": "section:strength.noviceDensity",
+   "rule": "Catalog section strength.noviceDensity",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#noviceDensityApplies"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C08 / B0-F08"
+   ]
+  },
+  {
+   "id": "section:strength.demandSemantics",
+   "rule": "Catalog section strength.demandSemantics",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#admissibleAlternative"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::DR-134 / B0-C06 rotation"
+   ],
+   "note": "Ordinal priors only; no recovery-cost class is derived (see SSCTR:B0-C04#c2)."
+  },
+  {
+   "id": "section:strength.muscleCounting",
+   "rule": "Catalog section strength.muscleCounting",
+   "status": "DESCRIPTIVE",
+   "consumers": [],
+   "tests": [],
+   "note": "No consumer until G02 adopts a method."
+  },
+  {
+   "id": "section:strength.equipmentProfiles",
+   "rule": "Catalog section strength.equipmentProfiles",
+   "status": "DESCRIPTIVE",
+   "consumers": [],
+   "tests": [],
+   "note": "Illustrative profiles; the runtime reads the declared equipment."
+  },
+  {
+   "id": "section:classification.skillAdmissibility",
+   "rule": "Catalog section classification.skillAdmissibility",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#buildTemplates",
+    "src/r6-program.mjs#highSkillAdmissible"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C03 / skill admissibility"
+   ]
+  },
+  {
+   "id": "section:classification.graduation",
+   "rule": "Catalog section classification.graduation",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-adaptation.mjs#blockBoundary",
+    "src/r6-program.mjs#advanceRun"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C01 graduation: two complete",
+    "test/r7b-running.test.mjs::B0-C01 negatives",
+    "test/r7b-running.test.mjs::B0-C01 c2: a walk/jog starter"
+   ]
+  },
+  {
+   "id": "section:classification.unknownCategories",
+   "rule": "Catalog section classification.unknownCategories",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "section:trajectories.run",
+   "rule": "Catalog section trajectories.run",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#advanceRun"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::B0-C01 graduation: two complete",
+    "test/r7b-running.test.mjs::B0-C01 with R7-A returns"
+   ]
+  },
+  {
+   "id": "section:trajectories.event",
+   "rule": "Catalog section trajectories.event",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [
+    "test/r7b-running.test.mjs::Event taper (10K, half marathon)"
+   ],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "section:trajectories.event.combinedTaper",
+   "rule": "Catalog section trajectories.event.combinedTaper",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-program.mjs#phaseDose",
+    "src/r6-program.mjs#buildWeek"
+   ],
+   "tests": [
+    "test/r7b-running.test.mjs::Event taper (10K, half marathon)"
+   ]
+  },
+  {
+   "id": "section:trajectories.strengthExercise",
+   "rule": "Catalog section trajectories.strengthExercise",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "section:trajectories.novice",
+   "rule": "Catalog section trajectories.novice",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-adaptation.mjs#blockBoundary",
+    "src/r6-program.mjs#noviceDensityApplies"
+   ],
+   "tests": [
+    "test/r7b-strength.test.mjs::B0-C08 / B0-F08",
+    "test/r7b-running.test.mjs::B0-C01 graduation: two complete",
+    "test/r7b-strength.test.mjs::B0-C07: ladder steps are offered"
+   ]
+  },
+  {
+   "id": "section:composition.ranking",
+   "rule": "Catalog section composition.ranking",
+   "status": "INHERITED",
+   "consumers": [],
+   "tests": [
+    "test/r7b-hybrid-program.test.mjs::B0-C11 / CMP.I11"
+   ],
+   "note": "The frozen R6/R7-A runtime behaviour, unchanged by R7-B; covered by the inherited suite (673 tests at the baseline, all passing on the R7-B runtime with the recorded test changes)."
+  },
+  {
+   "id": "section:composition.sessionClasses",
+   "rule": "Catalog section composition.sessionClasses",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r6-balanced.mjs#loadClass",
+    "src/r6-balanced.mjs#KEY_RUN"
+   ],
+   "tests": [
+    "test/r7b-hybrid-program.test.mjs::B0-C11 / CMP.I11"
+   ]
+  },
+  {
+   "id": "section:parameterModel",
+   "rule": "Catalog section parameterModel",
+   "status": "IMPLEMENTED",
+   "consumers": [
+    "src/r7b-repertoire.mjs#repertoireBinding",
+    "src/r7b-repertoire.mjs#runRepertoireOf"
+   ],
+   "tests": [
+    "test/r7b-binding.test.mjs::R7-B conformance: every planned run belongs"
+   ]
+  }
+ ]
+}

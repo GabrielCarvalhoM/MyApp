@@ -94,7 +94,7 @@ export function strengthTemplates(c,goal,{equipment=c.athlete.equipment,knownOnl
 export const noviceDensityApplies=(sk,cap=sk.cap)=>allowsCandidate(sk.repertoire??DEFAULT_REPERTOIRE,'B0-C08')&&cap.strength.programmed&&cap.strength.class==='NONE'&&sk.c.schedule.strengthDays.length>2;
 const turnOf=(c,sport)=>sport==='RUN'?c.schedule.runTurn:c.schedule.strengthTurn;
 /** Candidate weekly arrangements: quality day × strength-type permutation × back-to-back order on shared same-turn days. */
-export function arrangementCandidates(c,cap,goal,context,ctx,templates){
+export function arrangementCandidates(c,cap,goal,context,ctx,templates,{established=null}={}){
  const s=c.schedule,runDays=cap.run.programmed?s.runDays:[],strengthDays=cap.strength.programmed?s.strengthDays:[];
  // The R6 quality gates stay whole (B0-FIDELITY M1–M3): run goal RACE or PERFORMANCE, at least three chosen run days, a development or
  // specific context and R6-RUN-QUALITY. A graduated novice (B0-C01, decided on executed evidence at a block boundary) meets the class gate only.
@@ -108,7 +108,7 @@ export function arrangementCandidates(c,cap,goal,context,ctx,templates){
   const sessions=[];
   for(const d of runDays){const role=d===longDay?'LONG':d===q?'QUALITY':'EASY';sessions.push({id:'RUN-'+d,sport:'RUN',role,day:d,turn:turnOf(c,'RUN'),backToBackOrder:sameTurnShared.includes(d)?(runFirst?0:1):0,prescription:{modality:'RUN',family:role==='QUALITY'?specificFamily:role}});}
   const taken=new Set();
-  strengthDays.forEach((d,i)=>{const t=templates.find(x=>x.type===perm[i]&&!taken.has(x.index))??templates[i];taken.add(t.index);sessions.push({id:'STR-'+d,sport:'STRENGTH',role:'STRENGTH_'+t.type,templateIndex:t.index,day:d,turn:turnOf(c,'STRENGTH'),backToBackOrder:sameTurnShared.includes(d)?(runFirst?1:0):0,prescription:{modality:'STRENGTH',exercises:t.rows.map(r=>({id:r.entry.id,pattern:r.pattern,sets:context==='ESTABLISHMENT'&&cap.strength.class==='NONE'?1:cap.strength.known.find(k=>k.id===r.entry.id)?.dose?.sets??(r.role==='MAIN'?3:2),load:{mode:noExternalLoad(r.entry)?'BODYWEIGHT':'ESTABLISH',unit:noExternalLoad(r.entry)?'BODYWEIGHT':'KG'},...(context==='ESTABLISHMENT'&&!cap.strength.known.some(k=>k.id===r.entry.id)?{firstExposure:true}:{})}))}});});
+  strengthDays.forEach((d,i)=>{const t=templates.find(x=>x.type===perm[i]&&!taken.has(x.index))??templates[i];taken.add(t.index);sessions.push({id:'STR-'+d,sport:'STRENGTH',role:'STRENGTH_'+t.type,templateIndex:t.index,day:d,turn:turnOf(c,'STRENGTH'),backToBackOrder:sameTurnShared.includes(d)?(runFirst?1:0):0,prescription:{modality:'STRENGTH',exercises:t.rows.map(r=>({id:r.entry.id,pattern:r.pattern,sets:context==='ESTABLISHMENT'&&cap.strength.class==='NONE'?1:cap.strength.known.find(k=>k.id===r.entry.id)?.dose?.sets??(r.role==='MAIN'?3:2),load:{mode:noExternalLoad(r.entry)?'BODYWEIGHT':'ESTABLISH',unit:noExternalLoad(r.entry)?'BODYWEIGHT':'KG'},...(!cap.strength.known.some(k=>k.id===r.entry.id)&&(context==='ESTABLISHMENT'||!!established&&!established.has(r.entry.id))?{firstExposure:true}:{})}))}});});
   const adjacentToLong=q!==null&&longDay!==null&&[1,6].includes(Math.abs(q-longDay));
   out.push({id:`q${q??'-'}|${perm.join(',')}|${sameTurnShared.length?(runFirst?'run-first':'strength-first'):'separate'}`,quality:q,perm,runFirstOnShared:runFirst,sessions,admissible:true,adjacentToLong,preservesRun:true,preservesStrength:true,signature:hash(sessions.map(x=>[x.sport,x.role,x.day,x.backToBackOrder]))});
  }
