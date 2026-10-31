@@ -1,0 +1,264 @@
+{
+ "check": "R7B-MUTATION",
+ "mutants": 15,
+ "killed": 13,
+ "survived": [
+  "M03",
+  "M13"
+ ],
+ "invalid": [],
+ "sourceRestored": true,
+ "results": [
+  {
+   "id": "M01",
+   "area": "eligibility",
+   "what": "quality arrangement ignores the run goal",
+   "file": "src/r6-program.mjs",
+   "tests": [
+    "test/r7b-running.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 10,
+   "failing": [
+    "✖ B0-FIDELITY M1–M3 regression guard: quality is never released by apparent capacity alone (goal RACE/PERFORMANCE, at least three run days, development context, authority) (3.5612ms)",
+    "✖ failing tests:",
+    "✖ B0-FIDELITY M1–M3 regression guard: quality is never released by apparent capacity alone (goal RACE/PERFORMANCE, at least three run days, development context, authority) (3.5612ms)"
+   ]
+  },
+  {
+   "id": "M02",
+   "area": "quality gating",
+   "what": "two run days open quality",
+   "file": "src/r6-program.mjs",
+   "tests": [
+    "test/r7b-running.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 10,
+   "failing": [
+    "✖ B0-FIDELITY M1–M3 regression guard: quality is never released by apparent capacity alone (goal RACE/PERFORMANCE, at least three run days, development context, authority) (11.4665ms)",
+    "✖ failing tests:",
+    "✖ B0-FIDELITY M1–M3 regression guard: quality is never released by apparent capacity alone (goal RACE/PERFORMANCE, at least three run days, development context, authority) (11.4665ms)"
+   ]
+  },
+  {
+   "id": "M03",
+   "area": "eligibility",
+   "what": "graduation ignores adverse reports",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b-running.test.mjs"
+   ],
+   "result": "SURVIVED",
+   "failedTests": 0,
+   "passedTests": 11,
+   "failing": []
+  },
+  {
+   "id": "M04",
+   "area": "progression",
+   "what": "a declined graduation is applied anyway",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b-running.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 10,
+   "failing": [
+    "✖ B0-C01 negatives: 40-minute weeks, an adverse report, a declined offer, a non-performance goal or two run days never graduate; projections never graduate (94.5159ms)",
+    "✖ failing tests:",
+    "✖ B0-C01 negatives: 40-minute weeks, an adverse report, a declined offer, a non-performance goal or two run days never graduate; projections never graduate (94.5159ms)"
+   ]
+  },
+  {
+   "id": "M05",
+   "area": "progression",
+   "what": "the introduction week holds the released (unexecuted) long run",
+   "file": "src/r6-program.mjs",
+   "tests": [
+    "test/r7b-running.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 10,
+   "failing": [
+    "✖ B0-C01 graduation: two complete easy weeks of at least 60 executed minutes on two days graduate at the block boundary; the threshold ladder enters at step 0 by effort, a calibration, with the easy run as an equal alternative and nothing else stepping (54.7098ms)",
+    "✖ failing tests:",
+    "✖ B0-C01 graduation: two complete easy weeks of at least 60 executed minutes on two days graduate at the block boundary; the threshold ladder enters at step 0 by effort, a calibration, with the easy run as an equal alternative and nothing else stepping (54.7098ms)"
+   ]
+  },
+  {
+   "id": "M06",
+   "area": "rotation",
+   "what": "MAIN rows rotate on the calendar",
+   "file": "src/r6-program.mjs",
+   "tests": [
+    "test/r7b-strength.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 11,
+   "failing": [
+    "✖ DR-134 / B0-C06 rotation: MAIN and PRACTICE never rotate on the calendar; an accessory turns every two weeks under EVERY_2_WEEKS, and under COACH_DECIDES only at the first block boundary on or after six weeks; FIXED never (90.146ms)",
+    "✖ failing tests:",
+    "✖ DR-134 / B0-C06 rotation: MAIN and PRACTICE never rotate on the calendar; an accessory turns every two weeks under EVERY_2_WEEKS, and under COACH_DECIDES only at the first block boundary on or after six weeks; FIXED never (90.146ms)"
+   ]
+  },
+  {
+   "id": "M07",
+   "area": "rotation",
+   "what": "COACH_DECIDES turns at every block boundary",
+   "file": "src/r6-program.mjs",
+   "tests": [
+    "test/r7b-strength.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 11,
+   "failing": [
+    "✖ DR-134 / B0-C06 rotation: MAIN and PRACTICE never rotate on the calendar; an accessory turns every two weeks under EVERY_2_WEEKS, and under COACH_DECIDES only at the first block boundary on or after six weeks; FIXED never (87.1089ms)",
+    "✖ failing tests:",
+    "✖ DR-134 / B0-C06 rotation: MAIN and PRACTICE never rotate on the calendar; an accessory turns every two weeks under EVERY_2_WEEKS, and under COACH_DECIDES only at the first block boundary on or after six weeks; FIXED never (87.1089ms)"
+   ]
+  },
+  {
+   "id": "M08",
+   "area": "interference",
+   "what": "CMP.I11 never costs",
+   "file": "src/r6-balanced.mjs",
+   "tests": [
+    "test/r7b-hybrid-program.test.mjs",
+    "test/r7b-binding.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 2,
+   "passedTests": 12,
+   "failing": [
+    "✖ R7-B per-record gating: a candidate without its record is off and its conservative fallback applies; B0-C12 never changes a dose (162.6389ms)",
+    "✖ B0-C11 / CMP.I11: an ordinal LOW run cost, counted once per pair, that the ranking avoids when the chosen days allow; never a prohibition (55.7151ms)",
+    "✖ failing tests:",
+    "✖ R7-B per-record gating: a candidate without its record is off and its conservative fallback applies; B0-C12 never changes a dose (162.6389ms)"
+   ]
+  },
+  {
+   "id": "M09",
+   "area": "progression",
+   "what": "novice density released without executed evidence",
+   "file": "src/r6-program.mjs",
+   "tests": [
+    "test/r7b-strength.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 11,
+   "failing": [
+    "✖ B0-C08 / B0-F08: strength class NONE keeps two full templates until the first block boundary and is released only on executed evidence (389.4909ms)",
+    "✖ failing tests:",
+    "✖ B0-C08 / B0-F08: strength class NONE keeps two full templates until the first block boundary and is released only on executed evidence (389.4909ms)"
+   ]
+  },
+  {
+   "id": "M10",
+   "area": "eligibility",
+   "what": "band and assistance rows carry kilograms",
+   "file": "src/r6-prescription.mjs",
+   "tests": [
+    "test/r7b-strength.test.mjs",
+    "test/r7b-binding.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 5,
+   "passedTests": 15,
+   "failing": [
+    "✖ R7-B conformance: every planned run belongs to a catalog run family and every strength row is a catalog configuration in a role it admits (60 programs, 12 weeks) (158.6153ms)",
+    "✖ R7-B conformance: reviews keep the binding (4 executed weeks over a sample of the grid, including block boundaries) (282.8287ms)",
+    "✖ R7-B conformance: no later-gate or unsupported item is ever prescribed (B0-C10) (157.2646ms)",
+    "✖ B0-C04 / B0-F01 / B0-F02: single implements, bands, assistance and the pull-up carry their own convention; one-sided work is per side (29.1759ms)"
+   ]
+  },
+  {
+   "id": "M11",
+   "area": "progression",
+   "what": "familiar bouts count as executed threshold sessions",
+   "file": "src/r6-program.mjs",
+   "tests": [
+    "test/r7b-running.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 10,
+   "failing": [
+    "✖ B0-C02 c3–c6: bouts never count as threshold sessions or taper/touch peaks; repeated adverse responses withdraw them; any interruption lapses them (46.3764ms)",
+    "✖ failing tests:",
+    "✖ B0-C02 c3–c6: bouts never count as threshold sessions or taper/touch peaks; repeated adverse responses withdraw them; any interruption lapses them (46.3764ms)"
+   ]
+  },
+  {
+   "id": "M12",
+   "area": "eligibility",
+   "what": "strides optional only for EASY_LOW and NOVICE (the frozen runtime)",
+   "file": "src/r6-program.mjs",
+   "tests": [
+    "test/r7b-running.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 10,
+   "failing": [
+    "✖ B0-C01 c8: strides stay optional for walk/jog-, restart- and easy-low-started athletes and for never-runners and novices; not for an easy-current intermediate (20.6739ms)",
+    "✖ failing tests:",
+    "✖ B0-C01 c8: strides stay optional for walk/jog-, restart- and easy-low-started athletes and for never-runners and novices; not for an easy-current intermediate (20.6739ms)"
+   ]
+  },
+  {
+   "id": "M13",
+   "area": "return ceilings",
+   "what": "graduation applied in return steps",
+   "file": "src/r6-program.mjs",
+   "tests": [
+    "test/r7b-running.test.mjs"
+   ],
+   "result": "SURVIVED",
+   "failedTests": 0,
+   "passedTests": 11,
+   "failing": []
+  },
+  {
+   "id": "M14",
+   "area": "progression",
+   "what": "a ladder step may skip its chain",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b-strength.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 11,
+   "failing": [
+    "✖ B0-C07: ladder steps are offered (never applied) at a block boundary after progressing final exposures, one step, opt-in; accepted, the new configuration is established from the lightest load (276.4192ms)",
+    "✖ failing tests:",
+    "✖ B0-C07: ladder steps are offered (never applied) at a block boundary after progressing final exposures, one step, opt-in; accepted, the new configuration is established from the lightest load (276.4192ms)"
+   ]
+  },
+  {
+   "id": "M15",
+   "area": "interference",
+   "what": "content reduction under a STRENGTH lead",
+   "file": "src/r6-program.mjs",
+   "tests": [
+    "test/r7b-hybrid-program.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 5,
+   "failing": [
+    "✖ B0-C11 / CMP.P04 content stage: under a RUN lead a non-MAIN HIGH-eccentric lower row next to a protected run loses one set, disclosed; MAIN rows and STRENGTH or JOINT leads are untouched (33.8351ms)",
+    "✖ failing tests:",
+    "✖ B0-C11 / CMP.P04 content stage: under a RUN lead a non-MAIN HIGH-eccentric lower row next to a protected run loses one set, disclosed; MAIN rows and STRENGTH or JOINT leads are untouched (33.8351ms)"
+   ]
+  }
+ ]
+}

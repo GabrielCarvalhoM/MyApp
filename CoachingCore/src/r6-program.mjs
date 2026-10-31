@@ -1247,7 +1247,8 @@ export function generateProgram(input,options={}){
  const variants=[...new Set(plan.phases.map((p,w)=>contextOf(plan.phases,w)))].flatMap(context=>[[context,false],...(noviceTemplates?[[context,true]]:[])]);
  for(const [context,capped] of variants){
   const own=capped?noviceTemplates:templates,key=arrangementKey(context,capped);
-  const candidates=arrangementCandidates(c,cap,goal,context,sk,own),lead=goal.priorityByPhase[context]?.lead??goal.baseLead;
+  // The context of week 0 holds the first exposures of every configuration not known (B0-C03 c3, B0-C11): the ranking sees them there.
+  const candidates=arrangementCandidates(c,cap,goal,context,sk,own,context===contextOf(plan.phases,0)?{established:new Set(cap.strength.known.map(k=>k.id))}:{}),lead=goal.priorityByPhase[context]?.lead??goal.baseLead;
   const choice=chooseBalanced(candidates,{lead,temporaryPreference:goal.temporaryPreference,severityAuthority,cmpI11,currentId:capped?sk.arrangement[context]?.id??null:previousId,hybrid:op.hybrid,context:{eventPhase:EVENT_PHASES.includes(context),strengthDevelopment:goal.strength.development,runDevelopment:goal.run.development,runRole:goal.run.kind==='NONE'?'MAINTAIN':'PRIMARY',strengthRole:EVENT_PHASES.includes(context)||goal.strength.kind==='MAINTAIN'?'MAINTAIN':'PRIMARY'}});
   arrangementTrace[key]={lead,basis:choice.basis,reason:choice.reason,selectedId:choice.selected?.id??null,paretoIds:choice.paretoIds,candidateCount:candidates.length,counterfactuals:choice.counterfactuals.filter(x=>x.selected||choice.paretoIds.includes(x.id)).slice(0,8)};
   if(capped&&(choice.askRequired||!choice.selected)){arrangementTrace[key].fallback='CONTEXT_ARRANGEMENT';continue;}

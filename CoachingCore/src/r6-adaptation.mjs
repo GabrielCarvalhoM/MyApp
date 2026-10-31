@@ -435,7 +435,8 @@ function graduationWeek(ctx,k){
  const start=k===ctx.w?ctx.base:program.stateTrace[k];if(start?.run?.mode!=='EASY')return {week:k,ok:false,why:'NOT_EASY_MODE'};
  const ev=weekEvidence(program,k,ctx.asOfLocal,ctx.ledger,ctx.quarantined??[]),run=ev.rows.filter(r=>r.sport==='RUN'),running=run.filter(r=>['EASY','LONG'].includes(r.role));
  if(!running.length||running.some(r=>r.status!=='COMPLETED'))return {week:k,ok:false,why:'NOT_ALL_REPORTED'};
- if(run.some(r=>['ADVERSE','CONFLICTING'].includes(r.kind)||r.status==='CONFLICTED'))return {week:k,ok:false,why:'ADVERSE_OR_CONFLICTED'};
+ // Any adverse or conflicted report of the week, whichever sport, disqualifies it (the stricter reading of B0-C01 c3; declared R7B-DECL-02).
+ if(ev.rows.some(r=>['ADVERSE','CONFLICTING'].includes(r.kind)||r.status==='CONFLICTED'))return {week:k,ok:false,why:'ADVERSE_OR_CONFLICTED'};
  const {gates}=weeklyGates(program,sk.at(k)??sk,k,ev,ctx.ledger,ctx.asOf,{base:start});
  if(['EASY','LONG'].some(key=>running.some(r=>r.role===key)&&!['ADVANCE','EARNED'].includes(gates[key])))return {week:k,ok:false,why:'GATE_NOT_ADVANCE'};
  const m=runningMinutes(ctx,running);

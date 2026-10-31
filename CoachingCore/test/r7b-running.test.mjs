@@ -158,3 +158,11 @@ test('B0-C01 with R7-A returns: a graduated athlete keeps the graduation through
  const executedLong=Math.max(...[...Array(6).keys()].flatMap(k=>runs(t.p,k).filter(s=>s.role==='LONG').map(s=>s.prescription.durationMinutes)));
  assert.ok(runs(P,ew).filter(s=>s.role==='LONG').every(s=>s.prescription.durationMinutes<=executedLong),'E1: the return never starts above the executed long run');
 });
+
+test('B0-C01 c3 (stricter reading): an adverse report of any session of a qualifying week, strength included, blocks graduation; the same weeks without it graduate',()=>{
+ const H={...GRAD,id:'r-grad-hybrid',goals:{run:'PERFORMANCE',strength:'GENERAL'},schedule:{runMinutes:45,strengthDays:[2,5]}};
+ const ok=reviewed(H,0),B=ok.p.blocks.find(b=>b.family==='DEVELOPMENT').endWeekExclusive-1;for(let w=0;w<B;w++)weekly(ok,w);assert.equal(weekly(ok,B).action,'RUN_QUALITY_GRADUATION','positive control');
+ const bad=reviewed({...H,id:'r-grad-hybrid-adverse'},B);
+ const r=weekly(bad,B,{o:s=>s.sport==='STRENGTH'?{response:{performance:'UNDER',recovery:'ADVERSE',effort:'HARDER',nextDayFunction:'IMPAIRED'}}:{}});
+ assert.notEqual(r.action,'RUN_QUALITY_GRADUATION');assert.ok(r.disclosures.some(d=>d.id==='RUN_QUALITY_NOT_YET'&&d.weeks.some(x=>x.why==='ADVERSE_OR_CONFLICTED')));
+});
