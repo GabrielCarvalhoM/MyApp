@@ -1,0 +1,188 @@
+{
+  "revision": "TWR-1",
+  "checked_at": "2026-10-30T18:03:57.210Z",
+  "workspace": "C:\\Users\\carva\\Documents\\ChatGPT\\fit\\work\\MyApp-two-week-rotation-policy",
+  "branch": "chore/two-week-rotation-policy",
+  "base_commit": "f82b7f6917e695b5fb8f277e3b6ea39737e19c35",
+  "freeze_commit": "7d2da3603e224124696a2290766ec448080f3264",
+  "head_at_check": "f82b7f6917e695b5fb8f277e3b6ea39737e19c35",
+  "artifact_hashes": {
+    "DECISION_MATRIX.json": "a4a6292cf38230bd697e1f6b59c8ddd72d0f01676af6dcc2f96e2d32cb789358",
+    "INDEPENDENT_REVIEW.md": "9a607ca6760679dad474f529fae4017452383e98004dd5ee55330b9b3f1b2f86",
+    "PROPOSAL.md": "efe66f8920260a710bce058b15f7728df919de22b3581ab3c36756afcb708e7a",
+    "SOURCES.json": "e425c268c9fefaad0da98937a80861672f6bb37c53af4218eac3f86874aeebbf",
+    "SSCTR_REVIEW.json": "335f1ae4c5e753e04099e5d0b495ca493a1c6224962046cffc7984dbd1b5087c"
+  },
+  "checks": [
+    {
+      "id": "every-preexisting-working-file-byte",
+      "ok": true,
+      "detail": {
+        "checked": 5896,
+        "changed": []
+      }
+    },
+    {
+      "id": "freeze-manifest-raw-sha256",
+      "ok": true,
+      "detail": {
+        "checked": 86,
+        "changed": [],
+        "sourceDigest": "e7172eb2e65bfb1da4c102a7efa2bae64bf1c70b06562fd3ce9896defd6dc17d",
+        "manifestDigest": "3d214fb53f62e45ca7d99f39f2c562d358719a2264c2de46098d39b318c85125",
+        "freezeRecordSha256": "51e67fb05c5c0997da45366d99bbc44e5defa81405530ac86b85d3e5058379d3",
+        "policySemanticHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+        "policyFileSha256": "a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100"
+      }
+    },
+    {
+      "id": "raw-blob-byte-equality-to-requested-freeze-commit",
+      "ok": true,
+      "detail": {
+        "freeze_commit": "7d2da3603e224124696a2290766ec448080f3264",
+        "checked": 459,
+        "changed": [],
+        "currentTrackedCoreFiles": 459,
+        "method": "git cat-file --batch streaming; Buffer.equals against each raw disk segment, including runtime/policy/tests/freeze artifacts; not Git text-normalized comparison"
+      }
+    },
+    {
+      "id": "preexisting-branch-heads-unchanged",
+      "ok": true,
+      "detail": {
+        "checked": 8,
+        "changed": [],
+        "reviewBranchHeads": 1,
+        "method": "Local refs compared with pre-mission snapshot; no merge/cherry-pick/reset/checkout in other worktrees"
+      }
+    },
+    {
+      "id": "all-read-source-hashes-current",
+      "ok": true,
+      "detail": {
+        "checked": 42,
+        "changed": []
+      }
+    },
+    {
+      "id": "machine-matrix-reference-and-combination-consistency",
+      "ok": true,
+      "detail": {
+        "baseRows": 12,
+        "overlays": 15,
+        "witnesses": 34,
+        "problems": [],
+        "limit": "Structural checks only; witnesses are manually evaluated semantics, not current runtime or physiological tests"
+      }
+    },
+    {
+      "id": "proposal-only-diff-allowlist",
+      "ok": true,
+      "detail": {
+        "changedOrNew": [
+          "audits/two-week-rotation-policy-2026-10-30/DECISION_MATRIX.json",
+          "audits/two-week-rotation-policy-2026-10-30/INDEPENDENT_REVIEW.md",
+          "audits/two-week-rotation-policy-2026-10-30/PROPOSAL.md",
+          "audits/two-week-rotation-policy-2026-10-30/SOURCES.json",
+          "audits/two-week-rotation-policy-2026-10-30/SSCTR_REVIEW.json",
+          "audits/two-week-rotation-policy-2026-10-30/VERIFICATION.json"
+        ],
+        "outside": []
+      }
+    },
+    {
+      "id": "growth-held-patch-byte-unchanged",
+      "ok": true,
+      "detail": {
+        "sha256": "6b737179873535dac0ebc950aa0637866ea2c32df396cf9b93a80654940820d6"
+      }
+    },
+    {
+      "id": "relative-artifact-links",
+      "ok": true,
+      "detail": {
+        "missing": [],
+        "pending": []
+      }
+    },
+    {
+      "id": "git-working-whitespace",
+      "ok": true,
+      "detail": {
+        "command": "git diff --check",
+        "output": ""
+      }
+    },
+    {
+      "id": "git-staged-whitespace",
+      "ok": true,
+      "detail": {
+        "command": "git diff --cached --check",
+        "output": ""
+      }
+    },
+    {
+      "id": "existing-freeze-verifier-read-only",
+      "ok": true,
+      "detail": {
+        "command": "node CoachingCore/scripts/verify-r7ara.mjs",
+        "exit": 0,
+        "result": {
+          "passed": 12,
+          "total": 12,
+          "failed": []
+        },
+        "flags": "No --write and no --tests; no frozen evidence regeneration or readiness reassessment"
+      }
+    },
+    {
+      "id": "independent-review-exact-current-artifact-binding",
+      "ok": true,
+      "detail": {
+        "reviewId": "SSCTR-TWR-20261030-01",
+        "reviewHashes": [
+          {
+            "path": "PROPOSAL.md",
+            "sha256": "efe66f8920260a710bce058b15f7728df919de22b3581ab3c36756afcb708e7a"
+          },
+          {
+            "path": "DECISION_MATRIX.json",
+            "sha256": "a4a6292cf38230bd697e1f6b59c8ddd72d0f01676af6dcc2f96e2d32cb789358"
+          },
+          {
+            "path": "SOURCES.json",
+            "sha256": "e425c268c9fefaad0da98937a80861672f6bb37c53af4218eac3f86874aeebbf"
+          }
+        ],
+        "disposition": "LIMITED_REVERSIBLE_RECOMMENDATION",
+        "prescriptiveApproval": false,
+        "wholeGateClosure": false,
+        "formalPythonSchemaHelper": "NOT_EXECUTED_PYTHON_UNAVAILABLE",
+        "limit": "Fresh independent proposal review only, no human/clinical validation or prescriptive approval"
+      }
+    },
+    {
+      "id": "structured-review-json-and-claim-source-links",
+      "ok": true,
+      "detail": {
+        "claimCount": 3,
+        "AE_answers": 10,
+        "badSourceRefs": [],
+        "limit": "JSON/reference checks only, not formal schema/helper PASS"
+      }
+    }
+  ],
+  "passed": 14,
+  "total": 14,
+  "proposal_outcome": "READY_FOR_FOUNDER_DECISION",
+  "not_claimed": [
+    "Canonical adoption",
+    "Scientific or human validation",
+    "B0 started",
+    "Repertoire or archetypes created",
+    "R7A exit readiness",
+    "Runtime behavior implementing this proposal",
+    "Merge or production readiness"
+  ],
+  "reproduction": "Re-hash listed SOURCES; compare every inherited file against parent f82b7f6 raw Git blobs; compare all CoachingCore blobs against 7d2da360 with git cat-file --batch raw bytes; verify frozen manifest; run existing verifier without --write/--tests; validate matrix refs; git diff --check. Ref snapshot was captured before authorship in the session temp directory."
+}

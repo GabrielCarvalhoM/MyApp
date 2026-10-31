@@ -729,3 +729,11 @@ The current direct Founder instruction authorizes application of the held [Growt
 `R7A_EXIT_READINESS = READY` · `R7A_FORMAL_CLOSURE = COMPLETE` · `NEXT_MISSION = DOMAIN_COACHING_R7-B0` (**NOT_STARTED**). The R7-A closure block and artifacts remain intact; all 86 freeze-bound files, runtime, policy, frozen tests and review evidence are byte-identical. No sporting rule, blocker or gate changes. Crew/social remains out of V1; Growth's open implementation/privacy/metrics decisions remain open.
 
 **STOP:** this documentary sync is complete. No B0 mission or baseline is captured here; no Figma, HealthKit/WorkoutKit, implementation, unrelated merge or deployment is authorized by this sync. A future B0 opener must use this branch/commit's current canonical authorities.
+
+
+<!-- TWO_WEEK_ROTATION_CANONICALIZATION: TWR-CANON-1 -->
+## Documentary follow-up — Founder-approved two-week rotation structure / 2026-10-30
+
+The current direct [Founder decision](audits/two-week-rotation-policy-2026-10-30/FOUNDER_DECISION.md) approves the structural refinement recorded in [PDR-1.12 / DR-134](product/PRODUCT_DECISION_REGISTER.md): contextual MAIN/ACCESSORY/PRACTICE, separate reason/block/two-week eligibility, conditional accessory variation, stable MAIN within block, practice continuity, directed close-variation relation, running purpose and reason-based substitution precedence. Approved copy is recorded for later reconciliation only. **R7_B0_ROTATION_FOUNDER_BLOCKER = CLOSED; OPEN_FOR_B0 = operational configuration mapping.** No structural rotation decision remains Founder-dependent before B0; B0 is not started or authorized by this follow-up.
+
+This is a documentary authority update, not a change to CURRENT_MISSION = R7A_RESIDUAL_AUTHORITY_FROZEN, its pending narrow rechecks or R7A_EXIT_READINESS. No new research, runtime/policy/tests/freeze/Figma/Growth/queue change, repertoire, archetype, catalogue or engine is authorized. The held Growth canon patch remains unapplied; DR-124–133 remain reserved. [Contract, exact integrity evidence, independent reviews and publication/handoff record](audits/two-week-rotation-policy-2026-10-30/CANONICALIZATION_RECORD.md).
