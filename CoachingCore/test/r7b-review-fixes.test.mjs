@@ -44,6 +44,20 @@ test('QE-R7B-01: a reason-based substitution plans exactly the configuration the
  assert.ok(applied>=40,`applied substitutions ${applied}`);
 });
 
+test('QE-R7B-01: a substitution follows its configuration into templates a later context change creates',()=>{
+ // The decision names the slots of the templates that existed; after a change to four days the new templates' slot that would pick the
+ // set-aside configuration takes the decided one, never another pick.
+ const t=reviewed({id:'fx-sub-ctx',equipment:['DUMBBELLS','BENCH','KETTLEBELL'],goals:{run:'PERFORMANCE',strength:'GENERAL'},rotation:'FIXED',weeks:12,schedule:{strengthDays:[0,2,4]}},3);
+ const s=apply(t,at(t,3,{day:1,hour:'06:00:00',kind:'EXERCISE_SUBSTITUTION',substitution:{exerciseId:'db-rdl',reason:'SKILL_MISMATCH'}}));
+ assert.equal(s.status,'MODIFY',s.reason);const sel=s.substitutions[0].selected;
+ // The change comes the same morning, before the new exercise is ever executed (so it is not yet established and the selection order alone
+ // would not keep it).
+ const before=types(t.p,4),r=apply(t,at(t,3,{day:1,hour:'08:00:00',kind:'SCHEDULE_CHANGE',changes:{strengthDays:[0,1,3,4]}}));
+ assert.equal(r.status,'MODIFY',r.reason);assert.notEqual(types(t.p,4),before,'new template types');
+ // Every hinge main row of the new weeks is the decided configuration: never the set-aside one, never the next rung of its ladder.
+ for(let w=4;w<8;w++){const mains=ids(t.p,w,e=>e.pattern==='HINGE'&&e.role==='MAIN');assert.ok(mains.length&&mains.every(id=>id===sel),`week ${w}: hinge mains ${mains} (decision ${sel})`);assert.ok(!ids(t.p,w).some(id=>['db-rdl','single-leg-rdl-db','barbell-rdl'].includes(id)),`week ${w}: ${ids(t.p,w)}`);}
+});
+
 test('Q-R7B-01 / QE-R7B-02: an accepted ladder step holds from the week it starts; the calendar never puts a lower rung back',()=>{
  const CASES=[
   {from:'band-assisted-pull-up',to:'pull-up',o:{equipment:['BANDS','PULL_UP_BAR'],goals:{run:'PERFORMANCE',strength:'GENERAL'},strengthExperience:'INTERMEDIATE',schedule:{strengthDays:[0,2,4,5]}}},

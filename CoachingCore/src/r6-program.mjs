@@ -94,9 +94,10 @@ export function strengthTemplates(c,goal,{equipment=c.athlete.equipment,knownOnl
 export const noviceDensityApplies=(sk,cap=sk.cap)=>allowsCandidate(sk.repertoire??DEFAULT_REPERTOIRE,'B0-C08')&&cap.strength.programmed&&cap.strength.class==='NONE'&&sk.c.schedule.strengthDays.length>2;
 /** The end of the first development-family block: the first strength block boundary of B0-C08 (R7B-DECL-06). */
 export const firstStrengthBoundary=sk=>Math.min(Infinity,...(sk.blocks??[]).filter(b=>DEVELOPMENT.includes(b.family)).map(b=>b.endWeekExclusive));
-/** The novice density cap in week w (B0-C08): the state's own cap, or, for a state that never had one (fewer days at intake), a cap that starts
- * when the context applies it before the first block boundary (QE-R7B-05). */
-export const densityCappedAt=(sk,ss,w)=>noviceDensityApplies(sk)&&(ss?.density?!!ss.density.capped:w<firstStrengthBoundary(sk));
+/** The novice density cap of a week (B0-C08): the state's own cap. A cap that a later context starts (more than two days chosen before the first
+ * block boundary, QE-R7B-05) enters the state in the transition into the first week of that context (advanceStrength), which runs under that
+ * context in the planner and in the evidence reducer alike. */
+export const densityCappedAt=(sk,ss)=>noviceDensityApplies(sk)&&!!ss?.density?.capped;
 const turnOf=(c,sport)=>sport==='RUN'?c.schedule.runTurn:c.schedule.strengthTurn;
 /** Candidate weekly arrangements: quality day × strength-type permutation × back-to-back order on shared same-turn days. */
 export function arrangementCandidates(c,cap,goal,context,ctx,templates,{established=null}={}){

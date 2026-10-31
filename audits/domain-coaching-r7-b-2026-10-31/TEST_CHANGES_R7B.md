@@ -13,7 +13,7 @@ Baseline `c66966e`: 673 tests, 673 pass. An existing test is changed only when i
 
 ## Fix cycle after the reviews of FREEZE-1 (R7B-RUNTIME-REPERTOIRE-FREEZE-2)
 
-FREEZE-1 (`4995d58`): 714 tests, 714 pass. The fix cycle adds one suite, `test/r7b-review-fixes.test.mjs` (18 tests, one per blocking finding and per fixed minor, each checking the plan and not only the decision record), and changes one existing test:
+FREEZE-1 (`4995d58`): 714 tests, 714 pass. The fix cycle adds one suite, `test/r7b-review-fixes.test.mjs` (19 tests, one per blocking finding and per fixed minor, each checking the plan and not only the decision record), and changes one existing test:
 
 | # | Test file | Test(s) | Superseded by | Change | Assertion bytes |
 |---|---|---|---|---|---|

@@ -34,7 +34,7 @@ const MUTANTS=[
  {id:'M22',area:'return ceilings',what:'graduation re-entry after a restart skips the established easy weeks',file:'src/r6-program.mjs',find:"st.qualityNeeds=R.qualityRequiresEstablishedEasyWeeks;st.graduatedAt=grad.fromWeek;",replace:"st.qualityNeeds=0;st.graduatedAt=grad.fromWeek;",tests:['test/r7b-review-fixes.test.mjs']},
  {id:'M23',area:'eligibility',what:'a familiar task stays current for ever',file:'src/r6-program.mjs',find:"st.familiarCurrentThrough=Number.isFinite(seenGap)?seenGap+op.return.moderateMaxDays:-1;",replace:"st.familiarCurrentThrough=Infinity;",tests:['test/r7b-review-fixes.test.mjs']},
  {id:'M24',area:'impossible combinations',what:'two changes of one exercise at one boundary are applied',file:'src/r6-adaptation.mjs',find:" if(twice.length)return {ask:",replace:" if(false)return {ask:",tests:['test/r7b-review-fixes.test.mjs']},
- {id:'M25',area:'state transition',what:'the novice cap never starts after intake',file:'src/r6-program.mjs',find:"(ss?.density?!!ss.density.capped:w<firstStrengthBoundary(sk))",replace:"(ss?.density?!!ss.density.capped:false)",tests:['test/r7b-review-fixes.test.mjs']}
+ {id:'M25',area:'state transition',what:'a cap a later context starts never enters the state',file:'src/r6-program.mjs',find:"if(ss.density===undefined&&noviceDensityApplies(sk)&&w<firstStrengthBoundary(sk))ss.density={capped:true};",replace:"",tests:['test/r7b-review-fixes.test.mjs']}
 ];
 const results=[];
 for(const m of MUTANTS){
