@@ -1,6 +1,6 @@
 # R7-B checkpoint
 
-2026-10-31 · branch `claude/domain-coaching-r7-b` (from the B0 closure `c66966e`). Status: **FREEZE-2 — the one narrow recheck pending** (FREEZE-1 reviewed: SSCTR BLOCK, Engineering NOT_READY, Quality NOT_READY; the one bounded fix cycle done; no further cycle exists).
+2026-10-31 · branch `claude/domain-coaching-r7-b` (from the B0 closure `c66966e`). Status: **CLOSED NOT_READY with explicit blockers** (the loop bound is spent: one review per gate, one fix cycle, one narrow recheck). Final: R7B_RUNTIME_REPERTOIRE_READY = NO; SSCTR BLOCK (QE-R7B-OBS-04); Engineering NOT_READY (QE-R7B-R2-01, -R2-02, -R2-03; QE-R7B-01/-05 residuals); Quality READY. Do not edit the runtime under this mission again; continue only in a newly authorized mission from `CoachingCore/r7/b/R7B_CLOSURE_HANDOFF.md`.
 
 ## Baseline
 
@@ -28,6 +28,12 @@
 - Fix commits `4873c5d` and `d03025b` (the first FREEZE-2 attempt refused on surviving mutants M17 and M25; closed). Dispositions in `CoachingCore/r7/b/CONFORMANCE_R7B.json` (`fixCycle`) and `CoachingCore/r7/b/R7B_RECHECK_HANDOFF.md`.
 - **R7B-RUNTIME-REPERTOIRE-FREEZE-2** — record `CoachingCore/r7/b/RUNTIME_FREEZE_R7B_2.json`; bytes of `d03025b`; source `d2c730140973c9037de8729387012f830204072053729fbf9bdebf1bc5fe7241`; manifest `d509452e4ad2aa98bce2889bd723c0faa22d2394aa5630d9f5a56588c9e6c23a`; 105 files. Suite 733/733; conformance PASS; regression vs R7-A 0 dose findings; vs FREEZE-1 31 changed, 0 rises; mutation 24/25 (M13 equivalent). `verify-r7b.mjs --freeze 2 --tests` 20/20.
 - Recheck requests: `reviews/SSCTR_RECHECK_REQUEST.md`, `reviews/ENGINEERING_RECHECK_REQUEST.md`, `reviews/QUALITY_RECHECK_REQUEST.md`; outputs under each judge's `recheck/`. After them: closure with the evidence; anything still blocking closes NOT_READY with an explicit blocker.
+
+## Recheck and closure
+
+- Recheck records committed at `e669cc5`: SSCTR R7B-SSCTR-r2 **BLOCK** (QE-R7B-OBS-04; F1–F5 resolved; FIDELITY REVISE, six records APPROVE_WITH_CONDITIONS); Engineering R7B-ENG-r2-RECHECK **NOT_READY** (QE-R7B-R2-01 BLOCKER pre-existing, -R2-02 MAJOR introduced by the fix cycle, -R2-03 MAJOR); Quality **READY**.
+- Human queue 217 → 223 (six HQ-R7B-SSCTR-* entries, append-only; `QUEUE_INTEGRATION_R7B.json`).
+- Closure records: `FINAL_DISPOSITION.json`, `CoachingCore/r7/b/R7B_CLOSURE_HANDOFF.md`, the closed blocks of `CURRENT_MISSION.md` and `MISSION_LEDGER.md`.
 
 ## Rules for any later session
 
