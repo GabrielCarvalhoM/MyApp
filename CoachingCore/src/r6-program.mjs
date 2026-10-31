@@ -872,7 +872,7 @@ export const NO_NEW_EXERCISE_PHASES=freeze(['TAPER','RACE_WEEK','POST_EVENT']);
 const performedInProgram=(sk,ss,id)=>{const e=ss?.exercises?.[id];return !!e&&typeof e.lastPerformed==='string'&&e.lastPerformed>=sk.c.startDate;};
 const reasonPlaced=r=>REASON_BASED_SUBSTITUTION.includes(r.directive?.reason)||!!r.fallbackFor;
 function eventWeekStandIn(sk,template,r,entry,ss,{date,taken}){
- const a=sk.c.athlete,lineage=r.directive??r.fallbackFor,X=configurationOf(lineage?.from),reason=r.directive?.reason??r.fallbackFor?.reason??null;
+ const a=sk.c.athlete,lineage=reasonPlaced(r)?r.directive??r.fallbackFor:null,X=configurationOf(lineage?.from??entry.id),reason=lineage?.reason??null;
  if(!X)return null;
  const setAside=new Set((a.strengthSelections??[]).filter(s=>s.setAside!==false&&REASON_BASED_SUBSTITUTION.includes(s.reason)).map(s=>s.from));
  const familiar=new Set((a.knownExercises??[]).filter(k=>k.familiar!==false).map(k=>k.id)),reached=new Set([...(a.ladderReached??[]),...(a.strengthSelections??[]).filter(s=>s.reason==='SKILL_PROGRESSION'&&s.to).map(s=>s.to)]),maxSkill=['NONE','NOVICE'].includes(a.strengthExperience)?0:1;
@@ -880,16 +880,16 @@ function eventWeekStandIn(sk,template,r,entry,ss,{date,taken}){
  const ok=e=>performedInProgram(sk,ss,e.id)&&!setAside.has(e.id)&&!taken.has(e.id)&&(!subpatterns||subpatterns.includes(e.subpattern))&&admissibleAlternative(X,e,{role:r.role,available,skillOk:x=>familiar.has(x.id)||reached.has(x.id)||skillRank(x.skill)<=maxSkill,auth:sk.repertoire??DEFAULT_REPERTOIRE})&&(reason!=='SKILL_MISMATCH'||followsSkillMismatch(X,e,current));
  return CONFIGURATIONS.filter(ok).sort((p,q)=>ss.exercises[q.id].lastPerformed.localeCompare(ss.exercises[p.id].lastPerformed)||(p.id<q.id?-1:p.id>q.id?1:0))[0]??null;
 }
-function strengthRowsFor(sk,template,w,ss,{firstOfWeek,phase=null,date=null,entryWeek=false}){
+function strengthRowsFor(sk,template,w,ss,{firstOfWeek,phase=null,date=null,entryWeek=false,guard=true}){
  const {op,goal}=sk,S=op.strength,rows=[],used=[],standIns=[],entries=slotEntries(sk,template,w,ss),dayPhase=phase??sk.plan.phases[w];
  for(const {r,entry:slotEntry} of entries){
   let entry=slotEntry,standNote=null;
   // QE-R7B-OBS-04: a configuration a reason-based substitution brought in is not new in an event week (the rows the phase keeps; see above).
-  if(NO_NEW_EXERCISE_PHASES.includes(dayPhase)&&(r.role==='MAIN'||dayPhase==='TAPER')&&reasonPlaced(r)&&!performedInProgram(sk,ss,entry.id)){
-   const stand=eventWeekStandIn(sk,template,r,entry,ss,{date,taken:new Set([...entries.map(x=>x.entry.id),...rows.map(x=>x.id)])}),from=(r.directive??r.fallbackFor).from;
+  if(guard&&NO_NEW_EXERCISE_PHASES.includes(dayPhase)&&(r.role==='MAIN'||dayPhase==='TAPER')&&!performedInProgram(sk,ss,entry.id)){
+   const stand=eventWeekStandIn(sk,template,r,entry,ss,{date,taken:new Set([...entries.map(x=>x.entry.id),...rows.map(x=>x.id)])}),from=reasonPlaced(r)?(r.directive??r.fallbackFor).from:null;
    standIns.push({slot:r.slot,pattern:r.pattern,role:r.role,selected:entry.id,setAside:from,inEventWeeks:stand?.id??null});
    if(!stand)continue;
-   standNote=`No new exercise in the taper, race or post-event weeks: ${stand.id}, already done in this program, stands in for ${from}; ${entry.id} starts after the post-event week`;entry=stand;
+   standNote=from?`No new exercise in the taper, race or post-event weeks: ${stand.id}, already done in this program, stands in for ${from}; ${entry.id} starts after the post-event week`:`No new exercise in the taper, race or post-event weeks: ${stand.id}, already done in this program, stands in for ${entry.id}, which starts after the post-event week`;entry=stand;
   }
   const restKey=r.role==='MAIN'?(goal.strength.kind==='STRENGTH'?'MAIN_STRENGTH_GOAL':'MAIN'):'ACCESSORY',common={restSeconds:S.restSeconds[restKey],preparationMinutes:S.preparationMinutes[r.role==='MAIN'?'MAIN':'ACCESSORY']};
   const dose=strengthDose(sk,ss,w,r,entry,{firstOfWeek,phase,date,entryWeek});
@@ -1040,10 +1040,12 @@ export function buildWeek(sk,w,rs,ss,priorWeeks,{arrangementOverride=null,equipm
   }
   if(phase==='POST_EVENT'){const since=7-plan.raceDay+r.day;if(since<op.event.postEventFirstRunMinDaysAfterRace||sessions.some(x=>x.sport==='STRENGTH'&&x.prescription)){sessions.push(restByDesign(common,'Post-event week: one light strength session is enough; this day is rest or mobility by design'));continue;}}
   // B0-C08: a TPL.CORE day under the novice cap runs at practice dose in the establishment week (practice first), accessory dose after it.
-  const built=t?strengthRowsFor(sk,t,w,strengthState,{firstOfWeek:firstStrength||!!t.densityCapped&&t.type==='CORE',phase:strengthPhase,date:common.date,entryWeek}):{rows:[],used:[]};firstStrength=false;
-  // What stood in for, or was left out of, an event-week slot (QE-R7B-OBS-04) travels with the session, so the plan states it.
-  const standIns=built.standIns?.length?{eventStandIns:built.standIns}:{};
-  if(!built.rows.length&&built.standIns?.length){sessions.push({...restByDesign(common,'No new exercise in the taper, race or post-event weeks: the exercises of this session start after the post-event week'),...standIns});continue;}
+  const firstOfWeek=firstStrength||!!t?.densityCapped&&t?.type==='CORE',built=t?strengthRowsFor(sk,t,w,strengthState,{firstOfWeek,phase:strengthPhase,date:common.date,entryWeek}):{rows:[],used:[]};firstStrength=false;
+  // What stood in for, or was left out of, an event-week slot (QE-R7B-OBS-04) travels with the session, so the plan states it: a reason-based slot
+  // always; another slot only when the session without the rule would have prescribed it (a row the time fit leaves out anyway is no change).
+  let kept=null;const stood=(built.standIns??[]).filter(g=>{if(g.setAside)return true;if(!kept){const plain=strengthRowsFor(sk,t,w,strengthState,{firstOfWeek,phase:strengthPhase,date:common.date,entryWeek,guard:false}),fit=plain.rows.length?fitStrengthSession(plain.rows,{budget:s.strengthMinutes,warmup:op.strength.warmupMinutes,cooldown:op.strength.cooldownMinutes,secondsPerRep:op.strength.secondsPerRep,maxExercises:s.strengthMinutes<35?op.strength.maxExercises.MAIN_ONLY_BUDGET:op.strength.maxExercises.DEFAULT,minimumExercises:Math.min(2,plain.rows.length)}):null;kept=new Set((fit??[]).map(e=>e.id));}return kept.has(g.selected);});
+  const standIns=stood.length?{eventStandIns:stood}:{};
+  if(!built.rows.length&&built.standIns?.length){sessions.push({...restByDesign(common,'No new exercise in the taper, race or post-event weeks: the exercises of this session start '+(plan.phases.lastIndexOf('POST_EVENT')===plan.phases.length-1?'after this program':'after the post-event week')),...standIns});continue;}
   let fitted=built.rows.length?fitStrengthSession(built.rows,{budget:s.strengthMinutes,warmup:op.strength.warmupMinutes,cooldown:op.strength.cooldownMinutes,secondsPerRep:op.strength.secondsPerRep,maxExercises:s.strengthMinutes<35?op.strength.maxExercises.MAIN_ONLY_BUDGET:op.strength.maxExercises.DEFAULT,minimumExercises:Math.min(2,built.rows.length)}):null;
   if(!fitted){sessions.push(restByDesign(common,'The chosen time cannot hold a supported strength session; more time on this day is needed'));continue;}
   // B0-C11 / CMP.P04: under a RUN lead, a non-MAIN HIGH-eccentric lower row in a session within about a day before the long run or the week's

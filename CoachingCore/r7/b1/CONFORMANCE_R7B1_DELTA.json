@@ -1,49 +1,68 @@
 {
- "revision": "R7B1-CONFORMANCE-DELTA-1",
+ "revision": "R7B1-CONFORMANCE-DELTA-2",
  "base": "CoachingCore/r7/b/CONFORMANCE_R7B.json (R7B-CONFORMANCE-2), unchanged and still passing (scripts/conformance-r7b.mjs)",
  "catalogRevision": "R7B0-CATALOG-2",
  "catalogSha256": "ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9",
- "note": "The catalog rules whose runtime materialization R7-B.1 changed, with the consumers and tests R7-B.1 adds to the base entries (which keep theirs). The R7-B engineering recheck found B0-C06#c8, B0-C07#c1 and B0-C08#c1 contradicted on the QE-R7B-R2-01 and -R2-03 paths; these entries record what now materializes them. An id outside the base matrix is an R7-A invariant the change touches.",
+ "note": "The catalog rules whose runtime materialization R7-B.1 changed, with the consumers and tests R7-B.1 adds to the base entries (which keep theirs). The R7-B engineering recheck found B0-C06#c8, B0-C07#c1 and B0-C08#c1 contradicted on the QE-R7B-R2-01 and -R2-03 paths; these entries record what now materializes them. An id outside the base matrix is an R7-A invariant the change touches. Revision 2 (the one correction cycle after the reviews of R7B1-FREEZE-1, request §17) adds what materializes the cycle's fixes: the clinical screen before any block-choice question (QE-R7B1-01, B0-C06#c8 and R7A:A5), the no-lower-skill question that acts (QR7B1-01, B0-C07#c1), the event-week rule for every row whatever placed it, its disclosure and the program-end wording (QR7B1-02, -04, -05; R7B1-SSCTR-F11 and the review half of F12; B0-C05#c1), the rotation slots and the exhaustion question (QR7B1-02, -03; B0-C06#c8).",
  "entries": [
   {
    "id": "SSCTR:B0-C05#c1",
    "rule": "No new exercise in TAPER, RACE_WEEK or POST_EVENT (with R6-EVENT-TRANSITION condition 7 and R6-SUBSTITUTION condition 8)",
    "status": "IMPLEMENTED",
-   "closes": ["QE-R7B-OBS-04"],
-   "consumers": ["src/r6-program.mjs#NO_NEW_EXERCISE_PHASES", "src/r6-program.mjs#eventWeekStandIn", "src/r6-program.mjs#performedInProgram", "src/r6-program.mjs#eventStandIns", "src/r6-adaptation.mjs#eventWeekDisclosure", "src/r7b-repertoire.mjs#fallbackFor"],
+   "closes": ["QE-R7B-OBS-04", "QR7B1-02", "QR7B1-04", "QR7B1-05", "R7B1-SSCTR-F11", "R7B1-SSCTR-F12 (a review that leaves an event-week slot out)"],
+   "consumers": ["src/r6-program.mjs#NO_NEW_EXERCISE_PHASES", "src/r6-program.mjs#eventWeekStandIn", "src/r6-program.mjs#performedInProgram", "src/r6-program.mjs#eventStandIns", "src/r6-adaptation.mjs#eventWeekDisclosure", "src/r7b-repertoire.mjs#fallbackFor", "src/r6-program.mjs#guard&&NO_NEW_EXERCISE_PHASES", "src/r6-program.mjs#const stood=", "src/r6-adaptation.mjs#newEventStandIns", "src/r6-program.mjs#after this program", "src/r6-adaptation.mjs#after this program"],
    "tests": [
     "test/r7b1-residual-closure.test.mjs::R7-B.1 OBS-04: a substitution requested in ",
     "test/r7b1-residual-closure.test.mjs::R7-B.1 OBS-04: an admissible configuration this program performed stands in during the taper",
     "test/r7b1-residual-closure.test.mjs::R7-B.1 OBS-04: in event weeks a configuration already performed in this program and admissible stands in",
     "test/r7b1-residual-closure.test.mjs::R7-B.1 OBS-04: an exercise familiar at intake but never performed in this program",
     "test/r7b1-residual-closure.test.mjs::R7-B.1 OBS-04: a program that ends with the post-event week",
-    "test/r7b1-residual-closure.test.mjs::R7-B.1 OBS-04: a substitution before the taper whose substitute is performed"
+    "test/r7b1-residual-closure.test.mjs::R7-B.1 OBS-04: a substitution before the taper whose substitute is performed",
+    "test/r7b1-correction-cycle.test.mjs::R7-B.1 cycle QR7B1-02: a taper substitution under a two-week rotation",
+    "test/r7b1-correction-cycle.test.mjs::R7-B.1 cycle QR7B1-02 (F11): an equipment change at the start of the taper",
+    "test/r7b1-correction-cycle.test.mjs::R7-B.1 cycle QR7B1-02: a configuration a rebuild brings into the taper",
+    "test/r7b1-correction-cycle.test.mjs::R7-B.1 cycle QR7B1-02 (preserved): a row the session time leaves out anyway",
+    "test/r7b1-correction-cycle.test.mjs::R7-B.1 cycle QR7B1-04: a substitute planned in the last SPECIFIC week and not done there",
+    "test/r7b1-correction-cycle.test.mjs::R7-B.1 cycle QR7B1-04 (preserved): a taper substitution\\'s own event-week disclosure",
+    "test/r7b1-correction-cycle.test.mjs::R7-B.1 cycle QR7B1-04 (preserved): a substitute done in the last SPECIFIC week",
+    "test/r7b1-correction-cycle.test.mjs::R7-B.1 cycle QR7B1-05: in a program that ends with the post-event week the option",
+    "test/r7b1-correction-cycle.test.mjs::R7-B.1 cycle QR7B1-05: the event-week note of a decision in a program that ends",
+    "test/r7b1-correction-cycle.test.mjs::R7-B.1 cycle QR7B1-05: a race-week session left with no exercise"
    ]
   },
   {
    "id": "SSCTR:B0-C06#c8",
    "rule": "Reason-based substitution keeps precedence over cadence after the clinical screen; ambiguous reports are ASK",
    "status": "IMPLEMENTED",
-   "closes": ["QE-R7B-01 residual (QE-R7B-R2-04)"],
-   "consumers": ["src/r6-adaptation.mjs#slipsFrom", "src/r6-adaptation.mjs#exerciseSubstitution"],
+   "closes": ["QE-R7B-01 residual (QE-R7B-R2-04)", "QE-R7B1-01", "QR7B1-02 (rotation slots)", "QR7B1-03"],
+   "consumers": ["src/r6-adaptation.mjs#slipsFrom", "src/r6-adaptation.mjs#exerciseSubstitution", "src/r6-adaptation.mjs#unknownChoices", "src/r6-adaptation.mjs#handled.status==='CLINICAL_HUMAN_REQUIRED'?handled:choiceAsk??handled", "src/r6-adaptation.mjs#slipsFrom(ctx,r.proposal,X.id,to.id,kX)", "src/r6-adaptation.mjs#nameable"],
    "tests": [
     "test/r7b1-residual-closure.test.mjs::R7-B.1 QE-R7B-01 residual: a substitution of ",
     "test/r7b1-residual-closure.test.mjs::R7-B.1 QE-R7B-01 residual: a named exercise already in a session",
-    "test/r7b1-residual-closure.test.mjs::R7-B.1 OBS-04: the clinical screen and the questions still come first"
+    "test/r7b1-residual-closure.test.mjs::R7-B.1 OBS-04: the clinical screen and the questions still come first",
+    "test/r7b1-correction-cycle.test.mjs::R7-B.1 cycle QE-R7B1-01: a review reporting ",
+    "test/r7b1-correction-cycle.test.mjs::R7-B.1 cycle QE-R7B1-01 (preserved): a nonclinical review with a block choice off the boundary",
+    "test/r7b1-correction-cycle.test.mjs::R7-B.1 cycle QR7B1-02: under a two-week rotation the plan prescribes what the decision selects",
+    "test/r7b1-correction-cycle.test.mjs::R7-B.1 cycle QR7B1-03: naming another exercise is offered when one would take its place",
+    "test/r7b1-correction-cycle.test.mjs::R7-B.1 cycle QR7B1-03: with nothing that could take its place",
+    "test/r7b1-correction-cycle.test.mjs::R7-B.1 cycle (preserved): a capped novice\\'s substitution is applied"
    ]
   },
   {
    "id": "SSCTR:B0-C07#c1",
    "rule": "SKILL_MISMATCH regression along the chain always available",
    "status": "IMPLEMENTED",
-   "closes": ["QE-R7B-R2-03"],
-   "consumers": ["src/r7b-repertoire.mjs#followsSkillMismatch", "src/r7b-repertoire.mjs#ladderDown", "src/r7b-repertoire.mjs#asideGaps", "src/r6-adaptation.mjs#skillMismatchGap"],
+   "closes": ["QE-R7B-R2-03", "QR7B1-01"],
+   "consumers": ["src/r7b-repertoire.mjs#followsSkillMismatch", "src/r7b-repertoire.mjs#ladderDown", "src/r7b-repertoire.mjs#asideGaps", "src/r6-adaptation.mjs#skillMismatchGap", "src/r6-adaptation.mjs#acceptGap", "src/r6-adaptation.mjs#missingEquipment"],
    "tests": [
     "test/r7b1-residual-closure.test.mjs::R7-B.1 R2-03: a permanent loss of the substitute",
     "test/r7b1-residual-closure.test.mjs::R7-B.1 R2-03: a dated window without the substitute",
     "test/r7b1-residual-closure.test.mjs::R7-B.1 R2-03: the fallback never rises above the substitute in use",
     "test/r7b1-residual-closure.test.mjs::R7-B.1 R2-03: with no lower option the equipment change asks",
-    "test/r7b1-residual-closure.test.mjs::R7-B.1 R2-03: a SKILL_MISMATCH substitute that held another slot is applied"
+    "test/r7b1-residual-closure.test.mjs::R7-B.1 R2-03: a SKILL_MISMATCH substitute that held another slot is applied",
+    "test/r7b1-correction-cycle.test.mjs::R7-B.1 cycle QR7B1-01: the question names only the missing equipment",
+    "test/r7b1-correction-cycle.test.mjs::R7-B.1 cycle QR7B1-01: confirming the loss records it with the pull slot left out",
+    "test/r7b1-correction-cycle.test.mjs::R7-B.1 cycle QR7B1-01: the question never says equipment the athlete still has is missing"
    ]
   },
   {
@@ -76,22 +95,25 @@
    "status": "IMPLEMENTED",
    "closes": ["QE-R7B-R2-01"],
    "consumers": ["src/r6-adaptation.mjs#finishProposal"],
-   "tests": ["test/r7b1-residual-closure.test.mjs::R7-B.1 R2-01: a cap started by a schedule change survives"]
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs::R7-B.1 R2-01: a cap started by a schedule change survives"
+   ]
   },
   {
    "id": "R7A:A5",
    "kind": "R7A_INVARIANT",
    "rule": "R7-A A5 and QE-R7ADA-01: the canonical factual state before any decision; a question carries the factual re-plan",
    "status": "IMPLEMENTED",
-   "closes": ["QE-R7B-R2-02"],
-   "consumers": ["src/r6-adaptation.mjs#choiceAsk", "src/r6-adaptation.mjs#withFactualReplan"],
+   "closes": ["QE-R7B-R2-02", "QE-R7B1-01 (the unrecognised-choices question keeps the factual re-plan)"],
+   "consumers": ["src/r6-adaptation.mjs#choiceAsk", "src/r6-adaptation.mjs#withFactualReplan", "src/r6-adaptation.mjs#unknownChoices"],
    "tests": [
     "test/r7b1-residual-closure.test.mjs::R7-B.1 R2-02: a mid-week correction with a block choice asks",
     "test/r7b1-residual-closure.test.mjs::R7-B.1 R2-02: no stale-state resurrection after the question",
     "test/r7b1-residual-closure.test.mjs::R7-B.1 R2-02: a correction with a graduation answer mid-week",
     "test/r7b1-residual-closure.test.mjs::R7-B.1 R2-02: a correction with a block choice in another review kind",
     "test/r7b1-residual-closure.test.mjs::R7-B.1 R2-02: a correction with a block choice in the final week",
-    "test/r7b1-residual-closure.test.mjs::R7-B.1 R2-02: without a correction a block choice off the boundary"
+    "test/r7b1-residual-closure.test.mjs::R7-B.1 R2-02: without a correction a block choice off the boundary",
+    "test/r7b1-correction-cycle.test.mjs::R7-B.1 cycle QE-R7B1-01: an unrecognised choice with a correction asks and still carries the factual re-plan"
    ]
   }
  ]

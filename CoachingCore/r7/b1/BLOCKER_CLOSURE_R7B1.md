@@ -94,3 +94,90 @@ Nothing in R6-POLICY-5, R7B0-CATALOG-2, its schema or the 13 B0 SSCTR r2 records
 | Mutation (`scripts/mutate-r7b1.mjs`) | 15 of 15 killed |
 | R7-B mutation on these bytes (`scripts/mutate-r7b.mjs`) | see the freeze record |
 | Engineering and SSCTR recheck probes of R7-B, from a temporary mirror | no PASS → FAIL; N1, N1b, N3, N5, A10, A13, N7a–d FAIL → PASS; SSCTR 17 of 20 byte-identical, r03, r04 and r06 changed as intended |
+
+## Correction cycle — after the reviews of R7B1-FREEZE-1 (request §17)
+
+The independent reviews of R7B1-FREEZE-1 (committed at `2e874f1`) returned SSCTR **ACCEPT_WITH_CONDITIONS** (R7B1-SSCTR-r1), Engineering **NOT_READY** (R7B1-ENG-r1) and Quality **NOT_READY**. Request §17 allows one cycle (correction, new freeze, narrow recheck) for a narrow blocker the mission's own correction created, then stop. QE-R7B1-01 (its prescription comes from the R2-02 fix) and QR7B1-01 (created by the R2-03 fix) open it. The batch also closes QR7B1-02, the residual of B1 on rotation and rebuilt slots, and the Quality MINORs. This is that cycle; no further cycle follows its freeze, **R7B1-FREEZE-2**.
+
+### C1 — QE-R7B1-01: a block choice skipped the clinical screen (Engineering, MAJOR)
+
+- **Finding.** A review reporting pain with an exercise (`substitution.pain: true`) or an illness interruption, sent together with a block choice, got the question "Block choices are made in the weekly review…" instead of `CLINICAL_HUMAN_REQUIRED`. Its reference state recorded ASK, so the clinical flag did not carry. With a correction in the same review, the question also carried the factual re-plan (R2-02). The same review without the choice routes to a human and proposes nothing.
+- **Root cause.** The block-choice question, and the unrecognised-choices question before it, were decided before the handler ran, so the handlers' clinical screens never ran. This came from the R7-B fix cycle (FREEZE-2); R7-B.1's R2-02 fix gave the question a prescription.
+- **Authority.** B0-C06 condition 8 (reason-based substitution keeps precedence after the clinical screen); SSCTR D08; R7-A: a clinical route proposes nothing (`withFactualReplan`).
+- **Runtime path.** `src/r6-adaptation.mjs` `evaluateProgram` (`unknownChoices`, `choiceAsk`, `handled`, `decision0`).
+- **Fix.** The handler runs whatever block choice the review carries. A clinical route it takes is the decision, with no proposal, as in the same review without the choice. Otherwise the block-choice question stands as before and carries the factual re-plan. The unrecognised-choices question is no longer returned before the facts: it is a block-choice question like the others, after the clinical screen, and keeps the factual re-plan.
+- **Regression tests.** Pain and illness, each with a ladder step, a declined offer and an unrecognised choice, with and without a correction: all route to a human, propose nothing, and carry the clinical dependency. An unrecognised choice with a correction asks and carries the re-plan the correction gives alone. All are RED on FREEZE-1. One preservation test: a nonclinical review with a choice off the boundary still asks and proposes nothing.
+- **Preservation.** The Engineering reproduction J1b gives 16 of 16 clinical (FREEZE-1: 12 of 16 skip). The timeline differential's 98 preserved timelines are identical.
+
+### C2 — QR7B1-01: the no-lower-skill question was a dead end (Quality, MAJOR)
+
+- **Finding.** After a SKILL_MISMATCH, losing the substitute's equipment asked "keep that equipment, or name a pull exercise" with missing inputs `changes.equipment` and `substitution.to`. Naming had no effect, the loss could not be recorded, and the text could name equipment the athlete still had (q12: "needs dumbbells and bench").
+- **Root cause.** The R2-03 fix asked without a resolution. The R6-SUBSTITUTION condition 8 path (omit and disclose) was not offered, every gap the program held was asked again, and the text listed all of the substitute's equipment.
+- **Authority.** Catalog SKILL_MISMATCH rule; B0-C07 condition 1; R6-SUBSTITUTION condition 8 (a pattern without a substitute is omitted and disclosed).
+- **Runtime path.** `src/r6-adaptation.mjs` `skillMismatchGap`, `equipmentChange`, `exerciseSubstitution`.
+- **Fix.** The question is raised only for a gap this decision creates, and it names only the equipment that is missing. Both options act:
+  - Keep the equipment: nothing changes.
+  - Confirm the change (`changes.acceptGap` or `substitution.acceptGap: true`): it is recorded with that slot left out until the equipment returns, disclosed as `NO_LOWER_SKILL_ALTERNATIVE` with `accepted`. Nothing harder takes its place.
+- **Regression tests.** The question names only the missing equipment, and its options are inputs the review reads. Confirming records the change with the slot left out, disclosed, with no climb through two later reviews, and the gap is not asked about again. The question never says equipment the athlete still has is missing. All are RED on FREEZE-1.
+- **Preservation.** The R2-03 tests are unchanged and pass; the plan still never climbs.
+
+### C3 — QR7B1-02 with R7B1-SSCTR-F11: the event-week rule for every row; rotation slots (Quality, MAJOR; SSCTR, MODERATE)
+
+- **Finding.**
+  - A taper substitution under a two-week rotation, or a rebuild, brought a configuration never performed in this program into the event weeks (q08 W1–W4).
+  - Under rotation, the slot of the replaced exercise in its week of next use could hold another exercise than the one selected (q09c: 12 sessions in 6 decisions).
+  - F11: an equipment change in the event weeks put never-performed substitutes on event days (s02: 15 of 15 reports, 94 rows).
+- **Root cause.** The guard bound only rows a reason-based substitution placed (`directive`, `fallbackFor`); rows placed by rotation, a rebuild or an equipment substitute were not guarded. `slipsFrom` compared template rows, which do not show what rotation places in a given week.
+- **Authority.** B0-C05 condition 1 (no new exercise in TAPER, RACE_WEEK or POST_EVENT); R6-EVENT-TRANSITION condition 7; R6-SUBSTITUTION condition 8; QE-R7B-01; the SSCTR's F11 condition: a performed configuration that fits the equipment of the date, otherwise the slot is left out and disclosed.
+- **Runtime path.** `src/r6-program.mjs`: `strengthRowsFor` (the guard), `eventWeekStandIn` (lineage) and `buildWeek` (what is recorded). `src/r6-adaptation.mjs`: `slipsFrom` (the week of next use).
+- **Fix.**
+  - In the event phases the guard binds every row. A configuration this program has not performed gives way to a performed admissible alternative that fits the equipment of the date: of the reason's lineage for a row a substitution placed, otherwise of the row's own configuration. Without one, its slot is left out.
+  - A row the session's time fit would leave out anyway is not recorded (no false omission).
+  - A substitution also checks the week the replaced exercise is next used, counted over that week by pattern and role, so a rotation slot takes the selected exercise.
+  - The prototype first compared sessions by id. That made 46 false questions for capped novices, whose re-plan may move the full session to another day (q03: 41 → 87). It was keyed on the week before porting, and q03 now matches FREEZE-1.
+- **Regression tests.**
+  - Four rotation witnesses: nothing never performed enters the event weeks.
+  - Rotation slots take the selected exercise.
+  - An equipment change at the start of the taper leaves never-performed substitutes out and discloses them, checked week by week through the post-event week.
+  - A machines loss: inverted-row, already performed, stands in for band-row.
+  - All of these are RED on FREEZE-1. Preservation tests: profile E's intake records nothing; a capped novice's substitution still applies.
+- **Preservation.** On the corrected bytes before the freeze:
+  - Intake differential against FREEZE-2: 83 of 83 identical.
+  - Timeline differential: PASS, 98 of 98 preserved timelines identical, grid inconsistent 8 → 0.
+  - Quality q09c (EVERY_2_WEEKS): slots not taken 12 → 0.
+  - Quality q03: statuses identical (MODIFY 1567, ASK 789).
+  - SSCTR s02: never-performed rows 94 → 0. SSCTR s01: the same 136 decision-time disclosure gaps as FREEZE-1 (F12's routed half).
+
+### C4 — QR7B1-03: the question when every candidate is already in the session (Quality, MINOR)
+
+- **Finding.** The question offered "Add equipment" (no effect in 29 of 41 grid questions) and "Keep X", with the missing input `substitution.to`.
+- **Root cause.** The options were not derived from what acts.
+- **Fix.** "Keep X" is always offered. "Name another exercise of the same pattern" is offered only when one of that pattern would take X's place, each tried exactly as the athlete's named exercise would be. Otherwise only keeping is offered, with no missing input. `src/r6-adaptation.mjs` `exerciseSubstitution` (`attempt`, `nameable`).
+- **Tests.** Naming is offered when it works, and it does; with nothing that could take the place, only keeping is offered. RED on FREEZE-1. q03: naming offered in exactly the 27 questions where it works, only keeping in the other 14.
+- **Routed, not changed.** Offering to leave the slot out, and whether "Keep X" fits after a SKILL_MISMATCH (R7B1-SSCTR-F13), need the SSCTR's call: next runtime mission, with Product/UX.
+
+### C5 — QR7B1-04: a decision that keeps an event-week slot out discloses it (Quality, MINOR; the review half of R7B1-SSCTR-F12)
+
+- **Finding.** A weekly review that left a substitute out of the taper (planned in the last SPECIFIC week and not done there) said nothing. The omission existed only in the session's `eventStandIns`.
+- **Fix.** Every decision whose proposal newly fills an event-week slot with a stand-in, or leaves it out, discloses it as `NO_NEW_EXERCISE_IN_EVENT_WEEKS` with `sessions` and `slots`. That includes weekly reviews, equipment changes and the knock-on slots of a substitution. Slots a substitution's own disclosure already names are not repeated, and the records are named `slots` so they never read as that disclosure's `standIns` (configuration ids). `src/r6-adaptation.mjs` `newEventStandIns`, `evaluateProgram`.
+- **Tests.** The review that keeps the slot out says so (RED on FREEZE-1). Preservation: a substitute done in the last SPECIFIC week continues with no omission disclosed, and a substitution's own disclosure is the only one for its slots.
+- **Routed, not changed.** The decision-time half of F12 (a substitute planned before the event weeks: disclosing what happens if it is not done) goes to the next runtime mission with Product/UX.
+
+### C6 — QR7B1-05: a program that ends with the post-event week (Quality, observation)
+
+- **Fix.** Where no week follows the post-event week, the option reads "Keep X instead: this program ends with the post-event week", and the event-week note and the rest-by-design text say the exercises start "after this program". Text only.
+- **Tests.** Option, note and rest text, all RED on FREEZE-1.
+
+### Not changed in the cycle
+
+- R7B1-SSCTR-F12's decision-time half and R7B1-SSCTR-F13 (above).
+- QE-R7B1-02 (Engineering MINOR, pre-existing): a short return in the capped period re-plans the rest of that week uncapped.
+- QE-R7B1-03 (Engineering MINOR, pre-existing): a knock-on slot moves to pike-push-up without a disclosure; suitability is the SSCTR's.
+- QR7B1-06 (pre-existing): knock-on changes are not listed in `substitutions`. Knock-on slots kept out of the event weeks are now disclosed (C5).
+- QR7B1-07: owners named at closure.
+- The Engineering observations: a capped novice's day layout; a one-arm-db-row mismatch landing on band-face-pull.
+- All are routed with the closure.
+
+### Evidence of the cycle
+
+See `RUNTIME_FREEZE_R7B1_2.json` (R7B1-FREEZE-2) and `VERIFICATION_R7B1_2.json`: the suite, the R7-B conformance check and the delta (revision 2), the intake and timeline differentials against FREEZE-2, the adversarial probes (`out/adversarial-R7B1-2.json`) and the R7-B.1 and R7-B mutation probes, all on the frozen bytes. The narrow rechecks of the three gates are under `audits/domain-coaching-r7-b1-2026-10-31/reviews/*/recheck/`.
