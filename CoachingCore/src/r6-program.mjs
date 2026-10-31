@@ -300,7 +300,12 @@ export function advanceRun(sk,st0,w,gate={}){
  // threshold ladder enters (the context of that week carries it): ladder step 0 at the effort cue (a calibration), and in that week no other run
  // dimension steps: easy, long and walk conversion hold where the reviewed week had them.
  const grad=sk.c.athlete.runGraduation;
- if(grad?.fromWeek===w+1&&st.mode==='EASY'&&!st.qualityRunner&&allowsCandidate(sk.repertoire??DEFAULT_REPERTOIRE,'B0-C01')){st.qualityRunner=true;st.qualityNeeds=0;st.qualityStep=0;st.graduatedAt=w+1;st.long=st0.long;st.easy=st0.easy;st.easyExtra=st0.easyExtra??0;st.walks=st0.walks;}
+ // Any later transition under a context that carries the graduation applies it too (the evidence reducer's HISTORY reading judges each week under
+ // its own context, and a return restarts from that reading), keeping the ladder steps the evidence earned; the hold belongs to the introduction.
+ if(grad&&grad.fromWeek<=w+1&&st.mode==='EASY'&&!st.qualityRunner&&allowsCandidate(sk.repertoire??DEFAULT_REPERTOIRE,'B0-C01')){st.qualityRunner=true;st.qualityNeeds=0;st.graduatedAt=grad.fromWeek;
+  if(grad.fromWeek===w+1){st.qualityStep=0;
+  // Held at what was executed (released is not executed, R7-A E1): a step the state took in the consolidation week is not run first now.
+  st.long=st0.long===null?null:Math.min(st0.long,st.achieved.long??st0.long);st.easy=st0.easy===null?null:Math.min(st0.easy,st.achieved.easy??st0.easy);st.easyExtra=st.easy===st0.easy?(st0.easyExtra??0):0;st.walks=st0.walks;}}
  if(next==='NEXT_BLOCK'&&!st.resumed){const N=op.event.nextBlock;st.resumed=true;if(st.long!==null)st.long=Math.max(R.minimumSessionMinutes,floor5((st.achieved.long??st.long)*N.longRunFractionOfAchievedPeak));if(st.easy!==null)st.easy=Math.max(R.minimumSessionMinutes,floor5((st.achieved.easy??st.easy)*N.easyFractionOfAchievedPeak));if(st.long!==null&&st.easy!==null)st.long=Math.max(st.long,st.easy);st.qualityStep=Math.max(0,st.qualityStep-N.qualityStepsBack);}
  }
  return st;
@@ -955,7 +960,7 @@ export function buildWeek(sk,w,rs,ss,priorWeeks,{arrangementOverride=null,equipm
   const common={id:`w${w}-${r.sport==='RUN'?'run':'str'}-d${r.day}`,weekIndex:w,day:r.day,date:onDate(c.startDate,w*7+r.day),turn:r.turn??null,sport:r.sport,backToBackOrder:r.backToBackOrder,blockId};
   if(r.sport==='RUN'){
    const x=runOut[r.id];if(!x)continue;
-   sessions.push({...common,role:x.role,key:!!x.key,essential:!!x.essential,optional:!!x.optional,prescription:x.prescription,progression:x.progression??null,explanation:x.explanation??(x.converted?x.prescription.instructions[0]:null),converted:x.converted??null,status:'PLANNED',plannedPrescriptionHash:x.prescription?hash(x.prescription):null,...(arr?.orderFlexible&&s.sharedDays.includes(r.day)?{orderFlexible:true}:{})});
+   sessions.push({...common,role:x.role,key:!!x.key,essential:!!x.essential,optional:!!x.optional,prescription:x.prescription,progression:x.progression??null,explanation:x.explanation??(x.converted?x.prescription.instructions[0]:null),converted:x.converted??null,...(x.introduction?{introduction:true,alternative:clone(x.alternative)}:{}),status:'PLANNED',plannedPrescriptionHash:x.prescription?hash(x.prescription):null,...(arr?.orderFlexible&&s.sharedDays.includes(r.day)?{orderFlexible:true}:{})});
    continue;
   }
   const t=templatesOn(common.date)[r.templateIndex];

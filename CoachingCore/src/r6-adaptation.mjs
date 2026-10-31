@@ -479,6 +479,7 @@ function blockBoundary(ctx,gates){
  for(const ch of choices){
   if(ch.type==='LADDER_STEP'){
    const role=inUse.get(ch.from);
+   if(selections.some(x=>x.from===ch.from)){invalid.push({choice:ch,why:'One ladder step per exercise per block boundary'});continue;}
    if(!ladderOpen||!role||!['ADVANCE','EARNED'].includes(gates[ch.from])||!stepOk(ch.from,ch.to,role)){invalid.push({choice:ch,why:!ladderOpen?'Ladder steps are not offered in this phase or during a return':!role?'The exercise is not in use':!['ADVANCE','EARNED'].includes(gates[ch.from])?'The exercise did not end the block progressing':'Not the next step on its ladder, or not available'});continue;}
    selections.push({from:ch.from,to:ch.to,reason:'SKILL_PROGRESSION',fromWeek:w+1,decidedBy:review.event.id});reached.push(ch.to);
   }else if(ch.type==='MAIN_CHANGE'){

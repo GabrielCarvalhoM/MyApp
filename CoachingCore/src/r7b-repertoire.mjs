@@ -29,8 +29,9 @@ const DEFAULT_RECORDS=RECORD_BYTES?(()=>{try{return JSON.parse(RECORD_BYTES.toSt
 
 // ---------- authority ----------
 export const CANDIDATES=['B0-C01','B0-C02','B0-C03','B0-C04','B0-C05','B0-C06','B0-C07','B0-C08','B0-C09','B0-C10','B0-C11','B0-C12'];
-/** Records without which the catalog cannot be the configuration source at all: fidelity, the configurations, their representation and roles. */
-export const CORE_RECORDS=['B0-FIDELITY','B0-C03','B0-C04','B0-C05'];
+/** Records without which the catalog cannot be the configuration source at all: fidelity, the representation and the contextual roles. The 37
+ * B0-origin configurations are admitted only with B0-C03; without it the catalog serves its 39 R6-origin configurations. */
+export const CORE_RECORDS=['B0-FIDELITY','B0-C04','B0-C05'];
 const ENABLING=new Set(['APPROVE','APPROVE_WITH_CONDITIONS']),EVIDENCE=new Set(['WELL_SUPPORTED','SUPPORTED_WITH_LIMITS']);
 /**
  * Per-record activation (fail closed): a record enables its candidate only when it targets this catalog revision and hash, its disposition
@@ -266,7 +267,7 @@ export function buildTemplates({types,equipment=[],experience='NOVICE',knownExer
    let options=CONFIGURATIONS.filter(e=>usable(e,role,{pattern,subpatterns:slot.subpatterns??null,used})).sort(order(rolePurposes,preferred));
    let rowRole=role,downgraded=false;
    // B0-C09: a MAIN pull slot without a MAIN-admissible pull takes the best ACCESSORY-admissible pull, as an ACCESSORY row, disclosed.
-   if(!options.length&&role==='MAIN'&&pattern==='PULL'&&allowsCandidate(auth,'B0-C09')){options=CONFIGURATIONS.filter(e=>usable(e,'ACCESSORY',{pattern,used})).sort(order(accessoryPurposes,preferred));if(options.length){rowRole='ACCESSORY';downgraded=true;}}
+   if(!options.length&&role==='MAIN'&&pattern==='PULL'&&allowsCandidate(auth,'B0-C09')){const within=e=>(slot.subpatterns??[]).includes(e.subpattern)?0:1,cmp=order(accessoryPurposes,preferred);options=CONFIGURATIONS.filter(e=>usable(e,'ACCESSORY',{pattern,used})).sort((a,b)=>within(a)-within(b)||cmp(a,b));if(options.length){rowRole='ACCESSORY';downgraded=true;}}
    let pick=options[0]??null;
    // Selection directives: the latest admissible replacement of the picked configuration in this slot (chained), recorded with its reason. The
    // replacement must fit the slot as any selection does (pattern, MAIN subpatterns, role, equipment, skill or ladder reach, not set aside).
