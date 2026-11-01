@@ -16,17 +16,17 @@ export function compactPaths(paths) {
   return [...entries].sort();
 }
 
-function gitFacts({ mission, state, worktree }) {
-  const head = git.head(worktree);
+function gitFacts({ mission, state, repo }) {
+  const head = git.head(repo);
   const since = state.last_checkpoint_head ?? mission.repo.base_commit;
-  const changed = git.isAncestor(worktree, since, head) ? git.changedFiles(worktree, since, head) : [];
-  return { git: { branch: git.branch(worktree), head_commit: head, pushed: false }, files_changed: compactPaths(changed) };
+  const changed = git.isAncestor(repo, since, head) ? git.changedFiles(repo, since, head) : [];
+  return { git: { branch: git.branch(repo), head_commit: head, pushed: false }, files_changed: compactPaths(changed) };
 }
 
 // A pre-filled checkpoint: Git facts computed, continuity fields carried over from the previous
 // checkpoint, judgment fields left empty so that validation fails until the session fills them.
-export function buildTemplate({ mission, state, previous, worktree, runSeq }) {
-  const facts = gitFacts({ mission, state, worktree });
+export function buildTemplate({ mission, state, previous, repo, runSeq }) {
+  const facts = gitFacts({ mission, state, repo });
   const route = state.current?.unit?.route ?? mission.first_unit.route;
   return {
     schema: CHECKPOINT_SCHEMA,

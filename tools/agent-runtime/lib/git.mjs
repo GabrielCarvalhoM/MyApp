@@ -1,29 +1,71 @@
+import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { runSync } from './proc.mjs';
 
-// Sessions can write this repository's config and hooks. Every Git command the supervisor runs
-// therefore switches off the config-driven ways to execute code on a local command (fsmonitor and
-// hooks: the hooks path below never exists), and remote checks run outside any repository (lsRemote),
-// where only the Founder's own system and global config take part.
-const NO_HOOKS = fileURLToPath(new URL('../.no-hooks', import.meta.url)).split(path.sep).join('/');
-const HARDENING = ['-c', 'core.fsmonitor=false', '-c', `core.hooksPath=${NO_HOOKS}`, '-c', 'protocol.ext.allow=never'];
-// Never prompt for credentials (a prompt would hang a headless run) and never take the optional index
-// lock, so a status check cannot collide with a session's own Git commands.
-const GIT_ENV = { ...process.env, GIT_TERMINAL_PROMPT: '0', GIT_OPTIONAL_LOCKS: '0' };
-delete GIT_ENV.GIT_DIR;
-delete GIT_ENV.GIT_WORK_TREE;
+// Sessions can write this repository's config, attributes, hooks and even a worktree's `.git` file, so
+// every Git command the supervisor runs:
+// - reads no attributes (no filter drivers, no line-ending conversion: bytes exactly as written);
+// - switches off fsmonitor, hooks (they point at an empty directory of this process), submodule
+//   recursion and automatic gc/maintenance, and pins the signing programs to the Founder's own config;
+// - addresses a repository through the git dir pinned when it was created (repository handles below);
+// - reaches a remote only from that private directory, outside any repository (lsRemote).
+const EMPTY_TREE = '4b825dc642cb6eb9a060e54bf8d69288fbee4904';
+const BASE_ENV = { ...process.env, GIT_TERMINAL_PROMPT: '0', GIT_OPTIONAL_LOCKS: '0' };
+delete BASE_ENV.GIT_DIR;
+delete BASE_ENV.GIT_WORK_TREE;
 
 export const COMMIT_ID = /^[0-9a-f]{40}$/;
 export const SAFE_BRANCH = /^(?!.*\.\.)(?!.*\/\/)(?!.*\.lock(?:\/|$))(?!.*@\{)[A-Za-z0-9][A-Za-z0-9._/-]*[A-Za-z0-9_]$/;
 
 export class GitError extends Error {}
 
-// `gitDir` pins the repository explicitly, so a worktree whose `.git` file was rewritten cannot redirect it.
-export function git(cwd, args, { allowFail = false, timeoutMs = 120_000, gitDir = null } = {}) {
+let ownDir = null;
+// A fresh directory that only this process knows: never inside a checkout, removed at exit.
+function privateDir() {
+  if (!ownDir) {
+    ownDir = fs.mkdtempSync(path.join(os.tmpdir(), 'agent-runtime-'));
+    process.once('exit', () => fs.rmSync(ownDir, { recursive: true, force: true }));
+  }
+  return ownDir;
+}
+
+const outsideAnyRepository = () => ({ cwd: privateDir(), env: { ...BASE_ENV, GIT_CEILING_DIRECTORIES: path.dirname(privateDir()) } });
+// Where every supervisor Git command looks for hooks: a path inside the private directory, never created.
+export const hooksDirectory = () => path.join(privateDir(), 'no-hooks');
+const hooksFlag = () => ['-c', `core.hooksPath=${hooksDirectory().split(path.sep).join('/')}`];
+
+const localHardening = () => [
+  `--attr-source=${EMPTY_TREE}`,
+  '-c', 'core.autocrlf=false',
+  '-c', 'core.fsmonitor=false',
+  ...hooksFlag(),
+  '-c', 'protocol.ext.allow=never',
+  '-c', 'submodule.recurse=false',
+  '-c', 'gc.auto=0',
+  '-c', 'maintenance.auto=false',
+];
+
+let signing = null;
+// The signing programs come from the Founder's global config (or Git's defaults), never the repository's.
+function signingPrograms() {
+  if (signing) return signing;
+  const { cwd, env } = outsideAnyRepository();
+  const globalValue = (key, fallback) => {
+    const result = runSync(['git', 'config', '--global', '--get', key], { cwd, env, timeoutMs: 30_000 });
+    return result.status === 0 && result.stdout.trim() ? result.stdout.trim() : fallback;
+  };
+  signing = [['gpg.program', 'gpg'], ['gpg.ssh.program', 'ssh-keygen'], ['gpg.x509.program', 'gpgsm']].flatMap(([key, fallback]) => ['-c', `${key}=${globalValue(key, fallback)}`]);
+  return signing;
+}
+
+// A repository as the supervisor addresses it: a work tree, and its git dir once pinned.
+export const repoAt = (worktree, gitDir = null) => ({ cwd: worktree, gitDir });
+
+export function git(target, args, { allowFail = false, timeoutMs = 120_000, extra = [] } = {}) {
+  const { cwd, gitDir } = typeof target === 'string' ? { cwd: target, gitDir: null } : target;
   const location = gitDir ? [`--git-dir=${gitDir}`, `--work-tree=${cwd}`] : [];
-  const result = runSync(['git', ...HARDENING, ...location, ...args], { cwd, env: GIT_ENV, timeoutMs });
+  const result = runSync(['git', ...localHardening(), ...extra, ...location, ...args], { cwd, env: BASE_ENV, timeoutMs });
   const ok = result.status === 0 && !result.error;
   if (!ok && !allowFail) {
     const detail = (result.stderr || result.stdout || result.error?.message || '').trim().slice(0, 500);
@@ -32,35 +74,35 @@ export function git(cwd, args, { allowFail = false, timeoutMs = 120_000, gitDir 
   return { ok, status: result.status, stdout: result.stdout, stderr: result.stderr.trim() };
 }
 
-const text = (cwd, args, options) => git(cwd, args, options).stdout.trim();
+const text = (target, args) => git(target, args).stdout.trim();
 
-export const head = (cwd, options) => text(cwd, ['rev-parse', 'HEAD'], options);
-export const toplevel = (cwd) => text(cwd, ['rev-parse', '--show-toplevel']);
-export const commonDir = (cwd) => path.resolve(text(cwd, ['rev-parse', '--path-format=absolute', '--git-common-dir']));
-export const gitDirOf = (cwd) => path.resolve(text(cwd, ['rev-parse', '--path-format=absolute', '--git-dir']));
+export const head = (target) => text(target, ['rev-parse', 'HEAD']);
+export const toplevel = (target) => text(target, ['rev-parse', '--show-toplevel']);
+export const commonDir = (target) => path.resolve(text(target, ['rev-parse', '--path-format=absolute', '--git-common-dir']));
+export const gitDirOf = (target) => path.resolve(text(target, ['rev-parse', '--path-format=absolute', '--git-dir']));
 export const mainRootOf = (common) => (path.basename(common) === '.git' ? path.dirname(common) : common);
-export const mainRoot = (cwd) => mainRootOf(commonDir(cwd));
+export const mainRoot = (target) => mainRootOf(commonDir(target));
 
-export function branch(cwd) {
-  const result = git(cwd, ['symbolic-ref', '--quiet', '--short', 'HEAD'], { allowFail: true });
+export function branch(target) {
+  const result = git(target, ['symbolic-ref', '--quiet', '--short', 'HEAD'], { allowFail: true });
   return result.ok ? result.stdout.trim() : null;
 }
 
-export function resolveCommit(cwd, rev) {
-  const result = git(cwd, ['rev-parse', '--verify', '--quiet', '--end-of-options', `${rev}^{commit}`], { allowFail: true });
+export function resolveCommit(target, rev) {
+  const result = git(target, ['rev-parse', '--verify', '--quiet', '--end-of-options', `${rev}^{commit}`], { allowFail: true });
   return result.ok ? result.stdout.trim() : null;
 }
 
-export function isAncestor(cwd, ancestor, descendant) {
-  const result = git(cwd, ['merge-base', '--is-ancestor', ancestor, descendant], { allowFail: true });
+export function isAncestor(target, ancestor, descendant) {
+  const result = git(target, ['merge-base', '--is-ancestor', ancestor, descendant], { allowFail: true });
   if (result.status === 0) return true;
   if (result.status === 1) return false;
   throw new GitError(`cannot compare ${ancestor} and ${descendant}: ${result.stderr}`);
 }
 
 // Every path with an uncommitted change, untracked files included; ignored files are not changes.
-export function dirtyPaths(cwd, options) {
-  const raw = git(cwd, ['status', '--porcelain=v1', '-z', '--untracked-files=all'], options).stdout;
+export function dirtyPaths(target) {
+  const raw = git(target, ['status', '--porcelain=v1', '-z', '--untracked-files=all']).stdout;
   const entries = raw.split('\0');
   const paths = [];
   for (let index = 0; index < entries.length; index += 1) {
@@ -73,30 +115,30 @@ export function dirtyPaths(cwd, options) {
 }
 
 // Untracked files that the ignore rules hide from `dirtyPaths` (dependencies, caches, runtime state).
-export function ignoredFiles(cwd, options) {
-  return git(cwd, ['ls-files', '--others', '--ignored', '--exclude-standard', '-z'], options).stdout.split('\0').filter(Boolean);
+export function ignoredFiles(target) {
+  return git(target, ['ls-files', '--others', '--ignored', '--exclude-standard', '-z']).stdout.split('\0').filter(Boolean);
 }
 
-export function changedFiles(cwd, from, to) {
-  return git(cwd, ['diff', '--name-only', '-z', '--no-renames', from, to]).stdout.split('\0').filter(Boolean);
+export function changedFiles(target, from, to) {
+  return git(target, ['diff', '--name-only', '-z', '--no-renames', '--no-ext-diff', '--no-textconv', from, to]).stdout.split('\0').filter(Boolean);
 }
 
-export function existsAt(cwd, rev, relPath) {
+export function existsAt(target, rev, relPath) {
   const clean = relPath.replace(/\/+$/, '');
-  return git(cwd, ['cat-file', '-e', `${rev}:${clean}`], { allowFail: true }).ok;
+  return git(target, ['cat-file', '-e', `${rev}:${clean}`], { allowFail: true }).ok;
 }
 
-export const trackedAtHead = (cwd, relPath) => existsAt(cwd, 'HEAD', relPath);
+export const trackedAtHead = (target, relPath) => existsAt(target, 'HEAD', relPath);
 
-export function isIgnored(cwd, relPath) {
-  const result = git(cwd, ['check-ignore', '-q', '--no-index', '--', relPath], { allowFail: true });
+export function isIgnored(target, relPath) {
+  const result = git(target, ['check-ignore', '-q', '--no-index', '--', relPath], { allowFail: true });
   if (result.status === 0) return true;
   if (result.status === 1) return false;
   throw new GitError(`git check-ignore ${relPath} failed: ${result.stderr}`);
 }
 
-export function worktreeList(cwd) {
-  const blocks = git(cwd, ['worktree', 'list', '--porcelain']).stdout.split(/\r?\n\r?\n/);
+export function worktreeList(target) {
+  const blocks = git(target, ['worktree', 'list', '--porcelain']).stdout.split(/\r?\n\r?\n/);
   return blocks
     .map((block) => {
       const fields = Object.fromEntries(
@@ -115,31 +157,32 @@ export function worktreeList(cwd) {
     .filter(Boolean);
 }
 
-export function branchExists(cwd, name) {
-  return git(cwd, ['show-ref', '--verify', '--quiet', `refs/heads/${name}`], { allowFail: true }).ok;
+export function branchExists(target, name) {
+  return git(target, ['show-ref', '--verify', '--quiet', `refs/heads/${name}`], { allowFail: true }).ok;
 }
 
-export function addWorktree(cwd, worktreePath, branchName, base) {
+export function addWorktree(target, worktreePath, branchName, base) {
   if (!SAFE_BRANCH.test(branchName)) throw new GitError(`unsafe branch name ${JSON.stringify(branchName)}`);
   const args = base
     ? ['worktree', 'add', '-b', branchName, '--', worktreePath, base]
     : ['worktree', 'add', '--', worktreePath, branchName];
-  git(cwd, args);
+  git(target, args);
 }
 
 // Read once, when the Founder starts a mission and before any session exists; later checks use this URL.
-export function remoteUrl(cwd, name) {
-  const result = git(cwd, ['remote', 'get-url', '--', name], { allowFail: true });
+export function remoteUrl(target, name) {
+  const result = git(target, ['remote', 'get-url', '--', name], { allowFail: true });
   return result.ok ? result.stdout.trim() : null;
 }
 
-// The remote branch tip, read from a neutral directory: no repository-level config (remotes, URL
-// rewrites, upload-pack, credential helpers a session might have added) can take part.
+// The remote branch tip, read from this process's private directory with no repository around it:
+// no repository-level setting (remotes, URL rewrites, upload-pack, SSH command, credential helper)
+// a session might have written can take part.
 export function lsRemote(url, branchName) {
   if (!SAFE_BRANCH.test(branchName)) return { ok: false, sha: null, error: `unsafe branch name ${JSON.stringify(branchName)}` };
-  const neutral = os.tmpdir();
-  const env = { ...GIT_ENV, GIT_CEILING_DIRECTORIES: path.dirname(neutral) };
-  const result = runSync(['git', ...HARDENING, 'ls-remote', '--end-of-options', url, `refs/heads/${branchName}`], { cwd: neutral, env, timeoutMs: 60_000 });
+  const { cwd, env } = outsideAnyRepository();
+  const network = ['-c', 'protocol.ext.allow=never', ...hooksFlag()];
+  const result = runSync(['git', ...network, 'ls-remote', '--end-of-options', url, `refs/heads/${branchName}`], { cwd, env, timeoutMs: 60_000 });
   if (result.status !== 0 || result.error) {
     return { ok: false, sha: null, error: (result.stderr || result.error?.message || `exit ${result.status}`).trim().slice(0, 300) };
   }
@@ -148,10 +191,10 @@ export function lsRemote(url, branchName) {
   return { ok: true, sha, error: null };
 }
 
-export function commitAll(cwd, message, options) {
-  git(cwd, ['add', '-A'], options);
-  git(cwd, ['commit', '--quiet', '-m', message], options);
-  return head(cwd, options);
+export function commitAll(target, message) {
+  git(target, ['add', '-A']);
+  git(target, ['commit', '--quiet', '-m', message], { extra: signingPrograms() });
+  return head(target);
 }
 
-export const parentOf = (cwd, rev, options) => text(cwd, ['rev-parse', `${rev}^`], options);
+export const parentOf = (target, rev) => text(target, ['rev-parse', `${rev}^`]);

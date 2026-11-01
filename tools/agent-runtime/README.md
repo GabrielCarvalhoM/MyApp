@@ -9,7 +9,7 @@ Node 24, no dependencies. State is local and never tracked:
 
 ## Start a mission (one command)
 
-From a normal terminal (PowerShell), in any checkout that contains this tool:
+From a normal terminal (PowerShell), in the main checkout (or another checkout that contains this tool and in which no session of the mission works). The supervisor refuses to run from the mission worktree or a Codex job worktree, where a session could change the code that supervises it:
 
 ```sh
 node tools/agent-runtime/runtime.mjs run DOMAIN_COACHING_R7-B.2 --request C:\path\to\founder-request.md
@@ -95,11 +95,13 @@ Codex is an accelerator, never a dependency. For a `codex` unit the supervisor c
 
 ## Safety and recovery
 
-One executor works at a time; Codex never touches the mission worktree. Sessions can write the repository's config, hooks and workspace, so the supervisor trusts none of it:
+One executor works at a time; Codex never touches the mission worktree. Sessions can write the repository's config, attributes, hooks, a worktree's `.git` file and the session workspace, so the supervisor trusts none of it:
 
-- its control state is outside the worktree and the mission record is re-validated on every load (permission mode, model ids, branch, remote URL, limits); a state that contradicts the append-only event log cannot reopen a terminal mission; an accepted checkpoint that changed afterwards blocks the mission;
-- no Git value a session can set is ever passed as an argument: the remote is read with `git ls-remote --end-of-options <URL pinned at mission start>` from outside any repository, and every supervisor Git command switches off fsmonitor and hooks;
-- a unit that commits agent configuration later sessions would load (`.claude/settings.json`, `.claude/settings.local.json`, `.mcp.json`, `.codex/config.toml`) stops the mission at `FOUNDER_REQUIRED`.
+- its code must not live where a session of the mission can change it (it refuses to run from the mission or a job worktree);
+- its control state is outside the worktree; the mission record is re-validated on every load (permission mode, model ids, branch, remote URL, pinned git dir, limits), and so are the units in the state; a state that contradicts the append-only event log cannot reopen a terminal mission; an accepted checkpoint that changed afterwards blocks the mission;
+- every supervisor Git command reads no attributes (no filter drivers, no line-ending conversion), switches off fsmonitor, hooks (a never-created path in a private temporary directory), submodule recursion and automatic gc/maintenance, takes signing programs from the Founder's global config, and addresses the mission and job worktrees through the git dir pinned when they were created, never through their `.git` file;
+- no Git value a session can set is passed as an argument: the remote is read with `git ls-remote --end-of-options <URL pinned at mission start>` from that private directory, outside any repository;
+- agent configuration that later sessions would load (`.claude/settings.json`, `.claude/settings.local.json`, `.mcp.json`, `.codex/config.toml`) is compared on disk, committed or not, ignored or not, with the version the Founder last accepted, before every launch and at every acceptance; any change stops the mission at `FOUNDER_REQUIRED`, and `--resolve` records the reviewed version.
 
 The supervisor's own Git writes are limited to creating worktrees and committing Codex output on a job branch. It never merges, pushes, resets, rewrites history, deletes branches or touches credentials; pushing the mission branch is the sessions' normal Git work.
 
@@ -125,7 +127,8 @@ The event log records each transition compactly (time, mission, run, executor, f
 - The JSON shape of `claude -p --output-format json` and Codex's `--output-schema` handling were verified from the installed CLIs' help and zero-cost probes only, not by a paid call: correctness depends on the checkpoint file, Git and exit codes, and the metrics read the CLI output defensively.
 - One supervisor per mission, started by the Founder: two supervisors racing for the same stale lock could both start (review SEC-8, accepted condition; revisit before supervisors are ever started automatically).
 - Session results, Codex logs and captured logs can contain whatever a worker printed, secrets included, and every child process gets the Founder's environment. They stay local and gitignored and are never pushed; nothing cleans them up (review SEC-10, accepted condition).
-- Git config the session writes still affects the session's own Git commands (credential helpers, URL rewrites); that is within the session's own permission controls, not the supervisor's.
+- Git config the session writes still affects the session's own Git commands (credential helpers, URL rewrites); that is within the session's own permission controls, not the supervisor's. A process that can write outside its working directory could still edit the control state; that write goes through Claude Code's permission checks.
+- The submodule, gc and maintenance switches are defence in depth without a dedicated test; every other hardening rule above has a regression test with a positive control and is covered by the mutation probe.
 - Removing the mission worktree removes the session workspace; the control state and the audit log stay in the Git common directory.
 
 ## Tests
@@ -134,4 +137,4 @@ The event log records each transition compactly (time, mission, run, executor, f
 node --test "tools/agent-runtime/tests/*.test.mjs"
 ```
 
-Fake `claude` and `codex` executables (`tests/fakes/`) play scripted sessions against temporary repositories with a local bare remote: checkpoint validation, terminal stop, recovery, Codex delegation and fallback, dirty-worktree protection, bootstrap content, a simulated three-phase mission with a Codex handoff, and `security.test.mjs`, where each attack from the security review is first shown to work against an unprotected Git command and then shown not to work through the runtime. No model is called.
+Fake `claude` and `codex` executables (`tests/fakes/`) play scripted sessions against temporary repositories with a local bare remote: checkpoint validation, terminal stop, recovery, Codex delegation and fallback, dirty-worktree protection, bootstrap content, a simulated three-phase mission with a Codex handoff, and `security.test.mjs` with `hardening.test.mjs`, where each attack from the security review and its recheck is first shown to work against an unprotected Git command and then shown not to work through the runtime. No model is called. A mutation probe that disables each safety rule in turn is kept with the mission evidence (`audits/agent-execution-runtime-v1-2026-10-31/probes/`).

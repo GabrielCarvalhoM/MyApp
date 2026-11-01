@@ -3,6 +3,7 @@ import path from 'node:path';
 import * as git from './git.mjs';
 import { EFFORTS, WORK_KINDS, MODEL_ID } from './checkpoint.mjs';
 import { readJson, readJsonIfExists, writeJsonAtomic, appendJsonl, ensureDir, sha256File, nowIso } from './files.mjs';
+import { protectedSnapshot } from './protected.mjs';
 
 export const MISSION_SCHEMA = 'agent-runtime/mission@1';
 export const STATE_SCHEMA = 'agent-runtime/state@1';
@@ -65,6 +66,26 @@ export function samePath(a, b) {
   return process.platform === 'win32' ? x.toLowerCase() === y.toLowerCase() : x === y;
 }
 
+export function isInside(child, parent) {
+  const relative = path.relative(parent, child);
+  return relative !== '' && !relative.startsWith('..') && !path.isAbsolute(relative);
+}
+
+// The supervisor must not run code a session can change: not from the mission worktree, not from a
+// Codex job worktree. Run it from the main checkout or another checkout no session works in.
+export function untrustedRuntimeReason(runtimeRoot, mission) {
+  const { worktree, main_root: mainRootPath } = mission.repo;
+  if (samePath(runtimeRoot, worktree) || isInside(runtimeRoot, worktree)) {
+    return `this copy of the runtime (${runtimeRoot}) is inside the mission worktree, where sessions could change the code that supervises them; run it from the main checkout`;
+  }
+  const jobs = path.join(mainRootPath, '.claude', 'worktrees');
+  const first = isInside(runtimeRoot, jobs) ? path.relative(jobs, runtimeRoot).split(path.sep)[0] : '';
+  if (first.startsWith(`${mission.slug}--codex-`)) {
+    return `this copy of the runtime (${runtimeRoot}) is inside a Codex job worktree; run it from the main checkout`;
+  }
+  return null;
+}
+
 const positive = (value) => Number.isFinite(value) && value > 0;
 
 // The record is read again at every start: whatever happened to the file meanwhile, the supervisor
@@ -80,7 +101,9 @@ export function validateMissionRecord(mission, control) {
   if (!git.COMMIT_ID.test(repo.base_commit ?? '')) problems.push('repo.base_commit');
   if (typeof repo.remote_url !== 'string' || repo.remote_url === '' || repo.remote_url.startsWith('-') || /[\0-\x1f]/.test(repo.remote_url)) problems.push('repo.remote_url');
   if (!path.isAbsolute(repo.worktree ?? '')) problems.push('repo.worktree');
-  if (!path.isAbsolute(repo.main_root ?? '') || !samePath(repo.main_root, git.mainRootOf(path.dirname(path.dirname(control))))) problems.push('repo.main_root');
+  const common = path.dirname(path.dirname(control));
+  if (!path.isAbsolute(repo.main_root ?? '') || !samePath(repo.main_root, git.mainRootOf(common))) problems.push('repo.main_root');
+  if (!path.isAbsolute(repo.git_dir ?? '') || !(samePath(repo.git_dir, common) || isInside(repo.git_dir, path.join(common, 'worktrees')))) problems.push('repo.git_dir');
   if (!MODEL_ID.test(route.model ?? '') || !EFFORTS.includes(route.effort) || !WORK_KINDS.includes(route.work_kind)) problems.push('first_unit.route');
   if (!PERMISSION_MODES.includes(mission?.claude?.permission_mode)) problems.push('claude.permission_mode');
   const budget = mission?.claude?.max_budget_usd;
@@ -95,7 +118,8 @@ export function validateMissionRecord(mission, control) {
 
 export function openMission(control) {
   const mission = validateMissionRecord(readJson(path.join(control, 'mission.json')), control);
-  return { mission, worktree: mission.repo.worktree, paths: layout(mission.repo.worktree, control) };
+  const { worktree, git_dir: gitDir } = mission.repo;
+  return { mission, worktree, repo: git.repoAt(worktree, gitDir), paths: layout(worktree, control) };
 }
 
 export function listMissions(cwd) {
@@ -214,6 +238,8 @@ export function createMission(options) {
     throw new Error(`${STATE_DIR}/ is not ignored in ${worktreePath}: the base needs "/${STATE_DIR}/" in .gitignore`);
   }
   if (fs.existsSync(paths.mission)) throw new Error(`${paths.mission} already exists`);
+  // Pinned before any session exists: later commands never follow the worktree's own `.git` file.
+  mission.repo.git_dir = git.gitDirOf(worktreePath);
   ensureDir(control);
   ensureDir(paths.dir);
   for (const target of [path.join(control, 'request.md'), paths.request]) {
@@ -221,7 +247,7 @@ export function createMission(options) {
     if (sha256File(target) !== mission.request.sha256) throw new Error('the request file changed while it was being copied');
   }
   writeJsonAtomic(paths.mission, mission);
-  const state = initialState(mission);
+  const state = { ...initialState(mission), protected_snapshot: protectedSnapshot(worktreePath) };
   writeJsonAtomic(paths.state, state);
   appendEvent(paths, mission, {
     type: 'mission_created',
@@ -231,7 +257,7 @@ export function createMission(options) {
     remote_url: mission.repo.remote_url,
     request_sha256: mission.request.sha256,
   });
-  return { worktree: worktreePath, paths, mission, state };
+  return { worktree: worktreePath, repo: git.repoAt(worktreePath, mission.repo.git_dir), paths, mission, state };
 }
 
 export function initialState(mission) {
@@ -246,6 +272,7 @@ export function initialState(mission) {
     last_checkpoint_seq: null,
     last_checkpoint_head: mission.repo.base_commit,
     last_checkpoint_sha256: null,
+    protected_snapshot: null,
     next_unit: mission.first_unit,
     pending: { notices: [], job_result: null },
     current: null,

@@ -68,9 +68,9 @@ function copyIgnored(source, target) {
 }
 
 // Ignored files never appear in a Git diff, so they are compared by content before and after the job.
-function ignoredState(worktree, options) {
+function ignoredState(worktree, repo) {
   const state = new Map();
-  for (const file of git.ignoredFiles(worktree, options)) {
+  for (const file of git.ignoredFiles(repo)) {
     if (file === OUTPUT) continue;
     const full = path.join(worktree, file);
     const stat = fs.lstatSync(full, { throwIfNoEntry: false });
@@ -136,17 +136,17 @@ function renderHandoff(result, output) {
 // Runs a Codex job in a new worktree on a job branch cut from the mission HEAD and verifies the result
 // independently of Codex's report: changed paths, ignored material, the commit. It runs none of the
 // code Codex wrote: the acceptance commands are handed to the Claude unit that judges the job.
-export async function runCodexJob({ mission, paths, worktree, unit, runSeq, env, codexArgv, onSpawn }) {
+export async function runCodexJob({ mission, paths, repo, worktree, unit, runSeq, env, codexArgv, onSpawn }) {
   const job = jobDir(paths, unit, runSeq);
   const started = Date.now();
-  const base = git.head(worktree);
+  const base = git.head(repo);
   const { branch: jobBranch, worktree: jobWorktree } = codexJobNames(mission, unit, runSeq);
   const reasons = [];
-  git.addWorktree(worktree, jobWorktree, jobBranch, base);
+  git.addWorktree(repo, jobWorktree, jobBranch, base);
   // Pinned now: a `.git` file rewritten during the job cannot redirect the supervisor's later commands.
-  const pinned = { gitDir: git.gitDirOf(jobWorktree) };
+  const jobRepo = git.repoAt(jobWorktree, git.gitDirOf(jobWorktree));
   const dotGit = fs.readFileSync(path.join(jobWorktree, '.git'), 'utf8');
-  if (!git.isIgnored(jobWorktree, OUTPUT)) reasons.push(`${STATE_DIR}/ is not ignored in the job worktree`);
+  if (!git.isIgnored(jobRepo, OUTPUT)) reasons.push(`${STATE_DIR}/ is not ignored in the job worktree`);
   const skippedLinks = [];
   for (const entry of unit.job.copy_ignored ?? []) {
     const source = path.join(worktree, entry);
@@ -154,12 +154,12 @@ export async function runCodexJob({ mission, paths, worktree, unit, runSeq, env,
     const probe = fs.existsSync(source) && fs.statSync(source).isDirectory() ? `${entry.replace(/\/+$/, '')}/` : entry;
     if (isReserved(entry)) reasons.push(`copy_ignored ${entry} is a reserved path`);
     else if (!fs.existsSync(source)) reasons.push(`copy_ignored ${entry} does not exist in the mission worktree`);
-    else if (!git.isIgnored(worktree, probe)) reasons.push(`copy_ignored ${entry} is tracked material; only ignored local material is copied`);
+    else if (!git.isIgnored(repo, probe)) reasons.push(`copy_ignored ${entry} is tracked material; only ignored local material is copied`);
     else skippedLinks.push(...copyIgnored(source, path.join(jobWorktree, entry)).map((link) => relative(worktree, link)));
   }
   const outputFile = path.join(jobWorktree, OUTPUT);
   ensureDir(path.dirname(outputFile));
-  const ignoredBefore = ignoredState(jobWorktree, pinned);
+  const ignoredBefore = ignoredState(jobWorktree, jobRepo);
   const brief = renderCodexBrief({ mission, unit, runSeq });
   writeText(path.join(job.dir, 'brief.md'), brief);
   let run = { status: null, error: null };
@@ -174,15 +174,15 @@ export async function runCodexJob({ mission, paths, worktree, unit, runSeq, env,
     if (!reasons.length && output.value.status !== 'DONE') reasons.push(`codex reported ${output.value.status}`);
   }
   if (fs.readFileSync(path.join(jobWorktree, '.git'), 'utf8') !== dotGit) reasons.push("the job worktree's .git file was changed");
-  const changed = git.dirtyPaths(jobWorktree, pinned);
+  const changed = git.dirtyPaths(jobRepo);
   const outside = changed.filter((file) => isReserved(file) || !unit.job.allowed_paths.some((entry) => covers(entry, file)));
   if (outside.length) reasons.push(`changes outside allowed_paths or on reserved paths, left uncommitted in the job worktree: ${outside.slice(0, 10).join(', ')}`);
-  const tampered = changedIgnored(ignoredBefore, ignoredState(jobWorktree, pinned));
+  const tampered = changedIgnored(ignoredBefore, ignoredState(jobWorktree, jobRepo));
   if (tampered.length) reasons.push(`ignored material changed, which no Git diff shows: ${tampered.slice(0, 10).join(', ')}`);
   let commit = null;
   if (!reasons.length && changed.length) {
-    commit = git.commitAll(jobWorktree, `agent-runtime: codex job ${unit.id} for ${mission.mission_id}\n\nAgent-Runtime-Job: ${mission.mission_id}/${job.id}`, pinned);
-    if (git.parentOf(jobWorktree, commit, pinned) !== base) reasons.push('the job commit does not sit directly on the mission HEAD');
+    commit = git.commitAll(jobRepo, `agent-runtime: codex job ${unit.id} for ${mission.mission_id}\n\nAgent-Runtime-Job: ${mission.mission_id}/${job.id}`);
+    if (git.parentOf(jobRepo, commit) !== base) reasons.push('the job commit does not sit directly on the mission HEAD');
   }
   const claimed = Array.isArray(output.value?.files_changed) ? output.value.files_changed : null;
   const result = {

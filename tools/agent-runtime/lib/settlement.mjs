@@ -1,6 +1,5 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import * as git from './git.mjs';
 import { ensureDir, writeText, sha256File } from './files.mjs';
 import { checkpointPath, checkpointCopyPath } from './mission.mjs';
 import { validateCheckpointFile } from './coherence.mjs';
@@ -11,12 +10,6 @@ import { unexpectedDirty } from './preflight.mjs';
 
 // How a Claude run ends: its checkpoint is validated, corrected in the same session, accepted, or the
 // run fails and the mission retries, pauses or blocks. Functions of the supervisor whose run it is.
-
-// Project configuration that the next headless sessions would load: permissions, hooks, MCP servers.
-const PROTECTED_CONFIG = ['.claude/settings.json', '.claude/settings.local.json', '.mcp.json', '.codex/config.toml'];
-
-const protectedConfigChanges = (worktree, from, to) =>
-  git.changedFiles(worktree, from, to).filter((file) => PROTECTED_CONFIG.includes(file));
 const pad = (seq) => String(seq).padStart(4, '0');
 
 // checkpoint rejected → the same session receives the errors (--resume) → it corrects → validate again.
@@ -37,6 +30,7 @@ export async function settleCheckpoint(supervisor, firstRun) {
       mission: supervisor.mission,
       state: supervisor.state,
       previous: supervisor.lastCheckpoint(),
+      repo: supervisor.repo,
       worktree: supervisor.worktree,
       runSeq: current.run_seq,
       stateDir: supervisor.paths.dir,
@@ -70,7 +64,6 @@ export function acceptCheckpoint(supervisor, cp) {
     supervisor.event({ type: 'warning', message: `a checkpoint ${cp.checkpoint_seq} that no state recorded was moved to ${moved}` });
   }
   fs.copyFileSync(supervisor.paths.checkpointOut, accepted);
-  const protectedChanges = protectedConfigChanges(supervisor.worktree, s.last_checkpoint_head, cp.git.head_commit);
   supervisor.event({
     type: 'checkpoint_accepted',
     run_seq: runSeq,
@@ -98,10 +91,6 @@ export function acceptCheckpoint(supervisor, cp) {
     s.terminal_state = cp.mission_state;
     supervisor.transition('COMPLETED', `checkpoint ${cp.checkpoint_seq}: ${cp.mission_state}`);
     supervisor.event({ type: 'mission_terminal', terminal_state: cp.mission_state, checkpoint: cp.checkpoint_seq, commit: cp.git.head_commit });
-  } else if (protectedChanges.length) {
-    // Agent configuration (permissions, hooks, MCP servers) that later sessions would load is never
-    // adopted silently: the next session waits for the Founder.
-    supervisor.transition('FOUNDER_REQUIRED', `PROTECTED_CONFIG: this unit changed agent configuration that later sessions load (${protectedChanges.join(', ')}); review it, then run again with --resolve "<note>"`);
   } else if (cp.mission_state === 'FOUNDER_REQUIRED') {
     supervisor.transition('FOUNDER_REQUIRED', `${cp.founder_action_required.decision_needed} (${cp.founder_action_required.reason})`);
   } else if (cp.mission_state === 'BLOCKED') {
@@ -124,7 +113,7 @@ export function failRun(supervisor, reason, run) {
   const excerpt = resultExcerpt(run?.result);
   supervisor.event({ type: 'run_failed', run_seq: current.run_seq, executor: current.executor, unit_id: current.unit.id, reason, excerpt });
   supervisor.log(`✗ run ${current.run_seq} failed: ${reason}`);
-  const dirty = unexpectedDirty(supervisor.worktree, supervisor.state);
+  const dirty = unexpectedDirty(supervisor.repo, supervisor.state);
   if (dirty.length) {
     s.blocked_dirty = dirty;
     supervisor.block(`DIRTY_WORKTREE after failed run ${current.run_seq} (${reason}): ${dirty.slice(0, 10).join(', ')}; probable origin: that session. Nothing was deleted; inspect them, then run again with --resolve "<note>"`);

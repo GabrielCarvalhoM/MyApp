@@ -249,6 +249,13 @@ function checkStateRules(c, cp) {
   }
 }
 
+// The same rules for a unit read back from the supervisor's own state.
+export function unitErrors(unit) {
+  const c = new Checker();
+  checkUnit(c, unit, 'unit', false);
+  return c.errors;
+}
+
 function checkUnit(c, unit, where, claudeOnly) {
   if (!c.object(unit, where)) return;
   c.text(unit.id, `${where}.id`);

@@ -79,7 +79,7 @@ test('a checkpoint that names another branch is rejected even when the worktree 
   const found = startMission(repo);
   sh(found.worktree, 'checkout', '--quiet', '-b', 'side');
   const sessionState = { ...found.state, status: 'RUNNING', run_seq: 1, current: { run_seq: 1, executor: 'claude', unit: found.mission.first_unit } };
-  const ctx = { mission: found.mission, state: sessionState, previous: null, worktree: found.worktree, runSeq: 1, stateDir: found.paths.dir };
+  const ctx = { mission: found.mission, state: sessionState, previous: null, repo: found.repo, worktree: found.worktree, runSeq: 1, stateDir: found.paths.dir };
   const cp = { ...buildTemplate(ctx), ...running() };
   const file = path.join(found.paths.dir, 'checkpoint.next.json');
   writeJsonAtomic(file, cp);

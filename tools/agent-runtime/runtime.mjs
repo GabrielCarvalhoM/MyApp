@@ -102,7 +102,7 @@ function dryRun(found, options) {
   const state = found ? readJson(found.paths.state) : initialState(mission);
   const previous = found && state.last_checkpoint_seq ? readJson(checkpointPath(found.paths, state.last_checkpoint_seq)) : null;
   const unit = state.next_unit;
-  const head = found ? git.head(found.worktree) : mission.repo.base_commit;
+  const head = found ? git.head(found.repo) : mission.repo.base_commit;
   const report = {
     mission_id: mission.mission_id,
     would_create: !found,
@@ -164,11 +164,11 @@ function sessionContext() {
     found = listMissions(process.cwd()).find((entry) => samePath(entry.worktree, top));
     if (!found) throw new Error(`no supervised mission runs in ${top}`);
   }
-  const { mission, paths, worktree } = found;
+  const { mission, paths, worktree, repo } = found;
   const state = readJson(paths.state);
   if (state.current?.executor !== 'claude') throw new Error(`no supervised Claude run is in progress (status ${state.status})`);
   const previous = state.last_checkpoint_seq ? readJson(checkpointPath(paths, state.last_checkpoint_seq)) : null;
-  return { mission, state, previous, worktree, paths, runSeq: state.current.run_seq, stateDir: paths.dir };
+  return { mission, state, previous, repo, worktree, paths, runSeq: state.current.run_seq, stateDir: paths.dir };
 }
 
 function cmdCheckpoint(args) {

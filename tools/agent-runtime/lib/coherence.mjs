@@ -18,7 +18,7 @@ const verdict = (checkpoint, errors) => ({ ok: errors.length === 0, errors, chec
 
 // Deterministic validation of a checkpoint file against the mission, the supervisor state, the
 // repository and the previous valid checkpoint.
-// ctx = { mission, state, previous, worktree, runSeq, stateDir }
+// ctx = { mission, state, previous, repo (pinned handle), worktree (for files), runSeq, stateDir }
 export function validateCheckpointFile(file, ctx) {
   if (!fs.existsSync(file)) return verdict(null, [`checkpoint file not found: ${file}`]);
   const raw = fs.readFileSync(file);
@@ -63,30 +63,30 @@ function identityErrors(cp, { mission, state, previous, runSeq }) {
   return errors;
 }
 
-function repositoryErrors(cp, { mission, state, worktree }) {
+function repositoryErrors(cp, { mission, state, repo }) {
   const errors = [];
-  const actualBranch = git.branch(worktree);
+  const actualBranch = git.branch(repo);
   if (actualBranch !== cp.git.branch) {
     errors.push(`git.branch is "${cp.git.branch}" but the worktree is on ${actualBranch ? `"${actualBranch}"` : 'a detached HEAD'}`);
   }
-  const head = git.head(worktree);
+  const head = git.head(repo);
   if (cp.git.head_commit !== head) {
     errors.push(`git.head_commit ${cp.git.head_commit} is not HEAD ${head}: commit first, then run "checkpoint template" to refresh the Git facts`);
   }
-  const dirty = git.dirtyPaths(worktree);
+  const dirty = git.dirtyPaths(repo);
   if (dirty.length) errors.push(`working tree is not clean (commit every change of this unit): ${listed(dirty)}`);
-  if (!git.isAncestor(worktree, mission.repo.base_commit, head)) errors.push('HEAD does not descend from the mission baseline');
+  if (!git.isAncestor(repo, mission.repo.base_commit, head)) errors.push('HEAD does not descend from the mission baseline');
   const since = state.last_checkpoint_head ?? mission.repo.base_commit;
-  if (git.isAncestor(worktree, since, head)) {
-    errors.push(...coverageErrors(cp.files_changed, git.changedFiles(worktree, since, head)));
+  if (git.isAncestor(repo, since, head)) {
+    errors.push(...coverageErrors(cp.files_changed, git.changedFiles(repo, since, head)));
   } else {
     errors.push(`HEAD does not descend from the last valid checkpoint commit ${since}: history must not be rewritten`);
   }
-  errors.push(...pushErrors(cp, mission, worktree, head));
+  errors.push(...pushErrors(cp, mission, head));
   return errors;
 }
 
-function pushErrors(cp, mission, worktree, head) {
+function pushErrors(cp, mission, head) {
   if (!cp.git.pushed && !isFinal(cp.mission_state)) return [];
   if (!cp.git.pushed) return [`git.pushed must be true for ${cp.mission_state}: push the branch, then validate again`];
   const remote = git.lsRemote(mission.repo.remote_url, cp.git.branch);
@@ -104,11 +104,11 @@ export function coverageErrors(declared, actual) {
   return errors;
 }
 
-function referenceErrors(cp, { worktree, stateDir }) {
+function referenceErrors(cp, { repo, worktree, stateDir }) {
   const errors = [];
   const requireTracked = (ref, where) => {
     const rel = stripAnchor(ref);
-    if (git.trackedAtHead(worktree, rel)) return true;
+    if (git.trackedAtHead(repo, rel)) return true;
     errors.push(`${where}: "${rel}" is not tracked at HEAD`);
     return false;
   };

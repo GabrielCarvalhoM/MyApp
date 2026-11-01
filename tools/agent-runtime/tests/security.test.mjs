@@ -28,6 +28,8 @@ test('the control state lives outside the session worktree and an altered record
   await assert.rejects(supervise(found, env), /is invalid or was altered \(claude\.permission_mode\)/);
   writeJsonAtomic(found.paths.mission, { ...record, repo: { ...record.repo, remote_url: '--upload-pack=touch pwned' } });
   await assert.rejects(supervise(found, env), /is invalid or was altered \(repo\.remote_url\)/);
+  writeJsonAtomic(found.paths.mission, { ...record, repo: { ...record.repo, git_dir: path.join(found.worktree, 'decoy.git') } });
+  await assert.rejects(supervise(found, env), /is invalid or was altered \(repo\.git_dir\)/);
   assert.equal(calls(claude).length, 0);
 });
 

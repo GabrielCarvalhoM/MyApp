@@ -1,9 +1,12 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { randomUUID } from 'node:crypto';
 import * as git from './git.mjs';
 import { readJson, readJsonl, writeText, ensureDir, nowIso, sha256File } from './files.mjs';
-import { openMission, checkpointPath, saveState, appendEvent, acquireLock, pidAlive } from './mission.mjs';
+import { openMission, checkpointPath, saveState, appendEvent, acquireLock, pidAlive, untrustedRuntimeReason } from './mission.mjs';
+import { unitErrors } from './checkpoint.mjs';
+import { protectedSnapshot } from './protected.mjs';
 import { renderBootstrap, bootstrapListedPaths } from './bootstrap.mjs';
 import { chooseExecutor } from './routing.mjs';
 import { preflight } from './preflight.mjs';
@@ -11,6 +14,8 @@ import { runClaude, claudeMetrics, detectCodex } from './executors.mjs';
 import { runCodexUnit } from './delegation.mjs';
 import { settleCheckpoint } from './settlement.mjs';
 
+// The code of this supervisor: it must not sit where a session of its mission can change it.
+const RUNTIME_ROOT = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
 const STATES = ['CREATED', 'RUNNING', 'CHECKPOINTING', 'READY_FOR_FRESH_SESSION', 'PAUSED', 'BLOCKED', 'FOUNDER_REQUIRED', 'COMPLETED'];
 const STOP_STATES = ['COMPLETED', 'BLOCKED', 'FOUNDER_REQUIRED', 'PAUSED'];
 const MAX_NOTICES = 6;
@@ -20,6 +25,10 @@ const minutes = (ms) => `${Math.round((ms ?? 0) / 60_000)} min`;
 // The audit log is append-only: a mission it records as terminal stays terminal, whatever state.json says.
 function assertConsistent(state, events) {
   if (!STATES.includes(state.status)) throw new Error(`state.json has an unknown status ${JSON.stringify(state.status)}`);
+  for (const [where, unit] of [['next_unit', state.next_unit], ['current.unit', state.current?.unit]]) {
+    const errors = unit ? unitErrors(unit) : [];
+    if (errors.length) throw new Error(`state.json ${where} is invalid (${errors.slice(0, 3).join('; ')}); the supervisor will not run it`);
+  }
   const terminal = events.find((event) => event.type === 'mission_terminal');
   if (terminal && (state.status !== 'COMPLETED' || state.terminal_state !== terminal.terminal_state)) {
     throw new Error(`state.json contradicts the audit log: the mission ended ${terminal.terminal_state} at checkpoint ${terminal.checkpoint}, and a terminal mission is never reopened`);
@@ -31,8 +40,10 @@ function assertConsistent(state, events) {
 // (`control`, inside the Git common directory) is outside every worktree a session works in.
 export class Supervisor {
   constructor({ control, env = process.env, log = () => {} }) {
-    const { mission, worktree, paths } = openMission(control);
-    Object.assign(this, { mission, worktree, paths, env, log });
+    const { mission, worktree, repo, paths } = openMission(control);
+    const untrusted = untrustedRuntimeReason(RUNTIME_ROOT, mission);
+    if (untrusted) throw new Error(untrusted);
+    Object.assign(this, { mission, worktree, repo, paths, env, log });
     this.state = readJson(paths.state);
     assertConsistent(this.state, readJsonl(paths.events));
     this.codex = null; // availability, detected once per supervisor run
@@ -48,7 +59,7 @@ export class Supervisor {
 
   headForLog() {
     try {
-      return git.head(this.worktree);
+      return git.head(this.repo);
     } catch {
       return null; // the audit line is still written; a broken repository surfaces in the preflight
     }
@@ -170,6 +181,8 @@ export class Supervisor {
       throw new Error(`--resolve applies to a BLOCKED or FOUNDER_REQUIRED mission; this one is ${s.status}${terminal}`);
     }
     this.notice(`FOUNDER RESOLUTION (${nowIso()}), authoritative at this point: ${note.trim()}`);
+    // The Founder has seen the agent configuration as it is now.
+    s.protected_snapshot = protectedSnapshot(this.worktree);
     if (this.checkpointTampering()) {
       const file = checkpointPath(this.paths, s.last_checkpoint_seq);
       if (!fs.existsSync(file)) throw new Error(`checkpoint ${s.last_checkpoint_seq} is missing; restore it before resolving`);
@@ -191,11 +204,16 @@ export class Supervisor {
     const tampered = this.checkpointTampering();
     if (tampered) return this.block(tampered);
     const result = preflight({
+      repo: this.repo,
       worktree: this.worktree,
       mission: this.mission,
       state: this.state,
       onWarning: (message) => this.event({ type: 'warning', message }),
     });
+    if (result.founder) {
+      this.transition('FOUNDER_REQUIRED', result.founder);
+      return false;
+    }
     if (result.block) {
       if (result.dirty) this.state.blocked_dirty = result.dirty;
       return this.block(result.block);
@@ -274,7 +292,7 @@ export class Supervisor {
       this.event({ type: 'warning', message: `an unvalidated checkpoint was left from an earlier run; moved to ${moved}` });
     }
     const previous = this.lastCheckpoint();
-    const head = git.head(this.worktree);
+    const head = git.head(this.repo);
     const prompt = renderBootstrap({ mission: this.mission, state: s, unit, previous, runSeq, head, worktree: this.worktree });
     const files = this.sessionFiles(runSeq, 0);
     writeText(files.prompt, prompt);

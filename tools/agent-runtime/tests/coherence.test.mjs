@@ -11,7 +11,7 @@ import { makeRepo, cleanup, startMission, sh, write, ROUTE, validCheckpoint } fr
 function session(repo) {
   const found = startMission(repo);
   const state = { ...found.state, status: 'RUNNING', run_seq: 1, current: { run_seq: 1, executor: 'claude', unit: found.mission.first_unit } };
-  return { found, ctx: { mission: found.mission, state, previous: null, worktree: found.worktree, runSeq: 1, stateDir: found.paths.dir } };
+  return { found, ctx: { mission: found.mission, state, previous: null, repo: found.repo, worktree: found.worktree, runSeq: 1, stateDir: found.paths.dir } };
 }
 
 function commitFile(worktree, rel, content) {

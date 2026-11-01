@@ -17,6 +17,7 @@ export async function runCodexUnit(supervisor, unit) {
     result = await runCodexJob({
       mission: supervisor.mission,
       paths: supervisor.paths,
+      repo: supervisor.repo,
       worktree: supervisor.worktree,
       unit,
       runSeq,
