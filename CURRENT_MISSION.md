@@ -912,3 +912,17 @@ The direct Founder request closes **READY**. Every gate G1–G9 holds, with one 
 - **Next:** no mission is opened. Any next runtime mission needs its own Founder authorization and starts from R7B2-FREEZE-1. R7-C is not authorized.
 
 [Disposition](audits/domain-coaching-r7-b2-2026-10-31/FINAL_DISPOSITION.json) · [Handoff](CoachingCore/r7/b2/R7B2_CLOSURE_HANDOFF.md)
+
+<!-- DOMAIN_COACHING_R7C: DCR7C-20261101-phase1-r1 -->
+## DOMAIN_COACHING_R7-C — Longitudinal Coaching — Phase 1 (investigation) complete / 2026-11-01
+
+A direct [Founder request](audits/domain-coaching-r7-c-2026-11-01/FOUNDER_REQUEST_PHASE1.md) authorizes **R7-C Phase 1 only**: investigation, context reconstruction, exact scope and closure plan. Branch `claude/domain-coaching-r7-c`, in an isolated worktree from the R7-B.2 closure `baa2cb1`; nothing merged or pushed.
+
+- **States:** R7C_PHASE1_STATUS = COMPLETE. IMPLEMENTATION_AUTHORIZED = NO. V1_COACHING_AUTHORITY_READY = NO.
+- **Baseline:** R7B2-FREEZE-1 (`1a1c728`), byte-identical at `baa2cb1` for runtime, tests, policy and catalog.
+- **Meaning:** R7-C is Longitudinal Coaching, the third phase named in the R7-A Founder request. Its scope is derived from the AEC/AEOS learning and cadence contracts, the R6-PARTIAL-NOISY-LEARNING envelope with SSCTR R18, and the B0 routing.
+- **Real gaps:**
+  - R7C-G01: unreviewed or unreported weeks. C15 still reproduces on R7B2-FREEZE-1, read-only; the strength side of R18 does not.
+  - R7C-G02: the Athlete Model changes no realistic decision (CQ-R6-14).
+- **Unchanged:** no runtime, test, policy, catalog, freeze, queue (230), `product/` or `canon/` change. R7-A, B0, R7-B, R7-B.1 and R7-B.2 are not reopened.
+- **Next:** R7-C Phase 2 needs its own Founder authorization and two decisions: who owns R18/C15/CQ-R6-04, and how deep CQ-R6-14 goes. [Checkpoint](audits/domain-coaching-r7-c-2026-11-01/PHASE1_CHECKPOINT.md).
