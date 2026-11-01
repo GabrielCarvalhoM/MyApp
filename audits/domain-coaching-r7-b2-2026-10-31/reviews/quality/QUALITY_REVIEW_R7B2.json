@@ -1,0 +1,214 @@
+{
+ "review": "R7B2-QUALITY-r1",
+ "gate": "R7B2_QUALITY_GATE (contract R7B2-CONTRACT-r1 §5, §7 G4, G8)",
+ "date": "2026-11-01",
+ "request": "audits/domain-coaching-r7-b2-2026-10-31/reviews/quality/REVIEW_REQUEST.md (committed at 51e7c77)",
+ "judge": {
+  "role": "quality-reliability-engineer",
+  "route": "claude-opus-5-5 / xhigh, mode productization, <task-route> envelope",
+  "instance": "fresh, session 6; not the R7-B.2 Engineering judge (R7B2-ENG-r1), not the author of the fix or its evidence, not an R7-B.1 judge, not the interrupted run-5 instance",
+  "scope": "routing and differential completeness only; clinical content stays CLINICAL_HUMAN_REQUIRED; sports-science adequacy is the SSCTR's",
+  "fixedNothing": true
+ },
+ "freezeVerified": {
+  "freeze": "R7B2-FREEZE-1",
+  "record": "CoachingCore/r7/b2/RUNTIME_FREEZE_R7B2_1.json",
+  "recordSha256": "8d51def566f2ce8f140cb3dcf22d62d0699be73571d5d931d8f5e2e50fb59fee",
+  "freezeCommit": "1a1c7286adc8b08d16f97dea86f4973fe33e5a95",
+  "sourceDigest": "57512322331f7a0295525775da8bc86da5e95fe0f2085404637498e1f8f7ecbd",
+  "manifestDigest": "f9c5bd5a1bb8bd6cf2a1df3298b6b9bdc62d7f951687c9e7d756889fa753ceca",
+  "files": 122,
+  "tests": 799,
+  "worktreeHead": "9269164",
+  "verifierBefore": "node CoachingCore/scripts/verify-r7b2.mjs --tests: 35/35 PASS (before any probe)",
+  "verifierAfterProbes": "node CoachingCore/scripts/verify-r7b2.mjs: 34/34 PASS (the 35th check is the --tests run); record sha256 unchanged",
+  "verifierAfterDeliverables": "node CoachingCore/scripts/verify-r7b2.mjs: 34/34 PASS after both review files were written; record sha256 unchanged; no tracked file modified"
+ },
+ "predecessor": {
+  "freeze": "R7B1-FREEZE-2",
+  "commit": "146ebb80c51d302ef3518a61c1cab208c7778632",
+  "extraction": "git archive 146ebb8 (full tree) into %TEMP%/r7b2-quality-r1-s6-pred (created for this review, outside the repository), CoachingCore/node_modules copied in",
+  "check": "114/114 files of CoachingCore/r7/b1/RUNTIME_FREEZE_R7B1_2.json (sha256 e75a2799ae1b9387e7c8831646cb877967262c19aa11c18c8d54c2a7b94f27d5) match; src/r6-adaptation.mjs sha256 f2a4f4f7..., the baseline blob",
+  "cleanup": "the directory was deleted after the probes; no other temporary directory was used or touched"
+ },
+ "reproductionOfQE_R7B2_01": {
+  "method": "verbatim copies in probes/r1/ (dual.mjs, s5-factual-proposal.mjs, s5-downstream.mjs, sha256 equal to reviews/engineering/probes/), run on NOW = worktree and PRED = the extracted tree",
+  "result": "out/s5-factual-proposal.json and out/s5-downstream.json are identical to the Engineering outputs in every field except the run timestamp: S5R2 and S5R8 FREEZE-2 ASK with proposal 439a61ba5e87c7206a79460c79594d857d33ddd746b52f8157aa37b9d0951240 against R7-B.2 CLINICAL_HUMAN_REQUIRED with no proposal; weeks 5-11 differ after the step and after the week-5 review"
+ },
+ "construction": {
+  "changedDecisions": "By the bytes (src/r6-adaptation.mjs:368-372), R7-B.2 differs from FREEZE-2 only when clinicalRoute(kind,review) is not null: with it null, handled and decision0 are the FREEZE-2 expressions. With it not null, FREEZE-2 returned one of: the handler's own route (identical; withFactualReplan returns a clinical decision unchanged), the late-evidence question (staleReturn), the factual re-plan's own question (factual.ask), the report-identity question (returnAfterPause 'again' ASK), or, for a review with block choices, the block-choice or unrecognised-choice question in place of the first two. The 'again' KEEP branch with clinical facts is unreachable (every REESTABLISH decision records interruption.inputHash = hash of facts that passed the screen; no other runtime path writes REESTABLISH).",
+  "proposalSources": "withFactualReplan attaches f.proposal and f.disclosures to every one of those questions except factual.ask. The canonical factual state f has exactly two proposal sources (line 357): factualReplan (a correction, retraction or new quarantine that moved this week's PlanningView) and graduationWithdrawal (a correction that disqualifies a graduation's qualifying week; state-derived, independent of the PlanningView anchor). U3 and R7B2-ENG-r1 exercised only the first.",
+  "exceptionPaths": "FREEZE-2 HOLD from an exception in the skipped path (staleReturn, the 'again' lookup) on a clinical-signal review: not observed in 588 signal rows (every FREEZE-2 signal row is ASK) and not constructed; impossibility not claimed. The reverse (R7-B.2 screening earlier and throwing) is reachable only with a non-JSON value: group F."
+ },
+ "enumeration": {
+  "probe": "probes/r1/q1-enum.mjs -> out/q1-enum.json; breakdown probes/r1/q1-breakdown.mjs -> out/q1-breakdown.json",
+  "rowsPerRuntime": 848,
+  "signalRows": 588,
+  "controlRows": 260,
+  "byClass": {"SAME": 258, "S5_I (nonclinical question, no proposal either side -> CLINICAL)": 356, "QE01 (question carrying the factual re-plan -> CLINICAL, no proposal)": 140, "QE01_WITH_DISCLOSURE (question carrying the graduation-withdrawal re-plan and its disclosure -> CLINICAL, no proposal, no disclosure)": 92, "OTHER": 2},
+  "groups": {
+   "A": {"what": "same-id resend x factual re-plan, week 5 (QE-R7B2-01 setup); 5 clinical facts (illness text, INJURY category, clinicalReason true, 'yes', alias kind RETURN) x corrections (none, week-4 strength adverse, week-4 run adverse) x 8 choice shapes", "rows": 120, "S5_I": 40, "QE01": 80, "controls": {"rows": 48, "SAME": 48}},
+   "A2": {"what": "the same one week earlier (week 4, corrections of week 3) x 4 choice shapes", "rows": 60, "S5_I": 20, "QE01": 40, "controls": {"rows": 24, "SAME": 24}},
+   "A3": {"what": "the same in the re-entry week (week 3, corrections of week 2)", "rows": 40, "S5_I": 40, "controls": {"rows": 16, "SAME": 16}},
+   "B": {"what": "same-id resend x graduation withdrawal, GRAD fixture re-entry week (week 4; corrections of the week-3 long run: adverse, 10 minutes)", "rows": 60, "S5_I": 20, "QE01_WITH_DISCLOSURE": 40, "controls": {"rows": 24, "SAME": 24}},
+   "B2": {"what": "the same the week after (week 5; corrections of the week-3 long run -> withdrawal, of the week-4 long run -> factual re-plan)", "rows": 40, "QE01_WITH_DISCLOSURE": 20, "QE01": 20, "controls": {"rows": 16, "SAME": 16}},
+   "C1": {"what": "late pre-break evidence x factual re-plan, re-entry this week (fromWeek = w); 4 substitution signals x 4 observation sets x 4 choice shapes", "rows": 64, "S5_I": 64, "controls": {"rows": 32, "SAME": 32}},
+   "C2": {"what": "the same in the report week of a return reported with one session left (fromWeek = w+1, a PlanningView the return does not anchor)", "rows": 64, "S5_I": 64, "controls": {"rows": 32, "SAME": 32}},
+   "C3": {"what": "the same in that return's re-entry week", "rows": 64, "S5_I": 64, "controls": {"rows": 32, "SAME": 32}},
+   "D": {"what": "late pre-break evidence x graduation withdrawal (strength program graduating at week 4; return week 5; late week-4 strength report + correction of the week-4 long run)", "rows": 48, "S5_I": 16, "QE01_WITH_DISCLOSURE": 32, "controls": {"rows": 24, "SAME": 24}},
+   "D-2step": {"what": "K6b form: late report + correction without a signal (applied), then the pain alone", "rows": 5, "SAME": 1, "S5_I": 4},
+   "E": {"what": "factual re-plan's own question (CAND-01 forged state as U2 built it) x 4 signals and 2 clinical returns x 4 choice shapes", "rows": 24, "S5_I": 24, "controls": {"rows": 8, "SAME": 8}},
+   "F": {"what": "a non-JSON interruption reason (object whose toString throws) in the same-id state, in the CAND-01 state, and on a fresh id (control)", "rows": 3, "SAME": 1, "OTHER": 2}
+  },
+  "exitBySource (signal rows)": {
+   "reportIdentity, no proposal": {"rows": 120, "class": "S5_I"},
+   "reportIdentity, factualReplan proposal": {"rows": 140, "class": "QE01"},
+   "reportIdentity, graduationWithdrawal proposal": {"rows": 60, "class": "QE01_WITH_DISCLOSURE"},
+   "lateEvidence, no proposal": {"rows": 212, "class": "S5_I", "note": "includes 144 rows with corrections: no factualReplan proposal on this exit in any of C1-C3, consistent with R7B2-ENG-r1"},
+   "lateEvidence, graduationWithdrawal proposal": {"rows": 32, "class": "QE01_WITH_DISCLOSURE"},
+   "factualAsk (CAND-01)": {"rows": 24, "class": "S5_I", "note": "factual.ask carries no proposal and outranks the choice questions on FREEZE-2"}
+  },
+  "qe01FamilyByChoice": {"none": 48, "empty": 10, "ladder": 48, "declined": 48, "accepted": 10, "mainChange": 10, "unrecognised": 48, "nullEntry": 10, "reading": "every choice shape carries the proposal on FREEZE-2: none/empty through the report-identity or late-evidence question, ladder/declined/accepted/mainChange through the block-choice question, unrecognised/nullEntry through the unrecognised-choice question"},
+  "invariants": {"ledgerDiffers": 0, "proposalContentDiffers": 0, "r7b2ProposalOnChangedRow": 0, "freeze2NotAskOnSignalRow": 0, "signalRowNotClinicalOnR7B2": 0, "changedRowPendingNotClinicalOnR7B2": 0, "controlsChanged": 0, "changedWithoutClinicalSignal": "2 (group F, non-JSON input only)"},
+  "planInForceAfterApply": {
+   "reading": "R7-B.2 proposes nothing on any changed row, so the plan in force after its route is the plan before the review. In every QE01-family row that plan is above FREEZE-2's applied re-plan; in every S5_I row nothing differs. The same holds on BOTH runtimes for the handler's own route with the same correction (controls XA, XB, XD in q3-after-route): it is the existing rule 'a clinical route proposes nothing' (QE-R7B1-01, QE-R7ADA-01), now reached in more states.",
+   "QE01 A": "10 sessions above (strength sets 3 vs 2 after the adverse correction), 2 below",
+   "QE01 A2": "up to 23 above, 12 below",
+   "QE01 B2 (factual)": "11 above",
+   "QE01_WITH_DISCLOSURE B, B2": "25 above, 10 of them a THRESHOLD run kept where FREEZE-2 planned EASY",
+   "QE01_WITH_DISCLOSURE D": "19 above, 9 of them a THRESHOLD run kept where FREEZE-2 planned EASY"
+  }
+ },
+ "answers": {
+  "Q1": {
+   "question": "G4 completeness: enumerate the combinations in which the FREEZE-2 output carries a proposal; add the QE-R7B2-01 class and any other class; is the differential complete once those are added?",
+   "answer": "Not with the QE-R7B2-01 class alone. Complete once this review's additions are counted.",
+   "evidence": [
+    "QE-R7B2-01 class (same-id resend x factual re-plan x choice), run on both runtimes: all 8 choice shapes (none, empty, ladder, declined, accepted, main change, unrecognised, null entry), 5 clinical-fact forms, strength and run corrections, weeks 4 and 5: 140 QE01 rows (A, A2, B2). R7B2-ENG-r1 had none and ladder.",
+    "Missing class 1: same-id resend x graduation withdrawal (B, B2): 60 rows; FREEZE-2's question carries the withdrawal re-plan and RUN_QUALITY_GRADUATION_WITHDRAWN.",
+    "Missing class 2: late-evidence question x graduation withdrawal (D): 32 rows. This is the QE-R7B2-01 shape on the late-evidence path, which R7B2-ENG-r1 and the U4 record list as 'not found'.",
+    "Missing class 3 (no clinical signal, non-JSON input): F, 2 rows, ASK -> HOLD.",
+    "No proposal on the late-evidence exit from factualReplan (192 rows over three return timings), none on factual.ask (24 rows), none on the re-entry-week report-identity exit (40 rows).",
+    "Closure argument: 4 class-(b) exits x 2 proposal sources x every choice shape are covered; the KEEP branch is unreachable; no FREEZE-2 HOLD on a signal row."
+   ]
+  },
+  "Q2": {
+   "question": "Is any changed decision anything other than (i) a nonclinical question -> CLINICAL with no proposal on either side, or (ii) the QE-R7B2-01 shape?",
+   "answer": "Yes, two kinds, neither a clinical-screen-first bypass and neither a runtime defect of the clinical routing.",
+   "evidence": [
+    "92 rows of the graduation-withdrawal family (QR7B2-01): the (ii) mechanism (withFactualReplan, REPLAN_FROM_EVIDENCE) from the other source. They also drop the RUN_QUALITY_GRADUATION_WITHDRAWN disclosure and keep THRESHOLD runs in the plan in force; 32 of them are on the late-evidence exit.",
+    "2 rows without a JSON-expressible clinical signal (QR7B2-03): a non-JSON reason now gives HOLD where FREEZE-2 asked.",
+    "Reviews without a clinical signal: 0 changed among 258 JSON controls.",
+    "Proposal content: 0 rows where both runtimes propose and the proposals differ.",
+    "actualLedger: 0 rows differ.",
+    "Pending state: on every changed signal row it goes from ASK to CLINICAL_HUMAN_REQUIRED, which is the route itself. The carried state then binds as on FREEZE-2 (q3-after-route: with the R7-B.2 reference state, the next review stays CLINICAL; without it, it does not).",
+    "Disclosures: dropped only together with the factual proposal (92 rows).",
+    "Dose: R7-B.2 proposes no dose on any changed row. The plan in force is above FREEZE-2's applied re-plan on all 232 QE01-family rows, as for the handler route with the same correction on both runtimes."
+   ]
+  },
+  "Q3": {
+   "question": "Is the clinical route that replaces the question-with-re-plan truthful, and does a later review without a clinical signal or pending clinical state pick up the recorded correction?",
+   "answer": "The route is truthful. Whether the correction is picked up depends on its source: a graduation withdrawal is re-derived by the very next review; a factual re-plan is never re-derived mid-week and is read only from the next week's start. The latter is pre-existing, identical on both runtimes for the handler's route (QR7B2-02).",
+   "evidence": [
+    "T (S5R2 on R7-B.2): status/action CLINICAL_HUMAN_REQUIRED; reason byte-identical to the handler's route for the same report under a new id; proposal, horizons, question null; disclosures, counterfactuals, missingInputs empty; planValidity REQUIRES_RECONCILIATION; pending CLINICAL_HUMAN_REQUIRED; referenceState.programHash = the source program. Only pending and referenceState differ from the new-id route (the event id). The handler's scope/screen is not an output field on either runtime (pre-existing).",
+    "Correction recorded: 2 correction rows and 2 superseded originals in actualLedger (2 expected).",
+    "PA (factual source): the next mid-week review without a reference state is KEEP with no proposal, and the plan in force differs from the re-plan; with the reference state it stays CLINICAL (sticky). The historical state reads the correction. Week-6 start and prescriptions differ from the same history without the correction, so the correction is read at the week boundary. XA (pain + the same correction): the next review is also KEEP on both runtimes, so the mid-week loss is pre-existing.",
+    "PB (graduation, same-id exit): after the route, the graduation and 10 THRESHOLD sessions remain. The next review (no signal, no reference state) is MODIFY REPLAN_FROM_EVIDENCE + RUN_QUALITY_GRADUATION_WITHDRAWN, leaving 0 quality sessions ahead; with the reference state it stays CLINICAL. XB (new-id route) is identical on both runtimes.",
+    "PD (graduation, late-evidence exit): after the route, 9 quality sessions remain. The next review gives the late-evidence question carrying the withdrawal and its disclosure, leaving 0 ahead. The late report and the correction stay recorded. XD is identical on both runtimes.",
+    "Classification: truthful output; no correction lost as a fact. The graduation withdrawal is deferred by one review. The factual re-plan of the week's remaining sessions is skipped, not deferred (pre-existing). U4's framing 'not re-planned from the correction until the human route resolves' is therefore inaccurate for the factual source."
+   ]
+  },
+  "Q4": {
+   "question": "Are QE-R7B2-01..04 and R7B2-OBS-01 recorded truthfully with origin and owner; is anything the U3 note or routing.conditionHolds claims now wrong beyond what U4 records as superseded?",
+   "answer": "The records are truthful as far as their evidence went. Three statements are now incomplete or wrong (QR7B2-04).",
+   "evidence": [
+    "QE-R7B2-01..04: in the U4 table with severity, origin, bypass column and disposition. QE-R7B2-02..04 name their owners; QE-R7B2-01's owner (Chief / U4) is stated in R7B2-ENG-r1's findings table, not in U4's.",
+    "R7B2-OBS-01: U4 cites it only by reference (QE-R7B2-02, 'same behaviour'); its class (c), origin and owner are in BLOCKER_CLOSURE_R7B2.md and the freeze record. Acceptable.",
+    "Superseded already by U4: the U3 'G4 reading', and the freeze's routing.conditionHolds = true and routing.reading ('no prescription differing').",
+    "Now wrong or incomplete beyond U4: (a) R7B2-ENG-r1 and the U4 row: 'Not found: the same shape on the late-evidence path' (found: D, 32 rows); impossibility was not claimed. (b) The QE-R7B2-01 description covers only the factual re-plan source, not graduation withdrawal (B, B2, D; 92 rows) or the dropped disclosure. (c) U4's next-unit framing, repeated in the SSCTR request: 'not re-planned from the correction until the human route resolves'. For the factual source the re-plan never comes (Q3).",
+    "The U3 note's grid claims stay true for its grid, and the Engineering rerun reproduces them."
+   ]
+  }
+ },
+ "findings": [
+  {
+   "id": "QR7B2-01",
+   "severity": "MAJOR",
+   "title": "G4 differential incomplete beyond QE-R7B2-01: the graduation-withdrawal source puts the same shape on the report-identity and the late-evidence exits",
+   "origin": "Introduced by B.2: the precedence point applied to states where FREEZE-2 attached the canonical factual state to a question. Same mechanism as QE-R7B2-01.",
+   "clinicalScreenFirstBypass": false,
+   "reproduction": "probes/r1/q1-enum.mjs, groups B, B2 and D (rows such as 'B illness | w3LongBAD | none' and 'D pain | late_w4LongBAD | none'); probes/r1/q3-after-route.mjs PB and PD; NOW_ROOT=<worktree> PRED_ROOT=<git archive of 146ebb8>",
+   "expected": "Contract §5 / §7 G4: only nonclinical question -> CLINICAL_HUMAN_REQUIRED with no proposal either side; every other difference recorded and judged by the SSCTR and Quality reviews.",
+   "actual": "FREEZE-2: ASK (report-identity, block-choice, unrecognised-choice or R7-A late-evidence question) with the graduation-withdrawal re-plan (REPLAN_FROM_EVIDENCE) and RUN_QUALITY_GRADUATION_WITHDRAWN. R7-B.2: the handler's clinical route, with no proposal and no disclosure. 92 rows (B 40, B2 20, D 32). Once each result is applied, R7-B.2's plan in force keeps the THRESHOLD sessions the withdrawal removes (up to 25 sessions above FREEZE-2, 9-10 of them THRESHOLD instead of EASY) until the next review without a signal or pending clinical state re-derives the withdrawal. With the clinical reference state carried, they stay until the human route resolves. The handler's own route with the same correction behaves identically on both runtimes (XB, XD).",
+   "judgement": "R7-B.2's routing is right by the existing rule ('a clinical route proposes nothing'). No runtime change is requested and no correction cycle is indicated. But R7B2-ENG-r1, the U4 record and the SSCTR request cover only the factual re-plan of strength sessions on the report-identity exit. The SSCTR verdict therefore covers QE-R7B2-01 as framed, not this family, unless it says so.",
+   "blocking": "Not blocking for this Quality gate: the evidence is complete in this review. It is a closure condition for G8/G9: the SSCTR gate must cover this family explicitly.",
+   "owner": "Chief / U4 coordinator: record in a new record (never edit U3, U4 or the freeze), forward to the SSCTR judge, obtain an explicit SSCTR disposition (in R7B2-SSCTR-r1 or a narrow addendum) before G8/G9"
+  },
+  {
+   "id": "QR7B2-02",
+   "severity": "MINOR",
+   "title": "After a clinical route on a review whose correction moved the PlanningView, no later review re-derives the factual re-plan of the week's remaining sessions",
+   "origin": "Pre-existing: the residual-authority closure (QE-R7ADA-01): factualReplan/viewMovedBy is scoped to the review that carries the correction, and withFactualReplan proposes nothing on a clinical route. Identical on FREEZE-2 and R7-B.2 for the handler's route (XA). B.2 extends the reach to the same-id and late-evidence states (A, A2).",
+   "clinicalScreenFirstBypass": false,
+   "reproduction": "probes/r1/q3-after-route.mjs PA and XA",
+   "expected": "R7-A A1 / SSCTR D44 reading: no row planned from a retracted fact is the reference a later log is judged against; the correction's effect is deferred, not lost.",
+   "actual": "With no reference state, the next mid-week review is KEEP with no proposal, and the week's remaining sessions keep the rows planned before the correction (strength 3 sets where the corrected evidence plans 2). The correction is in actualLedger and the historical state, and the next week's start reads it. With the reference state carried, the route stays CLINICAL (sticky).",
+   "blocking": "No: pre-existing, outside the QE-R7B1-04 class, not a bypass (contract §10)",
+   "owner": "Next runtime mission (Engineering), with the SSCTR (D44 reading during and after a clinical dependency). Bears directly on R7B2-SSCTR-r1 Q3 ('deferred, not lost?')."
+  },
+  {
+   "id": "QR7B2-03",
+   "severity": "OBSERVATION",
+   "title": "A non-JSON interruption reason now gives HOLD where FREEZE-2 asked the report-identity or the factual question",
+   "origin": "Introduced by B.2: clinicalRoute screens the interruption before the 'again' check and before factual.ask",
+   "clinicalScreenFirstBypass": false,
+   "reproduction": "probes/r1/q1-enum.mjs group F (reason = an object whose toString throws)",
+   "expected": "Every review without a clinical signal decides as on FREEZE-2",
+   "actual": "Same-id state and CAND-01 state: FREEZE-2 ASK, R7-B.2 HOLD 'Malformed review facts'. Fresh-id control: HOLD on both.",
+   "judgement": "Fail-closed, and only for a value no JSON review can carry: the same input already HOLDs on FREEZE-2 on a fresh id. No contract-conforming review changes (0 of 258 JSON controls).",
+   "blocking": "No",
+   "owner": "Next runtime mission (Engineering), optional: reject non-JSON review values at admission"
+  },
+  {
+   "id": "QR7B2-04",
+   "severity": "OBSERVATION",
+   "title": "Records: three statements are now incomplete or wrong beyond what U4 supersedes",
+   "origin": "Records of U4 and R7B2-ENG-r1 (session 5) and the SSCTR request (51e7c77)",
+   "clinicalScreenFirstBypass": false,
+   "reproduction": "Q4 evidence above",
+   "expected": "The routing record describes the changed decisions it routes",
+   "actual": "(a) 'Not found: the same shape on the late-evidence path' (found, D). (b) QE-R7B2-01 covers only the factual re-plan source. (c) 'Not re-planned from the correction until the human route resolves': for the factual source, the re-plan of the week's remaining sessions never comes (QR7B2-02). QE-R7B2-01's owner is not in U4's table.",
+   "blocking": "No (records only), but (b) is what makes QR7B2-01 a closure condition",
+   "owner": "Chief / U4 coordinator: new record only; never edit U3, U4, R7B2-ENG-r1 or the freeze"
+  }
+ ],
+ "verdict": {
+  "R7B2_QUALITY_GATE": "READY",
+  "constitutionState": "QUALITY_READY_WITH_CONDITIONS",
+  "basis": "The G4 differential is complete with this review's enumeration (848 rows per runtime). Every changed decision on a contract-conforming review is the handler's own clinical route on a review carrying a clinical signal. None changes actualLedger, proposal content or a proposed dose. None bypasses clinical-screen-first. No B.2-caused runtime defect needs the correction cycle.",
+  "conditions": [
+   "QR7B2-01: the SSCTR gate must explicitly cover the graduation-withdrawal family on the report-identity and late-evidence exits before G8/G9 (owner Chief/U4).",
+   "QR7B2-04: the coordinator records this review's differential and corrections in a new record (owner Chief/U4)."
+  ],
+  "notes": "Without these two conditions the verdict is not a plain READY. It does not stand in for the SSCTR gate, and it does not reopen the Engineering gate."
+ },
+ "probes": [
+  {"file": "probes/r1/dual.mjs", "sha256": "b36b0e4945d602acb0a00e4d4f73c6a06a95b3da6a6d0a75ade23b3be4a676fc", "note": "verbatim copy of reviews/engineering/probes/dual.mjs"},
+  {"file": "probes/r1/s5-factual-proposal.mjs", "sha256": "c4871e979209493340dee96c8f24c7681bdda40cb51b1b1e9dc9aeaf038529cc", "output": "out/s5-factual-proposal.json", "outputSha256": "b069458fe1715728620f90c8b103ff56b0ff2d4b63ee967c2d53888ae78a3ffd", "note": "verbatim copy; output identical to Engineering's except 'ran'"},
+  {"file": "probes/r1/s5-downstream.mjs", "sha256": "33d5a77094a7eb9ac50f436975288d26f53c14f7f47a68e3822c44e700492873", "output": "out/s5-downstream.json", "outputSha256": "ea852fe7eef41b8687ca776de2987ef5689fee33c473d1ab72ebe70889130d93", "note": "verbatim copy; output identical to Engineering's except 'ran'"},
+  {"file": "probes/r1/qr1.mjs", "sha256": "8de21b82162d5fb5b65598f8150483cd6b797bcc477549c5d6dd9a6dd4c291a8", "note": "library: full snapshot, classifier, plan-in-force dose comparison, choice shapes"},
+  {"file": "probes/r1/explore-setups.mjs", "sha256": "2ecbee5b7eaed4e73ab318de34069f75c72af28b417414cb4447a4d61aab8822", "output": "out/explore-setups.json", "outputSha256": "557c0811870e611541753ce98c36ea1ed456a908c6fd72222ecca5f72c86b5d7"},
+  {"file": "probes/r1/explore-graduation.mjs", "sha256": "799d68c7cb78f55d8771acdd645aba1ee9153127267ac1457c24b5983b5e0a4b", "output": "out/explore-graduation.json", "outputSha256": "b4bd9b443ef49a47f8f20dd3c91a2a8b167a13d416677c0f3664d25e85335672"},
+  {"file": "probes/r1/explore-graduation-strength.mjs", "sha256": "f8cf679db7b0bf1dfcb6168c528ef199abc56ec09aa87274a713a2e5a874df4a", "output": "out/explore-graduation-strength.json", "outputSha256": "9c6f949f6be3d8d7ce4fd1126abd10d239644d2e50f90697e69b81794004b162"},
+  {"file": "probes/r1/q1-enum.mjs", "sha256": "6d44f4d27bec4672a4d7845de2c7620a689256b3b2dff5146a7105cbfb17f5b0", "output": "out/q1-enum.json", "outputSha256": "bcdf24e5e592c4c8e9c53bba09ccaa3a5b8ef85dc8bfd82e7e176474208fa540"},
+  {"file": "probes/r1/q1-breakdown.mjs", "sha256": "578c8dc6c564859090f8a2a49cbfafa321e09ef04ea471b4968c34bd23fa03fe", "output": "out/q1-breakdown.json", "outputSha256": "c190c4ccc1975ada8676661515016349aa3fd07017367b3f94d84b6c555f76af"},
+  {"file": "probes/r1/q3-after-route.mjs", "sha256": "45885a03211f4375932539fdcb4c7adc0f472b1947d625b75a0fa5aebe7c5bcb", "output": "out/q3-after-route.json", "outputSha256": "af4e3c4340299ff7b7341e1c5e8b543944ed9092809f0d761e40c8f1f275a773"}
+ ],
+ "rulesKept": {
+  "repository": "read-only outside reviews/quality/probes/r1/ and these two files; no commit, no state-changing git operation; nothing in src/, tests, evidence, freeze records, CURRENT_MISSION.md or MISSION_LEDGER.md edited",
+  "scripts": "verify-r7b2.mjs only without --write; no mutate-r7b*/freeze-r7b* script; no npm run verify; node_modules not reinstalled",
+  "interruptedRun5": "the files directly in reviews/quality/probes/ were read only, not modified or relied on; everything used was reproduced in probes/r1/",
+  "concurrency": "the SSCTR judge's folder and temporary directories were not touched",
+  "background": "no background command started"
+ }
+}

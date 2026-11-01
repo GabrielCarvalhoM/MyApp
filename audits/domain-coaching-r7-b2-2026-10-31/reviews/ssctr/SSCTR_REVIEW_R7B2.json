@@ -1,0 +1,232 @@
+{
+ "review_id": "R7B2-SSCTR-r1",
+ "gate": "R7B2_SSCTR_GATE",
+ "mission": "DOMAIN_COACHING_R7-B.2",
+ "contract": "R7B2-CONTRACT-r1 (audits/domain-coaching-r7-b2-2026-10-31/TASK_CONTRACT.md), sections 2-5 and 10",
+ "request": "audits/domain-coaching-r7-b2-2026-10-31/reviews/ssctr/REVIEW_REQUEST.md (plus the session-6 dispatch additions)",
+ "review_date": "2026-11-01",
+ "instance": {
+  "role": "sports-science-concurrent-training-reviewer",
+  "agent_version": "SSCTR-1.0.0",
+  "constitution_revision": "SSCTR-CONST-1.0.0",
+  "protocol_revision": "SSCTR-EP-1.0.0",
+  "registry_revision": "SSCTR-REG-1.0.0",
+  "instance_identity": "Fresh SSCTR instance dispatched in supervised session 6 (U4b) for this gate, model claude-opus-5-5 (inherited), effort xhigh, mode productization, task-route envelope received. Not the author of the R7-B.2 runtime, its fix or its evidence; not the Engineering or Quality judge; not the interrupted run-5 instance, whose files in reviews/ssctr/probes/ were read-only to me and were not modified or relied on.",
+  "adapter_check": "My instructions match the body of .claude/agents/sports-science-concurrent-training-reviewer.md (body after the front matter, sha256 4850be6f6b211e567cbfece6ff5059b14c30a86885172e5e75f3e683b6f6eba1 as computed in this session; the R7-B.1 record's value 021b5951... used another hashing convention and is not compared). No Agent tool is available to me, consistent with the adapter's disallowedTools: Agent. Registration as the native agent type cannot be verified from inside the instance.",
+  "authority": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY for bounded nonclinical internal sporting decisions only. No human credentials, no human, empirical or clinical validation, no clinical clearance, no runtime sovereignty. Clinical judgment remains CLINICAL_HUMAN_REQUIRED.",
+  "independence": "Independent judge of a gate on another author's runtime change (SSCTR-08). This is not a self-check."
+ },
+ "freeze_verified": {
+  "freeze": "R7B2-FREEZE-1",
+  "record": "CoachingCore/r7/b2/RUNTIME_FREEZE_R7B2_1.json",
+  "record_sha256": "8d51def566f2ce8f140cb3dcf22d62d0699be73571d5d931d8f5e2e50fb59fee",
+  "record_sha256_matches_request": true,
+  "freeze_commit": "1a1c7286adc8b08d16f97dea86f4973fe33e5a95",
+  "worktree_head": "92691647ac587eb643e68b50316db4534b31f9cb",
+  "source_digest": "57512322331f7a0295525775da8bc86da5e95fe0f2085404637498e1f8f7ecbd",
+  "manifest_digest": "f9c5bd5a1bb8bd6cf2a1df3298b6b9bdc62d7f951687c9e7d756889fa753ceca",
+  "files": 122,
+  "tests": 799,
+  "verifier": "node CoachingCore/scripts/verify-r7b2.mjs (read-only, never --write)",
+  "verifier_before": {"args": "--tests", "result": "PASS", "passed": 35, "total": 35, "output": "probes/r1/out/verify-r7b2-before.json", "output_sha256": "0d95dec2d6883f9ed694764b175bf6256736d8555cf617265c2e0eac8a3e6061"},
+  "verifier_after_probes": {"args": "(none)", "result": "PASS", "passed": 34, "total": 34, "digests_unchanged": true, "output": "probes/r1/out/verify-r7b2-after-probes.json", "output_sha256": "57773fa3c194e30f2f43c81e0a4e213c666b984116c67a8f8823258c76905194"},
+  "verifier_after_deliverables": {"args": "(none)", "result": "PASS", "passed": 34, "total": 34, "digests_unchanged": true, "head": "92691647ac587eb643e68b50316db4534b31f9cb", "output": "probes/r1/out/verify-r7b2-after-deliverables.json", "output_sha256": "57773fa3c194e30f2f43c81e0a4e213c666b984116c67a8f8823258c76905194"}
+ },
+ "predecessor": {
+  "freeze": "R7B1-FREEZE-2",
+  "commit": "146ebb80c51d302ef3518a61c1cab208c7778632",
+  "tree": "git archive 146ebb8 (full tree) into the new temporary directory %TEMP%/r7b2-ssctr-r1-s6-pred outside the repository, with CoachingCore/node_modules copied in",
+  "identity": "record r7/b1/RUNTIME_FREEZE_R7B1_2.json sha256 e75a2799ae1b9387e7c8831646cb877967262c19aa11c18c8d54c2a7b94f27d5; verify-r7b1.mjs (read-only, inside the temporary tree) 24/24 PASS, source f54e5c0345aa9c1dbd9743a78127b59720b3cf4d68c1b53ed11bfdbf40ed1612, manifest 980d830106f3c75722126a8c0bffb5e5aafa9a261b411c30a4779d6d3e08fae8",
+  "cleanup": "deleted after the probes; no other temporary directory touched"
+ },
+ "delta_checked": {
+  "git_diff_033f300_1a1c728_src": "src/r6-adaptation.mjs only, +32/-8: the clinicalRoute precedence point in evaluateProgram's decision step, and the two handler screens moved verbatim into shared functions (substitutionClinical, interruptionScreen) called by both the handlers and the point",
+  "freeze_record_file_diff_vs_R7B1_FREEZE_2": "changed: src/r6-adaptation.mjs; added: r7/b2/CONFORMANCE_R7B2_DELTA.json, scripts/{conformance,freeze,mutate,neighbors,regress,verify}-r7b2.mjs, test/r7b2-clinical-precedence.test.mjs; removed: none",
+  "policy": "R6-POLICY-5 canonical 18ec48f3..., file a75be1aa... identical in both freeze records",
+  "catalog": "R7B0-CATALOG-2 ceee276a..., schema 8b51b80b..., B0 r2 records 6867d3e8... identical in both freeze records",
+  "records_and_queue_unchanged": "git diff 2c6cb93 (R7-B.1 closure) .. HEAD is empty for reviews/provisional-sports-science, governance, audits/domain-coaching-r7-b0/-r7-b/-r7-b1, PROGRAM_POLICY_R6.json and CoachingCore/r7/b0. Queue reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json: 230 entries, sha256 95ea4b92819455a7176e43e7a856dcff872b2ecf9cd575174468829f186099c8. R7B1-SSCTR-r2 records file sha256 6e03afa3d927422d2108223f6111ea70e7eac02c13d39cd5931d6ac2f35b3b57."
+ },
+ "probes": {
+  "folder": "audits/domain-coaching-r7-b2-2026-10-31/reviews/ssctr/probes/r1/ (outputs in out/)",
+  "run_with": "NOW_ROOT=<worktree> PRED_ROOT=%TEMP%/r7b2-ssctr-r1-s6-pred",
+  "files": [
+   {"file": "dual.mjs", "sha256": "b36b0e4945d602acb0a00e4d4f73c6a06a95b3da6a6d0a75ade23b3be4a676fc", "note": "verbatim copy of reviews/engineering/probes/dual.mjs"},
+   {"file": "s5-factual-proposal.mjs", "sha256": "c4871e979209493340dee96c8f24c7681bdda40cb51b1b1e9dc9aeaf038529cc", "note": "verbatim copy of the Engineering probe", "output": "out/s5-factual-proposal.json", "output_sha256": "65a5158aac4cd1b9fe1834c8368b467f707282a877c09b7daa04ea5193abacaa", "reproduction": "identical to reviews/engineering/probes/out/s5-factual-proposal.json in every field except the run timestamp"},
+   {"file": "s5-downstream.mjs", "sha256": "33d5a77094a7eb9ac50f436975288d26f53c14f7f47a68e3822c44e700492873", "note": "verbatim copy of the Engineering probe", "output": "out/s5-downstream.json", "output_sha256": "b2d6150ffbee5863a24a2312020b84a38c6450db00feddaaa9511f11cffa92dd", "reproduction": "identical to the Engineering output except the run timestamp"},
+   {"file": "q3-resolution.mjs", "sha256": "5f06304098c7d3b6768b22f48d48a744f99f3762fbc0b7bf5dd2a38f6575e04a", "note": "mine: six step variants x follow-ups (sticky reference, no reference, resent correction, correction of the correction, historical state, whole-week review)", "output": "out/q3-resolution.json", "output_sha256": "9d2a10e42d669f95f225656cce4a648316484cc7fef9a6175612bcefa74b4781"},
+   {"file": "week4-context.mjs", "sha256": "3e5231eda58272f64c7d7aaea8c0d40ba20389138753a851f028d9246604378e", "note": "mine: the week-4 rows and logged responses the correction refers to (R7-B.2 only)", "output": "out/week4-context.json", "output_sha256": "6b6b2e1858529326e630f22c3c2a18d3a9f3613f07ad1e56796bc8a222af5008"},
+   {"file": "q4-other-rows.mjs", "sha256": "35e24942081f5e79aceb9a022e2dcd23a80812ee5cdc52017c3b3cb85493c608", "note": "mine: K6 rows, K6b, CAND-02, CAND-01, each with follow-ups", "output": "out/q4-other-rows.json", "output_sha256": "69fc97f482aa75416b488868eef5cb3f467fa95407021af8fc05b016c3ab352a"}
+  ]
+ },
+ "literature": {
+  "access": "PARTIAL. WebSearch works. NCBI PubMed (one record page) and E-utilities (esearch, esummary, efetch) work. Publisher pages (bjsm.bmj.com) return 403; the University of Pretoria and NIH Brage repositories and the CASEM mirror were unreachable (500, DNS failure, socket hang-up); PMC article pages sit behind a browser check; Europe PMC returned 503. No full text was read in this review.",
+  "query_log": [
+   "WebSearch: IOC consensus statement acute respiratory illness athletes part 1 acute respiratory infections return to sport Schwellnus 2022 BJSM",
+   "WebSearch: \"consensus statement on acute respiratory illness in athletes part 1\" PMC full text return to sport graded",
+   "WebSearch: return to sport after acute respiratory infection athletes graded protocol systematic review open access PMC",
+   "PubMed: term=10.1136/bjsports-2022-105759 (record obtained)",
+   "Europe PMC REST: DOI:10.1136/bjsports-2022-105759 (503)",
+   "E-utilities esearch db=pmc: Snyders[au] AND \"return to sport\" AND respiratory (3 ids); esummary of the 3 ids; efetch PMC9770013 (abstract only; publisher disallows full-text XML)"
+  ],
+  "sources": [
+   {"id": "S1", "citation": "Schwellnus M, Adami PE, Bougault V, Budgett R, Clemm HH, Derman W, et al. International Olympic Committee (IOC) consensus statement on acute respiratory illness in athletes part 1: acute respiratory infections. Br J Sports Med. 2022;56(19):1066-1088.", "doi": "10.1136/bjsports-2022-105759", "pmid": "35863871", "url": "https://pubmed.ncbi.nlm.nih.gov/35863871/", "accessed": "2026-11-01", "read_depth": "PubMed record: title, authors, citation and the abstract as summarized by the fetch tool (not quoted verbatim); full text not accessible", "source_type": "consensus statement (expert consensus group of the IOC Medical and Scientific Commission)", "used_for": "Auxiliary only: return to sport after an acute respiratory infection is addressed within a clinical consensus (the abstract lists management and return-to-sport guidelines among its clinical considerations), i.e. it is a medically guided decision. No recommendation text, staging or threshold is cited from it, because none was read.", "limitations": "Elite/athlete population; consensus rather than trials; recommendation text not read; not applicable to this agent's individual decisions (OUT_OF_SCOPE_CLINICAL)."},
+   {"id": "S2", "citation": "Snyders C, Schwellnus M, Sewry N, Kaulback K, et al. Symptom Number and Reduced Preinfection Training Predict Prolonged Return to Training after SARS-CoV-2 in Athletes: AWARE IV. Med Sci Sports Exerc. 2023;55(1).", "doi": "10.1249/MSS.0000000000003027", "pmid": "35975934", "pmcid": "PMC9770013", "accessed": "2026-11-01", "read_depth": "abstract (PMC XML via E-utilities efetch)", "source_type": "cross-sectional survey, n = 207 unvaccinated athletes with confirmed SARS-CoV-2", "used_for": "Auxiliary: time to return to training after an acute respiratory infection varies between athletes and is predicted by symptom number and reduced pre-infection training; the authors frame the data as helping 'physicians as well as athletes/coaches in planning and guiding RTT'. Supports individual, guided return rather than a fixed nonclinical recipe.", "limitations": "SARS-CoV-2, not influenza; self-reported survey; cross-sectional; abstract only; does not inform any dose."}
+  ],
+  "searched_not_used": "Snyders et al., BJSM 2022;56:223 (systematic review and meta-analysis on acute respiratory illness and return to sport), surfaced by search only; not accessed (403/unreachable). Search snippets are not evidence and are not used.",
+  "gap_and_abstention": "No full text was read. I approve no dose, progression, taper, deload or substitution rule in this review, so no prescriptive conclusion depends on the literature. The routing conclusion rests on the constitution (SSCTR-05, G04) and the already-decided authorities (B0-C06 condition 8, D08, QE-R7B1-01, QE-R7ADA-01); S1 and S2 are corroborating only. I abstain on the dose question raised by SSCTR-R7B2-01 (how the remainder of a week should be re-planned from a correction recorded under a clinical route): that is routed, not decided."
+ },
+ "claims": [
+  {"id": "SC-1", "statement": "Whether and how an athlete returns to training after an acute respiratory illness (here 'Flu illness', followed by a first week poorly tolerated at one set per exercise with impaired next-day function) is an individual, medically guided decision, not a nonclinical re-plan.", "evidence_status": "SUPPORTED_WITH_LIMITS", "for_this_athlete": "OUT_OF_SCOPE_CLINICAL", "sources": ["S1", "S2"], "limitations": "Abstract-level access; athlete populations; S2 is SARS-CoV-2."},
+  {"id": "SC-2", "statement": "While a clinical route is pending, no dependent prescription and no reduced dose or generic deload is offered as a substitute for referral.", "evidence_status": "not an empirical claim: binding governance rule (SSCTR-05; CLAUDE.md; residual authority closure QE-R7ADA-01; QE-R7B1-01)", "sources": []},
+  {"id": "SC-3", "statement": "For a nonclinical adult, keeping for the remainder of one week the planned rows (one more set per exercise, RIR 3, same loads, and a planned repetition step on goblet squat) after a week whose corrected response is adverse carries small expected harm.", "evidence_status": "PLAUSIBLE_BUT_UNCERTAIN", "sources": [], "use": "Severity reasoning for SSCTR-R7B2-01 only (MINOR, routed). It supports no approval; in this scenario the athlete is under a clinical route, where the decision is human."}
+ ],
+ "questions": {
+  "Q1": {
+   "question": "Is it sports-science acceptable that, when a review carries a clinical signal its handler's own screen routes to a human, the plan is not re-planned from that review's factual correction until the human route resolves, where FREEZE-2 proposed that re-plan alongside a nonclinical question?",
+   "answer": "YES. R7-B.2's behaviour is required, and FREEZE-2's was the defect.",
+   "evidence": [
+    "Reproduced S5R2 and S5R8 (out/s5-factual-proposal.json, identical to the Engineering record). FREEZE-2 returns ASK about the report id (S5R8: about the block choice) with proposal 439a61ba5e87c7206a79460c79594d857d33ddd746b52f8157aa37b9d0951240 and pending ASK. R7-B.2 returns 'The interruption reason is clinical or possibly clinical (flu, illness): qualified assessment is needed; no nonclinical return recipe', CLINICAL_HUMAN_REQUIRED, proposal null, pending CLINICAL_HUMAN_REQUIRED.",
+    "What the case is (out/week4-context.json, out/q3-resolution.json): the resend under the return's own id restates the week-3 interruption as 'Flu illness', and the correction restates week 4 (the first week after the return, at one set per exercise, RIR 3) with performance UNDER, recovery ADVERSE, effort HARDER and next-day function IMPAIRED. That is suspected illness with a new functional limitation on return, which SSCTR-05 and G04 assign to CLINICAL_HUMAN_REQUIRED, and which D08 already routes ('Flu illness' routes to clinical).",
+    "What the athlete is prescribed in weeks 5-11 while the route is pending. FREEZE-2: the re-planned program (week 5 strength cut from 3x12@20 / 3x8@22 / 2x10@22 to 2x10@20 / 2x8@22 / 1x10@22, runs unchanged), offered with a bookkeeping question, and the illness is not carried: the next review carrying FREEZE-2's reference state returns KEEP with no clinical dependency (q3 A/F1). That is a reduced dose offered in place of referral, which SSCTR-05 forbids ('do not suggest a dose or generic deload as a substitute for referral'). R7-B.2: no new prescription; plan validity REQUIRES_RECONCILIATION; the dependency is sticky (q3 A/F1 on R7-B.2: CLINICAL_HUMAN_REQUIRED, 'A prior clinical dependency remains outside this nonclinical reference; no automatic clearance', no proposal). The rows already in the program are not re-authorized by the runtime while the route is pending.",
+    "Consistency: B0-C06 condition 8 ('passes the clinical screen first: pain, injury, illness or a functional limitation routes CLINICAL_HUMAN_REQUIRED for the dependent scope'); D08; QE-R7B1-01 (a clinical route the handler takes is the decision, with no proposal); withFactualReplan ('A clinical route proposes nothing (no dependent prescription)'). For an illness return the dependent scope is the whole return, so withholding the whole re-plan is the correct scope.",
+    "The predecessor already decided exactly this for the same facts sent under a new id (S5R4, q3 path C) and for substitution pain with the same correction (S5R5, q3 path D): CLINICAL, no proposal, on both runtimes. R7-B.2's output for QE-R7B2-01 equals the predecessor's own path C step by step: same reason, same week-5 rows, same weeks 5-11 after the week-5 review (q3 comparison)."
+   ],
+   "counterargument_tested": "FREEZE-2 looks more conservative (fewer sets). Rejected: conservative is not automatic reduction (SSCTR-04); the reduction is a dose substituted for referral, and FREEZE-2 also drops the clinical dependency. Under R7-B.2 the higher rows are not a prescription the runtime stands behind while the route is pending.",
+   "evidence_status": "SC-1 SUPPORTED_WITH_LIMITS; SC-2 governance rule",
+   "confidence": "HIGH for the routing judgment (it follows binding rules and is reproduced); individual clinical status is OUT_OF_SCOPE_CLINICAL"
+  },
+  "Q2": {
+   "question": "Is the difference a consequence of routing only, with no prescriptive record changed?",
+   "answer": "YES. No dose, progression, selection, substitution, taper or deload rule changed; no R7-B0, R7-B or R7B1-SSCTR-r2 prescriptive record changes in meaning; no SSCTR record needs a new revision and no queue entry is required (queue stays at 230).",
+   "evidence": [
+    "Diff: src/r6-adaptation.mjs only; the decision step's precedence point and the two handler screens moved verbatim into shared functions. Policy and catalog bytes identical in both freeze records; no other runtime source changed.",
+    "Same facts, same prescriptions: R7-B.2's QE-R7B2-01 path (q3 A) produces exactly the prescriptions the predecessor gives for the same facts under a new id (q3 C on FREEZE-2): week 5 and weeks 6-11 after the week-5 review identical. The prescription difference against FREEZE-2's own same-id output comes only from which decision is returned (a clinical route, which proposes nothing, instead of a question carrying the re-plan).",
+    "Every nonclinical path is identical on both runtimes: S5a, S5e, S5g, S5i, S5R1, S5R6, S5R7 (s5-factual-proposal); q3 paths E (correction, no clinical signal) and F (nothing), including the whole-week review and weeks 5-11; q4 controls (same id same facts; same id other nonclinical facts; new-id illness; CAND-01 weekly control).",
+    "The predecessor's clinical paths with a correction (q3 C and D) are identical on both runtimes in every follow-up, including the downstream weeks.",
+    "Records, queue, policy, catalog and governance unchanged since the R7-B.1 closure (git diff empty)."
+   ],
+   "records_considered": ["R7B1-SSCTR-r2: R7B-SSCTR-FIDELITY, R7B-SSCTR-NOVICE, R7B-SSCTR-HYBRID, R7B-SSCTR-TAPER, R7B-SSCTR-RETURN, R7B-SSCTR-DOSE, R7B-SSCTR-DECLARED", "R7B0-SSCTR-r2 (13 records, including R7B0-SSCTR-B0-C06 condition 8)", "R6 SSCTR D08 (audits/domain-coaching-r6-2026-10-26/reviews/ssctr-review.r2.md)"],
+   "record_reading": "R7B-SSCTR-RETURN approved returns after nonclinical interruptions and evidence corrections with the clinical screen first. FREEZE-2's S5R2 output sat inside that record's bytes but against its own condition (a 'Flu illness' report answered without the clinical route). R7-B.2 brings the bytes into line with the condition; it narrows nothing the record approved and adds no prescription. The records stay bound to their own targets (RUNTIME_FREEZE_R7B1_2); this review attests that on R7B2-FREEZE-1 their prescriptive content is unchanged in meaning. That is a carry-forward attestation, not a re-approval and not a new prescriptive decision."
+  },
+  "Q3": {
+   "question": "Is the factual correction's effect only deferred, not lost?",
+   "answer": "Deferred, and carried into the next whole-week review; but for the rest of the current week it is not re-planned once the clinical dependency is no longer carried. This behaviour pre-exists B.2 and is identical on FREEZE-2 for the same facts under a new id and for substitution pain. Recorded as SSCTR-R7B2-01 (MINOR, routed, not blocking); not a correction-cycle item.",
+   "what_i_checked": [
+    "The correction is recorded: actualLedger after the clinical route carries the corrections and supersedes the originals (q3 A ledgerHasCorrection true; S5R2 ledgerHasCorrection true).",
+    "While pending (reference state carried): sticky CLINICAL_HUMAN_REQUIRED, no proposal (q3 A/F1 on R7-B.2; also C, D on both runtimes).",
+    "Resolution as the runtime defines it: there is no clinical clearance path in evaluateProgram (by design: no AI clearance); the only continuation is a later review admitted without the carried pending state. The probes use that reading.",
+    "After that, a later review of the same week, with no reports (F2), with the same correction rows sent again (F3), or with a correction of the correction carrying identical facts (F4): KEEP, no proposal, on R7-B.2 path A and on both runtimes for paths C and D. The week-5 rows stay as planned before the correction (goblet squat 3x12@20; db-bench-press, db-row, db-rdl 3x8@22; db-split-squat 2x10@22; calf raise and dead bug 2 sets), where the correction applied at once gives one set fewer on each and goblet squat 2x10@20 (q3 E). The cause: the factual re-plan fires only on a review whose own reports move this week's PlanningView (viewMovedBy), and the correction is already in the carried record.",
+    "At the next whole-week review (week 5 executed and reviewed), the correction is read: weeks 6-8 differ from the same path without the correction (q3 A vs B, A vs F), and week 6 carries the corrected volume (2 sets per main exercise, against 3 without the correction). It is not lost from the plan ahead.",
+    "Late evidence (K6) after the clinical route: a later review with no signal and no reference state gets R7-A's question again, with the late report still recorded (q4 K6-after), identical on both runtimes."
+   ],
+   "acceptability": "Acceptable for this gate. Withholding while pending is required (Q1). The remainder-of-week gap is pre-existing, bounded to one week, reachable only after the clinical dependency stops being carried (which the runtime itself never authorizes), keeps rows the approved rule produced from the facts as first reported, and is not a bypass of clinical-screen-first. Closing it narrowly would mean either attaching a dose to a clinical route (forbidden: QE-R7ADA-01, SSCTR-05) or changing the factual re-plan's trigger semantics shared with the predecessor's paths C and D (an R7-A / state-model change; contract stop conditions). So it is routed, not corrected in U5."
+  },
+  "Q4": {
+   "question": "Same class elsewhere: S5b, S5c, S5f, S5h, S5R3, the K6/K6b rows and the CAND-01/CAND-02 rows.",
+   "answer": "No sports-science concern. Each replaced question was nonclinical bookkeeping or scheduling, and none carried a proposal on either side; the clinical route is at least as restrictive (it proposes nothing either) and adds the referral and the sticky dependency that B0-C06 condition 8 and D08 require.",
+   "evidence": [
+    "s5-factual-proposal: S5b, S5c, S5f, S5h, S5R3 go from ASK (no proposal) to CLINICAL_HUMAN_REQUIRED (no proposal).",
+    "q4-other-rows (mine): K6 pain, injury, clinical text, pain + ladder choice, pain + unrecognised choice: ASK (missing interruption.episodeId or choices) to CLINICAL, no proposal on either side, late report recorded. K6b step 2 (pain only, carrying step 1's state): ASK to CLINICAL, late report recorded. CAND-02 same id with illness, INJURY category or clinical flag: ASK (missing event.id) to CLINICAL. CAND-01 (state built as in the mission inventory) pain or illness with the correction: ASK (missing event.date) to CLINICAL, correction recorded.",
+    "Nothing nonclinical is lost: R7-A's late-evidence question returns on a later review without a clinical signal or pending state (K6-after, identical on both runtimes); the same-id nonclinical controls still get the id question; the CAND-01 weekly control still gets the factual question.",
+    "The only other differing row (CAND-02-after, carrying the reference state) differs because the carried state is now correctly clinical; the unchanged sticky rule then keeps the dependency. For the same input both runtimes decide alike (U3 carried-state check), and it is not a different decision rule.",
+    "Scope: for substitution pain the route is scoped to the named exercise (B0-C06 condition 8, 'for the dependent scope'), and the sticky state holds later reviews while it is carried. Identical to the predecessor's handling of the same report without late evidence (S5d, S5R5)."
+   ]
+  }
+ },
+ "ae_questions": {
+  "applies_to": "Q1: the QE-R7B2-01 review (return resent under its id with 'Flu illness', plus corrections of week 4)",
+  "answers": [
+   {"question_number": 1, "answer": "Adequacy of any plan for this athlete now depends on a clinical assessment the agent cannot make."},
+   {"question_number": 2, "answer": "Yes: the review's own interruption reason (screened CLINICAL by the existing screen, D08) and the corrected week-4 reports, recorded in actualLedger with provenance."},
+   {"question_number": 3, "answer": "KEEP would imply unwarranted safety and is not what the runtime does; it routes."},
+   {"question_number": 4, "answer": "The comparator (FREEZE-2) changes the dose with a nonclinical question; a dose change in answer to an illness report is the prohibited substitute for referral."},
+   {"question_number": 5, "answer": "Route to a qualified human, propose nothing, record the evidence (R7-B.2)."},
+   {"question_number": 6, "answer": "The identity question alone loses the clinical signal; a re-plan is not smaller, it is a prescriptive act dependent on the clinical judgment."},
+   {"question_number": 7, "answer": "Progression is suspended pending the human route; the recorded correction re-enters at the next whole-week review (SSCTR-R7B2-01 covers the remainder of the week)."},
+   {"question_number": 8, "answer": "No dose is approved. Routing follows SSCTR-05/G04 and is consistent with S1/S2 (abstract-level)."},
+   {"question_number": 9, "answer": "Individual clinical status (out of scope); remainder-of-week handling after the dependency is no longer carried (SSCTR-R7B2-01); undefined resolution input (SSCTR-R7B2-02)."},
+   {"question_number": 10, "answer": "CLINICAL_HUMAN_REQUIRED."}
+  ]
+ },
+ "decision": {
+  "disposition": "ACCEPT_WITH_CONDITIONS (gate verdict on the routing consequence; no prescriptive approval)",
+  "proposed_ae_action": "CLINICAL_HUMAN_REQUIRED for the QE-R7B2-01 class, as R7-B.2 does; NOT_APPLICABLE otherwise",
+  "preserve": ["Clinical screen first after admission (B0-C06 c8, D08, QE-R7B1-01)", "A clinical route proposes nothing (QE-R7ADA-01)", "Evidence recorded in actualLedger; late evidence re-asked later"],
+  "modify": [],
+  "must_not": ["Attach a factual re-plan or any dose to a CLINICAL_HUMAN_REQUIRED decision", "Add a clinical keyword, flag, threshold or clearance path as a B.2 fix"],
+  "evidence_status": "SUPPORTED_WITH_LIMITS (routing consistent with the binding rules and corroborating sources; abstract-level access)",
+  "confidence": "HIGH on Q1, Q2 and Q4 (reproduced on both runtimes, binding rules); MODERATE on the Q3 severity (SC-3 is PLAUSIBLE_BUT_UNCERTAIN)",
+  "gate_status": "R7B2_SSCTR_GATE reviewed; NOT a closure of G01-G04; whole_gate_closure false",
+  "publication_status": "NOT_PUBLISHED; Chief (U4/U6) records the gate state",
+  "human_validation": false,
+  "empirical_product_validation": false,
+  "clinical_clearance": false
+ },
+ "findings": [
+  {
+   "id": "SSCTR-R7B2-01",
+   "severity": "MINOR",
+   "title": "A correction recorded by a clinically routed review is applied only at the next whole-week review",
+   "statement": "Once a later review is admitted without the pending clinical state, no review of the same week re-plans the sessions still ahead from a correction that a clinically routed review recorded. The correction is read when the week's whole-week review plans the following week.",
+   "origin": "Pre-existing. Residual authority closure QE-R7ADA-01 (withFactualReplan: a clinical route proposes nothing), combined with the decision-authority closure's factual re-plan trigger (viewMovedBy, Property B: only a review whose own reports move this week's PlanningView re-plans). Identical on R7B1-FREEZE-2 for the same facts under a new id and for substitution pain with the same correction. B.2 extends its reach to the same-id resend (QE-R7B2-01) and the re-entry clinical rows; the B.2 rule itself introduces no new mechanism.",
+   "reproduction": "probes/r1/q3-resolution.mjs: paths A (R7-B.2), C and D (both runtimes), follow-ups F2, F3, F4 all KEEP with no proposal; week-5 rows unchanged; weeks 6-8 differ between A and B after the week-5 review.",
+   "consequence": "For the remainder of that week, after the dependency stops being carried, the rows planned from the facts as first reported stay: here one more set per strength exercise at RIR 3, same loads, and goblet squat 3x12@20 instead of 2x10@20. Logs of that remainder are judged against rows planned from facts that no longer stand, which the factual re-plan exists to avoid (A1, D44 intent). Runs are unaffected.",
+   "bypass_of_clinical_screen_first": false,
+   "blocks": false,
+   "why_not_blocking": "Pre-existing outside the QE-R7B1-04 class and not a safety bypass of the same invariant (contract §10). The clinical screen fires and nothing is proposed while it is carried. The kept rows are approved-rule outputs, bounded to one week, reachable only after an external resolution the runtime does not define. Under my standing criterion it is a deviation from a stricter rule whose prescription stays inside an approved envelope.",
+   "not_a_U5_item": "A narrow fix would either attach a dose to a clinical route (forbidden) or change the factual re-plan trigger shared with the predecessor's own clinical paths (R7-A / state model: contract stop conditions).",
+   "routed": true,
+   "owner": "Next runtime mission (Engineering), with SSCTR for the dose reading and Data for the state semantics",
+   "next_action": "Decide how corrections recorded under a clinical route re-enter the planning of the sessions still ahead when a review is next admitted without a pending clinical dependency, without attaching anything to the clinical route itself."
+  },
+  {
+   "id": "SSCTR-R7B2-02",
+   "severity": "OBSERVATION",
+   "title": "No runtime input represents a human resolution of a clinical dependency",
+   "statement": "evaluateProgram has no clearance path (correctly: no AI clearance). The only continuation is a review admitted without the carried pending state, after which the runtime has no record of the clinical reason: a clinical route records nothing in the program (q4 CAND-02-after without the reference state: KEEP on both runtimes; q3 F2). What a documented human resolution looks like as an input, and what the nonclinical continuation then starts from, is undefined.",
+   "origin": "Pre-existing (R6 reference continuation state and the clinical boundary design); identical on both runtimes.",
+   "blocks": false,
+   "routed": true,
+   "owner": "Founder/Product (service model) with Engineering (input contract) and the qualified-human clinical route; SSCTR only for the nonclinical continuation after a documented human resolution",
+   "next_action": "Define the input by which a documented human resolution re-enters, without any agent clearance or new clinical reading."
+  }
+ ],
+ "routed_findings_received": [
+  {"id": "QE-R7B2-03", "note": "Routed by the Engineering judge to SSCTR for the reading of structured clinical keys on substitution reports. Outside Q1-Q4, and any new clinical reading is barred from B.2 (contract §2.3, §10). Not decided here; stays with SSCTR and the next runtime mission."},
+  {"id": "QE-R7B2-02", "note": "Pain report without a named exercise (R7B2-OBS-01). Unchanged on both runtimes; stays routed with Engineering, SSCTR and Product/UX."}
+ ],
+ "conditions": [
+  "C1. SSCTR-R7B2-01 is resolved by its owner before any use beyond the offline synthetic reference. It needs no B.2 correction cycle.",
+  "C2. No later change may resolve SSCTR-R7B2-01 by attaching a factual re-plan or any dose to a CLINICAL_HUMAN_REQUIRED decision (QE-R7ADA-01; SSCTR-05).",
+  "C3. The R7B1-SSCTR-r2 conditions and routed findings (F12 decision half, F13, F14; F6, F7, F8, F10; R18) and QE-R7B2-02/-03 stay with their owners, unchanged."
+ ],
+ "record_revisions_needed": {
+  "needed": false,
+  "records": [],
+  "considered": ["R7B-SSCTR-FIDELITY", "R7B-SSCTR-NOVICE", "R7B-SSCTR-HYBRID", "R7B-SSCTR-TAPER", "R7B-SSCTR-RETURN", "R7B-SSCTR-DOSE", "R7B-SSCTR-DECLARED", "R7B0-SSCTR-B0-C06 (and the other 12 R7B0-SSCTR-r2 records)", "R6 SSCTR D08"],
+  "reason": "No prescriptive meaning changed (Q2). This review creates no decision.schema record and approves no prescriptive item."
+ },
+ "human_queue": {
+  "proposed_entries": [],
+  "queue_file": "reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json",
+  "entries": 230,
+  "sha256": "95ea4b92819455a7176e43e7a856dcff872b2ecf9cd575174468829f186099c8",
+  "edited": false,
+  "reason": "No prescriptive approval. The routing affirmed here is already covered by the queued R7B-SSCTR-RETURN and B0-C06 entries. Clinical referrals never wait for the funding milestone."
+ },
+ "validation_of_this_record": "The skill's validator (validate_records.py) could not run: no Python interpreter is installed (only the Windows Store alias). No decision.schema record is produced here, so nothing was validated against the schema; none is claimed.",
+ "re_review": {
+  "owner": "Chief, with SSCTR",
+  "triggers": ["any change to the precedence point, the two shared screens, withFactualReplan, viewMovedBy/factualReplan or withReference", "the SSCTR-R7B2-01 or SSCTR-R7B2-02 resolution", "a new systematic review or consensus on return to training after acute illness", "any use beyond the offline synthetic reference"],
+  "expiry": "event-based: the next runtime change to the files above, or R7-C start"
+ },
+ "rules_kept": [
+  "Read-only on the repository: I wrote only under reviews/ssctr/ (probes/r1/ and these two files). No commit, no state-changing git operation.",
+  "verify-r7b2.mjs run without --write only; verify-r7b1.mjs run read-only inside the temporary predecessor tree; no mutate/freeze script, no npm run verify, no reinstall.",
+  "The Engineering probes ran only from copies in my folder. The interrupted run-5 files in probes/ were not modified, deleted or relied on.",
+  "The temporary tree %TEMP%/r7b2-ssctr-r1-s6-pred was created new and deleted; no other judge's directory was touched. No background command left running.",
+  "No clinical keyword, flag, threshold or clearance path proposed. CURRENT_MISSION.md not read whole (one grep of the R7-B.2 block header)."
+ ],
+ "verdict": "ACCEPT_WITH_CONDITIONS",
+ "verdict_line": "R7B2_SSCTR_GATE = ACCEPT_WITH_CONDITIONS"
+}
