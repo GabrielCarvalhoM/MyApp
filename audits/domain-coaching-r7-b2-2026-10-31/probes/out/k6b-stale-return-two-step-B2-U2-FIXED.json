@@ -1,0 +1,40 @@
+{
+ "probe": "k6b-stale-return-two-step",
+ "frozen": "B2-U2-FIXED",
+ "root": "temporary tree domain-coaching-r7-b2",
+ "ran": "2026-11-01T02:59:26.668Z",
+ "results": [
+  {
+   "id": "K6b",
+   "area": "clinical first after a recorded late report in the re-entry week",
+   "verdict": "PASS",
+   "expected": "a later review that reports pain with an exercise routes to a human",
+   "actual": {
+    "label": "B2-U2-FIXED",
+    "rows": [
+     {
+      "step": "return",
+      "status": "MODIFY",
+      "action": "REESTABLISH"
+     },
+     {
+      "step": "late report alone (sync)",
+      "status": "ASK",
+      "action": "ASK",
+      "recorded": true,
+      "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and the return reported on 2026-11-26 did not"
+     },
+     {
+      "step": "pain report, nothing else",
+      "exercise": "goblet-squat",
+      "status": "CLINICAL_HUMAN_REQUIRED",
+      "action": "CLINICAL_HUMAN_REQUIRED",
+      "proposal": false,
+      "pending": "CLINICAL_HUMAN_REQUIRED",
+      "reason": "Pain, injury, illness or a functional limitation with goblet-squat routes to qualified human assessment; no exercise is substituted as a rem"
+     }
+    ]
+   }
+  }
+ ]
+}

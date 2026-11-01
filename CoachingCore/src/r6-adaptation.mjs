@@ -362,10 +362,14 @@ export function evaluateProgram(program,review,options={}){
   // withdrawal (withFactualReplan), because the facts it follows stand whatever is still asked.
   // The clinical screen comes first (QE-R7B1-01; B0-C06 condition 8; SSCTR D08): the handler runs whatever block choice the review carries, and a
   // clinical route it takes is the decision, with no proposal (withFactualReplan), as in the same review without the choice.
+  // So it comes before every nonclinical question (QE-R7B1-04): the clinical route the review's own handler screen takes is the decision before
+  // R7-A's late-evidence question, the factual re-plan's own question and the return's report-identity question; the review's evidence is still
+  // recorded (actualLedger) and the late evidence still asked about by a later review without a clinical signal or a pending clinical state.
+  const clinical=clinicalRoute(kind,review);
   const choiceAsk=unknownChoices?{action:'ASK',reason:'Some choices are not recognised: a block choice is a ladder step, a main-lift change with its reason, or keeping or declining the harder session',missingInputs:['choices']}
    :blockChoices.length&&(kind!=='WEEKLY_REVIEW'||ev.pending)?{action:'ASK',reason:'Block choices are made in the weekly review of a block\'s last week, once its sessions are complete',missingInputs:['choices']}:null;
-  const handled=factual?.ask?null:decide(factual?.ctx??ctx);
-  const decision0=factual?.ask??withFactualReplan(factual,handled.status==='CLINICAL_HUMAN_REQUIRED'?handled:choiceAsk??handled);
+  const handled=clinical??(factual?.ask?null:decide(factual?.ctx??ctx));
+  const decision0=clinical??factual?.ask??withFactualReplan(factual,handled.status==='CLINICAL_HUMAN_REQUIRED'?handled:choiceAsk??handled);
   const decision=blockChoices.length&&!choiceAsk&&!out.choicesHandled&&decision0.action!=='ASK'&&decision0.status!=='CLINICAL_HUMAN_REQUIRED'?withFactualReplan(factual,{action:'ASK',reason:'The block choices could not be applied in this review; they are made at the block boundary review',missingInputs:['choices']}):decision0;
   // Load questions follow the decision's own gates, so they never contradict the adoption the transition made (SSCTR D44).
   out.loadQuestions=loggedLoadQuestions(program,sk,w,ev,{gates:decision.gates??null,confirmations:confirmationsOf(ctx),base:ctx.base});
@@ -530,6 +534,26 @@ function blockBoundary(ctx,gates){
  return out;
 }
 /**
+ * The handlers' two clinical screens (B0-C06 condition 8; SSCTR D08), each shared by its handler and by the decision step's clinical precedence
+ * (QE-R7B1-04), so the two never read a report differently. A substitution report that names its exercise routes to a human on pain, injury or a
+ * free text the interruption screen reads as clinical; a return report on its interruption-reason screen. No other reading is added.
+ */
+const substitutionOf=review=>review.substitution&&typeof review.substitution==='object'?review.substitution:null;
+function substitutionClinical(sub){
+ const text=typeof sub.text==='string'?sub.text:'',screen=text?screenInterruptionReason({reason:text,reasonCategory:null,nonclinical:null,clinicalReason:null}):null;
+ return screen?.status==='CLINICAL'||isYes(sub.pain)||isYes(sub.injury)?{action:'CLINICAL_HUMAN_REQUIRED',status:'CLINICAL_HUMAN_REQUIRED',reason:'Pain, injury, illness or a functional limitation with '+sub.exerciseId+' routes to qualified human assessment; no exercise is substituted as a remedy',scope:{exerciseId:sub.exerciseId}}:null;
+}
+const interruptionOf=review=>review.interruption&&typeof review.interruption==='object'&&!Array.isArray(review.interruption)?review.interruption:{};
+function interruptionScreen(i){
+ const screen=screenInterruptionReason({reason:i.reason,reasonCategory:i.reasonCategory,nonclinical:i.nonclinical??null,clinicalReason:i.clinicalReason??null});
+ return {screen,clinical:screen.status==='CLINICAL'?{action:'CLINICAL_HUMAN_REQUIRED',status:'CLINICAL_HUMAN_REQUIRED',reason:'The interruption reason is clinical or possibly clinical'+(screen.matched.length?' ('+screen.matched.join(', ')+')':'')+': qualified assessment is needed; no nonclinical return recipe',screen}:null};
+}
+/** The clinical route the review's own handler screen takes (clinical-screen-first), or null; a review of another kind has no screen of its own. */
+function clinicalRoute(kind,review){
+ if(kind==='EXERCISE_SUBSTITUTION'){const sub=substitutionOf(review);return sub&&typeof sub.exerciseId==='string'?substitutionClinical(sub):null;}
+ return kind==='RETURN_AFTER_PAUSE'?interruptionScreen(interruptionOf(review)).clinical:null;
+}
+/**
  * Reason-based substitution (DR-134; B0-C06 condition 8, B0-C07, B0-C09): it overrides the cadence, MAIN retention and a FIXED preference,
  * never safety, policy or agency. The clinical screen comes first: pain, injury, illness or a functional limitation route to a human for the
  * dependent scope; an unclear report is asked. SKILL_MISMATCH steps back along the skill ladder (or to a lower-skill configuration of the same
@@ -537,10 +561,10 @@ function blockBoundary(ctx,gates){
  * The configuration set aside is never selected or rotated back; the new one starts with establishment; nothing is converted.
  */
 function exerciseSubstitution(ctx){
- const {program,review,w,sk}=ctx,sub=review.substitution&&typeof review.substitution==='object'?review.substitution:null,rep=sk.repertoire;
+ const {program,review,w,sk}=ctx,sub=substitutionOf(review),rep=sk.repertoire;
  if(!sub||typeof sub.exerciseId!=='string')return {action:'ASK',reason:'Say which exercise should change and why',missingInputs:['substitution.exerciseId','substitution.reason']};
- const text=typeof sub.text==='string'?sub.text:'',screen=text?screenInterruptionReason({reason:text,reasonCategory:null,nonclinical:null,clinicalReason:null}):null;
- if(screen?.status==='CLINICAL'||isYes(sub.pain)||isYes(sub.injury))return {action:'CLINICAL_HUMAN_REQUIRED',status:'CLINICAL_HUMAN_REQUIRED',reason:'Pain, injury, illness or a functional limitation with '+sub.exerciseId+' routes to qualified human assessment; no exercise is substituted as a remedy',scope:{exerciseId:sub.exerciseId}};
+ const clinical=substitutionClinical(sub);
+ if(clinical)return clinical;
  const reason=String(sub.reason??'').toUpperCase();
  if(!['SKILL_MISMATCH','NONCLINICAL_DISCOMFORT_OR_PREFERENCE'].includes(reason))return {action:'ASK',reason:'Say why the exercise should change: it cannot be done with steady technique, or a dislike or discomfort without pain',missingInputs:['substitution.reason']};
  if(reason==='NONCLINICAL_DISCOMFORT_OR_PREFERENCE'&&sub.nonclinicalConfirmed!==true)return {action:'ASK',reason:'Confirm there is no pain, injury or functional limitation with this exercise; with pain it goes to a qualified person instead',missingInputs:['substitution.nonclinicalConfirmed']};
@@ -1251,13 +1275,13 @@ function staleReturn(ctx){
 }
 /** Nonclinical return: current evidence is the start, prior tolerated dose the ceiling; no universal percentage rollback. */
 function returnAfterPause(ctx){
- const {program,sk,w,review,asOfLocal}=ctx,i=review.interruption&&typeof review.interruption==='object'&&!Array.isArray(review.interruption)?review.interruption:{},R=sk.op.return,tz=program.timezoneOffsetMinutes??0;
+ const {program,sk,w,review,asOfLocal}=ctx,i=interruptionOf(review),R=sk.op.return,tz=program.timezoneOffsetMinutes??0;
  // The same report again (one event id, the same facts) is already recorded: nothing changes and no interruption is added (R7-A final P6).
  // One event id carrying other facts is asked, never applied.
  const again=program.decisions.find(d=>d.action==='REESTABLISH'&&d.eventId===review.event.id);
  if(again)return (again.interruption?.inputHash??hash(i))===hash(i)?{action:'KEEP',reason:'This interruption report is already recorded; nothing changes',counterfactuals:[counter('KEEP','KEEP',true,'A report recorded once is never applied twice',{selected:true})]}:{action:'ASK',reason:'This report id already belongs to a different interruption report; send a correction as a new report of that interruption (its episodeId)',missingInputs:['event.id']};
- const screen=screenInterruptionReason({reason:i.reason,reasonCategory:i.reasonCategory,nonclinical:i.nonclinical??null,clinicalReason:i.clinicalReason??null});
- if(screen.status==='CLINICAL')return {action:'CLINICAL_HUMAN_REQUIRED',status:'CLINICAL_HUMAN_REQUIRED',reason:'The interruption reason is clinical or possibly clinical'+(screen.matched.length?' ('+screen.matched.join(', ')+')':'')+': qualified assessment is needed; no nonclinical return recipe',screen};
+ const {screen,clinical}=interruptionScreen(i);
+ if(clinical)return clinical;
  if(!allows(ctx.authority,'R6-NONCLINICAL-RETURN'))return {action:'UNSUPPORTED',status:'UNSUPPORTED',reason:'Nonclinical return authority unavailable'};
  if(screen.status==='ASK')return {action:'ASK',reason:screen.basis==='MISSING_REASON'?'Say what interrupted training (for example travel, work, family, illness or injury) before a nonclinical restart':'The interruption reason is unclear; say what it was and confirm it involved no pain, injury or illness',missingInputs:['interruption.reasonCategory'],screen};
  // Interruption facts out of range or contradicting each other are asked, never resolved to the least conservative class (QRE-R6-06).
