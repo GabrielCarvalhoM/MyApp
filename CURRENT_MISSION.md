@@ -858,3 +858,19 @@ The infrastructure mission authorized by the direct [Founder request](audits/age
 - **Next:** the first real use is DOMAIN_COACHING_R7-B.2, on its own Founder authorization. From a checkout of this branch, run `node tools/agent-runtime/runtime.mjs run DOMAIN_COACHING_R7-B.2 --request <request.md>`.
 
 [Disposition](audits/agent-execution-runtime-v1-2026-10-31/FINAL_DISPOSITION.json)
+
+<!-- DOMAIN_COACHING_R7B2: DCR7B2-20261031-inprogress-r1 -->
+## DOMAIN_COACHING_R7-B.2 — QE-R7B1-04 clinical precedence closure — in progress / 2026-10-31
+
+The direct [Founder request](audits/domain-coaching-r7-b2-2026-10-31/FOUNDER_REQUEST.md) authorizes **R7-B.2**, one narrow runtime mission whose only purpose is QE-R7B1-04. In a return's re-entry week with late pre-break evidence, R7-A's late-evidence question runs before the substitution's clinical screen, so a pain report gets a pending ASK instead of CLINICAL_HUMAN_REQUIRED.
+
+- **Objective:** the smallest runtime change after which a review's own clinical route takes precedence over the late-evidence question and every other nonclinical re-entry question. Valid R7-A late-evidence behaviour and the R7-A, R7-B0, R7-B and R7-B.1 closures are preserved.
+- **States:**
+  - IMPLEMENTATION_AUTHORIZED = SHADOW_REFERENCE_RUNTIME (`CoachingCore/`).
+  - R7-C, the routed R7-B.1 minors, an intake or state-machine redesign and an R7-A rewrite = NO.
+  - UI / FIGMA / KMP / IOS / HEALTHKIT / BACKEND / GROWTH / PRODUCTION = NO.
+  - V1_COACHING_AUTHORITY_READY is not declared.
+- **Execution:** the first mission run by the agent execution runtime (`tools/agent-runtime/`), on branch `claude/domain-coaching-r7-b2` from `033f300`. That base is the R7-B.1 closure `2c6cb93` plus the runtime infrastructure; Coaching Core is byte-identical to R7B1-FREEZE-2 (read-only verification 24/24).
+- **Review:** one independent Engineering judge on the new freeze. SSCTR and Quality are inherited only while the differential against R7B1-FREEZE-2 shows nothing but clinical precedence. At most one correction cycle, for an issue the B.2 change itself causes.
+
+Continue from the [task contract](audits/domain-coaching-r7-b2-2026-10-31/TASK_CONTRACT.md). Closure will be recorded in a later block of this file and in `audits/domain-coaching-r7-b2-2026-10-31/FINAL_DISPOSITION.json`.
