@@ -1,0 +1,191 @@
+{
+ "check": "R7B2-MUTATION",
+ "mutants": 9,
+ "killed": 8,
+ "survived": [
+  "M41"
+ ],
+ "equivalent": [
+  {
+   "id": "M41",
+   "why": "Equivalent on the R7-B.2 bytes: the guard it removes (a clinical handler result outranks the block-choice question, QE-R7B1-01) is now subsumed by the precedence point. In evaluateProgram's decision step a handler returns CLINICAL_HUMAN_REQUIRED only through its own screen (exerciseSubstitution: substitutionClinical; returnAfterPause: interruptionScreen; no other handler or callee returns that status after admission, src/r6-adaptation.mjs and its imports), and clinicalRoute(kind,review) calls the same function on the same review (the factual re-plan context spreads ctx and keeps its review). So handled.status==='CLINICAL_HUMAN_REQUIRED' implies clinical!==null, and then decision0 is clinical before the mutated fragment is read. QE-R7B1-01's behaviour stays covered by the R7-B.1 tests (passing on these bytes) and by neighbor E (scripts/neighbors-r7b2.mjs). The fragment is left in place (smallest diff; no runtime change in U3)."
+  }
+ ],
+ "invalid": [],
+ "sourceRestored": true,
+ "inherited": {
+  "note": "Every other R7-B.1 mutant (M27-M40, M42-M57) and every R7-B mutant (M01-M25) keeps its result from R7B1-FREEZE-2 (r7/b1/MUTATION_R7B1_2.json, r7/b1/MUTATION_R7B_ON_R7B1_2.json): none of their fragments overlaps the R7-B.2 diff (baseline 033f300 -> this runtime), and each still occurs once in the new bytes.",
+  "overlapRerun": [
+   "M26 (as M26b)",
+   "M41 (equivalent on these bytes; see equivalent)"
+  ]
+ },
+ "results": [
+  {
+   "id": "M58",
+   "blocker": "QE-R7B1-04, R7B2-CAND-01, R7B2-CAND-02",
+   "what": "the precedence point removed (the R7B1-FREEZE-2 behaviour)",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b2-clinical-precedence.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 6,
+   "passedTests": 7,
+   "failing": [
+    "✖ R7-B.2 QE-R7B1-04: pain or injury with an exercise, reported with late training before the break, routes to a human before the late-evidence question (174.1456ms)",
+    "✖ R7-B.2 QE-R7B1-04: with a block choice or an unrecognised choice in the same review, the clinical route still wins (135.1837ms)",
+    "✖ R7-B.2 QE-R7B1-04: two steps — the late report recorded with its question, then a pain-only review of the same re-entry week routes to a human (138.6792ms)",
+    "✖ R7-B.2 QE-R7B1-04: after the clinical route a later review with no clinical signal and no pending clinical state still gets the late-evidence question, and one carrying the clinical state stays clinical (147.872ms)",
+    "✖ R7-B.2 CAND-02: a return report resent under the same event id whose reason is clinical routes to a human, not to the report-id question (117.0718ms)",
+    "✖ R7-B.2 CAND-01: when the factual re-plan raises its own question, a review reporting pain or an illness still routes to a human (209.7834ms)"
+   ]
+  },
+  {
+   "id": "M59",
+   "blocker": "QE-R7B1-04",
+   "what": "the clinical route moved into decide, after staleReturn",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b2-clinical-precedence.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 5,
+   "passedTests": 8,
+   "failing": [
+    "✖ R7-B.2 QE-R7B1-04: pain or injury with an exercise, reported with late training before the break, routes to a human before the late-evidence question (170.8414ms)",
+    "✖ R7-B.2 QE-R7B1-04: with a block choice or an unrecognised choice in the same review, the clinical route still wins (134.0383ms)",
+    "✖ R7-B.2 QE-R7B1-04: two steps — the late report recorded with its question, then a pain-only review of the same re-entry week routes to a human (137.0581ms)",
+    "✖ R7-B.2 QE-R7B1-04: after the clinical route a later review with no clinical signal and no pending clinical state still gets the late-evidence question, and one carrying the clinical state stays clinical (147.7149ms)",
+    "✖ R7-B.2 CAND-01: when the factual re-plan raises its own question, a review reporting pain or an illness still routes to a human (207.7498ms)",
+    "✖ R7-B.2 QE-R7B1-04: pain or injury with an exercise, reported with late training before the break, routes to a human before the late-evidence question (170.8414ms)"
+   ]
+  },
+  {
+   "id": "M60",
+   "blocker": "R7B2-CAND-01",
+   "what": "the precedence point after the factual re-plan question",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b2-clinical-precedence.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 12,
+   "failing": [
+    "✖ R7-B.2 CAND-01: when the factual re-plan raises its own question, a review reporting pain or an illness still routes to a human (208.5167ms)",
+    "✖ R7-B.2 CAND-01: when the factual re-plan raises its own question, a review reporting pain or an illness still routes to a human (208.5167ms)"
+   ]
+  },
+  {
+   "id": "M61",
+   "blocker": "R7B2-CAND-02, R7B2-CAND-01",
+   "what": "the precedence point limited to EXERCISE_SUBSTITUTION (no return screen)",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b2-clinical-precedence.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 2,
+   "passedTests": 11,
+   "failing": [
+    "✖ R7-B.2 CAND-02: a return report resent under the same event id whose reason is clinical routes to a human, not to the report-id question (115.01ms)",
+    "✖ R7-B.2 CAND-01: when the factual re-plan raises its own question, a review reporting pain or an illness still routes to a human (231.5251ms)",
+    "✖ R7-B.2 CAND-02: a return report resent under the same event id whose reason is clinical routes to a human, not to the report-id question (115.01ms)",
+    "✖ R7-B.2 CAND-01: when the factual re-plan raises its own question, a review reporting pain or an illness still routes to a human (231.5251ms)"
+   ]
+  },
+  {
+   "id": "M62",
+   "blocker": "QE-R7B1-04, R7B2-CAND-01",
+   "what": "the precedence point limited to RETURN_AFTER_PAUSE (no substitution screen)",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b2-clinical-precedence.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 5,
+   "passedTests": 8,
+   "failing": [
+    "✖ R7-B.2 QE-R7B1-04: pain or injury with an exercise, reported with late training before the break, routes to a human before the late-evidence question (173.0039ms)",
+    "✖ R7-B.2 QE-R7B1-04: with a block choice or an unrecognised choice in the same review, the clinical route still wins (135.5ms)",
+    "✖ R7-B.2 QE-R7B1-04: two steps — the late report recorded with its question, then a pain-only review of the same re-entry week routes to a human (138.3027ms)",
+    "✖ R7-B.2 QE-R7B1-04: after the clinical route a later review with no clinical signal and no pending clinical state still gets the late-evidence question, and one carrying the clinical state stays clinical (148.742ms)",
+    "✖ R7-B.2 CAND-01: when the factual re-plan raises its own question, a review reporting pain or an illness still routes to a human (208.2304ms)",
+    "✖ R7-B.2 QE-R7B1-04: pain or injury with an exercise, reported with late training before the break, routes to a human before the late-evidence question (173.0039ms)"
+   ]
+  },
+  {
+   "id": "M63",
+   "blocker": "QE-R7B1-04",
+   "what": "the point reads a weaker substitution predicate (pain only) than the handler",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b2-clinical-precedence.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 12,
+   "failing": [
+    "✖ R7-B.2 QE-R7B1-04: pain or injury with an exercise, reported with late training before the break, routes to a human before the late-evidence question (185.0569ms)",
+    "✖ R7-B.2 QE-R7B1-04: pain or injury with an exercise, reported with late training before the break, routes to a human before the late-evidence question (185.0569ms)"
+   ]
+  },
+  {
+   "id": "M64",
+   "blocker": "R7B2-CAND-02, R7B2-CAND-01",
+   "what": "the point reads a weaker return predicate (the clinical flag only) than the handler",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b2-clinical-precedence.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 2,
+   "passedTests": 11,
+   "failing": [
+    "✖ R7-B.2 CAND-02: a return report resent under the same event id whose reason is clinical routes to a human, not to the report-id question (115.6315ms)",
+    "✖ R7-B.2 CAND-01: when the factual re-plan raises its own question, a review reporting pain or an illness still routes to a human (229.9228ms)",
+    "✖ R7-B.2 CAND-02: a return report resent under the same event id whose reason is clinical routes to a human, not to the report-id question (115.6315ms)",
+    "✖ R7-B.2 CAND-01: when the factual re-plan raises its own question, a review reporting pain or an illness still routes to a human (229.9228ms)"
+   ]
+  },
+  {
+   "id": "M26b",
+   "inherits": "M26 (R7-B.1)",
+   "blocker": "QE-R7B-R2-02",
+   "what": "the block-choice question asked mid-week or in another review kind drops the factual re-plan",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs",
+    "test/r7b1-correction-cycle.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 5,
+   "passedTests": 48,
+   "failing": [
+    "✖ R7-B.1 cycle QE-R7B1-01: an unrecognised choice with a correction asks and still carries the factual re-plan (272.9645ms)",
+    "✖ R7-B.1 R2-02: a mid-week correction with a block choice asks and still carries the factual re-plan (345.3302ms)",
+    "✖ R7-B.1 R2-02: no stale-state resurrection after the question: later reviews keep the corrected basis (271.3461ms)",
+    "✖ R7-B.1 R2-02: a correction with a graduation answer mid-week asks and carries the withdrawal (57.7228ms)",
+    "✖ R7-B.1 R2-02: a correction with a block choice in another review kind asks and carries the factual re-plan (242.181ms)",
+    "✖ R7-B.1 cycle QE-R7B1-01: an unrecognised choice with a correction asks and still carries the factual re-plan (272.9645ms)"
+   ]
+  },
+  {
+   "id": "M41",
+   "inherits": "M41 (R7-B.1)",
+   "blocker": "QE-R7B1-01",
+   "what": "a block-choice question wins over the clinical route of the same review",
+   "file": "src/r6-adaptation.mjs",
+   "tests": [
+    "test/r7b1-residual-closure.test.mjs",
+    "test/r7b1-correction-cycle.test.mjs",
+    "test/r7b2-clinical-precedence.test.mjs"
+   ],
+   "result": "SURVIVED",
+   "failedTests": 0,
+   "passedTests": 66,
+   "failing": []
+  }
+ ]
+}
