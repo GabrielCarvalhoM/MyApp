@@ -1,6 +1,6 @@
 import {clone,freeze,hash} from './value.mjs';
 import {r6Authority,allows} from './r6-authority.mjs';
-import {validProgram,programHash,skeletonOf,noviceDensityApplies,slotsInUse,advanceRun,advanceStrength,strengthAtBreak,historicalStrength,historicalRun,loggedLoadDecision,adoptionBasis,asEstablishment,heldKnownLoad,resolveExercisePrescription,dayPhaseOf,startStrengthReturn,eventCompletionItem,validateWeeks,peakOf,contextOf,arrangementCandidates,arrangementDisclosures,strengthTemplates,planPhases,buildGoalModel,blocksFrom,goalDose,runTarget,runMinutesOf,plannedOf,plannedStrengthOf,anchoredStart,projectedStart,WEEK_START,EVENT_PHASES,DEVELOPMENT,BLOCK_INTENT} from './r6-program.mjs';
+import {validProgram,programHash,skeletonOf,noviceDensityApplies,firstStrengthBoundary,slotsInUse,advanceRun,advanceStrength,strengthAtBreak,historicalStrength,historicalRun,loggedLoadDecision,adoptionBasis,asEstablishment,heldKnownLoad,resolveExercisePrescription,dayPhaseOf,startStrengthReturn,eventCompletionItem,validateWeeks,peakOf,contextOf,arrangementCandidates,arrangementDisclosures,strengthTemplates,planPhases,buildGoalModel,blocksFrom,goalDose,runTarget,runMinutesOf,plannedOf,plannedStrengthOf,anchoredStart,projectedStart,WEEK_START,EVENT_PHASES,DEVELOPMENT,BLOCK_INTENT} from './r6-program.mjs';
 import {chooseBalanced,interferenceCosts,SEVERITY} from './r6-balanced.mjs';
 import {substitutesFor,catalogueEntry,CATALOGUE as CATALOG_CONFIGURATIONS} from './r6-catalogue.mjs';
 import {exerciseRow,fitStrengthSession,strengthPrescription,easyPrescription,validateR6Prescription} from './r6-prescription.mjs';
@@ -106,6 +106,8 @@ function loggedLoadQuestions(program,sk,w,ev,{gates=null,confirmations={},base=n
 }
 /** A future known load that differs from the plan is a modification, not an instantiation of a placeholder. */
 const knownLoadsChanged=(a,b,from)=>{const old=new Map(a.weeks.filter(w=>w.index>=from).flatMap(w=>w.sessions.filter(s=>s.prescription?.exercises).flatMap(s=>s.prescription.exercises.filter(e=>e.load.mode==='KNOWN').map(e=>[s.id+':'+e.id,e.load.value]))));return b.weeks.filter(w=>w.index>=from).some(w=>w.sessions.some(s=>(s.prescription?.exercises??[]).some(e=>e.load.mode==='KNOWN'&&old.has(s.id+':'+e.id)&&old.get(s.id+':'+e.id)!==e.load.value)));};
+/** A future run prescription that differs from the plan (R7-C G01): runs have no placeholders, so any difference is a modification. */
+const runsChanged=(a,b,from)=>{const old=new Map(a.weeks.filter(w=>w.index>=from).flatMap(w=>w.sessions.filter(s=>s.sport==='RUN').map(s=>[s.id,hash(s.prescription??null)])));return b.weeks.filter(w=>w.index>=from).some(w=>w.sessions.some(s=>s.sport==='RUN'&&old.has(s.id)&&old.get(s.id)!==hash(s.prescription??null)));};
 /** Comparable phase class of a week; return and restart periods form their own class. */
 export function phaseClassOf(policy,phase,mode){
  if(['RETURN','RESTART'].includes(mode))return 'RETURN';
@@ -129,11 +131,18 @@ function bindObservations(program,accepted,hybrid,policy){
  return {bound,unbound};
 }
 const kindOf=o=>o.partial?'PARTIAL':o.confounded?'CONFOUNDED':classify(o);
+/** A report that the session was not done at all (R7-C G01, record fidelity, CQ-R6-19/H17): not completed, no minutes and no logged set. */
+const notDone=o=>o.actual?.completed===false&&!(Number(o.actual?.minutes)>0)&&!(Array.isArray(o.actual?.exercises)&&o.actual.exercises.some(e=>Array.isArray(e?.sets)&&e.sets.length));
 function weekEvidence(program,w,asOfLocal,ledger,quarantined){
  const week=program.weeks[w];
- const rows=(week?.sessions??[]).filter(s=>s.prescription).map(s=>{
+ // A session the plan moved to another day lives on in the session it moved to (movedTo): unless it was itself reported executed (or a report of
+ // it is in conflict), it is no unreported or missed row of its role, so an executed moved session is gated on its own report (R7-C G01, record
+ // fidelity, CQ-R6-19/H22); a report that it was not done only confirms the move. A session skipped without a move keeps its row: the next
+ // comparable session repeats the last executed dose (R6).
+ const rows=(week?.sessions??[]).filter(s=>s.prescription&&!(s.status==='SKIPPED'&&s.movedTo&&!ledger.some(o=>o.sessionId===s.id&&!notDone(o))&&!quarantined.includes('session:'+s.id))).map(s=>{
   const obs=ledger.filter(o=>o.sessionId===s.id),latest=obs.at(-1)??null,conflicted=quarantined.includes('session:'+s.id);
-  const status=conflicted?'CONFLICTED':latest?(latest.partial?'PARTIAL':'COMPLETED'):s.date<asOfLocal?'MISSED':s.date===asOfLocal?'NOT_REPORTED':'PENDING';
+  // A report that the session was not done is a known miss, never a partial execution; it still holds the dose and earns nothing.
+  const status=conflicted?'CONFLICTED':latest?(notDone(latest)?'MISSED':latest.partial?'PARTIAL':'COMPLETED'):s.date<asOfLocal?'MISSED':s.date===asOfLocal?'NOT_REPORTED':'PENDING';
   return {sessionId:s.id,sport:s.sport,role:s.role,key:s.key,optional:s.optional,date:s.date,status,kind:latest?kindOf(latest):null,eventId:latest?.eventId??null,logs:latest?.logs??{},exercises:s.sport==='STRENGTH'?s.prescription.exercises.map(e=>e.id):[]};
  });
  const adverse=rows.filter(r=>r.kind==='ADVERSE');
@@ -253,15 +262,48 @@ const systemicOf=ctx=>!!ctx.ev.systemicConvergence||(ctx.program.weeks[ctx.w]?.a
 const confirmationsOf=ctx=>Object.assign({},...(ctx.program.weeks[ctx.w]?.adaptations??[]).filter(a=>a.kind==='LOAD_CONFIRMATIONS').map(a=>a.confirmations),ctx.confirmations);
 const reviewGates=(ctx,{systemicSignal=false}={})=>weeklyGates(ctx.program,ctx.sk,ctx.w,ctx.ev,ctx.ledger,ctx.asOf,{systemic:systemicSignal||systemicOf(ctx),base:ctx.base});
 /**
+ * R7-C G02, learned maintenance between cycles (Founder option A, the current approved envelope: R6-PARTIAL-NOISY-LEARNING lets comparable
+ * observations inform hold; AEC §1.3 progresses the next cycle under response). With learning consent, when next week's start would take the long
+ * run above the long run last executed in a build week to a dose whose comparable observations hold an established adverse association, the
+ * long run stays at the dose last executed (maintenance instead of progression); the population rule decides everything else.
+ * - Comparable is the envelope's own (SSCTR r12 condition 8): the identical prescription, the same arrangement pool and the BUILD phase class,
+ *   within the model's age limit. Established is the model's own confidence (EMERGING or STRONG, direction ADVERSE, never MIXED): one event never
+ *   becomes a rule, and the hold lifts by itself once the association no longer stands.
+ * - It only ever keeps a dose the athlete executed and the plan prescribed: no new dose, threshold or step size, nothing above the population
+ *   start, never causal. Only into a development week of the BUILD class in EASY mode: never a return, restart, walk/jog, event-specific, taper,
+ *   race-week, post-event or next-block transition.
+ * - It reads the run state next week would start from, so a step the evidence reducer re-credits (it never sees a learned choice) is held again
+ *   at the next decision, a consolidation week in between included.
+ * - Without learning consent the model is empty and nothing is learned; a revoked consent empties it, so nothing personal stays in force.
+ * `skn` is the context of the week entered. Null when nothing is learned.
+ */
+function learnedMaintenance(ctx,runState,skn){
+ const {w,model}=ctx,phase=skn.plan.phases[w+1];
+ if(ctx.consent!==true||!model?.purposeAllowed||!allows(ctx.authority,'R6-PARTIAL-NOISY-LEARNING'))return null;
+ if(!['BUILD','DEVELOPMENT'].includes(phase)||phaseClassOf(ctx.authority.policy,phase,'EASY')!=='BUILD'||runState?.mode!=='EASY'||!Number.isFinite(runState.long))return null;
+ // The dose last executed: the latest complete long run of a build week in EASY mode, outside a consolidation week's planned reduction.
+ const last=(ctx.ledger??[]).filter(o=>!o.partial&&!o.conflicted&&o.context?.sessionType==='RUN:LONG'&&o.context.phaseClass==='BUILD'&&o.context.mode==='EASY'&&o.context.phase!=='CONSOLIDATION'&&Number.isFinite(o.context.runMinutes)&&Date.parse(o.observedAt)<=Date.parse(ctx.asOf)).sort((a,b)=>Date.parse(a.observedAt)-Date.parse(b.observedAt)).at(-1);
+ const now=last?.context.runMinutes,step=Math.min(skn.c.schedule.longRunMinutes??skn.c.schedule.runMinutes,runState.long);
+ if(!Number.isFinite(now)||step<=now)return null;
+ const target=hash(easyPrescription(step,{family:'LONG',cue:skn.op.run.effortCues.EASY_CONVERSATIONAL})),arrangementId=ctx.program.weeks[w+1]?.arrangementId??ctx.program.weeks[w].arrangementId;
+ const e=evidenceFor(model,{sessionType:'RUN:LONG',phaseClass:'BUILD',plannedHash:target,arrangementId},{asOf:ctx.asOf});
+ if(e.direction!=='ADVERSE'||!['EMERGING','STRONG'].includes(e.confidence))return null;
+ const reason=`Learned for you (an association, not a cause): your ${step}-minute long runs were followed by an adverse response ${e.adverseCount} times over ${Math.round(e.spanDays)} days, so the long run stays at the ${now} minutes you last ran instead of stepping up to ${step}; it steps up again once that pattern no longer stands (observations older than ${model.policy.maximumAgeDays} days no longer count)`;
+ return {runState:{...runState,long:now},reason,pattern:{kind:'LEARNED_MAINTENANCE',sessionType:'RUN:LONG',heldAtMinutes:now,stepToMinutes:step,evidence:{direction:e.direction,confidence:e.confidence,informativeCount:e.informativeCount,adverseCount:e.adverseCount,spanDays:e.spanDays,sourceEventIds:clone(e.sourceEventIds)},causal:false,automaticDoseAuthority:false,basis:'R6-PARTIAL-NOISY-LEARNING'}};
+}
+/**
  * The weekly review's rule (R7-A.1 C3): next week's start from this week's evidence, applied to the start the decision plans from. `start` is
  * that start: the PlanningView of this week (planningBase, state model) or this week as a composition re-planned it from that view; `week` is the
- * week's rows as they stand. A planning transition: it writes the projection's next start, never history.
+ * week's rows as they stand. A planning transition: it writes the projection's next start, never history. With learning consent the long run's
+ * step may be held by learnedMaintenance (R7-C G02), returned as `learned` so the caller's record names it.
  */
 function evidenceStart(ctx,{week,start},skn,{gates=null}={}){
- const {w}=ctx,g=gates??reviewGates(ctx).gates,evidenceGates={ALL:'HOLD',...g};
- return {runState:advanceRun(skn,start.run,w,evidenceGates),strengthState:advanceStrength(skn,start.strength,w,usedInWeek(week),evidenceGates,loggedLoads(ctx.ev,confirmationsOf(ctx)),{performed:performedInWeek(ctx.ev,ctx.fullLedger??ctx.ledger)})};
+ const {w}=ctx,g=gates??reviewGates(ctx).gates,evidenceGates={ALL:'HOLD',...g},run=advanceRun(skn,start.run,w,evidenceGates),learned=learnedMaintenance(ctx,run,skn);
+ return {runState:learned?.runState??run,strengthState:advanceStrength(skn,start.strength,w,usedInWeek(week),evidenceGates,loggedLoads(ctx.ev,confirmationsOf(ctx)),{performed:performedInWeek(ctx.ev,ctx.fullLedger??ctx.ledger)}),...(learned?{learned}:{})};
 }
 const evidenceRule=ctx=>(view,skn)=>evidenceStart(ctx,{week:view.weeks[ctx.w],start:view.stateTrace[ctx.w]},skn);
+/** A composition's question as a decision, with its typed payload when it has one (R7-C G01: UNREPORTED_TRAINING). */
+const askOf=x=>({action:'ASK',reason:x.ask,missingInputs:x.missingInputs,...(x.question?{question:x.question}:{})});
 function finishProposal(program,sk,next,decision){
  const proposal=clone(program);proposal.weeks=next.weeks;proposal.stateTrace=next.stateTrace??program.stateTrace;
  // The earlier contexts still in force for some weeks travel with the program (R7-A.1 C2).
@@ -401,43 +443,50 @@ function weeklyReview(ctx,{extraReason=null,systemicSignal=false}={}){
   if(patterns.length){
    const athleteSeverity=Object.fromEntries(patterns.map(x=>[x.cause,'HIGH']));
    const r=rebuild(ctx,{reason:'Learned athlete-specific pattern: '+patterns.map(x=>`${x.adverseWith} adverse key runs after "${x.cause.toLowerCase()}", ${x.compatibleWithout} compatible without it`).join('; ')+'. The arrangement changes for future weeks at the same doses (association, not causation).',action:'LEARNED_REARRANGEMENT',athleteSeverity});
-   if(r.proposal&&hash(r.proposal.arrangementSessions)!==hash(program.arrangementSessions))return {...r,learnedPatterns:patterns};
+   if(r.proposal&&hash(r.proposal.arrangementSessions)!==hash(program.arrangementSessions))return {...r,learnedPatterns:[...patterns,...(r.learnedPatterns??[])]};
   }
  }
  // Mid-week the week continues as planned: evidence about an earlier week that moved this week's PlanningView has already re-planned the sessions
  // still ahead before any handler decides (factualReplan).
  if(ev.pending)return {action:'KEEP',reason:(extraReason?extraReason+'; ':'')+'next-week steps are gated when this week’s remaining sessions are complete',counterfactuals:[counter('KEEP','KEEP',true,'Smallest effective decision mid-week',{selected:true}),counter('EARLY_GATE','HOLD_NEXT_STEP',false,'Gating before the week ends would treat future sessions as missed')]};
- const {gates,reasons}=weeklyGates(program,sk,w,ev,ledger,asOf,{systemic,base:ctx.base});
+ const {gates:populationGates,reasons}=weeklyGates(program,sk,w,ev,ledger,asOf,{systemic,base:ctx.base});
  // R7-B block boundary (B0-C01, B0-C06, B0-C07): graduation, ladder offers, MAIN changes with a recorded reason and the block summary, all on
  // executed evidence at the boundary of a development block; accepted changes re-plan from next week through the context (the evidence reducer
  // replays them). Nothing changes on the calendar alone.
- const boundary=blockBoundary(ctx,gates);
+ const boundary=blockBoundary(ctx,populationGates);
  if(boundary.ask)return boundary.ask;
  if(boundary.changes){const r=rebuild(ctx,{canonical:boundary.changes,fromWeek:w+1,reason:boundary.reason,action:boundary.action});return r.proposal?{...r,offers:boundary.offers,disclosures:[...(r.disclosures??[]),...boundary.disclosures]}:r;}
- const logs=loggedLoads(ev,confirmationsOf(ctx)),allAdvance=Object.values(gates).every(g=>g==='ADVANCE');
  const rebased=rebasedNext(program,w),skn=sk.at(w+1)??sk;
  // A dimension with no executed session this week has no gate: it holds, it never counts as executed (QRE-R6-04). The review's rule applies to
  // the start this decision plans from (PlanningView, state model), never to a stored projection's history-defined atoms.
- const nextState=rebased?{runState:clone(rebased.run),strengthState:clone(rebased.strength)}:evidenceStart(ctx,{week:program.weeks[w],start:ctx.base},skn,{gates});
+ const nextState=rebased?{runState:clone(rebased.run),strengthState:clone(rebased.strength)}:evidenceStart(ctx,{week:program.weeks[w],start:ctx.base},skn,{gates:populationGates});
+ // R7-C G02: a learned maintenance of the long run (evidenceStart) is recorded as the long run's gate, so the record names what the dose follows.
+ const learned=nextState.learned??null,gates=learned?{...populationGates,LONG:'HOLD'}:populationGates;
+ if(learned)reasons.push({key:'LONG',gate:'HOLD',why:learned.reason});
+ const logs=loggedLoads(ev,confirmationsOf(ctx)),allAdvance=Object.values(gates).every(g=>g==='ADVANCE');
  // A return's re-base stays next week's start, with its authority; otherwise the review's evidence sets it (R7-A.1 C3; WEEK_EVIDENCE).
  const projected=composeWeeks(ctx,program,{fromWeek:w+1,start:nextState,startAuthority:rebased?program.weeks[w+1].startAuthority:anchoredStart(WEEK_START.WEEK_EVIDENCE,{eventId:ctx.review.event.id,asOf})});
- if(projected.ask)return {action:'ASK',reason:projected.ask,missingInputs:projected.missingInputs};
+ if(projected.ask)return askOf(projected);
  const changed=changedSessions(program,projected);
  // An unconfirmed establishment load lives only in the state: a new or changed pending value needs a proposal to reach the next review (SSCTR D45).
  const pending=Object.keys(logs).filter(id=>Number.isFinite(nextState.strengthState.exercises[id]?.pendingLoad)),pendingMoved=pending.some(id=>nextState.strengthState.exercises[id].pendingLoad!==program.stateTrace[w+1]?.strength?.exercises?.[id]?.pendingLoad);
  const keepOk=(allAdvance||!!rebased)&&!changed&&!pendingMoved,knownChanged=allAdvance&&changed>0&&knownLoadsChanged(program,projected,w+1);
+ // R7-C G01 (C15): a week executed as planned whose next runs differ from the plan is a re-base, never an instantiation: the plan had assumed
+ // earlier weeks executed that have no executed evidence (they earn nothing), and keeping its label would report that credit as standing.
+ const runRebased=allAdvance&&!rebased&&changed>0&&runsChanged(program,projected,w+1);
  const keep=counter('KEEP','KEEP',keepOk,keepOk?'Every gated session executed without adverse signal: the planned next step stands':allAdvance?'Logged loads differ from the planned loads or placeholders; keeping them would ignore executed evidence':'Planned next step would advance work that was not executed or tolerated as planned',{h3Loss:0,changeCount:0,order:0});
  const gated=counter('GATED_NEXT_STEP',allAdvance?(knownChanged?'ADOPT_LOGGED_LOADS':Object.keys(logs).length?'INSTANTIATE_LOGGED_LOADS':'KEEP'):'HOLD_OR_REGRESS_NEXT_STEP',true,'Smallest valid change: repeat or step back only the affected session types; everything else proceeds',{changeCount:changed,order:1,gates});
  const replan=counter('REBASE_BLOCK','LARGER_REPLAN',systemic&&Object.values(gates).filter(g=>g==='REGRESS').length>=2,'A wider rebase is justified only by repeated converging adverse evidence',{changeCount:changed+3,order:2});
  if(keepOk)return {action:'KEEP',offers:boundary.offers,disclosures:boundary.disclosures,reason:extraReason??(rebased&&!allAdvance?'The return reported this week already plans next week; this review keeps it':'Executed as planned without adverse signal; the planned progression step stands'),gates,counterfactuals:[{...keep,selected:true},{...gated,admissible:false,reason:'No difference from the plan'},replan],nextObservation:'Execute next week as planned; record actual minutes, sets, reps, loads, effort and next-day function'};
- const action=allAdvance?(knownChanged?'ADOPT_LOGGED_LOADS':'INSTANTIATE_LOGGED_LOADS'):'GATED_NEXT_STEP';
+ const action=allAdvance&&!runRebased?(knownChanged?'ADOPT_LOGGED_LOADS':'INSTANTIATE_LOGGED_LOADS'):'GATED_NEXT_STEP';
  const decision={eventId:ctx.review.event.id,asOf,action,fromWeek:w+1,gates,reasons,horizonsConsidered:HORIZONS};
  const proposal=finishProposal(program,sk,projected,decision);
  const horizons=horizonSummary(sk,program,proposal,{w,changed});
  gated.selected=true;
  const wait=pending.length?`first logged loads wait for confirmation before they become numbers (${pending.join(', ')})`:null,instantiated=Object.keys(logs).some(id=>Number.isFinite(logs[id].load)&&!pending.includes(id));
- const why=extraReason??(action==='ADOPT_LOGGED_LOADS'?'Executed loads differ from the planned known loads; the plan continues from what was lifted, one step at a time':action==='INSTANTIATE_LOGGED_LOADS'?(instantiated||!wait?'Logged loads replace planned placeholders; the progression rule is unchanged':'The progression rule is unchanged'):'Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation');
- return {action,offers:boundary.offers,disclosures:boundary.disclosures,instantiationOnly:allAdvance&&!knownChanged,reason:wait?why+'; '+wait:why,proposal,gates,horizons,counterfactuals:[{...keep,whyLost:keep.admissible?null:keep.reason},gated,replan]};
+ const why=extraReason??(runRebased?'Executed as planned this week; next week’s runs start from what has been executed, which differs from what the plan had assumed for weeks with no executed evidence (they earn nothing), so the plan is re-based, not kept':action==='ADOPT_LOGGED_LOADS'?'Executed loads differ from the planned known loads; the plan continues from what was lifted, one step at a time':action==='INSTANTIATE_LOGGED_LOADS'?(instantiated||!wait?'Logged loads replace planned placeholders; the progression rule is unchanged':'The progression rule is unchanged'):'Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation');
+ const said=[why,wait,learned?.reason].filter(Boolean).join('; ');
+ return {action,offers:boundary.offers,disclosures:boundary.disclosures,instantiationOnly:allAdvance&&!knownChanged&&!runRebased,reason:said,proposal,gates,horizons,counterfactuals:[{...keep,whyLost:keep.admissible?null:keep.reason},gated,replan],...(learned?{learnedPatterns:[learned.pattern]}:{})};
 }
 // ---------- R7-B: block boundary and reason-based substitution ----------
 const DEV_FAMILIES=['BUILD','DEVELOPMENT','NEXT_BLOCK'];
@@ -779,12 +828,13 @@ function rebuild(ctx,{canonical=null,goals=false,fromWeek=ctx.w+1,reason,action,
  // any other one arrive never changes the dose (decision authority closure, QE-R7ASC-04).
  const own=fromWeek===ctx.w?{...ctx,program:next,sk,evidence:undefined}:ctx;if(own!==ctx)own.base=planningBase(own);
  const projected=composeWeeks(own,next,{fromWeek,start,startAuthority,evidence:evidenceRule(own)});
- if(projected.ask)return {action:'ASK',reason:projected.ask,missingInputs:projected.missingInputs};
+ if(projected.ask)return askOf(projected);
  const disclosures=arrangementDisclosures(trace.choices),negotiation=[...(program.negotiation??[]).filter(n=>n.id!=='ARRANGEMENT_COST_DISCLOSED'||!trace.contexts.includes(n.context)),...disclosures];
  const fields={weeks:projected.weeks,stateTrace:projected.stateTrace,schedule:next.canonical.schedule,canonical:next.canonical,templates:next.templates,noviceTemplates:next.noviceTemplates??null,arrangementSessions:next.arrangementSessions,phases:next.phases,blocks:next.blocks,goal:next.goal,negotiation,contextBefore:next.contextBefore??null};
- const applied=fromWeek===ctx.w+1?gates:null;
+ // R7-C G02: a learned maintenance of the long run in next week's start (evidenceStart) is recorded as the long run's gate.
+ const learned=start?.learned??null,applied=fromWeek===ctx.w+1?(learned?{...gates,LONG:'HOLD'}:gates):null;
  const proposal=finishProposal(program,sk,fields,{eventId:review.event.id,asOf:ctx.asOf,action,fromWeek,reason,arrangement:trace.traces,horizonsConsidered:HORIZONS,...(applied?{gates:applied}:{})});
- return {action,reason,proposal,sk,gates:applied,disclosures,counterfactuals:[counter('KEEP','KEEP',false,'The current plan no longer fits the stated facts'),counter(action,action,true,reason,{selected:true,changeCount:changedSessions(program,proposal)})],horizons:horizonSummary(sk,program,proposal,{w:ctx.w,changed:changedSessions(program,proposal)})};
+ return {action,reason:learned?reason+'; '+learned.reason:reason,proposal,sk,gates:applied,disclosures,counterfactuals:[counter('KEEP','KEEP',false,'The current plan no longer fits the stated facts'),counter(action,action,true,reason,{selected:true,changeCount:changedSessions(program,proposal)})],horizons:horizonSummary(sk,program,proposal,{w:ctx.w,changed:changedSessions(program,proposal)}),...(learned?{learnedPatterns:[learned.pattern]}:{})};
 }
 /** A schedule change is validated like the intake: unique days 0–6, AM/PM shifts, 10–240 minutes, a long-run day among the run days (QRE-R6-08). */
 function scheduleChangeErrors(ch,merged){
@@ -865,7 +915,7 @@ function equipmentChange(ctx){
  const next=changed.program,gap=skillMismatchGap(ctx,next,{accepted:ch.acceptGap===true,input:'changes.acceptGap'});if(gap?.ask)return gap.ask;
  // Only strength is re-planned, from the sessions still ahead (C1, C6), keeping next week's start and this week's adaptations (C3, C4).
  const composed=composeWeeks(ctx,next,{fromWeek:w,sports:['STRENGTH'],evidence:evidenceRule(ctx)});
- if(composed.ask)return {action:'ASK',reason:composed.ask,missingInputs:composed.missingInputs};
+ if(composed.ask)return askOf(composed);
  const swaps=[],omitted=[];
  for(const wk of program.weeks.slice(w))for(const s of wk.sessions){
    if(s.sport!=='STRENGTH'||!ctx.ahead(s))continue;
@@ -1042,6 +1092,10 @@ function evidenceState(ctx,{cut,day,ledger,program=ctx.program,ret=null,p=null,r
    const hr=how('RUN'),hs=how('STRENGTH');
    const run=hr?advanceRun(skn,{...P.state.run,planned:R.plannedRun},j,R.g):plan?advanceRun(skn,{...P.state.run,planned:R.plannedRun},j,{ALL:'HOLD'}):P.state.run;
    const strength=hs?advanceStrength(skn,{...P.state.strength,planned:R.plannedStrength,...(typeof R.entryWeek==='boolean'?{entryWeek:R.entryWeek}:{})},j,R.used,R.g,R.logs,{performed:R.performed,evidenceMode:true}):strengthAtBreak(skj,{...P.state.strength,planned:C5.plannedStrength},C5.used,C5.g,{performed:C5.performed,logged:C5.logs,evidenceMode:true});
+   // R7-C G01 (QE-R7B-R2-05): the novice density cap a context starts is a constraint of that context, not evidence, so a week read by its facts
+   // only (no review, not complete) starts it exactly as the weekly rule does (advanceStrength, same context and week); only executed evidence
+   // releases it, which the facts reading never does.
+   if(!hs&&strength.density===undefined&&noviceDensityApplies(skn)&&j<firstStrengthBoundary(skn))strength.density={capped:true};
    const runV=hr?{basis:hr,week:k}:P.values.RUN,sv=hs?{basis:hs,week:k}:null;
    const values=Object.fromEntries(Object.keys(strength.exercises).map(id=>[id,sv??P.values.STRENGTH[id]??{basis:'FACTS',week:null}]));
    out={state:{run,strength},values:{RUN:runV,STRENGTH:values},sport:{RUN:runV,STRENGTH:sv??P.sport.STRENGTH},since:null,executed:hs?[]:[...new Set([...P.executed,...Object.keys(C5.performed)])]};
@@ -1108,7 +1162,7 @@ function viewMovedBy(ctx){
 function factualReplan(ctx){
  if(!(ctx.ev.pending||ctx.program.weeks[ctx.w].sessions.some(s=>s.prescription&&ctx.ahead(s)))||!viewMovedBy(ctx))return null;
  const replan=composeWeeks(ctx,ctx.program,{fromWeek:ctx.w});
- if(replan.ask)return {ask:{action:'ASK',reason:replan.ask,missingInputs:replan.missingInputs}};
+ if(replan.ask)return {ask:askOf(replan)};
  const changed=changedSessions(ctx.program,replan);if(!changed)return null;
  const proposal=finishProposal(ctx.program,ctx.sk,replan,{eventId:ctx.review.event.id,asOf:ctx.asOf,action:'REPLAN_FROM_EVIDENCE',fromWeek:ctx.w,horizonsConsidered:HORIZONS});
  const own={...ctx,program:proposal,evidence:undefined};own.base=planningBase(own);
@@ -1353,8 +1407,9 @@ function returnAfterPause(ctx){
  if(fromWeek===w){const was=program.weeks[w];base={...base,weeks:base.weeks.map((x,k)=>k!==w?x:{...x,startBeforeReturn:clone(was.startBeforeReturn??program.stateTrace[w]),startBeforeReturnAuthority:clone((was.startBeforeReturn?was.startBeforeReturnAuthority:was.startAuthority)??null)})};}
  // Re-entry this week starts the week again from the return; re-entry next week is next week's start (C3). The entry is evidence-anchored:
  // the state executed when the interruption began, with its facts (RETURN_ENTRY).
- const next=composeWeeks(ctx,base,{fromWeek,start:{runState,strengthState},startAuthority:anchoredStart(WEEK_START.RETURN_ENTRY,{eventId:review.event.id,asOf:ctx.asOf}),completedRuns:returnRuns,returnDay:asOfLocal,evidence:evidenceRule(ctx)});
- if(next.ask)return {action:'ASK',reason:next.ask,missingInputs:next.missingInputs};
+ // The interruption this report declares is a known stop, not unreported training (R7-C G01): its days never make the re-entry ask.
+ const next=composeWeeks(ctx,base,{fromWeek,start:{runState,strengthState},startAuthority:anchoredStart(WEEK_START.RETURN_ENTRY,{eventId:review.event.id,asOf:ctx.asOf}),completedRuns:returnRuns,returnDay:asOfLocal,evidence:evidenceRule(ctx),declared:[{start:pauseStart,end}]});
+ if(next.ask)return askOf(next);
  // A named correction cannot move its interruption over the re-entry its return already had (Founder §11, I7): training recorded after that
  // return began (the interruption's first report), on or before the corrected end, would be both re-entry and before or inside the
  // interruption. When the new reading changes a prescription it is asked, never resolved by choosing one story.

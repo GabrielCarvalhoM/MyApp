@@ -137,7 +137,9 @@ test('Adaptation: nonclinical return is staged from current evidence; clinical o
  assert.ok(demo.proposal.weeks[w+1].plannedRunMinutes>entry.plannedRunMinutes,'a current demonstration replaces the generic entry');
  assert.equal(evaluateProgram(p,review(p,w,'RETURN_AFTER_PAUSE',{interruption:{days:18,reason:'knee injury'}}),opts).status,'CLINICAL_HUMAN_REQUIRED');
  assert.equal(evaluateProgram(p,review(p,w,'RETURN_AFTER_PAUSE',{interruption:{days:18}}),opts).status,'ASK');
- const short=evaluateProgram(p,review(p,w,'RETURN_AFTER_PAUSE',{interruption:{days:6,reasonCategory:'WORK'}}),opts);
+ // R7-C G01: a short break resumes the last executed doses, so it is judged where runs are recorded before it (the reviewed weeks); with nothing
+ // ever reported the resumption would rest on unreported training, which is asked (test/r7c-longitudinal.test.mjs), never read as zero.
+ const short=evaluateProgram(q,review(q,w,'RETURN_AFTER_PAUSE',{interruption:{days:6,reasonCategory:'WORK'},actualLedger:ledger}),opts);
  assert.ok(!short.proposal.weeks[w+1].sessions.some(s=>s.role==='QUALITY'),'first quality slot after a short break runs easy');
 });
 test('Adaptation: clinical flags route to a human and stay sticky through generic recovered labels',()=>{

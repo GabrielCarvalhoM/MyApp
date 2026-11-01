@@ -926,3 +926,16 @@ A direct [Founder request](audits/domain-coaching-r7-c-2026-11-01/FOUNDER_REQUES
   - R7C-G02: the Athlete Model changes no realistic decision (CQ-R6-14).
 - **Unchanged:** no runtime, test, policy, catalog, freeze, queue (230), `product/` or `canon/` change. R7-A, B0, R7-B, R7-B.1 and R7-B.2 are not reopened.
 - **Next:** R7-C Phase 2 needs its own Founder authorization and two decisions: who owns R18/C15/CQ-R6-04, and how deep CQ-R6-14 goes. [Checkpoint](audits/domain-coaching-r7-c-2026-11-01/PHASE1_CHECKPOINT.md).
+
+<!-- DOMAIN_COACHING_R7C: DCR7C-20261101-phase2-r1 -->
+## DOMAIN_COACHING_R7-C — Longitudinal Coaching — Phase 2 (re-baseline + implementation + directed tests) complete / 2026-11-01
+
+A direct Founder request authorizes **R7-C Phase 2 only**, with two decisions: the factual/runtime mechanism of R18, C15 and CQ-R6-04 belongs to R7-C (G03 keeps only the athlete interaction), and CQ-R6-14 stays inside the current approved envelope (option A). Same branch and worktree; nothing merged or pushed.
+
+- **States:** R7C_PHASE2_STATUS = COMPLETE. No freeze, no independent review, R7-C not READY. V1_COACHING_AUTHORITY_READY = NO.
+- **Re-baseline (on R7B2-FREEZE-1 bytes):** D1, D2, D4 and D5 reproduce. D2, D4 and D5 are absorbed. D1's in-week response stays routed (in-cycle rule or proactive check-in, excluded).
+- **R7C-G01:** unknown is neither executed-success nor executed-failure. A run dose that depends on weeks with no report or no review is asked, typed (UNREPORTED_TRAINING), never planned from the entry (zero) or the projection (credit). The C15 label is honest. The novice cap starts on the R18 path (QE-R7B-R2-05). Moved sessions and not-done reports are recorded as what they are.
+- **R7C-G02:** with consent, an established adverse association at the long-run dose a step would reach holds that step at the dose last executed, inside R6-PARTIAL-NOISY-LEARNING. Off or revoked consent changes nothing.
+- **Tests:** 16 new directed tests, 16/16. Clinical-first and return/re-entry 36/36 and 25/25. Touched-behaviour regressions 61/61. The full suite waits for Phase 3.
+- **Unchanged:** R6-POLICY-5, R7B0-CATALOG-2, queue (230), `product/`, `canon/`. No closure reopened.
+- **Next:** Phase 3 (freeze, full suite, SSCTR and Engineering gates) needs its own Founder authorization. [Checkpoint](audits/domain-coaching-r7-c-2026-11-01/PHASE2_CHECKPOINT.md).

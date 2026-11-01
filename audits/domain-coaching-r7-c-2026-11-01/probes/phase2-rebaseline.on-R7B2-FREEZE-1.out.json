@@ -1,0 +1,745 @@
+{
+ "D1_H19": {
+  "steps": [
+   {
+    "step": "S1",
+    "status": "KEEP",
+    "action": "KEEP",
+    "reason": "One adverse execution is a signal, not a trend; keep the plan and compare the next execution",
+    "gates": null,
+    "missing": [],
+    "learned": null
+   },
+   {
+    "step": "S2",
+    "status": "MODIFY",
+    "action": "GATED_NEXT_STEP",
+    "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation",
+    "gates": {
+     "LONG": "ADVANCE",
+     "QUALITY": "HOLD",
+     "EASY": "HOLD",
+     "goblet-squat": "ADVANCE",
+     "push-up": "ADVANCE",
+     "db-row": "ADVANCE",
+     "db-calf-raise": "ADVANCE",
+     "db-rdl": "ADVANCE",
+     "db-split-squat": "ADVANCE"
+    },
+    "missing": [],
+    "learned": null
+   },
+   {
+    "step": "S3",
+    "status": "KEEP",
+    "action": "KEEP",
+    "reason": "next-week steps are gated when this week’s remaining sessions are complete",
+    "gates": null,
+    "missing": [],
+    "learned": null
+   },
+   {
+    "step": "S4",
+    "status": "KEEP",
+    "action": "KEEP",
+    "reason": "next-week steps are gated when this week’s remaining sessions are complete",
+    "gates": null,
+    "missing": [],
+    "learned": null
+   }
+  ],
+  "s4QualityNext": null,
+  "counterfactualWithWeek5Review": [
+   {
+    "step": 0,
+    "status": "KEEP",
+    "action": "KEEP",
+    "reason": "One adverse execution is a signal, not a trend; keep the plan and compare the next execution",
+    "gates": null,
+    "missing": [],
+    "learned": null
+   },
+   {
+    "step": 1,
+    "status": "MODIFY",
+    "action": "GATED_NEXT_STEP",
+    "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation",
+    "gates": {
+     "LONG": "ADVANCE",
+     "QUALITY": "HOLD",
+     "EASY": "HOLD",
+     "goblet-squat": "ADVANCE",
+     "push-up": "ADVANCE",
+     "db-row": "ADVANCE",
+     "db-calf-raise": "ADVANCE",
+     "db-rdl": "ADVANCE",
+     "db-split-squat": "ADVANCE"
+    },
+    "missing": [],
+    "learned": null
+   },
+   {
+    "step": 2,
+    "status": "KEEP",
+    "action": "KEEP",
+    "reason": "next-week steps are gated when this week’s remaining sessions are complete",
+    "gates": null,
+    "missing": [],
+    "learned": null
+   },
+   {
+    "step": 3,
+    "status": "MODIFY",
+    "action": "GATED_NEXT_STEP",
+    "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation",
+    "gates": {
+     "LONG": "HOLD",
+     "QUALITY": "REGRESS",
+     "EASY": "HOLD",
+     "goblet-squat": "ADVANCE",
+     "push-up": "HOLD",
+     "db-row": "HOLD",
+     "db-calf-raise": "ADVANCE",
+     "dead-bug": "HOLD",
+     "db-rdl": "HOLD",
+     "db-split-squat": "HOLD"
+    },
+    "missing": [],
+    "learned": null
+   },
+   {
+    "step": 4,
+    "status": "KEEP",
+    "action": "KEEP",
+    "reason": "next-week steps are gated when this week’s remaining sessions are complete",
+    "gates": null,
+    "missing": [],
+    "learned": null
+   }
+  ]
+ },
+ "D2_H22": [
+  {
+   "step": "S1",
+   "status": "MODIFY",
+   "action": "RESCHEDULE_WITHIN_WEEK",
+   "reason": "Sessions on the unavailable date are moved within chosen days when that adds no interference, otherwise skipped without debt",
+   "gates": null,
+   "missing": [],
+   "learned": null,
+   "longRow": [
+    {
+     "id": "w5-run-d6",
+     "date": "2027-02-14",
+     "status": "PENDING"
+    }
+   ]
+  },
+  {
+   "step": "S2",
+   "status": "MODIFY",
+   "action": "GATED_NEXT_STEP",
+   "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation",
+   "gates": {
+    "LONG": "HOLD",
+    "QUALITY": "ADVANCE",
+    "EASY": "ADVANCE",
+    "goblet-squat": "ADVANCE",
+    "push-up": "ADVANCE",
+    "db-row": "ADVANCE",
+    "db-calf-raise": "ADVANCE",
+    "dead-bug": "ADVANCE",
+    "db-rdl": "ADVANCE",
+    "db-split-squat": "ADVANCE"
+   },
+   "missing": [],
+   "learned": null,
+   "longRow": [
+    {
+     "id": "w5-run-d5",
+     "date": "2027-02-13",
+     "status": "COMPLETED"
+    },
+    {
+     "id": "w5-run-d6",
+     "date": "2027-02-14",
+     "status": "NOT_REPORTED"
+    }
+   ]
+  },
+  {
+   "step": "S3",
+   "status": "MODIFY",
+   "action": "REARRANGE_FUTURE_WEEKS",
+   "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the athlete removed",
+   "gates": null,
+   "missing": [],
+   "learned": null,
+   "longRow": [
+    {
+     "id": "w7-run-d6",
+     "date": "2027-02-28",
+     "status": "PENDING"
+    }
+   ]
+  },
+  {
+   "step": "S4",
+   "status": "KEEP",
+   "action": "INSTANTIATE_LOGGED_LOADS",
+   "reason": "Logged loads replace planned placeholders; the progression rule is unchanged",
+   "gates": {
+    "LONG": "ADVANCE",
+    "QUALITY": "ADVANCE",
+    "EASY": "ADVANCE",
+    "goblet-squat": "ADVANCE",
+    "push-up": "ADVANCE",
+    "db-row": "ADVANCE",
+    "standing-calf-raise": "ADVANCE",
+    "front-plank": "ADVANCE",
+    "db-rdl": "ADVANCE",
+    "db-split-squat": "ADVANCE"
+   },
+   "missing": [],
+   "learned": null,
+   "longRow": [
+    {
+     "id": "w8-run-d6",
+     "date": "2027-03-07",
+     "status": "COMPLETED"
+    }
+   ]
+  }
+ ],
+ "D2_H17": {
+  "s1": {
+   "status": "KEEP",
+   "action": "KEEP",
+   "reason": "Missed quality: zero work recorded, no debt; nothing else changes",
+   "gates": null,
+   "missing": [],
+   "learned": null
+  },
+  "qualityRowStatus": "PARTIAL",
+  "ledgerPartial": true,
+  "ledgerActual": {
+   "completed": false
+  },
+  "ledgerKind": "PARTIAL",
+  "steps": [
+   {
+    "step": "S1",
+    "status": "KEEP",
+    "action": "KEEP"
+   },
+   {
+    "step": "S2",
+    "status": "MODIFY",
+    "action": "GATED_NEXT_STEP"
+   },
+   {
+    "step": "S3",
+    "status": "MODIFY",
+    "action": "REESTABLISH"
+   }
+  ]
+ },
+ "G01_R18": {
+  "EXEC": {
+   "status": "MODIFY",
+   "action": "GATED_NEXT_STEP",
+   "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation",
+   "gates": {
+    "LONG": "HOLD",
+    "QUALITY": "HOLD",
+    "EASY": "HOLD",
+    "back-squat": "HOLD",
+    "db-bench-press": "HOLD",
+    "db-row": "HOLD",
+    "standing-calf-raise": "HOLD",
+    "dead-bug": "HOLD",
+    "db-rdl": "HOLD",
+    "db-split-squat": "HOLD"
+   },
+   "missing": [],
+   "learned": null,
+   "wk8": [
+    "EASY:55",
+    "QUALITY:53@THRESHOLD:4",
+    "LONG:75"
+   ],
+   "wk9": [
+    "EASY:55",
+    "QUALITY:49@THRESHOLD:5",
+    "LONG:75"
+   ],
+   "state8": {
+    "easy": 50,
+    "long": 75,
+    "q": 4
+   }
+  },
+  "EMPTY": {
+   "status": "MODIFY",
+   "action": "GATED_NEXT_STEP",
+   "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation",
+   "gates": {
+    "LONG": "HOLD",
+    "EASY": "HOLD",
+    "back-squat": "HOLD",
+    "db-bench-press": "HOLD",
+    "db-row": "HOLD",
+    "standing-calf-raise": "HOLD",
+    "dead-bug": "HOLD",
+    "db-rdl": "HOLD",
+    "db-split-squat": "HOLD"
+   },
+   "missing": [],
+   "learned": null,
+   "wk8": [
+    "EASY:15",
+    "EASY:15",
+    "LONG:15"
+   ],
+   "wk9": [
+    "EASY:15",
+    "EASY:15",
+    "LONG:20"
+   ],
+   "state8": {
+    "easy": 45,
+    "long": 65,
+    "q": 0
+   }
+  },
+  "NONE": {
+   "status": "MODIFY",
+   "action": "GATED_NEXT_STEP",
+   "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation",
+   "gates": {
+    "LONG": "HOLD",
+    "QUALITY": "HOLD",
+    "EASY": "HOLD",
+    "back-squat": "HOLD",
+    "db-bench-press": "HOLD",
+    "db-row": "HOLD",
+    "standing-calf-raise": "HOLD",
+    "dead-bug": "HOLD",
+    "db-rdl": "HOLD",
+    "db-split-squat": "HOLD"
+   },
+   "missing": [],
+   "learned": null,
+   "wk8": [
+    "EASY:15",
+    "EASY:15",
+    "LONG:15"
+   ],
+   "wk9": [
+    "EASY:15",
+    "EASY:15",
+    "LONG:20"
+   ],
+   "state8": {
+    "easy": 45,
+    "long": 65,
+    "q": 0
+   }
+  }
+ },
+ "D4_declaredPause": {
+  "LONG_35d": {
+   "pause": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "reason": "long nonclinical interruption (35 days): restart from current capacity; prior doses are only a ceiling",
+    "gates": null,
+    "missing": [],
+    "learned": null,
+    "wk7": [
+     "EASY:15",
+     "EASY:15",
+     "EASY:15"
+    ],
+    "wk8": [
+     "EASY:20",
+     "EASY:20",
+     "EASY:20"
+    ],
+    "wk9": [
+     "EASY:25",
+     "EASY:25",
+     "EASY:25"
+    ]
+   },
+   "unknownScheduleChange": {
+    "status": "MODIFY",
+    "action": "REARRANGE_FUTURE_WEEKS",
+    "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the athlete removed",
+    "gates": null,
+    "missing": [],
+    "learned": null,
+    "wk8": [
+     "EASY:15",
+     "EASY:15",
+     "LONG:15"
+    ],
+    "wk9": [
+     "EASY:15",
+     "EASY:15",
+     "LONG:20"
+    ]
+   }
+  },
+  "MODERATE_28d": {
+   "pause": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "reason": "moderate nonclinical interruption (28 days): re-entry from the reviewed entry dose, returning to the prior tolerated dose in 2 conditional steps",
+    "gates": null,
+    "missing": [],
+    "learned": null,
+    "wk7": [
+     "EASY:15",
+     "EASY:15",
+     "LONG:20"
+    ],
+    "wk8": [
+     "EASY:25",
+     "EASY:25",
+     "LONG:25"
+    ],
+    "wk9": [
+     "EASY:30",
+     "QUALITY:27@THRESHOLD:0",
+     "LONG:30"
+    ]
+   },
+   "unknownScheduleChange": {
+    "status": "MODIFY",
+    "action": "REARRANGE_FUTURE_WEEKS",
+    "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the athlete removed",
+    "gates": null,
+    "missing": [],
+    "learned": null,
+    "wk8": [
+     "EASY:15",
+     "EASY:15",
+     "LONG:15"
+    ],
+    "wk9": [
+     "EASY:15",
+     "EASY:15",
+     "LONG:20"
+    ]
+   }
+  },
+  "SHORT_7d": {
+   "pause": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "reason": "short nonclinical interruption (7 days): resume the last completed doses; no step until execution is observed",
+    "gates": null,
+    "missing": [],
+    "learned": null,
+    "wk7": [
+     "EASY:50",
+     "EASY:48@THRESHOLD:2",
+     "LONG:65"
+    ],
+    "wk8": [
+     "EASY:50",
+     "QUALITY:43@THRESHOLD:3",
+     "LONG:75"
+    ],
+    "wk9": [
+     "EASY:55",
+     "QUALITY:53@THRESHOLD:4",
+     "LONG:75"
+    ]
+   },
+   "unknownScheduleChange": {
+    "status": "MODIFY",
+    "action": "REARRANGE_FUTURE_WEEKS",
+    "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the athlete removed",
+    "gates": null,
+    "missing": [],
+    "learned": null,
+    "wk8": [
+     "EASY:50",
+     "QUALITY:43@THRESHOLD:3",
+     "LONG:75"
+    ],
+    "wk9": [
+     "EASY:55",
+     "QUALITY:53@THRESHOLD:4",
+     "LONG:75"
+    ]
+   }
+  }
+ },
+ "G01_C15": {
+  "weekly": {
+   "status": "KEEP",
+   "action": "INSTANTIATE_LOGGED_LOADS",
+   "reason": "Logged loads replace planned placeholders; the progression rule is unchanged",
+   "gates": {
+    "LONG": "ADVANCE",
+    "QUALITY": "ADVANCE",
+    "EASY": "ADVANCE",
+    "back-squat": "ADVANCE",
+    "push-up": "ADVANCE",
+    "db-row": "ADVANCE",
+    "db-calf-raise": "ADVANCE",
+    "dead-bug": "ADVANCE",
+    "db-rdl": "ADVANCE",
+    "db-split-squat": "ADVANCE"
+   },
+   "missing": [],
+   "learned": null,
+   "instantiationOnly": true,
+   "storedWk8": [
+    "EASY:50",
+    "QUALITY:43@10K:1",
+    "LONG:70"
+   ],
+   "wk8": [
+    "EASY:45",
+    "QUALITY:38@10K:0",
+    "LONG:70"
+   ],
+   "runChanged": true
+  },
+  "schedule": {
+   "status": "MODIFY",
+   "action": "REARRANGE_FUTURE_WEEKS",
+   "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the athlete removed",
+   "gates": null,
+   "missing": [],
+   "learned": null,
+   "wk8": [
+    "EASY:15",
+    "EASY:15",
+    "LONG:15"
+   ],
+   "wk9": [
+    "EASY:15",
+    "EASY:15",
+    "LONG:20"
+   ]
+  }
+ },
+ "G01_R2_05": {
+  "skipped": {
+   "status": "MODIFY",
+   "week2": "LOWER,LOWER_B,UPPER,UPPER_B",
+   "week3": "CORE,CORE,FULL_A,FULL_B"
+  },
+  "reviewedEmpty": {
+   "status": "MODIFY",
+   "week2": "CORE,CORE,FULL_A,FULL_B",
+   "week3": "CORE,CORE,FULL_A,FULL_B"
+  },
+  "reviewedAll": {
+   "status": "MODIFY",
+   "week2": "CORE,CORE,FULL_A,FULL_B",
+   "week3": "CORE,CORE,FULL_A,FULL_B"
+  }
+ },
+ "G01_H25": [
+  {
+   "step": "S1",
+   "status": "MODIFY",
+   "action": "REPLAN_FUTURE_PHASES",
+   "reason": "Goal or event date changed: future phases, priorities and arrangements are re-planned from the current state; completed weeks stay as they were",
+   "gates": null,
+   "missing": [],
+   "learned": null,
+   "runsByWeek": [
+    "4:EASY:35/QUALITY:34/LONG:50",
+    "5:EASY:40/QUALITY:41/LONG:55",
+    "6:EASY:40/QUALITY:48/LONG:60",
+    "7:EASY:40/QUALITY:48/LONG:55",
+    "8:EASY:40/QUALITY:43/LONG:65",
+    "9:EASY:40/QUALITY:38/LONG:65",
+    "10:EASY:45/QUALITY:43/LONG:70",
+    "11:EASY:45/QUALITY:43/LONG:70",
+    "12:EASY:35/QUALITY:31/LONG:45",
+    "13:EASY:25/RACE_TOUCH:25/RACE:75"
+   ],
+   "raceWeek": 13
+  },
+  {
+   "step": "S2",
+   "status": "MODIFY",
+   "action": "REPLAN_FUTURE_PHASES",
+   "reason": "Goal or event date changed: future phases, priorities and arrangements are re-planned from the current state; completed weeks stay as they were",
+   "gates": null,
+   "missing": [],
+   "learned": null,
+   "runsByWeek": [
+    "4:EASY:35/QUALITY:34/LONG:50",
+    "5:EASY:40/QUALITY:41/LONG:55",
+    "6:EASY:40/QUALITY:48/LONG:60",
+    "7:EASY:15/EASY:15/LONG:15",
+    "8:EASY:15/EASY:15/LONG:20",
+    "9:EASY:15/EASY:15/LONG:20",
+    "10:EASY:25/EASY:25/LONG:25",
+    "11:EASY:20/EASY:20/RACE:75",
+    "12:RECOVERY_EASY:20/RECOVERY_EASY:30/RECOVERY_EASY:30",
+    "13:EASY:30/QUALITY:34/LONG:25"
+   ],
+   "raceWeek": 11
+  }
+ ],
+ "G01_H23": [],
+ "D5": {
+  "R6-H34": {
+   "steps": [
+    {
+     "step": "S1",
+     "on": "MODIFY/GATED_NEXT_STEP",
+     "off": "MODIFY/GATED_NEXT_STEP",
+     "sameProposal": true,
+     "learned": null,
+     "modelEvidence": 0,
+     "gatesOn": {
+      "LONG": "HOLD",
+      "QUALITY": "ADVANCE",
+      "EASY": "ADVANCE",
+      "goblet-squat": "ADVANCE",
+      "push-up": "ADVANCE",
+      "db-row": "ADVANCE",
+      "db-calf-raise": "ADVANCE",
+      "dead-bug": "ADVANCE",
+      "db-rdl": "ADVANCE",
+      "db-split-squat": "ADVANCE"
+     }
+    },
+    {
+     "step": "S2",
+     "on": "MODIFY/GATED_NEXT_STEP",
+     "off": "MODIFY/GATED_NEXT_STEP",
+     "sameProposal": true,
+     "learned": null,
+     "modelEvidence": 0,
+     "gatesOn": {
+      "LONG": "REGRESS",
+      "QUALITY": "ADVANCE",
+      "EASY": "ADVANCE",
+      "goblet-squat": "ADVANCE",
+      "push-up": "ADVANCE",
+      "db-row": "ADVANCE",
+      "db-calf-raise": "ADVANCE",
+      "dead-bug": "ADVANCE",
+      "db-rdl": "ADVANCE",
+      "db-split-squat": "ADVANCE"
+     }
+    },
+    {
+     "step": "S3",
+     "on": "MODIFY/GATED_NEXT_STEP",
+     "off": "MODIFY/GATED_NEXT_STEP",
+     "sameProposal": true,
+     "learned": null,
+     "modelEvidence": 0,
+     "gatesOn": {
+      "LONG": "HOLD",
+      "QUALITY": "ADVANCE",
+      "EASY": "ADVANCE",
+      "goblet-squat": "ADVANCE",
+      "push-up": "ADVANCE",
+      "db-row": "ADVANCE",
+      "db-calf-raise": "ADVANCE",
+      "dead-bug": "ADVANCE",
+      "db-rdl": "ADVANCE",
+      "db-split-squat": "ADVANCE"
+     }
+    }
+   ]
+  },
+  "R6-H35": {
+   "steps": [
+    {
+     "step": "S1",
+     "on": "UNSUPPORTED/UNSUPPORTED",
+     "off": "UNSUPPORTED/UNSUPPORTED",
+     "sameProposal": true,
+     "learned": null,
+     "modelEvidence": 0
+    },
+    {
+     "step": "S2",
+     "on": "UNSUPPORTED/UNSUPPORTED",
+     "off": "UNSUPPORTED/UNSUPPORTED",
+     "sameProposal": true,
+     "learned": null,
+     "modelEvidence": 0
+    },
+    {
+     "step": "S3",
+     "on": "UNSUPPORTED/UNSUPPORTED",
+     "off": "UNSUPPORTED/UNSUPPORTED",
+     "sameProposal": true,
+     "learned": null,
+     "modelEvidence": 0
+    }
+   ]
+  },
+  "R6-H20": {
+   "steps": [
+    {
+     "step": "S1",
+     "on": "KEEP/INSTANTIATE_LOGGED_LOADS",
+     "off": "KEEP/INSTANTIATE_LOGGED_LOADS",
+     "sameProposal": true,
+     "learned": null,
+     "modelEvidence": 0,
+     "gatesOn": {
+      "LONG": "ADVANCE",
+      "EASY": "ADVANCE",
+      "back-squat": "ADVANCE",
+      "barbell-rdl": "ADVANCE",
+      "bulgarian-split-squat-db": "ADVANCE",
+      "db-calf-raise": "ADVANCE",
+      "dead-bug": "ADVANCE",
+      "bench-press": "ADVANCE",
+      "barbell-row": "ADVANCE",
+      "db-bench-press": "ADVANCE",
+      "lat-pulldown": "ADVANCE"
+     }
+    },
+    {
+     "step": "S2",
+     "on": "KEEP/INSTANTIATE_LOGGED_LOADS",
+     "off": "KEEP/INSTANTIATE_LOGGED_LOADS",
+     "sameProposal": true,
+     "learned": null,
+     "modelEvidence": 0,
+     "gatesOn": {
+      "LONG": "ADVANCE",
+      "EASY": "ADVANCE",
+      "back-squat": "ADVANCE",
+      "barbell-rdl": "ADVANCE",
+      "bulgarian-split-squat-db": "ADVANCE",
+      "db-calf-raise": "ADVANCE",
+      "dead-bug": "ADVANCE",
+      "bench-press": "ADVANCE",
+      "barbell-row": "ADVANCE",
+      "db-bench-press": "ADVANCE",
+      "lat-pulldown": "ADVANCE"
+     }
+    },
+    {
+     "step": "S3",
+     "on": "KEEP/KEEP",
+     "off": "KEEP/KEEP",
+     "sameProposal": true,
+     "learned": null,
+     "modelEvidence": 0,
+     "gatesOn": null
+    }
+   ]
+  }
+ }
+}
