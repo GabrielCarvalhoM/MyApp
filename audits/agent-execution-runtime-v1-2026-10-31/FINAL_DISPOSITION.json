@@ -1,0 +1,117 @@
+{
+  "mission": "AGENT_EXECUTION_RUNTIME_V1",
+  "kind": "infrastructure/process; not a Coaching Core mission",
+  "revision": "AER1-FINAL-r1",
+  "date": "2026-10-31",
+  "timezone": "America/Sao_Paulo",
+  "founderAuthority": "audits/agent-execution-runtime-v1-2026-10-31/FOUNDER_REQUEST.md",
+  "contract": "AER1-CONTRACT-r1 (audits/agent-execution-runtime-v1-2026-10-31/TASK_CONTRACT.md)",
+  "branch": "chore/agent-execution-runtime-v1",
+  "worktree": ".claude/worktrees/agent-execution-runtime-v1",
+  "baseline": {
+    "commit": "2c6cb931ccc6ad42964db89c33235ab4b0bfa52c",
+    "what": "R7-B.1 closure, CLOSED NOT_READY with the single blocker QE-R7B1-04"
+  },
+  "reviewedRevision": "7cee7452af5e61a55d63a99cdb6800eb2479fec3",
+  "status": {
+    "AGENT_EXECUTION_RUNTIME_STATUS": "READY",
+    "AUTOMATIC_FRESH_SESSION": "SUPPORTED",
+    "CODEX_DELEGATION": "SUPPORTED",
+    "LOCAL_TOOL_FIRST": "READY",
+    "CHECKPOINT_VALIDATION": "READY",
+    "TERMINAL_STOP": "READY",
+    "RECOVERY": "READY"
+  },
+  "statusNotes": [
+    "READY under the independent gate's READY_WITH_CONDITIONS: conditions SEC-8 and SEC-10, both Founder-owned, below.",
+    "AUTOMATIC_FRESH_SESSION and CODEX_DELEGATION are proved end to end with fake executors and, against the installed CLIs, at the contract level only: help flags, authentication, zero-cost probes (empty stdin, --resume with an unknown id) and a dry run. No paid Claude or Codex call was made, so the first real mission (proposed DOMAIN_COACHING_R7-B.2) is also the first real headless run.",
+    "LOCAL_TOOL_FIRST: deterministic tooling runs inside sessions, with `runtime.mjs capture` keeping full output in a log and returning a compact summary. By the security design the supervisor itself runs no command an agent selects."
+  ],
+  "acceptance": {
+    "A_structured_checkpoint": "agent-runtime/checkpoint@1, validated and kept as authoritative copies in <git common dir>/agent-runtime/<slug>/checkpoints/; tests: coherence, supervisor, simulation",
+    "B_invalid_checkpoint_never_transitions": "rejection, correction in the same session (--resume), at most 2 corrections, then a failed run; tests: 'a rejected checkpoint goes back to the same session…', '…still invalid after the correction limit is never accepted'",
+    "C_rebuild_without_transcript": "bootstrap of a few KB: checkpoint, named authorities, Git state, rules; later sessions never see earlier outputs; tests: bootstrap, simulation ('no transcript or earlier output is carried over')",
+    "D_terminal_stop": "COMPLETED stops all sessions and jobs, is never resolved back open, and an edited state that contradicts the event log is refused; tests: supervisor, simulation, security",
+    "E_codex_optional_accelerator": "Codex job in its own worktree and branch, verified independently of Codex's report, judged and integrated by the next Claude unit; test: the three-phase simulation",
+    "F_codex_failure_does_not_block": "unavailable, quota, invalid handoff, changes outside allowed paths, ignored-material changes or a rewritten .git all hand the work back to the next Claude unit; tests: simulation, guards",
+    "G_git_worktree_safety": "preflight (branch, history, unknown changes, remote), no destructive Git, hardened Git invocation (attributes, fsmonitor, hooks, signing policy, pinned git dir, remote checks outside any repository); tests: supervisor, guards, security, hardening",
+    "H_no_founder_relay": "the supervisor starts every session and job and carries every hand-over; the Founder only starts a mission, resumes after a pause, resolves BLOCKED/FOUNDER_REQUIRED and adopts reviewed agent configuration",
+    "I_no_gate_weakened": "findings, blockers, do_not_reopen, invariants and freezes cannot be dropped between sessions; CLOSED_NOT_READY names a blocker; READY states keep none open; a blocker closes only with evidence; the mission's own gates and judges are untouched",
+    "J_no_coaching_core_change": "git diff --stat 2c6cb93..7cee745 -- CoachingCore canon product governance .claude .codex .agents is empty; the whole diff is 44 files, 5596 insertions, 0 deletions"
+  },
+  "evidence": {
+    "tests": {
+      "command": "node --test \"tools/agent-runtime/tests/*.test.mjs\"",
+      "result": "75/75 pass on the code of 7cee745 (0565d13)",
+      "files": ["checkpoint", "coherence", "routing", "bootstrap", "supervisor", "simulation", "guards", "security", "hardening"],
+      "executors": "fake claude and codex (tests/fakes); temporary repositories with a local bare remote; no model called"
+    },
+    "mutation": {
+      "script": "audits/agent-execution-runtime-v1-2026-10-31/probes/mutate-agent-runtime.mjs",
+      "scriptSha256": "a09ccabc331c3ee94ccd709ff27be9f877d9a3ecdc913f60eef6b0f1169c5eee",
+      "final": {
+        "revision": "7cee745",
+        "result": "71/71 mutants killed, baseline passes",
+        "file": "audits/agent-execution-runtime-v1-2026-10-31/probes/mutation-results-7cee745.json",
+        "sha256": "39c2020a724c11a331a2b9052e4b35ea25d52ffcb0a414aea559899ef8044511"
+      },
+      "earlier": [
+        "ff3bded: 32 of 42 killed; the 10 survivors led to tests/guards.test.mjs and 86fe26d, then 15/15 killed",
+        "fc77578: 57/57 killed (mutation-results-fc77578.json, sha256 3228208b47f91f0f81f7cd14ddc29fb6c092c6870cdb8463902c5f73de4e1cb6)",
+        "after 0c8f1fe: 61 of 67 killed on the pre-tidy code, 4 stale patterns and 2 survivors (a redundant acceptance-time check removed, the hooks test strengthened)",
+        "0c8f1fe: discarded, contaminated by an edit made while it ran"
+      ]
+    },
+    "smoke": {
+      "doctor": "Claude Code 2.1.316 (claude.ai, pro; -p, --session-id, --resume, --output-format, --permission-mode, --permission-prompts, --model, --effort present) and Codex CLI 0.161.0 (logged in; --output-schema, --output-last-message, --cd, --sandbox, --json present)",
+      "dryRun": "run SMOKE_DRY_RUN --dry-run on 7cee745: base 7cee745, exact claude -p command, bootstrap about 4.6 KB, nothing created",
+      "freeProbes": "claude -p with empty stdin and with --resume of an unknown id, and codex exec - with empty stdin, all fail before any model call"
+    },
+    "paidCalls": 0
+  },
+  "gate": {
+    "judge": "security-privacy-abuse-architect, fresh independent instance (claude-opus-5-5, effort high), with a reliability lens; worker != judge",
+    "rounds": [
+      { "revision": "49dfea7", "verdict": "NOT_READY", "file": "reviews/SECURITY_REVIEW.md", "findings": "SEC-1 and SEC-2 blockers (control state inside the session worktree; Git argument injection), SEC-3 major, SEC-4..SEC-11" },
+      { "revision": "16a932f", "verdict": "NOT_READY", "file": "reviews/SECURITY_RECHECK.md", "findings": "NEW-1 major (hooks path inside the runtime checkout), NEW-2, NEW-3 minor" },
+      { "revision": "82d3104", "verdict": "NOT_READY", "file": "reviews/SECURITY_RECHECK_2.md", "findings": "NEW-4 major (gpg.ssh.defaultKeyCommand), NEW-5 minor, NEW-6 observation" },
+      { "revision": "7cee745", "verdict": "READY_WITH_CONDITIONS", "file": "reviews/SECURITY_RECHECK_3.md", "findings": "none at MINOR or above" }
+    ],
+    "resolution": "every finding fixed with a regression test (positive control against plain Git where an attack was involved) or accepted as a condition below"
+  },
+  "conditions": [
+    {
+      "id": "SEC-8",
+      "owner": "Founder",
+      "condition": "one supervisor per mission, started by hand; two supervisors racing for the same stale lock could both start",
+      "trigger": "before supervisors are ever started automatically or on a schedule: replace the lock takeover with an atomic rename-based one, with a test"
+    },
+    {
+      "id": "SEC-10",
+      "owner": "Founder",
+      "condition": "session results, Codex logs and captured logs can contain whatever a worker printed, secrets included; they stay local and gitignored",
+      "trigger": "never attach .agent-runtime/ wholesale to a pull request or to evidence; redact or check a log by hand before sharing it"
+    }
+  ],
+  "observations": [
+    "The supervisor's signing policy reads the Founder's --global config only; a commit.gpgsign set in the system config would not be followed (not the case today; documented).",
+    "The submodule, gc and maintenance switches are defence in depth without a dedicated test."
+  ],
+  "limitations": [
+    "Start the supervisor from a terminal, in the main checkout or another checkout no mission session works in; it refuses mission and job worktrees.",
+    "Checkpoints happen at semantic boundaries; the installed CLI gives an external process no reliable live context-size signal, and an over-long unit relies on Claude Code's auto-compaction.",
+    "A hung session is never killed automatically; stop the supervisor and run again.",
+    "The Claude Pro plan's usage limit ends a session without a checkpoint: one retry, then PAUSED until the same command is run again.",
+    "Deterministic commands longer than ten minutes run inside a session (in the background, or split); the supervisor runs none.",
+    "Removing a mission worktree removes its session workspace; the control state and the event log stay in the Git common directory."
+  ],
+  "startCommand": "from a checkout of chore/agent-execution-runtime-v1 (for example .claude/worktrees/agent-execution-runtime-v1): node tools/agent-runtime/runtime.mjs run DOMAIN_COACHING_R7-B.2 --request <request.md>; the same command without --request resumes",
+  "manualSteps": [
+    "start: one command",
+    "after PAUSED (for example a usage-limit reset): the same command",
+    "after BLOCKED or FOUNDER_REQUIRED: --resolve \"<note>\"",
+    "to adopt reviewed agent configuration: --resolve \"<note>\" --accept-config"
+  ],
+  "unchanged": "R7-B.1 stays CLOSED NOT_READY with QE-R7B1-04; R7B1-FREEZE-2, the catalog, the policy, the SSCTR authorities, CoachingCore/, canon/, product/, governance/ and the agent adapters are untouched; QE-R7B1-04 is not fixed; R7-B.2 and R7-C are not started; nothing is merged",
+  "next": "The first real use is DOMAIN_COACHING_R7-B.2, on its own Founder authorization, branched from this branch's tip so that its sessions carry the runtime."
+}

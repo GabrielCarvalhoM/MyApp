@@ -825,3 +825,36 @@ The direct Founder request closes **NOT_READY with one explicit blocker** under 
 ## AGENT_EXECUTION_RUNTIME_V1 — infrastructure: agent execution runtime — in progress / 2026-10-31
 
 A direct [Founder request](audits/agent-execution-runtime-v1-2026-10-31/FOUNDER_REQUEST.md) authorizes an **infrastructure/process** mission, not a Coaching Core mission, on its own branch `chore/agent-execution-runtime-v1` in an isolated worktree from the R7-B.1 closure `2c6cb93`. IMPLEMENTATION_AUTHORIZED = REPOSITORY_TOOLING (`tools/agent-runtime/`): a supervisor that runs a long mission as fresh headless sessions joined by validated checkpoints. R7-B.1 stays **CLOSED NOT_READY** with the single blocker QE-R7B1-04; QE-R7B1-04 is not fixed here and R7-B.2 and R7-C are not started. No change to `CoachingCore/`, freezes, catalog, policy, SSCTR authorities, Canon or product files. [Task contract](audits/agent-execution-runtime-v1-2026-10-31/TASK_CONTRACT.md).
+
+<!-- AGENT_EXECUTION_RUNTIME_V1: AER1-20261031-closed-r1 -->
+## AGENT_EXECUTION_RUNTIME_V1 — infrastructure: agent execution runtime — CLOSED READY / 2026-10-31
+
+The infrastructure mission authorized by the direct [Founder request](audits/agent-execution-runtime-v1-2026-10-31/FOUNDER_REQUEST.md) is closed **READY**. The independent security gate returned READY_WITH_CONDITIONS on `7cee745`; its two conditions, SEC-8 and SEC-10, are owned by the Founder. `tools/agent-runtime/` ([README](tools/agent-runtime/README.md)) runs a long mission as fresh headless sessions joined by validated checkpoints.
+
+- **States:**
+  - AGENT_EXECUTION_RUNTIME_STATUS = READY.
+  - AUTOMATIC_FRESH_SESSION = SUPPORTED; CODEX_DELEGATION = SUPPORTED.
+  - LOCAL_TOOL_FIRST, CHECKPOINT_VALIDATION, TERMINAL_STOP and RECOVERY = READY.
+  - The installed Claude and Codex CLIs were exercised at the contract level only: help, authentication, zero-cost probes and a dry run. No paid call was made, so the first real mission is also the pilot.
+- **Evidence:**
+  - 75 tests: fake executors, temporary repositories and a simulated three-phase mission; each attack the review found runs first against plain Git as a positive control.
+  - Mutation probe on `7cee745`: 71/71 killed.
+  - Doctor and dry run against Claude Code 2.1.316 and Codex 0.161.0.
+- **Gate:** one independent security review with a reliability lens, in four rounds:
+  - NOT_READY on `49dfea7`: control state inside the session worktree; Git argument injection.
+  - NOT_READY on `16a932f`: hooks path inside the runtime checkout.
+  - NOT_READY on `82d3104`: the SSH signing key command.
+  - READY_WITH_CONDITIONS on `7cee745`.
+
+  Every finding is either fixed with a regression test or accepted as a condition.
+- **Design:**
+  - The supervisor runs only `claude`, sandboxed `codex` and hardened `git`; deterministic tooling runs inside sessions.
+  - The control state lives in the Git common directory.
+  - The supervisor starts from a terminal, in a checkout no mission session works in.
+- **Unchanged:**
+  - R7-B.1 stays CLOSED NOT_READY with QE-R7B1-04, which is not fixed here.
+  - R7B1-FREEZE-2, `CoachingCore/`, `canon/`, `product/`, `governance/` and the agent adapters are untouched. The diff from `2c6cb93` is insert-only and limited to `tools/agent-runtime/`, `.gitignore`, the two pointers, this audit folder and these records.
+  - R7-B.2 and R7-C are not started. Nothing is merged.
+- **Next:** the first real use is DOMAIN_COACHING_R7-B.2, on its own Founder authorization. From a checkout of this branch, run `node tools/agent-runtime/runtime.mjs run DOMAIN_COACHING_R7-B.2 --request <request.md>`.
+
+[Disposition](audits/agent-execution-runtime-v1-2026-10-31/FINAL_DISPOSITION.json)
