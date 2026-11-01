@@ -1,0 +1,424 @@
+{
+ "baseline": {
+  "freeze": "R7B2-FREEZE-1",
+  "commit": "1a1c7286adc8b08d16f97dea86f4973fe33e5a95"
+ },
+ "counterfactual": "expiry.review_by of the 13 B0 records moved to 2099-12-31 (development evidence only)",
+ "expiry": {
+  "R6-H35": {
+   "real": {
+    "B2": {
+     "generation": "PROPOSED",
+     "generationReason": "Complete conditional program generated from onboarding-like facts",
+     "stepsRun": 3,
+     "of": 3,
+     "steps": [
+      {
+       "status": "UNSUPPORTED",
+       "action": "UNSUPPORTED",
+       "question": null,
+       "plan": null,
+       "reason": "The program was not planned under the bound repertoire catalog, or that catalog and its SSCTR records are unavailable"
+      },
+      {
+       "status": "UNSUPPORTED",
+       "action": "UNSUPPORTED",
+       "question": null,
+       "plan": null,
+       "reason": "The program was not planned under the bound repertoire catalog, or that catalog and its SSCTR records are unavailable"
+      },
+      {
+       "status": "UNSUPPORTED",
+       "action": "UNSUPPORTED",
+       "question": null,
+       "plan": null,
+       "reason": "The program was not planned under the bound repertoire catalog, or that catalog and its SSCTR records are unavailable"
+      }
+     ]
+    },
+    "R7C": {
+     "generation": "PROPOSED",
+     "generationReason": "Complete conditional program generated from onboarding-like facts",
+     "stepsRun": 3,
+     "of": 3,
+     "steps": [
+      {
+       "status": "UNSUPPORTED",
+       "action": "UNSUPPORTED",
+       "question": null,
+       "plan": null,
+       "reason": "The program was not planned under the bound repertoire catalog, or that catalog and its SSCTR records are unavailable"
+      },
+      {
+       "status": "UNSUPPORTED",
+       "action": "UNSUPPORTED",
+       "question": null,
+       "plan": null,
+       "reason": "The program was not planned under the bound repertoire catalog, or that catalog and its SSCTR records are unavailable"
+      },
+      {
+       "status": "UNSUPPORTED",
+       "action": "UNSUPPORTED",
+       "question": null,
+       "plan": null,
+       "reason": "The program was not planned under the bound repertoire catalog, or that catalog and its SSCTR records are unavailable"
+      }
+     ]
+    }
+   },
+   "counterfactual": {
+    "B2": {
+     "generation": "PROPOSED",
+     "generationReason": "Complete conditional program generated from onboarding-like facts",
+     "stepsRun": 1,
+     "of": 3,
+     "laterStepError": "Observation fact matches no session: {\"weekIndex\":5,\"sport\":\"RUN\",\"role\":[\"QUALITY\"],\"completed\":true,\"actualStimulus\":\"AS_PRESCRIBED\",\"response\":{\"performance\":\"UNDER\",\"recovery\":\"COMPATIBLE\",\"effort\":\"HARDER\",\"nextDayFunction\":\"NORMAL\"},\"confounded\":true,\"comparable\":false}",
+     "steps": [
+      {
+       "status": "MODIFY",
+       "action": "GATED_NEXT_STEP",
+       "question": null,
+       "plan": "72db508fdc96bab8e0e17861d44d4e155545a68adf174ef18ef5fc3c7e7f3355",
+       "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation"
+      }
+     ]
+    },
+    "R7C": {
+     "generation": "PROPOSED",
+     "generationReason": "Complete conditional program generated from onboarding-like facts",
+     "stepsRun": 1,
+     "of": 3,
+     "laterStepError": "Observation fact matches no session: {\"weekIndex\":5,\"sport\":\"RUN\",\"role\":[\"QUALITY\"],\"completed\":true,\"actualStimulus\":\"AS_PRESCRIBED\",\"response\":{\"performance\":\"UNDER\",\"recovery\":\"COMPATIBLE\",\"effort\":\"HARDER\",\"nextDayFunction\":\"NORMAL\"},\"confounded\":true,\"comparable\":false}",
+     "steps": [
+      {
+       "status": "MODIFY",
+       "action": "GATED_NEXT_STEP",
+       "question": null,
+       "plan": "72db508fdc96bab8e0e17861d44d4e155545a68adf174ef18ef5fc3c7e7f3355",
+       "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation"
+      }
+     ]
+    }
+   },
+   "classification": "UNSUPPORTED_BY_EXISTING_EXPIRY",
+   "counterfactualSameOnBothRuntimes": true
+  },
+  "R6-H21": {
+   "real": {
+    "B2": {
+     "generation": "UNSUPPORTED",
+     "generationReason": "The bound repertoire (R7B0-CATALOG-2 with its SSCTR records) is unavailable or does not match; no program is generated",
+     "stepsRun": 3,
+     "of": 3,
+     "steps": []
+    },
+    "R7C": {
+     "generation": "UNSUPPORTED",
+     "generationReason": "The bound repertoire (R7B0-CATALOG-2 with its SSCTR records) is unavailable or does not match; no program is generated",
+     "stepsRun": 3,
+     "of": 3,
+     "steps": []
+    }
+   },
+   "counterfactual": {
+    "B2": {
+     "generation": "PROPOSED",
+     "generationReason": "Complete conditional program generated from onboarding-like facts",
+     "stepsRun": 3,
+     "of": 3,
+     "steps": [
+      {
+       "status": "MODIFY",
+       "action": "REDUCE",
+       "question": null,
+       "plan": "2e9e570bae3db1296a29539525a75fe6af6b9521ff87288ce9b01149b2b498f9",
+       "reason": "Remove only optional local work for the affected region; essentials stay"
+      },
+      {
+       "status": "MODIFY",
+       "action": "REDUCE",
+       "question": null,
+       "plan": "dddc01c5f47781f15bd1f9c438a3eb0f79cb6910c8bc8d50ed6110370fc86234",
+       "reason": "Remove the remaining hard suffix; keep easy participation"
+      },
+      {
+       "status": "KEEP",
+       "action": "KEEP",
+       "question": null,
+       "plan": null,
+       "reason": "Recovered label noted; the next step still follows executed evidence; next-week steps are gated when this week’s remaining sessions are complete"
+      }
+     ]
+    },
+    "R7C": {
+     "generation": "PROPOSED",
+     "generationReason": "Complete conditional program generated from onboarding-like facts",
+     "stepsRun": 3,
+     "of": 3,
+     "steps": [
+      {
+       "status": "MODIFY",
+       "action": "REDUCE",
+       "question": null,
+       "plan": "2e9e570bae3db1296a29539525a75fe6af6b9521ff87288ce9b01149b2b498f9",
+       "reason": "Remove only optional local work for the affected region; essentials stay"
+      },
+      {
+       "status": "MODIFY",
+       "action": "REDUCE",
+       "question": null,
+       "plan": "dddc01c5f47781f15bd1f9c438a3eb0f79cb6910c8bc8d50ed6110370fc86234",
+       "reason": "Remove the remaining hard suffix; keep easy participation"
+      },
+      {
+       "status": "KEEP",
+       "action": "KEEP",
+       "question": null,
+       "plan": null,
+       "reason": "Recovered label noted; the next step still follows executed evidence; next-week steps are gated when this week’s remaining sessions are complete"
+      }
+     ]
+    }
+   },
+   "classification": "UNSUPPORTED_BY_EXISTING_EXPIRY",
+   "counterfactualSameOnBothRuntimes": true
+  },
+  "R6-H23": {
+   "real": {
+    "B2": {
+     "generation": "UNSUPPORTED",
+     "generationReason": "The bound repertoire (R7B0-CATALOG-2 with its SSCTR records) is unavailable or does not match; no program is generated",
+     "stepsRun": 2,
+     "of": 2,
+     "steps": []
+    },
+    "R7C": {
+     "generation": "UNSUPPORTED",
+     "generationReason": "The bound repertoire (R7B0-CATALOG-2 with its SSCTR records) is unavailable or does not match; no program is generated",
+     "stepsRun": 2,
+     "of": 2,
+     "steps": []
+    }
+   },
+   "counterfactual": {
+    "B2": {
+     "generation": "PROPOSED",
+     "generationReason": "Complete conditional program generated from onboarding-like facts",
+     "stepsRun": 2,
+     "of": 2,
+     "steps": [
+      {
+       "status": "ASK",
+       "action": "ASK",
+       "question": null,
+       "plan": null,
+       "reason": "The change is stated for 2027-09-28 only; a dated window of days or shifts is not re-planned automatically. Say whether the change is permanent from a date, or move or skip the affected sessions"
+      },
+      {
+       "status": "MODIFY",
+       "action": "GATED_NEXT_STEP",
+       "question": null,
+       "plan": "ebd74b1b9056c655a5d4b8a880cae0ef60552c8f9a93cd45bc3185bebc062b43",
+       "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation"
+      }
+     ]
+    },
+    "R7C": {
+     "generation": "PROPOSED",
+     "generationReason": "Complete conditional program generated from onboarding-like facts",
+     "stepsRun": 2,
+     "of": 2,
+     "steps": [
+      {
+       "status": "ASK",
+       "action": "ASK",
+       "question": null,
+       "plan": null,
+       "reason": "The change is stated for 2027-09-28 only; a dated window of days or shifts is not re-planned automatically. Say whether the change is permanent from a date, or move or skip the affected sessions"
+      },
+      {
+       "status": "MODIFY",
+       "action": "GATED_NEXT_STEP",
+       "question": null,
+       "plan": "ebd74b1b9056c655a5d4b8a880cae0ef60552c8f9a93cd45bc3185bebc062b43",
+       "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation"
+      }
+     ]
+    }
+   },
+   "classification": "UNSUPPORTED_BY_EXISTING_EXPIRY",
+   "counterfactualSameOnBothRuntimes": true
+  }
+ },
+ "H22": {
+  "B2": [
+   {
+    "step": "S1",
+    "kind": "UNAVAILABLE_DAY",
+    "status": "MODIFY",
+    "action": "RESCHEDULE_WITHIN_WEEK",
+    "gates": null,
+    "longRows": [
+     "w5-run-d6:PENDING"
+    ],
+    "instantiationOnly": false,
+    "reason": "Sessions on the unavailable date are moved within chosen days when that adds no interference, otherwise skipped without debt",
+    "nextLong": [
+     105
+    ]
+   },
+   {
+    "step": "S2",
+    "kind": "WEEKLY_REVIEW",
+    "status": "MODIFY",
+    "action": "GATED_NEXT_STEP",
+    "gates": {
+     "LONG": "HOLD",
+     "QUALITY": "ADVANCE",
+     "EASY": "ADVANCE",
+     "goblet-squat": "ADVANCE",
+     "push-up": "ADVANCE",
+     "db-row": "ADVANCE",
+     "db-calf-raise": "ADVANCE",
+     "dead-bug": "ADVANCE",
+     "db-rdl": "ADVANCE",
+     "db-split-squat": "ADVANCE"
+    },
+    "longRows": [
+     "w5-run-d5:COMPLETED",
+     "w5-run-d6:NOT_REPORTED"
+    ],
+    "instantiationOnly": false,
+    "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation",
+    "nextLong": [
+     80
+    ]
+   },
+   {
+    "step": "S3",
+    "kind": "SCHEDULE_CHANGE",
+    "status": "MODIFY",
+    "action": "REARRANGE_FUTURE_WEEKS",
+    "gates": null,
+    "longRows": [
+     "w7-run-d6:PENDING"
+    ],
+    "instantiationOnly": false,
+    "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the athlete removed",
+    "nextLong": [
+     80
+    ]
+   },
+   {
+    "step": "S4",
+    "kind": "WEEKLY_REVIEW",
+    "status": "KEEP",
+    "action": "INSTANTIATE_LOGGED_LOADS",
+    "gates": {
+     "LONG": "ADVANCE",
+     "QUALITY": "ADVANCE",
+     "EASY": "ADVANCE",
+     "goblet-squat": "ADVANCE",
+     "push-up": "ADVANCE",
+     "db-row": "ADVANCE",
+     "standing-calf-raise": "ADVANCE",
+     "front-plank": "ADVANCE",
+     "db-rdl": "ADVANCE",
+     "db-split-squat": "ADVANCE"
+    },
+    "longRows": [
+     "w8-run-d6:COMPLETED"
+    ],
+    "instantiationOnly": true,
+    "reason": "Logged loads replace planned placeholders; the progression rule is unchanged",
+    "nextLong": [
+     85
+    ]
+   }
+  ],
+  "R7C": [
+   {
+    "step": "S1",
+    "kind": "UNAVAILABLE_DAY",
+    "status": "MODIFY",
+    "action": "RESCHEDULE_WITHIN_WEEK",
+    "gates": null,
+    "longRows": [
+     "w5-run-d6:PENDING"
+    ],
+    "instantiationOnly": false,
+    "reason": "Sessions on the unavailable date are moved within chosen days when that adds no interference, otherwise skipped without debt",
+    "nextLong": [
+     105
+    ]
+   },
+   {
+    "step": "S2",
+    "kind": "WEEKLY_REVIEW",
+    "status": "MODIFY",
+    "action": "GATED_NEXT_STEP",
+    "gates": {
+     "LONG": "ADVANCE",
+     "QUALITY": "ADVANCE",
+     "EASY": "ADVANCE",
+     "goblet-squat": "ADVANCE",
+     "push-up": "ADVANCE",
+     "db-row": "ADVANCE",
+     "db-calf-raise": "ADVANCE",
+     "dead-bug": "ADVANCE",
+     "db-rdl": "ADVANCE",
+     "db-split-squat": "ADVANCE"
+    },
+    "longRows": [
+     "w5-run-d5:COMPLETED"
+    ],
+    "instantiationOnly": false,
+    "reason": "Executed as planned this week; next week’s runs start from what has been executed, which differs from what the plan had assumed for weeks with no executed evidence (they earn nothing), so the plan is re-based, not kept",
+    "nextLong": [
+     85
+    ]
+   },
+   {
+    "step": "S3",
+    "kind": "SCHEDULE_CHANGE",
+    "status": "MODIFY",
+    "action": "REARRANGE_FUTURE_WEEKS",
+    "gates": null,
+    "longRows": [
+     "w7-run-d6:PENDING"
+    ],
+    "instantiationOnly": false,
+    "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the athlete removed",
+    "nextLong": [
+     85
+    ]
+   },
+   {
+    "step": "S4",
+    "kind": "WEEKLY_REVIEW",
+    "status": "MODIFY",
+    "action": "GATED_NEXT_STEP",
+    "gates": {
+     "LONG": "ADVANCE",
+     "QUALITY": "ADVANCE",
+     "EASY": "ADVANCE",
+     "goblet-squat": "ADVANCE",
+     "push-up": "ADVANCE",
+     "db-row": "ADVANCE",
+     "standing-calf-raise": "ADVANCE",
+     "front-plank": "ADVANCE",
+     "db-rdl": "ADVANCE",
+     "db-split-squat": "ADVANCE"
+    },
+    "longRows": [
+     "w8-run-d6:COMPLETED"
+    ],
+    "instantiationOnly": false,
+    "reason": "Executed as planned this week; next week’s runs start from what has been executed, which differs from what the plan had assumed for weeks with no executed evidence (they earn nothing), so the plan is re-based, not kept",
+    "nextLong": [
+     90
+    ]
+   }
+  ]
+ }
+}

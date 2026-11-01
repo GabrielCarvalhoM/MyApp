@@ -1,0 +1,82 @@
+{
+ "check": "R7C-P3-FULL-SUITE",
+ "command": "node --test (in CoachingCore)",
+ "node": "v24.19.0",
+ "r7c": {
+  "bytes": "R7-C Phase 2, commit f69abc1c81c4feaaf13219a16d3277cb62df49f7",
+  "started": "2026-11-01T21:49:37Z",
+  "ended": "2026-11-01T21:50:52Z",
+  "tests": 815,
+  "pass": 811,
+  "fail": 4,
+  "cancelled": 0,
+  "skipped": 0,
+  "todo": 0,
+  "duration_ms": 73915.9575,
+  "failures": [
+   {
+    "file": "test/r6-engineering-fixes.test.mjs",
+    "line": 94,
+    "title": "QRE-R6-04: a run dimension without executed sessions never counts as an executed week",
+    "first": "AssertionError [ERR_ASSERTION]: no quality, touch or strides without executed easy running",
+    "classification": "EXPECTED_SEMANTIC_UPDATE",
+    "cause": "the fixture models \"missed\" as no report at all (r6-simulator missed: no observation); R7-C reads that as unknown and asks from week 4 instead of collapsing; the stored plan keeps its projected quality sessions under REQUIRES_RECONCILIATION",
+    "ownInvariantOnR7C": "holds with the same misses reported not done: run plan, intense sessions and easyWeeksDone identical to R7B2-FREEZE-1 (suite-dispositions F1)"
+   },
+   {
+    "file": "test/r6-ssctr-revision.test.mjs",
+    "line": 51,
+    "title": "D18: with no completed run in the window, a reprojection starts from the reviewed entry",
+    "first": "TypeError: Cannot read properties of null (reading 'weeks')",
+    "classification": "EXPECTED_SEMANTIC_UPDATE",
+    "cause": "no report at all in the window (never reviewed, and reviewed empty: the r12 weekly-review contract path) now asks UNREPORTED_TRAINING, no proposal",
+    "ownInvariantOnR7C": "holds for a known stop: every run of week 7 at the reviewed entry (15), identical to R7B2-FREEZE-1 (suite-dispositions F2)",
+    "ssctr": "changes the reading SSCTR r12 approved (\"with unreported sessions reviewed as missed\") and D18 for unreported windows: SSCTR confirmation required before the test is disposed"
+   },
+   {
+    "file": "test/r7asc-state-consumer.test.mjs",
+    "line": 232,
+    "title": "SSCTR F3 (R6-H25): after the change to MAINTAIN no bench press or lat pulldown row leaves 8-8 or rises above the dose executed",
+    "first": "TypeError: Cannot read properties of null (reading 'goal')",
+    "classification": "EXPECTED_SEMANTIC_UPDATE",
+    "cause": "R6-H25 carries no execution facts; its second step (event-date change at week 6) now asks UNREPORTED_TRAINING, so the case ends without a proposal",
+    "ownInvariantOnR7C": "holds with the misses known and with everything executed: 30 rows, reps within MAINTAIN, never above 70, identical to R7B2-FREEZE-1 (suite-dispositions F3)"
+   },
+   {
+    "file": "test/r7b-hybrid-program.test.mjs",
+    "line": 85,
+    "title": "Program-level progression (request §19): each block states its intent, lead and planned doses; steps follow executed evidence, never the calendar",
+    "first": "AssertionError [ERR_ASSERTION]: the block review names what held",
+    "classification": "EXPECTED_SEMANTIC_UPDATE",
+    "cause": "\"every week missed\" is modelled as weekly reviews with no report; week 4 now asks, so no block-review disclosure is produced",
+    "ownInvariantOnR7C": "holds with the misses reported not done: the block review names run.long, run.easy and run.qualityStep as held, long and state identical to R7B2-FREEZE-1 (suite-dispositions F4)"
+   }
+  ]
+ },
+ "baseline": {
+  "bytes": "R7B2-FREEZE-1 (worktree claude/domain-coaching-r7-b2 at baa2cb1eebba7d50c0a1d0cc1af74f35655a980c, src/test clean)",
+  "tests": 799,
+  "pass": 799,
+  "fail": 0,
+  "cancelled": 0,
+  "skipped": 0,
+  "todo": 0,
+  "duration_ms": 75425.7921,
+  "failures": []
+ },
+ "environment": {
+  "firstRun": {
+   "tests": 602,
+   "pass": 590,
+   "fail": 12,
+   "cancelled": 0,
+   "skipped": 0,
+   "todo": 0,
+   "duration_ms": 46688.0838
+  },
+  "cause": "the R7-C worktree had no node_modules: 8 test files failed to load (ERR_MODULE_NOT_FOUND ajv); node_modules was copied from the B.2 worktree (package.json and package-lock.json byte-identical, ajv 8.20.0, gitignored) and the suite rerun; no test result came from that run",
+  "classification": "UNRELATED_PREEXISTING (environment)"
+ },
+ "result": "FAIL",
+ "newSinceBaseline": 4
+}

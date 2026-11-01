@@ -1,0 +1,645 @@
+{
+ "baseline": {
+  "freeze": "R7B2-FREEZE-1",
+  "commit": "1a1c7286adc8b08d16f97dea86f4973fe33e5a95"
+ },
+ "current": "working tree (R7-C)",
+ "F1_QRE_R6_04": {
+  "simulatorAsInTest": {
+   "B2": {
+    "testAssertions": {
+     "runLedger": 0,
+     "intense": [],
+     "easyWeeksDoneAllZero": true
+    },
+    "statuses": [
+     "0:MODIFY",
+     "1:MODIFY",
+     "2:MODIFY",
+     "3:MODIFY",
+     "4:MODIFY",
+     "5:KEEP",
+     "6:KEEP",
+     "7:MODIFY",
+     "8:MODIFY",
+     "9:MODIFY",
+     "10:MODIFY",
+     "11:KEEP"
+    ],
+    "invariants": {
+     "generated": true,
+     "noOfficialEffect": true,
+     "completedWorkImmutable": true,
+     "selectedOptionsAdmissible": true,
+     "noDeadlock": true,
+     "noPermanentHold": true,
+     "noRepeatedUnnecessaryAsk": true,
+     "noAdaptationCascade": true,
+     "noRunawayProgression": true,
+     "noWeeklyTremor": true,
+     "noPriorityInversion": true,
+     "scheduleValid": true,
+     "raceWeekPresent": true
+    }
+   },
+   "R7C": {
+    "testAssertions": {
+     "runLedger": 0,
+     "intense": [
+      "w8-run-d1",
+      "w8-run-d3",
+      "w9-run-d1",
+      "w9-run-d3",
+      "w10-run-d1",
+      "w10-run-d3",
+      "w11-run-d1",
+      "w11-run-d3"
+     ],
+     "easyWeeksDoneAllZero": false
+    },
+    "statuses": [
+     "0:MODIFY",
+     "1:MODIFY",
+     "2:MODIFY",
+     "3:MODIFY",
+     "4:ASK",
+     "5:ASK",
+     "6:ASK",
+     "7:ASK",
+     "8:ASK",
+     "9:ASK",
+     "10:ASK",
+     "11:KEEP"
+    ],
+    "invariants": {
+     "generated": true,
+     "noOfficialEffect": true,
+     "completedWorkImmutable": true,
+     "selectedOptionsAdmissible": true,
+     "noDeadlock": true,
+     "noPermanentHold": true,
+     "noRepeatedUnnecessaryAsk": false,
+     "noAdaptationCascade": true,
+     "noRunawayProgression": true,
+     "noWeeklyTremor": true,
+     "noPriorityInversion": true,
+     "scheduleValid": true,
+     "raceWeekPresent": true
+    }
+   }
+  },
+  "loops": {
+   "B2_UNREPORTED": {
+    "statuses": [
+     "0:MODIFY/GATED_NEXT_STEP",
+     "1:MODIFY/GATED_NEXT_STEP",
+     "2:MODIFY/GATED_NEXT_STEP",
+     "3:MODIFY/GATED_NEXT_STEP",
+     "4:MODIFY/GATED_NEXT_STEP",
+     "5:KEEP/INSTANTIATE_LOGGED_LOADS",
+     "6:KEEP/INSTANTIATE_LOGGED_LOADS",
+     "7:MODIFY/GATED_NEXT_STEP",
+     "8:MODIFY/GATED_NEXT_STEP",
+     "9:MODIFY/GATED_NEXT_STEP",
+     "10:MODIFY/GATED_NEXT_STEP",
+     "11:KEEP/KEEP"
+    ],
+    "firstAsk": null,
+    "intense": [],
+    "easyWeeksDoneMax": 0,
+    "runsByWeek": [
+     "0:EASY:30/EASY:30/EASY:30/LONG:60:LONG",
+     "1:EASY:30/EASY:30/EASY:30/LONG:60:LONG",
+     "2:EASY:30/EASY:30/EASY:30/LONG:60:LONG",
+     "3:EASY:15/EASY:15/EASY:15/EASY:15",
+     "4:EASY:15/EASY:15/EASY:15/SHAKEOUT:15:SHAKEOUT",
+     "5:RACE:75:RACE/RECOVERY_EASY:15:RECOVERY_EASY/RECOVERY_EASY:15:RECOVERY_EASY/RECOVERY_EASY:15:RECOVERY_EASY",
+     "6:RECOVERY_EASY:15:RECOVERY_EASY/RECOVERY_EASY:15:RECOVERY_EASY/RECOVERY_EASY:15:RECOVERY_EASY/RECOVERY_EASY:15:RECOVERY_EASY",
+     "7:EASY:15/EASY:15/EASY:15/LONG:15:LONG",
+     "8:EASY:15/EASY:15/EASY:15/LONG:15:LONG",
+     "9:EASY:15/EASY:15/EASY:15/LONG:15:LONG",
+     "10:EASY:15/EASY:15/EASY:15/LONG:15:LONG",
+     "11:EASY:15/EASY:15/EASY:15/LONG:15:LONG"
+    ],
+    "lastPlanValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "runLedger": 0
+   },
+   "B2_KNOWN_MISS": {
+    "statuses": [
+     "0:MODIFY/GATED_NEXT_STEP",
+     "1:MODIFY/GATED_NEXT_STEP",
+     "2:MODIFY/GATED_NEXT_STEP",
+     "3:MODIFY/GATED_NEXT_STEP",
+     "4:MODIFY/GATED_NEXT_STEP",
+     "5:KEEP/INSTANTIATE_LOGGED_LOADS",
+     "6:KEEP/INSTANTIATE_LOGGED_LOADS",
+     "7:MODIFY/GATED_NEXT_STEP",
+     "8:MODIFY/GATED_NEXT_STEP",
+     "9:MODIFY/GATED_NEXT_STEP",
+     "10:MODIFY/GATED_NEXT_STEP",
+     "11:KEEP/KEEP"
+    ],
+    "firstAsk": null,
+    "intense": [],
+    "easyWeeksDoneMax": 0,
+    "runsByWeek": [
+     "0:EASY:30/EASY:30/EASY:30/LONG:60:LONG",
+     "1:EASY:30/EASY:30/EASY:30/LONG:60:LONG",
+     "2:EASY:30/EASY:30/EASY:30/LONG:60:LONG",
+     "3:EASY:15/EASY:15/EASY:15/EASY:15",
+     "4:EASY:15/EASY:15/EASY:15/SHAKEOUT:15:SHAKEOUT",
+     "5:RACE:75:RACE/RECOVERY_EASY:15:RECOVERY_EASY/RECOVERY_EASY:15:RECOVERY_EASY/RECOVERY_EASY:15:RECOVERY_EASY",
+     "6:RECOVERY_EASY:15:RECOVERY_EASY/RECOVERY_EASY:15:RECOVERY_EASY/RECOVERY_EASY:15:RECOVERY_EASY/RECOVERY_EASY:15:RECOVERY_EASY",
+     "7:EASY:15/EASY:15/EASY:15/LONG:15:LONG",
+     "8:EASY:15/EASY:15/EASY:15/LONG:15:LONG",
+     "9:EASY:15/EASY:15/EASY:15/LONG:15:LONG",
+     "10:EASY:15/EASY:15/EASY:15/LONG:15:LONG",
+     "11:EASY:15/EASY:15/EASY:15/LONG:15:LONG"
+    ],
+    "lastPlanValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "runLedger": 48
+   },
+   "R7C_UNREPORTED": {
+    "statuses": [
+     "0:MODIFY/GATED_NEXT_STEP",
+     "1:MODIFY/GATED_NEXT_STEP",
+     "2:MODIFY/GATED_NEXT_STEP",
+     "3:MODIFY/GATED_NEXT_STEP",
+     "4:ASK/ASK/UNREPORTED_TRAINING",
+     "5:ASK/ASK/UNREPORTED_TRAINING",
+     "6:ASK/ASK/UNREPORTED_TRAINING",
+     "7:ASK/ASK/UNREPORTED_TRAINING",
+     "8:ASK/ASK/UNREPORTED_TRAINING",
+     "9:ASK/ASK/UNREPORTED_TRAINING",
+     "10:ASK/ASK/UNREPORTED_TRAINING",
+     "11:KEEP/KEEP"
+    ],
+    "firstAsk": {
+     "w": 4,
+     "status": "ASK",
+     "action": "ASK",
+     "proposal": false,
+     "missing": [
+      "observations.unreportedSessions|interruption"
+     ],
+     "question": {
+      "kind": "UNREPORTED_TRAINING",
+      "dependentScope": "RUN_DOSE",
+      "fromWeek": 5,
+      "unreported": 18
+     },
+     "reason": "No run is recorded in the 30 days before 2026-12-07, the reference for the runs planned from then, and 18 planned run sessions from 2026-11-07 to 2026-12-06 have no report: say what was done (report t",
+     "planValidity": "REQUIRES_RECONCILIATION"
+    },
+    "intense": [
+     "w8-run-d1",
+     "w8-run-d3",
+     "w9-run-d1",
+     "w9-run-d3",
+     "w10-run-d1",
+     "w10-run-d3",
+     "w11-run-d1",
+     "w11-run-d3"
+    ],
+    "easyWeeksDoneMax": 5,
+    "runsByWeek": [
+     "0:EASY:30/EASY:30/EASY:30/LONG:60:LONG",
+     "1:EASY:30/EASY:30/EASY:30/LONG:60:LONG",
+     "2:EASY:30/EASY:30/EASY:30/LONG:60:LONG",
+     "3:EASY:15/EASY:15/EASY:15/EASY:15",
+     "4:EASY:15/EASY:15/EASY:15/SHAKEOUT:15:SHAKEOUT",
+     "5:RACE:75:RACE/RECOVERY_EASY:20:RECOVERY_EASY/RECOVERY_EASY:20:RECOVERY_EASY/RECOVERY_EASY:20:RECOVERY_EASY",
+     "6:RECOVERY_EASY:25:RECOVERY_EASY/RECOVERY_EASY:25:RECOVERY_EASY/RECOVERY_EASY:25:RECOVERY_EASY/RECOVERY_EASY:25:RECOVERY_EASY",
+     "7:EASY:15/EASY:15/EASY:15/LONG:30:LONG",
+     "8:QUALITY:34:THRESHOLD/EASY:15:strides/EASY:15/LONG:35:LONG",
+     "9:QUALITY:34:THRESHOLD/EASY:15:strides/EASY:15/LONG:40:LONG",
+     "10:QUALITY:34:THRESHOLD/EASY:15:strides/EASY:15/LONG:35:LONG",
+     "11:QUALITY:34:THRESHOLD/EASY:15:strides/EASY:15/LONG:45:LONG"
+    ],
+    "lastPlanValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "runLedger": 0
+   },
+   "R7C_KNOWN_MISS": {
+    "statuses": [
+     "0:MODIFY/GATED_NEXT_STEP",
+     "1:MODIFY/GATED_NEXT_STEP",
+     "2:MODIFY/GATED_NEXT_STEP",
+     "3:MODIFY/GATED_NEXT_STEP",
+     "4:MODIFY/GATED_NEXT_STEP",
+     "5:MODIFY/GATED_NEXT_STEP",
+     "6:MODIFY/GATED_NEXT_STEP",
+     "7:MODIFY/GATED_NEXT_STEP",
+     "8:MODIFY/GATED_NEXT_STEP",
+     "9:MODIFY/GATED_NEXT_STEP",
+     "10:MODIFY/GATED_NEXT_STEP",
+     "11:KEEP/KEEP"
+    ],
+    "firstAsk": null,
+    "intense": [],
+    "easyWeeksDoneMax": 0,
+    "runsByWeek": [
+     "0:EASY:30/EASY:30/EASY:30/LONG:60:LONG",
+     "1:EASY:30/EASY:30/EASY:30/LONG:60:LONG",
+     "2:EASY:30/EASY:30/EASY:30/LONG:60:LONG",
+     "3:EASY:15/EASY:15/EASY:15/EASY:15",
+     "4:EASY:15/EASY:15/EASY:15/SHAKEOUT:15:SHAKEOUT",
+     "5:RACE:75:RACE/RECOVERY_EASY:15:RECOVERY_EASY/RECOVERY_EASY:15:RECOVERY_EASY/RECOVERY_EASY:15:RECOVERY_EASY",
+     "6:RECOVERY_EASY:15:RECOVERY_EASY/RECOVERY_EASY:15:RECOVERY_EASY/RECOVERY_EASY:15:RECOVERY_EASY/RECOVERY_EASY:15:RECOVERY_EASY",
+     "7:EASY:15/EASY:15/EASY:15/LONG:15:LONG",
+     "8:EASY:15/EASY:15/EASY:15/LONG:15:LONG",
+     "9:EASY:15/EASY:15/EASY:15/LONG:15:LONG",
+     "10:EASY:15/EASY:15/EASY:15/LONG:15:LONG",
+     "11:EASY:15/EASY:15/EASY:15/LONG:15:LONG"
+    ],
+    "lastPlanValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "runLedger": 48
+   }
+  },
+  "knownMissR7CEqualsUnreportedB2": {
+   "runs": true,
+   "intense": true
+  }
+ },
+ "F2_D18": {
+  "entryRunMinutes": 15,
+  "B2_UNREPORTED": {
+   "status": "MODIFY",
+   "action": "GATED_NEXT_STEP",
+   "proposal": true,
+   "missing": [],
+   "question": null,
+   "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation",
+   "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+   "week7": [
+    "EASY:15",
+    "EASY:15",
+    "LONG:15:LONG"
+   ],
+   "d18EntryOnly": true
+  },
+  "B2_EMPTY_REVIEWED": {
+   "status": "MODIFY",
+   "action": "GATED_NEXT_STEP",
+   "proposal": true,
+   "missing": [],
+   "question": null,
+   "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation",
+   "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+   "week7": [
+    "EASY:15",
+    "EASY:15",
+    "LONG:15:LONG"
+   ],
+   "d18EntryOnly": true
+  },
+  "B2_KNOWN_MISS": {
+   "status": "MODIFY",
+   "action": "GATED_NEXT_STEP",
+   "proposal": true,
+   "missing": [],
+   "question": null,
+   "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation",
+   "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+   "week7": [
+    "EASY:15",
+    "EASY:15",
+    "LONG:15:LONG"
+   ],
+   "d18EntryOnly": true
+  },
+  "R7C_UNREPORTED": {
+   "status": "ASK",
+   "action": "ASK",
+   "proposal": false,
+   "missing": [
+    "observations.unreportedSessions|interruption"
+   ],
+   "question": {
+    "kind": "UNREPORTED_TRAINING",
+    "dependentScope": "RUN_DOSE",
+    "fromWeek": 7,
+    "unreported": 13
+   },
+   "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 13 planned run sessions from 2026-11-22 to 2026-12-20 have no report: say what was done (report t",
+   "planValidity": "REQUIRES_RECONCILIATION",
+   "week7": null,
+   "d18EntryOnly": null
+  },
+  "R7C_EMPTY_REVIEWED": {
+   "status": "ASK",
+   "action": "ASK",
+   "proposal": false,
+   "missing": [
+    "observations.unreportedSessions|interruption"
+   ],
+   "question": {
+    "kind": "UNREPORTED_TRAINING",
+    "dependentScope": "RUN_DOSE",
+    "fromWeek": 7,
+    "unreported": 13
+   },
+   "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 13 planned run sessions from 2026-11-22 to 2026-12-20 have no report: say what was done (report t",
+   "planValidity": "REQUIRES_RECONCILIATION",
+   "week7": null,
+   "d18EntryOnly": null
+  },
+  "R7C_KNOWN_MISS": {
+   "status": "MODIFY",
+   "action": "GATED_NEXT_STEP",
+   "proposal": true,
+   "missing": [],
+   "question": null,
+   "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation",
+   "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+   "week7": [
+    "EASY:15",
+    "EASY:15",
+    "LONG:15:LONG"
+   ],
+   "d18EntryOnly": true
+  },
+  "knownMissR7CEqualsUnreportedB2": true
+ },
+ "F3_H25": {
+  "maintainRepHigh": 8,
+  "B2_UNREPORTED": {
+   "steps": [
+    {
+     "step": "S1",
+     "status": "MODIFY",
+     "action": "REPLAN_FUTURE_PHASES",
+     "proposal": true,
+     "missing": [],
+     "question": null,
+     "reason": "Goal or event date changed: future phases, priorities and arrangements are re-planned from the current state; completed weeks stay as they were",
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+    },
+    {
+     "step": "S2",
+     "status": "MODIFY",
+     "action": "REPLAN_FUTURE_PHASES",
+     "proposal": true,
+     "missing": [],
+     "question": null,
+     "reason": "Goal or event date changed: future phases, priorities and arrangements are re-planned from the current state; completed weeks stay as they were",
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+    }
+   ],
+   "f3": {
+    "proposal": true,
+    "goal": "MAINTAIN",
+    "rows": 30,
+    "repsWithinMaintain": true,
+    "neverAbove70": true,
+    "rowsDigest": "[{\"w\":7,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":7,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":7,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":7,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":8,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":8,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":8,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":8,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":9,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":9,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":9,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":9,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":10,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":10,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":10,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":10,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":12,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":12,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":13,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":13,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":13,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":13,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":14,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":14,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":14,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":14,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":15,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":15,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":15,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":15,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null}]"
+   }
+  },
+  "B2_KNOWN_MISS": {
+   "steps": [
+    {
+     "step": "S1",
+     "status": "MODIFY",
+     "action": "REPLAN_FUTURE_PHASES",
+     "proposal": true,
+     "missing": [],
+     "question": null,
+     "reason": "Goal or event date changed: future phases, priorities and arrangements are re-planned from the current state; completed weeks stay as they were",
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+    },
+    {
+     "step": "S2",
+     "status": "MODIFY",
+     "action": "REPLAN_FUTURE_PHASES",
+     "proposal": true,
+     "missing": [],
+     "question": null,
+     "reason": "Goal or event date changed: future phases, priorities and arrangements are re-planned from the current state; completed weeks stay as they were",
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+    }
+   ],
+   "f3": {
+    "proposal": true,
+    "goal": "MAINTAIN",
+    "rows": 30,
+    "repsWithinMaintain": true,
+    "neverAbove70": true,
+    "rowsDigest": "[{\"w\":7,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":7,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":7,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":7,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":8,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":8,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":8,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":8,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":9,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":9,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":9,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":9,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":10,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":10,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":10,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":10,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":12,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":12,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":13,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":13,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":13,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":13,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":14,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":14,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":14,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":14,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":15,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":15,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":15,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":15,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null}]"
+   }
+  },
+  "B2_EXECUTED": {
+   "steps": [
+    {
+     "step": "S1",
+     "status": "MODIFY",
+     "action": "REPLAN_FUTURE_PHASES",
+     "proposal": true,
+     "missing": [],
+     "question": null,
+     "reason": "Goal or event date changed: future phases, priorities and arrangements are re-planned from the current state; completed weeks stay as they were",
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+    },
+    {
+     "step": "S2",
+     "status": "MODIFY",
+     "action": "REPLAN_FUTURE_PHASES",
+     "proposal": true,
+     "missing": [],
+     "question": null,
+     "reason": "Goal or event date changed: future phases, priorities and arrangements are re-planned from the current state; completed weeks stay as they were",
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+    }
+   ],
+   "f3": {
+    "proposal": true,
+    "goal": "MAINTAIN",
+    "rows": 30,
+    "repsWithinMaintain": true,
+    "neverAbove70": true,
+    "rowsDigest": "[{\"w\":7,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":70},{\"w\":7,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":60},{\"w\":7,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":60},{\"w\":7,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":70},{\"w\":8,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":70},{\"w\":8,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":60},{\"w\":8,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":60},{\"w\":8,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":70},{\"w\":9,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":70},{\"w\":9,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":60},{\"w\":9,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":60},{\"w\":9,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":70},{\"w\":10,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":70},{\"w\":10,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":60},{\"w\":10,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":60},{\"w\":10,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":70},{\"w\":12,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":70},{\"w\":12,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":60},{\"w\":13,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":70},{\"w\":13,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":60},{\"w\":13,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":60},{\"w\":13,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":70},{\"w\":14,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":70},{\"w\":14,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":60},{\"w\":14,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":60},{\"w\":14,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":70},{\"w\":15,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":70},{\"w\":15,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":60},{\"w\":15,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":60},{\"w\":15,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":70}]"
+   }
+  },
+  "R7C_UNREPORTED": {
+   "steps": [
+    {
+     "step": "S1",
+     "status": "MODIFY",
+     "action": "REPLAN_FUTURE_PHASES",
+     "proposal": true,
+     "missing": [],
+     "question": null,
+     "reason": "Goal or event date changed: future phases, priorities and arrangements are re-planned from the current state; completed weeks stay as they were",
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+    },
+    {
+     "step": "S2",
+     "status": "ASK",
+     "action": "ASK",
+     "proposal": false,
+     "missing": [
+      "observations.unreportedSessions|interruption"
+     ],
+     "question": {
+      "kind": "UNREPORTED_TRAINING",
+      "dependentScope": "RUN_DOSE",
+      "fromWeek": 7,
+      "unreported": 11
+     },
+     "reason": "No run is recorded in the 30 days before 2027-02-22, the reference for the runs planned from then, and 11 planned run sessions from 2027-01-24 to 2027-02-16 have no report: say what was done (report t",
+     "planValidity": "REQUIRES_RECONCILIATION"
+    }
+   ],
+   "f3": {
+    "proposal": false
+   }
+  },
+  "R7C_KNOWN_MISS": {
+   "steps": [
+    {
+     "step": "S1",
+     "status": "MODIFY",
+     "action": "REPLAN_FUTURE_PHASES",
+     "proposal": true,
+     "missing": [],
+     "question": null,
+     "reason": "Goal or event date changed: future phases, priorities and arrangements are re-planned from the current state; completed weeks stay as they were",
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+    },
+    {
+     "step": "S2",
+     "status": "MODIFY",
+     "action": "REPLAN_FUTURE_PHASES",
+     "proposal": true,
+     "missing": [],
+     "question": null,
+     "reason": "Goal or event date changed: future phases, priorities and arrangements are re-planned from the current state; completed weeks stay as they were",
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+    }
+   ],
+   "f3": {
+    "proposal": true,
+    "goal": "MAINTAIN",
+    "rows": 30,
+    "repsWithinMaintain": true,
+    "neverAbove70": true,
+    "rowsDigest": "[{\"w\":7,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":7,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":7,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":7,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":8,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":8,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":8,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":8,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":9,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":9,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":9,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":9,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":10,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":10,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":10,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":10,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":12,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":12,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":13,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":13,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":13,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":13,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":14,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":14,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":14,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":14,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":15,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":15,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":15,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null},{\"w\":15,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"FROM_LOG\",\"value\":null}]"
+   }
+  },
+  "R7C_EXECUTED": {
+   "steps": [
+    {
+     "step": "S1",
+     "status": "MODIFY",
+     "action": "REPLAN_FUTURE_PHASES",
+     "proposal": true,
+     "missing": [],
+     "question": null,
+     "reason": "Goal or event date changed: future phases, priorities and arrangements are re-planned from the current state; completed weeks stay as they were",
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+    },
+    {
+     "step": "S2",
+     "status": "MODIFY",
+     "action": "REPLAN_FUTURE_PHASES",
+     "proposal": true,
+     "missing": [],
+     "question": null,
+     "reason": "Goal or event date changed: future phases, priorities and arrangements are re-planned from the current state; completed weeks stay as they were",
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+    }
+   ],
+   "f3": {
+    "proposal": true,
+    "goal": "MAINTAIN",
+    "rows": 30,
+    "repsWithinMaintain": true,
+    "neverAbove70": true,
+    "rowsDigest": "[{\"w\":7,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":70},{\"w\":7,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":60},{\"w\":7,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":60},{\"w\":7,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":70},{\"w\":8,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":70},{\"w\":8,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":60},{\"w\":8,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":60},{\"w\":8,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":70},{\"w\":9,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":70},{\"w\":9,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":60},{\"w\":9,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":60},{\"w\":9,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":70},{\"w\":10,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":70},{\"w\":10,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":60},{\"w\":10,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":60},{\"w\":10,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":70},{\"w\":12,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":70},{\"w\":12,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":60},{\"w\":13,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":70},{\"w\":13,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":60},{\"w\":13,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":60},{\"w\":13,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":70},{\"w\":14,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":70},{\"w\":14,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":60},{\"w\":14,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":60},{\"w\":14,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":70},{\"w\":15,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":70},{\"w\":15,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":60},{\"w\":15,\"id\":\"lat-pulldown\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":60},{\"w\":15,\"id\":\"bench-press\",\"reps\":8,\"mode\":\"KNOWN\",\"value\":70}]"
+   }
+  },
+  "knownMissR7CEqualsUnreportedB2": {
+   "f3Rows": true
+  }
+ },
+ "F4_S19": {
+  "B2_UNREPORTED": {
+   "weeks": [
+    "0:MODIFY/GATED_NEXT_STEP",
+    "1:MODIFY/GATED_NEXT_STEP",
+    "2:MODIFY/GATED_NEXT_STEP",
+    "3:MODIFY/GATED_NEXT_STEP",
+    "4:MODIFY/GATED_NEXT_STEP"
+   ],
+   "long1": 60,
+   "long5": 15,
+   "state5Long": 60,
+   "blockReview": {
+    "held": [
+     "run.long",
+     "run.easy",
+     "run.qualityStep"
+    ]
+   },
+   "lastMissing": []
+  },
+  "B2_KNOWN_MISS": {
+   "weeks": [
+    "0:MODIFY/GATED_NEXT_STEP",
+    "1:MODIFY/GATED_NEXT_STEP",
+    "2:MODIFY/GATED_NEXT_STEP",
+    "3:MODIFY/GATED_NEXT_STEP",
+    "4:MODIFY/GATED_NEXT_STEP"
+   ],
+   "long1": 60,
+   "long5": 15,
+   "state5Long": 60,
+   "blockReview": {
+    "held": [
+     "run.long",
+     "run.easy",
+     "run.qualityStep"
+    ]
+   },
+   "lastMissing": []
+  },
+  "R7C_UNREPORTED": {
+   "weeks": [
+    "0:MODIFY/GATED_NEXT_STEP",
+    "1:MODIFY/GATED_NEXT_STEP",
+    "2:MODIFY/GATED_NEXT_STEP",
+    "3:MODIFY/GATED_NEXT_STEP",
+    "4:ASK/ASK/UNREPORTED_TRAINING"
+   ],
+   "long1": 60,
+   "long5": 55,
+   "state5Long": 60,
+   "blockReview": null,
+   "lastMissing": [
+    "observations.unreportedSessions|interruption"
+   ]
+  },
+  "R7C_KNOWN_MISS": {
+   "weeks": [
+    "0:MODIFY/GATED_NEXT_STEP",
+    "1:MODIFY/GATED_NEXT_STEP",
+    "2:MODIFY/GATED_NEXT_STEP",
+    "3:MODIFY/GATED_NEXT_STEP",
+    "4:MODIFY/GATED_NEXT_STEP"
+   ],
+   "long1": 60,
+   "long5": 15,
+   "state5Long": 60,
+   "blockReview": {
+    "held": [
+     "run.long",
+     "run.easy",
+     "run.qualityStep"
+    ]
+   },
+   "lastMissing": []
+  },
+  "knownMissR7CEqualsUnreportedB2": {
+   "block": true,
+   "long": true
+  }
+ }
+}

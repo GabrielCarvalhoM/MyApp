@@ -939,3 +939,16 @@ A direct Founder request authorizes **R7-C Phase 2 only**, with two decisions: t
 - **Tests:** 16 new directed tests, 16/16. Clinical-first and return/re-entry 36/36 and 25/25. Touched-behaviour regressions 61/61. The full suite waits for Phase 3.
 - **Unchanged:** R6-POLICY-5, R7B0-CATALOG-2, queue (230), `product/`, `canon/`. No closure reopened.
 - **Next:** Phase 3 (freeze, full suite, SSCTR and Engineering gates) needs its own Founder authorization. [Checkpoint](audits/domain-coaching-r7-c-2026-11-01/PHASE2_CHECKPOINT.md).
+
+<!-- DOMAIN_COACHING_R7C: DCR7C-20261101-phase3-r1 -->
+## DOMAIN_COACHING_R7-C — Longitudinal Coaching — Phase 3 (proof and closure) CLOSED NOT_READY / 2026-11-01
+
+A direct Founder request authorizes **R7-C Phase 3 only**: full suite, directed holdout, the B.2 clinical differential, R7-A/R7-B conformance, adversarial, mutation, freeze and the SSCTR and Engineering gates only if every earlier check is clean. Same branch and worktree, from `f69abc1`; nothing merged or pushed.
+
+- **States:** R7C_PHASE3_STATUS = CLOSED_NOT_READY. No freeze (precondition failed), SSCTR and Engineering gates NOT_RUN. V1_COACHING_AUTHORITY_READY = NO.
+- **Suite:** 815 tests, 811 pass, 4 fail (baseline R7B2-FREEZE-1 799/799). All four EXPECTED_SEMANTIC_UPDATE (unreported now read as unknown, not zero); each test's own invariant holds with known misses, identical to B.2. Not disposed: it needs SSCTR confirmation of the r12 weekly-review contract and D18.
+- **Clean:** clinical-first and the B.2 closures (K6, K6b, inventory, neighbors 32/32, sweep 389, grid 184, adversarial 3,228/0), R7-B conformance 301/7/1, R7-A class sections (C15 changed as declared), holdout (H22 declared; H35/H21/H23 UNSUPPORTED_BY_EXISTING_EXPIRY), G02 adversarial PASS.
+- **Blockers for Phase 4:** R7C-P3-02, safety-relevant and introduced by R7-C: after the unreported-training question, a current-week decision validates credited projected run doses. R7C-P3-01: the taper and race week read an empty achieved state as zero without asking. R7C-P3-03: the C15 reason states a false cause. R7C-P3-04: dispose the four tests with SSCTR. R7C-P3-05: four mutation survivors (G01-M5, G02-M3, G02-M4, G02-M8).
+- **Also:** HISTORY observation = STALE_PROJECTION (no decision impact with identical facts). D1 = residual, owners SSCTR and Product/UX.
+- **Unchanged:** R6-POLICY-5, R7B0-CATALOG-2, queue (230), `product/`, `canon/`, every closed record. No closure reopened, no test of a closed mission edited.
+- **Next:** a minimal Phase 4 (fix P3-01..03, add the tests, dispose the four with SSCTR, freeze, first SSCTR and Engineering gates) on its own Founder authorization; the Founder decides whether it allows one narrow correction cycle after those gates. R7-D not started. [Checkpoint](audits/domain-coaching-r7-c-2026-11-01/PHASE3_CHECKPOINT.md).
