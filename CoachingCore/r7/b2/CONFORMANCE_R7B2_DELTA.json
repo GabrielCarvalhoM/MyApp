@@ -1,0 +1,41 @@
+{
+ "revision": "R7B2-CONFORMANCE-DELTA-1",
+ "base": "CoachingCore/r7/b/CONFORMANCE_R7B.json (R7B-CONFORMANCE-2) and CoachingCore/r7/b1/CONFORMANCE_R7B1_DELTA.json (R7B1-CONFORMANCE-DELTA-2), both unchanged and still passing (scripts/conformance-r7b.mjs, scripts/conformance-r7b1.mjs)",
+ "catalogRevision": "R7B0-CATALOG-2",
+ "catalogSha256": "ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9",
+ "note": "The one catalog rule whose runtime materialization R7-B.2 changed. B0-C06 condition 8 (and SSCTR D08, clinical-screen-first) was contradicted on the QE-R7B1-04 path (R7-A's late-evidence question before the substitution's clinical screen) and on the two same-class exits found by the contract §4 inventory (R7B2-CAND-01, the factual re-plan's own question; R7B2-CAND-02, the return's report-identity question). This entry records what now materializes it: one precedence point in evaluateProgram's decision step that returns the clinical route the review's own handler screen takes, through the two screens the handlers share with it. The base and R7-B.1 entries keep their consumers and tests.",
+ "entries": [
+  {
+   "id": "SSCTR:B0-C06#c8",
+   "rule": "Reason-based substitution keeps precedence over cadence after the clinical screen; ambiguous reports are ASK",
+   "ssctr": ["B0-C06 condition 8", "D08 (clinical-screen-first)"],
+   "status": "IMPLEMENTED",
+   "closes": ["QE-R7B1-04", "R7B2-CAND-01", "R7B2-CAND-02"],
+   "consumers": [
+    "src/r6-adaptation.mjs#clinicalRoute",
+    "src/r6-adaptation.mjs#substitutionClinical",
+    "src/r6-adaptation.mjs#interruptionScreen",
+    "src/r6-adaptation.mjs#const clinical=clinicalRoute(kind,review);",
+    "src/r6-adaptation.mjs#const handled=clinical??(factual?.ask?null:decide(factual?.ctx??ctx));",
+    "src/r6-adaptation.mjs#const decision0=clinical??factual?.ask??",
+    "src/r6-adaptation.mjs#const clinical=substitutionClinical(sub);",
+    "src/r6-adaptation.mjs#const {screen,clinical}=interruptionScreen(i);"
+   ],
+   "tests": [
+    "test/r7b2-clinical-precedence.test.mjs::R7-B.2 QE-R7B1-04: pain or injury with an exercise, reported with late training before the break, routes to a human before the late-evidence question",
+    "test/r7b2-clinical-precedence.test.mjs::R7-B.2 QE-R7B1-04: with a block choice or an unrecognised choice in the same review, the clinical route still wins",
+    "test/r7b2-clinical-precedence.test.mjs::R7-B.2 QE-R7B1-04: two steps",
+    "test/r7b2-clinical-precedence.test.mjs::R7-B.2 QE-R7B1-04: after the clinical route a later review with no clinical signal and no pending clinical state still gets the late-evidence question",
+    "test/r7b2-clinical-precedence.test.mjs::R7-B.2 preserved (neighbor A)",
+    "test/r7b2-clinical-precedence.test.mjs::R7-B.2 preserved (neighbor B)",
+    "test/r7b2-clinical-precedence.test.mjs::R7-B.2 preserved (neighbor D)",
+    "test/r7b2-clinical-precedence.test.mjs::R7-B.2 preserved (neighbor F)",
+    "test/r7b2-clinical-precedence.test.mjs::R7-B.2 CAND-02: a return report resent under the same event id whose reason is clinical routes to a human",
+    "test/r7b2-clinical-precedence.test.mjs::R7-B.2 preserved (CAND-02)",
+    "test/r7b2-clinical-precedence.test.mjs::R7-B.2 CAND-01: when the factual re-plan raises its own question, a review reporting pain or an illness still routes to a human",
+    "test/r7b2-clinical-precedence.test.mjs::R7-B.2 preserved (CAND-01)",
+    "test/r7b1-correction-cycle.test.mjs::R7-B.1 cycle QE-R7B1-01: a review reporting "
+   ]
+  }
+ ]
+}
