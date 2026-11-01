@@ -9,7 +9,8 @@ import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import * as git from '../lib/git.mjs';
-import { untrustedRuntimeReason, isInside, samePath } from '../lib/mission.mjs';
+import { isInside, samePath } from '../lib/mission.mjs';
+import { untrustedRuntimeReason, untrustedRuntimeForAnyMission } from '../lib/trust.mjs';
 import { writeJsonAtomic } from '../lib/files.mjs';
 import { makeRepo, cleanup, startMission, script, fakeEnv, supervise, calls, state, sh, write, running, closing } from './helpers.mjs';
 
@@ -44,7 +45,7 @@ test('the supervisor refuses to run from a copy of the runtime a session can cha
   fs.cpSync(RUNTIME_DIR, copy, { recursive: true });
   const result = spawnSync(process.execPath, [path.join(copy, 'runtime.mjs'), 'run', 'TEST_MISSION'], { cwd: repo.main, env: fakeEnv(), encoding: 'utf8' });
   assert.equal(result.status, 1);
-  assert.match(result.stderr, /inside the mission worktree, where sessions could change the code that supervises them/);
+  assert.match(result.stderr, /inside the worktree of mission TEST_MISSION, where sessions could change the code that supervises them/);
   const jobCopy = path.join(found.mission.repo.main_root, '.claude', 'worktrees', `${found.mission.slug}--codex-r3`, 'tools', 'agent-runtime');
   assert.match(untrustedRuntimeReason(jobCopy, found.mission), /inside a Codex job worktree/);
   assert.equal(untrustedRuntimeReason(RUNTIME_DIR, found.mission), null);
@@ -92,14 +93,24 @@ test('attribute filters and signing programs a session configures never run thro
   plainGit(wt, 'status', '--porcelain');
   plainGit(repo.main, 'worktree', 'add', '--quiet', path.join(repo.root, 'plain-wt'), found.mission.repo.branch + '~0');
   plainGit(wt, 'commit', '--quiet', '--allow-empty', '-m', 'signed?');
-  for (const marker of [clean, smudge, sign]) {
+  // Without a signing key, Git asks the default key command: a second program the session can choose.
+  const keyCommand = path.join(repo.root, 'via-key-command');
+  const keyScript = write(repo.root, 'evil-key', `#!/bin/sh\ntouch ${slash(keyCommand)}\n`);
+  fs.chmodSync(keyScript, 0o755);
+  sh(wt, 'config', '--unset', 'user.signingkey');
+  sh(wt, 'config', 'gpg.ssh.defaultKeyCommand', slash(keyScript));
+  plainGit(wt, 'commit', '--quiet', '--allow-empty', '-m', 'signed again?');
+  for (const marker of [clean, smudge, sign, keyCommand]) {
     assert.ok(fs.existsSync(marker), `positive control ${path.basename(marker)} did not fire`);
     fs.rmSync(marker);
   }
   assert.deepEqual(git.dirtyPaths(found.repo), ['a.txt']);
   git.addWorktree(found.repo, path.join(repo.root, 'hardened-wt'), 'hardened-branch', git.head(found.repo));
-  assert.throws(() => git.commitAll(found.repo, 'cannot sign with the Founder programs'), /failed/);
-  for (const marker of [clean, smudge, sign]) assert.ok(!fs.existsSync(marker), `${path.basename(marker)} ran through the supervisor`);
+  // The commit follows the Founder's own signing policy (global config), not the repository's.
+  const founderSigns = /^(true|yes|on|1)$/i.test(plainGit(os.tmpdir(), 'config', '--global', '--get', 'commit.gpgsign').stdout.trim());
+  if (founderSigns) assert.throws(() => git.commitAll(found.repo, 'signed with the Founder programs only'));
+  else assert.match(git.commitAll(found.repo, 'unsigned, as the Founder commits'), /^[0-9a-f]{40}$/);
+  for (const marker of [clean, smudge, sign, keyCommand]) assert.ok(!fs.existsSync(marker), `${path.basename(marker)} ran through the supervisor`);
 });
 
 test('a rewritten .git file in the mission worktree does not redirect what the supervisor checks', async (t) => {
@@ -131,6 +142,37 @@ test('agent configuration changed by a failed run, or hidden by ignore rules, st
   assert.equal(held.summary.status, 'FOUNDER_REQUIRED');
   assert.match(held.summary.reason, /\.claude\/settings\.local\.json/);
   assert.equal(calls(other).length, 0);
+});
+
+test('a change of agent configuration hidden behind an unrelated stop is never adopted by a resolution alone', async (t) => {
+  const { repo, found } = mission(t);
+  write(found.worktree, 'notes.txt', 'a stray file\n');
+  write(found.worktree, '.claude/settings.local.json', '{"permissions":{"allow":["Bash(*)"]}}\n');
+  fs.appendFileSync(path.join(repo.main, '.git', 'info', 'exclude'), '.claude/settings.local.json\n');
+  const claude = script(repo, [{ actions: [{ commit: 'keep the notes' }, { push: true }, { checkpoint: closing() }] }]);
+  const env = fakeEnv({ claudeScript: claude });
+  assert.match((await supervise(found, env)).summary.reason, /^DIRTY_WORKTREE: .*notes\.txt/);
+  await assert.rejects(supervise(found, env, { acceptConfig: true }), /--accept-config goes with --resolve/);
+  const held = await supervise(found, env, { resolve: 'notes.txt is mine' });
+  assert.equal(held.summary.status, 'FOUNDER_REQUIRED');
+  assert.match(held.summary.reason, /PROTECTED_CONFIG: .*\.claude\/settings\.local\.json/);
+  assert.equal(calls(claude).length, 0);
+  assert.equal((await supervise(found, env, { resolve: 'settings reviewed', acceptConfig: true })).summary.status, 'COMPLETED');
+});
+
+test('no supervised mission can run on a runtime copy inside another mission worktree, links included', (t) => {
+  const repo = makeRepo();
+  t.after(() => cleanup(repo));
+  const first = startMission(repo, { id: 'MISSION_A' });
+  const second = startMission(repo, { id: 'MISSION_B' });
+  const copy = path.join(second.worktree, 'tools', 'agent-runtime');
+  fs.cpSync(RUNTIME_DIR, copy, { recursive: true });
+  const controlRoot = path.dirname(first.paths.control);
+  assert.match(untrustedRuntimeForAnyMission(copy, controlRoot), /inside the worktree of mission MISSION_B/);
+  const link = path.join(repo.root, 'link-to-b');
+  fs.symlinkSync(second.worktree, link, 'junction');
+  assert.match(untrustedRuntimeForAnyMission(path.join(link, 'tools', 'agent-runtime'), controlRoot), /mission MISSION_B/);
+  assert.equal(untrustedRuntimeForAnyMission(RUNTIME_DIR, controlRoot), null);
 });
 
 test('a next unit altered in the control state is refused on load', async (t) => {

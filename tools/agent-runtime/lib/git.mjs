@@ -7,7 +7,7 @@ import { runSync } from './proc.mjs';
 // every Git command the supervisor runs:
 // - reads no attributes (no filter drivers, no line-ending conversion: bytes exactly as written);
 // - switches off fsmonitor, hooks (they point at an empty directory of this process), submodule
-//   recursion and automatic gc/maintenance, and pins the signing programs to the Founder's own config;
+//   recursion and automatic gc/maintenance, and commits under the Founder's own signing policy;
 // - addresses a repository through the git dir pinned when it was created (repository handles below);
 // - reaches a remote only from that private directory, outside any repository (lsRemote).
 const EMPTY_TREE = '4b825dc642cb6eb9a060e54bf8d69288fbee4904';
@@ -47,15 +47,24 @@ const localHardening = () => [
 ];
 
 let signing = null;
-// The signing programs come from the Founder's global config (or Git's defaults), never the repository's.
-function signingPrograms() {
+// The supervisor's commits follow the Founder's own signing policy, read from the Founder's global config,
+// whatever a session wrote into the repository's config: unsigned when the Founder does not sign; when the
+// Founder signs, the format, every signing program, the key command and the key come from that config too.
+// This enforces the Founder's policy against repository overrides; it never turns off a signing the
+// Founder asked for.
+function signingPolicy() {
   if (signing) return signing;
   const { cwd, env } = outsideAnyRepository();
-  const globalValue = (key, fallback) => {
+  const globalValue = (key) => {
     const result = runSync(['git', 'config', '--global', '--get', key], { cwd, env, timeoutMs: 30_000 });
-    return result.status === 0 && result.stdout.trim() ? result.stdout.trim() : fallback;
+    return result.status === 0 ? result.stdout.trim() : null;
   };
-  signing = [['gpg.program', 'gpg'], ['gpg.ssh.program', 'ssh-keygen'], ['gpg.x509.program', 'gpgsm']].flatMap(([key, fallback]) => ['-c', `${key}=${globalValue(key, fallback)}`]);
+  const signs = /^(true|yes|on|1)$/i.test(globalValue('commit.gpgsign') ?? '');
+  signing = ['-c', `commit.gpgsign=${signs}`];
+  if (signs) {
+    const settings = [['gpg.format', 'openpgp'], ['gpg.program', 'gpg'], ['gpg.ssh.program', 'ssh-keygen'], ['gpg.x509.program', 'gpgsm'], ['gpg.ssh.defaultKeyCommand', ''], ['user.signingKey', '']];
+    for (const [key, fallback] of settings) signing.push('-c', `${key}=${globalValue(key) ?? fallback}`);
+  }
   return signing;
 }
 
@@ -193,7 +202,7 @@ export function lsRemote(url, branchName) {
 
 export function commitAll(target, message) {
   git(target, ['add', '-A']);
-  git(target, ['commit', '--quiet', '-m', message], { extra: signingPrograms() });
+  git(target, ['commit', '--quiet', '-m', message], { extra: signingPolicy() });
   return head(target);
 }
 

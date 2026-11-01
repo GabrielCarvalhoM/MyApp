@@ -100,7 +100,10 @@ test('agent configuration committed by a session stops the mission for the Found
   assert.equal(stopped.summary.status, 'FOUNDER_REQUIRED');
   assert.match(stopped.summary.reason, /PROTECTED_CONFIG: .*\.claude\/settings\.json/);
   assert.equal(calls(claude).length, 1, 'no session starts on unreviewed agent configuration');
-  assert.equal((await supervise(found, env, { resolve: 'reviewed: keep the change' })).summary.status, 'COMPLETED');
+  const pending = await supervise(found, env, { resolve: 'reviewed: keep the change' });
+  assert.equal(pending.summary.status, 'FOUNDER_REQUIRED', 'a resolution alone never adopts agent configuration');
+  assert.equal((await supervise(found, env, { resolve: 'reviewed: keep the change', acceptConfig: true })).summary.status, 'COMPLETED');
+  assert.ok(events(found).some((event) => event.type === 'protected_config_accepted' && event.files.includes('.claude/settings.json')));
 });
 
 test('an accepted checkpoint that no state recorded is moved aside, never overwritten', async (t) => {

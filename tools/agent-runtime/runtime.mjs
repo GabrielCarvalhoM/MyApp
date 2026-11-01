@@ -21,7 +21,7 @@ const USAGE = `agent runtime: supervised long missions (tools/agent-runtime/READ
   run <MISSION_ID> --request <file> [--base <rev>] [--branch <name>] [--worktree <path>]
       [--model <id>] [--effort <level>] [--permission-mode <mode>] [--max-budget-usd <n>] [--goal <text>]
                                   start a mission; the same command without --request resumes it
-  run <MISSION_ID> [--once] [--dry-run] [--resolve "<note>"] [--assume-dead]
+  run <MISSION_ID> [--once] [--dry-run] [--resolve "<note>" [--accept-config]] [--assume-dead]
   status [<MISSION_ID>] [--json]  state, last checkpoint, next unit and metrics
   checkpoint template|validate    inside a supervised session: write or check the checkpoint
   capture [--out <file>] [--tail <n>] -- <command...>
@@ -59,7 +59,7 @@ async function cmdRun(args) {
       request: { type: 'string' }, base: { type: 'string' }, branch: { type: 'string' }, worktree: { type: 'string' },
       model: { type: 'string' }, effort: { type: 'string' }, 'permission-mode': { type: 'string' },
       'max-budget-usd': { type: 'string' }, goal: { type: 'string' }, once: { type: 'boolean' },
-      'dry-run': { type: 'boolean' }, resolve: { type: 'string' }, 'assume-dead': { type: 'boolean' },
+      'dry-run': { type: 'boolean' }, resolve: { type: 'string' }, 'accept-config': { type: 'boolean' }, 'assume-dead': { type: 'boolean' },
     },
   });
   if (positionals.length !== 1) throw new Error(`run needs exactly one MISSION_ID\n\n${USAGE}`);
@@ -90,7 +90,12 @@ async function cmdRun(args) {
     process.exit(130);
   };
   process.once('SIGINT', interrupted);
-  const summary = await supervisor.run({ once: values.once, resolve: values.resolve ?? null, assumeDead: values['assume-dead'] });
+  const summary = await supervisor.run({
+    once: values.once,
+    resolve: values.resolve ?? null,
+    acceptConfig: values['accept-config'] === true,
+    assumeDead: values['assume-dead'],
+  });
   process.removeListener('SIGINT', interrupted);
   console.log(JSON.stringify(summary, null, 2));
   return summary.status === 'COMPLETED' || (values.once && summary.status === 'READY_FOR_FRESH_SESSION') ? 0 : 2;

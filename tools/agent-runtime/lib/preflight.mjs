@@ -43,7 +43,7 @@ export function preflight({ repo, worktree, mission, state, onWarning = () => {}
   }
   const drift = protectedDrift(worktree, state.protected_snapshot);
   if (drift.length) {
-    return { founder: `PROTECTED_CONFIG: agent configuration the next session would load changed (${drift.join(', ')}); review it, then run again with --resolve "<note>"` };
+    return { founder: `PROTECTED_CONFIG: agent configuration the next session would load changed (${drift.join(', ')}); review it, then run again with --resolve "<note>" --accept-config to adopt it, or restore it first` };
   }
   const diverged = remoteDivergence(repo, mission, head, onWarning);
   if (diverged) return { block: diverged };

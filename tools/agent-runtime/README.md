@@ -20,6 +20,7 @@ This creates the branch `claude/domain-coaching-r7-b2` and its worktree `.claude
 ```sh
 node tools/agent-runtime/runtime.mjs status [MISSION_ID]       # state, last checkpoint, next unit, metrics
 node tools/agent-runtime/runtime.mjs run MISSION_ID --resolve "<decision or note>"   # after BLOCKED / FOUNDER_REQUIRED
+node tools/agent-runtime/runtime.mjs run MISSION_ID --resolve "<note>" --accept-config  # adopt reviewed agent configuration
 node tools/agent-runtime/runtime.mjs doctor                    # installed CLIs and capabilities, no model call
 ```
 
@@ -97,11 +98,12 @@ Codex is an accelerator, never a dependency. For a `codex` unit the supervisor c
 
 One executor works at a time; Codex never touches the mission worktree. Sessions can write the repository's config, attributes, hooks, a worktree's `.git` file and the session workspace, so the supervisor trusts none of it:
 
-- its code must not live where a session of the mission can change it (it refuses to run from the mission or a job worktree);
+- its code must not live where a session can change it: it refuses to run from the worktree, or a Codex job worktree, of any supervised mission of the repository, comparing real paths so that a junction changes nothing;
 - its control state is outside the worktree; the mission record is re-validated on every load (permission mode, model ids, branch, remote URL, pinned git dir, limits), and so are the units in the state; a state that contradicts the append-only event log cannot reopen a terminal mission; an accepted checkpoint that changed afterwards blocks the mission;
-- every supervisor Git command reads no attributes (no filter drivers, no line-ending conversion), switches off fsmonitor, hooks (a never-created path in a private temporary directory), submodule recursion and automatic gc/maintenance, takes signing programs from the Founder's global config, and addresses the mission and job worktrees through the git dir pinned when they were created, never through their `.git` file;
+- every supervisor Git command reads no attributes (no filter drivers, no line-ending conversion), switches off fsmonitor, hooks (a never-created path in a private temporary directory), submodule recursion and automatic gc/maintenance, and addresses the mission and job worktrees through the git dir pinned when they were created, never through their `.git` file;
+- the supervisor's own commits (Codex output on a job branch) follow the Founder's signing policy from the Founder's global config, whatever a session wrote into the repository's config: unsigned when the Founder does not sign, and, when the Founder signs, with the format, programs, key command and key of that config;
 - no Git value a session can set is passed as an argument: the remote is read with `git ls-remote --end-of-options <URL pinned at mission start>` from that private directory, outside any repository;
-- agent configuration that later sessions would load (`.claude/settings.json`, `.claude/settings.local.json`, `.mcp.json`, `.codex/config.toml`) is compared on disk, committed or not, ignored or not, with the version the Founder last accepted, before every launch and at every acceptance; any change stops the mission at `FOUNDER_REQUIRED`, and `--resolve` records the reviewed version.
+- agent configuration that later sessions would load (`.claude/settings.json`, `.claude/settings.local.json`, `.mcp.json`, `.codex/config.toml`) is compared on disk, committed or not, ignored or not, with the version the Founder last accepted, before every launch; any change stops the mission at `FOUNDER_REQUIRED`. It is adopted only with `--resolve "<note>" --accept-config`: resolving an unrelated stop never adopts it, and the change is listed in the event log either way.
 
 The supervisor's own Git writes are limited to creating worktrees and committing Codex output on a job branch. It never merges, pushes, resets, rewrites history, deletes branches or touches credentials; pushing the mission branch is the sessions' normal Git work.
 

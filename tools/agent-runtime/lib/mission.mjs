@@ -71,21 +71,6 @@ export function isInside(child, parent) {
   return relative !== '' && !relative.startsWith('..') && !path.isAbsolute(relative);
 }
 
-// The supervisor must not run code a session can change: not from the mission worktree, not from a
-// Codex job worktree. Run it from the main checkout or another checkout no session works in.
-export function untrustedRuntimeReason(runtimeRoot, mission) {
-  const { worktree, main_root: mainRootPath } = mission.repo;
-  if (samePath(runtimeRoot, worktree) || isInside(runtimeRoot, worktree)) {
-    return `this copy of the runtime (${runtimeRoot}) is inside the mission worktree, where sessions could change the code that supervises them; run it from the main checkout`;
-  }
-  const jobs = path.join(mainRootPath, '.claude', 'worktrees');
-  const first = isInside(runtimeRoot, jobs) ? path.relative(jobs, runtimeRoot).split(path.sep)[0] : '';
-  if (first.startsWith(`${mission.slug}--codex-`)) {
-    return `this copy of the runtime (${runtimeRoot}) is inside a Codex job worktree; run it from the main checkout`;
-  }
-  return null;
-}
-
 const positive = (value) => Number.isFinite(value) && value > 0;
 
 // The record is read again at every start: whatever happened to the file meanwhile, the supervisor

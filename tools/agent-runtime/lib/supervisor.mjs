@@ -4,9 +4,10 @@ import { fileURLToPath } from 'node:url';
 import { randomUUID } from 'node:crypto';
 import * as git from './git.mjs';
 import { readJson, readJsonl, writeText, ensureDir, nowIso, sha256File } from './files.mjs';
-import { openMission, checkpointPath, saveState, appendEvent, acquireLock, pidAlive, untrustedRuntimeReason } from './mission.mjs';
+import { openMission, checkpointPath, saveState, appendEvent, acquireLock, pidAlive } from './mission.mjs';
+import { untrustedRuntimeForAnyMission } from './trust.mjs';
 import { unitErrors } from './checkpoint.mjs';
-import { protectedSnapshot } from './protected.mjs';
+import { protectedSnapshot, protectedDrift } from './protected.mjs';
 import { renderBootstrap, bootstrapListedPaths } from './bootstrap.mjs';
 import { chooseExecutor } from './routing.mjs';
 import { preflight } from './preflight.mjs';
@@ -41,7 +42,7 @@ function assertConsistent(state, events) {
 export class Supervisor {
   constructor({ control, env = process.env, log = () => {} }) {
     const { mission, worktree, repo, paths } = openMission(control);
-    const untrusted = untrustedRuntimeReason(RUNTIME_ROOT, mission);
+    const untrusted = untrustedRuntimeForAnyMission(RUNTIME_ROOT, path.dirname(control));
     if (untrusted) throw new Error(untrusted);
     Object.assign(this, { mission, worktree, repo, paths, env, log });
     this.state = readJson(paths.state);
@@ -121,12 +122,13 @@ export class Supervisor {
     return `CHECKPOINT_TAMPERED: checkpoint ${seq} is ${actual ? 'no longer the accepted version' : 'missing'}; nothing was run. Inspect ${path.basename(file)}, then run again with --resolve "<note>" to continue from it as it now is`;
   }
 
-  async run({ once = false, resolve = null, assumeDead = false } = {}) {
+  async run({ once = false, resolve = null, acceptConfig = false, assumeDead = false } = {}) {
     const release = acquireLock(this.paths);
     try {
       if (this.state.status === 'PAUSED') this.transition('READY_FOR_FRESH_SESSION', 'resumed by a new supervisor run');
       await this.recoverInterrupted(assumeDead);
-      if (resolve !== null) this.applyResolution(resolve);
+      if (acceptConfig && resolve === null) throw new Error('--accept-config goes with --resolve');
+      if (resolve !== null) this.applyResolution(resolve, acceptConfig);
       for (;;) {
         if (STOP_STATES.includes(this.state.status)) return this.summary();
         if (!this.state.next_unit) {
@@ -173,7 +175,7 @@ export class Supervisor {
     });
   }
 
-  applyResolution(note) {
+  applyResolution(note, acceptConfig = false) {
     const s = this.state;
     if (typeof note !== 'string' || note.trim() === '') throw new Error('--resolve needs a note');
     if (s.status !== 'BLOCKED' && s.status !== 'FOUNDER_REQUIRED') {
@@ -181,8 +183,17 @@ export class Supervisor {
       throw new Error(`--resolve applies to a BLOCKED or FOUNDER_REQUIRED mission; this one is ${s.status}${terminal}`);
     }
     this.notice(`FOUNDER RESOLUTION (${nowIso()}), authoritative at this point: ${note.trim()}`);
-    // The Founder has seen the agent configuration as it is now.
-    s.protected_snapshot = protectedSnapshot(this.worktree);
+    // Agent configuration is adopted only when the Founder says so, never as a side effect of resolving
+    // an unrelated stop; without --accept-config the next preflight shows the change and stops again.
+    const drift = protectedDrift(this.worktree, s.protected_snapshot);
+    if (drift.length && acceptConfig) {
+      s.protected_snapshot = protectedSnapshot(this.worktree);
+      this.notice(`The Founder accepted the agent configuration as it now is (${drift.join(', ')}).`);
+      this.event({ type: 'protected_config_accepted', files: drift });
+    } else if (drift.length) {
+      this.event({ type: 'protected_config_pending', files: drift });
+      this.log(`agent configuration changed (${drift.join(', ')}); it is adopted only with --accept-config`);
+    }
     if (this.checkpointTampering()) {
       const file = checkpointPath(this.paths, s.last_checkpoint_seq);
       if (!fs.existsSync(file)) throw new Error(`checkpoint ${s.last_checkpoint_seq} is missing; restore it before resolving`);
