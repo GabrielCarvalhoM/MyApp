@@ -1,0 +1,1249 @@
+{
+ "probe": "a1-graduation",
+ "now": {
+  "label": "R7B2-FREEZE-1",
+  "root": "NOW_ROOT (worktree)"
+ },
+ "pred": {
+  "label": "R7B1-FREEZE-2",
+  "root": "PRED_ROOT (temporary git archive of 146ebb8)"
+ },
+ "ran": "2026-11-01T12:42:49.010Z",
+ "qualifyingWeeks": {
+  "freeze2": [
+   2,
+   3
+  ],
+  "r7b2": [
+   2,
+   3
+  ]
+ },
+ "rows": [
+  {
+   "case": "B same-id illness + w3 long correction",
+   "sameOnBothRuntimes": false,
+   "r7b2PlanAfterNextEqualsFreeze2PlanAfterNext": true,
+   "r7b2PlanAfterNextEqualsFreeze2PlanAfterStep": true,
+   "freeze2": {
+    "step": {
+     "status": "ASK",
+     "action": "ASK",
+     "proposal": true,
+     "proposalAction": "REPLAN_FROM_EVIDENCE",
+     "disclosures": [
+      "RUN_QUALITY_GRADUATION_WITHDRAWN"
+     ],
+     "pending": "ASK",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "This report id already belongs to a different interruption report; send a correction as a new report of that interruption (its episodeId); meanwhile e"
+    },
+    "stepDay": "2026-12-04",
+    "graduationOnRecordAfterStep": false,
+    "qualityAheadAfterStep": {
+     "count": 0,
+     "firstDates": [],
+     "beforeNextReview": []
+    },
+    "nextReviewDay": "2026-12-05",
+    "nextWithReference": {
+     "status": "KEEP",
+     "action": "KEEP",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": null,
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "nextWithoutReference": {
+     "status": "KEEP",
+     "action": "KEEP",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": null,
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "qualityAheadAfterNext": {
+     "count": 0
+    },
+    "graduationOnRecordAfterNext": false
+   },
+   "r7b2": {
+    "step": {
+     "status": "CLINICAL_HUMAN_REQUIRED",
+     "action": "CLINICAL_HUMAN_REQUIRED",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": "CLINICAL_HUMAN_REQUIRED",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "The interruption reason is clinical or possibly clinical (flu, illness): qualified assessment is needed; no nonclinical return recipe"
+    },
+    "stepDay": "2026-12-04",
+    "graduationOnRecordAfterStep": true,
+    "qualityAheadAfterStep": {
+     "count": 10,
+     "firstDates": [
+      "2026-12-15 THRESHOLD 34min",
+      "2026-12-22 THRESHOLD 34min",
+      "2026-12-29 THRESHOLD 34min",
+      "2027-01-05 THRESHOLD 34min"
+     ],
+     "beforeNextReview": []
+    },
+    "nextReviewDay": "2026-12-05",
+    "nextWithReference": {
+     "status": "CLINICAL_HUMAN_REQUIRED",
+     "action": "CLINICAL_HUMAN_REQUIRED",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": "CLINICAL_HUMAN_REQUIRED",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "A prior clinical dependency remains outside this nonclinical reference; no automatic clearance"
+    },
+    "nextWithoutReference": {
+     "status": "MODIFY",
+     "action": "REPLAN_FROM_EVIDENCE",
+     "proposal": true,
+     "proposalAction": "REPLAN_FROM_EVIDENCE",
+     "disclosures": [
+      "RUN_QUALITY_GRADUATION_WITHDRAWN"
+     ],
+     "pending": null,
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "reason": "Evidence about an earlier week changed what this week starts from; the sessions still ahead are planned again from it, completed sessions stay as they"
+    },
+    "qualityAheadAfterNext": {
+     "count": 0
+    },
+    "graduationOnRecordAfterNext": false
+   }
+  },
+  {
+   "case": "B-ctl new-id illness + w3 long correction (handler route)",
+   "sameOnBothRuntimes": true,
+   "r7b2PlanAfterNextEqualsFreeze2PlanAfterNext": true,
+   "r7b2PlanAfterNextEqualsFreeze2PlanAfterStep": false,
+   "freeze2": {
+    "step": {
+     "status": "CLINICAL_HUMAN_REQUIRED",
+     "action": "CLINICAL_HUMAN_REQUIRED",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": "CLINICAL_HUMAN_REQUIRED",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "The interruption reason is clinical or possibly clinical (flu, illness): qualified assessment is needed; no nonclinical return recipe"
+    },
+    "stepDay": "2026-12-04",
+    "graduationOnRecordAfterStep": true,
+    "qualityAheadAfterStep": {
+     "count": 10,
+     "firstDates": [
+      "2026-12-15 THRESHOLD 34min",
+      "2026-12-22 THRESHOLD 34min",
+      "2026-12-29 THRESHOLD 34min",
+      "2027-01-05 THRESHOLD 34min"
+     ],
+     "beforeNextReview": []
+    },
+    "nextReviewDay": "2026-12-05",
+    "nextWithReference": {
+     "status": "CLINICAL_HUMAN_REQUIRED",
+     "action": "CLINICAL_HUMAN_REQUIRED",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": "CLINICAL_HUMAN_REQUIRED",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "A prior clinical dependency remains outside this nonclinical reference; no automatic clearance"
+    },
+    "nextWithoutReference": {
+     "status": "MODIFY",
+     "action": "REPLAN_FROM_EVIDENCE",
+     "proposal": true,
+     "proposalAction": "REPLAN_FROM_EVIDENCE",
+     "disclosures": [
+      "RUN_QUALITY_GRADUATION_WITHDRAWN"
+     ],
+     "pending": null,
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "reason": "Evidence about an earlier week changed what this week starts from; the sessions still ahead are planned again from it, completed sessions stay as they"
+    },
+    "qualityAheadAfterNext": {
+     "count": 0
+    },
+    "graduationOnRecordAfterNext": false
+   },
+   "r7b2": {
+    "step": {
+     "status": "CLINICAL_HUMAN_REQUIRED",
+     "action": "CLINICAL_HUMAN_REQUIRED",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": "CLINICAL_HUMAN_REQUIRED",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "The interruption reason is clinical or possibly clinical (flu, illness): qualified assessment is needed; no nonclinical return recipe"
+    },
+    "stepDay": "2026-12-04",
+    "graduationOnRecordAfterStep": true,
+    "qualityAheadAfterStep": {
+     "count": 10,
+     "firstDates": [
+      "2026-12-15 THRESHOLD 34min",
+      "2026-12-22 THRESHOLD 34min",
+      "2026-12-29 THRESHOLD 34min",
+      "2027-01-05 THRESHOLD 34min"
+     ],
+     "beforeNextReview": []
+    },
+    "nextReviewDay": "2026-12-05",
+    "nextWithReference": {
+     "status": "CLINICAL_HUMAN_REQUIRED",
+     "action": "CLINICAL_HUMAN_REQUIRED",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": "CLINICAL_HUMAN_REQUIRED",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "A prior clinical dependency remains outside this nonclinical reference; no automatic clearance"
+    },
+    "nextWithoutReference": {
+     "status": "MODIFY",
+     "action": "REPLAN_FROM_EVIDENCE",
+     "proposal": true,
+     "proposalAction": "REPLAN_FROM_EVIDENCE",
+     "disclosures": [
+      "RUN_QUALITY_GRADUATION_WITHDRAWN"
+     ],
+     "pending": null,
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "reason": "Evidence about an earlier week changed what this week starts from; the sessions still ahead are planned again from it, completed sessions stay as they"
+    },
+    "qualityAheadAfterNext": {
+     "count": 0
+    },
+    "graduationOnRecordAfterNext": false
+   }
+  },
+  {
+   "case": "B-ctl2 correction alone, weekly (no clinical signal)",
+   "sameOnBothRuntimes": true,
+   "r7b2PlanAfterNextEqualsFreeze2PlanAfterNext": true,
+   "r7b2PlanAfterNextEqualsFreeze2PlanAfterStep": true,
+   "freeze2": {
+    "step": {
+     "status": "MODIFY",
+     "action": "REPLAN_FROM_EVIDENCE",
+     "proposal": true,
+     "proposalAction": "REPLAN_FROM_EVIDENCE",
+     "disclosures": [
+      "RUN_QUALITY_GRADUATION_WITHDRAWN"
+     ],
+     "pending": null,
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "reason": "Evidence about an earlier week changed what this week starts from; the sessions still ahead are planned again from it, completed sessions stay as they"
+    },
+    "stepDay": "2026-12-04",
+    "graduationOnRecordAfterStep": false,
+    "qualityAheadAfterStep": {
+     "count": 0,
+     "firstDates": [],
+     "beforeNextReview": []
+    },
+    "nextReviewDay": "2026-12-05",
+    "nextWithReference": {
+     "status": "KEEP",
+     "action": "KEEP",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": null,
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "nextWithoutReference": {
+     "status": "KEEP",
+     "action": "KEEP",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": null,
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "qualityAheadAfterNext": {
+     "count": 0
+    },
+    "graduationOnRecordAfterNext": false
+   },
+   "r7b2": {
+    "step": {
+     "status": "MODIFY",
+     "action": "REPLAN_FROM_EVIDENCE",
+     "proposal": true,
+     "proposalAction": "REPLAN_FROM_EVIDENCE",
+     "disclosures": [
+      "RUN_QUALITY_GRADUATION_WITHDRAWN"
+     ],
+     "pending": null,
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "reason": "Evidence about an earlier week changed what this week starts from; the sessions still ahead are planned again from it, completed sessions stay as they"
+    },
+    "stepDay": "2026-12-04",
+    "graduationOnRecordAfterStep": false,
+    "qualityAheadAfterStep": {
+     "count": 0,
+     "firstDates": [],
+     "beforeNextReview": []
+    },
+    "nextReviewDay": "2026-12-05",
+    "nextWithReference": {
+     "status": "KEEP",
+     "action": "KEEP",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": null,
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "nextWithoutReference": {
+     "status": "KEEP",
+     "action": "KEEP",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": null,
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "qualityAheadAfterNext": {
+     "count": 0
+    },
+    "graduationOnRecordAfterNext": false
+   }
+  },
+  {
+   "case": "B2 same-id illness + w4 long correction (week 5)",
+   "sameOnBothRuntimes": false,
+   "r7b2PlanAfterNextEqualsFreeze2PlanAfterNext": false,
+   "r7b2PlanAfterNextEqualsFreeze2PlanAfterStep": false,
+   "freeze2": {
+    "step": {
+     "status": "ASK",
+     "action": "ASK",
+     "proposal": true,
+     "proposalAction": "REPLAN_FROM_EVIDENCE",
+     "disclosures": [],
+     "pending": "ASK",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "This report id already belongs to a different interruption report; send a correction as a new report of that interruption (its episodeId); meanwhile e"
+    },
+    "stepDay": "2026-12-07",
+    "graduationOnRecordAfterStep": true,
+    "qualityAheadAfterStep": {
+     "count": 10,
+     "firstDates": [
+      "2026-12-15 THRESHOLD 34min",
+      "2026-12-22 THRESHOLD 34min",
+      "2026-12-29 THRESHOLD 34min",
+      "2027-01-05 THRESHOLD 34min"
+     ],
+     "beforeNextReview": []
+    },
+    "nextReviewDay": "2026-12-08",
+    "nextWithReference": {
+     "status": "KEEP",
+     "action": "KEEP",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": null,
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "nextWithoutReference": {
+     "status": "KEEP",
+     "action": "KEEP",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": null,
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "qualityAheadAfterNext": {
+     "count": 10
+    },
+    "graduationOnRecordAfterNext": true
+   },
+   "r7b2": {
+    "step": {
+     "status": "CLINICAL_HUMAN_REQUIRED",
+     "action": "CLINICAL_HUMAN_REQUIRED",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": "CLINICAL_HUMAN_REQUIRED",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "The interruption reason is clinical or possibly clinical (flu, illness): qualified assessment is needed; no nonclinical return recipe"
+    },
+    "stepDay": "2026-12-07",
+    "graduationOnRecordAfterStep": true,
+    "qualityAheadAfterStep": {
+     "count": 10,
+     "firstDates": [
+      "2026-12-15 THRESHOLD 34min",
+      "2026-12-22 THRESHOLD 34min",
+      "2026-12-29 THRESHOLD 34min",
+      "2027-01-05 THRESHOLD 34min"
+     ],
+     "beforeNextReview": []
+    },
+    "nextReviewDay": "2026-12-08",
+    "nextWithReference": {
+     "status": "CLINICAL_HUMAN_REQUIRED",
+     "action": "CLINICAL_HUMAN_REQUIRED",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": "CLINICAL_HUMAN_REQUIRED",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "A prior clinical dependency remains outside this nonclinical reference; no automatic clearance"
+    },
+    "nextWithoutReference": {
+     "status": "KEEP",
+     "action": "KEEP",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": null,
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "qualityAheadAfterNext": {
+     "count": 10
+    },
+    "graduationOnRecordAfterNext": true
+   }
+  },
+  {
+   "case": "B2-ctl new-id illness + w4 long correction",
+   "sameOnBothRuntimes": true,
+   "r7b2PlanAfterNextEqualsFreeze2PlanAfterNext": true,
+   "r7b2PlanAfterNextEqualsFreeze2PlanAfterStep": true,
+   "freeze2": {
+    "step": {
+     "status": "CLINICAL_HUMAN_REQUIRED",
+     "action": "CLINICAL_HUMAN_REQUIRED",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": "CLINICAL_HUMAN_REQUIRED",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "The interruption reason is clinical or possibly clinical (flu, illness): qualified assessment is needed; no nonclinical return recipe"
+    },
+    "stepDay": "2026-12-07",
+    "graduationOnRecordAfterStep": true,
+    "qualityAheadAfterStep": {
+     "count": 10,
+     "firstDates": [
+      "2026-12-15 THRESHOLD 34min",
+      "2026-12-22 THRESHOLD 34min",
+      "2026-12-29 THRESHOLD 34min",
+      "2027-01-05 THRESHOLD 34min"
+     ],
+     "beforeNextReview": []
+    },
+    "nextReviewDay": "2026-12-08",
+    "nextWithReference": {
+     "status": "CLINICAL_HUMAN_REQUIRED",
+     "action": "CLINICAL_HUMAN_REQUIRED",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": "CLINICAL_HUMAN_REQUIRED",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "A prior clinical dependency remains outside this nonclinical reference; no automatic clearance"
+    },
+    "nextWithoutReference": {
+     "status": "KEEP",
+     "action": "KEEP",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": null,
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "qualityAheadAfterNext": {
+     "count": 10
+    },
+    "graduationOnRecordAfterNext": true
+   },
+   "r7b2": {
+    "step": {
+     "status": "CLINICAL_HUMAN_REQUIRED",
+     "action": "CLINICAL_HUMAN_REQUIRED",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": "CLINICAL_HUMAN_REQUIRED",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "The interruption reason is clinical or possibly clinical (flu, illness): qualified assessment is needed; no nonclinical return recipe"
+    },
+    "stepDay": "2026-12-07",
+    "graduationOnRecordAfterStep": true,
+    "qualityAheadAfterStep": {
+     "count": 10,
+     "firstDates": [
+      "2026-12-15 THRESHOLD 34min",
+      "2026-12-22 THRESHOLD 34min",
+      "2026-12-29 THRESHOLD 34min",
+      "2027-01-05 THRESHOLD 34min"
+     ],
+     "beforeNextReview": []
+    },
+    "nextReviewDay": "2026-12-08",
+    "nextWithReference": {
+     "status": "CLINICAL_HUMAN_REQUIRED",
+     "action": "CLINICAL_HUMAN_REQUIRED",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": "CLINICAL_HUMAN_REQUIRED",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "A prior clinical dependency remains outside this nonclinical reference; no automatic clearance"
+    },
+    "nextWithoutReference": {
+     "status": "KEEP",
+     "action": "KEEP",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": null,
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "qualityAheadAfterNext": {
+     "count": 10
+    },
+    "graduationOnRecordAfterNext": true
+   }
+  },
+  {
+   "case": "B2w3 same-id illness + w3 long correction (week 5)",
+   "sameOnBothRuntimes": false,
+   "r7b2PlanAfterNextEqualsFreeze2PlanAfterNext": true,
+   "r7b2PlanAfterNextEqualsFreeze2PlanAfterStep": true,
+   "freeze2": {
+    "step": {
+     "status": "ASK",
+     "action": "ASK",
+     "proposal": true,
+     "proposalAction": "REPLAN_FROM_EVIDENCE",
+     "disclosures": [
+      "RUN_QUALITY_GRADUATION_WITHDRAWN"
+     ],
+     "pending": "ASK",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "This report id already belongs to a different interruption report; send a correction as a new report of that interruption (its episodeId); meanwhile e"
+    },
+    "stepDay": "2026-12-07",
+    "graduationOnRecordAfterStep": false,
+    "qualityAheadAfterStep": {
+     "count": 0,
+     "firstDates": [],
+     "beforeNextReview": []
+    },
+    "nextReviewDay": "2026-12-08",
+    "nextWithReference": {
+     "status": "KEEP",
+     "action": "KEEP",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": null,
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "nextWithoutReference": {
+     "status": "KEEP",
+     "action": "KEEP",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": null,
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "qualityAheadAfterNext": {
+     "count": 0
+    },
+    "graduationOnRecordAfterNext": false
+   },
+   "r7b2": {
+    "step": {
+     "status": "CLINICAL_HUMAN_REQUIRED",
+     "action": "CLINICAL_HUMAN_REQUIRED",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": "CLINICAL_HUMAN_REQUIRED",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "The interruption reason is clinical or possibly clinical (flu, illness): qualified assessment is needed; no nonclinical return recipe"
+    },
+    "stepDay": "2026-12-07",
+    "graduationOnRecordAfterStep": true,
+    "qualityAheadAfterStep": {
+     "count": 10,
+     "firstDates": [
+      "2026-12-15 THRESHOLD 34min",
+      "2026-12-22 THRESHOLD 34min",
+      "2026-12-29 THRESHOLD 34min",
+      "2027-01-05 THRESHOLD 34min"
+     ],
+     "beforeNextReview": []
+    },
+    "nextReviewDay": "2026-12-08",
+    "nextWithReference": {
+     "status": "CLINICAL_HUMAN_REQUIRED",
+     "action": "CLINICAL_HUMAN_REQUIRED",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": "CLINICAL_HUMAN_REQUIRED",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "A prior clinical dependency remains outside this nonclinical reference; no automatic clearance"
+    },
+    "nextWithoutReference": {
+     "status": "MODIFY",
+     "action": "REPLAN_FROM_EVIDENCE",
+     "proposal": true,
+     "proposalAction": "REPLAN_FROM_EVIDENCE",
+     "disclosures": [
+      "RUN_QUALITY_GRADUATION_WITHDRAWN"
+     ],
+     "pending": null,
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "reason": "Evidence about an earlier week changed what this week starts from; the sessions still ahead are planned again from it, completed sessions stay as they"
+    },
+    "qualityAheadAfterNext": {
+     "count": 0
+    },
+    "graduationOnRecordAfterNext": false
+   }
+  },
+  {
+   "case": "B2w3-ctl new-id illness + w3 long correction",
+   "sameOnBothRuntimes": true,
+   "r7b2PlanAfterNextEqualsFreeze2PlanAfterNext": true,
+   "r7b2PlanAfterNextEqualsFreeze2PlanAfterStep": false,
+   "freeze2": {
+    "step": {
+     "status": "CLINICAL_HUMAN_REQUIRED",
+     "action": "CLINICAL_HUMAN_REQUIRED",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": "CLINICAL_HUMAN_REQUIRED",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "The interruption reason is clinical or possibly clinical (flu, illness): qualified assessment is needed; no nonclinical return recipe"
+    },
+    "stepDay": "2026-12-07",
+    "graduationOnRecordAfterStep": true,
+    "qualityAheadAfterStep": {
+     "count": 10,
+     "firstDates": [
+      "2026-12-15 THRESHOLD 34min",
+      "2026-12-22 THRESHOLD 34min",
+      "2026-12-29 THRESHOLD 34min",
+      "2027-01-05 THRESHOLD 34min"
+     ],
+     "beforeNextReview": []
+    },
+    "nextReviewDay": "2026-12-08",
+    "nextWithReference": {
+     "status": "CLINICAL_HUMAN_REQUIRED",
+     "action": "CLINICAL_HUMAN_REQUIRED",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": "CLINICAL_HUMAN_REQUIRED",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "A prior clinical dependency remains outside this nonclinical reference; no automatic clearance"
+    },
+    "nextWithoutReference": {
+     "status": "MODIFY",
+     "action": "REPLAN_FROM_EVIDENCE",
+     "proposal": true,
+     "proposalAction": "REPLAN_FROM_EVIDENCE",
+     "disclosures": [
+      "RUN_QUALITY_GRADUATION_WITHDRAWN"
+     ],
+     "pending": null,
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "reason": "Evidence about an earlier week changed what this week starts from; the sessions still ahead are planned again from it, completed sessions stay as they"
+    },
+    "qualityAheadAfterNext": {
+     "count": 0
+    },
+    "graduationOnRecordAfterNext": false
+   },
+   "r7b2": {
+    "step": {
+     "status": "CLINICAL_HUMAN_REQUIRED",
+     "action": "CLINICAL_HUMAN_REQUIRED",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": "CLINICAL_HUMAN_REQUIRED",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "The interruption reason is clinical or possibly clinical (flu, illness): qualified assessment is needed; no nonclinical return recipe"
+    },
+    "stepDay": "2026-12-07",
+    "graduationOnRecordAfterStep": true,
+    "qualityAheadAfterStep": {
+     "count": 10,
+     "firstDates": [
+      "2026-12-15 THRESHOLD 34min",
+      "2026-12-22 THRESHOLD 34min",
+      "2026-12-29 THRESHOLD 34min",
+      "2027-01-05 THRESHOLD 34min"
+     ],
+     "beforeNextReview": []
+    },
+    "nextReviewDay": "2026-12-08",
+    "nextWithReference": {
+     "status": "CLINICAL_HUMAN_REQUIRED",
+     "action": "CLINICAL_HUMAN_REQUIRED",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": "CLINICAL_HUMAN_REQUIRED",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "A prior clinical dependency remains outside this nonclinical reference; no automatic clearance"
+    },
+    "nextWithoutReference": {
+     "status": "MODIFY",
+     "action": "REPLAN_FROM_EVIDENCE",
+     "proposal": true,
+     "proposalAction": "REPLAN_FROM_EVIDENCE",
+     "disclosures": [
+      "RUN_QUALITY_GRADUATION_WITHDRAWN"
+     ],
+     "pending": null,
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "reason": "Evidence about an earlier week changed what this week starts from; the sessions still ahead are planned again from it, completed sessions stay as they"
+    },
+    "qualityAheadAfterNext": {
+     "count": 0
+    },
+    "graduationOnRecordAfterNext": false
+   }
+  },
+  {
+   "case": "D late + pain + w4 long correction",
+   "sameOnBothRuntimes": false,
+   "r7b2PlanAfterNextEqualsFreeze2PlanAfterNext": true,
+   "r7b2PlanAfterNextEqualsFreeze2PlanAfterStep": true,
+   "freeze2": {
+    "step": {
+     "status": "ASK",
+     "action": "ASK",
+     "proposal": true,
+     "proposalAction": "REPLAN_FROM_EVIDENCE",
+     "disclosures": [
+      "RUN_QUALITY_GRADUATION_WITHDRAWN"
+     ],
+     "pending": "ASK",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "Training before the interruption that began on 2026-12-07 is now recorded, and the return reported on 2026-12-10 did not read it: confirm that interru"
+    },
+    "stepDay": "2026-12-11",
+    "graduationOnRecordAfterStep": false,
+    "qualityAheadAfterStep": {
+     "count": 0,
+     "firstDates": [],
+     "beforeNextReview": []
+    },
+    "nextReviewDay": "2026-12-11",
+    "nextWithReference": {
+     "status": "ASK",
+     "action": "ASK",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": "ASK",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "Training before the interruption that began on 2026-12-07 is now recorded, and the return reported on 2026-12-10 did not read it: confirm that interru"
+    },
+    "nextWithoutReference": {
+     "status": "ASK",
+     "action": "ASK",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": "ASK",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "Training before the interruption that began on 2026-12-07 is now recorded, and the return reported on 2026-12-10 did not read it: confirm that interru"
+    },
+    "qualityAheadAfterNext": {
+     "count": 0
+    },
+    "graduationOnRecordAfterNext": false
+   },
+   "r7b2": {
+    "step": {
+     "status": "CLINICAL_HUMAN_REQUIRED",
+     "action": "CLINICAL_HUMAN_REQUIRED",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": "CLINICAL_HUMAN_REQUIRED",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "Pain, injury, illness or a functional limitation with db-rdl routes to qualified human assessment; no exercise is substituted as a remedy"
+    },
+    "stepDay": "2026-12-11",
+    "graduationOnRecordAfterStep": true,
+    "qualityAheadAfterStep": {
+     "count": 9,
+     "firstDates": [
+      "2026-12-24 THRESHOLD 34min",
+      "2026-12-31 THRESHOLD 34min",
+      "2027-01-07 THRESHOLD 34min",
+      "2027-01-14 THRESHOLD 34min"
+     ],
+     "beforeNextReview": []
+    },
+    "nextReviewDay": "2026-12-11",
+    "nextWithReference": {
+     "status": "CLINICAL_HUMAN_REQUIRED",
+     "action": "CLINICAL_HUMAN_REQUIRED",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": "CLINICAL_HUMAN_REQUIRED",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "A prior clinical dependency remains outside this nonclinical reference; no automatic clearance"
+    },
+    "nextWithoutReference": {
+     "status": "ASK",
+     "action": "ASK",
+     "proposal": true,
+     "proposalAction": "REPLAN_FROM_EVIDENCE",
+     "disclosures": [
+      "RUN_QUALITY_GRADUATION_WITHDRAWN"
+     ],
+     "pending": "ASK",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "Training before the interruption that began on 2026-12-07 is now recorded, and the return reported on 2026-12-10 did not read it: confirm that interru"
+    },
+    "qualityAheadAfterNext": {
+     "count": 0
+    },
+    "graduationOnRecordAfterNext": false
+   }
+  },
+  {
+   "case": "D-ctl pain + w4 long correction, no late (handler route)",
+   "sameOnBothRuntimes": true,
+   "r7b2PlanAfterNextEqualsFreeze2PlanAfterNext": true,
+   "r7b2PlanAfterNextEqualsFreeze2PlanAfterStep": false,
+   "freeze2": {
+    "step": {
+     "status": "CLINICAL_HUMAN_REQUIRED",
+     "action": "CLINICAL_HUMAN_REQUIRED",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": "CLINICAL_HUMAN_REQUIRED",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "Pain, injury, illness or a functional limitation with db-rdl routes to qualified human assessment; no exercise is substituted as a remedy"
+    },
+    "stepDay": "2026-12-11",
+    "graduationOnRecordAfterStep": true,
+    "qualityAheadAfterStep": {
+     "count": 9,
+     "firstDates": [
+      "2026-12-24 THRESHOLD 34min",
+      "2026-12-31 THRESHOLD 34min",
+      "2027-01-07 THRESHOLD 34min",
+      "2027-01-14 THRESHOLD 34min"
+     ],
+     "beforeNextReview": []
+    },
+    "nextReviewDay": "2026-12-11",
+    "nextWithReference": {
+     "status": "CLINICAL_HUMAN_REQUIRED",
+     "action": "CLINICAL_HUMAN_REQUIRED",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": "CLINICAL_HUMAN_REQUIRED",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "A prior clinical dependency remains outside this nonclinical reference; no automatic clearance"
+    },
+    "nextWithoutReference": {
+     "status": "MODIFY",
+     "action": "REPLAN_FROM_EVIDENCE",
+     "proposal": true,
+     "proposalAction": "REPLAN_FROM_EVIDENCE",
+     "disclosures": [
+      "RUN_QUALITY_GRADUATION_WITHDRAWN"
+     ],
+     "pending": null,
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "reason": "Evidence about an earlier week changed what this week starts from; the sessions still ahead are planned again from it, completed sessions stay as they"
+    },
+    "qualityAheadAfterNext": {
+     "count": 0
+    },
+    "graduationOnRecordAfterNext": false
+   },
+   "r7b2": {
+    "step": {
+     "status": "CLINICAL_HUMAN_REQUIRED",
+     "action": "CLINICAL_HUMAN_REQUIRED",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": "CLINICAL_HUMAN_REQUIRED",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "Pain, injury, illness or a functional limitation with db-rdl routes to qualified human assessment; no exercise is substituted as a remedy"
+    },
+    "stepDay": "2026-12-11",
+    "graduationOnRecordAfterStep": true,
+    "qualityAheadAfterStep": {
+     "count": 9,
+     "firstDates": [
+      "2026-12-24 THRESHOLD 34min",
+      "2026-12-31 THRESHOLD 34min",
+      "2027-01-07 THRESHOLD 34min",
+      "2027-01-14 THRESHOLD 34min"
+     ],
+     "beforeNextReview": []
+    },
+    "nextReviewDay": "2026-12-11",
+    "nextWithReference": {
+     "status": "CLINICAL_HUMAN_REQUIRED",
+     "action": "CLINICAL_HUMAN_REQUIRED",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": "CLINICAL_HUMAN_REQUIRED",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "A prior clinical dependency remains outside this nonclinical reference; no automatic clearance"
+    },
+    "nextWithoutReference": {
+     "status": "MODIFY",
+     "action": "REPLAN_FROM_EVIDENCE",
+     "proposal": true,
+     "proposalAction": "REPLAN_FROM_EVIDENCE",
+     "disclosures": [
+      "RUN_QUALITY_GRADUATION_WITHDRAWN"
+     ],
+     "pending": null,
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "reason": "Evidence about an earlier week changed what this week starts from; the sessions still ahead are planned again from it, completed sessions stay as they"
+    },
+    "qualityAheadAfterNext": {
+     "count": 0
+    },
+    "graduationOnRecordAfterNext": false
+   }
+  },
+  {
+   "case": "D-ctl2 late + w4 long correction, no signal",
+   "sameOnBothRuntimes": true,
+   "r7b2PlanAfterNextEqualsFreeze2PlanAfterNext": true,
+   "r7b2PlanAfterNextEqualsFreeze2PlanAfterStep": true,
+   "freeze2": {
+    "step": {
+     "status": "ASK",
+     "action": "ASK",
+     "proposal": true,
+     "proposalAction": "REPLAN_FROM_EVIDENCE",
+     "disclosures": [
+      "RUN_QUALITY_GRADUATION_WITHDRAWN"
+     ],
+     "pending": "ASK",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "Training before the interruption that began on 2026-12-07 is now recorded, and the return reported on 2026-12-10 did not read it: confirm that interru"
+    },
+    "stepDay": "2026-12-11",
+    "graduationOnRecordAfterStep": false,
+    "qualityAheadAfterStep": {
+     "count": 0,
+     "firstDates": [],
+     "beforeNextReview": []
+    },
+    "nextReviewDay": "2026-12-11",
+    "nextWithReference": {
+     "status": "ASK",
+     "action": "ASK",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": "ASK",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "Training before the interruption that began on 2026-12-07 is now recorded, and the return reported on 2026-12-10 did not read it: confirm that interru"
+    },
+    "nextWithoutReference": {
+     "status": "ASK",
+     "action": "ASK",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": "ASK",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "Training before the interruption that began on 2026-12-07 is now recorded, and the return reported on 2026-12-10 did not read it: confirm that interru"
+    },
+    "qualityAheadAfterNext": {
+     "count": 0
+    },
+    "graduationOnRecordAfterNext": false
+   },
+   "r7b2": {
+    "step": {
+     "status": "ASK",
+     "action": "ASK",
+     "proposal": true,
+     "proposalAction": "REPLAN_FROM_EVIDENCE",
+     "disclosures": [
+      "RUN_QUALITY_GRADUATION_WITHDRAWN"
+     ],
+     "pending": "ASK",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "Training before the interruption that began on 2026-12-07 is now recorded, and the return reported on 2026-12-10 did not read it: confirm that interru"
+    },
+    "stepDay": "2026-12-11",
+    "graduationOnRecordAfterStep": false,
+    "qualityAheadAfterStep": {
+     "count": 0,
+     "firstDates": [],
+     "beforeNextReview": []
+    },
+    "nextReviewDay": "2026-12-11",
+    "nextWithReference": {
+     "status": "ASK",
+     "action": "ASK",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": "ASK",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "Training before the interruption that began on 2026-12-07 is now recorded, and the return reported on 2026-12-10 did not read it: confirm that interru"
+    },
+    "nextWithoutReference": {
+     "status": "ASK",
+     "action": "ASK",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": "ASK",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "Training before the interruption that began on 2026-12-07 is now recorded, and the return reported on 2026-12-10 did not read it: confirm that interru"
+    },
+    "qualityAheadAfterNext": {
+     "count": 0
+    },
+    "graduationOnRecordAfterNext": false
+   }
+  }
+ ],
+ "window": [
+  {
+   "case": "B3 same-id illness + w3 long correction (week 6 day 0)",
+   "sameOnBothRuntimes": false,
+   "freeze2": {
+    "step": {
+     "status": "ASK",
+     "action": "ASK",
+     "proposal": true,
+     "proposalAction": "REPLAN_FROM_EVIDENCE",
+     "disclosures": [
+      "RUN_QUALITY_GRADUATION_WITHDRAWN"
+     ],
+     "pending": "ASK",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "This report id already belongs to a different interruption report; send a correction as a new report of that interruption (its episodeId); meanwhile e"
+    },
+    "stepDay": "2026-12-14",
+    "qualityAheadAfterStep": {
+     "count": 0,
+     "first": null
+    },
+    "nextDay": "2026-12-16",
+    "thresholdBeforeNextReview": false,
+    "nextNoReport": {
+     "status": "KEEP",
+     "action": "KEEP",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": null,
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "nextWithThresholdExecuted": {
+     "status": "KEEP",
+     "action": "KEEP",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": null,
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "qualityAheadAfterNext": 0,
+    "thresholdKeptAsHistory": false
+   },
+   "r7b2": {
+    "step": {
+     "status": "CLINICAL_HUMAN_REQUIRED",
+     "action": "CLINICAL_HUMAN_REQUIRED",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": "CLINICAL_HUMAN_REQUIRED",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "The interruption reason is clinical or possibly clinical (flu, illness): qualified assessment is needed; no nonclinical return recipe"
+    },
+    "stepDay": "2026-12-14",
+    "qualityAheadAfterStep": {
+     "count": 10,
+     "first": "2026-12-15 THRESHOLD 34min"
+    },
+    "nextDay": "2026-12-16",
+    "thresholdBeforeNextReview": true,
+    "nextNoReport": {
+     "status": "MODIFY",
+     "action": "REPLAN_FROM_EVIDENCE",
+     "proposal": true,
+     "proposalAction": "REPLAN_FROM_EVIDENCE",
+     "disclosures": [
+      "RUN_QUALITY_GRADUATION_WITHDRAWN"
+     ],
+     "pending": null,
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "reason": "Evidence about an earlier week changed what this week starts from; the sessions still ahead are planned again from it, completed sessions stay as they"
+    },
+    "nextWithThresholdExecuted": {
+     "status": "MODIFY",
+     "action": "REPLAN_FROM_EVIDENCE",
+     "proposal": true,
+     "proposalAction": "REPLAN_FROM_EVIDENCE",
+     "disclosures": [
+      "RUN_QUALITY_GRADUATION_WITHDRAWN"
+     ],
+     "pending": null,
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "reason": "Evidence about an earlier week changed what this week starts from; the sessions still ahead are planned again from it, completed sessions stay as they"
+    },
+    "qualityAheadAfterNext": 0,
+    "thresholdKeptAsHistory": true
+   }
+  },
+  {
+   "case": "B3-ctl new-id illness + w3 long correction",
+   "sameOnBothRuntimes": true,
+   "freeze2": {
+    "step": {
+     "status": "CLINICAL_HUMAN_REQUIRED",
+     "action": "CLINICAL_HUMAN_REQUIRED",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": "CLINICAL_HUMAN_REQUIRED",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "The interruption reason is clinical or possibly clinical (flu, illness): qualified assessment is needed; no nonclinical return recipe"
+    },
+    "stepDay": "2026-12-14",
+    "qualityAheadAfterStep": {
+     "count": 10,
+     "first": "2026-12-15 THRESHOLD 34min"
+    },
+    "nextDay": "2026-12-16",
+    "thresholdBeforeNextReview": true,
+    "nextNoReport": {
+     "status": "MODIFY",
+     "action": "REPLAN_FROM_EVIDENCE",
+     "proposal": true,
+     "proposalAction": "REPLAN_FROM_EVIDENCE",
+     "disclosures": [
+      "RUN_QUALITY_GRADUATION_WITHDRAWN"
+     ],
+     "pending": null,
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "reason": "Evidence about an earlier week changed what this week starts from; the sessions still ahead are planned again from it, completed sessions stay as they"
+    },
+    "nextWithThresholdExecuted": {
+     "status": "MODIFY",
+     "action": "REPLAN_FROM_EVIDENCE",
+     "proposal": true,
+     "proposalAction": "REPLAN_FROM_EVIDENCE",
+     "disclosures": [
+      "RUN_QUALITY_GRADUATION_WITHDRAWN"
+     ],
+     "pending": null,
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "reason": "Evidence about an earlier week changed what this week starts from; the sessions still ahead are planned again from it, completed sessions stay as they"
+    },
+    "qualityAheadAfterNext": 0,
+    "thresholdKeptAsHistory": true
+   },
+   "r7b2": {
+    "step": {
+     "status": "CLINICAL_HUMAN_REQUIRED",
+     "action": "CLINICAL_HUMAN_REQUIRED",
+     "proposal": false,
+     "proposalAction": null,
+     "disclosures": [],
+     "pending": "CLINICAL_HUMAN_REQUIRED",
+     "planValidity": "REQUIRES_RECONCILIATION",
+     "reason": "The interruption reason is clinical or possibly clinical (flu, illness): qualified assessment is needed; no nonclinical return recipe"
+    },
+    "stepDay": "2026-12-14",
+    "qualityAheadAfterStep": {
+     "count": 10,
+     "first": "2026-12-15 THRESHOLD 34min"
+    },
+    "nextDay": "2026-12-16",
+    "thresholdBeforeNextReview": true,
+    "nextNoReport": {
+     "status": "MODIFY",
+     "action": "REPLAN_FROM_EVIDENCE",
+     "proposal": true,
+     "proposalAction": "REPLAN_FROM_EVIDENCE",
+     "disclosures": [
+      "RUN_QUALITY_GRADUATION_WITHDRAWN"
+     ],
+     "pending": null,
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "reason": "Evidence about an earlier week changed what this week starts from; the sessions still ahead are planned again from it, completed sessions stay as they"
+    },
+    "nextWithThresholdExecuted": {
+     "status": "MODIFY",
+     "action": "REPLAN_FROM_EVIDENCE",
+     "proposal": true,
+     "proposalAction": "REPLAN_FROM_EVIDENCE",
+     "disclosures": [
+      "RUN_QUALITY_GRADUATION_WITHDRAWN"
+     ],
+     "pending": null,
+     "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "reason": "Evidence about an earlier week changed what this week starts from; the sessions still ahead are planned again from it, completed sessions stay as they"
+    },
+    "qualityAheadAfterNext": 0,
+    "thresholdKeptAsHistory": true
+   }
+  }
+ ]
+}

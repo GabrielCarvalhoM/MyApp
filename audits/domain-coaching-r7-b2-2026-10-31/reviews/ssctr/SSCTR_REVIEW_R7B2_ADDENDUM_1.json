@@ -1,0 +1,103 @@
+{
+ "review_id": "R7B2-SSCTR-r1-A1",
+ "addendum_to": {"review_id": "R7B2-SSCTR-r1", "files": ["reviews/ssctr/SSCTR_REVIEW_R7B2.md (sha256 d2f6fbd7b81747fef8f7fa9ec09b6633d3ba0b09ad821a4f10dd35c915b7397a)", "reviews/ssctr/SSCTR_REVIEW_R7B2.json (sha256 b0383a29907f8021d498b591c24e61ebb8793c0356e56989116f9573741f53cb)"], "committed_at": "003b612", "edited": false},
+ "gate": "R7B2_SSCTR_GATE",
+ "mission": "DOMAIN_COACHING_R7-B.2",
+ "review_date": "2026-11-01",
+ "trigger": "Coordinator message (session 6): Quality's R7B2-QUALITY-r1 found QR7B2-01 (MAJOR, introduced by B.2, not a bypass), the graduation-withdrawal family, groups B, B2 and D (92 rows), and made an explicit SSCTR disposition of those groups a condition for G8/G9.",
+ "scope": "Only the graduation-withdrawal source of the canonical factual state (graduationWithdrawal) on the report-identity and late-evidence exits. Everything else in R7B2-SSCTR-r1 stands as written.",
+ "instance": "The same SSCTR instance as R7B2-SSCTR-r1 (session 6, claude-opus-5-5 inherited, no Agent tool). It authored neither the runtime nor Quality's probes. This addendum extends that instance's own gate review; it is not an independent recheck of it.",
+ "authority": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY, bounded nonclinical; no human, empirical or clinical validation, no clearance.",
+ "inputs_read": [
+  {"file": "reviews/quality/QUALITY_REVIEW_R7B2.md", "sha256": "8b47d8bb12cb9dc853510031a1219c197f2ba94f9a4acfc4e9b43bcca723676e"},
+  {"file": "reviews/quality/QUALITY_REVIEW_R7B2.json", "sha256": "d23c5ad6ed1854cf1bbdf343d48b39a8d3771eed4f21497ef1dc6fc0375ff129", "sections": "QR7B2-01, QR7B2-02"},
+  {"file": "reviews/quality/probes/r1/q1-enum.mjs", "sha256": "6d44f4d27bec4672a4d7845de2c7620a689256b3b2dff5146a7105cbfb17f5b0", "use": "read for the construction of groups B, B2, D; not run"},
+  {"file": "reviews/quality/probes/r1/q3-after-route.mjs", "sha256": "45885a03211f4375932539fdcb4c7adc0f472b1947d625b75a0fa5aebe7c5bcb", "use": "read for PB/PD; not run"},
+  {"file": "CoachingCore/src/r6-adaptation.mjs", "use": "graduationWithdrawal and withFactualReplan (already read in r1)"}
+ ],
+ "identity": {
+  "freeze": "R7B2-FREEZE-1, record sha256 8d51def566f2ce8f140cb3dcf22d62d0699be73571d5d931d8f5e2e50fb59fee, source 57512322...ecbd, manifest f9c5bd5a...ceca",
+  "head": "003b612ecb6e2b44a84ca610cd975836e29fcb41",
+  "verifier_after_probes": {"args": "(none)", "result": "PASS", "passed": 34, "total": 34, "output": "probes/r1/out/verify-r7b2-a1-after-probes.json", "output_sha256": "57773fa3c194e30f2f43c81e0a4e213c666b984116c67a8f8823258c76905194"},
+  "verifier_after_deliverables": "recorded in SSCTR_REVIEW_R7B2_ADDENDUM_1.md, section Identity",
+  "predecessor": "git archive 146ebb8 (full tree) into the new directory %TEMP%/r7b2-ssctr-r1a-s6-pred with node_modules copied; record e75a2799...4f27d5; verify-r7b1.mjs inside it 24/24 PASS; deleted after the probe"
+ },
+ "probe": {
+  "file": "probes/r1/a1-graduation.mjs",
+  "sha256": "43f35ca12390252716a5d8a50bdc9f0171488d06c509422d144dbb0613d892c7",
+  "output": "probes/r1/out/a1-graduation.json",
+  "output_sha256": "6a472d8db67cea10f4e87a1f65d515d4889eb9d99cacfa3183c4f9be13dac632",
+  "built_from": "the public fixture helpers and my verbatim dual.mjs only; Quality's fixtures (GRAD, GRADS) re-typed, its scripts not run",
+  "cases": {
+   "B": "novice run program graduated on qualifying weeks 2 and 3; WORK return on day 3 of week 4; on day 4 the return resent under its own id as 'Flu illness' + week-3 long-run correction (adverse response)",
+   "B2w3": "the same resend on day 0 of week 5 + week-3 long-run correction (Quality's B2 form)",
+   "B3": "the same resend on day 0 of week 6, the day before the first THRESHOLD session; the next review on day 2, with that session not reported or reported executed",
+   "D": "run+strength novice program graduated at week 4; late pre-break strength report + substitution pain + week-4 long-run correction on day 4 of the re-entry week 5",
+   "controls": "the handler's own clinical route with the same correction (new-id illness return; pain without the late report); the correction with no clinical signal; and B2 with a week-4 correction (not a qualifying week: the factual source, i.e. SSCTR-R7B2-01)"
+  }
+ },
+ "reproduction": {
+  "B": {"freeze2": "ASK about the report id + REPLAN_FROM_EVIDENCE proposal + RUN_QUALITY_GRADUATION_WITHDRAWN; pending ASK; applied, 0 quality sessions ahead; the next review carrying that state is KEEP (the illness is gone)", "r7b2": "CLINICAL_HUMAN_REQUIRED, no proposal, no disclosure, REQUIRES_RECONCILIATION; the plan in force keeps 10 THRESHOLD sessions (first 2026-12-15, 34 min); next review carrying the state: CLINICAL_HUMAN_REQUIRED; next review without it: MODIFY, REPLAN_FROM_EVIDENCE + RUN_QUALITY_GRADUATION_WITHDRAWN, 0 quality ahead; the resulting plan equals FREEZE-2's applied plan exactly"},
+  "B2w3": "same as B (10 THRESHOLD kept while pending; the next admitted review re-derives the withdrawal; plan equal to FREEZE-2's applied plan)",
+  "D": {"freeze2": "R7-A's late-evidence question + withdrawal proposal + disclosure; pending ASK (the pain is gone)", "r7b2": "CLINICAL_HUMAN_REQUIRED, no proposal; 9 THRESHOLD kept (first 2026-12-24); next with state: CLINICAL; next without it: the late-evidence question with the withdrawal proposal and disclosure (what FREEZE-2 gave at the step); applied, 0 quality ahead, plan equal to FREEZE-2's"},
+  "B3_window": {"freeze2": "ASK + withdrawal (the next day's session becomes easy running) with the illness dropped", "r7b2": "CLINICAL; a THRESHOLD session dated the next day stays in the plan in force; the review two days later, with or without that session reported executed, is MODIFY with the withdrawal; an executed session stays history; 0 quality ahead after", "control": "the new-id illness route does exactly the same on both runtimes"},
+  "controls": "Every control is identical on both runtimes: the handler's own route keeps the THRESHOLD sessions while pending and the next admitted review withdraws them (B-ctl, B2w3-ctl, B3-ctl, D-ctl); the correction without a clinical signal withdraws at once (B-ctl2, D-ctl2). B2 with the week-4 correction is the factual source: the next review is KEEP and the plan is not re-derived (SSCTR-R7B2-01, unchanged).",
+  "agreement_with_quality": "Matches QR7B2-01 (re-derivation pickup at the next review without a signal or pending clinical state; sticky with the state carried) and QR7B2-02 (= SSCTR-R7B2-01)."
+ },
+ "question": "Is it sports-science acceptable that, while the clinical route is pending, THRESHOLD quality runs stay in the plan in force, where FREEZE-2 had proposed their withdrawal? Is the deferral bounded?",
+ "answer": {
+  "acceptable": "YES, with condition C4.",
+  "reasons": [
+   "Kept is not prescribed. While the route is pending the decision is CLINICAL_HUMAN_REQUIRED, plan validity REQUIRES_RECONCILIATION, and every later review carrying the state stays CLINICAL with no proposal. The runtime authorizes no session at all, THRESHOLD, easy or strength, until the human route resolves.",
+   "The intensity question after an illness or injury signal is the dependent judgment SSCTR-05 and G04 reserve to a qualified human. Choosing 'easy instead of threshold' in answer to a 'Flu illness' report is not a safe default the agent may take: it is a nonclinical return recipe. The withdrawal disclosure itself says 'the harder session leaves the plan and easy running continues'.",
+   "FREEZE-2 was not the safer behaviour despite the lower intensity. It offered that easy-running plan with a bookkeeping question and dropped the clinical dependency (B: the next review is KEEP; D: R7-A's question with pending ASK), so after flu or pain the athlete would keep running with no referral. That is the dose-instead-of-referral pattern SSCTR-05 forbids. Dropping the disclosure on the clinical route is correct for the same reason.",
+   "Clinical-screen-first (B0-C06 condition 8, D08) and QE-R7B1-01 make the clinical route the decision, and withFactualReplan makes it propose nothing; R7-B.2 applies them, and the predecessor already behaves exactly so for the same facts on the handler's own route (controls)."
+  ],
+  "bounded": "YES for the graduation source: the withdrawal is state-derived, so the first review admitted without a pending clinical dependency re-derives it, and the resulting plan equals FREEZE-2's applied withdrawal exactly (B, B2w3, D); with the state carried it stays CLINICAL. What is not bounded by the runtime is execution of program rows between an external resolution (or a consumer ignoring the pending state) and that first admitted review: B3 shows a THRESHOLD session can fall inside that window. This window is pre-existing (identical on both runtimes for the handler's own route) and is a consumer and resolution-input matter (SSCTR-R7B2-02), recorded as SSCTR-R7B2-03 with condition C4.",
+  "contrast": "Unlike the factual source (SSCTR-R7B2-01, QR7B2-02), where the current week's rows are never re-derived mid-week, the graduation source is picked up at the next admitted review."
+ },
+ "disposition_groups_B_B2_D": {
+  "B": "ACCEPT (routing consequence required and bounded); residual window -> SSCTR-R7B2-03 / C4",
+  "B2": "ACCEPT (as B)",
+  "D": "ACCEPT (as B; the re-derived withdrawal arrives with R7-A's late-evidence question, exactly as FREEZE-2 gave it at the step)"
+ },
+ "claims": [
+  {"id": "SC-1", "carried_from": "R7B2-SSCTR-r1", "status": "SUPPORTED_WITH_LIMITS; OUT_OF_SCOPE_CLINICAL for the individual"},
+  {"id": "SC-4", "statement": "High-intensity running soon after a systemic viral illness carries particular clinical concern.", "evidence_status": "INSUFFICIENT_EVIDENCE as accessed in this review: the IOC consensus abstract (PMID 35863871, re-read via E-utilities) is a scope statement that names return-to-sport guidance and the risks of infection during exercise as topics, with no conclusions; full text inaccessible.", "use": "Not relied on. The conclusion holds without it, because the agent may choose neither intensity after an illness signal."}
+ ],
+ "literature_access": "Unchanged from r1 (partial; abstract-level only). Additional query: E-utilities efetch PMID 35863871 abstract (11 sentences; scope only).",
+ "findings": [
+  {
+   "id": "SSCTR-R7B2-03",
+   "severity": "MINOR",
+   "title": "Quality sessions a recorded correction has disqualified stay in the plan in force during a pending clinical dependency, and until the first admitted review after it",
+   "statement": "On a clinical route that carries a graduation-disqualifying correction, the plan in force keeps the THRESHOLD sessions (9-10 in the probes) that the correction withdraws. The runtime authorizes none of them while the dependency is carried and withdraws them at the first review admitted without it; but its output gives a consumer no marker that those rows are already invalidated, and a session can fall between an external resolution and that review (B3: the next day).",
+   "origin": "Pre-existing: the handler's own clinical route with the same correction behaves identically on R7B1-FREEZE-2 and R7-B.2 (B-ctl, B2w3-ctl, B3-ctl, D-ctl). B.2 extends its reach to the report-identity and late-evidence exits (QR7B2-01), where FREEZE-2 instead gave a withdrawal with the clinical signal dropped.",
+   "bypass_of_clinical_screen_first": false,
+   "blocks": false,
+   "why_not_blocking": "R7-B.2's decision is the required one; the exposure needs a consumer to present unauthorized rows, or a resolution outside the runtime, and the alternative (FREEZE-2) prescribes running after an illness report with no referral. Contract §10: pre-existing, not a bypass of the same invariant.",
+   "not_a_U5_item": "No runtime change in B.2 can close it without attaching a dose or disclosure to a clinical route (forbidden) or defining the resolution input (SSCTR-R7B2-02, outside B.2).",
+   "routed": true,
+   "owner": "Next runtime mission (Engineering: output and resolution-input contract), with Product/UX (how a pending clinical dependency is presented) and SSCTR",
+   "next_action": "Make the invalidated rows and the pending dependency unambiguous to a consumer, and make the first decision after a documented human resolution an admitted review, before any session is presented."
+  }
+ ],
+ "conditions": {
+  "C1_C2_C3": "unchanged from R7B2-SSCTR-r1",
+  "C4": "Before any use beyond the offline synthetic reference: (a) while CLINICAL_HUMAN_REQUIRED is pending, no program session, and in particular no quality or intensity session, is presented as current or prescribed; (b) after a documented human resolution (SSCTR-R7B2-02), an admitted review re-derives the canonical factual state, including any graduation withdrawal, before any session is presented. No clinical keyword, flag, threshold or clearance path is implied."
+ },
+ "effect_on_r1": {
+  "verdict_changed": false,
+  "r1_statements": "R7B2-SSCTR-r1's answers stand; r1 covered the factual re-plan source only (as the request framed QE-R7B2-01), and this addendum covers the graduation-withdrawal source. r1 Q4's 'no proposal on either side' applies to the rows it listed, not to groups B, B2 and D, which carry a FREEZE-2 proposal and are dispositioned here.",
+  "record_revisions_needed": "none (no prescriptive meaning changes: the withdrawal content after re-derivation equals FREEZE-2's; policy and catalog unchanged)",
+  "human_queue": "no entries proposed; queue unchanged at 230"
+ },
+ "rules_kept": [
+  "Read-only outside reviews/ssctr/; r1 files and the run-5 files not edited; Quality's files read, not run or modified",
+  "verify-r7b2.mjs without --write; no mutate or freeze script; no commit; foreground only",
+  "%TEMP%/r7b2-ssctr-r1a-s6-pred created new and deleted"
+ ],
+ "verdict": "ACCEPT_WITH_CONDITIONS",
+ "supersedes_verdict_line_of": "R7B2-SSCTR-r1",
+ "verdict_line": "R7B2_SSCTR_GATE = ACCEPT_WITH_CONDITIONS"
+}
