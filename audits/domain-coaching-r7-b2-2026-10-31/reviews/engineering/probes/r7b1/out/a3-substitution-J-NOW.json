@@ -1,0 +1,42 @@
+{
+ "probe": "a3-substitution",
+ "frozen": "J-NOW",
+ "root": "this worktree (R7B1-FREEZE-2 bytes)",
+ "ran": "2026-11-01T03:55:23.435Z",
+ "results": [
+  {
+   "id": "A10",
+   "area": "reason-based substitution / decision vs plan",
+   "verdict": "PASS",
+   "expected": "the configuration a substitution decision reports as selected is the one the plan prescribes in place of the replaced exercise",
+   "actual": {
+    "modified": 46,
+    "inconsistent": 0,
+    "asked": 16,
+    "examples": []
+   }
+  },
+  {
+   "id": "A11",
+   "area": "reason-based substitution after a MAIN change",
+   "verdict": "FAIL",
+   "expected": "leg-press (the MAIN chosen at the boundary) is replaced by the selected substitute; the plan never falls back to goblet-squat, the MAIN the athlete changed away from",
+   "actual": {
+    "week5Squat": [
+     "leg-press"
+    ],
+    "substitution": {
+     "status": "MODIFY",
+     "action": "SUBSTITUTE_FOR_REASON",
+     "reason": "leg-press is replaced by goblet-squat (a nonclinical preference); the new exercise starts with effort-guided establishment, nothing is converted",
+     "missingInputs": [],
+     "errors": [],
+     "selected": "goblet-squat"
+    },
+    "week7Squat": [
+     "goblet-squat"
+    ]
+   }
+  }
+ ]
+}

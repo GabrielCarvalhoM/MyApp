@@ -1,0 +1,247 @@
+{
+ "probe": "b2-inventory",
+ "frozen": "JUDGE-R7B1-FREEZE-2",
+ "root": "temporary tree qe-r7b2-pred-DNMn",
+ "ran": "2026-11-01T03:45:15.344Z",
+ "results": [
+  {
+   "id": "CAND-01",
+   "area": "factual re-plan question before the clinical screen",
+   "verdict": "FAIL",
+   "expected": "a review reporting pain or illness routes to a human even when the factual re-plan raises its own question",
+   "actual": {
+    "label": "JUDGE-R7B1-FREEZE-2",
+    "factualAskFires": true,
+    "rows": [
+     {
+      "raceWeek": 11,
+      "raceDate": "2027-01-24",
+      "validProgram": true,
+      "corrections": 2,
+      "exercise": "db-rdl"
+     },
+     {
+      "name": "control: forged program, correction, weekly review",
+      "status": "ASK",
+      "action": "ASK",
+      "proposal": false,
+      "pending": "ASK",
+      "reason": "The race now falls on a date marked unavailable; confirm whether the race still happens on that date or the new date"
+     },
+     {
+      "name": "forged program, correction, substitution pain",
+      "status": "ASK",
+      "action": "ASK",
+      "proposal": false,
+      "pending": "ASK",
+      "reason": "The race now falls on a date marked unavailable; confirm whether the race still happens on that date or the new date"
+     },
+     {
+      "name": "control: forged program, no correction, substitution pain",
+      "status": "CLINICAL_HUMAN_REQUIRED",
+      "action": "CLINICAL_HUMAN_REQUIRED",
+      "proposal": false,
+      "pending": "CLINICAL_HUMAN_REQUIRED",
+      "reason": "Pain, injury, illness or a functional limitation with db-rdl routes to qualified human assessment; no exercise is substituted as a remedy"
+     },
+     {
+      "name": "control: runtime program, correction, substitution pain",
+      "status": "CLINICAL_HUMAN_REQUIRED",
+      "action": "CLINICAL_HUMAN_REQUIRED",
+      "proposal": false,
+      "pending": "CLINICAL_HUMAN_REQUIRED",
+      "reason": "Pain, injury, illness or a functional limitation with db-rdl routes to qualified human assessment; no exercise is substituted as a remedy"
+     },
+     {
+      "name": "forged program, correction, return with an illness",
+      "status": "ASK",
+      "action": "ASK",
+      "proposal": false,
+      "pending": "ASK",
+      "reason": "The race now falls on a date marked unavailable; confirm whether the race still happens on that date or the new date"
+     }
+    ],
+    "bypass": [
+     {
+      "name": "forged program, correction, substitution pain",
+      "status": "ASK",
+      "action": "ASK",
+      "proposal": false,
+      "pending": "ASK",
+      "reason": "The race now falls on a date marked unavailable; confirm whether the race still happens on that date or the new date"
+     },
+     {
+      "name": "forged program, correction, return with an illness",
+      "status": "ASK",
+      "action": "ASK",
+      "proposal": false,
+      "pending": "ASK",
+      "reason": "The race now falls on a date marked unavailable; confirm whether the race still happens on that date or the new date"
+     }
+    ]
+   }
+  },
+  {
+   "id": "CAND-02",
+   "area": "same-event-id question before the return screen",
+   "verdict": "FAIL",
+   "expected": "a resent return report whose reason is clinical routes to a human, whatever id it reuses",
+   "actual": {
+    "label": "JUDGE-R7B1-FREEZE-2",
+    "rows": [
+     {
+      "name": "return (WORK)",
+      "status": "MODIFY",
+      "action": "REESTABLISH",
+      "proposal": true,
+      "pending": null,
+      "reason": "short nonclinical interruption (3 days): resume the last completed doses; no step until execution is observed",
+      "eventId": "r7b-3-RETURN_AFTER_PAUSE-58"
+     },
+     {
+      "name": "control: same id, same facts",
+      "status": "KEEP",
+      "action": "KEEP",
+      "proposal": false,
+      "pending": null,
+      "reason": "This interruption report is already recorded; nothing changes",
+      "sameId": true
+     },
+     {
+      "name": "same id, illness reason",
+      "status": "ASK",
+      "action": "ASK",
+      "proposal": false,
+      "pending": "ASK",
+      "reason": "This report id already belongs to a different interruption report; send a correction as a new report of that interruption (its episodeId)",
+      "sameId": true
+     },
+     {
+      "name": "same id, injury category",
+      "status": "ASK",
+      "action": "ASK",
+      "proposal": false,
+      "pending": "ASK",
+      "reason": "This report id already belongs to a different interruption report; send a correction as a new report of that interruption (its episodeId)",
+      "sameId": true
+     },
+     {
+      "name": "same id, clinical flag",
+      "status": "ASK",
+      "action": "ASK",
+      "proposal": false,
+      "pending": "ASK",
+      "reason": "This report id already belongs to a different interruption report; send a correction as a new report of that interruption (its episodeId)",
+      "sameId": true
+     },
+     {
+      "name": "control: same id, other nonclinical facts",
+      "status": "ASK",
+      "action": "ASK",
+      "proposal": false,
+      "pending": "ASK",
+      "reason": "This report id already belongs to a different interruption report; send a correction as a new report of that interruption (its episodeId)",
+      "sameId": true
+     },
+     {
+      "name": "control: new id, illness reason",
+      "status": "CLINICAL_HUMAN_REQUIRED",
+      "action": "CLINICAL_HUMAN_REQUIRED",
+      "proposal": false,
+      "pending": "CLINICAL_HUMAN_REQUIRED",
+      "reason": "The interruption reason is clinical or possibly clinical (flu, illness): qualified assessment is needed; no nonclinical return recipe",
+      "sameId": false
+     }
+    ],
+    "bypass": [
+     {
+      "name": "same id, illness reason",
+      "status": "ASK",
+      "action": "ASK",
+      "proposal": false,
+      "pending": "ASK",
+      "reason": "This report id already belongs to a different interruption report; send a correction as a new report of that interruption (its episodeId)",
+      "sameId": true
+     },
+     {
+      "name": "same id, injury category",
+      "status": "ASK",
+      "action": "ASK",
+      "proposal": false,
+      "pending": "ASK",
+      "reason": "This report id already belongs to a different interruption report; send a correction as a new report of that interruption (its episodeId)",
+      "sameId": true
+     },
+     {
+      "name": "same id, clinical flag",
+      "status": "ASK",
+      "action": "ASK",
+      "proposal": false,
+      "pending": "ASK",
+      "reason": "This report id already belongs to a different interruption report; send a correction as a new report of that interruption (its episodeId)",
+      "sameId": true
+     }
+    ]
+   }
+  },
+  {
+   "id": "ADJ",
+   "area": "adjacent exits recorded for the classification",
+   "verdict": "PASS",
+   "expected": "recorded, not judged here",
+   "actual": {
+    "label": "JUDGE-R7B1-FREEZE-2",
+    "rows": [
+     {
+      "name": "substitution pain without the exercise (handler contract, :541)",
+      "status": "ASK",
+      "action": "ASK",
+      "proposal": false,
+      "pending": "ASK",
+      "reason": "Say which exercise should change and why"
+     },
+     {
+      "name": "substitution pain, eligibility not assessed (:316)",
+      "status": "ASK",
+      "action": "ASK",
+      "proposal": false,
+      "pending": "ASK",
+      "reason": "Current eligibility must be assessed; unknown is neither clearance nor illness"
+     },
+     {
+      "name": "substitution pain, eligibility flag (:312)",
+      "status": "CLINICAL_HUMAN_REQUIRED",
+      "action": "CLINICAL_HUMAN_REQUIRED",
+      "proposal": false,
+      "pending": "CLINICAL_HUMAN_REQUIRED",
+      "reason": "A current clinical flag routes to qualified human assessment; no dependent prescription or return recipe"
+     },
+     {
+      "name": "substitution pain, malformed observations (:322)",
+      "status": "HOLD",
+      "action": "HOLD",
+      "proposal": false,
+      "pending": "HOLD",
+      "reason": "Observations must be a list of execution reports"
+     },
+     {
+      "name": "substitution pain, plain",
+      "status": "CLINICAL_HUMAN_REQUIRED",
+      "action": "CLINICAL_HUMAN_REQUIRED",
+      "proposal": false,
+      "pending": "CLINICAL_HUMAN_REQUIRED",
+      "reason": "Pain, injury, illness or a functional limitation with goblet-squat routes to qualified human assessment; no exercise is substituted as a rem"
+     },
+     {
+      "name": "weekly review carrying a substitution with pain (no screen of its own)",
+      "status": "KEEP",
+      "action": "KEEP",
+      "proposal": false,
+      "pending": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    ]
+   }
+  }
+ ]
+}

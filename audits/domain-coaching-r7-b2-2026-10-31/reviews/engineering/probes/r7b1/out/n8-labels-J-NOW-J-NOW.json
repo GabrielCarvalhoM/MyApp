@@ -1,0 +1,65 @@
+{
+ "probe": "n8-labels-J-NOW",
+ "frozen": "J-NOW",
+ "root": "this worktree (R7B1-FREEZE-2 bytes)",
+ "ran": "2026-11-01T04:01:49.821Z",
+ "results": [
+  {
+   "id": "N1-J-NOW",
+   "area": "A5 with a block choice in a mid-week review",
+   "verdict": "PASS",
+   "expected": "the sessions still ahead in week 5 follow the corrected facts (capped), whatever the review also asked",
+   "actual": {
+    "result": {
+     "status": "ASK",
+     "action": "ASK",
+     "reason": "Block choices are made in the weekly review of a block's last week, once its sessions are complete; meanwhile evidence about an earlier week",
+     "proposal": true
+    },
+    "week5Ahead": "CORE,CORE,FULL_B"
+   }
+  },
+  {
+   "id": "N7d-J-NOW",
+   "area": "capped novice: SKILL_MISMATCH substitution, then the next weekly reviews",
+   "verdict": "PASS",
+   "expected": "goblet-squat, reported as not doable with steady technique, never comes back in the capped weeks planned after the substitution",
+   "actual": {
+    "substitution": {
+     "status": "MODIFY",
+     "action": "SUBSTITUTE_FOR_REASON",
+     "reason": "goblet-squat is replaced by box-squat-bodyweight (cannot be done with steady technique); the new exercise starts with effort-guided establis",
+     "selected": "box-squat-bodyweight"
+    },
+    "inTheDecisionsProposalWeek3": [
+     "box-squat-bodyweight",
+     "db-floor-press",
+     "db-row",
+     "standing-calf-raise",
+     "dead-bug",
+     "glute-bridge",
+     "reverse-lunge",
+     "front-plank"
+    ],
+    "afterWeeklyReviews": [
+     {
+      "reviewedWeek": 2,
+      "action": "KEEP",
+      "nextWeek": 3,
+      "squatRows": [
+       "w3-str-d0:box-squat-bodyweight:MAIN"
+      ]
+     },
+     {
+      "reviewedWeek": 3,
+      "action": "KEEP",
+      "nextWeek": 4,
+      "squatRows": [
+       "w4-str-d0:box-squat-bodyweight:MAIN"
+      ]
+     }
+    ]
+   }
+  }
+ ]
+}

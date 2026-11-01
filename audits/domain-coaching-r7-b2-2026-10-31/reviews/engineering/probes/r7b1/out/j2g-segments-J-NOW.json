@@ -1,0 +1,96 @@
+{
+ "probe": "j2g-segments",
+ "frozen": "J-NOW",
+ "root": "this worktree (R7B1-FREEZE-2 bytes)",
+ "ran": "2026-11-01T03:56:57.449Z",
+ "results": [
+  {
+   "id": "J2g",
+   "area": "R2-01 with context segments",
+   "verdict": "PASS",
+   "expected": "a change reaching an earlier segment and the later context keeps both consistent through the next reviews",
+   "actual": {
+    "label": "J-NOW",
+    "failures": [],
+    "log": [
+     {
+      "step": "schedule from week 3",
+      "status": "MODIFY",
+      "stored": true,
+      "segments": [
+       {
+        "until": 3,
+        "novice": false,
+        "days": 2
+       }
+      ]
+     },
+     {
+      "step": "kettlebell only in week 2",
+      "status": "MODIFY",
+      "action": "SUBSTITUTE",
+      "stored": true,
+      "segments": [
+       {
+        "until": 2,
+        "novice": false,
+        "eq": [
+         "DUMBBELLS",
+         "BENCH"
+        ]
+       },
+       {
+        "until": 3,
+        "novice": false,
+        "eq": [
+         "KETTLEBELL"
+        ]
+       }
+      ],
+      "bad": [],
+      "types": [
+       "FULL_A,FULL_B",
+       "CORE,CORE,FULL_A,FULL_B",
+       "CORE,CORE,FULL_A,FULL_B",
+       "LOWER,LOWER_B,UPPER,UPPER_B"
+      ]
+     },
+     {
+      "reviewed": 2,
+      "action": "INSTANTIATE_LOGGED_LOADS",
+      "next": "CORE,CORE,FULL_A,FULL_B",
+      "density": {
+       "capped": true
+      }
+     },
+     {
+      "reviewed": 3,
+      "action": "INSTANTIATE_LOGGED_LOADS",
+      "next": "CORE,CORE,FULL_A,FULL_B",
+      "density": {
+       "capped": true
+      }
+     },
+     {
+      "reviewed": 4,
+      "action": "KEEP",
+      "next": "LOWER,LOWER_B,UPPER,UPPER_B",
+      "density": {
+       "capped": false,
+       "releasedAfterWeek": 4
+      }
+     },
+     {
+      "reviewed": 5,
+      "action": "KEEP",
+      "next": "LOWER,LOWER_B,UPPER,UPPER_B",
+      "density": {
+       "capped": false,
+       "releasedAfterWeek": 4
+      }
+     }
+    ]
+   }
+  }
+ ]
+}

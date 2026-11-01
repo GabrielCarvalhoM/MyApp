@@ -1,0 +1,46 @@
+{
+ "probe": "k5-guard-retraction",
+ "frozen": "J-NOW",
+ "root": "this worktree (R7B1-FREEZE-2 bytes)",
+ "ran": "2026-11-01T04:01:24.165Z",
+ "results": [
+  {
+   "id": "K5",
+   "area": "correction/retraction authority over the event-week guard",
+   "verdict": "PASS",
+   "expected": "a retracted only execution removes the exercise from the event weeks ahead (disclosed), history stops crediting it, and a question carries the same re-plan",
+   "actual": {
+    "label": "J-NOW",
+    "failures": [],
+    "info": {
+     "onlyInTheRetractedSession": [
+      "db-rdl",
+      "db-split-squat"
+     ],
+     "correction": {
+      "status": "MODIFY",
+      "action": "REPLAN_FROM_EVIDENCE",
+      "notes": [
+       "No new exercise starts in the taper, race week or post-event week: db-rdl, not yet done in this program, is left out of w10-str-d4; db-split-squat, not yet done in this program, is left out of w10-str"
+      ]
+     },
+     "inEventWeeksBefore": [
+      "db-rdl",
+      "db-split-squat"
+     ],
+     "stillAfter": [],
+     "historyStillCredits": [],
+     "control": {
+      "status": "KEEP",
+      "action": "KEEP"
+     },
+     "withChoice": {
+      "status": "ASK",
+      "proposal": true,
+      "same": true
+     }
+    }
+   }
+  }
+ ]
+}

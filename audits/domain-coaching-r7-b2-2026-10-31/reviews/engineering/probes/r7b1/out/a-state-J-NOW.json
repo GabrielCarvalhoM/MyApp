@@ -1,0 +1,310 @@
+{
+ "probe": "a-state",
+ "frozen": "J-NOW",
+ "root": "this worktree (R7B1-FREEZE-2 bytes)",
+ "ran": "2026-11-01T03:55:14.464Z",
+ "results": [
+  {
+   "id": "A1",
+   "area": "stale-state / correction",
+   "verdict": "PASS",
+   "expected": "after a correction makes a qualifying week adverse, the graduation is re-assessed: no threshold session planned on retracted evidence (or an ASK)",
+   "actual": {
+    "boundaryAction": "RUN_QUALITY_GRADUATION",
+    "correctionReview": {
+     "status": "MODIFY",
+     "action": "REPLAN_FROM_EVIDENCE",
+     "reason": "Evidence about an earlier week changed what this week starts from; the sessions still ahead are planned again from it, completed sessions stay as they were; next-week steps are gated when this week’s remaining sessions are complete",
+     "missingInputs": [],
+     "errors": []
+    },
+    "graduationStillInContext": false,
+    "qualityWeek4": [],
+    "qualityWeek5": [],
+    "historicalQualityRunner": false,
+    "correctedObservationAccepted": [
+     "r7b-o-14"
+    ]
+   }
+  },
+  {
+   "id": "A2",
+   "area": "correction before block-boundary step",
+   "verdict": "PASS",
+   "expected": "a same-review correction of a qualifying week to adverse prevents graduation",
+   "actual": {
+    "result": {
+     "status": "KEEP",
+     "action": "INSTANTIATE_LOGGED_LOADS",
+     "reason": "Logged loads replace planned placeholders; the progression rule is unchanged",
+     "missingInputs": [],
+     "errors": []
+    },
+    "notYet": [
+     [
+      {
+       "week": 2,
+       "why": "ADVERSE_OR_CONFLICTED",
+       "minutes": null,
+       "days": null
+      },
+      {
+       "week": 3,
+       "why": "QUALIFIES",
+       "minutes": 70,
+       "days": 3
+      }
+     ]
+    ]
+   }
+  },
+  {
+   "id": "A3",
+   "area": "stale-state / novice density",
+   "verdict": "PASS",
+   "expected": "after the boundary week is corrected to adverse, the release evidence is gone: week 5 is planned under the cap again (planner and reducer agree)",
+   "actual": {
+    "releasedBefore": true,
+    "week5Before": "LOWER,LOWER_B,UPPER,UPPER_B",
+    "correctionReview": {
+     "status": "MODIFY",
+     "action": "REPLAN_FROM_EVIDENCE",
+     "reason": "Evidence about an earlier week changed what this week starts from; the sessions still ahead are planned again from it, completed sessions stay as they were; next-week steps are gated when this week’s remaining sessions are complete",
+     "missingInputs": [],
+     "errors": []
+    },
+    "week5After": "CORE,CORE,FULL_A,FULL_B",
+    "plannerDensity": {
+     "capped": true
+    },
+    "historicalDensity": {
+     "capped": true
+    }
+   }
+  },
+  {
+   "id": "A4",
+   "area": "state transition / novice density",
+   "verdict": "PASS",
+   "expected": "B0-C08: strength class NONE keeps at most two full templates until the first block boundary, whatever the day count is changed to before it",
+   "actual": {
+    "result": {
+     "status": "MODIFY",
+     "action": "REARRANGE_FUTURE_WEEKS",
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the athlete removed",
+     "missingInputs": [],
+     "errors": []
+    },
+    "week2": "CORE,CORE,FULL_A,FULL_B",
+    "week3": "CORE,CORE,FULL_A,FULL_B",
+    "week4": "CORE,CORE,FULL_A,FULL_B",
+    "noviceTemplates": true,
+    "density": {
+     "capped": true
+    }
+   }
+  },
+  {
+   "id": "A5",
+   "area": "stale-state / familiar bouts lapse",
+   "verdict": "PASS",
+   "expected": "after an interruption the familiar status lapses; a later re-plan never brings the bouts back",
+   "actual": {
+    "returnAction": "REESTABLISH",
+    "scheduleChange": {
+     "status": "MODIFY",
+     "action": "REARRANGE_FUTURE_WEEKS",
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the athlete removed",
+     "missingInputs": [],
+     "errors": []
+    },
+    "boutsFromWeek6": [],
+    "lapsedInPlannerState": [
+     true,
+     true,
+     true,
+     true,
+     true,
+     true
+    ],
+    "lapsedInHistory": true
+   }
+  },
+  {
+   "id": "A6",
+   "area": "stale-state / familiar bouts withdrawal",
+   "verdict": "PASS",
+   "expected": "withdrawn after repeated adverse responses; a later re-plan never brings the bouts back",
+   "actual": {
+    "withdrawnAt4": true,
+    "scheduleChange": {
+     "status": "MODIFY",
+     "action": "REARRANGE_FUTURE_WEEKS",
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the athlete removed",
+     "missingInputs": [],
+     "errors": []
+    },
+    "boutsFromWeek5": []
+   }
+  },
+  {
+   "id": "A7",
+   "area": "stale-state / set-aside configuration",
+   "verdict": "PASS",
+   "expected": "back-squat, set aside for SKILL_MISMATCH, is never offered again and a ladder step or MAIN change to it is refused or asked",
+   "actual": {
+    "ladderStep": "BLOCK_EXERCISE_CHANGES",
+    "usedBackSquatWeek5": true,
+    "substitution": {
+     "status": "MODIFY",
+     "action": "SUBSTITUTE_FOR_REASON",
+     "reason": "back-squat is replaced by goblet-squat (cannot be done with steady technique); the new exercise starts with effort-guided establishment, nothing is converted",
+     "missingInputs": [],
+     "errors": [],
+     "selected": "goblet-squat"
+    },
+    "week7": [
+     "goblet-squat",
+     "db-bench-press",
+     "db-row",
+     "db-calf-raise",
+     "dead-bug",
+     "db-rdl",
+     "db-row",
+     "db-bench-press",
+     "bulgarian-split-squat-db",
+     "dead-bug"
+    ],
+    "boundaryWeek": 8,
+    "blockEndWeek": 12,
+    "reoffered": [],
+    "acceptLadder": {
+     "status": "ASK",
+     "action": "ASK",
+     "reason": "Some block choices cannot be applied: Not the next step on its ladder, or not available",
+     "missingInputs": [
+      "choices"
+     ],
+     "errors": [],
+     "week9": null,
+     "recorded": []
+    },
+    "acceptMain": {
+     "status": "ASK",
+     "action": "ASK",
+     "reason": "Some block choices cannot be applied: An exercise set aside for a stated reason is not chosen again",
+     "missingInputs": [
+      "choices"
+     ],
+     "errors": [],
+     "week9": null,
+     "recorded": []
+    }
+   }
+  },
+  {
+   "id": "A8",
+   "area": "determinism / impossible combinations",
+   "verdict": "PASS",
+   "expected": "two changes of one exercise at one boundary are asked in either order (the same outcome whatever the order)",
+   "actual": {
+    "ladderThenMain": {
+     "status": "ASK",
+     "action": "ASK",
+     "reason": "One change per exercise at a block boundary: choose either a ladder step or a main-lift change for goblet-squat",
+     "missingInputs": [
+      "choices"
+     ],
+     "errors": [],
+     "week5Squat": null,
+     "ladderReached": null,
+     "selections": []
+    },
+    "mainThenLadder": {
+     "status": "ASK",
+     "action": "ASK",
+     "reason": "One change per exercise at a block boundary: choose either a ladder step or a main-lift change for goblet-squat",
+     "missingInputs": [
+      "choices"
+     ],
+     "errors": [],
+     "week5Squat": null,
+     "ladderReached": null,
+     "selections": []
+    },
+    "mainThenMain2": {
+     "status": "ASK",
+     "action": "ASK",
+     "reason": "One change per exercise at a block boundary: choose either a ladder step or a main-lift change for goblet-squat",
+     "missingInputs": [
+      "choices"
+     ],
+     "errors": [],
+     "week5Squat": null,
+     "ladderReached": null,
+     "selections": []
+    },
+    "main2ThenMain": {
+     "status": "ASK",
+     "action": "ASK",
+     "reason": "One change per exercise at a block boundary: choose either a ladder step or a main-lift change for goblet-squat",
+     "missingInputs": [
+      "choices"
+     ],
+     "errors": [],
+     "week5Squat": null,
+     "ladderReached": null,
+     "selections": []
+    }
+   }
+  },
+  {
+   "id": "A9",
+   "area": "impossible combinations / choices off the boundary step",
+   "verdict": "PASS",
+   "expected": "a block choice that cannot be applied in this review is refused or asked; it is never planned and never silently dropped",
+   "actual": {
+    "midWeek": {
+     "status": "ASK",
+     "action": "ASK",
+     "reason": "Block choices are made in the weekly review of a block's last week, once its sessions are complete",
+     "missingInputs": [
+      "choices"
+     ],
+     "errors": []
+    },
+    "missedSessionKind": {
+     "status": "ASK",
+     "action": "ASK",
+     "reason": "Block choices are made in the weekly review of a block's last week, once its sessions are complete",
+     "missingInputs": [
+      "choices"
+     ],
+     "errors": [],
+     "applied": false
+    },
+    "unknownChoiceType": {
+     "status": "ASK",
+     "action": "ASK",
+     "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift change with its reason, or keeping or declining the harder session",
+     "missingInputs": [
+      "choices"
+     ],
+     "errors": [],
+     "applied": false
+    },
+    "choicesNotAList": {
+     "status": "HOLD",
+     "action": "HOLD",
+     "reason": "Choices must be a list",
+     "missingInputs": [],
+     "errors": [
+      "choices.array"
+     ],
+     "applied": false
+    },
+    "anyPlanned": false
+   }
+  }
+ ]
+}

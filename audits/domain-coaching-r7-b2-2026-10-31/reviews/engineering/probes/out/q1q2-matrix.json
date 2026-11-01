@@ -1,0 +1,2888 @@
+{
+ "probe": "q1q2-matrix",
+ "now": {
+  "label": "R7B2-FREEZE-1",
+  "root": "NOW_ROOT (worktree)"
+ },
+ "pred": {
+  "label": "R7B1-FREEZE-2",
+  "root": "PRED_ROOT (temporary git archive of 146ebb8)"
+ },
+ "ran": "2026-11-01T03:52:27.984Z",
+ "verdict": {
+  "q1SameReview": {
+   "cases": 123,
+   "ok": 123,
+   "failed": []
+  },
+  "q1TwoStep": {
+   "cases": 6,
+   "ok": 6,
+   "failed": []
+  },
+  "q2After": {
+   "rows": [
+    {
+     "step": "pain + late (applied)",
+     "same": true,
+     "differs": [
+      "status",
+      "action",
+      "reason",
+      "missingInputs",
+      "question",
+      "pending",
+      "referenceState"
+     ],
+     "r7b2": {
+      "status": "CLINICAL_HUMAN_REQUIRED",
+      "missing": [],
+      "pending": "CLINICAL_HUMAN_REQUIRED",
+      "proposal": null
+     },
+     "freeze2": {
+      "status": "ASK",
+      "missing": [
+       "interruption.episodeId"
+      ],
+      "pending": "ASK"
+     }
+    },
+    {
+     "step": "later review, no signal, no reference state",
+     "same": true,
+     "differs": [],
+     "r7b2": {
+      "status": "ASK",
+      "missing": [
+       "interruption.episodeId"
+      ],
+      "pending": "ASK",
+      "proposal": null
+     },
+     "freeze2": {
+      "status": "ASK",
+      "missing": [
+       "interruption.episodeId"
+      ],
+      "pending": "ASK"
+     }
+    },
+    {
+     "step": "later review, no signal, carrying the clinical reference state",
+     "same": false,
+     "differs": [
+      "status",
+      "action",
+      "reason",
+      "missingInputs",
+      "question",
+      "disclosures",
+      "offers",
+      "instantiationOnly",
+      "loadQuestions",
+      "ledger",
+      "pending",
+      "referenceState"
+     ],
+     "r7b2": {
+      "status": "CLINICAL_HUMAN_REQUIRED",
+      "missing": [],
+      "pending": "CLINICAL_HUMAN_REQUIRED",
+      "proposal": null
+     },
+     "freeze2": {
+      "status": "ASK",
+      "missing": [
+       "interruption.episodeId"
+      ],
+      "pending": "ASK"
+     }
+    },
+    {
+     "step": "the interruption confirmed again (episodeId from the question)",
+     "same": true,
+     "differs": [],
+     "r7b2": {
+      "status": "MODIFY",
+      "missing": [],
+      "pending": null,
+      "proposal": "702841b654d6efa5d78d3bfbe2a0cd2329726ff2c6b822653446ba645fce5745"
+     },
+     "freeze2": {
+      "status": "MODIFY",
+      "missing": [],
+      "pending": null
+     }
+    },
+    {
+     "step": "later review after the confirmation, no signal",
+     "same": true,
+     "differs": [],
+     "r7b2": {
+      "status": "KEEP",
+      "missing": [],
+      "pending": null,
+      "proposal": null
+     },
+     "freeze2": {
+      "status": "KEEP",
+      "missing": [],
+      "pending": null
+     }
+    }
+   ]
+  },
+  "q2Preserved": {
+   "cases": 29,
+   "identical": 29,
+   "changed": [],
+   "anyClinical": []
+  },
+  "q2NeighborD": [
+   {
+    "name": "D corrections + late",
+    "same": true,
+    "differs": [],
+    "status": "ASK",
+    "proposal": null,
+    "correctionRecorded": true,
+    "lateRecorded": true
+   },
+   {
+    "name": "D corrections alone",
+    "same": true,
+    "differs": [],
+    "status": "ASK",
+    "proposal": null
+   },
+   {
+    "name": "D sub skill + corrections + late",
+    "same": true,
+    "differs": [],
+    "status": "ASK",
+    "proposal": null
+   }
+  ]
+ },
+ "q1Same": [
+  {
+   "signal": "pain:true",
+   "choice": "none",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and t"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:true",
+   "choice": "empty list",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and t"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:true",
+   "choice": "ladder step",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:true",
+   "choice": "graduation decline",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:true",
+   "choice": "graduation accept",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:true",
+   "choice": "main change",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:true",
+   "choice": "unrecognised",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:true",
+   "choice": "null entry",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:true",
+   "choice": "string entry",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "injury:true",
+   "choice": "none",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and t"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "injury:true",
+   "choice": "empty list",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and t"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "injury:true",
+   "choice": "ladder step",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "injury:true",
+   "choice": "graduation decline",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "injury:true",
+   "choice": "graduation accept",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "injury:true",
+   "choice": "main change",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "injury:true",
+   "choice": "unrecognised",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "injury:true",
+   "choice": "null entry",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "injury:true",
+   "choice": "string entry",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:'yes'",
+   "choice": "none",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and t"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:'yes'",
+   "choice": "empty list",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and t"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:'yes'",
+   "choice": "ladder step",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:'yes'",
+   "choice": "graduation decline",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:'yes'",
+   "choice": "graduation accept",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:'yes'",
+   "choice": "main change",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:'yes'",
+   "choice": "unrecognised",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:'yes'",
+   "choice": "null entry",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:'yes'",
+   "choice": "string entry",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:'SIM'",
+   "choice": "none",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and t"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:'SIM'",
+   "choice": "empty list",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and t"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:'SIM'",
+   "choice": "ladder step",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:'SIM'",
+   "choice": "graduation decline",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:'SIM'",
+   "choice": "graduation accept",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:'SIM'",
+   "choice": "main change",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:'SIM'",
+   "choice": "unrecognised",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:'SIM'",
+   "choice": "null entry",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:'SIM'",
+   "choice": "string entry",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:1",
+   "choice": "none",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and t"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:1",
+   "choice": "empty list",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and t"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:1",
+   "choice": "ladder step",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:1",
+   "choice": "graduation decline",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:1",
+   "choice": "graduation accept",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:1",
+   "choice": "main change",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:1",
+   "choice": "unrecognised",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:1",
+   "choice": "null entry",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:1",
+   "choice": "string entry",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "injury:'Y'",
+   "choice": "none",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and t"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "injury:'Y'",
+   "choice": "empty list",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and t"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "injury:'Y'",
+   "choice": "ladder step",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "injury:'Y'",
+   "choice": "graduation decline",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "injury:'Y'",
+   "choice": "graduation accept",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "injury:'Y'",
+   "choice": "main change",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "injury:'Y'",
+   "choice": "unrecognised",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "injury:'Y'",
+   "choice": "null entry",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "injury:'Y'",
+   "choice": "string entry",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:' Yes '",
+   "choice": "none",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and t"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:' Yes '",
+   "choice": "empty list",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and t"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:' Yes '",
+   "choice": "ladder step",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:' Yes '",
+   "choice": "graduation decline",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:' Yes '",
+   "choice": "graduation accept",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:' Yes '",
+   "choice": "main change",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:' Yes '",
+   "choice": "unrecognised",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:' Yes '",
+   "choice": "null entry",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain:' Yes '",
+   "choice": "string entry",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "text: knee hurts",
+   "choice": "none",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and t"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "text: knee hurts",
+   "choice": "empty list",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and t"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "text: knee hurts",
+   "choice": "ladder step",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "text: knee hurts",
+   "choice": "graduation decline",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "text: knee hurts",
+   "choice": "graduation accept",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "text: knee hurts",
+   "choice": "main change",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "text: knee hurts",
+   "choice": "unrecognised",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "text: knee hurts",
+   "choice": "null entry",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "text: knee hurts",
+   "choice": "string entry",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "text: dor no ombro",
+   "choice": "none",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and t"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "text: dor no ombro",
+   "choice": "empty list",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and t"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "text: dor no ombro",
+   "choice": "ladder step",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "text: dor no ombro",
+   "choice": "graduation decline",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "text: dor no ombro",
+   "choice": "graduation accept",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "text: dor no ombro",
+   "choice": "main change",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "text: dor no ombro",
+   "choice": "unrecognised",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "text: dor no ombro",
+   "choice": "null entry",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "text: dor no ombro",
+   "choice": "string entry",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "text: couldn't run without pain",
+   "choice": "none",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and t"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "text: couldn't run without pain",
+   "choice": "empty list",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and t"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "text: couldn't run without pain",
+   "choice": "ladder step",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "text: couldn't run without pain",
+   "choice": "graduation decline",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "text: couldn't run without pain",
+   "choice": "graduation accept",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "text: couldn't run without pain",
+   "choice": "main change",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "text: couldn't run without pain",
+   "choice": "unrecognised",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "text: couldn't run without pain",
+   "choice": "null entry",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "text: couldn't run without pain",
+   "choice": "string entry",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain, no reason",
+   "choice": "none",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and t"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain, no reason",
+   "choice": "empty list",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and t"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain, no reason",
+   "choice": "ladder step",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain, no reason",
+   "choice": "graduation decline",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain, no reason",
+   "choice": "graduation accept",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain, no reason",
+   "choice": "main change",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain, no reason",
+   "choice": "unrecognised",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain, no reason",
+   "choice": "null entry",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain, no reason",
+   "choice": "string entry",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain + nonclinicalConfirmed",
+   "choice": "none",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and t"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain + nonclinicalConfirmed",
+   "choice": "empty list",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and t"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain + nonclinicalConfirmed",
+   "choice": "ladder step",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain + nonclinicalConfirmed",
+   "choice": "graduation decline",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain + nonclinicalConfirmed",
+   "choice": "graduation accept",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain + nonclinicalConfirmed",
+   "choice": "main change",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Block choices are made in the weekly review of a block's last week, once its ses"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain + nonclinicalConfirmed",
+   "choice": "unrecognised",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain + nonclinicalConfirmed",
+   "choice": "null entry",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "pain + nonclinicalConfirmed",
+   "choice": "string entry",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "ASK",
+    "proposal": null,
+    "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift ch"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "return illness",
+   "choice": "none",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "reason": "The interruption reason is clinical or possibly clinical (flu, illness): qualifi"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "return illness",
+   "choice": "ladder step",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "reason": "The interruption reason is clinical or possibly clinical (flu, illness): qualifi"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "return illness",
+   "choice": "unrecognised",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "reason": "The interruption reason is clinical or possibly clinical (flu, illness): qualifi"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "return injury category",
+   "choice": "none",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "reason": "The interruption reason is clinical or possibly clinical (INJURY): qualified ass"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "return injury category",
+   "choice": "ladder step",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "reason": "The interruption reason is clinical or possibly clinical (INJURY): qualified ass"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "return injury category",
+   "choice": "unrecognised",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "reason": "The interruption reason is clinical or possibly clinical (INJURY): qualified ass"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "return clinical flag",
+   "choice": "none",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "reason": "The interruption reason is clinical or possibly clinical: qualified assessment i"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "return clinical flag",
+   "choice": "ladder step",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "reason": "The interruption reason is clinical or possibly clinical: qualified assessment i"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "return clinical flag",
+   "choice": "unrecognised",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "reason": "The interruption reason is clinical or possibly clinical: qualified assessment i"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "return clinical flag 'yes'",
+   "choice": "none",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "reason": "The interruption reason is clinical or possibly clinical: qualified assessment i"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "return clinical flag 'yes'",
+   "choice": "ladder step",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "reason": "The interruption reason is clinical or possibly clinical: qualified assessment i"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "return clinical flag 'yes'",
+   "choice": "unrecognised",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "reason": "The interruption reason is clinical or possibly clinical: qualified assessment i"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "alias kind 'RETURN' + illness",
+   "choice": "none",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "reason": "The interruption reason is clinical or possibly clinical (flu, illness): qualifi"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "alias kind 'RETURN' + illness",
+   "choice": "ladder step",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "reason": "The interruption reason is clinical or possibly clinical (flu, illness): qualifi"
+   },
+   "handlerReasonSameOnBoth": true
+  },
+  {
+   "signal": "alias kind 'RETURN' + illness",
+   "choice": "unrecognised",
+   "ok": true,
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "reasonIsHandlers": true,
+    "lateRecorded": true
+   },
+   "freeze2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null,
+    "reason": "The interruption reason is clinical or possibly clinical (flu, illness): qualifi"
+   },
+   "handlerReasonSameOnBoth": true
+  }
+ ],
+ "q1Two": [
+  {
+   "signal": "pain:true",
+   "ok": true,
+   "r7b2": {
+    "alone": "CLINICAL_HUMAN_REQUIRED",
+    "withSyncReferenceState": "CLINICAL_HUMAN_REQUIRED",
+    "withChoice": "CLINICAL_HUMAN_REQUIRED",
+    "lateStillRecorded": true
+   },
+   "freeze2": {
+    "alone": "ASK",
+    "withSyncReferenceState": "ASK",
+    "withChoice": "ASK"
+   },
+   "sync": {
+    "status": "ASK",
+    "missing": [
+     "interruption.episodeId"
+    ],
+    "lateRecorded": true
+   }
+  },
+  {
+   "signal": "injury:true",
+   "ok": true,
+   "r7b2": {
+    "alone": "CLINICAL_HUMAN_REQUIRED",
+    "withSyncReferenceState": "CLINICAL_HUMAN_REQUIRED",
+    "withChoice": "CLINICAL_HUMAN_REQUIRED",
+    "lateStillRecorded": true
+   },
+   "freeze2": {
+    "alone": "ASK",
+    "withSyncReferenceState": "ASK",
+    "withChoice": "ASK"
+   },
+   "sync": {
+    "status": "ASK",
+    "missing": [
+     "interruption.episodeId"
+    ],
+    "lateRecorded": true
+   }
+  },
+  {
+   "signal": "pain:'yes'",
+   "ok": true,
+   "r7b2": {
+    "alone": "CLINICAL_HUMAN_REQUIRED",
+    "withSyncReferenceState": "CLINICAL_HUMAN_REQUIRED",
+    "withChoice": "CLINICAL_HUMAN_REQUIRED",
+    "lateStillRecorded": true
+   },
+   "freeze2": {
+    "alone": "ASK",
+    "withSyncReferenceState": "ASK",
+    "withChoice": "ASK"
+   },
+   "sync": {
+    "status": "ASK",
+    "missing": [
+     "interruption.episodeId"
+    ],
+    "lateRecorded": true
+   }
+  },
+  {
+   "signal": "text: knee hurts",
+   "ok": true,
+   "r7b2": {
+    "alone": "CLINICAL_HUMAN_REQUIRED",
+    "withSyncReferenceState": "CLINICAL_HUMAN_REQUIRED",
+    "withChoice": "CLINICAL_HUMAN_REQUIRED",
+    "lateStillRecorded": true
+   },
+   "freeze2": {
+    "alone": "ASK",
+    "withSyncReferenceState": "ASK",
+    "withChoice": "ASK"
+   },
+   "sync": {
+    "status": "ASK",
+    "missing": [
+     "interruption.episodeId"
+    ],
+    "lateRecorded": true
+   }
+  },
+  {
+   "signal": "return illness",
+   "ok": true,
+   "r7b2": {
+    "alone": "CLINICAL_HUMAN_REQUIRED",
+    "withSyncReferenceState": "CLINICAL_HUMAN_REQUIRED",
+    "withChoice": "CLINICAL_HUMAN_REQUIRED",
+    "lateStillRecorded": true
+   },
+   "freeze2": {
+    "alone": "CLINICAL_HUMAN_REQUIRED",
+    "withSyncReferenceState": "CLINICAL_HUMAN_REQUIRED",
+    "withChoice": "CLINICAL_HUMAN_REQUIRED"
+   },
+   "sync": {
+    "status": "ASK",
+    "missing": [
+     "interruption.episodeId"
+    ],
+    "lateRecorded": true
+   }
+  },
+  {
+   "signal": "return injury category",
+   "ok": true,
+   "r7b2": {
+    "alone": "CLINICAL_HUMAN_REQUIRED",
+    "withSyncReferenceState": "CLINICAL_HUMAN_REQUIRED",
+    "withChoice": "CLINICAL_HUMAN_REQUIRED",
+    "lateStillRecorded": true
+   },
+   "freeze2": {
+    "alone": "CLINICAL_HUMAN_REQUIRED",
+    "withSyncReferenceState": "CLINICAL_HUMAN_REQUIRED",
+    "withChoice": "CLINICAL_HUMAN_REQUIRED"
+   },
+   "sync": {
+    "status": "ASK",
+    "missing": [
+     "interruption.episodeId"
+    ],
+    "lateRecorded": true
+   }
+  }
+ ],
+ "q2After": [
+  {
+   "step": "pain + late (applied)",
+   "same": true,
+   "differs": [
+    "status",
+    "action",
+    "reason",
+    "missingInputs",
+    "question",
+    "pending",
+    "referenceState"
+   ],
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "missing": [],
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null
+   },
+   "freeze2": {
+    "status": "ASK",
+    "missing": [
+     "interruption.episodeId"
+    ],
+    "pending": "ASK"
+   }
+  },
+  {
+   "step": "later review, no signal, no reference state",
+   "same": true,
+   "differs": [],
+   "r7b2": {
+    "status": "ASK",
+    "missing": [
+     "interruption.episodeId"
+    ],
+    "pending": "ASK",
+    "proposal": null
+   },
+   "freeze2": {
+    "status": "ASK",
+    "missing": [
+     "interruption.episodeId"
+    ],
+    "pending": "ASK"
+   }
+  },
+  {
+   "step": "later review, no signal, carrying the clinical reference state",
+   "same": false,
+   "differs": [
+    "status",
+    "action",
+    "reason",
+    "missingInputs",
+    "question",
+    "disclosures",
+    "offers",
+    "instantiationOnly",
+    "loadQuestions",
+    "ledger",
+    "pending",
+    "referenceState"
+   ],
+   "r7b2": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "missing": [],
+    "pending": "CLINICAL_HUMAN_REQUIRED",
+    "proposal": null
+   },
+   "freeze2": {
+    "status": "ASK",
+    "missing": [
+     "interruption.episodeId"
+    ],
+    "pending": "ASK"
+   }
+  },
+  {
+   "step": "the interruption confirmed again (episodeId from the question)",
+   "same": true,
+   "differs": [],
+   "r7b2": {
+    "status": "MODIFY",
+    "missing": [],
+    "pending": null,
+    "proposal": "702841b654d6efa5d78d3bfbe2a0cd2329726ff2c6b822653446ba645fce5745"
+   },
+   "freeze2": {
+    "status": "MODIFY",
+    "missing": [],
+    "pending": null
+   }
+  },
+  {
+   "step": "later review after the confirmation, no signal",
+   "same": true,
+   "differs": [],
+   "r7b2": {
+    "status": "KEEP",
+    "missing": [],
+    "pending": null,
+    "proposal": null
+   },
+   "freeze2": {
+    "status": "KEEP",
+    "missing": [],
+    "pending": null
+   }
+  }
+ ],
+ "q2Pres": [
+  {
+   "name": "weekly",
+   "same": true,
+   "differs": [],
+   "status": "ASK",
+   "clinical": false,
+   "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and the return reported o"
+  },
+  {
+   "name": "sub pain:false",
+   "same": true,
+   "differs": [],
+   "status": "ASK",
+   "clinical": false,
+   "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and the return reported o"
+  },
+  {
+   "name": "sub pain:'no'",
+   "same": true,
+   "differs": [],
+   "status": "ASK",
+   "clinical": false,
+   "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and the return reported o"
+  },
+  {
+   "name": "sub pain:'nao'",
+   "same": true,
+   "differs": [],
+   "status": "ASK",
+   "clinical": false,
+   "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and the return reported o"
+  },
+  {
+   "name": "sub pain:'maybe'",
+   "same": true,
+   "differs": [],
+   "status": "ASK",
+   "clinical": false,
+   "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and the return reported o"
+  },
+  {
+   "name": "sub pain:null",
+   "same": true,
+   "differs": [],
+   "status": "ASK",
+   "clinical": false,
+   "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and the return reported o"
+  },
+  {
+   "name": "sub pain:0",
+   "same": true,
+   "differs": [],
+   "status": "ASK",
+   "clinical": false,
+   "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and the return reported o"
+  },
+  {
+   "name": "sub skill mismatch",
+   "same": true,
+   "differs": [],
+   "status": "ASK",
+   "clinical": false,
+   "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and the return reported o"
+  },
+  {
+   "name": "sub dislike, confirmed",
+   "same": true,
+   "differs": [],
+   "status": "ASK",
+   "clinical": false,
+   "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and the return reported o"
+  },
+  {
+   "name": "sub dislike, not confirmed",
+   "same": true,
+   "differs": [],
+   "status": "ASK",
+   "clinical": false,
+   "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and the return reported o"
+  },
+  {
+   "name": "sub text ambiguous",
+   "same": true,
+   "differs": [],
+   "status": "ASK",
+   "clinical": false,
+   "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and the return reported o"
+  },
+  {
+   "name": "sub text denial",
+   "same": true,
+   "differs": [],
+   "status": "ASK",
+   "clinical": false,
+   "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and the return reported o"
+  },
+  {
+   "name": "sub text pain free",
+   "same": true,
+   "differs": [],
+   "status": "ASK",
+   "clinical": false,
+   "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and the return reported o"
+  },
+  {
+   "name": "OBS-01 sub pain without exercise",
+   "same": true,
+   "differs": [],
+   "status": "ASK",
+   "clinical": false,
+   "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and the return reported o"
+  },
+  {
+   "name": "weekly carrying sub.pain (no screen of its own)",
+   "same": true,
+   "differs": [],
+   "status": "ASK",
+   "clinical": false,
+   "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and the return reported o"
+  },
+  {
+   "name": "equipment change",
+   "same": true,
+   "differs": [],
+   "status": "ASK",
+   "clinical": false,
+   "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and the return reported o"
+  },
+  {
+   "name": "schedule change",
+   "same": true,
+   "differs": [],
+   "status": "ASK",
+   "clinical": false,
+   "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and the return reported o"
+  },
+  {
+   "name": "missed session",
+   "same": true,
+   "differs": [],
+   "status": "ASK",
+   "clinical": false,
+   "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and the return reported o"
+  },
+  {
+   "name": "partial session",
+   "same": true,
+   "differs": [],
+   "status": "ASK",
+   "clinical": false,
+   "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and the return reported o"
+  },
+  {
+   "name": "local fatigue",
+   "same": true,
+   "differs": [],
+   "status": "ASK",
+   "clinical": false,
+   "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and the return reported o"
+  },
+  {
+   "name": "systemic fatigue",
+   "same": true,
+   "differs": [],
+   "status": "ASK",
+   "clinical": false,
+   "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and the return reported o"
+  },
+  {
+   "name": "underperformance",
+   "same": true,
+   "differs": [],
+   "status": "ASK",
+   "clinical": false,
+   "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and the return reported o"
+  },
+  {
+   "name": "goal change",
+   "same": true,
+   "differs": [],
+   "status": "ASK",
+   "clinical": false,
+   "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and the return reported o"
+  },
+  {
+   "name": "recovered",
+   "same": true,
+   "differs": [],
+   "status": "ASK",
+   "clinical": false,
+   "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and the return reported o"
+  },
+  {
+   "name": "unavailable day",
+   "same": true,
+   "differs": [],
+   "status": "ASK",
+   "clinical": false,
+   "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and the return reported o"
+  },
+  {
+   "name": "event week conflict",
+   "same": true,
+   "differs": [],
+   "status": "ASK",
+   "clinical": false,
+   "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and the return reported o"
+  },
+  {
+   "name": "return nonclinical (FAMILY)",
+   "same": true,
+   "differs": [],
+   "status": "ASK",
+   "clinical": false,
+   "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and the return reported o"
+  },
+  {
+   "name": "ladder choice only",
+   "same": true,
+   "differs": [],
+   "status": "ASK",
+   "clinical": false,
+   "reason": "Block choices are made in the weekly review of a block's last week, once its sessions are complete"
+  },
+  {
+   "name": "unrecognised choice only",
+   "same": true,
+   "differs": [],
+   "status": "ASK",
+   "clinical": false,
+   "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift change with its reason"
+  }
+ ],
+ "q2D": [
+  {
+   "name": "D corrections + late",
+   "same": true,
+   "differs": [],
+   "status": "ASK",
+   "proposal": null,
+   "correctionRecorded": true,
+   "lateRecorded": true
+  },
+  {
+   "name": "D corrections alone",
+   "same": true,
+   "differs": [],
+   "status": "ASK",
+   "proposal": null
+  },
+  {
+   "name": "D sub skill + corrections + late",
+   "same": true,
+   "differs": [],
+   "status": "ASK",
+   "proposal": null
+  }
+ ]
+}

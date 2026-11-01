@@ -1,0 +1,131 @@
+{
+ "probe": "n7-novice-templates-J-NOW",
+ "frozen": "J-NOW",
+ "root": "this worktree (R7B1-FREEZE-2 bytes)",
+ "ran": "2026-11-01T04:01:48.586Z",
+ "results": [
+  {
+   "id": "N7a-J-NOW",
+   "area": "novice cap started by a context change, after the following weekly reviews",
+   "verdict": "PASS",
+   "expected": "weeks 2 and 3 (before the first block boundary at week 4) stay capped after each weekly review, as the state says",
+   "actual": {
+    "scheduleChange": {
+     "status": "MODIFY",
+     "action": "REARRANGE_FUTURE_WEEKS",
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the athlete removed",
+     "errors": []
+    },
+    "plannedAtTheChange": [
+     "CORE,CORE,FULL_A,FULL_B",
+     "CORE,CORE,FULL_A,FULL_B",
+     "CORE,CORE,FULL_A,FULL_B"
+    ],
+    "storedNoviceTemplates": true,
+    "afterWeeklyReviews": [
+     {
+      "reviewedWeek": 1,
+      "action": "INSTANTIATE_LOGGED_LOADS",
+      "nextWeek": 2,
+      "templates": "CORE,CORE,FULL_A,FULL_B",
+      "density": {
+       "capped": true
+      }
+     },
+     {
+      "reviewedWeek": 2,
+      "action": "INSTANTIATE_LOGGED_LOADS",
+      "nextWeek": 3,
+      "templates": "CORE,CORE,FULL_A,FULL_B",
+      "density": {
+       "capped": true
+      }
+     },
+     {
+      "reviewedWeek": 3,
+      "action": "KEEP",
+      "nextWeek": 4,
+      "templates": "CORE,CORE,FULL_A,FULL_B",
+      "density": {
+       "capped": true
+      }
+     }
+    ]
+   }
+  },
+  {
+   "id": "N7b-J-NOW",
+   "area": "set-aside configuration in capped weeks after the next weekly reviews",
+   "verdict": "PASS",
+   "expected": "the exercise set aside in week 2 never comes back in the capped weeks the following weekly reviews plan",
+   "actual": {
+    "replaced": "goblet-squat",
+    "substitution": {
+     "status": "MODIFY",
+     "action": "SUBSTITUTE_FOR_REASON",
+     "reason": "goblet-squat is replaced by box-squat-bodyweight (a nonclinical preference); the new exercise starts with effort-guided establishment, nothing is converted",
+     "errors": [],
+     "selected": "box-squat-bodyweight"
+    },
+    "inTheDecisionsProposal": [
+     {
+      "week": 2,
+      "templates": "CORE,CORE,FULL_A,FULL_B",
+      "hasReplaced": true
+     },
+     {
+      "week": 3,
+      "templates": "CORE,CORE,FULL_A,FULL_B",
+      "hasReplaced": false
+     },
+     {
+      "week": 4,
+      "templates": "CORE,CORE,FULL_A,FULL_B",
+      "hasReplaced": false
+     }
+    ],
+    "afterWeeklyReviews": [
+     {
+      "reviewedWeek": 2,
+      "action": "KEEP",
+      "status": "KEEP",
+      "nextWeek": 3,
+      "templates": "CORE,CORE,FULL_A,FULL_B",
+      "hasReplaced": false
+     },
+     {
+      "reviewedWeek": 3,
+      "action": "KEEP",
+      "status": "KEEP",
+      "nextWeek": 4,
+      "templates": "CORE,CORE,FULL_A,FULL_B",
+      "hasReplaced": false
+     }
+    ],
+    "storedNoviceTemplatesStillHoldIt": true
+   }
+  },
+  {
+   "id": "N7c-J-NOW",
+   "area": "equipment change while capped, after the next weekly review",
+   "verdict": "PASS",
+   "expected": "after a permanent change to kettlebell only, the capped weeks the next weekly review plans use only the kettlebell (and the review is not refused)",
+   "actual": {
+    "equipmentChange": {
+     "status": "MODIFY",
+     "action": "SUBSTITUTE",
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed",
+     "errors": []
+    },
+    "weeklyReviewWeek1": {
+     "status": "KEEP",
+     "action": "INSTANTIATE_LOGGED_LOADS",
+     "reason": "Logged loads replace planned placeholders; the progression rule is unchanged; first logged loads wait for confirmation before they become numbers (kb-goblet-squ",
+     "errors": []
+    },
+    "week2": "CORE,CORE,FULL_A,FULL_B",
+    "rowsNeedingRemovedEquipment": []
+   }
+  }
+ ]
+}

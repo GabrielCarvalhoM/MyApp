@@ -1,0 +1,195 @@
+{
+ "review_id": "R7B2-ENG-r1",
+ "mission": "DOMAIN_COACHING_R7-B.2",
+ "contract": "R7B2-CONTRACT-r1 (audits/domain-coaching-r7-b2-2026-10-31/TASK_CONTRACT.md)",
+ "request": "audits/domain-coaching-r7-b2-2026-10-31/reviews/engineering/REVIEW_REQUEST.md (commit 0c73605)",
+ "gate": "contract §7 G8, the one Engineering review",
+ "date": "2026-11-01",
+ "judge": {
+  "role": "quality-reliability-engineer 1.3.0, fresh independent instance",
+  "route": {"model": "claude-opus-5-5", "effort": "xhigh", "mode": "productization"},
+  "independence": "Did not author the runtime, the fix, its tests or its evidence; not the R7-B.1 judge. Fixed nothing. Wrote only under reviews/engineering/.",
+  "clinicalScope": "Judges routing only; clinical judgment stays CLINICAL_HUMAN_REQUIRED."
+ },
+ "freeze": {
+  "id": "R7B2-FREEZE-1",
+  "record": "CoachingCore/r7/b2/RUNTIME_FREEZE_R7B2_1.json",
+  "recordSha256": "8d51def566f2ce8f140cb3dcf22d62d0699be73571d5d931d8f5e2e50fb59fee",
+  "recordSha256Verified": true,
+  "freezeCommit": "1a1c7286adc8b08d16f97dea86f4973fe33e5a95",
+  "bytesCommit": "63fa60271efeb8451b25d9a28f7107141f716c74",
+  "sourceDigest": "57512322331f7a0295525775da8bc86da5e95fe0f2085404637498e1f8f7ecbd",
+  "manifestDigest": "f9c5bd5a1bb8bd6cf2a1df3298b6b9bdc62d7f951687c9e7d756889fa753ceca",
+  "files": 122,
+  "tests": 799,
+  "worktreeHead": "0c73605",
+  "driftSinceFreeze": "git diff 1a1c728 HEAD -- CoachingCore: only CoachingCore/r7/b2/VERIFICATION_R7B2_1.json added (evidence, not bound runtime bytes)",
+  "delta": "git diff 033f300 1a1c728 -- CoachingCore/src CoachingCore/test: src/r6-adaptation.mjs (+32/-8) and test/r7b2-clinical-precedence.test.mjs (new, 13 tests); nothing else",
+  "verifier": {
+   "command": "node CoachingCore/scripts/verify-r7b2.mjs --tests (read-only, never --write)",
+   "before": {"result": "PASS", "passed": 35, "total": 35, "sourceDigest": "57512322331f7a0295525775da8bc86da5e95fe0f2085404637498e1f8f7ecbd", "manifestDigest": "f9c5bd5a1bb8bd6cf2a1df3298b6b9bdc62d7f951687c9e7d756889fa753ceca"},
+   "after": {"result": "PASS", "passed": 35, "total": 35, "sourceDigest": "57512322331f7a0295525775da8bc86da5e95fe0f2085404637498e1f8f7ecbd", "manifestDigest": "f9c5bd5a1bb8bd6cf2a1df3298b6b9bdc62d7f951687c9e7d756889fa753ceca", "when": "after every probe ran and every temporary tree was deleted"}
+  }
+ },
+ "predecessor": {
+  "id": "R7B1-FREEZE-2",
+  "commit": "146ebb80c51d302ef3518a61c1cab208c7778632",
+  "extraction": "git archive 146ebb8 (CoachingCore, audits/domain-coaching-r7-b0-2026-10-31, the r5 and r6 SSCTR policy reviews) into a temporary directory outside the repository, deleted afterwards",
+  "identity": "all 114 files bound by CoachingCore/r7/b1/RUNTIME_FREEZE_R7B1_2.json match their sha256 in the extracted tree; git diff 146ebb8 033f300 over src, test, r6, r7/b0 and r7/b/fixtures is empty"
+ },
+ "verdict": "READY",
+ "verdictBasis": "QE-R7B1-04 is closed correctly: on the frozen bytes the clinical route that the review's own handler screen takes is the decision before R7-A's late-evidence question, the factual re-plan's question, the block-choice questions and the return's report-identity question; it is the handler's own route; late evidence is recorded and still asked about later; every review without a clinical signal decides exactly as on R7B1-FREEZE-2; no R7-B.1 closure regresses; no new route bypasses the clinical screen and no false clinical route was found. No runtime change is requested. The Engineering verdict does not cover the SSCTR and Quality gates that QE-R7B2-01 makes required under contract §5.",
+ "section5": {
+  "conditionHolds": false,
+  "statement": "On my evidence the contract §5 condition does NOT hold. One class of changed decision is not 'a nonclinical question replaced by CLINICAL_HUMAN_REQUIRED, with no proposal on either side': a return report resent under the event id of a recorded return, with a clinical reason, in a review that also corrects last week's reports. FREEZE-2 returns the report-identity question (or, with a block choice, the block-choice question) carrying the factual re-plan proposal; R7-B.2 returns CLINICAL_HUMAN_REQUIRED with no proposal. Once each result is applied, the prescriptions of weeks 5-11 differ. This reopens §5: the SSCTR review becomes required and Quality needs one narrow independent review (contract §5 table, §7 G4).",
+  "finding": "QE-R7B2-01",
+  "everyOtherChangedDecision": "All other changed decisions found (K6, K6b, CAND-01, CAND-02 without a correction, the 108 substitution rows of the Q1 matrix, the 39 clinical substitution payloads and 83 clinical interruption payloads of the Q4 grid) are ASK with no proposal on FREEZE-2 and CLINICAL_HUMAN_REQUIRED with no proposal and pending CLINICAL_HUMAN_REQUIRED on R7-B.2.",
+  "notFound": "In the re-entry week (late-evidence path) no recorded construction with corrections produced a factual re-plan proposal on FREEZE-2 (s5-factual-proposal rows S5a-S5i: corrections of this week's run and of week 2's strength reports, with and without the late report and a clinical signal; unrecorded exploratory variants, including re-entry starting next week, gave the same). Impossibility is not claimed. The QE-R7B2-01 shape is expected wherever FREEZE-2 attached a factual re-plan or graduation-withdrawal proposal or disclosure to a question on a clinical review."
+ },
+ "questions": {
+  "Q1": {
+   "answer": "YES. Clinical screening now precedes the late-evidence question whenever the review's own handler screen routes clinical.",
+   "evidence": [
+    "K6 copy (verbatim, sha256 0917988c...): FREEZE-2 FAIL (substitution-pain, +ladder choice, +unrecognised choice -> ASK); R7-B.2 PASS, each row CLINICAL_HUMAN_REQUIRED, no proposal, pending CLINICAL_HUMAN_REQUIRED; controls (no-late pain, illness return, weekly) identical on both. out/k6-stale-return-clinical-JUDGE-*.json",
+    "K6b copy (verbatim, sha256 f21b811d...): FREEZE-2 FAIL (pain-only step -> ASK); R7-B.2 PASS (CLINICAL). out/k6b-stale-return-two-step-JUDGE-*.json",
+    "q1q2-matrix.mjs, same review: 12 substitution signal spellings (pain:true, injury:true, pain 'yes', 'SIM', 1, ' Yes ', injury 'Y', three clinical free texts in en/pt, pain with no reason, pain with nonclinicalConfirmed) x 9 choice shapes (none, empty, ladder step, graduation decline, graduation accept, main change, unrecognised, null entry, string entry), plus 5 return signals (illness, INJURY category, clinicalReason true and 'yes', alias kind RETURN) x 3 choice shapes: 123/123 give CLINICAL_HUMAN_REQUIRED, no proposal, no missing inputs, pending CLINICAL_HUMAN_REQUIRED with the same reason, the reason and counterfactuals equal to the same review without the late report (the handler's own route, equal on both runtimes), and the late report recorded in actualLedger. FREEZE-2: 108 ASK (all substitution rows), 15 CLINICAL (the return rows, already screened first).",
+    "q1q2-matrix.mjs, two steps: pain, injury, pain 'yes', clinical text, illness return, injury return; alone, carrying the first step's reference state (pending ASK), and with a ladder choice: 6/6 CLINICAL on every variant, late report still recorded; FREEZE-2 ASK on all substitution variants.",
+    "Scope: the substitution route's scope is {exerciseId} from the same function (substitutionClinical) the handler calls; scope is not part of evaluateProgram's output, so it is checked by reading, and by the witness below (route deep-equal to the handler's own result)."
+   ]
+  },
+  "Q2": {
+   "answer": "YES. Legitimate R7-A late-evidence behaviour is preserved and late evidence is never suppressed or discarded.",
+   "evidence": [
+    "q1q2-matrix.mjs preserved rows: late pre-break report with no clinical signal across 29 reviews (weekly; substitution with pain false/'no'/'nao'/'maybe'/null/0, skill mismatch, dislike confirmed and not confirmed, ambiguous text, denial text, 'pain free'; OBS-01; a weekly review carrying a substitution; equipment, schedule, missed, partial, local and systemic fatigue, underperformance, goal change, recovered, unavailable day, event-week conflict, nonclinical return; a ladder choice; an unrecognised choice): 29/29 identical to FREEZE-2 in every output field (status, action, reason, missing inputs, question, proposal, disclosures, offers, counterfactuals, gates, horizons, load questions, ledger hash, pending state, reference-state hash); none clinical.",
+    "After the clinical route (pain + late applied): a later review with no signal and no reference state gets R7-A's question (missing interruption.episodeId), identical to FREEZE-2, late report still in actualLedger; with the clinical reference state it stays CLINICAL_HUMAN_REQUIRED (sticky rule unchanged); confirming the interruption again (episodeId from the question) re-establishes identically on both; the next review is KEEP on both.",
+    "Neighbor D: nonclinical corrections of week 2 + late report, corrections alone, skill substitution + corrections + late: identical to FREEZE-2, never clinical, correction and late report recorded.",
+    "QM8 (staleReturn suppressed) is killed by the B.2 tests (4 failures).",
+    "neighbors-r7b2.mjs rerun read-only: 32/32 PASS (A 4, B 2, C 9, AFTER 2, D 1, E 2, F 2, CAND-01 4, CAND-02 5, OBS-01 1)."
+   ]
+  },
+  "Q3": {
+   "answer": "NO regression of any R7-B.1 closure or of R7-A, R7-B0 and R7-B behaviour was found. The only behaviour differences are the intended clinical routes and the QE-R7B2-01 class, which is not a regression (FREEZE-2's output there was the defective one).",
+   "evidence": [
+    "36 verbatim copies of the R7-B.1 Engineering recheck probes (a-state ... r-regression; at-commit, c-mutation and the adversarial copy excluded) run on both runtimes: 95 results identical except K6 and K6b (FAIL -> PASS). This covers taper/race/post-event substitution and the event-week guard (k2, j5, j8), novice-template persistence (j2, j2f, j2g, n7), factual correction + block choice (j1, j1u, r-regression), the SKILL_MISMATCH fallback (j3, j3b), the no-lower-skill question (j3d), clinical before block choice QE-R7B1-01 (j1b), substitution and rotation (a3, a4, k3). Rows that FAIL do so identically on FREEZE-2 (routed or historical expectations). probes/r7b1/out/r7b1-probes-differential.json",
+    "Adversarial R7-B.1 probes (verbatim copy, includes the QE-R7B-01 and QE-R7B-05 residual grid RES): 3,228 checks, 0 failed, on both runtimes.",
+    "regress-r7b2.mjs rerun read-only: PASS, 151 timelines, 1,626 steps; PRESERVE 98/98 and R7B1_PATH 20/20 identical step by step; B2_PATH 19 identical + 14 changed only to the clinical route; substitution grid 184 unchanged; clinical sweep 389 unchanged; carried-state 4/4 same; 0 envelope findings, 0 run rises. Equal to the recorded REGRESSION_R7B2.json.",
+    "regress-r7b.mjs --base 146ebb8 rerun read-only: 83/83 intake programs identical, 0 status differences, 0 dose findings.",
+    "conformance-r7b.mjs, conformance-r7b1.mjs, conformance-r7b2.mjs rerun read-only: PASS.",
+    "Full suite on the frozen bytes (verifier --tests, and on a temporary copy): 799/799."
+   ]
+  },
+  "Q4": {
+   "answer": "NO new route bypasses the required safety handling, and none was found that returns a false clinical route.",
+   "inventory": "Complete for evaluateProgram's decision step. After admission the only exits that can come before a handler's clinical screen are staleReturn (inside decide), factual?.ask (factualReplan and graduationWithdrawal), the block-choice questions and the return's report-identity question; all four now yield to the precedence point. Everything earlier is admission or a safety requirement (integrity/authority/catalog, contract and chronology HOLD; eligibility clinical flag first; eligibility ASK; post-race check; previousValidity incl. sticky clinical first; malformed lists and athlete model; exceptions caught as HOLD). After the decision only the 'could not be applied' question (skips clinical) and proposal validation (clinical proposes nothing) remain. In src/r6-adaptation.mjs only substitutionClinical and interruptionScreen produce CLINICAL_HUMAN_REQUIRED after admission; no other handler or callee (r6-composition, r6-program, r7b-repertoire, r6-learning, r6-balanced) does; generateProgram's clinical reject is not imported. KIND_ALIASES maps no alias to EXERCISE_SUBSTITUTION; RETURN maps to RETURN_AFTER_PAUSE and is covered (tested).",
+   "sharedScreens": "clinicalRoute calls the same functions on the same review object as the handlers (factual contexts spread ctx; nothing replaces review). q4-screen-fuzz.mjs: 155 substitution payloads (flag spellings incl. objects/arrays/'n'/'nao', 15 free texts, exercise ids string/''/number/null/missing, non-object substitutions) and 133 interruption payloads (13 categories x 8 clinical-flag values, 9 reasons x 3 nonclinical values, non-object interruptions): fresh-state results identical to FREEZE-2 (screens moved verbatim), and in the late-evidence state and the same-id state the result is clinical exactly when the fresh handler result is clinical, with the same reason; otherwise identical to FREEZE-2. 288/288 ok.",
+   "falseRoute": "Reviews carrying a clinical substitution that stop before the decision step: 12 not admitted (eligibility missing, 30 days old, non-boolean flag, unknown status; wrong version; not synthetic; asOf outside the week; unknown kind; tampered reference state; observations or choices not a list; malformed athlete model) and 1 taking the eligibility clinical flag's route first: 13/13 identical to FREEZE-2; the point cannot fire before admission. (The 14th row of that grid, a valid reference state pending ASK, is admitted and changes ASK -> CLINICAL as intended.) Witness on an instrumented temporary copy: every precedence route was deep-equal to the review's own handler run directly with a fresh event id (W2 = 0 over 649 routes in the full suite and the judge probes).",
+   "CAND01": "Correct. On the hash-valid forged state the factual question with pain or an illness return is CLINICAL with no proposal; without a clinical signal the factual question is asked as before (inventory copy and B.2 tests). QM3 (point after factual?.ask) is killed.",
+   "CAND02": "Correct. Same id + illness / INJURY / clinicalReason -> CLINICAL; same id + same facts -> KEEP ('already recorded'); same id + other nonclinical facts -> report-identity question; new id + illness -> CLINICAL; all unchanged where not clinical. QM4 (point limited to substitution) is killed. With a correction in the same review, see QE-R7B2-01.",
+   "M41": "The equivalence argument holds. Static: after admission a handler returns CLINICAL_HUMAN_REQUIRED only through substitutionClinical or interruptionScreen, which clinicalRoute evaluates on the same review, so handled clinical implies clinical !== null and decision0 is clinical before the guard is read. Empirical: instrumented copy, full suite 799/799 plus the judge probes, 7,555 decision steps, 649 precedence routes, 0 handler-only clinical results (W1 = 0). QM9 (= M41) survives the B.2 and R7-B.1 test files. The guard is dead code on these bytes; it is harmless and does not protect against the K6 class for a future handler (see QE-R7B2-04).",
+   "OBS01": "Correctly classified (c), pre-existing (R7-B exerciseSubstitution), outside the QE-R7B1-04 class, and not a safety bypass of clinical-screen-first: no clinical route the handler takes is replaced (its screen is scoped to the named exercise, B0-C06 condition 8 'for the dependent scope') and the review proposes nothing. Unchanged on the frozen bytes. Recorded as QE-R7B2-02 for its residual risk."
+  }
+ },
+ "findings": [
+  {
+   "id": "QE-R7B2-01",
+   "severity": "MAJOR",
+   "title": "Contract §5 routing condition does not hold: a changed decision carries a proposal on the FREEZE-2 side",
+   "origin": "Introduced by the B.2 change (CAND-02: the precedence point now outranks the return's report-identity question; on FREEZE-2 withFactualReplan attached the factual re-plan to that question). Not covered by the U3 G4 grid (no same-id resend combined with a correction).",
+   "safetyBypassOfClinicalScreenFirst": false,
+   "runtimeDefect": false,
+   "reproduction": {
+    "probe": "audits/domain-coaching-r7-b2-2026-10-31/reviews/engineering/probes/s5-factual-proposal.mjs (rows S5R2, S5R8; controls S5R1, S5R3-S5R7) and s5-downstream.mjs",
+    "command": "NOW_ROOT=<worktree> PRED_ROOT=<temporary git archive of 146ebb8> node audits/domain-coaching-r7-b2-2026-10-31/reviews/engineering/probes/s5-factual-proposal.mjs",
+    "setup": "A program reviewed 3 weeks; a nonclinical WORK return reported on day 3 of week 3; weeks 3 and 4 reviewed; on day 0 of week 5 the return report is resent under its own event id with the reason 'Flu illness', in a review whose observations correct week 4's strength reports (BAD response)."
+   },
+   "expected": "Per contract §5 and §7 G4: a changed decision is only a nonclinical question replaced by CLINICAL_HUMAN_REQUIRED, with no proposal on either side, and no prescription differs; any other difference is a finding that makes the SSCTR review and a narrow Quality review required.",
+   "actual": "FREEZE-2: ASK 'This report id already belongs to a different interruption report...; meanwhile evidence about an earlier week changed what this week starts from...' WITH proposal 439a61ba5e87c7206a79460c79594d857d33ddd746b52f8157aa37b9d0951240 (the factual re-plan), pending ASK. R7-B.2: CLINICAL_HUMAN_REQUIRED, the handler's illness route, no proposal, pending CLINICAL_HUMAN_REQUIRED. With a ladder choice (S5R8): FREEZE-2 block-choice ASK with the same proposal; R7-B.2 CLINICAL, no proposal. Applied, the prescriptions of weeks 5-11 differ between the runtimes and still differ after the next whole-week review (s5-downstream). Controls identical on both runtimes: the same report under a new id (S5R4) and a substitution pain report (S5R5) with the same correction are CLINICAL with no proposal; the same id with other nonclinical facts (S5R6) is asked with the proposal; the same facts (S5R7) re-plan.",
+   "engineeringJudgement": "R7-B.2's result is the correct one: a clinical route proposes nothing (QE-R7B1-01; residual authority closure QE-R7ADA-01, withFactualReplan), and it equals what both runtimes give for the same clinical report under a new id. No runtime change is requested. The finding is about the §5 condition and the U3 'G4 reading' claim (and the freeze's routing.conditionHolds = true), which my evidence does not support for this class.",
+   "suggestedOwner": "Chief / U4 coordinator: dispatch the SSCTR review and one narrow independent Quality review as contract §5 requires, before G8/G9 can hold. U3 evidence owner: record the reopening and add this combination (resend under the same id + factual re-plan; also a graduation withdrawal's disclosures) to the differential in a new record, never by editing the freeze."
+  },
+  {
+   "id": "QE-R7B2-02",
+   "severity": "MINOR",
+   "title": "R7B2-OBS-01: a substitution report with pain and no named exercise is asked for the exercise; the clinical signal is neither routed nor carried",
+   "origin": "Pre-existing: R7-B exerciseSubstitution (the exerciseId check precedes the screen; src/r6-adaptation.mjs:565 on the frozen bytes). Identical on R7B1-FREEZE-2 and R7B2-FREEZE-1.",
+   "safetyBypassOfClinicalScreenFirst": false,
+   "classification": "(c) other, outside the QE-R7B1-04 class: confirmed. No clinical route the handler takes is replaced by another mechanism's question; the handler's screen is scoped to the named exercise (B0-C06 condition 8: 'routes CLINICAL_HUMAN_REQUIRED for the dependent scope'); the review proposes nothing.",
+   "reproduction": {"probe": "probes/b2-inventory.mjs (row ADJ 'substitution pain without the exercise'); probes/q1q2-matrix.mjs (preserved row 'OBS-01 sub pain without exercise')", "command": "PROBE_ROOT=<tree> PROBE_LABEL=<label> node audits/domain-coaching-r7-b2-2026-10-31/reviews/engineering/probes/b2-inventory.mjs"},
+   "expected": "A pain report is acknowledged and its clinical dependency is not lost (routed, or asked with the pain acknowledged, as the next mission decides).",
+   "actual": "ASK 'Say which exercise should change and why', missing substitution.exerciseId and substitution.reason (although the reason was given), pending ASK; in the re-entry week R7-A's question instead. A later review does not carry the pain.",
+   "suggestedOwner": "Next runtime mission (Engineering), with the SSCTR (whether an unscoped route like the eligibility route applies) and Product/UX (wording). Not blocking under contract §10."
+  },
+  {
+   "id": "QE-R7B2-03",
+   "severity": "MINOR",
+   "title": "Clinical signals the decision step does not read: structured clinical flags in a substitution report, and a substitution on another review kind",
+   "origin": "Pre-existing (R6/R7-B input reading). Identical on both runtimes.",
+   "safetyBypassOfClinicalScreenFirst": false,
+   "classification": "Not the precedence invariant: the screen runs first; what it reads (pain, injury, free text) is fixed by contract §2.3, and reading more would be a new clinical reading, which B.2 may not add (§4, §10 stop condition). In every case the same review's eligibility block asserts NONCLINICAL_CONFIRMED with those flags false, so the input contradicts itself. B0-C06 condition 8 names illness and functional limitation.",
+   "reproduction": {"probe": "probes/obs-structured-flags.mjs; probes/q1q2-matrix.mjs; probes/b2-inventory.mjs (ADJ 'weekly review carrying a substitution with pain')", "command": "NOW_ROOT=<worktree> PRED_ROOT=<temp archive of 146ebb8> node audits/domain-coaching-r7-b2-2026-10-31/reviews/engineering/probes/obs-structured-flags.mjs"},
+   "expected": "A clinical flag in a report is routed or asked, never answered with a substitute exercise as remedy.",
+   "actual": "EXERCISE_SUBSTITUTION with substitution.illness, functionalLimitation, clinicalConcern or persistentPain true: MODIFY, goblet-squat replaced by box-squat-bodyweight. Free text 'I have the flu' and pain:true: CLINICAL. A WEEKLY_REVIEW carrying substitution.pain: KEEP. Alias SUBSTITUTION_NEED (-> EQUIPMENT_CHANGE) with substitution.pain: KEEP or MODIFY with substitutes.",
+   "suggestedOwner": "SSCTR (the clinical reading) with the next runtime mission (Engineering: ask or route contradictory clinical keys in the input contract) and Product/UX. Not blocking under contract §10."
+  },
+  {
+   "id": "QE-R7B2-04",
+   "severity": "OBSERVATION",
+   "title": "The precedence point's coverage is not pinned by tests or by structure",
+   "origin": "Introduced by the B.2 change (the precedence structure; the M41 guard made redundant).",
+   "safetyBypassOfClinicalScreenFirst": false,
+   "detail": [
+    "QM7 (the point routes a substitution report without its exercise: 'Pain ... with undefined routes...') survives the whole suite, 799/799; only neighbors-r7b2.mjs's OBS-01 case pins it.",
+    "R7-B.1's M41 guard is dead on these bytes (W1 = 0 over 7,555 decision steps) and unkillable (QM9 survives).",
+    "The point's completeness rests on clinicalRoute's hand-kept kind list matching the handlers' clinical exits; nothing enforces it. A future handler with its own screen not registered there would silently reopen the QE-R7B1-04 class: the M41 guard would still put its route before the block-choice question but not before staleReturn, factual?.ask or the report-identity question."
+   ],
+   "reproduction": {"probe": "probes/mutants-temp.mjs (temporary copy only); probes/m41-witness-instrument.mjs", "command": "node audits/domain-coaching-r7-b2-2026-10-31/reviews/engineering/probes/mutants-temp.mjs <temp tree> <pristine r6-adaptation.mjs>"},
+   "expected": "A test fails when the point routes a report the handler would not route, and when a handler returns CLINICAL_HUMAN_REQUIRED while clinicalRoute returns null.",
+   "actual": "Neither is asserted by any test.",
+   "suggestedOwner": "Next runtime mission (Engineering): a test pinning OBS-01 unchanged, and an invariant test (handler-returned CLINICAL_HUMAN_REQUIRED implies clinicalRoute !== null), as the witness instrument checks."
+  }
+ ],
+ "negativeControls": {
+  "probe": "probes/mutants-temp.mjs on a temporary git archive of 1a1c728 (restored after each mutant; the repository's src was never touched). Tests: r7b2-clinical-precedence, r7b1-correction-cycle, r7b1-residual-closure (66 tests; pristine 66/66).",
+  "killed": ["QM1 precedence point removed (6 fail)", "QM2 point moved into decide after staleReturn (5)", "QM3 point after the factual question (1)", "QM4 point limited to EXERCISE_SUBSTITUTION (2)", "QM5 point reads pain only (1)", "QM6 point skipped with block choices (2)", "QM8 staleReturn suppressed (4)", "QM10 clinical route given the factual re-plan proposal (2)"],
+  "survived": ["QM7 false route on a report without its exercise (also survives the full suite 799/799) - QE-R7B2-04", "QM9 = M41 guard removed - equivalent (witness)"]
+ },
+ "witness": {
+  "probe": "probes/m41-witness-instrument.mjs (instrumented temporary copy of the frozen r6-adaptation.mjs)",
+  "fullSuite": {"tests": 799, "pass": 799, "decisionSteps": 6405, "precedenceRoutes": 43, "handlerOnlyClinical_W1": 0, "divergentRoutes_W2": 0},
+  "judgeProbes": {"decisionSteps": 1150, "precedenceRoutes": 606, "handlerOnlyClinical_W1": 0, "divergentRoutes_W2": 0}
+ },
+ "probesRun": [
+  {"probe": "probes/k6-stale-return-clinical.mjs (verbatim copy)", "freeze2": "FAIL", "r7b2": "PASS", "out": "probes/out/k6-stale-return-clinical-JUDGE-R7B1-FREEZE-2.json, -JUDGE-R7B2-FREEZE-1.json"},
+  {"probe": "probes/k6b-stale-return-two-step.mjs (verbatim copy)", "freeze2": "FAIL", "r7b2": "PASS", "out": "probes/out/k6b-stale-return-two-step-JUDGE-*.json"},
+  {"probe": "probes/b2-inventory.mjs (copy)", "freeze2": "CAND-01 FAIL, CAND-02 FAIL, ADJ recorded", "r7b2": "CAND-01, CAND-02 PASS; ADJ identical", "out": "probes/out/b2-inventory-JUDGE-*.json"},
+  {"probe": "probes/q1q2-matrix.mjs (new)", "result": "Q1 123/123 + 6/6; Q2 29/29 identical; after-route and neighbor D as expected", "out": "probes/out/q1q2-matrix.json"},
+  {"probe": "probes/q4-screen-fuzz.mjs (new)", "result": "288/288 payloads consistent; 13/13 not-admitted identical", "out": "probes/out/q4-screen-fuzz.json"},
+  {"probe": "probes/s5-factual-proposal.mjs (new)", "result": "S5R2 and S5R8 outside §5 (QE-R7B2-01); all other changed rows ASK no proposal -> CLINICAL no proposal", "out": "probes/out/s5-factual-proposal.json"},
+  {"probe": "probes/s5-downstream.mjs (new)", "result": "weeks 5-11 differ after S5R2 is applied; controls identical", "out": "probes/out/s5-downstream.json"},
+  {"probe": "probes/obs-structured-flags.mjs (new)", "result": "QE-R7B2-03; identical on both runtimes", "out": "probes/out/obs-structured-flags.json"},
+  {"probe": "probes/adversarial-r7b1.mjs (verbatim copy)", "result": "3,228 checks, 0 failed on both", "out": "probes/out/adversarial-JUDGE-*.json"},
+  {"probe": "probes/r7b1/*.mjs (36 verbatim copies of the R7-B.1 recheck probes) via probes/r7b1/run-differential.mjs", "result": "identical except K6, K6b FAIL -> PASS", "out": "probes/r7b1/out/r7b1-probes-differential.json"},
+  {"probe": "probes/mutants-temp.mjs, probes/m41-witness-instrument.mjs (temporary copies only)", "result": "see negativeControls and witness", "out": "probes/out/mutants-temp.json"},
+  {"probe": "CoachingCore/scripts/regress-r7b2.mjs (read-only, stdout)", "result": "PASS 151/1,626, 14 allowed changes, equal to the recorded report", "out": "probes/out/rerun-regress-r7b2.stdout.json"},
+  {"probe": "CoachingCore/scripts/neighbors-r7b2.mjs (read-only, stdout)", "result": "32/32 PASS", "out": "probes/out/rerun-neighbors-r7b2.stdout.json"},
+  {"probe": "CoachingCore/scripts/regress-r7b.mjs --base 146ebb8 (read-only, stdout)", "result": "83/83 identical", "out": "probes/out/rerun-regress-r7b-intake.stdout.json"},
+  {"probe": "CoachingCore/scripts/conformance-r7b.mjs, -r7b1.mjs, -r7b2.mjs (read-only, stdout)", "result": "PASS", "out": "probes/out/rerun-conformance-*.stdout.json"}
+ ],
+ "rulesKept": [
+  "No write outside reviews/engineering/ in the repository; no commit or state-changing git operation; nothing in src/, tests, evidence, freeze records, CURRENT_MISSION.md or MISSION_LEDGER.md edited or read whole.",
+  "verify-r7b2.mjs run only without --write; npm run verify never run; no script run with --write; mutate-r7b2.mjs not run (it edits src in place); mutants and instrumentation only on temporary copies outside the repository.",
+  "Closed-mission probes run only from copies in this folder; predecessor bytes from git archive 146ebb8 into a temporary directory; all three temporary trees deleted. No background command left running."
+ ],
+ "limitations": [
+  "The late-evidence path was not shown to be free of factual re-plan proposals on FREEZE-2; the recorded re-entry constructions (S5a-S5i) found none.",
+  "A FREEZE-2 HOLD from an exception in the skipped path (staleReturn or a handler on a clinical review) was not found and not exhaustively searched.",
+  "Scope of the substitution route is not in evaluateProgram's output; it is checked by reading and by the witness's deep-equality with the handler's own result."
+ ],
+ "filesWritten": [
+  "audits/domain-coaching-r7-b2-2026-10-31/reviews/engineering/ENGINEERING_REVIEW_R7B2.json",
+  "audits/domain-coaching-r7-b2-2026-10-31/reviews/engineering/ENGINEERING_REVIEW_R7B2.md",
+  "audits/domain-coaching-r7-b2-2026-10-31/reviews/engineering/probes/ (copies: lib.mjs, k6-stale-return-clinical.mjs, k6b-stale-return-two-step.mjs, b2-inventory.mjs, adversarial-r7b1.mjs, r7b1/*.mjs; new: dual.mjs, q1q2-matrix.mjs, q4-screen-fuzz.mjs, s5-factual-proposal.mjs, s5-downstream.mjs, obs-structured-flags.mjs, mutants-temp.mjs, m41-witness-instrument.mjs, r7b1/run-differential.mjs)",
+  "audits/domain-coaching-r7-b2-2026-10-31/reviews/engineering/probes/out/ and probes/r7b1/out/ (probe outputs)"
+ ],
+ "gate": "R7B2_ENGINEERING_GATE = READY"
+}

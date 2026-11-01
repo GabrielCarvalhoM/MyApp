@@ -1,0 +1,98 @@
+{
+ "probe": "k6-stale-return-clinical",
+ "frozen": "JUDGE-R7B1-FREEZE-2",
+ "root": "temporary tree qe-r7b2-pred-DNMn",
+ "ran": "2026-11-01T03:45:13.232Z",
+ "results": [
+  {
+   "id": "K6",
+   "area": "clinical first against the late-evidence question (pre-existing path, information)",
+   "verdict": "FAIL",
+   "expected": "a review reporting pain or illness routes to a human even when late training before the latest break is in the same review",
+   "actual": {
+    "label": "JUDGE-R7B1-FREEZE-2",
+    "rows": [
+     {
+      "name": "return",
+      "status": "MODIFY",
+      "action": "REESTABLISH"
+     },
+     {
+      "name": "weekly-midweek",
+      "status": "ASK",
+      "action": "ASK",
+      "proposal": false,
+      "pending": "ASK",
+      "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and the return reported on 2026-11-26 did not read it: confirm that interru"
+     },
+     {
+      "name": "substitution-pain",
+      "status": "ASK",
+      "action": "ASK",
+      "proposal": false,
+      "pending": "ASK",
+      "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and the return reported on 2026-11-26 did not read it: confirm that interru"
+     },
+     {
+      "name": "substitution-pain-no-late",
+      "status": "CLINICAL_HUMAN_REQUIRED",
+      "action": "CLINICAL_HUMAN_REQUIRED",
+      "proposal": false,
+      "pending": "CLINICAL_HUMAN_REQUIRED",
+      "reason": "Pain, injury, illness or a functional limitation with db-rdl routes to qualified human assessment; no exercise is substituted as a remedy"
+     },
+     {
+      "name": "return-illness",
+      "status": "CLINICAL_HUMAN_REQUIRED",
+      "action": "CLINICAL_HUMAN_REQUIRED",
+      "proposal": false,
+      "pending": "CLINICAL_HUMAN_REQUIRED",
+      "reason": "The interruption reason is clinical or possibly clinical (flu, illness): qualified assessment is needed; no nonclinical return recipe"
+     },
+     {
+      "name": "substitution-pain+ladder-choice",
+      "status": "ASK",
+      "action": "ASK",
+      "proposal": false,
+      "pending": "ASK",
+      "reason": "Block choices are made in the weekly review of a block's last week, once its sessions are complete"
+     },
+     {
+      "name": "substitution-pain+unrecognised-choice",
+      "status": "ASK",
+      "action": "ASK",
+      "proposal": false,
+      "pending": "ASK",
+      "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift change with its reason, or keeping or declining the harder session"
+     }
+    ],
+    "bypass": [
+     {
+      "name": "substitution-pain",
+      "status": "ASK",
+      "action": "ASK",
+      "proposal": false,
+      "pending": "ASK",
+      "reason": "Training before the interruption that began on 2026-11-23 is now recorded, and the return reported on 2026-11-26 did not read it: confirm that interru"
+     },
+     {
+      "name": "substitution-pain+ladder-choice",
+      "status": "ASK",
+      "action": "ASK",
+      "proposal": false,
+      "pending": "ASK",
+      "reason": "Block choices are made in the weekly review of a block's last week, once its sessions are complete"
+     },
+     {
+      "name": "substitution-pain+unrecognised-choice",
+      "status": "ASK",
+      "action": "ASK",
+      "proposal": false,
+      "pending": "ASK",
+      "reason": "Some choices are not recognised: a block choice is a ladder step, a main-lift change with its reason, or keeping or declining the harder session"
+     }
+    ]
+   }
+  }
+ ]
+}
