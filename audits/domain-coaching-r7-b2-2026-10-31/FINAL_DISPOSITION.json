@@ -1,0 +1,129 @@
+{
+ "mission": "DOMAIN_COACHING_R7-B.2 — QE-R7B1-04 clinical precedence closure",
+ "revision": "R7B2-FINAL-1",
+ "date": "2026-11-01",
+ "timezone": "America/Sao_Paulo",
+ "founderAuthority": "audits/domain-coaching-r7-b2-2026-10-31/FOUNDER_REQUEST.md",
+ "contract": "audits/domain-coaching-r7-b2-2026-10-31/TASK_CONTRACT.md (R7B2-CONTRACT-r1)",
+ "loopBound": "Contract §10 with the Founder loop bound: implementation, freeze, one review per required gate; at most one correction cycle, only for a narrow runtime-only issue the B.2 change causes. Consumed: 0 of 1 (U5 not entered).",
+ "execution": "First mission run by the agent execution runtime (tools/agent-runtime/): seven supervised headless sessions joined by validated checkpoints. Run 5 lost its two background judges before any verdict; their probes are preserved and classified (9269164, probes/INTERRUPTED_RUN5.md) and are not a review.",
+ "branch": "claude/domain-coaching-r7-b2",
+ "worktree": ".claude/worktrees/domain-coaching-r7-b2",
+ "baseline": {
+  "commit": "033f3003ecc31e8514ba26826433b006ce135b03",
+  "note": "R7-B.1 closure 2c6cb93 plus the agent execution runtime; git diff 2c6cb93 033f300 -- CoachingCore is empty",
+  "predecessorRuntime": "R7B1-FREEZE-2, record CoachingCore/r7/b1/RUNTIME_FREEZE_R7B1_2.json (sha256 e75a2799ae1b9387e7c8831646cb877967262c19aa11c18c8d54c2a7b94f27d5), commit 146ebb80c51d302ef3518a61c1cab208c7778632, source f54e5c0345aa9c1dbd9743a78127b59720b3cf4d68c1b53ed11bfdbf40ed1612, 114 files, 786 tests",
+  "consumedUnchanged": {
+   "catalog": "R7B0-CATALOG-2 ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9, with its schema and foundation",
+   "records": "the 13 B0 SSCTR r2 records and the seven R7B1-SSCTR-r2 records (no meaning changed, R7B2-SSCTR-r1)",
+   "policy": "R6-POLICY-5 18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+   "humanQueue": "230 entries, unedited (no entry proposed)"
+  }
+ },
+ "commits": {
+  "open": "a6f386098dba73e7fa2fae3235787cccece2e9cd",
+  "fix": "f1259d39247343ea6ef20d5d708b5ad5e008ee01",
+  "evidence": "63fa60271efeb8451b25d9a28f7107141f716c74",
+  "freeze1": "1a1c7286adc8b08d16f97dea86f4973fe33e5a95",
+  "verification1": "d1ec20706bb3be6500684e88c8828aa322978729",
+  "engineeringRequest": "0c736053fe366f97589e78bd39a1babb7e419b08",
+  "engineeringReview": "53acccf2953419a0b8be8e3e662893bce154b347",
+  "ssctrQualityRequests": "51e7c77acd8fa3a36b566e15a9b5625cc9b67656",
+  "interruptedRun5Probes": "92691647ac587eb643e68b50316db4534b31f9cb",
+  "ssctrQualityReviews": "003b612ecb6e2b44a84ca610cd975836e29fcb41",
+  "ssctrAddendumAndU4bRecord": "a37a84a6779095fc9711c81161bee3ebe0dd18cc",
+  "closure_commit": "The commit containing this file; resolve with: git log -1 --format=%H -- audits/domain-coaching-r7-b2-2026-10-31/FINAL_DISPOSITION.json"
+ },
+ "merged": false,
+ "pushed": "Yes: claude/domain-coaching-r7-b2 to git@github.com:GabrielCarvalhoM/MyApp.git over SSH (the remote HEAD is checked at closure); no merge, no force push, no history rewrite",
+ "status": {
+  "R7B2_STATUS": "CLOSED",
+  "MISSION_STATE": "CLOSED_READY",
+  "QE_R7B1_04": "CLOSED",
+  "R7B2_ENGINEERING_GATE": "READY (R7B2-ENG-r1)",
+  "R7B2_SSCTR_GATE": "ACCEPT_WITH_CONDITIONS (reviewed: R7B2-SSCTR-r1 with addendum R7B2-SSCTR-r1-A1; conditions C1-C4)",
+  "R7B2_QUALITY_GATE": "READY (reviewed: R7B2-QUALITY-r1; both conditions met in the U4b record)",
+  "R7B_RUNTIME_REPERTOIRE_READY": "READY (shadow reference runtime R7B2-FREEZE-1; SSCTR C1-C4 bind any use beyond the offline synthetic reference)",
+  "V1_COACHING_AUTHORITY_READY": "NO (not declared)",
+  "PRODUCTION_READY": "NO",
+  "CORRECTION_CYCLES_USED": "0 of 1",
+  "FOUNDER_DECISION": "None needed inside this mission. What follows (the routed findings, R7-C) needs its own Founder authorization.",
+  "R7A_REOPENED": false,
+  "R7B0_REOPENED": false,
+  "R7B_REOPENED": false,
+  "R7B1_REOPENED": false,
+  "R7C_STARTED": false
+ },
+ "theOneQuestion": {
+  "question": "Is QE-R7B1-04 closed correctly, with clinical safety precedence restored and the valid predecessor behaviour preserved?",
+  "answer": "Yes. One precedence point in src/r6-adaptation.mjs reuses the handlers' own clinical screens and runs before R7-A's late-evidence question, the factual re-plan question (CAND-01) and the return's report-identity question (CAND-02). Engineering Q1-Q4 yes/no-regression/no-bypass; SSCTR ACCEPT_WITH_CONDITIONS; Quality READY with an 848-row differential, 0 ledger and 0 proposal-content differences, 0/260 nonclinical controls changed."
+ },
+ "why": "The U2 fix (f1259d3) routes a review's own clinical signal to CLINICAL_HUMAN_REQUIRED, with the handler's reason and no proposal, before any nonclinical re-entry question; late evidence stays in actualLedger and R7-A's confirmation question still applies to reviews with no clinical signal and no pending clinical state. U3 evidence on R7B2-FREEZE-1 passes G3-G7. The Engineering judge accepted (READY) and found QE-R7B2-01: a same-id return resend with a clinical reason plus a factual correction loses the predecessor's attached re-plan proposal, which is outside the §5 exemption, so §5 required the SSCTR and one narrow Quality review. Quality (READY) completed the differential and found the same shape from the graduation-withdrawal source (QR7B2-01); the SSCTR accepted both (r1 and addendum A1): a clinical route proposing nothing is what clinical-screen-first requires. Every other finding is pre-existing or an observation, not a bypass, and is routed with an owner (contract §10). No judge asked for a runtime change, so the correction cycle was not used.",
+ "freezes": {
+  "R7B2-FREEZE-1": {
+   "record": "CoachingCore/r7/b2/RUNTIME_FREEZE_R7B2_1.json",
+   "sha256": "8d51def566f2ce8f140cb3dcf22d62d0699be73571d5d931d8f5e2e50fb59fee",
+   "commit": "1a1c7286adc8b08d16f97dea86f4973fe33e5a95",
+   "bytesOf": "63fa60271efeb8451b25d9a28f7107141f716c74",
+   "sourceDigest": "57512322331f7a0295525775da8bc86da5e95fe0f2085404637498e1f8f7ecbd",
+   "manifestDigest": "f9c5bd5a1bb8bd6cf2a1df3298b6b9bdc62d7f951687c9e7d756889fa753ceca",
+   "files": 122,
+   "tests": 799,
+   "runtimeDelta": "src/r6-adaptation.mjs changed (precedence point), test/r7b2-clinical-precedence.test.mjs added (13 tests), nothing removed",
+   "verification": {"record": "CoachingCore/r7/b2/VERIFICATION_R7B2_1.json", "sha256": "48404b42bb992b5f4ff830832e7ec54d1365bafef42899f0e43b7c5aea01d043", "result": "35/35 PASS with the suite; re-run at closure 35/35 (capture 2026-11-01T12-50-15-367Z-node.log)"},
+   "supersession": "verify-r7b1.mjs on these bytes fails exactly files, sourceDigest and manifestDigest, by design (r7/b2/SUPERSESSION_VERIFY_R7B1_ON_R7B2.json)",
+   "state": "The runtime to start from"
+  }
+ },
+ "gates": {
+  "G0": {"result": "HOLDS", "evidence": "TASK_CONTRACT.md §1 (verify-r7b1 24/24 at 033f300); evidence/SUITE_baseline-033f300.log (786/786)"},
+  "G1": {"result": "HOLDS", "evidence": "K6 (three bypass rows) and K6b reproduce on the baseline, controls route to a human; CAND-01 reproduced on a hash-valid state, CAND-02 through the public API (r7/b2/BLOCKER_CLOSURE_R7B2.md; probes/out/)"},
+  "G2": {"result": "HOLDS", "evidence": "RED 6 of 13 fail on 033f300 (evidence/RED_r7b2-clinical-precedence_baseline-033f300.log); GREEN 799/799 (evidence/SUITE_U2-fixed.log); no existing test changed (TEST_CHANGES_R7B2.md)"},
+  "G3": {"result": "HOLDS", "evidence": "Neighbors A-F, after-clinical, CAND-01/02 pairs: 32/32 (r7/b2/NEIGHBORS_R7B2.json); inherited adversarial 3,228 checks, 0 failed"},
+  "G4": {"result": "HOLDS, with its finding branch taken", "evidence": "Intake 83/83 identical; timeline PASS (r7/b2/REGRESSION_*.json). The differences outside the §5 shape (QE-R7B2-01, QR7B2-01) were findings and triggered §5's SSCTR and Quality reviews, which accepted them; Quality's 848-row enumeration: 0 ledger, 0 proposal-content differences, 0/260 controls changed (reviews/quality/QUALITY_REVIEW_R7B2.md)"},
+  "G5": {"result": "HOLDS", "evidence": "9 mutants, 8 killed: M58-M64 and M26b killed, M41 documented equivalent and confirmed by the Engineering judge (r7/b2/MUTATION_R7B2.json); other R7-B.1/R7-B results inherited"},
+  "G6": {"result": "HOLDS", "evidence": "conformance-r7b PASS (301), conformance-r7b1 PASS (7), B.2 delta SSCTR:B0-C06#c8 -> D08 PASS (r7/b2/*.report.json)"},
+  "G7": {"result": "HOLDS", "evidence": "R7B2-FREEZE-1 verified 35/35; supersession recorded"},
+  "G8": {"result": "HOLDS", "evidence": "Engineering READY (reviews/engineering/ENGINEERING_REVIEW_R7B2.md, sha256 04a01c7c…8f4d); SSCTR ACCEPT_WITH_CONDITIONS (reviews/ssctr/SSCTR_REVIEW_R7B2.md d2f6fbd7…397a, addendum 2ed384bb…748); Quality READY (reviews/quality/QUALITY_REVIEW_R7B2.md 8b47d8bb…676e); evidence/U4_ENGINEERING_GATE_R7B2.md, evidence/U4B_SSCTR_QUALITY_GATES_R7B2.md"},
+  "G9": {"result": "HOLDS at the closure commit", "evidence": "This disposition and its states; clean tree; branch pushed over SSH with the remote HEAD equal to local HEAD (checked after push)"}
+ },
+ "inheritedR7B1Requirements": {
+  "result": "Still hold on R7B2-FREEZE-1",
+  "evidence": [
+   "R7-B blockers QE-R7B-OBS-04, -R2-01, -R2-02, -R2-03 and the QE-R7B-01/-05 residuals: the 36 R7-B.1 recheck probe copies are identical on both runtimes except K6/K6b (FAIL -> PASS); adversarial 3,228/0 including the residual grid (R7B2-ENG-r1 Q3)",
+   "QE-R7B1-01 and QR7B1-01..05: neighbor E unchanged; the R7-B.1 tests pass unchanged in the 799/799 suite",
+   "R7B1-SSCTR-r2 and B0 SSCTR r2 records: no meaning changed, queue 230 (R7B2-SSCTR-r1)",
+   "The R7-B.1 routed minors stay routed and non-blocking (below)"
+  ]
+ },
+ "closedFindings": [
+  {"id": "QE-R7B1-04", "severity": "MAJOR", "resolution": "Fixed at f1259d3 (one precedence point reusing the handlers' screens); evidence U3; Engineering READY Q1 yes; SSCTR and Quality accept", "evidence": ["CoachingCore/r7/b2/BLOCKER_CLOSURE_R7B2.md", "audits/domain-coaching-r7-b2-2026-10-31/evidence/U3_EVIDENCE_R7B2.md", "audits/domain-coaching-r7-b2-2026-10-31/reviews/engineering/ENGINEERING_REVIEW_R7B2.md", "audits/domain-coaching-r7-b2-2026-10-31/evidence/U4B_SSCTR_QUALITY_GATES_R7B2.md"]},
+  {"id": "R7B2-CAND-01", "severity": "MAJOR", "resolution": "Factual re-plan question before a clinical route; fixed by the same precedence point (before factual?.ask); test 'R7-B.2 CAND-01'; confirmed by the Engineering judge (QM3 killed)", "evidence": ["CoachingCore/r7/b2/BLOCKER_CLOSURE_R7B2.md", "audits/domain-coaching-r7-b2-2026-10-31/reviews/engineering/ENGINEERING_REVIEW_R7B2.md"]},
+  {"id": "R7B2-CAND-02", "severity": "MAJOR", "resolution": "Return report-identity question before its interruption-reason screen; fixed by the same precedence point; tests 'R7-B.2 CAND-02'; confirmed by the Engineering judge", "evidence": ["CoachingCore/r7/b2/BLOCKER_CLOSURE_R7B2.md", "audits/domain-coaching-r7-b2-2026-10-31/reviews/engineering/ENGINEERING_REVIEW_R7B2.md"]},
+  {"id": "QE-R7B2-01", "severity": "MAJOR", "resolution": "Correct behaviour, not a defect: SSCTR ACCEPT (r1 Q1), Quality READY (r1 Q1-Q3); residual routed as SSCTR-R7B2-01/QR7B2-02", "evidence": ["audits/domain-coaching-r7-b2-2026-10-31/evidence/U4B_SSCTR_QUALITY_GATES_R7B2.md"]},
+  {"id": "QR7B2-01", "severity": "MAJOR", "resolution": "Graduation-withdrawal source of the same shape; SSCTR addendum A1 ACCEPT for groups B, B2, D; residual window routed as SSCTR-R7B2-03 (C4)", "evidence": ["audits/domain-coaching-r7-b2-2026-10-31/reviews/ssctr/SSCTR_REVIEW_R7B2_ADDENDUM_1.md"]},
+  {"id": "QR7B2-04", "severity": "OBSERVATION", "resolution": "Record inaccuracies corrected in a new record; originals not edited", "evidence": ["audits/domain-coaching-r7-b2-2026-10-31/evidence/U4B_SSCTR_QUALITY_GATES_R7B2.md"]}
+ ],
+ "ssctrConditions": {
+  "C1": "SSCTR-R7B2-01 is resolved before any use beyond the offline reference",
+  "C2": "never by attaching a re-plan or dose to a clinical decision",
+  "C3": "the R7B1-SSCTR-r2 conditions and routed findings (F12 decision half, F13, F14, F6, F7, F8, F10, R18), QE-R7B2-02 and QE-R7B2-03 stay with their owners",
+  "C4": "while CLINICAL_HUMAN_REQUIRED is pending, no session is presented as current or prescribed; after a documented human resolution, an admitted review re-derives the factual state before any session is presented",
+  "scope": "Bind use beyond the offline synthetic reference; require no B.2 runtime change"
+ },
+ "routedFindings": [
+  {"id": "QE-R7B2-02", "severity": "MINOR", "origin": "pre-existing (R7-B); same behaviour as R7B2-OBS-01", "what": "A substitution report with pain and no named exerciseId gets 'Say which exercise should change and why'; the pain is not carried forward", "owner": "Next runtime mission (Engineering), with SSCTR and Product/UX"},
+  {"id": "R7B2-OBS-01", "severity": "OBSERVATION", "origin": "pre-existing (R7-B), class (c)", "what": "Same as QE-R7B2-02, recorded at U2; routing it needs a new (unscoped) clinical route shape", "owner": "Next runtime mission (Engineering), Product/UX for wording, SSCTR if an unscoped clinical route is proposed"},
+  {"id": "QE-R7B2-03", "severity": "MINOR", "origin": "pre-existing (R6/R7-B input reading)", "what": "The substitution screen does not read structured illness/functionalLimitation/clinicalConcern/persistentPain flags; a pain field on a weekly review or SUBSTITUTION_NEED is ignored", "owner": "SSCTR (clinical reading) with the next runtime mission (Engineering) and Product/UX"},
+  {"id": "QE-R7B2-04", "severity": "OBSERVATION", "origin": "introduced by B.2 (test coverage)", "what": "No test kills a mutant that routes a substitution with no named exercise; M41 guard unkillable; completeness depends on clinicalRoute's hand-kept kind list", "owner": "Next runtime mission (Engineering): invariant test"},
+  {"id": "QR7B2-02", "severity": "MINOR", "origin": "pre-existing (QE-R7ADA-01), reach extended by B.2", "what": "After a clinical route no review re-derives the factual re-plan mid-week; the correction is read from the next week's start", "owner": "Next runtime mission (Engineering) with SSCTR (D44)"},
+  {"id": "QR7B2-03", "severity": "OBSERVATION", "origin": "introduced by B.2, fails closed", "what": "A non-JSON reason now gives HOLD instead of a question (2 rows)", "owner": "Next runtime mission (Engineering), optional admission check"},
+  {"id": "SSCTR-R7B2-01", "severity": "MINOR", "origin": "pre-existing, reach extended by B.2", "what": "A correction recorded by a clinically routed review is applied only at the next whole-week review (same behaviour as QR7B2-02); conditions C1, C2", "owner": "Next runtime mission (Engineering), with SSCTR and Data"},
+  {"id": "SSCTR-R7B2-02", "severity": "OBSERVATION", "origin": "pre-existing", "what": "No runtime input represents a human resolution of a clinical dependency", "owner": "Founder/Product (service model), with Engineering and the qualified-human route"},
+  {"id": "SSCTR-R7B2-03", "severity": "MINOR", "origin": "pre-existing, reach extended by B.2 (QR7B2-01)", "what": "Quality sessions a recorded correction disqualified stay in the plan in force while a clinical dependency is pending, until the first admitted review; no invalidation marker; condition C4", "owner": "Next runtime mission: Engineering, with Product/UX and SSCTR"}
+ ],
+ "carriedRoutedFromR7B1": "Unchanged and non-blocking: R7B1-SSCTR-F12 (decision half), F13 (narrowed), F14; QE-R7B1-02, QE-R7B1-03; QR7B1-06; the R7-B.1 Engineering and Quality observations; and the R7-B backlog (QE-R7B-R2-05, R2-OBS-01, OBS-01..03, F6, F7, F8, F10, R18, running-ceiling units). See CoachingCore/r7/b1/R7B1_CLOSURE_HANDOFF.md and CoachingCore/r7/b/R7B_CLOSURE_HANDOFF.md.",
+ "runtimeLeftovers": "Run 5 left %TEMP%/r7b2-ssctr-judge-pred, %TEMP%/r7b2-quality-r1-pred-366 and %TEMP%/r7b2-pred-McCNdx outside the repository; reported, not deleted.",
+ "handoff": "CoachingCore/r7/b2/R7B2_CLOSURE_HANDOFF.md",
+ "next": "No mission is opened. The next runtime mission, on its own Founder authorization, starts from R7B2-FREEZE-1 with the routed findings above and SSCTR C1-C4. R7-C is not authorized."
+}

@@ -874,3 +874,41 @@ The direct [Founder request](audits/domain-coaching-r7-b2-2026-10-31/FOUNDER_REQ
 - **Review:** one independent Engineering judge on the new freeze. SSCTR and Quality are inherited only while the differential against R7B1-FREEZE-2 shows nothing but clinical precedence. At most one correction cycle, for an issue the B.2 change itself causes.
 
 Continue from the [task contract](audits/domain-coaching-r7-b2-2026-10-31/TASK_CONTRACT.md). Closure will be recorded in a later block of this file and in `audits/domain-coaching-r7-b2-2026-10-31/FINAL_DISPOSITION.json`.
+
+<!-- DOMAIN_COACHING_R7B2: DCR7B2-20261101-closed-r1 -->
+## DOMAIN_COACHING_R7-B.2 — QE-R7B1-04 clinical precedence closure — CLOSED READY / 2026-11-01
+
+The direct Founder request closes **READY**. Every gate G1–G9 holds, with one review per required gate on R7B2-FREEZE-1, and the one correction cycle was not used. No verdict was forced.
+
+- **States:**
+  - R7B_RUNTIME_REPERTOIRE_READY = READY, for the shadow reference runtime. SSCTR C1–C4 bind any use beyond the offline synthetic reference.
+  - R7B2_ENGINEERING_GATE = READY (R7B2-ENG-r1).
+  - R7B2_SSCTR_GATE = ACCEPT_WITH_CONDITIONS (R7B2-SSCTR-r1 and addendum A1).
+  - R7B2_QUALITY_GATE = READY (R7B2-QUALITY-r1).
+  - V1_COACHING_AUTHORITY_READY = NO. PRODUCTION_READY = NO. Correction cycles used: 0 of 1.
+- **Closed:**
+  - QE-R7B1-04. One precedence point in `src/r6-adaptation.mjs` (`f1259d3`) reuses the handlers' own clinical screens and runs before R7-A's late-evidence question. Late evidence stays in `actualLedger`, and R7-A's question still applies to reviews with no clinical signal.
+  - The same-class exits R7B2-CAND-01 (the factual re-plan question) and R7B2-CAND-02 (the return's report-identity question).
+  - QE-R7B2-01 and QR7B2-01. A clinical route now replaces a question that carried a re-plan or a graduation withdrawal. The SSCTR accepted this as correct behaviour: a clinical route proposes nothing.
+- **Runtime to start from:** R7B2-FREEZE-1 (`1a1c728`, record sha256 `8d51def5…`, source `57512322…`, manifest `f9c5bd5a…`, 122 files). Evidence on these bytes:
+  - suite 799/799;
+  - neighbors 32/32;
+  - intake differential 83/83 identical; timeline differential PASS;
+  - Quality's 848-row differential: 0 ledger differences, 0 proposal-content differences, 0 of 260 controls changed;
+  - adversarial 3,228 checks, 0 failed;
+  - mutation 8/9, with M41 equivalent;
+  - conformance PASS;
+  - verification 35/35, re-run at closure.
+
+  R7B1-FREEZE-2 is superseded.
+- **Routed, not blocking:**
+  - SSCTR-R7B2-01..03, with conditions C1–C4;
+  - QR7B2-02 and -03;
+  - QE-R7B2-02..04, and R7B2-OBS-01;
+  - the R7-B.1 routed minors and the R7-B backlog.
+
+  Owners are in the handoff.
+- **Unchanged:** R6-POLICY-5, R7B0-CATALOG-2 with its schema and foundation, the B0 and R7B1 SSCTR r2 records, and the human queue (230). R7-A, B0, R7-B and R7-B.1 are not reopened. No UI, Figma, KMP, iOS, HealthKit/WorkoutKit, backend, Growth or production change. Nothing merged; branch `claude/domain-coaching-r7-b2` pushed over SSH.
+- **Next:** no mission is opened. Any next runtime mission needs its own Founder authorization and starts from R7B2-FREEZE-1. R7-C is not authorized.
+
+[Disposition](audits/domain-coaching-r7-b2-2026-10-31/FINAL_DISPOSITION.json) · [Handoff](CoachingCore/r7/b2/R7B2_CLOSURE_HANDOFF.md)
