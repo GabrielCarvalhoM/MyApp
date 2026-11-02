@@ -1,0 +1,1662 @@
+{
+ "check": "R7C-P7-MUTATION",
+ "head": "b4464435b664a02b1f68216f42e63aa3a066cf17",
+ "isolatedCopy": true,
+ "repoUntouched": true,
+ "baseline": {
+  "test/r7c-longitudinal.test.mjs+test/r7c-phase4.test.mjs+test/r7c-phase5.test.mjs+test/r7c-phase5-cc.test.mjs+test/r7c-phase6.test.mjs+test/r7c-phase7.test.mjs": {
+   "fail": 0,
+   "pass": 85,
+   "ran": 85,
+   "failing": []
+  },
+  "test/r7c-longitudinal.test.mjs+test/r7c-phase4.test.mjs+test/r7c-phase5.test.mjs+test/r7c-phase5-cc.test.mjs+test/r7c-phase6.test.mjs+test/r7c-phase7.test.mjs+test/r7b2-clinical-precedence.test.mjs": {
+   "fail": 0,
+   "pass": 98,
+   "ran": 85,
+   "failing": []
+  },
+  "test/r7c-longitudinal.test.mjs+test/r7c-phase4.test.mjs+test/r7c-phase5.test.mjs+test/r7c-phase5-cc.test.mjs+test/r7c-phase6.test.mjs+test/r7c-phase7.test.mjs+test/r6-adaptation.test.mjs": {
+   "fail": 0,
+   "pass": 106,
+   "ran": 85,
+   "failing": []
+  }
+ },
+ "phase3Set": {
+  "mutants": 18,
+  "killed": 17,
+  "survived": [
+   "G02-M4"
+  ],
+  "invalid": []
+ },
+ "equivalenceWitness": {
+  "mutants": 1,
+  "killed": 1,
+  "survived": [],
+  "invalid": []
+ },
+ "phase4Rules": {
+  "mutants": 8,
+  "killed": 8,
+  "survived": [],
+  "invalid": []
+ },
+ "phase5SD": {
+  "mutants": 6,
+  "killed": 6,
+  "survived": [],
+  "invalid": []
+ },
+ "correctionCycle": {
+  "mutants": 9,
+  "killed": 9,
+  "survived": [],
+  "invalid": []
+ },
+ "phase6QE07": {
+  "mutants": 7,
+  "killed": 7,
+  "survived": [],
+  "invalid": []
+ },
+ "phase7QE10": {
+  "mutants": 11,
+  "killed": 11,
+  "survived": [],
+  "invalid": [],
+  "killedByOwnWitness": 11
+ },
+ "witnessBaseline": {
+  "F7-M1": {
+   "witness": "shortened \\(5\\)",
+   "ran": 1,
+   "pass": 1,
+   "fail": 0
+  },
+  "F7-M2": {
+   "witness": "visibility \\(1\\)",
+   "ran": 1,
+   "pass": 1,
+   "fail": 0
+  },
+  "F7-M3": {
+   "witness": "visibility \\(2\\)",
+   "ran": 1,
+   "pass": 1,
+   "fail": 0
+  },
+  "F7-M4": {
+   "witness": "visibility \\(3\\)",
+   "ran": 1,
+   "pass": 1,
+   "fail": 0
+  },
+  "F7-M5": {
+   "witness": "\\(15\\): clinical first",
+   "ran": 1,
+   "pass": 1,
+   "fail": 0
+  },
+  "F7-M6": {
+   "witness": "P6-F01 mixed",
+   "ran": 1,
+   "pass": 1,
+   "fail": 0
+  },
+  "F7-M7": {
+   "witness": "backward behaviour",
+   "ran": 1,
+   "pass": 1,
+   "fail": 0
+  },
+  "F7-M8": {
+   "witness": "record: ",
+   "ran": 1,
+   "pass": 1,
+   "fail": 0
+  },
+  "F7-M9": {
+   "witness": "record: ",
+   "ran": 1,
+   "pass": 1,
+   "fail": 0
+  },
+  "F7-M10": {
+   "witness": "record: ",
+   "ran": 1,
+   "pass": 1,
+   "fail": 0
+  },
+  "F7-M11": {
+   "witness": "record: ",
+   "ran": 1,
+   "pass": 1,
+   "fail": 0
+  }
+ },
+ "results": [
+  {
+   "id": "G01-M1",
+   "rule": "credit the unknown: an elapsed session with no report gates as executed",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 15,
+   "passedTests": 70,
+   "failing": [
+    "✖ R7-C G01: a week reviewed with nothing reported is no adverse execution and reads exactly as a week never reviewed (metamorphic) (316.2583ms)",
+    "✖ R7-C G01: the last established execution stays the fact: weeks with no evidence move neither the run nor the strength history (113.2849ms)",
+    "✖ R7-C G01: a week executed after weeks with no review re-bases the plan and says so; it is never kept as an instantiation (C15) (156.5096ms)",
+    "✖ R7-C G01: strength after weeks with no review or no report earns no credit and is re-established from the last executed load; never reviewed equals reviewed empty (R18 strength regression) (311.8701ms)",
+    "✖ R7-C P3-02: after the question about unreported training, no decision validates the projected run doses; THRESHOLD 41 / LONG 65 never comes back after 7 weeks with no reported run (279.256ms)"
+   ]
+  },
+  {
+   "id": "G01-M2",
+   "rule": "remove the question: unknown is read as the entry (zero)",
+   "files": [
+    "src/r6-composition.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs",
+    "test/r6-adaptation.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 60,
+   "passedTests": 46,
+   "failing": [
+    "✖ Adaptation: local fatigue removes only optional local work; systemic convergence removes remaining hard work (86.8191ms)",
+    "✖ Adaptation: nonclinical return is staged from current evidence; clinical or unknown cause is never given a recipe (1376.9395ms)",
+    "✖ R7-C G01: after weeks with no review or no report, a run dose that depends on them is asked, typed; neither the entry (zero) nor the projection (credit) is planned (R18, CQ-R6-04) (199.9881ms)",
+    "✖ R7-C G01: a week reviewed with nothing reported is no adverse execution and reads exactly as a week never reviewed (metamorphic) (438.2252ms)",
+    "✖ R7-C G01: an agenda or event-date change after weeks with no review asks instead of collapsing running before the race (CQ-R6-04, C15) (471.0063ms)"
+   ]
+  },
+  {
+   "id": "G01-M4",
+   "rule": "a proposal travels with the question",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 44,
+   "passedTests": 41,
+   "failing": [
+    "✖ R7-C G01: after weeks with no review or no report, a run dose that depends on them is asked, typed; neither the entry (zero) nor the projection (credit) is planned (R18, CQ-R6-04) (161.2215ms)",
+    "✖ R7-C G01: a week reviewed with nothing reported is no adverse execution and reads exactly as a week never reviewed (metamorphic) (385.7519ms)",
+    "✖ R7-C G01: an agenda or event-date change after weeks with no review asks instead of collapsing running before the race (CQ-R6-04, C15) (401.884ms)",
+    "✖ R7-C G01: a declared pause and an unknown gap of the same length stay different facts with coherent outcomes (D4) (105.1298ms)",
+    "✖ R7-C P3-02: after the question about unreported training, no decision validates the projected run doses; THRESHOLD 41 / LONG 65 never comes back after 7 weeks with no reported run (264.1447ms)"
+   ]
+  },
+  {
+   "id": "G01-M5",
+   "rule": "the question crosses a declared pause (its days count as unreported)",
+   "files": [
+    "src/r6-composition.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs",
+    "test/r6-adaptation.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 2,
+   "passedTests": 104,
+   "failing": [
+    "✖ Adaptation: nonclinical return is staged from current evidence; clinical or unknown cause is never given a recipe (609.4138ms)",
+    "✖ R7-C P3-05 (G01-M5): the days of a declared pause are a known stop, never unreported training (212.1581ms)",
+    "✖ Adaptation: nonclinical return is staged from current evidence; clinical or unknown cause is never given a recipe (609.4138ms)",
+    "✖ R7-C P3-05 (G01-M5): the days of a declared pause are a known stop, never unreported training (212.1581ms)"
+   ]
+  },
+  {
+   "id": "G01-M6",
+   "rule": "clinical-first inverted (the precedence point removed)",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs",
+    "test/r7b2-clinical-precedence.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 6,
+   "passedTests": 92,
+   "failing": [
+    "✖ R7-B.2 QE-R7B1-04: pain or injury with an exercise, reported with late training before the break, routes to a human before the late-evidence question (274.8942ms)",
+    "✖ R7-B.2 QE-R7B1-04: with a block choice or an unrecognised choice in the same review, the clinical route still wins (220.3695ms)",
+    "✖ R7-B.2 QE-R7B1-04: two steps — the late report recorded with its question, then a pain-only review of the same re-entry week routes to a human (229.5096ms)",
+    "✖ R7-B.2 QE-R7B1-04: after the clinical route a later review with no clinical signal and no pending clinical state still gets the late-evidence question, and one carrying the clinical state stays clinical (250.5415ms)",
+    "✖ R7-B.2 CAND-02: a return report resent under the same event id whose reason is clinical routes to a human, not to the report-id question (170.3067ms)"
+   ]
+  },
+  {
+   "id": "G01-M7",
+   "rule": "the weekly review re-plans from this week (late evidence rewrites the week it reports)",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 56,
+   "passedTests": 29,
+   "failing": [
+    "✖ R7-C G01: after weeks with no review or no report, a run dose that depends on them is asked, typed; neither the entry (zero) nor the projection (credit) is planned (R18, CQ-R6-04) (199.4521ms)",
+    "✖ R7-C G01: a week reviewed with nothing reported is no adverse execution and reads exactly as a week never reviewed (metamorphic) (451.403ms)",
+    "✖ R7-C G01: a week executed after weeks with no review re-bases the plan and says so; it is never kept as an instantiation (C15) (176.4394ms)",
+    "✖ R7-C G01: strength after weeks with no review or no report earns no credit and is re-established from the last executed load; never reviewed equals reviewed empty (R18 strength regression) (312.2118ms)",
+    "✖ R7-C G01: a session the plan moved is gated on its own report, and a report that a session was not done is a known miss (CQ-R6-19 record, D2) (112.0719ms)"
+   ]
+  },
+  {
+   "id": "G01-M8",
+   "rule": "C15: a re-based plan keeps the instantiation label",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 4,
+   "passedTests": 81,
+   "failing": [
+    "✖ R7-C G01: a week executed after weeks with no review re-bases the plan and says so; it is never kept as an instantiation (C15) (160.1001ms)",
+    "✖ R7-C P3-03: a true gap is named with the sessions that have no report; the claim holds on the record (128.615ms)",
+    "✖ R7-C P3-03: with every week executed no reason claims missing evidence; an ordinary re-base says only that next week follows the executed record (370.9469ms)",
+    "✖ R7-C P3-03: a declared interruption and a return re-entry are named with their dates, never as unreported training (399.6869ms)",
+    "✖ R7-C G01: a week executed after weeks with no review re-bases the plan and says so; it is never kept as an instantiation (C15) (160.1001ms)"
+   ]
+  },
+  {
+   "id": "G01-M9",
+   "rule": "R2-05: the novice cap does not start on the facts-only path",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 84,
+   "failing": [
+    "✖ R7-C G01: the novice density cap starts when the week before it had no review, as when it was reviewed (QE-R7B-R2-05) (393.7377ms)",
+    "✖ R7-C G01: the novice density cap starts when the week before it had no review, as when it was reviewed (QE-R7B-R2-05) (393.7377ms)"
+   ]
+  },
+  {
+   "id": "G01-M10",
+   "rule": "a not-done report is a partial execution",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 84,
+   "failing": [
+    "✖ R7-C G01: a session the plan moved is gated on its own report, and a report that a session was not done is a known miss (CQ-R6-19 record, D2) (396.021ms)",
+    "✖ R7-C G01: a session the plan moved is gated on its own report, and a report that a session was not done is a known miss (CQ-R6-19 record, D2) (396.021ms)"
+   ]
+  },
+  {
+   "id": "G01-M11",
+   "rule": "a moved session keeps its own row (the slot it left holds the gate)",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 84,
+   "failing": [
+    "✖ R7-C G01: a session the plan moved is gated on its own report, and a report that a session was not done is a known miss (CQ-R6-19 record, D2) (146.228ms)",
+    "✖ R7-C G01: a session the plan moved is gated on its own report, and a report that a session was not done is a known miss (CQ-R6-19 record, D2) (146.228ms)"
+   ]
+  },
+  {
+   "id": "G02-M1",
+   "rule": "consent and revocation ignored (the model is built and read without consent)",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 6,
+   "passedTests": 79,
+   "failing": [
+    "✖ R7-C G02: with learning consent, long runs repeatedly followed by an adverse response at one dose hold the next step to it; the long run stays at the dose last executed (621.1162ms)",
+    "✖ R7-C G02: without consent, or once consent is revoked, nothing learned changes the plan; the completed-work record stays (30.217ms)",
+    "✖ R7-C G02: insufficient or mixed evidence personalizes nothing; one event never becomes a rule (485.217ms)",
+    "✖ R7-C G02: the same facts and consent give the same decision, with the carried model or without it; nothing learned outside build weeks (1273.5061ms)",
+    "✖ R7-C P3-05 (G02-M3): mixed evidence never sustains learned maintenance (511.2004ms)"
+   ]
+  },
+  {
+   "id": "G02-M2",
+   "rule": "one adverse event is enough",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 6,
+   "passedTests": 79,
+   "failing": [
+    "✖ R7-C G02: with learning consent, long runs repeatedly followed by an adverse response at one dose hold the next step to it; the long run stays at the dose last executed (1113.5415ms)",
+    "✖ R7-C G02: without consent, or once consent is revoked, nothing learned changes the plan; the completed-work record stays (1054.3054ms)",
+    "✖ R7-C G02: insufficient or mixed evidence personalizes nothing; one event never becomes a rule (792.6865ms)",
+    "✖ R7-C P3-05 (G02-M3): mixed evidence never sustains learned maintenance (926.262ms)",
+    "✖ R7-C P3-05 (G02-M4): evidence older than maximumAgeDays never sustains learned maintenance; the hold lifts by itself (525.0991ms)"
+   ]
+  },
+  {
+   "id": "G02-M3",
+   "rule": "MIXED evidence is enough",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 84,
+   "failing": [
+    "✖ R7-C P3-05 (G02-M3): mixed evidence never sustains learned maintenance (961.0736ms)",
+    "✖ R7-C P3-05 (G02-M3): mixed evidence never sustains learned maintenance (961.0736ms)"
+   ]
+  },
+  {
+   "id": "G02-M4",
+   "rule": "expiry ignored (observations of any age count)",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "SURVIVED",
+   "failedTests": 0,
+   "passedTests": 85,
+   "failing": []
+  },
+  {
+   "id": "G02-M5",
+   "rule": "a new dose (between the executed long run and the step)",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 2,
+   "passedTests": 83,
+   "failing": [
+    "✖ R7-C G02: with learning consent, long runs repeatedly followed by an adverse response at one dose hold the next step to it; the long run stays at the dose last executed (1064.9201ms)",
+    "✖ R7-C P3-05 (G02-M4): evidence older than maximumAgeDays never sustains learned maintenance; the hold lifts by itself (522.3564ms)",
+    "✖ R7-C G02: with learning consent, long runs repeatedly followed by an adverse response at one dose hold the next step to it; the long run stays at the dose last executed (1064.9201ms)",
+    "✖ R7-C P3-05 (G02-M4): evidence older than maximumAgeDays never sustains learned maintenance; the hold lifts by itself (522.3564ms)"
+   ]
+  },
+  {
+   "id": "G02-M6",
+   "rule": "learning operates in taper, race week, post-event and return weeks",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 2,
+   "passedTests": 83,
+   "failing": [
+    "✖ R7-C G02: with learning consent, long runs repeatedly followed by an adverse response at one dose hold the next step to it; the long run stays at the dose last executed (1101.4779ms)",
+    "✖ R7-C G02: without consent, or once consent is revoked, nothing learned changes the plan; the completed-work record stays (1055.154ms)",
+    "✖ R7-C G02: with learning consent, long runs repeatedly followed by an adverse response at one dose hold the next step to it; the long run stays at the dose last executed (1101.4779ms)",
+    "✖ R7-C G02: without consent, or once consent is revoked, nothing learned changes the plan; the completed-work record stays (1055.154ms)"
+   ]
+  },
+  {
+   "id": "G02-M7",
+   "rule": "the association becomes automatic dose authority and a cause",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 84,
+   "failing": [
+    "✖ R7-C G02: with learning consent, long runs repeatedly followed by an adverse response at one dose hold the next step to it; the long run stays at the dose last executed (1095.7872ms)",
+    "✖ R7-C G02: with learning consent, long runs repeatedly followed by an adverse response at one dose hold the next step to it; the long run stays at the dose last executed (1095.7872ms)"
+   ]
+  },
+  {
+   "id": "G02-M8",
+   "rule": "comparability: any arrangement pool counts",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 84,
+   "failing": [
+    "✖ R7-C P3-05 (G02-M8): evidence from another arrangement pool never sustains learned maintenance (1112.1077ms)",
+    "✖ R7-C P3-05 (G02-M8): evidence from another arrangement pool never sustains learned maintenance (1112.1077ms)"
+   ]
+  }
+ ],
+ "witness": [
+  {
+   "id": "G02-M4b",
+   "rule": "expiry removed from the model update and from the learned query (witness for G02-M4)",
+   "files": [
+    "src/r6-adaptation.mjs",
+    "src/r6-learning.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 84,
+   "failing": [
+    "✖ R7-C P3-05 (G02-M4): evidence older than maximumAgeDays never sustains learned maintenance; the hold lifts by itself (550.0203ms)",
+    "✖ R7-C P3-05 (G02-M4): evidence older than maximumAgeDays never sustains learned maintenance; the hold lifts by itself (550.0203ms)"
+   ]
+  }
+ ],
+ "phase4": [
+  {
+   "id": "P4-M1",
+   "rule": "P3-02: the gap guard removed",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 11,
+   "passedTests": 74,
+   "failing": [
+    "✖ R7-C P3-02: after the question about unreported training, no decision validates the projected run doses; THRESHOLD 41 / LONG 65 never comes back after 7 weeks with no reported run (339.7806ms)",
+    "✖ R7-C P3-02: metamorphic EXEC / MISS / UNKNOWN: wherever the facts of the gap decide the run doses, the unknown stays a question until it is factualized (1145.5271ms)",
+    "✖ R7-C P3-02: a mid-week KEEP never clears the pending question, and the clinical route still comes first (220.5041ms)",
+    "✖ R7-C QE-R7C-03: a held signal keeps travelling beside a change kept while the question stays open, and is re-evaluated with the answer as on time (382.049ms)",
+    "✖ R7-C SD-01: a partial answer asks only about what stays unknown; the stored doses are never validated until the rest is answered (195.2056ms)"
+   ]
+  },
+  {
+   "id": "P4-M2",
+   "rule": "P3-02: every proposal counts as planning no run dose",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 4,
+   "passedTests": 81,
+   "failing": [
+    "✖ R7-C P3-02: after the question about unreported training, no decision validates the projected run doses; THRESHOLD 41 / LONG 65 never comes back after 7 weeks with no reported run (383.3213ms)",
+    "✖ R7-C QE-R7C-03: a held signal keeps travelling beside a change kept while the question stays open, and is re-evaluated with the answer as on time (337.5571ms)",
+    "✖ R7-C SD-03: a fatigue report held by the question is applied when a plain review answers it that week (the engine carries it), as on time (249.8294ms)",
+    "✖ R7-C SD-03: a clinical flag wins over the answer and over a held signal: nothing is proposed or carried (219.4894ms)",
+    "✖ R7-C P3-02: after the question about unreported training, no decision validates the projected run doses; THRESHOLD 41 / LONG 65 never comes back after 7 weeks with no reported run (383.3213ms)"
+   ]
+  },
+  {
+   "id": "P4-M3",
+   "rule": "P3-02: a KEEP keeps the plan with the question beside it instead of asking",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 7,
+   "passedTests": 78,
+   "failing": [
+    "✖ R7-C P3-02: after the question about unreported training, no decision validates the projected run doses; THRESHOLD 41 / LONG 65 never comes back after 7 weeks with no reported run (377.6514ms)",
+    "✖ R7-C P3-02: a mid-week KEEP never clears the pending question, and the clinical route still comes first (225.0069ms)",
+    "✖ R7-C SD-01: a partial answer asks only about what stays unknown; the stored doses are never validated until the rest is answered (200.6678ms)",
+    "✖ R7-C SD-03: a fatigue report held by the question is applied when a plain review answers it that week (the engine carries it), as on time (257.0178ms)",
+    "✖ R7-C SD-03: a performance report held by the question is re-evaluated with the answer; a held signal never crosses its week (291.6172ms)"
+   ]
+  },
+  {
+   "id": "P4-M4",
+   "rule": "P3-02: the question carried by an independent change is not pending",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 3,
+   "passedTests": 82,
+   "failing": [
+    "✖ R7-C P3-02: after the question about unreported training, no decision validates the projected run doses; THRESHOLD 41 / LONG 65 never comes back after 7 weeks with no reported run (407.8168ms)",
+    "✖ R7-C QE-R7C-03: a held signal keeps travelling beside a change kept while the question stays open, and is re-evaluated with the answer as on time (367.1203ms)",
+    "✖ R7-C SD-02: a question raised in the answer week, answered later that week, reconciles the rest of the week; validity follows the reconciliation (251.5892ms)",
+    "✖ R7-C P3-02: after the question about unreported training, no decision validates the projected run doses; THRESHOLD 41 / LONG 65 never comes back after 7 weeks with no reported run (407.8168ms)",
+    "✖ R7-C QE-R7C-03: a held signal keeps travelling beside a change kept while the question stays open, and is re-evaluated with the answer as on time (367.1203ms)"
+   ]
+  },
+  {
+   "id": "P4-M5",
+   "rule": "P3-02: a handler's own later-week question replaces this week's",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 84,
+   "failing": [
+    "✖ R7-C P3-02: after the question about unreported training, no decision validates the projected run doses; THRESHOLD 41 / LONG 65 never comes back after 7 weeks with no reported run (350.7388ms)",
+    "✖ R7-C P3-02: after the question about unreported training, no decision validates the projected run doses; THRESHOLD 41 / LONG 65 never comes back after 7 weeks with no reported run (350.7388ms)"
+   ]
+  },
+  {
+   "id": "P4-M6",
+   "rule": "P3-02: a return report is held by the guard (its declared days ignored)",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs",
+    "test/r6-adaptation.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 5,
+   "passedTests": 101,
+   "failing": [
+    "✖ R7-C G01: a declared pause and an unknown gap of the same length stay different facts with coherent outcomes (D4) (152.8817ms)",
+    "✖ R7-C P3-01: a declared interruption before the taper is a known stop (its return recipe applies), and the clinical route comes before the question (450.4626ms)",
+    "✖ R7-C P3-05 (G01-M5): the days of a declared pause are a known stop, never unreported training (226.1962ms)",
+    "✖ R7-C QE-R7C-01 trigger scope: a dose standing on facts the record does not keep, or planned on time, is never re-planned by the ceiling (692.6094ms)",
+    "✖ R7-C SD-01: a declared interruption answers by its own authority: the return re-enters mid-week, nothing stored is kept (98.2884ms)"
+   ]
+  },
+  {
+   "id": "P4-M7",
+   "rule": "P3-01: the peaks dependency removed (taper and race week read an empty peak as zero)",
+   "files": [
+    "src/r6-composition.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 23,
+   "passedTests": 62,
+   "failing": [
+    "✖ R7-C P3-01: taper and race-week entry with no run ever reported asks; known misses plan the reviewed entry; executed weeks plan the taper (837.6651ms)",
+    "✖ R7-C QE-R7C-01: an answer a refusal (R4 HOLD) recorded without applying it never leaves the stale doses valid: the next decision re-plans them, as on time (race week) (565.4802ms)",
+    "✖ R7-C SD-01: answered before a key session, before the long run, in the taper and in race week, the remaining sessions follow the facts (829.7382ms)",
+    "✖ R7-C QE-R7C-07: an EXECUTED answer recorded by an R4 HOLD or a clinical route gives the plan the direct answer gives (recorder independence) (416.8982ms)",
+    "✖ R7-C QE-R7C-07: a MIXED answer (long runs done, the rest not) recorded by an R4 HOLD or a clinical route gives the direct answer's plan (330.8093ms)"
+   ]
+  },
+  {
+   "id": "P4-M8",
+   "rule": "P3-03: the re-base reason states the Phase 3 cause whatever the facts",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 3,
+   "passedTests": 82,
+   "failing": [
+    "✖ R7-C P3-03: a true gap is named with the sessions that have no report; the claim holds on the record (133.0414ms)",
+    "✖ R7-C P3-03: with every week executed no reason claims missing evidence; an ordinary re-base says only that next week follows the executed record (371.3833ms)",
+    "✖ R7-C P3-03: a declared interruption and a return re-entry are named with their dates, never as unreported training (434.0952ms)",
+    "✖ R7-C P3-03: a true gap is named with the sessions that have no report; the claim holds on the record (133.0414ms)",
+    "✖ R7-C P3-03: with every week executed no reason claims missing evidence; an ordinary re-base says only that next week follows the executed record (371.3833ms)"
+   ]
+  }
+ ],
+ "phase5": [
+  {
+   "id": "SD-M1",
+   "rule": "SD-01: the answer clears the pending question without re-planning (the stored doses stay in force)",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 2,
+   "passedTests": 83,
+   "failing": [
+    "✖ R7-C SD-01: the answer re-plans the answer week before the event decides: A and B agree for every decision kind, day 0 and day 2 (597.6225ms)",
+    "✖ R7-C SD-01/SD-03: same facts, same decision (determinism); the answer is named as such (328.5453ms)",
+    "✖ R7-C SD-01: the answer re-plans the answer week before the event decides: A and B agree for every decision kind, day 0 and day 2 (597.6225ms)",
+    "✖ R7-C SD-01/SD-03: same facts, same decision (determinism); the answer is named as such (328.5453ms)"
+   ]
+  },
+  {
+   "id": "SD-M2",
+   "rule": "SD-01/02: the answer re-plans the following weeks but not the answer week",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 15,
+   "passedTests": 70,
+   "failing": [
+    "✖ R7-C QE-R7C-02 / C9 (SSCTR-SD5-01): after a known-stop answer later in the week, the week after it is planned as on time; the elapsed sessions with no report are never credited (taper to race week included) (252.5107ms)",
+    "✖ R7-C QE-R7C-03: a held signal keeps travelling beside a change kept while the question stays open, and is re-evaluated with the answer as on time (386.4342ms)",
+    "✖ R7-C SD-01: the same facts on time (A*, A) or answered after the question (B) leave the same plan in force from the answer on; the answer week drops the stale doses (820.8944ms)",
+    "✖ R7-C SD-01: after an answer later in the week, A and B converge at the week’s review: the same week facts give the same next week (367.2859ms)",
+    "✖ R7-C SD-01: the answer re-plans the answer week before the event decides: A and B agree for every decision kind, day 0 and day 2 (418.0048ms)"
+   ]
+  },
+  {
+   "id": "SD-M3a",
+   "rule": "SD-03: a signal the question held is not re-evaluated with the answer",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 3,
+   "passedTests": 82,
+   "failing": [
+    "✖ R7-C QE-R7C-03: a held signal keeps travelling beside a change kept while the question stays open, and is re-evaluated with the answer as on time (407.5197ms)",
+    "✖ R7-C SD-03: a fatigue report held by the question is applied when a plain review answers it that week (the engine carries it), as on time (299.5907ms)",
+    "✖ R7-C SD-03: a performance report held by the question is re-evaluated with the answer; a held signal never crosses its week (268.2134ms)",
+    "✖ R7-C QE-R7C-03: a held signal keeps travelling beside a change kept while the question stays open, and is re-evaluated with the answer as on time (407.5197ms)",
+    "✖ R7-C SD-03: a fatigue report held by the question is applied when a plain review answers it that week (the engine carries it), as on time (299.5907ms)"
+   ]
+  },
+  {
+   "id": "SD-M3b",
+   "rule": "SD-03: the answer event's own signal is dropped (it is decided as a plain review)",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 17,
+   "passedTests": 68,
+   "failing": [
+    "✖ R7-C G01: a declared pause and an unknown gap of the same length stay different facts with coherent outcomes (D4) (349.6871ms)",
+    "✖ R7-C P3-02: the athlete’s report factualizes the gap: late reports of the runs (done or not done) answer it, and history is never rewritten (348.5468ms)",
+    "✖ R7-C QE-R7C-01: an answer a refusal (R4 HOLD) recorded without applying it never leaves the stale doses valid: the next decision re-plans them, as on time (race week) (596.8753ms)",
+    "✖ R7-C QE-R7C-01 trigger scope: a dose standing on facts the record does not keep, or planned on time, is never re-planned by the ceiling (1861.5609ms)",
+    "✖ R7-C SD-01: the answer re-plans the answer week before the event decides: A and B agree for every decision kind, day 0 and day 2 (469.1609ms)"
+   ]
+  },
+  {
+   "id": "SD-M3c",
+   "rule": "SD-03: the held signal does not travel with the pending question",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 5,
+   "passedTests": 80,
+   "failing": [
+    "✖ R7-C QE-R7C-03: a held signal keeps travelling beside a change kept while the question stays open, and is re-evaluated with the answer as on time (377.9846ms)",
+    "✖ R7-C QE-R7C-04: a signal held at the end of its week is never replayed in the next week (the week guard) (276.5654ms)",
+    "✖ R7-C SD-03: a fatigue report held by the question is applied when a plain review answers it that week (the engine carries it), as on time (246.1024ms)",
+    "✖ R7-C SD-03: a performance report held by the question is re-evaluated with the answer; a held signal never crosses its week (234.4055ms)",
+    "✖ R7-C SD-03: a clinical flag wins over the answer and over a held signal: nothing is proposed or carried (205.7068ms)"
+   ]
+  },
+  {
+   "id": "SD-M4",
+   "rule": "SD-01: after a known miss the answer re-plans strength only (the stale projected run doses stay)",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 14,
+   "passedTests": 71,
+   "failing": [
+    "✖ R7-C QE-R7C-02 / C9 (SSCTR-SD5-01): after a known-stop answer later in the week, the week after it is planned as on time; the elapsed sessions with no report are never credited (taper to race week included) (259.6916ms)",
+    "✖ R7-C QE-R7C-03: a held signal keeps travelling beside a change kept while the question stays open, and is re-evaluated with the answer as on time (402.5321ms)",
+    "✖ R7-C SD-01: the same facts on time (A*, A) or answered after the question (B) leave the same plan in force from the answer on; the answer week drops the stale doses (826.9101ms)",
+    "✖ R7-C SD-01: after an answer later in the week, A and B converge at the week’s review: the same week facts give the same next week (317.0126ms)",
+    "✖ R7-C SD-01: the answer re-plans the answer week before the event decides: A and B agree for every decision kind, day 0 and day 2 (352.3316ms)"
+   ]
+  }
+ ],
+ "correction": [
+  {
+   "id": "CC-M1",
+   "rule": "QE-R7C-01: the ceiling trigger removed (an answer a refusal or a clinical route recorded leaves the stale doses valid)",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 2,
+   "passedTests": 83,
+   "failing": [
+    "✖ R7-C QE-R7C-01 trigger scope: a dose standing on facts the record does not keep, or planned on time, is never re-planned by the ceiling (1941.8766ms)",
+    "✖ R7-C QE-R7C-07: a known stop (MISS) recorded by a carrier is unchanged from R7C-FREEZE-2: the ceiling re-plan applies it, as the direct answer (4704.8466ms)",
+    "✖ R7-C QE-R7C-01 trigger scope: a dose standing on facts the record does not keep, or planned on time, is never re-planned by the ceiling (1941.8766ms)",
+    "✖ R7-C QE-R7C-07: a known stop (MISS) recorded by a carrier is unchanged from R7C-FREEZE-2: the ceiling re-plan applies it, as the direct answer (4704.8466ms)"
+   ]
+  },
+  {
+   "id": "CC-M2",
+   "rule": "QE-R7C-02 / C9: the elapsed sessions with no report are credited in the weeks after the answer week",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 2,
+   "passedTests": 83,
+   "failing": [
+    "✖ R7-C QE-R7C-02 / C9 (SSCTR-SD5-01): after a known-stop answer later in the week, the week after it is planned as on time; the elapsed sessions with no report are never credited (taper to race week included) (264.8399ms)",
+    "✖ R7-C QE-R7C-07 (G01): the recorded-answer re-plan never travels with a question about unknown training; that question decides alone (254.7165ms)",
+    "✖ R7-C QE-R7C-02 / C9 (SSCTR-SD5-01): after a known-stop answer later in the week, the week after it is planned as on time; the elapsed sessions with no report are never credited (taper to race week included) (264.8399ms)",
+    "✖ R7-C QE-R7C-07 (G01): the recorded-answer re-plan never travels with a question about unknown training; that question decides alone (254.7165ms)"
+   ]
+  },
+  {
+   "id": "CC-M3",
+   "rule": "QE-R7C-03: a change kept beside the open question drops the held signal",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 84,
+   "failing": [
+    "✖ R7-C QE-R7C-03: a held signal keeps travelling beside a change kept while the question stays open, and is re-evaluated with the answer as on time (374.9982ms)",
+    "✖ R7-C QE-R7C-03: a held signal keeps travelling beside a change kept while the question stays open, and is re-evaluated with the answer as on time (374.9982ms)"
+   ]
+  },
+  {
+   "id": "CC-M4",
+   "rule": "QE-R7C-04 (QM-2): the held signal is replayed in any week (its week guard removed)",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 84,
+   "failing": [
+    "✖ R7-C QE-R7C-04: a signal held at the end of its week is never replayed in the next week (the week guard) (285.8079ms)",
+    "✖ R7-C QE-R7C-04: a signal held at the end of its week is never replayed in the next week (the week guard) (285.8079ms)"
+   ]
+  },
+  {
+   "id": "CC-M5",
+   "rule": "trigger scope: no credited session needed (a cold start is re-planned to the entry)",
+   "files": [
+    "src/r6-composition.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 4,
+   "passedTests": 81,
+   "failing": [
+    "✖ R7-C QE-R7C-01 trigger scope: a dose standing on facts the record does not keep, or planned on time, is never re-planned by the ceiling (110.0281ms)",
+    "✖ R7-C QE-R7C-10 visibility (3): a report the record first held after the review closed its week was not read by it, whatever gate the week gives; the next eligible decision reconciles it (6646.6886ms)",
+    "✖ R7-C QE-R7C-10 (12): true unread still reconciles: wherever the facts change the plan, the carrier's next decision re-plans from the record (1.9149ms)",
+    "✖ R7-C QE-R7C-10 backward behaviour: a record written before R7C-FREEZE-4 (no first-recorded clocks) is read as R7C-FREEZE-3 read it (277.8556ms)",
+    "✖ R7-C QE-R7C-01 trigger scope: a dose standing on facts the record does not keep, or planned on time, is never re-planned by the ceiling (110.0281ms)"
+   ]
+  },
+  {
+   "id": "CC-M6",
+   "rule": "trigger scope: a return entry is read (its current demonstration ignored)",
+   "files": [
+    "src/r6-composition.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 84,
+   "failing": [
+    "✖ R7-C QE-R7C-01 trigger scope: a dose standing on facts the record does not keep, or planned on time, is never re-planned by the ceiling (1594.4902ms)",
+    "✖ R7-C QE-R7C-01 trigger scope: a dose standing on facts the record does not keep, or planned on time, is never re-planned by the ceiling (1594.4902ms)"
+   ]
+  },
+  {
+   "id": "CC-M8",
+   "rule": "G01: the ceiling re-plan travels with a question about unknown training (its proposal plans run doses while the question stands)",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 84,
+   "failing": [
+    "✖ R7-C QE-R7C-01 trigger scope: a dose standing on facts the record does not keep, or planned on time, is never re-planned by the ceiling (2371.8133ms)",
+    "✖ R7-C QE-R7C-01 trigger scope: a dose standing on facts the record does not keep, or planned on time, is never re-planned by the ceiling (2371.8133ms)"
+   ]
+  },
+  {
+   "id": "CC-M9",
+   "rule": "trigger scope: a return report is pre-empted by the ceiling re-plan (the break it declares read as credit)",
+   "files": [
+    "src/r6-composition.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 84,
+   "failing": [
+    "✖ R7-C QE-R7C-01 trigger scope: a dose standing on facts the record does not keep, or planned on time, is never re-planned by the ceiling (906.4096ms)",
+    "✖ R7-C QE-R7C-01 trigger scope: a dose standing on facts the record does not keep, or planned on time, is never re-planned by the ceiling (906.4096ms)"
+   ]
+  },
+  {
+   "id": "CC-M7",
+   "rule": "trigger scope: a return or restart week is read (its re-entry recipe overridden by the entry)",
+   "files": [
+    "src/r6-composition.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 84,
+   "failing": [
+    "✖ R7-C QE-R7C-01 trigger scope: a dose standing on facts the record does not keep, or planned on time, is never re-planned by the ceiling (1506.0098ms)",
+    "✖ R7-C QE-R7C-01 trigger scope: a dose standing on facts the record does not keep, or planned on time, is never re-planned by the ceiling (1506.0098ms)"
+   ]
+  }
+ ],
+ "phase6": [
+  {
+   "id": "P6-M1",
+   "rule": "facts a carrier recorded are never reconciled later (the recorded-answer re-plan removed)",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 22,
+   "passedTests": 63,
+   "failing": [
+    "✖ R7-C QE-R7C-07: an EXECUTED answer recorded by an R4 HOLD or a clinical route gives the plan the direct answer gives (recorder independence) (4738.1974ms)",
+    "✖ R7-C QE-R7C-07: a MIXED answer (long runs done, the rest not) recorded by an R4 HOLD or a clinical route gives the direct answer's plan (4545.2601ms)",
+    "✖ R7-C QE-R7C-07: an ADVERSE answer (done, the long runs with an adverse response) recorded by an R4 HOLD or a clinical route gives the direct answer's plan (4065.6241ms)",
+    "✖ R7-C QE-R7C-07: while the clinical route stands nothing is prescribed; after qualified clearance the recorded facts are applied with no re-send (256.8399ms)",
+    "✖ R7-C QE-R7C-07: no decision presents the stale projection as valid once the record holds the answer (race touch, taper quality, long run) (1.2467ms)"
+   ]
+  },
+  {
+   "id": "P6-M2",
+   "rule": "only a known stop is reconciled: an answer with executed runs (EXEC, MIXED, ADVERSE) is ignored",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 22,
+   "passedTests": 63,
+   "failing": [
+    "✖ R7-C QE-R7C-07: an EXECUTED answer recorded by an R4 HOLD or a clinical route gives the plan the direct answer gives (recorder independence) (4571.5231ms)",
+    "✖ R7-C QE-R7C-07: a MIXED answer (long runs done, the rest not) recorded by an R4 HOLD or a clinical route gives the direct answer's plan (4443.0968ms)",
+    "✖ R7-C QE-R7C-07: an ADVERSE answer (done, the long runs with an adverse response) recorded by an R4 HOLD or a clinical route gives the direct answer's plan (4088.6962ms)",
+    "✖ R7-C QE-R7C-07: while the clinical route stands nothing is prescribed; after qualified clearance the recorded facts are applied with no re-send (250.5732ms)",
+    "✖ R7-C QE-R7C-07: no decision presents the stale projection as valid once the record holds the answer (race touch, taper quality, long run) (1.0997ms)"
+   ]
+  },
+  {
+   "id": "P6-M3",
+   "rule": "clinical clearance requires the answer re-sent (the reconciliation needs the review to carry reports)",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 19,
+   "passedTests": 66,
+   "failing": [
+    "✖ R7-C QE-R7C-07: an EXECUTED answer recorded by an R4 HOLD or a clinical route gives the plan the direct answer gives (recorder independence) (4880.6843ms)",
+    "✖ R7-C QE-R7C-07: a MIXED answer (long runs done, the rest not) recorded by an R4 HOLD or a clinical route gives the direct answer's plan (5030.6235ms)",
+    "✖ R7-C QE-R7C-07: an ADVERSE answer (done, the long runs with an adverse response) recorded by an R4 HOLD or a clinical route gives the direct answer's plan (4396.8181ms)",
+    "✖ R7-C QE-R7C-07: while the clinical route stands nothing is prescribed; after qualified clearance the recorded facts are applied with no re-send (253.3237ms)",
+    "✖ R7-C QE-R7C-07: no decision presents the stale projection as valid once the record holds the answer (race touch, taper quality, long run) (1.2228ms)"
+   ]
+  },
+  {
+   "id": "P6-M4",
+   "rule": "the stale plan stays valid with factual reconciliation debt (the recorded answer re-plans the later weeks only)",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 23,
+   "passedTests": 62,
+   "failing": [
+    "✖ R7-C SD-01: the answer re-plans the answer week before the event decides: A and B agree for every decision kind, day 0 and day 2 (290.1866ms)",
+    "✖ R7-C QE-R7C-07: an EXECUTED answer recorded by an R4 HOLD or a clinical route gives the plan the direct answer gives (recorder independence) (4913.0748ms)",
+    "✖ R7-C QE-R7C-07: a MIXED answer (long runs done, the rest not) recorded by an R4 HOLD or a clinical route gives the direct answer's plan (4715.6053ms)",
+    "✖ R7-C QE-R7C-07: an ADVERSE answer (done, the long runs with an adverse response) recorded by an R4 HOLD or a clinical route gives the direct answer's plan (4247.3995ms)",
+    "✖ R7-C QE-R7C-07: a known stop (MISS) recorded by a carrier is unchanged from R7C-FREEZE-2: the ceiling re-plan applies it, as the direct answer (4587.7016ms)"
+   ]
+  },
+  {
+   "id": "P6-M5",
+   "rule": "the carrier's identity enters the factual decision (a refusal's pending state blocks the reconciliation)",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 13,
+   "passedTests": 72,
+   "failing": [
+    "✖ R7-C QE-R7C-07: a MIXED answer (long runs done, the rest not) recorded by an R4 HOLD or a clinical route gives the direct answer's plan (5073.7113ms)",
+    "✖ R7-C QE-R7C-07: an ADVERSE answer (done, the long runs with an adverse response) recorded by an R4 HOLD or a clinical route gives the direct answer's plan (4608.8799ms)",
+    "✖ R7-C QE-R7C-07: no decision presents the stale projection as valid once the record holds the answer (race touch, taper quality, long run) (2.9278ms)",
+    "✖ R7-C QE-R7C-10 visibility (4): reports of one week held by its review and reports recorded after it are read and unread one by one (441.4477ms)",
+    "✖ R7-C QE-R7C-10 shortened (5): every gap run done at 60 % of its minutes, recorded by an R4 HOLD or a clinical route, gives the direct answer's plan (0.3288ms)"
+   ]
+  },
+  {
+   "id": "P6-M6",
+   "rule": "G01: the recorded-answer re-plan travels with a question about unknown training",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 2,
+   "passedTests": 83,
+   "failing": [
+    "✖ R7-C G01: a declared pause and an unknown gap of the same length stay different facts with coherent outcomes (D4) (916.8583ms)",
+    "✖ R7-C QE-R7C-07 (G01): the recorded-answer re-plan never travels with a question about unknown training; that question decides alone (862.4634ms)",
+    "✖ R7-C G01: a declared pause and an unknown gap of the same length stay different facts with coherent outcomes (D4) (916.8583ms)",
+    "✖ R7-C QE-R7C-07 (G01): the recorded-answer re-plan never travels with a question about unknown training; that question decides alone (862.4634ms)"
+   ]
+  },
+  {
+   "id": "P6-M7",
+   "rule": "a week a review closed always counts as read, even when its review read no executed run",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 18,
+   "passedTests": 67,
+   "failing": [
+    "✖ R7-C QE-R7C-07: an EXECUTED answer recorded by an R4 HOLD or a clinical route gives the plan the direct answer gives (recorder independence) (4918.2137ms)",
+    "✖ R7-C QE-R7C-07: a MIXED answer (long runs done, the rest not) recorded by an R4 HOLD or a clinical route gives the direct answer's plan (5149.9136ms)",
+    "✖ R7-C QE-R7C-07: an ADVERSE answer (done, the long runs with an adverse response) recorded by an R4 HOLD or a clinical route gives the direct answer's plan (4593.7205ms)",
+    "✖ R7-C QE-R7C-07: while the clinical route stands nothing is prescribed; after qualified clearance the recorded facts are applied with no re-send (253.9519ms)",
+    "✖ R7-C QE-R7C-07: no decision presents the stale projection as valid once the record holds the answer (race touch, taper quality, long run) (1.7529ms)"
+   ]
+  }
+ ],
+ "phase7": [
+  {
+   "id": "F7-M1",
+   "rule": "visibility inferred from the gate class only (the R7C-FREEZE-3 reading for every report)",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 11,
+   "passedTests": 74,
+   "failing": [
+    "✖ R7-C QE-R7C-10 visibility (3): a report the record first held after the review closed its week was not read by it, whatever gate the week gives; the next eligible decision reconciles it (5386.7843ms)",
+    "✖ R7-C QE-R7C-10 visibility (4): reports of one week held by its review and reports recorded after it are read and unread one by one (3096.8377ms)",
+    "✖ R7-C QE-R7C-10 shortened (5): every gap run done at 60 % of its minutes, recorded by an R4 HOLD or a clinical route, gives the direct answer's plan (0.7887ms)",
+    "✖ R7-C QE-R7C-10 shortened (6): every gap run done at 80 %, recorded by a carrier, gives the direct answer's plan (3039.3595ms)",
+    "✖ R7-C QE-R7C-10 shortened (8): the long runs shortened, the rest not done, recorded by a carrier, gives the direct answer's plan (2936.6765ms)"
+   ],
+   "witness": "shortened \\(5\\)",
+   "witnessRan": 1,
+   "ownWitness": "KILLED",
+   "witnessFailing": [
+    "✖ R7-C QE-R7C-10 shortened (5): every gap run done at 60 % of its minutes, recorded by an R4 HOLD or a clinical route, gives the direct answer's plan (4558.7422ms)",
+    "✖ R7-C QE-R7C-10 shortened (5): every gap run done at 60 % of its minutes, recorded by an R4 HOLD or a clinical route, gives the direct answer's plan (4558.7422ms)"
+   ]
+  },
+  {
+   "id": "F7-M2",
+   "rule": "HOLD never counts as a review that read a run (a week whose review gave only HOLD run gates is unread)",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 3,
+   "passedTests": 82,
+   "failing": [
+    "✖ R7-C QE-R7C-10 visibility (1): a review that had the run reports by its clock read them, though every run gate it gave was HOLD (runs done short): the plan stands mid-week (463.2261ms)",
+    "✖ R7-C QE-R7C-10 visibility (4): reports of one week held by its review and reports recorded after it are read and unread one by one (3132.9278ms)",
+    "✖ R7-C QE-R7C-10 backward behaviour: a record written before R7C-FREEZE-4 (no first-recorded clocks) is read as R7C-FREEZE-3 read it (270.123ms)",
+    "✖ R7-C QE-R7C-10 visibility (1): a review that had the run reports by its clock read them, though every run gate it gave was HOLD (runs done short): the plan stands mid-week (463.2261ms)",
+    "✖ R7-C QE-R7C-10 visibility (4): reports of one week held by its review and reports recorded after it are read and unread one by one (3132.9278ms)"
+   ],
+   "witness": "visibility \\(1\\)",
+   "witnessRan": 1,
+   "ownWitness": "KILLED",
+   "witnessFailing": [
+    "✖ R7-C QE-R7C-10 visibility (1): a review that had the run reports by its clock read them, though every run gate it gave was HOLD (runs done short): the plan stands mid-week (347.8619ms)",
+    "✖ R7-C QE-R7C-10 visibility (1): a review that had the run reports by its clock read them, though every run gate it gave was HOLD (runs done short): the plan stands mid-week (347.8619ms)"
+   ]
+  },
+  {
+   "id": "F7-M3",
+   "rule": "REGRESS never counts as a review that read a run (a week whose review gave a REGRESS and no executed run gate is unread)",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 84,
+   "failing": [
+    "✖ R7-C QE-R7C-10 visibility (2) and all-adverse (11): a review that read adverse runs and gave REGRESS read them; REGRESS is never read as \"the review read no run\" (364.9311ms)",
+    "✖ R7-C QE-R7C-10 visibility (2) and all-adverse (11): a review that read adverse runs and gave REGRESS read them; REGRESS is never read as \"the review read no run\" (364.9311ms)"
+   ],
+   "witness": "visibility \\(2\\)",
+   "witnessRan": 1,
+   "ownWitness": "KILLED",
+   "witnessFailing": [
+    "✖ R7-C QE-R7C-10 visibility (2) and all-adverse (11): a review that read adverse runs and gave REGRESS read them; REGRESS is never read as \"the review read no run\" (341.7711ms)",
+    "✖ R7-C QE-R7C-10 visibility (2) and all-adverse (11): a review that read adverse runs and gave REGRESS read them; REGRESS is never read as \"the review read no run\" (341.7711ms)"
+   ]
+  },
+  {
+   "id": "F7-M4",
+   "rule": "temporal visibility ignored: a report recorded after the review counts as present (its observation time stands in for the clock the record first held it at)",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 18,
+   "passedTests": 67,
+   "failing": [
+    "✖ R7-C QE-R7C-07: an EXECUTED answer recorded by an R4 HOLD or a clinical route gives the plan the direct answer gives (recorder independence) (4960.4576ms)",
+    "✖ R7-C QE-R7C-07: a MIXED answer (long runs done, the rest not) recorded by an R4 HOLD or a clinical route gives the direct answer's plan (5039.4785ms)",
+    "✖ R7-C QE-R7C-07: an ADVERSE answer (done, the long runs with an adverse response) recorded by an R4 HOLD or a clinical route gives the direct answer's plan (4644.8833ms)",
+    "✖ R7-C QE-R7C-07: while the clinical route stands nothing is prescribed; after qualified clearance the recorded facts are applied with no re-send (250.6365ms)",
+    "✖ R7-C QE-R7C-07: no decision presents the stale projection as valid once the record holds the answer (race touch, taper quality, long run) (1.8134ms)"
+   ],
+   "witness": "visibility \\(3\\)",
+   "witnessRan": 1,
+   "ownWitness": "KILLED",
+   "witnessFailing": [
+    "✖ R7-C QE-R7C-10 visibility (3): a report the record first held after the review closed its week was not read by it, whatever gate the week gives; the next eligible decision reconciles it (4610.8102ms)",
+    "✖ R7-C QE-R7C-10 visibility (3): a report the record first held after the review closed its week was not read by it, whatever gate the week gives; the next eligible decision reconciles it (4610.8102ms)"
+   ]
+  },
+  {
+   "id": "F7-M5",
+   "rule": "a shortened answer a clinical route recorded is never reconciled (a late report of a run done short stays read)",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 11,
+   "passedTests": 74,
+   "failing": [
+    "✖ R7-C QE-R7C-10 visibility (3): a report the record first held after the review closed its week was not read by it, whatever gate the week gives; the next eligible decision reconciles it (4943.782ms)",
+    "✖ R7-C QE-R7C-10 visibility (4): reports of one week held by its review and reports recorded after it are read and unread one by one (437.8641ms)",
+    "✖ R7-C QE-R7C-10 shortened (5): every gap run done at 60 % of its minutes, recorded by an R4 HOLD or a clinical route, gives the direct answer's plan (0.4026ms)",
+    "✖ R7-C QE-R7C-10 shortened (6): every gap run done at 80 %, recorded by a carrier, gives the direct answer's plan (2772.4608ms)",
+    "✖ R7-C QE-R7C-10 shortened (7): the long runs shortened (60 %), the rest done, recorded by a carrier, gives the direct answer's plan (2629.8207ms)"
+   ],
+   "witness": "\\(15\\): clinical first",
+   "witnessRan": 1,
+   "ownWitness": "KILLED",
+   "witnessFailing": [
+    "✖ R7-C QE-R7C-10 (15): clinical first: while the route stands a shortened answer prescribes nothing; after clearance it is applied with no re-send (437.5946ms)",
+    "✖ R7-C QE-R7C-10 (15): clinical first: while the route stands a shortened answer prescribes nothing; after clearance it is applied with no re-send (437.5946ms)"
+   ]
+  },
+  {
+   "id": "F7-M6",
+   "rule": "a mixed answer a carrier recorded is never reconciled (a closed week holding a report of a run not done keeps its late reports read)",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 6,
+   "passedTests": 79,
+   "failing": [
+    "✖ R7-C QE-R7C-07: a MIXED answer (long runs done, the rest not) recorded by an R4 HOLD or a clinical route gives the direct answer's plan (5503.1409ms)",
+    "✖ R7-C QE-R7C-07: no decision presents the stale projection as valid once the record holds the answer (race touch, taper quality, long run) (3.9589ms)",
+    "✖ R7-C QE-R7C-07 (G01): the recorded-answer re-plan never travels with a question about unknown training; that question decides alone (197.2725ms)",
+    "✖ R7-C QE-R7C-10 shortened (8): the long runs shortened, the rest not done, recorded by a carrier, gives the direct answer's plan (2992.7992ms)",
+    "✖ R7-C P6-F01 mixed: some runs done, some not done; some done short, some not done; some done, some adverse: recorded by a carrier, each gives the direct answer's plan (2833.0488ms)"
+   ],
+   "witness": "P6-F01 mixed",
+   "witnessRan": 1,
+   "ownWitness": "KILLED",
+   "witnessFailing": [
+    "✖ R7-C P6-F01 mixed: some runs done, some not done; some done short, some not done; some done, some adverse: recorded by a carrier, each gives the direct answer's plan (4586.4943ms)",
+    "✖ R7-C P6-F01 mixed: some runs done, some not done; some done short, some not done; some done, some adverse: recorded by a carrier, each gives the direct answer's plan (4586.4943ms)"
+   ]
+  },
+  {
+   "id": "F7-M7",
+   "rule": "records without first-recorded clocks: REGRESS no longer counts as an executed run in the R7C-FREEZE-3 reading (the Engineering's J-M2)",
+   "files": [
+    "src/r6-adaptation.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 84,
+   "failing": [
+    "✖ R7-C QE-R7C-10 backward behaviour: a record written before R7C-FREEZE-4 (no first-recorded clocks) is read as R7C-FREEZE-3 read it (108.0582ms)",
+    "✖ R7-C QE-R7C-10 backward behaviour: a record written before R7C-FREEZE-4 (no first-recorded clocks) is read as R7C-FREEZE-3 read it (108.0582ms)"
+   ],
+   "witness": "backward behaviour",
+   "witnessRan": 1,
+   "ownWitness": "KILLED",
+   "witnessFailing": [
+    "✖ R7-C QE-R7C-10 backward behaviour: a record written before R7C-FREEZE-4 (no first-recorded clocks) is read as R7C-FREEZE-3 read it (333.5475ms)",
+    "✖ R7-C QE-R7C-10 backward behaviour: a record written before R7C-FREEZE-4 (no first-recorded clocks) is read as R7C-FREEZE-3 read it (333.5475ms)"
+   ]
+  },
+  {
+   "id": "F7-M8",
+   "rule": "the clock is taken from the input (a supplied first-recorded clock is trusted)",
+   "files": [
+    "src/r6-provenance.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 84,
+   "failing": [
+    "✖ R7-C QE-R7C-10 record: the runtime stamps the clock it first held a report at, never a value the input supplies; one execution keeps its earliest; the learning model holds none (14.0475ms)",
+    "✖ R7-C QE-R7C-10 record: the runtime stamps the clock it first held a report at, never a value the input supplies; one execution keeps its earliest; the learning model holds none (14.0475ms)"
+   ],
+   "witness": "record: ",
+   "witnessRan": 1,
+   "ownWitness": "KILLED",
+   "witnessFailing": [
+    "✖ R7-C QE-R7C-10 record: the runtime stamps the clock it first held a report at, never a value the input supplies; one execution keeps its earliest; the learning model holds none (45.4797ms)",
+    "✖ R7-C QE-R7C-10 record: the runtime stamps the clock it first held a report at, never a value the input supplies; one execution keeps its earliest; the learning model holds none (45.4797ms)"
+   ]
+  },
+  {
+   "id": "F7-M9",
+   "rule": "one execution keeps the later clock when two agreeing reports merge",
+   "files": [
+    "src/r6-provenance.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 84,
+   "failing": [
+    "✖ R7-C QE-R7C-10 record: the runtime stamps the clock it first held a report at, never a value the input supplies; one execution keeps its earliest; the learning model holds none (14.7371ms)",
+    "✖ R7-C QE-R7C-10 record: the runtime stamps the clock it first held a report at, never a value the input supplies; one execution keeps its earliest; the learning model holds none (14.7371ms)"
+   ],
+   "witness": "record: ",
+   "witnessRan": 1,
+   "ownWitness": "KILLED",
+   "witnessFailing": [
+    "✖ R7-C QE-R7C-10 record: the runtime stamps the clock it first held a report at, never a value the input supplies; one execution keeps its earliest; the learning model holds none (36.8413ms)",
+    "✖ R7-C QE-R7C-10 record: the runtime stamps the clock it first held a report at, never a value the input supplies; one execution keeps its earliest; the learning model holds none (36.8413ms)"
+   ]
+  },
+  {
+   "id": "F7-M10",
+   "rule": "a correction takes its own clock (not its chain's)",
+   "files": [
+    "src/r6-provenance.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 84,
+   "failing": [
+    "✖ R7-C QE-R7C-10 record: the runtime stamps the clock it first held a report at, never a value the input supplies; one execution keeps its earliest; the learning model holds none (14.814ms)",
+    "✖ R7-C QE-R7C-10 record: the runtime stamps the clock it first held a report at, never a value the input supplies; one execution keeps its earliest; the learning model holds none (14.814ms)"
+   ],
+   "witness": "record: ",
+   "witnessRan": 1,
+   "ownWitness": "KILLED",
+   "witnessFailing": [
+    "✖ R7-C QE-R7C-10 record: the runtime stamps the clock it first held a report at, never a value the input supplies; one execution keeps its earliest; the learning model holds none (37.0413ms)",
+    "✖ R7-C QE-R7C-10 record: the runtime stamps the clock it first held a report at, never a value the input supplies; one execution keeps its earliest; the learning model holds none (37.0413ms)"
+   ]
+  },
+  {
+   "id": "F7-M11",
+   "rule": "a normalization that records no arrivals keeps the clocks its new rows bring (the learning model holds them)",
+   "files": [
+    "src/r6-provenance.mjs"
+   ],
+   "tests": [
+    "test/r7c-longitudinal.test.mjs",
+    "test/r7c-phase4.test.mjs",
+    "test/r7c-phase5.test.mjs",
+    "test/r7c-phase5-cc.test.mjs",
+    "test/r7c-phase6.test.mjs",
+    "test/r7c-phase7.test.mjs"
+   ],
+   "result": "KILLED",
+   "failedTests": 1,
+   "passedTests": 84,
+   "failing": [
+    "✖ R7-C QE-R7C-10 record: the runtime stamps the clock it first held a report at, never a value the input supplies; one execution keeps its earliest; the learning model holds none (17.7996ms)",
+    "✖ R7-C QE-R7C-10 record: the runtime stamps the clock it first held a report at, never a value the input supplies; one execution keeps its earliest; the learning model holds none (17.7996ms)"
+   ],
+   "witness": "record: ",
+   "witnessRan": 1,
+   "ownWitness": "KILLED",
+   "witnessFailing": [
+    "✖ R7-C QE-R7C-10 record: the runtime stamps the clock it first held a report at, never a value the input supplies; one execution keeps its earliest; the learning model holds none (39.3349ms)",
+    "✖ R7-C QE-R7C-10 record: the runtime stamps the clock it first held a report at, never a value the input supplies; one execution keeps its earliest; the learning model holds none (39.3349ms)"
+   ]
+  }
+ ]
+}
