@@ -1,0 +1,5003 @@
+{
+ "packet": "R7D-DOMAIN-PACKET-1",
+ "harness": "R7D-HARNESS-1",
+ "firstEvaluation": false,
+ "runtime": {
+  "revision": "R7C-FREEZE-4",
+  "commit": "a9654c8ea175611fbaae805ac6b0e8b928620dff"
+ },
+ "corpus": {
+  "path": "audits/domain-coaching-r7-d-2026-11-02/diagnostic/R7D_DIAGNOSTIC_CORPUS.json",
+  "revision": "R7D-DIAGNOSTIC-1",
+  "sha256": "44fca38174a8999888dac4b2bfc6cafdfde2c6a0dcc089a563121af5a6740957",
+  "cases": 18
+ },
+ "cases": [
+  {
+   "caseId": "R7D-D08",
+   "authorIntent": "A balanced hybrid athlete trains run and strength on two shared days in different turns. Two double conflicts arrive (one with same-turn confirmation, one without) and later the long-run day becomes unavailable when no other chosen run day is left that week. It probes turn handling, the confirmation rule, and that sessions are never moved to unchosen days.",
+   "coverageTags": [
+    "BALANCED_HYBRID",
+    "NON_RACE",
+    "H12",
+    "RUN_EXP_INTERMEDIATE",
+    "STR_EXP_INTERMEDIATE",
+    "GYM",
+    "SHARED_DAYS",
+    "SAME_TURN",
+    "DOUBLE_CONFLICT",
+    "UNAVAILABLE_DAY",
+    "FREQ_HIGH",
+    "START_NON_MONDAY"
+   ],
+   "oracleClass": "INVARIANT_ORACLE",
+   "intake": {
+    "startDate": "2026-11-17",
+    "weeks": 12,
+    "asOf": "2026-11-16",
+    "tz": 0,
+    "learningConsent": null,
+    "eligibility": "CONFIRMED",
+    "goals": {
+     "run": "REGULAR",
+     "strength": "HYPERTROPHY"
+    },
+    "event": null,
+    "runExperience": "INTERMEDIATE",
+    "strengthExperience": "INTERMEDIATE",
+    "recent": {
+     "runDaysPerWeek": 3,
+     "runMinutesPerWeek": 150,
+     "longestRunMinutes": 75,
+     "strengthDaysPerWeek": 3
+    },
+    "knownRuns": 0,
+    "knownExercises": [
+     "leg-press 3x10 140KG MACHINE_STACK",
+     "machine-chest-press 3x10 50KG MACHINE_STACK",
+     "lat-pulldown 3x10 55KG MACHINE_STACK",
+     "db-rdl 3x10 22KG PER_HAND",
+     "seated-cable-row 3x12 50KG MACHINE_STACK"
+    ],
+    "equipment": [
+     "MACHINES",
+     "DUMBBELLS",
+     "BENCH",
+     "BANDS",
+     "PULL_UP_BAR",
+     "BODYWEIGHT"
+    ],
+    "pause": null,
+    "wearable": null,
+    "history": 0,
+    "ageYears": 31,
+    "specialPopulation": null,
+    "schedule": {
+     "runDays": [
+      0,
+      2,
+      5
+     ],
+     "strengthDays": [
+      0,
+      2,
+      4
+     ],
+     "runTurn": "AM",
+     "strengthTurn": "PM",
+     "runMinutes": 45,
+     "strengthMinutes": 60,
+     "longRunDay": 5,
+     "longRunMinutes": 90
+    }
+   },
+   "generation": {
+    "status": "PROPOSED",
+    "reason": "Complete conditional program generated from onboarding-like facts",
+    "missingInputs": [],
+    "phases": [
+     "DEVELOPMENT",
+     "DEVELOPMENT",
+     "DEVELOPMENT",
+     "CONSOLIDATION",
+     "DEVELOPMENT",
+     "DEVELOPMENT",
+     "DEVELOPMENT",
+     "CONSOLIDATION",
+     "DEVELOPMENT",
+     "DEVELOPMENT",
+     "DEVELOPMENT",
+     "CONSOLIDATION"
+    ],
+    "week0": {
+     "week": 0,
+     "phase": "DEVELOPMENT",
+     "startDate": "2026-11-17",
+     "sessions": [
+      "d0 2026-11-17 AM RUN EASY 40min (EASY)",
+      "d0 2026-11-17 PM STRENGTH_LOWER 35min: leg-press 3x10 RIR3 140kg MACHINE_STACK; db-rdl 3x10 RIR3 22kg PER_HAND; leg-extension-machine 2x10 RIR3 establish; db-calf-raise 2x10 RIR3 establish; dead-bug 2x10 RIR3 BW",
+      "d2 2026-11-19 AM RUN EASY 40min (EASY)",
+      "d2 2026-11-19 PM STRENGTH_FULL_B 40min: db-rdl 3x10 RIR3 22kg PER_HAND; seated-cable-row 3x12 RIR3 50kg MACHINE_STACK; machine-chest-press 3x10 RIR3 50kg MACHINE_STACK; leg-curl-machine 2x10 RIR3 establish; cable-triceps-pushdown 2x10 RIR3 establish",
+      "d4 2026-11-21 PM STRENGTH_UPPER 36min: machine-chest-press 3x10 RIR3 50kg MACHINE_STACK; seated-cable-row 3x12 RIR3 50kg MACHINE_STACK; db-lateral-raise 2x10 RIR3 establish; db-biceps-curl 2x10 RIR3 establish; dead-bug 2x10 RIR3 BW",
+      "d5 2026-11-22 AM RUN LONG 65min (LONG)"
+     ]
+    },
+    "week1": {
+     "week": 1,
+     "phase": "DEVELOPMENT",
+     "startDate": "2026-11-24",
+     "sessions": [
+      "d0 2026-11-24 AM RUN EASY 40min (EASY)",
+      "d0 2026-11-24 PM STRENGTH_LOWER 36min: leg-press 3x12 RIR3 140kg MACHINE_STACK; db-rdl 3x12 RIR3 22kg PER_HAND; leg-extension-machine 2x10 RIR3 last logged; db-calf-raise 2x10 RIR3 last logged; dead-bug 2x12 RIR3 BW",
+      "d2 2026-11-26 AM RUN EASY 40min (EASY)",
+      "d2 2026-11-26 PM STRENGTH_FULL_B 40min: db-rdl 3x12 RIR3 22kg PER_HAND; seated-cable-row 3x8 RIR3 51kg MACHINE_STACK; machine-chest-press 3x12 RIR3 50kg MACHINE_STACK; leg-curl-machine 2x10 RIR3 last logged; cable-triceps-pushdown 2x10 RIR3 last logged",
+      "d4 2026-11-28 PM STRENGTH_UPPER 36min: machine-chest-press 3x12 RIR3 50kg MACHINE_STACK; seated-cable-row 3x8 RIR3 51kg MACHINE_STACK; db-lateral-raise 2x10 RIR3 last logged; db-biceps-curl 2x10 RIR3 last logged; dead-bug 2x12 RIR3 BW",
+      "d5 2026-11-29 AM RUN LONG 65min (LONG)"
+     ]
+    },
+    "raceWeek": null,
+    "weekBeforeRace": null
+   },
+   "steps": [
+    {
+     "stepId": "w0",
+     "asOf": "2026-11-23T20:00:00+00:00",
+     "kind": "WEEKLY_REVIEW",
+     "week": 0,
+     "athlete": {
+      "eligibility": "CONFIRMED",
+      "reports": [
+       "w0-run-d0 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w0-run-d2 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w0-run-d5 done 65min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w0-str-d0 done 35min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w0-str-d2 done 40min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w0-str-d4 done 36min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)"
+      ],
+      "notes": []
+     },
+     "coach": {
+      "status": "MODIFY",
+      "action": "ADOPT_LOGGED_LOADS",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "question": null,
+      "reason": "Executed loads differ from the planned known loads; the plan continues from what was lifted, one step at a time",
+      "missingInputs": [],
+      "offers": [],
+      "loadQuestions": 5,
+      "gates": {
+       "LONG": "ADVANCE",
+       "EASY": "ADVANCE",
+       "leg-press": "ADVANCE",
+       "db-rdl": "ADVANCE",
+       "leg-extension-machine": "ADVANCE",
+       "db-calf-raise": "ADVANCE",
+       "dead-bug": "ADVANCE",
+       "seated-cable-row": "ADVANCE",
+       "machine-chest-press": "ADVANCE",
+       "leg-curl-machine": "ADVANCE",
+       "cable-triceps-pushdown": "ADVANCE",
+       "db-lateral-raise": "ADVANCE",
+       "db-biceps-curl": "ADVANCE"
+      },
+      "adopted": true,
+      "currentWeek": {
+       "week": 0,
+       "phase": "DEVELOPMENT",
+       "startDate": "2026-11-17",
+       "sessions": []
+      },
+      "nextWeekProvisional": {
+       "week": 1,
+       "phase": "DEVELOPMENT",
+       "startDate": "2026-11-24",
+       "sessions": [
+        "d0 2026-11-24 AM RUN EASY 40min (EASY)",
+        "d0 2026-11-24 PM STRENGTH_LOWER 36min: leg-press 3x10 RIR3 140kg MACHINE_STACK; db-rdl 3x12 RIR3 22kg PER_HAND; leg-extension-machine 2x10 RIR3 establish; db-calf-raise 2x10 RIR3 establish; dead-bug 2x12 RIR3 BW",
+        "d2 2026-11-26 AM RUN EASY 40min (EASY)",
+        "d2 2026-11-26 PM STRENGTH_FULL_B 40min: db-rdl 3x12 RIR3 22kg PER_HAND; seated-cable-row 3x12 RIR3 50kg MACHINE_STACK; machine-chest-press 3x10 RIR3 50kg MACHINE_STACK; leg-curl-machine 2x10 RIR3 establish; cable-triceps-pushdown 2x10 RIR3 establish",
+        "d4 2026-11-28 PM STRENGTH_UPPER 36min: machine-chest-press 3x10 RIR3 50kg MACHINE_STACK; seated-cable-row 3x12 RIR3 50kg MACHINE_STACK; db-lateral-raise 2x10 RIR3 establish; db-biceps-curl 2x10 RIR3 establish; dead-bug 2x12 RIR3 BW",
+        "d5 2026-11-29 AM RUN LONG 65min (LONG)"
+       ]
+      }
+     }
+    },
+    {
+     "stepId": "w1",
+     "asOf": "2026-11-30T20:00:00+00:00",
+     "kind": "WEEKLY_REVIEW",
+     "week": 1,
+     "athlete": {
+      "eligibility": "CONFIRMED",
+      "reports": [
+       "w1-run-d0 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w1-run-d2 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w1-run-d5 done 65min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w1-str-d0 done 36min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w1-str-d2 done 40min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w1-str-d4 done 36min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)"
+      ],
+      "notes": []
+     },
+     "coach": {
+      "status": "MODIFY",
+      "action": "ADOPT_LOGGED_LOADS",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "question": null,
+      "reason": "Executed loads differ from the planned known loads; the plan continues from what was lifted, one step at a time",
+      "missingInputs": [],
+      "offers": [],
+      "loadQuestions": 5,
+      "gates": {
+       "LONG": "ADVANCE",
+       "EASY": "ADVANCE",
+       "leg-press": "ADVANCE",
+       "db-rdl": "ADVANCE",
+       "leg-extension-machine": "ADVANCE",
+       "db-calf-raise": "ADVANCE",
+       "dead-bug": "ADVANCE",
+       "seated-cable-row": "ADVANCE",
+       "machine-chest-press": "ADVANCE",
+       "leg-curl-machine": "ADVANCE",
+       "cable-triceps-pushdown": "ADVANCE",
+       "db-lateral-raise": "ADVANCE",
+       "db-biceps-curl": "ADVANCE"
+      },
+      "adopted": true,
+      "currentWeek": {
+       "week": 1,
+       "phase": "DEVELOPMENT",
+       "startDate": "2026-11-24",
+       "sessions": []
+      },
+      "nextWeekProvisional": {
+       "week": 2,
+       "phase": "DEVELOPMENT",
+       "startDate": "2026-12-01",
+       "sessions": [
+        "d0 2026-12-01 AM RUN EASY 45min (EASY +strides)",
+        "d0 2026-12-01 PM STRENGTH_LOWER 35min: leg-press 3x10 RIR3 140kg MACHINE_STACK; db-rdl 3x8 RIR3 24kg PER_HAND; leg-extension-machine 2x10 RIR3 establish; db-calf-raise 2x10 RIR3 establish; dead-bug 2x14 RIR3 BW",
+        "d2 2026-12-03 AM RUN EASY 40min (EASY)",
+        "d2 2026-12-03 PM STRENGTH_FULL_B 40min: db-rdl 3x8 RIR3 24kg PER_HAND; seated-cable-row 3x12 RIR3 50kg MACHINE_STACK; machine-chest-press 3x10 RIR3 50kg MACHINE_STACK; leg-curl-machine 2x10 RIR3 establish; cable-triceps-pushdown 2x10 RIR3 establish",
+        "d4 2026-12-05 PM STRENGTH_UPPER 36min: machine-chest-press 3x10 RIR3 50kg MACHINE_STACK; seated-cable-row 3x12 RIR3 50kg MACHINE_STACK; db-lateral-raise 2x10 RIR3 establish; db-biceps-curl 2x10 RIR3 establish; dead-bug 2x14 RIR3 BW",
+        "d5 2026-12-06 AM RUN LONG 65min (LONG)"
+       ]
+      }
+     }
+    },
+    {
+     "stepId": "w2",
+     "asOf": "2026-12-07T20:00:00+00:00",
+     "kind": "WEEKLY_REVIEW",
+     "week": 2,
+     "athlete": {
+      "eligibility": "CONFIRMED",
+      "reports": [
+       "w2-run-d0 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w2-run-d2 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w2-run-d5 done 65min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w2-str-d0 done 35min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w2-str-d2 done 40min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w2-str-d4 done 36min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)"
+      ],
+      "notes": []
+     },
+     "coach": {
+      "status": "MODIFY",
+      "action": "ADOPT_LOGGED_LOADS",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "question": null,
+      "reason": "Executed loads differ from the planned known loads; the plan continues from what was lifted, one step at a time",
+      "missingInputs": [],
+      "offers": [],
+      "loadQuestions": 5,
+      "gates": {
+       "LONG": "ADVANCE",
+       "EASY": "ADVANCE",
+       "leg-press": "ADVANCE",
+       "db-rdl": "ADVANCE",
+       "leg-extension-machine": "ADVANCE",
+       "db-calf-raise": "ADVANCE",
+       "dead-bug": "ADVANCE",
+       "seated-cable-row": "ADVANCE",
+       "machine-chest-press": "ADVANCE",
+       "leg-curl-machine": "ADVANCE",
+       "cable-triceps-pushdown": "ADVANCE",
+       "db-lateral-raise": "ADVANCE",
+       "db-biceps-curl": "ADVANCE"
+      },
+      "adopted": true,
+      "currentWeek": {
+       "week": 2,
+       "phase": "DEVELOPMENT",
+       "startDate": "2026-12-01",
+       "sessions": []
+      },
+      "nextWeekProvisional": {
+       "week": 3,
+       "phase": "CONSOLIDATION",
+       "startDate": "2026-12-08",
+       "sessions": [
+        "d0 2026-12-08 AM RUN EASY 45min (EASY +strides)",
+        "d0 2026-12-08 PM STRENGTH_LOWER 25min: leg-press 2x10 RIR3 140kg MACHINE_STACK; db-rdl 2x10 RIR3 24kg PER_HAND; leg-extension-machine 1x10 RIR3 establish; db-calf-raise 1x10 RIR3 establish; dead-bug 1x16 RIR3 BW",
+        "d2 2026-12-10 AM RUN EASY 40min (EASY)",
+        "d2 2026-12-10 PM STRENGTH_FULL_B 28min: db-rdl 2x10 RIR3 24kg PER_HAND; seated-cable-row 2x12 RIR3 50kg MACHINE_STACK; machine-chest-press 2x10 RIR3 50kg MACHINE_STACK; leg-curl-machine 1x10 RIR3 establish; cable-triceps-pushdown 1x10 RIR3 establish",
+        "d4 2026-12-12 PM STRENGTH_UPPER 25min: machine-chest-press 2x10 RIR3 50kg MACHINE_STACK; seated-cable-row 2x12 RIR3 50kg MACHINE_STACK; db-lateral-raise 1x10 RIR3 establish; db-biceps-curl 1x10 RIR3 establish; dead-bug 1x16 RIR3 BW",
+        "d5 2026-12-13 AM RUN LONG 55min (LONG)"
+       ]
+      }
+     }
+    },
+    {
+     "stepId": "dc3",
+     "asOf": "2026-12-09T12:00:00+00:00",
+     "kind": "DOUBLE_CONFLICT",
+     "week": 3,
+     "athlete": {
+      "eligibility": "CONFIRMED",
+      "reports": [],
+      "changes": {
+       "from": "2026-12-10",
+       "to": "2026-12-10",
+       "runTurn": "PM",
+       "strengthTurn": "PM",
+       "sameTurnConfirmed": true
+      },
+      "notes": []
+     },
+     "coach": {
+      "status": "ASK",
+      "action": "ASK",
+      "validity": "REQUIRES_RECONCILIATION",
+      "question": null,
+      "reason": "The change is stated for 2026-12-10 only; a dated window of days or shifts is not re-planned automatically. Say whether the change is permanent from a date, or move or skip the affected sessions",
+      "missingInputs": [
+       "changes.permanentFrom|sessionMove"
+      ],
+      "offers": [],
+      "loadQuestions": 0,
+      "gates": null,
+      "adopted": false,
+      "currentWeek": {
+       "week": 3,
+       "phase": "CONSOLIDATION",
+       "startDate": "2026-12-08",
+       "sessions": [
+        "d2 2026-12-10 AM RUN EASY 40min (EASY)",
+        "d2 2026-12-10 PM STRENGTH_FULL_B 28min: db-rdl 2x10 RIR3 24kg PER_HAND; seated-cable-row 2x12 RIR3 50kg MACHINE_STACK; machine-chest-press 2x10 RIR3 50kg MACHINE_STACK; leg-curl-machine 1x10 RIR3 establish; cable-triceps-pushdown 1x10 RIR3 establish",
+        "d4 2026-12-12 PM STRENGTH_UPPER 25min: machine-chest-press 2x10 RIR3 50kg MACHINE_STACK; seated-cable-row 2x12 RIR3 50kg MACHINE_STACK; db-lateral-raise 1x10 RIR3 establish; db-biceps-curl 1x10 RIR3 establish; dead-bug 1x16 RIR3 BW",
+        "d5 2026-12-13 AM RUN LONG 55min (LONG)"
+       ]
+      },
+      "nextWeekProvisional": {
+       "week": 4,
+       "phase": "DEVELOPMENT",
+       "startDate": "2026-12-15",
+       "sessions": [
+        "d0 2026-12-15 AM RUN EASY 45min (EASY +strides)",
+        "d0 2026-12-15 PM STRENGTH_LOWER 48min: leg-press 4x10 RIR3 140kg MACHINE_STACK; db-rdl 4x10 RIR3 24kg PER_HAND; leg-extension-machine 3x10 RIR3 last logged; db-calf-raise 3x10 RIR3 last logged; dead-bug 3x16 RIR3 BW",
+        "d2 2026-12-17 AM RUN EASY 40min (EASY)",
+        "d2 2026-12-17 PM STRENGTH_FULL_B 52min: db-rdl 4x10 RIR3 24kg PER_HAND; seated-cable-row 4x12 RIR3 50kg MACHINE_STACK; machine-chest-press 4x10 RIR3 50kg MACHINE_STACK; leg-curl-machine 3x10 RIR3 last logged; cable-triceps-pushdown 3x10 RIR3 last logged",
+        "d4 2026-12-19 PM STRENGTH_UPPER 48min: machine-chest-press 4x10 RIR3 50kg MACHINE_STACK; seated-cable-row 4x12 RIR3 50kg MACHINE_STACK; db-lateral-raise 3x10 RIR3 last logged; db-biceps-curl 3x10 RIR3 last logged; dead-bug 3x16 RIR3 BW",
+        "d5 2026-12-20 AM RUN LONG 65min (LONG)"
+       ]
+      }
+     }
+    },
+    {
+     "stepId": "w3",
+     "asOf": "2026-12-14T20:00:00+00:00",
+     "kind": "WEEKLY_REVIEW",
+     "week": 3,
+     "athlete": {
+      "eligibility": "CONFIRMED",
+      "reports": [
+       "w3-run-d0 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w3-run-d2 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w3-run-d5 done 55min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w3-str-d0 done 25min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w3-str-d2 done 28min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w3-str-d4 done 25min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)"
+      ],
+      "notes": []
+     },
+     "coach": {
+      "status": "KEEP",
+      "action": "INSTANTIATE_LOGGED_LOADS",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "question": null,
+      "reason": "Logged loads replace planned placeholders; the progression rule is unchanged",
+      "missingInputs": [],
+      "offers": [
+       "LADDER_STEP",
+       "LADDER_STEP"
+      ],
+      "loadQuestions": 5,
+      "gates": {
+       "LONG": "ADVANCE",
+       "EASY": "ADVANCE",
+       "leg-press": "ADVANCE",
+       "db-rdl": "ADVANCE",
+       "leg-extension-machine": "ADVANCE",
+       "db-calf-raise": "ADVANCE",
+       "dead-bug": "ADVANCE",
+       "seated-cable-row": "ADVANCE",
+       "machine-chest-press": "ADVANCE",
+       "leg-curl-machine": "ADVANCE",
+       "cable-triceps-pushdown": "ADVANCE",
+       "db-lateral-raise": "ADVANCE",
+       "db-biceps-curl": "ADVANCE"
+      },
+      "adopted": true,
+      "currentWeek": {
+       "week": 3,
+       "phase": "CONSOLIDATION",
+       "startDate": "2026-12-08",
+       "sessions": []
+      },
+      "nextWeekProvisional": {
+       "week": 4,
+       "phase": "DEVELOPMENT",
+       "startDate": "2026-12-15",
+       "sessions": [
+        "d0 2026-12-15 AM RUN EASY 45min (EASY +strides)",
+        "d0 2026-12-15 PM STRENGTH_LOWER 41min: leg-press 3x10 RIR3 140kg MACHINE_STACK; db-rdl 4x10 RIR3 24kg PER_HAND; leg-extension-machine 2x10 RIR3 establish; db-calf-raise 2x10 RIR3 establish; dead-bug 3x16 RIR3 BW",
+        "d2 2026-12-17 AM RUN EASY 40min (EASY)",
+        "d2 2026-12-17 PM STRENGTH_FULL_B 43min: db-rdl 4x10 RIR3 24kg PER_HAND; seated-cable-row 3x12 RIR3 50kg MACHINE_STACK; machine-chest-press 3x10 RIR3 50kg MACHINE_STACK; leg-curl-machine 2x10 RIR3 establish; cable-triceps-pushdown 2x10 RIR3 establish",
+        "d4 2026-12-19 PM STRENGTH_UPPER 39min: machine-chest-press 3x10 RIR3 50kg MACHINE_STACK; seated-cable-row 3x12 RIR3 50kg MACHINE_STACK; db-lateral-raise 2x10 RIR3 establish; db-biceps-curl 2x10 RIR3 establish; dead-bug 3x16 RIR3 BW",
+        "d5 2026-12-20 AM RUN LONG 65min (LONG)"
+       ]
+      }
+     }
+    },
+    {
+     "stepId": "w4",
+     "asOf": "2026-12-21T20:00:00+00:00",
+     "kind": "WEEKLY_REVIEW",
+     "week": 4,
+     "athlete": {
+      "eligibility": "CONFIRMED",
+      "reports": [
+       "w4-run-d0 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w4-run-d2 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w4-run-d5 done 65min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w4-str-d0 done 41min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w4-str-d2 done 43min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w4-str-d4 done 39min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)"
+      ],
+      "notes": []
+     },
+     "coach": {
+      "status": "MODIFY",
+      "action": "ADOPT_LOGGED_LOADS",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "question": null,
+      "reason": "Executed loads differ from the planned known loads; the plan continues from what was lifted, one step at a time",
+      "missingInputs": [],
+      "offers": [],
+      "loadQuestions": 5,
+      "gates": {
+       "LONG": "ADVANCE",
+       "EASY": "ADVANCE",
+       "leg-press": "ADVANCE",
+       "db-rdl": "ADVANCE",
+       "leg-extension-machine": "ADVANCE",
+       "db-calf-raise": "ADVANCE",
+       "dead-bug": "ADVANCE",
+       "seated-cable-row": "ADVANCE",
+       "machine-chest-press": "ADVANCE",
+       "leg-curl-machine": "ADVANCE",
+       "cable-triceps-pushdown": "ADVANCE",
+       "db-lateral-raise": "ADVANCE",
+       "db-biceps-curl": "ADVANCE"
+      },
+      "adopted": true,
+      "currentWeek": {
+       "week": 4,
+       "phase": "DEVELOPMENT",
+       "startDate": "2026-12-15",
+       "sessions": []
+      },
+      "nextWeekProvisional": {
+       "week": 5,
+       "phase": "DEVELOPMENT",
+       "startDate": "2026-12-22",
+       "sessions": [
+        "d0 2026-12-22 AM RUN EASY 45min (EASY +strides)",
+        "d0 2026-12-22 PM STRENGTH_LOWER 42min: leg-press 3x10 RIR3 140kg MACHINE_STACK; db-rdl 4x12 RIR3 24kg PER_HAND; leg-extension-machine 2x10 RIR3 establish; db-calf-raise 2x10 RIR3 establish; dead-bug 3x16 RIR3 BW",
+        "d2 2026-12-24 AM RUN EASY 45min (EASY)",
+        "d2 2026-12-24 PM STRENGTH_FULL_B 43min: db-rdl 4x12 RIR3 24kg PER_HAND; seated-cable-row 3x12 RIR3 50kg MACHINE_STACK; machine-chest-press 3x10 RIR3 50kg MACHINE_STACK; leg-curl-machine 2x10 RIR3 establish; cable-triceps-pushdown 2x10 RIR3 establish",
+        "d4 2026-12-26 PM STRENGTH_UPPER 39min: machine-chest-press 3x10 RIR3 50kg MACHINE_STACK; seated-cable-row 3x12 RIR3 50kg MACHINE_STACK; db-lateral-raise 2x10 RIR3 establish; db-biceps-curl 2x10 RIR3 establish; dead-bug 3x16 RIR3 BW",
+        "d5 2026-12-27 AM RUN LONG 65min (LONG)"
+       ]
+      }
+     }
+    },
+    {
+     "stepId": "dc5",
+     "asOf": "2026-12-21T20:30:00+00:00",
+     "kind": "DOUBLE_CONFLICT",
+     "week": 4,
+     "athlete": {
+      "eligibility": "CONFIRMED",
+      "reports": [],
+      "changes": {
+       "from": "2026-12-22",
+       "to": "2026-12-22",
+       "runTurn": "PM",
+       "strengthTurn": "PM",
+       "sameTurnConfirmed": false
+      },
+      "notes": []
+     },
+     "coach": {
+      "status": "ASK",
+      "action": "ASK",
+      "validity": "REQUIRES_RECONCILIATION",
+      "question": null,
+      "reason": "The change is stated for 2026-12-22 only; a dated window of days or shifts is not re-planned automatically. Say whether the change is permanent from a date, or move or skip the affected sessions",
+      "missingInputs": [
+       "changes.permanentFrom|sessionMove"
+      ],
+      "offers": [],
+      "loadQuestions": 5,
+      "gates": null,
+      "adopted": false,
+      "currentWeek": {
+       "week": 4,
+       "phase": "DEVELOPMENT",
+       "startDate": "2026-12-15",
+       "sessions": []
+      },
+      "nextWeekProvisional": {
+       "week": 5,
+       "phase": "DEVELOPMENT",
+       "startDate": "2026-12-22",
+       "sessions": [
+        "d0 2026-12-22 AM RUN EASY 45min (EASY +strides)",
+        "d0 2026-12-22 PM STRENGTH_LOWER 42min: leg-press 3x10 RIR3 140kg MACHINE_STACK; db-rdl 4x12 RIR3 24kg PER_HAND; leg-extension-machine 2x10 RIR3 establish; db-calf-raise 2x10 RIR3 establish; dead-bug 3x16 RIR3 BW",
+        "d2 2026-12-24 AM RUN EASY 45min (EASY)",
+        "d2 2026-12-24 PM STRENGTH_FULL_B 43min: db-rdl 4x12 RIR3 24kg PER_HAND; seated-cable-row 3x12 RIR3 50kg MACHINE_STACK; machine-chest-press 3x10 RIR3 50kg MACHINE_STACK; leg-curl-machine 2x10 RIR3 establish; cable-triceps-pushdown 2x10 RIR3 establish",
+        "d4 2026-12-26 PM STRENGTH_UPPER 39min: machine-chest-press 3x10 RIR3 50kg MACHINE_STACK; seated-cable-row 3x12 RIR3 50kg MACHINE_STACK; db-lateral-raise 2x10 RIR3 establish; db-biceps-curl 2x10 RIR3 establish; dead-bug 3x16 RIR3 BW",
+        "d5 2026-12-27 AM RUN LONG 65min (LONG)"
+       ]
+      }
+     }
+    },
+    {
+     "stepId": "w5",
+     "asOf": "2026-12-28T20:00:00+00:00",
+     "kind": "WEEKLY_REVIEW",
+     "week": 5,
+     "athlete": {
+      "eligibility": "CONFIRMED",
+      "reports": [
+       "w5-run-d0 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w5-run-d2 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w5-run-d5 done 65min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w5-str-d0 done 42min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w5-str-d2 done 43min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w5-str-d4 done 39min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)"
+      ],
+      "notes": []
+     },
+     "coach": {
+      "status": "MODIFY",
+      "action": "ADOPT_LOGGED_LOADS",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "question": null,
+      "reason": "Executed loads differ from the planned known loads; the plan continues from what was lifted, one step at a time",
+      "missingInputs": [],
+      "offers": [],
+      "loadQuestions": 5,
+      "gates": {
+       "LONG": "ADVANCE",
+       "EASY": "ADVANCE",
+       "leg-press": "ADVANCE",
+       "db-rdl": "ADVANCE",
+       "leg-extension-machine": "ADVANCE",
+       "db-calf-raise": "ADVANCE",
+       "dead-bug": "ADVANCE",
+       "seated-cable-row": "ADVANCE",
+       "machine-chest-press": "ADVANCE",
+       "leg-curl-machine": "ADVANCE",
+       "cable-triceps-pushdown": "ADVANCE",
+       "db-lateral-raise": "ADVANCE",
+       "db-biceps-curl": "ADVANCE"
+      },
+      "adopted": true,
+      "currentWeek": {
+       "week": 5,
+       "phase": "DEVELOPMENT",
+       "startDate": "2026-12-22",
+       "sessions": []
+      },
+      "nextWeekProvisional": {
+       "week": 6,
+       "phase": "DEVELOPMENT",
+       "startDate": "2026-12-29",
+       "sessions": [
+        "d0 2026-12-29 AM RUN EASY 45min (EASY +strides)",
+        "d0 2026-12-29 PM STRENGTH_LOWER 40min: leg-press 3x10 RIR3 140kg MACHINE_STACK; db-rdl 4x8 RIR3 26kg PER_HAND; leg-extension-machine 2x10 RIR3 establish; db-calf-raise 2x10 RIR3 establish; dead-bug 3x16 RIR3 BW",
+        "d2 2026-12-31 AM RUN EASY 45min (EASY)",
+        "d2 2026-12-31 PM STRENGTH_FULL_B 42min: db-rdl 4x8 RIR3 26kg PER_HAND; seated-cable-row 3x12 RIR3 50kg MACHINE_STACK; machine-chest-press 3x10 RIR3 50kg MACHINE_STACK; leg-curl-machine 2x10 RIR3 establish; cable-triceps-pushdown 2x10 RIR3 establish",
+        "d4 2027-01-02 PM STRENGTH_UPPER 39min: machine-chest-press 3x10 RIR3 50kg MACHINE_STACK; seated-cable-row 3x12 RIR3 50kg MACHINE_STACK; db-lateral-raise 2x10 RIR3 establish; db-biceps-curl 2x10 RIR3 establish; dead-bug 3x16 RIR3 BW",
+        "d5 2027-01-03 AM RUN LONG 65min (LONG)"
+       ]
+      }
+     }
+    },
+    {
+     "stepId": "u6",
+     "asOf": "2027-01-01T18:00:00+00:00",
+     "kind": "UNAVAILABLE_DAY",
+     "week": 6,
+     "athlete": {
+      "eligibility": "CONFIRMED",
+      "reports": [],
+      "changes": {
+       "unavailableDates": [
+        "2027-01-03"
+       ]
+      },
+      "notes": []
+     },
+     "coach": {
+      "status": "MODIFY",
+      "action": "RESCHEDULE_WITHIN_WEEK",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "question": null,
+      "reason": "Sessions on the unavailable date are moved within chosen days when that adds no interference, otherwise skipped without debt",
+      "missingInputs": [],
+      "offers": [],
+      "loadQuestions": 0,
+      "gates": null,
+      "adopted": true,
+      "currentWeek": {
+       "week": 6,
+       "phase": "DEVELOPMENT",
+       "startDate": "2026-12-29",
+       "sessions": [
+        "d4 2027-01-02 PM STRENGTH_UPPER 39min: machine-chest-press 3x10 RIR3 50kg MACHINE_STACK; seated-cable-row 3x12 RIR3 50kg MACHINE_STACK; db-lateral-raise 2x10 RIR3 establish; db-biceps-curl 2x10 RIR3 establish; dead-bug 3x16 RIR3 BW",
+        "d5 2027-01-03 AM RUN LONG 65min (LONG) [SKIPPED]"
+       ]
+      },
+      "nextWeekProvisional": {
+       "week": 7,
+       "phase": "CONSOLIDATION",
+       "startDate": "2027-01-05",
+       "sessions": [
+        "d0 2027-01-05 AM RUN EASY 45min (EASY +strides)",
+        "d0 2027-01-05 PM STRENGTH_LOWER 30min: leg-press 2x12 RIR3 140kg MACHINE_STACK; db-rdl 3x10 RIR3 26kg PER_HAND; leg-extension-machine 1x10 RIR3 last logged; db-calf-raise 1x10 RIR3 last logged; dead-bug 2x16 RIR3 BW",
+        "d2 2027-01-07 AM RUN EASY 45min (EASY)",
+        "d2 2027-01-07 PM STRENGTH_FULL_B 31min: db-rdl 3x10 RIR3 26kg PER_HAND; seated-cable-row 2x8 RIR3 51kg MACHINE_STACK; machine-chest-press 2x12 RIR3 50kg MACHINE_STACK; leg-curl-machine 1x10 RIR3 last logged; cable-triceps-pushdown 1x10 RIR3 last logged",
+        "d4 2027-01-09 PM STRENGTH_UPPER 27min: machine-chest-press 2x12 RIR3 50kg MACHINE_STACK; seated-cable-row 2x8 RIR3 51kg MACHINE_STACK; db-lateral-raise 1x10 RIR3 last logged; db-biceps-curl 1x10 RIR3 last logged; dead-bug 2x16 RIR3 BW",
+        "d5 2027-01-10 AM RUN LONG 55min (LONG)"
+       ]
+      }
+     }
+    },
+    {
+     "stepId": "w6",
+     "asOf": "2027-01-04T20:00:00+00:00",
+     "kind": "WEEKLY_REVIEW",
+     "week": 6,
+     "athlete": {
+      "eligibility": "CONFIRMED",
+      "reports": [
+       "w6-run-d0 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w6-run-d2 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w6-str-d0 done 40min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w6-str-d2 done 42min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w6-str-d4 done 39min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)"
+      ],
+      "notes": []
+     },
+     "coach": {
+      "status": "MODIFY",
+      "action": "GATED_NEXT_STEP",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "question": null,
+      "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation",
+      "missingInputs": [],
+      "offers": [],
+      "loadQuestions": 5,
+      "gates": {
+       "LONG": "HOLD",
+       "EASY": "ADVANCE",
+       "leg-press": "ADVANCE",
+       "db-rdl": "ADVANCE",
+       "leg-extension-machine": "ADVANCE",
+       "db-calf-raise": "ADVANCE",
+       "dead-bug": "ADVANCE",
+       "seated-cable-row": "ADVANCE",
+       "machine-chest-press": "ADVANCE",
+       "leg-curl-machine": "ADVANCE",
+       "cable-triceps-pushdown": "ADVANCE",
+       "db-lateral-raise": "ADVANCE",
+       "db-biceps-curl": "ADVANCE"
+      },
+      "adopted": true,
+      "currentWeek": {
+       "week": 6,
+       "phase": "DEVELOPMENT",
+       "startDate": "2026-12-29",
+       "sessions": []
+      },
+      "nextWeekProvisional": {
+       "week": 7,
+       "phase": "CONSOLIDATION",
+       "startDate": "2027-01-05",
+       "sessions": [
+        "d0 2027-01-05 AM RUN EASY 45min (EASY +strides)",
+        "d0 2027-01-05 PM STRENGTH_LOWER 30min: leg-press 2x10 RIR3 140kg MACHINE_STACK; db-rdl 3x10 RIR3 26kg PER_HAND; leg-extension-machine 1x10 RIR3 establish; db-calf-raise 1x10 RIR3 establish; dead-bug 2x16 RIR3 BW",
+        "d2 2027-01-07 AM RUN EASY 45min (EASY)",
+        "d2 2027-01-07 PM STRENGTH_FULL_B 31min: db-rdl 3x10 RIR3 26kg PER_HAND; seated-cable-row 2x12 RIR3 50kg MACHINE_STACK; machine-chest-press 2x10 RIR3 50kg MACHINE_STACK; leg-curl-machine 1x10 RIR3 establish; cable-triceps-pushdown 1x10 RIR3 establish",
+        "d4 2027-01-09 PM STRENGTH_UPPER 27min: machine-chest-press 2x10 RIR3 50kg MACHINE_STACK; seated-cable-row 2x12 RIR3 50kg MACHINE_STACK; db-lateral-raise 1x10 RIR3 establish; db-biceps-curl 1x10 RIR3 establish; dead-bug 2x16 RIR3 BW",
+        "d5 2027-01-10 AM RUN LONG 55min (LONG)"
+       ]
+      }
+     }
+    },
+    {
+     "stepId": "w7",
+     "asOf": "2027-01-11T20:00:00+00:00",
+     "kind": "WEEKLY_REVIEW",
+     "week": 7,
+     "athlete": {
+      "eligibility": "CONFIRMED",
+      "reports": [
+       "w7-run-d0 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w7-run-d2 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w7-run-d5 done 55min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w7-str-d0 done 30min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w7-str-d2 done 31min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w7-str-d4 done 27min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)"
+      ],
+      "notes": []
+     },
+     "coach": {
+      "status": "KEEP",
+      "action": "INSTANTIATE_LOGGED_LOADS",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "question": null,
+      "reason": "Logged loads replace planned placeholders; the progression rule is unchanged",
+      "missingInputs": [],
+      "offers": [
+       "LADDER_STEP",
+       "LADDER_STEP"
+      ],
+      "loadQuestions": 5,
+      "gates": {
+       "LONG": "ADVANCE",
+       "EASY": "ADVANCE",
+       "leg-press": "ADVANCE",
+       "db-rdl": "ADVANCE",
+       "leg-extension-machine": "ADVANCE",
+       "db-calf-raise": "ADVANCE",
+       "dead-bug": "ADVANCE",
+       "seated-cable-row": "ADVANCE",
+       "machine-chest-press": "ADVANCE",
+       "leg-curl-machine": "ADVANCE",
+       "cable-triceps-pushdown": "ADVANCE",
+       "db-lateral-raise": "ADVANCE",
+       "db-biceps-curl": "ADVANCE"
+      },
+      "adopted": true,
+      "currentWeek": {
+       "week": 7,
+       "phase": "CONSOLIDATION",
+       "startDate": "2027-01-05",
+       "sessions": []
+      },
+      "nextWeekProvisional": {
+       "week": 8,
+       "phase": "DEVELOPMENT",
+       "startDate": "2027-01-12",
+       "sessions": [
+        "d0 2027-01-12 AM RUN EASY 45min (EASY +strides)",
+        "d0 2027-01-12 PM STRENGTH_LOWER 38min: leg-press 3x10 RIR3 140kg MACHINE_STACK; db-rdl 4x10 RIR3 26kg PER_HAND; leg-extension-machine 2x10 RIR3 establish; standing-calf-raise 2x10 RIR3 BW; front-plank 2x10 RIR3 BW",
+        "d2 2027-01-14 AM RUN EASY 45min (EASY)",
+        "d2 2027-01-14 PM STRENGTH_FULL_B 43min: db-rdl 4x10 RIR3 26kg PER_HAND; seated-cable-row 3x12 RIR3 50kg MACHINE_STACK; machine-chest-press 3x10 RIR3 50kg MACHINE_STACK; leg-curl-machine 2x10 RIR3 establish; db-overhead-triceps-extension 2x10 RIR3 establish",
+        "d4 2027-01-16 PM STRENGTH_UPPER 36min: machine-chest-press 3x10 RIR3 50kg MACHINE_STACK; seated-cable-row 3x12 RIR3 50kg MACHINE_STACK; db-lateral-raise 2x10 RIR3 establish; band-biceps-curl 2x10 RIR3 BW; front-plank 2x10 RIR3 BW",
+        "d5 2027-01-17 AM RUN LONG 65min (LONG)"
+       ]
+      }
+     }
+    },
+    {
+     "stepId": "w8",
+     "asOf": "2027-01-18T20:00:00+00:00",
+     "kind": "WEEKLY_REVIEW",
+     "week": 8,
+     "athlete": {
+      "eligibility": "CONFIRMED",
+      "reports": [
+       "w8-run-d0 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w8-run-d2 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w8-run-d5 done 65min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w8-str-d0 done 38min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w8-str-d2 done 43min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w8-str-d4 done 36min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)"
+      ],
+      "notes": []
+     },
+     "coach": {
+      "status": "MODIFY",
+      "action": "ADOPT_LOGGED_LOADS",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "question": null,
+      "reason": "Executed loads differ from the planned known loads; the plan continues from what was lifted, one step at a time",
+      "missingInputs": [],
+      "offers": [],
+      "loadQuestions": 5,
+      "gates": {
+       "LONG": "ADVANCE",
+       "EASY": "ADVANCE",
+       "leg-press": "ADVANCE",
+       "db-rdl": "ADVANCE",
+       "leg-extension-machine": "ADVANCE",
+       "standing-calf-raise": "ADVANCE",
+       "front-plank": "ADVANCE",
+       "seated-cable-row": "ADVANCE",
+       "machine-chest-press": "ADVANCE",
+       "leg-curl-machine": "ADVANCE",
+       "db-overhead-triceps-extension": "ADVANCE",
+       "db-lateral-raise": "ADVANCE",
+       "band-biceps-curl": "ADVANCE"
+      },
+      "adopted": true,
+      "currentWeek": {
+       "week": 8,
+       "phase": "DEVELOPMENT",
+       "startDate": "2027-01-12",
+       "sessions": []
+      },
+      "nextWeekProvisional": {
+       "week": 9,
+       "phase": "DEVELOPMENT",
+       "startDate": "2027-01-19",
+       "sessions": [
+        "d0 2027-01-19 AM RUN EASY 45min (EASY +strides)",
+        "d0 2027-01-19 PM STRENGTH_LOWER 39min: leg-press 3x10 RIR3 140kg MACHINE_STACK; db-rdl 4x12 RIR3 26kg PER_HAND; leg-extension-machine 2x10 RIR3 establish; standing-calf-raise 2x12 RIR3 BW; front-plank 2x12 RIR3 BW",
+        "d2 2027-01-21 AM RUN EASY 45min (EASY)",
+        "d2 2027-01-21 PM STRENGTH_FULL_B 43min: db-rdl 4x12 RIR3 26kg PER_HAND; seated-cable-row 3x12 RIR3 50kg MACHINE_STACK; machine-chest-press 3x10 RIR3 50kg MACHINE_STACK; leg-curl-machine 2x10 RIR3 establish; db-overhead-triceps-extension 2x10 RIR3 establish",
+        "d4 2027-01-23 PM STRENGTH_UPPER 36min: machine-chest-press 3x10 RIR3 50kg MACHINE_STACK; seated-cable-row 3x12 RIR3 50kg MACHINE_STACK; db-lateral-raise 2x10 RIR3 establish; band-biceps-curl 2x10 RIR3 BW; front-plank 2x12 RIR3 BW",
+        "d5 2027-01-24 AM RUN LONG 65min (LONG)"
+       ]
+      }
+     }
+    }
+   ],
+   "stopped": null,
+   "corpusErrors": [],
+   "runtimeErrors": [],
+   "automated": {
+    "failures": [],
+    "notEvaluable": []
+   },
+   "metamorphic": {
+    "violations": [],
+    "nonBlockingDifferences": [
+     {
+      "relation": "LOAD_CONVENTION_EQUIVALENT",
+      "blocking": true,
+      "differences": [
+       {
+        "issue": "LATER_LOAD_VALUES_FOLLOW_STATED_CONVENTION",
+        "at": "GENERATE",
+        "policy": "operational.strength.loadUnits + smallestIncrement"
+       }
+      ]
+     }
+    ]
+   },
+   "authorExpectations": [
+    {
+     "expectationId": "d08-e01",
+     "atStep": "GENERATE",
+     "oracleClass": "DOMAIN_ORACLE",
+     "type": "STATUS_IN",
+     "rationale": "Shared days in different turns need no confirmation.",
+     "result": "PASS",
+     "observed": "PROPOSED",
+     "expected": {
+      "type": "STATUS_IN",
+      "oneOf": [
+       "PROPOSED"
+      ]
+     }
+    },
+    {
+     "expectationId": "d08-e02",
+     "atStep": "GENERATE",
+     "oracleClass": "INVARIANT_ORACLE",
+     "type": "JUDGED",
+     "rationale": "Same turn needs confirmation, which was not given at onboarding.",
+     "result": "JUDGED",
+     "statement": "On the shared days 0 and 2 the run is in the AM turn and strength in the PM turn; no day has both sports in the same turn."
+    },
+    {
+     "expectationId": "d08-e03",
+     "atStep": "GENERATE",
+     "oracleClass": "DOMAIN_ORACLE",
+     "type": "JUDGED",
+     "rationale": "Concurrent-training placement.",
+     "result": "JUDGED",
+     "statement": "The Saturday strength session before the Sunday long run is not the heaviest lower-body session of the week, and the run on a shared day is not a hard quality run placed just before the heaviest lower-body work of that evening."
+    },
+    {
+     "expectationId": "d08-e04",
+     "atStep": "dc3",
+     "oracleClass": "DOMAIN_ORACLE",
+     "type": "STATUS_IN",
+     "rationale": "The confirmed double conflict can be planned.",
+     "result": "FAIL",
+     "observed": "ASK",
+     "expected": {
+      "type": "STATUS_IN",
+      "oneOf": [
+       "MODIFY",
+       "KEEP"
+      ]
+     }
+    },
+    {
+     "expectationId": "d08-e05",
+     "atStep": "dc3",
+     "oracleClass": "DOMAIN_ORACLE",
+     "type": "VALIDITY_IS",
+     "rationale": "Nothing pending.",
+     "result": "FAIL",
+     "observed": "REQUIRES_RECONCILIATION",
+     "expected": {
+      "type": "VALIDITY_IS",
+      "value": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+     }
+    },
+    {
+     "expectationId": "d08-e06",
+     "atStep": "dc3",
+     "oracleClass": "DOMAIN_ORACLE",
+     "type": "JUDGED",
+     "rationale": "Confirmed same-turn day.",
+     "result": "JUDGED",
+     "statement": "On Thursday of week 3 both sessions are in the PM turn (confirmed) and the combination is sensible: an easy or shortened run with the strength session, not a quality run stacked on heavy legs."
+    },
+    {
+     "expectationId": "d08-e07",
+     "atStep": "dc5",
+     "oracleClass": "DOMAIN_ORACLE",
+     "type": "STATUS_IN",
+     "rationale": "The unconfirmed double conflict needs a change or a question.",
+     "result": "PASS",
+     "observed": "ASK",
+     "expected": {
+      "type": "STATUS_IN",
+      "oneOf": [
+       "MODIFY",
+       "ASK"
+      ]
+     }
+    },
+    {
+     "expectationId": "d08-e08",
+     "atStep": "dc5",
+     "oracleClass": "INVARIANT_ORACLE",
+     "type": "JUDGED",
+     "rationale": "Same turn without confirmation is not allowed.",
+     "result": "JUDGED",
+     "statement": "On Tuesday of week 5 the plan does not contain two live sessions in the same turn; if one is dropped it is marked skipped, not moved to a day the athlete did not choose."
+    },
+    {
+     "expectationId": "d08-e09",
+     "atStep": "u6",
+     "oracleClass": "DOMAIN_ORACLE",
+     "type": "STATUS_IN",
+     "rationale": "The long run of week 6 cannot happen on Sunday.",
+     "result": "PASS",
+     "observed": "MODIFY",
+     "expected": {
+      "type": "STATUS_IN",
+      "oneOf": [
+       "MODIFY"
+      ]
+     }
+    },
+    {
+     "expectationId": "d08-e10",
+     "atStep": "u6",
+     "oracleClass": "INVARIANT_ORACLE",
+     "type": "JUDGED",
+     "rationale": "Chosen days are the athlete's.",
+     "result": "JUDGED",
+     "statement": "No session is dated Sunday of week 6, and no run is placed on Wednesday, Friday, Saturday or Monday of week 6 (days the athlete did not choose for running); the long run of week 6 is skipped rather than moved to an unchosen day or doubled up."
+    },
+    {
+     "expectationId": "d08-e11",
+     "atStep": "u6",
+     "oracleClass": "DOMAIN_ORACLE",
+     "type": "JUDGED",
+     "rationale": "No catch-up.",
+     "result": "JUDGED",
+     "statement": "The week-7 long run is not extended to compensate for the skipped week-6 long run: it is no longer than what had been planned for week 6."
+    }
+   ],
+   "independentAssessment": {
+    "rationale": "An intermediate hybrid athlete in a gym without barbells, three runs and three hypertrophy sessions with two shared days. Most of the difficulty is in the schedule, not the dose.",
+    "preferredCoachingBehavior": "Run AM / lift PM on shared days, Sunday long run, upper or lighter emphasis on Saturday. On the confirmed Thursday, put both in the evening with the easy run first or a short run after lifting. On the unconfirmed Tuesday, keep one session in the evening (strength, or an easy run if the coach prefers to protect running) and skip the other; asking which one is also fine. On the unavailable Sunday, skip the week-6 long run; resume the planned progression in week 7 without compensating.",
+    "acceptableAlternatives": [
+     "Shortening the Thursday run when stacked with strength.",
+     "Asking at dc5 which session to keep.",
+     "Turning the remaining week-6 strength session lighter to compensate for nothing (not required)."
+    ],
+    "concerns": [
+     "Placing both sessions in the same turn on the unconfirmed day.",
+     "Moving the long run to Saturday (a strength-only day) or Monday (unchosen).",
+     "A longer week-7 long run to catch up.",
+     "Quality running stacked before heavy lower-body work on shared days."
+    ]
+   },
+   "domainNotes": "Bulk reports cover only planned, non-skipped sessions, so the week-5 and week-6 reviews stay valid whichever session the coach drops.",
+   "authorRelations": [
+    {
+     "relation": "CALENDAR_SHIFT"
+    },
+    {
+     "relation": "PERMUTE_OBSERVATIONS",
+     "atStep": "w5"
+    },
+    {
+     "relation": "LOAD_CONVENTION_EQUIVALENT"
+    }
+   ]
+  },
+  {
+   "caseId": "R7D-D15",
+   "authorIntent": "A run-first athlete with a partial watch history sends messy data: the same long run from phone and watch (watch stamped in UTC, which falls on the previous calendar day), reports out of order with an in-review correction, a correction a week late, and a watch clock set two days ahead. It probes de-duplication, local-date attribution, correction semantics and future-clock handling.",
+   "coverageTags": [
+    "RUN_FIRST",
+    "NON_RACE",
+    "H8",
+    "RUN_EXP_INTERMEDIATE",
+    "STR_EXP_NOVICE",
+    "WEARABLE_PARTIAL",
+    "START_NON_MONDAY",
+    "TIMEZONE",
+    "DUPLICATE_SOURCES",
+    "CORRECTION",
+    "OUT_OF_ORDER",
+    "CLOCK_SKEW",
+    "CONTRADICTION",
+    "SAME_FACTS_DIFFERENT_ORDER"
+   ],
+   "oracleClass": "METAMORPHIC_ORACLE",
+   "intake": {
+    "startDate": "2026-11-24",
+    "weeks": 8,
+    "asOf": "2026-11-23",
+    "tz": 660,
+    "learningConsent": null,
+    "eligibility": "CONFIRMED",
+    "goals": {
+     "run": "PERFORMANCE",
+     "strength": "RUNNING_SUPPORT"
+    },
+    "event": null,
+    "runExperience": "INTERMEDIATE",
+    "strengthExperience": "NOVICE",
+    "recent": {
+     "runDaysPerWeek": 3,
+     "runMinutesPerWeek": 135,
+     "longestRunMinutes": 70,
+     "strengthDaysPerWeek": 1
+    },
+    "knownRuns": 0,
+    "knownExercises": [],
+    "equipment": [
+     "DUMBBELLS",
+     "BODYWEIGHT",
+     "BANDS"
+    ],
+    "pause": null,
+    "wearable": "PARTIAL",
+    "history": 8,
+    "ageYears": 30,
+    "specialPopulation": null,
+    "schedule": {
+     "runDays": [
+      0,
+      2,
+      5
+     ],
+     "strengthDays": [
+      1,
+      3
+     ],
+     "runTurn": "AM",
+     "strengthTurn": "PM",
+     "runMinutes": 45,
+     "strengthMinutes": 45,
+     "longRunDay": 5,
+     "longRunMinutes": 90
+    }
+   },
+   "generation": {
+    "status": "PROPOSED",
+    "reason": "Complete conditional program generated from onboarding-like facts",
+    "missingInputs": [],
+    "phases": [
+     "ESTABLISHMENT",
+     "DEVELOPMENT",
+     "DEVELOPMENT",
+     "DEVELOPMENT",
+     "CONSOLIDATION",
+     "DEVELOPMENT",
+     "DEVELOPMENT",
+     "DEVELOPMENT"
+    ],
+    "week0": {
+     "week": 0,
+     "phase": "ESTABLISHMENT",
+     "startDate": "2026-11-24",
+     "sessions": [
+      "d0 2026-11-24 AM RUN EASY 35min (EASY)",
+      "d1 2026-11-25 PM STRENGTH_FULL_A 15min: sit-to-stand 1x5 RIR3 BW; wall-pushup 1x5 RIR3 BW; prone-row-practice 1x5 RIR3 BW; supported-calf-raise 1x5 RIR3 BW; dead-bug-practice 1x5 RIR3 BW",
+      "d2 2026-11-26 AM RUN EASY 35min (EASY)",
+      "d3 2026-11-27 PM STRENGTH_FULL_B 27min: glute-bridge 2x8 RIR3 BW; band-row 2x8 RIR3 BW; incline-push-up 2x8 RIR3 BW; reverse-lunge 1x10 RIR3 BW; dead-bug 1x10 RIR3 BW",
+      "d5 2026-11-29 AM RUN LONG 55min (LONG)"
+     ]
+    },
+    "week1": {
+     "week": 1,
+     "phase": "DEVELOPMENT",
+     "startDate": "2026-12-01",
+     "sessions": [
+      "d0 2026-12-01 AM RUN EASY 35min (EASY)",
+      "d1 2026-12-02 PM STRENGTH_FULL_A 27min: goblet-squat 2x8 RIR3 establish; incline-push-up 2x8 RIR3 BW; band-row 2x8 RIR3 BW; db-calf-raise 1x10 RIR3 establish; dead-bug 1x10 RIR3 BW",
+      "d2 2026-12-03 AM RUN EASY 35min (EASY)",
+      "d3 2026-12-04 PM STRENGTH_FULL_B 27min: glute-bridge 2x8 RIR3 BW; band-row 2x8 RIR3 BW; incline-push-up 2x8 RIR3 BW; reverse-lunge 1x10 RIR3 BW; dead-bug 1x10 RIR3 BW",
+      "d5 2026-12-06 AM RUN LONG 55min (LONG)"
+     ]
+    },
+    "raceWeek": null,
+    "weekBeforeRace": null
+   },
+   "steps": [
+    {
+     "stepId": "w0",
+     "asOf": "2026-11-30T20:00:00+11:00",
+     "kind": "WEEKLY_REVIEW",
+     "week": 0,
+     "athlete": {
+      "eligibility": "CONFIRMED",
+      "reports": [
+       "w0-run-d0 done 35min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w0-run-d2 done 35min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w0-run-d5 done 55min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) via phone-app",
+       "w0-run-d5 done 55min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) at 2026-11-28T20:12:00Z via watch-b",
+       "w0-str-d1 done 15min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w0-str-d3 done 27min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)"
+      ],
+      "notes": []
+     },
+     "coach": {
+      "status": "KEEP",
+      "action": "KEEP",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "question": null,
+      "reason": "Executed as planned without adverse signal; the planned progression step stands",
+      "missingInputs": [],
+      "offers": [],
+      "loadQuestions": 0,
+      "gates": {
+       "LONG": "ADVANCE",
+       "EASY": "ADVANCE",
+       "sit-to-stand": "ADVANCE",
+       "wall-pushup": "ADVANCE",
+       "prone-row-practice": "ADVANCE",
+       "supported-calf-raise": "ADVANCE",
+       "dead-bug-practice": "ADVANCE",
+       "glute-bridge": "ADVANCE",
+       "band-row": "ADVANCE",
+       "incline-push-up": "ADVANCE",
+       "reverse-lunge": "ADVANCE",
+       "dead-bug": "ADVANCE"
+      },
+      "adopted": false,
+      "currentWeek": {
+       "week": 0,
+       "phase": "ESTABLISHMENT",
+       "startDate": "2026-11-24",
+       "sessions": []
+      },
+      "nextWeekProvisional": {
+       "week": 1,
+       "phase": "DEVELOPMENT",
+       "startDate": "2026-12-01",
+       "sessions": [
+        "d0 2026-12-01 AM RUN EASY 35min (EASY)",
+        "d1 2026-12-02 PM STRENGTH_FULL_A 27min: goblet-squat 2x8 RIR3 establish; incline-push-up 2x8 RIR3 BW; band-row 2x8 RIR3 BW; db-calf-raise 1x10 RIR3 establish; dead-bug 1x10 RIR3 BW",
+        "d2 2026-12-03 AM RUN EASY 35min (EASY)",
+        "d3 2026-12-04 PM STRENGTH_FULL_B 27min: glute-bridge 2x8 RIR3 BW; band-row 2x8 RIR3 BW; incline-push-up 2x8 RIR3 BW; reverse-lunge 1x10 RIR3 BW; dead-bug 1x10 RIR3 BW",
+        "d5 2026-12-06 AM RUN LONG 55min (LONG)"
+       ]
+      }
+     }
+    },
+    {
+     "stepId": "w1",
+     "asOf": "2026-12-07T20:00:00+11:00",
+     "kind": "WEEKLY_REVIEW",
+     "week": 1,
+     "athlete": {
+      "eligibility": "CONFIRMED",
+      "reports": [
+       "w1-run-d5 done 55min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) reportedAt 2026-12-06T10:00:00+11:00",
+       "w1-run-d2 done 95min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) reportedAt 2026-12-07T18:00:00+11:00",
+       "w1-run-d0 done 35min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) reportedAt 2026-12-07T18:05:00+11:00",
+       "w1-run-d2 done 35min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) reportedAt 2026-12-07T19:30:00+11:00 corrects d15-w1-d2",
+       "w1-str-d1 done 27min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w1-str-d3 done 27min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)"
+      ],
+      "notes": []
+     },
+     "coach": {
+      "status": "KEEP",
+      "action": "INSTANTIATE_LOGGED_LOADS",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "question": null,
+      "reason": "Logged loads replace planned placeholders; the progression rule is unchanged",
+      "missingInputs": [],
+      "offers": [],
+      "loadQuestions": 0,
+      "gates": {
+       "LONG": "ADVANCE",
+       "EASY": "ADVANCE",
+       "goblet-squat": "ADVANCE",
+       "incline-push-up": "ADVANCE",
+       "band-row": "ADVANCE",
+       "db-calf-raise": "ADVANCE",
+       "dead-bug": "ADVANCE",
+       "glute-bridge": "ADVANCE",
+       "reverse-lunge": "ADVANCE"
+      },
+      "adopted": true,
+      "currentWeek": {
+       "week": 1,
+       "phase": "DEVELOPMENT",
+       "startDate": "2026-12-01",
+       "sessions": []
+      },
+      "nextWeekProvisional": {
+       "week": 2,
+       "phase": "DEVELOPMENT",
+       "startDate": "2026-12-08",
+       "sessions": [
+        "d0 2026-12-08 AM RUN EASY 35min (EASY)",
+        "d1 2026-12-09 PM STRENGTH_FULL_A 27min: goblet-squat 2x8 RIR3 establish; incline-push-up 2x10 RIR3 BW; band-row 2x8 RIR3 BW; db-calf-raise 1x10 RIR3 establish; dead-bug 1x12 RIR3 BW",
+        "d2 2026-12-10 AM RUN EASY 35min (EASY)",
+        "d3 2026-12-11 PM STRENGTH_FULL_B 28min: glute-bridge 2x10 RIR3 BW; band-row 2x8 RIR3 BW; incline-push-up 2x10 RIR3 BW; reverse-lunge 1x12 RIR3 BW; dead-bug 1x12 RIR3 BW",
+        "d5 2026-12-13 AM RUN LONG 55min (LONG)"
+       ]
+      }
+     }
+    },
+    {
+     "stepId": "w2",
+     "asOf": "2026-12-14T20:00:00+11:00",
+     "kind": "WEEKLY_REVIEW",
+     "week": 2,
+     "athlete": {
+      "eligibility": "CONFIRMED",
+      "reports": [
+       "w2-run-d0 done 35min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w2-run-d2 done 35min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w2-run-d5 not done",
+       "w2-str-d1 done 27min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w2-str-d3 done 28min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)"
+      ],
+      "notes": []
+     },
+     "coach": {
+      "status": "MODIFY",
+      "action": "GATED_NEXT_STEP",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "question": null,
+      "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation",
+      "missingInputs": [],
+      "offers": [],
+      "loadQuestions": 0,
+      "gates": {
+       "LONG": "HOLD",
+       "EASY": "ADVANCE",
+       "goblet-squat": "ADVANCE",
+       "incline-push-up": "ADVANCE",
+       "band-row": "ADVANCE",
+       "db-calf-raise": "ADVANCE",
+       "dead-bug": "ADVANCE",
+       "glute-bridge": "ADVANCE",
+       "reverse-lunge": "ADVANCE"
+      },
+      "adopted": true,
+      "currentWeek": {
+       "week": 2,
+       "phase": "DEVELOPMENT",
+       "startDate": "2026-12-08",
+       "sessions": []
+      },
+      "nextWeekProvisional": {
+       "week": 3,
+       "phase": "DEVELOPMENT",
+       "startDate": "2026-12-15",
+       "sessions": [
+        "d0 2026-12-15 AM RUN EASY 40min (EASY)",
+        "d1 2026-12-16 PM STRENGTH_FULL_A 28min: goblet-squat 2x8 RIR3 establish; incline-push-up 2x12 RIR3 BW; band-row 2x8 RIR3 BW; db-calf-raise 1x10 RIR3 establish; dead-bug 1x14 RIR3 BW",
+        "d2 2026-12-17 AM RUN EASY 35min (EASY)",
+        "d3 2026-12-18 PM STRENGTH_FULL_B 29min: glute-bridge 2x12 RIR3 BW; band-row 2x8 RIR3 BW; incline-push-up 2x12 RIR3 BW; reverse-lunge 1x14 RIR3 BW; dead-bug 1x14 RIR3 BW",
+        "d5 2026-12-20 AM RUN LONG 55min (LONG)"
+       ]
+      }
+     }
+    },
+    {
+     "stepId": "w3",
+     "asOf": "2026-12-21T20:00:00+11:00",
+     "kind": "WEEKLY_REVIEW",
+     "week": 3,
+     "athlete": {
+      "eligibility": "CONFIRMED",
+      "reports": [
+       "w2-run-d5 done 55min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) corrects d15-w2-long",
+       "w3-run-d0 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w3-run-d2 done 35min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w3-run-d5 done 55min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w3-str-d1 done 28min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w3-str-d3 done 29min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)"
+      ],
+      "notes": []
+     },
+     "coach": {
+      "status": "MODIFY",
+      "action": "GATED_NEXT_STEP",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "question": null,
+      "reason": "Executed as planned this week; next week’s runs follow the executed record, not the plan’s earlier projection (quality 34 min, planned easy 40 min; easy 40 min, planned easy 35 min); so the plan is re-based, not kept",
+      "missingInputs": [],
+      "offers": [],
+      "loadQuestions": 0,
+      "gates": {
+       "LONG": "ADVANCE",
+       "EASY": "ADVANCE",
+       "goblet-squat": "ADVANCE",
+       "incline-push-up": "ADVANCE",
+       "band-row": "ADVANCE",
+       "db-calf-raise": "ADVANCE",
+       "dead-bug": "ADVANCE",
+       "glute-bridge": "ADVANCE",
+       "reverse-lunge": "ADVANCE"
+      },
+      "adopted": true,
+      "currentWeek": {
+       "week": 3,
+       "phase": "DEVELOPMENT",
+       "startDate": "2026-12-15",
+       "sessions": []
+      },
+      "nextWeekProvisional": {
+       "week": 4,
+       "phase": "CONSOLIDATION",
+       "startDate": "2026-12-22",
+       "sessions": [
+        "d0 2026-12-22 AM RUN QUALITY 34min (THRESHOLD 3x5'/2')",
+        "d1 2026-12-23 PM STRENGTH_FULL_A 20min: goblet-squat 1x8 RIR3 establish; incline-push-up 1x14 RIR3 BW; band-row 1x8 RIR3 BW; db-calf-raise 1x10 RIR3 establish; dead-bug 1x14 RIR3 BW",
+        "d2 2026-12-24 AM RUN EASY 40min (EASY +strides)",
+        "d3 2026-12-25 PM STRENGTH_FULL_B 21min: glute-bridge 1x14 RIR3 BW; band-row 1x8 RIR3 BW; incline-push-up 1x14 RIR3 BW; reverse-lunge 1x14 RIR3 BW; dead-bug 1x14 RIR3 BW",
+        "d5 2026-12-27 AM RUN LONG 50min (LONG)"
+       ]
+      }
+     }
+    },
+    {
+     "stepId": "w4",
+     "asOf": "2026-12-28T20:00:00+11:00",
+     "kind": "WEEKLY_REVIEW",
+     "week": 4,
+     "athlete": {
+      "eligibility": "CONFIRMED",
+      "reports": [
+       "w4-run-d0 done 34min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w4-run-d2 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w4-run-d5 done 50min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) at 2026-12-30T07:05:00+11:00 via watch-b",
+       "w4-str-d1 done 20min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w4-str-d3 done 21min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)"
+      ],
+      "notes": []
+     },
+     "coach": {
+      "status": "MODIFY",
+      "action": "GATED_NEXT_STEP",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "question": null,
+      "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation",
+      "missingInputs": [],
+      "offers": [
+       "LADDER_STEP",
+       "LADDER_STEP",
+       "LADDER_STEP",
+       "LADDER_STEP",
+       "LADDER_STEP"
+      ],
+      "loadQuestions": 0,
+      "gates": {
+       "LONG": "HOLD",
+       "QUALITY": "ADVANCE",
+       "EASY": "ADVANCE",
+       "goblet-squat": "ADVANCE",
+       "incline-push-up": "ADVANCE",
+       "band-row": "ADVANCE",
+       "db-calf-raise": "ADVANCE",
+       "dead-bug": "ADVANCE",
+       "glute-bridge": "ADVANCE",
+       "reverse-lunge": "ADVANCE"
+      },
+      "adopted": true,
+      "currentWeek": {
+       "week": 4,
+       "phase": "CONSOLIDATION",
+       "startDate": "2026-12-22",
+       "sessions": []
+      },
+      "nextWeekProvisional": {
+       "week": 5,
+       "phase": "DEVELOPMENT",
+       "startDate": "2026-12-29",
+       "sessions": [
+        "d0 2026-12-29 AM RUN QUALITY 34min (THRESHOLD 3x5'/2')",
+        "d1 2026-12-30 PM STRENGTH_FULL_A 33min: goblet-squat 2x8 RIR3 establish; incline-push-up 3x14 RIR3 BW; band-row 2x8 RIR3 BW; db-calf-raise 1x10 RIR3 establish; dead-bug 2x14 RIR3 BW",
+        "d2 2026-12-31 AM RUN EASY 40min (EASY +strides)",
+        "d3 2027-01-01 PM STRENGTH_FULL_B 39min: glute-bridge 3x14 RIR3 BW; band-row 2x8 RIR3 BW; incline-push-up 3x14 RIR3 BW; reverse-lunge 2x14 RIR3 BW; dead-bug 2x14 RIR3 BW",
+        "d5 2027-01-03 AM RUN LONG 60min (LONG)"
+       ]
+      }
+     }
+    },
+    {
+     "stepId": "f4",
+     "asOf": "2026-12-28T21:30:00+11:00",
+     "kind": "WEEKLY_REVIEW",
+     "week": 4,
+     "athlete": {
+      "eligibility": "CONFIRMED",
+      "reports": [
+       "w4-run-d5 done 50min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) at 2026-12-27T07:05:00+11:00 via watch-b"
+      ],
+      "notes": []
+     },
+     "coach": {
+      "status": "MODIFY",
+      "action": "GATED_NEXT_STEP",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "question": null,
+      "reason": "Executed as planned this week; next week’s runs follow the executed record, not the plan’s earlier projection; so the plan is re-based, not kept",
+      "missingInputs": [],
+      "offers": [
+       "LADDER_STEP",
+       "LADDER_STEP",
+       "LADDER_STEP",
+       "LADDER_STEP",
+       "LADDER_STEP"
+      ],
+      "loadQuestions": 0,
+      "gates": {
+       "LONG": "ADVANCE",
+       "QUALITY": "ADVANCE",
+       "EASY": "ADVANCE",
+       "goblet-squat": "ADVANCE",
+       "incline-push-up": "ADVANCE",
+       "band-row": "ADVANCE",
+       "db-calf-raise": "ADVANCE",
+       "dead-bug": "ADVANCE",
+       "glute-bridge": "ADVANCE",
+       "reverse-lunge": "ADVANCE"
+      },
+      "adopted": true,
+      "currentWeek": {
+       "week": 4,
+       "phase": "CONSOLIDATION",
+       "startDate": "2026-12-22",
+       "sessions": []
+      },
+      "nextWeekProvisional": {
+       "week": 5,
+       "phase": "DEVELOPMENT",
+       "startDate": "2026-12-29",
+       "sessions": [
+        "d0 2026-12-29 AM RUN QUALITY 34min (THRESHOLD 3x5'/2')",
+        "d1 2026-12-30 PM STRENGTH_FULL_A 33min: goblet-squat 2x8 RIR3 establish; incline-push-up 3x14 RIR3 BW; band-row 2x8 RIR3 BW; db-calf-raise 1x10 RIR3 establish; dead-bug 2x14 RIR3 BW",
+        "d2 2026-12-31 AM RUN EASY 40min (EASY +strides)",
+        "d3 2027-01-01 PM STRENGTH_FULL_B 39min: glute-bridge 3x14 RIR3 BW; band-row 2x8 RIR3 BW; incline-push-up 3x14 RIR3 BW; reverse-lunge 2x14 RIR3 BW; dead-bug 2x14 RIR3 BW",
+        "d5 2027-01-03 AM RUN LONG 60min (LONG)"
+       ]
+      }
+     }
+    },
+    {
+     "stepId": "w5",
+     "asOf": "2027-01-04T20:00:00+11:00",
+     "kind": "WEEKLY_REVIEW",
+     "week": 5,
+     "athlete": {
+      "eligibility": "CONFIRMED",
+      "reports": [
+       "w5-run-d0 done 34min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w5-run-d2 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w5-run-d5 done 60min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w5-str-d1 done 33min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w5-str-d3 done 39min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)"
+      ],
+      "notes": []
+     },
+     "coach": {
+      "status": "KEEP",
+      "action": "INSTANTIATE_LOGGED_LOADS",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "question": null,
+      "reason": "Logged loads replace planned placeholders; the progression rule is unchanged",
+      "missingInputs": [],
+      "offers": [],
+      "loadQuestions": 0,
+      "gates": {
+       "LONG": "ADVANCE",
+       "QUALITY": "ADVANCE",
+       "EASY": "ADVANCE",
+       "goblet-squat": "ADVANCE",
+       "incline-push-up": "ADVANCE",
+       "band-row": "ADVANCE",
+       "db-calf-raise": "ADVANCE",
+       "dead-bug": "ADVANCE",
+       "glute-bridge": "ADVANCE",
+       "reverse-lunge": "ADVANCE"
+      },
+      "adopted": true,
+      "currentWeek": {
+       "week": 5,
+       "phase": "DEVELOPMENT",
+       "startDate": "2026-12-29",
+       "sessions": []
+      },
+      "nextWeekProvisional": {
+       "week": 6,
+       "phase": "DEVELOPMENT",
+       "startDate": "2027-01-05",
+       "sessions": [
+        "d0 2027-01-05 AM RUN QUALITY 41min (THRESHOLD 4x5'/2')",
+        "d1 2027-01-06 PM STRENGTH_FULL_A 33min: goblet-squat 2x8 RIR3 establish; incline-push-up 3x14 RIR3 BW; band-row 2x8 RIR3 BW; db-calf-raise 1x10 RIR3 establish; dead-bug 2x14 RIR3 BW",
+        "d2 2027-01-07 AM RUN EASY 40min (EASY +strides)",
+        "d3 2027-01-08 PM STRENGTH_FULL_B 39min: glute-bridge 3x14 RIR3 BW; band-row 2x8 RIR3 BW; incline-push-up 3x14 RIR3 BW; reverse-lunge 2x14 RIR3 BW; dead-bug 2x14 RIR3 BW",
+        "d5 2027-01-10 AM RUN LONG 65min (LONG)"
+       ]
+      }
+     }
+    }
+   ],
+   "stopped": null,
+   "corpusErrors": [],
+   "runtimeErrors": [],
+   "automated": {
+    "failures": [
+     {
+      "property": "P10",
+      "name": "History",
+      "violations": [
+       {
+        "at": "w2",
+        "issue": "RECORD_ROW_DROPPED",
+        "eventId": "d15-w1-long"
+       }
+      ],
+      "more": 0
+     }
+    ],
+    "notEvaluable": []
+   },
+   "metamorphic": {
+    "violations": [
+     {
+      "relation": "RESEND",
+      "violations": [
+       {
+        "issue": "DECISIONS_DIFFER",
+        "at": "w2",
+        "decisionA": {
+         "status": "MODIFY",
+         "action": "GATED_NEXT_STEP",
+         "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+         "question": null,
+         "gates": {
+          "EASY": "ADVANCE",
+          "LONG": "HOLD",
+          "band-row": "ADVANCE",
+          "db-calf-raise": "ADVANCE",
+          "dead-bug": "ADVANCE",
+          "glute-bridge": "ADVANCE",
+          "goblet-squat": "ADVANCE",
+          "incline-push-up": "ADVANCE",
+          "reverse-lunge": "ADVANCE"
+         },
+         "offers": [],
+         "pending": null
+        },
+        "decisionB": {
+         "status": "MODIFY",
+         "action": "GATED_NEXT_STEP",
+         "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+         "question": null,
+         "gates": {
+          "EASY": "ADVANCE",
+          "LONG": "HOLD",
+          "band-row": "ADVANCE",
+          "db-calf-raise": "ADVANCE",
+          "dead-bug": "ADVANCE",
+          "glute-bridge": "ADVANCE",
+          "goblet-squat": "ADVANCE",
+          "incline-push-up": "ADVANCE",
+          "reverse-lunge": "ADVANCE"
+         },
+         "offers": [],
+         "pending": null
+        },
+        "planEqual": false,
+        "phasesEqual": true
+       }
+      ]
+     }
+    ],
+    "nonBlockingDifferences": []
+   },
+   "authorExpectations": [
+    {
+     "expectationId": "d15-e01",
+     "atStep": "GENERATE",
+     "oracleClass": "DOMAIN_ORACLE",
+     "type": "STATUS_IN",
+     "rationale": "Complete intake with a partial history.",
+     "result": "PASS",
+     "observed": "PROPOSED",
+     "expected": {
+      "type": "STATUS_IN",
+      "oneOf": [
+       "PROPOSED"
+      ]
+     }
+    },
+    {
+     "expectationId": "d15-e02",
+     "atStep": "GENERATE",
+     "oracleClass": "DOMAIN_ORACLE",
+     "type": "JUDGED",
+     "rationale": "Use partial data honestly.",
+     "result": "JUDGED",
+     "statement": "The partial history is read as about three runs a week (about 135-150 minutes, long run near 70 minutes) and one light strength session; UTC-stamped rows are attributed to their local dates; the starting week is near that level, neither from zero nor above it."
+    },
+    {
+     "expectationId": "d15-e03",
+     "atStep": "w0",
+     "oracleClass": "DOMAIN_ORACLE",
+     "type": "STATUS_IN",
+     "rationale": "All sessions are reported.",
+     "result": "PASS",
+     "observed": "KEEP",
+     "expected": {
+      "type": "STATUS_IN",
+      "oneOf": [
+       "KEEP",
+       "MODIFY"
+      ]
+     }
+    },
+    {
+     "expectationId": "d15-e04",
+     "atStep": "w0",
+     "oracleClass": "INVARIANT_ORACLE",
+     "type": "JUDGED",
+     "rationale": "De-duplication and local-date attribution.",
+     "result": "JUDGED",
+     "statement": "The phone and watch reports of the Sunday long run are one session (counted once) and the long run is dated on Sunday local time, not Saturday."
+    },
+    {
+     "expectationId": "d15-e05",
+     "atStep": "w1",
+     "oracleClass": "INVARIANT_ORACLE",
+     "type": "JUDGED",
+     "rationale": "Correction within the same decision.",
+     "result": "JUDGED",
+     "statement": "The 95-minute typo is superseded by its correction: it is not treated as an overperformance and does not drive any progression; arrival order does not matter."
+    },
+    {
+     "expectationId": "d15-e06",
+     "atStep": "w3",
+     "oracleClass": "DOMAIN_ORACLE",
+     "type": "JUDGED",
+     "rationale": "A correction changes the future plan, never what was already decided or done.",
+     "result": "JUDGED",
+     "statement": "After the late correction, the plan from week 4 treats the week-2 long run as done (no remedial or reduced long run because of a miss that did not happen), while the week-3 decisions already taken are not rewritten."
+    },
+    {
+     "expectationId": "d15-e07",
+     "atStep": "w4",
+     "oracleClass": "DOMAIN_ORACLE",
+     "type": "STATUS_IN",
+     "rationale": "A report stamped two days after the decision time cannot be used as given.",
+     "result": "FAIL",
+     "observed": "MODIFY",
+     "expected": {
+      "type": "STATUS_IN",
+      "oneOf": [
+       "HOLD",
+       "ASK"
+      ]
+     }
+    },
+    {
+     "expectationId": "d15-e08",
+     "atStep": "w4",
+     "oracleClass": "INVARIANT_ORACLE",
+     "type": "JUDGED",
+     "rationale": "Only reported facts with valid times write history.",
+     "result": "JUDGED",
+     "statement": "The future-stamped long run is not written to the completed-work record as given (not dated in week 5, not counted as done in week 4 until its time is resolved)."
+    },
+    {
+     "expectationId": "d15-e09",
+     "atStep": "f4",
+     "oracleClass": "DOMAIN_ORACLE",
+     "type": "STATUS_IN",
+     "rationale": "The re-synced report resolves the hold.",
+     "result": "PASS",
+     "observed": "MODIFY",
+     "expected": {
+      "type": "STATUS_IN",
+      "oneOf": [
+       "KEEP",
+       "MODIFY"
+      ]
+     }
+    },
+    {
+     "expectationId": "d15-e10",
+     "atStep": "f4",
+     "oracleClass": "DOMAIN_ORACLE",
+     "type": "VALIDITY_IS",
+     "rationale": "Nothing pending.",
+     "result": "PASS",
+     "observed": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "expected": {
+      "type": "VALIDITY_IS",
+      "value": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+     }
+    }
+   ],
+   "independentAssessment": {
+    "rationale": "None of these data events is about training: they are about trust in the record. A good coach counts one session once, dates it in the athlete's local day, lets a correction replace what it corrects, and refuses to write a fact that claims to come from the future.",
+    "preferredCoachingBehavior": "Plan from the partial history at about current volume. Count the duplicate long run once on Sunday. Use the corrected week-1 value. After the late correction, plan week 4 as if the week-2 long run was done. Hold (or ask about) the future-stamped report; accept the re-synced one.",
+    "acceptableAlternatives": [
+     "ASK instead of HOLD for the future-stamped report.",
+     "Keeping the week-4 plan unchanged after the late correction if week 3 had not been reduced."
+    ],
+    "concerns": [
+     "Counting the long run twice or on Saturday.",
+     "Reacting to the 95-minute typo.",
+     "Reducing the week-4 long run because of the miss that was later corrected.",
+     "Accepting a fact dated in the future as done."
+    ]
+   },
+   "domainNotes": "The CONTRADICTION tag is used for the week-2 \"not done\" report contradicted a week later by its correction. Week 0 day 5 is a Sunday; 07:12 local is 20:12 UTC on Saturday.",
+   "authorRelations": [
+    {
+     "relation": "VARIANT",
+     "variant": {
+      "timeline": [
+       {
+        "stepId": "w0",
+        "at": {
+         "week": 0,
+         "day": 6,
+         "time": "20:00"
+        },
+        "event": {
+         "kind": "WEEKLY_REVIEW"
+        },
+        "observations": [
+         {
+          "ref": {
+           "week": 0,
+           "sport": "RUN",
+           "day": 0
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "ref": {
+           "week": 0,
+           "sport": "RUN",
+           "day": 2
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "ref": {
+           "week": 0,
+           "sport": "RUN",
+           "day": 5
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          },
+          "eventId": "d15-w0-long-watch",
+          "observedAt": "2026-11-28T20:12:00Z",
+          "source": {
+           "provider": "watch-b",
+           "activityId": "wb-778",
+           "quality": "WEARABLE_FULL"
+          }
+         },
+         {
+          "each": {
+           "weeks": [
+            0
+           ],
+           "sport": "STRENGTH"
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         }
+        ]
+       },
+       {
+        "stepId": "w1",
+        "at": {
+         "week": 1,
+         "day": 6,
+         "time": "20:00"
+        },
+        "event": {
+         "kind": "WEEKLY_REVIEW"
+        },
+        "observations": [
+         {
+          "ref": {
+           "week": 1,
+           "sport": "RUN",
+           "day": 5
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          },
+          "eventId": "d15-w1-long",
+          "reportedAt": "2026-12-06T10:00:00+11:00"
+         },
+         {
+          "ref": {
+           "week": 1,
+           "sport": "RUN",
+           "day": 2
+          },
+          "completed": true,
+          "minutes": 95,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          },
+          "eventId": "d15-w1-d2",
+          "reportedAt": "2026-12-07T18:00:00+11:00"
+         },
+         {
+          "ref": {
+           "week": 1,
+           "sport": "RUN",
+           "day": 0
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          },
+          "eventId": "d15-w1-d0",
+          "reportedAt": "2026-12-07T18:05:00+11:00"
+         },
+         {
+          "ref": {
+           "week": 1,
+           "sport": "RUN",
+           "day": 2
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          },
+          "eventId": "d15-w1-d2-fix",
+          "correctionOf": "d15-w1-d2",
+          "correctedAt": "2026-12-07T19:30:00+11:00",
+          "reportedAt": "2026-12-07T19:30:00+11:00"
+         },
+         {
+          "each": {
+           "weeks": [
+            1
+           ],
+           "sport": "STRENGTH"
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         }
+        ],
+        "note": "Out of order (Sunday reported before Tuesday) and a typo (95 minutes) corrected before the review is sent."
+       },
+       {
+        "stepId": "w2",
+        "at": {
+         "week": 2,
+         "day": 6,
+         "time": "20:00"
+        },
+        "event": {
+         "kind": "WEEKLY_REVIEW"
+        },
+        "observations": [
+         {
+          "ref": {
+           "week": 2,
+           "sport": "RUN",
+           "day": 0
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "ref": {
+           "week": 2,
+           "sport": "RUN",
+           "day": 2
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "ref": {
+           "week": 2,
+           "sport": "RUN",
+           "day": 5
+          },
+          "completed": false,
+          "eventId": "d15-w2-long"
+         },
+         {
+          "each": {
+           "weeks": [
+            2
+           ],
+           "sport": "STRENGTH"
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         }
+        ],
+        "note": "The long run is wrongly reported as not done."
+       },
+       {
+        "stepId": "w3",
+        "at": {
+         "week": 3,
+         "day": 6,
+         "time": "20:00"
+        },
+        "event": {
+         "kind": "WEEKLY_REVIEW"
+        },
+        "observations": [
+         {
+          "ref": {
+           "week": 2,
+           "sport": "RUN",
+           "day": 5
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          },
+          "eventId": "d15-w2-long-fix",
+          "correctionOf": "d15-w2-long",
+          "correctedAt": "2026-12-21T19:00:00+11:00"
+         },
+         {
+          "each": {
+           "weeks": [
+            3
+           ],
+           "sport": "RUN",
+           "roles": [
+            "EASY",
+            "LONG",
+            "QUALITY",
+            "WALK_JOG",
+            "WALK",
+            "RACE_TOUCH",
+            "SHAKEOUT",
+            "RECOVERY_EASY"
+           ]
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "each": {
+           "weeks": [
+            3
+           ],
+           "sport": "STRENGTH"
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         }
+        ],
+        "note": "A week later the athlete corrects the week-2 long run: it was done as prescribed."
+       },
+       {
+        "stepId": "w4",
+        "at": {
+         "week": 4,
+         "day": 6,
+         "time": "20:00"
+        },
+        "event": {
+         "kind": "WEEKLY_REVIEW"
+        },
+        "observations": [
+         {
+          "ref": {
+           "week": 4,
+           "sport": "RUN",
+           "day": 0
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "ref": {
+           "week": 4,
+           "sport": "RUN",
+           "day": 2
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "ref": {
+           "week": 4,
+           "sport": "RUN",
+           "day": 5
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          },
+          "eventId": "d15-w4-long-skewed",
+          "observedAt": "2026-12-30T07:05:00+11:00",
+          "source": {
+           "provider": "watch-b",
+           "activityId": "wb-901",
+           "quality": "WEARABLE_FULL"
+          }
+         },
+         {
+          "each": {
+           "weeks": [
+            4
+           ],
+           "sport": "STRENGTH"
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         }
+        ],
+        "note": "The watch clock was set two days ahead: the long run is stamped in the future."
+       },
+       {
+        "stepId": "f4",
+        "at": {
+         "week": 4,
+         "day": 6,
+         "time": "21:30"
+        },
+        "event": {
+         "kind": "WEEKLY_REVIEW"
+        },
+        "observations": [
+         {
+          "ref": {
+           "week": 4,
+           "sport": "RUN",
+           "day": 5
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          },
+          "eventId": "d15-w4-long-fixed",
+          "observedAt": "2026-12-27T07:05:00+11:00",
+          "source": {
+           "provider": "watch-b",
+           "activityId": "wb-901",
+           "quality": "WEARABLE_FULL"
+          }
+         }
+        ],
+        "note": "The watch clock is fixed and the long run re-synced with the right time."
+       },
+       {
+        "stepId": "w5",
+        "at": {
+         "week": 5,
+         "day": 6,
+         "time": "20:00"
+        },
+        "event": {
+         "kind": "WEEKLY_REVIEW"
+        },
+        "observations": [
+         {
+          "each": {
+           "weeks": [
+            5
+           ],
+           "sport": "RUN",
+           "roles": [
+            "EASY",
+            "LONG",
+            "QUALITY",
+            "WALK_JOG",
+            "WALK",
+            "RACE_TOUCH",
+            "SHAKEOUT",
+            "RECOVERY_EASY"
+           ]
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "each": {
+           "weeks": [
+            5
+           ],
+           "sport": "STRENGTH"
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "compareAtStep": "w0",
+     "expect": "SAME_PLAN",
+     "rationale": "Only the watch report of the long run (no phone duplicate) must give the same plan after week 0. (Direction: the variant's plan compared with the base case's plan.)"
+    },
+    {
+     "relation": "VARIANT",
+     "variant": {
+      "timeline": [
+       {
+        "stepId": "w0",
+        "at": {
+         "week": 0,
+         "day": 6,
+         "time": "20:00"
+        },
+        "event": {
+         "kind": "WEEKLY_REVIEW"
+        },
+        "observations": [
+         {
+          "ref": {
+           "week": 0,
+           "sport": "RUN",
+           "day": 0
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "ref": {
+           "week": 0,
+           "sport": "RUN",
+           "day": 2
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "ref": {
+           "week": 0,
+           "sport": "RUN",
+           "day": 5
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          },
+          "eventId": "d15-w0-long-phone",
+          "source": {
+           "provider": "phone-app",
+           "quality": "MANUAL"
+          }
+         },
+         {
+          "ref": {
+           "week": 0,
+           "sport": "RUN",
+           "day": 5
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          },
+          "eventId": "d15-w0-long-watch",
+          "observedAt": "2026-11-28T20:12:00Z",
+          "source": {
+           "provider": "watch-b",
+           "activityId": "wb-778",
+           "quality": "WEARABLE_FULL"
+          }
+         },
+         {
+          "each": {
+           "weeks": [
+            0
+           ],
+           "sport": "STRENGTH"
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         }
+        ],
+        "note": "The Sunday long run arrives twice: typed in the phone app and synced from the watch, whose timestamp is in UTC (Saturday evening UTC = Sunday morning locally)."
+       },
+       {
+        "stepId": "w1",
+        "at": {
+         "week": 1,
+         "day": 6,
+         "time": "20:00"
+        },
+        "event": {
+         "kind": "WEEKLY_REVIEW"
+        },
+        "observations": [
+         {
+          "ref": {
+           "week": 1,
+           "sport": "RUN",
+           "day": 0
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "ref": {
+           "week": 1,
+           "sport": "RUN",
+           "day": 2
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "ref": {
+           "week": 1,
+           "sport": "RUN",
+           "day": 5
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "each": {
+           "weeks": [
+            1
+           ],
+           "sport": "STRENGTH"
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         }
+        ]
+       },
+       {
+        "stepId": "w2",
+        "at": {
+         "week": 2,
+         "day": 6,
+         "time": "20:00"
+        },
+        "event": {
+         "kind": "WEEKLY_REVIEW"
+        },
+        "observations": [
+         {
+          "ref": {
+           "week": 2,
+           "sport": "RUN",
+           "day": 0
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "ref": {
+           "week": 2,
+           "sport": "RUN",
+           "day": 2
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "ref": {
+           "week": 2,
+           "sport": "RUN",
+           "day": 5
+          },
+          "completed": false,
+          "eventId": "d15-w2-long"
+         },
+         {
+          "each": {
+           "weeks": [
+            2
+           ],
+           "sport": "STRENGTH"
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         }
+        ],
+        "note": "The long run is wrongly reported as not done."
+       },
+       {
+        "stepId": "w3",
+        "at": {
+         "week": 3,
+         "day": 6,
+         "time": "20:00"
+        },
+        "event": {
+         "kind": "WEEKLY_REVIEW"
+        },
+        "observations": [
+         {
+          "ref": {
+           "week": 2,
+           "sport": "RUN",
+           "day": 5
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          },
+          "eventId": "d15-w2-long-fix",
+          "correctionOf": "d15-w2-long",
+          "correctedAt": "2026-12-21T19:00:00+11:00"
+         },
+         {
+          "each": {
+           "weeks": [
+            3
+           ],
+           "sport": "RUN",
+           "roles": [
+            "EASY",
+            "LONG",
+            "QUALITY",
+            "WALK_JOG",
+            "WALK",
+            "RACE_TOUCH",
+            "SHAKEOUT",
+            "RECOVERY_EASY"
+           ]
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "each": {
+           "weeks": [
+            3
+           ],
+           "sport": "STRENGTH"
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         }
+        ],
+        "note": "A week later the athlete corrects the week-2 long run: it was done as prescribed."
+       },
+       {
+        "stepId": "w4",
+        "at": {
+         "week": 4,
+         "day": 6,
+         "time": "20:00"
+        },
+        "event": {
+         "kind": "WEEKLY_REVIEW"
+        },
+        "observations": [
+         {
+          "ref": {
+           "week": 4,
+           "sport": "RUN",
+           "day": 0
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "ref": {
+           "week": 4,
+           "sport": "RUN",
+           "day": 2
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "ref": {
+           "week": 4,
+           "sport": "RUN",
+           "day": 5
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          },
+          "eventId": "d15-w4-long-skewed",
+          "observedAt": "2026-12-30T07:05:00+11:00",
+          "source": {
+           "provider": "watch-b",
+           "activityId": "wb-901",
+           "quality": "WEARABLE_FULL"
+          }
+         },
+         {
+          "each": {
+           "weeks": [
+            4
+           ],
+           "sport": "STRENGTH"
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         }
+        ],
+        "note": "The watch clock was set two days ahead: the long run is stamped in the future."
+       },
+       {
+        "stepId": "f4",
+        "at": {
+         "week": 4,
+         "day": 6,
+         "time": "21:30"
+        },
+        "event": {
+         "kind": "WEEKLY_REVIEW"
+        },
+        "observations": [
+         {
+          "ref": {
+           "week": 4,
+           "sport": "RUN",
+           "day": 5
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          },
+          "eventId": "d15-w4-long-fixed",
+          "observedAt": "2026-12-27T07:05:00+11:00",
+          "source": {
+           "provider": "watch-b",
+           "activityId": "wb-901",
+           "quality": "WEARABLE_FULL"
+          }
+         }
+        ],
+        "note": "The watch clock is fixed and the long run re-synced with the right time."
+       },
+       {
+        "stepId": "w5",
+        "at": {
+         "week": 5,
+         "day": 6,
+         "time": "20:00"
+        },
+        "event": {
+         "kind": "WEEKLY_REVIEW"
+        },
+        "observations": [
+         {
+          "each": {
+           "weeks": [
+            5
+           ],
+           "sport": "RUN",
+           "roles": [
+            "EASY",
+            "LONG",
+            "QUALITY",
+            "WALK_JOG",
+            "WALK",
+            "RACE_TOUCH",
+            "SHAKEOUT",
+            "RECOVERY_EASY"
+           ]
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "each": {
+           "weeks": [
+            5
+           ],
+           "sport": "STRENGTH"
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "compareAtStep": "w1",
+     "expect": "SAME_PLAN",
+     "rationale": "The same week-1 facts reported in order and without the corrected typo must give the same plan after week 1. (Direction: the variant's plan compared with the base case's plan.)"
+    },
+    {
+     "relation": "DUPLICATE_SECOND_SOURCE",
+     "atStep": "w5"
+    },
+    {
+     "relation": "PERMUTE_OBSERVATIONS",
+     "atStep": "w1"
+    },
+    {
+     "relation": "RESEND",
+     "atStep": "f4"
+    }
+   ]
+  },
+  {
+   "caseId": "R7D-D18",
+   "authorIntent": "A balanced hybrid athlete silently disappears for 17 days, comes back asking only to change her run turn, and declares the vacation when asked; later she declares a five-week work break with a short demonstration run. It probes the moderate break found through a question, a long break return with reduced loads in both sports, and that the reason category within nonclinical does not matter.",
+   "coverageTags": [
+    "BALANCED_HYBRID",
+    "NON_RACE",
+    "H16",
+    "RUN_EXP_INTERMEDIATE",
+    "STR_EXP_INTERMEDIATE",
+    "GYM",
+    "START_NON_MONDAY",
+    "TIMEZONE",
+    "UNREPORTED_WEEKS",
+    "SKIPPED_REVIEW",
+    "LATE_ANSWER",
+    "RETURN_MODERATE",
+    "RETURN_LONG",
+    "SCHEDULE_CHANGE"
+   ],
+   "oracleClass": "DOMAIN_ORACLE",
+   "intake": {
+    "startDate": "2027-01-06",
+    "weeks": 16,
+    "asOf": "2027-01-05",
+    "tz": -300,
+    "learningConsent": null,
+    "eligibility": "CONFIRMED",
+    "goals": {
+     "run": "PERFORMANCE",
+     "strength": "STRENGTH"
+    },
+    "event": null,
+    "runExperience": "INTERMEDIATE",
+    "strengthExperience": "INTERMEDIATE",
+    "recent": {
+     "runDaysPerWeek": 3,
+     "runMinutesPerWeek": 150,
+     "longestRunMinutes": 75,
+     "strengthDaysPerWeek": 2
+    },
+    "knownRuns": 0,
+    "knownExercises": [
+     "back-squat 3x5 70KG TOTAL",
+     "bench-press 3x5 45KG TOTAL",
+     "barbell-rdl 3x6 70KG TOTAL",
+     "lat-pulldown 3x10 45KG MACHINE_STACK"
+    ],
+    "equipment": [
+     "BARBELL",
+     "RACK",
+     "BENCH",
+     "DUMBBELLS",
+     "MACHINES",
+     "PULL_UP_BAR",
+     "BANDS",
+     "BODYWEIGHT"
+    ],
+    "pause": null,
+    "wearable": null,
+    "history": 0,
+    "ageYears": 35,
+    "specialPopulation": null,
+    "schedule": {
+     "runDays": [
+      1,
+      3,
+      5
+     ],
+     "strengthDays": [
+      0,
+      4
+     ],
+     "runTurn": "AM",
+     "strengthTurn": "PM",
+     "runMinutes": 45,
+     "strengthMinutes": 50,
+     "longRunDay": 3,
+     "longRunMinutes": 90
+    }
+   },
+   "generation": {
+    "status": "PROPOSED",
+    "reason": "Complete conditional program generated from onboarding-like facts",
+    "missingInputs": [],
+    "phases": [
+     "DEVELOPMENT",
+     "DEVELOPMENT",
+     "DEVELOPMENT",
+     "CONSOLIDATION",
+     "DEVELOPMENT",
+     "DEVELOPMENT",
+     "DEVELOPMENT",
+     "CONSOLIDATION",
+     "DEVELOPMENT",
+     "DEVELOPMENT",
+     "DEVELOPMENT",
+     "CONSOLIDATION",
+     "DEVELOPMENT",
+     "DEVELOPMENT",
+     "DEVELOPMENT",
+     "CONSOLIDATION"
+    ],
+    "week0": {
+     "week": 0,
+     "phase": "DEVELOPMENT",
+     "startDate": "2027-01-06",
+     "sessions": [
+      "d0 2027-01-06 PM STRENGTH_FULL_A 39min: back-squat 3x5 RIR3 70kg TOTAL; bench-press 3x5 RIR3 45kg TOTAL; lat-pulldown 3x6 RIR3 45kg MACHINE_STACK; db-calf-raise 2x7 RIR3 establish; dead-bug 2x7 RIR3 BW",
+      "d1 2027-01-07 AM RUN EASY 40min (EASY)",
+      "d3 2027-01-09 AM RUN LONG 65min (LONG)",
+      "d4 2027-01-10 PM STRENGTH_FULL_B 39min: barbell-rdl 3x6 RIR3 70kg TOTAL; lat-pulldown 3x6 RIR3 45kg MACHINE_STACK; bench-press 3x5 RIR3 45kg TOTAL; bulgarian-split-squat-db 2x7 RIR3 establish; dead-bug 2x7 RIR3 BW",
+      "d5 2027-01-11 AM RUN EASY 40min (EASY)"
+     ]
+    },
+    "week1": {
+     "week": 1,
+     "phase": "DEVELOPMENT",
+     "startDate": "2027-01-13",
+     "sessions": [
+      "d0 2027-01-13 PM STRENGTH_FULL_A 39min: back-squat 3x5 RIR3 70kg TOTAL; bench-press 3x5 RIR3 45kg TOTAL; lat-pulldown 3x6 RIR3 45kg MACHINE_STACK; db-calf-raise 2x7 RIR3 last logged; dead-bug 2x9 RIR3 BW",
+      "d1 2027-01-14 AM RUN EASY 40min (EASY)",
+      "d3 2027-01-16 AM RUN LONG 65min (LONG)",
+      "d4 2027-01-17 PM STRENGTH_FULL_B 40min: barbell-rdl 3x6 RIR3 70kg TOTAL; lat-pulldown 3x6 RIR3 45kg MACHINE_STACK; bench-press 3x5 RIR3 45kg TOTAL; bulgarian-split-squat-db 2x7 RIR3 last logged; dead-bug 2x9 RIR3 BW",
+      "d5 2027-01-18 AM RUN EASY 40min (EASY)"
+     ]
+    },
+    "raceWeek": null,
+    "weekBeforeRace": null
+   },
+   "steps": [
+    {
+     "stepId": "w0",
+     "asOf": "2027-01-12T21:00:00-05:00",
+     "kind": "WEEKLY_REVIEW",
+     "week": 0,
+     "athlete": {
+      "eligibility": "CONFIRMED",
+      "reports": [
+       "w0-run-d1 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w0-run-d3 done 65min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w0-run-d5 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w0-str-d0 done 39min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w0-str-d4 done 39min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)"
+      ],
+      "notes": []
+     },
+     "coach": {
+      "status": "MODIFY",
+      "action": "ADOPT_LOGGED_LOADS",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "question": null,
+      "reason": "Executed loads differ from the planned known loads; the plan continues from what was lifted, one step at a time",
+      "missingInputs": [],
+      "offers": [],
+      "loadQuestions": 2,
+      "gates": {
+       "LONG": "ADVANCE",
+       "EASY": "ADVANCE",
+       "back-squat": "ADVANCE",
+       "bench-press": "ADVANCE",
+       "lat-pulldown": "ADVANCE",
+       "db-calf-raise": "ADVANCE",
+       "dead-bug": "ADVANCE",
+       "barbell-rdl": "ADVANCE",
+       "bulgarian-split-squat-db": "ADVANCE"
+      },
+      "adopted": true,
+      "currentWeek": {
+       "week": 0,
+       "phase": "DEVELOPMENT",
+       "startDate": "2027-01-06",
+       "sessions": []
+      },
+      "nextWeekProvisional": {
+       "week": 1,
+       "phase": "DEVELOPMENT",
+       "startDate": "2027-01-13",
+       "sessions": [
+        "d0 2027-01-13 PM STRENGTH_FULL_A 39min: back-squat 3x5 RIR3 70kg TOTAL; bench-press 3x5 RIR3 45kg TOTAL; lat-pulldown 3x6 RIR3 45kg MACHINE_STACK; db-calf-raise 2x7 RIR3 establish; dead-bug 2x9 RIR3 BW",
+        "d1 2027-01-14 AM RUN EASY 40min (EASY)",
+        "d3 2027-01-16 AM RUN LONG 65min (LONG)",
+        "d4 2027-01-17 PM STRENGTH_FULL_B 40min: barbell-rdl 3x6 RIR3 70kg TOTAL; lat-pulldown 3x6 RIR3 45kg MACHINE_STACK; bench-press 3x5 RIR3 45kg TOTAL; bulgarian-split-squat-db 2x7 RIR3 establish; dead-bug 2x9 RIR3 BW",
+        "d5 2027-01-18 AM RUN EASY 40min (EASY)"
+       ]
+      }
+     }
+    },
+    {
+     "stepId": "w1",
+     "asOf": "2027-01-19T21:00:00-05:00",
+     "kind": "WEEKLY_REVIEW",
+     "week": 1,
+     "athlete": {
+      "eligibility": "CONFIRMED",
+      "reports": [
+       "w1-run-d1 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w1-run-d3 done 65min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w1-run-d5 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w1-str-d0 done 39min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w1-str-d4 done 40min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)"
+      ],
+      "notes": []
+     },
+     "coach": {
+      "status": "MODIFY",
+      "action": "ADOPT_LOGGED_LOADS",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "question": null,
+      "reason": "Executed loads differ from the planned known loads; the plan continues from what was lifted, one step at a time",
+      "missingInputs": [],
+      "offers": [],
+      "loadQuestions": 2,
+      "gates": {
+       "LONG": "ADVANCE",
+       "EASY": "ADVANCE",
+       "back-squat": "ADVANCE",
+       "bench-press": "ADVANCE",
+       "lat-pulldown": "ADVANCE",
+       "db-calf-raise": "ADVANCE",
+       "dead-bug": "ADVANCE",
+       "barbell-rdl": "ADVANCE",
+       "bulgarian-split-squat-db": "ADVANCE"
+      },
+      "adopted": true,
+      "currentWeek": {
+       "week": 1,
+       "phase": "DEVELOPMENT",
+       "startDate": "2027-01-13",
+       "sessions": []
+      },
+      "nextWeekProvisional": {
+       "week": 2,
+       "phase": "DEVELOPMENT",
+       "startDate": "2027-01-20",
+       "sessions": [
+        "d0 2027-01-20 PM STRENGTH_FULL_A 39min: back-squat 3x5 RIR3 72.5kg TOTAL; bench-press 3x5 RIR3 47.5kg TOTAL; lat-pulldown 3x6 RIR3 45kg MACHINE_STACK; db-calf-raise 2x7 RIR3 establish; dead-bug 2x10 RIR3 BW",
+        "d1 2027-01-21 AM RUN QUALITY 34min (THRESHOLD 3x5'/2')",
+        "d3 2027-01-23 AM RUN LONG 65min (LONG)",
+        "d4 2027-01-24 PM STRENGTH_FULL_B 40min: barbell-rdl 3x6 RIR3 72.5kg TOTAL; lat-pulldown 3x6 RIR3 45kg MACHINE_STACK; bench-press 3x5 RIR3 47.5kg TOTAL; bulgarian-split-squat-db 2x7 RIR3 establish; dead-bug 2x10 RIR3 BW",
+        "d5 2027-01-25 AM RUN EASY 45min (EASY +strides)"
+       ]
+      }
+     }
+    },
+    {
+     "stepId": "w2",
+     "asOf": "2027-01-26T21:00:00-05:00",
+     "kind": "WEEKLY_REVIEW",
+     "week": 2,
+     "athlete": {
+      "eligibility": "CONFIRMED",
+      "reports": [
+       "w2-run-d1 done 34min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w2-run-d3 done 65min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w2-run-d5 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w2-str-d0 done 39min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w2-str-d4 done 40min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)"
+      ],
+      "notes": []
+     },
+     "coach": {
+      "status": "MODIFY",
+      "action": "ADOPT_LOGGED_LOADS",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "question": null,
+      "reason": "Executed loads differ from the planned known loads; the plan continues from what was lifted, one step at a time",
+      "missingInputs": [],
+      "offers": [],
+      "loadQuestions": 2,
+      "gates": {
+       "LONG": "ADVANCE",
+       "QUALITY": "ADVANCE",
+       "EASY": "ADVANCE",
+       "back-squat": "ADVANCE",
+       "bench-press": "ADVANCE",
+       "lat-pulldown": "ADVANCE",
+       "db-calf-raise": "ADVANCE",
+       "dead-bug": "ADVANCE",
+       "barbell-rdl": "ADVANCE",
+       "bulgarian-split-squat-db": "ADVANCE"
+      },
+      "adopted": true,
+      "currentWeek": {
+       "week": 2,
+       "phase": "DEVELOPMENT",
+       "startDate": "2027-01-20",
+       "sessions": []
+      },
+      "nextWeekProvisional": {
+       "week": 3,
+       "phase": "CONSOLIDATION",
+       "startDate": "2027-01-27",
+       "sessions": [
+        "d0 2027-01-27 PM STRENGTH_FULL_A 27min: back-squat 2x5 RIR3 72.5kg TOTAL; bench-press 2x5 RIR3 47.5kg TOTAL; lat-pulldown 2x6 RIR3 45kg MACHINE_STACK; db-calf-raise 1x7 RIR3 establish; dead-bug 1x10 RIR3 BW",
+        "d1 2027-01-28 AM RUN QUALITY 34min (THRESHOLD 3x5'/2')",
+        "d3 2027-01-30 AM RUN LONG 60min (LONG)",
+        "d4 2027-01-31 PM STRENGTH_FULL_B 27min: barbell-rdl 2x6 RIR3 72.5kg TOTAL; lat-pulldown 2x6 RIR3 45kg MACHINE_STACK; bench-press 2x5 RIR3 47.5kg TOTAL; bulgarian-split-squat-db 1x7 RIR3 establish; dead-bug 1x10 RIR3 BW",
+        "d5 2027-02-01 AM RUN EASY 45min (EASY +strides)"
+       ]
+      }
+     }
+    },
+    {
+     "stepId": "w3",
+     "asOf": "2027-02-02T21:00:00-05:00",
+     "kind": "WEEKLY_REVIEW",
+     "week": 3,
+     "athlete": {
+      "eligibility": "CONFIRMED",
+      "reports": [
+       "w3-run-d1 done 34min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w3-run-d3 done 60min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w3-run-d5 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w3-str-d0 done 27min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w3-str-d4 done 27min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)"
+      ],
+      "notes": []
+     },
+     "coach": {
+      "status": "KEEP",
+      "action": "INSTANTIATE_LOGGED_LOADS",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "question": null,
+      "reason": "Logged loads replace planned placeholders; the progression rule is unchanged",
+      "missingInputs": [],
+      "offers": [
+       "LADDER_STEP"
+      ],
+      "loadQuestions": 2,
+      "gates": {
+       "LONG": "ADVANCE",
+       "QUALITY": "ADVANCE",
+       "EASY": "ADVANCE",
+       "back-squat": "ADVANCE",
+       "bench-press": "ADVANCE",
+       "lat-pulldown": "ADVANCE",
+       "db-calf-raise": "ADVANCE",
+       "dead-bug": "ADVANCE",
+       "barbell-rdl": "ADVANCE",
+       "bulgarian-split-squat-db": "ADVANCE"
+      },
+      "adopted": true,
+      "currentWeek": {
+       "week": 3,
+       "phase": "CONSOLIDATION",
+       "startDate": "2027-01-27",
+       "sessions": []
+      },
+      "nextWeekProvisional": {
+       "week": 4,
+       "phase": "DEVELOPMENT",
+       "startDate": "2027-02-03",
+       "sessions": [
+        "d0 2027-02-03 PM STRENGTH_FULL_A 47min: back-squat 4x5 RIR3 72.5kg TOTAL; bench-press 4x5 RIR3 47.5kg TOTAL; lat-pulldown 3x6 RIR3 45kg MACHINE_STACK; db-calf-raise 2x7 RIR3 establish; dead-bug 3x10 RIR3 BW",
+        "d1 2027-02-04 AM RUN QUALITY 41min (THRESHOLD 4x5'/2')",
+        "d3 2027-02-06 AM RUN LONG 70min (LONG)",
+        "d4 2027-02-07 PM STRENGTH_FULL_B 47min: barbell-rdl 4x6 RIR3 72.5kg TOTAL; lat-pulldown 3x6 RIR3 45kg MACHINE_STACK; bench-press 4x5 RIR3 47.5kg TOTAL; bulgarian-split-squat-db 2x7 RIR3 establish; dead-bug 3x10 RIR3 BW",
+        "d5 2027-02-08 AM RUN EASY 45min (EASY +strides)"
+       ]
+      }
+     }
+    },
+    {
+     "stepId": "s6",
+     "asOf": "2027-02-20T06:30:00-05:00",
+     "kind": "SCHEDULE_CHANGE",
+     "week": 6,
+     "athlete": {
+      "eligibility": "CONFIRMED",
+      "reports": [],
+      "changes": {
+       "runTurn": "PM"
+      },
+      "notes": []
+     },
+     "coach": {
+      "status": "MODIFY",
+      "action": "REARRANGE_FUTURE_WEEKS",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "question": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the athlete removed",
+      "missingInputs": [],
+      "offers": [],
+      "loadQuestions": 0,
+      "gates": null,
+      "adopted": true,
+      "currentWeek": {
+       "week": 6,
+       "phase": "DEVELOPMENT",
+       "startDate": "2027-02-17",
+       "sessions": [
+        "d3 2027-02-20 AM RUN LONG 70min (LONG)",
+        "d4 2027-02-21 PM STRENGTH_FULL_B 47min: barbell-rdl 4x6 RIR3 75kg TOTAL; lat-pulldown 3x6 RIR3 46kg MACHINE_STACK; bench-press 4x5 RIR3 50kg TOTAL; bulgarian-split-squat-db 2x7 RIR3 last logged; dead-bug 3x10 RIR3 BW",
+        "d5 2027-02-22 AM RUN EASY 45min (EASY +strides)"
+       ]
+      },
+      "nextWeekProvisional": {
+       "week": 7,
+       "phase": "CONSOLIDATION",
+       "startDate": "2027-02-24",
+       "sessions": [
+        "d0 2027-02-24 PM STRENGTH_FULL_A 35min: back-squat 3x5 RIR3 75kg TOTAL; bench-press 3x5 RIR3 50kg TOTAL; lat-pulldown 2x6 RIR3 45kg MACHINE_STACK; db-calf-raise 1x7 RIR3 last logged; dead-bug 2x10 RIR3 BW",
+        "d1 2027-02-25 PM RUN QUALITY 41min (THRESHOLD 4x5'/2')",
+        "d3 2027-02-27 PM RUN LONG 65min (LONG)",
+        "d4 2027-02-28 PM STRENGTH_FULL_B 35min: barbell-rdl 3x6 RIR3 75kg TOTAL; lat-pulldown 2x6 RIR3 45kg MACHINE_STACK; bench-press 3x5 RIR3 50kg TOTAL; bulgarian-split-squat-db 1x7 RIR3 last logged; dead-bug 2x10 RIR3 BW",
+        "d5 2027-03-01 PM RUN EASY 45min (EASY +strides)"
+       ]
+      }
+     }
+    },
+    {
+     "stepId": "a6",
+     "asOf": "2027-02-20T08:00:00-05:00",
+     "kind": "WEEKLY_REVIEW",
+     "week": 6,
+     "athlete": {
+      "eligibility": "CONFIRMED",
+      "reports": [],
+      "interruption": {
+       "startDate": "2027-02-03",
+       "endDate": "2027-02-19",
+       "days": 17,
+       "reasonCategory": "VACATION",
+       "nonclinical": true,
+       "reason": "Family trip; no training at all."
+      },
+      "notes": []
+     },
+     "coach": {
+      "status": "KEEP",
+      "action": "KEEP",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "question": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete",
+      "missingInputs": [],
+      "offers": [],
+      "loadQuestions": 0,
+      "gates": null,
+      "adopted": false,
+      "currentWeek": {
+       "week": 6,
+       "phase": "DEVELOPMENT",
+       "startDate": "2027-02-17",
+       "sessions": [
+        "d3 2027-02-20 AM RUN LONG 70min (LONG)",
+        "d4 2027-02-21 PM STRENGTH_FULL_B 47min: barbell-rdl 4x6 RIR3 75kg TOTAL; lat-pulldown 3x6 RIR3 46kg MACHINE_STACK; bench-press 4x5 RIR3 50kg TOTAL; bulgarian-split-squat-db 2x7 RIR3 last logged; dead-bug 3x10 RIR3 BW",
+        "d5 2027-02-22 AM RUN EASY 45min (EASY +strides)"
+       ]
+      },
+      "nextWeekProvisional": {
+       "week": 7,
+       "phase": "CONSOLIDATION",
+       "startDate": "2027-02-24",
+       "sessions": [
+        "d0 2027-02-24 PM STRENGTH_FULL_A 35min: back-squat 3x5 RIR3 75kg TOTAL; bench-press 3x5 RIR3 50kg TOTAL; lat-pulldown 2x6 RIR3 45kg MACHINE_STACK; db-calf-raise 1x7 RIR3 last logged; dead-bug 2x10 RIR3 BW",
+        "d1 2027-02-25 PM RUN QUALITY 41min (THRESHOLD 4x5'/2')",
+        "d3 2027-02-27 PM RUN LONG 65min (LONG)",
+        "d4 2027-02-28 PM STRENGTH_FULL_B 35min: barbell-rdl 3x6 RIR3 75kg TOTAL; lat-pulldown 2x6 RIR3 45kg MACHINE_STACK; bench-press 3x5 RIR3 50kg TOTAL; bulgarian-split-squat-db 1x7 RIR3 last logged; dead-bug 2x10 RIR3 BW",
+        "d5 2027-03-01 PM RUN EASY 45min (EASY +strides)"
+       ]
+      }
+     }
+    },
+    {
+     "stepId": "w6",
+     "asOf": "2027-02-23T21:00:00-05:00",
+     "kind": "WEEKLY_REVIEW",
+     "week": 6,
+     "athlete": {
+      "eligibility": "CONFIRMED",
+      "reports": [
+       "w6-run-d1 done 43min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w6-run-d3 done 70min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w6-run-d5 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w6-str-d0 done 47min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w6-str-d4 done 47min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)"
+      ],
+      "notes": []
+     },
+     "coach": {
+      "status": "MODIFY",
+      "action": "ADOPT_LOGGED_LOADS",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "question": null,
+      "reason": "Executed loads differ from the planned known loads; the plan continues from what was lifted, one step at a time",
+      "missingInputs": [],
+      "offers": [],
+      "loadQuestions": 2,
+      "gates": {
+       "LONG": "ADVANCE",
+       "QUALITY": "ADVANCE",
+       "EASY": "ADVANCE",
+       "back-squat": "ADVANCE",
+       "bench-press": "ADVANCE",
+       "lat-pulldown": "ADVANCE",
+       "db-calf-raise": "ADVANCE",
+       "dead-bug": "ADVANCE",
+       "barbell-rdl": "ADVANCE",
+       "bulgarian-split-squat-db": "ADVANCE"
+      },
+      "adopted": true,
+      "currentWeek": {
+       "week": 6,
+       "phase": "DEVELOPMENT",
+       "startDate": "2027-02-17",
+       "sessions": []
+      },
+      "nextWeekProvisional": {
+       "week": 7,
+       "phase": "CONSOLIDATION",
+       "startDate": "2027-02-24",
+       "sessions": [
+        "d0 2027-02-24 PM STRENGTH_FULL_A 35min: back-squat 3x5 RIR3 75kg TOTAL; bench-press 3x5 RIR3 50kg TOTAL; lat-pulldown 2x6 RIR3 45kg MACHINE_STACK; db-calf-raise 1x7 RIR3 establish; dead-bug 2x10 RIR3 BW",
+        "d1 2027-02-25 PM RUN QUALITY 41min (THRESHOLD 4x5'/2')",
+        "d3 2027-02-27 PM RUN LONG 65min (LONG)",
+        "d4 2027-02-28 PM STRENGTH_FULL_B 35min: barbell-rdl 3x6 RIR3 75kg TOTAL; lat-pulldown 2x6 RIR3 45kg MACHINE_STACK; bench-press 3x5 RIR3 50kg TOTAL; bulgarian-split-squat-db 1x7 RIR3 establish; dead-bug 2x10 RIR3 BW",
+        "d5 2027-03-01 PM RUN EASY 45min (EASY +strides)"
+       ]
+      }
+     }
+    },
+    {
+     "stepId": "w7",
+     "asOf": "2027-03-02T21:00:00-05:00",
+     "kind": "WEEKLY_REVIEW",
+     "week": 7,
+     "athlete": {
+      "eligibility": "CONFIRMED",
+      "reports": [
+       "w7-run-d1 done 41min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w7-run-d3 done 65min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w7-run-d5 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w7-str-d0 done 35min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w7-str-d4 done 35min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)"
+      ],
+      "notes": []
+     },
+     "coach": {
+      "status": "KEEP",
+      "action": "INSTANTIATE_LOGGED_LOADS",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "question": null,
+      "reason": "Logged loads replace planned placeholders; the progression rule is unchanged",
+      "missingInputs": [],
+      "offers": [
+       "LADDER_STEP"
+      ],
+      "loadQuestions": 2,
+      "gates": {
+       "LONG": "ADVANCE",
+       "QUALITY": "ADVANCE",
+       "EASY": "ADVANCE",
+       "back-squat": "ADVANCE",
+       "bench-press": "ADVANCE",
+       "lat-pulldown": "ADVANCE",
+       "db-calf-raise": "ADVANCE",
+       "dead-bug": "ADVANCE",
+       "barbell-rdl": "ADVANCE",
+       "bulgarian-split-squat-db": "ADVANCE"
+      },
+      "adopted": true,
+      "currentWeek": {
+       "week": 7,
+       "phase": "CONSOLIDATION",
+       "startDate": "2027-02-24",
+       "sessions": []
+      },
+      "nextWeekProvisional": {
+       "week": 8,
+       "phase": "DEVELOPMENT",
+       "startDate": "2027-03-03",
+       "sessions": [
+        "d0 2027-03-03 PM STRENGTH_FULL_A 45min: back-squat 4x5 RIR3 75kg TOTAL; bench-press 4x5 RIR3 50kg TOTAL; lat-pulldown 3x6 RIR3 45kg MACHINE_STACK; db-calf-raise 2x7 RIR3 establish; front-plank 2x7 RIR3 BW",
+        "d1 2027-03-04 PM RUN QUALITY 41min (THRESHOLD 4x5'/2')",
+        "d3 2027-03-06 PM RUN LONG 70min (LONG)",
+        "d4 2027-03-07 PM STRENGTH_FULL_B 45min: barbell-rdl 4x6 RIR3 75kg TOTAL; lat-pulldown 3x6 RIR3 45kg MACHINE_STACK; bench-press 4x5 RIR3 50kg TOTAL; db-split-squat 2x7 RIR3 establish; front-plank 2x7 RIR3 BW",
+        "d5 2027-03-08 PM RUN EASY 45min (EASY +strides)"
+       ]
+      }
+     }
+    },
+    {
+     "stepId": "w8",
+     "asOf": "2027-03-09T21:00:00-05:00",
+     "kind": "WEEKLY_REVIEW",
+     "week": 8,
+     "athlete": {
+      "eligibility": "CONFIRMED",
+      "reports": [
+       "w8-run-d1 done 41min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w8-run-d3 done 70min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w8-run-d5 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w8-str-d0 done 45min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w8-str-d4 done 45min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)"
+      ],
+      "notes": []
+     },
+     "coach": {
+      "status": "MODIFY",
+      "action": "ADOPT_LOGGED_LOADS",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "question": null,
+      "reason": "Executed loads differ from the planned known loads; the plan continues from what was lifted, one step at a time",
+      "missingInputs": [],
+      "offers": [],
+      "loadQuestions": 2,
+      "gates": {
+       "LONG": "ADVANCE",
+       "QUALITY": "ADVANCE",
+       "EASY": "ADVANCE",
+       "back-squat": "ADVANCE",
+       "bench-press": "ADVANCE",
+       "lat-pulldown": "ADVANCE",
+       "db-calf-raise": "ADVANCE",
+       "front-plank": "ADVANCE",
+       "barbell-rdl": "ADVANCE",
+       "db-split-squat": "ADVANCE"
+      },
+      "adopted": true,
+      "currentWeek": {
+       "week": 8,
+       "phase": "DEVELOPMENT",
+       "startDate": "2027-03-03",
+       "sessions": []
+      },
+      "nextWeekProvisional": {
+       "week": 9,
+       "phase": "DEVELOPMENT",
+       "startDate": "2027-03-10",
+       "sessions": [
+        "d0 2027-03-10 PM STRENGTH_FULL_A 45min: back-squat 4x5 RIR3 77.5kg TOTAL; bench-press 4x5 RIR3 52.5kg TOTAL; lat-pulldown 3x6 RIR3 45kg MACHINE_STACK; db-calf-raise 2x7 RIR3 establish; front-plank 2x9 RIR3 BW",
+        "d1 2027-03-11 PM RUN QUALITY 43min (THRESHOLD 3x8'/2')",
+        "d3 2027-03-13 PM RUN LONG 70min (LONG)",
+        "d4 2027-03-14 PM STRENGTH_FULL_B 45min: barbell-rdl 4x6 RIR3 77.5kg TOTAL; lat-pulldown 3x6 RIR3 45kg MACHINE_STACK; bench-press 4x5 RIR3 52.5kg TOTAL; db-split-squat 2x7 RIR3 establish; front-plank 2x9 RIR3 BW",
+        "d5 2027-03-15 PM RUN EASY 45min (EASY +strides)"
+       ]
+      }
+     }
+    },
+    {
+     "stepId": "r14",
+     "asOf": "2027-04-14T07:00:00-05:00",
+     "kind": "RETURN_AFTER_PAUSE",
+     "week": 14,
+     "athlete": {
+      "eligibility": "CONFIRMED",
+      "reports": [],
+      "interruption": {
+       "startDate": "2027-03-10",
+       "endDate": "2027-04-13",
+       "days": 35,
+       "reasonCategory": "WORK",
+       "nonclinical": true,
+       "reason": "Five-week project at a remote site; no gym and no running."
+      },
+      "currentDemonstration": {
+       "observedAt": "2027-04-12T18:00:00-05:00",
+       "sport": "RUN",
+       "family": "EASY",
+       "minutes": 20,
+       "completed": true,
+       "effort": "CONVERSATIONAL",
+       "response": "COMPATIBLE",
+       "ordinaryFunction": "COMPATIBLE",
+       "nextDayFunction": "NORMAL"
+      },
+      "notes": []
+     },
+     "coach": {
+      "status": "MODIFY",
+      "action": "REESTABLISH",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "question": null,
+      "reason": "long nonclinical interruption (35 days): restart from current capacity; prior doses are only a ceiling",
+      "missingInputs": [],
+      "offers": [],
+      "loadQuestions": 0,
+      "gates": null,
+      "adopted": true,
+      "currentWeek": {
+       "week": 14,
+       "phase": "DEVELOPMENT",
+       "startDate": "2027-04-14",
+       "sessions": [
+        "d0 2027-04-14 PM STRENGTH_FULL_A 19min: back-squat 1x5 RIR4 establish; bench-press 1x5 RIR4 establish; lat-pulldown 1x6 RIR4 establish; db-calf-raise 1x5 RIR4 establish; dead-bug 1x10 RIR4 BW",
+        "d1 2027-04-15 PM RUN EASY 20min (EASY)",
+        "d3 2027-04-17 PM RUN EASY 20min (EASY)",
+        "d4 2027-04-18 PM STRENGTH_FULL_B 19min: barbell-rdl 1x6 RIR4 establish; lat-pulldown 1x6 RIR4 establish; bench-press 1x5 RIR4 establish; bulgarian-split-squat-db 1x5 RIR4 establish; dead-bug 1x10 RIR4 BW",
+        "d5 2027-04-19 PM RUN EASY 20min (EASY)"
+       ]
+      },
+      "nextWeekProvisional": {
+       "week": 15,
+       "phase": "CONSOLIDATION",
+       "startDate": "2027-04-21",
+       "sessions": [
+        "d0 2027-04-21 PM STRENGTH_FULL_A 19min: back-squat 1x5 RIR3 last logged; bench-press 1x5 RIR3 last logged; lat-pulldown 1x6 RIR3 last logged; db-calf-raise 1x5 RIR3 last logged; dead-bug 1x10 RIR3 BW",
+        "d1 2027-04-22 PM RUN EASY 25min (EASY)",
+        "d3 2027-04-24 PM RUN EASY 25min (EASY)",
+        "d4 2027-04-25 PM STRENGTH_FULL_B 19min: barbell-rdl 1x6 RIR3 last logged; lat-pulldown 1x6 RIR3 last logged; bench-press 1x5 RIR3 last logged; bulgarian-split-squat-db 1x5 RIR3 last logged; dead-bug 1x10 RIR3 BW",
+        "d5 2027-04-26 PM RUN EASY 25min (EASY)"
+       ]
+      }
+     }
+    },
+    {
+     "stepId": "w14",
+     "asOf": "2027-04-20T21:00:00-05:00",
+     "kind": "WEEKLY_REVIEW",
+     "week": 14,
+     "athlete": {
+      "eligibility": "CONFIRMED",
+      "reports": [
+       "w14-run-d1 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w14-run-d3 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w14-run-d5 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w14-str-d0 done 19min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w14-str-d4 done 19min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)"
+      ],
+      "notes": []
+     },
+     "coach": {
+      "status": "KEEP",
+      "action": "INSTANTIATE_LOGGED_LOADS",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "question": null,
+      "reason": "Logged loads replace planned placeholders; the progression rule is unchanged",
+      "missingInputs": [],
+      "offers": [],
+      "loadQuestions": 0,
+      "gates": {
+       "EASY": "ADVANCE",
+       "back-squat": "ADVANCE",
+       "bench-press": "ADVANCE",
+       "lat-pulldown": "ADVANCE",
+       "db-calf-raise": "ADVANCE",
+       "dead-bug": "ADVANCE",
+       "barbell-rdl": "ADVANCE",
+       "bulgarian-split-squat-db": "ADVANCE"
+      },
+      "adopted": true,
+      "currentWeek": {
+       "week": 14,
+       "phase": "DEVELOPMENT",
+       "startDate": "2027-04-14",
+       "sessions": []
+      },
+      "nextWeekProvisional": {
+       "week": 15,
+       "phase": "CONSOLIDATION",
+       "startDate": "2027-04-21",
+       "sessions": [
+        "d0 2027-04-21 PM STRENGTH_FULL_A 19min: back-squat 1x5 RIR4 establish; bench-press 1x5 RIR4 establish; lat-pulldown 1x6 RIR4 establish; db-calf-raise 1x5 RIR4 establish; dead-bug 1x10 RIR3 BW",
+        "d1 2027-04-22 PM RUN EASY 25min (EASY)",
+        "d3 2027-04-24 PM RUN EASY 25min (EASY)",
+        "d4 2027-04-25 PM STRENGTH_FULL_B 19min: barbell-rdl 1x6 RIR4 establish; lat-pulldown 1x6 RIR4 establish; bench-press 1x5 RIR4 establish; bulgarian-split-squat-db 1x5 RIR4 establish; dead-bug 1x10 RIR3 BW",
+        "d5 2027-04-26 PM RUN EASY 25min (EASY)"
+       ]
+      }
+     }
+    },
+    {
+     "stepId": "w15",
+     "asOf": "2027-04-27T21:00:00-05:00",
+     "kind": "WEEKLY_REVIEW",
+     "week": 15,
+     "athlete": {
+      "eligibility": "CONFIRMED",
+      "reports": [
+       "w15-run-d1 done 25min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w15-run-d3 done 25min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w15-run-d5 done 25min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w15-str-d0 done 19min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)",
+       "w15-str-d4 done 19min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)"
+      ],
+      "notes": []
+     },
+     "coach": {
+      "status": "KEEP",
+      "action": "KEEP",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "question": null,
+      "reason": "Final week of the horizon; record outcomes for the next program",
+      "missingInputs": [],
+      "offers": [],
+      "loadQuestions": 0,
+      "gates": null,
+      "adopted": false,
+      "currentWeek": {
+       "week": 15,
+       "phase": "CONSOLIDATION",
+       "startDate": "2027-04-21",
+       "sessions": []
+      },
+      "nextWeekProvisional": null
+     }
+    }
+   ],
+   "stopped": null,
+   "corpusErrors": [],
+   "runtimeErrors": [],
+   "automated": {
+    "failures": [],
+    "notEvaluable": []
+   },
+   "metamorphic": {
+    "violations": [],
+    "nonBlockingDifferences": []
+   },
+   "authorExpectations": [
+    {
+     "expectationId": "d18-e01",
+     "atStep": "GENERATE",
+     "oracleClass": "DOMAIN_ORACLE",
+     "type": "STATUS_IN",
+     "rationale": "Complete in-scope intake.",
+     "result": "PASS",
+     "observed": "PROPOSED",
+     "expected": {
+      "type": "STATUS_IN",
+      "oneOf": [
+       "PROPOSED"
+      ]
+     }
+    },
+    {
+     "expectationId": "d18-e02",
+     "atStep": "s6",
+     "oracleClass": "DOMAIN_ORACLE",
+     "type": "STATUS_IN",
+     "rationale": "Two and a half weeks of planned runs have no report.",
+     "result": "FAIL",
+     "observed": "MODIFY",
+     "expected": {
+      "type": "STATUS_IN",
+      "oneOf": [
+       "ASK"
+      ]
+     }
+    },
+    {
+     "expectationId": "d18-e03",
+     "atStep": "s6",
+     "oracleClass": "DOMAIN_ORACLE",
+     "type": "QUESTION_KIND_IS",
+     "rationale": "The question is about the unreported runs.",
+     "result": "FAIL",
+     "observed": null,
+     "expected": {
+      "type": "QUESTION_KIND_IS",
+      "value": "UNREPORTED_TRAINING"
+     }
+    },
+    {
+     "expectationId": "d18-e04",
+     "atStep": "s6",
+     "oracleClass": "INVARIANT_ORACLE",
+     "type": "NO_PRESCRIPTION",
+     "rationale": "Nothing prescribed while the question stands.",
+     "result": "FAIL",
+     "observed": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "expected": {
+      "type": "NO_PRESCRIPTION"
+     }
+    },
+    {
+     "expectationId": "d18-e05",
+     "atStep": "a6",
+     "oracleClass": "DOMAIN_ORACLE",
+     "type": "STATUS_IN",
+     "rationale": "A 17-day break calls for a re-plan.",
+     "result": "FAIL",
+     "observed": "KEEP",
+     "expected": {
+      "type": "STATUS_IN",
+      "oneOf": [
+       "MODIFY"
+      ]
+     }
+    },
+    {
+     "expectationId": "d18-e06",
+     "atStep": "a6",
+     "oracleClass": "DOMAIN_ORACLE",
+     "type": "VALIDITY_IS",
+     "rationale": "The declared break covers the unknown sessions.",
+     "result": "PASS",
+     "observed": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "expected": {
+      "type": "VALIDITY_IS",
+      "value": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+     }
+    },
+    {
+     "expectationId": "d18-e07",
+     "atStep": "a6",
+     "oracleClass": "DOMAIN_ORACLE",
+     "type": "ROLE_ABSENT",
+     "rationale": "No hard running in the first days back.",
+     "result": "FAIL",
+     "observed": [
+      "6:1:QUALITY"
+     ],
+     "expected": {
+      "type": "ROLE_ABSENT",
+      "weeks": [
+       6
+      ],
+      "sport": "RUN",
+      "roles": [
+       "QUALITY"
+      ]
+     }
+    },
+    {
+     "expectationId": "d18-e08",
+     "atStep": "a6",
+     "oracleClass": "DOMAIN_ORACLE",
+     "type": "ROLE_MINUTES_COMPARE",
+     "rationale": "The first full week back does not exceed the last pre-break long run.",
+     "result": "FAIL",
+     "observed": {
+      "week": 65,
+      "otherWeek": 60
+     },
+     "expected": {
+      "type": "ROLE_MINUTES_COMPARE",
+      "sport": "RUN",
+      "role": "LONG",
+      "week": 7,
+      "op": "<=",
+      "otherWeek": 3
+     }
+    },
+    {
+     "expectationId": "d18-e09",
+     "atStep": "a6",
+     "oracleClass": "INVARIANT_ORACLE",
+     "type": "JUDGED",
+     "rationale": "Schedule change and no catch-up.",
+     "result": "JUDGED",
+     "statement": "From the change on, runs are scheduled in the PM turn on days 1, 3 and 5; nothing is added to make up for the break."
+    },
+    {
+     "expectationId": "d18-e10",
+     "atStep": "r14",
+     "oracleClass": "DOMAIN_ORACLE",
+     "type": "STATUS_IN",
+     "rationale": "Return after five weeks off.",
+     "result": "PASS",
+     "observed": "MODIFY",
+     "expected": {
+      "type": "STATUS_IN",
+      "oneOf": [
+       "MODIFY"
+      ]
+     }
+    },
+    {
+     "expectationId": "d18-e11",
+     "atStep": "r14",
+     "oracleClass": "DOMAIN_ORACLE",
+     "type": "VALIDITY_IS",
+     "rationale": "Fully declared nonclinical break.",
+     "result": "PASS",
+     "observed": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "expected": {
+      "type": "VALIDITY_IS",
+      "value": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+     }
+    },
+    {
+     "expectationId": "d18-e12",
+     "atStep": "r14",
+     "oracleClass": "DOMAIN_ORACLE",
+     "type": "PHASE_IS",
+     "rationale": "The first week after a long break is a return week.",
+     "result": "FAIL",
+     "observed": "DEVELOPMENT",
+     "expected": {
+      "type": "PHASE_IS",
+      "week": 14,
+      "oneOf": [
+       "RETURN",
+       "ESTABLISHMENT"
+      ]
+     }
+    },
+    {
+     "expectationId": "d18-e13",
+     "atStep": "r14",
+     "oracleClass": "DOMAIN_ORACLE",
+     "type": "ROLE_ABSENT",
+     "rationale": "No hard running in the return week.",
+     "result": "PASS",
+     "observed": [],
+     "expected": {
+      "type": "ROLE_ABSENT",
+      "weeks": [
+       14
+      ],
+      "sport": "RUN",
+      "roles": [
+       "QUALITY"
+      ]
+     }
+    },
+    {
+     "expectationId": "d18-e14",
+     "atStep": "r14",
+     "oracleClass": "DOMAIN_ORACLE",
+     "type": "ROLE_MINUTES_COMPARE",
+     "rationale": "The return long run is shorter than the last pre-break long run.",
+     "result": "NOT_EVALUABLE",
+     "reason": "ROLE_NOT_IN_BOTH_WEEKS",
+     "observed": {
+      "week": null,
+      "otherWeek": 70
+     }
+    },
+    {
+     "expectationId": "d18-e15",
+     "atStep": "r14",
+     "oracleClass": "DOMAIN_ORACLE",
+     "type": "JUDGED",
+     "rationale": "Detraining after five weeks.",
+     "result": "JUDGED",
+     "statement": "Return running is roughly 40-60% of the week-8 level, anchored on the 20-minute demonstration; strength resumes at reduced loads or volume (for example re-established or about 10-20% below the last logged loads) with more reserve."
+    }
+   ],
+   "independentAssessment": {
+    "rationale": "Two nonclinical breaks of different length. The first is hidden: the coach can only find it by asking about unreported sessions. The second is declared with a current demonstration of tolerance. Fitness loss after 17 days is modest; after 35 days it is meaningful in both sports.",
+    "preferredCoachingBehavior": "At s6, ask about the unreported runs (prescribe nothing). After the declared vacation, plan a short re-entry (about one week near 70-80% of pre-break, no quality) and move runs to the evening. After the five-week break, plan a return week near half of the pre-break running with no quality and reduced strength loads, then rebuild over two to three weeks.",
+    "acceptableAlternatives": [
+     "Treating the first re-entry week as RETURN phase.",
+     "Re-establishing strength loads after the long break instead of a percentage reduction."
+    ],
+    "concerns": [
+     "Assuming the vacation weeks were done (progression) or missed without asking.",
+     "Resuming at the pre-break level after five weeks.",
+     "Quality running in either first week back.",
+     "Different plans for VACATION versus WORK."
+    ]
+   },
+   "domainNotes": "The vacation is declared as an interruption inside a weekly review on day 3 of week 6 (an answer). The demonstration run is two days before the return decision, inside the declared break.",
+   "authorRelations": [
+    {
+     "relation": "VARIANT",
+     "variant": {
+      "timeline": [
+       {
+        "stepId": "w0",
+        "at": {
+         "week": 0,
+         "day": 6,
+         "time": "21:00"
+        },
+        "event": {
+         "kind": "WEEKLY_REVIEW"
+        },
+        "observations": [
+         {
+          "each": {
+           "weeks": [
+            0
+           ],
+           "sport": "RUN",
+           "roles": [
+            "EASY",
+            "LONG",
+            "QUALITY",
+            "WALK_JOG",
+            "WALK",
+            "RACE_TOUCH",
+            "SHAKEOUT",
+            "RECOVERY_EASY"
+           ]
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "each": {
+           "weeks": [
+            0
+           ],
+           "sport": "STRENGTH"
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         }
+        ]
+       },
+       {
+        "stepId": "w1",
+        "at": {
+         "week": 1,
+         "day": 6,
+         "time": "21:00"
+        },
+        "event": {
+         "kind": "WEEKLY_REVIEW"
+        },
+        "observations": [
+         {
+          "each": {
+           "weeks": [
+            1
+           ],
+           "sport": "RUN",
+           "roles": [
+            "EASY",
+            "LONG",
+            "QUALITY",
+            "WALK_JOG",
+            "WALK",
+            "RACE_TOUCH",
+            "SHAKEOUT",
+            "RECOVERY_EASY"
+           ]
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "each": {
+           "weeks": [
+            1
+           ],
+           "sport": "STRENGTH"
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         }
+        ]
+       },
+       {
+        "stepId": "w2",
+        "at": {
+         "week": 2,
+         "day": 6,
+         "time": "21:00"
+        },
+        "event": {
+         "kind": "WEEKLY_REVIEW"
+        },
+        "observations": [
+         {
+          "each": {
+           "weeks": [
+            2
+           ],
+           "sport": "RUN",
+           "roles": [
+            "EASY",
+            "LONG",
+            "QUALITY",
+            "WALK_JOG",
+            "WALK",
+            "RACE_TOUCH",
+            "SHAKEOUT",
+            "RECOVERY_EASY"
+           ]
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "each": {
+           "weeks": [
+            2
+           ],
+           "sport": "STRENGTH"
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         }
+        ]
+       },
+       {
+        "stepId": "w3",
+        "at": {
+         "week": 3,
+         "day": 6,
+         "time": "21:00"
+        },
+        "event": {
+         "kind": "WEEKLY_REVIEW"
+        },
+        "observations": [
+         {
+          "each": {
+           "weeks": [
+            3
+           ],
+           "sport": "RUN",
+           "roles": [
+            "EASY",
+            "LONG",
+            "QUALITY",
+            "WALK_JOG",
+            "WALK",
+            "RACE_TOUCH",
+            "SHAKEOUT",
+            "RECOVERY_EASY"
+           ]
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "each": {
+           "weeks": [
+            3
+           ],
+           "sport": "STRENGTH"
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         }
+        ]
+       },
+       {
+        "stepId": "s6",
+        "at": {
+         "week": 6,
+         "day": 3,
+         "time": "06:30"
+        },
+        "event": {
+         "kind": "SCHEDULE_CHANGE",
+         "changes": {
+          "runTurn": "PM"
+         }
+        },
+        "note": "Back from 17 days away without saying so; only asks to move runs to the evening."
+       },
+       {
+        "stepId": "a6",
+        "at": {
+         "week": 6,
+         "day": 3,
+         "time": "08:00"
+        },
+        "event": {
+         "kind": "WEEKLY_REVIEW",
+         "interruption": {
+          "startDate": "2027-02-03",
+          "endDate": "2027-02-19",
+          "days": 17,
+          "reasonCategory": "WORK",
+          "nonclinical": true,
+          "reason": "Work travel; no training at all."
+         }
+        },
+        "note": "Answer: a declared nonclinical break."
+       },
+       {
+        "stepId": "w6",
+        "at": {
+         "week": 6,
+         "day": 6,
+         "time": "21:00"
+        },
+        "event": {
+         "kind": "WEEKLY_REVIEW"
+        },
+        "observations": [
+         {
+          "each": {
+           "weeks": [
+            6
+           ],
+           "sport": "RUN",
+           "roles": [
+            "EASY",
+            "LONG",
+            "QUALITY",
+            "WALK_JOG",
+            "WALK",
+            "RACE_TOUCH",
+            "SHAKEOUT",
+            "RECOVERY_EASY"
+           ]
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "each": {
+           "weeks": [
+            6
+           ],
+           "sport": "STRENGTH"
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         }
+        ]
+       },
+       {
+        "stepId": "w7",
+        "at": {
+         "week": 7,
+         "day": 6,
+         "time": "21:00"
+        },
+        "event": {
+         "kind": "WEEKLY_REVIEW"
+        },
+        "observations": [
+         {
+          "each": {
+           "weeks": [
+            7
+           ],
+           "sport": "RUN",
+           "roles": [
+            "EASY",
+            "LONG",
+            "QUALITY",
+            "WALK_JOG",
+            "WALK",
+            "RACE_TOUCH",
+            "SHAKEOUT",
+            "RECOVERY_EASY"
+           ]
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "each": {
+           "weeks": [
+            7
+           ],
+           "sport": "STRENGTH"
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         }
+        ]
+       },
+       {
+        "stepId": "w8",
+        "at": {
+         "week": 8,
+         "day": 6,
+         "time": "21:00"
+        },
+        "event": {
+         "kind": "WEEKLY_REVIEW"
+        },
+        "observations": [
+         {
+          "each": {
+           "weeks": [
+            8
+           ],
+           "sport": "RUN",
+           "roles": [
+            "EASY",
+            "LONG",
+            "QUALITY",
+            "WALK_JOG",
+            "WALK",
+            "RACE_TOUCH",
+            "SHAKEOUT",
+            "RECOVERY_EASY"
+           ]
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "each": {
+           "weeks": [
+            8
+           ],
+           "sport": "STRENGTH"
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         }
+        ]
+       },
+       {
+        "stepId": "r14",
+        "at": {
+         "week": 14,
+         "day": 0,
+         "time": "07:00"
+        },
+        "event": {
+         "kind": "RETURN_AFTER_PAUSE",
+         "interruption": {
+          "startDate": "2027-03-10",
+          "endDate": "2027-04-13",
+          "days": 35,
+          "reasonCategory": "WORK",
+          "nonclinical": true,
+          "reason": "Five-week project at a remote site; no gym and no running."
+         },
+         "currentDemonstration": {
+          "observedAt": "2027-04-12T18:00:00-05:00",
+          "sport": "RUN",
+          "family": "EASY",
+          "minutes": 20,
+          "completed": true,
+          "effort": "CONVERSATIONAL",
+          "response": "COMPATIBLE",
+          "ordinaryFunction": "COMPATIBLE",
+          "nextDayFunction": "NORMAL"
+         }
+        },
+        "note": "Declared before the first session after the break, with a 20-minute easy test run two days earlier."
+       },
+       {
+        "stepId": "w14",
+        "at": {
+         "week": 14,
+         "day": 6,
+         "time": "21:00"
+        },
+        "event": {
+         "kind": "WEEKLY_REVIEW"
+        },
+        "observations": [
+         {
+          "each": {
+           "weeks": [
+            14
+           ],
+           "sport": "RUN",
+           "roles": [
+            "EASY",
+            "LONG",
+            "QUALITY",
+            "WALK_JOG",
+            "WALK",
+            "RACE_TOUCH",
+            "SHAKEOUT",
+            "RECOVERY_EASY"
+           ]
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "each": {
+           "weeks": [
+            14
+           ],
+           "sport": "STRENGTH"
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         }
+        ]
+       },
+       {
+        "stepId": "w15",
+        "at": {
+         "week": 15,
+         "day": 6,
+         "time": "21:00"
+        },
+        "event": {
+         "kind": "WEEKLY_REVIEW"
+        },
+        "observations": [
+         {
+          "each": {
+           "weeks": [
+            15
+           ],
+           "sport": "RUN",
+           "roles": [
+            "EASY",
+            "LONG",
+            "QUALITY",
+            "WALK_JOG",
+            "WALK",
+            "RACE_TOUCH",
+            "SHAKEOUT",
+            "RECOVERY_EASY"
+           ]
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "each": {
+           "weeks": [
+            15
+           ],
+           "sport": "STRENGTH"
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "compareAtStep": "a6",
+     "expect": "SAME_PLAN",
+     "rationale": "The same 17-day break declared as WORK instead of VACATION (both nonclinical) should give the same return plan. (Direction: the variant's plan compared with the base case's plan.)"
+    },
+    {
+     "relation": "VARIANT",
+     "variant": {
+      "timeline": [
+       {
+        "stepId": "w0",
+        "at": {
+         "week": 0,
+         "day": 6,
+         "time": "21:00"
+        },
+        "event": {
+         "kind": "WEEKLY_REVIEW"
+        },
+        "observations": [
+         {
+          "each": {
+           "weeks": [
+            0
+           ],
+           "sport": "RUN",
+           "roles": [
+            "EASY",
+            "LONG",
+            "QUALITY",
+            "WALK_JOG",
+            "WALK",
+            "RACE_TOUCH",
+            "SHAKEOUT",
+            "RECOVERY_EASY"
+           ]
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "each": {
+           "weeks": [
+            0
+           ],
+           "sport": "STRENGTH"
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         }
+        ]
+       },
+       {
+        "stepId": "w1",
+        "at": {
+         "week": 1,
+         "day": 6,
+         "time": "21:00"
+        },
+        "event": {
+         "kind": "WEEKLY_REVIEW"
+        },
+        "observations": [
+         {
+          "each": {
+           "weeks": [
+            1
+           ],
+           "sport": "RUN",
+           "roles": [
+            "EASY",
+            "LONG",
+            "QUALITY",
+            "WALK_JOG",
+            "WALK",
+            "RACE_TOUCH",
+            "SHAKEOUT",
+            "RECOVERY_EASY"
+           ]
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "each": {
+           "weeks": [
+            1
+           ],
+           "sport": "STRENGTH"
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         }
+        ]
+       },
+       {
+        "stepId": "w2",
+        "at": {
+         "week": 2,
+         "day": 6,
+         "time": "21:00"
+        },
+        "event": {
+         "kind": "WEEKLY_REVIEW"
+        },
+        "observations": [
+         {
+          "each": {
+           "weeks": [
+            2
+           ],
+           "sport": "RUN",
+           "roles": [
+            "EASY",
+            "LONG",
+            "QUALITY",
+            "WALK_JOG",
+            "WALK",
+            "RACE_TOUCH",
+            "SHAKEOUT",
+            "RECOVERY_EASY"
+           ]
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "each": {
+           "weeks": [
+            2
+           ],
+           "sport": "STRENGTH"
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         }
+        ]
+       },
+       {
+        "stepId": "w3",
+        "at": {
+         "week": 3,
+         "day": 6,
+         "time": "21:00"
+        },
+        "event": {
+         "kind": "WEEKLY_REVIEW"
+        },
+        "observations": [
+         {
+          "each": {
+           "weeks": [
+            3
+           ],
+           "sport": "RUN",
+           "roles": [
+            "EASY",
+            "LONG",
+            "QUALITY",
+            "WALK_JOG",
+            "WALK",
+            "RACE_TOUCH",
+            "SHAKEOUT",
+            "RECOVERY_EASY"
+           ]
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "each": {
+           "weeks": [
+            3
+           ],
+           "sport": "STRENGTH"
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         }
+        ]
+       },
+       {
+        "stepId": "s6",
+        "at": {
+         "week": 6,
+         "day": 3,
+         "time": "06:30"
+        },
+        "event": {
+         "kind": "SCHEDULE_CHANGE",
+         "changes": {
+          "runTurn": "PM"
+         }
+        },
+        "note": "Back from 17 days away without saying so; only asks to move runs to the evening."
+       },
+       {
+        "stepId": "a6",
+        "at": {
+         "week": 6,
+         "day": 3,
+         "time": "08:00"
+        },
+        "event": {
+         "kind": "WEEKLY_REVIEW",
+         "interruption": {
+          "startDate": "2027-02-03",
+          "endDate": "2027-02-19",
+          "days": 17,
+          "reasonCategory": "VACATION",
+          "nonclinical": true,
+          "reason": "Family trip; no training at all."
+         }
+        },
+        "note": "Answer: a declared nonclinical break."
+       },
+       {
+        "stepId": "w6",
+        "at": {
+         "week": 6,
+         "day": 6,
+         "time": "21:00"
+        },
+        "event": {
+         "kind": "WEEKLY_REVIEW"
+        },
+        "observations": [
+         {
+          "each": {
+           "weeks": [
+            6
+           ],
+           "sport": "RUN",
+           "roles": [
+            "EASY",
+            "LONG",
+            "QUALITY",
+            "WALK_JOG",
+            "WALK",
+            "RACE_TOUCH",
+            "SHAKEOUT",
+            "RECOVERY_EASY"
+           ]
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "each": {
+           "weeks": [
+            6
+           ],
+           "sport": "STRENGTH"
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         }
+        ]
+       },
+       {
+        "stepId": "w7",
+        "at": {
+         "week": 7,
+         "day": 6,
+         "time": "21:00"
+        },
+        "event": {
+         "kind": "WEEKLY_REVIEW"
+        },
+        "observations": [
+         {
+          "each": {
+           "weeks": [
+            7
+           ],
+           "sport": "RUN",
+           "roles": [
+            "EASY",
+            "LONG",
+            "QUALITY",
+            "WALK_JOG",
+            "WALK",
+            "RACE_TOUCH",
+            "SHAKEOUT",
+            "RECOVERY_EASY"
+           ]
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "each": {
+           "weeks": [
+            7
+           ],
+           "sport": "STRENGTH"
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         }
+        ]
+       },
+       {
+        "stepId": "w8",
+        "at": {
+         "week": 8,
+         "day": 6,
+         "time": "21:00"
+        },
+        "event": {
+         "kind": "WEEKLY_REVIEW"
+        },
+        "observations": [
+         {
+          "each": {
+           "weeks": [
+            8
+           ],
+           "sport": "RUN",
+           "roles": [
+            "EASY",
+            "LONG",
+            "QUALITY",
+            "WALK_JOG",
+            "WALK",
+            "RACE_TOUCH",
+            "SHAKEOUT",
+            "RECOVERY_EASY"
+           ]
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "each": {
+           "weeks": [
+            8
+           ],
+           "sport": "STRENGTH"
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         }
+        ]
+       },
+       {
+        "stepId": "r14",
+        "at": {
+         "week": 14,
+         "day": 0,
+         "time": "07:00"
+        },
+        "event": {
+         "kind": "RETURN_AFTER_PAUSE",
+         "interruption": {
+          "startDate": "2027-03-10",
+          "endDate": "2027-04-13",
+          "days": 35,
+          "reasonCategory": "WORK",
+          "nonclinical": true,
+          "reason": "Five-week project at a remote site; no gym and no running."
+         }
+        },
+        "note": "Declared before the first session after the break, with a 20-minute easy test run two days earlier."
+       },
+       {
+        "stepId": "w14",
+        "at": {
+         "week": 14,
+         "day": 6,
+         "time": "21:00"
+        },
+        "event": {
+         "kind": "WEEKLY_REVIEW"
+        },
+        "observations": [
+         {
+          "each": {
+           "weeks": [
+            14
+           ],
+           "sport": "RUN",
+           "roles": [
+            "EASY",
+            "LONG",
+            "QUALITY",
+            "WALK_JOG",
+            "WALK",
+            "RACE_TOUCH",
+            "SHAKEOUT",
+            "RECOVERY_EASY"
+           ]
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "each": {
+           "weeks": [
+            14
+           ],
+           "sport": "STRENGTH"
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         }
+        ]
+       },
+       {
+        "stepId": "w15",
+        "at": {
+         "week": 15,
+         "day": 6,
+         "time": "21:00"
+        },
+        "event": {
+         "kind": "WEEKLY_REVIEW"
+        },
+        "observations": [
+         {
+          "each": {
+           "weeks": [
+            15
+           ],
+           "sport": "RUN",
+           "roles": [
+            "EASY",
+            "LONG",
+            "QUALITY",
+            "WALK_JOG",
+            "WALK",
+            "RACE_TOUCH",
+            "SHAKEOUT",
+            "RECOVERY_EASY"
+           ]
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         },
+         {
+          "each": {
+           "weeks": [
+            15
+           ],
+           "sport": "STRENGTH"
+          },
+          "completed": true,
+          "asPrescribed": true,
+          "response": {
+           "performance": "COMPATIBLE",
+           "recovery": "COMPATIBLE",
+           "effort": "ON_TARGET",
+           "nextDayFunction": "NORMAL"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "compareAtStep": "r14",
+     "expect": "NOT_HIGHER_RUN_LOAD",
+     "rationale": "Without the demonstration run (less evidence of current tolerance) the return should not be more ambitious. (Direction: the variant's plan compared with the base case's plan.)"
+    },
+    {
+     "relation": "CALENDAR_SHIFT"
+    }
+   ]
+  }
+ ]
+}
