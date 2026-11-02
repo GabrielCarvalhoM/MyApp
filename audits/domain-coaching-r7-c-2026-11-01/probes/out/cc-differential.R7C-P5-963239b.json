@@ -1,0 +1,95 @@
+{
+ "check": "R7C-P5-CC-DIFFERENTIAL",
+ "base": {
+  "revision": "R7C-FREEZE-1",
+  "commit": "1890f66356455112907d757032a8b1cd2de29c00"
+ },
+ "head": "963239b1d5ce0ed5f466a7b23819cd8151cb3c7d",
+ "scenarios": 99,
+ "generationFailures": 0,
+ "families": {
+  "weekZero": {
+   "scenarios": 14,
+   "identical": 14,
+   "differing": 0
+  },
+  "timely": {
+   "scenarios": 14,
+   "identical": 14,
+   "differing": 0
+  },
+  "timely-short70": {
+   "scenarios": 3,
+   "identical": 3,
+   "differing": 0
+  },
+  "returnDemo": {
+   "scenarios": 48,
+   "identical": 48,
+   "differing": 0
+  },
+  "neverReported": {
+   "scenarios": 20,
+   "identical": 18,
+   "differing": 2
+  }
+ },
+ "differing": [
+  {
+   "scenario": "neverReported EASY_CURRENT W=2",
+   "steps": [
+    {
+     "step": 0,
+     "F1": {
+      "W": 2,
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "ph": null,
+      "runs": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "HEAD": {
+      "W": 2,
+      "s": "MODIFY",
+      "a": "REPLAN_FROM_EVIDENCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "ph": "d7355d8965550c30367b710ed36341a76ffcacf9976a3af94ada710902ee8f52",
+      "runs": "E35/E35/L50 | E35/E35/L45",
+      "reason": "Run doses stored ahead exceed what the recorded runs allow (the longest run completed in the window plus the single-run step, or the reviewed entry when none is"
+     }
+    }
+   ]
+  },
+  {
+   "scenario": "neverReported EASY_CURRENT W=4",
+   "steps": [
+    {
+     "step": 0,
+     "F1": {
+      "W": 4,
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "ph": null,
+      "runs": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "HEAD": {
+      "W": 4,
+      "s": "MODIFY",
+      "a": "REPLAN_FROM_EVIDENCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "ph": "bb2d2dd1a0d820a39ad445169ed24ca8553120477919ccc7ff830992c1b3cc91",
+      "runs": "E35/E35/L50 | E35/E35/L55",
+      "reason": "Run doses stored ahead exceed what the recorded runs allow (the longest run completed in the window plus the single-run step, or the reviewed entry when none is"
+     }
+    }
+   ]
+  }
+ ]
+}
