@@ -379,7 +379,7 @@ function replayHeld(ctx,s){
  const d=HANDLERS[s.kind]({...ctx,kind:s.kind,review});
  // Still asked about (a later week's unreported training, say): no answer has landed for the signal yet; it keeps waiting with the question.
  if(d.question?.kind==='UNREPORTED_TRAINING')return null;
- return {...d,reason:`The ${REACTIVE[s.kind]} reported on ${localDate(s.asOf,ctx.program.timezoneOffsetMinutes??0)} with the question is applied with the answer: ${d.reason}`};
+ return {...d,reason:`The ${REACTIVE[s.kind]} reported on ${localDate(s.asOf,ctx.program.timezoneOffsetMinutes??0)} with the question is re-evaluated with the answer: ${d.reason}`};
 }
 function finishProposal(program,sk,next,decision){
  const proposal=clone(program);proposal.weeks=next.weeks;proposal.stateTrace=next.stateTrace??program.stateTrace;

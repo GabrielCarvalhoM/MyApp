@@ -271,7 +271,7 @@ test('R7-C SD-03: a fatigue report held by the question is applied when a plain 
   const wait=step(copy(B),7,{day:1,hour:'07:00:00'});
   assert.equal(wait.status,'ASK');assert.equal(wait.referenceState.pending.signal?.kind,'SYSTEMIC_FATIGUE',V+': still waiting');
   const r=step(B,7,{...AT(2),observations:facts});
-  assert.equal(r.action,'REDUCE',V+': the held fatigue is applied with the answer: '+r.reason);assert.match(r.reason,/systemic fatigue reported on .* with the question is applied with the answer/);
+  assert.equal(r.action,'REDUCE',V+': the held fatigue is applied with the answer: '+r.reason);assert.match(r.reason,/systemic fatigue reported on .* with the question is re-evaluated with the answer/);
   assert.deepEqual(fromDay(B.p,7,2),fromDay(A.p,7,2),V+': the same plan in force as the fatigue applied on time');
   assert.equal(r.referenceState.pending,null,V+': consumed');assert.equal(r.planValidity.status,'VALID_WITHIN_CURRENT_BOUNDED_SCOPE');
  }
@@ -289,7 +289,7 @@ test('R7-C SD-03: a performance report held by the question is re-evaluated with
  const held=step(B,7,{...event,observations:week7(B)});
  assert.equal(held.status,'ASK',held.reason);assert.equal(held.referenceState.pending.signal?.kind,'UNDERPERFORMANCE');assert.equal(held.referenceState.pending.signal?.targetSessionId,target.id);
  const r=step(copy(B),7,{day:6,hour:'21:00:00',observations:facts});
- assert.match(r.reason,/underperformance reported on .* with the question is applied with the answer/);
+ assert.match(r.reason,/underperformance reported on .* with the question is re-evaluated with the answer/);
  assert.deepEqual(fromDay(inForce(B,r),8,0,1),fromDay(inForce(A,ra),8,0,1),'week 8 as the report decided on time');
  assert.equal(r.planValidity.status,ra.planValidity.status);
  // Not answered that week: the signal stays with its week; next week's pending question does not carry it.
