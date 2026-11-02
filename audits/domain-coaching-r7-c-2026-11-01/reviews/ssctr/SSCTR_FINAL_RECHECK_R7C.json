@@ -1,0 +1,288 @@
+{
+ "revision": "SSCTR-FR-R7C-r3",
+ "reviewDate": "2026-11-02",
+ "recordKind": "Narrow final recheck on frozen bytes (R7C-FREEZE-1). Not a new disposition: it confirms, on the frozen bytes, the nine items of FINAL_RECHECK_REQUEST.md, within the finalRecheckScope of SSCTR-SD-R7C-r2.",
+ "request": "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/FINAL_RECHECK_REQUEST.md (committed in f96041f)",
+ "predecessors": {
+  "r1": "SSCTR-SD-R7C-r1 (NOT_READY, SSCTR-SD-01), kept unchanged",
+  "r2": "SSCTR-SD-R7C-r2 (ACCEPT_R7C_UNKNOWN_SEMANTICS), kept unchanged; sha256 ccf61f1be02bbe2511d132e3c9f0815cd70eb60fe655d0bd990777be629ebae6, equal to the freeze record's semanticDisposition.sha256"
+ },
+ "reviewer": {
+  "instance": "ssctr-r7c-final-recheck-2026-11-02",
+  "role": "sports-science-concurrent-training-reviewer (SSCTR-1.0.0, constitution SSCTR-CONST-1.0.0, skill sports-science-review 1.0.0)",
+  "model": "claude-opus-5-5",
+  "effort": "xhigh (task-route envelope)",
+  "dispatch": "Launched by the R7-C coordinator as a subagent with a task-route envelope naming this role. The Agent tool is absent from this instance and no specialist was delegated. Whether the native project agent type was used cannot be observed from inside the instance.",
+  "independence": "This instance did not author the runtime, the Phase 5 fix, the directed tests, the legacy split (738928b), the freeze generator, the verifier, the freeze record or the handoff. The legacyTests and legacySplitRules the split is checked against were written by an earlier instance of this role (r2). This recheck checks the coordinator's split against them and does not re-judge r2's sporting conclusions, so it is not an independent re-review of r2. Own writes: this record, its .md, and probes/final/ (one probe, two outputs).",
+  "literatureAccess": "WebSearch and WebFetch available and working (checked 2026-11-02). WebFetch reads through a summarizing model. No new scientific claim is made here, so no new source is relied on."
+ },
+ "authority": {
+  "type": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY",
+  "scope": "Bounded nonclinical internal sporting confirmation that the frozen bytes of the offline synthetic Node 24 shadow reference (CoachingCore) carry the semantics accepted in SSCTR-SD-R7C-r2.",
+  "humanValidation": false,
+  "empiricalProductValidation": false,
+  "clinicalClearance": false,
+  "runtimeSovereignty": false,
+  "gateStatus": "SSCTR final recheck recorded here. It does not close the R7-C gate alone: the independent Engineering review of the same freeze and the competent closure remain.",
+  "publicationStatus": "NOT_PUBLISHED",
+  "v1Authority": "V1_COACHING_AUTHORITY_READY stays NO (handoff); this record does not change it.",
+  "notChanged": "No runtime, test, freeze record, verifier, policy, catalog, product/, canon/, CURRENT_MISSION.md, MISSION_LEDGER.md, closed-mission record or human queue was edited. reviews/engineering/ was neither read nor written (its untracked probes/ folder exists and was not touched). npm run verify was not run. No verify-r* script other than verify-r7c.mjs without --write was run. phase5-run-evidence.mjs and phase5-mutation.mjs were not run. The b2-copy clinical probes were run as verbatim copies from the session scratchpad, so nothing was written into the coordinator's directory."
+ },
+ "bytes": {
+  "head": "f96041fad418fa4f7dd68472ad626672426eb143",
+  "freeze": "R7C-FREEZE-1",
+  "freezeRecord": "CoachingCore/r7/c/RUNTIME_FREEZE_R7C_1.json",
+  "freezeCommit": "1890f66356455112907d757032a8b1cd2de29c00",
+  "sourceDigest": "29bf25327cfedf57add2ed7f4c4e6439ee20c2e6c72add50fa4def5f23bf4b6f",
+  "manifestDigest": "0362faa76f21269b9dbcce469c29338b0717c2ee9030b98c588cf944313b813e",
+  "boundFiles": 138,
+  "sources": {
+   "CoachingCore/src/r6-adaptation.mjs": "8b189617fe2c8ca01b01472225ac35411e160ec474a5be6ca965cf6ff1fa1587",
+   "CoachingCore/src/r6-composition.mjs": "2a4c47e8775773182d77e90938db92184917c4954f256d4e83c1b965124cb7ce"
+  },
+  "sourcesCheckedBy": "sha256 of the working files and of git show 1890f66:<path>, both equal to r2's sha256 and to the freeze record",
+  "runtimeEqualToR2": "git diff e1a4ef4 1890f66 -- CoachingCore/src is empty (0 bytes). git diff 1890f66 HEAD -- CoachingCore/src CoachingCore/test is empty.",
+  "legacySplit": {
+   "commit": "738928be28ce8aaccf592c188933b31f2882da22",
+   "files": {
+    "CoachingCore/test/r6-engineering-fixes.test.mjs": "e2963d56397b12de9bd6dc805832fb1794d605f708b759db58543fbdb8869680",
+    "CoachingCore/test/r6-ssctr-revision.test.mjs": "35630df7398fd0802a83788b66302084aaedb896c73614ad1e3ffc86c6b7f89a",
+    "CoachingCore/test/r7asc-state-consumer.test.mjs": "17d4ffd925724b53947376e02ea93448dcfcea4a3fed0fc6b121f1b00d649032",
+    "CoachingCore/test/r7b-hybrid-program.test.mjs": "49fc1de1003422523636e5def14d3becd57773ec31548f503ae09dc5304ae14f",
+    "CoachingCore/test/r6-adaptation.test.mjs": "4c82c0d7ebdc6b2df1ab1d0f184a87bb7a74ca1f41badaad3cc47862afcaa5cb"
+   },
+   "scope": "git diff --name-only e1a4ef4 738928b -- CoachingCore/test lists exactly these five files. git diff 738928b 1890f66 -- CoachingCore/test is empty. The five sha256 equal the freeze record."
+  },
+  "inputsUnchanged": {
+   "policy R6-POLICY-5 CoachingCore/r6/PROGRAM_POLICY_R6.json": "a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100",
+   "catalog R7B0-CATALOG-2 CoachingCore/r7/b0/REPERTOIRE_CATALOG_B0.json": "ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9",
+   "human queue reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json": "95ea4b92819455a7176e43e7a856dcff872b2ecf9cd575174468829f186099c8, 230 items, funding_trigger NOT_DECLARED",
+   "src, r5, r6, r7/b0, product/, canon/, CURRENT_MISSION.md, MISSION_LEDGER.md, reviews/": "git diff 074b835 f96041f is empty for these paths; verifier inputs-unchanged and append-only PASS"
+  }
+ },
+ "gate": "ACCEPT_WITH_CONDITIONS",
+ "gateRationale": "All nine items are confirmed on the frozen bytes, and nothing blocks. The gate is ACCEPT_WITH_CONDITIONS, not READY, because r2's acceptance holds only with the consumer conditions C2, C3, C8 and C9 binding (with C4, C5, C7 and C10 also in force). They are carried in the freeze record and the handoff, but they are obligations on consumers, G03 and Engineering that no frozen byte discharges.",
+ "items": [
+  {
+   "id": 1,
+   "item": "SD-01 closed on the frozen bytes",
+   "status": "CONFIRMED",
+   "reason": [
+    "The runtime is byte-identical to the e1a4ef4 bytes on which r2 closed SD-01.",
+    "Re-run on HEAD f96041f, every output byte-identical:",
+    " - SD7: 0 credited;",
+    " - SD9: the :85 fixture's week 7 at 15/15/15;",
+    " - SD8 controls;",
+    " - the 3,060-cell kinds-days grid: 0 validity and 0 history violations; the only answer-week flags are 58 entry runs with strides, all GEN week 7 after two executed weeks, which the timely path also plans;",
+    " - the coordinator's SD grid: 1,200 cells, 0 violations (24 PREEXISTING_HOLD, 4 ELAPSED_HISTORY_QUESTION); C 9/0, S 6/0, I 4/0;",
+    " - verify-sd01.",
+    "Own cross-runtime probe: the frozen split tests pass on the frozen runtime. On the Phase 4 runtime (6240080, SD-01 present), QRE-R6-04, D18 (day 0) and §19 (day 2 of week 5) fail, the answer returning KEEP/KEEP where MODIFY/REPLAN_FROM_EVIDENCE is required. The legacy split now guards SD-01 too.",
+    "Mutation on f69ddbb (read, not re-run): SD-M1, SD-M2 and SD-M4 killed by 12 directed tests each."
+   ]
+  },
+  {
+   "id": 2,
+   "item": "SD-02 closed",
+   "status": "CONFIRMED",
+   "reason": "The answer week is tested in the R7-C directed tests, which pass inside the 848/848 suite re-run by this reviewer through the verifier. It is also tested in the legacy split: the D18 answer on day 0 and day 2 asserts week 7 from the answer day; §19 (b) asserts week 5 from day 2; QRE-R6-04 asserts the day-2 answer. Mutant SD-M2 (re-plan the following weeks but not the answer week) is killed with 12 failing tests on f69ddbb (mutation output read, not re-run). The cross-runtime probe shows the split tests themselves fail on the runtime that did not re-plan the answer week."
+  },
+  {
+   "id": 3,
+   "item": "SD-03 closed, within the recorded residual (SSCTR-SD5-02, C3/C8)",
+   "status": "CONFIRMED",
+   "reason": "Re-run byte-identical on the frozen bytes:\n- signals-residuals: the held signal re-evaluated by a plain review in its week; it survives a partial answer; it does not cross its week; clinical takes over;\n- recovered-and-held: the residual is unchanged and no wider. An answer inside SCHEDULE_CHANGE, EQUIPMENT_CHANGE, GOAL_CHANGE, UNAVAILABLE_DAY or LOCAL_FATIGUE drops the held SYSTEMIC_FATIGUE and validates. A RECOVERED event stays ASK;\n- the coordinator's S grid 6/0.\nMutants SD-M3a, SD-M3b and SD-M3c are killed (read). The residual stays non-blocking and is carried as C3 (consumer) and C8 (engine, next revision), and disclosed under C7."
+  },
+  {
+   "id": 4,
+   "item": "The accepted semantics are the ones frozen (legacy split matches legacyTests and legacySplitRules; no KNOWN_MISS invariant weakened)",
+   "status": "CONFIRMED",
+   "reason": [
+    "Read in full: the 738928b diff of the five files, against r2's legacyTests, per variant.",
+    "QRE-R6-04:",
+    " - UNREPORTED asserts (i)-(iv): no RUN in either ledger; the hand loop decides as the simulator (statuses); hash-equal to KNOWN_MISS before the question; the six-field typed ask for every decision with runs ahead; VALID only with nothing ahead;",
+    " - KNOWN_MISS keeps the original invariant on the final program and adds the per-decision next-week check;",
+    " - ANSWERED asserts the day-2 answer (MODIFY / REPLAN_FROM_EVIDENCE, VALID, pending null), history intact, the known-miss plan at every later review, and the original invariant.",
+    "D18:",
+    " - UNREPORTED: never-reviewed and reviewed-empty, the typed ask, the same session set;",
+    " - KNOWN_MISS: the original assertion, and week 8 at the entry;",
+    " - ANSWERED, day 0 and day 2: runs ahead at the entry and equal to the known miss (own probe: day 0 three sessions, day 2 the two after the elapsed day-1 run), week 8 equal.",
+    "F3/H25:",
+    " - UNREPORTED: S1 VALID with the invariant, S2 the typed ask;",
+    " - KNOWN_MISS: S2 VALID REPLAN_FUTURE_PHASES with the invariant;",
+    " - ANSWERED: the re-submitted event, and a plain review then the event, both VALID with pending null and the invariant.",
+    "§19:",
+    " - UNREPORTED: the week-4 typed ask with no block review; nothing grows; the state holds;",
+    " - KNOWN_MISS: the original three assertions, plus the exact held list;",
+    " - ANSWERED: (a) end of week 4, GATED_NEXT_STEP, block review, week 5 equal to the known miss, state holds; (b) day 2 of week 5, REPLAN_FROM_EVIDENCE, entry and no quality.",
+    "FIFTH: the Phase 2 edit kept as EXECUTED; UNREPORTED the typed ask; KNOWN_MISS and ANSWERED REESTABLISH, VALID, no QUALITY in week 6, runs at or below the entry.",
+    "legacySplitRules: titles kept, the original invariant on every KNOWN_MISS path, the typed ask plus absence of credit in every UNREPORTED variant, known-miss equality plus history plus pending null in every ANSWERED variant, and SSCTR-SD-R7C-r2 cited in all five files.",
+    "No KNOWN_MISS invariant is weakened. Each original assertion appears unchanged on the KNOWN_MISS path, and two are strengthened (QRE per-decision, §19 exact list).",
+    "On R7B2-FREEZE-1, the frozen QRE-R6-04 test fails only at the UNREPORTED question step, after its KNOWN_MISS block passed (cross-runtime probe). R7-C KNOWN_MISS equals R7B2-FREEZE-1 at all 12 reviews, and the D18, F3, §19 and fifth KNOWN_MISS variants reproduce B.2 (qre-r6-04-split and legacy-variants, re-run byte-identical).",
+    "Minor test-strength notes, non-blocking: findings FR-01 and FR-02."
+   ]
+  },
+  {
+   "id": 5,
+   "item": "G02 still inside R6-PARTIAL-NOISY-LEARNING",
+   "status": "CONFIRMED",
+   "reason": "learnedMaintenance is not touched by the Phase 5 delta: git diff 39115ed 1890f66 has no line on it. The adversarial-g02 output re-run on the frozen bytes is byte-identical to the committed f69ddbb output and to the Phase 4 output R7C-P4-39115ed (47212a8f…), on which r1 confirmed the binding (consent; BUILD; identical prescription and pool; EMERGING or STRONG, never MIXED; 56 days; holds the last executed long run only; causal false). The mutation Phase 3 set on f69ddbb (read) is 17/18, with G02-M4 equivalent and its witness killed."
+  },
+  {
+   "id": 6,
+   "item": "D1 still the ACCEPTABLE_RESIDUAL",
+   "status": "CONFIRMED",
+   "reason": "The holdout re-run is byte-identical to the committed f69ddbb output. Against R7C-P4-39115ed it differs only in R6-H19 S2's reason text ('The underperformance reported ... with the question is re-evaluated with the answer: ...'). Status, action, gates and plan hash (3ae5bf27…) are unchanged. S2-S4 equal B.2, S4 (the D1 step) is KEEP on both, and S1 asks because the corpus has no earlier facts. The clinical route is intact (item 8). The classification and owners are unchanged from r1: SSCTR with PCG for any in-cycle rule, Product/UX for a check-in."
+  },
+  {
+   "id": 7,
+   "item": "Taper and race week",
+   "status": "CONFIRMED",
+   "reason": "Kinds-days grid (byte-identical), R10K taper answer weeks 9 and 10 and race week 11: 0 answer-week flags. No VALID known-stop cell plans a run above the entry, or any quality or race touch, in a taper or race-week answer week. All 112 taper flags are next-week R1 projections, under C9: week 10 quality after a week-9 answer, and the race-week touch after a week-10 answer. r1-race-week (byte-identical): the answer on taper day 4 projects race week EASY 20 / RACE_TOUCH 25 / RACE, against A's EASY 15 / EASY 15 / RACE. Every next decision converges to A, except the pre-existing last-week SCHEDULE_CHANGE HOLD, which is not VALID. C9's text in the freeze record names the taper-to-race-week case explicitly. SD3 (byte-identical): with the long run reported and the easy runs unreported, the taper and race week plan EASY 15 / EASY 15 / LONG 40, then EASY 15 / EASY 15 / RACE, identical to B.2 (the disclosed B2 residual). Unknown training before a taper asks, never zero (G01 grids byte-identical: grid A 148 = 76/40/32, grid B 46/46, P1 165/0)."
+  },
+  {
+   "id": 8,
+   "item": "Clinical boundary: clinical-first, K6, K6b, CAND-01, CAND-02",
+   "status": "CONFIRMED",
+   "reason": [
+    "Re-run by this reviewer from verbatim copies (sha256 equal) with PROBE_ROOT set to the worktree; identical to the committed f69ddbb outputs except run time, label and root:",
+    " - K6 1/1 PASS; K6b 1/1 PASS; inventory CAND-01, CAND-02 and ADJ PASS;",
+    " - inherited adversarial: 3,228 checks, 0 failed.",
+    "Coordinator SD grid C (clinical first: the answer with a pain flag of any kind, with a held signal, or as a substitution with pain): 9/0, byte-identical.",
+    "signals-residuals R5 (byte-identical): a pain flag with the answer routes to CLINICAL_HUMAN_REQUIRED, and the answer is re-sent after clearance (C3).",
+    "Neighbors and differential against R7B2-FREEZE-1, re-run byte-identical (exit 1, as in the manifest):",
+    " - the 14 neighbor 'failures' all have the expected R7-C outcome, with CLINICAL_HUMAN_REQUIRED on both sides (the TO_CLINICAL relation against an already clinical base);",
+    " - the differential's 58 step findings in 29 timelines are the known C15 relabels, none with a clinical signal or status;",
+    " - substitution grid 184/0; clinical sweep 389/0; envelope findings 0; no run rises.",
+    "This record makes no clinical judgment. Clinical precedence is a routing property, and CLINICAL_HUMAN_REQUIRED stays with qualified humans."
+   ]
+  },
+  {
+   "id": 9,
+   "item": "Conditions C2, C3, C7, C8 and C9 carried in the freeze record (bindingConditions) and the handoff",
+   "status": "CONFIRMED",
+   "reason": "Freeze record: bindingConditions holds C2, C3, C7, C8 and C9 with r2's binding class and text verbatim (string-compared). The verifier's binding-conditions check passes. Handoff: section 'Binding consumer conditions' carries C2, C3, C8 and C9, and section 'Disclosed residuals (C7)' carries every C7 item: D1, B2, B1, the ratified fifth fixture, R1 at its measured magnitude including the race touch, R2 with the timely path as the only differing path, R3 persisting into the next week, R4, R5 and SSCTR-SD5-02. C4, C5 and C10 are also carried. The handoff paraphrases where the record is verbatim (finding FR-03); the paraphrase loses no obligation."
+  }
+ ],
+ "blockers": [],
+ "blockersNote": "None. No item requires the Founder's single post-freeze correction cycle on SSCTR's account.",
+ "conditions": [
+  {"id": "C2", "origin": "r1/r2, carried unchanged", "binding": "CONSUMER_CONDITION_FOR_ACCEPTANCE", "status": "CARRIED (freeze record and handoff)"},
+  {"id": "C3", "origin": "r1/r2, carried unchanged", "binding": "G03_CONDITION_FOR_USE_BEYOND_OFFLINE_REFERENCE", "status": "CARRIED (freeze record and handoff)"},
+  {"id": "C4", "origin": "r1/r2, carried unchanged", "binding": "G03_DATA_CONDITION", "status": "CARRIED (handoff)"},
+  {"id": "C5", "origin": "r1/r2, carried unchanged", "binding": "NON_BLOCKING_NEXT_RUNTIME_REVISION", "status": "CARRIED (handoff)"},
+  {"id": "C7", "origin": "r1/r2, carried unchanged", "binding": "DISCLOSURE", "status": "CARRIED (freeze record and handoff)"},
+  {"id": "C8", "origin": "r2, carried unchanged", "binding": "CONSUMER_CONDITION_FOR_ACCEPTANCE (via C3) and NON_BLOCKING_NEXT_RUNTIME_REVISION (engine)", "status": "CARRIED (freeze record and handoff)"},
+  {"id": "C9", "origin": "r2, carried unchanged", "binding": "CONSUMER_CONDITION_FOR_ACCEPTANCE; ENGINEERING_BEFORE_ANY_USE_BEYOND_THE_OFFLINE_REFERENCE", "status": "CARRIED (freeze record and handoff)"},
+  {"id": "C10", "origin": "r2, carried unchanged", "binding": "ROUTING_TO_POLICY_OWNER", "status": "CARRIED (handoff)"}
+ ],
+ "conditionsNote": "No new condition. The texts are those of SSCTR-SD-R7C-r2. Where the handoff paraphrases, the verbatim texts in the freeze record's bindingConditions govern.",
+ "findings": [
+  {
+   "id": "FR-01",
+   "severity": "INFO (non-blocking; not DIRECT_R7C_DELTA)",
+   "title": "QRE-R6-04 ANSWERED applies its next-week intense check to VALID decisions only. r2's wording said 'no decision'.",
+   "evidence": "On this fixture, the only non-VALID decision on the ANSWERED path is the week-4 ASK, and it has 0 intense sessions in week 5 (sd5/qre-r6-04-split, byte-identical on the frozen bytes). The unrestricted assertion would pass, so nothing is hidden.",
+   "recommendation": "Widen the filter to every decision in a later test revision. Not required for this freeze."
+  },
+  {
+   "id": "FR-02",
+   "severity": "INFO (non-blocking)",
+   "title": "Some UNREPORTED variants assert the typed ask with four of its six fields.",
+   "evidence": "§19, F3 S2 and FIFTH assert status ASK, question UNREPORTED_TRAINING, proposal null and REQUIRES_RECONCILIATION, not missingInputs or pending.status. QRE-R6-04 and D18 assert all six. legacySplitRules rule 2 (the typed ask and the absence of credit, not merely that a question exists) is met. Absence of credit: §19 asserts no growth and the state hold; F3 and FIFTH have no proposal."
+  },
+  {
+   "id": "FR-03",
+   "severity": "INFO (documentary; non-blocking; the handoff is not a frozen byte)",
+   "title": "The handoff paraphrases C8 and C9, and one summary line is broader than R1 allows.",
+   "evidence": [
+    "C9 in the handoff omits the record's explicit 'including the taper-to-race-week case'. Its generic scope still covers it, and the R1 disclosure names the race-week touch.",
+    "C8 omits 'with the plan REQUIRES_RECONCILIATION until the signal kind is re-submitted'.",
+    "'Semantics accepted' says that once answered, 'the answer week and the weeks after are re-planned from the facts'. Under R1 the following week's projection can still credit elapsed unreported answer-week sessions until the next decision. R1 and C9 are disclosed in the same handoff."
+   ],
+   "recommendation": "At closure, state in the handoff that the freeze record's bindingConditions texts govern, add the taper clause to C9, and qualify the summary line with 'subject to R1/C9'."
+  },
+  {
+   "id": "FR-04",
+   "severity": "INFO (positive evidence)",
+   "title": "The frozen legacy split discriminates between runtimes.",
+   "evidence": "probes/final/legacy-split-crossruntime.mjs: FROZEN 5/5 pass; PHASE4 (6240080) QRE-R6-04, D18 and §19 fail on the answer returning KEEP/KEEP, while F3 and FIFTH pass; B2 (1a1c728) 5/5 fail at their UNREPORTED step. The SD mutants were run against the R7-C directed tests only, so this adds the legacy files' sensitivity to SD-01."
+  },
+  {
+   "id": "FR-05",
+   "severity": "INFO",
+   "title": "Every f69ddbb output equals its e1a4ef4 counterpart apart from labels and timestamps.",
+   "evidence": "Normalized comparison of all 21 committed pairs in probes/out and probes/b2-copy/out. The exceptions are full-suite (848/844/4 to 848/848, as stated), the evidence manifest itself, and the mutation output, which has no e1a4ef4 counterpart (its 0897261 predecessor differs by one runtime line and two test lines, per r2)."
+  }
+ ],
+ "verification": {
+  "verifier": "node CoachingCore/scripts/verify-r7c.mjs --suite (no --write), run 2026-11-02T04:48:51Z: 12/12 PASS. files-current, files-at-commit, source-digest, manifest-digest, inputs-unchanged, append-only CURRENT_MISSION.md and MISSION_LEDGER.md, semantic-disposition, binding-conditions, evidence-manifest, evidence-mutation, and suite: 848 tests, 848 pass, 0 fail. It wrote nothing.",
+  "rerunByteIdentical": "20 re-runs, listed with sha256 in probes/final/out/reruns.f96041f.json:\n- own sd5 probes (8), equal to their e1a4ef4 outputs;\n- r1 sd probes (4), equal to the committed f69ddbb outputs;\n- coordinator phase3-adversarial-g02 (also equal to Phase 4), phase3-holdout, phase5-adversarial-sd, phase4-verify-sd01 and phase4-adversarial-g01;\n- neighbors-r7b2 and regress-r7b2 with --base R7B2-FREEZE-1;\n- conformance-r7b, conformance-r7b1 and conformance-r7b2: PASS, with stdout sha256 equal to the freeze record.",
+  "clinicalCopies": "b2-copy k6, k6b, inventory and adversarial, from verbatim copies in the session scratchpad: identical except run time, label and root.",
+  "ownProbe": "probes/final/legacy-split-crossruntime.mjs (see FR-04).",
+  "readNotRerun": [
+   "mutation.R7C-P5-f69ddbb.json (Phase 3 set 17/18 with G02-M4 equivalent and its witness killed; Phase 4 rules 8/8; SD 6/6), with sha256 equal to the freeze record (verifier evidence-mutation PASS).",
+   "full-suite.R7C-P5-f69ddbb.json (replaced by this reviewer's own suite run through the verifier)."
+  ],
+  "literatureCheck": "Access check and re-review screen only (queryLog). No source is newly relied on."
+ },
+ "claims": [],
+ "claimsNote": "No new material scientific claim. r1 and r2 claims (C-SD-01, C-SD-02, C-SD-03, C-SD-04, C-SD5-01, C-SD5-02) and their evidence status and limits are carried unchanged. The re-review screen found nothing that changes them.",
+ "sources": [
+  {
+   "id": "S2",
+   "citation": "Bosquet L, Montpetit J, Arvisais D, Mujika I. Effects of tapering on performance: a meta-analysis. Med Sci Sports Exerc. 2007;39(8):1358-65. doi:10.1249/mss.0b013e31806010e0. PMID 17762369.",
+   "access": "PubMed record re-opened 2026-11-02 through WebFetch (summarizing model). Abstract conclusion seen: 'A 2-wk taper during which training volume is exponentially reduced by 41-60% seems to be the most efficient strategy'. No erratum, correction, retraction or expression of concern shown on the page.",
+   "use": "Correction/retraction screen of the r1 source behind C-SD-03 only."
+  }
+ ],
+ "queryLog": [
+  {"tool": "WebSearch", "query": "systematic review detraining retraining endurance athletes training cessation 2025 2026", "purpose": "access check and re-review screen (a newer systematic review would be a trigger)", "date": "2026-11-02", "result": "No 2025 or 2026 systematic review on endurance detraining surfaced. Barbieri et al. 2024 (S5, already cited) was the most recent. A 2022 meta-analysis on short- and long-term detraining and VO2max (Zheng et al.) surfaced through a mirror page. It was not opened and nothing relies on it; it predates r2 and no ruling uses a magnitude. Negative search, standard mode, limited."},
+  {"tool": "WebFetch", "url": "https://pubmed.ncbi.nlm.nih.gov/17762369/", "purpose": "correction/retraction screen of S2", "date": "2026-11-02", "result": "Loaded; no erratum or retraction shown."}
+ ],
+ "aeReview": "Unchanged from r2. No adaptive decision is re-judged: the frozen runtime equals the bytes r2 reviewed, and the legacy split only adds tests.",
+ "probes": {
+  "own": [
+   {
+    "file": "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/final/legacy-split-crossruntime.mjs",
+    "sha256": "7090a139bf6be92626589a61235ccc6edc717379a5bd52797429ad2e0f8f5fec",
+    "output": "probes/final/out/legacy-split-crossruntime.f96041f.json",
+    "outputSha256": "a386c448e148f454361526e3cb7a328030ca0159ba112df00c02a0b7cbacce6d",
+    "covers": "The five frozen split tests on the frozen runtime, the Phase 4 runtime and R7B2-FREEZE-1. Only the two runtime files are swapped; the frozen tree is extracted through a temporary index file outside the repository."
+   },
+   {
+    "file": "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/final/out/reruns.f96041f.json",
+    "sha256": "aeb49d2c166c2bf18b8e7eb1bd756d6f3bb977fc1c0cd1097faf9e2c7d96469e",
+    "covers": "Re-run manifest: sha256 of every re-run output and of what it was compared to, the clinical copies and the verifier report."
+   }
+  ]
+ },
+ "proposedQueueItems": "Unchanged: the two items proposed in SSCTR-SD-R7C-r2 (the R7-C unknown semantics, and the G02 binding) stay proposed. They are bound now to R7C-FREEZE-1 (source digest 29bf2532…4b6f). Not appended here; appending belongs to the competent closure.",
+ "humanRevalidation": {
+  "humanValidation": false,
+  "fundingTrigger": "NOT_DECLARED (queue funding_trigger.state, verified)",
+  "queueAppended": false,
+  "futureHuman": "A qualified human may maintain, modify or revoke this recheck and r2 with evidence and verified qualifications. This reviewer has no veto.",
+  "clinical": "Clinical dependencies stay CLINICAL_HUMAN_REQUIRED and never wait for funding."
+ },
+ "couldNotVerify": [
+  "Schema validation: Python is not installed ('python', 'python3' and 'py' are absent), so .agents/skills/sports-science-review/scripts/validate_records.py was not run. This record follows the request's field list and is not claimed schema-valid.",
+  "The mutation run was read, not re-run (phase5-mutation.mjs is excluded by the request). Its sha256 equals the freeze record.",
+  "The full texts of the sources. No source is newly relied on.",
+  "On R7B2-FREEZE-1, the frozen D18, F3, §19 and fifth tests stop at their UNREPORTED step, so their KNOWN_MISS blocks were not executed there by the frozen test code. Their equality to B.2 rests on r2's probes, re-run byte-identical here.",
+  "The independent Engineering review of the same freeze (not read, by instruction).",
+  "Real-user behaviour, consumer compliance with C2, C3, C8 and C9, asking cost, and HealthKit matching. None exists yet.",
+  "R1, R2 and R3 beyond the shapes probed in r2 (carried unchanged).",
+  "Whether the native project agent dispatch was used (not observable from inside)."
+ ],
+ "expiry": {
+  "owner": "Chief / R7-C coordinator",
+  "eventTriggers": [
+   "Any change to a file bound by R7C-FREEZE-1 (manifest digest 0362faa7…813e), in particular r6-adaptation.mjs or r6-composition.mjs.",
+   "An engine fix for R1 (C9) or SD-03 (C8), or a C5 or R4 fix.",
+   "A G03 decision on the answer interaction or cadence.",
+   "A policy, catalog, canon or product change touching D17/D18, R18, return, event or reactive-signal rules.",
+   "New real V1 data on reporting gaps or re-entry, or a relevant new systematic review on detraining, retraining or tapering."
+  ],
+  "reviewBy": "2027-04-30, or the first trigger, whichever comes first"
+ }
+}
