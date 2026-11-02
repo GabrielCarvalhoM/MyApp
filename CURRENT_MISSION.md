@@ -1032,3 +1032,45 @@ Same branch and worktree, from `6240080`; nothing merged or pushed.
   - then a new freeze and the rechecks.
 
   R7-D not started. [Checkpoint](audits/domain-coaching-r7-c-2026-11-01/PHASE5_CHECKPOINT.md).
+
+<!-- DOMAIN_COACHING_R7C: DCR7C-20261102-phase6-r1 -->
+## DOMAIN_COACHING_R7-C — Longitudinal Coaching — Phase 6 CLOSED NOT_READY / 2026-11-02
+
+A direct Founder request authorizes **R7-C Phase 6 only**: close QE-R7C-07. An answer to `UNREPORTED_TRAINING` must be applied independently of the decision that recorded it. The phase includes directed tests, the full suite, `R7C-FREEZE-3`, the Engineering review and the SSCTR narrow recheck. There is no correction loop: a new blocker closes the phase.
+
+Same branch and worktree, from `9863732` / R7C-FREEZE-2 (`a10cec0`); nothing merged or pushed.
+
+- **States:**
+  - R7C_PHASE6_STATUS = CLOSED_NOT_READY.
+  - Engineering on R7C-FREEZE-3 = NOT_READY (QE-R7C-10, DIRECT_R7C_DELTA).
+  - SSCTR-P6-R7C-r5 = ACCEPT_WITH_CONDITIONS (no SSCTR blocker).
+  - D1 = ACCEPTABLE_RESIDUAL. V1_COACHING_AUTHORITY_READY = NO.
+- **Done:** the recorded-answer re-plan (`answeredOnRecord`, `397872a`). Reports already in the record re-plan the answer week from the facts (C9), whichever decision recorded them, with no re-send and no new schema.
+  - Order: clinical first, then the ceiling re-plan, then this re-plan; never beside an `UNREPORTED_TRAINING` question.
+  - Recorder independence on the Engineering grid: 0/160 (72 on FREEZE-2).
+- **Test update, classified before the edit:** the P51 fixture of five closed state-model tests was pinned (`dca3f94`), EXPECTED_SEMANTIC_UPDATE of the fixture only, no assertion changed; both gates confirm.
+- **R7C-FREEZE-3:**
+  - bytes `08c6db3`, record sha256 `e21da973…0f36`, source `764ad023…4b38`, manifest `ebc8af2f…bbaa`, 163 files, 866/866;
+  - verifier `verify-r7c.mjs --revision 3 --suite` 20/20.
+- **Evidence on its bytes:**
+  - SD grid, SD-01 and G02 byte-identical to FREEZE-2;
+  - G01 0 violations, P1 165/0; 8 grid-A rows apply late facts, 4 verdicts changed;
+  - differential against FREEZE-2 120/120 identical;
+  - clinical, conformance, holdout and the R7B2 differentials unchanged;
+  - mutation 17/18 plus the equivalent, 8/8, 6/6, CC 9/9, P6 7/7.
+- **Blocker QE-R7C-10** (DIRECT_R7C_DELTA, reproduced). Shortened executed answers are still recorder-dependent: a week a review closed while no run was reported still reads as HOLD, so its late runs count as read. The stale projection stays VALID in 28 of 280 cells (FREEZE-2 224; R7B2-FREEZE-1 0). SSCTR P6-F01 (some mixed answers via a clinical route) has the same cause.
+- **Non-blocking:**
+  - QE-R7C-11 (reach wider than stated; Property B scope);
+  - QE-R7C-12 (re-plan fires again after a direct answer);
+  - QE-R7C-13 (MOVED edge);
+  - QE-R7C-14 (tests use full-dose answers only);
+  - SSCTR C3 r5, C7 r5, C9 r5 note, C11 new.
+
+  The C3 narrowing conflict between the gates is routed, not resolved.
+- **Unchanged:** R6-POLICY-5, R7B0-CATALOG-2, queue (230), `product/`, `canon/`, every closed record, FREEZE-1 and FREEZE-2. The R4 HOLD bug is not fixed. QE-R7C-08 and -09 are not absorbed.
+- **Next:** a runtime mission with its own Founder authorization:
+  1. QE-R7C-10 first: decide "the review read no run" from the record, with tests for shortened and all-adverse answers;
+  2. then QE-R7C-13 and CC-F01;
+  3. then a new freeze and the gates.
+
+  R7-D not started. [Checkpoint](audits/domain-coaching-r7-c-2026-11-01/PHASE6_CHECKPOINT.md).
