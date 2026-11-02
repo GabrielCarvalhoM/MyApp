@@ -14,14 +14,23 @@
 // plus package.json and package-lock.json (QE-R7C-06) and the Engineering reproduction probes among the bound files, every correction-cycle
 // mutant killed, and the predecessor's reviews (SSCTR final recheck, Engineering review) bound by SHA-256 with the cycle's delta from
 // R7C-FREEZE-1. It writes only CoachingCore/r7/c/RUNTIME_FREEZE_R7C_2.json.
+// --revision 3 (R7C-FREEZE-3, DOMAIN_COACHING_R7-C Phase 6, QE-R7C-07): the same checks on the Phase 6 bytes, plus the Engineering recheck
+// probes among the bound files; the evidence of probes/phase6-run-evidence.mjs (the recheck's recorder-independence grid with 0 of 160 cells
+// failing, the differential against R7C-FREEZE-2 with no differing scenario) and of probes/phase6-mutation.mjs (every Phase 6 and correction-
+// cycle mutant killed); the predecessor's rechecks (Engineering NOT_READY on QE-R7C-07, SSCTR-CC-R7C-r4) bound by SHA-256 with the phase's delta
+// from R7C-FREEZE-2, the classified test updates and the r4 condition updates. It writes only CoachingCore/r7/c/RUNTIME_FREEZE_R7C_3.json.
 import fs from 'node:fs';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {spawnSync} from 'node:child_process';
 import {hash} from '../src/value.mjs';
-const N=(()=>{const i=process.argv.indexOf('--revision');return i>=0?process.argv[i+1]:'1';})();if(!['1','2'].includes(N))throw Error('--revision 1|2');
+const N=(()=>{const i=process.argv.indexOf('--revision');return i>=0?process.argv[i+1]:'1';})();if(!['1','2','3'].includes(N))throw Error('--revision 1|2|3');
 const cc=path.resolve(import.meta.dirname,'..'),repo=path.resolve(cc,'..'),revision='R7C-FREEZE-'+N;
 const F1={revision:'R7C-FREEZE-1',commit:'1890f66356455112907d757032a8b1cd2de29c00',record:'CoachingCore/r7/c/RUNTIME_FREEZE_R7C_1.json'};
+const F2={revision:'R7C-FREEZE-2',commit:'a10cec04071be97e409f11a4f831f13eae0c9769',record:'CoachingCore/r7/c/RUNTIME_FREEZE_R7C_2.json'};
+// The Phase 6 test updates, each classified before it was made (no assertion changed): the P51 history's fixture pin.
+const P6_TEST_UPDATES=[{commit:'dca3f94',classification:'EXPECTED_SEMANTIC_UPDATE',scope:'fixture only; no assertion changed',files:['CoachingCore/test/r7asm-state-model.test.mjs','CoachingCore/test/r7asc-state-consumer.test.mjs'],tests:['T1 (QE-R7ASE-01)','T6','T6b','T7c','S3'],
+ reason:'Their P51 history (weeks 2-4 kept by KEEP reviews, weeks 5-6 reported day by day and never reviewed) leaves the plan for week 7 resting on projection over its whole run window; under the Phase 6 invariant that is the state of an answer a refusal or a clinical route recorded, so week 7\'s first decision re-plans it from the facts (answeredOnRecord) and the plan no longer runs ahead. The pin (week 4\'s review adopts a back squat logged 2.5 kg above the plan, an evidence anchor that read the week\'s runs) restores the premise; the assertions are unchanged and pass on R7C-FREEZE-2 bytes too. The original history is pinned by test/r7c-phase6.test.mjs (reach).'}];
 const B2_FREEZE='1a1c7286adc8b08d16f97dea86f4973fe33e5a95',B2_CLOSURE='baa2cb1',AUD='audits/domain-coaching-r7-c-2026-11-01';
 const arg=k=>{const i=process.argv.indexOf(k);return i>=0?process.argv[i+1]:null;};
 const target=path.join(cc,`r7/c/RUNTIME_FREEZE_R7C_${N}.json`);
@@ -38,7 +47,7 @@ for(const f of ['CURRENT_MISSION.md','MISSION_LEDGER.md']){const base=spawnSync(
 const ls=d=>fs.readdirSync(path.join(repo,d)).filter(f=>f.endsWith('.mjs')).map(f=>`${d}/${f}`);
 const list=[...ls('CoachingCore/src'),...ls('CoachingCore/test'),'CoachingCore/r7/b/fixtures/helpers.mjs','CoachingCore/r6/fixtures/dev-authority.mjs','CoachingCore/r6/fixtures/profiles.mjs','CoachingCore/r6/PROGRAM_POLICY_R6.json','CoachingCore/r7/b0/REPERTOIRE_CATALOG_B0.json','CoachingCore/r6/holdout/R6_INDEPENDENT_HOLDOUT.json','audits/domain-coaching-r7-b0-2026-10-31/reviews/SSCTR_RECHECK_B0.json',
  ...['conformance-r7b','conformance-r7b1','conformance-r7b2','neighbors-r7b2','regress-r7b2','evaluate-holdout-r6','freeze-r7c','verify-r7c'].map(s=>`CoachingCore/scripts/${s}.mjs`),
- ...ls(`${AUD}/probes`),...ls(`${AUD}/probes/b2-copy`),...ls(`${AUD}/reviews/ssctr/probes/sd`),...(N==='2'?['CoachingCore/package.json','CoachingCore/package-lock.json',...ls(`${AUD}/reviews/engineering/probes`)]:[])];
+ ...ls(`${AUD}/probes`),...ls(`${AUD}/probes/b2-copy`),...ls(`${AUD}/reviews/ssctr/probes/sd`),...(N!=='1'?['CoachingCore/package.json','CoachingCore/package-lock.json',...ls(`${AUD}/reviews/engineering/probes`),...(N==='3'?ls(`${AUD}/reviews/engineering/probes/recheck`):[])]:[])];
 const missing=list.filter(p=>!fs.existsSync(path.join(repo,p)));if(missing.length)refuse('bound files missing: '+missing.join(', '));
 const files=Object.fromEntries([...new Set(list)].sort().map(p=>[p,shaRepo(p)]));
 // Committed bytes only: every bound file is in HEAD with the same bytes as on disk.
@@ -64,13 +73,21 @@ if(shaRepo(ev.jobs.find(x=>x.name==='adversarial-g02').output)!==shaRepo(`${AUD}
 if(full.fail!==0)refuse('evidence full suite has failures');
 const clinical=ev.jobs.filter(j=>j.name.startsWith('b2-copy/')).map(j=>{if(!j.output||shaRepo(j.output)!==j.sha256)refuse(j.name+' output missing or changed');const o=JSON.parse(fs.readFileSync(path.join(repo,j.output),'utf8'));
  const fail=j.name==='b2-copy/adversarial'?o.failed:(o.results??[]).filter(r=>r.verdict!=='PASS').length;if(fail!==0||j.name!=='b2-copy/adversarial'&&!(o.results??[]).length)refuse(j.name+' has failures or no results');return {name:j.name,output:j.output,sha256:j.sha256,...(j.name==='b2-copy/adversarial'?{checks:o.checks,failed:o.failed}:{pass:o.results.length})};});
+// R7C-FREEZE-3: QE-R7C-07's recorder independence (the Engineering recheck's own grid, rc-p4, run on these bytes; the probe names the runtime it
+// loads F2 by default, here the worktree) and the differential against R7C-FREEZE-2.
+const qe07=N==='3'?(()=>{const job=name=>ev.jobs.find(x=>x.name===name),ri=outOf('recorder-independence'),s=ri.summary?.F2,df=outOf('phase6-differential-vs-R7C-FREEZE-2');
+ if(!s||s.cells!==160||s.RIfail!==0)refuse('recorder independence '+JSON.stringify(s));
+ if(df.base?.commit!==F2.commit||df.generationFailures!==0||df.differing.length!==0)refuse('the differential against R7C-FREEZE-2 differs: '+df.differing.map(d=>d.scenario).slice(0,5).join(', '));
+ return {recorderIndependence:{output:job('recorder-independence').output,sha256:job('recorder-independence').sha256,cells:s.cells,failures:s.RIfail,byAnswer:s.byV,predecessor:{revision:F2.revision,failures:72,source:`${AUD}/reviews/engineering/ENGINEERING_RECHECK_R7C.md`}},
+  differentialVsFreeze2:{output:job('phase6-differential-vs-R7C-FREEZE-2').output,sha256:job('phase6-differential-vs-R7C-FREEZE-2').sha256,scenarios:df.scenarios,families:df.families,differing:0}};})():null;
 // The SSCTR semantic disposition that authorized the legacy split, and the conditions its acceptance binds to this record (SSCTR-SD-R7C-r2:
 // C2, C3, C8 and C9 as binding consumer conditions, C7 the disclosures).
 const SSCTR=`${AUD}/reviews/ssctr/SSCTR_SEMANTIC_REDISPOSITION_R7C.json`,ss=JSON.parse(fs.readFileSync(path.join(repo,SSCTR),'utf8'));
 if(ss.revision!=='SSCTR-SD-R7C-r2'||ss.semanticDisposition!=='ACCEPT_R7C_UNKNOWN_SEMANTICS')refuse('the SSCTR semantic disposition is not ACCEPT_R7C_UNKNOWN_SEMANTICS (r2)');
 const bindingConditions=['C2','C3','C7','C8','C9'].map(id=>{const c=ss.conditions.find(x=>x.id===id);if(!c)refuse('SSCTR condition missing: '+id);return {id,binding:c.binding,text:c.text};});
 const sum=x=>x&&{mutants:x.mutants,killed:x.killed,survived:x.survived,invalid:x.invalid};
-if(N==='2'&&!(mu.correctionCycle?.mutants>0&&mu.correctionCycle.killed===mu.correctionCycle.mutants))refuse('correction-cycle mutation adequacy');
+if(N!=='1'&&!(mu.correctionCycle?.mutants>0&&mu.correctionCycle.killed===mu.correctionCycle.mutants))refuse('correction-cycle mutation adequacy');
+if(N==='3'&&!(mu.phase6QE07?.mutants>0&&mu.phase6QE07.killed===mu.phase6QE07.mutants))refuse('Phase 6 (QE-R7C-07) mutation adequacy');
 if(mu.phase5SD.killed!==mu.phase5SD.mutants||mu.phase4Rules.killed!==mu.phase4Rules.mutants||mu.equivalenceWitness.killed!==1||mu.phase3Set.killed<17||mu.phase3Set.survived.some(id=>id!=='G02-M4'))refuse('mutation adequacy');
 // R7C-FREEZE-2: the predecessor's reviews and the cycle's delta from it.
 const reviewOf=(p,verdict)=>({path:p,sha256:shaRepo(p),verdict});
@@ -78,13 +95,23 @@ const cycle=N==='2'?(()=>{const E=`${AUD}/reviews/engineering/ENGINEERING_REVIEW
  if(e.freeze?.commit!==F1.commit||e.verdict!=='NOT_READY')refuse('the Engineering review is not the NOT_READY review of R7C-FREEZE-1');
  return {predecessorReviews:{engineering:reviewOf(E,e.verdict),ssctrFinal:reviewOf(S,f.gate)},findings:e.findings.map(x=>({id:x.id,severity:x.severity})),
   delta:{src:git('diff','--name-only',F1.commit,'HEAD','--','CoachingCore/src').split('\n').filter(Boolean),test:git('diff','--name-status',F1.commit,'HEAD','--','CoachingCore/test').split('\n').filter(Boolean)}};})():null;
-const record={revision,mission:'DOMAIN_COACHING_R7-C Phase 5'+(N==='2'?' (single correction cycle)':''),commit:head,predecessor:N==='2'?{revision:F1.revision,commit:F1.commit,record:F1.record,sha256:shaRepo(F1.record),base:{revision:'R7B2-FREEZE-1',commit:B2_FREEZE}}:{revision:'R7B2-FREEZE-1',commit:B2_FREEZE},created:new Date().toISOString(),
+// R7C-FREEZE-3: the predecessor's rechecks (Engineering NOT_READY on QE-R7C-07, SSCTR-CC-R7C-r4), the phase's delta from R7C-FREEZE-2, its
+// classified test updates and the r4 condition updates (C3's r4 clause, C7, C9 and C10 as r4 records them).
+const phase6=N==='3'?(()=>{const E=`${AUD}/reviews/engineering/ENGINEERING_RECHECK_R7C.json`,S=`${AUD}/reviews/ssctr/SSCTR_CC_RECHECK_R7C.json`,e=JSON.parse(fs.readFileSync(path.join(repo,E),'utf8')),s4=JSON.parse(fs.readFileSync(path.join(repo,S),'utf8'));
+ if(e.freeze?.commit!==F2.commit||e.verdict!=='NOT_READY'||!e.findings.some(x=>x.id==='QE-R7C-07'&&x.severity==='BLOCKER'))refuse('the Engineering recheck is not the NOT_READY recheck of R7C-FREEZE-2 on QE-R7C-07');
+ if(s4.revision!=='SSCTR-CC-R7C-r4')refuse('the SSCTR recheck is not SSCTR-CC-R7C-r4');
+ for(const u of P6_TEST_UPDATES)if(spawnSync('git',['merge-base','--is-ancestor',u.commit,'HEAD'],{cwd:repo}).status!==0)refuse('test update commit not in HEAD: '+u.commit);
+ return {blocker:'QE-R7C-07',predecessorReviews:{engineering:reviewOf(E,e.verdict),ssctrRecheck:reviewOf(S,s4.gate)},findings:e.findings.map(x=>({id:x.id,severity:x.severity})),
+  delta:{src:git('diff','--name-only',F2.commit,'HEAD','--','CoachingCore/src').split('\n').filter(Boolean),test:git('diff','--name-status',F2.commit,'HEAD','--','CoachingCore/test').split('\n').filter(Boolean)},
+  testUpdates:P6_TEST_UPDATES,conditionUpdates:{record:s4.revision,path:S,sha256:shaRepo(S),conditions:s4.conditions.map(c=>({id:c.id,binding:c.binding,status:c.status,...(c.text?{text:c.text}:{})}))}};})():null;
+const record={revision,mission:N==='3'?'DOMAIN_COACHING_R7-C Phase 6 (QE-R7C-07)':'DOMAIN_COACHING_R7-C Phase 5'+(N==='2'?' (single correction cycle)':''),commit:head,
+ predecessor:N==='3'?{revision:F2.revision,commit:F2.commit,record:F2.record,sha256:shaRepo(F2.record),base:{revision:'R7B2-FREEZE-1',commit:B2_FREEZE}}:N==='2'?{revision:F1.revision,commit:F1.commit,record:F1.record,sha256:shaRepo(F1.record),base:{revision:'R7B2-FREEZE-1',commit:B2_FREEZE}}:{revision:'R7B2-FREEZE-1',commit:B2_FREEZE},created:new Date().toISOString(),
  delta:{src:deltaSrc,test:deltaTest},files,sourceDigest,manifestDigest,tests,conformance,
- evidence:{manifest:{path:evPath,sha256:shaRepo(evPath),head:ev.head},mutation:{path:muPath,sha256:shaRepo(muPath),head:mu.head,phase3Set:sum(mu.phase3Set),equivalenceWitness:sum(mu.equivalenceWitness),phase4Rules:sum(mu.phase4Rules),phase5SD:sum(mu.phase5SD),...(N==='2'?{correctionCycle:sum(mu.correctionCycle)}:{})},sdGrid:sd.summary,g01:{gridA:g01.gridA,gridB:g01.gridB,p1:g01.p1,violations:g01.violations.length},g02:'identical to R7C-P4-39115ed',clinical},
+ evidence:{manifest:{path:evPath,sha256:shaRepo(evPath),head:ev.head},mutation:{path:muPath,sha256:shaRepo(muPath),head:mu.head,phase3Set:sum(mu.phase3Set),equivalenceWitness:sum(mu.equivalenceWitness),phase4Rules:sum(mu.phase4Rules),phase5SD:sum(mu.phase5SD),...(N!=='1'?{correctionCycle:sum(mu.correctionCycle)}:{}),...(N==='3'?{phase6QE07:sum(mu.phase6QE07)}:{})},sdGrid:sd.summary,g01:{gridA:g01.gridA,gridB:g01.gridB,p1:g01.p1,violations:g01.violations.length},g02:'identical to R7C-P4-39115ed',clinical,...(qe07??{})},
  semanticDisposition:{record:ss.revision,path:SSCTR,sha256:shaRepo(SSCTR),disposition:ss.semanticDisposition},bindingConditions,
  unchangedSince:{commit:B2_CLOSURE,paths:UNCHANGED},appendOnly:['CURRENT_MISSION.md','MISSION_LEDGER.md'],
- ...(cycle?{correctionCycle:cycle}:{}),
- verifier:`node CoachingCore/scripts/verify-r7c.mjs${N==='2'?' --revision 2':''} (read-only; --suite also re-runs the suite; --write writes only CoachingCore/r7/c/VERIFICATION_R7C_${N}.json)`};
+ ...(cycle?{correctionCycle:cycle}:{}),...(phase6?{phase6}:{}),
+ verifier:`node CoachingCore/scripts/verify-r7c.mjs${N!=='1'?' --revision '+N:''} (read-only; --suite also re-runs the suite; --write writes only CoachingCore/r7/c/VERIFICATION_R7C_${N}.json)`};
 fs.mkdirSync(path.dirname(target),{recursive:true});
 fs.writeFileSync(target,JSON.stringify(record,null,1)+'\n');
 console.log(JSON.stringify({revision,commit:head,sourceDigest,manifestDigest,files:Object.keys(files).length,tests},null,1));
