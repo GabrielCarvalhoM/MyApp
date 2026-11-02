@@ -504,7 +504,8 @@ export function evaluateProgram(program,review,options={}){
   const decision=gap?heldByRunGap(facts,gap,decided):decided;
   // R7-C QE-R7C-01 (G01): the ceiling re-plan never travels with a question about unknown training. When the decision asks it, or keeps it beside
   // a change, that question decides alone, exactly as without the re-plan (no run dose is planned while it stands); the answer re-plans.
-  if(factual0?.origin==='CEILING'&&decision.question?.kind==='UNREPORTED_TRAINING')return evaluateProgram(program,review,{...options,[NO_CEILING]:true});
+  // So does the recorded-answer re-plan (QE-R7C-07): its later weeks would read the sessions the question is about as not run.
+  if((factual0?.origin==='CEILING'||factual0?.origin==='RECORDED')&&decision.question?.kind==='UNREPORTED_TRAINING')return evaluateProgram(program,review,{...options,[NO_CEILING]:true});
   // Load questions follow the decision's own gates, so they never contradict the adoption the transition made (SSCTR D44).
   out.loadQuestions=loggedLoadQuestions(program,sk,w,ev,{gates:decision.gates??null,confirmations:confirmationsOf(ctx),base:ctx.base});
   if(decision.proposal){
@@ -1193,7 +1194,8 @@ function evidenceState(ctx,{cut,day,ledger,program=ctx.program,ret=null,p=null,r
    if(!hs&&strength.density===undefined&&noviceDensityApplies(skn)&&j<firstStrengthBoundary(skn))strength.density={capped:true};
    const runV=hr?{basis:hr,week:k}:P.values.RUN,sv=hs?{basis:hs,week:k}:null;
    const values=Object.fromEntries(Object.keys(strength.exercises).map(id=>[id,sv??P.values.STRENGTH[id]??{basis:'FACTS',week:null}]));
-   out={state:{run,strength},values:{RUN:runV,STRENGTH:values},sport:{RUN:runV,STRENGTH:sv??P.sport.STRENGTH},since:null,executed:hs?[]:[...new Set([...P.executed,...Object.keys(C5.performed)])]};
+   // The gates the week was read with (R7-C QE-R7C-07, unreadRunWeeks: what the record now shows of the week, against what its review recorded).
+   out={state:{run,strength},values:{RUN:runV,STRENGTH:values},sport:{RUN:runV,STRENGTH:sv??P.sport.STRENGTH},since:null,executed:hs?[]:[...new Set([...P.executed,...Object.keys(C5.performed)])],gates:R.gates};
   }
   memo.set(k,out);return out;
  };
@@ -1261,16 +1263,19 @@ function factualReplan(ctx){
  // exceeds the single-run ceiling the record allows and no question about the window is open (aboveFactsCeiling), it rests on training the record
  // does not show, whichever review brought the facts.
  const moved=viewMovedBy(ctx),answered=!moved&&gapAnsweredBy(ctx),overCeiling=!moved&&!answered&&!ctx.noCeiling&&!!aboveFactsCeiling(ctx)&&!runGapInForce(ctx);
- const origin=moved?'MOVED':answered?'ANSWERED':'CEILING';
- if(!moved&&!answered&&!overCeiling)return null;
+ // R7-C QE-R7C-07: so do reports already in the record that answer it, whichever decision recorded them (answeredOnRecord): an executed, mixed or
+ // adverse answer a refusal (R4) or a clinical route recorded is applied by the next eligible decision, with no re-send.
+ const recorded=!moved&&!answered&&!overCeiling&&!ctx.noCeiling&&answeredOnRecord(ctx);
+ const origin=moved?'MOVED':answered?'ANSWERED':overCeiling?'CEILING':'RECORDED';
+ if(!moved&&!answered&&!overCeiling&&!recorded)return null;
  // R7-C SSCTR-SD5-01 / QE-R7C-02 (C9): this week's run sessions that elapsed with no report stay unknown in the weeks this re-plan projects.
- const reported=new Set((ctx.fullLedger??ctx.ledger).map(o=>o.sessionId)),uncredited=answered||overCeiling?ctx.program.weeks[ctx.w].sessions.filter(s=>s.sport==='RUN'&&s.prescription&&s.status!=='SKIPPED'&&!ctx.ahead(s)&&!reported.has(s.id)).map(s=>s.id):[];
+ const reported=new Set((ctx.fullLedger??ctx.ledger).map(o=>o.sessionId)),uncredited=answered||overCeiling||recorded?ctx.program.weeks[ctx.w].sessions.filter(s=>s.sport==='RUN'&&s.prescription&&s.status!=='SKIPPED'&&!ctx.ahead(s)&&!reported.has(s.id)).map(s=>s.id):[];
  const replan=composeWeeks(ctx,ctx.program,{fromWeek:ctx.w,uncredited});
  if(replan.ask)return {ask:askOf(replan),origin};
  const changed=changedSessions(ctx.program,replan);if(!changed)return null;
  const proposal=finishProposal(ctx.program,ctx.sk,replan,{eventId:ctx.review.event.id,asOf:ctx.asOf,action:'REPLAN_FROM_EVIDENCE',fromWeek:ctx.w,horizonsConsidered:HORIZONS});
  const own={...ctx,program:proposal,evidence:undefined};own.base=planningBase(own);
- return {proposal,changed,ctx:own,origin,...(answered?{reason:ANSWERED_REPLAN}:overCeiling?{reason:CEILING_REPLAN}:{}),horizons:horizonSummary(ctx.sk,ctx.program,proposal,{w:ctx.w,changed}),counterfactuals:answered||overCeiling?[counter('KEEP','KEEP',false,'Keeping the run doses stored while that training had no report would keep the projection, not what the athlete reported'),counter('REPLAN_FROM_EVIDENCE','REPLAN_FROM_EVIDENCE',true,'The sessions still ahead follow the facts the athlete reported',{selected:true,changeCount:changed})]:[counter('KEEP','KEEP',false,'Keeping rows planned from evidence that has since been corrected would judge the next logs against facts that no longer stand'),counter('REPLAN_FROM_EVIDENCE','REPLAN_FROM_EVIDENCE',true,'The sessions still ahead follow the evidence as it now stands',{selected:true,changeCount:changed})]};
+ return {proposal,changed,ctx:own,origin,...(answered?{reason:ANSWERED_REPLAN}:overCeiling?{reason:CEILING_REPLAN}:recorded?{reason:RECORDED_REPLAN}:{}),horizons:horizonSummary(ctx.sk,ctx.program,proposal,{w:ctx.w,changed}),counterfactuals:answered||overCeiling||recorded?[counter('KEEP','KEEP',false,'Keeping the run doses stored while that training had no report would keep the projection, not what the athlete reported'),counter('REPLAN_FROM_EVIDENCE','REPLAN_FROM_EVIDENCE',true,'The sessions still ahead follow the facts the athlete reported',{selected:true,changeCount:changed})]:[counter('KEEP','KEEP',false,'Keeping rows planned from evidence that has since been corrected would judge the next logs against facts that no longer stand'),counter('REPLAN_FROM_EVIDENCE','REPLAN_FROM_EVIDENCE',true,'The sessions still ahead follow the evidence as it now stands',{selected:true,changeCount:changed})]};
 }
 /**
  * R7-C SSCTR-SD-01: whether this review's own reports answered the unreported training the run doses still ahead depended on. On the record as
@@ -1292,10 +1297,48 @@ function gapAnsweredBy(ctx){
  carried.base=planningBase(carried);
  return !!runGapInForce(carried);
 }
+/**
+ * R7-C QE-R7C-07: the weeks before this one whose run facts the stored plan did not read, from the program's own record of how each week start was
+ * set. A week the plan projected (the next week starts as a CONDITIONAL_PLAN: its rows were assumed executed) read none of them. A week a review
+ * closed (WEEK_EVIDENCE) read its runs as that review's recorded gates say: when every run gate it recorded holds and the evidence reducer, on the
+ * record as it stands, now reads a run of that week as executed (ADVANCE, EARNED or REGRESS), the review read no executed run there; the reports came
+ * after it. Any other start (the intake, a return's entry, a review that read an executed run or recorded no gates) read the week.
+ */
+function unreadRunWeeks(ctx){
+ const {program,w}=ctx,E=decisionEvidence(ctx),keys=Object.values(RUN_GATE_ROLE),executed=g=>!!g&&keys.some(k=>['ADVANCE','EARNED','REGRESS'].includes(g[k]));
+ const decisions=new Map(program.decisions.map(d=>[d.eventId,d])),out=new Set();
+ for(let j=0;j<w;j++){
+  const n=program.weeks[j+1],a=(n.startBeforeReturn?n.startBeforeReturnAuthority:n.startAuthority)?.RUN,recorded=a?.provenance===WEEK_START.WEEK_EVIDENCE?decisions.get(a.eventId)?.gates:null;
+  if(a?.provenance===WEEK_START.CONDITIONAL_PLAN||recorded&&!executed(recorded)&&executed(E(j+1).gates))out.add(j);
+ }
+ return out;
+}
+/**
+ * R7-C QE-R7C-07: whether the record holds reports that answer the unreported training the run doses still ahead depended on, whichever decision
+ * recorded them: the state-based form of gapAnsweredBy, which asks the same of the reports one review brings. On the record without the run
+ * reports of the weeks the stored plan did not read (unreadRunWeeks), those doses depend on unreported training (runGapInForce asks): they were
+ * stored while that window was unknown. On the record as it stands they do not: the facts make it known. The answer week is then re-planned from
+ * the facts (factualReplan, with C9) before any handler decides, so the same facts give the same plan whether a plain review, a refusal (R4) or a
+ * clinical route recorded them, with or without a re-send; a clinical route still decides alone while it stands. Reports that leave part of the
+ * window unknown answer nothing yet (runGapInForce asks on the record as it stands). A return report decides its own re-entry.
+ */
+function answeredOnRecord(ctx){
+ if(ctx.kind==='RETURN_AFTER_PAUSE')return false;
+ const unread=unreadRunWeeks(ctx);if(!unread.size)return false;
+ const record=ctx.fullLedger??ctx.ledger,read=record.filter(o=>!(o.context?.sport==='RUN'&&unread.has(o.context.weekIndex)));
+ if(read.length===record.length||runGapInForce(ctx))return false;
+ const usable=read.filter(o=>!o.conflicted),done=completedRuns(ctx.program,usable),start=ctx.program.weeks[ctx.w].startDate,C=ctx.authority.policy.operational.run.singleRunCeiling;
+ // A run the stored plan read in the window already makes it known to that plan: nothing was unknown (unknownRunWindow's own first test).
+ if(done.some(h=>dayGap(h.date,start)>0&&dayGap(h.date,start)<=C.windowDays))return false;
+ const unknown={...ctx,fullLedger:read,ledger:usable,completedRuns:done,evidence:undefined};unknown.base=planningBase(unknown);
+ return !!runGapInForce(unknown);
+}
 const FACTUAL_REPLAN='Evidence about an earlier week changed what this week starts from; the sessions still ahead are planned again from it, completed sessions stay as they were';
 const ANSWERED_REPLAN='The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from those facts, not from the doses stored while they were unknown; completed sessions stay as they were';
-/** The key (module-private) of a decision made again without the ceiling re-plan, when that decision asks about unknown training (G01). */
-const NO_CEILING=Symbol('R7-C: decide without the ceiling re-plan');
+const RECORDED_REPLAN='The run doses still ahead were stored while the record held no report of the run sessions they depended on; the record now holds those reports, whichever decision recorded them: the sessions still ahead are planned from those facts; completed sessions stay as they were';
+/** The key (module-private) of a decision made again without the ceiling re-plan or the recorded-answer re-plan, when that decision asks about
+ * unknown training (G01). */
+const NO_CEILING=Symbol('R7-C: decide without the ceiling or recorded-answer re-plan');
 const CEILING_REPLAN='Run doses stored ahead exceed what the recorded runs allow (the longest run completed in the window plus the single-run step, or the reviewed entry when none is), so they rest on training the record does not show: the sessions still ahead are planned from the facts; completed sessions stay as they were';
 /**
  * B0-C01 with R7-A A5 (QE-R7B-04): a graduation stands only while its qualifying weeks still qualify on the canonical record, judged as the
