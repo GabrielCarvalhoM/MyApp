@@ -180,6 +180,15 @@ export function weekAsPlanned(ctx,next,w,{start=null,sports=SPORTS,completedRuns
  return {week,state:{run:{...base.states[0].run,planned:plannedOf(week)},strength:{...base.states[0].strength,planned:plannedStrengthOf(usedInWeek(week).map(u=>({...u,sets:u.phasedSets??u.sets})))}}};
 }
 /**
+ * Declared interruptions in force (each episode's latest report; a superseded report's days are not the athlete's statement any more), with their
+ * days read as the return engine reads them: a report recorded without dates ended the day before it and lasted its stated days (breakOf).
+ */
+function declaredPauses(next){
+ const tz=next.timezoneOffsetMinutes??0,reports=next.decisions.filter(d=>d.action==='REESTABLISH'),gone=new Set(reports.map(d=>d.interruption?.supersedes).filter(Boolean));
+ const daysOf=d=>{const i=d.interruption??{},end=i.endDate??onDate(localDate(d.asOf,tz),-1);return {start:i.startDate??onDate(end,-((i.days??1)-1)),end};};
+ return reports.filter(d=>!gone.has(d.eventId)).map(daysOf);
+}
+/**
  * R7-C G01, unknown is neither executed-success nor executed-failure. The first week a decision plans takes its single-run ceiling from the runs
  * completed in the window before it (policy run.singleRunCeiling); with none known there, the policy's reviewed entry is the ceiling. That entry
  * reads a known stop (every run session there reported as not done, or inside a declared interruption) correctly, but it reads training that is
@@ -195,11 +204,7 @@ function unknownRunWindow(ctx,next,fromWeek,{first,completedRuns,start,sports,de
  if(!startDate||!sports.includes('RUN')||first.state.run.mode!=='EASY')return null;
  const inWindow=d=>dayGap(d,startDate)>0&&dayGap(d,startDate)<=C.windowDays;
  if(completedRuns.some(h=>inWindow(h.date)))return null;
- // Declared interruptions in force (each episode's latest report; a superseded report's days are not the athlete's statement any more), with their
- // days read as the return engine reads them: a report recorded without dates ended the day before it and lasted its stated days (breakOf).
- const tz=next.timezoneOffsetMinutes??0,reports=next.decisions.filter(d=>d.action==='REESTABLISH'),gone=new Set(reports.map(d=>d.interruption?.supersedes).filter(Boolean));
- const daysOf=d=>{const i=d.interruption??{},end=i.endDate??onDate(localDate(d.asOf,tz),-1);return {start:i.startDate??onDate(end,-((i.days??1)-1)),end};};
- const pauses=[...reports.filter(d=>!gone.has(d.eventId)).map(daysOf),...declared];
+ const pauses=[...declaredPauses(next),...declared];
  const record=ctx.fullLedger??ctx.ledger??[],reported=new Set(record.map(o=>o.sessionId)),ahead=aheadOf(ctx);
  const unknown=ctx.program.weeks.flatMap(x=>x.sessions).filter(s=>s.sport==='RUN'&&s.prescription&&s.status!=='SKIPPED'&&inWindow(s.date)&&!ahead(s)&&!reported.has(s.id)&&!pauses.some(p=>s.date>=p.start&&s.date<=p.end)).sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0);
  if(!unknown.length)return null;
@@ -251,6 +256,28 @@ export function runGapInForce(ctx){
  return unknownRunWindow(ctx,program,w,{first,completedRuns:ctx.completedRuns??[],start:null,sports:SPORTS});
 }
 /**
+ * R7-C QE-R7C-01: the run sessions still ahead in the decision's week whose dose exceeds the single-run ceiling the facts allow (policy
+ * run.singleRunCeiling: the longest run completed in the window before the week plus the step, or the reviewed entry when none is), read on the
+ * completed-work record as it stands, whichever decision recorded it, when that excess can only rest on credit: the window holds run sessions of
+ * this plan with no executed report (unreported, or reported not done) outside a declared interruption, which a projection counted as executed.
+ * The scope is the unknown window's (unknownRunWindow): easy running; a return, restart or walk/jog week follows its own re-entry recipe. A week
+ * whose run start is a return's entry is not read here either: it stands on the interruption's facts with its current demonstration, which the
+ * record does not keep. (The first week, on the intake, has no session of this plan before it, so nothing there was credited.) Null when every
+ * dose ahead fits; the race is outside the ceiling.
+ */
+export function aboveFactsCeiling(ctx){
+ const {program,w}=ctx,week=program.weeks[w];if(!week)return null;
+ if(week.startAuthority?.RUN?.provenance===WEEK_START.RETURN_ENTRY||(ctx.base??program.stateTrace[w])?.run?.mode!=='EASY')return null;
+ const op=ctx.authority.policy.operational,C=op.run.singleRunCeiling,start=week.startDate,ahead=aheadOf(ctx),inWindow=d=>dayGap(d,start)>0&&dayGap(d,start)<=C.windowDays;
+ const recent=(ctx.completedRuns??[]).filter(h=>inWindow(h.date)).map(h=>h.minutes);
+ const ceiling=recent.length?Math.max(...recent)+C.stepMinutes:op.return.entryRunMinutes;
+ const over=week.sessions.filter(s=>s.sport==='RUN'&&s.prescription&&s.status!=='SKIPPED'&&ahead(s)&&runMinutesOf(s)>ceiling);
+ if(!over.length)return null;
+ const executed=new Set((ctx.fullLedger??ctx.ledger??[]).filter(o=>!o.conflicted&&(o.actual?.completed===true||Number(o.actual?.minutes)>0)).map(o=>o.sessionId)),pauses=declaredPauses(program);
+ const credited=program.weeks.flatMap(x=>x.sessions).filter(s=>s.sport==='RUN'&&s.status!=='SKIPPED'&&runMinutesOf(s)>0&&inWindow(s.date)&&!ahead(s)&&!executed.has(s.id)&&!pauses.some(p=>s.date>=p.start&&s.date<=p.end));
+ return credited.length?{ceiling,sessionIds:over.map(s=>s.id),credited:credited.map(s=>s.id)}:null;
+}
+/**
  * The conditional start of the week after w (planning, not prediction): the week as planned, assumed executed as prescribed, except the sessions
  * dated before a return reported this week: they belong to the plan before the break, which the return replaced (C3, C5).
  */
@@ -276,7 +303,7 @@ export function conditionalNext(ctx,skn,w,{week,state},ret=returnOf(ctx.program,
  * naming the values it carried from a projection (`projectedBase`); every conditional transition is CONDITIONAL_PLAN, with the rows it
  * assumed executed, per sport and per strength exercise; a sport outside `sports` keeps the authority of its part.
  */
-export function composeWeeks(ctx,next,{fromWeek,start=null,startAuthority:startAuth=null,sports=SPORTS,completedRuns=ctx.completedRuns??[],returnDay=null,evidence=null,declared=[]}){
+export function composeWeeks(ctx,next,{fromWeek,start=null,startAuthority:startAuth=null,sports=SPORTS,completedRuns=ctx.completedRuns??[],returnDay=null,evidence=null,declared=[],uncredited=[]}){
  const {w,authority}=ctx,ahead=aheadOf(ctx),sk=skeletonOf(next,authority),at=i=>sk.at(i)??sk,N=sk.c.weeks,inScope=s=>sports.includes(s.sport),all=sports.length===SPORTS.length,fresh=s=>ahead(s)&&inScope(s);
  // A short return's easy slot not found in its week, carried to the next week placed (D58), each with its own break (R7-A.2 I9). So is one
  // that the week before the first week placed, this week or later, no longer holds (a later change of that week skipped or replaced it); it
@@ -318,9 +345,12 @@ export function composeWeeks(ctx,next,{fromWeek,start=null,startAuthority:startA
  weeks[fromWeek]=first.week;const p0=place(fromWeek,first.week.sessions,first.state,start?startAuth:next.weeks[fromWeek].startAuthority);if(p0.ask)return p0;
  if(fromWeek+1>=N)return {weeks,stateTrace,sk};
  const skn=at(fromWeek+1),rebased=fromWeek===w&&!start?rebasedNext(next,w):null,fromEvidence=!rebased&&fromWeek===w&&!ctx.ev?.pending&&!!evidence;
- const nextStart=rebased?{runState:clone(rebased.run),strengthState:clone(rebased.strength)}:fromEvidence?evidence({...next,weeks,stateTrace},skn):conditionalNext(ctx,skn,fromWeek,first,returned(fromWeek));
+ // R7-C SSCTR-SD5-01 / QE-R7C-02 (C9): sessions of this week that elapsed with no report (`uncredited`, from a factual re-plan) are unknown: the
+ // conditional plan of the weeks after it never counts them as executed, for the transition or for the single-run ceiling.
+ const credited=uncredited.length?{...first,week:{...first.week,sessions:first.week.sessions.filter(s=>!uncredited.includes(s.id))}}:first;
+ const nextStart=rebased?{runState:clone(rebased.run),strengthState:clone(rebased.strength)}:fromEvidence?evidence({...next,weeks,stateTrace},skn):conditionalNext(ctx,skn,fromWeek,credited,returned(fromWeek));
  const nextAuthority=rebased?next.weeks[fromWeek+1].startAuthority:fromEvidence?anchoredStart(WEEK_START.WEEK_EVIDENCE,by):projectedStart(first.week,by);
- const rest=projectWeeks(sk,fromWeek+1,nextStart,[...next.weeks.slice(0,fromWeek),first.week],{completedRuns:[...completedRuns,...runsOf(first.week)]});
+ const rest=projectWeeks(sk,fromWeek+1,nextStart,[...next.weeks.slice(0,fromWeek),first.week],{completedRuns:[...completedRuns,...runsOf(credited.week)]});
  for(const [k,wk] of rest.weeks.entries()){weeks[fromWeek+1+k]=wk;const r=place(fromWeek+1+k,wk.sessions,rest.states[k],k===0?nextAuthority:projectedStart(rest.weeks[k-1],by));if(r.ask)return r;}
  return {weeks,stateTrace,sk};
 }

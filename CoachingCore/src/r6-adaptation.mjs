@@ -4,7 +4,7 @@ import {validProgram,programHash,skeletonOf,noviceDensityApplies,firstStrengthBo
 import {chooseBalanced,interferenceCosts,SEVERITY} from './r6-balanced.mjs';
 import {substitutesFor,catalogueEntry,CATALOGUE as CATALOG_CONFIGURATIONS} from './r6-catalogue.mjs';
 import {exerciseRow,fitStrengthSession,strengthPrescription,easyPrescription,validateR6Prescription} from './r6-prescription.mjs';
-import {aheadOf,usedInWeek,rebasedNext,returnOf,beforeReturn,moveCandidates,choose,counter,rank,fatigueSessions,unavailableSessions,missedMove,conflictSessions,waitSessions,adaptThisWeek,adaptation,withContextChange,composeWeeks,weekAsPlanned,conditionalNext,runGapInForce} from './r6-composition.mjs';
+import {aheadOf,usedInWeek,rebasedNext,returnOf,beforeReturn,moveCandidates,choose,counter,rank,fatigueSessions,unavailableSessions,missedMove,conflictSessions,waitSessions,adaptThisWeek,adaptation,withContextChange,composeWeeks,weekAsPlanned,conditionalNext,runGapInForce,aboveFactsCeiling} from './r6-composition.mjs';
 import {createLearningModel,updateLearningModel,validateLearningModel,evidenceFor,preferredArrangement,classify} from './r6-learning.mjs';
 import {normalizeObservations,utcTimestamp,localDate} from './r6-provenance.mjs';
 import {onDate,dayGap,isoDay,LB_TO_KG,toKilograms,RUN_GOALS,STRENGTH_GOALS,EVENTS} from './r6-intake.mjs';
@@ -46,8 +46,8 @@ function withReference(program,review,result){
  // R7-C SSCTR-SD-03: a reactive signal (a fatigue or performance report) that the unreported-training question held, with nothing applied or
  // recorded (an ASK with no proposal, heldByRunGap), travels with the pending question through its own week, so the answer re-evaluates it
  // (evaluateProgram) instead of losing it; while the decision stays pending in that week it keeps travelling. A week's signal acts on that
- // week only, and a clinical route takes over from it.
- if(pending&&pendingStatus&&!clinicalSticky&&result.status!=='CLINICAL_HUMAN_REQUIRED'){
+ // week only, and a clinical route takes over from it. A change kept beside the still-open question keeps it travelling too (QE-R7C-03).
+ if(pending&&(pendingStatus||carried)&&!clinicalSticky&&result.status!=='CLINICAL_HUMAN_REQUIRED'){
   const target=review?.targetSessionId??review?.event?.sessionId;
   const own=result.status==='ASK'&&result.question?.kind==='UNREPORTED_TRAINING'&&!result.proposal&&Object.hasOwn(REACTIVE,pending.eventKind??'')?{kind:pending.eventKind,eventId:review.event.id,asOf:utcTimestamp(review.asOf),weekIndex:review.weekIndex,...(review.signals&&typeof review.signals==='object'?{signals:clone(review.signals)}:{}),...(target!==undefined?{targetSessionId:clone(target)}:{})}:null;
   const signal=own??(priorValid&&prior.pending?.signal&&prior.pending.signal.weekIndex===review?.weekIndex?clone(prior.pending.signal):null);
@@ -1253,13 +1253,19 @@ function viewMovedBy(ctx){
 function factualReplan(ctx){
  if(!(ctx.ev.pending||ctx.program.weeks[ctx.w].sessions.some(s=>s.prescription&&ctx.ahead(s))))return null;
  // R7-C SSCTR-SD-01: reports that answer the unreported training the run doses ahead depended on re-plan them like a correction (gapAnsweredBy).
- const moved=viewMovedBy(ctx),answered=!moved&&gapAnsweredBy(ctx);if(!moved&&!answered)return null;
- const replan=composeWeeks(ctx,ctx.program,{fromWeek:ctx.w});
+ // R7-C QE-R7C-01: so do facts that some earlier decision recorded without applying (a refusal, a clinical route): whenever a run dose still ahead
+ // exceeds the single-run ceiling the record allows and no question about the window is open (aboveFactsCeiling), it rests on training the record
+ // does not show, whichever review brought the facts.
+ const moved=viewMovedBy(ctx),answered=!moved&&gapAnsweredBy(ctx),overCeiling=!moved&&!answered&&!!aboveFactsCeiling(ctx)&&!runGapInForce(ctx);
+ if(!moved&&!answered&&!overCeiling)return null;
+ // R7-C SSCTR-SD5-01 / QE-R7C-02 (C9): this week's run sessions that elapsed with no report stay unknown in the weeks this re-plan projects.
+ const reported=new Set((ctx.fullLedger??ctx.ledger).map(o=>o.sessionId)),uncredited=answered||overCeiling?ctx.program.weeks[ctx.w].sessions.filter(s=>s.sport==='RUN'&&s.prescription&&s.status!=='SKIPPED'&&!ctx.ahead(s)&&!reported.has(s.id)).map(s=>s.id):[];
+ const replan=composeWeeks(ctx,ctx.program,{fromWeek:ctx.w,uncredited});
  if(replan.ask)return {ask:askOf(replan)};
  const changed=changedSessions(ctx.program,replan);if(!changed)return null;
  const proposal=finishProposal(ctx.program,ctx.sk,replan,{eventId:ctx.review.event.id,asOf:ctx.asOf,action:'REPLAN_FROM_EVIDENCE',fromWeek:ctx.w,horizonsConsidered:HORIZONS});
  const own={...ctx,program:proposal,evidence:undefined};own.base=planningBase(own);
- return {proposal,changed,ctx:own,...(answered?{reason:ANSWERED_REPLAN}:{}),horizons:horizonSummary(ctx.sk,ctx.program,proposal,{w:ctx.w,changed}),counterfactuals:answered?[counter('KEEP','KEEP',false,'Keeping the run doses stored while that training had no report would keep the projection, not what the athlete reported'),counter('REPLAN_FROM_EVIDENCE','REPLAN_FROM_EVIDENCE',true,'The sessions still ahead follow the facts the athlete reported',{selected:true,changeCount:changed})]:[counter('KEEP','KEEP',false,'Keeping rows planned from evidence that has since been corrected would judge the next logs against facts that no longer stand'),counter('REPLAN_FROM_EVIDENCE','REPLAN_FROM_EVIDENCE',true,'The sessions still ahead follow the evidence as it now stands',{selected:true,changeCount:changed})]};
+ return {proposal,changed,ctx:own,...(answered?{reason:ANSWERED_REPLAN}:overCeiling?{reason:CEILING_REPLAN}:{}),horizons:horizonSummary(ctx.sk,ctx.program,proposal,{w:ctx.w,changed}),counterfactuals:answered||overCeiling?[counter('KEEP','KEEP',false,'Keeping the run doses stored while that training had no report would keep the projection, not what the athlete reported'),counter('REPLAN_FROM_EVIDENCE','REPLAN_FROM_EVIDENCE',true,'The sessions still ahead follow the facts the athlete reported',{selected:true,changeCount:changed})]:[counter('KEEP','KEEP',false,'Keeping rows planned from evidence that has since been corrected would judge the next logs against facts that no longer stand'),counter('REPLAN_FROM_EVIDENCE','REPLAN_FROM_EVIDENCE',true,'The sessions still ahead follow the evidence as it now stands',{selected:true,changeCount:changed})]};
 }
 /**
  * R7-C SSCTR-SD-01: whether this review's own reports answered the unreported training the run doses still ahead depended on. On the record as
@@ -1283,6 +1289,7 @@ function gapAnsweredBy(ctx){
 }
 const FACTUAL_REPLAN='Evidence about an earlier week changed what this week starts from; the sessions still ahead are planned again from it, completed sessions stay as they were';
 const ANSWERED_REPLAN='The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from those facts, not from the doses stored while they were unknown; completed sessions stay as they were';
+const CEILING_REPLAN='Run doses stored ahead exceed what the recorded runs allow (the longest run completed in the window plus the single-run step, or the reviewed entry when none is), so they rest on training the record does not show: the sessions still ahead are planned from the facts; completed sessions stay as they were';
 /**
  * B0-C01 with R7-A A5 (QE-R7B-04): a graduation stands only while its qualifying weeks still qualify on the canonical record, judged as the
  * boundary review judged them (its gates' windows at its clock) with the facts as they now stand. When a correction, a retraction or a quarantine

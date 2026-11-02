@@ -110,10 +110,22 @@ test('R7-A cycle 2: a session moved to another date is never prescribed a dose t
 
 test('R7-A cycle 2: a dated change with dates the plan cannot use is asked, never applied (QE-R7A-11; INV-11)',()=>{
  const p=generateProgram(intake({id:'t7a2-dates',weeks:12,athlete:{exerciseRotationPreference:'FIXED'}}),opts).program,W=2,from=p.weeks[3].startDate;
- const eq=(f,to)=>evaluateProgram(p,review(p,W,{day:0,kind:'EQUIPMENT_CHANGE',changes:{equipment:['DUMBBELLS','BENCH'],from:f,to}}),opts);
- for(const [f,to] of [[from,'soon'],[from,'2026-13-45'],[from,'2026-11-01'],['next week',addDays(from,6)]]){const r=eq(f,to);assert.equal(r.status,'ASK',`${f}..${to}: ${r.status}`);assert.equal(r.proposal??null,null);}
+ const eq=(f,to,P=p,extra={})=>evaluateProgram(P,review(P,W,{day:0,kind:'EQUIPMENT_CHANGE',changes:{equipment:['DUMBBELLS','BENCH'],from:f,to},...extra}),opts);
+ const barbellIn=(P,w)=>rows(P,w).some(x=>x.e.equipment.includes('BARBELL'));
+ // R7-C Phase 5 correction cycle (QE-R7C-01; classified EXPECTED_SEMANTIC_UPDATE under SSCTR-SD-R7C-r2, unknown is neither executed-success nor
+ // executed-failure; the ceiling re-plan is subject to the SSCTR recheck of the cycle): here weeks 0-1 elapsed with no report, so the stored
+ // week 2 credits them above the single-run ceiling the record allows (the intake's 50-minute run + 5). The factual re-plan of those run doses
+ // travels with the question; the dated change itself is still asked and never applied (the barbell rows of the week it names stay).
+ for(const [f,to] of [[from,'soon'],[from,'2026-13-45'],[from,'2026-11-01'],['next week',addDays(from,6)]]){
+  const r=eq(f,to);assert.equal(r.status,'ASK',`${f}..${to}: ${r.status}`);
+  assert.ok(r.proposal,`${f}..${to}: the factual re-plan of the credited run doses`);assert.match(r.reason,/run doses stored ahead exceed what the recorded runs allow/);
+  assert.equal(barbellIn(r.proposal,3),true,`${f}..${to}: the change is not applied`);
+ }
+ // The original reading, with nothing credited (weeks 0-1 reported as prescribed): asked, and nothing at all is proposed.
+ const t=reviewed({id:'t7a2-dates',athlete:{exerciseRotationPreference:'FIXED'}});for(let w=0;w<2;w++)t.step(w);
+ for(const [f,to] of [[from,'soon'],[from,'2026-13-45'],[from,'2026-11-01'],['next week',addDays(from,6)]]){const r=eq(f,to,t.p,{actualLedger:t.ledger});assert.equal(r.status,'ASK',`${f}..${to}: ${r.status}`);assert.equal(r.proposal??null,null);}
  const ok=eq(from,addDays(from,6));assert.equal(ok.action,'SUBSTITUTE');
- const barbell=w=>rows(ok.proposal,w).some(x=>x.e.equipment.includes('BARBELL'));
+ const barbell=w=>barbellIn(ok.proposal,w);
  assert.equal(barbell(3),false);assert.ok([4,5,6].every(barbell));
 });
 

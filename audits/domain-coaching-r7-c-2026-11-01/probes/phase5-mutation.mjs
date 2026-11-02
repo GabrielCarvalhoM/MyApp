@@ -1,6 +1,7 @@
-// R7-C Phase 5: the Phase 3 mutation set (the same 18 mutants and fragments), the G02-M4 equivalence witness and the 8 Phase 4 rule mutants, run
+// R7-C Phase 5 (with its correction cycle): the Phase 3 mutation set (the same 18 mutants and fragments), the G02-M4 equivalence witness and the 8 Phase 4 rule mutants, run
 // with the Phase 4 and Phase 5 directed tests in the R7-C set (P4-M6's fragment is lengthened to stay unique: gapAnsweredBy now opens with the
 // same guard); plus, reported apart, the Phase 5 mutants of SSCTR-SD-01/02/03, every one of which must be killed. Isolated copy:
+// the correction-cycle mutants (QE-R7C-01..04, C9 and the ceiling trigger's scope), every one of which must be killed too. Isolated copy:
 // HEAD's CoachingCore and the audit records its fixtures read are extracted with git archive into a temporary directory (node_modules copied from
 // this worktree); each mutant edits exact fragments of that copy (each must occur once), runs the named test files there and restores the bytes
 // (checked by SHA-256). The repository is never edited. An unmutated baseline run of every test set must pass first. Prints JSON.
@@ -18,7 +19,7 @@ if(ar.status!==0)throw Error('git archive: '+ar.stderr);
 if(spawnSync('tar',['-xf','x.tar'],{cwd:tmp}).status!==0)throw Error('tar');fs.rmSync(tar);
 fs.cpSync(path.join(REPO,'CoachingCore/node_modules'),path.join(tmp,'CoachingCore/node_modules'),{recursive:true});
 const core=path.join(tmp,'CoachingCore'),AD='src/r6-adaptation.mjs',CO='src/r6-composition.mjs',LE='src/r6-learning.mjs';
-const R7C=['test/r7c-longitudinal.test.mjs','test/r7c-phase4.test.mjs','test/r7c-phase5.test.mjs'],CLIN=[...R7C,'test/r7b2-clinical-precedence.test.mjs'],RET=[...R7C,'test/r6-adaptation.test.mjs'];
+const R7C=['test/r7c-longitudinal.test.mjs','test/r7c-phase4.test.mjs','test/r7c-phase5.test.mjs','test/r7c-phase5-cc.test.mjs'],CLIN=[...R7C,'test/r7b2-clinical-precedence.test.mjs'],RET=[...R7C,'test/r6-adaptation.test.mjs'];
 const M=[
  // ---------- G01 (Phase 3 set) ----------
  {id:'G01-M1',rule:'credit the unknown: an elapsed session with no report gates as executed',edits:[[AD,"s.date<asOfLocal?'MISSED':s.date===asOfLocal?'NOT_REPORTED':'PENDING'","s.date<asOfLocal?'COMPLETED':s.date===asOfLocal?'NOT_REPORTED':'PENDING'"]],tests:R7C},
@@ -57,12 +58,22 @@ const P4=[
 ];
 // The Phase 5 mutants of SSCTR-SD-01/02/03 (reported apart; each must be killed).
 const P5=[
- {id:'SD-M1',rule:'SD-01: the answer clears the pending question without re-planning (the stored doses stay in force)',edits:[[AD,"const moved=viewMovedBy(ctx),answered=!moved&&gapAnsweredBy(ctx);","const moved=viewMovedBy(ctx),answered=false;"]],tests:R7C},
- {id:'SD-M2',rule:'SD-01/02: the answer re-plans the following weeks but not the answer week',edits:[[AD,"const replan=composeWeeks(ctx,ctx.program,{fromWeek:ctx.w});\n if(replan.ask)return {ask:askOf(replan)};\n const changed=changedSessions(ctx.program,replan);if(!changed)return null;","const replan=composeWeeks(ctx,ctx.program,{fromWeek:answered?ctx.w+1:ctx.w});\n if(replan.ask)return {ask:askOf(replan)};\n const changed=changedSessions(ctx.program,replan);if(!changed)return null;"]],tests:R7C},
+ {id:'SD-M1',rule:'SD-01: the answer clears the pending question without re-planning (the stored doses stay in force)',edits:[[AD,"const moved=viewMovedBy(ctx),answered=!moved&&gapAnsweredBy(ctx),overCeiling=","const moved=viewMovedBy(ctx),answered=false,overCeiling="]],tests:R7C},
+ {id:'SD-M2',rule:'SD-01/02: the answer re-plans the following weeks but not the answer week',edits:[[AD,"const replan=composeWeeks(ctx,ctx.program,{fromWeek:ctx.w,uncredited});\n if(replan.ask)return {ask:askOf(replan)};\n const changed=changedSessions(ctx.program,replan);if(!changed)return null;","const replan=composeWeeks(ctx,ctx.program,{fromWeek:answered?ctx.w+1:ctx.w,uncredited});\n if(replan.ask)return {ask:askOf(replan)};\n const changed=changedSessions(ctx.program,replan);if(!changed)return null;"]],tests:R7C},
  {id:'SD-M3a',rule:'SD-03: a signal the question held is not re-evaluated with the answer',edits:[[AD,"const held=kind==='WEEKLY_REVIEW'&&!gap&&!factual?.ask?heldSignal(review.referenceState,w):null;","const held=null;"]],tests:R7C},
  {id:'SD-M3b',rule:'SD-03: the answer event\'s own signal is dropped (it is decided as a plain review)',edits:[[AD,"||(held&&replayHeld(c,held))||(HANDLERS[kind]??weeklyReview)(c);","||(held&&replayHeld(c,held))||(factual?.reason?weeklyReview:HANDLERS[kind]??weeklyReview)(c);"]],tests:R7C},
  {id:'SD-M3c',rule:'SD-03: the held signal does not travel with the pending question',edits:[[AD,"if(signal)pending.signal=signal;","if(false)pending.signal=signal;"]],tests:R7C},
- {id:'SD-M4',rule:'SD-01: after a known miss the answer re-plans strength only (the stale projected run doses stay)',edits:[[AD,"const replan=composeWeeks(ctx,ctx.program,{fromWeek:ctx.w});\n if(replan.ask)return {ask:askOf(replan)};\n const changed=changedSessions(ctx.program,replan);if(!changed)return null;","const replan=composeWeeks(ctx,ctx.program,{fromWeek:ctx.w,...(answered?{sports:['STRENGTH']}:{})});\n if(replan.ask)return {ask:askOf(replan)};\n const changed=changedSessions(ctx.program,replan);if(!changed)return null;"]],tests:R7C}
+ {id:'SD-M4',rule:'SD-01: after a known miss the answer re-plans strength only (the stale projected run doses stay)',edits:[[AD,"const replan=composeWeeks(ctx,ctx.program,{fromWeek:ctx.w,uncredited});\n if(replan.ask)return {ask:askOf(replan)};\n const changed=changedSessions(ctx.program,replan);if(!changed)return null;","const replan=composeWeeks(ctx,ctx.program,{fromWeek:ctx.w,uncredited,...(answered?{sports:['STRENGTH']}:{})});\n if(replan.ask)return {ask:askOf(replan)};\n const changed=changedSessions(ctx.program,replan);if(!changed)return null;"]],tests:R7C}
+];
+// The correction-cycle mutants (reported apart; each must be killed).
+const CC=[
+ {id:'CC-M1',rule:'QE-R7C-01: the ceiling trigger removed (an answer a refusal or a clinical route recorded leaves the stale doses valid)',edits:[[AD,"overCeiling=!moved&&!answered&&!!aboveFactsCeiling(ctx)&&!runGapInForce(ctx);","overCeiling=false;"]],tests:R7C},
+ {id:'CC-M2',rule:'QE-R7C-02 / C9: the elapsed sessions with no report are credited in the weeks after the answer week',edits:[[AD,"uncredited=answered||overCeiling?ctx.program","uncredited=false?ctx.program"]],tests:R7C},
+ {id:'CC-M3',rule:'QE-R7C-03: a change kept beside the open question drops the held signal',edits:[[AD,"if(pending&&(pendingStatus||carried)&&!clinicalSticky","if(pending&&pendingStatus&&!clinicalSticky"]],tests:R7C},
+ {id:'CC-M4',rule:'QE-R7C-04 (QM-2): the held signal is replayed in any week (its week guard removed)',edits:[[AD,"Object.hasOwn(REACTIVE,s.kind??'')&&s.weekIndex===w?s:null;}","Object.hasOwn(REACTIVE,s.kind??'')?s:null;}"]],tests:R7C},
+ {id:'CC-M5',rule:'trigger scope: no credited session needed (a cold start is re-planned to the entry)',edits:[[CO,"return credited.length?{ceiling,sessionIds:over.map(s=>s.id),credited:credited.map(s=>s.id)}:null;","return {ceiling,sessionIds:over.map(s=>s.id),credited:credited.map(s=>s.id)};"]],tests:R7C},
+ {id:'CC-M6',rule:'trigger scope: a return entry is read (its current demonstration ignored)',edits:[[CO,"if(week.startAuthority?.RUN?.provenance===WEEK_START.RETURN_ENTRY||(ctx.base","if((ctx.base"]],tests:R7C},
+ {id:'CC-M7',rule:'trigger scope: a return or restart week is read (its re-entry recipe overridden by the entry)',edits:[[CO,"||(ctx.base??program.stateTrace[w])?.run?.mode!=='EASY')return null;",")return null;"]],tests:R7C}
 ];
 const runTests=files=>{const r=spawnSync(process.execPath,['--test',...files],{cwd:core,encoding:'utf8',timeout:1800000,maxBuffer:1<<26});const n=k=>Number((r.stdout.match(new RegExp('ℹ '+k+' (\\d+)'))??[])[1]??NaN);return {fail:n('fail'),pass:n('pass'),failing:(r.stdout.match(/^✖ .*$/gm)??[]).filter(l=>!/failing tests/.test(l)).slice(0,5)};};
 const baseline={};for(const set of [R7C,CLIN,RET]){const k=set.join('+'),b=runTests(set);baseline[k]=b;if(!(b.fail===0&&b.pass>0))throw Error('baseline fails on the isolated copy: '+k+' '+JSON.stringify(b));}
@@ -76,8 +87,8 @@ function mutate(m){
  for(const f of files)if(sha(fs.readFileSync(path.join(core,f)))!==sha(originals[f]))throw Error('restore failed '+f);
  return {id:m.id,rule:m.rule,files,tests:m.tests,result:o.fail>0?'KILLED':Number.isFinite(o.fail)?'SURVIVED':'ERROR',failedTests:o.fail,passedTests:o.pass,failing:o.failing};
 }
-const results=M.map(mutate),witness=WITNESS.map(mutate),phase4=P4.map(mutate),phase5=P5.map(mutate);
+const results=M.map(mutate),witness=WITNESS.map(mutate),phase4=P4.map(mutate),phase5=P5.map(mutate),correction=CC.map(mutate);
 const repoUntouched=spawnSync('git',['diff','--quiet','--','CoachingCore/src','CoachingCore/test'],{cwd:REPO}).status===0;
 fs.rmSync(tmp,{recursive:true,force:true});
 const sum=list=>({mutants:list.length,killed:list.filter(r=>r.result==='KILLED').length,survived:list.filter(r=>r.result==='SURVIVED').map(r=>r.id),invalid:list.filter(r=>['INVALID','ERROR'].includes(r.result)).map(r=>r.id)});
-console.log(JSON.stringify({check:'R7C-P5-MUTATION',head,isolatedCopy:true,repoUntouched,baseline,phase3Set:sum(results),equivalenceWitness:sum(witness),phase4Rules:sum(phase4),phase5SD:sum(phase5),results,witness,phase4,phase5},null,1));
+console.log(JSON.stringify({check:'R7C-P5-MUTATION',head,isolatedCopy:true,repoUntouched,baseline,phase3Set:sum(results),equivalenceWitness:sum(witness),phase4Rules:sum(phase4),phase5SD:sum(phase5),correctionCycle:sum(correction),results,witness,phase4,phase5,correction},null,1));
