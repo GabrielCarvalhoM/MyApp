@@ -952,3 +952,33 @@ A direct Founder request authorizes **R7-C Phase 3 only**: full suite, directed 
 - **Also:** HISTORY observation = STALE_PROJECTION (no decision impact with identical facts). D1 = residual, owners SSCTR and Product/UX.
 - **Unchanged:** R6-POLICY-5, R7B0-CATALOG-2, queue (230), `product/`, `canon/`, every closed record. No closure reopened, no test of a closed mission edited.
 - **Next:** a minimal Phase 4 (fix P3-01..03, add the tests, dispose the four with SSCTR, freeze, first SSCTR and Engineering gates) on its own Founder authorization; the Founder decides whether it allows one narrow correction cycle after those gates. R7-D not started. [Checkpoint](audits/domain-coaching-r7-c-2026-11-01/PHASE3_CHECKPOINT.md).
+
+<!-- DOMAIN_COACHING_R7C: DCR7C-20261101-phase4-r1 -->
+## DOMAIN_COACHING_R7-C — Longitudinal Coaching — Phase 4 (final correction) CLOSED NOT_READY / 2026-11-01
+
+A direct Founder request authorizes **R7-C Phase 4 only**:
+- fix R7C-P3-01, -02 and -03, and close the P3-05 test gaps;
+- obtain the SSCTR semantic disposition before the four legacy tests are touched;
+- then the full suite, `R7C-FREEZE-1`, the SSCTR and Engineering gates, and at most one narrow correction cycle after them.
+
+The rule for a NOT_READY disposition is STOP. Same branch and worktree, from `5ba8738`; nothing merged or pushed.
+
+- **States:** R7C_PHASE4_STATUS = CLOSED_NOT_READY. SEMANTIC_DISPOSITION = NOT_READY (SSCTR-SD-R7C-r1). The SSCTR answers the Founder's question YES in principle, distinguishing a known miss from no report, and rejects KEEP_R12_UNREPORTED_AS_MISSED on the merits. No freeze; SSCTR final recheck and Engineering NOT_RUN; correction cycle NOT_USED. V1_COACHING_AUTHORITY_READY = NO.
+- **Fixed, verified, not gated** (`ec2c1e4`, `39115ed`):
+  - P3-02, while the question is open: no decision keeps, validates or re-plans the run doses that depend on it. Strength-only and same-week changes keep their change with the question pending (REQUIRES_RECONCILIATION).
+  - P3-01: taper and race week ask when unreported sessions decide the executed peaks.
+  - P3-03: the C15 reason names only facts.
+  - P3-05: survivors killed; G02-M4 equivalent, with the expiry rule proven.
+- **Evidence on `39115ed`:**
+  - full suite 832/828/4, the four legacy tests only, not edited;
+  - G01 grid A 148 cells with 0 violations, grid B 46/46, P1 165/0; G02 PASS;
+  - mutation 17/18 plus the equivalent, Phase 4 rules 8/8;
+  - clinical, differential, conformance and R7-A unchanged except as declared.
+- **Blocker SSCTR-SD-01 (safety-relevant, R7-C mechanism; reproduced independently).** An answer that reports the gap as not done before the next weekly review leaves the stored projection kept and valid for the rest of that week: QUALITY 34 / LONG 60 against the 15-minute entry. The smallest fix is runtime only: plan the current week from the facts when they turn the window from unknown to known.
+- **Also:**
+  - D1 = ACCEPTABLE_RESIDUAL; G02 confirmed inside R6-PARTIAL-NOISY-LEARNING;
+  - conditions C1–C7 (C6: split each legacy fixture into UNREPORTED, KNOWN_MISS and ANSWERED_KNOWN_STOP);
+  - a fifth legacy fixture (`test/r6-adaptation.test.mjs:140`) not ratified;
+  - two pre-existing B.2 behaviours recorded (UNRELATED_PREEXISTING).
+- **Unchanged:** R6-POLICY-5, R7B0-CATALOG-2, queue (230), `product/`, `canon/`, every closed record, the four legacy tests.
+- **Next:** a narrow phase with SSCTR-SD-01 first, then re-present the semantic disposition, on its own Founder authorization. R7-D not started. [Checkpoint](audits/domain-coaching-r7-c-2026-11-01/PHASE4_CHECKPOINT.md).

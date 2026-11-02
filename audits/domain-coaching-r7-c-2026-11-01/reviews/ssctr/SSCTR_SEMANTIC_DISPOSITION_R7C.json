@@ -1,0 +1,382 @@
+{
+  "revision": "SSCTR-SD-R7C-r1",
+  "reviewDate": "2026-11-01",
+  "recordKind": "Narrow semantic disposition requested by the Founder before four legacy tests may be updated (R7-C Phase 4, Etapa F). Not the final SSCTR gate on frozen bytes.",
+  "request": "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/SEMANTIC_DISPOSITION_REQUEST.md (committed at f6c688c), with two coordinator fact corrections received during the review (holdout outputs on 39115ed; B3 EXERCISE_SUBSTITUTION path).",
+  "reviewer": {
+    "instance": "ssctr-r7c-semantic-disposition-2026-11-01",
+    "role": "sports-science-concurrent-training-reviewer (SSCTR-1.0.0, constitution SSCTR-CONST-1.0.0, evidence protocol SSCTR-EP-1.0.0, escalation policy SSCTR-HR-1.0.0, skill sports-science-review 1.0.0)",
+    "model": "claude-opus-5-5",
+    "effort": "xhigh (task-route envelope)",
+    "dispatch": "Launched by the R7-C coordinator as a subagent. The instance's instructions are the body of .claude/agents/sports-science-concurrent-training-reviewer.md verbatim and the Agent tool is absent (consistent with disallowedTools: Agent), so this reads as the native project agent type. The dispatch mechanism itself is not observable from inside the instance.",
+    "independence": "Did not author the R7-C runtime, its fixes, tests or the coordinator's probes. Authored only the probes under reviews/ssctr/probes/sd/ and these two records. Not a self-check of own policy.",
+    "literatureAccess": "WebSearch and WebFetch available and used (PubMed records opened). Full texts were not opened: every source below is ABSTRACT_ONLY."
+  },
+  "authority": {
+    "type": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY",
+    "scope": "Bounded nonclinical internal sporting decision on one runtime semantic change of the offline synthetic Node 24 shadow reference.",
+    "humanValidation": false,
+    "empiricalProductValidation": false,
+    "clinicalClearance": false,
+    "runtimeSovereignty": false,
+    "gateStatus": "NOT_CLOSED_BY_THIS_RECORD",
+    "publicationStatus": "NOT_PUBLISHED",
+    "notChanged": "No runtime, test, policy, catalog, canon, product, human queue, mission, ledger or closed-mission record was edited."
+  },
+  "bytes": {
+    "head": "f6c688c6616bbee35bf45120cc48ce28b183ab73",
+    "runtimeCommit": "39115ed85b34a40d0c207c3401fb99204c9ba3c1",
+    "runtimeIdenticalAtHead": true,
+    "baseline": "R7B2-FREEZE-1 1a1c7286adc8b08d16f97dea86f4973fe33e5a95",
+    "sources": {
+      "CoachingCore/src/r6-adaptation.mjs": "7dda46de3a3a6fb259bcbf097d0449ab30cff1c63c968a441abcdddb6c5ac605",
+      "CoachingCore/src/r6-composition.mjs": "2a4c47e8775773182d77e90938db92184917c4954f256d4e83c1b965124cb7ce"
+    },
+    "verifiedUnchanged": {
+      "policy R6-POLICY-5 CoachingCore/r6/PROGRAM_POLICY_R6.json": "a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100 (git diff 1a1c728..39115ed empty)",
+      "catalog R7B0-CATALOG-2 CoachingCore/r7/b0/REPERTOIRE_CATALOG_B0.json": "ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9 (git diff 1a1c728..39115ed empty)",
+      "product/ and canon/": "git diff baa2cb1..39115ed empty",
+      "human queue reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json": "95ea4b92819455a7176e43e7a856dcff872b2ecf9cd575174468829f186099c8, 230 items, funding_trigger NOT_DECLARED"
+    }
+  },
+  "question": "A authority longitudinal da V1 deve distinguir uma sessão realmente não executada de uma sessão simplesmente sem relato?",
+  "principleAnswer": {
+    "answer": "YES",
+    "statement": "The V1 longitudinal authority should distinguish a session known not to have been done (reported not done, or inside a declared interruption) from a session with no report at all. Unreported training must count neither as executed (no credit) nor as not done (no zero reading), and where a run dose depends on it, the dose is asked, not planned.",
+    "basis": [
+      "Product Truth already requires it: AEOS §15 'Falta de dado é censura/unknown'; AEC §2.1 'distinguir sync ausente, parcial e sessão realmente omitida'; AEC §4 'sem confirmação/evidência, desconhecido, nunca não realização/falha por ausência de treino'; DR-118 'Missing data stays missing: unknown, never zero, \"not done\", default or inferred'; AEC §1.2 'Incerteza decisiva segue ASK/HOLD/RECONCILE no escopo, sem default fisiológico'.",
+      "V1 inbound is HealthKit (DR-121): an activity can exist and still be absent from the app (sync gap, partial fidelity), so 'no report' is a weaker fact than 'not done'.",
+      "Sporting asymmetry: a real stop of weeks reduces endurance capacity and calls for re-entry (C-SD-02), while continuity calls for progression and race-specific tapering (C-SD-03). Reading unknown as zero underdoses and collapses race preparation for an athlete who trained (CQ-R6-04, P3-01). Reading it as credit overdoses an athlete who stopped (R18, P3-02). Asking is the smallest intervention that does not assume either.",
+      "r12 does not forbid it: its own R18 recommendation lists 'catch-up from the completed-work ledger with unreported sessions as missed' as one Engineering mechanism among others, with Product/Data owning how the athlete is asked, and requires that a week without a gating review never count as executed."
+    ],
+    "keepR12Rejected": "KEEP_R12_UNREPORTED_AS_MISSED is rejected on the merits: it contradicts DR-118/AEC §4 for V1 and plans the reviewed entry (15 min, no quality or touch) for an athlete who may have trained, including in the taper and race week."
+  },
+  "semanticDisposition": "NOT_READY",
+  "semanticDispositionRationale": "The direction is right (principleAnswer YES; KEEP_R12 rejected), but at 39115ed the mechanism breaks the semantics it claims on a realistic path. When the athlete answers UNREPORTED_TRAINING with a known stop before the next weekly review, the decision keeps and validates the credited projection for the rest of that week (SSCTR-SD-01, safety-relevant, introduced by R7-C on the reviewed path). This contradicts R7-C's own rules 1 and 2 as stated in the request, the approved single-run ceiling (D18), r12 R18 and the Phase 3 DO_NOT_REOPEN claim that with reported misses R7-C reproduces R7B2-FREEZE-1. The legacy-test edits and a freeze on these bytes are therefore not authorized. Under the Founder's rule: no test is edited, no freeze is made, the conflict is recorded and Phase 4 closes NOT_READY.",
+  "smallestMissingProof": "Runtime only; no policy byte and no Product or Founder decision. When the facts a decision receives turn the window from unknown into known (late reports done or not done, on any day, with any decision kind, including the pending event re-submitted), the run doses still ahead in the decision's own week are planned from the canonical factual state before any decision keeps, validates or reduces them. A known stop gets the reviewed entry, or a declared break's return recipe. Executed sessions get their evidence. Engineering chooses the mechanism. Directed tests: the SD7 grid (reviewed and unreviewed; day 0 and day 2; WEEKLY_REVIEW, SCHEDULE_CHANGE, SYSTEMIC_FATIGUE), the r7c-phase4.test.mjs:85 fixture asserting the current week as well as week 8, mixed answers (some done, some not done), and a mutant that removes the re-plan.",
+  "d1": {
+    "classification": "ACCEPTABLE_RESIDUAL",
+    "item": "D1 / CQ-R6-16 (LOW): in R6-H19 S4 the third adverse key session mid-week, with impaired next-day function, changes nothing at once; the next weekly review gates quality.",
+    "verifiedAt39115ed": "SD5 (own probe) and the coordinator's corrected holdout output: S1 now differs (B.2 KEEP; R7-C ASK UNREPORTED_TRAINING, because the corpus supplies no facts for weeks 0-3, so the 30-day window holds only unreported run sessions). S2, S3 and S4 have the same status, action and proposal hash as B.2. S4, the D1 step, is KEEP on both.",
+    "rationale": "Pre-existing, not introduced or changed by R7-C, and outside the Founder's Phase 2-4 scope. The clinical route is intact (an eligibility pain/illness/injury/functional-limitation flag routes to CLINICAL_HUMAN_REQUIRED before the question; N9 and SD6). A next-day impairment reported as a training response is not a clinical determination. The athlete can report SYSTEMIC_FATIGUE (REDUCE). The exposure is the remainder of one week before the weekly gate. Whether three repeated adverse key sessions should trigger an in-cycle reduction is a new rule. Under AEC §1.3 an exceptional in-cycle adaptation needs sustained materiality, and this review did not evaluate evidence for such a rule (abstain on the rule, claim C-SD-06).",
+    "owners": "SSCTR with Product Constitution & Governance for any in-cycle reduction rule (policy revision with its own evidence review); Product/UX for a proactive check-in.",
+    "disclosure": "To be carried as a disclosed residual in the R7-C closure record; re-review when a policy revision proposes an in-cycle rule or when real V1 data shows the pattern."
+  },
+  "g02": {
+    "verdict": "CONFIRMED_INSIDE_APPROVED_ENVELOPE",
+    "binding": "learnedMaintenance (r6-adaptation.mjs) under R6-PARTIAL-NOISY-LEARNING, r12 conditions 8 (comparability) and 13 (learning consent), AEC §1.3 (between-cycle progression under response).",
+    "evidence": "Policy claim of R6-PARTIAL-NOISY-LEARNING: observations 'can inform near-term coaching (hold, advance, regress, rank) when provenance, comparability, recency, consistency and hysteresis are kept, without causal or physiological claims'. Code read: with consent only; development weeks of the BUILD class in EASY mode only; identical prescription hash, same arrangement pool, BUILD phase class, within maximumAgeDays (56); association EMERGING or STRONG and ADVERSE, never MIXED; holds the long run at the dose last executed in a non-consolidation build week, never a new dose, step or threshold; causal false, automaticDoseAuthority false; the reason states an association. Probe phase3-adversarial-g02.mjs re-run by this reviewer at 39115ed: output byte-identical to probes/out/adversarial-g02.R7C-P4-39115ed.json (L1-L7 in 16 variants, determinism with and without the carried model). Mutation output read, not re-run: G02-M3 and G02-M8 killed; G02-M4 is equivalent, its witness killed.",
+    "notes": [
+      "O3: holding below the population HOLD when the released long run was not reported keeps the last executed dose. That is consistent with 'unknown earns no credit'.",
+      "O4: re-consent rebuilds the model from the whole ledger, including facts recorded during revocation. This is pre-existing R6 behaviour and a privacy-scope question (G07, LEARNING-CONSENT-SCOPE), not a sporting one.",
+      "Variant K: with a same-pool strength-day change the hold can sit two population steps below (65 against 75). It is still the last executed dose, inside the envelope.",
+      "G02 does not depend on r12 condition 14 (unreported reviewed as missed): it reads executed long runs only."
+    ],
+    "limits": "A conformity confirmation of a runtime binding to an existing envelope, not a new policy approval and not efficacy evidence."
+  },
+  "legacyTests": [
+    {
+      "id": "QRE-R6-04",
+      "file": "CoachingCore/test/r6-engineering-fixes.test.mjs:94",
+      "authorized": false,
+      "status": "NOT_AUTHORIZED_AT_39115ED",
+      "split": "Assessed for a future request on fixed bytes, not authorized now. UNREPORTED: the simulator's runs carry no report; from the first decision whose run dose depends on them the decision is the typed UNREPORTED_TRAINING question, and no decision returns a VALID plan with quality, race touch or strides ahead while the run ledger is empty (the safety meaning of the original invariant; asserting only that the question is typed is not enough, because the stored final program still holds w8-w11 quality/strides under REQUIRES_RECONCILIATION). KNOWN_MISS: the runs reported not done; original invariant kept (no quality, touch or strides; easyWeeksDone 0). ANSWERED_KNOWN_STOP: unknown first, then answered not done before the next review; original invariant kept.",
+      "reproducedHere": "Suite failure reproduced (8 intense session ids in weeks 8-11 of the stored final program). With the misses reported not done R7-C equals R7B2-FREEZE-1 (suite-dispositions re-run, identical output)."
+    },
+    {
+      "id": "D18",
+      "file": "CoachingCore/test/r6-ssctr-revision.test.mjs:51",
+      "authorized": false,
+      "status": "NOT_AUTHORIZED_AT_39115ED",
+      "split": "UNREPORTED (never reviewed, and reviewed empty): typed ASK, no proposal, and never reviewed equals reviewed empty. KNOWN_MISS: week 7 entirely at the reviewed entry (15 min), as B.2. ANSWERED_KNOWN_STOP: entry for the runs still ahead in the answer week as well as the next week.",
+      "reproducedHere": "Failure reproduced (proposal null). R7C_KNOWN_MISS week 7 = EASY 15 / EASY 15 / LONG 15, equal to B.2."
+    },
+    {
+      "id": "SSCTR F3 / R6-H25",
+      "file": "CoachingCore/test/r7asc-state-consumer.test.mjs:232",
+      "authorized": false,
+      "status": "NOT_AUTHORIZED_AT_39115ED",
+      "split": "UNREPORTED: the event-date step asks, typed. KNOWN_MISS: MAINTAIN rows within the goal's rep range (<= 8) and never above the executed load (<= 70 kg), as B.2.",
+      "reproducedHere": "Failure reproduced (proposal null at the last step). Known-miss rows equal to B.2."
+    },
+    {
+      "id": "§19",
+      "file": "CoachingCore/test/r7b-hybrid-program.test.mjs:85",
+      "authorized": false,
+      "status": "NOT_AUTHORIZED_AT_39115ED",
+      "split": "UNREPORTED: week 4 asks; nothing grows. KNOWN_MISS: original invariant (long run not grown, state holds, block review names run.long, run.easy, run.qualityStep).",
+      "reproducedHere": "Failure reproduced (block review absent). Known-miss block review and long run equal to B.2."
+    }
+  ],
+  "fifthLegacyFixture": {
+    "file": "CoachingCore/test/r6-adaptation.test.mjs:140 (short break)",
+    "status": "NOT_RATIFIED_BY_THIS_RECORD",
+    "fact": "Edited in f69abc1 (Phase 2) under the same semantics: the SHORT return now runs on the reviewed program, and the never-reported case moved to r7c-longitudinal. Disclosed in PHASE2_CHECKPOINT.md:93, absent from the request's list of four. The closure should record it with the four."
+  },
+  "fullSuite": "node --test in CoachingCore, run by this reviewer at HEAD f6c688c (runtime 39115ed), Node v24.19.0: 832 tests, 828 pass, 4 fail; the four failures are exactly the four legacy tests above. npm run verify was not run.",
+  "boundaryRulings": {
+    "B1": {
+      "ruling": "ACCEPTABLE",
+      "text": "With a completed run in the 30-day window, an unreported week holds like a reviewed miss without asking (76/148 Grid A cells, re-run identical). Unknown earns no credit and causes no regression, and the dose is bounded by the single-run ceiling anchored on a known completed run (D18). The two readings give the same dose, so asking would add burden with no dose benefit (MEC, AEC §1.2). Record-level condition C4 applies: the internal gating row status 'MISSED' for an elapsed unreported session must never surface as 'not done'.",
+      "observation": "Pre-existing and unchanged by R7-C (B.2-identical): after about four weeks of known misses with an anchor run still inside the window, the plan holds prior doses including quality (Grid A GEN b=7 g=3: EASY 50+strides / THRESHOLD 34 / LONG 65), while a declared break of similar length gets the return recipe. Not evaluated for approval here; routed to the policy owner as a re-review trigger."
+    },
+    "B2": {
+      "ruling": "ACCEPTABLE_RESIDUAL",
+      "text": "A known run in the window anchors it and nothing is asked. In the taper, a dimension never executed in the program plans at the event authority's minimum. SD3: with the long run reported and the easy runs unreported, the taper and race week plan EASY 15 / EASY 15 / LONG 40, then EASY 15 / EASY 15 / RACE. That is identical to the easy runs reported not done and identical to B.2, and the reason claims no 'not done'. For that dimension this is a per-dimension minimum reading of unknown. It is conservative in direction inside a taper whose purpose is volume reduction, with the long run anchored on executed work; the cost is adequacy (C-SD-03), not safety. Disclosed residual; re-review if V1 data shows dimension-level under-reporting (HealthKit partial fidelity)."
+    },
+    "B3": {
+      "ruling": "ACCEPTABLE_WITH_CONDITION",
+      "text": "Strength-only or same-week changes keep their change with the question pending and the run doses unvalidated (Grid B; SD8 C3: EQUIPMENT_CHANGE KEEP with UNREPORTED_TRAINING pending, REQUIRES_RECONCILIATION). Coordinator fact: EXERCISE_SUBSTITUTION goes through rebuild(ctx,{fromWeek:w}), so a nonclinical substitution asks and is not applied until the athlete answers (SD8 C3 confirms; with pain it routes to CLINICAL_HUMAN_REQUIRED first, never substituting as a remedy). Acceptable as fail-closed: the run doses are not derived from the gap and the stored plan is not valid. A blocked strength intent is still an agency and adequacy cost, so condition C5 applies: in a later runtime revision, apply a nonclinical substitution strength-only (as EQUIPMENT_CHANGE does) while the question is pending. Not blocking."
+    },
+    "B4": {
+      "ruling": "QUESTIONS_ACCEPTABLE_ANSWERS_NOT",
+      "text": "Questions behave as described: a missed-session or underperformance report once the week is complete asks about the next week with its own question, and a decision inside the gap week repeats the pending question verbatim (Grid B sameQuestionAsReview; SD4: the question hash at mid-week of week w equals the one asked at the end of week w-1). The answer path fails. An answer given inside the next week before its review, as a known stop, validates the credited projection (SSCTR-SD-01). With the answer at the end-of-week review the result is correct (SD6: not done gives the entry; executed gives the re-base)."
+    },
+    "B5": {
+      "ruling": "ACCEPTABLE_WITH_CONDITIONS",
+      "text": "A never-reporting athlete gets the question at every decision once a run dose depends on the gap. SD4: 10 of 10 decisions from the end of week 6 to week 11 carry it, and no valid run plan exists until the athlete answers (the last week's review has nothing ahead). Corrected holdout reading: H19 S1 and H17 S1 now ask because the corpus supplies no facts for the preceding weeks, as expected under the semantics. In the H21 counterfactual the SYSTEMIC_FATIGUE step asks instead of REDUCE, and the RECOVERED step asks through previousValidity. This cost is preferable to either wrong default, but conditions C2 and C3 bind. SD1 shows that a reactive signal reported with the question is dropped if the answer comes through a plain review (KEEP, no reduction), while re-submitting the pending event kind with the answer applies it. Cadence and wording are G03's (O2)."
+    }
+  },
+  "conditions": [
+    {
+      "id": "C1",
+      "binding": "BLOCKING_BEFORE_ANY_ACCEPTANCE",
+      "text": "Fix SSCTR-SD-01 as stated in smallestMissingProof, with its directed tests. Re-present the disposition on the fixed bytes."
+    },
+    {
+      "id": "C2",
+      "binding": "CONSUMER_CONDITION_FOR_ACCEPTANCE (O1 made binding)",
+      "text": "While UNREPORTED_TRAINING is pending (planValidity REQUIRES_RECONCILIATION, referenceState.pending ASK), no consumer presents the stored run doses ahead as a prescription. The question, and any strength change kept beside it, are the only actionable items. Carry this in the freeze record and the handoff, as client condition C4 is carried."
+    },
+    {
+      "id": "C3",
+      "binding": "G03_CONDITION_FOR_USE_BEYOND_OFFLINE_REFERENCE",
+      "text": "The answer path is low-friction and factual: per session done or not done, or a declared break with its reason (screened clinically). Passive factual evidence (HealthKit inbound, DR-121) is used before asking where available. Non-response never silently defaults to credit or zero. The pending event's own signal (for example SYSTEMIC_FATIGUE, UNDERPERFORMANCE) is re-evaluated with the answer, by the client re-submitting the pending event kind and signals or by the engine carrying them. Cadence and wording are G03's."
+    },
+    {
+      "id": "C4",
+      "binding": "G03_DATA_CONDITION",
+      "text": "The internal weekly-gating row status 'MISSED' for an elapsed session with no report (kind null, eventId null) is a gating label only. It must never surface as 'not done' in history or adherence, which must keep 'no report' distinct from 'reported not done' (DR-118, AEC §2.1)."
+    },
+    {
+      "id": "C5",
+      "binding": "NON_BLOCKING_NEXT_RUNTIME_REVISION",
+      "text": "Apply a nonclinical EXERCISE_SUBSTITUTION strength-only while the run question is pending. The clinical-first route stays first."
+    },
+    {
+      "id": "C6",
+      "binding": "FOR_A_FUTURE_LEGACY_TEST_REQUEST",
+      "text": "Each of the four fixtures splits into UNREPORTED and KNOWN_MISS as described in legacyTests, plus an ANSWERED_KNOWN_STOP variant (unknown, then answered not done before the next review) that keeps the original invariant. For QRE-R6-04 the UNREPORTED variant asserts that no decision returns VALID with quality, touch or strides ahead while the run ledger is empty."
+    },
+    {
+      "id": "C7",
+      "binding": "DISCLOSURE",
+      "text": "The closure records D1 as a disclosed residual, the B2 per-dimension residual, the B1 pre-existing observation and the fifth legacy fixture."
+    }
+  ],
+  "findings": [
+    {
+      "id": "SSCTR-SD-01",
+      "severity": "BLOCKING_SAFETY_RELEVANT",
+      "introducedBy": "R7-C on the reviewed path; on the unreviewed path it is the pre-existing R18 path that R7-C was assigned to close (Founder Phase 2 decision 1).",
+      "title": "A known stop answered before the next weekly review is credited: the stored projection stays in force and VALID for the rest of the week",
+      "evidence": [
+        "SD7 (probes/sd/sd7-answer-midweek.mjs; out/sd7-answer-midweek.39115ed.json): GEN and 10K programs, g = 0 or 2 executed weeks, gap weeks 2-6 reviewed with runs unreported (RV) or not reviewed (NR), answer on day 0 or 2 of week 7 as WEEKLY_REVIEW or SCHEDULE_CHANGE with every gap run reported not done. R7-C: RV 12/16 KNOWN_STOP_CREDITED, 4/16 ASK; NR 12/16 credited, 4/16 ASK. B.2: RV 16/16 reviewed entry; NR 16/16 credited (pre-existing). Example GEN g0 RV day 0: KEEP, VALID, week 7 ahead EASY 50 / THRESHOLD 41 / LONG 65; timely known-miss path: EASY 15 / EASY 15 / LONG 15.",
+        "SD9 (exact fixture of test/r7c-phase4.test.mjs:85, the test that claims late not-done reports answer the gap): MISS answer gives MODIFY/REARRANGE_FUTURE_WEEKS, VALID, week 8 at the entry (the test's assertion passes), but week 7 ahead stays EASY 50 / THRESHOLD 34 / LONG 60 after five weeks reported not done; timely known miss: 15/15/15.",
+        "SD8 C1: same outcome with the not-done reports observed at the answer time (21/21 accepted). SD8 C2: the exposure lasts until the week's review, which then plans the entry for the next week.",
+        "SD1: SYSTEMIC_FATIGUE re-submitted with a not-done answer gives REDUCE from the projection (EASY 50+strides / EASY 41 / LONG 65), VALID, where the reviewed known-miss path gives 15/15/15."
+      ],
+      "violates": [
+        "Approved single-run ceiling (D18, policy run.singleRunCeiling): with no completed run in the 30-day window, every planned run is capped at the reviewed entry.",
+        "R7-C rule 2 (request): 'A known stop keeps the policy's own answer: sessions reported not done get the reviewed entry.'",
+        "R7-C rule 1 and r12 R18: no credit; a week without a gating review never counts as executed.",
+        "PHASE3_CHECKPOINT DO_NOT_REOPEN: 'Com faltas relatadas, a R7-C reproduz o R7B2-FREEZE-1 bit a bit' holds only for timely reports.",
+        "Same class and magnitude as R7C-P3-02, which Phase 3 classified SAFETY-RELEVANT."
+      ],
+      "root": "viewMovedBy re-plans the current week only for corrections, retractions or new quarantines ('New facts alone ... leave a projection ahead of them standing'). Once the answer removes the unknowns, runGapInForce returns null and nothing re-plans the week's stored doses, which R7-C's earlier questions had left as the projection.",
+      "owner": "Runtime author (R7-C) with Engineering; no policy change needed.",
+      "clinical": "Not a clinical judgment. If the answer is a declared break with a clinical reason it routes to CLINICAL_HUMAN_REQUIRED (SD6)."
+    },
+    {
+      "id": "SSCTR-SD-02",
+      "severity": "TEST_GAP",
+      "title": "r7c-phase4.test.mjs:85 asserts history (weeks 0-6) and week 8 but not the answer week's runs ahead, so it passes with SSCTR-SD-01 present (SD9)."
+    },
+    {
+      "id": "SSCTR-SD-03",
+      "severity": "NON_BLOCKING (G03 / Engineering)",
+      "title": "A reactive signal reported with the question is lost if the answer arrives through a plain review: SYSTEMIC_FATIGUE asked, then a plain-review answer gives KEEP with no reduction (SD1). Re-submitting the pending event kind applies it (REDUCE). Covered by C3."
+    },
+    {
+      "id": "SSCTR-SD-04",
+      "severity": "CONDITION (O1)",
+      "title": "Safety while the question is pending rests on the consumer: the never-reporting QRE-R6-04 fixture ends with quality and strides stored in weeks 8-11 under REQUIRES_RECONCILIATION, and SD1 shows THRESHOLD 41 and LONG 65 stored while a SYSTEMIC_FATIGUE question is pending. Covered by C2."
+    },
+    {
+      "id": "SSCTR-SD-05",
+      "severity": "RESIDUAL",
+      "title": "B2 per-dimension minimum reading of an unreported easy dimension in the taper (SD3), B.2-identical and conservative in direction."
+    },
+    {
+      "id": "SSCTR-SD-06",
+      "severity": "PROCESS",
+      "title": "A fifth legacy fixture (r6-adaptation.test.mjs:140) was changed in Phase 2 under the same semantics; disclosed in PHASE2_CHECKPOINT.md:93 but not in this request. Not ratified here."
+    },
+    {
+      "id": "SSCTR-SD-07",
+      "severity": "INFO",
+      "title": "Untracked files under audits/domain-coaching-r7-c-2026-11-01/probes/b2-copy/out/ named *-R7C-P4-39115ed.json are not this reviewer's; they were present when the records were written."
+    }
+  ],
+  "claims": [
+    {
+      "id": "C-SD-01",
+      "statement": "For V1, missing data is unknown, never zero, 'not done', default or inferred; an absent report must not be read as non-execution.",
+      "epistemic": "DECIDED",
+      "evidenceStatus": "NOT_A_SCIENTIFIC_CLAIM (normative Product Truth)",
+      "sources": ["AEOS §15", "AEC §2.1", "AEC §4", "AEC §1.2", "DR-118", "DR-121"]
+    },
+    {
+      "id": "C-SD-02",
+      "statement": "A real cessation of training over weeks reduces endurance capacity (VO2max, blood volume, lactate threshold, oxidative capacity), faster in highly trained athletes and more moderately in recently trained people, so a known stop calls for a different dose answer (re-entry) than continuity. Direction only; no magnitude is used.",
+      "epistemic": "OBSERVED (literature) / INFERRED (application)",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "sources": ["S1"],
+      "limits": "Narrative review, abstract read only; populations are mostly trained athletes; extrapolation to recreational V1 adults is qualitative."
+    },
+    {
+      "id": "C-SD-03",
+      "statement": "Planning a trained athlete's taper and race approach from a zero reading (minimum easy runs, no quality or touch) departs from the tapering pattern associated with the largest performance benefit (about 2 weeks, volume reduced about 41-60%, intensity and frequency maintained). The zero reading has an adequacy cost near races when the athlete did train.",
+      "epistemic": "OBSERVED (literature) / INFERRED (application)",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "sources": ["S2"],
+      "limits": "Meta-analysis of competitive athletes; abstract read only; the application to recreational runners is qualitative; performance, not safety."
+    },
+    {
+      "id": "C-SD-04",
+      "statement": "Sudden increases in running load raise running-related injury risk.",
+      "epistemic": "OBSERVED (literature)",
+      "evidenceStatus": "PLAUSIBLE_BUT_UNCERTAIN",
+      "sources": ["S3"],
+      "limits": "Systematic review found 4 studies and called the evidence very limited (level 2); the >30% versus <10% weekly distance HR 1.59 (95% CI 0.96-2.66) includes 1. The blocker SSCTR-SD-01 does NOT rest on this claim; it rests on the approved policy (D18) and the R7-C invariant."
+    },
+    {
+      "id": "C-SD-05",
+      "statement": "Repeated asking costs adherence or engagement.",
+      "epistemic": "ASSUMED",
+      "evidenceStatus": "INSUFFICIENT_EVIDENCE",
+      "sources": [],
+      "limits": "Not searched; G03 / Product owns it."
+    },
+    {
+      "id": "C-SD-06",
+      "statement": "Three consecutive adverse key sessions with impaired next-day function warrant an in-cycle reduction.",
+      "epistemic": "ASSUMED",
+      "evidenceStatus": "INSUFFICIENT_EVIDENCE",
+      "sources": [],
+      "limits": "No evidence review performed in this record; abstain on any in-cycle rule (D1 routing)."
+    }
+  ],
+  "sources": [
+    {
+      "id": "S1",
+      "citation": "Mujika I, Padilla S. Detraining: loss of training-induced physiological and performance adaptations. Part I: short term insufficient training stimulus. Sports Med. 2000;30(2):79-87.",
+      "doi": "10.2165/00007256-200030020-00002",
+      "pmid": "10966148",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/10966148/",
+      "type": "Review (narrative)",
+      "access": "ABSTRACT_ONLY",
+      "accessed": "2026-11-01",
+      "correctionOrRetraction": "None shown on the PubMed record"
+    },
+    {
+      "id": "S2",
+      "citation": "Bosquet L, Montpetit J, Arvisais D, Mujika I. Effects of tapering on performance: a meta-analysis. Med Sci Sports Exerc. 2007;39(8):1358-65.",
+      "doi": "10.1249/mss.0b013e31806010e0",
+      "pmid": "17762369",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/17762369/",
+      "type": "Meta-analysis",
+      "access": "ABSTRACT_ONLY",
+      "accessed": "2026-11-01",
+      "correctionOrRetraction": "None shown on the PubMed record"
+    },
+    {
+      "id": "S3",
+      "citation": "Damsted C, Glad S, Nielsen RO, Sørensen H, Malisoux L. Is there evidence for an association between changes in training load and running-related injuries? A systematic review. Int J Sports Phys Ther. 2018;13(6):931-942.",
+      "pmid": "30534459",
+      "pmcid": "PMC6253751",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/30534459/",
+      "type": "Systematic review",
+      "access": "ABSTRACT_ONLY",
+      "accessed": "2026-11-01",
+      "correctionOrRetraction": "None shown on the PubMed record",
+      "role": "Counterevidence and limits on any injury-based argument"
+    }
+  ],
+  "queryLog": [
+    {"tool": "WebSearch", "query": "Mujika Padilla detraining loss of training-induced physiological and performance adaptations Part I Sports Medicine 2000 PubMed", "purpose": "verify detraining review", "date": "2026-11-01"},
+    {"tool": "WebSearch", "query": "Bosquet Montpetit Arvisais Mujika effects of tapering on performance meta-analysis Med Sci Sports Exerc 2007 PubMed", "purpose": "verify taper meta-analysis", "date": "2026-11-01"},
+    {"tool": "WebSearch", "query": "Damsted Glad Nielsen Sørensen Malisoux \"changes in training load and running-related injuries\" systematic review PubMed", "purpose": "directed counterevidence on load change and injury", "date": "2026-11-01"},
+    {"tool": "WebFetch", "url": "https://pubmed.ncbi.nlm.nih.gov/10966148/", "date": "2026-11-01"},
+    {"tool": "WebFetch", "url": "https://pubmed.ncbi.nlm.nih.gov/17762369/", "date": "2026-11-01"},
+    {"tool": "WebFetch", "url": "https://pubmed.ncbi.nlm.nih.gov/30534459/", "date": "2026-11-01"}
+  ],
+  "aeReview": {
+    "decisionReviewed": "An elapsed run window with no report on which a run dose depends.",
+    "q1_planStillAdequate": "Unknown: the stored doses assume execution and the entry assumes none; neither fact is known.",
+    "q2_materialFactWithProvenance": "Only 'no report' and 'no completed run known in 30 days'. No report is not a fact of non-execution (C-SD-01).",
+    "q3_keepDefensible": "No. KEEP validates credit for sessions that may not have happened (P3-02, SSCTR-SD-01).",
+    "q4_changeNecessary": "Changing to the entry assumes non-execution; necessity is not established either way.",
+    "q5_smallestSufficientIntervention": "ASK, typed, with no run-dose proposal; independent strength or same-week changes proceed with the question pending.",
+    "q6_whySmallerAlternativesFail": "Nothing smaller than an information request preserves both readings; KEEP is unsafe for a stopped athlete and the entry is inadequate for a trained one.",
+    "q7_priorityAndProgression": "Protects the trained athlete's progression and race specificity and the stopped athlete's re-entry, without choosing between them.",
+    "q8_evidenceSupportsConclusionAndDose": "Qualitatively (C-SD-02, C-SD-03) plus Product Truth; no dose is approved here.",
+    "q9_materialUncertainty": "Asking burden and non-response stall (C-SD-05); the answer-path defect SSCTR-SD-01; consumer dependence (C2).",
+    "q10_askHoldClinical": "ASK for the dependent run doses; their validity is held (REQUIRES_RECONCILIATION). CLINICAL_HUMAN_REQUIRED if the answer reveals a clinical reason (routing verified, SD6)."
+  },
+  "probes": {
+    "own": [
+      {"file": "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/sd/sd-probe.mjs", "sha256": "ac3e4f2f61652d02b3278bd516ce512b834c15d81638497ee96fd52265322527", "output": "probes/sd/out/sd-probe.39115ed.json", "outputSha256": "c4c849962b3b1379f99eb207146f17648cdad7d37edf5070918112e0ad99c7c8", "covers": "SD1 fatigue during the gap and its answers; SD2 simulator stored plan; SD3 B2 taper; SD4 B5 asking cost; SD5 D1 H19 on both runtimes; SD6 answer paths at the end-of-week review"},
+      {"file": "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/sd/sd7-answer-midweek.mjs", "sha256": "ec9aad72bc9be6c08b00c0afc3117322cb797722c981b01ca7a6dcd6445b91d2", "output": "probes/sd/out/sd7-answer-midweek.39115ed.json", "outputSha256": "59e6d2e3929d4756a766192e205c66882d02b5c2721e00ec89fbda6751a69e97", "covers": "SSCTR-SD-01 grid, R7-C against R7B2-FREEZE-1"},
+      {"file": "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/sd/sd8-controls.mjs", "sha256": "3b8dbf1127f86171ff1cc2e08e638a678c77ffd89a23d1d930eaca04064dab55", "output": "probes/sd/out/sd8-controls.39115ed.json", "outputSha256": "11d6ca47ce917a507f6e4cf774ff44a6cde06c4f2f3ad50d7f34a7b1f52e1f10", "covers": "observedAt control, exposure window, B3 substitution"},
+      {"file": "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/sd/sd9-test-fixture-week7.mjs", "sha256": "0b0cc328797ec7ff8e04b9f1bb04b867b9eb1bffccae3976987e8bfbaf8f60a1", "output": "probes/sd/out/sd9-test-fixture-week7.39115ed.json", "outputSha256": "3cd3671d00329f003c9f9e7d07f2601319716f806d123987d644c6cf2cc7c4d5", "covers": "the exact r7c-phase4.test.mjs:85 fixture, answer week"}
+    ],
+    "coordinatorRerunByReviewer": [
+      "probes/phase4-adversarial-g01.mjs: output byte-identical to probes/out/adversarial-g01.R7C-P4-39115ed.json (Grid A 148: 76 hold, 40 ask, 32 independent, 0 violations; Grid B 46 asked; P1 165, 0 failed)",
+      "probes/phase3-adversarial-g02.mjs: output byte-identical to probes/out/adversarial-g02.R7C-P4-39115ed.json",
+      "probes/phase3-suite-dispositions.mjs: output identical to probes/out/suite-dispositions.R7C-P4-39115ed.json (F1-F4 known misses equal B.2)"
+    ],
+    "readNotRerun": [
+      "probes/out/mutation.R7C-P4-39115ed.json",
+      "coordinator scratchpad evidence/holdout.R7C-P4-39115ed.json and holdout-expiry.R7C-P4-39115ed.json (not in the repo; corroborated for H19 by SD5)"
+    ]
+  },
+  "couldNotVerify": [
+    "Full texts of S1-S3 (abstract only); no effect magnitudes are relied on.",
+    "The mutation results (read, not re-run) and the coordinator's holdout, differential, clinical sweep, conformance and R7-A class outputs (read from the coordinator's messages or scratchpad; H19 independently reproduced by SD5).",
+    "Schema validation: the skill's validate_records.py needs Python, which is not installed here. This record follows the request's field list rather than decision.schema.json and is not claimed schema-valid.",
+    "Real-user behaviour, the asking cost (C-SD-05) and any HealthKit matching: none exist yet.",
+    "Whether SSCTR-SD-01 also occurs in event-week, return or strength-only decision kinds beyond those probed (WEEKLY_REVIEW, SCHEDULE_CHANGE, SYSTEMIC_FATIGUE, day 0 and day 2)."
+  ],
+  "proposedQueueItems": [],
+  "proposedQueueItemsNote": "None: this record approves no prescriptive decision. If a later SSCTR record accepts the R7-C unknown semantics on fixed bytes, that acceptance (unknown run window → typed ASK instead of the reviewed entry) and the G02 learned-maintenance binding each have prescriptive effect and should then be proposed as QUEUED_FOR_FUNDED_HUMAN_REVALIDATION. The closure decides; this reviewer did not append to the queue.",
+  "humanRevalidation": {
+    "humanValidation": false,
+    "fundingTrigger": "NOT_DECLARED (queue funding_trigger.state, verified)",
+    "queueAppended": false,
+    "futureHuman": "A qualified human may maintain, modify or revoke this disposition with evidence and verified qualifications; this reviewer has no veto.",
+    "clinical": "Clinical dependencies stay CLINICAL_HUMAN_REQUIRED and never wait for funding."
+  },
+  "expiry": {
+    "owner": "Chief / R7-C coordinator",
+    "eventTriggers": [
+      "any runtime change to r6-adaptation.mjs or r6-composition.mjs (this record binds the two sha256 above)",
+      "a fix for SSCTR-SD-01 (re-present the disposition)",
+      "any policy, catalog, canon or product change touching D18, R18, return or event rules",
+      "a G03 decision on the answer interaction or cadence",
+      "new real V1 data on reporting gaps"
+    ],
+    "reviewBy": "2027-04-30, or the first trigger, whichever comes first"
+  },
+  "supersedes": null
+}
