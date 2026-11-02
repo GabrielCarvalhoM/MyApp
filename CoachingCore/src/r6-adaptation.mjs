@@ -806,6 +806,8 @@ function missedSession(ctx){
   const proposal=finishProposal(program,sk,next,{eventId:review.event.id,asOf:ctx.asOf,action:'MOVE',fromWeek:w,throughWeek:w,sessionId:target.id,horizonsConsidered:HORIZONS});
   return {action:'MOVE',reason:best.reason,proposal,counterfactuals:cands.map(({proposalSessions,...c})=>c),horizons:{H0_SESSION:'Key stimulus preserved on a later chosen day',H1_WEEK:'No added interference; one easy run is replaced',H2_BLOCK:'Block progression continues',H3_GOAL_EVENT:'Goal trajectory unchanged'}};
  }
+ // R7-C P3-02: when the gate review asks about unreported training, that question is the decision; it is never kept as a KEEP.
+ if(gateReview.question?.kind==='UNREPORTED_TRAINING')return gateReview;
  return {...gateReview,action:gateReview.proposal?gateReview.action:'KEEP',reason:'Missed '+target.role.toLowerCase()+': zero work recorded, no debt; '+(gateReview.proposal?'the next comparable step repeats':'nothing else changes'),counterfactuals:[...cands.map(({proposalSessions,...c})=>c),...(gateReview.proposal?(gateReview.counterfactuals??[]).filter(c=>c.id!=='KEEP'):[])]};
 }
 function performanceSignal(ctx){
@@ -813,7 +815,8 @@ function performanceSignal(ctx){
  if(!target){const g=weeklyReview(ctx);return g.proposal?g:{...g,reason:'The report names no session; the plan stays and the next steps are gated on executed sessions. '+(g.reason??'')};}
  const type=sessionType(target),r=recent(ledger,type,asOf,sk.op.learning.repeatedAdverseWindowDays),s21=recent(ledger,type,asOf,21),single=ctx.kind==='UNDERPERFORMANCE'||ctx.kind==='PROGRESSION_NOT_TOLERATED'?r.adverse<sk.op.learning.repeatedAdverseForRegression:s21.surplus<sk.op.learning.earnedProgressionSessions;
  const gateReview=weeklyReview(ctx);
- if(single&&!gateReview.proposal)return {...gateReview,action:'KEEP',reason:(ctx.kind.includes('UNDER')||ctx.kind.includes('NOT_TOLERATED')?'One adverse execution is a signal, not a trend':'One easier execution does not earn an extra step')+'; keep the plan and compare the next execution',counterfactuals:[counter('KEEP','KEEP',true,'Smallest effective decision under single-event evidence',{selected:true}),counter('REGRESS','REGRESS',false,'Repeated comparable adverse responses are required before regression'),counter('EXTRA_PROGRESSION','EARNED',false,'Repeated comparable surplus is required before an extra step')]};
+ // R7-C P3-02: a gate review that asks about unreported training is the decision, never a KEEP.
+ if(single&&!gateReview.proposal&&gateReview.question?.kind!=='UNREPORTED_TRAINING')return {...gateReview,action:'KEEP',reason:(ctx.kind.includes('UNDER')||ctx.kind.includes('NOT_TOLERATED')?'One adverse execution is a signal, not a trend':'One easier execution does not earn an extra step')+'; keep the plan and compare the next execution',counterfactuals:[counter('KEEP','KEEP',true,'Smallest effective decision under single-event evidence',{selected:true}),counter('REGRESS','REGRESS',false,'Repeated comparable adverse responses are required before regression'),counter('EXTRA_PROGRESSION','EARNED',false,'Repeated comparable surplus is required before an extra step')]};
  return gateReview;
 }
 function fatigue(ctx){

@@ -103,6 +103,15 @@ test('R7-C P3-02: a mid-week KEEP never clears the pending question, and the cli
  const pain=decide(t,7,{...AT,...KINDS.SCHEDULE_CHANGE(),eligibility:{...elig(t.p.weeks[7].startDate),pain:true}});
  assert.equal(pain.status,'CLINICAL_HUMAN_REQUIRED');assert.equal(pain.proposal,null);assert.equal(pain.question??null,null);
 });
+test('R7-C P3-02: a missed-session or single-performance report whose gate review asks about unreported training is that question, never a KEEP',()=>{
+ const t=timeline(BASE,{g:0,b:7,V:'UNREP'}),long=t.p.weeks[7].sessions.find(s=>s.sport==='RUN'&&live(s)&&s.role==='LONG');
+ for(const kind of ['MISSED_SESSION','UNDERPERFORMANCE']){
+  const r=decide(t,7,{day:6,hour:'20:00:00',kind,targetSessionId:long.id});
+  assert.equal(r.status,'ASK',kind+': '+r.reason);assert.equal(r.action,'ASK',kind);assert.equal(r.proposal,null,kind);
+  assert.equal(r.question.kind,'UNREPORTED_TRAINING',kind);assert.equal(r.question.fromWeek,8,kind+': the next week the review plans');
+  assert.equal(r.planValidity.status,'REQUIRES_RECONCILIATION',kind);
+ }
+});
 test('R7-C P3-02: same facts, same decision; the strength change kept beside the question is the change itself',()=>{
  const t=timeline(BASE,{g:0,b:7,V:'UNREP'}),rv={...review(t.p,7,{...AT,...KINDS.EQUIPMENT_CHANGE()}),actualLedger:t.ledger};
  const a=evaluateProgram(t.p,rv,opts),b=evaluateProgram(t.p,rv,opts);
