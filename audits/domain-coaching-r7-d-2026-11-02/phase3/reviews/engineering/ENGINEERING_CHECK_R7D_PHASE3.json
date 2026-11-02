@@ -1,0 +1,263 @@
+{
+ "recordId": "R7D-ENGINEERING-PHASE3-CHECK-1",
+ "date": "2026-11-02",
+ "judge": "Quality & Reliability Engineer (constitution 1.3.0), fresh instance",
+ "model": "claude-opus-5-5",
+ "effort": "xhigh",
+ "independent": true,
+ "independenceNote": "This instance did not author the runtime, the Phase 3 fix, its directed tests, its evidence, the harness (R7D-HARNESS-1 or -2), PREREG-1/-2, the F03-B rule or its authority form, or any earlier review of R7-D. It read the author's evidence and reproduced it on rebuilt runtimes outside the repository, and wrote its own probes and mutants. It did not open phase3/reviews/ssctr/. Self-check of the author is not counted as approval.",
+ "scope": {
+  "kind": "NARROW_ENGINEERING_CHECK (not a general audit)",
+  "candidate": {"branch": "claude/domain-coaching-r7-d", "commit": "7039bc1999a9e1dcc952cd8e20265e716bbb9c46", "runtimeBytesFrom": "9e1ecbf02999a702646ac7df56e6acaf421d9f2e", "predecessor": "R7C-FREEZE-4 a9654c8ea175611fbaae805ac6b0e8b928620dff"},
+  "runtimeDelta": {
+   "CoachingCore/src/r6-adaptation.mjs": "768ea65d774e9269e80077927119ae48afc0df9da5667ca290d747a3207a8d8a",
+   "CoachingCore/src/r6-composition.mjs": "ff965eb6730614c417cea6948c01ac94c39228210a3256eba06779ae7107fe1a",
+   "CoachingCore/src/r6-prescription.mjs": "f5e0f5defa0a1f211bad1d63747641ce325aad9d61cc938e7472757fecea4a5f",
+   "CoachingCore/src/r6-program.mjs": "2fd46f8ded66b84068e1c07cf4043fa8b3eba1a55382abd33dca9af18ddd7678",
+   "CoachingCore/src/r6-provenance.mjs": "2b9c5ccc023e80a698c3f155acd6873ee2a9c3407e66f491c3a90baf90fb9419",
+   "CoachingCore/src/r7b-repertoire.mjs": "e8f1689520e159836a4c2c005c1405e683629202bd6da6dbdfdc031bc73c3733",
+   "CoachingCore/test/r7d-phase3.test.mjs": "2058f0281c0d1e98fd1255ffbefb97e3449b3b3a63abe9076be2e9a7550a5b9a"
+  },
+  "questions": ["DX-01 factual persistence", "carrier independence of a declared break", "machine round trip and no computed machine load", "confounded semantics", "closed history, clinical-first, no new stale VALID", "harness revision and PREREG-2 against PREREG-1; oracles; P16", "flagged behaviours 1, 2 and 5 (engineering side)"],
+  "notInScope": ["domain adequacy of DX-02, F03-B and F04 (SSCTR recheck)", "flagged behaviours 3 and 4 (SSCTR)", "privacy acceptance of the consent consumer condition (Security)", "commit d4725e6 (freeze script, read-only verifier, authorization summary), which landed during this check and was not reviewed; runtime src bytes are unchanged by it", "uncommitted working-tree changes another author made during this check (CoachingCore/scripts/freeze-r7d.mjs; harness/lib/report.mjs, a renderer-only change citing an SSCTR recheck condition, sha256 53ea0096… against the reviewed ba869d64…; phase3/probes/f03b-athlete-probe.mjs and its outputs). The harness reviewed is the 7039bc1 bytes: properties, client, expectations, canonical, metamorphic, util and r7d-harness are unchanged in the working tree."],
+  "probesWritten": {"phase3/reviews/engineering/probes/qe-consent.mjs":"0cb2281eec1699d17d21418ab105065bcf09119e4be8985e0171cb5fbd7b4530","phase3/reviews/engineering/probes/qe-differential-attribution.mjs":"2821272e764cb14f4169a2f78d8fea3366bbf05806dd549123b6198a8cca0e95","phase3/reviews/engineering/probes/qe-dx01.mjs":"2a010dbc03b703cabb20d73a15dfc92e019fc98bdc4cdaed1bd531681ec7b2f2","phase3/reviews/engineering/probes/qe-dx02.mjs":"647f9f81f07af906457a183f756bd826b4ff067ce01b0ca0d2d8c75bdf35ffb1","phase3/reviews/engineering/probes/qe-f03.mjs":"6b2c0f37b670fd8ab4122b93ab033669624541895d9ae7af001f3d5cc113d687","phase3/reviews/engineering/probes/qe-f03b-edges.mjs":"fcc0e2fc8160c51d8f06ea95cbb23346d2ec66265ca76a1a19174d7df4020804","phase3/reviews/engineering/probes/qe-mutation.mjs":"1dc31fb791e4bdf463020fe5e5b0f2db4a2275c6c996bb75cddf1a1e83d01c61"}
+ },
+ "sourcesRead": [
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/REVIEW_REQUEST_PHASE3.md", "sha256": "b9c808714bc43e1dd2c8a726ec7e6bae164fa4dd207947f195327d8c4d09dec0"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/PHASE2_CHECKPOINT.md", "sha256": "53a982e7d37449078ea92ee0d3f9a1e87dd1f47793972589942c3fd98341ec4b"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/diagnostic/triage/ENGINEERING_PRETRIAGE.md", "sha256": "97a41fe63f2ceaf10cfbf2c0c727fb0ad839d343a933a38fe29e0023d15d2de5"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/phase3/AUTHORIZATION_PHASE3.md", "sha256": "99da5ff67cbeff4105609dad313a264f1c6351ef6249be6a46114732d4cd20d3"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/PREREGISTRATION_R7D.md", "sha256": "fefb532a3ef876a152bae95ee26bf564c8fb4bd118fd4b8154dcd5bd6bb447c6"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/PREREGISTRATION_R7D_2.md", "sha256": "e2bb6596e7757d29cc042610a60ab25780fbd3b29035f49d8edacb5d91fc69db"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/author/AUTHOR_BRIEF_FINAL_R7D.md", "sha256": "a599dfeb892074a53992bbe6bbfff953911888ecd073274017a0bb25e4a83c41"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/author/INTERFACE_DELTA_R7D_2.md", "sha256": "18c59b60325f77ca2c37f0d011c6d61444d688a2876c85f0506c0b859530fb10"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/phase3/policy/SSCTR_F03B_DECISION_R7D.json", "sha256": "5eda3d816360f807ce096939bade3ba58c2703ae206e5f83c49637c682c12ec0"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/phase3/policy/SSCTR_F03B_DECISION_R7D.md", "sha256": "7012579af14b51d806d5a6f0a0e70eb36fd9cd9f17b1996d13d8bf1d1ea539df"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/phase3/policy/PCG_F03B_AUTHORITY_R7D.json", "sha256": "5e25b1580d9d74d9b73204a290d3c02e5237fef86b2fda097d4b681ecc3212c6"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/phase3/policy/PCG_F03B_AUTHORITY_R7D.md", "sha256": "cb99f7f33834b25fefc66b5f0550dc12a94d036cdd43b41234a13a0134ab2e30"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/harness/lib/properties.mjs", "sha256": "a29207d7d8715f583eba9c037bc1f556632b26970efa6a574ba820fb7018f064"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/harness/lib/client.mjs", "sha256": "f328033d9a52d3a8c10adc17313f262657bc92781330d5e1bc5d42d9f1acb811"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/harness/lib/expectations.mjs", "sha256": "4f785b167ccf393c58eee6a6d969ad8b2d9904831f0d2f1967a4553a535ceb93"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/harness/lib/canonical.mjs", "sha256": "1cdc6dc3eb097fecbd6b4b054ee5718fb07cf7e297969b661decca5acc78b675"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/harness/lib/report.mjs", "sha256": "ba869d642b5d44b8324dd29c622cda1fcd67ed358861c546337d74be25cd7710"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/harness/r7d-harness.mjs", "sha256": "7511c127a6ae04da8fc40d9af38bbcf30509015c7e9f647997be5a5374288be8"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/harness/README.md", "sha256": "3cdf36d3d7956d47ecfd0ac33bad0df4a81e9bd76658ab789a3130065a56c1ad"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/harness/validation/run-validation.mjs", "sha256": "e3f3e09057d4d0d8c7386fec13e4607291c0c9154a91befac757b48796098193"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/harness/validation/build-dev-cases.mjs", "sha256": "942fed55382a59a32e4915aec8da59fed3fc4dd3c076e5ba44489ad25ed3fc2a"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/harness/validation/DEV_CASES_R7D_2.json", "sha256": "c91e9110c0d2b3c8c52f795bc531de39ac60eb17ce22c78861fa1aa4dd8b4fdc"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/harness/validation/HARNESS_VALIDATION_R7D_2.json", "sha256": "1a42bf3e8170bd4dedbb2f2a108cf1daa105a40abbab5e45a1c36f5d7b30c9c9"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/phase3/evidence/EVIDENCE_PHASE3.json", "sha256": "f69613044205c2b9298d8045c74199905f24bbb42c150294e976b513d18a9aaa"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/phase3/evidence/MUTATION_PHASE3.json", "sha256": "24e06196a3d575b31cbf4e9594565e25d8e112c746b6fb227421a755999aaa6e"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/phase3/evidence/DIFFERENTIAL_VS_R7C_FREEZE_4.json", "sha256": "02007011446f78cecb0d8925c7b1c96208bd1f4384733af0a66eb3d568a6d618"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/phase3/probes/phase3-mutation.mjs", "sha256": "6c73b8b4ab2f9349e5fe406f0a974d96046df060753fb9e32b50bf6d036040ca"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/phase3/probes/phase3-differential.mjs", "sha256": "d7b7eaa535c59fafa34115a44fa44218bcf7cf276aef0854a107a69dc448f710"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/phase3/probes/phase3-run-evidence.mjs", "sha256": "4585e27b3dfa5de15e794768abe5a17c0b6009271f2430b21095fb495e2bc216"},
+  {"path": "CoachingCore/r7/b/fixtures/helpers.mjs", "sha256": "33caefbf5aff2f93e7ad21785d65a8ebf07c4521216d689954f04d9011161241"},
+  {"path": "CoachingCore/r6/PROGRAM_POLICY_R6.json (hash only)", "sha256": "a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100"},
+  {"path": "CoachingCore/r7/b0/REPERTOIRE_CATALOG_B0.json (hash only)", "sha256": "ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9"},
+  {"path": "runtime delta (git diff a9654c8 9e1ecbf -- CoachingCore) and harness delta (git diff cdff248 7039bc1 -- harness)", "sha256": "see scope.runtimeDelta for the candidate file hashes"}
+ ],
+ "reproduced": {
+  "environment": "Node v24.19.0, Windows 11. R7C-FREEZE-4 and the candidate rebuilt with git archive (plus node_modules and the review records the suite reads) under %TEMP%\\qe-r7d-p3\\; superseded runtimes rt-f3, rt-b2, rt-prer7a rebuilt per harness/README.md.",
+  "fullSuite": {"where": "worktree CoachingCore (candidate bytes)", "result": "907/907 pass (884 frozen + 23 directed), 73 s"},
+  "directedOnFreeze4": {"result": "22 of 23 fail on R7C-FREEZE-4 for the expected reasons (row dropped, REPLAN_FROM_EVIDENCE instead of REESTABLISH, 70 min above 65, CONFOUNDED instead of ADVERSE, STACK_STEP unit, computed 51/141 kg rows); T9 passes on R7C-FREEZE-4 (characterization, not a RED test)"},
+  "conformance": {"where": "scratch copy of the candidate", "result": "conformance-r7b, -r7b1, -r7b2 PASS"},
+  "harnessValidation2": {"result": "summary, runs, witnesses, findings and coverage byte-equal to HARNESS_VALIDATION_R7D_2.json: no false block (outside the P3-F01 witnesses), 7/7 sensitivity DETECTED_AND_CLEAN_ON_CANDIDATE, 31/31 witnesses, P05 coverage CARRIER_CLINICAL 7 / CARRIER_HOLD 1 / RESEND 16, P3-F01 2 violations on the candidate and pre-existing on R7C-FREEZE-4", "note": "following README literally (rt-f3 without SSCTR_RECHECK_B0.json) gives NO_PROGRAM and QE-R7C-10 NOT_DETECTED; see QE-R7D-P3-13"},
+  "regression": {"diagnostic": "summary identical to phase3/regression/diagnostic/RUN_REPORT.json: P01–P16 0 violations; relations 0 except VARIANT 4/12 (D02, D06, D14, D16, already triaged); harnessErrors 0", "generated": "summary identical to phase3/regression/generated/RUN_REPORT.json: 0 violations"},
+  "differential": {"author": "phase3-differential.mjs rerun: rows identical to DIFFERENTIAL_VS_R7C_FREEZE_4.json (137 cases, 128 same, 9 differing, 0 unexplained)", "independentAttribution": "probes/qe-differential-attribution.mjs (step level): 34 cases differ at some level. 25 generated cases differ only in the machine row unit STACK_STEP→KG at generation (F03-A; invisible to the author's canonical view, so reported there as same); the 3 diagnostic machine cases also differ in unit plus numberless step rows and the removed +1 kg rows (F03-B); D08, D14, DEV-15 only in machine rows and machine load questions (F03); D15, DEV-12 record rows and runs (DX-01); D18 machine-only until a6, then return (DX-02); DEV-13, DEV-17 return (DX-02); DEV-14 long-run gate (F04). No difference outside the four corrections."},
+  "mutation": {
+   "author": "MUTATION_PHASE3.json 6/6, source hashes equal to the candidate; author script rerun into scratch (see AUTHOR_MUTATION_RERUN below)",
+   "independent": "probes/qe-mutation.mjs: 24 adversarial mutants on the six changed files, each applied to a scratch copy whose unmutated full suite is 907/907. 17 killed (all by the directed file): QM01–QM09, QM11–QM15, QM17, QM20, QM22. 7 survive the whole suite (907/907): QM10 (no ceiling cap in the machine branch), QM16 (no P4 fallback repetitions), QM18 (re-establishment keeps machine fields), QM19 (return keeps machine fields), QM21 (MACHINE_STACK increment read as 1 kg again), QM23 and QM24 (nextSetting dropped from the week/used records). probes/qe-f03b-edges.mjs distinguishes QM16, QM19, QM21 and QM23 and shows the candidate does what the rule says; QM10, QM18 and QM24 stay verified by code reading only.",
+   "AUTHOR_MUTATION_RERUN": "phase3-mutation.mjs rerun with --work and --out in scratch: 6/6 killed, baseline 23/23, per-mutant witness runs and caughtBy identical to MUTATION_PHASE3.json, source hashes identical"
+  },
+  "probes": {
+   "qe-dx01.mjs": "DX-01 across UTC-5 and UTC+9, same-day corrections, edited carried rows, learning model (candidate and R7C-FREEZE-4)",
+   "qe-dx02.mjs": "re-sent and malformed interruptions; break + clinical flag then clearance; other kinds then a plain review; every one of the 19 review kinds; past break after training; closed history",
+   "qe-f03.mjs": "7 machine scenarios (10K race window, half marathon STRENGTH through taper, moderate and long return, fatigue + substitution events, pounds, adverse with no plate fitting)",
+   "qe-f03b-edges.mjs": "ceiling cap of a confirmed heavier value; step logged at R with the step's repetitions; I-1 duplicate tolerance",
+   "qe-consent.mjs": "a revocation not repeated at the next decision"
+  }
+ },
+ "answers": {
+  "Q1_DX01": {
+   "result": "PASS_WITH_RESIDUALS",
+   "evidence": "A carried row with provenance.timePrecision DAY keeps its stored instant and local day; the report-before-observation screen still runs on it (local-date comparison: an edited earlier reportedAt is still rejected, directed test and mutant QM02 killed). Survives later decisions in UTC, UTC-5 and UTC+9 with identical facts and firstRecordedAt (qe-dx01 C; R7C-FREEZE-4 drops it at UTC-5). Replay, second device and a later correction work and history stays append-only (directed test; P10 0/11103 and RESEND 0/14 in the diagnostic regression). EXACT rows unchanged (mutant QM01 killed).",
+   "residuals": ["QE-R7D-P3-03 same-day correction of a day-precision report refused (pre-existing)", "QE-R7D-P3-04 learning-model sibling of DX-01 (pre-existing)", "QE-R7D-P3-09 carried localDate/timePrecision trusted without a consistency check"]
+  },
+  "Q2_carrierIndependence": {
+   "result": "PASS_FOR_THE_DECLARING_DECISION; NOT_RETAINED_AFTER_IT (QE-R7D-P3-01)",
+   "evidence": "Same facts through WEEKLY_REVIEW and RETURN_AFTER_PAUSE give the same decision, weeks, start states and record (directed test; qe-dx02 E1 re-send, E6 past break after reported training). Every other one of the 17 kinds asks (REQUIRES_RECONCILIATION) with no stale VALID at the declaring decision, where R7C-FREEZE-4 returned VALID with long 70 > 65 executed on 13 of them (qe-dx02 E5). Clinical reason routes clinically on all 19 kinds; an empty {} declares nothing (mutant QM05 killed). The declared break is kept only when a decision applies it: through another kind, a clinical route or a clinical carrier of an answer it is not retained (QE-R7D-P3-01)."
+  },
+  "Q3_machineRoundTrip": {
+   "result": "PASS",
+   "evidence": "Prescription KNOWN in KG → log exactly as prescribed read (F03-A test; P16(a) 0 violations; DEV-15) → record carries the log as sent → next week advances. No computed machine load: directed T2 (5 goals × 4 behaviours × 10 weeks) and qe-f03 (7 scenarios incl. race window, taper, returns, fatigue, substitution, pounds, REGRESS with no plate fitting): 0 KNOWN machine values not supplied, logged or confirmed; 0 numbers on numberless rows. incrementFor(MACHINE_STACK)=0 makes every kilogram step, REGRESS step and tolerance a no-op for machines; REGRESS and the step use the machine branch. Ceiling cap of a confirmed heavier value holds at 140 (qe-f03b-edges). Pound logs are converted with the existing 0.5 kg rounding (unit conversion, not progression)."
+  },
+  "Q4_confoundedSemantics": {
+   "result": "PASS",
+   "evidence": "kindOf: confounded + recovery ADVERSE or next day IMPAIRED → ADVERSE; otherwise CONFOUNDED. 16-cell matrix, repeated-adverse REGRESS and strength HOLD are directed (mutants QM07, QM08 killed). The return's tolerated-run reading uses kindOf, so it becomes more conservative; learnedInterference filters confounded rows (comparable=false) before kindOf, so learning is unchanged. PARTIAL still precedes (unchanged, out of scope)."
+  },
+  "Q5_historyClinicalStale": {
+   "result": "PASS (no new stale VALID; no regression)",
+   "evidence": "Weekly-review return keeps every past session and the decision-history prefix (qe-dx02 E7); P10 0/11103 and P01 0/15 in the diagnostic regression; eligibility clinical flags still return before any kind logic; clinical break reason → CLINICAL on all 19 kinds. No path found where the candidate returns a stale VALID that R7C-FREEZE-4 did not: the post-clearance and post-question stale VALIDs (QE-R7D-P3-01 b, a) are identical to, or one decision later than, R7C-FREEZE-4."
+  },
+  "Q6_harnessAndPrereg2": {
+   "result": "NO_WEAKENING_OF_SUCCESS_CRITERIA; precision gaps recorded",
+   "evidence": "PREREG-1 bytes unchanged (fefb532a…); §4 success criteria, §8 protocol and §9 no-tuning carried verbatim by reference. Δ1, Δ5 (P16), Δ9, Δ10(a)(c), Δ12 are stricter. Δ3, Δ4, Δ6, Δ7, Δ8 are precision changes the Founder authorized by name. Δ2 is stricter (impaired next day, HARDER effort) with one Founder-authorized relaxation (a confounded UNDER/HARDER run is favourable), which its 'Mais estrito' label hides (QE-R7D-P3-07). Δ11 envelopes cover only residuals of the authorized F03-B rule and no computed value; two of them depend on the SSCTR accepting flagged behaviours 3 and 4. P3-F01 is kept strict with no envelope. Validation excludes the P3-F01 witnesses only from its own no-false-block count; the gate harness has no exclusion.",
+   "oraclesMeasureTheFour": "Yes: DX-01 by P10 RECORD_ROW_DROPPED and RESEND, DX-02 by P08 on any carrier, F03 by P16, F04 by P09; each detected on R7C-FREEZE-4 and clean on the candidate (reproduced). Gaps: P08 does not see a declared break lost at a later decision (QE-R7D-P3-01); P07 no longer sees an unrequested race-date change (QE-R7D-P3-06).",
+   "p16Sound": "Sound (cannot false-block on athlete-supplied values; same LB conversion and rounding as the runtime), but narrow: (b) checks KNOWN rows of VALID plans only, (a) only an unread exact copy answered LOGGED_UNIT_OR_CONVENTION_UNKNOWN (QE-R7D-P3-05)."
+  },
+  "Q7_flaggedBehaviours": {
+   "1_P3F01": "Reproduced (validation rerun). Fail-closed: the first eligible decision after clearance asks UNREPORTED_TRAINING again (REQUIRES_RECONCILIATION, no run dose). Mechanism: a declared break is not a record fact, so a clinical route records nothing of it, unlike executed answers (QE-R7C-10, firstRecordedAt). Pre-existing in the return form. Not a Phase 3 blocker; under PREREG-2 it is a P05 violation with no envelope, so a final holdout that exercises it fails (brief items 1 and 7 invite it). Part of QE-R7D-P3-01 (c).",
+   "2_breakWithClinicalFlag": "Reproduced (qe-dx02 E3). After clearance a plain review is VALID with long 70 and 75 min against 65 executed and THRESHOLD in the re-entry week, through either carrier, identical on R7C-FREEZE-4 and identical to the control where the break was never declared. Not new and not a regression; F08 family. No automated property measures it (P08 does not apply to that decision; P06 passes at 70 ≤ 65+5). Part of QE-R7D-P3-01 (b).",
+   "5_otherKindAsk": "Reproduced (qe-dx02 E4, E5). Correct as described: ASK with the factual re-plan, REQUIRES_RECONCILIATION, neither the event's change nor the return applied. Engineering consequence: the break is not retained; if the next decision does not re-send it on its own (for example a plain review two days later), that decision is KEEP/VALID with long 70 and 75 min. R7C-FREEZE-4 returned that stale VALID at the declaring decision itself, so this is not new. Part of QE-R7D-P3-01 (a)."
+  }
+ },
+ "findings": [
+  {
+   "id": "QE-R7D-P3-01",
+   "class": "MAJOR",
+   "origin": "(a) consequence of the NEW ask path, strictly safer than R7C-FREEZE-4; (b) PRE_EXISTING, identical on R7C-FREEZE-4; (c) PRE_EXISTING (return form)",
+   "title": "A declared break is retained only by a decision that applies it",
+   "detail": "The runtime remembers an interruption only as a REESTABLISH decision. (a) Another event kind that declares a break asks (breakCarrierAsk); a later decision that does not re-send the break decides on the stale plan, VALID. (b) A break declared with a clinical flag or reason routes clinically; after qualified clearance the next plain review is VALID with the stale plan, including quality in the re-entry week. (c) A break answer to UNREPORTED_TRAINING carried by a clinical route is asked again after clearance (fail-closed, P05 difference). The Founder's DX-02 decision says 'the same interruption fact is factual whatever the carrier'; the candidate meets the Phase 2 minimal scope ('the return recipe, or the decision asks') at the declaring decision but not retention after it.",
+   "reproduction": "node probes/qe-dx02.mjs <root>: E4 (SCHEDULE_CHANGE, SYSTEMIC_FATIGUE, MISSED_SESSION, GOAL_CHANGE, EVENT_DATE_CHANGE, LOCAL_FATIGUE, EQUIPMENT_CHANGE + 14-day break at w5 d1 07:00 → ASK; plain review w5 d2 → KEEP VALID, w5-run-d6 70 and w6-run-d6 75 > 65 executed); E3 (WEEKLY_REVIEW or RETURN_AFTER_PAUSE + same break + eligibility.illness → CLINICAL; referenceState dropped; plain review w5 d2 → VALID, long 70/75, THRESHOLD w5-run-d3 and w6-run-d3; same as SILENCE_CONTROL and as R7C-FREEZE-4). (c) harness validation DEV-17/DEV-17b, findings P3-F01.",
+   "whyNotBlocker": "No path is worse than R7C-FREEZE-4; the declaring decision never returns VALID with a stale plan (19/19 kinds); the later stale VALID needs a further event that does not carry the break and equals the undeclared-silence outcome the current authority already accepts; the agreed minimal scope allowed asking. The domain classification of (a) and (b) belongs to the SSCTR recheck (its question 5) and is not overridden here.",
+   "owner": "Engineering (mechanism), SSCTR (classification), Founder (whether to correct before the holdout)",
+   "route": "Freeze record and handoff as a disclosed residual with no PREREG envelope; Founder decision before the holdout is commissioned"
+  },
+  {
+   "id": "QE-R7D-P3-02",
+   "class": "MINOR",
+   "origin": "NEW (test adequacy of the Phase 3 tests)",
+   "title": "Directed tests leave parts of F03-B and I-1 unpinned",
+   "detail": "Seven of 24 mutants survive the whole suite (907/907): the machine-branch ceiling cap (QM10; T9 also passes on R7C-FREEZE-4 and reaches the generic cap through an ESTABLISH row, so it pins nothing of the new branch), the P4 fallback dose of a step logged at R (QM16, QM23, QM24: in the directed path the athlete logs the fallback repetitions, so the line is not needed there), clearing previousLoad/stepDue/pendingSetting on re-establishment and return (QM18, QM19), and I-1's equal-only tolerance (QM21). Where probed the candidate does what the rule says and the mutant does not: a step logged at R = 50 kg with the step's 8 repetitions re-offers the step and holds 50 kg at 12, where QM16/QM23 restart at 50 kg x 10 (qe-f03b-edges 2); after a verified step 50→55 and a 14-day return, two adverse weeks lower repetitions at 55, where QM19 drops back to the pre-return 50 (qe-f03b-edges 4); 140 vs 141 kg reports of one session conflict, where QM21 merges them (qe-f03b-edges 3); a confirmed 170 kg above a 140 kg ceiling is capped at 140 (generic path; qe-f03b-edges 1).",
+   "reproduction": "node probes/qe-mutation.mjs --runtime <scratch copy with the R3/R4/R5/R6/B0 records> --out <file> --full",
+   "owner": "Engineering",
+   "route": "Record as TEST_GAP in the freeze record; directed tests in the next authorized runtime phase (no test change in this phase: no correction loop)"
+  },
+  {
+   "id": "QE-R7D-P3-03",
+   "class": "MINOR",
+   "origin": "PRE_EXISTING (same on R7C-FREEZE-4, where the carried original was also dropped)",
+   "title": "A same-day correction of a day-precision report is refused",
+   "detail": "The correction-chain screen compares the correction instant with the day-precision row's stored latest causal instant (the accepting decision's clock, or 23:59:59 local). A correction made later the same day is excluded INVALID_CORRECTION_CHAIN, delivered with the report or later; the uncorrected facts stand. An EXACT report corrected at the same times is accepted. The Founder listed corrections among what DX-01 must preserve; this path was never preserved and is not made worse.",
+   "reproduction": "node probes/qe-dx01.mjs <root>: A (report 09:00, accepted 21:00, correction 12:00 → c1 INVALID_CORRECTION_CHAIN; correction 22:00 → applied), A2 (same batch → refused; EXACT control → applied), A_variant (accepted next morning, correction 20:00 → refused)",
+   "owner": "Engineering",
+   "route": "Disclose in the freeze record; next authorized runtime phase (day-precision-aware chain screen)"
+  },
+  {
+   "id": "QE-R7D-P3-04",
+   "class": "MINOR",
+   "origin": "PRE_EXISTING (identical on R7C-FREEZE-4)",
+   "title": "DX-01 sibling in the athlete learning model",
+   "detail": "r6-learning re-normalizes the adaptation's already-normalized rows as new observations, so a same-day day-precision report is excluded REPORT_BEFORE_OBSERVATION and never enters the athlete model. Learning only (arrangement preference, consent-gated, no dose authority).",
+   "reproduction": "node probes/qe-dx01.mjs <root>: D (inModel1 false, inModel2 false, excludedByModel REPORT_BEFORE_OBSERVATION)",
+   "owner": "Engineering",
+   "route": "Disclose; next authorized runtime phase"
+  },
+  {
+   "id": "QE-R7D-P3-05",
+   "class": "MINOR",
+   "origin": "NEW (harness R7D-HARNESS-2)",
+   "title": "P16 is sound but narrow",
+   "detail": "(b) checks only KNOWN machine rows of VALID plans from the decision date: a number on a numberless (FROM_LOG/nextSetting) row, or in a REQUIRES_RECONCILIATION proposal the client adopts, is not checked, and a computed value that happens to equal an earlier athlete log is accepted. (a) only fires on a LOGGED_UNIT_OR_CONVENTION_UNKNOWN question; an exact copy dropped without any question is not seen.",
+   "reproduction": "Reading harness/lib/properties.mjs p16 (lines 241–270); mutant QM22 (step row stating R) is caught by the directed T3/T4 test, not by P16 as written",
+   "owner": "Harness author",
+   "route": "Before the holdout exists: a registered stricter revision (any machine row number, every plan in force), or record as TEST_GAP in the freeze record"
+  },
+  {
+   "id": "QE-R7D-P3-06",
+   "class": "MINOR",
+   "origin": "NEW (harness R7D-HARNESS-2, Δ3)",
+   "title": "P07 reads the race date from the plan it checks",
+   "detail": "HG-02 was a real false FAIL and the Founder authorized following changes only when adopted. The fix derives date and 'changed' from the adopted plan, so a race-date or goal change the runtime made without any request would no longer be seen by P07 (HARNESS-1 would have reported RACE_SESSION_MISSING). It is also stricter in one way: a refused change no longer skips the taper check.",
+   "reproduction": "Reading harness/lib/properties.mjs raceDateTimeline (lines 203–210)",
+   "owner": "Harness author",
+   "route": "Before the holdout exists: add the guard 'the plan's race date or goal changes only at a decision whose review requested it' (stricter), or record as TEST_GAP"
+  },
+  {
+   "id": "QE-R7D-P3-07",
+   "class": "MINOR",
+   "origin": "NEW (PREREG-2 text)",
+   "title": "PREREG-2 Δ2 is labelled 'Mais estrito' but relaxes one corner",
+   "detail": "Against PREREG-1 P09 ('sem resposta adversa nem UNDER'), a confounded run with performance UNDER (or effort HARDER) and no adverse recovery or impairment is now favourable. This is the F04 semantics the Founder decided ('confounded may limit the performance reading'), so it is not a weakening made to let the runtime pass, but the delta table should say so.",
+   "reproduction": "harness/lib/properties.mjs favourable() vs PREREGISTRATION_R7D.md §1 P09",
+   "owner": "Coordinator (PREREG author)",
+   "route": "Note in the freeze record, or correct the label in a PREREG-3 before the holdout"
+  },
+  {
+   "id": "QE-R7D-P3-08",
+   "class": "MINOR",
+   "origin": "PRE_EXISTING",
+   "title": "A malformed interruption on a non-return event is ignored",
+   "detail": "A string or array interruption on a WEEKLY_REVIEW decides VALID with the stale plan (long 70), while the same value on a RETURN_AFTER_PAUSE asks. The interface defines interruption as an object, so a conforming client cannot send it; robustness only.",
+   "reproduction": "node probes/qe-dx02.mjs <root>: E2 string/WEEKLY_REVIEW and array/WEEKLY_REVIEW (MODIFY VALID, 70) vs .../RETURN_AFTER_PAUSE (ASK)",
+   "owner": "Engineering",
+   "route": "Disclose; next authorized runtime phase (malformed interruption → HOLD or ASK)"
+  },
+  {
+   "id": "QE-R7D-P3-09",
+   "class": "OBSERVATION",
+   "origin": "NEW (DX-01 trusts two more carried fields)",
+   "title": "A carried day-precision row's localDate and timePrecision are trusted",
+   "detail": "R7C-FREEZE-4 recomputed localDate from observedAt; the candidate keeps the carried localDate when timePrecision is DAY, with no check that it matches observedAt in the program's offset, and accepts an EXACT row relabelled DAY. observedAt itself was already trusted (C3: the client carries the record as returned).",
+   "reproduction": "node probes/qe-dx01.mjs <root>: B_editedLocalDate (2026-11-01 kept for an instant on 2026-11-08), B_relabelledPrecision",
+   "route": "Consumer condition C3 in the freeze record; optional consistency check later"
+  },
+  {
+   "id": "QE-R7D-P3-10",
+   "class": "OBSERVATION",
+   "origin": "NEW (consequence of DX-02, carrier-consistent)",
+   "title": "An interruption re-sent with a later weekly review re-applies the return",
+   "detail": "A client that keeps the field restarts the re-entry (week 6 at 15/15/20 instead of 30/30/45) and skips that week's gates, exactly as the same re-send as a return report. Conservative.",
+   "reproduction": "node probes/qe-dx02.mjs <root>: E1",
+   "route": "Consumer condition: send interruption only in the review that declares it"
+  },
+  {
+   "id": "QE-R7D-P3-11",
+   "class": "OBSERVATION",
+   "origin": "PRE_EXISTING runtime behaviour; PREREG-2 Δ4 makes it a consumer condition",
+   "title": "A learning-consent revocation lapses when not repeated",
+   "detail": "With learningConsent absent the runtime falls back to the intake consent; after a single revocation the next decision re-enables learning and the model re-ingests the record, including the revoked weeks. The Founder authorized carrying consent in the client; this is a privacy trust boundary this check does not judge.",
+   "reproduction": "node probes/qe-consent.mjs <root>: week 1 false → purposeAllowed false, 0 rows; week 2 absent → true, 15 rows",
+   "route": "Security (privacy) to accept the consumer condition before Phase 4"
+  },
+  {
+   "id": "QE-R7D-P3-12",
+   "class": "OBSERVATION",
+   "origin": "NEW (PCG I-1 applied everywhere)",
+   "title": "Machine duplicates now agree only when equal",
+   "detail": "Two reports of one session with 140 and 141 kg on a machine conflict (quarantined for gating) where R7C-FREEZE-4 merged them; 140 vs 140 merges. Fail-closed and as PCG I-1 states.",
+   "reproduction": "node probes/qe-f03b-edges.mjs <root>: duplicateTolerance (candidate vs R7C-FREEZE-4)",
+   "route": "Disclose with the F03-B residuals"
+  },
+  {
+   "id": "QE-R7D-P3-13",
+   "class": "OBSERVATION",
+   "origin": "NEW (documentation)",
+   "title": "README rebuild of rt-f3 omits the B0 record",
+   "detail": "Following harness/README.md literally, R7C-FREEZE-3 cannot plan (NO_PROGRAM) and QE-R7C-10 sensitivity reports NOT_DETECTED. With audits/domain-coaching-r7-b0-2026-10-31/reviews/SSCTR_RECHECK_B0.json added, the validation reproduces exactly.",
+   "reproduction": "git archive 08c6db3 CoachingCore <R6 record> | tar -x; run-validation.mjs → QE-R7C-10 NOT_DETECTED",
+   "route": "Documentation fix; note in the freeze record"
+  },
+  {
+   "id": "QE-R7D-P3-14",
+   "class": "OBSERVATION",
+   "origin": "NEW (evidence method)",
+   "title": "The author's differential attribution is coarse",
+   "detail": "Any case whose intake lists MACHINES carries the F03 trigger, and the canonical view hides the load unit, so 'explained' is near-vacuous and 25 unit-only differences show as 'same'. The step-level attribution found every difference attributable to one of the four corrections.",
+   "reproduction": "node probes/qe-differential-attribution.mjs --f4 <R7C-FREEZE-4 root> --candidate <candidate root> --out <file>",
+   "route": "None needed for the freeze"
+  }
+ ],
+ "conditionsForFreeze": [
+  {"id": "CF-1", "condition": "Bind exactly the evaluated bytes: the six source files and the directed test file in scope.runtimeDelta, policy a75be1aa…/18ec48f3… with 10 boundaries, catalog ceee276a…, R6 and B0 records, and both F03-B records (SSCTR json 5eda3d81…, PCG json 5e25b158…). Record that this check covered the candidate at 7039bc1 and did not review d4725e6 (freeze script, verifier)."},
+  {"id": "CF-2", "condition": "Disclose QE-R7D-P3-01 (a), (b), (c) in the freeze record and handoff as known residuals with no PREREG envelope; the SSCTR recheck's classification governs their domain severity. Before the final holdout is commissioned the Founder is told that the final brief (required coverage items 1, 2 and 7; the safety stratum 'a break with a clinical cause'; the events stratum) is likely to exercise them, that (c) is a P05 violation under PREREG-2, and that (a) and (b) are measured by no automated property."},
+  {"id": "CF-3", "condition": "The two Δ11 envelope bullets that cover flagged behaviours 3 and 4 hold only if the SSCTR recheck accepts those behaviours; otherwise they are removed in a PREREG-3 registered before the holdout exists."},
+  {"id": "CF-4", "condition": "Record the mutation survivors of QE-R7D-P3-02 as TEST_GAP with owner Engineering and trigger 'next authorized runtime phase'; no test or runtime change in this phase."},
+  {"id": "CF-5", "condition": "Before the holdout exists, either register stricter P16 and P07 oracles (QE-R7D-P3-05, -06) and the Δ2 label (QE-R7D-P3-07) in a PREREG-3/HARNESS-3, or record them as accepted TEST_GAPs in the freeze record. Tightening only; no success criterion changes."},
+  {"id": "CF-6", "condition": "Record the consumer conditions: re-send a break on its own after breakCarrierAsk; send interruption only in the review that declares it; carry the record as returned (localDate and timePrecision included); send the current learning consent with every decision, accepted by Security as the privacy owner."},
+  {"id": "CF-7", "condition": "Disclose the pre-existing MINORs QE-R7D-P3-03, -04, -08 and route them to the Engineering backlog; they are outside the Phase 3 authorization."}
+ ],
+ "verdict": "READY_WITH_CONDITIONS",
+ "verdictBasis": "No BLOCKER. DX-01, the carrier fix at the declaring decision, the machine round trip with no computed machine load, and the confounded semantics are correct on every path probed; the full suite (907), conformance, regression, validation and differential reproduce; no closed history is mutated, clinical-first holds on every kind, and no stale VALID appears that R7C-FREEZE-4 did not already produce. PREREG-2 and HARNESS-2 do not weaken PREREG-1's success criteria. The one MAJOR (QE-R7D-P3-01) is a retention gap, not a regression, and is routed with conditions; the SSCTR recheck may classify its domain severity differently."
+}
