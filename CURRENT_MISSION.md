@@ -1118,3 +1118,28 @@ A direct Founder request authorizes **R7-D Phase 1 only**: investigation, scope,
 - **Inherited findings:** classified A/B/C; none absorbed.
 - **Unchanged:** runtime, tests, policy, catalog, queue (230), `product/`, `canon/`, every closed record.
 - **Next:** Phase 2 (R7-D interface, harness, pre-registration draft, independent diagnostic corpus and diagnostic run) needs its own Founder authorization, with the success criteria confirmed. [Checkpoint](audits/domain-coaching-r7-d-2026-11-02/PHASE1_CHECKPOINT.md).
+
+<!-- DOMAIN_COACHING_R7D: DCR7D-20261102-phase2-r1 -->
+## DOMAIN_COACHING_R7-D — Fresh Generalization Gate — Phase 2 (interface, harness, diagnostic) DIAGNOSTIC_BLOCKED / 2026-11-02
+
+A direct Founder request authorizes **R7-D Phase 2 only**: author interface, harness, pre-registration, an independent diagnostic corpus, one first diagnostic evaluation and its triage. No correction, no final holdout, no freeze. Same branch and worktree; nothing merged or pushed.
+
+- **States:** R7D_PHASE2_STATUS = DIAGNOSTIC_BLOCKED; FINAL_HOLDOUT_READY = NO; PHASE3_REQUIRED = YES. Runtime unchanged (R7C-FREEZE-4, 197/197). V1_COACHING_AUTHORITY_READY = NO.
+- **Built:**
+  - interface R7D-INTERFACE-1 and a case schema for independent authors;
+  - harness R7D-HARNESS-1 outside CoachingCore (C3 client, P01–P14, 12 relations, seal and single-evaluation enforcement), validated on development cases only;
+  - pre-registration R7D-PREREG-1, with the Founder's success criteria.
+- **Diagnostic:** a fresh independent author wrote 18 cases (158 steps), sealed before any run; plus 100 seeded intakes. Evaluated once (evaluationCount 0 → 1); domain triage by the SSCTR (not a gate).
+- **Blockers (all pre-existing and undisclosed):**
+  - DX-02, SAFETY: a declared break inside a weekly review is ignored; the plan stays VALID, with the program's longest run that day.
+  - DX-01: a same-day report drops out of the record at the next decision.
+  - F03: machine-stack loads are prescribed in a unit the log reader rejects, so they never progress.
+  - F04, latent: a confounded flag masks an adverse recovery.
+- **Safety test gaps:** the P08 scope; no unreported-training question was ever asked.
+- **Unchanged:** runtime, tests, policy, catalog, queue (230), `product/`, `canon/`, every closed record.
+- **Next:** Phase 3 on its own Founder authorization:
+  - a narrow correction of DX-02, DX-01, F03's unit and, if authorized, F04, with a new freeze;
+  - the machine-stack step is a policy decision for the SSCTR with the PCG;
+  - the harness and pre-registration are revised before Phase 4.
+
+  [Checkpoint](audits/domain-coaching-r7-d-2026-11-02/PHASE2_CHECKPOINT.md).

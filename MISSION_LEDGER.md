@@ -1115,3 +1115,15 @@ Overlays revised to r2; r1 bytes are kept in the audit. R6 is untouched. No impl
 
 <!-- DCR7D-20261102-phase1-r1 -->
 2026-11-02 · DOMAIN_COACHING_R7-D — Fresh Generalization Gate, Phase 1 (scoping only) complete; R7D_PHASE1_STATUS = READY_FOR_EXECUTION. Direct Founder request, not stored verbatim; own branch `claude/domain-coaching-r7-d` in an isolated worktree from the R7-C closure `0e6dfd8`; nothing merged or pushed. R7C-FREEZE-4 hash-verified 197/197. Derived contract: an independent holdout authored after the final freeze, sealed and evaluated once; properties P01–P14; a failure taxonomy; inherited findings classified, none absorbed. No runtime, test, policy, catalog, freeze, queue, product or canon change; V1 authority NO; Phase 2 not authorized. Checkpoint: `audits/domain-coaching-r7-d-2026-11-02/PHASE1_CHECKPOINT.md`.
+
+<!-- DCR7D-20261102-phase2-r1 -->
+2026-11-02 · DOMAIN_COACHING_R7-D — Fresh Generalization Gate, Phase 2 **DIAGNOSTIC_BLOCKED**.
+- **Infrastructure:**
+  - interface R7D-INTERFACE-1;
+  - harness R7D-HARNESS-1, outside CoachingCore: no false block on R7C-FREEZE-4; QE-R7C-10, R7C-G01 and D54 detected on their superseded runtimes; 27/27 witnesses;
+  - pre-registration R7D-PREREG-1 (`628fb63`, before the corpus).
+- **Diagnostic:** an independent corpus (18 cases, 158 steps; sha256 44fca381…0957) and 100 seeded intakes, sealed (`854ae7e`) and evaluated once on R7C-FREEZE-4 (`46e26ba`).
+- **SSCTR diagnostic triage** (not a gate): 8 BEST_SUPPORTED, 5 ACCEPTABLE_ALTERNATIVE, 3 SUBOPTIMAL, 1 UNSAFE, 1 CORPUS_ERROR.
+- **Blockers** (all pre-existing and undisclosed): DX-02 SAFETY_BLOCKER, DX-01, F03, F04 (latent).
+- **Unchanged:** no runtime, test, policy, catalog, freeze, queue, product or canon change; V1 authority NO; nothing merged or pushed.
+- **Next:** Phase 3 narrow correction, on its own Founder authorization. Checkpoint: `audits/domain-coaching-r7-d-2026-11-02/PHASE2_CHECKPOINT.md`.
