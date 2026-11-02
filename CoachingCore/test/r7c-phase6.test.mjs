@@ -50,8 +50,12 @@ const planFrom=(P,b,d)=>{const day=addDays(P.weeks[b].startDate,d);return P.week
 const runsFrom=(P,b,d)=>{const day=addDays(P.weeks[b].startDate,d);return P.weeks[b].sessions.filter(s=>s.sport==='RUN'&&live(s)&&s.date>=day).map(s=>`${s.role}:${s.prescription.durationMinutes}`);};
 const past=(P,b,d)=>{const day=addDays(P.weeks[b].startDate,d);return P.weeks.slice(0,b+1).flatMap(x=>x.sessions).filter(s=>s.date<day).map(s=>`${s.id}:${s.status??'PLANNED'}:${hash(s.prescription??null)}`);};
 const CELLS=[['R10K race week',R10K,11,['R4','CLIN']],['R10K taper',R10K,10,['CLIN']],['GEN week 7',GEN,7,['CLIN']]];
-/** Every cell of the grid for answer V: DIRECT's plan from day 3 against each carrier's, after a plain day-3 review and after the re-send. */
-function grid(V,visit){
+/** Every cell of the grid for answer V: DIRECT's plan from day 3 against each carrier's, after a plain day-3 review and after the re-send.
+ * Computed once per answer and shared by the tests that read it (the decisions are pure: the same input gives the same result). */
+const GRIDS={};
+function cells(V){
+ if(GRIDS[V])return GRIDS[V];
+ const out=[];
  for(const [prog,o,b,carriers] of CELLS)for(const g of [0,2])for(const mode of ['RV','NR']){
   const {B,facts,question}=fork(o,{g,b,mode,V}),label=`${prog} g=${g} ${mode} ${V}`;
   assert.equal(question,'UNREPORTED_TRAINING',label+': the review before the answer week asks');
@@ -61,11 +65,13 @@ function grid(V,visit){
    const t=copy(B),before=t.p,c=carry(t,b,carrier,facts);if(carrier==='CLIN')clear(t);
    for(const [next,x] of [['plain day 3',{}],['answer re-sent day 3',{observations:facts}]]){
     const u=copy(t),r=step(u,b,{...AT(3),...x});
-    visit({label:`${label} ${carrier} :: ${next}`,carrier,c,r,u,b,before,facts,reference,plan:planFrom(r.proposal??u.p,b,3),runs:runsFrom(r.proposal??u.p,b,3)});
+    out.push({label:`${label} ${carrier} :: ${next}`,carrier,c,r,u,b,before,facts,reference,plan:planFrom(r.proposal??u.p,b,3),runs:runsFrom(r.proposal??u.p,b,3)});
    }
   }
  }
+ return GRIDS[V]=out;
 }
+const grid=(V,visit)=>cells(V).forEach(visit);
 function independent(V){
  let n=0;
  grid(V,({label,c,r,plan,runs,reference})=>{
