@@ -230,13 +230,44 @@ test('SSCTR F2: a load the plan stepped above history, lifted short or at low re
 // ---------- SSCTR F3: after a goal change to MAINTAIN the dose is the goal's, from the executed one (R6-H25) ----------
 
 test('SSCTR F3 (R6-H25): after the change to MAINTAIN no bench press or lat pulldown row leaves 8-8 or rises above the dose executed',()=>{
- const item=JSON.parse(fs.readFileSync(new URL('../r6/holdout/R6_INDEPENDENT_HOLDOUT.json',import.meta.url),'utf8')).cases.find(c=>c.caseId==='R6-H25');
- const r=evaluateHoldoutCase(structuredClone(item),opts),P=r.steps.at(-1).result.proposal,[,hi]=DOSES.MAINTAIN.repRange;
- assert.equal(P.goal.strength.kind,'MAINTAIN');
- const rows=P.weeks.slice(7).flatMap(w=>w.sessions.filter(live).filter(s=>s.sport==='STRENGTH').flatMap(s=>s.prescription.exercises.filter(e=>['bench-press','lat-pulldown'].includes(e.id)).map(e=>({w:w.index,id:e.id,reps:e.reps,mode:e.load.mode,value:e.load.value??null}))));
- assert.ok(rows.length>0);
- assert.ok(rows.every(x=>x.reps<=hi),JSON.stringify(rows.filter(x=>x.reps>hi)));
- assert.ok(rows.every(x=>x.mode!=='KNOWN'||x.value<=70),'never above the load executed');
+ // Split by SSCTR-SD-R7C-r2 (R7-C Phase 5; audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/SSCTR_SEMANTIC_REDISPOSITION_R7C.json, legacyTests
+ // SSCTR F3 / R6-H25): the case reports no execution at all, so its runs are unknown and the event-date step asks (UNREPORTED); with the elapsed
+ // runs reported not done the original invariant holds (KNOWN_MISS); answered after the question, it holds on the result (ANSWERED_KNOWN_STOP).
+ const item=JSON.parse(fs.readFileSync(new URL('../r6/holdout/R6_INDEPENDENT_HOLDOUT.json',import.meta.url),'utf8')).cases.find(c=>c.caseId==='R6-H25'),[,hi]=DOSES.MAINTAIN.repRange;
+ const f3=(P,label)=>{
+  assert.equal(P.goal.strength.kind,'MAINTAIN',label);
+  const rows=P.weeks.slice(7).flatMap(w=>w.sessions.filter(live).filter(s=>s.sport==='STRENGTH').flatMap(s=>s.prescription.exercises.filter(e=>['bench-press','lat-pulldown'].includes(e.id)).map(e=>({w:w.index,id:e.id,reps:e.reps,mode:e.load.mode,value:e.load.value??null}))));
+  assert.ok(rows.length>0,label);
+  assert.ok(rows.every(x=>x.reps<=hi),label+': '+JSON.stringify(rows.filter(x=>x.reps>hi)));
+  assert.ok(rows.every(x=>x.mode!=='KNOWN'||x.value<=70),label+': never above the load executed');
+ };
+ const VALID='VALID_WITHIN_CURRENT_BOUNDED_SCOPE';
+ // UNREPORTED: the case as written. S1 (the goal change) keeps the invariant; S2 (the event date change) is the typed question, nothing planned.
+ const r=evaluateHoldoutCase(structuredClone(item),opts),[S1,S2]=r.steps;
+ assert.equal(S1.result.planValidity.status,VALID);f3(S1.result.proposal,'UNREPORTED S1');
+ assert.deepEqual([S2.result.status,S2.result.question?.kind,S2.result.proposal,S2.result.planValidity.status],['ASK','UNREPORTED_TRAINING',null,'REQUIRES_RECONCILIATION'],'UNREPORTED S2');
+ // KNOWN_MISS: the elapsed runs reported not done at each step (holdout observation facts, as probes/phase3-suite-dispositions.mjs builds them).
+ const factsFor=(P,asOf)=>{const day=asOf.slice(0,10);return P.weeks.flatMap(x=>x.sessions).filter(s=>live(s)&&s.sport==='RUN'&&s.date<day).map(s=>({weekIndex:s.weekIndex,sport:s.sport,role:s.role,day:s.day,completed:false}));};
+ const known=structuredClone(item),key=f=>[f.weekIndex,f.sport,f.role,f.day].join(':');
+ known.steps[0].observationFacts=factsFor(generateProgram(known.intake,opts).program,known.steps[0].review.asOf);
+ const P1k=evaluateHoldoutCase({...structuredClone(known),steps:[known.steps[0]]},opts).steps[0].result.proposal,first=new Set(known.steps[0].observationFacts.map(key));
+ known.steps[1].observationFacts=factsFor(P1k,known.steps[1].review.asOf).filter(f=>!first.has(key(f)));
+ const k=evaluateHoldoutCase(known,opts).steps[1].result;
+ assert.deepEqual([k.status,k.action,k.planValidity.status],['MODIFY','REPLAN_FUTURE_PHASES',VALID],'KNOWN_MISS S2');f3(k.proposal,'KNOWN_MISS');
+ // ANSWERED_KNOWN_STOP: S2 asks; the event re-submitted an hour later with every elapsed run reported not done, or a plain review with that answer
+ // and then the event. Both end valid, with nothing pending and the invariant on the result.
+ const P1=item.steps[0].adoptProposal===true&&S1.result.proposal?S1.result.proposal:r.generation.program,asOf=S2.review.asOf,day=asOf.slice(0,10);
+ const later=h=>new Date(Date.parse(asOf)+h*36e5).toISOString().replace('.000Z','Z');
+ const gapRuns=P=>P.weeks.flatMap(x=>x.sessions).filter(s=>live(s)&&s.sport==='RUN'&&s.date<day).map(s=>({eventId:`h25-nd-${s.id}`,athleteId:P.athleteId,sessionId:s.id,observedAt:`${s.date}T${s.turn==='PM'?'19:00:00':'08:00:00'}Z`,actual:{completed:false},response:{}}));
+ const decide=(t,review)=>{const x=evaluateProgram(t.p,{...review,actualLedger:t.ledger,referenceState:t.ref},opts);t.ledger=x.actualLedger??t.ledger;t.ref=x.referenceState??t.ref;if(x.proposal)t.p=x.proposal;return x;};
+ const t0=()=>({p:P1,ledger:S2.result.actualLedger??[],ref:S2.result.referenceState??null});
+ const resub=decide(t0(),{...structuredClone(S2.review),asOf:later(1),event:{id:'h25-resubmitted',kind:'EVENT_DATE_CHANGE'},observations:gapRuns(P1)});
+ const t1=t0(),plain=decide(t1,{...structuredClone(S2.review),asOf:later(1),event:{id:'h25-plain',kind:'WEEKLY_REVIEW'},changes:undefined,observations:gapRuns(P1)});
+ const event=decide(t1,{...structuredClone(S2.review),asOf:later(2),event:{id:'h25-event',kind:'EVENT_DATE_CHANGE'},observations:[]});
+ assert.equal(plain.planValidity.status,VALID,'the plain review answers: '+plain.reason);
+ for(const [label,x] of [['re-submitted event',resub],['plain review, then the event',event]]){
+  assert.deepEqual([x.status,x.action,x.planValidity.status,x.referenceState.pending],['MODIFY','REPLAN_FUTURE_PHASES',VALID,null],'ANSWERED '+label);f3(x.proposal,'ANSWERED '+label);
+ }
 });
 
 // ---------- H1-H5: history ingress ----------

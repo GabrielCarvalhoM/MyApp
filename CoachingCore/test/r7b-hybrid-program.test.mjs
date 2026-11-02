@@ -4,7 +4,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {program,reviewed,weekly,gen,opts,FULL,K,rows,runs,live,intake,generateProgram} from '../r7/b/fixtures/helpers.mjs';
+import {program,reviewed,weekly,gen,opts,FULL,K,rows,runs,live,intake,generateProgram,review,evaluateProgram,addDays} from '../r7/b/fixtures/helpers.mjs';
 import {interferenceCosts} from '../src/r6-balanced.mjs';
 import {validateWeeks,skeletonOf} from '../src/r6-program.mjs';
 
@@ -89,9 +89,33 @@ test('Program-level progression (request §19): each block states its intent, le
  for(let w=0;w<5;w++)weekly(t,w);
  const longOf=(p,w)=>runs(p,w).find(s=>s.role==='LONG')?.prescription.durationMinutes;
  assert.ok(longOf(t.p,5)>=longOf(t.p,1));
- const m=reviewed({id:'h-prog-missed',goals:{run:'PERFORMANCE',strength:'GENERAL'},weeks:12},0);
- let last=null;for(let w=0;w<5;w++)last=weekly(m,w,{keep:()=>false});
- assert.ok(longOf(m.p,5)<=longOf(m.p,1),'missed weeks never grow the long run (no debt, no calendar progression; with no run in the window the reviewed entry is the ceiling)');
- assert.equal(m.p.stateTrace[5].run.long,t.p.stateTrace[1].run.long,'the state holds: HOLD repeats the dose');
- assert.ok((last.disclosures??[]).some(d=>d.id==='BLOCK_REVIEW'&&d.held.length),'the block review names what held');
+ // Split by SSCTR-SD-R7C-r2 (R7-C Phase 5; audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/SSCTR_SEMANTIC_REDISPOSITION_R7C.json, legacyTests
+ // §19): sessions with no report are unknown, never missed (UNREPORTED: week 4 asks, nothing grows); sessions reported not done are missed and
+ // the original invariant holds (KNOWN_MISS); answered after the question, the known-miss plan follows (ANSWERED_KNOWN_STOP).
+ const MISSED={id:'h-prog-missed',goals:{run:'PERFORMANCE',strength:'GENERAL'},weeks:12};
+ const notDone=(p,s)=>({eventId:`s19-nd-${s.id}`,athleteId:p.athleteId,sessionId:s.id,observedAt:`${s.date}T${s.turn==='PM'?'19:00:00':'08:00:00'}Z`,actual:{completed:false},response:{}});
+ const step=(x,rv)=>{const r=evaluateProgram(x.p,{...rv,actualLedger:x.ledger,...(x.ref?{referenceState:x.ref}:{})},opts);x.ledger=r.actualLedger??x.ledger;x.ref=r.referenceState??x.ref;if(r.proposal)x.p=r.proposal;return r;};
+ const block=r=>(r.disclosures??[]).find(d=>d.id==='BLOCK_REVIEW')?.held??null,runsOf=(p,w,from=p.weeks[w].startDate)=>runs(p,w).filter(s=>s.date>=from).map(s=>`${s.id}:${s.role}:${s.prescription.durationMinutes}`);
+ const HELD=['run.long','run.easy','run.qualityStep'],VALID='VALID_WITHIN_CURRENT_BOUNDED_SCOPE';
+ // UNREPORTED: every session of weeks 0-4 with no report. Week 4 is the typed question, with no block review (it belongs to a deciding review).
+ const m={p:program(MISSED),ledger:[],ref:null};let last=null;for(let w=0;w<5;w++)last=step(m,review(m.p,w,{}));
+ assert.deepEqual([last.status,last.question?.kind,last.proposal,last.planValidity.status,block(last)],['ASK','UNREPORTED_TRAINING',null,'REQUIRES_RECONCILIATION',null],'UNREPORTED week 4');
+ assert.ok(longOf(m.p,5)<=longOf(m.p,1),'unreported weeks never grow the long run (no credit)');
+ assert.equal(m.p.stateTrace[5].run.long,t.p.stateTrace[1].run.long,'the state holds');
+ // KNOWN_MISS: every session reported not done at its review: the original invariant.
+ const k={p:program(MISSED),ledger:[],ref:null};let k4=null;for(let w=0;w<5;w++)k4=step(k,review(k.p,w,{observations:k.p.weeks[w].sessions.filter(live).map(s=>notDone(k.p,s))}));
+ assert.ok(longOf(k.p,5)<=longOf(k.p,1),'missed weeks never grow the long run (no debt, no calendar progression; with no run in the window the reviewed entry is the ceiling)');
+ assert.equal(k.p.stateTrace[5].run.long,t.p.stateTrace[1].run.long,'the state holds: HOLD repeats the dose');
+ assert.ok((k4.disclosures??[]).some(d=>d.id==='BLOCK_REVIEW'&&d.held.length),'the block review names what held');
+ assert.deepEqual(block(k4),HELD);
+ // ANSWERED_KNOWN_STOP (a): the week-4 review re-submitted at the end of the week with every session of weeks 0-4 reported not done.
+ const reportedNotDone=(x,day)=>x.p.weeks.flatMap(w=>w.sessions).filter(s=>live(s)&&s.date<day).map(s=>notDone(x.p,s));
+ const a={p:m.p,ledger:[...m.ledger],ref:m.ref},a4=step(a,review(a.p,4,{hour:'22:00:00',observations:reportedNotDone(a,addDays(a.p.weeks[4].startDate,7))}));
+ assert.deepEqual([a4.status,a4.action,a4.planValidity.status,a4.referenceState.pending],['MODIFY','GATED_NEXT_STEP',VALID,null],'ANSWERED at the end of week 4');
+ assert.deepEqual(block(a4),HELD,'the block review names the held doses');
+ assert.deepEqual(runsOf(a.p,5),runsOf(k.p,5),'week 5 equals the known miss');assert.equal(a.p.stateTrace[5].run.long,t.p.stateTrace[1].run.long);
+ // ANSWERED_KNOWN_STOP (b): the answer on day 2 of week 5: the runs ahead at the entry, no quality.
+ const b={p:m.p,ledger:[...m.ledger],ref:m.ref},d2=addDays(b.p.weeks[5].startDate,2),b5=step(b,review(b.p,5,{day:2,hour:'07:00:00',observations:reportedNotDone(b,d2)}));
+ assert.deepEqual([b5.status,b5.action,b5.planValidity.status,b5.referenceState.pending],['MODIFY','REPLAN_FROM_EVIDENCE',VALID,null],'ANSWERED on day 2 of week 5');
+ assert.ok(runs(b.p,5).filter(s=>s.date>=d2).every(s=>s.prescription.durationMinutes<=opts.authority.policy.operational.return.entryRunMinutes&&s.role!=='QUALITY'),runsOf(b.p,5,d2).join('/'));
 });

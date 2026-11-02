@@ -92,12 +92,63 @@ test('QRE-R6-03: event rules follow days to the race, whatever the race weekday'
  assert.ok(programs>=100,'the sweep generated event programs ('+programs+')');
 });
 test('QRE-R6-04: a run dimension without executed sessions never counts as an executed week',()=>{
+ // Split by SSCTR-SD-R7C-r2 (R7-C Phase 5; audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/SSCTR_SEMANTIC_REDISPOSITION_R7C.json, legacyTests
+ // QRE-R6-04). A run with no report is unknown, never a miss:
+ // - UNREPORTED: the simulator exactly as before (no run report). Where the engine does not ask, unknown earns no credit (the known-miss plan);
+ //   from the first question, every decision with runs ahead is the typed question, never VALID on run doses it left undecided;
+ // - KNOWN_MISS: the runs reported not done; the original invariant, and no intense session in the week after any decision;
+ // - ANSWERED_KNOWN_STOP: unknown until the question, then answered not done; from the answer on, the known-miss plan and the original invariant.
  const input=intake({id:'t-gate',weeks:12,athlete:{goals:{run:{kind:'RACE',event:{kind:'10K',date:'2026-12-07'}},strength:'MAINTAIN'},recent:{runDaysPerWeek:4,runMinutesPerWeek:160,longestRunMinutes:60}},schedule:{runDays:[1,3,5,6],strengthDays:[2],longRunDay:6,runMinutes:50,longRunMinutes:80}});
+ const intenseOf=P=>sessionsOf(P).filter(s=>s.weekIndex>0&&s.prescription&&(s.role==='QUALITY'||s.role==='RACE_TOUCH'||s.prescription.strides));
+ const intenseIn=(P,w)=>(P.weeks[w]?.sessions??[]).filter(s=>s.prescription&&s.status!=='SKIPPED'&&(s.role==='QUALITY'||s.role==='RACE_TOUCH'||s.prescription.strides));
+ const live=s=>s.prescription&&s.status!=='SKIPPED',isRun=s=>s.sport==='RUN';
+ const notDone=(p,s)=>({eventId:`t-nd-${s.id}`,athleteId:p.athleteId,sessionId:s.id,observedAt:s.date+(s.turn==='PM'?'T19:00:00Z':'T08:00:00Z'),actual:{completed:false},response:{}});
+ const weeksAfter=(P,w)=>JSON.stringify(P.weeks.slice(w+1).map(x=>x.sessions.map(s=>[s.id,s.status??null,s.prescription??null])));
+ // The simulator's weekly loop by hand (end-of-week review, strength executed, proposals adopted, ledger and reference state chained), to read
+ // each decision.
+ function loop(kind){
+  const t={p:generateProgram(input,opts).program,ledger:[],ref:null,rows:[],asked:null,answered:null};
+  const decide=(w,day,observations)=>{
+   const r=evaluateProgram(t.p,{...review(t.p,w,{day,time:day===6?'T21:00:00Z':'T07:00:00Z'}),observations,...(t.ledger.length?{actualLedger:t.ledger}:{}),...(t.ref?{referenceState:t.ref}:{})},opts);
+   const before=t.p;t.ledger=r.actualLedger??t.ledger;t.ref=r.referenceState??t.ref;if(r.proposal)t.p=r.proposal;
+   const day0=addDays(before.weeks[w].startDate,day);t.rows.push({w,day,r,before,after:t.p,ahead:weeksAfter(t.p,w),runsAhead:sessionsOf(t.p).some(s=>live(s)&&isRun(s)&&s.date>day0)});return r;
+  };
+  for(let w=0;w<t.p.weeks.length;w++){
+   if(kind==='ANSWERED_KNOWN_STOP'&&t.asked!==null&&t.answered===null){
+    const cut=addDays(t.p.weeks[w].startDate,2),reported=new Set(t.ledger.map(o=>o.sessionId));
+    t.answered={w,r:decide(w,2,sessionsOf(t.p).filter(s=>live(s)&&isRun(s)&&s.date<cut&&!reported.has(s.id)).map(s=>notDone(t.p,s)))};
+   }
+   const reported=new Set(t.ledger.map(o=>o.sessionId)),known=kind==='KNOWN_MISS'||kind==='ANSWERED_KNOWN_STOP'&&t.answered!==null;
+   const r=decide(w,6,[...t.p.weeks[w].sessions.filter(s=>live(s)&&!isRun(s)).map(s=>obsFor(t.p,s)),...(known?t.p.weeks[w].sessions.filter(s=>live(s)&&isRun(s)&&!reported.has(s.id)).map(s=>notDone(t.p,s)):[])]);
+   if(t.asked===null&&r.question?.kind==='UNREPORTED_TRAINING')t.asked=w;
+  }
+  return t;
+ }
+ const K=loop('KNOWN_MISS'),U=loop('UNREPORTED'),A=loop('ANSWERED_KNOWN_STOP'),atK=w=>K.rows.find(x=>x.w===w&&x.day===6);
+ // KNOWN_MISS: the original invariant. The run ledger holds the not-done reports and no completed run.
+ const kRuns=K.ledger.filter(o=>o.context?.sport==='RUN');
+ assert.ok(kRuns.length>0&&kRuns.every(o=>o.actual?.completed===false),'only not-done run reports');
+ assert.deepEqual(intenseOf(K.p).map(s=>s.id),[],'no quality, touch or strides without executed easy running');
+ assert.ok(K.p.stateTrace.every(st=>(st.run.easyWeeksDone??0)===0));
+ for(const x of K.rows)assert.deepEqual(intenseIn(x.after,x.w+1).map(s=>s.id),[],`KNOWN_MISS week ${x.w}: no intense session in the week after the decision`);
+ // UNREPORTED: the simulator exactly as before has no run report; the hand loop is that simulator, decision by decision.
  const sim=simulateProgram(input,{default:{missed:[{sport:'RUN'}]}},opts);
  assert.equal(sim.actualLedger.filter(o=>o.context?.sport==='RUN').length,0);
- const intense=sessionsOf(sim.finalProgram).filter(s=>s.weekIndex>0&&s.prescription&&(s.role==='QUALITY'||s.role==='RACE_TOUCH'||s.prescription.strides));
- assert.deepEqual(intense.map(s=>s.id),[],'no quality, touch or strides without executed easy running');
- assert.ok(sim.finalProgram.stateTrace.every(st=>(st.run.easyWeeksDone??0)===0));
+ assert.equal(U.ledger.filter(o=>o.context?.sport==='RUN').length,0);
+ assert.deepEqual(U.rows.map(x=>x.r.status),sim.rows.map(r=>r.weekly.result.status),'the hand loop decides as the simulator');
+ assert.ok(U.asked!==null,'a question is raised once a run dose depends on the unreported runs');
+ for(const x of U.rows.filter(x=>x.w<U.asked))assert.equal(x.ahead,atK(x.w).ahead,`UNREPORTED week ${x.w}: where the engine does not ask, the known-miss plan (no credit)`);
+ for(const x of U.rows.filter(x=>x.w>=U.asked&&x.runsAhead))assert.deepEqual([x.r.status,x.r.question?.kind,x.r.missingInputs,x.r.proposal,x.r.planValidity.status,x.r.referenceState.pending?.status],['ASK','UNREPORTED_TRAINING',['observations.unreportedSessions|interruption'],null,'REQUIRES_RECONCILIATION','ASK'],`UNREPORTED week ${x.w}: the typed question`);
+ assert.ok(U.rows.filter(x=>x.w>=U.asked&&x.r.planValidity.status==='VALID_WITHIN_CURRENT_BOUNDED_SCOPE').every(x=>!x.runsAhead),'after the question, VALID only with no run session ahead');
+ // ANSWERED_KNOWN_STOP: answered on day 2 of the week after the question; then the known-miss plan, and the original invariant.
+ assert.equal(A.asked,U.asked);
+ const bA=A.rows.find(x=>x.day===2).before,cut=addDays(bA.weeks[A.answered.w].startDate,2),ans=A.answered.r;
+ assert.deepEqual([ans.status,ans.action,ans.planValidity.status,ans.referenceState.pending],['MODIFY','REPLAN_FROM_EVIDENCE','VALID_WITHIN_CURRENT_BOUNDED_SCOPE',null]);
+ const pastOf=P=>JSON.stringify(sessionsOf(P).filter(s=>s.date<cut).map(s=>[s.id,s.prescription??null]));
+ assert.equal(pastOf(A.answered.r.proposal),pastOf(bA),'history before the answer is never rewritten');
+ for(const x of A.rows.filter(x=>x.day===6&&x.w>=A.answered.w))assert.equal(x.ahead,atK(x.w).ahead,`ANSWERED week ${x.w}: the known-miss plan`);
+ assert.deepEqual(intenseOf(A.p).map(s=>s.id),[]);assert.ok(A.p.stateTrace.every(st=>(st.run.easyWeeksDone??0)===0));
+ for(const x of A.rows.filter(x=>x.r.planValidity.status==='VALID_WITHIN_CURRENT_BOUNDED_SCOPE'))assert.deepEqual(intenseIn(x.after,x.w+1).map(s=>s.id),[],`ANSWERED week ${x.w}: no intense session in the week after a valid decision`);
 });
 test('QRE-R6-05: an eligibility date that is not a date is not a current assessment, and never throws',()=>{
  const p=generateProgram(intake({id:'t-elig',weeks:12}),opts).program;

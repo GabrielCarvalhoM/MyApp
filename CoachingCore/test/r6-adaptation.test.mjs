@@ -139,8 +139,28 @@ test('Adaptation: nonclinical return is staged from current evidence; clinical o
  assert.equal(evaluateProgram(p,review(p,w,'RETURN_AFTER_PAUSE',{interruption:{days:18}}),opts).status,'ASK');
  // R7-C G01: a short break resumes the last executed doses, so it is judged where runs are recorded before it (the reviewed weeks); with nothing
  // ever reported the resumption would rest on unreported training, which is asked (test/r7c-longitudinal.test.mjs), never read as zero.
+ // Split by SSCTR-SD-R7C-r2 (R7-C Phase 5; audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/SSCTR_SEMANTIC_REDISPOSITION_R7C.json, legacyTests
+ // FIFTH), which ratifies the Phase 2 edit as the EXECUTED variant and adds UNREPORTED, KNOWN_MISS and ANSWERED_KNOWN_STOP.
+ // EXECUTED (the Phase 2 edit): weeks 0-2 executed and reviewed; the first quality slot after the break runs easy.
  const short=evaluateProgram(q,review(q,w,'RETURN_AFTER_PAUSE',{interruption:{days:6,reasonCategory:'WORK'},actualLedger:ledger}),opts);
  assert.ok(!short.proposal.weeks[w+1].sessions.some(s=>s.role==='QUALITY'),'first quality slot after a short break runs easy');
+ // UNREPORTED (the original fixture, nothing ever reported): the return asks; it never resumes projected doses and never reads zero.
+ const unknown=evaluateProgram(p,review(p,w,'RETURN_AFTER_PAUSE',{interruption:{days:6,reasonCategory:'WORK'}}),opts);
+ assert.deepEqual([unknown.status,unknown.question?.kind,unknown.proposal,unknown.planValidity.status],['ASK','UNREPORTED_TRAINING',null,'REQUIRES_RECONCILIATION']);
+ const ENTRY=opts.authority.policy.operational.return.entryRunMinutes,liveRun=s=>s.sport==='RUN'&&s.prescription&&s.status!=='SKIPPED';
+ const notDone=(P,s)=>({eventId:'nd-'+s.id,athleteId:P.athleteId,sessionId:s.id,observedAt:s.date+(s.turn==='PM'?'T19:00:00Z':'T08:00:00Z'),actual:{completed:false},response:{}});
+ const atEntry=r=>r.action==='REESTABLISH'&&r.planValidity.status==='VALID_WITHIN_CURRENT_BOUNDED_SCOPE'&&!r.proposal.weeks[w+1].sessions.some(s=>s.role==='QUALITY')&&r.proposal.weeks[w+1].sessions.filter(liveRun).every(s=>s.prescription.durationMinutes<=ENTRY);
+ // KNOWN_MISS: weeks 0-4 reviewed, strength executed and runs reported not done; the run on the return's own day lies outside the 6 declared days
+ // and is reported not done too. The return re-enters at the entry, with no quality.
+ let km=p,kl=[];for(let i=0;i<w;i++){const r=evaluateProgram(km,review(km,i,'WEEKLY_REVIEW',{observations:km.weeks[i].sessions.filter(s=>s.prescription).map(s=>s.sport==='RUN'?notDone(km,s):obs(km,s)),actualLedger:kl}),opts);kl=r.actualLedger;if(r.proposal)km=r.proposal;}
+ const knownMiss=evaluateProgram(km,review(km,w,'RETURN_AFTER_PAUSE',{interruption:{days:6,reasonCategory:'WORK'},observations:km.weeks[w].sessions.filter(s=>liveRun(s)&&s.date===lastDay(km,w)).map(s=>notDone(km,s)),actualLedger:kl}),opts);
+ assert.ok(atEntry(knownMiss),'KNOWN_MISS: '+knownMiss.status+' '+knownMiss.reason);
+ // ANSWERED_KNOWN_STOP: the fixture's return asks; re-submitted with every run outside the declared break (which ended the day before the report
+ // and lasted its 6 days) reported not done.
+ const breakStart=onDay(lastDay(p,w),-6),outside=p.weeks.flatMap(x=>x.sessions).filter(s=>liveRun(s)&&(s.date<breakStart||s.date===lastDay(p,w))).map(s=>notDone(p,s));
+ const answered=evaluateProgram(p,review(p,w,'RETURN_AFTER_PAUSE',{asOf:lastDay(p,w)+'T22:00:00Z',event:{id:'t-5-return-answered',kind:'RETURN_AFTER_PAUSE'},interruption:{days:6,reasonCategory:'WORK'},observations:outside,actualLedger:unknown.actualLedger??[],referenceState:unknown.referenceState}),opts);
+ assert.ok(atEntry(answered),'ANSWERED_KNOWN_STOP: '+answered.status+' '+answered.reason);
+ assert.equal(answered.referenceState.pending,null);
 });
 test('Adaptation: clinical flags route to a human and stay sticky through generic recovered labels',()=>{
  const p=fresh(),clinical=evaluateProgram(p,review(p,3,'WEEKLY_REVIEW',{eligibility:{...elig(lastDay(p,3)),pain:true}}),opts);

@@ -49,9 +49,43 @@ test('D17/D18: restart and walk/jog transitions respect the single-run ceiling a
  assert.ok(lowData.slice(1).some(wk=>wk.sessions.some(s=>s.role==='WALK_JOG'&&s.prescription.durationMinutes>=20)),'the walk/jog ladder keeps its full session time');
 });
 test('D18: with no completed run in the window, a reprojection starts from the reviewed entry',()=>{
- const p=generateProgram(PROFILES.A_RUN_FIRST_HALF_MARATHON,opts).program,w=6,last=p.weeks[w].sessions.at(-1).date;
- const r=evaluateProgram(p,{version:'R6-REVIEW-1',synthetic:true,purpose:'SHADOW_REFERENCE',asOf:last+'T21:00:00Z',weekIndex:w,event:{id:'empty',kind:'WEEKLY_REVIEW'},eligibility:elig(last),observations:[]},opts);
- assert.ok(run(r.proposal.weeks[w+1]).every(s=>s.prescription.durationMinutes<=policy.operational.return.entryRunMinutes),'nothing completed in 30 days: entry only');
+ // Split by SSCTR-SD-R7C-r2 (R7-C Phase 5; audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/SSCTR_SEMANTIC_REDISPOSITION_R7C.json, legacyTests
+ // D18): with nothing reported the window is unknown, never zero (UNREPORTED asks); with the runs reported not done it is a known stop and the
+ // original assertion holds (KNOWN_MISS); a known stop answered after the question re-plans the answer week and the next from the facts.
+ const ENTRY=policy.operational.return.entryRunMinutes,w=6,gen=()=>generateProgram(PROFILES.A_RUN_FIRST_HALF_MARATHON,opts).program;
+ const addDays=(d,n)=>new Date(Date.parse(d+'T00:00:00Z')+n*864e5).toISOString().slice(0,10);
+ const live=s=>s.prescription&&s.status!=='SKIPPED',last=(P,k)=>P.weeks[k].sessions.at(-1).date;
+ const notDone=(p,s)=>({eventId:`d18-nd-${s.id}`,athleteId:p.athleteId,sessionId:s.id,observedAt:`${s.date}T${s.turn==='PM'?'19:00:00':'08:00:00'}Z`,actual:{completed:false},response:{}});
+ const rv=(P,k,date,{time='21:00:00',id=`d18-${k}-${date}-${time}`,observations=[]}={})=>({version:'R6-REVIEW-1',synthetic:true,purpose:'SHADOW_REFERENCE',asOf:`${date}T${time}Z`,weekIndex:k,event:{id,kind:'WEEKLY_REVIEW'},eligibility:elig(date),observations});
+ const step=(t,review)=>{const r=evaluateProgram(t.p,{...review,...(t.ledger.length?{actualLedger:t.ledger}:{}),...(t.ref?{referenceState:t.ref}:{})},opts);t.ledger=r.actualLedger??t.ledger;t.ref=r.referenceState??t.ref;if(r.proposal)t.p=r.proposal;return r;};
+ const runsBefore=(P,day)=>P.weeks.flatMap(x=>x.sessions).filter(s=>s.sport==='RUN'&&live(s)&&s.date<day);
+ const runsFrom=(P,k,day)=>P.weeks[k].sessions.filter(s=>s.sport==='RUN'&&live(s)&&s.date>=day).map(s=>`${s.id}:${s.role}:${s.prescription.durationMinutes}`);
+ const typedAsk=r=>[r.status,r.question?.kind,r.missingInputs,r.proposal,r.planValidity.status,r.referenceState.pending?.status];
+ const ASK=['ASK','UNREPORTED_TRAINING',['observations.unreportedSessions|interruption'],null,'REQUIRES_RECONCILIATION','ASK'];
+ // UNREPORTED: the fixture as written (week 6 reviewed empty, never reviewed before), and the same with weeks 0-5 reviewed empty.
+ const nr={p:gen(),ledger:[],ref:null},q=step(nr,rv(nr.p,w,last(nr.p,w),{id:'empty'}));
+ const re={p:gen(),ledger:[],ref:null};for(let k=0;k<w;k++)step(re,rv(re.p,k,last(re.p,k)));const qe=step(re,rv(re.p,w,last(re.p,w),{id:'empty'}));
+ assert.deepEqual(typedAsk(q),ASK,'never reviewed: the typed question, nothing planned on zero');assert.deepEqual(typedAsk(qe),ASK,'reviewed empty: the same');
+ assert.deepEqual(qe.question.unreported.sessionIds,q.question.unreported.sessionIds,'both ask about the same sessions');
+ // KNOWN_MISS: every run of weeks 0-6 reported not done at the week-6 review: the original assertion; after week 7 is reported not done, week 8 too.
+ const km={p:gen(),ledger:[],ref:null},k6=step(km,rv(km.p,w,last(km.p,w),{observations:runsBefore(km.p,addDays(last(km.p,w),1)).map(s=>notDone(km.p,s))}));
+ assert.equal(k6.planValidity.status,'VALID_WITHIN_CURRENT_BOUNDED_SCOPE');
+ assert.ok(run(km.p.weeks[w+1]).every(s=>s.prescription.durationMinutes<=ENTRY),'nothing completed in 30 days: entry only');
+ const km7=runsFrom(km.p,7,km.p.weeks[7].startDate);step(km,rv(km.p,7,last(km.p,7),{observations:km.p.weeks[7].sessions.filter(s=>s.sport==='RUN'&&live(s)).map(s=>notDone(km.p,s))}));
+ const km8=runsFrom(km.p,8,km.p.weeks[8].startDate);assert.ok(run(km.p.weeks[8]).every(s=>s.prescription.durationMinutes<=ENTRY),'week 8 at the entry');
+ // ANSWERED_KNOWN_STOP: the week-6 review asks; the answer comes on day 0, or day 2, of week 7 with every run dated before it reported not done.
+ for(const d of [0,2]){
+  const t={p:nr.p,ledger:[...nr.ledger],ref:nr.ref},day=addDays(t.p.weeks[7].startDate,d),before=t.p;
+  const r=step(t,rv(t.p,7,day,{time:'07:00:00',observations:runsBefore(t.p,day).map(s=>notDone(t.p,s))}));
+  assert.deepEqual([r.status,r.action,r.planValidity.status,r.referenceState.pending],['MODIFY','REPLAN_FROM_EVIDENCE','VALID_WITHIN_CURRENT_BOUNDED_SCOPE',null],'day '+d);
+  const past=P=>JSON.stringify(P.weeks.flatMap(x=>x.sessions).filter(s=>s.date<day).map(s=>[s.id,s.prescription??null]));
+  assert.equal(past(t.p),past(before),`day ${d}: history before the answer is never rewritten`);
+  const ahead=runsFrom(t.p,7,day);
+  assert.ok(ahead.every(x=>Number(x.split(':')[2])<=ENTRY&&!/QUALITY|RACE_TOUCH/.test(x)),`day ${d}: the runs ahead at the entry ${ahead}`);
+  assert.deepEqual(ahead,km7.filter(x=>ahead.some(y=>y.split(':')[0]===x.split(':')[0])),`day ${d}: equal to the known miss`);
+  step(t,rv(t.p,7,last(t.p,7),{observations:t.p.weeks[7].sessions.filter(s=>s.sport==='RUN'&&live(s)&&s.date>=day).map(s=>notDone(t.p,s))}));
+  assert.deepEqual(runsFrom(t.p,8,t.p.weeks[8].startDate),km8,`day ${d}: after the week-7 review, week 8 equals the known miss`);
+ }
 });
 test('D19/C8: the long run respects its weekly share; a step on a short reference is disclosed and never combined',()=>{
  const S=policy.operational.run.longRunShareOfWeeklyMinutesMax;
