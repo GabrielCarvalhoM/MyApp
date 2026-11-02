@@ -80,7 +80,7 @@ const conformance=Object.fromEntries(['conformance-r7b','conformance-r7b1','conf
 const evPath=arg('--evidence'),muPath=arg('--mutation');if(!evPath||!muPath)refuse('give --evidence <manifest> and --mutation <mutation json>');
 const ev=JSON.parse(fs.readFileSync(path.join(repo,evPath),'utf8')),mu=JSON.parse(fs.readFileSync(path.join(repo,muPath),'utf8'));
 for(const [label,commit] of [['evidence',ev.head],['mutation',mu.head]])if(spawnSync('git',['diff','--quiet',commit,'HEAD','--','CoachingCore/src','CoachingCore/test'],{cwd:repo}).status!==0)refuse(`${label} was made on other runtime or test bytes (${commit})`);
-const outOf=name=>{const j=ev.jobs.find(x=>x.name===name);if(!j||j.exit!==0&&!['neighbors-r7b2-vs-R7B2-FREEZE-1','differential-regress-r7b2-vs-R7B2-FREEZE-1'].includes(name))refuse('evidence job '+name+' missing or failed');if(shaRepo(j.output)!==j.sha256)refuse('evidence output changed: '+j.output);return JSON.parse(fs.readFileSync(path.join(repo,j.output),'utf8'));};
+const outOf=name=>{const j=ev.jobs.find(x=>x.name===name);if(!j||j.exit!==0&&!['neighbors-r7b2-vs-R7B2-FREEZE-1','differential-regress-r7b2-vs-R7B2-FREEZE-1','differential-regress-r7b2-stamp-neutral-vs-R7B2-FREEZE-1'].includes(name))refuse('evidence job '+name+' missing or failed');if(shaRepo(j.output)!==j.sha256)refuse('evidence output changed: '+j.output);return JSON.parse(fs.readFileSync(path.join(repo,j.output),'utf8'));};
 const sd=outOf('adversarial-sd'),g01=outOf('adversarial-g01'),g02=outOf('adversarial-g02'),full=outOf('full-suite');
 if(sd.summary.total!==0)refuse('SD grid violations '+sd.summary.total);
 if(g01.violations.length||g01.p1.failed.length)refuse('G01 grid violations');
@@ -113,11 +113,15 @@ const qe10=N==='4'?(()=>{const job=name=>{const j=ev.jobs.find(x=>x.name===name)
  if(!cc2||cc2.cells!==1200||cc2.validNotD!==0||cc2.errors!==0)refuse('SSCTR CC2: '+JSON.stringify({cells:cc2?.cells,validNotD:cc2?.validNotD}));
  if(df.base?.commit!==F3.commit||df.generationFailures!==0||df.unexpectedDiffering?.length||df.beyondTimely?.length)refuse('the differential against R7C-FREEZE-3: '+JSON.stringify({unexpected:df.unexpectedDiffering,beyondTimely:df.beyondTimely?.length}));
  if(!(hi.checked>0)||hi.violations?.length!==0||hi.unsupported!==0)refuse('history '+JSON.stringify(hi).slice(0,300));
+ // regress-r7b2 against R7B2-FREEZE-1 with each step's ledger digest ignoring the first-recorded clock: it must read exactly as Phase 6's did.
+ const P6_REGRESS=`${AUD}/probes/out/differential-regress-r7b2-vs-R7B2-FREEZE-1.R7C-P6-fb75d5b.json`,semantic=x=>JSON.stringify(x,(k,v)=>/^(head|commit|ran|created|base)$/.test(k)?undefined:v);
+ const rn=outOf('differential-regress-r7b2-stamp-neutral-vs-R7B2-FREEZE-1');if(semantic(rn)!==semantic(JSON.parse(fs.readFileSync(path.join(repo,P6_REGRESS),'utf8'))))refuse('the stamp-neutral regress differential does not read as Phase 6\'s');
  return {recorderIndependence:{original:{...job('recorder-independence'),cells:ri.cells,failures:ri.RIfail,byAnswer:ri.byV},shortened:{...job('recorder-independence-shortened'),cells:sh.cells,failures:sh.fail,staleValid:sh.staleValid,predecessor:{revision:F3.revision,failures:28}},
   trajectories:{...job('recorder-independence-trajectories'),trajectories:tr.trajectories,staleValid:tr.staleValid,failedTrajectories:tr.failedTrajectories,failingByAnswer:tr.byV??{},fullDoseAndShortenedFailing:0,predecessor:{revision:F3.revision,...F3_TRAJ}},mixedScopeP6F01:{...job('ssctr-mixed-scope'),cells:mixedCells,recorderDependent:0,predecessor:{revision:F3.revision,recorderDependent:16}},
   cc2:{...job('ssctr-cc2'),cells:cc2.cells,validNotD:0,predecessor:{revision:F3.revision,validNotD:18}}},
   differentialVsFreeze3:{...job('phase7-differential-vs-R7C-FREEZE-3'),scenarios:df.scenarios,families:df.families,expectedToDiffer:df.expectedToDiffer,differing:df.differing.length,beyondTimely:0},
   history:{...job('history'),recordedReplansChecked:hi.checked,violations:0,unsupported:0},
+  regressStampNeutral:{...job('differential-regress-r7b2-stamp-neutral-vs-R7B2-FREEZE-1'),asPhase6:{path:P6_REGRESS,sha256:shaRepo(P6_REGRESS)},byTag:rn.byTag,note:'scripts/regress-r7b2.mjs digests the carried record at every step; that digest changes with the new first-recorded clock alone, so its own output differs from Phase 6\'s while the stamp-neutral form reads identically'},
   measured:{reach:job('reach-vs-R7C-FREEZE-3'),lateReporter:job('late-reporter-vs-R7C-FREEZE-3'),directRefire:job('direct-refire-vs-R7C-FREEZE-3')}};})():null;
 // The SSCTR semantic disposition that authorized the legacy split, and the conditions its acceptance binds to this record (SSCTR-SD-R7C-r2:
 // C2, C3, C8 and C9 as binding consumer conditions, C7 the disclosures).

@@ -62,6 +62,8 @@ if(rec.phase7){
  const D=rec.evidence.differentialVsFreeze3,df=read(D);
  check('differential-vs-freeze-3',!!df&&df.generationFailures===0&&df.unexpectedDiffering.length===0&&df.beyondTimely.length===0&&df.scenarios===D.scenarios,df?{scenarios:df.scenarios,differing:df.differing.length,unexpected:df.unexpectedDiffering.length}:{output:'missing or changed'});
  const Hs=read(rec.evidence.history);check('history',!!Hs&&Hs.checked>0&&Hs.violations.length===0&&Hs.unsupported===0,Hs?{checked:Hs.checked}:{output:'missing or changed'});
+ const RN=rec.evidence.regressStampNeutral,rn=read(RN),p6=shaRepo(RN.asPhase6.path)===RN.asPhase6.sha256?JSON.parse(fs.readFileSync(path.join(repo,RN.asPhase6.path),'utf8')):null,semantic=x=>JSON.stringify(x,(k,v)=>/^(head|commit|ran|created|base)$/.test(k)?undefined:v);
+ check('regress-r7b2-stamp-neutral-as-phase6',!!rn&&!!p6&&semantic(rn)===semantic(p6),rn?{byTag:rn.byTag}:{output:'missing or changed'});
  check('condition-updates',shaRepo(rec.phase7.conditionUpdates.path)===rec.phase7.conditionUpdates.sha256);
 }
 if(process.argv.includes('--suite')){const r=spawnSync(process.execPath,['--test'],{cwd:cc,encoding:'utf8',maxBuffer:1<<28,timeout:1800000}),n=k=>Number(r.stdout.match(new RegExp('ℹ '+k+' (\\d+)'))?.[1]??NaN);check('suite',n('tests')===rec.tests.count&&n('fail')===0&&n('pass')===rec.tests.count,{tests:n('tests'),pass:n('pass'),fail:n('fail')});}

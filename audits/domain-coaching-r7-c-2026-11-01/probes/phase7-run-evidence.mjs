@@ -7,7 +7,8 @@
 // - the Engineering's Phase 6 reach, late-reporter, direct-refire and history probes (p6-x2, p6-x4, p6-x7, p6-x6) with R7C-FREEZE-3's bytes as
 //   the old runtime (its label starts with F2) and this worktree as the new one (F3): QE-R7C-11 and QE-R7C-12 as they now stand;
 // - as in Phase 6: the SD grid and SD-01 check, G01, G02, the holdout (D1, H19), the clinical probes, the R7-B, R7-B.1 and R7-B.2 conformance
-//   checks, the R7-A/B differentials against R7B2-FREEZE-1, and the full suite.
+//   checks, the R7-A/B differentials against R7B2-FREEZE-1 (regress-r7b2 also in its stamp-neutral form, phase7-regress-r7b2-stamp-neutral.mjs,
+//   whose only change is that each step's ledger digest ignores the new first-recorded clock), and the full suite.
 // Refuses to run when CoachingCore/src or CoachingCore/test differ from HEAD. Nothing else is written; R7C-FREEZE-3's bytes are extracted with
 // git archive into a temporary directory (removed after). Usage: node audits/domain-coaching-r7-c-2026-11-01/probes/phase7-run-evidence.mjs
 // [--only name,name]
@@ -46,7 +47,10 @@ const JOBS=[
  ['conformance-r7b1',['CoachingCore/scripts/conformance-r7b1.mjs']],
  ['conformance-r7b2',['CoachingCore/scripts/conformance-r7b2.mjs']],
  ['neighbors-r7b2-vs-R7B2-FREEZE-1',['CoachingCore/scripts/neighbors-r7b2.mjs','--base',B2]],
- ['differential-regress-r7b2-vs-R7B2-FREEZE-1',['CoachingCore/scripts/regress-r7b2.mjs','--base',B2]]
+ ['differential-regress-r7b2-vs-R7B2-FREEZE-1',['CoachingCore/scripts/regress-r7b2.mjs','--base',B2]],
+ // The same differential with each step's ledger digest ignoring provenance.firstRecordedAt (the original's digest of the carried record differs
+ // at every step that records a report for that field alone, which R7B2-FREEZE-1 never writes): it must read as Phase 6's did.
+ ['differential-regress-r7b2-stamp-neutral-vs-R7B2-FREEZE-1',[`${P}/phase7-regress-r7b2-stamp-neutral.mjs`,'--base',B2]]
 ];
 const manifest={check:'R7C-P7-EVIDENCE',head,label,node:process.version,started:new Date().toISOString(),runtimes:{old:{label:'F2-is-R7C-FREEZE-3',commit:F3,root:'git archive (temporary)'},new:{label:'F3-is-R7C-P7 / F4 / F2 / HEAD (each probe\'s own name for this worktree)',commit:head}},jobs:[]};
 try{
@@ -58,7 +62,7 @@ try{
   console.log(name,r.status,Date.now()-t0+'ms');
  }
  // The R7-B.2 clinical probes (copied verbatim in Phase 3): they write their own outputs, labelled, under probes/b2-copy/out.
- for(const [name,args,env] of [['k6-stale-return-clinical',[`${P}/b2-copy/k6-stale-return-clinical.mjs`],{PROBE_ROOT:WT,PROBE_LABEL:label}],['k6b-stale-return-two-step',[`${P}/b2-copy/k6b-stale-return-two-step.mjs`],{PROBE_ROOT:WT,PROBE_LABEL:label}],['b2-inventory',[`${P}/b2-copy/b2-inventory.mjs`],{PROBE_ROOT:WT,PROBE_LABEL:label}],['adversarial',[`${P}/b2-copy/adversarial-r7b1.mjs`],{PROBE_ROOT:WT,PROBE_LABEL:label}]]){
+ for(const [name,args,env] of [['k6-stale-return-clinical',[`${P}/b2-copy/k6-stale-return-clinical.mjs`],{PROBE_ROOT:WT,PROBE_LABEL:label}],['k6b-stale-return-two-step',[`${P}/b2-copy/k6b-stale-return-two-step.mjs`],{PROBE_ROOT:WT,PROBE_LABEL:label}],['b2-inventory',[`${P}/b2-copy/b2-inventory.mjs`],{PROBE_ROOT:WT,PROBE_LABEL:label}],['adversarial',[`${P}/b2-copy/adversarial-r7b1.mjs`,WT,label],{}]]){
   if(only&&!only.has(name))continue;
   const t0=Date.now(),r=spawnSync(process.execPath,args,{cwd:WT,encoding:'utf8',maxBuffer:1<<28,timeout:1800000,env:{...process.env,...env}}),file=path.join(HERE,'b2-copy/out',`${name}-${label}.json`);
   manifest.jobs.push({name:'b2-copy/'+name,command:'node '+args.join(' ')+' (PROBE_ROOT, PROBE_LABEL)',exit:r.status,ms:Date.now()-t0,output:fs.existsSync(file)?path.relative(WT,file).replaceAll('\\','/'):null,sha256:fs.existsSync(file)?sha(file):null,stdout:(r.stdout??'').slice(0,300)||null,stderr:(r.stderr??'').slice(0,400)||null});
