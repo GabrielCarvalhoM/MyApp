@@ -982,3 +982,53 @@ The rule for a NOT_READY disposition is STOP. Same branch and worktree, from `5b
   - two pre-existing B.2 behaviours recorded (UNRELATED_PREEXISTING).
 - **Unchanged:** R6-POLICY-5, R7B0-CATALOG-2, queue (230), `product/`, `canon/`, every closed record, the four legacy tests.
 - **Next:** a narrow phase with SSCTR-SD-01 first, then re-present the semantic disposition, on its own Founder authorization. R7-D not started. [Checkpoint](audits/domain-coaching-r7-c-2026-11-01/PHASE4_CHECKPOINT.md).
+
+<!-- DOMAIN_COACHING_R7C: DCR7C-20261102-phase5-r1 -->
+## DOMAIN_COACHING_R7-C — Longitudinal Coaching — Phase 5 CLOSED NOT_READY / 2026-11-02
+
+A direct Founder request authorizes **R7-C Phase 5 only**:
+- fix SSCTR-SD-01: re-plan the current horizon from the answered facts;
+- test SD-02, and preserve SD-03;
+- obtain the SSCTR semantic re-disposition first;
+- then, only if accepted: the legacy split, the full suite, `R7C-FREEZE-1`, the SSCTR final recheck and the Engineering gate, and at most one correction cycle (there is no second cycle).
+
+Same branch and worktree, from `6240080`; nothing merged or pushed.
+
+- **States:**
+  - R7C_PHASE5_STATUS = CLOSED_NOT_READY.
+  - SEMANTIC_DISPOSITION = ACCEPT_R7C_UNKNOWN_SEMANTICS (SSCTR-SD-R7C-r2).
+  - On R7C-FREEZE-1: SSCTR final recheck ACCEPT_WITH_CONDITIONS (r3); Engineering NOT_READY (blockers QE-R7C-01 and -02).
+  - CORRECTION_CYCLE = USED_ONCE, ending in R7C-FREEZE-2.
+  - On R7C-FREEZE-2: SSCTR recheck ACCEPT_WITH_CONDITIONS (SSCTR-CC-R7C-r4, no blocker); Engineering recheck NOT_READY (QE-R7C-07, DIRECT_R7C_DELTA).
+  - D1 = ACCEPTABLE_RESIDUAL. V1_COACHING_AUTHORITY_READY = NO.
+- **Done and gated:**
+  - SD-01: the answer re-plans the answer week and the weeks after from the facts;
+  - SD-02: the answer week is tested;
+  - SD-03: signals sent with the answer, or held by the question, are applied by their own authority, clinical first;
+  - the legacy split of QRE-R6-04, D18, F3/H25, §19 and the fifth fixture (`738928b`).
+- **Correction cycle** (`e7ddc38`, `3210b88`, `963239b`):
+  - closed: QE-R7C-02 / C9 (the re-plan's projection never credits elapsed unreported sessions), -03 (a held signal travels beside a kept change), -04 (week guard tested) and -06 (package files bound);
+  - QE-R7C-01 closed for known stops only, by the ceiling re-plan. Its scope: easy running; never a return report or a return-entry week; never beside a question about unknown training;
+  - the cycle's own regressions (cold starts, a G01 P1 case, return reports) were caught by evidence and fixed before the freeze.
+- **Freezes:**
+  - R7C-FREEZE-1: `1890f66`, source `29bf2532…4b6f`, manifest `0362faa7…813e`, 848/848.
+  - **R7C-FREEZE-2:** `a10cec0`, source `9e424f70…3f35`, manifest `02c50ef3…efb9`, 150 files, 854/854; verifier `verify-r7c.mjs --revision 2` 16/16.
+- **Evidence on FREEZE-2's bytes:**
+  - full suite 854/854;
+  - SD grid 1,200 cells, 0 violations;
+  - G01 0 violations (P1 165/0), verdicts unchanged;
+  - G02 byte-identical;
+  - clinical, conformance, holdout and the R7B2 differential unchanged;
+  - mutation 17/18 plus the equivalent, Phase 4 rules 8/8, SD 6/6, CC 9/9.
+- **Blocker QE-R7C-07** (DIRECT_R7C_DELTA, reproduced). An executed, mixed or adverse answer recorded by a decision that does not apply it (R4 HOLD, handler clinical route) is never applied, and the stale projection stays VALID. 72/160 cells depend on which decision recorded the answer; R7B2-FREEZE-1 has 0.
+- **SSCTR conditions:**
+  - C9 still binding: R1 narrowed, still present on the handler re-compositions (CC-F01);
+  - a C3 r4 clause;
+  - C7 and C10 extended (C10 with CC-F06).
+- **Unchanged:** R6-POLICY-5, R7B0-CATALOG-2, queue (230), `product/`, `canon/`, every closed record. D1 not fixed.
+- **Next:** a runtime mission with its own Founder authorization:
+  - QE-R7C-07 first: re-plan from the facts on state, whichever decision recorded them, CC-F02 included;
+  - then CC-F01;
+  - then a new freeze and the rechecks.
+
+  R7-D not started. [Checkpoint](audits/domain-coaching-r7-c-2026-11-01/PHASE5_CHECKPOINT.md).
