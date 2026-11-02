@@ -191,17 +191,20 @@ test('R7-C QE-R7C-07 reach: a plan that rests on projection over its whole run w
 
 test('R7-C QE-R7C-07 (G01): the recorded-answer re-plan never travels with a question about unknown training; that question decides alone',()=>{
  // The answer: only the oldest long run of the window done, every other gap run not done; recorded by a clinical route, then cleared. Week 7's own
- // runs are never reported, so the end-of-week review asks about next week's window (that long run falls out of it).
+ // runs are never reported. On day 4 the facts' plan differs from the stored one again (more of week 7's runs elapsed with no report, C9), so a
+ // plain review re-plans from the record; a schedule change at the same instant re-plans from next week, whose window (that long run falls out
+ // of it) is unknown: it asks, and the question decides alone, with no proposal (without the guard it would carry the re-plan's run doses).
  const b=7,t={p:program(GEN),ledger:[],ref:null};
- for(let w=0;w<b-1;w++)step(t,w,{observations:strengthOf(t.p,w)});
- step(t,b-1,{observations:strengthOf(t.p,b-1)});
+ for(let w=0;w<b;w++)step(t,w,{observations:strengthOf(t.p,w)});
  const start=t.p.weeks[b].startDate,longest=runSessions(t.p,0,b).filter(s=>s.role==='LONG'&&addDays(s.date,30)>=start).sort((x,y)=>x.date<y.date?-1:1)[0];
  const facts=runSessions(t.p,0,b).map(s=>s.id===longest.id?obs(t.p,s):notDone(t.p,s));
  carry(t,b,'CLIN',facts);clear(t);
  const r3=step(t,b,AT(3));
  assert.equal(r3.action,'REPLAN_FROM_EVIDENCE',r3.reason);assert.match(r3.reason,RECORDED);
- const end=step(t,b,{observations:strengthOf(t.p,b)});
- assert.equal(end.question?.kind,'UNREPORTED_TRAINING',end.reason);assert.equal(end.status,'ASK');
- assert.equal(end.proposal??null,null,'no run dose is planned while the question stands');
- assert.equal(end.planValidity?.status,'REQUIRES_RECONCILIATION');
+ const live4=step(copy(t),b,AT(4));
+ assert.equal(live4.action,'REPLAN_FROM_EVIDENCE',live4.reason);assert.match(live4.reason,RECORDED,'the recorded-answer re-plan acts on day 4');
+ const ask=step(copy(t),b,{...AT(4),kind:'SCHEDULE_CHANGE',changes:{strengthDays:[0,3]}});
+ assert.equal(ask.question?.kind,'UNREPORTED_TRAINING',ask.reason);assert.equal(ask.status,'ASK');
+ assert.equal(ask.proposal??null,null,'no run dose is planned while the question stands');
+ assert.equal(ask.planValidity?.status,'REQUIRES_RECONCILIATION');
 });
