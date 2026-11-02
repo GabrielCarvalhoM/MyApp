@@ -4,7 +4,7 @@ import {validProgram,programHash,skeletonOf,noviceDensityApplies,firstStrengthBo
 import {chooseBalanced,interferenceCosts,SEVERITY} from './r6-balanced.mjs';
 import {substitutesFor,catalogueEntry,CATALOGUE as CATALOG_CONFIGURATIONS} from './r6-catalogue.mjs';
 import {exerciseRow,fitStrengthSession,strengthPrescription,easyPrescription,validateR6Prescription} from './r6-prescription.mjs';
-import {aheadOf,usedInWeek,rebasedNext,returnOf,beforeReturn,moveCandidates,choose,counter,rank,fatigueSessions,unavailableSessions,missedMove,conflictSessions,waitSessions,adaptThisWeek,adaptation,withContextChange,composeWeeks,weekAsPlanned,conditionalNext} from './r6-composition.mjs';
+import {aheadOf,usedInWeek,rebasedNext,returnOf,beforeReturn,moveCandidates,choose,counter,rank,fatigueSessions,unavailableSessions,missedMove,conflictSessions,waitSessions,adaptThisWeek,adaptation,withContextChange,composeWeeks,weekAsPlanned,conditionalNext,runGapInForce} from './r6-composition.mjs';
 import {createLearningModel,updateLearningModel,validateLearningModel,evidenceFor,preferredArrangement,classify} from './r6-learning.mjs';
 import {normalizeObservations,utcTimestamp,localDate} from './r6-provenance.mjs';
 import {onDate,dayGap,isoDay,LB_TO_KG,toKilograms,RUN_GOALS,STRENGTH_GOALS,EVENTS} from './r6-intake.mjs';
@@ -37,7 +37,10 @@ function withReference(program,review,result){
  const clinicalSticky=priorValid&&prior.pending?.status==='CLINICAL_HUMAN_REQUIRED';
  if(clinicalSticky&&result.status!=='CLINICAL_HUMAN_REQUIRED')result={...result,status:'CLINICAL_HUMAN_REQUIRED',action:'CLINICAL_HUMAN_REQUIRED',proposal:null,reason:'Prior clinical dependency is preserved; this reference cannot clear it'};
  const pendingStatus=['ASK','HOLD','UNSUPPORTED','CLINICAL_HUMAN_REQUIRED'].includes(result.status);
- const pending=clinicalSticky?clone(prior.pending):pendingStatus?{status:result.status,reason:result.reason,missingInputs:clone(result.missingInputs??[]),eventKind:KIND_ALIASES[review?.event?.kind]??review?.event?.kind??null,eventId:review?.event?.id??null}:null;
+ // R7-C P3-02: a change made while a question about the plan stays open (heldByRunGap) carries that question, still pending: the plan in force is
+ // not valid until it is answered.
+ const carried=!pendingStatus&&!!result.question;
+ const pending=clinicalSticky?clone(prior.pending):pendingStatus||carried?{status:carried?'ASK':result.status,reason:result.reason,missingInputs:clone(result.missingInputs??[]),eventKind:KIND_ALIASES[review?.event?.kind]??review?.event?.kind??null,eventId:review?.event?.id??null}:null;
  const asOf=utcTimestamp(review?.asOf)&&(!priorValid||Date.parse(review.asOf)>=Date.parse(prior.asOf))?utcTimestamp(review.asOf):priorValid?prior.asOf:null;
  const body={version:'R6-REFERENCE-STATE-1',athleteId:program?.athleteId??null,programHash:result.proposal?.hash??program?.hash??null,asOf,pending,scope:'Synthetic reference continuation state; never authorizes official plan effects'};
  return {...result,planValidity:{status:pending?'REQUIRES_RECONCILIATION':'VALID_WITHIN_CURRENT_BOUNDED_SCOPE'},referenceState:{...body,hash:hash(body)}};
@@ -108,6 +111,32 @@ function loggedLoadQuestions(program,sk,w,ev,{gates=null,confirmations={},base=n
 const knownLoadsChanged=(a,b,from)=>{const old=new Map(a.weeks.filter(w=>w.index>=from).flatMap(w=>w.sessions.filter(s=>s.prescription?.exercises).flatMap(s=>s.prescription.exercises.filter(e=>e.load.mode==='KNOWN').map(e=>[s.id+':'+e.id,e.load.value]))));return b.weeks.filter(w=>w.index>=from).some(w=>w.sessions.some(s=>(s.prescription?.exercises??[]).some(e=>e.load.mode==='KNOWN'&&old.has(s.id+':'+e.id)&&old.get(s.id+':'+e.id)!==e.load.value)));};
 /** A future run prescription that differs from the plan (R7-C G01): runs have no placeholders, so any difference is a modification. */
 const runsChanged=(a,b,from)=>{const old=new Map(a.weeks.filter(w=>w.index>=from).flatMap(w=>w.sessions.filter(s=>s.sport==='RUN').map(s=>[s.id,hash(s.prescription??null)])));return b.weeks.filter(w=>w.index>=from).some(w=>w.sessions.some(s=>s.sport==='RUN'&&old.has(s.id)&&old.get(s.id)!==hash(s.prescription??null)));};
+/**
+ * The reason of a C15 re-base (R7-C P3-03): only facts that hold, read from the structures that carry them, never a cause inferred from the
+ * difference itself.
+ * - What differs: next week's run sessions as the executed record plans them against the plan's earlier ones, each with its minutes.
+ * - The weeks that plan had assumed executed: from the latest week whose run start is evidence-anchored (startAuthority: intake, a review's
+ *   evidence or a return's entry; the starts after it are CONDITIONAL_PLAN projections) to this week.
+ * - In those weeks, the run sessions with no report at all outside a declared interruption: named only when there are some.
+ * - A declared interruption whose days fall in those weeks or whose return set one of their starts: named with its dates.
+ * With neither, the reason says only that next week follows the executed record, not the plan's earlier projection.
+ */
+function rebaseReason(ctx,projected){
+ const {program,w}=ctx,label=s=>s.role==='LONG'?'long run':s.role.toLowerCase().replace(/_/g,' ');
+ const before=new Map((program.weeks[w+1]?.sessions??[]).filter(s=>s.sport==='RUN').map(s=>[s.id,s]));
+ const minutes=x=>x.prescription&&x.status!=='SKIPPED'?`${label(x)} ${x.prescription.durationMinutes} min`:'no run';
+ const diffs=(projected.weeks[w+1]?.sessions??[]).filter(s=>s.sport==='RUN'&&before.has(s.id)&&minutes(s)!==minutes(before.get(s.id))).map(s=>`${minutes(s)}, planned ${minutes(before.get(s.id))}`);
+ let j=w;while(j>0&&program.weeks[j].startAuthority?.RUN?.provenance===WEEK_START.CONDITIONAL_PLAN)j--;
+ const from=program.weeks[j].startDate,until=program.weeks[w].startDate,reported=new Set((ctx.fullLedger??ctx.ledger).map(o=>o.sessionId));
+ const reports=program.decisions.filter(d=>d.action==='REESTABLISH'),gone=new Set(reports.map(d=>d.interruption?.supersedes).filter(Boolean));
+ const breaks=reports.filter(d=>!gone.has(d.eventId)).map(d=>breakOf(program,d)).filter(b=>b.end>=from&&b.start<onDate(until,7)||Number.isInteger(b.fromWeek)&&b.fromWeek>=j&&b.fromWeek<=w);
+ const unreported=program.weeks.slice(j,w).flatMap(x=>x.sessions).filter(s=>s.sport==='RUN'&&s.prescription&&s.status!=='SKIPPED'&&!reported.has(s.id)&&!breaks.some(b=>s.date>=b.start&&s.date<=b.end)).sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0);
+ const n=unreported.length;
+ const facts=[
+  ...(n?[`the plan had assumed every session from ${from} executed, and ${n} run session${n>1?'s':''} (${unreported[0].date}${n>1?' to '+unreported.at(-1).date:''}) ha${n>1?'ve':'s'} no report: unreported training earns nothing`]:[]),
+  ...breaks.map(b=>`a break was declared from ${b.start} to ${b.end}, and next week follows what was executed since its return`)];
+ return `Executed as planned this week; next week’s runs follow the executed record, not the plan’s earlier projection${diffs.length?' ('+diffs.join('; ')+')':''}${facts.length?'; '+facts.join('; '):''}; so the plan is re-based, not kept`;
+}
 /** Comparable phase class of a week; return and restart periods form their own class. */
 export function phaseClassOf(policy,phase,mode){
  if(['RETURN','RESTART'].includes(mode))return 'RETURN';
@@ -304,6 +333,32 @@ function evidenceStart(ctx,{week,start},skn,{gates=null}={}){
 const evidenceRule=ctx=>(view,skn)=>evidenceStart(ctx,{week:view.weeks[ctx.w],start:view.stateTrace[ctx.w]},skn);
 /** A composition's question as a decision, with its typed payload when it has one (R7-C G01: UNREPORTED_TRAINING). */
 const askOf=x=>({action:'ASK',reason:x.ask,missingInputs:x.missingInputs,...(x.question?{question:x.question}:{})});
+/** The run prescriptions still ahead of a decision, per week from its own week, as a sorted list of digests (a multiset). */
+const runDosesAhead=(program,ahead,from)=>program.weeks.filter(x=>x.index>=from).map(x=>x.sessions.filter(s=>s.sport==='RUN'&&s.prescription&&s.status!=='SKIPPED'&&ahead(s)).map(s=>hash(s.prescription)).sort());
+/** A proposal plans no run dose when every run prescription still ahead in it is one the plan already had ahead in the same week: strength only,
+ * or run sessions skipped or moved within their week at the doses they had. */
+function plansNoRunDose(ctx,proposal){
+ const was=runDosesAhead(ctx.program,ctx.ahead,ctx.w),now=runDosesAhead(proposal,ctx.ahead,ctx.w);
+ return now.length===was.length&&now.every((list,k)=>{const pool=[...was[k]];return list.every(h=>{const i=pool.indexOf(h);if(i<0)return false;pool.splice(i,1);return true;});});
+}
+/**
+ * R7-C P3-02, unknown never earns execution credit, whichever decision is made. While the run doses still ahead depend on unreported training
+ * (runGapInForce), a decision cannot leave a run dose in force: the stored doses are a projection over sessions with no report (credit), and the
+ * facts alone read that window as zero. So:
+ * - a clinical route, a refusal or a question of the decision's own about something else leaves nothing in force and stands; a return report
+ *   declares an interruption, a known stop: its handler composes the re-entry with the days it declares and asks about what they do not cover;
+ * - a change that plans no run dose (strength only, or sessions skipped or moved within their week at the doses they had) keeps its change,
+ *   and the same question stays with it, pending: the run doses ahead stay as they were, never validated (plan validity REQUIRES_RECONCILIATION);
+ * - any other decision (a KEEP, which would validate the doses ahead, a re-plan, which would derive new run doses from that window, or its
+ *   own question about a later week's unreported training) is this week's UNREPORTED_TRAINING question, the one the weekly review asked for
+ *   it, with no proposal: neither the projection (credit) nor the entry (zero).
+ */
+function heldByRunGap(ctx,gap,d){
+ const status=d.status??(d.action==='ASK'?'ASK':null),unreported=d.question?.kind==='UNREPORTED_TRAINING';
+ if(ctx.kind==='RETURN_AFTER_PAUSE'||['CLINICAL_HUMAN_REQUIRED','ASK','HOLD','UNSUPPORTED'].includes(status)&&!unreported)return d;
+ if(!unreported&&d.proposal&&plansNoRunDose(ctx,d.proposal))return {...d,question:clone(gap.question),missingInputs:[...gap.missingInputs],reason:`${d.reason}; the run sessions ahead stay as they were and wait for an answer: ${gap.ask}`};
+ return {...askOf(gap),counterfactuals:[counter(d.action??'KEEP',d.action??'KEEP',false,'It would keep or plan run doses that depend on training with no report: the projection would credit it, the reviewed entry would read it as zero'),counter('ASK','ASK',true,'Unreported training counts neither as done nor as not done; the athlete’s report decides',{selected:true})]};
+}
 function finishProposal(program,sk,next,decision){
  const proposal=clone(program);proposal.weeks=next.weeks;proposal.stateTrace=next.stateTrace??program.stateTrace;
  // The earlier contexts still in force for some weeks travel with the program (R7-A.1 C2).
@@ -412,7 +467,10 @@ export function evaluateProgram(program,review,options={}){
    :blockChoices.length&&(kind!=='WEEKLY_REVIEW'||ev.pending)?{action:'ASK',reason:'Block choices are made in the weekly review of a block\'s last week, once its sessions are complete',missingInputs:['choices']}:null;
   const handled=clinical??(factual?.ask?null:decide(factual?.ctx??ctx));
   const decision0=clinical??factual?.ask??withFactualReplan(factual,handled.status==='CLINICAL_HUMAN_REQUIRED'?handled:choiceAsk??handled);
-  const decision=blockChoices.length&&!choiceAsk&&!out.choicesHandled&&decision0.action!=='ASK'&&decision0.status!=='CLINICAL_HUMAN_REQUIRED'?withFactualReplan(factual,{action:'ASK',reason:'The block choices could not be applied in this review; they are made at the block boundary review',missingInputs:['choices']}):decision0;
+  const decided=blockChoices.length&&!choiceAsk&&!out.choicesHandled&&decision0.action!=='ASK'&&decision0.status!=='CLINICAL_HUMAN_REQUIRED'?withFactualReplan(factual,{action:'ASK',reason:'The block choices could not be applied in this review; they are made at the block boundary review',missingInputs:['choices']}):decision0;
+  // R7-C P3-02: unreported training the run doses still ahead depend on is read on the canonical factual state, after the clinical screen: no
+  // decision keeps, validates or re-plans those doses until the athlete answers (heldByRunGap).
+  const facts=factual?.ctx??ctx,gap=clinical?null:runGapInForce(facts),decision=gap?heldByRunGap(facts,gap,decided):decided;
   // Load questions follow the decision's own gates, so they never contradict the adoption the transition made (SSCTR D44).
   out.loadQuestions=loggedLoadQuestions(program,sk,w,ev,{gates:decision.gates??null,confirmations:confirmationsOf(ctx),base:ctx.base});
   if(decision.proposal){
@@ -471,8 +529,8 @@ function weeklyReview(ctx,{extraReason=null,systemicSignal=false}={}){
  // An unconfirmed establishment load lives only in the state: a new or changed pending value needs a proposal to reach the next review (SSCTR D45).
  const pending=Object.keys(logs).filter(id=>Number.isFinite(nextState.strengthState.exercises[id]?.pendingLoad)),pendingMoved=pending.some(id=>nextState.strengthState.exercises[id].pendingLoad!==program.stateTrace[w+1]?.strength?.exercises?.[id]?.pendingLoad);
  const keepOk=(allAdvance||!!rebased)&&!changed&&!pendingMoved,knownChanged=allAdvance&&changed>0&&knownLoadsChanged(program,projected,w+1);
- // R7-C G01 (C15): a week executed as planned whose next runs differ from the plan is a re-base, never an instantiation: the plan had assumed
- // earlier weeks executed that have no executed evidence (they earn nothing), and keeping its label would report that credit as standing.
+ // R7-C G01 (C15): a week executed as planned whose next runs differ from the plan is a re-base, never an instantiation: keeping the label
+ // would report the plan's earlier projection as standing. Its reason names only the facts that hold (rebaseReason, R7-C P3-03).
  const runRebased=allAdvance&&!rebased&&changed>0&&runsChanged(program,projected,w+1);
  const keep=counter('KEEP','KEEP',keepOk,keepOk?'Every gated session executed without adverse signal: the planned next step stands':allAdvance?'Logged loads differ from the planned loads or placeholders; keeping them would ignore executed evidence':'Planned next step would advance work that was not executed or tolerated as planned',{h3Loss:0,changeCount:0,order:0});
  const gated=counter('GATED_NEXT_STEP',allAdvance?(knownChanged?'ADOPT_LOGGED_LOADS':Object.keys(logs).length?'INSTANTIATE_LOGGED_LOADS':'KEEP'):'HOLD_OR_REGRESS_NEXT_STEP',true,'Smallest valid change: repeat or step back only the affected session types; everything else proceeds',{changeCount:changed,order:1,gates});
@@ -484,7 +542,7 @@ function weeklyReview(ctx,{extraReason=null,systemicSignal=false}={}){
  const horizons=horizonSummary(sk,program,proposal,{w,changed});
  gated.selected=true;
  const wait=pending.length?`first logged loads wait for confirmation before they become numbers (${pending.join(', ')})`:null,instantiated=Object.keys(logs).some(id=>Number.isFinite(logs[id].load)&&!pending.includes(id));
- const why=extraReason??(runRebased?'Executed as planned this week; next week’s runs start from what has been executed, which differs from what the plan had assumed for weeks with no executed evidence (they earn nothing), so the plan is re-based, not kept':action==='ADOPT_LOGGED_LOADS'?'Executed loads differ from the planned known loads; the plan continues from what was lifted, one step at a time':action==='INSTANTIATE_LOGGED_LOADS'?(instantiated||!wait?'Logged loads replace planned placeholders; the progression rule is unchanged':'The progression rule is unchanged'):'Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation');
+ const why=extraReason??(runRebased?rebaseReason(ctx,projected):action==='ADOPT_LOGGED_LOADS'?'Executed loads differ from the planned known loads; the plan continues from what was lifted, one step at a time':action==='INSTANTIATE_LOGGED_LOADS'?(instantiated||!wait?'Logged loads replace planned placeholders; the progression rule is unchanged':'The progression rule is unchanged'):'Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation');
  const said=[why,wait,learned?.reason].filter(Boolean).join('; ');
  return {action,offers:boundary.offers,disclosures:boundary.disclosures,instantiationOnly:allAdvance&&!knownChanged&&!runRebased,reason:said,proposal,gates,horizons,counterfactuals:[{...keep,whyLost:keep.admissible?null:keep.reason},gated,replan],...(learned?{learnedPatterns:[learned.pattern]}:{})};
 }

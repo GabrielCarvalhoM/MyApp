@@ -195,11 +195,6 @@ function unknownRunWindow(ctx,next,fromWeek,{first,completedRuns,start,sports,de
  if(!startDate||!sports.includes('RUN')||first.state.run.mode!=='EASY')return null;
  const inWindow=d=>dayGap(d,startDate)>0&&dayGap(d,startDate)<=C.windowDays;
  if(completedRuns.some(h=>inWindow(h.date)))return null;
- // Whether the entry trims anything: the same week planned with no ceiling binding (a reference beyond any run) against the week as planned.
- const free=weekAsPlanned(ctx,next,fromWeek,{start,sports,completedRuns:[...completedRuns,{date:onDate(startDate,-1),minutes:Infinity}]});
- const minutes=wk=>new Map(wk.sessions.filter(s=>s.sport==='RUN'&&s.prescription).map(s=>[s.id,runMinutesOf(s)]));
- const capped=minutes(first.week),uncapped=minutes(free.week);
- if(![...capped].some(([id,m])=>m<(uncapped.get(id)??m)))return null;
  // Declared interruptions in force (each episode's latest report; a superseded report's days are not the athlete's statement any more), with their
  // days read as the return engine reads them: a report recorded without dates ended the day before it and lasted its stated days (breakOf).
  const tz=next.timezoneOffsetMinutes??0,reports=next.decisions.filter(d=>d.action==='REESTABLISH'),gone=new Set(reports.map(d=>d.interruption?.supersedes).filter(Boolean));
@@ -208,11 +203,52 @@ function unknownRunWindow(ctx,next,fromWeek,{first,completedRuns,start,sports,de
  const record=ctx.fullLedger??ctx.ledger??[],reported=new Set(record.map(o=>o.sessionId)),ahead=aheadOf(ctx);
  const unknown=ctx.program.weeks.flatMap(x=>x.sessions).filter(s=>s.sport==='RUN'&&s.prescription&&s.status!=='SKIPPED'&&inWindow(s.date)&&!ahead(s)&&!reported.has(s.id)&&!pauses.some(p=>s.date>=p.start&&s.date<=p.end)).sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0);
  if(!unknown.length)return null;
+ // Whether the dose depends on them. (1) The entry trims a run: the same week planned with no ceiling binding (a reference beyond any run)
+ // against the week as planned. (2) R7-C P3-01: taper and race-window runs are derived from the executed peaks (`achieved`), not from the
+ // ceiling, so with the window unreported an empty peak plans them as never run (the minimum easy run, no long run, quality or touch) and the
+ // entry trims nothing; the same week planned with the window's unreported sessions counted as run as prescribed shows whether they decide it.
+ // A run whose prescription the peaks do not change (the days after the race, say) does not depend on them and is not asked about.
+ const free=weekAsPlanned(ctx,next,fromWeek,{start,sports,completedRuns:[...completedRuns,{date:onDate(startDate,-1),minutes:Infinity}]});
+ const minutes=wk=>new Map(wk.sessions.filter(s=>s.sport==='RUN'&&s.prescription).map(s=>[s.id,runMinutesOf(s)]));
+ const capped=minutes(first.week),uncapped=minutes(free.week);
+ if(![...capped].some(([id,m])=>m<(uncapped.get(id)??m))&&!peaksDecide(ctx,next,fromWeek,{free,start,sports,completedRuns,unknown,startDate}))return null;
  const ran=record.filter(o=>!o.conflicted&&o.context?.sport==='RUN'&&(o.actual?.completed===true||Number(o.actual?.minutes)>0)).sort((a,b)=>a.localDate<b.localDate?-1:a.localDate>b.localDate?1:0).at(-1);
  const from=unknown[0].date,through=unknown.at(-1).date,n=unknown.length;
  return {ask:`No run is recorded in the ${C.windowDays} days before ${startDate}, the reference for the runs planned from then, and ${n} planned run session${n>1?'s':''} from ${from} to ${through} ha${n>1?'ve':'s'} no report: say what was done (report the sessions) or that training stopped (the break and its reason) before runs are planned; training that is only unreported counts neither as done nor as not done`,
   missingInputs:['observations.unreportedSessions|interruption'],
   question:{kind:'UNREPORTED_TRAINING',dependentScope:'RUN_DOSE',fromWeek,referenceWindow:{from:onDate(startDate,-C.windowDays),through:onDate(startDate,-1)},unreported:{from,through,sessionIds:unknown.map(s=>s.id)},lastRecordedRun:ran?{date:ran.localDate,sessionId:ran.sessionId}:null}};
+}
+/**
+ * R7-C P3-01: whether the week's runs derived from the executed peaks depend on the window's unreported run sessions. The peaks are counted as the
+ * evidence reducer counts an executed week (advanceRun): a long run its minutes, an easy run its minutes and strides, a quality session (never
+ * the familiar bouts) its work, the latest one standing. Both readings plan the week with no ceiling binding (`free`: run sessions would also
+ * have set the ceiling), so the comparison isolates the peaks. Only the event-week rules read the peaks, so any other week is unchanged by them.
+ */
+function peaksDecide(ctx,next,fromWeek,{free,start,sports,completedRuns,unknown,startDate}){
+ const st0=fromWeek===ctx.w&&ctx.base?ctx.base:next.stateTrace[fromWeek],s0=start??{runState:st0.run,strengthState:st0.strength};
+ const peaks=clone(s0.runState.achieved??{long:null,easy:null,quality:null,strides:0});
+ for(const s of unknown){
+  const p=s.prescription;
+  if(s.role==='LONG')peaks.long=Math.max(peaks.long??0,p.durationMinutes);
+  else if(s.role==='EASY'){peaks.easy=Math.max(peaks.easy??0,p.durationMinutes);peaks.strides=Math.max(peaks.strides??0,p.strides?.repetitions??0);}
+  else if(s.role==='QUALITY'&&p.work&&p.family!=='FAMILIAR_REPEATED_BOUTS')peaks.quality={family:p.family,work:clone(p.work)};
+ }
+ const run=wk=>new Map(wk.sessions.filter(s=>s.sport==='RUN'&&s.prescription).map(s=>[s.id,hash(s.prescription)]));
+ const counted=weekAsPlanned(ctx,next,fromWeek,{start:{...s0,runState:{...s0.runState,achieved:peaks}},sports,completedRuns:[...completedRuns,{date:onDate(startDate,-1),minutes:Infinity}]});
+ const was=run(free.week);
+ return [...run(counted.week)].some(([id,h])=>was.has(id)&&was.get(id)!==h);
+}
+/**
+ * R7-C P3-02: the unreported training in force at a decision, read on the canonical factual state before any handler decides. The decision's own
+ * week, planned from its PlanningView with its run sessions still ahead: when unknownRunWindow asks for them, no run dose still ahead can be kept
+ * or planned from the facts. The stored doses were planned on execution assumed for sessions that have no report (a projection: credit), and the
+ * facts alone read that window as zero. The question is the one the weekly review asks for this week. Null when this week has no run session
+ * still ahead, when the facts decide its doses, or when nothing is unreported.
+ */
+export function runGapInForce(ctx){
+ const {program,w}=ctx;if(!program.weeks[w])return null;
+ const first=weekAsPlanned(ctx,program,w);
+ return unknownRunWindow(ctx,program,w,{first,completedRuns:ctx.completedRuns??[],start:null,sports:SPORTS});
 }
 /**
  * The conditional start of the week after w (planning, not prediction): the week as planned, assumed executed as prescribed, except the sessions
