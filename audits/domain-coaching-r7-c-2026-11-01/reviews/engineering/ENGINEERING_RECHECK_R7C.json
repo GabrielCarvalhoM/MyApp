@@ -1,0 +1,192 @@
+{
+ "review": "R7C-ENGINEERING-RECHECK-1",
+ "mission": "DOMAIN_COACHING_R7-C Phase 5 (narrow recheck after the single correction cycle)",
+ "date": "2026-11-02",
+ "judge": {
+  "role": "quality-reliability-engineer",
+  "constitutionVersion": "1.3.0",
+  "model": "claude-opus-5-5",
+  "effort": "xhigh",
+  "independence": "Fresh instance. Did not author the runtime, the correction cycle, its tests, its evidence, the R7C-FREEZE-1 review or its probes. Did not read the SSCTR recheck work in progress (an untracked reviews/ssctr/probes/cc/ appeared in the worktree during this recheck; it was not opened). The session scratchpad turned out to be shared with the authoring session and holds its working files, including a draft template for this recheck; none of them was read.",
+  "request": "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/RECHECK_REQUEST.md"
+ },
+ "freeze": {
+  "revision": "R7C-FREEZE-2",
+  "record": "CoachingCore/r7/c/RUNTIME_FREEZE_R7C_2.json",
+  "recordSha256": "457582a2094c3d1ed89067ee56caadcd8def58e94f6e68750e010624337bfa8d",
+  "commit": "a10cec04071be97e409f11a4f831f13eae0c9769",
+  "sourceDigest": "9e424f702dbc2861f00d7ee0f2993172e74702afeb46767b7065eec6eaa63f35",
+  "manifestDigest": "02c50ef3a98cf5770551934b116acb47aa3240fefc0a640d0639f2db5597efb9",
+  "files": 150,
+  "tests": 854,
+  "predecessor": {"revision": "R7C-FREEZE-1", "commit": "1890f66356455112907d757032a8b1cd2de29c00"},
+  "base": {"revision": "R7B2-FREEZE-1", "commit": "1a1c7286adc8b08d16f97dea86f4973fe33e5a95"},
+  "evidenceHead": "963239b1d5ce0ed5f466a7b23819cd8151cb3c7d (git diff 963239b a10cec0 -- CoachingCore/src CoachingCore/test CoachingCore/r6 CoachingCore/r7/b/fixtures is empty)",
+  "worktreeHead": {"atStart": "b31d0362a78828cf360775d5fa3f3e6f2872ea16", "atEnd": "b31d0362a78828cf360775d5fa3f3e6f2872ea16"},
+  "verifierBefore": {
+   "command": "node CoachingCore/scripts/verify-r7c.mjs --revision 2 --suite",
+   "ran": "2026-11-02T06:34:58.762Z",
+   "result": "PASS",
+   "checks": "16/16",
+   "suite": {"tests": 854, "pass": 854, "fail": 0},
+   "output": "reviews/engineering/probes/recheck/out/verify-before.json"
+  },
+  "verifierAfter": {
+   "command": "node CoachingCore/scripts/verify-r7c.mjs --revision 2 --suite",
+   "ran": "2026-11-02T07:09:07.931Z",
+   "result": "PASS",
+   "checks": "16/16",
+   "suite": {"tests": 854, "pass": 854, "fail": 0},
+   "output": "reviews/engineering/probes/recheck/out/verify-after.json"
+  }
+ },
+ "verdict": "NOT_READY",
+ "gateLine": "R7C_ENGINEERING_GATE = NOT_READY",
+ "closesR7C": "CLOSED_NOT_READY (no second correction cycle; QE-R7C-07 is a blocker and DIRECT_R7C_DELTA)",
+ "verdictBasis": "QE-R7C-02, -03 and -04 are closed on FREEZE-2 and QE-R7C-06 is closed. QE-R7C-01 is closed only for the cases it reproduced: answers that report a known stop (every gap run not done). The defect class it named is still open. An answer to UNREPORTED_TRAINING that a refusal (R4 HOLD) or a handler clinical route records without applying is never applied afterwards when it reports mixed, adverse or executed training: the stale projection stays VALID, including a race touch in race week, quality in the taper, and a long run the adverse evidence would shorten. The ceiling re-plan, the cycle's fix, acts only when a stored dose exceeds the facts' single-run ceiling, and executed gap runs lift that ceiling above the stale doses. R7B2-FREEZE-1 is recorder-independent on the same 160 cells; FREEZE-2 is not on 72 of them (FREEZE-1: 104). No regression was found elsewhere: the suite, every committed probe rerun byte-identically, the differential against FREEZE-1 and two new grids.",
+ "items": [
+  {
+   "item": "1. QE-R7C-01..04 closed on FREEZE-2",
+   "answer": "QE-R7C-01 PARTIAL (open as QE-R7C-07); QE-R7C-02 CLOSED; QE-R7C-03 CLOSED; QE-R7C-04 CLOSED",
+   "evidence": [
+    "QE-R7C-01 (qe-e1 rerun, out/qe-e1.json): 0 stale VALID cells after a recorded known-stop answer (16 on FREEZE-1). R4 race week: the next plain review, with or without the re-send, re-plans to EASY 15 + RACE 75, as on time. Clinical substitution and clinical return, after clearance: EASY 15 / LONG 15. The sticky clinical reference stays CLINICAL_HUMAN_REQUIRED with nothing validated.",
+    "QE-R7C-01 beyond MISS (rc-p4-recorder-independence.mjs, out/rc-p4.json): with V in {MISS, EXEC, MIXED, ADVERSE, PARTIAL}, carriers R4 and clinical substitution, GEN week 7, R10K taper and race week, g 0/2, RV/NR, plain review day 3 with and without the re-send. Recorder-dependent cells: R7B2-FREEZE-1 0/160 (out/rc-p4.on-R7B2-FREEZE-1.json); FREEZE-1 104/160; FREEZE-2 72/160 (MISS 0, EXEC 8, MIXED 32, ADVERSE 32, PARTIAL 0). Deterministic over two runs (sha256 ab360f24...c5507 both times). See QE-R7C-07.",
+    "QE-R7C-02 (qe-e3b rerun, out/qe-e3b.json): 0 stale cells (12 on FREEZE-1). With the answer week's review skipped, every first decision of week 8 keeps EASY 20 / 20 / LONG 20 VALID: the facts' ceiling (20) and the on-time plan. qe-e3 (out/qe-e3.json): week b+1 equals on time in 8/8 cases (GEN 4, R10K taper to race week 4), against 2/8 on FREEZE-1.",
+    "QE-R7C-03 (qe-e2 rerun, out/qe-e2.json): case (a), MISS and EXEC. The held SYSTEMIC_FATIGUE survives the kept UNAVAILABLE_DAY change (pending.signal SYSTEMIC_FATIGUE) and is re-evaluated with the answer ('re-evaluated with the answer'). The plan from day 2 equals the on-time plan (EXEC: EASY 34 / LONG 60, was QUALITY 34 / LONG 60).",
+    "QE-R7C-04 (qe-e2b rerun, out/qe-e2b.json): a fatigue held at the end of week 7 is not replayed in week 8 (replayedAcrossWeek false). Directed test r7c-phase5-cc 'QE-R7C-04'; CC-M4 (= QM-2) killed in the committed record and in this recheck's independent rerun.",
+    "Directed tests (test/r7c-phase5-cc.test.mjs, 6 tests), judged by reading. They pin the reproduced classes and the trigger's scope. The QE-R7C-01 tests use V = MISS only, so neither they nor CC-M1 can tell a fix for known stops from a fix for the class (QE-R7C-07). The skipped-review part of the QE-R7C-02 test 'continue's on a cell that is not VALID, so it could pass vacuously; qe-e3b shows all 12 cells VALID, so today it does not."
+   ]
+  },
+  {
+   "item": "2. No regression from the cycle",
+   "answer": "PASS (no regression found against R7C-FREEZE-1 outside the intended reach)",
+   "evidence": [
+    "Suite: 854/854 in both verifier runs (before and after).",
+    "Committed stdout probes rerun on FREEZE-2 bytes, byte-identical to the committed evidence R7C-P5-963239b (same SHA-256): phase5-adversarial-sd (SD grid A 1,200 cells, 0 violations; C/S/I 0), phase4-adversarial-g01 (grid A 148 76/40/32, grid B 46/46, P1 165/0), phase3-adversarial-g02 (G02), phase4-verify-sd01. phase5-cc-differential rerun: identical apart from the head field (99 scenarios, 97 identical, 2 differing, both never-reported). Outputs: out/rerun-*.json.",
+    "G01 grid rows (committed outputs, f69ddbb vs 963239b): exactly 6 grid-A rows differ, all late schedule changes (MISS column; UNREP identically in 3 short-gap rows). Verdict counts identical. Grid B identical.",
+    "qe-e4 rerun (out/qe-e4.json): 81 checks, identical to FREEZE-1 check by check, the same 2 batch checks failing (QE-R7C-05).",
+    "rc-p1-return-next-week.mjs (out/rc-p1.json): the week after a return's re-entry week with the re-entry week unreported, 3 classes x 5 break lengths x 4 demonstrations = 60 cases: FREEZE-1 = FREEZE-2 in all 60 (the ceiling re-plan never acts there).",
+    "rc-p2-reach-grid.mjs (out/rc-p2.json): 8 timelines x 4 classes, 540 decisions (never reported, empty reviews, known misses, one miss a week, one unreported run a week, skipped reviews with and without unreported runs, the on-time control). Only 'NEVER GEN' differs (2 decisions, week 3), and there FREEZE-2 equals the on-time path with empty reviews, runs and strength alike (rc-p3).",
+    "Census on an isolated instrumented copy (rc-instrument.mjs; the patch only logs, and the instrumented G01 and SD grid outputs are identical to the committed ones). Full suite run file by file (854/854). The first pass failed 13 tests in r6-r5-regression and r6-ssctr-r7-fixes because the copy lacked the r3-r6 SSCTR records the runtime reads; with them added from the same commit, both files pass (census-suite-results.txt). The ceiling re-plan acts in 30 decisions in 6 test files (r7c-phase5-cc 17, r7a-cycle2 5, r7asc-state-consumer 3, r7asm-state-model 2, r7ada-decision-authority 1, r6-adaptation 1); all of them are skipped-review or never-reported fixtures. G01 grid: 9 schedule-change decisions (the 6 changed rows). SD grid: none. Outputs: out/census-suite.jsonl, out/census-grids.jsonl."
+   ]
+  },
+  {
+   "item": "3. The ceiling re-plan and the G01 guard: correct and minimal; facts not kept, a question about unknown training, history",
+   "answer": "PARTIAL. The guard is correct, and no path was found where the re-plan acts on facts the record does not keep, travels with an UNREPORTED_TRAINING question or rewrites history. The re-plan is not a sufficient fix for the class it was introduced for (QE-R7C-07).",
+   "evidence": [
+    "G01 guard: in the suite census it fires once (the directed test) and 3 times in the G01 grid (the P1 schedule changes). Every re-decision is ASK UNREPORTED_TRAINING, REQUIRES_RECONCILIATION, with no proposal. The NO_CEILING key is a module-private Symbol, so no caller can set it. The ceiling re-plan's own composition cannot raise UNREPORTED_TRAINING for its own week: overCeiling requires !runGapInForce(ctx), and composeWeeks runs the same unknownRunWindow for fromWeek = w with the same completed runs.",
+    "Facts the record does not keep: the return-entry week is excluded (RETURN_ENTRY), return and restart weeks are excluded by mode, and a return report is excluded. The week after a re-entry week (rc-p1, 60 cases) is unchanged from FREEZE-1. In RETURN mode the stored step stays VALID over an unreported re-entry week on both freezes; that is the pre-existing G01 scope (easy running only), not the delta.",
+    "History: every proposal goes through immutabilityErrors and validateWeeks in evaluateProgram, and fails closed to UNSUPPORTED. The directed tests assert past() unchanged; SD grid H1 has 0 violations. No probe here changed a past prescription.",
+    "Not minimal in effect, and not sufficient: the trigger reads only minutes above the ceiling. (a) Answers with executed gap runs leave the stale projection in force (QE-R7C-07). (b) In the never-reported class with the intake run still in the window, credited doses within the ceiling stay VALID, including a quality session at week 4 (QE-R7C-08, pre-existing). (c) The re-plan re-composes every sport, not only the run doses the handoff names; in the never-reported fixture the strength rows go from FROM_LOG 3x5 to ESTABLISH 2x5, exactly as on the on-time path (rc-p3).",
+    "Provenance: after an uncredited re-plan, the week b+1 start records a RUN premise that names the uncredited session as assumed executed (QE-R7C-09, observation)."
+   ]
+  },
+  {
+   "item": "4. The r7a-cycle2 classification (test/r7a-cycle2.test.mjs:111)",
+   "answer": "ACCEPT as EXPECTED_SEMANTIC_UPDATE, subject to the SSCTR accepting the ceiling re-plan semantics (as the test comment states)",
+   "evidence": [
+    "rc-p3 (out/rc-p3.json), on the test's own intake and clock. For all four unusable-date variants on FREEZE-2: status ASK, planValidity REQUIRES_RECONCILIATION. The proposal is identical, session by session from week 2, to the ceiling re-plan of a plain review at the same clock, so nothing of the refused equipment change reaches any week. The reference state names the proposal. On FREEZE-1 the same reviews give ASK with no proposal, and the plain review KEEPs EASY 40 / QUALITY 34 / LONG 60.",
+    "A factual re-plan travelling with a question that is not about unknown training is the pre-existing withFactualReplan rule: a question or a refusal is still asked, with the re-plan proposed. The original reading (no proposal at all) is kept where nothing is credited (weeks 0-1 reported as prescribed), so INV-11 ('asked, never applied') is still pinned. The new assertion checks only week 3's barbell rows; rc-p3's whole-plan equality covers the rest."
+   ]
+  },
+  {
+   "item": "5. Mutation",
+   "answer": "PASS as recorded, with a coverage caveat (QE-R7C-07)",
+   "evidence": [
+    "Committed record (probes/out/mutation.R7C-P5-963239b.json, sha256 66b9270a...b7f4, read, not rerun as the rules require): Phase 3 set 17/18 (G02-M4 equivalent, witness 1/1 killed), Phase 4 rules 8/8, SD mutants 6/6, correction-cycle mutants 9/9. The earlier sets equal the FREEZE-1 record (mutation.R7C-P5-f69ddbb.json).",
+    "Independent rerun of CC-M1..M9, with the committed fragments, on an isolated git archive of a10cec0 with the 4 R7-C test files (rc-mutants.mjs, out/rc-mutants.json): baseline 55/55, then 9/9 killed (CC-M1 by 3 tests, each of the others by 1). Bytes restored and checked by SHA-256.",
+    "Caveat: CC-M1 is killed only by known-stop (MISS) cases. A trigger restricted to known stops would pass the same tests, and that is effectively what FREEZE-2 is for the QE-R7C-01 class."
+   ]
+  },
+  {
+   "item": "6. QE-R7C-05 and QE-R7C-06 dispositions",
+   "answer": "QE-R7C-05 ACCEPTED as disclosed (minor, conservative, unchanged); QE-R7C-06 CLOSED",
+   "evidence": [
+    "QE-R7C-05: qe-e4 gives the same 2 batch-independence checks failing, identical detail to FREEZE-1. The handoff discloses it under the residuals, including the schedule-change variant.",
+    "QE-R7C-06: CoachingCore/package.json (9e2c8a8a...0828) and package-lock.json (a6ea7b32...5417) are in the FREEZE-2 file manifest, equal the working tree, and are unchanged since 1a1c728 (git diff empty)."
+   ]
+  }
+ ],
+ "findingsStatus": [
+  {"id": "QE-R7C-01", "was": "BLOCKER", "now": "PARTIALLY_CLOSED", "note": "Closed for known-stop answers (16 -> 0 stale VALID cells). The class (recorder-dependent answers) is still open for executed, mixed and adverse answers: QE-R7C-07."},
+  {"id": "QE-R7C-02", "was": "BLOCKER", "now": "CLOSED"},
+  {"id": "QE-R7C-03", "was": "MAJOR", "now": "CLOSED"},
+  {"id": "QE-R7C-04", "was": "MINOR", "now": "CLOSED"},
+  {"id": "QE-R7C-05", "was": "MINOR", "now": "ACCEPTED_DISCLOSED"},
+  {"id": "QE-R7C-06", "was": "OBSERVATION", "now": "CLOSED"}
+ ],
+ "findings": [
+  {
+   "id": "QE-R7C-07",
+   "severity": "BLOCKER",
+   "title": "QE-R7C-01 is closed only for known-stop answers: an executed, mixed or adverse answer that an R4 HOLD or a handler clinical route records is still never applied, and the stale projection stays VALID",
+   "origin": "Introduced by R7-C. The UNREPORTED_TRAINING question leaves a projection stored while training was unknown. gapAnsweredBy still detects an answer only as a transition between the carried record and the same review's reports, so a decision that records the answer without applying it (the last-week SCHEDULE_CHANGE exception, R4; EXERCISE_SUBSTITUTION with pain; a clinical RETURN_AFTER_PAUSE) leaves nothing for a later review to detect. The cycle's ceiling re-plan (aboveFactsCeiling) catches the stale projection only when a stored dose exceeds the facts' single-run ceiling. That holds after a known stop (no completed run: ceiling = entry 15). Executed gap runs lift the ceiling (70-75 here) above every stale dose.",
+   "directR7CDelta": true,
+   "whyDelta": "R7B2-FREEZE-1 is recorder-independent on the same 160 cells (0 failures, out/rc-p4.on-R7B2-FREEZE-1.json). FREEZE-1 fails 104, FREEZE-2 fails 72 (out/rc-p4.json). The cells that remain are the QE-R7C-01 class with V other than MISS.",
+   "reproduction": {
+    "probe": "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/recheck/rc-p4-recorder-independence.mjs (grid) and rc-p4b-mechanism.mjs (one cell per carrier, with the ceiling)",
+    "command": "QE_ROOTS=\"F1=<git archive 1890f66>;F2=<worktree>\" node .../recheck/rc-p4-recorder-independence.mjs; node .../recheck/rc-p4b-mechanism.mjs (worktree only)",
+    "predecessor": "QE_ROOTS=\"B2=<git archive 1a1c728>\" node .../recheck/rc-p4-recorder-independence.mjs",
+    "output": "out/rc-p4.json (sha256 ab360f248b7dc1fb5a9facfd0cb8b270d47b2298c4cf8df447d42740cb8c5507, identical over 2 runs); out/rc-p4b.json; out/rc-p4.on-R7B2-FREEZE-1.json"
+   },
+   "cases": [
+    {"case": "R10K race week (the last week), g=2 RV, MIXED (gap long runs done, other gap runs not done), answer inside a day-2 SCHEDULE_CHANGE (HOLD, recorded)", "factsCeiling": 75, "next": "plain review day 3, with or without the re-send: KEEP, VALID, RACE_TOUCH 25 + RACE 75", "directAnswer": "EASY 20 + RACE 75"},
+    {"case": "R10K race week, MIXED or ADVERSE, g 0/2, RV/NR, carrier R4 or clinical substitution", "next": "RACE_TOUCH 25 VALID in all 32 cells", "directAnswer": "EASY 15 or EASY 20"},
+    {"case": "R10K taper (week 10), MIXED or ADVERSE, clinical substitution then clearance", "next": "QUALITY 28 / LONG 45 or QUALITY 31 / LONG 45, VALID", "directAnswer": "EASY 15 / LONG 40, EASY 30 / EASY 30, EASY 15 / EASY 15 or EASY 30 / LONG 40"},
+    {"case": "GEN week 7, g=0 RV, ADVERSE (gap long runs done with an adverse response), clinical substitution then clearance", "factsCeiling": 70, "next": "QUALITY 34 / LONG 60, VALID: the adverse evidence is never applied", "directAnswer": "EASY 45 / LONG 35"},
+    {"case": "EXEC (all gap runs done), clinical substitution then clearance, GEN week 7 and R10K taper", "next": "6 cells with the same run minutes this week but a different prescription from day 3 on (in GEN g=0 RV, week 8's first easy run: same 50 minutes, different prescription); 2 cells (GEN g=2 RV) keep QUALITY 34 where the direct answer plans QUALITY 43 (more conservative)", "directAnswer": "varies"}
+   ],
+   "counts": {"cells": 160, "recorderDependentFREEZE2": 72, "byV": {"MISS": 0, "EXEC": 8, "MIXED": 32, "ADVERSE": 32, "PARTIAL": 0}, "moreRunMinutesThanDirect": 62, "raceTouchTheDirectAnswerDoesNotPlan": 32, "qualityTheDirectAnswerDoesNotPlan": 24, "FREEZE1": 104, "R7B2_FREEZE_1": 0},
+   "expected": "The predecessor's QE-R7C-01 expectation, unchanged: once the canonical facts make the window known, the run doses still ahead follow those facts, whichever decision carried the reports (projection vs fact; deterministic answer processing; no stale dose in race week; evidence preservation). SSCTR-SD-R7C-r2's own grid properties, as the SD grid applies them to direct answers: M2 (mixed evidence never leaves a run longer than the on-time plan's) and E1 (adverse responses change the plan and never lengthen the long run).",
+   "actual": "The next decision KEEPs the projection stored while the training was unknown, VALID, re-sent or not. This is a race touch in race week, quality in the taper, and LONG 60 where the adverse long runs give LONG 35.",
+   "consumerShield": "None. The plan is VALID, so C2 (REQUIRES_RECONCILIATION) does not apply. C3's re-send after clearance changes nothing, because the reports are already in the carried record (dedupe).",
+   "disclosureImpact": "The FREEZE-2 handoff says, under R4, 'Since the correction cycle, the next decision applies it (the ceiling re-plan)', and under R5, 'After a handler clinical route, which records the answer, the next decision after qualified clearance applies it, with or without the re-send'. Both are false for executed, mixed and adverse answers. The SD grid still classifies its 24 R4 HOLD cells and never looks at the decision after them.",
+   "smallestFix": "As the predecessor proposed for QE-R7C-01: make the answered re-plan state-based, not transition-based, and not ceiling-based. Re-plan from the facts (factualReplan with uncredited) whenever the run doses still ahead were stored while the window was unknown and the canonical facts now make it known, whichever decision recorded the reports. One way: the reference state (or the program) records that an UNREPORTED_TRAINING question stood when the week's run doses were stored, so a later decision whose facts close that window re-plans. Another: compare against the record as the decision that composed the week saw it (a received-at reference). Keep the ceiling re-plan for the never-reported class if the SSCTR accepts it. Add directed tests for R4 and for the clinical carriers x V in {MISS, EXEC, MIXED, ADVERSE} x with and without the re-send; rc-p4 is a ready grid. Policy, catalog and the clinical routes are untouched.",
+   "routing": "No second correction cycle is permitted: R7-C closes CLOSED_NOT_READY. The fix belongs to the next runtime mission. No product, policy, catalog or clinical decision is needed to judge it."
+  },
+  {
+   "id": "QE-R7C-08",
+   "severity": "MINOR",
+   "title": "The never-reported class is re-planned only where a dose exceeds the minute ceiling; credited doses within it, including a quality session, stay VALID",
+   "origin": "Pre-existing (R7B2-FREEZE-1 and R7C-FREEZE-1 behave identically on these decisions). The cycle's ceiling re-plan reaches part of the class, and the recheck request presents the class as handled ('They are now re-planned from the facts').",
+   "directR7CDelta": false,
+   "reproduction": {
+    "probe": "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/recheck/rc-p2-reach-grid.mjs, timelines NEVER and EMPTY_REVIEWS, class GEN (intake longest run 50)",
+    "output": "out/rc-p2.json; out/rc-p2.vs-R7B2-FREEZE-1.json"
+   },
+   "actual": "With nothing ever reported and the intake run still in the window: week 3 is re-planned (EASY 35/35/LONG 50, equal to the on-time path with empty reviews, strength included). Week 2 keeps EASY 35/35/LONG 55 (on time: LONG 50). Week 4 keeps EASY 40 / QUALITY 34 / LONG 55 VALID, where the on-time path with empty reviews plans EASY 35 / EASY 35 / LONG 40. From week 5 the question is asked.",
+   "smallestFix": "Disclose it with the ceiling re-plan: the never-reported class is re-planned only where a stored dose exceeds the minute ceiling; within the ceiling, credited progression and a quality session stay while the intake run anchors the window. Or route to the SSCTR whether the trigger should also read the PlanningView's run mode (a stored quality session above an EASY PlanningView). That is a policy question, not an engineering one.",
+   "routing": "SSCTR recheck of the cycle / C7 disclosure. Non-blocking."
+  },
+  {
+   "id": "QE-R7C-09",
+   "severity": "OBSERVATION",
+   "title": "After a re-plan with uncredited sessions, week b+1's CONDITIONAL_PLAN start records a RUN premise that names the uncredited sessions as assumed executed",
+   "origin": "Correction cycle (composeWeeks: the transition uses `credited`, but nextAuthority is projectedStart(first.week)).",
+   "directR7CDelta": true,
+   "reproduction": {"probe": "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/recheck/rc-p5-uncredited-premise.mjs", "output": "out/rc-p5.json"},
+   "actual": "GEN week 7, known stop answered on day 2. w7-run-d1 is uncredited, yet the recorded RUN premise (01329b2b...8e86) equals premiseOf(week 7 as planned), not premiseOf(week 7 without w7-run-d1) (3d10d363...ade). premiseOf is documented as 'the rows ... a projection of the next week's start assumed executed'. No decision reads the premise (only the historical reader documents it), so prescriptions are unaffected.",
+   "smallestFix": "Record nextAuthority with projectedStart(credited.week, by) when uncredited is non-empty, and pin it in a test."
+  }
+ ],
+ "probesRun": [
+  {"probe": "CoachingCore/scripts/verify-r7c.mjs --revision 2 --suite", "when": "before and after", "outputs": ["probes/recheck/out/verify-before.json", "probes/recheck/out/verify-after.json"]},
+  {"probe": "reviews/engineering/probes/qe-e1..qe-e4 (bound in FREEZE-2; stdout only)", "runtime": "worktree (FREEZE-2 bytes)", "outputs": ["probes/recheck/out/qe-e1.json", "qe-e2.json", "qe-e2b.json", "qe-e3.json", "qe-e3b.json", "qe-e4.json"]},
+  {"probe": "probes/phase5-adversarial-sd.mjs, phase4-adversarial-g01.mjs, phase3-adversarial-g02.mjs, phase4-verify-sd01.mjs (stdout only)", "result": "byte-identical to the committed R7C-P5-963239b outputs", "outputs": ["probes/recheck/out/rerun-*.json"]},
+  {"probe": "probes/phase5-cc-differential.mjs (stdout; git archive into the OS temp directory, removed by the probe)", "result": "identical apart from the head field", "output": "probes/recheck/out/rerun-cc-differential.json"},
+  {"probe": "probes/recheck/rc-instrument.mjs + full suite per file + G01/SD grids on an isolated instrumented copy", "outputs": ["probes/recheck/out/census-suite.jsonl", "census-suite-results.txt", "census-grids.jsonl"]},
+  {"probe": "probes/recheck/rc-p1-return-next-week.mjs (F1 vs F2)", "output": "probes/recheck/out/rc-p1.json"},
+  {"probe": "probes/recheck/rc-p2-reach-grid.mjs (F1 vs F2; R7B2-FREEZE-1 vs F2)", "outputs": ["probes/recheck/out/rc-p2.json", "rc-p2.vs-R7B2-FREEZE-1.json"]},
+  {"probe": "probes/recheck/rc-p3-r7a-cycle2-and-strength.mjs (F1, F2)", "output": "probes/recheck/out/rc-p3.json"},
+  {"probe": "probes/recheck/rc-p4-recorder-independence.mjs (F1, F2; R7B2-FREEZE-1)", "outputs": ["probes/recheck/out/rc-p4.json", "rc-p4.on-R7B2-FREEZE-1.json"]},
+  {"probe": "probes/recheck/rc-p4b-mechanism.mjs (F2)", "output": "probes/recheck/out/rc-p4b.json"},
+  {"probe": "probes/recheck/rc-p5-uncredited-premise.mjs (F1, F2)", "output": "probes/recheck/out/rc-p5.json"},
+  {"probe": "probes/recheck/rc-mutants.mjs (CC-M1..M9 on an isolated copy)", "output": "probes/recheck/out/rc-mutants.json"}
+ ],
+ "notRun": ["probes/phase5-run-evidence.mjs and probes/phase5-mutation.mjs (rules)", "npm run verify, any other verify-r* script, anything with --write (rules)", "b2-copy clinical probes, conformance, neighbours, holdout, the R7B2 differential (outputs not re-derived; unchanged by the delta's reach as the census shows, not independently rerun)"],
+ "caveats": [
+  "The runtime has no clinical-clearance API. Clinical carriers are followed by 'clearance' modelled as the predecessor did: the client continues with the carried record and no clinical reference state. The R4 cells need no such assumption, and they fail the same way.",
+  "Predecessor and mutant bytes come from git archive into the session scratchpad (qe-recheck-judge/{f1,b2,f2,f2g,f2m}), with node_modules copied, not reinstalled, and the audit records the runtime reads (r3/r4/r5/r6 SSCTR records) extracted from the same commits. Before using that folder I extracted 1a1c728 and a10cec0 over two pre-existing scratchpad folders (b2/, f2/) that belong to the authoring session's scratch, and copied node_modules into them. Tracked bytes there now equal those commits. Nothing in the repository was touched.",
+  "The repository was written only under reviews/engineering/: these two deliverables and probes/recheck/ (scripts and out/). No commits and no git state change. HEAD stayed b31d036. An untracked reviews/ssctr/probes/cc/ written by another session was left untouched."
+ ]
+}

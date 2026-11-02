@@ -1,0 +1,317 @@
+{
+ "probe": "QE-E2 held signal lifecycle",
+ "cases": [
+  {
+   "case": "(a) held fatigue, then a kept strength change, then the answer (MISS)",
+   "onTime": [
+    {
+     "status": "MODIFY",
+     "action": "REDUCE",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "question": null,
+     "pending": null,
+     "reason": "Remove the remaining hard suffix; keep easy participation"
+    },
+    {
+     "status": "MODIFY",
+     "action": "RESCHEDULE_WITHIN_WEEK",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "question": null,
+     "pending": null,
+     "reason": "Sessions on the unavailable date are moved within chosen days when that adds no interference, otherwise skipped without debt"
+    }
+   ],
+   "B": [
+    {
+     "status": "ASK",
+     "action": "ASK",
+     "validity": "REQUIRES_RECONCILIATION",
+     "question": "UNREPORTED_TRAINING",
+     "pending": {
+      "status": "ASK",
+      "eventKind": "SYSTEMIC_FATIGUE",
+      "signal": "SYSTEMIC_FATIGUE"
+     },
+     "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 13 planned run sessions from 2026-11-22 to 2026-12-20 have no report: say what was done (report the sessions) or that training stopped (t",
+     "signal": {
+      "kind": "SYSTEMIC_FATIGUE",
+      "weekIndex": 7
+     }
+    },
+    {
+     "status": "MODIFY",
+     "action": "RESCHEDULE_WITHIN_WEEK",
+     "validity": "REQUIRES_RECONCILIATION",
+     "question": "UNREPORTED_TRAINING",
+     "pending": {
+      "status": "ASK",
+      "eventKind": "UNAVAILABLE_DAY",
+      "signal": "SYSTEMIC_FATIGUE"
+     },
+     "reason": "Sessions on the unavailable date are moved within chosen days when that adds no interference, otherwise skipped without debt; the run sessions ahead stay as they were and wait for an answer: No run is recorded in the 30 days before 2026-12-",
+     "signal": {
+      "kind": "SYSTEMIC_FATIGUE",
+      "weekIndex": 7
+     }
+    },
+    {
+     "status": "MODIFY",
+     "action": "REDUCE",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "question": null,
+     "pending": null,
+     "reason": "The systemic fatigue reported on 2026-12-21 with the question is re-evaluated with the answer: Remove the remaining hard suffix; keep easy participation; the reports of the run sessions that had no report answer the question about unreporte",
+     "signal": null
+    }
+   ],
+   "fatigueReEvaluatedWithAnswer": true,
+   "samePlanAsOnTimeFromDay2": true,
+   "onTimeRunsFromDay2": [
+    "EASY:15",
+    "LONG:15"
+   ],
+   "BRunsFromDay2": [
+    "EASY:15",
+    "LONG:15"
+   ]
+  },
+  {
+   "case": "(b) local fatigue held, then systemic fatigue held (MISS)",
+   "B": [
+    {
+     "status": "MODIFY",
+     "action": "REDUCE",
+     "validity": "REQUIRES_RECONCILIATION",
+     "question": "UNREPORTED_TRAINING",
+     "pending": {
+      "status": "ASK",
+      "eventKind": "LOCAL_FATIGUE",
+      "signal": null
+     },
+     "reason": "Remove only optional local work for the affected region; essentials stay; the run sessions ahead stay as they were and wait for an answer: No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, an",
+     "signal": null
+    },
+    {
+     "status": "ASK",
+     "action": "ASK",
+     "validity": "REQUIRES_RECONCILIATION",
+     "question": "UNREPORTED_TRAINING",
+     "pending": {
+      "status": "ASK",
+      "eventKind": "SYSTEMIC_FATIGUE",
+      "signal": "SYSTEMIC_FATIGUE"
+     },
+     "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 13 planned run sessions from 2026-11-22 to 2026-12-20 have no report: say what was done (report the sessions) or that training stopped (t",
+     "signal": {
+      "kind": "SYSTEMIC_FATIGUE",
+      "weekIndex": 7
+     }
+    }
+   ],
+   "firstSignalSurvives": false
+  },
+  {
+   "case": "(c) control: held fatigue, plain review without answer, then answer (MISS)",
+   "B": [
+    {
+     "status": "ASK",
+     "action": "ASK",
+     "validity": "REQUIRES_RECONCILIATION",
+     "question": "UNREPORTED_TRAINING",
+     "pending": {
+      "status": "ASK",
+      "eventKind": "SYSTEMIC_FATIGUE",
+      "signal": "SYSTEMIC_FATIGUE"
+     },
+     "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 13 planned run sessions from 2026-11-22 to 2026-12-20 have no report: say what was done (report the sessions) or that training stopped (t",
+     "signal": {
+      "kind": "SYSTEMIC_FATIGUE",
+      "weekIndex": 7
+     }
+    },
+    {
+     "status": "ASK",
+     "action": "ASK",
+     "validity": "REQUIRES_RECONCILIATION",
+     "question": "UNREPORTED_TRAINING",
+     "pending": {
+      "status": "ASK",
+      "eventKind": "WEEKLY_REVIEW",
+      "signal": "SYSTEMIC_FATIGUE"
+     },
+     "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 13 planned run sessions from 2026-11-22 to 2026-12-20 have no report: say what was done (report the sessions) or that training stopped (t",
+     "signal": {
+      "kind": "SYSTEMIC_FATIGUE",
+      "weekIndex": 7
+     }
+    },
+    {
+     "status": "MODIFY",
+     "action": "REDUCE",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "question": null,
+     "pending": null,
+     "reason": "The systemic fatigue reported on 2026-12-21 with the question is re-evaluated with the answer: Remove the remaining hard suffix; keep easy participation; the reports of the run sessions that had no report answer the question about unreporte",
+     "signal": null
+    }
+   ],
+   "samePlanAsOnTimeFromDay2": true
+  },
+  {
+   "case": "(a) held fatigue, then a kept strength change, then the answer (EXEC)",
+   "onTime": [
+    {
+     "status": "MODIFY",
+     "action": "REDUCE",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "question": null,
+     "pending": null,
+     "reason": "Remove the remaining hard suffix; keep easy participation"
+    },
+    {
+     "status": "MODIFY",
+     "action": "RESCHEDULE_WITHIN_WEEK",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "question": null,
+     "pending": null,
+     "reason": "Sessions on the unavailable date are moved within chosen days when that adds no interference, otherwise skipped without debt"
+    }
+   ],
+   "B": [
+    {
+     "status": "ASK",
+     "action": "ASK",
+     "validity": "REQUIRES_RECONCILIATION",
+     "question": "UNREPORTED_TRAINING",
+     "pending": {
+      "status": "ASK",
+      "eventKind": "SYSTEMIC_FATIGUE",
+      "signal": "SYSTEMIC_FATIGUE"
+     },
+     "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 13 planned run sessions from 2026-11-22 to 2026-12-20 have no report: say what was done (report the sessions) or that training stopped (t",
+     "signal": {
+      "kind": "SYSTEMIC_FATIGUE",
+      "weekIndex": 7
+     }
+    },
+    {
+     "status": "MODIFY",
+     "action": "RESCHEDULE_WITHIN_WEEK",
+     "validity": "REQUIRES_RECONCILIATION",
+     "question": "UNREPORTED_TRAINING",
+     "pending": {
+      "status": "ASK",
+      "eventKind": "UNAVAILABLE_DAY",
+      "signal": "SYSTEMIC_FATIGUE"
+     },
+     "reason": "Sessions on the unavailable date are moved within chosen days when that adds no interference, otherwise skipped without debt; the run sessions ahead stay as they were and wait for an answer: No run is recorded in the 30 days before 2026-12-",
+     "signal": {
+      "kind": "SYSTEMIC_FATIGUE",
+      "weekIndex": 7
+     }
+    },
+    {
+     "status": "MODIFY",
+     "action": "REDUCE",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "question": null,
+     "pending": null,
+     "reason": "The systemic fatigue reported on 2026-12-21 with the question is re-evaluated with the answer: Remove the remaining hard suffix; keep easy participation; the reports of the run sessions that had no report answer the question about unreporte",
+     "signal": null
+    }
+   ],
+   "fatigueReEvaluatedWithAnswer": true,
+   "samePlanAsOnTimeFromDay2": true,
+   "onTimeRunsFromDay2": [
+    "EASY:34",
+    "LONG:60"
+   ],
+   "BRunsFromDay2": [
+    "EASY:34",
+    "LONG:60"
+   ]
+  },
+  {
+   "case": "(b) local fatigue held, then systemic fatigue held (EXEC)",
+   "B": [
+    {
+     "status": "MODIFY",
+     "action": "REDUCE",
+     "validity": "REQUIRES_RECONCILIATION",
+     "question": "UNREPORTED_TRAINING",
+     "pending": {
+      "status": "ASK",
+      "eventKind": "LOCAL_FATIGUE",
+      "signal": null
+     },
+     "reason": "Remove only optional local work for the affected region; essentials stay; the run sessions ahead stay as they were and wait for an answer: No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, an",
+     "signal": null
+    },
+    {
+     "status": "ASK",
+     "action": "ASK",
+     "validity": "REQUIRES_RECONCILIATION",
+     "question": "UNREPORTED_TRAINING",
+     "pending": {
+      "status": "ASK",
+      "eventKind": "SYSTEMIC_FATIGUE",
+      "signal": "SYSTEMIC_FATIGUE"
+     },
+     "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 13 planned run sessions from 2026-11-22 to 2026-12-20 have no report: say what was done (report the sessions) or that training stopped (t",
+     "signal": {
+      "kind": "SYSTEMIC_FATIGUE",
+      "weekIndex": 7
+     }
+    }
+   ],
+   "firstSignalSurvives": false
+  },
+  {
+   "case": "(c) control: held fatigue, plain review without answer, then answer (EXEC)",
+   "B": [
+    {
+     "status": "ASK",
+     "action": "ASK",
+     "validity": "REQUIRES_RECONCILIATION",
+     "question": "UNREPORTED_TRAINING",
+     "pending": {
+      "status": "ASK",
+      "eventKind": "SYSTEMIC_FATIGUE",
+      "signal": "SYSTEMIC_FATIGUE"
+     },
+     "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 13 planned run sessions from 2026-11-22 to 2026-12-20 have no report: say what was done (report the sessions) or that training stopped (t",
+     "signal": {
+      "kind": "SYSTEMIC_FATIGUE",
+      "weekIndex": 7
+     }
+    },
+    {
+     "status": "ASK",
+     "action": "ASK",
+     "validity": "REQUIRES_RECONCILIATION",
+     "question": "UNREPORTED_TRAINING",
+     "pending": {
+      "status": "ASK",
+      "eventKind": "WEEKLY_REVIEW",
+      "signal": "SYSTEMIC_FATIGUE"
+     },
+     "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 13 planned run sessions from 2026-11-22 to 2026-12-20 have no report: say what was done (report the sessions) or that training stopped (t",
+     "signal": {
+      "kind": "SYSTEMIC_FATIGUE",
+      "weekIndex": 7
+     }
+    },
+    {
+     "status": "MODIFY",
+     "action": "REDUCE",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "question": null,
+     "pending": null,
+     "reason": "The systemic fatigue reported on 2026-12-21 with the question is re-evaluated with the answer: Remove the remaining hard suffix; keep easy participation; the reports of the run sessions that had no report answer the question about unreporte",
+     "signal": null
+    }
+   ],
+   "samePlanAsOnTimeFromDay2": true
+  }
+ ]
+}
