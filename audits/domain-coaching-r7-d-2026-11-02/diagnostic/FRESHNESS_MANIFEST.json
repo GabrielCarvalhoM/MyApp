@@ -1,0 +1,73 @@
+{
+ "manifest": "R7D-FRESHNESS-MANIFEST-1",
+ "corpus": "DIAGNOSTIC",
+ "author": {
+  "role": "independent diagnostic case author (fresh general-purpose instance)",
+  "identity": "claude-opus-5-5 (general-purpose subagent, fresh instance for this task)",
+  "runtimeInspectedBeforeSeal": false,
+  "outputsInspectedBeforeSeal": false,
+  "runtimeImportedOrExecutedByAuthor": false,
+  "developmentCorpusInspected": false,
+  "earlierHoldoutsInspected": false,
+  "harnessInspected": false,
+  "engineImplementationByAuthor": false,
+  "assessmentsAuthoredBeforeRuntimeOutput": true
+ },
+ "authoringProtocol": "R7D-AUTHOR-BRIEF-DIAGNOSTIC (this brief)",
+ "allowedInputs": [
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/author/AUTHOR_BRIEF_DIAGNOSTIC.md", "sha256": "d9f5bc12d5419bfb1e0e92f5951eeda231640602a0b681a1c57503ab0c379ff2"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/author/INTERFACE_ONLY_R7D.md", "sha256": "728d64961d53d701c0224bf242f25c61218b3532309e3ec46a30de6adda764ef"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/author/CASE_SCHEMA_R7D.json", "sha256": "2d5d64be8c507dfc525e335cc2da1aa1ddc066c814aacb11bf2b53eb1bd31940"}
+ ],
+ "forbiddenInputs": [
+  "CoachingCore/ (source, tests, fixtures, scripts, records) - not opened, listed, searched or imported",
+  "the R7-D harness/ folder - not opened",
+  "other audits/ and reviews/ folders, product/, canon/ - not opened",
+  "earlier holdouts, development cases, git history, other agents' outputs - not opened",
+  "any runtime output - none exists for this corpus; the coach and harness were never run",
+  "author/check-corpus.mjs source - executed only, never read"
+ ],
+ "inspectedFiles": [
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/author/AUTHOR_BRIEF_DIAGNOSTIC.md", "scope": "read completely", "sha256": "d9f5bc12d5419bfb1e0e92f5951eeda231640602a0b681a1c57503ab0c379ff2"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/author/INTERFACE_ONLY_R7D.md", "scope": "read completely", "sha256": "728d64961d53d701c0224bf242f25c61218b3532309e3ec46a30de6adda764ef"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/author/CASE_SCHEMA_R7D.json", "scope": "read completely", "sha256": "2d5d64be8c507dfc525e335cc2da1aa1ddc066c814aacb11bf2b53eb1bd31940"}
+ ],
+ "commandsRun": [
+  "node -e (clock time and weekday computations only)",
+  "mkdir -p audits/domain-coaching-r7-d-2026-11-02/diagnostic",
+  "node diagnostic/_probe.mjs && node author/check-corpus.mjs diagnostic/_probe.json (a 2-case shape probe written by the author to learn what the checker accepts; both probe files deleted before drafting the corpus)",
+  "node diagnostic/build-diagnostic-corpus.mjs (author builder; plain Node, imports only node:fs; run several times while drafting)",
+  "node author/check-corpus.mjs diagnostic/R7D_DIAGNOSTIC_CORPUS.json (run after each drafting stage; final result: 18 cases, 0 errors, 0 warnings; checker sha256 306cd546909a6d5f5faf60981399e652cf509f880924eccebe1d14ead057e8ed)",
+  "sed -i on diagnostic/build-diagnostic-corpus.mjs (add one coverage tag)",
+  "node -e (sha256 and byte counts of the corpus, the inputs, the checker and the builder)"
+ ],
+ "authorStartedAt": "2026-11-02T20:07:01.755Z",
+ "sealedAt": "2026-11-02T20:51:22.891Z",
+ "runtimeFreeze": "R7C-FREEZE-4",
+ "runtimeFreezeDigest": "61937f87bf8ecffa950fb7825b4656ab8da0b04413bca9f3d95c06dbecd3f6b8",
+ "corpusPath": "R7D_DIAGNOSTIC_CORPUS.json",
+ "corpusSha256": "44fca38174a8999888dac4b2bfc6cafdfde2c6a0dcc089a563121af5a6740957",
+ "hashMode": "sha256 over file bytes",
+ "bytes": 432753,
+ "caseCount": 18,
+ "steps": 158,
+ "builder": {"path": "build-diagnostic-corpus.mjs", "sha256": "12dadcc7e12f7f557484cef86ec19b5147e27d02f3d581f7a58165e56a8e1d05"},
+ "coverageTags": {"COLD_START":5,"RUN_FIRST":4,"RACE_10K":3,"H16":3,"RUN_EXP_NONE":3,"STR_EXP_NOVICE":6,"WALK_JOG":1,"BODYWEIGHT_ONLY":1,"LOW_DATA":4,"START_NON_MONDAY":16,"TIMEZONE":15,"RETURN_SHORT":1,"TAPER":3,"RACE_WEEK":3,"POST_RACE":3,"RACE_HALF":2,"H12":5,"RUN_EXP_INTERMEDIATE":8,"STR_EXP_EXPERIENCED":2,"GYM":8,"SKIPPED_REVIEW":3,"UNREPORTED_WEEKS":5,"LATE_ANSWER":4,"TAPER_ANSWER":1,"UNAVAILABLE_DAY":2,"OFFERS":3,"SAME_FACTS_DIFFERENT_ORDER":4,"ELIGIBILITY_UNKNOWN":2,"STRENGTH_ONLY":2,"GENERAL_FITNESS":5,"H4":2,"FREQ_LOW":3,"CLINICAL_SIGNAL":4,"BALANCED_HYBRID":6,"NON_RACE":12,"H8":8,"OUT_OF_SCOPE":2,"RUN_EXP_NOVICE":5,"RUN_ONLY":2,"RUN_EXP_EXPERIENCED":2,"STR_EXP_NONE":4,"FREQ_HIGH":4,"WEARABLE_FULL":1,"LATE_REPORTER":1,"PARTIAL_ANSWER":2,"SHORTENED_RUNS":4,"MIXED_EXECUTION":4,"SCHEDULE_CHANGE":3,"STRENGTH_FIRST":3,"STR_EXP_INTERMEDIATE":6,"KETTLEBELL":1,"EQUIPMENT_CHANGE":1,"TRAVEL":1,"FATIGUE_LOCAL":1,"LOAD_CONFIRMATION":3,"SHARED_DAYS":2,"SAME_TURN":1,"DOUBLE_CONFLICT":1,"RESTART":1,"RETURN_LONG":2,"GOAL_CHANGE":2,"EVENT_DATE_CHANGE":1,"CLINICAL_PAUSE":1,"RETURN_MODERATE":2,"SUBSTITUTION":1,"SUBSTITUTION_PAIN_CLEARANCE":1,"ADVERSE_RESPONSE":3,"REPEATED_SIGNAL":3,"NO_CONSENT":2,"LEARNING_PATTERN":1,"CONSENT_REVOKED":1,"LEARNING_NOISE":1,"WEARABLE_PARTIAL":1,"DUPLICATE_SOURCES":1,"CORRECTION":1,"OUT_OF_ORDER":1,"CLOCK_SKEW":1,"CONTRADICTION":1,"TOO_MANY_DAYS":1,"EMPTY_REVIEW":1,"FATIGUE_SYSTEMIC":1},
+ "generationMethod": "INDEPENDENT_AUTHOR",
+ "seed": null,
+ "interfaceGapsNoted": [
+  "VARIANT 'expect' direction is not specified. Resolved: NOT_HIGHER_RUN_LOAD / NOT_LOWER_RUN_LOAD always describe the VARIANT's plan relative to the BASE case's plan; every VARIANT rationale states this.",
+  "compareAtStep cannot be GENERATE (the checker requires a step in both timelines), so onboarding-only variants (e.g. eligibility status confirmed but one flag omitted, versus status UNKNOWN) cannot be expressed; D03 notes it.",
+  "There is no dedicated event kind for a standalone answer. Answers arriving mid-week are WEEKLY_REVIEW steps, following the interface statement that an UNREPORTED_TRAINING answer is delivered as a plain weekly review of the current week (D02 a9, D06 a2/a5, D16 p1/a2, D18 a6). The checker accepts them; whether a mid-week review also closes the current week is not specified.",
+  "When an answer must not depend on which sessions the pending question lists, explicit answer.overrides (or event.interruption) were used instead of answer.report (D06 w2, D16, D18 a6).",
+  "Dates before 2026-11-03 cannot appear, so an older race result or long history cannot be stated (D09 states the former half-marathon history only in pause.reason).",
+  "A marathon request is not in the intake vocabulary; D14 sends an out-of-vocabulary GOAL_CHANGE to MARATHON as the mid-program out-of-scope probe and accepts UNSUPPORTED or INVALID_INPUT.",
+  "loadsByPattern is ambiguous when the author cannot know which exercise (and convention) the coach planned for a pattern; modest values were used (D11 leg press, D17).",
+  "EXERCISE_SUBSTITUTION exerciseRef depends on the coach having placed that pattern on that day; D11 assumes a squat-pattern exercise on days 0 and 4 of week 2 of a 3-day strength-first plan (a corpus error if not).",
+  "ROLE_MINUTES_COMPARE is not defined when a week has no live session of the role; the author assumed an absent role counts as shorter (0).",
+  "timezoneOffsetMinutes is a single fixed offset; programs were placed in zones/dates without daylight-saving transitions.",
+  "CARRIER_HOLD appears in the schema but is not described in the interface; it was not used.",
+  "Same-turn without confirmation at onboarding could make the coach ASK and invalidate every later session reference, so same-turn handling is probed through DOUBLE_CONFLICT steps (D08) rather than through the intake."
+ ],
+ "evaluation": {"evaluationCount": 0, "firstEvaluationAt": null}
+}
