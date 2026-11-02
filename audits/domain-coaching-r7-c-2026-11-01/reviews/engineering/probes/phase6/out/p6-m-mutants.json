@@ -1,0 +1,96 @@
+{
+ "copy": "C:\\Users\\carva\\AppData\\Local\\Temp\\qe-r7c-p6-judge\\f3m",
+ "originalSha256": "dc0cfb8413931e83ba0cbfabced147dc97069dff98422c27235eb000d29068f7",
+ "tests": [
+  "test/r7c-longitudinal.test.mjs",
+  "test/r7c-phase4.test.mjs",
+  "test/r7c-phase5.test.mjs",
+  "test/r7c-phase5-cc.test.mjs",
+  "test/r7c-phase6.test.mjs",
+  "test/r7asm-state-model.test.mjs",
+  "test/r7asc-state-consumer.test.mjs"
+ ],
+ "baseline": {
+  "pass": 144,
+  "fail": 0,
+  "failing": []
+ },
+ "mutants": [
+  {
+   "id": "J-M1",
+   "rule": "the window guard removed: a run the stored plan read in the window no longer blocks the re-plan",
+   "result": "SURVIVED",
+   "pass": 144,
+   "fail": 0,
+   "failing": []
+  },
+  {
+   "id": "J-M2",
+   "rule": "REGRESS no longer counts as an executed run gate (adverse late facts not detected)",
+   "result": "SURVIVED",
+   "pass": 144,
+   "fail": 0,
+   "failing": []
+  },
+  {
+   "id": "J-M3",
+   "rule": "the return-report exclusion removed",
+   "result": "SURVIVED",
+   "pass": 144,
+   "fail": 0,
+   "failing": []
+  },
+  {
+   "id": "J-M4",
+   "rule": "the open-gap early exit removed (the re-plan computed while the window is still unknown)",
+   "result": "SURVIVED",
+   "pass": 144,
+   "fail": 0,
+   "failing": []
+  },
+  {
+   "id": "J-M5",
+   "rule": "a return-replaced start ignored (startBeforeReturn not read)",
+   "result": "SURVIVED",
+   "pass": 144,
+   "fail": 0,
+   "failing": []
+  },
+  {
+   "id": "J-M6",
+   "rule": "C9 dropped for the recorded re-plan (elapsed unreported runs of the answer week credited)",
+   "result": "KILLED",
+   "pass": 142,
+   "fail": 2,
+   "failing": [
+    "R7-C QE-R7C-07: a known stop (MISS) recorded by a carrier is unchanged from R7C-FREEZE-2: the ceiling re-plan applies it, as the direct answer",
+    "R7-C QE-R7C-07 (G01): the recorded-answer re-plan never travels with a question about unknown training; that question decides alone"
+   ]
+  },
+  {
+   "id": "J-M7",
+   "rule": "CONDITIONAL_PLAN weeks never count as unread (only reviewed weeks can be unread)",
+   "result": "KILLED",
+   "pass": 137,
+   "fail": 7,
+   "failing": [
+    "R7-C QE-R7C-07: an EXECUTED answer recorded by an R4 HOLD or a clinical route gives the plan the direct answer gives (recorder independence)",
+    "R7-C QE-R7C-07: a MIXED answer (long runs done, the rest not) recorded by an R4 HOLD or a clinical route gives the direct answer's plan",
+    "R7-C QE-R7C-07: an ADVERSE answer (done, the long runs with an adverse response) recorded by an R4 HOLD or a clinical route gives the direct answer'",
+    "R7-C QE-R7C-07: while the clinical route stands nothing is prescribed; after qualified clearance the recorded facts are applied with no re-send",
+    "R7-C QE-R7C-07: no decision presents the stale projection as valid once the record holds the answer (race touch, taper quality, long run)",
+    "R7-C QE-R7C-07: the same record, program, clock and safety state give the same decision whichever decision recorded the answer (determinism)",
+    "R7-C QE-R7C-07 reach: a plan that rests on projection over its whole run window follows the record of that window, however it was reported"
+   ]
+  },
+  {
+   "id": "J-M8",
+   "rule": "the recorded re-plan pre-empts the ceiling re-plan for known stops",
+   "result": "SURVIVED",
+   "pass": 144,
+   "fail": 0,
+   "failing": []
+  }
+ ],
+ "restored": true
+}

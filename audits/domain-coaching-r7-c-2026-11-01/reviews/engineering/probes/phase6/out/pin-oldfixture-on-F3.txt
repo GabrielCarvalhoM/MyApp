@@ -1,0 +1,187 @@
+✔ QE-R7ASM-01 (noDetails): a KNOWN row planned from retracted evidence establishes nothing; history does not depend on when the correction reached the plan (711.0082ms)
+✔ QE-R7ASM-01 (repsNoLoad): a KNOWN row planned from retracted evidence establishes nothing; history does not depend on when the correction reached the plan (627.1953ms)
+✔ QE-R7ASM-01 (unknownUnit): a KNOWN row planned from retracted evidence establishes nothing; history does not depend on when the correction reached the plan (681.7227ms)
+✔ QE-R7ASM-01 (loggedAt18): a KNOWN row planned from retracted evidence establishes nothing; history does not depend on when the correction reached the plan (603.364ms)
+✔ QE-R7ASM-01 (facts only, Q12a): the same when the week is never reviewed (399.8184ms)
+✔ QE-R7ASM-01 (conflict, Q3b): a late wearable record that quarantines the establishing session leaves no prescribed load in history (341.4537ms)
+✔ QE-R7ASM-02: with identical ledgers, a LONG return (RESTART) and a MODERATE one (RETURN) plan the same run whether or not the empty week was reviewed (1217.8666ms)
+✔ QE-R7ASM-03: with identical ledgers, a decision after two empty weeks prescribes the repetitions history earned, not the projection's steps (1197.4239ms)
+✔ QE-R7ASM-04: historicalStateOf reads a corrected load and a retracted session as the runtime does, never the superseded row (492.2486ms)
+✔ SSCTR F1 (D53, D57): after a mid-week return, no covered count comes back more than one set above the largest executed since the break (1250.8511ms)
+✔ SSCTR F2: a load the plan stepped above history, lifted short or at low reserve, is held at its prescribed repetitions, inside the range (560.8059ms)
+✔ SSCTR F3 (R6-H25): after the change to MAINTAIN no bench press or lat pulldown row leaves 8-8 or rises above the dose executed (703.7994ms)
+✔ H1: a projected KNOWN load without a factual load gives history no load (221.0436ms)
+✔ H2: a valid factual load is history, exactly (96.8426ms)
+✔ H3: the plan says 20, the athlete lifts 18: history is 18 (131.1578ms)
+✔ H4: the plan says 20, the lift has no readable load: history never invents 20 (463.2699ms)
+✔ H5: a correction removes the retracted value from every historical reader (499.7273ms)
+✔ S1 HOLD: a missed target repeats the dose, load and repetitions (118.0499ms)
+✔ S2 MAINTAIN: after a goal change to maintenance every row of a known dose is inside 8-8 (255.1263ms)
+✖ S3: a projection above history creates no unearned progression: load, tick and repetitions are history's (342.1011ms)
+✔ S4: a partial execution resolves only with the atoms it executed (124.8513ms)
+✔ S5: a moderate return and a restart read the same facts; their differences come from their recipes only (705.4202ms)
+✔ S6: after a goal change the earlier goal's projected dose does not survive where it contradicts the new goal (150.3028ms)
+✔ T1: a return reported on Thursday, the later session not yet executed: it never reaches Thursday's history (195.4723ms)
+✔ T2: once the entry is executed, it is history from then on, at the dose it was executed (232.9679ms)
+✔ T3: a late sync whose execution came before the cut enters that cut's history retroactively (109.4791ms)
+✔ T4: a report made later of an execution after the cut never anticipates it (134.9324ms)
+✔ T5: at a week boundary no session of the new week is credited, executed later or not (150.6969ms)
+✔ P1: changing only PlanningProjection leaves HistoricalState identical (1062.014ms)
+✔ P2: a retracted fact is returned as factual by no public reader (254.5194ms)
+✔ P3: no resolved prescription combines atoms into a dose its goal or gate does not allow (803.0337ms)
+✔ P4: HOLD with no new evidence never progresses the resolved dose (128.7923ms)
+✔ P5: HistoricalState(T) holds no evidence executed only after T (the gate of a past week never counts a later log) (262.474ms)
+✔ P6: an execution influences HistoricalState(T) only once its timestamp is before T (151.7748ms)
+✔ P7: the evidence reducer and the public reader give one HistoricalState, corrections included (521.505ms)
+✔ The public reader answers for a cut in the last week of a program while a return is in force (it threw before) (522.9844ms)
+✔ NF-R7ASM-1: in a restart's own week a run planned inside the pause is never credited as run (the D47 statement) (210.9425ms)
+✔ Property D (found on the way): a past week's gate never counts a log executed after its clock (the T04 simulation's dead bug) (570.1934ms)
+✔ QE-R7ASM-01 (the load questions): the decision asks to confirm a first log of an exercise history does not hold, whatever its row prescribed (501.4604ms)
+✔ R42 and the gate's repetitions: a heavier load the athlete chose starts its credit at 0 and takes the repetitions executed at it (113.9475ms)
+✔ F1, the walk/jog side: after a short return the walk/jog step follows the step run, never one the plan did not prescribe (109.8697ms)
+✔ SSCTR F2, REGRESS at a projected load (REPS_THEN_LOAD): the regression starts from the dose held at that load, never from the earlier load's target (371.8328ms)
+✖ T1 (QE-R7ASE-01): a lifted projected dose promotes the load, never the projection's load tick (483.7145ms)
+✔ T2 (QE-R7ASE-02): the re-establishment threshold D52 is measured from the last executed exposure, never from a planned date (319.5907ms)
+✔ T3: 20 executed and 22 planned is a valid state: history 20, projection 22 (198.7967ms)
+✔ T4: the projected 22 kg executed becomes history (294.3604ms)
+✔ T5: 21 kg executed where 22 was planned is 21 kg of history, not 22 (327.8983ms)
+✖ T6: a load executed without earning a step advances the load, never the progression credit (450.2706ms)
+✔ T7: a tick genuinely earned advances EARNED_PROGRESS, and two of them release the next load (310.0251ms)
+✔ T8: a planned date with no execution never moves lastPerformed (300.0912ms)
+✔ T9: an actual execution moves lastPerformed to the date executed, not the date planned (267.2131ms)
+✔ T10: partial execution advances only the facts it carries (212.1667ms)
+✔ T10b: a load the record cannot read is never prescribed as known: the next row keeps the last readable load (223.3827ms)
+✖ T6b: a load first reached by execution needs its own successful exposures before the next step (374.2194ms)
+✔ T13b: a handler that re-plans this week prescribes from history, never from the stored projection (406.1445ms)
+✔ T13d: a handler that re-plans a week whose stored start is still a projection prescribes from history (173.4662ms)
+✔ T7b (R42 in the planner): a load adopted above the state's own starts its credit at nothing, in the plan as in history (188.1201ms)
+✖ T7c: the plan never holds a progression credit history does not hold at that load (328.8829ms)
+✔ T10c: a load the record cannot read advances nothing, through a week no review closed (188.7984ms)
+✔ T13c: an exercise the evidence never established is not in history, and its next exposure establishes it (158.7892ms)
+✔ T11: an unrelated weekly review never promotes a target (326.4406ms)
+✔ T12: a week boundary never promotes a target (181.7166ms)
+✔ T13: a return after a target that was never executed starts from the executed dose (261.4475ms)
+✔ T14: a return after the target was executed starts from the promoted execution (307.0564ms)
+✔ T15: an authorized historical correction replaces the fact it corrects (233.2364ms)
+✔ T15c (State consumer, conflict, not correction): a second report that disagrees quarantines the session, and nothing of it counts (226.6972ms)
+✔ T16: running evidence never promotes a strength target, and strength evidence never promotes a run target (345.0696ms)
+✔ T17: the execution of one exercise never promotes another (291.5124ms)
+✔ P1: saving a projection again, any number of times, leaves HistoricalState unchanged (344.0221ms)
+✔ P2: time passing with no evidence leaves HistoricalState unchanged (213.0338ms)
+✔ P3: changing only a future target leaves HistoricalState unchanged (237.623ms)
+✔ P4: adding a relevant execution moves only what that evidence supports (199.2483ms)
+✔ P5: a projection and an unrelated fact in either order give the same HistoricalState (298.8593ms)
+✔ P6: deleting a future plan leaves HistoricalState intact (215.5456ms)
+✔ P7: a correction changes the fact it corrects and no unrelated projection (209.2557ms)
+✔ Write ownership: HistoricalState is read-only, PlanningProjection holds the targets, PlanningView is derived per decision (177.8243ms)
+✔ I14 (learning): the athlete model reads reported observations only, never a projection (169.6102ms)
+ℹ tests 77
+ℹ suites 0
+ℹ pass 72
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 18448.4867
+
+✖ failing tests:
+
+test at test\r7asc-state-consumer.test.mjs:333:1
+✖ S3: a projection above history creates no unearned progression: load, tick and repetitions are history's (342.1011ms)
+  AssertionError [ERR_ASSERTION]: the projection is ahead
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/qe-r7c-p6-judge/f3x/CoachingCore/test/r7asc-state-consumer.test.mjs:337:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\r7asm-state-model.test.mjs:55:1
+✖ T1 (QE-R7ASE-01): a lifted projected dose promotes the load, never the projection's load tick (483.7145ms)
+  AssertionError [ERR_ASSERTION]: db-rdl: the load lifted is history
+  
+  22 !== 24
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/qe-r7c-p6-judge/f3x/CoachingCore/test/r7asm-state-model.test.mjs:63:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 22,
+    expected: 24,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7asm-state-model.test.mjs:110:1
+✖ T6: a load executed without earning a step advances the load, never the progression credit (450.2706ms)
+  AssertionError [ERR_ASSERTION]: db-rdl
+  
+  22 !== 24
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/qe-r7c-p6-judge/f3x/CoachingCore/test/r7asm-state-model.test.mjs:113:61)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 22,
+    expected: 24,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7asm-state-model.test.mjs:183:1
+✖ T6b: a load first reached by execution needs its own successful exposures before the next step (374.2194ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  22 !== 24
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/qe-r7c-p6-judge/f3x/CoachingCore/test/r7asm-state-model.test.mjs:189:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 22,
+    expected: 24,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7asm-state-model.test.mjs:233:1
+✖ T7c: the plan never holds a progression credit history does not hold at that load (328.8829ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  22 !== 24
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/qe-r7c-p6-judge/f3x/CoachingCore/test/r7asm-state-model.test.mjs:237:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 22,
+    expected: 24,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
