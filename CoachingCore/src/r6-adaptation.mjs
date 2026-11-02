@@ -475,8 +475,10 @@ export function evaluateProgram(program,review,options={}){
   // re-plans the sessions still ahead first, and the handler, whatever its kind, decides on that program.
   // R7-C SSCTR-SD-01: so do reports that answer the unreported training the run doses ahead depended on (factualReplan, gapAnsweredBy).
   const factual0=factualReplan(ctx),factual=factual0?.ask?factual0:graduationWithdrawal(factual0?.ctx??ctx)??factual0;
+  // The clinical screen of the review's own handler (clinical-screen-first; its precedence over every question is applied below).
+  const clinical=clinicalRoute(kind,review);
   // R7-C P3-02: unreported training the run doses still ahead depend on, read on the canonical factual state (heldByRunGap applies it below).
-  const facts=factual?.ctx??ctx,clinical=clinicalRoute(kind,review),gap=clinical?null:runGapInForce(facts);
+  const facts=factual?.ctx??ctx,gap=clinical?null:runGapInForce(facts);
   // R7-C SSCTR-SD-03: the reactive signal the pending question held (withReference) is re-evaluated with the answer. A plain weekly review of that
   // signal's week whose facts leave this week's run doses known decides as the held event decides, with its own handler and authority, on the
   // canonical factual state; the decision consumes it.
