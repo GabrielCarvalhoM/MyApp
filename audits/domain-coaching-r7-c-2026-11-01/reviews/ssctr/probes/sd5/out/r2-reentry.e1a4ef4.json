@@ -1,0 +1,1429 @@
+{
+ "check": "SSCTR-SD5-R2-REENTRY",
+ "entry": 15,
+ "ceiling": {
+  "windowDays": 30,
+  "stepMinutes": 5,
+  "appliesTo": "Every planned run except the race, including long-run steps, RESTART->EASY and WALK_JOG->EASY transitions and return steps",
+  "reference": "Longest completed run in the preceding windowDays from the completed-work ledger; in a conditional projection, earlier projected weeks count as executed. Walk/jog sessions count their jogging minutes. With no completed run in the window, the reviewed entry (return.entryRunMinutes) is the ceiling in every week, not only the first projected week; in the first cold-start week the intake ceiling applies.",
+  "disclosure": "When the reference run is under 50 minutes a 5-minute step exceeds 10% of it; the step stays response-gated, is disclosed and is never combined with another single-session increase in the same week."
+ },
+ "qualityRequiresEstablishedEasyWeeks": 2,
+ "cases": {
+  "GEN g=0": {
+   "ASTAR": {
+    "weeks": {
+     "7": {
+      "phase": "CONSOLIDATION",
+      "runsInForce": "EASY:15 / EASY:15 / LONG:15",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 15,
+       "easy": 15,
+       "qualityStep": 0,
+       "easyWeeksDone": 0,
+       "qualityDone": 0,
+       "achievedLong": null
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "8": {
+      "phase": "DEVELOPMENT",
+      "runsInForce": "EASY:15 / EASY:15 / LONG:15",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 15,
+       "easy": 15,
+       "qualityStep": 0,
+       "easyWeeksDone": 1,
+       "qualityDone": 0,
+       "achievedLong": 15
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "9": {
+      "phase": "DEVELOPMENT",
+      "runsInForce": "EASY:15:S4 / EASY:15 / LONG:20",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 20,
+       "easy": 15,
+       "qualityStep": 0,
+       "easyWeeksDone": 2,
+       "qualityDone": 0,
+       "achievedLong": 15
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "10": {
+      "phase": "DEVELOPMENT",
+      "runsInForce": "EASY:15:S4 / EASY:15 / LONG:20",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 25,
+       "easy": 15,
+       "qualityStep": 0,
+       "easyWeeksDone": 3,
+       "qualityDone": 0,
+       "achievedLong": 20
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "11": {
+      "phase": "CONSOLIDATION",
+      "runsInForce": "EASY:15:S5 / EASY:15 / LONG:15",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 25,
+       "easy": 15,
+       "qualityStep": 0,
+       "easyWeeksDone": 4,
+       "qualityDone": 0,
+       "achievedLong": 20
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     }
+    },
+    "qualityWeeks": [
+     9,
+     10,
+     11
+    ]
+   },
+   "A": {
+    "answer": "MODIFY/GATED_NEXT_STEP",
+    "weeks": {
+     "7": {
+      "phase": "CONSOLIDATION",
+      "runsInForce": "EASY:15 / EASY:15 / LONG:15",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 60,
+       "easy": 45,
+       "qualityStep": 0,
+       "easyWeeksDone": 0,
+       "qualityDone": 0,
+       "achievedLong": null
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "8": {
+      "phase": "DEVELOPMENT",
+      "runsInForce": "EASY:20 / EASY:20 / LONG:20",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 60,
+       "easy": 45,
+       "qualityStep": 0,
+       "easyWeeksDone": 1,
+       "qualityDone": 0,
+       "achievedLong": 15
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "9": {
+      "phase": "DEVELOPMENT",
+      "runsInForce": "EASY:20:S4 / EASY:20 / LONG:25",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 25,
+       "easy": 20,
+       "qualityStep": 0,
+       "easyWeeksDone": 2,
+       "qualityDone": 0,
+       "achievedLong": 20
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "10": {
+      "phase": "DEVELOPMENT",
+      "runsInForce": "EASY:20:S4 / QUALITY:27:THRESHOLD:2x5 / LONG:30",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 30,
+       "easy": 20,
+       "qualityStep": 0,
+       "easyWeeksDone": 3,
+       "qualityDone": 0,
+       "achievedLong": 25
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "11": {
+      "phase": "CONSOLIDATION",
+      "runsInForce": "EASY:20:S5 / QUALITY:34:THRESHOLD:3x5 / LONG:25",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 35,
+       "easy": 20,
+       "qualityStep": 0,
+       "easyWeeksDone": 4,
+       "qualityDone": 1,
+       "achievedLong": 30
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     }
+    },
+    "qualityWeeks": [
+     9,
+     10,
+     11
+    ]
+   },
+   "B": {
+    "question": "UNREPORTED_TRAINING",
+    "answer": "MODIFY/REPLAN_FROM_EVIDENCE/VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "weeks": {
+     "7": {
+      "phase": "CONSOLIDATION",
+      "runsInForce": "EASY:15 / EASY:15 / LONG:15",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 60,
+       "easy": 45,
+       "qualityStep": 0,
+       "easyWeeksDone": 0,
+       "qualityDone": 0,
+       "achievedLong": null
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "8": {
+      "phase": "DEVELOPMENT",
+      "runsInForce": "EASY:20 / EASY:20 / LONG:20",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 60,
+       "easy": 45,
+       "qualityStep": 0,
+       "easyWeeksDone": 1,
+       "qualityDone": 0,
+       "achievedLong": 15
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "9": {
+      "phase": "DEVELOPMENT",
+      "runsInForce": "EASY:20:S4 / EASY:20 / LONG:25",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 25,
+       "easy": 20,
+       "qualityStep": 0,
+       "easyWeeksDone": 2,
+       "qualityDone": 0,
+       "achievedLong": 20
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "10": {
+      "phase": "DEVELOPMENT",
+      "runsInForce": "EASY:20:S4 / QUALITY:27:THRESHOLD:2x5 / LONG:30",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 30,
+       "easy": 20,
+       "qualityStep": 0,
+       "easyWeeksDone": 3,
+       "qualityDone": 0,
+       "achievedLong": 25
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "11": {
+      "phase": "CONSOLIDATION",
+      "runsInForce": "EASY:20:S5 / QUALITY:34:THRESHOLD:3x5 / LONG:25",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 35,
+       "easy": 20,
+       "qualityStep": 0,
+       "easyWeeksDone": 4,
+       "qualityDone": 1,
+       "achievedLong": 30
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     }
+    },
+    "qualityWeeks": [
+     9,
+     10,
+     11
+    ]
+   },
+   "D": {
+    "question": "UNREPORTED_TRAINING",
+    "answer": "MODIFY/REESTABLISH/VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "interruptionClass": "LONG",
+    "weeks": {
+     "7": {
+      "phase": "CONSOLIDATION",
+      "runsInForce": "EASY:15 / EASY:15 / EASY:15",
+      "stateAtWeekStart": {
+       "mode": "RESTART",
+       "long": 60,
+       "easy": 45,
+       "qualityStep": 0,
+       "easyWeeksDone": 0,
+       "qualityDone": 0,
+       "achievedLong": null
+      },
+      "ceilingBreaches": [],
+      "review": "MODIFY/ADOPT_LOGGED_LOADS"
+     },
+     "8": {
+      "phase": "DEVELOPMENT",
+      "runsInForce": "EASY:20 / EASY:20 / EASY:20",
+      "stateAtWeekStart": {
+       "mode": "RESTART",
+       "long": 60,
+       "easy": 45,
+       "qualityStep": 0,
+       "easyWeeksDone": 0,
+       "qualityDone": 0,
+       "achievedLong": null
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/INSTANTIATE_LOGGED_LOADS"
+     },
+     "9": {
+      "phase": "DEVELOPMENT",
+      "runsInForce": "EASY:25 / EASY:25 / EASY:25",
+      "stateAtWeekStart": {
+       "mode": "RESTART",
+       "long": 60,
+       "easy": 45,
+       "qualityStep": 0,
+       "easyWeeksDone": 0,
+       "qualityDone": 0,
+       "achievedLong": null
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "10": {
+      "phase": "DEVELOPMENT",
+      "runsInForce": "EASY:30 / EASY:30 / LONG:30",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 40,
+       "easy": 30,
+       "qualityStep": 0,
+       "easyWeeksDone": 0,
+       "qualityDone": 0,
+       "achievedLong": null
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "11": {
+      "phase": "CONSOLIDATION",
+      "runsInForce": "EASY:30 / EASY:30 / LONG:25",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 35,
+       "easy": 30,
+       "qualityStep": 0,
+       "easyWeeksDone": 1,
+       "qualityDone": 0,
+       "achievedLong": 30
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     }
+    },
+    "qualityWeeks": []
+   },
+   "B_equals_ASTAR_weeks": [
+    7
+   ],
+   "B_equals_A_weeks": [
+    7,
+    8,
+    9,
+    10,
+    11
+   ]
+  },
+  "GEN g=2": {
+   "ASTAR": {
+    "weeks": {
+     "7": {
+      "phase": "CONSOLIDATION",
+      "runsInForce": "EASY:15:S4 / EASY:15 / LONG:15",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 65,
+       "easy": 45,
+       "qualityStep": 0,
+       "easyWeeksDone": 2,
+       "qualityDone": 0,
+       "achievedLong": 65
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "8": {
+      "phase": "DEVELOPMENT",
+      "runsInForce": "EASY:20:S4 / EASY:20 / LONG:20",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 65,
+       "easy": 45,
+       "qualityStep": 0,
+       "easyWeeksDone": 3,
+       "qualityDone": 0,
+       "achievedLong": 65
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "9": {
+      "phase": "DEVELOPMENT",
+      "runsInForce": "EASY:20:S5 / EASY:20 / LONG:25",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 25,
+       "easy": 20,
+       "qualityStep": 0,
+       "easyWeeksDone": 4,
+       "qualityDone": 0,
+       "achievedLong": 65
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "10": {
+      "phase": "DEVELOPMENT",
+      "runsInForce": "EASY:20:S5 / QUALITY:27:THRESHOLD:2x5 / LONG:30",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 30,
+       "easy": 20,
+       "qualityStep": 0,
+       "easyWeeksDone": 5,
+       "qualityDone": 0,
+       "achievedLong": 65
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "11": {
+      "phase": "CONSOLIDATION",
+      "runsInForce": "EASY:20:S6 / QUALITY:34:THRESHOLD:3x5 / LONG:25",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 35,
+       "easy": 20,
+       "qualityStep": 0,
+       "easyWeeksDone": 6,
+       "qualityDone": 1,
+       "achievedLong": 65
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     }
+    },
+    "qualityWeeks": [
+     7,
+     8,
+     9,
+     10,
+     11
+    ]
+   },
+   "A": {
+    "answer": "MODIFY/GATED_NEXT_STEP",
+    "weeks": {
+     "7": {
+      "phase": "CONSOLIDATION",
+      "runsInForce": "EASY:15:S4 / EASY:15 / LONG:15",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 65,
+       "easy": 45,
+       "qualityStep": 0,
+       "easyWeeksDone": 2,
+       "qualityDone": 0,
+       "achievedLong": 65
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "8": {
+      "phase": "DEVELOPMENT",
+      "runsInForce": "EASY:20:S4 / EASY:20 / LONG:20",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 65,
+       "easy": 45,
+       "qualityStep": 0,
+       "easyWeeksDone": 3,
+       "qualityDone": 0,
+       "achievedLong": 65
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "9": {
+      "phase": "DEVELOPMENT",
+      "runsInForce": "EASY:20:S5 / EASY:20 / LONG:25",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 25,
+       "easy": 20,
+       "qualityStep": 0,
+       "easyWeeksDone": 4,
+       "qualityDone": 0,
+       "achievedLong": 65
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "10": {
+      "phase": "DEVELOPMENT",
+      "runsInForce": "EASY:20:S5 / QUALITY:27:THRESHOLD:2x5 / LONG:30",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 30,
+       "easy": 20,
+       "qualityStep": 0,
+       "easyWeeksDone": 5,
+       "qualityDone": 0,
+       "achievedLong": 65
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "11": {
+      "phase": "CONSOLIDATION",
+      "runsInForce": "EASY:20:S6 / QUALITY:34:THRESHOLD:3x5 / LONG:25",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 35,
+       "easy": 20,
+       "qualityStep": 0,
+       "easyWeeksDone": 6,
+       "qualityDone": 1,
+       "achievedLong": 65
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     }
+    },
+    "qualityWeeks": [
+     7,
+     8,
+     9,
+     10,
+     11
+    ]
+   },
+   "B": {
+    "question": "UNREPORTED_TRAINING",
+    "answer": "MODIFY/REPLAN_FROM_EVIDENCE/VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "weeks": {
+     "7": {
+      "phase": "CONSOLIDATION",
+      "runsInForce": "EASY:15:S4 / EASY:15 / LONG:15",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 65,
+       "easy": 45,
+       "qualityStep": 0,
+       "easyWeeksDone": 2,
+       "qualityDone": 0,
+       "achievedLong": 65
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "8": {
+      "phase": "DEVELOPMENT",
+      "runsInForce": "EASY:20:S4 / EASY:20 / LONG:20",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 65,
+       "easy": 45,
+       "qualityStep": 0,
+       "easyWeeksDone": 3,
+       "qualityDone": 0,
+       "achievedLong": 65
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "9": {
+      "phase": "DEVELOPMENT",
+      "runsInForce": "EASY:20:S5 / EASY:20 / LONG:25",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 25,
+       "easy": 20,
+       "qualityStep": 0,
+       "easyWeeksDone": 4,
+       "qualityDone": 0,
+       "achievedLong": 65
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "10": {
+      "phase": "DEVELOPMENT",
+      "runsInForce": "EASY:20:S5 / QUALITY:27:THRESHOLD:2x5 / LONG:30",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 30,
+       "easy": 20,
+       "qualityStep": 0,
+       "easyWeeksDone": 5,
+       "qualityDone": 0,
+       "achievedLong": 65
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "11": {
+      "phase": "CONSOLIDATION",
+      "runsInForce": "EASY:20:S6 / QUALITY:34:THRESHOLD:3x5 / LONG:25",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 35,
+       "easy": 20,
+       "qualityStep": 0,
+       "easyWeeksDone": 6,
+       "qualityDone": 1,
+       "achievedLong": 65
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     }
+    },
+    "qualityWeeks": [
+     7,
+     8,
+     9,
+     10,
+     11
+    ]
+   },
+   "D": {
+    "question": "UNREPORTED_TRAINING",
+    "answer": "MODIFY/REESTABLISH/VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "interruptionClass": "LONG",
+    "weeks": {
+     "7": {
+      "phase": "CONSOLIDATION",
+      "runsInForce": "EASY:15 / EASY:15 / EASY:15",
+      "stateAtWeekStart": {
+       "mode": "RESTART",
+       "long": 65,
+       "easy": 45,
+       "qualityStep": 0,
+       "easyWeeksDone": 2,
+       "qualityDone": 0,
+       "achievedLong": null
+      },
+      "ceilingBreaches": [],
+      "review": "MODIFY/ADOPT_LOGGED_LOADS"
+     },
+     "8": {
+      "phase": "DEVELOPMENT",
+      "runsInForce": "EASY:20 / EASY:20 / EASY:20",
+      "stateAtWeekStart": {
+       "mode": "RESTART",
+       "long": 65,
+       "easy": 45,
+       "qualityStep": 0,
+       "easyWeeksDone": 2,
+       "qualityDone": 0,
+       "achievedLong": null
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "9": {
+      "phase": "DEVELOPMENT",
+      "runsInForce": "EASY:25 / EASY:25 / EASY:25",
+      "stateAtWeekStart": {
+       "mode": "RESTART",
+       "long": 65,
+       "easy": 45,
+       "qualityStep": 0,
+       "easyWeeksDone": 2,
+       "qualityDone": 0,
+       "achievedLong": null
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "10": {
+      "phase": "DEVELOPMENT",
+      "runsInForce": "EASY:30 / EASY:30 / LONG:30",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 40,
+       "easy": 30,
+       "qualityStep": 0,
+       "easyWeeksDone": 0,
+       "qualityDone": 0,
+       "achievedLong": null
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "11": {
+      "phase": "CONSOLIDATION",
+      "runsInForce": "EASY:30 / EASY:30 / LONG:25",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 35,
+       "easy": 30,
+       "qualityStep": 0,
+       "easyWeeksDone": 1,
+       "qualityDone": 0,
+       "achievedLong": 30
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     }
+    },
+    "qualityWeeks": []
+   },
+   "B_equals_ASTAR_weeks": [
+    7,
+    8,
+    9,
+    10,
+    11
+   ],
+   "B_equals_A_weeks": [
+    7,
+    8,
+    9,
+    10,
+    11
+   ]
+  },
+  "R10K g=0": {
+   "ASTAR": {
+    "weeks": {
+     "7": {
+      "phase": "SPECIFIC",
+      "runsInForce": "EASY:15 / EASY:15 / LONG:15",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 15,
+       "easy": 15,
+       "qualityStep": 0,
+       "easyWeeksDone": 0,
+       "qualityDone": 0,
+       "achievedLong": null
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "8": {
+      "phase": "SPECIFIC",
+      "runsInForce": "EASY:15 / EASY:15 / LONG:20",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 20,
+       "easy": 15,
+       "qualityStep": 0,
+       "easyWeeksDone": 1,
+       "qualityDone": 0,
+       "achievedLong": 15
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "9": {
+      "phase": "SPECIFIC",
+      "runsInForce": "EASY:15:S4 / EASY:15 / LONG:20",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 25,
+       "easy": 15,
+       "qualityStep": 0,
+       "easyWeeksDone": 2,
+       "qualityDone": 0,
+       "achievedLong": 20
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "10": {
+      "phase": "TAPER",
+      "runsInForce": "EASY:15:S4 / EASY:15:S4 / LONG:15",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 25,
+       "easy": 15,
+       "qualityStep": 0,
+       "easyWeeksDone": 3,
+       "qualityDone": 0,
+       "achievedLong": 20
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "11": {
+      "phase": "RACE_WEEK",
+      "runsInForce": "EASY:15 / EASY:15 / RACE:75:RACE",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 15,
+       "easy": 15,
+       "qualityStep": 0,
+       "easyWeeksDone": 4,
+       "qualityDone": 0,
+       "achievedLong": 20
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     }
+    },
+    "qualityWeeks": [
+     9,
+     10
+    ]
+   },
+   "A": {
+    "answer": "MODIFY/GATED_NEXT_STEP",
+    "weeks": {
+     "7": {
+      "phase": "SPECIFIC",
+      "runsInForce": "EASY:15 / EASY:15 / LONG:15",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 60,
+       "easy": 40,
+       "qualityStep": 0,
+       "easyWeeksDone": 0,
+       "qualityDone": 0,
+       "achievedLong": null
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "8": {
+      "phase": "SPECIFIC",
+      "runsInForce": "EASY:15 / EASY:15 / LONG:20",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 20,
+       "easy": 15,
+       "qualityStep": 0,
+       "easyWeeksDone": 1,
+       "qualityDone": 0,
+       "achievedLong": 15
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "9": {
+      "phase": "SPECIFIC",
+      "runsInForce": "EASY:15:S4 / EASY:15 / LONG:20",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 25,
+       "easy": 15,
+       "qualityStep": 0,
+       "easyWeeksDone": 2,
+       "qualityDone": 0,
+       "achievedLong": 20
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "10": {
+      "phase": "TAPER",
+      "runsInForce": "EASY:15:S4 / EASY:15:S4 / LONG:15",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 25,
+       "easy": 15,
+       "qualityStep": 0,
+       "easyWeeksDone": 3,
+       "qualityDone": 0,
+       "achievedLong": 20
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "11": {
+      "phase": "RACE_WEEK",
+      "runsInForce": "EASY:15 / EASY:15 / RACE:75:RACE",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 15,
+       "easy": 15,
+       "qualityStep": 0,
+       "easyWeeksDone": 4,
+       "qualityDone": 0,
+       "achievedLong": 20
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     }
+    },
+    "qualityWeeks": [
+     9,
+     10
+    ]
+   },
+   "B": {
+    "question": "UNREPORTED_TRAINING",
+    "answer": "MODIFY/REPLAN_FROM_EVIDENCE/VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "weeks": {
+     "7": {
+      "phase": "SPECIFIC",
+      "runsInForce": "EASY:15 / EASY:15 / LONG:15",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 60,
+       "easy": 40,
+       "qualityStep": 0,
+       "easyWeeksDone": 0,
+       "qualityDone": 0,
+       "achievedLong": null
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "8": {
+      "phase": "SPECIFIC",
+      "runsInForce": "EASY:15 / EASY:15 / LONG:20",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 20,
+       "easy": 15,
+       "qualityStep": 0,
+       "easyWeeksDone": 1,
+       "qualityDone": 0,
+       "achievedLong": 15
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "9": {
+      "phase": "SPECIFIC",
+      "runsInForce": "EASY:15:S4 / EASY:15 / LONG:20",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 25,
+       "easy": 15,
+       "qualityStep": 0,
+       "easyWeeksDone": 2,
+       "qualityDone": 0,
+       "achievedLong": 20
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "10": {
+      "phase": "TAPER",
+      "runsInForce": "EASY:15:S4 / EASY:15:S4 / LONG:15",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 25,
+       "easy": 15,
+       "qualityStep": 0,
+       "easyWeeksDone": 3,
+       "qualityDone": 0,
+       "achievedLong": 20
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "11": {
+      "phase": "RACE_WEEK",
+      "runsInForce": "EASY:15 / EASY:15 / RACE:75:RACE",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 15,
+       "easy": 15,
+       "qualityStep": 0,
+       "easyWeeksDone": 4,
+       "qualityDone": 0,
+       "achievedLong": 20
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     }
+    },
+    "qualityWeeks": [
+     9,
+     10
+    ]
+   },
+   "D": {
+    "question": "UNREPORTED_TRAINING",
+    "answer": "MODIFY/REESTABLISH/VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "interruptionClass": "LONG",
+    "weeks": {
+     "7": {
+      "phase": "SPECIFIC",
+      "runsInForce": "EASY:15 / EASY:15 / EASY:15",
+      "stateAtWeekStart": {
+       "mode": "RESTART",
+       "long": 65,
+       "easy": 40,
+       "qualityStep": 0,
+       "easyWeeksDone": 0,
+       "qualityDone": 0,
+       "achievedLong": null
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/INSTANTIATE_LOGGED_LOADS"
+     },
+     "8": {
+      "phase": "SPECIFIC",
+      "runsInForce": "EASY:20 / EASY:20 / EASY:20",
+      "stateAtWeekStart": {
+       "mode": "RESTART",
+       "long": 65,
+       "easy": 40,
+       "qualityStep": 0,
+       "easyWeeksDone": 0,
+       "qualityDone": 0,
+       "achievedLong": null
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/INSTANTIATE_LOGGED_LOADS"
+     },
+     "9": {
+      "phase": "SPECIFIC",
+      "runsInForce": "EASY:25 / EASY:25 / EASY:25",
+      "stateAtWeekStart": {
+       "mode": "RESTART",
+       "long": 65,
+       "easy": 40,
+       "qualityStep": 0,
+       "easyWeeksDone": 0,
+       "qualityDone": 0,
+       "achievedLong": null
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "10": {
+      "phase": "TAPER",
+      "runsInForce": "EASY:15 / EASY:15 / EASY:15",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 40,
+       "easy": 30,
+       "qualityStep": 0,
+       "easyWeeksDone": 0,
+       "qualityDone": 0,
+       "achievedLong": null
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "11": {
+      "phase": "RACE_WEEK",
+      "runsInForce": "EASY:15 / EASY:15 / RACE:75:RACE",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 40,
+       "easy": 15,
+       "qualityStep": 0,
+       "easyWeeksDone": 1,
+       "qualityDone": 0,
+       "achievedLong": null
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     }
+    },
+    "qualityWeeks": []
+   },
+   "B_equals_ASTAR_weeks": [
+    7,
+    8,
+    9,
+    10,
+    11
+   ],
+   "B_equals_A_weeks": [
+    7,
+    8,
+    9,
+    10,
+    11
+   ]
+  },
+  "R10K g=2": {
+   "ASTAR": {
+    "weeks": {
+     "7": {
+      "phase": "SPECIFIC",
+      "runsInForce": "EASY:15 / EASY:15 / LONG:15",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 65,
+       "easy": 40,
+       "qualityStep": 0,
+       "easyWeeksDone": 1,
+       "qualityDone": 0,
+       "achievedLong": 65
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "8": {
+      "phase": "SPECIFIC",
+      "runsInForce": "EASY:15:S4 / EASY:15 / LONG:20",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 20,
+       "easy": 15,
+       "qualityStep": 0,
+       "easyWeeksDone": 2,
+       "qualityDone": 0,
+       "achievedLong": 65
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "9": {
+      "phase": "SPECIFIC",
+      "runsInForce": "EASY:15:S4 / EASY:15 / LONG:20",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 25,
+       "easy": 15,
+       "qualityStep": 0,
+       "easyWeeksDone": 3,
+       "qualityDone": 0,
+       "achievedLong": 65
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "10": {
+      "phase": "TAPER",
+      "runsInForce": "EASY:25:S4 / EASY:25:S4 / LONG:25",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 20,
+       "easy": 15,
+       "qualityStep": 0,
+       "easyWeeksDone": 4,
+       "qualityDone": 0,
+       "achievedLong": 65
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "11": {
+      "phase": "RACE_WEEK",
+      "runsInForce": "EASY:20 / EASY:20 / RACE:75:RACE",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 20,
+       "easy": 15,
+       "qualityStep": 0,
+       "easyWeeksDone": 5,
+       "qualityDone": 0,
+       "achievedLong": 65
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     }
+    },
+    "qualityWeeks": [
+     8,
+     9,
+     10
+    ]
+   },
+   "A": {
+    "answer": "MODIFY/GATED_NEXT_STEP",
+    "weeks": {
+     "7": {
+      "phase": "SPECIFIC",
+      "runsInForce": "EASY:15 / EASY:15 / LONG:15",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 65,
+       "easy": 40,
+       "qualityStep": 0,
+       "easyWeeksDone": 1,
+       "qualityDone": 0,
+       "achievedLong": 65
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "8": {
+      "phase": "SPECIFIC",
+      "runsInForce": "EASY:15:S4 / EASY:15 / LONG:20",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 20,
+       "easy": 15,
+       "qualityStep": 0,
+       "easyWeeksDone": 2,
+       "qualityDone": 0,
+       "achievedLong": 65
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "9": {
+      "phase": "SPECIFIC",
+      "runsInForce": "EASY:15:S4 / EASY:15 / LONG:20",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 25,
+       "easy": 15,
+       "qualityStep": 0,
+       "easyWeeksDone": 3,
+       "qualityDone": 0,
+       "achievedLong": 65
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "10": {
+      "phase": "TAPER",
+      "runsInForce": "EASY:25:S4 / EASY:25:S4 / LONG:25",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 20,
+       "easy": 15,
+       "qualityStep": 0,
+       "easyWeeksDone": 4,
+       "qualityDone": 0,
+       "achievedLong": 65
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "11": {
+      "phase": "RACE_WEEK",
+      "runsInForce": "EASY:20 / EASY:20 / RACE:75:RACE",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 20,
+       "easy": 15,
+       "qualityStep": 0,
+       "easyWeeksDone": 5,
+       "qualityDone": 0,
+       "achievedLong": 65
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     }
+    },
+    "qualityWeeks": [
+     8,
+     9,
+     10
+    ]
+   },
+   "B": {
+    "question": "UNREPORTED_TRAINING",
+    "answer": "MODIFY/REPLAN_FROM_EVIDENCE/VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "weeks": {
+     "7": {
+      "phase": "SPECIFIC",
+      "runsInForce": "EASY:15 / EASY:15 / LONG:15",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 65,
+       "easy": 40,
+       "qualityStep": 0,
+       "easyWeeksDone": 1,
+       "qualityDone": 0,
+       "achievedLong": 65
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "8": {
+      "phase": "SPECIFIC",
+      "runsInForce": "EASY:15:S4 / EASY:15 / LONG:20",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 20,
+       "easy": 15,
+       "qualityStep": 0,
+       "easyWeeksDone": 2,
+       "qualityDone": 0,
+       "achievedLong": 65
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "9": {
+      "phase": "SPECIFIC",
+      "runsInForce": "EASY:15:S4 / EASY:15 / LONG:20",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 25,
+       "easy": 15,
+       "qualityStep": 0,
+       "easyWeeksDone": 3,
+       "qualityDone": 0,
+       "achievedLong": 65
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "10": {
+      "phase": "TAPER",
+      "runsInForce": "EASY:25:S4 / EASY:25:S4 / LONG:25",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 20,
+       "easy": 15,
+       "qualityStep": 0,
+       "easyWeeksDone": 4,
+       "qualityDone": 0,
+       "achievedLong": 65
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "11": {
+      "phase": "RACE_WEEK",
+      "runsInForce": "EASY:20 / EASY:20 / RACE:75:RACE",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 20,
+       "easy": 15,
+       "qualityStep": 0,
+       "easyWeeksDone": 5,
+       "qualityDone": 0,
+       "achievedLong": 65
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     }
+    },
+    "qualityWeeks": [
+     8,
+     9,
+     10
+    ]
+   },
+   "D": {
+    "question": "UNREPORTED_TRAINING",
+    "answer": "MODIFY/REESTABLISH/VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "interruptionClass": "LONG",
+    "weeks": {
+     "7": {
+      "phase": "SPECIFIC",
+      "runsInForce": "EASY:15 / EASY:15 / EASY:15",
+      "stateAtWeekStart": {
+       "mode": "RESTART",
+       "long": 65,
+       "easy": 40,
+       "qualityStep": 0,
+       "easyWeeksDone": 1,
+       "qualityDone": 0,
+       "achievedLong": null
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/INSTANTIATE_LOGGED_LOADS"
+     },
+     "8": {
+      "phase": "SPECIFIC",
+      "runsInForce": "EASY:20 / EASY:20 / EASY:20",
+      "stateAtWeekStart": {
+       "mode": "RESTART",
+       "long": 65,
+       "easy": 40,
+       "qualityStep": 0,
+       "easyWeeksDone": 1,
+       "qualityDone": 0,
+       "achievedLong": null
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "9": {
+      "phase": "SPECIFIC",
+      "runsInForce": "EASY:25 / EASY:25 / EASY:25",
+      "stateAtWeekStart": {
+       "mode": "RESTART",
+       "long": 65,
+       "easy": 40,
+       "qualityStep": 0,
+       "easyWeeksDone": 1,
+       "qualityDone": 0,
+       "achievedLong": null
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "10": {
+      "phase": "TAPER",
+      "runsInForce": "EASY:15 / EASY:15 / EASY:15",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 40,
+       "easy": 30,
+       "qualityStep": 0,
+       "easyWeeksDone": 0,
+       "qualityDone": 0,
+       "achievedLong": null
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     },
+     "11": {
+      "phase": "RACE_WEEK",
+      "runsInForce": "EASY:15 / EASY:15 / RACE:75:RACE",
+      "stateAtWeekStart": {
+       "mode": "EASY",
+       "long": 40,
+       "easy": 15,
+       "qualityStep": 0,
+       "easyWeeksDone": 1,
+       "qualityDone": 0,
+       "achievedLong": null
+      },
+      "ceilingBreaches": [],
+      "review": "KEEP/KEEP"
+     }
+    },
+    "qualityWeeks": []
+   },
+   "B_equals_ASTAR_weeks": [
+    7,
+    8,
+    9,
+    10,
+    11
+   ],
+   "B_equals_A_weeks": [
+    7,
+    8,
+    9,
+    10,
+    11
+   ]
+  }
+ }
+}
