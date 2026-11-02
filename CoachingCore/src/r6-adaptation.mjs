@@ -95,7 +95,7 @@ function loadConfirmationsOf(list){
  return out;
 }
 const confirmationFor=(confirmations,id,l)=>{const c=confirmations?.[id];return c&&c.convention===l.convention?c:null;};
-const WHY_NOT_USED={LOGGED_LOAD_ABOVE_PLAN_TARGET_NOT_MET:'it is above the plan and the target reps or reps in reserve were not met, so the planned load stays',ESTABLISHMENT_LOG_UNCONFIRMED:'a first logged load becomes your reference only once you confirm it or log it again'};
+const WHY_NOT_USED={MACHINE_SETTING_UNCONFIRMED:'a heavier machine setting becomes your reference once you confirm it or log the same setting again (R7-D F03-B)',LOGGED_LOAD_ABOVE_PLAN_TARGET_NOT_MET:'it is above the plan and the target reps or reps in reserve were not met, so the planned load stays',ESTABLISHMENT_LOG_UNCONFIRMED:'a first logged load becomes your reference only once you confirm it or log it again'};
 /**
  * Logged loads that were not adopted as the next reference are asked about (QRE-R6-02; SSCTR D44, D45). Built after the
  * decision: with gates, each question follows the transition's own adoption rule; before the week is gated the target
@@ -171,7 +171,10 @@ function bindObservations(program,accepted,hybrid,policy){
  }
  return {bound,unbound};
 }
-const kindOf=o=>o.partial?'PARTIAL':o.confounded?'CONFOUNDED':classify(o);
+/** R7-D F04: a confounded execution (heat or terrain, for example) cannot be read for performance or effort, so they neither earn nor count
+ * against it; an adverse recovery or an impaired next day reported with it is independent of that reading and stays adverse evidence. */
+const adverseBeyondConfounding=o=>o.response?.recovery==='ADVERSE'||o.response?.nextDayFunction==='IMPAIRED';
+const kindOf=o=>o.partial?'PARTIAL':o.confounded?(adverseBeyondConfounding(o)?'ADVERSE':'CONFOUNDED'):classify(o);
 /** A report that the session was not done at all (R7-C G01, record fidelity, CQ-R6-19/H17): not completed, no minutes and no logged set. */
 const notDone=o=>o.actual?.completed===false&&!(Number(o.actual?.minutes)>0)&&!(Array.isArray(o.actual?.exercises)&&o.actual.exercises.some(e=>Array.isArray(e?.sets)&&e.sets.length));
 function weekEvidence(program,w,asOfLocal,ledger,quarantined){
@@ -417,7 +420,12 @@ export function evaluateProgram(program,review,options={}){
  const authority0=r6Authority(options),authority={...authority0,repertoire:authority0.repertoire??repertoireAuthority({...options,asOf:typeof review?.asOf==='string'?review.asOf:null})};
  if(!authority.policy||authority.policyHash!==program.policyHash||!allows(authority,'R6-PLANNED-PROGRESSION'))return finish('UNSUPPORTED','UNSUPPORTED','Current independent program authority is missing or does not match the program policy');
  if(!authority.repertoire.valid||program.repertoire?.catalogSha256!==authority.repertoire.catalogSha256)return finish('UNSUPPORTED','UNSUPPORTED','The program was not planned under the bound repertoire catalog, or that catalog and its SSCTR records are unavailable');
- const errors=[],missing=[],kind=KIND_ALIASES[review?.event?.kind]??review?.event?.kind,tz=program.timezoneOffsetMinutes??0,asOf=utcTimestamp(review?.asOf);
+ const errors=[],missing=[],kind0=KIND_ALIASES[review?.event?.kind]??review?.event?.kind,tz=program.timezoneOffsetMinutes??0,asOf=utcTimestamp(review?.asOf);
+ // R7-D DX-02: a declared interruption is a known stop whatever event carries it, never dependent on a pending question. A weekly review that
+ // declares one is decided as the return report of that interruption, with the return handler's own clinical screen, episode identity and
+ // re-entry (the same facts give the same factual state and re-entry); another event kind that declares one is screened clinically and asked
+ // (breakCarrierAsk): it would otherwise apply its own change on a plan the interruption has made stale.
+ const kind=kind0==='WEEKLY_REVIEW'&&declaresBreak(review)?'RETURN_AFTER_PAUSE':kind0;
  if(review?.version!==REVIEW_VERSION||review?.synthetic!==true||review?.purpose!=='SHADOW_REFERENCE')errors.push('syntheticReviewContract');
  if(!asOf)errors.push('asOf.timezoneAwareTimestamp');
  if(!review?.event?.id||!REVIEW_KINDS.includes(kind))errors.push('event.id/kind');
@@ -455,7 +463,7 @@ export function evaluateProgram(program,review,options={}){
   // Causal provenance: only facts observed and reported by the decision clock count; the actual ledger is append-only.
   const priorLedger=Array.isArray(review.actualLedger)?clone(review.actualLedger):[];
   // R7-C QE-R7C-10: the record notes when it first held each report (recordArrival), so a later decision knows which reports a review had.
-  const n=normalizeObservations(review.observations??[],{athleteId:program.athleteId,asOf,prior:priorLedger,maximumAgeDays:36500,futureSkewSeconds:authority.policy.operational.learning.futureClockSkewSeconds,timezoneOffsetMinutes:tz,loadIncrements:{...authority.policy.operational.strength.smallestIncrement,SINGLE_IMPLEMENT:incrementFor(authority.policy.operational.strength,'SINGLE_IMPLEMENT')},recordArrival:true});
+  const n=normalizeObservations(review.observations??[],{athleteId:program.athleteId,asOf,prior:priorLedger,maximumAgeDays:36500,futureSkewSeconds:authority.policy.operational.learning.futureClockSkewSeconds,timezoneOffsetMinutes:tz,loadIncrements:{...authority.policy.operational.strength.smallestIncrement,SINGLE_IMPLEMENT:incrementFor(authority.policy.operational.strength,'SINGLE_IMPLEMENT'),MACHINE_STACK:incrementFor(authority.policy.operational.strength,'MACHINE_STACK')},recordArrival:true});
   const {bound,unbound}=bindObservations(program,n.accepted,authority.policy.operational.hybrid,authority.policy),ledger=[...bound,...unbound];
   // Conflicted facts stay in the record but never count for gating counts, capacity or learning until corrected (QRE-R6-14).
   const usable=ledger.filter(o=>!o.conflicted),usableBound=bound.filter(o=>!o.conflicted);
@@ -486,7 +494,7 @@ export function evaluateProgram(program,review,options={}){
   // canonical factual state; the decision consumes it.
   const held=kind==='WEEKLY_REVIEW'&&!gap&&!factual?.ask?heldSignal(review.referenceState,w):null;
   // Training before the latest interruption that its return did not read is confirmed first (R7-A final I6); a return report decides it itself.
-  const decide=c=>(kind!=='RETURN_AFTER_PAUSE'&&staleReturn(c))||(held&&replayHeld(c,held))||(HANDLERS[kind]??weeklyReview)(c);
+  const decide=c=>(kind!=='RETURN_AFTER_PAUSE'&&declaresBreak(review)&&breakCarrierAsk(kind))||(kind!=='RETURN_AFTER_PAUSE'&&staleReturn(c))||(held&&replayHeld(c,held))||(HANDLERS[kind]??weeklyReview)(c);
   // A question about block choices is a decision like any other (QE-R7B-R2-02; R7-A A5): it never drops the canonical factual state computed above. A
   // question the factual re-plan itself raises keeps precedence; otherwise the block-choice question carries the factual re-plan and any graduation
   // withdrawal (withFactualReplan), because the facts it follows stand whatever is still asked.
@@ -691,10 +699,19 @@ function interruptionScreen(i){
  const screen=screenInterruptionReason({reason:i.reason,reasonCategory:i.reasonCategory,nonclinical:i.nonclinical??null,clinicalReason:i.clinicalReason??null});
  return {screen,clinical:screen.status==='CLINICAL'?{action:'CLINICAL_HUMAN_REQUIRED',status:'CLINICAL_HUMAN_REQUIRED',reason:'The interruption reason is clinical or possibly clinical'+(screen.matched.length?' ('+screen.matched.join(', ')+')':'')+': qualified assessment is needed; no nonclinical return recipe',screen}:null};
 }
-/** The clinical route the review's own handler screen takes (clinical-screen-first), or null; a review of another kind has no screen of its own. */
+/** R7-D DX-02: whether a review declares an interruption (an object with at least one field), whatever event carries it. */
+function declaresBreak(review){const i=review?.interruption;return !!i&&typeof i==='object'&&!Array.isArray(i)&&Object.keys(i).length>0;}
+/** R7-D DX-02: an event of another kind (a change or a signal of its own) that also declares an interruption: the interruption is screened
+ * clinically first (clinicalRoute) and then asked to be reported on its own, so neither the event's change nor the stale plan is applied over it. */
+function breakCarrierAsk(kind){
+ const what=kind.toLowerCase().replace(/_/g,' ');
+ return {action:'ASK',reason:`A break in training is declared with this ${what} report: report the break on its own (as a return report, or with the week’s review) and then the ${what} again; until then nothing changes and the plan is not valid`,missingInputs:['interruption.reportedOnItsOwn'],counterfactuals:[counter('APPLY_'+kind,'KEEP',false,'Applying the event over the plan would ignore the declared break'),counter('REESTABLISH','REESTABLISH',false,'The return re-entry would drop the event’s own change'),counter('ASK','ASK',true,'The break and the event are reported separately',{selected:true})]};
+}
+/** The clinical route the review's own handler screen takes (clinical-screen-first), or null; a review of another kind has no screen of its own,
+ * except an interruption it declares (R7-D DX-02), which is screened as a return report screens it. */
 function clinicalRoute(kind,review){
- if(kind==='EXERCISE_SUBSTITUTION'){const sub=substitutionOf(review);return sub&&typeof sub.exerciseId==='string'?substitutionClinical(sub):null;}
- return kind==='RETURN_AFTER_PAUSE'?interruptionScreen(interruptionOf(review)).clinical:null;
+ if(kind==='EXERCISE_SUBSTITUTION'){const sub=substitutionOf(review),own=sub&&typeof sub.exerciseId==='string'?substitutionClinical(sub):null;if(own)return own;}
+ return kind==='RETURN_AFTER_PAUSE'||declaresBreak(review)?interruptionScreen(interruptionOf(review)).clinical:null;
 }
 /**
  * Reason-based substitution (DR-134; B0-C06 condition 8, B0-C07, B0-C09): it overrides the cadence, MAIN retention and a FIXED preference,
@@ -1436,7 +1453,7 @@ export const HISTORICAL_STATE_VERSION='R7-HISTORICAL-STATE-1';
 function canonicalRecord(program,actualLedger,{authority,cut}){
  const rows=(Array.isArray(actualLedger)?actualLedger:[]).filter(o=>o&&typeof o==='object'),op=authority.policy.operational;
  const latest=rows.reduce((m,o)=>Math.max(m,...[o.correctedAt,o.reportedAt,o.supersededAt,o.observedAt].map(utcTimestamp).filter(Boolean).map(Date.parse)),Date.parse(cut));
- const n=normalizeObservations([],{athleteId:program.athleteId,asOf:new Date(latest).toISOString(),prior:rows,maximumAgeDays:36500,futureSkewSeconds:op.learning.futureClockSkewSeconds,timezoneOffsetMinutes:program.timezoneOffsetMinutes??0,loadIncrements:{...op.strength.smallestIncrement,SINGLE_IMPLEMENT:incrementFor(op.strength,'SINGLE_IMPLEMENT')}});
+ const n=normalizeObservations([],{athleteId:program.athleteId,asOf:new Date(latest).toISOString(),prior:rows,maximumAgeDays:36500,futureSkewSeconds:op.learning.futureClockSkewSeconds,timezoneOffsetMinutes:program.timezoneOffsetMinutes??0,loadIncrements:{...op.strength.smallestIncrement,SINGLE_IMPLEMENT:incrementFor(op.strength,'SINGLE_IMPLEMENT'),MACHINE_STACK:incrementFor(op.strength,'MACHINE_STACK')}});
  const {bound,unbound}=bindObservations(program,n.accepted,op.hybrid,authority.policy);
  return {ledger:[...bound,...unbound],quarantined:n.quarantinedIdentities};
 }

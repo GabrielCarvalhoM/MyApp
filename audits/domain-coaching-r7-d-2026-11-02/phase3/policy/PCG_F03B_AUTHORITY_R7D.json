@@ -1,0 +1,190 @@
+{
+  "recordId": "PCG-R7D-F03B-r1",
+  "date": "2026-11-02",
+  "role": "Product Constitution & Governance (PCG constitution 1.2.0), fresh instance; owner of the authority form for F03-B under the Founder's R7-D Phase 3 authorization. Not the author of the runtime, the decision request, the policy, the catalog or any SSCTR record. Decides the authority form only; makes no domain or scientific judgment on which progression is best (SSCTR).",
+  "independent": true,
+  "scope": {
+    "question": "F03-B only: the authority form under which the engine may decide what a MACHINE_STACK load does when the progression rule calls for a heavier (or lighter) load, once F03-A (the row's unit) is corrected.",
+    "inScope": ["Option A", "Option B", "Option C", "any SSCTR variant composed of A/B elements", "the binding record", "the source-of-truth index entry"],
+    "outOfScope": [
+      "F03-A (row unit KG): runtime correction already made mandatory by the Founder; this record only notes it is consistent with loadUnits",
+      "HV-01 (per-convention increment on a declared TOTAL dumbbell pair), F12 (kettlebell steps), BODYWEIGHT, BAND_TENSION, ASSISTED_BODYWEIGHT, SINGLE_IMPLEMENT, TOTAL and PER_HAND increments",
+      "DX-01, DX-02, F04 and every other Phase 2 finding",
+      "any general policy review, any change to PROGRAM_POLICY_R6.json, the R6 or B0 SSCTR records, the B0 catalog, product/ or canon/"
+    ],
+    "founderAuthorization": "R7-D Phase 3, as quoted in the dispatch: 'um narrow policy decision com SSCTR e Product Constitution / Governance owner apropriado ... Uma mudança estreita de policy está autorizada somente se necessária para resolver F03-B e aprovada pelos owners. Não fazer revisão geral da policy. Se a policy não puder resolver de forma autorizada: F03_POLICY_BLOCKED.' Founder limits (F03B_DECISION_REQUEST.md): no hardcoded +2.5 kg or +5 kg; no assumption that every machine uses the same stack; no impossible weight; no false precision. No on-disk Founder request file for Phase 3 was found under audits/domain-coaching-r7-d-2026-11-02/ at the time of reading (see condition PCG-F03B-C10)."
+  },
+  "sourcesRead": [
+    {"path": "CURRENT_MISSION.md", "sha256": "bc820cd40e4072c09c86901faeb1b39ecd22f562448a2a0fe452f56baf8d6082", "read": "head and the R7-C Phase 7 / R7-D Phase 1-2 sections"},
+    {"path": "canon/CANONICAL_INDEX.md", "sha256": "c9e012a8c404ec5d520fc78ba03e592a429dc08b08e75884b546c3d33cde28cc", "read": "authority filter; R7-B0 block (lines 1-5), baseline block, SSCTR-AUTH-r1 overlay (lines 75-83); no R7-B/R7-C/R7-D entry exists"},
+    {"path": "audits/domain-coaching-r7-d-2026-11-02/phase3/policy/F03B_DECISION_REQUEST.md", "sha256": "d0f2ce6f85224bccad3c57a93531e715382db2f9294b4771d059d4f7d88f3e92", "read": "whole"},
+    {"path": "CoachingCore/r6/PROGRAM_POLICY_R6.json", "sha256": "a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100", "valueHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c", "read": "revision R6-POLICY-5; authoritySplit, principles, boundaries R6-LOAD-ESTABLISHMENT / R6-PLANNED-PROGRESSION / R6-SUBSTITUTION, operational.strength (loadUnits, smallestIncrement, loggedLoadAdoption, goalDoses, repStep, gates), revisionNote. valueHash recomputed read-only with CoachingCore/src/value.mjs hash(); it matches the R6 records."},
+    {"path": "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-policy-review.json", "sha256": "6238cbf0ed9fdbf1e5337f97a21d720c9dc0f5311422c9c8ade4309e7f008c70", "read": "structure only: revision R6-SSCTR-POLICY-r12, 10 records each bound to policyHash 18ec48f3...; conditions of R6-SSCTR-PLANNED-PROGRESSION and R6-SSCTR-LOAD-ESTABLISHMENT (binding clause: 'Any policy byte change invalidates it; any change to the runtime functions named in requiredRuntimeChanges needs a delta binding review before runtime freeze'; D44 one-increment adoption bound; establishment ramp 'add the smallest increment'). No record mentions MACHINE_STACK or STACK_STEP."},
+    {"path": "CoachingCore/src/r6-authority.mjs", "sha256": "916b601ade47966557bafc29f134a45f7497380949c584e9be773f4beba63f69", "read": "whole: a boundary is enabled only by an independent record whose policyHash equals hash(policy); otherwise fail closed"},
+    {"path": "audits/domain-coaching-r7-b0-2026-10-31/reviews/SSCTR_RECHECK_B0.json", "sha256": "6867d3e89ebd4bb309c018fb456508d3a4510038194269769b0a4ef16f23d885", "read": "record R7B0-SSCTR-B0-C04 (R7B0-SSCTR-r2): target, scope (B0-C04, B0-F07), decision.conditions 4, 5 and 8, expiry triggers"},
+    {"path": "CoachingCore/r7/b0/GAP_CLOSURE_B0.md", "sha256": "0f43f09fb3ccbe4ab2f4f71c03c82f7ea09a588a43358bd149cf64b5e4fa2b04", "read": "B0-F07 (line 96), POUND-DISPLAY"},
+    {"path": "CoachingCore/r7/b0/REPERTOIRE_CATALOG_B0.json", "sha256": "ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9", "read": "R7B0-CATALOG-2 vocabulary.loadConvention; 10 MACHINE_STACK configurations"},
+    {"path": "audits/domain-coaching-r7-d-2026-11-02/PHASE2_CHECKPOINT.md", "sha256": "53a982e7d37449078ea92ee0d3f9a1e87dd1f47793972589942c3fd98341ec4b", "read": "FINDINGS table: F03 (owner 'SSCTR com PCG (passo da pilha, decisão de policy)'), HV-01, F12"},
+    {"path": "audits/domain-coaching-r7-d-2026-11-02/diagnostic/triage/SSCTR_DIAGNOSTIC_TRIAGE_R7D.json", "sha256": "b2cf1ba48ea4826d44f2d39e19e912ec92c3ad66e1cf62f8c21c730bde74c632", "read": "JW-3 and the F03 smallestCorrection only ('This is a policy decision, not set here')"},
+    {"path": "CoachingCore/r7/c/R7C_HANDOFF.md", "sha256": "3239dd056ffc9d844040d36c54a2810535041fae2fcd6a14a463d00ee72c9327", "read": "freeze and semantic-disposition binding pattern"},
+    {"path": "CoachingCore/r7/c/RUNTIME_FREEZE_R7C_4.json", "sha256": "bf99c01bf791b832725bb0f4a83cab270378c1afc882b402b76916000eca2fc2", "read": "keys; semanticDisposition {record, path, sha256, disposition}; bindingConditions; unchangedSince (CoachingCore/r6, CoachingCore/r7/b0, B0 reviews, human queue, product, canon)"},
+    {"path": "CoachingCore/src/r6-prescription.mjs", "sha256": "41d90e32b9976d92156e0b9a1e8eca92df2597d83475e80d670391923bbf532f", "read": "line 63 INCREMENT_UNITS (MACHINE_STACK:'STACK_STEP'); line 74 KNOWN load object uses the increment unit as the load unit"},
+    {"path": "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-dossier/reviewed-18ec48f3-r11-source/src/r6-prescription.mjs", "sha256": "6d223c285fb5e1595086dcd6be275956a2cfb122e036060ace369b4bc83cb4ed", "read": "line 60: INCREMENT_UNITS with MACHINE_STACK:'STACK_STEP' already present in the R6 source the SSCTR reviewed"},
+    {"path": "CoachingCore/src/r6-program.mjs", "sha256": "32a7b3cfb862faf7ee2789c76f09e85b5bc027d271ae3d82a211a1ccf165a407", "read": "lines 545-551 (adoption bound and establishment agreement use the increment as kilograms) and 797 (progression step)"},
+    {"path": "CoachingCore/src/r7b-repertoire.mjs", "sha256": "dd16691f41014df415e2ddd494e3dca88947cdd9f43bb9805811ff517cd62fe4", "read": "line 81 incrementFor"},
+    {"path": "CoachingCore/src/r6-provenance.mjs", "sha256": null, "read": "lines 65 and 140 only (loadIncrements used by physicalAgrees); not hashed"},
+    {"path": "audits/domain-coaching-r7-d-2026-11-02/phase3/probes/out/f03-machine-witness.R7C-FREEZE-4.txt", "sha256": "eb1d20de68ec41e08680b8c408b1f388aa3f611d603aab885945f9feff8f9bb8", "read": "first section (AS_PRESCRIBED): machine loads frozen with LOGGED_UNIT_OR_CONVENTION_UNKNOWN"},
+    {"path": "C:/Users/carva/.claude/agent-system/constitutions/PRODUCT_CONSTITUTION_GOVERNANCE.md", "sha256": null, "read": "via the dispatch (constitution 1.2.0)"},
+    {"path": "C:/Users/carva/.claude/agent-system/evals/PRODUCT_GOVERNANCE.md", "sha256": null, "read": "PCG self-check criteria"}
+  ],
+  "current": {
+    "policyText": "smallestIncrement {TOTAL 2.5, PER_HAND 2, MACHINE_STACK 1, BODYWEIGHT 0} states no unit. loadUnits states that loads (not increments) are kilograms inside the engine. loggedLoadAdoption bounds adoption at maximumIncrementsAbovePlanned (1) smallest increment above the stated load, and establishment agreement at establishmentAgreementIncrements (1) smallest increment; it enumerates the stated-load cases as the known load, the last logged load of a from-log row and a first establishment log, and ends 'Anything else keeps the planned reference and is asked about.'",
+    "runtimeReading": "Since R6 the runtime names the MACHINE_STACK increment unit STACK_STEP (INCREMENT_UNITS, present in the SSCTR-reviewed R6 source) but performs its arithmetic in kilograms (value + 1, value - 1, adoption bound +1 kg, agreement within 1 kg, duplicate tolerance).",
+    "reviewedAuthority": "No R6 SSCTR record and no B0 SSCTR record examined the MACHINE_STACK increment or its unit. The +1 kg machine step is therefore an unreviewed runtime behaviour, not a reviewed decision.",
+    "relatedPrinciple": "B0-F07 and B0-C04 condition 4 (SINGLE_IMPLEMENT): progress by the implement step, or by repetitions when that step is unavailable, never a fabricated load. B0-C04 condition 5 (BAND_TENSION, ASSISTED_BODYWEIGHT): no kilograms; repetitions inside the goal range; a level change is athlete-reported and confirmed (ASK), never inferred. Catalog: MACHINE_STACK is 'Stack or plate setting of one machine; never comparable across machines.'"
+  },
+  "findings": [
+    {
+      "id": "PCG-F03B-F01",
+      "type": "NORMATIVE_AMBIGUITY (THESIS_CONFLICT convention, policy layer)",
+      "sourceA": "PROGRAM_POLICY_R6.json operational.strength.loadUnits + the kilogram values of TOTAL and PER_HAND: reads smallestIncrement.MACHINE_STACK = 1 as 1 kg (the runtime's arithmetic).",
+      "sourceB": "r6-prescription.mjs INCREMENT_UNITS (MACHINE_STACK -> STACK_STEP, since R6), catalog MACHINE_STACK convention ('setting of one machine'), R6-LOAD-ESTABLISHMENT ('add the smallest increment' between ramp sets, a physical step): reads it as one setting of that machine.",
+      "incompatibility": "The kg reading prescribes loads no ordinary stack can set (140 -> 141 kg); the setting reading has no kilogram size the engine can compute.",
+      "currentDecisionPrevailing": "The Founder's Phase 3 limits (no universal step, no impossible weight, no false precision) are the current explicit decision. They exclude the kg reading as a basis for any machine step. Recorded as delta PCG-F03B-D01; the past runtime behaviour is not re-described as if it had been the setting reading.",
+      "resolution": "Interpretation I-1 (below), bound with an accepting SSCTR record.",
+      "decider": "SSCTR for the domain meaning and rule; PCG for the form; no Founder strategic decision needed."
+    }
+  ],
+  "interpretation": {
+    "id": "I-1",
+    "classification": {"epistemic": "DECIDED (on acceptance by the SSCTR record)", "normative": "CURRENT_PRODUCT_DECISION at the coaching-policy layer, scope MACHINE_STACK only"},
+    "text": "In PROGRAM_POLICY_R6.json (R6-POLICY-5), smallestIncrement.MACHINE_STACK = 1 means one setting of that machine (one stack or plate position, or its smallest add-on). Its size in kilograms is unknown to the engine and is never assumed, converted or computed. Machine loads themselves stay kilograms (loadUnits): a known machine load is only a kilogram value the athlete reported, logged or confirmed. STACK_STEP names the unit of the increment, never the unit of a load.",
+    "appliesTo": "Every use of smallestIncrement.MACHINE_STACK, with one consistent reading: the progression step, REGRESS, the loggedLoadAdoption bound (maximumIncrementsAbovePlanned), establishment agreement and hint agreement (establishmentAgreementIncrements), and observation duplicate/agreement tolerance (loadIncrements in normalizeObservations).",
+    "whyWithinAuthority": [
+      "The hash-bound value and every policy byte stay unchanged: canonical hash 18ec48f3... and file sha a75be1aa... are preserved, so all ten R6 boundaries stay enabled.",
+      "smallestIncrement states no unit; loadUnits governs loads, not increments; the R6 runtime already typed this increment as STACK_STEP in the source the SSCTR reviewed.",
+      "It supersedes no reviewed decision: no R6 or B0 SSCTR record examined MACHINE_STACK.",
+      "It applies a recorded principle (B0-F07: never a fabricated load) and the catalog's own convention, and complies with the current Founder limits."
+    ],
+    "consequenceAtKgBoundaries": "Where an existing rule measures a distance in MACHINE_STACK increments between two kilogram values, the engine cannot show that two different values are within one setting. Read strictly and fail-closed, only equal values provably agree, and anything else falls to the policy's own default: 'Anything else keeps the planned reference and is asked about.' Any wider reading is a domain rule the SSCTR record must state explicitly (see Option B)."
+  },
+  "optionRulings": [
+    {
+      "option": "A",
+      "summary": "Hold until an executable value is known; repetitions only; no machine load computed up or down.",
+      "ruling": "WITHIN_EXISTING_AUTHORITY",
+      "form": "Interpretation and application (I-1 + B0-F07 principle + the policy's fail-closed defaults), bound by record; no policy change.",
+      "reasons": [
+        "Under I-1 the kilogram size of the next machine step is unavailable, which is the case B0-F07 and B0-C04 condition 4 address: repetitions progress and no load is fabricated. Extending that principle from SINGLE_IMPLEMENT to MACHINE_STACK is an application to a convention with the same property (step size unknown to the engine); the SSCTR's acceptance for MACHINE_STACK is what makes the extension authoritative.",
+        "Every remaining behaviour uses existing mechanisms with no new number: repStep 2 inside goalDoses.repRange; HOLD at the top of the range and in LOAD mode (holding is the policy's fail-closed outcome; planned doses are conditional proposals, never promises, R6-PLANNED-PROGRESSION limits); REGRESS by repetitions (the existing zero-step path).",
+        "An above-plan machine log is not adopted and is asked about: under I-1 the one-increment bound cannot be shown satisfied, so the policy's own default applies ('Anything else keeps the planned reference and is asked about'). A log at or below the plan stays executed evidence.",
+        "No byte of the policy, catalog or any closed record changes."
+      ],
+      "conditionsSpecific": [
+        "Option A as written in the request reads the adoption bound 'with the 1 kg increment'. That mixes readings and is not admissible: the adoption bound, establishment agreement and duplicate tolerance must use I-1 like the step does (PCG-F03B-C02). Under I-1 the outcome is the same for an above-plan log (asked, not adopted), and equal values still agree.",
+        "The plateau at the top of the range and the non-progressing STRENGTH-goal machine MAIN are disclosed limitations. Whether they are acceptable as non-blocking is the SSCTR's call."
+      ]
+    },
+    {
+      "option": "B",
+      "summary": "The athlete's next setting from executed evidence; numberless next-setting row; the logged setting becomes known only on executed evidence.",
+      "ruling": "NARROW_DELTA_ADMISSIBLE",
+      "form": "A narrow normative overlay on R6-POLICY-5 for MACHINE_STACK only. It is a runtime-binding delta review in the sense of the R6 records' own binding clause ('any change to the runtime functions ... needs a delta binding review before runtime freeze'), carried by an SSCTR F03-B record that states the rule and by this PCG record that states I-1 and the form. Both are bound by SHA-256 in the R7-D Phase 3 freeze record. No policy byte, catalog byte or closed record changes, and no new number.",
+      "whyNotWithinExistingAuthority": [
+        "loggedLoadAdoption enumerates the stated load of an exposure (the known load, the last logged load of a from-log row, a first establishment log). A numberless 'next setting' row on an exercise with a known load is none of these, so the adoption of its log is not covered by the text, and the text's default for uncovered cases is to keep the planned reference and ask.",
+        "The one-increment bound (SSCTR D44 condition) cannot be measured in kilograms for such a log. Accepting the log therefore means meeting that bound by a different kind of evidence (the row stated 'one setting' and the athlete executed and reported it) instead of the kilogram check. That is a substantive, if narrow, change in how a reviewed bound is applied, so it needs a domain record. It is not a silent runtime choice and not an interpretation PCG can make alone."
+      ],
+      "whyAdmissible": [
+        "Needed: the Founder authorized a narrow change only if needed to resolve F03-B. Option A resolves F03-B's safety and precision limits but leaves machine loads without any adoption path, so a narrow change is needed if the SSCTR holds that A alone is not an adequate rule. Whether it is adequate is the SSCTR's judgment, not PCG's.",
+        "Narrow: MACHINE_STACK only; no new value, threshold, input field or row unit; it reuses existing elements (numberless row as in D48 from-log/establishment rows, repRange bottom, startRir/targetRir, ADVANCE gate, ceilings, loadConfirmations, second-log agreement).",
+        "Hash-safe: the policy value 1 is unchanged and read under I-1; the canonical hash and every R6 boundary stay enabled; R6 and B0 records are not rewritten.",
+        "Approved by the owners named by the Founder: the SSCTR (rule) and PCG (form), which is the decision rule of F03B_DECISION_REQUEST.md."
+      ],
+      "conditionsSpecific": [
+        "The engine never computes a machine kilogram value up or down. REGRESS goes to a value previously executed and adopted for that machine, or lowers repetitions; never value minus a step.",
+        "Adoption evidence for a logged next setting is the SSCTR's to state explicitly: ADVANCE alone, or ADVANCE plus confirmation or a second agreeing log as D45 does for establishment loads. If the SSCTR record is silent or ambiguous on it, the narrower variant applies (ADVANCE plus confirmation or a second equal log); otherwise the log stays asked about.",
+        "Every bound that kilograms can still evaluate keeps applying unchanged: 0-500 kg, kg or lb unit with the planned convention, the ADVANCE criterion, the re-establishment ceiling and the return pre-break cap (capped and asked).",
+        "The residual that the engine cannot detect a multi-setting jump on a next-setting row is disclosed. Numeric plausibility stays the open Data-owned gap the policy names.",
+        "If no heavier setting fits, the same logged load means hold at the top of the range; no load is fabricated."
+      ]
+    },
+    {
+      "option": "C",
+      "summary": "An equipment-declared increment (the athlete or equipment states the machine's step), with A or B without a declaration.",
+      "ruling": "NOT_ADMISSIBLE",
+      "form": null,
+      "reasons": [
+        "It needs a new athlete/equipment input field that neither the intake nor R7D-INTERFACE-1 has. Equipment detail is a Product/Data matter (B0-F07 owner: 'Product/Data (equipment detail) and R7-B'), outside the two owners the Founder named for this decision. Changing the interface also changes what the R7-D harness and pre-registration measure.",
+        "It is not needed: A or B resolves F03-B without it, so the Founder's 'only if needed' test fails.",
+        "Under I-1 it would not override smallestIncrement.MACHINE_STACK. It would supply the kilogram size of one setting for a given machine, which is a new athlete-supplied number whose plausibility is the open Data gap. That is not a narrow F03-B change.",
+        "Not a blocker: routed as OPEN_QUESTION to Product/Data (equipment detail) for a later mission with its own authorization; it would refine I-1, not replace it."
+      ]
+    },
+    {
+      "option": "SSCTR variant (another rule composed of A/B elements)",
+      "ruling": "NARROW_DELTA_ADMISSIBLE only if it meets every B invariant; NOT_ADMISSIBLE otherwise",
+      "form": "Same as B.",
+      "reasons": [
+        "Admissible if it computes no machine kilogram value, adds no number or input field, reads MACHINE_STACK under I-1 everywhere and keeps every kg-evaluable bound.",
+        "Not admissible in this phase if it needs a policy value change (it breaks the 18ec48f3... binding of all ten R6 boundaries and the closed records cannot be re-issued here), a new input, a fixed kg step for machines (excluded by the Founder) or a rewrite of a closed record. If such a rule is the only one the SSCTR accepts, the coordinator's outcome is F03_POLICY_BLOCKED."
+      ]
+    }
+  ],
+  "delta": [
+    {
+      "id": "PCG-F03B-D01",
+      "previous": "Unreviewed R6 runtime behaviour: MACHINE_STACK step +1 kg / -1 kg; adoption bound +1 kg; agreement within 1 kg.",
+      "new": "I-1 plus the SSCTR-accepted rule (A, B or an admissible variant), MACHINE_STACK only.",
+      "trigger": "R7-D Phase 2 finding F03 (D08, D14, D18; witness f03-machine-witness).",
+      "decider": "SSCTR (rule) + PCG (form), under the Founder's Phase 3 authorization",
+      "approvalRef": "this record + the SSCTR F03-B record, as bound by the R7-D Phase 3 freeze record",
+      "supersedes": "Only the runtime's kilogram arithmetic for MACHINE_STACK. No reviewed decision, no policy byte, no closed record.",
+      "impact": ["CoachingCore runtime (step, regress, adoption, agreement, duplicate tolerance for MACHINE_STACK)", "10 MACHINE_STACK catalog configurations (convention unchanged, so B0-C04 condition 8 is not triggered)", "R7-D harness/pre-registration expectations for machine rows", "future policy revision (unit of each smallestIncrement entry)", "human revalidation queue (prescriptive change)"]
+    }
+  ],
+  "bindingForm": {
+    "records": [
+      "This record, PCG-R7D-F03B-r1 (audits/domain-coaching-r7-d-2026-11-02/phase3/policy/PCG_F03B_AUTHORITY_R7D.json; MD is the readable copy, the JSON prevails).",
+      "The SSCTR F03-B record (domain rule; separate independent instance), which must accept A, B or an admissible variant and state I-1 for MACHINE_STACK in its own words or by reference."
+    ],
+    "freezeBinding": "The R7-D Phase 3 runtime freeze record carries a field analogous to R7-C's semanticDisposition, e.g. policyDecision: {decision:'F03-B', option, interpretation:'I-1', records:[{record:'PCG-R7D-F03B-r1', path, sha256}, {record:<SSCTR id>, path, sha256, disposition}]}. The freeze verifier checks both hashes, and checks that PROGRAM_POLICY_R6.json is still sha a75be1aa... with value hash 18ec48f3..., the R6 SSCTR record still 6238cbf0..., the catalog still ceee276a... and SSCTR_RECHECK_B0.json still 6867d3e8....",
+    "handoff": "The R7-D handoff lists F03-B as a binding condition: I-1 verbatim, the chosen rule, its conditions from both records, and the statement that it is an overlay on R6-POLICY-5 for MACHINE_STACK only, not a policy revision.",
+    "missionAndLedger": "The coordinator's insert-only CURRENT_MISSION.md / MISSION_LEDGER.md entry for Phase 3 names both records and their hashes. This record does not write them.",
+    "futurePolicyRevision": "When R6-POLICY-5 is next legitimately revised under its own authorization, with every boundary record re-issued for the new hash, the revision absorbs I-1 into the text (the unit of each smallestIncrement entry) and the overlay is retired by reference. Until then the overlay is the authority for MACHINE_STACK.",
+    "humanRevalidation": "If the SSCTR record has prescriptive impact, its funded-human revalidation entry follows existing practice, appended by the owner authorized in Phase 3. This record does not touch the queue."
+  },
+  "proposedIndexEntry": {
+    "status": "PROPOSED — not written to canon/ in Phase 3; apply only at an authorized canon sync, and only if the coordinator's outcome is an accepted option (not F03_POLICY_BLOCKED)",
+    "target": "canon/CANONICAL_INDEX.md, a new block immediately above R7_B0_REPERTOIRE_INDEX_START. The B0 block states 'R6-POLICY-5 ... unchanged' and is the index's only path to the policy and the MACHINE_STACK convention, so a reader would otherwise apply 1 as kilograms.",
+    "text": "<!-- R7D_F03B_INDEX_START: R7D-F03B-1 -->\n## R6-POLICY-5 reading overlay — MACHINE_STACK increment (R7-D Phase 3, F03-B) / 2026-11-02\n\nFor MACHINE_STACK only, `smallestIncrement.MACHINE_STACK = 1` in [R6-POLICY-5](../CoachingCore/r6/PROGRAM_POLICY_R6.json) means one setting of that machine; its kilogram size is never assumed or computed, and machine loads stay kilograms. The machine progression rule and its conditions are in the [SSCTR F03-B record](<path>) and the [PCG authority record](../audits/domain-coaching-r7-d-2026-11-02/phase3/policy/PCG_F03B_AUTHORITY_R7D.json), bound by hash in the [R7-D Phase 3 freeze record](<path>). Policy bytes, the ten R6 boundary records, R7B0-CATALOG-2 and the B0 records are unchanged. This is not a policy revision, not Product Truth and not V1 coaching authority (V1_COACHING_AUTHORITY_READY = NO).\n<!-- R7D_F03B_INDEX_END: R7D-F03B-1 -->"
+  },
+  "conditions": [
+    {"id": "PCG-F03B-C01", "text": "This record binds only together with an SSCTR F03-B record that accepts A, B or an admissible variant. It chooses no rule. If the SSCTR accepts only C or an inadmissible variant, or no option, the outcome for F03-B is F03_POLICY_BLOCKED (coordinator's decision rule)."},
+    {"id": "PCG-F03B-C02", "text": "One reading (I-1) at every use of smallestIncrement.MACHINE_STACK: step, REGRESS, adoption bound, establishment and hint agreement, and observation duplicate tolerance. A mixed reading (setting for the step, kilograms for adoption or agreement) is not admissible."},
+    {"id": "PCG-F03B-C03", "text": "No machine kilogram value is ever computed from the increment, in either direction, and no fixed kilogram step is introduced for machines."},
+    {"id": "PCG-F03B-C04", "text": "No byte change to PROGRAM_POLICY_R6.json, the R6 SSCTR records, R7B0-CATALOG-2, SSCTR_RECHECK_B0.json or any closed record; no new policy number, threshold or input field."},
+    {"id": "PCG-F03B-C05", "text": "Scope is MACHINE_STACK only. TOTAL, PER_HAND, SINGLE_IMPLEMENT, BODYWEIGHT, BAND_TENSION and ASSISTED_BODYWEIGHT, HV-01 and F12 are untouched and not absorbed."},
+    {"id": "PCG-F03B-C06", "text": "F03-A is consistent with this record: the row's load unit is KG (loadUnits); STACK_STEP never appears as a load unit."},
+    {"id": "PCG-F03B-C07", "text": "Both records are bound by SHA-256 in the R7-D Phase 3 freeze record and named in the R7-D handoff and in the insert-only mission entry. A later byte change to either record invalidates the binding and needs a new freeze."},
+    {"id": "PCG-F03B-C08", "text": "Residuals (plateau and non-progressing STRENGTH machine MAIN under A; an undetectable multi-setting jump under B) are disclosed in the handoff as the SSCTR classifies them."},
+    {"id": "PCG-F03B-C09", "text": "Re-review triggers: any change to the policy value hash or file; any change to the MACHINE_STACK convention in the catalog; an equipment-increment input added (Option C route); funded human revalidation (may maintain, modify or revoke without AI veto); an adverse or runtime inconsistency observed on machine rows in a later gate."},
+    {"id": "PCG-F03B-C10", "text": "Before the freeze binds this record, the coordinator preserves the Founder's Phase 3 authorization on disk under the R7-D audit folder, so the approvalRef chain does not depend on a dispatch quotation."}
+  ],
+  "openQuestions": [
+    {"id": "PCG-F03B-Q01", "question": "Should the intake or equipment model collect a machine's executable increment (Option C)?", "owner": "Product/Data (B0-F07 equipment detail)", "trigger": "a later mission with its own Founder authorization", "blocking": false}
+  ],
+  "selfCheck": {
+    "note": "Self-check, not approval. Rubric evals/PRODUCT_GOVERNANCE.md 1.2.0, PCG section.",
+    "items": [
+      {"criterion": "request, authority, current source and history recovered; current/target/delta explicit", "result": "PASS", "evidence": "current, findings, delta"},
+      {"criterion": "decisions, design space, open questions distinguishable with IDs, sources, classifications", "result": "PASS", "evidence": "I-1, PCG-F03B-F01/D01/C01-C10/Q01"},
+      {"criterion": "hypothesis not turned into MUST; no domain judgment", "result": "PASS", "evidence": "rule choice and adoption evidence left to SSCTR; the fail-closed defaults are quoted policy text"},
+      {"criterion": "conflict with sources A/B, impact and resolution authority", "result": "PASS", "evidence": "PCG-F03B-F01"},
+      {"criterion": "history recoverable, supersession explicit, no rewrite", "result": "PASS", "evidence": "D01 supersedes only unreviewed runtime arithmetic; no closed record edited"},
+      {"criterion": "no UI/architecture prescribed", "result": "N/A", "evidence": "runtime policy layer; no surface"},
+      {"criterion": "independent reviews", "result": "N/A in this phase", "evidence": "not a Product Thesis/doctrine change (routing product_doctrine not triggered); the Founder named SSCTR + PCG as deciders; no PRODUCT_CONSTITUTION_READY or canonical publication is claimed"}
+    ]
+  },
+  "status": "GOVERNANCE_READY_FOR_REVIEW for the authority form; binding only per bindingForm. Not canonical, not Product Truth, not V1 coaching authority.",
+  "outcome": "AUTHORITY_FORM_DECIDED"
+}

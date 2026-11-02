@@ -491,6 +491,9 @@ function strengthCandidate(sk,ss,w,slot,entry,{firstOfWeek,phase,date,entryWeek}
  }
  // A from-log row needs a logged load: an exercise a review saw performed without one is established by effort again (SSCTR D52).
  if(ex.unlogged&&ex.mode==='FROM_LOG')return {kind:'UNLOGGED',...counts,cap:e.sets,rirFloor:e.minimumRir,row:{reps:inRange(ex.reps??reps),mode:'ESTABLISH',establishment:true,note:`No usable load was logged last time: establish the load by effort again${Number.isFinite(ex.ceiling)?`; do not exceed ${ex.ceiling} ${ex.convention==='PER_HAND'?'kg per hand':'kg'}`:''}`}};
+ // R7-D F03-B (F03B-MACHINE-STEP-r1, P2): a machine step due is the athlete's next setting above R, a numberless row at the step's repetitions with R
+ // (at the dose held before the step) as the fallback; never in a phase that holds the load.
+ if(ex.mode==='KNOWN'&&ex.convention==='MACHINE_STACK'&&ex.stepDue&&!hold)return {kind:'KNOWN',...counts,rirFloor:2,row:{reps:Math.min(ex.stepDue.reps??ex.reps,hi),mode:'FROM_LOG',convention:ex.convention,nextSetting:{aboveKg:ex.load,fallbackReps:Math.min(ex.stepDue.heldReps??ex.reps,hi)},note:null}};
  if(ex.mode==='KNOWN')return {kind:'KNOWN',...counts,rirFloor:2,row:{reps:Math.min(ex.reps,hi),mode:'KNOWN',value:ex.load,convention:ex.convention,note:hold?'No load increase in this phase':null}};
  const pending=Number.isFinite(ex.pendingLoad),rule=pending?PENDING_RULE:ex.ceiling!=null&&ex.source==='RE_ESTABLISHED'?`Use the load you established last time; never above the previous ${ex.ceiling} until a new log supports it`:hold?'Use the last logged load; no increase in this phase':g.mode==='LOAD'?`If every set reached ${g.reps} reps with at least ${g.targetRir} in reserve, add the smallest available increment; otherwise repeat`:g.mode==='HOLD'?'Keep the logged load while reps in reserve hold':`Add ${S.repStep} reps per set while at least ${g.targetRir} reps stay in reserve, up to ${hi}; then add the smallest increment and return to ${lo}`;
  return {kind:'FROM_LOG',...counts,row:{reps:inRange(ex.reps??reps),mode:'FROM_LOG',rule,...(pending?{pending:true}:{})}};
@@ -543,6 +546,17 @@ export function loggedLoadDecision(S,ex,u,log,{advanced=null,hint=null}={}){
  if(!Number.isFinite(log?.load))return {adopted:false,reason:'LOGGED_LOAD_MISSING'};
  if(log.load<=0||log.load>(A.maximumKilograms??500))return {adopted:false,reason:'LOGGED_LOAD_IMPLAUSIBLE'};
  const conv=log.convention??ex?.convention,step=incrementFor(S,conv),planned=u?.mode==='KNOWN'&&Number.isFinite(u.value)?u.value:u?.mode==='FROM_LOG'&&Number.isFinite(ex?.load)?ex.load:null;
+ // R7-D F03-B (F03B-MACHINE-STEP-r1, P3; PCG I-1): a machine value above the reference is the athlete's next setting, whose size in kilograms cannot
+ // be checked against "one smallest increment": it becomes the reference only on the ADVANCE criterion and the establishment verification (D45:
+ // confirmed, or the same value logged at another exposure), and never above a re-establishment or return ceiling. Until then it is asked about.
+ if(conv==='MACHINE_STACK'&&planned!==null&&log.load>planned+1e-9){
+  if(advanced===false)return {adopted:false,reason:'LOGGED_LOAD_ABOVE_PLAN_TARGET_NOT_MET',planned};
+  const cap=Number.isFinite(ex?.ceiling)?ex.ceiling:Number.isInteger(ex?.returnStep)&&Number.isFinite(ex?.load)?ex.load:null;
+  if(cap!==null&&log.load>cap+1e-9)return {adopted:true,value:cap,capped:true,reason:'LOGGED_LOAD_ABOVE_CEILING_CAPPED',planned};
+  const same=v=>Number.isFinite(v)&&Math.abs(v-log.load)<1e-9;
+  if(log.confirmed===true||same(log.earlier)||same(ex?.pendingSetting))return {adopted:true,value:log.load,planned,machineStep:true,reason:log.confirmed===true?'MACHINE_SETTING_CONFIRMED':'MACHINE_SETTING_REPEATED',...(log.confirmed===true?{confirmed:true}:{})};
+  return {adopted:false,pending:true,machineStep:true,reason:'MACHINE_SETTING_UNCONFIRMED',planned};
+ }
  if(planned!==null&&log.load>planned+(A.maximumIncrementsAbovePlanned??1)*step+1e-9)return {adopted:false,reason:'LOGGED_LOAD_ABOVE_PLAN',planned};
  if(planned!==null&&log.load>planned+1e-9&&advanced===false)return {adopted:false,reason:'LOGGED_LOAD_ABOVE_PLAN_TARGET_NOT_MET',planned};
  const ceiling=Number.isFinite(ex?.ceiling)?ex.ceiling:Number.isInteger(ex?.returnStep)&&Number.isFinite(ex?.load)?ex.load:null;
@@ -576,6 +590,8 @@ export const adoptionBasis=(ex,u)=>reestablishes(ex,u)?{...ex,ceiling:ex.load,mo
  */
 export function startStrengthReturn(ex){
  const n={...ex,returnStep:0,returnInBlock:true};delete n.setCap;delete n.setCeiling;delete n.returnLogged;delete n.regainCap;
+ // R7-D F03-B: a return ends a machine's continuity of settings (no previous setting to regress to) and any step or pending setting.
+ delete n.previousLoad;delete n.stepDue;delete n.pendingSetting;
  const ceiling=Number.isInteger(ex.lastExecutedSets)?ex.lastExecutedSets:Number.isInteger(ex.sets)?ex.sets:null;
  if(ceiling!==null)n.setCeiling=ceiling;
  return n;
@@ -595,7 +611,7 @@ const wholeCounts=(done,pl)=>done.map(x=>countsOf(x,pl)).filter(c=>Number.isInte
 const setUp=(u,{entryWeek,returningWeek})=>({status:'ESTABLISHED',mode:u.mode==='BODYWEIGHT'?'BODYWEIGHT':u.mode==='KNOWN'?'KNOWN':'FROM_LOG',load:u.mode==='KNOWN'?u.value:null,convention:u.convention??null,reps:u.reps,sets:u.mode==='KNOWN'?u.sets:null,rir:u.rir,loadTick:0,source:'PLANNED_ESTABLISHMENT',...(entryWeek?{returnStep:0}:returningWeek?{returnInBlock:true,...(Number.isInteger(u.baseSets??u.sets)?{regainCap:u.baseSets??u.sets}:{})}:{})});
 /** Re-established by effort once performed, whatever the state's mode: the earlier load becomes a ceiling and the earlier count comes back one
  * set per executed week from the re-establishment count before its phase reduction, never at once (QRE-R6-17, SSCTR D49, D53). */
-const reEstablish=(ex,u)=>{const c0=Number.isInteger(u.baseSets)?u.baseSets:u.sets;if(ex.mode==='KNOWN'){ex.ceiling=ex.load;ex.mode='FROM_LOG';}ex.source='RE_ESTABLISHED';if(Number.isInteger(ex.sets)&&Number.isInteger(c0)&&ex.sets>c0){ex.priorSets=ex.sets;ex.sets=c0;}if(Number.isInteger(c0))ex.regainCap=c0;};
+const reEstablish=(ex,u)=>{const c0=Number.isInteger(u.baseSets)?u.baseSets:u.sets;delete ex.previousLoad;delete ex.stepDue;delete ex.pendingSetting;if(ex.mode==='KNOWN'){ex.ceiling=ex.load;ex.mode='FROM_LOG';}ex.source='RE_ESTABLISHED';if(Number.isInteger(ex.sets)&&Number.isInteger(c0)&&ex.sets>c0){ex.priorSets=ex.sets;ex.sets=c0;}if(Number.isInteger(c0))ex.regainCap=c0;};
 /**
  * History ingress (state model consumer closure, Property A; QE-R7ASM-01): a prescription never establishes a state. Read as executed evidence, an
  * exposure of an exercise the start does not hold is an effort-guided establishment whatever its row prescribed: a KNOWN row's load is neither the
@@ -786,7 +802,17 @@ export function advanceStrength(sk,ss0,w,used,gate={},logged={},{assumeLogged=fa
   // A log of an exposure that prescribed a known load, at that load or a lighter one, is progression evidence: its repetition target is the
   // gate's (HOLD and REGRESS repeat it, ADVANCE takes the logged repetitions). Only an establishment exposure sets its target from the
   // repetitions it was established with (R7-A; R7-A.1 QE-R7A-12, SSCTR R25).
-  if(adoption?.adopted){const before=ex.mode==='KNOWN'?ex.load:null,progression=uLog.mode==='KNOWN'||ex.mode==='KNOWN'&&Number.isFinite(ex.load)&&Math.abs(ex.load-adoption.value)<1e-9;ex.mode='KNOWN';ex.load=adoption.value;earnedAt(ex,before,uLog,log,advancedGate(k));ex.convention=log.convention??ex.convention??catalogueEntry(u.id)?.convention??'TOTAL';ex.reps=progression&&!(advancedGate(k)&&Number.isFinite(log.reps))?ex.reps:log.reps??ex.reps;ex.source='LOGGED_ACTUAL';delete ex.ceiling;delete ex.pendingLoad;if(Number.isInteger(ex.returnStep))ex.returnLogged=true;}
+  if(adoption?.adopted){const before=ex.mode==='KNOWN'?ex.load:null,progression=uLog.mode==='KNOWN'||ex.mode==='KNOWN'&&Number.isFinite(ex.load)&&Math.abs(ex.load-adoption.value)<1e-9;ex.mode='KNOWN';ex.load=adoption.value;earnedAt(ex,before,uLog,log,advancedGate(k));ex.convention=log.convention??ex.convention??catalogueEntry(u.id)?.convention??'TOTAL';ex.reps=progression&&!(advancedGate(k)&&Number.isFinite(log.reps))?ex.reps:log.reps??ex.reps;ex.source='LOGGED_ACTUAL';delete ex.ceiling;delete ex.pendingLoad;if(Number.isInteger(ex.returnStep))ex.returnLogged=true;
+   // R7-D F03-B (F03B-MACHINE-STEP-r1): a verified heavier setting keeps the one it replaced as the previous adopted setting (P5); any other
+   // change of the setting ends that continuity; a log at or below the reference drops a pending heavier one (P3). A step-due exposure logged at
+   // the reference holds the dose held before the step and never restarts the repetition range there (P4).
+   if(ex.convention==='MACHINE_STACK'){
+    if(adoption.machineStep&&Number.isFinite(before)&&adoption.value>before+1e-9)ex.previousLoad=before;else if(!(Number.isFinite(before)&&Math.abs(adoption.value-before)<1e-9))delete ex.previousLoad;
+    delete ex.pendingSetting;
+    if(uLog.nextSetting&&Number.isFinite(before)&&Math.abs(adoption.value-before)<1e-9&&Number.isInteger(uLog.nextSetting.fallbackReps))ex.reps=uLog.nextSetting.fallbackReps;
+   }}
+  // R7-D F03-B (P3): a heavier machine setting awaiting verification keeps the reference; it is held, asked about and never stated by a row (D48).
+  else if(adoption?.pending&&adoption.machineStep)ex.pendingSetting=log.load;
   // An unconfirmed establishment log is not a number: the next exposure stays FROM_LOG and the athlete is asked (SSCTR D45).
   else if(adoption?.pending){ex.mode='FROM_LOG';ex.pendingLoad=log.load;ex.convention=log.convention??ex.convention;}
   // A from-log row needs a logged load: an exposure performed without a usable one leaves the next one chosen by effort (SSCTR D52).
@@ -819,11 +845,24 @@ export function advanceStrength(sk,ss0,w,used,gate={},logged={},{assumeLogged=fa
   // A return step moves from the dose the week's exposures were prescribed at, never above the state: an exposure that repeated the entry dose
   // completes the entry only, so the restoration never skips the step it did not execute, and HOLD repeats the dose it held (Property D, SSCTR F1).
   if(returning){const base=Math.min(ex.returnStep,doseStep(done.length?done:list));ex.returnStep=k==='REGRESS'?Math.max(0,base-1):executed?base+1:base;if(ex.returnStep>=2){delete ex.returnStep;delete ex.returnLogged;finished=true;ex.setCap=Math.min(ceiling,(Number.isInteger(p?.baseSets)?p.baseSets:uc.sets)+(wholeWeek?1:0));}continue;}
+  const machine=ex.convention==='MACHINE_STACK'&&ex.mode==='KNOWN';
+  // R7-D F03-B (P5): a machine regresses to its previous adopted setting when one is held, otherwise by repetitions; never by a computed load.
+  if(k==='REGRESS'&&machine){if(Number.isFinite(ex.previousLoad)&&ex.previousLoad<ex.load-1e-9)ex.load=ex.previousLoad;else ex.reps=Math.max(lo,(ex.reps??lo)-S.repStep);delete ex.previousLoad;delete ex.pendingSetting;delete ex.stepDue;continue;}
   if(k==='REGRESS'){if(ex.mode==='KNOWN'&&ex.load>=step&&step>0)ex.load=Math.round((ex.load-step)*10)/10;else ex.reps=Math.max(lo,(ex.reps??lo)-S.repStep);continue;}
   if(!dev||!executed)continue;
   // One step per week; EARNED may release the load tick but never adds a second step.
   if(ex.mode==='BODYWEIGHT'){ex.reps=ordinalResistance(catalogueEntry(id))?Math.max(ex.reps??lo,Math.min(hi,(ex.reps??lo)+S.repStep)):Math.min(hi+4,(ex.reps??lo)+S.repStep);continue;}
   if(ex.mode!=='KNOWN'||g.mode==='HOLD')continue;
+  // R7-D F03-B (P2, P6): where the existing rule makes a load step due, a machine's next exposure is its next setting (stepDue), never R plus a
+  // value; the repetitions follow the existing rule unchanged. A pending heavier setting keeps the same step offered until it is verified, dropped
+  // by a log at or below the reference, or regressed.
+  if(machine){
+   if(Number.isFinite(ex.pendingSetting)){ex.stepDue=ex.stepDue??{reps:g.mode==='LOAD'?ex.reps:Math.max(lo,Math.min(hi,ex.repsBase??lo)),heldReps:ex.reps};continue;}
+   if(g.mode==='LOAD'){ex.loadTick=(ex.loadTick??0)+1;if(k==='EARNED'||ex.loadTick%2===0){ex.stepDue={reps:ex.reps,heldReps:ex.reps};ex.loadTick=0;}else delete ex.stepDue;}
+   else if((ex.reps??lo)+S.repStep<=hi){ex.reps=(ex.reps??lo)+S.repStep;delete ex.stepDue;}
+   else ex.stepDue={reps:Math.max(lo,Math.min(hi,ex.repsBase??lo)),heldReps:ex.reps};
+   continue;
+  }
   if(g.mode==='LOAD'){ex.loadTick=(ex.loadTick??0)+1;if(k==='EARNED'||ex.loadTick%2===0){ex.load=Math.round((ex.load+step)*10)/10;ex.loadTick=0;}}
   else if((ex.reps??lo)+S.repStep<=hi)ex.reps=(ex.reps??lo)+S.repStep;else{ex.load=Math.round((ex.load+step)*10)/10;ex.reps=Math.max(lo,Math.min(hi,ex.repsBase??lo));}
  }
@@ -896,8 +935,8 @@ function strengthRowsFor(sk,template,w,ss,{firstOfWeek,phase=null,date=null,entr
   if(dose.skip)continue;
   // A configuration is used at most once per session (catalog rule; Q-R7B-05): two slots of one pattern at practice dose give one practice row.
   if(dose.practice){const practice=catalogueEntry(PRACTICE_ID[r.slotPattern??r.pattern])??entry;if(rows.some(x=>x.id===practice.id))continue;rows.push(exerciseRow(practice,{role:'PRACTICE',sets:dose.sets,reps:dose.reps,rir:dose.rir,mode:'BODYWEIGHT',restSeconds:S.restSeconds.PRACTICE,preparationMinutes:S.preparationMinutes.PRACTICE,establishment:true,note:'Movement practice: learn the pattern; this is not a strength test',exposure:dose.exposure}));used.push({id:practice.id,practice:true,kind:dose.kind,date});continue;}
-  rows.push(exerciseRow(entry,{...common,role:r.role,sets:dose.sets,reps:dose.reps,rir:Math.max(2,dose.rir),mode:dose.mode,value:dose.value??null,convention:dose.convention??null,establishment:!!dose.establishment,rule:dose.rule??null,note:[dose.note,standNote].filter(Boolean).join('; ')||null,pending:!!dose.pending,exposure:dose.exposure}));
-  used.push({id:entry.id,kind:dose.kind,mode:dose.mode,value:dose.value??null,convention:dose.convention??entry.convention,reps:dose.reps,sets:dose.sets,phasedSets:dose.sets,rir:dose.rir,baseSets:dose.baseSets??null,normalSets:dose.normalSets??null,date});
+  rows.push(exerciseRow(entry,{...common,role:r.role,sets:dose.sets,reps:dose.reps,rir:Math.max(2,dose.rir),mode:dose.mode,value:dose.value??null,convention:dose.convention??null,establishment:!!dose.establishment,rule:dose.rule??null,note:[dose.note,standNote].filter(Boolean).join('; ')||null,pending:!!dose.pending,exposure:dose.exposure,nextSetting:dose.nextSetting??null}));
+  used.push({id:entry.id,kind:dose.kind,mode:dose.mode,value:dose.value??null,convention:dose.convention??entry.convention,reps:dose.reps,sets:dose.sets,phasedSets:dose.sets,rir:dose.rir,baseSets:dose.baseSets??null,normalSets:dose.normalSets??null,date,...(dose.nextSetting?{nextSetting:clone(dose.nextSetting)}:{})});
  }
  return {rows,used,standIns};
 }

@@ -1,0 +1,293 @@
+{
+  "recordId": "SSCTR-R7D-F03B-r1",
+  "date": "2026-11-02",
+  "reviewer": {
+    "actorType": "AI_AGENT",
+    "role": "Sports Science & Concurrent Training Reviewer (SSCTR-1.0.0, constitution SSCTR-CONST-1.0.0, evidence protocol SSCTR-EP-1.0.0)",
+    "authority": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY: nonclinical internal sporting decision only",
+    "instanceId": "ssctr-r7d-f03b-2026-11-02: fresh instance; system prompt is the project adapter role (.claude/agents/sports-science-concurrent-training-reviewer.md, sha256 021b5951...6c52d); model inherited (claude-opus-5-5); no fallback; no specialist delegation",
+    "humanCredentialsClaimed": false
+  },
+  "independent": true,
+  "independenceNote": "Independent of the request author (Phase 3 coordinator, Engineering worker) and of the parallel Product Constitution & Governance instance: PCG_F03B_AUTHORITY_R7D.json/.md appeared in the policy folder during this review and were deliberately not opened. This record authors the domain rule F03B-MACHINE-STEP-r1 (a refinement of option B), so any later SSCTR gate on its implementation must be a different instance; a self-check by this instance is not a gate.",
+  "scope": {
+    "question": "F03-B only: how a MACHINE_STACK load progresses when the executable step depends on the machine and no universal step is reliable (prescription when a load step is due, adoption of a heavier logged setting, REGRESS, LOAD mode, bounds).",
+    "population": "Explicitly nonclinical eligible adults (18+) of the V1 shadow-reference population of R6-POLICY-5 (recreational novice-to-experienced runners and strength trainees); synthetic intakes only; offline shadow reference runtime; no real athlete, plan or product effect.",
+    "eligibilityStatus": "SCOPE_DEFINITION_ONLY",
+    "conventionScope": "MACHINE_STACK only: the ten R7B0-CATALOG-2 configurations (leg-press, machine-chest-press, seated-cable-row, lat-pulldown as MAIN or ACCESSORY; leg-curl-machine, leg-extension-machine, hip-abduction-machine, seated-calf-raise-machine, cable-triceps-pushdown, cable-face-pull as ACCESSORY).",
+    "outOfScope": [
+      "F03-A (the row's unit): an Engineering correction the Founder already made mandatory; it is a precondition of this rule, not decided here.",
+      "Establishment, re-establishment, return-step, UNLOGGED and FROM_LOG paths of machine exercises (unchanged).",
+      "SINGLE_IMPLEMENT and every other convention (unchanged; see residual R-08).",
+      "Authority form, binding record and admissibility (PCG).",
+      "Any clinical judgment (none is needed: this is a nonclinical load-progression mechanic)."
+    ],
+    "gate": "G02 (training policy: progression), item F03-B only",
+    "prescriptiveImpact": true,
+    "wholeGateClosure": false
+  },
+  "sourcesRead": {
+    "governance": [
+      {"path": "governance/agents/sports-science-reviewer/CONSTITUTION.md", "sha256": "9de27b4d6ab0879419a92c218b98acc7ef3df63b73b3325010f033d403122180"},
+      {"path": ".agents/skills/sports-science-review/SKILL.md", "sha256": "67374297e275d2ec9ded1a8653baf6dc078fbe3d1fd1002e61a13cd6f34065bf"},
+      {"path": "governance/agents/sports-science-reviewer/EVIDENCE_PROTOCOL.md", "sha256": "7885c126a724716a24c1e270b4d6983c7b8cd5a9797514830d1ea4d0b77e6f31"},
+      {"path": "governance/agents/sports-science-reviewer/REVIEW_TEMPLATE.md", "sha256": "17bba6dbfb1fef46623973e691e2351f4d7ff3157fb38626126e14802283c14c"},
+      {"path": "governance/agents/sports-science-reviewer/ESCALATION_AND_HUMAN_REVALIDATION.md", "sha256": "12ae588e7691b7864a1f0354dadfa7e27277ac2b893df6aaf47730142450f446"},
+      {"path": "CURRENT_MISSION.md (R7-D Phase 1 and Phase 2 blocks)", "sha256": "bc820cd40e4072c09c86901faeb1b39ecd22f562448a2a0fe452f56baf8d6082"},
+      {"path": "canon/CANONICAL_INDEX.md (SSCTR authority overlay, R7-B0 entry, authority filter rows for STIL)", "sha256": "c9e012a8c404ec5d520fc78ba03e592a429dc08b08e75884b546c3d33cde28cc"},
+      {"path": "product/STRENGTH_INTELLIGENCE_SPEC.md (inputs: representable increments; load row: machine loads not interchangeable; progression engine: load is not the only progression)", "sha256": "a39729e9e55e6c76735b5463dd5a4e2a689ac96dcd783540323f82b0ae962950"}
+    ],
+    "request": [
+      {"path": "audits/domain-coaching-r7-d-2026-11-02/phase3/policy/F03B_DECISION_REQUEST.md", "sha256": "d0f2ce6f85224bccad3c57a93531e715382db2f9294b4771d059d4f7d88f3e92"}
+    ],
+    "authorities": [
+      {"path": "CoachingCore/r6/PROGRAM_POLICY_R6.json", "part": "operational.strength (goalDoses, repStep, smallestIncrement, gates, loadUnits, loggedLoadAdoption, resumeAfterDays)", "sha256": "a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100", "canonicalHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c (recomputed with CoachingCore/src/value.mjs hash)"},
+      {"path": "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-policy-review.json (= r12)", "part": "records R6-LOAD-ESTABLISHMENT and R6-PLANNED-PROGRESSION (D44, D45, D48 conditions), R6-SUBSTITUTION; policyHash binding", "sha256": "6238cbf0ed9fdbf1e5337f97a21d720c9dc0f5311422c9c8ade4309e7f008c70"},
+      {"path": "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-evidence-manifest.r12.json", "part": "R6-S01, R6-S11, R6-S13, R6-S38 entries", "sha256": "0079e12638b17dd2e412844c5e704b5fe99e09f224856db00ebffc3ebca4da9b"},
+      {"path": "audits/domain-coaching-r7-b0-2026-10-31/reviews/SSCTR_RECHECK_B0.json", "part": "R7B0-SSCTR-B0-C04 r2 (conditions 4 and 5)", "sha256": "6867d3e89ebd4bb309c018fb456508d3a4510038194269769b0a4ef16f23d885"},
+      {"path": "CoachingCore/r7/b0/GAP_CLOSURE_B0.md", "part": "B0-F07", "sha256": "0f43f09fb3ccbe4ab2f4f71c03c82f7ea09a588a43358bd149cf64b5e4fa2b04"},
+      {"path": "CoachingCore/r7/b0/REPERTOIRE_CATALOG_B0.json", "part": "vocabulary.loadConvention.MACHINE_STACK and the ten MACHINE_STACK configurations", "sha256": "ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9"},
+      {"path": "audits/domain-coaching-r7-b-2026-10-31/reviews/ssctr/SSCTR_REVIEW_R7B.json", "part": "B0-F07 deferral fact and condition (logged load governs; implement steps owned by Product/Data)", "sha256": "e40b069e0f2c66bd65066ebd1423f0d669a7ed8eea17f64b26117f1dcabb9f52"},
+      {"path": "audits/domain-coaching-r7-d-2026-11-02/diagnostic/triage/SSCTR_DIAGNOSTIC_TRIAGE_R7D.json", "part": "F03 and JW-3", "sha256": "b2cf1ba48ea4826d44f2d39e19e912ec92c3ad66e1cf62f8c21c730bde74c632"},
+      {"path": "reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json", "part": "read only, entry HQ-R7B0-SSCTR-B0-C04 as the item shape; not modified", "sha256": "95ea4b92819455a7176e43e7a856dcff872b2ecf9cd575174468829f186099c8"}
+    ],
+    "runtime": [
+      {"path": "CoachingCore/src/r6-program.mjs", "part": "loggedLoadDecision, advanceStrength, strengthCandidate (FROM_LOG rule text 'add the smallest available increment')", "sha256": "32a7b3cfb862faf7ee2789c76f09e85b5bc027d271ae3d82a211a1ccf165a407"},
+      {"path": "CoachingCore/src/r6-prescription.mjs", "part": "INCREMENT_UNITS, exerciseRow (KNOWN-row instruction 'otherwise reduce it')", "sha256": "41d90e32b9976d92156e0b9a1e8eca92df2597d83475e80d670391923bbf532f"},
+      {"path": "CoachingCore/src/r7b-repertoire.mjs", "part": "incrementFor", "sha256": "dd16691f41014df415e2ddd494e3dca88947cdd9f43bb9805811ff517cd62fe4"},
+      {"path": "CoachingCore/src/r6-adaptation.mjs", "part": "loggedLoadQuestions reasons", "sha256": "372f56ad2d8a5816f78894da8dc8394e8d38ff0010b1988dd5e75a59d6b59bfe"}
+    ],
+    "witnesses": [
+      {"path": "audits/domain-coaching-r7-d-2026-11-02/phase3/probes/f03-machine-witness.mjs", "sha256": "8109be24dcd21c581e1106fca0bd42a49c3f2e26d2eb39da41c5ce0c98ffcb00", "run": "Run live on 2026-11-02 (HYPERTROPHY): output identical to the recorded HYPERTROPHY section; the recorded file also holds the GOAL=STRENGTH run."},
+      {"path": "audits/domain-coaching-r7-d-2026-11-02/phase3/probes/out/f03-machine-witness.R7C-FREEZE-4.txt", "sha256": "eb1d20de68ec41e08680b8c408b1f388aa3f611d603aab885945f9feff8f9bb8"},
+      {"path": "scratch, outside the repository: %TEMP%/claude/.../scratchpad/ssctr-r7d-f03b/f03b-real-setting-probe.mjs", "sha256": null, "run": "Same athlete, logs in KG what a synthetic machine allows when a step is due (example settings only, no universal step implied). ROUND_DOWN (athlete keeps the real setting because the stated +1 kg is not settable), HYPERTROPHY: the plan oscillates 140x12 -> 141x8 -> 140x10 -> 140x10 -> 140x12 -> 141x8 over eight weeks; the load never moves. NEXT_SETTING (athlete uses the real next setting, 145 / 55 / 62), HYPERTROPHY and STRENGTH: every week LOGGED_LOAD_ABOVE_PLAN is asked for each machine while the plan's own +1 kg track drifts (141, 142, 143) away from what is lifted. Read-only on the runtime."}
+    ],
+    "notRead": [
+      "audits/domain-coaching-r7-d-2026-11-02/phase3/policy/PCG_F03B_AUTHORITY_R7D.json and .md (parallel independent decision; not opened by design)."
+    ]
+  },
+  "facts": [
+    "R7C-FREEZE-4 prescribes a machine KNOWN row with unit STACK_STEP and a kilogram value; a log echoed as prescribed is refused (LOGGED_UNIT_OR_CONVENTION_UNKNOWN); a log in KG steps the value by smallestIncrement.MACHINE_STACK = 1 as kilograms (140 -> 141 -> 142) and REGRESS subtracts 1 kg (witness, reproduced live).",
+    "The engine knows a machine's logged or reported kilogram value, its convention and the exercise; it does not know the machine's stack, plates or add-ons, and no intake or author field collects them (request; B0-F07; STIL lists representable increments as an input that is not collected).",
+    "The policy value smallestIncrement.MACHINE_STACK = 1 states no unit; the runtime names the machine increment unit STACK_STEP; the catalog defines MACHINE_STACK as the stack or plate setting of one machine, never comparable across machines.",
+    "The runtime's FROM_LOG rows already instruct the athlete to 'add the smallest available increment' (strengthCandidate), and the establishment ramp-up claim in the policy uses 'the smallest increment' the equipment allows: the athlete-executed equipment step is an existing pattern.",
+    "D44 adopts an above-plan logged load only with the ADVANCE criterion and at most one smallest increment above the plan; D45 verifies a logged number the engine cannot judge against a planned number by athlete confirmation or a second agreeing log; D48 forbids a pending row from pointing at the unconfirmed logged value.",
+    "Changing any value in PROGRAM_POLICY_R6.json changes canonical hash 18ec48f3...6b4c and disables all ten R6 boundaries; the rule below needs no policy value change."
+  ],
+  "optionVerdicts": [
+    {
+      "option": "A",
+      "title": "Hold until an executable value is known (repetitions only)",
+      "verdict": "ACCEPT_WITH_CONDITIONS",
+      "role": "Fallback only: acceptable if, and only if, the chosen rule (B') is found inadmissible. Not the SSCTR's chosen rule.",
+      "reasons": [
+        "Safe and free of fabricated load; consistent with B0-C04 c4 and B0-F07 ('reps progress when the next step is unavailable, never a fabricated load'). Repetition progression inside the goal range is a supported progression (CL-2).",
+        "But it treats an executable step as permanently unavailable: no mechanism ever makes an executable heavier value known, because a heavier log stays above the 1-unit bound and is asked about indefinitely. 'Maintenance until an executable value is known' becomes maintenance forever.",
+        "A STRENGTH-goal machine MAIN never progresses load, against the goal's LOAD mode and the dose-response of strength to heavier loads (CL-4). Every machine exercise plateaus at the top of its range.",
+        "An athlete who progresses the setting on their own is asked every week and the reference goes stale (planned below executed)."
+      ],
+      "conditionsIfUsed": [
+        "Disclosed as a known limitation in the binding record: machine loads hold at the top of the goal range; a STRENGTH-goal machine MAIN does not progress load.",
+        "The engine computes no machine load, up or down; REGRESS lowers repetitions by repStep, not below the bottom of the goal range.",
+        "A heavier logged machine value is asked about once per value (not every week) and never adopted silently.",
+        "Re-review is mandatory when an executable-step input exists (B0-F07) or B' becomes admissible."
+      ],
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS (safety and repetition progression); its cost for STRENGTH goals is WELL_SUPPORTED as a principle (CL-4)"
+    },
+    {
+      "option": "B",
+      "title": "The athlete's next setting, from executed evidence",
+      "verdict": "ACCEPT_WITH_CONDITIONS",
+      "role": "Chosen, as refined in chosenRule (B'): verification by confirmation or a second agreeing log is required, not the ADVANCE exposure alone.",
+      "reasons": [
+        "The executable step is the machine's own, executed by the athlete and logged: no fabricated number, no universal step, no impossible weight (Founder limits).",
+        "Load selection by effort with a reserve gate is a supported way to raise absolute load (CL-3); the ADVANCE criterion already verifies that the heavier setting was executed at the target repetitions with the prescribed reserve.",
+        "It preserves load progression for every goal, including a STRENGTH-goal machine MAIN (CL-4), and falls back to A's hold when no heavier setting fits.",
+        "The half of D44 the engine cannot compute for a machine (at most one increment above the plan) is replaced by the existing D45 verification, not dropped; D48 independence is kept, so the agreeing log is not manufactured by the row."
+      ],
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS"
+    },
+    {
+      "option": "C",
+      "title": "An equipment-declared increment",
+      "verdict": "REJECT",
+      "role": "Rejected for F03-B in this phase; not unsafe in principle.",
+      "reasons": [
+        "Needs a new per-machine input field, a new intake/author surface and an override of smallestIncrement.MACHINE_STACK: more than a narrow correction, and outside what this domain decision can create.",
+        "A declaration can be wrong or stale (a different machine, a different gym), and the catalog makes machine values non-comparable across machines; the engine would compute R + declared step and still need B's executed-evidence adoption to stay honest.",
+        "It adds no domain advantage over B': B' obtains the same executable setting from the athlete's own execution without a new number in the engine.",
+        "Equipment detail is owned by Product/Data under B0-F07; a later mission may revisit C as an optional input that only pre-fills B's instruction."
+      ],
+      "evidenceStatus": "NOT_APPLICABLE_TO_EVIDENCE (procedural and scope rejection); no evidence identifies a correct universal or per-machine step (CL-1b)"
+    }
+  ],
+  "chosenRule": {
+    "ruleId": "F03B-MACHINE-STEP-r1",
+    "name": "B': athlete-executed next machine setting, adopted on executed and verified evidence",
+    "disposition": "APPROVE_WITH_CONDITIONS",
+    "proposedAction": "MODIFY_CANDIDATE (runtime-only; policy and catalog bytes unchanged)",
+    "appliesTo": "An exercise whose load convention is MACHINE_STACK and whose state holds a KNOWN reference R (kilograms, the last adopted logged or intake value), in a development week where the existing progression rule makes a load step due, and to any heavier machine value logged on a KNOWN row.",
+    "precondition": "F03-A implemented: a machine KNOWN row states unit KG, the unit of its value, so a log written as prescribed is read under the existing loadUnits rule.",
+    "parts": {
+      "P1_noComputedMachineLoad": "The engine never computes a machine load, up or down: no R plus or minus smallestIncrement, no fixed kilogram step, no rounding to a presumed stack. Every number a machine row states is a value the athlete reported or logged and the engine adopted.",
+      "P2_whenStepDue": {
+        "trigger": "Unchanged and existing: REPS_THEN_LOAD goals (HYPERTROPHY, RUNNING_SUPPORT, GENERAL) when an advancing (ADVANCE or EARNED) exposure is already at the top of the goal range (reps + repStep > top); LOAD goal (STRENGTH) at a due tick (every second advancing week, or EARNED). Development weeks only; one step per week; HOLD phases, returns, re-establishment and establishment unchanged.",
+        "prescription": "The next exposure is a numberless next-setting row (name for Engineering, e.g. NEXT_SETTING): it states no heavier value; it states R kg as the current setting; sets and reserve are the dose's; repetitions are, in REPS_THEN_LOAD, the target the existing load step sets (bottom of the range, or repsBase where the existing step uses it) and, in LOAD, the current target unchanged.",
+        "instructionContent": "Move to the next heavier setting this machine allows above R kg (the next stack plate, pin or add-on). Do the target repetitions with at least the reserve shown and steady technique. If that setting does not allow it, keep R kg at the dose held before the step (REPS_THEN_LOAD: R at the top of the range; LOAD: R at the current target). Record the load you used and its unit.",
+        "cadence": "A step that was not executed is not carried as a second step: it is offered again only at the existing cadence (REPS_THEN_LOAD: the next advancing week at the top of the range; LOAD: the next due tick)."
+      },
+      "P3_adoptionOfHeavierSetting": {
+        "rule": "A logged machine value H above R becomes the reference only when all hold: (a) unit KG or LB (converted at the boundary) and convention MACHINE_STACK (existing loadUnits); (b) inside 0 to loggedLoadAdoption.maximumKilograms (existing); (c) that exposure met the existing ADVANCE criterion (target repetitions of its row, minimum logged RIR at or above the prescription minus gates.advanceMinimumLoggedRirBelowPrescribed, no adverse response); (d) verification by an existing D45 mechanism: the athlete confirms it (review loadConfirmations: exercise, value, unit, convention MACHINE_STACK), or a second executed log of the same exercise from a separate exposure (later, or earlier in the same week; not a conflicted report) has the same value after the boundary conversion; (e) never above a re-establishment or return ceiling (existing: capped there and asked).",
+        "whyVerification": "The ADVANCE exposure alone is not enough. The existing D44 bound (at most one smallest increment above the plan) cannot be computed for a machine in kilograms, so the existing rule for a logged number the engine cannot judge against a planned number (D45) replaces it. 'Same value' is the strictest reading of 'within one increment' that the engine can verify without a step size, and adds no tolerance number.",
+        "untilVerified": "R stays the reference; H is held as pending; one load question is raised through the existing loadQuestions flow; every later exposure of that exercise re-issues the same next-setting row relative to R (it is the same step, not another one) and never states H (D48: a row stating H would manufacture the agreeing log).",
+        "laterEvidence": "Later executed evidence governs: a later log at or below R is executed evidence under the existing rule and drops the pending H; a different heavier value replaces H as the pending candidate under the same verification.",
+        "selfProgression": "The same rule applies to a heavier machine value logged on an ordinary KNOWN row, as D44 already admits above-plan adoption with ADVANCE for the other conventions.",
+        "notRequired": "No kilogram check that H - R equals one setting (not verifiable) and no numeric cap on H - R."
+      },
+      "P4_noHeavierSettingFits": "A step-due exposure logged at R holds the dose held before the step (REPS_THEN_LOAD: R at the top of the range; LOAD: R at the current target). It never restarts the repetition range at R. This is the existing B0-C04 c4 / B0-F07 principle: repetitions progress while they can; when the next step is unavailable, no fabricated load, and at the top of the range the dose holds.",
+      "P5_regress": "REGRESS (existing trigger unchanged) replaces the minus 1 kg: if the state holds the previous adopted setting of this exercise (the reference in force before its most recent heavier adoption, held continuously as KNOWN since, with no re-establishment, return or substitution in between), the next exposure states that value, which the athlete executed before; otherwise the repetition target lowers by repStep, not below the bottom of the goal range (the existing path when the step is 0). Never R minus any computed value. A pending H is dropped. The existing KNOWN-row instruction ('use the stated load only while technique and reps in reserve hold; otherwise reduce it') and the existing adoption of a log at or below the plan remain the in-session valve.",
+      "P6_loadMode": "Covered: a STRENGTH-goal machine MAIN (or any machine exercise under the STRENGTH goal) gets the next-setting row at each due tick with the current target repetitions and R as the fallback. No repetition progression is added to LOAD mode; that would be a new dose rule.",
+      "P7_boundsOnLoggedStep": "Only existing bounds: 0 to 500 kg (loggedLoadAdoption.maximumKilograms); the ADVANCE criterion (gates.advanceMinimumLoggedRirBelowPrescribed); re-establishment and return ceilings (resumeAfterDays, return rules, D44 text); unit and convention (loadUnits); verification (D45 mechanisms). maximumIncrementsAbovePlanned = 1 is read for MACHINE_STACK as one setting of that machine, the unit the runtime already names (STACK_STEP) and the catalog convention defines; the engine does not compute it and verifies the logged value through P3(d) instead. Numeric plausibility of a logged value remains the existing open Data gap (SSCTR R5, D45).",
+      "P8_unchanged": "TOTAL, PER_HAND, SINGLE_IMPLEMENT, BODYWEIGHT, BAND_TENSION, ASSISTED_BODYWEIGHT; machine establishment, re-establishment, return, UNLOGGED and FROM_LOG paths; set progression, block-boundary sets, phase holds, novice density release; PROGRAM_POLICY_R6.json bytes and canonical hash 18ec48f3...6b4c; catalog bytes ceee276a...92f9; all closed records."
+    },
+    "directedTests": [
+      "T1 (precondition F03-A): a machine KNOWN row states unit KG; a log written as prescribed is read.",
+      "T2: no machine row in any week of any goal states R+1 kg, R-1 kg or any value not previously reported, logged or confirmed (sweep the ten MACHINE_STACK configurations, both log modes of the F03 witness).",
+      "T3 (REPS_THEN_LOAD): at the top of the range with ADVANCE, the next exposure is a next-setting row with no heavier value, R stated as fallback, repetitions at the existing load-step target.",
+      "T4: a step-due exposure logged at H > R with ADVANCE and a second same-value log in the week (or a loadConfirmation) makes H the reference; without either, R stays, exactly one load question is raised, and the next exposure re-issues the next-setting row without stating H.",
+      "T5: H logged without ADVANCE is not adopted, R stays and the athlete is asked (existing D44).",
+      "T6: a step-due exposure logged at R holds R at the top of the range (REPS_THEN_LOAD) or at the current target (LOAD); the range does not restart; the step is offered again only at the existing cadence.",
+      "T7 (LOAD, STRENGTH goal, machine MAIN): the next-setting row appears only at due ticks; off-tick weeks state R; verified H is adopted.",
+      "T8 (REGRESS): after an adopted step, REGRESS states the previous adopted setting; with none held (intake reference, or after re-establishment/return/substitution) it lowers repetitions by repStep to no lower than the bottom of the range; a pending H is dropped.",
+      "T9: H above a re-establishment or return ceiling is capped there and asked (existing).",
+      "T10: the other conventions produce byte-identical decisions to R7C-FREEZE-4 on the existing suites; the policy canonical hash is unchanged and all ten R6 boundaries stay enabled.",
+      "T11 (F03 witness extended): an athlete who logs the real next setting progresses without weekly questions; an athlete whose next setting never fits holds at the top of the range without oscillation."
+    ]
+  },
+  "conditions": [
+    "C1: F03-A (KG unit on machine KNOWN rows) is implemented with or before this rule.",
+    "C2: The engine computes no machine load in any path (progression, REGRESS, rounding, defaults); a test sweep proves it (T2).",
+    "C3: A heavier machine value becomes the reference only with ADVANCE and D45 verification (P3); the ADVANCE exposure alone never suffices; the next-setting row never states a pending value (D48).",
+    "C4: No new number, tolerance, cap, cadence or dose is introduced; 'same value' agreement uses the existing boundary conversion only. If implementation needs any number not already in the policy, stop and return to the SSCTR.",
+    "C5: PROGRAM_POLICY_R6.json and REPERTOIRE_CATALOG_B0.json are not edited; the R6 boundaries remain enabled under hash 18ec48f3...6b4c.",
+    "C6: Scope is MACHINE_STACK only; every other convention is unchanged (T10).",
+    "C7: The residuals below are disclosed in the binding record, including the LOAD-mode plateau and the unverifiable step size.",
+    "C8: The implementation is judged by an SSCTR instance other than this one (this instance authored the rule) before any freeze counts it as accepted.",
+    "C9: Valid for the offline synthetic shadow reference only; no real athlete, plan, release or V1 authority."
+  ],
+  "domainConstraintsForGovernance": [
+    "Do not edit policy values to express this rule; the hash-bound R6 boundaries would fail closed.",
+    "Do not weaken D44 (ADVANCE), D45 (verification) or D48 (no pointing at a pending value) to make the rule fit.",
+    "The binding must keep option A's conditions available as the fallback if B' is not admissible, so that 'narrowest option both accept' does not silently drop the LOAD-mode disclosure.",
+    "The rule is a provisional SSCTR domain disposition with a proposed funded-human revalidation item; it is not human or empirical validation."
+  ],
+  "newPrescriptiveAuthority": {
+    "value": false,
+    "explanation": "The rule adds no dose, threshold, increment, cap, tolerance or cadence. It removes one computed number (the +1 kg / -1 kg machine step). Every number it uses already exists in operational.strength: goal repetition ranges and modes, repStep, the LOAD tick cadence, the ADVANCE gate offset, 500 kg, maximumIncrementsAbovePlanned (read for machines as one setting, which the engine does not compute) and the D45 verification mechanisms. The executable step is the machine's own, chosen and executed by the athlete and verified from the log. Two behaviours are new to machine KNOWN references: a numberless next-setting row and a pending heavier value awaiting verification. Both apply existing D45/D48 semantics, and neither carries a number. Whether they are an interpretation or a change of policy in substance is for PCG to decide."
+  },
+  "residuals": [
+    {"id": "R-01", "what": "Plateau where no heavier setting allows the target repetitions with the reserve (machine steps that are coarse relative to the load), most visible in LOAD mode, where a STRENGTH-goal machine MAIN holds R at a fixed target.", "whyAcceptable": "Not harmful: the dose holds and is offered the step again at the existing cadence. Holding a dose still yields benefit; continued progress needs overload (CL-5). Disclosed, non-blocking for a shadow reference; adding LOAD-mode repetition progression would be a new dose rule.", "owner": "SSCTR / Product (future equipment input)"},
+    {"id": "R-02", "what": "The engine cannot verify that H is exactly one setting above R; an athlete who jumps two settings and meets ADVANCE with verification is adopted at H.", "whyAcceptable": "Adoption still needs the target repetitions at the prescribed reserve (executed capacity) and a confirmed or repeated value; the at-or-below-plan rule and the KNOWN-row 'otherwise reduce it' instruction correct an overshoot at the next exposure.", "owner": "SSCTR"},
+    {"id": "R-03", "what": "Reserve (RIR) self-report is imprecise (about one repetition, heterogeneous); the appropriateness of a coarse step rests on it.", "whyAcceptable": "Existing R6 limitation (RIR treated as approximate; the ADVANCE gate already tolerates one repetition); unchanged by this rule (CL-6).", "owner": "SSCTR (existing)"},
+    {"id": "R-04", "what": "Machine identity is not modelled: the same exercise on another machine or gym yields non-comparable values that can be verified and adopted.", "whyAcceptable": "Existing equipment-detail gap (B0-F07, Product/Data). A lighter value is adopted as executed evidence and a heavier one needs ADVANCE and verification, so the reference follows what is lifted.", "owner": "Product/Data"},
+    {"id": "R-05", "what": "Numeric plausibility of logged values (typos inside 0-500 kg).", "whyAcceptable": "Existing open Data gap (SSCTR R5, D45); the same-value agreement or confirmation catches a single typo before adoption.", "owner": "Data"},
+    {"id": "R-06", "what": "Self-selected loads tend to be light; the athlete may choose a setting below the instruction's intent.", "whyAcceptable": "Errs toward conservatism, not harm (CL-7).", "owner": "SSCTR"},
+    {"id": "R-07", "what": "Each step costs one load question when the exercise appears once a week and the athlete does not confirm in the review.", "whyAcceptable": "At most one question per step, against five questions every week today.", "owner": "Product/UX (question flow)"},
+    {"id": "R-08", "what": "SINGLE_IMPLEMENT (kettlebells, fixed dumbbells) has the same structure (R7-D F12 observation: +2 kg steps on a kettlebell); not decided here.", "whyAcceptable": "Outside F03-B; the existing B0-C04 c4 and R7-B conditions govern. The same pattern could be reviewed in a later mission.", "owner": "SSCTR with Product/Data (B0-F07)"},
+    {"id": "R-09", "what": "Machine establishment agreement still reads the 1-unit increment as 1 kg (existing runtime).", "whyAcceptable": "Unchanged and harmless: two logs of the same setting are equal values. Out of scope.", "owner": "Engineering (existing)"},
+    {"id": "R-10", "what": "Evidence comes from trained (8 weeks) or untrained young (10 weeks) samples, mostly lower-body, not from concurrent-training runners; no study tests machine-specific progression or step sizes.", "whyAcceptable": "The rule claims no physiological optimum and sets no number; it only keeps progression executable and evidence-gated.", "owner": "SSCTR"}
+  ],
+  "evidence": {
+    "literatureAccess": "Confirmed in this session: WebSearch (discovery only; summaries are not evidence: one misreported Chaves 2024 as favouring load progression, while its abstract reports no difference); WebFetch (publisher pages: LWW returned HTTP 402 for the ACSM 2009 full text; Thieme returned a bot check for Chaves 2024); Europe PMC REST through Node fetch (full-text XML for three open-access papers, core records and abstracts for four others). Full texts stored outside the repository; two byte-identical to the R6 copies.",
+    "queryLog": [
+      {"date": "2026-11-02", "tool": "WebSearch", "query": "double progression repetitions then load resistance training load increment progression randomized trial", "result": "Plotkin 2022 only; no trial of double progression itself."},
+      {"date": "2026-11-02", "tool": "WebSearch", "query": "ACSM position stand progression models resistance training healthy adults 2009 load increase 2-10% two consecutive sessions", "result": "ACSM 2009 record located; claim verified from the Europe PMC abstract, not from the snippets."},
+      {"date": "2026-11-02", "tool": "WebSearch", "query": "autoregulation RPE RIR versus percentage-based load progression strength meta-analysis", "result": "Hickmott 2022 located; blog and unverified network meta-analysis excluded."},
+      {"date": "2026-11-02", "tool": "Europe PMC", "query": "(\"load increment\" OR \"loading increment\" OR \"microloading\" OR \"micro-loading\") AND (resistance training OR strength training)", "result": "111 hits, none relevant: no trial comparing load-increment sizes (negative search, CL-1b)."},
+      {"date": "2026-11-02", "tool": "Europe PMC", "query": "(\"double progression\") AND (resistance OR strength)", "result": "16 hits, all oncology/pharmacology; none relevant."},
+      {"date": "2026-11-02", "tool": "Europe PMC", "query": "(\"weight stack\" OR \"selectorized\") AND (increment OR progression) AND (strength OR resistance)", "result": "94 hits; none on machine increment size or stack-based progression."},
+      {"date": "2026-11-02", "tool": "Europe PMC", "query": "(\"repetitions in reserve\" AND (progression OR autoregulat*) AND (randomized OR randomised))", "result": "Plotkin 2022, Currier 2026, Hickmott 2022, Larsen 2021 surfaced; Larsen 2021 not read (Hickmott covers the question)."},
+      {"date": "2026-11-02", "tool": "WebSearch + Europe PMC", "query": "randomized trial load progression versus repetition progression strength hypertrophy untrained (directed counterevidence); (\"load progression\" AND \"repetition progression\")", "result": "Chaves 2024 (counterevidence candidate; its abstract shows no difference); Vargas-Molina 2026 screened, not used (compares rest-pause and drop sets inside repetition progression)."}
+    ],
+    "sources": [
+      {"id": "F3B-S01", "citation": "Plotkin D, Coleman M, Van Every D, et al., Schoenfeld BJ. Progressive overload without progressing load? The effects of load or repetition progression on muscular adaptations. PeerJ 2022;10:e14142.", "doi": "10.7717/peerj.14142", "pmid": "36199287", "pmcid": "PMC9528903", "type": "RCT", "readLevel": "FULL_TEXT", "fullTextSha256": "1a3b75d2cafa53e650bbbaa60caa94c5e41fc5b92bba6d733c323af3168524a0 (equals R6-S11 localFileSha256)", "locator": "Abstract; Methods (training protocol: 8-12 RM, LOAD increases load at a fixed range, REPS increases repetitions at a fixed load; sets to momentary failure, supervised); Results Table 1; Discussion (Strength; limitations).", "findings": "43 resistance-trained adults, 8 weeks, lower body: similar hypertrophy; squat 1RM slightly favoured LOAD (2.0 kg, CI -2.4 to 7.8), of questionable practical significance; both progressions viable.", "limitations": "Trained, young, lower body only, 8 weeks, sets toward failure, 1RM tested on a Smith machine while training used a free-weight squat; not concurrent training."},
+      {"id": "F3B-S02", "citation": "Hickmott LM, Chilibeck PD, Shaw KA, Butcher SJ. The Effect of Load and Volume Autoregulation on Muscular Strength and Hypertrophy: A Systematic Review and Meta-Analysis. Sports Med Open 2022;8:9.", "doi": "10.1186/s40798-021-00404-9", "pmid": "35038063", "pmcid": "PMC8762534", "type": "SYSTEMATIC_REVIEW_META_ANALYSIS", "readLevel": "FULL_TEXT", "fullTextSha256": "99d1ecc3b3e234801df23383ccaa774d7189193e0b9e8d45628ddeec00c4596c", "locator": "Abstract; Introduction (definition of RIR-based load autoregulation); Discussion (load autoregulation conclusion; Primary Limitations).", "findings": "Six load-autoregulation studies: no significant difference in 1RM between autoregulated (RIR-based RPE or velocity) and standardized percentage-based load prescription (MD 2.07 kg, 95% CI -0.32 to 4.46; SMD 0.21); RPE-based selection is subjective and less accurate far from failure.", "limitations": "Resistance-trained participants; few, small studies; mostly barbell or Smith-machine outcomes; no machine-stack increment question."},
+      {"id": "F3B-S03", "citation": "Currier BS, D'Souza AC, Singh MAF, et al. American College of Sports Medicine Position Stand. Resistance Training Prescription for Muscle Function, Hypertrophy, and Physical Performance in Healthy Adults: An Overview of Reviews. Med Sci Sports Exerc 2026.", "doi": "10.1249/mss.0000000000003897", "pmid": "41843416", "pmcid": "PMC12965823", "type": "CONSENSUS_POSITION_STAND (overview of reviews)", "readLevel": "FULL_TEXT", "fullTextSha256": "0f92699661a50164bbd97e7db21587f920da3055914327436b0947081ed2c082 (equals R6-S01 localFileSha256)", "locator": "Results, Strength (comparing RTx); Discussion (progressive overload paragraph; individualization).", "findings": "Strength is enhanced by higher loads (dose-response) and is not affected by free weights versus machines; perceived-exertion scales can be used to increase absolute load commensurate with strength gains; progression is not necessary for beneficial outcomes, but overload is likely required for continued longer-term progress.", "limitations": "Overview dominated by novice trainees; no per-exercise increment or machine procedure."},
+      {"id": "F3B-S04", "citation": "American College of Sports Medicine. American College of Sports Medicine position stand. Progression models in resistance training for healthy adults. Med Sci Sports Exerc 2009;41(3):687-708.", "doi": "10.1249/MSS.0b013e3181915670", "pmid": "19204579", "type": "CONSENSUS_POSITION_STAND", "readLevel": "ABSTRACT_ONLY", "locator": "Europe PMC core abstract (publisher full text: HTTP 402).", "findings": "When training at a specific RM load, a 2-10% load increase is recommended when the current workload can be done for one to two repetitions over the desired number; recommendations are contingent on goals, capacity and training status.", "limitations": "Abstract only; superseded in part by Currier 2026. Used only to show that recommended increments are relative and context-dependent, so a universal absolute machine step has no support; the 2-10% range is NOT adopted."},
+      {"id": "F3B-S05", "citation": "Kraemer WJ, Adams K, Cafarelli E, et al. American College of Sports Medicine position stand. Progression models in resistance training for healthy adults. Med Sci Sports Exerc 2002;34(2):364-380.", "doi": "10.1097/00005768-200202000-00027", "pmid": "11828249", "type": "CONSENSUS_POSITION_STAND", "readLevel": "ABSTRACT_ONLY", "locator": "Europe PMC core abstract.", "findings": "Same relative-increment recommendation as 2009.", "limitations": "Abstract only; historical; context."},
+      {"id": "F3B-S06", "citation": "Chaves TS, Scarpelli MC, Bergamasco JGA, et al., Libardi CA. Effects of Resistance Training Overload Progression Protocols on Strength and Muscle Mass. Int J Sports Med 2024;45(7):504-510.", "doi": "10.1055/a-2256-5857", "pmid": "38286426", "type": "RCT (within-subject, legs randomized)", "readLevel": "ABSTRACT_ONLY", "locator": "Europe PMC core abstract (publisher page: bot check, not read).", "findings": "39 untrained young adults, 10 weeks, leg extension (a machine): load progression and repetition progression both increased 1RM and vastus lateralis CSA with no difference between them.", "limitations": "Abstract only; within-subject design (cross-education possible); single machine exercise; untrained young adults. Directed counterevidence search: does not contradict CL-2."},
+      {"id": "F3B-S07", "citation": "Halperin I, Malleron T, Har-Nir I, et al., Steele J. Accuracy in Predicting Repetitions to Task Failure in Resistance Exercise: A Scoping Review and Exploratory Meta-analysis. Sports Med 2022;52:377-390.", "doi": "10.1007/s40279-021-01559-x", "pmid": "34542869", "type": "SCOPING_REVIEW_META_ANALYSIS", "readLevel": "ABSTRACT_ONLY", "locator": "Europe PMC core abstract (R6-S13).", "findings": "Repetitions to failure underpredicted by about 0.95 on average with large heterogeneity; accuracy better closer to failure and at lower repetition counts.", "limitations": "Abstract only; context for R-03, not decisive."},
+      {"id": "F3B-S08", "citation": "Steele J, Malleron T, Har-Nir I, et al., Halperin I. Are Trainees Lifting Heavy Enough? Self-Selected Loads in Resistance Exercise: A Scoping Review and Exploratory Meta-analysis. Sports Med 2022;52:2909-2923.", "doi": "10.1007/s40279-022-01717-9", "pmid": "35790622", "type": "SCOPING_REVIEW_META_ANALYSIS", "readLevel": "ABSTRACT_ONLY", "locator": "Europe PMC core abstract (R6-S38).", "findings": "Self-selected loads average about 53% 1RM under mostly vague instructions; heavier when fewer repetitions are prescribed.", "limitations": "Abstract only; single sessions; context for R-06."}
+    ],
+    "claims": [
+      {"id": "CL-1", "statement": "No universal absolute load step is supported; recommended increments are relative to the load and context-dependent, so a fixed kilogram step for all machines has no basis.", "epistemic": "INFERRED", "status": "SUPPORTED_WITH_LIMITS", "sources": ["F3B-S04", "F3B-S05", "F3B-S03"], "use": "Rejects a computed or fixed machine step; sets no step."},
+      {"id": "CL-1b", "statement": "Evidence for an optimal or safe machine increment size, universal or per machine, is absent.", "epistemic": "OBSERVED (negative search)", "status": "INSUFFICIENT_EVIDENCE", "sources": [], "use": "Abstain on any step number (option C and the 1 kg reading)."},
+      {"id": "CL-2", "statement": "Progressing repetitions at a constant load yields strength and hypertrophy gains comparable to load progression over 8-10 weeks, so holding the load while repetitions progress (and holding at the top of the range when no step is executable) is a defensible fallback.", "epistemic": "OBSERVED", "status": "SUPPORTED_WITH_LIMITS", "sources": ["F3B-S01", "F3B-S06"], "use": "Supports P4 and option A's fallback role."},
+      {"id": "CL-3", "statement": "Raising absolute load by effort and reserve (RIR-based autoregulation) is an accepted progression method with strength outcomes similar to standardized prescription.", "epistemic": "OBSERVED", "status": "SUPPORTED_WITH_LIMITS", "sources": ["F3B-S02", "F3B-S03"], "use": "Supports the athlete-selected next setting gated by the existing ADVANCE criterion (P2, P3c)."},
+      {"id": "CL-4", "statement": "Strength gains increase with heavier loads (dose-response); a permanent load hold forgoes this for a STRENGTH goal.", "epistemic": "OBSERVED", "status": "WELL_SUPPORTED", "sources": ["F3B-S03"], "use": "Grounds the rejection of A as the primary rule and the coverage of LOAD mode (P6)."},
+      {"id": "CL-5", "statement": "Progression is not necessary for benefit, but overload is likely needed for continued longer-term progress; a temporary plateau is not harmful.", "epistemic": "OBSERVED", "status": "SUPPORTED_WITH_LIMITS", "sources": ["F3B-S03"], "use": "Supports accepting residual R-01 as disclosed and non-blocking."},
+      {"id": "CL-6", "statement": "RIR self-estimates are approximate (about one repetition) and heterogeneous.", "epistemic": "OBSERVED", "status": "SUPPORTED_WITH_LIMITS", "sources": ["F3B-S07", "F3B-S02"], "use": "Limitation R-03; already in R6 conditions."},
+      {"id": "CL-7", "statement": "Self-selected loads tend to be lighter than intended.", "epistemic": "OBSERVED", "status": "SUPPORTED_WITH_LIMITS", "sources": ["F3B-S08"], "use": "Context R-06."},
+      {"id": "CL-8", "statement": "A logged number the engine cannot judge against a planned number is verified by athlete confirmation or a second agreeing log, and a pending row never points at it.", "epistemic": "DECIDED (existing project authority D45, D48)", "status": "SUPPORTED_WITH_LIMITS", "sources": [], "authorityRefs": ["PROGRAM_POLICY_R6.json operational.strength.loggedLoadAdoption", "R6-SSCTR-LOAD-ESTABLISHMENT conditions (D45, D48)"], "use": "P3(d) and the until-verified behaviour."}
+    ],
+    "counterevidenceAndRefutation": "Attempted refutations: (1) load progression may beat repetition progression in novices; the directed search found Chaves 2024, which reports no difference on a leg-extension machine in untrained adults, and Plotkin 2022 shows only a small, imprecise strength edge for load in trained adults. CL-2 stands, with limits. (2) Athlete-chosen loads may be too light (Steele 2022); that errs conservative, it does not refute B'. (3) RIR inaccuracy could admit a too-heavy setting; the D44 ADVANCE gate, verification and in-session reduction bound the effect to one exposure. (4) Coarse steps on light stacks can exceed common relative increments; B' handles that by the fallback to R, with the plateau disclosed (R-01). No evidence was found that an athlete-executed next setting under a reserve gate is unsafe for nonclinical adults."
+  },
+  "aeReview": [
+    {"q": 1, "question": "Is the current plan still adequate for the goal and context?", "answer": "No, for machine exercises: the plan states a value it then refuses to read back, or steps by an unsettable 1 kg. Plans for other conventions are unaffected."},
+    {"q": 2, "question": "Is there a sufficient material fact, with provenance?", "answer": "Yes: the witness reproduced live on R7C-FREEZE-4 and the scratch probe (oscillation, or weekly questions with drift)."},
+    {"q": 3, "question": "Is KEEP defensible, and what is unknown?", "answer": "KEEP is not defensible (it fabricates loads). The machine's real step is unknown and stays unknown; the rule does not need it."},
+    {"q": 4, "question": "Is change really necessary, relative to a comparator?", "answer": "Yes, against KEEP. Against option A, a change in kind (load progression from executed evidence) is necessary for the STRENGTH goal (CL-4)."},
+    {"q": 5, "question": "What is the smallest sufficient intervention?", "answer": "B': remove every computed machine load; let the athlete execute and log the machine's next setting; adopt it on ADVANCE plus D45 verification; hold when it does not fit; REGRESS to a previously executed value or by repetitions."},
+    {"q": 6, "question": "Why are relevant smaller alternatives insufficient?", "answer": "A alone caps machine loads permanently and leaves a STRENGTH-goal machine MAIN without progression; a per-machine kilogram step (including the 1 kg) is fabricated precision; C needs a new input and a number."},
+    {"q": 7, "question": "Does the trade-off protect the stated priority and progression?", "answer": "Yes: progression stays earned by executed comparable work, one step per week, in development weeks only; goal modes and cadence are unchanged."},
+    {"q": 8, "question": "Does applicable evidence support the conclusion and dose?", "answer": "Supported with limits for the mechanism (CL-2, CL-3, CL-4). No dose or step number is set; any step number is INSUFFICIENT_EVIDENCE (CL-1b) and is not used."},
+    {"q": 9, "question": "What material uncertainty remains?", "answer": "R-01 to R-10, chiefly the LOAD-mode plateau on coarse machines, the unverifiable step size and RIR imprecision."},
+    {"q": 10, "question": "Is ASK, HOLD or CLINICAL_HUMAN_REQUIRED needed?", "answer": "ASK only for an unverified heavier value (one question per value). No clinical dependency: this is a nonclinical load mechanic, and pain or injury routes stay as they are."}
+  ],
+  "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+  "confidence": {"level": "MODERATE", "rationale": "Repetition and load progression, effort-gated load selection and the strength dose-response are consistently supported in healthy adults, but the samples are short, mostly young or trained, not concurrent-training runners, and no study addresses machine step size or verification flows. The verification rule rests on existing project authority, not on physiology."},
+  "governance": {
+    "gateStatus": "NOT_CLOSED_BY_THIS_RECORD",
+    "publicationStatus": "NOT_PUBLISHED",
+    "humanValidation": false,
+    "empiricalProductValidation": false,
+    "clinicalClearance": false,
+    "nextOwner": "R7-D Phase 3 coordinator (applies its decision rule with the PCG record); PCG decides the authority form and the binding",
+    "nextAction": "Bind this record and the PCG record in the new freeze record. If B' is admissible, implement it with tests T1-T11. If only A is admissible, use A's conditions. If neither is admissible: F03_POLICY_BLOCKED."
+  },
+  "expiry": {
+    "owner": "Chief / R7-D coordinator, with the SSCTR",
+    "reviewBy": "2027-05-02",
+    "eventBasedExpiry": "Expires on the first of: reviewBy, any trigger below, or a material change to the target behaviour.",
+    "triggers": [
+      "Any change to PROGRAM_POLICY_R6.json or to the R6 r12 records",
+      "Any change to the catalog's MACHINE_STACK convention or configurations",
+      "An equipment-increment input (B0-F07) is introduced",
+      "A relevant new systematic review or meta-analysis on progression models or load increments",
+      "V1 population, objective or scope change",
+      "An adverse event or a runtime inconsistency in a later gate (including the C8 implementation review)",
+      "Funded qualified-human revalidation (may maintain, modify or revoke without AI veto)"
+    ]
+  },
+  "proposedHumanRevalidation": {
+    "status": "PROPOSED_ONLY: not appended; the queue file was not touched",
+    "needed": true,
+    "why": "The rule has prescriptive impact: it changes how prescribed machine loads progress and regress.",
+    "item": {
+      "queue_id": "HQ-R7D-SSCTR-F03B (proposed)",
+      "decision_id": "SSCTR-R7D-F03B",
+      "decision_revision": "r1",
+      "target": {"project": "MyApp / Vilumo Fit", "rule": "F03B-MACHINE-STEP-r1 (MACHINE_STACK load progression, adoption, REGRESS)", "runtimeBaseline": "R7C-FREEZE-4 (the implementing freeze to be named by the coordinator)", "policySha256": "a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100", "catalogSha256": "ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9"},
+      "approved_scope": "Offline synthetic shadow reference; MACHINE_STACK configurations only; no dose, step or threshold set.",
+      "conditions": ["C1-C9 of SSCTR-R7D-F03B-r1"],
+      "approval_date": "2026-11-02",
+      "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+      "owner": "Chief / Founder",
+      "human_review": null,
+      "re_review_triggers": ["As in expiry.triggers of SSCTR-R7D-F03B-r1"]
+    },
+    "appendCondition": "Append only if the coordinator's decision adopts B' (or A under its conditions, with the item's rule renamed accordingly); the coordinator or Chief appends it, never this instance."
+  },
+  "validation": "The decision.schema.json validator was not run: this record follows the field list set by the task envelope, which differs from that schema, and no queue entry was appended to cross-check. The JSON parses. Structural checks prove structure only.",
+  "outcome": "DECIDED"
+}

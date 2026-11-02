@@ -78,7 +78,10 @@ export const NO_KG_CONVENTIONS=['BODYWEIGHT','BAND_TENSION','ASSISTED_BODYWEIGHT
  * The smallest load step of a convention (B0-C04 condition 4; B0-F07): a single implement steps by the per-implement step applied to the one
  * implement; bands and assistance never step a load (they progress by repetitions inside the goal range).
  */
-export const incrementFor=(S,convention)=>convention==='SINGLE_IMPLEMENT'?(S?.smallestIncrement?.PER_HAND??0):(S?.smallestIncrement?.[convention]??0);
+// R7-D F03-B (PCG-R7D-F03B-r1 interpretation I-1; SSCTR-R7D-F03B-r1 rule F03B-MACHINE-STEP-r1): the policy's MACHINE_STACK increment (1) is one
+// setting of that machine, whose size in kilograms is machine-specific and never known to the engine. So no kilogram increment exists for it:
+// none is added, subtracted or used as a tolerance (a step is the athlete's next setting, adopted on executed and verified evidence).
+export const incrementFor=(S,convention)=>convention==='SINGLE_IMPLEMENT'?(S?.smallestIncrement?.PER_HAND??0):convention==='MACHINE_STACK'?0:(S?.smallestIncrement?.[convention]??0);
 /** Kilogram display of a logged or planned load: per hand for two implements, the one implement's mass otherwise. */
 export const kgText=(value,convention)=>`${value} kg${convention==='PER_HAND'?' per hand':convention==='SINGLE_IMPLEMENT'?' (one implement)':''}`;
 

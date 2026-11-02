@@ -90,7 +90,11 @@ export function normalizeObservations(observations,{athleteId,asOf,maximumAgeDay
   if(!carried){delete o.superseded;delete o.supersededBy;delete o.supersededAt;}
   if(carried&&o.superseded===true){const row={...o,identity:o.sessionId?'session:'+o.sessionId:'activity:'+(o.canonicalActivityId??o.source?.activityId??(o.provenance?.provider??'MANUAL')+'@'+o.observedAt),inputHash:hash({...source,athleteId})};for(const id of [o.eventId,...Object.keys(o.provenance?.inputHashes??{}),...(o.provenance?.mergedSourceIds??[])])if(!byEvent.has(id))byEvent.set(id,row);supersededRows.push(row);continue;}
   o.athleteId=athleteId;
-  const t=effective(o);if(!t){reject('OBSERVATION_TIME_REQUIRED');continue;}
+  // R7-D DX-01: a row the record carries keeps the time precision it was accepted with. A day-precision report was stored with the latest causal
+  // instant of its local day as observedAt; read again as a supplied timestamp, a report made earlier that same day would now precede it and the
+  // accepted row would drop out of the record. Its stored instant and local day stand, and every screen below still applies to it as to a
+  // day-precision report (the local-date comparison for a report before what it reports).
+  const t=carried&&o.provenance?.timePrecision==='DAY'&&isoDay(o.localDate)&&utcTimestamp(o.observedAt)?{at:utcTimestamp(o.observedAt),precision:'DAY',day:o.localDate}:effective(o);if(!t){reject('OBSERVATION_TIME_REQUIRED');continue;}
   const reported=o.reportedAt?utcTimestamp(o.reportedAt):null;
   if(o.reportedAt&&!reported){reject('INVALID_REPORT_TIME');continue;}
   if(Date.parse(t.at)>Date.parse(now)){reject(Date.parse(t.at)-Date.parse(now)<=futureSkewSeconds*1000?'FUTURE_CLOCK_SKEW_QUARANTINED':'FUTURE_OBSERVATION');continue;}
