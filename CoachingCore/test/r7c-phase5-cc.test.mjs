@@ -172,6 +172,14 @@ test('R7-C QE-R7C-01 trigger scope: a dose standing on facts the record does not
   assert.ok(ret.proposal,`days ${days}: ${ret.reason}`);
   for(const x of [{day:4,hour:'07:00:00'},{}]){const r=step(t,R,x);assert.doesNotMatch(r.reason??'',CEILING,`days ${days}: ${r.reason}`);}
  }
+ // A return report decides its own re-entry from the break it declares, never the ceiling (the timelines return:gen:* of regress-r7b2: weeks 0-4
+ // reviewed, week 5 unreported, the break ending the day before week 6, reported on its first day).
+ for(const days of [5,12,40]){
+  const t={p:program({id:'r7c-cc-ret',equipment:['DUMBBELLS','BENCH','KETTLEBELL'],weeks:12}),ledger:[],ref:null};
+  for(let w=0;w<5;w++)step(t,w,{observations:t.p.weeks[w].sessions.filter(live).map(s=>obs(t.p,s))});
+  const r=step(t,6,{day:0,hour:'06:00:00',kind:'RETURN_AFTER_PAUSE',interruption:{reason:'work travel',reasonCategory:'TRAVEL',nonclinical:true,days,endDate:addDays(t.p.weeks[6].startDate,-1)}});
+  assert.equal(r.action,'REESTABLISH',`days ${days}: ${r.reason}`);assert.doesNotMatch(r.reason,CEILING,`days ${days}`);
+ }
  {// A short break after a known stop (weeks 0-4 reviewed, their runs reported not done), the return on the break's last day + 1 with a 25-minute
   // demonstration the day before: the re-entry week (easy running) is planned from the demonstration and kept.
   const t={p:program(RG),ledger:[],ref:null};

@@ -260,14 +260,15 @@ export function runGapInForce(ctx){
  * run.singleRunCeiling: the longest run completed in the window before the week plus the step, or the reviewed entry when none is), read on the
  * completed-work record as it stands, whichever decision recorded it, when that excess can only rest on credit: the window holds run sessions of
  * this plan with no executed report (unreported, or reported not done) outside a declared interruption, which a projection counted as executed.
- * The scope is the unknown window's (unknownRunWindow): easy running; a return, restart or walk/jog week follows its own re-entry recipe. A week
+ * The scope is the unknown window's (unknownRunWindow): easy running; a return, restart or walk/jog week follows its own re-entry recipe; a return
+ * report decides its own re-entry from the break it declares (a known stop the record does not hold yet; the gap guard lets it through too). A week
  * whose run start is a return's entry is not read here either: it stands on the interruption's facts with its current demonstration, which the
  * record does not keep. (The first week, on the intake, has no session of this plan before it, so nothing there was credited.) Null when every
  * dose ahead fits; the race is outside the ceiling.
  */
 export function aboveFactsCeiling(ctx){
  const {program,w}=ctx,week=program.weeks[w];if(!week)return null;
- if(week.startAuthority?.RUN?.provenance===WEEK_START.RETURN_ENTRY||(ctx.base??program.stateTrace[w])?.run?.mode!=='EASY')return null;
+ if(ctx.kind==='RETURN_AFTER_PAUSE'||week.startAuthority?.RUN?.provenance===WEEK_START.RETURN_ENTRY||(ctx.base??program.stateTrace[w])?.run?.mode!=='EASY')return null;
  const op=ctx.authority.policy.operational,C=op.run.singleRunCeiling,start=week.startDate,ahead=aheadOf(ctx),inWindow=d=>dayGap(d,start)>0&&dayGap(d,start)<=C.windowDays;
  const recent=(ctx.completedRuns??[]).filter(h=>inWindow(h.date)).map(h=>h.minutes);
  const ceiling=recent.length?Math.max(...recent)+C.stepMinutes:op.return.entryRunMinutes;
