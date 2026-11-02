@@ -1,0 +1,528 @@
+{
+ "check": "JUDGE-P7-MUTANTS",
+ "root": "C:\\Users\\carva\\AppData\\Local\\Temp\\qe-r7c-p7-judge\\f4m",
+ "baseline": {
+  "fail": 0,
+  "pass": 175
+ },
+ "witnessBaseline": {
+  "shortened \\(5\\)": {
+   "fail": 0,
+   "pass": 1,
+   "ranNamed": 1,
+   "failing": []
+  },
+  "visibility \\(1\\)": {
+   "fail": 0,
+   "pass": 1,
+   "ranNamed": 1,
+   "failing": []
+  },
+  "visibility \\(2\\)": {
+   "fail": 0,
+   "pass": 1,
+   "ranNamed": 1,
+   "failing": []
+  },
+  "visibility \\(3\\)": {
+   "fail": 0,
+   "pass": 1,
+   "ranNamed": 1,
+   "failing": []
+  },
+  "\\(15\\): clinical first": {
+   "fail": 0,
+   "pass": 1,
+   "ranNamed": 1,
+   "failing": []
+  },
+  "P6-F01 mixed": {
+   "fail": 0,
+   "pass": 1,
+   "ranNamed": 1,
+   "failing": []
+  },
+  "backward behaviour": {
+   "fail": 0,
+   "pass": 1,
+   "ranNamed": 1,
+   "failing": []
+  },
+  "record: ": {
+   "fail": 0,
+   "pass": 1,
+   "ranNamed": 1,
+   "failing": []
+  },
+  "visibility \\(4\\)": {
+   "fail": 0,
+   "pass": 1,
+   "ranNamed": 1,
+   "failing": []
+  }
+ },
+ "results": [
+  {
+   "id": "F7-M1",
+   "rule": "visibility inferred from the gate class only (the R7C-FREEZE-3 reading for every report)",
+   "result": "KILLED",
+   "failed": 11,
+   "passed": 164,
+   "failing": [
+    "✖ R7-C QE-R7C-10 visibility (3): a report the record first held after the review closed its week was not read by it, whatever gate the week gives; the next eligible decision reconciles it",
+    "✖ R7-C QE-R7C-10 visibility (4): reports of one week held by its review and reports recorded after it are read and unread one by one",
+    "✖ R7-C QE-R7C-10 shortened (5): every gap run done at 60 % of its minutes, recorded by an R4 HOLD or a clinical route, gives the direct answer's plan",
+    "✖ R7-C QE-R7C-10 shortened (6): every gap run done at 80 %, recorded by a carrier, gives the direct answer's plan",
+    "✖ R7-C QE-R7C-10 shortened (8): the long runs shortened, the rest not done, recorded by a carrier, gives the direct answer's plan",
+    "✖ R7-C QE-R7C-10 shortened (9): every gap run shortened with an adverse response, recorded by a carrier, gives the direct answer's plan",
+    "✖ R7-C QE-R7C-10 all-adverse (10): every gap run done with an adverse response, recorded by a carrier, gives the direct answer's plan, never the stale projection",
+    "✖ R7-C P6-F01 mixed: some runs done, some not done; some done short, some not done; some done, some adverse: recorded by a carrier, each gives the direct answer's plan",
+    "✖ R7-C QE-R7C-10 (12): true unread still reconciles: wherever the facts change the plan, the carrier's next decision re-plans from the record",
+    "✖ R7-C QE-R7C-10 (15): clinical first: while the route stands a shortened answer prescribes nothing; after clearance it is applied with no re-send",
+    "✖ R7-C QE-R7C-10 (16): no decision presents the stale projection as valid once the record holds the answer (shortened, adverse, mixed)"
+   ],
+   "witness": "shortened \\(5\\)",
+   "witnessRan": 2,
+   "witnessFail": 1,
+   "witnessPass": 0,
+   "witnessFailing": [
+    "✖ R7-C QE-R7C-10 shortened (5): every gap run done at 60 % of its minutes, recorded by an R4 HOLD or a clinical route, gives the direct answer's plan"
+   ]
+  },
+  {
+   "id": "F7-M2",
+   "rule": "HOLD never counts as a review that read a run (a week whose review gave only HOLD run gates is unread)",
+   "result": "KILLED",
+   "failed": 3,
+   "passed": 172,
+   "failing": [
+    "✖ R7-C QE-R7C-10 visibility (1): a review that had the run reports by its clock read them, though every run gate it gave was HOLD (runs done short): the plan stands mid-week",
+    "✖ R7-C QE-R7C-10 visibility (4): reports of one week held by its review and reports recorded after it are read and unread one by one",
+    "✖ R7-C QE-R7C-10 backward behaviour: a record written before R7C-FREEZE-4 (no first-recorded clocks) is read as R7C-FREEZE-3 read it"
+   ],
+   "witness": "visibility \\(1\\)",
+   "witnessRan": 2,
+   "witnessFail": 1,
+   "witnessPass": 0,
+   "witnessFailing": [
+    "✖ R7-C QE-R7C-10 visibility (1): a review that had the run reports by its clock read them, though every run gate it gave was HOLD (runs done short): the plan stands mid-week"
+   ]
+  },
+  {
+   "id": "F7-M3",
+   "rule": "REGRESS never counts as a review that read a run (a week whose review gave a REGRESS and no executed run gate is unread)",
+   "result": "KILLED",
+   "failed": 1,
+   "passed": 174,
+   "failing": [
+    "✖ R7-C QE-R7C-10 visibility (2) and all-adverse (11): a review that read adverse runs and gave REGRESS read them; REGRESS is never read as \"the review read no run\""
+   ],
+   "witness": "visibility \\(2\\)",
+   "witnessRan": 2,
+   "witnessFail": 1,
+   "witnessPass": 0,
+   "witnessFailing": [
+    "✖ R7-C QE-R7C-10 visibility (2) and all-adverse (11): a review that read adverse runs and gave REGRESS read them; REGRESS is never read as \"the review read no run\""
+   ]
+  },
+  {
+   "id": "F7-M4",
+   "rule": "temporal visibility ignored: a report recorded after the review counts as present (its observation time stands in for the clock the record first held it at)",
+   "result": "KILLED",
+   "failed": 18,
+   "passed": 157,
+   "failing": [
+    "✖ R7-C QE-R7C-07: an EXECUTED answer recorded by an R4 HOLD or a clinical route gives the plan the direct answer gives (recorder independence)",
+    "✖ R7-C QE-R7C-07: a MIXED answer (long runs done, the rest not) recorded by an R4 HOLD or a clinical route gives the direct answer's plan",
+    "✖ R7-C QE-R7C-07: an ADVERSE answer (done, the long runs with an adverse response) recorded by an R4 HOLD or a clinical route gives the direct answer's plan",
+    "✖ R7-C QE-R7C-07: while the clinical route stands nothing is prescribed; after qualified clearance the recorded facts are applied with no re-send",
+    "✖ R7-C QE-R7C-07: no decision presents the stale projection as valid once the record holds the answer (race touch, taper quality, long run)",
+    "✖ R7-C QE-R7C-07 (G01): the recorded-answer re-plan never travels with a question about unknown training; that question decides alone",
+    "✖ R7-C QE-R7C-10 visibility (3): a report the record first held after the review closed its week was not read by it, whatever gate the week gives; the next eligible decision reconciles it",
+    "✖ R7-C QE-R7C-10 shortened (5): every gap run done at 60 % of its minutes, recorded by an R4 HOLD or a clinical route, gives the direct answer's plan",
+    "✖ R7-C QE-R7C-10 shortened (6): every gap run done at 80 %, recorded by a carrier, gives the direct answer's plan",
+    "✖ R7-C QE-R7C-10 shortened (7): the long runs shortened (60 %), the rest done, recorded by a carrier, gives the direct answer's plan",
+    "✖ R7-C QE-R7C-10 shortened (8): the long runs shortened, the rest not done, recorded by a carrier, gives the direct answer's plan",
+    "✖ R7-C QE-R7C-10 shortened (9): every gap run shortened with an adverse response, recorded by a carrier, gives the direct answer's plan",
+    "✖ R7-C QE-R7C-10 all-adverse (10): every gap run done with an adverse response, recorded by a carrier, gives the direct answer's plan, never the stale projection",
+    "✖ R7-C P6-F01 mixed: some runs done, some not done; some done short, some not done; some done, some adverse: recorded by a carrier, each gives the direct answer's plan",
+    "✖ R7-C QE-R7C-10 (12): true unread still reconciles: wherever the facts change the plan, the carrier's next decision re-plans from the record",
+    "✖ R7-C QE-R7C-10 (15): clinical first: while the route stands a shortened answer prescribes nothing; after clearance it is applied with no re-send",
+    "✖ R7-C QE-R7C-10 (16): no decision presents the stale projection as valid once the record holds the answer (shortened, adverse, mixed)",
+    "✖ R7-C QE-R7C-10 backward behaviour: a record written before R7C-FREEZE-4 (no first-recorded clocks) is read as R7C-FREEZE-3 read it"
+   ],
+   "witness": "visibility \\(3\\)",
+   "witnessRan": 2,
+   "witnessFail": 1,
+   "witnessPass": 0,
+   "witnessFailing": [
+    "✖ R7-C QE-R7C-10 visibility (3): a report the record first held after the review closed its week was not read by it, whatever gate the week gives; the next eligible decision reconciles it"
+   ]
+  },
+  {
+   "id": "F7-M5",
+   "rule": "a shortened answer a clinical route recorded is never reconciled (a late report of a run done short stays read)",
+   "result": "KILLED",
+   "failed": 11,
+   "passed": 164,
+   "failing": [
+    "✖ R7-C QE-R7C-10 visibility (3): a report the record first held after the review closed its week was not read by it, whatever gate the week gives; the next eligible decision reconciles it",
+    "✖ R7-C QE-R7C-10 visibility (4): reports of one week held by its review and reports recorded after it are read and unread one by one",
+    "✖ R7-C QE-R7C-10 shortened (5): every gap run done at 60 % of its minutes, recorded by an R4 HOLD or a clinical route, gives the direct answer's plan",
+    "✖ R7-C QE-R7C-10 shortened (6): every gap run done at 80 %, recorded by a carrier, gives the direct answer's plan",
+    "✖ R7-C QE-R7C-10 shortened (7): the long runs shortened (60 %), the rest done, recorded by a carrier, gives the direct answer's plan",
+    "✖ R7-C QE-R7C-10 shortened (8): the long runs shortened, the rest not done, recorded by a carrier, gives the direct answer's plan",
+    "✖ R7-C QE-R7C-10 shortened (9): every gap run shortened with an adverse response, recorded by a carrier, gives the direct answer's plan",
+    "✖ R7-C P6-F01 mixed: some runs done, some not done; some done short, some not done; some done, some adverse: recorded by a carrier, each gives the direct answer's plan",
+    "✖ R7-C QE-R7C-10 (12): true unread still reconciles: wherever the facts change the plan, the carrier's next decision re-plans from the record",
+    "✖ R7-C QE-R7C-10 (15): clinical first: while the route stands a shortened answer prescribes nothing; after clearance it is applied with no re-send",
+    "✖ R7-C QE-R7C-10 (16): no decision presents the stale projection as valid once the record holds the answer (shortened, adverse, mixed)"
+   ],
+   "witness": "\\(15\\): clinical first",
+   "witnessRan": 2,
+   "witnessFail": 1,
+   "witnessPass": 0,
+   "witnessFailing": [
+    "✖ R7-C QE-R7C-10 (15): clinical first: while the route stands a shortened answer prescribes nothing; after clearance it is applied with no re-send"
+   ]
+  },
+  {
+   "id": "F7-M6",
+   "rule": "a mixed answer a carrier recorded is never reconciled (a closed week holding a report of a run not done keeps its late reports read)",
+   "result": "KILLED",
+   "failed": 6,
+   "passed": 169,
+   "failing": [
+    "✖ R7-C QE-R7C-07: a MIXED answer (long runs done, the rest not) recorded by an R4 HOLD or a clinical route gives the direct answer's plan",
+    "✖ R7-C QE-R7C-07: no decision presents the stale projection as valid once the record holds the answer (race touch, taper quality, long run)",
+    "✖ R7-C QE-R7C-07 (G01): the recorded-answer re-plan never travels with a question about unknown training; that question decides alone",
+    "✖ R7-C QE-R7C-10 shortened (8): the long runs shortened, the rest not done, recorded by a carrier, gives the direct answer's plan",
+    "✖ R7-C P6-F01 mixed: some runs done, some not done; some done short, some not done; some done, some adverse: recorded by a carrier, each gives the direct answer's plan",
+    "✖ R7-C QE-R7C-10 (16): no decision presents the stale projection as valid once the record holds the answer (shortened, adverse, mixed)"
+   ],
+   "witness": "P6-F01 mixed",
+   "witnessRan": 2,
+   "witnessFail": 1,
+   "witnessPass": 0,
+   "witnessFailing": [
+    "✖ R7-C P6-F01 mixed: some runs done, some not done; some done short, some not done; some done, some adverse: recorded by a carrier, each gives the direct answer's plan"
+   ]
+  },
+  {
+   "id": "F7-M7",
+   "rule": "records without first-recorded clocks: REGRESS no longer counts as an executed run in the R7C-FREEZE-3 reading (the Engineering's J-M2)",
+   "result": "KILLED",
+   "failed": 1,
+   "passed": 174,
+   "failing": [
+    "✖ R7-C QE-R7C-10 backward behaviour: a record written before R7C-FREEZE-4 (no first-recorded clocks) is read as R7C-FREEZE-3 read it"
+   ],
+   "witness": "backward behaviour",
+   "witnessRan": 2,
+   "witnessFail": 1,
+   "witnessPass": 0,
+   "witnessFailing": [
+    "✖ R7-C QE-R7C-10 backward behaviour: a record written before R7C-FREEZE-4 (no first-recorded clocks) is read as R7C-FREEZE-3 read it"
+   ]
+  },
+  {
+   "id": "F7-M8",
+   "rule": "the clock is taken from the input (a supplied first-recorded clock is trusted)",
+   "result": "KILLED",
+   "failed": 1,
+   "passed": 174,
+   "failing": [
+    "✖ R7-C QE-R7C-10 record: the runtime stamps the clock it first held a report at, never a value the input supplies; one execution keeps its earliest; the learning model holds none"
+   ],
+   "witness": "record: ",
+   "witnessRan": 2,
+   "witnessFail": 1,
+   "witnessPass": 0,
+   "witnessFailing": [
+    "✖ R7-C QE-R7C-10 record: the runtime stamps the clock it first held a report at, never a value the input supplies; one execution keeps its earliest; the learning model holds none"
+   ]
+  },
+  {
+   "id": "F7-M9",
+   "rule": "one execution keeps the later clock when two agreeing reports merge",
+   "result": "KILLED",
+   "failed": 1,
+   "passed": 174,
+   "failing": [
+    "✖ R7-C QE-R7C-10 record: the runtime stamps the clock it first held a report at, never a value the input supplies; one execution keeps its earliest; the learning model holds none"
+   ],
+   "witness": "record: ",
+   "witnessRan": 2,
+   "witnessFail": 1,
+   "witnessPass": 0,
+   "witnessFailing": [
+    "✖ R7-C QE-R7C-10 record: the runtime stamps the clock it first held a report at, never a value the input supplies; one execution keeps its earliest; the learning model holds none"
+   ]
+  },
+  {
+   "id": "F7-M10",
+   "rule": "a correction takes its own clock (not its chain's)",
+   "result": "KILLED",
+   "failed": 1,
+   "passed": 174,
+   "failing": [
+    "✖ R7-C QE-R7C-10 record: the runtime stamps the clock it first held a report at, never a value the input supplies; one execution keeps its earliest; the learning model holds none"
+   ],
+   "witness": "record: ",
+   "witnessRan": 2,
+   "witnessFail": 1,
+   "witnessPass": 0,
+   "witnessFailing": [
+    "✖ R7-C QE-R7C-10 record: the runtime stamps the clock it first held a report at, never a value the input supplies; one execution keeps its earliest; the learning model holds none"
+   ]
+  },
+  {
+   "id": "F7-M11",
+   "rule": "a normalization that records no arrivals keeps the clocks its new rows bring (the learning model holds them)",
+   "result": "KILLED",
+   "failed": 1,
+   "passed": 174,
+   "failing": [
+    "✖ R7-C QE-R7C-10 record: the runtime stamps the clock it first held a report at, never a value the input supplies; one execution keeps its earliest; the learning model holds none"
+   ],
+   "witness": "record: ",
+   "witnessRan": 2,
+   "witnessFail": 1,
+   "witnessPass": 0,
+   "witnessFailing": [
+    "✖ R7-C QE-R7C-10 record: the runtime stamps the clock it first held a report at, never a value the input supplies; one execution keeps its earliest; the learning model holds none"
+   ]
+  },
+  {
+   "id": "J7-M1",
+   "rule": "tie: a report first recorded at the closing review's own clock counts as unread (>= instead of >)",
+   "result": "KILLED",
+   "failed": 9,
+   "passed": 166,
+   "failing": [
+    "✖ S3: a projection above history creates no unearned progression: load, tick and repetitions are history's",
+    "✖ T1 (QE-R7ASE-01): a lifted projected dose promotes the load, never the projection's load tick",
+    "✖ T6: a load executed without earning a step advances the load, never the progression credit",
+    "✖ T6b: a load first reached by execution needs its own successful exposures before the next step",
+    "✖ T7c: the plan never holds a progression credit history does not hold at that load",
+    "✖ R7-C QE-R7C-07 reach: a plan that rests on projection over its whole run window follows the record of that window, however it was reported",
+    "✖ R7-C QE-R7C-10 visibility (1): a review that had the run reports by its clock read them, though every run gate it gave was HOLD (runs done short): the plan stands mid-week",
+    "✖ R7-C QE-R7C-10 visibility (2) and all-adverse (11): a review that read adverse runs and gave REGRESS read them; REGRESS is never read as \"the review read no run\"",
+    "✖ R7-C QE-R7C-10 visibility (4): reports of one week held by its review and reports recorded after it are read and unread one by one"
+   ],
+   "witness": "visibility \\(1\\)",
+   "witnessRan": 2,
+   "witnessFail": 1,
+   "witnessPass": 0,
+   "witnessFailing": [
+    "✖ R7-C QE-R7C-10 visibility (1): a review that had the run reports by its clock read them, though every run gate it gave was HOLD (runs done short): the plan stands mid-week"
+   ]
+  },
+  {
+   "id": "J7-M2",
+   "rule": "records without clocks: always read (legacy reading dropped)",
+   "result": "KILLED",
+   "failed": 1,
+   "passed": 174,
+   "failing": [
+    "✖ R7-C QE-R7C-10 backward behaviour: a record written before R7C-FREEZE-4 (no first-recorded clocks) is read as R7C-FREEZE-3 read it"
+   ],
+   "witness": "backward behaviour",
+   "witnessRan": 2,
+   "witnessFail": 1,
+   "witnessPass": 0,
+   "witnessFailing": [
+    "✖ R7-C QE-R7C-10 backward behaviour: a record written before R7C-FREEZE-4 (no first-recorded clocks) is read as R7C-FREEZE-3 read it"
+   ]
+  },
+  {
+   "id": "J7-M3",
+   "rule": "records without clocks: always unread",
+   "result": "KILLED",
+   "failed": 1,
+   "passed": 174,
+   "failing": [
+    "✖ R7-C QE-R7C-10 backward behaviour: a record written before R7C-FREEZE-4 (no first-recorded clocks) is read as R7C-FREEZE-3 read it"
+   ],
+   "witness": "backward behaviour",
+   "witnessRan": 2,
+   "witnessFail": 1,
+   "witnessPass": 0,
+   "witnessFailing": [
+    "✖ R7-C QE-R7C-10 backward behaviour: a record written before R7C-FREEZE-4 (no first-recorded clocks) is read as R7C-FREEZE-3 read it"
+   ]
+  },
+  {
+   "id": "J7-M4",
+   "rule": "merge with a clockless (pre-FREEZE-4) row keeps the earliest known clock instead of none",
+   "result": "SURVIVED",
+   "failed": 0,
+   "passed": 175,
+   "failing": [],
+   "witness": "record: ",
+   "witnessRan": 1,
+   "witnessFail": 0,
+   "witnessPass": 1,
+   "witnessFailing": []
+  },
+  {
+   "id": "J7-M5",
+   "rule": "EXACT_REPLAY takes the re-send's (later) clock",
+   "result": "KILLED",
+   "failed": 2,
+   "passed": 173,
+   "failing": [
+    "✖ R7-C QE-R7C-10 visibility (3): a report the record first held after the review closed its week was not read by it, whatever gate the week gives; the next eligible decision reconciles it",
+    "✖ R7-C QE-R7C-10 record: the runtime stamps the clock it first held a report at, never a value the input supplies; one execution keeps its earliest; the learning model holds none"
+   ],
+   "witness": "record: ",
+   "witnessRan": 2,
+   "witnessFail": 1,
+   "witnessPass": 0,
+   "witnessFailing": [
+    "✖ R7-C QE-R7C-10 record: the runtime stamps the clock it first held a report at, never a value the input supplies; one execution keeps its earliest; the learning model holds none"
+   ]
+  },
+  {
+   "id": "J7-M6",
+   "rule": "EXACT_REPLAY never merges clocks (the row processed first keeps its own)",
+   "result": "SURVIVED",
+   "failed": 0,
+   "passed": 175,
+   "failing": [],
+   "witness": "record: ",
+   "witnessRan": 1,
+   "witnessFail": 0,
+   "witnessPass": 1,
+   "witnessFailing": []
+  },
+  {
+   "id": "J7-M7",
+   "rule": "the stamp is the report's own reportedAt when it supplies one (input-derived)",
+   "result": "SURVIVED",
+   "failed": 0,
+   "passed": 175,
+   "failing": [],
+   "witness": "record: ",
+   "witnessRan": 1,
+   "witnessFail": 0,
+   "witnessPass": 1,
+   "witnessFailing": []
+  },
+  {
+   "id": "J7-M8",
+   "rule": "per week instead of per report: one unread report makes every run report of its week unread",
+   "result": "KILLED",
+   "failed": 1,
+   "passed": 174,
+   "failing": [
+    "✖ R7-C QE-R7C-10 visibility (4): reports of one week held by its review and reports recorded after it are read and unread one by one"
+   ],
+   "witness": "visibility \\(4\\)",
+   "witnessRan": 2,
+   "witnessFail": 1,
+   "witnessPass": 0,
+   "witnessFailing": [
+    "✖ R7-C QE-R7C-10 visibility (4): reports of one week held by its review and reports recorded after it are read and unread one by one"
+   ]
+  },
+  {
+   "id": "J7-M9",
+   "rule": "carried rows are re-stamped with the decision clock (arrival forgotten at every decision)",
+   "result": "KILLED",
+   "failed": 12,
+   "passed": 163,
+   "failing": [
+    "✖ S3: a projection above history creates no unearned progression: load, tick and repetitions are history's",
+    "✖ T1 (QE-R7ASE-01): a lifted projected dose promotes the load, never the projection's load tick",
+    "✖ T6: a load executed without earning a step advances the load, never the progression credit",
+    "✖ T6b: a load first reached by execution needs its own successful exposures before the next step",
+    "✖ T7c: the plan never holds a progression credit history does not hold at that load",
+    "✖ R7-C QE-R7C-07 reach: a plan that rests on projection over its whole run window follows the record of that window, however it was reported",
+    "✖ R7-C QE-R7C-10 visibility (1): a review that had the run reports by its clock read them, though every run gate it gave was HOLD (runs done short): the plan stands mid-week",
+    "✖ R7-C QE-R7C-10 visibility (2) and all-adverse (11): a review that read adverse runs and gave REGRESS read them; REGRESS is never read as \"the review read no run\"",
+    "✖ R7-C QE-R7C-10 visibility (3): a report the record first held after the review closed its week was not read by it, whatever gate the week gives; the next eligible decision reconciles it",
+    "✖ R7-C QE-R7C-10 visibility (4): reports of one week held by its review and reports recorded after it are read and unread one by one",
+    "✖ R7-C QE-R7C-10 record: the runtime stamps the clock it first held a report at, never a value the input supplies; one execution keeps its earliest; the learning model holds none",
+    "✖ R7-C QE-R7C-10 backward behaviour: a record written before R7C-FREEZE-4 (no first-recorded clocks) is read as R7C-FREEZE-3 read it"
+   ],
+   "witness": "visibility \\(1\\)",
+   "witnessRan": 2,
+   "witnessFail": 1,
+   "witnessPass": 0,
+   "witnessFailing": [
+    "✖ R7-C QE-R7C-10 visibility (1): a review that had the run reports by its clock read them, though every run gate it gave was HOLD (runs done short): the plan stands mid-week"
+   ]
+  },
+  {
+   "id": "J7-M10",
+   "rule": "projected weeks (CONDITIONAL_PLAN) no longer unread",
+   "result": "KILLED",
+   "failed": 21,
+   "passed": 154,
+   "failing": [
+    "✖ R7-C QE-R7C-07: an EXECUTED answer recorded by an R4 HOLD or a clinical route gives the plan the direct answer gives (recorder independence)",
+    "✖ R7-C QE-R7C-07: a MIXED answer (long runs done, the rest not) recorded by an R4 HOLD or a clinical route gives the direct answer's plan",
+    "✖ R7-C QE-R7C-07: an ADVERSE answer (done, the long runs with an adverse response) recorded by an R4 HOLD or a clinical route gives the direct answer's plan",
+    "✖ R7-C QE-R7C-07: while the clinical route stands nothing is prescribed; after qualified clearance the recorded facts are applied with no re-send",
+    "✖ R7-C QE-R7C-07: no decision presents the stale projection as valid once the record holds the answer (race touch, taper quality, long run)",
+    "✖ R7-C QE-R7C-07: the same record, program, clock and safety state give the same decision whichever decision recorded the answer (determinism)",
+    "✖ R7-C QE-R7C-07 reach: a plan that rests on projection over its whole run window follows the record of that window, however it was reported",
+    "✖ R7-C QE-R7C-10 visibility (3): a report the record first held after the review closed its week was not read by it, whatever gate the week gives; the next eligible decision reconciles it",
+    "✖ R7-C QE-R7C-10 visibility (4): reports of one week held by its review and reports recorded after it are read and unread one by one",
+    "✖ R7-C QE-R7C-10 shortened (5): every gap run done at 60 % of its minutes, recorded by an R4 HOLD or a clinical route, gives the direct answer's plan",
+    "✖ R7-C QE-R7C-10 shortened (6): every gap run done at 80 %, recorded by a carrier, gives the direct answer's plan",
+    "✖ R7-C QE-R7C-10 shortened (7): the long runs shortened (60 %), the rest done, recorded by a carrier, gives the direct answer's plan",
+    "✖ R7-C QE-R7C-10 shortened (8): the long runs shortened, the rest not done, recorded by a carrier, gives the direct answer's plan",
+    "✖ R7-C QE-R7C-10 shortened (9): every gap run shortened with an adverse response, recorded by a carrier, gives the direct answer's plan",
+    "✖ R7-C QE-R7C-10 all-adverse (10): every gap run done with an adverse response, recorded by a carrier, gives the direct answer's plan, never the stale projection",
+    "✖ R7-C P6-F01 mixed: some runs done, some not done; some done short, some not done; some done, some adverse: recorded by a carrier, each gives the direct answer's plan",
+    "✖ R7-C QE-R7C-10 (12): true unread still reconciles: wherever the facts change the plan, the carrier's next decision re-plans from the record",
+    "✖ R7-C QE-R7C-10 (14): the reconciliation never rewrites history, and the first-recorded clock never enters HistoricalState",
+    "✖ R7-C QE-R7C-10 (15): clinical first: while the route stands a shortened answer prescribes nothing; after clearance it is applied with no re-send",
+    "✖ R7-C QE-R7C-10 (16): no decision presents the stale projection as valid once the record holds the answer (shortened, adverse, mixed)",
+    "✖ R7-C QE-R7C-10 backward behaviour: a record written before R7C-FREEZE-4 (no first-recorded clocks) is read as R7C-FREEZE-3 read it"
+   ],
+   "witness": "shortened \\(5\\)",
+   "witnessRan": 2,
+   "witnessFail": 1,
+   "witnessPass": 0,
+   "witnessFailing": [
+    "✖ R7-C QE-R7C-10 shortened (5): every gap run done at 60 % of its minutes, recorded by an R4 HOLD or a clinical route, gives the direct answer's plan"
+   ]
+  },
+  {
+   "id": "J7-M11",
+   "rule": "the closing clock read from the start's asOf only (evidenceThrough ignored)",
+   "result": "KILLED",
+   "failed": 17,
+   "passed": 158,
+   "failing": [
+    "✖ R7-C QE-R7C-07: an EXECUTED answer recorded by an R4 HOLD or a clinical route gives the plan the direct answer gives (recorder independence)",
+    "✖ R7-C QE-R7C-07: a MIXED answer (long runs done, the rest not) recorded by an R4 HOLD or a clinical route gives the direct answer's plan",
+    "✖ R7-C QE-R7C-07: an ADVERSE answer (done, the long runs with an adverse response) recorded by an R4 HOLD or a clinical route gives the direct answer's plan",
+    "✖ R7-C QE-R7C-07: while the clinical route stands nothing is prescribed; after qualified clearance the recorded facts are applied with no re-send",
+    "✖ R7-C QE-R7C-07: no decision presents the stale projection as valid once the record holds the answer (race touch, taper quality, long run)",
+    "✖ R7-C QE-R7C-07 (G01): the recorded-answer re-plan never travels with a question about unknown training; that question decides alone",
+    "✖ R7-C QE-R7C-10 visibility (3): a report the record first held after the review closed its week was not read by it, whatever gate the week gives; the next eligible decision reconciles it",
+    "✖ R7-C QE-R7C-10 shortened (5): every gap run done at 60 % of its minutes, recorded by an R4 HOLD or a clinical route, gives the direct answer's plan",
+    "✖ R7-C QE-R7C-10 shortened (6): every gap run done at 80 %, recorded by a carrier, gives the direct answer's plan",
+    "✖ R7-C QE-R7C-10 shortened (7): the long runs shortened (60 %), the rest done, recorded by a carrier, gives the direct answer's plan",
+    "✖ R7-C QE-R7C-10 shortened (8): the long runs shortened, the rest not done, recorded by a carrier, gives the direct answer's plan",
+    "✖ R7-C QE-R7C-10 shortened (9): every gap run shortened with an adverse response, recorded by a carrier, gives the direct answer's plan",
+    "✖ R7-C QE-R7C-10 all-adverse (10): every gap run done with an adverse response, recorded by a carrier, gives the direct answer's plan, never the stale projection",
+    "✖ R7-C P6-F01 mixed: some runs done, some not done; some done short, some not done; some done, some adverse: recorded by a carrier, each gives the direct answer's plan",
+    "✖ R7-C QE-R7C-10 (12): true unread still reconciles: wherever the facts change the plan, the carrier's next decision re-plans from the record",
+    "✖ R7-C QE-R7C-10 (15): clinical first: while the route stands a shortened answer prescribes nothing; after clearance it is applied with no re-send",
+    "✖ R7-C QE-R7C-10 (16): no decision presents the stale projection as valid once the record holds the answer (shortened, adverse, mixed)"
+   ],
+   "witness": "shortened \\(5\\)",
+   "witnessRan": 2,
+   "witnessFail": 1,
+   "witnessPass": 0,
+   "witnessFailing": [
+    "✖ R7-C QE-R7C-10 shortened (5): every gap run done at 60 % of its minutes, recorded by an R4 HOLD or a clinical route, gives the direct answer's plan"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,135 @@
+{
+ "probe": "P7-X6 first-recorded clock rules",
+ "checks": [
+  {
+   "id": "conflict:event-id-reused",
+   "ok": true,
+   "detail": [
+    {
+     "eventId": "e1",
+     "conflicted": true,
+     "firstRecordedAt": "2026-11-03T21:00:00.000Z"
+    }
+   ]
+  },
+  {
+   "id": "conflict:physical",
+   "ok": true,
+   "detail": [
+    {
+     "eventId": "e1",
+     "conflicted": true,
+     "firstRecordedAt": "2026-11-03T21:00:00.000Z"
+    }
+   ]
+  },
+  {
+   "id": "correction-resolves-conflict:earliest",
+   "ok": true,
+   "detail": [
+    {
+     "eventId": "e3",
+     "conflicted": false,
+     "firstRecordedAt": "2026-11-03T21:00:00.000Z"
+    }
+   ]
+  },
+  {
+   "id": "legacy-merge:no-clock",
+   "ok": true,
+   "detail": [
+    {
+     "eventId": "e1",
+     "conflicted": false,
+     "firstRecordedAt": null
+    }
+   ]
+  },
+  {
+   "id": "superseded-resend",
+   "ok": true,
+   "detail": [
+    {
+     "eventId": "e5",
+     "conflicted": false,
+     "firstRecordedAt": "2026-11-03T21:00:00.000Z"
+    }
+   ]
+  },
+  {
+   "id": "same-decision-two-sources",
+   "ok": true,
+   "detail": [
+    {
+     "eventId": "e6a",
+     "conflicted": false,
+     "firstRecordedAt": "2026-11-05T07:00:00.000Z"
+    }
+   ]
+  },
+  {
+   "id": "order-permutation",
+   "ok": true,
+   "detail": {
+    "a": [
+     {
+      "eventId": "e1",
+      "conflicted": false,
+      "firstRecordedAt": "2026-11-03T21:00:00.000Z"
+     }
+    ],
+    "b": [
+     {
+      "eventId": "e1",
+      "conflicted": false,
+      "firstRecordedAt": "2026-11-03T21:00:00.000Z"
+     }
+    ]
+   }
+  },
+  {
+   "id": "resend-later-reportedAt",
+   "ok": true,
+   "detail": [
+    {
+     "eventId": "e1",
+     "conflicted": false,
+     "firstRecordedAt": "2026-11-03T21:00:00.000Z"
+    }
+   ]
+  },
+  {
+   "id": "resend-sorts-first",
+   "ok": true,
+   "detail": [
+    {
+     "eventId": "e9",
+     "conflicted": false,
+     "firstRecordedAt": "2026-11-05T07:00:00.000Z"
+    }
+   ]
+  },
+  {
+   "id": "trust:carried-clock-kept,observation-clock-replaced",
+   "ok": true,
+   "detail": {
+    "carried": [
+     {
+      "eventId": "e1",
+      "conflicted": false,
+      "firstRecordedAt": "2020-01-01T00:00:00.000Z"
+     }
+    ],
+    "observation": [
+     {
+      "eventId": "e10",
+      "conflicted": false,
+      "firstRecordedAt": "2026-11-05T07:00:00.000Z"
+     }
+    ]
+   }
+  }
+ ],
+ "pass": 10,
+ "total": 10
+}

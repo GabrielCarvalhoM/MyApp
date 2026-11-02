@@ -1,0 +1,151 @@
+{
+ "check": "R7C-P3-ADVERSARIAL-G02",
+ "runtime": "working tree (R7-C)",
+ "policy": {
+  "emergingSessions": 3,
+  "emergingSpanDays": 7,
+  "strongSessions": 4,
+  "strongSpanDays": 14,
+  "maximumAgeDays": 56
+ },
+ "variants": {
+  "A_one_adverse_at_70": {
+   "name": "A_one_adverse_at_70",
+   "learnedAt": [],
+   "learnedLong": [],
+   "fails": []
+  },
+  "B_two_adverse_one_cycle": {
+   "name": "B_two_adverse_one_cycle",
+   "learnedAt": [],
+   "learnedLong": [],
+   "fails": []
+  },
+  "C_two_cycles_four_adverse": {
+   "name": "C_two_cycles_four_adverse",
+   "learnedAt": [
+    12,
+    13
+   ],
+   "learnedLong": [
+    "w13:65 (off 70)",
+    "w14:65 (off 70)"
+   ],
+   "fails": []
+  },
+  "D_mixed_one_compatible_70": {
+   "name": "D_mixed_one_compatible_70",
+   "learnedAt": [],
+   "learnedLong": [],
+   "fails": []
+  },
+  "E_adverse_at_other_dose_only": {
+   "name": "E_adverse_at_other_dose_only",
+   "learnedAt": [
+    9,
+    10
+   ],
+   "learnedLong": [
+    "w10:60 (off 65)",
+    "w11:60 (off 65)"
+   ],
+   "fails": []
+  },
+  "F_three_adverse_short_span": {
+   "name": "F_three_adverse_short_span",
+   "learnedAt": [],
+   "learnedLong": [],
+   "fails": []
+  },
+  "G_consent_off": {
+   "name": "G_consent_off",
+   "learnedAt": [],
+   "learnedLong": [],
+   "fails": []
+  },
+  "H_revoked_at_12": {
+   "name": "H_revoked_at_12",
+   "learnedAt": [],
+   "learnedLong": [],
+   "fails": []
+  },
+  "I_revoked_12_reconsent_14": {
+   "name": "I_revoked_12_reconsent_14",
+   "learnedAt": [],
+   "learnedLong": [],
+   "fails": []
+  },
+  "J_duplicates": {
+   "name": "J_duplicates",
+   "learnedAt": [],
+   "learnedLong": [],
+   "fails": []
+  },
+  "K_strength_days_change_week11_same_pool": {
+   "name": "K_strength_days_change_week11_same_pool",
+   "learnedAt": [
+    12,
+    13
+   ],
+   "learnedLong": [
+    "w13:65 (off 70)",
+    "w14:65 (off 75)"
+   ],
+   "fails": []
+  },
+  "K2_run_days_change_week11_new_pool": {
+   "name": "K2_run_days_change_week11_new_pool",
+   "learnedAt": [],
+   "learnedLong": [],
+   "fails": []
+  },
+  "M_expiry_after_week8": {
+   "name": "M_expiry_after_week8",
+   "learnedAt": [],
+   "learnedLong": [],
+   "fails": []
+  },
+  "N_released_long_unreported": {
+   "name": "N_released_long_unreported",
+   "learnedAt": [
+    12,
+    13
+   ],
+   "learnedLong": [
+    "w13:65 (off 70)",
+    "w14:65 (off 70)"
+   ],
+   "fails": []
+  },
+  "L_event_plan": {
+   "name": "L_event_plan",
+   "learnedAt": [],
+   "learnedLong": [],
+   "fails": []
+  }
+ },
+ "determinism": {
+  "sameTwice": true,
+  "sameWithCarriedModel": true
+ },
+ "reconsent": {
+  "atRevocation": 0,
+  "atReconsent": 40,
+  "learnedAfterReconsent": false,
+  "factsObservedWhileRevoked": 10
+ },
+ "holdCase": [
+  {
+   "w": 12,
+   "learned": 65,
+   "gate": "HOLD"
+  },
+  {
+   "w": 13,
+   "learned": 65,
+   "gate": "HOLD"
+  }
+ ],
+ "fails": [],
+ "result": "PASS"
+}
