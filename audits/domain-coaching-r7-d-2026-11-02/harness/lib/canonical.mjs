@@ -4,7 +4,7 @@ import {live} from './client.mjs';
 
 export function canonicalPrescription(p){
  if(!p)return null;
- if(p.modality==='RUN')return {family:p.family,minutes:p.durationMinutes??null,work:p.work?{reps:p.work.repetitions??null,work:p.work.workMinutes??null,rec:p.work.recoveryMinutes??null}:null,strides:p.strides?{count:p.strides.count??p.strides.repetitions??null}:null,completion:p.completion??null,walkBreaks:p.walkBreaks?true:null};
+ if(p.modality==='RUN')return {family:p.family,minutes:p.durationMinutes??null,work:p.work?{reps:p.work.repetitions??null,work:p.work.workMinutes??null,rec:p.work.recoveryMinutes??null,workSeconds:p.work.workSeconds??null,recSeconds:p.work.recoverySeconds??null}:null,strides:p.strides?{count:p.strides.count??p.strides.repetitions??null}:null,completion:p.completion??null,walkBreaks:p.walkBreaks?true:null};
  return {family:p.family,exercises:(p.exercises??[]).map(e=>({id:e.id,sets:e.sets,reps:e.reps,rir:e.rir??null,load:canonicalLoad(e.load)}))};
 }
 /** A load as mass: a dumbbell or kettlebell pair PER_HAND v is the same mass as TOTAL 2v (the stated convention is kept by the plan). */

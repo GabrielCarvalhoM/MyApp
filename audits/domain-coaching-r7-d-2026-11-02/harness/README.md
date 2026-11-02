@@ -50,3 +50,36 @@ node validation/run-validation.mjs --dev validation/DEV_CASES_R7D.json --out <fi
 - A known dumbbell-pair load stated as 36 kg TOTAL instead of 18 kg PER_HAND starts the same mass. It then progresses by the TOTAL increment of 2.5 kg, so 38.5 kg total (19.25 kg per hand) where PER_HAND gives 40 (20 per hand).
 - The policy authorizes this: `operational.strength.loadUnits` keeps a load as reported, and `smallestIncrement` differs by convention. So `LOAD_CONVENTION_EQUIVALENT` compares the starting mass and every decision except the later load values of the flipped exercises, and records the rest as a difference.
 - Routed to the SSCTR with the PCG: should a dumbbell pair declared TOTAL progress in real dumbbell steps?
+
+## R7D-HARNESS-2 (Phase 3)
+
+R7D-HARNESS-1 is commit `8eec795`, kept as the record of the Phase 2 diagnostic. R7D-HARNESS-2 corrects the gaps the diagnostic found (pre-registered as `R7D-PREREG-2`, `../PREREGISTRATION_R7D_2.md`):
+
+| Gap | Change |
+|---|---|
+| HG-01 | The client carries the athlete's current learning consent to every decision; P14 reads the consent in force |
+| HG-02 | P07 follows the race date of the adopted plan (`goal.run.event.date`), never a refused change |
+| HG-03 | P09: `confounded` makes only performance and effort unreadable; adverse recovery or an impaired next day stays unfavourable |
+| HG-04 | Author expectations: own-week ROLE_ABSENT/PRESENT read sessions from the step date; ROLE_MINUTES_COMPARE counts an absent role as 0 |
+| HG-05 | P08 applies to any declared break, whatever event carries it, and to any decision that records a return |
+| HG-06 | Pending-load confirmations use the kilogram value the runtime returned and the planned row's convention |
+| HG-07 | Walk/jog intervals in seconds are shown in the packet and compared in the canonical view |
+| F03 | New P16: a load logged exactly as prescribed is read; no plan states a machine load the athlete did not supply, log or confirm |
+
+The default freeze record is `CoachingCore/r7/d/RUNTIME_FREEZE_R7D_1.json`. Before it exists, a run names a record and passes `--allow-runtime-diff`; the report then lists the differing files and the evaluated bytes (`runtimeSource`). A first evaluation refuses `--allow-runtime-diff`.
+
+Validation 2: `validation/DEV_CASES_R7D_2.json` (from `build-dev-cases.mjs`, contaminated by construction) and `validation/HARNESS_VALIDATION_R7D_2.json`:
+```
+node validation/run-validation.mjs --dev validation/DEV_CASES_R7D_2.json --out <file> --candidate <worktree root> --f4 $D/rt-f4 --f3 $D/rt-f3 --b2 $D/rt-b2 --prer7a $D/rt-prer7a
+```
+`$D/rt-f4` is `git archive a9654c8 CoachingCore audits/domain-coaching-r6-2026-10-26/reviews/ssctr-policy-review.json audits/domain-coaching-r7-b0-2026-10-31/reviews/SSCTR_RECHECK_B0.json`, the other runtimes as above.
+
+Results:
+- no false block on the candidate;
+- each of the seven sensitivity defects is detected on its own runtime and clean on the candidate:
+  - on R7C-FREEZE-4: DX-01 (P10), DX-02 (P08), F03 (P16), F04 (P09);
+  - QE-R7C-10, R7C-G01 and D54 on their earlier runtimes;
+- P05 coverage: CARRIER_CLINICAL 7, CARRIER_HOLD 1 and RESEND 16 units;
+- 31/31 witnesses fire.
+
+The validation also measures finding **P3-F01**: a declared-break answer recorded by a clinical route is not retained across qualified clearance. It is a true finding, not a false block. It already existed on R7C-FREEZE-4 in the return-report form.

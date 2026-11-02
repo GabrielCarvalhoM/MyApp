@@ -1,0 +1,147 @@
+{
+ "mutation": "R7D-PHASE3-MUTATION-1",
+ "testFile": "CoachingCore/test/r7d-phase3.test.mjs",
+ "testFileSha256": "2058f0281c0d1e98fd1255ffbefb97e3449b3b3a63abe9076be2e9a7550a5b9a",
+ "sources": {
+  "CoachingCore/src/r6-provenance.mjs": "2b9c5ccc023e80a698c3f155acd6873ee2a9c3407e66f491c3a90baf90fb9419",
+  "CoachingCore/src/r6-adaptation.mjs": "768ea65d774e9269e80077927119ae48afc0df9da5667ca290d747a3207a8d8a",
+  "CoachingCore/src/r6-prescription.mjs": "f5e0f5defa0a1f211bad1d63747641ce325aad9d61cc938e7472757fecea4a5f",
+  "CoachingCore/src/r6-program.mjs": "2fd46f8ded66b84068e1c07cf4043fa8b3eba1a55382abd33dca9af18ddd7678"
+ },
+ "baseline": {
+  "status": 0,
+  "selected": 23,
+  "pass": 23,
+  "fail": 0,
+  "failed": []
+ },
+ "mutants": [
+  {
+   "id": "DX01-M1",
+   "defect": "a carried same-day day-precision row is re-screened as an exact timestamp and dropped",
+   "file": "CoachingCore/src/r6-provenance.mjs",
+   "witness": "R7-D DX-01: a same-day report with day precision, accepted by a decision, stays in the record",
+   "applied": true,
+   "witnessRun": {
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D DX-01: a same-day report with day precision, accepted by a decision, stays in the record at the next decisions with its facts and first-recorded clock"
+    ]
+   },
+   "caughtBy": [
+    "R7-D DX-01: a same-day report with day precision, accepted by a decision, stays in the record at the next decisions with its facts and first-recorded clock",
+    "R7-D DX-01: the carried record decides exactly as the same report sent again (the row never disappears, so no factual result changes)",
+    "R7-D DX-01: two adverse long runs, the first reported the same day with day precision, still step the long run back (the repeated-adverse rule reads both)",
+    "R7-D DX-01: next-day, clockless and exact-timestamp reports are kept as before; the report-before-observation screen still rejects what it rejected",
+    "R7-D DX-01: a correction, an exact replay and a second-device duplicate of a carried same-day report work as for any report; history stays append-only"
+   ],
+   "killed": true
+  },
+  {
+   "id": "DX02-M1",
+   "defect": "a declared break in a weekly review is read only when an unreported-training question is pending",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D DX-02: a declared break inside a weekly review with no question pending is read",
+   "applied": true,
+   "witnessRun": {
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D DX-02: a declared break inside a weekly review with no question pending is read as the known stop it is, exactly as the same break in a return report"
+    ]
+   },
+   "caughtBy": [
+    "R7-D DX-02: a declared break inside a weekly review with no question pending is read as the known stop it is, exactly as the same break in a return report",
+    "R7-D DX-02: no stale run dose continues after a declared break; the re-entry stays within what was executed before it",
+    "R7-D DX-02: an ongoing break (its end after the review) is asked, never kept valid, through either carrier"
+   ],
+   "killed": true
+  },
+  {
+   "id": "F03-M1",
+   "defect": "the prescribed machine unit (STACK_STEP) is not accepted when logged back",
+   "file": "CoachingCore/src/r6-prescription.mjs",
+   "witness": "R7-D F03-A: a machine load is prescribed in the unit of its value",
+   "applied": true,
+   "witnessRun": {
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D F03-A: a machine load is prescribed in the unit of its value, logged back exactly as prescribed, read, recorded and consumed by the next week"
+    ]
+   },
+   "caughtBy": [
+    "R7-D F03-A: a machine load is prescribed in the unit of its value, logged back exactly as prescribed, read, recorded and consumed by the next week",
+    "R7-D F03-B T3/T4: at the top of the range a machine step is a numberless next-setting row; a verified heavier setting becomes the reference, an unverified one is asked once and never stated"
+   ],
+   "killed": true
+  },
+  {
+   "id": "F03-M2",
+   "defect": "at the top of the range the engine computes the next machine load (R + 1 kg)",
+   "file": "CoachingCore/src/r6-program.mjs",
+   "witness": "R7-D F03-B T2 ",
+   "applied": true,
+   "witnessRun": {
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D F03-B T2 (C2): over every goal and athlete behaviour, no machine row states a value the athlete did not supply, log or confirm (no R±1 kg, no computed setting)"
+    ]
+   },
+   "caughtBy": [
+    "R7-D F03-B T2 (C2): over every goal and athlete behaviour, no machine row states a value the athlete did not supply, log or confirm (no R±1 kg, no computed setting)",
+    "R7-D F03-B T3/T4: at the top of the range a machine step is a numberless next-setting row; a verified heavier setting becomes the reference, an unverified one is asked once and never stated",
+    "R7-D F03-B T5/T6: a heavier setting without the ADVANCE criterion is not adopted; a step logged at R holds R at the top of the range, never restarting it",
+    "R7-D F03-B T8: REGRESS goes back to the previous adopted setting, otherwise lowers repetitions; never R minus a computed value",
+    "R7-D F03-B T11: an athlete whose machine allows the next plate climbs by real plates; one whose next plate never fits holds at the top of the range, never oscillating"
+   ],
+   "killed": true
+  },
+  {
+   "id": "F03-M3",
+   "defect": "a heavier machine setting is adopted on the ADVANCE exposure alone, without verification",
+   "file": "CoachingCore/src/r6-program.mjs",
+   "witness": "R7-D F03-B T3/T4",
+   "applied": true,
+   "witnessRun": {
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D F03-B T3/T4: at the top of the range a machine step is a numberless next-setting row; a verified heavier setting becomes the reference, an unverified one is asked once and never stated"
+    ]
+   },
+   "caughtBy": [
+    "R7-D F03-B T3/T4: at the top of the range a machine step is a numberless next-setting row; a verified heavier setting becomes the reference, an unverified one is asked once and never stated"
+   ],
+   "killed": true
+  },
+  {
+   "id": "F04-M1",
+   "defect": "confounded erases an adverse recovery and an impaired next day",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D F04: confounded × performance × recovery × next-day function",
+   "applied": true,
+   "witnessRun": {
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D F04: confounded × performance × recovery × next-day function: an adverse recovery or an impaired next day always holds the long run; confounding only neutralizes performance"
+    ]
+   },
+   "caughtBy": [
+    "R7-D F04: confounded × performance × recovery × next-day function: an adverse recovery or an impaired next day always holds the long run; confounding only neutralizes performance",
+    "R7-D F04: no long-run advance follows a confounded run whose recovery was adverse or next day impaired",
+    "R7-D F04: two confounded long runs with adverse recovery within 14 days step the long run back, as two unconfounded ones do",
+    "R7-D F04: a confounded strength session with an impaired next day holds its exercises; unconfounded control identical"
+   ],
+   "killed": true
+  }
+ ],
+ "summary": {
+  "mutants": 6,
+  "killed": 6,
+  "survived": []
+ }
+}

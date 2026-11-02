@@ -4,7 +4,10 @@ import {live} from './client.mjs';
 
 const VALID='VALID_WITHIN_CURRENT_BOUNDED_SCOPE',RECON='REQUIRES_RECONCILIATION';
 const OPS={'<=':(a,b)=>a<=b,'<':(a,b)=>a<b,'>=':(a,b)=>a>=b,'==':(a,b)=>a===b};
-const maxMinutes=(plan,week,sport,role)=>{const w=plan?.weeks?.[week];if(!w)return null;const xs=w.sessions.filter(s=>live(s)&&s.sport===sport&&s.role===role&&Number.isFinite(s.prescription?.durationMinutes)).map(s=>s.prescription.durationMinutes);return xs.length?Math.max(...xs):null;};
+// R7D-HARNESS-2 (HG-04, interface R7D-INTERFACE-2): a week of the plan with no live session of the role counts 0 minutes (the author interface's
+// reading); a week the plan does not have is not evaluable. ROLE_ABSENT / ROLE_PRESENT read, in the step's own week, only the sessions on or
+// after the step's local date (what that decision prescribes; earlier sessions of the week are history).
+const maxMinutes=(plan,week,sport,role)=>{const w=plan?.weeks?.[week];if(!w)return null;const xs=w.sessions.filter(s=>live(s)&&s.sport===sport&&s.role===role&&Number.isFinite(s.prescription?.durationMinutes)).map(s=>s.prescription.durationMinutes);return xs.length?Math.max(...xs):0;};
 
 export function evaluateExpectations(kase,trace){
  const out=[];
@@ -23,13 +26,14 @@ export function evaluateExpectations(kase,trace){
    case 'NO_PRESCRIPTION':observed=gen?status:validity;ok=gen?status!=='PROPOSED':validity===RECON;break;
    case 'ROLE_ABSENT':case 'ROLE_PRESENT':{
     if(!plan){observed='NO_PLAN';ok=a.type==='ROLE_ABSENT';break;}
-    const found=(a.weeks??[]).flatMap(k=>plan.weeks[k]?.sessions??[]).filter(s=>live(s)&&s.sport===a.sport&&(a.roles??[]).includes(s.role));
+    const ahead=s=>gen||s.weekIndex!==step.weekIndex||s.date>=step.asOfLocal;
+    const found=(a.weeks??[]).flatMap(k=>plan.weeks[k]?.sessions??[]).filter(s=>live(s)&&ahead(s)&&s.sport===a.sport&&(a.roles??[]).includes(s.role));
     observed=found.map(s=>`${s.weekIndex}:${s.day}:${s.role}`);ok=a.type==='ROLE_ABSENT'?found.length===0:found.length>0;break;}
    case 'PHASE_IS':observed=plan?.weeks?.[a.week]?.phase??null;ok=observed!==null&&(a.oneOf??[]).includes(observed);if(observed===null){out.push({...row,result:'NOT_EVALUABLE',reason:'NO_SUCH_WEEK_OR_PLAN'});continue;}break;
    case 'ROLE_MINUTES_COMPARE':{
     const x=maxMinutes(plan,a.week,a.sport??'RUN',a.role),y=maxMinutes(plan,a.otherWeek,a.sport??'RUN',a.role);
     observed={week:x,otherWeek:y};
-    if(x===null||y===null||!OPS[a.op]){out.push({...row,result:'NOT_EVALUABLE',reason:'ROLE_NOT_IN_BOTH_WEEKS',observed});continue;}
+    if(x===null||y===null||!OPS[a.op]){out.push({...row,result:'NOT_EVALUABLE',reason:!OPS[a.op]?'UNKNOWN_OPERATOR':'WEEK_NOT_IN_PLAN',observed});continue;}
     ok=OPS[a.op](x,y);break;}
    default:out.push({...row,result:'CORPUS_ERROR',reason:'UNKNOWN_ASSERT_TYPE'});continue;
   }

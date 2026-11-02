@@ -1,7 +1,10 @@
-// R7-D evaluation client (R7D-HARNESS-1). A client conforming to C3: it carries the record exactly as the runtime returns it
+// R7-D evaluation client (R7D-HARNESS-2). A client conforming to C3: it carries the record exactly as the runtime returns it
 // (actualLedger, referenceState, updatedModel), sends new reports only as observations, adopts proposals, never invents a report,
 // a clock, a load, a confirmation or an answer, and models qualified clinical clearance only where a step says so (it drops the
 // clinical continuation state and keeps the record, as the frozen tests model it).
+// R7D-HARNESS-2 (Phase 3): it also carries the athlete's current learning consent to every decision (HG-01: the runtime reads consent per
+// decision, so a revocation sent once would lapse), and confirms a pending load with the value the runtime returned (HG-06: a load
+// question's `logged` is a number in kilograms; the convention is the planned row's).
 import path from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {clone,addDays,localDate,offsetString,hasZone,dayGap,digestOf,CorpusError} from './util.mjs';
@@ -111,7 +114,8 @@ export function runCase(runtime,kase,hooks={}){
  trace.generation=gen;trace.intake=intake;
  if(gen.status!=='PROPOSED'||!gen.program){trace.stopped=(kase.timeline??[]).length?'NO_PROGRAM':null;return trace;}
  const tz=intake.timezoneOffsetMinutes??0;
- const st={program:gen.program,ledger:[],ref:null,model:null,last:null,pendingQuestion:null,prevAsOf:null};
+ // The athlete's current learning consent (HG-01): the intake's, then the latest a step states; sent with every decision once known.
+ const st={program:gen.program,ledger:[],ref:null,model:null,last:null,pendingQuestion:null,prevAsOf:null,consent:typeof intake.learningConsent==='boolean'?intake.learningConsent:null};
  const caseId=kase.caseId;
  for(const step of kase.timeline??[]){
   const resolutions=[],notes=[];let review;
@@ -163,10 +167,15 @@ export function runCase(runtime,kase,hooks={}){
     if(choices.length)review.choices=choices;else notes.push('NO_OFFER_TO_RESPOND');
    }
    if(step.confirmPendingLoads===true){
-    const conf=(st.last?.loadQuestions??[]).filter(q=>q&&typeof q.exerciseId==='string'&&Number.isFinite(q.loggedKg??q.logged?.value??q.value)).map(q=>({exerciseId:q.exerciseId,value:q.loggedKg??q.logged?.value??q.value,unit:'KG',convention:q.convention??q.logged?.convention}));
+    // The runtime returns `logged` as the kilogram value it read (or, for an unreadable unit, the raw value); a question carries no convention,
+    // so the planned row's convention is used: a confirmation in another convention would confirm nothing (HG-06).
+    const rowConvention=q=>sessionById(st.program,q.sessionId)?.prescription?.exercises?.find(e=>e.id===q.exerciseId)?.load?.convention??null;
+    const loggedKg=q=>Number.isFinite(q.logged)?q.logged:Number.isFinite(q.logged?.value)?q.logged.value:null;
+    const conf=(st.last?.loadQuestions??[]).filter(q=>q&&typeof q.exerciseId==='string'&&!q.confirmed&&Number.isFinite(loggedKg(q))&&rowConvention(q)).map(q=>({exerciseId:q.exerciseId,value:loggedKg(q),unit:'KG',convention:rowConvention(q)}));
     if(conf.length)review.loadConfirmations=conf;else notes.push('NO_LOAD_QUESTION_TO_CONFIRM');
    }
-   if(typeof step.learningConsent==='boolean')review.learningConsent=step.learningConsent;
+   if(typeof step.learningConsent==='boolean')st.consent=step.learningConsent;
+   if(typeof st.consent==='boolean')review.learningConsent=st.consent;
    if(hooks.carry)hooks.carry(st,{step});
    if(st.ledger.length)review.actualLedger=st.ledger;
    if(st.ref)review.referenceState=st.ref;
@@ -185,7 +194,7 @@ export function runCase(runtime,kase,hooks={}){
   if(digestOf(result.officialPlanState??null)!==digestOf(result.appliedState??null))trace.integrity.push({stepId:step.stepId,issue:'OFFICIAL_EFFECT'});
   const r=result,asOfLocal=localDate(review.asOf,program.timezoneOffsetMinutes??0);
   const adopted=!!r.proposal&&step.adoptProposal!==false;
-  trace.steps.push({stepId:step.stepId,kind:review.event.kind,asOf:review.asOf,asOfLocal,weekIndex:review.weekIndex,notes,resolutions,review:sent(review),result:r,planBefore:program,planAfter:adopted?r.proposal:program,adopted,ledgerBefore:st.ledger,refBefore:st.ref,pendingQuestionBefore:st.pendingQuestion,clearance:step.clearance==='QUALIFIED_CLEARANCE'});
+  trace.steps.push({stepId:step.stepId,kind:review.event.kind,consent:st.consent,asOf:review.asOf,asOfLocal,weekIndex:review.weekIndex,notes,resolutions,review:sent(review),result:r,planBefore:program,planAfter:adopted?r.proposal:program,adopted,ledgerBefore:st.ledger,refBefore:st.ref,pendingQuestionBefore:st.pendingQuestion,clearance:step.clearance==='QUALIFIED_CLEARANCE'});
   st.ledger=r.actualLedger??st.ledger;st.ref=r.referenceState??st.ref;st.model=r.updatedModel??st.model;st.last=r;
   if(r.question)st.pendingQuestion=r.question;else if(r.planValidity?.status==='VALID_WITHIN_CURRENT_BOUNDED_SCOPE')st.pendingQuestion=null;
   if(adopted)st.program=r.proposal;

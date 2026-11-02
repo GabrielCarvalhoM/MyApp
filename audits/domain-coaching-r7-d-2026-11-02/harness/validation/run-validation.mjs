@@ -1,37 +1,49 @@
 // R7-D harness validation (Phase 1 plan: "sem falso bloqueio no FREEZE-4; sensibilidade nos freezes superados; oráculo sem testemunha =
 // TEST_GAP"). Development cases only (build-dev-cases.mjs): contaminated by construction, never diagnostic or fresh evidence.
-//   node run-validation.mjs --dev <dev-cases.json> --out <file> --f4 <repo root> [--f3 <root>] [--b2 <root>] [--prer7a <root>]
+//   node run-validation.mjs --dev <dev-cases.json> --out <file> --candidate <repo root> [--f4 <root>] [--f3 <root>] [--b2 <root>] [--prer7a <root>]
+// R7D-HARNESS-VALIDATION-2 (Phase 3): no false block on the candidate runtime (the tree under --candidate); R7C-FREEZE-4 is now a superseded
+// runtime whose four diagnostic blockers (DX-01, DX-02, F03, F04) must be detected; P05 carrier coverage must be non-zero on the dev cases.
 // Superseded runtimes are rebuilt outside the repository (see HARNESS_VALIDATION.md for the exact git archive / copy commands).
 import fs from 'node:fs';
 import path from 'node:path';
 import {loadRuntime,runCase} from '../lib/client.mjs';
 import {evaluateProperties} from '../lib/properties.mjs';
 import {runRelations} from '../lib/metamorphic.mjs';
-import {verifyRuntime} from '../r7d-harness.mjs';
+import {verifyRuntime,sourceBytes} from '../r7d-harness.mjs';
 import {digestOf} from '../lib/util.mjs';
 
 const arg=k=>{const i=process.argv.indexOf(k);return i>=0?process.argv[i+1]:null;};
 const dev=JSON.parse(fs.readFileSync(arg('--dev'),'utf8')),byId=new Map(dev.cases.map(c=>[c.caseId,c]));
-const out={validation:'R7D-HARNESS-VALIDATION-1',devCorpusSha256:digestOf(dev),runs:[],witnesses:[]};
+const out={validation:'R7D-HARNESS-VALIDATION-2',harness:'R7D-HARNESS-2',devCorpusSha256:digestOf(dev),runs:[],witnesses:[],coverage:{}};
 
 async function ctxFor(root,record){
  const cc=path.join(root,'CoachingCore');
  const rt=await loadRuntime(cc);
  const policy=JSON.parse(fs.readFileSync(path.join(cc,'r6/PROGRAM_POLICY_R6.json'),'utf8'));
  const catalogPath=path.join(cc,'r7/b0/REPERTOIRE_CATALOG_B0.json');
- const catalog=JSON.parse(fs.readFileSync(fs.existsSync(catalogPath)?catalogPath:path.join(arg('--f4'),'CoachingCore/r7/b0/REPERTOIRE_CATALOG_B0.json'),'utf8'));
- return {rt,ctx:{policy,catalog},runtime:record?verifyRuntime(root,record):null};
+ const catalog=JSON.parse(fs.readFileSync(fs.existsSync(catalogPath)?catalogPath:path.join(arg('--candidate'),'CoachingCore/r7/b0/REPERTOIRE_CATALOG_B0.json'),'utf8'));
+ return {rt,ctx:{policy,catalog},runtime:record?verifyRuntime(root,record):{revision:'CANDIDATE (not frozen)',source:sourceBytes(cc)}};
 }
 function evaluate(rt,ctx,kase,relations=true){
  const base=runCase(rt,kase),properties=evaluateProperties(base,ctx),rel=relations?runRelations(rt,kase,base,ctx):{};
  return {base,properties,relations:rel,fails:[...Object.values(properties).filter(p=>p.result==='FAIL').map(p=>({property:p.id,issues:[...new Set(p.violations.map(v=>v.issue??'VIOLATION'))],n:p.violations.length})),...Object.entries(rel).filter(([,r])=>(r.violations??[]).length).map(([k,r])=>({relation:k,n:r.violations.length,issues:[...new Set(r.violations.map(v=>v.issue))]}))],differences:Object.entries(rel).filter(([,r])=>(r.differences??[]).length).map(([k])=>k)};
 }
-// ---------- 1. FREEZE-4: no false block on the development cases ----------
-const f4root=arg('--f4'),F4=await ctxFor(f4root,path.join(f4root,'CoachingCore/r7/c/RUNTIME_FREEZE_R7C_4.json'));
-const f4=[];for(const c of dev.cases){const e=evaluate(F4.rt,F4.ctx,c);f4.push({caseId:c.caseId,generation:e.base.generation?.status,steps:e.base.steps.length,fails:e.fails,differences:e.differences});}
-out.runs.push({runtime:F4.runtime,purpose:'NO_FALSE_BLOCK',expected:'no violation',cases:f4,result:f4.every(x=>!x.fails.length)?'PASS':'FAIL'});
+// ---------- 1. Candidate: no false block on the development cases ----------
+const croot=arg('--candidate'),F4=await ctxFor(croot,arg('--candidate-record'));
+// Finding witnesses (P3-F01): their violation on the candidate is a true finding, measured and disclosed, never counted as a false block.
+const FINDING_CASES={'DEV-17':'P3-F01','DEV-17b':'P3-F01'};
+const f4=[],relRows=new Map();for(const c of dev.cases){const e=evaluate(F4.rt,F4.ctx,c);relRows.set(c.caseId,e.relations);f4.push({caseId:c.caseId,generation:e.base.generation?.status,steps:e.base.steps.length,fails:e.fails,differences:e.differences,...(FINDING_CASES[c.caseId]?{findingWitness:FINDING_CASES[c.caseId]}:{})});}
+const plain=f4.filter(x=>!x.findingWitness);
+out.runs.push({runtime:F4.runtime,purpose:'NO_FALSE_BLOCK',expected:'no violation outside the finding witnesses',cases:f4,result:plain.every(x=>!x.fails.length)?'PASS':'FAIL'});
+// P05 coverage (Founder, Phase 3): the carrier relations and the re-send must each get units on the candidate.
+for(const r of ['CARRIER_CLINICAL','CARRIER_HOLD','RESEND']){const by=[...relRows].map(([id,x])=>({caseId:id,units:x[r]?.units??0,violations:(x[r]?.violations??[]).length,notApplicable:x[r]?.notApplicable??null})).filter(x=>x.units||x.notApplicable?.length);out.coverage[r]={units:by.reduce((n,x)=>n+x.units,0),violations:by.reduce((n,x)=>n+x.violations,0),cases:by};}
+out.coverage.result=['CARRIER_CLINICAL','CARRIER_HOLD','RESEND'].every(r=>out.coverage[r].units>0)?'COVERED':'NOT_COVERED';
 // ---------- 2. Sensitivity on superseded runtimes (documented defects) ----------
 const SENS=[
+ {key:'--f4',record:'CoachingCore/r7/c/RUNTIME_FREEZE_R7C_4.json',defect:'DX-01 (a same-day day-precision report drops out of the record at the next decision)',cases:['DEV-12'],detect:f=>f.some(x=>x.property==='P10'&&x.issues.includes('RECORD_ROW_DROPPED'))},
+ {key:'--f4',record:'CoachingCore/r7/c/RUNTIME_FREEZE_R7C_4.json',defect:'DX-02 (a break declared in a weekly review with no pending question is ignored, VALID)',cases:['DEV-13'],detect:f=>f.some(x=>x.property==='P08')},
+ {key:'--f4',record:'CoachingCore/r7/c/RUNTIME_FREEZE_R7C_4.json',defect:'F03 (a machine load logged as prescribed is refused; machine settings fabricated by +1 kg)',cases:['DEV-15'],detect:f=>f.some(x=>x.property==='P16')},
+ {key:'--f4',record:'CoachingCore/r7/c/RUNTIME_FREEZE_R7C_4.json',defect:'F04 (confounded masks an adverse recovery and an impaired next day; the long run advances)',cases:['DEV-14'],detect:f=>f.some(x=>x.property==='P09')},
  {key:'--f3',record:'CoachingCore/r7/c/RUNTIME_FREEZE_R7C_3.json',defect:'QE-R7C-10 (shortened answer recorded by a clinical route stays unapplied)',cases:['DEV-02','DEV-02b'],detect:f=>f.some(x=>x.relation==='CARRIER_CLINICAL')},
  {key:'--b2',record:'CoachingCore/r7/b2/RUNTIME_FREEZE_R7B2_1.json',defect:'R7C-G01 (unknown training planned without a question: unreported weeks read as a stop, entry dose VALID)',cases:['DEV-10'],detect:f=>f.some(x=>x.property==='P03'||x.property==='P06')},
  {key:'--prer7a',record:null,defect:'D54 (a strength row not done for more than 28 days ignores the race-window dose)',cases:['DEV-11'],detect:f=>f.some(x=>x.property==='P07')}
@@ -39,11 +51,27 @@ const SENS=[
 for(const s of SENS){
  const root=arg(s.key);if(!root){out.runs.push({purpose:'SENSITIVITY',defect:s.defect,result:'NOT_RUN'});continue;}
  // Freeze records are append-only and kept in the current tree; each one binds the bytes of its own freeze.
- const recordPath=s.record?path.join(f4root,s.record):path.join(f4root,'audits/domain-coaching-r7a-2026-10-27/pre-r7a-source/MANIFEST.json');
+ const recordPath=s.record?path.join(croot,s.record):path.join(croot,'audits/domain-coaching-r7a-2026-10-27/pre-r7a-source/MANIFEST.json');
  const R=await ctxFor(root,recordPath),rows=[];
  for(const id of s.cases){const e=evaluate(R.rt,R.ctx,byId.get(id));rows.push({caseId:id,steps:e.base.steps.length,stopped:e.base.stopped,runtimeErrors:e.base.runtimeErrors,fails:e.fails,detected:s.detect(e.fails)});}
  const f4same=s.cases.map(id=>f4.find(x=>x.caseId===id));
- out.runs.push({runtime:R.runtime,purpose:'SENSITIVITY',defect:s.defect,cases:rows,onFreeze4:f4same.map(x=>({caseId:x.caseId,fails:x.fails})),result:rows.some(r=>r.detected)&&f4same.every(x=>!x.fails.length)?'DETECTED_AND_CLEAN_ON_FREEZE4':'NOT_DETECTED'});
+ out.runs.push({runtime:R.runtime,purpose:'SENSITIVITY',defect:s.defect,cases:rows,onCandidate:f4same.map(x=>({caseId:x.caseId,fails:x.fails})),result:rows.some(r=>r.detected)&&f4same.every(x=>!x.fails.length)?'DETECTED_AND_CLEAN_ON_CANDIDATE':'NOT_DETECTED'});
+}
+// ---------- 2b. Finding P3-F01 (measured, not fixed): a declared-break answer recorded by a clinical route is not retained across qualified
+// clearance; the first eligible decision asks again (fail-closed) where the direct answer re-enters. Measured on the candidate and on R7C-FREEZE-4,
+// with the answer as a weekly review (DEV-17) and as a return report (DEV-17b, the carrier R7C-FREEZE-4 already read).
+{
+ const f4root=arg('--f4'),rows=[];
+ const R4=f4root?await ctxFor(f4root,path.join(croot,'CoachingCore/r7/c/RUNTIME_FREEZE_R7C_4.json')):null;
+ for(const id of Object.keys(FINDING_CASES))for(const [label,R] of [['CANDIDATE',F4],...(R4?[['R7C-FREEZE-4',R4]]:[])]){
+  const kase=byId.get(id),base=runCase(R.rt,kase),rel=runRelations(R.rt,kase,base,R.ctx,{only:['CARRIER_CLINICAL']}).CARRIER_CLINICAL;
+  const answer=base.steps.find(s=>s.stepId==='w7d2');
+  rows.push({caseId:id,runtime:label,directAnswer:{kind:answer?.kind,status:answer?.result.status,action:answer?.result.action,validity:answer?.result.planValidity?.status},carrierUnits:rel?.units??0,carrierViolations:(rel?.violations??[]).map(v=>({at:v.at,issue:v.issue,direct:v.direct?.decision??null,carried:v.carried?.decision??null}))});
+ }
+ const on=(id,l)=>rows.find(r=>r.caseId===id&&r.runtime===l);
+ out.findings=[{id:'P3-F01',finding:'A declared-break answer to UNREPORTED_TRAINING recorded by a clinical route is not retained across qualified clearance: the first eligible decision asks again (REQUIRES_RECONCILIATION, no run dose) where the direct answer re-enters by the return recipe',
+  rows,preExistingOnFreeze4:!!R4&&(on('DEV-17b','R7C-FREEZE-4')?.carrierViolations.length??0)>0,
+  note:'On R7C-FREEZE-4 the weekly-review form of the answer was itself ignored (DX-02), so both paths asked and no difference showed; the return-report form already differed there. Not a false block: a true P05 difference, fail-closed, routed to the reviewers and the Founder.'}];
 }
 // ---------- 3. Synthetic witnesses: every automated check fires on a constructed violation ----------
 const thaw=v=>JSON.parse(JSON.stringify(v));
@@ -76,6 +104,15 @@ witness('W-P12','DEV-01',t=>{const s=t.steps[2],p=thaw(s.planAfter);const x=p.we
 witness('W-P12b','DEV-01',t=>{const s=t.steps[2],p=thaw(s.planAfter);const r=p.weeks[4].sessions.find(y=>y.sport==='RUN'&&y.prescription&&y.day===1);const g=p.weeks[4].sessions.find(y=>y.sport==='STRENGTH'&&y.prescription);g.day=1;g.date=r.date;g.turn=r.turn;s.planAfter=p;return 'run and strength in one turn without confirmation';},['SAME_TURN_WITHOUT_CONFIRMATION','SESSION_ON_UNCHOSEN_DAY']);
 witness('W-P13','DEV-01',t=>{const s=t.steps[1],rows=thaw(s.result.actualLedger);delete rows[0].provenance.firstRecordedAt;s.result={...s.result,actualLedger:rows};return 'record row without its clock';},['RECORD_ROW_WITHOUT_CLOCK']);
 witness('W-P14','DEV-09',t=>{const s=t.steps[1];s.result={...s.result,updatedModel:{...s.result.updatedModel,purposeAllowed:true}};return 'learning without consent';},['LEARNING_WITHOUT_CONSENT']);
+// R7D-HARNESS-2 witnesses: the carrier-independent return (P08), confounded semantics (P09) and the load round trip (P16).
+function witnessP(id,caseId,property,mutate){
+ const base=runCase(F4.rt,byId.get(caseId)),t={...base,steps:base.steps.map(s=>({...s}))},note=mutate(t);
+ out.witnesses.push({witness:id,caseId,mutation:note,expects:[property+' violation'],fired:evaluateProperties(t,F4.ctx)[property].violations.length>0});
+}
+witnessP('W-P08b','DEV-13','P08',t=>{const s=stepOf(t,'brk'),p=thaw(s.planBefore);for(const x of p.weeks[s.weekIndex].sessions)if(x.sport==='RUN'&&x.prescription&&x.date>=s.asOfLocal)x.prescription.durationMinutes=120;s.result={...s.result,status:'KEEP',action:'KEEP',proposal:null,planValidity:{status:'VALID_WITHIN_CURRENT_BOUNDED_SCOPE'}};s.planAfter=p;s.adopted=false;return 'a break declared in a weekly review answered KEEP, VALID, runs of 120 min';});
+witnessP('W-P09b','DEV-14','P09',t=>{const s=t.steps[0];s.result={...s.result,gates:{...(s.result.gates??{}),LONG:'ADVANCE'}};return 'a confounded long run with an adverse recovery credited ADVANCE';});
+witnessP('W-P16a','DEV-15','P16',t=>{const s=t.steps[0],o=(s.review.observations??[]).find(x=>(x.actual?.exercises??[]).some(e=>(e.sets??[]).some(z=>z.load?.convention==='MACHINE_STACK')));const e=o.actual.exercises.find(x=>x.sets.some(z=>z.load?.convention==='MACHINE_STACK'));s.result={...s.result,loadQuestions:[...(s.result.loadQuestions??[]),{exerciseId:e.id,sessionId:o.sessionId,reason:'LOGGED_UNIT_OR_CONVENTION_UNKNOWN'}]};return 'a load logged exactly as prescribed answered as an unknown unit';});
+witnessP('W-P16b','DEV-15','P16',t=>{const s=t.steps[0],p=thaw(s.planAfter);const x=p.weeks[1].sessions.find(y=>y.sport==='STRENGTH'&&y.prescription&&y.prescription.exercises.some(e=>e.load?.convention==='MACHINE_STACK'&&e.load.mode==='KNOWN'));const e=x.prescription.exercises.find(e=>e.load?.convention==='MACHINE_STACK'&&e.load.mode==='KNOWN');e.load.value+=1;s.planAfter=p;return 'a machine setting stated 1 kg above anything supplied or logged';});
 // P06 and P08 violations carry no issue label (unit records): count any violation of the property.
 for(const w of out.witnesses)if(w.expects[0]==='__P06__'||w.expects[0]==='__P08__'){
  const id=w.expects[0]==='__P06__'?'P06':'P08',kase=byId.get(w.caseId),base=runCase(F4.rt,kase),t={...base,steps:base.steps.map(s=>({...s}))};
@@ -96,6 +133,6 @@ wrapped('W-DUP','DEV-01',ev=>(p,r)=>{const x=ev(p,r),o=r.observations??[];return
 wrapped('W-RENAME','DEV-01',ev=>(p,r)=>{const x=ev(p,r);return String(p.athleteId).startsWith('rn~')?{...x,status:'HOLD'}:x;},'RENAME_OPAQUE_IDS');
 wrapped('W-RESEND','DEV-01',ev=>(p,r)=>{const x=ev(p,r),seen=new Set((r.actualLedger??[]).map(y=>y.eventId));return (r.observations??[]).some(o=>seen.has(o.eventId))?{...x,status:'ASK'}:x;},'RESEND');
 wrapped('W-CARRIER','DEV-02',ev=>(p,r)=>{const x=ev(p,r);return r.event.id.endsWith('w7d3')&&!r.referenceState?{...x,planValidity:{status:'REQUIRES_RECONCILIATION'}}:x;},'CARRIER_CLINICAL');
-out.summary={noFalseBlock:out.runs[0].result,sensitivity:out.runs.slice(1).map(r=>({defect:r.defect,result:r.result})),witnessesFired:out.witnesses.filter(w=>w.fired).length,witnesses:out.witnesses.length,notFired:out.witnesses.filter(w=>!w.fired).map(w=>w.witness)};
+out.summary={noFalseBlock:out.runs[0].result,findings:(out.findings??[]).map(f=>({id:f.id,preExistingOnFreeze4:f.preExistingOnFreeze4,candidateViolations:f.rows.filter(r=>r.runtime==='CANDIDATE').reduce((n,r)=>n+r.carrierViolations.length,0)})),p05Coverage:out.coverage.result,carrierUnits:Object.fromEntries(['CARRIER_CLINICAL','CARRIER_HOLD','RESEND'].map(r=>[r,out.coverage[r].units])),sensitivity:out.runs.slice(1).map(r=>({defect:r.defect,result:r.result})),witnessesFired:out.witnesses.filter(w=>w.fired).length,witnesses:out.witnesses.length,notFired:out.witnesses.filter(w=>!w.fired).map(w=>w.witness)};
 fs.writeFileSync(arg('--out'),JSON.stringify(out,null,1)+'\n');
 console.log(JSON.stringify(out.summary,null,1));

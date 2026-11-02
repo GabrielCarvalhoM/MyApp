@@ -70,5 +70,42 @@ cases.push({caseId:'DEV-10',authorIntent:'Never reports anything; every weekly r
 const r10b=intake('dev-10k-b',{weeks:8,goals:{run:{kind:'RACE',event:{kind:'10K',date:'2026-12-25'}},strength:'RUNNING_SUPPORT'},recent:{runDaysPerWeek:3,runMinutesPerWeek:150,longestRunMinutes:70,strengthDaysPerWeek:2},schedule:{runDays:[1,3,6],strengthDays:[0,4],longRunDay:6,runMinutes:60,longRunMinutes:100}});
 const notDoneStrength=w=>[{each:{weeks:[w],sport:'RUN'},asPrescribed:true,response:OK},{each:{weeks:[w],sport:'STRENGTH'},completed:false}];
 cases.push({caseId:'DEV-11',authorIntent:'Strength not done for five weeks before a 10K race week; runs done',coverageTags:['RACE_10K','RACE_WEEK','TAPER'],oracleClass:'INVARIANT_ORACLE',intake:r10b,timeline:[review(0,allDone(0)),review(1,allDone(1)),...[2,3,4,5,6].map(w=>review(w,notDoneStrength(w)))],expectedDomainProperties:[],metamorphicRelations:[],independentAssessment:assess('race-week strength stays minimal'),domainNotes:''});
-fs.writeFileSync(process.argv[2],JSON.stringify({corpusRevision:'R7D-HARNESS-DEV-1',contaminated:true,cases},null,1)+'\n');
+// ---------- R7D-HARNESS-2 (Phase 3): witnesses of the four diagnostic blockers on R7C-FREEZE-4, and P05 carrier coverage ----------
+// DEV-12 (DX-01): the long run reported the same day with day precision (no clock), then a plain review: the row must stay in the record.
+cases.push({caseId:'DEV-12',authorIntent:'Same-day report with day precision only, then the next weekly review',coverageTags:['SAME_DAY_REPORT','DAY_PRECISION'],oracleClass:'INVARIANT_ORACLE',intake:GEN,
+ timeline:[{...review(0,[{each:{weeks:[0],sport:'STRENGTH'},asPrescribed:true,loadsByPattern:LOADS,response:OK},{ref:{week:0,sport:'RUN',day:1},asPrescribed:true,response:OK},{ref:{week:0,sport:'RUN',day:3},asPrescribed:true,response:OK},{ref:{week:0,sport:'RUN',role:'LONG'},asPrescribed:true,response:BAD,reportedAt:'2026-11-08T09:00:00Z',eventId:'dev12-long0'}])},
+  {...review(1,[{each:{weeks:[1],sport:'STRENGTH'},asPrescribed:true,loadsByPattern:LOADS,response:OK},{ref:{week:1,sport:'RUN',day:1},asPrescribed:true,response:OK},{ref:{week:1,sport:'RUN',day:3},asPrescribed:true,response:OK},{ref:{week:1,sport:'RUN',role:'LONG'},asPrescribed:true,response:BAD}])},review(2,allDone(2))],
+ expectedDomainProperties:[],metamorphicRelations:[],independentAssessment:assess('two adverse long runs step the long run back'),domainNotes:''});
+// DEV-13 (DX-02): a 14-day vacation declared inside a mid-week weekly review, no question pending.
+const VAC={startDate:'2026-11-23',endDate:'2026-12-06',days:14,reasonCategory:'VACATION',reason:'Holiday, no training at all',nonclinical:true};
+cases.push({caseId:'DEV-13',authorIntent:'Two weeks of vacation declared in a weekly review with no question pending',coverageTags:['DECLARED_BREAK_NO_QUESTION','RETURN_MODERATE'],oracleClass:'INVARIANT_ORACLE',intake:GEN,
+ timeline:[review(0,allDone(0)),review(1,allDone(1)),review(2,allDone(2)),{stepId:'brk',at:{week:5,day:1,time:'07:00'},event:{kind:'WEEKLY_REVIEW',interruption:VAC}},review(5,allDone(5)),review(6,allDone(6))],
+ expectedDomainProperties:[],metamorphicRelations:[],independentAssessment:assess('re-enter from what was executed before the break'),domainNotes:''});
+// DEV-14 (F04): the only long run of week 0 confounded (heat) with an adverse recovery and an impaired next day.
+cases.push({caseId:'DEV-14',authorIntent:'Hot long run: confounded, recovery adverse and next day impaired',coverageTags:['CONFOUNDED','ADVERSE_RESPONSE'],oracleClass:'INVARIANT_ORACLE',intake:GEN,
+ timeline:[review(0,[{each:{weeks:[0],sport:'STRENGTH'},asPrescribed:true,loadsByPattern:LOADS,response:OK},{ref:{week:0,sport:'RUN',day:1},asPrescribed:true,response:OK},{ref:{week:0,sport:'RUN',day:3},asPrescribed:true,response:OK},{ref:{week:0,sport:'RUN',role:'LONG'},asPrescribed:true,confounded:true,response:{performance:'COMPATIBLE',recovery:'ADVERSE',effort:'ON_TARGET',nextDayFunction:'IMPAIRED'}}]),review(1,allDone(1))],
+ expectedDomainProperties:[],metamorphicRelations:[],independentAssessment:assess('hold the long run'),domainNotes:''});
+// DEV-15 (F03): machine lifts only, every set logged exactly as the plan prescribes it; the next setting, when the plan asks for one, is logged
+// with the athlete's own value (loadsByPattern).
+const MACH=intake('dev-machine',{goals:{run:'NONE',strength:'HYPERTROPHY'},equipment:['MACHINES','DUMBBELLS','BENCH'],recent:{strengthDaysPerWeek:3},knownExercises:[K('leg-press',3,10,140,'MACHINE_STACK'),K('machine-chest-press',3,10,50,'MACHINE_STACK'),K('seated-cable-row',3,12,50,'MACHINE_STACK')],schedule:{runDays:[],strengthDays:[0,2,4],longRunDay:undefined,runMinutes:undefined,longRunMinutes:undefined}});
+const MLOADS={SQUAT:150,PUSH:55,PULL:55,HINGE:20,LUNGE:12,CALF:30,TRUNK:0,KNEE_FLEXION:30,KNEE_EXTENSION:30,HIP_ABDUCTION:30,ELBOW_EXTENSION:15};
+cases.push({caseId:'DEV-15',authorIntent:'Machine lifts logged exactly as prescribed for eight weeks',coverageTags:['MACHINES','LOAD_LOGGING'],oracleClass:'INVARIANT_ORACLE',intake:MACH,
+ timeline:[0,1,2,3,4,5,6,7].map(w=>review(w,[{each:{weeks:[w],sport:'STRENGTH'},asPrescribed:true,loadsByPattern:MLOADS,response:OK}])),expectedDomainProperties:[],metamorphicRelations:[],independentAssessment:assess('read every log; never an impossible setting'),domainNotes:''});
+// DEV-16 (P05 coverage, R4 HOLD carrier): an 8-week program, runs unreported from week 2; the coach asks in the last week and the answer arrives there.
+const G8=intake('dev-gen8',{weeks:8,equipment:FULL,knownExercises:[K('back-squat',3,5,82.5)]});
+cases.push({caseId:'DEV-16',authorIntent:'Silence of five weeks on runs; asked and answered in the program\'s last week',coverageTags:['UNREPORTED_WEEKS','LONG_SILENCE','LATE_ANSWER'],oracleClass:'METAMORPHIC_ORACLE',intake:G8,
+ timeline:[review(0,allDone(0)),review(1,allDone(1)),...[2,3,4,5,6].map(w=>review(w,strengthOnly(w))),{stepId:'w7d0',at:{week:7,day:0,time:'06:00'},event:{kind:'WEEKLY_REVIEW'}},
+  {stepId:'w7d2',at:{week:7,day:2,time:'07:00'},event:{kind:'WEEKLY_REVIEW'},answer:{report:{completed:true,asPrescribed:true,response:OK}}},{stepId:'w7d3',at:{week:7,day:3,time:'07:00'},event:{kind:'WEEKLY_REVIEW'}}],
+ expectedDomainProperties:[{expectationId:'E1',atStep:'w7d0',oracleClass:'DOMAIN_ORACLE',assert:{type:'QUESTION_KIND_IS',value:'UNREPORTED_TRAINING'},rationale:'runs unknown for five weeks'}],metamorphicRelations:[{relation:'CARRIER_HOLD',atStep:'w7d2'}],independentAssessment:assess('ask, then plan from the answer'),domainNotes:''});
+// DEV-17 (P05 coverage, break answer): five weeks with no review and no report at all; the coach asks; the answer is a declared work break in a
+// plain weekly review (no training in those weeks, so nothing recorded contradicts it).
+cases.push({caseId:'DEV-17',authorIntent:'Silence of five weeks; the answer is a declared break with its reason',coverageTags:['UNREPORTED_WEEKS','LONG_SILENCE','DECLARED_BREAK_ANSWER'],oracleClass:'METAMORPHIC_ORACLE',intake:GEN,
+ timeline:[review(0,allDone(0)),review(1,allDone(1)),{stepId:'w7d0',at:{week:7,day:0,time:'06:00'},event:{kind:'WEEKLY_REVIEW'}},
+  {stepId:'w7d2',at:{week:7,day:2,time:'07:00'},event:{kind:'WEEKLY_REVIEW'},answer:{declareBreak:{startDate:'2026-11-16',endDate:'2026-12-20',reasonCategory:'WORK',reason:'Work project, no training',nonclinical:true}}},
+  {stepId:'w7d3',at:{week:7,day:3,time:'07:00'},event:{kind:'WEEKLY_REVIEW'}},review(7,allDone(7))],
+ expectedDomainProperties:[],metamorphicRelations:[{relation:'CARRIER_CLINICAL',atStep:'w7d2'}],independentAssessment:assess('the declared break re-enters by the return recipe'),domainNotes:''});
+// DEV-17b (finding P3-F01 witness): the same answer delivered as a return report, the carrier R7C-FREEZE-4 already read; its clinical-carrier
+// variant shows whether a declared break recorded by a clinical route is retained across qualified clearance on each runtime.
+{const c=cases.find(x=>x.caseId==='DEV-17');cases.push({...c,caseId:'DEV-17b',authorIntent:c.authorIntent+' (answer as a return report)',timeline:c.timeline.map(s=>s.stepId==='w7d2'?{...s,event:{kind:'RETURN_AFTER_PAUSE'}}:s)});}
+fs.writeFileSync(process.argv[2],JSON.stringify({corpusRevision:'R7D-HARNESS-DEV-2',contaminated:true,cases},null,1)+'\n');
 console.log('dev cases',cases.length);

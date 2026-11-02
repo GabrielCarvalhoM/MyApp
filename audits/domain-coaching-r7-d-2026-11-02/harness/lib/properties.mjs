@@ -19,7 +19,8 @@ export const PROPERTY_META={
  P11:{name:'Repertoire',type:'AUTOMATED',blocking:'GENERALIZATION_BLOCKER (SAFETY_BLOCKER outside eligibility)'},
  P12:{name:'Hybrid composition',type:'AUTOMATED (days, turns) + DOMAIN_JUDGED (interference)',blocking:'GENERALIZATION_BLOCKER'},
  P13:{name:'Determinism and equivalences',type:'AUTOMATED (metamorphic + record clock)',blocking:'GENERALIZATION_BLOCKER (DIRECT_RUNTIME_DELTA)'},
- P14:{name:'Learning inside its envelope',type:'AUTOMATED (consent) + metamorphic',blocking:'GENERALIZATION_BLOCKER'}
+ P14:{name:'Learning inside its envelope',type:'AUTOMATED (consent) + metamorphic',blocking:'GENERALIZATION_BLOCKER'},
+ P16:{name:'Load round trip and no fabricated machine load (R7D-PREREG-2)',type:'AUTOMATED',blocking:'GENERALIZATION_BLOCKER (DIRECT_RUNTIME_DELTA)'}
 };
 const PENDING=['ASK','HOLD','UNSUPPORTED','CLINICAL_HUMAN_REQUIRED'];
 const VALID='VALID_WITHIN_CURRENT_BOUNDED_SCOPE',RECON='REQUIRES_RECONCILIATION';
@@ -199,15 +200,12 @@ function p06(trace,ctx){
  return finish(p);
 }
 // ---------- P07 phase near the race ----------
+// R7D-HARNESS-2 (HG-02): the race date in force is the adopted plan's own (goal.run.event.date), never the date a refused or asked change
+// requested; `changed` marks a plan whose race or running goal differs from the generated one.
 function raceDateTimeline(trace){
- const a=trace.intake?.athlete??{},ev=a.event??(typeof a.goals?.run==='object'?a.goals.run.event:null);
- let date=ev?.date??null,changed=false;const at=[{stepIndex:-1,date,changed}];
- trace.steps.forEach((s,i)=>{
-  const ch=s.review.changes??{};
-  if(s.kind==='EVENT_DATE_CHANGE'&&typeof ch.eventDate==='string'){date=ch.eventDate;changed=true;}
-  if(s.kind==='GOAL_CHANGE'){const g=ch.goals?.run,e=ch.event??(typeof g==='object'?g.event:null);if(e?.date){date=e.date;changed=true;}else if(g&&(typeof g==='string'||g.kind!=='RACE')){date=null;changed=true;}}
-  at.push({stepIndex:i,date,changed});
- });
+ const g=trace.generation?.program,dateOf=p=>p?.goal?.run?.kind==='RACE'?p.goal.run.event?.date??null:null,goalOf=p=>canonicalJson({kind:p?.goal?.run?.kind??null,event:p?.goal?.run?.event?.kind??null});
+ const at=[{stepIndex:-1,date:dateOf(g),changed:false}];
+ trace.steps.forEach((s,i)=>{const p=s.planAfter;at.push({stepIndex:i,date:dateOf(p),changed:dateOf(p)!==dateOf(g)||goalOf(p)!==goalOf(g)});});
  return at;
 }
 function p07(trace,ctx){
@@ -243,12 +241,21 @@ function p07(trace,ctx){
  return finish(p);
 }
 // ---------- P08 return ----------
+// R7D-HARNESS-2 (HG-05, DX-02): a declared break is detected whatever event carries it: any review with a non-empty `interruption`, and any
+// decision that records a return (REESTABLISH). The plan in force after a VALID decision (the adopted proposal, or the kept plan when there is
+// none) is checked: a break the decision ignored and kept VALID is measured exactly as a return. Tolerated = completed with no adverse recovery
+// and no impaired next day.
+const declaresBreak=s=>{const i=s.review?.interruption;return !!i&&typeof i==='object'&&!Array.isArray(i)&&Object.keys(i).length>0;};
+const tolerated=r=>r.actual?.completed===true&&r.response?.recovery!=='ADVERSE'&&r.response?.nextDayFunction!=='IMPAIRED';
 function p08(trace){
- const p=prop('P08'),tz=trace.intake?.timezoneOffsetMinutes??0;
+ const p=prop('P08');
  trace.steps.forEach((s,i)=>{
-  if(s.kind!=='RETURN_AFTER_PAUSE'||s.result.planValidity?.status!==VALID||!s.adopted)return;
-  const it=s.review.interruption??{},breakStart=typeof it.startDate==='string'?it.startDate:s.asOfLocal;
-  const before=(s.result.actualLedger??s.ledgerBefore??[]).filter(r=>!r.superseded&&r.context?.sport==='RUN'&&r.actual?.completed===true&&r.response?.recovery!=='ADVERSE'&&typeof r.localDate==='string'&&r.localDate<breakStart&&Number.isFinite(r.actual?.minutes)).map(r=>r.actual.minutes);
+  const declared=declaresBreak(s),recorded=s.result.proposal?.decisions?.at(-1)?.action==='REESTABLISH';
+  if(!(declared||recorded)||s.result.planValidity?.status!==VALID||(s.result.proposal&&!s.adopted))return;
+  const brk=declared?s.review.interruption:s.result.proposal.decisions.at(-1).interruption??{};
+  const breakStart=typeof brk.startDate==='string'?brk.startDate:s.asOfLocal;
+  if(declared&&!recorded)p.observations.push({at:s.stepId,kind:s.kind,note:'A declared break was decided without a return record; the plan kept in force is measured as a return'});
+  const before=(s.result.actualLedger??s.ledgerBefore??[]).filter(r=>!r.superseded&&r.context?.sport==='RUN'&&tolerated(r)&&typeof r.localDate==='string'&&r.localDate<breakStart&&Number.isFinite(r.actual?.minutes)).map(r=>r.actual.minutes);
   const d=s.review.currentDemonstration;
   if(d&&d.sport==='RUN'&&d.completed!==false&&d.response!=='ADVERSE'&&Number.isFinite(d.minutes))before.push(d.minutes);
   if(!before.length){p.notEvaluable.push({at:s.stepId,reason:'NO_EXECUTED_TOLERATED_RUN'});return;}
@@ -260,6 +267,10 @@ function p08(trace){
  return finish(p);
 }
 // ---------- P09 progression earned ----------
+// R7D-HARNESS-2 (HG-03, F04): a favourable execution is completed with no adverse recovery and no impaired next day; its performance and
+// effort count too unless the report marks the execution confounded, which makes only those two unreadable. A confounded run with an adverse
+// recovery or an impaired next day is never favourable.
+const favourable=r=>{const x=r.response??{};if(r.actual?.completed!==true||x.recovery==='ADVERSE'||x.nextDayFunction==='IMPAIRED')return false;if(r.confounded===true)return true;return x.performance!=='UNDER'&&!(x.effort==='HARDER'&&x.performance!=='OVER');};
 function p09(trace){
  const p=prop('P09');
  for(const s of trace.steps){
@@ -269,7 +280,7 @@ function p09(trace){
    if(!['ADVANCE','EARNED'].includes(gate))continue;
    const mine=rows.filter(r=>r.context?.role===key||(r.actual?.exercises??[]).some(e=>e.id===key));
    if(!mine.length)continue; // P03 owns credit without any report
-   unit(p,mine.some(r=>r.actual?.completed===true&&r.response?.recovery!=='ADVERSE'&&r.response?.performance!=='UNDER'),{at:s.stepId,issue:'PROGRESSION_WITHOUT_FAVOURABLE_EXECUTION',key,gate,week:s.weekIndex});
+   unit(p,mine.some(favourable),{at:s.stepId,issue:'PROGRESSION_WITHOUT_FAVOURABLE_EXECUTION',key,gate,week:s.weekIndex,confounded:mine.some(r=>r.confounded===true)});
   }
  }
  return finish(p);
@@ -391,13 +402,52 @@ function p13(trace){
 function p14(trace){
  const p=prop('P14');let consent=trace.intake?.learningConsent===true;
  for(const s of trace.steps){
+  // The athlete's consent in force at the decision: the client carries it (HG-01); a review that states it is that consent.
+  if(typeof s.consent==='boolean')consent=s.consent;
   if(typeof s.review.learningConsent==='boolean')consent=s.review.learningConsent;
   const m=s.result.updatedModel;
   if(!consent&&m)unit(p,m.purposeAllowed!==true&&!(s.result.learnedPatterns??[]).length,{at:s.stepId,issue:'LEARNING_WITHOUT_CONSENT',purposeAllowed:m.purposeAllowed,learned:s.result.learnedPatterns??null});
  }
  return finish(p);
 }
+// ---------- P16 load round trip (R7D-PREREG-2, diagnostic finding F03) ----------
+// (a) A load logged exactly as the plan prescribed it (every set's load equal to the row's value, unit and convention) is read: the runtime never
+//     answers it LOGGED_UNIT_OR_CONVENTION_UNKNOWN. (b) No fabricated machine load: every KNOWN load of a MACHINE_STACK row in a plan in force is a
+//     value the athlete supplied (intake known load) or logged or confirmed for that exercise; the engine never states a machine setting it computed.
+const LB_TO_KG=0.45359237;
+const kgOf=l=>!l||typeof l!=='object'||!Number.isFinite(l.value)?null:String(l.unit).toUpperCase()==='KG'?l.value:String(l.unit).toUpperCase()==='LB'?Math.round(l.value*LB_TO_KG*2)/2:null;
+const sameLoad=(a,b)=>!!a&&!!b&&a.value===b.value&&a.unit===b.unit&&a.convention===b.convention;
+function p16(trace){
+ const p=prop('P16'),sessions=new Map();
+ for(const s of trace.steps){
+  // (a) each load question of this decision about a log that copied its row.
+  const sent=new Map();for(const x of trace.steps.slice(0,trace.steps.indexOf(s)+1))for(const o of x.review.observations??[])if(o.sessionId)sent.set(o.sessionId,{o,plan:x.planBefore});
+  for(const q of s.result.loadQuestions??[]){
+   const hit=sent.get(q.sessionId),row=hit?.plan.weeks.flatMap(w=>w.sessions).find(x=>x.id===q.sessionId)?.prescription?.exercises?.find(e=>e.id===q.exerciseId);
+   const logged=(hit?.o.actual?.exercises??[]).find(e=>e.id===q.exerciseId);
+   if(!row||!logged||row.load?.mode!=='KNOWN')continue;
+   const copied=(logged.sets??[]).length>0&&logged.sets.every(x=>sameLoad(x.load,{value:row.load.value,unit:row.load.unit,convention:row.load.convention}));
+   if(copied)unit(p,q.reason!=='LOGGED_UNIT_OR_CONVENTION_UNKNOWN',{at:s.stepId,issue:'PRESCRIBED_LOAD_UNREADABLE',exerciseId:q.exerciseId,sessionId:q.sessionId,row:row.load});
+  }
+ }
+ // (b) machine values in every plan in force.
+ const known=new Map(),add=(id,v)=>{if(Number.isFinite(v)){if(!known.has(id))known.set(id,new Set());known.get(id).add(Math.round(v*1000)/1000);}};
+ for(const k of trace.intake?.athlete?.knownExercises??[])if(k?.load?.convention==='MACHINE_STACK')add(k.id,kgOf(k.load));
+ for(const x of plans(trace)){
+  if(x.stepIndex>=0){
+   const s=trace.steps[x.stepIndex];
+   for(const r of s.result.actualLedger??[])for(const e of r.actual?.exercises??[])for(const set of e.sets??[])add(e.id,kgOf(set.load));
+   for(const c of s.review.loadConfirmations??[])add(c.exerciseId,kgOf(c));
+   if(!x.valid)continue;
+  }
+  for(const w of x.plan.weeks)for(const ss of w.sessions.filter(y=>live(y)&&y.sport==='STRENGTH'&&(x.stepIndex<0||y.date>=x.asOfLocal)))for(const e of ss.prescription.exercises??[]){
+   if(e.load?.convention!=='MACHINE_STACK'||e.load.mode!=='KNOWN')continue;
+   unit(p,known.get(e.id)?.has(Math.round(e.load.value*1000)/1000)===true,{at:x.at,issue:'FABRICATED_MACHINE_LOAD',sessionId:ss.id,exerciseId:e.id,value:e.load.value,known:[...(known.get(e.id)??[])]});
+  }
+ }
+ return finish(p);
+}
 export function evaluateProperties(trace,ctx){
- return {P01:p01(trace),P02:p02(trace),P03:p03(trace,ctx),P04:p04(trace),P06:p06(trace,ctx),P07:p07(trace,ctx),P08:p08(trace),P09:p09(trace),P10:p10(trace),P11:p11(trace,ctx),P12:p12(trace),P13:p13(trace),P14:p14(trace)};
+ return {P01:p01(trace),P02:p02(trace),P03:p03(trace,ctx),P04:p04(trace),P06:p06(trace,ctx),P07:p07(trace,ctx),P08:p08(trace),P09:p09(trace),P10:p10(trace),P11:p11(trace,ctx),P12:p12(trace),P13:p13(trace),P14:p14(trace),P16:p16(trace)};
 }
 export {VALID,RECON};

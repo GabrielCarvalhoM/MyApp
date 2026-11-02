@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// R7-D Fresh Generalization harness (R7D-HARNESS-1). Lives outside CoachingCore and has no *.test.* file, so `node --test CoachingCore` never
+// R7-D Fresh Generalization harness (R7D-HARNESS-2; R7D-HARNESS-1 is commit 8eec795, kept for the Phase 2 diagnostic record). Lives outside CoachingCore and has no *.test.* file, so `node --test CoachingCore` never
 // discovers it and the 884 frozen tests are untouched. It reads the runtime, the freeze record, the policy and the catalog; it never writes
 // inside CoachingCore or into a corpus file. With --first-evaluation it writes only the manifest's `evaluation` block (excluded from the seal).
 //
@@ -15,7 +15,10 @@ import {evaluateExpectations} from './lib/expectations.mjs';
 import {domainPacket,summaryMarkdown} from './lib/report.mjs';
 import {checkCorpus} from '../author/check-corpus.mjs';
 
-export const HARNESS_VERSION='R7D-HARNESS-1';
+export const HARNESS_VERSION='R7D-HARNESS-2';
+// The runtime the final gate evaluates: the R7-D Phase 3 freeze (R7D-FREEZE-1). Before it exists, a development run names a record and passes
+// --allow-runtime-diff; its report then lists the differing files and the evaluated bytes (runtimeSource), never a freeze claim.
+export const DEFAULT_FREEZE_RECORD='CoachingCore/r7/d/RUNTIME_FREEZE_R7D_1.json';
 const HERE=import.meta.dirname,REPO=path.resolve(HERE,'../../..');
 const arg=(k,d=null)=>{const i=process.argv.indexOf(k);return i>=0&&process.argv[i+1]&&!process.argv[i+1].startsWith('--')?process.argv[i+1]:d;};
 const flag=k=>process.argv.includes(k);
@@ -31,6 +34,13 @@ export function verifyRuntime(repoRoot,recordPath){
  }
  const runtimeDiff=[...diff,...absent].filter(p=>/^(CoachingCore\/)?(src|r6|r7|package)/.test(p));
  return {revision:rec.revision??null,commit:rec.commit??null,created:rec.created??rec.frozenAt??rec.createdAt??null,recordSha256:raw(recordPath),sourceDigest:rec.sourceDigest??null,manifestDigest:rec.manifestDigest??null,files:Object.keys(rec.files??{}).length,same:Object.keys(rec.files??{}).length-diff.length-absent.length,diff:[...diff,...absent],changed:diff.length,absent:absent.length,runtimeDiff};
+}
+/** The evaluated bytes: SHA-256 of every runtime source file, the policy and the catalog (what a freeze record binds for them). */
+export function sourceBytes(coachingCore){
+ const files={};
+ for(const f of fs.readdirSync(path.join(coachingCore,'src')).filter(x=>x.endsWith('.mjs')).sort())files['CoachingCore/src/'+f]=raw(path.join(coachingCore,'src',f));
+ for(const p of ['r6/PROGRAM_POLICY_R6.json','r7/b0/REPERTOIRE_CATALOG_B0.json'])files['CoachingCore/'+p]=raw(path.join(coachingCore,p));
+ return {files,digest:digestOf(files)};
 }
 export const manifestSealDigest=m=>{const {evaluation,...body}=m;return digestOf(body);};
 
@@ -50,10 +60,12 @@ async function main(){
  const corpusPath=arg('--corpus'),out=arg('--out');
  if(!corpusPath||!out)throw Error('usage: --corpus <file> --out <dir> [...]');
  const repoRoot=path.resolve(arg('--runtime-root',REPO)),coachingCore=path.join(repoRoot,'CoachingCore');
- const recordPath=path.resolve(arg('--freeze-record',path.join(repoRoot,'CoachingCore/r7/c/RUNTIME_FREEZE_R7C_4.json')));
+ const recordPath=path.resolve(arg('--freeze-record',path.join(repoRoot,DEFAULT_FREEZE_RECORD)));
  const firstEvaluation=flag('--first-evaluation');
  if(firstEvaluation&&fs.existsSync(out))throw Error('a first evaluation writes into a new directory only: '+out);
- const runtime=verifyRuntime(repoRoot,recordPath);
+ if(firstEvaluation&&flag('--allow-runtime-diff'))throw Error('a first evaluation runs only on the exact bytes of its freeze record');
+ if(!fs.existsSync(recordPath))throw Error('freeze record not found: '+recordPath+' (give --freeze-record)');
+ const runtime=verifyRuntime(repoRoot,recordPath),runtimeSource=sourceBytes(coachingCore);
  if(runtime.runtimeDiff.length&&!flag('--allow-runtime-diff'))throw Error(`runtime bytes differ from ${runtime.revision}: ${runtime.diff.slice(0,5).join(', ')}`);
  const corpusBytes=fs.readFileSync(corpusPath),corpusSha=sha256(corpusBytes),corpus=JSON.parse(corpusBytes.toString('utf8'));
  const manifestPath=arg('--manifest'),manifest=manifestPath?JSON.parse(fs.readFileSync(manifestPath,'utf8')):null;
@@ -79,7 +91,7 @@ async function main(){
   rows.push({caseId:kase.caseId,kase,base,properties,expectations,relations});
  }
  const finishedAt=new Date().toISOString();
- const report=buildReport({corpus,corpusPath,corpusSha,manifest,runtime,freshness,structure,rows,startedAt,finishedAt,firstEvaluation,label:arg('--label')});
+ const report=buildReport({corpus,corpusPath,corpusSha,manifest,runtime,runtimeSource,allowRuntimeDiff:flag('--allow-runtime-diff'),freshness,structure,rows,startedAt,finishedAt,firstEvaluation,label:arg('--label')});
  fs.mkdirSync(out,{recursive:true});
  const write=(name,content)=>{const p=path.join(out,name);fs.writeFileSync(p,content,{flag:firstEvaluation?'wx':'w'});return {name,sha256:sha256(Buffer.from(content))};};
  const files=[write('RUN_REPORT.json',JSON.stringify(report,null,1)+'\n')];
@@ -93,7 +105,7 @@ async function main(){
  console.log(JSON.stringify({out,cases:rows.length,files,summary:report.summary},null,1));
 }
 
-function buildReport({corpus,corpusPath,corpusSha,manifest,runtime,freshness,structure,rows,startedAt,finishedAt,firstEvaluation,label}){
+function buildReport({corpus,corpusPath,corpusSha,manifest,runtime,runtimeSource=null,allowRuntimeDiff=false,freshness,structure,rows,startedAt,finishedAt,firstEvaluation,label}){
  const props={},rel={},exp={PASS:0,FAIL:0,NOT_EVALUABLE:0,JUDGED:0,CORPUS_ERROR:0};
  for(const id of [...Object.keys(PROPERTY_META)])props[id]={...PROPERTY_META[id],cases:{PASS:0,FAIL:0,NOT_EVALUABLE:0,NOT_APPLICABLE:0},units:0,violations:0,notEvaluableUnits:0,failingCases:[]};
  for(const r of Object.keys(RELATIONS))rel[r]={...RELATIONS[r],applicableCases:0,units:0,violations:0,failingCases:[],differenceCases:[]};
@@ -115,7 +127,7 @@ function buildReport({corpus,corpusPath,corpusSha,manifest,runtime,freshness,str
  return {harness:HARNESS_VERSION,label:label??null,firstEvaluation,startedAt,finishedAt,node:process.version,
   corpus:{path:path.relative(REPO,path.resolve(corpusPath)).split(path.sep).join('/'),revision:corpus.corpusRevision??null,sha256:corpusSha,cases:corpus.cases.length},
   manifest:manifest?{sealDigest:manifestSealDigest(manifest),evaluationBefore:manifest.evaluation??null}:null,
-  runtime,freshness,structure,
+  runtime,runtimeSource,allowRuntimeDiff,freshness,structure,
   summary:{cases:rows.length,evaluated:rows.filter(r=>r.base).length,corpusErrors:corpusErrors.length,harnessErrors:harnessErrors.length,properties:Object.fromEntries(Object.entries(props).map(([k,t])=>[k,{result:t.result,units:t.units,violations:t.violations,notEvaluableUnits:t.notEvaluableUnits,failingCases:t.failingCases}])),relations:Object.fromEntries(Object.entries(rel).map(([k,t])=>[k,{applicableCases:t.applicableCases,units:t.units,violations:t.violations,failingCases:t.failingCases,differenceCases:t.differenceCases}])),expectations:exp},
   corpusErrors,harnessErrors,cases:caseRows};
 }

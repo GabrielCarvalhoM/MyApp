@@ -7,7 +7,7 @@ const loadText=l=>!l?'':l.mode==='KNOWN'?`${l.value}kg ${l.convention??''}`.trim
 export function sessionText(s){
  if(!s.prescription)return `d${s.day} ${s.sport} ${s.role}${s.status&&s.status!=='PLANNED'?' ['+s.status+']':''}`;
  const p=s.prescription,st=s.status&&s.status!=='PLANNED'?` [${s.status}]`:'';
- if(s.sport==='RUN'){const w=p.work?` ${p.work.repetitions}x${p.work.workMinutes}'/${p.work.recoveryMinutes}'`:'';const strides=p.strides?` +strides`:'';return `d${s.day} ${s.date} ${s.turn??''} RUN ${s.role} ${p.durationMinutes}min (${p.family}${w}${strides}${p.completion?', completion':''})${st}`;}
+ if(s.sport==='RUN'){const w=p.work?(Number.isFinite(p.work.workSeconds)?` ${p.work.repetitions}x(${p.work.workSeconds}s jog/${p.work.recoverySeconds}s walk)`:` ${p.work.repetitions}x${p.work.workMinutes}'/${p.work.recoveryMinutes}'`):'';const strides=p.strides?` +strides`:'';return `d${s.day} ${s.date} ${s.turn??''} RUN ${s.role} ${p.durationMinutes}min (${p.family}${w}${strides}${p.completion?', completion':''})${st}`;}
  return `d${s.day} ${s.date} ${s.turn??''} ${s.role} ${p.durationMinutes}min: `+(p.exercises??[]).map(e=>`${e.id} ${e.sets}x${e.reps}${Number.isFinite(e.rir)?' RIR'+e.rir:''} ${loadText(e.load)}`).join('; ')+st;
 }
 const weekText=(plan,k,fromDate=null)=>{const w=plan?.weeks?.[k];if(!w)return null;return {week:k,phase:w.phase,startDate:w.startDate,sessions:w.sessions.filter(s=>(s.prescription||s.role==='REST_BY_DESIGN')&&(!fromDate||s.date>=fromDate)).map(sessionText)};};
