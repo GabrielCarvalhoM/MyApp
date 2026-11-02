@@ -1127,3 +1127,12 @@ Overlays revised to r2; r1 bytes are kept in the audit. R6 is untouched. No impl
 - **Blockers** (all pre-existing and undisclosed): DX-02 SAFETY_BLOCKER, DX-01, F03, F04 (latent).
 - **Unchanged:** no runtime, test, policy, catalog, freeze, queue, product or canon change; V1 authority NO; nothing merged or pushed.
 - **Next:** Phase 3 narrow correction, on its own Founder authorization. Checkpoint: `audits/domain-coaching-r7-d-2026-11-02/PHASE2_CHECKPOINT.md`.
+
+<!-- DCR7D-20261102-phase3-r1 -->
+2026-11-02 · DOMAIN_COACHING_R7-D — Fresh Generalization Gate, Phase 3 **READY_FOR_FINAL_HOLDOUT**.
+- **Corrections:** DX-01, DX-02 (SAFETY), F03 (unit and the machine step rule F03B-MACHINE-STEP-r1, decided by the SSCTR with the PCG, no policy byte change) and F04, all closed; 23 directed tests; 6/6 mutants killed by their own witness.
+- **Verification:** suite 907/907; conformance R7-B, R7-B.1, R7-B.2 PASS; diagnostic and generated samples (regression only) with no property violation; differential against R7C-FREEZE-4 with no unexplained difference.
+- **Harness R7D-HARNESS-2:** HG-01..HG-07 corrected, P16 added; no false block; the four blockers detected on R7C-FREEZE-4; P05 carriers covered; 33/33 witnesses. Pre-registration R7D-PREREG-2 registered before any holdout.
+- **Gates:** SSCTR-R7D-P3-RECHECK-r1 ACCEPT_WITH_CONDITIONS; R7D-ENGINEERING-PHASE3-CHECK-1 READY_WITH_CONDITIONS (MAJOR QE-R7D-P3-01, non-blocking, pre-existing in substance).
+- **Freeze:** R7D-FREEZE-1 (`4cabd18`; record `6c03ca8`; source d2afeb8d…1e64; manifest b2b99cd0…f568); verifier 25/25.
+- **Unchanged:** no policy, catalog, record, queue, product or canon change; final holdout not created; V1 authority NO; nothing merged or pushed. Checkpoint: `audits/domain-coaching-r7-d-2026-11-02/PHASE3_CHECKPOINT.md`.

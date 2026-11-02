@@ -1143,3 +1143,22 @@ A direct Founder request authorizes **R7-D Phase 2 only**: author interface, har
   - the harness and pre-registration are revised before Phase 4.
 
   [Checkpoint](audits/domain-coaching-r7-d-2026-11-02/PHASE2_CHECKPOINT.md).
+
+<!-- DOMAIN_COACHING_R7D: DCR7D-20261102-phase3-r1 -->
+## DOMAIN_COACHING_R7-D — Fresh Generalization Gate — Phase 3 (narrow correction) READY_FOR_FINAL_HOLDOUT / 2026-11-02
+
+A direct Founder request authorizes **R7-D Phase 3 only**: a narrow correction of DX-02, DX-01, F03 (unit round trip, and the machine step through a narrow SSCTR + PCG policy decision) and F04; the harness gaps that could distort the final gate; directed tests, mutants, regressions; a narrow SSCTR recheck and engineering check; a new runtime freeze. No final holdout, no change to V1 authority, no push or merge. Summary of the authorization: `audits/domain-coaching-r7-d-2026-11-02/phase3/AUTHORIZATION_PHASE3.md`.
+
+- **States:** R7D_PHASE3_STATUS = READY_FOR_FINAL_HOLDOUT; FINAL_HOLDOUT_EXISTS = NO; V1_COACHING_AUTHORITY_READY = NO.
+- **Runtime:** R7D-FREEZE-1 (frozen bytes `4cabd18`, record `6c03ca8`, source d2afeb8d…1e64, manifest b2b99cd0…f568, 254 files, 907/907; verifier 25/25), on top of R7C-FREEZE-4 (not edited). Delta: six source files and one new test file.
+- **Corrections:**
+  - DX-01: a carried day-precision row keeps the precision it was accepted with;
+  - DX-02: a break declared in a weekly review is decided as the return report; another event kind is screened clinically and asked;
+  - F03: machine rows state KG; rule F03B-MACHINE-STEP-r1 (SSCTR-R7D-F03B-r1, PCG-R7D-F03B-r1 interpretation I-1, no policy or catalog byte change): the engine never computes a machine load;
+  - F04: confounded no longer hides an adverse recovery or an impaired next day.
+- **Gates:** SSCTR recheck ACCEPT_WITH_CONDITIONS; engineering check READY_WITH_CONDITIONS (MAJOR QE-R7D-P3-01, non-blocking: a declared break is retained only by a decision that applies it).
+- **Instruments for Phase 4:** R7D-HARNESS-2, R7D-PREREG-2 (no criterion weakened; QE-R7D-P3-01 disclosed without envelope), R7D-INTERFACE-2 delta, final author brief (no cases, no seed).
+- **Unchanged:** policy, catalog, records, queue (230), `product/`, `canon/`, the diagnostic corpus and its first evaluation.
+- **Next:** Phase 4 (sealed fresh holdout and final gates) on its own Founder authorization, after the Founder decides QE-R7D-P3-01 and the SSCTR interpretation question, and the proposed revalidation items are appended by their owner.
+
+  [Checkpoint](audits/domain-coaching-r7-d-2026-11-02/PHASE3_CHECKPOINT.md).
