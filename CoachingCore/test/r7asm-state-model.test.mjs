@@ -47,8 +47,13 @@ const IDS=['db-rdl','db-split-squat'];
 /** The judge's P40 history: weeks 0-1 trained and reviewed; week 2 executed but for Saturday's lift, never reviewed; week 3 the same and reviewed. */
 const p40=id=>{const t=start(id,2);perDay(t,2,s=>!SAT(s));weekly(t,3,s=>!SAT(s));return t;};
 /** The judge's P51 history: weeks 0-4 reviewed, then two development weeks executed but for Saturday's lift and never reviewed, so the plan runs
- * two steps ahead of history for the Saturday-only exercises. */
-const p51=id=>{const t=start(id,5);perDay(t,5,s=>!SAT(s));perDay(t,6,s=>!SAT(s));return t;};
+ * two steps ahead of history for the Saturday-only exercises.
+ * R7-C Phase 6 fixture pin (QE-R7C-07; EXPECTED_SEMANTIC_UPDATE of the fixture only, no assertion changed): week 4's review adopts a back squat
+ * logged 2.5 kg above the plan, so the stored plan was last set from evidence that read the week's runs. Without it, weeks 2-4 are kept by KEEP
+ * reviews that leave no evidence anchor, the plan for week 7 rests on projection over its whole run window, and the record of that window
+ * re-plans it from the facts at week 7's first decision (answeredOnRecord: the same state as an answer a refusal or a clinical route recorded),
+ * so the plan no longer runs ahead. The back squat is not one of the Saturday-only exercises these tests read (I10). */
+const p51=id=>{const t=start(id,4);weekly(t,4,()=>true,s=>WED(s)?{kg:(i,e)=>i==='back-squat'?e.load.value+2.5:(e.load.mode==='KNOWN'?e.load.value:20)}:{});perDay(t,5,s=>!SAT(s));perDay(t,6,s=>!SAT(s));return t;};
 
 // ---------- T1, T2: the two blockers ----------
 

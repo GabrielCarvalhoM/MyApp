@@ -332,7 +332,10 @@ test('S2 MAINTAIN: after a goal change to maintenance every row of a known dose 
 });
 test('S3: a projection above history creates no unearned progression: load, tick and repetitions are history\'s',()=>{
  // Two development weeks executed but for Saturday's lift and never reviewed: the plan runs two steps ahead for the Saturday-only exercises.
- N=0;const t=start('t7sc-s3',5);perDay(t,5,s=>!SAT(s));perDay(t,6,s=>!SAT(s));
+ // R7-C Phase 6 fixture pin (QE-R7C-07; EXPECTED_SEMANTIC_UPDATE of the fixture only, no assertion changed): week 4's review adopts a back squat
+ // logged 2.5 kg above the plan, an evidence anchor that read the week's runs; without it the plan for week 7 rests on projection over its whole
+ // run window and the record of that window re-plans it from the facts at week 7's first decision (answeredOnRecord), so it is no longer ahead.
+ N=0;const t=start('t7sc-s3',4);weekly(t,4,()=>true,s=>WED(s)?{kg:(i,e)=>i==='back-squat'?e.load.value+2.5:(e.load.mode==='KNOWN'?e.load.value:20)}:{});perDay(t,5,s=>!SAT(s));perDay(t,6,s=>!SAT(s));
  const P=t.p.stateTrace[7].strength.exercises[RDL],H=history(t,7,1).state.strength.exercises[RDL];
  assert.ok(P.load>H.load||(P.loadTick??0)>(H.loadTick??0),'the projection is ahead');
  // Week 7 reviewed with its Saturday lift missed: the review plans week 8 from the resolved dose, which is history's.
