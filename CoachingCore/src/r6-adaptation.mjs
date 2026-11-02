@@ -20,6 +20,8 @@ export const sessionType=s=>s.sport==='RUN'?'RUN:'+s.role:'STRENGTH:'+(s.templat
 const RUN_GATE_ROLE={LONG:'LONG',QUALITY:'QUALITY',EASY:'EASY',WALK_JOG:'WALK_JOG'};
 /** Gate precedence (decision authority closure, QE-R7ASC-03): a gate that stops progression outranks one that allows it. */
 const GATE_ORDER={EARNED:0,ADVANCE:1,HOLD:2,REGRESS:3};
+/** The reactive signals a pending unreported-training question carries to its answer (R7-C SSCTR-SD-03), with the words that name them. */
+const REACTIVE={SYSTEMIC_FATIGUE:'systemic fatigue',LOCAL_FATIGUE:'local fatigue',UNDERPERFORMANCE:'underperformance',PROGRESSION_NOT_TOLERATED:'progression not tolerated',OVERPERFORMANCE:'overperformance',PROGRESSION_TOO_EASY:'progression too easy'};
 
 // ---------- reference continuation state ----------
 function previousValidity(program,review){
@@ -41,6 +43,16 @@ function withReference(program,review,result){
  // not valid until it is answered.
  const carried=!pendingStatus&&!!result.question;
  const pending=clinicalSticky?clone(prior.pending):pendingStatus||carried?{status:carried?'ASK':result.status,reason:result.reason,missingInputs:clone(result.missingInputs??[]),eventKind:KIND_ALIASES[review?.event?.kind]??review?.event?.kind??null,eventId:review?.event?.id??null}:null;
+ // R7-C SSCTR-SD-03: a reactive signal (a fatigue or performance report) that the unreported-training question held, with nothing applied or
+ // recorded (an ASK with no proposal, heldByRunGap), travels with the pending question through its own week, so the answer re-evaluates it
+ // (evaluateProgram) instead of losing it; while the decision stays pending in that week it keeps travelling. A week's signal acts on that
+ // week only, and a clinical route takes over from it.
+ if(pending&&pendingStatus&&!clinicalSticky&&result.status!=='CLINICAL_HUMAN_REQUIRED'){
+  const target=review?.targetSessionId??review?.event?.sessionId;
+  const own=result.status==='ASK'&&result.question?.kind==='UNREPORTED_TRAINING'&&!result.proposal&&Object.hasOwn(REACTIVE,pending.eventKind??'')?{kind:pending.eventKind,eventId:review.event.id,asOf:utcTimestamp(review.asOf),weekIndex:review.weekIndex,...(review.signals&&typeof review.signals==='object'?{signals:clone(review.signals)}:{}),...(target!==undefined?{targetSessionId:clone(target)}:{})}:null;
+  const signal=own??(priorValid&&prior.pending?.signal&&prior.pending.signal.weekIndex===review?.weekIndex?clone(prior.pending.signal):null);
+  if(signal)pending.signal=signal;
+ }
  const asOf=utcTimestamp(review?.asOf)&&(!priorValid||Date.parse(review.asOf)>=Date.parse(prior.asOf))?utcTimestamp(review.asOf):priorValid?prior.asOf:null;
  const body={version:'R6-REFERENCE-STATE-1',athleteId:program?.athleteId??null,programHash:result.proposal?.hash??program?.hash??null,asOf,pending,scope:'Synthetic reference continuation state; never authorizes official plan effects'};
  return {...result,planValidity:{status:pending?'REQUIRES_RECONCILIATION':'VALID_WITHIN_CURRENT_BOUNDED_SCOPE'},referenceState:{...body,hash:hash(body)}};
@@ -359,6 +371,16 @@ function heldByRunGap(ctx,gap,d){
  if(!unreported&&d.proposal&&plansNoRunDose(ctx,d.proposal))return {...d,question:clone(gap.question),missingInputs:[...gap.missingInputs],reason:`${d.reason}; the run sessions ahead stay as they were and wait for an answer: ${gap.ask}`};
  return {...askOf(gap),counterfactuals:[counter(d.action??'KEEP',d.action??'KEEP',false,'It would keep or plan run doses that depend on training with no report: the projection would credit it, the reviewed entry would read it as zero'),counter('ASK','ASK',true,'Unreported training counts neither as done nor as not done; the athlete’s report decides',{selected:true})]};
 }
+/** R7-C SSCTR-SD-03: the reactive signal a valid reference state's pending question holds for week w (withReference), or null. */
+function heldSignal(st,w){const s=st?.pending?.signal;return s&&typeof s==='object'&&Object.hasOwn(REACTIVE,s.kind??'')&&s.weekIndex===w?s:null;}
+/** R7-C SSCTR-SD-03: a held reactive signal decided again, with the answer, by its own handler (and authority) on the decision's factual state. */
+function replayHeld(ctx,s){
+ const review={...ctx.review,...(s.signals?{signals:clone(s.signals)}:{}),...(s.targetSessionId!==undefined?{targetSessionId:clone(s.targetSessionId)}:{})};
+ const d=HANDLERS[s.kind]({...ctx,kind:s.kind,review});
+ // Still asked about (a later week's unreported training, say): no answer has landed for the signal yet; it keeps waiting with the question.
+ if(d.question?.kind==='UNREPORTED_TRAINING')return null;
+ return {...d,reason:`The ${REACTIVE[s.kind]} reported on ${localDate(s.asOf,ctx.program.timezoneOffsetMinutes??0)} with the question is applied with the answer: ${d.reason}`};
+}
 function finishProposal(program,sk,next,decision){
  const proposal=clone(program);proposal.weeks=next.weeks;proposal.stateTrace=next.stateTrace??program.stateTrace;
  // The earlier contexts still in force for some weeks travel with the program (R7-A.1 C2).
@@ -451,9 +473,16 @@ export function evaluateProgram(program,review,options={}){
   if(Object.keys(confirmations).length)ctx.program={...program,weeks:program.weeks.map((x,i)=>i!==w?x:{...x,adaptations:[...(x.adaptations??[]),adaptation(ctx,'LOAD_CONFIRMATIONS',{confirmations})]})};
   // The canonical factual state comes before any decision (residual authority closure, QE-R7ADA-01): evidence that moved this week's PlanningView
   // re-plans the sessions still ahead first, and the handler, whatever its kind, decides on that program.
+  // R7-C SSCTR-SD-01: so do reports that answer the unreported training the run doses ahead depended on (factualReplan, gapAnsweredBy).
   const factual0=factualReplan(ctx),factual=factual0?.ask?factual0:graduationWithdrawal(factual0?.ctx??ctx)??factual0;
+  // R7-C P3-02: unreported training the run doses still ahead depend on, read on the canonical factual state (heldByRunGap applies it below).
+  const facts=factual?.ctx??ctx,clinical=clinicalRoute(kind,review),gap=clinical?null:runGapInForce(facts);
+  // R7-C SSCTR-SD-03: the reactive signal the pending question held (withReference) is re-evaluated with the answer. A plain weekly review of that
+  // signal's week whose facts leave this week's run doses known decides as the held event decides, with its own handler and authority, on the
+  // canonical factual state; the decision consumes it.
+  const held=kind==='WEEKLY_REVIEW'&&!gap&&!factual?.ask?heldSignal(review.referenceState,w):null;
   // Training before the latest interruption that its return did not read is confirmed first (R7-A final I6); a return report decides it itself.
-  const decide=c=>(kind!=='RETURN_AFTER_PAUSE'&&staleReturn(c))||(HANDLERS[kind]??weeklyReview)(c);
+  const decide=c=>(kind!=='RETURN_AFTER_PAUSE'&&staleReturn(c))||(held&&replayHeld(c,held))||(HANDLERS[kind]??weeklyReview)(c);
   // A question about block choices is a decision like any other (QE-R7B-R2-02; R7-A A5): it never drops the canonical factual state computed above. A
   // question the factual re-plan itself raises keeps precedence; otherwise the block-choice question carries the factual re-plan and any graduation
   // withdrawal (withFactualReplan), because the facts it follows stand whatever is still asked.
@@ -462,15 +491,14 @@ export function evaluateProgram(program,review,options={}){
   // So it comes before every nonclinical question (QE-R7B1-04): the clinical route the review's own handler screen takes is the decision before
   // R7-A's late-evidence question, the factual re-plan's own question and the return's report-identity question; the review's evidence is still
   // recorded (actualLedger) and the late evidence still asked about by a later review without a clinical signal or a pending clinical state.
-  const clinical=clinicalRoute(kind,review);
   const choiceAsk=unknownChoices?{action:'ASK',reason:'Some choices are not recognised: a block choice is a ladder step, a main-lift change with its reason, or keeping or declining the harder session',missingInputs:['choices']}
    :blockChoices.length&&(kind!=='WEEKLY_REVIEW'||ev.pending)?{action:'ASK',reason:'Block choices are made in the weekly review of a block\'s last week, once its sessions are complete',missingInputs:['choices']}:null;
   const handled=clinical??(factual?.ask?null:decide(factual?.ctx??ctx));
   const decision0=clinical??factual?.ask??withFactualReplan(factual,handled.status==='CLINICAL_HUMAN_REQUIRED'?handled:choiceAsk??handled);
   const decided=blockChoices.length&&!choiceAsk&&!out.choicesHandled&&decision0.action!=='ASK'&&decision0.status!=='CLINICAL_HUMAN_REQUIRED'?withFactualReplan(factual,{action:'ASK',reason:'The block choices could not be applied in this review; they are made at the block boundary review',missingInputs:['choices']}):decision0;
-  // R7-C P3-02: unreported training the run doses still ahead depend on is read on the canonical factual state, after the clinical screen: no
-  // decision keeps, validates or re-plans those doses until the athlete answers (heldByRunGap).
-  const facts=factual?.ctx??ctx,gap=clinical?null:runGapInForce(facts),decision=gap?heldByRunGap(facts,gap,decided):decided;
+  // R7-C P3-02: after the clinical screen, no decision keeps, validates or re-plans the run doses that depend on unreported training until the
+  // athlete answers (heldByRunGap).
+  const decision=gap?heldByRunGap(facts,gap,decided):decided;
   // Load questions follow the decision's own gates, so they never contradict the adoption the transition made (SSCTR D44).
   out.loadQuestions=loggedLoadQuestions(program,sk,w,ev,{gates:decision.gates??null,confirmations:confirmationsOf(ctx),base:ctx.base});
   if(decision.proposal){
@@ -1221,15 +1249,38 @@ function viewMovedBy(ctx){
  * judged against (A1, SSCTR D44). Null when nothing ahead moved; {ask} when the re-plan cannot be composed.
  */
 function factualReplan(ctx){
- if(!(ctx.ev.pending||ctx.program.weeks[ctx.w].sessions.some(s=>s.prescription&&ctx.ahead(s)))||!viewMovedBy(ctx))return null;
+ if(!(ctx.ev.pending||ctx.program.weeks[ctx.w].sessions.some(s=>s.prescription&&ctx.ahead(s))))return null;
+ // R7-C SSCTR-SD-01: reports that answer the unreported training the run doses ahead depended on re-plan them like a correction (gapAnsweredBy).
+ const moved=viewMovedBy(ctx),answered=!moved&&gapAnsweredBy(ctx);if(!moved&&!answered)return null;
  const replan=composeWeeks(ctx,ctx.program,{fromWeek:ctx.w});
  if(replan.ask)return {ask:askOf(replan)};
  const changed=changedSessions(ctx.program,replan);if(!changed)return null;
  const proposal=finishProposal(ctx.program,ctx.sk,replan,{eventId:ctx.review.event.id,asOf:ctx.asOf,action:'REPLAN_FROM_EVIDENCE',fromWeek:ctx.w,horizonsConsidered:HORIZONS});
  const own={...ctx,program:proposal,evidence:undefined};own.base=planningBase(own);
- return {proposal,changed,ctx:own,horizons:horizonSummary(ctx.sk,ctx.program,proposal,{w:ctx.w,changed}),counterfactuals:[counter('KEEP','KEEP',false,'Keeping rows planned from evidence that has since been corrected would judge the next logs against facts that no longer stand'),counter('REPLAN_FROM_EVIDENCE','REPLAN_FROM_EVIDENCE',true,'The sessions still ahead follow the evidence as it now stands',{selected:true,changeCount:changed})]};
+ return {proposal,changed,ctx:own,...(answered?{reason:ANSWERED_REPLAN}:{}),horizons:horizonSummary(ctx.sk,ctx.program,proposal,{w:ctx.w,changed}),counterfactuals:answered?[counter('KEEP','KEEP',false,'Keeping the run doses stored while that training had no report would keep the projection, not what the athlete reported'),counter('REPLAN_FROM_EVIDENCE','REPLAN_FROM_EVIDENCE',true,'The sessions still ahead follow the facts the athlete reported',{selected:true,changeCount:changed})]:[counter('KEEP','KEEP',false,'Keeping rows planned from evidence that has since been corrected would judge the next logs against facts that no longer stand'),counter('REPLAN_FROM_EVIDENCE','REPLAN_FROM_EVIDENCE',true,'The sessions still ahead follow the evidence as it now stands',{selected:true,changeCount:changed})]};
+}
+/**
+ * R7-C SSCTR-SD-01: whether this review's own reports answered the unreported training the run doses still ahead depended on. On the record as
+ * the review received it (the carried record, read canonically, as viewMovedBy reads it) those doses depend on unreported training
+ * (runGapInForce asks); with the review's reports they no longer do: the window is known (sessions reported not done, a known stop; sessions
+ * reported done; a run that anchors it). Once the unknown is known, the doses still ahead follow the facts, never the projection stored while it
+ * was unknown: this week is re-planned from the facts (factualReplan) before any handler keeps, validates or reduces its doses, so the handler's
+ * own signal (a fatigue report, say) applies to the doses the facts give (SSCTR-SD-03). Only reports of sessions dated before this week can answer
+ * it (the window is the days before the week). Reports that leave part of the window unknown answer nothing yet: the question stays, about the
+ * sessions still unknown (heldByRunGap). A return report declares its own known stop and composes its re-entry from it (returnAfterPause).
+ * The re-plan reads the facts as every decision reads them (PlanningView): a past week is closed only by its own review, so a week whose review
+ * asked instead of deciding is read from its facts by the evidence reducer (held unless executed completely), never by a review made later.
+ */
+function gapAnsweredBy(ctx){
+ const obs=(Array.isArray(ctx.review.observations)?ctx.review.observations:[]).filter(o=>o&&typeof o==='object'),start=ctx.program.weeks[ctx.w].startDate,dates=new Map(ctx.program.weeks.flatMap(x=>x.sessions.map(s=>[s.id,s.date])));
+ if(ctx.kind==='RETURN_AFTER_PAUSE'||!obs.some(o=>(dates.get(o.sessionId)??start)<start)||runGapInForce(ctx))return false;
+ const {ledger,quarantined}=canonicalRecord(ctx.program,Array.isArray(ctx.review.actualLedger)?ctx.review.actualLedger:[],{authority:ctx.authority,cut:ctx.asOf});
+ const usable=ledger.filter(o=>!o.conflicted),carried={...ctx,fullLedger:ledger,ledger:usable,quarantined,completedRuns:completedRuns(ctx.program,usable),evidence:undefined};
+ carried.base=planningBase(carried);
+ return !!runGapInForce(carried);
 }
 const FACTUAL_REPLAN='Evidence about an earlier week changed what this week starts from; the sessions still ahead are planned again from it, completed sessions stay as they were';
+const ANSWERED_REPLAN='The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from those facts, not from the doses stored while they were unknown; completed sessions stay as they were';
 /**
  * B0-C01 with R7-A A5 (QE-R7B-04): a graduation stands only while its qualifying weeks still qualify on the canonical record, judged as the
  * boundary review judged them (its gates' windows at its clock) with the facts as they now stand. When a correction, a retraction or a quarantine
@@ -1259,8 +1310,8 @@ function graduationWithdrawal(c){
  */
 function withFactualReplan(f,d){
  if(!f||d.status==='CLINICAL_HUMAN_REQUIRED')return d;
- const note=FACTUAL_REPLAN.charAt(0).toLowerCase()+FACTUAL_REPLAN.slice(1),disclosures=[...(f.disclosures??[]),...(d.disclosures??[])],x=disclosures.length?{disclosures}:{};
- if(d.action==='KEEP')return {...d,...x,action:'REPLAN_FROM_EVIDENCE',instantiationOnly:false,proposal:d.proposal??f.proposal,reason:FACTUAL_REPLAN+(d.reason?'; '+d.reason:''),horizons:d.proposal?d.horizons:f.horizons,counterfactuals:[...f.counterfactuals,...(d.counterfactuals??[]).filter(c=>c.id!=='KEEP')]};
+ const said=f.reason??FACTUAL_REPLAN,note=said.charAt(0).toLowerCase()+said.slice(1),disclosures=[...(f.disclosures??[]),...(d.disclosures??[])],x=disclosures.length?{disclosures}:{};
+ if(d.action==='KEEP')return {...d,...x,action:'REPLAN_FROM_EVIDENCE',instantiationOnly:false,proposal:d.proposal??f.proposal,reason:said+(d.reason?'; '+d.reason:''),horizons:d.proposal?d.horizons:f.horizons,counterfactuals:[...f.counterfactuals,...(d.counterfactuals??[]).filter(c=>c.id!=='KEEP')]};
  if(d.proposal)return {...d,...x,instantiationOnly:false,reason:d.reason+'; '+note};
  return {...d,...x,status:d.status??(d.action==='ASK'?'ASK':undefined),proposal:f.proposal,reason:d.reason+'; meanwhile '+note,horizons:d.horizons??f.horizons};
 }
