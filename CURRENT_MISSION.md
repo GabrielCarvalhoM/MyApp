@@ -1102,3 +1102,19 @@ Same branch and worktree, from `8699cba` / R7C-FREEZE-3 (`08c6db3`); nothing mer
   - unchanged and not absorbed: QE-R7C-08/09/11/12/13, CC-F01, C8, C5, the R4 HOLD, C10, D1, G03.
 - **Unchanged:** R6-POLICY-5, R7B0-CATALOG-2, queue (230), `product/`, `canon/`, every closed record, FREEZE-1/2/3.
 - **Next:** R7-D (Fresh Generalization Gate), with its own Founder authorization; not started. [Checkpoint](audits/domain-coaching-r7-c-2026-11-01/PHASE7_CHECKPOINT.md).
+
+<!-- DOMAIN_COACHING_R7D: DCR7D-20261102-phase1-r1 -->
+## DOMAIN_COACHING_R7-D — Fresh Generalization Gate — Phase 1 (scoping) complete / 2026-11-02
+
+A direct Founder request authorizes **R7-D Phase 1 only**: investigation, scope, authority and the fresh-corpus design. Branch `claude/domain-coaching-r7-d`, in an isolated worktree from the R7-C closure `0e6dfd8`; nothing merged or pushed.
+
+- **States:** R7D_PHASE1_STATUS = READY_FOR_EXECUTION. Runtime unchanged. V1_COACHING_AUTHORITY_READY = NO.
+- **Baseline:** R7C-FREEZE-4 (`a9654c8`); its 197 bound files are hash-identical at `0e6dfd8`.
+- **Meaning:** R7-D is the fourth R7 phase named in the R7-A Founder request ("new unseen holdout belongs to R7-D"; known corpora are regression only). No authority set its objective or exit criteria, so the contract is derived:
+  - an independently authored holdout, sealed before any run and evaluated once on the final freeze;
+  - checked against 14 authority-backed properties (plus one proposal) and the SSCTR's rubric;
+  - a blocker on that holdout closes R7-D NOT_READY, with no correction loop on it.
+- **Gate world:** records carrying the first-recorded clock. Clockless records stay a disclosed C3 consumer matter.
+- **Inherited findings:** classified A/B/C; none absorbed.
+- **Unchanged:** runtime, tests, policy, catalog, queue (230), `product/`, `canon/`, every closed record.
+- **Next:** Phase 2 (R7-D interface, harness, pre-registration draft, independent diagnostic corpus and diagnostic run) needs its own Founder authorization, with the success criteria confirmed. [Checkpoint](audits/domain-coaching-r7-d-2026-11-02/PHASE1_CHECKPOINT.md).
