@@ -1,0 +1,773 @@
+{
+ "probe": "QE-E3 R1 next-week projection after a later-week answer",
+ "cases": [
+  {
+   "case": "GEN g=0 RV MISS answer day 2",
+   "elapsedBeforeAnswer": [
+    "EASY:50@2026-12-22"
+   ],
+   "answer": {
+    "status": "MODIFY",
+    "action": "REPLAN_FROM_EVIDENCE",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from those facts, not from the doses stored while they were unknown; completed sessions stay as they were"
+   },
+   "weekB": [
+    "EASY:50",
+    "EASY:15",
+    "LONG:15"
+   ],
+   "weekB1": [
+    "EASY:45",
+    "EASY:45",
+    "LONG:55"
+   ],
+   "weekB1Stale": true,
+   "weekB1StartAuthorityRun": {
+    "provenance": "CONDITIONAL_PLAN",
+    "assumed": null,
+    "keys": [
+     "provenance",
+     "eventId",
+     "asOf",
+     "premise"
+    ]
+   },
+   "A_weekB1": [
+    "EASY:20",
+    "EASY:20",
+    "LONG:20"
+   ],
+   "midWeekPlainReviewDay3": {
+    "status": "KEEP",
+    "action": "KEEP",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "next-week steps are gated when this week’s remaining sessions are complete",
+    "weekB1": [
+     "EASY:45",
+     "EASY:45",
+     "LONG:55"
+    ]
+   },
+   "endOfWeekDay1Unreported": {
+    "status": "MODIFY",
+    "action": "GATED_NEXT_STEP",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation",
+    "weekB1": [
+     "EASY:20",
+     "EASY:20",
+     "LONG:20"
+    ]
+   },
+   "endOfWeekDay1NotDone": {
+    "status": "MODIFY",
+    "action": "GATED_NEXT_STEP",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation",
+    "weekB1": [
+     "EASY:20",
+     "EASY:20",
+     "LONG:20"
+    ]
+   },
+   "endOfWeekNothingReported": {
+    "status": "ASK",
+    "action": "ASK",
+    "validity": "REQUIRES_RECONCILIATION",
+    "question": "UNREPORTED_TRAINING",
+    "pending": {
+     "status": "ASK",
+     "eventKind": "WEEKLY_REVIEW",
+     "signal": null
+    },
+    "reason": "No run is recorded in the 30 days before 2026-12-28, the reference for the runs planned from then, and 3 planned run sessions from 2026-12-22 to 2026-12-27 have no report: say what was done (report the sessions) or that training stopped (th",
+    "weekB1": [
+     "EASY:45",
+     "EASY:45",
+     "LONG:55"
+    ]
+   }
+  },
+  {
+   "case": "GEN g=0 NR MISS answer day 2",
+   "elapsedBeforeAnswer": [
+    "EASY:55@2026-12-22"
+   ],
+   "answer": {
+    "status": "MODIFY",
+    "action": "REPLAN_FROM_EVIDENCE",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from those facts, not from the doses stored while they were unknown; completed sessions stay as they were"
+   },
+   "weekB": [
+    "EASY:55",
+    "EASY:15",
+    "LONG:15"
+   ],
+   "weekB1": [
+    "EASY:45",
+    "EASY:45",
+    "LONG:60"
+   ],
+   "weekB1Stale": true,
+   "weekB1StartAuthorityRun": {
+    "provenance": "CONDITIONAL_PLAN",
+    "assumed": null,
+    "keys": [
+     "provenance",
+     "eventId",
+     "asOf",
+     "premise"
+    ]
+   },
+   "A_weekB1": [
+    "EASY:20",
+    "EASY:20",
+    "LONG:20"
+   ],
+   "midWeekPlainReviewDay3": {
+    "status": "KEEP",
+    "action": "KEEP",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "next-week steps are gated when this week’s remaining sessions are complete",
+    "weekB1": [
+     "EASY:45",
+     "EASY:45",
+     "LONG:60"
+    ]
+   },
+   "endOfWeekDay1Unreported": {
+    "status": "MODIFY",
+    "action": "GATED_NEXT_STEP",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation",
+    "weekB1": [
+     "EASY:20",
+     "EASY:20",
+     "LONG:20"
+    ]
+   },
+   "endOfWeekDay1NotDone": {
+    "status": "MODIFY",
+    "action": "GATED_NEXT_STEP",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation",
+    "weekB1": [
+     "EASY:20",
+     "EASY:20",
+     "LONG:20"
+    ]
+   },
+   "endOfWeekNothingReported": {
+    "status": "ASK",
+    "action": "ASK",
+    "validity": "REQUIRES_RECONCILIATION",
+    "question": "UNREPORTED_TRAINING",
+    "pending": {
+     "status": "ASK",
+     "eventKind": "WEEKLY_REVIEW",
+     "signal": null
+    },
+    "reason": "No run is recorded in the 30 days before 2026-12-28, the reference for the runs planned from then, and 3 planned run sessions from 2026-12-22 to 2026-12-27 have no report: say what was done (report the sessions) or that training stopped (th",
+    "weekB1": [
+     "EASY:45",
+     "EASY:45",
+     "LONG:60"
+    ]
+   }
+  },
+  {
+   "case": "GEN g=2 RV MISS answer day 2",
+   "elapsedBeforeAnswer": [
+    "EASY:50@2026-12-22"
+   ],
+   "answer": {
+    "status": "MODIFY",
+    "action": "REPLAN_FROM_EVIDENCE",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from those facts, not from the doses stored while they were unknown; completed sessions stay as they were"
+   },
+   "weekB": [
+    "EASY:50",
+    "EASY:15",
+    "LONG:15"
+   ],
+   "weekB1": [
+    "EASY:50",
+    "QUALITY:34",
+    "LONG:55"
+   ],
+   "weekB1Stale": true,
+   "weekB1StartAuthorityRun": {
+    "provenance": "CONDITIONAL_PLAN",
+    "assumed": null,
+    "keys": [
+     "provenance",
+     "eventId",
+     "asOf",
+     "premise"
+    ]
+   },
+   "A_weekB1": [
+    "EASY:20",
+    "EASY:20",
+    "LONG:20"
+   ],
+   "midWeekPlainReviewDay3": {
+    "status": "KEEP",
+    "action": "KEEP",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "next-week steps are gated when this week’s remaining sessions are complete",
+    "weekB1": [
+     "EASY:50",
+     "QUALITY:34",
+     "LONG:55"
+    ]
+   },
+   "endOfWeekDay1Unreported": {
+    "status": "MODIFY",
+    "action": "GATED_NEXT_STEP",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation",
+    "weekB1": [
+     "EASY:20",
+     "EASY:20",
+     "LONG:20"
+    ]
+   },
+   "endOfWeekDay1NotDone": {
+    "status": "MODIFY",
+    "action": "GATED_NEXT_STEP",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation",
+    "weekB1": [
+     "EASY:20",
+     "EASY:20",
+     "LONG:20"
+    ]
+   },
+   "endOfWeekNothingReported": {
+    "status": "ASK",
+    "action": "ASK",
+    "validity": "REQUIRES_RECONCILIATION",
+    "question": "UNREPORTED_TRAINING",
+    "pending": {
+     "status": "ASK",
+     "eventKind": "WEEKLY_REVIEW",
+     "signal": null
+    },
+    "reason": "No run is recorded in the 30 days before 2026-12-28, the reference for the runs planned from then, and 3 planned run sessions from 2026-12-22 to 2026-12-27 have no report: say what was done (report the sessions) or that training stopped (th",
+    "weekB1": [
+     "EASY:50",
+     "QUALITY:34",
+     "LONG:55"
+    ]
+   }
+  },
+  {
+   "case": "GEN g=2 NR MISS answer day 2",
+   "elapsedBeforeAnswer": [
+    "EASY:55@2026-12-22"
+   ],
+   "answer": {
+    "status": "MODIFY",
+    "action": "REPLAN_FROM_EVIDENCE",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from those facts, not from the doses stored while they were unknown; completed sessions stay as they were"
+   },
+   "weekB": [
+    "EASY:55",
+    "EASY:15",
+    "LONG:15"
+   ],
+   "weekB1": [
+    "EASY:50",
+    "QUALITY:34",
+    "LONG:60"
+   ],
+   "weekB1Stale": true,
+   "weekB1StartAuthorityRun": {
+    "provenance": "CONDITIONAL_PLAN",
+    "assumed": null,
+    "keys": [
+     "provenance",
+     "eventId",
+     "asOf",
+     "premise"
+    ]
+   },
+   "A_weekB1": [
+    "EASY:20",
+    "EASY:20",
+    "LONG:20"
+   ],
+   "midWeekPlainReviewDay3": {
+    "status": "KEEP",
+    "action": "KEEP",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "next-week steps are gated when this week’s remaining sessions are complete",
+    "weekB1": [
+     "EASY:50",
+     "QUALITY:34",
+     "LONG:60"
+    ]
+   },
+   "endOfWeekDay1Unreported": {
+    "status": "MODIFY",
+    "action": "GATED_NEXT_STEP",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation",
+    "weekB1": [
+     "EASY:20",
+     "EASY:20",
+     "LONG:20"
+    ]
+   },
+   "endOfWeekDay1NotDone": {
+    "status": "MODIFY",
+    "action": "GATED_NEXT_STEP",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation",
+    "weekB1": [
+     "EASY:20",
+     "EASY:20",
+     "LONG:20"
+    ]
+   },
+   "endOfWeekNothingReported": {
+    "status": "ASK",
+    "action": "ASK",
+    "validity": "REQUIRES_RECONCILIATION",
+    "question": "UNREPORTED_TRAINING",
+    "pending": {
+     "status": "ASK",
+     "eventKind": "WEEKLY_REVIEW",
+     "signal": null
+    },
+    "reason": "No run is recorded in the 30 days before 2026-12-28, the reference for the runs planned from then, and 3 planned run sessions from 2026-12-22 to 2026-12-27 have no report: say what was done (report the sessions) or that training stopped (th",
+    "weekB1": [
+     "EASY:50",
+     "QUALITY:34",
+     "LONG:60"
+    ]
+   }
+  },
+  {
+   "case": "R10K-taper-to-race g=0 RV MISS answer day 2",
+   "elapsedBeforeAnswer": [
+    "EASY:35@2027-01-12"
+   ],
+   "answer": {
+    "status": "MODIFY",
+    "action": "REPLAN_FROM_EVIDENCE",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from those facts, not from the doses stored while they were unknown; completed sessions stay as they were"
+   },
+   "weekB": [
+    "EASY:35",
+    "EASY:15",
+    "EASY:15"
+   ],
+   "weekB1": [
+    "EASY:20",
+    "EASY:20",
+    "RACE:75"
+   ],
+   "weekB1Stale": true,
+   "weekB1StartAuthorityRun": {
+    "provenance": "CONDITIONAL_PLAN",
+    "assumed": null,
+    "keys": [
+     "provenance",
+     "eventId",
+     "asOf",
+     "premise"
+    ]
+   },
+   "A_weekB1": [
+    "EASY:15",
+    "EASY:15",
+    "RACE:75"
+   ],
+   "midWeekPlainReviewDay3": {
+    "status": "KEEP",
+    "action": "KEEP",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "next-week steps are gated when this week’s remaining sessions are complete",
+    "weekB1": [
+     "EASY:20",
+     "EASY:20",
+     "RACE:75"
+    ]
+   },
+   "endOfWeekDay1Unreported": {
+    "status": "MODIFY",
+    "action": "GATED_NEXT_STEP",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation",
+    "weekB1": [
+     "EASY:15",
+     "EASY:15",
+     "RACE:75"
+    ]
+   },
+   "endOfWeekDay1NotDone": {
+    "status": "MODIFY",
+    "action": "GATED_NEXT_STEP",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation",
+    "weekB1": [
+     "EASY:15",
+     "EASY:15",
+     "RACE:75"
+    ]
+   },
+   "endOfWeekNothingReported": {
+    "status": "ASK",
+    "action": "ASK",
+    "validity": "REQUIRES_RECONCILIATION",
+    "question": "UNREPORTED_TRAINING",
+    "pending": {
+     "status": "ASK",
+     "eventKind": "WEEKLY_REVIEW",
+     "signal": null
+    },
+    "reason": "No run is recorded in the 30 days before 2027-01-18, the reference for the runs planned from then, and 3 planned run sessions from 2027-01-12 to 2027-01-17 have no report: say what was done (report the sessions) or that training stopped (th",
+    "weekB1": [
+     "EASY:20",
+     "EASY:20",
+     "RACE:75"
+    ]
+   }
+  },
+  {
+   "case": "R10K-taper-to-race g=0 NR MISS answer day 2",
+   "elapsedBeforeAnswer": [
+    "EASY:40@2027-01-12"
+   ],
+   "answer": {
+    "status": "MODIFY",
+    "action": "REPLAN_FROM_EVIDENCE",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from those facts, not from the doses stored while they were unknown; completed sessions stay as they were"
+   },
+   "weekB": [
+    "EASY:40",
+    "EASY:15",
+    "EASY:15"
+   ],
+   "weekB1": [
+    "EASY:20",
+    "EASY:20",
+    "RACE:75"
+   ],
+   "weekB1Stale": true,
+   "weekB1StartAuthorityRun": {
+    "provenance": "CONDITIONAL_PLAN",
+    "assumed": null,
+    "keys": [
+     "provenance",
+     "eventId",
+     "asOf",
+     "premise"
+    ]
+   },
+   "A_weekB1": [
+    "EASY:15",
+    "EASY:15",
+    "RACE:75"
+   ],
+   "midWeekPlainReviewDay3": {
+    "status": "KEEP",
+    "action": "KEEP",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "next-week steps are gated when this week’s remaining sessions are complete",
+    "weekB1": [
+     "EASY:20",
+     "EASY:20",
+     "RACE:75"
+    ]
+   },
+   "endOfWeekDay1Unreported": {
+    "status": "MODIFY",
+    "action": "GATED_NEXT_STEP",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation",
+    "weekB1": [
+     "EASY:15",
+     "EASY:15",
+     "RACE:75"
+    ]
+   },
+   "endOfWeekDay1NotDone": {
+    "status": "MODIFY",
+    "action": "GATED_NEXT_STEP",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation",
+    "weekB1": [
+     "EASY:15",
+     "EASY:15",
+     "RACE:75"
+    ]
+   },
+   "endOfWeekNothingReported": {
+    "status": "ASK",
+    "action": "ASK",
+    "validity": "REQUIRES_RECONCILIATION",
+    "question": "UNREPORTED_TRAINING",
+    "pending": {
+     "status": "ASK",
+     "eventKind": "WEEKLY_REVIEW",
+     "signal": null
+    },
+    "reason": "No run is recorded in the 30 days before 2027-01-18, the reference for the runs planned from then, and 3 planned run sessions from 2027-01-12 to 2027-01-17 have no report: say what was done (report the sessions) or that training stopped (th",
+    "weekB1": [
+     "EASY:20",
+     "EASY:20",
+     "RACE:75"
+    ]
+   }
+  },
+  {
+   "case": "R10K-taper-to-race g=2 RV MISS answer day 2",
+   "elapsedBeforeAnswer": [
+    "EASY:35@2027-01-12"
+   ],
+   "answer": {
+    "status": "MODIFY",
+    "action": "REPLAN_FROM_EVIDENCE",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from those facts, not from the doses stored while they were unknown; completed sessions stay as they were"
+   },
+   "weekB": [
+    "EASY:35",
+    "EASY:15",
+    "LONG:15"
+   ],
+   "weekB1": [
+    "EASY:20",
+    "EASY:20",
+    "RACE:75"
+   ],
+   "weekB1Stale": true,
+   "weekB1StartAuthorityRun": {
+    "provenance": "CONDITIONAL_PLAN",
+    "assumed": null,
+    "keys": [
+     "provenance",
+     "eventId",
+     "asOf",
+     "premise"
+    ]
+   },
+   "A_weekB1": [
+    "EASY:20",
+    "EASY:20",
+    "RACE:75"
+   ],
+   "midWeekPlainReviewDay3": {
+    "status": "KEEP",
+    "action": "KEEP",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "next-week steps are gated when this week’s remaining sessions are complete",
+    "weekB1": [
+     "EASY:20",
+     "EASY:20",
+     "RACE:75"
+    ]
+   },
+   "endOfWeekDay1Unreported": {
+    "status": "MODIFY",
+    "action": "GATED_NEXT_STEP",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation",
+    "weekB1": [
+     "EASY:20",
+     "EASY:20",
+     "RACE:75"
+    ]
+   },
+   "endOfWeekDay1NotDone": {
+    "status": "MODIFY",
+    "action": "GATED_NEXT_STEP",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation",
+    "weekB1": [
+     "EASY:20",
+     "EASY:20",
+     "RACE:75"
+    ]
+   },
+   "endOfWeekNothingReported": {
+    "status": "ASK",
+    "action": "ASK",
+    "validity": "REQUIRES_RECONCILIATION",
+    "question": "UNREPORTED_TRAINING",
+    "pending": {
+     "status": "ASK",
+     "eventKind": "WEEKLY_REVIEW",
+     "signal": null
+    },
+    "reason": "No run is recorded in the 30 days before 2027-01-18, the reference for the runs planned from then, and 3 planned run sessions from 2027-01-12 to 2027-01-17 have no report: say what was done (report the sessions) or that training stopped (th",
+    "weekB1": [
+     "EASY:20",
+     "EASY:20",
+     "RACE:75"
+    ]
+   }
+  },
+  {
+   "case": "R10K-taper-to-race g=2 NR MISS answer day 2",
+   "elapsedBeforeAnswer": [
+    "EASY:40@2027-01-12"
+   ],
+   "answer": {
+    "status": "MODIFY",
+    "action": "REPLAN_FROM_EVIDENCE",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from those facts, not from the doses stored while they were unknown; completed sessions stay as they were"
+   },
+   "weekB": [
+    "EASY:40",
+    "EASY:15",
+    "LONG:15"
+   ],
+   "weekB1": [
+    "EASY:20",
+    "EASY:20",
+    "RACE:75"
+   ],
+   "weekB1Stale": true,
+   "weekB1StartAuthorityRun": {
+    "provenance": "CONDITIONAL_PLAN",
+    "assumed": null,
+    "keys": [
+     "provenance",
+     "eventId",
+     "asOf",
+     "premise"
+    ]
+   },
+   "A_weekB1": [
+    "EASY:20",
+    "EASY:20",
+    "RACE:75"
+   ],
+   "midWeekPlainReviewDay3": {
+    "status": "KEEP",
+    "action": "KEEP",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "next-week steps are gated when this week’s remaining sessions are complete",
+    "weekB1": [
+     "EASY:20",
+     "EASY:20",
+     "RACE:75"
+    ]
+   },
+   "endOfWeekDay1Unreported": {
+    "status": "MODIFY",
+    "action": "GATED_NEXT_STEP",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation",
+    "weekB1": [
+     "EASY:20",
+     "EASY:20",
+     "RACE:75"
+    ]
+   },
+   "endOfWeekDay1NotDone": {
+    "status": "MODIFY",
+    "action": "GATED_NEXT_STEP",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation",
+    "weekB1": [
+     "EASY:20",
+     "EASY:20",
+     "RACE:75"
+    ]
+   },
+   "endOfWeekNothingReported": {
+    "status": "ASK",
+    "action": "ASK",
+    "validity": "REQUIRES_RECONCILIATION",
+    "question": "UNREPORTED_TRAINING",
+    "pending": {
+     "status": "ASK",
+     "eventKind": "WEEKLY_REVIEW",
+     "signal": null
+    },
+    "reason": "No run is recorded in the 30 days before 2027-01-18, the reference for the runs planned from then, and 3 planned run sessions from 2027-01-12 to 2027-01-17 have no report: say what was done (report the sessions) or that training stopped (th",
+    "weekB1": [
+     "EASY:20",
+     "EASY:20",
+     "RACE:75"
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,74 @@
+{
+ "probe": "QE mutation spot-check",
+ "root": "C:\\Users\\carva\\AppData\\Local\\Temp\\claude\\C--Users-carva-Desktop-myApp-MyApp\\b195193c-c183-4244-837f-2ddf81fcae1f\\scratchpad\\r7c\\CoachingCore",
+ "tests": [
+  "test/r7c-longitudinal.test.mjs",
+  "test/r7c-phase4.test.mjs",
+  "test/r7c-phase5.test.mjs",
+  "test/r7b2-clinical-precedence.test.mjs"
+ ],
+ "sourceSha256Before": {
+  "src/r6-adaptation.mjs": "8b189617fe2c8ca01b01472225ac35411e160ec474a5be6ca965cf6ff1fa1587"
+ },
+ "baseline": {
+  "tests": 62,
+  "pass": 62,
+  "fail": 0,
+  "failing": []
+ },
+ "mutants": [
+  {
+   "id": "QM-1",
+   "what": "reproduces SD-M1: an answer is never re-planned (gapAnsweredBy ignored); the question just clears",
+   "result": "KILLED",
+   "tests": 62,
+   "pass": 50,
+   "fail": 12,
+   "failing": [
+    "R7-C SD-01: the same facts on time (A*, A) or answered after the question (B) leave the same plan in force from the answer on; the answer week drops the stale doses",
+    "R7-C SD-01: after an answer later in the week, A and B converge at the week’s review: the same week facts give the same next week",
+    "R7-C SD-01: the answer re-plans the answer week before the event decides: A and B agree for every decision kind, day 0 and day 2",
+    "R7-C SD-01: answered before a key session, before the long run, in the taper and in race week, the remaining sessions follow the facts",
+    "R7-C SD-01: mixed evidence in the week the question left open: the answer week follows the canonical factual state, never more than a review on time would plan",
+    "R7-C SD-01: a partial answer asks only about what stays unknown; the stored doses are never validated until the rest is answered",
+    "R7-C SD-02 (fixture of r7c-phase4.test.mjs:85): the answer week, not only the next week, follows the late reports",
+    "R7-C SD-02: a question raised in the answer week, answered later that week, reconciles the rest of the week; validity follows the reconciliation"
+   ]
+  },
+  {
+   "id": "QM-2",
+   "what": "new: the held signal is replayed in any week (heldSignal ignores its weekIndex)",
+   "result": "SURVIVED",
+   "tests": 62,
+   "pass": 62,
+   "fail": 0,
+   "failing": []
+  },
+  {
+   "id": "QM-3",
+   "what": "candidate fix for QE-R7C-03 (not a mutant): the held signal also travels when a change is kept beside the question (carried)",
+   "result": "SURVIVED",
+   "tests": 62,
+   "pass": 62,
+   "fail": 0,
+   "failing": []
+  },
+  {
+   "id": "QM-4",
+   "what": "new: the gap guard ignores plansNoRunDose (every change beside the question becomes the question)",
+   "result": "KILLED",
+   "tests": 62,
+   "pass": 59,
+   "fail": 3,
+   "failing": [
+    "R7-C P3-02: after the question about unreported training, no decision validates the projected run doses; THRESHOLD 41 / LONG 65 never comes back after 7 weeks with no reported run",
+    "R7-C P3-02: same facts, same decision; the strength change kept beside the question is the change itself",
+    "R7-C SD-02: a question raised in the answer week, answered later that week, reconciles the rest of the week; validity follows the reconciliation"
+   ]
+  }
+ ],
+ "sourceSha256After": {
+  "src/r6-adaptation.mjs": "8b189617fe2c8ca01b01472225ac35411e160ec474a5be6ca965cf6ff1fa1587"
+ },
+ "restored": true
+}

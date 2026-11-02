@@ -1,0 +1,411 @@
+{
+ "probe": "QE-E3b first decision of week b+1 after a day-2 answer",
+ "cases": [
+  {
+   "case": "GEN g=0 RV MISS",
+   "answer": {
+    "status": "MODIFY",
+    "action": "REPLAN_FROM_EVIDENCE",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from those facts, not from the doses stored while they were unknown; completed sessions stay as they were"
+   },
+   "day4": {
+    "status": "KEEP",
+    "action": "KEEP",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+   },
+   "storedB1": [
+    "EASY:45",
+    "EASY:45",
+    "LONG:55"
+   ],
+   "A_B1": [
+    "EASY:20",
+    "EASY:20",
+    "LONG:20"
+   ],
+   "next": [
+    {
+     "label": "week b+1 day 0 plain review",
+     "status": "KEEP",
+     "action": "KEEP",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "question": null,
+     "pending": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete",
+     "b1RunsInForce": [
+      "EASY:45",
+      "EASY:45",
+      "LONG:55"
+     ],
+     "singleRunCeiling": 20,
+     "aboveCeilingValid": true,
+     "qualityValid": false,
+     "staleValid": true
+    },
+    {
+     "label": "week b+1 day 0 plain review with the day-6 long run reported",
+     "status": "KEEP",
+     "action": "KEEP",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "question": null,
+     "pending": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete",
+     "b1RunsInForce": [
+      "EASY:45",
+      "EASY:45",
+      "LONG:55"
+     ],
+     "singleRunCeiling": 20,
+     "aboveCeilingValid": true,
+     "qualityValid": false,
+     "staleValid": true
+    },
+    {
+     "label": "week b+1 day 0 schedule change (strength days)",
+     "status": "MODIFY",
+     "action": "REARRANGE_FUTURE_WEEKS",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "question": null,
+     "pending": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the athlete removed",
+     "b1RunsInForce": [
+      "EASY:45",
+      "EASY:45",
+      "LONG:55"
+     ],
+     "singleRunCeiling": 20,
+     "aboveCeilingValid": true,
+     "qualityValid": false,
+     "staleValid": true
+    }
+   ],
+   "controlEndOfWeekReview": {
+    "status": "MODIFY",
+    "action": "GATED_NEXT_STEP",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation",
+    "b1": [
+     "EASY:20",
+     "EASY:20",
+     "LONG:20"
+    ]
+   }
+  },
+  {
+   "case": "GEN g=0 NR MISS",
+   "answer": {
+    "status": "MODIFY",
+    "action": "REPLAN_FROM_EVIDENCE",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from those facts, not from the doses stored while they were unknown; completed sessions stay as they were"
+   },
+   "day4": {
+    "status": "KEEP",
+    "action": "KEEP",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+   },
+   "storedB1": [
+    "EASY:45",
+    "EASY:45",
+    "LONG:60"
+   ],
+   "A_B1": [
+    "EASY:20",
+    "EASY:20",
+    "LONG:20"
+   ],
+   "next": [
+    {
+     "label": "week b+1 day 0 plain review",
+     "status": "KEEP",
+     "action": "KEEP",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "question": null,
+     "pending": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete",
+     "b1RunsInForce": [
+      "EASY:45",
+      "EASY:45",
+      "LONG:60"
+     ],
+     "singleRunCeiling": 20,
+     "aboveCeilingValid": true,
+     "qualityValid": false,
+     "staleValid": true
+    },
+    {
+     "label": "week b+1 day 0 plain review with the day-6 long run reported",
+     "status": "KEEP",
+     "action": "KEEP",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "question": null,
+     "pending": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete",
+     "b1RunsInForce": [
+      "EASY:45",
+      "EASY:45",
+      "LONG:60"
+     ],
+     "singleRunCeiling": 20,
+     "aboveCeilingValid": true,
+     "qualityValid": false,
+     "staleValid": true
+    },
+    {
+     "label": "week b+1 day 0 schedule change (strength days)",
+     "status": "MODIFY",
+     "action": "REARRANGE_FUTURE_WEEKS",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "question": null,
+     "pending": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the athlete removed",
+     "b1RunsInForce": [
+      "EASY:45",
+      "EASY:45",
+      "LONG:60"
+     ],
+     "singleRunCeiling": 20,
+     "aboveCeilingValid": true,
+     "qualityValid": false,
+     "staleValid": true
+    }
+   ],
+   "controlEndOfWeekReview": {
+    "status": "MODIFY",
+    "action": "GATED_NEXT_STEP",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation",
+    "b1": [
+     "EASY:20",
+     "EASY:20",
+     "LONG:20"
+    ]
+   }
+  },
+  {
+   "case": "GEN g=2 RV MISS",
+   "answer": {
+    "status": "MODIFY",
+    "action": "REPLAN_FROM_EVIDENCE",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from those facts, not from the doses stored while they were unknown; completed sessions stay as they were"
+   },
+   "day4": {
+    "status": "KEEP",
+    "action": "KEEP",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+   },
+   "storedB1": [
+    "EASY:50",
+    "QUALITY:34",
+    "LONG:55"
+   ],
+   "A_B1": [
+    "EASY:20",
+    "EASY:20",
+    "LONG:20"
+   ],
+   "next": [
+    {
+     "label": "week b+1 day 0 plain review",
+     "status": "KEEP",
+     "action": "KEEP",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "question": null,
+     "pending": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete",
+     "b1RunsInForce": [
+      "EASY:50",
+      "QUALITY:34",
+      "LONG:55"
+     ],
+     "singleRunCeiling": 20,
+     "aboveCeilingValid": true,
+     "qualityValid": true,
+     "staleValid": true
+    },
+    {
+     "label": "week b+1 day 0 plain review with the day-6 long run reported",
+     "status": "KEEP",
+     "action": "KEEP",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "question": null,
+     "pending": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete",
+     "b1RunsInForce": [
+      "EASY:50",
+      "QUALITY:34",
+      "LONG:55"
+     ],
+     "singleRunCeiling": 20,
+     "aboveCeilingValid": true,
+     "qualityValid": true,
+     "staleValid": true
+    },
+    {
+     "label": "week b+1 day 0 schedule change (strength days)",
+     "status": "MODIFY",
+     "action": "REARRANGE_FUTURE_WEEKS",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "question": null,
+     "pending": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the athlete removed",
+     "b1RunsInForce": [
+      "EASY:50",
+      "QUALITY:34",
+      "LONG:55"
+     ],
+     "singleRunCeiling": 20,
+     "aboveCeilingValid": true,
+     "qualityValid": true,
+     "staleValid": true
+    }
+   ],
+   "controlEndOfWeekReview": {
+    "status": "MODIFY",
+    "action": "GATED_NEXT_STEP",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation",
+    "b1": [
+     "EASY:20",
+     "EASY:20",
+     "LONG:20"
+    ]
+   }
+  },
+  {
+   "case": "GEN g=2 NR MISS",
+   "answer": {
+    "status": "MODIFY",
+    "action": "REPLAN_FROM_EVIDENCE",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from those facts, not from the doses stored while they were unknown; completed sessions stay as they were"
+   },
+   "day4": {
+    "status": "KEEP",
+    "action": "KEEP",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+   },
+   "storedB1": [
+    "EASY:50",
+    "QUALITY:34",
+    "LONG:60"
+   ],
+   "A_B1": [
+    "EASY:20",
+    "EASY:20",
+    "LONG:20"
+   ],
+   "next": [
+    {
+     "label": "week b+1 day 0 plain review",
+     "status": "KEEP",
+     "action": "KEEP",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "question": null,
+     "pending": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete",
+     "b1RunsInForce": [
+      "EASY:50",
+      "QUALITY:34",
+      "LONG:60"
+     ],
+     "singleRunCeiling": 20,
+     "aboveCeilingValid": true,
+     "qualityValid": true,
+     "staleValid": true
+    },
+    {
+     "label": "week b+1 day 0 plain review with the day-6 long run reported",
+     "status": "KEEP",
+     "action": "KEEP",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "question": null,
+     "pending": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete",
+     "b1RunsInForce": [
+      "EASY:50",
+      "QUALITY:34",
+      "LONG:60"
+     ],
+     "singleRunCeiling": 20,
+     "aboveCeilingValid": true,
+     "qualityValid": true,
+     "staleValid": true
+    },
+    {
+     "label": "week b+1 day 0 schedule change (strength days)",
+     "status": "MODIFY",
+     "action": "REARRANGE_FUTURE_WEEKS",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "question": null,
+     "pending": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the athlete removed",
+     "b1RunsInForce": [
+      "EASY:50",
+      "QUALITY:34",
+      "LONG:60"
+     ],
+     "singleRunCeiling": 20,
+     "aboveCeilingValid": true,
+     "qualityValid": true,
+     "staleValid": true
+    }
+   ],
+   "controlEndOfWeekReview": {
+    "status": "MODIFY",
+    "action": "GATED_NEXT_STEP",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "question": null,
+    "pending": null,
+    "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation",
+    "b1": [
+     "EASY:20",
+     "EASY:20",
+     "LONG:20"
+    ]
+   }
+  }
+ ],
+ "summary": [
+  "GEN g=0 RV MISS :: week b+1 day 0 plain review :: [\"EASY:45\",\"EASY:45\",\"LONG:55\"]",
+  "GEN g=0 RV MISS :: week b+1 day 0 plain review with the day-6 long run reported :: [\"EASY:45\",\"EASY:45\",\"LONG:55\"]",
+  "GEN g=0 RV MISS :: week b+1 day 0 schedule change (strength days) :: [\"EASY:45\",\"EASY:45\",\"LONG:55\"]",
+  "GEN g=0 NR MISS :: week b+1 day 0 plain review :: [\"EASY:45\",\"EASY:45\",\"LONG:60\"]",
+  "GEN g=0 NR MISS :: week b+1 day 0 plain review with the day-6 long run reported :: [\"EASY:45\",\"EASY:45\",\"LONG:60\"]",
+  "GEN g=0 NR MISS :: week b+1 day 0 schedule change (strength days) :: [\"EASY:45\",\"EASY:45\",\"LONG:60\"]",
+  "GEN g=2 RV MISS :: week b+1 day 0 plain review :: [\"EASY:50\",\"QUALITY:34\",\"LONG:55\"]",
+  "GEN g=2 RV MISS :: week b+1 day 0 plain review with the day-6 long run reported :: [\"EASY:50\",\"QUALITY:34\",\"LONG:55\"]",
+  "GEN g=2 RV MISS :: week b+1 day 0 schedule change (strength days) :: [\"EASY:50\",\"QUALITY:34\",\"LONG:55\"]",
+  "GEN g=2 NR MISS :: week b+1 day 0 plain review :: [\"EASY:50\",\"QUALITY:34\",\"LONG:60\"]",
+  "GEN g=2 NR MISS :: week b+1 day 0 plain review with the day-6 long run reported :: [\"EASY:50\",\"QUALITY:34\",\"LONG:60\"]",
+  "GEN g=2 NR MISS :: week b+1 day 0 schedule change (strength days) :: [\"EASY:50\",\"QUALITY:34\",\"LONG:60\"]"
+ ]
+}

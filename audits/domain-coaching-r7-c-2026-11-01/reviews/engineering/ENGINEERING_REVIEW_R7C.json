@@ -1,0 +1,382 @@
+{
+ "review": "R7C-ENGINEERING-REVIEW-1",
+ "mission": "DOMAIN_COACHING_R7-C Phase 5",
+ "date": "2026-11-02",
+ "judge": {
+  "role": "quality-reliability-engineer",
+  "constitutionVersion": "1.3.0",
+  "model": "claude-opus-5-5",
+  "effort": "xhigh",
+  "independence": "Fresh instance. Did not author the runtime, its fixes, its tests, its probes or its evidence. Did not read the SSCTR final recheck (committed as 747518b during this review) before writing this verdict.",
+  "request": "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/REVIEW_REQUEST.md"
+ },
+ "freeze": {
+  "revision": "R7C-FREEZE-1",
+  "record": "CoachingCore/r7/c/RUNTIME_FREEZE_R7C_1.json",
+  "recordSha256": "1b38a2b5c8c142c77ca178d4bdb6412fb227bf0c4771dc1748f4177735956747",
+  "commit": "1890f66356455112907d757032a8b1cd2de29c00",
+  "sourceDigest": "29bf25327cfedf57add2ed7f4c4e6439ee20c2e6c72add50fa4def5f23bf4b6f",
+  "manifestDigest": "0362faa76f21269b9dbcce469c29338b0717c2ee9030b98c588cf944313b813e",
+  "files": 138,
+  "tests": 848,
+  "runtimeSha256": {
+   "CoachingCore/src/r6-adaptation.mjs": "8b189617fe2c8ca01b01472225ac35411e160ec474a5be6ca965cf6ff1fa1587",
+   "CoachingCore/src/r6-composition.mjs": "2a4c47e8775773182d77e90938db92184917c4954f256d4e83c1b965124cb7ce"
+  },
+  "runtimeUnchangedSince": "e1a4ef4 (the bytes of SSCTR-SD-R7C-r2); tests unchanged since 738928b",
+  "predecessor": {
+   "revision": "R7B2-FREEZE-1",
+   "commit": "1a1c728",
+   "tests": 799
+  },
+  "worktreeHead": {
+   "atStart": "f96041fad418fa4f7dd68472ad626672426eb143",
+   "atEnd": "747518b0db9a8e01a2227cce096ec9c969000e69",
+   "betweenThem": "one commit adding only reviews/ssctr/SSCTR_FINAL_RECHECK_R7C.* and reviews/ssctr/probes/final/*; git diff f96041f 747518b -- CoachingCore is empty"
+  },
+  "verifierBefore": {
+   "command": "node CoachingCore/scripts/verify-r7c.mjs --suite",
+   "ran": "2026-11-02T04:45:22.364Z",
+   "result": "PASS",
+   "checks": "12/12",
+   "suite": {
+    "tests": 848,
+    "pass": 848,
+    "fail": 0
+   },
+   "output": "probes/out/verify-before.json"
+  },
+  "verifierAfter": {
+   "command": "node CoachingCore/scripts/verify-r7c.mjs --suite",
+   "ran": "2026-11-02T05:08:15.923Z",
+   "result": "PASS",
+   "checks": "12/12",
+   "suite": {
+    "tests": 848,
+    "pass": 848,
+    "fail": 0
+   },
+   "output": "probes/out/verify-after.json"
+  }
+ },
+ "verdict": "NOT_READY",
+ "gateLine": "R7C_ENGINEERING_GATE = NOT_READY",
+ "verdictBasis": "Two blockers caused directly by the R7-C delta. In each, a projection stored while training was unknown, credited against a known multi-week stop, is kept and validated as the plan in force. The predecessor gives the correct plan on the same timelines. One narrow correction cycle is permitted and both blockers qualify for it.",
+ "items": [
+  {
+   "item": "Current actionable horizon",
+   "answer": "FAIL",
+   "evidence": "Direct answers PASS. The 48-cell metamorphic test passes in the suite, and the committed SD grid (1,200 cells) reproduces byte-identically (probes/out/rerun-adversarial-sd.json). It FAILS when the answer reached the record through a decision that did not apply it (QE-R7C-01): the answer week's sessions still ahead then keep the stale projection."
+  },
+  {
+   "item": "Projection vs fact (incl. R1 / SSCTR-SD5-01)",
+   "answer": "FAIL",
+   "evidence": "QE-R7C-01: after an R4 HOLD, a handler clinical route or a clinical return that recorded the answer, the next decision keeps the stored projection as VALID. QE-R7C-02: the R1 projection of week b+1 becomes the current week as VALID at the first decision of week b+1 when the answer week's own review is skipped. It is then above the single-run ceiling of the known facts."
+  },
+  {
+   "item": "Pending lifecycle",
+   "answer": "PARTIAL",
+   "evidence": "PASS: the question raised, repeated verbatim (probes/out/qe-e4.json), kept beside an independent change, partially answered, answered with the pending state cleared, and consumed. FAIL: a held signal is dropped when a change is kept beside the question (QE-R7C-03). Dropping a held signal at the week boundary is by design, but its guard is untested (QE-R7C-04)."
+  },
+  {
+   "item": "Replay",
+   "answer": "PASS_WITH_TEST_GAP",
+   "evidence": "replayHeld re-evaluates the held signal once, with its own handler, on the factual ctx, and the decision consumes it (pending null). A replayed handler that returns a pending status keeps the signal, and nothing has been applied by then. The week guard in heldSignal is reachable and correct, but no test kills its removal (QM-2, QE-R7C-04)."
+  },
+  {
+   "item": "Deterministic answer processing",
+   "answer": "FAIL",
+   "evidence": "PASS: the same review gives the same hash (suite and qe-e4). FAIL: the outcome for the same facts depends on which decision recorded the answer. Recorded and applied gives the entry; recorded by an R4 HOLD or a clinical route gives the stale projection, even when re-sent (QE-R7C-01). MINOR: a partial executed answer plans conservatively and converges at the week review (QE-R7C-05)."
+  },
+  {
+   "item": "Plan validity",
+   "answer": "PASS_STRUCTURAL",
+   "evidence": "withReference sets VALID exactly when pending is null, and this held on every decision in qe-e4. In QE-R7C-01 and QE-R7C-02, however, pending is null while the plan in force still depends on the stale projection."
+  },
+  {
+   "item": "No stale dose after reconciliation (known stop, mixed, taper, race week)",
+   "answer": "FAIL",
+   "evidence": "PASS for answers applied directly, including taper and race week (suite; SD grid). FAIL in race week through R4: RACE_TOUCH 25 is VALID after an 11-week known stop, where the on-time plan is EASY 15 (QE-R7C-01)."
+  },
+  {
+   "item": "Evidence preservation",
+   "answer": "FAIL",
+   "evidence": "The answer's own adverse responses are applied (SD-03 adverse test). A held SYSTEMIC_FATIGUE is silently dropped by a change kept beside the question, so the plain-review answer that C3 prescribes no longer re-evaluates it. QUALITY 34 stays where the on-time plan removes it (QE-R7C-03). This path is not the recorded SSCTR-SD5-02 residual."
+  },
+  {
+   "item": "Clinical priority",
+   "answer": "PASS",
+   "evidence": "72/72 grid cells (9 decision kinds, open gap or held signal, with or without the answer, MISS and EXEC) give CLINICAL_HUMAN_REQUIRED with no proposal, no question, a pending CLINICAL state and no held signal (probes/out/qe-e4.json). The suite includes r7b2-clinical-precedence. In code, the clinical route is computed before the gap and wins in decision0, and withReference never carries a signal through a clinical route. The b2-copy K6/K6b/inventory probes were read, not re-run."
+  },
+  {
+   "item": "Consent and revocation (G02)",
+   "answer": "PASS",
+   "evidence": "learnedMaintenance returns null unless consent is true, model.purposeAllowed holds and the authority allows R6-PARTIAL-NOISY-LEARNING. updateLearningModel with purposeAllowed false empties observations (r6-learning.mjs:19). The G02 adversarial probe was re-run byte-identically (PASS), and the suite has the G02 and P3-05 tests."
+  },
+  {
+   "item": "History immutability",
+   "answer": "PASS",
+   "evidence": "Every proposal passes immutabilityErrors and validateWeeks against the sessions not ahead. The past() assertions in the r7c-phase5 metamorphic tests and the SD grid's H1 (re-run, 0 violations) hold. No probe here changed a past prescription."
+  },
+  {
+   "item": "Tests",
+   "answer": "PASS",
+   "evidence": "848/848, both before and after this review. The legacy split was read: each KNOWN_MISS variant keeps its original assertions verbatim, and the UNREPORTED and ANSWERED variants follow SSCTR-SD-R7C-r2. The directed tests miss QE-R7C-01..04."
+  },
+  {
+   "item": "Mutation",
+   "answer": "PASS_WITH_GAP",
+   "evidence": "The committed output was read: Phase 3 17/18 (G02-M4 equivalent, witness killed), Phase 4 8/8, SD 6/6. On an isolated copy, QM-1 (= SD-M1) and QM-4 are killed and QM-2 survives (QE-R7C-04). phase5-mutation.mjs was not re-run, as the rules require."
+  }
+ ],
+ "findings": [
+  {
+   "id": "QE-R7C-01",
+   "severity": "BLOCKER",
+   "title": "An answer recorded by a decision that does not apply it is never applied afterwards; the stale projection is then kept as VALID",
+   "origin": "Introduced by R7-C. gapAnsweredBy, added in Phase 5, detects an answer only as a transition from the review's carried record to the same review's own reports. The decisions that record without re-planning are pre-existing: the R4 HOLD (an exception in the last-week SCHEDULE_CHANGE handler) and the handler clinical routes (EXERCISE_SUBSTITUTION with pain; a clinical RETURN_AFTER_PAUSE), which record the review's evidence (B.2 QE-R7B1-04).",
+   "directR7CDelta": true,
+   "whyDelta": "On R7B2-FREEZE-1 the same timelines give the correct plan, with 0 stale cells (probes/out/qe-e1.on-R7B2-FREEZE-1.json). On R7C-FREEZE-1 there are 16 stale cells (probes/out/qe-e1.json). The stale credited projection only exists because R7-C asks instead of planning, and only R7-C's answer path is meant to remove it.",
+   "reproduction": {
+    "probe": "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/qe-e1-answer-in-carried-record.mjs",
+    "command": "node audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/qe-e1-answer-in-carried-record.mjs",
+    "predecessor": "QE_CC=<git archive 1a1c728>/CoachingCore/ node <same probe>",
+    "output": "probes/out/qe-e1.json (sha256 de36f8fc…e7e0, deterministic over 2 runs)"
+   },
+   "cases": [
+    {
+     "case": "R4, R10K race week (the program's last week), gap from week 0 or 2, RV or NR, known stop",
+     "carrier": "SCHEDULE_CHANGE on day 2 with the answer: HOLD ('Malformed review facts: Cannot read properties of undefined'), answer recorded",
+     "next": "plain review on day 3, with or without the answer re-sent: KEEP, VALID, runs ahead RACE_TOUCH 25 + RACE 75",
+     "onTime": "EASY 15 + RACE 75",
+     "predecessor": "EASY 15 + RACE 75"
+    },
+    {
+     "case": "Handler clinical route, GEN week 7, gap from week 0 or 2, known stop",
+     "carrier": "EXERCISE_SUBSTITUTION with pain on day 2 with the answer: CLINICAL_HUMAN_REQUIRED, answer recorded",
+     "next": "after qualified clearance (no clinical reference state), day 3: a plain review gives KEEP, VALID, QUALITY 34 / LONG 60, and so does a plain review with the answer re-sent as C3 prescribes. SYSTEMIC_FATIGUE reduces from the stale week (EASY 34 / LONG 60)",
+     "onTime": "EASY 15 / LONG 15",
+     "predecessor": "EASY 15 / LONG 15",
+     "control": "the same answer under an eligibility clinical flag (not recorded, R5), re-sent after clearance: REPLAN_FROM_EVIDENCE, EASY 15 / LONG 15"
+    },
+    {
+     "case": "Clinical return report (ILLNESS) carrying the answer, GEN week 7",
+     "next": "after clearance, KEEP, VALID, QUALITY 34 / LONG 60, with or without the answer re-sent",
+     "predecessor": "EASY 15 / LONG 15"
+    }
+   ],
+   "expected": "Once the canonical facts make the window known, the run doses still ahead follow those facts, whichever decision carried the reports (Founder list: projection vs fact; deterministic, batch-independent answer processing; no stale dose in race week). SSCTR-SD-R7C-r2's own criterion is that no VALID known-stop cell plans a run above the entry, or any quality or race touch.",
+   "actual": "The stored projection stays in force as VALID until the next end-of-week review composes the following week. In the last week no such review comes: the final-week review is KEEP.",
+   "disclosureImpact": "Three disclosures are inaccurate. R4 says 'recorded, not applied until the next review': the next review does not apply it. R5/C3 say 'kept and re-sent ... after qualified clearance': a re-send does not re-plan once a handler clinical route has recorded the answer. The SD grid classifies the 24 R4 HOLD cells and stops (phase5-adversarial-sd.mjs:76), so it never checks the decision after the HOLD.",
+   "smallestFix": "Make the trigger depend on state, not on a transition. Re-plan week w from the facts (as factualReplan does) whenever the stored run doses ahead were composed while the window was unknown and the canonical facts now make it known, whichever decision recorded the reports. One way: compare against the record as the decision that composed week w's run start saw it, not against the review's carried record; this needs a received-at reference per report or per composing decision. Add directed tests for the R4 HOLD followed by a plain review, and for a handler clinical route or clinical return followed by clearance, with and without the re-send. Policy, catalog and the clinical routes are untouched."
+  },
+  {
+   "id": "QE-R7C-02",
+   "severity": "BLOCKER",
+   "title": "R1 is not cured by 'the first decision of the next week'; the stale week b+1 becomes the current week as VALID, above the single-run ceiling",
+   "origin": "Introduced by R7-C. Phase 5's factualReplan re-projects week b+1 counting an answer-week session that elapsed before the answer, with no report, as executed at its stale prescription (R1). The mechanism by which a conditional week b+1 becomes current under a KEEP when week b's review is skipped is pre-existing.",
+   "directR7CDelta": true,
+   "whyDelta": "On R7B2-FREEZE-1 the same timelines give 15/15/15 or 20/20/20, within the ceiling (probes/out/qe-e3b.on-R7B2-FREEZE-1.json: 0 stale cells). On R7C-FREEZE-1 there are 12 stale cells (probes/out/qe-e3b.json).",
+   "reproduction": {
+    "probe": "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/qe-e3b-r1-first-decision-next-week.mjs",
+    "command": "node audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/qe-e3b-r1-first-decision-next-week.mjs",
+    "output": "probes/out/qe-e3b.json (sha256 d04e7db6…909c, deterministic over 2 runs)",
+    "companion": "probes/qe-e3-r1-next-week-projection.mjs → probes/out/qe-e3.json (R1 magnitude and provenance)"
+   },
+   "timeline": "GEN, gap from week 0 or 2, RV or NR, known stop. The answer comes on day 2 of week 7; the day-1 EASY 50/55 elapsed with no report. The day-3 run is reported executed on day 4 (KEEP). Week 7's own review is skipped. The first decision of week 8 is on day 0: a plain review, a plain review with the day-6 long run reported, or a SCHEDULE_CHANGE.",
+   "expected": "C9 (binding, in the freeze record and the handoff) says the projection is not presented 'until a decision re-plans it: the answer week's review, or the first decision of the next week'. SSCTR-SD-R7C-r2 accepted R1 because 'the next decision always cures it before any stale session is due (168 + 16 cells, 0 ceiling breaches)'. The policy run.singleRunCeiling for the first planned week is the longest completed run in 30 days + 5 min = 20.",
+   "actual": "Every first decision of week 8 is VALID with week 8 in force at EASY 45/45/LONG 55 (g0 RV), EASY 45/45/LONG 60 (g0 NR), EASY 50/QUALITY 34/LONG 55 (g2 RV) or EASY 50/QUALITY 34/LONG 60 (g2 NR). A plain review and a plain review with the long run reported give KEEP; a schedule change gives MODIFY. The on-time path gives 20/20/20. Only week 7's own review cures it (control: 20/20/20). The measured magnitude also exceeds the C7 disclosure, which says up to LONG 55: LONG 60 appears in NR.",
+   "smallestFix": "C9's Engineering item, brought into this cycle. When the answer's factual re-plan leaves answer-week sessions elapsed with no report, do not count them as executed when re-projecting later weeks (read them as unknown). Alternatively, have the first decision of week b+1 re-plan a start that was projected conditionally over them. Add C9's directed test pinning week b+1 after a day-2 known-stop answer, plus the case where the first decision of week b+1 comes with week b's review skipped. If the engine is not changed, C9 must be narrowed to 'only the answer week's own review', and the SSCTR must re-dispose R1, because its premise is falsified here."
+  },
+  {
+   "id": "QE-R7C-03",
+   "severity": "MAJOR",
+   "title": "A held reactive signal is silently dropped when a change is kept beside the still-open question",
+   "origin": "Introduced by R7-C. In withReference, the signal carry is gated on pendingStatus (ASK/HOLD/UNSUPPORTED/CLINICAL) and excludes the 'carried' path (a REQUIRES_RECONCILIATION change kept beside the question by heldByRunGap).",
+   "directR7CDelta": true,
+   "reproduction": {
+    "probe": "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/qe-e2-held-signal-lifecycle.mjs",
+    "command": "node audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/qe-e2-held-signal-lifecycle.mjs",
+    "output": "probes/out/qe-e2.json (sha256 4e5f9e7d…8626)"
+   },
+   "expected": "The held SYSTEMIC_FATIGUE travels with the question until a decision re-evaluates it (Founder list: evidence preservation; C3's consumer route depends on referenceState.pending.signal being present).",
+   "actual": "Day 0: SYSTEMIC_FATIGUE is held (pending.signal SYSTEMIC_FATIGUE). Day 1: an UNAVAILABLE_DAY strength-only change is kept (REQUIRES_RECONCILIATION; pending.eventKind UNAVAILABLE_DAY; signal gone). Day 2: a plain review answers (REPLAN_FROM_EVIDENCE) and the fatigue is never re-evaluated. EXEC: B keeps QUALITY 34 / LONG 60; on time is EASY 34 / LONG 60. The consumer gets no sign of the drop.",
+   "smallestFix": "Change one condition in withReference: carry the prior signal also on the carried path, i.e. `if(pending&&(pendingStatus||carried)&&!clinicalSticky&&result.status!=='CLINICAL_HUMAN_REQUIRED')`. This was checked on an isolated copy and is not repository authority: all 62 directed and clinical tests pass (probes/out/qe-mutation.json, QM-3), and E2(a) then equals the on-time plan for MISS and EXEC (probes/out/qe-e2.on-QM-3-copy.json). Add a directed test. If the fix is not taken, extend C3/C8 to this path and disclose it under C7.",
+   "routing": "Include it in the correction cycle for QE-R7C-01/02: same file, one line."
+  },
+  {
+   "id": "QE-R7C-04",
+   "severity": "MINOR",
+   "title": "The held-signal week guard (heldSignal weekIndex === w) is reachable but untested",
+   "origin": "R7-C Phase 5 tests.",
+   "directR7CDelta": true,
+   "reproduction": {
+    "probe": "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/qe-mutation.mjs (QM-2) and qe-e2b-signal-week-boundary.mjs",
+    "command": "node .../probes/qe-mutation.mjs <isolated copy>/CoachingCore; node .../probes/qe-e2b-signal-week-boundary.mjs (and with QE_CC=<QM-2 copy>)",
+    "output": "probes/out/qe-mutation.json; probes/out/qe-e2b.json; probes/out/qe-e2b.on-QM-2-copy.json"
+   },
+   "expected": "A test fails when the guard is removed.",
+   "actual": "QM-2 survives all 62 directed and clinical tests. Under QM-2, a fatigue held at the end of week 7 is replayed by week 8's first plain review (REDUCE); the freeze correctly does not replay it.",
+   "smallestFix": "Add a directed test: the signal is held at the end of week b, and the answer comes in week b+1's first plain review; the signal must not be replayed."
+  },
+  {
+   "id": "QE-R7C-05",
+   "severity": "MINOR",
+   "title": "A partial executed answer followed by the rest gives a different, more conservative answer week than one batch",
+   "origin": "Introduced by R7-C, from the accepted 'a run that anchors it' semantics combined with the pre-existing R7-A rule that late new facts do not re-plan mid-week.",
+   "directR7CDelta": true,
+   "reproduction": {
+    "probe": "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/qe-e4-lifecycle-clinical-determinism.mjs",
+    "command": "node audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/qe-e4-lifecycle-clinical-determinism.mjs",
+    "output": "probes/out/qe-e4.json (checks 'EXEC batch independence …' FAIL)"
+   },
+   "expected": "Answer processing does not depend on how the answer is batched.",
+   "actual": "GEN g=0, EXEC. One batch on day 2 gives QUALITY 34 / LONG 60 ahead. Half on day 0 (it anchors: re-plan from partial facts) and the rest on day 2 (late facts: KEEP) gives EASY 45 / LONG 50 ahead. The direction is conservative, and both paths converge at the week-7 review (week 8 EASY 50 / QUALITY 41 / LONG 70). MISS batches are independent.",
+   "smallestFix": "Disclose under C7. A state-based fix of QE-R7C-01 that re-plans whenever the canonical facts move week w's planning view would also remove this."
+  },
+  {
+   "id": "QE-R7C-06",
+   "severity": "OBSERVATION",
+   "title": "The R7C-FREEZE-1 manifest does not bind CoachingCore/package.json and package-lock.json",
+   "origin": "R7-C freeze tooling (scripts/freeze-r7c.mjs), not the runtime. R7B2-FREEZE-1 bound both files.",
+   "directR7CDelta": false,
+   "reproduction": {
+    "command": "node -e \"const r=require('./CoachingCore/r7/c/RUNTIME_FREEZE_R7C_1.json');console.log(Object.keys(r.files).filter(k=>k.includes('package')))\"",
+    "output": "[] (R7B2 record: package.json, package-lock.json)"
+   },
+   "actual": "Both files are unchanged since 1a1c728 (git diff empty), so no risk today. The verifier's suite check relies on them (node --test with ajv).",
+   "smallestFix": "Bind both files in the next freeze record."
+  }
+ ],
+ "preExistingRecordedNotBlocking": [
+  "R4 (SCHEDULE_CHANGE in the last week throws and returns HOLD): identical on R7B2-FREEZE-1. It is the carrier of QE-R7C-01, whose consequence is new.",
+  "R5 (an eligibility clinical exit returns before the reports are read): identical, and it fails closed. Here a re-send after clearance does work (the QE-R7C-01 control).",
+  "Skipped-review conditional projections becoming current under a mid-week KEEP: pre-existing. QE-R7C-02 is the R7-C-made-worse instance.",
+  "HISTORY = STALE_PROJECTION (historicalStateOf run.long in never-reviewed weeks): observation carried from Phase 3, not re-judged."
+ ],
+ "reproducedEvidence": [
+  {
+   "what": "SD answer grid (committed probe, stdout only)",
+   "command": "node audits/domain-coaching-r7-c-2026-11-01/probes/phase5-adversarial-sd.mjs",
+   "result": "identical to probes/out/adversarial-sd.R7C-P5-f69ddbb.json except clock fields; A 1,200 cells, 0 violations; C 9/0; S 6/0; I 4/0",
+   "output": "probes/out/rerun-adversarial-sd.json"
+  },
+  {
+   "what": "SD-01 reproduction",
+   "command": "node audits/domain-coaching-r7-c-2026-11-01/probes/phase4-verify-sd01.mjs",
+   "result": "identical to the committed output",
+   "output": "probes/out/rerun-verify-sd01.json"
+  },
+  {
+   "what": "G01 grids",
+   "command": "node audits/domain-coaching-r7-c-2026-11-01/probes/phase4-adversarial-g01.mjs",
+   "result": "identical to the committed output",
+   "output": "probes/out/rerun-adversarial-g01.json"
+  },
+  {
+   "what": "G02 adversarial",
+   "command": "node audits/domain-coaching-r7-c-2026-11-01/probes/phase3-adversarial-g02.mjs",
+   "result": "identical to the committed output, PASS",
+   "output": "probes/out/rerun-adversarial-g02.json"
+  },
+  {
+   "what": "Full suite",
+   "command": "node CoachingCore/scripts/verify-r7c.mjs --suite (before and after)",
+   "result": "848/848 both times"
+  }
+ ],
+ "probes": [
+  {
+   "path": "probes/qe-lib.mjs",
+   "sha256": "e003a3aac92b413b1e9a9bc34e4c426ac55a2c7aa3f4ecaf402f64ec45c21384",
+   "purpose": "shared timelines (A, B, A*-like), predicates, the policy single-run ceiling; QE_CC switches the runtime root (predecessor or mutant copies)"
+  },
+  {
+   "path": "probes/qe-e1-answer-in-carried-record.mjs",
+   "sha256": "83561f008a4052dbdf09df6b04789126ca35d9285daaf9701457e45fcca86732",
+   "outputs": {
+    "probes/out/qe-e1.json": "de36f8fc0e4e4accb253d02ab76b9c687e98145dfc1a1f8aa203053d7ce4e7e0",
+    "probes/out/qe-e1.on-R7B2-FREEZE-1.json": "e10732815a5be6ab7eaa91f5d48de0218c24ef80f5b27adf5083b3928089aacd"
+   },
+   "finding": "QE-R7C-01"
+  },
+  {
+   "path": "probes/qe-e2-held-signal-lifecycle.mjs",
+   "sha256": "045df7655a760f01a45faf78508e720c04af47bcf5452fe8fda28ff494ef25e0",
+   "outputs": {
+    "probes/out/qe-e2.json": "4e5f9e7db60a341f138b1146bc0824d3913cf9bfa3745e946040b2857c5e8626",
+    "probes/out/qe-e2.on-QM-3-copy.json": "bd3f1210e359de04142eb4e09010c415b8c6d38245cf3bcd614f40e9c7669fe9"
+   },
+   "finding": "QE-R7C-03"
+  },
+  {
+   "path": "probes/qe-e2b-signal-week-boundary.mjs",
+   "sha256": "0af7e63a781d9667cdc581df6b6b4d4728a4d0146b4ef40842e24c0d1136db2d",
+   "outputs": {
+    "probes/out/qe-e2b.json": "3ef1ec9a46a3c28a2f9bee22fd9badd1007c9bc8743a573cc3a3e03081c5c150",
+    "probes/out/qe-e2b.on-QM-2-copy.json": "62f1eee39d6ceba6f1bcb45c9edc764e4b0ff5af5dace40b81e8404ce25cfd28"
+   },
+   "finding": "QE-R7C-04"
+  },
+  {
+   "path": "probes/qe-e3-r1-next-week-projection.mjs",
+   "sha256": "3ac3f2ef69575aba044970be1398d1c13c3a199d7cb64fd1b0275e300e1b29cd",
+   "outputs": {
+    "probes/out/qe-e3.json": "9d5a900b712a0ef3b25eaeecaf7be364959f8471ad1db099143d65e43a3ac248",
+    "probes/out/qe-e3.on-R7B2-FREEZE-1.json": "9aa36034c2ee920acdc97268a256e68cb0f4d925a761d0d4b64c41ad3b0c36f7"
+   },
+   "finding": "R1 magnitude (QE-R7C-02 companion)"
+  },
+  {
+   "path": "probes/qe-e3b-r1-first-decision-next-week.mjs",
+   "sha256": "0dcd09ac01d3ed75313bb1aeb8c071c7d3508d31f3f11c6662893c637987ea76",
+   "outputs": {
+    "probes/out/qe-e3b.json": "d04e7db682a31e7899a9af7bfcbe0728719254066957ced9f9fd3c8dce64909c",
+    "probes/out/qe-e3b.on-R7B2-FREEZE-1.json": "850185167672c13887c90571e44efb8579db00279cf360090840d6ab8f626814"
+   },
+   "finding": "QE-R7C-02"
+  },
+  {
+   "path": "probes/qe-e4-lifecycle-clinical-determinism.mjs",
+   "sha256": "465f71a0c369789f40be1f82f90d43f29683cffe5ceb6ba53bf571a992d82ef3",
+   "outputs": {
+    "probes/out/qe-e4.json": "5f803ad76f8b16646f2edf26cb9ae2d70d378a20cd259a53b1f6c7198ed69afc"
+   },
+   "finding": "QE-R7C-05; clinical-first 72/72; verbatim; determinism; validity"
+  },
+  {
+   "path": "probes/qe-mutation.mjs",
+   "sha256": "557e2bc6f23360ee86f12cbf3b947fb195e36408801d4c53e074c042239bd21e",
+   "outputs": {
+    "probes/out/qe-mutation.json": "ca944cbb7b2b74dc123b963d7511904217596309ec326623cd7bc2b12ac8679b"
+   },
+   "result": "baseline 62/62; QM-1 KILLED (12 fail); QM-2 SURVIVED; QM-3 (candidate fix) 62/62; QM-4 KILLED (3 fail); source restored (sha256 8b189617…1587 before and after)",
+   "finding": "QE-R7C-04 (QM-2), QE-R7C-03 fix compatibility (QM-3); QM-1 reproduces SD-M1"
+  }
+ ],
+ "determinism": "Every qe-e* probe was run twice with byte-identical outputs.",
+ "isolation": "The predecessor and mutant runs used git archive copies (1a1c728 and 1890f66: CoachingCore plus the B0 review records, with node_modules copied) in the session scratchpad. The repository was never edited outside this folder, and git status shows only this folder untracked. The mutant copy's r6-adaptation.mjs was restored and re-hashed after the run.",
+ "notVerified": [
+  "The b2-copy clinical probes (K6, K6b, inventory, inherited adversarial 3,228), the neighbors/differential/conformance scripts and the holdout were read from the evidence manifest, not re-run.",
+  "phase5-run-evidence.mjs and phase5-mutation.mjs were not re-run, as the rules require.",
+  "Clinical clearance has no runtime API. The QE-R7C-01 clinical cases model it as the client continuing with the carried record and no clinical reference state; the R4 cases need no such assumption.",
+  "Schema validation of decisions against SHADOW_DECISION_SCHEMA.json was not run separately; the suite's schema tests pass.",
+  "Real-client behaviour and consumer compliance with C2/C3/C8/C9."
+ ],
+ "correctionCycle": {
+  "eligible": [
+   "QE-R7C-01",
+   "QE-R7C-02"
+  ],
+  "recommendedInSameCycle": [
+   "QE-R7C-03 (one line, verified test-compatible on a copy)",
+   "QE-R7C-04 (one directed test)"
+  ],
+  "disclose": [
+   "QE-R7C-05",
+   "QE-R7C-06"
+  ],
+  "afterFix": "directed tests per finding; the full suite (the runtime changes); R7C-FREEZE-2; Engineering narrow recheck of QE-R7C-01..04; SSCTR recheck of R1/C9 (premise falsified by QE-R7C-02) and of the answer path",
+  "escalation": "No product, policy or clinical decision is needed for the fixes: they are runtime-only, inside the accepted semantics, and leave policy and catalog untouched. The SSCTR must see the falsified R1 premise."
+ }
+}
