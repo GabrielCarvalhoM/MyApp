@@ -1104,3 +1104,11 @@ Overlays revised to r2; r1 bytes are kept in the audit. R6 is untouched. No impl
 
 <!-- DCR7C-20261102-phase6-r1 -->
 2026-11-02 · DOMAIN_COACHING_R7-C — Longitudinal Coaching, Phase 6 (QE-R7C-07) **CLOSED NOT_READY**. The recorded-answer re-plan (`answeredOnRecord`): reports already in the record re-plan the answer week from the facts whichever decision recorded them, no re-send, no new schema; recorder independence 0/160 (FREEZE-2 72/160). Five closed state-model tests' P51 fixture pinned as EXPECTED_SEMANTIC_UPDATE (fixture only, no assertion changed). R7C-FREEZE-3 (`08c6db3`, 163 files, 866/866, verifier 20/20): SD, SD-01, G02 identical to FREEZE-2; G01 0 violations (8 rows, 4 verdicts); differential vs FREEZE-2 120/120; mutation 17/18 plus the equivalent, 8/8, 6/6, CC 9/9, P6 7/7. Engineering = NOT_READY on QE-R7C-10 (BLOCKER, DIRECT_R7C_DELTA): shortened executed answers still recorder-dependent, stale projection VALID in 28/280 cells (FREEZE-2 224, R7B2 0); QE-R7C-11/12 minor, -13/14 observations. SSCTR-P6-R7C-r5 = ACCEPT_WITH_CONDITIONS (P6-F01 same cause; C3 r5, C7 r5, C9 r5 note, C11 new; the C3 narrowing conflict routed). No correction loop. D1 ACCEPTABLE_RESIDUAL; V1_COACHING_AUTHORITY_READY = NO. Policy, catalog, queue (230), product and canon unchanged; nothing merged or pushed. Next: QE-R7C-10 first, on a new Founder authorization; R7-D not started. Checkpoint: `audits/domain-coaching-r7-c-2026-11-01/PHASE6_CHECKPOINT.md`.
+
+<!-- DCR7C-20261102-phase7-r1 -->
+2026-11-02 · DOMAIN_COACHING_R7-C — Longitudinal Coaching, Phase 7 (QE-R7C-10) **CLOSED READY**; R7C_STATUS = CLOSED_READY.
+- **Fix:** whether an earlier review read a run is taken from the canonical record (`provenance.firstRecordedAt`, runtime-written evidence visibility) and that review's clock, never from its gate.
+- **R7C-FREEZE-4:** `a9654c8`, 884/884, verifier 27/27.
+- **Evidence:** recorder independence 0/160, shortened 0/280, P6-F01 0/768, CC2 0/1,200.
+- **Gates:** Engineering READY_WITH_CONDITIONS; SSCTR-P7-R7C-r6 (with addendum) ACCEPT_WITH_CONDITIONS, one final C3, C11 generalized; no blocker.
+- **Status:** V1 authority NO. R7-D not started. [Checkpoint](audits/domain-coaching-r7-c-2026-11-01/PHASE7_CHECKPOINT.md).

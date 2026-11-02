@@ -1074,3 +1074,31 @@ Same branch and worktree, from `9863732` / R7C-FREEZE-2 (`a10cec0`); nothing mer
   3. then a new freeze and the gates.
 
   R7-D not started. [Checkpoint](audits/domain-coaching-r7-c-2026-11-01/PHASE6_CHECKPOINT.md).
+
+<!-- DOMAIN_COACHING_R7C: DCR7C-20261102-phase7-r1 -->
+## DOMAIN_COACHING_R7-C — Longitudinal Coaching — Phase 7 CLOSED READY / 2026-11-02
+
+A direct Founder request authorizes **R7-C Phase 7 only**: close QE-R7C-10 (answers executed below the prescribed dose were still applied or not depending on which decision recorded them; SSCTR P6-F01 the same cause). The phase includes directed tests, the full suite, `R7C-FREEZE-4`, the Engineering gate and the SSCTR narrow recheck with one final C3, and no correction loop.
+
+Same branch and worktree, from `8699cba` / R7C-FREEZE-3 (`08c6db3`); nothing merged or pushed.
+
+- **Status:**
+  - R7C_PHASE7_STATUS = CLOSED_READY; **R7C_STATUS = CLOSED_READY**.
+  - Engineering on R7C-FREEZE-4 = READY_WITH_CONDITIONS (QE-R7C-10 closed; its disclosure corrections made at closure).
+  - SSCTR-P7-R7C-r6 with its addendum = ACCEPT_WITH_CONDITIONS (no blocker; P6-F01 closed; one final C3; C11 generalized).
+  - V1_COACHING_AUTHORITY_READY = NO.
+- **Fix:** whether an earlier review read a run comes from the canonical record and that review's clock, never from its gate:
+  - `provenance.firstRecordedAt`: runtime-written evidence visibility, no dose, no authority;
+  - `unreadRunReports`, deciding per report;
+  - reports without the clock keep the R7C-FREEZE-3 reading (disclosed; C3).
+- **R7C-FREEZE-4:** `a9654c8`, record sha `bf99c01b…2fc2`, source `16d0633e…69c1`, manifest `61937f87…f6b8`, 197 files, 884/884; verifier `verify-r7c.mjs --revision 4` 27/27.
+- **Evidence:**
+  - recorder independence 0/160; shortened 0/280 (FREEZE-3 28); P6-F01 mixed scope 0/768 (16); CC2 0/1,200 (18); 1,536 trajectories with no stale valid plan;
+  - differential against FREEZE-3 128/128;
+  - mutation F7-M1..M11 11/11, each by its own witness.
+- **Non-blocking, routed:**
+  - QE-R7C-15 (records without the clock), QE-R7C-16 (C11), QE-R7C-17, QE-R7C-18;
+  - SSCTR P7-F02 to P7-F06;
+  - unchanged and not absorbed: QE-R7C-08/09/11/12/13, CC-F01, C8, C5, the R4 HOLD, C10, D1, G03.
+- **Unchanged:** R6-POLICY-5, R7B0-CATALOG-2, queue (230), `product/`, `canon/`, every closed record, FREEZE-1/2/3.
+- **Next:** R7-D (Fresh Generalization Gate), with its own Founder authorization; not started. [Checkpoint](audits/domain-coaching-r7-c-2026-11-01/PHASE7_CHECKPOINT.md).
