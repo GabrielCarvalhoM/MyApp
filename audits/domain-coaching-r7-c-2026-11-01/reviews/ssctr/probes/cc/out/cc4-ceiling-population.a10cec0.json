@@ -1,0 +1,6883 @@
+{
+ "check": "SSCTR-CC4-CEILING-POPULATION",
+ "runtimes": [
+  "HEAD",
+  "F1"
+ ],
+ "N": {
+  "HEAD": {
+   "cells": 360,
+   "ceilingReplans": 16,
+   "newDose": 0,
+   "overCeilingValid": 80,
+   "vsRef": {
+    "equal": 80,
+    "above": 178,
+    "below": 2,
+    "other": 0
+   },
+   "aboveRef": [
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-01 W=2 PLAIN_D0",
+     "inH": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:45"
+     ],
+     "inRef": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:40"
+     ],
+     "stored": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:45"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-01 W=2 PLAIN_D2",
+     "inH": [
+      "EASY:30",
+      "LONG:45"
+     ],
+     "inRef": [
+      "EASY:30",
+      "LONG:40"
+     ],
+     "stored": [
+      "EASY:30",
+      "LONG:45"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-01 W=2 SCHEDULE_CHANGE",
+     "inH": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:45"
+     ],
+     "inRef": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:40"
+     ],
+     "stored": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:45"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "REF": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-01 W=2 SYSTEMIC_FATIGUE",
+     "inH": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:45"
+     ],
+     "inRef": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:40"
+     ],
+     "stored": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:45"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     },
+     "REF": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-01 W=4 PLAIN_D0",
+     "inH": [
+      "EASY:30",
+      "QUALITY:34",
+      "LONG:45"
+     ],
+     "inRef": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:30"
+     ],
+     "stored": [
+      "EASY:30",
+      "QUALITY:34",
+      "LONG:45"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-01 W=4 PLAIN_D2",
+     "inH": [
+      "QUALITY:34",
+      "LONG:45"
+     ],
+     "inRef": [
+      "EASY:30",
+      "LONG:30"
+     ],
+     "stored": [
+      "QUALITY:34",
+      "LONG:45"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-01 W=4 SYSTEMIC_FATIGUE",
+     "inH": [
+      "EASY:30",
+      "EASY:34",
+      "LONG:45"
+     ],
+     "inRef": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:30"
+     ],
+     "stored": [
+      "EASY:30",
+      "QUALITY:34",
+      "LONG:45"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     },
+     "REF": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-02 W=2 PLAIN_D0",
+     "inH": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:45"
+     ],
+     "inRef": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:40"
+     ],
+     "stored": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:45"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-02 W=2 PLAIN_D2",
+     "inH": [
+      "EASY:30",
+      "LONG:45"
+     ],
+     "inRef": [
+      "EASY:30",
+      "LONG:40"
+     ],
+     "stored": [
+      "EASY:30",
+      "LONG:45"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-02 W=2 SCHEDULE_CHANGE",
+     "inH": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:45"
+     ],
+     "inRef": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:40"
+     ],
+     "stored": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:45"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "REF": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-02 W=2 SYSTEMIC_FATIGUE",
+     "inH": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:45"
+     ],
+     "inRef": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:40"
+     ],
+     "stored": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:45"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     },
+     "REF": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-02 W=4 PLAIN_D0",
+     "inH": [
+      "EASY:30",
+      "QUALITY:34",
+      "LONG:45"
+     ],
+     "inRef": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:30"
+     ],
+     "stored": [
+      "EASY:30",
+      "QUALITY:34",
+      "LONG:45"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-02 W=4 PLAIN_D2",
+     "inH": [
+      "QUALITY:34",
+      "LONG:45"
+     ],
+     "inRef": [
+      "EASY:30",
+      "LONG:30"
+     ],
+     "stored": [
+      "QUALITY:34",
+      "LONG:45"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-02 W=4 SYSTEMIC_FATIGUE",
+     "inH": [
+      "EASY:30",
+      "EASY:34",
+      "LONG:45"
+     ],
+     "inRef": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:30"
+     ],
+     "stored": [
+      "EASY:30",
+      "QUALITY:34",
+      "LONG:45"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     },
+     "REF": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-01 W=2 PLAIN_D0",
+     "inH": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:55"
+     ],
+     "inRef": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:50"
+     ],
+     "stored": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:55"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-01 W=2 PLAIN_D2",
+     "inH": [
+      "EASY:35",
+      "LONG:55"
+     ],
+     "inRef": [
+      "EASY:35",
+      "LONG:50"
+     ],
+     "stored": [
+      "EASY:35",
+      "LONG:55"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-01 W=2 SCHEDULE_CHANGE",
+     "inH": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:55"
+     ],
+     "inRef": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:50"
+     ],
+     "stored": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:55"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "REF": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-01 W=2 SYSTEMIC_FATIGUE",
+     "inH": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:55"
+     ],
+     "inRef": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:50"
+     ],
+     "stored": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:55"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     },
+     "REF": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-01 W=4 PLAIN_D0",
+     "inH": [
+      "EASY:40",
+      "QUALITY:34",
+      "LONG:55"
+     ],
+     "inRef": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:40"
+     ],
+     "stored": [
+      "EASY:40",
+      "QUALITY:34",
+      "LONG:55"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-01 W=4 PLAIN_D2",
+     "inH": [
+      "QUALITY:34",
+      "LONG:55"
+     ],
+     "inRef": [
+      "EASY:35",
+      "LONG:40"
+     ],
+     "stored": [
+      "QUALITY:34",
+      "LONG:55"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-01 W=4 SYSTEMIC_FATIGUE",
+     "inH": [
+      "EASY:40",
+      "EASY:34",
+      "LONG:55"
+     ],
+     "inRef": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:40"
+     ],
+     "stored": [
+      "EASY:40",
+      "QUALITY:34",
+      "LONG:55"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     },
+     "REF": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-02 W=2 PLAIN_D0",
+     "inH": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:55"
+     ],
+     "inRef": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:50"
+     ],
+     "stored": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:55"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-02 W=2 PLAIN_D2",
+     "inH": [
+      "EASY:35",
+      "LONG:55"
+     ],
+     "inRef": [
+      "EASY:35",
+      "LONG:50"
+     ],
+     "stored": [
+      "EASY:35",
+      "LONG:55"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-02 W=2 SCHEDULE_CHANGE",
+     "inH": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:55"
+     ],
+     "inRef": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:50"
+     ],
+     "stored": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:55"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "REF": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-02 W=2 SYSTEMIC_FATIGUE",
+     "inH": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:55"
+     ],
+     "inRef": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:50"
+     ],
+     "stored": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:55"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     },
+     "REF": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-02 W=4 PLAIN_D0",
+     "inH": [
+      "EASY:40",
+      "QUALITY:34",
+      "LONG:55"
+     ],
+     "inRef": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:40"
+     ],
+     "stored": [
+      "EASY:40",
+      "QUALITY:34",
+      "LONG:55"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-02 W=4 PLAIN_D2",
+     "inH": [
+      "QUALITY:34",
+      "LONG:55"
+     ],
+     "inRef": [
+      "EASY:35",
+      "LONG:40"
+     ],
+     "stored": [
+      "QUALITY:34",
+      "LONG:55"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-02 W=4 SYSTEMIC_FATIGUE",
+     "inH": [
+      "EASY:40",
+      "EASY:34",
+      "LONG:55"
+     ],
+     "inRef": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:40"
+     ],
+     "stored": [
+      "EASY:40",
+      "QUALITY:34",
+      "LONG:55"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     },
+     "REF": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_60 asOf=2026-11-01 W=2 PLAIN_D0",
+     "inH": [
+      "EASY:45",
+      "EASY:45",
+      "LONG:65"
+     ],
+     "inRef": [
+      "EASY:45",
+      "EASY:45",
+      "LONG:60"
+     ],
+     "stored": [
+      "EASY:45",
+      "EASY:45",
+      "LONG:65"
+     ],
+     "ceil": 65,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_60 asOf=2026-11-01 W=2 PLAIN_D2",
+     "inH": [
+      "EASY:45",
+      "LONG:65"
+     ],
+     "inRef": [
+      "EASY:45",
+      "LONG:60"
+     ],
+     "stored": [
+      "EASY:45",
+      "LONG:65"
+     ],
+     "ceil": 65,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_60 asOf=2026-11-01 W=2 SCHEDULE_CHANGE",
+     "inH": [
+      "EASY:45",
+      "EASY:45",
+      "LONG:65"
+     ],
+     "inRef": [
+      "EASY:45",
+      "EASY:45",
+      "LONG:60"
+     ],
+     "stored": [
+      "EASY:45",
+      "EASY:45",
+      "LONG:65"
+     ],
+     "ceil": 65,
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "REF": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     }
+    },
+    {
+     "key": "EASY_CURRENT_60 asOf=2026-11-01 W=2 SYSTEMIC_FATIGUE",
+     "inH": [
+      "EASY:45",
+      "EASY:45",
+      "LONG:65"
+     ],
+     "inRef": [
+      "EASY:45",
+      "EASY:45",
+      "LONG:60"
+     ],
+     "stored": [
+      "EASY:45",
+      "EASY:45",
+      "LONG:65"
+     ],
+     "ceil": 65,
+     "B": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     },
+     "REF": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_60 asOf=2026-11-01 W=3 PLAIN_D0",
+     "inH": [
+      "EASY:50",
+      "QUALITY:34",
+      "LONG:65"
+     ],
+     "inRef": [
+      "EASY:45",
+      "EASY:45",
+      "LONG:60"
+     ],
+     "stored": [
+      "EASY:50",
+      "QUALITY:34",
+      "LONG:65"
+     ],
+     "ceil": 65,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_60 asOf=2026-11-01 W=3 PLAIN_D2",
+     "inH": [
+      "QUALITY:34",
+      "LONG:65"
+     ],
+     "inRef": [
+      "EASY:45",
+      "LONG:60"
+     ],
+     "stored": [
+      "QUALITY:34",
+      "LONG:65"
+     ],
+     "ceil": 65,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_60 asOf=2026-11-01 W=3 SCHEDULE_CHANGE",
+     "inH": [
+      "EASY:50",
+      "QUALITY:34",
+      "LONG:65"
+     ],
+     "inRef": [
+      "EASY:45",
+      "EASY:45",
+      "LONG:60"
+     ],
+     "stored": [
+      "EASY:50",
+      "QUALITY:34",
+      "LONG:65"
+     ],
+     "ceil": 65,
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "REF": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     }
+    },
+    {
+     "key": "EASY_CURRENT_60 asOf=2026-11-01 W=3 SYSTEMIC_FATIGUE",
+     "inH": [
+      "EASY:50",
+      "EASY:34",
+      "LONG:65"
+     ],
+     "inRef": [
+      "EASY:45",
+      "EASY:45",
+      "LONG:60"
+     ],
+     "stored": [
+      "EASY:50",
+      "QUALITY:34",
+      "LONG:65"
+     ],
+     "ceil": 65,
+     "B": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     },
+     "REF": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_60 asOf=2026-11-01 W=4 PLAIN_D0",
+     "inH": [
+      "EASY:50",
+      "QUALITY:34",
+      "LONG:60"
+     ],
+     "inRef": [
+      "EASY:45",
+      "EASY:45",
+      "LONG:50"
+     ],
+     "stored": [
+      "EASY:50",
+      "QUALITY:34",
+      "LONG:60"
+     ],
+     "ceil": 65,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_60 asOf=2026-11-01 W=4 PLAIN_D2",
+     "inH": [
+      "QUALITY:34",
+      "LONG:60"
+     ],
+     "inRef": [
+      "EASY:45",
+      "LONG:50"
+     ],
+     "stored": [
+      "QUALITY:34",
+      "LONG:60"
+     ],
+     "ceil": 65,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_60 asOf=2026-11-01 W=4 SYSTEMIC_FATIGUE",
+     "inH": [
+      "EASY:50",
+      "EASY:34",
+      "LONG:60"
+     ],
+     "inRef": [
+      "EASY:45",
+      "EASY:45",
+      "LONG:50"
+     ],
+     "stored": [
+      "EASY:50",
+      "QUALITY:34",
+      "LONG:60"
+     ],
+     "ceil": 65,
+     "B": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     },
+     "REF": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_60 asOf=2026-11-02 W=2 PLAIN_D0",
+     "inH": [
+      "EASY:45",
+      "EASY:45",
+      "LONG:65"
+     ],
+     "inRef": [
+      "EASY:45",
+      "EASY:45",
+      "LONG:60"
+     ],
+     "stored": [
+      "EASY:45",
+      "EASY:45",
+      "LONG:65"
+     ],
+     "ceil": 65,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    }
+   ],
+   "newDoseList": [],
+   "overCeilingList": [
+    {
+     "key": "EASY_LOW asOf=2026-11-01 W=1 PLAIN_D0",
+     "inH": [
+      "WALK_JOG:21",
+      "WALK_JOG:21",
+      "WALK_JOG:21"
+     ],
+     "ceil": 15,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-01 W=1 PLAIN_D2",
+     "inH": [
+      "WALK_JOG:21",
+      "WALK_JOG:21"
+     ],
+     "ceil": 15,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-01 W=1 SCHEDULE_CHANGE",
+     "inH": [
+      "WALK_JOG:21",
+      "WALK_JOG:21",
+      "WALK_JOG:21"
+     ],
+     "ceil": 15,
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     }
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-01 W=1 SYSTEMIC_FATIGUE",
+     "inH": [
+      "WALK_JOG:21",
+      "WALK_JOG:21",
+      "WALK_JOG:21"
+     ],
+     "ceil": 15,
+     "B": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     }
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-01 W=2 PLAIN_D0",
+     "inH": [
+      "WALK_JOG:23",
+      "WALK_JOG:23",
+      "WALK_JOG:23"
+     ],
+     "ceil": 15,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-01 W=2 PLAIN_D2",
+     "inH": [
+      "WALK_JOG:23",
+      "WALK_JOG:23"
+     ],
+     "ceil": 15,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-01 W=2 SCHEDULE_CHANGE",
+     "inH": [
+      "WALK_JOG:23",
+      "WALK_JOG:23",
+      "WALK_JOG:23"
+     ],
+     "ceil": 15,
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     }
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-01 W=2 SYSTEMIC_FATIGUE",
+     "inH": [
+      "WALK_JOG:23",
+      "WALK_JOG:23",
+      "WALK_JOG:23"
+     ],
+     "ceil": 15,
+     "B": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     }
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-01 W=3 PLAIN_D0",
+     "inH": [
+      "WALK_JOG:26",
+      "WALK_JOG:26",
+      "WALK_JOG:26"
+     ],
+     "ceil": 15,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-01 W=3 PLAIN_D2",
+     "inH": [
+      "WALK_JOG:26",
+      "WALK_JOG:26"
+     ],
+     "ceil": 15,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-01 W=3 SCHEDULE_CHANGE",
+     "inH": [
+      "WALK_JOG:26",
+      "WALK_JOG:26",
+      "WALK_JOG:26"
+     ],
+     "ceil": 15,
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     }
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-01 W=3 SYSTEMIC_FATIGUE",
+     "inH": [
+      "WALK_JOG:26",
+      "WALK_JOG:26",
+      "WALK_JOG:26"
+     ],
+     "ceil": 15,
+     "B": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     }
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-01 W=4 PLAIN_D0",
+     "inH": [
+      "WALK_JOG:28",
+      "WALK_JOG:28",
+      "WALK_JOG:28"
+     ],
+     "ceil": 15,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-01 W=4 PLAIN_D2",
+     "inH": [
+      "WALK_JOG:28",
+      "WALK_JOG:28"
+     ],
+     "ceil": 15,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-01 W=4 SCHEDULE_CHANGE",
+     "inH": [
+      "WALK_JOG:28",
+      "WALK_JOG:28",
+      "WALK_JOG:28"
+     ],
+     "ceil": 15,
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     }
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-01 W=4 SYSTEMIC_FATIGUE",
+     "inH": [
+      "WALK_JOG:28",
+      "WALK_JOG:28",
+      "WALK_JOG:28"
+     ],
+     "ceil": 15,
+     "B": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     }
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-01 W=5 PLAIN_D0",
+     "inH": [
+      "WALK_JOG:28",
+      "WALK_JOG:28",
+      "WALK_JOG:28"
+     ],
+     "ceil": 15,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-01 W=5 PLAIN_D2",
+     "inH": [
+      "WALK_JOG:28",
+      "WALK_JOG:28"
+     ],
+     "ceil": 15,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-01 W=5 SCHEDULE_CHANGE",
+     "inH": [
+      "WALK_JOG:28",
+      "WALK_JOG:28",
+      "WALK_JOG:28"
+     ],
+     "ceil": 15,
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     }
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-01 W=5 SYSTEMIC_FATIGUE",
+     "inH": [
+      "WALK_JOG:28",
+      "WALK_JOG:28",
+      "WALK_JOG:28"
+     ],
+     "ceil": 15,
+     "B": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     }
+    }
+   ],
+   "rowsPlainD0": [
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-01 W=1 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:30/EASY:30/LONG:40",
+     "inH": "EASY:30/EASY:30/LONG:40",
+     "inRef": "EASY:30/EASY:30/LONG:40",
+     "ceil": 45
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-01 W=2 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:30/EASY:30/LONG:45",
+     "inH": "EASY:30/EASY:30/LONG:45",
+     "inRef": "EASY:30/EASY:30/LONG:40",
+     "ceil": 45
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-01 W=3 PLAIN_D0",
+     "B": "MODIFY/REPLAN_FROM_EVIDENCE/VALID/CEILING",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:30/QUALITY:34/LONG:50",
+     "inH": "EASY:30/EASY:30/LONG:40",
+     "inRef": "EASY:30/EASY:30/LONG:40",
+     "ceil": 45
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-01 W=4 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:30/QUALITY:34/LONG:45",
+     "inH": "EASY:30/QUALITY:34/LONG:45",
+     "inRef": "EASY:30/EASY:30/LONG:30",
+     "ceil": 45
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-01 W=5 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:30/QUALITY:41/LONG:55",
+     "inH": "EASY:30/QUALITY:41/LONG:55",
+     "inRef": "EASY:30/EASY:30/LONG:35",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-02 W=1 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:30/EASY:30/LONG:40",
+     "inH": "EASY:30/EASY:30/LONG:40",
+     "inRef": "EASY:30/EASY:30/LONG:40",
+     "ceil": 45
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-02 W=2 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:30/EASY:30/LONG:45",
+     "inH": "EASY:30/EASY:30/LONG:45",
+     "inRef": "EASY:30/EASY:30/LONG:40",
+     "ceil": 45
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-02 W=3 PLAIN_D0",
+     "B": "MODIFY/REPLAN_FROM_EVIDENCE/VALID/CEILING",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:30/QUALITY:34/LONG:50",
+     "inH": "EASY:30/EASY:30/LONG:40",
+     "inRef": "EASY:30/EASY:30/LONG:40",
+     "ceil": 45
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-02 W=4 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:30/QUALITY:34/LONG:45",
+     "inH": "EASY:30/QUALITY:34/LONG:45",
+     "inRef": "EASY:30/EASY:30/LONG:30",
+     "ceil": 45
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-02 W=5 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:30/QUALITY:41/LONG:55",
+     "inH": "EASY:30/QUALITY:41/LONG:55",
+     "inRef": "EASY:30/EASY:30/LONG:35",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-01 W=1 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:35/EASY:35/LONG:50",
+     "inH": "EASY:35/EASY:35/LONG:50",
+     "inRef": "EASY:35/EASY:35/LONG:50",
+     "ceil": 55
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-01 W=2 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:35/EASY:35/LONG:55",
+     "inH": "EASY:35/EASY:35/LONG:55",
+     "inRef": "EASY:35/EASY:35/LONG:50",
+     "ceil": 55
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-01 W=3 PLAIN_D0",
+     "B": "MODIFY/REPLAN_FROM_EVIDENCE/VALID/CEILING",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:40/QUALITY:34/LONG:60",
+     "inH": "EASY:35/EASY:35/LONG:50",
+     "inRef": "EASY:35/EASY:35/LONG:50",
+     "ceil": 55
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-01 W=4 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:40/QUALITY:34/LONG:55",
+     "inH": "EASY:40/QUALITY:34/LONG:55",
+     "inRef": "EASY:35/EASY:35/LONG:40",
+     "ceil": 55
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-01 W=5 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:40/QUALITY:41/LONG:65",
+     "inH": "EASY:40/QUALITY:41/LONG:65",
+     "inRef": "EASY:35/EASY:35/LONG:45",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-02 W=1 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:35/EASY:35/LONG:50",
+     "inH": "EASY:35/EASY:35/LONG:50",
+     "inRef": "EASY:35/EASY:35/LONG:50",
+     "ceil": 55
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-02 W=2 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:35/EASY:35/LONG:55",
+     "inH": "EASY:35/EASY:35/LONG:55",
+     "inRef": "EASY:35/EASY:35/LONG:50",
+     "ceil": 55
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-02 W=3 PLAIN_D0",
+     "B": "MODIFY/REPLAN_FROM_EVIDENCE/VALID/CEILING",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:40/QUALITY:34/LONG:60",
+     "inH": "EASY:35/EASY:35/LONG:50",
+     "inRef": "EASY:35/EASY:35/LONG:50",
+     "ceil": 55
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-02 W=4 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:40/QUALITY:34/LONG:55",
+     "inH": "EASY:40/QUALITY:34/LONG:55",
+     "inRef": "EASY:35/EASY:35/LONG:40",
+     "ceil": 55
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-02 W=5 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:40/QUALITY:41/LONG:65",
+     "inH": "EASY:40/QUALITY:41/LONG:65",
+     "inRef": "EASY:35/EASY:35/LONG:45",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_CURRENT_60 asOf=2026-11-01 W=1 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:45/EASY:45/LONG:60",
+     "inH": "EASY:45/EASY:45/LONG:60",
+     "inRef": "EASY:45/EASY:45/LONG:60",
+     "ceil": 65
+    },
+    {
+     "key": "EASY_CURRENT_60 asOf=2026-11-01 W=2 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:45/EASY:45/LONG:65",
+     "inH": "EASY:45/EASY:45/LONG:65",
+     "inRef": "EASY:45/EASY:45/LONG:60",
+     "ceil": 65
+    },
+    {
+     "key": "EASY_CURRENT_60 asOf=2026-11-01 W=3 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:50/QUALITY:34/LONG:65",
+     "inH": "EASY:50/QUALITY:34/LONG:65",
+     "inRef": "EASY:45/EASY:45/LONG:60",
+     "ceil": 65
+    },
+    {
+     "key": "EASY_CURRENT_60 asOf=2026-11-01 W=4 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:50/QUALITY:34/LONG:60",
+     "inH": "EASY:50/QUALITY:34/LONG:60",
+     "inRef": "EASY:45/EASY:45/LONG:50",
+     "ceil": 65
+    },
+    {
+     "key": "EASY_CURRENT_60 asOf=2026-11-01 W=5 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:50/QUALITY:41/LONG:70",
+     "inH": "EASY:50/QUALITY:41/LONG:70",
+     "inRef": "EASY:45/EASY:45/LONG:55",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_CURRENT_60 asOf=2026-11-02 W=1 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:45/EASY:45/LONG:60",
+     "inH": "EASY:45/EASY:45/LONG:60",
+     "inRef": "EASY:45/EASY:45/LONG:60",
+     "ceil": 65
+    },
+    {
+     "key": "EASY_CURRENT_60 asOf=2026-11-02 W=2 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:45/EASY:45/LONG:65",
+     "inH": "EASY:45/EASY:45/LONG:65",
+     "inRef": "EASY:45/EASY:45/LONG:60",
+     "ceil": 65
+    },
+    {
+     "key": "EASY_CURRENT_60 asOf=2026-11-02 W=3 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:50/QUALITY:34/LONG:65",
+     "inH": "EASY:50/QUALITY:34/LONG:65",
+     "inRef": "EASY:45/EASY:45/LONG:60",
+     "ceil": 65
+    },
+    {
+     "key": "EASY_CURRENT_60 asOf=2026-11-02 W=4 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:50/QUALITY:34/LONG:60",
+     "inH": "EASY:50/QUALITY:34/LONG:60",
+     "inRef": "EASY:45/EASY:45/LONG:50",
+     "ceil": 65
+    },
+    {
+     "key": "EASY_CURRENT_60 asOf=2026-11-02 W=5 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:50/QUALITY:41/LONG:70",
+     "inH": "EASY:50/QUALITY:41/LONG:70",
+     "inRef": "EASY:45/EASY:45/LONG:55",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_CURRENT_70 asOf=2026-11-01 W=1 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:50/EASY:50/LONG:70",
+     "inH": "EASY:50/EASY:50/LONG:70",
+     "inRef": "EASY:50/EASY:50/LONG:70",
+     "ceil": 75
+    },
+    {
+     "key": "EASY_CURRENT_70 asOf=2026-11-01 W=2 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:50/EASY:50/LONG:75",
+     "inH": "EASY:50/EASY:50/LONG:75",
+     "inRef": "EASY:50/EASY:50/LONG:70",
+     "ceil": 75
+    },
+    {
+     "key": "EASY_CURRENT_70 asOf=2026-11-01 W=3 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:55/QUALITY:34/LONG:75",
+     "inH": "EASY:55/QUALITY:34/LONG:75",
+     "inRef": "EASY:50/EASY:50/LONG:70",
+     "ceil": 75
+    },
+    {
+     "key": "EASY_CURRENT_70 asOf=2026-11-01 W=4 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:55/QUALITY:34/LONG:65",
+     "inH": "EASY:55/QUALITY:34/LONG:65",
+     "inRef": "EASY:50/EASY:50/LONG:60",
+     "ceil": 75
+    },
+    {
+     "key": "EASY_CURRENT_70 asOf=2026-11-01 W=5 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:55/QUALITY:41/LONG:75",
+     "inH": "EASY:55/QUALITY:41/LONG:75",
+     "inRef": "EASY:50/EASY:50/LONG:65",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_CURRENT_70 asOf=2026-11-02 W=1 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:50/EASY:50/LONG:70",
+     "inH": "EASY:50/EASY:50/LONG:70",
+     "inRef": "EASY:50/EASY:50/LONG:70",
+     "ceil": 75
+    },
+    {
+     "key": "EASY_CURRENT_70 asOf=2026-11-02 W=2 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:50/EASY:50/LONG:75",
+     "inH": "EASY:50/EASY:50/LONG:75",
+     "inRef": "EASY:50/EASY:50/LONG:70",
+     "ceil": 75
+    },
+    {
+     "key": "EASY_CURRENT_70 asOf=2026-11-02 W=3 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:55/QUALITY:34/LONG:75",
+     "inH": "EASY:55/QUALITY:34/LONG:75",
+     "inRef": "EASY:50/EASY:50/LONG:70",
+     "ceil": 75
+    },
+    {
+     "key": "EASY_CURRENT_70 asOf=2026-11-02 W=4 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:55/QUALITY:34/LONG:65",
+     "inH": "EASY:55/QUALITY:34/LONG:65",
+     "inRef": "EASY:50/EASY:50/LONG:60",
+     "ceil": 75
+    },
+    {
+     "key": "EASY_CURRENT_70 asOf=2026-11-02 W=5 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:55/QUALITY:41/LONG:75",
+     "inH": "EASY:55/QUALITY:41/LONG:75",
+     "inRef": "EASY:50/EASY:50/LONG:65",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-01 W=1 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "WALK_JOG:21/WALK_JOG:21/WALK_JOG:21",
+     "inH": "WALK_JOG:21/WALK_JOG:21/WALK_JOG:21",
+     "inRef": "WALK_JOG:20/WALK_JOG:20/WALK_JOG:20",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-01 W=2 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "WALK_JOG:23/WALK_JOG:23/WALK_JOG:23",
+     "inH": "WALK_JOG:23/WALK_JOG:23/WALK_JOG:23",
+     "inRef": "WALK_JOG:20/WALK_JOG:20/WALK_JOG:20",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-01 W=3 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "WALK_JOG:26/WALK_JOG:26/WALK_JOG:26",
+     "inH": "WALK_JOG:26/WALK_JOG:26/WALK_JOG:26",
+     "inRef": "WALK_JOG:20/WALK_JOG:20/WALK_JOG:20",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-01 W=4 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "WALK_JOG:28/WALK_JOG:28/WALK_JOG:28",
+     "inH": "WALK_JOG:28/WALK_JOG:28/WALK_JOG:28",
+     "inRef": "WALK_JOG:20/WALK_JOG:20/WALK_JOG:20",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-01 W=5 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "WALK_JOG:28/WALK_JOG:28/WALK_JOG:28",
+     "inH": "WALK_JOG:28/WALK_JOG:28/WALK_JOG:28",
+     "inRef": "WALK_JOG:20/WALK_JOG:20/WALK_JOG:20",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-02 W=1 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "WALK_JOG:21/WALK_JOG:21/WALK_JOG:21",
+     "inH": "WALK_JOG:21/WALK_JOG:21/WALK_JOG:21",
+     "inRef": "WALK_JOG:20/WALK_JOG:20/WALK_JOG:20",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-02 W=2 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "WALK_JOG:23/WALK_JOG:23/WALK_JOG:23",
+     "inH": "WALK_JOG:23/WALK_JOG:23/WALK_JOG:23",
+     "inRef": "WALK_JOG:20/WALK_JOG:20/WALK_JOG:20",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-02 W=3 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "WALK_JOG:26/WALK_JOG:26/WALK_JOG:26",
+     "inH": "WALK_JOG:26/WALK_JOG:26/WALK_JOG:26",
+     "inRef": "WALK_JOG:20/WALK_JOG:20/WALK_JOG:20",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-02 W=4 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "WALK_JOG:28/WALK_JOG:28/WALK_JOG:28",
+     "inH": "WALK_JOG:28/WALK_JOG:28/WALK_JOG:28",
+     "inRef": "WALK_JOG:20/WALK_JOG:20/WALK_JOG:20",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-02 W=5 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "WALK_JOG:28/WALK_JOG:28/WALK_JOG:28",
+     "inH": "WALK_JOG:28/WALK_JOG:28/WALK_JOG:28",
+     "inRef": "WALK_JOG:20/WALK_JOG:20/WALK_JOG:20",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_UNKNOWN asOf=2026-11-01 W=1 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:20/EASY:20/LONG:20",
+     "inH": "EASY:20/EASY:20/LONG:20",
+     "inRef": "EASY:20/EASY:20/LONG:20",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_UNKNOWN asOf=2026-11-01 W=2 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:20/EASY:20/LONG:25",
+     "inH": "EASY:20/EASY:20/LONG:25",
+     "inRef": "EASY:20/EASY:20/LONG:25",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_UNKNOWN asOf=2026-11-01 W=3 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:20/EASY:20/LONG:30",
+     "inH": "EASY:20/EASY:20/LONG:30",
+     "inRef": "EASY:20/EASY:20/LONG:30",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_UNKNOWN asOf=2026-11-01 W=4 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:20/EASY:20/LONG:25",
+     "inH": "EASY:20/EASY:20/LONG:25",
+     "inRef": "EASY:20/EASY:20/LONG:25",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_UNKNOWN asOf=2026-11-01 W=5 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:20/EASY:20/LONG:30",
+     "inH": "EASY:20/EASY:20/LONG:30",
+     "inRef": "EASY:20/EASY:20/LONG:30",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_UNKNOWN asOf=2026-11-02 W=1 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:20/EASY:20/LONG:20",
+     "inH": "EASY:20/EASY:20/LONG:20",
+     "inRef": "EASY:20/EASY:20/LONG:20",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_UNKNOWN asOf=2026-11-02 W=2 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:20/EASY:20/LONG:25",
+     "inH": "EASY:20/EASY:20/LONG:25",
+     "inRef": "EASY:20/EASY:20/LONG:25",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_UNKNOWN asOf=2026-11-02 W=3 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:20/EASY:20/LONG:30",
+     "inH": "EASY:20/EASY:20/LONG:30",
+     "inRef": "EASY:20/EASY:20/LONG:30",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_UNKNOWN asOf=2026-11-02 W=4 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:20/EASY:20/LONG:25",
+     "inH": "EASY:20/EASY:20/LONG:25",
+     "inRef": "EASY:20/EASY:20/LONG:25",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_UNKNOWN asOf=2026-11-02 W=5 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:20/EASY:20/LONG:30",
+     "inH": "EASY:20/EASY:20/LONG:30",
+     "inRef": "EASY:20/EASY:20/LONG:30",
+     "ceil": 15
+    },
+    {
+     "key": "QUALITY_FAMILIAR asOf=2026-11-01 W=1 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:35/EASY:35/EASY:35/LONG:85",
+     "inH": "EASY:35/EASY:35/EASY:35/LONG:85",
+     "inRef": "EASY:35/EASY:35/EASY:35/LONG:85",
+     "ceil": 95
+    },
+    {
+     "key": "QUALITY_FAMILIAR asOf=2026-11-01 W=2 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:35/EASY:35/EASY:35/LONG:85",
+     "inH": "EASY:35/EASY:35/EASY:35/LONG:85",
+     "inRef": "EASY:35/EASY:35/EASY:35/LONG:85",
+     "ceil": 95
+    },
+    {
+     "key": "QUALITY_FAMILIAR asOf=2026-11-01 W=3 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:40/QUALITY:34/EASY:35/LONG:85",
+     "inH": "EASY:40/QUALITY:34/EASY:35/LONG:85",
+     "inRef": "EASY:35/EASY:35/EASY:35/LONG:85",
+     "ceil": 95
+    },
+    {
+     "key": "QUALITY_FAMILIAR asOf=2026-11-01 W=4 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:40/QUALITY:34/EASY:35/LONG:75",
+     "inH": "EASY:40/QUALITY:34/EASY:35/LONG:75",
+     "inRef": "EASY:35/EASY:35/EASY:35/LONG:75",
+     "ceil": 95
+    },
+    {
+     "key": "QUALITY_FAMILIAR asOf=2026-11-01 W=5 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:40/QUALITY:41/EASY:35/LONG:85",
+     "inH": "EASY:40/QUALITY:41/EASY:35/LONG:85",
+     "inRef": "EASY:35/EASY:35/EASY:35/LONG:80",
+     "ceil": 15
+    },
+    {
+     "key": "QUALITY_FAMILIAR asOf=2026-11-02 W=1 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:35/EASY:35/EASY:35/LONG:85",
+     "inH": "EASY:35/EASY:35/EASY:35/LONG:85",
+     "inRef": "EASY:35/EASY:35/EASY:35/LONG:85",
+     "ceil": 95
+    },
+    {
+     "key": "QUALITY_FAMILIAR asOf=2026-11-02 W=2 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:35/EASY:35/EASY:35/LONG:85",
+     "inH": "EASY:35/EASY:35/EASY:35/LONG:85",
+     "inRef": "EASY:35/EASY:35/EASY:35/LONG:85",
+     "ceil": 95
+    },
+    {
+     "key": "QUALITY_FAMILIAR asOf=2026-11-02 W=3 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:40/QUALITY:34/EASY:35/LONG:85",
+     "inH": "EASY:40/QUALITY:34/EASY:35/LONG:85",
+     "inRef": "EASY:35/EASY:35/EASY:35/LONG:85",
+     "ceil": 95
+    },
+    {
+     "key": "QUALITY_FAMILIAR asOf=2026-11-02 W=4 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:40/QUALITY:34/EASY:35/LONG:75",
+     "inH": "EASY:40/QUALITY:34/EASY:35/LONG:75",
+     "inRef": "EASY:35/EASY:35/EASY:35/LONG:75",
+     "ceil": 95
+    },
+    {
+     "key": "QUALITY_FAMILIAR asOf=2026-11-02 W=5 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:40/QUALITY:41/EASY:35/LONG:85",
+     "inH": "EASY:40/QUALITY:41/EASY:35/LONG:85",
+     "inRef": "EASY:35/EASY:35/EASY:35/LONG:80",
+     "ceil": 15
+    },
+    {
+     "key": "RESTART asOf=2026-11-01 W=1 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:20/EASY:20/EASY:20",
+     "inH": "EASY:20/EASY:20/EASY:20",
+     "inRef": "EASY:15/EASY:15/EASY:15",
+     "ceil": 15
+    },
+    {
+     "key": "RESTART asOf=2026-11-01 W=2 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:25/EASY:25/EASY:25",
+     "inH": "EASY:25/EASY:25/EASY:25",
+     "inRef": "EASY:15/EASY:15/EASY:15",
+     "ceil": 15
+    },
+    {
+     "key": "RESTART asOf=2026-11-01 W=3 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:30/EASY:30/LONG:30",
+     "inH": "EASY:30/EASY:30/LONG:30",
+     "inRef": "EASY:15/EASY:15/EASY:15",
+     "ceil": 15
+    },
+    {
+     "key": "RESTART asOf=2026-11-01 W=4 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:30/EASY:30/LONG:25",
+     "inH": "EASY:30/EASY:30/LONG:25",
+     "inRef": "EASY:15/EASY:15/EASY:15",
+     "ceil": 15
+    },
+    {
+     "key": "RESTART asOf=2026-11-01 W=5 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:30/EASY:30/LONG:35",
+     "inH": "EASY:30/EASY:30/LONG:35",
+     "inRef": "EASY:15/EASY:15/EASY:15",
+     "ceil": 15
+    },
+    {
+     "key": "RESTART asOf=2026-11-02 W=1 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:20/EASY:20/EASY:20",
+     "inH": "EASY:20/EASY:20/EASY:20",
+     "inRef": "EASY:15/EASY:15/EASY:15",
+     "ceil": 15
+    },
+    {
+     "key": "RESTART asOf=2026-11-02 W=2 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:25/EASY:25/EASY:25",
+     "inH": "EASY:25/EASY:25/EASY:25",
+     "inRef": "EASY:15/EASY:15/EASY:15",
+     "ceil": 15
+    },
+    {
+     "key": "RESTART asOf=2026-11-02 W=3 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:30/EASY:30/LONG:30",
+     "inH": "EASY:30/EASY:30/LONG:30",
+     "inRef": "EASY:15/EASY:15/EASY:15",
+     "ceil": 15
+    },
+    {
+     "key": "RESTART asOf=2026-11-02 W=4 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:30/EASY:30/LONG:25",
+     "inH": "EASY:30/EASY:30/LONG:25",
+     "inRef": "EASY:15/EASY:15/EASY:15",
+     "ceil": 15
+    },
+    {
+     "key": "RESTART asOf=2026-11-02 W=5 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:30/EASY:30/LONG:35",
+     "inH": "EASY:30/EASY:30/LONG:35",
+     "inRef": "EASY:15/EASY:15/EASY:15",
+     "ceil": 15
+    },
+    {
+     "key": "RACE_10K asOf=2026-11-01 W=1 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:40/EASY:40/LONG:65",
+     "inH": "EASY:40/EASY:40/LONG:65",
+     "inRef": "EASY:40/EASY:40/LONG:65",
+     "ceil": 75
+    },
+    {
+     "key": "RACE_10K asOf=2026-11-01 W=2 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:40/EASY:40/LONG:65",
+     "inH": "EASY:40/EASY:40/LONG:65",
+     "inRef": "EASY:40/EASY:40/LONG:65",
+     "ceil": 75
+    },
+    {
+     "key": "RACE_10K asOf=2026-11-01 W=3 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:45/QUALITY:34/LONG:65",
+     "inH": "EASY:45/QUALITY:34/LONG:65",
+     "inRef": "EASY:40/EASY:40/LONG:65",
+     "ceil": 75
+    },
+    {
+     "key": "RACE_10K asOf=2026-11-01 W=4 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:45/QUALITY:34/LONG:60",
+     "inH": "EASY:45/QUALITY:34/LONG:60",
+     "inRef": "EASY:40/EASY:40/LONG:55",
+     "ceil": 75
+    },
+    {
+     "key": "RACE_10K asOf=2026-11-01 W=5 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:45/QUALITY:41/LONG:70",
+     "inH": "EASY:45/QUALITY:41/LONG:70",
+     "inRef": "EASY:40/EASY:40/LONG:60",
+     "ceil": 15
+    },
+    {
+     "key": "RACE_10K asOf=2026-11-02 W=1 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:40/EASY:40/LONG:65",
+     "inH": "EASY:40/EASY:40/LONG:65",
+     "inRef": "EASY:40/EASY:40/LONG:65",
+     "ceil": 75
+    },
+    {
+     "key": "RACE_10K asOf=2026-11-02 W=2 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:40/EASY:40/LONG:65",
+     "inH": "EASY:40/EASY:40/LONG:65",
+     "inRef": "EASY:40/EASY:40/LONG:65",
+     "ceil": 75
+    },
+    {
+     "key": "RACE_10K asOf=2026-11-02 W=3 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:45/QUALITY:34/LONG:65",
+     "inH": "EASY:45/QUALITY:34/LONG:65",
+     "inRef": "EASY:40/EASY:40/LONG:65",
+     "ceil": 75
+    },
+    {
+     "key": "RACE_10K asOf=2026-11-02 W=4 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:45/QUALITY:34/LONG:60",
+     "inH": "EASY:45/QUALITY:34/LONG:60",
+     "inRef": "EASY:40/EASY:40/LONG:55",
+     "ceil": 75
+    },
+    {
+     "key": "RACE_10K asOf=2026-11-02 W=5 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:45/QUALITY:41/LONG:70",
+     "inH": "EASY:45/QUALITY:41/LONG:70",
+     "inRef": "EASY:40/EASY:40/LONG:60",
+     "ceil": 15
+    }
+   ]
+  },
+  "F1": {
+   "cells": 360,
+   "ceilingReplans": 0,
+   "newDose": 0,
+   "overCeilingValid": 96,
+   "vsRef": {
+    "equal": 64,
+    "above": 194,
+    "below": 2,
+    "other": 0
+   },
+   "aboveRef": [
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-01 W=2 PLAIN_D0",
+     "inH": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:45"
+     ],
+     "inRef": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:40"
+     ],
+     "stored": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:45"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-01 W=2 PLAIN_D2",
+     "inH": [
+      "EASY:30",
+      "LONG:45"
+     ],
+     "inRef": [
+      "EASY:30",
+      "LONG:40"
+     ],
+     "stored": [
+      "EASY:30",
+      "LONG:45"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-01 W=2 SCHEDULE_CHANGE",
+     "inH": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:45"
+     ],
+     "inRef": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:40"
+     ],
+     "stored": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:45"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "REF": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-01 W=2 SYSTEMIC_FATIGUE",
+     "inH": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:45"
+     ],
+     "inRef": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:40"
+     ],
+     "stored": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:45"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     },
+     "REF": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-01 W=3 PLAIN_D0",
+     "inH": [
+      "EASY:30",
+      "QUALITY:34",
+      "LONG:50"
+     ],
+     "inRef": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:40"
+     ],
+     "stored": [
+      "EASY:30",
+      "QUALITY:34",
+      "LONG:50"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-01 W=3 PLAIN_D2",
+     "inH": [
+      "QUALITY:34",
+      "LONG:50"
+     ],
+     "inRef": [
+      "EASY:30",
+      "LONG:40"
+     ],
+     "stored": [
+      "QUALITY:34",
+      "LONG:50"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-01 W=3 SCHEDULE_CHANGE",
+     "inH": [
+      "EASY:30",
+      "QUALITY:34",
+      "LONG:50"
+     ],
+     "inRef": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:40"
+     ],
+     "stored": [
+      "EASY:30",
+      "QUALITY:34",
+      "LONG:50"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "REF": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-01 W=3 SYSTEMIC_FATIGUE",
+     "inH": [
+      "EASY:30",
+      "EASY:34",
+      "LONG:50"
+     ],
+     "inRef": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:40"
+     ],
+     "stored": [
+      "EASY:30",
+      "QUALITY:34",
+      "LONG:50"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     },
+     "REF": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-01 W=4 PLAIN_D0",
+     "inH": [
+      "EASY:30",
+      "QUALITY:34",
+      "LONG:45"
+     ],
+     "inRef": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:30"
+     ],
+     "stored": [
+      "EASY:30",
+      "QUALITY:34",
+      "LONG:45"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-01 W=4 PLAIN_D2",
+     "inH": [
+      "QUALITY:34",
+      "LONG:45"
+     ],
+     "inRef": [
+      "EASY:30",
+      "LONG:30"
+     ],
+     "stored": [
+      "QUALITY:34",
+      "LONG:45"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-01 W=4 SYSTEMIC_FATIGUE",
+     "inH": [
+      "EASY:30",
+      "EASY:34",
+      "LONG:45"
+     ],
+     "inRef": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:30"
+     ],
+     "stored": [
+      "EASY:30",
+      "QUALITY:34",
+      "LONG:45"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     },
+     "REF": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-02 W=2 PLAIN_D0",
+     "inH": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:45"
+     ],
+     "inRef": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:40"
+     ],
+     "stored": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:45"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-02 W=2 PLAIN_D2",
+     "inH": [
+      "EASY:30",
+      "LONG:45"
+     ],
+     "inRef": [
+      "EASY:30",
+      "LONG:40"
+     ],
+     "stored": [
+      "EASY:30",
+      "LONG:45"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-02 W=2 SCHEDULE_CHANGE",
+     "inH": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:45"
+     ],
+     "inRef": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:40"
+     ],
+     "stored": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:45"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "REF": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-02 W=2 SYSTEMIC_FATIGUE",
+     "inH": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:45"
+     ],
+     "inRef": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:40"
+     ],
+     "stored": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:45"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     },
+     "REF": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-02 W=3 PLAIN_D0",
+     "inH": [
+      "EASY:30",
+      "QUALITY:34",
+      "LONG:50"
+     ],
+     "inRef": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:40"
+     ],
+     "stored": [
+      "EASY:30",
+      "QUALITY:34",
+      "LONG:50"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-02 W=3 PLAIN_D2",
+     "inH": [
+      "QUALITY:34",
+      "LONG:50"
+     ],
+     "inRef": [
+      "EASY:30",
+      "LONG:40"
+     ],
+     "stored": [
+      "QUALITY:34",
+      "LONG:50"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-02 W=3 SCHEDULE_CHANGE",
+     "inH": [
+      "EASY:30",
+      "QUALITY:34",
+      "LONG:50"
+     ],
+     "inRef": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:40"
+     ],
+     "stored": [
+      "EASY:30",
+      "QUALITY:34",
+      "LONG:50"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "REF": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-02 W=3 SYSTEMIC_FATIGUE",
+     "inH": [
+      "EASY:30",
+      "EASY:34",
+      "LONG:50"
+     ],
+     "inRef": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:40"
+     ],
+     "stored": [
+      "EASY:30",
+      "QUALITY:34",
+      "LONG:50"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     },
+     "REF": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-02 W=4 PLAIN_D0",
+     "inH": [
+      "EASY:30",
+      "QUALITY:34",
+      "LONG:45"
+     ],
+     "inRef": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:30"
+     ],
+     "stored": [
+      "EASY:30",
+      "QUALITY:34",
+      "LONG:45"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-02 W=4 PLAIN_D2",
+     "inH": [
+      "QUALITY:34",
+      "LONG:45"
+     ],
+     "inRef": [
+      "EASY:30",
+      "LONG:30"
+     ],
+     "stored": [
+      "QUALITY:34",
+      "LONG:45"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-02 W=4 SYSTEMIC_FATIGUE",
+     "inH": [
+      "EASY:30",
+      "EASY:34",
+      "LONG:45"
+     ],
+     "inRef": [
+      "EASY:30",
+      "EASY:30",
+      "LONG:30"
+     ],
+     "stored": [
+      "EASY:30",
+      "QUALITY:34",
+      "LONG:45"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     },
+     "REF": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-01 W=2 PLAIN_D0",
+     "inH": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:55"
+     ],
+     "inRef": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:50"
+     ],
+     "stored": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:55"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-01 W=2 PLAIN_D2",
+     "inH": [
+      "EASY:35",
+      "LONG:55"
+     ],
+     "inRef": [
+      "EASY:35",
+      "LONG:50"
+     ],
+     "stored": [
+      "EASY:35",
+      "LONG:55"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-01 W=2 SCHEDULE_CHANGE",
+     "inH": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:55"
+     ],
+     "inRef": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:50"
+     ],
+     "stored": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:55"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "REF": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-01 W=2 SYSTEMIC_FATIGUE",
+     "inH": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:55"
+     ],
+     "inRef": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:50"
+     ],
+     "stored": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:55"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     },
+     "REF": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-01 W=3 PLAIN_D0",
+     "inH": [
+      "EASY:40",
+      "QUALITY:34",
+      "LONG:60"
+     ],
+     "inRef": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:50"
+     ],
+     "stored": [
+      "EASY:40",
+      "QUALITY:34",
+      "LONG:60"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-01 W=3 PLAIN_D2",
+     "inH": [
+      "QUALITY:34",
+      "LONG:60"
+     ],
+     "inRef": [
+      "EASY:35",
+      "LONG:50"
+     ],
+     "stored": [
+      "QUALITY:34",
+      "LONG:60"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-01 W=3 SCHEDULE_CHANGE",
+     "inH": [
+      "EASY:40",
+      "QUALITY:34",
+      "LONG:60"
+     ],
+     "inRef": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:50"
+     ],
+     "stored": [
+      "EASY:40",
+      "QUALITY:34",
+      "LONG:60"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "REF": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-01 W=3 SYSTEMIC_FATIGUE",
+     "inH": [
+      "EASY:40",
+      "EASY:34",
+      "LONG:60"
+     ],
+     "inRef": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:50"
+     ],
+     "stored": [
+      "EASY:40",
+      "QUALITY:34",
+      "LONG:60"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     },
+     "REF": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-01 W=4 PLAIN_D0",
+     "inH": [
+      "EASY:40",
+      "QUALITY:34",
+      "LONG:55"
+     ],
+     "inRef": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:40"
+     ],
+     "stored": [
+      "EASY:40",
+      "QUALITY:34",
+      "LONG:55"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-01 W=4 PLAIN_D2",
+     "inH": [
+      "QUALITY:34",
+      "LONG:55"
+     ],
+     "inRef": [
+      "EASY:35",
+      "LONG:40"
+     ],
+     "stored": [
+      "QUALITY:34",
+      "LONG:55"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-01 W=4 SYSTEMIC_FATIGUE",
+     "inH": [
+      "EASY:40",
+      "EASY:34",
+      "LONG:55"
+     ],
+     "inRef": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:40"
+     ],
+     "stored": [
+      "EASY:40",
+      "QUALITY:34",
+      "LONG:55"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     },
+     "REF": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-02 W=2 PLAIN_D0",
+     "inH": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:55"
+     ],
+     "inRef": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:50"
+     ],
+     "stored": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:55"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-02 W=2 PLAIN_D2",
+     "inH": [
+      "EASY:35",
+      "LONG:55"
+     ],
+     "inRef": [
+      "EASY:35",
+      "LONG:50"
+     ],
+     "stored": [
+      "EASY:35",
+      "LONG:55"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-02 W=2 SCHEDULE_CHANGE",
+     "inH": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:55"
+     ],
+     "inRef": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:50"
+     ],
+     "stored": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:55"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "REF": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-02 W=2 SYSTEMIC_FATIGUE",
+     "inH": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:55"
+     ],
+     "inRef": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:50"
+     ],
+     "stored": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:55"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     },
+     "REF": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-02 W=3 PLAIN_D0",
+     "inH": [
+      "EASY:40",
+      "QUALITY:34",
+      "LONG:60"
+     ],
+     "inRef": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:50"
+     ],
+     "stored": [
+      "EASY:40",
+      "QUALITY:34",
+      "LONG:60"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-02 W=3 PLAIN_D2",
+     "inH": [
+      "QUALITY:34",
+      "LONG:60"
+     ],
+     "inRef": [
+      "EASY:35",
+      "LONG:50"
+     ],
+     "stored": [
+      "QUALITY:34",
+      "LONG:60"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     },
+     "REF": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-02 W=3 SCHEDULE_CHANGE",
+     "inH": [
+      "EASY:40",
+      "QUALITY:34",
+      "LONG:60"
+     ],
+     "inRef": [
+      "EASY:35",
+      "EASY:35",
+      "LONG:50"
+     ],
+     "stored": [
+      "EASY:40",
+      "QUALITY:34",
+      "LONG:60"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "REF": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     }
+    }
+   ],
+   "newDoseList": [],
+   "overCeilingList": [
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-01 W=3 PLAIN_D0",
+     "inH": [
+      "EASY:30",
+      "QUALITY:34",
+      "LONG:50"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-01 W=3 PLAIN_D2",
+     "inH": [
+      "QUALITY:34",
+      "LONG:50"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-01 W=3 SCHEDULE_CHANGE",
+     "inH": [
+      "EASY:30",
+      "QUALITY:34",
+      "LONG:50"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-01 W=3 SYSTEMIC_FATIGUE",
+     "inH": [
+      "EASY:30",
+      "EASY:34",
+      "LONG:50"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-02 W=3 PLAIN_D0",
+     "inH": [
+      "EASY:30",
+      "QUALITY:34",
+      "LONG:50"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-02 W=3 PLAIN_D2",
+     "inH": [
+      "QUALITY:34",
+      "LONG:50"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-02 W=3 SCHEDULE_CHANGE",
+     "inH": [
+      "EASY:30",
+      "QUALITY:34",
+      "LONG:50"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     }
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-02 W=3 SYSTEMIC_FATIGUE",
+     "inH": [
+      "EASY:30",
+      "EASY:34",
+      "LONG:50"
+     ],
+     "ceil": 45,
+     "B": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-01 W=3 PLAIN_D0",
+     "inH": [
+      "EASY:40",
+      "QUALITY:34",
+      "LONG:60"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-01 W=3 PLAIN_D2",
+     "inH": [
+      "QUALITY:34",
+      "LONG:60"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-01 W=3 SCHEDULE_CHANGE",
+     "inH": [
+      "EASY:40",
+      "QUALITY:34",
+      "LONG:60"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-01 W=3 SYSTEMIC_FATIGUE",
+     "inH": [
+      "EASY:40",
+      "EASY:34",
+      "LONG:60"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-02 W=3 PLAIN_D0",
+     "inH": [
+      "EASY:40",
+      "QUALITY:34",
+      "LONG:60"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-02 W=3 PLAIN_D2",
+     "inH": [
+      "QUALITY:34",
+      "LONG:60"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-02 W=3 SCHEDULE_CHANGE",
+     "inH": [
+      "EASY:40",
+      "QUALITY:34",
+      "LONG:60"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     }
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-02 W=3 SYSTEMIC_FATIGUE",
+     "inH": [
+      "EASY:40",
+      "EASY:34",
+      "LONG:60"
+     ],
+     "ceil": 55,
+     "B": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     }
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-01 W=1 PLAIN_D0",
+     "inH": [
+      "WALK_JOG:21",
+      "WALK_JOG:21",
+      "WALK_JOG:21"
+     ],
+     "ceil": 15,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-01 W=1 PLAIN_D2",
+     "inH": [
+      "WALK_JOG:21",
+      "WALK_JOG:21"
+     ],
+     "ceil": 15,
+     "B": {
+      "s": "KEEP",
+      "a": "KEEP",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+     }
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-01 W=1 SCHEDULE_CHANGE",
+     "inH": [
+      "WALK_JOG:21",
+      "WALK_JOG:21",
+      "WALK_JOG:21"
+     ],
+     "ceil": 15,
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     }
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-01 W=1 SYSTEMIC_FATIGUE",
+     "inH": [
+      "WALK_JOG:21",
+      "WALK_JOG:21",
+      "WALK_JOG:21"
+     ],
+     "ceil": 15,
+     "B": {
+      "s": "MODIFY",
+      "a": "REDUCE",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "Remove the remaining hard suffix; keep easy participation"
+     }
+    }
+   ],
+   "rowsPlainD0": [
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-01 W=1 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:30/EASY:30/LONG:40",
+     "inH": "EASY:30/EASY:30/LONG:40",
+     "inRef": "EASY:30/EASY:30/LONG:40",
+     "ceil": 45
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-01 W=2 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:30/EASY:30/LONG:45",
+     "inH": "EASY:30/EASY:30/LONG:45",
+     "inRef": "EASY:30/EASY:30/LONG:40",
+     "ceil": 45
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-01 W=3 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:30/QUALITY:34/LONG:50",
+     "inH": "EASY:30/QUALITY:34/LONG:50",
+     "inRef": "EASY:30/EASY:30/LONG:40",
+     "ceil": 45
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-01 W=4 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:30/QUALITY:34/LONG:45",
+     "inH": "EASY:30/QUALITY:34/LONG:45",
+     "inRef": "EASY:30/EASY:30/LONG:30",
+     "ceil": 45
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-01 W=5 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:30/QUALITY:41/LONG:55",
+     "inH": "EASY:30/QUALITY:41/LONG:55",
+     "inRef": "EASY:30/EASY:30/LONG:35",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-02 W=1 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:30/EASY:30/LONG:40",
+     "inH": "EASY:30/EASY:30/LONG:40",
+     "inRef": "EASY:30/EASY:30/LONG:40",
+     "ceil": 45
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-02 W=2 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:30/EASY:30/LONG:45",
+     "inH": "EASY:30/EASY:30/LONG:45",
+     "inRef": "EASY:30/EASY:30/LONG:40",
+     "ceil": 45
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-02 W=3 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:30/QUALITY:34/LONG:50",
+     "inH": "EASY:30/QUALITY:34/LONG:50",
+     "inRef": "EASY:30/EASY:30/LONG:40",
+     "ceil": 45
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-02 W=4 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:30/QUALITY:34/LONG:45",
+     "inH": "EASY:30/QUALITY:34/LONG:45",
+     "inRef": "EASY:30/EASY:30/LONG:30",
+     "ceil": 45
+    },
+    {
+     "key": "EASY_CURRENT_40 asOf=2026-11-02 W=5 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:30/QUALITY:41/LONG:55",
+     "inH": "EASY:30/QUALITY:41/LONG:55",
+     "inRef": "EASY:30/EASY:30/LONG:35",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-01 W=1 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:35/EASY:35/LONG:50",
+     "inH": "EASY:35/EASY:35/LONG:50",
+     "inRef": "EASY:35/EASY:35/LONG:50",
+     "ceil": 55
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-01 W=2 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:35/EASY:35/LONG:55",
+     "inH": "EASY:35/EASY:35/LONG:55",
+     "inRef": "EASY:35/EASY:35/LONG:50",
+     "ceil": 55
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-01 W=3 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:40/QUALITY:34/LONG:60",
+     "inH": "EASY:40/QUALITY:34/LONG:60",
+     "inRef": "EASY:35/EASY:35/LONG:50",
+     "ceil": 55
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-01 W=4 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:40/QUALITY:34/LONG:55",
+     "inH": "EASY:40/QUALITY:34/LONG:55",
+     "inRef": "EASY:35/EASY:35/LONG:40",
+     "ceil": 55
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-01 W=5 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:40/QUALITY:41/LONG:65",
+     "inH": "EASY:40/QUALITY:41/LONG:65",
+     "inRef": "EASY:35/EASY:35/LONG:45",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-02 W=1 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:35/EASY:35/LONG:50",
+     "inH": "EASY:35/EASY:35/LONG:50",
+     "inRef": "EASY:35/EASY:35/LONG:50",
+     "ceil": 55
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-02 W=2 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:35/EASY:35/LONG:55",
+     "inH": "EASY:35/EASY:35/LONG:55",
+     "inRef": "EASY:35/EASY:35/LONG:50",
+     "ceil": 55
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-02 W=3 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:40/QUALITY:34/LONG:60",
+     "inH": "EASY:40/QUALITY:34/LONG:60",
+     "inRef": "EASY:35/EASY:35/LONG:50",
+     "ceil": 55
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-02 W=4 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:40/QUALITY:34/LONG:55",
+     "inH": "EASY:40/QUALITY:34/LONG:55",
+     "inRef": "EASY:35/EASY:35/LONG:40",
+     "ceil": 55
+    },
+    {
+     "key": "EASY_CURRENT_50 asOf=2026-11-02 W=5 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:40/QUALITY:41/LONG:65",
+     "inH": "EASY:40/QUALITY:41/LONG:65",
+     "inRef": "EASY:35/EASY:35/LONG:45",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_CURRENT_60 asOf=2026-11-01 W=1 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:45/EASY:45/LONG:60",
+     "inH": "EASY:45/EASY:45/LONG:60",
+     "inRef": "EASY:45/EASY:45/LONG:60",
+     "ceil": 65
+    },
+    {
+     "key": "EASY_CURRENT_60 asOf=2026-11-01 W=2 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:45/EASY:45/LONG:65",
+     "inH": "EASY:45/EASY:45/LONG:65",
+     "inRef": "EASY:45/EASY:45/LONG:60",
+     "ceil": 65
+    },
+    {
+     "key": "EASY_CURRENT_60 asOf=2026-11-01 W=3 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:50/QUALITY:34/LONG:65",
+     "inH": "EASY:50/QUALITY:34/LONG:65",
+     "inRef": "EASY:45/EASY:45/LONG:60",
+     "ceil": 65
+    },
+    {
+     "key": "EASY_CURRENT_60 asOf=2026-11-01 W=4 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:50/QUALITY:34/LONG:60",
+     "inH": "EASY:50/QUALITY:34/LONG:60",
+     "inRef": "EASY:45/EASY:45/LONG:50",
+     "ceil": 65
+    },
+    {
+     "key": "EASY_CURRENT_60 asOf=2026-11-01 W=5 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:50/QUALITY:41/LONG:70",
+     "inH": "EASY:50/QUALITY:41/LONG:70",
+     "inRef": "EASY:45/EASY:45/LONG:55",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_CURRENT_60 asOf=2026-11-02 W=1 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:45/EASY:45/LONG:60",
+     "inH": "EASY:45/EASY:45/LONG:60",
+     "inRef": "EASY:45/EASY:45/LONG:60",
+     "ceil": 65
+    },
+    {
+     "key": "EASY_CURRENT_60 asOf=2026-11-02 W=2 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:45/EASY:45/LONG:65",
+     "inH": "EASY:45/EASY:45/LONG:65",
+     "inRef": "EASY:45/EASY:45/LONG:60",
+     "ceil": 65
+    },
+    {
+     "key": "EASY_CURRENT_60 asOf=2026-11-02 W=3 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:50/QUALITY:34/LONG:65",
+     "inH": "EASY:50/QUALITY:34/LONG:65",
+     "inRef": "EASY:45/EASY:45/LONG:60",
+     "ceil": 65
+    },
+    {
+     "key": "EASY_CURRENT_60 asOf=2026-11-02 W=4 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:50/QUALITY:34/LONG:60",
+     "inH": "EASY:50/QUALITY:34/LONG:60",
+     "inRef": "EASY:45/EASY:45/LONG:50",
+     "ceil": 65
+    },
+    {
+     "key": "EASY_CURRENT_60 asOf=2026-11-02 W=5 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:50/QUALITY:41/LONG:70",
+     "inH": "EASY:50/QUALITY:41/LONG:70",
+     "inRef": "EASY:45/EASY:45/LONG:55",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_CURRENT_70 asOf=2026-11-01 W=1 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:50/EASY:50/LONG:70",
+     "inH": "EASY:50/EASY:50/LONG:70",
+     "inRef": "EASY:50/EASY:50/LONG:70",
+     "ceil": 75
+    },
+    {
+     "key": "EASY_CURRENT_70 asOf=2026-11-01 W=2 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:50/EASY:50/LONG:75",
+     "inH": "EASY:50/EASY:50/LONG:75",
+     "inRef": "EASY:50/EASY:50/LONG:70",
+     "ceil": 75
+    },
+    {
+     "key": "EASY_CURRENT_70 asOf=2026-11-01 W=3 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:55/QUALITY:34/LONG:75",
+     "inH": "EASY:55/QUALITY:34/LONG:75",
+     "inRef": "EASY:50/EASY:50/LONG:70",
+     "ceil": 75
+    },
+    {
+     "key": "EASY_CURRENT_70 asOf=2026-11-01 W=4 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:55/QUALITY:34/LONG:65",
+     "inH": "EASY:55/QUALITY:34/LONG:65",
+     "inRef": "EASY:50/EASY:50/LONG:60",
+     "ceil": 75
+    },
+    {
+     "key": "EASY_CURRENT_70 asOf=2026-11-01 W=5 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:55/QUALITY:41/LONG:75",
+     "inH": "EASY:55/QUALITY:41/LONG:75",
+     "inRef": "EASY:50/EASY:50/LONG:65",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_CURRENT_70 asOf=2026-11-02 W=1 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:50/EASY:50/LONG:70",
+     "inH": "EASY:50/EASY:50/LONG:70",
+     "inRef": "EASY:50/EASY:50/LONG:70",
+     "ceil": 75
+    },
+    {
+     "key": "EASY_CURRENT_70 asOf=2026-11-02 W=2 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:50/EASY:50/LONG:75",
+     "inH": "EASY:50/EASY:50/LONG:75",
+     "inRef": "EASY:50/EASY:50/LONG:70",
+     "ceil": 75
+    },
+    {
+     "key": "EASY_CURRENT_70 asOf=2026-11-02 W=3 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:55/QUALITY:34/LONG:75",
+     "inH": "EASY:55/QUALITY:34/LONG:75",
+     "inRef": "EASY:50/EASY:50/LONG:70",
+     "ceil": 75
+    },
+    {
+     "key": "EASY_CURRENT_70 asOf=2026-11-02 W=4 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:55/QUALITY:34/LONG:65",
+     "inH": "EASY:55/QUALITY:34/LONG:65",
+     "inRef": "EASY:50/EASY:50/LONG:60",
+     "ceil": 75
+    },
+    {
+     "key": "EASY_CURRENT_70 asOf=2026-11-02 W=5 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:55/QUALITY:41/LONG:75",
+     "inH": "EASY:55/QUALITY:41/LONG:75",
+     "inRef": "EASY:50/EASY:50/LONG:65",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-01 W=1 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "WALK_JOG:21/WALK_JOG:21/WALK_JOG:21",
+     "inH": "WALK_JOG:21/WALK_JOG:21/WALK_JOG:21",
+     "inRef": "WALK_JOG:20/WALK_JOG:20/WALK_JOG:20",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-01 W=2 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "WALK_JOG:23/WALK_JOG:23/WALK_JOG:23",
+     "inH": "WALK_JOG:23/WALK_JOG:23/WALK_JOG:23",
+     "inRef": "WALK_JOG:20/WALK_JOG:20/WALK_JOG:20",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-01 W=3 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "WALK_JOG:26/WALK_JOG:26/WALK_JOG:26",
+     "inH": "WALK_JOG:26/WALK_JOG:26/WALK_JOG:26",
+     "inRef": "WALK_JOG:20/WALK_JOG:20/WALK_JOG:20",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-01 W=4 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "WALK_JOG:28/WALK_JOG:28/WALK_JOG:28",
+     "inH": "WALK_JOG:28/WALK_JOG:28/WALK_JOG:28",
+     "inRef": "WALK_JOG:20/WALK_JOG:20/WALK_JOG:20",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-01 W=5 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "WALK_JOG:28/WALK_JOG:28/WALK_JOG:28",
+     "inH": "WALK_JOG:28/WALK_JOG:28/WALK_JOG:28",
+     "inRef": "WALK_JOG:20/WALK_JOG:20/WALK_JOG:20",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-02 W=1 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "WALK_JOG:21/WALK_JOG:21/WALK_JOG:21",
+     "inH": "WALK_JOG:21/WALK_JOG:21/WALK_JOG:21",
+     "inRef": "WALK_JOG:20/WALK_JOG:20/WALK_JOG:20",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-02 W=2 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "WALK_JOG:23/WALK_JOG:23/WALK_JOG:23",
+     "inH": "WALK_JOG:23/WALK_JOG:23/WALK_JOG:23",
+     "inRef": "WALK_JOG:20/WALK_JOG:20/WALK_JOG:20",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-02 W=3 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "WALK_JOG:26/WALK_JOG:26/WALK_JOG:26",
+     "inH": "WALK_JOG:26/WALK_JOG:26/WALK_JOG:26",
+     "inRef": "WALK_JOG:20/WALK_JOG:20/WALK_JOG:20",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-02 W=4 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "WALK_JOG:28/WALK_JOG:28/WALK_JOG:28",
+     "inH": "WALK_JOG:28/WALK_JOG:28/WALK_JOG:28",
+     "inRef": "WALK_JOG:20/WALK_JOG:20/WALK_JOG:20",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_LOW asOf=2026-11-02 W=5 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "WALK_JOG:28/WALK_JOG:28/WALK_JOG:28",
+     "inH": "WALK_JOG:28/WALK_JOG:28/WALK_JOG:28",
+     "inRef": "WALK_JOG:20/WALK_JOG:20/WALK_JOG:20",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_UNKNOWN asOf=2026-11-01 W=1 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:20/EASY:20/LONG:20",
+     "inH": "EASY:20/EASY:20/LONG:20",
+     "inRef": "EASY:20/EASY:20/LONG:20",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_UNKNOWN asOf=2026-11-01 W=2 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:20/EASY:20/LONG:25",
+     "inH": "EASY:20/EASY:20/LONG:25",
+     "inRef": "EASY:20/EASY:20/LONG:25",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_UNKNOWN asOf=2026-11-01 W=3 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:20/EASY:20/LONG:30",
+     "inH": "EASY:20/EASY:20/LONG:30",
+     "inRef": "EASY:20/EASY:20/LONG:30",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_UNKNOWN asOf=2026-11-01 W=4 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:20/EASY:20/LONG:25",
+     "inH": "EASY:20/EASY:20/LONG:25",
+     "inRef": "EASY:20/EASY:20/LONG:25",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_UNKNOWN asOf=2026-11-01 W=5 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:20/EASY:20/LONG:30",
+     "inH": "EASY:20/EASY:20/LONG:30",
+     "inRef": "EASY:20/EASY:20/LONG:30",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_UNKNOWN asOf=2026-11-02 W=1 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:20/EASY:20/LONG:20",
+     "inH": "EASY:20/EASY:20/LONG:20",
+     "inRef": "EASY:20/EASY:20/LONG:20",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_UNKNOWN asOf=2026-11-02 W=2 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:20/EASY:20/LONG:25",
+     "inH": "EASY:20/EASY:20/LONG:25",
+     "inRef": "EASY:20/EASY:20/LONG:25",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_UNKNOWN asOf=2026-11-02 W=3 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:20/EASY:20/LONG:30",
+     "inH": "EASY:20/EASY:20/LONG:30",
+     "inRef": "EASY:20/EASY:20/LONG:30",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_UNKNOWN asOf=2026-11-02 W=4 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:20/EASY:20/LONG:25",
+     "inH": "EASY:20/EASY:20/LONG:25",
+     "inRef": "EASY:20/EASY:20/LONG:25",
+     "ceil": 15
+    },
+    {
+     "key": "EASY_UNKNOWN asOf=2026-11-02 W=5 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:20/EASY:20/LONG:30",
+     "inH": "EASY:20/EASY:20/LONG:30",
+     "inRef": "EASY:20/EASY:20/LONG:30",
+     "ceil": 15
+    },
+    {
+     "key": "QUALITY_FAMILIAR asOf=2026-11-01 W=1 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:35/EASY:35/EASY:35/LONG:85",
+     "inH": "EASY:35/EASY:35/EASY:35/LONG:85",
+     "inRef": "EASY:35/EASY:35/EASY:35/LONG:85",
+     "ceil": 95
+    },
+    {
+     "key": "QUALITY_FAMILIAR asOf=2026-11-01 W=2 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:35/EASY:35/EASY:35/LONG:85",
+     "inH": "EASY:35/EASY:35/EASY:35/LONG:85",
+     "inRef": "EASY:35/EASY:35/EASY:35/LONG:85",
+     "ceil": 95
+    },
+    {
+     "key": "QUALITY_FAMILIAR asOf=2026-11-01 W=3 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:40/QUALITY:34/EASY:35/LONG:85",
+     "inH": "EASY:40/QUALITY:34/EASY:35/LONG:85",
+     "inRef": "EASY:35/EASY:35/EASY:35/LONG:85",
+     "ceil": 95
+    },
+    {
+     "key": "QUALITY_FAMILIAR asOf=2026-11-01 W=4 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:40/QUALITY:34/EASY:35/LONG:75",
+     "inH": "EASY:40/QUALITY:34/EASY:35/LONG:75",
+     "inRef": "EASY:35/EASY:35/EASY:35/LONG:75",
+     "ceil": 95
+    },
+    {
+     "key": "QUALITY_FAMILIAR asOf=2026-11-01 W=5 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:40/QUALITY:41/EASY:35/LONG:85",
+     "inH": "EASY:40/QUALITY:41/EASY:35/LONG:85",
+     "inRef": "EASY:35/EASY:35/EASY:35/LONG:80",
+     "ceil": 15
+    },
+    {
+     "key": "QUALITY_FAMILIAR asOf=2026-11-02 W=1 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:35/EASY:35/EASY:35/LONG:85",
+     "inH": "EASY:35/EASY:35/EASY:35/LONG:85",
+     "inRef": "EASY:35/EASY:35/EASY:35/LONG:85",
+     "ceil": 95
+    },
+    {
+     "key": "QUALITY_FAMILIAR asOf=2026-11-02 W=2 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:35/EASY:35/EASY:35/LONG:85",
+     "inH": "EASY:35/EASY:35/EASY:35/LONG:85",
+     "inRef": "EASY:35/EASY:35/EASY:35/LONG:85",
+     "ceil": 95
+    },
+    {
+     "key": "QUALITY_FAMILIAR asOf=2026-11-02 W=3 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:40/QUALITY:34/EASY:35/LONG:85",
+     "inH": "EASY:40/QUALITY:34/EASY:35/LONG:85",
+     "inRef": "EASY:35/EASY:35/EASY:35/LONG:85",
+     "ceil": 95
+    },
+    {
+     "key": "QUALITY_FAMILIAR asOf=2026-11-02 W=4 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:40/QUALITY:34/EASY:35/LONG:75",
+     "inH": "EASY:40/QUALITY:34/EASY:35/LONG:75",
+     "inRef": "EASY:35/EASY:35/EASY:35/LONG:75",
+     "ceil": 95
+    },
+    {
+     "key": "QUALITY_FAMILIAR asOf=2026-11-02 W=5 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:40/QUALITY:41/EASY:35/LONG:85",
+     "inH": "EASY:40/QUALITY:41/EASY:35/LONG:85",
+     "inRef": "EASY:35/EASY:35/EASY:35/LONG:80",
+     "ceil": 15
+    },
+    {
+     "key": "RESTART asOf=2026-11-01 W=1 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:20/EASY:20/EASY:20",
+     "inH": "EASY:20/EASY:20/EASY:20",
+     "inRef": "EASY:15/EASY:15/EASY:15",
+     "ceil": 15
+    },
+    {
+     "key": "RESTART asOf=2026-11-01 W=2 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:25/EASY:25/EASY:25",
+     "inH": "EASY:25/EASY:25/EASY:25",
+     "inRef": "EASY:15/EASY:15/EASY:15",
+     "ceil": 15
+    },
+    {
+     "key": "RESTART asOf=2026-11-01 W=3 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:30/EASY:30/LONG:30",
+     "inH": "EASY:30/EASY:30/LONG:30",
+     "inRef": "EASY:15/EASY:15/EASY:15",
+     "ceil": 15
+    },
+    {
+     "key": "RESTART asOf=2026-11-01 W=4 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:30/EASY:30/LONG:25",
+     "inH": "EASY:30/EASY:30/LONG:25",
+     "inRef": "EASY:15/EASY:15/EASY:15",
+     "ceil": 15
+    },
+    {
+     "key": "RESTART asOf=2026-11-01 W=5 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:30/EASY:30/LONG:35",
+     "inH": "EASY:30/EASY:30/LONG:35",
+     "inRef": "EASY:15/EASY:15/EASY:15",
+     "ceil": 15
+    },
+    {
+     "key": "RESTART asOf=2026-11-02 W=1 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:20/EASY:20/EASY:20",
+     "inH": "EASY:20/EASY:20/EASY:20",
+     "inRef": "EASY:15/EASY:15/EASY:15",
+     "ceil": 15
+    },
+    {
+     "key": "RESTART asOf=2026-11-02 W=2 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:25/EASY:25/EASY:25",
+     "inH": "EASY:25/EASY:25/EASY:25",
+     "inRef": "EASY:15/EASY:15/EASY:15",
+     "ceil": 15
+    },
+    {
+     "key": "RESTART asOf=2026-11-02 W=3 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:30/EASY:30/LONG:30",
+     "inH": "EASY:30/EASY:30/LONG:30",
+     "inRef": "EASY:15/EASY:15/EASY:15",
+     "ceil": 15
+    },
+    {
+     "key": "RESTART asOf=2026-11-02 W=4 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:30/EASY:30/LONG:25",
+     "inH": "EASY:30/EASY:30/LONG:25",
+     "inRef": "EASY:15/EASY:15/EASY:15",
+     "ceil": 15
+    },
+    {
+     "key": "RESTART asOf=2026-11-02 W=5 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:30/EASY:30/LONG:35",
+     "inH": "EASY:30/EASY:30/LONG:35",
+     "inRef": "EASY:15/EASY:15/EASY:15",
+     "ceil": 15
+    },
+    {
+     "key": "RACE_10K asOf=2026-11-01 W=1 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:40/EASY:40/LONG:65",
+     "inH": "EASY:40/EASY:40/LONG:65",
+     "inRef": "EASY:40/EASY:40/LONG:65",
+     "ceil": 75
+    },
+    {
+     "key": "RACE_10K asOf=2026-11-01 W=2 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:40/EASY:40/LONG:65",
+     "inH": "EASY:40/EASY:40/LONG:65",
+     "inRef": "EASY:40/EASY:40/LONG:65",
+     "ceil": 75
+    },
+    {
+     "key": "RACE_10K asOf=2026-11-01 W=3 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:45/QUALITY:34/LONG:65",
+     "inH": "EASY:45/QUALITY:34/LONG:65",
+     "inRef": "EASY:40/EASY:40/LONG:65",
+     "ceil": 75
+    },
+    {
+     "key": "RACE_10K asOf=2026-11-01 W=4 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:45/QUALITY:34/LONG:60",
+     "inH": "EASY:45/QUALITY:34/LONG:60",
+     "inRef": "EASY:40/EASY:40/LONG:55",
+     "ceil": 75
+    },
+    {
+     "key": "RACE_10K asOf=2026-11-01 W=5 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:45/QUALITY:41/LONG:70",
+     "inH": "EASY:45/QUALITY:41/LONG:70",
+     "inRef": "EASY:40/EASY:40/LONG:60",
+     "ceil": 15
+    },
+    {
+     "key": "RACE_10K asOf=2026-11-02 W=1 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:40/EASY:40/LONG:65",
+     "inH": "EASY:40/EASY:40/LONG:65",
+     "inRef": "EASY:40/EASY:40/LONG:65",
+     "ceil": 75
+    },
+    {
+     "key": "RACE_10K asOf=2026-11-02 W=2 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:40/EASY:40/LONG:65",
+     "inH": "EASY:40/EASY:40/LONG:65",
+     "inRef": "EASY:40/EASY:40/LONG:65",
+     "ceil": 75
+    },
+    {
+     "key": "RACE_10K asOf=2026-11-02 W=3 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:45/QUALITY:34/LONG:65",
+     "inH": "EASY:45/QUALITY:34/LONG:65",
+     "inRef": "EASY:40/EASY:40/LONG:65",
+     "ceil": 75
+    },
+    {
+     "key": "RACE_10K asOf=2026-11-02 W=4 PLAIN_D0",
+     "B": "KEEP/KEEP/VALID",
+     "REF": "KEEP/KEEP/VALID",
+     "stored": "EASY:45/QUALITY:34/LONG:60",
+     "inH": "EASY:45/QUALITY:34/LONG:60",
+     "inRef": "EASY:40/EASY:40/LONG:55",
+     "ceil": 75
+    },
+    {
+     "key": "RACE_10K asOf=2026-11-02 W=5 PLAIN_D0",
+     "B": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "REF": "ASK/ASK/REQUIRES_RECONCILIATION",
+     "stored": "EASY:45/QUALITY:41/LONG:70",
+     "inH": "EASY:45/QUALITY:41/LONG:70",
+     "inRef": "EASY:40/EASY:40/LONG:60",
+     "ceil": 15
+    }
+   ]
+  }
+ },
+ "L": {
+  "HEAD": {
+   "rows": [
+    {
+     "key": "GEN b=5 g=1 day 0",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "A": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "stored": "EASY:45/EASY:45/LONG:60",
+     "inB": "EASY:45/EASY:45/LONG:60",
+     "inA": "EASY:45/EASY:45/LONG:60",
+     "eqA": true,
+     "ceiling": 65,
+     "overCeiling": []
+    },
+    {
+     "key": "GEN b=5 g=1 day 2",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "ASK",
+      "a": "ASK",
+      "v": "REQUIRES_RECONCILIATION",
+      "q": "UNREPORTED_TRAINING",
+      "reason": "No run is recorded in the 30 days before 2026-12-14, the reference for the runs planned from then, and 1 planned run session from 2026-12-08"
+     },
+     "A": {
+      "s": "ASK",
+      "a": "ASK",
+      "v": "REQUIRES_RECONCILIATION",
+      "q": "UNREPORTED_TRAINING",
+      "reason": "No run is recorded in the 30 days before 2026-12-14, the reference for the runs planned from then, and 1 planned run session from 2026-12-08"
+     },
+     "stored": "EASY:45/LONG:60",
+     "inB": "EASY:45/LONG:60",
+     "inA": "EASY:45/LONG:60",
+     "eqA": true,
+     "ceiling": 65,
+     "overCeiling": []
+    },
+    {
+     "key": "GEN b=5 g=2 day 0",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "A": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "stored": "EASY:45/EASY:45/LONG:65",
+     "inB": "EASY:45/EASY:45/LONG:65",
+     "inA": "EASY:45/EASY:45/LONG:65",
+     "eqA": true,
+     "ceiling": 65,
+     "overCeiling": []
+    },
+    {
+     "key": "GEN b=5 g=2 day 2",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "A": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "stored": "EASY:45/LONG:65",
+     "inB": "EASY:45/LONG:65",
+     "inA": "EASY:45/LONG:65",
+     "eqA": true,
+     "ceiling": 65,
+     "overCeiling": []
+    },
+    {
+     "key": "GEN b=5 g=3 day 0",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "A": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "stored": "EASY:50/QUALITY:34/LONG:65",
+     "inB": "EASY:50/QUALITY:34/LONG:65",
+     "inA": "EASY:50/QUALITY:34/LONG:65",
+     "eqA": true,
+     "ceiling": 70,
+     "overCeiling": []
+    },
+    {
+     "key": "GEN b=5 g=3 day 2",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "A": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "stored": "QUALITY:34/LONG:65",
+     "inB": "QUALITY:34/LONG:65",
+     "inA": "QUALITY:34/LONG:65",
+     "eqA": true,
+     "ceiling": 70,
+     "overCeiling": []
+    },
+    {
+     "key": "GEN b=7 g=3 day 0",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "A": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "stored": "EASY:50/QUALITY:34/LONG:65",
+     "inB": "EASY:50/QUALITY:34/LONG:65",
+     "inA": "EASY:50/QUALITY:34/LONG:65",
+     "eqA": true,
+     "ceiling": 70,
+     "overCeiling": []
+    },
+    {
+     "key": "GEN b=7 g=3 day 2",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "ASK",
+      "a": "ASK",
+      "v": "REQUIRES_RECONCILIATION",
+      "q": "UNREPORTED_TRAINING",
+      "reason": "No run is recorded in the 30 days before 2026-12-28, the reference for the runs planned from then, and 1 planned run session from 2026-12-22"
+     },
+     "A": {
+      "s": "ASK",
+      "a": "ASK",
+      "v": "REQUIRES_RECONCILIATION",
+      "q": "UNREPORTED_TRAINING",
+      "reason": "No run is recorded in the 30 days before 2026-12-28, the reference for the runs planned from then, and 1 planned run session from 2026-12-22"
+     },
+     "stored": "QUALITY:34/LONG:65",
+     "inB": "QUALITY:34/LONG:65",
+     "inA": "QUALITY:34/LONG:65",
+     "eqA": true,
+     "ceiling": 70,
+     "overCeiling": []
+    },
+    {
+     "key": "GEN b=7 g=4 day 0",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "A": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "stored": "EASY:50/QUALITY:41/LONG:70",
+     "inB": "EASY:50/QUALITY:41/LONG:70",
+     "inA": "EASY:50/QUALITY:41/LONG:70",
+     "eqA": true,
+     "ceiling": 70,
+     "overCeiling": []
+    },
+    {
+     "key": "GEN b=7 g=4 day 2",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "A": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "stored": "QUALITY:41/LONG:70",
+     "inB": "QUALITY:41/LONG:70",
+     "inA": "QUALITY:41/LONG:70",
+     "eqA": true,
+     "ceiling": 70,
+     "overCeiling": []
+    },
+    {
+     "key": "GEN b=7 g=5 day 0",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "A": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "stored": "EASY:50/QUALITY:41/LONG:70",
+     "inB": "EASY:50/QUALITY:41/LONG:70",
+     "inA": "EASY:50/QUALITY:41/LONG:70",
+     "eqA": true,
+     "ceiling": 70,
+     "overCeiling": []
+    },
+    {
+     "key": "GEN b=7 g=5 day 2",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "A": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "stored": "QUALITY:41/LONG:70",
+     "inB": "QUALITY:41/LONG:70",
+     "inA": "QUALITY:41/LONG:70",
+     "eqA": true,
+     "ceiling": 70,
+     "overCeiling": []
+    },
+    {
+     "key": "GEN b=9 g=5 day 0",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "A": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "stored": "EASY:50/QUALITY:41/LONG:65",
+     "inB": "EASY:50/QUALITY:41/LONG:65",
+     "inA": "EASY:50/QUALITY:41/LONG:65",
+     "eqA": true,
+     "ceiling": 65,
+     "overCeiling": []
+    },
+    {
+     "key": "GEN b=9 g=5 day 2",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "ASK",
+      "a": "ASK",
+      "v": "REQUIRES_RECONCILIATION",
+      "q": "UNREPORTED_TRAINING",
+      "reason": "No run is recorded in the 30 days before 2027-01-11, the reference for the runs planned from then, and 1 planned run session from 2027-01-05"
+     },
+     "A": {
+      "s": "ASK",
+      "a": "ASK",
+      "v": "REQUIRES_RECONCILIATION",
+      "q": "UNREPORTED_TRAINING",
+      "reason": "No run is recorded in the 30 days before 2027-01-11, the reference for the runs planned from then, and 1 planned run session from 2027-01-05"
+     },
+     "stored": "QUALITY:41/LONG:65",
+     "inB": "QUALITY:41/LONG:65",
+     "inA": "QUALITY:41/LONG:65",
+     "eqA": true,
+     "ceiling": 65,
+     "overCeiling": []
+    },
+    {
+     "key": "GEN b=9 g=6 day 0",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "A": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "stored": "EASY:50/QUALITY:48/LONG:75",
+     "inB": "EASY:50/QUALITY:48/LONG:75",
+     "inA": "EASY:50/QUALITY:48/LONG:75",
+     "eqA": true,
+     "ceiling": 75,
+     "overCeiling": []
+    },
+    {
+     "key": "GEN b=9 g=6 day 2",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "A": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "stored": "QUALITY:48/LONG:75",
+     "inB": "QUALITY:48/LONG:75",
+     "inA": "QUALITY:48/LONG:75",
+     "eqA": true,
+     "ceiling": 75,
+     "overCeiling": []
+    },
+    {
+     "key": "GEN b=9 g=7 day 0",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "A": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "stored": "EASY:50/QUALITY:43/LONG:75",
+     "inB": "EASY:50/QUALITY:43/LONG:75",
+     "inA": "EASY:50/QUALITY:43/LONG:75",
+     "eqA": true,
+     "ceiling": 80,
+     "overCeiling": []
+    },
+    {
+     "key": "GEN b=9 g=7 day 2",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "A": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "stored": "QUALITY:43/LONG:75",
+     "inB": "QUALITY:43/LONG:75",
+     "inA": "QUALITY:43/LONG:75",
+     "eqA": true,
+     "ceiling": 80,
+     "overCeiling": []
+    }
+   ],
+   "eqA": 18,
+   "n": 18,
+   "overCeiling": 0
+  },
+  "F1": {
+   "rows": [
+    {
+     "key": "GEN b=5 g=1 day 0",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "A": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "stored": "EASY:45/EASY:45/LONG:60",
+     "inB": "EASY:45/EASY:45/LONG:60",
+     "inA": "EASY:45/EASY:45/LONG:60",
+     "eqA": true,
+     "ceiling": 65,
+     "overCeiling": []
+    },
+    {
+     "key": "GEN b=5 g=1 day 2",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "ASK",
+      "a": "ASK",
+      "v": "REQUIRES_RECONCILIATION",
+      "q": "UNREPORTED_TRAINING",
+      "reason": "No run is recorded in the 30 days before 2026-12-14, the reference for the runs planned from then, and 1 planned run session from 2026-12-08"
+     },
+     "A": {
+      "s": "ASK",
+      "a": "ASK",
+      "v": "REQUIRES_RECONCILIATION",
+      "q": "UNREPORTED_TRAINING",
+      "reason": "No run is recorded in the 30 days before 2026-12-14, the reference for the runs planned from then, and 1 planned run session from 2026-12-08"
+     },
+     "stored": "EASY:45/LONG:60",
+     "inB": "EASY:45/LONG:60",
+     "inA": "EASY:45/LONG:60",
+     "eqA": true,
+     "ceiling": 65,
+     "overCeiling": []
+    },
+    {
+     "key": "GEN b=5 g=2 day 0",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "A": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "stored": "EASY:45/EASY:45/LONG:65",
+     "inB": "EASY:45/EASY:45/LONG:65",
+     "inA": "EASY:45/EASY:45/LONG:65",
+     "eqA": true,
+     "ceiling": 65,
+     "overCeiling": []
+    },
+    {
+     "key": "GEN b=5 g=2 day 2",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "A": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "stored": "EASY:45/LONG:65",
+     "inB": "EASY:45/LONG:65",
+     "inA": "EASY:45/LONG:65",
+     "eqA": true,
+     "ceiling": 65,
+     "overCeiling": []
+    },
+    {
+     "key": "GEN b=5 g=3 day 0",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "A": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "stored": "EASY:50/QUALITY:34/LONG:65",
+     "inB": "EASY:50/QUALITY:34/LONG:65",
+     "inA": "EASY:50/QUALITY:34/LONG:65",
+     "eqA": true,
+     "ceiling": 70,
+     "overCeiling": []
+    },
+    {
+     "key": "GEN b=5 g=3 day 2",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "A": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "stored": "QUALITY:34/LONG:65",
+     "inB": "QUALITY:34/LONG:65",
+     "inA": "QUALITY:34/LONG:65",
+     "eqA": true,
+     "ceiling": 70,
+     "overCeiling": []
+    },
+    {
+     "key": "GEN b=7 g=3 day 0",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "A": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "stored": "EASY:50/QUALITY:34/LONG:65",
+     "inB": "EASY:50/QUALITY:34/LONG:65",
+     "inA": "EASY:50/QUALITY:34/LONG:65",
+     "eqA": true,
+     "ceiling": 70,
+     "overCeiling": []
+    },
+    {
+     "key": "GEN b=7 g=3 day 2",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "ASK",
+      "a": "ASK",
+      "v": "REQUIRES_RECONCILIATION",
+      "q": "UNREPORTED_TRAINING",
+      "reason": "No run is recorded in the 30 days before 2026-12-28, the reference for the runs planned from then, and 1 planned run session from 2026-12-22"
+     },
+     "A": {
+      "s": "ASK",
+      "a": "ASK",
+      "v": "REQUIRES_RECONCILIATION",
+      "q": "UNREPORTED_TRAINING",
+      "reason": "No run is recorded in the 30 days before 2026-12-28, the reference for the runs planned from then, and 1 planned run session from 2026-12-22"
+     },
+     "stored": "QUALITY:34/LONG:65",
+     "inB": "QUALITY:34/LONG:65",
+     "inA": "QUALITY:34/LONG:65",
+     "eqA": true,
+     "ceiling": 70,
+     "overCeiling": []
+    },
+    {
+     "key": "GEN b=7 g=4 day 0",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "A": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "stored": "EASY:50/QUALITY:41/LONG:70",
+     "inB": "EASY:50/QUALITY:41/LONG:70",
+     "inA": "EASY:50/QUALITY:41/LONG:70",
+     "eqA": true,
+     "ceiling": 70,
+     "overCeiling": []
+    },
+    {
+     "key": "GEN b=7 g=4 day 2",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "A": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "stored": "QUALITY:41/LONG:70",
+     "inB": "QUALITY:41/LONG:70",
+     "inA": "QUALITY:41/LONG:70",
+     "eqA": true,
+     "ceiling": 70,
+     "overCeiling": []
+    },
+    {
+     "key": "GEN b=7 g=5 day 0",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "A": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "stored": "EASY:50/QUALITY:41/LONG:70",
+     "inB": "EASY:50/QUALITY:41/LONG:70",
+     "inA": "EASY:50/QUALITY:41/LONG:70",
+     "eqA": true,
+     "ceiling": 70,
+     "overCeiling": []
+    },
+    {
+     "key": "GEN b=7 g=5 day 2",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "A": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "stored": "QUALITY:41/LONG:70",
+     "inB": "QUALITY:41/LONG:70",
+     "inA": "QUALITY:41/LONG:70",
+     "eqA": true,
+     "ceiling": 70,
+     "overCeiling": []
+    },
+    {
+     "key": "GEN b=9 g=5 day 0",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "A": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "stored": "EASY:50/QUALITY:41/LONG:65",
+     "inB": "EASY:50/QUALITY:41/LONG:65",
+     "inA": "EASY:50/QUALITY:41/LONG:65",
+     "eqA": true,
+     "ceiling": 65,
+     "overCeiling": []
+    },
+    {
+     "key": "GEN b=9 g=5 day 2",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "ASK",
+      "a": "ASK",
+      "v": "REQUIRES_RECONCILIATION",
+      "q": "UNREPORTED_TRAINING",
+      "reason": "No run is recorded in the 30 days before 2027-01-11, the reference for the runs planned from then, and 1 planned run session from 2027-01-05"
+     },
+     "A": {
+      "s": "ASK",
+      "a": "ASK",
+      "v": "REQUIRES_RECONCILIATION",
+      "q": "UNREPORTED_TRAINING",
+      "reason": "No run is recorded in the 30 days before 2027-01-11, the reference for the runs planned from then, and 1 planned run session from 2027-01-05"
+     },
+     "stored": "QUALITY:41/LONG:65",
+     "inB": "QUALITY:41/LONG:65",
+     "inA": "QUALITY:41/LONG:65",
+     "eqA": true,
+     "ceiling": 65,
+     "overCeiling": []
+    },
+    {
+     "key": "GEN b=9 g=6 day 0",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "A": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "stored": "EASY:50/QUALITY:48/LONG:75",
+     "inB": "EASY:50/QUALITY:48/LONG:75",
+     "inA": "EASY:50/QUALITY:48/LONG:75",
+     "eqA": true,
+     "ceiling": 75,
+     "overCeiling": []
+    },
+    {
+     "key": "GEN b=9 g=6 day 2",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "A": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "stored": "QUALITY:48/LONG:75",
+     "inB": "QUALITY:48/LONG:75",
+     "inA": "QUALITY:48/LONG:75",
+     "eqA": true,
+     "ceiling": 75,
+     "overCeiling": []
+    },
+    {
+     "key": "GEN b=9 g=7 day 0",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "A": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "stored": "EASY:50/QUALITY:43/LONG:75",
+     "inB": "EASY:50/QUALITY:43/LONG:75",
+     "inA": "EASY:50/QUALITY:43/LONG:75",
+     "eqA": true,
+     "ceiling": 80,
+     "overCeiling": []
+    },
+    {
+     "key": "GEN b=9 g=7 day 2",
+     "reviewBefore": {
+      "A": "MODIFY",
+      "B": "MODIFY/"
+     },
+     "B": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "A": {
+      "s": "MODIFY",
+      "a": "REARRANGE_FUTURE_WEEKS",
+      "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "q": null,
+      "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+     },
+     "stored": "QUALITY:43/LONG:75",
+     "inB": "QUALITY:43/LONG:75",
+     "inA": "QUALITY:43/LONG:75",
+     "eqA": true,
+     "ceiling": 80,
+     "overCeiling": []
+    }
+   ],
+   "eqA": 18,
+   "n": 18,
+   "overCeiling": 0
+  }
+ },
+ "P": {
+  "HEAD": {
+   "decisions": 72,
+   "ceilingReplans": [],
+   "byVariant": {
+    "SHORT70": {
+     "decisions": 24,
+     "ceilingReplans": 0
+    },
+    "ONE_MISS": {
+     "decisions": 24,
+     "ceilingReplans": 0
+    },
+    "SHORT70_ONE_MISS": {
+     "decisions": 24,
+     "ceilingReplans": 0
+    }
+   }
+  },
+  "F1": {
+   "decisions": 72,
+   "ceilingReplans": [],
+   "byVariant": {
+    "SHORT70": {
+     "decisions": 24,
+     "ceilingReplans": 0
+    },
+    "ONE_MISS": {
+     "decisions": 24,
+     "ceilingReplans": 0
+    },
+    "SHORT70_ONE_MISS": {
+     "decisions": 24,
+     "ceilingReplans": 0
+    }
+   }
+  }
+ },
+ "R": {
+  "HEAD": [
+   {
+    "key": "SHORT 6d demo 25 long UNREPORTED",
+    "ret": {
+     "s": "MODIFY",
+     "a": "REESTABLISH",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "short nonclinical interruption (6 days): resume the last completed doses; no step until execution is observed"
+    },
+    "entryWeek": "EASY:30/EASY:30/LONG:30",
+    "stored": "EASY:30/EASY:30/LONG:35",
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Run doses stored ahead exceed what the recorded runs allow (the longest run completed in the window plus the single-run step, or the reviewe"
+    },
+    "inH": "EASY:15/EASY:15/LONG:15",
+    "ceilingWithoutDemo": 25,
+    "ceilingWithDemoIfInWindow": 30,
+    "ceilingReplan": true
+   },
+   {
+    "key": "SHORT 6d demo 25 long NOT_DONE",
+    "ret": {
+     "s": "MODIFY",
+     "a": "REESTABLISH",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "short nonclinical interruption (6 days): resume the last completed doses; no step until execution is observed"
+    },
+    "entryWeek": "EASY:30/EASY:30/LONG:30",
+    "stored": "EASY:30/EASY:30/LONG:35",
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Run doses stored ahead exceed what the recorded runs allow (the longest run completed in the window plus the single-run step, or the reviewe"
+    },
+    "inH": "EASY:15/EASY:15/LONG:15",
+    "ceilingWithoutDemo": 25,
+    "ceilingWithDemoIfInWindow": 30,
+    "ceilingReplan": true
+   },
+   {
+    "key": "SHORT 6d demo 25 long EXECUTED",
+    "ret": {
+     "s": "MODIFY",
+     "a": "REESTABLISH",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "short nonclinical interruption (6 days): resume the last completed doses; no step until execution is observed"
+    },
+    "entryWeek": "EASY:30/EASY:30/LONG:30",
+    "stored": "EASY:30/EASY:30/LONG:35",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "inH": "EASY:30/EASY:30/LONG:35",
+    "ceilingWithoutDemo": 35,
+    "ceilingWithDemoIfInWindow": 30,
+    "ceilingReplan": false
+   },
+   {
+    "key": "SHORT 6d demo 40 long UNREPORTED",
+    "ret": {
+     "s": "MODIFY",
+     "a": "REESTABLISH",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "short nonclinical interruption (6 days): resume the last completed doses; no step until execution is observed"
+    },
+    "entryWeek": "EASY:45/EASY:45/LONG:45",
+    "stored": "EASY:45/EASY:45/LONG:50",
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Run doses stored ahead exceed what the recorded runs allow (the longest run completed in the window plus the single-run step, or the reviewe"
+    },
+    "inH": "EASY:15/EASY:15/LONG:15",
+    "ceilingWithoutDemo": 40,
+    "ceilingWithDemoIfInWindow": 45,
+    "ceilingReplan": true
+   },
+   {
+    "key": "SHORT 6d demo 40 long NOT_DONE",
+    "ret": {
+     "s": "MODIFY",
+     "a": "REESTABLISH",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "short nonclinical interruption (6 days): resume the last completed doses; no step until execution is observed"
+    },
+    "entryWeek": "EASY:45/EASY:45/LONG:45",
+    "stored": "EASY:45/EASY:45/LONG:50",
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Run doses stored ahead exceed what the recorded runs allow (the longest run completed in the window plus the single-run step, or the reviewe"
+    },
+    "inH": "EASY:15/EASY:15/LONG:15",
+    "ceilingWithoutDemo": 40,
+    "ceilingWithDemoIfInWindow": 45,
+    "ceilingReplan": true
+   },
+   {
+    "key": "SHORT 6d demo 40 long EXECUTED",
+    "ret": {
+     "s": "MODIFY",
+     "a": "REESTABLISH",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "short nonclinical interruption (6 days): resume the last completed doses; no step until execution is observed"
+    },
+    "entryWeek": "EASY:45/EASY:45/LONG:45",
+    "stored": "EASY:45/EASY:45/LONG:50",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "inH": "EASY:45/EASY:45/LONG:50",
+    "ceilingWithoutDemo": 50,
+    "ceilingWithDemoIfInWindow": 45,
+    "ceilingReplan": false
+   },
+   {
+    "key": "MODERATE 20d demo 40 long UNREPORTED",
+    "ret": {
+     "s": "MODIFY",
+     "a": "REESTABLISH",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "moderate nonclinical interruption (20 days): re-entry from the current demonstration, returning to the prior tolerated dose in 2 conditional"
+    },
+    "entryWeek": "EASY:40/EASY:40/LONG:45",
+    "stored": "EASY:45/EASY:45/LONG:50",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "inH": "EASY:45/EASY:45/LONG:50",
+    "ceilingWithoutDemo": 35,
+    "ceilingWithDemoIfInWindow": 45,
+    "ceilingReplan": false
+   },
+   {
+    "key": "MODERATE 20d demo 40 long NOT_DONE",
+    "ret": {
+     "s": "MODIFY",
+     "a": "REESTABLISH",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "moderate nonclinical interruption (20 days): re-entry from the current demonstration, returning to the prior tolerated dose in 2 conditional"
+    },
+    "entryWeek": "EASY:40/EASY:40/LONG:45",
+    "stored": "EASY:45/EASY:45/LONG:50",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "inH": "EASY:45/EASY:45/LONG:50",
+    "ceilingWithoutDemo": 35,
+    "ceilingWithDemoIfInWindow": 45,
+    "ceilingReplan": false
+   },
+   {
+    "key": "MODERATE 20d demo 40 long EXECUTED",
+    "ret": {
+     "s": "MODIFY",
+     "a": "REESTABLISH",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "moderate nonclinical interruption (20 days): re-entry from the current demonstration, returning to the prior tolerated dose in 2 conditional"
+    },
+    "entryWeek": "EASY:40/EASY:40/LONG:45",
+    "stored": "EASY:45/EASY:45/LONG:50",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "inH": "EASY:45/EASY:45/LONG:50",
+    "ceilingWithoutDemo": 50,
+    "ceilingWithDemoIfInWindow": 45,
+    "ceilingReplan": false
+   }
+  ],
+  "F1": [
+   {
+    "key": "SHORT 6d demo 25 long UNREPORTED",
+    "ret": {
+     "s": "MODIFY",
+     "a": "REESTABLISH",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "short nonclinical interruption (6 days): resume the last completed doses; no step until execution is observed"
+    },
+    "entryWeek": "EASY:30/EASY:30/LONG:30",
+    "stored": "EASY:30/EASY:30/LONG:35",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "inH": "EASY:30/EASY:30/LONG:35",
+    "ceilingWithoutDemo": 25,
+    "ceilingWithDemoIfInWindow": 30,
+    "ceilingReplan": false
+   },
+   {
+    "key": "SHORT 6d demo 25 long NOT_DONE",
+    "ret": {
+     "s": "MODIFY",
+     "a": "REESTABLISH",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "short nonclinical interruption (6 days): resume the last completed doses; no step until execution is observed"
+    },
+    "entryWeek": "EASY:30/EASY:30/LONG:30",
+    "stored": "EASY:30/EASY:30/LONG:35",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "inH": "EASY:30/EASY:30/LONG:35",
+    "ceilingWithoutDemo": 25,
+    "ceilingWithDemoIfInWindow": 30,
+    "ceilingReplan": false
+   },
+   {
+    "key": "SHORT 6d demo 25 long EXECUTED",
+    "ret": {
+     "s": "MODIFY",
+     "a": "REESTABLISH",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "short nonclinical interruption (6 days): resume the last completed doses; no step until execution is observed"
+    },
+    "entryWeek": "EASY:30/EASY:30/LONG:30",
+    "stored": "EASY:30/EASY:30/LONG:35",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "inH": "EASY:30/EASY:30/LONG:35",
+    "ceilingWithoutDemo": 35,
+    "ceilingWithDemoIfInWindow": 30,
+    "ceilingReplan": false
+   },
+   {
+    "key": "SHORT 6d demo 40 long UNREPORTED",
+    "ret": {
+     "s": "MODIFY",
+     "a": "REESTABLISH",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "short nonclinical interruption (6 days): resume the last completed doses; no step until execution is observed"
+    },
+    "entryWeek": "EASY:45/EASY:45/LONG:45",
+    "stored": "EASY:45/EASY:45/LONG:50",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "inH": "EASY:45/EASY:45/LONG:50",
+    "ceilingWithoutDemo": 40,
+    "ceilingWithDemoIfInWindow": 45,
+    "ceilingReplan": false
+   },
+   {
+    "key": "SHORT 6d demo 40 long NOT_DONE",
+    "ret": {
+     "s": "MODIFY",
+     "a": "REESTABLISH",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "short nonclinical interruption (6 days): resume the last completed doses; no step until execution is observed"
+    },
+    "entryWeek": "EASY:45/EASY:45/LONG:45",
+    "stored": "EASY:45/EASY:45/LONG:50",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "inH": "EASY:45/EASY:45/LONG:50",
+    "ceilingWithoutDemo": 40,
+    "ceilingWithDemoIfInWindow": 45,
+    "ceilingReplan": false
+   },
+   {
+    "key": "SHORT 6d demo 40 long EXECUTED",
+    "ret": {
+     "s": "MODIFY",
+     "a": "REESTABLISH",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "short nonclinical interruption (6 days): resume the last completed doses; no step until execution is observed"
+    },
+    "entryWeek": "EASY:45/EASY:45/LONG:45",
+    "stored": "EASY:45/EASY:45/LONG:50",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "inH": "EASY:45/EASY:45/LONG:50",
+    "ceilingWithoutDemo": 50,
+    "ceilingWithDemoIfInWindow": 45,
+    "ceilingReplan": false
+   },
+   {
+    "key": "MODERATE 20d demo 40 long UNREPORTED",
+    "ret": {
+     "s": "MODIFY",
+     "a": "REESTABLISH",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "moderate nonclinical interruption (20 days): re-entry from the current demonstration, returning to the prior tolerated dose in 2 conditional"
+    },
+    "entryWeek": "EASY:40/EASY:40/LONG:45",
+    "stored": "EASY:45/EASY:45/LONG:50",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "inH": "EASY:45/EASY:45/LONG:50",
+    "ceilingWithoutDemo": 35,
+    "ceilingWithDemoIfInWindow": 45,
+    "ceilingReplan": false
+   },
+   {
+    "key": "MODERATE 20d demo 40 long NOT_DONE",
+    "ret": {
+     "s": "MODIFY",
+     "a": "REESTABLISH",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "moderate nonclinical interruption (20 days): re-entry from the current demonstration, returning to the prior tolerated dose in 2 conditional"
+    },
+    "entryWeek": "EASY:40/EASY:40/LONG:45",
+    "stored": "EASY:45/EASY:45/LONG:50",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "inH": "EASY:45/EASY:45/LONG:50",
+    "ceilingWithoutDemo": 35,
+    "ceilingWithDemoIfInWindow": 45,
+    "ceilingReplan": false
+   },
+   {
+    "key": "MODERATE 20d demo 40 long EXECUTED",
+    "ret": {
+     "s": "MODIFY",
+     "a": "REESTABLISH",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "moderate nonclinical interruption (20 days): re-entry from the current demonstration, returning to the prior tolerated dose in 2 conditional"
+    },
+    "entryWeek": "EASY:40/EASY:40/LONG:45",
+    "stored": "EASY:45/EASY:45/LONG:50",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "inH": "EASY:45/EASY:45/LONG:50",
+    "ceilingWithoutDemo": 50,
+    "ceilingWithDemoIfInWindow": 45,
+    "ceilingReplan": false
+   }
+  ]
+ },
+ "T": {
+  "HEAD": [
+   {
+    "key": "R10K hole UNREPORTED in week 8, decision week 9 day 0",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "stored": "EASY:50/QUALITY:43/LONG:70",
+    "inH": "EASY:50/QUALITY:43/LONG:70",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole UNREPORTED in week 8, decision week 9 day 2",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "stored": "QUALITY:43/LONG:70",
+    "inH": "QUALITY:43/LONG:70",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole UNREPORTED in week 8, decision week 10 day 0",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "stored": "EASY:40/QUALITY:31/LONG:45",
+    "inH": "EASY:40/QUALITY:31/LONG:45",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole UNREPORTED in week 8, decision week 10 day 2",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "stored": "QUALITY:31/LONG:45",
+    "inH": "QUALITY:31/LONG:45",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole UNREPORTED in week 8, decision week 11 day 0",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Final week of the horizon; record outcomes for the next program"
+    },
+    "stored": "EASY:25/RACE_TOUCH:25/RACE:75",
+    "inH": "EASY:25/RACE_TOUCH:25/RACE:75",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole UNREPORTED in week 8, decision week 11 day 2",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Final week of the horizon; record outcomes for the next program"
+    },
+    "stored": "RACE_TOUCH:25/RACE:75",
+    "inH": "RACE_TOUCH:25/RACE:75",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole NOT_DONE in week 8, decision week 9 day 0",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "stored": "EASY:50/QUALITY:43/LONG:70",
+    "inH": "EASY:50/QUALITY:43/LONG:70",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole NOT_DONE in week 8, decision week 9 day 2",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "stored": "QUALITY:43/LONG:70",
+    "inH": "QUALITY:43/LONG:70",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole NOT_DONE in week 8, decision week 10 day 0",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "stored": "EASY:40/QUALITY:31/LONG:45",
+    "inH": "EASY:40/QUALITY:31/LONG:45",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole NOT_DONE in week 8, decision week 10 day 2",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "stored": "QUALITY:31/LONG:45",
+    "inH": "QUALITY:31/LONG:45",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole NOT_DONE in week 8, decision week 11 day 0",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Final week of the horizon; record outcomes for the next program"
+    },
+    "stored": "EASY:25/RACE_TOUCH:25/RACE:75",
+    "inH": "EASY:25/RACE_TOUCH:25/RACE:75",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole NOT_DONE in week 8, decision week 11 day 2",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Final week of the horizon; record outcomes for the next program"
+    },
+    "stored": "RACE_TOUCH:25/RACE:75",
+    "inH": "RACE_TOUCH:25/RACE:75",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole UNREPORTED in week 9, decision week 10 day 0",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "stored": "EASY:40/QUALITY:31/LONG:45",
+    "inH": "EASY:40/QUALITY:31/LONG:45",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole UNREPORTED in week 9, decision week 10 day 2",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "stored": "QUALITY:31/LONG:45",
+    "inH": "QUALITY:31/LONG:45",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole UNREPORTED in week 9, decision week 11 day 0",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Final week of the horizon; record outcomes for the next program"
+    },
+    "stored": "EASY:25/RACE_TOUCH:25/RACE:75",
+    "inH": "EASY:25/RACE_TOUCH:25/RACE:75",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole UNREPORTED in week 9, decision week 11 day 2",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Final week of the horizon; record outcomes for the next program"
+    },
+    "stored": "RACE_TOUCH:25/RACE:75",
+    "inH": "RACE_TOUCH:25/RACE:75",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole NOT_DONE in week 9, decision week 10 day 0",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "stored": "EASY:40/QUALITY:31/LONG:45",
+    "inH": "EASY:40/QUALITY:31/LONG:45",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole NOT_DONE in week 9, decision week 10 day 2",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "stored": "QUALITY:31/LONG:45",
+    "inH": "QUALITY:31/LONG:45",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole NOT_DONE in week 9, decision week 11 day 0",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Final week of the horizon; record outcomes for the next program"
+    },
+    "stored": "EASY:25/RACE_TOUCH:25/RACE:75",
+    "inH": "EASY:25/RACE_TOUCH:25/RACE:75",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole NOT_DONE in week 9, decision week 11 day 2",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Final week of the horizon; record outcomes for the next program"
+    },
+    "stored": "RACE_TOUCH:25/RACE:75",
+    "inH": "RACE_TOUCH:25/RACE:75",
+    "ceiling": 75,
+    "ceilingReplan": false
+   }
+  ],
+  "F1": [
+   {
+    "key": "R10K hole UNREPORTED in week 8, decision week 9 day 0",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "stored": "EASY:50/QUALITY:43/LONG:70",
+    "inH": "EASY:50/QUALITY:43/LONG:70",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole UNREPORTED in week 8, decision week 9 day 2",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "stored": "QUALITY:43/LONG:70",
+    "inH": "QUALITY:43/LONG:70",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole UNREPORTED in week 8, decision week 10 day 0",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "stored": "EASY:40/QUALITY:31/LONG:45",
+    "inH": "EASY:40/QUALITY:31/LONG:45",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole UNREPORTED in week 8, decision week 10 day 2",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "stored": "QUALITY:31/LONG:45",
+    "inH": "QUALITY:31/LONG:45",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole UNREPORTED in week 8, decision week 11 day 0",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Final week of the horizon; record outcomes for the next program"
+    },
+    "stored": "EASY:25/RACE_TOUCH:25/RACE:75",
+    "inH": "EASY:25/RACE_TOUCH:25/RACE:75",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole UNREPORTED in week 8, decision week 11 day 2",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Final week of the horizon; record outcomes for the next program"
+    },
+    "stored": "RACE_TOUCH:25/RACE:75",
+    "inH": "RACE_TOUCH:25/RACE:75",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole NOT_DONE in week 8, decision week 9 day 0",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "stored": "EASY:50/QUALITY:43/LONG:70",
+    "inH": "EASY:50/QUALITY:43/LONG:70",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole NOT_DONE in week 8, decision week 9 day 2",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "stored": "QUALITY:43/LONG:70",
+    "inH": "QUALITY:43/LONG:70",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole NOT_DONE in week 8, decision week 10 day 0",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "stored": "EASY:40/QUALITY:31/LONG:45",
+    "inH": "EASY:40/QUALITY:31/LONG:45",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole NOT_DONE in week 8, decision week 10 day 2",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "stored": "QUALITY:31/LONG:45",
+    "inH": "QUALITY:31/LONG:45",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole NOT_DONE in week 8, decision week 11 day 0",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Final week of the horizon; record outcomes for the next program"
+    },
+    "stored": "EASY:25/RACE_TOUCH:25/RACE:75",
+    "inH": "EASY:25/RACE_TOUCH:25/RACE:75",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole NOT_DONE in week 8, decision week 11 day 2",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Final week of the horizon; record outcomes for the next program"
+    },
+    "stored": "RACE_TOUCH:25/RACE:75",
+    "inH": "RACE_TOUCH:25/RACE:75",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole UNREPORTED in week 9, decision week 10 day 0",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "stored": "EASY:40/QUALITY:31/LONG:45",
+    "inH": "EASY:40/QUALITY:31/LONG:45",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole UNREPORTED in week 9, decision week 10 day 2",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "stored": "QUALITY:31/LONG:45",
+    "inH": "QUALITY:31/LONG:45",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole UNREPORTED in week 9, decision week 11 day 0",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Final week of the horizon; record outcomes for the next program"
+    },
+    "stored": "EASY:25/RACE_TOUCH:25/RACE:75",
+    "inH": "EASY:25/RACE_TOUCH:25/RACE:75",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole UNREPORTED in week 9, decision week 11 day 2",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Final week of the horizon; record outcomes for the next program"
+    },
+    "stored": "RACE_TOUCH:25/RACE:75",
+    "inH": "RACE_TOUCH:25/RACE:75",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole NOT_DONE in week 9, decision week 10 day 0",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "stored": "EASY:40/QUALITY:31/LONG:45",
+    "inH": "EASY:40/QUALITY:31/LONG:45",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole NOT_DONE in week 9, decision week 10 day 2",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "stored": "QUALITY:31/LONG:45",
+    "inH": "QUALITY:31/LONG:45",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole NOT_DONE in week 9, decision week 11 day 0",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Final week of the horizon; record outcomes for the next program"
+    },
+    "stored": "EASY:25/RACE_TOUCH:25/RACE:75",
+    "inH": "EASY:25/RACE_TOUCH:25/RACE:75",
+    "ceiling": 75,
+    "ceilingReplan": false
+   },
+   {
+    "key": "R10K hole NOT_DONE in week 9, decision week 11 day 2",
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Final week of the horizon; record outcomes for the next program"
+    },
+    "stored": "RACE_TOUCH:25/RACE:75",
+    "inH": "RACE_TOUCH:25/RACE:75",
+    "ceiling": 75,
+    "ceilingReplan": false
+   }
+  ]
+ }
+}

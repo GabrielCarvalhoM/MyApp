@@ -1,0 +1,2909 @@
+{
+ "check": "SSCTR-CC5-HELD-SIGNAL",
+ "runtimes": [
+  "HEAD",
+  "F1"
+ ],
+ "grid": {
+  "HEAD": {
+   "cells": 160,
+   "keptCells": 128,
+   "travelsAfterKept": 128,
+   "reEvaluated": 40,
+   "sameAsA": 120,
+   "byRoute": {
+    "kept none / answer PLAIN": {
+     "cells": 8,
+     "reEvaluated": 8,
+     "sameAsA": 8,
+     "validNotSame": 0
+    },
+    "kept none / answer OWN_KIND": {
+     "cells": 8,
+     "reEvaluated": 0,
+     "sameAsA": 8,
+     "validNotSame": 0
+    },
+    "kept none / answer SCHEDULE_CHANGE": {
+     "cells": 8,
+     "reEvaluated": 0,
+     "sameAsA": 4,
+     "validNotSame": 2
+    },
+    "kept none / answer EQUIPMENT_CHANGE": {
+     "cells": 8,
+     "reEvaluated": 0,
+     "sameAsA": 4,
+     "validNotSame": 4
+    },
+    "kept change / answer PLAIN": {
+     "cells": 32,
+     "reEvaluated": 32,
+     "sameAsA": 32,
+     "validNotSame": 0
+    },
+    "kept change / answer OWN_KIND": {
+     "cells": 32,
+     "reEvaluated": 0,
+     "sameAsA": 32,
+     "validNotSame": 0
+    },
+    "kept change / answer SCHEDULE_CHANGE": {
+     "cells": 32,
+     "reEvaluated": 0,
+     "sameAsA": 16,
+     "validNotSame": 8
+    },
+    "kept change / answer EQUIPMENT_CHANGE": {
+     "cells": 32,
+     "reEvaluated": 0,
+     "sameAsA": 16,
+     "validNotSame": 16
+    }
+   },
+   "guardReplayed": 0,
+   "guard": 8,
+   "dropped": 80
+  },
+  "F1": {
+   "cells": 160,
+   "keptCells": 128,
+   "travelsAfterKept": 64,
+   "reEvaluated": 24,
+   "sameAsA": 112,
+   "byRoute": {
+    "kept none / answer PLAIN": {
+     "cells": 8,
+     "reEvaluated": 8,
+     "sameAsA": 8,
+     "validNotSame": 0
+    },
+    "kept none / answer OWN_KIND": {
+     "cells": 8,
+     "reEvaluated": 0,
+     "sameAsA": 8,
+     "validNotSame": 0
+    },
+    "kept none / answer SCHEDULE_CHANGE": {
+     "cells": 8,
+     "reEvaluated": 0,
+     "sameAsA": 4,
+     "validNotSame": 2
+    },
+    "kept none / answer EQUIPMENT_CHANGE": {
+     "cells": 8,
+     "reEvaluated": 0,
+     "sameAsA": 4,
+     "validNotSame": 4
+    },
+    "kept change / answer PLAIN": {
+     "cells": 32,
+     "reEvaluated": 16,
+     "sameAsA": 24,
+     "validNotSame": 8
+    },
+    "kept change / answer OWN_KIND": {
+     "cells": 32,
+     "reEvaluated": 0,
+     "sameAsA": 32,
+     "validNotSame": 0
+    },
+    "kept change / answer SCHEDULE_CHANGE": {
+     "cells": 32,
+     "reEvaluated": 0,
+     "sameAsA": 16,
+     "validNotSame": 8
+    },
+    "kept change / answer EQUIPMENT_CHANGE": {
+     "cells": 32,
+     "reEvaluated": 0,
+     "sameAsA": 16,
+     "validNotSame": 16
+    }
+   },
+   "guardReplayed": 0,
+   "guard": 8,
+   "dropped": 80
+  }
+ },
+ "HEAD": {
+  "notSame": [
+   {
+    "key": "MISS RV SYSTEMIC_FATIGUE kept NONE answer EQUIPMENT_CHANGE",
+    "kept": null,
+    "keptSignal": null,
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Planned exercises already fit the available equipment; the equipment is recorded for the dates stated"
+    },
+    "runsB": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "runsA": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "MISS RV SYSTEMIC_FATIGUE kept UNAVAILABLE_STRENGTH_DAY answer EQUIPMENT_CHANGE",
+    "kept": {
+     "s": "MODIFY",
+     "a": "RESCHEDULE_WITHIN_WEEK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Sessions on the unavailable date are moved within chosen days when that adds no interference, otherwise skipped without debt; the run sessio"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Planned exercises already fit the available equipment; the equipment is recorded for the dates stated"
+    },
+    "runsB": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "runsA": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "MISS RV SYSTEMIC_FATIGUE kept EQUIPMENT_CHANGE answer EQUIPMENT_CHANGE",
+    "kept": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed; the run"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed; the rep"
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed"
+    },
+    "runsB": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "runsA": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "MISS RV SYSTEMIC_FATIGUE kept GOAL_CHANGE answer EQUIPMENT_CHANGE",
+    "kept": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 13 planned run sessions from 2026-11-"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed"
+    },
+    "runsB": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "runsA": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "MISS RV SYSTEMIC_FATIGUE kept DOUBLE_CONFLICT answer EQUIPMENT_CHANGE",
+    "kept": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 13 planned run sessions from 2026-11-"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Planned exercises already fit the available equipment; the equipment is recorded for the dates stated"
+    },
+    "runsB": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "runsA": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "MISS NR SYSTEMIC_FATIGUE kept NONE answer EQUIPMENT_CHANGE",
+    "kept": null,
+    "keptSignal": null,
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Planned exercises already fit the available equipment; the equipment is recorded for the dates stated"
+    },
+    "runsB": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "runsA": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "MISS NR SYSTEMIC_FATIGUE kept UNAVAILABLE_STRENGTH_DAY answer EQUIPMENT_CHANGE",
+    "kept": {
+     "s": "MODIFY",
+     "a": "RESCHEDULE_WITHIN_WEEK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Sessions on the unavailable date are moved within chosen days when that adds no interference, otherwise skipped without debt; the run sessio"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Planned exercises already fit the available equipment; the equipment is recorded for the dates stated"
+    },
+    "runsB": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "runsA": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "MISS NR SYSTEMIC_FATIGUE kept EQUIPMENT_CHANGE answer EQUIPMENT_CHANGE",
+    "kept": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed; the run"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed; the rep"
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed"
+    },
+    "runsB": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "runsA": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "MISS NR SYSTEMIC_FATIGUE kept GOAL_CHANGE answer EQUIPMENT_CHANGE",
+    "kept": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 13 planned run sessions from 2026-11-"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed"
+    },
+    "runsB": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "runsA": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "MISS NR SYSTEMIC_FATIGUE kept DOUBLE_CONFLICT answer EQUIPMENT_CHANGE",
+    "kept": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 13 planned run sessions from 2026-11-"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Planned exercises already fit the available equipment; the equipment is recorded for the dates stated"
+    },
+    "runsB": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "runsA": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC RV SYSTEMIC_FATIGUE kept NONE answer SCHEDULE_CHANGE",
+    "kept": null,
+    "keptSignal": null,
+    "B": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "runsB": [
+     "QUALITY:34",
+     "LONG:60"
+    ],
+    "runsA": [
+     "EASY:34",
+     "LONG:60"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC RV SYSTEMIC_FATIGUE kept NONE answer EQUIPMENT_CHANGE",
+    "kept": null,
+    "keptSignal": null,
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Planned exercises already fit the available equipment; the equipment is recorded for the dates stated"
+    },
+    "runsB": [
+     "QUALITY:34",
+     "LONG:60"
+    ],
+    "runsA": [
+     "EASY:34",
+     "LONG:60"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC RV SYSTEMIC_FATIGUE kept UNAVAILABLE_STRENGTH_DAY answer SCHEDULE_CHANGE",
+    "kept": {
+     "s": "MODIFY",
+     "a": "RESCHEDULE_WITHIN_WEEK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Sessions on the unavailable date are moved within chosen days when that adds no interference, otherwise skipped without debt; the run sessio"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "runsB": [
+     "QUALITY:34",
+     "LONG:60"
+    ],
+    "runsA": [
+     "EASY:34",
+     "LONG:60"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC RV SYSTEMIC_FATIGUE kept UNAVAILABLE_STRENGTH_DAY answer EQUIPMENT_CHANGE",
+    "kept": {
+     "s": "MODIFY",
+     "a": "RESCHEDULE_WITHIN_WEEK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Sessions on the unavailable date are moved within chosen days when that adds no interference, otherwise skipped without debt; the run sessio"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Planned exercises already fit the available equipment; the equipment is recorded for the dates stated"
+    },
+    "runsB": [
+     "QUALITY:34",
+     "LONG:60"
+    ],
+    "runsA": [
+     "EASY:34",
+     "LONG:60"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC RV SYSTEMIC_FATIGUE kept EQUIPMENT_CHANGE answer SCHEDULE_CHANGE",
+    "kept": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed; the run"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "runsB": [
+     "QUALITY:34",
+     "LONG:60"
+    ],
+    "runsA": [
+     "EASY:34",
+     "LONG:60"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC RV SYSTEMIC_FATIGUE kept EQUIPMENT_CHANGE answer EQUIPMENT_CHANGE",
+    "kept": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed; the run"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed; the rep"
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed"
+    },
+    "runsB": [
+     "QUALITY:34",
+     "LONG:60"
+    ],
+    "runsA": [
+     "EASY:34",
+     "LONG:60"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC RV SYSTEMIC_FATIGUE kept GOAL_CHANGE answer SCHEDULE_CHANGE",
+    "kept": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 13 planned run sessions from 2026-11-"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "runsB": [
+     "QUALITY:34",
+     "LONG:60"
+    ],
+    "runsA": [
+     "EASY:34",
+     "LONG:60"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC RV SYSTEMIC_FATIGUE kept GOAL_CHANGE answer EQUIPMENT_CHANGE",
+    "kept": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 13 planned run sessions from 2026-11-"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed"
+    },
+    "runsB": [
+     "QUALITY:34",
+     "LONG:60"
+    ],
+    "runsA": [
+     "EASY:34",
+     "LONG:60"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC RV SYSTEMIC_FATIGUE kept DOUBLE_CONFLICT answer SCHEDULE_CHANGE",
+    "kept": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 13 planned run sessions from 2026-11-"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "runsB": [
+     "QUALITY:34",
+     "LONG:60"
+    ],
+    "runsA": [
+     "EASY:34",
+     "LONG:60"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC RV SYSTEMIC_FATIGUE kept DOUBLE_CONFLICT answer EQUIPMENT_CHANGE",
+    "kept": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 13 planned run sessions from 2026-11-"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Planned exercises already fit the available equipment; the equipment is recorded for the dates stated"
+    },
+    "runsB": [
+     "QUALITY:34",
+     "LONG:60"
+    ],
+    "runsA": [
+     "EASY:34",
+     "LONG:60"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC NR SYSTEMIC_FATIGUE kept NONE answer SCHEDULE_CHANGE",
+    "kept": null,
+    "keptSignal": null,
+    "B": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "runsB": [
+     "QUALITY:43",
+     "LONG:65"
+    ],
+    "runsA": [
+     "EASY:43",
+     "LONG:65"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC NR SYSTEMIC_FATIGUE kept NONE answer EQUIPMENT_CHANGE",
+    "kept": null,
+    "keptSignal": null,
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Planned exercises already fit the available equipment; the equipment is recorded for the dates stated"
+    },
+    "runsB": [
+     "QUALITY:43",
+     "LONG:65"
+    ],
+    "runsA": [
+     "EASY:43",
+     "LONG:65"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC NR SYSTEMIC_FATIGUE kept UNAVAILABLE_STRENGTH_DAY answer SCHEDULE_CHANGE",
+    "kept": {
+     "s": "MODIFY",
+     "a": "RESCHEDULE_WITHIN_WEEK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Sessions on the unavailable date are moved within chosen days when that adds no interference, otherwise skipped without debt; the run sessio"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "runsB": [
+     "QUALITY:43",
+     "LONG:65"
+    ],
+    "runsA": [
+     "EASY:43",
+     "LONG:65"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC NR SYSTEMIC_FATIGUE kept UNAVAILABLE_STRENGTH_DAY answer EQUIPMENT_CHANGE",
+    "kept": {
+     "s": "MODIFY",
+     "a": "RESCHEDULE_WITHIN_WEEK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Sessions on the unavailable date are moved within chosen days when that adds no interference, otherwise skipped without debt; the run sessio"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Planned exercises already fit the available equipment; the equipment is recorded for the dates stated"
+    },
+    "runsB": [
+     "QUALITY:43",
+     "LONG:65"
+    ],
+    "runsA": [
+     "EASY:43",
+     "LONG:65"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC NR SYSTEMIC_FATIGUE kept EQUIPMENT_CHANGE answer SCHEDULE_CHANGE",
+    "kept": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed; the run"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "runsB": [
+     "QUALITY:43",
+     "LONG:65"
+    ],
+    "runsA": [
+     "EASY:43",
+     "LONG:65"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC NR SYSTEMIC_FATIGUE kept EQUIPMENT_CHANGE answer EQUIPMENT_CHANGE",
+    "kept": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed; the run"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed"
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed"
+    },
+    "runsB": [
+     "QUALITY:43",
+     "LONG:65"
+    ],
+    "runsA": [
+     "EASY:43",
+     "LONG:65"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC NR SYSTEMIC_FATIGUE kept GOAL_CHANGE answer SCHEDULE_CHANGE",
+    "kept": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 13 planned run sessions from 2026-11-"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "runsB": [
+     "QUALITY:43",
+     "LONG:65"
+    ],
+    "runsA": [
+     "EASY:43",
+     "LONG:65"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC NR SYSTEMIC_FATIGUE kept GOAL_CHANGE answer EQUIPMENT_CHANGE",
+    "kept": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 13 planned run sessions from 2026-11-"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed"
+    },
+    "runsB": [
+     "QUALITY:43",
+     "LONG:65"
+    ],
+    "runsA": [
+     "EASY:43",
+     "LONG:65"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC NR SYSTEMIC_FATIGUE kept DOUBLE_CONFLICT answer SCHEDULE_CHANGE",
+    "kept": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 13 planned run sessions from 2026-11-"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "runsB": [
+     "QUALITY:43",
+     "LONG:65"
+    ],
+    "runsA": [
+     "EASY:43",
+     "LONG:65"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC NR SYSTEMIC_FATIGUE kept DOUBLE_CONFLICT answer EQUIPMENT_CHANGE",
+    "kept": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 13 planned run sessions from 2026-11-"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Planned exercises already fit the available equipment; the equipment is recorded for the dates stated"
+    },
+    "runsB": [
+     "QUALITY:43",
+     "LONG:65"
+    ],
+    "runsA": [
+     "EASY:43",
+     "LONG:65"
+    ],
+    "pendingAfter": null
+   }
+  ],
+  "guard": [
+   {
+    "key": "MISS RV guard kept NONE",
+    "held": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Converging fatigue signal: No run is recorded in the 30 days before 2026-12-28, the reference for the runs planned from then, and 13 planned"
+    },
+    "answer": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "replayed": false,
+    "pending": null
+   },
+   {
+    "key": "MISS RV guard kept EQUIPMENT_CHANGE",
+    "held": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Converging fatigue signal: No run is recorded in the 30 days before 2026-12-28, the reference for the runs planned from then, and 13 planned"
+    },
+    "answer": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "replayed": false,
+    "pending": null
+   },
+   {
+    "key": "MISS NR guard kept NONE",
+    "held": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Converging fatigue signal: No run is recorded in the 30 days before 2026-12-28, the reference for the runs planned from then, and 13 planned"
+    },
+    "answer": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "replayed": false,
+    "pending": null
+   },
+   {
+    "key": "MISS NR guard kept EQUIPMENT_CHANGE",
+    "held": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Converging fatigue signal: No run is recorded in the 30 days before 2026-12-28, the reference for the runs planned from then, and 13 planned"
+    },
+    "answer": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "replayed": false,
+    "pending": null
+   },
+   {
+    "key": "EXEC RV guard kept NONE",
+    "held": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Converging fatigue signal: No run is recorded in the 30 days before 2026-12-28, the reference for the runs planned from then, and 13 planned"
+    },
+    "answer": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "replayed": false,
+    "pending": null
+   },
+   {
+    "key": "EXEC RV guard kept EQUIPMENT_CHANGE",
+    "held": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Converging fatigue signal: No run is recorded in the 30 days before 2026-12-28, the reference for the runs planned from then, and 13 planned"
+    },
+    "answer": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "replayed": false,
+    "pending": null
+   },
+   {
+    "key": "EXEC NR guard kept NONE",
+    "held": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Converging fatigue signal: No run is recorded in the 30 days before 2026-12-28, the reference for the runs planned from then, and 13 planned"
+    },
+    "answer": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "replayed": false,
+    "pending": null
+   },
+   {
+    "key": "EXEC NR guard kept EQUIPMENT_CHANGE",
+    "held": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Converging fatigue signal: No run is recorded in the 30 days before 2026-12-28, the reference for the runs planned from then, and 13 planned"
+    },
+    "answer": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "replayed": false,
+    "pending": null
+   }
+  ],
+  "dropped": [
+   {
+    "key": "MISS RV LOCAL_FATIGUE kept NONE answer PLAIN",
+    "stage": "hold",
+    "held": {
+     "s": "MODIFY",
+     "a": "REDUCE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Remove only optional local work for the affected region; essentials stay; the run sessions ahead stay as they were and wait for an answer: N"
+    }
+   },
+   {
+    "key": "MISS RV LOCAL_FATIGUE kept NONE answer OWN_KIND",
+    "stage": "hold",
+    "held": {
+     "s": "MODIFY",
+     "a": "REDUCE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Remove only optional local work for the affected region; essentials stay; the run sessions ahead stay as they were and wait for an answer: N"
+    }
+   },
+   {
+    "key": "MISS RV LOCAL_FATIGUE kept NONE answer SCHEDULE_CHANGE",
+    "stage": "hold",
+    "held": {
+     "s": "MODIFY",
+     "a": "REDUCE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Remove only optional local work for the affected region; essentials stay; the run sessions ahead stay as they were and wait for an answer: N"
+    }
+   },
+   {
+    "key": "MISS RV LOCAL_FATIGUE kept NONE answer EQUIPMENT_CHANGE",
+    "stage": "hold",
+    "held": {
+     "s": "MODIFY",
+     "a": "REDUCE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Remove only optional local work for the affected region; essentials stay; the run sessions ahead stay as they were and wait for an answer: N"
+    }
+   },
+   {
+    "key": "MISS RV LOCAL_FATIGUE kept UNAVAILABLE_STRENGTH_DAY answer PLAIN",
+    "stage": "hold",
+    "held": {
+     "s": "MODIFY",
+     "a": "REDUCE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Remove only optional local work for the affected region; essentials stay; the run sessions ahead stay as they were and wait for an answer: N"
+    }
+   },
+   {
+    "key": "MISS RV LOCAL_FATIGUE kept UNAVAILABLE_STRENGTH_DAY answer OWN_KIND",
+    "stage": "hold",
+    "held": {
+     "s": "MODIFY",
+     "a": "REDUCE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Remove only optional local work for the affected region; essentials stay; the run sessions ahead stay as they were and wait for an answer: N"
+    }
+   },
+   {
+    "key": "MISS RV LOCAL_FATIGUE kept UNAVAILABLE_STRENGTH_DAY answer SCHEDULE_CHANGE",
+    "stage": "hold",
+    "held": {
+     "s": "MODIFY",
+     "a": "REDUCE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Remove only optional local work for the affected region; essentials stay; the run sessions ahead stay as they were and wait for an answer: N"
+    }
+   },
+   {
+    "key": "MISS RV LOCAL_FATIGUE kept UNAVAILABLE_STRENGTH_DAY answer EQUIPMENT_CHANGE",
+    "stage": "hold",
+    "held": {
+     "s": "MODIFY",
+     "a": "REDUCE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Remove only optional local work for the affected region; essentials stay; the run sessions ahead stay as they were and wait for an answer: N"
+    }
+   },
+   {
+    "key": "MISS RV LOCAL_FATIGUE kept EQUIPMENT_CHANGE answer PLAIN",
+    "stage": "hold",
+    "held": {
+     "s": "MODIFY",
+     "a": "REDUCE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Remove only optional local work for the affected region; essentials stay; the run sessions ahead stay as they were and wait for an answer: N"
+    }
+   },
+   {
+    "key": "MISS RV LOCAL_FATIGUE kept EQUIPMENT_CHANGE answer OWN_KIND",
+    "stage": "hold",
+    "held": {
+     "s": "MODIFY",
+     "a": "REDUCE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Remove only optional local work for the affected region; essentials stay; the run sessions ahead stay as they were and wait for an answer: N"
+    }
+   }
+  ]
+ },
+ "F1": {
+  "notSame": [
+   {
+    "key": "MISS RV SYSTEMIC_FATIGUE kept NONE answer EQUIPMENT_CHANGE",
+    "kept": null,
+    "keptSignal": null,
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Planned exercises already fit the available equipment; the equipment is recorded for the dates stated"
+    },
+    "runsB": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "runsA": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "MISS RV SYSTEMIC_FATIGUE kept UNAVAILABLE_STRENGTH_DAY answer PLAIN",
+    "kept": {
+     "s": "MODIFY",
+     "a": "RESCHEDULE_WITHIN_WEEK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Sessions on the unavailable date are moved within chosen days when that adds no interference, otherwise skipped without debt; the run sessio"
+    },
+    "keptSignal": null,
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "runsB": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "runsA": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "MISS RV SYSTEMIC_FATIGUE kept UNAVAILABLE_STRENGTH_DAY answer EQUIPMENT_CHANGE",
+    "kept": {
+     "s": "MODIFY",
+     "a": "RESCHEDULE_WITHIN_WEEK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Sessions on the unavailable date are moved within chosen days when that adds no interference, otherwise skipped without debt; the run sessio"
+    },
+    "keptSignal": null,
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Planned exercises already fit the available equipment; the equipment is recorded for the dates stated"
+    },
+    "runsB": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "runsA": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "MISS RV SYSTEMIC_FATIGUE kept EQUIPMENT_CHANGE answer PLAIN",
+    "kept": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed; the run"
+    },
+    "keptSignal": null,
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "runsB": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "runsA": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "MISS RV SYSTEMIC_FATIGUE kept EQUIPMENT_CHANGE answer EQUIPMENT_CHANGE",
+    "kept": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed; the run"
+    },
+    "keptSignal": null,
+    "B": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed; the rep"
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed"
+    },
+    "runsB": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "runsA": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "MISS RV SYSTEMIC_FATIGUE kept GOAL_CHANGE answer EQUIPMENT_CHANGE",
+    "kept": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 13 planned run sessions from 2026-11-"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed"
+    },
+    "runsB": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "runsA": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "MISS RV SYSTEMIC_FATIGUE kept DOUBLE_CONFLICT answer EQUIPMENT_CHANGE",
+    "kept": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 13 planned run sessions from 2026-11-"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Planned exercises already fit the available equipment; the equipment is recorded for the dates stated"
+    },
+    "runsB": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "runsA": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "MISS NR SYSTEMIC_FATIGUE kept NONE answer EQUIPMENT_CHANGE",
+    "kept": null,
+    "keptSignal": null,
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Planned exercises already fit the available equipment; the equipment is recorded for the dates stated"
+    },
+    "runsB": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "runsA": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "MISS NR SYSTEMIC_FATIGUE kept UNAVAILABLE_STRENGTH_DAY answer PLAIN",
+    "kept": {
+     "s": "MODIFY",
+     "a": "RESCHEDULE_WITHIN_WEEK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Sessions on the unavailable date are moved within chosen days when that adds no interference, otherwise skipped without debt; the run sessio"
+    },
+    "keptSignal": null,
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "runsB": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "runsA": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "MISS NR SYSTEMIC_FATIGUE kept UNAVAILABLE_STRENGTH_DAY answer EQUIPMENT_CHANGE",
+    "kept": {
+     "s": "MODIFY",
+     "a": "RESCHEDULE_WITHIN_WEEK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Sessions on the unavailable date are moved within chosen days when that adds no interference, otherwise skipped without debt; the run sessio"
+    },
+    "keptSignal": null,
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Planned exercises already fit the available equipment; the equipment is recorded for the dates stated"
+    },
+    "runsB": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "runsA": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "MISS NR SYSTEMIC_FATIGUE kept EQUIPMENT_CHANGE answer PLAIN",
+    "kept": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed; the run"
+    },
+    "keptSignal": null,
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "runsB": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "runsA": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "MISS NR SYSTEMIC_FATIGUE kept EQUIPMENT_CHANGE answer EQUIPMENT_CHANGE",
+    "kept": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed; the run"
+    },
+    "keptSignal": null,
+    "B": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed; the rep"
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed"
+    },
+    "runsB": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "runsA": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "MISS NR SYSTEMIC_FATIGUE kept GOAL_CHANGE answer EQUIPMENT_CHANGE",
+    "kept": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 13 planned run sessions from 2026-11-"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed"
+    },
+    "runsB": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "runsA": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "MISS NR SYSTEMIC_FATIGUE kept DOUBLE_CONFLICT answer EQUIPMENT_CHANGE",
+    "kept": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 13 planned run sessions from 2026-11-"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Planned exercises already fit the available equipment; the equipment is recorded for the dates stated"
+    },
+    "runsB": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "runsA": [
+     "EASY:15",
+     "LONG:15"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC RV SYSTEMIC_FATIGUE kept NONE answer SCHEDULE_CHANGE",
+    "kept": null,
+    "keptSignal": null,
+    "B": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "runsB": [
+     "QUALITY:34",
+     "LONG:60"
+    ],
+    "runsA": [
+     "EASY:34",
+     "LONG:60"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC RV SYSTEMIC_FATIGUE kept NONE answer EQUIPMENT_CHANGE",
+    "kept": null,
+    "keptSignal": null,
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Planned exercises already fit the available equipment; the equipment is recorded for the dates stated"
+    },
+    "runsB": [
+     "QUALITY:34",
+     "LONG:60"
+    ],
+    "runsA": [
+     "EASY:34",
+     "LONG:60"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC RV SYSTEMIC_FATIGUE kept UNAVAILABLE_STRENGTH_DAY answer PLAIN",
+    "kept": {
+     "s": "MODIFY",
+     "a": "RESCHEDULE_WITHIN_WEEK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Sessions on the unavailable date are moved within chosen days when that adds no interference, otherwise skipped without debt; the run sessio"
+    },
+    "keptSignal": null,
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "runsB": [
+     "QUALITY:34",
+     "LONG:60"
+    ],
+    "runsA": [
+     "EASY:34",
+     "LONG:60"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC RV SYSTEMIC_FATIGUE kept UNAVAILABLE_STRENGTH_DAY answer SCHEDULE_CHANGE",
+    "kept": {
+     "s": "MODIFY",
+     "a": "RESCHEDULE_WITHIN_WEEK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Sessions on the unavailable date are moved within chosen days when that adds no interference, otherwise skipped without debt; the run sessio"
+    },
+    "keptSignal": null,
+    "B": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "runsB": [
+     "QUALITY:34",
+     "LONG:60"
+    ],
+    "runsA": [
+     "EASY:34",
+     "LONG:60"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC RV SYSTEMIC_FATIGUE kept UNAVAILABLE_STRENGTH_DAY answer EQUIPMENT_CHANGE",
+    "kept": {
+     "s": "MODIFY",
+     "a": "RESCHEDULE_WITHIN_WEEK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Sessions on the unavailable date are moved within chosen days when that adds no interference, otherwise skipped without debt; the run sessio"
+    },
+    "keptSignal": null,
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Planned exercises already fit the available equipment; the equipment is recorded for the dates stated"
+    },
+    "runsB": [
+     "QUALITY:34",
+     "LONG:60"
+    ],
+    "runsA": [
+     "EASY:34",
+     "LONG:60"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC RV SYSTEMIC_FATIGUE kept EQUIPMENT_CHANGE answer PLAIN",
+    "kept": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed; the run"
+    },
+    "keptSignal": null,
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "runsB": [
+     "QUALITY:34",
+     "LONG:60"
+    ],
+    "runsA": [
+     "EASY:34",
+     "LONG:60"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC RV SYSTEMIC_FATIGUE kept EQUIPMENT_CHANGE answer SCHEDULE_CHANGE",
+    "kept": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed; the run"
+    },
+    "keptSignal": null,
+    "B": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "runsB": [
+     "QUALITY:34",
+     "LONG:60"
+    ],
+    "runsA": [
+     "EASY:34",
+     "LONG:60"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC RV SYSTEMIC_FATIGUE kept EQUIPMENT_CHANGE answer EQUIPMENT_CHANGE",
+    "kept": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed; the run"
+    },
+    "keptSignal": null,
+    "B": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed; the rep"
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed"
+    },
+    "runsB": [
+     "QUALITY:34",
+     "LONG:60"
+    ],
+    "runsA": [
+     "EASY:34",
+     "LONG:60"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC RV SYSTEMIC_FATIGUE kept GOAL_CHANGE answer SCHEDULE_CHANGE",
+    "kept": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 13 planned run sessions from 2026-11-"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "runsB": [
+     "QUALITY:34",
+     "LONG:60"
+    ],
+    "runsA": [
+     "EASY:34",
+     "LONG:60"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC RV SYSTEMIC_FATIGUE kept GOAL_CHANGE answer EQUIPMENT_CHANGE",
+    "kept": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 13 planned run sessions from 2026-11-"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed"
+    },
+    "runsB": [
+     "QUALITY:34",
+     "LONG:60"
+    ],
+    "runsA": [
+     "EASY:34",
+     "LONG:60"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC RV SYSTEMIC_FATIGUE kept DOUBLE_CONFLICT answer SCHEDULE_CHANGE",
+    "kept": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 13 planned run sessions from 2026-11-"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "runsB": [
+     "QUALITY:34",
+     "LONG:60"
+    ],
+    "runsA": [
+     "EASY:34",
+     "LONG:60"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC RV SYSTEMIC_FATIGUE kept DOUBLE_CONFLICT answer EQUIPMENT_CHANGE",
+    "kept": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 13 planned run sessions from 2026-11-"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Planned exercises already fit the available equipment; the equipment is recorded for the dates stated"
+    },
+    "runsB": [
+     "QUALITY:34",
+     "LONG:60"
+    ],
+    "runsA": [
+     "EASY:34",
+     "LONG:60"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC NR SYSTEMIC_FATIGUE kept NONE answer SCHEDULE_CHANGE",
+    "kept": null,
+    "keptSignal": null,
+    "B": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "runsB": [
+     "QUALITY:43",
+     "LONG:65"
+    ],
+    "runsA": [
+     "EASY:43",
+     "LONG:65"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC NR SYSTEMIC_FATIGUE kept NONE answer EQUIPMENT_CHANGE",
+    "kept": null,
+    "keptSignal": null,
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Planned exercises already fit the available equipment; the equipment is recorded for the dates stated"
+    },
+    "runsB": [
+     "QUALITY:43",
+     "LONG:65"
+    ],
+    "runsA": [
+     "EASY:43",
+     "LONG:65"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC NR SYSTEMIC_FATIGUE kept UNAVAILABLE_STRENGTH_DAY answer PLAIN",
+    "kept": {
+     "s": "MODIFY",
+     "a": "RESCHEDULE_WITHIN_WEEK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Sessions on the unavailable date are moved within chosen days when that adds no interference, otherwise skipped without debt; the run sessio"
+    },
+    "keptSignal": null,
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "runsB": [
+     "QUALITY:43",
+     "LONG:65"
+    ],
+    "runsA": [
+     "EASY:43",
+     "LONG:65"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC NR SYSTEMIC_FATIGUE kept UNAVAILABLE_STRENGTH_DAY answer SCHEDULE_CHANGE",
+    "kept": {
+     "s": "MODIFY",
+     "a": "RESCHEDULE_WITHIN_WEEK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Sessions on the unavailable date are moved within chosen days when that adds no interference, otherwise skipped without debt; the run sessio"
+    },
+    "keptSignal": null,
+    "B": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "runsB": [
+     "QUALITY:43",
+     "LONG:65"
+    ],
+    "runsA": [
+     "EASY:43",
+     "LONG:65"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC NR SYSTEMIC_FATIGUE kept UNAVAILABLE_STRENGTH_DAY answer EQUIPMENT_CHANGE",
+    "kept": {
+     "s": "MODIFY",
+     "a": "RESCHEDULE_WITHIN_WEEK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Sessions on the unavailable date are moved within chosen days when that adds no interference, otherwise skipped without debt; the run sessio"
+    },
+    "keptSignal": null,
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Planned exercises already fit the available equipment; the equipment is recorded for the dates stated"
+    },
+    "runsB": [
+     "QUALITY:43",
+     "LONG:65"
+    ],
+    "runsA": [
+     "EASY:43",
+     "LONG:65"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC NR SYSTEMIC_FATIGUE kept EQUIPMENT_CHANGE answer PLAIN",
+    "kept": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed; the run"
+    },
+    "keptSignal": null,
+    "B": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "A": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "runsB": [
+     "QUALITY:43",
+     "LONG:65"
+    ],
+    "runsA": [
+     "EASY:43",
+     "LONG:65"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC NR SYSTEMIC_FATIGUE kept EQUIPMENT_CHANGE answer SCHEDULE_CHANGE",
+    "kept": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed; the run"
+    },
+    "keptSignal": null,
+    "B": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "runsB": [
+     "QUALITY:43",
+     "LONG:65"
+    ],
+    "runsA": [
+     "EASY:43",
+     "LONG:65"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC NR SYSTEMIC_FATIGUE kept EQUIPMENT_CHANGE answer EQUIPMENT_CHANGE",
+    "kept": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed; the run"
+    },
+    "keptSignal": null,
+    "B": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed"
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed"
+    },
+    "runsB": [
+     "QUALITY:43",
+     "LONG:65"
+    ],
+    "runsA": [
+     "EASY:43",
+     "LONG:65"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC NR SYSTEMIC_FATIGUE kept GOAL_CHANGE answer SCHEDULE_CHANGE",
+    "kept": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 13 planned run sessions from 2026-11-"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "runsB": [
+     "QUALITY:43",
+     "LONG:65"
+    ],
+    "runsA": [
+     "EASY:43",
+     "LONG:65"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC NR SYSTEMIC_FATIGUE kept GOAL_CHANGE answer EQUIPMENT_CHANGE",
+    "kept": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 13 planned run sessions from 2026-11-"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "SUBSTITUTE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Equipment changed: same-intent substitutes from now on; unfamiliar ones are established by effort; the stimulus change is disclosed"
+    },
+    "runsB": [
+     "QUALITY:43",
+     "LONG:65"
+    ],
+    "runsA": [
+     "EASY:43",
+     "LONG:65"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC NR SYSTEMIC_FATIGUE kept DOUBLE_CONFLICT answer SCHEDULE_CHANGE",
+    "kept": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 13 planned run sessions from 2026-11-"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "A": {
+     "s": "MODIFY",
+     "a": "REARRANGE_FUTURE_WEEKS",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the "
+    },
+    "runsB": [
+     "QUALITY:43",
+     "LONG:65"
+    ],
+    "runsA": [
+     "EASY:43",
+     "LONG:65"
+    ],
+    "pendingAfter": null
+   },
+   {
+    "key": "EXEC NR SYSTEMIC_FATIGUE kept DOUBLE_CONFLICT answer EQUIPMENT_CHANGE",
+    "kept": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 13 planned run sessions from 2026-11-"
+    },
+    "keptSignal": "SYSTEMIC_FATIGUE",
+    "B": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "A": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "Planned exercises already fit the available equipment; the equipment is recorded for the dates stated"
+    },
+    "runsB": [
+     "QUALITY:43",
+     "LONG:65"
+    ],
+    "runsA": [
+     "EASY:43",
+     "LONG:65"
+    ],
+    "pendingAfter": null
+   }
+  ],
+  "guard": [
+   {
+    "key": "MISS RV guard kept NONE",
+    "held": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Converging fatigue signal: No run is recorded in the 30 days before 2026-12-28, the reference for the runs planned from then, and 13 planned"
+    },
+    "answer": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "replayed": false,
+    "pending": null
+   },
+   {
+    "key": "MISS RV guard kept EQUIPMENT_CHANGE",
+    "held": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Converging fatigue signal: No run is recorded in the 30 days before 2026-12-28, the reference for the runs planned from then, and 13 planned"
+    },
+    "answer": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "replayed": false,
+    "pending": null
+   },
+   {
+    "key": "MISS NR guard kept NONE",
+    "held": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Converging fatigue signal: No run is recorded in the 30 days before 2026-12-28, the reference for the runs planned from then, and 13 planned"
+    },
+    "answer": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "replayed": false,
+    "pending": null
+   },
+   {
+    "key": "MISS NR guard kept EQUIPMENT_CHANGE",
+    "held": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Converging fatigue signal: No run is recorded in the 30 days before 2026-12-28, the reference for the runs planned from then, and 13 planned"
+    },
+    "answer": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "replayed": false,
+    "pending": null
+   },
+   {
+    "key": "EXEC RV guard kept NONE",
+    "held": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Converging fatigue signal: No run is recorded in the 30 days before 2026-12-28, the reference for the runs planned from then, and 13 planned"
+    },
+    "answer": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "replayed": false,
+    "pending": null
+   },
+   {
+    "key": "EXEC RV guard kept EQUIPMENT_CHANGE",
+    "held": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Converging fatigue signal: No run is recorded in the 30 days before 2026-12-28, the reference for the runs planned from then, and 13 planned"
+    },
+    "answer": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "replayed": false,
+    "pending": null
+   },
+   {
+    "key": "EXEC NR guard kept NONE",
+    "held": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Converging fatigue signal: No run is recorded in the 30 days before 2026-12-28, the reference for the runs planned from then, and 13 planned"
+    },
+    "answer": {
+     "s": "MODIFY",
+     "a": "REPLAN_FROM_EVIDENCE",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "The reports of the run sessions that had no report answer the question about unreported training: the sessions still ahead are planned from "
+    },
+    "replayed": false,
+    "pending": null
+   },
+   {
+    "key": "EXEC NR guard kept EQUIPMENT_CHANGE",
+    "held": {
+     "s": "ASK",
+     "a": "ASK",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Converging fatigue signal: No run is recorded in the 30 days before 2026-12-28, the reference for the runs planned from then, and 13 planned"
+    },
+    "answer": {
+     "s": "KEEP",
+     "a": "KEEP",
+     "v": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "q": null,
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    "replayed": false,
+    "pending": null
+   }
+  ],
+  "dropped": [
+   {
+    "key": "MISS RV LOCAL_FATIGUE kept NONE answer PLAIN",
+    "stage": "hold",
+    "held": {
+     "s": "MODIFY",
+     "a": "REDUCE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Remove only optional local work for the affected region; essentials stay; the run sessions ahead stay as they were and wait for an answer: N"
+    }
+   },
+   {
+    "key": "MISS RV LOCAL_FATIGUE kept NONE answer OWN_KIND",
+    "stage": "hold",
+    "held": {
+     "s": "MODIFY",
+     "a": "REDUCE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Remove only optional local work for the affected region; essentials stay; the run sessions ahead stay as they were and wait for an answer: N"
+    }
+   },
+   {
+    "key": "MISS RV LOCAL_FATIGUE kept NONE answer SCHEDULE_CHANGE",
+    "stage": "hold",
+    "held": {
+     "s": "MODIFY",
+     "a": "REDUCE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Remove only optional local work for the affected region; essentials stay; the run sessions ahead stay as they were and wait for an answer: N"
+    }
+   },
+   {
+    "key": "MISS RV LOCAL_FATIGUE kept NONE answer EQUIPMENT_CHANGE",
+    "stage": "hold",
+    "held": {
+     "s": "MODIFY",
+     "a": "REDUCE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Remove only optional local work for the affected region; essentials stay; the run sessions ahead stay as they were and wait for an answer: N"
+    }
+   },
+   {
+    "key": "MISS RV LOCAL_FATIGUE kept UNAVAILABLE_STRENGTH_DAY answer PLAIN",
+    "stage": "hold",
+    "held": {
+     "s": "MODIFY",
+     "a": "REDUCE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Remove only optional local work for the affected region; essentials stay; the run sessions ahead stay as they were and wait for an answer: N"
+    }
+   },
+   {
+    "key": "MISS RV LOCAL_FATIGUE kept UNAVAILABLE_STRENGTH_DAY answer OWN_KIND",
+    "stage": "hold",
+    "held": {
+     "s": "MODIFY",
+     "a": "REDUCE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Remove only optional local work for the affected region; essentials stay; the run sessions ahead stay as they were and wait for an answer: N"
+    }
+   },
+   {
+    "key": "MISS RV LOCAL_FATIGUE kept UNAVAILABLE_STRENGTH_DAY answer SCHEDULE_CHANGE",
+    "stage": "hold",
+    "held": {
+     "s": "MODIFY",
+     "a": "REDUCE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Remove only optional local work for the affected region; essentials stay; the run sessions ahead stay as they were and wait for an answer: N"
+    }
+   },
+   {
+    "key": "MISS RV LOCAL_FATIGUE kept UNAVAILABLE_STRENGTH_DAY answer EQUIPMENT_CHANGE",
+    "stage": "hold",
+    "held": {
+     "s": "MODIFY",
+     "a": "REDUCE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Remove only optional local work for the affected region; essentials stay; the run sessions ahead stay as they were and wait for an answer: N"
+    }
+   },
+   {
+    "key": "MISS RV LOCAL_FATIGUE kept EQUIPMENT_CHANGE answer PLAIN",
+    "stage": "hold",
+    "held": {
+     "s": "MODIFY",
+     "a": "REDUCE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Remove only optional local work for the affected region; essentials stay; the run sessions ahead stay as they were and wait for an answer: N"
+    }
+   },
+   {
+    "key": "MISS RV LOCAL_FATIGUE kept EQUIPMENT_CHANGE answer OWN_KIND",
+    "stage": "hold",
+    "held": {
+     "s": "MODIFY",
+     "a": "REDUCE",
+     "v": "REQUIRES_RECONCILIATION",
+     "q": "UNREPORTED_TRAINING",
+     "reason": "Remove only optional local work for the affected region; essentials stay; the run sessions ahead stay as they were and wait for an answer: N"
+    }
+   }
+  ]
+ }
+}

@@ -1,0 +1,319 @@
+{
+ "revision": "SSCTR-CC-R7C-r4",
+ "reviewDate": "2026-11-02",
+ "recordKind": "Narrow recheck on frozen bytes (R7C-FREEZE-2) after the single correction cycle. Not a new disposition: it answers the seven items of CC_RECHECK_REQUEST.md within SSCTR-SD-R7C-r2, and sets the conditions as they stand now.",
+ "request": "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/CC_RECHECK_REQUEST.md (committed in b31d036)",
+ "predecessors": {
+  "r1": "SSCTR-SD-R7C-r1 (NOT_READY, SSCTR-SD-01), kept unchanged",
+  "r2": "SSCTR-SD-R7C-r2 (ACCEPT_R7C_UNKNOWN_SEMANTICS), kept unchanged (sha256 ccf61f1b…ebae6, equal to the freeze record's semanticDisposition)",
+  "r3": "SSCTR-FR-R7C-r3 (ACCEPT_WITH_CONDITIONS on R7C-FREEZE-1), kept unchanged; its R1 premise ('the next decision cures it') was falsified by QE-R7C-02 on R7C-FREEZE-1 and is re-judged here on R7C-FREEZE-2"
+ },
+ "reviewer": {
+  "instance": "ssctr-r7c-cc-recheck-2026-11-02",
+  "role": "sports-science-concurrent-training-reviewer (SSCTR-1.0.0, constitution SSCTR-CONST-1.0.0, skill sports-science-review 1.0.0)",
+  "model": "claude-opus-5-5",
+  "effort": "xhigh (task-route envelope)",
+  "dispatch": "Launched by the R7-C coordinator as a subagent with a task-route envelope naming this role. No Agent tool in this instance; no specialist delegated. Whether the native project agent type was used cannot be observed from inside.",
+  "independence": "This instance authored none of the runtime, the correction cycle, its tests, the freeze, the verifier, the handoff or the evidence. r1-r3 are earlier records of this role; their conclusions are re-judged here only where the request asks (R1/C9, the answer path, the ceiling re-plan). The Engineering review of R7C-FREEZE-1 was read as instructed. An Engineering recheck of R7C-FREEZE-2 appeared untracked in reviews/engineering/ during this review and was NOT read, to keep the two rechecks independent.",
+  "literatureAccess": "WebSearch available and working (checked 2026-11-02). No new scientific claim is made; one re-review screen was run (queryLog)."
+ },
+ "authority": {
+  "type": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY",
+  "scope": "Bounded nonclinical internal sporting judgment on whether the frozen bytes of the offline synthetic Node 24 shadow reference (CoachingCore) still carry the semantics accepted in SSCTR-SD-R7C-r2 after the correction cycle.",
+  "humanValidation": false,
+  "empiricalProductValidation": false,
+  "clinicalClearance": false,
+  "runtimeSovereignty": false,
+  "gateStatus": "SSCTR recheck recorded here. It does not close R7-C alone: the independent Engineering recheck of the same freeze and the competent closure remain.",
+  "publicationStatus": "NOT_PUBLISHED",
+  "v1Authority": "V1_COACHING_AUTHORITY_READY stays NO.",
+  "notChanged": "No policy, catalog, canon, product, runtime, test, evidence, freeze record, verifier, handoff, CURRENT_MISSION.md, MISSION_LEDGER.md or human queue was edited. No commit or state-changing git operation. npm run verify was not run; the only verify script run was verify-r7c.mjs --revision 2 --suite without --write. phase5-run-evidence.mjs and phase5-mutation.mjs were not run. The coordinator's stdout probes were re-run into probes/cc/out/rerun/; my sd/ and sd5/ probes were re-run into probes/cc/out/rerun/, never into their own out/ folders; the b2-copy clinical probes were run from verbatim copies in the session scratchpad and their outputs copied into probes/cc/out/clinical/."
+ },
+ "bytes": {
+  "head": "b31d0362a78828cf360775d5fa3f3e6f2872ea16",
+  "freeze": "R7C-FREEZE-2",
+  "freezeRecord": "CoachingCore/r7/c/RUNTIME_FREEZE_R7C_2.json (sha256 457582a2094c3d1ed89067ee56caadcd8def58e94f6e68750e010624337bfa8d, checked)",
+  "freezeCommit": "a10cec04071be97e409f11a4f831f13eae0c9769",
+  "sourceDigest": "9e424f702dbc2861f00d7ee0f2993172e74702afeb46767b7065eec6eaa63f35",
+  "manifestDigest": "02c50ef3a98cf5770551934b116acb47aa3240fefc0a640d0639f2db5597efb9",
+  "sources": {
+   "CoachingCore/src/r6-adaptation.mjs": "0deb1bd3db74f6c46f20afc6cbe84c2491bf2df35e4e584097808e44aab8b52f",
+   "CoachingCore/src/r6-composition.mjs": "ebdf638b20d7d059e28ca51a2f40d90baaba55accff219aba7ba9d958364d91a"
+  },
+  "sourcesCheckedBy": "sha256 of the working files equal to the freeze record; git diff a10cec0 HEAD -- CoachingCore/src CoachingCore/test CoachingCore/r7/b CoachingCore/r6 is empty",
+  "deltaRead": "git diff 1890f663 a10cec04 -- CoachingCore/src CoachingCore/test read in full: withReference carry (QE-R7C-03), aboveFactsCeiling and declaredPauses (r6-composition), the uncredited sessions in factualReplan/composeWeeks (C9), the NO_CEILING re-decision (G01 first), r7a-cycle2.test.mjs:111 and r7c-phase5-cc.test.mjs.",
+  "inputsUnchanged": {
+   "policy R6-POLICY-5 CoachingCore/r6/PROGRAM_POLICY_R6.json": "a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100",
+   "catalog R7B0-CATALOG-2 CoachingCore/r7/b0/REPERTOIRE_CATALOG_B0.json": "ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9",
+   "human queue reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json": "95ea4b92819455a7176e43e7a856dcff872b2ecf9cd575174468829f186099c8, 230 items, funding_trigger NOT_DECLARED",
+   "r5, r6, r7/b0, product/, canon/, reviews/": "git diff 1890f66 b31d036 is empty for these paths; verifier inputs-unchanged PASS"
+  }
+ },
+ "gate": "ACCEPT_WITH_CONDITIONS",
+ "gateRationale": [
+  "No blocker. QE-R7C-02's failure is gone: no first decision of week b+1 keeps a dose above the single-run ceiling or an intense session the on-time path lacks, on any route measured (CC1 1,308 VALID cells, CC3 1,752 VALID first decisions; 0 and 0). QE-R7C-01's known-stop class is gone across six recorders (CC2 MISS 228/228 equal to the on-time and the direct-answer plan; R7C-FREEZE-1 had 108 ceiling breaches).",
+  "Not READY, for three reasons. (1) R1 is closed on the factual re-plan route but not on handler routes that re-compose the weeks from the answer week (a nonclinical substitution, a short return report, an event date change): week b+1 is still stored with the stale credit, including a race touch in race week after a taper answer. Every measured first decision of week b+1 asks or re-plans within the ceiling, so r2's condition holds again, but C9 must keep binding. (2) An adverse or mixed answer recorded by a handler clinical route is still not applied after clearance, re-send included (R7C-FREEZE-1 identical); C3 gains a clause. (3) The consumer conditions C2, C3, C8 and C9 are obligations no frozen byte discharges.",
+  "The ceiling re-plan itself is inside r2 and the single-run ceiling policy: where it fires it plans what the reviewed path plans, it never raises a dose, and it never fires on the timely path."
+ ],
+ "items": [
+  {
+   "id": 1,
+   "item": "R1 / C9: is R1 closed on FREEZE-2; does C9 still bind; FR-03 taper wording",
+   "status": "NOT_CONFIRMED",
+   "statusMeaning": "R1 is narrowed and contained, not closed. Not a blocker: it stays a CONDITION (C9) as in r2, whose premise now holds.",
+   "reason": [
+    "Factual re-plan route, closed. My r1-exposure re-run: 168/168 cells equal to the on-time plan, 0 ceiling breaches (was 112/168 on R7C-FREEZE-1; week b+1 after the answer now 20/20/20, was EASY 45/45/LONG 55 or EASY 50/QUALITY 34/LONG 55). r1-race-week: race week after a taper answer EASY 15/EASY 15/RACE 75, equal to the on-time plan (was EASY 20/RACE_TOUCH 25). signals-residuals R1 section: week 8 equal to A in both cells.",
+    "QE-R7C-02 timeline (own CC1, 1,536 cells: GEN b=5,7 and R10K b=9,10; g 0/2; RV/NR; MISS/EXEC; answer day 2/4; the week's later facts reported mid-week with the review skipped, at the review, never, or with the next decision; six kinds of first decision of week b+1): 0 runs above the policy ceiling on the factual record and 0 intense roles the on-time path lacks (R7C-FREEZE-1: 72 breaches, 66 of them in the skipped-review path, and 10 intense). Remaining differences from the on-time plan are one 5-minute step on one slot within the ceiling, the R2 shape; the same 24 cells differ identically on the reviewed path on both freezes.",
+    "Handler re-composition routes, still open. My kinds-days re-run (3,060 cells) still flags 46 next-week cells, every one a known-stop answer carried on day 3 or 4 by EXERCISE_SUBSTITUTION (28), RETURN_SHORT (14) or EVENT_DATE_CHANGE (4). Own CC3 (864 answer cells over 15 kinds and days 2-5): 66 handler cells keep the stale week b+1, up to EASY 50/QUALITY 34/LONG 60, EASY 45/EASY 45/LONG 60, EASY 45/EASY 34/LONG 60, and EASY 20/RACE_TOUCH 25/RACE 75 after a taper answer carried by a substitution (on-time: EASY 15 or 20/EASY/RACE). Cause read in the delta: only factualReplan passes the uncredited sessions; rebuild() and the return composition re-compose from the answer week without them.",
+    "Containment. CC3 cure step (every R1 cell x three deliveries x six first decisions of week b+1, 2,916 cells): 1,752 VALID, 804 ask; 0 above the ceiling, 0 intense roles the on-time path lacks; all 1,298 differences are exactly one 5-minute step within the ceiling (R2). With nothing reported after the answer, every first decision asks (0 VALID of 972). So the stale projection never reaches a VALID decision of week b+1, and r2's ground for a condition rather than a blocker holds again.",
+    "C9 decision: keep binding, obligation unchanged; not retired, not narrowed. Its Engineering part is done for the factual re-plan only. FR-03: 'including the taper-to-race-week case' must stay; the race-touch case persists on the substitution route."
+   ]
+  },
+  {
+   "id": 2,
+   "item": "The answer after a refusal or clinical route is applied at the next decision: within the accepted semantics?",
+   "status": "CONFIRMED",
+   "statusMeaning": "Within r2's semantics (the answer is part of the canonical factual state, whichever decision recorded it), but narrower than the request states: it holds for known stops, not for adverse or mixed answers recorded by a handler clinical route (finding CC-F02, C3 clause).",
+   "reason": [
+    "Own CC2 (1,200 cells): recorders R4 HOLD (race week), substitution with pain, clinical return report, eligibility pain flag (R5 control, not recorded), RECOVERED, equipment change with unusable dates; then a plain decision, the answer re-sent, or a systemic fatigue; compared with the on-time path A and the accepted direct-answer path D.",
+    "MISS (known stop): 228/228 VALID cells equal to A and to D, 0 ceiling breaches, 0 intense (R7C-FREEZE-1: 108 breaches, 68 intense). The R4 race week now plans EASY 15 + RACE 75, as on time (QE-R7C-01 directed test re-read; CC2 agrees). Clinical-first unchanged: while the clinical reference stands nothing is proposed or VALID (directed test); the eligibility flag still records nothing.",
+    "EXEC: identical on both freezes.",
+    "ADVERSE and MIXED via the two handler clinical routes: after clearance (modelled as the tests do: carried record, no clinical reference state) the rest of the answer week keeps the stored doses, re-sent answer included: LONG 65 where D plans 45 and A 40 (adverse long runs); QUALITY 48/LONG 75 where D plans EASY 45/LONG 60 (mixed, NR). Identical on R7C-FREEZE-1, so not the cycle's delta. Within the ceiling. After the week's own review, week b+1 equals D in 162/166 VALID cells (the 4 others are R5 cells whose answer was never re-sent)."
+   ]
+  },
+  {
+   "id": 3,
+   "item": "The ceiling re-plan's semantics and scope (incl. the never-reported class and the late known-stop schedule changes): inside r2 and the single-run ceiling policy, no new dose, any population read wrongly",
+   "status": "CONFIRMED",
+   "reason": [
+    "Policy. run.singleRunCeiling: no planned run but the race above the longest completed run of the 30 days before (ledger, intake run while in the window, a valid return demonstration) plus 5 minutes, with the entry as the ceiling when nothing is completed; earlier projected weeks count as executed only inside a conditional projection. Once the week is current, those weeks are facts or unknown (r2 rule 1), so enforcing the ledger reading on the week in force is the policy's own reading, not a new rule.",
+    "It plans what the reviewed path plans. CC4 never-reported: where it fires (16 cells) the result equals the weekly-reviewed path with nothing reported (EASY 30/30/LONG 40 from 30/QUALITY 34/50; EASY 35/35/LONG 50 from 40/QUALITY 34/60). The coordinator's G01 grid re-run (byte-identical): the six late schedule-change rows now equal their reviewed-miss rows (e.g. GEN b=7 g=3 EASY 50+S/QUALITY 34/LONG 65, RHM g=5 LONG 65 where R7C-FREEZE-1 kept LONG 90 above a 65 ceiling). CC7: every LATE cell it changes lands on the REVIEWED plan.",
+    "No new dose. CC4: 0 cells where HEAD is above the stored week or adds an intense role; no ceiling re-plan in any grid raised a dose. The r7a-cycle2 fixture: EASY 40/QUALITY 34/LONG 60 to EASY 35/35/LONG 50 (week 3 EASY 35/35/LONG 45), the intake's 50-minute run plus 5 being 55.",
+    "Never fires on the timely path: CC4-P 0/72 (runs at 70 %, one run not done, both), CC4-T 0/20 (taper and race week with a hole), the coordinator's differential 97/99 identical (both differences in the never-reported class).",
+    "G01 first: with an UNREPORTED_TRAINING question it decides alone (NO_CEILING re-decision; directed test; G01 grids byte-identical, 0 unnecessary asks).",
+    "Populations. The re-plan reads no population wrongly where it acts. Its scope leaves three pre-existing credits standing, disclosed under C7: never-reported easy running below the ceiling (CC-F04), restart and walk/jog never reported (CC-F05), and, through the reviewed path it copies, the return to the entry after a short return following known misses (CC-F06, C10)."
+   ]
+  },
+  {
+   "id": 4,
+   "item": "r7a-cycle2.test.mjs:111 classified EXPECTED_SEMANTIC_UPDATE",
+   "status": "CONFIRMED",
+   "reason": "Own CC8 on both freezes: the dated change is still asked (ASK, REQUIRES_RECONCILIATION, changes.to / changes.from) and never applied (the barbell rows of week 3 stay). On R7C-FREEZE-2 the factual re-plan of the credited run doses travels with the question, as MOVED and ANSWERED re-plans already did; under C2 nothing ahead is presented while it stands. The original assertion (no proposal) is kept on the same fixture with weeks 0-1 reported as prescribed. INV-11's intent is intact; the change follows r2's unknown semantics."
+  },
+  {
+   "id": 5,
+   "item": "SSCTR-SD5-02 / C8 after QE-R7C-03",
+   "status": "CONFIRMED",
+   "reason": "Own CC5 (160 cells, SYSTEMIC_FATIGUE held; LOCAL_FATIGUE and UNDERPERFORMANCE are not held by design, they apply beside the question): the held signal now survives a kept change 128/128 (R7C-FREEZE-1 64/128); a plain answer after a kept change re-evaluates it 32/32, equal to on time 32/32 (R7C-FREEZE-1 16 and 24). The residual is unchanged and no wider: an answer inside SCHEDULE_CHANGE or EQUIPMENT_CHANGE still drops it (EXEC: QUALITY 34 or 43 kept where on time removes it; same counts on both freezes). Week guard: 0/8 replays. recovered-and-held re-run byte-identical. C8 stays as written (engine, next revision; consumer via C3)."
+  },
+  {
+   "id": 6,
+   "item": "Unchanged: D1, G02, taper and race week, clinical boundary",
+   "status": "CONFIRMED",
+   "reason": [
+    "D1: the coordinator's holdout re-run is byte-identical to its R7C-FREEZE-2 output (83ea8dc2…) and equal to R7C-FREEZE-1 after labels.",
+    "G02: adversarial-g02 re-run byte-identical (47212a8f…), equal to Phase 4.",
+    "Taper and race week on the answer paths: kinds-days answer-week flags are still only the 58 entry runs with strides the timely path also plans; race week after a taper answer equals the on-time plan (r1-race-week). The race-touch case remaining on the substitution route is R1 (item 1), held under C9. B2 and unknown-before-taper unchanged (G01 grids byte-identical).",
+    "Clinical boundary: K6 1/1, K6b 1/1, inventory CAND-01/CAND-02/ADJ 3/3, inherited adversarial 3,228 checks 0 failed, all equal to the coordinator's R7C-FREEZE-2 outputs after labels; SD grid C 9/0 (re-run byte-identical). No clinical judgment is made here."
+   ]
+  },
+  {
+   "id": 7,
+   "item": "Conditions carried: C2, C3, C7, C8 and C9 as set now",
+   "status": "CONFIRMED",
+   "statusMeaning": "Carried verbatim in the freeze record (verifier binding-conditions PASS). This record updates C3, C7 and C9 (texts below); the closure must carry the r4 texts in the handoff, whose R1, C9 and R5 lines are inaccurate (CC-F08).",
+   "reason": "C2 and C8 unchanged. C3 gains the clinical-recorder clause. C7 is corrected and extended. C9 keeps binding with a status note. C4, C5 and C10 carried; C10 extended (CC-F06)."
+  }
+ ],
+ "blockers": [],
+ "blockersNote": "None, DIRECT_R7C_DELTA or not. Nothing found reaches a VALID decision above the single-run ceiling, plans an intense session a known stop excludes, or touches the clinical route.",
+ "conditions": [
+  {"id": "C2", "binding": "CONSUMER_CONDITION_FOR_ACCEPTANCE", "status": "CARRIED UNCHANGED (r2 text, freeze record)"},
+  {
+   "id": "C3",
+   "binding": "G03_CONDITION_FOR_USE_BEYOND_OFFLINE_REFERENCE",
+   "status": "CARRIED, r4 clause added",
+   "text": "r2 text, plus (r4): Since R7C-FREEZE-2 a known stop recorded by a refusal or a clinical route is applied by the next decision, with or without the re-send. An adverse or mixed answer recorded by a handler clinical route (a substitution with pain, a clinical return report) is not: after qualified clearance the next decisions keep the stored run doses of that week, and re-sending the answer does not re-plan them. Until an engine fix, after such a route the run doses remaining in that week are not presented as a prescription; the qualified human's clearance and the week's own review decide, and that review re-plans the following week from the facts."
+  },
+  {"id": "C4", "binding": "G03_DATA_CONDITION", "status": "CARRIED UNCHANGED"},
+  {"id": "C5", "binding": "NON_BLOCKING_NEXT_RUNTIME_REVISION", "status": "CARRIED UNCHANGED"},
+  {
+   "id": "C7",
+   "binding": "DISCLOSURE",
+   "status": "CARRIED, corrected and extended",
+   "text": "The closure records as disclosed residuals: D1. B2. B1. The ratified fifth fixture. R1: fixed on the factual re-plan route; persisting on handler routes that re-compose the weeks from the answer week (a nonclinical EXERCISE_SUBSTITUTION, a short RETURN_AFTER_PAUSE, an EVENT_DATE_CHANGE): week b+1 stored up to EASY 50/QUALITY 34/LONG 60, and a 25-minute race touch in race week after a taper answer, until the first decision of the next week, which in every measured case asks or re-plans within the single-run ceiling. R2 with A* as the only differing reference (the one-step differences at the first decision of week b+1 belong here). R3 persisting one step into the following week. R4: the HOLD remains (Engineering); a known stop it records is applied by the next decision. R5: the eligibility flag records nothing, the re-send applies it; after a handler clinical route a known stop is applied after clearance, an adverse or mixed answer is not (C3). SSCTR-SD5-02, narrowed (a held signal survives a change kept beside the question; it is still dropped by an answer inside a non-review kind that returns VALID). QE-R7C-05. Never reported, easy running: within the intake window a credited progression below the single-run ceiling, quality activation included, stands at non-review decisions until the week's own review (e.g. EASY 50/QUALITY 34/LONG 65 against the reviewed EASY 45/45/LONG 60). Never reported, restart or walk/jog: outside the unknown window by design; the restart ladder progresses on credit (EASY 20 to EASY 30/LONG 35 by week 5, against 15 on the reviewed path and the entry ceiling on the record) until the week's own review."
+  },
+  {"id": "C8", "binding": "CONSUMER_CONDITION_FOR_ACCEPTANCE (via C3) and NON_BLOCKING_NEXT_RUNTIME_REVISION (engine)", "status": "CARRIED UNCHANGED (r2 text); residual narrowed by QE-R7C-03"},
+  {
+   "id": "C9",
+   "binding": "CONSUMER_CONDITION_FOR_ACCEPTANCE; ENGINEERING_BEFORE_ANY_USE_BEYOND_THE_OFFLINE_REFERENCE",
+   "status": "STILL BINDING (r2 text verbatim, including the taper-to-race-week case); r4 status note added",
+   "text": "r2 text, plus (r4 status): The consumer part still binds. On R7C-FREEZE-2 the factual re-plan no longer credits the elapsed unreported sessions, and the first decision of week b+1 asks or re-plans within the ceiling in every measured case, so the condition's premise holds. The stale projection persists on handler routes that re-compose from the answer week (EXERCISE_SUBSTITUTION, RETURN_AFTER_PAUSE, EVENT_DATE_CHANGE), the taper-to-race-week case included. Engineering part: done for the factual re-plan; still owed for those re-compositions (read the elapsed unreported sessions as unknown in every composition from the answer week, or mark the projection conditional), with a directed test per route, including a substitution answer on day 4 of the taper."
+  },
+  {"id": "C10", "binding": "ROUTING_TO_POLICY_OWNER", "status": "CARRIED, extended with CC-F06 (no policy change here)"}
+ ],
+ "findings": [
+  {
+   "id": "CC-F01",
+   "severity": "CONDITION (non-blocking)",
+   "directR7CDelta": true,
+   "title": "R1 persists on handler routes that re-compose the weeks from the answer week; the next decision contains it.",
+   "evidence": "Item 1: kinds-days 46 next-week flags, CC3 66 handler cells (EXERCISE_SUBSTITUTION 44, RETURN_SHORT 14, EVENT_DATE_CHANGE 8), up to EASY 50/QUALITY 34/LONG 60 and a race touch 25 in race week; CC3 cure 2,916 cells, 0 material failures. In the delta, only factualReplan passes `uncredited` to composeWeeks; rebuild() (substitution, event date, goal) and the return composition do not.",
+   "action": "C9 keeps binding; C7 corrected. Engineering, next runtime revision: carry the uncredited sessions into every composition from the answer week."
+  },
+  {
+   "id": "CC-F02",
+   "severity": "CONDITION (non-blocking)",
+   "directR7CDelta": false,
+   "directR7CDeltaNote": "Identical on R7C-FREEZE-1, so not the cycle's delta; it is in R7-C's overall delta (the answer-as-transition mechanism) and in QE-R7C-01's class.",
+   "title": "An adverse or mixed answer recorded by a handler clinical route is not applied after clearance, re-send included.",
+   "evidence": "Item 2, CC2: LONG 65 kept where the direct path plans 45; QUALITY 48/LONG 75 kept where it plans EASY 45/LONG 60. The rest of the answer week only; within the ceiling; week b+1 converges at the week's review (162/166).",
+   "action": "C3 r4 clause. Engineering: apply recorded answers by state, not by transition (the Engineering review's original smallest fix). The return after a clinical event remains CLINICAL_HUMAN_REQUIRED."
+  },
+  {
+   "id": "CC-F03",
+   "severity": "INFO (positive evidence)",
+   "directR7CDelta": true,
+   "title": "The ceiling re-plan plans what the reviewed path plans, never raises a dose and never fires on the timely path.",
+   "evidence": "Item 3: CC4-N 16/16 equal to the reviewed path, newDose 0; G01 late rows 6/6 equal to their reviewed-miss rows; CC7 LATE changes land on REVIEWED; CC4-P 0/72, CC4-T 0/20, differential 97/99."
+  },
+  {
+   "id": "CC-F04",
+   "severity": "DISCLOSURE (non-blocking)",
+   "directR7CDelta": false,
+   "title": "Never-reported easy running, below the ceiling: credited progression and quality activation stand at non-review decisions within the intake window.",
+   "evidence": "CC4-N plain day-0 decisions: e.g. EASY_CURRENT_60 week 3 EASY 50/QUALITY 34/LONG 65 VALID against the reviewed EASY 45/45/LONG 60; EASY_CURRENT_40 week 4 EASY 30/QUALITY 34/LONG 45 against EASY 30/30/LONG 30. 178 cells above the reviewed path on HEAD, 194 on R7C-FREEZE-1. Bounded by the single-run ceiling on the intake run; from day 31 the question is asked.",
+   "action": "C7. G03: the week's own review at each boundary cures it. Engineering, next revision: read the never-reported window as the reviewed path does at any decision."
+  },
+  {
+   "id": "CC-F05",
+   "severity": "DISCLOSURE (non-blocking)",
+   "directR7CDelta": false,
+   "title": "Never-reported restart and walk/jog progress on credit, outside the unknown window by design (Phase 2: 'restart, re-entry and walk/jog follow their own recipe').",
+   "evidence": "CC4-N: RESTART EASY 20/20/20 in week 1 to EASY 30/30/LONG 35 in week 5 VALID, against 15/15/15 on the reviewed path; above the entry ceiling the policy applies when nothing is completed. Identical on R7C-FREEZE-1. Exposure needs no weekly review and no report.",
+   "action": "C7; Engineering and the policy owner in the next revision (a restart or walk/jog step resting only on unreported weeks). Re-review trigger."
+  },
+  {
+   "id": "CC-F06",
+   "severity": "OBSERVATION for C10 (adequacy, not safety)",
+   "directR7CDelta": false,
+   "title": "After a short return following known misses, the reviewed path returns to the entry the week after the re-entry week; the ceiling re-plan now brings the late path there too.",
+   "evidence": "CC7 RET (demonstration 25 or 40): with the re-entry week's easy runs 5-10 minutes short and the long run unreported or not done, REVIEWED and MID give EASY 15/15/LONG 15 on HEAD, R7C-FREEZE-1 and R7B2-FREEZE-1; LATE was 30/30/35 or 45/45/50 and is now 15/15/15. With the long run executed, 15/15/20. The policy ceiling would allow up to the demonstration or the executed run plus 5. Known-miss re-entry without a declared break (KM) is unaffected.",
+   "action": "Routed to C10 (re-entry coherence across report timings); no rule here (C-SD5-02 INSUFFICIENT_EVIDENCE)."
+  },
+  {
+   "id": "CC-F07",
+   "severity": "INFO",
+   "directR7CDelta": true,
+   "title": "After an executed answer later in the week, the answer path holds the threshold step where the on-time path progresses.",
+   "evidence": "CC6: GEN g=0 NR b=5 day 4: week 6 THRESHOLD 5x5 (step 2, 48 min) held, against 3x8 (step 3, 43 min) on time, which credits its own elapsed unreported quality session. Consistent with unknown semantics; within the ceiling."
+  },
+  {
+   "id": "CC-F08",
+   "severity": "DOCUMENTARY (the handoff is not a frozen byte)",
+   "directR7CDelta": false,
+   "title": "The handoff overstates the cycle.",
+   "evidence": "R7C_HANDOFF.md says 'R1 (C9): fixed in R7C-FREEZE-2', 'Engineering part: done', 'C9's projection part was done', and for R5 that after a handler clinical route the next decision 'applies it, with or without the re-send'. Items 1 and 2 show these hold for the factual re-plan and for known stops only.",
+   "action": "At closure, carry the r4 texts of C3, C7 and C9 and state that the freeze record's verbatim texts plus this record govern."
+  }
+ ],
+ "verification": {
+  "verifier": "node CoachingCore/scripts/verify-r7c.mjs --revision 2 --suite (no --write): 16/16 PASS, suite 854/854, 0 failures; wrote nothing (probes/cc/out/verify-r7c-rev2-suite.json).",
+  "ownProbes": "cc1 to cc8 under probes/cc/ (shared helpers cc-lib.mjs), each read-only and printing JSON into probes/cc/out/; R7C-FREEZE-1 and R7B2-FREEZE-1 bytes extracted by git archive into temporary directories outside the repository.",
+  "reRunsIntoCcOut": {
+   "byteIdenticalToPriorOutputs": [
+    "sd-probe, sd7-answer-midweek, sd8-controls, sd9-test-fixture-week7 (equal to the coordinator's R7C-FREEZE-2 and R7C-FREEZE-1 outputs)",
+    "recovered-and-held, legacy-variants, qre-r6-04-split, r2-reentry (equal to their e1a4ef4 outputs)",
+    "coordinator: phase5-adversarial-sd (b091d1aa…), phase4-adversarial-g01 (2f83aa3e…), phase3-adversarial-g02 (47212a8f…), phase3-holdout (83ea8dc2…), phase4-verify-sd01 (99b624f6…): equal to their R7C-FREEZE-2 outputs",
+    "conformance-r7b, -r7b1, -r7b2: PASS, stdout sha256 equal to the freeze record"
+   ],
+   "changedAsExpected": [
+    "r1-exposure: 168/168 equal to A (was 112/168), 0 breaches",
+    "r1-race-week: race week EASY 15/EASY 15/RACE 75 (was EASY 20/RACE_TOUCH 25)",
+    "signals-residuals: only the R1 section changes (week 8 equal to A)",
+    "kinds-days: 0 validity, 0 history violations; S flags 444 to 104 (58 answer-week strides as before; 46 next-week flags, all handler routes, CC-F01); mismatch classes unchanged"
+   ],
+   "clinicalCopies": "b2-copy k6, k6b, inventory and adversarial run from verbatim copies in the session scratchpad on this worktree's runtime: equal to the coordinator's R7C-FREEZE-2 outputs after labels (outputs copied to probes/cc/out/clinical/)."
+  },
+  "readNotRerun": [
+   "mutation.R7C-P5-963239b.json (CC-M1..M9 9/9, earlier sets preserved); the verifier's evidence-mutation and correction-cycle-mutants checks pass.",
+   "cc-differential.R7C-P5-963239b.json (97/99 identical; both differences in the never-reported class, consistent with CC4)."
+  ]
+ },
+ "claims": [],
+ "claimsNote": "No new scientific claim. r1/r2 claims (C-SD-01, C-SD-02, C-SD-04, C-SD5-01, C-SD5-02) carried unchanged; C-SD5-02 (optimal retraining dose by interruption length: INSUFFICIENT_EVIDENCE) is why CC-F06 is routed, not ruled.",
+ "queryLog": [
+  {"tool": "WebSearch", "query": "systematic review retraining after detraining endurance runners return to running load 2025 2026", "purpose": "access check and re-review screen", "date": "2026-11-02", "result": "No 2025-2026 systematic review surfaced; the most recent was the 2023/2024 Frontiers in Physiology systematic review of detraining in endurance athletes (10.3389/fphys.2023.1334766), already cited as S5. Negative search, standard mode, limited."}
+ ],
+ "aeReview": {
+  "decisionReviewed": "The ceiling re-plan: a run dose still ahead above the single-run ceiling on the factual record, while the window holds sessions without an executed report.",
+  "q1_planStillAdequate": "No: the stored dose rests on credit the record does not show.",
+  "q2_materialFactWithProvenance": "Yes: the completed-work ledger and the intake run in the 30-day window, read as the policy states it.",
+  "q3_keepDefensible": "No above the ceiling (policy breach on facts). Below it KEEP stands by scope (CC-F04).",
+  "q4_changeNecessary": "Yes, against the reviewed path with the same facts as comparator; the re-plan equals it where it fires.",
+  "q5_smallestSufficientIntervention": "Re-plan the sessions still ahead from the facts, as the reviewed path would; nothing elapsed is rewritten; no policy change.",
+  "q6_whySmallerAlternativesFail": "Trimming only the over-ceiling session would keep quality and progression activated by credited weeks; keeping it fails the policy on facts.",
+  "q7_priorityAndProgression": "Progression and quality return by the approved activation counts on executed weeks.",
+  "q8_evidenceSupportsConclusionAndDose": "By policy conformance; no new dose. Dose questions by interruption length stay INSUFFICIENT_EVIDENCE (C-SD5-02).",
+  "q9_materialUncertainty": "R1 on handler routes (C9), the clinical-recorder residual (C3), never-reported credit below the ceiling and restart/walk-jog (C7), consumer compliance, real-user asking cost.",
+  "q10_askHoldClinical": "ASK keeps precedence (G01 first); clinical-first unchanged; post-clearance return stays CLINICAL_HUMAN_REQUIRED."
+ },
+ "probes": {
+  "folder": "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/cc/",
+  "files": {
+   "cc-lib.mjs": "7736eb0981a60f2a6a0a7a2e17f742a00abfc27490800e09c3d5ceef69b48f25",
+   "cc1-r1-skipped-review.mjs": "cb9412151e04b3ee5554c450f5718c8e00771ad18cfc098adf2c07171704d79e",
+   "cc2-answer-after-refusal.mjs": "1fb7721755a82bd1f9e9c808b148b0541c9716bb111222fa1d1623e3ec3c9c07",
+   "cc3-r1-handler-routes.mjs": "ea2c897ea542048306647d160dcf2b04ffa8f9126250bc45d57f40183459ac44",
+   "cc4-ceiling-population.mjs": "299ba396219468fb27128b418368f24ff238c6fc48359c10d02d65a428318e86",
+   "cc5-held-signal.mjs": "015e4c7f88d4ba5492bd92c75b6e4e980fa95634f1fca4289a8aa1e35f9eb44f",
+   "cc6-exec-quality-step.mjs": "072d2dde469820834e3aa0b988eb45e293aaa2864c202b8916acd2ffa71ea229",
+   "cc7-reentry-partial-week.mjs": "f51537b6fbc0b42c41f13cc7ff33cff87680e0dd95ded7fdd4784d20be884196",
+   "cc8-r7a-cycle2-111.mjs": "acfe7dbb0912e9b462deafc898c3f5c36d9c28da4910b1319d8a93f4094a943b"
+  },
+  "outputs": {
+   "out/cc1-r1-skipped-review.a10cec0.json": "72a6c39069454fb2cc5ad73c5152219b11cb601f19f48d2866b2b57281751448",
+   "out/cc2-answer-after-refusal.a10cec0.json": "901bfe978cfac72c8ff4e8d391d08e2a1deebcc3940fe5e5fb0a77d348d7e464",
+   "out/cc3-r1-handler-routes.a10cec0.json": "892a638df86b544e0f75fb3393d0b00ff38388070d2cc941d338995f8fae2886",
+   "out/cc3-r1-handler-routes.a10cec0.withF1.json": "90560fcd699a1f48566fe312dcc31612c355a316d2d47dcb35e6a61f5695399f (an earlier run of cc3 with R7C-FREEZE-1, before the failure classes were added: 574 R1 cells there against 162 on HEAD)",
+   "out/cc4-ceiling-population.a10cec0.json": "7c5336fd4b825e9012e47680285ab902205213a8d390ec02299bc665d4765473",
+   "out/cc5-held-signal.a10cec0.json": "06d73d0ef26c105f2c4eab554df25cfd194fba5c0570d10718c1305168978b05",
+   "out/cc6-exec-quality-step.a10cec0.json": "09d02dcfb41397947d24e39067549d74f5611dead50a8e36854230f4e613b454",
+   "out/cc7-reentry-partial-week.a10cec0.json": "74928cf079fab5b157e0b692d9560a5489a1b550a8f0c4f73385245bba5f7173",
+   "out/cc8-r7a-cycle2-111.a10cec0.json": "afc490d26176a70bd1d167f7601f912765292456954954fcbbfa9e319f3304e0",
+   "out/verify-r7c-rev2-suite.json": "5fca4e240b20fcd73ddcdfc9f482d60c4f30966783929fbbb1709b8287e3d9ed",
+   "out/rerun/": "re-runs of sd/, sd5/ and coordinator stdout probes (hashes in verification)",
+   "out/clinical/": "b2-copy clinical outputs from the scratchpad copies"
+  }
+ },
+ "proposedQueueItems": "Unchanged: the two items proposed in r2 (the R7-C unknown semantics; the G02 binding) stay proposed, now bound to R7C-FREEZE-2 (source digest 9e424f70…3f35) and to this record's conditions. Nothing appended; appending belongs to the competent closure.",
+ "humanRevalidation": {
+  "humanValidation": false,
+  "fundingTrigger": "NOT_DECLARED (verified)",
+  "queueAppended": false,
+  "futureHuman": "A qualified human may maintain, modify or revoke this recheck with evidence and verified qualifications; this reviewer has no veto.",
+  "clinical": "Clinical dependencies, including the return after a substitution with pain or an illness, stay CLINICAL_HUMAN_REQUIRED and never wait for funding."
+ },
+ "couldNotVerify": [
+  "Schema validation: Python is not installed, so validate_records.py was not run. This record follows the request's field list and is not claimed schema-valid.",
+  "The mutation run (read, not re-run, as excluded).",
+  "The Engineering recheck of R7C-FREEZE-2 (present untracked, not read, for independence).",
+  "Clinical clearance: the runtime has no clearance API; post-clearance cells model it as the directed tests do (carried record, no clinical reference state).",
+  "R1 on rebuild routes not probed one by one (learned rearrangement, graduation withdrawal) and on strength-side effects; the run doses of the measured kinds only.",
+  "R7B2-FREEZE-1 comparison for CC1-CC6 (R7C-FREEZE-1 is the comparator there; CC7 includes R7B2-FREEZE-1).",
+  "Full texts of sources (no source newly relied on).",
+  "Real-user behaviour, consumer compliance with C2, C3, C8 and C9, asking cost and HealthKit matching.",
+  "Whether the native project agent dispatch was used (not observable from inside)."
+ ],
+ "expiry": {
+  "owner": "Chief / R7-C coordinator",
+  "eventTriggers": [
+   "Any change to a file bound by R7C-FREEZE-2 (manifest digest 02c50ef3…efb9).",
+   "An engine fix for C9's handler routes, C3's clinical-recorder residual, C8, C5 or R4.",
+   "A G03 decision on the answer interaction or cadence (the week's own review at each boundary bears on C7, C9 and CC-F04/F05).",
+   "A policy, catalog, canon or product change touching D17/D18, R18, the single-run ceiling, return, restart, walk/jog, event or reactive-signal rules.",
+   "New real V1 data on reporting gaps or re-entry, or a relevant new systematic review on detraining, retraining or tapering."
+  ],
+  "reviewBy": "2027-04-30, or the first trigger, whichever comes first"
+ }
+}
