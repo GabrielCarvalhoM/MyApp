@@ -10,15 +10,21 @@
 // It refuses when the bound bytes are not committed, when the policy, catalog, B0 records, human queue, product/ or canon/ changed since the R7-B.2
 // closure, or when CURRENT_MISSION.md or MISSION_LEDGER.md is not append-only since then. One record: an existing record is never overwritten.
 // It writes only CoachingCore/r7/c/RUNTIME_FREEZE_R7C_1.json. Usage: node scripts/freeze-r7c.mjs --evidence <manifest> --mutation <mutation json>
+// --revision 2 (R7C-FREEZE-2, the single correction cycle after the Engineering review of R7C-FREEZE-1): the same checks on the corrected bytes,
+// plus package.json and package-lock.json (QE-R7C-06) and the Engineering reproduction probes among the bound files, every correction-cycle
+// mutant killed, and the predecessor's reviews (SSCTR final recheck, Engineering review) bound by SHA-256 with the cycle's delta from
+// R7C-FREEZE-1. It writes only CoachingCore/r7/c/RUNTIME_FREEZE_R7C_2.json.
 import fs from 'node:fs';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {spawnSync} from 'node:child_process';
 import {hash} from '../src/value.mjs';
-const cc=path.resolve(import.meta.dirname,'..'),repo=path.resolve(cc,'..'),revision='R7C-FREEZE-1';
+const N=(()=>{const i=process.argv.indexOf('--revision');return i>=0?process.argv[i+1]:'1';})();if(!['1','2'].includes(N))throw Error('--revision 1|2');
+const cc=path.resolve(import.meta.dirname,'..'),repo=path.resolve(cc,'..'),revision='R7C-FREEZE-'+N;
+const F1={revision:'R7C-FREEZE-1',commit:'1890f66356455112907d757032a8b1cd2de29c00',record:'CoachingCore/r7/c/RUNTIME_FREEZE_R7C_1.json'};
 const B2_FREEZE='1a1c7286adc8b08d16f97dea86f4973fe33e5a95',B2_CLOSURE='baa2cb1',AUD='audits/domain-coaching-r7-c-2026-11-01';
 const arg=k=>{const i=process.argv.indexOf(k);return i>=0?process.argv[i+1]:null;};
-const target=path.join(cc,'r7/c/RUNTIME_FREEZE_R7C_1.json');
+const target=path.join(cc,`r7/c/RUNTIME_FREEZE_R7C_${N}.json`);
 if(fs.existsSync(target))throw Error(revision+' exists already ('+target+'); it is never overwritten');
 const refuse=why=>{throw Error('Freeze refused: '+why);};
 const git=(...a)=>{const r=spawnSync('git',a,{cwd:repo,encoding:'utf8',maxBuffer:1<<26});if(r.status!==0)refuse('git '+a.join(' ')+': '+r.stderr);return r.stdout;};
@@ -32,7 +38,7 @@ for(const f of ['CURRENT_MISSION.md','MISSION_LEDGER.md']){const base=spawnSync(
 const ls=d=>fs.readdirSync(path.join(repo,d)).filter(f=>f.endsWith('.mjs')).map(f=>`${d}/${f}`);
 const list=[...ls('CoachingCore/src'),...ls('CoachingCore/test'),'CoachingCore/r7/b/fixtures/helpers.mjs','CoachingCore/r6/fixtures/dev-authority.mjs','CoachingCore/r6/fixtures/profiles.mjs','CoachingCore/r6/PROGRAM_POLICY_R6.json','CoachingCore/r7/b0/REPERTOIRE_CATALOG_B0.json','CoachingCore/r6/holdout/R6_INDEPENDENT_HOLDOUT.json','audits/domain-coaching-r7-b0-2026-10-31/reviews/SSCTR_RECHECK_B0.json',
  ...['conformance-r7b','conformance-r7b1','conformance-r7b2','neighbors-r7b2','regress-r7b2','evaluate-holdout-r6','freeze-r7c','verify-r7c'].map(s=>`CoachingCore/scripts/${s}.mjs`),
- ...ls(`${AUD}/probes`),...ls(`${AUD}/probes/b2-copy`),...ls(`${AUD}/reviews/ssctr/probes/sd`)];
+ ...ls(`${AUD}/probes`),...ls(`${AUD}/probes/b2-copy`),...ls(`${AUD}/reviews/ssctr/probes/sd`),...(N==='2'?['CoachingCore/package.json','CoachingCore/package-lock.json',...ls(`${AUD}/reviews/engineering/probes`)]:[])];
 const missing=list.filter(p=>!fs.existsSync(path.join(repo,p)));if(missing.length)refuse('bound files missing: '+missing.join(', '));
 const files=Object.fromEntries([...new Set(list)].sort().map(p=>[p,shaRepo(p)]));
 // Committed bytes only: every bound file is in HEAD with the same bytes as on disk.
@@ -64,13 +70,21 @@ const SSCTR=`${AUD}/reviews/ssctr/SSCTR_SEMANTIC_REDISPOSITION_R7C.json`,ss=JSON
 if(ss.revision!=='SSCTR-SD-R7C-r2'||ss.semanticDisposition!=='ACCEPT_R7C_UNKNOWN_SEMANTICS')refuse('the SSCTR semantic disposition is not ACCEPT_R7C_UNKNOWN_SEMANTICS (r2)');
 const bindingConditions=['C2','C3','C7','C8','C9'].map(id=>{const c=ss.conditions.find(x=>x.id===id);if(!c)refuse('SSCTR condition missing: '+id);return {id,binding:c.binding,text:c.text};});
 const sum=x=>x&&{mutants:x.mutants,killed:x.killed,survived:x.survived,invalid:x.invalid};
+if(N==='2'&&!(mu.correctionCycle?.mutants>0&&mu.correctionCycle.killed===mu.correctionCycle.mutants))refuse('correction-cycle mutation adequacy');
 if(mu.phase5SD.killed!==mu.phase5SD.mutants||mu.phase4Rules.killed!==mu.phase4Rules.mutants||mu.equivalenceWitness.killed!==1||mu.phase3Set.killed<17||mu.phase3Set.survived.some(id=>id!=='G02-M4'))refuse('mutation adequacy');
-const record={revision,mission:'DOMAIN_COACHING_R7-C Phase 5',commit:head,predecessor:{revision:'R7B2-FREEZE-1',commit:B2_FREEZE},created:new Date().toISOString(),
+// R7C-FREEZE-2: the predecessor's reviews and the cycle's delta from it.
+const reviewOf=(p,verdict)=>({path:p,sha256:shaRepo(p),verdict});
+const cycle=N==='2'?(()=>{const E=`${AUD}/reviews/engineering/ENGINEERING_REVIEW_R7C.json`,S=`${AUD}/reviews/ssctr/SSCTR_FINAL_RECHECK_R7C.json`,e=JSON.parse(fs.readFileSync(path.join(repo,E),'utf8')),f=JSON.parse(fs.readFileSync(path.join(repo,S),'utf8'));
+ if(e.freeze?.commit!==F1.commit||e.verdict!=='NOT_READY')refuse('the Engineering review is not the NOT_READY review of R7C-FREEZE-1');
+ return {predecessorReviews:{engineering:reviewOf(E,e.verdict),ssctrFinal:reviewOf(S,f.gate)},findings:e.findings.map(x=>({id:x.id,severity:x.severity})),
+  delta:{src:git('diff','--name-only',F1.commit,'HEAD','--','CoachingCore/src').split('\n').filter(Boolean),test:git('diff','--name-status',F1.commit,'HEAD','--','CoachingCore/test').split('\n').filter(Boolean)}};})():null;
+const record={revision,mission:'DOMAIN_COACHING_R7-C Phase 5'+(N==='2'?' (single correction cycle)':''),commit:head,predecessor:N==='2'?{revision:F1.revision,commit:F1.commit,record:F1.record,sha256:shaRepo(F1.record),base:{revision:'R7B2-FREEZE-1',commit:B2_FREEZE}}:{revision:'R7B2-FREEZE-1',commit:B2_FREEZE},created:new Date().toISOString(),
  delta:{src:deltaSrc,test:deltaTest},files,sourceDigest,manifestDigest,tests,conformance,
- evidence:{manifest:{path:evPath,sha256:shaRepo(evPath),head:ev.head},mutation:{path:muPath,sha256:shaRepo(muPath),head:mu.head,phase3Set:sum(mu.phase3Set),equivalenceWitness:sum(mu.equivalenceWitness),phase4Rules:sum(mu.phase4Rules),phase5SD:sum(mu.phase5SD)},sdGrid:sd.summary,g01:{gridA:g01.gridA,gridB:g01.gridB,p1:g01.p1,violations:g01.violations.length},g02:'identical to R7C-P4-39115ed',clinical},
+ evidence:{manifest:{path:evPath,sha256:shaRepo(evPath),head:ev.head},mutation:{path:muPath,sha256:shaRepo(muPath),head:mu.head,phase3Set:sum(mu.phase3Set),equivalenceWitness:sum(mu.equivalenceWitness),phase4Rules:sum(mu.phase4Rules),phase5SD:sum(mu.phase5SD),...(N==='2'?{correctionCycle:sum(mu.correctionCycle)}:{})},sdGrid:sd.summary,g01:{gridA:g01.gridA,gridB:g01.gridB,p1:g01.p1,violations:g01.violations.length},g02:'identical to R7C-P4-39115ed',clinical},
  semanticDisposition:{record:ss.revision,path:SSCTR,sha256:shaRepo(SSCTR),disposition:ss.semanticDisposition},bindingConditions,
  unchangedSince:{commit:B2_CLOSURE,paths:UNCHANGED},appendOnly:['CURRENT_MISSION.md','MISSION_LEDGER.md'],
- verifier:'node CoachingCore/scripts/verify-r7c.mjs (read-only; --suite also re-runs the suite; --write writes only CoachingCore/r7/c/VERIFICATION_R7C_1.json)'};
+ ...(cycle?{correctionCycle:cycle}:{}),
+ verifier:`node CoachingCore/scripts/verify-r7c.mjs${N==='2'?' --revision 2':''} (read-only; --suite also re-runs the suite; --write writes only CoachingCore/r7/c/VERIFICATION_R7C_${N}.json)`};
 fs.mkdirSync(path.dirname(target),{recursive:true});
 fs.writeFileSync(target,JSON.stringify(record,null,1)+'\n');
 console.log(JSON.stringify({revision,commit:head,sourceDigest,manifestDigest,files:Object.keys(files).length,tests},null,1));

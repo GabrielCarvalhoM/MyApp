@@ -188,6 +188,15 @@ test('R7-C QE-R7C-01 trigger scope: a dose standing on facts the record does not
   const stored=weekRuns(t.p,6),r=step(t,6,{day:1,hour:'07:00:00'});
   assert.equal(r.status,'KEEP',r.reason);assert.deepEqual(weekRuns(inForce(t,r),6),stored);
  }
+ // G01 first: when the decision asks about unknown training (here a schedule change whose next week's window has no recorded run), the ceiling
+ // re-plan never travels with the question: it asks with no proposal, as without the re-plan (the fixture of the Phase 4 G01 grid, GEN b7 g3 NR).
+ {
+  const t={p:program({id:'adv-gen',weeks:12,goals:{run:'PERFORMANCE',strength:'GENERAL'}}),ledger:[],ref:null};
+  for(let w=0;w<3;w++)step(t,w,{observations:t.p.weeks[w].sessions.filter(live).map(s=>obs(t.p,s))});
+  const late=[3,4,5,6].flatMap(w=>strengthOf(t.p,w)),r=evaluateProgram(t.p,{...review(t.p,7,{...AT(0),kind:'SCHEDULE_CHANGE',changes:{strengthDays:[0,3]},observations:late}),actualLedger:t.ledger},opts);
+  assert.equal(r.status,'ASK',r.reason);assert.equal(r.question?.kind,'UNREPORTED_TRAINING');assert.equal(r.proposal,null,'no run dose planned while the question stands');
+  assert.doesNotMatch(r.reason,CEILING);assert.equal(r.planValidity.status,'REQUIRES_RECONCILIATION');
+ }
  // The class it reaches: weeks never reported, the intake run still in the window: the stored doses above the facts' ceiling are re-planned.
  // (The fixture of r7a-cycle2.test.mjs:111: the stored week 2 credits weeks 0-1, with the intake's 50-minute run the only one recorded.)
  const p=program({id:'r7c-cc-n',goals:{run:'PERFORMANCE',strength:'STRENGTH'},recent:{runDaysPerWeek:3,runMinutesPerWeek:120,longestRunMinutes:50,strengthDaysPerWeek:2},equipment:['DUMBBELLS','BENCH','BARBELL','RACK'],knownExercises:[K('back-squat',3,5,80),K('db-bench-press',3,8,18,'PER_HAND')],schedule:{runMinutes:50,strengthMinutes:50,longRunMinutes:80}});
