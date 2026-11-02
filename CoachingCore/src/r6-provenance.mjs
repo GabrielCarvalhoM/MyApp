@@ -48,11 +48,21 @@ function mergeActual(a,b,ra,rb){
 }
 const responseConflicts=(a,b)=>['performance','recovery','effort'].some(k=>a?.[k]&&b?.[k]&&a[k]!=='UNKNOWN'&&b[k]!=='UNKNOWN'&&a[k]!==b[k]);
 /**
+ * R7-C QE-R7C-10: when the completed-work record first held a report of one execution (`provenance.firstRecordedAt`): the clock of the decision
+ * whose input first carried it. Rows that are one execution (an agreeing duplicate, a correction and what it corrects) take the earliest; a row
+ * recorded before R7C-FREEZE-4 carries none, and was held earlier than any clock known, so then none is known. Evidence visibility only: no dose,
+ * no authority, never read by the evidence reducer.
+ */
+const firstRecorded=(...rows)=>{const t=rows.map(r=>utcTimestamp(r?.provenance?.firstRecordedAt));return t.every(Boolean)?t.reduce((a,b)=>Date.parse(a)<=Date.parse(b)?a:b):null;};
+const setFirstRecorded=(row,t)=>{if(t)row.provenance.firstRecordedAt=t;else delete row.provenance.firstRecordedAt;};
+/**
  * Causal, provenance-preserving normalization. An observation is usable only if it was observed and reported at or
  * before the decision clock. Day-precision facts get the latest causal instant of that local day, never an invented
  * later clock. Duplicates merge, conflicts quarantine, corrections supersede, stale facts expire for learning.
+ * `recordArrival` (a decision's own completed-work record, R7-C QE-R7C-10): each observation the decision brings is stamped with the decision
+ * clock (`provenance.firstRecordedAt`), never with a value the input supplies; a carried row keeps its own. Without it no new row carries one.
  */
-export function normalizeObservations(observations,{athleteId,asOf,maximumAgeDays=56,futureSkewSeconds=300,prior=[],timezoneOffsetMinutes=0,loadIncrements={}}={}){
+export function normalizeObservations(observations,{athleteId,asOf,maximumAgeDays=56,futureSkewSeconds=300,prior=[],timezoneOffsetMinutes=0,loadIncrements={},recordArrival=false}={}){
  const now=utcTimestamp(asOf);if(!now)throw new TypeError('Explicit decision time with timezone required');
  // supersededRows keeps every fact a correction replaced, so the carried record stays append-only and a later normalization of it still
  // finds the corrected original (R7-A). They are history: never accepted, counted or bound again.
@@ -94,12 +104,16 @@ export function normalizeObservations(observations,{athleteId,asOf,maximumAgeDay
   if(Object.entries(RESPONSE).some(([k,values])=>!values.includes(o.response[k]))){reject('INVALID_RESPONSE');continue;}
   o.observedAt=t.at;o.localDate=t.day??localDate(t.at,timezoneOffsetMinutes);if(reported)o.reportedAt=reported;
   o.provenance={...(o.provenance??{}),provider:o.source?.provider??o.provider??'MANUAL',sourceQuality:sourceQuality(o),activityId:o.source?.activityId??o.canonicalActivityId??null,sourceHash:o.sourceHash??o.provenance?.sourceHash??hash(source),inputHashes:{...(o.provenance?.inputHashes??{}),[o.eventId]:o.provenance?.inputHashes?.[o.eventId]??hash({...source,athleteId})},timePrecision:t.precision,timeBasis:t.precision==='DAY'?'LATEST_CAUSAL_INSTANT_OF_LOCAL_DAY':'SUPPLIED_TIMESTAMP',completeness:o.actual.completed?'COMPLETE':'PARTIAL'};
+  // R7-C QE-R7C-10: a carried row keeps its first-recorded clock; a new one takes this decision's when it records arrivals, else none.
+  if(!carried)setFirstRecorded(o,recordArrival?now:null);
   const identity=o.sessionId?'session:'+o.sessionId:'activity:'+(o.canonicalActivityId??o.source?.activityId??o.provenance.provider+'@'+o.observedAt);
   // A conflict carried in from an earlier review stays quarantined for its identity.
   if(o.conflicted===true)quarantined.add(identity);
   if(o.correctionOf){
    const old=byEvent.get(o.correctionOf),corrected=utcTimestamp(o.correctedAt??o.reportedAt);
    if(!old||!corrected||Date.parse(corrected)>Date.parse(now)||Date.parse(corrected)<Date.parse(old.observedAt)||old.identity!==identity){reject('INVALID_CORRECTION_CHAIN');continue;}
+   // A correction reports the execution its chain reported: the record first held a report of it when it first held the chain's.
+   setFirstRecorded(o,firstRecorded(o,old,...(quarantined.has(identity)?accepted.filter(x=>x.identity===identity):[])));
    // A correction carried in from an earlier review already replaced its original: the chain is valid and the correction stays live.
    const retire=row=>{const at=accepted.indexOf(row);if(at>=0)accepted.splice(at,1);superseded.push({eventId:row.eventId,supersededBy:o.eventId,correctedAt:corrected});const kept={...row,superseded:true,supersededBy:o.eventId,supersededAt:corrected};supersededRows.push(kept);byEvent.set(row.eventId,kept);};
    if(old.superseded!==true){if(accepted.includes(old))retire(old);else byEvent.delete(old.eventId);byIdentity.delete(identity);}
@@ -109,7 +123,7 @@ export function normalizeObservations(observations,{athleteId,asOf,maximumAgeDay
   const sameEvent=byEvent.get(o.eventId);
   if(sameEvent){
    const {identity:_i,...stored}=sameEvent;
-   if(hash({...source,athleteId})===(sameEvent.provenance?.inputHashes?.[o.eventId]??sameEvent.inputHash)||hash(stored.actual)===hash(o.actual)&&!responseConflicts(stored.response,o.response)){duplicates.push({eventId:o.eventId,mergedInto:sameEvent.eventId,reason:'EXACT_REPLAY'});continue;}
+   if(hash({...source,athleteId})===(sameEvent.provenance?.inputHashes?.[o.eventId]??sameEvent.inputHash)||hash(stored.actual)===hash(o.actual)&&!responseConflicts(stored.response,o.response)){if(accepted.includes(sameEvent))setFirstRecorded(sameEvent,firstRecorded(sameEvent,o));duplicates.push({eventId:o.eventId,mergedInto:sameEvent.eventId,reason:'EXACT_REPLAY'});continue;}
    flagConflict(sameEvent,'EVENT_ID_REUSED_WITH_DIFFERENT_FACTS');quarantined.add(identity);
    conflicts.push({identity,eventIds:[sameEvent.eventId],reason:'EVENT_ID_REUSED_WITH_DIFFERENT_FACTS'});reject('EVENT_ID_REUSED_WITH_DIFFERENT_FACTS');continue;
   }
@@ -128,6 +142,7 @@ export function normalizeObservations(observations,{athleteId,asOf,maximumAgeDay
    previous.provenance.inputHashes={...(previous.provenance.inputHashes??{}),[o.eventId]:hash({...source,athleteId})};
    for(const k of Object.keys(RESPONSE))if(previous.response[k]==='UNKNOWN'&&o.response[k]!=='UNKNOWN')previous.response[k]=o.response[k];
    previous.provenance.mergedSourceIds=[...new Set([...(previous.provenance.mergedSourceIds??[previous.eventId]),o.eventId])];
+   setFirstRecorded(previous,firstRecorded(previous,o));
    duplicates.push({eventId:o.eventId,mergedInto:previous.eventId,reason:'SAME_EXECUTION_DIFFERENT_SOURCE'});byEvent.set(o.eventId,previous);if(activityId&&!byActivity.has(activityId))byActivity.set(activityId,previous);continue;
   }
   const row={...o,identity,inputHash:hash({...source,athleteId})};

@@ -454,7 +454,8 @@ export function evaluateProgram(program,review,options={}){
  try{
   // Causal provenance: only facts observed and reported by the decision clock count; the actual ledger is append-only.
   const priorLedger=Array.isArray(review.actualLedger)?clone(review.actualLedger):[];
-  const n=normalizeObservations(review.observations??[],{athleteId:program.athleteId,asOf,prior:priorLedger,maximumAgeDays:36500,futureSkewSeconds:authority.policy.operational.learning.futureClockSkewSeconds,timezoneOffsetMinutes:tz,loadIncrements:{...authority.policy.operational.strength.smallestIncrement,SINGLE_IMPLEMENT:incrementFor(authority.policy.operational.strength,'SINGLE_IMPLEMENT')}});
+  // R7-C QE-R7C-10: the record notes when it first held each report (recordArrival), so a later decision knows which reports a review had.
+  const n=normalizeObservations(review.observations??[],{athleteId:program.athleteId,asOf,prior:priorLedger,maximumAgeDays:36500,futureSkewSeconds:authority.policy.operational.learning.futureClockSkewSeconds,timezoneOffsetMinutes:tz,loadIncrements:{...authority.policy.operational.strength.smallestIncrement,SINGLE_IMPLEMENT:incrementFor(authority.policy.operational.strength,'SINGLE_IMPLEMENT')},recordArrival:true});
   const {bound,unbound}=bindObservations(program,n.accepted,authority.policy.operational.hybrid,authority.policy),ledger=[...bound,...unbound];
   // Conflicted facts stay in the record but never count for gating counts, capacity or learning until corrected (QRE-R6-14).
   const usable=ledger.filter(o=>!o.conflicted),usableBound=bound.filter(o=>!o.conflicted);
@@ -1194,7 +1195,7 @@ function evidenceState(ctx,{cut,day,ledger,program=ctx.program,ret=null,p=null,r
    if(!hs&&strength.density===undefined&&noviceDensityApplies(skn)&&j<firstStrengthBoundary(skn))strength.density={capped:true};
    const runV=hr?{basis:hr,week:k}:P.values.RUN,sv=hs?{basis:hs,week:k}:null;
    const values=Object.fromEntries(Object.keys(strength.exercises).map(id=>[id,sv??P.values.STRENGTH[id]??{basis:'FACTS',week:null}]));
-   // The gates the week was read with (R7-C QE-R7C-07, unreadRunWeeks: what the record now shows of the week, against what its review recorded).
+   // The gates the week was read with (R7-C QE-R7C-07; legacyUnreadWeeks: what the record now shows of the week, against what its review recorded).
    out={state:{run,strength},values:{RUN:runV,STRENGTH:values},sport:{RUN:runV,STRENGTH:sv??P.sport.STRENGTH},since:null,executed:hs?[]:[...new Set([...P.executed,...Object.keys(C5.performed)])],gates:R.gates};
   }
   memo.set(k,out);return out;
@@ -1298,25 +1299,46 @@ function gapAnsweredBy(ctx){
  return !!runGapInForce(carried);
 }
 /**
- * R7-C QE-R7C-07: the weeks before this one whose run facts the stored plan did not read, from the program's own record of how each week start was
- * set. A week the plan projected (the next week starts as a CONDITIONAL_PLAN: its rows were assumed executed) read none of them. A week a review
- * closed (WEEK_EVIDENCE) read its runs as that review's recorded gates say: when every run gate it recorded holds and the evidence reducer, on the
- * record as it stands, now reads a run of that week as executed (ADVANCE, EARNED or REGRESS), the review read no executed run there; the reports came
- * after it. Any other start (the intake, a return's entry, a review that read an executed run or recorded no gates) read the week.
+ * R7-C QE-R7C-10 (R7-C Phase 7): the run reports of the weeks before this one that the stored plan did not read, decided per report from the
+ * canonical record and the clock of the decision that closed the report's week, never from the gates that decision recorded (a gate is the
+ * result of a decision, not proof of which reports it had). By how the week's next start was set (the program's own record):
+ * - projected (CONDITIONAL_PLAN: the week's rows were assumed executed): none of the week's run reports was read;
+ * - closed by a review (WEEK_EVIDENCE, at its clock `evidenceThrough`): a report the record first held after that clock
+ *   (`provenance.firstRecordedAt`) was not read by it; one the record held by then was, whatever it reports (done in full, shortened, adverse or
+ *   not done) and whatever gate it gave (HOLD, REGRESS or any other);
+ * - any other start (the intake, a return's entry): the week was read.
+ * A record written before R7C-FREEZE-4 carries no first-recorded clock: for such a report the R7C-FREEZE-3 reading stands (legacyUnreadWeeks).
  */
-function unreadRunWeeks(ctx){
+function unreadRunReports(ctx){
+ const {program,w}=ctx,record=ctx.fullLedger??ctx.ledger,out=new Set();let legacy=null;
+ for(const o of record){
+  const j=o.context?.weekIndex;if(o.context?.sport!=='RUN'||!Number.isInteger(j)||j<0||j>=w)continue;
+  const n=program.weeks[j+1],a=(n.startBeforeReturn?n.startBeforeReturnAuthority:n.startAuthority)?.RUN;
+  if(a?.provenance===WEEK_START.CONDITIONAL_PLAN){out.add(o);continue;}
+  if(a?.provenance!==WEEK_START.WEEK_EVIDENCE)continue;
+  const at=utcTimestamp(o.provenance?.firstRecordedAt);
+  if(at?Date.parse(at)>Date.parse(a.evidenceThrough??a.asOf):(legacy??=legacyUnreadWeeks(ctx)).has(j))out.add(o);
+ }
+ return out;
+}
+/**
+ * The R7C-FREEZE-3 reading (QE-R7C-07), kept only for reports recorded before R7C-FREEZE-4, which carry no first-recorded clock: a week a review
+ * closed is unread when every run gate that review recorded holds and the evidence reducer, on the record as it stands, now reads a run of that
+ * week as executed (ADVANCE, EARNED or REGRESS). It is sound but incomplete: a run done shorter than prescribed reads HOLD either way (QE-R7C-10).
+ */
+function legacyUnreadWeeks(ctx){
  const {program,w}=ctx,E=decisionEvidence(ctx),keys=Object.values(RUN_GATE_ROLE),executed=g=>!!g&&keys.some(k=>['ADVANCE','EARNED','REGRESS'].includes(g[k]));
  const decisions=new Map(program.decisions.map(d=>[d.eventId,d])),out=new Set();
  for(let j=0;j<w;j++){
   const n=program.weeks[j+1],a=(n.startBeforeReturn?n.startBeforeReturnAuthority:n.startAuthority)?.RUN,recorded=a?.provenance===WEEK_START.WEEK_EVIDENCE?decisions.get(a.eventId)?.gates:null;
-  if(a?.provenance===WEEK_START.CONDITIONAL_PLAN||recorded&&!executed(recorded)&&executed(E(j+1).gates))out.add(j);
+  if(recorded&&!executed(recorded)&&executed(E(j+1).gates))out.add(j);
  }
  return out;
 }
 /**
  * R7-C QE-R7C-07: whether the record holds reports that answer the unreported training the run doses still ahead depended on, whichever decision
  * recorded them: the state-based form of gapAnsweredBy, which asks the same of the reports one review brings. On the record without the run
- * reports of the weeks the stored plan did not read (unreadRunWeeks), those doses depend on unreported training (runGapInForce asks): they were
+ * reports the stored plan did not read (unreadRunReports), those doses depend on unreported training (runGapInForce asks): they were
  * stored while that window was unknown. On the record as it stands they do not: the facts make it known. The answer week is then re-planned from
  * the facts (factualReplan, with C9) before any handler decides, so the same facts give the same plan whether a plain review, a refusal (R4) or a
  * clinical route recorded them, with or without a re-send; a clinical route still decides alone while it stands. Reports that leave part of the
@@ -1324,9 +1346,9 @@ function unreadRunWeeks(ctx){
  */
 function answeredOnRecord(ctx){
  if(ctx.kind==='RETURN_AFTER_PAUSE')return false;
- const unread=unreadRunWeeks(ctx);if(!unread.size)return false;
- const record=ctx.fullLedger??ctx.ledger,read=record.filter(o=>!(o.context?.sport==='RUN'&&unread.has(o.context.weekIndex)));
- if(read.length===record.length||runGapInForce(ctx))return false;
+ const unread=unreadRunReports(ctx);if(!unread.size)return false;
+ const record=ctx.fullLedger??ctx.ledger,read=record.filter(o=>!unread.has(o));
+ if(runGapInForce(ctx))return false;
  const usable=read.filter(o=>!o.conflicted),done=completedRuns(ctx.program,usable),start=ctx.program.weeks[ctx.w].startDate,C=ctx.authority.policy.operational.run.singleRunCeiling;
  // A run the stored plan read in the window already makes it known to that plan: nothing was unknown (unknownRunWindow's own first test).
  if(done.some(h=>dayGap(h.date,start)>0&&dayGap(h.date,start)<=C.windowDays))return false;
