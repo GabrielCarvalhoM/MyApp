@@ -1,6 +1,6 @@
 # R7-D harness run summary — DIAGNOSTIC_REGRESSION
 
-- Harness R7D-HARNESS-2; first evaluation: false; 2026-11-02T22:37:37.149Z → 2026-11-02T22:38:19.604Z; node v24.19.0.
+- Harness R7D-HARNESS-2; first evaluation: false; 2026-11-02T23:38:16.255Z → 2026-11-02T23:39:20.112Z; node v24.19.0.
 - Runtime R7C-FREEZE-4 (a9654c8ea175611fbaae805ac6b0e8b928620dff), files 191/197 equal to the record.
 - Corpus R7D-DIAGNOSTIC-1 (18 cases), sha256 44fca38174a8999888dac4b2bfc6cafdfde2c6a0dcc089a563121af5a6740957.
 - Freshness: no manifest (development run).
@@ -15,7 +15,7 @@
 | P04 | PASS | 13 | 0 | 0 |  |
 | P05 | PASS | 14 | 0 | 0 |  |
 | P06 | PASS | 338 | 0 | 0 |  |
-| P07 | PASS | 187 | 0 | 0 |  |
+| P07 | PASS | 189 | 0 | 0 |  |
 | P08 | PASS | 5 | 0 | 0 |  |
 | P09 | PASS | 839 | 0 | 0 |  |
 | P10 | PASS | 11103 | 0 | 0 |  |
@@ -23,7 +23,7 @@
 | P12 | PASS | 5001 | 0 | 0 |  |
 | P13 | PASS | 3587 | 0 | 0 |  |
 | P14 | PASS | 138 | 0 | 0 |  |
-| P16 | PASS | 311 | 0 | 0 |  |
+| P16 | PASS | 790 | 0 | 0 |  |
 
 | Relation | Applicable cases | Units | Violations | Failing cases | Non-blocking differences |
 |---|---|---|---|---|---|

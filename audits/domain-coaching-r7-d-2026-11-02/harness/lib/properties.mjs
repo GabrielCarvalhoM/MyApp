@@ -226,6 +226,8 @@ function p07(trace,ctx){
   }
  }
  const timeline=raceDateTimeline(trace),genTaper=g.weeks.filter(w=>w.phase==='TAPER').map(w=>w.index),genPost=g.weeks.filter(w=>w.phase==='POST_EVENT').map(w=>w.index);
+ // R7D-HARNESS-2 (engineering check QE-R7D-P3-06, CF-5): the plan's race date moves only at a step that asks for a race or goal change.
+ for(const [i,s] of trace.steps.entries())if(s.adopted&&timeline[i+1].date!==timeline[i].date)unit(p,['EVENT_DATE_CHANGE','GOAL_CHANGE'].includes(s.kind),{at:s.stepId,issue:'RACE_DATE_CHANGED_WITHOUT_REQUEST',kind:s.kind,from:timeline[i].date,to:timeline[i+1].date});
  for(const x of plans(trace)){
   if(x.at!=='GENERATE'&&!x.valid)continue;
   const t=timeline[x.stepIndex+1];if(!t?.date)continue;
@@ -412,8 +414,10 @@ function p14(trace){
 }
 // ---------- P16 load round trip (R7D-PREREG-2, diagnostic finding F03) ----------
 // (a) A load logged exactly as the plan prescribed it (every set's load equal to the row's value, unit and convention) is read: the runtime never
-//     answers it LOGGED_UNIT_OR_CONVENTION_UNKNOWN. (b) No fabricated machine load: every KNOWN load of a MACHINE_STACK row in a plan in force is a
-//     value the athlete supplied (intake known load) or logged or confirmed for that exercise; the engine never states a machine setting it computed.
+//     answers it LOGGED_UNIT_OR_CONVENTION_UNKNOWN. (b) No fabricated machine load: every machine value a plan in force states, valid or not (a
+//     KNOWN load, or the setting a next-setting row states as its fallback, `nextSetting.aboveKg`), is a value the athlete supplied (intake known
+//     load), logged or confirmed for that exercise by then; the engine never states a machine setting it computed (engineering check
+//     QE-R7D-P3-05, CF-5: every plan and both kinds of stated value).
 const LB_TO_KG=0.45359237;
 const kgOf=l=>!l||typeof l!=='object'||!Number.isFinite(l.value)?null:String(l.unit).toUpperCase()==='KG'?l.value:String(l.unit).toUpperCase()==='LB'?Math.round(l.value*LB_TO_KG*2)/2:null;
 const sameLoad=(a,b)=>!!a&&!!b&&a.value===b.value&&a.unit===b.unit&&a.convention===b.convention;
@@ -438,11 +442,12 @@ function p16(trace){
    const s=trace.steps[x.stepIndex];
    for(const r of s.result.actualLedger??[])for(const e of r.actual?.exercises??[])for(const set of e.sets??[])add(e.id,kgOf(set.load));
    for(const c of s.review.loadConfirmations??[])add(c.exerciseId,kgOf(c));
-   if(!x.valid)continue;
   }
   for(const w of x.plan.weeks)for(const ss of w.sessions.filter(y=>live(y)&&y.sport==='STRENGTH'&&(x.stepIndex<0||y.date>=x.asOfLocal)))for(const e of ss.prescription.exercises??[]){
-   if(e.load?.convention!=='MACHINE_STACK'||e.load.mode!=='KNOWN')continue;
-   unit(p,known.get(e.id)?.has(Math.round(e.load.value*1000)/1000)===true,{at:x.at,issue:'FABRICATED_MACHINE_LOAD',sessionId:ss.id,exerciseId:e.id,value:e.load.value,known:[...(known.get(e.id)??[])]});
+   if(e.load?.convention!=='MACHINE_STACK')continue;
+   const stated=e.load.mode==='KNOWN'?e.load.value:Number.isFinite(e.load.nextSetting?.aboveKg)?e.load.nextSetting.aboveKg:null;
+   if(stated===null)continue;
+   unit(p,known.get(e.id)?.has(Math.round(stated*1000)/1000)===true,{at:x.at,issue:'FABRICATED_MACHINE_LOAD',sessionId:ss.id,exerciseId:e.id,value:stated,stated:e.load.mode==='KNOWN'?'KNOWN':'NEXT_SETTING_FALLBACK',valid:x.valid,known:[...(known.get(e.id)??[])]});
   }
  }
  return finish(p);

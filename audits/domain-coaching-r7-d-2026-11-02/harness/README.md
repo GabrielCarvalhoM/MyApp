@@ -40,7 +40,7 @@ Development cases only (`DEV_CASES_R7D.json`, from `build-dev-cases.mjs`): writt
 To rebuild the superseded runtimes outside the repository (from this worktree's root, into an empty directory `$D`):
 
 ```
-git archive 08c6db3 CoachingCore audits/domain-coaching-r6-2026-10-26/reviews/ssctr-policy-review.json | tar -x -C $D/rt-f3
+git archive 08c6db3 CoachingCore audits/domain-coaching-r6-2026-10-26/reviews/ssctr-policy-review.json audits/domain-coaching-r7-b0-2026-10-31/reviews/SSCTR_RECHECK_B0.json | tar -x -C $D/rt-f3
 git archive 1a1c728 CoachingCore audits/domain-coaching-r6-2026-10-26/reviews/ssctr-policy-review.json audits/domain-coaching-r7-b0-2026-10-31/reviews/SSCTR_RECHECK_B0.json | tar -x -C $D/rt-b2
 cp -r audits/domain-coaching-r7a-2026-10-27/pre-r7a-source/CoachingCore $D/rt-prer7a/  (plus the R6 ssctr-policy-review.json at the same relative path)
 node validation/run-validation.mjs --dev validation/DEV_CASES_R7D.json --out <file> --f4 <worktree root> --f3 $D/rt-f3 --b2 $D/rt-b2 --prer7a $D/rt-prer7a
@@ -80,6 +80,6 @@ Results:
   - on R7C-FREEZE-4: DX-01 (P10), DX-02 (P08), F03 (P16), F04 (P09);
   - QE-R7C-10, R7C-G01 and D54 on their earlier runtimes;
 - P05 coverage: CARRIER_CLINICAL 7, CARRIER_HOLD 1 and RESEND 16 units;
-- 31/31 witnesses fire.
+- 33/33 witnesses fire, including the tightened P07 (a race date changed without a request) and P16 (a fabricated next-setting fallback), added after the engineering check (CF-5).
 
 The validation also measures finding **P3-F01**: a declared-break answer recorded by a clinical route is not retained across qualified clearance. It is a true finding, not a false block. It already existed on R7C-FREEZE-4 in the return-report form.

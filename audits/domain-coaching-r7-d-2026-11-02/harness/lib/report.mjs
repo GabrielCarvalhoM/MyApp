@@ -3,7 +3,8 @@
 import {live} from './client.mjs';
 import {classifyEligibility} from './properties.mjs';
 
-const loadText=l=>!l?'':l.mode==='KNOWN'?`${l.value}kg ${l.convention??''}`.trim():l.mode==='BODYWEIGHT'?'BW':l.mode==='FROM_LOG'?'last logged':l.mode==='ESTABLISH'?'establish':l.mode??'';
+// SSCTR-R7D-P3-RECHECK-r1 CF-04 (renderer only): a machine step row states the athlete's next setting above R, with R as the fallback.
+const loadText=l=>!l?'':l.mode==='KNOWN'?`${l.value}kg ${l.convention??''}`.trim():l.mode==='BODYWEIGHT'?'BW':l.mode==='FROM_LOG'&&l.nextSetting?`next machine setting above ${l.nextSetting.aboveKg}kg (else ${l.nextSetting.aboveKg}kg x${l.nextSetting.fallbackReps??'?'})`:l.mode==='FROM_LOG'?'last logged':l.mode==='ESTABLISH'?'establish':l.mode??'';
 export function sessionText(s){
  if(!s.prescription)return `d${s.day} ${s.sport} ${s.role}${s.status&&s.status!=='PLANNED'?' ['+s.status+']':''}`;
  const p=s.prescription,st=s.status&&s.status!=='PLANNED'?` [${s.status}]`:'';

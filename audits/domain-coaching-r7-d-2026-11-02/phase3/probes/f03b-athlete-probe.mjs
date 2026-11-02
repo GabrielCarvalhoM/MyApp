@@ -26,7 +26,8 @@ const MACHINES=Object.keys(PLATE);
 function sessionLog(s,athlete){
  return {completed:true,minutes:s.prescription.durationMinutes,exercises:s.prescription.exercises.map(e=>{
   const next=e.load.nextSetting,fits=athlete==='FITS';
-  const load=next?{value:fits?next.aboveKg+PLATE[e.id]:next.aboveKg,unit:'KG',convention:e.load.convention}:e.load.mode==='KNOWN'?{value:e.load.value,unit:e.load.unit,convention:e.load.convention}:e.load.mode==='BODYWEIGHT'?null:{value:20,unit:'KG',convention:e.load.convention};
+  // A machine the probe does not list (an accessory machine first established by effort) steps by 5 kg (SSCTR-R7D-P3-RECHECK-r1 O-5).
+  const load=next?{value:fits?next.aboveKg+(PLATE[e.id]??5):next.aboveKg,unit:'KG',convention:e.load.convention}:e.load.mode==='KNOWN'?{value:e.load.value,unit:e.load.unit,convention:e.load.convention}:e.load.mode==='BODYWEIGHT'?null:{value:20,unit:'KG',convention:e.load.convention};
   const reps=next&&!fits?next.fallbackReps:e.reps;
   return {id:e.id,sets:Array.from({length:e.sets},()=>({reps,rir:e.rir,...(load?{load}:{})}))};
  })};

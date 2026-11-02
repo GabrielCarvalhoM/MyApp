@@ -10,7 +10,7 @@ import {loadRuntime,runCase} from '../lib/client.mjs';
 import {evaluateProperties} from '../lib/properties.mjs';
 import {runRelations} from '../lib/metamorphic.mjs';
 import {verifyRuntime,sourceBytes} from '../r7d-harness.mjs';
-import {digestOf} from '../lib/util.mjs';
+import {digestOf,addDays as addDaysLocal} from '../lib/util.mjs';
 
 const arg=k=>{const i=process.argv.indexOf(k);return i>=0?process.argv[i+1]:null;};
 const dev=JSON.parse(fs.readFileSync(arg('--dev'),'utf8')),byId=new Map(dev.cases.map(c=>[c.caseId,c]));
@@ -113,6 +113,9 @@ witnessP('W-P08b','DEV-13','P08',t=>{const s=stepOf(t,'brk'),p=thaw(s.planBefore
 witnessP('W-P09b','DEV-14','P09',t=>{const s=t.steps[0];s.result={...s.result,gates:{...(s.result.gates??{}),LONG:'ADVANCE'}};return 'a confounded long run with an adverse recovery credited ADVANCE';});
 witnessP('W-P16a','DEV-15','P16',t=>{const s=t.steps[0],o=(s.review.observations??[]).find(x=>(x.actual?.exercises??[]).some(e=>(e.sets??[]).some(z=>z.load?.convention==='MACHINE_STACK')));const e=o.actual.exercises.find(x=>x.sets.some(z=>z.load?.convention==='MACHINE_STACK'));s.result={...s.result,loadQuestions:[...(s.result.loadQuestions??[]),{exerciseId:e.id,sessionId:o.sessionId,reason:'LOGGED_UNIT_OR_CONVENTION_UNKNOWN'}]};return 'a load logged exactly as prescribed answered as an unknown unit';});
 witnessP('W-P16b','DEV-15','P16',t=>{const s=t.steps[0],p=thaw(s.planAfter);const x=p.weeks[1].sessions.find(y=>y.sport==='STRENGTH'&&y.prescription&&y.prescription.exercises.some(e=>e.load?.convention==='MACHINE_STACK'&&e.load.mode==='KNOWN'));const e=x.prescription.exercises.find(e=>e.load?.convention==='MACHINE_STACK'&&e.load.mode==='KNOWN');e.load.value+=1;s.planAfter=p;return 'a machine setting stated 1 kg above anything supplied or logged';});
+// Engineering check CF-5 (QE-R7D-P3-05, -06): the tightened P07 and P16 each fire on a constructed violation.
+witnessP('W-P07d','DEV-04','P07',t=>{const s=t.steps[1],p=thaw(s.planAfter);p.goal.run.event.date=addDaysLocal(p.goal.run.event.date,-7);s.planAfter=p;s.adopted=true;return 'race date moved a week earlier by a weekly review that asked for nothing';});
+witnessP('W-P16c','DEV-15','P16',t=>{for(const s of t.steps){const p=thaw(s.planAfter),row=p.weeks.flatMap(w=>w.sessions).filter(x=>x.sport==='STRENGTH'&&x.prescription&&x.date>=s.asOfLocal).flatMap(x=>x.prescription.exercises).find(e=>e.load?.nextSetting);if(row){row.load.nextSetting.aboveKg+=1;s.planAfter=p;return 'a next-setting row states a fallback 1 kg above anything supplied or logged';}}return 'NO_NEXT_SETTING_ROW';});
 // P06 and P08 violations carry no issue label (unit records): count any violation of the property.
 for(const w of out.witnesses)if(w.expects[0]==='__P06__'||w.expects[0]==='__P08__'){
  const id=w.expects[0]==='__P06__'?'P06':'P08',kase=byId.get(w.caseId),base=runCase(F4.rt,kase),t={...base,steps:base.steps.map(s=>({...s}))};

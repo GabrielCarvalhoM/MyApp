@@ -1,6 +1,6 @@
 # R7-D harness run summary — GENERATED_DIAGNOSTIC_REGRESSION
 
-- Harness R7D-HARNESS-2; first evaluation: false; 2026-11-02T22:38:20.244Z → 2026-11-02T22:38:29.267Z; node v24.19.0.
+- Harness R7D-HARNESS-2; first evaluation: false; 2026-11-02T23:39:21.042Z → 2026-11-02T23:39:34.634Z; node v24.19.0.
 - Runtime R7C-FREEZE-4 (a9654c8ea175611fbaae805ac6b0e8b928620dff), files 191/197 equal to the record.
 - Corpus R7D-GENERATED-DIAGNOSTIC-1 (100 cases), sha256 449b7d91d7b6a0235a473650dc2c256e8ef3b50bf4255e82cddd83b0e1601fb3.
 - Freshness: no manifest (development run).
