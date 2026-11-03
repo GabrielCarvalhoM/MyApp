@@ -1,0 +1,315 @@
+{
+ "root": "candidate dfd8779 (scratch rebuild, r6-adaptation faa3bc12)",
+ "cases": {
+  "F1": {
+   "carrierB": "INTERRUPTION_RELATION",
+   "plain": {
+    "status": "ASK",
+    "action": "ASK",
+    "validity": "REQUIRES_RECONCILIATION",
+    "question": "INTERRUPTION_RELATION",
+    "missing": [
+     "interruption.episodeId"
+    ],
+    "unresolved": [
+     "q1-B"
+    ],
+    "reason": "Breaks in training reported on 2026-11-30 (2026-11-16 to 2026-11-29) and 2026-12-07 (2026-11-30 to 2026-12-06) are on record and not applied, and the one reported on 2026-12-07 (2026-11-30 to 2026-12-",
+    "runsAhead": "THRESHOLD:34 LONG:65 EASY:50 THRESHOLD:41 LONG:70",
+    "qualityAhead": true,
+    "maxRunAhead": 70,
+    "declaredRows": 2,
+    "returnsApplied": 0
+   },
+   "answerSeparate": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "missing": [],
+    "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-11-30 to 2026-12-06), each its own interruption; the stop read runs from 2026-11-16 to 2026-12-06 with no training recorded be",
+    "ret": "MODERATE 21d 2026-11-16..2026-12-06",
+    "episode": "q1-B",
+    "separateBreaks": [
+     "q1-A 2026-11-16..2026-11-29 TOUCHES",
+     "q1-B 2026-11-30..2026-12-06 LATEST"
+    ],
+    "notApplied": null,
+    "runsAhead": "EASY:15 LONG:20 EASY:30 EASY:30 LONG:45",
+    "qualityAhead": false,
+    "maxRunAhead": 45,
+    "declaredRows": 3,
+    "returnsApplied": 1
+   },
+   "answerCorrection": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "missing": [],
+    "reason": "short nonclinical interruption (7 days): resume the last completed doses; no step until execution is observed",
+    "ret": "SHORT 7d 2026-11-30..2026-12-06",
+    "episode": "q1-A",
+    "separateBreaks": null,
+    "notApplied": null,
+    "runsAhead": "EASY:34 LONG:65 EASY:45 THRESHOLD:41 LONG:70",
+    "qualityAhead": true,
+    "maxRunAhead": 70,
+    "declaredRows": 3,
+    "returnsApplied": 1
+   }
+  },
+  "F2": {
+   "weeklyStatesB": {
+    "status": "ASK",
+    "action": "ASK",
+    "validity": "REQUIRES_RECONCILIATION",
+    "question": "INTERRUPTION_RELATION",
+    "missing": [
+     "interruption.episodeId"
+    ],
+    "unresolved": [
+     "q1-B2"
+    ],
+    "reason": "Breaks in training reported on 2026-11-30 (2026-11-16 to 2026-11-29) and 2026-12-08 (2026-11-30 to 2026-12-06) are on record and not applied, and the one reported on 2026-12-08 (2026-11-30 to 2026-12-",
+    "runsAhead": "THRESHOLD:48 LONG:75 EASY:50 THRESHOLD:43 LONG:75",
+    "qualityAhead": true,
+    "maxRunAhead": 75,
+    "declaredRows": 2,
+    "returnsApplied": 0
+   },
+   "answerSeparate": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "missing": [],
+    "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-11-30 to 2026-12-06), each its own interruption; the stop read runs from 2026-11-16 to 2026-12-06 with no training recorded be",
+    "ret": "MODERATE 21d 2026-11-16..2026-12-06",
+    "episode": "q1-B2",
+    "separateBreaks": [
+     "q1-A 2026-11-16..2026-11-29 TOUCHES",
+     "q1-B2 2026-11-30..2026-12-06 LATEST"
+    ],
+    "notApplied": null,
+    "runsAhead": "EASY:15 LONG:20 EASY:30 EASY:30 LONG:45",
+    "qualityAhead": false,
+    "maxRunAhead": 45,
+    "declaredRows": 3,
+    "returnsApplied": 1
+   },
+   "answerCorrection": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "missing": [],
+    "reason": "short nonclinical interruption (7 days): resume the last completed doses; no step until execution is observed",
+    "ret": "SHORT 7d 2026-11-30..2026-12-06",
+    "episode": "q1-A",
+    "separateBreaks": null,
+    "notApplied": null,
+    "runsAhead": "EASY:34 LONG:65 EASY:45 THRESHOLD:41 LONG:70",
+    "qualityAhead": true,
+    "maxRunAhead": 70,
+    "declaredRows": 3,
+    "returnsApplied": 1
+   }
+  },
+  "F3": {
+   "status": "MODIFY",
+   "action": "REESTABLISH",
+   "validity": "VALID",
+   "question": null,
+   "missing": [],
+   "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-11-30 to 2026-12-06), each its own interruption; the stop read runs from 2026-11-16 to 2026-12-06 with no training recorded be",
+   "ret": "MODERATE 21d 2026-11-16..2026-12-06",
+   "episode": "my-work-trip",
+   "separateBreaks": [
+    "q1-A 2026-11-16..2026-11-29 TOUCHES",
+    "my-work-trip 2026-11-30..2026-12-06 LATEST"
+   ],
+   "notApplied": null,
+   "runsAhead": "EASY:15 LONG:20 EASY:30 EASY:30 LONG:45",
+   "qualityAhead": false,
+   "maxRunAhead": 45,
+   "declaredRows": 2,
+   "returnsApplied": 1
+  },
+  "F4": {
+   "comparatorOnce31": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "missing": [],
+    "reason": "long nonclinical interruption (31 days): restart from current capacity; prior doses are only a ceiling",
+    "ret": "LONG 31d 2026-11-16..2026-12-16",
+    "episode": "r7b-6-RETURN_AFTER_PAUSE-23",
+    "separateBreaks": null,
+    "notApplied": null,
+    "runsAhead": "EASY:15 EASY:20 EASY:20 EASY:20",
+    "qualityAhead": false,
+    "maxRunAhead": 20,
+    "declaredRows": 1,
+    "returnsApplied": 1
+   },
+   "plain": {
+    "status": "ASK",
+    "action": "ASK",
+    "validity": "REQUIRES_RECONCILIATION",
+    "question": "INTERRUPTION_RELATION",
+    "missing": [
+     "interruption.episodeId"
+    ],
+    "unresolved": [
+     "q1-B",
+     "q1-C"
+    ],
+    "reason": "Breaks in training reported on 2026-11-30 (2026-11-16 to 2026-11-29) and 2026-12-07 (2026-11-30 to 2026-12-06) and 2026-12-17 (2026-12-07 to 2026-12-16) are on record and not applied, and the one repo",
+    "runsAhead": "LONG:70 EASY:50 THRESHOLD:41 LONG:65",
+    "qualityAhead": true,
+    "maxRunAhead": 70,
+    "declaredRows": 3,
+    "returnsApplied": 0
+   },
+   "afterAnswerB": {
+    "status": "ASK",
+    "action": "ASK",
+    "validity": "REQUIRES_RECONCILIATION",
+    "question": "INTERRUPTION_RELATION",
+    "missing": [
+     "interruption.episodeId"
+    ],
+    "unresolved": [
+     "q1-C"
+    ],
+    "reason": "Breaks in training reported on 2026-11-30 (2026-11-16 to 2026-11-29) and 2026-12-07 (2026-11-30 to 2026-12-06) and 2026-12-17 (2026-12-07 to 2026-12-16) are on record and not applied, and the one repo",
+    "runsAhead": "LONG:70 EASY:50 THRESHOLD:41 LONG:65",
+    "qualityAhead": true,
+    "maxRunAhead": 70,
+    "declaredRows": 4,
+    "returnsApplied": 0
+   },
+   "afterAnswerC": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "missing": [],
+    "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-11-30 to 2026-12-06; 2026-12-07 to 2026-12-16), each its own interruption; the stop read runs from 2026-11-16 to 2026-12-16 wi",
+    "ret": "LONG 31d 2026-11-16..2026-12-16",
+    "episode": "q1-C",
+    "separateBreaks": [
+     "q1-A 2026-11-16..2026-11-29 TOUCHES",
+     "q1-B 2026-11-30..2026-12-06 TOUCHES",
+     "q1-C 2026-12-07..2026-12-16 LATEST"
+    ],
+    "notApplied": null,
+    "runsAhead": "EASY:15 EASY:20 EASY:20 EASY:20",
+    "qualityAhead": false,
+    "maxRunAhead": 20,
+    "declaredRows": 5,
+    "returnsApplied": 1
+   }
+  },
+  "F5": {
+   "flag": "CLINICAL_HUMAN_REQUIRED",
+   "plainAfterClearance": {
+    "status": "ASK",
+    "action": "ASK",
+    "validity": "REQUIRES_RECONCILIATION",
+    "question": "INTERRUPTION_RELATION",
+    "missing": [
+     "interruption.episodeId"
+    ],
+    "unresolved": [
+     "q1-B"
+    ],
+    "reason": "Breaks in training reported on 2026-11-30 (2026-11-16 to 2026-11-29) and 2026-12-07 (2026-11-30 to 2026-12-06) are on record and not applied, and the one reported on 2026-12-07 (2026-11-30 to 2026-12-",
+    "runsAhead": "THRESHOLD:34 LONG:65 EASY:50 THRESHOLD:41 LONG:70",
+    "qualityAhead": true,
+    "maxRunAhead": 70,
+    "declaredRows": 2,
+    "returnsApplied": 0
+   },
+   "answerSeparate": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "missing": [],
+    "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-11-30 to 2026-12-06), each its own interruption; the stop read runs from 2026-11-16 to 2026-12-06 with no training recorded be",
+    "ret": "MODERATE 21d 2026-11-16..2026-12-06",
+    "episode": "q1-B",
+    "separateBreaks": [
+     "q1-A 2026-11-16..2026-11-29 TOUCHES",
+     "q1-B 2026-11-30..2026-12-06 LATEST"
+    ],
+    "notApplied": null,
+    "runsAhead": "EASY:15 LONG:20 EASY:30 EASY:30 LONG:45",
+    "qualityAhead": false,
+    "maxRunAhead": 45,
+    "declaredRows": 3,
+    "returnsApplied": 1
+   },
+   "answerCorrection": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "missing": [],
+    "reason": "short nonclinical interruption (7 days): resume the last completed doses; no step until execution is observed",
+    "ret": "SHORT 7d 2026-11-30..2026-12-06",
+    "episode": "q1-A",
+    "separateBreaks": null,
+    "notApplied": null,
+    "runsAhead": "EASY:34 LONG:65 EASY:45 THRESHOLD:41 LONG:70",
+    "qualityAhead": true,
+    "maxRunAhead": 70,
+    "declaredRows": 3,
+    "returnsApplied": 1
+   }
+  },
+  "F6": {
+   "plain": {
+    "status": "ASK",
+    "action": "ASK",
+    "validity": "REQUIRES_RECONCILIATION",
+    "question": "INTERRUPTION_RELATION",
+    "missing": [
+     "interruption.episodeId"
+    ],
+    "unresolved": [
+     "q1-Alater"
+    ],
+    "reason": "Breaks in training reported on 2026-12-07 (2026-11-30 to 2026-12-06) and 2026-12-07 (2026-11-16 to 2026-11-29) are on record and not applied, and the one reported on 2026-12-07 (2026-11-16 to 2026-11-",
+    "runsAhead": "THRESHOLD:34 LONG:65 EASY:50 THRESHOLD:41 LONG:70",
+    "qualityAhead": true,
+    "maxRunAhead": 70,
+    "declaredRows": 2,
+    "returnsApplied": 0
+   },
+   "answerSeparate": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "missing": [],
+    "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-11-30 to 2026-12-06), each its own interruption; the stop read runs from 2026-11-16 to 2026-12-06 with no training recorded be",
+    "ret": "MODERATE 21d 2026-11-16..2026-12-06",
+    "episode": "q1-Bfirst",
+    "separateBreaks": [
+     "q1-Alater 2026-11-16..2026-11-29 TOUCHES",
+     "q1-Bfirst 2026-11-30..2026-12-06 LATEST"
+    ],
+    "notApplied": null,
+    "runsAhead": "EASY:15 LONG:20 EASY:30 EASY:30 LONG:45",
+    "qualityAhead": false,
+    "maxRunAhead": 45,
+    "declaredRows": 3,
+    "returnsApplied": 1
+   }
+  }
+ }
+}

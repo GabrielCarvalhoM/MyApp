@@ -1,0 +1,83 @@
+{
+ "root": "R7D-FREEZE-2 (scratch rebuild, r6-adaptation 9f905030)",
+ "cases": {
+  "oneRunBetween": {
+   "gap": [
+    "2026-12-17 RUN 34",
+    "2026-12-18 STRENGTH 28"
+   ],
+   "result": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "missing": [],
+    "reason": "The break reported on 2026-12-23 is on record and applied now: short nonclinical interruption (4 days): resume the last completed doses; no step until execution is observed",
+    "ret": "SHORT 4d 2026-12-19..2026-12-22",
+    "episode": "lb-D",
+    "separateBreaks": null,
+    "notApplied": null,
+    "runsAhead": "LONG:39 EASY:45 THRESHOLD:34 LONG:55",
+    "qualityAhead": true,
+    "maxRunAhead": 55,
+    "declaredRows": 2,
+    "returnsApplied": 1
+   }
+  },
+  "nothingBetween": {
+   "gap": [
+    "2026-12-17 RUN 34",
+    "2026-12-18 STRENGTH 28"
+   ],
+   "result": {
+    "status": "ASK",
+    "action": "ASK",
+    "validity": "REQUIRES_RECONCILIATION",
+    "question": "UNREPORTED_TRAINING",
+    "missing": [
+     "observations.unreportedSessions|interruption"
+    ],
+    "unreported": {
+     "from": "2026-11-22",
+     "through": "2026-12-15",
+     "sessionIds": [
+      "w2-run-d6",
+      "w3-run-d1",
+      "w3-run-d3",
+      "w3-run-d6",
+      "w4-run-d1",
+      "w4-run-d3",
+      "w4-run-d6",
+      "w5-run-d1",
+      "w5-run-d3",
+      "w5-run-d6",
+      "w6-run-d1"
+     ]
+    },
+    "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 11 planned run sessions from 2026-11-22 to 2026-12-15 have no report: say what was done (report t",
+    "runsAhead": "LONG:60 EASY:50 THRESHOLD:41 LONG:70",
+    "qualityAhead": true,
+    "maxRunAhead": 70,
+    "declaredRows": 2,
+    "returnsApplied": 0
+   }
+  },
+  "comparatorOnce37": {
+   "status": "MODIFY",
+   "action": "REESTABLISH",
+   "validity": "VALID",
+   "question": null,
+   "missing": [],
+   "reason": "long nonclinical interruption (37 days): restart from current capacity; prior doses are only a ceiling",
+   "ret": "LONG 37d 2026-11-16..2026-12-22",
+   "episode": "r7b-7-RETURN_AFTER_PAUSE-22",
+   "separateBreaks": null,
+   "notApplied": null,
+   "runsAhead": "EASY:15 EASY:20 EASY:20 EASY:20",
+   "qualityAhead": false,
+   "maxRunAhead": 20,
+   "declaredRows": 1,
+   "returnsApplied": 1
+  }
+ }
+}

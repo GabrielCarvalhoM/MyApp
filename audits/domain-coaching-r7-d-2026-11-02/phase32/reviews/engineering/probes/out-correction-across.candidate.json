@@ -1,0 +1,134 @@
+{
+ "probe": "R7D-ENG-P32-CORRECTION-ACROSS",
+ "runtime": "C:\\Users\\carva\\AppData\\Local\\Temp\\claude\\C--Users-carva-Desktop-myApp-MyApp\\d1937e9f-9b5d-4461-830d-75a2721d33cb\\scratchpad\\qre32\\cand",
+ "steps": {
+  "returnA": {
+   "status": "MODIFY",
+   "action": "REESTABLISH",
+   "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+   "q": null,
+   "missing": [],
+   "ret": {
+    "episode": "qe-ca-A",
+    "start": "2026-11-16",
+    "end": "2026-11-29",
+    "days": 14,
+    "class": "MODERATE",
+    "notApplied": []
+   },
+   "reason": "moderate nonclinical interruption (14 days): re-entry from the reviewed entry dose, returning to the prior tolerated dose in 2 conditional steps"
+  },
+  "review4": {
+   "status": "MODIFY",
+   "action": "GATED_NEXT_STEP",
+   "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+   "q": null,
+   "missing": [],
+   "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation"
+  },
+  "review5": {
+   "status": "MODIFY",
+   "action": "GATED_NEXT_STEP",
+   "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+   "q": null,
+   "missing": [],
+   "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation"
+  },
+  "keepC": {
+   "status": "ASK",
+   "action": "ASK",
+   "validity": "REQUIRES_RECONCILIATION",
+   "q": null,
+   "missing": [
+    "interruption.reportedOnItsOwn"
+   ],
+   "reason": "A break in training reported on 2026-12-21 is recorded and not applied yet: a return report or the week’s review applies it, with no need to state the break again, and then the systemic fatigue is sent again; until then "
+  },
+  "correction": {
+   "status": "ASK",
+   "action": "ASK",
+   "validity": "REQUIRES_RECONCILIATION",
+   "q": null,
+   "missing": [
+    "interruption.episodeId"
+   ],
+   "reason": "This corrects a break a return already applied, but a break reported on 2026-12-21 is on record and not applied yet: it is applied first (a return report or the week’s review, with no need to state it again), and a corre"
+  },
+  "plain": {
+   "status": "MODIFY",
+   "action": "REESTABLISH",
+   "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+   "q": null,
+   "missing": [],
+   "ret": {
+    "episode": "qe-ca-C",
+    "start": "2026-12-14",
+    "end": "2026-12-20",
+    "days": 7,
+    "class": "SHORT",
+    "notApplied": [
+     "qe-ca-corr"
+    ]
+   },
+   "reason": "The break reported on 2026-12-21 is on record and applied now: short nonclinical interruption (7 days): resume the last completed doses; no step until execution is observed"
+  },
+  "plainAfter": {
+   "status": "KEEP",
+   "action": "KEEP",
+   "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+   "q": null,
+   "missing": [],
+   "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+  }
+ },
+ "comparators": {
+  "correctionFirst": {
+   "status": "MODIFY",
+   "action": "REESTABLISH",
+   "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+   "q": null,
+   "missing": [],
+   "ret": {
+    "episode": "qe-ca-A",
+    "start": "2026-11-16",
+    "end": "2026-12-13",
+    "days": 28,
+    "class": "MODERATE",
+    "notApplied": []
+   },
+   "reason": "moderate nonclinical interruption (28 days): re-entry from the reviewed entry dose, returning to the prior tolerated dose in 2 conditional steps"
+  },
+  "thenC": {
+   "status": "MODIFY",
+   "action": "REESTABLISH",
+   "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+   "q": null,
+   "missing": [],
+   "ret": {
+    "episode": "qe-ca-C2",
+    "start": "2026-12-14",
+    "end": "2026-12-20",
+    "days": 7,
+    "class": "SHORT",
+    "notApplied": []
+   },
+   "reason": "short nonclinical interruption (7 days): resume the last completed doses; no step until execution is observed"
+  },
+  "cAlone": {
+   "status": "MODIFY",
+   "action": "REESTABLISH",
+   "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+   "q": null,
+   "missing": [],
+   "ret": {
+    "episode": "qe-ca-C3",
+    "start": "2026-12-14",
+    "end": "2026-12-20",
+    "days": 7,
+    "class": "SHORT",
+    "notApplied": []
+   },
+   "reason": "short nonclinical interruption (7 days): resume the last completed doses; no step until execution is observed"
+  }
+ }
+}

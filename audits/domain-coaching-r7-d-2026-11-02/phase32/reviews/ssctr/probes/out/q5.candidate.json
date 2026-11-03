@@ -1,0 +1,169 @@
+{
+ "root": "candidate dfd8779 (scratch rebuild, r6-adaptation faa3bc12)",
+ "cases": {
+  "C1": {
+   "first": "CLINICAL_HUMAN_REQUIRED",
+   "newer": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "action": "CLINICAL_HUMAN_REQUIRED",
+    "validity": "REQUIRES_RECONCILIATION",
+    "question": null,
+    "missing": [],
+    "reason": "The interruption reason is clinical or possibly clinical (INJURY): qualified assessment is needed; no nonclinical return recipe",
+    "runsAhead": "EASY:50 THRESHOLD:48 LONG:75 EASY:50 THRESHOLD:43 LONG:75",
+    "qualityAhead": true,
+    "maxRunAhead": 75,
+    "declaredRows": 2,
+    "returnsApplied": 0
+   },
+   "plain": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "action": "CLINICAL_HUMAN_REQUIRED",
+    "validity": "REQUIRES_RECONCILIATION",
+    "question": null,
+    "missing": [],
+    "reason": "The interruption reason is clinical or possibly clinical (INJURY): qualified assessment is needed; no nonclinical return recipe",
+    "runsAhead": "THRESHOLD:48 LONG:75 EASY:50 THRESHOLD:43 LONG:75",
+    "qualityAhead": true,
+    "maxRunAhead": 75,
+    "declaredRows": 2,
+    "returnsApplied": 0
+   }
+  },
+  "C2": {
+   "newerNamed": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "action": "CLINICAL_HUMAN_REQUIRED",
+    "validity": "REQUIRES_RECONCILIATION",
+    "question": null,
+    "missing": [],
+    "reason": "The interruption reason is clinical or possibly clinical (INJURY): qualified assessment is needed; no nonclinical return recipe",
+    "runsAhead": "EASY:50 THRESHOLD:48 LONG:75 EASY:50 THRESHOLD:43 LONG:75",
+    "qualityAhead": true,
+    "maxRunAhead": 75,
+    "declaredRows": 2,
+    "returnsApplied": 0
+   },
+   "plain": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "action": "CLINICAL_HUMAN_REQUIRED",
+    "validity": "REQUIRES_RECONCILIATION",
+    "question": null,
+    "missing": [],
+    "reason": "The interruption reason is clinical or possibly clinical (INJURY): qualified assessment is needed; no nonclinical return recipe",
+    "runsAhead": "THRESHOLD:48 LONG:75 EASY:50 THRESHOLD:43 LONG:75",
+    "qualityAhead": true,
+    "maxRunAhead": 75,
+    "declaredRows": 2,
+    "returnsApplied": 0
+   }
+  },
+  "C3": {
+   "status": "MODIFY",
+   "action": "REESTABLISH",
+   "validity": "VALID",
+   "question": null,
+   "missing": [],
+   "reason": "moderate nonclinical interruption (14 days): re-entry from the reviewed entry dose, returning to the prior tolerated dose in 2 conditional steps",
+   "ret": "MODERATE 14d 2026-11-16..2026-11-29",
+   "episode": "c-INJ",
+   "separateBreaks": null,
+   "notApplied": null,
+   "runsAhead": "EASY:15 LONG:20 EASY:30 EASY:30 LONG:45",
+   "qualityAhead": false,
+   "maxRunAhead": 45,
+   "declaredRows": 2,
+   "returnsApplied": 1
+  },
+  "C4": {
+   "status": "CLINICAL_HUMAN_REQUIRED",
+   "action": "CLINICAL_HUMAN_REQUIRED",
+   "validity": "REQUIRES_RECONCILIATION",
+   "question": null,
+   "missing": [],
+   "reason": "The interruption reason is clinical or possibly clinical (INJURY): qualified assessment is needed; no nonclinical return recipe",
+   "runsAhead": "THRESHOLD:48 LONG:75 EASY:50 THRESHOLD:43 LONG:75",
+   "qualityAhead": true,
+   "maxRunAhead": 75,
+   "declaredRows": 2,
+   "returnsApplied": 0
+  },
+  "C5": {
+   "status": "CLINICAL_HUMAN_REQUIRED",
+   "action": "CLINICAL_HUMAN_REQUIRED",
+   "validity": "REQUIRES_RECONCILIATION",
+   "question": null,
+   "missing": [],
+   "reason": "The interruption reason is clinical or possibly clinical (painful): qualified assessment is needed; no nonclinical return recipe",
+   "runsAhead": "THRESHOLD:48 LONG:75 EASY:50 THRESHOLD:43 LONG:75",
+   "qualityAhead": true,
+   "maxRunAhead": 75,
+   "declaredRows": 2,
+   "returnsApplied": 0
+  },
+  "C6": {
+   "newerFlu": "CLINICAL_HUMAN_REQUIRED",
+   "plain": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "action": "CLINICAL_HUMAN_REQUIRED",
+    "validity": "REQUIRES_RECONCILIATION",
+    "question": null,
+    "missing": [],
+    "reason": "The interruption reason is clinical or possibly clinical (ILLNESS): qualified assessment is needed; no nonclinical return recipe",
+    "runsAhead": "THRESHOLD:48 LONG:75 EASY:50 THRESHOLD:43 LONG:75",
+    "qualityAhead": true,
+    "maxRunAhead": 75,
+    "declaredRows": 2,
+    "returnsApplied": 0
+   },
+   "namedCorrectionToWork": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "missing": [],
+    "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-11-30 to 2026-12-06), each its own interruption; the stop read runs from 2026-11-16 to 2026-12-06 with no training recorded be",
+    "ret": "MODERATE 21d 2026-11-16..2026-12-06",
+    "episode": "c-FLU",
+    "separateBreaks": [
+     "c-A 2026-11-16..2026-11-29 TOUCHES",
+     "c-FLU 2026-11-30..2026-12-06 LATEST"
+    ],
+    "notApplied": null,
+    "runsAhead": "EASY:15 LONG:20 EASY:30 EASY:30 LONG:45",
+    "qualityAhead": false,
+    "maxRunAhead": 45,
+    "declaredRows": 3,
+    "returnsApplied": 1
+   }
+  },
+  "C7": {
+   "status": "CLINICAL_HUMAN_REQUIRED",
+   "action": "CLINICAL_HUMAN_REQUIRED",
+   "validity": "REQUIRES_RECONCILIATION",
+   "question": null,
+   "missing": [],
+   "reason": "The interruption reason is clinical or possibly clinical (ILLNESS): qualified assessment is needed; no nonclinical return recipe",
+   "runsAhead": "THRESHOLD:43 LONG:75 EASY:55 THRESHOLD:43 LONG:65",
+   "qualityAhead": true,
+   "maxRunAhead": 75,
+   "declaredRows": 3,
+   "returnsApplied": 0
+  },
+  "C8": {
+   "status": "ASK",
+   "missing": [
+    "eligibility.currentAssessment"
+   ],
+   "question": null
+  },
+  "C9": {
+   "weeklyReviewsWithTraining": [
+    "4:CLINICAL_HUMAN_REQUIRED",
+    "5:CLINICAL_HUMAN_REQUIRED",
+    "6:CLINICAL_HUMAN_REQUIRED",
+    "7:CLINICAL_HUMAN_REQUIRED"
+   ]
+  }
+ }
+}

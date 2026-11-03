@@ -1,0 +1,74 @@
+{
+ "root": "candidate dfd8779 (scratch rebuild, r6-adaptation faa3bc12)",
+ "cases": {
+  "oneRunBetween": {
+   "gap": [
+    "2026-12-17 RUN 34",
+    "2026-12-18 STRENGTH 28"
+   ],
+   "result": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "missing": [],
+    "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-12-15; 2026-12-19 to 2026-12-22), each its own interruption; the stop read runs from 2026-12-19 to 2026-12-22, and training is recorded af",
+    "ret": "SHORT 4d 2026-12-19..2026-12-22",
+    "episode": "lb-D",
+    "separateBreaks": [
+     "lb-A 2026-11-16..2026-12-15 TRAINING_AFTER",
+     "lb-D 2026-12-19..2026-12-22 LATEST"
+    ],
+    "notApplied": null,
+    "runsAhead": "LONG:39 EASY:45 THRESHOLD:34 LONG:55",
+    "qualityAhead": true,
+    "maxRunAhead": 55,
+    "declaredRows": 2,
+    "returnsApplied": 1
+   }
+  },
+  "nothingBetween": {
+   "gap": [
+    "2026-12-17 RUN 34",
+    "2026-12-18 STRENGTH 28"
+   ],
+   "result": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "missing": [],
+    "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-12-15; 2026-12-19 to 2026-12-22), each its own interruption; the stop read runs from 2026-11-16 to 2026-12-22 with no training recorded be",
+    "ret": "LONG 37d 2026-11-16..2026-12-22",
+    "episode": "lb-D",
+    "separateBreaks": [
+     "lb-A 2026-11-16..2026-12-15 NO_TRAINING_BETWEEN",
+     "lb-D 2026-12-19..2026-12-22 LATEST"
+    ],
+    "notApplied": null,
+    "runsAhead": "EASY:15 EASY:20 EASY:20 EASY:20",
+    "qualityAhead": false,
+    "maxRunAhead": 20,
+    "declaredRows": 2,
+    "returnsApplied": 1
+   }
+  },
+  "comparatorOnce37": {
+   "status": "MODIFY",
+   "action": "REESTABLISH",
+   "validity": "VALID",
+   "question": null,
+   "missing": [],
+   "reason": "long nonclinical interruption (37 days): restart from current capacity; prior doses are only a ceiling",
+   "ret": "LONG 37d 2026-11-16..2026-12-22",
+   "episode": "r7b-7-RETURN_AFTER_PAUSE-22",
+   "separateBreaks": null,
+   "notApplied": null,
+   "runsAhead": "EASY:15 EASY:20 EASY:20 EASY:20",
+   "qualityAhead": false,
+   "maxRunAhead": 20,
+   "declaredRows": 1,
+   "returnsApplied": 1
+  }
+ }
+}

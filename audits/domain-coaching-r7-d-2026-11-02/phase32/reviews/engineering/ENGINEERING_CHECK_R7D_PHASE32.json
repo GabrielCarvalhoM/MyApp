@@ -1,0 +1,126 @@
+{
+ "recordId": "R7D-ENGINEERING-PHASE32-CHECK-1",
+ "role": "Quality & Reliability Engineer (independent judge; not the author of the runtime, tests, harness, PREREG-4 or evidence)",
+ "date": "2026-11-03",
+ "candidate": "dfd8779",
+ "candidateRuntime": {
+  "file": "CoachingCore/src/r6-adaptation.mjs",
+  "sha256": "faa3bc12a329941e6df228e553a8166f43ddaefce9cca80165c369f59a309e3a",
+  "evidenceCommit": "36e9f02",
+  "srcAndTestUnchangedSinceCandidate": true
+ },
+ "scope": "Engineering items of phase32/reviews/REVIEW_REQUEST_PHASE32.md only. The SSCTR folder was not opened. Synthetic development fixtures only: engineering evidence, never gate, quality or generalization evidence.",
+ "verdict": "READY_WITH_CONDITIONS",
+ "verdictSummary": "SSCTR-P31-F02 is closed on the paths the rule names (W1, W2, W4 RED on R7D-FREEZE-2 and clean on the candidate; the relation ASK reaches every event kind; clinical first holds; no double application; the single-break path is preserved; differential contained). One MAJOR instrument/runtime conflict must be resolved instrument-side before the freeze runs: the pre-registered P17 RESTATE_DECLARED_BREAK relation fails on the candidate for the interface-documented flow 'correction of an applied break while a newer break is kept' (QE-R7D-P32-01). Four MINOR residuals and one TEST_GAP set must be disclosed with owners. No blocker.",
+ "items": [
+  {"item": "append-only provenance", "verdict": "PASS_WITH_FINDING", "basis": "Every carried INTERRUPTION_DECLARED row travels unchanged and the decision history is append-only (T8; the relation ASK keeps the newer row through keep()/out.actualLedger). A return records separateBreaks and notApplied. Exception: a report id re-sent with other facts is read but not recorded, and the return's separateBreaks entry for it pairs the first row's declaredAt with the re-sent dates and hash (QE-R7D-P32-04)."},
+  {"item": "multiple unresolved interruption facts (grouping, identity, applied)", "verdict": "PASS_WITH_FINDINGS", "basis": "Union-find over name and exact-facts keys; groups ordered by first report; identity = latest name else first event id; applied by name or applied replay. Three, two and one group cases behave as specified (probes TH, K; T1-T6). Findings: ties in declaredAt fall back to record position (QE-R7D-P32-02); dateless reports with equal facts are joined whatever their declaration time (QE-R7D-P32-03)."},
+  {"item": "correction and replay semantics", "verdict": "PASS_WITH_FINDINGS", "basis": "A named correction replaces once; an exact replay records nothing; a replayed answer is KEEP; earlier carriers replayed never re-apply (T2, T3). Findings: a separate break's own identity is not addressable after its return (QE-R7D-P32-05); a kept correction of an applied break is dropped to notApplied and never asked again unless re-sent, which conflicts with P17 RESTATE (QE-R7D-P32-01)."},
+  {"item": "relation ASK propagation (every event kind, clinical precedence, decide order, heldByRunGap pass-through)", "verdict": "PASS", "basis": "All 19 review kinds with no break of their own after two kept breaks: 18 give INTERRUPTION_RELATION, RECOVERED gives the pending-question guard ASK (missing interruption.episodeId); none proposes a return or is VALID (probe K). On R7D-FREEZE-2 the same matrix applies returns or validates. keptAsk is first in decide; only the clinical route, the previous-validity guard, the factual re-plan's own ask and an unrecognised-choice ask precede it, all non-dose. heldByRunGap returns any ASK whose question is not UNREPORTED_TRAINING unchanged (code, line 373). T5 and DEV-25 show clinical first."},
+  {"item": "no last-write-wins", "verdict": "PASS_WITH_FINDINGS", "basis": "Dated newer breaks under a new report id never replace (W1, W2, T1, probe DL dated control, K). Residual paths: same report id with other facts (QE-R7D-P32-04, pre-existing QE-R7D-P31-10 mechanism) and dateless equal-facts reports (QE-R7D-P32-03, dose-equivalent under QE-R7D-P31-12)."},
+  {"item": "no double application", "verdict": "PASS", "basis": "A return applies every declaration by its clock once; replays of the answer and of each carrier never REESTABLISH again (T2, T3, T4 'applied once', W4; probes AN, SC); mutant QM32-12 (applied rows read again) is killed by the directed files."},
+  {"item": "determinism", "verdict": "PASS_WITH_FINDING", "basis": "Same input gives byte-identical output (probe RP; T8; DETERMINISM relation clean on four extra cases; probe outputs identical across two runs). Record-order invariance fails only for declarations with equal clocks (QE-R7D-P32-02)."},
+  {"item": "differential containment", "verdict": "PASS", "basis": "Re-run: 145 cases, 141 identical, 4 differing (DEV-22 to DEV-25), 0 unexplained; rows identical to the committed DIFFERENTIAL_VS_R7D_FREEZE_2.json. Each first difference is at the family trigger and is the relation ASK or the clinical route; R7D-D10 (meets the trigger: three unnamed reports of the same flu break) is identical (clinical first). The 140 single-break cases identical support the byte-identical single-break claim, which code reading also supports (keptBreaks with one group reproduces retainedBreak; readBreak extraction is line-for-line; keptEpisode, separate and notApplied are unset on that path)."},
+  {"item": "test, property and mutation adequacy (P18, INSERT, false block)", "verdict": "PASS_WITH_CONDITIONS", "basis": "Author mutation re-run 8/8 killed by their own witnesses. Harness validation 4 re-run: identical runs, coverage and 42/42 witnesses. P18 and INSERT_NEWER_BREAK showed no false block on four extra constructed cases covering branches no development case reaches (TRAINING_AFTER, notApplied, dateless equal facts, equal clocks). But P17's RESTATE_DECLARED_BREAK falsely blocks (or truly flags) the notApplied path (QE-R7D-P32-01). Judge mutants: 9 of 18 survive the whole suite (QE-R7D-P32-06)."},
+  {"item": "no regression of Phase 3.1 (P17, RESTATE, single-break path)", "verdict": "PASS_WITH_FINDING", "basis": "Suite 938/938; Phase 3.1 directed 14/14; DEV P17 39 units and RESTATE 13 units clean; single-break path preserved. RESTATE fails only on the new multi-break notApplied path (QE-R7D-P32-01)."},
+  {"item": "the two updated assertions", "verdict": "ACCEPT", "basis": "Both pre-update forms encoded last-write-wins and fail on the candidate (2/33 in their files). T6 as updated fails on R7D-FREEZE-2; C4/C5 as updated passes on both, preserving its intent (order invariance of composition) and adopting the R7D-PREREG-4 consumer condition (name a correction). The T6 title discloses the change. The unnamed variant is covered by T1."},
+  {"item": "freeze readiness", "verdict": "READY_WITH_CONDITIONS", "basis": "Read, not run. Every refusal pre-check passes read-only on HEAD 36e9f02: inputs unchanged since 88d2495; diagnostic and PREREG-1 unchanged since cdff248; PREREG-2/-3, FREEZE-1/-2 records and phase3/phase31 unchanged since 93f3a38; CURRENT_MISSION.md and MISSION_LEDGER.md append-only; no final folder; source delta r6-adaptation.mjs alone; modified tests exactly the two disclosed; src/test unchanged since dfd8779; the seven evidence outputs hash as listed; runtimeSource equals the tree. The script refuses on a non-passing review and never overwrites. Conditions C1 and C4."}
+ ],
+ "findings": [
+  {
+   "id": "QE-R7D-P32-01",
+   "class": "MAJOR",
+   "finding": "Instrument/runtime conflict on the interface-documented flow 'correction of an applied break while a newer break is kept' (the SSCTR p4b path). The runtime reads a kept correction of an applied break as not read: the next plain review applies the kept break and records the correction in notApplied, VALID. The same correction stated again by that review is asked (CORRECTION_ACROSS_KEPT_BREAK), REQUIRES_RECONCILIATION. So the pre-registered P17 metamorphic relation RESTATE_DECLARED_BREAK (BLOCKER, no envelope, unchanged by R7D-PREREG-4 Delta 2) fails on the candidate: a final holdout containing this flow would fail P17 on designed behaviour. Validation 4 has no development case for it, so its no-false-block result does not reach it. Also, after the kept break's return the correction is never asked again (the next reviews KEEP and GATED_NEXT_STEP, VALID): the ASK text 'a correction of an earlier break across it is then asked' holds only if the athlete re-sends it. Dose-neutral in the probe (the comparator that applies the correction first still gives the kept break SHORT 7 days), and fail-closed in the restated variant. Any live runtime design differs from RESTATE here (asking on every review while the correction is kept never lets the kept break be applied), so the reconciliation is instrument-side.",
+   "reproduction": "probes/qe-p32-p18-false-block.mjs <scratch root> --relations (QE-FB-2: RESTATE_DECLARED_BREAK 2 units, 1 violation; P18 PASS; INSERT clean); probes/qe-p32-restate-fb2.mjs <scratch root> (violation at w7d2: decisionA VALID / decisionB REQUIRES_RECONCILIATION + ASK; w7d3 KEEP and w7r GATED_NEXT_STEP, both VALID, no question). On R7D-FREEZE-2 the same case has 1 RESTATE unit and 0 violations because R7D-FREEZE-2 applies the correction at w7d1 and loses the kept break (F02, p4b). probes/qe-p32-correction-across.mjs: dose comparison. Outputs: probes/out-p18-false-block.candidate.json, out-restate-fb2.*.json, out-correction-across.candidate.json.",
+   "newAndRuntimeOnly": false,
+   "newNote": "New in Phase 3.2 (the notApplied rule); an interaction of the runtime with the HARNESS-3 instrument kept unchanged in HARNESS-4, not a runtime-only defect."
+  },
+  {
+   "id": "QE-R7D-P32-02",
+   "class": "MINOR",
+   "finding": "Record-order dependence for declarations with equal clocks. Groups are ordered by first declaredAt and the head by end then declaredAt; ties fall back to the carried record's array order. A 14-day holiday (unnamed) and a 7-day trip with the same end (named) declared at the same instant: record order [holiday, trip] applies a separate-breaks return (14 days, MODERATE, episode = trip); order [trip, holiday] asks INTERRUPTION_RELATION (the holiday becomes the later unnamed break). Same input, same output (determinism holds); record-position invariance does not. Fail-closed in one order, no dropped fact in either. R7D-FREEZE-2 was order-invariant here (both orders re-entered from the latest). Not reachable by the evaluation client, which carries the record in step order.",
+   "reproduction": "probes/qe-p32-probes.mjs <scratch root>, scenario ORD (out-probes.candidate.json: order1 REESTABLISH, order2 ASK INTERRUPTION_RELATION, sameStopAndEntry false). Harness form (two steps at the same time): probes/qe-p32-p18-false-block.mjs QE-FB-4, all properties and relations clean.",
+   "newAndRuntimeOnly": true
+  },
+  {
+   "id": "QE-R7D-P32-03",
+   "class": "MINOR",
+   "finding": "The exact-replay key (facts apart from episodeId) omits the time a dateless report is anchored to. Two dateless reports with equal facts ({days:5, WORK, nonclinical}) declared two weeks apart are joined as one declaration: no relation question, and the older report has no effect (one SHORT 5-day return from the newer). The dated control asks INTERRUPTION_RELATION. Dose-equivalent under the disclosed QE-R7D-P31-12 reading (a dateless kept break ends the day before the review that applies it, so as separate breaks both would overlap at the same days); the outcome equals R7D-FREEZE-2's. Invisible to the harness: P18 joins them by the same key and (a) is not evaluable without dates.",
+   "reproduction": "probes/qe-p32-probes.mjs, scenario DL (candidate: plain review REESTABLISH 2026-12-06..12-10 SHORT; dated control ASK INTERRUPTION_RELATION). probes/qe-p32-p18-false-block.mjs QE-FB-3: P18 NOT_APPLICABLE, no violation.",
+   "newAndRuntimeOnly": true
+  },
+  {
+   "id": "QE-R7D-P32-04",
+   "class": "MINOR",
+   "finding": "A report id re-sent with other break facts while its break is kept is read over the kept row in that decision (keptBreaks: mine.i = input.interruption) but never recorded (newDeclaration keeps the first row). (a) It bypasses the no-last-write-wins rule: with the 14-day holiday kept under id X and a named separate trip kept, X re-sent with 7-day facts gives a 7-day SHORT return, where the facts on record (holiday + trip, the days between reported not done) give 21 days MODERATE. (b) The return's separateBreaks entry for X carries the re-sent dates and hash with the first row's declaredAt, unlike the record row. (c) A relation answer sent under the kept report's own id is lost when that decision asks something else (TRAINING_BETWEEN_BREAKS): the next review asks the relation again; under a new id the flow completes (21 days MODERATE). Mechanism pre-existing and disclosed as QE-R7D-P31-10 ('not recorded nor refused'); the consequences (a)-(c) are not disclosed against the Phase 3.2 rule. Not reachable by the evaluation client (one event id per step). Unpinned by any test (judge mutant QM32-14 survives the suite).",
+   "reproduction": "probes/qe-p32-probes.mjs, scenarios SE (twoKeptSeparate: REESTABLISH 2026-11-30..12-06 SHORT, separate 'qe-SE:2026-11-30..2026-12-06:OVERLAPS' while the qe-SE row holds 2026-11-16..2026-11-29) and AN (sameIdThenGapAnswer: ASK INTERRUPTION_RELATION again; newIdThenGapAnswer: REESTABLISH 21 days MODERATE). R7D-FREEZE-2 gives the same SHORT results in SE (out-probes.R7D-FREEZE-2.json).",
+   "newAndRuntimeOnly": false
+  },
+  {
+   "id": "QE-R7D-P32-05",
+   "class": "MINOR",
+   "finding": "Separate-break identities recorded in separateBreaks are not addressable after their return: episodesOf and appliedName know only the return's episode (the head). A correction naming the earlier separate break (its listed episode) is asked as a different interruption that shares days, and the question offers the return's episode; naming that episode with the earlier break's corrected facts replaces the whole stop (21-day stop to 12 days: the later break's days leave the applied stop). Fail-closed until the athlete names the return's episode; a correct consumer path exists (send the whole corrected stop under the return's episode, INTERFACE-4 'send the whole corrected break'), at the price of restating separate facts as one.",
+   "reproduction": "probes/qe-p32-probes.mjs, scenario SC (namingA: ASK, missing interruption.episodeId, 'its episodeId qe-B'; namingEpisode: REESTABLISH SAME_BREAK 2026-11-16..2026-11-27, 12 days, separateBreaks empty).",
+   "newAndRuntimeOnly": true
+  },
+  {
+   "id": "QE-R7D-P32-06",
+   "class": "TEST_GAP",
+   "finding": "Judge mutants of the Phase 3.2 delta: 18 applied, 9 killed by the directed files, 9 survive the whole suite (938/0). Priority: QM32-10 (an earlier separate break whose reason is missing or unclear is read into the stop without the reason question: a possibly clinical cause read as nonclinical), QM32-13 (an earlier separate break with invalid facts read without asking), QM32-06 (a conflicted report between two breaks counted as reported, i.e. read as no training: the SSCTR question 4b behaviour is unpinned). Then QM32-02 (a correction by a chosen name, not an event id, is not joined), QM32-05 (replaying an answering review whose own break is not the head), QM32-14 (same report id re-sent with other facts, QE-R7D-P32-04). QM32-03, QM32-07 and QM32-17 are close to equivalent on reachable inputs. The runtime behaves correctly on these paths by code reading; the gap is that no test pins it.",
+   "reproduction": "probes/qe-p32-mutants.mjs --cc <scratch CoachingCore> --out <file> (out-mutants.candidate.json). The scratch source was restored and re-hashed faa3bc12... after the run.",
+   "newAndRuntimeOnly": false
+  },
+  {
+   "id": "QE-R7D-P32-07",
+   "class": "OBSERVATION",
+   "finding": "P18 and INSERT_NEWER_BREAK showed no false block on four constructed cases beyond validation 4 (TRAINING_AFTER answered done, notApplied, dateless equal facts, equal clocks): P18 PASS (3, 3, n/a, 3 units), INSERT clean (1 unit each). INSERT's inserted break (fixed reason text, dates asOf-7..asOf-1, no name) can only be joined to a kept break with byte-identical facts, so a false block from it needs a corpus break with that reason text. P18 mirrors the runtime's grouping (same keys, step order equals record order in the client, replays excluded by event id) and its TRAINING_AFTER branch is a superset of the runtime's trainedBetween. Residual risk: a same-id re-send with other facts, unreachable in the client.",
+   "reproduction": "probes/qe-p32-p18-false-block.mjs <scratch root> --relations (out-p18-false-block.candidate.json).",
+   "newAndRuntimeOnly": false
+  },
+  {
+   "id": "QE-R7D-P32-08",
+   "class": "OBSERVATION",
+   "finding": "HARNESS-4 text drift: P17's window and RESTATE_DECLARED_BREAK still end at 'a later review states a break of its own (it replaces this one)', which no longer holds. Effect: P17 stops following the older break once a newer one is stated, and P18 checks the older break only at a return. No false block results (any VALID decision while both are open still violates the newer break's own P17 window), but the comment is wrong under R7D-PREREG-4.",
+   "reproduction": "Reading lib/properties.mjs lines 500-502 and lib/metamorphic.mjs restate().",
+   "newAndRuntimeOnly": false
+  },
+  {
+   "id": "QE-R7D-P32-09",
+   "class": "OBSERVATION",
+   "finding": "Freeze tooling: freeze-r7d-3.mjs and verify-r7d-3.mjs join --evidence, --ssctr and --engineering to the repository root, so they must be given repository-relative paths (an absolute Windows path fails). The freeze binds only top-level .mjs/.json/.md files of each review folder and of review probes folders. The verifier rechecks the R7D-FREEZE-2 record but not R7D-FREEZE-1 (the freeze itself refuses if FREEZE-1 changed before it runs).",
+   "reproduction": "Reading CoachingCore/scripts/freeze-r7d-3.mjs and verify-r7d-3.mjs.",
+   "newAndRuntimeOnly": false
+  }
+ ],
+ "conditionsForFreeze": [
+  {"id": "C1", "condition": "QE-R7D-P32-01, before freeze-r7d-3.mjs runs and before any final holdout exists, with no runtime byte changed: reconcile RESTATE_DECLARED_BREAK with the Phase 3.2 notApplied rule, for example by not restating a stated correction of an applied break (its episodeId names a recorded return's episode or event) while another stated break is open, recorded as a pre-registration addendum to R7D-PREREG-4 (Delta 2 currently says P17 is unchanged); add a development case of the QE-FB-2 form and show no false block on the candidate, RESTATE still detecting QE-R7D-P3-01 on R7D-FREEZE-1, and all witnesses firing. If the coordinator cannot make an instrument-only change in this phase, the freeze waits for a Chief/Founder disposition of this conflict; the final holdout is not authored until it is resolved. In the same addendum, state precisely that a kept correction of an applied break listed in notApplied is not asked again unless re-sent."},
+  {"id": "C2", "condition": "The freeze record's disclosures list QE-R7D-P32-02 to -05 as residuals (P32-03 with QE-R7D-P31-12, P32-04 as an extension of QE-R7D-P31-10), with the consumer conditions: never re-send a report id with other facts; answer INTERRUPTION_RELATION under a new report id; state a break's dates; to correct one break of a separate-breaks return, restate the whole stop under the return's episode. Owner: Chief; trigger: the freeze record."},
+  {"id": "C3", "condition": "TEST_GAP QE-R7D-P32-06 recorded with owner Engineering and trigger the next authorized runtime phase (tests cannot be added now without changing the reviewed test bytes): first QM32-10, QM32-13, QM32-06, then QM32-02, QM32-05, QM32-14."},
+  {"id": "C4", "condition": "Run the freeze only after C1, with repository-relative paths, --reviewed dfd8779, and both review records and their probe files committed (the freeze binds engineering/ and engineering/probes/ top-level files). Then verify-r7d-3.mjs (read-only) must PASS."}
+ ],
+ "reproduced": {
+  "scratchRuntime": "git archive dfd8779 of CoachingCore plus the R6, B0, R3, R4 and R5 SSCTR records, node_modules copied; r6-adaptation.mjs sha256 faa3bc12a329941e6df228e553a8166f43ddaefce9cca80165c369f59a309e3a",
+  "suite": "node --test on the scratch candidate: 938 tests, 938 pass, 0 fail",
+  "directedOnCandidate": "Phase 3.2 17/17 and Phase 3.1 14/14 (in the suite and in every mutant baseline)",
+  "directedOnFreeze2": "candidate test files copied into a writable copy of rt-d2 (r6 sha256 9f905030..., equal to 88d2495): 50 tests, 38 pass, 12 fail = 11 Phase 3.2 (the 6 characterization tests pass) + updated T6; updated C4/C5 passes",
+  "assertionsAsAtFreeze2OnCandidate": "88d2495 versions of r7d-phase31.test.mjs and r7a1-composition.test.mjs on the candidate: 33 tests, 2 fail (T6 and C4/C5)",
+  "conformance": "conformance-r7b, -r7b1, -r7b2 on the scratch candidate: PASS, PASS, PASS",
+  "f02Witness": "candidate: RED false, W1/W2 ASK INTERRUPTION_RELATION, W3 MODERATE, W4 applies the kept break; R7D-FREEZE-2: RED true (W1 REESTABLISH SHORT, W4 kept break lost). Both outputs identical to the committed probes/out files",
+  "authorMutation": "phase32-mutation.mjs re-run in a scratch dir: 8/8 killed by their own witnesses (probes/out-author-mutation-rerun.json)",
+  "differential": "phase32-differential.mjs re-run against rt-d2: 145 cases, 141 same, 4 differing (DEV-22..25), 0 unexplained; rows identical to the committed evidence",
+  "harnessValidation4": "run-validation.mjs re-run (candidate = worktree, read-only; superseded runtimes from scratchpad/rt): NO_FALSE_BLOCK PASS, 13/13 sensitivity rows DETECTED_AND_CLEAN_ON_CANDIDATE, coverage CARRIER_CLINICAL 7, CARRIER_HOLD 1, RESEND 24, RESTATE 13, INSERT 4, P17 39, P18 6, witnesses 42/42; runs, coverage and witnesses identical to the committed HARNESS_VALIDATION_R7D_4.json",
+  "regressions": "not re-run; checked that both RUN_REPORT.json files evaluated r6-adaptation.mjs faa3bc12... (allow-runtime-diff against the R7D-FREEZE-2 record)",
+  "evidenceManifest": "EVIDENCE_PHASE32.json: result PASS, problems []; its seven outputs hash as listed; runtimeSource equals the tree",
+  "freezePrechecks": "every refusal condition of freeze-r7d-3.mjs checked read-only with git on HEAD 36e9f02: none triggers; the freeze script was not run",
+  "judgeProbes": {
+   "qe-p32-probes.mjs": "K, DL, SE, AN, ORD, SC, TH, TB, RP on the candidate and on R7D-FREEZE-2 (out-probes.*.json); candidate output identical across two runs",
+   "qe-p32-p18-false-block.mjs": "QE-FB-1..4 with all properties and relations on the candidate (out-p18-false-block.candidate.json)",
+   "qe-p32-restate-fb2.mjs": "QE-FB-2 RESTATE detail on the candidate and on R7D-FREEZE-2",
+   "qe-p32-correction-across.mjs": "correction extending an applied break up to a kept one, with comparators",
+   "qe-p32-mutants.mjs": "18 judge mutants: killed by directed files 01, 04, 08, 09, 11, 12, 15, 16, 18; survive the suite 02, 03, 05, 06, 07, 10, 13, 14, 17"
+  },
+  "notRun": ["freeze-r7d-3.mjs (forbidden)", "verify-r7d-3.mjs (no record yet)", "npm run verify", "any --write"]
+ },
+ "proposedHumanRevalidation": null,
+ "independence": "Worker != judge: this instance wrote none of the runtime, tests, harness, PREREG-4 or evidence. Nothing in the repository was edited outside phase32/reviews/engineering/. No commit."
+}

@@ -1,0 +1,241 @@
+{
+ "root": "R7D-FREEZE-2 (scratch rebuild, r6-adaptation 9f905030)",
+ "cases": {
+  "R1": {
+   "again": {
+    "status": "ASK",
+    "action": "ASK",
+    "validity": "REQUIRES_RECONCILIATION",
+    "question": null,
+    "missing": [
+     "interruption.reportedOnItsOwn"
+    ],
+    "reason": "A break in training reported on 2026-12-01 is recorded and not applied yet: a return report or the week’s review applies it, with no need to state the break again, and then the local fatigue is sent a",
+    "runsAhead": "THRESHOLD:41 LONG:70 EASY:50 THRESHOLD:48 LONG:75",
+    "qualityAhead": true,
+    "maxRunAhead": 75,
+    "declaredRows": 2,
+    "returnsApplied": 0
+   },
+   "plain": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "missing": [],
+    "reason": "The break reported on 2026-12-01 is on record and applied now: moderate nonclinical interruption (14 days): re-entry from the reviewed entry dose, returning to the prior tolerated dose in 2 conditiona",
+    "ret": "MODERATE 14d 2026-11-16..2026-11-29",
+    "episode": "r-A2",
+    "separateBreaks": null,
+    "notApplied": null,
+    "runsAhead": "EASY:15 LONG:20 EASY:30 EASY:30 LONG:45",
+    "qualityAhead": false,
+    "maxRunAhead": 45,
+    "declaredRows": 2,
+    "returnsApplied": 1
+   },
+   "plainAgain": {
+    "status": "KEEP",
+    "action": "KEEP",
+    "validity": "VALID",
+    "question": null,
+    "missing": [],
+    "reason": "next-week steps are gated when this week’s remaining sessions are complete",
+    "runsAhead": "LONG:20 EASY:30 EASY:30 LONG:45",
+    "qualityAhead": false,
+    "maxRunAhead": 45,
+    "declaredRows": 2,
+    "returnsApplied": 1
+   }
+  },
+  "R2": {
+   "sameDatesOtherText": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "missing": [],
+    "reason": "moderate nonclinical interruption (14 days): re-entry from the reviewed entry dose, returning to the prior tolerated dose in 2 conditional steps",
+    "ret": "MODERATE 14d 2026-11-16..2026-11-29",
+    "episode": "r-A3",
+    "separateBreaks": null,
+    "notApplied": null,
+    "runsAhead": "EASY:15 LONG:20 EASY:30 EASY:30 LONG:45",
+    "qualityAhead": false,
+    "maxRunAhead": 45,
+    "declaredRows": 2,
+    "returnsApplied": 1
+   },
+   "answeredCorrection": {
+    "status": "ASK",
+    "action": "ASK",
+    "validity": "REQUIRES_RECONCILIATION",
+    "question": null,
+    "missing": [
+     "interruption.episodeId"
+    ],
+    "reason": "This interruption shares days with the one first reported on 2026-12-01 (2026-11-16 to 2026-11-29), or follows it with no return or training between, and is not marked as its correction: say whether i",
+    "runsAhead": "EASY:15 LONG:20 EASY:30 EASY:30 LONG:45",
+    "qualityAhead": false,
+    "maxRunAhead": 45,
+    "declaredRows": 3,
+    "returnsApplied": 1
+   },
+   "answeredSeparate": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "missing": [],
+    "reason": "moderate nonclinical interruption (14 days): re-entry from the reviewed entry dose, returning to the prior tolerated dose in 2 conditional steps",
+    "ret": "MODERATE 14d 2026-11-16..2026-11-29",
+    "episode": "r-A3",
+    "separateBreaks": null,
+    "notApplied": null,
+    "runsAhead": "EASY:15 LONG:20 EASY:30 EASY:30 LONG:45",
+    "qualityAhead": false,
+    "maxRunAhead": 45,
+    "declaredRows": 3,
+    "returnsApplied": 2
+   }
+  },
+  "R3": {
+   "withStartedAt": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "missing": [],
+    "reason": "moderate nonclinical interruption (14 days): re-entry from the reviewed entry dose, returning to the prior tolerated dose in 2 conditional steps",
+    "ret": "MODERATE 14d 2026-11-16..2026-11-29",
+    "episode": "r-A4",
+    "separateBreaks": null,
+    "notApplied": null,
+    "runsAhead": "EASY:15 LONG:20 EASY:30 EASY:30 LONG:45",
+    "qualityAhead": false,
+    "maxRunAhead": 45,
+    "declaredRows": 2,
+    "returnsApplied": 1
+   },
+   "named": {
+    "status": "ASK",
+    "action": "ASK",
+    "validity": "REQUIRES_RECONCILIATION",
+    "question": null,
+    "missing": [
+     "interruption.episodeId"
+    ],
+    "reason": "This interruption shares days with the one first reported on 2026-12-01 (2026-11-16 to 2026-11-29), or follows it with no return or training between, and is not marked as its correction: say whether i",
+    "runsAhead": "EASY:15 LONG:20 EASY:30 EASY:30 LONG:45",
+    "qualityAhead": false,
+    "maxRunAhead": 45,
+    "declaredRows": 3,
+    "returnsApplied": 1
+   }
+  },
+  "R4": {
+   "second": {
+    "status": "ASK",
+    "action": "ASK",
+    "validity": "REQUIRES_RECONCILIATION",
+    "question": null,
+    "missing": [
+     "interruption.reportedOnItsOwn"
+    ],
+    "reason": "A break in training reported on 2026-11-30 is recorded and not applied yet: a return report or the week’s review applies it, with no need to state the break again, and then the local fatigue is sent a",
+    "runsAhead": "EASY:50 THRESHOLD:41 LONG:70 EASY:50 THRESHOLD:48 LONG:75",
+    "qualityAhead": true,
+    "maxRunAhead": 75,
+    "declaredRows": 2,
+    "returnsApplied": 0
+   },
+   "plain": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "missing": [],
+    "reason": "The break reported on 2026-11-30 is on record and applied now: short nonclinical interruption (7 days): resume the last completed doses; no step until execution is observed",
+    "ret": "SHORT 7d 2026-11-24..2026-11-30",
+    "episode": "r-rel2",
+    "separateBreaks": null,
+    "notApplied": null,
+    "runsAhead": "EASY:34 LONG:65 EASY:45 THRESHOLD:41 LONG:70",
+    "qualityAhead": true,
+    "maxRunAhead": 70,
+    "declaredRows": 2,
+    "returnsApplied": 1
+   },
+   "comparatorDated": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "missing": [],
+    "reason": "The break reported on 2026-11-30 is on record and applied now: short nonclinical interruption (7 days): resume the last completed doses; no step until execution is observed",
+    "ret": "SHORT 7d 2026-11-23..2026-11-29",
+    "episode": "r-dat2",
+    "separateBreaks": null,
+    "notApplied": null,
+    "runsAhead": "EASY:34 LONG:65 EASY:45 THRESHOLD:41 LONG:70",
+    "qualityAhead": true,
+    "maxRunAhead": 70,
+    "declaredRows": 2,
+    "returnsApplied": 1
+   }
+  },
+  "R5": {
+   "secondNamedOther": {
+    "status": "ASK",
+    "action": "ASK",
+    "validity": "REQUIRES_RECONCILIATION",
+    "question": null,
+    "missing": [
+     "interruption.reportedOnItsOwn"
+    ],
+    "reason": "A break in training reported on 2026-12-01 is recorded and not applied yet: a return report or the week’s review applies it, with no need to state the break again, and then the local fatigue is sent a",
+    "runsAhead": "THRESHOLD:41 LONG:70 EASY:50 THRESHOLD:48 LONG:75",
+    "qualityAhead": true,
+    "maxRunAhead": 75,
+    "declaredRows": 2,
+    "returnsApplied": 0
+   },
+   "plain": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "missing": [],
+    "reason": "The break reported on 2026-12-01 is on record and applied now: moderate nonclinical interruption (14 days): re-entry from the reviewed entry dose, returning to the prior tolerated dose in 2 conditiona",
+    "ret": "MODERATE 14d 2026-11-16..2026-11-29",
+    "episode": "holiday-2",
+    "separateBreaks": null,
+    "notApplied": null,
+    "runsAhead": "EASY:15 LONG:20 EASY:30 EASY:30 LONG:45",
+    "qualityAhead": false,
+    "maxRunAhead": 45,
+    "declaredRows": 2,
+    "returnsApplied": 1
+   }
+  },
+  "R6": {
+   "namesUnknown": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "missing": [],
+    "reason": "short nonclinical interruption (7 days): resume the last completed doses; no step until execution is observed",
+    "ret": "SHORT 7d 2026-11-30..2026-12-06",
+    "episode": "r-AA",
+    "separateBreaks": null,
+    "notApplied": null,
+    "runsAhead": "EASY:34 LONG:65 EASY:45 THRESHOLD:41 LONG:70",
+    "qualityAhead": true,
+    "maxRunAhead": 70,
+    "declaredRows": 2,
+    "returnsApplied": 1
+   }
+  }
+ }
+}

@@ -1,0 +1,260 @@
+{
+  "recordId": "SSCTR-R7D-P32-RECHECK-r1",
+  "date": "2026-11-03",
+  "disposition": "ACCEPT_WITH_CONDITIONS",
+  "dispositionNote": "No BLOCK. The candidate closes SSCTR-P31-F02 as the Founder ruled. In every case I ran, a newer break that names none never replaces, joins or outranks a kept, unapplied break, whatever carries it and whatever its dates: the relation is asked, no return dose is chosen, and both facts are recorded. Answered 'separate', touching or overlapping breaks, or breaks with nothing trained between them, are read as one continuous stop equal to that stop declared once (21 days MODERATE, 31 days LONG). Clinical first is intact, and the F03 relabel path through an unnamed break is closed. No new dose, threshold, recipe or clinical authority was introduced. One material residual remains, F01: by the Founder's 'known training between' clause as implemented, any single recorded session between two separate breaks, even a strength session or a 5-minute aborted run, removes the earlier break's effect on the decision. The re-entry is then classed by the later break alone and resumes the doses executed before the earlier break. This is identical to R7D-FREEZE-2 on every path I ran, and doses stay within executed capacity. It is not 'safe' in the sense of the policy's own classes, and no instrument detects it.",
+  "candidate": "dfd8779",
+  "reviewer": {
+    "role": "Sports Science & Concurrent Training Reviewer (SSCTR)",
+    "agent": "SSCTR-1.0.0",
+    "constitution": "SSCTR-CONST-1.0.0",
+    "skill": "sports-science-review 1.0.0",
+    "evidenceProtocol": "EVIDENCE_PROTOCOL 1.0.0",
+    "authority": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY: nonclinical internal sporting judgment only. No human credentials; no clinical, human or empirical validation; no runtime sovereignty; no Product Truth publication.",
+    "model": "claude-opus-5-5",
+    "effort": "xhigh",
+    "instance": "Fresh SSCTR instance dispatched by the R7-D Phase 3.2 coordinator (task-route owner sports-science-concurrent-training-reviewer, L3, productization). It acted under the shared constitution and skill, read at the start. This instance did not verify whether this was a native project-adapter dispatch or a default-instance fallback. No human review occurred."
+  },
+  "independent": true,
+  "independenceNote": "This instance did not write the runtime, the directed tests, the two updated assertions, the harness, PREREG-4, the interface delta or the evidence. It did not open phase32/reviews/engineering/, nor the coordinator's other scratch folders. It is not the Phase 3.1 instance that raised SSCTR-P31-F02.",
+  "scope": {
+    "question": "The SSCTR questions of REVIEW_REQUEST_PHASE32.md only: F02 factual preservation; separate versus corrected episodes and the answer protocol; any new dose or clinical authority; return conservatism, including the two flagged readings; clinical first; the relationship with I9; unknown training between interruptions; F08 unchanged; the two updated assertions.",
+    "candidate": "Runtime bytes of commit dfd87791e9ba995332696ed93cbc2b34529932a7. The evidence commit 36e9f0291ec469125213a0188816a38989b3a88e has the same CoachingCore/src and CoachingCore/test bytes.",
+    "baseline": "R7D-FREEZE-2, the scratch rebuild supplied by the coordinator (r6-adaptation.mjs sha256 9f905030aee96d534d037800db33045ce1a08de281caa317ad94940e9e1e0d95), read-only.",
+    "runtimeFileJudged": {
+      "path": "CoachingCore/src/r6-adaptation.mjs",
+      "sha256Candidate": "faa3bc12a329941e6df228e553a8166f43ddaefce9cca80165c369f59a309e3a",
+      "sha256Freeze2": "9f905030aee96d534d037800db33045ce1a08de281caa317ad94940e9e1e0d95",
+      "note": "The only source file changed from R7D-FREEZE-2 (EVIDENCE_PHASE32.json changedSourceVsFreeze2). Functions read: evaluateProgram (kept, retained, review, keptAsk, decide order), keptBreaks, relationAsk, correctionAcrossAsk, readBreak, unreportedBetween, separateStop and returnAfterPause, plus the helpers they call: interruptionScreen, clinicalRoute, declaresBreak, statesBreak, newDeclaration, episodesOf, trainedBetween, afterReentry, interruptionEpisode, stateAtBreak and staleReturn."
+    },
+    "outOfScope": "Engineering questions (append-only provenance mechanics, grouping internals, ASK propagation per event kind, heldByRunGap pass-through, harness and property adequacy, freeze scripts). F08 policy itself (Founder/PCG). Taper, race logic, progression, learning, policy numbers, catalog, product/ and canon/. This record sets no dose, threshold, increment, tolerance or cadence."
+  },
+  "sourcesRead": [
+    {"path": "governance/agents/sports-science-reviewer/CONSTITUTION.md", "sha256": "9de27b4d6ab0879419a92c218b98acc7ef3df63b73b3325010f033d403122180"},
+    {"path": ".agents/skills/sports-science-review/SKILL.md", "sha256": "67374297e275d2ec9ded1a8653baf6dc078fbe3d1fd1002e61a13cd6f34065bf"},
+    {"path": "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/REVIEW_REQUEST_PHASE32.md", "sha256": "865bd5da85e32b193839a2eda9ba6d7ba387450589cb4b9ba23eaeba30511a25", "read": "completely"},
+    {"path": "audits/domain-coaching-r7-d-2026-11-02/phase32/AUTHORIZATION_PHASE32.md", "sha256": "ea849ae03e4a613b3d63c41a927d3e3f5cbd19670754ba9039e5e4a97f492273", "read": "completely"},
+    {"path": "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/ssctr/SSCTR_PHASE31_RECHECK_R7D.md", "sha256": "fddd93811c15ee2ff9d6aa4129b87b00fa8fced1180f99d1c25c4e5f37d68c73"},
+    {"path": "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/ssctr/SSCTR_PHASE31_RECHECK_R7D.json (F02-F05, conditions, proposed queue item shape)", "sha256": "304eedd62bea7d769ade0db533e62434273624858ea23935a6a70fbd9dd2380b"},
+    {"path": "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/ssctr/probes/common.mjs, p4-newer-replaces.mjs, p4b-correction-ends-kept.mjs (copied to scratch and run on the candidate)"},
+    {"path": "audits/domain-coaching-r7-d-2026-11-02/author/INTERFACE_DELTA_R7D_4.md", "sha256": "6a2eb779351667caa3d0ee8dca16368e7182ccd131b1f44e0c66976f4cadcfeb", "read": "completely"},
+    {"path": "audits/domain-coaching-r7-d-2026-11-02/PREREGISTRATION_R7D_4.md (Δ1, Δ5, Δ7, Δ8, F08 and usability lines)", "sha256": "a31c1bfe095786f835ead024f662373e8891c8d3cc547b4ea36224b22e052e3b"},
+    {"path": "CoachingCore/src/r6-adaptation.mjs (git diff 88d2495 dfd8779, and the code around it)", "sha256": "faa3bc12a329941e6df228e553a8166f43ddaefce9cca80165c369f59a309e3a"},
+    {"path": "CoachingCore/src/r6-provenance.mjs (normalizeObservations: how a report becomes conflicted; read only)"},
+    {"path": "CoachingCore/test/r7d-phase32.test.mjs", "sha256": "ab50199c6c28306d23844861fbc57c44cf7648cd74f10d456b989e4fec2c5dce", "read": "completely"},
+    {"path": "CoachingCore/test/r7d-phase31.test.mjs (T6 diff)", "sha256": "45018b32c391f8f2e6cab26ad105c705a5519feda6d84da26aa36e7fe9da29c3"},
+    {"path": "CoachingCore/test/r7a1-composition.test.mjs (C4/C5 diff)", "sha256": "ee134ac70f831068f6126301ed569d8a3c4933288c1ba1b84853d8653bccfd7d"},
+    {"path": "CoachingCore/r6/PROGRAM_POLICY_R6.json (operational.return block only: shortMaxDays 10, moderateMaxDays 28, entryRunMinutes 15; unchanged)", "sha256": "a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100"},
+    {"path": "audits/domain-coaching-r7-d-2026-11-02/phase32/evidence/EVIDENCE_PHASE32.json", "sha256": "2912c136b99a7c9874fe91dc7b982aef1741f2529c2c3109b02aa314215b3660"},
+    {"path": "audits/domain-coaching-r7-d-2026-11-02/phase32/evidence/DIFFERENTIAL_VS_R7D_FREEZE_2.json (differing cases DEV-22..25, the R7D-D10 row)", "sha256": "121638623d1541897713469b9377f959c1ef15c957bf1a9de6555497218482ef"},
+    {"path": "audits/domain-coaching-r7-d-2026-11-02/harness/validation/DEV_CASES_R7D_4.json (DEV-25 only)"},
+    {"path": "audits/domain-coaching-r7-d-2026-11-02/phase32/probes/f02-witness.mjs and out/f02-witness.{candidate,R7D-FREEZE-2}.json", "sha256": "64eee00225950afd6f88d7b1f1862f0d43f95108e933203a9a4eadc552c770c1 / 417c038f2771a5e0c62495f7547128f98c25277042afe5e0dab867d7f36f3208 / d503ca437dceec166c5783df4a1cf83803c0cb8e6a94866ee7400d4c75d2b77d"},
+    {"path": "audits/domain-coaching-r7-d-2026-11-02/phase32/probes/phase32-mutation.mjs (the scratch-copy pattern and mutant list only; not rerun)"},
+    {"path": "reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json", "note": "Read only, for the item shape (233 items). Not modified."},
+    {"path": "CURRENT_MISSION.md (R7-D Phase 3.1 section and its 'open for the Founder' line)"}
+  ],
+  "literatureAccess": {
+    "tools": "WebSearch worked. The Europe PMC REST API returned PubMed records with abstracts. No full text was read. Nothing was paywalled for the abstracts used.",
+    "role": "Only directional claims were needed: the severity of residual F01, and the direction of the continuous-stop reading. The class boundaries are existing approved policy numbers; none is set or revised here.",
+    "sources": [
+      {"id": "S1", "citation": "Coyle EF, Martin WH, Sinacore DR, Joyner MJ, Hagberg JM, Holloszy JO. Time course of loss of adaptations after stopping prolonged intense endurance training. J Appl Physiol 1984. PMID 6511559", "accessed": "abstract via Europe PMC", "use": "In 7 endurance-trained subjects, VO2max declined 7% in the first 21 days of inactivity and stabilized about 16% lower after 56 days. Supports the direction: a stop of about 3 weeks detrains."},
+      {"id": "S2", "citation": "Neufer PD. The effect of detraining and reduced training on the physiological adaptations to aerobic exercise training. Sports Med 1989. PMID 2692122", "accessed": "abstract via Europe PMC", "use": "Significant VO2max reductions within 2-4 weeks of detraining. Reduced training maintains adaptations only at substantial residual frequency or duration with intensity kept."},
+      {"id": "S3", "citation": "Hickson RC, Rosenkoetter MA. Reduced training frequencies and maintenance of increased aerobic power. Med Sci Sports Exerc 1981. PMID 7219129", "accessed": "abstract via Europe PMC", "use": "VO2max was maintained for 15 weeks at 2 or 4 days a week, 40 minutes, high intensity. One session in about 3 weeks is far below any frequency shown to maintain adaptations."},
+      {"id": "S4", "citation": "Hickson RC, Foster C, Pollock ML, Galassi TM, Rich S. Reduced training intensities and loss of aerobic power, endurance, and cardiac growth. J Appl Physiol 1985. PMID 3156841", "accessed": "abstract via Europe PMC", "use": "Context: intensity is essential for maintenance, and long-term endurance fell 21-30% with reduced intensity."},
+      {"id": "S5", "citation": "Mujika I, Padilla S. Detraining: loss of training-induced physiological and performance adaptations. Part I: short term insufficient training stimulus. Sports Med 2000;30(2):79-87. PMID 10966148", "accessed": "abstract via Europe PMC", "use": "Short-term (<4 weeks) insufficient stimulus: rapid VO2max and blood-volume decline in highly trained people, more moderate in recently trained people."},
+      {"id": "S6", "citation": "Barbieri A, et al. Cardiorespiratory and metabolic consequences of detraining in endurance athletes. Front Physiol 2023. PMID 38344385", "accessed": "abstract via Europe PMC", "use": "Counter-weight: the evidence base on detraining in endurance athletes is heterogeneous and limited."}
+    ],
+    "claimStatus": [
+      {"claim": "A continuous stop of about 3 weeks (two breaks with nothing trained between) detrains materially more than either break alone, so reading it at its whole calendar length is the conservative side of the approved classes.", "status": "SUPPORTED_WITH_LIMITS", "sources": ["S1", "S2", "S5", "S6"], "limits": "Abstracts only. Small samples, mostly trained young adults. Physiological endpoints (VO2max, blood volume, endurance time), not injury or tissue tolerance. Group means, no individual prediction. Direction only, never a number."},
+      {"claim": "One session (any sport) recorded between two declared stops totalling about 3 to 5 weeks does not make the stop materially different, for endurance detraining, from the continuous stop. Classing the re-entry by the later stop alone therefore under-classifies relative to the policy's own classes.", "status": "SUPPORTED_WITH_LIMITS", "sources": ["S1", "S2", "S3", "S4"], "limits": "The maintenance studies used 2 or more sessions a week over weeks, so a single session is an extrapolation by contrast, not a measured condition. Same population and endpoint limits as above. Used only for the severity of F01, never for a rule or a number."},
+      {"claim": "A strength session does not maintain running-specific endurance adaptations.", "status": "PLAUSIBLE_BUT_UNCERTAIN", "sources": [], "limits": "The specificity principle; not searched in depth. Recorded only as context for F01 (TB3), not as a basis for any rule."}
+    ]
+  },
+  "whatWasRun": {
+    "rebuilds": "Candidate rebuilt with git archive of dfd8779 (committed bytes: CoachingCore plus the R3, R4, R5, R6 and B0 SSCTR authority records the runtime and the legacy tests read), with CoachingCore/node_modules copied, in the session scratchpad (ssctr-p32/cand). r6-adaptation.mjs sha256 faa3bc12... confirmed. The coordinator's R7D-FREEZE-2 rebuild (rt/rt-d2) was used read-only. Nothing was written in the repository except this folder.",
+    "suite": "Candidate full suite 938/938 pass (node --test in the scratch rebuild).",
+    "directed": "r7d-phase32.test.mjs 17/17, r7d-phase31.test.mjs 14/14 and r7a1-composition.test.mjs: 50/50 tests across the three files on the candidate.",
+    "predecessorProbes": "phase31/reviews/ssctr/probes/p4-newer-replaces.mjs and p4b-correction-ends-kept.mjs, copied to scratch and run on the candidate. p4 (i), (ii) and (v): INTERRUPTION_RELATION, no return. (iii), the applied-break episode path: SHORT from the return state, EASY 15/15, LONG 20, unchanged. (iv), the 21 days declared once: MODERATE. p4b: the correction is asked, then the kept break is applied (2026-12-14..20).",
+    "ownProbes": "probes/*.mjs, each run on both roots, with outputs in probes/out/: q1-f02-preservation, q4-between-breaks, q4b-long-then-session, q5-clinical-f08 and q6-i9-replay. Probe defects found and fixed before the recorded runs: two views were computed after later steps (q1 F4, q5 C6).",
+    "notRun": "No npm run verify, no verify-r*/freeze-r* script, no harness, mutation or differential rerun. Python is not installed on this host, so validate_records.py was not run. The human queue was not touched."
+  },
+  "answers": {
+    "q1_f02FactualPreservation": {
+      "verdict": "PRESERVED, with residual F01",
+      "answer": "No older open break leaves factual authority through a newer break that names none. I checked every carrier (a fatigue or local-fatigue report, a weekly review stating the break, a return report), contiguous, overlapping and disjoint dates, a partial newer report, the clinical-flag route and clearance between the two reports, both declaration orders, and a three-break chain. In each case the review asks INTERRUPTION_RELATION, chooses no return dose, leaves the plan not valid and keeps both rows (q1 F1-F6, T1, witness W1/W2, p4). Answered 'separate', the stop equals the stop declared once: 14+7 touching gives MODERATE 21, EASY 15 / LONG 20 (q1 F1, F2, F5, F6). Three touching breaks of 14+7+10 days give LONG 31, EASY 15/20/20/20 (q1 F4), where R7D-FREEZE-2 gave SHORT 10 days with LONG 65. A break named with a new name of its own at first statement is separate at once and gives the continuous MODERATE 21 (q1 F3). Answered 'correction', the athlete's corrected facts govern: SHORT 7. W4/p4b: the kept break is applied first, and the correction of the applied break is asked and listed in notApplied. Limit: with any recorded session between two separate breaks, the earlier break stays recorded (separateBreaks TRAINING_AFTER) but has no decision effect (F01)."
+    },
+    "q2_separateVersusCorrected": {
+      "verdict": "PROTOCOL ACCEPTED. Exact-replay rule ACCEPTED for dated facts; residual F03 for days-only facts.",
+      "answer": "Re-sending the newer break with the earlier break's identity (a correction, whose facts replace the earlier ones) or with its own identity or a new name (separate) is the right protocol. It keeps the athlete's statement as the only source of identity, as I9 and R7-A final §8 require. Both answers are safe in dose terms. A wrongly chosen 'separate' errs to the longer stop, because overlapping or touching days give the union (q6 R2: identical dates answered separate still give MODERATE 14). 'Correction' is an explicit statement that the earlier facts were wrong. A name the record does not hold, such as a typo, makes a separate break and so a longer stop: conservative (q6 R6: MODERATE 21, where R7D-FREEZE-2 gave SHORT 7). The exact-replay rule ('the same facts apart from the name are one declaration') has no consequence for dated facts: identical days give the same stop whether joined or separate (q6 R1, R5). It is not identity for days-only facts stated on different days, because relative facts then denote different periods. Two identical 'I was off 7 days' reports sent a week apart while kept are joined and read as one 7-day SHORT break. Two dated 7-day stops would give MODERATE 14 (q6 R4). That outcome equals R7D-FREEZE-2 and needs undated reports: residual F03. Usability cost, accepted: a corrected re-send without a name gets one more question (q6 R2, R3)."
+    },
+    "q3_noNewDoseOrClinicalAuthority": {
+      "verdict": "CONFIRMED: none introduced",
+      "answer": "The return is the unchanged R6-NONCLINICAL-RETURN recipe, with the same handler, screens, classes (shortMaxDays 10, moderateMaxDays 28), entry and steps. It is classed by the stop the facts establish: the calendar span from the earliest to the latest day of breaks that touch or overlap or have nothing trained between them, not the sum of their declared days (overlapping 14 and 11 days give 21). The entry state is read at the stop's start, and eligibility is checked against the stop's end. The diff adds no numeric literal other than 0/±1 date offsets and indices and the existing 200-character name bound. No policy, catalog, record, queue, product/ or canon/ byte changed. Clinical authority is unchanged. separateStop applies the existing interruption screen to every break it reads, which is more conservative, and no path synthesizes clearance."
+    },
+    "q4_returnConservatism": {
+      "verdict": "CONSERVATIVE for touching, overlapping, no-training and unknown-between cases. Both flagged readings accepted. Residual F01 for training between.",
+      "touchingOverlapping": "Equal to the stop declared once (T4; q1: 21 days MODERATE, 31 days LONG), with no quality in the re-entry.",
+      "restDaysOnlyBetween": "ACCEPTED. A gap holding only rest days is read as no training. A 9-day and a 4-day break around a Wednesday rest day give MODERATE 14, EASY 15 / LONG 20, equal to the 14 days declared once. R7D-FREEZE-2 gave SHORT 4 with LONG 65 and THRESHOLD 41 (q4 RD). This is the conservative side, and consistent with Founder 0.3 (training is plan sessions). Cost, not risk: unplanned training on a rest day is invisible, so an athlete who trained then gets a longer stop than reality (O-02).",
+      "conflictedReportBetween": "ACCEPTED. A session whose reports conflict is treated as unreported and asked (TRAINING_BETWEEN_BREAKS lists it). Corrected to done, it gives SHORT 4; corrected to not done, MODERATE 21 (q4 CF). Unknown is neither zero nor credit, and QRE-R6-14 is respected. The consumer condition is F04: a plain new report of a conflicted session is rejected (the identity is quarantined) and the question repeats. Only a correction of the conflicting report answers it.",
+      "trainingBetween": "As the Founder ruled ('known training between them lets the existing rules act on that reality'), the later break is read alone. The runtime ends the stop on any recorded session of any sport, completed or with minutes > 0. It then resumes the doses executed before the earlier break, not 'what was actually done' since. In q4 TB1-TB4 (one 50-minute easy run, all gap sessions, one strength session only, a 5-minute aborted run), a 14-day holiday and a 4-day trip give SHORT 4: EASY 34, LONG 65, then THRESHOLD 41, LONG 70. With the holiday applied when it was stated, the same trip re-enters at EASY 15 / LONG 20. In q4b, a 30-day break, one 34-minute run and a 4-day trip give SHORT with THRESHOLD 34 the next week; the 37 days declared once give LONG, a restart at 15/20. R7D-FREEZE-2 is identical on every one of these paths. This is residual F01."
+    },
+    "q5_clinicalFirst": {
+      "verdict": "INTACT",
+      "answer": "These all route to a human with no proposal: a kept clinical break older or newer than a nonclinical one, unnamed or named separate (q5 C1, C2, C6; T5); a clinical break named separate in the middle of three (C7, where R7D-FREEZE-2 gave SHORT 4 with LONG 65); and a clinical flag, a pain substitution or a standing clinical reference while the relation is unresolved (T5). A named correction that keeps the injury stays clinical (C4). So does a named 'vacation' correction whose free text says the ankle is still painful (C5). Eligibility is asked before the relation question (C8). DEV-25 (an injury, then a trip return after clearance): R7D-FREEZE-2 gave REESTABLISH VALID, the candidate gives CLINICAL_HUMAN_REQUIRED. R7D-D10 is identical (clinical first, then F08)."
+    },
+    "q6_relationshipWithI9": {
+      "verdict": "PRESERVED",
+      "answer": "Dates never join two reports into one interruption. Only a name or identical facts do. Dates are used only for the stop a return reads after the athlete has said the breaks are separate (touching, overlapping, or nothing trained between), which is the factual continuity the Founder authorized, with no merge and no duration added. Equal dates with different facts (another reason text, or an added start time) are asked (q6 R2, R3). Applied returns keep rule 2 (DUPLICATE) unchanged. The asymmetry is acceptable: neither path under-classifies, and asking about a kept fact is the more conservative of the two."
+    },
+    "q7_unknownTrainingBetween": {
+      "verdict": "ACCEPTED",
+      "answer": "Planned sessions between two separate breaks with no usable report are always asked (TRAINING_BETWEEN_BREAKS with the session ids), and no dose is chosen until then. The answer decides: all not done gives MODERATE 21, all done or the run only gives SHORT 4, and a partial answer is asked again for the rest (q4 UB; T4). A known trained session settles the question without asking about the others, because the stop ends there under the Founder's clause. The runtime asks even where the class could not change. That over-asks relative to 'when the decision depends on it', but it is conservative (O-01)."
+    },
+    "q8_f08Unchanged": {
+      "verdict": "ACCEPTABLE inside KNOWN_FAIL_CLOSED_AUTHORITY_BOUNDARY only with a corrected disclosure (F02)",
+      "answer": "A kept clinical-cause break stays clinical, also after clearance and with four weeks of training reported (q5 C9). A newer unnamed nonclinical break no longer replaces it, and the F03 relabel path is closed (C1, C2, C7, DEV-25). A named correction that changes the reason to nonclinical is read as on R7D-FREEZE-2: the 14-day injury corrected to a holiday gives MODERATE 14 (C3), and a flu corrected to work gives the continuous MODERATE 21 (C6). That exit is the athlete's explicit restatement of their own report, not a clearance. It is bounded by the free-text screen of the correction (C5), by the eligibility gate (NONCLINICAL_CONFIRMED within 14 days, every clinical flag false) and by the append-only record. It is acceptable as a pre-existing, narrowed residual. It is not 'fail closed', though, and the interface sentence 'A newer nonclinical break never makes a kept clinical one nonclinical' overstates it. PREREG-4 discloses it correctly (F08 lines). It must be disclosed the PREREG-4 way in the freeze record and handoff, and qualified in the interface if that is amended before any holdout (CF-P32-04)."
+    },
+    "updatedAssertions": {
+      "verdict": "BOTH ACCEPTED FROM THE DOMAIN SIDE",
+      "r7dPhase31T6": "Correct. The newer report covers the second week of the kept 14-day break. Unnamed, it is either a correction (7 days) or a separate overlapping break (the 14-day union). Inferring the correction from dates is what I9 and the Founder forbid, so asking is right. Named as the correction, it replaces the kept break: SHORT 7, as the athlete stated. Had the athlete answered 'separate', the union would give MODERATE 14, which is conservative.",
+      "r7a1CompositionC4C5": "Correct. The corrected return report adds the start time to the same 16-day break. Naming the report it corrects is the protocol, and the assertion still requires commutativity over complete facts: the same week and the same next start in both orders."
+    }
+  },
+  "findings": [
+    {
+      "id": "SSCTR-P32-F01",
+      "class": "DOMAIN_RESIDUAL_NON_BLOCKING",
+      "new": "The rule (TRAINING_AFTER) is new and public in INTERFACE-4. The outcome is pre-existing: identical to R7D-FREEZE-2 on every path probed.",
+      "runtimeOnly": false,
+      "safetyRelevant": "moderate-low (the same mechanism as SSCTR-P31-F02; doses stay within capacity executed before the earlier break)",
+      "finding": "With any recorded session between two separate breaks, the earlier declared break has no effect on the decision. That means any planned session of any sport, completed or with minutes > 0, including a single strength session or a 5-minute aborted run. The earlier break is listed as TRAINING_AFTER; the re-entry is classed by the later break alone and resumes the doses executed before the earlier break. A short trip after a long holiday with one session between therefore gets the SHORT recipe, with threshold work the following week. The interface wording ('a session reported done'; 'from what was actually done') understates this. P18(a) counts any executed session after the earlier break as accounted for, so no instrument detects it.",
+      "reproduction": "probes/q4-between-breaks.mjs TB1-TB4 and probes/q4b-long-then-session.mjs (outputs in probes/out/). TB: holiday 2026-11-16..29 kept; gap Mon-Wed with one easy run (TB1), every session (TB2), one strength session only (TB3) or a 5-minute aborted run (TB4); trip 12-03..06 named separate; plain review. Candidate and R7D-FREEZE-2 both give SHORT 4d, EASY 34, LONG 65, then EASY 45-50, THRESHOLD 41, LONG 70. With the holiday applied when stated (MODERATE), the same gap and trip give EASY 15, LONG 20, 30/30/45. q4b: a 30-day break, one 34-minute run and a 4-day trip give SHORT, LONG 39, then THRESHOLD 34, LONG 55; the 37 days once give LONG, EASY 15/20/20/20.",
+      "assessment": "This does not contradict the Founder's literal clause, is not worse than R7D-FREEZE-2, and P08 holds. It is still the F02 mechanism behind a single session. Under the policy's own classes, three to five weeks with one session is far closer to a continuous stop than to maintained training (S1-S4, SUPPORTED_WITH_LIMITS, direction only).",
+      "routeTo": "Founder, before the final holdout (interpretation of 'known training between them lets the existing rules act on that reality'), then the next authorized runtime mission. Options, not decided here: (a) the existing episode rule, as if the earlier break had been applied, so the later break starts from the state the earlier break's own return would have set (an applied break, training, then a new break: the TRAINING_BETWEEN basis); (b) at least align the runtime with the interface's 'reported done' and say what the re-entry resumes. No new number is proposed."
+    },
+    {
+      "id": "SSCTR-P32-F02",
+      "class": "DISCLOSURE_CORRECTION (F08 salience)",
+      "new": "The wording is new (INTERFACE-4). The behaviour is pre-existing (R7-A episode correction) and narrower than R7D-FREEZE-2.",
+      "runtimeOnly": false,
+      "safetyRelevant": "low (bounded by the free-text screen and the current eligibility gate)",
+      "finding": "Under KNOWN_FAIL_CLOSED_AUTHORITY_BOUNDARY, a kept clinical-cause break exits to the nonclinical recipe when the athlete sends a named correction that restates the reason as nonclinical. It is the athlete's statement, not a clearance. INTERFACE-4 §1 says 'A newer nonclinical break never makes a kept clinical one nonclinical' and calls F08 fail-closed without this exception. PREREG-4 states it correctly.",
+      "reproduction": "probes/q5-clinical-f08.mjs C3 (an injury corrected by name to a holiday gives MODERATE 14 on both runtimes) and C6 (a flu corrected by name to work gives the continuous MODERATE 21; R7D-FREEZE-2 gave SHORT 7). Counter-checks: C4 and C5 stay clinical.",
+      "routeTo": "Freeze record and handoff (CF-P32-04); Founder/PCG with the G04 owners and G03, with F08 (whether a consumer may offer correcting a clinical reason without a clinical prompt)."
+    },
+    {
+      "id": "SSCTR-P32-F03",
+      "class": "DOMAIN_RESIDUAL_LOW",
+      "new": "The rule wording is new. The outcome equals R7D-FREEZE-2.",
+      "runtimeOnly": false,
+      "safetyRelevant": "low (needs undated reports)",
+      "finding": "The exact-replay rule treats identical days-only reports (no dates) stated on different days as one declaration, although relative facts stated on different days can denote different periods. Two separate 'off 7 days' stops are then read as one 7-day SHORT break.",
+      "reproduction": "probes/q6-i9-replay.mjs R4: 'WORK, 7 days' reported on 11-23 and again on 11-30 while kept, then a plain review, gives SHORT 7d (11-24..30), EASY 34, LONG 65, THRESHOLD 41, on both runtimes. The same two stops dated, named separate, give MODERATE 14 on the candidate.",
+      "routeTo": "Interface owner and the next runtime mission: ask the relation for identical undated reports stated on different days, or require dates for a break the coach keeps across reviews."
+    },
+    {
+      "id": "SSCTR-P32-F04",
+      "class": "CONSUMER_CONDITION",
+      "new": "New (the TRAINING_BETWEEN_BREAKS question).",
+      "runtimeOnly": false,
+      "safetyRelevant": "no (it fails closed: asked, no dose)",
+      "finding": "TRAINING_BETWEEN_BREAKS lists a session whose reports conflict as having 'no report' and says to report it. A plain new report of that session is rejected (IDENTITY_QUARANTINED_BY_CONFLICT) and the question repeats. Only a correction of the conflicting report (correctionOf) answers it.",
+      "reproduction": "probes/q4-between-breaks.mjs CF: the Tue run reported done and not done (conflicted) gives TRAINING_BETWEEN_BREAKS ['w4-run-d1']. answeredPlainNewReportNotDone gives the same question again. correctedToNotDone gives MODERATE 21; correctedToDone gives SHORT 4.",
+      "routeTo": "G03 and interface owner (CF-P32-05); Engineering may consider the question wording."
+    }
+  ],
+  "observations": [
+    {"id": "O-01", "note": "TRAINING_BETWEEN_BREAKS is asked even when the answer cannot change the class. This is conservative over-asking relative to the Founder's 'when the decision depends on it'. Usability only."},
+    {"id": "O-02", "note": "Training outside the plan (on a rest day) cannot end a stop (Founder 0.3), so the stop is longer than reality: more conservative, at a cost to performance or adherence, not safety."},
+    {"id": "O-03", "note": "While INTERRUPTION_RELATION stands, the stale plan (with THRESHOLD and LONG 65-75) is still in the program, marked REQUIRES_RECONCILIATION. This is the pre-existing ASK semantics; the consumer must not present it as valid (G03)."},
+    {"id": "O-04", "note": "The answer protocol only works if the consumer shows each break's identity and never generates names automatically (INTERFACE-4 §3, PREREG-4 Δ7). That condition is essential to the domain semantics, because an automatic name would be a merge or a split the athlete never stated."},
+    {"id": "O-05", "note": "My committed-bytes rebuild included the R3, R4 and R5 SSCTR records (CF-P31-08) and ran 938/938."}
+  ],
+  "aeReview": {
+    "1_planAdequate": "No: two declared stops make the pre-break plan stale. The candidate marks it not valid until the relation is stated.",
+    "2_materialFact": "Yes: two declared breaks with provenance (event id and clock), kept append-only.",
+    "3_keepDefensible": "No. KEEP or a return from the newer break alone would ignore a stated fact (F02).",
+    "4_changeNecessary": "Asking is necessary. The dose depends on whether the breaks are one corrected break or two (7 days versus 21).",
+    "5_smallestIntervention": "One question (INTERRUPTION_RELATION), then the unchanged recipe for the stop the facts establish.",
+    "6_smallerAlternatives": "Last-write-wins and date-merging were rejected by the Founder and I9. KEEP is not defensible.",
+    "7_priorityAndProgression": "The re-entry returns to the prior tolerated dose in the approved steps. No progression is invented.",
+    "8_evidenceSupportsDose": "Classes and doses are the approved R6 policy (unchanged). The direction of reading a continuous stop by its length is SUPPORTED_WITH_LIMITS (S1, S2, S5, S6).",
+    "9_uncertainty": "F01: the training-between reading. F03: undated replays. Individual detraining is not predictable from group data.",
+    "10_askHoldClinical": "ASK for the relation and for unknown training between. CLINICAL_HUMAN_REQUIRED for any clinical break, flag, substitution or standing route, before every question."
+  },
+  "newPrescriptiveAuthority": "None. No new dose, threshold, increment, tolerance, cadence, return recipe or clinical authority. Relative to R7D-FREEZE-2, prescribed training changes only by applying the existing recipe to a longer, factual stop (more conservative) or by asking before any dose.",
+  "conditionsForFreeze": [
+    {"id": "CF-P32-01", "condition": "Bind this record by sha256 in R7D-FREEZE-3. It accepts only the runtime bytes of dfd8779: CoachingCore/src/r6-adaptation.mjs sha256 faa3bc12a329941e6df228e553a8166f43ddaefce9cca80165c369f59a309e3a, with every other source file equal to R7D-FREEZE-2. It also covers r7d-phase32.test.mjs (ab50199c...) and the two updated assertions (r7d-phase31.test.mjs 45018b32..., r7a1-composition.test.mjs ee134ac7...). Any runtime byte change needs a new recheck."},
+    {"id": "CF-P32-02", "condition": "Disclose F01 with no envelope in the freeze record and the handoff. F02 is closed for touching, overlapping, nothing-trained-between and unknown-between cases. With any recorded session between two separate breaks (any sport; completed or with minutes > 0), the earlier break has no decision effect and the re-entry resumes the doses executed before it, identical to R7D-FREEZE-2. Do not describe the F02 family as fully closed. Restate 'a session reported done' and 'from what was actually done' accordingly wherever the freeze record or handoff repeats them."},
+    {"id": "CF-P32-03", "condition": "Before the final holdout is commissioned, tell the Founder four things. F01 exists. P18(a) accepts TRAINING_AFTER on any executed session, so no instrument detects it. A holdout case of 'break, one session, break' will be judged on domain grounds without envelope. And the reading of 'known training between them lets the existing rules act on that reality' is the Founder's decision (options in F01)."},
+    {"id": "CF-P32-04", "condition": "F08 disclosure (F02). In the freeze record and the handoff, state that KNOWN_FAIL_CLOSED_AUTHORITY_BOUNDARY holds while the break's stated reason is clinical. An explicit named correction of the reason to nonclinical is honoured as the athlete's statement, not as clearance, and re-enters through the nonclinical recipe as on R7D-FREEZE-2. Its free text is still screened and current eligibility must be NONCLINICAL_CONFIRMED with every clinical flag false. If INTERFACE-4 is amended before any holdout exists, qualify its sentence 'A newer nonclinical break never makes a kept clinical one nonclinical'."},
+    {"id": "CF-P32-05", "condition": "Consumer conditions (G03), in addition to CF-P31-04. Name corrections. Never generate episodeId automatically. Present INTERRUPTION_RELATION in plain words ('the same break, corrected' versus 'another break'), with no default answer. Answer a conflicted session listed by TRAINING_BETWEEN_BREAKS with a correction of the conflicting report (F04). Prefer dated breaks (F03). Do not present the stale plan while a relation or between-breaks question stands."},
+    {"id": "CF-P32-06", "condition": "State that Phase 3.2 adds no new dose, threshold, increment, tolerance, cadence, return recipe or clinical authority. Shadow reference only; V1 authority stays NO; no human or empirical validation."},
+    {"id": "CF-P32-07", "condition": "Route F01 and F03 to the Founder and the next authorized runtime or interface mission. Route F02 with F08 to Founder/PCG with the G04 owners and G03. Route F04 to G03 and the interface owner."},
+    {"id": "CF-P32-08", "condition": "This phase has no queue authorization. The proposed item below is appended only by its authorized owner (coordinator, Chief or Founder) in a phase that authorizes it, naming R7D-FREEZE-3. Never this instance."}
+  ],
+  "proposedHumanRevalidation": {
+    "status": "PROPOSED_ONLY: not appended; the queue file was not touched (233 items)",
+    "needed": true,
+    "why": "Accepting the Phase 3.2 rule changes prescribed training relative to R7D-FREEZE-2. Two kept breaks now get a relation question, or the recipe for their continuous stop, where R7D-FREEZE-2 re-entered from the newer break alone. A clinical break no longer yields to an unnamed newer one. No number is new.",
+    "item": {
+      "queue_id": "HQ-R7D-SSCTR-P32-RECHECK (proposed)",
+      "decision_id": "SSCTR-R7D-P32-RECHECK",
+      "decision_revision": "r1",
+      "target": {
+        "project": "MyApp / Vilumo Fit",
+        "scope": "R7-D Phase 3.2 acceptance (SSCTR-P31-F02, Founder 2026-11-02). A newer declared break replaces a kept, unapplied one only when it names it (episodeId). Identical facts are one declaration. Otherwise INTERRUPTION_RELATION is asked before any return. Separate breaks are read as one continuous stop when their days touch or overlap or nothing was trained between; the later break alone after recorded training (F01); unknown training between is asked (TRAINING_BETWEEN_BREAKS). Clinical first unchanged. F08 is KNOWN_FAIL_CLOSED_AUTHORITY_BOUNDARY, with the named-correction exit disclosed (F02).",
+        "runtimeBaseline": "R7D-FREEZE-3 (to be named by the coordinator). Runtime source bytes of dfd87791e9ba995332696ed93cbc2b34529932a7, CoachingCore/src/r6-adaptation.mjs sha256 faa3bc12a329941e6df228e553a8166f43ddaefce9cca80165c369f59a309e3a",
+        "policySha256": "a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100",
+        "catalogSha256": "ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9"
+      },
+      "approved_scope": "Offline synthetic shadow reference; nonclinical adults; no new dose, threshold, increment, tolerance, cadence or recipe; residuals F01-F04 disclosed.",
+      "conditions": ["CF-P32-01 to CF-P32-08 of SSCTR-R7D-P32-RECHECK-r1"],
+      "approval_date": "2026-11-03",
+      "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+      "owner": "Chief / Founder",
+      "human_review": null,
+      "linked": ["HQ-R7D-SSCTR-P31-RECHECK", "HQ-R7D-SSCTR-P3-RECHECK", "HQ-R7D-SSCTR-F03B"],
+      "re_review_triggers": [
+        "Any byte change to CoachingCore/src or to a file bound by R7D-FREEZE-3",
+        "A Founder decision on F01 (training between separate breaks) or on F08",
+        "A change to the exact-replay rule or to undated breaks (F03)",
+        "A holdout result touching P18, INSERT_NEWER_BREAK, TRAINING_BETWEEN_BREAKS, CARRIER_CLINICAL or P08",
+        "A relevant new systematic review or meta-analysis on detraining, reduced training or return to running",
+        "An adverse event or runtime inconsistency",
+        "Funded qualified-human revalidation (may maintain, modify or revoke without AI veto)"
+      ]
+    },
+    "appendCondition": "Append only in a phase with queue authorization, after R7D-FREEZE-3 binds this record. The authorized owner appends it, never this instance."
+  },
+  "evidenceStatus": "SUPPORTED_WITH_LIMITS for the directional claims (abstracts only). The runtime behaviour is reproduced on committed bytes on both roots.",
+  "confidence": {
+    "runtimeBehaviour": "high: every claim reproduced by my own probes on a committed-bytes rebuild and on R7D-FREEZE-2, consistent with the directed tests and the witness",
+    "domainJudgment": "moderate: directional literature only (abstracts), small samples, no injury endpoint; the classes themselves are approved policy, not re-derived here",
+    "f01Severity": "moderate: the under-classification is clear relative to the policy's own classes, but whether a given athlete is harmed is not predictable"
+  },
+  "governance": {
+    "gate": "Not closed by this record. It is one of two independent narrow checks (with Engineering) before R7D-FREEZE-3.",
+    "publication": "Not published; not Product Truth.",
+    "clinical": "No clinical judgment was made. Clinical-cause breaks remain CLINICAL_HUMAN_REQUIRED; the F08 policy stays with Founder/PCG and the qualified owners.",
+    "fixCycle": "None in this phase. Nothing here is a blocker."
+  },
+  "expiry": {
+    "reviewBy": "2027-05-03",
+    "orEarlierOn": ["any runtime byte change", "a policy or catalog change", "a Founder decision on F01, F08, G03 or D2", "a holdout result touching P18, INSERT_NEWER_BREAK, TRAINING_BETWEEN_BREAKS or P08", "a new SR/MA on detraining", "an adverse event", "human revalidation"],
+    "owner": "Chief / Founder"
+  },
+  "validation": {
+    "validateRecords": "Not run: Python is not installed on this host. This record follows the shape the coordinator requested (recordId, disposition, candidate, findings, conditionsForFreeze, answers, proposedHumanRevalidation.item), not decision.schema.json.",
+    "probeFiles": {
+      "probes/common.mjs": "0307e8f31e43f5f1a9b67d145fddb2906211351edfaebfd064421f2e54775844",
+      "probes/q1-f02-preservation.mjs": "8c63c6d76acc10e7febdb746fff6212a4f42de8b806c37ef4fb602a4b18b95a8",
+      "probes/q4-between-breaks.mjs": "5e362f5e173928047a6afc59ce87df75991ac51c56b4a914e247586d91c3b7a5",
+      "probes/q4b-long-then-session.mjs": "7c3566d323051357afbcff6323225a41fedef0f6292018f3e18b852c8d8df360",
+      "probes/q5-clinical-f08.mjs": "c660533ceeaf0ea3fefe14e009c1405644110014bd8bd29b481614cb2ca9c92b",
+      "probes/q6-i9-replay.mjs": "b8e6d2a59771ee6d5dd4e81e4e38bcddad3c79eaff0fb02f63ba25d765efbc98"
+    },
+    "probeOutputs": "probes/out/<probe>.candidate.json and <probe>.R7D-FREEZE-2.json (local paths replaced by runtime labels)",
+    "usage": "node probes/<probe>.mjs <scratch root holding CoachingCore>; never on the repository."
+  }
+}

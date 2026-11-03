@@ -1,0 +1,379 @@
+{
+ "probe": "R7D-ENG-P32-MUTANTS-1",
+ "cc": "C:\\Users\\carva\\AppData\\Local\\Temp\\claude\\C--Users-carva-Desktop-myApp-MyApp\\d1937e9f-9b5d-4461-830d-75a2721d33cb\\scratchpad\\qre32\\mutroot\\CoachingCore",
+ "results": [
+  {
+   "id": "QM32-01",
+   "what": "exact replay never joins (the facts key ignored)",
+   "applied": true,
+   "directed": {
+    "tests": 31,
+    "pass": 24,
+    "fail": 7,
+    "failed": [
+     "R7-D Phase 3.1 T1: a break declared with another event is asked and recorded; the next plain review applies it with no repetition, as the same break stated there",
+     "R7-D Phase 3.1 T2: a break with a clinical flag routes to a human first and is recorded; nothing is prescribed while the route stands; after clearance the first review re-enters from it",
+     "R7-D Phase 3.1 T2: a break with a pain substitution routes to a human and is recorded; after clearance the first review re-enters from it",
+     "R7-D Phase 3.1 T5: the same break delivered again, or the same report replayed, records one fact and applies one return; the next reviews never apply it again",
+     "R7-D Phase 3.1 T6: a newer declaration of the break replaces a recorded one not applied yet when it names it (R7-D Phase 3.2: unnamed, it is asked); the earlier decisions stay as they were",
+     "R7-D Phase 3.2 T2: after the relation question, the answer that the newer break corrects the kept one (its facts with the kept one's episodeId) applies the newer facts alone, once",
+     "R7-D Phase 3.2 T3: the same report replayed, or the same facts again, are one declaration: nothing new, one return, never applied twice"
+    ]
+   },
+   "suite": null,
+   "killedBy": "DIRECTED",
+   "survived": false
+  },
+  {
+   "id": "QM32-02",
+   "what": "two reports naming the same episode are not joined",
+   "applied": true,
+   "directed": {
+    "tests": 31,
+    "pass": 31,
+    "fail": 0,
+    "failed": []
+   },
+   "suite": {
+    "tests": 938,
+    "pass": 938,
+    "fail": 0,
+    "failed": []
+   },
+   "killedBy": null,
+   "survived": true
+  },
+  {
+   "id": "QM32-03",
+   "what": "an applied-replay or applied-correction group counts as unnamed",
+   "applied": true,
+   "directed": {
+    "tests": 31,
+    "pass": 31,
+    "fail": 0,
+    "failed": []
+   },
+   "suite": {
+    "tests": 938,
+    "pass": 938,
+    "fail": 0,
+    "failed": []
+   },
+   "killedBy": null,
+   "survived": true
+  },
+  {
+   "id": "QM32-04",
+   "what": "touching days no longer reach the stop (only overlap does)",
+   "applied": true,
+   "directed": {
+    "tests": 31,
+    "pass": 30,
+    "fail": 1,
+    "failed": [
+     "R7-D Phase 3.2 T4: separate breaks whose days touch or overlap stay two interruptions; the return reads the one continuous stop, as the same stop declared at once"
+    ]
+   },
+   "suite": null,
+   "killedBy": "DIRECTED",
+   "survived": false
+  },
+  {
+   "id": "QM32-05",
+   "what": "the replay check ignores the separate breaks a return recorded",
+   "applied": true,
+   "directed": {
+    "tests": 31,
+    "pass": 31,
+    "fail": 0,
+    "failed": []
+   },
+   "suite": {
+    "tests": 938,
+    "pass": 938,
+    "fail": 0,
+    "failed": []
+   },
+   "killedBy": null,
+   "survived": true
+  },
+  {
+   "id": "QM32-06",
+   "what": "a conflicted report between two breaks counts as reported",
+   "applied": true,
+   "directed": {
+    "tests": 31,
+    "pass": 31,
+    "fail": 0,
+    "failed": []
+   },
+   "suite": {
+    "tests": 938,
+    "pass": 938,
+    "fail": 0,
+    "failed": []
+   },
+   "killedBy": null,
+   "survived": true
+  },
+  {
+   "id": "QM32-07",
+   "what": "sessions inside a recorded return’s stop are asked as unreported",
+   "applied": true,
+   "directed": {
+    "tests": 31,
+    "pass": 31,
+    "fail": 0,
+    "failed": []
+   },
+   "suite": {
+    "tests": 938,
+    "pass": 938,
+    "fail": 0,
+    "failed": []
+   },
+   "killedBy": null,
+   "survived": true
+  },
+  {
+   "id": "QM32-08",
+   "what": "the head is the latest declared, not the latest ending",
+   "applied": true,
+   "directed": {
+    "tests": 31,
+    "pass": 30,
+    "fail": 1,
+    "failed": [
+     "R7-D Phase 3.2 T4: two separate breaks followed by a return report are applied together once, in either order of declaration"
+    ]
+   },
+   "suite": null,
+   "killedBy": "DIRECTED",
+   "survived": false
+  },
+  {
+   "id": "QM32-09",
+   "what": "a declaration at the same instant as a return is not applied by it",
+   "applied": true,
+   "directed": {
+    "tests": 31,
+    "pass": 26,
+    "fail": 5,
+    "failed": [
+     "R7-D Phase 3.1 T3 (P3-F01): a break answering the unreported-training question through a clinical route survives clearance; the first review applies it with no second declaration, as the direct answer does",
+     "R7-D Phase 3.2 T2: a newer break that names the kept one corrects it: its facts are applied once, the earlier facts stay recorded and inert",
+     "R7-D Phase 3.2 T2: after the relation question, the answer that the newer break corrects the kept one (its facts with the kept one's episodeId) applies the newer facts alone, once",
+     "R7-D Phase 3.2 T6: an applied break and a later new one follow the episode rules unchanged; a correction of the applied one while a break is kept is asked and the kept break is applied next",
+     "R7-D Phase 3.2 T7: an event that carries a newer break is never applied with it, nor with the return; sent again after the return it is applied"
+    ]
+   },
+   "suite": null,
+   "killedBy": "DIRECTED",
+   "survived": false
+  },
+  {
+   "id": "QM32-10",
+   "what": "an earlier separate break with an unclear or missing reason is not asked",
+   "applied": true,
+   "directed": {
+    "tests": 31,
+    "pass": 31,
+    "fail": 0,
+    "failed": []
+   },
+   "suite": {
+    "tests": 938,
+    "pass": 938,
+    "fail": 0,
+    "failed": []
+   },
+   "killedBy": null,
+   "survived": true
+  },
+  {
+   "id": "QM32-11",
+   "what": "the first break must be named too",
+   "applied": true,
+   "directed": {
+    "tests": 31,
+    "pass": 22,
+    "fail": 9,
+    "failed": [
+     "R7-D Phase 3.2 T1 (F02 witness): a newer break that does not name a kept one is asked about, whatever carries it; the older fact is never dropped and no return dose is chosen",
+     "R7-D Phase 3.2 T1: a partial newer declaration never replaces a kept break; the relation is asked and the kept facts are still read once it is answered",
+     "R7-D Phase 3.2 T3: the answer that resolves the relation, replayed, changes nothing and records nothing; nor do the earlier reports replayed",
+     "R7-D Phase 3.2 T4: separate breaks whose days touch or overlap stay two interruptions; the return reads the one continuous stop, as the same stop declared at once",
+     "R7-D Phase 3.2 T4: separate breaks with nothing trained between them (every planned session there reported not done) are one continuous stop; recorded training between them leaves the latest break alone",
+     "R7-D Phase 3.2 T4: separate breaks with unreported training between them are asked about those sessions; the answer decides, never zero and never credit",
+     "R7-D Phase 3.2 T4: two separate breaks followed by a return report are applied together once, in either order of declaration",
+     "R7-D Phase 3.2 T6: an applied break and a later new one follow the episode rules unchanged; a correction of the applied one while a break is kept is asked and the kept break is applied next",
+     "R7-D Phase 3.2 T7: an event that carries a newer break is never applied with it, nor with the return; sent again after the return it is applied"
+    ]
+   },
+   "suite": null,
+   "killedBy": "DIRECTED",
+   "survived": false
+  },
+  {
+   "id": "QM32-12",
+   "what": "applied declarations are read again (double application)",
+   "applied": true,
+   "directed": {
+    "tests": 31,
+    "pass": 21,
+    "fail": 10,
+    "failed": [
+     "R7-D Phase 3.1 T3 (P3-F01): a break answering the unreported-training question through a clinical route survives clearance; the first review applies it with no second declaration, as the direct answer does",
+     "R7-D Phase 3.1 T4: retaining the break never applies the event that carried it; after the return the event is sent again and applied then",
+     "R7-D Phase 3.1 T5: the same break delivered again, or the same report replayed, records one fact and applies one return; the next reviews never apply it again",
+     "R7-D Phase 3.2 T2: a newer break that names the kept one corrects it: its facts are applied once, the earlier facts stay recorded and inert",
+     "R7-D Phase 3.2 T2: after the relation question, the answer that the newer break corrects the kept one (its facts with the kept one's episodeId) applies the newer facts alone, once",
+     "R7-D Phase 3.2 T3: the same report replayed, or the same facts again, are one declaration: nothing new, one return, never applied twice",
+     "R7-D Phase 3.2 T3: the answer that resolves the relation, replayed, changes nothing and records nothing; nor do the earlier reports replayed",
+     "R7-D Phase 3.2 T4: two separate breaks followed by a return report are applied together once, in either order of declaration",
+     "R7-D Phase 3.2 T6: an applied break and a later new one follow the episode rules unchanged; a correction of the applied one while a break is kept is asked and the kept break is applied next",
+     "R7-D Phase 3.2 T7: an event that carries a newer break is never applied with it, nor with the return; sent again after the return it is applied"
+    ]
+   },
+   "suite": null,
+   "killedBy": "DIRECTED",
+   "survived": false
+  },
+  {
+   "id": "QM32-13",
+   "what": "an earlier separate break with invalid facts is read without asking",
+   "applied": true,
+   "directed": {
+    "tests": 31,
+    "pass": 31,
+    "fail": 0,
+    "failed": []
+   },
+   "suite": {
+    "tests": 938,
+    "pass": 938,
+    "fail": 0,
+    "failed": []
+   },
+   "killedBy": null,
+   "survived": true
+  },
+  {
+   "id": "QM32-14",
+   "what": "the review’s own re-sent facts are not read over the kept row (the record row stands)",
+   "applied": true,
+   "directed": {
+    "tests": 31,
+    "pass": 31,
+    "fail": 0,
+    "failed": []
+   },
+   "suite": {
+    "tests": 938,
+    "pass": 938,
+    "fail": 0,
+    "failed": []
+   },
+   "killedBy": null,
+   "survived": true
+  },
+  {
+   "id": "QM32-15",
+   "what": "the relation is asked only for weekly reviews and return reports",
+   "applied": true,
+   "directed": {
+    "tests": 31,
+    "pass": 28,
+    "fail": 3,
+    "failed": [
+     "R7-D Phase 3.2 T1 (F02 witness): a newer break that does not name a kept one is asked about, whatever carries it; the older fact is never dropped and no return dose is chosen",
+     "R7-D Phase 3.2 T6: a kept correction of an applied break, then a newer break that names none: the relation is asked; named separate, the newer break is applied and the correction not read",
+     "R7-D Phase 3.2 T7: an event that carries a newer break is never applied with it, nor with the return; sent again after the return it is applied"
+    ]
+   },
+   "suite": null,
+   "killedBy": "DIRECTED",
+   "survived": false
+  },
+  {
+   "id": "QM32-16",
+   "what": "notApplied is not recorded on the return",
+   "applied": true,
+   "directed": {
+    "tests": 31,
+    "pass": 29,
+    "fail": 2,
+    "failed": [
+     "R7-D Phase 3.2 T6: an applied break and a later new one follow the episode rules unchanged; a correction of the applied one while a break is kept is asked and the kept break is applied next",
+     "R7-D Phase 3.2 T6: a kept correction of an applied break, then a newer break that names none: the relation is asked; named separate, the newer break is applied and the correction not read"
+    ]
+   },
+   "suite": null,
+   "killedBy": "DIRECTED",
+   "survived": false
+  },
+  {
+   "id": "QM32-17",
+   "what": "with no break open, the other applied group is read instead of the review’s own",
+   "applied": true,
+   "directed": {
+    "tests": 31,
+    "pass": 31,
+    "fail": 0,
+    "failed": []
+   },
+   "suite": {
+    "tests": 938,
+    "pass": 938,
+    "fail": 0,
+    "failed": []
+   },
+   "killedBy": null,
+   "survived": true
+  },
+  {
+   "id": "QM32-18",
+   "what": "separate breaks are added up (days summed, never one continuous stop)",
+   "applied": true,
+   "directed": {
+    "tests": 31,
+    "pass": 29,
+    "fail": 2,
+    "failed": [
+     "R7-D Phase 3.2 T4: separate breaks whose days touch or overlap stay two interruptions; the return reads the one continuous stop, as the same stop declared at once",
+     "R7-D Phase 3.2 T4: separate breaks with nothing trained between them (every planned session there reported not done) are one continuous stop; recorded training between them leaves the latest break alone"
+    ]
+   },
+   "suite": null,
+   "killedBy": "DIRECTED",
+   "survived": false
+  }
+ ],
+ "summary": {
+  "mutants": 18,
+  "killedDirected": [
+   "QM32-01",
+   "QM32-04",
+   "QM32-08",
+   "QM32-09",
+   "QM32-11",
+   "QM32-12",
+   "QM32-15",
+   "QM32-16",
+   "QM32-18"
+  ],
+  "killedSuiteOnly": [],
+  "survived": [
+   "QM32-02",
+   "QM32-03",
+   "QM32-05",
+   "QM32-06",
+   "QM32-07",
+   "QM32-10",
+   "QM32-13",
+   "QM32-14",
+   "QM32-17"
+  ],
+  "notApplied": []
+ }
+}
