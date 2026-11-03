@@ -1190,3 +1190,35 @@ No final holdout, no change to V1 authority, no push or merge. Summary of the au
 - **Next:** the Founder's F02 decision, then Phase 4 on its own authorization.
 
   [Checkpoint](audits/domain-coaching-r7-d-2026-11-02/PHASE31_CHECKPOINT.md).
+
+<!-- DOMAIN_COACHING_R7D: DCR7D-20261103-phase32-r1 -->
+## DOMAIN_COACHING_R7-D — Fresh Generalization Gate — Phase 3.2 (narrow closure of SSCTR-P31-F02) COMPLETE / 2026-11-03
+
+A direct Founder request authorizes **R7-D Phase 3.2 only**:
+- close SSCTR-P31-F02: a newer declared interruption never silently erases an older unapplied one;
+- it replaces it only when it names it as its correction;
+- otherwise the relation is asked, and separate breaks stay separate facts read by factual continuity;
+- clinical first unchanged;
+- F08 recorded as KNOWN_FAIL_CLOSED_AUTHORITY_BOUNDARY.
+
+No final holdout, no change to V1 authority, no queue append, no push or merge. Summary of the authorization: `audits/domain-coaching-r7-d-2026-11-02/phase32/AUTHORIZATION_PHASE32.md`.
+
+- **States:** R7D_PHASE32_STATUS = COMPLETE; FINAL_HOLDOUT_EXISTS = NO; V1_COACHING_AUTHORITY_READY = NO.
+- **Runtime:** R7D-FREEZE-3.
+  - Bytes reviewed in `dfd8779`; bound files at `aeafc83`; record `c938b53`.
+  - Source 1ee8585e…aecb4, manifest 99872c88…1083, 364 files, 938/938; verifier 26/26.
+  - Delta from R7D-FREEZE-2 (superseded, not edited): `r6-adaptation.mjs` only.
+- **Gates:**
+  - SSCTR-R7D-P32-RECHECK-r1 ACCEPT_WITH_CONDITIONS;
+  - R7D-ENGINEERING-PHASE32-CHECK-1 READY_WITH_CONDITIONS;
+  - no blocker.
+- **Instruments:** R7D-HARNESS-4 (P18, INSERT_NEWER_BREAK), R7D-PREREG-4 with its post-review addendum, R7D-INTERFACE-4 delta, final brief 3.
+- **Queue:** unchanged at 233; HQ-R7D-SSCTR-P32-RECHECK is proposed only.
+- **Open for the Founder before Phase 4:**
+  - SSCTR-P32-F01: any recorded session between two separate breaks removes the earlier break's effect, identical to R7D-FREEZE-2, no envelope; the reading of "known training between" is the Founder's decision;
+  - the append of the proposed queue item.
+
+  F08 stays with Founder/PCG before any consumer use.
+- **Next:** the Founder's decisions, then Phase 4 on its own authorization.
+
+  [Checkpoint](audits/domain-coaching-r7-d-2026-11-02/PHASE32_CHECKPOINT.md).

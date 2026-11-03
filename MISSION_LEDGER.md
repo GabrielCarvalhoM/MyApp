@@ -1152,3 +1152,19 @@ Overlays revised to r2; r1 bytes are kept in the audit. R6 is untouched. No impl
 - **Queue:** 230 → 233 (HQ-R7D-SSCTR-F03B, -P3-RECHECK, -P31-RECHECK, naming R7D-FREEZE-2).
 - **Open:** SSCTR-P31-F02, for the Founder before Phase 4.
 - **Unchanged:** policy, catalog, records, product and canon unchanged; final holdout not created; V1 authority NO; nothing merged or pushed. Checkpoint: `audits/domain-coaching-r7-d-2026-11-02/PHASE31_CHECKPOINT.md`.
+
+<!-- DCR7D-20261103-phase32-r1 -->
+2026-11-03 · DOMAIN_COACHING_R7-D — Fresh Generalization Gate, Phase 3.2 **COMPLETE**.
+- **Correction:** SSCTR-P31-F02 is closed on the paths the Founder's rule names. Several breaks on record and not applied never replace or join each other unless one names the other; an unnamed later break gets INTERRUPTION_RELATION before any return dose. Separate breaks are read by factual continuity (touching or overlapping days, or nothing trained between), the later break alone after recorded training, and TRAINING_BETWEEN_BREAKS when training between is unreported. Clinical first unchanged; no new number.
+- **Tests:** 17 directed tests (11/17 RED on R7D-FREEZE-2); two frozen assertions that encoded last-write-wins updated and disclosed; 8/8 mutants killed by their own witness.
+- **Verification:**
+  - suite 938/938; conformance R7-B, R7-B.1, R7-B.2 PASS;
+  - harness R7D-HARNESS-4 validation 4: no false block, 13/13 sensitivity, 42/42 witnesses;
+  - diagnostic and generated regressions with no property violation;
+  - differential against R7D-FREEZE-2: 0 unexplained.
+- **R7D-PREREG-4:** registered before any holdout; post-review addendum Δ9–Δ15 (RESTATE carve-out under B4, F01 disclosed).
+- **Gates:** SSCTR-R7D-P32-RECHECK-r1 ACCEPT_WITH_CONDITIONS; R7D-ENGINEERING-PHASE32-CHECK-1 READY_WITH_CONDITIONS.
+- **Freeze:** R7D-FREEZE-3 (bound `aeafc83`, record `c938b53`; source 1ee8585e…aecb4; manifest 99872c88…1083); verifier 26/26.
+- **Queue:** unchanged at 233; HQ-R7D-SSCTR-P32-RECHECK proposed only.
+- **Open:** SSCTR-P32-F01, for the Founder before the holdout; F08 is KNOWN_FAIL_CLOSED_AUTHORITY_BOUNDARY.
+- **Unchanged:** policy, catalog, records, product and canon unchanged; final holdout not created; V1 authority NO; nothing merged or pushed. Checkpoint: `audits/domain-coaching-r7-d-2026-11-02/PHASE32_CHECKPOINT.md`.
