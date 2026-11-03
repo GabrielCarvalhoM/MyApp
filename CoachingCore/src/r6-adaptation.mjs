@@ -411,16 +411,26 @@ function horizonSummary(sk,program,next,{w,changed}){
  return {H0_SESSION:changed?`${changed} future session prescription(s) differ; completed sessions unchanged`:'No session changes',H1_WEEK:`Week ${w+1}: planned run ${next.weeks[w+1]?.plannedRunMinutes??'-'} min (was ${program.weeks[w+1]?.plannedRunMinutes??'-'}), strength sets ${next.weeks[w+1]?.plannedStrengthSets??'-'} (was ${program.weeks[w+1]?.plannedStrengthSets??'-'})`,H2_BLOCK:`Block ${sk.blocks.find(b=>w+1>=b.startWeek&&w+1<b.endWeekExclusive)?.family??'-'} intent kept: ${BLOCK_INTENT[sk.plan.phases[w+1]]??'end of horizon'}`,H3_GOAL_EVENT:raceWeek!==null?`Long-run peak ${after.long} min (planned ${before.long}, target ${target}); race week ${next.weeks[raceWeek]?.sessions.some(s=>s.role==='RACE')?'intact':'missing'}`:`Final planned known loads ${JSON.stringify(lastStrength(next.weeks))} (planned ${JSON.stringify(lastStrength(program.weeks))}); long run ${after.long} (planned ${before.long})`};
 }
 // ---------- main ----------
-export function evaluateProgram(program,review,options={}){
- const official=clone(review?.officialPlanState??program?.officialPlanState??null);
+export function evaluateProgram(program,input,options={}){
+ const official=clone(input?.officialPlanState??program?.officialPlanState??null);
  const base={runtimeVersion:'R6-1',mode:'SHADOW',applied:false,proposal:null,officialPlanState:official,appliedState:clone(official),completedWork:clone(program?.completedWork??[]),horizonsConsidered:HORIZONS,qualityAssessment:{assessor:'RUNTIME_SELF_CHECK',independent:false,class:'UNREVIEWED'},missingInputs:[],counterfactuals:[]};
- const finish=(status,action,reason,extra={})=>freeze(withReference(program,review,{...base,status,action,reason,...extra}));
+ const finish=(status,action,reason,extra={})=>freeze(withReference(program,input,{...base,status,action,reason,...extra}));
  if(!validProgram(program))return finish('HOLD','HOLD','Program integrity or version is invalid');
  // The repertoire authority is read at the review's date; the program must have been planned under the same catalog (R7-B, fail closed).
- const authority0=r6Authority(options),authority={...authority0,repertoire:authority0.repertoire??repertoireAuthority({...options,asOf:typeof review?.asOf==='string'?review.asOf:null})};
+ const authority0=r6Authority(options),authority={...authority0,repertoire:authority0.repertoire??repertoireAuthority({...options,asOf:typeof input?.asOf==='string'?input.asOf:null})};
  if(!authority.policy||authority.policyHash!==program.policyHash||!allows(authority,'R6-PLANNED-PROGRESSION'))return finish('UNSUPPORTED','UNSUPPORTED','Current independent program authority is missing or does not match the program policy');
  if(!authority.repertoire.valid||program.repertoire?.catalogSha256!==authority.repertoire.catalogSha256)return finish('UNSUPPORTED','UNSUPPORTED','The program was not planned under the bound repertoire catalog, or that catalog and its SSCTR records are unavailable');
- const errors=[],missing=[],kind0=KIND_ALIASES[review?.event?.kind]??review?.event?.kind,tz=program.timezoneOffsetMinutes??0,asOf=utcTimestamp(review?.asOf);
+ const errors=[],missing=[],kind0=KIND_ALIASES[input?.event?.kind]??input?.event?.kind,tz=program.timezoneOffsetMinutes??0,asOf=utcTimestamp(input?.asOf);
+ // R7-D Phase 3.1 (QE-R7D-P3-01, P3-F01; Founder D2: fact retention is not decision application): a break a review declares is a fact whatever
+ // event carried it and whatever that review decided. The record keeps it (INTERRUPTION_DECLARED) until a return applies it or a newer
+ // declaration replaces it (retainedBreak); a review that states no break of its own reads the one the record holds as if it stated it, so every
+ // later decision decides it exactly as the same break stated again there: the return re-enters from it, another event kind asks, a clinical
+ // route still comes first (and a break with a clinical reason routes clinically again, F08). The event that carried it is never applied with it.
+ const carried=Array.isArray(input?.actualLedger)?input.actualLedger.filter(isDeclaration):[];
+ const retained=asOf&&!declaresBreak(input)?retainedBreak(program,carried,asOf):null,review=retained?{...input,interruption:clone(retained.interruption)}:input;
+ const declared=asOf&&input?.event?.id?newDeclaration(program,input,asOf,carried):null;
+ // The record a decision returns before it reads the review's reports keeps the break this review declares (a clinical route, a question).
+ const keep=extra=>declared&&(input.actualLedger===undefined||input.actualLedger===null||Array.isArray(input.actualLedger))?{...extra,actualLedger:[...clone(input.actualLedger??[]),declared]}:extra;
  // R7-D DX-02: a declared interruption is a known stop whatever event carries it, never dependent on a pending question. A weekly review that
  // declares one is decided as the return report of that interruption, with the return handler's own clinical screen, episode identity and
  // re-entry (the same facts give the same factual state and re-entry); another event kind that declares one is screened clinically and asked
@@ -436,16 +446,17 @@ export function evaluateProgram(program,review,options={}){
  if(errors.length)return finish('HOLD','HOLD','Review contract or chronology failed validation',{errors});
  const el=review.eligibility&&typeof review.eligibility==='object'?review.eligibility:null;
  // A clinical flag that means yes in any form routes to a human; any other non-boolean flag is asked below (SSCTR R6).
- if(el&&(CLINICAL_KEYS.some(k=>isYes(el[k]))||['CLINICAL','PAIN_OR_INJURY'].includes(typeof el.status==='string'?el.status.trim().toUpperCase():el.status)))return finish('CLINICAL_HUMAN_REQUIRED','CLINICAL_HUMAN_REQUIRED','A current clinical flag routes to qualified human assessment; no dependent prescription or return recipe');
+ if(el&&(CLINICAL_KEYS.some(k=>isYes(el[k]))||['CLINICAL','PAIN_OR_INJURY'].includes(typeof el.status==='string'?el.status.trim().toUpperCase():el.status)))return finish('CLINICAL_HUMAN_REQUIRED','CLINICAL_HUMAN_REQUIRED','A current clinical flag routes to qualified human assessment; no dependent prescription or return recipe',keep({}));
  // An assessment date that is not a date is no assessment at all (QRE-R6-05).
  const assessedDay=dayOf(el?.assessedAt);
  if(!el||el.status!=='NONCLINICAL_CONFIRMED'||!assessedDay||dayGap(assessedDay,asOfLocal)<0||dayGap(assessedDay,asOfLocal)>14||CLINICAL_KEYS.some(k=>typeof el[k]!=='boolean'))missing.push('eligibility.currentAssessment');
- if(missing.length)return finish('ASK','ASK','Current eligibility must be assessed; unknown is neither clearance nor illness',{missingInputs:missing});
+ if(missing.length)return finish('ASK','ASK','Current eligibility must be assessed; unknown is neither clearance nor illness',keep({missingInputs:missing}));
  // After the race, redevelopment needs an eligibility and function check dated on or after race day (SSCTR D04).
  const ph=program.phases,raceDate=Number.isInteger(ph?.raceWeek)?onDate(program.startDate,ph.raceWeek*7+ph.raceDay):null;
- if(raceDate&&asOfLocal>=raceDate&&(['RACE_WEEK','POST_EVENT'].includes(ph.phases[w])||ph.phases[w+1]==='NEXT_BLOCK')&&dayGap(raceDate,assessedDay)<0)return finish('ASK','ASK','After the race, an eligibility and function check dated on or after race day is needed before the next steps',{missingInputs:['eligibility.assessedOnOrAfterRace']});
+ if(raceDate&&asOfLocal>=raceDate&&(['RACE_WEEK','POST_EVENT'].includes(ph.phases[w])||ph.phases[w+1]==='NEXT_BLOCK')&&dayGap(raceDate,assessedDay)<0)return finish('ASK','ASK','After the race, an eligibility and function check dated on or after race day is needed before the next steps',keep({missingInputs:['eligibility.assessedOnOrAfterRace']}));
  const guard=previousValidity(program,review);
- if(guard)return finish(guard.status,guard.status,guard.reason,{missingInputs:guard.missingInputs??[]});
+ // An integrity refusal reads nothing of the review; a standing clinical route or a question still keeps the break it declares.
+ if(guard)return finish(guard.status,guard.status,guard.reason,(guard.status==='HOLD'?x=>x:keep)({missingInputs:guard.missingInputs??[]}));
  if(review.observations!==undefined&&review.observations!==null&&!Array.isArray(review.observations))return finish('HOLD','HOLD','Observations must be a list of execution reports',{errors:['observations.array']});
  if(review.actualLedger!==undefined&&review.actualLedger!==null&&!Array.isArray(review.actualLedger))return finish('HOLD','HOLD','The completed-work ledger must be a list',{errors:['actualLedger.array']});
  if(review.loadConfirmations!==undefined&&review.loadConfirmations!==null&&!Array.isArray(review.loadConfirmations))return finish('HOLD','HOLD','Load confirmations must be a list',{errors:['loadConfirmations.array']});
@@ -461,7 +472,8 @@ export function evaluateProgram(program,review,options={}){
  // Any malformed fact inside the review gives a status, never an exception (QRE-R6-10).
  try{
   // Causal provenance: only facts observed and reported by the decision clock count; the actual ledger is append-only.
-  const priorLedger=Array.isArray(review.actualLedger)?clone(review.actualLedger):[];
+  // R7-D Phase 3.1: the declared breaks the record holds are facts of their own kind, never execution reports; they travel with it unchanged.
+  const priorLedger=Array.isArray(review.actualLedger)?clone(review.actualLedger.filter(o=>!isDeclaration(o))):[];
   // R7-C QE-R7C-10: the record notes when it first held each report (recordArrival), so a later decision knows which reports a review had.
   const n=normalizeObservations(review.observations??[],{athleteId:program.athleteId,asOf,prior:priorLedger,maximumAgeDays:36500,futureSkewSeconds:authority.policy.operational.learning.futureClockSkewSeconds,timezoneOffsetMinutes:tz,loadIncrements:{...authority.policy.operational.strength.smallestIncrement,SINGLE_IMPLEMENT:incrementFor(authority.policy.operational.strength,'SINGLE_IMPLEMENT'),MACHINE_STACK:incrementFor(authority.policy.operational.strength,'MACHINE_STACK')},recordArrival:true});
   const {bound,unbound}=bindObservations(program,n.accepted,authority.policy.operational.hybrid,authority.policy),ledger=[...bound,...unbound];
@@ -472,8 +484,11 @@ export function evaluateProgram(program,review,options={}){
   const sk=skeletonOf(program,authority),ev=weekEvidence(program,w,asOfLocal,bound,n.quarantinedIdentities);
   const confirmations=loadConfirmationsOf(review.loadConfirmations);
   // The carried record is append-only: facts a correction replaced travel with it as inert history (R7-A).
-  out={...base,updatedModel:model,actualLedger:[...ledger,...n.supersededRows],provenance:{excluded:n.excluded,duplicates:n.duplicates,conflicts:n.conflicts,superseded:n.superseded,causalCutoff:n.causalCutoff},weekEvidence:ev,loadQuestions:[],inputHash:hash({programHash:program.hash,review})};
+  out={...base,updatedModel:model,actualLedger:[...ledger,...n.supersededRows,...clone(carried),...(declared?[declared]:[])],provenance:{excluded:n.excluded,duplicates:n.duplicates,conflicts:n.conflicts,superseded:n.superseded,causalCutoff:n.causalCutoff},weekEvidence:ev,loadQuestions:[],inputHash:hash({programHash:program.hash,review:input})};
   const ctx={program,sk,review,kind,w,week,asOf,asOfLocal,ev,ledger:usable,fullLedger:ledger,quarantined:n.quarantinedIdentities,model,consent,authority,out,confirmations,completedRuns:completedRuns(program,usable)};
+  // R7-D Phase 3.1: the break the record holds, read by this decision as if this review stated it: the report that declared it names its
+  // interruption (episode identity) and is recorded with the return that applies it.
+  if(retained)ctx.declaredBy={eventId:retained.eventId,eventKind:retained.eventKind??null,declaredAt:retained.declaredAt};
   // This week's own context (R7-A.1 C2), the one test of what is still ahead (C1) and the day of a return reported this week (C5).
   Object.assign(ctx,{skw:sk.at(w)??sk,ahead:aheadOf(ctx),returned:returnOf(program,w)});
  if(options[NO_CEILING]===true)ctx.noCeiling=true;
@@ -494,7 +509,8 @@ export function evaluateProgram(program,review,options={}){
   // canonical factual state; the decision consumes it.
   const held=kind==='WEEKLY_REVIEW'&&!gap&&!factual?.ask?heldSignal(review.referenceState,w):null;
   // Training before the latest interruption that its return did not read is confirmed first (R7-A final I6); a return report decides it itself.
-  const decide=c=>(kind!=='RETURN_AFTER_PAUSE'&&declaresBreak(review)&&breakCarrierAsk(kind))||(kind!=='RETURN_AFTER_PAUSE'&&staleReturn(c))||(held&&replayHeld(c,held))||(HANDLERS[kind]??weeklyReview)(c);
+  const replayed=carried.find(r=>r.eventId===input.event.id&&utcTimestamp(r.declaredAt)),recordedOn=retained?localDate(retained.declaredAt,tz):declared?asOfLocal:replayed?localDate(replayed.declaredAt,tz):null;
+  const decide=c=>(kind!=='RETURN_AFTER_PAUSE'&&declaresBreak(review)&&breakCarrierAsk(kind,recordedOn))||(kind!=='RETURN_AFTER_PAUSE'&&staleReturn(c))||(held&&replayHeld(c,held))||(HANDLERS[kind]??weeklyReview)(c);
   // A question about block choices is a decision like any other (QE-R7B-R2-02; R7-A A5): it never drops the canonical factual state computed above. A
   // question the factual re-plan itself raises keeps precedence; otherwise the block-choice question carries the factual re-plan and any graduation
   // withdrawal (withFactualReplan), because the facts it follows stand whatever is still asked.
@@ -514,7 +530,7 @@ export function evaluateProgram(program,review,options={}){
   // R7-C QE-R7C-01 (G01): the ceiling re-plan never travels with a question about unknown training. When the decision asks it, or keeps it beside
   // a change, that question decides alone, exactly as without the re-plan (no run dose is planned while it stands); the answer re-plans.
   // So does the recorded-answer re-plan (QE-R7C-07): its later weeks would read the sessions the question is about as not run.
-  if((factual0?.origin==='CEILING'||factual0?.origin==='RECORDED')&&decision.question?.kind==='UNREPORTED_TRAINING')return evaluateProgram(program,review,{...options,[NO_CEILING]:true});
+  if((factual0?.origin==='CEILING'||factual0?.origin==='RECORDED')&&decision.question?.kind==='UNREPORTED_TRAINING')return evaluateProgram(program,input,{...options,[NO_CEILING]:true});
   // Load questions follow the decision's own gates, so they never contradict the adoption the transition made (SSCTR D44).
   out.loadQuestions=loggedLoadQuestions(program,sk,w,ev,{gates:decision.gates??null,confirmations:confirmationsOf(ctx),base:ctx.base});
   if(decision.proposal){
@@ -529,7 +545,7 @@ export function evaluateProgram(program,review,options={}){
   // Every event-week slot a decision newly fills with a stand-in or leaves out is disclosed with it, whichever decision re-planned it (QR7B1-04).
   const eventNote=decision.proposal?newEventStandIns(program,decision.proposal,ctx.ahead,decision.disclosures??[]):null;
   const status=decision.status??(decision.proposal&&!decision.instantiationOnly?'MODIFY':decision.action==='ASK'?'ASK':'KEEP');
-  return finish(status,decision.action,decision.reason,{...out,proposal:decision.proposal??null,disclosures:[...(decision.disclosures??[]),...(eventNote?[eventNote]:[])],offers:decision.offers??[],learnedPatterns:decision.learnedPatterns??null,substitutions:decision.substitutions??null,instantiationOnly:!!decision.instantiationOnly,gates:decision.gates??null,counterfactuals:decision.counterfactuals??[],horizons:decision.horizons??null,missingInputs:decision.missingInputs??[],question:decision.question??null,trace:{sourceProgramHash:program.hash,reviewHash:hash(review),policyHash:authority.policyHash,modelBeforeHash:review.athleteModel?.hash??null,modelAfterHash:model.hash,ledgerSize:ledger.length,authoritySplit:'Reusable boundaries constrain; coaching compares concrete feasible options',noCausalClaim:true},nextObservation:decision.nextObservation??'Record actual execution, effort if known and next-day function; the next step advances only on that evidence'});
+  return finish(status,decision.action,decision.reason,{...out,proposal:decision.proposal??null,disclosures:[...(decision.disclosures??[]),...(eventNote?[eventNote]:[])],offers:decision.offers??[],learnedPatterns:decision.learnedPatterns??null,substitutions:decision.substitutions??null,instantiationOnly:!!decision.instantiationOnly,gates:decision.gates??null,counterfactuals:decision.counterfactuals??[],horizons:decision.horizons??null,missingInputs:decision.missingInputs??[],question:decision.question??null,trace:{sourceProgramHash:program.hash,reviewHash:hash(input),policyHash:authority.policyHash,modelBeforeHash:review.athleteModel?.hash??null,modelAfterHash:model.hash,ledgerSize:ledger.length,authoritySplit:'Reusable boundaries constrain; coaching compares concrete feasible options',noCausalClaim:true},nextObservation:decision.nextObservation??'Record actual execution, effort if known and next-day function; the next step advances only on that evidence'});
  }catch(e){return finish('HOLD','HOLD','Malformed review facts: '+e.message,{...(out??{}),errors:['malformed:'+(e?.constructor?.name??'Error')]});}
 }
 const dayOf=v=>typeof v==='string'&&isoDay(v.slice(0,10))?v.slice(0,10):null;
@@ -701,10 +717,39 @@ function interruptionScreen(i){
 }
 /** R7-D DX-02: whether a review declares an interruption (an object with at least one field), whatever event carries it. */
 function declaresBreak(review){const i=review?.interruption;return !!i&&typeof i==='object'&&!Array.isArray(i)&&Object.keys(i).length>0;}
+// ---------- R7-D Phase 3.1: a declared break is a fact (QE-R7D-P3-01, P3-F01; Founder D1-D3: fact retention is not decision application) ----------
+/** The record row of a declared break: the interruption as the review stated it, the report that stated it and when (its clock). */
+export const INTERRUPTION_DECLARED='INTERRUPTION_DECLARED';
+const isDeclaration=o=>!!o&&typeof o==='object'&&!Array.isArray(o)&&o.fact===INTERRUPTION_DECLARED;
+/** A declared break that states a fact (at least one field with a value); a template of empty fields states none and stays its own review's
+ * question (DX-02, O-6). */
+const statesBreak=review=>declaresBreak(review)&&Object.values(review.interruption).some(v=>v!==null&&v!==undefined);
+/** The row this review adds to the record: none when it states no break, when the break it states begins after it (a plan, not an observed
+ * stop; its own review asks about it), or when the record already holds this report's declaration (a replay of the same report; the record is
+ * append-only and the first row recorded stands). */
+function newDeclaration(program,review,asOf,carried){
+ if(!statesBreak(review)||carried.some(r=>r.eventId===review.event.id))return null;
+ const i=clone(review.interruption),startedAt=utcTimestamp(i.startedAt);
+ if(isoDay(i.startDate)&&i.startDate>localDate(asOf,program.timezoneOffsetMinutes??0)||startedAt&&Date.parse(startedAt)>Date.parse(asOf))return null;
+ return {fact:INTERRUPTION_DECLARED,eventId:review.event.id,eventKind:KIND_ALIASES[review.event.kind]??review.event.kind??null,athleteId:program.athleteId,declaredAt:asOf,interruption:i,inputHash:hash(i),provenance:{firstRecordedAt:asOf}};
+}
+/**
+ * The declared break the record holds that no return has applied, or null: the latest declaration made by the decision clock (a newer one
+ * replaces an older one, as a newer report of a break does), unless a return (REESTABLISH) was decided at or after it: a return applies the
+ * break in force when it is decided. A row that is not this athlete's, has no clock, or whose facts do not match its own hash is not read.
+ */
+function retainedBreak(program,carried,asOf){
+ const at=Date.parse(asOf),rows=carried.filter(r=>r.athleteId===program.athleteId&&typeof r.eventId==='string'&&utcTimestamp(r.declaredAt)&&Date.parse(r.declaredAt)<=at&&!!r.interruption&&typeof r.interruption==='object'&&!Array.isArray(r.interruption)&&r.inputHash===hash(r.interruption));
+ const latest=rows.reduce((m,r)=>!m||Date.parse(r.declaredAt)>=Date.parse(m.declaredAt)?r:m,null);
+ return latest&&!program.decisions.some(d=>d.action==='REESTABLISH'&&Date.parse(d.asOf)>=Date.parse(latest.declaredAt))?latest:null;
+}
 /** R7-D DX-02: an event of another kind (a change or a signal of its own) that also declares an interruption: the interruption is screened
- * clinically first (clinicalRoute) and then asked to be reported on its own, so neither the event's change nor the stale plan is applied over it. */
-function breakCarrierAsk(kind){
+ * clinically first (clinicalRoute) and then asked to be reported on its own, so neither the event's change nor the stale plan is applied over it.
+ * R7-D Phase 3.1: a break the record holds (recorded on `recordedOn`) is never asked again: a return report or the week's review applies it, then
+ * the event is sent again; the event is never applied with it. */
+function breakCarrierAsk(kind,recordedOn=null){
  const what=kind.toLowerCase().replace(/_/g,' ');
+ if(recordedOn)return {action:'ASK',reason:`A break in training reported on ${recordedOn} is recorded and not applied yet: a return report or the week’s review applies it, with no need to state the break again, and then the ${what} is sent again; until then nothing changes and the plan is not valid`,missingInputs:['interruption.reportedOnItsOwn'],counterfactuals:[counter('APPLY_'+kind,'KEEP',false,'Applying the event over the plan would ignore the recorded break'),counter('REESTABLISH','REESTABLISH',false,'The return re-entry would drop the event’s own change'),counter('ASK','ASK',true,'The recorded break is applied first; the event is sent again after it',{selected:true})]};
  return {action:'ASK',reason:`A break in training is declared with this ${what} report: report the break on its own (as a return report, or with the week’s review) and then the ${what} again; until then nothing changes and the plan is not valid`,missingInputs:['interruption.reportedOnItsOwn'],counterfactuals:[counter('APPLY_'+kind,'KEEP',false,'Applying the event over the plan would ignore the declared break'),counter('REESTABLISH','REESTABLISH',false,'The return re-entry would drop the event’s own change'),counter('ASK','ASK',true,'The break and the event are reported separately',{selected:true})]};
 }
 /** The clinical route the review's own handler screen takes (clinical-screen-first), or null; a review of another kind has no screen of its own,
@@ -1126,7 +1171,7 @@ function interruptionEpisode(ctx,{start,end,id=null}){
   return {relation:'SAME_BREAK',episode:named.id,supersedes:named.live.eventId,basis:'EXPLICIT',revision:named.reports.length+1};
  }
  if(last&&id===null&&start===last.live.start&&end===last.live.end)return {relation:'SAME_BREAK',episode:last.id,supersedes:last.live.eventId,basis:'DUPLICATE',revision:last.reports.length+1};
- if(!last||afterReentry(ctx,last,start))return {relation:'NEW',episode:id??ctx.review.event.id,supersedes:null,basis:id!==null?'EXPLICIT':!last?'FIRST':start>=last.first.day?'AFTER_REENTRY':'TRAINING_BETWEEN',revision:1};
+ if(!last||afterReentry(ctx,last,start))return {relation:'NEW',episode:id??ctx.declaredBy?.eventId??ctx.review.event.id,supersedes:null,basis:id!==null?'EXPLICIT':!last?'FIRST':start>=last.first.day?'AFTER_REENTRY':'TRAINING_BETWEEN',revision:1};
  if(end<last.live.start||prev&&!afterReentry(ctx,prev,start))return {ask:`This interruption ends before the one reported on ${last.first.day} began, or spans an earlier return: say when it started and ended, as one period`,missingInputs:dates};
  return {ask:`This interruption shares days with the one first reported on ${last.first.day} (${last.live.start} to ${last.live.end}), or follows it with no return or training between, and is not marked as its correction: say whether it corrects that interruption (its episodeId ${last.id}) or is a different one`,missingInputs:['interruption.episodeId']};
 }
@@ -1451,7 +1496,7 @@ export const HISTORICAL_STATE_VERSION='R7-HISTORICAL-STATE-1';
  * reducer's cut (executions observed before it) limits what counts. The superseded rows the record carries stay inert history, as in a decision.
  */
 function canonicalRecord(program,actualLedger,{authority,cut}){
- const rows=(Array.isArray(actualLedger)?actualLedger:[]).filter(o=>o&&typeof o==='object'),op=authority.policy.operational;
+ const rows=(Array.isArray(actualLedger)?actualLedger:[]).filter(o=>o&&typeof o==='object'&&!isDeclaration(o)),op=authority.policy.operational;
  const latest=rows.reduce((m,o)=>Math.max(m,...[o.correctedAt,o.reportedAt,o.supersededAt,o.observedAt].map(utcTimestamp).filter(Boolean).map(Date.parse)),Date.parse(cut));
  const n=normalizeObservations([],{athleteId:program.athleteId,asOf:new Date(latest).toISOString(),prior:rows,maximumAgeDays:36500,futureSkewSeconds:op.learning.futureClockSkewSeconds,timezoneOffsetMinutes:program.timezoneOffsetMinutes??0,loadIncrements:{...op.strength.smallestIncrement,SINGLE_IMPLEMENT:incrementFor(op.strength,'SINGLE_IMPLEMENT'),MACHINE_STACK:incrementFor(op.strength,'MACHINE_STACK')}});
  const {bound,unbound}=bindObservations(program,n.accepted,op.hybrid,authority.policy);
@@ -1632,8 +1677,8 @@ function returnAfterPause(ctx){
  // The report records its interruption (InterruptionEpisode, Founder 0.1): its days and start time when stated, its identity and revision, how
  // it relates to the report before and why (basis), the facts it was given (inputHash), the point its state came from and the start it set,
  // which a later, separate interruption starts from. Its clock (asOf) is its report time.
- const proposal=finishProposal(program,sk,next,{eventId:review.event.id,asOf:ctx.asOf,action:'REESTABLISH',fromWeek,interruption:{days,class:cls,nonclinical:true,screen,startDate:pauseStart,endDate:end,...(startedAt?{startedAt}:{}),episode:ep.episode,relation:ep.relation,supersedes:ep.supersedes,basis:ep.basis,revision:ep.revision,inputHash:hash(i),stateAt:at.point,entry:{run:clone(runState),strength:clone(strengthState)}},demonstrationUsed:!!demoMinutes,horizonsConsidered:HORIZONS});
- return {action:'REESTABLISH',reason:`${cls.toLowerCase()} nonclinical interruption (${days} days): ${cls==='SHORT'?'resume the last completed doses; no step until execution is observed':cls==='MODERATE'?`re-entry from ${demoMinutes?'the current demonstration':'the reviewed entry dose'}, returning to the prior tolerated dose in ${R.moderateStepsToPrior} conditional steps`:'restart from current capacity; prior doses are only a ceiling'}`,proposal,counterfactuals:[counter('RESUME_PRIOR_PLAN','KEEP',cls==='SHORT','Resuming the planned (higher) week restores dose by elapsed time',{selected:false}),counter('PERCENT_ROLLBACK','ROLLBACK',false,'A universal percentage rollback is not an approved rule'),counter('REESTABLISH','REESTABLISH',true,'Current evidence first, prior tolerance as ceiling',{selected:true}),counter('CLINICAL_ROUTE','CLINICAL',false,'The interruption reason screened nonclinical ('+screen.matched.join(', ')+') and no current clinical flag is present')],horizons:{H0_SESSION:'First sessions back are easy and effort-governed',H1_WEEK:'No quality or heavy loading in the entry step',H2_BLOCK:`Prior dose reached in ${cls==='SHORT'?1:R.moderateStepsToPrior} conditional step(s)`,H3_GOAL_EVENT:eventSoon?'The event is close: the plan aims at completion and cannot catch up missed preparation':'Goal trajectory continues after re-establishment'},missingInputs:[],nextObservation:'Record minutes, effort and next-day function after each return session; any pain, illness or abnormal symptom routes to qualified assessment'};
+ const proposal=finishProposal(program,sk,next,{eventId:review.event.id,asOf:ctx.asOf,action:'REESTABLISH',fromWeek,interruption:{days,class:cls,nonclinical:true,screen,startDate:pauseStart,endDate:end,...(startedAt?{startedAt}:{}),episode:ep.episode,relation:ep.relation,supersedes:ep.supersedes,basis:ep.basis,revision:ep.revision,inputHash:hash(i),stateAt:at.point,entry:{run:clone(runState),strength:clone(strengthState)},...(ctx.declaredBy?{declaredBy:clone(ctx.declaredBy)}:{})},demonstrationUsed:!!demoMinutes,horizonsConsidered:HORIZONS});
+ return {action:'REESTABLISH',reason:`${ctx.declaredBy?`The break reported on ${localDate(ctx.declaredBy.declaredAt,tz)} is on record and applied now: `:''}${cls.toLowerCase()} nonclinical interruption (${days} days): ${cls==='SHORT'?'resume the last completed doses; no step until execution is observed':cls==='MODERATE'?`re-entry from ${demoMinutes?'the current demonstration':'the reviewed entry dose'}, returning to the prior tolerated dose in ${R.moderateStepsToPrior} conditional steps`:'restart from current capacity; prior doses are only a ceiling'}`,proposal,counterfactuals:[counter('RESUME_PRIOR_PLAN','KEEP',cls==='SHORT','Resuming the planned (higher) week restores dose by elapsed time',{selected:false}),counter('PERCENT_ROLLBACK','ROLLBACK',false,'A universal percentage rollback is not an approved rule'),counter('REESTABLISH','REESTABLISH',true,'Current evidence first, prior tolerance as ceiling',{selected:true}),counter('CLINICAL_ROUTE','CLINICAL',false,'The interruption reason screened nonclinical ('+screen.matched.join(', ')+') and no current clinical flag is present')],horizons:{H0_SESSION:'First sessions back are easy and effort-governed',H1_WEEK:'No quality or heavy loading in the entry step',H2_BLOCK:`Prior dose reached in ${cls==='SHORT'?1:R.moderateStepsToPrior} conditional step(s)`,H3_GOAL_EVENT:eventSoon?'The event is close: the plan aims at completion and cannot catch up missed preparation':'Goal trajectory continues after re-establishment'},missingInputs:[],nextObservation:'Record minutes, effort and next-day function after each return session; any pain, illness or abnormal symptom routes to qualified assessment'};
 }
 function eventWeekConflict(ctx){
  const {program,sk,w,asOfLocal,review}=ctx,raceWeek=sk.plan.raceWeek,week=program.weeks[w],dates=new Set(Array.isArray(review.changes?.unavailableDates)?review.changes.unavailableDates:[]);

@@ -92,7 +92,10 @@ test('R7-C QE-R7C-01: an answer a clinical route recorded is applied after clear
  const b=7,{B,facts}=fork(GEN,{g:2,b,mode:'RV',V:'MISS'}),t=copy(B),end=addDays(t.p.weeks[b].startDate,1);
  const clin=step(t,b,{...AT(2),kind:'RETURN_AFTER_PAUSE',observations:facts,interruption:{startDate:t.p.weeks[b].startDate,endDate:end,days:2,reasonCategory:'ILLNESS',reason:'flu',nonclinical:false}});
  assert.equal(clin.status,'CLINICAL_HUMAN_REQUIRED');
- for(const x of [{},{observations:facts}]){const u=cleared(t),r=step(u,b,{...AT(3),...x}),inPlan=runsFrom(inForce(u,r),b,3);assert.equal(r.planValidity.status,VALID,r.reason);assert.ok(!stale(inPlan),JSON.stringify(inPlan));}
+ // R7-D Phase 3.1 (QE-R7D-P3-01(b); Founder D2-D3; F08 unchanged): the illness break is a fact the record keeps through the clinical route and
+ // the clearance. Read again after it, its clinical reason routes to a human, as the same break stated again does (no nonclinical return recipe,
+ // no clearance synthesized); R7D-FREEZE-1 dropped the break and validated the plan. The answer stays recorded; no dose is proposed or validated.
+ for(const x of [{},{observations:facts}]){const u=cleared(t),r=step(u,b,{...AT(3),...x});assert.equal(r.status,'CLINICAL_HUMAN_REQUIRED',r.reason);assert.equal(r.proposal,null);assert.notEqual(r.planValidity.status,VALID);assert.ok(facts.every(f=>u.ledger.some(o=>o.sessionId===f.sessionId)),'the answer stays recorded');assert.ok(u.ledger.some(o=>o.fact==='INTERRUPTION_DECLARED'&&o.interruption.reasonCategory==='ILLNESS'),'the break stays recorded');}
 });
 
 test('R7-C QE-R7C-02 / C9 (SSCTR-SD5-01): after a known-stop answer later in the week, the week after it is planned as on time; the elapsed sessions with no report are never credited (taper to race week included)',()=>{

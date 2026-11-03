@@ -107,5 +107,25 @@ cases.push({caseId:'DEV-17',authorIntent:'Silence of five weeks; the answer is a
 // DEV-17b (finding P3-F01 witness): the same answer delivered as a return report, the carrier R7C-FREEZE-4 already read; its clinical-carrier
 // variant shows whether a declared break recorded by a clinical route is retained across qualified clearance on each runtime.
 {const c=cases.find(x=>x.caseId==='DEV-17');cases.push({...c,caseId:'DEV-17b',authorIntent:c.authorIntent+' (answer as a return report)',timeline:c.timeline.map(s=>s.stepId==='w7d2'?{...s,event:{kind:'RETURN_AFTER_PAUSE'}}:s)});}
-fs.writeFileSync(process.argv[2],JSON.stringify({corpusRevision:'R7D-HARNESS-DEV-2',contaminated:true,cases},null,1)+'\n');
+// R7D-HARNESS-DEV-3 (Phase 3.1, P17): a two-week holiday (weeks 3-4, no training, nothing reported) declared in week 5 through routes that do not
+// apply it, then reviews that do not state it again.
+const HOLIDAY={startDate:'2026-11-23',endDate:'2026-12-06',days:14,reasonCategory:'VACATION',reason:'Holiday, no training at all',nonclinical:true};
+const firstWeeks=[review(0,allDone(0)),review(1,allDone(1)),review(2,allDone(2))];
+// DEV-18 (QE-R7D-P3-01(a)): the holiday declared with a schedule change; the next review does not repeat it.
+cases.push({caseId:'DEV-18',authorIntent:'A two-week holiday declared together with a schedule change; the next review does not repeat it',coverageTags:['DECLARED_BREAK','BREAK_WITH_OTHER_EVENT'],oracleClass:'INVARIANT_ORACLE',intake:GEN,
+ timeline:[...firstWeeks,{stepId:'w5d1',at:{week:5,day:1,time:'07:00'},event:{kind:'SCHEDULE_CHANGE',changes:{strengthDays:[0,3]},interruption:HOLIDAY}},{stepId:'w5d2',at:{week:5,day:2,time:'07:00'},event:{kind:'WEEKLY_REVIEW'}},review(5,allDone(5))],
+ expectedDomainProperties:[],metamorphicRelations:[],independentAssessment:assess('the holiday re-enters at the next review; the schedule change is sent again later'),domainNotes:''});
+// DEV-19 (QE-R7D-P3-01(b)): the holiday declared while ill (clinical flag); qualified clearance; the next review does not repeat it.
+cases.push({caseId:'DEV-19',authorIntent:'A two-week holiday declared while ill; after qualified clearance the next review does not repeat it',coverageTags:['DECLARED_BREAK','CLINICAL_SIGNAL','CLEARANCE'],oracleClass:'INVARIANT_ORACLE',intake:GEN,
+ timeline:[...firstWeeks,{stepId:'w5d1',at:{week:5,day:1,time:'07:00'},event:{kind:'WEEKLY_REVIEW',interruption:HOLIDAY},eligibility:{...elig('2026-12-08'),illness:true}},{stepId:'w5d2',at:{week:5,day:2,time:'07:00'},event:{kind:'WEEKLY_REVIEW'},clearance:'QUALIFIED_CLEARANCE'},review(5,allDone(5))],
+ expectedDomainProperties:[],metamorphicRelations:[],independentAssessment:assess('clinical first; after clearance the holiday re-enters'),domainNotes:''});
+// DEV-20 (QE-R7D-P3-01(a)): the holiday declared with a fatigue report, a second event of another kind, then a plain review.
+cases.push({caseId:'DEV-20',authorIntent:'A two-week holiday declared with a fatigue report; a local-fatigue report and a plain review follow without it',coverageTags:['DECLARED_BREAK','BREAK_WITH_OTHER_EVENT'],oracleClass:'INVARIANT_ORACLE',intake:GEN,
+ timeline:[...firstWeeks,{stepId:'w5d1',at:{week:5,day:1,time:'07:00'},event:{kind:'SYSTEMIC_FATIGUE',interruption:HOLIDAY}},{stepId:'w5d2',at:{week:5,day:2,time:'07:00'},event:{kind:'LOCAL_FATIGUE'}},{stepId:'w5d3',at:{week:5,day:3,time:'07:00'},event:{kind:'WEEKLY_REVIEW'}},review(5,allDone(5))],
+ expectedDomainProperties:[],metamorphicRelations:[],independentAssessment:assess('asked until a review applies the holiday'),domainNotes:''});
+// DEV-21 (F08 boundary): a two-week injury break; clearance twice; plain reviews never repeat it.
+cases.push({caseId:'DEV-21',authorIntent:'A two-week break for an injury; qualified clearance; plain reviews follow without restating it',coverageTags:['DECLARED_BREAK','CLINICAL_BREAK','CLEARANCE'],oracleClass:'INVARIANT_ORACLE',intake:GEN,
+ timeline:[...firstWeeks,{stepId:'w5d1',at:{week:5,day:1,time:'07:00'},event:{kind:'RETURN_AFTER_PAUSE',interruption:{...HOLIDAY,reasonCategory:'INJURY',reason:'ankle sprain',nonclinical:false}}},{stepId:'w5d2',at:{week:5,day:2,time:'07:00'},event:{kind:'WEEKLY_REVIEW'},clearance:'QUALIFIED_CLEARANCE'},{stepId:'w5d3',at:{week:5,day:3,time:'07:00'},event:{kind:'WEEKLY_REVIEW'},clearance:'QUALIFIED_CLEARANCE'}],
+ expectedDomainProperties:[],metamorphicRelations:[],independentAssessment:assess('routes to a human; never the pre-break plan'),domainNotes:''});
+fs.writeFileSync(process.argv[2],JSON.stringify({corpusRevision:'R7D-HARNESS-DEV-3',contaminated:true,cases},null,1)+'\n');
 console.log('dev cases',cases.length);

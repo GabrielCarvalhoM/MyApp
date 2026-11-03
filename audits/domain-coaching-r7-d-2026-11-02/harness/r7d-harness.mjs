@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-// R7-D Fresh Generalization harness (R7D-HARNESS-2; R7D-HARNESS-1 is commit 8eec795, kept for the Phase 2 diagnostic record). Lives outside CoachingCore and has no *.test.* file, so `node --test CoachingCore` never
+// R7-D Fresh Generalization harness (R7D-HARNESS-3, Phase 3.1: P17 and RESTATE_DECLARED_BREAK; R7D-HARNESS-2 is commit b77480f, R7D-HARNESS-1 is
+// commit 8eec795, kept for the Phase 2 diagnostic record). Lives outside CoachingCore and has no *.test.* file, so `node --test CoachingCore` never
 // discovers it and the 884 frozen tests are untouched. It reads the runtime, the freeze record, the policy and the catalog; it never writes
 // inside CoachingCore or into a corpus file. With --first-evaluation it writes only the manifest's `evaluation` block (excluded from the seal).
 //
@@ -15,10 +16,11 @@ import {evaluateExpectations} from './lib/expectations.mjs';
 import {domainPacket,summaryMarkdown} from './lib/report.mjs';
 import {checkCorpus} from '../author/check-corpus.mjs';
 
-export const HARNESS_VERSION='R7D-HARNESS-2';
-// The runtime the final gate evaluates: the R7-D Phase 3 freeze (R7D-FREEZE-1). Before it exists, a development run names a record and passes
-// --allow-runtime-diff; its report then lists the differing files and the evaluated bytes (runtimeSource), never a freeze claim.
-export const DEFAULT_FREEZE_RECORD='CoachingCore/r7/d/RUNTIME_FREEZE_R7D_1.json';
+export const HARNESS_VERSION='R7D-HARNESS-3';
+// The runtime the final gate evaluates: the R7-D Phase 3.1 freeze (R7D-FREEZE-2; R7D-HARNESS-2 named R7D-FREEZE-1). Before it exists, a development
+// run names a record and passes --allow-runtime-diff; its report then lists the differing files and the evaluated bytes (runtimeSource), never a
+// freeze claim.
+export const DEFAULT_FREEZE_RECORD='CoachingCore/r7/d/RUNTIME_FREEZE_R7D_2.json';
 const HERE=import.meta.dirname,REPO=path.resolve(HERE,'../../..');
 const arg=(k,d=null)=>{const i=process.argv.indexOf(k);return i>=0&&process.argv[i+1]&&!process.argv[i+1].startsWith('--')?process.argv[i+1]:d;};
 const flag=k=>process.argv.includes(k);
@@ -120,6 +122,8 @@ function buildReport({corpus,corpusPath,corpusSha,manifest,runtime,runtimeSource
  props.P05={...PROPERTY_META.P05,cases:null,units:0,violations:0,notEvaluableUnits:0,failingCases:[]};fromRel(['CARRIER_CLINICAL','CARRIER_HOLD','RESEND'],'P05');
  fromRel(['DETERMINISM','PERMUTE_OBSERVATIONS','DUPLICATE_SECOND_SOURCE','RENAME_OPAQUE_IDS','LOAD_CONVENTION_EQUIVALENT'],'P13');
  fromRel(['CONSENT_OFF'],'P14');
+ // R7D-HARNESS-3: P17 adds its relation (no repetition is ever needed) to its own checks.
+ fromRel(['RESTATE_DECLARED_BREAK'],'P17');
  for(const t of Object.values(props))t.result=t.violations?'FAIL':t.units?'PASS':'NOT_EVALUABLE';
  const corpusErrors=rows.filter(r=>r.corpusError||r.base?.corpusErrors?.length).map(r=>({caseId:r.caseId,errors:r.corpusError?.errors??r.base.corpusErrors}));
  const harnessErrors=rows.filter(r=>r.harnessError||r.relations?.harnessError).map(r=>({caseId:r.caseId,error:r.harnessError??r.relations.harnessError}));

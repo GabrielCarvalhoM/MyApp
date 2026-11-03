@@ -20,7 +20,8 @@ export const PROPERTY_META={
  P12:{name:'Hybrid composition',type:'AUTOMATED (days, turns) + DOMAIN_JUDGED (interference)',blocking:'GENERALIZATION_BLOCKER'},
  P13:{name:'Determinism and equivalences',type:'AUTOMATED (metamorphic + record clock)',blocking:'GENERALIZATION_BLOCKER (DIRECT_RUNTIME_DELTA)'},
  P14:{name:'Learning inside its envelope',type:'AUTOMATED (consent) + metamorphic',blocking:'GENERALIZATION_BLOCKER'},
- P16:{name:'Load round trip and no fabricated machine load (R7D-PREREG-2)',type:'AUTOMATED',blocking:'GENERALIZATION_BLOCKER (DIRECT_RUNTIME_DELTA)'}
+ P16:{name:'Load round trip and no fabricated machine load (R7D-PREREG-2)',type:'AUTOMATED',blocking:'GENERALIZATION_BLOCKER (DIRECT_RUNTIME_DELTA)'},
+ P17:{name:'Interruption fact persistence (R7D-PREREG-3)',type:'AUTOMATED + metamorphic (RESTATE_DECLARED_BREAK)',blocking:'BLOCKER, no envelope (SAFETY_BLOCKER when a plan is VALID while a stated break is not applied)'}
 };
 const PENDING=['ASK','HOLD','UNSUPPORTED','CLINICAL_HUMAN_REQUIRED'];
 const VALID='VALID_WITHIN_CURRENT_BOUNDED_SCOPE',RECON='REQUIRES_RECONCILIATION';
@@ -106,7 +107,10 @@ function p03(trace,ctx){
  const p=prop('P03');
  trace.steps.forEach((s,i)=>{
   const sent=sentObservations(trace,i),ledger=s.result.actualLedger;
+  // R7D-HARNESS-3: a declared-break row is the report of the review that stated it (same event id, the same interruption).
+  const stated=new Map(trace.steps.slice(0,i+1).filter(x=>x.review.interruption!==undefined).map(x=>[x.review.event?.id,x.review.interruption]));
   if(Array.isArray(ledger))for(const row of ledger){
+   if(isDeclarationRow(row)){unit(p,stated.has(row.eventId)&&canonicalJson(stated.get(row.eventId))===canonicalJson(row.interruption),{at:s.stepId,issue:'RECORD_ROW_WITHOUT_REPORT',eventId:row.eventId,fact:row.fact});continue;}
    const ids=[row.eventId,...Object.keys(row.provenance?.inputHashes??{})],src=ids.map(id=>sent.get(id)).find(Boolean);
    unit(p,!!src,{at:s.stepId,issue:'RECORD_ROW_WITHOUT_REPORT',eventId:row.eventId,sessionId:row.sessionId});
    if(src&&!row.superseded)unit(p,src.actual?.completed===row.actual?.completed||sent.get(row.eventId)?.actual?.completed===row.actual?.completed,{at:s.stepId,issue:'COMPLETED_FLAG_CHANGED',eventId:row.eventId});
@@ -299,12 +303,14 @@ function p10(trace){
    unit(p,canonicalJson(d1.slice(0,d0.length))===canonicalJson(d0),{at:s.stepId,issue:'DECISION_HISTORY_REWRITTEN'});
   }
   const out=s.result.actualLedger;if(!Array.isArray(out))return;
-  const byId=new Map(out.map(r=>[r.eventId,r])),corrected=new Set((s.review.observations??[]).map(o=>o.correctionOf).filter(Boolean));
+  // R7D-HARNESS-3: declared-break rows and execution rows are keyed apart; a declared break is never dropped and its facts never change.
+  const key=r=>(isDeclarationRow(r)?'D|':'O|')+r.eventId,facts=r=>isDeclarationRow(r)?{i:r.interruption,d:r.declaredAt,h:r.inputHash,a:r.athleteId}:{a:r.actual,o:r.observedAt,s:r.sessionId};
+  const byId=new Map(out.map(r=>[key(r),r])),corrected=new Set((s.review.observations??[]).map(o=>o.correctionOf).filter(Boolean));
   for(const r of s.ledgerBefore??[]){
-   const y=byId.get(r.eventId);
-   unit(p,!!y,{at:s.stepId,issue:'RECORD_ROW_DROPPED',eventId:r.eventId});
+   const y=byId.get(key(r));
+   unit(p,!!y,{at:s.stepId,issue:'RECORD_ROW_DROPPED',eventId:r.eventId,...(isDeclarationRow(r)?{fact:r.fact}:{})});
    if(!y)continue;
-   const same=canonicalJson({a:r.actual,o:r.observedAt,s:r.sessionId})===canonicalJson({a:y.actual,o:y.observedAt,s:y.sessionId});
+   const same=canonicalJson(facts(r))===canonicalJson(facts(y));
    unit(p,same,{at:s.stepId,issue:'RECORD_ROW_REWRITTEN',eventId:r.eventId});
    if(!r.superseded&&y.superseded)unit(p,corrected.has(r.eventId),{at:s.stepId,issue:'SUPERSEDED_WITHOUT_CORRECTION',eventId:r.eventId});
    const c0=r.provenance?.firstRecordedAt,c1=y.provenance?.firstRecordedAt;
@@ -314,11 +320,14 @@ function p10(trace){
  return finish(p);
 }
 // ---------- P11 repertoire ----------
+// R7D-HARNESS-3 (R7D-PREREG-3 Δ3): a requested change its own decision asked about or refused (ASK, HOLD, UNSUPPORTED, a clinical route) is not
+// in force: the plan keeps the days and the equipment it had (a break declared with the change is the usual cause, P17 event separation).
+const refused=s=>PENDING.includes(s.result?.status);
 function equipmentTimeline(trace){
  const base=trace.intake?.athlete?.equipment??['BODYWEIGHT'],changes=[];
  return {at:(stepIndex,date)=>{
   let eq=base;
-  for(let i=0;i<=stepIndex;i++){const s=trace.steps[i];if(s.kind!=='EQUIPMENT_CHANGE'||!Array.isArray(s.review.changes?.equipment))continue;const c=s.review.changes,from=c.from??s.asOfLocal,to=c.to??null;if(date>=from&&(!to||date<=to))eq=c.equipment;}
+  for(let i=0;i<=stepIndex;i++){const s=trace.steps[i];if(s.kind!=='EQUIPMENT_CHANGE'||!Array.isArray(s.review.changes?.equipment)||refused(s))continue;const c=s.review.changes,from=c.from??s.asOfLocal,to=c.to??null;if(date>=from&&(!to||date<=to))eq=c.equipment;}
   return new Set([...eq,'BODYWEIGHT']);
  },changes};
 }
@@ -352,7 +361,7 @@ function scheduleTimeline(trace){
  return (stepIndex,date,weekStart)=>{
   let sch={runDays:s0.runDays??[],strengthDays:s0.strengthDays??[],sameTurnConfirmed:s0.sameTurnConfirmed===true},prev=null;
   for(let i=0;i<=stepIndex;i++){
-   const s=trace.steps[i];if(!['SCHEDULE_CHANGE','DOUBLE_CONFLICT'].includes(s.kind))continue;
+   const s=trace.steps[i];if(!['SCHEDULE_CHANGE','DOUBLE_CONFLICT'].includes(s.kind)||refused(s))continue;
    const c=s.review.changes??{},from=c.from??null,to=c.to??null;
    if(from&&(date<from||(to&&date>to)))continue;
    const next={runDays:c.runDays??sch.runDays,strengthDays:c.strengthDays??sch.strengthDays,sameTurnConfirmed:c.sameTurnConfirmed??sch.sameTurnConfirmed};
@@ -452,7 +461,44 @@ function p16(trace){
  }
  return finish(p);
 }
+// ---------- P17 interruption fact persistence (R7D-PREREG-3; QE-R7D-P3-01 (a), (b) and P3-F01; Founder D1-D3) ----------
+// A stated break is a fact whatever event carried it: it survives ASK, HOLD and CLINICAL_HUMAN_REQUIRED routing until a return applies it or a
+// newer stated break replaces it. Checked here on the run as decided: (a) no decision is VALID while it is not applied, the decision that
+// applies it excepted; (c) an event of another kind is never applied over it, nor with the return that applies it (event separation). (b), that
+// no repetition is ever needed, is the RESTATE_DECLARED_BREAK relation (metamorphic.mjs). Clinical routes are P01's and P02's.
+export const isDeclarationRow=r=>!!r&&typeof r==='object'&&r.fact==='INTERRUPTION_DECLARED';
+const ISO=/^\d{4}-\d{2}-\d{2}$/,KIND_ALIASES={REVIEW:'WEEKLY_REVIEW',RETURN:'RETURN_AFTER_PAUSE'};
+/** The break a review states (R7D-INTERFACE-3): an interruption object with at least one field that has a value, whose stated start (startDate, or
+ * the instant startedAt) is not after the review. A template of empty fields states none; a break that begins later is a plan, asked by its own
+ * review only. */
+export function statedBreakOf(review,asOfLocal){
+ const i=review?.interruption;
+ if(!i||typeof i!=='object'||Array.isArray(i)||!Object.values(i).some(v=>v!==null&&v!==undefined))return null;
+ if(typeof i.startDate==='string'&&ISO.test(i.startDate)&&i.startDate>asOfLocal)return null;
+ if(typeof i.startedAt==='string'&&Number.isFinite(Date.parse(i.startedAt))&&Date.parse(i.startedAt)>Date.parse(review.asOf))return null;
+ return i;
+}
+const statedBreak=s=>statedBreakOf(s.review,s.asOfLocal);
+/** The decisions an adopted proposal adds to the plan (none when no proposal was adopted), and whether one of them is a return. */
+const addedDecisions=s=>s.adopted?(s.planAfter.decisions??[]).slice((s.planBefore.decisions??[]).length):[];
+export const appliesReturn=s=>addedDecisions(s).some(d=>d.action==='REESTABLISH');
+const RETURN_CARRIERS=['WEEKLY_REVIEW','RETURN_AFTER_PAUSE'];
+function p17(trace){
+ const p=prop('P17');
+ trace.steps.forEach((s,i)=>{
+  if(!statedBreak(s)||appliesReturn(s))return;
+  // The window: this decision and the later ones until one applies a return, or a later review states a break of its own (it replaces this one).
+  for(let k=i;k<trace.steps.length;k++){
+   const t=trace.steps[k];if(k>i&&statedBreak(t))break;
+   const r=t.result,applies=appliesReturn(t),kind=KIND_ALIASES[t.kind]??t.kind,added=addedDecisions(t).map(d=>d.action);
+   unit(p,applies||r.planValidity?.status!==VALID,{at:t.stepId,issue:'VALID_BEFORE_DECLARED_BREAK_APPLIED',declaredAt:s.stepId,status:r.status,action:r.action});
+   if(r.status!=='CLINICAL_HUMAN_REQUIRED'&&!RETURN_CARRIERS.includes(kind))unit(p,added.every(a=>a==='REPLAN_FROM_EVIDENCE'),{at:t.stepId,issue:'EVENT_APPLIED_OVER_DECLARED_BREAK',declaredAt:s.stepId,kind:t.kind,added});
+   if(applies){unit(p,added.every(a=>['REESTABLISH','REPLAN_FROM_EVIDENCE'].includes(a)),{at:t.stepId,issue:'EVENT_APPLIED_WITH_RETURN',declaredAt:s.stepId,added});break;}
+  }
+ });
+ return finish(p);
+}
 export function evaluateProperties(trace,ctx){
- return {P01:p01(trace),P02:p02(trace),P03:p03(trace,ctx),P04:p04(trace),P06:p06(trace,ctx),P07:p07(trace,ctx),P08:p08(trace),P09:p09(trace),P10:p10(trace),P11:p11(trace,ctx),P12:p12(trace),P13:p13(trace),P14:p14(trace),P16:p16(trace)};
+ return {P01:p01(trace),P02:p02(trace),P03:p03(trace,ctx),P04:p04(trace),P06:p06(trace,ctx),P07:p07(trace,ctx),P08:p08(trace),P09:p09(trace),P10:p10(trace),P11:p11(trace,ctx),P12:p12(trace),P13:p13(trace),P14:p14(trace),P16:p16(trace),P17:p17(trace)};
 }
 export {VALID,RECON};

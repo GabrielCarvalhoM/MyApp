@@ -291,7 +291,18 @@ test('R7-A.1 C4/C5: a waiting or event-conflict day carries no session in either
  const r=start({id:'t7a1-c4w',athlete:{goals:{run:RACE,strength:'STRENGTH'}},schedule:{strengthDays:[0,3]}},6),last=r.p.weeks[6].sessions.filter(s=>s.prescription).at(-1);
  const ret=(days,day,h)=>p=>at(p,6,day,h,travel(p,6,day,days)),off=(kind,day,h)=>p=>at(p,6,day,h,{kind,changes:{unavailableDates:[last.date]}});
  for(const [x,y,day] of [[16,'UNAVAILABLE_DAY',5],[5,'EVENT_WEEK_CONFLICT',4]]){
-  const A=copy(r),B=copy(r);step(A,ret(x,day,'20:00:00')(A.p));step(A,off(y,day,'21:00:00')(A.p));step(B,off(y,day,'20:00:00')(B.p));step(B,ret(x,day,'21:00:00')(B.p));
+  const A=copy(r),B=copy(r),a1=step(A,ret(x,day,'20:00:00')(A.p)),a2=step(A,off(y,day,'21:00:00')(A.p));step(B,off(y,day,'20:00:00')(B.p));step(B,ret(x,day,'21:00:00')(B.p));
+  // R7-D Phase 3.1 (QE-R7D-P3-01): this 16-day return asks when the interruption began (a strength session on its first day), so its break is
+  // recorded and not applied yet; the unavailable day sent after it is asked, never applied over the recorded break (R7D-FREEZE-1 dropped the
+  // break and applied the day on the plan that ignored it). Once the start time is supplied (a corrected return report, in both orders) and
+  // the day is sent again where it was asked, both orders give the same week and the same next start.
+  if(y==='UNAVAILABLE_DAY'){
+   assert.deepEqual(a1.missingInputs,['interruption.startedAt'],y+': the return asks when the interruption began');
+   assert.equal(a2.action,'ASK',y+': '+a2.reason);assert.deepEqual(a2.missingInputs,['interruption.reportedOnItsOwn']);assert.notEqual(a2.planValidity.status,'VALID_WITHIN_CURRENT_BOUNDED_SCOPE');
+   const fix=(p,h)=>{const t=travel(p,6,day,x);return at(p,6,day,h,{...t,interruption:{...t.interruption,startedAt:`${t.interruption.startDate}T21:00:00Z`}});};
+   step(A,fix(A.p,'21:30:00'));step(A,off(y,day,'21:45:00')(A.p));step(B,fix(B.p,'21:30:00'));
+   assert.equal(stateOf(A.p,7),stateOf(B.p,7),y+': next start');
+  }
   assert.equal(line(A.p,6).join('\n'),line(B.p,6).join('\n'),y);
  }
  const g=start({id:'t7a1-c5g'},2),dated=step(g,at(g.p,2,1,'07:00:00',{kind:'GOAL_CHANGE',changes:{goals:{strength:'HYPERTROPHY'},from:g.p.weeks[5].startDate}}));

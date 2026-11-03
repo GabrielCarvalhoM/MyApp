@@ -22,6 +22,12 @@ function intakeSummary(i){
  const a=i.athlete??{};
  return {startDate:i.startDate,weeks:i.weeks,asOf:i.asOf,tz:i.timezoneOffsetMinutes??0,learningConsent:i.learningConsent??null,eligibility:classifyEligibility(a.eligibility),goals:a.goals,event:a.event??(typeof a.goals?.run==='object'?a.goals.run.event:null),runExperience:a.runExperience??null,strengthExperience:a.strengthExperience??null,recent:a.recent??null,knownRuns:(a.knownRuns??[]).length,knownExercises:(a.knownExercises??[]).map(k=>`${k.id} ${k.sets}x${k.reps} ${k.load?.value}${k.load?.unit} ${k.load?.convention}`),equipment:a.equipment??null,pause:a.pause??null,wearable:a.wearableCapabilities?.completeness??null,history:(i.history??[]).length,ageYears:a.ageYears??null,specialPopulation:a.specialPopulation??null,schedule:i.schedule};
 }
+/** R7D-HARNESS-3 (renderer only): the latest declared break the record holds that no return in the plan in force has applied yet. */
+function breakOnRecord(r,plan){
+ const rows=(r.actualLedger??[]).filter(x=>x?.fact==='INTERRUPTION_DECLARED'),last=rows.reduce((m,x)=>!m||Date.parse(x.declaredAt)>=Date.parse(m.declaredAt)?x:m,null);
+ if(!last||(plan?.decisions??[]).some(d=>d.action==='REESTABLISH'&&Date.parse(d.asOf)>=Date.parse(last.declaredAt)))return null;
+ return {declaredAt:last.declaredAt,eventKind:last.eventKind,interruption:last.interruption};
+}
 export function domainPacket(rows,report){
  const cases=[];
  for(const row of rows){
@@ -33,7 +39,7 @@ export function domainPacket(rows,report){
    return {stepId:s.stepId,asOf:s.asOf,kind:s.kind,week:s.weekIndex,
     athlete:{eligibility:classifyEligibility(rv.eligibility),reports:(rv.observations??[]).map(reportText),...(rv.changes?{changes:rv.changes}:{}),...(rv.interruption?{interruption:rv.interruption}:{}),...(rv.substitution?{substitution:rv.substitution}:{}),...(rv.currentDemonstration?{currentDemonstration:rv.currentDemonstration}:{}),...(rv.signals?{signals:rv.signals}:{}),...(rv.choices?{choices:rv.choices}:{}),...(rv.loadConfirmations?{loadConfirmations:rv.loadConfirmations}:{}),...(typeof rv.learningConsent==='boolean'?{learningConsent:rv.learningConsent}:{}),...(s.clearance?{clearance:'QUALIFIED_CLEARANCE'}:{}),notes:s.notes},
     coach:{status:r.status,action:r.action,validity:r.planValidity?.status,question:r.question?{kind:r.question.kind,fromWeek:r.question.fromWeek,sessions:(r.question.unreported?.sessionIds??[]).length}:null,reason:r.reason,missingInputs:r.missingInputs,offers:(r.offers??[]).map(o=>o.type??o.id),loadQuestions:(r.loadQuestions??[]).length,gates:r.gates??null,adopted:s.adopted,
-     currentWeek:weekText(s.planAfter,s.weekIndex,s.asOfLocal),nextWeekProvisional:weekText(s.planAfter,next)}};
+     breakOnRecord:breakOnRecord(r,s.planAfter),currentWeek:weekText(s.planAfter,s.weekIndex,s.asOfLocal),nextWeekProvisional:weekText(s.planAfter,next)}};
   });
   const failures=Object.values(row.properties).filter(p=>p.result==='FAIL').map(p=>({property:p.id,name:p.name,violations:p.violations.slice(0,8),more:Math.max(0,p.violations.length-8)}));
   const notEvaluable=Object.values(row.properties).filter(p=>p.notEvaluable.length).map(p=>({property:p.id,units:p.notEvaluable.length,example:p.notEvaluable[0]}));
@@ -68,6 +74,7 @@ function packetMarkdown(p){
    L.push(`- Athlete: ${said.join(' · ')}`);
    L.push(`- Coach: **${co.status}** / ${co.action} · ${co.validity}${co.question?` · question ${co.question.kind} (${co.question.sessions} sessions, from week ${co.question.fromWeek})`:''}${co.offers.length?' · offers '+co.offers.join(','):''}${co.loadQuestions?` · ${co.loadQuestions} load question(s)`:''}${co.adopted?' · new plan':''}`);
    L.push(`- Reason: ${co.reason}`);
+   if(co.breakOnRecord)L.push(`- Record: break declared ${co.breakOnRecord.declaredAt} with a ${co.breakOnRecord.eventKind} report, not applied yet: ${j(co.breakOnRecord.interruption)}`);
    if(co.gates)L.push(`- Gates: ${j(co.gates)}`);
    if(co.currentWeek)L.push(`- Current week ${co.currentWeek.week} (${co.currentWeek.phase}) from ${s.asOf.slice(0,10)}: ${co.currentWeek.sessions.join(' | ')||'—'}`);
    if(co.nextWeekProvisional)L.push(`- Next week ${co.nextWeekProvisional.week} (${co.nextWeekProvisional.phase}, provisional): ${co.nextWeekProvisional.sessions.join(' | ')}`);

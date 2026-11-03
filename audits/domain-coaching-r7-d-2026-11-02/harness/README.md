@@ -83,3 +83,24 @@ Results:
 - 33/33 witnesses fire, including the tightened P07 (a race date changed without a request) and P16 (a fabricated next-setting fallback), added after the engineering check (CF-5).
 
 The validation also measures finding **P3-F01**: a declared-break answer recorded by a clinical route is not retained across qualified clearance. It is a true finding, not a false block. It already existed on R7C-FREEZE-4 in the return-report form.
+
+## R7D-HARNESS-3 (Phase 3.1)
+
+R7D-HARNESS-2 is commit `b77480f` (the R7D-FREEZE-1 instruments). R7D-HARNESS-3 measures the Phase 3.1 invariant (`R7D-PREREG-3`): a stated break is a fact that survives ASK, HOLD and CLINICAL_HUMAN_REQUIRED routing until a return applies it.
+
+| Change | Where |
+|---|---|
+| **P17 (new):** (a) no VALID decision while a stated break is not applied, the applying decision excepted; (c) event separation (another event kind is never applied over the break, nor with its return) | `lib/properties.mjs` |
+| **RESTATE_DECLARED_BREAK (new, P17(b)):** each stated break its own decision did not apply, stated again in every later review that states none, must change no decision | `lib/metamorphic.mjs` |
+| P03 and P10 read the record's `INTERRUPTION_DECLARED` rows (each matches the review that stated it; never dropped or rewritten) | `lib/properties.mjs` |
+| P11 and P12: a change request its own decision asked about or refused is not in force (PREREG-3 Δ5) | `lib/properties.mjs` |
+| The domain packet shows a recorded break not applied yet (renderer only) | `lib/report.mjs` |
+| Default freeze record `CoachingCore/r7/d/RUNTIME_FREEZE_R7D_2.json` | `r7d-harness.mjs` |
+
+Validation 3: `validation/DEV_CASES_R7D_3.json` (from `build-dev-cases.mjs`: DEV-18 to DEV-21 added; contaminated by construction) and `validation/HARNESS_VALIDATION_R7D_3.json`:
+```
+node validation/run-validation.mjs --dev validation/DEV_CASES_R7D_3.json --out <file> --candidate <worktree root> --f4 $D/rt-f4 --f3 $D/rt-f3 --b2 $D/rt-b2 --prer7a $D/rt-prer7a --d1 $D/rt-d1
+```
+`$D/rt-d1` is `git archive 4cabd18 CoachingCore audits/domain-coaching-r6-2026-10-26/reviews/ssctr-policy-review.json audits/domain-coaching-r7-b0-2026-10-31/reviews/SSCTR_RECHECK_B0.json` (R7D-FREEZE-1), with `CoachingCore/node_modules` copied in, as for the other runtimes.
+
+Results: no false block on the candidate; 10/10 sensitivity rows detected on their own runtime and clean on the candidate (QE-R7D-P3-01(a) and (b) by P17 and RESTATE, P3-F01 by CARRIER_CLINICAL, all on R7D-FREEZE-1); coverage CARRIER_CLINICAL 7, CARRIER_HOLD 1, RESEND 20, RESTATE 4, P17 16 units; 37/37 witnesses fire. P3-F01 is no longer a finding: DEV-17 and DEV-17b are plain no-false-block cases.

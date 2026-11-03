@@ -1,0 +1,15 @@
+# R7-D Phase 3.1 — the Founder's authorization (summary, not verbatim)
+
+Direct Founder request on 2026-11-02, after `R7D_PHASE3_STATUS = READY_FOR_FINAL_HOLDOUT` (`PHASE3_CHECKPOINT.md`). The Founder withholds Phase 4 until `QE-R7D-P3-01` is closed. The request itself is not stored verbatim, by the Founder's standing preference.
+
+**Authorized:** R7-D Phase 3.1 only, on `claude/domain-coaching-r7-d` from `b77480f` (runtime `R7D-FREEZE-1`, bytes `4cabd18`, record `6c03ca8`). No final holdout, no final author, no Phase 4.
+
+**Founder decisions:**
+- **D1, QE-R7D-P3-01: correct it, narrowly.** No acceptance as-is, no envelope, no allowed stale-plan residual, no consumer requirement that the athlete repeat the same interruption fact.
+- **D2, "factual whatever the carrier":** a declared interruption is a factual observation independent of the event that carried it. Retaining the fact is not applying a return. A WEEKLY_REVIEW may decide it at once. Another event kind may still ASK. A clinical condition keeps precedence (CLINICAL_HUMAN_REQUIRED). In every case the fact survives. At the first eligible nonclinical decision it takes part in the factual state with no second statement. The unrelated event that carried it is never applied just because the fact was kept. **FACT RETENTION ≠ DECISION APPLICATION.**
+- **D3, clinical first, unchanged.** A kept interruption never bypasses a clinical hold, never gives a dose while clinical authority is pending, never interprets pain, injury or illness, and never synthesizes clearance. After a qualified clearance the runtime must not fall back to the pre-interruption state merely because the interruption came with a clinically routed decision.
+- **D4, governance:** append the Phase 3 SSCTR-proposed human-revalidation items to the existing queue through its authorized owner, unchanged in scientific content. No broader canon sync. The PCG canon-index entry may stay pending.
+
+**Scope:** only the interruption-persistence family (QE-R7D-P3-01(a), (b), P3-F01), plus the harness, interface and pre-registration needed to measure it. Not reopened: DX-01, DX-02, F03, F04, R7-A, R7-B, R7-C, repertoire, taper or race logic, machine progression, learning, policy numbers, catalog, `product/`, `canon/`, iOS, Figma, Supabase. No broad refactor, no new prescription authority, no new physiological threshold, no open-ended generation.
+
+**Required:** directed tests T1–T7; PREREG-3 (preferably P17) committed before any holdout exists, no envelope; an interface delta; a small mutation set (at least: lost after ASK; lost after a clinical route or clearance; P3-F01 answer dropped; sibling event applied); regression (frozen suite, directed tests, R7-B/B.1/B.2 conformance, HARNESS validation, diagnostic corpus and generated sample as regression only, differential versus R7D-FREEZE-1); a narrow fresh SSCTR recheck and a narrow engineering/reliability check; then `R7D-FREEZE-2` (R7D-FREEZE-1 not overwritten) with a read-only verifier, the queue append, and a compact checkpoint. Then stop.

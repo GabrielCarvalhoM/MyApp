@@ -4,6 +4,7 @@
 import {clone,digestOf,canonicalJson,addDays,localDate} from './util.mjs';
 import {runCase,live} from './client.mjs';
 import {stepView,generationView,planWindow,decisionView} from './canonical.mjs';
+import {statedBreakOf,appliesReturn} from './properties.mjs';
 
 export const RELATIONS={
  DETERMINISM:{property:'P13',blocking:true,desc:'The same case run twice gives byte-identical decisions'},
@@ -14,6 +15,7 @@ export const RELATIONS={
  RESEND:{property:'P05',blocking:true,desc:'Every decision re-sends the previous decision\'s reports (same ids)'},
  CARRIER_CLINICAL:{property:'P05',blocking:true,desc:'An answer to UNREPORTED_TRAINING recorded by a clinical substitution, then qualified clearance; compared at the first eligible decision'},
  CARRIER_HOLD:{property:'P05',blocking:true,desc:'An answer in the program\'s last week recorded by a refused schedule change (HOLD); compared at the next decision'},
+ RESTATE_DECLARED_BREAK:{property:'P17',blocking:true,desc:'A stated break its own decision did not apply, stated again with every later review that states none until a return is recorded: identical decisions (no repetition is ever needed)'},
  CONSENT_OFF:{property:'P14',blocking:'LEARNING_NOISE cases only',desc:'Learning consent off from the start'},
  CLOCKLESS_CONTROL:{property:'C3 legacy',blocking:false,desc:'The carried record loses provenance.firstRecordedAt (pre-FREEZE-4 records); differences are C3 consumer conditions'},
  CALENDAR_SHIFT:{property:'P15 (PROPOSED_ONLY)',blocking:false,desc:'Every date one week earlier; decisions compared without dates'},
@@ -120,6 +122,31 @@ function carrier(relation,rt,kase,base){
  const applicable=out.filter(x=>x.applicable);
  return result(relation,{applicable:applicable.length>0,units:applicable.length,violations:applicable.filter(x=>x.violation).map(x=>({at:x.at,...x.violation})),notApplicable:out.filter(x=>!x.applicable)});
 }
+/**
+ * R7D-HARNESS-3 (R7D-PREREG-3, P17): a stated break that its own decision did not apply (a question, a refusal, a clinical route, another event's
+ * question) is a fact the athlete never has to state again. The variant states it again, as the same interruption object, with every later review
+ * that states none of its own, until the variant's plan records a return at or after the declaration, or a later review states a break of its
+ * own (it replaces this one). Every later decision of the two runs must be identical in what it decides: validity, question, pending state, the
+ * whole plan and its phases. Ids and free text are not compared (the interruption is named by its first report in one run, by its restatement in
+ * the other).
+ */
+function restate(rt,kase,base){
+ const units=base.steps.map((s,i)=>({s,i,brk:statedBreakOf(s.review,s.asOfLocal)})).filter(x=>x.brk&&!appliesReturn(x.s));
+ if(!units.length)return result('RESTATE_DECLARED_BREAK',{applicable:false});
+ const out=[];
+ for(const {s,i,brk} of units){
+  const clock=Date.parse(s.asOf);let done=false;
+  const v=runCase(rt,kase,{review:(r,{step,st})=>{
+   const k=kase.timeline.indexOf(step);if(k<=i||done)return r;
+   if(st.program.decisions.some(d=>d.action==='REESTABLISH'&&Date.parse(d.asOf)>=clock)){done=true;return r;}
+   if(r.interruption!==undefined&&r.interruption!==null){if(statedBreakOf(r,localDate(r.asOf,st.program.timezoneOffsetMinutes??0)))done=true;return r;}
+   return {...r,interruption:clone(brk)};
+  }});
+  const view=t=>({gen:null,steps:t.steps.slice(i+1).map(x=>({id:x.stepId,...planCentric(x,'ALL')}))}),d=firstDiff(view(base),view(v));
+  out.push({at:s.stepId,applicable:true,...(d?{violation:{issue:'DECISIONS_DIFFER',...d}}:{}),variantErrors:[...v.corpusErrors,...v.runtimeErrors]});
+ }
+ return result('RESTATE_DECLARED_BREAK',{applicable:true,units:out.length,violations:out.filter(x=>x.violation).map(x=>({at:x.at,...x.violation})),variantErrors:out.flatMap(x=>x.variantErrors)});
+}
 function clockless(rt,kase,base){
  if(base.steps.length<2)return result('CLOCKLESS_CONTROL',{applicable:false});
  const strip=st=>{st.ledger=st.ledger.map(r=>{if(!r.provenance?.firstRecordedAt)return r;const {firstRecordedAt,...prov}=r.provenance;return {...r,provenance:prov};});};
@@ -176,6 +203,7 @@ export function runRelations(rt,kase,base,ctx,{only=null}={}){
  if(want('RESEND'))out.RESEND=resend(rt,kase,base);
  if(want('CARRIER_CLINICAL'))out.CARRIER_CLINICAL=carrier('CARRIER_CLINICAL',rt,kase,base);
  if(want('CARRIER_HOLD'))out.CARRIER_HOLD=carrier('CARRIER_HOLD',rt,kase,base);
+ if(want('RESTATE_DECLARED_BREAK'))out.RESTATE_DECLARED_BREAK=restate(rt,kase,base);
  if(want('CONSENT_OFF'))out.CONSENT_OFF=consent(rt,kase,base);
  if(want('CLOCKLESS_CONTROL'))out.CLOCKLESS_CONTROL=clockless(rt,kase,base);
  if(want('CALENDAR_SHIFT'))out.CALENDAR_SHIFT=shift(rt,kase,base);
