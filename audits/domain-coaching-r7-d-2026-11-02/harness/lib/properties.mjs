@@ -467,8 +467,8 @@ function p16(trace){
  return finish(p);
 }
 // ---------- P17 interruption fact persistence (R7D-PREREG-3; QE-R7D-P3-01 (a), (b) and P3-F01; Founder D1-D3) ----------
-// A stated break is a fact whatever event carried it: it survives ASK, HOLD and CLINICAL_HUMAN_REQUIRED routing until a return applies it or a
-// newer stated break replaces it. Checked here on the run as decided: (a) no decision is VALID while it is not applied, the decision that
+// A stated break is a fact whatever event carried it: it survives ASK, HOLD and CLINICAL_HUMAN_REQUIRED routing until a return applies it (since
+// R7D-PREREG-4 a newer stated break replaces it only when it names it; P18 follows it past a newer one). Checked here on the run as decided: (a) no decision is VALID while it is not applied, the decision that
 // applies it excepted; (c) an event of another kind is never applied over it, nor with the return that applies it (event separation). (b), that
 // no repetition is ever needed, is the RESTATE_DECLARED_BREAK relation (metamorphic.mjs). Clinical routes are P01's and P02's.
 export const isDeclarationRow=r=>!!r&&typeof r==='object'&&r.fact==='INTERRUPTION_DECLARED';
@@ -497,7 +497,8 @@ function p17(trace){
  const p=prop('P17');
  trace.steps.forEach((s,i)=>{
   if(!statedBreak(s)||appliesReturn(s)||refusedUnread(s))return;
-  // The window: this decision and the later ones until one applies a return, or a later review states a break of its own (it replaces this one).
+  // The window: this decision and the later ones until one applies a return, or a later review states a break of its own (the window of that
+  // break then takes over; the older break stays open, and P18 checks it at the return: R7D-PREREG-4).
   for(let k=i;k<trace.steps.length;k++){
    const t=trace.steps[k];if(k>i&&statedBreak(t))break;
    const r=t.result,applies=appliesReturn(t),kind=KIND_ALIASES[t.kind]??t.kind,added=addedDecisions(t).map(d=>d.action);

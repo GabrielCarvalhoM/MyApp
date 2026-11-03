@@ -130,13 +130,23 @@ function carrier(relation,rt,kase,base){
  * R7D-HARNESS-3 (R7D-PREREG-3, P17): a stated break that its own decision did not apply (a question, a refusal, a clinical route, another event's
  * question) is a fact the athlete never has to state again. The variant states it again, as the same interruption object, with every later review
  * that states none of its own, until the variant's plan records a return at or after the declaration, or a later review states a break of its
- * own (it replaces this one). Every later decision of the two runs must be identical in what it decides: validity, question, pending state, the
+ * own (the variant then stops: that review states its own break; R7D-PREREG-4). Every later decision of the two runs must be identical in what it decides: validity, question, pending state, the
  * whole plan and its phases. Ids and free text are not compared (the interruption is named by its first report in one run, by its restatement in
  * the other).
  */
 function restate(rt,kase,base){
- const units=base.steps.map((s,i)=>({s,i,brk:statedBreakOf(s.review,s.asOfLocal)})).filter(x=>x.brk&&!appliesReturn(x.s));
- if(!units.length)return result('RESTATE_DECLARED_BREAK',{applicable:false});
+ // R7D-PREREG-4 addendum (QE-R7D-P32-01; B4 read over declarations): a stated correction of a break a return already applied (its episodeId names a
+ // recorded return's episode or event) is not restated when another break is stated in its window (from the last return before it to the next
+ // one). Kept, such a correction is not read and the other break is applied (listed as notApplied, which P18(a) accounts for); stated again, it is
+ // asked (a correction across a kept break). The two differ by design, so this relation does not hold there; P18 measures that path. Excluded units
+ // are listed. A newer stated break no longer ends the window by replacing the older one (Phase 3.2): the variant stops at it only because the
+ // review then states a break of its own.
+ const all=base.steps.map((s,i)=>({s,i,brk:statedBreakOf(s.review,s.asOfLocal)})).filter(x=>x.brk&&!appliesReturn(x.s));
+ const named=(s,brk)=>{const n=typeof brk.episodeId==='string'?brk.episodeId:null;return !!n&&(s.planBefore?.decisions??[]).some(d=>d.action==='REESTABLISH'&&(d.interruption?.episode===n||d.eventId===n));};
+ const bounds=i=>{let from=0,to=base.steps.length-1;for(let m=i-1;m>=0;m--)if(appliesReturn(base.steps[m])){from=m+1;break;}for(let m=i+1;m<base.steps.length;m++)if(appliesReturn(base.steps[m])){to=m;break;}return [from,to];};
+ const across=({s,i,brk})=>{if(!named(s,brk))return false;const [from,to]=bounds(i);return base.steps.slice(from,to+1).some((t,k)=>from+k!==i&&!!statedBreakOf(t.review,t.asOfLocal));};
+ const excluded=all.filter(across).map(x=>({at:x.s.stepId,reason:'B4_CORRECTION_ACROSS_KEPT_BREAK'})),units=all.filter(x=>!across(x));
+ if(!units.length)return result('RESTATE_DECLARED_BREAK',{applicable:false,...(excluded.length?{excluded}:{})});
  const out=[];
  for(const {s,i,brk} of units){
   const clock=Date.parse(s.asOf);let done=false;
@@ -149,7 +159,7 @@ function restate(rt,kase,base){
   const view=t=>({gen:null,steps:t.steps.slice(i+1).map(x=>({id:x.stepId,...planCentric(x,'ALL')}))}),d=firstDiff(view(base),view(v));
   out.push({at:s.stepId,applicable:true,...(d?{violation:{issue:'DECISIONS_DIFFER',...d}}:{}),variantErrors:[...v.corpusErrors,...v.runtimeErrors]});
  }
- return result('RESTATE_DECLARED_BREAK',{applicable:true,units:out.length,violations:out.filter(x=>x.violation).map(x=>({at:x.at,...x.violation})),variantErrors:out.flatMap(x=>x.variantErrors)});
+ return result('RESTATE_DECLARED_BREAK',{applicable:true,units:out.length,violations:out.filter(x=>x.violation).map(x=>({at:x.at,...x.violation})),variantErrors:out.flatMap(x=>x.variantErrors),...(excluded.length?{excluded}:{})});
 }
 // R7D-HARNESS-4 (P18 metamorphic, R7D-PREREG-4): a newer break that names no break (seven days ending the day before; a work trip, nonclinical)
 // stated in a review that applied a return reading a break the record kept (the review states none of its own). The newer break's relation to

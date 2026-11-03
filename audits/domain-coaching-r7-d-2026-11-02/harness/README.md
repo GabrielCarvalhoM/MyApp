@@ -137,3 +137,14 @@ node validation/run-validation.mjs --dev validation/DEV_CASES_R7D_4.json --out <
 `$D/rt-d2` is `git archive 93f3a38 CoachingCore audits/domain-coaching-r6-2026-10-26/reviews/ssctr-policy-review.json audits/domain-coaching-r7-b0-2026-10-31/reviews/SSCTR_RECHECK_B0.json` (R7D-FREEZE-2; add the three R3/R4/R5 records above for the whole suite), with `CoachingCore/node_modules` copied in.
 
 Results: no false block on the candidate; 13/13 sensitivity rows detected on their own runtime and clean on the candidate (SSCTR-P31-F02 by P18 on DEV-22/23/24 and by INSERT_NEWER_BREAK on DEV-18/20, and the SSCTR-P31-F03 relabel path by P18 on DEV-25, all on R7D-FREEZE-2); coverage CARRIER_CLINICAL 7, CARRIER_HOLD 1, RESEND 24, RESTATE 13, INSERT_NEWER_BREAK 4, P17 39, P18 6 units; 42/42 witnesses fire (W-P18a, W-P18b, W-INSERT added).
+
+**After the Phase 3.2 checks** (instrument text and oracles only, no runtime byte; R7D-PREREG-4 addendum Δ9–Δ10):
+- RESTATE_DECLARED_BREAK does not restate a stated correction of an applied break when another break is stated in its window. Under B4, kept, it is not read (`notApplied`); stated again, it is asked. Excluded units are listed (`B4_CORRECTION_ACROSS_KEPT_BREAK`), and P18 measures that path (QE-R7D-P32-01).
+- DEV-26 (the QE-FB-2 form: a correction of an applied holiday while a trip is kept) is added to `DEV_CASES_R7D_4.json`, and validation 4 is re-run with it. It is also a sensitivity case for the p4b path on R7D-FREEZE-2.
+- The P17 and RESTATE comments no longer say that a newer stated break replaces an older one (QE-R7D-P32-08).
+
+Validation 4, re-run:
+- no false block;
+- 13/13 sensitivity rows, with F02 by P18 now on DEV-22/23/24/26;
+- coverage: RESTATE 14 units (1 excluded under B4: DEV-26@w7d1), INSERT_NEWER_BREAK 5, P17 44, P18 9;
+- 42/42 witnesses.

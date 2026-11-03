@@ -1,7 +1,7 @@
 {
  "validation": "R7D-HARNESS-VALIDATION-4",
  "harness": "R7D-HARNESS-4",
- "devCorpusSha256": "ff867e6fae9114b422f67663f49e33bc6631f2e1cc949d3d072529655e9fc552",
+ "devCorpusSha256": "d1e90a9e7a808099ba4c5099161ed692fa191767e401c769d8931c85c9a35933",
  "runs": [
   {
    "runtime": {
@@ -249,6 +249,13 @@
      "caseId": "DEV-25",
      "generation": "PROPOSED",
      "steps": 5,
+     "fails": [],
+     "differences": []
+    },
+    {
+     "caseId": "DEV-26",
+     "generation": "PROPOSED",
+     "steps": 8,
      "fails": [],
      "differences": []
     }
@@ -1799,7 +1806,7 @@
     "runtimeDiff": []
    },
    "purpose": "SENSITIVITY",
-   "defect": "SSCTR-P31-F02 (a newer break that names none replaces a kept one: the next review re-enters from the newer break alone)",
+   "defect": "SSCTR-P31-F02 (a newer break that names none replaces a kept one: the next review re-enters from the newer break alone; a correction of an applied break ends a kept one, the p4b path)",
    "cases": [
     {
      "caseId": "DEV-22",
@@ -1871,6 +1878,22 @@
       }
      ],
      "detected": true
+    },
+    {
+     "caseId": "DEV-26",
+     "steps": 8,
+     "stopped": null,
+     "runtimeErrors": [],
+     "fails": [
+      {
+       "property": "P18",
+       "issues": [
+        "OLDER_BREAK_DROPPED"
+       ],
+       "n": 1
+      }
+     ],
+     "detected": true
     }
    ],
    "onCandidate": [
@@ -1884,6 +1907,10 @@
     },
     {
      "caseId": "DEV-24",
+     "fails": []
+    },
+    {
+     "caseId": "DEV-26",
      "fails": []
     }
    ],
@@ -2777,7 +2804,7 @@
    ]
   },
   "RESEND": {
-   "units": 24,
+   "units": 25,
    "violations": 0,
    "cases": [
     {
@@ -2923,12 +2950,21 @@
      "units": 1,
      "violations": 0,
      "notApplicable": null
+    },
+    {
+     "caseId": "DEV-26",
+     "units": 1,
+     "violations": 0,
+     "notApplicable": null
     }
    ]
   },
   "RESTATE_DECLARED_BREAK": {
-   "units": 13,
+   "units": 14,
    "violations": 0,
+   "excludedB4": [
+    "DEV-26@w7d1"
+   ],
    "cases": [
     {
      "caseId": "DEV-18",
@@ -2977,11 +3013,23 @@
      "units": 2,
      "violations": 0,
      "notApplicable": null
+    },
+    {
+     "caseId": "DEV-26",
+     "units": 1,
+     "violations": 0,
+     "notApplicable": null,
+     "excluded": [
+      {
+       "at": "w7d1",
+       "reason": "B4_CORRECTION_ACROSS_KEPT_BREAK"
+      }
+     ]
     }
    ]
   },
   "INSERT_NEWER_BREAK": {
-   "units": 4,
+   "units": 5,
    "violations": 0,
    "cases": [
     {
@@ -3007,12 +3055,18 @@
      "units": 1,
      "violations": 0,
      "notApplicable": null
+    },
+    {
+     "caseId": "DEV-26",
+     "units": 1,
+     "violations": 0,
+     "notApplicable": null
     }
    ]
   },
   "result": "COVERED",
   "P17": {
-   "units": 39,
+   "units": 44,
    "violations": 0,
    "cases": [
     {
@@ -3054,11 +3108,16 @@
      "caseId": "DEV-25",
      "units": 3,
      "violations": 0
+    },
+    {
+     "caseId": "DEV-26",
+     "units": 5,
+     "violations": 0
     }
    ]
   },
   "P18": {
-   "units": 6,
+   "units": 9,
    "violations": 0,
    "cases": [
     {
@@ -3068,6 +3127,11 @@
     },
     {
      "caseId": "DEV-24",
+     "units": 3,
+     "violations": 0
+    },
+    {
+     "caseId": "DEV-26",
      "units": 3,
      "violations": 0
     }
@@ -3080,12 +3144,12 @@
   "carrierUnits": {
    "CARRIER_CLINICAL": 7,
    "CARRIER_HOLD": 1,
-   "RESEND": 24,
-   "RESTATE_DECLARED_BREAK": 13,
-   "INSERT_NEWER_BREAK": 4
+   "RESEND": 25,
+   "RESTATE_DECLARED_BREAK": 14,
+   "INSERT_NEWER_BREAK": 5
   },
-  "p17Units": 39,
-  "p18Units": 6,
+  "p17Units": 44,
+  "p18Units": 9,
   "sensitivity": [
    {
     "defect": "DX-01 (a same-day day-precision report drops out of the record at the next decision)",
@@ -3128,7 +3192,7 @@
     "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
    },
    {
-    "defect": "SSCTR-P31-F02 (a newer break that names none replaces a kept one: the next review re-enters from the newer break alone)",
+    "defect": "SSCTR-P31-F02 (a newer break that names none replaces a kept one: the next review re-enters from the newer break alone; a correction of an applied break ends a kept one, the p4b path)",
     "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
    },
    {

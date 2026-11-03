@@ -150,5 +150,13 @@ cases.push({caseId:'DEV-24',authorIntent:'A kept two-week holiday and a separate
 cases.push({caseId:'DEV-25',authorIntent:'A two-week break for an injury, then a one-week trip reported with a return; clearance',coverageTags:['DECLARED_BREAK','MULTIPLE_BREAKS','CLINICAL_BREAK','CLEARANCE'],oracleClass:'INVARIANT_ORACLE',intake:GEN,
  timeline:[...twoWeeks,{stepId:'w4d0',at:{week:4,day:0,time:'07:00'},event:{kind:'WEEKLY_REVIEW',interruption:{...VAC14,reasonCategory:'INJURY',reason:'ankle sprain',nonclinical:false}}},{stepId:'w5d0',at:{week:5,day:0,time:'07:00'},event:{kind:'RETURN_AFTER_PAUSE',interruption:TRIP7},clearance:'QUALIFIED_CLEARANCE'},{stepId:'w5d1',at:{week:5,day:1,time:'07:00'},event:{kind:'WEEKLY_REVIEW'},clearance:'QUALIFIED_CLEARANCE'}],
  expectedDomainProperties:[],metamorphicRelations:[],independentAssessment:assess('routes to a human; the trip never relabels the injury break'),domainNotes:''});
+// DEV-26 (after the Phase 3.2 engineering check, QE-R7D-P32-01; the QE-FB-2 form): the holiday applied by a return report, weeks 4-5 trained and
+// reviewed, a one-week trip in week 6 kept with a fatigue report, then a correction of the applied holiday (its episodeId), then a plain review.
+cases.push({caseId:'DEV-26',authorIntent:'A holiday applied, two trained weeks, a trip kept with a fatigue report, then a correction of the holiday\'s dates and a plain review',coverageTags:['DECLARED_BREAK','MULTIPLE_BREAKS','CORRECTION_ACROSS_KEPT_BREAK'],oracleClass:'INVARIANT_ORACLE',intake:GEN,
+ timeline:[...twoWeeks,{stepId:'w4d0',at:{week:4,day:0,time:'07:00'},event:{kind:'RETURN_AFTER_PAUSE',interruption:VAC14}},review(4,allDone(4)),review(5,allDone(5)),
+  {stepId:'w7d0',at:{week:7,day:0,time:'07:00'},event:{kind:'SYSTEMIC_FATIGUE',interruption:{startDate:'2026-12-14',endDate:'2026-12-20',days:7,reasonCategory:'WORK',reason:'Work trip, no training',nonclinical:true}}},
+  {stepId:'w7d1',at:{week:7,day:1,time:'07:00'},event:{kind:'RETURN_AFTER_PAUSE',interruption:{...VAC14,endDate:'2026-11-28',days:13,episodeId:'DEV-26-w4d0'}}},
+  {stepId:'w7d2',at:{week:7,day:2,time:'07:00'},event:{kind:'WEEKLY_REVIEW'}}],
+ expectedDomainProperties:[],metamorphicRelations:[],independentAssessment:assess('the kept trip is applied first; the correction of the earlier, applied holiday is asked when sent and not read while the trip is kept'),domainNotes:''});
 fs.writeFileSync(process.argv[2],JSON.stringify({corpusRevision:'R7D-HARNESS-DEV-4',contaminated:true,cases},null,1)+'\n');
 console.log('dev cases',cases.length);

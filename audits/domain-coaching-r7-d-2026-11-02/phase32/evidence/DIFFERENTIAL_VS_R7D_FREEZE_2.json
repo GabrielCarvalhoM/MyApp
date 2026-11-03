@@ -2,9 +2,9 @@
  "probe": "R7D-PHASE32-DIFFERENTIAL-1",
  "baseline": "R7D-FREEZE-2",
  "d2root": "C:\\Users\\carva\\AppData\\Local\\Temp\\claude\\C--Users-carva-Desktop-myApp-MyApp\\d1937e9f-9b5d-4461-830d-75a2721d33cb\\scratchpad\\rt\\rt-d2",
- "cases": 145,
+ "cases": 146,
  "same": 141,
- "differing": 4,
+ "differing": 5,
  "unexplained": [],
  "differingCases": [
   {
@@ -54,6 +54,18 @@
     ],
     "status": "MODIFY"
    }
+  },
+  {
+   "corpus": "HARNESS_DEV_4",
+   "caseId": "DEV-26",
+   "first": "w7d1",
+   "trigger": {
+    "at": "w7d1",
+    "open": [
+     "w7d0"
+    ],
+    "status": "MODIFY"
+   }
   }
  ],
  "casesWithFamilyTrigger": [
@@ -61,7 +73,8 @@
   "DEV-22",
   "DEV-23",
   "DEV-24",
-  "DEV-25"
+  "DEV-25",
+  "DEV-26"
  ],
  "rows": [
   {
@@ -1657,6 +1670,46 @@
      "offers": [],
      "pending": {
       "status": "CLINICAL_HUMAN_REQUIRED",
+      "signal": false
+     }
+    }
+   }
+  },
+  {
+   "corpus": "HARNESS_DEV_4",
+   "caseId": "DEV-26",
+   "same": false,
+   "firstDifference": "w7d1",
+   "trigger": {
+    "at": "w7d1",
+    "open": [
+     "w7d0"
+    ],
+    "status": "MODIFY"
+   },
+   "familyTriggers": [
+    "w7d1"
+   ],
+   "explained": true,
+   "atFirst": {
+    "freeze2": {
+     "status": "MODIFY",
+     "action": "REESTABLISH",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "question": null,
+     "gates": null,
+     "offers": [],
+     "pending": null
+    },
+    "candidate": {
+     "status": "ASK",
+     "action": "ASK",
+     "validity": "REQUIRES_RECONCILIATION",
+     "question": null,
+     "gates": null,
+     "offers": [],
+     "pending": {
+      "status": "ASK",
       "signal": false
      }
     }

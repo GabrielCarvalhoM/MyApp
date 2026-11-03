@@ -1,6 +1,6 @@
 # R7-D harness run summary — R7-D Phase 3.2 regression only (generated diagnostic sample, not fresh evidence)
 
-- Harness R7D-HARNESS-4; first evaluation: false; 2026-11-03T03:02:42.495Z → 2026-11-03T03:02:51.739Z; node v24.19.0.
+- Harness R7D-HARNESS-4; first evaluation: false; 2026-11-03T03:42:14.401Z → 2026-11-03T03:42:23.827Z; node v24.19.0.
 - Runtime R7D-FREEZE-2 (88d2495ae06310abb8eff1ddb7a02b9880994ae9), files 292/303 equal to the record.
 - Corpus R7D-GENERATED-DIAGNOSTIC-1 (100 cases), sha256 449b7d91d7b6a0235a473650dc2c256e8ef3b50bf4255e82cddd83b0e1601fb3.
 - Freshness: no manifest (development run).

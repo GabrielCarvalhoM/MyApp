@@ -8841,6 +8841,384 @@
     "concerns": []
    },
    "domainNotes": ""
+  },
+  {
+   "caseId": "DEV-26",
+   "authorIntent": "A holiday applied, two trained weeks, a trip kept with a fatigue report, then a correction of the holiday's dates and a plain review",
+   "coverageTags": [
+    "DECLARED_BREAK",
+    "MULTIPLE_BREAKS",
+    "CORRECTION_ACROSS_KEPT_BREAK"
+   ],
+   "oracleClass": "INVARIANT_ORACLE",
+   "intake": {
+    "version": "R6-INTAKE-1",
+    "synthetic": true,
+    "purpose": "SHADOW_REFERENCE",
+    "asOf": "2026-11-01",
+    "startDate": "2026-11-02",
+    "weeks": 12,
+    "learningConsent": true,
+    "athlete": {
+     "id": "dev-gen",
+     "ageEligible": true,
+     "eligibility": {
+      "status": "NONCLINICAL_CONFIRMED",
+      "assessedAt": "2026-11-01",
+      "pain": false,
+      "persistentPain": false,
+      "injury": false,
+      "illness": false,
+      "functionalLimitation": false,
+      "clinicalConcern": false
+     },
+     "goals": {
+      "run": "PERFORMANCE",
+      "strength": "GENERAL"
+     },
+     "runExperience": "INTERMEDIATE",
+     "strengthExperience": "INTERMEDIATE",
+     "recent": {
+      "runDaysPerWeek": 3,
+      "runMinutesPerWeek": 150,
+      "longestRunMinutes": 60,
+      "strengthDaysPerWeek": 2
+     },
+     "equipment": [
+      "BARBELL",
+      "RACK",
+      "BENCH",
+      "DUMBBELLS",
+      "KETTLEBELL",
+      "MACHINES",
+      "BANDS",
+      "PULL_UP_BAR"
+     ],
+     "knownExercises": [
+      {
+       "id": "back-squat",
+       "sets": 3,
+       "reps": 5,
+       "load": {
+        "value": 82.5,
+        "unit": "KG",
+        "convention": "TOTAL"
+       },
+       "rir": 2,
+       "current": true,
+       "familiar": true,
+       "tolerated": true,
+       "observedAt": "2026-10-29"
+      }
+     ],
+     "exerciseRotationPreference": "FIXED"
+    },
+    "schedule": {
+     "runDays": [
+      1,
+      3,
+      6
+     ],
+     "strengthDays": [
+      0,
+      4
+     ],
+     "runTurn": "AM",
+     "strengthTurn": "PM",
+     "runMinutes": 60,
+     "strengthMinutes": 60,
+     "longRunDay": 6,
+     "longRunMinutes": 90
+    }
+   },
+   "timeline": [
+    {
+     "stepId": "w0r",
+     "at": {
+      "week": 0,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         0
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         0
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "w1r",
+     "at": {
+      "week": 1,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         1
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         1
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "w4d0",
+     "at": {
+      "week": 4,
+      "day": 0,
+      "time": "07:00"
+     },
+     "event": {
+      "kind": "RETURN_AFTER_PAUSE",
+      "interruption": {
+       "startDate": "2026-11-16",
+       "endDate": "2026-11-29",
+       "days": 14,
+       "reasonCategory": "VACATION",
+       "reason": "Holiday, no training at all",
+       "nonclinical": true
+      }
+     }
+    },
+    {
+     "stepId": "w4r",
+     "at": {
+      "week": 4,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         4
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         4
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "w5r",
+     "at": {
+      "week": 5,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         5
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         5
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "w7d0",
+     "at": {
+      "week": 7,
+      "day": 0,
+      "time": "07:00"
+     },
+     "event": {
+      "kind": "SYSTEMIC_FATIGUE",
+      "interruption": {
+       "startDate": "2026-12-14",
+       "endDate": "2026-12-20",
+       "days": 7,
+       "reasonCategory": "WORK",
+       "reason": "Work trip, no training",
+       "nonclinical": true
+      }
+     }
+    },
+    {
+     "stepId": "w7d1",
+     "at": {
+      "week": 7,
+      "day": 1,
+      "time": "07:00"
+     },
+     "event": {
+      "kind": "RETURN_AFTER_PAUSE",
+      "interruption": {
+       "startDate": "2026-11-16",
+       "endDate": "2026-11-28",
+       "days": 13,
+       "reasonCategory": "VACATION",
+       "reason": "Holiday, no training at all",
+       "nonclinical": true,
+       "episodeId": "DEV-26-w4d0"
+      }
+     }
+    },
+    {
+     "stepId": "w7d2",
+     "at": {
+      "week": 7,
+      "day": 2,
+      "time": "07:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     }
+    }
+   ],
+   "expectedDomainProperties": [],
+   "metamorphicRelations": [],
+   "independentAssessment": {
+    "rationale": "the kept trip is applied first; the correction of the earlier, applied holiday is asked when sent and not read while the trip is kept",
+    "preferredCoachingBehavior": "the kept trip is applied first; the correction of the earlier, applied holiday is asked when sent and not read while the trip is kept",
+    "acceptableAlternatives": [],
+    "concerns": []
+   },
+   "domainNotes": ""
   }
  ]
 }
