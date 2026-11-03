@@ -1162,3 +1162,31 @@ A direct Founder request authorizes **R7-D Phase 3 only**: a narrow correction o
 - **Next:** Phase 4 (sealed fresh holdout and final gates) on its own Founder authorization, after the Founder decides QE-R7D-P3-01 and the SSCTR interpretation question, and the proposed revalidation items are appended by their owner.
 
   [Checkpoint](audits/domain-coaching-r7-d-2026-11-02/PHASE3_CHECKPOINT.md).
+
+<!-- DOMAIN_COACHING_R7D: DCR7D-20261102-phase31-r1 -->
+## DOMAIN_COACHING_R7-D — Fresh Generalization Gate — Phase 3.1 (narrow closure of QE-R7D-P3-01) COMPLETE / 2026-11-02
+
+A direct Founder request authorizes **R7-D Phase 3.1 only**:
+- correct QE-R7D-P3-01 (a), (b) and P3-F01 under D1–D3 (a declared interruption is a fact whatever event carried it; fact retention ≠ decision application; clinical first unchanged);
+- register the measurement (R7D-PREREG-3) before any holdout;
+- run two narrow fresh reviews;
+- freeze R7D-FREEZE-2;
+- append the SSCTR revalidation items (D4).
+
+No final holdout, no change to V1 authority, no push or merge. Summary of the authorization: `audits/domain-coaching-r7-d-2026-11-02/phase31/AUTHORIZATION_PHASE31.md`.
+
+- **States:** R7D_PHASE31_STATUS = COMPLETE; FINAL_HOLDOUT_EXISTS = NO; V1_COACHING_AUTHORITY_READY = NO.
+- **Runtime:** R7D-FREEZE-2.
+  - Bytes reviewed in `1357638`; bound files at `88d2495`; record `93f3a38`.
+  - Source 211b662d…efbe5, manifest d74eefbb…b265, 303 files, 921/921; verifier 26/26.
+  - Delta from R7D-FREEZE-1 (superseded, not edited): `r6-adaptation.mjs` only. A stated break is recorded (INTERRUPTION_DECLARED) through ASK, HOLD and clinical routes until a return applies it.
+- **Gates:**
+  - SSCTR-R7D-P31-RECHECK-r1 ACCEPT_WITH_CONDITIONS;
+  - R7D-ENGINEERING-PHASE31-CHECK-1 READY_WITH_CONDITIONS;
+  - no blocker.
+- **Instruments:** R7D-HARNESS-3 (P17, RESTATE_DECLARED_BREAK), R7D-PREREG-3, R7D-INTERFACE-3 delta, final brief 2.
+- **Queue:** 230 → 233; three items name R7D-FREEZE-2.
+- **Open for the Founder before Phase 4:** SSCTR-P31-F02, a newer break for a separate period ends a kept one. It is a domain defect, not safe, with no envelope. Also F08 (QE-R7D-P31-01), before any consumer use.
+- **Next:** the Founder's F02 decision, then Phase 4 on its own authorization.
+
+  [Checkpoint](audits/domain-coaching-r7-d-2026-11-02/PHASE31_CHECKPOINT.md).

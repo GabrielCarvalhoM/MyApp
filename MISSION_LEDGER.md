@@ -1136,3 +1136,19 @@ Overlays revised to r2; r1 bytes are kept in the audit. R6 is untouched. No impl
 - **Gates:** SSCTR-R7D-P3-RECHECK-r1 ACCEPT_WITH_CONDITIONS; R7D-ENGINEERING-PHASE3-CHECK-1 READY_WITH_CONDITIONS (MAJOR QE-R7D-P3-01, non-blocking, pre-existing in substance).
 - **Freeze:** R7D-FREEZE-1 (`4cabd18`; record `6c03ca8`; source d2afeb8d…1e64; manifest b2b99cd0…f568); verifier 25/25.
 - **Unchanged:** no policy, catalog, record, queue, product or canon change; final holdout not created; V1 authority NO; nothing merged or pushed. Checkpoint: `audits/domain-coaching-r7-d-2026-11-02/PHASE3_CHECKPOINT.md`.
+
+<!-- DCR7D-20261102-phase31-r1 -->
+2026-11-02 · DOMAIN_COACHING_R7-D — Fresh Generalization Gate, Phase 3.1 **COMPLETE**.
+- **Correction:** QE-R7D-P3-01 (a), (b) and P3-F01 closed by one rule. A stated break is a record fact (INTERRUPTION_DECLARED) through ASK, HOLD and clinical routes until a return applies it. The carrying event is never applied with it. Clinical first unchanged.
+- **Tests:** 14 directed tests (13/14 RED on R7D-FREEZE-1); two frozen assertions that encoded the dropped break updated and disclosed; 6/6 mutants killed by their own witness.
+- **Verification:**
+  - suite 921/921; conformance R7-B, R7-B.1, R7-B.2 PASS;
+  - harness R7D-HARNESS-3 validation 3: no false block, 10/10 sensitivity, 39/39 witnesses;
+  - diagnostic and generated regressions with no property violation;
+  - differential against R7D-FREEZE-1: 0 unexplained.
+- **R7D-PREREG-3:** registered before any holdout.
+- **Gates:** SSCTR-R7D-P31-RECHECK-r1 ACCEPT_WITH_CONDITIONS; R7D-ENGINEERING-PHASE31-CHECK-1 READY_WITH_CONDITIONS.
+- **Freeze:** R7D-FREEZE-2 (bound `88d2495`, record `93f3a38`; source 211b662d…efbe5; manifest d74eefbb…b265); verifier 26/26.
+- **Queue:** 230 → 233 (HQ-R7D-SSCTR-F03B, -P3-RECHECK, -P31-RECHECK, naming R7D-FREEZE-2).
+- **Open:** SSCTR-P31-F02, for the Founder before Phase 4.
+- **Unchanged:** policy, catalog, records, product and canon unchanged; final holdout not created; V1 authority NO; nothing merged or pushed. Checkpoint: `audits/domain-coaching-r7-d-2026-11-02/PHASE31_CHECKPOINT.md`.
