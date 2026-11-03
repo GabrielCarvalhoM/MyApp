@@ -1,7 +1,7 @@
 # R7-D harness run summary — R7-D Phase 3.1 regression only (diagnostic corpus, not fresh evidence)
 
-- Harness R7D-HARNESS-3; first evaluation: false; 2026-11-03T00:50:30.819Z → 2026-11-03T00:51:40.474Z; node v24.19.0.
-- Runtime R7D-FREEZE-1 (4cabd18def76f88d170a90723cef422989f502c7), files 245/254 equal to the record.
+- Harness R7D-HARNESS-3; first evaluation: false; 2026-11-03T01:46:57.068Z → 2026-11-03T01:47:41.135Z; node v24.19.0.
+- Runtime R7D-FREEZE-1 (4cabd18def76f88d170a90723cef422989f502c7), files 244/254 equal to the record.
 - Corpus R7D-DIAGNOSTIC-1 (18 cases), sha256 44fca38174a8999888dac4b2bfc6cafdfde2c6a0dcc089a563121af5a6740957.
 - Freshness: no manifest (development run).
 - Structure: 0 error(s), 0 warning(s).
@@ -11,7 +11,7 @@
 |---|---|---|---|---|---|
 | P01 | PASS | 15 | 0 | 0 |  |
 | P02 | PASS | 10 | 0 | 0 |  |
-| P03 | PASS | 7946 | 0 | 0 |  |
+| P03 | PASS | 7971 | 0 | 0 |  |
 | P04 | PASS | 13 | 0 | 0 |  |
 | P05 | PASS | 14 | 0 | 0 |  |
 | P06 | PASS | 338 | 0 | 0 |  |

@@ -10,8 +10,10 @@
 
 **The coach keeps a stated break until a return applies it.** The athlete never has to state it again, whatever the review that stated it decided:
 - a question (`ASK`), for instance because the break came with another kind of event, or because one of its facts was missing;
-- a refusal (`HOLD`);
+- a refusal of a valid review (`HOLD`);
 - a route to a qualified human (`CLINICAL_HUMAN_REQUIRED`), for instance because of a clinical flag or a substitution with pain.
+
+A review the coach refuses as invalid input is not read at all, so nothing it states is kept. That covers a review whose contract, clock or week is wrong, a list it carries that is not a list, and a carried reference state or athlete model that fails its integrity check. Send the break again in a valid review.
 
 **While a kept break is not applied:**
 - **No plan is valid.**
@@ -22,15 +24,24 @@
 - **A break whose own reason is clinical** (illness, injury, pain…) goes to a qualified human at every later decision, also after a qualified clearance, exactly as stating it again would. No nonclinical return is planned for a clinical cause.
 
 **Replacing and correcting:**
-- A newer stated break replaces an older one not applied yet. To correct the dates of a kept break, state the corrected break; send the whole break, since separate fields are not merged into the kept one.
-- Once applied, a break is corrected as any return is: state it again with `episodeId` set to the event id of the review that **first** stated it.
+- A newer stated break replaces an older one not applied yet, whatever its dates and however few of its fields it fills. The older break's days then count as days with no report. To correct the dates of a kept break, state the corrected break; send the whole break, since separate fields are not merged into the kept one.
+- Once applied, a break is corrected as any return is: state it again with `episodeId` set to the event id of the review that **first** stated it. Stated again with a new event id and no `episodeId`, an applied break is applied again, and its re-entry starts over.
 - Sending the same review again (same event id, same facts) records nothing new and applies nothing twice.
 
 ## 2. The record
 
 The completed-work record the coach returns (`actualLedger`) may now hold, besides execution reports, one row per stated break: `{fact:'INTERRUPTION_DECLARED', eventId, eventKind, athleteId, declaredAt, interruption, inputHash, provenance}`. It is the break exactly as the review stated it, the review's event id and kind, and the review's clock.
 - Carry the record exactly as returned (unchanged rule). Never edit, drop or reorder these rows.
+- **A decision that returns no record (`actualLedger` absent) leaves the record unchanged: keep the previous one.** Some decisions stop before reading the review's reports and return none, for instance a clinical flag or an eligibility still to be assessed, when the review states no new break. A client that replaced the record with nothing would lose every kept break and every report.
 - A qualified clearance drops only the clinical continuation state (`referenceState`). It keeps the record, and so the kept break.
+
+## 2a. What a client does (consumer conditions)
+
+- Carry the record as described above.
+- State a break once. Once a return has applied it, state it again only to correct it, with `episodeId`.
+- When an event is asked because a break is kept (`missingInputs: ['interruption.reportedOnItsOwn']`), send that event again once a return has applied the break. This includes fatigue and performance reports. The asked event's reports stay in the record, but its own decision is made only when it is sent again.
+- Never send a template `interruption` (all fields empty).
+- Never require the athlete to state a kept break again. Optionally, let the athlete correct a kept break's dates when it is applied.
 
 ## 3. What the evaluation adds (to §7 of the version-2 delta)
 

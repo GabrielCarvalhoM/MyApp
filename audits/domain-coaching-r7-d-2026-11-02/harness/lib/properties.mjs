@@ -2,7 +2,7 @@
 // runtime returned and two bound authorities read as data: the policy's single-run ceiling (operational.run.singleRunCeiling,
 // operational.return.entryRunMinutes) and the R7B0-CATALOG-2 configurations. Results per case: PASS / FAIL / NOT_EVALUABLE / NOT_APPLICABLE,
 // with every unit counted. Never imports the runtime.
-import {addDays,dayGap,localDate,canonicalJson} from './util.mjs';
+import {addDays,dayGap,localDate,canonicalJson,digestOf} from './util.mjs';
 import {live} from './client.mjs';
 
 export const PROPERTY_META={
@@ -107,10 +107,14 @@ function p03(trace,ctx){
  const p=prop('P03');
  trace.steps.forEach((s,i)=>{
   const sent=sentObservations(trace,i),ledger=s.result.actualLedger;
-  // R7D-HARNESS-3: a declared-break row is the report of the review that stated it (same event id, the same interruption).
-  const stated=new Map(trace.steps.slice(0,i+1).filter(x=>x.review.interruption!==undefined).map(x=>[x.review.event?.id,x.review.interruption]));
+  // R7D-HARNESS-3: a declared-break row is the report of the review that stated it (same event id, the same interruption), with that review's
+  // athlete, clock and facts hash (engineering check QE-R7D-P31-06).
+  const stated=new Map(trace.steps.slice(0,i+1).filter(x=>x.review.interruption!==undefined).map(x=>[x.review.event?.id,x]));
   if(Array.isArray(ledger))for(const row of ledger){
-   if(isDeclarationRow(row)){unit(p,stated.has(row.eventId)&&canonicalJson(stated.get(row.eventId))===canonicalJson(row.interruption),{at:s.stepId,issue:'RECORD_ROW_WITHOUT_REPORT',eventId:row.eventId,fact:row.fact});continue;}
+   if(isDeclarationRow(row)){const x=stated.get(row.eventId),same=!!x&&canonicalJson(x.review.interruption)===canonicalJson(row.interruption);
+    unit(p,same,{at:s.stepId,issue:'RECORD_ROW_WITHOUT_REPORT',eventId:row.eventId,fact:row.fact});
+    if(same)unit(p,row.athleteId===x.planBefore.athleteId&&row.declaredAt===new Date(Date.parse(x.asOf)).toISOString()&&row.inputHash===digestOf(row.interruption),{at:s.stepId,issue:'DECLARED_ROW_FACTS_WRONG',eventId:row.eventId,athleteId:row.athleteId,declaredAt:row.declaredAt});
+    continue;}
    const ids=[row.eventId,...Object.keys(row.provenance?.inputHashes??{})],src=ids.map(id=>sent.get(id)).find(Boolean);
    unit(p,!!src,{at:s.stepId,issue:'RECORD_ROW_WITHOUT_REPORT',eventId:row.eventId,sessionId:row.sessionId});
    if(src&&!row.superseded)unit(p,src.actual?.completed===row.actual?.completed||sent.get(row.eventId)?.actual?.completed===row.actual?.completed,{at:s.stepId,issue:'COMPLETED_FLAG_CHANGED',eventId:row.eventId});
@@ -483,17 +487,26 @@ const statedBreak=s=>statedBreakOf(s.review,s.asOfLocal);
 const addedDecisions=s=>s.adopted?(s.planAfter.decisions??[]).slice((s.planBefore.decisions??[]).length):[];
 export const appliesReturn=s=>addedDecisions(s).some(d=>d.action==='REESTABLISH');
 const RETURN_CARRIERS=['WEEKLY_REVIEW','RETURN_AFTER_PAUSE'];
+// R7D-HARNESS-3 after the Phase 3.1 engineering check (CF-2): a review the coach refused before reading it (an integrity or contract refusal:
+// HOLD with no record returned) records nothing and opens no window (QE-R7D-P31-02); the case format cannot produce one. (d) A stated break is
+// applied once: after the decision that applies it, no later decision applies a return again unless a review states a break again
+// (QE-R7D-P31-05, "applied twice").
+const refusedUnread=s=>s.result?.status==='HOLD'&&s.result.actualLedger===undefined;
 function p17(trace){
  const p=prop('P17');
  trace.steps.forEach((s,i)=>{
-  if(!statedBreak(s)||appliesReturn(s))return;
+  if(!statedBreak(s)||appliesReturn(s)||refusedUnread(s))return;
   // The window: this decision and the later ones until one applies a return, or a later review states a break of its own (it replaces this one).
   for(let k=i;k<trace.steps.length;k++){
    const t=trace.steps[k];if(k>i&&statedBreak(t))break;
    const r=t.result,applies=appliesReturn(t),kind=KIND_ALIASES[t.kind]??t.kind,added=addedDecisions(t).map(d=>d.action);
    unit(p,applies||r.planValidity?.status!==VALID,{at:t.stepId,issue:'VALID_BEFORE_DECLARED_BREAK_APPLIED',declaredAt:s.stepId,status:r.status,action:r.action});
    if(r.status!=='CLINICAL_HUMAN_REQUIRED'&&!RETURN_CARRIERS.includes(kind))unit(p,added.every(a=>a==='REPLAN_FROM_EVIDENCE'),{at:t.stepId,issue:'EVENT_APPLIED_OVER_DECLARED_BREAK',declaredAt:s.stepId,kind:t.kind,added});
-   if(applies){unit(p,added.every(a=>['REESTABLISH','REPLAN_FROM_EVIDENCE'].includes(a)),{at:t.stepId,issue:'EVENT_APPLIED_WITH_RETURN',declaredAt:s.stepId,added});break;}
+   if(applies){
+    unit(p,added.every(a=>['REESTABLISH','REPLAN_FROM_EVIDENCE'].includes(a)),{at:t.stepId,issue:'EVENT_APPLIED_WITH_RETURN',declaredAt:s.stepId,added});
+    for(let m=k+1;m<trace.steps.length;m++){const u=trace.steps[m];if(statedBreak(u))break;unit(p,!appliesReturn(u),{at:u.stepId,issue:'DECLARED_BREAK_APPLIED_TWICE',declaredAt:s.stepId,appliedAt:t.stepId});}
+    break;
+   }
   }
  });
  return finish(p);

@@ -103,4 +103,16 @@ node validation/run-validation.mjs --dev validation/DEV_CASES_R7D_3.json --out <
 ```
 `$D/rt-d1` is `git archive 4cabd18 CoachingCore audits/domain-coaching-r6-2026-10-26/reviews/ssctr-policy-review.json audits/domain-coaching-r7-b0-2026-10-31/reviews/SSCTR_RECHECK_B0.json` (R7D-FREEZE-1), with `CoachingCore/node_modules` copied in, as for the other runtimes.
 
-Results: no false block on the candidate; 10/10 sensitivity rows detected on their own runtime and clean on the candidate (QE-R7D-P3-01(a) and (b) by P17 and RESTATE, P3-F01 by CARRIER_CLINICAL, all on R7D-FREEZE-1); coverage CARRIER_CLINICAL 7, CARRIER_HOLD 1, RESEND 20, RESTATE 4, P17 16 units; 37/37 witnesses fire. P3-F01 is no longer a finding: DEV-17 and DEV-17b are plain no-false-block cases.
+Results: no false block on the candidate; 10/10 sensitivity rows detected on their own runtime and clean on the candidate (QE-R7D-P3-01(a) and (b) by P17 and RESTATE, P3-F01 by CARRIER_CLINICAL, all on R7D-FREEZE-1); coverage CARRIER_CLINICAL 7, CARRIER_HOLD 1, RESEND 20, RESTATE 4, P17 19 units; 39/39 witnesses fire (after the Phase 3.1 checks; 16 units and 37 witnesses before them). P3-F01 is no longer a finding: DEV-17 and DEV-17b are plain no-false-block cases.
+
+**Rebuilding a runtime for the whole suite** (after the Phase 3.1 checks, QE-R7D-P31-13 and SSCTR CF-P31-08). The harness and its validation need only the R6 and B0 records listed above. The whole `node --test` suite also has legacy-path tests that read three more authority records. Without them a rebuilt runtime gives 908/921. Add them to the `git archive` list:
+- `audits/domain-closure-r3-2026-10-24/reviews/ssctr-records.json`
+- `audits/domain-closure-r4-2026-10-25/reviews/ssctr-envelope-review.json`
+- `audits/domain-coaching-r5-2026-10-25/reviews/ssctr-policy-review.json`
+
+**After the Phase 3.1 checks (instrument text and oracles only, no runtime byte):**
+- P17 opens no window for a review refused before it was read (HOLD with no record returned);
+- P17 also checks that a stated break is applied once;
+- P03 checks a declared-break row's athlete, clock and facts hash.
+
+The validation adds the witnesses W-P17d and W-P03c.

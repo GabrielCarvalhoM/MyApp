@@ -1848,6 +1848,24 @@
    "fired": true
   },
   {
+   "witness": "W-P17d",
+   "caseId": "DEV-18",
+   "mutation": "the week review after the applying review applies the same break again",
+   "expects": [
+    "P17 violation"
+   ],
+   "fired": true
+  },
+  {
+   "witness": "W-P03c",
+   "caseId": "DEV-18",
+   "mutation": "a declared-break row recorded with a clock that is not its review's",
+   "expects": [
+    "P03 violation"
+   ],
+   "fired": true
+  },
+  {
    "witness": "W-DET",
    "caseId": "DEV-01",
    "relation": "DETERMINISM",
@@ -2104,22 +2122,22 @@
   },
   "result": "COVERED",
   "P17": {
-   "units": 16,
+   "units": 19,
    "violations": 0,
    "cases": [
     {
      "caseId": "DEV-18",
-     "units": 4,
+     "units": 5,
      "violations": 0
     },
     {
      "caseId": "DEV-19",
-     "units": 3,
+     "units": 4,
      "violations": 0
     },
     {
      "caseId": "DEV-20",
-     "units": 6,
+     "units": 7,
      "violations": 0
     },
     {
@@ -2139,7 +2157,7 @@
    "RESEND": 20,
    "RESTATE_DECLARED_BREAK": 4
   },
-  "p17Units": 16,
+  "p17Units": 19,
   "sensitivity": [
    {
     "defect": "DX-01 (a same-day day-precision report drops out of the record at the next decision)",
@@ -2182,8 +2200,8 @@
     "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
    }
   ],
-  "witnessesFired": 37,
-  "witnesses": 37,
+  "witnessesFired": 39,
+  "witnesses": 39,
   "notFired": []
  }
 }
