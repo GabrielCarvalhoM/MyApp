@@ -7,6 +7,9 @@
 // R7D-HARNESS-VALIDATION-3 (Phase 3.1): also --d1 <root> (R7D-FREEZE-1, superseded): QE-R7D-P3-01 (a) and (b) are detected by P17 and its
 // RESTATE_DECLARED_BREAK relation, P3-F01 by CARRIER_CLINICAL, each clean on the candidate; P17 gets units on the candidate and every P17 check
 // fires on a constructed violation. P3-F01 is no longer a finding on the candidate: its cases are plain no-false-block cases.
+// R7D-HARNESS-VALIDATION-4 (Phase 3.2): also --d2 <root> (R7D-FREEZE-2, superseded): SSCTR-P31-F02 (a newer break that names none replaces or
+// drops a kept one) is detected by P18 and its INSERT_NEWER_BREAK relation, each clean on the candidate; P18 and INSERT_NEWER_BREAK get units on
+// the candidate and every P18 check and the relation fire on a constructed violation.
 import fs from 'node:fs';
 import path from 'node:path';
 import {loadRuntime,runCase} from '../lib/client.mjs';
@@ -17,7 +20,7 @@ import {digestOf,addDays as addDaysLocal} from '../lib/util.mjs';
 
 const arg=k=>{const i=process.argv.indexOf(k);return i>=0?process.argv[i+1]:null;};
 const dev=JSON.parse(fs.readFileSync(arg('--dev'),'utf8')),byId=new Map(dev.cases.map(c=>[c.caseId,c]));
-const out={validation:'R7D-HARNESS-VALIDATION-3',harness:'R7D-HARNESS-3',devCorpusSha256:digestOf(dev),runs:[],witnesses:[],coverage:{}};
+const out={validation:'R7D-HARNESS-VALIDATION-4',harness:'R7D-HARNESS-4',devCorpusSha256:digestOf(dev),runs:[],witnesses:[],coverage:{}};
 
 async function ctxFor(root,record){
  const cc=path.join(root,'CoachingCore');
@@ -40,11 +43,14 @@ const f4=[],relRows=new Map();for(const c of dev.cases){const e=evaluate(F4.rt,F
 const plain=f4.filter(x=>!x.findingWitness);
 out.runs.push({runtime:F4.runtime,purpose:'NO_FALSE_BLOCK',expected:'no violation outside the finding witnesses',cases:f4,result:plain.every(x=>!x.fails.length)?'PASS':'FAIL'});
 // P05 coverage (Founder, Phase 3): the carrier relations and the re-send must each get units on the candidate.
-for(const r of ['CARRIER_CLINICAL','CARRIER_HOLD','RESEND','RESTATE_DECLARED_BREAK']){const by=[...relRows].map(([id,x])=>({caseId:id,units:x[r]?.units??0,violations:(x[r]?.violations??[]).length,notApplicable:x[r]?.notApplicable??null})).filter(x=>x.units||x.notApplicable?.length);out.coverage[r]={units:by.reduce((n,x)=>n+x.units,0),violations:by.reduce((n,x)=>n+x.violations,0),cases:by};}
-out.coverage.result=['CARRIER_CLINICAL','CARRIER_HOLD','RESEND','RESTATE_DECLARED_BREAK'].every(r=>out.coverage[r].units>0)?'COVERED':'NOT_COVERED';
+for(const r of ['CARRIER_CLINICAL','CARRIER_HOLD','RESEND','RESTATE_DECLARED_BREAK','INSERT_NEWER_BREAK']){const by=[...relRows].map(([id,x])=>({caseId:id,units:x[r]?.units??0,violations:(x[r]?.violations??[]).length,notApplicable:x[r]?.notApplicable??null})).filter(x=>x.units||x.notApplicable?.length);out.coverage[r]={units:by.reduce((n,x)=>n+x.units,0),violations:by.reduce((n,x)=>n+x.violations,0),cases:by};}
+out.coverage.result=['CARRIER_CLINICAL','CARRIER_HOLD','RESEND','RESTATE_DECLARED_BREAK','INSERT_NEWER_BREAK'].every(r=>out.coverage[r].units>0)?'COVERED':'NOT_COVERED';
 // P17 property units on the candidate (R7D-PREREG-3): every stated break not applied by its own decision is followed until applied.
 {const by=[];for(const c of dev.cases){const p=evaluateProperties(runCase(F4.rt,c),F4.ctx).P17;if(p.units)by.push({caseId:c.caseId,units:p.units,violations:p.violations.length});}out.coverage.P17={units:by.reduce((n,x)=>n+x.units,0),violations:by.reduce((n,x)=>n+x.violations,0),cases:by};}
 if(!(out.coverage.P17.units>0))out.coverage.result='NOT_COVERED';
+// P18 property units on the candidate (R7D-PREREG-4): every return applied while two or more stated breaks are open is checked.
+{const by=[];for(const c of dev.cases){const p=evaluateProperties(runCase(F4.rt,c),F4.ctx).P18;if(p.units)by.push({caseId:c.caseId,units:p.units,violations:p.violations.length});}out.coverage.P18={units:by.reduce((n,x)=>n+x.units,0),violations:by.reduce((n,x)=>n+x.violations,0),cases:by};}
+if(!(out.coverage.P18.units>0))out.coverage.result='NOT_COVERED';
 // ---------- 2. Sensitivity on superseded runtimes (documented defects) ----------
 const SENS=[
  {key:'--f4',record:'CoachingCore/r7/c/RUNTIME_FREEZE_R7C_4.json',defect:'DX-01 (a same-day day-precision report drops out of the record at the next decision)',cases:['DEV-12'],detect:f=>f.some(x=>x.property==='P10'&&x.issues.includes('RECORD_ROW_DROPPED'))},
@@ -57,7 +63,11 @@ const SENS=[
  // R7D-HARNESS-VALIDATION-3: the QE-R7D-P3-01 family on R7D-FREEZE-1.
  {key:'--d1',record:'CoachingCore/r7/d/RUNTIME_FREEZE_R7D_1.json',defect:'QE-R7D-P3-01(a) (a break declared with another event is asked and then lost: the next plain review is VALID on the pre-break plan)',cases:['DEV-18','DEV-20'],detect:f=>f.some(x=>x.property==='P17'||x.relation==='RESTATE_DECLARED_BREAK')},
  {key:'--d1',record:'CoachingCore/r7/d/RUNTIME_FREEZE_R7D_1.json',defect:'QE-R7D-P3-01(b) (a break declared with a clinical flag is lost across qualified clearance: the next plain review is VALID on the pre-break plan)',cases:['DEV-19'],detect:f=>f.some(x=>x.property==='P17'||x.relation==='RESTATE_DECLARED_BREAK')},
- {key:'--d1',record:'CoachingCore/r7/d/RUNTIME_FREEZE_R7D_1.json',defect:'P3-F01 (a break answering UNREPORTED_TRAINING through a clinical route is not retained across clearance: asked again)',cases:['DEV-17','DEV-17b'],detect:f=>f.some(x=>x.relation==='CARRIER_CLINICAL')}
+ {key:'--d1',record:'CoachingCore/r7/d/RUNTIME_FREEZE_R7D_1.json',defect:'P3-F01 (a break answering UNREPORTED_TRAINING through a clinical route is not retained across clearance: asked again)',cases:['DEV-17','DEV-17b'],detect:f=>f.some(x=>x.relation==='CARRIER_CLINICAL')},
+ // R7D-HARNESS-VALIDATION-4: SSCTR-P31-F02 on R7D-FREEZE-2.
+ {key:'--d2',record:'CoachingCore/r7/d/RUNTIME_FREEZE_R7D_2.json',defect:'SSCTR-P31-F02 (a newer break that names none replaces a kept one: the next review re-enters from the newer break alone)',cases:['DEV-22','DEV-23','DEV-24'],detect:f=>f.some(x=>x.property==='P18'||x.relation==='INSERT_NEWER_BREAK')},
+ {key:'--d2',record:'CoachingCore/r7/d/RUNTIME_FREEZE_R7D_2.json',defect:'SSCTR-P31-F02, metamorphic (a newer break stated in the review that applies a kept one re-enters from the newer break alone)',cases:['DEV-18','DEV-20'],detect:f=>f.some(x=>x.relation==='INSERT_NEWER_BREAK')},
+ {key:'--d2',record:'CoachingCore/r7/d/RUNTIME_FREEZE_R7D_2.json',defect:'SSCTR-P31-F03 path (a newer nonclinical break replaces a kept clinical-cause break: a nonclinical return)',cases:['DEV-25'],detect:f=>f.some(x=>x.property==='P18')}
 ];
 for(const s of SENS){
  const root=arg(s.key);if(!root){out.runs.push({purpose:'SENSITIVITY',defect:s.defect,result:'NOT_RUN'});continue;}
@@ -119,6 +129,9 @@ witnessP('W-P17c2','DEV-18','P17',t=>{const s=stepOf(t,'w5d2'),p=thaw(s.planAfte
 // After the Phase 3.1 engineering check (CF-2): a kept break applied a second time, and a declared-break row recorded with another clock.
 witnessP('W-P17d','DEV-18','P17',t=>{const s=stepOf(t,'w5r'),p=thaw(s.planAfter);p.decisions=[...p.decisions,{action:'REESTABLISH',eventId:'witness',asOf:s.asOf,interruption:{}}];s.planAfter=p;s.adopted=true;return 'the week review after the applying review applies the same break again';});
 witnessP('W-P03c','DEV-18','P03',t=>{const s=stepOf(t,'w5d1'),rows=thaw(s.result.actualLedger),row=rows.find(r=>r.fact==='INTERRUPTION_DECLARED');row.declaredAt='2026-12-01T00:00:00.000Z';s.result={...s.result,actualLedger:rows};return 'a declared-break row recorded with a clock that is not its review\'s';});
+// R7D-HARNESS-4 witnesses (P18): each check fires on a constructed violation of the candidate's own run of DEV-22.
+witnessP('W-P18a','DEV-22','P18',t=>{const s=stepOf(t,'w5d2'),p=thaw(s.planAfter),d=p.decisions.findLast(x=>x.action==='REESTABLISH');d.interruption.startDate='2026-11-30';d.interruption.days=7;s.planAfter=p;s.adopted=true;return 'the return records the trip alone: the kept holiday dropped';});
+witnessP('W-P18b','DEV-22','P18',t=>{const s=stepOf(t,'w5d2'),r=thaw(s.review);delete r.interruption.episodeId;s.review=r;return 'the return applied while the trip names no break: the relation never stated';});
 // P06 and P08 violations carry no issue label (unit records): count any violation of the property.
 for(const w of out.witnesses)if(w.expects[0]==='__P06__'||w.expects[0]==='__P08__'){
  const id=w.expects[0]==='__P06__'?'P06':'P08',kase=byId.get(w.caseId),base=runCase(F4.rt,kase),t={...base,steps:base.steps.map(s=>({...s}))};
@@ -139,7 +152,8 @@ wrapped('W-DUP','DEV-01',ev=>(p,r)=>{const x=ev(p,r),o=r.observations??[];return
 wrapped('W-RENAME','DEV-01',ev=>(p,r)=>{const x=ev(p,r);return String(p.athleteId).startsWith('rn~')?{...x,status:'HOLD'}:x;},'RENAME_OPAQUE_IDS');
 wrapped('W-RESEND','DEV-01',ev=>(p,r)=>{const x=ev(p,r),seen=new Set((r.actualLedger??[]).map(y=>y.eventId));return (r.observations??[]).some(o=>seen.has(o.eventId))?{...x,status:'ASK'}:x;},'RESEND');
 wrapped('W-RESTATE','DEV-18',ev=>(p,r)=>{const x=ev(p,r);return Array.isArray(x.actualLedger)?{...x,actualLedger:x.actualLedger.filter(o=>o.fact!=='INTERRUPTION_DECLARED')}:x;},'RESTATE_DECLARED_BREAK');
+wrapped('W-INSERT','DEV-18',ev=>(p,r)=>{const i=r.interruption,own=!!i&&typeof i==='object'&&Object.values(i).some(v=>v!==null&&v!==undefined);return ev(p,own?{...r,actualLedger:(r.actualLedger??[]).filter(o=>o.fact!=='INTERRUPTION_DECLARED')}:r);},'INSERT_NEWER_BREAK');
 wrapped('W-CARRIER','DEV-02',ev=>(p,r)=>{const x=ev(p,r);return r.event.id.endsWith('w7d3')&&!r.referenceState?{...x,planValidity:{status:'REQUIRES_RECONCILIATION'}}:x;},'CARRIER_CLINICAL');
-out.summary={noFalseBlock:out.runs[0].result,coverage:out.coverage.result,carrierUnits:Object.fromEntries(['CARRIER_CLINICAL','CARRIER_HOLD','RESEND','RESTATE_DECLARED_BREAK'].map(r=>[r,out.coverage[r].units])),p17Units:out.coverage.P17.units,sensitivity:out.runs.slice(1).map(r=>({defect:r.defect,result:r.result})),witnessesFired:out.witnesses.filter(w=>w.fired).length,witnesses:out.witnesses.length,notFired:out.witnesses.filter(w=>!w.fired).map(w=>w.witness)};
+out.summary={noFalseBlock:out.runs[0].result,coverage:out.coverage.result,carrierUnits:Object.fromEntries(['CARRIER_CLINICAL','CARRIER_HOLD','RESEND','RESTATE_DECLARED_BREAK','INSERT_NEWER_BREAK'].map(r=>[r,out.coverage[r].units])),p17Units:out.coverage.P17.units,p18Units:out.coverage.P18.units,sensitivity:out.runs.slice(1).map(r=>({defect:r.defect,result:r.result})),witnessesFired:out.witnesses.filter(w=>w.fired).length,witnesses:out.witnesses.length,notFired:out.witnesses.filter(w=>!w.fired).map(w=>w.witness)};
 fs.writeFileSync(arg('--out'),JSON.stringify(out,null,1)+'\n');
 console.log(JSON.stringify(out.summary,null,1));

@@ -139,7 +139,8 @@ export function runCase(runtime,kase,hooks={}){
    }
    if(step.answer){
     const q=st.pendingQuestion,a=step.answer;
-    if(q?.kind==='UNREPORTED_TRAINING'){
+    // R7D-HARNESS-4: the question about training between two separate breaks (TRAINING_BETWEEN_BREAKS) lists its sessions the same way.
+    if(q?.kind==='UNREPORTED_TRAINING'||q?.kind==='TRAINING_BETWEEN_BREAKS'){
      const ids=q.unreported?.sessionIds??[],used=new Set();
      for(const id of ids){
       const s=sessionById(program,id);

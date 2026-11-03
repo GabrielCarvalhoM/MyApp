@@ -116,3 +116,24 @@ Results: no false block on the candidate; 10/10 sensitivity rows detected on the
 - P03 checks a declared-break row's athlete, clock and facts hash.
 
 The validation adds the witnesses W-P17d and W-P03c.
+
+## R7D-HARNESS-4 (Phase 3.2)
+
+R7D-HARNESS-3 is commit `747eab2` (the R7D-FREEZE-2 instruments). R7D-HARNESS-4 measures the Phase 3.2 invariant (`R7D-PREREG-4`, SSCTR-P31-F02): a newer stated break never replaces, joins or outranks an older one that is still open unless it names it; separate breaks stay separate facts.
+
+| Change | Where |
+|---|---|
+| **P18 (new):** at every return applied while two or more stated breaks are open, (a) each one is accounted for (the stop covers its days; listed as a separate break with recorded training after it; or listed as not read because it corrects an applied break), (b) every open break after the first carries a name (the relation was stated) | `lib/properties.mjs` |
+| **INSERT_NEWER_BREAK (new, P18 metamorphic):** each review that applied a return reading a kept break, sent again with a newer break that names none: no return, not VALID | `lib/metamorphic.mjs` |
+| RENAME_OPAQUE_IDS also renames `interruption.episodeId` (an opaque identity, like `correctionOf`); HARNESS-3 broke a named correction's reference in the variant | `lib/metamorphic.mjs` |
+| The C3 client answers TRAINING_BETWEEN_BREAKS as UNREPORTED_TRAINING (the listed sessions) | `lib/client.mjs` |
+| The domain packet shows every recorded break not applied yet, not only the latest | `lib/report.mjs` |
+| Default freeze record `CoachingCore/r7/d/RUNTIME_FREEZE_R7D_3.json` | `r7d-harness.mjs` |
+
+Validation 4: `validation/DEV_CASES_R7D_4.json` (from `build-dev-cases.mjs`: DEV-22 to DEV-25 added; contaminated by construction) and `validation/HARNESS_VALIDATION_R7D_4.json`:
+```
+node validation/run-validation.mjs --dev validation/DEV_CASES_R7D_4.json --out <file> --candidate <worktree root> --f4 $D/rt-f4 --f3 $D/rt-f3 --b2 $D/rt-b2 --prer7a $D/rt-prer7a --d1 $D/rt-d1 --d2 $D/rt-d2
+```
+`$D/rt-d2` is `git archive 93f3a38 CoachingCore audits/domain-coaching-r6-2026-10-26/reviews/ssctr-policy-review.json audits/domain-coaching-r7-b0-2026-10-31/reviews/SSCTR_RECHECK_B0.json` (R7D-FREEZE-2; add the three R3/R4/R5 records above for the whole suite), with `CoachingCore/node_modules` copied in.
+
+Results: no false block on the candidate; 13/13 sensitivity rows detected on their own runtime and clean on the candidate (SSCTR-P31-F02 by P18 on DEV-22/23/24 and by INSERT_NEWER_BREAK on DEV-18/20, and the SSCTR-P31-F03 relabel path by P18 on DEV-25, all on R7D-FREEZE-2); coverage CARRIER_CLINICAL 7, CARRIER_HOLD 1, RESEND 24, RESTATE 13, INSERT_NEWER_BREAK 4, P17 39, P18 6 units; 42/42 witnesses fire (W-P18a, W-P18b, W-INSERT added).

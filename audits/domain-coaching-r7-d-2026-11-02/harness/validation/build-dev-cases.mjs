@@ -127,5 +127,28 @@ cases.push({caseId:'DEV-20',authorIntent:'A two-week holiday declared with a fat
 cases.push({caseId:'DEV-21',authorIntent:'A two-week break for an injury; qualified clearance; plain reviews follow without restating it',coverageTags:['DECLARED_BREAK','CLINICAL_BREAK','CLEARANCE'],oracleClass:'INVARIANT_ORACLE',intake:GEN,
  timeline:[...firstWeeks,{stepId:'w5d1',at:{week:5,day:1,time:'07:00'},event:{kind:'RETURN_AFTER_PAUSE',interruption:{...HOLIDAY,reasonCategory:'INJURY',reason:'ankle sprain',nonclinical:false}}},{stepId:'w5d2',at:{week:5,day:2,time:'07:00'},event:{kind:'WEEKLY_REVIEW'},clearance:'QUALIFIED_CLEARANCE'},{stepId:'w5d3',at:{week:5,day:3,time:'07:00'},event:{kind:'WEEKLY_REVIEW'},clearance:'QUALIFIED_CLEARANCE'}],
  expectedDomainProperties:[],metamorphicRelations:[],independentAssessment:assess('routes to a human; never the pre-break plan'),domainNotes:''});
-fs.writeFileSync(process.argv[2],JSON.stringify({corpusRevision:'R7D-HARNESS-DEV-3',contaminated:true,cases},null,1)+'\n');
+// R7D-HARNESS-DEV-4 (Phase 3.2, P18; SSCTR-P31-F02): weeks 0-1 trained and reviewed; a 14-day holiday (weeks 2-3) declared with a fatigue report on
+// week 4 day 0 and kept; a newer break declared with a local-fatigue report on week 5 day 0. The holiday's identity is its report's event id.
+const twoWeeks=[review(0,allDone(0)),review(1,allDone(1))];
+const VAC14={startDate:'2026-11-16',endDate:'2026-11-29',days:14,reasonCategory:'VACATION',reason:'Holiday, no training at all',nonclinical:true};
+const TRIP7={startDate:'2026-11-30',endDate:'2026-12-06',days:7,reasonCategory:'WORK',reason:'Work trip, no training',nonclinical:true};
+const TRIP4={startDate:'2026-12-03',endDate:'2026-12-06',days:4,reasonCategory:'WORK',reason:'Work trip, no training',nonclinical:true};
+const kept=(newer)=>[...twoWeeks,{stepId:'w4d0',at:{week:4,day:0,time:'07:00'},event:{kind:'SYSTEMIC_FATIGUE',interruption:VAC14}},{stepId:'w5d0',at:{week:5,day:0,time:'07:00'},event:{kind:'LOCAL_FATIGUE',interruption:newer}}];
+// DEV-22 (F02 witness): the plain review asks how the trip relates to the holiday; answered "a separate break" (its own episodeId).
+cases.push({caseId:'DEV-22',authorIntent:'A kept two-week holiday, then a one-week work trip right after it; the plain review must not re-enter from the trip alone; the trip is a separate break',coverageTags:['DECLARED_BREAK','MULTIPLE_BREAKS','BREAK_RELATION'],oracleClass:'INVARIANT_ORACLE',intake:GEN,
+ timeline:[...kept(TRIP7),{stepId:'w5d1',at:{week:5,day:1,time:'07:00'},event:{kind:'WEEKLY_REVIEW'}},{stepId:'w5d2',at:{week:5,day:2,time:'07:00'},event:{kind:'WEEKLY_REVIEW',interruption:{...TRIP7,episodeId:'DEV-22-w5d0'}}}],
+ expectedDomainProperties:[],metamorphicRelations:[],independentAssessment:assess('asked first; separate breaks with no training between: the whole three weeks are the stop'),domainNotes:''});
+// DEV-23: the same, answered "the trip corrects the holiday" (the holiday's episodeId with the trip's facts).
+cases.push({caseId:'DEV-23',authorIntent:'A kept two-week holiday, then a one-week trip; asked; the athlete says the trip corrects the holiday',coverageTags:['DECLARED_BREAK','MULTIPLE_BREAKS','BREAK_CORRECTION'],oracleClass:'INVARIANT_ORACLE',intake:GEN,
+ timeline:[...kept(TRIP7),{stepId:'w5d1',at:{week:5,day:1,time:'07:00'},event:{kind:'WEEKLY_REVIEW'}},{stepId:'w5d2',at:{week:5,day:2,time:'07:00'},event:{kind:'WEEKLY_REVIEW',interruption:{...TRIP7,episodeId:'DEV-23-w4d0'}}}],
+ expectedDomainProperties:[],metamorphicRelations:[],independentAssessment:assess('the corrected facts are the break: one week'),domainNotes:''});
+// DEV-24: a separate four-day trip with three days between the breaks and nothing reported there: asked; answered "not done".
+cases.push({caseId:'DEV-24',authorIntent:'A kept two-week holiday and a separate four-day trip; nothing reported in the three days between',coverageTags:['DECLARED_BREAK','MULTIPLE_BREAKS','UNREPORTED_BETWEEN_BREAKS'],oracleClass:'INVARIANT_ORACLE',intake:GEN,
+ timeline:[...kept(TRIP4),{stepId:'w5d1',at:{week:5,day:1,time:'07:00'},event:{kind:'WEEKLY_REVIEW',interruption:{...TRIP4,episodeId:'DEV-24-w5d0'}}},{stepId:'w5d2',at:{week:5,day:2,time:'07:00'},event:{kind:'WEEKLY_REVIEW'},answer:{report:{completed:false}}}],
+ expectedDomainProperties:[],metamorphicRelations:[],independentAssessment:assess('the sessions between are asked; reported not done, the stop runs from the holiday'),domainNotes:''});
+// DEV-25: the older break is an injury: clinical first, whatever the newer break, before and after clearance.
+cases.push({caseId:'DEV-25',authorIntent:'A two-week break for an injury, then a one-week trip reported with a return; clearance',coverageTags:['DECLARED_BREAK','MULTIPLE_BREAKS','CLINICAL_BREAK','CLEARANCE'],oracleClass:'INVARIANT_ORACLE',intake:GEN,
+ timeline:[...twoWeeks,{stepId:'w4d0',at:{week:4,day:0,time:'07:00'},event:{kind:'WEEKLY_REVIEW',interruption:{...VAC14,reasonCategory:'INJURY',reason:'ankle sprain',nonclinical:false}}},{stepId:'w5d0',at:{week:5,day:0,time:'07:00'},event:{kind:'RETURN_AFTER_PAUSE',interruption:TRIP7},clearance:'QUALIFIED_CLEARANCE'},{stepId:'w5d1',at:{week:5,day:1,time:'07:00'},event:{kind:'WEEKLY_REVIEW'},clearance:'QUALIFIED_CLEARANCE'}],
+ expectedDomainProperties:[],metamorphicRelations:[],independentAssessment:assess('routes to a human; the trip never relabels the injury break'),domainNotes:''});
+fs.writeFileSync(process.argv[2],JSON.stringify({corpusRevision:'R7D-HARNESS-DEV-4',contaminated:true,cases},null,1)+'\n');
 console.log('dev cases',cases.length);

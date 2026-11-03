@@ -16,6 +16,7 @@ export const RELATIONS={
  CARRIER_CLINICAL:{property:'P05',blocking:true,desc:'An answer to UNREPORTED_TRAINING recorded by a clinical substitution, then qualified clearance; compared at the first eligible decision'},
  CARRIER_HOLD:{property:'P05',blocking:true,desc:'An answer in the program\'s last week recorded by a refused schedule change (HOLD); compared at the next decision'},
  RESTATE_DECLARED_BREAK:{property:'P17',blocking:true,desc:'A stated break its own decision did not apply, stated again with every later review that states none until a return is recorded: identical decisions (no repetition is ever needed)'},
+ INSERT_NEWER_BREAK:{property:'P18',blocking:true,desc:'A review that applied a return reading a kept break, sent again with a newer break that names none: its relation is unresolved, so no return is applied and the plan is not valid (no last-write-wins, no join)'},
  CONSENT_OFF:{property:'P14',blocking:'LEARNING_NOISE cases only',desc:'Learning consent off from the start'},
  CLOCKLESS_CONTROL:{property:'C3 legacy',blocking:false,desc:'The carried record loses provenance.firstRecordedAt (pre-FREEZE-4 records); differences are C3 consumer conditions'},
  CALENDAR_SHIFT:{property:'P15 (PROPOSED_ONLY)',blocking:false,desc:'Every date one week earlier; decisions compared without dates'},
@@ -51,7 +52,10 @@ function duplicate(rt,kase,base){
 function rename(rt,kase,base){
  const R=x=>typeof x==='string'?'rn~'+x:x;
  const intake=i=>{const x=clone(i);x.athlete.id=R(x.athlete.id);for(const h of x.history??[]){h.activityId=R(h.activityId);h.provider=R(h.provider);}if(x.athlete.wearableCapabilities?.provider)x.athlete.wearableCapabilities.provider=R(x.athlete.wearableCapabilities.provider);return x;};
- const review=r=>({...r,event:{...r.event,id:R(r.event.id)},observations:(r.observations??[]).map(o=>({...o,eventId:R(o.eventId),...(o.correctionOf?{correctionOf:R(o.correctionOf)}:{}),...(o.source?{source:{...o.source,...(o.source.provider?{provider:R(o.source.provider)}:{}),...(o.source.activityId?{activityId:R(o.source.activityId)}:{})}}:{})}))});
+ // R7D-HARNESS-4: an interruption's episodeId names a report (its event id) or an identity the athlete chose: an opaque id, renamed the same way, as
+ // a report's correctionOf is (HARNESS-3 left it as sent, so a correction that named its report stopped naming it in the variant).
+ const named=r=>r.interruption&&typeof r.interruption==='object'&&!Array.isArray(r.interruption)&&typeof r.interruption.episodeId==='string'?{interruption:{...r.interruption,episodeId:R(r.interruption.episodeId)}}:{};
+ const review=r=>({...r,...named(r),event:{...r.event,id:R(r.event.id)},observations:(r.observations??[]).map(o=>({...o,eventId:R(o.eventId),...(o.correctionOf?{correctionOf:R(o.correctionOf)}:{}),...(o.source?{source:{...o.source,...(o.source.provider?{provider:R(o.source.provider)}:{}),...(o.source.activityId?{activityId:R(o.source.activityId)}:{})}}:{})}))});
  return compareWhole('RENAME_OPAQUE_IDS',rt,kase,base,{intake,review});
 }
 function convention(rt,kase,base,catalog){
@@ -147,6 +151,21 @@ function restate(rt,kase,base){
  }
  return result('RESTATE_DECLARED_BREAK',{applicable:true,units:out.length,violations:out.filter(x=>x.violation).map(x=>({at:x.at,...x.violation})),variantErrors:out.flatMap(x=>x.variantErrors)});
 }
+// R7D-HARNESS-4 (P18 metamorphic, R7D-PREREG-4): a newer break that names no break (seven days ending the day before; a work trip, nonclinical)
+// stated in a review that applied a return reading a break the record kept (the review states none of its own). The newer break's relation to
+// the kept one is unresolved: the variant decision applies no return and is not VALID, whatever the dates (F02: R7D-FREEZE-2 re-entered from it).
+function insertNewer(rt,kase,base){
+ const units=base.steps.map((s,i)=>({s,i})).filter(({s})=>appliesReturn(s)&&(s.review.interruption===undefined||s.review.interruption===null));
+ if(!units.length)return result('INSERT_NEWER_BREAK',{applicable:false});
+ const out=[];
+ for(const {s,i} of units){
+  const newer={startDate:addDays(s.asOfLocal,-7),endDate:addDays(s.asOfLocal,-1),days:7,reasonCategory:'WORK',reason:'Work trip, a newer break',nonclinical:true};
+  const v=runCase(rt,kase,{review:(r,{step})=>kase.timeline.indexOf(step)===i?{...r,interruption:clone(newer)}:r}),t=v.steps[i];
+  const ok=!!t&&!appliesReturn(t)&&t.result.planValidity?.status!=='VALID_WITHIN_CURRENT_BOUNDED_SCOPE';
+  out.push({at:s.stepId,applicable:true,...(ok?{}:{violation:{issue:'NEWER_BREAK_REPLACED_OR_JOINED',status:t?.result.status??null,action:t?.result.action??null}}),variantErrors:[...v.corpusErrors,...v.runtimeErrors]});
+ }
+ return result('INSERT_NEWER_BREAK',{applicable:true,units:out.length,violations:out.filter(x=>x.violation).map(x=>({at:x.at,...x.violation})),variantErrors:out.flatMap(x=>x.variantErrors)});
+}
 function clockless(rt,kase,base){
  if(base.steps.length<2)return result('CLOCKLESS_CONTROL',{applicable:false});
  const strip=st=>{st.ledger=st.ledger.map(r=>{if(!r.provenance?.firstRecordedAt)return r;const {firstRecordedAt,...prov}=r.provenance;return {...r,provenance:prov};});};
@@ -204,6 +223,7 @@ export function runRelations(rt,kase,base,ctx,{only=null}={}){
  if(want('CARRIER_CLINICAL'))out.CARRIER_CLINICAL=carrier('CARRIER_CLINICAL',rt,kase,base);
  if(want('CARRIER_HOLD'))out.CARRIER_HOLD=carrier('CARRIER_HOLD',rt,kase,base);
  if(want('RESTATE_DECLARED_BREAK'))out.RESTATE_DECLARED_BREAK=restate(rt,kase,base);
+ if(want('INSERT_NEWER_BREAK'))out.INSERT_NEWER_BREAK=insertNewer(rt,kase,base);
  if(want('CONSENT_OFF'))out.CONSENT_OFF=consent(rt,kase,base);
  if(want('CLOCKLESS_CONTROL'))out.CLOCKLESS_CONTROL=clockless(rt,kase,base);
  if(want('CALENDAR_SHIFT'))out.CALENDAR_SHIFT=shift(rt,kase,base);

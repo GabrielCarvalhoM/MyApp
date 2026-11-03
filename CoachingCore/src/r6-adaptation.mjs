@@ -427,8 +427,11 @@ export function evaluateProgram(program,input,options={}){
  // later decision decides it exactly as the same break stated again there: the return re-enters from it, another event kind asks, a clinical
  // route still comes first (and a break with a clinical reason routes clinically again, F08). The event that carried it is never applied with it.
  const carried=Array.isArray(input?.actualLedger)?input.actualLedger.filter(isDeclaration):[];
- const retained=asOf&&!declaresBreak(input)?retainedBreak(program,carried,asOf):null,review=retained?{...input,interruption:clone(retained.interruption)}:input;
  const declared=asOf&&input?.event?.id?newDeclaration(program,input,asOf,carried):null;
+ // R7-D Phase 3.2 (SSCTR-P31-F02; Founder: no last-write-wins over unresolved facts): the breaks the record holds and no return applied, with the
+ // one this review states, read as interruptions (keptBreaks). One is read as Phase 3.1 reads its declaration; several never replace each other.
+ const kept=asOf?keptBreaks(program,carried,asOf,input,declared):null,read=kept?.read??null;
+ const retained=read&&!read.own?read.live.row:null,review=read&&read.live.i!==input.interruption?{...input,interruption:clone(read.live.i)}:input;
  // The record a decision returns before it reads the review's reports keeps the break this review declares (a clinical route, a question).
  const keep=extra=>declared&&(input.actualLedger===undefined||input.actualLedger===null||Array.isArray(input.actualLedger))?{...extra,actualLedger:[...clone(input.actualLedger??[]),declared]}:extra;
  // R7-D DX-02: a declared interruption is a known stop whatever event carries it, never dependent on a pending question. A weekly review that
@@ -489,6 +492,9 @@ export function evaluateProgram(program,input,options={}){
   // R7-D Phase 3.1: the break the record holds, read by this decision as if this review stated it: the report that declared it names its
   // interruption (episode identity) and is recorded with the return that applies it.
   if(retained)ctx.declaredBy={eventId:retained.eventId,eventKind:retained.eventKind??null,declaredAt:retained.declaredAt};
+  // R7-D Phase 3.2: separate breaks a return reads together (separateStop), the identity of the one it reads, and breaks it does not apply.
+  if(kept?.separate){ctx.separate=kept.separate;ctx.keptEpisode=read.identity;}
+  if(kept?.excluded?.length)ctx.notApplied=kept.excluded;
   // This week's own context (R7-A.1 C2), the one test of what is still ahead (C1) and the day of a return reported this week (C5).
   Object.assign(ctx,{skw:sk.at(w)??sk,ahead:aheadOf(ctx),returned:returnOf(program,w)});
  if(options[NO_CEILING]===true)ctx.noCeiling=true;
@@ -510,7 +516,10 @@ export function evaluateProgram(program,input,options={}){
   const held=kind==='WEEKLY_REVIEW'&&!gap&&!factual?.ask?heldSignal(review.referenceState,w):null;
   // Training before the latest interruption that its return did not read is confirmed first (R7-A final I6); a return report decides it itself.
   const replayed=carried.find(r=>r.eventId===input.event.id&&utcTimestamp(r.declaredAt)),recordedOn=retained?localDate(retained.declaredAt,tz):declared?asOfLocal:replayed?localDate(replayed.declaredAt,tz):null;
-  const decide=c=>(kind!=='RETURN_AFTER_PAUSE'&&declaresBreak(review)&&breakCarrierAsk(kind,recordedOn))||(kind!=='RETURN_AFTER_PAUSE'&&staleReturn(c))||(held&&replayHeld(c,held))||(HANDLERS[kind]??weeklyReview)(c);
+  // R7-D Phase 3.2: with several breaks on record and not applied, the question about how they relate (or about a correction across a kept break)
+  // comes first, after the clinical route only: no return dose and no other change is chosen before it is answered.
+  const keptAsk=kept?.ask==='INTERRUPTION_RELATION'?relationAsk(kept,kind,tz):kept?.ask==='CORRECTION_ACROSS_KEPT_BREAK'?correctionAcrossAsk(kept,tz):null;
+  const decide=c=>keptAsk||(kind!=='RETURN_AFTER_PAUSE'&&declaresBreak(review)&&breakCarrierAsk(kind,recordedOn))||(kind!=='RETURN_AFTER_PAUSE'&&staleReturn(c))||(held&&replayHeld(c,held))||(HANDLERS[kind]??weeklyReview)(c);
   // A question about block choices is a decision like any other (QE-R7B-R2-02; R7-A A5): it never drops the canonical factual state computed above. A
   // question the factual re-plan itself raises keeps precedence; otherwise the block-choice question carries the factual re-plan and any graduation
   // withdrawal (withFactualReplan), because the facts it follows stand whatever is still asked.
@@ -733,15 +742,75 @@ function newDeclaration(program,review,asOf,carried){
  if(isoDay(i.startDate)&&i.startDate>localDate(asOf,program.timezoneOffsetMinutes??0)||startedAt&&Date.parse(startedAt)>Date.parse(asOf))return null;
  return {fact:INTERRUPTION_DECLARED,eventId:review.event.id,eventKind:KIND_ALIASES[review.event.kind]??review.event.kind??null,athleteId:program.athleteId,declaredAt:asOf,interruption:i,inputHash:hash(i),provenance:{firstRecordedAt:asOf}};
 }
+/** A record row this decision reads: this athlete's, with a clock no later than the decision's, and facts that match their own hash. */
+const readableDeclaration=(program,r,at)=>r.athleteId===program.athleteId&&typeof r.eventId==='string'&&!!utcTimestamp(r.declaredAt)&&Date.parse(r.declaredAt)<=at&&!!r.interruption&&typeof r.interruption==='object'&&!Array.isArray(r.interruption)&&r.inputHash===hash(r.interruption);
+// ---------- R7-D Phase 3.2: several declared breaks not applied (SSCTR-P31-F02; Founder 2026-11-02: no last-write-wins over unresolved facts) ----------
+/** The facts of an interruption report apart from its name: two reports with the same facts are one declaration. */
+const factsKey=i=>{const {episodeId,...x}=i;return hash(x);};
+/** The name a report gives its interruption (interruption.episodeId, the existing correction mechanism), or null. */
+const nameOf=i=>typeof i?.episodeId==='string'&&i.episodeId.trim()!==''&&i.episodeId.length<=200?i.episodeId:null;
 /**
- * The declared break the record holds that no return has applied, or null: the latest declaration made by the decision clock (a newer one
- * replaces an older one, as a newer report of a break does), unless a return (REESTABLISH) was decided at or after it: a return applies the
- * break in force when it is decided. A row that is not this athlete's, has no clock, or whose facts do not match its own hash is not read.
+ * The breaks on record that no return has applied (a return applies every break declared by its clock), with the break this review states, read
+ * as interruptions by the existing episode semantics (R7-A final §3): a report belongs to the interruption it names (interruption.episodeId: its
+ * identity, or the event id of one of its reports), and two reports with the same facts apart from the name are one declaration (an exact
+ * replay). Nothing else joins two reports: dates that touch, overlap or are equal never do (I9; Founder F02 §1). Each interruption has its
+ * identity (the latest name its reports give it, else its first report's event id), its reports in order, the one in force (`live`, the latest:
+ * a correction is a newer report), whether a report named it (`named`), and whether its name is a recorded return's (`applied`: a correction of
+ * a break already applied, or the replay of a report a return already applied).
+ * Read by the decision:
+ * - one interruption: it is the break the review reads, exactly as R7-D Phase 3.1 reads its latest declaration;
+ * - several: none replaces another. Every one is screened clinically first (the review reads a clinical one when there is one). Each later one
+ *   must say how it relates to the earlier ones, by its name (a correction of an applied break, or the replay of an applied report, names its
+ *   break): until it does, the relation is asked (INTERRUPTION_RELATION) and no return dose is chosen. A correction of an applied break waits
+ *   while a break not applied is on record (B4 read over declarations: asked when this review states it, otherwise not read and recorded so).
+ *   Two or more breaks not applied, each later one named, are separate breaks: the return reads them together (separateStop), and the review
+ *   reads the latest-ending one.
+ * Null when there is nothing to read, when this review states a template (its own question) or a break that begins after it (a plan).
  */
-function retainedBreak(program,carried,asOf){
- const at=Date.parse(asOf),rows=carried.filter(r=>r.athleteId===program.athleteId&&typeof r.eventId==='string'&&utcTimestamp(r.declaredAt)&&Date.parse(r.declaredAt)<=at&&!!r.interruption&&typeof r.interruption==='object'&&!Array.isArray(r.interruption)&&r.inputHash===hash(r.interruption));
- const latest=rows.reduce((m,r)=>!m||Date.parse(r.declaredAt)>=Date.parse(m.declaredAt)?r:m,null);
- return latest&&!program.decisions.some(d=>d.action==='REESTABLISH'&&Date.parse(d.asOf)>=Date.parse(latest.declaredAt))?latest:null;
+function keptBreaks(program,carried,asOf,input,declared){
+ const states=statesBreak(input),at=Date.parse(asOf),tz=program.timezoneOffsetMinutes??0;
+ if(declaresBreak(input)&&!states||states&&typeof input.event?.id!=='string')return null;
+ const applied=r=>program.decisions.some(d=>d.action==='REESTABLISH'&&Date.parse(d.asOf)>=Date.parse(r.declaredAt));
+ const readable=carried.filter(r=>readableDeclaration(program,r,at)),replay=states&&!declared?readable.find(r=>r.eventId===input.event?.id)??null:null;
+ if(states&&!declared&&!replay)return null;
+ const reports=readable.filter(r=>!applied(r)).map(r=>({eventId:r.eventId,declaredAt:r.declaredAt,i:r.interruption,row:r})).sort((a,b)=>Date.parse(a.declaredAt)-Date.parse(b.declaredAt));
+ if(states){
+  const mine=reports.find(x=>x.eventId===input.event.id);
+  if(mine){mine.own=true;mine.i=input.interruption;}
+  else reports.push({eventId:input.event.id,declaredAt:asOf,i:input.interruption,row:declared,own:true,appliedReplay:!declared});
+ }
+ if(!reports.length)return null;
+ const parent=reports.map((_,k)=>k),find=k=>parent[k]===k?k:(parent[k]=find(parent[k])),join=(a,b)=>{a=find(a);b=find(b);if(a!==b)parent[Math.max(a,b)]=Math.min(a,b);};
+ const keys=reports.map(x=>factsKey(x.i)),names=reports.map(x=>nameOf(x.i));
+ for(let a=0;a<reports.length;a++)for(let b=0;b<reports.length;b++)if(a!==b&&(keys[a]===keys[b]||names[a]&&(names[a]===reports[b].eventId||names[a]===names[b])))join(a,b);
+ const eps=episodesOf(program),appliedName=n=>!!n&&eps.some(e=>e.id===n||e.reports.some(b=>b.eventId===n));
+ const by=new Map();reports.forEach((x,k)=>{const r=find(k);if(!by.has(r))by.set(r,[]);by.get(r).push(x);});
+ const groups=[...by.values()].map(list=>{const named=list.filter(x=>nameOf(x.i)),name=named.length?nameOf(named.at(-1).i):null,applied=appliedName(name)||list.some(x=>x.appliedReplay);return {identity:name??list[0].eventId,named:!!name||applied,reports:list,first:list[0],live:list.at(-1),own:list.some(x=>x.own),applied};}).sort((a,b)=>Date.parse(a.first.declaredAt)-Date.parse(b.first.declaredAt));
+ if(groups.length===1)return {groups,read:groups[0],separate:null,excluded:[],ask:null};
+ const own=groups.find(g=>g.own)??null,open=groups.filter(g=>!g.applied),clinical=groups.find(g=>interruptionScreen(g.live.i).clinical)??null;
+ const latest=list=>own&&list.includes(own)?own:list.reduce((m,g)=>!m||Date.parse(g.live.declaredAt)>=Date.parse(m.live.declaredAt)?g:m,null);
+ // A later break that names none has not said how it relates to the breaks before it, a kept correction of an applied break included.
+ const unresolved=groups.filter((g,k)=>k>0&&!g.named);
+ if(unresolved.length)return {groups,read:clinical??latest(open.length?open:groups),separate:null,excluded:[],ask:'INTERRUPTION_RELATION',unresolved};
+ if(own?.applied&&open.length)return {groups,read:clinical??own,separate:null,excluded:[],ask:'CORRECTION_ACROSS_KEPT_BREAK'};
+ if(open.length<=1){const g=open[0]??latest(groups);return {groups,read:clinical??g,separate:null,excluded:groups.filter(x=>x!==g),ask:null};}
+ const end=g=>isoDay(g.live.i.endDate)?g.live.i.endDate:onDate(localDate(asOf,tz),-1);
+ const head=open.reduce((m,g)=>!m||end(g)>end(m)||end(g)===end(m)&&Date.parse(g.live.declaredAt)>=Date.parse(m.live.declaredAt)?g:m,null);
+ return {groups,read:clinical??head,separate:open,excluded:groups.filter(g=>g.applied),ask:null};
+}
+/** The question a review gets while two or more breaks are on record, not applied, and a later one has not said how it relates to the earlier. */
+function relationAsk(kept,kind,tz){
+ const day=g=>localDate(g.first.declaredAt,tz),span=g=>`${g.live.i.startDate??'?'} to ${g.live.i.endDate??'?'}`,open=kept.groups,n=kept.unresolved.length;
+ const later=kept.unresolved.map(g=>`the one reported on ${day(g)} (${span(g)}, episodeId ${g.identity})`).join(' and ');
+ const event=['WEEKLY_REVIEW','RETURN_AFTER_PAUSE'].includes(kind)?'':`; the ${kind.toLowerCase().replace(/_/g,' ')} is sent again after the return`;
+ return {action:'ASK',reason:`Breaks in training reported on ${open.map(g=>`${day(g)} (${span(g)})`).join(' and ')} are on record and not applied, and ${later} ${n>1?'do':'does'} not say how ${n>1?'they relate':'it relates'} to the earlier: report ${n>1?'each':'it'} again with an episodeId, the earlier break's if it corrects that break, or its own if it is a separate break. No break is replaced or joined to another on its own and the earlier facts need not be stated again; until then no return dose is chosen and the plan is not valid${event}`,
+  missingInputs:['interruption.episodeId'],question:{kind:'INTERRUPTION_RELATION',breaks:open.map(g=>({episodeId:g.identity,reportedOn:day(g),startDate:g.live.i.startDate??null,endDate:g.live.i.endDate??null,named:g.named,...(g.applied?{correctsAppliedBreak:true}:{})})),unresolved:kept.unresolved.map(g=>g.identity)},
+  counterfactuals:[counter('LATEST_REPLACES','REESTABLISH',false,'The newer break would erase the older one: last-write-wins over a fact'),counter('JOIN','REESTABLISH',false,'Two declarations are never made one interruption on their own (I9)'),counter('ASK','ASK',true,'Whether the newer break corrects the older or is separate is the athlete’s statement',{selected:true})]};
+}
+/** A correction of an applied break stated while a break not applied is on record (B4, read over declarations). */
+function correctionAcrossAsk(kept,tz){
+ const open=kept.groups.filter(g=>!g.applied),day=g=>localDate(g.first.declaredAt,tz);
+ return {action:'ASK',reason:`This corrects a break a return already applied, but a break reported on ${open.map(day).join(' and ')} is on record and not applied yet: it is applied first (a return report or the week’s review, with no need to state it again), and a correction of an earlier break across it is then asked as any correction across a later break; nothing changes until then`,missingInputs:['interruption.episodeId'],counterfactuals:[counter('APPLY_CORRECTION','REESTABLISH',false,'Re-planning the earlier break would drop the break still on record'),counter('ASK','ASK',true,'The break not applied yet comes first',{selected:true})]};
 }
 /** R7-D DX-02: an event of another kind (a change or a signal of its own) that also declares an interruption: the interruption is screened
  * clinically first (clinicalRoute) and then asked to be reported on its own, so neither the event's change nor the stale plan is applied over it.
@@ -1171,7 +1240,7 @@ function interruptionEpisode(ctx,{start,end,id=null}){
   return {relation:'SAME_BREAK',episode:named.id,supersedes:named.live.eventId,basis:'EXPLICIT',revision:named.reports.length+1};
  }
  if(last&&id===null&&start===last.live.start&&end===last.live.end)return {relation:'SAME_BREAK',episode:last.id,supersedes:last.live.eventId,basis:'DUPLICATE',revision:last.reports.length+1};
- if(!last||afterReentry(ctx,last,start))return {relation:'NEW',episode:id??ctx.declaredBy?.eventId??ctx.review.event.id,supersedes:null,basis:id!==null?'EXPLICIT':!last?'FIRST':start>=last.first.day?'AFTER_REENTRY':'TRAINING_BETWEEN',revision:1};
+ if(!last||afterReentry(ctx,last,start))return {relation:'NEW',episode:id??ctx.keptEpisode??ctx.declaredBy?.eventId??ctx.review.event.id,supersedes:null,basis:id!==null?'EXPLICIT':!last?'FIRST':start>=last.first.day?'AFTER_REENTRY':'TRAINING_BETWEEN',revision:1};
  if(end<last.live.start||prev&&!afterReentry(ctx,prev,start))return {ask:`This interruption ends before the one reported on ${last.first.day} began, or spans an earlier return: say when it started and ended, as one period`,missingInputs:dates};
  return {ask:`This interruption shares days with the one first reported on ${last.first.day} (${last.live.start} to ${last.live.end}), or follows it with no return or training between, and is not marked as its correction: say whether it corrects that interruption (its episodeId ${last.id}) or is a different one`,missingInputs:['interruption.episodeId']};
 }
@@ -1582,22 +1651,15 @@ function staleReturn(ctx){
  if(hash(returnStrength(r.cls,at.state.strength))===hash(r.entry.strength)&&!at.material)return null;
  return {action:'ASK',reason:`Training before the interruption that began on ${r.start} is now recorded, and the return reported on ${r.day} did not read it: confirm that interruption again (episodeId ${e.id}, or the same dates) so its return reads the whole record; nothing else changes until then`,missingInputs:['interruption.episodeId'],question:{episodeId:e.id,startDate:r.start,endDate:r.end,reportedOn:r.day}};
 }
-/** Nonclinical return: current evidence is the start, prior tolerated dose the ceiling; no universal percentage rollback. */
-function returnAfterPause(ctx){
- const {program,sk,w,review,asOfLocal}=ctx,i=interruptionOf(review),R=sk.op.return,tz=program.timezoneOffsetMinutes??0;
- // The same report again (one event id, the same facts) is already recorded: nothing changes and no interruption is added (R7-A final P6).
- // One event id carrying other facts is asked, never applied.
- const again=program.decisions.find(d=>d.action==='REESTABLISH'&&d.eventId===review.event.id);
- if(again)return (again.interruption?.inputHash??hash(i))===hash(i)?{action:'KEEP',reason:'This interruption report is already recorded; nothing changes',counterfactuals:[counter('KEEP','KEEP',true,'A report recorded once is never applied twice',{selected:true})]}:{action:'ASK',reason:'This report id already belongs to a different interruption report; send a correction as a new report of that interruption (its episodeId)',missingInputs:['event.id']};
- const {screen,clinical}=interruptionScreen(i);
- if(clinical)return clinical;
- if(!allows(ctx.authority,'R6-NONCLINICAL-RETURN'))return {action:'UNSUPPORTED',status:'UNSUPPORTED',reason:'Nonclinical return authority unavailable'};
- if(screen.status==='ASK')return {action:'ASK',reason:screen.basis==='MISSING_REASON'?'Say what interrupted training (for example travel, work, family, illness or injury) before a nonclinical restart':'The interruption reason is unclear; say what it was and confirm it involved no pain, injury or illness',missingInputs:['interruption.reasonCategory'],screen};
- // Interruption facts out of range or contradicting each other are asked, never resolved to the least conservative class (QRE-R6-06).
- const invalid=[];
+/**
+ * The facts a return reads from one interruption report: its days, its first and last days (without an end date it ended the day before the
+ * review), its start time when stated (it orders a session of its first day, 0.8) and whether it names its interruption (R7-A final §8). Facts
+ * out of range or contradicting each other are returned to be asked, never resolved to the least conservative class (QRE-R6-06).
+ */
+function readBreak(ctx,i){
+ const {asOfLocal}=ctx,tz=ctx.program.timezoneOffsetMinutes??0,invalid=[];
  if(i.days!==undefined&&i.days!==null&&!(Number.isInteger(i.days)&&i.days>=1&&i.days<=3650))invalid.push('interruption.days');
  for(const k of ['startDate','endDate'])if(i[k]!==undefined&&i[k]!==null&&!isoDay(i[k]))invalid.push('interruption.'+k);
- // The interruption's identity is a name (R7-A final §8), and its start time, when stated, orders a session of its first day (0.8).
  const named=i.episodeId!==undefined&&i.episodeId!==null,startedAt=i.startedAt===undefined||i.startedAt===null?null:utcTimestamp(i.startedAt);
  if(named&&!(typeof i.episodeId==='string'&&i.episodeId.trim()!==''&&i.episodeId.length<=200))invalid.push('interruption.episodeId');
  if(i.startedAt!==undefined&&i.startedAt!==null&&!startedAt)invalid.push('interruption.startedAt');
@@ -1608,11 +1670,72 @@ function returnAfterPause(ctx){
  if(!invalid.length&&isoDay(i.endDate)&&dayGap(asOfLocal,i.endDate)>0)invalid.push('interruption.endAfterThisReview');
  if(!invalid.length&&startDay&&dayGap(asOfLocal,startDay)>0)invalid.push('interruption.startAfterThisReview');
  if(!invalid.length&&Number.isInteger(i.days)&&startDay&&isoDay(i.endDate)&&Math.abs(i.days-(dayGap(startDay,i.endDate)+1))>1)invalid.push('interruption.daysContradictDates');
- if(invalid.length)return {action:'ASK',reason:'The interruption facts are out of range or contradict each other ('+invalid.join(', ')+'); say when it started and when it ended',missingInputs:invalid,screen};
- // Without an end date the interruption ended the day before this return review.
+ if(invalid.length)return {invalid};
  const end=isoDay(i.endDate)?i.endDate:onDate(asOfLocal,-1),start=startDay;
- const days=Number.isInteger(i.days)?i.days:start?dayGap(start,end)+1:null;
+ return {named,startedAt,start,end,days:Number.isInteger(i.days)?i.days:start?dayGap(start,end)+1:null};
+}
+/** Planned sessions from one day to another (inclusive) with no report that reads (R7-C G01: unknown is neither done nor not done); a day inside a
+ * recorded return's interruption is a known stop. */
+function unreportedBetween(ctx,from,through){
+ if(from>through)return [];
+ const reported=new Set((ctx.fullLedger??ctx.ledger).filter(o=>!o.conflicted).map(o=>o.sessionId)),stops=episodesOf(ctx.program).map(e=>e.live);
+ return ctx.program.weeks.flatMap(x=>x.sessions).filter(s=>s.prescription&&s.status!=='SKIPPED'&&s.date>=from&&s.date<=through&&!reported.has(s.id)&&!stops.some(b=>s.date>=b.start&&s.date<=b.end)).sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0);
+}
+/**
+ * R7-D Phase 3.2 (Founder F02 §3): the stop a return reads when separate breaks are on record and not applied (ctx.separate: each later one named on
+ * its own). They stay separate facts with their own identities: no break is joined to another and no duration is added. The stop ends with the
+ * latest of them (`head`, the break the return reads) and runs back through each earlier one whose days reach or touch it, or with nothing trained
+ * between (every session planned between them reported not done, or none planned): factual continuity. Training recorded between them ends it
+ * there: the earlier break is history and the training after it a fact the state reads (the existing return rules). Training between them that is
+ * only unreported counts neither as done nor as not done: asked, with its sessions (R7-C G01). Every break is screened and read as the return reads
+ * its own. Returns the stop ({start, end, days, startedAt}), the days declared and each break's place in it, or the decision to return.
+ */
+function separateStop(ctx,head){
+ const tz=ctx.program.timezoneOffsetMinutes??0,day=g=>localDate(g.first.declaredAt,tz),headG=ctx.separate.find(g=>g.identity===ctx.keptEpisode),list=[];
+ for(const g of ctx.separate.filter(x=>x!==headG)){
+  const i=g.live.i,who=`The break reported on ${day(g)} (episodeId ${g.identity})`,{screen,clinical}=interruptionScreen(i);
+  if(clinical)return {decision:clinical};
+  if(screen.status==='ASK')return {decision:{action:'ASK',reason:`${who}: ${screen.basis==='MISSING_REASON'?'say what interrupted training (for example travel, work, family, illness or injury)':'its reason is unclear; say what it was and confirm it involved no pain, injury or illness'}; report it again with its episodeId`,missingInputs:['interruption.reasonCategory'],screen}};
+  const f=readBreak(ctx,i);
+  if(f.invalid)return {decision:{action:'ASK',reason:`${who}: its facts are out of range or contradict each other (${f.invalid.join(', ')}); report it again with its episodeId and when it started and ended`,missingInputs:f.invalid}};
+  if(f.days===null)return {decision:{action:'ASK',reason:`${who} has no length: report it again with its episodeId and its start and end dates`,missingInputs:['interruption.days']}};
+  list.push({g,start:f.start??onDate(f.end,-(f.days-1)),end:f.end,days:f.days,startedAt:f.startedAt});
+ }
+ const H={g:headG,start:head.start??onDate(head.end,-(head.days-1)),end:head.end,days:head.days,startedAt:head.startedAt},place=new Map([[headG,'LATEST']]);
+ let start=H.start,startedAt=H.startedAt,at=H;
+ for(const x of [...list].sort((a,b)=>a.end<b.end?1:a.end>b.end?-1:a.start<b.start?1:a.start>b.start?-1:0)){
+  if(x.end>=onDate(start,-1)){place.set(x.g,x.end>=start?'OVERLAPS':'TOUCHES');if(x.start<start){start=x.start;startedAt=x.startedAt;at=x;}else if(x.start===start&&x.startedAt&&(!startedAt||Date.parse(x.startedAt)<Date.parse(startedAt)))startedAt=x.startedAt;continue;}
+  if(trainedBetween(ctx,x.end,start))break;
+  const from=onDate(x.end,1),through=onDate(start,-1),unknown=unreportedBetween(ctx,from,through),n=unknown.length;
+  if(n)return {decision:{action:'ASK',reason:`The breaks reported on ${day(x.g)} (${x.start} to ${x.end}) and on ${day(at.g)} (${at.start} to ${at.end}) are separate, and ${n} planned session${n>1?'s':''} between them (${from} to ${through}) ha${n>1?'ve':'s'} no report: say what was done (report the sessions, done or not done); training that is only unreported counts neither as done nor as not done, and the return depends on it`,missingInputs:['observations.unreportedSessions'],question:{kind:'TRAINING_BETWEEN_BREAKS',unreported:{from,through,sessionIds:unknown.map(s=>s.id)},breaks:[{episodeId:x.g.identity,startDate:x.start,endDate:x.end},{episodeId:at.g.identity,startDate:at.start,endDate:at.end}]}}};
+  place.set(x.g,'NO_TRAINING_BETWEEN');start=x.start;startedAt=x.startedAt;at=x;
+ }
+ const all=[H,...list].sort((a,b)=>a.start<b.start?-1:a.start>b.start?1:0);
+ return {start,end:H.end,days:start===H.start?H.days:dayGap(start,H.end)+1,startedAt,continuous:start!==H.start,
+  declared:[{start,end:H.end},...list.filter(x=>!place.has(x.g)).map(x=>({start:x.start,end:x.end}))],
+  record:all.map(x=>({episode:x.g.identity,eventId:x.g.live.eventId,declaredAt:x.g.live.declaredAt,inputHash:hash(x.g.live.i),startDate:x.start,endDate:x.end,days:x.days,stop:place.get(x.g)??'TRAINING_AFTER'}))};
+}
+/** Nonclinical return: current evidence is the start, prior tolerated dose the ceiling; no universal percentage rollback. */
+function returnAfterPause(ctx){
+ const {program,sk,w,review,asOfLocal}=ctx,i=interruptionOf(review),R=sk.op.return,tz=program.timezoneOffsetMinutes??0;
+ // The same report again (one event id, the same facts) is already recorded: nothing changes and no interruption is added (R7-A final P6).
+ // One event id carrying other facts is asked, never applied. A return that read separate breaks records each one's facts (R7-D Phase 3.2).
+ const again=program.decisions.find(d=>d.action==='REESTABLISH'&&d.eventId===review.event.id);
+ if(again)return (again.interruption?.inputHash??hash(i))===hash(i)||(again.interruption?.separateBreaks??[]).some(b=>b.inputHash===hash(i))?{action:'KEEP',reason:'This interruption report is already recorded; nothing changes',counterfactuals:[counter('KEEP','KEEP',true,'A report recorded once is never applied twice',{selected:true})]}:{action:'ASK',reason:'This report id already belongs to a different interruption report; send a correction as a new report of that interruption (its episodeId)',missingInputs:['event.id']};
+ const {screen,clinical}=interruptionScreen(i);
+ if(clinical)return clinical;
+ if(!allows(ctx.authority,'R6-NONCLINICAL-RETURN'))return {action:'UNSUPPORTED',status:'UNSUPPORTED',reason:'Nonclinical return authority unavailable'};
+ if(screen.status==='ASK')return {action:'ASK',reason:screen.basis==='MISSING_REASON'?'Say what interrupted training (for example travel, work, family, illness or injury) before a nonclinical restart':'The interruption reason is unclear; say what it was and confirm it involved no pain, injury or illness',missingInputs:['interruption.reasonCategory'],screen};
+ // Interruption facts out of range or contradicting each other are asked, never resolved to the least conservative class (QRE-R6-06).
+ const f=readBreak(ctx,i);
+ if(f.invalid)return {action:'ASK',reason:'The interruption facts are out of range or contradict each other ('+f.invalid.join(', ')+'); say when it started and when it ended',missingInputs:f.invalid,screen};
+ // Without an end date the interruption ended the day before this return review.
+ const {named}=f;let {startedAt,start,end,days}=f;
  if(days===null)return {action:'ASK',reason:'The interruption length decides the re-entry stage; supply start and end dates',missingInputs:['interruption.days']};
+ // R7-D Phase 3.2: separate breaks on record and not applied are read together: the stop this return reads (separateStop).
+ const sep=ctx.separate?separateStop(ctx,{start,end,days,startedAt}):null;
+ if(sep?.decision)return sep.decision;
+ if(sep)({start,end,days,startedAt}=sep);
  const assessedDay=dayOf(review.eligibility?.assessedAt);
  if(!assessedDay||dayGap(end,assessedDay)<0)return {action:'ASK',reason:'Eligibility must be assessed on or after the interruption ended',missingInputs:['eligibility.assessedOnOrAfterInterruptionEnd']};
  const pauseStart=start??onDate(end,-(days-1)),demo=review.currentDemonstration,demoDay=String(demo?.observedAt??'').slice(0,10);
@@ -1663,7 +1786,7 @@ function returnAfterPause(ctx){
  // Re-entry this week starts the week again from the return; re-entry next week is next week's start (C3). The entry is evidence-anchored:
  // the state executed when the interruption began, with its facts (RETURN_ENTRY).
  // The interruption this report declares is a known stop, not unreported training (R7-C G01): its days never make the re-entry ask.
- const next=composeWeeks(ctx,base,{fromWeek,start:{runState,strengthState},startAuthority:anchoredStart(WEEK_START.RETURN_ENTRY,{eventId:review.event.id,asOf:ctx.asOf}),completedRuns:returnRuns,returnDay:asOfLocal,evidence:evidenceRule(ctx),declared:[{start:pauseStart,end}]});
+ const next=composeWeeks(ctx,base,{fromWeek,start:{runState,strengthState},startAuthority:anchoredStart(WEEK_START.RETURN_ENTRY,{eventId:review.event.id,asOf:ctx.asOf}),completedRuns:returnRuns,returnDay:asOfLocal,evidence:evidenceRule(ctx),declared:sep?sep.declared:[{start:pauseStart,end}]});
  if(next.ask)return askOf(next);
  // A named correction cannot move its interruption over the re-entry its return already had (Founder §11, I7): training recorded after that
  // return began (the interruption's first report), on or before the corrected end, would be both re-entry and before or inside the
@@ -1677,8 +1800,8 @@ function returnAfterPause(ctx){
  // The report records its interruption (InterruptionEpisode, Founder 0.1): its days and start time when stated, its identity and revision, how
  // it relates to the report before and why (basis), the facts it was given (inputHash), the point its state came from and the start it set,
  // which a later, separate interruption starts from. Its clock (asOf) is its report time.
- const proposal=finishProposal(program,sk,next,{eventId:review.event.id,asOf:ctx.asOf,action:'REESTABLISH',fromWeek,interruption:{days,class:cls,nonclinical:true,screen,startDate:pauseStart,endDate:end,...(startedAt?{startedAt}:{}),episode:ep.episode,relation:ep.relation,supersedes:ep.supersedes,basis:ep.basis,revision:ep.revision,inputHash:hash(i),stateAt:at.point,entry:{run:clone(runState),strength:clone(strengthState)},...(ctx.declaredBy?{declaredBy:clone(ctx.declaredBy)}:{})},demonstrationUsed:!!demoMinutes,horizonsConsidered:HORIZONS});
- return {action:'REESTABLISH',reason:`${ctx.declaredBy?`The break reported on ${localDate(ctx.declaredBy.declaredAt,tz)} is on record and applied now: `:''}${cls.toLowerCase()} nonclinical interruption (${days} days): ${cls==='SHORT'?'resume the last completed doses; no step until execution is observed':cls==='MODERATE'?`re-entry from ${demoMinutes?'the current demonstration':'the reviewed entry dose'}, returning to the prior tolerated dose in ${R.moderateStepsToPrior} conditional steps`:'restart from current capacity; prior doses are only a ceiling'}`,proposal,counterfactuals:[counter('RESUME_PRIOR_PLAN','KEEP',cls==='SHORT','Resuming the planned (higher) week restores dose by elapsed time',{selected:false}),counter('PERCENT_ROLLBACK','ROLLBACK',false,'A universal percentage rollback is not an approved rule'),counter('REESTABLISH','REESTABLISH',true,'Current evidence first, prior tolerance as ceiling',{selected:true}),counter('CLINICAL_ROUTE','CLINICAL',false,'The interruption reason screened nonclinical ('+screen.matched.join(', ')+') and no current clinical flag is present')],horizons:{H0_SESSION:'First sessions back are easy and effort-governed',H1_WEEK:'No quality or heavy loading in the entry step',H2_BLOCK:`Prior dose reached in ${cls==='SHORT'?1:R.moderateStepsToPrior} conditional step(s)`,H3_GOAL_EVENT:eventSoon?'The event is close: the plan aims at completion and cannot catch up missed preparation':'Goal trajectory continues after re-establishment'},missingInputs:[],nextObservation:'Record minutes, effort and next-day function after each return session; any pain, illness or abnormal symptom routes to qualified assessment'};
+ const proposal=finishProposal(program,sk,next,{eventId:review.event.id,asOf:ctx.asOf,action:'REESTABLISH',fromWeek,interruption:{days,class:cls,nonclinical:true,screen,startDate:pauseStart,endDate:end,...(startedAt?{startedAt}:{}),episode:ep.episode,relation:ep.relation,supersedes:ep.supersedes,basis:ep.basis,revision:ep.revision,inputHash:hash(i),stateAt:at.point,entry:{run:clone(runState),strength:clone(strengthState)},...(ctx.declaredBy?{declaredBy:clone(ctx.declaredBy)}:{}),...(sep?{separateBreaks:sep.record}:{}),...(ctx.notApplied?.length?{notApplied:ctx.notApplied.map(g=>({episode:g.identity,eventId:g.live.eventId,declaredAt:g.live.declaredAt,inputHash:hash(g.live.i),why:'CORRECTION_OF_AN_APPLIED_BREAK_NOT_READ'}))}:{})},demonstrationUsed:!!demoMinutes,horizonsConsidered:HORIZONS});
+ return {action:'REESTABLISH',reason:`${sep?`Separate breaks on record are applied now (${sep.record.map(b=>b.startDate+' to '+b.endDate).join('; ')}), each its own interruption; the stop read runs from ${pauseStart} to ${end}${sep.continuous?' with no training recorded between them':''}${sep.record.some(b=>b.stop==='TRAINING_AFTER')?', and training is recorded after the earlier one':''}: `:ctx.declaredBy?`The break reported on ${localDate(ctx.declaredBy.declaredAt,tz)} is on record and applied now: `:''}${cls.toLowerCase()} nonclinical interruption (${days} days): ${cls==='SHORT'?'resume the last completed doses; no step until execution is observed':cls==='MODERATE'?`re-entry from ${demoMinutes?'the current demonstration':'the reviewed entry dose'}, returning to the prior tolerated dose in ${R.moderateStepsToPrior} conditional steps`:'restart from current capacity; prior doses are only a ceiling'}`,proposal,counterfactuals:[counter('RESUME_PRIOR_PLAN','KEEP',cls==='SHORT','Resuming the planned (higher) week restores dose by elapsed time',{selected:false}),counter('PERCENT_ROLLBACK','ROLLBACK',false,'A universal percentage rollback is not an approved rule'),counter('REESTABLISH','REESTABLISH',true,'Current evidence first, prior tolerance as ceiling',{selected:true}),counter('CLINICAL_ROUTE','CLINICAL',false,'The interruption reason screened nonclinical ('+screen.matched.join(', ')+') and no current clinical flag is present')],horizons:{H0_SESSION:'First sessions back are easy and effort-governed',H1_WEEK:'No quality or heavy loading in the entry step',H2_BLOCK:`Prior dose reached in ${cls==='SHORT'?1:R.moderateStepsToPrior} conditional step(s)`,H3_GOAL_EVENT:eventSoon?'The event is close: the plan aims at completion and cannot catch up missed preparation':'Goal trajectory continues after re-establishment'},missingInputs:[],nextObservation:'Record minutes, effort and next-day function after each return session; any pain, illness or abnormal symptom routes to qualified assessment'};
 }
 function eventWeekConflict(ctx){
  const {program,sk,w,asOfLocal,review}=ctx,raceWeek=sk.plan.raceWeek,week=program.weeks[w],dates=new Set(Array.isArray(review.changes?.unavailableDates)?review.changes.unavailableDates:[]);

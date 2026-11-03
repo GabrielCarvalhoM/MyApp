@@ -184,14 +184,18 @@ test('R7-D Phase 3.1 T5: the same break delivered again, or the same report repl
 });
 
 // ---------- T6: correction ----------
-test('R7-D Phase 3.1 T6: a newer declaration of the break replaces a recorded one not applied yet; the earlier decisions stay as they were',()=>{
+test('R7-D Phase 3.1 T6: a newer declaration of the break replaces a recorded one not applied yet when it names it (R7-D Phase 3.2: unnamed, it is asked); the earlier decisions stay as they were',()=>{
  const t=beforeBreak(),brk=BREAK(t.p),corrected={...brk,startDate:addDays(brk.startDate,7),days:7};
  const r1=step(t,5,{...D1,kind:'SYSTEMIC_FATIGUE',interruption:brk});
  const kept=JSON.parse(JSON.stringify({decisions:t.p.decisions,row:declarations(t.ledger)[0]}));
  step(t,5,{...D1,hour:'09:00:00',kind:'LOCAL_FATIGUE',interruption:corrected});
  assert.deepEqual(JSON.parse(JSON.stringify(declarations(t.ledger)[0])),kept.row,'the first fact is never rewritten');
  assert.equal(r1.action,'ASK');assert.deepEqual(JSON.parse(JSON.stringify(t.p.decisions.slice(0,kept.decisions.length))),kept.decisions,'decision history is append-only');
- const r=step(t,5,D2),d=r.proposal.decisions.at(-1);
+ // R7-D Phase 3.2 (SSCTR-P31-F02, Founder): a newer declaration that does not name the recorded break never replaces it; the relation is asked.
+ const q=step(t,5,D2);
+ assert.equal(q.action,'ASK',q.reason);assert.equal(q.question?.kind,'INTERRUPTION_RELATION');assert.equal(returns(t.p).length,0);
+ // Named as its correction (the episodeId of the report that declared it), it replaces it.
+ const r=step(t,5,{...D3,interruption:{...corrected,episodeId:kept.row.eventId}}),d=r.proposal.decisions.at(-1);
  assert.equal(r.action,'REESTABLISH',r.reason);assert.equal(d.interruption.startDate,corrected.startDate);assert.equal(d.interruption.days,7);assert.equal(d.interruption.class,'SHORT');
 });
 test('R7-D Phase 3.1 T6: a recorded break once applied is corrected through its episode, named by the report that declared it; only later decisions use the correction',()=>{

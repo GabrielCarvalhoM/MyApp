@@ -1,0 +1,95 @@
+{
+ "probe": "R7D-P32-F02-WITNESS",
+ "runtime": "R7D-FREEZE-2 (runtime bytes 1357638, r6-adaptation 9f905030)",
+ "cases": {
+  "W1": {
+   "status": "MODIFY",
+   "action": "REESTABLISH",
+   "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+   "missing": [],
+   "question": null,
+   "returnClass": "SHORT",
+   "returnDays": 7,
+   "returnStart": "2026-11-30",
+   "returnEnd": "2026-12-06",
+   "separateBreaks": null,
+   "runsAhead": [
+    "EASY:45",
+    "EASY:34",
+    "LONG:65",
+    "EASY:45",
+    "THRESHOLD:41",
+    "LONG:70"
+   ],
+   "qualityAhead": true,
+   "declaredRows": 2
+  },
+  "W2": {
+   "status": "MODIFY",
+   "action": "REESTABLISH",
+   "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+   "missing": [],
+   "question": null,
+   "returnClass": "SHORT",
+   "returnDays": 7,
+   "returnStart": "2026-11-30",
+   "returnEnd": "2026-12-06",
+   "separateBreaks": null,
+   "runsAhead": [
+    "EASY:45",
+    "EASY:34",
+    "LONG:65",
+    "EASY:45",
+    "THRESHOLD:41",
+    "LONG:70"
+   ],
+   "qualityAhead": true,
+   "declaredRows": 2
+  },
+  "W3": {
+   "status": "MODIFY",
+   "action": "REESTABLISH",
+   "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+   "missing": [],
+   "question": null,
+   "returnClass": "MODERATE",
+   "returnDays": 21,
+   "returnStart": "2026-11-16",
+   "returnEnd": "2026-12-06",
+   "separateBreaks": null,
+   "runsAhead": [
+    "EASY:15",
+    "EASY:15",
+    "LONG:20",
+    "EASY:30",
+    "EASY:30",
+    "LONG:45"
+   ],
+   "qualityAhead": false,
+   "declaredRows": 1
+  },
+  "W4": {
+   "correction": {
+    "status": "MODIFY",
+    "action": "REESTABLISH"
+   },
+   "plainAfter": {
+    "status": "KEEP",
+    "action": "KEEP",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+   },
+   "returns": [
+    "p32-w4-A 2026-11-16..2026-11-29",
+    "p32-w4-A 2026-11-16..2026-11-28"
+   ],
+   "keptBreakApplied": false
+  }
+ },
+ "verdict": {
+  "W1_olderBreakDropped": true,
+  "W2_olderBreakDropped": true,
+  "W4_keptBreakLost": true,
+  "comparatorClass": "MODERATE",
+  "RED": true
+ }
+}
