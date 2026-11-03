@@ -1,0 +1,89 @@
+{
+ "probe": "R7D-P32-F02-WITNESS",
+ "runtime": "candidate (R7-D Phase 3.2, r6-adaptation faa3bc12)",
+ "cases": {
+  "W1": {
+   "status": "ASK",
+   "action": "ASK",
+   "validity": "REQUIRES_RECONCILIATION",
+   "missing": [
+    "interruption.episodeId"
+   ],
+   "question": "INTERRUPTION_RELATION",
+   "runsAhead": [
+    "EASY:50",
+    "THRESHOLD:34",
+    "LONG:65",
+    "EASY:50",
+    "THRESHOLD:41",
+    "LONG:70"
+   ],
+   "qualityAhead": true,
+   "declaredRows": 2
+  },
+  "W2": {
+   "status": "ASK",
+   "action": "ASK",
+   "validity": "REQUIRES_RECONCILIATION",
+   "missing": [
+    "interruption.episodeId"
+   ],
+   "question": "INTERRUPTION_RELATION",
+   "runsAhead": [
+    "EASY:50",
+    "THRESHOLD:48",
+    "LONG:75",
+    "EASY:50",
+    "THRESHOLD:43",
+    "LONG:75"
+   ],
+   "qualityAhead": true,
+   "declaredRows": 2
+  },
+  "W3": {
+   "status": "MODIFY",
+   "action": "REESTABLISH",
+   "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+   "missing": [],
+   "question": null,
+   "returnClass": "MODERATE",
+   "returnDays": 21,
+   "returnStart": "2026-11-16",
+   "returnEnd": "2026-12-06",
+   "separateBreaks": null,
+   "runsAhead": [
+    "EASY:15",
+    "EASY:15",
+    "LONG:20",
+    "EASY:30",
+    "EASY:30",
+    "LONG:45"
+   ],
+   "qualityAhead": false,
+   "declaredRows": 1
+  },
+  "W4": {
+   "correction": {
+    "status": "ASK",
+    "action": "ASK"
+   },
+   "plainAfter": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+   },
+   "returns": [
+    "p32-w4-A 2026-11-16..2026-11-29",
+    "p32-w4-C 2026-12-14..2026-12-20"
+   ],
+   "keptBreakApplied": true
+  }
+ },
+ "verdict": {
+  "W1_olderBreakDropped": false,
+  "W2_olderBreakDropped": false,
+  "W4_keptBreakLost": false,
+  "comparatorClass": "MODERATE",
+  "RED": false
+ }
+}

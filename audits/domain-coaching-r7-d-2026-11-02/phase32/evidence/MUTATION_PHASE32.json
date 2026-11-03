@@ -1,0 +1,233 @@
+{
+ "mutation": "R7D-PHASE32-MUTATION-1",
+ "testFile": "CoachingCore/test/r7d-phase32.test.mjs",
+ "testFileSha256": "ab50199c6c28306d23844861fbc57c44cf7648cd74f10d456b989e4fec2c5dce",
+ "sources": {
+  "CoachingCore/src/r6-adaptation.mjs": "faa3bc12a329941e6df228e553a8166f43ddaefce9cca80165c369f59a309e3a"
+ },
+ "baseline": {
+  "status": 0,
+  "selected": 17,
+  "pass": 17,
+  "fail": 0,
+  "failed": []
+ },
+ "mutants": [
+  {
+   "id": "P32-M1",
+   "defect": "last-write-wins: with several breaks on record the newest one is read alone",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.2 T1",
+   "applied": true,
+   "cleanRun": {
+    "selected": 2,
+    "pass": 2,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 4,
+    "pass": 0,
+    "fail": 2,
+    "failedTests": [
+     "R7-D Phase 3.2 T1 (F02 witness): a newer break that does not name a kept one is asked about, whatever carries it; the older fact is never dropped and no return dose is chosen",
+     "R7-D Phase 3.2 T1: a partial newer declaration never replaces a kept break; the relation is asked and the kept facts are still read once it is answered"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.2 T1 (F02 witness): a newer break that does not name a kept one is asked about, whatever carries it; the older fact is never dropped and no return dose is chosen",
+    "R7-D Phase 3.2 T1: a partial newer declaration never replaces a kept break; the relation is asked and the kept facts are still read once it is answered",
+    "R7-D Phase 3.2 T2: after the relation question, the answer that the newer break corrects the kept one (its facts with the kept one's episodeId) applies the newer facts alone, once",
+    "R7-D Phase 3.2 T4: separate breaks whose days touch or overlap stay two interruptions; the return reads the one continuous stop, as the same stop declared at once",
+    "R7-D Phase 3.2 T4: separate breaks with nothing trained between them (every planned session there reported not done) are one continuous stop; recorded training between them leaves the latest break alone",
+    "R7-D Phase 3.2 T4: separate breaks with unreported training between them are asked about those sessions; the answer decides, never zero and never credit",
+    "R7-D Phase 3.2 T4: two separate breaks followed by a return report are applied together once, in either order of declaration",
+    "R7-D Phase 3.2 T5: clinical first comes before the relation question: a kept clinical break routes to a human whatever newer break comes, before and after clearance",
+    "R7-D Phase 3.2 T6: an applied break and a later new one follow the episode rules unchanged; a correction of the applied one while a break is kept is asked and the kept break is applied next",
+    "R7-D Phase 3.2 T6: a kept correction of an applied break, then a newer break that names none: the relation is asked; named separate, the newer break is applied and the correction not read",
+    "R7-D Phase 3.2 T7: an event that carries a newer break is never applied with it, nor with the return; sent again after the return it is applied"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P32-M2",
+   "defect": "automatic merge: a newer break that names none is joined to the kept one by its dates (the relation is never asked)",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.2 T1",
+   "applied": true,
+   "cleanRun": {
+    "selected": 2,
+    "pass": 2,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 4,
+    "pass": 0,
+    "fail": 2,
+    "failedTests": [
+     "R7-D Phase 3.2 T1 (F02 witness): a newer break that does not name a kept one is asked about, whatever carries it; the older fact is never dropped and no return dose is chosen",
+     "R7-D Phase 3.2 T1: a partial newer declaration never replaces a kept break; the relation is asked and the kept facts are still read once it is answered"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.2 T1 (F02 witness): a newer break that does not name a kept one is asked about, whatever carries it; the older fact is never dropped and no return dose is chosen",
+    "R7-D Phase 3.2 T1: a partial newer declaration never replaces a kept break; the relation is asked and the kept facts are still read once it is answered",
+    "R7-D Phase 3.2 T2: after the relation question, the answer that the newer break corrects the kept one (its facts with the kept one's episodeId) applies the newer facts alone, once",
+    "R7-D Phase 3.2 T6: a kept correction of an applied break, then a newer break that names none: the relation is asked; named separate, the newer break is applied and the correction not read",
+    "R7-D Phase 3.2 T7: an event that carries a newer break is never applied with it, nor with the return; sent again after the return it is applied"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P32-M3",
+   "defect": "the older fact dropped when the newer declaration is partial (a newer report with no dates joins the one before it)",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.2 T1: a partial newer declaration",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.2 T1: a partial newer declaration never replaces a kept break; the relation is asked and the kept facts are still read once it is answered"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.2 T1: a partial newer declaration never replaces a kept break; the relation is asked and the kept facts are still read once it is answered"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P32-M4",
+   "defect": "answered \"separate\", the older break is ignored: the return reads the latest break alone",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.2 T4: separate breaks whose days touch or overlap",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.2 T4: separate breaks whose days touch or overlap stay two interruptions; the return reads the one continuous stop, as the same stop declared at once"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.2 T1: a partial newer declaration never replaces a kept break; the relation is asked and the kept facts are still read once it is answered",
+    "R7-D Phase 3.2 T4: separate breaks whose days touch or overlap stay two interruptions; the return reads the one continuous stop, as the same stop declared at once",
+    "R7-D Phase 3.2 T4: separate breaks with nothing trained between them (every planned session there reported not done) are one continuous stop; recorded training between them leaves the latest break alone",
+    "R7-D Phase 3.2 T4: separate breaks with unreported training between them are asked about those sessions; the answer decides, never zero and never credit"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P32-M5",
+   "defect": "unknown training between separate breaks read as no training (continuity assumed)",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.2 T4: separate breaks with unreported training between them",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.2 T4: separate breaks with unreported training between them are asked about those sessions; the answer decides, never zero and never credit"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.2 T4: separate breaks with unreported training between them are asked about those sessions; the answer decides, never zero and never credit"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P32-M6",
+   "defect": "unknown training between separate breaks read as resumed training (the earlier break left out)",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.2 T4: separate breaks with unreported training between them",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.2 T4: separate breaks with unreported training between them are asked about those sessions; the answer decides, never zero and never credit"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.2 T4: separate breaks with unreported training between them are asked about those sessions; the answer decides, never zero and never credit"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P32-M7",
+   "defect": "clinical precedence bypassed by the episode question: with the relation unresolved the review reads the newest break, not the clinical one",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.2 T5: clinical first comes before the relation question",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.2 T5: clinical first comes before the relation question: a kept clinical break routes to a human whatever newer break comes, before and after clearance"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.2 T5: clinical first comes before the relation question: a kept clinical break routes to a human whatever newer break comes, before and after clearance"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P32-M8",
+   "defect": "a correction of an applied break is applied across a break kept since (SSCTR p4b): the kept break is consumed unapplied",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.2 T6: an applied break and a later new one",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.2 T6: an applied break and a later new one follow the episode rules unchanged; a correction of the applied one while a break is kept is asked and the kept break is applied next"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.2 T6: an applied break and a later new one follow the episode rules unchanged; a correction of the applied one while a break is kept is asked and the kept break is applied next"
+   ],
+   "killed": true
+  }
+ ],
+ "summary": {
+  "mutants": 8,
+  "killed": 8,
+  "survived": []
+ }
+}
