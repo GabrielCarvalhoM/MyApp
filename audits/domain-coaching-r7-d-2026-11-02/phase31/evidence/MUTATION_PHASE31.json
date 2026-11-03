@@ -1,0 +1,187 @@
+{
+ "mutation": "R7D-PHASE31-MUTATION-1",
+ "testFile": "CoachingCore/test/r7d-phase31.test.mjs",
+ "testFileSha256": "b81cf1144b855eab55f65e3b0bc3d72b680ae2e69366322286eba7a181c330db",
+ "sources": {
+  "CoachingCore/src/r6-adaptation.mjs": "9f905030aee96d534d037800db33045ce1a08de281caa317ad94940e9e1e0d95"
+ },
+ "baseline": {
+  "status": 0,
+  "selected": 14,
+  "pass": 14,
+  "fail": 0,
+  "failed": []
+ },
+ "mutants": [
+  {
+   "id": "P31-M1",
+   "defect": "a break declared with another event is not recorded: lost after its question (ASK)",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.1 T1: a break declared with another event is asked and recorded",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.1 T1: a break declared with another event is asked and recorded; the next plain review applies it with no repetition, as the same break stated there"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.1 T1: a break declared with another event is asked and recorded; the next plain review applies it with no repetition, as the same break stated there",
+    "R7-D Phase 3.1 T1: while the recorded break is not applied, a later event of another kind is asked and applies nothing; a return report with no break of its own applies it",
+    "R7-D Phase 3.1 T2: a break with a clinical flag routes to a human first and is recorded; nothing is prescribed while the route stands; after clearance the first review re-enters from it",
+    "R7-D Phase 3.1 T2: a break with a pain substitution routes to a human and is recorded; after clearance the first review re-enters from it",
+    "R7-D Phase 3.1 T3 (P3-F01): a break answering the unreported-training question through a clinical route survives clearance; the first review applies it with no second declaration, as the direct answer does",
+    "R7-D Phase 3.1 T4: retaining the break never applies the event that carried it; after the return the event is sent again and applied then",
+    "R7-D Phase 3.1 T5: the same break delivered again, or the same report replayed, records one fact and applies one return; the next reviews never apply it again",
+    "R7-D Phase 3.1 T6: a newer declaration of the break replaces a recorded one not applied yet; the earlier decisions stay as they were",
+    "R7-D Phase 3.1 T6: a recorded break once applied is corrected through its episode, named by the report that declared it; only later decisions use the correction",
+    "R7-D Phase 3.1 T7: a recorded break never passes a clinical route: a later clinical flag, a pain substitution or a standing clinical reference routes to a human with no return applied",
+    "R7-D Phase 3.1 T7: every event kind with a recorded break and a clinical flag routes to a human; with no flag none is valid before the return",
+    "R7-D Phase 3.1: the declared break is a record fact of its own kind: carried unchanged and append-only, never an execution report, never read when it is not this athlete's or its facts do not match its hash"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P31-M2",
+   "defect": "the break is read from the clinical continuation state, not the record: lost when qualified clearance drops that state",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.1 T2: a break with a clinical flag routes to a human first and is recorded",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.1 T2: a break with a clinical flag routes to a human first and is recorded; nothing is prescribed while the route stands; after clearance the first review re-enters from it"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.1 T2: a break with a clinical flag routes to a human first and is recorded; nothing is prescribed while the route stands; after clearance the first review re-enters from it",
+    "R7-D Phase 3.1 T2: a break with a pain substitution routes to a human and is recorded; after clearance the first review re-enters from it",
+    "R7-D Phase 3.1 T2: a break whose own reason is clinical is recorded and, after clearance, routes to a human again as the same break stated again does (F08 unchanged): never a dose, never the pre-break plan",
+    "R7-D Phase 3.1 T3 (P3-F01): a break answering the unreported-training question through a clinical route survives clearance; the first review applies it with no second declaration, as the direct answer does"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P31-M3",
+   "defect": "the break answering UNREPORTED_TRAINING is dropped when the same decision routes clinically (P3-F01)",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.1 T3",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.1 T3 (P3-F01): a break answering the unreported-training question through a clinical route survives clearance; the first review applies it with no second declaration, as the direct answer does"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.1 T2: a break with a pain substitution routes to a human and is recorded; after clearance the first review re-enters from it",
+    "R7-D Phase 3.1 T2: a break whose own reason is clinical is recorded and, after clearance, routes to a human again as the same break stated again does (F08 unchanged): never a dose, never the pre-break plan",
+    "R7-D Phase 3.1 T3 (P3-F01): a break answering the unreported-training question through a clinical route survives clearance; the first review applies it with no second declaration, as the direct answer does"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P31-M4",
+   "defect": "the event that carried the break is applied while the break is retained",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.1 T4",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.1 T4: retaining the break never applies the event that carried it; after the return the event is sent again and applied then"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.1 T1: a break declared with another event is asked and recorded; the next plain review applies it with no repetition, as the same break stated there",
+    "R7-D Phase 3.1 T4: retaining the break never applies the event that carried it; after the return the event is sent again and applied then",
+    "R7-D Phase 3.1 T5: the same break delivered again, or the same report replayed, records one fact and applies one return; the next reviews never apply it again",
+    "R7-D Phase 3.1 T6: a newer declaration of the break replaces a recorded one not applied yet; the earlier decisions stay as they were"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P31-M5",
+   "defect": "a recorded break stays in force after the return that applied it, so it is applied again",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.1 T5",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.1 T5: the same break delivered again, or the same report replayed, records one fact and applies one return; the next reviews never apply it again"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.1 T3 (P3-F01): a break answering the unreported-training question through a clinical route survives clearance; the first review applies it with no second declaration, as the direct answer does",
+    "R7-D Phase 3.1 T4: retaining the break never applies the event that carried it; after the return the event is sent again and applied then",
+    "R7-D Phase 3.1 T5: the same break delivered again, or the same report replayed, records one fact and applies one return; the next reviews never apply it again"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P31-M6",
+   "defect": "a newer declaration does not replace an older one not applied yet (the first stays in force)",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.1 T6: a newer declaration of the break replaces",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.1 T6: a newer declaration of the break replaces a recorded one not applied yet; the earlier decisions stay as they were"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.1 T6: a newer declaration of the break replaces a recorded one not applied yet; the earlier decisions stay as they were"
+   ],
+   "killed": true
+  }
+ ],
+ "summary": {
+  "mutants": 6,
+  "killed": 6,
+  "survived": []
+ }
+}
