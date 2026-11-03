@@ -1,0 +1,250 @@
+{
+ "recordId": "R7D-ENGINEERING-PHASE31-CHECK-1",
+ "kind": "NARROW_ENGINEERING_RELIABILITY_CHECK",
+ "verdict": "READY_WITH_CONDITIONS",
+ "date": "2026-11-02",
+ "judge": {
+  "role": "Quality & Reliability Engineer 1.3.0",
+  "instance": "fresh instance, claude-opus-5-5, effort xhigh",
+  "independence": "Did not author the runtime, the directed tests, the two assertion updates, the harness, PREREG-3, the interface delta, the evidence or any earlier R7-D review. Did not open audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/ssctr/."
+ },
+ "candidate": {
+  "branch": "claude/domain-coaching-r7-d",
+  "runtimeCommit": "135763846ee9f3074a3fa80d86c3635ef4886120",
+  "headAtCheck": "a6a11f5 (adds evidence, freeze/verify/queue scripts; no CoachingCore/src or CoachingCore/test byte changed since 1357638)",
+  "predecessor": "R7D-FREEZE-1 = 4cabd18def76f88d170a90723cef422989f502c7",
+  "sourceDeltaVsFreeze1": ["M CoachingCore/src/r6-adaptation.mjs"],
+  "testDeltaVsFreeze1": ["M CoachingCore/test/r7a1-composition.test.mjs", "M CoachingCore/test/r7c-phase5-cc.test.mjs", "A CoachingCore/test/r7d-phase31.test.mjs"],
+  "sha256": {
+   "CoachingCore/src/r6-adaptation.mjs": "9f905030aee96d534d037800db33045ce1a08de281caa317ad94940e9e1e0d95",
+   "CoachingCore/test/r7d-phase31.test.mjs": "b81cf1144b855eab55f65e3b0bc3d72b680ae2e69366322286eba7a181c330db",
+   "CoachingCore/test/r7a1-composition.test.mjs": "1266f2ff68842a635b2300d1b0c2e548214dd0720a6663c3b79585b9af923a67",
+   "CoachingCore/test/r7c-phase5-cc.test.mjs": "70dcdccc74850552f33885c5ee62c216f701326c6a3db3aa4c14286b55195596",
+   "CoachingCore/scripts/freeze-r7d-2.mjs": "143718b66f050499d8a28eb0daee0663722f27ce2f7c55d55529bd9a64910205",
+   "CoachingCore/scripts/verify-r7d-2.mjs": "b02c7567cb4c2a9c3adee0a685cc04bc9c93ca88adea00ae572a2b250f2e9f69",
+   "audits/domain-coaching-r7-d-2026-11-02/phase31/integrate-queue-r7d.mjs": "0397c2bde1e36f87c5d165d45bb63d964b8bfa45c39580503c00ae2de7e8d27f",
+   "audits/domain-coaching-r7-d-2026-11-02/PREREGISTRATION_R7D_3.md": "d33374ecb59feb5c29e19e6de793138402458a150e4f418e5dc2245eff477d65",
+   "audits/domain-coaching-r7-d-2026-11-02/author/INTERFACE_DELTA_R7D_3.md": "3e6f721ea951dd79cf9e7e479069c936ab5af881b64160a4ecd2c833f4e6a3a3",
+   "audits/domain-coaching-r7-d-2026-11-02/harness/lib/properties.mjs": "53fde0e005c4187362489994308cf7888ee3844dfcc5d0bae29593562f975ec8",
+   "audits/domain-coaching-r7-d-2026-11-02/harness/lib/metamorphic.mjs": "9ec99e43642bb9a51b3d098bd9979a558d28ef0995471bc21cb9ad113df5f460",
+   "audits/domain-coaching-r7-d-2026-11-02/phase31/evidence/EVIDENCE_PHASE31.json": "86f2b9e78b1a09dab390041c618e359b96b4cd5d4ab883e689558c39f19ce730"
+  }
+ },
+ "environment": {
+  "node": "v24.19.0",
+  "os": "Windows 11 (Git Bash)",
+  "method": "Every run on runtimes rebuilt outside the repository (session scratch) with git archive: the candidate (a6a11f5 tree: CoachingCore, the R7-D audit folder, the pre-R7A source and the R3, R4, R5, R6 and B0 SSCTR records), R7D-FREEZE-1 (4cabd18), R7C-FREEZE-4 (a9654c8), R7C-FREEZE-3 (08c6db3), R7B2-FREEZE-1 (1a1c728), the pre-R7A source and HARNESS-2 (b77480f); CoachingCore/node_modules copied in. Nothing was written in the repository outside this folder."
+ },
+ "notRun": [
+  "CoachingCore/scripts/freeze-r7d-2.mjs, CoachingCore/scripts/verify-r7d-2.mjs and phase31/integrate-queue-r7d.mjs: read only",
+  "npm run verify and any CoachingCore/scripts/verify-r* or freeze-r* script",
+  "reviews/provisional-sports-science/: not touched"
+ ],
+ "reproduced": {
+  "fullSuite": {
+   "result": "921/921 pass on the candidate",
+   "note": "With only the two records the instructions name (R6 and B0), 908/921: 13 legacy-path tests (r6-r5-regression and SSCTR R6 legacy) return UNSUPPORTED because the R3, R4 and R5 SSCTR records are missing (QE-R7D-P31-13). With those records added, 921/921."
+  },
+  "directed": {
+   "candidate": "14/14 pass (standalone and inside the suite)",
+   "freeze1": "13/14 fail (directed file copied onto a scratch R7D-FREEZE-1). The passing one is the future-start / template / determinism test. Every failure is the dropped break: a missing INTERRUPTION_DECLARED row, a stale VALID or a different re-entry (the record test fails with a TypeError reading the absent row)."
+  },
+  "updatedAssertions": {
+   "newOnFreeze1": {"r7a1-composition (R7-A.1 C4/C5)": "selected 1, fail 1 (the unavailable day is applied over the dropped break)", "r7c-phase5-cc (R7-C QE-R7C-01)": "selected 1, fail 1 (VALID after clearance; not CLINICAL)"},
+   "newOnCandidate": "both pass (suite)",
+   "oldVersionsFromB77480fOnCandidate": {"r7a1-composition": "selected 1, fail 1 (line equality: order A now asks)", "r7c-phase5-cc": "selected 1, fail 1 (CLINICAL: the illness break is kept)"}
+  },
+  "conformance": {"conformance-r7b": "PASS", "conformance-r7b1": "PASS", "conformance-r7b2": "PASS", "stdoutSha256IdenticalToEvidence": true},
+  "authorMutation": {"result": "6/6 killed by their own witnesses", "identicalToCommitted": "witness runs, caughtBy, sources and test file sha identical to phase31/evidence/MUTATION_PHASE31.json"},
+  "harnessValidation3": {"result": "summary identical to HARNESS_VALIDATION_R7D_3.json; runs, witnesses, coverage identical once roots, paths and timestamps are removed", "noFalseBlock": "PASS", "sensitivity": "10/10 DETECTED_AND_CLEAN_ON_CANDIDATE", "coverage": {"CARRIER_CLINICAL": 7, "CARRIER_HOLD": 1, "RESEND": 20, "RESTATE_DECLARED_BREAK": 4, "P17": 16}, "witnesses": "37/37", "devCorpus": "build-dev-cases.mjs rebuilds DEV_CASES_R7D_3.json byte-equal (23 cases)"},
+  "regressions": {
+   "diagnostic": "18 cases (1 pre-existing corpus error R7D-D11): summary, case rows, corpus errors and runtime source identical to phase31/regression/diagnostic/RUN_REPORT.json; P01-P17 0 violations (P17 9 units, RESTATE 3); VARIANT 4/12 = R7D-D02, D06, D14, D16",
+   "generated": "100 onboarding-only cases: summary and case rows identical to phase31/regression/generated/RUN_REPORT.json; 0 violations (P17 not evaluable: no timeline)"
+  },
+  "differential": {"authorProbe": "identical to DIFFERENTIAL_VS_R7D_FREEZE_1.json except the d1root path: 141 cases, 137 same, 4 differ (DEV-18, -19, -20, -21), 0 unexplained", "attribution": "probes/qe31-differential-attribution.mjs: the candidate run equals R7D-FREEZE-1 run on the same case with the kept break restated in every later review that states none (until the plan records a return at or after it) at every step of all 141 cases (0 differences). The execution record (INTERRUPTION_DECLARED rows removed) differs only in R7D-D10 c5 and DEV-19 w5d1 (the candidate now returns the record on an early return that declares a break; R7D-FREEZE-1 returned none) and DEV-18 / DEV-20 w5r (different sessions reported on the re-entry plan; return-week binding context). No difference outside the interruption-persistence family."},
+  "ownMutation": {"mutants": 17, "killedByDirected": ["QM31-01", "QM31-06", "QM31-10", "QM31-12", "QM31-13", "QM31-14", "QM31-15", "QM31-16"], "survivedWholeSuite": ["QM31-02", "QM31-03", "QM31-04", "QM31-05", "QM31-07", "QM31-08", "QM31-09", "QM31-11", "QM31-17"], "equivalent": ["QM31-08", "QM31-09"]},
+  "ownProbes": "probes/qe31-persistence.mjs, qe31-row-diff.mjs, qe31-malformed-and-resend.mjs, qe31-post-race.mjs, qe31-instruments.mjs (with qe31-make-mutant-runtimes.mjs) on the candidate; qe31-row-diff.mjs also on R7D-FREEZE-1"
+ },
+ "answers": {
+  "factualPersistence": {
+   "result": "PASS_WITH_WORDING_GAP",
+   "row": "{fact:'INTERRUPTION_DECLARED', eventId, eventKind, athleteId, declaredAt (the review clock), interruption (as sent), inputHash = hash(interruption), provenance.firstRecordedAt}; recorded once per stating report.",
+   "recordedOn": "the decision path whatever it decides (also UNSUPPORTED counterfactual failures and a malformed-facts HOLD after the record is built) and every clinical or question early return. Probed: clinical flag, unknown and stale eligibility, standing clinical route, generic RECOVERED, post-race eligibility check (each 1 row, and the next plain weekly review applies it after clearance where clinical).",
+   "malformedFacts": "6 malformations of execution facts (sets not a list, null exercise, string load, null actual, null observation, string response) x 2 carriers: never refused; the break is recorded in 12/12.",
+   "integrityRefusals": "Not recorded on the integrity refusals (by design; review request: 'Not on integrity refusals'). Probed 6: tampered reference state, chronology, unknown kind, observations or choices not a list, invalid athlete model; by reading also ledger / loadConfirmations not a list, invalid program, missing authority. The next plain review is then VALID with the silence ceiling re-plan and no return. INTERFACE-3 section 1 and PREREG-3 Delta 1 say a break survives HOLD with no carve-out (QE-R7D-P31-02); the R7D-CASE-1 client and checker cannot produce these reviews.",
+   "appendOnly": "Every carried row survives with its facts unchanged (4-step sequence; P10 on all corpora). Not positional: declared rows are emitted after newer execution rows, and the binding context of rows in a return week is re-derived (pre-existing; identical on R7D-FREEZE-1 when the break is stated directly) (QE-R7D-P31-09).",
+   "integrityFilter": "Another athlete's row, a row with no hash and a row declared after the decision clock are carried and not read. A row whose facts were changed is not read (test), but the directed tamper case is not a witness of the hash check: with the check removed the tampered days contradict the dates and the return asks anyway (QM31-11 survives the suite). The candidate's hash check does work: a row whose free text was edited after recording, with consistent facts, is not read on the candidate and is read (REESTABLISH) on the QM31-11 mutant (probe appendOnly.rows.tamperedConsistentFacts). A forged row with a recomputed hash is read (the hash is a consistency check, not authentication; same trust model as execution rows) (QE-R7D-P31-12).",
+   "separationFromExecution": "Normalization, binding, learning and historicalStateOf never read the rows. Removing either filter (QM31-08, QM31-09) changes no decision: normalization excludes such rows anyway (defence in depth)."
+  },
+  "noStalePlanResurrection": {
+   "result": "PASS",
+   "evidence": [
+    "A kept break is applied once and is never read again after the return decided at or after it (T5; author mutant P31-M5 and QM31-06 killed by the directed file).",
+    "After a clinical flag, an eligibility question, a standing clinical route or RECOVERED, the first plain review after clearance re-enters from the kept break (REESTABLISH, VALID), never the pre-break plan.",
+    "Differential attribution: on all 141 cases the candidate equals R7D-FREEZE-1 with the kept break restated.",
+    "The only path back to the pre-break (silence) plan after a stated break is an integrity refusal of the stating review (QE-R7D-P31-02).",
+    "A break with a clinical reason stays CLINICAL_HUMAN_REQUIRED at every later decision (QE-R7D-P31-01): no resurrection, but no exit.",
+    "A break already applied and re-stated with a new event id is applied again (QE-R7D-P31-03): a re-anchored re-entry, not the stale plan."
+   ]
+  },
+  "eventSeparation": {
+   "result": "PASS",
+   "evidence": "12 non-return kinds as carriers (directed T1/T4: schedule, systemic and local fatigue, missed session, goal, equipment, event date; probe: unavailable day, nonclinical exercise substitution, progression too easy, double conflict, overperformance): the carrier asks (interruption.reportedOnItsOwn) and adds only REPLAN_FROM_EVIDENCE; the applying return adds only REESTABLISH; nothing of the carrier is applied. A weekly review with block choices asks (choices) and adds nothing; the next plain review applies the break. T7: none of the 19 kinds is VALID before the return.",
+   "consequence": "The carrying event and its own signal are not kept: the consumer sends them again after the return. Nothing in the instruments measures that it was (QE-R7D-P31-04)."
+  },
+  "duplicateReplayCorrection": {
+   "result": "PASS_WITH_RESIDUALS",
+   "evidence": [
+    "Exact replay (same id, same facts): no new row, same decision (T5).",
+    "Replay of the declaring carrier after its return: HOLD (reference-state clock), no row, no plan change.",
+    "Newer declaration replaces an older unapplied one, also with other dates (T6; P31-M6 killed). Two declarations at the same instant: the later row in the record wins (deterministic by record order).",
+    "Correction of an applied kept break by episodeId = the report that first stated it: SAME_BREAK / EXPLICIT / revision 2, history append-only (T6).",
+    "Residual: same event id with other break facts on a carrier is neither recorded nor refused; the first row stands and is applied (QE-R7D-P31-10).",
+    "Residual: a partial newer declaration (only reason, or only episodeId) replaces a complete kept break, also a clinical-reason one; decisions become ASK (QE-R7D-P31-11).",
+    "Residual: an applied break re-stated with a new id is re-applied as SAME_BREAK/DUPLICATE revision 2 (QE-R7D-P31-03)."
+   ]
+  },
+  "propertyAndOracle": {
+   "P17": "Sound as coded for (a) and (c). On the dev cases it detects the author's M1 to M4. Gaps: (c) exempts weekly and return reports that do not apply the break; no check that a kept break is applied only once (P31-M5 undetected on DEV-17 to DEV-21; caught only by T5); 'survives HOLD' has no integrity carve-out (QE-R7D-P31-02).",
+   "RESTATE_DECLARED_BREAK": "Sound: base and restated runs compared on validity, question, pending state, whole plan and phases. Detects M1 to M4. Does not detect M6 (newer declaration ignored) unless a case holds two unapplied declarations, which Delta 6 does not require; does not detect QM31-02 or QM31-04 (no case declares a break with unknown eligibility or during a standing clinical route).",
+   "P03_P10": "Fire on a forged row (P03), rewritten facts (P03 + P10), a clock rewritten later (P10) and a dropped row (P10; also catches QM31-07 on DEV-19). Do not fire on a wrong clock or athlete at the row's first recording: P03 checks only event id and interruption (QE-R7D-P31-06); the behavioural effect is caught by P17.",
+   "delta5": "Not a weakening on the existing corpora: HARNESS-2 vs HARNESS-3 differ only on DEV-18 P12 (18 SESSION_ON_UNCHOSEN_DAY to 0), and the 3 asked or refused schedule/equipment changes in the corpora never changed the adopted plan's schedule or equipment, so only false FAILs go. It is a scoped relaxation: on a constructed case (QE31-EQ: DEV-18 with the schedule change replaced by an equipment change to dumbbells, bench and bands) the VALID plans after the return prescribe back-squat and P11 passes on HARNESS-3 where HARNESS-2 fails (18 EQUIPMENT_NOT_AVAILABLE at w5d1, w5d2, w5r); P17 passes. Consistent with D2 (the event is sent again) but labelled precision only (QE-R7D-P31-04)."
+  },
+  "regressionAndDifferential": "Reproduced exactly (see reproduced). No difference outside the interruption-persistence family: every differing decision is the R7D-FREEZE-1 decision with the kept break restated.",
+  "updatedAssertions": {
+   "r7a1-composition": "Acceptable. On R7D-FREEZE-1 the old test passed only because both orders dropped the break (the 16-day return asks startedAt). The new test asserts the ask, the asked unavailable day, and, once the start time is supplied in both orders and the day re-sent where it was asked, the same next start and the original line equality. Not weaker: the original assertion is kept.",
+   "r7c-phase5-cc": "Acceptable from engineering: VALID becomes CLINICAL_HUMAN_REQUIRED with no proposal, not VALID, the answer and the break still recorded; stronger on safety. The QE-R7C-01 coverage that a recorded nonclinical answer is applied after clearance stays in the first block of the same test. Whether a 2-day flu break should keep the athlete clinical is the F08 question (QE-R7D-P31-01, SSCTR)."
+  },
+  "freezeReadiness": {
+   "result": "READY (scripts consistent; read, not run)",
+   "freezeScript": "Refuses when: a bound file is uncommitted; the source delta is not r6-adaptation.mjs alone; existing tests changed beyond the two; policy, catalog, records, product/ or canon/ changed; mission files are not append-only; the queue is not the 230 items plus the integrated items naming R7D-FREEZE-2; the queue-integration source digest differs; the evidence is not PASS on these bytes or an output hash changed; a src/test byte differs from --reviewed; either review is not a pass; a final holdout exists. It embeds both reviews' conditionsForFreeze and binds this folder (records and probes). Its source digest uses the 44 src .mjs files, the same set integrate-queue-r7d.mjs hashes from git ls-tree. Its rule text omits the integrity-refusal carve-out (QE-R7D-P31-02).",
+   "verifier": "Read-only unless --write (writes only CoachingCore/r7/d/VERIFICATION_R7D_2.json). Excludes only the queue from files-current, so later queue appends pass; CURRENT_MISSION.md and MISSION_LEDGER.md are not bound, so the post-freeze checkpoint does not break it. Any later edit of a bound instrument (harness, PREREG-3, interface delta 3, README, final brief) fails files-current, so every text change asked below must land before the freeze.",
+   "queueIntegration": "Takes one proposedHumanRevalidation.item per SSCTR record (the Phase 3 F03-B and P3 recheck records have that shape), changes only queue_id, target (names R7D-FREEZE-2, runtime commit, source digest) and owner, refuses duplicates, a changed funding state, a serialization drift or working-tree sources different from the runtime commit; writes the queue and QUEUE_INTEGRATION_R7D.json only with --write. Order: integrate (authorized owner) then commit then freeze with --reviewed 1357638."
+  },
+  "securityRouting": {
+   "answer": "YES, route to Security (privacy owner) as a data-minimization and retention item; not a blocker for this synthetic shadow phase.",
+   "why": "Before Phase 3.1 the free-text reason of a break was never persisted: the program keeps only hash(interruption) and the screen's matched tokens. Now the whole interruption object, including free text, is kept in the completed-work record for the life of the program and travels with every later decision. Probe freeTextReason: a marker string is in the record and in no program, decision output or reference state, on both the carrier path and the weekly-review path. A break's reason is often health information (flu, ankle sprain), sensitive personal data. No new recipient, but longer retention and replication.",
+   "optionsForTheOwner": ["keep reasonCategory, nonclinical, clinicalReason and the screen outcome instead of the text (the F08 re-screen needs the outcome, not the text)", "bound the retention (drop the text once a return is applied or a newer declaration replaces it)", "accept it with a consumer-side retention rule"],
+   "alsoNote": "The record is consumer-carried and its hash is not authentication: a forged row with a recomputed hash is read (QE-R7D-P31-12)."
+  }
+ },
+ "findings": [
+  {
+   "id": "QE-R7D-P31-01",
+   "class": "MAJOR",
+   "decisionNeeded": "Founder + SSCTR (F08); policy or sports-science decision, not an engineering fix",
+   "origin": "new: consequence of D1-D3 with F08 open (disclosed in PREREG-3 residuals and INTERFACE-3)",
+   "finding": "A break whose own reason is clinical is an absorbing state. After qualified clearance every later decision of every kind stays CLINICAL_HUMAN_REQUIRED for the rest of the program, whatever training is reported. No truthful conforming input leaves it: a return report with no break, the same break with nonclinical:true and clinicalReason:false, RECOVERED and weekly reviews all stay CLINICAL. Only a newer, different nonclinical declaration leaves it. A partial one (only episodeId) also replaces it, then asks. Fails closed (no dose); not a blocker; must be decided before any consumer use of the kept-break rule.",
+   "reproduction": "probes/qe31-persistence.mjs scenario clinicalReasonLiveness: RETURN_AFTER_PAUSE week 5 with {reasonCategory:'ILLNESS', reason:'flu', 2 days}; then, after clearance, weekly reviews in weeks 5 to 9 with the plan's sessions reported, all CLINICAL_HUMAN_REQUIRED; in week 10, a return with no break, the same break with nonclinical flags and RECOVERED all stay CLINICAL; {episodeId} only gives ASK; a new 1-day WORK break gives REESTABLISH VALID."
+  },
+  {
+   "id": "QE-R7D-P31-02",
+   "class": "MINOR",
+   "origin": "new (interface / pre-registration wording vs runtime)",
+   "finding": "INTERFACE-3 section 1 ('a refusal (HOLD)') and PREREG-3 Delta 1 ('sobrevive a ASK, HOLD e CLINICAL_HUMAN_REQUIRED') promise retention through HOLD. The runtime deliberately records nothing on integrity and contract refusals: the next plain review is VALID with no return. P17 has no carve-out, so such a case would score a SAFETY_BLOCKER. The R7D-CASE-1 client and checker cannot produce these reviews (they build the contract and lists, and reject unknown kinds), so no holdout case is expected to show it. Malformed execution facts do not refuse. The freeze record's rule text has the same omission.",
+   "reproduction": "probes/qe31-persistence.mjs scenario earlyReturns: referenceTampered, chronology, unknownKind, observationsNotList, choicesNotList, athleteModelInvalid; each HOLD, 0 rows kept; next plain weekly REPLAN_FROM_EVIDENCE VALID (lostAndStaleValid true)."
+  },
+  {
+   "id": "QE-R7D-P31-03",
+   "class": "MINOR",
+   "origin": "pre-existing semantics (R-DX02-2, QE-R7D-P3-10), now reachable through every carrier; PREREG-3 Delta 8 retires the G03 'declare once' consumer condition that guarded it",
+   "finding": "A break already applied, then re-stated with a new event id and no episodeId by another event kind, is recorded, kept and applied again by the next weekly review (SAME_BREAK / DUPLICATE, revision 2). The re-entry is re-anchored and the plan ahead changes. INTERFACE-3 does not describe re-application. Whether a re-anchored re-entry is acceptable is a domain question.",
+   "reproduction": "probes/qe31-persistence.mjs scenario reSentAfterApplied, and probes/qe31-malformed-and-resend.mjs resend: SCHEDULE_CHANGE + break, return applied, week 5 trained, LOCAL_FATIGUE in week 6 with the same break, then a weekly review: REESTABLISH again (2 returns in total). Against a control that never re-sent it, the state traces of weeks 6 to 11 differ. Strength rows go to ESTABLISH or FROM_LOG; week 8 dumbbell rows are 22 vs 20 kg; week 9 back squat is 3x9 vs 3x11."
+  },
+  {
+   "id": "QE-R7D-P31-04",
+   "class": "MINOR",
+   "origin": "new (PREREG-3 Delta 5, harness)",
+   "finding": "Delta 5 is labelled precision, but it is also a scoped relaxation. A complete schedule or equipment change that its own decision asked about or refused, typically because it carried a break, and that is never sent again is no longer checked by P11/P12 in the later VALID plans. On the existing corpora it removes only false FAILs. No property measures that the consumer re-sends the carrying event after the return.",
+   "reproduction": "probes/qe31-instruments.mjs: delta5 (only DEV-18 P12 differs: 18 to 0; 3 asked or refused changes, none adopted) and equipmentCarriedWithBreak: DEV-18 with the schedule change replaced by EQUIPMENT_CHANGE to ['DUMBBELLS','BENCH','BANDS']. w5d1 ASK, w5d2 REESTABLISH VALID with back-squat ahead, w5r VALID. HARNESS-2 P11 FAIL (18 EQUIPMENT_NOT_AVAILABLE), HARNESS-3 P11 PASS, P17 PASS (4 units)."
+  },
+  {
+   "id": "QE-R7D-P31-05",
+   "class": "MINOR",
+   "origin": "new (test and instrument adequacy)",
+   "finding": "9 of 17 adversarial mutants of the delta survive the directed file and the whole 921-test suite. Seven are behaviour-relevant:\n- QM31-02, -03 and -04: keep dropped on the eligibility, post-race and standing-route/RECOVERED early returns;\n- QM31-05: rows declared after the decision clock are read;\n- QM31-07: an early return keeps only the new row and drops the whole carried execution record; caught only by harness P10 on DEV-19;\n- QM31-11: hash check removed; the tamper test is not its witness;\n- QM31-17: a review with a template interruption reads the kept break.\nQM31-08 and -09 are equivalent. The candidate behaves correctly on every path probed: 02, 03 and 04 record the break (qe31-persistence earlyReturns, qe31-post-race), 05 does not read a future-clock row, 07 keeps the record (P10 on DEV-19), 11 refuses an edited row (tamperedConsistentFacts; read on the mutant). The instruments do not detect P31-M5 (applied twice), P31-M6 (newer ignored), QM31-02, -04 or -11 on the dev cases.",
+   "reproduction": "probes/qe31-mutation.mjs (directed, then --full on the survivors); probes/qe31-make-mutant-runtimes.mjs + probes/qe31-instruments.mjs mutantsUnderHarness (DEV-17 to DEV-21, P01-P17 + RESTATE, CARRIER_CLINICAL, RESEND, DETERMINISM)."
+  },
+  {
+   "id": "QE-R7D-P31-06",
+   "class": "MINOR",
+   "origin": "new (harness, PREREG-3 Delta 4)",
+   "finding": "P03 checks only that a declared-break row's event id and interruption match a review that sent them. A row recorded with a wrong declaredAt or a wrong athleteId at its first appearance (and any eventKind or inputHash) is not flagged by P03 or P10. Its behavioural consequence, a lost break, is caught by P17.",
+   "reproduction": "probes/qe31-instruments.mjs p03p10 on DEV-18: forgedRow P03 1; rewrittenFacts P03 1 + P10 REWRITTEN; rewrittenClock P10 REWRITTEN; dropped P10 DROPPED; wrongClockAtRecording 0/0; wrongAthleteAtRecording 0/0."
+  },
+  {
+   "id": "QE-R7D-P31-07",
+   "class": "OBSERVATION",
+   "routeTo": "Security (privacy owner)",
+   "origin": "new",
+   "finding": "The declared break's free-text reason, often health information, is now retained in the consumer-carried record for the life of the program and replicated on every decision; before this phase it was never persisted. See answers.securityRouting.",
+   "reproduction": "probes/qe31-persistence.mjs scenario freeTextReason: marker in the record only (not program, decision output or reference state), on the carrier path and on the weekly-review path."
+  },
+  {
+   "id": "QE-R7D-P31-08",
+   "class": "OBSERVATION",
+   "origin": "pre-existing convention, now load-bearing",
+   "finding": "An early return with no new declaration (for example a later clinical flag while a break is kept) returns no actualLedger. Every client here keeps the previous record (r.actualLedger ?? previous). C3 and INTERFACE-3 say 'carry the record exactly as returned' and do not say that absent means unchanged. A literal client would lose every kept break and every execution row.",
+   "reproduction": "probes/qe31-persistence.mjs scenario retainedThenEarlyReturn: CLINICAL_HUMAN_REQUIRED, actualLedger absent; the carried record keeps its row only through the client's fallback."
+  },
+  {
+   "id": "QE-R7D-P31-09",
+   "class": "OBSERVATION",
+   "origin": "pre-existing (record shape)",
+   "finding": "Append-only holds by fact, not by position. The runtime emits declared rows after newer execution rows, so the input is not a prefix of the output at the applying review. The binding context (mode, phaseClass) of rows observed earlier in a return week is re-derived (NORMAL/BUILD to RETURN/RETURN). Identical on R7D-FREEZE-1 when the break is stated directly. P10 compares facts only.",
+   "reproduction": "probes/qe31-persistence.mjs appendOnly (inputIsPrefixOfOutput false at the applying review); probes/qe31-row-diff.mjs statedInWeekly on both runtimes (same context changes)."
+  },
+  {
+   "id": "QE-R7D-P31-10",
+   "class": "OBSERVATION",
+   "origin": "new",
+   "finding": "A carrier replayed with the same event id but other break facts is neither recorded nor refused. The first row stands and is applied, while the ASK says the break is recorded. The return handler asks event.id in the same situation. The harness client's id scheme cannot produce it.",
+   "reproduction": "probes/qe31-persistence.mjs replayAndCorrection.sameIdOtherFacts: rows ['2026-11-23'] only; the next weekly applies the first break (start 2026-11-23, 14 days)."
+  },
+  {
+   "id": "QE-R7D-P31-11",
+   "class": "OBSERVATION",
+   "routeTo": "SSCTR (Q4)",
+   "origin": "new (disclosed in part: 'campos soltos não se juntam')",
+   "finding": "A partial newer declaration (only reason, or only episodeId) is a stated break: it replaces a complete kept break, and also a clinical-reason one, whose clinical re-route then stops. Later decisions ask for the missing facts. Fails closed (ASK, never VALID).",
+   "reproduction": "probes/qe31-persistence.mjs replayAndCorrection.partialNewerDeclaration (next weekly ASK interruption.reasonCategory); clinicalReasonLiveness.afterClearanceAttempts.returnEpisodeOnly (ASK instead of CLINICAL)."
+  },
+  {
+   "id": "QE-R7D-P31-12",
+   "class": "OBSERVATION",
+   "routeTo": "SSCTR (Q1) for the first point; Security for the second",
+   "origin": "new reachability of existing semantics",
+   "finding": "Two notes:\n- An open-ended kept break ends the day before the applying review, so sessions reported between the declaration and that review fall inside it. In the probe, 3 sessions; a 12-day MODERATE re-entry. This is identical to stating the break there (the as-if-stated rule).\n- The row's inputHash is a consistency check, not authentication: a consumer-forged row with a recomputed hash is read and applied.",
+   "reproduction": "probes/qe31-persistence.mjs openEndedKeptThenTraining (kept and restated give equal plans, 2026-11-30 to 2026-12-11) and appendOnly.rows.forgedValidHash (read true)."
+  },
+  {
+   "id": "QE-R7D-P31-13",
+   "class": "OBSERVATION",
+   "origin": "docs (reproduction), cf. QE-R7D-P3-13",
+   "finding": "Rebuilding the runtime with only the R6 and B0 records gives 908/921. The 13 legacy-path tests need the R3, R4 and R5 SSCTR records (audits/domain-closure-r3-2026-10-24/reviews/ssctr-records.json, audits/domain-closure-r4-2026-10-25/reviews/ssctr-envelope-review.json, audits/domain-coaching-r5-2026-10-25/reviews/ssctr-policy-review.json).",
+   "reproduction": "Full suite on the scratch candidate before and after adding the three records: 908/921, then 921/921."
+  }
+ ],
+ "conditionsForFreeze": [
+  {"id": "CF-1", "condition": "Freeze exactly what was reviewed: the runtime bytes of 1357638 (r6-adaptation.mjs 9f905030...0e95; directed test b81cf114...30db), with --reviewed 1357638. Commit this record and probes/ before the freeze; the freeze binds them."},
+  {"id": "CF-2", "condition": "Settle the instrument and interface text before the freeze binds it (precision or tightening only, committed before the freeze, registered before any holdout). Otherwise carry each item as a disclosed residual in the freeze record and the final brief. No instrument change after the freeze without a new freeze. Items: (a) the integrity-refusal carve-out in INTERFACE-3 section 1, PREREG-3 Delta 1 / P17 and the freeze rule text (QE-R7D-P31-02); (b) Delta 5 labelled as a scoped relaxation, with the consumer condition 'send the carrying event again after the return' (QE-R7D-P31-04); (c) a consumer rule that an applied break is re-stated only as a correction (episodeId), or the re-application disclosed in INTERFACE-3 (QE-R7D-P31-03); (d) C3: an absent actualLedger means the record is unchanged (QE-R7D-P31-08). Optional tightening: P03 checks the row's declaredAt, athleteId, eventKind and inputHash (QE-R7D-P31-06); a P17 check that a kept break is applied once; Delta 6 coverage of a newer declaration replacing an older one (QE-R7D-P31-05)."},
+  {"id": "CF-3", "condition": "Disclose QE-R7D-P31-01 in the freeze record and the handoff as a known residual with no envelope. Owners: Founder and SSCTR (F08). Trigger: before any consumer use of the kept-break rule or any V1 authority claim."},
+  {"id": "CF-4", "condition": "Route QE-R7D-P31-07 (free-text retention) and the forged-row note of QE-R7D-P31-12 to Security as the privacy owner. Trigger: before any real-data consumer. No runtime change in this phase."},
+  {"id": "CF-5", "condition": "Record the mutation survivors of QE-R7D-P31-05 as TEST_GAP. Owner: Engineering; trigger: the next authorized runtime phase. QM31-07 (an early return that drops the carried record survives all 921 tests) comes first. No test change in this phase."},
+  {"id": "CF-6", "condition": "Add the R3, R4 and R5 records to the reproduction instructions (README R7D-HARNESS-3 / evidence notes) (QE-R7D-P31-13)."}
+ ],
+ "probes": {
+  "folder": "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/engineering/probes/",
+  "files": {
+   "qe31-persistence.mjs": "early returns, retained + early return, re-sent applied break, clinical-reason liveness, open-ended kept break, event separation (5 more kinds + choices), replay / same id / partial / same instant, append-only, forged / future / hashless rows, free-text reason",
+   "qe31-row-diff.mjs": "which carried rows change between input and output record (with break, without, stated directly); run on candidate and R7D-FREEZE-1",
+   "qe31-malformed-and-resend.mjs": "malformed execution facts with a stated break; plan differences after a re-stated applied break",
+   "qe31-post-race.mjs": "the post-race eligibility early return keeps the break",
+   "qe31-mutation.mjs": "17 adversarial mutants: directed file, then the whole suite for survivors (--full)",
+   "qe31-make-mutant-runtimes.mjs": "scratch runtimes for the author's six mutants and QM31-02, -04, -07, -11",
+   "qe31-instruments.mjs": "Delta 5 (HARNESS-2 vs HARNESS-3), constructed equipment case, P03/P10 on the new row, mutants under P17/RESTATE",
+   "qe31-differential-attribution.mjs": "candidate vs R7D-FREEZE-1, vs R7D-FREEZE-1 with the kept break restated, and the execution record, on the 141 differential cases"
+  },
+  "usage": "Each takes a root that holds CoachingCore and the records it reads (qe31-instruments and qe31-differential-attribution also the R7-D audit folder). Run them on scratch copies only, never on the repository."
+ }
+}
