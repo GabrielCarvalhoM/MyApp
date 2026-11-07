@@ -1,7 +1,7 @@
 {
  "mutation": "R7D-PHASE34-MUTATION-1",
  "testFile": "CoachingCore/test/r7d-phase34.test.mjs",
- "testFileSha256": "0e7d47463746f20ba3c03ef0e068e3a679ccc0b7d75ecf4b3b283bd8a634bfcb",
+ "testFileSha256": "f9269853199c5ccf660922f6fa03250a302a0663f86021d09fbe1e928ebaff52",
  "sources": {
   "CoachingCore/src/r6-adaptation.mjs": "1163e105005134afbe12edf5a6e2f1873873268d2a8e6cb8df4c12f4f4a94771",
   "CoachingCore/src/r6-composition.mjs": "8aa5f950dff697bf80425f364462fdfde9cfad937027ab8a4cf2640af7cc18a8"
@@ -9,8 +9,8 @@
  "scratchRestored": true,
  "baseline": {
   "status": 0,
-  "selected": 22,
-  "pass": 22,
+  "selected": 30,
+  "pass": 30,
   "fail": 0,
   "failed": []
  },
@@ -22,21 +22,25 @@
    "witness": "R7-D Phase 3.4 T1",
    "applied": true,
    "cleanRun": {
-    "selected": 12,
-    "pass": 12,
+    "selected": 18,
+    "pass": 18,
     "fail": 0
    },
    "witnessRun": {
-    "selected": 18,
-    "pass": 6,
-    "fail": 6,
+    "selected": 28,
+    "pass": 8,
+    "fail": 10,
     "failedTests": [
      "R7-D Phase 3.4 T1 (the Founder's case): a 14-day holiday, two weeks with every run done and one strength session missed each week, then a 4-day trip: never a restart; the trip is classed by its own days, running resumes the executed doses and strength steps nothing",
      "R7-D Phase 3.4 T10: after a return that read the earlier break as its own return, later reviews are not asked again, and a named correction of the trip re-reads the holiday as that return did; a replay changes nothing",
      "R7-D Phase 3.4 T13: after a return that read the earlier break as its own return, a genuine late fact about the training before the trip still asks to confirm the trip again",
      "R7-D Phase 3.4 T14: a race week between the breaks re-enters running only with its race touch and race finished; strength re-enters by its own week",
      "R7-D Phase 3.4 T15: a week whose last session falls on the first day of the later break counts when that session was executed before the stated start, never after it",
-     "R7-D Phase 3.4 T16: a return reported mid-week plans the weeks after it from the runs completed, never from the elapsed runs of that week that were not done"
+     "R7-D Phase 3.4 T16: a return reported mid-week plans the weeks after it from the runs completed, never from the elapsed runs of that week that were not done",
+     "R7-D Phase 3.4 T17 (R1, R1b): a running lapse with strength complete: strength resumes its executed doses; running continues the holiday's own return, exactly as the episode rule",
+     "R7-D Phase 3.4 T17 (R2): a strength lapse with every run done: running resumes its executed doses; strength re-enters from its return exactly as the episode rule",
+     "R7-D Phase 3.4 T18 (E4, V3, W4): a week without its long run holds running only; three weeks with the Friday strength missed re-enter running; a race week with only its easy run and strength done re-enters strength only",
+     "R7-D Phase 3.4 T19: each sport re-enters by its own first whole week when the sports complete different weeks"
     ]
    },
    "caughtBy": [
@@ -52,7 +56,11 @@
     "R7-D Phase 3.4 T13: after a return that read the earlier break as its own return, a genuine late fact about the training before the trip still asks to confirm the trip again",
     "R7-D Phase 3.4 T14: a race week between the breaks re-enters running only with its race touch and race finished; strength re-enters by its own week",
     "R7-D Phase 3.4 T15: a week whose last session falls on the first day of the later break counts when that session was executed before the stated start, never after it",
-    "R7-D Phase 3.4 T16: a return reported mid-week plans the weeks after it from the runs completed, never from the elapsed runs of that week that were not done"
+    "R7-D Phase 3.4 T16: a return reported mid-week plans the weeks after it from the runs completed, never from the elapsed runs of that week that were not done",
+    "R7-D Phase 3.4 T17 (R1, R1b): a running lapse with strength complete: strength resumes its executed doses; running continues the holiday's own return, exactly as the episode rule",
+    "R7-D Phase 3.4 T17 (R2): a strength lapse with every run done: running resumes its executed doses; strength re-enters from its return exactly as the episode rule",
+    "R7-D Phase 3.4 T18 (E4, V3, W4): a week without its long run holds running only; three weeks with the Friday strength missed re-enter running; a race week with only its easy run and strength done re-enters strength only",
+    "R7-D Phase 3.4 T19: each sport re-enters by its own first whole week when the sports complete different weeks"
    ],
    "killed": true
   },
@@ -79,7 +87,9 @@
     "R7-D Phase 3.4 T4: isolated sessions in no whole week, in either sport, still run the stop through the earlier break, exactly as R7D-FREEZE-4",
     "R7-D Phase 3.4 T4 (disclosed residual): weeks with both sports partial (an easy run and a strength session missed each week) complete no week in any sport: the stop still runs through the earlier break",
     "R7-D Phase 3.4 T8: three breaks: a run-complete week after the first reads it as its own return; the days between the second and the last, in no whole week, run their stop through; the record says each",
-    "R7-D Phase 3.4 T10: a named correction of the latest break after a return whose stop ran through the earlier break keeps the earlier break in the stop (R7D-FREEZE-4 dropped it and resumed the pre-break doses)"
+    "R7-D Phase 3.4 T10: a named correction of the latest break after a return whose stop ran through the earlier break keeps the earlier break in the stop (R7D-FREEZE-4 dropped it and resumed the pre-break doses)",
+    "R7-D Phase 3.4 T18 (X6, characterization): an adverse recovery on every run of the week is a systemic signal that holds both sports: no week complete in any sport, the stop runs through, as R7D-FREEZE-4",
+    "R7-D Phase 3.4 T19 (characterization): a run-only and a strength-only plan re-enter only by a whole week of their one sport; one session missed there is no whole week, never an own return"
    ],
    "killed": true
   },
@@ -106,7 +116,10 @@
     "R7-D Phase 3.4 T1 (the Founder's case): a 14-day holiday, two weeks with every run done and one strength session missed each week, then a 4-day trip: never a restart; the trip is classed by its own days, running resumes the executed doses and strength steps nothing",
     "R7-D Phase 3.4 T2: strength executed in full and an easy run missed each week: strength resumes its executed doses, running continues from the holiday's own return (no step it did not earn)",
     "R7-D Phase 3.4 T2: one week with every run done and the Friday strength missed: running resumes the doses of that whole week, as the complete week gives",
-    "R7-D Phase 3.4 T3: a week executed in full with strength logged without reps in reserve: the missing strength data holds strength only; running re-enters by its whole week"
+    "R7-D Phase 3.4 T3: a week executed in full with strength logged without reps in reserve: the missing strength data holds strength only; running re-enters by its whole week",
+    "R7-D Phase 3.4 T17 (R1, R1b): a running lapse with strength complete: strength resumes its executed doses; running continues the holiday's own return, exactly as the episode rule",
+    "R7-D Phase 3.4 T17 (R2): a strength lapse with every run done: running resumes its executed doses; strength re-enters from its return exactly as the episode rule",
+    "R7-D Phase 3.4 T18 (E4, V3, W4): a week without its long run holds running only; three weeks with the Friday strength missed re-enter running; a race week with only its easy run and strength done re-enters strength only"
    ],
    "killed": true
   },
@@ -134,7 +147,10 @@
     "R7-D Phase 3.4 T2: strength executed in full and an easy run missed each week: strength resumes its executed doses, running continues from the holiday's own return (no step it did not earn)",
     "R7-D Phase 3.4 T2: one week with every run done and the Friday strength missed: running resumes the doses of that whole week, as the complete week gives",
     "R7-D Phase 3.4 T3: a week executed in full with strength logged without reps in reserve: the missing strength data holds strength only; running re-enters by its whole week",
-    "R7-D Phase 3.4 T5: an adverse response holds the sport it was reported in: the long run with recovery adverse or next-day function impaired, strength complete: strength resumes, running continues from the holiday's own return"
+    "R7-D Phase 3.4 T5: an adverse response holds the sport it was reported in: the long run with recovery adverse or next-day function impaired, strength complete: strength resumes, running continues from the holiday's own return",
+    "R7-D Phase 3.4 T17 (R1, R1b): a running lapse with strength complete: strength resumes its executed doses; running continues the holiday's own return, exactly as the episode rule",
+    "R7-D Phase 3.4 T17 (R2): a strength lapse with every run done: running resumes its executed doses; strength re-enters from its return exactly as the episode rule",
+    "R7-D Phase 3.4 T18 (E4, V3, W4): a week without its long run holds running only; three weeks with the Friday strength missed re-enter running; a race week with only its easy run and strength done re-enters strength only"
    ],
    "killed": true
   },
@@ -145,20 +161,24 @@
    "witness": "R7-D Phase 3.4 T1",
    "applied": true,
    "cleanRun": {
-    "selected": 12,
-    "pass": 12,
+    "selected": 18,
+    "pass": 18,
     "fail": 0
    },
    "witnessRun": {
-    "selected": 17,
-    "pass": 7,
-    "fail": 5,
+    "selected": 27,
+    "pass": 9,
+    "fail": 9,
     "failedTests": [
      "R7-D Phase 3.4 T1 (the Founder's case): a 14-day holiday, two weeks with every run done and one strength session missed each week, then a 4-day trip: never a restart; the trip is classed by its own days, running resumes the executed doses and strength steps nothing",
      "R7-D Phase 3.4 T10: after a return that read the earlier break as its own return, later reviews are not asked again, and a named correction of the trip re-reads the holiday as that return did; a replay changes nothing",
      "R7-D Phase 3.4 T14: a race week between the breaks re-enters running only with its race touch and race finished; strength re-enters by its own week",
      "R7-D Phase 3.4 T15: a week whose last session falls on the first day of the later break counts when that session was executed before the stated start, never after it",
-     "R7-D Phase 3.4 T16: a return reported mid-week plans the weeks after it from the runs completed, never from the elapsed runs of that week that were not done"
+     "R7-D Phase 3.4 T16: a return reported mid-week plans the weeks after it from the runs completed, never from the elapsed runs of that week that were not done",
+     "R7-D Phase 3.4 T17 (R1, R1b): a running lapse with strength complete: strength resumes its executed doses; running continues the holiday's own return, exactly as the episode rule",
+     "R7-D Phase 3.4 T17 (R2): a strength lapse with every run done: running resumes its executed doses; strength re-enters from its return exactly as the episode rule",
+     "R7-D Phase 3.4 T18 (E4, V3, W4): a week without its long run holds running only; three weeks with the Friday strength missed re-enter running; a race week with only its easy run and strength done re-enters strength only",
+     "R7-D Phase 3.4 T19: each sport re-enters by its own first whole week when the sports complete different weeks"
     ]
    },
    "caughtBy": [
@@ -173,7 +193,11 @@
     "R7-D Phase 3.4 T10: after a return that read the earlier break as its own return, later reviews are not asked again, and a named correction of the trip re-reads the holiday as that return did; a replay changes nothing",
     "R7-D Phase 3.4 T14: a race week between the breaks re-enters running only with its race touch and race finished; strength re-enters by its own week",
     "R7-D Phase 3.4 T15: a week whose last session falls on the first day of the later break counts when that session was executed before the stated start, never after it",
-    "R7-D Phase 3.4 T16: a return reported mid-week plans the weeks after it from the runs completed, never from the elapsed runs of that week that were not done"
+    "R7-D Phase 3.4 T16: a return reported mid-week plans the weeks after it from the runs completed, never from the elapsed runs of that week that were not done",
+    "R7-D Phase 3.4 T17 (R1, R1b): a running lapse with strength complete: strength resumes its executed doses; running continues the holiday's own return, exactly as the episode rule",
+    "R7-D Phase 3.4 T17 (R2): a strength lapse with every run done: running resumes its executed doses; strength re-enters from its return exactly as the episode rule",
+    "R7-D Phase 3.4 T18 (E4, V3, W4): a week without its long run holds running only; three weeks with the Friday strength missed re-enter running; a race week with only its easy run and strength done re-enters strength only",
+    "R7-D Phase 3.4 T19: each sport re-enters by its own first whole week when the sports complete different weeks"
    ],
    "killed": true
   },
@@ -284,19 +308,23 @@
    "witness": "R7-D Phase 3.4 T1",
    "applied": true,
    "cleanRun": {
-    "selected": 12,
-    "pass": 12,
+    "selected": 18,
+    "pass": 18,
     "fail": 0
    },
    "witnessRun": {
-    "selected": 16,
-    "pass": 8,
-    "fail": 4,
+    "selected": 26,
+    "pass": 10,
+    "fail": 8,
     "failedTests": [
      "R7-D Phase 3.4 T1 (the Founder's case): a 14-day holiday, two weeks with every run done and one strength session missed each week, then a 4-day trip: never a restart; the trip is classed by its own days, running resumes the executed doses and strength steps nothing",
      "R7-D Phase 3.4 T10: after a return that read the earlier break as its own return, later reviews are not asked again, and a named correction of the trip re-reads the holiday as that return did; a replay changes nothing",
      "R7-D Phase 3.4 T13: after a return that read the earlier break as its own return, a genuine late fact about the training before the trip still asks to confirm the trip again",
-     "R7-D Phase 3.4 T15: a week whose last session falls on the first day of the later break counts when that session was executed before the stated start, never after it"
+     "R7-D Phase 3.4 T15: a week whose last session falls on the first day of the later break counts when that session was executed before the stated start, never after it",
+     "R7-D Phase 3.4 T17 (R1, R1b): a running lapse with strength complete: strength resumes its executed doses; running continues the holiday's own return, exactly as the episode rule",
+     "R7-D Phase 3.4 T17 (R2): a strength lapse with every run done: running resumes its executed doses; strength re-enters from its return exactly as the episode rule",
+     "R7-D Phase 3.4 T18 (E4, V3, W4): a week without its long run holds running only; three weeks with the Friday strength missed re-enter running; a race week with only its easy run and strength done re-enters strength only",
+     "R7-D Phase 3.4 T19: each sport re-enters by its own first whole week when the sports complete different weeks"
     ]
    },
    "caughtBy": [
@@ -309,7 +337,11 @@
     "R7-D Phase 3.4 T8: three breaks: a run-complete week after the first reads it as its own return; the days between the second and the last, in no whole week, run their stop through; the record says each",
     "R7-D Phase 3.4 T10: after a return that read the earlier break as its own return, later reviews are not asked again, and a named correction of the trip re-reads the holiday as that return did; a replay changes nothing",
     "R7-D Phase 3.4 T13: after a return that read the earlier break as its own return, a genuine late fact about the training before the trip still asks to confirm the trip again",
-    "R7-D Phase 3.4 T15: a week whose last session falls on the first day of the later break counts when that session was executed before the stated start, never after it"
+    "R7-D Phase 3.4 T15: a week whose last session falls on the first day of the later break counts when that session was executed before the stated start, never after it",
+    "R7-D Phase 3.4 T17 (R1, R1b): a running lapse with strength complete: strength resumes its executed doses; running continues the holiday's own return, exactly as the episode rule",
+    "R7-D Phase 3.4 T17 (R2): a strength lapse with every run done: running resumes its executed doses; strength re-enters from its return exactly as the episode rule",
+    "R7-D Phase 3.4 T18 (E4, V3, W4): a week without its long run holds running only; three weeks with the Friday strength missed re-enter running; a race week with only its easy run and strength done re-enters strength only",
+    "R7-D Phase 3.4 T19: each sport re-enters by its own first whole week when the sports complete different weeks"
    ],
    "killed": true
   },
@@ -333,7 +365,8 @@
     ]
    },
    "caughtBy": [
-    "R7-D Phase 3.4 T14: a race week between the breaks re-enters running only with its race touch and race finished; strength re-enters by its own week"
+    "R7-D Phase 3.4 T14: a race week between the breaks re-enters running only with its race touch and race finished; strength re-enters by its own week",
+    "R7-D Phase 3.4 T18 (E4, V3, W4): a week without its long run holds running only; three weeks with the Friday strength missed re-enter running; a race week with only its easy run and strength done re-enters strength only"
    ],
    "killed": true
   },
@@ -381,7 +414,9 @@
     ]
    },
    "caughtBy": [
-    "R7-D Phase 3.4 T16: a return reported mid-week plans the weeks after it from the runs completed, never from the elapsed runs of that week that were not done"
+    "R7-D Phase 3.4 T16: a return reported mid-week plans the weeks after it from the runs completed, never from the elapsed runs of that week that were not done",
+    "R7-D Phase 3.4 T17 (R1, R1b): a running lapse with strength complete: strength resumes its executed doses; running continues the holiday's own return, exactly as the episode rule",
+    "R7-D Phase 3.4 T20: the ceiling ladder (G1-G4): a return reported on Friday with that week's elapsed runs unreported plans the weeks after it as a Monday report does"
    ],
    "killed": true
   }
