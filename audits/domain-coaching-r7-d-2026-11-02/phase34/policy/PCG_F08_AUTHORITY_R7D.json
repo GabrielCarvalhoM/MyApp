@@ -1,0 +1,373 @@
+{
+  "recordId": "PCG-R7D-F08-r1",
+  "date": "2026-11-07",
+  "role": "Product Constitution & Governance (PCG constitution 1.2.0), fresh instance; owner of the authority form for F08 under the Founder's R7-D Phase 3.4 authorization (front C). Not the author of the runtime, the interface, the pre-registrations, the decision request, the F08 proposal, the benchmark, the prototype or any SSCTR record. Decides the authority form only. Makes no clinical judgment (a qualified human's) and no sporting judgment on the return process (the SSCTR's, answered in parallel as Part 1 Q8, not read by this instance).",
+  "independent": true,
+  "runtimeContext": {
+    "model": "claude-opus-5-5 (inherited, as dispatched)",
+    "effort": "xhigh (as dispatched)",
+    "toolsAvailable": ["Read", "Grep", "Glob", "Bash (read-only use plus one scratch probe)", "Write (the two output files only)"],
+    "delegation": "none",
+    "repositoryWrites": ["audits/domain-coaching-r7-d-2026-11-02/phase34/policy/PCG_F08_AUTHORITY_R7D.json", "audits/domain-coaching-r7-d-2026-11-02/phase34/policy/PCG_F08_AUTHORITY_R7D.md"],
+    "notRun": "npm run verify, any verify-r*, freeze-r* or integrate-queue* script, anything with --write; no commit",
+    "worktree": "C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/domain-coaching-r7-d, branch claude/domain-coaching-r7-d, HEAD 661b05d, clean at start"
+  },
+  "scope": {
+    "question": "F08: a break whose own reason is clinical keeps the athlete in CLINICAL_HUMAN_REQUIRED indefinitely, also after a qualified clearance. What current authority permits, what a qualified clearance is for governance purposes, who holds each missing piece, and the exact blocker and reopening trigger.",
+    "inScope": ["P-1 to P-5 of phase34/f08/F08_RETURN_PROPOSAL.md", "whether Security/Privacy is required before any clearance input", "the existing named-correction path for a kept clinical-cause break", "the authority table", "the binding form of this record"],
+    "outOfScope": [
+      "the sporting return process after a legitimate clearance (SSCTR, Part 1 Q8)",
+      "any clinical judgment, diagnosis, triage class, clearance criterion, restriction vocabulary content, stop sign or return criterion (G04 qualified professionals)",
+      "fronts A and B of Phase 3.4 (SSCTR-P33-F01, QE-R7D-P33-01)",
+      "UI/UX, consumer copy, Figma, backend, Apple Health",
+      "any edit to product/, canon/, CURRENT_MISSION.md, MISSION_LEDGER.md or the human revalidation queue"
+    ],
+    "founderAuthorization": "R7-D Phase 3.4, summarized on disk in phase34/AUTHORIZATION_PHASE34.md (sha256 e2b94fa52dc8...): front C: 'a clinical-authority boundary (SSCTR on the return process; PCG and the existing G04/clinical owners on the authority transition; qualified clearance vs athlete statement). Implement only with sufficient scientific and governance authority; otherwise record a complete proposal and block only that part of the runtime. Forbidden: a later nonclinical break erasing an earlier injury, or the athlete simply reclassifying the original cause.' Freeze: A and B may be frozen with F08_OPEN; F08 is then never declared resolved. Security becomes mandatory before any clinical-clearance input.",
+    "earlierFounderDisposition": "R7-D Phase 3.2 (phase32/AUTHORIZATION_PHASE32.md, sha256 ea849ae03e4a...): 'a qualified clearance is not R7-D authority to convert a clinical-cause interruption into the nonclinical recipe. Preserve fail-closed; record F08 as KNOWN_FAIL_CLOSED_AUTHORITY_BOUNDARY, owned after R7-D by Founder/PCG with qualified SSCTR/clinical-domain review; no runtime expansion now.'"
+  },
+  "sourcesRead": [
+    {"path": "C:/Users/carva/.claude/agent-system/constitutions/PRODUCT_CONSTITUTION_GOVERNANCE.md", "sha256": null, "read": "via the dispatch (constitution 1.2.0)"},
+    {"path": "C:/Users/carva/.claude/agent-system/protocols/CORE.md", "sha256": null, "read": "whole"},
+    {"path": "C:/Users/carva/.claude/agent-system/playbooks/PRODUCT_GOVERNANCE.md", "sha256": null, "read": "whole"},
+    {"path": "C:/Users/carva/.claude/agent-system/evals/PRODUCT_GOVERNANCE.md", "sha256": null, "read": "PCG self-check criteria"},
+    {"path": "audits/domain-coaching-r7-d-2026-11-02/phase34/AUTHORIZATION_PHASE34.md", "sha256": "e2b94fa52dc82c1f658c68fd1f661b8e4fe8089da007e78fd7d82d7f787b1316", "read": "whole"},
+    {"path": "audits/domain-coaching-r7-d-2026-11-02/phase34/policy/DECISION_REQUEST_PHASE34.md", "sha256": "00e48fb97bec7d64f6bfad4b0ce470d4d6efe4bdf59df1b3becd2b704b4b7999", "read": "whole (Part 1 read for context only; Part 2 is this record's task)"},
+    {"path": "audits/domain-coaching-r7-d-2026-11-02/phase34/f08/F08_RETURN_PROPOSAL.md", "sha256": "b7b3b62af2a2017826ac41423ce4455bf025684a4a42be737c1490358c64f4e1", "read": "whole"},
+    {"path": "audits/domain-coaching-r7-d-2026-11-02/phase34/f08/F08_COMPETITOR_BENCHMARK.md", "sha256": "7c37af21263d865feb43c973ed045edbf9063aa2e2d274e205b8b3822e8417ad", "read": "whole"},
+    {"path": "audits/domain-coaching-r7-d-2026-11-02/phase3/policy/PCG_F03B_AUTHORITY_R7D.json", "sha256": "5e25b1580d9d74d9b73204a290d3c02e5237fef86b2fda097d4b681ecc3212c6", "read": "whole, as the format template"},
+    {"path": "audits/domain-coaching-r7-d-2026-11-02/phase3/policy/PCG_F03B_AUTHORITY_R7D.md", "sha256": "cb99f7f33834b25fefc66b5f0550dc12a94d036cdd43b41234a13a0134ab2e30", "read": "whole, as the format template"},
+    {"path": "canon/CANONICAL_INDEX.md", "sha256": "c9e012a8c404ec5d520fc78ba03e592a429dc08b08e75884b546c3d33cde28cc", "read": "R7-B0 and baseline blocks, SSCTR-AUTH-r1 overlay, EXP-AUTH-r1 authority filter (A/B/C map). No R7-C/R7-D entry exists."},
+    {"path": "canon/VILUMO_FIT_PRODUCT_THESIS_CONTRACT.md", "sha256": "d7b795a1a99a4961bd091ea10c3966ee11555d0d9f778fa95a308cec84d60f38", "read": "grep for clinical/safety: DR-125 precedence note, VFT-C015 (no medical diagnosis; safety limits belong to a Safety Contract), non-goal 'diagnóstico médico', VFT-O003, VFT-O017"},
+    {"path": "product/PRODUCT_DECISION_REGISTER.md", "sha256": "7387a013adee05ff7d89ecf3d1bb41fa9300ab94ee6b68e79e4f20b2e8a91f50", "read": "§5 gap table G01-G11 (G04, G07, G03, G01 rows); DR-17 status; PDR-1.5 block DR-98 to DR-102 and THESIS_CONFLICT-SSCTR-01; DR-125"},
+    {"path": "product/ADAPTIVE_ENGINE_CONTRACT.md", "sha256": "68252a158c8f41e24214b3ed0fd4a3dc2cac417e90075350a05f4c698c52874a", "read": "hold classes table and the correction paragraph (lines 255-267): 'Correção pode resolver um flag de contexto incorreto; restrição clínica exige resolução competente. Sem liberação por silêncio, tempo, score, compromisso Crew ou checkbox de risco. Reavaliar futuro, sem clearance retroativo.'"},
+    {"path": "product/ADAPTIVE_ENGINE_OPERATIONAL_SPEC.md", "sha256": "08149de67c576d26dc0d99fd26ca199aa3d5259b7dfefe1d06430ac8e0e65e02", "read": "priority rule 4 ('não perguntar ao usuário por clearance'), HC02, HC03, PS04 (G04: 'Não preencher com aceite/score/tempo'), allowed_routes ('Human review operacional não fornece clearance clínico')"},
+    {"path": "product/PRODUCT_DOMAIN_MODEL.md", "sha256": "7e4dc9cb832dea76957c63d7ed08f6e864548eeed08eea4f09f80f6a6354b998", "read": "lines 39, 50-52 (HOLD has class/scope/minimal private cause, owner/next step/exit evidence; 'Um sinal favorável não dá clearance'), I14"},
+    {"path": "product/V1_RELEASE_SCOPE.md", "sha256": "efc7536af0a165622878b0116481bbb717f5755b2cc54c3c9297959253f4b92b", "read": "grep only (clinical/return/safety/G04): no explicit statement on post-clearance clinical return in V1"},
+    {"path": "governance/agents/sports-science-reviewer/CONSTITUTION.md", "sha256": "9de27b4d6ab0879419a92c218b98acc7ef3df63b73b3325010f033d403122180", "read": "whole (SSCTR-02, SSCTR-05, SSCTR-06, SSCTR-10, SSCTR-11)"},
+    {"path": "audits/domain-coaching-r7-d-2026-11-02/author/INTERFACE_ONLY_R7D.md", "sha256": "728d64961d53d701c0224bf242f25c61218b3532309e3ec46a30de6adda764ef", "read": "§1 (clinical boundary; clinical return out of scope), §4, §5 (clearance step), §6 (reason categories), case step format"},
+    {"path": "audits/domain-coaching-r7-d-2026-11-02/author/INTERFACE_DELTA_R7D_3.md", "sha256": "1d700de665ac2f3b5d9739f517c45df366c6554723f7a14050dc910534a7edda", "read": "whole"},
+    {"path": "audits/domain-coaching-r7-d-2026-11-02/author/INTERFACE_DELTA_R7D_4.md", "sha256": "431b8005663b02d9f47687d38bee01a5691cfc5900c2e70694bbefd53773c964", "read": "whole (the F08 sentence and 'the one exception': a named correction of the reason)"},
+    {"path": "audits/domain-coaching-r7-d-2026-11-02/author/INTERFACE_DELTA_R7D_5.md", "sha256": "91631f442ecf58cf77b28d7c78c3b364cfb169b654532ab6d78bb50830f081a5", "read": "lines 10-22 ('Clinical first, the relation question and F08 are unchanged')"},
+    {"path": "audits/domain-coaching-r7-d-2026-11-02/PREREGISTRATION_R7D_4.md", "sha256": "0bbc96d537e8d4bfa947b0a9616a235dc0bb755e75236fdb4f21c91b50f505ec", "read": "Δ8, Δ12 (F08 precision: the named correction to a nonclinical reason re-enters by the nonclinical recipe)"},
+    {"path": "audits/domain-coaching-r7-d-2026-11-02/PREREGISTRATION_R7D_5.md", "sha256": "205335f61637fe64687a7e76f3888204299884dfe68b861be045f1eac9ed3709", "read": "grep F08/clinical only"},
+    {"path": "audits/domain-coaching-r7-d-2026-11-02/diagnostic/triage/SSCTR_DIAGNOSTIC_TRIAGE_R7D.json", "sha256": "b2cf1ba48ea4826d44f2d39e19e912ec92c3ad66e1cf62f8c21c730bde74c632", "read": "finding F08, position D10-cl6, blockers, nonClaims"},
+    {"path": "audits/domain-coaching-r7-d-2026-11-02/phase32/AUTHORIZATION_PHASE32.md", "sha256": "ea849ae03e4a613b3d63c41a927d3e3f5cbd19670754ba9039e5e4a97f492273", "read": "whole (Founder F02 rule; F08 disposition)"},
+    {"path": "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/SSCTR_PHASE32_RECHECK_R7D.md", "sha256": "f014e430a24f01ec49be40cd90458db74b1ab6fb2af1183850f3ca63af0421e1", "read": "item 8 'F08 unchanged', findings F01-F04 (F02: 'A named correction can turn a kept clinical-cause break nonclinical: the athlete's statement, not a clearance'), CF-P32-04, CF-P32-07"},
+    {"path": "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/ssctr/SSCTR_PHASE31_RECHECK_R7D.md", "sha256": "fddd93811c15ee2ff9d6aa4129b87b00fa8fced1180f99d1c25c4e5f37d68c73", "read": "grep F08 lines (item 2, F03 'The consumer path rewards relabelling a clinical break', CF-P31-05)"},
+    {"path": "audits/domain-coaching-r7-d-2026-11-02/PHASE32_CHECKPOINT.md", "sha256": "e27a5e00b5c22bda4f768b438ca0d8462a8309efddd093274f34ff2aa0fb1655", "read": "F08_DISPOSITION section"},
+    {"path": "CURRENT_MISSION.md", "sha256": "64a6f6d5fb949978778dc053901d7041cc435abc30e08d1292045533bb8da53b", "read": "grep F08/Phase 3.x lines only (read-only; F08 'stays with Founder/PCG before any consumer use')"},
+    {"path": "CoachingCore/src/r6-adaptation.mjs", "sha256": "15e4279baae4b79a5f61081539fa1f46b37930454f93894eab17118a248f97bc", "read": "previousValidity, withReference (sticky clinical pending), evaluateProgram entry (kept breaks read as the report in force, read.live.i; eligibility gate before clinicalRoute), interruptionScreen, keptBreaks, clinicalRoute, separateStop, returnAfterPause head"},
+    {"path": "CoachingCore/src/r6-clinical.mjs", "sha256": "51449486b4cb7acaaae6c7c915d52b150c420b4f49c14cdfe9f896febff7f681", "read": "screenInterruptionReason (CLINICAL bases: CLINICAL_CATEGORY, CLINICAL_FLAG, CLINICAL_MENTION; ASK bases)"},
+    {"path": "CoachingCore/src/r6-intake.mjs", "sha256": "8becd1c6dcfa357c4e7f957068265d3a0cad5036f74a0d23b78711d3936e3c56", "read": "lines 176-191 (a clinical pause reason at onboarding routes to a human)"},
+    {"path": "CoachingCore/test/r7d-phase32.test.mjs", "sha256": "2f4cdc44d5e050609cc8ccd816e6b28ebac7c19a9b463031ba4577d03d95115f", "read": "helpers and T5 (F08 characterization: INJURY break, clearance, named correction to VACATION -> REESTABLISH)"},
+    {"path": "CoachingCore/test/r7d-phase31.test.mjs", "sha256": "45018b32c391f8f2e6cab26ad105c705a5519feda6d84da26aa36e7fe9da29c3", "read": "T2 (clinical-cause break routes clinical after clearance)"},
+    {"path": "CoachingCore/r7/b/fixtures/helpers.mjs", "sha256": "33caefbf5aff2f93e7ad21785d65a8ebf07c4521216d689954f04d9011161241", "read": "review(), elig(), obs() (used by the probe)"}
+  ],
+  "notOpened": [
+    "audits/domain-coaching-r7-d-2026-11-02/phase34/policy/SSCTR_* (the parallel SSCTR answer)",
+    "any audits/domain-coaching-r7-d-2026-11-02/phase34/reviews/ folder",
+    "audits/domain-coaching-r7-d-2026-11-02/phase34/policy/prototype/ (front A; not needed)"
+  ],
+  "probe": {
+    "nature": "This instance's own read-only reproduction on the R7D-FREEZE-4 source in the worktree (runtime bytes unchanged, nothing written to the repository). Engineering evidence for the authority form only; not gate, quality or generalization evidence.",
+    "script": {"path": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/664cd42f-94db-4235-9512-4d8817799bb1/scratchpad/pcg-f08-probe-1794054474/probe.mjs", "sha256": "28029e7f3c9a6385e172d7b3d06ef57b77983bf6627f3c670a97dc1cc94b4af1"},
+    "output": {"path": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/664cd42f-94db-4235-9512-4d8817799bb1/scratchpad/pcg-f08-probe-1794054474/probe-out.txt", "sha256": "bb75be9cf7d82ed3861ff76f6c0c032afccb44a8eed9a992db5120efd97cd6db"},
+    "fixture": "the r7d-phase32 GEN program (12 weeks, PERFORMANCE run + GENERAL strength), weeks 0-1 executed; a 14-day break from week 2 stated in week 4",
+    "results": [
+      {"id": "P1", "shape": "INJURY 'ankle sprain' break stated in a review whose eligibility is unanswered; next review names it (episodeId) with VACATION 'Holiday'; no clearance at any point", "result": "first ASK (eligibility; pending ASK, not clinical; the break is recorded), then MODIFY / REESTABLISH, moderate nonclinical interruption (14 days)", "meaning": "the athlete's reclassification alone opens the nonclinical recipe, with no clinical route ever issued and no clearance"},
+      {"id": "P2", "shape": "INJURY break stated with eligibility confirmed; named correction to VACATION with the continuation state carried", "result": "CLINICAL_HUMAN_REQUIRED, then CLINICAL_HUMAN_REQUIRED ('no automatic clearance'); the correction row is nevertheless recorded", "meaning": "the sticky clinical continuation state blocks the correction until a client drops it"},
+      {"id": "P3", "shape": "P2, then the client drops the continuation state (QUALIFIED_CLEARANCE)", "result": "a plain review returns REESTABLISH MODERATE (it reads the correction kept during the clinical route); a named correction also returns REESTABLISH MODERATE; record rows kept: the INJURY row and the VACATION corrections", "meaning": "clearance plus the athlete's relabel converts a clinical-cause break into the nonclinical recipe; the original INJURY row stays in the record, unused"},
+      {"id": "P4", "shape": "INJURY break routed clinical; a client drops the continuation state without any clearance; named correction to VACATION", "result": "REESTABLISH MODERATE", "meaning": "the runtime cannot tell a qualified clearance from a client that discards the continuation state: today's clearance is a client act, not a recorded or verifiable fact"}
+    ],
+    "consistentWith": "r7d-phase32.test.mjs T5 (characterization, R7D-FREEZE-2 to -4) and SSCTR-P32-F02 (q5-clinical-f08 C3, C6)"
+  },
+  "current": {
+    "runtime": "A break the existing screen classifies CLINICAL (clinical category, clinical flag or clinical mention in free text) routes to CLINICAL_HUMAN_REQUIRED; the route is sticky through the continuation state (previousValidity, withReference: 'this reference cannot clear it'). A clinical-cause break is a record fact (INTERRUPTION_DECLARED) that no return ever applies, so every later decision re-screens it, also after a qualified clearance (F08). Kept breaks are read by their report in force (read.live.i): a later report that names the episode and states a nonclinical reason is screened alone, so the episode stops being clinical (INTERFACE-4 'the one exception'; PREREG-4 Δ12; r7d-phase32 T5; probe P1, P3).",
+    "clearance": "The runtime has no clearance fact. The interface's clearance:'QUALIFIED_CLEARANCE' is an evaluation-client convention: the client drops the clinical continuation state (referenceState) and keeps the record (INTERFACE_ONLY §5.4; INTERFACE-3 §2). The runtime cannot verify it (probe P4).",
+    "authority": [
+      "PDR G04: competent professionals (a physician where clinical evaluation is needed) approve concrete classes, urgency/copy, eligibility, restriction, release ('liberação') and return; training covers nonclinical return. Before collecting, classifying or acting in these cases, releasing a hold or prescribing a return: 'Confirmação/score/LLM não dão clearance.' Proof needs versioned rules and cases and a real owner ('responsável real').",
+      "DR-99: clinical injury/illness return, persistent pain/pathology/contraindications/clearance stay CLINICAL_HUMAN_REQUIRED; G04 clinical scope is never substituted.",
+      "DR-98 / SSCTR-02, -05, -06: the SSCTR is provisional authority for nonclinical sporting items only; it MUST NOT grant clearance or approve clinical post-injury/illness return.",
+      "AEC hold table and §7: a safety red flag's assessment and release are defined by a competent professional (G04); 'Correção pode resolver um flag de contexto incorreto; restrição clínica exige resolução competente. Sem liberação por silêncio, tempo, score, compromisso Crew ou checkbox de risco. Reavaliar futuro, sem clearance retroativo.'",
+      "AEOS: priority rule 4 'Se faltar aprovação/receita, HOLD/review do owner; não perguntar ao usuário por clearance'; HC02 'texto \"profissional aprovou\" não vale approval record'; HC03 exit only with evidence/competent owner and reassessment; PS04 (G04) 'Não preencher com aceite/score/tempo'.",
+      "PDM: a HOLD carries class, scope, minimal private cause, owner, next step and exit evidence; 'Um sinal favorável não dá clearance'.",
+      "DR-125: Training/Safety prevails over Growth; no growth mechanic pressures training during HOLD.",
+      "PDR G07: data/legal classification, legal basis, retention before real collection or persistence of affected data.",
+      "Founder R7-D Phase 3.2 F08 disposition and Phase 3.4 front C (quoted in scope)."
+    ],
+    "qualifiedOwnerAvailable": "No. No source read records a G04 qualified professional for the project; DR-98 installed the SSCTR precisely because a qualified human is not affordable, and DR-102 leaves the funding milestone to the Founder. None is recorded in the sources read."
+  },
+  "findings": [
+    {
+      "id": "PCG-F08-F01",
+      "type": "NORMATIVE_CONFLICT (THESIS_CONFLICT convention, coaching-policy layer) with a DOWNSTREAM_VIOLATION in the R7D-FREEZE-4 runtime and its public contract",
+      "sourceA": "The Founder's Phase 3.2 F02 rule ('an explicit correction is a revision: append-only provenance, the corrected facts live') as applied to the reason of a clinical-cause break; INTERFACE-4 §1 'the one exception'; PREREG-4 Δ12 ('honrada como declaração do atleta, não como liberação ... reentra pela receita não clínica'); SSCTR-P32-F02 / CF-P32-04 (disclosed, not decided); AEC §7 first half ('Correção pode resolver um flag de contexto incorreto').",
+      "sourceB": "The Founder's Phase 3.4 front C ('Forbidden: ... the athlete simply reclassifying the original cause'); the Founder's Phase 3.2 F08 disposition ('a qualified clearance is not R7-D authority to convert a clinical-cause interruption into the nonclinical recipe'); PDR G04 ('Confirmação/score/LLM não dão clearance'; releasing a hold needs competent professionals); AEC §7 second half ('restrição clínica exige resolução competente ... sem liberação por ... checkbox de risco'); AEOS HC03 and PS04 ('Não preencher com aceite'); DR-99; SSCTR-05.",
+      "incompatibility": "Under A, an athlete statement ends a clinical-cause hold and opens the nonclinical return recipe (probe P1 with no clearance and no clinical route ever issued; P3 and T5 after a clearance). Under B, only a competent resolution may release it, and the athlete's reclassification is expressly forbidden.",
+      "whyNotAReopenedDecision": "No source records a decision that a clinical reason may be reclassified by the athlete. A is a general correction rule whose consequence for clinical reasons was disclosed as a residual (SSCTR-P32-F02, PREREG-4 Δ12), never approved as a clinical exit. The Founder's later, specific Phase 3.4 decision prevails for this subset; the general correction rule stays for every other fact.",
+      "dependents": ["CoachingCore runtime (kept-break read by the report in force; separate-break screen)", "INTERFACE-4 §1 'the one exception'", "PREREG-4 Δ12 (carried by PREREG-5)", "r7d-phase32.test.mjs T5 (characterization asserting REESTABLISH)", "the R7-D handoff and freeze disclosures", "any future consumer"],
+      "resolution": "Interpretation I-F08-1 and restriction R-F08-1 (below).",
+      "decider": "Founder (already decided in Phase 3.4); PCG formalizes the form; no new Founder decision is needed."
+    },
+    {
+      "id": "PCG-F08-F02",
+      "type": "INTERPRETIVE_AMBIGUITY (triage F08 'interface aspect')",
+      "sourceA": "INTERFACE_ONLY §5.4 and INTERFACE-3: a qualified clearance lets the client continue without the clinical continuation state.",
+      "sourceB": "INTERFACE_ONLY §1: clinical return or rehabilitation is out of scope for the coach under test.",
+      "resolution": "Interpretation I-F08-2 (below). Both statements hold together; no text changes.",
+      "decider": "PCG (reading); no decision needed."
+    }
+  ],
+  "observations": [
+    {
+      "id": "PCG-F08-O01",
+      "text": "Ordering: a break the screen classifies CLINICAL, stated in a review whose eligibility is unassessed, receives the eligibility question (ASK) before the clinical route (probe P1). Nothing is prescribed and the plan is not valid, so it fails closed; but INTERFACE-4 §1 says a kept clinical-cause break goes to a qualified human first, and the ASK window is what made P1 reachable. With R-F08-1 in force it opens no exit. Not ruled here.",
+      "routedTo": "SSCTR and Quality/Reliability (clinical-first ordering and public-contract consistency); consumer copy for that state is G04/Product/UX",
+      "blocking": false
+    },
+    {
+      "id": "PCG-F08-O02",
+      "text": "The evaluation client's QUALIFIED_CLEARANCE is unverifiable by the runtime (probe P4: discarding the continuation state without any clearance gives the same result). Acceptable inside the synthetic shadow evaluation, where the step models a qualified human; it is not a product clearance mechanism. The same authority dependency applies to the clearance of routes from current clinical flags or pain substitutions in any consumer use.",
+      "routedTo": "Security/Privacy scope when dispatched (see securityRuling); consumer condition PCG-F08-C06",
+      "blocking": false
+    }
+  ],
+  "interpretations": [
+    {
+      "id": "I-F08-1",
+      "classification": {"epistemic": "DECIDED (Founder Phase 3.4, formalized here)", "normative": "CURRENT_PRODUCT_DECISION at the coaching-policy layer; scope: the clinical status of declared breaks"},
+      "text": "For declared breaks, a reason that the existing clinical screen classifies CLINICAL (clinical category, clinical flag or clinical mention) is, from the moment it is recorded, a clinical restriction in the sense of AEC §7, not a correctable context flag. Its correction to a nonclinical reason by the athlete is recorded as the athlete's statement and never releases the clinical route. AEC §7's 'Correção pode resolver um flag de contexto incorreto' keeps applying to every nonclinical context fact of a break: dates, length, start time, a nonclinical category changed for another, free text the screen does not classify CLINICAL, and an unclear (ASK) reason clarified.",
+      "sources": ["Founder Phase 3.4 front C", "Founder Phase 3.2 F08 disposition", "PDR G04", "AEC hold table and §7", "AEOS HC03, PS04", "DR-99", "SSCTR-05"],
+      "whyWithinAuthority": "It chooses, between the two halves of AEC §7, the one the current explicit Founder decision and G04 already select for clinical causes; it adds no number, input, field, criterion or dose; it moves the runtime only toward the existing clinical hold.",
+      "promotion": "Record-level reading bound to R7-D. If it is ever written into AEC, PDR or the index, that is a doctrine change through the PCG product_doctrine branch (independent Research audit and Product/UX interpretability review, Chief consolidation) at an authorized canon sync."
+    },
+    {
+      "id": "I-F08-2",
+      "classification": {"epistemic": "INFERRED (reading of existing texts)", "normative": "reading only; no change"},
+      "text": "In the R7-D interface, the clearance continuation (§5.4, INTERFACE-3) covers a clinical route that a qualified human cleared while the kept break's own reason is nonclinical (a current clinical flag, a substitution with pain). A return from a break whose own reason is clinical is clinical return, out of scope (§1) until G04 exists. Inside the synthetic shadow evaluation the clearance step models a qualified human; it is not a product mechanism (PCG-F08-O02)."
+    }
+  ],
+  "rulings": [
+    {
+      "question": "P-1",
+      "summary": "Does any current authority permit implementing S5 (clearance recorded) or S6 (sporting reassessment and progressive return) now, in whole or in part?",
+      "ruling": "NOT_IMPLEMENTABLE_UNDER_CURRENT_AUTHORITY for S5 and S6, in whole and in part, including an inert, record-only clearance fact",
+      "form": "BLOCKED_BY_AUTHORITY; the proposal is recorded as the candidate handed to the G04 owners and Security (see proposalAdmissibility). Only S3 hardening is implementable now.",
+      "reasons": [
+        "S5's content is G04's: issuer classes, verification, scope codes, restriction vocabulary, stop signs, validity and expiry are 'classes concretas ... elegibilidade, restrição, liberação' that the G04 row reserves to competent professionals. No G04 owner exists. A schema written without them would invent clinical authority.",
+        "Even a fact that is recorded and never read is collection of a clinical fact and a new input across a trust boundary: G04 ('Antes de coletar/classificar/atuar'), G07 (before collection or persistence) and the Phase 3.4 Security condition apply first. An inert placeholder would also signal an exit that does not exist.",
+        "S6 is a return after a clinical cause. G04 reserves 'liberação e retorno' to competent professionals; DR-99 keeps clinical return CLINICAL_HUMAN_REQUIRED; SSCTR-05 forbids the SSCTR to approve it. The SSCTR can define the sporting content only inside a scope and a return framework a G04 owner has approved.",
+        "S6 cannot exist before S5: every S6 entry condition depends on a valid clearance fact."
+      ],
+      "implementableNow": [
+        "R-F08-1 (S3 hardening; see P-4), under the Phase 3.4 authorization and its conditions.",
+        "S3 characterization tests that need no clearance input (proposal §7): clinical condition active; no clearance; a trip or holiday trying to overwrite the clinical cause; an athlete reclassification attempt (named correction, before and after a clinical route, during it, after a client clearance); history preserved; another event's change never applied with a clinical decision.",
+        "Disclosures in the freeze, handoff, interface and pre-registration (append-only)."
+      ],
+      "proposalOnly": [
+        "The SSCTR's Part 1 Q8 answer (the sporting process after a legitimate clearance): an offline proposal for a future joint G04/SSCTR review. It is not runtime authority and approves no clinical return.",
+        "F08_RETURN_PROPOSAL.md §2-§6 with the corrections in proposalAdmissibility."
+      ]
+    },
+    {
+      "question": "P-2",
+      "summary": "What makes a clearance qualified, and may an athlete-declared clearance ever open S6?",
+      "ruling": "Governance definition decided (content G04's). Athlete-issued clearance: NOT_ADMISSIBLE under current authority, ever. A professional's clearance relayed by the athlete: NOT_ADMISSIBLE now; only the G04 owners with Security/Privacy and G07 could ever admit it as a provenance level.",
+      "form": "Form requirements Q-1 to Q-8 below are within PCG's authority (they restate G04, AEC, AEOS and PDM). Their content belongs to the G04 owners and is BLOCKED_BY_AUTHORITY.",
+      "qualifiedClearance": [
+        {"id": "Q-1", "text": "Issuer: a real, identifiable human professional whose class is on a G04-approved list for that cause and scope (a physician where clinical evaluation is needed; any other class only as G04 approves). The athlete, the coach, the SSCTR, an LLM, a score, a wearable signal or elapsed time is never an issuer."},
+        {"id": "Q-2", "text": "Verification: a level approved by G04 with Security/Privacy (and G07 for the data). The engine never validates a medical document, never reads a clearance from free text or an image, and never infers one ('texto \"profissional aprovou\" não vale approval record', HC02)."},
+        {"id": "Q-3", "text": "Binding: it names the clinical episode it clears, of this athlete, and is issued on or after that episode began. It is never transferred to another episode, athlete or later sign."},
+        {"id": "Q-4", "text": "Scope: per sport (RUN, STRENGTH), each cleared, restricted or not cleared, with restrictions only from a closed G04-approved vocabulary. The engine never reads free text as a restriction. A restriction is a hard cap no profile overrides."},
+        {"id": "Q-5", "text": "Validity: issued on a date, valid forward only (AEC 'sem clearance retroativo'), with a review or expiry rule set by G04. It is not withdrawn or contradicted, and no clinical sign has appeared since."},
+        {"id": "Q-6", "text": "Exit signs: G04-approved stop signs send the athlete back to S3."},
+        {"id": "Q-7", "text": "Record: an append-only fact of its own. It never edits, replaces or reclassifies the clinical declaration, whose reason stays recorded."},
+        {"id": "Q-8", "text": "Necessary, never sufficient: a current eligibility re-answer (NONCLINICAL_CONFIRMED, every flag false) is still required before S6, but on its own it never opens S5 or S6."}
+      ],
+      "athleteDeclared": {
+        "selfIssued": "An athlete-issued clearance ('I feel fine', 'I am ready', RECOVERED, an eligibility re-answer, a checkbox, a correction or a later report) never opens S6. It is a confirmation, which G04 excludes ('Confirmação ... não dão clearance'); AEC excludes release by a 'checkbox de risco'; AEOS forbids asking the user for clearance; PS04 forbids filling G04 with acceptance. Changing this would be a Founder doctrine change against DR-99 and G04, plus legal service-model review. It is not available, not requested and not recommended here.",
+        "relayedProfessionalClearance": "An athlete entering a named professional's clearance is a provenance question, not self-clearance. It is not admissible now, and the proposal's 'ATHLETE_DECLARED opens S6 only if G04 and Security approve' is the right owner split. Whether such a relay can ever be an admissible verification level, for which classes and scopes, is OPEN_QUESTION PCG-F08-Q03. PCG does not decide it."
+      }
+    },
+    {
+      "question": "P-3",
+      "summary": "Until G04 has an owner, is an interim exit acceptable, such as a fresh onboarding after the professional's clearance (benchmark RN1), or would it bypass the clinical boundary?",
+      "ruling": "NOT_ADMISSIBLE: it bypasses the clinical boundary. No interim exit exists under current authority.",
+      "form": "Applies existing canon; no new rule. The interim state is S3/S4, defined below.",
+      "reasons": [
+        "An honest fresh onboarding gives no exit: a clinical pause reason at intake routes to a human (r6-intake.mjs lines 177-178 and 191), the same boundary as F08.",
+        "A fresh onboarding gives a plan only if the athlete omits or relabels the cause, or if the new program does not read the kept clinical episode. The first is the athlete reclassifying the original cause; the second lets a later act erase an earlier injury. The Founder forbids both.",
+        "A plan after a clinical hold is 'liberar hold ou prescrever retorno', which G04 reserves to competent professionals. The professional's clearance would be neither recorded nor verified: the plan would rest on the athlete's word that it happened (see P-2).",
+        "The benchmark shows competitors leave the decision to the user and a professional, with a disclaimer. A competitor having a feature is not authority to adopt it (PCG constitution). The benchmark itself classes the self-managed patterns 4, 5 and 12 as REJECT for clinical causes, and RN1 as ADAPT only as the G04-subject target."
+      ],
+      "interimState": [
+        "S3/S4: CLINICAL_HUMAN_REQUIRED; no prescription; the record keeps accepting evidence and the athlete may keep logging.",
+        "The hold carries its owner (a qualified human), next step (qualified assessment outside the product) and exit evidence (a future G04 clearance fact), as PDM requires; the exit evidence is undefined until G04.",
+        "No stale plan presented as current; no growth pressure (DR-125); no 'start a new plan' or 'change the reason' offered as an exit; routing copy only under G04 (clinical copy not finalized).",
+        "A new user's onboarding is unaffected: the existing intake gate applies."
+      ]
+    },
+    {
+      "question": "P-4",
+      "summary": "Is the existing correction path (naming the kept clinical break and correcting its reason to nonclinical) compatible with the Founder's prohibition, and what restriction does it need, without trapping genuine data-entry mistakes, and who owns it?",
+      "ruling": "INCOMPATIBLE (PCG-F08-F01). Restriction R-F08-1 is REQUIRED, and it is WITHIN_EXISTING_AUTHORITY.",
+      "form": "Interpretation I-F08-1 plus restriction R-F08-1: fail-closed, with no number, input, field, criterion or dose. The coordinator may implement it in Phase 3.4 under front C, subject to the conditions. If it is not implemented before the next freeze, PCG-F08-C04 applies.",
+      "restriction": {
+        "id": "R-F08-1",
+        "classification": {"epistemic": "DECIDED (Founder Phase 3.4; formalized here)", "normative": "CURRENT_PRODUCT_DECISION, coaching-policy layer; MUST (outcome only; how the runtime achieves it is Engineering's design space)"},
+        "text": "The clinical status of a declared break belongs to its episode, not to the report in force. If any report of an episode on record was classified CLINICAL by the existing interruption screen, on any basis (clinical category, clinical flag or clinical mention), the episode is a clinical-cause episode at every later decision, whatever a later report of it states. An episode's reports are those joined by the existing episode semantics: a name, or the same facts. A named correction of such an episode is still recorded append-only and still corrects its other facts (dates, length, start time, text). Its nonclinical reason is kept as the athlete's statement. It never removes CLINICAL_HUMAN_REQUIRED, never opens a nonclinical return and never sets a return class. This holds whether or not a clinical route was issued before the correction, whether the correction was sent during a clinical route or after a client clearance, and on every path that reads the episode (a weekly review, a return report, an answer, a separate-break read). An episode whose reports the screen classified only ASK or NONCLINICAL is unaffected: clarifying an unclear reason stays a correction.",
+        "witnessesToTurnRed": ["probe P1 (no clearance, no clinical route)", "probe P3 (correction kept during the route, read after clearance; and after clearance directly)", "r7d-phase32 T5"],
+        "residuals": [
+          {"id": "R-F08-R1", "text": "A mistaken clinical category or flag holds the athlete in CLINICAL_HUMAN_REQUIRED, with no exit in the product until a G04 owner exists. This fails closed and follows the canon. The cost is real: one mistaken entry ends the athlete's plan in the product. It is the Founder's to weigh against the reopening trigger (funding a G04 owner), not PCG's to relax.", "mitigation": "Consumer design space (Product/UX): confirm a clinical category or flag with the athlete before the report is sent; plain routing copy under G04. The runtime does not change for it."},
+          {"id": "R-F08-R2", "text": "A free-text mention the screen reads as clinical, in a report with a nonclinical category (an idiom, for example), also becomes permanent. Whether a mention-only classification can be a correctable misread is a G04 triage question (PCG-F08-Q02). The interim reading fails closed.", "mitigation": "As R-F08-R1."}
+        ]
+      },
+      "whyNotTheAlternatives": [
+        "Keep the path and only disclose it: the Founder's Phase 3.4 decision forbids it, and G04 and AEC exclude release by athlete confirmation.",
+        "Allow the correction only before a clinical route is issued: the window exists only through an incidental ordering (PCG-F08-O01), and the stated cause is already a clinical signal (SSCTR-05). It would still be the athlete reclassifying.",
+        "Allow it within some time window: that is a new number, outside authority.",
+        "Remove corrections of clinical-cause breaks entirely: unnecessary, because dates, length and text stay correctable without touching the clinical status."
+      ],
+      "owners": [
+        {"part": "the restriction's normative form (I-F08-1, R-F08-1)", "owner": "PCG (this record), from the Founder's Phase 3.4 decision", "available": true},
+        {"part": "implementation in the runtime", "owner": "Engineering worker (the Phase 3.4 coordinator) under the Founder's Phase 3.4 authorization", "available": true},
+        {"part": "sporting-effect recheck of the candidate (it removes a nonclinical return path, so it changes prescribed training; SSCTR-11)", "owner": "SSCTR, narrow recheck", "available": true},
+        {"part": "tests, mutation and contract consistency", "owner": "Quality/Reliability Engineer, narrow check", "available": true},
+        {"part": "whether a retracted clinical statement, or a mention-only classification, may ever be treated as never clinical", "owner": "G04 competent qualified professionals", "available": false},
+        {"part": "consumer prevention of mistaken clinical entries and routing copy", "owner": "Product/UX with Data (G03); clinical copy G04", "available": "out of this mission"}
+      ]
+    },
+    {
+      "question": "P-5",
+      "summary": "The decision record: the exact blocker, its owner and the trigger that reopens F08.",
+      "ruling": "F08 is BLOCKED_BY_AUTHORITY on a missing G04 owner. It is never declared resolved. R-F08-1 narrows the hold but does not resolve F08.",
+      "form": "Blocker statement, owners and reopening triggers below. The disposition label KNOWN_FAIL_CLOSED_AUTHORITY_BOUNDARY stays, qualified per PCG-F08-C03/C04.",
+      "blockerRef": "blocker",
+      "triggerRef": "reopeningTriggers"
+    }
+  ],
+  "securityRuling": {
+    "question": "Is Security/Privacy required before any clearance input enters the runtime?",
+    "ruling": "REQUIRED, before any clearance input of any kind enters the runtime, including an inert record-only fact, a flag, a new event kind or a client convention that a consumer would rely on. G07 is required with it, because a clearance is health data.",
+    "notDispatchedNow": "Correct for Phase 3.4: no clearance input enters the runtime, and R-F08-1 adds none.",
+    "dispatchTrigger": "Any design, schema or implementation of S5, or any consumer path that would drop or replace the clinical continuation state.",
+    "minimumScope": ["issuer identity and verification", "binding to athlete and episode", "forgery, replay and other-athlete or other-episode use", "withdrawal and contradiction", "data minimization, consent and retention (with G07)", "no social exposure of the cause (AEC)", "audit trail", "the unverifiable client-side clearance of the evaluation (PCG-F08-O02) never becoming a consumer mechanism"]
+  },
+  "authorityTable": [
+    {"part": "the product decision that a clinical exit is only a qualified clearance, never an athlete statement; prohibition on reclassification and on a later break erasing an injury", "owner": "Founder", "available": true, "ref": "Phase 3.4 front C; Phase 3.2 F08 disposition; DR-99"},
+    {"part": "the authority form (this record), I-F08-1, R-F08-1", "owner": "PCG", "available": true, "ref": "this record"},
+    {"part": "the clearance contract: issuer classes, verification, scope, restriction vocabulary, stop signs, validity/expiry", "owner": "G04 competent qualified professionals (a physician where clinical evaluation is needed)", "available": false, "ref": "PDR G04; AEC hold table; AEOS PS04"},
+    {"part": "the post-clearance return framework: whether and how a clinical-cause episode may be rebuilt within a scope, and which signs return to assessment", "owner": "G04 competent qualified professionals", "available": false, "ref": "PDR G04 'liberação e retorno'; DR-99"},
+    {"part": "the sporting content of S6 inside a G04-approved scope (class, demonstration, prior-dose ceiling, run/strength coordination)", "owner": "SSCTR", "available": "partial: an offline proposal only; binding only after the two G04 rows; never a clinical return (SSCTR-05/06)", "ref": "Part 1 Q8; SSCTR-02/05/06"},
+    {"part": "clearance input trust boundary", "owner": "Security/Privacy", "available": "not dispatched; mandatory before any input", "ref": "Phase 3.4 authorization; securityRuling"},
+    {"part": "health-data classification, legal basis, consent, retention of a clearance fact", "owner": "G07: Founder/legal with Security/Engineering", "available": false, "ref": "PDR G07"},
+    {"part": "legal service model: who may clear within this service; professional registration", "owner": "qualified legal process (G01 legal qualification)", "available": false, "ref": "PDR G01; DR-102 open/owner line"},
+    {"part": "appointing and funding a qualified G04 owner", "owner": "Founder", "available": "not recorded in the sources read", "ref": "DR-98, DR-102"},
+    {"part": "consumer flow and copy for S3/S4 and future S5/S6; prevention of mistaken clinical entries", "owner": "Product/UX with Data (G03); clinical copy G04", "available": "out of this mission", "ref": "Phase 3.4 'not authorized: UI/UX'"},
+    {"part": "runtime implementation of R-F08-1 and S3 tests", "owner": "Engineering worker under the Phase 3.4 authorization; SSCTR and Quality narrow checks", "available": true, "ref": "Phase 3.4 front C"},
+    {"part": "funded human revalidation of approved prescriptive decisions", "owner": "a future qualified human (DR-102); queue appends by its authorized owner", "available": false, "ref": "DR-102; SSCTR-10"}
+  ],
+  "blocker": {
+    "id": "F08-BLOCK-G04",
+    "statement": "F08 (no legitimate exit after a break whose own reason is clinical) is BLOCKED_BY_AUTHORITY. The exit needs a clearance fact (S5) and a post-clearance return framework (S6). Both need the G04 competent qualified professionals, a physician where clinical evaluation is needed, to approve: issuer classes, verification, scope, restriction vocabulary, stop signs, validity, and whether and how a clinical-cause episode may be rebuilt. No such owner exists in the project. Security/Privacy and G07 must also approve the clearance input before it enters the runtime, and the legal service model must say who may clear. Until then the athlete stays in CLINICAL_HUMAN_REQUIRED (S3/S4): the record keeps accepting evidence, no plan is given, and no interim exit exists. R-F08-1 closes the athlete-reclassification path and does not resolve F08.",
+    "owner": "G04 competent qualified professionals (unavailable). The smallest missing decision is the Founder's: appoint and fund a real qualified G04 owner, with identity, verified qualifications and scope.",
+    "dependentsSuspended": ["S5 and S6 runtime", "any consumer clinical-return flow", "any claim that F08 is resolved", "any V1 or consumer use of the clinical-cause path"],
+    "notSuspended": ["fronts A and B of Phase 3.4", "a freeze of A and B with F08_OPEN", "R-F08-1 and S3 tests", "the SSCTR's offline Q8 proposal"],
+    "nextActionAfterTrigger": "With a G04 owner recorded: G04 approves the clearance contract and the return framework → Security/Privacy and G07 review the input → SSCTR defines the sporting part inside the approved scope → PCG formalizes (product_doctrine branch, with independent Research and Product/UX reviews, if canon changes) → a Founder-authorized mission implements → Quality checks. Each step in a mission with its own authorization."
+  },
+  "reopeningTriggers": [
+    {"id": "T1", "trigger": "The Founder records a real qualified G04 owner (identity, verified qualifications, scope).", "primary": true},
+    {"id": "T2", "trigger": "A Founder strategic decision that changes the clinical boundary of DR-99/G04 (for example, admitting a relayed clearance). It would be reopened as a doctrine change through the PCG product_doctrine branch, with legal review. Not requested or recommended here."},
+    {"id": "T3", "trigger": "Funded human revalidation (DR-102) that reaches the clinical boundary or this record."},
+    {"id": "T4", "trigger": "A legal, regulatory or service-model decision that changes who may clear."},
+    {"id": "T5", "trigger": "Evidence that any path leaves CLINICAL_HUMAN_REQUIRED without a qualified clearance, presents the stale plan as current, or loses the clinical record. This reopens at once as a DOWNSTREAM_VIOLATION and does not wait for G04."},
+    {"id": "T6", "trigger": "A change to the interface clearance semantics, the interruption screen or the intake clinical screen."}
+  ],
+  "notTriggers": ["a competitor's feature", "an athlete's request or statement", "elapsed time", "executed training or a count of weeks", "a passing test or harness result", "an SSCTR sporting record on its own", "an LLM output"],
+  "proposalAdmissibility": {
+    "record": "phase34/f08/F08_RETURN_PROPOSAL.md (sha256 b7b3b62a...)",
+    "ruling": "Admissible as the candidate structure handed to the G04 owners and Security/Privacy, with these corrections. It is not approved.",
+    "corrections": [
+      "§3 verification 'ATHLETE_DECLARED': excluded as a self-issued clearance; it may name only a relay of a named professional's clearance, and is admissible only if G04, Security/Privacy and G07 approve it (PCG-F08-Q03).",
+      "§3/§4: add Q-5 (forward-only validity, no retroactive clearance) and Q-8 (eligibility necessary, never sufficient).",
+      "§4 S6 entry 'candidate: the existing nonclinical class by the clinical break's own length, never shorter': a question inside the G04 return framework with SSCTR content; not decided.",
+      "§2 S4: copy is G04 (clinical copy) with Product/UX; no runtime state.",
+      "§6 authority table: add G07, the legal service model and the Founder's appointment and funding of a G04 owner; SSCTR 'Partly' means an offline proposal only.",
+      "§1 last bullet and §8 P-4: superseded by R-F08-1."
+    ]
+  },
+  "benchmarkReading": {
+    "record": "phase34/f08/F08_COMPETITOR_BENCHMARK.md (sha256 7c37af21...)",
+    "reading": "A documented description of public behaviour, with the IOC and Bern sources read at abstract level only. It is evidence of what competitors do, not of user need or of a safe exit. No pattern in it justifies an exit. PCG agrees with its REJECT for self-managed clinical patterns 4, 5 and 12, and reads RN1's 'new plan when ready' only as the G04-subject target, not as an interim exit (P-3)."
+  },
+  "delta": [
+    {
+      "id": "PCG-F08-D01",
+      "previous": "INTERFACE-4 §1 'the one exception' and PREREG-4 Δ12: a named correction of a kept clinical-cause break's reason to a nonclinical one is read as the corrected break and re-enters by the nonclinical recipe (R7D-FREEZE-2 to -4).",
+      "new": "I-F08-1 and R-F08-1: the correction is recorded and corrects the other facts, but the episode stays clinical.",
+      "trigger": "The Founder's Phase 3.4 front C prohibition; SSCTR-P31-F03 and SSCTR-P32-F02 disclosures; triage F08.",
+      "decider": "Founder (Phase 3.4); form by PCG",
+      "approvalRef": "this record, bound as in bindingForm",
+      "supersedes": "Only the effect of a corrected reason on the clinical status of a clinical-cause episode. The Phase 3.2 F02 correction rule stays for every other fact. No closed record, freeze or earlier text is rewritten; INTERFACE-4 and PREREG-4 are superseded by future append-only deltas.",
+      "impact": ["CoachingCore runtime (kept-break and separate-break clinical screen)", "r7d-phase32 T5 (a marked assertion update accepted by the narrow checks)", "INTERFACE and PREREG deltas before any holdout", "R7-D freeze and handoff disclosures", "future consumer flows (G03)", "human revalidation queue: whether an entry is needed is for the SSCTR recheck and the queue owner under existing practice; this record does not touch the queue"]
+    }
+  ],
+  "bindingForm": {
+    "records": ["This record, PCG-R7D-F08-r1 (the JSON prevails; the MD is the readable copy)."],
+    "freezeBinding": "If the coordinator freezes Phase 3.4 (A and B with F08_OPEN), the freeze record binds this record by path and SHA-256, states F08 = BLOCKED_BY_AUTHORITY (F08-BLOCK-G04), and states whether R-F08-1 is implemented and checked (C03) or open (C04).",
+    "handoff": "The R7-D handoff lists the F08 blocker, R-F08-1 and its status, the residuals R-F08-R1/R2, consumer conditions C06 and the reopening triggers.",
+    "missionAndLedger": "The coordinator's insert-only mission/ledger entry names this record and its hash. This record does not write them.",
+    "canon": "No canon or product change is needed for any ruling. An optional traceability pointer is proposed below."
+  },
+  "proposedCanonNote": {
+    "status": "PROPOSED; not applied. Optional, for traceability only. Apply only at an authorized canon sync, by PCG with Founder authorization. Promoting I-F08-1 into AEC/PDR text needs the product_doctrine branch (independent Research audit, Product/UX interpretability review, Chief consolidation).",
+    "target": "product/PRODUCT_DECISION_REGISTER.md, a note under the G04 row, or a canon/CANONICAL_INDEX.md pointer once an R7-D handoff exists",
+    "text": "F08 (R7-D, PCG-R7D-F08-r1): a break whose own reason is clinical has no exit until a G04 qualified owner approves a clearance contract and return framework; an athlete's correction of a clinical reason never releases a clinical hold (I-F08-1). Candidate structure: phase34/f08/F08_RETURN_PROPOSAL.md. Not Product Truth; V1_COACHING_AUTHORITY_READY = NO."
+  },
+  "conditions": [
+    {"id": "PCG-F08-C01", "text": "No S5 or S6 in the runtime: no clearance input, field, flag, event kind or client convention a consumer would rely on, inert or not, until G04, Security/Privacy and G07 approve and a Founder mission authorizes it."},
+    {"id": "PCG-F08-C02", "text": "No athlete statement ends a clinical-cause episode. That covers 'I feel fine', RECOVERED, an eligibility re-answer, a return report, a correction, a fresh onboarding, a later break, elapsed time, executed training and a count of weeks."},
+    {"id": "PCG-F08-C03", "text": "If R-F08-1 is implemented in Phase 3.4: (a) RED on R7D-FREEZE-4 for the P1, P3 and T5 shapes, GREEN after; (b) no new number, input, field or screen vocabulary; (c) r7d-phase32 T5's assertion changes only as a marked update that the SSCTR and Quality narrow checks accept, never silently; (d) append-only INTERFACE and PREREG deltas supersede INTERFACE-4's 'one exception' and PREREG-4 Δ12 before any holdout; (e) SSCTR and Quality narrow checks on the candidate; (f) residuals R-F08-R1/R2 disclosed; (g) F08 stays open."},
+    {"id": "PCG-F08-C04", "text": "If R-F08-1 is not implemented before the next freeze: the freeze and handoff carry PCG-F08-F01 as an open DOWNSTREAM_VIOLATION. F08 is described as 'fail-closed except an athlete-statement exit that the Founder's current decision forbids', never as plain fail-closed or resolved. No consumer may expose a reason correction for a clinical-cause episode."},
+    {"id": "PCG-F08-C05", "text": "F08_OPEN in every case: never declared resolved. KNOWN_FAIL_CLOSED_AUTHORITY_BOUNDARY stays, qualified by C03 or C04."},
+    {"id": "PCG-F08-C06", "text": "For any future consumer (owner Product/UX with Data; no UI in this mission): never drop or replace the clinical continuation state, since no clearance mechanism exists. Never present the stale plan as current under a clinical route. No growth pressure (DR-125). Never offer 'start a new plan' or 'change the reason' as an exit. Route plainly to a qualified human, with clinical copy only under G04. Keep recording. Never expose the cause socially."},
+    {"id": "PCG-F08-C07", "text": "The interface's QUALIFIED_CLEARANCE step stays an evaluation-client convention modelling a qualified human in synthetic shadow cases (I-F08-2). It is not a product mechanism, not a runtime input and not evidence that an exit exists."},
+    {"id": "PCG-F08-C08", "text": "The SSCTR's Part 1 Q8 answer is an offline proposal for a future joint G04/SSCTR review. It approves no clinical return and is not runtime authority. If it conflicts with this record on the authority form, the conflict returns to PCG and the Chief; neither silently prevails."},
+    {"id": "PCG-F08-C09", "text": "No product/, canon/, mission, ledger or queue edit by this record. The canon note is a proposal only."},
+    {"id": "PCG-F08-C10", "text": "Re-review triggers for this record: T1-T6; any byte change to the interruption or intake clinical screen; any new correction or episode semantics; a change of PDR G04, DR-99, AEC §7 or AEOS PS04/HC03; the SSCTR Q8 record conflicting with it."}
+  ],
+  "openQuestions": [
+    {"id": "PCG-F08-Q01", "question": "Appoint and fund a real qualified G04 owner (a physician for clinical evaluation, and other competent professionals as G04 needs).", "owner": "Founder", "trigger": "Founder decision; DR-102 funding milestone", "blocking": "blocks F08 only"},
+    {"id": "PCG-F08-Q02", "question": "Can a mention-only clinical screen (nonclinical category, clinical word in free text) be a correctable misread, and can a retracted clinical category ever be treated as never clinical?", "owner": "G04 competent qualified professionals", "trigger": "T1", "blocking": false},
+    {"id": "PCG-F08-Q03", "question": "Can a professional's clearance relayed by the athlete be an admissible verification level, and for which classes and scopes?", "owner": "G04 with Security/Privacy and G07", "trigger": "T1", "blocking": false},
+    {"id": "PCG-F08-Q04", "question": "The consumer path for S3/S4 (no plan, recording continues, routing, prevention of mistaken clinical entries), and later S5/S6.", "owner": "Product/UX with Data (G03); clinical copy G04", "trigger": "a Founder-authorized UX mission", "blocking": false},
+    {"id": "PCG-F08-Q05", "question": "Whether post-clearance clinical return enters V1 scope at all once G04 exists (the R7-D interface lists clinical return as out of scope).", "owner": "Founder (product scope)", "trigger": "T1", "blocking": false}
+  ],
+  "unchanged": [
+    "Every runtime byte: R7D-FREEZE-4 (record 8bbbb8e, bound files b242237, reviewed runtime 3228a70), r6-adaptation.mjs 15e4279b..., r6-clinical.mjs 51449486..., r6-intake.mjs 8becd1c6...",
+    "product/, canon/, PDR G04 and G07, DR-98 to DR-102, DR-125, AEC, AEOS, PDM, the thesis",
+    "the SSCTR constitution and its authority",
+    "CURRENT_MISSION.md, MISSION_LEDGER.md, the human revalidation queue",
+    "INTERFACE-1 to -5 and PREREG-1 to -5 (superseded only by future append-only deltas)",
+    "clinical first, I9, the episode and correction semantics for every nonclinical fact, the Phase 3.2 F02 rule outside the clinical status",
+    "the F08 disposition label KNOWN_FAIL_CLOSED_AUTHORITY_BOUNDARY (qualified, not replaced)",
+    "fronts A and B of Phase 3.4"
+  ],
+  "selfCheck": {
+    "note": "Self-check, not approval. Rubric evals/PRODUCT_GOVERNANCE.md 1.2.0, PCG section.",
+    "items": [
+      {"criterion": "request, authority, current source and history recovered; current/target/delta explicit", "result": "PASS", "evidence": "scope, current, probe, delta PCG-F08-D01"},
+      {"criterion": "decisions, design space, open questions distinguishable, with IDs, sources and classifications", "result": "PASS", "evidence": "I-F08-1/2, R-F08-1, Q-1 to Q-8, C01-C10, Q01-Q05; R-F08-1 is an outcome only, its implementation is Engineering's design space"},
+      {"criterion": "no hypothesis turned into a MUST; no clinical or sporting judgment", "result": "PASS", "evidence": "every MUST traces to the Founder's Phase 3.4 decision, G04, AEC, AEOS or DR-99; the clearance content is left to G04 and the sporting process to the SSCTR"},
+      {"criterion": "conflict with sources A/B, impact and resolution authority", "result": "PASS", "evidence": "PCG-F08-F01, PCG-F08-F02"},
+      {"criterion": "history recoverable, supersession explicit, no rewrite", "result": "PASS", "evidence": "D01 supersedes one effect only; INTERFACE-4 and PREREG-4 are not edited"},
+      {"criterion": "no UI or architecture prescribed", "result": "PASS", "evidence": "consumer items are conditions and design space for Product/UX, with no surface named"},
+      {"criterion": "independent reviews", "result": "N/A in this phase", "evidence": "a record-level authority form applying existing canon; no Product Thesis or doctrine text changes (the product_doctrine branch applies only if I-F08-1 is promoted to canon); no PRODUCT_CONSTITUTION_READY or canonical publication is claimed"}
+    ]
+  },
+  "independenceStatement": "Fresh PCG instance, model claude-opus-5-5 at xhigh as dispatched. I did not write the runtime, the interface, the pre-registrations, the decision request, the F08 proposal, the benchmark, the front-A prototype or any SSCTR or Quality record. I did not open phase34/policy/SSCTR_* or any phase34/reviews/ folder, and I have not seen the SSCTR's Part 1 answer. The probe is my own read-only reproduction, run from my scratch directory against the unchanged FREEZE-4 source. No agent was delegated to. This record is a self-checked submission, not a judgment of my own work and not canonical.",
+  "status": "GOVERNANCE_READY_FOR_REVIEW for the authority form; F08 itself GOVERNANCE_BLOCKED (F08-BLOCK-G04). Binding only per bindingForm. Not canonical, not Product Truth, not V1 coaching authority (V1_COACHING_AUTHORITY_READY = NO).",
+  "outcome": "AUTHORITY_FORM_DECIDED",
+  "f08Status": "BLOCKED_BY_AUTHORITY",
+  "correctionPath": "RESTRICTION_REQUIRED (R-F08-1, WITHIN_EXISTING_AUTHORITY)"
+}
