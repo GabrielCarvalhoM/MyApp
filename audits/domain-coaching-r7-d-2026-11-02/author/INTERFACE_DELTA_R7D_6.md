@@ -15,7 +15,7 @@ Separate breaks stay two facts with their own identities, and their days are nev
 | Every strength exercise | yes, logged with reps, reps in reserve and a load in a known unit |
 | Optional brisk walks, recovery runs, shakeouts, optional strides | **no**: done or not, they never decide a week |
 
-A sport counts a week only through a week that holds at least one of its counted sessions. A session on the later break's first day counts as between when that break states its start time and the session was reported done before it; otherwise its week does not count.
+A sport counts a week only through a week that holds at least one of its counted sessions. A session on the later break's first day counts as between when that break states its start time (`startedAt`) and the session was done before it (its `observedAt`); otherwise that session's sport does not count that week. The same session also counts as training done before the break when the return is measured against what was executed.
 
 Then:
 - **A week that counts in every sport it plans re-enters the athlete** (unchanged): the earlier break is history (`TRAINING_AFTER`, with `reentryWeek`) and the return is classed by the later break alone, from what was executed.

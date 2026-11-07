@@ -85,7 +85,8 @@ After sealing, change nothing and stop.
    - at least one with isolated training between them: one session or a few, with no whole week of the plan executed (for example a long holiday, one run, then a short trip);
    - at least one with a whole week of the plan executed in full between them, every session done as prescribed and well tolerated, so that the athlete has clearly resumed;
    - at least one where a whole week was executed in full **in one sport only**: every run of the week done, a strength session missed (or the reverse), over one or more weeks;
-   - at least one whose week between them holds **optional sessions** (for example optional walks) left undone, and at least one whose week between them is a **race week** with its race touch or race missed.
+   - at least one whose week between them holds **optional sessions** (for example optional walks) left undone, and at least one whose week between them is a **race week** with its race touch or race missed;
+   - at least one whose week between them has its strength **logged without reps in reserve**, and at least one where the later break **states a start time** (`startedAt`) on the day of that week's last session.
 12. **A correction of the later break by name** (its `episodeId`, other dates), after the coach returned the athlete from two separate breaks.
 13. **A return reported in the middle of its week** (Wednesday or later), after sessions of that week dated before the report that were not done.
 

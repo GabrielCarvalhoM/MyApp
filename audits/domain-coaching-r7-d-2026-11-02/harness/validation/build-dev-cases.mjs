@@ -233,5 +233,33 @@ const notDoneWeek=w=>[{each:{weeks:[w],sport:'RUN'},completed:false},{each:{week
 cases.push({caseId:'DEV-41',authorIntent:'Two weeks not done, a three-week holiday, then a return reported mid-week with the elapsed sessions of that week unreported',coverageTags:['RETURN_MODERATE','RETURN_MID_WEEK'],oracleClass:'INVARIANT_ORACLE',intake:GEN,
  timeline:[...twoWeeks,review(2,notDoneWeek(2)),review(3,notDoneWeek(3)),{stepId:'ret',at:{week:7,day:2,time:'21:00'},event:{kind:'RETURN_AFTER_PAUSE',interruption:{startDate:'2026-11-30',endDate:'2026-12-20',days:21,reasonCategory:'VACATION',reason:'Holiday, no training at all',nonclinical:true}}}],
  expectedDomainProperties:[],metamorphicRelations:[],independentAssessment:assess('the weeks after the return start from the entry dose, as a Monday report would'),domainNotes:''});
+// R7D-HARNESS-DEV-6, false-block controls of SSCTR CF-P34-05 (added after the candidate's first validation 6, before any review; instrument only).
+// DEV-42: a race week between the breaks with its race touch missed: it never re-enters running; strength re-enters by its own week.
+const RACE10=intake('dev-race10',{goals:{run:{kind:'RACE',event:{kind:'10K',date:'2026-12-27'}},strength:'GENERAL'},equipment:FULL,knownExercises:[K('back-squat',3,5,82.5)]});
+const VAC14r={startDate:'2026-12-07',endDate:'2026-12-20',days:14,reasonCategory:'VACATION',reason:'Holiday, no training at all',nonclinical:true};
+const TRIP4r={startDate:'2026-12-28',endDate:'2026-12-31',days:4,reasonCategory:'WORK',reason:'Work trip, no training',nonclinical:true};
+cases.push({caseId:'DEV-42',authorIntent:'Five weeks executed, a kept two-week holiday, a race week with everything done except the race touch, then a separate four-day trip',coverageTags:['DECLARED_BREAK','MULTIPLE_BREAKS','REENTRY_WEEK','RACE_WEEK','PARTIAL_REENTRY'],oracleClass:'INVARIANT_ORACLE',intake:RACE10,
+ timeline:[...[0,1,2,3,4].map(w=>review(w,allDone(w))),{stepId:'w7d0',at:{week:7,day:0,time:'07:00'},event:{kind:'SYSTEMIC_FATIGUE',interruption:VAC14r}},
+  {stepId:'brk2',at:{week:8,day:4,time:'07:00'},event:{kind:'LOCAL_FATIGUE',interruption:{...TRIP4r,episodeId:'DEV-42-brk2'}},observations:[{each:{weeks:[7],sport:'RUN',roles:['EASY','LONG','QUALITY','WALK_JOG','RACE']},asPrescribed:true,response:OK},{each:{weeks:[7],sport:'RUN',roles:['RACE_TOUCH']},completed:false},{each:{weeks:[7],sport:'STRENGTH'},asPrescribed:true,loadsByPattern:LOADS,response:OK}]},
+  {stepId:'plain',at:{week:8,day:4,time:'08:00'},event:{kind:'WEEKLY_REVIEW'}}],
+ expectedDomainProperties:[],metamorphicRelations:[],independentAssessment:assess('the race touch missed: the race week never re-enters running; strength re-enters by its own week (the holiday is its own return)'),domainNotes:''});
+// DEV-43: the DEV-30 week executed in full with every strength set logged without reps in reserve: the missing strength data holds strength only.
+const noRir=rows=>rows.map(([id,sets,reps,load])=>({id,sets:Array.from({length:sets},()=>({reps,load}))}));
+const PH=v=>({value:v,unit:'KG',convention:'PER_HAND'}),BW={value:0,unit:'BODYWEIGHT',convention:'BODYWEIGHT'};
+cases.push({caseId:'DEV-43',authorIntent:'A kept holiday, a week executed in full with strength logged without reps in reserve, then a separate four-day trip',coverageTags:['DECLARED_BREAK','MULTIPLE_BREAKS','REENTRY_WEEK','PARTIAL_REENTRY','MISSING_STRENGTH_DATA'],oracleClass:'INVARIANT_ORACLE',intake:GEN,
+ timeline:separateLater('DEV-43',keptHoliday,TRIP4b,{week:5,day:4,time:'07:00'},[{each:{weeks:[4],sport:'RUN'},asPrescribed:true,response:OK},
+  {ref:{week:4,sport:'STRENGTH',day:0},completed:true,minutes:41,exercises:noRir([['back-squat',3,11,{value:82.5,unit:'KG',convention:'TOTAL'}],['db-bench-press',3,10,PH(16)],['db-row',3,10,PH(16)],['standing-calf-raise',2,16,BW],['dead-bug',2,16,BW]]),response:OK},
+  {ref:{week:4,sport:'STRENGTH',day:4},completed:true,minutes:40,exercises:noRir([['db-rdl',3,8,PH(22)],['db-row',3,10,PH(16)],['db-bench-press',3,10,PH(16)],['db-split-squat',2,10,PH(14)],['dead-bug',2,16,BW]]),response:OK}],{week:5,day:4,time:'08:00'}),
+ expectedDomainProperties:[],metamorphicRelations:[],independentAssessment:assess('running re-enters by its whole week; strength, logged without reps in reserve, continues from the holiday\'s own return'),domainNotes:''});
+// DEV-44, DEV-45 (S1, S2; SSCTR BR-Q5): the DEV-30 week executed in full, the trip starting on its Sunday with a stated start time; the Sunday long
+// run reported at 08:00. S1: the trip starts at 18:00, so the week counts. S2: it starts at 07:00, so the run falls inside the trip and the week does not.
+const TRIPsun=startedAt=>({startDate:'2026-12-06',endDate:'2026-12-09',days:4,startedAt,reasonCategory:'WORK',reason:'Work trip, no training',nonclinical:true});
+const sundayWeek=[{each:{weeks:[4],sport:'RUN',roles:['EASY','QUALITY']},asPrescribed:true,response:OK},{ref:{week:4,sport:'RUN',day:6},asPrescribed:true,response:OK,observedAt:'2026-12-06T08:00:00Z'},{each:{weeks:[4],sport:'STRENGTH'},asPrescribed:true,loadsByPattern:LOADS,response:OK}];
+cases.push({caseId:'DEV-44',authorIntent:'A kept holiday, a week executed in full, a trip starting at 18:00 on its Sunday after the long run at 08:00',coverageTags:['DECLARED_BREAK','MULTIPLE_BREAKS','REENTRY_WEEK','SAME_DAY_START'],oracleClass:'INVARIANT_ORACLE',intake:GEN,
+ timeline:separateLater('DEV-44',keptHoliday,TRIPsun('2026-12-06T18:00:00Z'),{week:5,day:3,time:'07:00'},sundayWeek,{week:5,day:3,time:'08:00'}),
+ expectedDomainProperties:[],metamorphicRelations:[],independentAssessment:assess('the long run was done before the trip started: the week re-entered the athlete; the trip alone'),domainNotes:''});
+cases.push({caseId:'DEV-45',authorIntent:'The same with the trip starting at 07:00, before the long run reported at 08:00',coverageTags:['DECLARED_BREAK','MULTIPLE_BREAKS','REENTRY_WEEK','SAME_DAY_START'],oracleClass:'INVARIANT_ORACLE',intake:GEN,
+ timeline:separateLater('DEV-45',keptHoliday,TRIPsun('2026-12-06T07:00:00Z'),{week:5,day:3,time:'07:00'},sundayWeek,{week:5,day:3,time:'08:00'}),
+ expectedDomainProperties:[],metamorphicRelations:[],independentAssessment:assess('the long run falls inside the trip: that week is not a whole week between the breaks; running re-enters nothing by it'),domainNotes:''});
 fs.writeFileSync(process.argv[2],JSON.stringify({corpusRevision:'R7D-HARNESS-DEV-6',contaminated:true,cases},null,1)+'\n');
 console.log('dev cases',cases.length);

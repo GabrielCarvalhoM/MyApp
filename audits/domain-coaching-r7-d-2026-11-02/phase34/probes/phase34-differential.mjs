@@ -3,7 +3,7 @@
 // Decisions are compared step by step on the canonical decision and plan view (canonical.mjs: ids, free text and the record excluded). A differing
 // case is explained only by one of the phase's own triggers, read on the R7D-FREEZE-4 run, at or before its first difference:
 //  - OWN_RETURN (SSCTR-P33-F01, direction A): a review that applied a return reading separate breaks and ran the stop through an earlier break
-//    (TRAINING_NOT_REESTABLISHED) although a whole week of the plan between them was executed in one sport (sportWeekBetween, the HARNESS-6 reading);
+//    (TRAINING_NOT_REESTABLISHED or NO_TRAINING_BETWEEN) although a whole week of the plan between them was executed in one sport (sportWeekBetween, the HARNESS-6 reading);
 //  - CORRECTION: a return that is a newer report (SAME_BREAK) of an interruption whose return read separate breaks;
 //  - CLINICAL_EPISODE (R-F08-1): a decision after a break with a clinical category was stated in the case;
 //  - SAME_DAY (Q5): a return reading separate breaks whose later break states a start time on a day a plan week ends;
@@ -43,7 +43,7 @@ function triggers(t){
   if(!ret.separateBreaks)return;
   // The next break after b in date order is the one b's stop ran into: the window is b's last day to that break's first day.
   const byStart=[...ret.separateBreaks].sort((x,y)=>x.startDate<y.startDate?-1:x.startDate>y.startDate?1:0);
-  for(const b of ret.separateBreaks.filter(x=>x.stop==='TRAINING_NOT_REESTABLISHED')){const next=byStart.find(x=>x.startDate>b.endDate);if(next&&sportWeekBetween(s.planBefore,ledger,b.endDate,next.startDate))out.push({i,id:s.stepId,kind:'OWN_RETURN',break:`${b.startDate}..${b.endDate}`});}
+  for(const b of ret.separateBreaks.filter(x=>x.stop==='TRAINING_NOT_REESTABLISHED'||x.stop==='NO_TRAINING_BETWEEN')){const next=byStart.find(x=>x.startDate>b.endDate);if(next&&sportWeekBetween(s.planBefore,ledger,b.endDate,next.startDate))out.push({i,id:s.stepId,kind:'OWN_RETURN',break:`${b.startDate}..${b.endDate}`});}
   if(ret.startedAt)out.push({i,id:s.stepId,kind:'SAME_DAY'});
   // RACE_KEYS (SSCTR BR-Q4): a re-entry (TRAINING_AFTER) through a week whose race touch or race between the breaks has no executed report.
   for(const b of ret.separateBreaks.filter(x=>x.stop==='TRAINING_AFTER')){const next=byStart.find(x=>x.startDate>b.endDate);if(next&&(s.planBefore.weeks??[]).flatMap(w=>w.sessions).some(x=>x.sport==='RUN'&&['RACE','RACE_TOUCH'].includes(x.role)&&x.prescription&&x.status!=='SKIPPED'&&x.date>b.endDate&&x.date<next.startDate&&!done.has(x.id)))out.push({i,id:s.stepId,kind:'RACE_KEYS'});}

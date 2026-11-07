@@ -300,8 +300,12 @@ function p08(trace){
   if(!(declared||recorded)||s.result.planValidity?.status!==VALID||(s.result.proposal&&!s.adopted))return;
   const brk=declared?s.review.interruption:s.result.proposal.decisions.at(-1).interruption??{};
   const breakStart=typeof brk.startDate==='string'?brk.startDate:s.asOfLocal;
+  // R7D-HARNESS-6 (SSCTR-R7D-P34-DECISION-r1, BR-Q5; the DEV-44 false-block control of CF-P34-05): when the break states its start time, a run on
+  // its first day done before that time (its observedAt) was executed before the break. A run with no time on that day stays outside.
+  const startedAt=typeof brk.startedAt==='string'&&Number.isFinite(Date.parse(brk.startedAt))?Date.parse(brk.startedAt):null;
+  const beforeBreak=r=>r.localDate<breakStart||startedAt!==null&&r.localDate===breakStart&&Date.parse(r.observedAt)<startedAt;
   if(declared&&!recorded)p.observations.push({at:s.stepId,kind:s.kind,note:'A declared break was decided without a return record; the plan kept in force is measured as a return'});
-  const before=(s.result.actualLedger??s.ledgerBefore??[]).filter(r=>!r.superseded&&r.context?.sport==='RUN'&&tolerated(r)&&typeof r.localDate==='string'&&r.localDate<breakStart&&Number.isFinite(r.actual?.minutes)).map(r=>r.actual.minutes);
+  const before=(s.result.actualLedger??s.ledgerBefore??[]).filter(r=>!r.superseded&&r.context?.sport==='RUN'&&tolerated(r)&&typeof r.localDate==='string'&&beforeBreak(r)&&Number.isFinite(r.actual?.minutes)).map(r=>r.actual.minutes);
   const d=s.review.currentDemonstration;
   if(d&&d.sport==='RUN'&&d.completed!==false&&d.response!=='ADVERSE'&&Number.isFinite(d.minutes))before.push(d.minutes);
   if(!before.length){p.notEvaluable.push({at:s.stepId,reason:'NO_EXECUTED_TOLERATED_RUN'});return;}
@@ -633,11 +637,12 @@ function p18(trace){
    const refused=(ret.notApplied??[]).some(x=>g.some(r=>r.eventId===x.eventId))&&g.some(r=>r.name&&applied.has(r.name));
    unit(p,covered||trainedAfter||ownReturn||withinOwn||refused,{at:t.stepId,issue:'OLDER_BREAK_DROPPED',break:live.s.stepId,breakDays:[start,end],returnDays:[ret.startDate??null,ret.endDate??null]});
   });
-  // (c) R7D-HARNESS-6 (SSCTR-P33-F01, the inverse direction; SSCTR CF-P34-05): a break the return ran its stop through after training
-  // (TRAINING_NOT_REESTABLISHED) has no whole week of the plan between it and the next break executed as prescribed in one sport, as a client reads
-  // it (nominalSportWeekBetween); otherwise weeks of training were read as days of the stop (SPORT_WEEK_READ_AS_STOP).
+  // (c) R7D-HARNESS-6 (SSCTR-P33-F01, the inverse direction; SSCTR CF-P34-05): a break the return ran its stop through, a continuity reading
+  // (TRAINING_NOT_REESTABLISHED after training, or NO_TRAINING_BETWEEN), has no whole week of the plan between it and the next break executed as
+  // prescribed in one sport, as a client reads it (nominalSportWeekBetween); otherwise weeks of training were read as days of the stop
+  // (SPORT_WEEK_READ_AS_STOP).
   const rows=ret.separateBreaks??[],byStart=[...rows].sort((a,b)=>a.startDate<b.startDate?-1:a.startDate>b.startDate?1:0);
-  for(const b of rows.filter(x=>x.stop==='TRAINING_NOT_REESTABLISHED')){const next=byStart.find(x=>x.startDate>b.endDate);if(next)unit(p,!nominalSportWeekBetween(t.planBefore,ledger,b.endDate,next.startDate),{at:t.stepId,issue:'SPORT_WEEK_READ_AS_STOP',break:b.episode,breakDays:[b.startDate,b.endDate],until:next.startDate});}
+  for(const b of rows.filter(x=>x.stop==='TRAINING_NOT_REESTABLISHED'||x.stop==='NO_TRAINING_BETWEEN')){const next=byStart.find(x=>x.startDate>b.endDate);if(next)unit(p,!nominalSportWeekBetween(t.planBefore,ledger,b.endDate,next.startDate),{at:t.stepId,issue:'SPORT_WEEK_READ_AS_STOP',break:b.episode,breakDays:[b.startDate,b.endDate],until:next.startDate});}
  });
  // (d) R7D-HARNESS-6: a newer report of an interruption whose return read separate breaks (a return applied with relation SAME_BREAK, superseding
  // a report whose return listed separateBreaks) reads every one of them again: each earlier break that return listed is listed again by its report,
