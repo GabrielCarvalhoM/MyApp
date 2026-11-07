@@ -430,8 +430,12 @@ export function evaluateProgram(program,input,options={}){
  const declared=asOf&&input?.event?.id?newDeclaration(program,input,asOf,carried):null;
  // R7-D Phase 3.2 (SSCTR-P31-F02; Founder: no last-write-wins over unresolved facts): the breaks the record holds and no return applied, with the
  // one this review states, read as interruptions (keptBreaks). One is read as Phase 3.1 reads its declaration; several never replace each other.
- const kept=asOf?keptBreaks(program,carried,asOf,input,declared):null,read=kept?.read??null;
- const retained=read&&!read.own?read.live.row:null,review0=read&&read.live.i!==input.interruption?{...input,interruption:clone(read.live.i)}:input;
+ // R7-D Phase 3.5 (QRE2-P34-01): a review whose break restates one the latest return read (restatedBreak: its facts again, its start time apart)
+ // states that break's report, never a break of its own: the record keeps it (declared), a re-read of that return reads it (recordedStop), and the
+ // review is decided as if it stated no break.
+ const restated=asOf&&declaresBreak(input)?restatedBreak(program,carried,asOf,input,declared):null,stated=restated?{...input,interruption:undefined}:input;
+ const kept=asOf?keptBreaks(program,carried,asOf,stated,declared):null,read=kept?.read??null;
+ const retained=read&&!read.own?read.live.row:null,review0=read&&read.live.i!==stated.interruption?{...stated,interruption:clone(read.live.i)}:stated;
  // R7-D Phase 3.4 (PCG-R7D-F08-r1, R-F08-1): a kept episode one of whose reports was classed clinical stays clinical: the review carries that
  // episode's route (EPISODE_CLINICAL, a symbol: never serialized or hashed), which its clinical screen takes whatever the report in force restates.
  const review=read?.clinicalCause?Object.assign({...review0},{[EPISODE_CLINICAL]:episodeClinical(read,tz)}):review0;
@@ -491,8 +495,9 @@ export function evaluateProgram(program,input,options={}){
   const confirmations=loadConfirmationsOf(review.loadConfirmations);
   // The carried record is append-only: facts a correction replaced travel with it as inert history (R7-A).
   out={...base,updatedModel:model,actualLedger:[...ledger,...n.supersededRows,...clone(carried),...(declared?[declared]:[])],provenance:{excluded:n.excluded,duplicates:n.duplicates,conflicts:n.conflicts,superseded:n.superseded,causalCutoff:n.causalCutoff},weekEvidence:ev,loadQuestions:[],inputHash:hash({programHash:program.hash,review:input})};
-  // R7-D Phase 3.4: the declarations the record carries, which a re-read of a recorded return finds its separate breaks in (recordedStop).
-  const ctx={program,sk,review,kind,w,week,asOf,asOfLocal,ev,ledger:usable,fullLedger:ledger,quarantined:n.quarantinedIdentities,model,consent,authority,out,confirmations,completedRuns:completedRuns(program,usable),carried};
+  // R7-D Phase 3.4: the declarations the record carries, which a re-read of a recorded return finds its separate breaks in (recordedStop). R7-D
+  // Phase 3.5 (QRE2-P34-01): with this review's own row, so a re-read this review makes reads the restatement it carries.
+  const ctx={program,sk,review,kind,w,week,asOf,asOfLocal,ev,ledger:usable,fullLedger:ledger,quarantined:n.quarantinedIdentities,model,consent,authority,out,confirmations,completedRuns:completedRuns(program,usable),carried:declared?[...carried,declared]:carried};
   // R7-D Phase 3.1: the break the record holds, read by this decision as if this review stated it: the report that declared it names its
   // interruption (episode identity) and is recorded with the return that applies it.
   if(retained)ctx.declaredBy={eventId:retained.eventId,eventKind:retained.eventKind??null,declaredAt:retained.declaredAt};
@@ -523,7 +528,9 @@ export function evaluateProgram(program,input,options={}){
   // R7-D Phase 3.2: with several breaks on record and not applied, the question about how they relate (or about a correction across a kept break)
   // comes first, after the clinical route only: no return dose and no other change is chosen before it is answered.
   const keptAsk=kept?.ask==='INTERRUPTION_RELATION'?relationAsk(kept,kind,tz):kept?.ask==='CORRECTION_ACROSS_KEPT_BREAK'?correctionAcrossAsk(kept,tz):null;
-  const decide=c=>keptAsk||(kind!=='RETURN_AFTER_PAUSE'&&declaresBreak(review)&&breakCarrierAsk(kind,recordedOn))||(kind!=='RETURN_AFTER_PAUSE'&&staleReturn(c))||(held&&replayHeld(c,held))||(HANDLERS[kind]??weeklyReview)(c);
+  // R7-D Phase 3.5 (QRE2-P34-01): a return report whose break only restates one the latest return read, with no break of its own on record, is
+  // decided by the re-read the late-evidence check makes with it (staleReturn), else kept.
+  const decide=c=>keptAsk||(restated&&!read&&kind==='RETURN_AFTER_PAUSE'?staleReturn(c)??restatedKeep(restated):null)||(kind!=='RETURN_AFTER_PAUSE'&&declaresBreak(review)&&breakCarrierAsk(kind,recordedOn))||(kind!=='RETURN_AFTER_PAUSE'&&staleReturn(c))||(held&&replayHeld(c,held))||(HANDLERS[kind]??weeklyReview)(c);
   // A question about block choices is a decision like any other (QE-R7B-R2-02; R7-A A5): it never drops the canonical factual state computed above. A
   // question the factual re-plan itself raises keeps precedence; otherwise the block-choice question carries the factual re-plan and any graduation
   // withdrawal (withFactualReplan), because the facts it follows stand whatever is still asked.
@@ -777,7 +784,10 @@ function keptBreaks(program,carried,asOf,input,declared){
  const applied=r=>program.decisions.some(d=>d.action==='REESTABLISH'&&Date.parse(d.asOf)>=Date.parse(r.declaredAt));
  const readable=carried.filter(r=>readableDeclaration(program,r,at)),replay=states&&!declared?readable.find(r=>r.eventId===input.event?.id)??null:null;
  if(states&&!declared&&!replay)return null;
- const reports=readable.filter(r=>!applied(r)).map(r=>({eventId:r.eventId,declaredAt:r.declaredAt,i:r.interruption,row:r})).sort((a,b)=>Date.parse(a.declaredAt)-Date.parse(b.declaredAt));
+ // R7-D Phase 3.5 (QRE2-P34-01): the reports of a break the latest return read whose newest report restates it (restatedReports) are that break's
+ // reports, read by a re-read of that return (recordedStop); none is a break to apply.
+ const consumed=restatedReports(program,declared?[...readable,declared]:readable,at);
+ const reports=readable.filter(r=>!applied(r)&&!consumed.has(r.eventId)).map(r=>({eventId:r.eventId,declaredAt:r.declaredAt,i:r.interruption,row:r})).sort((a,b)=>Date.parse(a.declaredAt)-Date.parse(b.declaredAt));
  if(states){
   const mine=reports.find(x=>x.eventId===input.event.id);
   if(mine){mine.own=true;mine.i=input.interruption;}
@@ -1321,8 +1331,8 @@ function evidenceState(ctx,{cut,day,ledger,program=ctx.program,ret=null,p=null,r
    // prescribed; never the plan's state).
    const read=(sessions,stored,entryWeek)=>{
     const wk={...week,sessions},v={...view,weeks:program.weeks.map((x,i)=>i===j?wk:x)},ev=weekEvidence(v,j,day,seen,ctx.quarantined??[]),used=usedInWeek(wk);
-    const vj={...v,decisions:view.decisions.filter(d=>Date.parse(d.asOf)<Date.parse(clock))},{gates}=weeklyGates(vj,skn,j,ev,usable,clock,{systemic:!!ev.systemicConvergence||sg.systemic,base:P.state});
-    return {ev,used,gates,g:{ALL:'HOLD',...gates},logs:loggedLoads(ev,sg.confirmations),performed:performedInWeek(ev,seen),entryWeek,plannedRun:stored?.run?.planned??plannedOf(wk),plannedStrength:stored?.strength?.planned??plannedStrengthOf(used.map(u=>({...u,sets:u.phasedSets??u.sets})))};
+    const vj={...v,decisions:view.decisions.filter(d=>Date.parse(d.asOf)<Date.parse(clock))},systemic=!!ev.systemicConvergence||sg.systemic,{gates}=weeklyGates(vj,skn,j,ev,usable,clock,{systemic,base:P.state});
+    return {ev,used,gates,systemic,g:{ALL:'HOLD',...gates},logs:loggedLoads(ev,sg.confirmations),performed:performedInWeek(ev,seen),entryWeek,plannedRun:stored?.run?.planned??plannedOf(wk),plannedStrength:stored?.strength?.planned??plannedStrengthOf(used.map(u=>({...u,sets:u.phasedSets??u.sets})))};
    };
    // The week's sessions after the return whose entry the state before it is (C5), with their own summary: a run planned before the break, inside
    // the pause, is never read as executed (state model consumer closure, Property A; NF-R7ASM-1). The PLAN reading reads a return's own week as the
@@ -1345,7 +1355,9 @@ function evidenceState(ctx,{cut,day,ledger,program=ctx.program,ret=null,p=null,r
    const values=Object.fromEntries(Object.keys(strength.exercises).map(id=>[id,sv??P.values.STRENGTH[id]??{basis:'FACTS',week:null}]));
    // The gates the week was read with (R7-C QE-R7C-07; legacyUnreadWeeks: what the record now shows of the week, against what its review recorded),
    // and, per sport, whether the athlete executed the week completely, whether or not a review closed it (R7-D Phase 3.3: reestablishedBetween).
-   out={state:{run,strength},values:{RUN:runV,STRENGTH:values},sport:{RUN:runV,STRENGTH:sv??P.sport.STRENGTH},since:null,executed:hs?[]:[...new Set([...P.executed,...Object.keys(C5.performed)])],gates:R.gates,complete:{RUN:complete('RUN'),STRENGTH:complete('STRENGTH')}};
+   // R7-D Phase 3.5 (SSCTR-P34R2-F01): whether the systemic rule held the week's gates (the flag weeklyGates applied to them), for the re-entry
+   // predicate, which also reads running through the race touch and race (no gate of their own).
+   out={state:{run,strength},values:{RUN:runV,STRENGTH:values},sport:{RUN:runV,STRENGTH:sv??P.sport.STRENGTH},since:null,executed:hs?[]:[...new Set([...P.executed,...Object.keys(C5.performed)])],gates:R.gates,complete:{RUN:complete('RUN'),STRENGTH:complete('STRENGTH')},systemic:R.systemic};
   }
   memo.set(k,out);return out;
  };
@@ -1714,10 +1726,12 @@ function readBreak(ctx,i){
  return {named,startedAt,start,end,days:Number.isInteger(i.days)?i.days:start?dayGap(start,end)+1:null};
 }
 /** Planned sessions from one day to another (inclusive) with no report that reads (R7-C G01: unknown is neither done nor not done); a day inside a
- * recorded return's interruption is a known stop. */
-function unreportedBetween(ctx,from,through){
+ * recorded return's interruption is a known stop. R7-D Phase 3.5 (SSCTR-P34R2-F02): except the episode `except` (the break being read): a newer
+ * report of it supersedes the report its recorded return read, so that report's days are no known stop for it (the exception appliedBetween
+ * applies), and the sessions a correction uncovers are asked about as a fresh report asks. */
+function unreportedBetween(ctx,from,through,except=null){
  if(from>through)return [];
- const reported=new Set((ctx.fullLedger??ctx.ledger).filter(o=>!o.conflicted).map(o=>o.sessionId)),stops=episodesOf(ctx.program).map(e=>e.live);
+ const reported=new Set((ctx.fullLedger??ctx.ledger).filter(o=>!o.conflicted).map(o=>o.sessionId)),stops=episodesOf(ctx.program).filter(e=>e.id!==except).map(e=>e.live);
  return ctx.program.weeks.flatMap(x=>x.sessions).filter(s=>s.prescription&&s.status!=='SKIPPED'&&s.date>=from&&s.date<=through&&!reported.has(s.id)&&!stops.some(b=>s.date>=b.start&&s.date<=b.end)).sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0);
 }
 /**
@@ -1730,9 +1744,10 @@ function unreportedBetween(ctx,from,through){
  * was missed, partial, unreported or conflicted and none had an adverse response). `full` is the first such week complete in every sport it plans
  * (Phase 3.3's re-entry week); `sport` the first such week per sport. A review that closed a week does not make it one: its gates hold what was not
  * executed as planned. An isolated session, sessions in no such week, a partial, aborted or conflicted report re-enter nothing. No count, length or
- * threshold of its own. The weeks are read on the history the return reading `before` reads (stateAtBreak).
+ * threshold of its own. The weeks are read on the history the return reading `before` reads (stateAtBreak), without the report a newer report of
+ * the break being read (`except`, its episode) supersedes (R7-D Phase 3.5, SSCTR-P34R2-F02).
  */
-function reentryBetween(ctx,after,before,startedAt=null){
+function reentryBetween(ctx,after,before,startedAt=null,except=null){
  const between=s=>s.date>after&&(s.date<before||!!startedAt&&s.date===before);
  const weeks=ctx.program.weeks.map((x,j)=>({j,startDate:x.startDate,sessions:x.sessions.filter(s=>s.prescription&&s.status!=='SKIPPED')})).filter(x=>x.sessions.length&&x.sessions.every(between));
  if(!weeks.length)return {full:null,sport:{RUN:null,STRENGTH:null}};
@@ -1745,8 +1760,10 @@ function reentryBetween(ctx,after,before,startedAt=null){
  // prescribed: its gated rows by the reducer's complete test when it holds any, its race touch and race by their report test (SSCTR-P34R-F03,
  // BR-Q4.4; a race week whose runs are the touch, an optional shakeout and the race). A week whose running is only optional re-enters running
  // nowhere. Only this predicate reads it so: the reducer's step release is unchanged.
+ // R7-D Phase 3.5 (SSCTR-P34R2-F01; BR-Q3.2(1), BR-Q4.2, BR-Q6): running never re-enters through a week whose evidence the systemic rule holds (the
+ // reducer's flag, the one weeklyGates applies): converging adverse responses hold it whether the week's runs are gated or are the touch and race.
  const gated=x=>x.sessions.some(s=>s.sport==='RUN'&&RUN_GATE_ROLE[s.role]),required=x=>x.sessions.some(s=>s.sport==='RUN'&&(RUN_GATE_ROLE[s.role]||['RACE_TOUCH','RACE'].includes(s.role)));
- const at=stateAtBreak(ctx,{start:before,startedAt}).history,done=x=>{const d=at(x.j+1)?.complete;return d?{RUN:required(x)&&(!gated(x)||d.RUN===true)&&raced(x),STRENGTH:d.STRENGTH===true}:null;},plans=x=>[...new Set(x.sessions.map(s=>s.sport))];
+ const at=stateAtBreak(ctx,{start:before,startedAt,episode:except}).history,done=x=>{const h=at(x.j+1),d=h?.complete;return d?{RUN:required(x)&&(!gated(x)||d.RUN===true)&&raced(x)&&!h.systemic,STRENGTH:d.STRENGTH===true}:null;},plans=x=>[...new Set(x.sessions.map(s=>s.sport))];
  const full=weeks.find(x=>{const d=done(x);return !!d&&plans(x).every(s=>d[s]===true);})??null;
  return {full,sport:Object.fromEntries(['RUN','STRENGTH'].map(S=>[S,weeks.find(x=>{const d=done(x);return !!d&&plans(x).includes(S)&&d[S]===true;})??null]))};
 }
@@ -1781,6 +1798,47 @@ function stateForStop(ctx,args,own){
  return {...withOwn,state:{run:re.RUN?history.state.run:withOwn.state.run,strength:re.STRENGTH?history.state.strength:withOwn.state.strength},material:withOwn.material||history.material};
 }
 /**
+ * R7-D Phase 3.5 (QRE2-P34-01): the earlier breaks the latest return read (its separateBreaks rows other than the latest), each with the record's row
+ * of the report that return read (its facts matching the hash the return recorded). A newer report of one of them that states its facts again, its
+ * start time apart (restates), is that break's report in force for its start time: a re-read of that return reads it (recordedStop), and it is never
+ * a break of its own (keptBreaks). So the start-time question a re-read asks (rule 0.8, SSCTR-P34R-F04) is answered by restating that break.
+ */
+function listedBreaks(program,carried,at){
+ const last=episodesOf(program).at(-1),d=last?program.decisions.find(x=>x.action==='REESTABLISH'&&x.eventId===last.live.eventId):null,rows=d?.interruption?.separateBreaks??[];
+ if(rows.length<2||!rows.some(b=>b.stop==='LATEST'))return [];
+ const decl=new Map(carried.filter(x=>readableDeclaration(program,x,at)).map(x=>[x.eventId,x]));
+ return rows.filter(b=>b.stop!=='LATEST').map(b=>({row:b,decl:decl.get(b.eventId)??null})).filter(x=>!!x.decl&&x.decl.inputHash===x.row.inputHash);
+}
+/** The facts of an interruption report apart from its name and its start time. */
+const factsBesideStart=i=>{const {episodeId,startedAt,...x}=i;return hash(x);};
+/** Whether report `r` restates listed break `x` (listedBreaks): every fact of it but its name and start time unchanged, and no start time stated or a
+ * valid one on that break's first day, no later than the report itself. Any other fact changed is no restatement: it is read as before (a report of
+ * an earlier break a return read is asked). */
+function restates(program,x,r){
+ const i=r.interruption,tz=program.timezoneOffsetMinutes??0;
+ if(factsBesideStart(i)!==factsBesideStart(x.decl.interruption))return false;
+ if(i.startedAt===undefined||i.startedAt===null)return true;
+ const t=utcTimestamp(i.startedAt);return !!t&&localDate(t,tz)===x.row.startDate&&Date.parse(t)<=Date.parse(r.declaredAt);
+}
+/** The record rows that name listed break `x` (its identity, or the event id of the report the return read), made after the report the return read
+ * (an older one is superseded by it), oldest first. */
+const naming=(x,rows)=>rows.filter(r=>r.eventId!==x.row.eventId&&Date.parse(r.declaredAt)>Date.parse(x.decl.declaredAt)&&[x.row.episode,x.row.eventId].includes(nameOf(r.interruption))).sort((a,c)=>Date.parse(a.declaredAt)-Date.parse(c.declaredAt));
+/** The newest report of listed break `x`, when it restates it: that break's report in force for its start time (a newer report supersedes an older
+ * one, I1/I3). Null when there is none, or when the newest changes another fact. */
+const restating=(program,x,rows)=>{const n=naming(x,rows).at(-1);return n&&restates(program,x,n)?n:null;};
+/** The event ids of the reports of the listed breaks whose newest report restates them: superseded or in force, none is a break of its own. */
+function restatedReports(program,rows,at){const ids=new Set();for(const x of listedBreaks(program,rows,at))if(restating(program,x,rows))for(const r of naming(x,rows))ids.add(r.eventId);return ids;}
+/** The decision of a return report whose break only restates one the latest return read, when its re-read changes nothing (QRE2-P34-01). */
+const restatedKeep=x=>({action:'KEEP',reason:`This report restates the break from ${x.row.startDate} to ${x.row.endDate} (episodeId ${x.row.episode}), which the return in force read: the record keeps it as that break's report, and nothing else changes`,counterfactuals:[counter('KEEP','KEEP',true,'The same break reported again, its start time apart, is no break of its own',{selected:true}),counter('NEW_BREAK','REESTABLISH',false,'Reading it as another break would count the same days twice')]});
+/** The listed break whose report in force is this review's own report (its record row: this review's declaration, or the one the record holds for a
+ * replay), restating it; else null. */
+function restatedBreak(program,carried,asOf,input,declared){
+ const at=Date.parse(asOf),readable=carried.filter(r=>readableDeclaration(program,r,at)),row=declared??readable.find(r=>r.eventId===input?.event?.id)??null;
+ if(!row)return null;
+ const rows=declared?[...readable,declared]:readable;
+ return listedBreaks(program,rows,at).find(x=>restating(program,x,rows)?.eventId===row.eventId)??null;
+}
+/**
  * R7-D Phase 3.4: the stop a recorded return read, rebuilt from its own record (its separateBreaks rows, with each earlier break's declaration still
  * on the carried record), for a later decision that re-reads that return: the late-evidence check (staleReturn; `onlyOwnReturn`: only a return that
  * read an earlier break as its own return needs it) and a newer report of its interruption, which reads the earlier breaks as that return did, with
@@ -1800,7 +1858,10 @@ function recordedStop(ctx,eventId,head,{onlyOwnReturn=false}={}){
   const cause=reports.find(r=>interruptionScreen(r.i).clinical)??null;
   if(cause)return {decision:episodeClinical({identity:b.episode,clinicalCause:cause,live:reports.at(-1)},tz)};
   if(screen.status==='ASK')return {decision:{action:'ASK',reason:`The break from ${b.startDate} to ${b.endDate} (episodeId ${b.episode}): its reason is unclear; say what it was and confirm it involved no pain, injury or illness; report it again with its episodeId`,missingInputs:['interruption.reasonCategory'],screen}};
-  list.push({g:{identity:b.episode,live:{i,eventId:b.eventId,declaredAt:b.declaredAt},first:{declaredAt:b.declaredAt}},start:b.startDate,end:b.endDate,days:b.days,startedAt:utcTimestamp(i.startedAt)});
+  // R7-D Phase 3.5 (QRE2-P34-01): the start time in force is that of the newest report restating this break (restates), else that of the report the
+  // return read: the answer to the start-time question a re-read asks is read on every re-read path (late evidence, a correction, a confirmation).
+  const newer=restating(ctx.program,{row:b,decl:x},[...decl.values()])??x;
+  list.push({g:{identity:b.episode,live:{i,eventId:b.eventId,declaredAt:b.declaredAt},first:{declaredAt:b.declaredAt}},start:b.startDate,end:b.endDate,days:b.days,startedAt:utcTimestamp(newer.interruption.startedAt)});
  }
  // A newer report that states its length and last day but not its first day starts on the day its length gives, as separateStop reads it
  // (QRE-P34-01: an unknown first day is never a date).
@@ -1856,9 +1917,9 @@ function stopOf(ctx,H,list){
  for(let k=0;k<sorted.length;k++){
   const x=sorted[k];
   if(x.end>=onDate(start,-1)){place.set(x.g,x.end>=start?'OVERLAPS':'TOUCHES');if(x.start<start){start=x.start;startedAt=x.startedAt;at=x;}else if(x.start===start&&x.startedAt&&(!startedAt||Date.parse(x.startedAt)<Date.parse(startedAt)))startedAt=x.startedAt;continue;}
-  const by=reentryBetween(ctx,x.end,start,startedAt);
+  const by=reentryBetween(ctx,x.end,start,startedAt,H.g.identity);
   if(by.full){reentry=by.full;break;}
-  const from=onDate(x.end,1),through=onDate(start,-1),unknown=unreportedBetween(ctx,from,through),n=unknown.length;
+  const from=onDate(x.end,1),through=onDate(start,-1),unknown=unreportedBetween(ctx,from,through,H.g.identity),n=unknown.length;
   if(n)return {decision:{action:'ASK',reason:`The breaks reported on ${day(x.g)} (${x.start} to ${x.end}) and on ${day(at.g)} (${at.start} to ${at.end}) are separate, and ${n} planned session${n>1?'s':''} between them (${from} to ${through}) ha${n>1?'ve':'s'} no report: say what was done (report the sessions, done or not done); training that is only unreported counts neither as done nor as not done, and the return depends on it`,missingInputs:['observations.unreportedSessions'],question:{kind:'TRAINING_BETWEEN_BREAKS',unreported:{from,through,sessionIds:unknown.map(s=>s.id)},breaks:[{episodeId:x.g.identity,startDate:x.start,endDate:x.end},{episodeId:at.g.identity,startDate:at.start,endDate:at.end}]}}};
   if((by.sport.RUN||by.sport.STRENGTH)&&!appliedBetween(ctx,x.end,start,H.g.identity)){
    const r=ownReturnOf(ctx,x,sorted.slice(k+1).filter(y=>!place.has(y.g)));
