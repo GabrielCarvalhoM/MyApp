@@ -46,7 +46,7 @@ for(const f of [T34,T33,T32])fs.copyFileSync(path.join(CC,f),path.join(redCC,f))
 // --test-name-pattern reads a regular expression: titles are escaped so a parenthesis matches itself.
 const pattern=t=>t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
 const UPDATED=[[T33,'R7-D Phase 3.3 T4: a week between the breaks with a session missed or partial'],[T33,'R7-D Phase 3.3 T4: unreported sessions in a week between the breaks'],[T33,'R7-D Phase 3.3 T4: a conflicted report in a week between the breaks'],[T33,'R7-D Phase 3.3 T5'],[T32,'R7-D Phase 3.2 T5 (F08 unchanged, characterization)']];
-const CHARACTERIZATION=['R7-D Phase 3.4 T4: isolated sessions','R7-D Phase 3.4 T4 (disclosed residual)','R7-D Phase 3.4 T9','R7-D Phase 3.4 T11','R7-D Phase 3.4 T12 (R-F08-1, control)','R7-D Phase 3.4 T14: optional walks'];
+const CHARACTERIZATION=['R7-D Phase 3.4 T4: isolated sessions','R7-D Phase 3.4 T4 (disclosed residual)','R7-D Phase 3.4 T9','R7-D Phase 3.4 T11','R7-D Phase 3.4 T12 (R-F08-1, control)','R7-D Phase 3.4 T14: optional walks','R7-D Phase 3.4 T18 (X6, characterization)','R7-D Phase 3.4 T19 (characterization)','R7-D Phase 3.4 T20 (characterization)'];
 const r4=counts(run(['--test',T34],redCC));
 const red={directedOnFreeze4:{tests:r4.tests,pass:r4.pass,fail:r4.fail,failed:r4.failed,passing:r4.tests-r4.fail},
  updatedAssertions:UPDATED.map(([file,title])=>{const x=counts(run(['--test','--test-name-pattern',pattern(title),file],redCC)),c=counts(run(['--test','--test-name-pattern',pattern(title),file]));return {file:'CoachingCore/'+file,test:title,updatedOnFreeze4:{tests:x.tests,fail:x.fail},updatedOnCandidate:{tests:c.tests,fail:c.fail}};})};

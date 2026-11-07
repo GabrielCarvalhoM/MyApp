@@ -353,3 +353,105 @@ test('R7-D Phase 3.4 T16: a return reported mid-week plans the weeks after it fr
  assert.deepEqual(stops(lastReturn(c.t.p)),['OWN_RETURN','LATEST']);
  assert.ok(Math.max(...minutes(runsAhead(c.t.p,7,from)))<=20,'no run above the entry ceiling plus one step after about 45 days without a completed run: '+runsAhead(c.t.p,7,from).join(' '));
 });
+
+// ---------- T17-T20: the remaining shapes of SSCTR CF-P34-06 (the SSCTR decision probes p34-ssctr.mjs and p34-ceiling.mjs, and the decision
+// request's table): a whole sport's lapse against the episode rule (R1, R1b, R2); E4, X6, V3, W4; a run-only and a strength-only plan; each sport
+// re-entering in a different week; the applied-return guard (QE-R7D-P33-03); the consolidation-week re-entry (L1, O-01); a correction naming the
+// earlier break (C3, O-02); the G3 ceiling. The characterization tests hold on R7D-FREEZE-4 too. ----------
+const by=(fRun,fStr)=>(p,s)=>s.sport==='RUN'?fRun(p,s):fStr(p,s);
+/** The episode rule for the bulk shape: A applied by a return report when stated (Mon wk4), the weeks between reviewed as re-planned with the same
+ * report pattern, D by a return report on Fri of week `dw`. */
+function episodeRule(id,weeks,dw,report){
+ const t=base();
+ step(t,4,{day:0,hour:'07:00:00',kind:'RETURN_AFTER_PAUSE',interruption:A(),event:{id:id+'-A',kind:'RETURN_AFTER_PAUSE'}});
+ for(const w of weeks)step(t,w,{observations:t.p.weeks[w].sessions.filter(live).map(s=>report(t.p,s))});
+ const r=step(t,dw,{day:4,hour:'07:00:00',kind:'RETURN_AFTER_PAUSE',interruption:trip(dw*7-14,dw*7-11),event:{id:id+'-D',kind:'RETURN_AFTER_PAUSE'}}),from=addDays(t.p.weeks[dw].startDate,6);
+ return {t,r,runs:runsAhead(t.p,dw,from),strength:strengthAhead(t.p,dw,from)};
+}
+const reentered=d=>[d.separateBreaks[0].ownReturn.reentered.RUN,d.separateBreaks[0].ownReturn.reentered.STRENGTH];
+test('R7-D Phase 3.4 T17 (R1, R1b): a running lapse with strength complete: strength resumes its executed doses; running continues the holiday\'s own return, exactly as the episode rule',()=>{
+ const runLapse=by(notDone,all);
+ for(const [label,weeks,dw] of [['R1, three weeks',[4,5,6],7],['R1b, two weeks',[4,5],6]]){
+  const c=bulk('t17-'+dw,weeks,dw,runLapse),d=lastReturn(c.t.p),k=episodeRule('t17k-'+dw,weeks,dw,runLapse),full=bulk('t17f-'+dw,weeks,dw,all);
+  assert.equal(c.r.action,'REESTABLISH',`${label}: ${c.r.reason}`);assert.equal(k.r.action,'REESTABLISH',`${label}, episode rule: ${k.r.reason}`);
+  assert.deepEqual(stops(d),['OWN_RETURN','LATEST'],label);assert.deepEqual(reentered(d),[null,c.t.p.weeks[4].startDate],label);
+  assert.equal(d.entry.run.mode,'RETURN',label);
+  assert.deepEqual(c.runs,k.runs,label+': running equals the episode rule (CF-P34-03: never above it), R7D-FREEZE-4 restarted it');
+  assert.deepEqual(c.strength,full.strength,label+': strength is not penalized for the running lapse');
+ }
+});
+test('R7-D Phase 3.4 T17 (R2): a strength lapse with every run done: running resumes its executed doses; strength re-enters from its return exactly as the episode rule',()=>{
+ const strengthLapse=by(all,notDone);
+ const c=bulk('t17-r2',[4,5],6,strengthLapse),d=lastReturn(c.t.p);
+ assert.equal(c.r.action,'REESTABLISH',c.r.reason);assert.deepEqual(stops(d),['OWN_RETURN','LATEST']);assert.deepEqual(reentered(d),[c.t.p.weeks[4].startDate,null]);
+ assert.deepEqual(c.runs,bulk('t17-r2-full',[4,5],6,all).runs,'running is not penalized for the strength lapse');
+ assert.deepEqual(c.strength,episodeRule('t17-r2k',[4,5],6,strengthLapse).strength,'strength: exactly the episode rule');
+});
+test('R7-D Phase 3.4 T18 (E4, V3, W4): a week without its long run holds running only; three weeks with the Friday strength missed re-enter running; a race week with only its easy run and strength done re-enters strength only',()=>{
+ const e4=oneWeek('t18-e4',miss(longRun)),de=lastReturn(e4.t.p);
+ assert.deepEqual(stops(de),['OWN_RETURN','LATEST'],'E4');assert.deepEqual(reentered(de),[null,e4.t.p.weeks[4].startDate],'E4');assert.equal(de.entry.run.mode,'RETURN','E4');
+ const v3=bulk('t18-v3',[4,5,6],7,miss(friStrength)),dv=lastReturn(v3.t.p);
+ assert.deepEqual(stops(dv),['OWN_RETURN','LATEST'],'V3');assert.deepEqual([dv.days,dv.class],[4,'SHORT'],'V3: R7D-FREEZE-4 read LONG 39');
+ assert.deepEqual(v3.runs,bulk('t18-v3-full',[4,5,6],7,all).runs,'V3: running resumes the three whole weeks it executed');
+ const w4=raceWeek('t18-w4',(p,s)=>s.sport==='RUN'&&['RACE','RACE_TOUCH'].includes(s.role)?notDone(p,s):obs(p,s)),dw=lastReturn(w4.t.p);
+ assert.equal(w4.r.action,'REESTABLISH',w4.r.reason);assert.deepEqual(stops(dw),['OWN_RETURN','LATEST'],'W4');
+ assert.deepEqual([dw.separateBreaks[0].ownReturn.reentered.RUN,!!dw.separateBreaks[0].ownReturn.reentered.STRENGTH],[null,true],'W4: one easy run never re-enters running in a race week');
+});
+test('R7-D Phase 3.4 T18 (X6, characterization): an adverse recovery on every run of the week is a systemic signal that holds both sports: no week complete in any sport, the stop runs through, as R7D-FREEZE-4',()=>{
+ const x6=oneWeek('t18-x6',(p,s)=>s.sport==='RUN'?obs(p,s,{response:{recovery:'ADVERSE'}}):obs(p,s)),d=lastReturn(x6.t.p);
+ assert.equal(x6.r.action,'REESTABLISH',x6.r.reason);
+ assert.deepEqual(stops(d),['TRAINING_NOT_REESTABLISHED','LATEST']);assert.deepEqual([d.startDate,d.days,d.class],[day(0),25,'MODERATE']);
+});
+test('R7-D Phase 3.4 T19 (characterization): a run-only and a strength-only plan re-enter only by a whole week of their one sport; one session missed there is no whole week, never an own return',()=>{
+ for(const [label,o,missOne] of [['run-only',{id:'r7d-p34-run',weeks:12,goals:{run:'PERFORMANCE',strength:'NONE'},equipment:FULL,schedule:{strengthDays:[]}},tueRun],
+  ['strength-only',{id:'r7d-p34-str',weeks:12,goals:{run:'NONE',strength:'GENERAL'},equipment:FULL,knownExercises:[K('back-squat',3,5,82.5)],schedule:{runDays:[],longRunDay:null}},friStrength]]){
+  const mk=(id,report)=>{const t={p:program(o),ledger:[],ref:null};for(const w of [0,1])step(t,w,{observations:t.p.weeks[w].sessions.filter(live).map(s=>obs(t.p,s))});
+   step(t,4,{day:0,hour:'07:00:00',kind:'SYSTEMIC_FATIGUE',interruption:A(),event:{id:id+'-A',kind:'SYSTEMIC_FATIGUE'}});
+   step(t,5,{day:4,hour:'07:00:00',kind:'LOCAL_FATIGUE',interruption:{...trip(21,24),episodeId:id+'-D'},event:{id:id+'-D',kind:'LOCAL_FATIGUE'},observations:t.p.weeks[4].sessions.filter(live).map(s=>report(t.p,s))});
+   return {r:step(t,5,{day:4,hour:'08:00:00'}),t};};
+  const full=mk('t19f-'+label,all),part=mk('t19p-'+label,miss(missOne)),df=lastReturn(full.t.p),dp=lastReturn(part.t.p);
+  assert.equal(full.r.action,'REESTABLISH',`${label}: ${full.r.reason}`);assert.deepEqual(stops(df),['TRAINING_AFTER','LATEST'],label);assert.equal(df.class,'SHORT',label);
+  assert.equal(part.r.action,'REESTABLISH',`${label}: ${part.r.reason}`);assert.deepEqual(stops(dp),['TRAINING_NOT_REESTABLISHED','LATEST'],label);assert.deepEqual([dp.days,dp.class],[25,'MODERATE'],label);
+ }
+});
+test('R7-D Phase 3.4 T19: each sport re-enters by its own first whole week when the sports complete different weeks',()=>{
+ const c=bulk('t19-diff',[4,5],6,(p,s)=>(s.date<p.weeks[5].startDate?friStrength(s):tueRun(s))?notDone(p,s):obs(p,s)),d=lastReturn(c.t.p);
+ assert.equal(c.r.action,'REESTABLISH',c.r.reason);assert.deepEqual(stops(d),['OWN_RETURN','LATEST']);assert.deepEqual([d.days,d.class],[4,'SHORT']);
+ assert.deepEqual(reentered(d),[c.t.p.weeks[4].startDate,c.t.p.weeks[5].startDate],'running by week 4, strength by week 5');
+});
+test('R7-D Phase 3.4 T20 (characterization): an applied return between the breaks blocks any own return across it (the existing question stands); a consolidation week executed in full re-enters the athlete (O-01); a correction naming the earlier break a return consumed is asked (O-02)',()=>{
+ // The guard (QE-R7D-P33-03): the late form, a short break C applied by its return in week 5, the holiday declared after it, then the trip.
+ const g=base();
+ for(const w of [2,3])step(g,w,{observations:g.p.weeks[w].sessions.filter(live).map(s=>notDone(g.p,s))});
+ step(g,4,{observations:g.p.weeks[4].sessions.filter(live).map(s=>miss(friStrength)(g.p,s))});
+ assert.equal(step(g,5,{day:2,hour:'07:00:00',kind:'RETURN_AFTER_PAUSE',interruption:trip(21,22),event:{id:'t20g-C',kind:'RETURN_AFTER_PAUSE'}}).action,'REESTABLISH');
+ step(g,5,{observations:g.p.weeks[5].sessions.filter(s=>live(s)&&s.date>day(22)).map(s=>miss(friStrength)(g.p,s))});
+ step(g,6,{day:0,hour:'07:00:00',kind:'SYSTEMIC_FATIGUE',interruption:A(),event:{id:'t20g-A',kind:'SYSTEMIC_FATIGUE'}});
+ step(g,6,{day:4,hour:'07:00:00',kind:'LOCAL_FATIGUE',interruption:{...trip(28,31),episodeId:'t20g-D'},event:{id:'t20g-D',kind:'LOCAL_FATIGUE'}});
+ const rg=step(g,6,{day:4,hour:'08:00:00'});
+ assert.equal(rg.action,'ASK',rg.reason);assert.deepEqual(rg.missingInputs,['interruption.episodeId']);assert.equal(returns(g.p).length,1,'only C\'s return: nothing reconstructed across it');
+ // L1: weeks 2-4 in full, the holiday weeks 5-6, the consolidation week 7 executed in full, a trip in week 8.
+ const l=base();for(const w of [2,3,4])step(l,w,{observations:l.p.weeks[w].sessions.filter(live).map(s=>obs(l.p,s))});
+ assert.equal(l.p.weeks[7].phase,'CONSOLIDATION');
+ const executed=Math.max(...l.ledger.filter(o=>!o.fact&&o.actual?.completed&&o.context?.sport==='RUN').map(o=>o.actual.minutes));
+ step(l,7,{day:0,hour:'07:00:00',kind:'SYSTEMIC_FATIGUE',interruption:brk(21,34),event:{id:'t20l-A',kind:'SYSTEMIC_FATIGUE'}});
+ step(l,8,{day:4,hour:'07:00:00',kind:'LOCAL_FATIGUE',interruption:{...trip(42,45),episodeId:'t20l-D'},event:{id:'t20l-D',kind:'LOCAL_FATIGUE'},observations:l.p.weeks[7].sessions.filter(live).map(s=>obs(l.p,s))});
+ const rl=step(l,8,{day:4,hour:'08:00:00'}),dl=lastReturn(l.p);
+ assert.equal(rl.action,'REESTABLISH',rl.reason);assert.deepEqual(stops(dl),['TRAINING_AFTER','LATEST']);assert.deepEqual([dl.days,dl.class,dl.entry.run.mode],[4,'SHORT','EASY']);
+ const wk8=l.p.weeks[8].sessions.filter(s=>live(s)&&s.sport==='RUN'&&s.date>=addDays(l.p.weeks[8].startDate,4)).map(s=>s.prescription.durationMinutes);
+ assert.ok(wk8.length&&Math.max(...wk8)<=executed,`the return week never exceeds what was executed (${wk8.join(',')} vs ${executed})`);
+ // C3: after a continuity return (the F1 shape), a report naming the earlier break with other dates is asked; nothing is applied.
+ const c=base();
+ step(c,4,{day:0,hour:'07:00:00',kind:'SYSTEMIC_FATIGUE',interruption:A(),event:{id:'t20c-A',kind:'SYSTEMIC_FATIGUE'}});
+ const gap=c.p.weeks[4].sessions.filter(s=>live(s)&&s.date>=day(14)&&s.date<=day(16));
+ step(c,5,{day:0,hour:'07:00:00',kind:'LOCAL_FATIGUE',interruption:{...trip(17,20),episodeId:'t20c-D'},event:{id:'t20c-D',kind:'LOCAL_FATIGUE'},observations:gap.map(s=>s.sport==='RUN'?obs(c.p,s):notDone(c.p,s))});
+ assert.equal(step(c,5,{day:1,hour:'07:00:00'}).action,'REESTABLISH');
+ const rc=step(c,5,{day:1,hour:'09:00:00',kind:'RETURN_AFTER_PAUSE',interruption:{...brk(0,12),episodeId:'t20c-A'}});
+ assert.equal(rc.action,'ASK',rc.reason);assert.equal(returns(c.p).length,1,'fails closed: nothing applied');
+});
+test('R7-D Phase 3.4 T20: the ceiling ladder (G1-G4): a return reported on Friday with that week\'s elapsed runs unreported plans the weeks after it as a Monday report does',()=>{
+ const runsOfWeek=(p,w)=>p.weeks[w].sessions.filter(s=>live(s)&&s.sport==='RUN').map(s=>`${s.role}:${s.prescription.family}:${s.prescription.durationMinutes}`);
+ const plan=d=>{const t=base();for(const w of [2,3])step(t,w,{observations:t.p.weeks[w].sessions.filter(live).map(s=>notDone(t.p,s))});
+  const r=step(t,7,{day:d,hour:'21:00:00',kind:'RETURN_AFTER_PAUSE',interruption:brk(14,34)});assert.equal(r.action,'REESTABLISH',r.reason);return [runsOfWeek(t.p,8),runsOfWeek(t.p,9)];};
+ assert.deepEqual(plan(4),plan(0),'G3 equals G1 (R7D-FREEZE-4 planned 30/30/45 from the elapsed runs)');
+});
