@@ -10,6 +10,9 @@
 // R7D-HARNESS-VALIDATION-4 (Phase 3.2): also --d2 <root> (R7D-FREEZE-2, superseded): SSCTR-P31-F02 (a newer break that names none replaces or
 // drops a kept one) is detected by P18 and its INSERT_NEWER_BREAK relation, each clean on the candidate; P18 and INSERT_NEWER_BREAK get units on
 // the candidate and every P18 check and the relation fire on a constructed violation.
+// R7D-HARNESS-VALIDATION-5 (Phase 3.3): also --d3 <root> (R7D-FREEZE-3, superseded): SSCTR-P32-F01 (training between two separate breaks that
+// completes no whole week of the plan ends the earlier break: the return re-enters from the later break alone) is detected by the revised P18(a)
+// on DEV-27, DEV-28, DEV-29 and DEV-31, each clean on the candidate; DEV-30 (a whole week executed) is no false block on either runtime.
 import fs from 'node:fs';
 import path from 'node:path';
 import {loadRuntime,runCase} from '../lib/client.mjs';
@@ -20,7 +23,7 @@ import {digestOf,addDays as addDaysLocal} from '../lib/util.mjs';
 
 const arg=k=>{const i=process.argv.indexOf(k);return i>=0?process.argv[i+1]:null;};
 const dev=JSON.parse(fs.readFileSync(arg('--dev'),'utf8')),byId=new Map(dev.cases.map(c=>[c.caseId,c]));
-const out={validation:'R7D-HARNESS-VALIDATION-4',harness:'R7D-HARNESS-4',devCorpusSha256:digestOf(dev),runs:[],witnesses:[],coverage:{}};
+const out={validation:'R7D-HARNESS-VALIDATION-5',harness:'R7D-HARNESS-5',devCorpusSha256:digestOf(dev),runs:[],witnesses:[],coverage:{}};
 
 async function ctxFor(root,record){
  const cc=path.join(root,'CoachingCore');
@@ -67,7 +70,9 @@ const SENS=[
  // R7D-HARNESS-VALIDATION-4: SSCTR-P31-F02 on R7D-FREEZE-2.
  {key:'--d2',record:'CoachingCore/r7/d/RUNTIME_FREEZE_R7D_2.json',defect:'SSCTR-P31-F02 (a newer break that names none replaces a kept one: the next review re-enters from the newer break alone; a correction of an applied break ends a kept one, the p4b path)',cases:['DEV-22','DEV-23','DEV-24','DEV-26'],detect:f=>f.some(x=>x.property==='P18'||x.relation==='INSERT_NEWER_BREAK')},
  {key:'--d2',record:'CoachingCore/r7/d/RUNTIME_FREEZE_R7D_2.json',defect:'SSCTR-P31-F02, metamorphic (a newer break stated in the review that applies a kept one re-enters from the newer break alone)',cases:['DEV-18','DEV-20'],detect:f=>f.some(x=>x.relation==='INSERT_NEWER_BREAK')},
- {key:'--d2',record:'CoachingCore/r7/d/RUNTIME_FREEZE_R7D_2.json',defect:'SSCTR-P31-F03 path (a newer nonclinical break replaces a kept clinical-cause break: a nonclinical return)',cases:['DEV-25'],detect:f=>f.some(x=>x.property==='P18')}
+ {key:'--d2',record:'CoachingCore/r7/d/RUNTIME_FREEZE_R7D_2.json',defect:'SSCTR-P31-F03 path (a newer nonclinical break replaces a kept clinical-cause break: a nonclinical return)',cases:['DEV-25'],detect:f=>f.some(x=>x.property==='P18')},
+ // R7D-HARNESS-VALIDATION-5: SSCTR-P32-F01 on R7D-FREEZE-3.
+ {key:'--d3',record:'CoachingCore/r7/d/RUNTIME_FREEZE_R7D_3.json',defect:'SSCTR-P32-F01 (training between two separate breaks that completes no whole week of the plan, one run, an aborted run or a week with a session missed, ends the earlier break: the return re-enters from the later break alone)',cases:['DEV-27','DEV-28','DEV-29','DEV-31'],detect:f=>f.some(x=>x.property==='P18'&&x.issues.includes('OLDER_BREAK_DROPPED'))}
 ];
 for(const s of SENS){
  const root=arg(s.key);if(!root){out.runs.push({purpose:'SENSITIVITY',defect:s.defect,result:'NOT_RUN'});continue;}
@@ -132,6 +137,8 @@ witnessP('W-P03c','DEV-18','P03',t=>{const s=stepOf(t,'w5d1'),rows=thaw(s.result
 // R7D-HARNESS-4 witnesses (P18): each check fires on a constructed violation of the candidate's own run of DEV-22.
 witnessP('W-P18a','DEV-22','P18',t=>{const s=stepOf(t,'w5d2'),p=thaw(s.planAfter),d=p.decisions.findLast(x=>x.action==='REESTABLISH');d.interruption.startDate='2026-11-30';d.interruption.days=7;s.planAfter=p;s.adopted=true;return 'the return records the trip alone: the kept holiday dropped';});
 witnessP('W-P18b','DEV-22','P18',t=>{const s=stepOf(t,'w5d2'),r=thaw(s.review);delete r.interruption.episodeId;s.review=r;return 'the return applied while the trip names no break: the relation never stated';});
+// R7D-HARNESS-5 witness (P18(a), re-entry week): the candidate's own run of DEV-27 made to record the trip alone, the holiday TRAINING_AFTER.
+witnessP('W-P18c','DEV-27','P18',t=>{const s=stepOf(t,'plain'),p=thaw(s.planAfter),d=p.decisions.findLast(x=>x.action==='REESTABLISH');d.interruption.startDate='2026-12-03';d.interruption.days=4;d.interruption.separateBreaks=d.interruption.separateBreaks.map(b=>b.stop==='LATEST'?b:{...b,stop:'TRAINING_AFTER'});s.planAfter=p;s.adopted=true;return 'the return records the trip alone and lists the holiday TRAINING_AFTER after one isolated run (F01)';});
 // P06 and P08 violations carry no issue label (unit records): count any violation of the property.
 for(const w of out.witnesses)if(w.expects[0]==='__P06__'||w.expects[0]==='__P08__'){
  const id=w.expects[0]==='__P06__'?'P06':'P08',kase=byId.get(w.caseId),base=runCase(F4.rt,kase),t={...base,steps:base.steps.map(s=>({...s}))};

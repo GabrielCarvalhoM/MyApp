@@ -22,7 +22,7 @@ export const PROPERTY_META={
  P14:{name:'Learning inside its envelope',type:'AUTOMATED (consent) + metamorphic',blocking:'GENERALIZATION_BLOCKER'},
  P16:{name:'Load round trip and no fabricated machine load (R7D-PREREG-2)',type:'AUTOMATED',blocking:'GENERALIZATION_BLOCKER (DIRECT_RUNTIME_DELTA)'},
  P17:{name:'Interruption fact persistence (R7D-PREREG-3)',type:'AUTOMATED + metamorphic (RESTATE_DECLARED_BREAK)',blocking:'BLOCKER, no envelope (SAFETY_BLOCKER when a plan is VALID while a stated break is not applied)'},
- P18:{name:'Unresolved interruption relation (R7D-PREREG-4)',type:'AUTOMATED + metamorphic (INSERT_NEWER_BREAK)',blocking:'BLOCKER, no envelope (SAFETY_BLOCKER when a return drops an open stated break or is applied before an unnamed newer break\'s relation is stated)'}
+ P18:{name:'Unresolved interruption relation (R7D-PREREG-4; (a) re-entry week, R7D-PREREG-5)',type:'AUTOMATED + metamorphic (INSERT_NEWER_BREAK)',blocking:'BLOCKER, no envelope (SAFETY_BLOCKER when a return drops an open stated break or is applied before an unnamed newer break\'s relation is stated)'}
 };
 const PENDING=['ASK','HOLD','UNSUPPORTED','CLINICAL_HUMAN_REQUIRED'];
 const VALID='VALID_WITHIN_CURRENT_BOUNDED_SCOPE',RECON='REQUIRES_RECONCILIATION';
@@ -518,10 +518,16 @@ function p17(trace){
 // id of the report that stated it) or states the same facts again (one declaration). Reports that name each other or state the same facts are one
 // break. At every decision that applies a return while two or more such breaks are open (stated since the last return applied):
 // (a) each one is accounted for: the stop the return records covers its days; or the return lists it as a separate break with training recorded
-//     after it (an executed report dated after its end and before the stop's start); or the return lists it as not read and it names a break a
-//     return already applied (a correction across a later break);
+//     after it (since R7D-HARNESS-5: a whole week of the plan executed between its end and the stop's start, below); or the return lists it as not
+//     read and it names a break a return already applied (a correction across a later break);
 // (b) the relation was stated: every open break after the first carries a name in one of its reports (no last-write-wins, no join on dates).
 // A break with no stated start or end date cannot be checked for (a): recorded as not evaluable. P17 keeps the single-break window.
+// R7D-HARNESS-5 (R7D-PREREG-5; SSCTR-P32-F01, Founder direction B): training after a break accounts for it only when a whole week of the plan
+// between the break and the stop was executed: every live session of that week falls after the break's last day and before the stop's first day,
+// and each has an executed report (completed, not conflicted, not superseded). An isolated session, sessions in no such week, or an aborted one
+// account for nothing: the stop must then cover the break. The runtime's own rule is stricter (every gate ADVANCE or EARNED, no adverse response);
+// this is the part a client reads from the plan and the record, a necessary condition, so it never blocks a runtime that applies the stricter rule.
+export const executedWeekBetween=(plan,ledger,after,before)=>(plan?.weeks??[]).some(w=>{const ss=w.sessions.filter(live);return ss.length>0&&ss.every(s=>s.date>after&&s.date<before&&ledger.some(r=>r.sessionId===s.id&&!r.superseded&&!r.conflicted&&r.actual?.completed===true));});
 const breakFacts=i=>{const {episodeId,...x}=i;return canonicalJson(x);};
 const nameOfBreak=i=>typeof i?.episodeId==='string'&&i.episodeId.trim()!==''?i.episodeId:null;
 function p18(trace){
@@ -546,7 +552,7 @@ function p18(trace){
    if(!start||!end){p.notEvaluable.push({at:t.stepId,break:live.s.stepId,reason:'BREAK_WITHOUT_DATES'});return;}
    const covered=typeof ret.startDate==='string'&&typeof ret.endDate==='string'&&ret.startDate<=start&&end<=ret.endDate;
    const listed=(ret.separateBreaks??[]).find(b=>b.startDate===start&&b.endDate===end);
-   const trainedAfter=listed?.stop==='TRAINING_AFTER'&&ledger.some(r=>!r.superseded&&!r.conflicted&&r.sessionId&&(r.actual?.completed===true||Number(r.actual?.minutes)>0)&&typeof r.localDate==='string'&&r.localDate>end&&r.localDate<ret.startDate);
+   const trainedAfter=listed?.stop==='TRAINING_AFTER'&&executedWeekBetween(t.planBefore,ledger,end,ret.startDate);
    const refused=(ret.notApplied??[]).some(x=>g.some(r=>r.eventId===x.eventId))&&g.some(r=>r.name&&applied.has(r.name));
    unit(p,covered||trainedAfter||refused,{at:t.stepId,issue:'OLDER_BREAK_DROPPED',break:live.s.stepId,breakDays:[start,end],returnDays:[ret.startDate??null,ret.endDate??null]});
   });

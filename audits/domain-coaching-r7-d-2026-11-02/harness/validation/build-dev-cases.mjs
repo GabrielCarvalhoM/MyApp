@@ -158,5 +158,33 @@ cases.push({caseId:'DEV-26',authorIntent:'A holiday applied, two trained weeks, 
   {stepId:'w7d1',at:{week:7,day:1,time:'07:00'},event:{kind:'RETURN_AFTER_PAUSE',interruption:{...VAC14,endDate:'2026-11-28',days:13,episodeId:'DEV-26-w4d0'}}},
   {stepId:'w7d2',at:{week:7,day:2,time:'07:00'},event:{kind:'WEEKLY_REVIEW'}}],
  expectedDomainProperties:[],metamorphicRelations:[],independentAssessment:assess('the kept trip is applied first; the correction of the earlier, applied holiday is asked when sent and not read while the trip is kept'),domainNotes:''});
-fs.writeFileSync(process.argv[2],JSON.stringify({corpusRevision:'R7D-HARNESS-DEV-4',contaminated:true,cases},null,1)+'\n');
+// R7D-HARNESS-DEV-5 (Phase 3.3, P18(a) re-entry week; SSCTR-P32-F01): the holiday kept as above, a separate break later, named on its own, and the
+// training between them reported with that later break's declaration (no review between); then a plain review.
+const VAC30={startDate:'2026-11-16',endDate:'2026-12-15',days:30,reasonCategory:'VACATION',reason:'Long holiday, no training at all',nonclinical:true};
+const TRIP4b={startDate:'2026-12-07',endDate:'2026-12-10',days:4,reasonCategory:'WORK',reason:'Work trip, no training',nonclinical:true};
+const TRIP4c={startDate:'2026-12-19',endDate:'2026-12-22',days:4,reasonCategory:'WORK',reason:'Work trip, no training',nonclinical:true};
+const separateLater=(caseId,keptStep,newer,at,observations,plainAt)=>[...twoWeeks,keptStep,{stepId:'brk2',at,event:{kind:'LOCAL_FATIGUE',interruption:{...newer,episodeId:`${caseId}-brk2`}},observations},{stepId:'plain',at:plainAt,event:{kind:'WEEKLY_REVIEW'}}];
+const keptHoliday={stepId:'w4d0',at:{week:4,day:0,time:'07:00'},event:{kind:'SYSTEMIC_FATIGUE',interruption:VAC14}};
+const gapRun=extra=>[{ref:{week:4,sport:'STRENGTH',day:0},completed:false},{ref:{week:4,sport:'RUN',day:1},response:OK,...extra}];
+// DEV-27 (F01 witness): one easy run in the three days between a kept two-week holiday and a separate four-day trip.
+cases.push({caseId:'DEV-27',authorIntent:'A kept two-week holiday, one easy run, then a separate four-day trip; the one run must not make the holiday disappear',coverageTags:['DECLARED_BREAK','MULTIPLE_BREAKS','TRAINING_BETWEEN_BREAKS'],oracleClass:'INVARIANT_ORACLE',intake:GEN,
+ timeline:separateLater('DEV-27',keptHoliday,TRIP4,{week:5,day:0,time:'07:00'},gapRun({asPrescribed:true}),{week:5,day:1,time:'07:00'}),
+ expectedDomainProperties:[],metamorphicRelations:[],independentAssessment:assess('one session re-enters nothing: the whole three weeks are the stop'),domainNotes:''});
+// DEV-28: the same with a five-minute aborted run.
+cases.push({caseId:'DEV-28',authorIntent:'A kept two-week holiday, a run aborted after five minutes, then a separate four-day trip',coverageTags:['DECLARED_BREAK','MULTIPLE_BREAKS','TRAINING_BETWEEN_BREAKS','PARTIAL'],oracleClass:'INVARIANT_ORACLE',intake:GEN,
+ timeline:separateLater('DEV-28',keptHoliday,TRIP4,{week:5,day:0,time:'07:00'},gapRun({completed:false,minutes:5}),{week:5,day:1,time:'07:00'}),
+ expectedDomainProperties:[],metamorphicRelations:[],independentAssessment:assess('an aborted run re-enters nothing: the whole three weeks are the stop'),domainNotes:''});
+// DEV-29: a thirty-day break, one run, a separate four-day trip.
+cases.push({caseId:'DEV-29',authorIntent:'A kept thirty-day holiday, one run, then a separate four-day trip',coverageTags:['DECLARED_BREAK','MULTIPLE_BREAKS','TRAINING_BETWEEN_BREAKS','RETURN_LONG'],oracleClass:'INVARIANT_ORACLE',intake:GEN,
+ timeline:separateLater('DEV-29',{stepId:'w6d2',at:{week:6,day:2,time:'07:00'},event:{kind:'SYSTEMIC_FATIGUE',interruption:VAC30}},TRIP4c,{week:7,day:2,time:'07:00'},[{ref:{week:6,sport:'RUN',day:3},asPrescribed:true,response:OK},{ref:{week:6,sport:'STRENGTH',day:4},completed:false}],{week:7,day:3,time:'07:00'}),
+ expectedDomainProperties:[],metamorphicRelations:[],independentAssessment:assess('one run re-enters nothing: the 37 days are the stop, a restart'),domainNotes:''});
+// DEV-30 (no false block): a whole week executed in full between the holiday and a trip: the athlete re-entered.
+cases.push({caseId:'DEV-30',authorIntent:'A kept two-week holiday, a whole week executed in full, then a separate four-day trip',coverageTags:['DECLARED_BREAK','MULTIPLE_BREAKS','TRAINING_BETWEEN_BREAKS','REENTRY_WEEK'],oracleClass:'INVARIANT_ORACLE',intake:GEN,
+ timeline:separateLater('DEV-30',keptHoliday,TRIP4b,{week:5,day:4,time:'07:00'},allDone(4),{week:5,day:4,time:'08:00'}),
+ expectedDomainProperties:[],metamorphicRelations:[],independentAssessment:assess('the week re-entered the athlete: the trip alone, from what was executed'),domainNotes:''});
+// DEV-31: the same week with its Friday strength session not done: no whole week was executed.
+cases.push({caseId:'DEV-31',authorIntent:'A kept two-week holiday, a week with every run done but the Friday strength session missed, then a separate four-day trip',coverageTags:['DECLARED_BREAK','MULTIPLE_BREAKS','TRAINING_BETWEEN_BREAKS'],oracleClass:'INVARIANT_ORACLE',intake:GEN,
+ timeline:separateLater('DEV-31',keptHoliday,TRIP4b,{week:5,day:4,time:'07:00'},[{each:{weeks:[4],sport:'RUN'},asPrescribed:true,response:OK},{ref:{week:4,sport:'STRENGTH',day:0},asPrescribed:true,loadsByPattern:LOADS,response:OK},{ref:{week:4,sport:'STRENGTH',day:4},completed:false}],{week:5,day:4,time:'08:00'}),
+ expectedDomainProperties:[],metamorphicRelations:[],independentAssessment:assess('no whole week was executed: the stop runs from the holiday'),domainNotes:''});
+fs.writeFileSync(process.argv[2],JSON.stringify({corpusRevision:'R7D-HARNESS-DEV-5',contaminated:true,cases},null,1)+'\n');
 console.log('dev cases',cases.length);

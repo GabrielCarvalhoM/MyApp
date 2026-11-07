@@ -1326,8 +1326,9 @@ function evidenceState(ctx,{cut,day,ledger,program=ctx.program,ret=null,p=null,r
    if(!hs&&strength.density===undefined&&noviceDensityApplies(skn)&&j<firstStrengthBoundary(skn))strength.density={capped:true};
    const runV=hr?{basis:hr,week:k}:P.values.RUN,sv=hs?{basis:hs,week:k}:null;
    const values=Object.fromEntries(Object.keys(strength.exercises).map(id=>[id,sv??P.values.STRENGTH[id]??{basis:'FACTS',week:null}]));
-   // The gates the week was read with (R7-C QE-R7C-07; legacyUnreadWeeks: what the record now shows of the week, against what its review recorded).
-   out={state:{run,strength},values:{RUN:runV,STRENGTH:values},sport:{RUN:runV,STRENGTH:sv??P.sport.STRENGTH},since:null,executed:hs?[]:[...new Set([...P.executed,...Object.keys(C5.performed)])],gates:R.gates};
+   // The gates the week was read with (R7-C QE-R7C-07; legacyUnreadWeeks: what the record now shows of the week, against what its review recorded),
+   // and, per sport, whether the athlete executed the week completely, whether or not a review closed it (R7-D Phase 3.3: reestablishedBetween).
+   out={state:{run,strength},values:{RUN:runV,STRENGTH:values},sport:{RUN:runV,STRENGTH:sv??P.sport.STRENGTH},since:null,executed:hs?[]:[...new Set([...P.executed,...Object.keys(C5.performed)])],gates:R.gates,complete:{RUN:complete('RUN'),STRENGTH:complete('STRENGTH')}};
   }
   memo.set(k,out);return out;
  };
@@ -1592,6 +1593,7 @@ function canonicalRecord(program,actualLedger,{authority,cut}){
  * The state returned is history as a return reads it (I13, T13): historicalStrength undoes a step the evidence released but the athlete never
  * executed, so a return starts from the dose last executed; historicalRun does the same for the run (the running state and doses last executed:
  * SSCTR F4, F4-X; QE-R7ADA-02), with the releases the return's class `cls` undoes (none given: every one).
+ * `history` is the evidence reducer it read (R7-D Phase 3.3: reestablishedBetween reads the weeks before the start from it).
  */
 function stateAtBreak(ctx,{start,startedAt=null,episode=null,cls=null}){
  const {program}=ctx,tz=program.timezoneOffsetMinutes??0,p=Math.max(0,Math.min(ctx.w,Math.floor(dayGap(program.startDate,start)/7)));
@@ -1633,7 +1635,7 @@ function stateAtBreak(ctx,{start,startedAt=null,episode=null,cls=null}){
  const byId=new Map(program.weeks.flatMap(x=>x.sessions.map(s=>[s.id,s]))),since=R?Date.parse(R.asOf):-Infinity;
  const ran=all.filter(o=>!o.conflicted&&!o.partial&&o.context?.sport==='RUN'&&Date.parse(o.observedAt)<Date.parse(cut)&&Date.parse(o.observedAt)>since).sort((a,b)=>Date.parse(a.observedAt)-Date.parse(b.observedAt)).map(o=>{const s=byId.get(o.context.sessionId);return s?.prescription?{role:s.role,dimension:s.progression?.dimension??null,value:s.progression?.value??null,minutes:s.prescription.durationMinutes,week:o.context.weekIndex,tolerated:!['ADVERSE','CONFLICTING'].includes(kindOf(o))}:null;}).filter(Boolean);
  const run=historicalRun(clone(H.state.run),ran,{stateOf:k=>at(k)?.state?.run??null,easyStepMinutes:ctx.sk.op.run.easyStepMinutes,undo:m=>!cls||cls==='SHORT'||m==='WALK_JOG'});
- return {state:{run:run&&(ctx.program.capability?.run?.familiarBouts??[]).length?{...run,familiarBoutsLapsed:true}:run,strength:base.strength},material,point:{...point,authority,values:clone(H.values),executed:[...new Set([...H.executed,...Object.keys(base.performed)])].sort(),...(late?{reportedAfterStart:true}:{}),...(other?{sameDay:other}:{})}};
+ return {state:{run:run&&(ctx.program.capability?.run?.familiarBouts??[]).length?{...run,familiarBoutsLapsed:true}:run,strength:base.strength},material,point:{...point,authority,values:clone(H.values),executed:[...new Set([...H.executed,...Object.keys(base.performed)])].sort(),...(late?{reportedAfterStart:true}:{}),...(other?{sameDay:other}:{})},history:at};
 }
 /** The strength start of a return from the state at its interruption: a short one resumes it; a moderate or long one starts the return steps
  * from it, its last executed count the ceiling (SSCTR D49). */
@@ -1682,13 +1684,34 @@ function unreportedBetween(ctx,from,through){
  return ctx.program.weeks.flatMap(x=>x.sessions).filter(s=>s.prescription&&s.status!=='SKIPPED'&&s.date>=from&&s.date<=through&&!reported.has(s.id)&&!stops.some(b=>s.date>=b.start&&s.date<=b.end)).sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0);
 }
 /**
+ * R7-D Phase 3.3 (SSCTR-P32-F01; Founder direction B: what counts as known training between two breaks): whether the training the record shows
+ * between two separate breaks re-entered the athlete after the earlier one (`after`, its last day) before the stop that begins on `before`, so that
+ * the earlier break is history the return need not read. It is read by the one rule by which executed training ever becomes history, the evidence
+ * reducer's (SSCTR S-A, E3; R7-A final P5): a week of the plan lying wholly between them (every session it plans falls after `after` and before
+ * `before`) that the athlete executed completely in every sport it plans: every session executed as prescribed and every gate ADVANCE or EARNED,
+ * so no session was missed, partial, unreported or conflicted and none had an adverse response, with a usable log for every exercise
+ * (COMPLETED_SESSIONS). A review that closed the week does not make it one: its gates hold what was not executed as planned. An isolated session,
+ * any sessions in no such week, a partial, aborted or conflicted report re-enter nothing; they stay facts. No count, length or threshold of its own.
+ * The weeks are read on the history the return reading `before` reads (stateAtBreak). Returns the first such week, or null.
+ */
+function reestablishedBetween(ctx,after,before,startedAt=null){
+ const weeks=ctx.program.weeks.map((x,j)=>({j,startDate:x.startDate,sessions:x.sessions.filter(s=>s.prescription&&s.status!=='SKIPPED')})).filter(x=>x.sessions.length&&x.sessions.every(s=>s.date>after&&s.date<before));
+ if(!weeks.length)return null;
+ const at=stateAtBreak(ctx,{start:before,startedAt}).history;
+ return weeks.find(x=>{const done=at(x.j+1)?.complete;return !!done&&[...new Set(x.sessions.map(s=>s.sport))].every(sport=>done[sport]===true);})??null;
+}
+/**
  * R7-D Phase 3.2 (Founder F02 §3): the stop a return reads when separate breaks are on record and not applied (ctx.separate: each later one named on
  * its own). They stay separate facts with their own identities: no break is joined to another and no duration is added. The stop ends with the
  * latest of them (`head`, the break the return reads) and runs back through each earlier one whose days reach or touch it, or with nothing trained
- * between (every session planned between them reported not done, or none planned): factual continuity. Training recorded between them ends it
- * there: the earlier break is history and the training after it a fact the state reads (the existing return rules). Training between them that is
- * only unreported counts neither as done nor as not done: asked, with its sessions (R7-C G01). Every break is screened and read as the return reads
- * its own. Returns the stop ({start, end, days, startedAt}), the days declared and each break's place in it, or the decision to return.
+ * between (every session planned between them reported not done, or none planned): factual continuity. Training between them that is only
+ * unreported counts neither as done nor as not done: asked, with its sessions (R7-C G01). Every break is screened and read as the return reads its
+ * own. Returns the stop ({start, end, days, startedAt}), the days declared and each break's place in it, or the decision to return.
+ * R7-D Phase 3.3 (SSCTR-P32-F01; Founder direction B): known training between them ends the stop only when it re-entered the athlete
+ * (reestablishedBetween: a whole week of the plan executed completely). Then the earlier break is history (TRAINING_AFTER, with the week it was
+ * re-entered in) and the training after it a fact the state reads (the existing return rules). Training short of that (an isolated session, any
+ * sessions in no complete week, a partial or aborted one) is a fact of the stop, not a re-entry: the stop runs back through the earlier break as
+ * with nothing trained between (TRAINING_NOT_REESTABLISHED), so a later break never erases an earlier one's effect.
  */
 function separateStop(ctx,head){
  const tz=ctx.program.timezoneOffsetMinutes??0,day=g=>localDate(g.first.declaredAt,tz),headG=ctx.separate.find(g=>g.identity===ctx.keptEpisode),list=[];
@@ -1702,18 +1725,19 @@ function separateStop(ctx,head){
   list.push({g,start:f.start??onDate(f.end,-(f.days-1)),end:f.end,days:f.days,startedAt:f.startedAt});
  }
  const H={g:headG,start:head.start??onDate(head.end,-(head.days-1)),end:head.end,days:head.days,startedAt:head.startedAt},place=new Map([[headG,'LATEST']]);
- let start=H.start,startedAt=H.startedAt,at=H;
+ let start=H.start,startedAt=H.startedAt,at=H,reentry=null;
  for(const x of [...list].sort((a,b)=>a.end<b.end?1:a.end>b.end?-1:a.start<b.start?1:a.start>b.start?-1:0)){
   if(x.end>=onDate(start,-1)){place.set(x.g,x.end>=start?'OVERLAPS':'TOUCHES');if(x.start<start){start=x.start;startedAt=x.startedAt;at=x;}else if(x.start===start&&x.startedAt&&(!startedAt||Date.parse(x.startedAt)<Date.parse(startedAt)))startedAt=x.startedAt;continue;}
-  if(trainedBetween(ctx,x.end,start))break;
+  reentry=reestablishedBetween(ctx,x.end,start,startedAt);
+  if(reentry)break;
   const from=onDate(x.end,1),through=onDate(start,-1),unknown=unreportedBetween(ctx,from,through),n=unknown.length;
   if(n)return {decision:{action:'ASK',reason:`The breaks reported on ${day(x.g)} (${x.start} to ${x.end}) and on ${day(at.g)} (${at.start} to ${at.end}) are separate, and ${n} planned session${n>1?'s':''} between them (${from} to ${through}) ha${n>1?'ve':'s'} no report: say what was done (report the sessions, done or not done); training that is only unreported counts neither as done nor as not done, and the return depends on it`,missingInputs:['observations.unreportedSessions'],question:{kind:'TRAINING_BETWEEN_BREAKS',unreported:{from,through,sessionIds:unknown.map(s=>s.id)},breaks:[{episodeId:x.g.identity,startDate:x.start,endDate:x.end},{episodeId:at.g.identity,startDate:at.start,endDate:at.end}]}}};
-  place.set(x.g,'NO_TRAINING_BETWEEN');start=x.start;startedAt=x.startedAt;at=x;
+  place.set(x.g,trainedBetween(ctx,x.end,start)?'TRAINING_NOT_REESTABLISHED':'NO_TRAINING_BETWEEN');start=x.start;startedAt=x.startedAt;at=x;
  }
  const all=[H,...list].sort((a,b)=>a.start<b.start?-1:a.start>b.start?1:0);
  return {start,end:H.end,days:start===H.start?H.days:dayGap(start,H.end)+1,startedAt,continuous:start!==H.start,
   declared:[{start,end:H.end},...list.filter(x=>!place.has(x.g)).map(x=>({start:x.start,end:x.end}))],
-  record:all.map(x=>({episode:x.g.identity,eventId:x.g.live.eventId,declaredAt:x.g.live.declaredAt,inputHash:hash(x.g.live.i),startDate:x.start,endDate:x.end,days:x.days,stop:place.get(x.g)??'TRAINING_AFTER'}))};
+  record:all.map(x=>({episode:x.g.identity,eventId:x.g.live.eventId,declaredAt:x.g.live.declaredAt,inputHash:hash(x.g.live.i),startDate:x.start,endDate:x.end,days:x.days,stop:place.get(x.g)??'TRAINING_AFTER',...(!place.has(x.g)&&reentry?{reentryWeek:reentry.startDate}:{})}))};
 }
 /** Nonclinical return: current evidence is the start, prior tolerated dose the ceiling; no universal percentage rollback. */
 function returnAfterPause(ctx){
@@ -1801,7 +1825,7 @@ function returnAfterPause(ctx){
  // it relates to the report before and why (basis), the facts it was given (inputHash), the point its state came from and the start it set,
  // which a later, separate interruption starts from. Its clock (asOf) is its report time.
  const proposal=finishProposal(program,sk,next,{eventId:review.event.id,asOf:ctx.asOf,action:'REESTABLISH',fromWeek,interruption:{days,class:cls,nonclinical:true,screen,startDate:pauseStart,endDate:end,...(startedAt?{startedAt}:{}),episode:ep.episode,relation:ep.relation,supersedes:ep.supersedes,basis:ep.basis,revision:ep.revision,inputHash:hash(i),stateAt:at.point,entry:{run:clone(runState),strength:clone(strengthState)},...(ctx.declaredBy?{declaredBy:clone(ctx.declaredBy)}:{}),...(sep?{separateBreaks:sep.record}:{}),...(ctx.notApplied?.length?{notApplied:ctx.notApplied.map(g=>({episode:g.identity,eventId:g.live.eventId,declaredAt:g.live.declaredAt,inputHash:hash(g.live.i),why:'CORRECTION_OF_AN_APPLIED_BREAK_NOT_READ'}))}:{})},demonstrationUsed:!!demoMinutes,horizonsConsidered:HORIZONS});
- return {action:'REESTABLISH',reason:`${sep?`Separate breaks on record are applied now (${sep.record.map(b=>b.startDate+' to '+b.endDate).join('; ')}), each its own interruption; the stop read runs from ${pauseStart} to ${end}${sep.continuous?' with no training recorded between them':''}${sep.record.some(b=>b.stop==='TRAINING_AFTER')?', and training is recorded after the earlier one':''}: `:ctx.declaredBy?`The break reported on ${localDate(ctx.declaredBy.declaredAt,tz)} is on record and applied now: `:''}${cls.toLowerCase()} nonclinical interruption (${days} days): ${cls==='SHORT'?'resume the last completed doses; no step until execution is observed':cls==='MODERATE'?`re-entry from ${demoMinutes?'the current demonstration':'the reviewed entry dose'}, returning to the prior tolerated dose in ${R.moderateStepsToPrior} conditional steps`:'restart from current capacity; prior doses are only a ceiling'}`,proposal,counterfactuals:[counter('RESUME_PRIOR_PLAN','KEEP',cls==='SHORT','Resuming the planned (higher) week restores dose by elapsed time',{selected:false}),counter('PERCENT_ROLLBACK','ROLLBACK',false,'A universal percentage rollback is not an approved rule'),counter('REESTABLISH','REESTABLISH',true,'Current evidence first, prior tolerance as ceiling',{selected:true}),counter('CLINICAL_ROUTE','CLINICAL',false,'The interruption reason screened nonclinical ('+screen.matched.join(', ')+') and no current clinical flag is present')],horizons:{H0_SESSION:'First sessions back are easy and effort-governed',H1_WEEK:'No quality or heavy loading in the entry step',H2_BLOCK:`Prior dose reached in ${cls==='SHORT'?1:R.moderateStepsToPrior} conditional step(s)`,H3_GOAL_EVENT:eventSoon?'The event is close: the plan aims at completion and cannot catch up missed preparation':'Goal trajectory continues after re-establishment'},missingInputs:[],nextObservation:'Record minutes, effort and next-day function after each return session; any pain, illness or abnormal symptom routes to qualified assessment'};
+ return {action:'REESTABLISH',reason:`${sep?`Separate breaks on record are applied now (${sep.record.map(b=>b.startDate+' to '+b.endDate).join('; ')}), each its own interruption; the stop read runs from ${pauseStart} to ${end}${sep.continuous?(sep.record.some(b=>b.stop==='TRAINING_NOT_REESTABLISHED')?' through the training recorded between them, which completed no whole week of the plan (no re-entry)':' with no training recorded between them'):''}${sep.record.some(b=>b.stop==='TRAINING_AFTER')?', and a whole week of the plan executed in full after the earlier one re-entered the athlete':''}: `:ctx.declaredBy?`The break reported on ${localDate(ctx.declaredBy.declaredAt,tz)} is on record and applied now: `:''}${cls.toLowerCase()} nonclinical interruption (${days} days): ${cls==='SHORT'?'resume the last completed doses; no step until execution is observed':cls==='MODERATE'?`re-entry from ${demoMinutes?'the current demonstration':'the reviewed entry dose'}, returning to the prior tolerated dose in ${R.moderateStepsToPrior} conditional steps`:'restart from current capacity; prior doses are only a ceiling'}`,proposal,counterfactuals:[counter('RESUME_PRIOR_PLAN','KEEP',cls==='SHORT','Resuming the planned (higher) week restores dose by elapsed time',{selected:false}),counter('PERCENT_ROLLBACK','ROLLBACK',false,'A universal percentage rollback is not an approved rule'),counter('REESTABLISH','REESTABLISH',true,'Current evidence first, prior tolerance as ceiling',{selected:true}),counter('CLINICAL_ROUTE','CLINICAL',false,'The interruption reason screened nonclinical ('+screen.matched.join(', ')+') and no current clinical flag is present')],horizons:{H0_SESSION:'First sessions back are easy and effort-governed',H1_WEEK:'No quality or heavy loading in the entry step',H2_BLOCK:`Prior dose reached in ${cls==='SHORT'?1:R.moderateStepsToPrior} conditional step(s)`,H3_GOAL_EVENT:eventSoon?'The event is close: the plan aims at completion and cannot catch up missed preparation':'Goal trajectory continues after re-establishment'},missingInputs:[],nextObservation:'Record minutes, effort and next-day function after each return session; any pain, illness or abnormal symptom routes to qualified assessment'};
 }
 function eventWeekConflict(ctx){
  const {program,sk,w,asOfLocal,review}=ctx,raceWeek=sk.plan.raceWeek,week=program.weeks[w],dates=new Set(Array.isArray(review.changes?.unavailableDates)?review.changes.unavailableDates:[]);

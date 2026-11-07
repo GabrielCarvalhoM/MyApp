@@ -4,6 +4,8 @@
 // asked (corrects, or a separate break) before any return dose. Separate breaks stay separate facts: the return reads the continuous stop when
 // their days touch or overlap or nothing was trained between them, the latest break after recorded training, and asks about unreported training.
 // Clinical first is unchanged; F08 is unchanged.
+// R7-D Phase 3.3 (SSCTR-P32-F01, Founder direction B): the latest break is read alone only after a whole week of the plan executed in full between
+// them; training short of that is a fact of the stop. The two T4 assertions this changes are updated and marked "R7-D Phase 3.3".
 // Synthetic development fixtures (r7/b/fixtures/helpers.mjs): engineering evidence only, never gate, quality or generalization evidence.
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -141,7 +143,7 @@ test('R7-D Phase 3.2 T4: separate breaks whose days touch or overlap stay two in
   assert.ok(runsAhead(t.p,5,from).every(x=>!QUALITY.some(q=>x.includes(':'+q+':'))),label+': no quality in the re-entry');
  }
 });
-test('R7-D Phase 3.2 T4: separate breaks with nothing trained between them (every planned session there reported not done) are one continuous stop; recorded training between them leaves the latest break alone',()=>{
+test('R7-D Phase 3.2 T4: separate breaks with nothing trained between them (every planned session there reported not done) are one continuous stop; recorded training between them leaves the latest break alone only once a whole week of it re-entered the athlete (R7-D Phase 3.3)',()=>{
  for(const done of [false,true]){
   const t=base(),gap=gapSessions(t.p);
   assert.ok(gap.length,'sessions planned between the breaks');
@@ -154,12 +156,14 @@ test('R7-D Phase 3.2 T4: separate breaks with nothing trained between them (ever
    assert.deepEqual([d.startDate,d.endDate,d.days,d.class],[A().startDate,D().endDate,21,'MODERATE']);
    assert.deepEqual(d.separateBreaks.map(x=>x.stop),['NO_TRAINING_BETWEEN','LATEST']);
   }else{
-   assert.deepEqual([d.startDate,d.endDate,d.days,d.class],[D().startDate,D().endDate,4,'SHORT'],'training is recorded after the holiday: the trip alone');
-   assert.deepEqual(d.separateBreaks.map(x=>x.stop),['TRAINING_AFTER','LATEST'],'the holiday stays a fact, before the training');
+   // R7-D Phase 3.3: the two sessions between the breaks complete no week of the plan, so they re-enter nothing and the stop runs through the
+   // holiday. The trip alone needs a whole week executed in full between them (r7d-phase33.test.mjs T3).
+   assert.deepEqual([d.startDate,d.endDate,d.days,d.class],[A().startDate,D().endDate,21,'MODERATE'],'training between that completes no week: the whole stop');
+   assert.deepEqual(d.separateBreaks.map(x=>x.stop),['TRAINING_NOT_REESTABLISHED','LATEST'],'the holiday stays a fact, the training a fact of the stop');
   }
  }
 });
-test('R7-D Phase 3.2 T4: separate breaks with unreported training between them are asked about those sessions; the answer decides, never zero and never credit',()=>{
+test('R7-D Phase 3.2 T4: separate breaks with unreported training between them are asked about those sessions; the answer decides, never zero and never credit (R7-D Phase 3.3: here it decides the record, not the class)',()=>{
  const t=base(),gap=gapSessions(t.p);
  step(t,4,{...W4D0,kind:'SYSTEMIC_FATIGUE',interruption:A(),event:{id:'p32-A',kind:'SYSTEMIC_FATIGUE'}});
  step(t,5,{...W5D0,kind:'LOCAL_FATIGUE',interruption:D(),event:{id:'p32-B',kind:'LOCAL_FATIGUE'}});
@@ -169,7 +173,11 @@ test('R7-D Phase 3.2 T4: separate breaks with unreported training between them a
  for(const done of [false,true]){
   const c=copy(t),r=step(c,5,{...W5D2,observations:gap.map(s=>done?obs(c.p,s):notDone(c.p,s))});
   assert.equal(r.action,'REESTABLISH',`done ${done}: ${r.reason}`);
-  assert.equal(returns(c.p).at(-1).interruption.class,done?'SHORT':'MODERATE');
+  // R7-D Phase 3.3: answered done, the two sessions complete no week of the plan and re-enter nothing, so the class is MODERATE either way; the
+  // answer decides what the record says of them. Inside a whole week between the breaks it decides the class (r7d-phase33.test.mjs T4).
+  const d=returns(c.p).at(-1).interruption;
+  assert.equal(d.class,'MODERATE');
+  assert.deepEqual(d.separateBreaks.map(x=>x.stop),[done?'TRAINING_NOT_REESTABLISHED':'NO_TRAINING_BETWEEN','LATEST']);
  }
 });
 test('R7-D Phase 3.2 T4: two separate breaks followed by a return report are applied together once, in either order of declaration',()=>{

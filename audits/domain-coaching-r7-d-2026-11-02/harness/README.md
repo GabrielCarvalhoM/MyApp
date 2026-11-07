@@ -148,3 +148,30 @@ Validation 4, re-run:
 - 13/13 sensitivity rows, with F02 by P18 now on DEV-22/23/24/26;
 - coverage: RESTATE 14 units (1 excluded under B4: DEV-26@w7d1), INSERT_NEWER_BREAK 5, P17 44, P18 9;
 - 42/42 witnesses.
+
+## R7D-HARNESS-5 (R7-D Phase 3.3, SSCTR-P32-F01)
+
+R7D-HARNESS-4 is commit `9042ed0`. R7D-HARNESS-5 changes one check, pre-registered as `R7D-PREREG-5` (`../PREREGISTRATION_R7D_5.md`):
+
+| Change | Where |
+|---|---|
+| **P18(a), re-entry week:** a separate break listed `TRAINING_AFTER` is accounted for only when a whole week of the plan between its last day and the stop's first day was executed: every live session of that week falls between them and has an executed report (completed, not conflicted, not superseded). One run, an aborted run, or sessions in no such week account for nothing: the stop must cover the break (`OLDER_BREAK_DROPPED` otherwise). Under R7D-HARNESS-4 any executed report between them was enough, so nothing detected F01 | `lib/properties.mjs` (`executedWeekBetween`) |
+| The runtime's own rule is stricter (every gate ADVANCE or EARNED, no adverse response). This check is the part a client can read from the plan and the record, so it never blocks a runtime that applies the stricter rule | `lib/properties.mjs` |
+| Default freeze record `CoachingCore/r7/d/RUNTIME_FREEZE_R7D_4.json` | `r7d-harness.mjs` |
+
+Validation 5: `validation/DEV_CASES_R7D_5.json` (from `build-dev-cases.mjs`: DEV-27 to DEV-31 added; DEV-01 to DEV-26 byte-identical to `DEV_CASES_R7D_4.json`; contaminated by construction) and `validation/HARNESS_VALIDATION_R7D_5.json`:
+```
+node validation/run-validation.mjs --dev validation/DEV_CASES_R7D_5.json --out <file> --candidate <worktree root> --f4 $D/rt-f4 --f3 $D/rt-f3 --b2 $D/rt-b2 --prer7a $D/rt-prer7a --d1 $D/rt-d1 --d2 $D/rt-d2 --d3 $D/rt-d3
+```
+`$D/rt-d3` is `git archive 9042ed0 CoachingCore` plus the R6 and B0 records (and the three R3/R4/R5 records for the whole suite), with `CoachingCore/node_modules` copied in. Rebuild every runtime into a new, empty directory; nothing needs deleting.
+
+The new cases:
+- DEV-27, DEV-28, DEV-29: a kept holiday, then one easy run, one 5-minute aborted run, or (after 30 days) one run, then a separate four-day trip;
+- DEV-30: a whole week executed in full between the holiday and the trip (the no-false-block control for a real re-entry);
+- DEV-31: the same week with its Friday strength session missed.
+
+Results:
+- no false block on the candidate;
+- 14/14 sensitivity rows. The new row, SSCTR-P32-F01, is detected by P18 on DEV-27, DEV-28, DEV-29 and DEV-31 on R7D-FREEZE-3, and is clean on the candidate. DEV-30 passes on both runtimes;
+- coverage: P18 24 units, P17 74, RESTATE 24, INSERT_NEWER_BREAK 10;
+- 43/43 witnesses (W-P18c added: the candidate's DEV-27 return rewritten to the trip alone with the holiday `TRAINING_AFTER`).

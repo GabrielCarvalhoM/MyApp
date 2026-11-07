@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-// R7-D Fresh Generalization harness (R7D-HARNESS-4, Phase 3.2: P18 and INSERT_NEWER_BREAK; R7D-HARNESS-3 is commit 747eab2 (Phase 3.1: P17 and
+// R7-D Fresh Generalization harness (R7D-HARNESS-5, Phase 3.3: P18(a) accepts training after a break only as a whole executed week of the plan;
+// R7D-HARNESS-4 is commit 9042ed0 (Phase 3.2: P18 and INSERT_NEWER_BREAK); R7D-HARNESS-3 is commit 747eab2 (Phase 3.1: P17 and
 // RESTATE_DECLARED_BREAK); R7D-HARNESS-2 is commit b77480f, R7D-HARNESS-1 is
 // commit 8eec795, kept for the Phase 2 diagnostic record). Lives outside CoachingCore and has no *.test.* file, so `node --test CoachingCore` never
 // discovers it and the 884 frozen tests are untouched. It reads the runtime, the freeze record, the policy and the catalog; it never writes
@@ -17,12 +18,12 @@ import {evaluateExpectations} from './lib/expectations.mjs';
 import {domainPacket,summaryMarkdown} from './lib/report.mjs';
 import {checkCorpus} from '../author/check-corpus.mjs';
 
-export const HARNESS_VERSION='R7D-HARNESS-4';
-// The runtime the final gate evaluates: the R7-D Phase 3.2 freeze (R7D-FREEZE-3; R7D-HARNESS-3 named R7D-FREEZE-2, R7D-HARNESS-2 R7D-FREEZE-1). Before
-// it exists, a development
+export const HARNESS_VERSION='R7D-HARNESS-5';
+// The runtime the final gate evaluates: the R7-D Phase 3.3 freeze (R7D-FREEZE-4; R7D-HARNESS-4 named R7D-FREEZE-3, R7D-HARNESS-3 R7D-FREEZE-2,
+// R7D-HARNESS-2 R7D-FREEZE-1). Before it exists, a development
 // run names a record and passes --allow-runtime-diff; its report then lists the differing files and the evaluated bytes (runtimeSource), never a
 // freeze claim.
-export const DEFAULT_FREEZE_RECORD='CoachingCore/r7/d/RUNTIME_FREEZE_R7D_3.json';
+export const DEFAULT_FREEZE_RECORD='CoachingCore/r7/d/RUNTIME_FREEZE_R7D_4.json';
 const HERE=import.meta.dirname,REPO=path.resolve(HERE,'../../..');
 const arg=(k,d=null)=>{const i=process.argv.indexOf(k);return i>=0&&process.argv[i+1]&&!process.argv[i+1].startsWith('--')?process.argv[i+1]:d;};
 const flag=k=>process.argv.includes(k);
