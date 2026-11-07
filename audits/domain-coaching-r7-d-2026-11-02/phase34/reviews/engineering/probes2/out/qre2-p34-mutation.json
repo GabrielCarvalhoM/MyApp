@@ -1,0 +1,313 @@
+{
+ "mutation": "QRE2-P34-MUTATION-1",
+ "from": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/664cd42f-94db-4235-9512-4d8817799bb1/scratchpad/qre2-p34-20261107-121435-653/46934a0",
+ "work": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/664cd42f-94db-4235-9512-4d8817799bb1/scratchpad/qre2-p34-20261107-121435-653/mut-123131",
+ "tests": [
+  "test/r7d-phase34.test.mjs",
+  "test/r7d-phase33.test.mjs",
+  "test/r7d-phase32.test.mjs",
+  "test/r7d-phase31.test.mjs"
+ ],
+ "baseline": {
+  "pass": 85,
+  "fail": 0,
+  "failed": []
+ },
+ "mutants": [
+  {
+   "id": "CQ2-M18",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "defect": "QRE Q02: an adverse or conflicting race touch or race still re-enters running",
+   "applied": true,
+   "pass": 84,
+   "fail": 1,
+   "failed": [
+    "R7-D Phase 3.4 T27 (QRE CQ-2): a race touch or race with an adverse recovery, or a race observed only after the later break began, never re-enters running; strength still re-enters by its own week"
+   ],
+   "killed": true,
+   "witness": "T27",
+   "witnessFailed": true
+  },
+  {
+   "id": "CQ2-M19",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "defect": "QRE Q03: a race observed after the later stop began re-enters running",
+   "applied": true,
+   "pass": 84,
+   "fail": 1,
+   "failed": [
+    "R7-D Phase 3.4 T27 (QRE CQ-2): a race touch or race with an adverse recovery, or a race observed only after the later break began, never re-enters running; strength still re-enters by its own week"
+   ],
+   "killed": true,
+   "witness": "T27",
+   "witnessFailed": true
+  },
+  {
+   "id": "CQ2-M20",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "defect": "QRE Q09: a missing declaration is dropped silently",
+   "applied": true,
+   "pass": 84,
+   "fail": 1,
+   "failed": [
+    "R7-D Phase 3.4 T28 (QRE CQ-2): a named correction of the latest break sent with a record that lacks an earlier break its return read is asked, never applied with that break dropped"
+   ],
+   "killed": true,
+   "witness": "T28",
+   "witnessFailed": true
+  },
+  {
+   "id": "CQ2-M21",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "defect": "QRE Q12: a session on the later break's first day counts without a start time",
+   "applied": true,
+   "pass": 84,
+   "fail": 1,
+   "failed": [
+    "R7-D Phase 3.4 T29 (QRE CQ-2, characterization): a later break that starts on the last day of a week, with no stated start time, leaves that week out: no sport re-enters by it and the stop runs through the earlier break"
+   ],
+   "killed": true,
+   "witness": "T29",
+   "witnessFailed": true
+  },
+  {
+   "id": "CQ2-M22",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "defect": "QRE Q10: stopInOwnReturn lost",
+   "applied": true,
+   "pass": 84,
+   "fail": 1,
+   "failed": [
+    "R7-D Phase 3.4 T30 (QRE CQ-2): three breaks with an inner own return: the record places the first break inside the second break's own return (WITHIN_OWN_RETURN, ownReturnOf, stopInOwnReturn)"
+   ],
+   "killed": true,
+   "witness": "T30",
+   "witnessFailed": true
+  },
+  {
+   "id": "CQ2-M23",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "defect": "QRE-P34-01 reverted",
+   "applied": true,
+   "pass": 84,
+   "fail": 1,
+   "failed": [
+    "R7-D Phase 3.4 T26 (QRE-P34-01): a named correction of the latest break that states its length and last day but not its first day, or only its length, is read as the same correction with its first day, and no later review holds"
+   ],
+   "killed": true,
+   "witness": "T26",
+   "witnessFailed": true
+  },
+  {
+   "id": "Q01",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "defect": "the applied-return guard removed",
+   "applied": true,
+   "pass": 84,
+   "fail": 1,
+   "failed": [
+    "R7-D Phase 3.4 T20 (characterization): an applied return between the breaks blocks any own return across it (the existing question stands); a consolidation week executed in full re-enters the athlete (O-01); a correction naming the earlier break a return consumed is asked (O-02)"
+   ],
+   "killed": true
+  },
+  {
+   "id": "Q04",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "defect": "a conflicted race report re-enters running (the request: not reachable, asked as unreported first)",
+   "applied": true,
+   "pass": 85,
+   "fail": 0,
+   "failed": [],
+   "killed": false
+  },
+  {
+   "id": "Q11",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "defect": "the OWN_RETURN break's days not declared to the composition as a known stop",
+   "applied": true,
+   "pass": 85,
+   "fail": 0,
+   "failed": [],
+   "killed": false
+  },
+  {
+   "id": "Q13",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "defect": "the same-day strength question ignores the re-entered sport's history",
+   "applied": true,
+   "pass": 84,
+   "fail": 1,
+   "failed": [
+    "R7-D Phase 3.4 T21: a named correction of the latest break gives the return a fresh report of the corrected break gives, also when it makes the breaks touch or overlap or moves a whole week out; a week it moves in between is asked about first"
+   ],
+   "killed": true
+  },
+  {
+   "id": "Q14",
+   "file": "CoachingCore/src/r6-composition.mjs",
+   "defect": "ceiling: a same-day session already past at the return clock is credited",
+   "applied": true,
+   "pass": 85,
+   "fail": 0,
+   "failed": [],
+   "killed": false
+  },
+  {
+   "id": "Q15",
+   "file": "CoachingCore/src/r6-composition.mjs",
+   "defect": "ceiling fix only for the return's own composition",
+   "applied": true,
+   "pass": 85,
+   "fail": 0,
+   "failed": [],
+   "killed": false
+  },
+  {
+   "id": "N01",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "defect": "F03: a week with only optional runs (no gated run, no race key) re-enters running",
+   "applied": true,
+   "pass": 85,
+   "fail": 0,
+   "failed": [],
+   "killed": false
+  },
+  {
+   "id": "N02",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "defect": "F03: the reducer's gated completion is no longer required when the week holds a race key",
+   "applied": true,
+   "pass": 68,
+   "fail": 17,
+   "failed": [
+    "R7-D Phase 3.3 T3: the late form: a week executed in full and reviewed before the earlier break was declared re-enters the athlete; one session in a reviewed week does not",
+    "R7-D Phase 3.3 T4: a week between the breaks with a session missed or partial re-enters nothing in the sport it was missed in (R7-D Phase 3.4: the other sport's whole week makes the earlier break its own return)",
+    "R7-D Phase 3.3 T4: unreported sessions in a week between the breaks are asked first; the answer decides whether that week re-entered the athlete",
+    "R7-D Phase 3.3 T4: a conflicted report in a week between the breaks is asked as unreported; corrected, the week re-enters the athlete only when every session was executed",
+    "R7-D Phase 3.3 T5: a week executed in full but with an adverse response (recovery adverse or next-day function impaired) re-enters nothing in the sport it was reported in (R7-D Phase 3.4: strength's whole week makes the earlier break its own return)",
+    "R7-D Phase 3.4 T2: strength executed in full and an easy run missed each week: strength resumes its executed doses, running continues from the holiday's own return (no step it did not earn)",
+    "R7-D Phase 3.4 T4: isolated sessions in no whole week, in either sport, still run the stop through the earlier break, exactly as R7D-FREEZE-4",
+    "R7-D Phase 3.4 T4 (disclosed residual): weeks with both sports partial (an easy run and a strength session missed each week) complete no week in any sport: the stop still runs through the earlier break",
+    "R7-D Phase 3.4 T5: an adverse response holds the sport it was reported in: the long run with recovery adverse or next-day function impaired, strength complete: strength resumes, running continues from the holiday's own return",
+    "R7-D Phase 3.4 T15: a week whose last session falls on the first day of the later break counts when that session was executed before the stated start, never after it",
+    "R7-D Phase 3.4 T16: a return reported mid-week plans the weeks after it from the runs completed, never from the elapsed runs of that week that were not done",
+    "R7-D Phase 3.4 T17 (R1, R1b): a running lapse with strength complete: strength resumes its executed doses; running continues the holiday's own return, exactly as the episode rule"
+   ],
+   "killed": true
+  },
+  {
+   "id": "N03",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "defect": "F04: asked even when strength re-entered by its own week",
+   "applied": true,
+   "pass": 84,
+   "fail": 1,
+   "failed": [
+    "R7-D Phase 3.4 T25 (SSCTR-P34R-F04): a strength session on the earlier break's first day with no stated start time is asked about when strength reads from that break's own return (rule 0.8); with the start stated, or with strength re-entered by its own week, nothing is asked"
+   ],
+   "killed": true
+  },
+  {
+   "id": "N04",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "defect": "F04: the question names the latest break, not the earlier one",
+   "applied": true,
+   "pass": 84,
+   "fail": 1,
+   "failed": [
+    "R7-D Phase 3.4 T25 (SSCTR-P34R-F04): a strength session on the earlier break's first day with no stated start time is asked about when strength reads from that break's own return (rule 0.8); with the start stated, or with strength re-entered by its own week, nothing is asked"
+   ],
+   "killed": true
+  },
+  {
+   "id": "N05",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "defect": "F04: the question names the own return's head, not the break that starts its stop (R03 shape)",
+   "applied": true,
+   "pass": 85,
+   "fail": 0,
+   "failed": [],
+   "killed": false
+  },
+  {
+   "id": "N06",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "defect": "F04: the condition reads the wrong sport",
+   "applied": true,
+   "pass": 84,
+   "fail": 1,
+   "failed": [
+    "R7-D Phase 3.4 T25 (SSCTR-P34R-F04): a strength session on the earlier break's first day with no stated start time is asked about when strength reads from that break's own return (rule 0.8); with the start stated, or with strength re-entered by its own week, nothing is asked"
+   ],
+   "killed": true
+  },
+  {
+   "id": "N07",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "defect": "F01: the guard excepts the earlier break, not the break being read",
+   "applied": true,
+   "pass": 84,
+   "fail": 1,
+   "failed": [
+    "R7-D Phase 3.4 T22 (SSCTR-P34R-F01): a named correction that moves the trip's start one day later re-reads the holiday as its own return, exactly as a fresh report of the corrected trip; the guard counts only another episode's return"
+   ],
+   "killed": true
+  },
+  {
+   "id": "N08",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "defect": "QRE-P34-01: the first day one day early",
+   "applied": true,
+   "pass": 84,
+   "fail": 1,
+   "failed": [
+    "R7-D Phase 3.4 T26 (QRE-P34-01): a named correction of the latest break that states its length and last day but not its first day, or only its length, is read as the same correction with its first day, and no later review holds"
+   ],
+   "killed": true
+  },
+  {
+   "id": "N09",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "defect": "F02: a partial race touch still counts",
+   "applied": true,
+   "pass": 84,
+   "fail": 1,
+   "failed": [
+    "R7-D Phase 3.4 T23 (SSCTR-P34R-F02): a race touch reported completed at half its minutes is partial by the existing completion rule: it never re-enters running, in a hybrid or a run-only plan"
+   ],
+   "killed": true
+  },
+  {
+   "id": "N10",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "defect": "F02: a partial race still counts (the race's minutes are exempt: possibly equivalent)",
+   "applied": true,
+   "pass": 85,
+   "fail": 0,
+   "failed": [],
+   "killed": false
+  }
+ ],
+ "summary": {
+  "applied": 22,
+  "killed": 15,
+  "survived": [
+   "Q04",
+   "Q11",
+   "Q14",
+   "Q15",
+   "N01",
+   "N05",
+   "N10"
+  ],
+  "notApplied": [],
+  "cq2WitnessFailed": [
+   "CQ2-M18:true",
+   "CQ2-M19:true",
+   "CQ2-M20:true",
+   "CQ2-M21:true",
+   "CQ2-M22:true",
+   "CQ2-M23:true"
+  ]
+ }
+}
