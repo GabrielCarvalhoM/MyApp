@@ -175,3 +175,8 @@ Results:
 - 14/14 sensitivity rows. The new row, SSCTR-P32-F01, is detected by P18 on DEV-27, DEV-28, DEV-29 and DEV-31 on R7D-FREEZE-3, and is clean on the candidate. DEV-30 passes on both runtimes;
 - coverage: P18 24 units, P17 74, RESTATE 24, INSERT_NEWER_BREAK 10;
 - 43/43 witnesses (W-P18c added: the candidate's DEV-27 return rewritten to the trip alone with the holiday `TRAINING_AFTER`).
+
+**After the Phase 3.3 checks** (instrument text only; `lib/`, `r7d-harness.mjs` and the scripts unchanged; R7D-PREREG-5 addendum Δ7–Δ13):
+- **Withdrawn claim (QE-R7D-P33-01, open, binding before any final holdout, author or seed):** "this check never blocks a runtime that applies the stricter rule" (above, and in the `lib/properties.mjs` comment) does not hold for sessions the runtime's weekly gates do not read. Those are optional WALK, RECOVERY_EASY and SHAKEOUT, and race-week RACE_TOUCH and RACE. For them the runtime's rule is not stricter: a re-entry week with optional walks not done is `TRAINING_AFTER` on the runtime, and P18(a) reports `OLDER_BREAK_DROPPED` (the check's probes QH-1 and QH-2).
+- **Not reached by validation 5:** no development case has optional or race-week sessions in a re-entry week.
+- **Resolution, before Phase 4:** the SSCTR judges which sessions a re-entry week needs, then Chief/Founder chooses an instrument revision (P18(a) restricted to the sessions that count, with a QH-1-style development case) or a runtime change in a new authorized mission.
