@@ -1,0 +1,360 @@
+{
+ "runtime": "CANDIDATE-1978cc4",
+ "cases": {
+  "R1_runLapseStrengthComplete": {
+   "status": "MODIFY",
+   "action": "REESTABLISH",
+   "validity": "VALID",
+   "question": null,
+   "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-21 to 2026-12-24), each its own interruption; the stop read runs from 2026-12-21 to 2026-12-24; the break from 2026-11-16 to 2026-11-29 is read as its own return (",
+   "ret": "SHORT 4d 2026-12-21..2026-12-24",
+   "runMode": "RETURN",
+   "separateBreaks": [
+    "r1-A 2026-11-16..2026-11-29 OWN_RETURN",
+    "r1-D 2026-12-21..2026-12-24 LATEST"
+   ],
+   "runsAhead": "LONG:15 EASY:20 EASY:20 LONG:20",
+   "qualityAhead": false,
+   "maxRunAhead": 20,
+   "strengthAhead": "back-squat:3x10@85 db-bench-press:3x8@24 db-row:3x8@24",
+   "returnsApplied": 1
+  },
+  "R1k_episodeRule": {
+   "aReturn": "REESTABLISH",
+   "result": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "reason": "short nonclinical interruption (4 days): resume the last completed doses; no step until execution is observed",
+    "ret": "SHORT 4d 2026-12-21..2026-12-24",
+    "runMode": "RETURN",
+    "separateBreaks": null,
+    "runsAhead": "LONG:15 EASY:20 EASY:20 LONG:20",
+    "qualityAhead": false,
+    "maxRunAhead": 20,
+    "strengthAhead": "back-squat:3x7@20 db-bench-press:2x12@20 db-row:2x12@20",
+    "returnsApplied": 2
+   }
+  },
+  "R1b_runLapseTwoWeeks": {
+   "status": "MODIFY",
+   "action": "REESTABLISH",
+   "validity": "VALID",
+   "question": null,
+   "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-14 to 2026-12-17), each its own interruption; the stop read runs from 2026-12-14 to 2026-12-17; the break from 2026-11-16 to 2026-11-29 is read as its own return (",
+   "ret": "SHORT 4d 2026-12-14..2026-12-17",
+   "runMode": "RETURN",
+   "separateBreaks": [
+    "r1b-A 2026-11-16..2026-11-29 OWN_RETURN",
+    "r1b-D 2026-12-14..2026-12-17 LATEST"
+   ],
+   "runsAhead": "LONG:20 EASY:25 EASY:25 LONG:25",
+   "qualityAhead": false,
+   "maxRunAhead": 25,
+   "strengthAhead": "back-squat:2x8@85 db-bench-press:1x8@24 db-row:1x8@24",
+   "returnsApplied": 1
+  },
+  "R2_strengthLapseRunsComplete": {
+   "status": "MODIFY",
+   "action": "REESTABLISH",
+   "validity": "VALID",
+   "question": null,
+   "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-14 to 2026-12-17), each its own interruption; the stop read runs from 2026-12-14 to 2026-12-17; the break from 2026-11-16 to 2026-11-29 is read as its own return (",
+   "ret": "SHORT 4d 2026-12-14..2026-12-17",
+   "runMode": "EASY",
+   "separateBreaks": [
+    "r2-A 2026-11-16..2026-11-29 OWN_RETURN",
+    "r2-D 2026-12-14..2026-12-17 LATEST"
+   ],
+   "runsAhead": "LONG:75 EASY:50 EASY:41 LONG:65",
+   "qualityAhead": false,
+   "maxRunAhead": 75,
+   "strengthAhead": "back-squat:1x7@ESTABLISH db-bench-press:1x12@FROM_LOG db-row:1x12@FROM_LOG",
+   "returnsApplied": 1
+  },
+  "R2k_episodeRule": {
+   "aReturn": "REESTABLISH",
+   "result": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "reason": "short nonclinical interruption (4 days): resume the last completed doses; no step until execution is observed",
+    "ret": "SHORT 4d 2026-12-14..2026-12-17",
+    "runMode": "RETURN",
+    "separateBreaks": null,
+    "runsAhead": "LONG:45 EASY:45 EASY:34 LONG:50",
+    "qualityAhead": false,
+    "maxRunAhead": 50,
+    "strengthAhead": "back-squat:1x7@ESTABLISH db-bench-press:1x12@FROM_LOG db-row:1x12@FROM_LOG",
+    "returnsApplied": 2
+   }
+  },
+  "L1_consolidationWeekReentry": {
+   "executedBefore": "D2:EASY:50 D2:THRESHOLD:34 D2:LONG:65 C3:EASY:50 C3:THRESHOLD:34 C3:LONG:60 D4:EASY:50 D4:THRESHOLD:41 D4:LONG:70",
+   "week7AsPlanned": "CONSOLIDATION:EASY:55 CONSOLIDATION:THRESHOLD:43 CONSOLIDATION:LONG:65",
+   "result": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "reason": "Separate breaks on record are applied now (2026-12-07 to 2026-12-20; 2026-12-28 to 2026-12-31), each its own interruption; the stop read runs from 2026-12-28 to 2026-12-31, and a whole week of the plan executed in full after the earlier one",
+    "ret": "SHORT 4d 2026-12-28..2026-12-31",
+    "runMode": "EASY",
+    "separateBreaks": [
+     "l1-A 2026-12-07..2026-12-20 TRAINING_AFTER reentry 2026-12-21",
+     "l1-D 2026-12-28..2026-12-31 LATEST"
+    ],
+    "runsAhead": "LONG:70 EASY:50 EASY:48 LONG:75",
+    "qualityAhead": false,
+    "maxRunAhead": 75,
+    "strengthAhead": "back-squat:3x8@85 db-bench-press:3x8@24 db-row:3x8@24",
+    "returnsApplied": 1
+   }
+  },
+  "L1k_episodeRule": {
+   "aReturn": "REESTABLISH",
+   "result": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "reason": "short nonclinical interruption (4 days): resume the last completed doses; no step until execution is observed",
+    "ret": "SHORT 4d 2026-12-28..2026-12-31",
+    "runMode": "RETURN",
+    "separateBreaks": null,
+    "runsAhead": "LONG:20 EASY:35 EASY:35 LONG:45",
+    "qualityAhead": false,
+    "maxRunAhead": 45,
+    "strengthAhead": "back-squat:3x11@20 db-bench-press:3x10@20 db-row:3x10@20",
+    "returnsApplied": 2
+   }
+  },
+  "C1_F1ThenNamedCorrection": {
+   "first": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-03 to 2026-12-06), each its own interruption; the stop read runs from 2026-11-16 to 2026-12-06 through the training recorded between them, which completed no whole",
+    "ret": "MODERATE 21d 2026-11-16..2026-12-06",
+    "runMode": "RETURN",
+    "separateBreaks": [
+     "c1-A 2026-11-16..2026-11-29 TRAINING_NOT_REESTABLISHED",
+     "c1-D 2026-12-03..2026-12-06 LATEST"
+    ],
+    "runsAhead": "EASY:15 LONG:20 EASY:30 EASY:30 LONG:45",
+    "qualityAhead": false,
+    "maxRunAhead": 45,
+    "strengthAhead": "db-rdl:1x10@ESTABLISH db-row:1x12@ESTABLISH db-bench-press:1x12@ESTABLISH",
+    "returnsApplied": 1
+   },
+   "afterCorrection": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-03 to 2026-12-07), each its own interruption; the stop read runs from 2026-11-16 to 2026-12-07 through the training recorded between them, which completed no whole",
+    "ret": "MODERATE 22d 2026-11-16..2026-12-07",
+    "runMode": "RETURN",
+    "separateBreaks": [
+     "c1-A 2026-11-16..2026-11-29 TRAINING_NOT_REESTABLISHED",
+     "c1-D 2026-12-03..2026-12-07 LATEST"
+    ],
+    "runsAhead": "EASY:15 LONG:20 EASY:30 EASY:30 LONG:45",
+    "qualityAhead": false,
+    "maxRunAhead": 45,
+    "strengthAhead": "db-rdl:1x10@ESTABLISH db-row:1x12@ESTABLISH db-bench-press:1x12@ESTABLISH",
+    "returnsApplied": 2
+   }
+  },
+  "C2_V1ThenNamedCorrection": {
+   "first": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-14 to 2026-12-17), each its own interruption; the stop read runs from 2026-12-14 to 2026-12-17; the break from 2026-11-16 to 2026-11-29 is read as its own return (",
+    "ret": "SHORT 4d 2026-12-14..2026-12-17",
+    "runMode": "EASY",
+    "separateBreaks": [
+     "c2-A 2026-11-16..2026-11-29 OWN_RETURN",
+     "c2-D 2026-12-14..2026-12-17 LATEST"
+    ],
+    "runsAhead": "LONG:75 EASY:50 EASY:41 LONG:65",
+    "qualityAhead": false,
+    "maxRunAhead": 75,
+    "strengthAhead": "back-squat:1x7@ESTABLISH db-bench-press:1x12@FROM_LOG db-row:1x12@FROM_LOG",
+    "returnsApplied": 1
+   },
+   "afterCorrection": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-14 to 2026-12-18), each its own interruption; the stop read runs from 2026-12-14 to 2026-12-18; the break from 2026-11-16 to 2026-11-29 is read as its own return (",
+    "ret": "SHORT 5d 2026-12-14..2026-12-18",
+    "runMode": "EASY",
+    "separateBreaks": [
+     "c2-A 2026-11-16..2026-11-29 OWN_RETURN",
+     "c2-D 2026-12-14..2026-12-18 LATEST"
+    ],
+    "runsAhead": "EASY:50 EASY:41 LONG:65",
+    "qualityAhead": false,
+    "maxRunAhead": 65,
+    "strengthAhead": "back-squat:1x7@ESTABLISH db-bench-press:1x12@ESTABLISH db-row:1x12@ESTABLISH",
+    "returnsApplied": 2
+   }
+  },
+  "C3_namedCorrectionOfEarlierBreak": {
+   "first": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-03 to 2026-12-06), each its own interruption; the stop read runs from 2026-11-16 to 2026-12-06 through the training recorded between them, which completed no whole",
+    "ret": "MODERATE 21d 2026-11-16..2026-12-06",
+    "runMode": "RETURN",
+    "separateBreaks": [
+     "c3-A 2026-11-16..2026-11-29 TRAINING_NOT_REESTABLISHED",
+     "c3-D 2026-12-03..2026-12-06 LATEST"
+    ],
+    "runsAhead": "EASY:15 LONG:20 EASY:30 EASY:30 LONG:45",
+    "qualityAhead": false,
+    "maxRunAhead": 45,
+    "strengthAhead": "db-rdl:1x10@ESTABLISH db-row:1x12@ESTABLISH db-bench-press:1x12@ESTABLISH",
+    "returnsApplied": 1
+   },
+   "afterCorrection": {
+    "status": "ASK",
+    "action": "ASK",
+    "validity": "REQUIRES_RECONCILIATION",
+    "question": null,
+    "reason": "This interruption shares days with the one first reported on 2026-12-08 (2026-11-16 to 2026-12-06), or follows it with no return or training between, and is not marked as its correction: say whether it corrects that interruption (its episod",
+    "runsAhead": "EASY:15 LONG:20 EASY:30 EASY:30 LONG:45",
+    "qualityAhead": false,
+    "maxRunAhead": 45,
+    "strengthAhead": "db-rdl:1x10@ESTABLISH db-row:1x12@ESTABLISH db-bench-press:1x12@ESTABLISH",
+    "returnsApplied": 1
+   }
+  },
+  "S1_sameDayLongRunBeforeStart": {
+   "status": "MODIFY",
+   "action": "REESTABLISH",
+   "validity": "VALID",
+   "question": null,
+   "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-06 to 2026-12-09), each its own interruption; the stop read runs from 2026-12-06 to 2026-12-09, and a whole week of the plan executed in full after the earlier one",
+   "ret": "SHORT 4d 2026-12-06..2026-12-09",
+   "runMode": "EASY",
+   "separateBreaks": [
+    "s1-A 2026-11-16..2026-11-29 TRAINING_AFTER reentry 2026-11-30",
+    "s1-D 2026-12-06..2026-12-09 LATEST"
+   ],
+   "runsAhead": "LONG:70 EASY:50 EASY:34 LONG:70",
+   "qualityAhead": false,
+   "maxRunAhead": 70,
+   "strengthAhead": "back-squat:3x9@82.5 db-bench-press:2x10@22 db-row:2x10@22",
+   "returnsApplied": 1
+  },
+  "S2_sameDayLongRunAfterStart": {
+   "status": "MODIFY",
+   "action": "REESTABLISH",
+   "validity": "VALID",
+   "question": null,
+   "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-06 to 2026-12-09), each its own interruption; the stop read runs from 2026-12-06 to 2026-12-09; the break from 2026-11-16 to 2026-11-29 is read as its own return (",
+   "ret": "SHORT 4d 2026-12-06..2026-12-09",
+   "runMode": "RETURN",
+   "separateBreaks": [
+    "s2-A 2026-11-16..2026-11-29 OWN_RETURN",
+    "s2-D 2026-12-06..2026-12-09 LATEST"
+   ],
+   "runsAhead": "LONG:20 EASY:30 EASY:30 LONG:45",
+   "qualityAhead": false,
+   "maxRunAhead": 45,
+   "strengthAhead": "back-squat:3x9@82.5 db-bench-press:2x10@22 db-row:2x10@22",
+   "returnsApplied": 1
+  },
+  "W0_raceWeekAsPlanned": {
+   "phase": "RACE_WEEK",
+   "sessions": [
+    "2026-12-21 STRENGTH",
+    "2026-12-22 EASY:25",
+    "2026-12-24 RACE_TOUCH:25(key)",
+    "2026-12-27 RACE:75(key)"
+   ]
+  },
+  "W1_raceWeekInFull": {
+   "status": "MODIFY",
+   "action": "REESTABLISH",
+   "validity": "VALID",
+   "question": null,
+   "reason": "Separate breaks on record are applied now (2026-12-07 to 2026-12-20; 2026-12-28 to 2026-12-31), each its own interruption; the stop read runs from 2026-12-28 to 2026-12-31, and a whole week of the plan executed in full after the earlier one",
+   "ret": "SHORT 4d 2026-12-28..2026-12-31",
+   "runMode": "EASY",
+   "separateBreaks": [
+    "w1-A 2026-12-07..2026-12-20 TRAINING_AFTER reentry 2026-12-21",
+    "w1-D 2026-12-28..2026-12-31 LATEST"
+   ],
+   "runsAhead": "RECOVERY_EASY:30 EASY:35 EASY:34 LONG:40",
+   "qualityAhead": false,
+   "maxRunAhead": 40,
+   "strengthAhead": "back-squat:3x11@82.5 db-bench-press:3x10@22 db-row:3x10@22",
+   "returnsApplied": 1
+  },
+  "W2_raceTouchMissed": {
+   "status": "MODIFY",
+   "action": "REESTABLISH",
+   "validity": "VALID",
+   "question": null,
+   "reason": "Separate breaks on record are applied now (2026-12-07 to 2026-12-20; 2026-12-28 to 2026-12-31), each its own interruption; the stop read runs from 2026-12-28 to 2026-12-31; the break from 2026-12-07 to 2026-12-20 is read as its own return (",
+   "ret": "SHORT 4d 2026-12-28..2026-12-31",
+   "runMode": "RETURN",
+   "separateBreaks": [
+    "w2-A 2026-12-07..2026-12-20 OWN_RETURN",
+    "w2-D 2026-12-28..2026-12-31 LATEST"
+   ],
+   "runsAhead": "RECOVERY_EASY:15 EASY:35 EASY:35 LONG:45",
+   "qualityAhead": false,
+   "maxRunAhead": 45,
+   "strengthAhead": "back-squat:3x11@82.5 db-bench-press:3x10@22 db-row:3x10@22",
+   "returnsApplied": 1
+  },
+  "W3_raceMissed": {
+   "status": "MODIFY",
+   "action": "REESTABLISH",
+   "validity": "VALID",
+   "question": null,
+   "reason": "Separate breaks on record are applied now (2026-12-07 to 2026-12-20; 2026-12-28 to 2026-12-31), each its own interruption; the stop read runs from 2026-12-28 to 2026-12-31; the break from 2026-12-07 to 2026-12-20 is read as its own return (",
+   "ret": "SHORT 4d 2026-12-28..2026-12-31",
+   "runMode": "RETURN",
+   "separateBreaks": [
+    "w3-A 2026-12-07..2026-12-20 OWN_RETURN",
+    "w3-D 2026-12-28..2026-12-31 LATEST"
+   ],
+   "runsAhead": "RECOVERY_EASY:15 EASY:35 EASY:35 LONG:45",
+   "qualityAhead": false,
+   "maxRunAhead": 45,
+   "strengthAhead": "back-squat:3x11@82.5 db-bench-press:3x10@22 db-row:3x10@22",
+   "returnsApplied": 1
+  },
+  "W4_onlyEasyAndStrength": {
+   "status": "MODIFY",
+   "action": "REESTABLISH",
+   "validity": "VALID",
+   "question": null,
+   "reason": "Separate breaks on record are applied now (2026-12-07 to 2026-12-20; 2026-12-28 to 2026-12-31), each its own interruption; the stop read runs from 2026-12-28 to 2026-12-31; the break from 2026-12-07 to 2026-12-20 is read as its own return (",
+   "ret": "SHORT 4d 2026-12-28..2026-12-31",
+   "runMode": "RETURN",
+   "separateBreaks": [
+    "w4-A 2026-12-07..2026-12-20 OWN_RETURN",
+    "w4-D 2026-12-28..2026-12-31 LATEST"
+   ],
+   "runsAhead": "RECOVERY_EASY:15 EASY:35 EASY:35 LONG:45",
+   "qualityAhead": false,
+   "maxRunAhead": 45,
+   "strengthAhead": "back-squat:3x11@82.5 db-bench-press:3x10@22 db-row:3x10@22",
+   "returnsApplied": 1
+  }
+ }
+}

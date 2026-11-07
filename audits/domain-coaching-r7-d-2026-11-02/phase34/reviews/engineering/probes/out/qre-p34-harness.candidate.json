@@ -1,0 +1,210 @@
+{
+ "probe": "QRE-P34-HARNESS-1",
+ "label": "candidate-1978cc4",
+ "harness": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/664cd42f-94db-4235-9512-4d8817799bb1/scratchpad/qre-p34-20261107-111110-185/audits/domain-coaching-r7-d-2026-11-02/harness",
+ "root": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/664cd42f-94db-4235-9512-4d8817799bb1/scratchpad/qre-p34-20261107-111110-185",
+ "cases": {
+  "QH1": {
+   "stopped": null,
+   "corpusErrors": [],
+   "runtimeErrors": [],
+   "steps": [
+    "w0r:INSTANTIATE_LOGGED_LOADS",
+    "w1r:INSTANTIATE_LOGGED_LOADS",
+    "z:ASK",
+    "y:ASK",
+    "x:ASK",
+    "h:ASK",
+    "plain:REESTABLISH"
+   ],
+   "return": {
+    "start": "2026-12-28",
+    "end": "2026-12-31",
+    "days": 4,
+    "cls": "SHORT",
+    "runMode": "EASY",
+    "separateBreaks": [
+     {
+      "episode": "QH1-z",
+      "start": "2026-11-16",
+      "end": "2026-11-22",
+      "stop": "WITHIN_OWN_RETURN",
+      "ownReturnOf": "QH1-x",
+      "stopInOwnReturn": "WITHIN_OWN_RETURN"
+     },
+     {
+      "episode": "QH1-y",
+      "start": "2026-11-30",
+      "end": "2026-12-06",
+      "stop": "WITHIN_OWN_RETURN",
+      "ownReturnOf": "QH1-x",
+      "stopInOwnReturn": "OWN_RETURN"
+     },
+     {
+      "episode": "QH1-x",
+      "start": "2026-12-14",
+      "end": "2026-12-20",
+      "stop": "OWN_RETURN",
+      "ownReturn": {
+       "class": "SHORT",
+       "days": 7,
+       "startDate": "2026-12-14",
+       "endDate": "2026-12-20",
+       "returnDay": "2026-12-21",
+       "reentered": {
+        "RUN": "2026-12-21",
+        "STRENGTH": null
+       }
+      }
+     },
+     {
+      "episode": "QH1-h",
+      "start": "2026-12-28",
+      "end": "2026-12-31",
+      "stop": "LATEST"
+     }
+    ]
+   },
+   "fails": [
+    {
+     "property": "P18",
+     "violations": [
+      {
+       "at": "plain",
+       "issue": "OLDER_BREAK_DROPPED",
+       "break": "z",
+       "breakDays": [
+        "2026-11-16",
+        "2026-11-22"
+       ],
+       "returnDays": [
+        "2026-12-28",
+        "2026-12-31"
+       ]
+      }
+     ]
+    }
+   ],
+   "P18": {
+    "result": "FAIL",
+    "units": 7
+   }
+  },
+  "QH2": {
+   "stopped": null,
+   "corpusErrors": [],
+   "runtimeErrors": [],
+   "steps": [
+    "w0r:INSTANTIATE_LOGGED_LOADS",
+    "w1r:INSTANTIATE_LOGGED_LOADS",
+    "y:ASK",
+    "x:ASK",
+    "h:ASK",
+    "plain:REESTABLISH"
+   ],
+   "return": {
+    "start": "2026-12-28",
+    "end": "2026-12-31",
+    "days": 4,
+    "cls": "SHORT",
+    "runMode": "EASY",
+    "separateBreaks": [
+     {
+      "episode": "QH2-y",
+      "start": "2026-11-30",
+      "end": "2026-12-06",
+      "stop": "WITHIN_OWN_RETURN",
+      "ownReturnOf": "QH2-x",
+      "stopInOwnReturn": "OWN_RETURN"
+     },
+     {
+      "episode": "QH2-x",
+      "start": "2026-12-14",
+      "end": "2026-12-20",
+      "stop": "OWN_RETURN",
+      "ownReturn": {
+       "class": "SHORT",
+       "days": 7,
+       "startDate": "2026-12-14",
+       "endDate": "2026-12-20",
+       "returnDay": "2026-12-21",
+       "reentered": {
+        "RUN": "2026-12-21",
+        "STRENGTH": null
+       }
+      }
+     },
+     {
+      "episode": "QH2-h",
+      "start": "2026-12-28",
+      "end": "2026-12-31",
+      "stop": "LATEST"
+     }
+    ]
+   },
+   "fails": [],
+   "P18": {
+    "result": "PASS",
+    "units": 5
+   }
+  },
+  "QH3": {
+   "stopped": null,
+   "corpusErrors": [],
+   "runtimeErrors": [],
+   "steps": [
+    "w0r:INSTANTIATE_LOGGED_LOADS",
+    "w1r:INSTANTIATE_LOGGED_LOADS",
+    "z:ASK",
+    "x:ASK",
+    "h:ASK",
+    "plain:REESTABLISH"
+   ],
+   "return": {
+    "start": "2026-12-21",
+    "end": "2026-12-24",
+    "days": 4,
+    "cls": "SHORT",
+    "runMode": "EASY",
+    "separateBreaks": [
+     {
+      "episode": "QH3-z",
+      "start": "2026-11-30",
+      "end": "2026-12-02",
+      "stop": "WITHIN_OWN_RETURN",
+      "ownReturnOf": "QH3-x",
+      "stopInOwnReturn": "TOUCHES"
+     },
+     {
+      "episode": "QH3-x",
+      "start": "2026-12-03",
+      "end": "2026-12-13",
+      "stop": "OWN_RETURN",
+      "ownReturn": {
+       "class": "MODERATE",
+       "days": 14,
+       "startDate": "2026-11-30",
+       "endDate": "2026-12-13",
+       "returnDay": "2026-12-14",
+       "reentered": {
+        "RUN": "2026-12-14",
+        "STRENGTH": null
+       }
+      }
+     },
+     {
+      "episode": "QH3-h",
+      "start": "2026-12-21",
+      "end": "2026-12-24",
+      "stop": "LATEST"
+     }
+    ]
+   },
+   "fails": [],
+   "P18": {
+    "result": "PASS",
+    "units": 5
+   }
+  }
+ }
+}

@@ -1,0 +1,214 @@
+{
+ "mutation": "QRE-P34-MUTATION-1",
+ "from": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/664cd42f-94db-4235-9512-4d8817799bb1/scratchpad/qre-p34-20261107-111110-185",
+ "work": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/664cd42f-94db-4235-9512-4d8817799bb1/scratchpad/qre-p34-mut-20261107-112645-428",
+ "tests": [
+  "test/r7d-phase34.test.mjs",
+  "test/r7d-phase33.test.mjs",
+  "test/r7d-phase32.test.mjs",
+  "test/r7d-phase31.test.mjs"
+ ],
+ "baseline": {
+  "pass": 76,
+  "fail": 0,
+  "failed": []
+ },
+ "mutants": [
+  {
+   "id": "Q01",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "defect": "the applied-return guard (QE-R7D-P33-03) removed: an own return is reconstructed across an applied return",
+   "applied": true,
+   "pass": 75,
+   "fail": 1,
+   "failed": [
+    "R7-D Phase 3.4 T20 (characterization): an applied return between the breaks blocks any own return across it (the existing question stands); a consolidation week executed in full re-enters the athlete (O-01); a correction naming the earlier break a return consumed is asked (O-02)"
+   ],
+   "killed": true
+  },
+  {
+   "id": "Q02",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "defect": "BR-Q4: a race touch or race with an adverse or conflicting response still re-enters running",
+   "applied": true,
+   "pass": 76,
+   "fail": 0,
+   "failed": [],
+   "killed": false
+  },
+  {
+   "id": "Q03",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "defect": "BR-Q4/BR-Q5: a race reported only after the later stop began still re-enters running",
+   "applied": true,
+   "pass": 76,
+   "fail": 0,
+   "failed": [],
+   "killed": false
+  },
+  {
+   "id": "Q04",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "defect": "a conflicted race report re-enters running",
+   "applied": true,
+   "pass": 76,
+   "fail": 0,
+   "failed": [],
+   "killed": false
+  },
+  {
+   "id": "Q05",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "defect": "R-F08-1 dropped in the re-read of a recorded return (recordedStop)",
+   "applied": true,
+   "pass": 76,
+   "fail": 0,
+   "failed": [],
+   "killed": false
+  },
+  {
+   "id": "Q06",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "defect": "R-F08-1 dropped for an earlier separate break whose report in force restates it (separateStop)",
+   "applied": true,
+   "pass": 76,
+   "fail": 0,
+   "failed": [],
+   "killed": false
+  },
+  {
+   "id": "Q07",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "defect": "the episode route takes precedence over a clinical reason the review states (reason text only)",
+   "applied": true,
+   "pass": 76,
+   "fail": 0,
+   "failed": [],
+   "killed": false
+  },
+  {
+   "id": "Q08",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "defect": "BR-Q1.3: the own return point is the last day of x, not the day after it",
+   "applied": true,
+   "pass": 75,
+   "fail": 1,
+   "failed": [
+    "R7-D Phase 3.4 T1 (the Founder's case): a 14-day holiday, two weeks with every run done and one strength session missed each week, then a 4-day trip: never a restart; the trip is classed by its own days, running resumes the executed doses and strength steps nothing"
+   ],
+   "killed": true
+  },
+  {
+   "id": "Q09",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "defect": "a re-read silently drops an earlier break whose declaration is missing from the record sent (no ASK)",
+   "applied": true,
+   "pass": 76,
+   "fail": 0,
+   "failed": [],
+   "killed": false
+  },
+  {
+   "id": "Q10",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "defect": "CF-P34-05 record: a break inside an own return loses its placement there",
+   "applied": true,
+   "pass": 76,
+   "fail": 0,
+   "failed": [],
+   "killed": false
+  },
+  {
+   "id": "Q11",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "defect": "the OWN_RETURN break's days are not declared to the composition as a known stop",
+   "applied": true,
+   "pass": 76,
+   "fail": 0,
+   "failed": [],
+   "killed": false
+  },
+  {
+   "id": "Q12",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "defect": "BR-Q5: a session on the later break's first day is a candidate even without a stated start time",
+   "applied": true,
+   "pass": 76,
+   "fail": 0,
+   "failed": [],
+   "killed": false
+  },
+  {
+   "id": "Q13",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "defect": "the same-day strength question ignores the re-entered sport's history",
+   "applied": true,
+   "pass": 75,
+   "fail": 1,
+   "failed": [
+    "R7-D Phase 3.4 T21: a named correction of the latest break gives the return a fresh report of the corrected break gives, also when it makes the breaks touch or overlap or moves a whole week out; a week it moves in between is asked about first"
+   ],
+   "killed": true
+  },
+  {
+   "id": "Q14",
+   "file": "CoachingCore/src/r6-composition.mjs",
+   "defect": "SSCTR-P34-F01: a same-day session already past at the return clock is still credited to the ceiling",
+   "applied": true,
+   "pass": 76,
+   "fail": 0,
+   "failed": [],
+   "killed": false
+  },
+  {
+   "id": "Q15",
+   "file": "CoachingCore/src/r6-composition.mjs",
+   "defect": "SSCTR-P34-F01: the ceiling fix only for the return's own composition, not a later re-plan of the return week",
+   "applied": true,
+   "pass": 76,
+   "fail": 0,
+   "failed": [],
+   "killed": false
+  },
+  {
+   "id": "Q16",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "defect": "the own return point ignores the athlete's time zone",
+   "applied": true,
+   "pass": 76,
+   "fail": 0,
+   "failed": [],
+   "killed": false
+  },
+  {
+   "id": "Q17",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "defect": "the race-key history cut uses the wrong time-zone sign",
+   "applied": true,
+   "pass": 76,
+   "fail": 0,
+   "failed": [],
+   "killed": false
+  }
+ ],
+ "summary": {
+  "applied": 17,
+  "killed": 3,
+  "survived": [
+   "Q02",
+   "Q03",
+   "Q04",
+   "Q05",
+   "Q06",
+   "Q07",
+   "Q09",
+   "Q10",
+   "Q11",
+   "Q12",
+   "Q14",
+   "Q15",
+   "Q16",
+   "Q17"
+  ]
+ }
+}

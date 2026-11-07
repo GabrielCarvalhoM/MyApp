@@ -1,0 +1,92 @@
+{
+ "probe": "QRE-P34-Q01-1",
+ "label": "candidate-1978cc4",
+ "cases": {
+  "a_hold_persists": {
+   "first": {
+    "action": "REESTABLISH",
+    "status": "MODIFY",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "missing": [],
+    "errors": [],
+    "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-14 to 2026-12-17), each its own interruption; the stop read runs from 2026-12-14 to 2026-12-17; the break from 2026-11-16 t",
+    "recordRows": 22
+   },
+   "correctionNoStart": {
+    "action": "HOLD",
+    "status": "HOLD",
+    "validity": "REQUIRES_RECONCILIATION",
+    "missing": [],
+    "errors": [
+     "malformed:RangeError"
+    ],
+    "reason": "Malformed review facts: Invalid time value",
+    "recordRows": 23
+   },
+   "nextPlain": {
+    "action": "HOLD",
+    "status": "HOLD",
+    "validity": "REQUIRES_RECONCILIATION",
+    "missing": [],
+    "errors": [
+     "malformed:RangeError"
+    ],
+    "reason": "Malformed review facts: Invalid time value",
+    "recordRows": 23
+   },
+   "weekReview": {
+    "action": "HOLD",
+    "status": "HOLD",
+    "validity": "REQUIRES_RECONCILIATION",
+    "missing": [],
+    "errors": [
+     "malformed:RangeError"
+    ],
+    "reason": "Malformed review facts: Invalid time value",
+    "recordRows": 23
+   },
+   "restatedWithStart": {
+    "action": "REESTABLISH",
+    "status": "MODIFY",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "missing": [],
+    "errors": [],
+    "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-14 to 2026-12-18), each its own interruption; the stop read runs from 2026-12-14 to 2026-12-18; the break from 2026-11-16 t",
+    "recordRows": 24
+   }
+  },
+  "b_days_only": {
+   "action": "HOLD",
+   "status": "HOLD",
+   "validity": "REQUIRES_RECONCILIATION",
+   "missing": [],
+   "errors": [
+    "malformed:RangeError"
+   ],
+   "reason": "Malformed review facts: Invalid time value",
+   "recordRows": 23
+  },
+  "c_single_break_control": {
+   "first": {
+    "action": "REESTABLISH",
+    "status": "MODIFY",
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "missing": [],
+    "errors": [],
+    "reason": "short nonclinical interruption (4 days): resume the last completed doses; no step until execution is observed",
+    "recordRows": 11
+   },
+   "correctionNoStart": {
+    "action": "ASK",
+    "status": "ASK",
+    "validity": "REQUIRES_RECONCILIATION",
+    "missing": [
+     "observations.unreportedSessions|interruption"
+    ],
+    "errors": [],
+    "reason": "No run is recorded in the 30 days before 2026-12-21, the reference for the runs planned from then, and 10 planned run sessions from 2026-11-22 to 2026-12-13 have no report: say what was done (report t",
+    "recordRows": 12
+   }
+  }
+ }
+}
