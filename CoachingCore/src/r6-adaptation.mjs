@@ -1737,16 +1737,23 @@ function reentryBetween(ctx,after,before,startedAt=null){
  const weeks=ctx.program.weeks.map((x,j)=>({j,startDate:x.startDate,sessions:x.sessions.filter(s=>s.prescription&&s.status!=='SKIPPED')})).filter(x=>x.sessions.length&&x.sessions.every(between));
  if(!weeks.length)return {full:null,sport:{RUN:null,STRENGTH:null}};
  // The re-entry week contract (SSCTR-R7D-P34-DECISION-r1, BR-Q4): running also needs the week's race touch and race, which hold no gate: each
- // finished (an executed report), with no adverse or conflicting response, reported before the stop began. Optional walks, recovery runs,
- // shakeouts and strides never decide a week.
+ // finished (an executed report that meets the existing completion rule, never partial: SSCTR-P34R-F02), with no adverse or conflicting response,
+ // reported before the stop began. Optional walks, recovery runs, shakeouts and strides never decide a week.
  const tz=ctx.program.timezoneOffsetMinutes??0,cut=Date.parse(startedAt??new Date(Date.parse(before+'T00:00:00Z')-tz*60000).toISOString()),rows=(ctx.fullLedger??ctx.ledger).filter(o=>!o.conflicted&&Date.parse(o.observedAt)<cut);
- const raced=x=>x.sessions.filter(s=>s.sport==='RUN'&&['RACE_TOUCH','RACE'].includes(s.role)).every(s=>rows.some(o=>o.sessionId===s.id&&o.actual?.completed===true&&!['ADVERSE','CONFLICTING'].includes(kindOf(o))));
- const at=stateAtBreak(ctx,{start:before,startedAt}).history,done=x=>{const d=at(x.j+1)?.complete;return d?{RUN:d.RUN===true&&raced(x),STRENGTH:d.STRENGTH===true}:null;},plans=x=>[...new Set(x.sessions.map(s=>s.sport))];
+ const raced=x=>x.sessions.filter(s=>s.sport==='RUN'&&['RACE_TOUCH','RACE'].includes(s.role)).every(s=>rows.some(o=>o.sessionId===s.id&&o.actual?.completed===true&&!o.partial&&!['ADVERSE','CONFLICTING'].includes(kindOf(o))));
+ // Running re-enters through a week holding at least one required run (a gated row, the race touch or the race), every one executed as
+ // prescribed: its gated rows by the reducer's complete test when it holds any, its race touch and race by their report test (SSCTR-P34R-F03,
+ // BR-Q4.4; a race week whose runs are the touch, an optional shakeout and the race). A week whose running is only optional re-enters running
+ // nowhere. Only this predicate reads it so: the reducer's step release is unchanged.
+ const gated=x=>x.sessions.some(s=>s.sport==='RUN'&&RUN_GATE_ROLE[s.role]),required=x=>x.sessions.some(s=>s.sport==='RUN'&&(RUN_GATE_ROLE[s.role]||['RACE_TOUCH','RACE'].includes(s.role)));
+ const at=stateAtBreak(ctx,{start:before,startedAt}).history,done=x=>{const d=at(x.j+1)?.complete;return d?{RUN:required(x)&&(!gated(x)||d.RUN===true)&&raced(x),STRENGTH:d.STRENGTH===true}:null;},plans=x=>[...new Set(x.sessions.map(s=>s.sport))];
  const full=weeks.find(x=>{const d=done(x);return !!d&&plans(x).every(s=>d[s]===true);})??null;
  return {full,sport:Object.fromEntries(['RUN','STRENGTH'].map(S=>[S,weeks.find(x=>{const d=done(x);return !!d&&plans(x).includes(S)&&d[S]===true;})??null]))};
 }
-/** A return already applied whose interruption lies between two separate breaks: no earlier break is reconstructed across it (QE-R7D-P33-03). */
-const appliedBetween=(ctx,after,before)=>episodesOf(ctx.program).some(e=>e.live.end>after&&e.live.start<before);
+/** A return already applied whose interruption lies between two separate breaks: no earlier break is reconstructed across it (QE-R7D-P33-03). Only
+ * a return of another episode: the episode of the break being read (`except`), whose earlier report a named correction re-reads, is never one
+ * (SSCTR-P34R-F01). */
+const appliedBetween=(ctx,after,before,except=null)=>episodesOf(ctx.program).some(e=>e.id!==except&&e.live.end>after&&e.live.start<before);
 /**
  * R7-D Phase 3.4 (SSCTR-P33-F01; Founder direction A): the return an earlier separate break `x` would have set had it been applied when the athlete
  * came back, the day after its last day: its own stop (x with the breaks before it, by the same rules), the class that stop's days give and the entry
@@ -1795,7 +1802,10 @@ function recordedStop(ctx,eventId,head,{onlyOwnReturn=false}={}){
   if(screen.status==='ASK')return {decision:{action:'ASK',reason:`The break from ${b.startDate} to ${b.endDate} (episodeId ${b.episode}): its reason is unclear; say what it was and confirm it involved no pain, injury or illness; report it again with its episodeId`,missingInputs:['interruption.reasonCategory'],screen}};
   list.push({g:{identity:b.episode,live:{i,eventId:b.eventId,declaredAt:b.declaredAt},first:{declaredAt:b.declaredAt}},start:b.startDate,end:b.endDate,days:b.days,startedAt:utcTimestamp(i.startedAt)});
  }
- const H={g:{identity:latest.episode,live:{i:ctx.review?.interruption??{},eventId:ctx.review?.event?.id??latest.eventId,declaredAt:ctx.asOf},first:{declaredAt:latest.declaredAt}},start:head.start,end:head.end,days:head.days??dayGap(head.start,head.end)+1,startedAt:head.startedAt};
+ // A newer report that states its length and last day but not its first day starts on the day its length gives, as separateStop reads it
+ // (QRE-P34-01: an unknown first day is never a date).
+ const first=head.start??onDate(head.end,-(head.days-1));
+ const H={g:{identity:latest.episode,live:{i:ctx.review?.interruption??{},eventId:ctx.review?.event?.id??latest.eventId,declaredAt:ctx.asOf},first:{declaredAt:latest.declaredAt}},start:first,end:head.end,days:head.days??dayGap(first,head.end)+1,startedAt:head.startedAt};
  const stop=stopOf(ctx,H,list);
  return stop.decision?{decision:stop.decision}:{stop};
 }
@@ -1850,16 +1860,19 @@ function stopOf(ctx,H,list){
   if(by.full){reentry=by.full;break;}
   const from=onDate(x.end,1),through=onDate(start,-1),unknown=unreportedBetween(ctx,from,through),n=unknown.length;
   if(n)return {decision:{action:'ASK',reason:`The breaks reported on ${day(x.g)} (${x.start} to ${x.end}) and on ${day(at.g)} (${at.start} to ${at.end}) are separate, and ${n} planned session${n>1?'s':''} between them (${from} to ${through}) ha${n>1?'ve':'s'} no report: say what was done (report the sessions, done or not done); training that is only unreported counts neither as done nor as not done, and the return depends on it`,missingInputs:['observations.unreportedSessions'],question:{kind:'TRAINING_BETWEEN_BREAKS',unreported:{from,through,sessionIds:unknown.map(s=>s.id)},breaks:[{episodeId:x.g.identity,startDate:x.start,endDate:x.end},{episodeId:at.g.identity,startDate:at.start,endDate:at.end}]}}};
-  if((by.sport.RUN||by.sport.STRENGTH)&&!appliedBetween(ctx,x.end,start)){
+  if((by.sport.RUN||by.sport.STRENGTH)&&!appliedBetween(ctx,x.end,start,H.g.identity)){
    const r=ownReturnOf(ctx,x,sorted.slice(k+1).filter(y=>!place.has(y.g)));
    if(r.decision)return {decision:r.decision};
+   // SSCTR-P34R-F04 (BR-Q1.3, rule 0.8): strength read from that own return (not re-entered between) starts from the state at its stop, which a
+   // strength session on that stop's first day with no stated start time can change: asked, as a single-break return asks, never guessed.
+   if(r.material&&!by.sport.STRENGTH){const b=r.sub.startBreak;return {decision:{action:'ASK',reason:`A strength session was recorded on ${r.sub.start}, the day the break reported on ${day(b.g)} (episodeId ${b.g.identity}) began, and whether it came before that break changes the state its own return starts from: report that break again with its episodeId and the time it began (interruption.startedAt)`,missingInputs:['interruption.startedAt'],question:{episodeId:b.g.identity,startDate:r.sub.start}}};}
    own={episode:x.g.identity,read:r.read,cls:r.cls,days:r.sub.days,startDate:r.sub.start,endDate:x.end,returnDay:r.day,reentered:{RUN:by.sport.RUN?.startDate??null,STRENGTH:by.sport.STRENGTH?.startDate??null},within:new Map(r.sub.record.map(b=>[b.episode,b.stop]))};
    place.set(x.g,'OWN_RETURN');break;
   }
   place.set(x.g,trainedBetween(ctx,x.end,start)?'TRAINING_NOT_REESTABLISHED':'NO_TRAINING_BETWEEN');start=x.start;startedAt=x.startedAt;at=x;
  }
  const all=[H,...list].sort((a,b)=>a.start<b.start?-1:a.start>b.start?1:0),placed=x=>place.has(x.g),ownRow=x=>place.get(x.g)==='OWN_RETURN';
- return {start,end:H.end,days:start===H.start?H.days:dayGap(start,H.end)+1,startedAt,continuous:start!==H.start,own,
+ return {start,end:H.end,days:start===H.start?H.days:dayGap(start,H.end)+1,startedAt,startBreak:at,continuous:start!==H.start,own,
   declared:[{start,end:H.end},...list.filter(x=>!placed(x)||ownRow(x)).map(x=>({start:x.start,end:x.end}))],
   record:all.map(x=>({episode:x.g.identity,eventId:x.g.live.eventId,declaredAt:x.g.live.declaredAt,inputHash:hash(x.g.live.i),startDate:x.start,endDate:x.end,days:x.days,
    stop:place.get(x.g)??(own?'WITHIN_OWN_RETURN':'TRAINING_AFTER'),

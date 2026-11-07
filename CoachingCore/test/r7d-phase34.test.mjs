@@ -487,3 +487,113 @@ test('R7-D Phase 3.4 T21: a named correction of the latest break gives the retur
  const m=returns(w.p).length,rw=step(w,6,{day:4,hour:'10:00:00',kind:'RETURN_AFTER_PAUSE',interruption:{...trip(28,31),episodeId:'t21w-D'},event:{id:'t21w-D2',kind:'RETURN_AFTER_PAUSE'}});
  assert.equal(rw.action,'ASK',rw.reason);assert.equal(rw.question?.kind,'TRAINING_BETWEEN_BREAKS');assert.equal(returns(w.p).length,m,'nothing applied before the answer');
 });
+
+// ---------- T22-T25: the one bounded runtime-only cycle (SSCTR-R7D-P34-RECHECK-r1, CFR-01: SSCTR-P34R-F01 to F04); each RED on 1978cc4 ----------
+test('R7-D Phase 3.4 T22 (SSCTR-P34R-F01): a named correction that moves the trip\'s start one day later re-reads the holiday as its own return, exactly as a fresh report of the corrected trip; the guard counts only another episode\'s return',()=>{
+ const mon6=t=>t.p.weeks[6].sessions.find(s=>live(s)&&s.sport==='STRENGTH'&&s.date===day(28)),at={day:5,hour:'10:00:00'},from=t=>addDays(t.p.weeks[6].startDate,6);
+ const view=t=>{const d=lastReturn(t.p);return {stop:[d.startDate,d.endDate,d.days,d.class,stops(d).join()],runs:runsAhead(t.p,6,from(t)),strength:strengthAhead(t.p,6,from(t))};};
+ const a=foundersCase('t22',trip(28,31));assert.deepEqual(stops(lastReturn(a.t.p)),['OWN_RETURN','LATEST']);
+ const m=mon6(a.t),rc=step(a.t,6,{...at,kind:'RETURN_AFTER_PAUSE',interruption:{...trip(29,32),episodeId:'t22-D'},event:{id:'t22-D2',kind:'RETURN_AFTER_PAUSE'},observations:m?[notDone(a.t.p,m)]:[]});
+ assert.equal(rc.action,'REESTABLISH',rc.reason);assert.equal(lastReturn(a.t.p).relation,'SAME_BREAK');
+ const f=base();
+ step(f,4,{day:0,hour:'07:00:00',kind:'SYSTEMIC_FATIGUE',interruption:A(),event:{id:'t22f-A',kind:'SYSTEMIC_FATIGUE'}});
+ const mf=mon6(f),o=[4,5].flatMap(w=>f.p.weeks[w].sessions.filter(live).map(s=>miss(friStrength)(f.p,s)));
+ step(f,6,{day:4,hour:'07:00:00',kind:'LOCAL_FATIGUE',interruption:{...trip(29,32),episodeId:'t22f-D'},event:{id:'t22f-D',kind:'LOCAL_FATIGUE'},observations:[...o,...(mf?[notDone(f.p,mf)]:[])]});
+ const rf=step(f,6,at);assert.equal(rf.action,'REESTABLISH',rf.reason);
+ assert.deepEqual(view(a.t),view(f),'the corrected return is the fresh re-read (1978cc4 counted the trip\'s own earlier report as a return between the breaks: LONG 33, a restart)');
+});
+test('R7-D Phase 3.4 T23 (SSCTR-P34R-F02): a race touch reported completed at half its minutes is partial by the existing completion rule: it never re-enters running, in a hybrid or a run-only plan',()=>{
+ const half=(p,s)=>obs(p,s,{minutes:Math.max(1,Math.round(s.prescription.durationMinutes/2))}),touch=s=>s.sport==='RUN'&&s.role==='RACE_TOUCH';
+ const h=raceWeek('t23',(p,s)=>touch(s)?half(p,s):obs(p,s)),d=lastReturn(h.t.p);
+ assert.equal(h.r.action,'REESTABLISH',h.r.reason);assert.deepEqual(stops(d),['OWN_RETURN','LATEST'],'hybrid: read as with the touch missed (1978cc4 re-entered running)');
+ assert.deepEqual([d.separateBreaks[0].ownReturn.reentered.RUN,!!d.separateBreaks[0].ownReturn.reentered.STRENGTH],[null,true]);
+ const GEVo={...GEV,id:'r7d-p34-evo',goals:{run:'10K',strength:'NONE'},knownExercises:[],schedule:{strengthDays:[]}};
+ const ro=(id,report)=>{const t={p:program(GEVo),ledger:[],ref:null};for(const w of [0,1,2,3,4])step(t,w,{observations:t.p.weeks[w].sessions.filter(live).map(s=>obs(t.p,s))});
+  step(t,7,{day:0,hour:'07:00:00',kind:'SYSTEMIC_FATIGUE',interruption:brk(21,34),event:{id:id+'-A',kind:'SYSTEMIC_FATIGUE'}});
+  step(t,8,{day:4,hour:'07:00:00',kind:'LOCAL_FATIGUE',interruption:{...trip(42,45),episodeId:id+'-D'},event:{id:id+'-D',kind:'LOCAL_FATIGUE'},observations:t.p.weeks[7].sessions.filter(live).map(s=>report(t.p,s))});
+  const r=step(t,8,{day:4,hour:'08:00:00'}),x=lastReturn(t.p);assert.equal(r.action,'REESTABLISH',`${id}: ${r.reason}`);
+  return [stops(x).join(),x.days,x.class,runsAhead(t.p,8,addDays(t.p.weeks[8].startDate,6))];};
+ const halfTouch=ro('t23o',(p,s)=>touch(s)?half(p,s):obs(p,s)),missed=ro('t23om',(p,s)=>touch(s)?notDone(p,s):obs(p,s));
+ assert.equal(halfTouch[0],'TRAINING_NOT_REESTABLISHED,LATEST','run-only: 1978cc4 re-entered running on a half-length touch (TRAINING_AFTER, SHORT 4)');
+ assert.deepEqual(halfTouch,missed,'run-only: a half-length touch reads as a missed one');
+});
+test('R7-D Phase 3.4 T24 (SSCTR-P34R-F03): a race week whose runs are the race touch, an optional shakeout and the race, executed in full, re-enters running, in a hybrid or a run-only plan',()=>{
+ for(const [label,o] of [['hybrid',{...GEV,id:'r7d-p34-rw',schedule:{runDays:[3,5,6],longRunDay:6}}],['run-only',{...GEV,id:'r7d-p34-rwo',goals:{run:'10K',strength:'NONE'},knownExercises:[],schedule:{runDays:[3,5,6],longRunDay:6,strengthDays:[]}}]]){
+  const t={p:program(o),ledger:[],ref:null};for(const w of [0,1,2,3,4])step(t,w,{observations:t.p.weeks[w].sessions.filter(live).map(s=>obs(t.p,s))});
+  const runs7=t.p.weeks[7].sessions.filter(s=>live(s)&&s.sport==='RUN');
+  assert.ok(runs7.length>0&&runs7.every(s=>['RACE_TOUCH','RACE','SHAKEOUT'].includes(s.role)),label+': the race week holds no gated run: '+runs7.map(s=>s.role).join(','));
+  step(t,7,{day:0,hour:'07:00:00',kind:'SYSTEMIC_FATIGUE',interruption:brk(21,34),event:{id:'t24-'+label+'-A',kind:'SYSTEMIC_FATIGUE'}});
+  step(t,8,{day:4,hour:'07:00:00',kind:'LOCAL_FATIGUE',interruption:{...trip(42,45),episodeId:'t24-'+label+'-D'},event:{id:'t24-'+label+'-D',kind:'LOCAL_FATIGUE'},observations:t.p.weeks[7].sessions.filter(live).map(s=>obs(t.p,s))});
+  const r=step(t,8,{day:4,hour:'08:00:00'}),d=lastReturn(t.p);
+  assert.equal(r.action,'REESTABLISH',`${label}: ${r.reason}`);
+  assert.deepEqual(stops(d),['TRAINING_AFTER','LATEST'],label+': 1978cc4 never re-entered running through a week without a gated run');assert.deepEqual([d.days,d.class],[4,'SHORT'],label);
+ }
+});
+test('R7-D Phase 3.4 T25 (SSCTR-P34R-F04): a strength session on the earlier break\'s first day with no stated start time is asked about when strength reads from that break\'s own return (rule 0.8); with the start stated, or with strength re-entered by its own week, nothing is asked',()=>{
+ const lift=t=>[obs(t.p,t.p.weeks[2].sessions.find(s=>live(s)&&s.sport==='STRENGTH'&&s.date===day(0)))];
+ const mk=(id,a,report)=>{const t=base();
+  step(t,4,{day:0,hour:'07:00:00',kind:'SYSTEMIC_FATIGUE',interruption:a,event:{id:id+'-A',kind:'SYSTEMIC_FATIGUE'},observations:lift(t)});
+  const o=[4,5].flatMap(w=>t.p.weeks[w].sessions.filter(live).map(s=>report(t.p,s)));
+  step(t,6,{day:4,hour:'07:00:00',kind:'LOCAL_FATIGUE',interruption:{...trip(28,31),episodeId:id+'-D'},event:{id:id+'-D',kind:'LOCAL_FATIGUE'},observations:o});
+  return {t,r:step(t,6,{day:4,hour:'08:00:00'})};};
+ const sd1=mk('t25a',A(),miss(friStrength));
+ assert.equal(sd1.r.action,'ASK',`1978cc4 placed the lift after the start without asking: ${sd1.r.reason}`);assert.deepEqual(sd1.r.missingInputs,['interruption.startedAt']);
+ assert.deepEqual([sd1.r.question?.episodeId,sd1.r.question?.startDate],['t25a-A',day(0)],'the question names the holiday and its first day');assert.equal(returns(sd1.t.p).length,0,'nothing applied');
+ const sd2=mk('t25b',brk(0,13,{startedAt:`${day(0)}T20:00:00Z`}),miss(friStrength));
+ assert.equal(sd2.r.action,'REESTABLISH',sd2.r.reason);assert.deepEqual(stops(lastReturn(sd2.t.p)),['OWN_RETURN','LATEST'],'the start stated after the lift: it counts, nothing asked');
+ const sd3=mk('t25c',A(),miss(tueRun));
+ assert.equal(sd3.r.action,'REESTABLISH',sd3.r.reason);assert.deepEqual(stops(lastReturn(sd3.t.p)),['OWN_RETURN','LATEST'],'strength re-entered by its own week: the order does not change the state');
+});
+
+// ---------- T26: QRE-R7D-PHASE34-CHECK-r1 CQ-1 (QRE-P34-01); RED on 1978cc4 ----------
+test('R7-D Phase 3.4 T26 (QRE-P34-01): a named correction of the latest break that states its length and last day but not its first day, or only its length, is read as the same correction with its first day, and no later review holds',()=>{
+ const at={day:5,hour:'10:00:00'},from=t=>addDays(t.p.weeks[6].startDate,6);
+ const view=t=>{const d=lastReturn(t.p);return {stop:[d.startDate,d.endDate,d.days,d.class,stops(d).join()],runs:runsAhead(t.p,6,from(t)),strength:strengthAhead(t.p,6,from(t))};};
+ const correct=(id,i)=>{const c=foundersCase(id,trip(28,31));assert.equal(c.r.action,'REESTABLISH',c.r.reason);return {c,r:step(c.t,6,{...at,kind:'RETURN_AFTER_PAUSE',interruption:{...i,episodeId:id+'-D'},event:{id:id+'-D2',kind:'RETURN_AFTER_PAUSE'}})};};
+ const withFirst=correct('t26f',trip(28,32));assert.equal(withFirst.r.action,'REESTABLISH',withFirst.r.reason);
+ const {startDate:_omitted,...noFirst}=trip(28,32);
+ for(const [id,label,i] of [['t26a','its length and last day',noFirst],['t26b','its length only',{days:5,reasonCategory:'WORK',reason:'Work trip',nonclinical:true}]]){
+  const x=correct(id,i);
+  assert.equal(x.r.action,'REESTABLISH',`${label}: 1978cc4 held (Invalid time value): ${x.r.reason}`);
+  assert.deepEqual(view(x.c.t),view(withFirst.c.t),label+': the same correction as with its first day');
+  const next=step(x.c.t,6,{day:5,hour:'12:00:00'});assert.notEqual(next.status,'HOLD',`${label}: the next review does not hold: ${next.reason}`);
+ }
+});
+
+// ---------- T27-T30: QRE CQ-2: rules pinned by no test before (the QRE mutants Q02, Q03, Q09, Q12, Q10 each fail one) ----------
+test('R7-D Phase 3.4 T27 (QRE CQ-2): a race touch or race with an adverse recovery, or a race observed only after the later break began, never re-enters running; strength still re-enters by its own week',()=>{
+ const roleIs=r=>s=>s.sport==='RUN'&&s.role===r;
+ for(const [id,label,report] of [
+  ['t27a','the race with an adverse recovery',(p,s)=>roleIs('RACE')(s)?obs(p,s,{response:{recovery:'ADVERSE'}}):obs(p,s)],
+  ['t27b','the race touch with an adverse recovery',(p,s)=>roleIs('RACE_TOUCH')(s)?obs(p,s,{response:{recovery:'ADVERSE'}}):obs(p,s)],
+  ['t27c','the race observed after the trip began',(p,s)=>roleIs('RACE')(s)?{...obs(p,s),observedAt:`${day(42)}T10:00:00Z`}:obs(p,s)]]){
+  const c=raceWeek(id,report),d=lastReturn(c.t.p);
+  assert.equal(c.r.action,'REESTABLISH',`${label}: ${c.r.reason}`);assert.deepEqual(stops(d),['OWN_RETURN','LATEST'],label);
+  assert.deepEqual([d.separateBreaks[0].ownReturn.reentered.RUN,!!d.separateBreaks[0].ownReturn.reentered.STRENGTH],[null,true],label);
+ }
+});
+test('R7-D Phase 3.4 T28 (QRE CQ-2): a named correction of the latest break sent with a record that lacks an earlier break its return read is asked, never applied with that break dropped',()=>{
+ const c=foundersCase('t28',trip(28,31));assert.equal(c.r.action,'REESTABLISH',c.r.reason);const n=returns(c.t.p).length;
+ const partial={...c.t,ledger:c.t.ledger.filter(o=>!(o.fact==='INTERRUPTION_DECLARED'&&o.eventId==='t28-A'))};
+ const r=step(partial,6,{day:5,hour:'10:00:00',kind:'RETURN_AFTER_PAUSE',interruption:{...trip(28,32),episodeId:'t28-D'},event:{id:'t28-D2',kind:'RETURN_AFTER_PAUSE'}});
+ assert.equal(r.action,'ASK',r.reason);assert.deepEqual(r.missingInputs,['actualLedger.interruptionDeclared']);assert.equal(returns(partial.p).length,n,'nothing applied');
+});
+test('R7-D Phase 3.4 T29 (QRE CQ-2, characterization): a later break that starts on the last day of a week, with no stated start time, leaves that week out: no sport re-enters by it and the stop runs through the earlier break',()=>{
+ const t=base();
+ step(t,4,{day:0,hour:'07:00:00',kind:'SYSTEMIC_FATIGUE',interruption:A(),event:{id:'t29-A',kind:'SYSTEMIC_FATIGUE'}});
+ step(t,5,{day:4,hour:'07:00:00',kind:'LOCAL_FATIGUE',interruption:{...trip(20,23),episodeId:'t29-D'},event:{id:'t29-D',kind:'LOCAL_FATIGUE'},observations:t.p.weeks[4].sessions.filter(live).map(s=>obs(t.p,s))});
+ const r=step(t,5,{day:4,hour:'08:00:00'}),d=lastReturn(t.p);
+ assert.equal(r.action,'REESTABLISH',r.reason);assert.deepEqual(stops(d),['TRAINING_NOT_REESTABLISHED','LATEST']);assert.deepEqual([d.startDate,d.days,d.class],[day(0),24,'MODERATE']);
+});
+test('R7-D Phase 3.4 T30 (QRE CQ-2): three breaks with an inner own return: the record places the first break inside the second break\'s own return (WITHIN_OWN_RETURN, ownReturnOf, stopInOwnReturn)',()=>{
+ const t=base();
+ step(t,4,{day:0,hour:'07:00:00',kind:'SYSTEMIC_FATIGUE',interruption:A(),event:{id:'t30-A',kind:'SYSTEMIC_FATIGUE'}});
+ step(t,5,{day:4,hour:'07:00:00',kind:'LOCAL_FATIGUE',interruption:{...trip(21,24),episodeId:'t30-B'},event:{id:'t30-B',kind:'LOCAL_FATIGUE'},observations:t.p.weeks[4].sessions.filter(live).map(s=>miss(friStrength)(t.p,s))});
+ const o5=t.p.weeks[5].sessions.filter(s=>live(s)&&s.date>day(24)).map(s=>miss(friStrength)(t.p,s)),o6=t.p.weeks[6].sessions.filter(live).map(s=>miss(friStrength)(t.p,s));
+ step(t,7,{day:4,hour:'07:00:00',kind:'LOCAL_FATIGUE',interruption:{...trip(35,38),episodeId:'t30-D'},event:{id:'t30-D',kind:'LOCAL_FATIGUE'},observations:[...o5,...o6]});
+ const r=step(t,7,{day:4,hour:'08:00:00'}),d=lastReturn(t.p);
+ assert.equal(r.action,'REESTABLISH',r.reason);
+ const row=e=>d.separateBreaks.find(b=>b.episode===e);
+ assert.deepEqual([row('t30-B')?.stop,row('t30-D')?.stop],['OWN_RETURN','LATEST'],JSON.stringify(d.separateBreaks.map(b=>[b.episode,b.stop])));
+ assert.deepEqual([row('t30-A')?.stop,row('t30-A')?.ownReturnOf,row('t30-A')?.stopInOwnReturn],['WITHIN_OWN_RETURN','t30-B','OWN_RETURN']);
+});
