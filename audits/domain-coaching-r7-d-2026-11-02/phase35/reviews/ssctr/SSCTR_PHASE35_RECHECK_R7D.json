@@ -1,0 +1,261 @@
+{
+ "recordId": "SSCTR-R7D-P35-RECHECK-r1",
+ "date": "2026-11-07",
+ "kind": "Narrow domain recheck of the R7-D Phase 3.5 candidate by a fresh SSCTR instance: the closure of SSCTR-P34R2-F01 and F02 (CFR2-01 to CFR2-03 of SSCTR-R7D-P34-RECHECK-r2), the domain side of QRE2-P34-01, O-P35-01, the HARNESS-7 readings and new numbers. The five SSCTR questions of phase35/reviews/REVIEW_REQUEST_PHASE35.md section 4. A closure check, not a new audit.",
+ "candidate": "8e78b8a",
+ "candidateDetail": "Branch claude/domain-coaching-r7-d, commit 8e78b8a (supersedes 9736718). Runtime of 5839f83: CoachingCore/src/r6-adaptation.mjs sha256 60d91e2259bd3bf41d5f01b085a9b230e0f01c9979c7239a15fec0c7c4a9e310 (46934a0: c98eb081...; R7D-FREEZE-4: 15e4279b...), r6-composition.mjs 8aa5f950... (unchanged since 1978cc4). git diff 46934a0 8e78b8a -- CoachingCore/src touches r6-adaptation.mjs only (+79/-18). Tests: f8cf12e adds CoachingCore/test/r7d-phase35.test.mjs (0be0fb45...; T31-T35, 10 tests). Harness R7D-HARNESS-7 (lib/properties.mjs 3b4a7b98...). Policy, catalog and the r5/r6/r7-b0 inputs unchanged since 46934a0. HEAD was 8e78b8a for the whole review.",
+ "disposition": "ACCEPT_WITH_CONDITIONS",
+ "dispositionNote": "Does not block R7D-FREEZE-5 of 8e78b8a. SSCTR-P34R2-F01 and F02 are closed exactly as SSCTR-R7D-P34-RECHECK-r2 states them, on my own rebuild: SY1 = SY1g (MODERATE 25, TRAINING_NOT_REESTABLISHED); CU3 = CU3f (asks only 2026-12-13 RUN) and CU3 answered done = CU3fa by two channels (stop, labels and every run and strength dose equal); CU1 = CU1f; LC1 and LC1d ask the two sessions LC1f asks; CU2 asks CU2f's five sessions. Every listed control keeps its 46934a0 output: 25 of 33 p34-recheck2 cases, all 24 p34-recheck, 17 p34-ssctr and 5 p34-ceiling cases. The 8 changed cases are the closure cases plus CU2a, which changes only because it answers the larger question and now equals CU2b. The re-entry history read without the superseded return (T32 'moved a week later') is the right reading. The QRE2-P34-01 restatement rule and its question order are acceptable in domain terms. A clinical change is never consumed as a restatement: it routes CLINICAL_HUMAN_REQUIRED. O-P35-01 is a disclosed, non-blocking residual. Its Δ31 wording needs one precision: in the two-break shape, R7D-FREEZE-4 differs. P18(c), P18(f) and the P17/P08 restatement reading follow the binding texts. One new instrument finding is non-blocking for this freeze and binding before any final holdout. SSCTR-P35-F01: P18(e) counts a recovery-ADVERSE report given with performance OVER. The reducer reads such a report as CONFLICTING, and the unchanged systemic rule does not count it. P18(e) can therefore false-block a runtime that follows BR-Q6. No number is new.",
+ "reviewer": {
+  "role": "Sports Science & Concurrent Training Reviewer (SSCTR)",
+  "agent": "SSCTR-1.0.0",
+  "constitution": "SSCTR-CONST-1.0.0 (sha256 9de27b4d6ab0879419a92c218b98acc7ef3df63b73b3325010f033d403122180)",
+  "skill": "sports-science-review 1.0.0 (sha256 67374297e275d2ec9ded1a8653baf6dc078fbe3d1fd1002e61a13cd6f34065bf)",
+  "registry": "SSCTR-REG-1.0.0 (sha256 7843a0c7921bc09d03f573ae56221b6b583d2b9f3d397625a5b2ace1d4871382; hash only, not re-read)",
+  "authority": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY: nonclinical internal sporting judgment only. No human credentials; no clinical, human or empirical validation; no runtime sovereignty; no Product Truth publication.",
+  "model": "claude-opus-5-5",
+  "effort": "xhigh",
+  "instance": "A fresh SSCTR instance dispatched by the R7-D Phase 3.5 coordinator (task-route owner sports-science-concurrent-training-reviewer, L3, productization). I did not verify whether this was a native project-adapter dispatch or a default-instance fallback, and I did not read the adapter file. No human review occurred.",
+  "nativeDispatch": "not verified"
+ },
+ "independent": true,
+ "independenceNote": "This instance did not write any Phase 3.4 or 3.5 artifact: runtime, tests, harness, PREREG-6, INTERFACE-7, evidence, the review request, or any earlier SSCTR record. It read SSCTR-R7D-P34-RECHECK-r2 (the record whose conditions it checks) and reran that role's probes read-only. From phase34/reviews/engineering/QUALITY_CHECK_R7D_PHASE34_R2.json it read only finding QRE2-P34-01, through a script that printed that item by id and nothing else. It did not open phase35/reviews/engineering/. It ignored the scratch folders of the stopped dispatch (ssctr-p35-*) and of the coordinator. probes/p35-recheck.mjs is this instance's own. Probe outputs are engineering evidence for this recheck, never gate, quality or generalization evidence.",
+ "scope": {
+  "questions": "REVIEW_REQUEST_PHASE35.md (sha256 b613b080d0634a8ef7a062bddc267f90086785ab26236ba4f0db04d84d088995), section 4, SSCTR questions 1-5.",
+  "outOfScope": "The Quality/Reliability questions: code correctness beyond its domain effect, mutation adequacy, the evidence refresh, validation 7 as an instrument suite, and freeze and verify readiness. Also out of scope: F08 (F08_OPEN, BLOCKED_BY_AUTHORITY); the Founder decisions D1 and D2, recorded only; any clinical judgment; product/, canon/, the mission, the ledger and the queue file. This record sets no dose, threshold, count, length, percentage, ceiling, increment, tolerance, cadence, recipe or clinical criterion."
+ },
+ "sourcesRead": [
+  {"path": "governance/agents/sports-science-reviewer/CONSTITUTION.md", "sha256": "9de27b4d6ab0879419a92c218b98acc7ef3df63b73b3325010f033d403122180", "read": "completely"},
+  {"path": ".agents/skills/sports-science-review/SKILL.md", "sha256": "67374297e275d2ec9ded1a8653baf6dc078fbe3d1fd1002e61a13cd6f34065bf", "read": "completely"},
+  {"path": "CURRENT_MISSION.md", "read": "the R7-D Phase 3.4 section (the latest); the Phase 3.5 authority is AUTHORIZATION_PHASE35.md"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/phase35/AUTHORIZATION_PHASE35.md", "sha256": "e609b8d1fd932621e12d2f010f7d56474c50e382a120083945fa50c8f64fe66a", "read": "completely"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/phase35/FOUNDER_DECISIONS_PHASE35.md", "sha256": "38a49fdc82b400c65897cbcc6651e64d665974d82c54269dc8dfb04045ca398d", "read": "completely (recorded decisions; no runtime effect)"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/phase35/reviews/REVIEW_REQUEST_PHASE35.md", "sha256": "b613b080d0634a8ef7a062bddc267f90086785ab26236ba4f0db04d84d088995", "read": "completely"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/phase34/reviews/ssctr/SSCTR_PHASE34_RECHECK2_R7D.json", "sha256": "0a4a5939d4f00c502f496ecb03863524d810fc9fb8db7a7d53d8d778fcfc08a9", "read": "completely (the record whose conditions are checked)"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/phase34/reviews/engineering/QUALITY_CHECK_R7D_PHASE34_R2.json", "read": "finding QRE2-P34-01 only, located by id"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/phase34/policy/SSCTR_P34_DECISION_R7D.json", "sha256": "d9335e58b680837aef6ee87d958f8848871dfb41d70c2d99c03148abaaf87c7d", "read": "BR-Q3.2, BR-Q4.2-4.4, BR-Q6, CF-P34-02, CF-P34-04, the staleReturn ruling, O-02 (located by text)"},
+  {"path": "audits/domain-coaching-r7a-2026-10-27/reviews/ssctr-r7a-recheck.json", "read": "the R27 gap entry (line 162) only: R27's original weight and the evidence it cites (R7A-S04, S05, S06), relied on as recorded and not re-verified"},
+  {"path": "git diff 46934a0 8e78b8a -- CoachingCore/src", "read": "completely"},
+  {"path": "CoachingCore/src/r6-adaptation.mjs (candidate)", "sha256": "60d91e2259bd3bf41d5f01b085a9b230e0f01c9979c7239a15fec0c7c4a9e310", "read": "classify (r6-learning) and kindOf, weekEvidence (systemicConvergence), weeklyGates, stateAtBreak, staleReturn, the return handler around rule 0.8, I6 and R27, interruptionScreen, unreportedBetween, reentryBetween, the new listedBreaks/restates/naming/restating/restatedReports/restatedKeep/restatedBreak, recordedStop and stopOf"},
+  {"path": "CoachingCore/src/r6-composition.mjs", "read": "shortReturnEasy and aheadAt (R27, D58; the R7-A.2 slot rule)"},
+  {"path": "CoachingCore/test/r7d-phase35.test.mjs", "sha256": "0be0fb45576f217e8243bf5155e4ddc47ee85d3efc8150692f7147f4297ec2b5", "read": "completely"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/PREREGISTRATION_R7D_6.md", "sha256": "a21aa4396fe0be098dcb23d85eec5a6e44fffd4899da9b3832baa0edfb75d933", "read": "Δ26-Δ33"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/author/INTERFACE_DELTA_R7D_7.md", "sha256": "2caab179ae6ad9fb0e8020977a738c49eaa5f3c3b7984f9428a22e302a51e15f", "read": "section 2"},
+  {"path": "git diff 46934a0 8e78b8a -- audits/domain-coaching-r7-d-2026-11-02/harness/lib/properties.mjs", "read": "completely (P08/P17 restatesListed; P18(c) mayConverge; P18(e) adverseConvergence; P18(f); the NESTED guard); executedNominal, counted and client.live read for context"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/harness/validation/DEV_CASES_R7D_7.json", "read": "scanned by script for response objects with recovery ADVERSE: 6 found (DEV-06, DEV-12 x2, DEV-14, DEV-48 x2), none with performance OVER"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/phase35/evidence/FIDELITY_PHASE35.json", "sha256": "bd11a99aa1dfa3873b89902dfbaa0b353d3ef1968690f54900c8adb86704ccc7", "read": "per-probe changed sets only, compared with my own reruns; the rest of the evidence is the quality check's"}
+ ],
+ "literatureAccess": {
+  "tools": "This session lists WebSearch and WebFetch as deferred tools. I did not load or use them, and searched no literature.",
+  "why": "This recheck makes no new scientific claim. Its judgments are fidelity to binding readings (BR-Q3.2(1), BR-Q4.2-4.4, BR-Q6, the Q7 addendum ruling, CF-P34-02, CF-P34-04, I6, rule 0.8, R7-C G01, R27/D58 and the R7-A.2 slot rule). For O-P35-01 it relies, as recorded and without re-verification, on the weight the role's R7-A recheck gave R27 when R27 is not met: non-blocking, low weight, no escalation above the last executed dose, with the short-break detraining claims R7A-S04, S05 and S06 cited there."
+ },
+ "whatWasRun": {
+  "rebuilds": "A new scratch directory ssctr2-p35-20261107-165808-643 under the session scratchpad. It holds cand/ (git archive 8e78b8a), prev/ (git archive 46934a0) and d4/ (git archive 3edf3c5, R7D-FREEZE-4). Each carries CoachingCore, the five SSCTR authority records named in phase35/probes/phase35-run-evidence.mjs (RECORDS) and the audit folder. prevT/ is a separate 46934a0 archive plus the candidate's r7d-phase35.test.mjs, used for the RED check. Hashes confirmed: r6-adaptation.mjs 60d91e22... (cand), c98eb081... (prev), 15e4279b... (d4); harness lib/properties.mjs in cand 3b4a7b98.... Nothing was deleted and nothing was written to the repository except this folder. Node v24.19.0.",
+  "reproduced": "On my 46934a0 rebuild, all seven recorded probes2/out *.CANDIDATE-46934a0 outputs reproduce byte for byte: p34-recheck2 bdc4be51..., p34-recheck2-detectors 68fd7312..., p34-recheck f51bee91..., p34-recheck-detectors 4de25ab1..., p34-ssctr 89fd4bbd..., p34-ceiling 2eb5abae.... On my FREEZE-4 rebuild, p34-recheck2.R7D-FREEZE-4 (6f38ecd0...) and probes/out/p34-recheck.R7D-FREEZE-4 (72ba2957...) reproduce too.",
+  "candidateRuns": "On 8e78b8a, compared with 46934a0 per case. p34-recheck 24/24, p34-ssctr 17/17, p34-ceiling 5/5 and p34-recheck-detectors 4/4 are identical. p34-recheck2: 25 of 33 identical; 8 differ (SY1, LC1, LC1d, CU1, CU3, CU2, CU2a_V1, CU2a_all). p34-recheck2-detectors: SY1 and CU3 differ (the candidate harness reads SY1's week as not nominal, and CU3 is now an ASK). These changed sets equal those of the author's FIDELITY_PHASE35.json.",
+  "directedTests": "On my candidate rebuild: r7d-phase35 10/10, r7d-phase34 40/40, r7d-phase33 14/14, r7d-phase32 17/17, r7d-phase31 14/14. On 46934a0 with the Phase 3.5 test file, 7 fail (T31, the three T32 and the three T33 tests) and 3 pass (T34, T35 x2). I did not rerun the full suite or the conformance checks; their evidence is the quality check's.",
+  "ownProbe": "probes/p35-recheck.mjs on 8e78b8a, 46934a0 and R7D-FREEZE-4, with the R7D-HARNESS-7 readings taken from the candidate rebuild. AN*: CU3 answered. MV*/MS*: a correction moving the trip a week later, with and without an earlier break. RS*: the QRE2-P34-01 sequences. SYc*: the P18(e) corner.",
+  "notRun": "No full suite, no npm run verify, no verify-r*, freeze-r* or integrate-queue* script, no --write, no holdout. validate_records.py was not run: this record follows the shape of the earlier R7-D SSCTR recheck records, not decision.schema.json. Nothing was committed, staged, pushed or merged."
+ },
+ "answers": {
+  "Q1_F01F02Closure": {
+   "verdict": "Yes. SSCTR-P34R2-F01 and F02 are closed exactly as CFR2-01 and CFR2-02 state them, and every CFR2-03 control is unchanged. The extra F02 reading (the re-entry history without the superseded return) is right.",
+   "F01": "SY1 on 8e78b8a gives MODERATE 25d 2026-12-07..2026-12-31, RETURN, [TRAINING_NOT_REESTABLISHED, LATEST], runs RECOVERY_EASY 15, EASY 15, EASY 15, LONG 20. That is SY1g's stop, class and labels; SY1g has one more EASY 15 because it has one more run day. It is also R7D-FREEZE-4's SY1 output. 46934a0 gave OWN_RETURN, SHORT 4, runs from 30 to 40 minutes. SY0, SY0g, SY1x and SY1gx are identical to 46934a0. Cause closed in code: the evidence reducer exposes the systemic flag weeklyGates applied (out.systemic), and reentryBetween requires !h.systemic for running whether the week's runs are gated or are the touch and race. That is BR-Q3.2(1), BR-Q4.2 and BR-Q6 with the existing flag and no new rule.",
+   "F02": "CU3 now asks TRAINING_BETWEEN_BREAKS for exactly 2026-12-13 RUN, the session CU3f asks; nothing is applied, and the first return stays in force. Answered done by a plain review (ANr) or by the correction sent again with the long run (ANc), it equals the fresh comparator CU3fa (ANf): SHORT 4d 2026-12-14..2026-12-17, [OWN_RETURN reentered RUN 2026-12-07, STRENGTH null; LATEST], runs EASY 50, EASY 34 (the R27 eased slot), LONG 65, and every strength dose. CU1 asks exactly 2026-12-14 STRENGTH, as CU1f does. LC1 and LC1d each ask 2 sessions, as LC1f does; T32 pins them as 2026-12-14 STRENGTH and 2026-12-15 RUN on both forms, and T32 passes on my rebuild. CU2 asks the five week-5 sessions CU2f asks (46934a0: 2). Once answered, CU2a and CU2b still reach the unchanged R7-A date question (interruption.startDate/endDate), as the closure expected. CU2a differs from 46934a0 only because it answers the five sessions now asked; it now equals CU2b. C5, CU1d, CU3a, T21, T22, T26 and T28 are unchanged (T1-T30 are 40/40). The repeated correction changes nothing (T32).",
+   "movedAWeekLater": "The T32 shape on my rebuild (MV: holiday kept; trip first Mon-Thu wk5, declared Mon wk6; corrected on Fri wk6 to Mon-Thu wk6, with week 5 Mon-Thu reported done) gives TRAINING_AFTER with reentry 2026-12-07 (week 5) on the candidate. Its strength doses equal the fresh report (MVf) and also R7D-FREEZE-4's corrected output. 46934a0 read it as OWN_RETURN with lower strength doses (db lifts 1x12@20 against 2x12@22), because it read week 5 through the superseded return, in which week 5 lay inside the stop. Passing the corrected episode to stateAtBreak applies executedStateAt's existing rule 1 (the latest interruption before this one, other than this one's own earlier reports), the Q7 ruling (a named correction supersedes only the report it corrects) and BR-Q4 (a re-entry week is read from the executed record). It is the same principle as the SSCTR-P34R-F01 closure in appliedBetween. Accepted. The only remaining difference from the fresh report is the R27 slot (Q3).",
+   "controls": "Unchanged against 46934a0: every case of p34-recheck.mjs (C5 = C5f; RT1o = RT2o; RT1 OWN_RETURN with RUN null and STRENGTH re-entered; RW and RWo TRAINING_AFTER SHORT 4; SD1 ASK interruption.startedAt; F1-F3 so R-F08-1 holds), p34-ssctr.mjs, p34-ceiling.mjs and the 25 other p34-recheck2.mjs cases (SA1, SA2, UK1, UK1n, UK2, UK2n, CU1d, CU1fd, CU3a, CU3f, CU3fa, CU2b, CU2fb, LC1f, ...)."
+  },
+  "Q2_QRE2_P34_01_domainSide": {
+   "verdict": "Acceptable in domain terms: the rule, the question order and the re-ask after a confirmation sent first.",
+   "order": "The start time comes first because rule 0.8 makes it the deciding fact. A strength session on the first day cannot be ordered without it, and the two readings give different states. The I6 confirmation reads the whole record, so asked first it could not settle that state. After the restatement, I6 is asked only when the state the return started from changes, that is, only when the late fact is genuine late evidence (Founder 0.7, CF-P34-04). On the candidate: RS1 (start after the lift) gives the I6 question (interruption.episodeId for the trip), then the confirmation gives REESTABLISH, and later reviews give KEEP, ADOPT_LOGGED_LOADS, KEEP. The plan equals the control with the start time stated from the outset (RS1c, T33): back-squat 1x9, db lifts 1x8 ESTABLISH, against 1x7 and 1x12 before the lift was known. RS2 (start before the lift) gives KEEP with the plan unchanged, because nothing is left to confirm. This asks only what changes the decision and keeps confirmation-first wherever late evidence changes the state. Compared with the all-facts-known reading (RS1k: the lift reported with the holiday from the outset), RS1 lets Sunday's long run wait and re-establishes the dumbbell loads instead of reading them from the log. Both differences are conservative and come from the existing late-evidence path and the day of the decision; RS1 equals RS1c, which goes through the same path.",
+   "confirmFirst": "Acceptable. RS3: confirming the trip first asks the start time again, because the deciding fact is still unstated. The confirmation is kept, and the restatement then applies the return by itself: one question per missing fact, never a second confirmation, no later ask, and the same plan as RS1. Sent as a declaration, the restatement is recorded and the next return report or weekly review applies it (T33). While the start time is unanswered (RS6), the ask lasts for the rest of the re-entry week. Week 7 then reads the late fact as every late fact is read (GATED_NEXT_STEP, KEEP), and the plan in force keeps the conservative default reading (the session after the start). This is I6 as designed.",
+   "rule": "Right. A report that names a break the latest return listed and repeats every fact of it, apart from the name and a start time on its first day, is the same episode stated more finely, not a break of its own. Reading it as a new break would count the same days twice (restatedKeep's counterfactual). 'The newest report decides' is I1/I3 (a newer report of the same named interruption replaces only the report in force). It is not last-write-wins between unrelated reports, which Phase 3.2 forbids: the identity is explicit. Any other changed fact is not consumed and is asked (O-02), which fails closed: nothing is applied and no dose is raised. Probed edges: (a) a named report that changes the holiday's reason to an injury (RS4, by a weekly review and by a return report) routes CLINICAL_HUMAN_REQUIRED, and the next review stays clinical, on all three runtimes, so clinical first and R-F08-1 are untouched; (b) a changed last day (RS5) is asked; (c) a restatement followed by a newer report changing the last day (RS7) is asked, so the newest decides; (d) a changed last day followed by the restatement (RS5x) resolves through I6 to REESTABLISH with no later ask on the candidate, where 46934a0 and R7D-FREEZE-4 stay in ASK through week 8. The O-02 wording is observation SSCTR-P35-O03.",
+   "cfP3402": "The correction path (R04) equals the correction with the start time stated from the outset, by every channel, idempotently (T33; it passes on my rebuild). That is CF-P34-02's equivalence on this path."
+  },
+  "Q3_O_P35_01": {
+   "verdict": "A disclosed residual, non-blocking. The Δ31 disclosure needs one precision (SSCTR-P35-O01).",
+   "reproduction": "Single-break shape (MS: the trip first reported on Mon wk6 as Mon-Thu wk5, which eases Thu 2026-12-17; then corrected on Fri wk6 to Mon-Thu wk6, which covers that slot). The candidate, 46934a0 and R7D-FREEZE-4 all give the same result: the eased slot stays at 2026-12-17, now inside the corrected break, and the first quality after the break, Thu 2026-12-24, runs THRESHOLD 41. The fresh report (MSf) eases 2026-12-24 to EASY 41. So O-P35-01 is pre-existing, from the R7-A.2 slot rule (I2, I9), exactly as stated. Two-break shape (MV, the T32 test): the candidate and 46934a0 give the same result (2026-12-24 THRESHOLD 41), but R7D-FREEZE-4 eased 2026-12-24 there, because its correction dropped the earlier break (the SSCTR-P34-F02 defect that Phase 3.4 fixed). On that shape the candidate is one eased quality session less conservative than R7D-FREEZE-4. The difference entered with Phase 3.4, not Phase 3.5. Δ31's 'é igual no R7D-FREEZE-4' holds for single-break corrections only.",
+   "classification": "Non-blocking. (1) No re-entry rule is broken, and no dose rises above the last executed one: a SHORT return resumes the last completed doses, and THRESHOLD 41 on 2026-12-24 is the dose the first report already planned for that day. It is not the F01 direction. (2) The role's R7-A recheck classified R27 itself, R6-NONCLINICAL-RETURN condition 7, as low weight and non-blocking when it is not met, citing short-break detraining evidence (R7A-S04, S05, S06; relied on as recorded). Here the session runs a week after a 4-day break, after two runs (LONG 75 and EASY 50) that the existing gates read first. (3) Closing it needs a binding-reading choice: how R27 combines with the R7-A.2 rule that a newer report of the same break keeps a past slot. That choice is outside Phase 3.5's authorization (no new rules) and outside CFR2-03 (nothing else changes). Route it to the next Founder-authorized phase. Proposed reading, no number: a past eased slot that lies inside the corrected break was never run after it, so the slot is the first quality slot ahead of the corrected break, as a fresh report reads it (CF-P34-02). It would come with a directed test where MS = MSf and MV = MVf."
+  },
+  "Q4_HARNESS7": {
+   "verdict": "P18(c), P18(f) and the P17/P08 restatement reading read the binding texts correctly. P18(e) mostly does, with one exception: it is not wholly inside the runtime's systemic rule (finding SSCTR-P35-F01, an instrument issue, non-blocking for the freeze and binding before any final holdout).",
+   "P18c": "Correct. The reducer's systemic rule reads every session's latest report, counted or optional, and holds every gate (BR-Q3.2(1); BR-Q4.2: an optional session counts only through that rule). mayConverge counts any live session whose report the runtime may read as adverse: UNDER, ADVERSE, HARDER or IMPAIRED, which also covers what the classifier calls CONFLICTING. It also counts a recorded SYSTEMIC_SIGNAL. That is a superset of the rule, so P18(c) never reads as nominal a week the systemic rule may hold, and it stays sufficient (stricter, as Δ3 registered). On my candidate run of the recheck2 detectors, SY1's week is no longer read as nominal, which removes the DEV-48 false block. P18(c) still never reads a week with an adverse required session as nominal, because executedNominal requires nominal responses (BR-Q6 per session).",
+   "P18e": "Mostly right: no sport re-enters, by TRAINING_AFTER or OWN_RETURN, through a week whose reports converge adversely (BR-Q3.2(1), BR-Q6). It excludes partial reports, as kindOf does. The exception: it counts every complete report with recovery ADVERSE. The reducer's classifier (r6-learning classify) reads performance OVER with recovery ADVERSE (or with effort HARDER) as CONFLICTING, not ADVERSE, unless the report is confounded. The systemic rule counts ADVERSE rows only, and BR-Q6 binds it unchanged. Probe SYc1 (SY1 with those responses on the strength session and the optional shakeout): the candidate gives TRAINING_AFTER, reentry 2026-12-21, conformant with BR-Q4.2-4.3 and BR-Q6 as the reducer reads them, while adverseConvergence(week 7) is true, so P18(e) would report SYSTEMIC_WEEK_REENTERED (SAFETY_BLOCKER). The same corner reaches ordinary weeks: a CONFLICTING strength session advances, while a recovery-ADVERSE run in the other sport is one session in one sport, so it is not systemic. The DEV corpus has no such response, so validation 7 cannot see it. Controls: SYc0 (recovery ADVERSE only) gives the hold and P18(e) is true; SYc2 (next day IMPAIRED) gives the hold and P18(e) is false (necessary only, as intended).",
+   "P18f": "Correct. It applies R7-C G01 (unknown training is neither done nor not done, so it is asked) and the F02 closure. For every applied return with separate breaks, including corrections and confirmations, a break placed by the training after it (OWN_RETURN, TRAINING_NOT_REESTABLISHED, NO_TRAINING_BETWEEN) has no live planned session without a report before the next break, or before the stop for OWN_RETURN. Days inside another episode's in-force recorded stop are known; the superseded report of the same episode is not. TRAINING_AFTER rows are left out, as the runtime asks nothing after a full re-entry week. That matches stopOf.",
+   "P17P08": "Correct against INTERFACE-7 section 2: a restatement is that break's report, never a break of its own, so it opens no P17 window and P08 measures no return from it. A changed fact still opens its window (W-P17e), and a later report of any kind still ends an earlier window. restatesListed matches the runtime's restates in substance: the same name match, the same comparison of every fact but the name and start time, and the start time absent or on the first day. It differs in two respects, both harmless. It exempts any restating review, not only the newest; a newer report that changes a fact still opens its own window. It also does not check that the start time is no later than the report, which cannot happen for an earlier break a return already listed. For BR-Q3.2(1), BR-Q4.2 and BR-Q6, see P18(c) and P18(e) above."
+  },
+  "Q5_newNumbers": {
+   "verdict": "Confirmed: none.",
+   "reasoning": "The added runtime code holds only existing day and index arithmetic (onDate(x,+1/-1), x.j+1, .at(-1)), the existing timezone default (??0) and the structural rows.length<2: a listing needs an earlier break beside LATEST, which is no training quantity. Other digits appear only in comments and ids (rule 0.8, Phase 3.4/3.5, finding ids). Policy, catalog, composition and the r5/r6/r7-b0 inputs are unchanged since 46934a0. The harness's '>1 sport or >=3 sessions' copies the reducer's existing systemic rule. Neither this record's finding nor its proposed O-P35-01 reading needs a number."
+  }
+ },
+ "findings": [
+  {
+   "id": "SSCTR-P35-F01",
+   "class": "INSTRUMENT_FIDELITY_DEFECT (R7D-HARNESS-7 P18(e), PREREG-6 Δ27; BR-Q3.2(1), BR-Q6)",
+   "severity": "MODERATE (validity of the final holdout; no product-safety effect, the runtime is conformant)",
+   "blocking": false,
+   "bindingBefore": "any final holdout (not R7D-FREEZE-5)",
+   "new": true,
+   "narrow": true,
+   "runtimeOnly": false,
+   "where": "harness/lib/properties.mjs adverseConvergence (P18(e)); harness only",
+   "finding": "Δ27 registers P18(e) as 'a reading inside the systemic rule, therefore a necessary condition', and the code comment says the runtime reads every report it counts as adverse. That is not so for a complete report with recovery ADVERSE and performance OVER (or effort HARDER with performance OVER). The reducer's classifier reads it CONFLICTING, not ADVERSE, unless the report is confounded. The systemic rule, bound unchanged by BR-Q6, counts ADVERSE rows only. P18(e) can therefore report SYSTEMIC_WEEK_REENTERED (SAFETY_BLOCKER) for a runtime that follows the binding rule. On the final holdout that would be a false blocker, which closes R7-D NOT_READY with no correction loop.",
+   "reproduction": "probes/p35-recheck.mjs SYc1: the SY1 race week of p34-recheck2.mjs, with the strength session and the optional shakeout reported with {recovery: ADVERSE, performance: OVER}. On 8e78b8a the result is REESTABLISH, SHORT 4d 2026-12-28..2026-12-31, [TRAINING_AFTER reentry 2026-12-21, LATEST], and R7D-HARNESS-7's adverseConvergence of week 7 is true, so the P18(e) unit fails. Controls: SYc0 (recovery ADVERSE only) gives MODERATE 25 TRAINING_NOT_REESTABLISHED with adverseConvergence true and no re-entry; SYc2 (next day IMPAIRED) gives the hold with adverseConvergence false. 46934a0 gives the same TRAINING_AFTER for SYc1. The DEV corpus (DEV_CASES_R7D_7) holds six recovery-ADVERSE responses, none with performance OVER.",
+   "smallestFix": "By an append-only PREREG addendum before any final holdout: adverseConvergence counts a report only when the reducer reads it ADVERSE given recovery ADVERSE, that is, when performance is not OVER or the report is confounded (kindOf). Add one DEV false-block control of the SYc1 shape, clean on the candidate, and keep DEV-48 / W-P18j sensitivity. Restate Δ27's necessary-condition wording. If no harness change is made, list the shape as NOT_EVALUABLE for P18(e), adjudicated by the domain judge. P18(a), (c), (d), (f), P02, P03, P06(b) and P08 are never weakened. The Chief may instead fix it before the freeze, as a harness-only change; then the candidate changes and its instrument check is repeated.",
+   "authority": "BR-Q6 (the reducer's gates unchanged, the systemic rule included), BR-Q3.2(1), Δ27's own stated intent. No number.",
+   "routeTo": "Chief, then Engineering (harness), with Quality/Reliability for the instrument check; domain closure by a fresh SSCTR instance or the domain judge brief."
+  }
+ ],
+ "observations": [
+  {
+   "id": "SSCTR-P35-O01",
+   "blocking": false,
+   "note": "O-P35-01, classified as a disclosed residual (Q3). The Δ31 text and the freeze record should say: identical on R7D-FREEZE-4, 46934a0 and the candidate for single-break corrections (MS); in the two-break correction shape of T32 (MV), R7D-FREEZE-4 eased the next quality slot, because its correction dropped the earlier break, and 46934a0 and the candidate do not. On that shape it is one eased quality session less conservative than R7D-FREEZE-4, from Phase 3.4. Route the R27 / R7-A.2 slot reading (Q3) to the next Founder-authorized phase. The final holdout's domain judge reads this shape as the disclosed residual."
+  },
+  {
+   "id": "SSCTR-P35-O02",
+   "blocking": false,
+   "note": "This is a precision point in the role's own BR-Q6 text, not a defect. BR-Q6's second sentence ('an adverse or conflicting response on a required session makes its sport not re-entry-complete') matches the run gates, which hold on ADVERSE or CONFLICTING. The strength gate holds on ADVERSE only: a CONFLICTING strength session whose logged target is met advances, in ordinary weeks as in re-entry weeks (SYc1: TRAINING_AFTER). BR-Q4.3 binds complete(STRENGTH), and BR-Q6's first sentence binds the gates unchanged, so the runtime is conformant, as on 46934a0. Read the second sentence as 'as the reducer's gates read it' and disclose it. Whether a strength session above target with an adverse recovery should hold is an R6 gate question, not reviewed here."
+  },
+  {
+   "id": "SSCTR-P35-O03",
+   "blocking": false,
+   "note": "When a named report of an earlier listed break changes a fact other than the start time (RS5, RS7), O-02 asks it with the pre-existing text 'say when it started and ended, as one period'. For breaks with weeks of training between, that wording invites the athlete to merge them, a reading direction A forbids (weeks of training between are never days of the stop). It fails closed, it is identical on 46934a0, and R7D-FREEZE-4 asks a relation question there. The candidate also adds an exit, because restating the break resolves it (RS5x). For the interface and wording owner: name the fact actually needed, either the break as first reported (with its start time if asked) or the change confirmed. No domain effect beyond the ask."
+  }
+ ],
+ "aeReview": {
+  "1_planAdequate": "Yes on the closure shapes. SY1 holds running under the systemic rule. CU3, CU1, LC1 and CU2 ask about the uncovered sessions before any return applies, then give the fresh report's return. The restatement gives the reading of the start time stated from the outset. One residual is disclosed: O-P35-01.",
+  "2_materialFact": "Yes. The declared breaks, the executed sessions with their responses, the named correction, the restatement and the late lift are all on the append-only record. The unreported sessions and the start time are facts to ask, not facts on record.",
+  "3_keepDefensible": "KEEP of 8e78b8a as the frozen shadow reference is defensible under the conditions below.",
+  "4_changeNecessary": "No further runtime change before this freeze. One instrument change (SSCTR-P35-F01) is necessary before the holdout.",
+  "5_smallestIntervention": "A one-predicate harness correction (adverseConvergence reads as the reducer's classifier does) with a DEV control, by PREREG addendum.",
+  "6_smallerAlternatives": "Leaving P18(e) as is risks a false SAFETY_BLOCKER on the holdout. Listing the shape as NOT_EVALUABLE is the acceptable smaller fallback. Changing the runtime's systemic rule instead would change a binding rule (BR-Q6) and is out of scope.",
+  "7_priorityAndProgression": "The closures restore BR-Q3.2's coupling and the correction rule and raise no dose. O-P35-01 leaves one quality session un-eased, at no dose above the last executed one.",
+  "8_evidenceSupportsDose": "No dose is judged here. The approved R6 recipes, the decision's CL1-CL7 and R27's recorded weight are relied on as recorded.",
+  "9_uncertainty": "How often these shapes occur in real use: a correction that moves a short break over its eased slot is plausible but uncommon; a report with performance OVER and an adverse recovery is plausible. Group means only; no individual prediction.",
+  "10_askHoldClinical": "ASK for the uncovered sessions (F02) and for the start time (rule 0.8), with I6 confirmation-first when the state changes. The systemic hold for F01. CLINICAL_HUMAN_REQUIRED for a clinical change, even when the report names an earlier break (RS4). F08 stays BLOCKED_BY_AUTHORITY."
+ },
+ "newPrescriptiveAuthority": "None. This record adds or approves no dose, threshold, count, length, percentage, ceiling, increment, tolerance, cadence, recipe or clinical criterion. Its acceptance uses only BR-Q1 to BR-Q6, the Q7 addendum ruling, I1/I3/I6, rule 0.8, R7-C G01, R27/D58 and the R7-A.2 slot rule as recorded.",
+ "conditionsForFreeze": [
+  {
+   "id": "CFP35-01",
+   "binding": "R7D-FREEZE-5",
+   "condition": "Freeze exactly the runtime and test bytes checked here (r6-adaptation.mjs 60d91e22..., r6-composition.mjs 8aa5f950..., r7d-phase35.test.mjs 0be0fb45..., T1-T35). Any other runtime or test byte change returns to a fresh SSCTR instance for the items it touches (CFR2-07 carried)."
+  },
+  {
+   "id": "CFP35-02",
+   "binding": "freeze record, handoff and a PREREG addendum",
+   "condition": "Disclose SSCTR-P35-O01 (O-P35-01 as a non-blocking residual, with the single-break and two-break comparison to R7D-FREEZE-4 and its route), SSCTR-P35-O02 (the BR-Q6 reading for strength) and SSCTR-P35-O03 (the O-02 wording). Record SSCTR-P35-F01 as open before any final holdout."
+  },
+  {
+   "id": "CFP35-03",
+   "binding": "before any final holdout",
+   "condition": "Close SSCTR-P35-F01 as its smallestFix states. Until then, R7D-HARNESS-7's P18(e) is not a necessary condition for reports given with performance OVER, and a P18(e) unit on such a report goes to the domain judge, never to an automatic SAFETY_BLOCKER."
+  },
+  {
+   "id": "CFP35-04",
+   "binding": "freeze record and queue",
+   "condition": "Carry CFR2-06 unchanged: no new numbers; shadow reference only; V1_COACHING_AUTHORITY_READY = NO; no human or empirical validation; F08_OPEN, BLOCKED_BY_AUTHORITY (F08-BLOCK-G04), never resolved; R-F08-1 checked (F1-F3 unchanged here); the queue stays at 235 with no append, and the Phase 3.4 and 3.5 items stay proposed."
+  }
+ ],
+ "proposedHumanRevalidation": {
+  "status": "PROPOSED_ONLY. Nothing was appended; this instance did not read or touch the queue file. Phase 3.5 authorizes no append (AUTHORIZATION_PHASE35). The owner can append it only in a phase that authorizes it, once a freeze binds 8e78b8a's runtime. Its content supersedes SSCTR-R7D-P34-RECHECK-r2's proposed HQ-R7D-SSCTR-P34-RECHECK (r2) and r1; the owner appends one item, not several.",
+  "needed": true,
+  "why": "Freezing the corrected candidate carries prescriptive impact relative to R7D-FREEZE-4: direction A per sport, the re-entry week contract with the race-key path under the systemic rule, the correction re-read (no superseded report as a known stop or as re-entry history), the start-time restatement reading, the first-day question, the ceiling fix and R-F08-1. It also accepts O-P35-01 and the QRE-P34-05/06 readings as residuals. No number is new.",
+  "item": {
+   "queue_id": "HQ-R7D-SSCTR-P35-RECHECK (proposed; supersedes the proposed HQ-R7D-SSCTR-P34-RECHECK r1/r2)",
+   "decision_id": "SSCTR-R7D-P35-RECHECK",
+   "decision_revision": "r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "scope": "R7-D Phase 3.4 implementation of SSCTR-R7D-P34-DECISION-r1 (direction A per sport, gamma; BR-Q1 to BR-Q6), the SSCTR-P34-F01 ceiling fix, the SSCTR-P34-F02 correction re-read and R-F08-1. It covers the corrections for SSCTR-P34R-F01 to F04 and QRE-P34-01 (46934a0), and those for SSCTR-P34R2-F01 (systemic flag on the race-key path), SSCTR-P34R2-F02 (the superseded report is neither a known stop nor re-entry history) and QRE2-P34-01 (start-time restatement of a listed break) in 8e78b8a. F08 is not approved.",
+    "runtimeBaseline": "Candidate 8e78b8a (runtime 5839f83: r6-adaptation.mjs 60d91e22..., r6-composition.mjs 8aa5f950...); the freeze that binds it is named by the coordinator.",
+    "policySha256": "a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100"
+   },
+   "approved_scope": "Offline synthetic shadow reference; nonclinical adults; conditional on CFP35-01 to CFP35-04; no new dose, threshold, count, length, percentage, ceiling, increment, tolerance, cadence, recipe or clinical criterion. Disclosed residuals: SSCTR-P34-F03, F04, SSCTR-P34R-O01, O02, SSCTR-P34R2-O02, O-P35-01 (SSCTR-P35-O01) and the O-02 wording (SSCTR-P35-O03).",
+   "conditions": [
+    "CFP35-01 to CFP35-04 of SSCTR-R7D-P35-RECHECK-r1",
+    "CFR2-01 to CFR2-07 of SSCTR-R7D-P34-RECHECK-r2 (CFR2-01 to 03 met here)",
+    "CFR-01 to CFR-06 of SSCTR-R7D-P34-RECHECK-r1",
+    "CF-P34-01 to CF-P34-11 of SSCTR-R7D-P34-DECISION-r1"
+   ],
+   "approval_date": null,
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Chief / Founder",
+   "human_review": null,
+   "linked": [
+    "HQ-R7D-SSCTR-P34-DECISION (proposed)",
+    "HQ-R7D-SSCTR-P33-RECHECK",
+    "HQ-R7D-SSCTR-P32-RECHECK",
+    "HQ-R7D-SSCTR-P31-RECHECK",
+    "HQ-R7D-SSCTR-P3-RECHECK",
+    "HQ-R7D-SSCTR-F03B"
+   ],
+   "re_review_triggers": [
+    "Any byte change to CoachingCore/src or to a file bound by the freeze that implements this record",
+    "The SSCTR-P35-F01 harness fix, or any other change to P17, P18 or P08",
+    "A decision on the R27 / R7-A.2 slot reading (O-P35-01)",
+    "A Founder decision on a partial-adherence criterion, per-sport return classes, the planned-sport reading for unavailable sessions, post-event bounds, or F08",
+    "A change to the reducer's classifier, complete rule, completion rule or systemic rule, the strength gate, the session roles, the race-week composition or the correction rules",
+    "A holdout result touching P03, P18, P02, P06(b), P08, TRAINING_BETWEEN_BREAKS, TRAINING_NOT_REESTABLISHED, OWN_RETURN, WITHIN_OWN_RETURN, reentryWeek or a restatement",
+    "A relevant new systematic review or meta-analysis on detraining, retraining, reduced training, tapering or return to running",
+    "An adverse event or runtime inconsistency",
+    "Funded qualified-human revalidation (may maintain, modify or revoke, with no AI veto)"
+   ]
+  }
+ },
+ "states": {
+  "V1_COACHING_AUTHORITY_READY": "NO",
+  "FINAL_HOLDOUT_EXISTS": "NO (no final/ folder under the audit; none created)",
+  "F08": "F08_OPEN (BLOCKED_BY_AUTHORITY, F08-BLOCK-G04)",
+  "humanQueue": "235 items, no append (not read or touched by this instance)"
+ },
+ "evidenceStatus": "Runtime behaviour reproduced on my own rebuilds of 8e78b8a, 46934a0 and R7D-FREEZE-4 (3edf3c5). The predecessor's 46934a0 and FREEZE-4 outputs reproduce byte for byte. No new scientific claim.",
+ "confidence": {
+  "runtimeBehaviour": "High for every case cited: each comes from my own runs, with the predecessor's outputs reproduced exactly and the closure tests RED on 46934a0.",
+  "closures": "High: CFR2-01 and CFR2-02 expectations are met case for case, and the changed sets equal the author's fidelity record.",
+  "SSCTR_P35_F01": "High on the mechanism: the classify rule, the systemic rule, adverseConvergence's code and the SYc1 run agree. How often it occurs on a holdout is unknown.",
+  "domainJudgment": "Moderate to high. The judgments are fidelity to binding readings. The O-P35-01 weight rests on R27's recorded classification, not on a new review of evidence."
+ },
+ "governance": {
+  "gate": "SSCTR side: ACCEPT_WITH_CONDITIONS for freezing 8e78b8a. R7D-FREEZE-5 also needs the independent Quality/Reliability check to pass; the Chief decides within the Founder's Phase 3.5 limits.",
+  "publication": "Not published; not Product Truth.",
+  "clinical": "No clinical judgment was made. Clinical-cause episodes and clinical changes stay CLINICAL_HUMAN_REQUIRED; F08 stays BLOCKED_BY_AUTHORITY.",
+  "closedHere": "SSCTR-P34R2-F01 and SSCTR-P34R2-F02 (CFR2-01, CFR2-02); CFR2-03 met. The domain side of QRE2-P34-01 is accepted. O-P35-01 is classified non-blocking. CFR2-04 is met in substance for SY1 and CU3 sensitivity (DEV-48, DEV-49), with SSCTR-P35-F01 open on P18(e)'s necessary-condition claim.",
+  "open": "SSCTR-P35-F01 (before any final holdout); the O-P35-01 reading (next authorized phase)."
+ },
+ "expiry": {
+  "reviewBy": "2027-05-07",
+  "orEarlierOn": [
+   "any runtime byte change",
+   "the SSCTR-P35-F01 harness change",
+   "a policy or catalog change",
+   "a Founder decision on per-sport classes, partial adherence, the planned-sport reading, post-event bounds, G03 or F08",
+   "a holdout result touching P03, P18 or OWN_RETURN",
+   "a new SR/MA on detraining, retraining or tapering",
+   "an adverse event",
+   "human revalidation"
+  ],
+  "owner": "Chief / Founder"
+ },
+ "validation": {
+  "validateRecords": "Not run. This record follows the shape of the earlier R7-D SSCTR recheck records, not decision.schema.json.",
+  "probeFiles": {
+   "probes/p35-recheck.mjs": "5bb55148ddcedf668c5b5faf5e66bbc2c5e48833ee343342d7681bbcaf4e47fa"
+  },
+  "probeOutputs": {
+   "probes/out/p35-recheck.CANDIDATE-8e78b8a.json": "ed6a183c976c4c05bdc4370c3f45ee925b4fa47cff142da76e7d00c694a2cc94",
+   "probes/out/p35-recheck.CANDIDATE-46934a0.json": "da0bceec2fd8fb591ebfc9347c700e23cfafd0bbd9fe102cf5e2fe71d9bb5608",
+   "probes/out/p35-recheck.R7D-FREEZE-4.json": "9517d8f8fa86b8c78fc17d707c7899ca67d5cbe404bef8b45aa0fe5dc7149ed7",
+   "probes/out/p34-recheck2.CANDIDATE-8e78b8a.json": "a90247470d32671dd62cc593c3a08e54bca4bcccb3b1f39e10727d6547a4c2fa",
+   "probes/out/p34-recheck2-detectors.CANDIDATE-8e78b8a.json": "e07aaf1b414a95d6896bcb2c8c8cb0c5e93b9af63a298eb3ca0836b4ea37f350",
+   "probes/out/p34-recheck.CANDIDATE-8e78b8a.json": "1ac2ec247dfeafb45292f20791c3ae1c260cadf3a6c30f2d699836a79d3bb301",
+   "probes/out/p34-recheck-detectors.CANDIDATE-8e78b8a.json": "e075c32e45bdc66d814da1b876bd5ab893aff64757f5f76c01d4cdf2188224c2",
+   "probes/out/p34-ssctr.CANDIDATE-8e78b8a.json": "fab8cb40975108ede26e148341a18fc2e6955b844d875c43eab04f80eb0e787e",
+   "probes/out/p34-ceiling.CANDIDATE-8e78b8a.json": "c85301962e11dc89efe27f6cce2dd6db184fcbd5b184ff546053c7267c478c0c"
+  },
+  "predecessorReruns": "My 46934a0 and FREEZE-4 reruns of the Phase 3.4 probes are byte-identical to phase34/reviews/ssctr/probes2/out and probes/out (hashes in whatWasRun.reproduced). They are not copied here.",
+  "usage": "Copy probes/p35-recheck.mjs to the same relative path under a scratch root that holds CoachingCore, the five SSCTR authority records and audits/domain-coaching-r7-d-2026-11-02 (phase33 helpers; the harness lib for SYc). Then run: node <probe> <runtime root> --label <name> [--harness <root with the R7D-HARNESS-7 lib>]. Never run it on the repository."
+ }
+}

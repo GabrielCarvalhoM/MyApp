@@ -1,0 +1,379 @@
+{
+ "recordId": "QRE-R7D-PHASE35-CHECK-r1",
+ "date": "2026-11-07",
+ "kind": "NARROW_QUALITY_RELIABILITY_CHECK",
+ "candidate": "8e78b8a",
+ "candidateCommit": "8e78b8a1933c697c95b5193ebf96d2c41dba1f59",
+ "verdict": "NOT_READY",
+ "verdictNote": "QRE2-P34-01 is closed: on every path probed the start-time question raised by a re-read of a recorded return is answerable by any channel, the next question (the I6 confirmation) is answerable, and no later review asks; the persistent asks that remain are each for a fact still unstated and each clears when it is stated, at any week probed. The F01 and F02 code is correct and scoped (an independent differential reproduces 172/168/4 with the same four cases). The Delta-23 items are done (guard, T34, T35, not-evaluable listing, Delta-30 text). One blocking defect was found on the confirmation channel the Phase 3.5 answer path leads to: QRE-P35-01. An unnamed newer report of the latest break with the same dates (the R7-A section 9 duplicate rule, and the I6 question's own 'or the same dates' option) re-establishes the latest break alone after a return that read an earlier break as its own return. The own return is dropped from the record and the state, and strength resumes known loads where the return in force and the named confirmation give the return steps. R7D-FREEZE-4 asks on the same input. It is a progression regression against R7D-FREEZE-4 on an accepted input, which the Phase 3.5 authorization excludes ('sem regressao de seguranca ou progressao'). It was introduced by Phase 3.4's own-return reading (46934a0) and carried unchanged, so it is new as a finding, not new in Phase 3.5's bytes. It is narrow and runtime-only, and a scratch prototype of the smallest fix passes every test and changes no corpus case. Three instrument defects (QRE-P35-02 to -04) and two test gaps (QRE-P35-05) are non-blocking for the runtime but bind before any holdout or the next runtime change. freeze-r7d-5.mjs refuses on this verdict (line 102).",
+ "reviewer": {
+  "role": "Quality & Reliability Engineer 1.3.0",
+  "model": "claude-opus-5-5",
+  "effort": "xhigh",
+  "nativeAdapterDispatch": "not verified (dispatched as a subagent instance)"
+ },
+ "independence": "Fresh instance. Wrote none of the Phase 3.4 or 3.5 runtime, tests, harness, PREREG-6 addenda, INTERFACE-7, brief 6, evidence or scripts. Did not open phase35/reviews/ssctr/ (it exists untracked in the worktree; not read). Ignored the stopped instance's qre-p35-* scratch folders. No delegation. Wrote only this record, its Markdown and probes/ (and probes/out/) under phase35/reviews/engineering/; nothing committed, staged, pushed or deleted. Every run was on copies in the new scratch directory qre2-p35-20261107-165736-736; mutants and prototypes were built in new subdirectories and never deleted (the full-suite copies had their one mutated file rewritten with its original bytes, hash-checked). freeze-*, verify-* and npm run verify were not run.",
+ "scope": "Section 4 (Quality/Reliability) questions 1-4 of phase35/reviews/REVIEW_REQUEST_PHASE35.md on 8e78b8a. No domain or clinical decision is made: such points are routed. F08 stays BLOCKED_BY_AUTHORITY and is not judged.",
+ "runtimeBytes": {
+  "CoachingCore/src/r6-adaptation.mjs": "60d91e2259bd3bf41d5f01b085a9b230e0f01c9979c7239a15fec0c7c4a9e310",
+  "CoachingCore/src/r6-composition.mjs": "8aa5f950dff697bf80425f364462fdfde9cfad937027ab8a4cf2640af7cc18a8",
+  "diffFrom46934a0": "git diff 46934a0 8e78b8a -- CoachingCore/src lists r6-adaptation.mjs only; the 44 source files equal EVIDENCE_PHASE35.runtimeSource",
+  "R7D-FREEZE-4": "rebuilt from 8bbbb8e: r6-adaptation.mjs 15e4279b..., r6-composition.mjs ff965eb6...",
+  "headAtReview": "8e78b8a at the start and through every run. While this record was being written, HEAD moved to 6203dcf (2026-11-07 18:15:43 -0300, another author: 'R7-D Phase 3.5 bounded cycle ... QRE-P35-01 closed in r6-adaptation.mjs only; directed tests T36-T38'). It changes CoachingCore/src/r6-adaptation.mjs and CoachingCore/test/r7d-phase35.test.mjs and acts on this record's in-progress findings. From 18:16 five working-tree files were modified, uncommitted: harness/lib/properties.mjs, harness/validation/build-dev-cases.mjs, harness/validation/run-validation.mjs, phase35/probes/phase35-differential.mjs and phase35/probes/phase35-mutation.mjs. None of this is reviewed here, and none was touched or reverted by this check. The verdict judges 8e78b8a's committed bytes, rebuilt by git archive. 6203dcf and any harness revision need their own independent check (CQ3-1, CQ3-3)."
+ },
+ "sourcesRead": [
+  "phase35/reviews/REVIEW_REQUEST_PHASE35.md; phase35/AUTHORIZATION_PHASE35.md",
+  "phase34/reviews/engineering/QUALITY_CHECK_R7D_PHASE34_R2.json (CQ2-1 to CQ2-5, QRE2-P34-01 requiredFix) and probes2/qre2-p34-runtime.mjs, qre2-p34-harness.mjs",
+  "git diff 46934a0 8e78b8a -- CoachingCore/src and the surrounding runtime (evaluateProgram's restatement wiring, keptBreaks, listedBreaks/restates/naming/restating/restatedReports/restatedBreak/restatedKeep, recordedStop, stopOf, reentryBetween, unreportedBetween, stateAtBreak, evidenceState, staleReturn, returnAfterPause, interruptionEpisode, clinicalRoute, interruptionScreen, kindOf/classify, weekEvidence)",
+  "CoachingCore/test/r7d-phase35.test.mjs (T31-T35)",
+  "git diff 46934a0 8e78b8a -- harness (properties.mjs P17/P08 restatesListed, P18(c) mayConverge, P18(e) adverseConvergence, P18(f), NESTED guard; r7d-harness.mjs notEvaluableCases; report.mjs), harness/README.md, validation/run-validation.mjs (header), DEV-48 to DEV-52",
+  "PREREGISTRATION_R7D_6.md Delta-21 to Delta-33; author/INTERFACE_DELTA_R7D_7.md",
+  "phase35/evidence/EVIDENCE_PHASE35.json, MUTATION_PHASE35.json, DIFFERENTIAL_VS_46934A0.json (via its runner phase35/probes/phase35-differential.mjs), FIDELITY_PHASE35.json and fidelity/qre2-p34-runtime.candidate.json; phase35/probes/phase35-mutation.mjs; phase35/regression/diagnostic/SUMMARY.md",
+  "CoachingCore/scripts/freeze-r7d-5.mjs and verify-r7d-5.mjs (read, not run)"
+ ],
+ "whatWasRun": [
+  {
+   "what": "Full suite on a git archive of 8e78b8a (with node_modules copied in)",
+   "result": "1002/1002 pass (node v24.19.0)"
+  },
+  {
+   "what": "Directed R7-D files on the rebuild",
+   "result": "95/95 (3.5 10, 3.4 40, 3.3 14, 3.2 17, 3.1 14)"
+  },
+  {
+   "what": "RED: r7d-phase35.test.mjs on a copy of 46934a0",
+   "result": "10 tests: exactly T31, T32 x3 and T33 x3 fail (7); T34 and T35 x2 pass (3)"
+  },
+  {
+   "what": "The role's Phase 3.4 probe, unchanged (probes2/qre2-p34-runtime.mjs)",
+   "runtimes": [
+    "8e78b8a",
+    "46934a0",
+    "R7D-FREEZE-4"
+   ],
+   "outputs": [
+    "probes/out/qre2-p34-runtime-rerun.8e78b8a.json",
+    "probes/out/qre2-p34-runtime-rerun.46934a0.json",
+    "probes/out/qre2-p34-runtime-rerun.R7D-FREEZE-4.json"
+   ],
+   "result": "on 8e78b8a exactly 8 of 32 cases differ from 46934a0 (R04_answer_declaration, R04_answer_weeklyReview, R04_answer_returnReport, R07_late_lift_answer_holidayDeclaration, R07_late_lift_answer_holidayInWeeklyReview, R07_late_lift_answer_holidayReturnReport, R07_late_lift_answer_holidayThenTrip, R04_escape_holidayRestatedUnchanged): the author's fidelity expectedClosure list; the 8e78b8a output equals the author's fidelity/qre2-p34-runtime.candidate.json after id normalization"
+  },
+  {
+   "what": "New runtime probes (Q1, Q2)",
+   "script": "probes/qre2-p35-runtime.mjs",
+   "runtimes": [
+    "8e78b8a",
+    "46934a0",
+    "R7D-FREEZE-4",
+    "mutants Q10 and Q15",
+    "the FIX-DUP scratch prototype"
+   ],
+   "outputs": [
+    "probes/out/qre2-p35-runtime.8e78b8a.json",
+    "probes/out/qre2-p35-runtime.46934a0.json",
+    "probes/out/qre2-p35-runtime.R7D-FREEZE-4.json",
+    "probes/out/qre2-p35-runtime.mutant-Q10.json",
+    "probes/out/qre2-p35-runtime.mutant-Q15.json",
+    "probes/out/qre2-p35-runtime.proto-FIX-DUP.json"
+   ]
+  },
+  {
+   "what": "Independent differential through the harness client and canonical step view, no trigger filter",
+   "script": "probes/qre2-p35-differential.mjs",
+   "outputs": [
+    "probes/out/qre2-p35-differential.8e78b8a-vs-46934a0.json",
+    "probes/out/qre2-p35-differential.8e78b8a-vs-R7D-FREEZE-4.json",
+    "probes/out/qre2-p35-differential.46934a0-vs-R7D-FREEZE-4.json",
+    "probes/out/qre2-p35-differential.proto-FIX-DUP-vs-8e78b8a.json"
+   ],
+   "result": "8e78b8a vs 46934a0: 172 cases, 168 same, 4 differing (DEV-48, DEV-49, DEV-51, DEV-52); 8e78b8a vs R7D-FREEZE-4 and 46934a0 vs R7D-FREEZE-4: the same 24 differing cases; the only step where 8e78b8a asks and R7D-FREEZE-4 did not is DEV-49 'corr' (the F02 question, by design); no case ends in ASK on 8e78b8a where it did not on R7D-FREEZE-4 (R7D-FREEZE-4 ends in ASK in DEV-51 and DEV-52); prototype vs 8e78b8a: 0 of 172 differ"
+  },
+  {
+   "what": "Harness probes (Q3): QH1/QH4/QH5/QH6, DEV-46 to DEV-52, the R04/R07 restatement flows in the corpus format (QH10-QH14), CONFLICTING race weeks (QH15, QH16), the unnamed duplicate and confirmation (QH17, QH18), a new break after a KEEP restatement (QH19 unnamed, QH20 named), with properties and relations",
+   "script": "probes/qre2-p35-harness.mjs",
+   "outputs": [
+    "probes/out/qre2-p35-harness.8e78b8a.json",
+    "probes/out/qre2-p35-harness.46934a0.json",
+    "probes/out/qre2-p35-harness.mutant-QH-DROP.json",
+    "probes/out/qre2-p35-harness.mutant-QH-SKIP.json",
+    "probes/out/qre2-p35-harness.mutant-QH-DEPTH2.json",
+    "probes/out/qre2-p35-harness.proto-FIX-DUP.json",
+    "probes/out/qre2-p35-harness-corpus.json"
+   ]
+  },
+  {
+   "what": "False-block and sensitivity runs over the corpora (DEV_CASES_R7D_7 54, diagnostic 18, generated 100) and the probe corpus (its first 18 cases with HARNESS-7, all 22 in the probe-corpus run and with the fixes), with HARNESS-7 as committed and with the scratch harness fixes (P17 and P18(e) alone: 190 cases; all three: 194 on 8e78b8a, 76 on 46934a0 and on the prototype, 22 on QH-DROP)",
+   "result": "HARNESS-7 on 8e78b8a: no property violation on the 172 corpus cases (only the pre-existing VARIANT rows R7D-D02/D06/D14/D16); QH15, QH16 (P18(e)), QH17, QH18 (P18(d), true) and QH19, QH20 (P18 restatement) fail on the probe corpus. All three fixes on 8e78b8a: only the VARIANT rows and QH17, QH18 (true) fail. On 46934a0: DEV-48 and DEV-49 still fail (sensitivity kept), and QH17. On QH-DROP: QH10, QH11, QH12 (P17) now fail. On the FIX-DUP prototype: nothing fails (76 cases)",
+   "script": "probes/qre2-p35-corpus.mjs",
+   "outputs": [
+    "probes/out/qre2-p35-corpus.HARNESS-7.8e78b8a.json",
+    "probes/out/qre2-p35-corpus.HARNESS-7.8e78b8a.probe-corpus.json",
+    "probes/out/qre2-p35-corpus.HARNESS-7.mutant-QH-DROP.json",
+    "probes/out/qre2-p35-corpus.fixed-harness-P17-P18e.8e78b8a.json",
+    "probes/out/qre2-p35-corpus.fixed-harness.8e78b8a.json",
+    "probes/out/qre2-p35-corpus.fixed-harness.46934a0.json",
+    "probes/out/qre2-p35-corpus.fixed-harness.mutant-QH-DROP.json",
+    "probes/out/qre2-p35-corpus.fixed-harness.proto-FIX-DUP.json",
+    "probes/out/qre2-p35-harness-fixes.scratch.diff"
+   ]
+  },
+  {
+   "what": "The harness's own CLI (r7d-harness.mjs, --allow-runtime-diff, outputs in scratch) on QH1, QH4, DEV-47, DEV-50, QH10, on 8e78b8a and on the depth-2 drop mutant",
+   "outputs": [
+    "probes/out/qre2-p35-cli-not-evaluable.8e78b8a.SUMMARY.md",
+    "probes/out/qre2-p35-cli-not-evaluable.mutant-QH-DEPTH2.SUMMARY.md"
+   ],
+   "result": "SUMMARY.md lists the four NESTED_OWN_RETURN_RECORD units under 'Units not evaluable' with 'case result PASS', on both runtimes"
+  },
+  {
+   "what": "Targeted mutants of the Phase 3.5 delta in new lean copies; the directed files on each; survivors on the full suite in one full copy",
+   "scripts": [
+    "probes/qre2-p35-mutants.mjs",
+    "probes/qre2-p35-mutation.mjs",
+    "probes/qre2-p35-fullsuite.mjs"
+   ],
+   "outputs": [
+    "probes/out/qre2-p35-mutation.json",
+    "probes/out/qre2-p35-mutation.N01-N05.json",
+    "probes/out/qre2-p35-fullsuite.survivors.json",
+    "probes/out/qre2-p35-fullsuite.proto-FIX-DUP.json",
+    "probes/out/qre2-p35-fixdup-prototype.scratch.diff"
+   ],
+   "result": "baseline 95/95; killed Q02 (T31), Q11 (T20), Q16 (T33), Q17 (T33 x2), N01 (T35), N05 (T35); survived the directed files and the full suite (1002/1002 each): Q01, Q03, Q10, Q12, Q13, Q14, Q15; the depth-2 drop fails only T34 (the 3.5 and 3.4 files run); QH-DROP fails T33 x2 (the 3.5 file run); the FIX-DUP prototype passes 95/95 and 1002/1002"
+  },
+  {
+   "what": "Evidence manifest check on the rebuild",
+   "result": "the seven outputs of EVIDENCE_PHASE35.json hash as listed; its runtimeSource matches all 44 source files"
+  }
+ ],
+ "notRun": [
+  "freeze-r7d-5.mjs, verify-r7d-5.mjs (any mode), npm run verify",
+  "the author's run-validation.mjs as a whole (it needs nine superseded runtimes): the no-false-block half was reproduced case by case on the 54 DEV cases, and the two new sensitivity rows (DEV-48, DEV-49 on 46934a0) were reproduced; the other 20 rows and the 55 witnesses were read, not rerun",
+  "the author's phase35-mutation.mjs as a whole (its N01, N05 and DEPTH2 kills and the T33 kill of a restatement-drop mutant were reproduced independently)",
+  "the conformance scripts (read in the evidence manifest)"
+ ],
+ "answers": {
+  "Q1_QRE2-P34-01_everyPath": {
+   "verdict": "Closed for QRE2-P34-01 as specified. Not every confirmation channel is safe: QRE-P35-01.",
+   "R07_lateEvidence": "The late first-day lift asks interruption.startedAt naming the holiday. A restatement with a start after the lift, by a declaration, a weekly review or a return report, is read: the I6 confirmation follows (ASK interruption.episodeId, never the 'as one period' lock), the trip's named confirmation applies the return, and no review asks through week 11. The plan equals the start time stated from the outset (R07a x3). Confirming the trip first asks the start time again; the restatement then applies the kept confirmation, by the same review for a weekly review or return report, by the next review for a declaration (R07b x3). A start before the lift keeps the return unchanged, with no later ask (R07d x3). Unconfirmed, the I6 question stays until the re-entry week ends and clears at week 7, as R7D-FREEZE-4 does for an unanswered late fact (R07c). The newest report decides in both orders (R07h). A timeless restatement leaves the start time unknown and asked, then a valid one answers (R07g, R07i). A replay changes nothing (R07j). Naming the holiday by its episodeId or by its report's event id is the same (R07k). With an earlier, separately applied return in the history, it resolves too (R07m). The lift and the restatement in one review work (R07q).",
+   "R04_correction": "The correction asks the holiday's start time. The restatement by each channel applies it, equal to the start stated from the outset; resent, the correction changes nothing; no later ask through week 11 (R04a x3).",
+   "persistentAsks": "Every remaining persistent ask is for a fact still unstated, and stating it clears it at any week probed. The holiday's start time with a kept correction or confirmation: R04_question_ignored, answered in week 8 (R04b); the trip's start time sent instead (R04c); a timeless restatement (R04d); a late lift then a correction (R04e); confirmation first, left to week 9, answered in week 9 (R07l). The I6 confirmation after a restatement clears with the re-entry week (R07c). The O-02 'as one period' ask for a report of the holiday that changes another fact persists while unanswered (R07o, through week 9). It is the pre-existing class: the same ask on 46934a0, and R7D-FREEZE-4 asks the confirmation persistently on the same input. A valid restatement ends it (R07f).",
+   "escapes": "Restating the trip's own start time does not answer the holiday's start time and stays asked (genuine). Re-correcting the trip back to its first dates applies it (R7D-FREEZE-4 asked). A timeless restatement of the holiday is consumed and the question stays (genuine).",
+   "clinical": "A 'restatement' whose reason text turns clinical ('Holiday, then the flu with a fever'; category unchanged) is no restatement: CLINICAL_HUMAN_REQUIRED by every channel, inside the re-entry week (R07n) and after it (R07n2). The guard that makes this so is unpinned (QRE-P35-05).",
+   "controls": "R02a-c and R03 (the separate-breaks path, T25's shape) equal 46934a0; T25 passes. R01, R05 and R08 equal 46934a0. The other 24 cases of the Phase 3.4 probe equal 46934a0. With no question pending, a restatement keeps the plan (S1; 46934a0 locked it in 'as one period' to week 11). A single-break correction with a start time and a restatement of the latest break are unchanged against 46934a0 (S2, S4). A new break after a restatement and confirmation is read alone, equal to the control (S3).",
+   "regressionAgainstR7D-FREEZE-4": "On the corpora, none beyond the Phase 3.4 and 3.5 design: the same 24 differing cases as 46934a0; the only new ask is DEV-49's F02 question, and no case ends in ASK where R7D-FREEZE-4 did not. On the probes, the start-time question is the Phase 3.4 F04 rule: R7D-FREEZE-4 resolves the late lift by the confirmation alone, the candidate asks the start time first, and stating it resolves, the domain order routed to the SSCTR. One regression on an accepted input: QRE-P35-01 (R7D-FREEZE-4 asks; the candidate applies a dose-raising single-break return)."
+  },
+  "Q2_F01_F02_code": {
+   "F01": "Correct and scoped. evidenceState adds 'systemic: R.systemic' (the flag weeklyGates applied). Its only consumer is reentryBetween's RUN predicate: no reader hashes or spreads the at(k) objects, and historicalStateOf builds its own fields. Probe F01 (8 report variants, each gateless and gated) on 8e78b8a against 46934a0: every gated variant identical. A ninth case, a SYSTEMIC_FATIGUE event in the race week, is not informative: with the holiday kept the event is asked (reportedOnItsOwn), so no signal is recorded. The gateless variants differ only where the systemic rule holds and the touch and race were nominal (strength+shakeout ADVERSE; strength UNDER + shakeout HARDER), and those now equal their gated variant (TRAINING_NOT_REESTABLISHED, MODERATE 25). One adverse sport, two adverse runs, a nominal week and an adverse shakeout alone are unchanged. Applying the flag to strength too (Q01) is equivalent: under the systemic flag the strength gates already hold (full suite 1002/1002). Reading the next week's flag (Q02) is killed by T31.",
+   "F02": "Correct and scoped. The exception only matters where the head's identity is an applied episode, the recordedStop re-read of a correction or confirmation. In the fresh separate-breaks path the head is no applied episode, so nothing changes (F02_fresh, and the differential's 168 identical cases). Probe: corrections earlier, later at the end, shorter at the end and on the same dates equal the fresh report and 46934a0. A correction that uncovers the Monday lift asks that one session, as the fresh report does (46934a0 applied it). stateAtBreak's episode exclusion in reentryBetween is the exclusion returnAfterPause already used. The nested own-return stop is unaffected (Q03, the head's exception carried into nested stops, is equivalent: 1002/1002). P35-M02 to M04 are killed by T32 (read).",
+   "QRE2-P34-01_code": "ctx.carried with the review's own row is read only by recordedStop (grep). The restating review is decided with interruption undefined; the clinical route reads that review, which is safe because a restatement's facts equal a report the return read (QRE-P35-05 for the guard). keptBreaks excludes consumed reports only; a report changing another fact is not consumed (R07f, R07o).",
+   "noOtherPath": "Independent differential: 4 differing cases of 172, each a stated closure (DEV-48 F01, DEV-49 F02, DEV-51/DEV-52 restatement); 0 others."
+  },
+  "Q3_instruments": {
+   "CQ2-2": "Done. The NESTED guard reads 'after it' by first days. QH4 and DEV-50 give P18 PASS with one NESTED_OWN_RETURN_RECORD unit, no false block. The not-evaluable region grows only to second-level breaks that overlap the inner own-return break, and such units go to the judge, never to a pass.",
+   "CQ2-3": "Done. T34 kills the depth-2 drop: on QH-DEPTH2 only T34 fails (3.5 and 3.4 files), and the doses differ from the candidate on QH1, QH4, QH5, QH6, DEV-47 and DEV-50. The automated properties stay blind to it (P18 PASS with the unit), as Delta-30 states. The harness CLI's SUMMARY.md lists each unit with 'case result PASS', on the candidate and on the mutant. The Delta-30 text is in PREREG-6 and the README.",
+   "CQ2-4": "Done. N01 and N05, re-applied to 8e78b8a, are each killed by T35 only.",
+   "P18e_necessary": "Not in general: QRE-P35-02. It counts a complete report with recovery ADVERSE whatever its performance. The runtime classifies performance OVER with recovery ADVERSE as CONFLICTING, not ADVERSE, so its systemic rule does not hold that week. QH15 and QH16 (DEV-48 with strength and the shakeout reported OVER/ADVERSE) false-block the candidate with SYSTEMIC_WEEK_REENTERED. Sensitivity is reproduced: DEV-48 on 46934a0 is detected.",
+   "P18f_necessary": "Sound on inspection and on every run. The runtime asks unreported sessions before placing a break by the training after it (OWN_RETURN, continuity) and stops at a whole re-entry week first. The known stops are the other episodes' in-force reports, with the same live-session filter. DEV-49 on 46934a0 is detected; there is no false block on 194 cases.",
+   "P18c_sufficient": "Sound. mayBeAdverse is a superset of the runtime's ADVERSE: classify's ADVERSE, CONFLICTING and the confounded reading are all covered. A SYSTEMIC_SIGNAL is read without the clock filter, also a superset. The week is never read as nominal unless every response is nominal. There is no false block on any corpus.",
+   "P17_P08_restatement": "No false block on the candidate in DEV-51, DEV-52 and QH10-QH14, and a report changing another fact still opens its window (QH13). Two gaps: QRE-P35-03 (a restatement ends an earlier break's P17 window and opens none, so a runtime that silently drops a kept correction passes) and QRE-P35-04 (P18 does not read the restatement: a correct runtime is blocked at the next return).",
+   "falseBlockRisk": "HARNESS-7 on 8e78b8a over DEV_CASES_R7D_7, the diagnostic and the generated corpora: no property violation. Only the VARIANT relation rows of R7D-D02, D06, D14 and D16 fail, identical in every regression since Phase 3. Not-evaluable units match the author's (DEV-17, DEV-17b, DEV-41 P06; DEV-47, DEV-50 P18; nine generated cases P06). The false blocks found are in shapes no corpus holds (QRE-P35-02, -04)."
+  },
+  "Q4_evidence_and_scripts": {
+   "mutation": "Adequate for the three stated closures (15/15 read; N01, N05, DEPTH2 and a restatement-drop mutant reproduced). Two unpinned clauses of the restatement rule matter (QRE-P35-05: Q10 clinical, Q15 latest return). Q12 is unreachable: a report with a start time after it is not recorded. Q13 is reachable only through a pre-return correction that differs only in its start time. Q14 is a timeless newest report against an earlier stated time, a domain choice. Q01 and Q03 are equivalent.",
+   "differential": "Reproduced exactly, independently and without a trigger filter. It cannot see QRE-P35-01, since no corpus case holds an unnamed duplicate after an own-return return. Its triggers are necessary conditions (CQ-6).",
+   "fidelity": "Reproduced. The rerun of qre2-p34-runtime.mjs equals the author's fidelity output, and the cases that changed are exactly its expectedClosure list.",
+   "evidenceManifest": "Accurate for what it claims: the outputs hash as listed, the source bytes match, and the suite, directed counts and RED are reproduced. Its PASS says nothing about QRE-P35-01 to -04, whose shapes are in no corpus.",
+   "freezeScript": "Correctly refuses on this verdict (line 102) and on a record naming another candidate (lines 103-104). The post-review guard (line 99) compares only src, test, harness/lib and r7d-harness.mjs with the reviewed commit (QRE-P35-06). verify-r7d-5.mjs reads rec.f08.prepared, which the freeze writes, and is otherwise consistent with the record it would read. Not run."
+  }
+ },
+ "findings": [
+  {
+   "id": "QRE-P35-01",
+   "severity": "HIGH",
+   "blocking": true,
+   "new": "yes as a finding (in no earlier record); not new in Phase 3.5's bytes: introduced with Phase 3.4's own-return reading (46934a0) and carried unchanged into 8e78b8a; its exposure grows in Phase 3.5, whose answer path (INTERFACE-7 section 2) leads to the I6 confirmation",
+   "narrow": true,
+   "runtimeOnly": true,
+   "title": "An unnamed newer report of the latest break with the same dates (the duplicate rule; the I6 'or the same dates' confirmation) re-establishes the latest break alone after a return that read an earlier break as its own return: the own return is dropped and strength resumes known loads",
+   "evidence": {
+    "input": "Accepted by every runtime: R7-A section 9's demonstrable duplicate (interruptionEpisode rule 2: no episodeId, the same days as the latest interruption: SAME_BREAK, basis DUPLICATE). staleReturn's I6 question itself offers it: 'confirm that interruption again (episodeId X, or the same dates)'.",
+    "candidate": [
+     "Founder's case, the trip re-sent with the same dates and no episodeId: REESTABLISH SAME_BREAK DUPLICATE, separateBreaks [] (the holiday's OWN_RETURN row gone). Strength ahead: back-squat 2x8 at 85 kg, db-bench-press 1x8 at 22. The return in force and the named re-send give back-squat 1x7 ESTABLISH, db-bench-press 1x12 ESTABLISH (runtime R07r_plain_resend_unnamed_ownReturn; harness QH17). In the TRAINING_AFTER variant the doses are equal and only the record row is lost (R07r_plain_resend_unnamed_trainingAfter, R07p2).",
+     "The R07 answer flow (late lift, restatement after the lift, then the I6 confirmation by the same dates): REESTABLISH with separateBreaks []. Strength at week 8: back-squat 3x10, bench and row 3x10. The named confirmation (QH12 shape) gives 3x9, 2x8, 2x8 (QH18; R07p equalToNamed false).",
+     "HARNESS-7 detects both: P18 FAIL EARLIER_BREAK_DROPPED_BY_CORRECTION (QH17, QH18). No DEV, diagnostic or generated case holds the shape."
+    ],
+    "baselines": {
+     "R7D-FREEZE-4": "The same re-send is asked: its return recorded the stop's start (the holiday's first day), so the duplicate rule does not match (R07p: ASK).",
+     "46934a0": "Same as the candidate for the plain re-send. In R07 the lock came first."
+    },
+    "rootCause": "returnAfterPause re-reads a recorded return (recordedStop) only for a named report: 'else if(named){...}'. An own-return reading records the stop as the latest break's own days, so an unnamed same-dates report now satisfies the duplicate rule and is read as a single break. stateAtBreak then excludes the episode, and the holiday, never applied on its own, is not read at all.",
+    "practicalConsequence": "An athlete who confirms the trip the way the coach's own question allows, or whose client re-sends the trip report, gets strength back at known loads with more sets. A 14-day holiday's strength return steps (MODERATE) are dropped. This is less conservative than R7D-FREEZE-4 on the same input, and it is the direction of SSCTR-P32-F01 (a later break never erases an earlier one's effect) through a duplicate."
+   },
+   "smallestFix": "In returnAfterPause, read a same-dates unnamed report of the latest episode as a named one is read: replace 'else if(named){const last=...,r=last&&(last.id===i.episodeId||...)?recordedStop(...):null;...}' with a branch that also calls recordedStop(ctx,last.live.eventId,{start,end,days,startedAt}) when !named and (start??onDate(end,-(days-1)))===last.live.start&&end===last.live.end (interruptionEpisode's rule-2 test). recordedStop returns null for a return with no separate breaks, so single-break duplicates are unchanged. A scratch prototype (probes/out/qre2-p35-fixdup-prototype.scratch.diff; the worker owns the change) passes 95/95 directed and 1002/1002 suite, changes 0 of 172 corpus cases, and makes the unnamed re-send and the unnamed I6 confirmation equal the named ones (R07p, R07p2, R07r equal; QH17 P18 PASS; with the three harness fixes nothing fails on the 54 DEV and 22 probe cases). Directed tests RED on 8e78b8a should pin the QH17 shape (re-send after an OWN_RETURN return: the record and the doses equal the named re-read) and the QH18 shape (R07 answered, then confirmed by the same dates: equal to the named confirmation), with controls: a TRAINING_AFTER re-send keeps its row with unchanged doses, a continuity return is still asked, a single-break duplicate is unchanged.",
+   "route": "ENGINEERING (worker) in a Founder-authorized cycle: the Phase 3.5 authorization says a persisting real blocker means no freeze. SSCTR for the domain confirmation that the same-dates confirmation must re-read the whole record, as the I6 question text states."
+  },
+  {
+   "id": "QRE-P35-02",
+   "severity": "MEDIUM",
+   "blocking": false,
+   "new": true,
+   "narrow": true,
+   "runtimeOnly": false,
+   "title": "P18(e) is not a necessary condition: it counts recovery ADVERSE with performance OVER, which the runtime classifies CONFLICTING (not systemic), so it false-blocks a correct runtime",
+   "evidence": "QH15 is DEV-48 with the strength sessions and the optional shakeout reported performance OVER, recovery ADVERSE; QH16 is the same with a gated easy run. The candidate is not systemic (classify checks CONFLICTING first, so no ADVERSE kinds) and re-enters both sports through week 7 (TRAINING_AFTER), by its own rule. HARNESS-7: P18 FAIL SYSTEMIC_WEEK_REENTERED (a SAFETY_BLOCKER). Delta-27 and the README state the reading 'sits inside the runtime's systemic rule'; it does not for this response combination.",
+   "smallestFix": "In adverseConvergence, count a report only when the runtime reads it ADVERSE: recovery ADVERSE and (confounded or performance not OVER). On scratch: QH15 and QH16 no longer fail; DEV-48 on 46934a0 is still detected; no false block on 194 cases (qre2-p35-harness-fixes.scratch.diff, second hunk). Whether a CONFLICTING week across sports should hold re-entry is the SSCTR's (BR-Q3.2(1), BR-Q6); if it should, that is a runtime change for a later phase, not this instrument.",
+   "route": "INSTRUMENT OWNER (Chief / harness author), before any holdout exists; SSCTR for the domain question"
+  },
+  {
+   "id": "QRE-P35-03",
+   "severity": "MEDIUM",
+   "blocking": false,
+   "new": true,
+   "narrow": true,
+   "runtimeOnly": false,
+   "title": "Delta-32 removes P17's coverage of a kept break whose window a restatement ends: a runtime that silently drops a kept correction after the restatement passes every property and relation",
+   "evidence": "Mutant QH-DROP: a restatement on record also drops every other named kept report. On QH10 and QH11 (R04: the trip correction kept, the holiday restated) the correction is never applied: every later review is KEEP or GATED_NEXT_STEP, VALID, on the first return. HARNESS-7 on QH-DROP: no property or relation fails (P17 PASS), because the correction's window ends at the restatement (a later stated break ends it) and the restatement opens none. T33 kills the mutant in the tests, but in a holdout only the harness judges. The transient variant (QH-SKIP) is caught by RESTATE_DECLARED_BREAK and P08.",
+   "smallestFix": "In P17's window loop a restatement does not end an earlier window: 'if(k>i&&statedBreak(t)&&!restatesListed(t))break;'. On scratch: QH-DROP is detected on QH10, QH11 and QH12 (VALID_BEFORE_DECLARED_BREAK_APPLIED). The candidate shows no false block on 190 cases with this fix alone (P17 units 352 -> 372) and on 194 cases with all three fixes (P17 407, P18 290) (first hunk). Add a DEV case of the QH10 shape and a sensitivity row on a drop mutant.",
+   "route": "INSTRUMENT OWNER, before any holdout exists"
+  },
+  {
+   "id": "QRE-P35-04",
+   "severity": "MEDIUM",
+   "blocking": false,
+   "new": true,
+   "narrow": true,
+   "runtimeOnly": false,
+   "title": "P18 does not read the restatement (Delta-32 was applied to P17 and P08 only): the next return after a KEEP restatement false-blocks a correct runtime",
+   "evidence": "QH19 and QH20 run the DEV-51 flow (a restatement with a start before the lift, KEEP, correct), weeks 7-8 done, then a new trip in week 9, unnamed (QH19) or named (QH20). The candidate reads the new trip alone (SHORT 3), correctly. HARNESS-7: P18 FAIL OLDER_BREAK_DROPPED for the restatement, and RELATION_NOT_ESTABLISHED for the unnamed trip. The restatement is counted as an open stated break. This is the path the interface tells the athlete to use, and Delta-29 makes it a critical-coverage shape. The same reading blocks the QRE-P35-01 fix: on the FIX-DUP prototype, HARNESS-7 still fails QH18 with RELATION_NOT_ESTABLISHED (the unnamed confirmation after a restatement counted as an open break). With the fix it passes.",
+   "smallestFix": "Leave a restatement out of P18's open breaks: in p18's report collection add '&&!restatesListed(s)'. On scratch: QH19 and QH20 pass, DEV-48 and DEV-49 are still detected on 46934a0, QH17 and QH18 are still detected on the candidate, and there is no false block on 194 cases (third hunk). Add DEV cases of the QH19/QH20 shape.",
+   "route": "INSTRUMENT OWNER, before any holdout exists"
+  },
+  {
+   "id": "QRE-P35-05",
+   "severity": "MEDIUM",
+   "blocking": false,
+   "new": true,
+   "narrow": true,
+   "runtimeOnly": false,
+   "title": "Two clauses of the QRE2-P34-01 rule are pinned by no test; one of them guards clinical first",
+   "evidence": {
+    "Q10": "factsBesideStart without the reason text survives the 95 directed tests and the full suite (1002/1002). After the re-entry week, a 'restatement' whose reason text turns clinical is then consumed and decided KEEP or REDUCE: no clinical route (R07n2 on the mutant). The candidate routes CLINICAL_HUMAN_REQUIRED on every channel (R07n, R07n2). Inside the re-entry week R-F08-1 in recordedStop still routes the mutant.",
+    "Q15": "listedBreaks reading the first return instead of the latest survives everything (1002/1002). With an earlier, separately applied return in the history (R07m), the QRE2-P34-01 lock returns: 'as one period' through week 11. The candidate resolves.",
+    "narrower": "Q13 (naming without the declaredAt filter) and Q14 (a timeless newest report keeps an earlier stated time) also survive; reachable only in narrow shapes"
+   },
+   "smallestFix": "Two directed tests in the next authorized candidate: the R07n2 shape (a reason-text change is no restatement; clinical first after the re-entry week, by each channel) and the R07m shape (an earlier applied return in the history; restatement, then confirmation, no later ask). The candidate already behaves correctly: no runtime change.",
+   "route": "ENGINEERING (worker), with the QRE-P35-01 cycle"
+  },
+  {
+   "id": "QRE-P35-06",
+   "severity": "LOW",
+   "blocking": false,
+   "new": true,
+   "narrow": true,
+   "runtimeOnly": false,
+   "title": "freeze-r7d-5.mjs's post-review guard covers only src, test, harness/lib and r7d-harness.mjs",
+   "evidence": "Line 99 refuses when CoachingCore/src, CoachingCore/test, harness/lib or r7d-harness.mjs differ from the reviewed commit. The harness validation files (DEV_CASES_R7D_7, HARNESS_VALIDATION_R7D_7, run-validation, build-dev-cases), harness/README, author/ (INTERFACE-7, brief 6), the Phase 3.5 evidence and regressions, and PREREG-6 (checked only as append-only) could change after the reviews without a refusal. They would be bound by hash at freeze time and listed in postReview.changedSinceReviewed, but not refused.",
+   "smallestFix": "Extend line 99's paths to the whole harness folder, author/, PREREGISTRATION_R7D_6.md, phase35/evidence, phase35/regression and phase35/probes. Or, as a freeze condition, confirm that 'git diff --name-status <reviewed> HEAD' lists only files under phase35/reviews/.",
+   "route": "Chief (scripts), before any freeze run"
+  }
+ ],
+ "observations": [
+  "No harness property flags a persistent ASK. On 46934a0 the QRE2-P34-01 lock passes every HARNESS-7 property on QH10-QH14, so liveness in a holdout rests on the domain judge (known since QRE-R7D-PHASE34-CHECK-r2).",
+  "The O-02 'as one period' ask for a report of an earlier listed break that changes another fact persists until a valid restatement is sent (R07o, R07f); pre-existing class, domain wording routed with QRE2-P34-01's domain side.",
+  "The diagnostic regression's VARIANT relation rows (R7D-D02, D06, D14, D16) fail identically in every phase since Phase 3; the evidence's 'no property violation' is literally accurate.",
+  "Delta-31 disclosures (O-P35-01, the composition's declaredPauses) are not judged here (domain)."
+ ],
+ "conditionsForFreeze": [
+  {
+   "id": "CQ3-1",
+   "owner": "Chief (routing, within the Founder's Phase 3.5 limits); Engineering worker",
+   "condition": "No freeze of 8e78b8a: QRE-P35-01 blocks it. A later candidate must fix QRE-P35-01 (smallestFix), with directed tests RED on 8e78b8a (the QH17 and QH18 shapes with their controls). A differential against 8e78b8a must show only that shape. The candidate must pass a new independent quality/reliability check naming its commit."
+  },
+  {
+   "id": "CQ3-2",
+   "owner": "Engineering worker",
+   "condition": "In the same candidate, add the two tests of QRE-P35-05 (the R07n2 and R07m shapes)."
+  },
+  {
+   "id": "CQ3-3",
+   "owner": "Chief / instrument owner",
+   "condition": "Before any holdout exists, correct P18(e) (QRE-P35-02), P17's window (QRE-P35-03) and P18's restatement reading (QRE-P35-04), under an append-only PREREG addendum. Add DEV cases of the QH15/QH16, QH10/QH11 and QH19/QH20 shapes and a sensitivity row on a drop mutant. The validation must show no false block, DEV-48 and DEV-49 still detected and the QH17 shape detected on 8e78b8a."
+  },
+  {
+   "id": "CQ3-4",
+   "owner": "Chief",
+   "condition": "Before running freeze-r7d-5.mjs on any candidate, extend its post-review guard or confirm that 'git diff --name-status <reviewed> HEAD' lists only phase35/reviews/ files (QRE-P35-06)."
+  },
+  {
+   "id": "CQ3-5",
+   "owner": "Chief",
+   "condition": "Carry unchanged the routed items (QRE2-P34-01's domain side and the I6 same-dates wording to the SSCTR; the CONFLICTING-week question of QRE-P35-02 to the SSCTR; QRE-P34-03, -05, -06 to the SSCTR and QRE-P34-07 to PCG, as before) and the CQ-6 disclosures."
+  }
+ ],
+ "limitations": [
+  "A narrow check of the stated delta and the paths it touches, on synthetic development fixtures and the existing corpora: engineering evidence only, never gate, generalization or human-validation evidence.",
+  "The persistent asks were followed to week 11 at most, not to the plan's end.",
+  "The harness fixes and the FIX-DUP prototype were exercised on scratch only, to check that each smallest fix is feasible and narrow. They are not the fixes of record; their owners make the changes.",
+  "Validation 7's other 20 sensitivity rows and 55 witnesses were read, not rerun; the conformance checks were read.",
+  "No domain or clinical judgement is made; routed items are not decided."
+ ],
+ "probes": {
+  "folder": "audits/domain-coaching-r7-d-2026-11-02/phase35/reviews/engineering/probes",
+  "scratch": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/c105ff3b-197b-42c3-87aa-d64ce29cda8a/scratchpad/qre2-p35-20261107-165736-736 (rt-8e78b8a, rt-46934a0, rt-8bbbb8e archives; red-46934a0; mut-run1, mut-run2, mut-harness, full-mut, proto-fixdup2, full-proto; harness-p17fix, harness-fix2, harness-fix3; cli-ne-*); nothing deleted",
+  "sha256": {
+   "probes/out/qre2-p34-runtime-rerun.46934a0.json": "a0a942f8e16332292a75f5e9b4abc431097d17539b7e605c901e05a842493fb7",
+   "probes/out/qre2-p34-runtime-rerun.8e78b8a.json": "c712a99d6da07bf110a0cdf814f1a60709267e290dd0072b767f0b4e95f0afb1",
+   "probes/out/qre2-p34-runtime-rerun.R7D-FREEZE-4.json": "b5539baddd6f74b9cfb2afceee723bddf39d856ac440c75a784730080a66890e",
+   "probes/out/qre2-p35-cli-not-evaluable.8e78b8a.SUMMARY.md": "f1a9f2b8e0bce2147923da8a3f726d1b17836e5d786ede34dc41d1599b16b428",
+   "probes/out/qre2-p35-cli-not-evaluable.mutant-QH-DEPTH2.SUMMARY.md": "af957ff8daa13676647258815daa6f67e3b97b94ed3f9c3815b2ed7cb4266c54",
+   "probes/out/qre2-p35-corpus.HARNESS-7.8e78b8a.json": "489136141462f1febf1b30ad2ae9689c66dcb9b4e3ba61d5d50377a88272f04b",
+   "probes/out/qre2-p35-corpus.HARNESS-7.8e78b8a.probe-corpus.json": "6feee469f397e43a6162bb655cc9696bb61b219e4db7205dd46fa0d94f3a7f91",
+   "probes/out/qre2-p35-corpus.HARNESS-7.mutant-QH-DROP.json": "89b1507bf9af884ef7800fc0f488e44d6c9a9a32dcd68526e8ad1ef701cb9bc1",
+   "probes/out/qre2-p35-corpus.fixed-harness-P17-P18e.8e78b8a.json": "ac9eb3d8eee41272f222e003c605840b77556a2461c9935760e2a6fa797c9240",
+   "probes/out/qre2-p35-corpus.fixed-harness.46934a0.json": "883d7d5e04caebfdceed94eb439c891924f045c5253e8d5299dbd2857a1965db",
+   "probes/out/qre2-p35-corpus.fixed-harness.8e78b8a.json": "86e6167b97bc0da5cb6bc20929da417aa9355fe1da6bba8f6eef2df015d80f3f",
+   "probes/out/qre2-p35-corpus.fixed-harness.mutant-QH-DROP.json": "58dcc4ffca47ebd75f4ffc22a1fe9126e864f7490d1127ae3c192fe1fc65b476",
+   "probes/out/qre2-p35-corpus.fixed-harness.proto-FIX-DUP.json": "25673f0448fc4db7e06f5b4806032cf260ebf4f535bc1efea29e5e583beccf02",
+   "probes/out/qre2-p35-differential.46934a0-vs-R7D-FREEZE-4.json": "01355395294e8e985d54a69604f21574203bb9f59ec7c36caf9ce21f4231bcba",
+   "probes/out/qre2-p35-differential.8e78b8a-vs-46934a0.json": "278b5dcaa1d8187aec6bcc47db0a39bd8f453848e66ddb5394bf21654d2ddb61",
+   "probes/out/qre2-p35-differential.8e78b8a-vs-R7D-FREEZE-4.json": "bc6b76ac07263911fedf57dc6e9a8a97f365356b7480455c137555dfc81aa367",
+   "probes/out/qre2-p35-differential.proto-FIX-DUP-vs-8e78b8a.json": "fc5995af1cb1d43d21e8f9cd358a8ed4d88746f3d79f887767f6fdc066d45d51",
+   "probes/out/qre2-p35-fixdup-prototype.scratch.diff": "cda6a68c38468e42d3b8710e8dc8a5fcd97efc415fbff5ca8299bb1e1c9eb79b",
+   "probes/out/qre2-p35-fullsuite.proto-FIX-DUP.json": "ec082c14d67dc25e86f69e98a46f20f8741bd2f4cf892671f1439765e4f26525",
+   "probes/out/qre2-p35-fullsuite.survivors.json": "62ea9e14d79932c09b527e81a531f7b5fa044561aeb46cb3ab1eef1a2484f591",
+   "probes/out/qre2-p35-harness-corpus.json": "070be1707932d908f2a1ed3060bab5e8db601b5ccb569fedc76733c0edebd4db",
+   "probes/out/qre2-p35-harness-fixes.scratch.diff": "1045123ec2bf55cffc99476f5afda2bced957898b540d5114c5ec1c0e486c9e8",
+   "probes/out/qre2-p35-harness.46934a0.json": "b189067c0daf4872b0947639a82c12b3661602f3cbd60d8443c2e0ff6f380292",
+   "probes/out/qre2-p35-harness.8e78b8a.json": "b7d81888c6bc97425b17f1856af68f57a53feb0121454daaf3c7a88c82cbd4d5",
+   "probes/out/qre2-p35-harness.mutant-QH-DEPTH2.json": "54a2c962c1966fcaf13c05ed792783315b48bab768a4aa8bd5ab116a6fc72e34",
+   "probes/out/qre2-p35-harness.mutant-QH-DROP.json": "c9d63d15ff695e36316144343f400994a4aa5b0779e086000ec2b71bf5939de7",
+   "probes/out/qre2-p35-harness.mutant-QH-SKIP.json": "fd4262b3ffd1247dee39e7671341f7a85be6db0f08b54171eaf3b2d0fb7b510e",
+   "probes/out/qre2-p35-harness.proto-FIX-DUP.json": "315dde9b225f1d4f1313c05db9c5b803151d3821dd93eeeaeb245267235b085f",
+   "probes/out/qre2-p35-mutation.N01-N05.json": "5e695eca4749c6fb27964e5de9c6c99c7d7ae74246e1211afb31207d51193f02",
+   "probes/out/qre2-p35-mutation.json": "2f5993d354c301440f83fdf23e18be4b38552bf19b2235bd3acb1bf5ba61606b",
+   "probes/out/qre2-p35-runtime.46934a0.json": "c91b68cab61ce811d94a53ad76300bbf5b00efe943f9034909547c08ce98be86",
+   "probes/out/qre2-p35-runtime.8e78b8a.json": "d45d589107a8997f5b351f1b0ab22fcfbb1cb3282134227c5473f1b86a816a62",
+   "probes/out/qre2-p35-runtime.R7D-FREEZE-4.json": "78dfbce9d03c8092b067545b205a6d1ccd72af49d54a56ae5ca543a33078c2d2",
+   "probes/out/qre2-p35-runtime.mutant-Q10.json": "5dca753cc574e1c9b06c4230fa4c337715b06d34aad069a7c28c7a4f91f2fe34",
+   "probes/out/qre2-p35-runtime.mutant-Q15.json": "11345cde178529a5372b8b2be7d9304edb75e201cea4b06892500d57a2617fdb",
+   "probes/out/qre2-p35-runtime.proto-FIX-DUP.json": "228cfc1be215d5bd6dbf8df648718c1d83d8491d64000ffadcff3e64abf6e4d6",
+   "probes/qre2-p35-corpus.mjs": "67a7ccf4ab2681cbd45f1ade4d1463262b96db13cc99a4eb3c8f4d2c73a92df9",
+   "probes/qre2-p35-differential.mjs": "907946dee0778c9f93c2dbab1db90a6e5360248411a8f7c66ac487d706dec8f9",
+   "probes/qre2-p35-fullsuite.mjs": "c9d57df2c0eab1243fcf506f0ab4f54fc22fac6438a0da06ceda60ae7912e119",
+   "probes/qre2-p35-harness.mjs": "4cfbdc527e35ab61703c79fd13a5a891fe0f2f0ee716b70e6638bcd1b8407cb1",
+   "probes/qre2-p35-mutants.mjs": "0fd35426a609e5d4283dc41c95e5784496911f3a5955c4e09cc4ffc13a153f76",
+   "probes/qre2-p35-mutation.mjs": "bd3b67845ce0e7a2a56961f5460dffaa69a7daf120e3350d266e4ee86f061747",
+   "probes/qre2-p35-runtime.mjs": "2443d63ea961d572f38091a9f102e9a136ac5aceb900eaab93441926d8876945"
+  },
+  "note": "SHA-256 of every probe script and output when this record was written. probes/out/qre2-p35-mutation.json was produced by qre2-p35-mutation.mjs before its mutant list moved to qre2-p35-mutants.mjs (same Q01-QH-SKIP definitions). Ad hoc scratch helpers (output summarizers and the dbg scripts that printed views) stayed in the scratch directory; every claim in this record is reproduced by a probe listed here, except the one-line check that the race-week SYSTEMIC_FATIGUE event of F01_gateless_signal_recorded is asked (reportedOnItsOwn) and records no signal (scratch dbg4.mjs on 8e78b8a)."
+ },
+ "states": {
+  "qualityGate": "QUALITY_BLOCKED (QRE-P35-01) for 8e78b8a",
+  "QRE2-P34-01": "CLOSED on 8e78b8a (every probed path answerable; no lock)",
+  "V1_COACHING_AUTHORITY_READY": "NO",
+  "FINAL_HOLDOUT_EXISTS": "NO",
+  "F08": "F08_OPEN (not judged)",
+  "humanRevalidationQueue": "235, no append"
+ }
+}

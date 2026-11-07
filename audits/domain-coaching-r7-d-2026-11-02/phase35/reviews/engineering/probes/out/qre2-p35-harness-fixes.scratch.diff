@@ -1,0 +1,29 @@
+--- a/audits/domain-coaching-r7-d-2026-11-02/harness/lib/properties.mjs (8e78b8a)
++++ b/audits/domain-coaching-r7-d-2026-11-02/harness/lib/properties.mjs (QRE scratch: QRE-P35-02, -03, -04)
+@@ -552,7 +552,7 @@
+   // The window: this decision and the later ones until one applies a return, or a later review states a break of its own (the window of that
+   // break then takes over; the older break stays open, and P18 checks it at the return: R7D-PREREG-4).
+   for(let k=i;k<trace.steps.length;k++){
+-   const t=trace.steps[k];if(k>i&&statedBreak(t))break;
++   const t=trace.steps[k];if(k>i&&statedBreak(t)&&!restatesListed(t))break;
+    const r=t.result,applies=appliesReturn(t),kind=KIND_ALIASES[t.kind]??t.kind,added=addedDecisions(t).map(d=>d.action);
+    unit(p,applies||r.planValidity?.status!==VALID,{at:t.stepId,issue:'VALID_BEFORE_DECLARED_BREAK_APPLIED',declaredAt:s.stepId,status:r.status,action:r.action});
+    if(r.status!=='CLINICAL_HUMAN_REQUIRED'&&!RETURN_CARRIERS.includes(kind))unit(p,added.every(a=>a==='REPLAN_FROM_EVIDENCE'),{at:t.stepId,issue:'EVENT_APPLIED_OVER_DECLARED_BREAK',declaredAt:s.stepId,kind:t.kind,added});
+@@ -620,7 +620,7 @@
+ /** P18(e), R7D-HARNESS-7 (SSCTR-P34R2-F01): a week whose reports a client reads as converging adversely by a reading inside the runtime's systemic
+  * rule: a complete (not partial) report with recovery ADVERSE, in both sports or in three or more sessions, observed before `cut`. The runtime reads
+  * each such report as adverse, so this never flags a week the runtime may re-enter. */
+-export const adverseConvergence=(week,ledger,cut)=>converging(week.sessions.filter(live).flatMap(s=>{const r=latestReport(ledger,s,cut);return r&&!r.partial&&r.response?.recovery==='ADVERSE'?[s.sport]:[];}));
++export const adverseConvergence=(week,ledger,cut)=>converging(week.sessions.filter(live).flatMap(s=>{const r=latestReport(ledger,s,cut);return r&&!r.partial&&r.response?.recovery==='ADVERSE'&&(r.confounded===true||r.response?.performance!=='OVER')?[s.sport]:[];}));
+ // R7D-HARNESS-6 r2 (SSCTR-R7D-P34-RECHECK-r1 CFR-05, SSCTR-P34R-F02): an executed report counts only under the existing completion rule, never
+ // partial (a race's duration is its event window, so a finished race is complete). The runtime's gates hold a partial gated row, and its race keys
+ // read the same rule, so this stays a necessary condition.
+@@ -642,7 +642,7 @@
+  trace.steps.forEach((t,k)=>{
+   if(!appliesReturn(t))return;
+   const reports=[];
+-  for(let j=from;j<=k;j++){const s=trace.steps[j],i=statedBreak(s),id=s.review.event?.id??null;if(i&&!refusedUnread(s)&&!(id!=null&&firstAt.get(id)<j))reports.push({s,i,eventId:id,key:breakFacts(i),name:nameOfBreak(i)});}
++  for(let j=from;j<=k;j++){const s=trace.steps[j],i=statedBreak(s),id=s.review.event?.id??null;if(i&&!refusedUnread(s)&&!restatesListed(s)&&!(id!=null&&firstAt.get(id)<j))reports.push({s,i,eventId:id,key:breakFacts(i),name:nameOfBreak(i)});}
+   from=k+1;
+   const parent=reports.map((_,n)=>n),find=n=>parent[n]===n?n:(parent[n]=find(parent[n])),join=(a,b)=>{a=find(a);b=find(b);if(a!==b)parent[Math.max(a,b)]=Math.min(a,b);};
+   for(let a=0;a<reports.length;a++)for(let b=0;b<reports.length;b++)if(a!==b&&(reports[a].key===reports[b].key||reports[a].name&&(reports[a].name===reports[b].eventId||reports[a].name===reports[b].name)))join(a,b);

@@ -1,0 +1,29 @@
+// QRE R7-D Phase 3.5 check (QRE-R7D-PHASE35-CHECK-r1): the targeted mutants of the Phase 3.5 runtime delta (exact text edits of
+// CoachingCore/src/r6-adaptation.mjs at 8e78b8a), shared by qre2-p35-mutation.mjs and qre2-p35-fullsuite.mjs.
+export const MUTANTS=[
+ // F01 / F02 scope
+ {id:'Q01',what:'F01 applied to strength too (a systemic week never re-enters strength through the re-entry predicate)',from:'STRENGTH:d.STRENGTH===true}:null;},plans',to:'STRENGTH:d.STRENGTH===true&&!h.systemic}:null;},plans'},
+ {id:'Q02',what:'F01 reads the systemic flag of the week after (at(x.j+2))',from:'const h=at(x.j+1),d=h?.complete;',to:'const h=at(x.j+1),d=h?.complete,h2=at(x.j+2)??h;'+'/*Q02*/',then:['&&raced(x)&&!h.systemic','&&raced(x)&&!h2.systemic']},
+ {id:'Q03',what:'F02 exception applied on every path (the fresh head too): the nested own return excepts the latest head',from:'const r=ownReturnOf(ctx,x,sorted.slice(k+1).filter(y=>!place.has(y.g)));',to:'const r=ownReturnOf({...ctx,__except:H.g.identity},x,sorted.slice(k+1).filter(y=>!place.has(y.g)));',then:['unknown=unreportedBetween(ctx,from,through,H.g.identity)','unknown=unreportedBetween(ctx,from,through,ctx.__except??H.g.identity)']},
+ // QRE2-P34-01 restatement rule
+ {id:'Q10',what:'restates ignores the reason text (a report changing only the reason is consumed)',from:'const factsBesideStart=i=>{const {episodeId,startedAt,...x}=i;return hash(x);};',to:'const factsBesideStart=i=>{const {episodeId,startedAt,reason,...x}=i;return hash(x);};'},
+ {id:'Q11',what:'restates ignores the end date and length (a report changing the days is consumed)',from:'const factsBesideStart=i=>{const {episodeId,startedAt,...x}=i;return hash(x);};',to:'const factsBesideStart=i=>{const {episodeId,startedAt,endDate,days,...x}=i;return hash(x);};'},
+ {id:'Q12',what:'restates accepts a start time later than the report itself',from:'localDate(t,tz)===x.row.startDate&&Date.parse(t)<=Date.parse(r.declaredAt)',to:'localDate(t,tz)===x.row.startDate'},
+ {id:'Q13',what:'naming reads reports made before the report the return read',from:'r.eventId!==x.row.eventId&&Date.parse(r.declaredAt)>Date.parse(x.decl.declaredAt)&&',to:'r.eventId!==x.row.eventId&&'},
+ {id:'Q14',what:'a timeless restatement keeps the earlier start time in force (newest decides only when it states a time)',from:'const newer=restating(ctx.program,{row:b,decl:x},[...decl.values()])??x;',to:'const newer=[restating(ctx.program,{row:b,decl:x},[...decl.values()])].find(n=>n&&n.interruption.startedAt)??x;'},
+ {id:'Q15',what:'listedBreaks reads the first return, not the latest',from:'const last=episodesOf(program).at(-1),d=last?',to:'const last=episodesOf(program)[0],d=last?'},
+ {id:'Q16',what:'a restating return report is always kept (the late-evidence re-read skipped)',from:"restated&&!read&&kind==='RETURN_AFTER_PAUSE'?staleReturn(c)??restatedKeep(restated):null",to:"restated&&!read&&kind==='RETURN_AFTER_PAUSE'?restatedKeep(restated):null"},
+ {id:'Q17',what:'consumed reports are excluded only when the review itself restates',from:'const consumed=restatedReports(program,declared?[...readable,declared]:readable,at);',to:'const consumed=declared?restatedReports(program,[...readable,declared],at):new Set();'},
+ // P17 window probe (harness adequacy): a restatement silently drops every named report kept on record (a kept correction of the latest break)
+ {id:'QH-DROP',what:'a restatement on record drops every other named kept report (the kept correction is never applied)',from:'const reports=readable.filter(r=>!applied(r)&&!consumed.has(r.eventId))',to:'const reports=readable.filter(r=>!applied(r)&&!consumed.has(r.eventId)&&!(consumed.size&&nameOf(r.interruption)))',harnessOnly:true},
+ {id:'QH-SKIP',what:'the restating review ignores the kept correction at that review only (decided as if nothing were kept)',from:'const kept=asOf?keptBreaks(program,carried,asOf,stated,declared):null',to:'const kept=asOf&&!restated?keptBreaks(program,carried,asOf,stated,declared):null',harnessOnly:true},
+ // The QRE2-P34-03 depth-2 drop (the author's DEPTH2 edit, re-applied here) for the harness reporting check (CQ2-3)
+ {id:'QH-DEPTH2',what:'an own return at depth 2 or more reads its stop without its earlier breaks',from:'const r=ownReturnOf(ctx,x,sorted.slice(k+1).filter(y=>!place.has(y.g)));',to:'const r=ownReturnOf({...ctx,__depth:(ctx.__depth??0)+1},x,sorted.slice(k+1).filter(y=>!place.has(y.g)));',then:['sub=stopOf(ctx,x,earlier);','sub=stopOf(ctx,x,(ctx.__depth??0)>1?[]:earlier);'],harnessOnly:true},
+ // The role's Phase 3.4 survivors N01 and N05 (QRE2-P34-04), re-applied to 8e78b8a: CQ2-4 asks T35 to kill them.
+ {id:'N01',what:'F03 without required(x)',from:'RUN:required(x)&&(!gated(x)||d.RUN===true)&&raced(x)',to:'RUN:(!gated(x)||d.RUN===true)&&raced(x)'},
+ {id:'N05',what:'F04 names the own return\'s head, not the break that starts its stop',from:'startedAt,startBreak:at,continuous',to:'startedAt,startBreak:H,continuous'},
+ // Not a mutant: a scratch prototype of the smallest fix suggested for QRE-P35-01 (the worker owns the change), to check it is narrow.
+ {id:'FIX-DUP',what:'PROTOTYPE (not the fix of record): an unnamed newer report with the latest break\'s days (the R7-A §9 duplicate) re-reads the recorded return as a named one does',
+  from:' else if(named){const last=episodesOf(program).at(-1),r=last&&(last.id===i.episodeId||last.reports.some(b=>b.eventId===i.episodeId))?recordedStop(ctx,last.live.eventId,{start,end,days,startedAt}):null;',
+  to:' else{const last=episodesOf(program).at(-1),dup=!named&&!!last&&(start??onDate(end,-(days-1)))===last.live.start&&end===last.live.end,r=last&&(named?(last.id===i.episodeId||last.reports.some(b=>b.eventId===i.episodeId)):dup)?recordedStop(ctx,last.live.eventId,{start,end,days,startedAt}):null;',harnessOnly:true}
+];

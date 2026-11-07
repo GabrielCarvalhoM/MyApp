@@ -1,0 +1,1929 @@
+{
+ "probe": "QRE2-P35-HARNESS-1",
+ "label": "proto-FIX-DUP",
+ "harness": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/c105ff3b-197b-42c3-87aa-d64ce29cda8a/scratchpad/qre2-p35-20261107-165736-736/rt-8e78b8a/audits/domain-coaching-r7-d-2026-11-02/harness",
+ "root": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/c105ff3b-197b-42c3-87aa-d64ce29cda8a/scratchpad/qre2-p35-20261107-165736-736/proto-fixdup2/FIX-DUP",
+ "cases": {
+  "QH1": {
+   "steps": [
+    "w0r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w1r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "z:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "y:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "x:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "h:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "plain:REESTABLISH:VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+   ],
+   "return": {
+    "start": "2026-12-28",
+    "end": "2026-12-31",
+    "days": 4,
+    "cls": "SHORT",
+    "stops": [
+     "QH1-z:WITHIN_OWN_RETURN[QH1-x:WITHIN_OWN_RETURN]",
+     "QH1-y:WITHIN_OWN_RETURN[QH1-x:OWN_RETURN]",
+     "QH1-x:OWN_RETURN",
+     "QH1-h:LATEST"
+    ]
+   },
+   "strengthAhead": [
+    "db-rdl:2x10",
+    "db-row:2x10",
+    "db-bench-press:2x10",
+    "db-split-squat:1x12",
+    "dead-bug:1x14",
+    "back-squat:3x7",
+    "db-bench-press:2x12",
+    "db-row:2x12",
+    "standing-calf-raise:1x14",
+    "dead-bug:1x16",
+    "db-rdl:2x10",
+    "db-row:2x12",
+    "db-bench-press:2x12",
+    "db-split-squat:1x12",
+    "dead-bug:1x16"
+   ],
+   "results": {
+    "P01": "NOT_APPLICABLE",
+    "P02": "NOT_APPLICABLE",
+    "P03": "PASS",
+    "P04": "PASS",
+    "P06": "PASS",
+    "P07": "NOT_APPLICABLE",
+    "P08": "PASS",
+    "P09": "PASS",
+    "P10": "PASS",
+    "P11": "PASS",
+    "P12": "PASS",
+    "P13": "PASS",
+    "P14": "NOT_APPLICABLE",
+    "P16": "NOT_APPLICABLE",
+    "P17": "PASS",
+    "P18": "PASS"
+   },
+   "fails": [],
+   "relationFails": [],
+   "relationUnits": {
+    "DETERMINISM": 1,
+    "PERMUTE_OBSERVATIONS": 1,
+    "DUPLICATE_SECOND_SOURCE": 1,
+    "RENAME_OPAQUE_IDS": 1,
+    "LOAD_CONVENTION_EQUIVALENT": 0,
+    "RESEND": 1,
+    "CARRIER_CLINICAL": 0,
+    "CARRIER_HOLD": 0,
+    "RESTATE_DECLARED_BREAK": 4,
+    "INSERT_NEWER_BREAK": 1,
+    "CONSENT_OFF": 0,
+    "CLOCKLESS_CONTROL": 1,
+    "CALENDAR_SHIFT": 1,
+    "VARIANT": 0
+   },
+   "P17": {
+    "result": "PASS",
+    "units": 10
+   },
+   "P18": {
+    "result": "PASS",
+    "units": 8,
+    "notEvaluable": [
+     {
+      "at": "plain",
+      "break": "z",
+      "reason": "NESTED_OWN_RETURN_RECORD",
+      "source": "QRE-P34-02"
+     }
+    ]
+   }
+  },
+  "QH4": {
+   "steps": [
+    "w0r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w1r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "z:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "y:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "x:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "h:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "plain:REESTABLISH:VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+   ],
+   "return": {
+    "start": "2026-12-21",
+    "end": "2026-12-24",
+    "days": 4,
+    "cls": "SHORT",
+    "stops": [
+     "QH4-z:WITHIN_OWN_RETURN[QH4-x:WITHIN_OWN_RETURN]",
+     "QH4-y:WITHIN_OWN_RETURN[QH4-x:OWN_RETURN]",
+     "QH4-x:OWN_RETURN",
+     "QH4-h:LATEST"
+    ]
+   },
+   "strengthAhead": [
+    "db-rdl:1x10",
+    "db-row:1x12",
+    "db-bench-press:1x12",
+    "db-split-squat:1x12",
+    "dead-bug:1x14",
+    "back-squat:1x7",
+    "db-bench-press:1x12",
+    "db-row:1x12",
+    "standing-calf-raise:1x14",
+    "dead-bug:1x14",
+    "db-rdl:1x10",
+    "db-row:1x12",
+    "db-bench-press:1x12",
+    "db-split-squat:1x12",
+    "dead-bug:1x14"
+   ],
+   "results": {
+    "P01": "NOT_APPLICABLE",
+    "P02": "NOT_APPLICABLE",
+    "P03": "PASS",
+    "P04": "PASS",
+    "P06": "PASS",
+    "P07": "NOT_APPLICABLE",
+    "P08": "PASS",
+    "P09": "PASS",
+    "P10": "PASS",
+    "P11": "PASS",
+    "P12": "PASS",
+    "P13": "PASS",
+    "P14": "NOT_APPLICABLE",
+    "P16": "NOT_APPLICABLE",
+    "P17": "PASS",
+    "P18": "PASS"
+   },
+   "fails": [],
+   "relationFails": [],
+   "relationUnits": {
+    "DETERMINISM": 1,
+    "PERMUTE_OBSERVATIONS": 1,
+    "DUPLICATE_SECOND_SOURCE": 1,
+    "RENAME_OPAQUE_IDS": 1,
+    "LOAD_CONVENTION_EQUIVALENT": 0,
+    "RESEND": 1,
+    "CARRIER_CLINICAL": 0,
+    "CARRIER_HOLD": 0,
+    "RESTATE_DECLARED_BREAK": 4,
+    "INSERT_NEWER_BREAK": 1,
+    "CONSENT_OFF": 0,
+    "CLOCKLESS_CONTROL": 1,
+    "CALENDAR_SHIFT": 1,
+    "VARIANT": 0
+   },
+   "P17": {
+    "result": "PASS",
+    "units": 10
+   },
+   "P18": {
+    "result": "PASS",
+    "units": 8,
+    "notEvaluable": [
+     {
+      "at": "plain",
+      "break": "z",
+      "reason": "NESTED_OWN_RETURN_RECORD",
+      "source": "QRE-P34-02"
+     }
+    ]
+   }
+  },
+  "QH6": {
+   "steps": [
+    "w0r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w1r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "z:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "y:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "x:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "h:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "plain:REESTABLISH:VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+   ],
+   "return": {
+    "start": "2026-12-21",
+    "end": "2026-12-24",
+    "days": 4,
+    "cls": "SHORT",
+    "stops": [
+     "QH6-z:WITHIN_OWN_RETURN[QH6-x:WITHIN_OWN_RETURN]",
+     "QH6-y:WITHIN_OWN_RETURN[QH6-x:OWN_RETURN]",
+     "QH6-x:OWN_RETURN",
+     "QH6-h:LATEST"
+    ]
+   },
+   "strengthAhead": [
+    "db-rdl:1x10",
+    "db-row:1x12",
+    "db-bench-press:1x12",
+    "db-split-squat:1x12",
+    "dead-bug:1x14",
+    "back-squat:1x7",
+    "db-bench-press:1x12",
+    "db-row:1x12",
+    "standing-calf-raise:1x14",
+    "dead-bug:1x14",
+    "db-rdl:1x10",
+    "db-row:1x12",
+    "db-bench-press:1x12",
+    "db-split-squat:1x12",
+    "dead-bug:1x14"
+   ],
+   "results": {
+    "P01": "NOT_APPLICABLE",
+    "P02": "NOT_APPLICABLE",
+    "P03": "PASS",
+    "P04": "PASS",
+    "P06": "PASS",
+    "P07": "NOT_APPLICABLE",
+    "P08": "PASS",
+    "P09": "PASS",
+    "P10": "PASS",
+    "P11": "PASS",
+    "P12": "PASS",
+    "P13": "PASS",
+    "P14": "NOT_APPLICABLE",
+    "P16": "NOT_APPLICABLE",
+    "P17": "PASS",
+    "P18": "PASS"
+   },
+   "fails": [],
+   "relationFails": [],
+   "relationUnits": {
+    "DETERMINISM": 1,
+    "PERMUTE_OBSERVATIONS": 1,
+    "DUPLICATE_SECOND_SOURCE": 1,
+    "RENAME_OPAQUE_IDS": 1,
+    "LOAD_CONVENTION_EQUIVALENT": 0,
+    "RESEND": 1,
+    "CARRIER_CLINICAL": 0,
+    "CARRIER_HOLD": 0,
+    "RESTATE_DECLARED_BREAK": 4,
+    "INSERT_NEWER_BREAK": 1,
+    "CONSENT_OFF": 0,
+    "CLOCKLESS_CONTROL": 1,
+    "CALENDAR_SHIFT": 1,
+    "VARIANT": 0
+   },
+   "P17": {
+    "result": "PASS",
+    "units": 10
+   },
+   "P18": {
+    "result": "PASS",
+    "units": 8,
+    "notEvaluable": [
+     {
+      "at": "plain",
+      "break": "z",
+      "reason": "NESTED_OWN_RETURN_RECORD",
+      "source": "QRE-P34-02"
+     }
+    ]
+   }
+  },
+  "QH5": {
+   "steps": [
+    "w0r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w1r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "z:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "y:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "x:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "h:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "plain:REESTABLISH:VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+   ],
+   "return": {
+    "start": "2026-12-28",
+    "end": "2026-12-31",
+    "days": 4,
+    "cls": "SHORT",
+    "stops": [
+     "QH5-z:WITHIN_OWN_RETURN[QH5-x:WITHIN_OWN_RETURN]",
+     "QH5-y:WITHIN_OWN_RETURN[QH5-x:OWN_RETURN]",
+     "QH5-x:OWN_RETURN",
+     "QH5-h:LATEST"
+    ]
+   },
+   "strengthAhead": [
+    "db-rdl:1x10",
+    "db-row:1x12",
+    "db-bench-press:1x12",
+    "db-split-squat:1x12",
+    "dead-bug:1x14",
+    "back-squat:1x7",
+    "db-bench-press:1x12",
+    "db-row:1x12",
+    "standing-calf-raise:1x14",
+    "dead-bug:1x14",
+    "db-rdl:1x10",
+    "db-row:1x12",
+    "db-bench-press:1x12",
+    "db-split-squat:1x12",
+    "dead-bug:1x14"
+   ],
+   "results": {
+    "P01": "NOT_APPLICABLE",
+    "P02": "NOT_APPLICABLE",
+    "P03": "PASS",
+    "P04": "PASS",
+    "P06": "PASS",
+    "P07": "NOT_APPLICABLE",
+    "P08": "PASS",
+    "P09": "PASS",
+    "P10": "PASS",
+    "P11": "PASS",
+    "P12": "PASS",
+    "P13": "PASS",
+    "P14": "NOT_APPLICABLE",
+    "P16": "NOT_APPLICABLE",
+    "P17": "PASS",
+    "P18": "PASS"
+   },
+   "fails": [],
+   "relationFails": [],
+   "relationUnits": {
+    "DETERMINISM": 1,
+    "PERMUTE_OBSERVATIONS": 1,
+    "DUPLICATE_SECOND_SOURCE": 1,
+    "RENAME_OPAQUE_IDS": 1,
+    "LOAD_CONVENTION_EQUIVALENT": 0,
+    "RESEND": 1,
+    "CARRIER_CLINICAL": 0,
+    "CARRIER_HOLD": 0,
+    "RESTATE_DECLARED_BREAK": 4,
+    "INSERT_NEWER_BREAK": 1,
+    "CONSENT_OFF": 0,
+    "CLOCKLESS_CONTROL": 1,
+    "CALENDAR_SHIFT": 1,
+    "VARIANT": 0
+   },
+   "P17": {
+    "result": "PASS",
+    "units": 10
+   },
+   "P18": {
+    "result": "PASS",
+    "units": 8,
+    "notEvaluable": [
+     {
+      "at": "plain",
+      "break": "z",
+      "reason": "NESTED_OWN_RETURN_RECORD",
+      "source": "QRE-P34-02"
+     }
+    ]
+   }
+  },
+  "QH10": {
+   "steps": [
+    "w0r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w1r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w4d0:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "brk2:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "plain:REESTABLISH:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "corr:ASK[interruption.startedAt]:REQUIRES_RECONCILIATION",
+    "restate:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "plain2:REESTABLISH:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "sun:KEEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "wk7:ADOPT_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "wk8:KEEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+   ],
+   "return": {
+    "start": "2026-12-08",
+    "end": "2026-12-18",
+    "days": 11,
+    "cls": "MODERATE",
+    "stops": [
+     "QH10-w4d0:OWN_RETURN",
+     "QH10-brk2:LATEST"
+    ]
+   },
+   "strengthAhead": [
+    "back-squat:3x9",
+    "db-bench-press:2x8",
+    "db-row:2x8",
+    "standing-calf-raise:1x16",
+    "dead-bug:1x16",
+    "db-rdl:2x10",
+    "db-row:2x8",
+    "db-bench-press:2x8",
+    "db-split-squat:1x12",
+    "dead-bug:1x16"
+   ],
+   "results": {
+    "P01": "NOT_APPLICABLE",
+    "P02": "NOT_APPLICABLE",
+    "P03": "PASS",
+    "P04": "PASS",
+    "P06": "PASS",
+    "P07": "NOT_APPLICABLE",
+    "P08": "PASS",
+    "P09": "PASS",
+    "P10": "PASS",
+    "P11": "PASS",
+    "P12": "PASS",
+    "P13": "PASS",
+    "P14": "NOT_APPLICABLE",
+    "P16": "NOT_APPLICABLE",
+    "P17": "PASS",
+    "P18": "PASS"
+   },
+   "fails": [],
+   "relationFails": [],
+   "relationUnits": {
+    "DETERMINISM": 1,
+    "PERMUTE_OBSERVATIONS": 1,
+    "DUPLICATE_SECOND_SOURCE": 1,
+    "RENAME_OPAQUE_IDS": 1,
+    "LOAD_CONVENTION_EQUIVALENT": 0,
+    "RESEND": 1,
+    "CARRIER_CLINICAL": 0,
+    "CARRIER_HOLD": 0,
+    "RESTATE_DECLARED_BREAK": 3,
+    "INSERT_NEWER_BREAK": 2,
+    "CONSENT_OFF": 0,
+    "CLOCKLESS_CONTROL": 1,
+    "CALENDAR_SHIFT": 1,
+    "VARIANT": 0
+   },
+   "P17": {
+    "result": "PASS",
+    "units": 7
+   },
+   "P18": {
+    "result": "PASS",
+    "units": 12,
+    "notEvaluable": []
+   }
+  },
+  "QH11": {
+   "steps": [
+    "w0r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w1r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w4d0:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "brk2:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "plain:REESTABLISH:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "corr:ASK[interruption.startedAt]:REQUIRES_RECONCILIATION",
+    "restate:REESTABLISH:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "sun:KEEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "wk7:ADOPT_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "wk8:KEEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+   ],
+   "return": {
+    "start": "2026-12-08",
+    "end": "2026-12-18",
+    "days": 11,
+    "cls": "MODERATE",
+    "stops": [
+     "QH11-w4d0:OWN_RETURN",
+     "QH11-brk2:LATEST"
+    ]
+   },
+   "strengthAhead": [
+    "back-squat:3x9",
+    "db-bench-press:2x8",
+    "db-row:2x8",
+    "standing-calf-raise:1x16",
+    "dead-bug:1x16",
+    "db-rdl:2x10",
+    "db-row:2x8",
+    "db-bench-press:2x8",
+    "db-split-squat:1x12",
+    "dead-bug:1x16"
+   ],
+   "results": {
+    "P01": "NOT_APPLICABLE",
+    "P02": "NOT_APPLICABLE",
+    "P03": "PASS",
+    "P04": "PASS",
+    "P06": "PASS",
+    "P07": "NOT_APPLICABLE",
+    "P08": "PASS",
+    "P09": "PASS",
+    "P10": "PASS",
+    "P11": "PASS",
+    "P12": "PASS",
+    "P13": "PASS",
+    "P14": "NOT_APPLICABLE",
+    "P16": "NOT_APPLICABLE",
+    "P17": "PASS",
+    "P18": "PASS"
+   },
+   "fails": [],
+   "relationFails": [],
+   "relationUnits": {
+    "DETERMINISM": 1,
+    "PERMUTE_OBSERVATIONS": 1,
+    "DUPLICATE_SECOND_SOURCE": 1,
+    "RENAME_OPAQUE_IDS": 1,
+    "LOAD_CONVENTION_EQUIVALENT": 0,
+    "RESEND": 1,
+    "CARRIER_CLINICAL": 0,
+    "CARRIER_HOLD": 0,
+    "RESTATE_DECLARED_BREAK": 2,
+    "INSERT_NEWER_BREAK": 1,
+    "CONSENT_OFF": 0,
+    "CLOCKLESS_CONTROL": 1,
+    "CALENDAR_SHIFT": 1,
+    "VARIANT": 0
+   },
+   "P17": {
+    "result": "PASS",
+    "units": 7
+   },
+   "P18": {
+    "result": "PASS",
+    "units": 12,
+    "notEvaluable": []
+   }
+  },
+  "QH12": {
+   "steps": [
+    "w0r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w1r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w4d0:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "brk2:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "plain:REESTABLISH:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "late:ASK[interruption.startedAt]:REQUIRES_RECONCILIATION",
+    "confirm:ASK[interruption.startedAt]:REQUIRES_RECONCILIATION",
+    "restate:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "plain2:REESTABLISH:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "sun:KEEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "wk7:ADOPT_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "wk8:KEEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+   ],
+   "return": {
+    "start": "2026-12-14",
+    "end": "2026-12-17",
+    "days": 4,
+    "cls": "SHORT",
+    "stops": [
+     "QH12-w4d0:OWN_RETURN",
+     "QH12-brk2:LATEST"
+    ]
+   },
+   "strengthAhead": [
+    "back-squat:3x9",
+    "db-bench-press:2x8",
+    "db-row:2x8",
+    "standing-calf-raise:1x16",
+    "dead-bug:1x16",
+    "db-rdl:2x10",
+    "db-row:2x8",
+    "db-bench-press:2x8",
+    "db-split-squat:1x12",
+    "dead-bug:1x16"
+   ],
+   "results": {
+    "P01": "NOT_APPLICABLE",
+    "P02": "NOT_APPLICABLE",
+    "P03": "PASS",
+    "P04": "PASS",
+    "P06": "PASS",
+    "P07": "NOT_APPLICABLE",
+    "P08": "PASS",
+    "P09": "PASS",
+    "P10": "PASS",
+    "P11": "PASS",
+    "P12": "PASS",
+    "P13": "PASS",
+    "P14": "NOT_APPLICABLE",
+    "P16": "NOT_APPLICABLE",
+    "P17": "PASS",
+    "P18": "PASS"
+   },
+   "fails": [],
+   "relationFails": [],
+   "relationUnits": {
+    "DETERMINISM": 1,
+    "PERMUTE_OBSERVATIONS": 1,
+    "DUPLICATE_SECOND_SOURCE": 1,
+    "RENAME_OPAQUE_IDS": 1,
+    "LOAD_CONVENTION_EQUIVALENT": 0,
+    "RESEND": 1,
+    "CARRIER_CLINICAL": 0,
+    "CARRIER_HOLD": 0,
+    "RESTATE_DECLARED_BREAK": 3,
+    "INSERT_NEWER_BREAK": 2,
+    "CONSENT_OFF": 0,
+    "CLOCKLESS_CONTROL": 1,
+    "CALENDAR_SHIFT": 1,
+    "VARIANT": 0
+   },
+   "P17": {
+    "result": "PASS",
+    "units": 8
+   },
+   "P18": {
+    "result": "PASS",
+    "units": 11,
+    "notEvaluable": []
+   }
+  },
+  "QH13": {
+   "steps": [
+    "w0r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w1r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w4d0:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "brk2:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "plain:REESTABLISH:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "late:ASK[interruption.startedAt]:REQUIRES_RECONCILIATION",
+    "changed:ASK[interruption.startDate,interruption.endDate]:REQUIRES_RECONCILIATION",
+    "restate:ASK[interruption.episodeId]:REQUIRES_RECONCILIATION",
+    "confirm:REESTABLISH:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "sun:KEEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "wk7:ADOPT_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "wk8:KEEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+   ],
+   "return": {
+    "start": "2026-12-14",
+    "end": "2026-12-17",
+    "days": 4,
+    "cls": "SHORT",
+    "stops": [
+     "QH13-w4d0:OWN_RETURN",
+     "QH13-brk2:LATEST"
+    ]
+   },
+   "strengthAhead": [
+    "back-squat:3x9",
+    "db-bench-press:2x8",
+    "db-row:2x8",
+    "standing-calf-raise:1x16",
+    "dead-bug:1x16",
+    "db-rdl:2x10",
+    "db-row:2x8",
+    "db-bench-press:2x8",
+    "db-split-squat:1x12",
+    "dead-bug:1x16"
+   ],
+   "results": {
+    "P01": "NOT_APPLICABLE",
+    "P02": "NOT_APPLICABLE",
+    "P03": "PASS",
+    "P04": "PASS",
+    "P06": "PASS",
+    "P07": "NOT_APPLICABLE",
+    "P08": "PASS",
+    "P09": "PASS",
+    "P10": "PASS",
+    "P11": "PASS",
+    "P12": "PASS",
+    "P13": "PASS",
+    "P14": "NOT_APPLICABLE",
+    "P16": "NOT_APPLICABLE",
+    "P17": "PASS",
+    "P18": "PASS"
+   },
+   "fails": [],
+   "relationFails": [],
+   "relationUnits": {
+    "DETERMINISM": 1,
+    "PERMUTE_OBSERVATIONS": 1,
+    "DUPLICATE_SECOND_SOURCE": 1,
+    "RENAME_OPAQUE_IDS": 1,
+    "LOAD_CONVENTION_EQUIVALENT": 0,
+    "RESEND": 1,
+    "CARRIER_CLINICAL": 0,
+    "CARRIER_HOLD": 0,
+    "RESTATE_DECLARED_BREAK": 4,
+    "INSERT_NEWER_BREAK": 1,
+    "CONSENT_OFF": 0,
+    "CLOCKLESS_CONTROL": 1,
+    "CALENDAR_SHIFT": 1,
+    "VARIANT": 0
+   },
+   "P17": {
+    "result": "PASS",
+    "units": 8
+   },
+   "P18": {
+    "result": "PASS",
+    "units": 11,
+    "notEvaluable": []
+   }
+  },
+  "QH14": {
+   "steps": [
+    "w0r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w1r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w4d0:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "brk2:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "plain:REESTABLISH:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "late:ASK[interruption.startedAt]:REQUIRES_RECONCILIATION",
+    "restate:KEEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "sun:GATED_NEXT_STEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "wk7:ADOPT_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "wk8:KEEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+   ],
+   "return": {
+    "start": "2026-12-14",
+    "end": "2026-12-17",
+    "days": 4,
+    "cls": "SHORT",
+    "stops": [
+     "QH14-w4d0:OWN_RETURN",
+     "QH14-brk2:LATEST"
+    ]
+   },
+   "strengthAhead": [
+    "back-squat:3x7",
+    "db-bench-press:2x12",
+    "db-row:2x12",
+    "standing-calf-raise:1x14",
+    "dead-bug:1x14",
+    "db-rdl:2x10",
+    "db-row:2x12",
+    "db-bench-press:2x12",
+    "db-split-squat:1x12",
+    "dead-bug:1x14"
+   ],
+   "results": {
+    "P01": "NOT_APPLICABLE",
+    "P02": "NOT_APPLICABLE",
+    "P03": "PASS",
+    "P04": "PASS",
+    "P06": "PASS",
+    "P07": "NOT_APPLICABLE",
+    "P08": "PASS",
+    "P09": "PASS",
+    "P10": "PASS",
+    "P11": "PASS",
+    "P12": "PASS",
+    "P13": "PASS",
+    "P14": "NOT_APPLICABLE",
+    "P16": "NOT_APPLICABLE",
+    "P17": "PASS",
+    "P18": "PASS"
+   },
+   "fails": [],
+   "relationFails": [],
+   "relationUnits": {
+    "DETERMINISM": 1,
+    "PERMUTE_OBSERVATIONS": 1,
+    "DUPLICATE_SECOND_SOURCE": 1,
+    "RENAME_OPAQUE_IDS": 1,
+    "LOAD_CONVENTION_EQUIVALENT": 0,
+    "RESEND": 1,
+    "CARRIER_CLINICAL": 0,
+    "CARRIER_HOLD": 0,
+    "RESTATE_DECLARED_BREAK": 3,
+    "INSERT_NEWER_BREAK": 1,
+    "CONSENT_OFF": 0,
+    "CLOCKLESS_CONTROL": 1,
+    "CALENDAR_SHIFT": 1,
+    "VARIANT": 0
+   },
+   "P17": {
+    "result": "PASS",
+    "units": 7
+   },
+   "P18": {
+    "result": "PASS",
+    "units": 5,
+    "notEvaluable": []
+   }
+  },
+  "DEV-46": {
+   "steps": [
+    "w0r:KEEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w1r:KEEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w2r:KEEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w3r:KEEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w4r:KEEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w7d0:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "brk2:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "plain:REESTABLISH:VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+   ],
+   "return": {
+    "start": "2026-12-07",
+    "end": "2026-12-31",
+    "days": 25,
+    "cls": "MODERATE",
+    "stops": [
+     "DEV-46-w7d0:TRAINING_NOT_REESTABLISHED",
+     "DEV-46-brk2:LATEST"
+    ]
+   },
+   "strengthAhead": [],
+   "results": {
+    "P01": "NOT_APPLICABLE",
+    "P02": "NOT_APPLICABLE",
+    "P03": "PASS",
+    "P04": "PASS",
+    "P06": "PASS",
+    "P07": "PASS",
+    "P08": "PASS",
+    "P09": "PASS",
+    "P10": "PASS",
+    "P11": "PASS",
+    "P12": "PASS",
+    "P13": "PASS",
+    "P14": "NOT_APPLICABLE",
+    "P16": "NOT_APPLICABLE",
+    "P17": "PASS",
+    "P18": "PASS"
+   },
+   "fails": [],
+   "relationFails": [],
+   "relationUnits": {
+    "DETERMINISM": 1,
+    "PERMUTE_OBSERVATIONS": 1,
+    "DUPLICATE_SECOND_SOURCE": 1,
+    "RENAME_OPAQUE_IDS": 1,
+    "LOAD_CONVENTION_EQUIVALENT": 0,
+    "RESEND": 1,
+    "CARRIER_CLINICAL": 0,
+    "CARRIER_HOLD": 0,
+    "RESTATE_DECLARED_BREAK": 2,
+    "INSERT_NEWER_BREAK": 1,
+    "CONSENT_OFF": 0,
+    "CLOCKLESS_CONTROL": 1,
+    "CALENDAR_SHIFT": 1,
+    "VARIANT": 0
+   },
+   "P17": {
+    "result": "PASS",
+    "units": 6
+   },
+   "P18": {
+    "result": "PASS",
+    "units": 5,
+    "notEvaluable": []
+   }
+  },
+  "DEV-47": {
+   "steps": [
+    "w0r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w1r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "z:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "y:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "x:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "h:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "plain:REESTABLISH:VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+   ],
+   "return": {
+    "start": "2026-12-28",
+    "end": "2026-12-31",
+    "days": 4,
+    "cls": "SHORT",
+    "stops": [
+     "DEV-47-z:WITHIN_OWN_RETURN[DEV-47-x:WITHIN_OWN_RETURN]",
+     "DEV-47-y:WITHIN_OWN_RETURN[DEV-47-x:OWN_RETURN]",
+     "DEV-47-x:OWN_RETURN",
+     "DEV-47-h:LATEST"
+    ]
+   },
+   "strengthAhead": [
+    "db-rdl:2x10",
+    "db-row:2x10",
+    "db-bench-press:2x10",
+    "db-split-squat:1x12",
+    "dead-bug:1x14",
+    "back-squat:3x7",
+    "db-bench-press:2x12",
+    "db-row:2x12",
+    "standing-calf-raise:1x14",
+    "dead-bug:1x16",
+    "db-rdl:2x10",
+    "db-row:2x12",
+    "db-bench-press:2x12",
+    "db-split-squat:1x12",
+    "dead-bug:1x16"
+   ],
+   "results": {
+    "P01": "NOT_APPLICABLE",
+    "P02": "NOT_APPLICABLE",
+    "P03": "PASS",
+    "P04": "PASS",
+    "P06": "PASS",
+    "P07": "NOT_APPLICABLE",
+    "P08": "PASS",
+    "P09": "PASS",
+    "P10": "PASS",
+    "P11": "PASS",
+    "P12": "PASS",
+    "P13": "PASS",
+    "P14": "NOT_APPLICABLE",
+    "P16": "NOT_APPLICABLE",
+    "P17": "PASS",
+    "P18": "PASS"
+   },
+   "fails": [],
+   "relationFails": [],
+   "relationUnits": {
+    "DETERMINISM": 1,
+    "PERMUTE_OBSERVATIONS": 1,
+    "DUPLICATE_SECOND_SOURCE": 1,
+    "RENAME_OPAQUE_IDS": 1,
+    "LOAD_CONVENTION_EQUIVALENT": 0,
+    "RESEND": 1,
+    "CARRIER_CLINICAL": 0,
+    "CARRIER_HOLD": 0,
+    "RESTATE_DECLARED_BREAK": 4,
+    "INSERT_NEWER_BREAK": 1,
+    "CONSENT_OFF": 0,
+    "CLOCKLESS_CONTROL": 1,
+    "CALENDAR_SHIFT": 1,
+    "VARIANT": 0
+   },
+   "P17": {
+    "result": "PASS",
+    "units": 10
+   },
+   "P18": {
+    "result": "PASS",
+    "units": 8,
+    "notEvaluable": [
+     {
+      "at": "plain",
+      "break": "z",
+      "reason": "NESTED_OWN_RETURN_RECORD",
+      "source": "QRE-P34-02"
+     }
+    ]
+   }
+  },
+  "DEV-48": {
+   "steps": [
+    "w0r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w1r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w2r:KEEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w3r:KEEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w4r:KEEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w7d0:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "brk2:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "plain:REESTABLISH:VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+   ],
+   "return": {
+    "start": "2026-12-07",
+    "end": "2026-12-31",
+    "days": 25,
+    "cls": "MODERATE",
+    "stops": [
+     "DEV-48-w7d0:TRAINING_NOT_REESTABLISHED",
+     "DEV-48-brk2:LATEST"
+    ]
+   },
+   "strengthAhead": [
+    "db-rdl:1x8",
+    "db-row:1x10",
+    "db-bench-press:1x10",
+    "back-squat:1x11",
+    "db-bench-press:1x10",
+    "db-row:1x10",
+    "db-calf-raise:1x10",
+    "dead-bug:1x16",
+    "db-rdl:1x8",
+    "db-row:1x10",
+    "db-bench-press:1x10",
+    "db-split-squat:1x10",
+    "dead-bug:1x16"
+   ],
+   "results": {
+    "P01": "NOT_APPLICABLE",
+    "P02": "NOT_APPLICABLE",
+    "P03": "PASS",
+    "P04": "PASS",
+    "P06": "PASS",
+    "P07": "PASS",
+    "P08": "PASS",
+    "P09": "PASS",
+    "P10": "PASS",
+    "P11": "PASS",
+    "P12": "PASS",
+    "P13": "PASS",
+    "P14": "NOT_APPLICABLE",
+    "P16": "NOT_APPLICABLE",
+    "P17": "PASS",
+    "P18": "PASS"
+   },
+   "fails": [],
+   "relationFails": [],
+   "relationUnits": {
+    "DETERMINISM": 1,
+    "PERMUTE_OBSERVATIONS": 1,
+    "DUPLICATE_SECOND_SOURCE": 1,
+    "RENAME_OPAQUE_IDS": 1,
+    "LOAD_CONVENTION_EQUIVALENT": 0,
+    "RESEND": 1,
+    "CARRIER_CLINICAL": 0,
+    "CARRIER_HOLD": 0,
+    "RESTATE_DECLARED_BREAK": 2,
+    "INSERT_NEWER_BREAK": 1,
+    "CONSENT_OFF": 0,
+    "CLOCKLESS_CONTROL": 1,
+    "CALENDAR_SHIFT": 1,
+    "VARIANT": 0
+   },
+   "P17": {
+    "result": "PASS",
+    "units": 6
+   },
+   "P18": {
+    "result": "PASS",
+    "units": 5,
+    "notEvaluable": []
+   }
+  },
+  "DEV-49": {
+   "steps": [
+    "w0r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w1r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w4d0:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "brk2:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "plain:REESTABLISH:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "corr:ASK[observations.unreportedSessions]:REQUIRES_RECONCILIATION",
+    "ans:REESTABLISH:VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+   ],
+   "return": {
+    "start": "2026-12-14",
+    "end": "2026-12-17",
+    "days": 4,
+    "cls": "SHORT",
+    "stops": [
+     "DEV-49-w4d0:OWN_RETURN",
+     "DEV-49-brk2:LATEST"
+    ]
+   },
+   "strengthAhead": [
+    "back-squat:1x7",
+    "db-bench-press:1x12",
+    "db-row:1x12",
+    "standing-calf-raise:1x14",
+    "dead-bug:1x14",
+    "db-rdl:1x10",
+    "db-row:1x12",
+    "db-bench-press:1x12",
+    "db-split-squat:1x12",
+    "dead-bug:1x14"
+   ],
+   "results": {
+    "P01": "NOT_APPLICABLE",
+    "P02": "NOT_APPLICABLE",
+    "P03": "PASS",
+    "P04": "PASS",
+    "P06": "PASS",
+    "P07": "NOT_APPLICABLE",
+    "P08": "PASS",
+    "P09": "PASS",
+    "P10": "PASS",
+    "P11": "PASS",
+    "P12": "PASS",
+    "P13": "PASS",
+    "P14": "NOT_APPLICABLE",
+    "P16": "NOT_APPLICABLE",
+    "P17": "PASS",
+    "P18": "PASS"
+   },
+   "fails": [],
+   "relationFails": [],
+   "relationUnits": {
+    "DETERMINISM": 1,
+    "PERMUTE_OBSERVATIONS": 1,
+    "DUPLICATE_SECOND_SOURCE": 1,
+    "RENAME_OPAQUE_IDS": 1,
+    "LOAD_CONVENTION_EQUIVALENT": 0,
+    "RESEND": 1,
+    "CARRIER_CLINICAL": 0,
+    "CARRIER_HOLD": 0,
+    "RESTATE_DECLARED_BREAK": 3,
+    "INSERT_NEWER_BREAK": 2,
+    "CONSENT_OFF": 0,
+    "CLOCKLESS_CONTROL": 1,
+    "CALENDAR_SHIFT": 1,
+    "VARIANT": 0
+   },
+   "P17": {
+    "result": "PASS",
+    "units": 9
+   },
+   "P18": {
+    "result": "PASS",
+    "units": 8,
+    "notEvaluable": []
+   }
+  },
+  "DEV-50": {
+   "steps": [
+    "w0r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w1r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "z:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "y:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "x:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "h:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "plain:REESTABLISH:VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+   ],
+   "return": {
+    "start": "2026-12-21",
+    "end": "2026-12-24",
+    "days": 4,
+    "cls": "SHORT",
+    "stops": [
+     "DEV-50-z:WITHIN_OWN_RETURN[DEV-50-x:WITHIN_OWN_RETURN]",
+     "DEV-50-y:WITHIN_OWN_RETURN[DEV-50-x:OWN_RETURN]",
+     "DEV-50-x:OWN_RETURN",
+     "DEV-50-h:LATEST"
+    ]
+   },
+   "strengthAhead": [
+    "db-rdl:1x10",
+    "db-row:1x12",
+    "db-bench-press:1x12",
+    "db-split-squat:1x12",
+    "dead-bug:1x14",
+    "back-squat:1x7",
+    "db-bench-press:1x12",
+    "db-row:1x12",
+    "standing-calf-raise:1x14",
+    "dead-bug:1x14",
+    "db-rdl:1x10",
+    "db-row:1x12",
+    "db-bench-press:1x12",
+    "db-split-squat:1x12",
+    "dead-bug:1x14"
+   ],
+   "results": {
+    "P01": "NOT_APPLICABLE",
+    "P02": "NOT_APPLICABLE",
+    "P03": "PASS",
+    "P04": "PASS",
+    "P06": "PASS",
+    "P07": "NOT_APPLICABLE",
+    "P08": "PASS",
+    "P09": "PASS",
+    "P10": "PASS",
+    "P11": "PASS",
+    "P12": "PASS",
+    "P13": "PASS",
+    "P14": "NOT_APPLICABLE",
+    "P16": "NOT_APPLICABLE",
+    "P17": "PASS",
+    "P18": "PASS"
+   },
+   "fails": [],
+   "relationFails": [],
+   "relationUnits": {
+    "DETERMINISM": 1,
+    "PERMUTE_OBSERVATIONS": 1,
+    "DUPLICATE_SECOND_SOURCE": 1,
+    "RENAME_OPAQUE_IDS": 1,
+    "LOAD_CONVENTION_EQUIVALENT": 0,
+    "RESEND": 1,
+    "CARRIER_CLINICAL": 0,
+    "CARRIER_HOLD": 0,
+    "RESTATE_DECLARED_BREAK": 4,
+    "INSERT_NEWER_BREAK": 1,
+    "CONSENT_OFF": 0,
+    "CLOCKLESS_CONTROL": 1,
+    "CALENDAR_SHIFT": 1,
+    "VARIANT": 0
+   },
+   "P17": {
+    "result": "PASS",
+    "units": 10
+   },
+   "P18": {
+    "result": "PASS",
+    "units": 8,
+    "notEvaluable": [
+     {
+      "at": "plain",
+      "break": "z",
+      "reason": "NESTED_OWN_RETURN_RECORD",
+      "source": "QRE-P34-02"
+     }
+    ]
+   }
+  },
+  "DEV-51": {
+   "steps": [
+    "w0r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w1r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w4d0:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "brk2:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "plain:REESTABLISH:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "late:ASK[interruption.startedAt]:REQUIRES_RECONCILIATION",
+    "restate:KEEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "plain2:KEEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+   ],
+   "return": {
+    "start": "2026-12-14",
+    "end": "2026-12-17",
+    "days": 4,
+    "cls": "SHORT",
+    "stops": [
+     "DEV-51-w4d0:OWN_RETURN",
+     "DEV-51-brk2:LATEST"
+    ]
+   },
+   "strengthAhead": [
+    "back-squat:1x7",
+    "db-bench-press:1x12",
+    "db-row:1x12",
+    "standing-calf-raise:1x14",
+    "dead-bug:1x14",
+    "db-rdl:1x10",
+    "db-row:1x12",
+    "db-bench-press:1x12",
+    "db-split-squat:1x12",
+    "dead-bug:1x14"
+   ],
+   "results": {
+    "P01": "NOT_APPLICABLE",
+    "P02": "NOT_APPLICABLE",
+    "P03": "PASS",
+    "P04": "PASS",
+    "P06": "PASS",
+    "P07": "NOT_APPLICABLE",
+    "P08": "PASS",
+    "P09": "PASS",
+    "P10": "PASS",
+    "P11": "PASS",
+    "P12": "PASS",
+    "P13": "PASS",
+    "P14": "NOT_APPLICABLE",
+    "P16": "NOT_APPLICABLE",
+    "P17": "PASS",
+    "P18": "PASS"
+   },
+   "fails": [],
+   "relationFails": [],
+   "relationUnits": {
+    "DETERMINISM": 1,
+    "PERMUTE_OBSERVATIONS": 1,
+    "DUPLICATE_SECOND_SOURCE": 1,
+    "RENAME_OPAQUE_IDS": 1,
+    "LOAD_CONVENTION_EQUIVALENT": 0,
+    "RESEND": 1,
+    "CARRIER_CLINICAL": 0,
+    "CARRIER_HOLD": 0,
+    "RESTATE_DECLARED_BREAK": 3,
+    "INSERT_NEWER_BREAK": 1,
+    "CONSENT_OFF": 0,
+    "CLOCKLESS_CONTROL": 1,
+    "CALENDAR_SHIFT": 1,
+    "VARIANT": 0
+   },
+   "P17": {
+    "result": "PASS",
+    "units": 7
+   },
+   "P18": {
+    "result": "PASS",
+    "units": 5,
+    "notEvaluable": []
+   }
+  },
+  "DEV-52": {
+   "steps": [
+    "w0r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w1r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w4d0:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "brk2:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "plain:REESTABLISH:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "late:ASK[interruption.startedAt]:REQUIRES_RECONCILIATION",
+    "restate:ASK[interruption.episodeId]:REQUIRES_RECONCILIATION",
+    "confirm:REESTABLISH:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "plain2:KEEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+   ],
+   "return": {
+    "start": "2026-12-14",
+    "end": "2026-12-17",
+    "days": 4,
+    "cls": "SHORT",
+    "stops": [
+     "DEV-52-w4d0:OWN_RETURN",
+     "DEV-52-brk2:LATEST"
+    ]
+   },
+   "strengthAhead": [
+    "back-squat:1x9",
+    "db-bench-press:1x8",
+    "db-row:1x8",
+    "standing-calf-raise:1x16",
+    "dead-bug:1x16",
+    "db-rdl:1x10",
+    "db-row:1x8",
+    "db-bench-press:1x8",
+    "db-split-squat:1x12",
+    "dead-bug:1x16"
+   ],
+   "results": {
+    "P01": "NOT_APPLICABLE",
+    "P02": "NOT_APPLICABLE",
+    "P03": "PASS",
+    "P04": "PASS",
+    "P06": "PASS",
+    "P07": "NOT_APPLICABLE",
+    "P08": "PASS",
+    "P09": "PASS",
+    "P10": "PASS",
+    "P11": "PASS",
+    "P12": "PASS",
+    "P13": "PASS",
+    "P14": "NOT_APPLICABLE",
+    "P16": "NOT_APPLICABLE",
+    "P17": "PASS",
+    "P18": "PASS"
+   },
+   "fails": [],
+   "relationFails": [],
+   "relationUnits": {
+    "DETERMINISM": 1,
+    "PERMUTE_OBSERVATIONS": 1,
+    "DUPLICATE_SECOND_SOURCE": 1,
+    "RENAME_OPAQUE_IDS": 1,
+    "LOAD_CONVENTION_EQUIVALENT": 0,
+    "RESEND": 1,
+    "CARRIER_CLINICAL": 0,
+    "CARRIER_HOLD": 0,
+    "RESTATE_DECLARED_BREAK": 3,
+    "INSERT_NEWER_BREAK": 1,
+    "CONSENT_OFF": 0,
+    "CLOCKLESS_CONTROL": 1,
+    "CALENDAR_SHIFT": 1,
+    "VARIANT": 0
+   },
+   "P17": {
+    "result": "PASS",
+    "units": 7
+   },
+   "P18": {
+    "result": "PASS",
+    "units": 11,
+    "notEvaluable": []
+   }
+  },
+  "QH15": {
+   "steps": [
+    "w0r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w1r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w2r:KEEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w3r:KEEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w4r:KEEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w7d0:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "brk2:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "plain:REESTABLISH:VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+   ],
+   "return": {
+    "start": "2026-12-28",
+    "end": "2026-12-31",
+    "days": 4,
+    "cls": "SHORT",
+    "stops": [
+     "QH15-w7d0:TRAINING_AFTER",
+     "QH15-brk2:LATEST"
+    ]
+   },
+   "strengthAhead": [
+    "db-rdl:1x8",
+    "db-row:1x10",
+    "db-bench-press:1x10",
+    "back-squat:3x11",
+    "db-bench-press:3x10",
+    "db-row:3x10",
+    "db-calf-raise:1x12",
+    "dead-bug:2x16",
+    "db-rdl:3x8",
+    "db-row:3x10",
+    "db-bench-press:3x10",
+    "db-split-squat:1x12",
+    "dead-bug:2x16"
+   ],
+   "results": {
+    "P01": "NOT_APPLICABLE",
+    "P02": "NOT_APPLICABLE",
+    "P03": "PASS",
+    "P04": "PASS",
+    "P06": "PASS",
+    "P07": "PASS",
+    "P08": "PASS",
+    "P09": "PASS",
+    "P10": "PASS",
+    "P11": "PASS",
+    "P12": "PASS",
+    "P13": "PASS",
+    "P14": "NOT_APPLICABLE",
+    "P16": "NOT_APPLICABLE",
+    "P17": "PASS",
+    "P18": "FAIL"
+   },
+   "fails": [
+    {
+     "property": "P18",
+     "violations": [
+      {
+       "at": "plain",
+       "issue": "SYSTEMIC_WEEK_REENTERED",
+       "break": "QH15-w7d0",
+       "week": "2026-12-21"
+      }
+     ]
+    }
+   ],
+   "relationFails": [],
+   "relationUnits": {
+    "DETERMINISM": 1,
+    "PERMUTE_OBSERVATIONS": 1,
+    "DUPLICATE_SECOND_SOURCE": 1,
+    "RENAME_OPAQUE_IDS": 1,
+    "LOAD_CONVENTION_EQUIVALENT": 0,
+    "RESEND": 1,
+    "CARRIER_CLINICAL": 0,
+    "CARRIER_HOLD": 0,
+    "RESTATE_DECLARED_BREAK": 2,
+    "INSERT_NEWER_BREAK": 1,
+    "CONSENT_OFF": 0,
+    "CLOCKLESS_CONTROL": 1,
+    "CALENDAR_SHIFT": 1,
+    "VARIANT": 0
+   },
+   "P17": {
+    "result": "PASS",
+    "units": 6
+   },
+   "P18": {
+    "result": "FAIL",
+    "units": 4,
+    "notEvaluable": []
+   }
+  },
+  "QH16": {
+   "steps": [
+    "w0r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w1r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w2r:KEEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w3r:KEEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w4r:KEEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w7d0:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "brk2:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "plain:REESTABLISH:VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+   ],
+   "return": {
+    "start": "2026-12-28",
+    "end": "2026-12-31",
+    "days": 4,
+    "cls": "SHORT",
+    "stops": [
+     "QH16-w7d0:TRAINING_AFTER",
+     "QH16-brk2:LATEST"
+    ]
+   },
+   "strengthAhead": [
+    "db-rdl:1x8",
+    "db-row:1x10",
+    "db-bench-press:1x10",
+    "back-squat:3x11",
+    "db-bench-press:3x10",
+    "db-row:3x10",
+    "db-calf-raise:1x12",
+    "dead-bug:2x16",
+    "db-rdl:3x8",
+    "db-row:3x10",
+    "db-bench-press:3x10",
+    "db-split-squat:1x12",
+    "dead-bug:2x16"
+   ],
+   "results": {
+    "P01": "NOT_APPLICABLE",
+    "P02": "NOT_APPLICABLE",
+    "P03": "PASS",
+    "P04": "PASS",
+    "P06": "PASS",
+    "P07": "PASS",
+    "P08": "PASS",
+    "P09": "PASS",
+    "P10": "PASS",
+    "P11": "PASS",
+    "P12": "PASS",
+    "P13": "PASS",
+    "P14": "NOT_APPLICABLE",
+    "P16": "NOT_APPLICABLE",
+    "P17": "PASS",
+    "P18": "FAIL"
+   },
+   "fails": [
+    {
+     "property": "P18",
+     "violations": [
+      {
+       "at": "plain",
+       "issue": "SYSTEMIC_WEEK_REENTERED",
+       "break": "QH16-w7d0",
+       "week": "2026-12-21"
+      }
+     ]
+    }
+   ],
+   "relationFails": [],
+   "relationUnits": {
+    "DETERMINISM": 1,
+    "PERMUTE_OBSERVATIONS": 1,
+    "DUPLICATE_SECOND_SOURCE": 1,
+    "RENAME_OPAQUE_IDS": 1,
+    "LOAD_CONVENTION_EQUIVALENT": 0,
+    "RESEND": 1,
+    "CARRIER_CLINICAL": 0,
+    "CARRIER_HOLD": 0,
+    "RESTATE_DECLARED_BREAK": 2,
+    "INSERT_NEWER_BREAK": 1,
+    "CONSENT_OFF": 0,
+    "CLOCKLESS_CONTROL": 1,
+    "CALENDAR_SHIFT": 1,
+    "VARIANT": 0
+   },
+   "P17": {
+    "result": "PASS",
+    "units": 6
+   },
+   "P18": {
+    "result": "FAIL",
+    "units": 4,
+    "notEvaluable": []
+   }
+  },
+  "QH17": {
+   "steps": [
+    "w0r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w1r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w4d0:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "brk2:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "plain:REESTABLISH:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "dup:REESTABLISH:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "plain2:KEEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+   ],
+   "return": {
+    "start": "2026-12-14",
+    "end": "2026-12-17",
+    "days": 4,
+    "cls": "SHORT",
+    "stops": [
+     "QH17-w4d0:OWN_RETURN",
+     "QH17-brk2:LATEST"
+    ]
+   },
+   "strengthAhead": [
+    "back-squat:1x7",
+    "db-bench-press:1x12",
+    "db-row:1x12",
+    "standing-calf-raise:1x14",
+    "dead-bug:1x14",
+    "db-rdl:1x10",
+    "db-row:1x12",
+    "db-bench-press:1x12",
+    "db-split-squat:1x12",
+    "dead-bug:1x14"
+   ],
+   "results": {
+    "P01": "NOT_APPLICABLE",
+    "P02": "NOT_APPLICABLE",
+    "P03": "PASS",
+    "P04": "PASS",
+    "P06": "PASS",
+    "P07": "NOT_APPLICABLE",
+    "P08": "PASS",
+    "P09": "PASS",
+    "P10": "PASS",
+    "P11": "PASS",
+    "P12": "PASS",
+    "P13": "PASS",
+    "P14": "NOT_APPLICABLE",
+    "P16": "NOT_APPLICABLE",
+    "P17": "PASS",
+    "P18": "PASS"
+   },
+   "fails": [],
+   "relationFails": [],
+   "relationUnits": {
+    "DETERMINISM": 1,
+    "PERMUTE_OBSERVATIONS": 1,
+    "DUPLICATE_SECOND_SOURCE": 1,
+    "RENAME_OPAQUE_IDS": 1,
+    "LOAD_CONVENTION_EQUIVALENT": 0,
+    "RESEND": 1,
+    "CARRIER_CLINICAL": 0,
+    "CARRIER_HOLD": 0,
+    "RESTATE_DECLARED_BREAK": 2,
+    "INSERT_NEWER_BREAK": 1,
+    "CONSENT_OFF": 0,
+    "CLOCKLESS_CONTROL": 1,
+    "CALENDAR_SHIFT": 1,
+    "VARIANT": 0
+   },
+   "P17": {
+    "result": "PASS",
+    "units": 6
+   },
+   "P18": {
+    "result": "PASS",
+    "units": 8,
+    "notEvaluable": []
+   }
+  },
+  "QH18": {
+   "steps": [
+    "w0r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w1r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w4d0:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "brk2:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "plain:REESTABLISH:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "late:ASK[interruption.startedAt]:REQUIRES_RECONCILIATION",
+    "restate:ASK[interruption.episodeId]:REQUIRES_RECONCILIATION",
+    "confirm:REESTABLISH:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "sun:KEEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "wk7:ADOPT_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "wk8:KEEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+   ],
+   "return": {
+    "start": "2026-12-14",
+    "end": "2026-12-17",
+    "days": 4,
+    "cls": "SHORT",
+    "stops": [
+     "QH18-w4d0:OWN_RETURN",
+     "QH18-brk2:LATEST"
+    ]
+   },
+   "strengthAhead": [
+    "back-squat:3x9",
+    "db-bench-press:2x8",
+    "db-row:2x8",
+    "standing-calf-raise:1x16",
+    "dead-bug:1x16",
+    "db-rdl:2x10",
+    "db-row:2x8",
+    "db-bench-press:2x8",
+    "db-split-squat:1x12",
+    "dead-bug:1x16"
+   ],
+   "results": {
+    "P01": "NOT_APPLICABLE",
+    "P02": "NOT_APPLICABLE",
+    "P03": "PASS",
+    "P04": "PASS",
+    "P06": "PASS",
+    "P07": "NOT_APPLICABLE",
+    "P08": "PASS",
+    "P09": "PASS",
+    "P10": "PASS",
+    "P11": "PASS",
+    "P12": "PASS",
+    "P13": "PASS",
+    "P14": "NOT_APPLICABLE",
+    "P16": "NOT_APPLICABLE",
+    "P17": "PASS",
+    "P18": "FAIL"
+   },
+   "fails": [
+    {
+     "property": "P18",
+     "violations": [
+      {
+       "at": "confirm",
+       "issue": "RELATION_NOT_ESTABLISHED",
+       "break": "confirm"
+      }
+     ]
+    }
+   ],
+   "relationFails": [],
+   "relationUnits": {
+    "DETERMINISM": 1,
+    "PERMUTE_OBSERVATIONS": 1,
+    "DUPLICATE_SECOND_SOURCE": 1,
+    "RENAME_OPAQUE_IDS": 1,
+    "LOAD_CONVENTION_EQUIVALENT": 0,
+    "RESEND": 1,
+    "CARRIER_CLINICAL": 0,
+    "CARRIER_HOLD": 0,
+    "RESTATE_DECLARED_BREAK": 3,
+    "INSERT_NEWER_BREAK": 1,
+    "CONSENT_OFF": 0,
+    "CLOCKLESS_CONTROL": 1,
+    "CALENDAR_SHIFT": 1,
+    "VARIANT": 0
+   },
+   "P17": {
+    "result": "PASS",
+    "units": 7
+   },
+   "P18": {
+    "result": "FAIL",
+    "units": 11,
+    "notEvaluable": []
+   }
+  },
+  "QH19": {
+   "steps": [
+    "w0r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w1r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w4d0:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "brk2:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "plain:REESTABLISH:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "late:ASK[interruption.startedAt]:REQUIRES_RECONCILIATION",
+    "restate:KEEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "sun:GATED_NEXT_STEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "wk7:ADOPT_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "wk8:KEEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "trip2:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "plain3:REESTABLISH:VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+   ],
+   "return": {
+    "start": "2027-01-05",
+    "end": "2027-01-07",
+    "days": 3,
+    "cls": "SHORT",
+    "stops": []
+   },
+   "strengthAhead": [
+    "db-rdl:2x10",
+    "db-row:2x12",
+    "db-bench-press:2x12",
+    "db-split-squat:1x12",
+    "dead-bug:1x14",
+    "back-squat:3x7",
+    "db-bench-press:2x8",
+    "db-row:2x8",
+    "standing-calf-raise:1x14",
+    "dead-bug:1x16",
+    "db-rdl:2x12",
+    "db-row:2x8",
+    "db-bench-press:2x8",
+    "db-split-squat:1x8",
+    "dead-bug:1x16"
+   ],
+   "results": {
+    "P01": "NOT_APPLICABLE",
+    "P02": "NOT_APPLICABLE",
+    "P03": "PASS",
+    "P04": "PASS",
+    "P06": "PASS",
+    "P07": "NOT_APPLICABLE",
+    "P08": "PASS",
+    "P09": "PASS",
+    "P10": "PASS",
+    "P11": "PASS",
+    "P12": "PASS",
+    "P13": "PASS",
+    "P14": "NOT_APPLICABLE",
+    "P16": "NOT_APPLICABLE",
+    "P17": "PASS",
+    "P18": "FAIL"
+   },
+   "fails": [
+    {
+     "property": "P18",
+     "violations": [
+      {
+       "at": "plain3",
+       "issue": "OLDER_BREAK_DROPPED",
+       "break": "restate",
+       "breakDays": [
+        "2026-11-16",
+        "2026-11-29"
+       ],
+       "returnDays": [
+        "2027-01-05",
+        "2027-01-07"
+       ]
+      },
+      {
+       "at": "plain3",
+       "issue": "RELATION_NOT_ESTABLISHED",
+       "break": "trip2"
+      }
+     ]
+    }
+   ],
+   "relationFails": [],
+   "relationUnits": {
+    "DETERMINISM": 1,
+    "PERMUTE_OBSERVATIONS": 1,
+    "DUPLICATE_SECOND_SOURCE": 1,
+    "RENAME_OPAQUE_IDS": 1,
+    "LOAD_CONVENTION_EQUIVALENT": 0,
+    "RESEND": 1,
+    "CARRIER_CLINICAL": 0,
+    "CARRIER_HOLD": 0,
+    "RESTATE_DECLARED_BREAK": 4,
+    "INSERT_NEWER_BREAK": 2,
+    "CONSENT_OFF": 0,
+    "CLOCKLESS_CONTROL": 1,
+    "CALENDAR_SHIFT": 1,
+    "VARIANT": 0
+   },
+   "P17": {
+    "result": "PASS",
+    "units": 11
+   },
+   "P18": {
+    "result": "FAIL",
+    "units": 8,
+    "notEvaluable": []
+   }
+  },
+  "QH20": {
+   "steps": [
+    "w0r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w1r:INSTANTIATE_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "w4d0:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "brk2:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "plain:REESTABLISH:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "late:ASK[interruption.startedAt]:REQUIRES_RECONCILIATION",
+    "restate:KEEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "sun:GATED_NEXT_STEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "wk7:ADOPT_LOGGED_LOADS:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "wk8:KEEP:VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "trip2:ASK[interruption.reportedOnItsOwn]:REQUIRES_RECONCILIATION",
+    "plain3:REESTABLISH:VALID_WITHIN_CURRENT_BOUNDED_SCOPE"
+   ],
+   "return": {
+    "start": "2027-01-05",
+    "end": "2027-01-07",
+    "days": 3,
+    "cls": "SHORT",
+    "stops": []
+   },
+   "strengthAhead": [
+    "db-rdl:2x10",
+    "db-row:2x12",
+    "db-bench-press:2x12",
+    "db-split-squat:1x12",
+    "dead-bug:1x14",
+    "back-squat:3x7",
+    "db-bench-press:2x8",
+    "db-row:2x8",
+    "standing-calf-raise:1x14",
+    "dead-bug:1x16",
+    "db-rdl:2x12",
+    "db-row:2x8",
+    "db-bench-press:2x8",
+    "db-split-squat:1x8",
+    "dead-bug:1x16"
+   ],
+   "results": {
+    "P01": "NOT_APPLICABLE",
+    "P02": "NOT_APPLICABLE",
+    "P03": "PASS",
+    "P04": "PASS",
+    "P06": "PASS",
+    "P07": "NOT_APPLICABLE",
+    "P08": "PASS",
+    "P09": "PASS",
+    "P10": "PASS",
+    "P11": "PASS",
+    "P12": "PASS",
+    "P13": "PASS",
+    "P14": "NOT_APPLICABLE",
+    "P16": "NOT_APPLICABLE",
+    "P17": "PASS",
+    "P18": "FAIL"
+   },
+   "fails": [
+    {
+     "property": "P18",
+     "violations": [
+      {
+       "at": "plain3",
+       "issue": "OLDER_BREAK_DROPPED",
+       "break": "restate",
+       "breakDays": [
+        "2026-11-16",
+        "2026-11-29"
+       ],
+       "returnDays": [
+        "2027-01-05",
+        "2027-01-07"
+       ]
+      }
+     ]
+    }
+   ],
+   "relationFails": [],
+   "relationUnits": {
+    "DETERMINISM": 1,
+    "PERMUTE_OBSERVATIONS": 1,
+    "DUPLICATE_SECOND_SOURCE": 1,
+    "RENAME_OPAQUE_IDS": 1,
+    "LOAD_CONVENTION_EQUIVALENT": 0,
+    "RESEND": 1,
+    "CARRIER_CLINICAL": 0,
+    "CARRIER_HOLD": 0,
+    "RESTATE_DECLARED_BREAK": 4,
+    "INSERT_NEWER_BREAK": 2,
+    "CONSENT_OFF": 0,
+    "CLOCKLESS_CONTROL": 1,
+    "CALENDAR_SHIFT": 1,
+    "VARIANT": 0
+   },
+   "P17": {
+    "result": "PASS",
+    "units": 11
+   },
+   "P18": {
+    "result": "FAIL",
+    "units": 8,
+    "notEvaluable": []
+   }
+  }
+ }
+}

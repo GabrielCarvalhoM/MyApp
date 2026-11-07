@@ -1,0 +1,11 @@
+--- a/CoachingCore/src/r6-adaptation.mjs (8e78b8a)
++++ b/CoachingCore/src/r6-adaptation.mjs (QRE scratch prototype for QRE-P35-01; not the fix of record)
+@@ -1963,7 +1963,7 @@
+  // facts (recordedStop): a correction of the latest break never drops an earlier one (the direction of SSCTR-P32-F01, through a correction).
+  let sep=null;
+  if(ctx.separate){sep=separateStop(ctx,{start,end,days,startedAt});if(sep.decision)return sep.decision;}
+- else if(named){const last=episodesOf(program).at(-1),r=last&&(last.id===i.episodeId||last.reports.some(b=>b.eventId===i.episodeId))?recordedStop(ctx,last.live.eventId,{start,end,days,startedAt}):null;if(r?.decision)return r.decision;sep=r?.stop?{...r.stop,reread:true}:null;}
++ else{const last=episodesOf(program).at(-1),dup=!named&&!!last&&(start??onDate(end,-(days-1)))===last.live.start&&end===last.live.end,r=last&&(named?(last.id===i.episodeId||last.reports.some(b=>b.eventId===i.episodeId)):dup)?recordedStop(ctx,last.live.eventId,{start,end,days,startedAt}):null;if(r?.decision)return r.decision;sep=r?.stop?{...r.stop,reread:true}:null;}
+  if(sep)({start,end,days,startedAt}=sep);
+  const assessedDay=dayOf(review.eligibility?.assessedAt);
+  if(!assessedDay||dayGap(end,assessedDay)<0)return {action:'ASK',reason:'Eligibility must be assessed on or after the interruption ended',missingInputs:['eligibility.assessedOnOrAfterInterruptionEnd']};
