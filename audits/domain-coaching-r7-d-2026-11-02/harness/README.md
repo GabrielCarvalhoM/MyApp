@@ -244,11 +244,11 @@ Results:
 - **P18(c)** is a sufficient reading again. It never reads as executed as prescribed a week that the systemic rule may hold: one with UNDER, ADVERSE, HARDER or IMPAIRED in two sports or three sessions, or a recorded SYSTEMIC_SIGNAL. DEV-48 found the gap: an adverse optional shakeout was not counted.
 - **NESTED guard:** "after it" is read by first days, so the overlapping two-level chain (QH4, DEV-50) is NOT_EVALUABLE rather than a false block.
 - **Not evaluable never reads as a pass:** the run summary lists each property's not-evaluable units by case (`notEvaluableCases`), whatever the case result. `SUMMARY.md` lists them under "Units not evaluable". Each one goes to the domain judge, who for a nested own return recomputes the inner own return from the case timeline (Δ30).
-- **Validation 7** (`validation/HARNESS_VALIDATION_R7D_7.json`, `DEV_CASES_R7D_7.json` with DEV-48 to DEV-50, 52 cases):
+- **Validation 7** (`validation/HARNESS_VALIDATION_R7D_7.json`, `DEV_CASES_R7D_7.json` with DEV-48 to DEV-52, 54 cases):
   - no false block on the candidate;
   - 22/22 sensitivity rows, including DEV-48 (P18(e)) and DEV-49 (P18(f)) on `46934a0`;
-  - 54/54 witnesses (W-P18j, W-P18k added);
-  - P17 has 188 units and P18 has 126.
+  - 55/55 witnesses (W-P18j, W-P18k and W-P17e added);
+  - P17 has 202 units and P18 has 142.
 
 To reproduce it from this worktree's root, add `rt-c46` (`git archive 46934a0 CoachingCore` plus the five review records, with `CoachingCore/node_modules` copied in) to the runtimes listed above. Rebuild every runtime into a new, uniquely named directory; nothing needs deleting.
 
@@ -256,3 +256,4 @@ To reproduce it from this worktree's root, add `rt-c46` (`git archive 46934a0 Co
 node validation/build-dev-cases.mjs validation/DEV_CASES_R7D_7.json
 node validation/run-validation.mjs --dev validation/DEV_CASES_R7D_7.json --out <file> --candidate <worktree root> --f4 $D/rt-f4 --f3 $D/rt-f3 --b2 $D/rt-b2 --prer7a $D/rt-prer7a --d1 $D/rt-d1 --d2 $D/rt-d2 --d3 $D/rt-d3 --d4 $D/rt-d4 --c46 $D/rt-c46
 ```
+- **P17 and P08 read a restatement** (R7D-INTERFACE-7 §2; Δ32). A review whose break names an earlier break the latest applied return listed, stating its facts again apart from its name and start time, is that break's report. It opens no P17 window of its own, and P08 measures no return from it. A report that changes another fact still opens its own window (witness W-P17e). DEV-51 and DEV-52 (the R07 shape) are the false-block controls.

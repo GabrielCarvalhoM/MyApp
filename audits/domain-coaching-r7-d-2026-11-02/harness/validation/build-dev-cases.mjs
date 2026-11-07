@@ -315,5 +315,20 @@ cases.push({caseId:'DEV-50',authorIntent:'Four separate breaks, the first overla
   {stepId:'h',at:{week:7,day:4,time:'07:00'},event:{kind:'LOCAL_FATIGUE',interruption:brkW(7,4,{episodeId:'DEV-50-h'})},observations:runWeekFriMissed(6)},
   {stepId:'plain',at:{week:7,day:4,time:'08:00'},event:{kind:'WEEKLY_REVIEW'}}],
  expectedDomainProperties:[],metamorphicRelations:[],independentAssessment:assess('each break is its own return in turn, the first two read as one stop; the trip by its own days'),domainNotes:''});
+// DEV-51, DEV-52 (QRE2-P34-01, the R07 shape; no false block; R7D-INTERFACE-7 §2): the Founder's case applied (holiday wk2-3 its own return, weeks 4-5
+// with every run done and the Friday lift missed, the trip Mon-Thu wk6); the Monday lift of the holiday's first day reported late (asked: the start
+// time); the holiday restated by its episodeId with its start time, in the week's review. DEV-51: before the lift (inside the holiday, as the return
+// read it): nothing changes. DEV-52: after it: the confirmation question follows, the trip is confirmed and the return applied again.
+const TRIPw6={startDate:'2026-12-14',endDate:'2026-12-17',days:4,reasonCategory:'WORK',reason:'Work trip, no training',nonclinical:true};
+const lateLift={ref:{week:2,sport:'STRENGTH',day:0},asPrescribed:true,loadsByPattern:LOADS,response:OK,observedAt:'2026-11-16T19:00:00Z'};
+for(const [caseId,startedAt,confirm] of [['DEV-51','2026-11-16T07:00:00Z',false],['DEV-52','2026-11-16T20:00:00Z',true]])cases.push({caseId,authorIntent:`A return read from separate breaks, a late lift on the earlier break's first day, then that break restated with a start time ${confirm?'after':'before'} the lift${confirm?' and the trip confirmed':''}`,coverageTags:['DECLARED_BREAK','MULTIPLE_BREAKS','PARTIAL_REENTRY','LATE_EVIDENCE','SAME_DAY_START'],oracleClass:'INVARIANT_ORACLE',intake:GEN,
+ timeline:[...twoWeeks,keptHoliday,
+  {stepId:'brk2',at:{week:6,day:4,time:'07:00'},event:{kind:'LOCAL_FATIGUE',interruption:{...TRIPw6,episodeId:`${caseId}-brk2`}},observations:runsDoneFriMissed([4,5])},
+  {stepId:'plain',at:{week:6,day:4,time:'08:00'},event:{kind:'WEEKLY_REVIEW'}},
+  {stepId:'late',at:{week:6,day:5,time:'09:00'},event:{kind:'WEEKLY_REVIEW'},observations:[lateLift]},
+  {stepId:'restate',at:{week:6,day:5,time:'10:00'},event:{kind:'WEEKLY_REVIEW',interruption:{...VAC14,episodeId:`${caseId}-w4d0`,startedAt}}},
+  ...(confirm?[{stepId:'confirm',at:{week:6,day:5,time:'11:00'},event:{kind:'RETURN_AFTER_PAUSE',interruption:{...TRIPw6,episodeId:`${caseId}-brk2`}}}]:[]),
+  {stepId:'plain2',at:{week:6,day:5,time:'13:00'},event:{kind:'WEEKLY_REVIEW'}}],
+ expectedDomainProperties:[],metamorphicRelations:[],independentAssessment:assess(confirm?'the lift counts before the holiday: the coach asks to confirm the trip, and the confirmation re-reads the return':'the lift falls inside the holiday, as the return read it: nothing changes'),domainNotes:''});
 fs.writeFileSync(process.argv[2],JSON.stringify({corpusRevision:'R7D-HARNESS-DEV-7',contaminated:true,cases},null,1)+'\n');
 console.log('dev cases',cases.length);

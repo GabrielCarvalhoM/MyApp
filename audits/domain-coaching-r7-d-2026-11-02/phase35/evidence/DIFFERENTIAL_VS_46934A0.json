@@ -94,9 +94,9 @@
  },
  "baseline": "46934a0 (the Phase 3.4 candidate; never frozen)",
  "candidate": "the working tree runtime",
- "cases": 170,
+ "cases": 172,
  "same": 168,
- "differing": 2,
+ "differing": 4,
  "unexplained": [],
  "differingCases": [
   {
@@ -122,6 +122,30 @@
    "kinds": [
     "CORRECTION"
    ]
+  },
+  {
+   "corpus": "HARNESS_DEV_7",
+   "caseId": "DEV-51",
+   "first": "restate",
+   "trigger": {
+    "at": "restate",
+    "kind": "RESTATEMENT"
+   },
+   "kinds": [
+    "RESTATEMENT"
+   ]
+  },
+  {
+   "corpus": "HARNESS_DEV_7",
+   "caseId": "DEV-52",
+   "first": "restate",
+   "trigger": {
+    "at": "restate",
+    "kind": "RESTATEMENT"
+   },
+   "kinds": [
+    "RESTATEMENT"
+   ]
   }
  ],
  "byTrigger": {
@@ -131,7 +155,10 @@
   "CORRECTION": [
    "DEV-49"
   ],
-  "RESTATEMENT": []
+  "RESTATEMENT": [
+   "DEV-51",
+   "DEV-52"
+  ]
  },
  "rows": [
   {
@@ -2091,6 +2118,103 @@
    "kindsAtOrBeforeFirst": [],
    "explained": true,
    "atFirst": null
+  },
+  {
+   "corpus": "HARNESS_DEV_7",
+   "caseId": "DEV-51",
+   "same": false,
+   "firstDifference": "restate",
+   "trigger": {
+    "at": "restate",
+    "kind": "RESTATEMENT"
+   },
+   "triggers": [
+    {
+     "at": "restate",
+     "kind": "RESTATEMENT"
+    }
+   ],
+   "kindsAtOrBeforeFirst": [
+    "RESTATEMENT"
+   ],
+   "explained": true,
+   "atFirst": {
+    "c46": {
+     "status": "ASK",
+     "action": "ASK",
+     "validity": "REQUIRES_RECONCILIATION",
+     "question": null,
+     "gates": null,
+     "offers": [],
+     "pending": {
+      "status": "ASK",
+      "signal": false
+     }
+    },
+    "candidate": {
+     "status": "KEEP",
+     "action": "KEEP",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "question": null,
+     "gates": null,
+     "offers": [],
+     "pending": null
+    }
+   }
+  },
+  {
+   "corpus": "HARNESS_DEV_7",
+   "caseId": "DEV-52",
+   "same": false,
+   "firstDifference": "restate",
+   "trigger": {
+    "at": "restate",
+    "kind": "RESTATEMENT"
+   },
+   "triggers": [
+    {
+     "at": "restate",
+     "kind": "RESTATEMENT"
+    },
+    {
+     "at": "confirm",
+     "kind": "CORRECTION"
+    }
+   ],
+   "kindsAtOrBeforeFirst": [
+    "RESTATEMENT"
+   ],
+   "explained": true,
+   "atFirst": {
+    "c46": {
+     "status": "ASK",
+     "action": "ASK",
+     "validity": "REQUIRES_RECONCILIATION",
+     "question": null,
+     "gates": null,
+     "offers": [],
+     "pending": {
+      "status": "ASK",
+      "signal": false
+     }
+    },
+    "candidate": {
+     "status": "ASK",
+     "action": "ASK",
+     "validity": "REQUIRES_RECONCILIATION",
+     "question": {
+      "scope": null,
+      "fromWeek": null,
+      "sessions": 0
+     },
+     "gates": null,
+     "offers": [],
+     "pending": {
+      "status": "ASK",
+      "signal": false
+     }
+    }
+   }
   }
  ]
 }

@@ -292,7 +292,19 @@ function p07(trace,ctx){
 // decision that records a return (REESTABLISH). The plan in force after a VALID decision (the adopted proposal, or the kept plan when there is
 // none) is checked: a break the decision ignored and kept VALID is measured exactly as a return. Tolerated = completed with no adverse recovery
 // and no impaired next day.
-const declaresBreak=s=>{const i=s.review?.interruption;return !!i&&typeof i==='object'&&!Array.isArray(i)&&Object.keys(i).length>0;};
+const declaresBreak=s=>{const i=s.review?.interruption;return !!i&&typeof i==='object'&&!Array.isArray(i)&&Object.keys(i).length>0&&!restatesListed(s);};
+/** R7D-HARNESS-7 (R7D-INTERFACE-7 §2; QRE2-P34-01): a review whose stated break names an earlier break the latest applied return listed (a
+ * separateBreaks row other than LATEST, by its episode or the event id of the report that return read) and states every fact of that report again,
+ * its name and start time apart (no start time, or one on that break's first day), restates that break. It is that break's report, never a break of
+ * its own: it opens no window of its own (P17) and no return is measured from it (P08). A later report of any kind still ends an earlier window. */
+const restatesListed=s=>{
+ const i=s.review?.interruption,name=typeof i?.episodeId==='string'&&i.episodeId.trim()!==''?i.episodeId:null;if(!i||typeof i!=='object'||!name)return false;
+ const last=(s.planBefore?.decisions??[]).filter(d=>d.action==='REESTABLISH').at(-1)?.interruption,row=(last?.separateBreaks??[]).find(b=>b.stop!=='LATEST'&&(b.episode===name||b.eventId===name));if(!row)return false;
+ const decl=(s.ledgerBefore??[]).find(r=>r.fact==='INTERRUPTION_DECLARED'&&r.eventId===row.eventId);if(!decl?.interruption)return false;
+ const rest=({episodeId,startedAt,...x})=>canonicalJson(x);if(rest(i)!==rest(decl.interruption))return false;
+ if(i.startedAt===undefined||i.startedAt===null)return true;
+ const t=Date.parse(i.startedAt);return Number.isFinite(t)&&localDate(new Date(t).toISOString(),s.planBefore?.timezoneOffsetMinutes??0)===row.startDate;
+};
 const tolerated=r=>r.actual?.completed===true&&r.response?.recovery!=='ADVERSE'&&r.response?.nextDayFunction!=='IMPAIRED';
 function p08(trace){
  const p=prop('P08');
@@ -536,7 +548,7 @@ const refusedUnread=s=>s.result?.status==='HOLD'&&s.result.actualLedger===undefi
 function p17(trace){
  const p=prop('P17');
  trace.steps.forEach((s,i)=>{
-  if(!statedBreak(s)||appliesReturn(s)||refusedUnread(s))return;
+  if(!statedBreak(s)||appliesReturn(s)||refusedUnread(s)||restatesListed(s))return;
   // The window: this decision and the later ones until one applies a return, or a later review states a break of its own (the window of that
   // break then takes over; the older break stays open, and P18 checks it at the return: R7D-PREREG-4).
   for(let k=i;k<trace.steps.length;k++){

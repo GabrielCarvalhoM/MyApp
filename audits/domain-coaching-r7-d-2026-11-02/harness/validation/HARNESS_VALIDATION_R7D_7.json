@@ -1,7 +1,7 @@
 {
  "validation": "R7D-HARNESS-VALIDATION-7",
  "harness": "R7D-HARNESS-7",
- "devCorpusSha256": "d65e1a2fda6f50118b09bba160b69b4160fc6ee14b9a3c8a10a8714f0c4a1a1b",
+ "devCorpusSha256": "6f262d8afe335dfbcbb6ed6fe33af0451eec378e9472c9972491be1bfae6d3f0",
  "runs": [
   {
    "runtime": {
@@ -522,6 +522,22 @@
        ]
       }
      ],
+     "differences": []
+    },
+    {
+     "caseId": "DEV-51",
+     "generation": "PROPOSED",
+     "steps": 8,
+     "fails": [],
+     "notEvaluable": [],
+     "differences": []
+    },
+    {
+     "caseId": "DEV-52",
+     "generation": "PROPOSED",
+     "steps": 9,
+     "fails": [],
+     "notEvaluable": [],
      "differences": []
     }
    ],
@@ -5734,6 +5750,15 @@
    "fired": true
   },
   {
+   "witness": "W-P17e",
+   "caseId": "DEV-51",
+   "mutation": "the restating review states another last day: a break of its own, never applied",
+   "expects": [
+    "VALID_BEFORE_DECLARED_BREAK_APPLIED"
+   ],
+   "fired": true
+  },
+  {
    "witness": "W-DET",
    "caseId": "DEV-01",
    "relation": "DETERMINISM",
@@ -5840,7 +5865,7 @@
    ]
   },
   "RESEND": {
-   "units": 49,
+   "units": 51,
    "violations": 0,
    "cases": [
     {
@@ -6136,11 +6161,23 @@
      "units": 1,
      "violations": 0,
      "notApplicable": null
+    },
+    {
+     "caseId": "DEV-51",
+     "units": 1,
+     "violations": 0,
+     "notApplicable": null
+    },
+    {
+     "caseId": "DEV-52",
+     "units": 1,
+     "violations": 0,
+     "notApplicable": null
     }
    ]
   },
   "RESTATE_DECLARED_BREAK": {
-   "units": 66,
+   "units": 72,
    "violations": 0,
    "excludedB4": [
     "DEV-26@w7d1"
@@ -6343,11 +6380,23 @@
      "units": 4,
      "violations": 0,
      "notApplicable": null
+    },
+    {
+     "caseId": "DEV-51",
+     "units": 3,
+     "violations": 0,
+     "notApplicable": null
+    },
+    {
+     "caseId": "DEV-52",
+     "units": 3,
+     "violations": 0,
+     "notApplicable": null
     }
    ]
   },
   "INSERT_NEWER_BREAK": {
-   "units": 27,
+   "units": 29,
    "violations": 0,
    "cases": [
     {
@@ -6505,12 +6554,24 @@
      "units": 1,
      "violations": 0,
      "notApplicable": null
+    },
+    {
+     "caseId": "DEV-51",
+     "units": 1,
+     "violations": 0,
+     "notApplicable": null
+    },
+    {
+     "caseId": "DEV-52",
+     "units": 1,
+     "violations": 0,
+     "notApplicable": null
     }
    ]
   },
   "result": "COVERED",
   "P17": {
-   "units": 188,
+   "units": 202,
    "violations": 0,
    "cases": [
     {
@@ -6672,11 +6733,21 @@
      "caseId": "DEV-50",
      "units": 10,
      "violations": 0
+    },
+    {
+     "caseId": "DEV-51",
+     "units": 7,
+     "violations": 0
+    },
+    {
+     "caseId": "DEV-52",
+     "units": 7,
+     "violations": 0
     }
    ]
   },
   "P18": {
-   "units": 126,
+   "units": 142,
    "violations": 0,
    "cases": [
     {
@@ -6798,6 +6869,16 @@
      "caseId": "DEV-50",
      "units": 8,
      "violations": 0
+    },
+    {
+     "caseId": "DEV-51",
+     "units": 5,
+     "violations": 0
+    },
+    {
+     "caseId": "DEV-52",
+     "units": 11,
+     "violations": 0
     }
    ]
   }
@@ -6808,12 +6889,12 @@
   "carrierUnits": {
    "CARRIER_CLINICAL": 7,
    "CARRIER_HOLD": 1,
-   "RESEND": 49,
-   "RESTATE_DECLARED_BREAK": 66,
-   "INSERT_NEWER_BREAK": 27
+   "RESEND": 51,
+   "RESTATE_DECLARED_BREAK": 72,
+   "INSERT_NEWER_BREAK": 29
   },
-  "p17Units": 188,
-  "p18Units": 126,
+  "p17Units": 202,
+  "p18Units": 142,
   "sensitivity": [
    {
     "defect": "DX-01 (a same-day day-precision report drops out of the record at the next decision)",
@@ -6904,8 +6985,8 @@
     "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
    }
   ],
-  "witnessesFired": 54,
-  "witnesses": 54,
+  "witnessesFired": 55,
+  "witnesses": 55,
   "notFired": [],
   "notEvaluableOnCandidate": [
    {
