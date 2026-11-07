@@ -12,7 +12,8 @@
 // conformance checks (PASS, read-only), and binds the Phase 3.4 evidence manifest (its outputs must still hash as listed, on these source bytes).
 // It refuses when:
 //  - a bound file is not committed;
-//  - a source file other than r6-adaptation.mjs differs from R7D-FREEZE-4, or an existing test other than the disclosed Phase 3.3 and 3.2 files;
+//  - a source file other than r6-adaptation.mjs and r6-composition.mjs differs from R7D-FREEZE-4, or an existing test other than the disclosed
+//    Phase 3.3 and 3.2 files;
 //  - the policy, catalog, B0 or R6 records, product/ or canon/ changed since R7D-FREEZE-4;
 //  - the queue differs from R7D-FREEZE-4's by anything but the one authorized item and its addendum key, appended after every earlier item;
 //  - the diagnostic corpus, PREREG-1 to PREREG-5, the R7D-FREEZE-1/-2/-3/-4 records or the Phase 3 / 3.1 / 3.2 / 3.3 folders changed;
