@@ -1,10 +1,11 @@
 // R7-D freeze-5 verifier (read-only): node scripts/verify-r7d-5.mjs [--suite] [--write]. It checks R7D-FREEZE-5 against the working tree:
 //  - every bound file hashes as recorded and as committed at the record's commit;
 //  - the source and manifest digests recompute;
-//  - the evidence, review, decision (SSCTR, PCG), authorization, PREREG-6 and queue-integration records hash as bound;
+//  - the evidence, review, decision (SSCTR, PCG, the Founder's Phase 3.5 decisions), authorization (Phases 3.4 and 3.5), F08 preparation, PREREG-6 and
+//    queue-integration records hash as bound;
 //  - the authorities the phase left untouched are still untouched (policy bytes, canonical hash and the ten R6 boundaries, catalog);
 //  - the predecessor R7D-FREEZE-4 record is unchanged;
-//  - the human queue still starts with the items this freeze bound (append-only), the authorized Phase 3.4 item among them;
+//  - the human queue still starts with the items this freeze bound (append-only), the authorized Phase 3.4 item among them (Phase 3.5 appended none);
 //  - F08 is recorded open; no final holdout exists; V1 authority is NO.
 // With --suite it re-runs the suite (the count must equal the record's, zero failures) and the three conformance checks. With --write it writes
 // only CoachingCore/r7/d/VERIFICATION_R7D_5.json.
@@ -25,7 +26,7 @@ check('files-current',!changed.length,changed.length?{changed:changed.slice(0,20
 const atCommit=Object.entries(rec.files).filter(([p,h])=>{const r=spawnSync('git',['show',`${rec.commit}:${p}`],{cwd:repo,encoding:'buffer',maxBuffer:1<<28});return r.status!==0||createHash('sha256').update(r.stdout).digest('hex')!==h;}).map(([p])=>p);
 check('files-committed',!atCommit.length,atCommit.length?{differ:atCommit.slice(0,20)}:{commit:rec.commit});
 check('digests',hash(Object.fromEntries(Object.entries(rec.files).filter(([p])=>p.startsWith('CoachingCore/src/'))))===rec.sourceDigest&&hash(rec.files)===rec.manifestDigest,{sourceDigest:rec.sourceDigest,manifestDigest:rec.manifestDigest});
-for(const [id,b] of [['evidence',rec.evidence],['review-ssctr',rec.reviews.ssctr],['review-quality-reliability',rec.reviews.qualityReliability],['decision-ssctr',rec.decisions.ssctr],['decision-pcg',rec.decisions.pcg],['authorization',rec.authorization],['prereg-6',rec.instruments.prereg],['queue-integration',rec.humanRevalidationQueue.integration],['predecessor',{path:rec.predecessor.record,sha256:rec.predecessor.sha256}]])check(id,fs.existsSync(path.join(repo,b.path))&&sha(b.path)===b.sha256,{path:b.path});
+for(const [id,b] of [['evidence',rec.evidence],['review-ssctr',rec.reviews.ssctr],['review-quality-reliability',rec.reviews.qualityReliability],['decision-ssctr',rec.decisions.ssctr],['decision-pcg',rec.decisions.pcg],['authorization',rec.authorization],['authorization-phase34',rec.authorization.phase34],['decision-founder',rec.decisions.founder],['f08-prepared',rec.f08.prepared],['prereg-6',rec.instruments.prereg],['queue-integration',rec.humanRevalidationQueue.integration],['predecessor',{path:rec.predecessor.record,sha256:rec.predecessor.sha256}]])check(id,fs.existsSync(path.join(repo,b.path))&&sha(b.path)===b.sha256,{path:b.path});
 for(const [k,o] of Object.entries(rec.evidence.outputs))check('evidence-output:'+k,fs.existsSync(path.join(repo,o.path))&&sha(o.path)===o.sha256);
 check('reviews-pass',['ACCEPT','ACCEPT_WITH_CONDITIONS'].includes(rec.reviews.ssctr.disposition)&&['READY','READY_WITH_CONDITIONS'].includes(rec.reviews.qualityReliability.verdict),{ssctr:rec.reviews.ssctr.disposition,qualityReliability:rec.reviews.qualityReliability.verdict});
 const {r6Authority}=await import(pathToFileURL(path.join(cc,'src/r6-authority.mjs')).href),A=r6Authority();
