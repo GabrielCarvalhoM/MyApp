@@ -1,0 +1,242 @@
+{
+ "mutation": "R7D-PHASE33-MUTATION-1",
+ "testFile": "CoachingCore/test/r7d-phase33.test.mjs",
+ "testFileSha256": "99865332448eb6e155b7b74cfda578a1dd680c80f732952d9a60727f38854578",
+ "sources": {
+  "CoachingCore/src/r6-adaptation.mjs": "15e4279baae4b79a5f61081539fa1f46b37930454f93894eab17118a248f97bc"
+ },
+ "scratchRestored": true,
+ "baseline": {
+  "status": 0,
+  "selected": 14,
+  "pass": 14,
+  "fail": 0,
+  "failed": []
+ },
+ "mutants": [
+  {
+   "id": "P33-M1",
+   "defect": "the R7D-FREEZE-3 reading: any recorded session between the breaks re-enters the athlete (F01 itself)",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.3 T1",
+   "applied": true,
+   "cleanRun": {
+    "selected": 2,
+    "pass": 2,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 4,
+    "pass": 0,
+    "fail": 2,
+    "failedTests": [
+     "R7-D Phase 3.3 T1 (F01 witness): a long break, one isolated session and a short break: the session re-enters nothing, the stop runs through the earlier break and the return is the whole stop's",
+     "R7-D Phase 3.3 T1: thirty days, one run and four days re-enter as the thirty-seven days declared once (a restart), not as the four days alone"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.3 T1 (F01 witness): a long break, one isolated session and a short break: the session re-enters nothing, the stop runs through the earlier break and the return is the whole stop's",
+    "R7-D Phase 3.3 T1: thirty days, one run and four days re-enter as the thirty-seven days declared once (a restart), not as the four days alone",
+    "R7-D Phase 3.3 T3: a whole week of the plan executed in full between the breaks re-enters the athlete: the later break alone, from what was executed, never a conservative re-entry",
+    "R7-D Phase 3.3 T3: the late form: a week executed in full and reviewed before the earlier break was declared re-enters the athlete; one session in a reviewed week does not",
+    "R7-D Phase 3.3 T4: a week between the breaks with a session missed or partial re-enters nothing: the stop runs through",
+    "R7-D Phase 3.3 T4: a week that holds days of the earlier break never re-enters the athlete, even with every one of its sessions reported done",
+    "R7-D Phase 3.3 T4: unreported sessions in a week between the breaks are asked first; the answer decides whether that week re-entered the athlete",
+    "R7-D Phase 3.3 T4: a conflicted report in a week between the breaks is asked as unreported; corrected, the week re-enters the athlete only when every session was executed",
+    "R7-D Phase 3.3 T5: a week executed in full but with an adverse response (recovery adverse or next-day function impaired) re-enters nothing: the stop runs through",
+    "R7-D Phase 3.3 T6: a named correction of the earlier break is read with its corrected facts, the isolated session between still re-enters nothing, and a replay changes nothing",
+    "R7-D Phase 3.3 T9: the same facts give the same decision: the same review twice is byte-identical, and either order of declaration gives the same stop, entry and plan"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P33-M2",
+   "defect": "a week a review closed re-enters the athlete whatever its gates (a review of a week with one session counts)",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.3 T3: the late form",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.3 T3: the late form: a week executed in full and reviewed before the earlier break was declared re-enters the athlete; one session in a reviewed week does not"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.3 T3: the late form: a week executed in full and reviewed before the earlier break was declared re-enters the athlete; one session in a reviewed week does not"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P33-M3",
+   "defect": "one sport executed completely is enough (the other sport's sessions of the week missed)",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.3 T4: a week between the breaks with a session missed or partial",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.3 T4: a week between the breaks with a session missed or partial re-enters nothing: the stop runs through"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.3 T4: a week between the breaks with a session missed or partial re-enters nothing: the stop runs through",
+    "R7-D Phase 3.3 T4: unreported sessions in a week between the breaks are asked first; the answer decides whether that week re-entered the athlete",
+    "R7-D Phase 3.3 T4: a conflicted report in a week between the breaks is asked as unreported; corrected, the week re-enters the athlete only when every session was executed",
+    "R7-D Phase 3.3 T5: a week executed in full but with an adverse response (recovery adverse or next-day function impaired) re-enters nothing: the stop runs through"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P33-M4",
+   "defect": "every week counts as executed completely (gates ignored: a missed, partial or adverse session re-enters)",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.3 T4: a week between the breaks with a session missed or partial",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.3 T4: a week between the breaks with a session missed or partial re-enters nothing: the stop runs through"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.3 T3: the late form: a week executed in full and reviewed before the earlier break was declared re-enters the athlete; one session in a reviewed week does not",
+    "R7-D Phase 3.3 T4: a week between the breaks with a session missed or partial re-enters nothing: the stop runs through",
+    "R7-D Phase 3.3 T4: unreported sessions in a week between the breaks are asked first; the answer decides whether that week re-entered the athlete",
+    "R7-D Phase 3.3 T4: a conflicted report in a week between the breaks is asked as unreported; corrected, the week re-enters the athlete only when every session was executed",
+    "R7-D Phase 3.3 T5: a week executed in full but with an adverse response (recovery adverse or next-day function impaired) re-enters nothing: the stop runs through"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P33-M5",
+   "defect": "every session reported done is enough (an adverse response, recovery adverse or next day impaired, re-enters)",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.3 T5",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.3 T5: a week executed in full but with an adverse response (recovery adverse or next-day function impaired) re-enters nothing: the stop runs through"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.3 T5: a week executed in full but with an adverse response (recovery adverse or next-day function impaired) re-enters nothing: the stop runs through"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P33-M6",
+   "defect": "a week that holds days of a break counts (the week need only touch the days between them)",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.3 T4: a week that holds days of the earlier break",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.3 T4: a week that holds days of the earlier break never re-enters the athlete, even with every one of its sessions reported done"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.3 T4: a week that holds days of the earlier break never re-enters the athlete, even with every one of its sessions reported done"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P33-M7",
+   "defect": "the record says nothing was trained between the breaks when training was recorded there",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.3 T1",
+   "applied": true,
+   "cleanRun": {
+    "selected": 2,
+    "pass": 2,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 4,
+    "pass": 0,
+    "fail": 2,
+    "failedTests": [
+     "R7-D Phase 3.3 T1 (F01 witness): a long break, one isolated session and a short break: the session re-enters nothing, the stop runs through the earlier break and the return is the whole stop's",
+     "R7-D Phase 3.3 T1: thirty days, one run and four days re-enter as the thirty-seven days declared once (a restart), not as the four days alone"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.3 T1 (F01 witness): a long break, one isolated session and a short break: the session re-enters nothing, the stop runs through the earlier break and the return is the whole stop's",
+    "R7-D Phase 3.3 T1: thirty days, one run and four days re-enter as the thirty-seven days declared once (a restart), not as the four days alone",
+    "R7-D Phase 3.3 T3: the late form: a week executed in full and reviewed before the earlier break was declared re-enters the athlete; one session in a reviewed week does not",
+    "R7-D Phase 3.3 T4: a week between the breaks with a session missed or partial re-enters nothing: the stop runs through",
+    "R7-D Phase 3.3 T4: a week that holds days of the earlier break never re-enters the athlete, even with every one of its sessions reported done",
+    "R7-D Phase 3.3 T5: a week executed in full but with an adverse response (recovery adverse or next-day function impaired) re-enters nothing: the stop runs through",
+    "R7-D Phase 3.3 T6: a named correction of the earlier break is read with its corrected facts, the isolated session between still re-enters nothing, and a replay changes nothing",
+    "R7-D Phase 3.3 T9: the same facts give the same decision: the same review twice is byte-identical, and either order of declaration gives the same stop, entry and plan"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P33-M8",
+   "defect": "with training recorded between the breaks, their unreported sessions are read through without asking",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.3 T4: unreported sessions in a week between the breaks",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.3 T4: unreported sessions in a week between the breaks are asked first; the answer decides whether that week re-entered the athlete"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.3 T4: unreported sessions in a week between the breaks are asked first; the answer decides whether that week re-entered the athlete",
+    "R7-D Phase 3.3 T4: a conflicted report in a week between the breaks is asked as unreported; corrected, the week re-enters the athlete only when every session was executed"
+   ],
+   "killed": true
+  }
+ ],
+ "summary": {
+  "mutants": 8,
+  "killed": 8,
+  "survived": []
+ }
+}

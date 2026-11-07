@@ -1,0 +1,2028 @@
+# R7-D domain-evaluation packet (R7D-DIAGNOSTIC-1)
+
+Runtime R7D-FREEZE-3 (aeafc83), harness R7D-HARNESS-5, first evaluation: false. Corpus sha256 44fca38174a8999888dac4b2bfc6cafdfde2c6a0dcc089a563121af5a6740957.
+
+Per case: what the case asks, the intake, onboarding, every decision (current week = prescription; next week = provisional projection), automated results, the author's expectations and independent assessment.
+
+## R7D-D01
+
+**Intent.** A 41-year-old who has never run builds from nothing to a 10K over 16 weeks with bodyweight-only running-support strength, a Wednesday start in a negative time zone, and one fully declared nonclinical week off. It probes whether the coach starts with walk/jog, progresses gradually, absorbs a short break without catching up, and lands a taper and race week on the stated date.
+
+**Tags.** COLD_START, RUN_FIRST, RACE_10K, H16, RUN_EXP_NONE, STR_EXP_NOVICE, WALK_JOG, BODYWEIGHT_ONLY, LOW_DATA, START_NON_MONDAY, TIMEZONE, RETURN_SHORT, TAPER, RACE_WEEK, POST_RACE · oracle DOMAIN_ORACLE
+
+**Intake.** `{"startDate":"2026-11-11","weeks":16,"asOf":"2026-11-10","tz":-300,"learningConsent":null,"eligibility":"CONFIRMED","goals":{"run":{"kind":"RACE","event":{"kind":"10K","date":"2027-02-28"}},"strength":"RUNNING_SUPPORT"},"event":{"kind":"10K","date":"2027-02-28"},"runExperience":"NONE","strengthExperience":"NOVICE","recent":{"runDaysPerWeek":0,"runMinutesPerWeek":0,"longestRunMinutes":0,"strengthDaysPerWeek":0},"knownRuns":0,"knownExercises":[],"equipment":["BODYWEIGHT"],"pause":null,"wearable":null,"history":0,"ageYears":41,"specialPopulation":null,"schedule":{"runDays":[0,2,4],"strengthDays":[1,5],"runTurn":"AM","strengthTurn":"PM","runMinutes":40,"strengthMinutes":30,"longRunDay":4,"longRunMinutes":75}}`
+
+**Onboarding.** PROPOSED: Complete conditional program generated from onboarding-like facts
+
+- Phases: ESTABLISHMENT · BUILD · BUILD · BUILD · CONSOLIDATION · BUILD · BUILD · BUILD · CONSOLIDATION · BUILD · BUILD · SPECIFIC · SPECIFIC · SPECIFIC · TAPER · RACE_WEEK
+- Week 0 (ESTABLISHMENT): d0 2026-11-11 AM RUN WALK_JOG 20min (WALK_JOG 3x(30s jog/120s walk)) | d1 2026-11-12 PM STRENGTH_FULL_A 12min: sit-to-stand 1x5 RIR3 BW; wall-pushup 1x5 RIR3 BW; prone-row-practice 1x5 RIR3 BW | d2 2026-11-13 AM RUN WALK_JOG 20min (WALK_JOG 3x(30s jog/120s walk)) | d4 2026-11-15 AM RUN WALK_JOG 20min (WALK_JOG 3x(30s jog/120s walk)) | d5 2026-11-16 PM STRENGTH_FULL_B 20min: glute-bridge 2x8 RIR3 BW; incline-push-up 2x8 RIR3 BW; prone-ytw-raise 1x10 RIR3 BW
+- Week 1 (BUILD): d0 2026-11-18 AM RUN WALK_JOG 21min (WALK_JOG 5x(30s jog/120s walk)) | d1 2026-11-19 PM STRENGTH_FULL_A 20min: box-squat-bodyweight 2x8 RIR3 BW; incline-push-up 2x8 RIR3 BW; prone-ytw-raise 1x10 RIR3 BW | d2 2026-11-20 AM RUN WALK_JOG 21min (WALK_JOG 5x(30s jog/120s walk)) | d4 2026-11-22 AM RUN WALK_JOG 21min (WALK_JOG 5x(30s jog/120s walk)) | d5 2026-11-23 PM STRENGTH_FULL_B 20min: glute-bridge 2x8 RIR3 BW; incline-push-up 2x8 RIR3 BW; prone-ytw-raise 1x10 RIR3 BW
+- Week 14 (TAPER): d0 2027-02-17 AM RUN EASY 25min (EASY +strides) | d1 2027-02-18 PM STRENGTH_FULL_A 16min: box-squat-bodyweight 1x14 RIR3 BW; incline-push-up 1x14 RIR3 BW; prone-ytw-raise 1x14 RIR3 BW | d2 2027-02-19 AM RUN EASY 25min (EASY +strides) | d4 2027-02-21 AM RUN EASY 25min (EASY +strides) | d5 2027-02-22 PM STRENGTH_FULL_B 14min: glute-bridge 1x14 RIR4 BW; incline-push-up 1x14 RIR4 BW
+- Week 15 (RACE_WEEK): d0 2027-02-24 AM RUN EASY 15min (EASY) | d1 STRENGTH REST_BY_DESIGN | d2 2027-02-26 AM RUN EASY 15min (EASY) | d4 2027-02-28  RUN RACE 75min (RACE, completion) | d5 STRENGTH REST_BY_DESIGN
+
+### w0 · 2026-11-17T20:30:00-05:00 · WEEKLY_REVIEW (week 0)
+
+- Athlete: 5 report(s): w0-run-d0 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-run-d2 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-run-d4 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-str-d1 done 12min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-str-d5 done 20min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Executed as planned without adverse signal; the planned progression step stands
+- Gates: `{"WALK_JOG":"ADVANCE","sit-to-stand":"ADVANCE","wall-pushup":"ADVANCE","prone-row-practice":"ADVANCE","glute-bridge":"ADVANCE","incline-push-up":"ADVANCE","prone-ytw-raise":"ADVANCE"}`
+- Current week 0 (ESTABLISHMENT) from 2026-11-17: —
+- Next week 1 (BUILD, provisional): d0 2026-11-18 AM RUN WALK_JOG 21min (WALK_JOG 5x(30s jog/120s walk)) | d1 2026-11-19 PM STRENGTH_FULL_A 20min: box-squat-bodyweight 2x8 RIR3 BW; incline-push-up 2x8 RIR3 BW; prone-ytw-raise 1x10 RIR3 BW | d2 2026-11-20 AM RUN WALK_JOG 21min (WALK_JOG 5x(30s jog/120s walk)) | d4 2026-11-22 AM RUN WALK_JOG 21min (WALK_JOG 5x(30s jog/120s walk)) | d5 2026-11-23 PM STRENGTH_FULL_B 20min: glute-bridge 2x8 RIR3 BW; incline-push-up 2x8 RIR3 BW; prone-ytw-raise 1x10 RIR3 BW
+
+### w1 · 2026-11-24T20:30:00-05:00 · WEEKLY_REVIEW (week 1)
+
+- Athlete: 5 report(s): w1-run-d0 done 21min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-run-d2 done 21min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-run-d4 done 21min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-str-d1 done 20min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-str-d5 done 20min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Executed as planned without adverse signal; the planned progression step stands
+- Gates: `{"WALK_JOG":"ADVANCE","box-squat-bodyweight":"ADVANCE","incline-push-up":"ADVANCE","prone-ytw-raise":"ADVANCE","glute-bridge":"ADVANCE"}`
+- Current week 1 (BUILD) from 2026-11-24: —
+- Next week 2 (BUILD, provisional): d0 2026-11-25 AM RUN WALK_JOG 23min (WALK_JOG 5x(60s jog/120s walk)) | d1 2026-11-26 PM STRENGTH_FULL_A 21min: box-squat-bodyweight 2x10 RIR3 BW; incline-push-up 2x10 RIR3 BW; prone-ytw-raise 1x12 RIR3 BW | d2 2026-11-27 AM RUN WALK_JOG 23min (WALK_JOG 5x(60s jog/120s walk)) | d4 2026-11-29 AM RUN WALK_JOG 23min (WALK_JOG 5x(60s jog/120s walk)) | d5 2026-11-30 PM STRENGTH_FULL_B 21min: glute-bridge 2x10 RIR3 BW; incline-push-up 2x10 RIR3 BW; prone-ytw-raise 1x12 RIR3 BW
+
+### w2 · 2026-12-01T20:30:00-05:00 · WEEKLY_REVIEW (week 2)
+
+- Athlete: 5 report(s): w2-run-d0 done 23min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-run-d2 done 23min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-run-d4 done 23min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-str-d1 done 21min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-str-d5 done 21min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Executed as planned without adverse signal; the planned progression step stands
+- Gates: `{"WALK_JOG":"ADVANCE","box-squat-bodyweight":"ADVANCE","incline-push-up":"ADVANCE","prone-ytw-raise":"ADVANCE","glute-bridge":"ADVANCE"}`
+- Current week 2 (BUILD) from 2026-12-01: —
+- Next week 3 (BUILD, provisional): d0 2026-12-02 AM RUN WALK_JOG 26min (WALK_JOG 5x(90s jog/120s walk)) | d1 2026-12-03 PM STRENGTH_FULL_A 22min: box-squat-bodyweight 2x12 RIR3 BW; incline-push-up 2x12 RIR3 BW; prone-ytw-raise 1x14 RIR3 BW | d2 2026-12-04 AM RUN WALK_JOG 26min (WALK_JOG 5x(90s jog/120s walk)) | d4 2026-12-06 AM RUN WALK_JOG 26min (WALK_JOG 5x(90s jog/120s walk)) | d5 2026-12-07 PM STRENGTH_FULL_B 22min: glute-bridge 2x12 RIR3 BW; incline-push-up 2x12 RIR3 BW; prone-ytw-raise 1x14 RIR3 BW
+
+### w3 · 2026-12-08T20:30:00-05:00 · WEEKLY_REVIEW (week 3)
+
+- Athlete: 5 report(s): w3-run-d0 done 26min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-run-d2 done 26min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-run-d4 done 26min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-str-d1 done 22min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-str-d5 done 22min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Executed as planned without adverse signal; the planned progression step stands
+- Gates: `{"WALK_JOG":"ADVANCE","box-squat-bodyweight":"ADVANCE","incline-push-up":"ADVANCE","prone-ytw-raise":"ADVANCE","glute-bridge":"ADVANCE"}`
+- Current week 3 (BUILD) from 2026-12-08: —
+- Next week 4 (CONSOLIDATION, provisional): d0 2026-12-09 AM RUN WALK_JOG 28min (WALK_JOG 5x(120s jog/120s walk)) | d1 2026-12-10 PM STRENGTH_FULL_A 16min: box-squat-bodyweight 1x14 RIR3 BW; incline-push-up 1x14 RIR3 BW; prone-ytw-raise 1x14 RIR3 BW | d2 2026-12-11 AM RUN WALK_JOG 28min (WALK_JOG 5x(120s jog/120s walk)) | d4 2026-12-13 AM RUN WALK_JOG 28min (WALK_JOG 5x(120s jog/120s walk)) | d5 2026-12-14 PM STRENGTH_FULL_B 16min: glute-bridge 1x14 RIR3 BW; incline-push-up 1x14 RIR3 BW; prone-ytw-raise 1x14 RIR3 BW
+
+### w4 · 2026-12-15T20:30:00-05:00 · WEEKLY_REVIEW (week 4)
+
+- Athlete: 5 report(s): w4-run-d0 done 28min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w4-run-d2 done 28min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w4-run-d4 done 28min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w4-str-d1 done 16min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w4-str-d5 done 16min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · offers LADDER_STEP,LADDER_STEP
+- Reason: Executed as planned without adverse signal; the planned progression step stands
+- Gates: `{"WALK_JOG":"ADVANCE","box-squat-bodyweight":"ADVANCE","incline-push-up":"ADVANCE","prone-ytw-raise":"ADVANCE","glute-bridge":"ADVANCE"}`
+- Current week 4 (CONSOLIDATION) from 2026-12-15: —
+- Next week 5 (BUILD, provisional): d0 2026-12-16 AM RUN WALK_JOG 28min (WALK_JOG 5x(120s jog/120s walk)) | d1 2026-12-17 PM STRENGTH_FULL_A 30min: box-squat-bodyweight 3x14 RIR3 BW; incline-push-up 3x14 RIR3 BW; prone-ytw-raise 2x14 RIR3 BW | d2 2026-12-18 AM RUN WALK_JOG 28min (WALK_JOG 5x(120s jog/120s walk)) | d4 2026-12-20 AM RUN WALK_JOG 28min (WALK_JOG 5x(120s jog/120s walk)) | d5 2026-12-21 PM STRENGTH_FULL_B 30min: glute-bridge 3x14 RIR3 BW; incline-push-up 3x14 RIR3 BW; prone-ytw-raise 2x14 RIR3 BW
+
+### w5 · 2026-12-22T20:30:00-05:00 · WEEKLY_REVIEW (week 5)
+
+- Athlete: 5 report(s): w5-run-d0 done 28min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-run-d2 done 28min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-run-d4 done 28min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-str-d1 done 30min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-str-d5 done 30min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Executed as planned without adverse signal; the planned progression step stands
+- Gates: `{"WALK_JOG":"ADVANCE","box-squat-bodyweight":"ADVANCE","incline-push-up":"ADVANCE","prone-ytw-raise":"ADVANCE","glute-bridge":"ADVANCE"}`
+- Current week 5 (BUILD) from 2026-12-22: —
+- Next week 6 (BUILD, provisional): d0 2026-12-23 AM RUN WALK_JOG 26min (WALK_JOG 4x(180s jog/90s walk)) | d1 2026-12-24 PM STRENGTH_FULL_A 30min: box-squat-bodyweight 3x14 RIR3 BW; incline-push-up 3x14 RIR3 BW; prone-ytw-raise 2x14 RIR3 BW | d2 2026-12-25 AM RUN WALK_JOG 26min (WALK_JOG 4x(180s jog/90s walk)) | d4 2026-12-27 AM RUN WALK_JOG 26min (WALK_JOG 4x(180s jog/90s walk)) | d5 2026-12-28 PM STRENGTH_FULL_B 30min: glute-bridge 3x14 RIR3 BW; incline-push-up 3x14 RIR3 BW; prone-ytw-raise 2x14 RIR3 BW
+
+### w6 · 2026-12-29T20:30:00-05:00 · WEEKLY_REVIEW (week 6)
+
+- Athlete: 5 report(s): w6-run-d0 done 26min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-run-d2 done 26min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-run-d4 done 26min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-str-d1 done 30min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-str-d5 done 30min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Executed as planned without adverse signal; the planned progression step stands
+- Gates: `{"WALK_JOG":"ADVANCE","box-squat-bodyweight":"ADVANCE","incline-push-up":"ADVANCE","prone-ytw-raise":"ADVANCE","glute-bridge":"ADVANCE"}`
+- Current week 6 (BUILD) from 2026-12-29: —
+- Next week 7 (BUILD, provisional): d0 2026-12-30 AM RUN WALK_JOG 28min (WALK_JOG 3x(300s jog/90s walk)) | d1 2026-12-31 PM STRENGTH_FULL_A 30min: box-squat-bodyweight 3x14 RIR3 BW; incline-push-up 3x14 RIR3 BW; prone-ytw-raise 2x14 RIR3 BW | d2 2027-01-01 AM RUN WALK_JOG 28min (WALK_JOG 3x(300s jog/90s walk)) | d4 2027-01-03 AM RUN WALK_JOG 28min (WALK_JOG 3x(300s jog/90s walk)) | d5 2027-01-04 PM STRENGTH_FULL_B 30min: glute-bridge 3x14 RIR3 BW; incline-push-up 3x14 RIR3 BW; prone-ytw-raise 2x14 RIR3 BW
+
+### ret8 · 2027-01-06T06:00:00-05:00 · RETURN_AFTER_PAUSE (week 8)
+
+- Athlete: no reports · break `{"startDate":"2026-12-30","endDate":"2027-01-05","days":7,"reasonCategory":"WORK","nonclinical":true,"reason":"Work trip all week, no time to train."}`
+- Coach: **MODIFY** / REESTABLISH · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: short nonclinical interruption (7 days): resume the last completed doses; no step until execution is observed
+- Current week 8 (CONSOLIDATION) from 2027-01-06: d0 2027-01-06 AM RUN WALK_JOG 26min (WALK_JOG 4x(180s jog/90s walk)) | d1 2027-01-07 PM STRENGTH_FULL_A 22min: box-squat-bodyweight 2x14 RIR3 BW; incline-push-up 2x14 RIR3 BW; prone-ytw-raise 1x14 RIR3 BW | d2 2027-01-08 AM RUN WALK_JOG 26min (WALK_JOG 4x(180s jog/90s walk)) | d4 2027-01-10 AM RUN WALK_JOG 26min (WALK_JOG 4x(180s jog/90s walk)) | d5 2027-01-11 PM STRENGTH_FULL_B 22min: glute-bridge 2x14 RIR3 BW; incline-push-up 2x14 RIR3 BW; prone-ytw-raise 1x14 RIR3 BW
+- Next week 9 (BUILD, provisional): d0 2027-01-13 AM RUN WALK_JOG 26min (WALK_JOG 4x(180s jog/90s walk)) | d1 2027-01-14 PM STRENGTH_FULL_A 30min: box-squat-bodyweight 3x14 RIR3 BW; incline-push-up 3x14 RIR3 BW; prone-ytw-raise 2x14 RIR3 BW | d2 2027-01-15 AM RUN WALK_JOG 26min (WALK_JOG 4x(180s jog/90s walk)) | d4 2027-01-17 AM RUN WALK_JOG 26min (WALK_JOG 4x(180s jog/90s walk)) | d5 2027-01-18 PM STRENGTH_FULL_B 30min: glute-bridge 3x14 RIR3 BW; incline-push-up 3x14 RIR3 BW; prone-ytw-raise 2x14 RIR3 BW
+
+### w8 · 2027-01-12T20:30:00-05:00 · WEEKLY_REVIEW (week 8)
+
+- Athlete: 5 report(s): w8-run-d0 done 26min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w8-run-d2 done 26min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w8-run-d4 done 26min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w8-str-d1 done 22min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w8-str-d5 done 22min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · offers LADDER_STEP,LADDER_STEP
+- Reason: Executed as planned without adverse signal; the planned progression step stands
+- Gates: `{"WALK_JOG":"ADVANCE","box-squat-bodyweight":"ADVANCE","incline-push-up":"ADVANCE","prone-ytw-raise":"ADVANCE","glute-bridge":"ADVANCE"}`
+- Current week 8 (CONSOLIDATION) from 2027-01-12: —
+- Next week 9 (BUILD, provisional): d0 2027-01-13 AM RUN WALK_JOG 26min (WALK_JOG 4x(180s jog/90s walk)) | d1 2027-01-14 PM STRENGTH_FULL_A 30min: box-squat-bodyweight 3x14 RIR3 BW; incline-push-up 3x14 RIR3 BW; prone-ytw-raise 2x14 RIR3 BW | d2 2027-01-15 AM RUN WALK_JOG 26min (WALK_JOG 4x(180s jog/90s walk)) | d4 2027-01-17 AM RUN WALK_JOG 26min (WALK_JOG 4x(180s jog/90s walk)) | d5 2027-01-18 PM STRENGTH_FULL_B 30min: glute-bridge 3x14 RIR3 BW; incline-push-up 3x14 RIR3 BW; prone-ytw-raise 2x14 RIR3 BW
+
+### w9 · 2027-01-19T20:30:00-05:00 · WEEKLY_REVIEW (week 9)
+
+- Athlete: 5 report(s): w9-run-d0 done 26min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w9-run-d2 done 26min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w9-run-d4 done 26min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w9-str-d1 done 30min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w9-str-d5 done 30min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Executed as planned without adverse signal; the planned progression step stands
+- Gates: `{"WALK_JOG":"ADVANCE","box-squat-bodyweight":"ADVANCE","incline-push-up":"ADVANCE","prone-ytw-raise":"ADVANCE","glute-bridge":"ADVANCE"}`
+- Current week 9 (BUILD) from 2027-01-19: —
+- Next week 10 (BUILD, provisional): d0 2027-01-20 AM RUN WALK_JOG 28min (WALK_JOG 3x(300s jog/90s walk)) | d1 2027-01-21 PM STRENGTH_FULL_A 30min: box-squat-bodyweight 3x14 RIR3 BW; incline-push-up 3x14 RIR3 BW; prone-ytw-raise 2x14 RIR3 BW | d2 2027-01-22 AM RUN WALK_JOG 28min (WALK_JOG 3x(300s jog/90s walk)) | d4 2027-01-24 AM RUN WALK_JOG 28min (WALK_JOG 3x(300s jog/90s walk)) | d5 2027-01-25 PM STRENGTH_FULL_B 30min: glute-bridge 3x14 RIR3 BW; incline-push-up 3x14 RIR3 BW; prone-ytw-raise 2x14 RIR3 BW
+
+### w10 · 2027-01-26T20:30:00-05:00 · WEEKLY_REVIEW (week 10)
+
+- Athlete: 5 report(s): w10-run-d0 done 28min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w10-run-d2 done 28min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w10-run-d4 done 28min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w10-str-d1 done 30min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w10-str-d5 done 30min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Executed as planned without adverse signal; the planned progression step stands
+- Gates: `{"WALK_JOG":"ADVANCE","box-squat-bodyweight":"ADVANCE","incline-push-up":"ADVANCE","prone-ytw-raise":"ADVANCE","glute-bridge":"ADVANCE"}`
+- Current week 10 (BUILD) from 2027-01-26: —
+- Next week 11 (SPECIFIC, provisional): d0 2027-01-27 AM RUN WALK_JOG 26min (WALK_JOG 2x(480s jog/60s walk)) | d1 2027-01-28 PM STRENGTH_FULL_A 22min: box-squat-bodyweight 2x14 RIR3 BW; incline-push-up 2x14 RIR3 BW; prone-ytw-raise 1x14 RIR3 BW | d2 2027-01-29 AM RUN WALK_JOG 26min (WALK_JOG 2x(480s jog/60s walk)) | d4 2027-01-31 AM RUN WALK_JOG 26min (WALK_JOG 2x(480s jog/60s walk)) | d5 2027-02-01 PM STRENGTH_FULL_B 22min: glute-bridge 2x14 RIR3 BW; incline-push-up 2x14 RIR3 BW; prone-ytw-raise 1x14 RIR3 BW
+
+### w11 · 2027-02-02T20:30:00-05:00 · WEEKLY_REVIEW (week 11)
+
+- Athlete: 5 report(s): w11-run-d0 done 26min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w11-run-d2 done 26min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w11-run-d4 done 26min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w11-str-d1 done 22min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w11-str-d5 done 22min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Executed as planned without adverse signal; the planned progression step stands
+- Gates: `{"WALK_JOG":"ADVANCE","box-squat-bodyweight":"ADVANCE","incline-push-up":"ADVANCE","prone-ytw-raise":"ADVANCE","glute-bridge":"ADVANCE"}`
+- Current week 11 (SPECIFIC) from 2027-02-02: —
+- Next week 12 (SPECIFIC, provisional): d0 2027-02-03 AM RUN WALK_JOG 28min (WALK_JOG 1x(1200s jog/0s walk)) | d1 2027-02-04 PM STRENGTH_FULL_A 22min: box-squat-bodyweight 2x14 RIR3 BW; incline-push-up 2x14 RIR3 BW; prone-ytw-raise 1x14 RIR3 BW | d2 2027-02-05 AM RUN WALK_JOG 28min (WALK_JOG 1x(1200s jog/0s walk)) | d4 2027-02-07 AM RUN WALK_JOG 28min (WALK_JOG 1x(1200s jog/0s walk)) | d5 2027-02-08 PM STRENGTH_FULL_B 22min: glute-bridge 2x14 RIR3 BW; incline-push-up 2x14 RIR3 BW; prone-ytw-raise 1x14 RIR3 BW
+
+### w12 · 2027-02-09T20:30:00-05:00 · WEEKLY_REVIEW (week 12)
+
+- Athlete: 5 report(s): w12-run-d0 done 28min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w12-run-d2 done 28min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w12-run-d4 done 28min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w12-str-d1 done 22min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w12-str-d5 done 22min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Executed as planned without adverse signal; the planned progression step stands
+- Gates: `{"WALK_JOG":"ADVANCE","box-squat-bodyweight":"ADVANCE","incline-push-up":"ADVANCE","prone-ytw-raise":"ADVANCE","glute-bridge":"ADVANCE"}`
+- Current week 12 (SPECIFIC) from 2027-02-09: —
+- Next week 13 (SPECIFIC, provisional): d0 2027-02-10 AM RUN EASY 25min (EASY) | d1 2027-02-11 PM STRENGTH_FULL_A 22min: box-squat-bodyweight 2x14 RIR3 BW; incline-push-up 2x14 RIR3 BW; prone-ytw-raise 1x14 RIR3 BW | d2 2027-02-12 AM RUN EASY 25min (EASY) | d4 2027-02-14 AM RUN EASY 25min (EASY) | d5 2027-02-15 PM STRENGTH_FULL_B 16min: glute-bridge 1x14 RIR3 BW; incline-push-up 1x14 RIR3 BW; prone-ytw-raise 1x14 RIR3 BW
+
+### w13 · 2027-02-16T20:30:00-05:00 · WEEKLY_REVIEW (week 13)
+
+- Athlete: 5 report(s): w13-run-d0 done 25min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w13-run-d2 done 25min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w13-run-d4 done 25min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w13-str-d1 done 22min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w13-str-d5 done 16min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Executed as planned without adverse signal; the planned progression step stands
+- Gates: `{"EASY":"ADVANCE","box-squat-bodyweight":"ADVANCE","incline-push-up":"ADVANCE","prone-ytw-raise":"ADVANCE","glute-bridge":"ADVANCE"}`
+- Current week 13 (SPECIFIC) from 2027-02-16: —
+- Next week 14 (TAPER, provisional): d0 2027-02-17 AM RUN EASY 20min (EASY) | d1 2027-02-18 PM STRENGTH_FULL_A 16min: box-squat-bodyweight 1x14 RIR3 BW; incline-push-up 1x14 RIR3 BW; prone-ytw-raise 1x14 RIR3 BW | d2 2027-02-19 AM RUN EASY 20min (EASY) | d4 2027-02-21 AM RUN EASY 20min (EASY) | d5 2027-02-22 PM STRENGTH_FULL_B 14min: glute-bridge 1x14 RIR4 BW; incline-push-up 1x14 RIR4 BW
+
+### w14 · 2027-02-23T20:30:00-05:00 · WEEKLY_REVIEW (week 14)
+
+- Athlete: 5 report(s): w14-run-d0 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w14-run-d2 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w14-run-d4 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w14-str-d1 done 16min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w14-str-d5 done 14min 2 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Executed as planned without adverse signal; the planned progression step stands
+- Gates: `{"EASY":"ADVANCE","box-squat-bodyweight":"ADVANCE","incline-push-up":"ADVANCE","prone-ytw-raise":"ADVANCE","glute-bridge":"ADVANCE"}`
+- Current week 14 (TAPER) from 2027-02-23: —
+- Next week 15 (RACE_WEEK, provisional): d0 2027-02-24 AM RUN EASY 15min (EASY) | d1 STRENGTH REST_BY_DESIGN | d2 2027-02-26 AM RUN EASY 15min (EASY) | d4 2027-02-28  RUN RACE 75min (RACE, completion) | d5 STRENGTH REST_BY_DESIGN
+
+### w15 · 2027-03-02T20:30:00-05:00 · WEEKLY_REVIEW (week 15)
+
+- Athlete: 3 report(s): w15-race done 74min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=HARDER,nextDayFunction=NORMAL); w15-run-d0 done 15min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w15-run-d2 done 15min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Final week of the horizon; record outcomes for the next program
+- Current week 15 (RACE_WEEK) from 2027-03-02: —
+
+**Automated properties.** no failure
+
+**Metamorphic.** no violation
+
+**Author expectations.**
+- d01-e01 @GENERATE STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"PROPOSED"`
+- d01-e02 @GENERATE ROLE_PRESENT [DOMAIN_ORACLE]: **PASS** observed `["0:0:WALK_JOG","0:2:WALK_JOG","0:4:WALK_JOG"]`
+- d01-e03 @GENERATE ROLE_ABSENT [DOMAIN_ORACLE]: **PASS** observed `[]`
+- d01-e04 @GENERATE PHASE_IS [DOMAIN_ORACLE]: **PASS** observed `"RACE_WEEK"`
+- d01-e05 @GENERATE ROLE_PRESENT [DOMAIN_ORACLE]: **PASS** observed `["15:4:RACE"]`
+- d01-e06 @GENERATE JUDGED [INVARIANT_ORACLE]: **JUDGED** — Every strength exercise in every week is executable with bodyweight only (no implement or machine), and every strength load is BODYWEIGHT.
+- d01-e07 @GENERATE JUDGED [INVARIANT_ORACLE]: **JUDGED** — Runs appear only on days 0, 2 and 4 and strength only on days 1 and 5 of each week; no other day receives a session.
+- d01-e08 @GENERATE JUDGED [DOMAIN_ORACLE]: **JUDGED** — Running load grows gradually from walk/jog toward continuous easy running; no single week shows an abrupt jump in total running time, and the longest session never exceeds the 75 minutes available on the long-run day.
+- d01-e09 @ret8 STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"MODIFY"`
+- d01-e10 @ret8 QUESTION_KIND_IS [DOMAIN_ORACLE]: **PASS** observed `null`
+- d01-e11 @ret8 VALIDITY_IS [DOMAIN_ORACLE]: **PASS** observed `"VALID_WITHIN_CURRENT_BOUNDED_SCOPE"`
+- d01-e12 @ret8 JUDGED [DOMAIN_ORACLE]: **JUDGED** — The first week back (week 8) does not exceed the running load of the last completed week before the break (week 6) and does not try to catch up the missed week; a small step back or a repeat of week 6 is appropriate.
+- d01-e13 @w14 PHASE_IS [DOMAIN_ORACLE]: **PASS** observed `"RACE_WEEK"`
+- d01-e14 @w14 ROLE_PRESENT [DOMAIN_ORACLE]: **PASS** observed `["15:4:RACE"]`
+- d01-e15 @w14 JUDGED [DOMAIN_ORACLE]: **JUDGED** — Running in the final 7-10 days before the race is reduced relative to the peak weeks, with no new or harder session types introduced in race week, and strength in race week is light or absent in the two days before the race.
+
+**Independent assessment (author, written before any output).**
+- Rationale: A true beginner (no running at all, novice strength) aiming at a 10K in 16 weeks. This is feasible as a completion goal with run/walk progressions. The risks are starting with continuous running, progressing too fast, adding intensity early, or reacting to a missed week by compressing the build.
+- Preferred: Start with walk/jog intervals three times per week totalling a modest amount of time, progress the run fraction and duration a little each week, keep all running easy until continuous easy running is established (quality, if any, only late and gentle such as strides or short steady segments), build a longer session on the Sunday up to roughly 60-75 minutes of running or run/walk, taper in the last 7-10 days, race on the date. Strength: two short bodyweight sessions (squat, hinge, lunge, calf, push, pull/trunk patterns) with high reps in reserve. After the declared work week off: resume at or slightly below the week-6 level.
+- Acceptable alternatives: A plan whose last weeks still contain short walk breaks so the race can be completed as run/walk. / Starting with WALK sessions only for the first week before walk/jog. / Keeping strength to one session a week during the taper. / Repeating week 6 exactly after the break.
+- Concerns: Continuous 30-40 minute runs in week 0 (uses the time available rather than the current capacity). / Quality or threshold work in the first month. / A week after the break that is harder than before it, or doubling sessions to make up for the lost week. / A long session that exceeds 75 minutes, or runs on strength days. / Asking a question after a fully declared nonclinical break.
+- Domain notes: Asking is not needed anywhere in this timeline: every week is reported and the break is declared with a nonclinical category. The time zone is UTC-05:00; step clocks are local. The race is on the long-run day so the race reference is unambiguous.
+
+## R7D-D02
+
+**Intent.** An intermediate runner and experienced lifter runs a half marathon in week 10 of 12 while maintaining strength. The last build week is never reviewed, the coach must ask at the start of the taper, and the answer arrives a day late, inside the taper. It probes the race window (taper, race week, race, after the race) and whether a late answer during the taper gives the same plan as an on-time review.
+
+**Tags.** RUN_FIRST, RACE_HALF, H12, RUN_EXP_INTERMEDIATE, STR_EXP_EXPERIENCED, GYM, START_NON_MONDAY, TIMEZONE, SKIPPED_REVIEW, UNREPORTED_WEEKS, LATE_ANSWER, TAPER_ANSWER, UNAVAILABLE_DAY, TAPER, RACE_WEEK, POST_RACE, OFFERS, SAME_FACTS_DIFFERENT_ORDER · oracle DOMAIN_ORACLE
+
+**Intake.** `{"startDate":"2026-12-03","weeks":12,"asOf":"2026-12-02","tz":60,"learningConsent":null,"eligibility":"CONFIRMED","goals":{"run":{"kind":"RACE","event":{"kind":"HALF_MARATHON","date":"2027-02-14","timeGoalMinutes":115}},"strength":"MAINTAIN"},"event":{"kind":"HALF_MARATHON","date":"2027-02-14","timeGoalMinutes":115},"runExperience":"INTERMEDIATE","strengthExperience":"EXPERIENCED","recent":{"runDaysPerWeek":4,"runMinutesPerWeek":190,"longestRunMinutes":85,"strengthDaysPerWeek":2},"knownRuns":2,"knownExercises":["back-squat 4x5 105KG TOTAL","barbell-rdl 3x6 95KG TOTAL","bench-press 4x6 75KG TOTAL","pull-up 3x6 0KG BODYWEIGHT","one-arm-db-row 3x10 30KG PER_HAND"],"equipment":["BARBELL","RACK","BENCH","DUMBBELLS","MACHINES","PULL_UP_BAR","BANDS","BODYWEIGHT"],"pause":null,"wearable":null,"history":0,"ageYears":34,"specialPopulation":null,"schedule":{"runDays":[0,2,3,5],"strengthDays":[1,4],"runTurn":"PM","strengthTurn":"PM","runMinutes":55,"strengthMinutes":55,"longRunDay":3,"longRunMinutes":130}}`
+
+**Onboarding.** PROPOSED: Complete conditional program generated from onboarding-like facts
+
+- Phases: BUILD · BUILD · BUILD · CONSOLIDATION · BUILD · SPECIFIC · SPECIFIC · SPECIFIC · SPECIFIC · TAPER · RACE_WEEK · POST_EVENT
+- Week 0 (BUILD): d0 2026-12-03 PM RUN EASY 35min (EASY) | d1 2026-12-04 PM STRENGTH_FULL_A 38min: back-squat 4x5 RIR3 105kg TOTAL; bench-press 4x6 RIR3 75kg TOTAL; one-arm-db-row 3x8 RIR3 30kg PER_HAND; db-calf-raise 1x10 RIR3 establish; dead-bug 1x10 RIR3 BW | d2 2026-12-05 PM RUN EASY 35min (EASY) | d3 2026-12-06 PM RUN LONG 85min (LONG) | d4 2026-12-07 PM STRENGTH_FULL_B 36min: barbell-rdl 3x6 RIR3 95kg TOTAL; one-arm-db-row 3x8 RIR3 30kg PER_HAND; bench-press 4x6 RIR3 75kg TOTAL; db-split-squat 1x10 RIR3 establish; dead-bug 1x10 RIR3 BW | d5 2026-12-08 PM RUN EASY 35min (EASY)
+- Week 1 (BUILD): d0 2026-12-10 PM RUN EASY 35min (EASY) | d1 2026-12-11 PM STRENGTH_FULL_A 38min: back-squat 4x5 RIR3 105kg TOTAL; bench-press 4x6 RIR3 75kg TOTAL; one-arm-db-row 3x8 RIR3 30kg PER_HAND; db-calf-raise 1x10 RIR3 last logged; dead-bug 1x12 RIR3 BW | d2 2026-12-12 PM RUN EASY 35min (EASY) | d3 2026-12-13 PM RUN LONG 85min (LONG) | d4 2026-12-14 PM STRENGTH_FULL_B 36min: barbell-rdl 3x6 RIR3 95kg TOTAL; one-arm-db-row 3x8 RIR3 30kg PER_HAND; bench-press 4x6 RIR3 75kg TOTAL; db-split-squat 1x10 RIR3 last logged; dead-bug 1x12 RIR3 BW | d5 2026-12-15 PM RUN EASY 35min (EASY)
+- Week 9 (TAPER): d0 2027-02-04 PM RUN QUALITY 37min (HALF_MARATHON_SPECIFIC 2x10'/2') | d1 2027-02-05 PM STRENGTH_FULL_A 24min: back-squat 2x5 RIR3 105kg TOTAL; bench-press 2x6 RIR3 75kg TOTAL; one-arm-db-row 1x8 RIR3 30kg PER_HAND; db-calf-raise 1x10 RIR3 last logged; dead-bug 1x12 RIR3 BW | d2 2027-02-06 PM RUN EASY 30min (EASY +strides) | d3 2027-02-07 PM RUN LONG 55min (LONG) | d4 2027-02-08 PM STRENGTH_FULL_B 16min: barbell-rdl 1x6 RIR4 95kg TOTAL; one-arm-db-row 1x8 RIR4 30kg PER_HAND; bench-press 1x6 RIR4 75kg TOTAL | d5 2027-02-09 PM RUN EASY 20min (EASY)
+- Week 10 (RACE_WEEK): d0 2027-02-11 PM RUN RACE_TOUCH 28min (RACE_TOUCH 2x5'/3') | d1 STRENGTH REST_BY_DESIGN | d2 2027-02-13 PM RUN SHAKEOUT 15min (SHAKEOUT +strides) | d3 2027-02-14  RUN RACE 150min (RACE) | d4 STRENGTH REST_BY_DESIGN | d5 2027-02-16 PM RUN RECOVERY_EASY 20min (RECOVERY_EASY)
+
+### w0 · 2026-12-09T21:00:00+01:00 · WEEKLY_REVIEW (week 0)
+
+- Athlete: 6 report(s): w0-run-d0 done 35min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-run-d2 done 35min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-run-d3 done 85min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-run-d5 done 35min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-str-d1 done 38min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-str-d4 done 36min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE","back-squat":"ADVANCE","bench-press":"ADVANCE","one-arm-db-row":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","barbell-rdl":"ADVANCE","db-split-squat":"ADVANCE"}`
+- Current week 0 (BUILD) from 2026-12-09: —
+- Next week 1 (BUILD, provisional): d0 2026-12-10 PM RUN EASY 35min (EASY) | d1 2026-12-11 PM STRENGTH_FULL_A 38min: back-squat 4x5 RIR3 105kg TOTAL; bench-press 4x6 RIR3 75kg TOTAL; one-arm-db-row 3x8 RIR3 30kg PER_HAND; db-calf-raise 1x10 RIR3 establish; dead-bug 1x12 RIR3 BW | d2 2026-12-12 PM RUN EASY 35min (EASY) | d3 2026-12-13 PM RUN LONG 85min (LONG) | d4 2026-12-14 PM STRENGTH_FULL_B 36min: barbell-rdl 3x6 RIR3 95kg TOTAL; one-arm-db-row 3x8 RIR3 30kg PER_HAND; bench-press 4x6 RIR3 75kg TOTAL; db-split-squat 1x10 RIR3 establish; dead-bug 1x12 RIR3 BW | d5 2026-12-15 PM RUN EASY 35min (EASY)
+
+### w1 · 2026-12-16T21:00:00+01:00 · WEEKLY_REVIEW (week 1)
+
+- Athlete: 6 report(s): w1-run-d0 done 35min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-run-d2 done 35min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-run-d3 done 85min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-run-d5 done 35min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-str-d1 done 38min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-str-d4 done 36min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · client notes NO_OFFER_TO_RESPOND
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE","back-squat":"ADVANCE","bench-press":"ADVANCE","one-arm-db-row":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","barbell-rdl":"ADVANCE","db-split-squat":"ADVANCE"}`
+- Current week 1 (BUILD) from 2026-12-16: —
+- Next week 2 (BUILD, provisional): d0 2026-12-17 PM RUN QUALITY 34min (THRESHOLD 3x5'/2') | d1 2026-12-18 PM STRENGTH_FULL_A 38min: back-squat 4x5 RIR3 105kg TOTAL; bench-press 4x6 RIR3 75kg TOTAL; one-arm-db-row 3x8 RIR3 30kg PER_HAND; db-calf-raise 1x10 RIR3 establish; dead-bug 1x12 RIR3 BW | d2 2026-12-19 PM RUN EASY 40min (EASY) | d3 2026-12-20 PM RUN LONG 85min (LONG) | d4 2026-12-21 PM STRENGTH_FULL_B 36min: barbell-rdl 3x6 RIR3 95kg TOTAL; one-arm-db-row 3x8 RIR3 30kg PER_HAND; bench-press 4x6 RIR3 75kg TOTAL; db-split-squat 1x10 RIR3 establish; dead-bug 1x12 RIR3 BW | d5 2026-12-22 PM RUN EASY 35min (EASY +strides)
+
+### w2 · 2026-12-23T21:00:00+01:00 · WEEKLY_REVIEW (week 2)
+
+- Athlete: 6 report(s): w2-run-d0 done 34min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-run-d2 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-run-d3 done 85min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-run-d5 done 35min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-str-d1 done 38min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-str-d4 done 36min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · client notes NO_OFFER_TO_RESPOND
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","QUALITY":"ADVANCE","EASY":"ADVANCE","back-squat":"ADVANCE","bench-press":"ADVANCE","one-arm-db-row":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","barbell-rdl":"ADVANCE","db-split-squat":"ADVANCE"}`
+- Current week 2 (BUILD) from 2026-12-23: —
+- Next week 3 (CONSOLIDATION, provisional): d0 2026-12-24 PM RUN QUALITY 34min (THRESHOLD 3x5'/2') | d1 2026-12-25 PM STRENGTH_FULL_A 31min: back-squat 3x5 RIR3 105kg TOTAL; bench-press 3x6 RIR3 75kg TOTAL; one-arm-db-row 2x8 RIR3 30kg PER_HAND; db-calf-raise 1x10 RIR3 establish; dead-bug 1x12 RIR3 BW | d2 2026-12-26 PM RUN EASY 40min (EASY) | d3 2026-12-27 PM RUN LONG 80min (LONG) | d4 2026-12-28 PM STRENGTH_FULL_B 29min: barbell-rdl 2x6 RIR3 95kg TOTAL; one-arm-db-row 2x8 RIR3 30kg PER_HAND; bench-press 3x6 RIR3 75kg TOTAL; db-split-squat 1x10 RIR3 establish; dead-bug 1x12 RIR3 BW | d5 2026-12-29 PM RUN EASY 35min (EASY +strides)
+
+### w3 · 2026-12-30T21:00:00+01:00 · WEEKLY_REVIEW (week 3)
+
+- Athlete: 6 report(s): w3-run-d0 done 34min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-run-d2 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-run-d3 done 80min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-run-d5 done 35min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-str-d1 done 31min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-str-d4 done 29min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · client notes NO_OFFER_TO_RESPOND
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · offers LADDER_STEP,LADDER_STEP · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","QUALITY":"ADVANCE","EASY":"ADVANCE","back-squat":"ADVANCE","bench-press":"ADVANCE","one-arm-db-row":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","barbell-rdl":"ADVANCE","db-split-squat":"ADVANCE"}`
+- Current week 3 (CONSOLIDATION) from 2026-12-30: —
+- Next week 4 (BUILD, provisional): d0 2026-12-31 PM RUN QUALITY 41min (THRESHOLD 4x5'/2') | d1 2027-01-01 PM STRENGTH_FULL_A 38min: back-squat 4x5 RIR3 105kg TOTAL; bench-press 4x6 RIR3 75kg TOTAL; one-arm-db-row 3x8 RIR3 30kg PER_HAND; db-calf-raise 1x10 RIR3 establish; dead-bug 1x12 RIR3 BW | d2 2027-01-02 PM RUN EASY 40min (EASY) | d3 2027-01-03 PM RUN LONG 90min (LONG) | d4 2027-01-04 PM STRENGTH_FULL_B 36min: barbell-rdl 3x6 RIR3 95kg TOTAL; one-arm-db-row 3x8 RIR3 30kg PER_HAND; bench-press 4x6 RIR3 75kg TOTAL; db-split-squat 1x10 RIR3 establish; dead-bug 1x12 RIR3 BW | d5 2027-01-05 PM RUN EASY 35min (EASY +strides)
+
+### w4 · 2027-01-06T21:00:00+01:00 · WEEKLY_REVIEW (week 4)
+
+- Athlete: 6 report(s): w4-run-d0 done 41min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w4-run-d2 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w4-run-d3 done 90min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w4-run-d5 done 35min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w4-str-d1 done 38min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w4-str-d4 done 36min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · client notes NO_OFFER_TO_RESPOND
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","QUALITY":"ADVANCE","EASY":"ADVANCE","back-squat":"ADVANCE","bench-press":"ADVANCE","one-arm-db-row":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","barbell-rdl":"ADVANCE","db-split-squat":"ADVANCE"}`
+- Current week 4 (BUILD) from 2027-01-06: —
+- Next week 5 (SPECIFIC, provisional): d0 2027-01-07 PM RUN QUALITY 42min (HALF_MARATHON_SPECIFIC 2x12'/3') | d1 2027-01-08 PM STRENGTH_FULL_A 31min: back-squat 3x5 RIR3 105kg TOTAL; bench-press 3x6 RIR3 75kg TOTAL; one-arm-db-row 2x8 RIR3 30kg PER_HAND; db-calf-raise 1x10 RIR3 establish; dead-bug 1x12 RIR3 BW | d2 2027-01-09 PM RUN EASY 40min (EASY) | d3 2027-01-10 PM RUN LONG 95min (LONG) | d4 2027-01-11 PM STRENGTH_FULL_B 29min: barbell-rdl 2x6 RIR3 95kg TOTAL; one-arm-db-row 2x8 RIR3 30kg PER_HAND; bench-press 3x6 RIR3 75kg TOTAL; db-split-squat 1x10 RIR3 establish; dead-bug 1x12 RIR3 BW | d5 2027-01-12 PM RUN EASY 40min (EASY +strides)
+
+### w5 · 2027-01-13T21:00:00+01:00 · WEEKLY_REVIEW (week 5)
+
+- Athlete: 6 report(s): w5-run-d0 done 42min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-run-d2 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-run-d3 done 95min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-run-d5 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-str-d1 done 31min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-str-d4 done 29min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · client notes NO_OFFER_TO_RESPOND
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","QUALITY":"ADVANCE","EASY":"ADVANCE","back-squat":"ADVANCE","bench-press":"ADVANCE","one-arm-db-row":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","barbell-rdl":"ADVANCE","db-split-squat":"ADVANCE"}`
+- Current week 5 (SPECIFIC) from 2027-01-13: —
+- Next week 6 (SPECIFIC, provisional): d0 2027-01-14 PM RUN QUALITY 49min (HALF_MARATHON_SPECIFIC 3x10'/2') | d1 2027-01-15 PM STRENGTH_FULL_A 31min: back-squat 3x5 RIR3 105kg TOTAL; bench-press 3x6 RIR3 75kg TOTAL; one-arm-db-row 2x8 RIR3 30kg PER_HAND; db-calf-raise 1x10 RIR3 establish; dead-bug 1x12 RIR3 BW | d2 2027-01-16 PM RUN EASY 40min (EASY) | d3 2027-01-17 PM RUN LONG 100min (LONG) | d4 2027-01-18 PM STRENGTH_FULL_B 29min: barbell-rdl 2x6 RIR3 95kg TOTAL; one-arm-db-row 2x8 RIR3 30kg PER_HAND; bench-press 3x6 RIR3 75kg TOTAL; db-split-squat 1x10 RIR3 establish; dead-bug 1x12 RIR3 BW | d5 2027-01-19 PM RUN EASY 40min (EASY +strides)
+
+### w6 · 2027-01-20T21:00:00+01:00 · WEEKLY_REVIEW (week 6)
+
+- Athlete: 6 report(s): w6-run-d0 done 49min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-run-d2 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-run-d3 done 100min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-run-d5 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-str-d1 done 31min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-str-d4 done 29min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · client notes NO_OFFER_TO_RESPOND
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","QUALITY":"ADVANCE","EASY":"ADVANCE","back-squat":"ADVANCE","bench-press":"ADVANCE","one-arm-db-row":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","barbell-rdl":"ADVANCE","db-split-squat":"ADVANCE"}`
+- Current week 6 (SPECIFIC) from 2027-01-20: —
+- Next week 7 (SPECIFIC, provisional): d0 2027-01-21 PM RUN QUALITY 48min (HALF_MARATHON_SPECIFIC 2x15'/3') | d1 2027-01-22 PM STRENGTH_FULL_A 31min: back-squat 3x5 RIR3 105kg TOTAL; bench-press 3x6 RIR3 75kg TOTAL; one-arm-db-row 2x8 RIR3 30kg PER_HAND; db-calf-raise 1x10 RIR3 establish; dead-bug 1x12 RIR3 BW | d2 2027-01-23 PM RUN EASY 40min (EASY) | d3 2027-01-24 PM RUN LONG 100min (LONG) | d4 2027-01-25 PM STRENGTH_FULL_B 29min: barbell-rdl 2x6 RIR3 95kg TOTAL; one-arm-db-row 2x8 RIR3 30kg PER_HAND; bench-press 3x6 RIR3 75kg TOTAL; db-split-squat 1x10 RIR3 establish; dead-bug 1x12 RIR3 BW | d5 2027-01-26 PM RUN EASY 40min (EASY +strides)
+
+### w7 · 2027-01-27T21:00:00+01:00 · WEEKLY_REVIEW (week 7)
+
+- Athlete: 6 report(s): w7-run-d0 done 48min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w7-run-d2 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w7-run-d3 done 100min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w7-run-d5 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w7-str-d1 done 31min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w7-str-d4 done 29min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · client notes NO_OFFER_TO_RESPOND
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","QUALITY":"ADVANCE","EASY":"ADVANCE","back-squat":"ADVANCE","bench-press":"ADVANCE","one-arm-db-row":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","barbell-rdl":"ADVANCE","db-split-squat":"ADVANCE"}`
+- Current week 7 (SPECIFIC) from 2027-01-27: —
+- Next week 8 (SPECIFIC, provisional): d0 2027-01-28 PM RUN QUALITY 55min (HALF_MARATHON_SPECIFIC 3x12'/2') | d1 2027-01-29 PM STRENGTH_FULL_A 31min: back-squat 3x5 RIR3 105kg TOTAL; bench-press 3x6 RIR3 75kg TOTAL; one-arm-db-row 2x8 RIR3 30kg PER_HAND; db-calf-raise 1x10 RIR3 establish; dead-bug 1x12 RIR3 BW | d2 2027-01-30 PM RUN EASY 40min (EASY) | d3 2027-01-31 PM RUN LONG 105min (LONG) | d4 2027-02-01 PM STRENGTH_FULL_B 20min: barbell-rdl 1x6 RIR3 95kg TOTAL; one-arm-db-row 1x8 RIR3 30kg PER_HAND; bench-press 2x6 RIR3 75kg TOTAL; dead-bug 1x12 RIR3 BW | d5 2027-02-02 PM RUN EASY 30min (EASY +strides)
+
+### u9 · 2027-02-04T07:00:00+01:00 · UNAVAILABLE_DAY (week 9)
+
+- Athlete: no reports · changes `{"unavailableDates":["2027-02-08"]}`
+- Coach: **MODIFY** / RESCHEDULE_WITHIN_WEEK · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Sessions on the unavailable date are moved within chosen days when that adds no interference, otherwise skipped without debt
+- Current week 9 (TAPER) from 2027-02-04: d0 2027-02-04 PM RUN QUALITY 37min (HALF_MARATHON_SPECIFIC 2x10'/2') | d1 2027-02-05 PM STRENGTH_FULL_A 24min: back-squat 2x5 RIR3 105kg TOTAL; bench-press 2x6 RIR3 75kg TOTAL; one-arm-db-row 1x8 RIR3 30kg PER_HAND; db-calf-raise 1x10 RIR3 last logged; dead-bug 1x12 RIR3 BW | d2 2027-02-06 PM RUN EASY 30min (EASY +strides) | d3 2027-02-07 PM RUN LONG 55min (LONG) | d4 2027-02-08 PM STRENGTH_FULL_B 16min: barbell-rdl 1x6 RIR4 95kg TOTAL; one-arm-db-row 1x8 RIR4 30kg PER_HAND; bench-press 1x6 RIR4 75kg TOTAL [SKIPPED] | d5 2027-02-09 PM RUN EASY 20min (EASY)
+- Next week 10 (RACE_WEEK, provisional): d0 2027-02-11 PM RUN RACE_TOUCH 28min (RACE_TOUCH 2x5'/3') | d1 STRENGTH REST_BY_DESIGN | d2 2027-02-13 PM RUN SHAKEOUT 15min (SHAKEOUT +strides) | d3 2027-02-14  RUN RACE 150min (RACE) | d4 STRENGTH REST_BY_DESIGN | d5 2027-02-16 PM RUN RECOVERY_EASY 20min (RECOVERY_EASY)
+
+### a9 · 2027-02-05T07:30:00+01:00 · WEEKLY_REVIEW (week 9)
+
+- Athlete: no reports · client notes ANSWER_WITHOUT_PENDING_QUESTION
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: next-week steps are gated when this week’s remaining sessions are complete
+- Current week 9 (TAPER) from 2027-02-05: d1 2027-02-05 PM STRENGTH_FULL_A 24min: back-squat 2x5 RIR3 105kg TOTAL; bench-press 2x6 RIR3 75kg TOTAL; one-arm-db-row 1x8 RIR3 30kg PER_HAND; db-calf-raise 1x10 RIR3 last logged; dead-bug 1x12 RIR3 BW | d2 2027-02-06 PM RUN EASY 30min (EASY +strides) | d3 2027-02-07 PM RUN LONG 55min (LONG) | d4 2027-02-08 PM STRENGTH_FULL_B 16min: barbell-rdl 1x6 RIR4 95kg TOTAL; one-arm-db-row 1x8 RIR4 30kg PER_HAND; bench-press 1x6 RIR4 75kg TOTAL [SKIPPED] | d5 2027-02-09 PM RUN EASY 20min (EASY)
+- Next week 10 (RACE_WEEK, provisional): d0 2027-02-11 PM RUN RACE_TOUCH 28min (RACE_TOUCH 2x5'/3') | d1 STRENGTH REST_BY_DESIGN | d2 2027-02-13 PM RUN SHAKEOUT 15min (SHAKEOUT +strides) | d3 2027-02-14  RUN RACE 150min (RACE) | d4 STRENGTH REST_BY_DESIGN | d5 2027-02-16 PM RUN RECOVERY_EASY 20min (RECOVERY_EASY)
+
+### w9 · 2027-02-10T21:00:00+01:00 · WEEKLY_REVIEW (week 9)
+
+- Athlete: 5 report(s): w9-run-d0 done 37min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w9-run-d2 done 30min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w9-run-d3 done 55min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w9-run-d5 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w9-str-d1 done 24min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **MODIFY** / GATED_NEXT_STEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation
+- Gates: `{"LONG":"ADVANCE","QUALITY":"ADVANCE","EASY":"ADVANCE","back-squat":"ADVANCE","bench-press":"HOLD","one-arm-db-row":"HOLD","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","barbell-rdl":"HOLD"}`
+- Current week 9 (TAPER) from 2027-02-10: —
+- Next week 10 (RACE_WEEK, provisional): d0 2027-02-11 PM RUN RACE_TOUCH 28min (RACE_TOUCH 2x5'/3') | d1 STRENGTH REST_BY_DESIGN | d2 2027-02-13 PM RUN SHAKEOUT 15min (SHAKEOUT +strides) | d3 2027-02-14  RUN RACE 150min (RACE) | d4 STRENGTH REST_BY_DESIGN | d5 2027-02-16 PM RUN RECOVERY_EASY 20min (RECOVERY_EASY)
+
+### w10 · 2027-02-17T21:00:00+01:00 · WEEKLY_REVIEW (week 10)
+
+- Athlete: 4 report(s): w10-race done 113min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w10-run-d0 done 28min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w10-run-d2 done 15min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w10-run-d5 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Executed as planned without adverse signal; the planned progression step stands
+- Gates: `{}`
+- Current week 10 (RACE_WEEK) from 2027-02-17: —
+- Next week 11 (POST_EVENT, provisional): d0 2027-02-18 PM RUN RECOVERY_EASY 30min (RECOVERY_EASY) | d1 2027-02-19 PM STRENGTH_FULL_A 16min: back-squat 1x5 RIR4 105kg TOTAL; bench-press 1x6 RIR4 75kg TOTAL; one-arm-db-row 1x8 RIR4 30kg PER_HAND | d2 2027-02-20 PM RUN RECOVERY_EASY 30min (RECOVERY_EASY) | d3 2027-02-21 PM RUN RECOVERY_EASY 30min (RECOVERY_EASY) | d4 STRENGTH REST_BY_DESIGN | d5 2027-02-23 PM RUN RECOVERY_EASY 30min (RECOVERY_EASY)
+
+### w11 · 2027-02-24T21:00:00+01:00 · WEEKLY_REVIEW (week 11)
+
+- Athlete: 5 report(s): w11-run-d0 done 30min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w11-run-d2 done 30min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w11-run-d3 done 30min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w11-run-d5 done 30min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w11-str-d1 done 16min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Final week of the horizon; record outcomes for the next program
+- Current week 11 (POST_EVENT) from 2027-02-24: —
+
+**Automated properties.** no failure
+
+**Metamorphic.** VARIANT `[{"index":0,"compareAtStep":"w9","expect":"SAME_PLAN","evaluable":true,"ok":false,"base":{"decision":{"status":"MODIFY","action":"GATED_NEXT_STEP","validity":"VALID_WITHIN_CURRENT_BOUNDED_SCOPE","question":null,"gates":{"EASY":"ADVANCE","LONG":"ADVANCE","QUALITY":"ADVANCE","back-squat":"ADVANCE","barbell-rdl":"HOLD","bench-press":"HOLD","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","one-arm-db-row":"HOLD"},"offers":[],"pending":null},"runMinutes":213},"variant":{"decision":{"status":"MODIFY","action":"GATED_NEXT_STEP","validity":"VALID_WITHIN_CURRENT_BOUNDED_SCOPE","question":null,"gates":{"EASY":"ADVANCE","LONG":"ADVANCE","QUALITY":"ADVANCE","back-squat":"ADVANCE","barbell-rdl":"HOLD","bench-press":"HOLD","dead-bug":"ADVANCE","one-arm-db-row":"HOLD"},"offers":[],"pending":null},"runMinutes":213}}]`
+
+**Author expectations.**
+- d02-e01 @GENERATE STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"PROPOSED"`
+- d02-e02 @GENERATE PHASE_IS [DOMAIN_ORACLE]: **PASS** observed `"RACE_WEEK"`
+- d02-e03 @GENERATE ROLE_PRESENT [DOMAIN_ORACLE]: **PASS** observed `["10:3:RACE"]`
+- d02-e04 @GENERATE ROLE_ABSENT [DOMAIN_ORACLE]: **PASS** observed `[]`
+- d02-e05 @GENERATE PHASE_IS [DOMAIN_ORACLE]: **PASS** observed `"POST_EVENT"`
+- d02-e06 @GENERATE ROLE_ABSENT [DOMAIN_ORACLE]: **PASS** observed `[]`
+- d02-e07 @GENERATE JUDGED [DOMAIN_ORACLE]: **JUDGED** — Strength is maintained with known loads (KNOWN or FROM_LOG, not ESTABLISH) at reduced volume and reps in reserve of about 2 or more; heavy lower-body work is reduced in weeks 9-10 and absent in the two days before the race.
+- d02-e08 @GENERATE JUDGED [DOMAIN_ORACLE]: **JUDGED** — The long run grows from about the current 85 minutes toward a peak of roughly 100-130 minutes no later than two weeks before the race, and the weekly running load rises gradually with at least one easier week in the build.
+- d02-e09 @u9 STATUS_IN [DOMAIN_ORACLE]: **FAIL** observed `"MODIFY"`
+- d02-e10 @u9 QUESTION_KIND_IS [DOMAIN_ORACLE]: **FAIL** observed `null`
+- d02-e11 @u9 NO_PRESCRIPTION [INVARIANT_ORACLE]: **FAIL** observed `"VALID_WITHIN_CURRENT_BOUNDED_SCOPE"`
+- d02-e12 @a9 STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"KEEP"`
+- d02-e13 @a9 VALIDITY_IS [DOMAIN_ORACLE]: **PASS** observed `"VALID_WITHIN_CURRENT_BOUNDED_SCOPE"`
+- d02-e14 @a9 QUESTION_KIND_IS [DOMAIN_ORACLE]: **PASS** observed `null`
+- d02-e15 @a9 ROLE_PRESENT [DOMAIN_ORACLE]: **PASS** observed `["10:3:RACE"]`
+- d02-e16 @a9 ROLE_MINUTES_COMPARE [DOMAIN_ORACLE]: **PASS** observed `{"week":55,"otherWeek":105}`
+- d02-e17 @a9 JUDGED [INVARIANT_ORACLE]: **JUDGED** — No session is placed on the unavailable date (day 4 of week 9) and no session moves to a day the athlete did not choose.
+- d02-e18 @w10 PHASE_IS [DOMAIN_ORACLE]: **PASS** observed `"POST_EVENT"`
+- d02-e19 @w10 ROLE_ABSENT [DOMAIN_ORACLE]: **PASS** observed `[]`
+- d02-e20 @w10 JUDGED [DOMAIN_ORACLE]: **JUDGED** — Week 11 running is easy and clearly below the pre-taper weekly load, and its longest run is well below the peak long run.
+
+**Independent assessment (author, written before any output).**
+- Rationale: A well-prepared intermediate runner with a credible half-marathon goal and an experienced lifter who only wants to keep strength. The interesting part is the unreported peak week right before the taper: the coach cannot know whether the athlete absorbed the peak, so it should ask before setting taper doses, and a late answer should land the athlete exactly where an on-time review would have.
+- Preferred: Plan four runs (easy, quality, easy, long on Sunday) with two maintenance strength sessions on Friday and Monday using known loads at lower volume. Build the long run toward roughly 105-125 minutes by week 7-8, taper from week 9 (shorter long run, maintained but reduced quality, lower volume), race on Sunday of week 10 with a short sharpening session and a shakeout before it, then an easy post-race week. At the start of week 9, ask about the unreported week-8 runs; after the answer, confirm or re-plan the taper and keep Monday of week 9 empty.
+- Acceptable alternatives: A 7-day taper (taper starts only in race week) if the peak long run is placed in week 8. / Keeping one short strength session in race week early in the week. / Strides in the post-race week. / Treating the unreported week conservatively without asking only if the taper doses were not increased; asking is better.
+- Concerns: Assuming the unreported peak week was done and silently keeping the projection. / Moving the Monday session of week 9 to Tuesday or Wednesday on an unchosen day. / A long run or heavy squats in the two days before the race. / Quality sessions in the week after the race. / Resetting the experienced lifter to ESTABLISH loads.
+- Domain notes: The athlete runs in the evening (PM) so the 07:00 step on day 0 of week 9 precedes that day's run; the answer arrives the next morning. Offers are accepted for run quality and declined for ladder steps. Steps carry REANSWERED_NO_CHANGE eligibility by default.
+
+## R7D-D03
+
+**Intent.** A 52-year-old who wants a 4-week machine-gym strength start leaves the eligibility status unanswered and two clinical questions blank. It probes that unknown eligibility is a question: no program, no clinical route, no presumed illness.
+
+**Tags.** ELIGIBILITY_UNKNOWN, STRENGTH_ONLY, GENERAL_FITNESS, H4, STR_EXP_NOVICE, RUN_EXP_NONE, GYM, FREQ_LOW, START_NON_MONDAY, LOW_DATA, COLD_START · oracle INVARIANT_ORACLE
+
+**Intake.** `{"startDate":"2027-01-16","weeks":4,"asOf":"2027-01-12","tz":0,"learningConsent":null,"eligibility":"UNKNOWN","goals":{"run":"NONE","strength":"GENERAL"},"event":null,"runExperience":"NONE","strengthExperience":"NOVICE","recent":{"runDaysPerWeek":0,"strengthDaysPerWeek":0},"knownRuns":0,"knownExercises":[],"equipment":["MACHINES","DUMBBELLS","BENCH","BANDS","BODYWEIGHT"],"pause":null,"wearable":null,"history":0,"ageYears":52,"specialPopulation":null,"schedule":{"runDays":[],"strengthDays":[0,3],"strengthTurn":"AM","strengthMinutes":45}}`
+
+**Onboarding.** ASK: Only facts that change the first program are asked; everything else is established or learned · missing `["athlete.eligibility.currentNonclinicalAssessment"]`
+
+**Automated properties.** no failure
+
+**Metamorphic.** no violation
+
+**Author expectations.**
+- d03-e01 @GENERATE STATUS_IN [INVARIANT_ORACLE]: **PASS** observed `"ASK"`
+- d03-e02 @GENERATE NO_PRESCRIPTION [INVARIANT_ORACLE]: **PASS** observed `"ASK"`
+- d03-e03 @GENERATE JUDGED [INVARIANT_ORACLE]: **JUDGED** — The missing facts named by the coach are the eligibility answers (the status and the unanswered functional-limitation and clinical-concern items); the response does not describe the athlete as having a clinical condition and does not route her to a clinician.
+
+**Independent assessment (author, written before any output).**
+- Rationale: Everything needed to plan is present except eligibility. Four flags were answered "no" but the status is UNKNOWN and functional limitation and clinical concern were left blank.
+- Preferred: Return ASK naming the unanswered eligibility items; no program until they are answered.
+- Acceptable alternatives: Asking only for the status if the coach treats the status as the single gate, as long as nothing is prescribed.
+- Concerns: Generating a "safe" beginner program anyway. / CLINICAL_HUMAN_REQUIRED (presumes a clinical problem from missing answers). / UNSUPPORTED (the request is in scope). / INVALID_INPUT (the intake is well formed; omitted flags are allowed and mean unknown).
+- Domain notes: Onboarding-only case. A second form of the same fact (status confirmed but one flag omitted) would also be unknown; it is not encoded as a VARIANT because a relation needs a step present in both timelines.
+
+## R7D-D04
+
+**Intent.** A recreational hybrid athlete reports persistent pain at onboarding while asking for a normal 8-week plan. It probes the clinical boundary at the very first decision: route to a qualified human and prescribe nothing, including no "pain-free" partial plan.
+
+**Tags.** CLINICAL_SIGNAL, BALANCED_HYBRID, NON_RACE, H8, RUN_EXP_INTERMEDIATE, STR_EXP_NOVICE, COLD_START · oracle INVARIANT_ORACLE
+
+**Intake.** `{"startDate":"2026-11-23","weeks":8,"asOf":"2026-11-20","tz":0,"learningConsent":null,"eligibility":"CLINICAL","goals":{"run":"REGULAR","strength":"GENERAL"},"event":null,"runExperience":"INTERMEDIATE","strengthExperience":"NOVICE","recent":{"runDaysPerWeek":3,"runMinutesPerWeek":120,"longestRunMinutes":50,"strengthDaysPerWeek":1},"knownRuns":0,"knownExercises":[],"equipment":["DUMBBELLS","BODYWEIGHT","BANDS"],"pause":null,"wearable":null,"history":0,"ageYears":37,"specialPopulation":null,"schedule":{"runDays":[1,3,5],"strengthDays":[0,3],"runTurn":"AM","strengthTurn":"PM","runMinutes":40,"strengthMinutes":40,"longRunDay":5,"longRunMinutes":70}}`
+
+**Onboarding.** CLINICAL_HUMAN_REQUIRED: Current pain, injury, illness or functional limitation routes to qualified human assessment; no training dose is substituted
+
+**Automated properties.** no failure
+
+**Metamorphic.** no violation
+
+**Author expectations.**
+- d04-e01 @GENERATE STATUS_IN [INVARIANT_ORACLE]: **PASS** observed `"CLINICAL_HUMAN_REQUIRED"`
+- d04-e02 @GENERATE NO_PRESCRIPTION [INVARIANT_ORACLE]: **PASS** observed `"CLINICAL_HUMAN_REQUIRED"`
+- d04-e03 @GENERATE JUDGED [NOT_EVALUABLE_DOMAIN]: **JUDGED** — Whether this athlete can train, and how, depends on a clinical assessment of the pain.
+
+**Independent assessment (author, written before any output).**
+- Rationale: Pain that is persistent, declared at onboarding, with a running history: a qualified human must assess it before any program.
+- Preferred: CLINICAL_HUMAN_REQUIRED with no program, no partial plan and no claim of clearance.
+- Acceptable alternatives: —
+- Concerns: A reduced or "upper-body only" program. / ASK (the signal is already explicit; nothing is unknown about it). / PROPOSED with a note to "listen to your body".
+- Domain notes: Onboarding-only case.
+
+## R7D-D05
+
+**Intent.** A 16-year-old asks for a half-marathon plan with hypertrophy work. Adolescents are outside V1. It probes that an out-of-scope request is not planned, and not softened into a reduced plan.
+
+**Tags.** OUT_OF_SCOPE, RACE_HALF, H8, RUN_EXP_NOVICE, STR_EXP_NOVICE, START_NON_MONDAY, TIMEZONE, COLD_START · oracle INVARIANT_ORACLE
+
+**Intake.** `{"startDate":"2027-03-06","weeks":8,"asOf":"2027-03-01","tz":-360,"learningConsent":null,"eligibility":"CONFIRMED","goals":{"run":{"kind":"RACE","event":{"kind":"HALF_MARATHON","date":"2027-04-25"}},"strength":"HYPERTROPHY"},"event":{"kind":"HALF_MARATHON","date":"2027-04-25"},"runExperience":"NOVICE","strengthExperience":"NOVICE","recent":{"runDaysPerWeek":2,"runMinutesPerWeek":60,"longestRunMinutes":35,"strengthDaysPerWeek":2},"knownRuns":0,"knownExercises":[],"equipment":["BARBELL","RACK","BENCH","DUMBBELLS","MACHINES","PULL_UP_BAR","BANDS","BODYWEIGHT"],"pause":null,"wearable":null,"history":0,"ageYears":16,"specialPopulation":null,"schedule":{"runDays":[1,3,5],"strengthDays":[0,2,4],"runTurn":"PM","strengthTurn":"PM","runMinutes":45,"strengthMinutes":60,"longRunDay":1,"longRunMinutes":90}}`
+
+**Onboarding.** UNSUPPORTED: Outside the V1 coaching population or event scope: POPULATION_OUTSIDE_V1_AGE_RANGE
+
+**Automated properties.** no failure
+
+**Metamorphic.** no violation
+
+**Author expectations.**
+- d05-e01 @GENERATE STATUS_IN [INVARIANT_ORACLE]: **PASS** observed `"UNSUPPORTED"`
+- d05-e02 @GENERATE NO_PRESCRIPTION [INVARIANT_ORACLE]: **PASS** observed `"UNSUPPORTED"`
+
+**Independent assessment (author, written before any output).**
+- Rationale: Age 16 is outside the adult-only V1 scope, regardless of how reasonable the request looks. A novice teenager going from 35 minutes to a half marathon in 7 weeks would also be a poor plan for an adult.
+- Preferred: UNSUPPORTED with no program.
+- Acceptable alternatives: —
+- Concerns: Any program, including a reduced "teen" program. / CLINICAL_HUMAN_REQUIRED (age is a scope question, not a clinical signal). / ASK for age confirmation (the age is given).
+- Domain notes: Onboarding-only case. The race date is day 1 (Sunday) of week 7, inside the program.
+
+## R7D-D06
+
+**Intent.** An experienced run-only athlete training five days a week habitually reports late: a week is reported days afterwards, one session at a time, and answers to questions come in pieces. It probes unknown-versus-missed handling, partial answers that leave some sessions unknown, and that a late answer yields the same plan as an on-time review.
+
+**Tags.** RUN_ONLY, NON_RACE, H8, RUN_EXP_EXPERIENCED, STR_EXP_NONE, FREQ_HIGH, WEARABLE_FULL, START_NON_MONDAY, TIMEZONE, LATE_REPORTER, SKIPPED_REVIEW, UNREPORTED_WEEKS, LATE_ANSWER, PARTIAL_ANSWER, SHORTENED_RUNS, MIXED_EXECUTION, SCHEDULE_CHANGE, OFFERS, SAME_FACTS_DIFFERENT_ORDER · oracle DOMAIN_ORACLE
+
+**Intake.** `{"startDate":"2027-01-09","weeks":8,"asOf":"2027-01-07","tz":540,"learningConsent":null,"eligibility":"CONFIRMED","goals":{"run":"PERFORMANCE","strength":"NONE"},"event":null,"runExperience":"EXPERIENCED","strengthExperience":"NONE","recent":{"runDaysPerWeek":5,"runMinutesPerWeek":280,"longestRunMinutes":100},"knownRuns":1,"knownExercises":[],"equipment":null,"pause":null,"wearable":"FULL","history":19,"ageYears":45,"specialPopulation":null,"schedule":{"runDays":[0,1,3,4,6],"strengthDays":[],"runTurn":"AM","runMinutes":50,"longRunDay":1,"longRunMinutes":110}}`
+
+**Onboarding.** PROPOSED: Complete conditional program generated from onboarding-like facts
+
+- Phases: DEVELOPMENT · DEVELOPMENT · DEVELOPMENT · CONSOLIDATION · DEVELOPMENT · DEVELOPMENT · DEVELOPMENT · CONSOLIDATION
+- Week 0 (DEVELOPMENT): d0 2027-01-09 AM RUN EASY 45min (EASY) | d1 2027-01-10 AM RUN LONG 95min (LONG) | d3 2027-01-12 AM RUN EASY 45min (EASY) | d4 2027-01-13 AM RUN EASY 45min (EASY) | d6 2027-01-15 AM RUN EASY 45min (EASY)
+- Week 1 (DEVELOPMENT): d0 2027-01-16 AM RUN EASY 45min (EASY) | d1 2027-01-17 AM RUN LONG 95min (LONG) | d3 2027-01-19 AM RUN QUALITY 49min (THRESHOLD 3x10'/2') | d4 2027-01-20 AM RUN EASY 45min (EASY) | d6 2027-01-22 AM RUN EASY 45min (EASY)
+
+### w0 · 2027-01-15T21:00:00+09:00 · WEEKLY_REVIEW (week 0)
+
+- Athlete: 5 report(s): w0-run-d0 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-run-d1 done 95min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-run-d3 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-run-d4 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-run-d6 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · client notes NO_OFFER_TO_RESPOND
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Executed as planned without adverse signal; the planned progression step stands
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE"}`
+- Current week 0 (DEVELOPMENT) from 2027-01-15: d6 2027-01-15 AM RUN EASY 45min (EASY)
+- Next week 1 (DEVELOPMENT, provisional): d0 2027-01-16 AM RUN EASY 45min (EASY) | d1 2027-01-17 AM RUN LONG 95min (LONG) | d3 2027-01-19 AM RUN QUALITY 49min (THRESHOLD 3x10'/2') | d4 2027-01-20 AM RUN EASY 45min (EASY) | d6 2027-01-22 AM RUN EASY 45min (EASY)
+
+### p2 · 2027-01-23T05:15:00+09:00 · PARTIAL_SESSION (week 2)
+
+- Athlete: 1 report(s): w1-run-d1 done 71min (performance=UNDER,recovery=COMPATIBLE,effort=HARDER,nextDayFunction=NORMAL) reportedAt 2027-01-23T05:15:00+09:00 at 2027-01-17T06:10:00+09:00 via watch-a
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Partial execution counts only what was done; the next comparable step repeats; next-week steps are gated when this week’s remaining sessions are complete
+- Current week 2 (DEVELOPMENT) from 2027-01-23: d0 2027-01-23 AM RUN EASY 50min (EASY) | d1 2027-01-24 AM RUN LONG 95min (LONG) | d3 2027-01-26 AM RUN QUALITY 49min (THRESHOLD 3x10'/2') | d4 2027-01-27 AM RUN EASY 45min (EASY +strides) | d6 2027-01-29 AM RUN EASY 45min (EASY)
+- Next week 3 (CONSOLIDATION, provisional): d0 2027-01-30 AM RUN EASY 50min (EASY) | d1 2027-01-31 AM RUN LONG 85min (LONG) | d3 2027-02-02 AM RUN QUALITY 43min (THRESHOLD 3x8'/2') | d4 2027-02-03 AM RUN EASY 45min (EASY +strides) | d6 2027-02-05 AM RUN EASY 45min (EASY)
+
+### a2 · 2027-01-26T20:30:00+09:00 · WEEKLY_REVIEW (week 2)
+
+- Athlete: no reports · client notes ANSWER_WITHOUT_PENDING_QUESTION
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: next-week steps are gated when this week’s remaining sessions are complete
+- Current week 2 (DEVELOPMENT) from 2027-01-26: d3 2027-01-26 AM RUN QUALITY 49min (THRESHOLD 3x10'/2') | d4 2027-01-27 AM RUN EASY 45min (EASY +strides) | d6 2027-01-29 AM RUN EASY 45min (EASY)
+- Next week 3 (CONSOLIDATION, provisional): d0 2027-01-30 AM RUN EASY 50min (EASY) | d1 2027-01-31 AM RUN LONG 85min (LONG) | d3 2027-02-02 AM RUN QUALITY 43min (THRESHOLD 3x8'/2') | d4 2027-02-03 AM RUN EASY 45min (EASY +strides) | d6 2027-02-05 AM RUN EASY 45min (EASY)
+
+### w2 · 2027-01-29T21:00:00+09:00 · WEEKLY_REVIEW (week 2)
+
+- Athlete: 5 report(s): w2-run-d0 done 50min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-run-d1 done 95min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-run-d3 done 49min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-run-d4 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-run-d6 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · client notes ANSWER_WITHOUT_PENDING_QUESTION
+- Coach: **MODIFY** / GATED_NEXT_STEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Executed as planned this week; next week’s runs follow the executed record, not the plan’s earlier projection; the plan had assumed every session from 2027-01-09 executed, and 4 run sessions (2027-01-16 to 2027-01-22) have no report: unreported training earns nothing; so the plan is re-based, not kept
+- Gates: `{"LONG":"ADVANCE","QUALITY":"ADVANCE","EASY":"ADVANCE"}`
+- Current week 2 (DEVELOPMENT) from 2027-01-29: d6 2027-01-29 AM RUN EASY 45min (EASY)
+- Next week 3 (CONSOLIDATION, provisional): d0 2027-01-30 AM RUN EASY 50min (EASY) | d1 2027-01-31 AM RUN LONG 85min (LONG) | d3 2027-02-02 AM RUN QUALITY 43min (THRESHOLD 3x8'/2') | d4 2027-02-03 AM RUN EASY 45min (EASY +strides) | d6 2027-02-05 AM RUN EASY 45min (EASY)
+
+### w3 · 2027-02-05T21:00:00+09:00 · WEEKLY_REVIEW (week 3)
+
+- Athlete: 5 report(s): w3-run-d0 done 50min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-run-d1 done 85min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-run-d3 done 43min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-run-d4 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-run-d6 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · client notes NO_OFFER_TO_RESPOND
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Executed as planned without adverse signal; the planned progression step stands
+- Gates: `{"LONG":"ADVANCE","QUALITY":"ADVANCE","EASY":"ADVANCE"}`
+- Current week 3 (CONSOLIDATION) from 2027-02-05: d6 2027-02-05 AM RUN EASY 45min (EASY)
+- Next week 4 (DEVELOPMENT, provisional): d0 2027-02-06 AM RUN EASY 50min (EASY) | d1 2027-02-07 AM RUN LONG 95min (LONG) | d3 2027-02-09 AM RUN QUALITY 49min (THRESHOLD 3x10'/2') | d4 2027-02-10 AM RUN EASY 45min (EASY +strides) | d6 2027-02-12 AM RUN EASY 45min (EASY)
+
+### s5 · 2027-02-14T19:00:00+09:00 · SCHEDULE_CHANGE (week 5)
+
+- Athlete: no reports · changes `{"longRunDay":0}`
+- Coach: **MODIFY** / REARRANGE_FUTURE_WEEKS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the athlete removed
+- Current week 5 (DEVELOPMENT) from 2027-02-14: d1 2027-02-14 AM RUN LONG 95min (LONG) | d3 2027-02-16 AM RUN QUALITY 49min (THRESHOLD 3x10'/2') | d4 2027-02-17 AM RUN EASY 45min (EASY +strides) | d6 2027-02-19 AM RUN EASY 45min (EASY)
+- Next week 6 (DEVELOPMENT, provisional): d0 2027-02-20 AM RUN LONG 95min (LONG) | d1 2027-02-21 AM RUN EASY 50min (EASY +strides) | d3 2027-02-23 AM RUN QUALITY 49min (THRESHOLD 3x10'/2') | d4 2027-02-24 AM RUN EASY 45min (EASY) | d6 2027-02-26 AM RUN EASY 45min (EASY)
+
+### a5 · 2027-02-15T07:00:00+09:00 · WEEKLY_REVIEW (week 5)
+
+- Athlete: no reports · client notes ANSWER_WITHOUT_PENDING_QUESTION
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: next-week steps are gated when this week’s remaining sessions are complete
+- Current week 5 (DEVELOPMENT) from 2027-02-15: d3 2027-02-16 AM RUN QUALITY 49min (THRESHOLD 3x10'/2') | d4 2027-02-17 AM RUN EASY 45min (EASY +strides) | d6 2027-02-19 AM RUN EASY 45min (EASY)
+- Next week 6 (DEVELOPMENT, provisional): d0 2027-02-20 AM RUN LONG 95min (LONG) | d1 2027-02-21 AM RUN EASY 50min (EASY +strides) | d3 2027-02-23 AM RUN QUALITY 49min (THRESHOLD 3x10'/2') | d4 2027-02-24 AM RUN EASY 45min (EASY) | d6 2027-02-26 AM RUN EASY 45min (EASY)
+
+### w5 · 2027-02-19T21:00:00+09:00 · WEEKLY_REVIEW (week 5)
+
+- Athlete: 5 report(s): w5-run-d0 done 50min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-run-d1 done 95min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-run-d3 done 49min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-run-d4 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-run-d6 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Executed as planned without adverse signal; the planned progression step stands
+- Gates: `{"LONG":"ADVANCE","QUALITY":"ADVANCE","EASY":"ADVANCE"}`
+- Current week 5 (DEVELOPMENT) from 2027-02-19: d6 2027-02-19 AM RUN EASY 45min (EASY)
+- Next week 6 (DEVELOPMENT, provisional): d0 2027-02-20 AM RUN LONG 95min (LONG) | d1 2027-02-21 AM RUN EASY 50min (EASY +strides) | d3 2027-02-23 AM RUN QUALITY 49min (THRESHOLD 3x10'/2') | d4 2027-02-24 AM RUN EASY 45min (EASY) | d6 2027-02-26 AM RUN EASY 45min (EASY)
+
+### w6 · 2027-02-26T21:00:00+09:00 · WEEKLY_REVIEW (week 6)
+
+- Athlete: 5 report(s): w6-run-d0 done 95min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-run-d1 done 50min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-run-d3 done 49min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-run-d4 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-run-d6 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Executed as planned without adverse signal; the planned progression step stands
+- Gates: `{"LONG":"ADVANCE","QUALITY":"ADVANCE","EASY":"ADVANCE"}`
+- Current week 6 (DEVELOPMENT) from 2027-02-26: d6 2027-02-26 AM RUN EASY 45min (EASY)
+- Next week 7 (CONSOLIDATION, provisional): d0 2027-02-27 AM RUN LONG 85min (LONG) | d1 2027-02-28 AM RUN EASY 50min (EASY +strides) | d3 2027-03-02 AM RUN QUALITY 43min (THRESHOLD 3x8'/2') | d4 2027-03-03 AM RUN EASY 50min (EASY) | d6 2027-03-05 AM RUN EASY 45min (EASY)
+
+### w7 · 2027-03-05T21:00:00+09:00 · WEEKLY_REVIEW (week 7)
+
+- Athlete: 5 report(s): w7-run-d0 done 85min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w7-run-d1 done 50min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w7-run-d3 done 43min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w7-run-d4 done 50min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w7-run-d6 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Final week of the horizon; record outcomes for the next program
+- Current week 7 (CONSOLIDATION) from 2027-03-05: d6 2027-03-05 AM RUN EASY 45min (EASY)
+
+**Automated properties.** no failure
+
+**Metamorphic.** VARIANT `[{"index":0,"compareAtStep":"w5","expect":"SAME_PLAN","evaluable":true,"ok":false,"base":{"decision":{"status":"KEEP","action":"KEEP","validity":"VALID_WITHIN_CURRENT_BOUNDED_SCOPE","question":null,"gates":{"EASY":"ADVANCE","LONG":"ADVANCE","QUALITY":"ADVANCE"},"offers":[],"pending":null},"runMinutes":329},"variant":{"decision":{"status":"KEEP","action":"KEEP","validity":"VALID_WITHIN_CURRENT_BOUNDED_SCOPE","question":null,"gates":{"EASY":"ADVANCE","LONG":"ADVANCE","QUALITY":"ADVANCE"},"offers":[],"pending":null},"runMinutes":334}}]`
+
+**Author expectations.**
+- d06-e01 @GENERATE STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"PROPOSED"`
+- d06-e02 @GENERATE JUDGED [INVARIANT_ORACLE]: **JUDGED** — No strength session appears in any week (strength goal NONE, no strength days).
+- d06-e03 @GENERATE ROLE_PRESENT [DOMAIN_ORACLE]: **PASS** observed `["0:1:LONG"]`
+- d06-e04 @GENERATE ROLE_PRESENT [DOMAIN_ORACLE]: **PASS** observed `["1:3:QUALITY","2:3:QUALITY","3:3:QUALITY"]`
+- d06-e05 @GENERATE JUDGED [DOMAIN_ORACLE]: **JUDGED** — Week-0 running is close to the current ~280 minutes per week (roughly 230-300), mostly easy, with the long run near the current 95-100 minutes; it is not reset to beginner volumes.
+- d06-e06 @p2 STATUS_IN [DOMAIN_ORACLE]: **FAIL** observed `"KEEP"`
+- d06-e07 @p2 QUESTION_KIND_IS [DOMAIN_ORACLE]: **FAIL** observed `null`
+- d06-e08 @p2 NO_PRESCRIPTION [INVARIANT_ORACLE]: **FAIL** observed `"VALID_WITHIN_CURRENT_BOUNDED_SCOPE"`
+- d06-e09 @p2 JUDGED [INVARIANT_ORACLE]: **JUDGED** — The question lists the four unreported week-1 runs (days 0, 3, 4, 6) and does not list the long run that was just reported; nothing unreported is treated as done or as missed.
+- d06-e10 @a2 STATUS_IN [DOMAIN_ORACLE]: **FAIL** observed `"KEEP"`
+- d06-e11 @a2 VALIDITY_IS [DOMAIN_ORACLE]: **FAIL** observed `"VALID_WITHIN_CURRENT_BOUNDED_SCOPE"`
+- d06-e12 @w2 STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"MODIFY"`
+- d06-e13 @w2 VALIDITY_IS [DOMAIN_ORACLE]: **PASS** observed `"VALID_WITHIN_CURRENT_BOUNDED_SCOPE"`
+- d06-e14 @w2 JUDGED [DOMAIN_ORACLE]: **JUDGED** — Week 3 does not try to make up the two missed week-1 runs or the shortened long run: running load is held or progresses only modestly from the week actually completed, and the next long run is not extended to compensate.
+- d06-e15 @s5 STATUS_IN [DOMAIN_ORACLE]: **FAIL** observed `"MODIFY"`
+- d06-e16 @s5 QUESTION_KIND_IS [DOMAIN_ORACLE]: **FAIL** observed `null`
+- d06-e17 @s5 NO_PRESCRIPTION [INVARIANT_ORACLE]: **FAIL** observed `"VALID_WITHIN_CURRENT_BOUNDED_SCOPE"`
+- d06-e18 @a5 STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"KEEP"`
+- d06-e19 @a5 VALIDITY_IS [DOMAIN_ORACLE]: **PASS** observed `"VALID_WITHIN_CURRENT_BOUNDED_SCOPE"`
+- d06-e20 @a5 JUDGED [INVARIANT_ORACLE]: **JUDGED** — From week 6 on, the long run is on day 0 (Saturday) and runs remain only on days 0, 1, 3, 4 and 6; the long run is not followed by another long or quality run the next day.
+
+**Independent assessment (author, written before any output).**
+- Rationale: A consistent, experienced runner whose reporting is the problem, not his training. The coach must keep unknown sessions unknown, ask for them, accept answers in pieces without treating unanswered sessions as done or missed, and must not penalise or reward late reporting once the facts are in.
+- Preferred: Plan five runs a week around the current 280 minutes with a Sunday long run and one or two quality sessions. At the late partial report of the shortened long run, ask about the other four week-1 runs. After the first partial answer, keep asking only about the remaining two. After the full answer (two runs missed, long run at 75%, the rest done), plan week 3 by holding or slightly reducing, not compensating. Ask again about week 4 when the schedule change arrives; the answer (all done) restores the normal progression, with the long run on Saturday from week 6.
+- Acceptable alternatives: Holding the doses of week 3 exactly at week-2 level. / Asking once for both remaining sessions and the current week together. / Treating the shortened long run as a signal to keep the next long run at the same length.
+- Concerns: Treating unreported sessions as done (silent progression) or as missed (silent cut). / Clearing the question after the partial answer. / Adding extra volume in week 3 to compensate. / Any strength session. / Different plans after week 5 depending only on whether week 4 was reported on time or late.
+- Domain notes: All step clocks are Japan local time (UTC+09:00). At w2 the remaining week-1 runs are given as explicit overrides and week 2 as a bulk report, so the case does not depend on whether the pending question also lists current-week sessions; a week-2 session listed by the question and covered by the bulk report carries the same derived event id (a re-send of the same fact).
+
+## R7D-D07
+
+**Intent.** A strength-first athlete with only kettlebells, a pull-up bar and bodyweight at home, and little running, changes her training days mid-program and then travels for a week to a hotel gym with different equipment, then returns home. It probes equipment-bound exercise selection, known kettlebell loads and conventions, schedule changes, a temporary equipment window, and a local lower-body fatigue signal.
+
+**Tags.** STRENGTH_FIRST, NON_RACE, GENERAL_FITNESS, H8, STR_EXP_INTERMEDIATE, RUN_EXP_NOVICE, KETTLEBELL, START_NON_MONDAY, SCHEDULE_CHANGE, EQUIPMENT_CHANGE, TRAVEL, TIMEZONE, FATIGUE_LOCAL, LOAD_CONFIRMATION, OFFERS · oracle DOMAIN_ORACLE
+
+**Intake.** `{"startDate":"2026-11-29","weeks":8,"asOf":"2026-11-28","tz":0,"learningConsent":null,"eligibility":"CONFIRMED","goals":{"run":"GENERAL","strength":"STRENGTH"},"event":null,"runExperience":"NOVICE","strengthExperience":"INTERMEDIATE","recent":{"runDaysPerWeek":1,"runMinutesPerWeek":25,"longestRunMinutes":25,"strengthDaysPerWeek":3},"knownRuns":0,"knownExercises":["kb-goblet-squat 4x8 24KG SINGLE_IMPLEMENT","kb-deadlift 4x8 24KG SINGLE_IMPLEMENT","push-up 3x12 0KG BODYWEIGHT","pull-up 4x5 0KG BODYWEIGHT","reverse-lunge 3x10 0KG BODYWEIGHT"],"equipment":["KETTLEBELL","PULL_UP_BAR","BODYWEIGHT"],"pause":null,"wearable":null,"history":0,"ageYears":29,"specialPopulation":null,"schedule":{"runDays":[0,4],"strengthDays":[1,3,5],"runTurn":"AM","strengthTurn":"PM","runMinutes":30,"strengthMinutes":50,"longRunDay":0,"longRunMinutes":45}}`
+
+**Onboarding.** PROPOSED: Complete conditional program generated from onboarding-like facts
+
+- Phases: ESTABLISHMENT · DEVELOPMENT · DEVELOPMENT · DEVELOPMENT · CONSOLIDATION · DEVELOPMENT · DEVELOPMENT · DEVELOPMENT
+- Week 0 (ESTABLISHMENT): d0 2026-11-29 AM RUN WALK_JOG 20min (WALK_JOG 3x(30s jog/120s walk)) | d1 2026-11-30 PM STRENGTH_LOWER 43min: kb-goblet-squat 4x6 RIR3 24kg SINGLE_IMPLEMENT; kb-deadlift 4x6 RIR3 24kg SINGLE_IMPLEMENT; reverse-lunge 3x10 RIR3 BW; standing-calf-raise 2x7 RIR3 BW; dead-bug 2x7 RIR3 BW | d3 2026-12-02 PM STRENGTH_UPPER 38min: pull-up 4x5 RIR3 BW; push-up 3x12 RIR3 BW; kb-row 2x7 RIR3 establish; incline-push-up 2x7 RIR3 BW; dead-bug 2x7 RIR3 BW | d4 2026-12-03 AM RUN WALK_JOG 20min (WALK_JOG 3x(30s jog/120s walk)) | d5 2026-12-04 PM STRENGTH_FULL_B 49min: kb-deadlift 4x6 RIR3 24kg SINGLE_IMPLEMENT; pull-up 4x5 RIR3 BW; push-up 3x12 RIR3 BW; reverse-lunge 3x10 RIR3 BW; dead-bug 2x7 RIR3 BW
+- Week 1 (DEVELOPMENT): d0 2026-12-06 AM RUN WALK_JOG 21min (WALK_JOG 5x(30s jog/120s walk)) | d1 2026-12-07 PM STRENGTH_LOWER 43min: kb-goblet-squat 4x6 RIR3 24kg SINGLE_IMPLEMENT; kb-deadlift 4x6 RIR3 24kg SINGLE_IMPLEMENT; reverse-lunge 3x10 RIR3 BW; standing-calf-raise 2x7 RIR3 BW; dead-bug 2x7 RIR3 BW | d3 2026-12-09 PM STRENGTH_UPPER 38min: pull-up 4x5 RIR3 BW; push-up 3x12 RIR3 BW; kb-row 2x7 RIR3 last logged; incline-push-up 2x7 RIR3 BW; dead-bug 2x7 RIR3 BW | d4 2026-12-10 AM RUN WALK_JOG 21min (WALK_JOG 5x(30s jog/120s walk)) | d5 2026-12-11 PM STRENGTH_FULL_B 49min: kb-deadlift 4x6 RIR3 24kg SINGLE_IMPLEMENT; pull-up 4x5 RIR3 BW; push-up 3x12 RIR3 BW; reverse-lunge 3x10 RIR3 BW; dead-bug 2x7 RIR3 BW
+
+### w0 · 2026-12-05T21:30:00+00:00 · WEEKLY_REVIEW (week 0)
+
+- Athlete: 5 report(s): w0-run-d0 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-run-d4 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-str-d1 done 43min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-str-d3 done 38min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-str-d5 done 49min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"WALK_JOG":"ADVANCE","kb-goblet-squat":"ADVANCE","kb-deadlift":"ADVANCE","reverse-lunge":"ADVANCE","standing-calf-raise":"ADVANCE","dead-bug":"ADVANCE","pull-up":"ADVANCE","push-up":"ADVANCE","kb-row":"ADVANCE","incline-push-up":"ADVANCE"}`
+- Current week 0 (ESTABLISHMENT) from 2026-12-05: —
+- Next week 1 (DEVELOPMENT, provisional): d0 2026-12-06 AM RUN WALK_JOG 21min (WALK_JOG 5x(30s jog/120s walk)) | d1 2026-12-07 PM STRENGTH_LOWER 43min: kb-goblet-squat 4x6 RIR3 24kg SINGLE_IMPLEMENT; kb-deadlift 4x6 RIR3 24kg SINGLE_IMPLEMENT; reverse-lunge 3x10 RIR3 BW; standing-calf-raise 2x7 RIR3 BW; dead-bug 2x7 RIR3 BW | d3 2026-12-09 PM STRENGTH_UPPER 38min: pull-up 4x5 RIR3 BW; push-up 3x12 RIR3 BW; kb-row 2x7 RIR3 establish; incline-push-up 2x7 RIR3 BW; dead-bug 2x7 RIR3 BW | d4 2026-12-10 AM RUN WALK_JOG 21min (WALK_JOG 5x(30s jog/120s walk)) | d5 2026-12-11 PM STRENGTH_FULL_B 49min: kb-deadlift 4x6 RIR3 24kg SINGLE_IMPLEMENT; pull-up 4x5 RIR3 BW; push-up 3x12 RIR3 BW; reverse-lunge 3x10 RIR3 BW; dead-bug 2x7 RIR3 BW
+
+### w1 · 2026-12-12T21:00:00+00:00 · WEEKLY_REVIEW (week 1)
+
+- Athlete: 5 report(s): w1-run-d0 done 21min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-run-d4 done 21min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-str-d1 done 43min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-str-d3 done 38min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-str-d5 done 49min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · client notes NO_OFFER_TO_RESPOND,NO_LOAD_QUESTION_TO_CONFIRM
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"WALK_JOG":"ADVANCE","kb-goblet-squat":"ADVANCE","kb-deadlift":"ADVANCE","reverse-lunge":"ADVANCE","standing-calf-raise":"ADVANCE","dead-bug":"ADVANCE","pull-up":"ADVANCE","push-up":"ADVANCE","kb-row":"ADVANCE","incline-push-up":"ADVANCE"}`
+- Current week 1 (DEVELOPMENT) from 2026-12-12: —
+- Next week 2 (DEVELOPMENT, provisional): d0 2026-12-13 AM RUN WALK_JOG 23min (WALK_JOG 5x(60s jog/120s walk)) | d1 2026-12-14 PM STRENGTH_LOWER 43min: kb-goblet-squat 4x6 RIR3 24kg SINGLE_IMPLEMENT; kb-deadlift 4x6 RIR3 24kg SINGLE_IMPLEMENT; reverse-lunge 3x10 RIR3 BW; standing-calf-raise 2x9 RIR3 BW; dead-bug 2x9 RIR3 BW | d3 2026-12-16 PM STRENGTH_UPPER 39min: pull-up 4x5 RIR3 BW; push-up 3x12 RIR3 BW; kb-row 2x7 RIR3 establish; incline-push-up 2x9 RIR3 BW; dead-bug 2x9 RIR3 BW | d4 2026-12-17 AM RUN WALK_JOG 23min (WALK_JOG 5x(60s jog/120s walk)) | d5 2026-12-18 PM STRENGTH_FULL_B 49min: kb-deadlift 4x6 RIR3 24kg SINGLE_IMPLEMENT; pull-up 4x5 RIR3 BW; push-up 3x12 RIR3 BW; reverse-lunge 3x10 RIR3 BW; dead-bug 2x9 RIR3 BW
+
+### s1 · 2026-12-12T21:30:00+00:00 · SCHEDULE_CHANGE (week 1)
+
+- Athlete: no reports · changes `{"strengthDays":[2,4,6],"runDays":[0,3],"longRunDay":0}`
+- Coach: **MODIFY** / REARRANGE_FUTURE_WEEKS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the athlete removed
+- Gates: `{"WALK_JOG":"ADVANCE","kb-goblet-squat":"ADVANCE","kb-deadlift":"ADVANCE","reverse-lunge":"ADVANCE","standing-calf-raise":"ADVANCE","dead-bug":"ADVANCE","pull-up":"ADVANCE","push-up":"ADVANCE","kb-row":"ADVANCE","incline-push-up":"ADVANCE"}`
+- Current week 1 (DEVELOPMENT) from 2026-12-12: —
+- Next week 2 (DEVELOPMENT, provisional): d0 2026-12-13 AM RUN WALK_JOG 23min (WALK_JOG 5x(60s jog/120s walk)) | d2 2026-12-15 PM STRENGTH_LOWER 43min: kb-goblet-squat 4x6 RIR3 24kg SINGLE_IMPLEMENT; kb-deadlift 4x6 RIR3 24kg SINGLE_IMPLEMENT; reverse-lunge 3x10 RIR3 BW; standing-calf-raise 2x9 RIR3 BW; dead-bug 2x9 RIR3 BW | d3 2026-12-16 AM RUN WALK_JOG 23min (WALK_JOG 5x(60s jog/120s walk)) | d4 2026-12-17 PM STRENGTH_UPPER 39min: pull-up 4x5 RIR3 BW; push-up 3x12 RIR3 BW; kb-row 2x7 RIR3 establish; incline-push-up 2x9 RIR3 BW; dead-bug 2x9 RIR3 BW | d6 2026-12-19 PM STRENGTH_FULL_B 49min: kb-deadlift 4x6 RIR3 24kg SINGLE_IMPLEMENT; pull-up 4x5 RIR3 BW; push-up 3x12 RIR3 BW; reverse-lunge 3x10 RIR3 BW; dead-bug 2x9 RIR3 BW
+
+### w2 · 2026-12-19T21:30:00+00:00 · WEEKLY_REVIEW (week 2)
+
+- Athlete: 5 report(s): w2-run-d0 done 23min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-run-d3 done 23min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-str-d2 done 43min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-str-d4 done 39min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-str-d6 done 49min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · client notes NO_LOAD_QUESTION_TO_CONFIRM
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"WALK_JOG":"ADVANCE","kb-goblet-squat":"ADVANCE","kb-deadlift":"ADVANCE","reverse-lunge":"ADVANCE","standing-calf-raise":"ADVANCE","dead-bug":"ADVANCE","pull-up":"ADVANCE","push-up":"ADVANCE","kb-row":"ADVANCE","incline-push-up":"ADVANCE"}`
+- Current week 2 (DEVELOPMENT) from 2026-12-19: d6 2026-12-19 PM STRENGTH_FULL_B 49min: kb-deadlift 4x6 RIR3 24kg SINGLE_IMPLEMENT; pull-up 4x5 RIR3 BW; push-up 3x12 RIR3 BW; reverse-lunge 3x10 RIR3 BW; dead-bug 2x9 RIR3 BW
+- Next week 3 (DEVELOPMENT, provisional): d0 2026-12-20 AM RUN WALK_JOG 26min (WALK_JOG 5x(90s jog/120s walk)) | d2 2026-12-22 PM STRENGTH_LOWER 43min: kb-goblet-squat 4x6 RIR3 26kg SINGLE_IMPLEMENT; kb-deadlift 4x6 RIR3 26kg SINGLE_IMPLEMENT; reverse-lunge 3x10 RIR3 BW; standing-calf-raise 2x10 RIR3 BW; dead-bug 2x10 RIR3 BW | d3 2026-12-23 AM RUN WALK_JOG 26min (WALK_JOG 5x(90s jog/120s walk)) | d4 2026-12-24 PM STRENGTH_UPPER 39min: pull-up 4x5 RIR3 BW; push-up 3x12 RIR3 BW; kb-row 2x7 RIR3 establish; incline-push-up 2x10 RIR3 BW; dead-bug 2x10 RIR3 BW | d6 2026-12-26 PM STRENGTH_FULL_B 49min: kb-deadlift 4x6 RIR3 26kg SINGLE_IMPLEMENT; pull-up 4x5 RIR3 BW; push-up 3x12 RIR3 BW; reverse-lunge 3x10 RIR3 BW; dead-bug 2x10 RIR3 BW
+
+### t3 · 2026-12-19T22:00:00+00:00 · EQUIPMENT_CHANGE (week 2)
+
+- Athlete: no reports · changes `{"equipment":["DUMBBELLS","BENCH","MACHINES","BODYWEIGHT"],"from":"2026-12-21","to":"2026-12-26"}`
+- Coach: **MODIFY** / SUBSTITUTE · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Equipment changed: same-intent substitutes from 2026-12-21 to 2026-12-26; unfamiliar ones are established by effort; the stimulus change is disclosed
+- Current week 2 (DEVELOPMENT) from 2026-12-19: d6 2026-12-19 PM STRENGTH_FULL_B 49min: kb-deadlift 4x6 RIR3 24kg SINGLE_IMPLEMENT; pull-up 4x5 RIR3 BW; push-up 3x12 RIR3 BW; reverse-lunge 3x10 RIR3 BW; dead-bug 2x9 RIR3 BW
+- Next week 3 (DEVELOPMENT, provisional): d0 2026-12-20 AM RUN WALK_JOG 26min (WALK_JOG 5x(90s jog/120s walk)) | d2 2026-12-22 PM STRENGTH_LOWER 31min: goblet-squat 2x5 RIR3 establish; db-rdl 2x5 RIR3 establish; reverse-lunge 3x10 RIR3 BW; db-calf-raise 2x7 RIR3 establish; dead-bug 2x10 RIR3 BW | d3 2026-12-23 AM RUN WALK_JOG 26min (WALK_JOG 5x(90s jog/120s walk)) | d4 2026-12-24 PM STRENGTH_UPPER 33min: db-row 2x5 RIR3 establish; push-up 3x12 RIR3 BW; one-arm-db-row 2x7 RIR3 establish; db-bench-press 2x7 RIR3 establish; dead-bug 2x10 RIR3 BW | d6 2026-12-26 PM STRENGTH_FULL_B 37min: db-rdl 2x5 RIR3 establish; db-row 2x5 RIR3 establish; push-up 3x12 RIR3 BW; reverse-lunge 3x10 RIR3 BW; dead-bug 2x10 RIR3 BW
+
+### w3 · 2026-12-26T16:30:00-05:00 · WEEKLY_REVIEW (week 3)
+
+- Athlete: 5 report(s): w3-run-d0 done 26min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-run-d3 done 26min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-str-d2 done 31min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-str-d4 done 33min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-str-d6 done 37min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Executed as planned without adverse signal; the planned progression step stands
+- Gates: `{"WALK_JOG":"ADVANCE","goblet-squat":"ADVANCE","db-rdl":"ADVANCE","reverse-lunge":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","db-row":"ADVANCE","push-up":"ADVANCE","one-arm-db-row":"ADVANCE","db-bench-press":"ADVANCE"}`
+- Current week 3 (DEVELOPMENT) from 2026-12-26: d6 2026-12-26 PM STRENGTH_FULL_B 37min: db-rdl 2x5 RIR3 establish; db-row 2x5 RIR3 establish; push-up 3x12 RIR3 BW; reverse-lunge 3x10 RIR3 BW; dead-bug 2x10 RIR3 BW
+- Next week 4 (CONSOLIDATION, provisional): d0 2026-12-27 AM RUN WALK_JOG 28min (WALK_JOG 5x(120s jog/120s walk)) | d2 2026-12-29 PM STRENGTH_LOWER 32min: kb-goblet-squat 3x6 RIR3 26kg SINGLE_IMPLEMENT; kb-deadlift 3x6 RIR3 26kg SINGLE_IMPLEMENT; reverse-lunge 2x10 RIR3 BW; standing-calf-raise 1x10 RIR3 BW; dead-bug 1x10 RIR3 BW | d3 2026-12-30 AM RUN WALK_JOG 28min (WALK_JOG 5x(120s jog/120s walk)) | d4 2026-12-31 PM STRENGTH_UPPER 27min: pull-up 3x5 RIR3 BW; push-up 2x12 RIR3 BW; kb-row 1x7 RIR3 establish; incline-push-up 1x10 RIR3 BW; dead-bug 1x10 RIR3 BW | d6 2027-01-02 PM STRENGTH_FULL_B 36min: kb-deadlift 3x6 RIR3 26kg SINGLE_IMPLEMENT; pull-up 3x5 RIR3 BW; push-up 2x12 RIR3 BW; reverse-lunge 2x10 RIR3 BW; dead-bug 1x10 RIR3 BW
+
+### w4 · 2027-01-02T21:30:00+00:00 · WEEKLY_REVIEW (week 4)
+
+- Athlete: 5 report(s): w4-run-d0 done 28min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w4-run-d3 done 28min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w4-str-d2 done 32min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w4-str-d4 done 27min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w4-str-d6 done 36min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · client notes NO_OFFER_TO_RESPOND
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · offers LADDER_STEP,LADDER_STEP,LADDER_STEP · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"WALK_JOG":"ADVANCE","kb-goblet-squat":"ADVANCE","kb-deadlift":"ADVANCE","reverse-lunge":"ADVANCE","standing-calf-raise":"ADVANCE","dead-bug":"ADVANCE","pull-up":"ADVANCE","push-up":"ADVANCE","kb-row":"ADVANCE","incline-push-up":"ADVANCE"}`
+- Current week 4 (CONSOLIDATION) from 2027-01-02: d6 2027-01-02 PM STRENGTH_FULL_B 36min: kb-deadlift 3x6 RIR3 26kg SINGLE_IMPLEMENT; pull-up 3x5 RIR3 BW; push-up 2x12 RIR3 BW; reverse-lunge 2x10 RIR3 BW; dead-bug 1x10 RIR3 BW
+- Next week 5 (DEVELOPMENT, provisional): d0 2027-01-03 AM RUN WALK_JOG 28min (WALK_JOG 5x(120s jog/120s walk)) | d2 2027-01-05 PM STRENGTH_LOWER 47min: kb-goblet-squat 4x6 RIR3 26kg SINGLE_IMPLEMENT; kb-deadlift 4x6 RIR3 26kg SINGLE_IMPLEMENT; reverse-lunge 3x10 RIR3 BW; standing-calf-raise 3x10 RIR3 BW; dead-bug 3x10 RIR3 BW | d3 2027-01-06 AM RUN WALK_JOG 28min (WALK_JOG 5x(120s jog/120s walk)) | d4 2027-01-07 PM STRENGTH_UPPER 46min: pull-up 4x5 RIR3 BW; push-up 4x12 RIR3 BW; kb-row 2x7 RIR3 establish; incline-push-up 3x10 RIR3 BW; dead-bug 3x10 RIR3 BW | d6 2027-01-09 PM STRENGTH_FULL_B 49min: kb-deadlift 4x6 RIR3 26kg SINGLE_IMPLEMENT; pull-up 4x5 RIR3 BW; push-up 4x12 RIR3 BW; reverse-lunge 3x10 RIR3 BW
+
+### f5 · 2027-01-06T07:00:00+00:00 · LOCAL_FATIGUE (week 5)
+
+- Athlete: no reports · signals `{"region":"LOWER"}`
+- Coach: **MODIFY** / REDUCE · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Remove only optional local work for the affected region; essentials stay
+- Current week 5 (DEVELOPMENT) from 2027-01-06: d3 2027-01-06 AM RUN WALK_JOG 28min (WALK_JOG 5x(120s jog/120s walk)) | d4 2027-01-07 PM STRENGTH_UPPER 46min: pull-up 4x5 RIR3 BW; push-up 4x12 RIR3 BW; kb-row 2x7 RIR3 establish; incline-push-up 3x10 RIR3 BW; dead-bug 3x10 RIR3 BW | d6 2027-01-09 PM STRENGTH_FULL_B 43min: kb-deadlift 4x6 RIR3 26kg SINGLE_IMPLEMENT; pull-up 4x5 RIR3 BW; push-up 4x12 RIR3 BW
+- Next week 6 (DEVELOPMENT, provisional): d0 2027-01-10 AM RUN WALK_JOG 26min (WALK_JOG 4x(180s jog/90s walk)) | d2 2027-01-12 PM STRENGTH_LOWER 47min: kb-goblet-squat 4x6 RIR3 26kg SINGLE_IMPLEMENT; kb-deadlift 4x6 RIR3 26kg SINGLE_IMPLEMENT; reverse-lunge 3x10 RIR3 BW; standing-calf-raise 3x10 RIR3 BW; dead-bug 3x10 RIR3 BW | d3 2027-01-13 AM RUN WALK_JOG 26min (WALK_JOG 4x(180s jog/90s walk)) | d4 2027-01-14 PM STRENGTH_UPPER 46min: pull-up 4x5 RIR3 BW; push-up 4x12 RIR3 BW; kb-row 2x7 RIR3 last logged; incline-push-up 3x10 RIR3 BW; dead-bug 3x10 RIR3 BW | d6 2027-01-16 PM STRENGTH_FULL_B 49min: kb-deadlift 4x6 RIR3 26kg SINGLE_IMPLEMENT; pull-up 4x5 RIR3 BW; push-up 4x12 RIR3 BW; reverse-lunge 3x10 RIR3 BW
+
+### w5 · 2027-01-09T21:30:00+00:00 · WEEKLY_REVIEW (week 5)
+
+- Athlete: 5 report(s): w5-run-d0 done 28min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-run-d3 done 28min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-str-d2 done 47min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-str-d4 done 46min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-str-d6 done 43min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"WALK_JOG":"ADVANCE","kb-goblet-squat":"ADVANCE","kb-deadlift":"ADVANCE","reverse-lunge":"ADVANCE","standing-calf-raise":"ADVANCE","dead-bug":"ADVANCE","pull-up":"ADVANCE","push-up":"ADVANCE","kb-row":"ADVANCE","incline-push-up":"ADVANCE"}`
+- Current week 5 (DEVELOPMENT) from 2027-01-09: d6 2027-01-09 PM STRENGTH_FULL_B 43min: kb-deadlift 4x6 RIR3 26kg SINGLE_IMPLEMENT; pull-up 4x5 RIR3 BW; push-up 4x12 RIR3 BW
+- Next week 6 (DEVELOPMENT, provisional): d0 2027-01-10 AM RUN WALK_JOG 26min (WALK_JOG 4x(180s jog/90s walk)) | d2 2027-01-12 PM STRENGTH_LOWER 47min: kb-goblet-squat 4x6 RIR3 26kg SINGLE_IMPLEMENT; kb-deadlift 4x6 RIR3 26kg SINGLE_IMPLEMENT; reverse-lunge 3x10 RIR3 BW; standing-calf-raise 3x10 RIR3 BW; dead-bug 3x10 RIR3 BW | d3 2027-01-13 AM RUN WALK_JOG 26min (WALK_JOG 4x(180s jog/90s walk)) | d4 2027-01-14 PM STRENGTH_UPPER 46min: pull-up 4x5 RIR3 BW; push-up 4x12 RIR3 BW; kb-row 2x7 RIR3 establish; incline-push-up 3x10 RIR3 BW; dead-bug 3x10 RIR3 BW | d6 2027-01-16 PM STRENGTH_FULL_B 49min: kb-deadlift 4x6 RIR3 26kg SINGLE_IMPLEMENT; pull-up 4x5 RIR3 BW; push-up 4x12 RIR3 BW; reverse-lunge 3x10 RIR3 BW
+
+### w6 · 2027-01-16T21:30:00+00:00 · WEEKLY_REVIEW (week 6)
+
+- Athlete: 5 report(s): w6-run-d0 done 26min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-run-d3 done 26min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-str-d2 done 47min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-str-d4 done 46min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-str-d6 done 49min 4 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"WALK_JOG":"ADVANCE","kb-goblet-squat":"ADVANCE","kb-deadlift":"ADVANCE","reverse-lunge":"ADVANCE","standing-calf-raise":"ADVANCE","dead-bug":"ADVANCE","pull-up":"ADVANCE","push-up":"ADVANCE","kb-row":"ADVANCE","incline-push-up":"ADVANCE"}`
+- Current week 6 (DEVELOPMENT) from 2027-01-16: d6 2027-01-16 PM STRENGTH_FULL_B 49min: kb-deadlift 4x6 RIR3 26kg SINGLE_IMPLEMENT; pull-up 4x5 RIR3 BW; push-up 4x12 RIR3 BW; reverse-lunge 3x10 RIR3 BW
+- Next week 7 (DEVELOPMENT, provisional): d0 2027-01-17 AM RUN WALK_JOG 28min (WALK_JOG 3x(300s jog/90s walk)) | d2 2027-01-19 PM STRENGTH_LOWER 47min: kb-goblet-squat 4x6 RIR3 28kg SINGLE_IMPLEMENT; kb-deadlift 4x6 RIR3 28kg SINGLE_IMPLEMENT; reverse-lunge 3x10 RIR3 BW; standing-calf-raise 3x10 RIR3 BW; dead-bug 3x10 RIR3 BW | d3 2027-01-20 AM RUN WALK_JOG 28min (WALK_JOG 3x(300s jog/90s walk)) | d4 2027-01-21 PM STRENGTH_UPPER 46min: pull-up 4x5 RIR3 BW; push-up 4x12 RIR3 BW; kb-row 2x7 RIR3 establish; incline-push-up 3x10 RIR3 BW; dead-bug 3x10 RIR3 BW | d6 2027-01-23 PM STRENGTH_FULL_B 49min: kb-deadlift 4x6 RIR3 28kg SINGLE_IMPLEMENT; pull-up 4x5 RIR3 BW; push-up 4x12 RIR3 BW; reverse-lunge 3x10 RIR3 BW
+
+### w7 · 2027-01-23T21:30:00+00:00 · WEEKLY_REVIEW (week 7)
+
+- Athlete: 5 report(s): w7-run-d0 done 28min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w7-run-d3 done 28min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w7-str-d2 done 47min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w7-str-d4 done 46min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w7-str-d6 done 49min 4 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Final week of the horizon; record outcomes for the next program
+- Current week 7 (DEVELOPMENT) from 2027-01-23: d6 2027-01-23 PM STRENGTH_FULL_B 49min: kb-deadlift 4x6 RIR3 28kg SINGLE_IMPLEMENT; pull-up 4x5 RIR3 BW; push-up 4x12 RIR3 BW; reverse-lunge 3x10 RIR3 BW
+
+**Automated properties.** no failure
+
+**Metamorphic.** no violation
+
+**Author expectations.**
+- d07-e01 @GENERATE STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"PROPOSED"`
+- d07-e02 @GENERATE JUDGED [INVARIANT_ORACLE]: **JUDGED** — Every strength exercise uses only a kettlebell, the pull-up bar or bodyweight; no barbell, dumbbell, bench or machine exercise appears.
+- d07-e03 @GENERATE JUDGED [DOMAIN_ORACLE]: **JUDGED** — Exercises the athlete already does (kettlebell goblet squat, kettlebell deadlift, pull-up, push-up, reverse lunge) start from her known loads and reps in their own convention (24 kg single implement), not from ESTABLISH, with reps in reserve of about 1-3; strength is the primary stimulus with three progressing sessions per week.
+- d07-e04 @GENERATE ROLE_ABSENT [DOMAIN_ORACLE]: **PASS** observed `[]`
+- d07-e05 @GENERATE JUDGED [DOMAIN_ORACLE]: **JUDGED** — Running stays easy and modest (two sessions, about 20-45 minutes) and grows slowly from the current 25 minutes per week.
+- d07-e06 @s1 STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"MODIFY"`
+- d07-e07 @s1 JUDGED [INVARIANT_ORACLE]: **JUDGED** — From week 2 on, strength sessions fall only on days 2, 4 and 6 and runs only on days 0 and 3; no strength remains on days 1, 3 or 5 and no run on day 4.
+- d07-e08 @t3 STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"MODIFY"`
+- d07-e09 @t3 JUDGED [INVARIANT_ORACLE]: **JUDGED** — Strength sessions dated inside the travel window (days 1-6 of week 3) use only dumbbells, the bench, machines or bodyweight; no kettlebell or pull-up-bar exercise appears in them.
+- d07-e10 @t3 JUDGED [DOMAIN_ORACLE]: **JUDGED** — Travel-week exercises keep the same movement patterns at a similar effort (new implements start with ESTABLISH or conservative loads), and weeks 4 onward return to the kettlebell repertoire and loads.
+- d07-e11 @f5 STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"MODIFY"`
+- d07-e12 @f5 JUDGED [DOMAIN_ORACLE]: **JUDGED** — After the lower-body fatigue signal, the remaining lower-body load of week 5 is eased (fewer sets, more reserve, or lighter) and the run that day stays easy or shorter; nothing is added.
+
+**Independent assessment (author, written before any output).**
+- Rationale: An intermediate lifter with a narrow home setup (one 24 kg kettlebell is her current working load for squat and hinge) who wants to get stronger, plus easy general running. Her constraints change twice: new days, then a week of travel with different equipment.
+- Preferred: Three strength sessions built around the kettlebell squat and hinge, pull-ups, push-ups and lunges, progressing reps/sets or single-leg variations since the kettlebell load is fixed; two easy runs, Sunday a little longer. Re-plan on the new days from week 2. For the travel week, swap to dumbbell/machine versions of the same patterns with conservative or effort-based loads, then return to the home plan. On lower-body fatigue, ease the next lower-body work and keep the run easy.
+- Acceptable alternatives: Progressing the kettlebell exercises through tempo, pauses or single-leg variations instead of load. / Reducing strength to two sessions during travel. / Ladder steps (harder variations) offered at block boundaries.
+- Concerns: Programming dumbbells or barbells at home. / Programming kettlebell exercises in the hotel week. / Keeping sessions on the old days after the schedule change. / Quality runs for a novice runner with a general goal. / Escalating fatigue to a clinical route.
+- Domain notes: Load confirmations are accepted at the next step in case the coach asks about first logged loads (for example the new hotel-gym exercises). The week-3 review is sent with an explicit New York timestamp that is the same local evening at home.
+
+## R7D-D08
+
+**Intent.** A balanced hybrid athlete trains run and strength on two shared days in different turns. Two double conflicts arrive (one with same-turn confirmation, one without) and later the long-run day becomes unavailable when no other chosen run day is left that week. It probes turn handling, the confirmation rule, and that sessions are never moved to unchosen days.
+
+**Tags.** BALANCED_HYBRID, NON_RACE, H12, RUN_EXP_INTERMEDIATE, STR_EXP_INTERMEDIATE, GYM, SHARED_DAYS, SAME_TURN, DOUBLE_CONFLICT, UNAVAILABLE_DAY, FREQ_HIGH, START_NON_MONDAY · oracle INVARIANT_ORACLE
+
+**Intake.** `{"startDate":"2026-11-17","weeks":12,"asOf":"2026-11-16","tz":0,"learningConsent":null,"eligibility":"CONFIRMED","goals":{"run":"REGULAR","strength":"HYPERTROPHY"},"event":null,"runExperience":"INTERMEDIATE","strengthExperience":"INTERMEDIATE","recent":{"runDaysPerWeek":3,"runMinutesPerWeek":150,"longestRunMinutes":75,"strengthDaysPerWeek":3},"knownRuns":0,"knownExercises":["leg-press 3x10 140KG MACHINE_STACK","machine-chest-press 3x10 50KG MACHINE_STACK","lat-pulldown 3x10 55KG MACHINE_STACK","db-rdl 3x10 22KG PER_HAND","seated-cable-row 3x12 50KG MACHINE_STACK"],"equipment":["MACHINES","DUMBBELLS","BENCH","BANDS","PULL_UP_BAR","BODYWEIGHT"],"pause":null,"wearable":null,"history":0,"ageYears":31,"specialPopulation":null,"schedule":{"runDays":[0,2,5],"strengthDays":[0,2,4],"runTurn":"AM","strengthTurn":"PM","runMinutes":45,"strengthMinutes":60,"longRunDay":5,"longRunMinutes":90}}`
+
+**Onboarding.** PROPOSED: Complete conditional program generated from onboarding-like facts
+
+- Phases: DEVELOPMENT · DEVELOPMENT · DEVELOPMENT · CONSOLIDATION · DEVELOPMENT · DEVELOPMENT · DEVELOPMENT · CONSOLIDATION · DEVELOPMENT · DEVELOPMENT · DEVELOPMENT · CONSOLIDATION
+- Week 0 (DEVELOPMENT): d0 2026-11-17 AM RUN EASY 40min (EASY) | d0 2026-11-17 PM STRENGTH_LOWER 35min: leg-press 3x10 RIR3 140kg MACHINE_STACK; db-rdl 3x10 RIR3 22kg PER_HAND; leg-extension-machine 2x10 RIR3 establish; db-calf-raise 2x10 RIR3 establish; dead-bug 2x10 RIR3 BW | d2 2026-11-19 AM RUN EASY 40min (EASY) | d2 2026-11-19 PM STRENGTH_FULL_B 40min: db-rdl 3x10 RIR3 22kg PER_HAND; seated-cable-row 3x12 RIR3 50kg MACHINE_STACK; machine-chest-press 3x10 RIR3 50kg MACHINE_STACK; leg-curl-machine 2x10 RIR3 establish; cable-triceps-pushdown 2x10 RIR3 establish | d4 2026-11-21 PM STRENGTH_UPPER 36min: machine-chest-press 3x10 RIR3 50kg MACHINE_STACK; seated-cable-row 3x12 RIR3 50kg MACHINE_STACK; db-lateral-raise 2x10 RIR3 establish; db-biceps-curl 2x10 RIR3 establish; dead-bug 2x10 RIR3 BW | d5 2026-11-22 AM RUN LONG 65min (LONG)
+- Week 1 (DEVELOPMENT): d0 2026-11-24 AM RUN EASY 40min (EASY) | d0 2026-11-24 PM STRENGTH_LOWER 36min: leg-press 3x12 RIR3 140kg MACHINE_STACK; db-rdl 3x12 RIR3 22kg PER_HAND; leg-extension-machine 2x10 RIR3 last logged; db-calf-raise 2x10 RIR3 last logged; dead-bug 2x12 RIR3 BW | d2 2026-11-26 AM RUN EASY 40min (EASY) | d2 2026-11-26 PM STRENGTH_FULL_B 40min: db-rdl 3x12 RIR3 22kg PER_HAND; seated-cable-row 3x8 RIR3 next machine setting above 50kg (else 50kg x12); machine-chest-press 3x12 RIR3 50kg MACHINE_STACK; leg-curl-machine 2x10 RIR3 last logged; cable-triceps-pushdown 2x10 RIR3 last logged | d4 2026-11-28 PM STRENGTH_UPPER 36min: machine-chest-press 3x12 RIR3 50kg MACHINE_STACK; seated-cable-row 3x8 RIR3 next machine setting above 50kg (else 50kg x12); db-lateral-raise 2x10 RIR3 last logged; db-biceps-curl 2x10 RIR3 last logged; dead-bug 2x12 RIR3 BW | d5 2026-11-29 AM RUN LONG 65min (LONG)
+
+### w0 · 2026-11-23T20:00:00+00:00 · WEEKLY_REVIEW (week 0)
+
+- Athlete: 6 report(s): w0-run-d0 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-run-d2 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-run-d5 done 65min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-str-d0 done 35min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-str-d2 done 40min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-str-d4 done 36min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE","leg-press":"ADVANCE","db-rdl":"ADVANCE","leg-extension-machine":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","seated-cable-row":"ADVANCE","machine-chest-press":"ADVANCE","leg-curl-machine":"ADVANCE","cable-triceps-pushdown":"ADVANCE","db-lateral-raise":"ADVANCE","db-biceps-curl":"ADVANCE"}`
+- Current week 0 (DEVELOPMENT) from 2026-11-23: —
+- Next week 1 (DEVELOPMENT, provisional): d0 2026-11-24 AM RUN EASY 40min (EASY) | d0 2026-11-24 PM STRENGTH_LOWER 36min: leg-press 3x12 RIR3 140kg MACHINE_STACK; db-rdl 3x12 RIR3 22kg PER_HAND; leg-extension-machine 2x10 RIR3 establish; db-calf-raise 2x10 RIR3 establish; dead-bug 2x12 RIR3 BW | d2 2026-11-26 AM RUN EASY 40min (EASY) | d2 2026-11-26 PM STRENGTH_FULL_B 40min: db-rdl 3x12 RIR3 22kg PER_HAND; seated-cable-row 3x8 RIR3 next machine setting above 50kg (else 50kg x12); machine-chest-press 3x12 RIR3 50kg MACHINE_STACK; leg-curl-machine 2x10 RIR3 establish; cable-triceps-pushdown 2x10 RIR3 establish | d4 2026-11-28 PM STRENGTH_UPPER 36min: machine-chest-press 3x12 RIR3 50kg MACHINE_STACK; seated-cable-row 3x8 RIR3 next machine setting above 50kg (else 50kg x12); db-lateral-raise 2x10 RIR3 establish; db-biceps-curl 2x10 RIR3 establish; dead-bug 2x12 RIR3 BW | d5 2026-11-29 AM RUN LONG 65min (LONG)
+
+### w1 · 2026-11-30T20:00:00+00:00 · WEEKLY_REVIEW (week 1)
+
+- Athlete: 6 report(s): w1-run-d0 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-run-d2 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-run-d5 done 65min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-str-d0 done 36min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-str-d2 done 40min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-str-d4 done 36min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE","leg-press":"ADVANCE","db-rdl":"ADVANCE","leg-extension-machine":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","seated-cable-row":"ADVANCE","machine-chest-press":"ADVANCE","leg-curl-machine":"ADVANCE","cable-triceps-pushdown":"ADVANCE","db-lateral-raise":"ADVANCE","db-biceps-curl":"ADVANCE"}`
+- Current week 1 (DEVELOPMENT) from 2026-11-30: —
+- Next week 2 (DEVELOPMENT, provisional): d0 2026-12-01 AM RUN EASY 45min (EASY +strides) | d0 2026-12-01 PM STRENGTH_LOWER 35min: leg-press 3x8 RIR3 next machine setting above 140kg (else 140kg x12); db-rdl 3x8 RIR3 24kg PER_HAND; leg-extension-machine 2x10 RIR3 establish; db-calf-raise 2x10 RIR3 establish; dead-bug 2x14 RIR3 BW | d2 2026-12-03 AM RUN EASY 40min (EASY) | d2 2026-12-03 PM STRENGTH_FULL_B 38min: db-rdl 3x8 RIR3 24kg PER_HAND; seated-cable-row 3x8 RIR3 next machine setting above 50kg (else 50kg x12); machine-chest-press 3x8 RIR3 next machine setting above 50kg (else 50kg x12); leg-curl-machine 2x10 RIR3 establish; cable-triceps-pushdown 2x10 RIR3 establish | d4 2026-12-05 PM STRENGTH_UPPER 35min: machine-chest-press 3x8 RIR3 next machine setting above 50kg (else 50kg x12); seated-cable-row 3x8 RIR3 next machine setting above 50kg (else 50kg x12); db-lateral-raise 2x10 RIR3 establish; db-biceps-curl 2x10 RIR3 establish; dead-bug 2x14 RIR3 BW | d5 2026-12-06 AM RUN LONG 65min (LONG)
+
+### w2 · 2026-12-07T20:00:00+00:00 · WEEKLY_REVIEW (week 2)
+
+- Athlete: 6 report(s): w2-run-d0 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-run-d2 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-run-d5 done 65min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-str-d0 done 35min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-str-d2 done 38min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-str-d4 done 35min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE","leg-press":"ADVANCE","db-rdl":"ADVANCE","leg-extension-machine":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","seated-cable-row":"ADVANCE","machine-chest-press":"ADVANCE","leg-curl-machine":"ADVANCE","cable-triceps-pushdown":"ADVANCE","db-lateral-raise":"ADVANCE","db-biceps-curl":"ADVANCE"}`
+- Current week 2 (DEVELOPMENT) from 2026-12-07: —
+- Next week 3 (CONSOLIDATION, provisional): d0 2026-12-08 AM RUN EASY 45min (EASY +strides) | d0 2026-12-08 PM STRENGTH_LOWER 25min: leg-press 2x12 RIR3 140kg MACHINE_STACK; db-rdl 2x10 RIR3 24kg PER_HAND; leg-extension-machine 1x10 RIR3 establish; db-calf-raise 1x10 RIR3 establish; dead-bug 1x16 RIR3 BW | d2 2026-12-10 AM RUN EASY 40min (EASY) | d2 2026-12-10 PM STRENGTH_FULL_B 28min: db-rdl 2x10 RIR3 24kg PER_HAND; seated-cable-row 2x12 RIR3 50kg MACHINE_STACK; machine-chest-press 2x12 RIR3 50kg MACHINE_STACK; leg-curl-machine 1x10 RIR3 establish; cable-triceps-pushdown 1x10 RIR3 establish | d4 2026-12-12 PM STRENGTH_UPPER 25min: machine-chest-press 2x12 RIR3 50kg MACHINE_STACK; seated-cable-row 2x12 RIR3 50kg MACHINE_STACK; db-lateral-raise 1x10 RIR3 establish; db-biceps-curl 1x10 RIR3 establish; dead-bug 1x16 RIR3 BW | d5 2026-12-13 AM RUN LONG 55min (LONG)
+
+### dc3 · 2026-12-09T12:00:00+00:00 · DOUBLE_CONFLICT (week 3)
+
+- Athlete: no reports · changes `{"from":"2026-12-10","to":"2026-12-10","runTurn":"PM","strengthTurn":"PM","sameTurnConfirmed":true}`
+- Coach: **ASK** / ASK · REQUIRES_RECONCILIATION
+- Reason: The change is stated for 2026-12-10 only; a dated window of days or shifts is not re-planned automatically. Say whether the change is permanent from a date, or move or skip the affected sessions
+- Current week 3 (CONSOLIDATION) from 2026-12-09: d2 2026-12-10 AM RUN EASY 40min (EASY) | d2 2026-12-10 PM STRENGTH_FULL_B 28min: db-rdl 2x10 RIR3 24kg PER_HAND; seated-cable-row 2x12 RIR3 50kg MACHINE_STACK; machine-chest-press 2x12 RIR3 50kg MACHINE_STACK; leg-curl-machine 1x10 RIR3 establish; cable-triceps-pushdown 1x10 RIR3 establish | d4 2026-12-12 PM STRENGTH_UPPER 25min: machine-chest-press 2x12 RIR3 50kg MACHINE_STACK; seated-cable-row 2x12 RIR3 50kg MACHINE_STACK; db-lateral-raise 1x10 RIR3 establish; db-biceps-curl 1x10 RIR3 establish; dead-bug 1x16 RIR3 BW | d5 2026-12-13 AM RUN LONG 55min (LONG)
+- Next week 4 (DEVELOPMENT, provisional): d0 2026-12-15 AM RUN EASY 45min (EASY +strides) | d0 2026-12-15 PM STRENGTH_LOWER 47min: leg-press 4x8 RIR3 next machine setting above 140kg (else 140kg x12); db-rdl 4x10 RIR3 24kg PER_HAND; leg-extension-machine 3x10 RIR3 last logged; db-calf-raise 3x10 RIR3 last logged; dead-bug 3x16 RIR3 BW | d2 2026-12-17 AM RUN EASY 40min (EASY) | d2 2026-12-17 PM STRENGTH_FULL_B 50min: db-rdl 4x10 RIR3 24kg PER_HAND; seated-cable-row 4x8 RIR3 next machine setting above 50kg (else 50kg x12); machine-chest-press 4x8 RIR3 next machine setting above 50kg (else 50kg x12); leg-curl-machine 3x10 RIR3 last logged; cable-triceps-pushdown 3x10 RIR3 last logged | d4 2026-12-19 PM STRENGTH_UPPER 46min: machine-chest-press 4x8 RIR3 next machine setting above 50kg (else 50kg x12); seated-cable-row 4x8 RIR3 next machine setting above 50kg (else 50kg x12); db-lateral-raise 3x10 RIR3 last logged; db-biceps-curl 3x10 RIR3 last logged; dead-bug 3x16 RIR3 BW | d5 2026-12-20 AM RUN LONG 65min (LONG)
+
+### w3 · 2026-12-14T20:00:00+00:00 · WEEKLY_REVIEW (week 3)
+
+- Athlete: 6 report(s): w3-run-d0 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-run-d2 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-run-d5 done 55min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-str-d0 done 25min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-str-d2 done 28min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-str-d4 done 25min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · offers LADDER_STEP,LADDER_STEP · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE","leg-press":"ADVANCE","db-rdl":"ADVANCE","leg-extension-machine":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","seated-cable-row":"ADVANCE","machine-chest-press":"ADVANCE","leg-curl-machine":"ADVANCE","cable-triceps-pushdown":"ADVANCE","db-lateral-raise":"ADVANCE","db-biceps-curl":"ADVANCE"}`
+- Current week 3 (CONSOLIDATION) from 2026-12-14: —
+- Next week 4 (DEVELOPMENT, provisional): d0 2026-12-15 AM RUN EASY 45min (EASY +strides) | d0 2026-12-15 PM STRENGTH_LOWER 43min: leg-press 4x8 RIR3 next machine setting above 140kg (else 140kg x12); db-rdl 4x10 RIR3 24kg PER_HAND; leg-extension-machine 2x10 RIR3 establish; db-calf-raise 2x10 RIR3 establish; dead-bug 3x16 RIR3 BW | d2 2026-12-17 AM RUN EASY 40min (EASY) | d2 2026-12-17 PM STRENGTH_FULL_B 47min: db-rdl 4x10 RIR3 24kg PER_HAND; seated-cable-row 4x8 RIR3 next machine setting above 50kg (else 50kg x12); machine-chest-press 4x8 RIR3 next machine setting above 50kg (else 50kg x12); leg-curl-machine 2x10 RIR3 establish; cable-triceps-pushdown 2x10 RIR3 establish | d4 2026-12-19 PM STRENGTH_UPPER 43min: machine-chest-press 4x8 RIR3 next machine setting above 50kg (else 50kg x12); seated-cable-row 4x8 RIR3 next machine setting above 50kg (else 50kg x12); db-lateral-raise 2x10 RIR3 establish; db-biceps-curl 2x10 RIR3 establish; dead-bug 3x16 RIR3 BW | d5 2026-12-20 AM RUN LONG 65min (LONG)
+
+### w4 · 2026-12-21T20:00:00+00:00 · WEEKLY_REVIEW (week 4)
+
+- Athlete: 6 report(s): w4-run-d0 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w4-run-d2 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w4-run-d5 done 65min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w4-str-d0 done 43min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w4-str-d2 done 47min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w4-str-d4 done 43min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE","leg-press":"ADVANCE","db-rdl":"ADVANCE","leg-extension-machine":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","seated-cable-row":"ADVANCE","machine-chest-press":"ADVANCE","leg-curl-machine":"ADVANCE","cable-triceps-pushdown":"ADVANCE","db-lateral-raise":"ADVANCE","db-biceps-curl":"ADVANCE"}`
+- Current week 4 (DEVELOPMENT) from 2026-12-21: —
+- Next week 5 (DEVELOPMENT, provisional): d0 2026-12-22 AM RUN EASY 45min (EASY +strides) | d0 2026-12-22 PM STRENGTH_LOWER 44min: leg-press 4x8 RIR3 next machine setting above 140kg (else 140kg x12); db-rdl 4x12 RIR3 24kg PER_HAND; leg-extension-machine 2x10 RIR3 establish; db-calf-raise 2x10 RIR3 establish; dead-bug 3x16 RIR3 BW | d2 2026-12-24 AM RUN EASY 45min (EASY) | d2 2026-12-24 PM STRENGTH_FULL_B 47min: db-rdl 4x12 RIR3 24kg PER_HAND; seated-cable-row 4x8 RIR3 next machine setting above 50kg (else 50kg x12); machine-chest-press 4x8 RIR3 next machine setting above 50kg (else 50kg x12); leg-curl-machine 2x10 RIR3 establish; cable-triceps-pushdown 2x10 RIR3 establish | d4 2026-12-26 PM STRENGTH_UPPER 43min: machine-chest-press 4x8 RIR3 next machine setting above 50kg (else 50kg x12); seated-cable-row 4x8 RIR3 next machine setting above 50kg (else 50kg x12); db-lateral-raise 2x10 RIR3 establish; db-biceps-curl 2x10 RIR3 establish; dead-bug 3x16 RIR3 BW | d5 2026-12-27 AM RUN LONG 65min (LONG)
+
+### dc5 · 2026-12-21T20:30:00+00:00 · DOUBLE_CONFLICT (week 4)
+
+- Athlete: no reports · changes `{"from":"2026-12-22","to":"2026-12-22","runTurn":"PM","strengthTurn":"PM","sameTurnConfirmed":false}`
+- Coach: **ASK** / ASK · REQUIRES_RECONCILIATION
+- Reason: The change is stated for 2026-12-22 only; a dated window of days or shifts is not re-planned automatically. Say whether the change is permanent from a date, or move or skip the affected sessions
+- Current week 4 (DEVELOPMENT) from 2026-12-21: —
+- Next week 5 (DEVELOPMENT, provisional): d0 2026-12-22 AM RUN EASY 45min (EASY +strides) | d0 2026-12-22 PM STRENGTH_LOWER 44min: leg-press 4x8 RIR3 next machine setting above 140kg (else 140kg x12); db-rdl 4x12 RIR3 24kg PER_HAND; leg-extension-machine 2x10 RIR3 establish; db-calf-raise 2x10 RIR3 establish; dead-bug 3x16 RIR3 BW | d2 2026-12-24 AM RUN EASY 45min (EASY) | d2 2026-12-24 PM STRENGTH_FULL_B 47min: db-rdl 4x12 RIR3 24kg PER_HAND; seated-cable-row 4x8 RIR3 next machine setting above 50kg (else 50kg x12); machine-chest-press 4x8 RIR3 next machine setting above 50kg (else 50kg x12); leg-curl-machine 2x10 RIR3 establish; cable-triceps-pushdown 2x10 RIR3 establish | d4 2026-12-26 PM STRENGTH_UPPER 43min: machine-chest-press 4x8 RIR3 next machine setting above 50kg (else 50kg x12); seated-cable-row 4x8 RIR3 next machine setting above 50kg (else 50kg x12); db-lateral-raise 2x10 RIR3 establish; db-biceps-curl 2x10 RIR3 establish; dead-bug 3x16 RIR3 BW | d5 2026-12-27 AM RUN LONG 65min (LONG)
+
+### w5 · 2026-12-28T20:00:00+00:00 · WEEKLY_REVIEW (week 5)
+
+- Athlete: 6 report(s): w5-run-d0 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-run-d2 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-run-d5 done 65min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-str-d0 done 44min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-str-d2 done 47min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-str-d4 done 43min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE","leg-press":"ADVANCE","db-rdl":"ADVANCE","leg-extension-machine":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","seated-cable-row":"ADVANCE","machine-chest-press":"ADVANCE","leg-curl-machine":"ADVANCE","cable-triceps-pushdown":"ADVANCE","db-lateral-raise":"ADVANCE","db-biceps-curl":"ADVANCE"}`
+- Current week 5 (DEVELOPMENT) from 2026-12-28: —
+- Next week 6 (DEVELOPMENT, provisional): d0 2026-12-29 AM RUN EASY 45min (EASY +strides) | d0 2026-12-29 PM STRENGTH_LOWER 43min: leg-press 4x8 RIR3 next machine setting above 140kg (else 140kg x12); db-rdl 4x8 RIR3 26kg PER_HAND; leg-extension-machine 2x10 RIR3 establish; db-calf-raise 2x10 RIR3 establish; dead-bug 3x16 RIR3 BW | d2 2026-12-31 AM RUN EASY 45min (EASY) | d2 2026-12-31 PM STRENGTH_FULL_B 46min: db-rdl 4x8 RIR3 26kg PER_HAND; seated-cable-row 4x8 RIR3 next machine setting above 50kg (else 50kg x12); machine-chest-press 4x8 RIR3 next machine setting above 50kg (else 50kg x12); leg-curl-machine 2x10 RIR3 establish; cable-triceps-pushdown 2x10 RIR3 establish | d4 2027-01-02 PM STRENGTH_UPPER 43min: machine-chest-press 4x8 RIR3 next machine setting above 50kg (else 50kg x12); seated-cable-row 4x8 RIR3 next machine setting above 50kg (else 50kg x12); db-lateral-raise 2x10 RIR3 establish; db-biceps-curl 2x10 RIR3 establish; dead-bug 3x16 RIR3 BW | d5 2027-01-03 AM RUN LONG 65min (LONG)
+
+### u6 · 2027-01-01T18:00:00+00:00 · UNAVAILABLE_DAY (week 6)
+
+- Athlete: no reports · changes `{"unavailableDates":["2027-01-03"]}`
+- Coach: **MODIFY** / RESCHEDULE_WITHIN_WEEK · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Sessions on the unavailable date are moved within chosen days when that adds no interference, otherwise skipped without debt
+- Current week 6 (DEVELOPMENT) from 2027-01-01: d4 2027-01-02 PM STRENGTH_UPPER 43min: machine-chest-press 4x8 RIR3 next machine setting above 50kg (else 50kg x12); seated-cable-row 4x8 RIR3 next machine setting above 50kg (else 50kg x12); db-lateral-raise 2x10 RIR3 establish; db-biceps-curl 2x10 RIR3 establish; dead-bug 3x16 RIR3 BW | d5 2027-01-03 AM RUN LONG 65min (LONG) [SKIPPED]
+- Next week 7 (CONSOLIDATION, provisional): d0 2027-01-05 AM RUN EASY 45min (EASY +strides) | d0 2027-01-05 PM STRENGTH_LOWER 33min: leg-press 3x12 RIR3 140kg MACHINE_STACK; db-rdl 3x10 RIR3 26kg PER_HAND; leg-extension-machine 1x10 RIR3 last logged; db-calf-raise 1x10 RIR3 last logged; dead-bug 2x16 RIR3 BW | d2 2027-01-07 AM RUN EASY 45min (EASY) | d2 2027-01-07 PM STRENGTH_FULL_B 37min: db-rdl 3x10 RIR3 26kg PER_HAND; seated-cable-row 3x12 RIR3 50kg MACHINE_STACK; machine-chest-press 3x12 RIR3 50kg MACHINE_STACK; leg-curl-machine 1x10 RIR3 last logged; cable-triceps-pushdown 1x10 RIR3 last logged | d4 2027-01-09 PM STRENGTH_UPPER 33min: machine-chest-press 3x12 RIR3 50kg MACHINE_STACK; seated-cable-row 3x12 RIR3 50kg MACHINE_STACK; db-lateral-raise 1x10 RIR3 last logged; db-biceps-curl 1x10 RIR3 last logged; dead-bug 2x16 RIR3 BW | d5 2027-01-10 AM RUN LONG 55min (LONG)
+
+### w6 · 2027-01-04T20:00:00+00:00 · WEEKLY_REVIEW (week 6)
+
+- Athlete: 5 report(s): w6-run-d0 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-run-d2 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-str-d0 done 43min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-str-d2 done 46min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-str-d4 done 43min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **MODIFY** / GATED_NEXT_STEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation
+- Gates: `{"LONG":"HOLD","EASY":"ADVANCE","leg-press":"ADVANCE","db-rdl":"ADVANCE","leg-extension-machine":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","seated-cable-row":"ADVANCE","machine-chest-press":"ADVANCE","leg-curl-machine":"ADVANCE","cable-triceps-pushdown":"ADVANCE","db-lateral-raise":"ADVANCE","db-biceps-curl":"ADVANCE"}`
+- Current week 6 (DEVELOPMENT) from 2027-01-04: —
+- Next week 7 (CONSOLIDATION, provisional): d0 2027-01-05 AM RUN EASY 45min (EASY +strides) | d0 2027-01-05 PM STRENGTH_LOWER 33min: leg-press 3x12 RIR3 140kg MACHINE_STACK; db-rdl 3x10 RIR3 26kg PER_HAND; leg-extension-machine 1x10 RIR3 establish; db-calf-raise 1x10 RIR3 establish; dead-bug 2x16 RIR3 BW | d2 2027-01-07 AM RUN EASY 45min (EASY) | d2 2027-01-07 PM STRENGTH_FULL_B 37min: db-rdl 3x10 RIR3 26kg PER_HAND; seated-cable-row 3x12 RIR3 50kg MACHINE_STACK; machine-chest-press 3x12 RIR3 50kg MACHINE_STACK; leg-curl-machine 1x10 RIR3 establish; cable-triceps-pushdown 1x10 RIR3 establish | d4 2027-01-09 PM STRENGTH_UPPER 33min: machine-chest-press 3x12 RIR3 50kg MACHINE_STACK; seated-cable-row 3x12 RIR3 50kg MACHINE_STACK; db-lateral-raise 1x10 RIR3 establish; db-biceps-curl 1x10 RIR3 establish; dead-bug 2x16 RIR3 BW | d5 2027-01-10 AM RUN LONG 55min (LONG)
+
+### w7 · 2027-01-11T20:00:00+00:00 · WEEKLY_REVIEW (week 7)
+
+- Athlete: 6 report(s): w7-run-d0 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w7-run-d2 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w7-run-d5 done 55min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w7-str-d0 done 33min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w7-str-d2 done 37min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w7-str-d4 done 33min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · offers LADDER_STEP,LADDER_STEP · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE","leg-press":"ADVANCE","db-rdl":"ADVANCE","leg-extension-machine":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","seated-cable-row":"ADVANCE","machine-chest-press":"ADVANCE","leg-curl-machine":"ADVANCE","cable-triceps-pushdown":"ADVANCE","db-lateral-raise":"ADVANCE","db-biceps-curl":"ADVANCE"}`
+- Current week 7 (CONSOLIDATION) from 2027-01-11: —
+- Next week 8 (DEVELOPMENT, provisional): d0 2027-01-12 AM RUN EASY 45min (EASY +strides) | d0 2027-01-12 PM STRENGTH_LOWER 40min: leg-press 4x8 RIR3 next machine setting above 140kg (else 140kg x12); db-rdl 4x10 RIR3 26kg PER_HAND; leg-extension-machine 2x10 RIR3 establish; standing-calf-raise 2x10 RIR3 BW; front-plank 2x10 RIR3 BW | d2 2027-01-14 AM RUN EASY 45min (EASY) | d2 2027-01-14 PM STRENGTH_FULL_B 47min: db-rdl 4x10 RIR3 26kg PER_HAND; seated-cable-row 4x8 RIR3 next machine setting above 50kg (else 50kg x12); machine-chest-press 4x8 RIR3 next machine setting above 50kg (else 50kg x12); leg-curl-machine 2x10 RIR3 establish; db-overhead-triceps-extension 2x10 RIR3 establish | d4 2027-01-16 PM STRENGTH_UPPER 40min: machine-chest-press 4x8 RIR3 next machine setting above 50kg (else 50kg x12); seated-cable-row 4x8 RIR3 next machine setting above 50kg (else 50kg x12); db-lateral-raise 2x10 RIR3 establish; band-biceps-curl 2x10 RIR3 BW; front-plank 2x10 RIR3 BW | d5 2027-01-17 AM RUN LONG 65min (LONG)
+
+### w8 · 2027-01-18T20:00:00+00:00 · WEEKLY_REVIEW (week 8)
+
+- Athlete: 6 report(s): w8-run-d0 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w8-run-d2 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w8-run-d5 done 65min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w8-str-d0 done 40min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w8-str-d2 done 47min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w8-str-d4 done 40min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE","leg-press":"ADVANCE","db-rdl":"ADVANCE","leg-extension-machine":"ADVANCE","standing-calf-raise":"ADVANCE","front-plank":"ADVANCE","seated-cable-row":"ADVANCE","machine-chest-press":"ADVANCE","leg-curl-machine":"ADVANCE","db-overhead-triceps-extension":"ADVANCE","db-lateral-raise":"ADVANCE","band-biceps-curl":"ADVANCE"}`
+- Current week 8 (DEVELOPMENT) from 2027-01-18: —
+- Next week 9 (DEVELOPMENT, provisional): d0 2027-01-19 AM RUN EASY 45min (EASY +strides) | d0 2027-01-19 PM STRENGTH_LOWER 41min: leg-press 4x8 RIR3 next machine setting above 140kg (else 140kg x12); db-rdl 4x12 RIR3 26kg PER_HAND; leg-extension-machine 2x10 RIR3 establish; standing-calf-raise 2x12 RIR3 BW; front-plank 2x12 RIR3 BW | d2 2027-01-21 AM RUN EASY 45min (EASY) | d2 2027-01-21 PM STRENGTH_FULL_B 47min: db-rdl 4x12 RIR3 26kg PER_HAND; seated-cable-row 4x8 RIR3 next machine setting above 50kg (else 50kg x12); machine-chest-press 4x8 RIR3 next machine setting above 50kg (else 50kg x12); leg-curl-machine 2x10 RIR3 establish; db-overhead-triceps-extension 2x10 RIR3 establish | d4 2027-01-23 PM STRENGTH_UPPER 40min: machine-chest-press 4x8 RIR3 next machine setting above 50kg (else 50kg x12); seated-cable-row 4x8 RIR3 next machine setting above 50kg (else 50kg x12); db-lateral-raise 2x10 RIR3 establish; band-biceps-curl 2x10 RIR3 BW; front-plank 2x12 RIR3 BW | d5 2027-01-24 AM RUN LONG 65min (LONG)
+
+**Automated properties.** no failure
+
+**Metamorphic.** no violation · non-blocking differences: LOAD_CONVENTION_EQUIVALENT
+
+**Author expectations.**
+- d08-e01 @GENERATE STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"PROPOSED"`
+- d08-e02 @GENERATE JUDGED [INVARIANT_ORACLE]: **JUDGED** — On the shared days 0 and 2 the run is in the AM turn and strength in the PM turn; no day has both sports in the same turn.
+- d08-e03 @GENERATE JUDGED [DOMAIN_ORACLE]: **JUDGED** — The Saturday strength session before the Sunday long run is not the heaviest lower-body session of the week, and the run on a shared day is not a hard quality run placed just before the heaviest lower-body work of that evening.
+- d08-e04 @dc3 STATUS_IN [DOMAIN_ORACLE]: **FAIL** observed `"ASK"`
+- d08-e05 @dc3 VALIDITY_IS [DOMAIN_ORACLE]: **FAIL** observed `"REQUIRES_RECONCILIATION"`
+- d08-e06 @dc3 JUDGED [DOMAIN_ORACLE]: **JUDGED** — On Thursday of week 3 both sessions are in the PM turn (confirmed) and the combination is sensible: an easy or shortened run with the strength session, not a quality run stacked on heavy legs.
+- d08-e07 @dc5 STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"ASK"`
+- d08-e08 @dc5 JUDGED [INVARIANT_ORACLE]: **JUDGED** — On Tuesday of week 5 the plan does not contain two live sessions in the same turn; if one is dropped it is marked skipped, not moved to a day the athlete did not choose.
+- d08-e09 @u6 STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"MODIFY"`
+- d08-e10 @u6 JUDGED [INVARIANT_ORACLE]: **JUDGED** — No session is dated Sunday of week 6, and no run is placed on Wednesday, Friday, Saturday or Monday of week 6 (days the athlete did not choose for running); the long run of week 6 is skipped rather than moved to an unchosen day or doubled up.
+- d08-e11 @u6 JUDGED [DOMAIN_ORACLE]: **JUDGED** — The week-7 long run is not extended to compensate for the skipped week-6 long run: it is no longer than what had been planned for week 6.
+
+**Independent assessment (author, written before any output).**
+- Rationale: An intermediate hybrid athlete in a gym without barbells, three runs and three hypertrophy sessions with two shared days. Most of the difficulty is in the schedule, not the dose.
+- Preferred: Run AM / lift PM on shared days, Sunday long run, upper or lighter emphasis on Saturday. On the confirmed Thursday, put both in the evening with the easy run first or a short run after lifting. On the unconfirmed Tuesday, keep one session in the evening (strength, or an easy run if the coach prefers to protect running) and skip the other; asking which one is also fine. On the unavailable Sunday, skip the week-6 long run; resume the planned progression in week 7 without compensating.
+- Acceptable alternatives: Shortening the Thursday run when stacked with strength. / Asking at dc5 which session to keep. / Turning the remaining week-6 strength session lighter to compensate for nothing (not required).
+- Concerns: Placing both sessions in the same turn on the unconfirmed day. / Moving the long run to Saturday (a strength-only day) or Monday (unchosen). / A longer week-7 long run to catch up. / Quality running stacked before heavy lower-body work on shared days.
+- Domain notes: Bulk reports cover only planned, non-skipped sessions, so the week-5 and week-6 reviews stay valid whichever session the coach drops.
+
+## R7D-D09
+
+**Intent.** A formerly experienced runner restarts from 20 minutes a week after five months off, then mid-program signs up for a 10K, and later the race is moved two weeks earlier. It probes that past experience does not override current capacity, that a shortened but tolerated run is not treated as intolerance, and that goal and event-date changes re-plan without compressing load.
+
+**Tags.** RUN_ONLY, RESTART, RETURN_LONG, RUN_EXP_EXPERIENCED, STR_EXP_NONE, H16, FREQ_LOW, NON_RACE, RACE_10K, GOAL_CHANGE, EVENT_DATE_CHANGE, SHORTENED_RUNS, START_NON_MONDAY, TIMEZONE, TAPER, RACE_WEEK, POST_RACE · oracle DOMAIN_ORACLE
+
+**Intake.** `{"startDate":"2027-01-08","weeks":16,"asOf":"2027-01-07","tz":-180,"learningConsent":null,"eligibility":"CONFIRMED","goals":{"run":"REGULAR","strength":"NONE"},"event":null,"runExperience":"EXPERIENCED","strengthExperience":"NONE","recent":{"runDaysPerWeek":1,"runMinutesPerWeek":20,"longestRunMinutes":20},"knownRuns":0,"knownExercises":[],"equipment":["BODYWEIGHT"],"pause":{"nonclinical":true,"weeks":22,"reasonCategory":"MOVING","reason":"Moved cities and changed jobs in August; stopped running. Used to race half marathons."},"wearable":null,"history":0,"ageYears":36,"specialPopulation":null,"schedule":{"runDays":[1,3,5],"strengthDays":[],"runTurn":"AM","runMinutes":45,"longRunDay":1,"longRunMinutes":90}}`
+
+**Onboarding.** PROPOSED: Complete conditional program generated from onboarding-like facts
+
+- Phases: ESTABLISHMENT · DEVELOPMENT · DEVELOPMENT · DEVELOPMENT · CONSOLIDATION · DEVELOPMENT · DEVELOPMENT · DEVELOPMENT · CONSOLIDATION · DEVELOPMENT · DEVELOPMENT · DEVELOPMENT · CONSOLIDATION · DEVELOPMENT · DEVELOPMENT · DEVELOPMENT
+- Week 0 (ESTABLISHMENT): d1 2027-01-09 AM RUN EASY 15min (EASY) | d3 2027-01-11 AM RUN EASY 15min (EASY) | d5 2027-01-13 AM RUN EASY 15min (EASY)
+- Week 1 (DEVELOPMENT): d1 2027-01-16 AM RUN EASY 20min (EASY) | d3 2027-01-18 AM RUN EASY 20min (EASY) | d5 2027-01-20 AM RUN EASY 20min (EASY)
+
+### w0 · 2027-01-14T20:00:00-03:00 · WEEKLY_REVIEW (week 0)
+
+- Athlete: 3 report(s): w0-run-d1 done 15min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-run-d3 done 15min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-run-d5 done 15min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Executed as planned without adverse signal; the planned progression step stands
+- Gates: `{"EASY":"ADVANCE"}`
+- Current week 0 (ESTABLISHMENT) from 2027-01-14: —
+- Next week 1 (DEVELOPMENT, provisional): d1 2027-01-16 AM RUN EASY 20min (EASY) | d3 2027-01-18 AM RUN EASY 20min (EASY) | d5 2027-01-20 AM RUN EASY 20min (EASY)
+
+### w1 · 2027-01-21T20:00:00-03:00 · WEEKLY_REVIEW (week 1)
+
+- Athlete: 3 report(s): w1-run-d1 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-run-d3 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-run-d5 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Executed as planned without adverse signal; the planned progression step stands
+- Gates: `{"EASY":"ADVANCE"}`
+- Current week 1 (DEVELOPMENT) from 2027-01-21: —
+- Next week 2 (DEVELOPMENT, provisional): d1 2027-01-23 AM RUN EASY 25min (EASY) | d3 2027-01-25 AM RUN EASY 25min (EASY) | d5 2027-01-27 AM RUN EASY 25min (EASY)
+
+### w2 · 2027-01-28T20:00:00-03:00 · WEEKLY_REVIEW (week 2)
+
+- Athlete: 3 report(s): w2-run-d1 done 25min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-run-d3 done 15min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-run-d5 done 25min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **MODIFY** / GATED_NEXT_STEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation
+- Gates: `{"EASY":"HOLD"}`
+- Current week 2 (DEVELOPMENT) from 2027-01-28: —
+- Next week 3 (DEVELOPMENT, provisional): d1 2027-01-30 AM RUN EASY 25min (EASY) | d3 2027-02-01 AM RUN EASY 25min (EASY) | d5 2027-02-03 AM RUN EASY 25min (EASY)
+
+### w3 · 2027-02-04T20:00:00-03:00 · WEEKLY_REVIEW (week 3)
+
+- Athlete: 3 report(s): w3-run-d1 done 25min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-run-d3 done 25min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-run-d5 done 25min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Executed as planned without adverse signal; the planned progression step stands
+- Gates: `{"EASY":"ADVANCE"}`
+- Current week 3 (DEVELOPMENT) from 2027-02-04: —
+- Next week 4 (CONSOLIDATION, provisional): d1 2027-02-06 AM RUN LONG 30min (LONG) | d3 2027-02-08 AM RUN EASY 30min (EASY) | d5 2027-02-10 AM RUN EASY 30min (EASY)
+
+### w4 · 2027-02-11T20:00:00-03:00 · WEEKLY_REVIEW (week 4)
+
+- Athlete: 3 report(s): w4-run-d1 done 30min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w4-run-d3 done 30min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w4-run-d5 done 30min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Executed as planned without adverse signal; the planned progression step stands
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE"}`
+- Current week 4 (CONSOLIDATION) from 2027-02-11: —
+- Next week 5 (DEVELOPMENT, provisional): d1 2027-02-13 AM RUN LONG 35min (LONG) | d3 2027-02-15 AM RUN EASY 30min (EASY) | d5 2027-02-17 AM RUN EASY 30min (EASY)
+
+### g5 · 2027-02-12T07:00:00-03:00 · GOAL_CHANGE (week 5)
+
+- Athlete: no reports · changes `{"goals":{"run":{"kind":"RACE","event":{"kind":"10K","date":"2027-04-25","timeGoalMinutes":50}},"strength":"NONE"},"event":{"kind":"10K","date":"2027-04-25","timeGoalMinutes":50}}`
+- Coach: **MODIFY** / REPLAN_FUTURE_PHASES · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Goal or event date changed: future phases, priorities and arrangements are re-planned from the current state; completed weeks stay as they were
+- Current week 5 (DEVELOPMENT) from 2027-02-12: d1 2027-02-13 AM RUN LONG 35min (LONG) | d3 2027-02-15 AM RUN EASY 30min (EASY) | d5 2027-02-17 AM RUN EASY 30min (EASY)
+- Next week 6 (BUILD, provisional): d1 2027-02-20 AM RUN LONG 35min (LONG) | d3 2027-02-22 AM RUN EASY 30min (EASY +strides) | d5 2027-02-24 AM RUN EASY 30min (EASY)
+
+### w5 · 2027-02-18T20:00:00-03:00 · WEEKLY_REVIEW (week 5)
+
+- Athlete: 3 report(s): w5-run-d1 done 35min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-run-d3 done 30min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-run-d5 done 30min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **MODIFY** / RUN_QUALITY_GRADUATION · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Two complete weeks of easy running met the graduation evidence: the threshold ladder starts next week at its first step
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE"}`
+- Current week 5 (DEVELOPMENT) from 2027-02-18: —
+- Next week 6 (BUILD, provisional): d1 2027-02-20 AM RUN LONG 35min (LONG) | d3 2027-02-22 AM RUN QUALITY 34min (THRESHOLD 3x5'/2') | d5 2027-02-24 AM RUN EASY 30min (EASY)
+
+### w6 · 2027-02-25T20:00:00-03:00 · WEEKLY_REVIEW (week 6)
+
+- Athlete: 3 report(s): w6-run-d1 done 35min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-run-d3 done 34min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-run-d5 done 30min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Executed as planned without adverse signal; the planned progression step stands
+- Gates: `{"LONG":"ADVANCE","QUALITY":"ADVANCE","EASY":"ADVANCE"}`
+- Current week 6 (BUILD) from 2027-02-25: —
+- Next week 7 (BUILD, provisional): d1 2027-02-27 AM RUN LONG 40min (LONG) | d3 2027-03-01 AM RUN QUALITY 34min (THRESHOLD 3x5'/2') | d5 2027-03-03 AM RUN EASY 30min (EASY +strides)
+
+### w7 · 2027-03-04T20:00:00-03:00 · WEEKLY_REVIEW (week 7)
+
+- Athlete: 3 report(s): w7-run-d1 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w7-run-d3 done 34min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w7-run-d5 done 30min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Executed as planned without adverse signal; the planned progression step stands
+- Gates: `{"LONG":"ADVANCE","QUALITY":"ADVANCE","EASY":"ADVANCE"}`
+- Current week 7 (BUILD) from 2027-03-04: —
+- Next week 8 (CONSOLIDATION, provisional): d1 2027-03-06 AM RUN LONG 35min (LONG) | d3 2027-03-08 AM RUN QUALITY 34min (THRESHOLD 3x5'/2') | d5 2027-03-10 AM RUN EASY 30min (EASY +strides)
+
+### w8 · 2027-03-11T20:00:00-03:00 · WEEKLY_REVIEW (week 8)
+
+- Athlete: 3 report(s): w8-run-d1 done 35min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w8-run-d3 done 34min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w8-run-d5 done 30min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Executed as planned without adverse signal; the planned progression step stands
+- Gates: `{"LONG":"ADVANCE","QUALITY":"ADVANCE","EASY":"ADVANCE"}`
+- Current week 8 (CONSOLIDATION) from 2027-03-11: —
+- Next week 9 (BUILD, provisional): d1 2027-03-13 AM RUN LONG 45min (LONG) | d3 2027-03-15 AM RUN QUALITY 34min (THRESHOLD 3x5'/2') | d5 2027-03-17 AM RUN EASY 30min (EASY +strides)
+
+### w9 · 2027-03-18T20:00:00-03:00 · WEEKLY_REVIEW (week 9)
+
+- Athlete: 3 report(s): w9-run-d1 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w9-run-d3 done 34min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w9-run-d5 done 30min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Executed as planned without adverse signal; the planned progression step stands
+- Gates: `{"LONG":"ADVANCE","QUALITY":"ADVANCE","EASY":"ADVANCE"}`
+- Current week 9 (BUILD) from 2027-03-18: —
+- Next week 10 (BUILD, provisional): d1 2027-03-20 AM RUN LONG 50min (LONG) | d3 2027-03-22 AM RUN QUALITY 34min (THRESHOLD 3x5'/2') | d5 2027-03-24 AM RUN EASY 30min (EASY +strides)
+
+### ed10 · 2027-03-19T07:00:00-03:00 · EVENT_DATE_CHANGE (week 10)
+
+- Athlete: no reports · changes `{"eventDate":"2027-04-11"}`
+- Coach: **MODIFY** / REPLAN_FUTURE_PHASES · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Goal or event date changed: future phases, priorities and arrangements are re-planned from the current state; completed weeks stay as they were
+- Current week 10 (BUILD) from 2027-03-19: d1 2027-03-20 AM RUN LONG 50min (LONG) | d3 2027-03-22 AM RUN QUALITY 34min (THRESHOLD 3x5'/2') | d5 2027-03-24 AM RUN EASY 30min (EASY +strides)
+- Next week 11 (SPECIFIC, provisional): d1 2027-03-27 AM RUN LONG 50min (LONG) | d3 2027-03-29 AM RUN QUALITY 25min (THRESHOLD 2x4'/2') | d5 2027-03-31 AM RUN EASY 25min (EASY +strides)
+
+### w10 · 2027-03-25T20:00:00-03:00 · WEEKLY_REVIEW (week 10)
+
+- Athlete: 3 report(s): w10-run-d1 done 50min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w10-run-d3 done 34min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w10-run-d5 done 30min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **MODIFY** / GATED_NEXT_STEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Executed as planned this week; next week’s runs follow the executed record, not the plan’s earlier projection (long run 55 min, planned long run 50 min); so the plan is re-based, not kept
+- Gates: `{"LONG":"ADVANCE","QUALITY":"ADVANCE","EASY":"ADVANCE"}`
+- Current week 10 (BUILD) from 2027-03-25: —
+- Next week 11 (SPECIFIC, provisional): d1 2027-03-27 AM RUN LONG 55min (LONG) | d3 2027-03-29 AM RUN QUALITY 25min (THRESHOLD 2x4'/2') | d5 2027-03-31 AM RUN EASY 25min (EASY +strides)
+
+### w11 · 2027-04-01T20:00:00-03:00 · WEEKLY_REVIEW (week 11)
+
+- Athlete: 3 report(s): w11-run-d1 done 55min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w11-run-d3 done 25min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w11-run-d5 done 25min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Executed as planned without adverse signal; the planned progression step stands
+- Gates: `{"LONG":"ADVANCE","QUALITY":"ADVANCE","EASY":"ADVANCE"}`
+- Current week 11 (SPECIFIC) from 2027-04-01: —
+- Next week 12 (TAPER, provisional): d1 2027-04-03 AM RUN LONG 35min (LONG) | d3 2027-04-05 AM RUN EASY 15min (EASY) | d5 2027-04-07 AM RUN RACE_TOUCH 25min (RACE_TOUCH 3x2'/2')
+
+### w12 · 2027-04-08T20:00:00-03:00 · WEEKLY_REVIEW (week 12)
+
+- Athlete: 3 report(s): w12-run-d1 done 35min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w12-run-d3 done 15min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w12-run-d5 done 25min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Executed as planned without adverse signal; the planned progression step stands
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE"}`
+- Current week 12 (TAPER) from 2027-04-08: —
+- Next week 13 (RACE_WEEK, provisional): d1 2027-04-10 AM RUN SHAKEOUT 15min (SHAKEOUT +strides) | d2 2027-04-11  RUN RACE 75min (RACE, completion) | d3 RUN REST_BY_DESIGN | d5 2027-04-14 AM RUN RECOVERY_EASY 20min (RECOVERY_EASY)
+
+### w13 · 2027-04-15T20:00:00-03:00 · WEEKLY_REVIEW (week 13)
+
+- Athlete: 3 report(s): w13-race done 52min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w13-run-d1 done 15min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w13-run-d5 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Executed as planned without adverse signal; the planned progression step stands
+- Gates: `{}`
+- Current week 13 (RACE_WEEK) from 2027-04-15: —
+- Next week 14 (POST_EVENT, provisional): d1 2027-04-17 AM RUN RECOVERY_EASY 30min (RECOVERY_EASY) | d3 2027-04-19 AM RUN RECOVERY_EASY 30min (RECOVERY_EASY) | d5 2027-04-21 AM RUN RECOVERY_EASY 30min (RECOVERY_EASY)
+
+### w14 · 2027-04-22T20:00:00-03:00 · WEEKLY_REVIEW (week 14)
+
+- Athlete: 3 report(s): w14-run-d1 done 30min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w14-run-d3 done 30min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w14-run-d5 done 30min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Executed as planned without adverse signal; the planned progression step stands
+- Gates: `{}`
+- Current week 14 (POST_EVENT) from 2027-04-22: —
+- Next week 15 (NEXT_BLOCK, provisional): d1 2027-04-24 AM RUN LONG 30min (LONG) | d3 2027-04-26 AM RUN QUALITY 34min (THRESHOLD 3x5'/2') | d5 2027-04-28 AM RUN EASY 20min (EASY +strides)
+
+### w15 · 2027-04-29T20:00:00-03:00 · WEEKLY_REVIEW (week 15)
+
+- Athlete: 3 report(s): w15-run-d1 done 30min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w15-run-d3 done 34min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w15-run-d5 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Final week of the horizon; record outcomes for the next program
+- Current week 15 (NEXT_BLOCK) from 2027-04-29: —
+
+**Automated properties.** no failure
+
+**Metamorphic.** no violation
+
+**Author expectations.**
+- d09-e01 @GENERATE STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"PROPOSED"`
+- d09-e02 @GENERATE ROLE_ABSENT [DOMAIN_ORACLE]: **PASS** observed `[]`
+- d09-e03 @GENERATE PHASE_IS [DOMAIN_ORACLE]: **PASS** observed `"ESTABLISHMENT"`
+- d09-e04 @GENERATE JUDGED [DOMAIN_ORACLE]: **JUDGED** — Week-0 running totals roughly 30-70 minutes in short easy runs (no run longer than about 30 minutes), anchored on the current 20 minutes per week rather than on the 45/90 minutes available or the former racing history; later progression may be somewhat faster than for a true novice.
+- d09-e05 @GENERATE JUDGED [INVARIANT_ORACLE]: **JUDGED** — No strength session appears in any week.
+- d09-e06 @w2 JUDGED [DOMAIN_ORACLE]: **JUDGED** — The 60% Monday run (time-limited, compatible response) does not trigger a reduction or a question; week 3 holds or progresses modestly.
+- d09-e07 @g5 STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"MODIFY"`
+- d09-e08 @g5 PHASE_IS [DOMAIN_ORACLE]: **PASS** observed `"RACE_WEEK"`
+- d09-e09 @g5 ROLE_PRESENT [DOMAIN_ORACLE]: **PASS** observed `["15:2:RACE"]`
+- d09-e10 @g5 JUDGED [DOMAIN_ORACLE]: **JUDGED** — The new plan continues from the running actually completed in weeks 0-4; the first race-oriented week is not a jump in volume or intensity, and quality is introduced gradually.
+- d09-e11 @ed10 STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"MODIFY"`
+- d09-e12 @ed10 PHASE_IS [DOMAIN_ORACLE]: **PASS** observed `"RACE_WEEK"`
+- d09-e13 @ed10 ROLE_PRESENT [DOMAIN_ORACLE]: **PASS** observed `["13:2:RACE"]`
+- d09-e14 @ed10 ROLE_ABSENT [DOMAIN_ORACLE]: **PASS** observed `[]`
+- d09-e15 @ed10 PHASE_IS [DOMAIN_ORACLE]: **PASS** observed `"POST_EVENT"`
+- d09-e16 @ed10 JUDGED [DOMAIN_ORACLE]: **JUDGED** — The earlier date is absorbed by shortening the remaining build and taper, not by increasing weekly running load or the long run faster than before the change.
+- d09-e17 @w13 ROLE_ABSENT [DOMAIN_ORACLE]: **PASS** observed `[]`
+
+**Independent assessment (author, written before any output).**
+- Rationale: Past experience helps the rate of progression but the starting point must be today's capacity: 20 minutes a week. The moved race shortens the time to prepare; the right reaction is a shorter build and taper, not a steeper ramp.
+- Preferred: Start with three short easy runs (e.g., 15-25 minutes), progress about 10-20% per week with a step-back week, add strides then gentle threshold work only after ~3-4 weeks, long run on Saturday growing from ~25 to ~60-75 minutes. On the goal change, plan toward the 10K from the current level. On the date change, re-plan with the taper starting about 7-10 days before the new date and a post-race easy week, without raising the weekly load.
+- Acceptable alternatives: Keeping all running easy until the goal change. / Accepting that a 50-minute target may not be reached and keeping the plan unchanged in load. / A one-week taper only (race week).
+- Concerns: Starting at 45-minute runs and a 90-minute long run because of experience. / Quality in the first two weeks. / Reducing load after the time-limited shortened run. / Increasing volume steeply after the race moves earlier. / Leaving the race on the old date or racing twice.
+- Domain notes: The former half-marathon history cannot be given as a performance anchor because its date is before the case window; it is stated in the pause reason text only.
+
+## R7D-D10
+
+**Intent.** A hybrid athlete misses a week with flu and first describes it only in free text, then names it as illness, then returns after a qualified clearance with a short demonstration run. It probes that free text is not a nonclinical category, that an illness break routes to a human with nothing prescribed, and that the post-clearance return is gradual.
+
+**Tags.** BALANCED_HYBRID, NON_RACE, H12, RUN_EXP_INTERMEDIATE, STR_EXP_INTERMEDIATE, GYM, START_NON_MONDAY, TIMEZONE, CLINICAL_PAUSE, CLINICAL_SIGNAL, RETURN_MODERATE, UNREPORTED_WEEKS · oracle INVARIANT_ORACLE
+
+**Intake.** `{"startDate":"2026-11-14","weeks":12,"asOf":"2026-11-13","tz":60,"learningConsent":null,"eligibility":"CONFIRMED","goals":{"run":"REGULAR","strength":"STRENGTH"},"event":null,"runExperience":"INTERMEDIATE","strengthExperience":"INTERMEDIATE","recent":{"runDaysPerWeek":3,"runMinutesPerWeek":150,"longestRunMinutes":80,"strengthDaysPerWeek":2},"knownRuns":0,"knownExercises":["back-squat 3x6 70KG TOTAL","db-bench-press 3x8 20KG PER_HAND","barbell-row 3x8 50KG TOTAL","db-rdl 3x8 20KG PER_HAND"],"equipment":["BARBELL","RACK","BENCH","DUMBBELLS","PULL_UP_BAR","BODYWEIGHT"],"pause":null,"wearable":null,"history":0,"ageYears":33,"specialPopulation":null,"schedule":{"runDays":[0,2,4],"strengthDays":[3,5],"runTurn":"AM","strengthTurn":"PM","runMinutes":45,"strengthMinutes":50,"longRunDay":0,"longRunMinutes":100}}`
+
+**Onboarding.** PROPOSED: Complete conditional program generated from onboarding-like facts
+
+- Phases: DEVELOPMENT · DEVELOPMENT · DEVELOPMENT · CONSOLIDATION · DEVELOPMENT · DEVELOPMENT · DEVELOPMENT · CONSOLIDATION · DEVELOPMENT · DEVELOPMENT · DEVELOPMENT · CONSOLIDATION
+- Week 0 (DEVELOPMENT): d0 2026-11-14 AM RUN LONG 65min (LONG) | d2 2026-11-16 AM RUN EASY 40min (EASY) | d3 2026-11-17 PM STRENGTH_FULL_A 39min: back-squat 3x6 RIR3 70kg TOTAL; db-bench-press 3x6 RIR3 20kg PER_HAND; barbell-row 3x6 RIR3 50kg TOTAL; db-calf-raise 2x7 RIR3 establish; dead-bug 2x7 RIR3 BW | d4 2026-11-18 AM RUN EASY 40min (EASY) | d5 2026-11-19 PM STRENGTH_FULL_B 39min: db-rdl 3x6 RIR3 20kg PER_HAND; barbell-row 3x6 RIR3 50kg TOTAL; db-bench-press 3x6 RIR3 20kg PER_HAND; bulgarian-split-squat-db 2x7 RIR3 establish; dead-bug 2x7 RIR3 BW
+- Week 1 (DEVELOPMENT): d0 2026-11-21 AM RUN LONG 65min (LONG) | d2 2026-11-23 AM RUN EASY 40min (EASY) | d3 2026-11-24 PM STRENGTH_FULL_A 40min: back-squat 3x6 RIR3 70kg TOTAL; db-bench-press 3x6 RIR3 20kg PER_HAND; barbell-row 3x6 RIR3 50kg TOTAL; db-calf-raise 2x7 RIR3 last logged; dead-bug 2x9 RIR3 BW | d4 2026-11-25 AM RUN EASY 40min (EASY) | d5 2026-11-26 PM STRENGTH_FULL_B 40min: db-rdl 3x6 RIR3 20kg PER_HAND; barbell-row 3x6 RIR3 50kg TOTAL; db-bench-press 3x6 RIR3 20kg PER_HAND; bulgarian-split-squat-db 2x7 RIR3 last logged; dead-bug 2x9 RIR3 BW
+
+### w0 · 2026-11-20T20:00:00+01:00 · WEEKLY_REVIEW (week 0)
+
+- Athlete: 5 report(s): w0-run-d0 done 65min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-run-d2 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-run-d4 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-str-d3 done 39min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-str-d5 done 39min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE","back-squat":"ADVANCE","db-bench-press":"ADVANCE","barbell-row":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","db-rdl":"ADVANCE","bulgarian-split-squat-db":"ADVANCE"}`
+- Current week 0 (DEVELOPMENT) from 2026-11-20: —
+- Next week 1 (DEVELOPMENT, provisional): d0 2026-11-21 AM RUN LONG 65min (LONG) | d2 2026-11-23 AM RUN EASY 40min (EASY) | d3 2026-11-24 PM STRENGTH_FULL_A 40min: back-squat 3x6 RIR3 70kg TOTAL; db-bench-press 3x6 RIR3 20kg PER_HAND; barbell-row 3x6 RIR3 50kg TOTAL; db-calf-raise 2x7 RIR3 establish; dead-bug 2x9 RIR3 BW | d4 2026-11-25 AM RUN EASY 40min (EASY) | d5 2026-11-26 PM STRENGTH_FULL_B 40min: db-rdl 3x6 RIR3 20kg PER_HAND; barbell-row 3x6 RIR3 50kg TOTAL; db-bench-press 3x6 RIR3 20kg PER_HAND; bulgarian-split-squat-db 2x7 RIR3 establish; dead-bug 2x9 RIR3 BW
+
+### w1 · 2026-11-27T20:00:00+01:00 · WEEKLY_REVIEW (week 1)
+
+- Athlete: 5 report(s): w1-run-d0 done 65min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-run-d2 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-run-d4 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-str-d3 done 40min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-str-d5 done 40min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE","back-squat":"ADVANCE","db-bench-press":"ADVANCE","barbell-row":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","db-rdl":"ADVANCE","bulgarian-split-squat-db":"ADVANCE"}`
+- Current week 1 (DEVELOPMENT) from 2026-11-27: —
+- Next week 2 (DEVELOPMENT, provisional): d0 2026-11-28 AM RUN LONG 65min (LONG) | d2 2026-11-30 AM RUN EASY 45min (EASY +strides) | d3 2026-12-01 PM STRENGTH_FULL_A 40min: back-squat 3x6 RIR3 72.5kg TOTAL; db-bench-press 3x6 RIR3 22kg PER_HAND; barbell-row 3x6 RIR3 52.5kg TOTAL; db-calf-raise 2x7 RIR3 establish; dead-bug 2x10 RIR3 BW | d4 2026-12-02 AM RUN EASY 40min (EASY) | d5 2026-12-03 PM STRENGTH_FULL_B 40min: db-rdl 3x6 RIR3 22kg PER_HAND; barbell-row 3x6 RIR3 52.5kg TOTAL; db-bench-press 3x6 RIR3 22kg PER_HAND; bulgarian-split-squat-db 2x7 RIR3 establish; dead-bug 2x10 RIR3 BW
+
+### w2 · 2026-12-04T20:00:00+01:00 · WEEKLY_REVIEW (week 2)
+
+- Athlete: 5 report(s): w2-run-d0 done 65min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-run-d2 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-run-d4 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-str-d3 done 40min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-str-d5 done 40min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE","back-squat":"ADVANCE","db-bench-press":"ADVANCE","barbell-row":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","db-rdl":"ADVANCE","bulgarian-split-squat-db":"ADVANCE"}`
+- Current week 2 (DEVELOPMENT) from 2026-12-04: —
+- Next week 3 (CONSOLIDATION, provisional): d0 2026-12-05 AM RUN LONG 55min (LONG) | d2 2026-12-07 AM RUN EASY 45min (EASY +strides) | d3 2026-12-08 PM STRENGTH_FULL_A 28min: back-squat 2x6 RIR3 72.5kg TOTAL; db-bench-press 2x6 RIR3 22kg PER_HAND; barbell-row 2x6 RIR3 52.5kg TOTAL; db-calf-raise 1x7 RIR3 establish; dead-bug 1x10 RIR3 BW | d4 2026-12-09 AM RUN EASY 40min (EASY) | d5 2026-12-10 PM STRENGTH_FULL_B 28min: db-rdl 2x6 RIR3 22kg PER_HAND; barbell-row 2x6 RIR3 52.5kg TOTAL; db-bench-press 2x6 RIR3 22kg PER_HAND; bulgarian-split-squat-db 1x7 RIR3 establish; dead-bug 1x10 RIR3 BW
+
+### w3 · 2026-12-11T20:00:00+01:00 · WEEKLY_REVIEW (week 3)
+
+- Athlete: 5 report(s): w3-run-d0 done 55min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-run-d2 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-run-d4 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-str-d3 done 28min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-str-d5 done 28min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · offers LADDER_STEP,LADDER_STEP,LADDER_STEP,LADDER_STEP · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE","back-squat":"ADVANCE","db-bench-press":"ADVANCE","barbell-row":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","db-rdl":"ADVANCE","bulgarian-split-squat-db":"ADVANCE"}`
+- Current week 3 (CONSOLIDATION) from 2026-12-11: —
+- Next week 4 (DEVELOPMENT, provisional): d0 2026-12-12 AM RUN LONG 65min (LONG) | d2 2026-12-14 AM RUN EASY 45min (EASY +strides) | d3 2026-12-15 PM STRENGTH_FULL_A 50min: back-squat 4x6 RIR3 72.5kg TOTAL; db-bench-press 4x6 RIR3 22kg PER_HAND; barbell-row 4x6 RIR3 52.5kg TOTAL; db-calf-raise 2x7 RIR3 establish; dead-bug 3x10 RIR3 BW | d4 2026-12-16 AM RUN EASY 40min (EASY) | d5 2026-12-17 PM STRENGTH_FULL_B 50min: db-rdl 4x6 RIR3 22kg PER_HAND; barbell-row 4x6 RIR3 52.5kg TOTAL; db-bench-press 4x6 RIR3 22kg PER_HAND; bulgarian-split-squat-db 2x7 RIR3 establish; dead-bug 3x10 RIR3 BW
+
+### r5 · 2026-12-19T06:30:00+01:00 · RETURN_AFTER_PAUSE (week 5)
+
+- Athlete: 1 report(s): w4-run-d0 done 65min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · break `{"startDate":"2026-12-13","endDate":"2026-12-18","days":6,"reason":"Had a bad flu with a fever for three days; feeling better now."}`
+- Coach: **CLINICAL_HUMAN_REQUIRED** / CLINICAL_HUMAN_REQUIRED · REQUIRES_RECONCILIATION
+- Reason: The interruption reason is clinical or possibly clinical (flu, fever): qualified assessment is needed; no nonclinical return recipe
+- Record: break declared 2026-12-19T05:30:00.000Z with a RETURN_AFTER_PAUSE report (R7D-D10-r5), not applied yet: `{"startDate":"2026-12-13","endDate":"2026-12-18","days":6,"reason":"Had a bad flu with a fever for three days; feeling better now."}`
+- Current week 5 (DEVELOPMENT) from 2026-12-19: d0 2026-12-19 AM RUN LONG 65min (LONG) | d2 2026-12-21 AM RUN EASY 45min (EASY +strides) | d3 2026-12-22 PM STRENGTH_FULL_A 50min: back-squat 4x6 RIR3 75kg TOTAL; db-bench-press 4x6 RIR3 24kg PER_HAND; barbell-row 4x6 RIR3 55kg TOTAL; db-calf-raise 2x7 RIR3 last logged; dead-bug 3x10 RIR3 BW | d4 2026-12-23 AM RUN EASY 45min (EASY) | d5 2026-12-24 PM STRENGTH_FULL_B 50min: db-rdl 4x6 RIR3 24kg PER_HAND; barbell-row 4x6 RIR3 55kg TOTAL; db-bench-press 4x6 RIR3 24kg PER_HAND; bulgarian-split-squat-db 2x7 RIR3 last logged; dead-bug 3x10 RIR3 BW
+- Next week 6 (DEVELOPMENT, provisional): d0 2026-12-26 AM RUN LONG 65min (LONG) | d2 2026-12-28 AM RUN EASY 45min (EASY +strides) | d3 2026-12-29 PM STRENGTH_FULL_A 50min: back-squat 4x6 RIR3 75kg TOTAL; db-bench-press 4x6 RIR3 24kg PER_HAND; barbell-row 4x6 RIR3 55kg TOTAL; db-calf-raise 2x7 RIR3 last logged; dead-bug 3x10 RIR3 BW | d4 2026-12-30 AM RUN EASY 45min (EASY) | d5 2026-12-31 PM STRENGTH_FULL_B 50min: db-rdl 4x6 RIR3 24kg PER_HAND; barbell-row 4x6 RIR3 55kg TOTAL; db-bench-press 4x6 RIR3 24kg PER_HAND; bulgarian-split-squat-db 2x7 RIR3 last logged; dead-bug 3x10 RIR3 BW
+
+### c5 · 2026-12-19T10:00:00+01:00 · RETURN_AFTER_PAUSE (week 5)
+
+- Athlete: no reports · break `{"startDate":"2026-12-13","endDate":"2026-12-18","days":6,"reasonCategory":"ILLNESS","clinicalReason":true,"reason":"Flu with fever."}`
+- Coach: **CLINICAL_HUMAN_REQUIRED** / CLINICAL_HUMAN_REQUIRED · REQUIRES_RECONCILIATION
+- Reason: A prior clinical dependency remains outside this nonclinical reference; no automatic clearance
+- Record: break declared 2026-12-19T05:30:00.000Z with a RETURN_AFTER_PAUSE report (R7D-D10-r5), not applied yet: `{"startDate":"2026-12-13","endDate":"2026-12-18","days":6,"reason":"Had a bad flu with a fever for three days; feeling better now."}`
+- Record: break declared 2026-12-19T09:00:00.000Z with a RETURN_AFTER_PAUSE report (R7D-D10-c5), not applied yet: `{"startDate":"2026-12-13","endDate":"2026-12-18","days":6,"reasonCategory":"ILLNESS","clinicalReason":true,"reason":"Flu with fever."}`
+- Current week 5 (DEVELOPMENT) from 2026-12-19: d0 2026-12-19 AM RUN LONG 65min (LONG) | d2 2026-12-21 AM RUN EASY 45min (EASY +strides) | d3 2026-12-22 PM STRENGTH_FULL_A 50min: back-squat 4x6 RIR3 75kg TOTAL; db-bench-press 4x6 RIR3 24kg PER_HAND; barbell-row 4x6 RIR3 55kg TOTAL; db-calf-raise 2x7 RIR3 last logged; dead-bug 3x10 RIR3 BW | d4 2026-12-23 AM RUN EASY 45min (EASY) | d5 2026-12-24 PM STRENGTH_FULL_B 50min: db-rdl 4x6 RIR3 24kg PER_HAND; barbell-row 4x6 RIR3 55kg TOTAL; db-bench-press 4x6 RIR3 24kg PER_HAND; bulgarian-split-squat-db 2x7 RIR3 last logged; dead-bug 3x10 RIR3 BW
+- Next week 6 (DEVELOPMENT, provisional): d0 2026-12-26 AM RUN LONG 65min (LONG) | d2 2026-12-28 AM RUN EASY 45min (EASY +strides) | d3 2026-12-29 PM STRENGTH_FULL_A 50min: back-squat 4x6 RIR3 75kg TOTAL; db-bench-press 4x6 RIR3 24kg PER_HAND; barbell-row 4x6 RIR3 55kg TOTAL; db-calf-raise 2x7 RIR3 last logged; dead-bug 3x10 RIR3 BW | d4 2026-12-30 AM RUN EASY 45min (EASY) | d5 2026-12-31 PM STRENGTH_FULL_B 50min: db-rdl 4x6 RIR3 24kg PER_HAND; barbell-row 4x6 RIR3 55kg TOTAL; db-bench-press 4x6 RIR3 24kg PER_HAND; bulgarian-split-squat-db 2x7 RIR3 last logged; dead-bug 3x10 RIR3 BW
+
+### cl6 · 2026-12-26T06:30:00+01:00 · RETURN_AFTER_PAUSE (week 6)
+
+- Athlete: qualified clearance · no reports · break `{"startDate":"2026-12-13","endDate":"2026-12-25","days":13,"reasonCategory":"ILLNESS","clinicalReason":true,"reason":"Flu; the GP cleared a gradual return on Thursday of week 5."}` · demonstration `{"observedAt":"2026-12-24T17:30:00+01:00","sport":"RUN","family":"EASY","minutes":20,"completed":true,"effort":"CONVERSATIONAL","response":"COMPATIBLE","ordinaryFunction":"COMPATIBLE","nextDayFunction":"NORMAL"}` · client notes QUALIFIED_CLEARANCE_APPLIED
+- Coach: **CLINICAL_HUMAN_REQUIRED** / CLINICAL_HUMAN_REQUIRED · REQUIRES_RECONCILIATION
+- Reason: The interruption reason is clinical or possibly clinical (flu, fever): qualified assessment is needed; no nonclinical return recipe
+- Record: break declared 2026-12-19T05:30:00.000Z with a RETURN_AFTER_PAUSE report (R7D-D10-r5), not applied yet: `{"startDate":"2026-12-13","endDate":"2026-12-18","days":6,"reason":"Had a bad flu with a fever for three days; feeling better now."}`
+- Record: break declared 2026-12-19T09:00:00.000Z with a RETURN_AFTER_PAUSE report (R7D-D10-c5), not applied yet: `{"startDate":"2026-12-13","endDate":"2026-12-18","days":6,"reasonCategory":"ILLNESS","clinicalReason":true,"reason":"Flu with fever."}`
+- Record: break declared 2026-12-26T05:30:00.000Z with a RETURN_AFTER_PAUSE report (R7D-D10-cl6), not applied yet: `{"startDate":"2026-12-13","endDate":"2026-12-25","days":13,"reasonCategory":"ILLNESS","clinicalReason":true,"reason":"Flu; the GP cleared a gradual return on Thursday of week 5."}`
+- Current week 6 (DEVELOPMENT) from 2026-12-26: d0 2026-12-26 AM RUN LONG 65min (LONG) | d2 2026-12-28 AM RUN EASY 45min (EASY +strides) | d3 2026-12-29 PM STRENGTH_FULL_A 50min: back-squat 4x6 RIR3 75kg TOTAL; db-bench-press 4x6 RIR3 24kg PER_HAND; barbell-row 4x6 RIR3 55kg TOTAL; db-calf-raise 2x7 RIR3 last logged; dead-bug 3x10 RIR3 BW | d4 2026-12-30 AM RUN EASY 45min (EASY) | d5 2026-12-31 PM STRENGTH_FULL_B 50min: db-rdl 4x6 RIR3 24kg PER_HAND; barbell-row 4x6 RIR3 55kg TOTAL; db-bench-press 4x6 RIR3 24kg PER_HAND; bulgarian-split-squat-db 2x7 RIR3 last logged; dead-bug 3x10 RIR3 BW
+- Next week 7 (CONSOLIDATION, provisional): d0 2027-01-02 AM RUN LONG 55min (LONG) | d2 2027-01-04 AM RUN EASY 45min (EASY +strides) | d3 2027-01-05 PM STRENGTH_FULL_A 38min: back-squat 3x6 RIR3 77.5kg TOTAL; db-bench-press 3x6 RIR3 26kg PER_HAND; barbell-row 3x6 RIR3 57.5kg TOTAL; db-calf-raise 1x7 RIR3 last logged; dead-bug 2x10 RIR3 BW | d4 2027-01-06 AM RUN EASY 45min (EASY) | d5 2027-01-07 PM STRENGTH_FULL_B 38min: db-rdl 3x6 RIR3 26kg PER_HAND; barbell-row 3x6 RIR3 57.5kg TOTAL; db-bench-press 3x6 RIR3 26kg PER_HAND; bulgarian-split-squat-db 1x7 RIR3 last logged; dead-bug 2x10 RIR3 BW
+
+### w6 · 2027-01-01T20:00:00+01:00 · WEEKLY_REVIEW (week 6)
+
+- Athlete: 5 report(s): w6-run-d0 done 65min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-run-d2 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-run-d4 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-str-d3 done 50min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-str-d5 done 50min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **CLINICAL_HUMAN_REQUIRED** / CLINICAL_HUMAN_REQUIRED · REQUIRES_RECONCILIATION
+- Reason: A prior clinical dependency remains outside this nonclinical reference; no automatic clearance
+- Current week 6 (DEVELOPMENT) from 2027-01-01: —
+- Next week 7 (CONSOLIDATION, provisional): d0 2027-01-02 AM RUN LONG 55min (LONG) | d2 2027-01-04 AM RUN EASY 45min (EASY +strides) | d3 2027-01-05 PM STRENGTH_FULL_A 38min: back-squat 3x6 RIR3 77.5kg TOTAL; db-bench-press 3x6 RIR3 26kg PER_HAND; barbell-row 3x6 RIR3 57.5kg TOTAL; db-calf-raise 1x7 RIR3 last logged; dead-bug 2x10 RIR3 BW | d4 2027-01-06 AM RUN EASY 45min (EASY) | d5 2027-01-07 PM STRENGTH_FULL_B 38min: db-rdl 3x6 RIR3 26kg PER_HAND; barbell-row 3x6 RIR3 57.5kg TOTAL; db-bench-press 3x6 RIR3 26kg PER_HAND; bulgarian-split-squat-db 1x7 RIR3 last logged; dead-bug 2x10 RIR3 BW
+
+### w7 · 2027-01-08T20:00:00+01:00 · WEEKLY_REVIEW (week 7)
+
+- Athlete: 5 report(s): w7-run-d0 done 55min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w7-run-d2 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w7-run-d4 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w7-str-d3 done 38min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w7-str-d5 done 38min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **CLINICAL_HUMAN_REQUIRED** / CLINICAL_HUMAN_REQUIRED · REQUIRES_RECONCILIATION
+- Reason: A prior clinical dependency remains outside this nonclinical reference; no automatic clearance
+- Current week 7 (CONSOLIDATION) from 2027-01-08: —
+- Next week 8 (DEVELOPMENT, provisional): d0 2027-01-09 AM RUN LONG 65min (LONG) | d2 2027-01-11 AM RUN EASY 45min (EASY +strides) | d3 2027-01-12 PM STRENGTH_FULL_A 48min: back-squat 4x6 RIR3 77.5kg TOTAL; db-bench-press 4x6 RIR3 26kg PER_HAND; barbell-row 4x6 RIR3 57.5kg TOTAL; standing-calf-raise 2x7 RIR3 BW; front-plank 2x7 RIR3 BW | d4 2027-01-13 AM RUN EASY 45min (EASY) | d5 2027-01-14 PM STRENGTH_FULL_B 48min: db-rdl 4x6 RIR3 26kg PER_HAND; barbell-row 4x6 RIR3 57.5kg TOTAL; db-bench-press 4x6 RIR3 26kg PER_HAND; db-split-squat 2x7 RIR3 establish; front-plank 2x7 RIR3 BW
+
+### w8 · 2027-01-15T20:00:00+01:00 · WEEKLY_REVIEW (week 8)
+
+- Athlete: 5 report(s): w8-run-d0 done 65min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w8-run-d2 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w8-run-d4 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w8-str-d3 done 48min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w8-str-d5 done 48min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **CLINICAL_HUMAN_REQUIRED** / CLINICAL_HUMAN_REQUIRED · REQUIRES_RECONCILIATION
+- Reason: A prior clinical dependency remains outside this nonclinical reference; no automatic clearance
+- Current week 8 (DEVELOPMENT) from 2027-01-15: —
+- Next week 9 (DEVELOPMENT, provisional): d0 2027-01-16 AM RUN LONG 65min (LONG) | d2 2027-01-18 AM RUN EASY 45min (EASY +strides) | d3 2027-01-19 PM STRENGTH_FULL_A 49min: back-squat 4x6 RIR3 77.5kg TOTAL; db-bench-press 4x6 RIR3 26kg PER_HAND; barbell-row 4x6 RIR3 57.5kg TOTAL; standing-calf-raise 2x9 RIR3 BW; front-plank 2x9 RIR3 BW | d4 2027-01-20 AM RUN EASY 45min (EASY) | d5 2027-01-21 PM STRENGTH_FULL_B 48min: db-rdl 4x6 RIR3 26kg PER_HAND; barbell-row 4x6 RIR3 57.5kg TOTAL; db-bench-press 4x6 RIR3 26kg PER_HAND; db-split-squat 2x7 RIR3 last logged; front-plank 2x9 RIR3 BW
+
+**Automated properties.** no failure
+
+**Metamorphic.** no violation · non-blocking differences: LOAD_CONVENTION_EQUIVALENT
+
+**Author expectations.**
+- d10-e01 @GENERATE STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"PROPOSED"`
+- d10-e02 @r5 STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"CLINICAL_HUMAN_REQUIRED"`
+- d10-e03 @r5 NO_PRESCRIPTION [INVARIANT_ORACLE]: **PASS** observed `"REQUIRES_RECONCILIATION"`
+- d10-e04 @r5 JUDGED [INVARIANT_ORACLE]: **JUDGED** — The coach does not treat the free-text break as nonclinical and does not plan a return from it.
+- d10-e05 @c5 STATUS_IN [INVARIANT_ORACLE]: **PASS** observed `"CLINICAL_HUMAN_REQUIRED"`
+- d10-e06 @c5 NO_PRESCRIPTION [INVARIANT_ORACLE]: **PASS** observed `"REQUIRES_RECONCILIATION"`
+- d10-e07 @cl6 STATUS_IN [DOMAIN_ORACLE]: **FAIL** observed `"CLINICAL_HUMAN_REQUIRED"`
+- d10-e08 @cl6 VALIDITY_IS [DOMAIN_ORACLE]: **FAIL** observed `"REQUIRES_RECONCILIATION"`
+- d10-e09 @cl6 QUESTION_KIND_IS [DOMAIN_ORACLE]: **PASS** observed `null`
+- d10-e10 @cl6 ROLE_ABSENT [DOMAIN_ORACLE]: **PASS** observed `[]`
+- d10-e11 @cl6 ROLE_MINUTES_COMPARE [DOMAIN_ORACLE]: **FAIL** observed `{"week":65,"otherWeek":55}`
+- d10-e12 @cl6 JUDGED [DOMAIN_ORACLE]: **JUDGED** — Week 6 running is clearly below week 3 (roughly half to two-thirds), strength uses reduced sets or loads with more reserve, and the plan ramps back to the pre-illness level over about two to three weeks.
+- d10-e13 @cl6 JUDGED [NOT_EVALUABLE_DOMAIN]: **JUDGED** — Whether a return 13 days after a febrile illness is medically appropriate for this athlete.
+
+**Independent assessment (author, written before any output).**
+- Rationale: Flu with fever is a clinical reason. The athlete first only describes it in words, so the coach must not decide for her that it was nonclinical. Once named as illness, a qualified human must clear the return; after clearance, the demonstration run (20 easy minutes, normal next day) supports a cautious restart.
+- Preferred: At r5, ask for the category of the break (or route to a human); prescribe nothing. At c5, CLINICAL_HUMAN_REQUIRED. At cl6, plan a return week at roughly 50-65% of the pre-illness running with no quality and a shorter long run, strength at reduced volume and higher reps in reserve, then rebuild over two to three weeks if responses stay compatible.
+- Acceptable alternatives: Routing to a human already at r5. / A return week with only easy runs and a single strength session. / Phase RETURN for week 6.
+- Concerns: Planning a return at r5 from the free text. / Resuming at the pre-illness level after clearance. / Prescribing anything between c5 and cl6. / The coach clearing the athlete itself because she says she feels better.
+- Domain notes: The demonstration run happened after the GP visit and before the clearance step was recorded. Steps carry the default re-answered eligibility (nothing clinical at the time of answering).
+
+## R7D-D11
+
+**Intent.** An experienced lifter on a strength-first plan reports sharp knee pain in the back squat while labelling it as discomfort. After a qualified clearance he asks for leg press instead. It probes that pain in one exercise routes to a human (regardless of the chosen label), that nothing is prescribed until clearance, and that the cleared substitution stays within the same pattern without disturbing the rest of the program.
+
+**Tags.** STRENGTH_FIRST, NON_RACE, H12, STR_EXP_EXPERIENCED, RUN_EXP_NOVICE, GYM, TIMEZONE, CLINICAL_SIGNAL, SUBSTITUTION, SUBSTITUTION_PAIN_CLEARANCE, LOAD_CONFIRMATION, MIXED_EXECUTION · oracle INVARIANT_ORACLE
+
+**Intake.** `{"startDate":"2027-02-01","weeks":12,"asOf":"2027-01-29","tz":-420,"learningConsent":null,"eligibility":"CONFIRMED","goals":{"run":"GENERAL","strength":"STRENGTH"},"event":null,"runExperience":"NOVICE","strengthExperience":"EXPERIENCED","recent":{"runDaysPerWeek":1,"runMinutesPerWeek":30,"longestRunMinutes":30,"strengthDaysPerWeek":4},"knownRuns":0,"knownExercises":["back-squat 5x5 140KG TOTAL","bench-press 5x5 100KG TOTAL","barbell-rdl 4x6 120KG TOTAL","barbell-row 4x8 80KG TOTAL","pull-up 4x6 0KG BODYWEIGHT","db-overhead-press 3x8 22KG PER_HAND"],"equipment":["BARBELL","RACK","BENCH","DUMBBELLS","MACHINES","PULL_UP_BAR","BANDS","BODYWEIGHT"],"pause":null,"wearable":null,"history":0,"ageYears":39,"specialPopulation":null,"schedule":{"runDays":[1,5],"strengthDays":[0,2,4],"runTurn":"AM","strengthTurn":"PM","runMinutes":35,"strengthMinutes":75,"longRunDay":5,"longRunMinutes":50}}`
+
+**Onboarding.** PROPOSED: Complete conditional program generated from onboarding-like facts
+
+- Phases: ESTABLISHMENT · DEVELOPMENT · DEVELOPMENT · DEVELOPMENT · CONSOLIDATION · DEVELOPMENT · DEVELOPMENT · DEVELOPMENT · CONSOLIDATION · DEVELOPMENT · DEVELOPMENT · DEVELOPMENT
+- Week 0 (ESTABLISHMENT): d0 2027-02-01 PM STRENGTH_LOWER 43min: back-squat 5x5 RIR3 140kg TOTAL; barbell-rdl 4x6 RIR3 120kg TOTAL; bulgarian-split-squat-db 2x7 RIR3 establish; db-calf-raise 2x7 RIR3 establish; dead-bug 2x7 RIR3 BW | d1 2027-02-02 AM RUN WALK_JOG 20min (WALK_JOG 3x(30s jog/120s walk)) | d2 2027-02-03 PM STRENGTH_UPPER 47min: bench-press 5x5 RIR3 100kg TOTAL; barbell-row 4x6 RIR3 80kg TOTAL; db-overhead-press 3x6 RIR3 22kg PER_HAND; pull-up 4x6 RIR3 BW; dead-bug 2x7 RIR3 BW | d4 2027-02-05 PM STRENGTH_FULL_B 51min: barbell-rdl 4x6 RIR3 120kg TOTAL; barbell-row 4x6 RIR3 80kg TOTAL; bench-press 5x5 RIR3 100kg TOTAL; bulgarian-split-squat-db 2x7 RIR3 establish; dead-bug 2x7 RIR3 BW | d5 2027-02-06 AM RUN WALK_JOG 20min (WALK_JOG 3x(30s jog/120s walk))
+- Week 1 (DEVELOPMENT): d0 2027-02-08 PM STRENGTH_LOWER 43min: back-squat 5x5 RIR3 140kg TOTAL; barbell-rdl 4x6 RIR3 120kg TOTAL; bulgarian-split-squat-db 2x7 RIR3 last logged; db-calf-raise 2x7 RIR3 last logged; dead-bug 2x7 RIR3 BW | d1 2027-02-09 AM RUN WALK_JOG 21min (WALK_JOG 5x(30s jog/120s walk)) | d2 2027-02-10 PM STRENGTH_UPPER 47min: bench-press 5x5 RIR3 100kg TOTAL; barbell-row 4x6 RIR3 80kg TOTAL; db-overhead-press 3x6 RIR3 22kg PER_HAND; pull-up 4x6 RIR3 BW; dead-bug 2x7 RIR3 BW | d4 2027-02-12 PM STRENGTH_FULL_B 51min: barbell-rdl 4x6 RIR3 120kg TOTAL; barbell-row 4x6 RIR3 80kg TOTAL; bench-press 5x5 RIR3 100kg TOTAL; bulgarian-split-squat-db 2x7 RIR3 last logged; dead-bug 2x7 RIR3 BW | d5 2027-02-13 AM RUN WALK_JOG 21min (WALK_JOG 5x(30s jog/120s walk))
+
+### w0 · 2027-02-07T20:00:00-07:00 · WEEKLY_REVIEW (week 0)
+
+- Athlete: 5 report(s): w0-run-d1 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-run-d5 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-str-d0 done 43min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-str-d2 done 47min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-str-d4 done 51min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"WALK_JOG":"ADVANCE","back-squat":"ADVANCE","barbell-rdl":"ADVANCE","bulgarian-split-squat-db":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","bench-press":"ADVANCE","barbell-row":"ADVANCE","db-overhead-press":"ADVANCE","pull-up":"ADVANCE"}`
+- Current week 0 (ESTABLISHMENT) from 2027-02-07: —
+- Next week 1 (DEVELOPMENT, provisional): d0 2027-02-08 PM STRENGTH_LOWER 43min: back-squat 5x5 RIR3 140kg TOTAL; barbell-rdl 4x6 RIR3 120kg TOTAL; bulgarian-split-squat-db 2x7 RIR3 establish; db-calf-raise 2x7 RIR3 establish; dead-bug 2x7 RIR3 BW | d1 2027-02-09 AM RUN WALK_JOG 21min (WALK_JOG 5x(30s jog/120s walk)) | d2 2027-02-10 PM STRENGTH_UPPER 47min: bench-press 5x5 RIR3 100kg TOTAL; barbell-row 4x6 RIR3 80kg TOTAL; db-overhead-press 3x6 RIR3 22kg PER_HAND; pull-up 4x6 RIR3 BW; dead-bug 2x7 RIR3 BW | d4 2027-02-12 PM STRENGTH_FULL_B 51min: barbell-rdl 4x6 RIR3 120kg TOTAL; barbell-row 4x6 RIR3 80kg TOTAL; bench-press 5x5 RIR3 100kg TOTAL; bulgarian-split-squat-db 2x7 RIR3 establish; dead-bug 2x7 RIR3 BW | d5 2027-02-13 AM RUN WALK_JOG 21min (WALK_JOG 5x(30s jog/120s walk))
+
+### w1 · 2027-02-14T20:00:00-07:00 · WEEKLY_REVIEW (week 1)
+
+- Athlete: 5 report(s): w1-run-d1 done 21min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-run-d5 done 21min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-str-d0 done 43min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-str-d2 done 47min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-str-d4 done 51min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"WALK_JOG":"ADVANCE","back-squat":"ADVANCE","barbell-rdl":"ADVANCE","bulgarian-split-squat-db":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","bench-press":"ADVANCE","barbell-row":"ADVANCE","db-overhead-press":"ADVANCE","pull-up":"ADVANCE"}`
+- Current week 1 (DEVELOPMENT) from 2027-02-14: —
+- Next week 2 (DEVELOPMENT, provisional): d0 2027-02-15 PM STRENGTH_LOWER 43min: back-squat 5x5 RIR3 140kg TOTAL; barbell-rdl 4x6 RIR3 120kg TOTAL; bulgarian-split-squat-db 2x7 RIR3 establish; db-calf-raise 2x7 RIR3 establish; dead-bug 2x9 RIR3 BW | d1 2027-02-16 AM RUN WALK_JOG 23min (WALK_JOG 5x(60s jog/120s walk)) | d2 2027-02-17 PM STRENGTH_UPPER 48min: bench-press 5x5 RIR3 100kg TOTAL; barbell-row 4x6 RIR3 80kg TOTAL; db-overhead-press 3x6 RIR3 22kg PER_HAND; pull-up 4x6 RIR3 BW; dead-bug 2x9 RIR3 BW | d4 2027-02-19 PM STRENGTH_FULL_B 51min: barbell-rdl 4x6 RIR3 120kg TOTAL; barbell-row 4x6 RIR3 80kg TOTAL; bench-press 5x5 RIR3 100kg TOTAL; bulgarian-split-squat-db 2x7 RIR3 establish; dead-bug 2x9 RIR3 BW | d5 2027-02-20 AM RUN WALK_JOG 23min (WALK_JOG 5x(60s jog/120s walk))
+
+### pt2 · 2027-02-15T20:30:00-07:00 · EXERCISE_SUBSTITUTION (week 2)
+
+- Athlete: eligibility CLINICAL · 1 report(s): w2-str-d0 not done · substitution `{"reason":"NONCLINICAL_DISCOMFORT_OR_PREFERENCE","pain":true,"text":"Sharp pain at the front of the right knee at the bottom of every back squat rep; it stopped when I stopped squatting.","exerciseId":"back-squat"}`
+- Coach: **CLINICAL_HUMAN_REQUIRED** / CLINICAL_HUMAN_REQUIRED · REQUIRES_RECONCILIATION
+- Reason: A current clinical flag routes to qualified human assessment; no dependent prescription or return recipe
+- Current week 2 (DEVELOPMENT) from 2027-02-15: d0 2027-02-15 PM STRENGTH_LOWER 43min: back-squat 5x5 RIR3 140kg TOTAL; barbell-rdl 4x6 RIR3 120kg TOTAL; bulgarian-split-squat-db 2x7 RIR3 establish; db-calf-raise 2x7 RIR3 establish; dead-bug 2x9 RIR3 BW | d1 2027-02-16 AM RUN WALK_JOG 23min (WALK_JOG 5x(60s jog/120s walk)) | d2 2027-02-17 PM STRENGTH_UPPER 48min: bench-press 5x5 RIR3 100kg TOTAL; barbell-row 4x6 RIR3 80kg TOTAL; db-overhead-press 3x6 RIR3 22kg PER_HAND; pull-up 4x6 RIR3 BW; dead-bug 2x9 RIR3 BW | d4 2027-02-19 PM STRENGTH_FULL_B 51min: barbell-rdl 4x6 RIR3 120kg TOTAL; barbell-row 4x6 RIR3 80kg TOTAL; bench-press 5x5 RIR3 100kg TOTAL; bulgarian-split-squat-db 2x7 RIR3 establish; dead-bug 2x9 RIR3 BW | d5 2027-02-20 AM RUN WALK_JOG 23min (WALK_JOG 5x(60s jog/120s walk))
+- Next week 3 (DEVELOPMENT, provisional): d0 2027-02-22 PM STRENGTH_LOWER 43min: back-squat 5x5 RIR3 142.5kg TOTAL; barbell-rdl 4x6 RIR3 122.5kg TOTAL; bulgarian-split-squat-db 2x7 RIR3 last logged; db-calf-raise 2x7 RIR3 last logged; dead-bug 2x10 RIR3 BW | d1 2027-02-23 AM RUN WALK_JOG 26min (WALK_JOG 5x(90s jog/120s walk)) | d2 2027-02-24 PM STRENGTH_UPPER 48min: bench-press 5x5 RIR3 102.5kg TOTAL; barbell-row 4x6 RIR3 82.5kg TOTAL; db-overhead-press 3x6 RIR3 24kg PER_HAND; pull-up 4x6 RIR3 BW; dead-bug 2x10 RIR3 BW | d4 2027-02-26 PM STRENGTH_FULL_B 51min: barbell-rdl 4x6 RIR3 122.5kg TOTAL; barbell-row 4x6 RIR3 82.5kg TOTAL; bench-press 5x5 RIR3 102.5kg TOTAL; bulgarian-split-squat-db 2x7 RIR3 last logged; dead-bug 2x10 RIR3 BW | d5 2027-02-27 AM RUN WALK_JOG 26min (WALK_JOG 5x(90s jog/120s walk))
+
+**Run stopped:** CORPUS_ERROR `[{"stepId":"cl2","message":"substitution.exerciseRef: no SQUAT exercise in w2-str-d4","detail":{"ref":{"week":2,"day":4,"pattern":"SQUAT"}}}]` `[]`
+
+**Automated properties.** no failure
+
+**Metamorphic.** no violation
+
+**Author expectations.**
+- d11-e01 @GENERATE STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"PROPOSED"`
+- d11-e02 @GENERATE JUDGED [DOMAIN_ORACLE]: **JUDGED** — The main lifts start from the known loads (KNOWN, not ESTABLISH) with low reps and reps in reserve of about 1-3, the squat pattern appears on day 0 and on at least one other strength day, and running stays easy and short.
+- d11-e03 @GENERATE ROLE_ABSENT [DOMAIN_ORACLE]: **PASS** observed `[]`
+- d11-e04 @pt2 STATUS_IN [INVARIANT_ORACLE]: **PASS** observed `"CLINICAL_HUMAN_REQUIRED"`
+- d11-e05 @pt2 NO_PRESCRIPTION [INVARIANT_ORACLE]: **PASS** observed `"REQUIRES_RECONCILIATION"`
+- d11-e06 @pt2 JUDGED [INVARIANT_ORACLE]: **JUDGED** — The coach does not perform the substitution itself or continue with a "pain-free" alternative while the route stands.
+- d11-e07 @cl2 STATUS_IN [DOMAIN_ORACLE]: **NOT_EVALUABLE** (STEP_NOT_EXECUTED (CORPUS_ERROR))
+- d11-e08 @cl2 VALIDITY_IS [DOMAIN_ORACLE]: **NOT_EVALUABLE** (STEP_NOT_EXECUTED (CORPUS_ERROR))
+- d11-e09 @cl2 JUDGED [DOMAIN_ORACLE]: **JUDGED** — From the Friday session of week 2 on, the back squat is replaced by the leg press (or, if the coach declines the exact request, another squat-pattern exercise available in the gym), the leg press starts at an ESTABLISH or conservative load, and the other lifts keep their known loads and the weekly structure.
+- d11-e10 @w3 JUDGED [DOMAIN_ORACLE]: **JUDGED** — After the logged 150 kg leg-press load is confirmed, later leg-press sessions use it as the reference (FROM_LOG or KNOWN) and the back squat does not return on its own.
+- d11-e11 @cl2 JUDGED [NOT_EVALUABLE_DOMAIN]: **JUDGED** — Whether leg press is clinically appropriate for this knee.
+
+**Independent assessment (author, written before any output).**
+- Rationale: Sharp, reproducible joint pain under load is a clinical signal even when the athlete calls it discomfort. After a physiotherapist clears training, the athlete's preferred same-pattern swap is reasonable and should not disturb the rest of a strength-first program.
+- Preferred: At pt2, CLINICAL_HUMAN_REQUIRED and nothing prescribed. At cl2, replace back squat by leg press with an effort-based starting load, keep everything else. After the first logged leg-press load is confirmed, progress from it.
+- Acceptable alternatives: Replacing back squat with another squat-pattern exercise if leg press were unavailable. / Reducing lower-body volume a little in the first week after clearance.
+- Concerns: Continuing the program with leg press at pt2 without a human. / Treating the label "discomfort or preference" as nonclinical despite pain:true. / Re-introducing back squat later without the athlete asking. / Starting the leg press from a guessed heavy load.
+- Domain notes: The substitution references point at the squat-pattern exercise of day 0 and day 4 of week 2; a three-day strength-first plan for this lifter is expected to train the squat pattern on both. The week-2 Tuesday run and Wednesday strength session fell inside the clinical route and are reported as not done.
+
+## R7D-D12
+
+**Intent.** A run-first 10K athlete reports an adverse response once, then repeatedly, then persistent shin pain, then says she is recovered without any clearance. It probes proportionate responses to adverse signals, escalation to the clinical route when pain appears, and that only a qualified human can lift that route.
+
+**Tags.** RUN_FIRST, RACE_10K, H8, RUN_EXP_INTERMEDIATE, STR_EXP_NOVICE, START_NON_MONDAY, TIMEZONE, ADVERSE_RESPONSE, REPEATED_SIGNAL, CLINICAL_SIGNAL, SHORTENED_RUNS, MIXED_EXECUTION, NO_CONSENT · oracle INVARIANT_ORACLE
+
+**Intake.** `{"startDate":"2027-02-18","weeks":8,"asOf":"2027-02-17","tz":330,"learningConsent":false,"eligibility":"CONFIRMED","goals":{"run":{"kind":"RACE","event":{"kind":"10K","date":"2027-04-11","timeGoalMinutes":55}},"strength":"RUNNING_SUPPORT"},"event":{"kind":"10K","date":"2027-04-11","timeGoalMinutes":55},"runExperience":"INTERMEDIATE","strengthExperience":"NOVICE","recent":{"runDaysPerWeek":3,"runMinutesPerWeek":140,"longestRunMinutes":65,"strengthDaysPerWeek":1},"knownRuns":0,"knownExercises":[],"equipment":["DUMBBELLS","BENCH","BODYWEIGHT","BANDS"],"pause":null,"wearable":null,"history":0,"ageYears":28,"specialPopulation":null,"schedule":{"runDays":[0,3,5],"strengthDays":[1,4],"runTurn":"AM","strengthTurn":"PM","runMinutes":45,"strengthMinutes":40,"longRunDay":3,"longRunMinutes":80}}`
+
+**Onboarding.** PROPOSED: Complete conditional program generated from onboarding-like facts
+
+- Phases: ESTABLISHMENT · BUILD · BUILD · SPECIFIC · SPECIFIC · SPECIFIC · TAPER · RACE_WEEK
+- Week 0 (ESTABLISHMENT): d0 2027-02-18 AM RUN EASY 40min (EASY) | d1 2027-02-19 PM STRENGTH_FULL_A 15min: sit-to-stand 1x5 RIR3 BW; wall-pushup 1x5 RIR3 BW; prone-row-practice 1x5 RIR3 BW; supported-calf-raise 1x5 RIR3 BW; dead-bug-practice 1x5 RIR3 BW | d3 2027-02-21 AM RUN LONG 60min (LONG) | d4 2027-02-22 PM STRENGTH_FULL_B 27min: glute-bridge 2x8 RIR3 BW; band-row 2x8 RIR3 BW; incline-push-up 2x8 RIR3 BW; reverse-lunge 1x10 RIR3 BW; dead-bug 1x10 RIR3 BW | d5 2027-02-23 AM RUN EASY 40min (EASY)
+- Week 1 (BUILD): d0 2027-02-25 AM RUN EASY 40min (EASY) | d1 2027-02-26 PM STRENGTH_FULL_A 27min: goblet-squat 2x8 RIR3 establish; incline-push-up 2x8 RIR3 BW; band-row 2x8 RIR3 BW; db-calf-raise 1x10 RIR3 establish; dead-bug 1x10 RIR3 BW | d3 2027-02-28 AM RUN LONG 60min (LONG) | d4 2027-03-01 PM STRENGTH_FULL_B 27min: glute-bridge 2x8 RIR3 BW; band-row 2x8 RIR3 BW; incline-push-up 2x8 RIR3 BW; reverse-lunge 1x10 RIR3 BW; dead-bug 1x10 RIR3 BW | d5 2027-03-02 AM RUN EASY 40min (EASY)
+- Week 6 (TAPER): d0 2027-04-01 AM RUN QUALITY 28min (TEN_K_SPECIFIC 3x3'/2') | d1 2027-04-02 PM STRENGTH_FULL_A 20min: goblet-squat 1x8 RIR3 last logged; incline-push-up 1x12 RIR3 BW; band-row 1x10 RIR3 BW; db-calf-raise 1x10 RIR3 last logged; dead-bug 1x14 RIR3 BW | d3 2027-04-04 AM RUN LONG 45min (LONG) | d4 2027-04-05 PM STRENGTH_FULL_B 17min: glute-bridge 1x12 RIR4 BW; band-row 1x10 RIR4 BW; incline-push-up 1x12 RIR4 BW | d5 2027-04-06 AM RUN EASY 25min (EASY)
+- Week 7 (RACE_WEEK): d0 2027-04-08 AM RUN RACE_TOUCH 25min (RACE_TOUCH 3x2'/2') | d1 STRENGTH REST_BY_DESIGN | d3 2027-04-11  RUN RACE 75min (RACE) | d4 STRENGTH REST_BY_DESIGN | d5 2027-04-13 AM RUN RECOVERY_EASY 20min (RECOVERY_EASY)
+
+### w0 · 2027-02-24T20:00:00+05:30 · WEEKLY_REVIEW (week 0)
+
+- Athlete: 5 report(s): w0-run-d0 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-run-d3 done 60min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-run-d5 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-str-d1 done 15min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-str-d4 done 27min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · learning consent false
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Executed as planned without adverse signal; the planned progression step stands
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE","sit-to-stand":"ADVANCE","wall-pushup":"ADVANCE","prone-row-practice":"ADVANCE","supported-calf-raise":"ADVANCE","dead-bug-practice":"ADVANCE","glute-bridge":"ADVANCE","band-row":"ADVANCE","incline-push-up":"ADVANCE","reverse-lunge":"ADVANCE","dead-bug":"ADVANCE"}`
+- Current week 0 (ESTABLISHMENT) from 2027-02-24: —
+- Next week 1 (BUILD, provisional): d0 2027-02-25 AM RUN EASY 40min (EASY) | d1 2027-02-26 PM STRENGTH_FULL_A 27min: goblet-squat 2x8 RIR3 establish; incline-push-up 2x8 RIR3 BW; band-row 2x8 RIR3 BW; db-calf-raise 1x10 RIR3 establish; dead-bug 1x10 RIR3 BW | d3 2027-02-28 AM RUN LONG 60min (LONG) | d4 2027-03-01 PM STRENGTH_FULL_B 27min: glute-bridge 2x8 RIR3 BW; band-row 2x8 RIR3 BW; incline-push-up 2x8 RIR3 BW; reverse-lunge 1x10 RIR3 BW; dead-bug 1x10 RIR3 BW | d5 2027-03-02 AM RUN EASY 40min (EASY)
+
+### w1 · 2027-03-03T20:00:00+05:30 · WEEKLY_REVIEW (week 1)
+
+- Athlete: 5 report(s): w1-run-d0 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-run-d3 done 60min (performance=COMPATIBLE,recovery=ADVERSE,effort=HARDER,nextDayFunction=IMPAIRED); w1-run-d5 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-str-d1 done 27min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-str-d4 done 27min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · learning consent false
+- Coach: **MODIFY** / GATED_NEXT_STEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation
+- Gates: `{"LONG":"HOLD","EASY":"ADVANCE","goblet-squat":"ADVANCE","incline-push-up":"ADVANCE","band-row":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","glute-bridge":"ADVANCE","reverse-lunge":"ADVANCE"}`
+- Current week 1 (BUILD) from 2027-03-03: —
+- Next week 2 (BUILD, provisional): d0 2027-03-04 AM RUN EASY 40min (EASY) | d1 2027-03-05 PM STRENGTH_FULL_A 27min: goblet-squat 2x8 RIR3 establish; incline-push-up 2x10 RIR3 BW; band-row 2x8 RIR3 BW; db-calf-raise 1x10 RIR3 establish; dead-bug 1x12 RIR3 BW | d3 2027-03-07 AM RUN LONG 60min (LONG) | d4 2027-03-08 PM STRENGTH_FULL_B 28min: glute-bridge 2x10 RIR3 BW; band-row 2x8 RIR3 BW; incline-push-up 2x10 RIR3 BW; reverse-lunge 1x12 RIR3 BW; dead-bug 1x12 RIR3 BW | d5 2027-03-09 AM RUN EASY 40min (EASY)
+
+### w2 · 2027-03-10T20:00:00+05:30 · WEEKLY_REVIEW (week 2)
+
+- Athlete: 5 report(s): w2-run-d0 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-run-d3 done 60min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-run-d5 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-str-d1 done 27min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-str-d4 done 28min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · learning consent false
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE","goblet-squat":"ADVANCE","incline-push-up":"ADVANCE","band-row":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","glute-bridge":"ADVANCE","reverse-lunge":"ADVANCE"}`
+- Current week 2 (BUILD) from 2027-03-10: —
+- Next week 3 (SPECIFIC, provisional): d0 2027-03-11 AM RUN EASY 45min (EASY) | d1 2027-03-12 PM STRENGTH_FULL_A 23min: goblet-squat 1x8 RIR3 establish; incline-push-up 2x12 RIR3 BW; band-row 1x8 RIR3 BW; db-calf-raise 1x10 RIR3 establish; dead-bug 1x14 RIR3 BW | d3 2027-03-14 AM RUN LONG 65min (LONG) | d4 2027-03-15 PM STRENGTH_FULL_B 26min: glute-bridge 2x12 RIR3 BW; band-row 1x8 RIR3 BW; incline-push-up 2x12 RIR3 BW; reverse-lunge 1x14 RIR3 BW; dead-bug 1x14 RIR3 BW | d5 2027-03-16 AM RUN EASY 40min (EASY)
+
+### w3 · 2027-03-17T20:00:00+05:30 · WEEKLY_REVIEW (week 3)
+
+- Athlete: 5 report(s): w3-run-d0 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-run-d3 done 65min (performance=COMPATIBLE,recovery=ADVERSE,effort=HARDER,nextDayFunction=IMPAIRED); w3-run-d5 done 40min (performance=UNDER,recovery=ADVERSE,effort=HARDER,nextDayFunction=IMPAIRED); w3-str-d1 done 23min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-str-d4 done 26min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · learning consent false
+- Coach: **MODIFY** / GATED_NEXT_STEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation
+- Gates: `{"LONG":"HOLD","EASY":"HOLD","goblet-squat":"ADVANCE","incline-push-up":"ADVANCE","band-row":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","glute-bridge":"ADVANCE","reverse-lunge":"ADVANCE"}`
+- Current week 3 (SPECIFIC) from 2027-03-17: —
+- Next week 4 (SPECIFIC, provisional): d0 2027-03-18 AM RUN EASY 45min (EASY) | d1 2027-03-19 PM STRENGTH_FULL_A 23min: goblet-squat 1x8 RIR3 establish; incline-push-up 2x12 RIR3 BW; band-row 1x8 RIR3 BW; db-calf-raise 1x10 RIR3 establish; dead-bug 1x14 RIR3 BW | d3 2027-03-21 AM RUN LONG 65min (LONG) | d4 2027-03-22 PM STRENGTH_FULL_B 26min: glute-bridge 2x12 RIR3 BW; band-row 1x8 RIR3 BW; incline-push-up 2x12 RIR3 BW; reverse-lunge 1x14 RIR3 BW; dead-bug 1x14 RIR3 BW | d5 2027-03-23 AM RUN EASY 40min (EASY)
+
+### w4 · 2027-03-24T20:00:00+05:30 · WEEKLY_REVIEW (week 4)
+
+- Athlete: eligibility CLINICAL · 5 report(s): w4-run-d0 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w4-run-d3 done 46min (performance=COMPATIBLE,recovery=ADVERSE,effort=HARDER,nextDayFunction=IMPAIRED); w4-run-d5 not done; w4-str-d1 done 23min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w4-str-d4 done 26min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · learning consent false
+- Coach: **CLINICAL_HUMAN_REQUIRED** / CLINICAL_HUMAN_REQUIRED · REQUIRES_RECONCILIATION
+- Reason: A current clinical flag routes to qualified human assessment; no dependent prescription or return recipe
+- Current week 4 (SPECIFIC) from 2027-03-24: —
+- Next week 5 (SPECIFIC, provisional): d0 2027-03-25 AM RUN QUALITY 34min (THRESHOLD 3x5'/2') | d1 2027-03-26 PM STRENGTH_FULL_A 23min: goblet-squat 1x8 RIR3 last logged; incline-push-up 2x12 RIR3 BW; band-row 1x8 RIR3 BW; db-calf-raise 1x10 RIR3 last logged; dead-bug 1x14 RIR3 BW | d3 2027-03-28 AM RUN LONG 65min (LONG) | d4 2027-03-29 PM STRENGTH_FULL_B 20min: glute-bridge 1x12 RIR3 BW; band-row 1x8 RIR3 BW; incline-push-up 1x12 RIR3 BW; reverse-lunge 1x14 RIR3 BW; dead-bug 1x14 RIR3 BW | d5 2027-03-30 AM RUN EASY 35min (EASY)
+
+### rec5 · 2027-03-27T08:00:00+05:30 · RECOVERED (week 5)
+
+- Athlete: no reports · learning consent false
+- Coach: **CLINICAL_HUMAN_REQUIRED** / CLINICAL_HUMAN_REQUIRED · REQUIRES_RECONCILIATION
+- Reason: A prior clinical dependency remains outside this nonclinical reference; no automatic clearance
+- Current week 5 (SPECIFIC) from 2027-03-27: d3 2027-03-28 AM RUN LONG 65min (LONG) | d4 2027-03-29 PM STRENGTH_FULL_B 20min: glute-bridge 1x12 RIR3 BW; band-row 1x8 RIR3 BW; incline-push-up 1x12 RIR3 BW; reverse-lunge 1x14 RIR3 BW; dead-bug 1x14 RIR3 BW | d5 2027-03-30 AM RUN EASY 35min (EASY)
+- Next week 6 (TAPER, provisional): d0 2027-04-01 AM RUN QUALITY 25min (THRESHOLD 2x4'/2') | d1 2027-04-02 PM STRENGTH_FULL_A 20min: goblet-squat 1x8 RIR3 last logged; incline-push-up 1x12 RIR3 BW; band-row 1x8 RIR3 BW; db-calf-raise 1x10 RIR3 last logged; dead-bug 1x14 RIR3 BW | d3 2027-04-04 AM RUN LONG 40min (LONG) | d4 2027-04-05 PM STRENGTH_FULL_B 17min: glute-bridge 1x12 RIR4 BW; band-row 1x8 RIR4 BW; incline-push-up 1x12 RIR4 BW | d5 2027-04-06 AM RUN EASY 25min (EASY)
+
+**Automated properties.** no failure
+
+**Metamorphic.** no violation
+
+**Author expectations.**
+- d12-e01 @GENERATE STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"PROPOSED"`
+- d12-e02 @GENERATE PHASE_IS [DOMAIN_ORACLE]: **PASS** observed `"RACE_WEEK"`
+- d12-e03 @w1 STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"MODIFY"`
+- d12-e04 @w1 ROLE_MINUTES_COMPARE [DOMAIN_ORACLE]: **PASS** observed `{"week":60,"otherWeek":60}`
+- d12-e05 @w3 ROLE_MINUTES_COMPARE [DOMAIN_ORACLE]: **PASS** observed `{"week":65,"otherWeek":65}`
+- d12-e06 @w3 JUDGED [DOMAIN_ORACLE]: **JUDGED** — After the second adverse long run and an adverse Tuesday run, week 4 reduces running stress (shorter long run and/or easier or fewer hard sessions) rather than just holding it, and does not add strength volume.
+- d12-e07 @w4 STATUS_IN [INVARIANT_ORACLE]: **PASS** observed `"CLINICAL_HUMAN_REQUIRED"`
+- d12-e08 @w4 NO_PRESCRIPTION [INVARIANT_ORACLE]: **PASS** observed `"REQUIRES_RECONCILIATION"`
+- d12-e09 @rec5 STATUS_IN [INVARIANT_ORACLE]: **PASS** observed `"CLINICAL_HUMAN_REQUIRED"`
+- d12-e10 @rec5 NO_PRESCRIPTION [INVARIANT_ORACLE]: **PASS** observed `"REQUIRES_RECONCILIATION"`
+- d12-e11 @w4 JUDGED [NOT_EVALUABLE_DOMAIN]: **JUDGED** — Whether and when this athlete can run the 10K.
+
+**Independent assessment (author, written before any output).**
+- Rationale: An adverse next-day response after a long run is common and calls for holding; repeated, it calls for reducing; persistent pain is a clinical matter. A generic "recovered" is neither a fact about training nor a clearance.
+- Preferred: w1: keep the week-2 long run at or below week 1. w3: reduce the week-4 long run and soften the quality session. w4: CLINICAL_HUMAN_REQUIRED. rec5: still CLINICAL_HUMAN_REQUIRED until a qualified human clears; the race is not prescribed meanwhile.
+- Acceptable alternatives: Asking how the athlete feels after the first adverse response, if the plan is not progressed meanwhile. / At w3, replacing the quality session with an easy run.
+- Concerns: Progressing the long run after an adverse response. / Routing to a clinician after a single adverse response without pain. / Continuing to prescribe running after the pain report. / Restarting the plan at rec5 without clearance.
+- Domain notes: Learning consent is off, so the reductions are per-decision responses, not learned patterns. A re-sent first adverse report must not count twice.
+
+## R7D-D13
+
+**Intent.** With learning consent, a hybrid athlete shows the same personal response three times: the long run (and only the long run) leaves him impaired the next day, while every other session is fine. He later revokes consent. It probes that learning, if any, is specific and bounded, never more aggressive than not learning, and stops after revocation.
+
+**Tags.** BALANCED_HYBRID, NON_RACE, H12, RUN_EXP_INTERMEDIATE, STR_EXP_INTERMEDIATE, START_NON_MONDAY, TIMEZONE, LEARNING_PATTERN, REPEATED_SIGNAL, ADVERSE_RESPONSE, CONSENT_REVOKED · oracle DOMAIN_ORACLE
+
+**Intake.** `{"startDate":"2026-11-22","weeks":12,"asOf":"2026-11-20","tz":600,"learningConsent":true,"eligibility":"CONFIRMED","goals":{"run":"REGULAR","strength":"GENERAL"},"event":null,"runExperience":"INTERMEDIATE","strengthExperience":"INTERMEDIATE","recent":{"runDaysPerWeek":3,"runMinutesPerWeek":170,"longestRunMinutes":75,"strengthDaysPerWeek":2},"knownRuns":0,"knownExercises":[],"equipment":["DUMBBELLS","BENCH","PULL_UP_BAR","BANDS","BODYWEIGHT"],"pause":null,"wearable":null,"history":0,"ageYears":47,"specialPopulation":null,"schedule":{"runDays":[0,2,4],"strengthDays":[1,3],"runTurn":"AM","strengthTurn":"PM","runMinutes":50,"strengthMinutes":45,"longRunDay":0,"longRunMinutes":120}}`
+
+**Onboarding.** PROPOSED: Complete conditional program generated from onboarding-like facts
+
+- Phases: ESTABLISHMENT · DEVELOPMENT · DEVELOPMENT · DEVELOPMENT · CONSOLIDATION · DEVELOPMENT · DEVELOPMENT · DEVELOPMENT · CONSOLIDATION · DEVELOPMENT · DEVELOPMENT · DEVELOPMENT
+- Week 0 (ESTABLISHMENT): d0 2026-11-22 AM RUN LONG 70min (LONG) | d1 2026-11-23 PM STRENGTH_FULL_A 28min: goblet-squat 2x10 RIR3 establish; db-bench-press 2x10 RIR3 establish; db-row 2x10 RIR3 establish; standing-calf-raise 1x12 RIR3 BW; dead-bug 1x12 RIR3 BW | d2 2026-11-24 AM RUN EASY 45min (EASY) | d3 2026-11-25 PM STRENGTH_FULL_B 28min: db-rdl 2x10 RIR3 establish; db-row 2x10 RIR3 establish; db-bench-press 2x10 RIR3 establish; db-split-squat 1x12 RIR3 establish; dead-bug 1x12 RIR3 BW | d4 2026-11-26 AM RUN EASY 45min (EASY)
+- Week 1 (DEVELOPMENT): d0 2026-11-29 AM RUN LONG 70min (LONG) | d1 2026-11-30 PM STRENGTH_FULL_A 28min: goblet-squat 2x10 RIR3 last logged; db-bench-press 2x10 RIR3 last logged; db-row 2x10 RIR3 last logged; standing-calf-raise 1x12 RIR3 BW; dead-bug 1x12 RIR3 BW | d2 2026-12-01 AM RUN EASY 45min (EASY) | d3 2026-12-02 PM STRENGTH_FULL_B 28min: db-rdl 2x10 RIR3 last logged; db-row 2x10 RIR3 last logged; db-bench-press 2x10 RIR3 last logged; db-split-squat 1x12 RIR3 last logged; dead-bug 1x12 RIR3 BW | d4 2026-12-03 AM RUN EASY 45min (EASY)
+
+### w0 · 2026-11-28T20:00:00+10:00 · WEEKLY_REVIEW (week 0)
+
+- Athlete: 5 report(s): w0-run-d0 done 70min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-run-d2 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-run-d4 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-str-d1 done 28min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-str-d3 done 28min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · learning consent true
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE","goblet-squat":"ADVANCE","db-bench-press":"ADVANCE","db-row":"ADVANCE","standing-calf-raise":"ADVANCE","dead-bug":"ADVANCE","db-rdl":"ADVANCE","db-split-squat":"ADVANCE"}`
+- Current week 0 (ESTABLISHMENT) from 2026-11-28: —
+- Next week 1 (DEVELOPMENT, provisional): d0 2026-11-29 AM RUN LONG 70min (LONG) | d1 2026-11-30 PM STRENGTH_FULL_A 28min: goblet-squat 2x10 RIR3 establish; db-bench-press 2x10 RIR3 establish; db-row 2x10 RIR3 establish; standing-calf-raise 1x12 RIR3 BW; dead-bug 1x12 RIR3 BW | d2 2026-12-01 AM RUN EASY 45min (EASY) | d3 2026-12-02 PM STRENGTH_FULL_B 28min: db-rdl 2x10 RIR3 establish; db-row 2x10 RIR3 establish; db-bench-press 2x10 RIR3 establish; db-split-squat 1x12 RIR3 establish; dead-bug 1x12 RIR3 BW | d4 2026-12-03 AM RUN EASY 45min (EASY)
+
+### w1 · 2026-12-05T20:00:00+10:00 · WEEKLY_REVIEW (week 1)
+
+- Athlete: 5 report(s): w1-run-d0 done 70min (performance=COMPATIBLE,recovery=ADVERSE,effort=ON_TARGET,nextDayFunction=IMPAIRED); w1-run-d2 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-run-d4 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-str-d1 done 28min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-str-d3 done 28min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · learning consent true
+- Coach: **MODIFY** / GATED_NEXT_STEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation
+- Gates: `{"LONG":"HOLD","EASY":"ADVANCE","goblet-squat":"ADVANCE","db-bench-press":"ADVANCE","db-row":"ADVANCE","standing-calf-raise":"ADVANCE","dead-bug":"ADVANCE","db-rdl":"ADVANCE","db-split-squat":"ADVANCE"}`
+- Current week 1 (DEVELOPMENT) from 2026-12-05: —
+- Next week 2 (DEVELOPMENT, provisional): d0 2026-12-06 AM RUN LONG 70min (LONG) | d1 2026-12-07 PM STRENGTH_FULL_A 28min: goblet-squat 2x10 RIR3 establish; db-bench-press 2x10 RIR3 establish; db-row 2x10 RIR3 establish; standing-calf-raise 1x14 RIR3 BW; dead-bug 1x14 RIR3 BW | d2 2026-12-08 AM RUN EASY 45min (EASY) | d3 2026-12-09 PM STRENGTH_FULL_B 28min: db-rdl 2x10 RIR3 establish; db-row 2x10 RIR3 establish; db-bench-press 2x10 RIR3 establish; db-split-squat 1x12 RIR3 establish; dead-bug 1x14 RIR3 BW | d4 2026-12-10 AM RUN EASY 45min (EASY)
+
+### w2 · 2026-12-12T20:00:00+10:00 · WEEKLY_REVIEW (week 2)
+
+- Athlete: 5 report(s): w2-run-d0 done 70min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-run-d2 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-run-d4 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-str-d1 done 28min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-str-d3 done 28min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · learning consent true
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE","goblet-squat":"ADVANCE","db-bench-press":"ADVANCE","db-row":"ADVANCE","standing-calf-raise":"ADVANCE","dead-bug":"ADVANCE","db-rdl":"ADVANCE","db-split-squat":"ADVANCE"}`
+- Current week 2 (DEVELOPMENT) from 2026-12-12: —
+- Next week 3 (DEVELOPMENT, provisional): d0 2026-12-13 AM RUN LONG 70min (LONG) | d1 2026-12-14 PM STRENGTH_FULL_A 29min: goblet-squat 2x10 RIR3 establish; db-bench-press 2x10 RIR3 establish; db-row 2x10 RIR3 establish; standing-calf-raise 1x16 RIR3 BW; dead-bug 1x16 RIR3 BW | d2 2026-12-15 AM RUN EASY 50min (EASY) | d3 2026-12-16 PM STRENGTH_FULL_B 28min: db-rdl 2x10 RIR3 establish; db-row 2x10 RIR3 establish; db-bench-press 2x10 RIR3 establish; db-split-squat 1x12 RIR3 establish; dead-bug 1x16 RIR3 BW | d4 2026-12-17 AM RUN EASY 45min (EASY)
+
+### w3 · 2026-12-19T20:00:00+10:00 · WEEKLY_REVIEW (week 3)
+
+- Athlete: 5 report(s): w3-run-d0 done 70min (performance=COMPATIBLE,recovery=ADVERSE,effort=ON_TARGET,nextDayFunction=IMPAIRED); w3-run-d2 done 50min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-run-d4 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-str-d1 done 29min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-str-d3 done 28min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · learning consent true
+- Coach: **MODIFY** / GATED_NEXT_STEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation
+- Gates: `{"LONG":"HOLD","EASY":"ADVANCE","goblet-squat":"ADVANCE","db-bench-press":"ADVANCE","db-row":"ADVANCE","standing-calf-raise":"ADVANCE","dead-bug":"ADVANCE","db-rdl":"ADVANCE","db-split-squat":"ADVANCE"}`
+- Current week 3 (DEVELOPMENT) from 2026-12-19: —
+- Next week 4 (CONSOLIDATION, provisional): d0 2026-12-20 AM RUN LONG 60min (LONG) | d1 2026-12-21 PM STRENGTH_FULL_A 21min: goblet-squat 1x10 RIR3 establish; db-bench-press 1x10 RIR3 establish; db-row 1x10 RIR3 establish; standing-calf-raise 1x16 RIR3 BW; dead-bug 1x16 RIR3 BW | d2 2026-12-22 AM RUN EASY 50min (EASY) | d3 2026-12-23 PM STRENGTH_FULL_B 20min: db-rdl 1x10 RIR3 establish; db-row 1x10 RIR3 establish; db-bench-press 1x10 RIR3 establish; db-split-squat 1x12 RIR3 establish; dead-bug 1x16 RIR3 BW | d4 2026-12-24 AM RUN EASY 45min (EASY)
+
+### w4 · 2026-12-26T20:00:00+10:00 · WEEKLY_REVIEW (week 4)
+
+- Athlete: 5 report(s): w4-run-d0 done 60min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w4-run-d2 done 50min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w4-run-d4 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w4-str-d1 done 21min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w4-str-d3 done 20min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · learning consent true
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · offers LADDER_STEP,LADDER_STEP,LADDER_STEP,LADDER_STEP,LADDER_STEP,LADDER_STEP · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE","goblet-squat":"ADVANCE","db-bench-press":"ADVANCE","db-row":"ADVANCE","standing-calf-raise":"ADVANCE","dead-bug":"ADVANCE","db-rdl":"ADVANCE","db-split-squat":"ADVANCE"}`
+- Current week 4 (CONSOLIDATION) from 2026-12-26: —
+- Next week 5 (DEVELOPMENT, provisional): d0 2026-12-27 AM RUN LONG 70min (LONG) | d1 2026-12-28 PM STRENGTH_FULL_A 33min: goblet-squat 2x10 RIR3 establish; db-bench-press 2x10 RIR3 establish; db-row 2x10 RIR3 establish; standing-calf-raise 2x16 RIR3 BW; dead-bug 2x16 RIR3 BW | d2 2026-12-29 AM RUN EASY 50min (EASY +strides) | d3 2026-12-30 PM STRENGTH_FULL_B 31min: db-rdl 2x10 RIR3 establish; db-row 2x10 RIR3 establish; db-bench-press 2x10 RIR3 establish; db-split-squat 1x12 RIR3 establish; dead-bug 2x16 RIR3 BW | d4 2026-12-31 AM RUN EASY 45min (EASY)
+
+### w5 · 2027-01-02T20:00:00+10:00 · WEEKLY_REVIEW (week 5)
+
+- Athlete: 5 report(s): w5-run-d0 done 70min (performance=COMPATIBLE,recovery=ADVERSE,effort=ON_TARGET,nextDayFunction=IMPAIRED); w5-run-d2 done 50min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-run-d4 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-str-d1 done 33min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-str-d3 done 31min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · learning consent true
+- Coach: **MODIFY** / GATED_NEXT_STEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation
+- Gates: `{"LONG":"HOLD","EASY":"ADVANCE","goblet-squat":"ADVANCE","db-bench-press":"ADVANCE","db-row":"ADVANCE","standing-calf-raise":"ADVANCE","dead-bug":"ADVANCE","db-rdl":"ADVANCE","db-split-squat":"ADVANCE"}`
+- Current week 5 (DEVELOPMENT) from 2027-01-02: —
+- Next week 6 (DEVELOPMENT, provisional): d0 2027-01-03 AM RUN LONG 70min (LONG) | d1 2027-01-04 PM STRENGTH_FULL_A 33min: goblet-squat 2x10 RIR3 establish; db-bench-press 2x10 RIR3 establish; db-row 2x10 RIR3 establish; standing-calf-raise 2x16 RIR3 BW; dead-bug 2x16 RIR3 BW | d2 2027-01-05 AM RUN EASY 50min (EASY +strides) | d3 2027-01-06 PM STRENGTH_FULL_B 31min: db-rdl 2x10 RIR3 establish; db-row 2x10 RIR3 establish; db-bench-press 2x10 RIR3 establish; db-split-squat 1x12 RIR3 establish; dead-bug 2x16 RIR3 BW | d4 2027-01-07 AM RUN EASY 50min (EASY)
+
+### w6 · 2027-01-09T20:00:00+10:00 · WEEKLY_REVIEW (week 6)
+
+- Athlete: 5 report(s): w6-run-d0 done 70min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-run-d2 done 50min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-run-d4 done 50min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-str-d1 done 33min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-str-d3 done 31min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · learning consent true
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE","goblet-squat":"ADVANCE","db-bench-press":"ADVANCE","db-row":"ADVANCE","standing-calf-raise":"ADVANCE","dead-bug":"ADVANCE","db-rdl":"ADVANCE","db-split-squat":"ADVANCE"}`
+- Current week 6 (DEVELOPMENT) from 2027-01-09: —
+- Next week 7 (DEVELOPMENT, provisional): d0 2027-01-10 AM RUN LONG 70min (LONG) | d1 2027-01-11 PM STRENGTH_FULL_A 33min: goblet-squat 2x10 RIR3 establish; db-bench-press 2x10 RIR3 establish; db-row 2x10 RIR3 establish; standing-calf-raise 2x16 RIR3 BW; dead-bug 2x16 RIR3 BW | d2 2027-01-12 AM RUN EASY 50min (EASY +strides) | d3 2027-01-13 PM STRENGTH_FULL_B 31min: db-rdl 2x10 RIR3 establish; db-row 2x10 RIR3 establish; db-bench-press 2x10 RIR3 establish; db-split-squat 1x12 RIR3 establish; dead-bug 2x16 RIR3 BW | d4 2027-01-14 AM RUN EASY 50min (EASY)
+
+### w7 · 2027-01-16T20:00:00+10:00 · WEEKLY_REVIEW (week 7)
+
+- Athlete: 5 report(s): w7-run-d0 done 70min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w7-run-d2 done 50min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w7-run-d4 done 50min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w7-str-d1 done 33min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w7-str-d3 done 31min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · learning consent false
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE","goblet-squat":"ADVANCE","db-bench-press":"ADVANCE","db-row":"ADVANCE","standing-calf-raise":"ADVANCE","dead-bug":"ADVANCE","db-rdl":"ADVANCE","db-split-squat":"ADVANCE"}`
+- Current week 7 (DEVELOPMENT) from 2027-01-16: —
+- Next week 8 (CONSOLIDATION, provisional): d0 2027-01-17 AM RUN LONG 60min (LONG) | d1 2027-01-18 PM STRENGTH_FULL_A 21min: goblet-squat 1x10 RIR3 establish; db-bench-press 1x10 RIR3 establish; db-row 1x10 RIR3 establish; standing-calf-raise 1x16 RIR3 BW; dead-bug 1x16 RIR3 BW | d2 2027-01-19 AM RUN EASY 50min (EASY +strides) | d3 2027-01-20 PM STRENGTH_FULL_B 20min: db-rdl 1x10 RIR3 establish; db-row 1x10 RIR3 establish; db-bench-press 1x10 RIR3 establish; db-split-squat 1x12 RIR3 establish; dead-bug 1x16 RIR3 BW | d4 2027-01-21 AM RUN EASY 50min (EASY)
+
+### w8 · 2027-01-23T20:00:00+10:00 · WEEKLY_REVIEW (week 8)
+
+- Athlete: 5 report(s): w8-run-d0 done 60min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w8-run-d2 done 50min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w8-run-d4 done 50min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w8-str-d1 done 21min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w8-str-d3 done 20min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · learning consent false
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · offers LADDER_STEP,LADDER_STEP,LADDER_STEP,LADDER_STEP,LADDER_STEP,LADDER_STEP · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE","goblet-squat":"ADVANCE","db-bench-press":"ADVANCE","db-row":"ADVANCE","standing-calf-raise":"ADVANCE","dead-bug":"ADVANCE","db-rdl":"ADVANCE","db-split-squat":"ADVANCE"}`
+- Current week 8 (CONSOLIDATION) from 2027-01-23: —
+- Next week 9 (DEVELOPMENT, provisional): d0 2027-01-24 AM RUN LONG 70min (LONG) | d1 2027-01-25 PM STRENGTH_FULL_A 28min: goblet-squat 2x10 RIR3 establish; db-bench-press 2x10 RIR3 establish; db-row 2x10 RIR3 establish; db-calf-raise 1x12 RIR3 establish; front-plank 1x12 RIR3 BW | d2 2027-01-26 AM RUN EASY 50min (EASY +strides) | d3 2027-01-27 PM STRENGTH_FULL_B 28min: db-rdl 2x10 RIR3 establish; db-row 2x10 RIR3 establish; db-bench-press 2x10 RIR3 establish; reverse-lunge-db 1x12 RIR3 establish; front-plank 1x12 RIR3 BW | d4 2027-01-28 AM RUN EASY 50min (EASY)
+
+**Automated properties.** no failure
+
+**Metamorphic.** no violation
+
+**Author expectations.**
+- d13-e01 @GENERATE STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"PROPOSED"`
+- d13-e02 @w1 ROLE_MINUTES_COMPARE [DOMAIN_ORACLE]: **PASS** observed `{"week":70,"otherWeek":70}`
+- d13-e03 @w3 ROLE_MINUTES_COMPARE [DOMAIN_ORACLE]: **PASS** observed `{"week":60,"otherWeek":70}`
+- d13-e04 @w5 ROLE_MINUTES_COMPARE [DOMAIN_ORACLE]: **PASS** observed `{"week":70,"otherWeek":70}`
+- d13-e05 @w5 JUDGED [DOMAIN_ORACLE]: **JUDGED** — By week 6 the long run is not progressed beyond the duration that repeatedly produced impaired next days, while the other runs and the strength sessions continue normally; any learned adjustment is specific to the long run and modest (it neither removes the long run nor cuts total running drastically).
+- d13-e06 @w7 STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"KEEP"`
+- d13-e07 @w7 JUDGED [INVARIANT_ORACLE]: **JUDGED** — After revocation the coach no longer applies or updates a learned personal pattern; the reported facts themselves stay in the record and may still inform ordinary decisions.
+
+**Independent assessment (author, written before any output).**
+- Rationale: A 47-year-old whose long runs beyond his current tolerance cost him the next day, three times, while everything else is fine. A good coach recognises that the issue is the long run specifically and stops pushing it; with consent the coach may keep that as a personal tolerance, without consent it should still react to each report.
+- Preferred: Hold the long run after each impaired day, and after the third occurrence cap the long run near the last well-tolerated duration for a while (or progress it more slowly), keep the other sessions on their normal progression. After revocation, stop using any stored personal pattern; carry on with ordinary decisions from the facts.
+- Acceptable alternatives: Splitting the long-run increase into smaller steps rather than capping. / Moving some long-run volume into a mid-week easy run within the chosen days. / No learned change at all, if each per-decision response already holds the long run.
+- Concerns: Progressing the long run in weeks 2, 4 or 6. / Cutting all running or strength because of a long-run-specific pattern. / Learning more aggressive progression from the compatible weeks. / Continuing to apply a learned pattern after revocation.
+- Domain notes: The pattern weeks are 1, 3 and 5; weeks 0, 2, 4, 6-8 are fully compatible. Revocation is carried on the week-7 review.
+
+## R7D-D14
+
+**Intent.** A strength-first hybrid athlete without learning consent sends noisy run data (a heat-confounded long run, a non-comparable hilly run), then reports the same strength session as too easy twice, then asks to switch to a marathon. It probes that noise changes nothing, that no personal pattern is learned without consent, and that an out-of-scope request mid-program is not planned.
+
+**Tags.** STRENGTH_FIRST, GENERAL_FITNESS, NON_RACE, H8, RUN_EXP_NOVICE, STR_EXP_INTERMEDIATE, GYM, FREQ_HIGH, START_NON_MONDAY, TIMEZONE, LEARNING_NOISE, NO_CONSENT, REPEATED_SIGNAL, OUT_OF_SCOPE, GOAL_CHANGE · oracle METAMORPHIC_ORACLE
+
+**Intake.** `{"startDate":"2026-12-09","weeks":8,"asOf":"2026-12-08","tz":-180,"learningConsent":false,"eligibility":"CONFIRMED","goals":{"run":"GENERAL","strength":"HYPERTROPHY"},"event":null,"runExperience":"NOVICE","strengthExperience":"INTERMEDIATE","recent":{"runDaysPerWeek":2,"runMinutesPerWeek":70,"longestRunMinutes":40,"strengthDaysPerWeek":3},"knownRuns":0,"knownExercises":["goblet-squat 3x10 24KG SINGLE_IMPLEMENT","lat-pulldown 3x10 45KG MACHINE_STACK","db-bench-press 3x10 14KG PER_HAND","leg-press 3x12 100KG MACHINE_STACK","db-rdl 3x10 16KG PER_HAND"],"equipment":["BARBELL","RACK","BENCH","DUMBBELLS","MACHINES","PULL_UP_BAR","BANDS","BODYWEIGHT"],"pause":null,"wearable":null,"history":0,"ageYears":26,"specialPopulation":null,"schedule":{"runDays":[1,3,5],"strengthDays":[0,2,4],"runTurn":"AM","strengthTurn":"PM","runMinutes":40,"strengthMinutes":60,"longRunDay":3,"longRunMinutes":70}}`
+
+**Onboarding.** PROPOSED: Complete conditional program generated from onboarding-like facts
+
+- Phases: DEVELOPMENT · DEVELOPMENT · DEVELOPMENT · CONSOLIDATION · DEVELOPMENT · DEVELOPMENT · DEVELOPMENT · CONSOLIDATION
+- Week 0 (DEVELOPMENT): d0 2026-12-09 PM STRENGTH_LOWER 35min: goblet-squat 3x10 RIR3 24kg SINGLE_IMPLEMENT; db-rdl 3x10 RIR3 16kg PER_HAND; leg-extension-machine 2x10 RIR3 establish; db-calf-raise 2x10 RIR3 establish; dead-bug 2x10 RIR3 BW | d1 2026-12-10 AM RUN EASY 20min (EASY) | d2 2026-12-11 PM STRENGTH_UPPER 35min: db-bench-press 3x10 RIR3 14kg PER_HAND; lat-pulldown 3x10 RIR3 45kg MACHINE_STACK; db-lateral-raise 2x10 RIR3 establish; db-biceps-curl 2x10 RIR3 establish; dead-bug 2x10 RIR3 BW | d3 2026-12-12 AM RUN LONG 30min (LONG) | d4 2026-12-13 PM STRENGTH_FULL_B 40min: db-rdl 3x10 RIR3 16kg PER_HAND; lat-pulldown 3x10 RIR3 45kg MACHINE_STACK; db-bench-press 3x10 RIR3 14kg PER_HAND; leg-curl-machine 2x10 RIR3 establish; cable-triceps-pushdown 2x10 RIR3 establish | d5 2026-12-14 AM RUN EASY 20min (EASY)
+- Week 1 (DEVELOPMENT): d0 2026-12-16 PM STRENGTH_LOWER 36min: goblet-squat 3x12 RIR3 24kg SINGLE_IMPLEMENT; db-rdl 3x12 RIR3 16kg PER_HAND; leg-extension-machine 2x10 RIR3 last logged; db-calf-raise 2x10 RIR3 last logged; dead-bug 2x12 RIR3 BW | d1 2026-12-17 AM RUN EASY 20min (EASY) | d2 2026-12-18 PM STRENGTH_UPPER 36min: db-bench-press 3x12 RIR3 14kg PER_HAND; lat-pulldown 3x12 RIR3 45kg MACHINE_STACK; db-lateral-raise 2x10 RIR3 last logged; db-biceps-curl 2x10 RIR3 last logged; dead-bug 2x12 RIR3 BW | d3 2026-12-19 AM RUN LONG 30min (LONG) | d4 2026-12-20 PM STRENGTH_FULL_B 41min: db-rdl 3x12 RIR3 16kg PER_HAND; lat-pulldown 3x12 RIR3 45kg MACHINE_STACK; db-bench-press 3x12 RIR3 14kg PER_HAND; leg-curl-machine 2x10 RIR3 last logged; cable-triceps-pushdown 2x10 RIR3 last logged | d5 2026-12-21 AM RUN EASY 20min (EASY)
+
+### w0 · 2026-12-15T20:30:00-03:00 · WEEKLY_REVIEW (week 0)
+
+- Athlete: 6 report(s): w0-run-d1 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-run-d3 done 30min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-run-d5 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-str-d0 done 35min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-str-d2 done 35min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-str-d4 done 40min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · learning consent false
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE","goblet-squat":"ADVANCE","db-rdl":"ADVANCE","leg-extension-machine":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","db-bench-press":"ADVANCE","lat-pulldown":"ADVANCE","db-lateral-raise":"ADVANCE","db-biceps-curl":"ADVANCE","leg-curl-machine":"ADVANCE","cable-triceps-pushdown":"ADVANCE"}`
+- Current week 0 (DEVELOPMENT) from 2026-12-15: —
+- Next week 1 (DEVELOPMENT, provisional): d0 2026-12-16 PM STRENGTH_LOWER 36min: goblet-squat 3x12 RIR3 24kg SINGLE_IMPLEMENT; db-rdl 3x12 RIR3 16kg PER_HAND; leg-extension-machine 2x10 RIR3 establish; db-calf-raise 2x10 RIR3 establish; dead-bug 2x12 RIR3 BW | d1 2026-12-17 AM RUN EASY 20min (EASY) | d2 2026-12-18 PM STRENGTH_UPPER 36min: db-bench-press 3x12 RIR3 14kg PER_HAND; lat-pulldown 3x12 RIR3 45kg MACHINE_STACK; db-lateral-raise 2x10 RIR3 establish; db-biceps-curl 2x10 RIR3 establish; dead-bug 2x12 RIR3 BW | d3 2026-12-19 AM RUN LONG 30min (LONG) | d4 2026-12-20 PM STRENGTH_FULL_B 41min: db-rdl 3x12 RIR3 16kg PER_HAND; lat-pulldown 3x12 RIR3 45kg MACHINE_STACK; db-bench-press 3x12 RIR3 14kg PER_HAND; leg-curl-machine 2x10 RIR3 establish; cable-triceps-pushdown 2x10 RIR3 establish | d5 2026-12-21 AM RUN EASY 20min (EASY)
+
+### w1 · 2026-12-22T20:30:00-03:00 · WEEKLY_REVIEW (week 1)
+
+- Athlete: 6 report(s): w1-run-d1 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-run-d3 done 30min (performance=UNDER,recovery=COMPATIBLE,effort=HARDER,nextDayFunction=NORMAL); w1-run-d5 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-str-d0 done 36min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-str-d2 done 36min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-str-d4 done 41min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · learning consent false
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE","goblet-squat":"ADVANCE","db-rdl":"ADVANCE","leg-extension-machine":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","db-bench-press":"ADVANCE","lat-pulldown":"ADVANCE","db-lateral-raise":"ADVANCE","db-biceps-curl":"ADVANCE","leg-curl-machine":"ADVANCE","cable-triceps-pushdown":"ADVANCE"}`
+- Current week 1 (DEVELOPMENT) from 2026-12-22: —
+- Next week 2 (DEVELOPMENT, provisional): d0 2026-12-23 PM STRENGTH_LOWER 35min: goblet-squat 3x8 RIR3 26kg SINGLE_IMPLEMENT; db-rdl 3x8 RIR3 18kg PER_HAND; leg-extension-machine 2x10 RIR3 establish; db-calf-raise 2x10 RIR3 establish; dead-bug 2x14 RIR3 BW | d1 2026-12-24 AM RUN EASY 25min (EASY +strides) | d2 2026-12-25 PM STRENGTH_UPPER 35min: db-bench-press 3x8 RIR3 16kg PER_HAND; lat-pulldown 3x8 RIR3 next machine setting above 45kg (else 45kg x12); db-lateral-raise 2x10 RIR3 establish; db-biceps-curl 2x10 RIR3 establish; dead-bug 2x14 RIR3 BW | d3 2026-12-26 AM RUN LONG 30min (LONG) | d4 2026-12-27 PM STRENGTH_FULL_B 38min: db-rdl 3x8 RIR3 18kg PER_HAND; lat-pulldown 3x8 RIR3 next machine setting above 45kg (else 45kg x12); db-bench-press 3x8 RIR3 16kg PER_HAND; leg-curl-machine 2x10 RIR3 establish; cable-triceps-pushdown 2x10 RIR3 establish | d5 2026-12-28 AM RUN EASY 20min (EASY)
+
+### w2 · 2026-12-29T20:30:00-03:00 · WEEKLY_REVIEW (week 2)
+
+- Athlete: 6 report(s): w2-run-d1 done 25min (performance=UNDER,recovery=COMPATIBLE,effort=HARDER,nextDayFunction=NORMAL); w2-run-d3 done 30min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-run-d5 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-str-d0 done 35min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-str-d2 done 35min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-str-d4 done 38min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · learning consent false
+- Coach: **MODIFY** / GATED_NEXT_STEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation
+- Gates: `{"LONG":"ADVANCE","EASY":"HOLD","goblet-squat":"ADVANCE","db-rdl":"ADVANCE","leg-extension-machine":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","db-bench-press":"ADVANCE","lat-pulldown":"ADVANCE","db-lateral-raise":"ADVANCE","db-biceps-curl":"ADVANCE","leg-curl-machine":"ADVANCE","cable-triceps-pushdown":"ADVANCE"}`
+- Current week 2 (DEVELOPMENT) from 2026-12-29: —
+- Next week 3 (CONSOLIDATION, provisional): d0 2026-12-30 PM STRENGTH_LOWER 25min: goblet-squat 2x10 RIR3 26kg SINGLE_IMPLEMENT; db-rdl 2x10 RIR3 18kg PER_HAND; leg-extension-machine 1x10 RIR3 establish; db-calf-raise 1x10 RIR3 establish; dead-bug 1x16 RIR3 BW | d1 2026-12-31 AM RUN EASY 25min (EASY +strides) | d2 2027-01-01 PM STRENGTH_UPPER 25min: db-bench-press 2x10 RIR3 16kg PER_HAND; lat-pulldown 2x12 RIR3 45kg MACHINE_STACK; db-lateral-raise 1x10 RIR3 establish; db-biceps-curl 1x10 RIR3 establish; dead-bug 1x16 RIR3 BW | d3 2027-01-02 AM RUN LONG 25min (LONG) | d4 2027-01-03 PM STRENGTH_FULL_B 28min: db-rdl 2x10 RIR3 18kg PER_HAND; lat-pulldown 2x12 RIR3 45kg MACHINE_STACK; db-bench-press 2x10 RIR3 16kg PER_HAND; leg-curl-machine 1x10 RIR3 establish; cable-triceps-pushdown 1x10 RIR3 establish | d5 2027-01-04 AM RUN EASY 20min (EASY)
+
+### tz3 · 2027-01-01T21:00:00-03:00 · PROGRESSION_TOO_EASY (week 3)
+
+- Athlete: 1 report(s): w3-str-d2 done 25min 5 exercises (performance=OVER,recovery=COMPATIBLE,effort=EASIER,nextDayFunction=NORMAL) · learning consent false
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: One easier execution does not earn an extra step; keep the plan and compare the next execution
+- Current week 3 (CONSOLIDATION) from 2027-01-01: d2 2027-01-01 PM STRENGTH_UPPER 25min: db-bench-press 2x10 RIR3 16kg PER_HAND; lat-pulldown 2x12 RIR3 45kg MACHINE_STACK; db-lateral-raise 1x10 RIR3 establish; db-biceps-curl 1x10 RIR3 establish; dead-bug 1x16 RIR3 BW | d3 2027-01-02 AM RUN LONG 25min (LONG) | d4 2027-01-03 PM STRENGTH_FULL_B 28min: db-rdl 2x10 RIR3 18kg PER_HAND; lat-pulldown 2x12 RIR3 45kg MACHINE_STACK; db-bench-press 2x10 RIR3 16kg PER_HAND; leg-curl-machine 1x10 RIR3 establish; cable-triceps-pushdown 1x10 RIR3 establish | d5 2027-01-04 AM RUN EASY 20min (EASY)
+- Next week 4 (DEVELOPMENT, provisional): d0 2027-01-06 PM STRENGTH_LOWER 48min: goblet-squat 4x10 RIR3 26kg SINGLE_IMPLEMENT; db-rdl 4x10 RIR3 18kg PER_HAND; leg-extension-machine 3x10 RIR3 last logged; db-calf-raise 3x10 RIR3 last logged; dead-bug 3x16 RIR3 BW | d1 2027-01-07 AM RUN EASY 25min (EASY +strides) | d2 2027-01-08 PM STRENGTH_UPPER 47min: db-bench-press 4x10 RIR3 16kg PER_HAND; lat-pulldown 4x8 RIR3 next machine setting above 45kg (else 45kg x12); db-lateral-raise 3x10 RIR3 last logged; db-biceps-curl 3x10 RIR3 last logged; dead-bug 3x16 RIR3 BW | d3 2027-01-09 AM RUN LONG 35min (LONG) | d4 2027-01-10 PM STRENGTH_FULL_B 51min: db-rdl 4x10 RIR3 18kg PER_HAND; lat-pulldown 4x8 RIR3 next machine setting above 45kg (else 45kg x12); db-bench-press 4x10 RIR3 16kg PER_HAND; leg-curl-machine 3x10 RIR3 last logged; cable-triceps-pushdown 3x10 RIR3 last logged | d5 2027-01-11 AM RUN EASY 20min (EASY)
+
+### w3 · 2027-01-05T20:30:00-03:00 · WEEKLY_REVIEW (week 3)
+
+- Athlete: 5 report(s): w3-run-d1 done 25min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-run-d3 done 25min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-run-d5 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-str-d0 done 25min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-str-d4 done 28min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · learning consent false
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · offers LADDER_STEP,LADDER_STEP,LADDER_STEP,LADDER_STEP,LADDER_STEP,LADDER_STEP · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE","goblet-squat":"ADVANCE","db-rdl":"ADVANCE","leg-extension-machine":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","db-bench-press":"ADVANCE","lat-pulldown":"ADVANCE","db-lateral-raise":"ADVANCE","db-biceps-curl":"ADVANCE","leg-curl-machine":"ADVANCE","cable-triceps-pushdown":"ADVANCE"}`
+- Current week 3 (CONSOLIDATION) from 2027-01-05: —
+- Next week 4 (DEVELOPMENT, provisional): d0 2027-01-06 PM STRENGTH_LOWER 44min: goblet-squat 4x10 RIR3 26kg SINGLE_IMPLEMENT; db-rdl 4x10 RIR3 18kg PER_HAND; leg-extension-machine 2x10 RIR3 establish; db-calf-raise 2x10 RIR3 establish; dead-bug 3x16 RIR3 BW | d1 2027-01-07 AM RUN EASY 25min (EASY +strides) | d2 2027-01-08 PM STRENGTH_UPPER 43min: db-bench-press 4x10 RIR3 16kg PER_HAND; lat-pulldown 4x8 RIR3 next machine setting above 45kg (else 45kg x12); db-lateral-raise 2x10 RIR3 establish; db-biceps-curl 2x10 RIR3 establish; dead-bug 3x16 RIR3 BW | d3 2027-01-09 AM RUN LONG 35min (LONG) | d4 2027-01-10 PM STRENGTH_FULL_B 47min: db-rdl 4x10 RIR3 18kg PER_HAND; lat-pulldown 4x8 RIR3 next machine setting above 45kg (else 45kg x12); db-bench-press 4x10 RIR3 16kg PER_HAND; leg-curl-machine 2x10 RIR3 establish; cable-triceps-pushdown 2x10 RIR3 establish | d5 2027-01-11 AM RUN EASY 20min (EASY)
+
+### tz4 · 2027-01-08T21:00:00-03:00 · PROGRESSION_TOO_EASY (week 4)
+
+- Athlete: 1 report(s): w4-str-d2 done 43min 5 exercises (performance=OVER,recovery=COMPATIBLE,effort=EASIER,nextDayFunction=NORMAL) · learning consent false
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: One easier execution does not earn an extra step; keep the plan and compare the next execution
+- Current week 4 (DEVELOPMENT) from 2027-01-08: d2 2027-01-08 PM STRENGTH_UPPER 43min: db-bench-press 4x10 RIR3 16kg PER_HAND; lat-pulldown 4x8 RIR3 next machine setting above 45kg (else 45kg x12); db-lateral-raise 2x10 RIR3 establish; db-biceps-curl 2x10 RIR3 establish; dead-bug 3x16 RIR3 BW | d3 2027-01-09 AM RUN LONG 35min (LONG) | d4 2027-01-10 PM STRENGTH_FULL_B 47min: db-rdl 4x10 RIR3 18kg PER_HAND; lat-pulldown 4x8 RIR3 next machine setting above 45kg (else 45kg x12); db-bench-press 4x10 RIR3 16kg PER_HAND; leg-curl-machine 2x10 RIR3 establish; cable-triceps-pushdown 2x10 RIR3 establish | d5 2027-01-11 AM RUN EASY 20min (EASY)
+- Next week 5 (DEVELOPMENT, provisional): d0 2027-01-13 PM STRENGTH_LOWER 45min: goblet-squat 4x12 RIR3 26kg SINGLE_IMPLEMENT; db-rdl 4x12 RIR3 18kg PER_HAND; leg-extension-machine 2x10 RIR3 last logged; db-calf-raise 2x10 RIR3 last logged; dead-bug 3x16 RIR3 BW | d1 2027-01-14 AM RUN EASY 25min (EASY +strides) | d2 2027-01-15 PM STRENGTH_UPPER 44min: db-bench-press 4x12 RIR3 16kg PER_HAND; lat-pulldown 4x8 RIR3 next machine setting above 45kg (else 45kg x12); db-lateral-raise 2x10 RIR3 last logged; db-biceps-curl 2x10 RIR3 last logged; dead-bug 3x16 RIR3 BW | d3 2027-01-16 AM RUN LONG 35min (LONG) | d4 2027-01-17 PM STRENGTH_FULL_B 48min: db-rdl 4x12 RIR3 18kg PER_HAND; lat-pulldown 4x8 RIR3 next machine setting above 45kg (else 45kg x12); db-bench-press 4x12 RIR3 16kg PER_HAND; leg-curl-machine 2x10 RIR3 last logged; cable-triceps-pushdown 2x10 RIR3 last logged | d5 2027-01-18 AM RUN EASY 20min (EASY)
+
+### w4 · 2027-01-12T20:30:00-03:00 · WEEKLY_REVIEW (week 4)
+
+- Athlete: 5 report(s): w4-run-d1 done 25min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w4-run-d3 done 35min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w4-run-d5 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w4-str-d0 done 44min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w4-str-d4 done 47min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · learning consent false
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE","goblet-squat":"ADVANCE","db-rdl":"ADVANCE","leg-extension-machine":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","db-bench-press":"ADVANCE","lat-pulldown":"ADVANCE","db-lateral-raise":"ADVANCE","db-biceps-curl":"ADVANCE","leg-curl-machine":"ADVANCE","cable-triceps-pushdown":"ADVANCE"}`
+- Current week 4 (DEVELOPMENT) from 2027-01-12: —
+- Next week 5 (DEVELOPMENT, provisional): d0 2027-01-13 PM STRENGTH_LOWER 45min: goblet-squat 4x12 RIR3 26kg SINGLE_IMPLEMENT; db-rdl 4x12 RIR3 18kg PER_HAND; leg-extension-machine 2x10 RIR3 establish; db-calf-raise 2x10 RIR3 establish; dead-bug 3x16 RIR3 BW | d1 2027-01-14 AM RUN EASY 25min (EASY +strides) | d2 2027-01-15 PM STRENGTH_UPPER 44min: db-bench-press 4x12 RIR3 16kg PER_HAND; lat-pulldown 4x8 RIR3 next machine setting above 45kg (else 45kg x12); db-lateral-raise 2x10 RIR3 establish; db-biceps-curl 2x10 RIR3 establish; dead-bug 3x16 RIR3 BW | d3 2027-01-16 AM RUN LONG 35min (LONG) | d4 2027-01-17 PM STRENGTH_FULL_B 48min: db-rdl 4x12 RIR3 18kg PER_HAND; lat-pulldown 4x8 RIR3 next machine setting above 45kg (else 45kg x12); db-bench-press 4x12 RIR3 16kg PER_HAND; leg-curl-machine 2x10 RIR3 establish; cable-triceps-pushdown 2x10 RIR3 establish | d5 2027-01-18 AM RUN EASY 20min (EASY)
+
+### g5 · 2027-01-13T07:00:00-03:00 · GOAL_CHANGE (week 5)
+
+- Athlete: no reports · changes `{"goals":{"run":{"kind":"RACE","event":{"kind":"MARATHON","date":"2027-01-31"}},"strength":"HYPERTROPHY"},"event":{"kind":"MARATHON","date":"2027-01-31"}}` · learning consent false
+- Coach: **ASK** / ASK · REQUIRES_RECONCILIATION
+- Reason: The new event is outside this program horizon or too close to plan safely; a new program input is needed
+- Current week 5 (DEVELOPMENT) from 2027-01-13: d0 2027-01-13 PM STRENGTH_LOWER 45min: goblet-squat 4x12 RIR3 26kg SINGLE_IMPLEMENT; db-rdl 4x12 RIR3 18kg PER_HAND; leg-extension-machine 2x10 RIR3 establish; db-calf-raise 2x10 RIR3 establish; dead-bug 3x16 RIR3 BW | d1 2027-01-14 AM RUN EASY 25min (EASY +strides) | d2 2027-01-15 PM STRENGTH_UPPER 44min: db-bench-press 4x12 RIR3 16kg PER_HAND; lat-pulldown 4x8 RIR3 next machine setting above 45kg (else 45kg x12); db-lateral-raise 2x10 RIR3 establish; db-biceps-curl 2x10 RIR3 establish; dead-bug 3x16 RIR3 BW | d3 2027-01-16 AM RUN LONG 35min (LONG) | d4 2027-01-17 PM STRENGTH_FULL_B 48min: db-rdl 4x12 RIR3 18kg PER_HAND; lat-pulldown 4x8 RIR3 next machine setting above 45kg (else 45kg x12); db-bench-press 4x12 RIR3 16kg PER_HAND; leg-curl-machine 2x10 RIR3 establish; cable-triceps-pushdown 2x10 RIR3 establish | d5 2027-01-18 AM RUN EASY 20min (EASY)
+- Next week 6 (DEVELOPMENT, provisional): d0 2027-01-20 PM STRENGTH_LOWER 43min: goblet-squat 4x8 RIR3 28kg SINGLE_IMPLEMENT; db-rdl 4x8 RIR3 20kg PER_HAND; leg-extension-machine 2x10 RIR3 last logged; db-calf-raise 2x10 RIR3 last logged; dead-bug 3x16 RIR3 BW | d1 2027-01-21 AM RUN EASY 25min (EASY +strides) | d2 2027-01-22 PM STRENGTH_UPPER 43min: db-bench-press 4x8 RIR3 18kg PER_HAND; lat-pulldown 4x8 RIR3 next machine setting above 45kg (else 45kg x12); db-lateral-raise 2x10 RIR3 last logged; db-biceps-curl 2x10 RIR3 last logged; dead-bug 3x16 RIR3 BW | d3 2027-01-23 AM RUN LONG 35min (LONG) | d4 2027-01-24 PM STRENGTH_FULL_B 46min: db-rdl 4x8 RIR3 20kg PER_HAND; lat-pulldown 4x8 RIR3 next machine setting above 45kg (else 45kg x12); db-bench-press 4x8 RIR3 18kg PER_HAND; leg-curl-machine 2x10 RIR3 last logged; cable-triceps-pushdown 2x10 RIR3 last logged | d5 2027-01-25 AM RUN EASY 25min (EASY)
+
+### w5 · 2027-01-19T20:30:00-03:00 · WEEKLY_REVIEW (week 5)
+
+- Athlete: 6 report(s): w5-run-d1 done 25min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-run-d3 done 35min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-run-d5 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-str-d0 done 45min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-str-d2 done 44min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-str-d4 done 48min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · learning consent false
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE","goblet-squat":"ADVANCE","db-rdl":"ADVANCE","leg-extension-machine":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","db-bench-press":"ADVANCE","lat-pulldown":"ADVANCE","db-lateral-raise":"ADVANCE","db-biceps-curl":"ADVANCE","leg-curl-machine":"ADVANCE","cable-triceps-pushdown":"ADVANCE"}`
+- Current week 5 (DEVELOPMENT) from 2027-01-19: —
+- Next week 6 (DEVELOPMENT, provisional): d0 2027-01-20 PM STRENGTH_LOWER 43min: goblet-squat 4x8 RIR3 28kg SINGLE_IMPLEMENT; db-rdl 4x8 RIR3 20kg PER_HAND; leg-extension-machine 2x10 RIR3 establish; db-calf-raise 2x10 RIR3 establish; dead-bug 3x16 RIR3 BW | d1 2027-01-21 AM RUN EASY 25min (EASY +strides) | d2 2027-01-22 PM STRENGTH_UPPER 43min: db-bench-press 4x8 RIR3 18kg PER_HAND; lat-pulldown 4x8 RIR3 next machine setting above 45kg (else 45kg x12); db-lateral-raise 2x10 RIR3 establish; db-biceps-curl 2x10 RIR3 establish; dead-bug 3x16 RIR3 BW | d3 2027-01-23 AM RUN LONG 35min (LONG) | d4 2027-01-24 PM STRENGTH_FULL_B 46min: db-rdl 4x8 RIR3 20kg PER_HAND; lat-pulldown 4x8 RIR3 next machine setting above 45kg (else 45kg x12); db-bench-press 4x8 RIR3 18kg PER_HAND; leg-curl-machine 2x10 RIR3 establish; cable-triceps-pushdown 2x10 RIR3 establish | d5 2027-01-25 AM RUN EASY 25min (EASY)
+
+### w6 · 2027-01-26T20:30:00-03:00 · WEEKLY_REVIEW (week 6)
+
+- Athlete: 6 report(s): w6-run-d1 done 25min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-run-d3 done 35min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-run-d5 done 25min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-str-d0 done 43min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-str-d2 done 43min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-str-d4 done 46min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · learning consent false
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE","goblet-squat":"ADVANCE","db-rdl":"ADVANCE","leg-extension-machine":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","db-bench-press":"ADVANCE","lat-pulldown":"ADVANCE","db-lateral-raise":"ADVANCE","db-biceps-curl":"ADVANCE","leg-curl-machine":"ADVANCE","cable-triceps-pushdown":"ADVANCE"}`
+- Current week 6 (DEVELOPMENT) from 2027-01-26: —
+- Next week 7 (CONSOLIDATION, provisional): d0 2027-01-27 PM STRENGTH_LOWER 32min: goblet-squat 3x10 RIR3 28kg SINGLE_IMPLEMENT; db-rdl 3x10 RIR3 20kg PER_HAND; leg-extension-machine 1x10 RIR3 establish; db-calf-raise 1x10 RIR3 establish; dead-bug 2x16 RIR3 BW | d1 2027-01-28 AM RUN EASY 25min (EASY +strides) | d2 2027-01-29 PM STRENGTH_UPPER 33min: db-bench-press 3x10 RIR3 18kg PER_HAND; lat-pulldown 3x12 RIR3 45kg MACHINE_STACK; db-lateral-raise 1x10 RIR3 establish; db-biceps-curl 1x10 RIR3 establish; dead-bug 2x16 RIR3 BW | d3 2027-01-30 AM RUN LONG 30min (LONG) | d4 2027-01-31 PM STRENGTH_FULL_B 36min: db-rdl 3x10 RIR3 20kg PER_HAND; lat-pulldown 3x12 RIR3 45kg MACHINE_STACK; db-bench-press 3x10 RIR3 18kg PER_HAND; leg-curl-machine 1x10 RIR3 establish; cable-triceps-pushdown 1x10 RIR3 establish | d5 2027-02-01 AM RUN EASY 25min (EASY)
+
+**Automated properties.** no failure
+
+**Metamorphic.** VARIANT `[{"index":0,"compareAtStep":"w2","expect":"SAME_PLAN","evaluable":true,"ok":false,"base":{"decision":{"status":"MODIFY","action":"GATED_NEXT_STEP","validity":"VALID_WITHIN_CURRENT_BOUNDED_SCOPE","question":null,"gates":{"EASY":"HOLD","LONG":"ADVANCE","cable-triceps-pushdown":"ADVANCE","db-bench-press":"ADVANCE","db-biceps-curl":"ADVANCE","db-calf-raise":"ADVANCE","db-lateral-raise":"ADVANCE","db-rdl":"ADVANCE","dead-bug":"ADVANCE","goblet-squat":"ADVANCE","lat-pulldown":"ADVANCE","leg-curl-machine":"ADVANCE","leg-extension-machine":"ADVANCE"},"offers":[],"pending":null},"runMinutes":70},"variant":{"decision":{"status":"KEEP","action":"INSTANTIATE_LOGGED_LOADS","validity":"VALID_WITHIN_CURRENT_BOUNDED_SCOPE","question":null,"gates":{"EASY":"ADVANCE","LONG":"ADVANCE","cable-triceps-pushdown":"ADVANCE","db-bench-press":"ADVANCE","db-biceps-curl":"ADVANCE","db-calf-raise":"ADVANCE","db-lateral-raise":"ADVANCE","db-rdl":"ADVANCE","dead-bug":"ADVANCE","goblet-squat":"ADVANCE","lat-pulldown":"ADVANCE","leg-curl-machine":"ADVANCE","leg-extension-machine":"ADVANCE"},"offers":[],"pending":null},"runMinutes":70}}]` · non-blocking differences: LOAD_CONVENTION_EQUIVALENT
+
+**Author expectations.**
+- d14-e01 @GENERATE STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"PROPOSED"`
+- d14-e02 @GENERATE JUDGED [DOMAIN_ORACLE]: **JUDGED** — Strength carries the hypertrophy goal (three sessions, moderate reps, known loads in their own conventions, reps in reserve about 1-3, gradual volume progression); running is easy, modest and progresses slowly from 70 minutes per week.
+- d14-e03 @w2 STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"MODIFY"`
+- d14-e04 @tz3 STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"KEEP"`
+- d14-e05 @tz4 JUDGED [INVARIANT_ORACLE]: **JUDGED** — With learning consent off, no personal response pattern is stored or applied; any change after the second "too easy" report is the ordinary per-decision response for that session (for example a normal load or rep step), not a learned faster progression for the athlete.
+- d14-e06 @g5 STATUS_IN [INVARIANT_ORACLE]: **FAIL** observed `"ASK"`
+- d14-e07 @g5 ROLE_ABSENT [INVARIANT_ORACLE]: **PASS** observed `[]`
+- d14-e08 @g5 JUDGED [INVARIANT_ORACLE]: **JUDGED** — The plan in force after the request is the previous hypertrophy/general plan, not a marathon build.
+- d14-e09 @w5 STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"KEEP"`
+
+**Independent assessment (author, written before any output).**
+- Rationale: Noise should be ignored: a long run slowed by heat with normal recovery, and a hard-feeling run on hills, say nothing about fitness. "Too easy" twice on one strength session can justify the ordinary load/rep step, but without consent it is not stored as a personal trait. A marathon three weeks away is out of scope and also a bad idea for a novice runner.
+- Preferred: Keep the plan unchanged after the noisy weeks. After each "too easy" report, apply at most the normal progression step for that session. Reject the marathon request (UNSUPPORTED or an invalid-input response) and keep the current plan.
+- Acceptable alternatives: A small load step after the first "too easy" report. / Explaining that the marathon is outside scope while offering nothing in its place.
+- Concerns: Reducing the run plan after the heat-confounded long run. / Accelerating strength progression for the rest of the program as a learned trait. / Building any marathon or long-distance plan. / Dropping the existing plan after the rejected request.
+- Domain notes: The marathon event kind is outside the intake vocabulary on purpose; the request is the out-of-scope probe. In weeks 3 and 4 the day-2 strength session is reported by the PROGRESSION_TOO_EASY event and the weekly review reports only the other two strength sessions, to avoid a duplicate with different content.
+
+## R7D-D15
+
+**Intent.** A run-first athlete with a partial watch history sends messy data: the same long run from phone and watch (watch stamped in UTC, which falls on the previous calendar day), reports out of order with an in-review correction, a correction a week late, and a watch clock set two days ahead. It probes de-duplication, local-date attribution, correction semantics and future-clock handling.
+
+**Tags.** RUN_FIRST, NON_RACE, H8, RUN_EXP_INTERMEDIATE, STR_EXP_NOVICE, WEARABLE_PARTIAL, START_NON_MONDAY, TIMEZONE, DUPLICATE_SOURCES, CORRECTION, OUT_OF_ORDER, CLOCK_SKEW, CONTRADICTION, SAME_FACTS_DIFFERENT_ORDER · oracle METAMORPHIC_ORACLE
+
+**Intake.** `{"startDate":"2026-11-24","weeks":8,"asOf":"2026-11-23","tz":660,"learningConsent":null,"eligibility":"CONFIRMED","goals":{"run":"PERFORMANCE","strength":"RUNNING_SUPPORT"},"event":null,"runExperience":"INTERMEDIATE","strengthExperience":"NOVICE","recent":{"runDaysPerWeek":3,"runMinutesPerWeek":135,"longestRunMinutes":70,"strengthDaysPerWeek":1},"knownRuns":0,"knownExercises":[],"equipment":["DUMBBELLS","BODYWEIGHT","BANDS"],"pause":null,"wearable":"PARTIAL","history":8,"ageYears":30,"specialPopulation":null,"schedule":{"runDays":[0,2,5],"strengthDays":[1,3],"runTurn":"AM","strengthTurn":"PM","runMinutes":45,"strengthMinutes":45,"longRunDay":5,"longRunMinutes":90}}`
+
+**Onboarding.** PROPOSED: Complete conditional program generated from onboarding-like facts
+
+- Phases: ESTABLISHMENT · DEVELOPMENT · DEVELOPMENT · DEVELOPMENT · CONSOLIDATION · DEVELOPMENT · DEVELOPMENT · DEVELOPMENT
+- Week 0 (ESTABLISHMENT): d0 2026-11-24 AM RUN EASY 35min (EASY) | d1 2026-11-25 PM STRENGTH_FULL_A 15min: sit-to-stand 1x5 RIR3 BW; wall-pushup 1x5 RIR3 BW; prone-row-practice 1x5 RIR3 BW; supported-calf-raise 1x5 RIR3 BW; dead-bug-practice 1x5 RIR3 BW | d2 2026-11-26 AM RUN EASY 35min (EASY) | d3 2026-11-27 PM STRENGTH_FULL_B 27min: glute-bridge 2x8 RIR3 BW; band-row 2x8 RIR3 BW; incline-push-up 2x8 RIR3 BW; reverse-lunge 1x10 RIR3 BW; dead-bug 1x10 RIR3 BW | d5 2026-11-29 AM RUN LONG 55min (LONG)
+- Week 1 (DEVELOPMENT): d0 2026-12-01 AM RUN EASY 35min (EASY) | d1 2026-12-02 PM STRENGTH_FULL_A 27min: goblet-squat 2x8 RIR3 establish; incline-push-up 2x8 RIR3 BW; band-row 2x8 RIR3 BW; db-calf-raise 1x10 RIR3 establish; dead-bug 1x10 RIR3 BW | d2 2026-12-03 AM RUN EASY 35min (EASY) | d3 2026-12-04 PM STRENGTH_FULL_B 27min: glute-bridge 2x8 RIR3 BW; band-row 2x8 RIR3 BW; incline-push-up 2x8 RIR3 BW; reverse-lunge 1x10 RIR3 BW; dead-bug 1x10 RIR3 BW | d5 2026-12-06 AM RUN LONG 55min (LONG)
+
+### w0 · 2026-11-30T20:00:00+11:00 · WEEKLY_REVIEW (week 0)
+
+- Athlete: 6 report(s): w0-run-d0 done 35min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-run-d2 done 35min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-run-d5 done 55min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) via phone-app; w0-run-d5 done 55min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) at 2026-11-28T20:12:00Z via watch-b; w0-str-d1 done 15min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-str-d3 done 27min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Executed as planned without adverse signal; the planned progression step stands
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE","sit-to-stand":"ADVANCE","wall-pushup":"ADVANCE","prone-row-practice":"ADVANCE","supported-calf-raise":"ADVANCE","dead-bug-practice":"ADVANCE","glute-bridge":"ADVANCE","band-row":"ADVANCE","incline-push-up":"ADVANCE","reverse-lunge":"ADVANCE","dead-bug":"ADVANCE"}`
+- Current week 0 (ESTABLISHMENT) from 2026-11-30: —
+- Next week 1 (DEVELOPMENT, provisional): d0 2026-12-01 AM RUN EASY 35min (EASY) | d1 2026-12-02 PM STRENGTH_FULL_A 27min: goblet-squat 2x8 RIR3 establish; incline-push-up 2x8 RIR3 BW; band-row 2x8 RIR3 BW; db-calf-raise 1x10 RIR3 establish; dead-bug 1x10 RIR3 BW | d2 2026-12-03 AM RUN EASY 35min (EASY) | d3 2026-12-04 PM STRENGTH_FULL_B 27min: glute-bridge 2x8 RIR3 BW; band-row 2x8 RIR3 BW; incline-push-up 2x8 RIR3 BW; reverse-lunge 1x10 RIR3 BW; dead-bug 1x10 RIR3 BW | d5 2026-12-06 AM RUN LONG 55min (LONG)
+
+### w1 · 2026-12-07T20:00:00+11:00 · WEEKLY_REVIEW (week 1)
+
+- Athlete: 6 report(s): w1-run-d5 done 55min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) reportedAt 2026-12-06T10:00:00+11:00; w1-run-d2 done 95min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) reportedAt 2026-12-07T18:00:00+11:00; w1-run-d0 done 35min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) reportedAt 2026-12-07T18:05:00+11:00; w1-run-d2 done 35min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) reportedAt 2026-12-07T19:30:00+11:00 corrects d15-w1-d2; w1-str-d1 done 27min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-str-d3 done 27min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE","goblet-squat":"ADVANCE","incline-push-up":"ADVANCE","band-row":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","glute-bridge":"ADVANCE","reverse-lunge":"ADVANCE"}`
+- Current week 1 (DEVELOPMENT) from 2026-12-07: —
+- Next week 2 (DEVELOPMENT, provisional): d0 2026-12-08 AM RUN EASY 35min (EASY) | d1 2026-12-09 PM STRENGTH_FULL_A 27min: goblet-squat 2x8 RIR3 establish; incline-push-up 2x10 RIR3 BW; band-row 2x8 RIR3 BW; db-calf-raise 1x10 RIR3 establish; dead-bug 1x12 RIR3 BW | d2 2026-12-10 AM RUN EASY 35min (EASY) | d3 2026-12-11 PM STRENGTH_FULL_B 28min: glute-bridge 2x10 RIR3 BW; band-row 2x8 RIR3 BW; incline-push-up 2x10 RIR3 BW; reverse-lunge 1x12 RIR3 BW; dead-bug 1x12 RIR3 BW | d5 2026-12-13 AM RUN LONG 55min (LONG)
+
+### w2 · 2026-12-14T20:00:00+11:00 · WEEKLY_REVIEW (week 2)
+
+- Athlete: 5 report(s): w2-run-d0 done 35min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-run-d2 done 35min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-run-d5 not done; w2-str-d1 done 27min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-str-d3 done 28min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **MODIFY** / GATED_NEXT_STEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation
+- Gates: `{"LONG":"HOLD","EASY":"ADVANCE","goblet-squat":"ADVANCE","incline-push-up":"ADVANCE","band-row":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","glute-bridge":"ADVANCE","reverse-lunge":"ADVANCE"}`
+- Current week 2 (DEVELOPMENT) from 2026-12-14: —
+- Next week 3 (DEVELOPMENT, provisional): d0 2026-12-15 AM RUN EASY 40min (EASY) | d1 2026-12-16 PM STRENGTH_FULL_A 28min: goblet-squat 2x8 RIR3 establish; incline-push-up 2x12 RIR3 BW; band-row 2x8 RIR3 BW; db-calf-raise 1x10 RIR3 establish; dead-bug 1x14 RIR3 BW | d2 2026-12-17 AM RUN EASY 35min (EASY) | d3 2026-12-18 PM STRENGTH_FULL_B 29min: glute-bridge 2x12 RIR3 BW; band-row 2x8 RIR3 BW; incline-push-up 2x12 RIR3 BW; reverse-lunge 1x14 RIR3 BW; dead-bug 1x14 RIR3 BW | d5 2026-12-20 AM RUN LONG 55min (LONG)
+
+### w3 · 2026-12-21T20:00:00+11:00 · WEEKLY_REVIEW (week 3)
+
+- Athlete: 6 report(s): w2-run-d5 done 55min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) corrects d15-w2-long; w3-run-d0 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-run-d2 done 35min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-run-d5 done 55min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-str-d1 done 28min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-str-d3 done 29min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **MODIFY** / GATED_NEXT_STEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Executed as planned this week; next week’s runs follow the executed record, not the plan’s earlier projection; so the plan is re-based, not kept
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE","goblet-squat":"ADVANCE","incline-push-up":"ADVANCE","band-row":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","glute-bridge":"ADVANCE","reverse-lunge":"ADVANCE"}`
+- Current week 3 (DEVELOPMENT) from 2026-12-21: —
+- Next week 4 (CONSOLIDATION, provisional): d0 2026-12-22 AM RUN QUALITY 34min (THRESHOLD 3x5'/2') | d1 2026-12-23 PM STRENGTH_FULL_A 20min: goblet-squat 1x8 RIR3 establish; incline-push-up 1x14 RIR3 BW; band-row 1x8 RIR3 BW; db-calf-raise 1x10 RIR3 establish; dead-bug 1x14 RIR3 BW | d2 2026-12-24 AM RUN EASY 40min (EASY +strides) | d3 2026-12-25 PM STRENGTH_FULL_B 21min: glute-bridge 1x14 RIR3 BW; band-row 1x8 RIR3 BW; incline-push-up 1x14 RIR3 BW; reverse-lunge 1x14 RIR3 BW; dead-bug 1x14 RIR3 BW | d5 2026-12-27 AM RUN LONG 50min (LONG)
+
+### w4 · 2026-12-28T20:00:00+11:00 · WEEKLY_REVIEW (week 4)
+
+- Athlete: 5 report(s): w4-run-d0 done 34min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w4-run-d2 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w4-run-d5 done 50min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) at 2026-12-30T07:05:00+11:00 via watch-b; w4-str-d1 done 20min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w4-str-d3 done 21min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **MODIFY** / GATED_NEXT_STEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · offers LADDER_STEP,LADDER_STEP,LADDER_STEP,LADDER_STEP,LADDER_STEP · new plan
+- Reason: Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation
+- Gates: `{"LONG":"HOLD","QUALITY":"ADVANCE","EASY":"ADVANCE","goblet-squat":"ADVANCE","incline-push-up":"ADVANCE","band-row":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","glute-bridge":"ADVANCE","reverse-lunge":"ADVANCE"}`
+- Current week 4 (CONSOLIDATION) from 2026-12-28: —
+- Next week 5 (DEVELOPMENT, provisional): d0 2026-12-29 AM RUN QUALITY 34min (THRESHOLD 3x5'/2') | d1 2026-12-30 PM STRENGTH_FULL_A 33min: goblet-squat 2x8 RIR3 establish; incline-push-up 3x14 RIR3 BW; band-row 2x8 RIR3 BW; db-calf-raise 1x10 RIR3 establish; dead-bug 2x14 RIR3 BW | d2 2026-12-31 AM RUN EASY 40min (EASY +strides) | d3 2027-01-01 PM STRENGTH_FULL_B 39min: glute-bridge 3x14 RIR3 BW; band-row 2x8 RIR3 BW; incline-push-up 3x14 RIR3 BW; reverse-lunge 2x14 RIR3 BW; dead-bug 2x14 RIR3 BW | d5 2027-01-03 AM RUN LONG 60min (LONG)
+
+### f4 · 2026-12-28T21:30:00+11:00 · WEEKLY_REVIEW (week 4)
+
+- Athlete: 1 report(s): w4-run-d5 done 50min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) at 2026-12-27T07:05:00+11:00 via watch-b
+- Coach: **MODIFY** / GATED_NEXT_STEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · offers LADDER_STEP,LADDER_STEP,LADDER_STEP,LADDER_STEP,LADDER_STEP · new plan
+- Reason: Executed as planned this week; next week’s runs follow the executed record, not the plan’s earlier projection; so the plan is re-based, not kept
+- Gates: `{"LONG":"ADVANCE","QUALITY":"ADVANCE","EASY":"ADVANCE","goblet-squat":"ADVANCE","incline-push-up":"ADVANCE","band-row":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","glute-bridge":"ADVANCE","reverse-lunge":"ADVANCE"}`
+- Current week 4 (CONSOLIDATION) from 2026-12-28: —
+- Next week 5 (DEVELOPMENT, provisional): d0 2026-12-29 AM RUN QUALITY 34min (THRESHOLD 3x5'/2') | d1 2026-12-30 PM STRENGTH_FULL_A 33min: goblet-squat 2x8 RIR3 establish; incline-push-up 3x14 RIR3 BW; band-row 2x8 RIR3 BW; db-calf-raise 1x10 RIR3 establish; dead-bug 2x14 RIR3 BW | d2 2026-12-31 AM RUN EASY 40min (EASY +strides) | d3 2027-01-01 PM STRENGTH_FULL_B 39min: glute-bridge 3x14 RIR3 BW; band-row 2x8 RIR3 BW; incline-push-up 3x14 RIR3 BW; reverse-lunge 2x14 RIR3 BW; dead-bug 2x14 RIR3 BW | d5 2027-01-03 AM RUN LONG 60min (LONG)
+
+### w5 · 2027-01-04T20:00:00+11:00 · WEEKLY_REVIEW (week 5)
+
+- Athlete: 5 report(s): w5-run-d0 done 34min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-run-d2 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-run-d5 done 60min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-str-d1 done 33min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-str-d3 done 39min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","QUALITY":"ADVANCE","EASY":"ADVANCE","goblet-squat":"ADVANCE","incline-push-up":"ADVANCE","band-row":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","glute-bridge":"ADVANCE","reverse-lunge":"ADVANCE"}`
+- Current week 5 (DEVELOPMENT) from 2027-01-04: —
+- Next week 6 (DEVELOPMENT, provisional): d0 2027-01-05 AM RUN QUALITY 41min (THRESHOLD 4x5'/2') | d1 2027-01-06 PM STRENGTH_FULL_A 33min: goblet-squat 2x8 RIR3 establish; incline-push-up 3x14 RIR3 BW; band-row 2x8 RIR3 BW; db-calf-raise 1x10 RIR3 establish; dead-bug 2x14 RIR3 BW | d2 2027-01-07 AM RUN EASY 40min (EASY +strides) | d3 2027-01-08 PM STRENGTH_FULL_B 39min: glute-bridge 3x14 RIR3 BW; band-row 2x8 RIR3 BW; incline-push-up 3x14 RIR3 BW; reverse-lunge 2x14 RIR3 BW; dead-bug 2x14 RIR3 BW | d5 2027-01-10 AM RUN LONG 65min (LONG)
+
+**Automated properties.** no failure
+
+**Metamorphic.** no violation
+
+**Author expectations.**
+- d15-e01 @GENERATE STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"PROPOSED"`
+- d15-e02 @GENERATE JUDGED [DOMAIN_ORACLE]: **JUDGED** — The partial history is read as about three runs a week (about 135-150 minutes, long run near 70 minutes) and one light strength session; UTC-stamped rows are attributed to their local dates; the starting week is near that level, neither from zero nor above it.
+- d15-e03 @w0 STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"KEEP"`
+- d15-e04 @w0 JUDGED [INVARIANT_ORACLE]: **JUDGED** — The phone and watch reports of the Sunday long run are one session (counted once) and the long run is dated on Sunday local time, not Saturday.
+- d15-e05 @w1 JUDGED [INVARIANT_ORACLE]: **JUDGED** — The 95-minute typo is superseded by its correction: it is not treated as an overperformance and does not drive any progression; arrival order does not matter.
+- d15-e06 @w3 JUDGED [DOMAIN_ORACLE]: **JUDGED** — After the late correction, the plan from week 4 treats the week-2 long run as done (no remedial or reduced long run because of a miss that did not happen), while the week-3 decisions already taken are not rewritten.
+- d15-e07 @w4 STATUS_IN [DOMAIN_ORACLE]: **FAIL** observed `"MODIFY"`
+- d15-e08 @w4 JUDGED [INVARIANT_ORACLE]: **JUDGED** — The future-stamped long run is not written to the completed-work record as given (not dated in week 5, not counted as done in week 4 until its time is resolved).
+- d15-e09 @f4 STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"MODIFY"`
+- d15-e10 @f4 VALIDITY_IS [DOMAIN_ORACLE]: **PASS** observed `"VALID_WITHIN_CURRENT_BOUNDED_SCOPE"`
+
+**Independent assessment (author, written before any output).**
+- Rationale: None of these data events is about training: they are about trust in the record. A good coach counts one session once, dates it in the athlete's local day, lets a correction replace what it corrects, and refuses to write a fact that claims to come from the future.
+- Preferred: Plan from the partial history at about current volume. Count the duplicate long run once on Sunday. Use the corrected week-1 value. After the late correction, plan week 4 as if the week-2 long run was done. Hold (or ask about) the future-stamped report; accept the re-synced one.
+- Acceptable alternatives: ASK instead of HOLD for the future-stamped report. / Keeping the week-4 plan unchanged after the late correction if week 3 had not been reduced.
+- Concerns: Counting the long run twice or on Saturday. / Reacting to the 95-minute typo. / Reducing the week-4 long run because of the miss that was later corrected. / Accepting a fact dated in the future as done.
+- Domain notes: The CONTRADICTION tag is used for the week-2 "not done" report contradicted a week later by its correction. Week 0 day 5 is a Sunday; 07:12 local is 20:12 UTC on Saturday.
+
+## R7D-D16
+
+**Intent.** A heavy, novice 44-year-old who currently runs once a week picks six run days and three strength days for a 4-week general-fitness program. He then does about half of it, sends an empty review, and answers in two pieces. It probes capacity-aware planning on chosen days, mixed and shortened execution, the empty review, a partial answer, and that late answers equal on-time ones.
+
+**Tags.** GENERAL_FITNESS, BALANCED_HYBRID, NON_RACE, H4, RUN_EXP_NOVICE, STR_EXP_NONE, TOO_MANY_DAYS, FREQ_HIGH, SHARED_DAYS, LOW_DATA, START_NON_MONDAY, TIMEZONE, MIXED_EXECUTION, SHORTENED_RUNS, EMPTY_REVIEW, PARTIAL_ANSWER, LATE_ANSWER, UNREPORTED_WEEKS, SAME_FACTS_DIFFERENT_ORDER · oracle DOMAIN_ORACLE
+
+**Intake.** `{"startDate":"2026-11-07","weeks":4,"asOf":"2026-11-05","tz":120,"learningConsent":null,"eligibility":"CONFIRMED","goals":{"run":"GENERAL","strength":"GENERAL"},"event":null,"runExperience":"NOVICE","strengthExperience":"NONE","recent":{"runDaysPerWeek":1,"runMinutesPerWeek":25,"longestRunMinutes":25,"strengthDaysPerWeek":0},"knownRuns":0,"knownExercises":[],"equipment":["BODYWEIGHT","BANDS"],"pause":null,"wearable":null,"history":0,"ageYears":44,"specialPopulation":null,"schedule":{"runDays":[0,1,2,3,4,5],"strengthDays":[0,2,4],"runTurn":"AM","strengthTurn":"PM","runMinutes":30,"strengthMinutes":30,"longRunDay":1,"longRunMinutes":60}}`
+
+**Onboarding.** PROPOSED: Complete conditional program generated from onboarding-like facts
+
+- Phases: ESTABLISHMENT · DEVELOPMENT · DEVELOPMENT · DEVELOPMENT
+- Week 0 (ESTABLISHMENT): d0 2026-11-07 AM RUN WALK_JOG 20min (WALK_JOG 3x(30s jog/120s walk)) | d0 2026-11-07 PM STRENGTH_FULL_A 12min: sit-to-stand 1x5 RIR3 BW; wall-pushup 1x5 RIR3 BW; prone-row-practice 1x5 RIR3 BW | d1 2026-11-08 AM RUN WALK 20min (WALK) | d2 2026-11-09 AM RUN WALK_JOG 20min (WALK_JOG 3x(30s jog/120s walk)) | d2 2026-11-09 PM STRENGTH_FULL_B 24min: glute-bridge 2x10 RIR3 BW; band-row 2x10 RIR3 BW; incline-push-up 2x10 RIR3 BW | d3 2026-11-10 AM RUN WALK 20min (WALK) | d4 2026-11-11 AM RUN WALK_JOG 20min (WALK_JOG 3x(30s jog/120s walk)) | d4 2026-11-11 PM STRENGTH_CORE 11min: dead-bug-practice 1x5 RIR3 BW; supported-calf-raise 1x5 RIR3 BW | d5 2026-11-12 AM RUN WALK 20min (WALK)
+- Week 1 (DEVELOPMENT): d0 2026-11-14 AM RUN WALK_JOG 21min (WALK_JOG 5x(30s jog/120s walk)) | d0 2026-11-14 PM STRENGTH_FULL_A 24min: box-squat-bodyweight 2x10 RIR3 BW; incline-push-up 2x10 RIR3 BW; band-row 2x10 RIR3 BW | d1 2026-11-15 AM RUN WALK 20min (WALK) | d2 2026-11-16 AM RUN WALK_JOG 21min (WALK_JOG 5x(30s jog/120s walk)) | d2 2026-11-16 PM STRENGTH_FULL_B 24min: glute-bridge 2x10 RIR3 BW; band-row 2x10 RIR3 BW; incline-push-up 2x10 RIR3 BW | d3 2026-11-17 AM RUN WALK 20min (WALK) | d4 2026-11-18 AM RUN WALK_JOG 21min (WALK_JOG 5x(30s jog/120s walk)) | d4 2026-11-18 PM STRENGTH_CORE 14min: dead-bug 1x12 RIR3 BW; standing-calf-raise 1x12 RIR3 BW; front-plank 1x12 RIR3 BW | d5 2026-11-19 AM RUN WALK 20min (WALK)
+
+### w0 · 2026-11-13T20:00:00+02:00 · WEEKLY_REVIEW (week 0)
+
+- Athlete: 9 report(s): w0-run-d0 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-run-d1 done 12min (performance=UNDER,recovery=COMPATIBLE,effort=HARDER,nextDayFunction=NORMAL); w0-run-d2 not done; w0-run-d3 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-run-d4 not done; w0-run-d5 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=HARDER,nextDayFunction=NORMAL); w0-str-d0 done 2 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-str-d2 done 24min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-str-d4 not done
+- Coach: **MODIFY** / GATED_NEXT_STEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation
+- Gates: `{"WALK_JOG":"HOLD","sit-to-stand":"ADVANCE","wall-pushup":"ADVANCE","prone-row-practice":"HOLD","glute-bridge":"ADVANCE","band-row":"ADVANCE","incline-push-up":"ADVANCE","dead-bug-practice":"HOLD","supported-calf-raise":"HOLD"}`
+- Current week 0 (ESTABLISHMENT) from 2026-11-13: —
+- Next week 1 (DEVELOPMENT, provisional): d0 2026-11-14 AM RUN WALK_JOG 20min (WALK_JOG 3x(30s jog/120s walk)) | d0 2026-11-14 PM STRENGTH_FULL_A 24min: box-squat-bodyweight 2x10 RIR3 BW; incline-push-up 2x10 RIR3 BW; band-row 2x10 RIR3 BW | d1 2026-11-15 AM RUN WALK 20min (WALK) | d2 2026-11-16 AM RUN WALK_JOG 20min (WALK_JOG 3x(30s jog/120s walk)) | d2 2026-11-16 PM STRENGTH_FULL_B 24min: glute-bridge 2x10 RIR3 BW; band-row 2x10 RIR3 BW; incline-push-up 2x10 RIR3 BW | d3 2026-11-17 AM RUN WALK 20min (WALK) | d4 2026-11-18 AM RUN WALK_JOG 20min (WALK_JOG 3x(30s jog/120s walk)) | d4 2026-11-18 PM STRENGTH_CORE 14min: dead-bug 1x12 RIR3 BW; standing-calf-raise 1x12 RIR3 BW; front-plank 1x12 RIR3 BW | d5 2026-11-19 AM RUN WALK 20min (WALK)
+
+### w1 · 2026-11-20T20:00:00+02:00 · WEEKLY_REVIEW (week 1)
+
+- Athlete: no reports
+- Coach: **MODIFY** / GATED_NEXT_STEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation
+- Gates: `{"WALK_JOG":"HOLD","box-squat-bodyweight":"HOLD","incline-push-up":"HOLD","band-row":"HOLD","glute-bridge":"HOLD","dead-bug":"HOLD","standing-calf-raise":"HOLD","front-plank":"HOLD"}`
+- Current week 1 (DEVELOPMENT) from 2026-11-20: —
+- Next week 2 (DEVELOPMENT, provisional): d0 2026-11-21 AM RUN WALK_JOG 20min (WALK_JOG 3x(30s jog/120s walk)) | d0 2026-11-21 PM STRENGTH_FULL_A 24min: box-squat-bodyweight 2x10 RIR3 BW; incline-push-up 2x10 RIR3 BW; band-row 2x10 RIR3 BW | d1 2026-11-22 AM RUN WALK 20min (WALK) | d2 2026-11-23 AM RUN WALK_JOG 20min (WALK_JOG 3x(30s jog/120s walk)) | d2 2026-11-23 PM STRENGTH_FULL_B 24min: glute-bridge 2x10 RIR3 BW; band-row 2x10 RIR3 BW; incline-push-up 2x10 RIR3 BW | d3 2026-11-24 AM RUN WALK 20min (WALK) | d4 2026-11-25 AM RUN WALK_JOG 20min (WALK_JOG 3x(30s jog/120s walk)) | d4 2026-11-25 PM STRENGTH_CORE 14min: dead-bug 1x12 RIR3 BW; standing-calf-raise 1x12 RIR3 BW; front-plank 1x12 RIR3 BW | d5 2026-11-26 AM RUN WALK 20min (WALK)
+
+### p1 · 2026-11-20T21:15:00+02:00 · WEEKLY_REVIEW (week 1)
+
+- Athlete: no reports · client notes ANSWER_WITHOUT_PENDING_QUESTION
+- Coach: **MODIFY** / GATED_NEXT_STEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation
+- Gates: `{"WALK_JOG":"HOLD","box-squat-bodyweight":"HOLD","incline-push-up":"HOLD","band-row":"HOLD","glute-bridge":"HOLD","dead-bug":"HOLD","standing-calf-raise":"HOLD","front-plank":"HOLD"}`
+- Current week 1 (DEVELOPMENT) from 2026-11-20: —
+- Next week 2 (DEVELOPMENT, provisional): d0 2026-11-21 AM RUN WALK_JOG 20min (WALK_JOG 3x(30s jog/120s walk)) | d0 2026-11-21 PM STRENGTH_FULL_A 24min: box-squat-bodyweight 2x10 RIR3 BW; incline-push-up 2x10 RIR3 BW; band-row 2x10 RIR3 BW | d1 2026-11-22 AM RUN WALK 20min (WALK) | d2 2026-11-23 AM RUN WALK_JOG 20min (WALK_JOG 3x(30s jog/120s walk)) | d2 2026-11-23 PM STRENGTH_FULL_B 24min: glute-bridge 2x10 RIR3 BW; band-row 2x10 RIR3 BW; incline-push-up 2x10 RIR3 BW | d3 2026-11-24 AM RUN WALK 20min (WALK) | d4 2026-11-25 AM RUN WALK_JOG 20min (WALK_JOG 3x(30s jog/120s walk)) | d4 2026-11-25 PM STRENGTH_CORE 14min: dead-bug 1x12 RIR3 BW; standing-calf-raise 1x12 RIR3 BW; front-plank 1x12 RIR3 BW | d5 2026-11-26 AM RUN WALK 20min (WALK)
+
+### a2 · 2026-11-21T06:30:00+02:00 · WEEKLY_REVIEW (week 2)
+
+- Athlete: no reports · client notes ANSWER_WITHOUT_PENDING_QUESTION
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: next-week steps are gated when this week’s remaining sessions are complete
+- Current week 2 (DEVELOPMENT) from 2026-11-21: d0 2026-11-21 AM RUN WALK_JOG 20min (WALK_JOG 3x(30s jog/120s walk)) | d0 2026-11-21 PM STRENGTH_FULL_A 24min: box-squat-bodyweight 2x10 RIR3 BW; incline-push-up 2x10 RIR3 BW; band-row 2x10 RIR3 BW | d1 2026-11-22 AM RUN WALK 20min (WALK) | d2 2026-11-23 AM RUN WALK_JOG 20min (WALK_JOG 3x(30s jog/120s walk)) | d2 2026-11-23 PM STRENGTH_FULL_B 24min: glute-bridge 2x10 RIR3 BW; band-row 2x10 RIR3 BW; incline-push-up 2x10 RIR3 BW | d3 2026-11-24 AM RUN WALK 20min (WALK) | d4 2026-11-25 AM RUN WALK_JOG 20min (WALK_JOG 3x(30s jog/120s walk)) | d4 2026-11-25 PM STRENGTH_CORE 14min: dead-bug 1x12 RIR3 BW; standing-calf-raise 1x12 RIR3 BW; front-plank 1x12 RIR3 BW | d5 2026-11-26 AM RUN WALK 20min (WALK)
+- Next week 3 (DEVELOPMENT, provisional): d0 2026-11-28 AM RUN WALK_JOG 21min (WALK_JOG 5x(30s jog/120s walk)) | d0 2026-11-28 PM STRENGTH_FULL_A 25min: box-squat-bodyweight 2x12 RIR3 BW; incline-push-up 2x12 RIR3 BW; band-row 2x12 RIR3 BW | d1 2026-11-29 AM RUN WALK 20min (WALK) | d2 2026-11-30 AM RUN WALK_JOG 21min (WALK_JOG 5x(30s jog/120s walk)) | d2 2026-11-30 PM STRENGTH_FULL_B 25min: glute-bridge 2x12 RIR3 BW; band-row 2x12 RIR3 BW; incline-push-up 2x12 RIR3 BW | d3 2026-12-01 AM RUN WALK 20min (WALK) | d4 2026-12-02 AM RUN WALK_JOG 21min (WALK_JOG 5x(30s jog/120s walk)) | d4 2026-12-02 PM STRENGTH_CORE 14min: dead-bug 1x14 RIR3 BW; standing-calf-raise 1x14 RIR3 BW; front-plank 1x14 RIR3 BW | d5 2026-12-03 AM RUN WALK 20min (WALK)
+
+### w2 · 2026-11-27T20:00:00+02:00 · WEEKLY_REVIEW (week 2)
+
+- Athlete: 9 report(s): w2-run-d0 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-run-d1 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-run-d2 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-run-d3 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-run-d4 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-run-d5 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-str-d0 done 24min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-str-d2 done 24min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-str-d4 done 14min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"WALK_JOG":"ADVANCE","box-squat-bodyweight":"ADVANCE","incline-push-up":"ADVANCE","band-row":"ADVANCE","glute-bridge":"ADVANCE","dead-bug":"ADVANCE","standing-calf-raise":"ADVANCE","front-plank":"ADVANCE"}`
+- Current week 2 (DEVELOPMENT) from 2026-11-27: —
+- Next week 3 (DEVELOPMENT, provisional): d0 2026-11-28 AM RUN WALK_JOG 21min (WALK_JOG 5x(30s jog/120s walk)) | d0 2026-11-28 PM STRENGTH_FULL_A 25min: box-squat-bodyweight 2x12 RIR3 BW; incline-push-up 2x12 RIR3 BW; band-row 2x10 RIR3 BW | d1 2026-11-29 AM RUN WALK 20min (WALK) | d2 2026-11-30 AM RUN WALK_JOG 21min (WALK_JOG 5x(30s jog/120s walk)) | d2 2026-11-30 PM STRENGTH_FULL_B 25min: glute-bridge 2x12 RIR3 BW; band-row 2x10 RIR3 BW; incline-push-up 2x12 RIR3 BW | d3 2026-12-01 AM RUN WALK 20min (WALK) | d4 2026-12-02 AM RUN WALK_JOG 21min (WALK_JOG 5x(30s jog/120s walk)) | d4 2026-12-02 PM STRENGTH_CORE 14min: dead-bug 1x14 RIR3 BW; standing-calf-raise 1x14 RIR3 BW; front-plank 1x14 RIR3 BW | d5 2026-12-03 AM RUN WALK 20min (WALK)
+
+### w3 · 2026-12-04T20:00:00+02:00 · WEEKLY_REVIEW (week 3)
+
+- Athlete: 9 report(s): w3-run-d0 done 21min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-run-d1 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-run-d2 done 21min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-run-d3 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-run-d4 done 21min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-run-d5 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-str-d0 done 25min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-str-d2 done 25min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-str-d4 done 14min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Final week of the horizon; record outcomes for the next program
+- Current week 3 (DEVELOPMENT) from 2026-12-04: —
+
+**Automated properties.** no failure
+
+**Metamorphic.** VARIANT `[{"index":0,"compareAtStep":"a2","expect":"SAME_PLAN","evaluable":true,"ok":false,"base":{"decision":{"status":"KEEP","action":"KEEP","validity":"VALID_WITHIN_CURRENT_BOUNDED_SCOPE","question":null,"gates":null,"offers":[],"pending":null},"runMinutes":243},"variant":{"decision":{"status":"MODIFY","action":"GATED_NEXT_STEP","validity":"VALID_WITHIN_CURRENT_BOUNDED_SCOPE","question":null,"gates":{"WALK_JOG":"HOLD","band-row":"HOLD","box-squat-bodyweight":"HOLD","dead-bug":"HOLD","front-plank":"HOLD","glute-bridge":"HOLD","incline-push-up":"HOLD","standing-calf-raise":"HOLD"},"offers":[],"pending":null},"runMinutes":120}}]`
+
+**Author expectations.**
+- d16-e01 @GENERATE STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"PROPOSED"`
+- d16-e02 @GENERATE JUDGED [DOMAIN_ORACLE]: **JUDGED** — Week-0 total running is close to current capacity (roughly 30-70 minutes spread over the six days as walks, walk/jog, very short easy runs or rest by design), not six 30-minute runs plus a 60-minute long run.
+- d16-e03 @GENERATE ROLE_ABSENT [DOMAIN_ORACLE]: **PASS** observed `[]`
+- d16-e04 @GENERATE JUDGED [INVARIANT_ORACLE]: **JUDGED** — Strength uses only bodyweight and bands; on shared days running is AM and strength PM.
+- d16-e05 @w0 STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"MODIFY"`
+- d16-e06 @w0 QUESTION_KIND_IS [DOMAIN_ORACLE]: **PASS** observed `null`
+- d16-e07 @w0 JUDGED [DOMAIN_ORACLE]: **JUDGED** — Week 1 does not increase running over week 0; it holds or reduces, and does not schedule make-up sessions for the two missed runs.
+- d16-e08 @w1 STATUS_IN [DOMAIN_ORACLE]: **FAIL** observed `"MODIFY"`
+- d16-e09 @w1 QUESTION_KIND_IS [DOMAIN_ORACLE]: **FAIL** observed `null`
+- d16-e10 @w1 NO_PRESCRIPTION [INVARIANT_ORACLE]: **FAIL** observed `"VALID_WITHIN_CURRENT_BOUNDED_SCOPE"`
+- d16-e11 @p1 STATUS_IN [DOMAIN_ORACLE]: **FAIL** observed `"MODIFY"`
+- d16-e12 @p1 VALIDITY_IS [DOMAIN_ORACLE]: **FAIL** observed `"VALID_WITHIN_CURRENT_BOUNDED_SCOPE"`
+- d16-e13 @a2 STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"KEEP"`
+- d16-e14 @a2 VALIDITY_IS [DOMAIN_ORACLE]: **PASS** observed `"VALID_WITHIN_CURRENT_BOUNDED_SCOPE"`
+- d16-e15 @a2 JUDGED [DOMAIN_ORACLE]: **JUDGED** — Week 2 running is not above week 1's planned load; the plan adapts toward the two to three sessions he actually does (lighter content on the other chosen days), without catch-up.
+
+**Independent assessment (author, written before any output).**
+- Rationale: Enthusiasm exceeds capacity: one 25-minute run a week now, nine chosen sessions a week asked. The chosen days must be respected, but the dose must come from capacity; then execution shows what he can sustain.
+- Preferred: Put light content on all chosen days (walks, short walk/jog, mobility-like bodyweight strength) with total running near 40-60 minutes, no hard running. After week 0 hold or reduce. At the empty review, ask about the week-1 runs; after the partial answer, keep asking about the rest; after the full answer, plan week 2 around the ~3 sessions he really does.
+- Acceptable alternatives: ASK at onboarding to confirm capacity before planning. / REST_BY_DESIGN on some chosen run days. / Treating the shortened long run as a sign to keep the long session short.
+- Concerns: Six full runs per week in week 0. / Progression after a week of misses. / Treating unknown week-1 runs as done or missed. / Clearing the question after the partial answer. / Different plans depending only on when the same week-1 facts arrived.
+- Domain notes: The two-part answer uses explicit overrides so it does not depend on which sessions the pending question lists. Week-1 strength is never reported in either version.
+
+## R7D-D17
+
+**Intent.** A 63-year-old who has never lifted starts a twice-weekly machine and dumbbell program, logs her first working loads, has a tired week, skips the eligibility questions once, and later reports an adverse strength response. It probes strength-only planning with no running, first-load confirmation, nonclinical fatigue, mid-program unknown eligibility and a single adverse strength response.
+
+**Tags.** STRENGTH_ONLY, GENERAL_FITNESS, H8, STR_EXP_NONE, RUN_EXP_NONE, GYM, FREQ_LOW, LOW_DATA, COLD_START, START_NON_MONDAY, TIMEZONE, LOAD_CONFIRMATION, FATIGUE_SYSTEMIC, ELIGIBILITY_UNKNOWN, ADVERSE_RESPONSE · oracle DOMAIN_ORACLE
+
+**Intake.** `{"startDate":"2026-12-06","weeks":8,"asOf":"2026-12-04","tz":-480,"learningConsent":null,"eligibility":"CONFIRMED","goals":{"run":"NONE","strength":"GENERAL"},"event":null,"runExperience":"NONE","strengthExperience":"NONE","recent":{"runDaysPerWeek":0,"strengthDaysPerWeek":0},"knownRuns":0,"knownExercises":[],"equipment":["MACHINES","DUMBBELLS","BENCH","BODYWEIGHT"],"pause":null,"wearable":null,"history":0,"ageYears":63,"specialPopulation":null,"schedule":{"runDays":[],"strengthDays":[1,4],"strengthTurn":"AM","strengthMinutes":45}}`
+
+**Onboarding.** PROPOSED: Complete conditional program generated from onboarding-like facts
+
+- Phases: ESTABLISHMENT · DEVELOPMENT · DEVELOPMENT · DEVELOPMENT · CONSOLIDATION · DEVELOPMENT · DEVELOPMENT · DEVELOPMENT
+- Week 0 (ESTABLISHMENT): d1 2026-12-07 AM STRENGTH_FULL_A 15min: sit-to-stand 1x5 RIR3 BW; wall-pushup 1x5 RIR3 BW; prone-row-practice 1x5 RIR3 BW; supported-calf-raise 1x5 RIR3 BW; dead-bug-practice 1x5 RIR3 BW | d4 2026-12-10 AM STRENGTH_FULL_B 28min: glute-bridge 2x10 RIR3 BW; db-row 2x8 RIR3 establish; db-floor-press 2x8 RIR3 establish; reverse-lunge 1x12 RIR3 BW; dead-bug 1x12 RIR3 BW
+- Week 1 (DEVELOPMENT): d1 2026-12-14 AM STRENGTH_FULL_A 28min: goblet-squat 2x10 RIR3 establish; db-floor-press 2x8 RIR3 last logged; db-row 2x8 RIR3 last logged; standing-calf-raise 1x12 RIR3 BW; dead-bug 1x12 RIR3 BW | d4 2026-12-17 AM STRENGTH_FULL_B 28min: glute-bridge 2x10 RIR3 BW; db-row 2x8 RIR3 last logged; db-floor-press 2x8 RIR3 last logged; reverse-lunge 1x12 RIR3 BW; dead-bug 1x12 RIR3 BW
+
+### w0 · 2026-12-12T18:00:00-08:00 · WEEKLY_REVIEW (week 0)
+
+- Athlete: 2 report(s): w0-str-d1 done 15min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-str-d4 done 28min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · 2 load question(s) · new plan
+- Reason: The progression rule is unchanged; first logged loads wait for confirmation before they become numbers (db-row, db-floor-press)
+- Gates: `{"sit-to-stand":"ADVANCE","wall-pushup":"ADVANCE","prone-row-practice":"ADVANCE","supported-calf-raise":"ADVANCE","dead-bug-practice":"ADVANCE","glute-bridge":"ADVANCE","db-row":"ADVANCE","db-floor-press":"ADVANCE","reverse-lunge":"ADVANCE","dead-bug":"ADVANCE"}`
+- Current week 0 (ESTABLISHMENT) from 2026-12-12: —
+- Next week 1 (DEVELOPMENT, provisional): d1 2026-12-14 AM STRENGTH_FULL_A 28min: goblet-squat 2x10 RIR3 establish; db-floor-press 2x8 RIR3 last logged; db-row 2x8 RIR3 last logged; standing-calf-raise 1x12 RIR3 BW; dead-bug 1x12 RIR3 BW | d4 2026-12-17 AM STRENGTH_FULL_B 28min: glute-bridge 2x10 RIR3 BW; db-row 2x8 RIR3 last logged; db-floor-press 2x8 RIR3 last logged; reverse-lunge 1x12 RIR3 BW; dead-bug 1x12 RIR3 BW
+
+### w1 · 2026-12-19T18:00:00-08:00 · WEEKLY_REVIEW (week 1)
+
+- Athlete: 2 report(s): w1-str-d1 done 28min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-str-d4 done 28min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL) · load confirmations `[{"exerciseId":"db-row","value":20,"unit":"KG","convention":"PER_HAND"},{"exerciseId":"db-floor-press","value":10,"unit":"KG","convention":"PER_HAND"}]`
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"goblet-squat":"ADVANCE","db-floor-press":"ADVANCE","db-row":"ADVANCE","standing-calf-raise":"ADVANCE","dead-bug":"ADVANCE","glute-bridge":"ADVANCE","reverse-lunge":"ADVANCE"}`
+- Current week 1 (DEVELOPMENT) from 2026-12-19: —
+- Next week 2 (DEVELOPMENT, provisional): d1 2026-12-21 AM STRENGTH_FULL_A 28min: goblet-squat 2x10 RIR3 establish; db-floor-press 2x10 RIR3 10kg PER_HAND; db-row 2x10 RIR3 20kg PER_HAND; standing-calf-raise 1x14 RIR3 BW; dead-bug 1x14 RIR3 BW | d4 2026-12-24 AM STRENGTH_FULL_B 29min: glute-bridge 2x12 RIR3 BW; db-row 2x10 RIR3 20kg PER_HAND; db-floor-press 2x10 RIR3 10kg PER_HAND; reverse-lunge 1x14 RIR3 BW; dead-bug 1x14 RIR3 BW
+
+### f2 · 2026-12-21T06:30:00-08:00 · SYSTEMIC_FATIGUE (week 2)
+
+- Athlete: no reports · signals `{"region":"ALL"}`
+- Coach: **MODIFY** / REDUCE · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Remove the remaining hard suffix; keep easy participation
+- Current week 2 (DEVELOPMENT) from 2026-12-21: d1 2026-12-21 AM STRENGTH_FULL_A 16min: goblet-squat 1x10 RIR4 establish; db-floor-press 1x10 RIR4 10kg PER_HAND; db-row 1x10 RIR4 20kg PER_HAND | d4 2026-12-24 AM STRENGTH_FULL_B 17min: glute-bridge 1x12 RIR4 BW; db-row 1x10 RIR4 20kg PER_HAND; db-floor-press 1x10 RIR4 10kg PER_HAND
+- Next week 3 (DEVELOPMENT, provisional): d1 2026-12-28 AM STRENGTH_FULL_A 29min: goblet-squat 2x10 RIR3 last logged; db-floor-press 2x12 RIR3 10kg PER_HAND; db-row 2x12 RIR3 20kg PER_HAND; standing-calf-raise 1x16 RIR3 BW; dead-bug 1x16 RIR3 BW | d4 2026-12-31 AM STRENGTH_FULL_B 30min: glute-bridge 2x14 RIR3 BW; db-row 2x12 RIR3 20kg PER_HAND; db-floor-press 2x12 RIR3 10kg PER_HAND; reverse-lunge 1x16 RIR3 BW; dead-bug 1x16 RIR3 BW
+
+### w2 · 2026-12-26T18:00:00-08:00 · WEEKLY_REVIEW (week 2)
+
+- Athlete: 2 report(s): w2-str-d1 done 16min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-str-d4 done 17min 3 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"goblet-squat":"ADVANCE","db-floor-press":"ADVANCE","db-row":"ADVANCE","glute-bridge":"ADVANCE"}`
+- Current week 2 (DEVELOPMENT) from 2026-12-26: —
+- Next week 3 (DEVELOPMENT, provisional): d1 2026-12-28 AM STRENGTH_FULL_A 29min: goblet-squat 2x10 RIR3 establish; db-floor-press 2x12 RIR3 10kg PER_HAND; db-row 2x12 RIR3 20kg PER_HAND; standing-calf-raise 1x14 RIR3 BW; dead-bug 1x14 RIR3 BW | d4 2026-12-31 AM STRENGTH_FULL_B 29min: glute-bridge 2x14 RIR3 BW; db-row 2x12 RIR3 20kg PER_HAND; db-floor-press 2x12 RIR3 10kg PER_HAND; reverse-lunge 1x14 RIR3 BW; dead-bug 1x14 RIR3 BW
+
+### u3 · 2027-01-02T18:00:00-08:00 · WEEKLY_REVIEW (week 3)
+
+- Athlete: eligibility UNKNOWN · 2 report(s): w3-str-d1 done 29min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-str-d4 done 29min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **ASK** / ASK · REQUIRES_RECONCILIATION
+- Reason: Current eligibility must be assessed; unknown is neither clearance nor illness
+- Current week 3 (DEVELOPMENT) from 2027-01-02: —
+- Next week 4 (CONSOLIDATION, provisional): d1 2027-01-04 AM STRENGTH_FULL_A 20min: goblet-squat 1x10 RIR3 last logged; db-floor-press 1x8 RIR3 12kg PER_HAND; db-row 1x8 RIR3 22kg PER_HAND; standing-calf-raise 1x16 RIR3 BW; dead-bug 1x16 RIR3 BW | d4 2027-01-07 AM STRENGTH_FULL_B 21min: glute-bridge 1x16 RIR3 BW; db-row 1x8 RIR3 22kg PER_HAND; db-floor-press 1x8 RIR3 12kg PER_HAND; reverse-lunge 1x16 RIR3 BW; dead-bug 1x16 RIR3 BW
+
+### e3 · 2027-01-02T19:00:00-08:00 · WEEKLY_REVIEW (week 3)
+
+- Athlete: 2 report(s): w3-str-d1 done 29min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-str-d4 done 29min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"goblet-squat":"ADVANCE","db-floor-press":"ADVANCE","db-row":"ADVANCE","standing-calf-raise":"ADVANCE","dead-bug":"ADVANCE","glute-bridge":"ADVANCE","reverse-lunge":"ADVANCE"}`
+- Current week 3 (DEVELOPMENT) from 2027-01-02: —
+- Next week 4 (CONSOLIDATION, provisional): d1 2027-01-04 AM STRENGTH_FULL_A 20min: goblet-squat 1x10 RIR3 establish; db-floor-press 1x8 RIR3 12kg PER_HAND; db-row 1x8 RIR3 22kg PER_HAND; standing-calf-raise 1x16 RIR3 BW; dead-bug 1x16 RIR3 BW | d4 2027-01-07 AM STRENGTH_FULL_B 21min: glute-bridge 1x16 RIR3 BW; db-row 1x8 RIR3 22kg PER_HAND; db-floor-press 1x8 RIR3 12kg PER_HAND; reverse-lunge 1x16 RIR3 BW; dead-bug 1x16 RIR3 BW
+
+### w4 · 2027-01-09T18:00:00-08:00 · WEEKLY_REVIEW (week 4)
+
+- Athlete: 2 report(s): w4-str-d1 done 20min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w4-str-d4 done 21min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · offers LADDER_STEP,LADDER_STEP,LADDER_STEP,LADDER_STEP,LADDER_STEP,LADDER_STEP,LADDER_STEP · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"goblet-squat":"ADVANCE","db-floor-press":"ADVANCE","db-row":"ADVANCE","standing-calf-raise":"ADVANCE","dead-bug":"ADVANCE","glute-bridge":"ADVANCE","reverse-lunge":"ADVANCE"}`
+- Current week 4 (CONSOLIDATION) from 2027-01-09: —
+- Next week 5 (DEVELOPMENT, provisional): d1 2027-01-11 AM STRENGTH_FULL_A 38min: goblet-squat 2x10 RIR3 establish; db-floor-press 3x8 RIR3 12kg PER_HAND; db-row 3x8 RIR3 22kg PER_HAND; standing-calf-raise 2x16 RIR3 BW; dead-bug 2x16 RIR3 BW | d4 2027-01-14 AM STRENGTH_FULL_B 42min: glute-bridge 3x16 RIR3 BW; db-row 3x8 RIR3 22kg PER_HAND; db-floor-press 3x8 RIR3 12kg PER_HAND; reverse-lunge 2x16 RIR3 BW; dead-bug 2x16 RIR3 BW
+
+### w5 · 2027-01-16T18:00:00-08:00 · WEEKLY_REVIEW (week 5)
+
+- Athlete: 2 report(s): w5-str-d1 done 38min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w5-str-d4 done 42min 5 exercises (performance=COMPATIBLE,recovery=ADVERSE,effort=HARDER,nextDayFunction=IMPAIRED)
+- Coach: **MODIFY** / GATED_NEXT_STEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation
+- Gates: `{"goblet-squat":"ADVANCE","db-floor-press":"HOLD","db-row":"HOLD","standing-calf-raise":"ADVANCE","dead-bug":"HOLD","glute-bridge":"HOLD","reverse-lunge":"HOLD"}`
+- Current week 5 (DEVELOPMENT) from 2027-01-16: —
+- Next week 6 (DEVELOPMENT, provisional): d1 2027-01-18 AM STRENGTH_FULL_A 38min: goblet-squat 2x10 RIR3 establish; db-floor-press 3x8 RIR3 12kg PER_HAND; db-row 3x8 RIR3 22kg PER_HAND; standing-calf-raise 2x16 RIR3 BW; dead-bug 2x16 RIR3 BW | d4 2027-01-21 AM STRENGTH_FULL_B 42min: glute-bridge 3x16 RIR3 BW; db-row 3x8 RIR3 22kg PER_HAND; db-floor-press 3x8 RIR3 12kg PER_HAND; reverse-lunge 2x16 RIR3 BW; dead-bug 2x16 RIR3 BW
+
+### w6 · 2027-01-23T18:00:00-08:00 · WEEKLY_REVIEW (week 6)
+
+- Athlete: 2 report(s): w6-str-d1 done 38min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-str-d4 done 42min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"goblet-squat":"ADVANCE","db-floor-press":"ADVANCE","db-row":"ADVANCE","standing-calf-raise":"ADVANCE","dead-bug":"ADVANCE","glute-bridge":"ADVANCE","reverse-lunge":"ADVANCE"}`
+- Current week 6 (DEVELOPMENT) from 2027-01-23: —
+- Next week 7 (DEVELOPMENT, provisional): d1 2027-01-25 AM STRENGTH_FULL_A 39min: goblet-squat 2x10 RIR3 establish; db-floor-press 3x10 RIR3 12kg PER_HAND; db-row 3x10 RIR3 22kg PER_HAND; standing-calf-raise 2x16 RIR3 BW; dead-bug 2x16 RIR3 BW | d4 2027-01-28 AM STRENGTH_FULL_B 42min: glute-bridge 3x16 RIR3 BW; db-row 3x10 RIR3 22kg PER_HAND; db-floor-press 3x10 RIR3 12kg PER_HAND; reverse-lunge 2x16 RIR3 BW; dead-bug 2x16 RIR3 BW
+
+### w7 · 2027-01-30T18:00:00-08:00 · WEEKLY_REVIEW (week 7)
+
+- Athlete: 2 report(s): w7-str-d1 done 39min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w7-str-d4 done 42min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Final week of the horizon; record outcomes for the next program
+- Current week 7 (DEVELOPMENT) from 2027-01-30: —
+
+**Automated properties.** no failure
+
+**Metamorphic.** no violation
+
+**Author expectations.**
+- d17-e01 @GENERATE STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"PROPOSED"`
+- d17-e02 @GENERATE ROLE_ABSENT [INVARIANT_ORACLE]: **PASS** observed `[]`
+- d17-e03 @GENERATE JUDGED [DOMAIN_ORACLE]: **JUDGED** — Two full-body sessions of simple machine/dumbbell/bodyweight exercises covering the main patterns, ESTABLISH loads (no guessed numbers), low volume (about 1-3 sets) and reps in reserve of about 3 or more at first, progressing slowly; only machines, dumbbells, bench or bodyweight are used.
+- d17-e04 @w0 JUDGED [DOMAIN_ORACLE]: **JUDGED** — The first logged loads are presented for confirmation and are not used to raise the loads before they are confirmed.
+- d17-e05 @f2 STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"MODIFY"`
+- d17-e06 @f2 JUDGED [DOMAIN_ORACLE]: **JUDGED** — The Monday session is eased (fewer sets or more reps in reserve, or shortened) and nothing progresses that day.
+- d17-e07 @u3 STATUS_IN [INVARIANT_ORACLE]: **PASS** observed `"ASK"`
+- d17-e08 @u3 NO_PRESCRIPTION [INVARIANT_ORACLE]: **PASS** observed `"REQUIRES_RECONCILIATION"`
+- d17-e09 @e3 STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"KEEP"`
+- d17-e10 @e3 VALIDITY_IS [DOMAIN_ORACLE]: **PASS** observed `"VALID_WITHIN_CURRENT_BOUNDED_SCOPE"`
+- d17-e11 @w5 JUDGED [DOMAIN_ORACLE]: **JUDGED** — After the adverse Thursday response, the next week does not increase lower-body load or volume; a small reduction or a repeat is appropriate, and there is no clinical route (no pain was reported).
+
+**Independent assessment (author, written before any output).**
+- Rationale: An older beginner benefits greatly from simple, regular resistance training; the risks are too much volume, guessed loads and over-reacting to normal tiredness or soreness. Unanswered eligibility mid-program must pause prescription until answered.
+- Preferred: Two full-body sessions (leg press or sit-to-stand/box squat, a hinge, a push, a pull, a trunk exercise), effort-based starting loads, confirm the first logged loads, then small progressions. Ease the session on the fatigue day. Ask when eligibility is unanswered; continue once answered. After the adverse response, repeat or slightly reduce the lower-body work.
+- Acceptable alternatives: Starting with machines only. / HOLD instead of ASK when eligibility is unanswered. / Postponing the fatigue-day session within the chosen days.
+- Concerns: Any running session. / Fixed guessed loads at the start. / Routing fatigue or soreness to a clinician. / Continuing to prescribe while eligibility is unanswered. / Counting the re-sent week twice.
+- Domain notes: loadsByPattern values are kilograms in the convention of whatever exercise the coach planned for that pattern; they are modest so they are plausible for a machine or a dumbbell variant.
+
+## R7D-D18
+
+**Intent.** A balanced hybrid athlete silently disappears for 17 days, comes back asking only to change her run turn, and declares the vacation when asked; later she declares a five-week work break with a short demonstration run. It probes the moderate break found through a question, a long break return with reduced loads in both sports, and that the reason category within nonclinical does not matter.
+
+**Tags.** BALANCED_HYBRID, NON_RACE, H16, RUN_EXP_INTERMEDIATE, STR_EXP_INTERMEDIATE, GYM, START_NON_MONDAY, TIMEZONE, UNREPORTED_WEEKS, SKIPPED_REVIEW, LATE_ANSWER, RETURN_MODERATE, RETURN_LONG, SCHEDULE_CHANGE · oracle DOMAIN_ORACLE
+
+**Intake.** `{"startDate":"2027-01-06","weeks":16,"asOf":"2027-01-05","tz":-300,"learningConsent":null,"eligibility":"CONFIRMED","goals":{"run":"PERFORMANCE","strength":"STRENGTH"},"event":null,"runExperience":"INTERMEDIATE","strengthExperience":"INTERMEDIATE","recent":{"runDaysPerWeek":3,"runMinutesPerWeek":150,"longestRunMinutes":75,"strengthDaysPerWeek":2},"knownRuns":0,"knownExercises":["back-squat 3x5 70KG TOTAL","bench-press 3x5 45KG TOTAL","barbell-rdl 3x6 70KG TOTAL","lat-pulldown 3x10 45KG MACHINE_STACK"],"equipment":["BARBELL","RACK","BENCH","DUMBBELLS","MACHINES","PULL_UP_BAR","BANDS","BODYWEIGHT"],"pause":null,"wearable":null,"history":0,"ageYears":35,"specialPopulation":null,"schedule":{"runDays":[1,3,5],"strengthDays":[0,4],"runTurn":"AM","strengthTurn":"PM","runMinutes":45,"strengthMinutes":50,"longRunDay":3,"longRunMinutes":90}}`
+
+**Onboarding.** PROPOSED: Complete conditional program generated from onboarding-like facts
+
+- Phases: DEVELOPMENT · DEVELOPMENT · DEVELOPMENT · CONSOLIDATION · DEVELOPMENT · DEVELOPMENT · DEVELOPMENT · CONSOLIDATION · DEVELOPMENT · DEVELOPMENT · DEVELOPMENT · CONSOLIDATION · DEVELOPMENT · DEVELOPMENT · DEVELOPMENT · CONSOLIDATION
+- Week 0 (DEVELOPMENT): d0 2027-01-06 PM STRENGTH_FULL_A 39min: back-squat 3x5 RIR3 70kg TOTAL; bench-press 3x5 RIR3 45kg TOTAL; lat-pulldown 3x6 RIR3 45kg MACHINE_STACK; db-calf-raise 2x7 RIR3 establish; dead-bug 2x7 RIR3 BW | d1 2027-01-07 AM RUN EASY 40min (EASY) | d3 2027-01-09 AM RUN LONG 65min (LONG) | d4 2027-01-10 PM STRENGTH_FULL_B 39min: barbell-rdl 3x6 RIR3 70kg TOTAL; lat-pulldown 3x6 RIR3 45kg MACHINE_STACK; bench-press 3x5 RIR3 45kg TOTAL; bulgarian-split-squat-db 2x7 RIR3 establish; dead-bug 2x7 RIR3 BW | d5 2027-01-11 AM RUN EASY 40min (EASY)
+- Week 1 (DEVELOPMENT): d0 2027-01-13 PM STRENGTH_FULL_A 39min: back-squat 3x5 RIR3 70kg TOTAL; bench-press 3x5 RIR3 45kg TOTAL; lat-pulldown 3x6 RIR3 45kg MACHINE_STACK; db-calf-raise 2x7 RIR3 last logged; dead-bug 2x9 RIR3 BW | d1 2027-01-14 AM RUN EASY 40min (EASY) | d3 2027-01-16 AM RUN LONG 65min (LONG) | d4 2027-01-17 PM STRENGTH_FULL_B 40min: barbell-rdl 3x6 RIR3 70kg TOTAL; lat-pulldown 3x6 RIR3 45kg MACHINE_STACK; bench-press 3x5 RIR3 45kg TOTAL; bulgarian-split-squat-db 2x7 RIR3 last logged; dead-bug 2x9 RIR3 BW | d5 2027-01-18 AM RUN EASY 40min (EASY)
+
+### w0 · 2027-01-12T21:00:00-05:00 · WEEKLY_REVIEW (week 0)
+
+- Athlete: 5 report(s): w0-run-d1 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-run-d3 done 65min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-run-d5 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-str-d0 done 39min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w0-str-d4 done 39min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE","back-squat":"ADVANCE","bench-press":"ADVANCE","lat-pulldown":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","barbell-rdl":"ADVANCE","bulgarian-split-squat-db":"ADVANCE"}`
+- Current week 0 (DEVELOPMENT) from 2027-01-12: —
+- Next week 1 (DEVELOPMENT, provisional): d0 2027-01-13 PM STRENGTH_FULL_A 39min: back-squat 3x5 RIR3 70kg TOTAL; bench-press 3x5 RIR3 45kg TOTAL; lat-pulldown 3x6 RIR3 45kg MACHINE_STACK; db-calf-raise 2x7 RIR3 establish; dead-bug 2x9 RIR3 BW | d1 2027-01-14 AM RUN EASY 40min (EASY) | d3 2027-01-16 AM RUN LONG 65min (LONG) | d4 2027-01-17 PM STRENGTH_FULL_B 40min: barbell-rdl 3x6 RIR3 70kg TOTAL; lat-pulldown 3x6 RIR3 45kg MACHINE_STACK; bench-press 3x5 RIR3 45kg TOTAL; bulgarian-split-squat-db 2x7 RIR3 establish; dead-bug 2x9 RIR3 BW | d5 2027-01-18 AM RUN EASY 40min (EASY)
+
+### w1 · 2027-01-19T21:00:00-05:00 · WEEKLY_REVIEW (week 1)
+
+- Athlete: 5 report(s): w1-run-d1 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-run-d3 done 65min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-run-d5 done 40min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-str-d0 done 39min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w1-str-d4 done 40min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","EASY":"ADVANCE","back-squat":"ADVANCE","bench-press":"ADVANCE","lat-pulldown":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","barbell-rdl":"ADVANCE","bulgarian-split-squat-db":"ADVANCE"}`
+- Current week 1 (DEVELOPMENT) from 2027-01-19: —
+- Next week 2 (DEVELOPMENT, provisional): d0 2027-01-20 PM STRENGTH_FULL_A 39min: back-squat 3x5 RIR3 72.5kg TOTAL; bench-press 3x5 RIR3 47.5kg TOTAL; lat-pulldown 3x6 RIR3 next machine setting above 45kg (else 45kg x6); db-calf-raise 2x7 RIR3 establish; dead-bug 2x10 RIR3 BW | d1 2027-01-21 AM RUN QUALITY 34min (THRESHOLD 3x5'/2') | d3 2027-01-23 AM RUN LONG 65min (LONG) | d4 2027-01-24 PM STRENGTH_FULL_B 40min: barbell-rdl 3x6 RIR3 72.5kg TOTAL; lat-pulldown 3x6 RIR3 next machine setting above 45kg (else 45kg x6); bench-press 3x5 RIR3 47.5kg TOTAL; bulgarian-split-squat-db 2x7 RIR3 establish; dead-bug 2x10 RIR3 BW | d5 2027-01-25 AM RUN EASY 45min (EASY +strides)
+
+### w2 · 2027-01-26T21:00:00-05:00 · WEEKLY_REVIEW (week 2)
+
+- Athlete: 5 report(s): w2-run-d1 done 34min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-run-d3 done 65min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-run-d5 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-str-d0 done 39min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w2-str-d4 done 40min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","QUALITY":"ADVANCE","EASY":"ADVANCE","back-squat":"ADVANCE","bench-press":"ADVANCE","lat-pulldown":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","barbell-rdl":"ADVANCE","bulgarian-split-squat-db":"ADVANCE"}`
+- Current week 2 (DEVELOPMENT) from 2027-01-26: —
+- Next week 3 (CONSOLIDATION, provisional): d0 2027-01-27 PM STRENGTH_FULL_A 27min: back-squat 2x5 RIR3 72.5kg TOTAL; bench-press 2x5 RIR3 47.5kg TOTAL; lat-pulldown 2x6 RIR3 45kg MACHINE_STACK; db-calf-raise 1x7 RIR3 establish; dead-bug 1x10 RIR3 BW | d1 2027-01-28 AM RUN QUALITY 34min (THRESHOLD 3x5'/2') | d3 2027-01-30 AM RUN LONG 60min (LONG) | d4 2027-01-31 PM STRENGTH_FULL_B 27min: barbell-rdl 2x6 RIR3 72.5kg TOTAL; lat-pulldown 2x6 RIR3 45kg MACHINE_STACK; bench-press 2x5 RIR3 47.5kg TOTAL; bulgarian-split-squat-db 1x7 RIR3 establish; dead-bug 1x10 RIR3 BW | d5 2027-02-01 AM RUN EASY 45min (EASY +strides)
+
+### w3 · 2027-02-02T21:00:00-05:00 · WEEKLY_REVIEW (week 3)
+
+- Athlete: 5 report(s): w3-run-d1 done 34min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-run-d3 done 60min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-run-d5 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-str-d0 done 27min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w3-str-d4 done 27min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · offers LADDER_STEP · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"LONG":"ADVANCE","QUALITY":"ADVANCE","EASY":"ADVANCE","back-squat":"ADVANCE","bench-press":"ADVANCE","lat-pulldown":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","barbell-rdl":"ADVANCE","bulgarian-split-squat-db":"ADVANCE"}`
+- Current week 3 (CONSOLIDATION) from 2027-02-02: —
+- Next week 4 (DEVELOPMENT, provisional): d0 2027-02-03 PM STRENGTH_FULL_A 50min: back-squat 4x5 RIR3 72.5kg TOTAL; bench-press 4x5 RIR3 47.5kg TOTAL; lat-pulldown 4x6 RIR3 next machine setting above 45kg (else 45kg x6); db-calf-raise 2x7 RIR3 establish; dead-bug 3x10 RIR3 BW | d1 2027-02-04 AM RUN QUALITY 41min (THRESHOLD 4x5'/2') | d3 2027-02-06 AM RUN LONG 70min (LONG) | d4 2027-02-07 PM STRENGTH_FULL_B 50min: barbell-rdl 4x6 RIR3 72.5kg TOTAL; lat-pulldown 4x6 RIR3 next machine setting above 45kg (else 45kg x6); bench-press 4x5 RIR3 47.5kg TOTAL; bulgarian-split-squat-db 2x7 RIR3 establish; dead-bug 3x10 RIR3 BW | d5 2027-02-08 AM RUN EASY 45min (EASY +strides)
+
+### s6 · 2027-02-20T06:30:00-05:00 · SCHEDULE_CHANGE (week 6)
+
+- Athlete: no reports · changes `{"runTurn":"PM"}`
+- Coach: **MODIFY** / REARRANGE_FUTURE_WEEKS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the athlete removed
+- Current week 6 (DEVELOPMENT) from 2027-02-20: d3 2027-02-20 AM RUN LONG 70min (LONG) | d4 2027-02-21 PM STRENGTH_FULL_B 50min: barbell-rdl 4x6 RIR3 75kg TOTAL; lat-pulldown 4x6 RIR3 next machine setting above 45kg (else 45kg x6); bench-press 4x5 RIR3 50kg TOTAL; bulgarian-split-squat-db 2x7 RIR3 last logged; dead-bug 3x10 RIR3 BW | d5 2027-02-22 AM RUN EASY 45min (EASY +strides)
+- Next week 7 (CONSOLIDATION, provisional): d0 2027-02-24 PM STRENGTH_FULL_A 38min: back-squat 3x5 RIR3 75kg TOTAL; bench-press 3x5 RIR3 50kg TOTAL; lat-pulldown 3x6 RIR3 45kg MACHINE_STACK; db-calf-raise 1x7 RIR3 last logged; dead-bug 2x10 RIR3 BW | d1 2027-02-25 PM RUN QUALITY 41min (THRESHOLD 4x5'/2') | d3 2027-02-27 PM RUN LONG 65min (LONG) | d4 2027-02-28 PM STRENGTH_FULL_B 38min: barbell-rdl 3x6 RIR3 75kg TOTAL; lat-pulldown 3x6 RIR3 45kg MACHINE_STACK; bench-press 3x5 RIR3 50kg TOTAL; bulgarian-split-squat-db 1x7 RIR3 last logged; dead-bug 2x10 RIR3 BW | d5 2027-03-01 PM RUN EASY 45min (EASY +strides)
+
+### a6 · 2027-02-20T08:00:00-05:00 · WEEKLY_REVIEW (week 6)
+
+- Athlete: no reports · break `{"startDate":"2027-02-03","endDate":"2027-02-19","days":17,"reasonCategory":"VACATION","nonclinical":true,"reason":"Family trip; no training at all."}`
+- Coach: **MODIFY** / REESTABLISH · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: moderate nonclinical interruption (17 days): re-entry from the reviewed entry dose, returning to the prior tolerated dose in 2 conditional steps
+- Current week 6 (DEVELOPMENT) from 2027-02-20: d3 2027-02-20 AM RUN LONG 20min (LONG) | d4 2027-02-21 PM STRENGTH_FULL_B 19min: barbell-rdl 1x6 RIR4 establish; lat-pulldown 1x6 RIR4 establish; bench-press 1x5 RIR4 establish; bulgarian-split-squat-db 1x5 RIR4 establish; dead-bug 1x10 RIR4 BW | d5 2027-02-22 AM RUN EASY 15min (EASY)
+- Next week 7 (CONSOLIDATION, provisional): d0 2027-02-24 PM STRENGTH_FULL_A 19min: back-squat 1x5 RIR4 establish; bench-press 1x5 RIR3 last logged; lat-pulldown 1x6 RIR3 last logged; db-calf-raise 1x5 RIR4 establish; dead-bug 1x10 RIR3 BW | d1 2027-02-25 PM RUN EASY 30min (EASY) | d3 2027-02-27 PM RUN LONG 45min (LONG) | d4 2027-02-28 PM STRENGTH_FULL_B 19min: barbell-rdl 1x6 RIR3 last logged; lat-pulldown 1x6 RIR3 last logged; bench-press 1x5 RIR3 last logged; bulgarian-split-squat-db 1x5 RIR3 last logged; dead-bug 1x10 RIR3 BW | d5 2027-03-01 PM RUN EASY 30min (EASY)
+
+### w6 · 2027-02-23T21:00:00-05:00 · WEEKLY_REVIEW (week 6)
+
+- Athlete: 5 report(s): w6-run-d1 done 43min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-run-d3 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-run-d5 done 15min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-str-d0 done 50min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w6-str-d4 done 19min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **MODIFY** / ADOPT_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · 2 load question(s) · new plan
+- Reason: Executed loads differ from the planned known loads; the plan continues from what was lifted, one step at a time
+- Gates: `{"EASY":"ADVANCE","back-squat":"ADVANCE","bench-press":"ADVANCE","lat-pulldown":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","barbell-rdl":"ADVANCE","bulgarian-split-squat-db":"ADVANCE"}`
+- Current week 6 (DEVELOPMENT) from 2027-02-23: —
+- Next week 7 (CONSOLIDATION, provisional): d0 2027-02-24 PM STRENGTH_FULL_A 19min: back-squat 1x5 RIR3 72.5kg TOTAL; bench-press 1x5 RIR3 47.5kg TOTAL; lat-pulldown 1x6 RIR4 establish; db-calf-raise 1x5 RIR4 establish; dead-bug 1x10 RIR3 BW | d1 2027-02-25 PM RUN EASY 30min (EASY) | d3 2027-02-27 PM RUN LONG 45min (LONG) | d4 2027-02-28 PM STRENGTH_FULL_B 19min: barbell-rdl 1x6 RIR4 establish; lat-pulldown 1x6 RIR4 establish; bench-press 1x5 RIR3 47.5kg TOTAL; bulgarian-split-squat-db 1x5 RIR4 establish; dead-bug 1x10 RIR3 BW | d5 2027-03-01 PM RUN EASY 30min (EASY)
+
+### w7 · 2027-03-02T21:00:00-05:00 · WEEKLY_REVIEW (week 7)
+
+- Athlete: 5 report(s): w7-run-d1 done 30min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w7-run-d3 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w7-run-d5 done 30min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w7-str-d0 done 19min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w7-str-d4 done 19min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **MODIFY** / ADOPT_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Executed loads differ from the planned known loads; the plan continues from what was lifted, one step at a time
+- Gates: `{"EASY":"ADVANCE","back-squat":"ADVANCE","bench-press":"ADVANCE","lat-pulldown":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","barbell-rdl":"ADVANCE","bulgarian-split-squat-db":"ADVANCE"}`
+- Current week 7 (CONSOLIDATION) from 2027-03-02: —
+- Next week 8 (DEVELOPMENT, provisional): d0 2027-03-03 PM STRENGTH_FULL_A 26min: back-squat 2x5 RIR3 72.5kg TOTAL; bench-press 2x5 RIR3 47.5kg TOTAL; lat-pulldown 1x6 RIR4 establish; db-calf-raise 1x5 RIR4 establish; dead-bug 2x10 RIR3 BW | d1 2027-03-04 PM RUN QUALITY 34min (THRESHOLD 3x5'/2') | d3 2027-03-06 PM RUN LONG 50min (LONG) | d4 2027-03-07 PM STRENGTH_FULL_B 23min: barbell-rdl 1x6 RIR4 establish; lat-pulldown 1x6 RIR4 establish; bench-press 2x5 RIR3 47.5kg TOTAL; bulgarian-split-squat-db 1x5 RIR4 establish; dead-bug 2x10 RIR3 BW | d5 2027-03-08 PM RUN EASY 45min (EASY +strides)
+
+### w8 · 2027-03-09T21:00:00-05:00 · WEEKLY_REVIEW (week 8)
+
+- Athlete: 5 report(s): w8-run-d1 done 34min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w8-run-d3 done 50min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w8-run-d5 done 45min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w8-str-d0 done 26min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w8-str-d4 done 23min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **MODIFY** / ADOPT_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Executed loads differ from the planned known loads; the plan continues from what was lifted, one step at a time
+- Gates: `{"LONG":"ADVANCE","QUALITY":"ADVANCE","EASY":"ADVANCE","back-squat":"ADVANCE","bench-press":"ADVANCE","lat-pulldown":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","barbell-rdl":"ADVANCE","bulgarian-split-squat-db":"ADVANCE"}`
+- Current week 8 (DEVELOPMENT) from 2027-03-09: —
+- Next week 9 (DEVELOPMENT, provisional): d0 2027-03-10 PM STRENGTH_FULL_A 32min: back-squat 3x5 RIR3 75kg TOTAL; bench-press 3x5 RIR3 50kg TOTAL; lat-pulldown 1x6 RIR4 establish; db-calf-raise 1x5 RIR4 establish; dead-bug 2x10 RIR3 BW | d1 2027-03-11 PM RUN QUALITY 41min (THRESHOLD 4x5'/2') | d3 2027-03-13 PM RUN LONG 55min (LONG) | d4 2027-03-14 PM STRENGTH_FULL_B 26min: barbell-rdl 1x6 RIR4 establish; lat-pulldown 1x6 RIR4 establish; bench-press 3x5 RIR3 50kg TOTAL; bulgarian-split-squat-db 1x5 RIR4 establish; dead-bug 2x10 RIR3 BW | d5 2027-03-15 PM RUN EASY 45min (EASY +strides)
+
+### r14 · 2027-04-14T07:00:00-05:00 · RETURN_AFTER_PAUSE (week 14)
+
+- Athlete: no reports · break `{"startDate":"2027-03-10","endDate":"2027-04-13","days":35,"reasonCategory":"WORK","nonclinical":true,"reason":"Five-week project at a remote site; no gym and no running."}` · demonstration `{"observedAt":"2027-04-12T18:00:00-05:00","sport":"RUN","family":"EASY","minutes":20,"completed":true,"effort":"CONVERSATIONAL","response":"COMPATIBLE","ordinaryFunction":"COMPATIBLE","nextDayFunction":"NORMAL"}`
+- Coach: **MODIFY** / REESTABLISH · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: long nonclinical interruption (35 days): restart from current capacity; prior doses are only a ceiling
+- Current week 14 (DEVELOPMENT) from 2027-04-14: d0 2027-04-14 PM STRENGTH_FULL_A 19min: back-squat 1x5 RIR4 establish; bench-press 1x5 RIR4 establish; lat-pulldown 1x6 RIR4 establish; db-calf-raise 1x5 RIR4 establish; dead-bug 1x10 RIR4 BW | d1 2027-04-15 PM RUN EASY 20min (EASY) | d3 2027-04-17 PM RUN EASY 20min (EASY) | d4 2027-04-18 PM STRENGTH_FULL_B 19min: barbell-rdl 1x6 RIR4 establish; lat-pulldown 1x6 RIR4 establish; bench-press 1x5 RIR4 establish; bulgarian-split-squat-db 1x5 RIR4 establish; dead-bug 1x10 RIR4 BW | d5 2027-04-19 PM RUN EASY 20min (EASY)
+- Next week 15 (CONSOLIDATION, provisional): d0 2027-04-21 PM STRENGTH_FULL_A 19min: back-squat 1x5 RIR3 last logged; bench-press 1x5 RIR3 last logged; lat-pulldown 1x6 RIR3 last logged; db-calf-raise 1x5 RIR3 last logged; dead-bug 1x10 RIR3 BW | d1 2027-04-22 PM RUN EASY 25min (EASY) | d3 2027-04-24 PM RUN EASY 25min (EASY) | d4 2027-04-25 PM STRENGTH_FULL_B 19min: barbell-rdl 1x6 RIR3 last logged; lat-pulldown 1x6 RIR3 last logged; bench-press 1x5 RIR3 last logged; bulgarian-split-squat-db 1x5 RIR3 last logged; dead-bug 1x10 RIR3 BW | d5 2027-04-26 PM RUN EASY 25min (EASY)
+
+### w14 · 2027-04-20T21:00:00-05:00 · WEEKLY_REVIEW (week 14)
+
+- Athlete: 5 report(s): w14-run-d1 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w14-run-d3 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w14-run-d5 done 20min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w14-str-d0 done 19min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w14-str-d4 done 19min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / INSTANTIATE_LOGGED_LOADS · VALID_WITHIN_CURRENT_BOUNDED_SCOPE · new plan
+- Reason: Logged loads replace planned placeholders; the progression rule is unchanged
+- Gates: `{"EASY":"ADVANCE","back-squat":"ADVANCE","bench-press":"ADVANCE","lat-pulldown":"ADVANCE","db-calf-raise":"ADVANCE","dead-bug":"ADVANCE","barbell-rdl":"ADVANCE","bulgarian-split-squat-db":"ADVANCE"}`
+- Current week 14 (DEVELOPMENT) from 2027-04-20: —
+- Next week 15 (CONSOLIDATION, provisional): d0 2027-04-21 PM STRENGTH_FULL_A 19min: back-squat 1x5 RIR4 establish; bench-press 1x5 RIR4 establish; lat-pulldown 1x6 RIR4 establish; db-calf-raise 1x5 RIR4 establish; dead-bug 1x10 RIR3 BW | d1 2027-04-22 PM RUN EASY 25min (EASY) | d3 2027-04-24 PM RUN EASY 25min (EASY) | d4 2027-04-25 PM STRENGTH_FULL_B 19min: barbell-rdl 1x6 RIR4 establish; lat-pulldown 1x6 RIR4 establish; bench-press 1x5 RIR4 establish; bulgarian-split-squat-db 1x5 RIR4 establish; dead-bug 1x10 RIR3 BW | d5 2027-04-26 PM RUN EASY 25min (EASY)
+
+### w15 · 2027-04-27T21:00:00-05:00 · WEEKLY_REVIEW (week 15)
+
+- Athlete: 5 report(s): w15-run-d1 done 25min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w15-run-d3 done 25min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w15-run-d5 done 25min (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w15-str-d0 done 19min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL); w15-str-d4 done 19min 5 exercises (performance=COMPATIBLE,recovery=COMPATIBLE,effort=ON_TARGET,nextDayFunction=NORMAL)
+- Coach: **KEEP** / KEEP · VALID_WITHIN_CURRENT_BOUNDED_SCOPE
+- Reason: Final week of the horizon; record outcomes for the next program
+- Current week 15 (CONSOLIDATION) from 2027-04-27: —
+
+**Automated properties.** no failure
+
+**Metamorphic.** no violation
+
+**Author expectations.**
+- d18-e01 @GENERATE STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"PROPOSED"`
+- d18-e02 @s6 STATUS_IN [DOMAIN_ORACLE]: **FAIL** observed `"MODIFY"`
+- d18-e03 @s6 QUESTION_KIND_IS [DOMAIN_ORACLE]: **FAIL** observed `null`
+- d18-e04 @s6 NO_PRESCRIPTION [INVARIANT_ORACLE]: **FAIL** observed `"VALID_WITHIN_CURRENT_BOUNDED_SCOPE"`
+- d18-e05 @a6 STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"MODIFY"`
+- d18-e06 @a6 VALIDITY_IS [DOMAIN_ORACLE]: **PASS** observed `"VALID_WITHIN_CURRENT_BOUNDED_SCOPE"`
+- d18-e07 @a6 ROLE_ABSENT [DOMAIN_ORACLE]: **PASS** observed `[]`
+- d18-e08 @a6 ROLE_MINUTES_COMPARE [DOMAIN_ORACLE]: **PASS** observed `{"week":45,"otherWeek":60}`
+- d18-e09 @a6 JUDGED [INVARIANT_ORACLE]: **JUDGED** — From the change on, runs are scheduled in the PM turn on days 1, 3 and 5; nothing is added to make up for the break.
+- d18-e10 @r14 STATUS_IN [DOMAIN_ORACLE]: **PASS** observed `"MODIFY"`
+- d18-e11 @r14 VALIDITY_IS [DOMAIN_ORACLE]: **PASS** observed `"VALID_WITHIN_CURRENT_BOUNDED_SCOPE"`
+- d18-e12 @r14 PHASE_IS [DOMAIN_ORACLE]: **FAIL** observed `"DEVELOPMENT"`
+- d18-e13 @r14 ROLE_ABSENT [DOMAIN_ORACLE]: **PASS** observed `[]`
+- d18-e14 @r14 ROLE_MINUTES_COMPARE [DOMAIN_ORACLE]: **PASS** observed `{"week":0,"otherWeek":50}`
+- d18-e15 @r14 JUDGED [DOMAIN_ORACLE]: **JUDGED** — Return running is roughly 40-60% of the week-8 level, anchored on the 20-minute demonstration; strength resumes at reduced loads or volume (for example re-established or about 10-20% below the last logged loads) with more reserve.
+
+**Independent assessment (author, written before any output).**
+- Rationale: Two nonclinical breaks of different length. The first is hidden: the coach can only find it by asking about unreported sessions. The second is declared with a current demonstration of tolerance. Fitness loss after 17 days is modest; after 35 days it is meaningful in both sports.
+- Preferred: At s6, ask about the unreported runs (prescribe nothing). After the declared vacation, plan a short re-entry (about one week near 70-80% of pre-break, no quality) and move runs to the evening. After the five-week break, plan a return week near half of the pre-break running with no quality and reduced strength loads, then rebuild over two to three weeks.
+- Acceptable alternatives: Treating the first re-entry week as RETURN phase. / Re-establishing strength loads after the long break instead of a percentage reduction.
+- Concerns: Assuming the vacation weeks were done (progression) or missed without asking. / Resuming at the pre-break level after five weeks. / Quality running in either first week back. / Different plans for VACATION versus WORK.
+- Domain notes: The vacation is declared as an interruption inside a weekly review on day 3 of week 6 (an answer). The demonstration run is two days before the return decision, inside the declared break.
+
