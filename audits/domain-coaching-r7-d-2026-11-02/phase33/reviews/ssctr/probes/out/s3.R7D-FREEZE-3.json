@@ -1,0 +1,206 @@
+{
+ "runtime": "R7D-FREEZE-3",
+ "cases": {
+  "C1_clinicalEarlierBreakCompleteWeekBetween": {
+   "aStep": "CLINICAL_HUMAN_REQUIRED CLINICAL_HUMAN_REQUIRED",
+   "dStep": "CLINICAL_HUMAN_REQUIRED CLINICAL_HUMAN_REQUIRED",
+   "result": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "action": "CLINICAL_HUMAN_REQUIRED",
+    "validity": "REQUIRES_RECONCILIATION",
+    "question": null,
+    "reason": "A prior clinical dependency remains outside this nonclinical reference; no automatic clearance",
+    "runsAhead": "LONG:75 EASY:50 THRESHOLD:43 LONG:75",
+    "qualityAhead": true,
+    "maxRunAhead": 75,
+    "strengthAhead": "back-squat:3x10@85 db-bench-press:3x8@24 db-row:3x8@24",
+    "returnsApplied": 0,
+    "proposal": null,
+    "declared": 2
+   }
+  },
+  "C2_clinicalLaterBreakCompleteWeekBetween": {
+   "dStep": "CLINICAL_HUMAN_REQUIRED CLINICAL_HUMAN_REQUIRED",
+   "result": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "action": "CLINICAL_HUMAN_REQUIRED",
+    "validity": "REQUIRES_RECONCILIATION",
+    "question": null,
+    "reason": "A prior clinical dependency remains outside this nonclinical reference; no automatic clearance",
+    "runsAhead": "LONG:75 EASY:50 THRESHOLD:43 LONG:75",
+    "qualityAhead": true,
+    "maxRunAhead": 75,
+    "strengthAhead": "back-squat:3x10@85 db-bench-press:3x8@24 db-row:3x8@24",
+    "returnsApplied": 0,
+    "proposal": null,
+    "declared": 2
+   }
+  },
+  "C3_painFlagAtReview": {
+   "status": "CLINICAL_HUMAN_REQUIRED",
+   "action": "CLINICAL_HUMAN_REQUIRED",
+   "validity": "REQUIRES_RECONCILIATION",
+   "question": null,
+   "reason": "A current clinical flag routes to qualified human assessment; no dependent prescription or return recipe",
+   "runsAhead": "LONG:75 EASY:50 THRESHOLD:43 LONG:75",
+   "qualityAhead": true,
+   "maxRunAhead": 75,
+   "strengthAhead": "back-squat:3x10@85 db-bench-press:3x8@24 db-row:3x8@24",
+   "returnsApplied": 0,
+   "proposal": null,
+   "declared": 2
+  },
+  "C4_adverseRecoveryInTheWeek": {
+   "status": "MODIFY",
+   "action": "REESTABLISH",
+   "validity": "VALID",
+   "question": null,
+   "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-07 to 2026-12-10), each its own interruption; the stop read runs from 2026-12-07 to 2026-12-10, and training is recorded after the earlier one: short nonclinical i",
+   "ret": "SHORT 4d 2026-12-07..2026-12-10",
+   "runMode": "EASY",
+   "separateBreaks": [
+    "c4-A 2026-11-16..2026-11-29 TRAINING_AFTER",
+    "c4-D 2026-12-07..2026-12-10 LATEST"
+   ],
+   "runsAhead": "LONG:65 EASY:50 EASY:34 LONG:65",
+   "qualityAhead": false,
+   "maxRunAhead": 65,
+   "strengthAhead": "back-squat:3x11@82.5 db-bench-press:2x12@22 db-row:2x12@22",
+   "returnsApplied": 1,
+   "proposal": "present",
+   "declared": 2
+  },
+  "U1_unknownNoWholeWeekFits": {
+   "gap": [
+    "2026-11-30 STRENGTH",
+    "2026-12-01 RUN"
+   ],
+   "asked": {
+    "status": "ASK",
+    "action": "ASK",
+    "validity": "REQUIRES_RECONCILIATION",
+    "question": "TRAINING_BETWEEN_BREAKS",
+    "unreported": 2,
+    "reason": "The breaks reported on 2026-11-30 (2026-11-16 to 2026-11-29) and on 2026-12-07 (2026-12-03 to 2026-12-06) are separate, and 2 planned sessions between them (2026-11-30 to 2026-12-02) have no report: say what was done (report the sessions, d",
+    "runsAhead": "THRESHOLD:34 LONG:65 EASY:50 THRESHOLD:41 LONG:70",
+    "qualityAhead": true,
+    "maxRunAhead": 70,
+    "strengthAhead": "db-rdl:2x12@20 db-row:2x8@22 db-bench-press:2x8@22",
+    "returnsApplied": 0,
+    "proposal": null,
+    "declared": 2
+   },
+   "answeredAllDone": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-03 to 2026-12-06), each its own interruption; the stop read runs from 2026-12-03 to 2026-12-06, and training is recorded after the earlier one: short nonclinical i",
+    "ret": "SHORT 4d 2026-12-03..2026-12-06",
+    "runMode": "EASY",
+    "separateBreaks": [
+     "u1-A 2026-11-16..2026-11-29 TRAINING_AFTER",
+     "u1-D 2026-12-03..2026-12-06 LATEST"
+    ],
+    "runsAhead": "EASY:34 LONG:65 EASY:50 THRESHOLD:41 LONG:70",
+    "qualityAhead": true,
+    "maxRunAhead": 70,
+    "strengthAhead": "db-rdl:2x10@20 db-row:2x8@22 db-bench-press:2x8@22",
+    "returnsApplied": 1,
+    "proposal": "present",
+    "declared": 2
+   },
+   "answeredAllNotDone": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-03 to 2026-12-06), each its own interruption; the stop read runs from 2026-11-16 to 2026-12-06 with no training recorded between them: moderate nonclinical interru",
+    "ret": "MODERATE 21d 2026-11-16..2026-12-06",
+    "runMode": "RETURN",
+    "separateBreaks": [
+     "u1-A 2026-11-16..2026-11-29 NO_TRAINING_BETWEEN",
+     "u1-D 2026-12-03..2026-12-06 LATEST"
+    ],
+    "runsAhead": "EASY:15 LONG:20 EASY:30 EASY:30 LONG:45",
+    "qualityAhead": false,
+    "maxRunAhead": 45,
+    "strengthAhead": "db-rdl:1x10@ESTABLISH db-row:1x12@ESTABLISH db-bench-press:1x12@ESTABLISH",
+    "returnsApplied": 1,
+    "proposal": "present",
+    "declared": 2
+   },
+   "answeredOneOnly": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-03 to 2026-12-06), each its own interruption; the stop read runs from 2026-12-03 to 2026-12-06, and training is recorded after the earlier one: short nonclinical i",
+    "ret": "SHORT 4d 2026-12-03..2026-12-06",
+    "runMode": "EASY",
+    "separateBreaks": [
+     "u1-A 2026-11-16..2026-11-29 TRAINING_AFTER",
+     "u1-D 2026-12-03..2026-12-06 LATEST"
+    ],
+    "runsAhead": "EASY:34 LONG:65 EASY:45 THRESHOLD:41 LONG:70",
+    "qualityAhead": true,
+    "maxRunAhead": 70,
+    "strengthAhead": "db-rdl:2x10@20 db-row:2x8@22 db-bench-press:2x8@22",
+    "returnsApplied": 1,
+    "proposal": "present",
+    "declared": 2
+   }
+  },
+  "U2_completeWeekThenUnknownSessions": {
+   "unknownBetween": [
+    "2026-12-07 STRENGTH",
+    "2026-12-08 RUN"
+   ],
+   "result": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-09 to 2026-12-12), each its own interruption; the stop read runs from 2026-12-09 to 2026-12-12, and training is recorded after the earlier one: short nonclinical i",
+    "ret": "SHORT 4d 2026-12-09..2026-12-12",
+    "runMode": "EASY",
+    "separateBreaks": [
+     "u2-A 2026-11-16..2026-11-29 TRAINING_AFTER",
+     "u2-D 2026-12-09..2026-12-12 LATEST"
+    ],
+    "runsAhead": "EASY:50 EASY:41 LONG:70 EASY:50 THRESHOLD:41 LONG:65",
+    "qualityAhead": true,
+    "maxRunAhead": 70,
+    "strengthAhead": "back-squat:3x11@82.5 db-bench-press:2x10@22 db-row:2x10@22",
+    "returnsApplied": 1,
+    "proposal": "present",
+    "declared": 2
+   }
+  },
+  "O1_orderOnReentryBranch": {
+   "results": [
+    {
+     "order": "AD",
+     "ret": "SHORT 4d 2026-12-07..2026-12-10",
+     "separateBreaks": [
+      "o1-A 2026-11-16..2026-11-29 TRAINING_AFTER",
+      "o1-D 2026-12-07..2026-12-10 LATEST"
+     ],
+     "runsAhead": "LONG:70 EASY:50 EASY:41 LONG:70",
+     "strengthAhead": "back-squat:3x11@82.5 db-bench-press:2x12@22 db-row:2x12@22"
+    },
+    {
+     "order": "DA",
+     "ret": "SHORT 4d 2026-12-07..2026-12-10",
+     "separateBreaks": [
+      "o1-A 2026-11-16..2026-11-29 TRAINING_AFTER",
+      "o1-D 2026-12-07..2026-12-10 LATEST"
+     ],
+     "runsAhead": "LONG:70 EASY:50 EASY:41 LONG:70",
+     "strengthAhead": "back-squat:3x11@82.5 db-bench-press:2x12@22 db-row:2x12@22"
+    }
+   ],
+   "same": true
+  }
+ }
+}

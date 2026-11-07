@@ -1,0 +1,196 @@
+{
+ "recordId": "R7D-QUALITY-PHASE33-CHECK-1",
+ "role": "Quality & Reliability Engineer, constitution 1.3.0 (independent judge; not the author of the runtime, tests, harness, PREREG-5, interface delta 5, evidence or scripts)",
+ "date": "2026-11-06",
+ "candidate": "3228a70",
+ "candidateRuntime": {
+  "file": "CoachingCore/src/r6-adaptation.mjs",
+  "sha256": "15e4279baae4b79a5f61081539fa1f46b37930454f93894eab17118a248f97bc",
+  "otherSourceFiles": "equal to R7D-FREEZE-3 (bound files aeafc83)",
+  "evidenceCommit": "f74bb82",
+  "srcAndTestUnchangedBetween3228a70AndF74bb82": true
+ },
+ "scope": "The quality/reliability questions of phase33/reviews/REVIEW_REQUEST_PHASE33.md only. The SSCTR folder (phase33/reviews/ssctr/) and the SSCTR scratch directory were not opened. Synthetic development fixtures only: engineering evidence, never gate, quality or generalization evidence. Every probe ran on scratch copies outside the repository; nothing was deleted; no verify-r*/freeze-r*/integrate-queue --write ran against the repository.",
+ "verdict": "READY_WITH_CONDITIONS",
+ "verdictSummary": "SSCTR-P32-F01 is closed on the paths the rule names, and the closure reproduces: suite 952/952; directed 14/14 (3.3), 17/17 (3.2), 14/14 (3.1); F01 witness RED on R7D-FREEZE-3 and clean on the candidate, E1-E3 recognized; the author's 8/8 mutants killed; harness validation 5 and the differential reproduced byte-for-byte in substance. Independent probes confirm the closure for run-only and strength-only plans, three separate breaks, a return in force before the earlier break, determinism and append-only provenance. No path was found where an isolated session still ends the earlier break. One MAJOR conflict: the runtime's 'executed completely' is the reducer's gate reading, which never gates optional walks, recovery runs, shakeouts or race-week race touches and races, while INTERFACE-5, PREREG-5 Delta 2 and P18(a) require every session of the week. P18(a) therefore blocks the candidate on a plausible fresh case (QE-R7D-P33-01); it must be reconciled before any final holdout. One undisclosed inverse-defect residual: a whole week completed before a later break that starts later the same day (startedAt) is not recognized (QE-R7D-P33-02, conservative). One pre-existing fail-closed dead-end question is extended to isolated training (QE-R7D-P33-03). Plus record, process and test-gap items. No blocker: no unsafe direction, no behaviour change outside the F01 rule's own consequences, and freeze readiness demonstrated on a scratch clone.",
+ "items": [
+  {
+   "item": "reestablishedBetween: reuse of the reducer through stateAtBreak(...).history and the additive complete field",
+   "verdict": "PASS_WITH_FINDINGS",
+   "basis": "complete(sport) is the reducer's existing COMPLETED_SESSIONS predicate (every gate key of the sport ADVANCE or EARNED, strength logs usable), now also exposed per week; it is computed on R = C5 in the HISTORY reading. history is the evidenceState stateAtBreak already builds, cut at the stop's start or startedAt, with the return in force at that start. Neither field leaks: complete and history are read only by reestablishedBetween (grep of every consumer: planningBase, legacyUnreadWeeks, the historicalState export and the stateAtBreak callers all pick named fields). Findings: the gates cover only RUN_GATE_ROLE (EASY, LONG, QUALITY, WALK_JOG) and strength exercises, so the predicate is weaker than the rule as published (QE-R7D-P33-01); the week selection is day-granular although history honours startedAt (QE-R7D-P33-02)."
+  },
+  {
+   "item": "edge cases",
+   "verdict": "PASS_WITH_FINDINGS",
+   "basis": "Return in force before the earlier break: Q4a gives the stop 21 days MODERATE with entry and sessions ahead identical to the 21 days declared once; Q4b a whole week gives D alone SHORT, TRAINING_AFTER with reentryWeek. Late reports: the bulk and late forms of the directed tests and probes Q4b, Q6. Run-only and strength-only plans: Q1 (whole week SHORT with reentryWeek; one session MODERATE 25). SKIPPED sessions: excluded from the wholly-between test, while a SKIPPED row without movedTo stays MISSED in weekEvidence and holds its gate, so the direction is conservative; untested (QM9 survives). Weeks without one sport: the sports checked are those the week plans. A RETURN-branch week (return reported in week j+1) has no complete field and never re-enters (conservative). startedAt: QE-R7D-P33-02."
+  },
+  {
+   "item": "separateStop loop: reentry per iteration, labels, record, reentryWeek, the unknown-between question",
+   "verdict": "PASS_WITH_OBSERVATION",
+   "basis": "reentry is reassigned on every non-touching iteration and is non-null only when the loop breaks on it; TOUCHES/OVERLAPS keep the Phase 3.2 branch. Labels: TRAINING_NOT_REESTABLISHED only when trainedBetween holds, else NO_TRAINING_BETWEEN (T1, T2; three breaks in Q3a: A TRAINING_AFTER@wk4, B TRAINING_NOT_REESTABLISHED, stop 9 days SHORT). reentryWeek is written on every unplaced row (Q3b: A and B both carry the week after B; QE-R7D-P33-04). The question: a whole executed week is found before unreported sessions are asked (as R7D-FREEZE-3's trainedBetween came first, Q6); with no re-entry, unreported sessions are asked even when training is recorded (T4, intended, O-01 extended)."
+  },
+  {
+   "item": "behaviour outside F01 and containment",
+   "verdict": "PASS_WITH_FINDINGS",
+   "basis": "Differential reproduced: 151 cases, 147 identical, 4 differing (DEV-27, -28, -29, -31), 0 unexplained; rows equal to the committed file. The change is reachable only through ctx.separate, so the 139 cases that never read separate breaks (2 of 18 diagnostic and 0 of 100 generated cases state two breaks) are identical by construction; the differential compares decisions and plan views (record and free text excluded). Reviewer probes on R7D-FREEZE-3 and the candidate: every difference is in the F01 family (Q1 one-session, Q3a, Q4a, Q7), plus two consequences the differential did not reach: Q5, a proven re-entry no longer recognized (QE-R7D-P33-02; the differential's explainer would also classify it F01, because executedWeekBetween shares the day-granular test), and an applied break between the two separate breaks, where R7D-FREEZE-3's REESTABLISH (the F01 form) becomes a relation question (QE-R7D-P33-03)."
+  },
+  {
+   "item": "append-only provenance, determinism and event separation",
+   "verdict": "PASS",
+   "basis": "T8 and Q7: the earlier declaration row unchanged, the carried ledger prefix kept, decisions only appended (REPLAN_FROM_EVIDENCE, one REESTABLISH), the carrying fatigue events never applied, the return applied once. T9 and Q7: the same plain review twice gives byte-identical outputs (hash); either declaration order gives the same stop, entry and plan."
+  },
+  {
+   "item": "harness R7D-HARNESS-5: P18(a) soundness, false blocks, sensitivity, W-P18c",
+   "verdict": "PASS_WITH_FINDING",
+   "basis": "Validation 5 reproduced: noFalseBlock PASS, coverage COVERED (P18 24 units), 14/14 sensitivity rows DETECTED_AND_CLEAN_ON_CANDIDATE, 43/43 witnesses, runs, witnesses and coverage equal to the committed file. Sensitive on R7D-FREEZE-3 (DEV-27/28/29/31 OLDER_BREAK_DROPPED). W-P18c is discriminating: its rewritten return (the trip alone, the holiday TRAINING_AFTER after one run) passes R7D-HARNESS-4's any-executed-report test and fails only the new whole-week test. Not a sound necessary condition of the runtime as implemented: it requires every live session, the runtime only the gated ones, so it blocks the candidate (QH-1, QH-2: P18 FAIL OLDER_BREAK_DROPPED on a correct-by-its-own-rule TRAINING_AFTER; QH-3 PASS), QE-R7D-P33-01."
+  },
+  {
+   "item": "test, property and mutation adequacy",
+   "verdict": "PASS_WITH_TEST_GAPS",
+   "basis": "Author's 8/8 mutants reproduced (scratchRestored true). Reviewer mutants QM1-QM10 against the 3.3 and 3.2 directed files and the reviewer probes: QM7 and QM10 killed by the tests; QM2, QM4, QM5 and QM8 survive the tests and are killed only by the reviewer probes (Q5; Q1; Q1-Q6 record rows; Q2 and Q6); QM1, QM3, QM6 and QM9 survive both (QM6 equivalent while the week selection is day-granular). QE-R7D-P33-05."
+  },
+  {
+   "item": "the two updated Phase 3.2 assertions",
+   "verdict": "PASS",
+   "basis": "Reproduced: the R7D-FREEZE-3 version of r7d-phase32.test.mjs on the candidate gives 15 pass, 2 fail, exactly the two disclosed T4 tests; the updated file's two tests fail on R7D-FREEZE-3; the Phase 3.3 file on R7D-FREEZE-3 gives 11 fail and 3 pass (T2, T7, T8). The updates are the minimum the rule requires and are tighter, not weaker: each now asserts the stop label (TRAINING_NOT_REESTABLISHED, or NO_TRAINING_BETWEEN when answered not done), and the coverage 'the answer decides the class' moved to Phase 3.3 T4 (a whole unreported week answered in full gives SHORT, with its long run not done MODERATE). No other existing assertion changed (diff of the test folder)."
+  },
+  {
+   "item": "freeze readiness: freeze-r7d-4.mjs, verify-r7d-4.mjs, integrate-queue-r7d-p32.mjs",
+   "verdict": "PASS_WITH_FINDINGS",
+   "basis": "Dry run on a scratch git clone of f74bb82 (dummy review records, never the repository): integrate without --write reports no problems (233 to 234) and writes nothing; the freeze before integration refuses on the queue; integrate --write changes 4 files with 89 insertions and 0 deletions (the queue +55 lines, append-only); the freeze then writes R7D-FREEZE-4 (397 files, 952/952, conformance PASS x3, postReview lists only added evidence, review and queue-record files plus the queue); a second freeze refuses (exists already); verify-r7d-4 gives 23/23 PASS. Refusal logic read and partly exercised: committed-only bound files, single-file source delta, the one disclosed test file, inputs and earlier records unchanged, mission and ledger append-only, queue = R7D-FREEZE-3's plus exactly HQ-R7D-SSCTR-P32-RECHECK and the addendum key with a matching integration record, evidence PASS on these source bytes with unchanged outputs, both reviews passing, no final holdout. Findings QE-R7D-P33-06 and QE-R7D-P33-07."
+  },
+  {
+   "item": "no script of this phase deletes anything",
+   "verdict": "PASS",
+   "basis": "No rm, rmSync, rmdirSync or unlinkSync in freeze-r7d-4.mjs, verify-r7d-4.mjs, integrate-queue-r7d-p32.mjs, the phase33 probes (f01-witness, differential, mutation, run-evidence) or the harness lib and validation; the suite and the three conformance scripts the freeze runs delete nothing (the rmSync users are older regress-*/neighbors-r7b2 scripts this phase never runs). Writes: the freeze and the integration record with flag wx; the mutation script rewrites its own scratch copy and restores it; integrate rewrites the queue file whole (round-trip checked before, append-only checked after; not atomic, QE-R7D-P33-06)."
+  }
+ ],
+ "findings": [
+  {
+   "id": "QE-R7D-P33-01",
+   "severity": "MAJOR",
+   "title": "The runtime's 'week executed completely' reads only gated sessions; INTERFACE-5, PREREG-5 Delta 2 and P18(a) require every session, so P18(a) blocks the candidate",
+   "finding": "reestablishedBetween reads complete(sport), the reducer's gate predicate. weeklyGates gates only the run roles of RUN_GATE_ROLE (EASY, LONG, QUALITY, WALK_JOG) and strength exercises. Planned, prescribed sessions with other roles hold no gate: WALK (optional brisk walks when more run days are chosen than current running supports, and in walk/jog or restart), RECOVERY_EASY and SHAKEOUT (optional, around a race), RACE_TOUCH (key) and RACE (key, essential). A week with any of them missed or unreported re-enters the athlete when the gated sessions are complete. The public rule says otherwise: INTERFACE-5 section 1 ('every session that week plans ... every one was reported done as prescribed'), PREREG-5 Delta 2 ('toda sessao executada como prescrita'), the runtime comment ('so no session was missed') and the freeze-r7d-4.mjs rule text. P18(a) follows the public rule (every live session with an executed report), so on a correct-by-its-own-rule TRAINING_AFTER it reports OLDER_BREAK_DROPPED, a P18 blocker without envelope (SAFETY_BLOCKER class). The README and PREREG-5 Delta 1 claim that P18(a) is a necessary condition that never blocks the runtime's stricter rule; for these roles the runtime's rule is not stricter. Validation 5 has no plan with optional or race-week sessions in a re-entry week, so its no-false-block result does not reach this. Dose direction on the runtime side is the lighter reading (a SHORT return); for skipped optional walks this is plausibly acceptable, for a missed race touch or race wholly between two breaks it is a domain question.",
+   "reproduction": "probes/qre-p33-harness-probes.mjs --rt <candidate scratch root> --harness audits/domain-coaching-r7-d-2026-11-02/harness --out probes/out/harness-probe.candidate.json: intake with run days Mon/Tue/Wed/Fri/Sun and low recent running (EASY, LONG and two optional WALK sessions a week), weeks 0-1 reviewed, VAC14 kept on w4d0, TRIP4b named and declared w5d4 with week 4 reported: QH-1 (walks unreported) and QH-2 (walks reported not done): REESTABLISH, VALID, the trip alone 4 days SHORT, the holiday TRAINING_AFTER; executedWeekBetween false; P18 FAIL OLDER_BREAK_DROPPED. QH-3 (walks done): P18 PASS. Runtime side: probes/qre-p33-runtime-probes.mjs Q2 (same plan, three report variants, all SHORT TRAINING_AFTER with reentryWeek 2026-11-30). Code: r6-adaptation.mjs RUN_GATE_ROLE (line 20), weeklyGates (lines 221-230), complete (line 1318).",
+   "newAndRuntimeOnly": false,
+   "newNote": "New in Phase 3.3: the rule, its public text and P18(a) are all new; the gate coverage they disagree about is the reducer's existing one.",
+   "routedTo": "SSCTR (which sessions a re-entry week needs: optional WALK, RECOVERY_EASY, SHAKEOUT; race-week RACE_TOUCH, RACE) then Chief/Founder: instrument-side (PREREG addendum + harness revision + a development case of the QH-1 form) or runtime-side (a new authorized mission). No runtime byte in this phase."
+  },
+  {
+   "id": "QE-R7D-P33-02",
+   "severity": "MINOR",
+   "title": "Inverse-defect residual: a whole week executed before a later break that begins later the same day (startedAt) is not a re-entry",
+   "finding": "The week selection requires every session date < the stop's first day, while the history it reads is cut at startedAt. A plan week whose last session is on the stop's first day, executed before the stated start time, is never wholly between the breaks, so the stop runs through the earlier break. R7D-FREEZE-3 recognized this re-entry. Conservative direction (a longer stop, a MODERATE re-entry), narrow (a stated start time on a day holding the week's last session), but it is a proven resumption the rule fails to recognize, against the Founder's 'never create the inverse defect', and it is not among the PREREG-5 Delta 6 residuals (plan-week alignment there concerns executed days split across two plan weeks). Without startedAt the first day is read as wholly inside the break (0.8), so only the startedAt form is affected.",
+   "reproduction": "probes/qre-p33-runtime-probes.mjs Q5: A days 0-13 kept Mon wk4; week 4 executed in full, its Sunday long run at 08:00Z; D from Sun wk4 18:00Z (startedAt) to Wed wk5, named, declared Fri wk5; plain review. Candidate: REESTABLISH, stop 2026-11-16 to 2026-12-09, 24 days MODERATE, RETURN mode, TRAINING_NOT_REESTABLISHED. R7D-FREEZE-3: D alone, 4 days SHORT. probes/qre-p33-mutation.mjs EXP-1 (a session on the stop's first day counts as before it when the stop has a stated start time): Q5 becomes 4 days SHORT, TRAINING_AFTER with reentryWeek 2026-11-30, confirming the cause. Outputs: probes/out/runtime-probes.{candidate,R7D-FREEZE-3}.json, probes/out/mutation.qre.json.",
+   "newAndRuntimeOnly": true,
+   "newNote": "New in Phase 3.3 (the wholly-between test).",
+   "routedTo": "SSCTR (acceptability as a conservative residual), then the next authorized runtime mission; disclosed in this freeze"
+  },
+  {
+   "id": "QE-R7D-P33-03",
+   "severity": "MINOR",
+   "title": "An applied break between two separate breaks: reading the stop through isolated training gives a relation question that restating the later break does not end",
+   "finding": "When the earlier break A is declared after a return already applied a later break E, A is not applied and A and H are separate breaks with E between them. With no whole executed week between A and H, the stop now runs from A's first day through H, across the applied E, and interruptionEpisode asks whether H corrects E (missingInputs interruption.episodeId). Restating H under its own name asks again. R7D-FREEZE-3 asked the same question with nothing trained between them, so the dead end is pre-existing; Phase 3.3 extends it to isolated training between, where R7D-FREEZE-3 re-entered from H alone (the F01 form itself). Fail-closed (no prescription), so not unsafe; a usability dead end on a rare path (a break declared after a later one's return).",
+   "reproduction": "probes/qre-p33-applied-between.mjs: weeks 2-3 reported not done, week 4 with its Tue run only (or nothing), E Mon-Thu wk5 applied by a return report on Fri wk5, A (weeks 2-3) declared Mon wk6, H Wed-Sat wk6 named and declared Sun wk6. Candidate, both variants: ASK interruption.episodeId, and ASK again after H is restated. R7D-FREEZE-3: one run between, REESTABLISH (H alone SHORT, A TRAINING_AFTER); nothing between, the same ASK. Outputs: probes/out/applied-between.{candidate,R7D-FREEZE-3}.json.",
+   "newAndRuntimeOnly": false,
+   "newNote": "Pre-existing on R7D-FREEZE-3 for nothing trained between; extended by Phase 3.3.",
+   "routedTo": "Chief/Founder for the next runtime or interface mission (for example, a separate stop that ends at an applied return between the breaks, or a question the athlete can answer)"
+  },
+  {
+   "id": "QE-R7D-P33-04",
+   "severity": "OBSERVATION",
+   "title": "reentryWeek with three or more separate breaks names the week after the latest earlier break for every earlier break",
+   "finding": "Once a re-entry week is found after break B, every earlier unplaced break, A included, is TRAINING_AFTER with that same reentryWeek, although B came between A and that week and A's own re-entry was never read. INTERFACE-5 section 3 asks clients to tell the athlete 'which week re-entered them'; for A that text would point past B. No dose effect (the stop is H alone either way).",
+   "reproduction": "probes/qre-p33-runtime-probes.mjs Q3b: A days 0-13, one run (Tue wk4), B days 17-20, week 5 in full, H days 28-31: candidate separateBreaks TRAINING_AFTER@2026-12-07 / TRAINING_AFTER@2026-12-07 / LATEST, 4 days SHORT.",
+   "routedTo": "Interface owner (record wording: reentryWeek read as 'after the latest break before it')"
+  },
+  {
+   "id": "QE-R7D-P33-05",
+   "severity": "TEST_GAP",
+   "title": "Directed tests miss several shapes of the new rule; four reviewer mutants survive the tests",
+   "finding": "Surviving the Phase 3.3 and 3.2 directed files: QM2 (a session on the stop's first day counts), QM4 (both sports required whatever the week plans: run-only and strength-only weeks never re-enter), QM5 (reentryWeek also on LATEST and placed rows), QM8 (any unreported session suppresses a whole executed week); each is killed by a reviewer probe (Q5; Q1; Q1-Q6; Q2 and Q6). Surviving everything: QM1 (a session on the earlier break's last day counts), QM3 (the empty-week guard dropped), QM9 (SKIPPED sessions kept in the wholly-between test); QM6 (history without startedAt) is equivalent while the selection is day-granular. No directed test has a run-only or strength-only plan, three separate breaks, a re-entry week followed by unreported sessions, a SKIPPED or moved session in the gap, a session on either boundary day, or optional or race-week sessions in a re-entry week.",
+   "reproduction": "probes/qre-p33-mutation.mjs --rt <candidate scratch root> --work-parent <scratch> --baseline probes/out/runtime-probes.candidate.json --out probes/out/mutation.qre.json (restored true).",
+   "routedTo": "The next authorized runtime mission (tests only; the reviewer probes are available as seeds)"
+  },
+  {
+   "id": "QE-R7D-P33-06",
+   "severity": "MINOR",
+   "title": "The queue item states a supersession that does not exist yet, and the queue write is not atomic",
+   "finding": "integrate-queue-r7d-p32.mjs writes target.artifact_revision '... superseded by R7D-FREEZE-4 in R7-D Phase 3.3 ...', and the freeze requires the append before it runs. If the freeze is then refused (a review not passing, a suite failure), the append-only queue keeps a statement about a freeze that was never made. The script also rewrites the queue file and checks append-only afterwards; on a failed check it throws with the file already rewritten (no deletion; content preserved by the prior round-trip check).",
+   "reproduction": "Scratch clone dry run (probes/out/reruns.summary.json, freezeDryRun): the appended item's target.artifact_revision text; integrate-queue-r7d-p32.mjs line 40 (artifact_revision) and lines 67-71 (write, then the append-only check).",
+   "routedTo": "Chief (the coordinator running the integration)"
+  },
+  {
+   "id": "QE-R7D-P33-07",
+   "severity": "OBSERVATION",
+   "title": "freeze-r7d-4.mjs takes --reviewed on trust and refuses post-review changes only in CoachingCore/src and test",
+   "finding": "The reviewed commit is not cross-checked against the review records' candidate field, and a post-review change to the harness lib, PREREG-5, the interface delta, the brief or the scripts would be bound without refusal. The record does list every path changed since --reviewed (postReview.changedSinceReviewed), so it is visible, not prevented.",
+   "reproduction": "freeze-r7d-4.mjs: the quiet(reviewed,'HEAD',['CoachingCore/src','CoachingCore/test']) check and postReview; scratch clone dry run with --reviewed 3228a70 (postReview lists only added evidence, review and queue-record files and the modified queue).",
+   "routedTo": "Chief (the coordinator running the freeze)"
+  },
+  {
+   "id": "QE-R7D-P33-08",
+   "severity": "OBSERVATION",
+   "title": "Containment evidence is mostly by construction, and the differential's explainer shares the rule's day-granular test",
+   "finding": "Of the 151 differential cases, 12 state two or more breaks and 5 ever record a TRAINING_AFTER return; the other 139 are identical by construction because the change is reachable only through separate breaks. The explainer classifies a TRAINING_AFTER return without a whole week wholly before the stop's first day as F01, so a Q5-shaped case (a proven re-entry lost) would be counted as explained. The reviewer probes (17 cases on both runtimes) supply the missing reach.",
+   "reproduction": "Re-run of phase33-differential.mjs on scratch copies (rows equal to the committed file); counts from its rows and the three corpora; Q5 reasoning against executedWeekBetween.",
+   "routedTo": "Record only"
+  }
+ ],
+ "conditionsForFreeze": [
+  {
+   "id": "C1",
+   "finding": "QE-R7D-P33-01",
+   "condition": "Binding before any final holdout, final author or final seed exists (the Phase 4 gate), with no runtime byte changed in this phase: reconcile the re-entry rule's treatment of ungated sessions across the runtime, INTERFACE-5 section 1, PREREG-5 Delta 1 and Delta 2 and P18(a). The SSCTR judges which sessions a re-entry week needs (optional WALK, RECOVERY_EASY, SHAKEOUT; race-week RACE_TOUCH, RACE). Then either instrument-side (a pre-registration addendum and a harness revision that restricts P18(a) to the sessions the runtime gates, or excludes the ones the domain says do not count, with a development case of the QH-1 form showing no false block and the SSCTR-P32-F01 sensitivity rows still detected) or runtime-side in a new authorized mission. Until then the freeze record and the closing checkpoint list QE-R7D-P33-01 as an open instrument/interface conflict, owner Chief/Founder, and drop or qualify the claim that P18(a) never blocks the runtime's rule. If the coordinator can make the instrument-only change in this phase before the freeze, that is preferred, re-validated and re-recorded; it is not required for the freeze."
+  },
+  {
+   "id": "C2",
+   "finding": "QE-R7D-P33-02, QE-R7D-P33-03, QE-R7D-P33-04",
+   "condition": "The closing checkpoint and the freeze record disclose them as residuals of the Phase 3.3 rule (the record embeds these findings through engineeringFindings; the checkpoint adds owner and trigger): QE-R7D-P33-02 to the SSCTR for acceptability and to the next runtime mission; QE-R7D-P33-03 and -04 to Chief/Founder for the next runtime or interface mission. The consumer conditions of PREREG-5 Delta 5 add: when a later break has a stated start time on a day the athlete trained, the re-entry week may not be recognized (QE-R7D-P33-02)."
+  },
+  {
+   "id": "C3",
+   "finding": "QE-R7D-P33-06",
+   "condition": "Run integrate-queue-r7d-p32.mjs --write only after both Phase 3.3 reviews pass, immediately before freeze-r7d-4.mjs, and commit the queue, the integration record and the freeze record in that sequence. If the freeze is refused after the append, record that in a later queue addendum (never rewrite the item)."
+  },
+  {
+   "id": "C4",
+   "finding": "QE-R7D-P33-07",
+   "condition": "Pass --reviewed 3228a70 (the candidate both reviews judged; this record's candidate field). Before running, confirm that CoachingCore/src, CoachingCore/test and the harness lib and r7d-harness.mjs are unchanged since 3228a70 and the freeze, verifier and integration scripts unchanged since f74bb82, and check after the freeze that postReview.changedSinceReviewed lists only added evidence, review and queue-record files and the queue."
+  },
+  {
+   "id": "C5",
+   "finding": "QE-R7D-P33-05",
+   "condition": "Record the test gaps in the freeze record or closing checkpoint, owner the next authorized runtime mission: directed tests for run-only and strength-only weeks, three separate breaks and their record rows, a re-entry week followed by unreported sessions, SKIPPED or moved sessions in the gap, sessions on both boundary days with and without startedAt, and optional or race-week sessions in a re-entry week."
+  },
+  {
+   "id": "C6",
+   "finding": null,
+   "condition": "Commit this folder (the two records, probes/ and probes/out/, .mjs and .json only) before the freeze runs; the freeze binds it and refuses uncommitted bound files."
+  }
+ ],
+ "reproduced": {
+  "suite": "952/952 on git archive 3228a70 rebuilt in scratch (Phase 3.3 14/14, Phase 3.2 17/17, Phase 3.1 14/14)",
+  "directedOnFreeze3": "Phase 3.3 file: 11 fail, 3 pass (T2, T7, T8)",
+  "updatedAssertions": "R7D-FREEZE-3 version of r7d-phase32.test.mjs on the candidate: 15 pass, 2 fail (the two disclosed); updated tests on R7D-FREEZE-3: 2/2 fail",
+  "f01Witness": "cases and verdict equal to the committed outputs on both runtimes (RED true on R7D-FREEZE-3, false on the candidate; E1-E3 recognized)",
+  "authorMutation": "8/8 killed, scratch restored",
+  "harnessValidation5": "summary, runs, witnesses and coverage equal to HARNESS_VALIDATION_R7D_5.json (paths excluded)",
+  "differential": "151 cases, 147 same, 4 differing, 0 unexplained; rows equal to DIFFERENTIAL_VS_R7D_FREEZE_3.json",
+  "freezeDryRun": "scratch clone of f74bb82 with dummy reviews: refusal before integration, integration append-only (0 deletions), freeze 397 files 952/952, second freeze refused, verify 23/23",
+  "notReproduced": "the diagnostic and generated regression runs (relied on the differential's decision-level identity and the by-construction containment)",
+  "summaryFile": "probes/out/reruns.summary.json"
+ },
+ "probes": {
+  "runtime": "probes/qre-p33-runtime-probes.mjs (Q1-Q7; outputs probes/out/runtime-probes.{candidate,R7D-FREEZE-3}.json)",
+  "harness": "probes/qre-p33-harness-probes.mjs (QH-1 to QH-3; output probes/out/harness-probe.candidate.json)",
+  "appliedBetween": "probes/qre-p33-applied-between.mjs (outputs probes/out/applied-between.{candidate,R7D-FREEZE-3}.json)",
+  "mutation": "probes/qre-p33-mutation.mjs (QM1-QM10, EXP-1; output probes/out/mutation.qre.json)"
+ },
+ "proposedHumanRevalidation": {
+  "needed": false,
+  "why": "No quality/reliability item for funded human revalidation; the domain questions routed here (QE-R7D-P33-01, -02) belong to the SSCTR, which owns any queue proposal.",
+  "item": null
+ },
+ "independence": "Fresh instance; did not write the runtime, tests, harness, PREREG-5, interface delta 5, evidence or scripts, and never approves its own work. Did not open phase33/reviews/ssctr/ or the SSCTR scratch directory. Did not edit the runtime, the queue, CURRENT_MISSION.md, MISSION_LEDGER.md, product/ or canon/; wrote only in phase33/reviews/engineering/. No commit."
+}

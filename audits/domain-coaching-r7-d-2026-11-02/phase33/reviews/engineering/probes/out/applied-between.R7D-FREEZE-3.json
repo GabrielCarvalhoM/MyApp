@@ -1,0 +1,109 @@
+{
+ "probe": "QRE-R7D-P33-APPLIED-BETWEEN-1",
+ "runtimeRoot": "C:\\Users\\carva\\AppData\\Local\\Temp\\claude\\858165ffefe5d744\\d1b308dc-243b-4985-8d22-78ba1cb403ed\\scratchpad\\qre-p33-20261106-230251-413\\d3",
+ "rows": [
+  {
+   "variant": "one run between A and E",
+   "log": [
+    [
+     "w2",
+     "GATED_NEXT_STEP"
+    ],
+    [
+     "w3",
+     "GATED_NEXT_STEP"
+    ],
+    [
+     "w4",
+     "GATED_NEXT_STEP"
+    ],
+    [
+     "E",
+     "REESTABLISH"
+    ],
+    [
+     "w5",
+     "GATED_NEXT_STEP"
+    ],
+    [
+     "A",
+     "ASK"
+    ],
+    [
+     "H",
+     "ASK"
+    ]
+   ],
+   "plain": {
+    "action": "REESTABLISH",
+    "missing": [],
+    "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-16 to 2026-12-19), each its own interruption; the stop read runs from 2026-12-16 to 2026-12-19, and training is recorded after the earlier one: short nonclinical interruption (4 days): resume the last completed doses; no step until execution is observed"
+   },
+   "answer": null,
+   "lastReturn": {
+    "start": "2026-12-16",
+    "end": "2026-12-19",
+    "days": 4,
+    "class": "SHORT",
+    "separate": [
+     "TRAINING_AFTER",
+     "LATEST"
+    ]
+   }
+  },
+  {
+   "variant": "nothing trained between A and E",
+   "log": [
+    [
+     "w2",
+     "GATED_NEXT_STEP"
+    ],
+    [
+     "w3",
+     "GATED_NEXT_STEP"
+    ],
+    [
+     "w4",
+     "GATED_NEXT_STEP"
+    ],
+    [
+     "E",
+     "REESTABLISH"
+    ],
+    [
+     "w5",
+     "GATED_NEXT_STEP"
+    ],
+    [
+     "A",
+     "ASK"
+    ],
+    [
+     "H",
+     "ASK"
+    ]
+   ],
+   "plain": {
+    "action": "ASK",
+    "missing": [
+     "interruption.episodeId"
+    ],
+    "reason": "This interruption shares days with the one first reported on 2026-12-11 (2026-12-07 to 2026-12-10), or follows it with no return or training between, and is not marked as its correction: say whether it corrects that interruption (its episodeId r7b-5-RETURN_AFTER_PAUSE-69) or is a different one"
+   },
+   "answer": {
+    "action": "ASK",
+    "missing": [
+     "interruption.episodeId"
+    ],
+    "reason": "This interruption shares days with the one first reported on 2026-12-11 (2026-12-07 to 2026-12-10), or follows it with no return or training between, and is not marked as its correction: say whether it corrects that interruption (its episodeId r7b-5-RETURN_AFTER_PAUSE-69) or is a different one"
+   },
+   "lastReturn": {
+    "start": "2026-12-07",
+    "end": "2026-12-10",
+    "days": 4,
+    "class": "SHORT",
+    "separate": []
+   }
+  }
+ ]
+}

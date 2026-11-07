@@ -1,0 +1,677 @@
+{
+ "probe": "QRE-R7D-P33-MUTATION-1",
+ "source": "C:\\Users\\carva\\AppData\\Local\\Temp\\claude\\858165ffefe5d744\\d1b308dc-243b-4985-8d22-78ba1cb403ed\\scratchpad\\qre-p33-20261106-230251-413\\cand",
+ "work": "C:\\Users\\carva\\AppData\\Local\\Temp\\claude\\858165ffefe5d744\\d1b308dc-243b-4985-8d22-78ba1cb403ed\\scratchpad\\qre-p33-20261106-230251-413\\mut-parent\\qre-p33-mut-ef8JYN",
+ "sourceSha256": "15e4279baae4b79a5f61081539fa1f46b37930454f93894eab17118a248f97bc",
+ "restored": true,
+ "rows": [
+  {
+   "id": "QM1",
+   "what": "a week whose session falls on the earlier break's last day counts",
+   "applied": true,
+   "tests": {
+    "pass": 31,
+    "fail": 0,
+    "failed": []
+   },
+   "probes": {
+    "differ": [],
+    "error": null
+   },
+   "killedByTests": false,
+   "killedByProbes": false
+  },
+  {
+   "id": "QM2",
+   "what": "a week whose session falls on the stop's first day counts",
+   "applied": true,
+   "tests": {
+    "pass": 31,
+    "fail": 0,
+    "failed": []
+   },
+   "probes": {
+    "differ": [
+     "Q5-startedAt-same-day"
+    ],
+    "error": null
+   },
+   "killedByTests": false,
+   "killedByProbes": true
+  },
+  {
+   "id": "QM3",
+   "what": "the empty-week guard dropped (a plan week with no live session re-enters)",
+   "applied": true,
+   "tests": {
+    "pass": 31,
+    "fail": 0,
+    "failed": []
+   },
+   "probes": {
+    "differ": [],
+    "error": null
+   },
+   "killedByTests": false,
+   "killedByProbes": false
+  },
+  {
+   "id": "QM4",
+   "what": "both sports required whatever the week plans (run-only or strength-only weeks never re-enter)",
+   "applied": true,
+   "tests": {
+    "pass": 31,
+    "fail": 0,
+    "failed": []
+   },
+   "probes": {
+    "differ": [
+     "Q1-RUN_ONLY-full-week",
+     "Q1-STRENGTH_ONLY-full-week"
+    ],
+    "error": null
+   },
+   "killedByTests": false,
+   "killedByProbes": true
+  },
+  {
+   "id": "QM5",
+   "what": "reentryWeek written on every record row once a re-entry is found (placed breaks and LATEST too)",
+   "applied": true,
+   "tests": {
+    "pass": 31,
+    "fail": 0,
+    "failed": []
+   },
+   "probes": {
+    "differ": [
+     "Q1-RUN_ONLY-full-week",
+     "Q1-STRENGTH_ONLY-full-week",
+     "Q2-WALKS-walks-unreported",
+     "Q2-WALKS-walks-reported-not-done",
+     "Q2-WALKS-every-session-done",
+     "Q3a-three-breaks-reentry-before-middle",
+     "Q3b-three-breaks-reentry-after-middle",
+     "Q4b-applied-return-before-A-full-week",
+     "Q6-full-week-then-unreported"
+    ],
+    "error": null
+   },
+   "killedByTests": false,
+   "killedByProbes": true
+  },
+  {
+   "id": "QM6",
+   "what": "the history read without the stop's start time",
+   "applied": true,
+   "tests": {
+    "pass": 31,
+    "fail": 0,
+    "failed": []
+   },
+   "probes": {
+    "differ": [],
+    "error": null
+   },
+   "killedByTests": false,
+   "killedByProbes": false
+  },
+  {
+   "id": "QM7",
+   "what": "off by one: the week before the candidate week is read",
+   "applied": true,
+   "tests": {
+    "pass": 27,
+    "fail": 4,
+    "failed": [
+     "R7-D Phase 3.3 T3: a whole week of the plan executed in full between the breaks re-enters the athlete: the lat",
+     "R7-D Phase 3.3 T3: the late form: a week executed in full and reviewed before the earlier break was declared r",
+     "R7-D Phase 3.3 T4: unreported sessions in a week between the breaks are asked first; the answer decides whethe",
+     "R7-D Phase 3.3 T4: a conflicted report in a week between the breaks is asked as unreported; corrected, the wee"
+    ]
+   },
+   "probes": {
+    "differ": [
+     "Q1-RUN_ONLY-full-week",
+     "Q1-STRENGTH_ONLY-full-week",
+     "Q2-WALKS-walks-unreported",
+     "Q2-WALKS-walks-reported-not-done",
+     "Q2-WALKS-every-session-done",
+     "Q3a-three-breaks-reentry-before-middle",
+     "Q3b-three-breaks-reentry-after-middle",
+     "Q4b-applied-return-before-A-full-week",
+     "Q6-full-week-then-unreported"
+    ],
+    "error": null
+   },
+   "killedByTests": true,
+   "killedByProbes": true
+  },
+  {
+   "id": "QM8",
+   "what": "any unreported session between the breaks suppresses the re-entry (asks even after a whole executed week)",
+   "applied": true,
+   "tests": {
+    "pass": 31,
+    "fail": 0,
+    "failed": []
+   },
+   "probes": {
+    "differ": [
+     "Q2-WALKS-walks-unreported",
+     "Q6-full-week-then-unreported"
+    ],
+    "error": null
+   },
+   "killedByTests": false,
+   "killedByProbes": true
+  },
+  {
+   "id": "QM9",
+   "what": "SKIPPED sessions kept in the wholly-between test",
+   "applied": true,
+   "tests": {
+    "pass": 31,
+    "fail": 0,
+    "failed": []
+   },
+   "probes": {
+    "differ": [],
+    "error": null
+   },
+   "killedByTests": false,
+   "killedByProbes": false
+  },
+  {
+   "id": "QM10",
+   "what": "the latest week between the breaks reported as the re-entry week instead of the first",
+   "applied": true,
+   "tests": {
+    "pass": 30,
+    "fail": 1,
+    "failed": [
+     "R7-D Phase 3.3 T3: a whole week of the plan executed in full between the breaks re-enters the athlete: the lat"
+    ]
+   },
+   "probes": {
+    "differ": [],
+    "error": null
+   },
+   "killedByTests": true,
+   "killedByProbes": false
+  },
+  {
+   "id": "EXP-1",
+   "what": "experiment: a session on the stop's first day counts as before it when the stop has a stated start time (tests the Q5 hypothesis)",
+   "applied": true,
+   "tests": null,
+   "probes": {
+    "differ": [
+     "Q5-startedAt-same-day"
+    ],
+    "error": null,
+    "cases": [
+     {
+      "id": "Q1-RUN_ONLY-full-week",
+      "action": "REESTABLISH",
+      "question": null,
+      "stop": {
+       "start": "2026-12-07",
+       "end": "2026-12-10",
+       "days": 4,
+       "class": "SHORT",
+       "runMode": "EASY",
+       "separate": [
+        {
+         "episode": "q1fRUN_ONLY-A",
+         "start": "2026-11-16",
+         "end": "2026-11-29",
+         "stop": "TRAINING_AFTER",
+         "reentryWeek": "2026-11-30"
+        },
+        {
+         "episode": "q1fRUN_ONLY-D",
+         "start": "2026-12-07",
+         "end": "2026-12-10",
+         "stop": "LATEST"
+        }
+       ]
+      },
+      "extra": [
+       null,
+       null,
+       null
+      ]
+     },
+     {
+      "id": "Q1-RUN_ONLY-one-session",
+      "action": "REESTABLISH",
+      "question": null,
+      "stop": {
+       "start": "2026-11-16",
+       "end": "2026-12-10",
+       "days": 25,
+       "class": "MODERATE",
+       "runMode": "RETURN",
+       "separate": [
+        {
+         "episode": "q1oRUN_ONLY-A",
+         "start": "2026-11-16",
+         "end": "2026-11-29",
+         "stop": "TRAINING_NOT_REESTABLISHED"
+        },
+        {
+         "episode": "q1oRUN_ONLY-D",
+         "start": "2026-12-07",
+         "end": "2026-12-10",
+         "stop": "LATEST"
+        }
+       ]
+      },
+      "extra": [
+       null,
+       null,
+       null
+      ]
+     },
+     {
+      "id": "Q1-STRENGTH_ONLY-full-week",
+      "action": "REESTABLISH",
+      "question": null,
+      "stop": {
+       "start": "2026-12-07",
+       "end": "2026-12-10",
+       "days": 4,
+       "class": "SHORT",
+       "runMode": "NONE",
+       "separate": [
+        {
+         "episode": "q1fSTRENGTH_ONLY-A",
+         "start": "2026-11-16",
+         "end": "2026-11-29",
+         "stop": "TRAINING_AFTER",
+         "reentryWeek": "2026-11-30"
+        },
+        {
+         "episode": "q1fSTRENGTH_ONLY-D",
+         "start": "2026-12-07",
+         "end": "2026-12-10",
+         "stop": "LATEST"
+        }
+       ]
+      },
+      "extra": [
+       null,
+       null,
+       null
+      ]
+     },
+     {
+      "id": "Q1-STRENGTH_ONLY-one-session",
+      "action": "REESTABLISH",
+      "question": null,
+      "stop": {
+       "start": "2026-11-16",
+       "end": "2026-12-10",
+       "days": 25,
+       "class": "MODERATE",
+       "runMode": "NONE",
+       "separate": [
+        {
+         "episode": "q1oSTRENGTH_ONLY-A",
+         "start": "2026-11-16",
+         "end": "2026-11-29",
+         "stop": "TRAINING_NOT_REESTABLISHED"
+        },
+        {
+         "episode": "q1oSTRENGTH_ONLY-D",
+         "start": "2026-12-07",
+         "end": "2026-12-10",
+         "stop": "LATEST"
+        }
+       ]
+      },
+      "extra": [
+       null,
+       null,
+       null
+      ]
+     },
+     {
+      "id": "Q2-WALKS-walks-unreported",
+      "action": "REESTABLISH",
+      "question": null,
+      "stop": {
+       "start": "2026-12-07",
+       "end": "2026-12-10",
+       "days": 4,
+       "class": "SHORT",
+       "runMode": "EASY",
+       "separate": [
+        {
+         "episode": "q2walksunreported-A",
+         "start": "2026-11-16",
+         "end": "2026-11-29",
+         "stop": "TRAINING_AFTER",
+         "reentryWeek": "2026-11-30"
+        },
+        {
+         "episode": "q2walksunreported-D",
+         "start": "2026-12-07",
+         "end": "2026-12-10",
+         "stop": "LATEST"
+        }
+       ]
+      },
+      "extra": [
+       null,
+       null,
+       null
+      ]
+     },
+     {
+      "id": "Q2-WALKS-walks-reported-not-done",
+      "action": "REESTABLISH",
+      "question": null,
+      "stop": {
+       "start": "2026-12-07",
+       "end": "2026-12-10",
+       "days": 4,
+       "class": "SHORT",
+       "runMode": "EASY",
+       "separate": [
+        {
+         "episode": "q2walksreportednotdone-A",
+         "start": "2026-11-16",
+         "end": "2026-11-29",
+         "stop": "TRAINING_AFTER",
+         "reentryWeek": "2026-11-30"
+        },
+        {
+         "episode": "q2walksreportednotdone-D",
+         "start": "2026-12-07",
+         "end": "2026-12-10",
+         "stop": "LATEST"
+        }
+       ]
+      },
+      "extra": [
+       null,
+       null,
+       null
+      ]
+     },
+     {
+      "id": "Q2-WALKS-every-session-done",
+      "action": "REESTABLISH",
+      "question": null,
+      "stop": {
+       "start": "2026-12-07",
+       "end": "2026-12-10",
+       "days": 4,
+       "class": "SHORT",
+       "runMode": "EASY",
+       "separate": [
+        {
+         "episode": "q2everysessiondone-A",
+         "start": "2026-11-16",
+         "end": "2026-11-29",
+         "stop": "TRAINING_AFTER",
+         "reentryWeek": "2026-11-30"
+        },
+        {
+         "episode": "q2everysessiondone-D",
+         "start": "2026-12-07",
+         "end": "2026-12-10",
+         "stop": "LATEST"
+        }
+       ]
+      },
+      "extra": [
+       null,
+       null,
+       null
+      ]
+     },
+     {
+      "id": "Q3a-three-breaks-reentry-before-middle",
+      "action": "REESTABLISH",
+      "question": null,
+      "stop": {
+       "start": "2026-12-07",
+       "end": "2026-12-15",
+       "days": 9,
+       "class": "SHORT",
+       "runMode": "EASY",
+       "separate": [
+        {
+         "episode": "q3a-A",
+         "start": "2026-11-16",
+         "end": "2026-11-29",
+         "stop": "TRAINING_AFTER",
+         "reentryWeek": "2026-11-30"
+        },
+        {
+         "episode": "q3a-B",
+         "start": "2026-12-07",
+         "end": "2026-12-09",
+         "stop": "TRAINING_NOT_REESTABLISHED"
+        },
+        {
+         "episode": "q3a-H",
+         "start": "2026-12-12",
+         "end": "2026-12-15",
+         "stop": "LATEST"
+        }
+       ]
+      },
+      "extra": [
+       null,
+       null,
+       null
+      ]
+     },
+     {
+      "id": "Q3b-three-breaks-reentry-after-middle",
+      "action": "REESTABLISH",
+      "question": null,
+      "stop": {
+       "start": "2026-12-14",
+       "end": "2026-12-17",
+       "days": 4,
+       "class": "SHORT",
+       "runMode": "EASY",
+       "separate": [
+        {
+         "episode": "q3b-A",
+         "start": "2026-11-16",
+         "end": "2026-11-29",
+         "stop": "TRAINING_AFTER",
+         "reentryWeek": "2026-12-07"
+        },
+        {
+         "episode": "q3b-B",
+         "start": "2026-12-03",
+         "end": "2026-12-06",
+         "stop": "TRAINING_AFTER",
+         "reentryWeek": "2026-12-07"
+        },
+        {
+         "episode": "q3b-H",
+         "start": "2026-12-14",
+         "end": "2026-12-17",
+         "stop": "LATEST"
+        }
+       ]
+      },
+      "extra": [
+       null,
+       null,
+       null
+      ]
+     },
+     {
+      "id": "Q4a-applied-return-before-A-isolated",
+      "action": "REESTABLISH",
+      "question": null,
+      "stop": {
+       "start": "2026-11-30",
+       "end": "2026-12-20",
+       "days": 21,
+       "class": "MODERATE",
+       "runMode": "RETURN",
+       "separate": [
+        {
+         "episode": "q4a-A",
+         "start": "2026-11-30",
+         "end": "2026-12-13",
+         "stop": "TRAINING_NOT_REESTABLISHED"
+        },
+        {
+         "episode": "q4a-D",
+         "start": "2026-12-17",
+         "end": "2026-12-20",
+         "stop": "LATEST"
+        }
+       ]
+      },
+      "extra": [
+       true,
+       true,
+       null
+      ]
+     },
+     {
+      "id": "Q4b-applied-return-before-A-full-week",
+      "action": "REESTABLISH",
+      "question": null,
+      "stop": {
+       "start": "2026-12-07",
+       "end": "2026-12-10",
+       "days": 4,
+       "class": "SHORT",
+       "runMode": "EASY",
+       "separate": [
+        {
+         "episode": "q4b-A",
+         "start": "2026-11-23",
+         "end": "2026-11-29",
+         "stop": "TRAINING_AFTER",
+         "reentryWeek": "2026-11-30"
+        },
+        {
+         "episode": "q4b-D",
+         "start": "2026-12-07",
+         "end": "2026-12-10",
+         "stop": "LATEST"
+        }
+       ]
+      },
+      "extra": [
+       null,
+       null,
+       null
+      ]
+     },
+     {
+      "id": "Q5-startedAt-same-day",
+      "action": "REESTABLISH",
+      "question": null,
+      "stop": {
+       "start": "2026-12-06",
+       "end": "2026-12-09",
+       "days": 4,
+       "class": "SHORT",
+       "runMode": "EASY",
+       "separate": [
+        {
+         "episode": "q5-A",
+         "start": "2026-11-16",
+         "end": "2026-11-29",
+         "stop": "TRAINING_AFTER",
+         "reentryWeek": "2026-11-30"
+        },
+        {
+         "episode": "q5-D",
+         "start": "2026-12-06",
+         "end": "2026-12-09",
+         "stop": "LATEST"
+        }
+       ]
+      },
+      "extra": [
+       null,
+       null,
+       null
+      ]
+     },
+     {
+      "id": "Q6-full-week-then-unreported",
+      "action": "REESTABLISH",
+      "question": null,
+      "stop": {
+       "start": "2026-12-10",
+       "end": "2026-12-13",
+       "days": 4,
+       "class": "SHORT",
+       "runMode": "EASY",
+       "separate": [
+        {
+         "episode": "q6-A",
+         "start": "2026-11-16",
+         "end": "2026-11-29",
+         "stop": "TRAINING_AFTER",
+         "reentryWeek": "2026-11-30"
+        },
+        {
+         "episode": "q6-D",
+         "start": "2026-12-10",
+         "end": "2026-12-13",
+         "stop": "LATEST"
+        }
+       ]
+      },
+      "extra": [
+       null,
+       null,
+       null
+      ]
+     },
+     {
+      "id": "Q7-determinism-and-record",
+      "action": "REESTABLISH",
+      "question": null,
+      "stop": {
+       "start": "2026-11-16",
+       "end": "2026-12-06",
+       "days": 21,
+       "class": "MODERATE",
+       "runMode": "RETURN",
+       "separate": [
+        {
+         "episode": "q7-A",
+         "start": "2026-11-16",
+         "end": "2026-11-29",
+         "stop": "TRAINING_NOT_REESTABLISHED"
+        },
+        {
+         "episode": "q7-D",
+         "start": "2026-12-03",
+         "end": "2026-12-06",
+         "stop": "LATEST"
+        }
+       ]
+      },
+      "extra": [
+       null,
+       null,
+       true
+      ]
+     }
+    ]
+   },
+   "killedByTests": null,
+   "killedByProbes": true
+  }
+ ]
+}

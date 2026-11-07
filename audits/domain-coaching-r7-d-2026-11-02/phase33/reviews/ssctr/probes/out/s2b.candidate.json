@@ -1,0 +1,112 @@
+{
+ "runtime": "candidate",
+ "cases": {
+  "B1_bulkTwoImperfectWeeksNoD": {
+   "sync": "REESTABLISH ",
+   "result": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "reason": "The break reported on 2026-11-30 is on record and applied now: moderate nonclinical interruption (14 days): re-entry from the reviewed entry dose, returning to the prior tolerated dose in 2 conditional steps",
+    "ret": "MODERATE 14d 2026-11-16..2026-11-29",
+    "runMode": "RETURN",
+    "separateBreaks": null,
+    "runsAhead": "LONG:20 EASY:30 EASY:30 LONG:45",
+    "qualityAhead": false,
+    "maxRunAhead": 45,
+    "strengthAhead": "back-squat:1x7@ESTABLISH db-bench-press:1x12@FROM_LOG db-row:1x12@FROM_LOG",
+    "returnsApplied": 1
+   },
+   "plain": "KEEP",
+   "returns": [
+    "MODERATE 14d 2026-11-16..2026-11-29 fromWeek 6"
+   ]
+  },
+  "B2_bulkTwoCompleteWeeksNoD": {
+   "sync": "REESTABLISH ",
+   "result": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "reason": "The break reported on 2026-11-30 is on record and applied now: moderate nonclinical interruption (14 days): re-entry from the reviewed entry dose, returning to the prior tolerated dose in 2 conditional steps",
+    "ret": "MODERATE 14d 2026-11-16..2026-11-29",
+    "runMode": "RETURN",
+    "separateBreaks": null,
+    "runsAhead": "LONG:20 EASY:30 EASY:30 LONG:45",
+    "qualityAhead": false,
+    "maxRunAhead": 45,
+    "strengthAhead": "back-squat:1x7@ESTABLISH db-bench-press:1x12@FROM_LOG db-row:1x12@FROM_LOG",
+    "returnsApplied": 1
+   },
+   "plain": "KEEP",
+   "returns": [
+    "MODERATE 14d 2026-11-16..2026-11-29 fromWeek 6"
+   ]
+  },
+  "B3_lateFatigueNoD": {
+   "declare": "ASK ",
+   "reasonDeclare": "A break in training reported on 2026-12-14 is recorded and not applied yet: a return report or the week’s review applies it, with no need to state the break again, and then the systemic fatigue is sen",
+   "sun": "REESTABLISH",
+   "mon": {
+    "status": "KEEP",
+    "action": "KEEP",
+    "validity": "VALID",
+    "question": null,
+    "reason": "next-week steps are gated when this week’s remaining sessions are complete",
+    "runsAhead": "EASY:15 EASY:15 LONG:20 EASY:30 EASY:30 LONG:45",
+    "qualityAhead": false,
+    "maxRunAhead": 45,
+    "strengthAhead": "db-rdl:1x10@ESTABLISH db-row:1x12@ESTABLISH db-bench-press:1x12@ESTABLISH",
+    "returnsApplied": 1
+   },
+   "returns": [
+    "MODERATE 14d 2026-11-16..2026-11-29 fromWeek 7"
+   ]
+  },
+  "B4_lateReturnReportNoD": {
+   "declare": "REESTABLISH ",
+   "reasonDeclare": "moderate nonclinical interruption (14 days): re-entry from the reviewed entry dose, returning to the prior tolerated dose in 2 conditional steps",
+   "sun": "GATED_NEXT_STEP",
+   "mon": {
+    "status": "KEEP",
+    "action": "KEEP",
+    "validity": "VALID",
+    "question": null,
+    "reason": "next-week steps are gated when this week’s remaining sessions are complete",
+    "runsAhead": "EASY:15 EASY:15 LONG:20 EASY:30 EASY:30 LONG:45",
+    "qualityAhead": false,
+    "maxRunAhead": 45,
+    "strengthAhead": "db-rdl:1x10@ESTABLISH db-row:1x12@ESTABLISH db-bench-press:1x12@ESTABLISH",
+    "returnsApplied": 1
+   },
+   "returns": [
+    "MODERATE 14d 2026-11-16..2026-11-29 fromWeek 6"
+   ]
+  },
+  "B5_DByReturnReport": {
+   "result": {
+    "status": "MODIFY",
+    "action": "REESTABLISH",
+    "validity": "VALID",
+    "question": null,
+    "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-14 to 2026-12-17), each its own interruption; the stop read runs from 2026-11-16 to 2026-12-17 through the training recorded between them, which completed no whole",
+    "ret": "LONG 32d 2026-11-16..2026-12-17",
+    "runMode": "RESTART",
+    "separateBreaks": [
+     "b5-A 2026-11-16..2026-11-29 TRAINING_NOT_REESTABLISHED",
+     "b5-D 2026-12-14..2026-12-17 LATEST"
+    ],
+    "runsAhead": "EASY:15 EASY:20 EASY:20 EASY:20",
+    "qualityAhead": false,
+    "maxRunAhead": 20,
+    "strengthAhead": "back-squat:1x7@ESTABLISH db-bench-press:1x12@FROM_LOG db-row:1x12@FROM_LOG",
+    "returnsApplied": 1
+   },
+   "returns": [
+    "LONG 32d 2026-11-16..2026-12-17 fromWeek 6"
+   ]
+  }
+ }
+}

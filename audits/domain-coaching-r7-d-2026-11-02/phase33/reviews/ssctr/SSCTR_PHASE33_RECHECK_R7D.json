@@ -1,0 +1,269 @@
+{
+ "recordId": "SSCTR-R7D-P33-RECHECK-r1",
+ "date": "2026-11-06",
+ "disposition": "ACCEPT_WITH_CONDITIONS",
+ "dispositionNote": "No BLOCK. The candidate closes SSCTR-P32-F01 on every path I could build. An isolated execution between two separate breaks no longer erases the earlier break, whatever its sport and whether it was completed, partial or aborted. That holds with several sessions in no whole week, a chain of three breaks, a later break that holds the rest of the week, late reports and the late form. The stop runs through the earlier break, and on the F01 cases the return equals both the stop declared once and the earlier break applied when it was stated (the existing episode rule). The reading uses existing authority only: the plan's own week, and the evidence reducer's COMPLETED_SESSIONS test. Requiring every sport follows the accepted precedent NF-R7AB-1. It adds no number, threshold, count, length, dose or clinical criterion. A whole week executed completely re-enters the athlete at the same doses as R7D-FREEZE-3 (E1-E3, I3, O1), so the inverse defect does not appear on the paths the evidence names. It does appear on one narrower path, finding SSCTR-P33-F01. There, weeks of real but imperfect training between an unapplied earlier break and a later break are counted as days of one stop. The class can rise to a LONG restart, below the existing episode rule. This is conservative and needs a conjunction that normal weekly reviews avoid. Its remedy needs new authority, so it is routed to the Founder with conditions and does not block.",
+ "candidate": "3228a70",
+ "reviewer": {
+  "role": "Sports Science & Concurrent Training Reviewer (SSCTR)",
+  "agent": "SSCTR-1.0.0",
+  "constitution": "SSCTR-CONST-1.0.0",
+  "skill": "sports-science-review 1.0.0",
+  "evidenceProtocol": "EVIDENCE_PROTOCOL 1.0.0",
+  "authority": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY: nonclinical internal sporting judgment only. No human credentials; no clinical, human or empirical validation; no runtime sovereignty; no Product Truth publication.",
+  "model": "claude-opus-5-5",
+  "effort": "xhigh",
+  "instance": "Fresh SSCTR instance dispatched by the R7-D Phase 3.3 coordinator (task-route owner sports-science-concurrent-training-reviewer, L3, productization). It acted under the shared constitution and skill, read at the start. This instance did not verify whether this was a native project-adapter dispatch or a default-instance fallback. No human review occurred."
+ },
+ "independent": true,
+ "independenceNote": "This instance did not write the runtime, the directed tests, the two updated assertions, the witness, the harness, PREREG-5, the interface delta or the evidence. It did not open phase33/reviews/engineering/, which appeared untracked in the worktree during this review. It is not the Phase 3.2 instance that raised SSCTR-P32-F01.",
+ "scope": {
+  "question": "The nine SSCTR questions of REVIEW_REQUEST_PHASE33.md only: F01 closure; direction B fidelity and authority; the inverse defect and the four disclosed residuals; incomplete, unconfirmed, conflicting or adverse activity; clinical first and F08; I9, identities and causal relations; unknown training between; the two updated assertions; the queue item HQ-R7D-SSCTR-P32-RECHECK.",
+  "candidate": "Runtime bytes of commit 3228a705d52aa699747872490a332bc19dc55b25. HEAD f74bb82ac7ea00cf33176394d5d9e911c67cfbf5 has identical CoachingCore/src and CoachingCore/test bytes (git diff --quiet).",
+  "baseline": "R7D-FREEZE-3: a copy, in my own scratch directory, of the coordinator's rebuild rt-d3 (r6-adaptation.mjs sha256 faa3bc12a329941e6df228e553a8166f43ddaefce9cca80165c369f59a309e3a). The coordinator's directory was only copied from.",
+  "runtimeFileJudged": {
+   "path": "CoachingCore/src/r6-adaptation.mjs",
+   "sha256Candidate": "15e4279baae4b79a5f61081539fa1f46b37930454f93894eab17118a248f97bc",
+   "sha256Freeze3": "faa3bc12a329941e6df228e553a8166f43ddaefce9cca80165c369f59a309e3a",
+   "diff": "git diff aeafc83 3228a70 -- CoachingCore/src: this file only, +36/-12. The diff changes evidenceState (an additive per-week complete field), stateAtBreak (returns history), the new reestablishedBetween, separateStop (the re-entry test, the TRAINING_NOT_REESTABLISHED label, reentryWeek) and the returnAfterPause reason text.",
+   "alsoRead": "weeklyGates, weekEvidence, evidenceState (complete, how, closedBy), stateAtBreak, unreportedBetween, trainedBetween, afterReentry, interruptionEpisode, episodesOf. SKIPPED handling in r6-composition.mjs, read only."
+  },
+  "outOfScope": "Engineering questions: reducer reuse mechanics, a return in force before the earlier break, startedAt edge cases, the loop's per-iteration state, harness adequacy, mutation adequacy and the freeze, verify and queue scripts. Also out of scope: the F08 policy itself (Founder/PCG), taper, race logic, progression, learning, policy numbers, the catalog, product/ and canon/. This record sets no dose, threshold, count, length, increment, tolerance or cadence."
+ },
+ "sourcesRead": [
+  {"path": "governance/agents/sports-science-reviewer/CONSTITUTION.md", "sha256": "9de27b4d6ab0879419a92c218b98acc7ef3df63b73b3325010f033d403122180", "read": "completely"},
+  {"path": ".agents/skills/sports-science-review/SKILL.md", "sha256": "67374297e275d2ec9ded1a8653baf6dc078fbe3d1fd1002e61a13cd6f34065bf", "read": "completely"},
+  {"path": "governance/agents/sports-science-reviewer/registry.json", "sha256": "7843a0c7921bc09d03f573ae56221b6b583d2b9f3d397625a5b2ace1d4871382", "read": "completely"},
+  {"path": "CURRENT_MISSION.md", "read": "the head, the SSCTR mission block, and the R7-D Phase 3.1 and 3.2 sections"},
+  {"path": "canon/CANONICAL_INDEX.md", "read": "the R7 pointers only (grep); no product or canon file is relevant to this narrow recheck"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/REVIEW_REQUEST_PHASE33.md", "sha256": "1b1555f4bbd01f18d8cf59a3184746f76d6bb9c3c46db87e5470fb940eb31bcf", "read": "completely"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/phase33/AUTHORIZATION_PHASE33.md", "sha256": "305309b12ce2a5d4d7c1e13c4e101bcec27c2a0383ae2fc7c2cd797c39272a79", "read": "completely"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/SSCTR_PHASE32_RECHECK_R7D.md", "sha256": "f014e430a24f01ec49be40cd90458db74b1ab6fb2af1183850f3ca63af0421e1", "read": "completely"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/SSCTR_PHASE32_RECHECK_R7D.json", "sha256": "4aff9fa6bc67b7b25fe7613145172c2f6245d239fcabee5350b0532682c03edc", "read": "completely (F01-F04, conditions, the proposed queue item shape)"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/probes/common.mjs, q4-between-breaks.mjs", "read": "the pattern only; not rerun (the Phase 3.3 witness reproduces q4 TB1-TB4 and q4b)"},
+  {"path": "CoachingCore/src/r6-adaptation.mjs (3228a70)", "sha256": "15e4279baae4b79a5f61081539fa1f46b37930454f93894eab17118a248f97bc"},
+  {"path": "CoachingCore/test/r7d-phase33.test.mjs", "sha256": "99865332448eb6e155b7b74cfda578a1dd680c80f732952d9a60727f38854578", "read": "completely"},
+  {"path": "CoachingCore/test/r7d-phase32.test.mjs (the T4 diff aeafc83..3228a70)", "sha256": "2f4cdc44d5e050609cc8ccd816e6b28ebac7c19a9b463031ba4577d03d95115f"},
+  {"path": "CoachingCore/r6/PROGRAM_POLICY_R6.json", "sha256": "a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100", "note": "unchanged; not re-derived"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/phase33/probes/f01-witness.mjs", "sha256": "73a54ca8e328e576503091f0ee5502f4207db454a758c2293b9437bad75f1a46", "read": "completely; rerun on my rebuild, with output case-identical to out/f01-witness.candidate.json"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/phase33/probes/out/f01-witness.candidate.json", "sha256": "7adc6ecc1851b4de9f6beaa3a0fcfd9aa194d69a091edb85cfbc7eafff32ea0e"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/phase33/probes/out/f01-witness.R7D-FREEZE-3.json", "sha256": "99a2ed9306030d951601dc24e7905b63b9af08b2f77a7a2015348cb6580661e0"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/phase33/evidence/EVIDENCE_PHASE33.json", "sha256": "d2f339ef1abe466f8260b05899027c5f7dd8f07c3906033a55f2396288e99e4b"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/phase33/evidence/MUTATION_PHASE33.json", "sha256": "8a738cca589a5946942f5373a46194916232dca4812c096b8579640f0686b010", "read": "the mutant list and kills"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/phase33/evidence/DIFFERENTIAL_VS_R7D_FREEZE_3.json", "sha256": "4cd6cb06115e4420992a46cce9a4c0022c6aab8459545c3c32dac124ab93910c", "read": "summary: 147 same, 4 differing (DEV-27/28/29/31 at F01), 0 unexplained, DEV-30 same"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/PREREGISTRATION_R7D_5.md", "sha256": "eaaf23d367bef2f06f7c6cbd09da06e818c56559784b7dfb9c8d1d51585c8e70", "read": "completely"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/author/INTERFACE_DELTA_R7D_5.md", "sha256": "fcc15c48234e0654d3b2f1985dd3fc43b046de04b9e314a56eeab54f87b0402f", "read": "completely"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/harness/validation/HARNESS_VALIDATION_R7D_5.json", "sha256": "9f1cd47e653e6c3ed49c66dbde679705ae705840787f5ba54963d892765432c4", "read": "summary, coverage and the W-P18c witness only; adequacy is the quality/reliability check's"},
+  {"path": "audits/domain-coaching-r7a-boundary-2026-10-28/reviews/ssctr-r7ab-recheck.md", "sha256": "114822c9ffa0498d561cd19364dc4152f27b8628e4b24d58a79ee3fd47e30bf2", "read": "S-A ruling, NF-R7AB-1 and R40 (precedent for the every-sport reading)"},
+  {"path": "reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json", "sha256": "667e1ff033e978d409aef0419537407d32e511eb45f5266dd5bb08bfa2c1f9ae", "note": "Read only: 233 items; neither HQ-R7D-SSCTR-P32-RECHECK nor a P33 item is present. Not modified."}
+ ],
+ "literatureAccess": {
+  "tools": "The Europe PMC REST API (curl) returned PubMed records with abstracts, and WebSearch worked (one query, for recent reviews). No full text was read, and nothing needed was paywalled at abstract level. A 2024 retraining case report surfaced in the search; I did not read it and do not use it.",
+  "role": "Only directional claims were needed: whether isolated training interrupts detraining (Q1), what a complete week does and does not show (Q3), whether weeks of imperfect adherence are physiologically a stop (Q3, finding P33-F01), and the strength time course for the every-sport residual. The class boundaries are existing approved policy. No number is set, revised or taken from these sources.",
+  "sources": [
+   {"id": "S1", "citation": "Hickson RC, Rosenkoetter MA. Reduced training frequencies and maintenance of increased aerobic power. Med Sci Sports Exerc 1981. PMID 7219129", "accessed": "abstract via Europe PMC", "use": "12 young adults: VO2max gained in 10 weeks was maintained for 15 weeks at 2 or 4 days a week, at kept intensity and duration. Maintenance needs repeated sessions over weeks; one session is far below it, and 2 weeks of near-full frequency is far above it."},
+   {"id": "S2", "citation": "Spiering BA, Mujika I, Sharp MA, Foulis SA. Maintaining physical performance: the minimal dose of exercise needed to preserve endurance and strength over time. J Strength Cond Res 2021. PMID 33629972", "accessed": "abstract via Europe PMC", "use": "Narrative review: endurance maintained up to 15 weeks at as little as 2 sessions a week or 33-66% less volume if intensity is kept; strength and size maintained for long periods at much reduced doses in younger people."},
+   {"id": "S3", "citation": "Mujika I, Padilla S. Detraining Part I: short term insufficient training stimulus. Sports Med 2000. PMID 10966148", "accessed": "abstract via Europe PMC", "use": "Under 4 weeks of insufficient stimulus: rapid VO2max and blood-volume decline in highly trained athletes, more moderate in recently trained; strength performance declines are limited."},
+   {"id": "S4", "citation": "Mujika I, Padilla S. Detraining Part II: long term insufficient training stimulus. Sports Med 2000. PMID 10999420", "accessed": "abstract via Europe PMC", "use": "Over 4 weeks: marked VO2max decline; force declines slowly; the negative effects can be avoided or limited by reduced training if intensity is maintained."},
+   {"id": "S5", "citation": "Zheng J, Pan T, Jiang Y, Shen Y. Effects of short- and long-term detraining on maximal oxygen uptake in athletes: a systematic review and meta-analysis. Biomed Res Int 2022. PMID 36017396", "accessed": "abstract via Europe PMC", "use": "21 studies: VO2max falls after short-term cessation (ES -0.62) and more after long-term cessation (ES -1.42). Supports the direction that a longer continuous stop detrains more."},
+   {"id": "S6", "citation": "Barbieri A, et al. Cardiorespiratory and metabolic consequences of detraining in endurance athletes. Front Physiol 2023. PMID 38344385", "accessed": "abstract via Europe PMC", "use": "Counter-weight: data on endurance athletes are scarce. A partial reduction of training mitigates losses."},
+   {"id": "S7", "citation": "Houston ME, Bentzen H, Larsen H. Interrelationships between skeletal muscle adaptations and performance as studied by detraining and retraining. Acta Physiol Scand 1979. PMID 420018", "accessed": "abstract via Europe PMC", "use": "6 well-trained runners: 15 days of detraining cut VO2max 4% and performance time 25%. After 15 days of retraining, VO2max recovered, but performance was still 9% below. A complete week of training is evidence of tolerated dose, not of restored capacity."},
+   {"id": "S8", "citation": "Bosquet L, et al. Effect of training cessation on muscular performance: a meta-analysis. Scand J Med Sci Sports 2013. PMID 23347054", "accessed": "abstract via Europe PMC", "use": "103 studies: cessation reduces strength with a dose-response on its duration. The effect is smaller in recreational athletes than in inactive people. One missed strength session is not a cessation."},
+   {"id": "S9", "citation": "Bickel CS, Cross JM, Bamman MM. Exercise dosing to retain resistance training adaptations in young and older adults. Med Sci Sports Exerc 2011. PMID 21131862", "accessed": "abstract via Europe PMC", "use": "In young adults, one-third (even one-ninth) of the training dose preserved hypertrophy for 32 weeks. Context for the every-sport residual: a strength shortfall says little about strength detraining and nothing about running."},
+   {"id": "S10", "citation": "Nielsen RO, et al. Excessive progression in weekly running distance and risk of running-related injuries. J Orthop Sports Phys Ther 2014. PMID 25155475", "accessed": "abstract via Europe PMC", "use": "Exploratory cohort of 874 novices: progression over 30% in 2 weeks is associated with more distance-related injuries (HR 1.59, 95% CI 0.96-2.66, p = .07). Weak support, direction only, that resuming full prior doses right after a long stop (R7D-FREEZE-3's F01) is the riskier side."}
+  ],
+  "claimStatus": [
+   {"claim": "One or a few sessions within a few days between two declared stops (the F01 forms) do not make the combined stop materially different, for endurance detraining, from the continuous stop. Reading the continuous span is the conservative reading of the evidence.", "status": "SUPPORTED_WITH_LIMITS", "sources": ["S1", "S2", "S3", "S5"], "limits": "Abstracts only. Maintenance studies measured repeated sessions over weeks, so a single session is an extrapolation by contrast. Mostly young or trained adults, physiological endpoints, group means. Direction only."},
+   {"claim": "A whole plan week executed as prescribed, with no adverse response, shows tolerance of the executed dose, not restored capacity. The SHORT recipe's reading (resume the executed doses, no step until execution is observed) fits that evidence.", "status": "SUPPORTED_WITH_LIMITS", "sources": ["S7"], "limits": "One small study (6 runners), performance endpoint, abstract only. The tolerance standard itself is the coach's existing approved rule, not derived here. Consumer wording must not present re-entry as restored capacity (CF-P33-04)."},
+   {"claim": "Two or more weeks of near-full training (every run, including long and quality, executed; one strength or easy session missed each week) are not physiologically a continuation of the stop. Reading them as stop days overstates detraining.", "status": "SUPPORTED_WITH_LIMITS", "sources": ["S1", "S2", "S4", "S6"], "limits": "Maintenance and reduced-training studies, not retraining-after-break studies. Group means. Supports only the severity of finding P33-F01 (over-conservative, not unsafe), never a rule, count or threshold."},
+   {"claim": "A missed strength session does not indicate strength detraining, and says nothing about running resumption. The every-sport requirement is a governance conservatism, not a physiological necessity.", "status": "SUPPORTED_WITH_LIMITS", "sources": ["S3", "S4", "S8", "S9"], "limits": "Strength time course from cessation and maintenance studies. Used only to class the residual as a progression cost."},
+   {"claim": "R7D-FREEZE-3's F01 (resuming threshold and long runs at the pre-break dose after 2-4+ weeks off with one session) is the riskier side for injury.", "status": "PLAUSIBLE_BUT_UNCERTAIN", "sources": ["S10"], "limits": "Exploratory novice cohort, a non-significant hazard ratio, and distance progression rather than return after a break. Direction only; it does not decide anything here."}
+  ]
+ },
+ "whatWasRun": {
+  "rebuilds": "Candidate rebuilt by git archive of 3228a70 (CoachingCore plus the R3, R4, R5, R6 and B0 SSCTR authority records), with CoachingCore/node_modules copied, into my own new scratch directory ssctr-p33-20261106-225952-23072/cand. r6-adaptation.mjs sha256 15e4279b... confirmed. R7D-FREEZE-3: a copy of the coordinator's rt-d3 into ssctr-p33-20261106-225952-23072/d3 (faa3bc12... confirmed). Nothing was deleted.",
+  "suite": "Candidate full suite 952/952 pass (node --test in the scratch rebuild, 137 s). This includes r7d-phase33 (14), r7d-phase32 (17) and r7d-phase31 (14).",
+  "witness": "phase33/probes/f01-witness.mjs on my rebuild: verdict RED false, E1-E3 re-entry recognized, E4 not. The cases are byte-identical to the committed out/f01-witness.candidate.json.",
+  "ownProbes": "probes/s1-isolated-paths.mjs, s2-inverse-defect.mjs, s2b-single-break-baseline.mjs and s3-clinical-unknown-order.mjs, sharing common.mjs, each run on both roots. Outputs are in probes/out/, labelled by runtime with no local paths.",
+  "notRun": "No npm run verify, no verify-r*, freeze-r* or integrate-queue* script, no harness, mutation or differential rerun, no --write. Python is not installed on this host (only the Windows Store alias), so validate_records.py was not run. The human queue was not touched.",
+  "scratchDisclosure": "Before creating my unique directory, I extracted the candidate's r6-adaptation.mjs once into the scratchpad root as cand-r6.mjs (read-only use). It was left in place; nothing was deleted."
+ },
+ "answers": {
+  "Q1_F01Closure": {
+   "verdict": "CLOSED on every path probed. The continuous-span reading is right for isolated training.",
+   "detail": "No isolated execution erases the earlier break: one run, one strength session, every gap session, a 5-minute aborted run, a partial run, or 30 days with one run (witness F1-F6). I added more paths. I1: 7 sessions over 10 days in no whole plan week gives MODERATE 23, equal to the stop declared once. I2: a chain of three breaks with one run between each gives MODERATE 20 through both earlier breaks, equal to the stop declared once. I3: a complete week between A and B, then one run before C: A is history (reentryWeek), B is TRAINING_NOT_REESTABLISHED, and C reads B..C, MODERATE 13. I6: the later break holds the rest of the week, giving MODERATE 21. U1: unknown sessions answered done give MODERATE 21. R7D-FREEZE-3 gave SHORT 4-5 with threshold work ahead on every one of these. The applied-break episode rule (afterReentry) is unchanged and keeps the earlier break's effect through its return entry (K3). On the F01 forms the candidate's doses equal the stop declared once (K1) and the earlier break applied when stated (K3): EASY 15, LONG 20, then 30/30/45, no quality. The continuous span is the conservative reading for isolated training (claim 1, SUPPORTED_WITH_LIMITS). It is not the right reading for weeks of imperfect training: see SSCTR-P33-F01."
+  },
+  "Q2_DirectionBFidelityAndAuthority": {
+   "verdict": "Sound existing-authority reading. No new number, threshold, count, length, clinical criterion or dose. Not a blocker.",
+   "detail": "The test reuses the evidence reducer's own complete(sport): every run gate and every strength exercise gate ADVANCE or EARNED, with a usable log. That is the rule by which an unreviewed week releases a step (SSCTR S-A; R7-A final P5). ADVANCE does not depend on the phase (taper, deload), so no phase is excluded. HOLD follows a missed, partial, conflicted, pending or adverse row, a missing log, or missing reps or reps in reserve. The week is the plan's own week; 'one week' is the reducer's unit of evidence, not a new length. SKIPPED sessions are excluded from the 'wholly between' check, but an unmoved skip keeps its reducer row (MISSED), so a skip cannot make a week complete. Every sport follows NF-R7AB-1 and R40, accepted as the conservative reading until per-sport authority exists. Two wordings overstate. 'The one rule by which executed training ever becomes history' should read 'the rule by which an unreviewed week releases a step': reviewed weeks are history by their review, and unreviewed incomplete weeks are read by their facts. And 'no duration added' is exact only for isolated training. See SSCTR-P33-F03. The doses and classes are the unchanged R6-NONCLINICAL-RETURN recipe."
+  },
+  "Q3_InverseDefect": {
+   "verdict": "A proven resumption, as the existing authorized standard defines it, is recognized. One narrower inverse-direction residual exists (SSCTR-P33-F01). Each disclosed residual is acceptable as a conservative residual with conditions; none blocks.",
+   "recognized": "E1 (two complete weeks), E2 (one), E3 (the late form, reviewed and complete), I3, I5-control and O1 (either order) all give SHORT 4 from the executed doses, in EASY mode with no return mode. The doses equal R7D-FREEZE-3's (E1 on both: LONG 75, EASY 50/41, LONG 65). The re-entry is evidence of tolerated dose, not of restored capacity (S7). The SHORT recipe's 'no step until execution is observed' fits that.",
+   "residuals": {
+    "planWeekAlignment": "Acceptable conservative residual (I1: 7 complete sessions over 10 days, MODERATE 23 = once). A rolling window would be a new length. Up to about 13 training days can go unrecognized. That is a sub-form of P33-F01, which carries its cost.",
+    "everySport": "Acceptable conservative residual with precedent (NF-R7AB-1, R40). It has no physiological basis for running (S8, S9), so it is a progression cost. Combined with a long gap it reaches a restart (V1), carried by P33-F01. Strength logs without reps in reserve also block re-entry for both sports (I4, I5): consumer condition P33-F02.",
+    "longImperfectAdherence": "This is the inverse defect on a narrow path: finding SSCTR-P33-F01, material but not blocking. The training days are counted as stop days, so the class rises with the length of the training span. A 14-day holiday, two weeks with every run executed and one strength session missed each week, and a 4-day trip give LONG 32 RESTART (EASY 15/20). The existing episode rule gives SHORT 4 at LONG 45, and R7D-FREEZE-3 gave SHORT 4 at LONG 75 (V1, V2, V3, V5, B5). Not reached under weekly reviews (V4: the first weekly review applies A). Partly pre-existing: a single break applied late already ignores training after it (B1-B4 on both runtimes, MODERATE 14 even after two complete weeks).",
+    "reviewedWeekAlone": "Acceptable. A review closes a week with its gates. HOLD gates say a session was not executed as planned, so a closed but incomplete week is not proof of resumption (F6, I4; T3 late form)."
+   }
+  },
+  "Q4_IncompleteUnconfirmedConflictingAdverse": {
+   "verdict": "Correct direction.",
+   "detail": "These re-enter nothing: a missed long run, a partial run, a missed strength session (T4, E4), a week holding break days (T4), unreported sessions (asked; the answer decides: T4, U1), conflicted reports (asked as unreported, then corrected: T4), recovery ADVERSE or next-day function IMPAIRED (T5, C4: MODERATE 25 instead of R7D-FREEZE-3's SHORT 4). An adverse training response is not routed to the clinical path, which is right: it is a training signal, while pain, illness and injury flags route separately (C3)."
+  },
+  "Q5_ClinicalFirstAndF08": {
+   "verdict": "Intact, unchanged.",
+   "detail": "These route to a human with no proposal and both declarations recorded, on both runtimes: a clinical earlier break (flu) with a complete week between (C1, F08: still clinical after the re-entry week), a clinical later break (C2), a pain flag at the review (C3), and a clinical earlier break with one run or unknown training between (T7). The stale plan stays in the program under CLINICAL (pre-existing O-03 semantics; consumer condition carried forward)."
+  },
+  "Q6_I9IdentitiesAndCausalRelations": {
+   "verdict": "Preserved. 'Factual continuity' is accepted for isolated training only.",
+   "detail": "Each break keeps its own identity, eventId, inputHash and dates. No break is joined, no declared days are summed, every declaration stays append-only (T6, T8; I2 and I3 records). Either order of declaration gives the same stop, record and plan, on both branches (T9, O1). A named correction is read with its corrected facts, and a replay changes nothing (T6). Reading the stop through one or a few sessions is factual continuity in substance, as NO_TRAINING_BETWEEN is. With weeks of training between, the span read as a stop includes training days, so 'no duration added' is not exact there (P33-F01, P33-F03)."
+  },
+  "Q7_UnknownTrainingBetween": {
+   "verdict": "Acceptable: conservative over-asking (O-01 extended).",
+   "detail": "Where no whole week fits (U1: a 3-day gap), the answer cannot change the class: done or not done, both give MODERATE 21. It only decides the record label, and a partial answer is asked again for the rest. That is a usability cost, not a safety cost. Inside a candidate week the answer does decide the class (T4: SHORT or MODERATE). Observation O-02: after a complete re-entry week, unreported sessions before the later break are not asked (U2), unchanged from R7D-FREEZE-3."
+  },
+  "Q8_TheTwoUpdatedAssertions": {
+   "verdict": "Both accepted from the domain side.",
+   "detail": "(1) A Monday strength session and a Tuesday run between a 14-day holiday and a 4-day trip are two sessions in three days, not a resumption. MODERATE 21 with TRAINING_NOT_REESTABLISHED equals the 21 days declared once and the holiday applied when stated (K3). SHORT 4 resuming threshold work was F01 itself. (2) Answered done, those sessions still complete no plan week, so MODERATE either way is the correct consequence. The question remains justified, because it fixes the record and decides the class whenever a whole week fits."
+  },
+  "Q9_QueueItem": {
+   "verdict": "No domain objection.",
+   "detail": "Append HQ-R7D-SSCTR-P32-RECHECK with its content unchanged, naming R7D-FREEZE-3, the freeze its record judged. Its F01 description is accurate for that freeze. One of its own re-review triggers, 'a Founder decision on F01', has now fired (direction B). This is recorded in my proposed item's links, not by editing the P32 item. The P32 item must not be read as validating the present rule."
+  }
+ },
+ "findings": [
+  {
+   "id": "SSCTR-P33-F01",
+   "class": "DOMAIN_RESIDUAL_NON_BLOCKING (inverse direction, material)",
+   "new": "The outcome is new: R7D-FREEZE-3 erased the earlier break on these paths (SHORT 4). The related single-break behaviour is pre-existing (B1-B4).",
+   "runtimeOnly": false,
+   "safetyRelevant": "No: it lowers doses (progression and adherence cost, possible loss of trust). Nonclinical.",
+   "finding": "When an earlier separate break is still unapplied and the training between it and a later break completes no plan week in every sport, the candidate reads the whole span as one stop. That covers imperfect adherence, a strength session missed each week, missing reps in reserve and plan-week straddling. The training days are counted as stop days, so the class rises with the length of the training span. With a 14-day earlier break and a 4-day later one, any gap of 11 days or more without a complete plan week turns a MODERATE-sized pair into a LONG restart. That is more conservative than each break alone and than the existing episode rule (the earlier break applied when stated, then the later break from its return state).",
+   "reproduction": "probes/s2-inverse-defect.mjs and s2b-single-break-baseline.mjs. V1: weeks 4-5 with every run executed (long and quality included) and the Friday strength session missed each week, then a 4-day trip. Candidate: LONG 32d RESTART, EASY 15/20/20/20, back-squat 1x7 ESTABLISH. Episode rule: SHORT 4 RETURN, LONG 45, EASY 45/34, LONG 50. R7D-FREEZE-3: SHORT 4, LONG 75, EASY 50/41, LONG 65. V2 (a Tuesday easy run missed each week): LONG 32 RESTART. V3 (three weeks): LONG 39 RESTART. V5 (the late form, weeks 4-5 reviewed at the time): LONG 34 RESTART. B5 (the trip declared by a return report): LONG 32. V4 (a weekly review at the end of each week) never reaches the path: the first review applies the holiday (MODERATE 14), then the trip is SHORT 4 RETURN, identical on both runtimes. Pre-existing on both runtimes, without the trip: the holiday applied late after two imperfect or two complete weeks gives MODERATE 14, LONG 20 (B1-B4).",
+   "assessment": "Weeks of near-full training are not physiologically a stop (claim 3, SUPPORTED_WITH_LIMITS), so on this path the outcome is over-conservative. It is the inverse defect the Founder asked to avoid, on a path narrower than the ones the evidence tests. Why it does not block: (a) the direction is conservative and nonclinical, with no dose above executed capacity; (b) it needs three things together: an earlier break left unapplied across weeks of training (a bulk sync without review, or a late declaration of a past break), no plan week complete in every sport, and a later separate break; normal weekly reviews avoid it (V4); (c) the PREREG-5 Δ6 'adesao imperfeita longa' bullet discloses it, though it understates it (F03); (d) every remedy needs authority the Founder has not given: a per-sport re-entry (an architectural decision per NF-R7AB-1/R40), a partial-adherence criterion (a new count or threshold), or a combination rule; (e) blocking would keep R7D-FREEZE-3's F01, which errs on the riskier side on every F01 path.",
+   "routeTo": "Founder/PCG, before the final holdout is commissioned (CF-P33-03). Then SSCTR for any policy that results, and the runtime author with Product/UX and Data for an R40-style per-sport reading. Options to decide, not decided here, no number: (a) on the non-re-entry branch, read the later break from the state the earlier break's own return would have set, so training days never count as stop days; (b) per-sport re-entry, with the return class per sport (R40); (c) keep the candidate's reading and accept the restart on this path as the authorized conservative behaviour. The related single-break question (B1-B4: whether training after an unapplied break is read when it is applied) belongs to the same decision."
+  },
+  {
+   "id": "SSCTR-P33-F02",
+   "class": "CONSUMER_CONDITION (G03 with Data)",
+   "new": "The consequence is new: re-entry depends on it. The gate rule is pre-existing.",
+   "runtimeOnly": false,
+   "safetyRelevant": "No (it errs conservative).",
+   "finding": "A week executed in full whose strength sets lack reps in reserve (or reps) never re-enters the athlete, for running too. The strength gates HOLD ('reps in reserve not logged; the dose holds'), so complete(STRENGTH) is false.",
+   "reproduction": "probes/s1-isolated-paths.mjs. I5 (bulk): MODERATE 25 RETURN, where the same week with reps in reserve logged gives SHORT 4 at LONG 70 (I5 control). I4 (late form, week reviewed): MODERATE 27. R7D-FREEZE-3 gave SHORT 4 on both.",
+   "routeTo": "G03 and Data, with the interface owner: a consumer must capture reps and reps in reserve for every strength exercise, or tell the athlete that a week without them cannot re-enter them. CF-P33-04."
+  },
+  {
+   "id": "SSCTR-P33-F03",
+   "class": "DISCLOSURE_CORRECTION",
+   "new": "New wording (PREREG-5, INTERFACE-5, the code comment and the review request).",
+   "runtimeOnly": false,
+   "safetyRelevant": "No",
+   "finding": "Three wordings misstate the candidate's behaviour. (1) PREREG-5 Δ6 calls the long imperfect-adherence reading 'mais conservadora que cada pausa sozinha; e a regra existente de que nenhuma semana incompleta ganha passo'. The existing rule holds an incomplete week's dose; it never counts its days as a stop. And the outcome can be a LONG restart whose class grows with the training span, below the existing episode rule. (2) INTERFACE-5 §1 says 'the one by which any executed week ever counts for the coach's history', and the review request and the reestablishedBetween comment say the same. It is the rule by which an unreviewed week releases a step: reviewed weeks are history by their review, and unreviewed incomplete weeks by their facts. (3) 'No duration added' (review request, Q6) is exact only where the training between is isolated.",
+   "routeTo": "Freeze record, handoff and a post-review addendum to PREREG-5 (CF-P33-02). INTERFACE-5 to be qualified before any holdout if it is amended."
+  }
+ ],
+ "observations": [
+  {"id": "O-01", "note": "Over-asking extended (U1): TRAINING_BETWEEN_BREAKS is asked where no whole week fits and the answer cannot change the class. Conservative; usability only."},
+  {"id": "O-02", "note": "After a complete re-entry week, unreported planned sessions between it and the later break are not asked (U2); the later break is classed by its declared days. Unchanged from R7D-FREEZE-3; it is the single-break rule's treatment of unknown sessions before a break."},
+  {"id": "O-03", "note": "Under CLINICAL_HUMAN_REQUIRED or ASK, the stale plan (LONG 75, THRESHOLD 43) stays in the program (C1-C3). Pre-existing; the consumer must not present it (CF-P32-05 carried forward)."},
+  {"id": "O-04", "note": "Re-entry means tolerated dose, not restored capacity (S7: 15 days of retraining after 15 days off left performance 9% below). The SHORT recipe resumes executed doses with no step until execution is observed, which fits. Consumer wording for reentryWeek must not say 'back to full fitness' (CF-P33-04)."},
+  {"id": "O-05", "note": "Non-monotonic but pre-existing (B2 against E1): with two complete weeks after an unapplied holiday, adding a later 4-day trip gives SHORT from the executed doses, while no trip gives the holiday's MODERATE re-entry. The candidate's re-entry branch is the better-founded reading. The single-break late path is the over-conservative one; it belongs to the P33-F01 decision."},
+  {"id": "O-06", "note": "P18(a) only detects the aggressive direction. No instrument detects P33-F01 (the restart), so a holdout case of 'break, weeks of imperfect training, break' will be judged on domain grounds alone (CF-P33-03)."}
+ ],
+ "aeReview": {
+  "1_planAdequate": "No. Two declared stops make the pre-break plan stale; the candidate does not present it as valid until the return is decided.",
+  "2_materialFact": "Yes. Two declared breaks with provenance, and the executed sessions between them with their gates, all append-only.",
+  "3_keepDefensible": "No. Resuming the pre-break doses after an isolated session (R7D-FREEZE-3) ignores a stated 14-37 day stop.",
+  "4_changeNecessary": "Yes. The re-entry dose depends on whether the training between showed tolerance (a complete week) or not.",
+  "5_smallestIntervention": "The unchanged return recipe for the stop the facts establish, or SHORT from the executed doses once a whole week showed tolerance. One question when the training between is unknown.",
+  "6_smallerAlternatives": "Treating any session as a resumption is F01 (rejected by the Founder). Asking a resumption question is not authorized. A partial-adherence criterion would be a new threshold.",
+  "7_priorityAndProgression": "Prior tolerated doses stay the ceiling; no progression is invented. On P33-F01's path, progression is lost (a restart), which is a cost to the stated goal.",
+  "8_evidenceSupportsDose": "Classes and doses are the approved R6 policy, unchanged. The direction for isolated training is SUPPORTED_WITH_LIMITS (claim 1). The restart on P33-F01's path is not supported as necessary (claim 3).",
+  "9_uncertainty": "P33-F01 (imperfect weeks), P33-F02 (logging), plan-week alignment. Individual detraining is not predictable from group data.",
+  "10_askHoldClinical": "ASK for unknown training between and for the relation of unnamed breaks. CLINICAL_HUMAN_REQUIRED for any clinical break, flag or standing route, before any reading of the training between."
+ },
+ "newPrescriptiveAuthority": "None. No new dose, threshold, count, length, increment, tolerance, cadence, return recipe or clinical authority. Relative to R7D-FREEZE-3, prescribed training changes only on paths with training between two separate breaks that completes no plan week. There the existing recipe applies to the continuous stop: more conservative, and on P33-F01's path a restart. A complete week gives the same doses as R7D-FREEZE-3.",
+ "conditionsForFreeze": [
+  {"id": "CF-P33-01", "condition": "Bind this record by sha256 in R7D-FREEZE-4. It accepts only these runtime bytes of 3228a70: CoachingCore/src/r6-adaptation.mjs sha256 15e4279baae4b79a5f61081539fa1f46b37930454f93894eab17118a248f97bc, with every other source file equal to R7D-FREEZE-3. It also covers r7d-phase33.test.mjs (99865332448eb6e155b7b74cfda578a1dd680c80f732952d9a60727f38854578) and the two updated T4 assertions in r7d-phase32.test.mjs (2f4cdc44d5e050609cc8ccd816e6b28ebac7c19a9b463031ba4577d03d95115f). Any runtime byte change needs a new recheck."},
+  {"id": "CF-P33-02", "condition": "Disclose SSCTR-P33-F01 with no envelope in the freeze record, the handoff and a post-review addendum to PREREG-5. Give the quantified example: V1 gives LONG 32 RESTART (EASY 15/20), against SHORT 4 at LONG 45 by the existing episode rule and SHORT 4 at LONG 75 on R7D-FREEZE-3. State that the class grows with the training span, and that a single break applied late already ignores training after it (B1-B4). Correct the three wordings of SSCTR-P33-F03. Do not describe F01 as closed with no residual in the inverse direction."},
+  {"id": "CF-P33-03", "condition": "Before the final holdout is commissioned, tell the Founder four things. First, SSCTR-P32-F01 is closed on every path probed. Second, P33-F01 exists, no instrument detects it, and a holdout case of 'break, weeks of imperfect training, break' will be judged on domain grounds without envelope. Third, the Founder should decide beforehand whether a restart on that path counts as a domain failure. Fourth, every remedy needs the Founder's authority (options in P33-F01; no number proposed)."},
+  {"id": "CF-P33-04", "condition": "Consumer conditions (G03 with Data), adding to CF-P31-04, CF-P32-05 and PREREG-5 Δ5. (a) Let the week's review apply a declared break; never leave a declared break unapplied across weeks of training. When past weeks are synced in bulk, run the plain review that applies kept breaks before a newer break is added. (b) Invite the athlete to state a break when it happens, not weeks later. (c) Capture reps and reps in reserve for every strength exercise (P33-F02), or say that a week without them cannot re-enter the athlete. (d) Present reentryWeek as 'training resumed at the doses you executed', never as restored fitness (O-04). (e) For TRAINING_NOT_REESTABLISHED, say in plain words that the earlier break still counts; add no number."},
+  {"id": "CF-P33-05", "condition": "State that Phase 3.3 adds no new dose, threshold, count, length, increment, tolerance, cadence, return recipe or clinical authority. Shadow reference only; V1 authority stays NO; no human or empirical validation."},
+  {"id": "CF-P33-06", "condition": "Queue. Only HQ-R7D-SSCTR-P32-RECHECK is appended in this phase: by its authorized owner, with its content unchanged, naming R7D-FREEZE-3, after checking it is not already present (it was not, at 233 items). The item proposed below names R7D-FREEZE-4 and is appended only in a later phase that authorizes it, by its owner. Never by this instance."},
+  {"id": "CF-P33-07", "condition": "Routing. P33-F01, with the related single-break question B1-B4, goes to the Founder/PCG before the holdout. P33-F02 goes to G03 and Data. P33-F03 goes to the freeze record and the interface owner. SSCTR-P32-F02 (F08 disclosure), F03 and F04 stay routed as in SSCTR-R7D-P32-RECHECK-r1, and F08 stays with Founder/PCG."}
+ ],
+ "proposedHumanRevalidation": {
+  "status": "PROPOSED_ONLY: not appended; the queue file was not touched (233 items)",
+  "needed": true,
+  "why": "Accepting the Phase 3.3 rule changes prescribed training relative to R7D-FREEZE-3. Isolated or incomplete training between two separate breaks now gets the return of the continuous stop (MODERATE or LONG) instead of the later break alone (SHORT). A whole plan week executed in full in every sport is the only re-entry. No number is new.",
+  "item": {
+   "queue_id": "HQ-R7D-SSCTR-P33-RECHECK (proposed)",
+   "decision_id": "SSCTR-R7D-P33-RECHECK",
+   "decision_revision": "r1",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "scope": "R7-D Phase 3.3 acceptance (SSCTR-P32-F01, Founder direction B, 2026-11-06). Training between two separate, unapplied breaks re-enters the athlete only when a whole plan week lying wholly between them was executed completely in every sport it plans: every gate ADVANCE or EARNED, with usable logs (the reducer's COMPLETED_SESSIONS test). The earlier break is then TRAINING_AFTER with reentryWeek. Anything less is TRAINING_NOT_REESTABLISHED, and the stop runs through the earlier break. Unknown training between is still asked. Clinical first and F08 are unchanged. Residuals disclosed: P33-F01 (weeks of imperfect training read as stop days; a possible restart), P33-F02 (strength logs), plan-week alignment, every sport.",
+    "runtimeBaseline": "R7D-FREEZE-4 (to be named by the coordinator). Runtime source bytes of 3228a705d52aa699747872490a332bc19dc55b25, CoachingCore/src/r6-adaptation.mjs sha256 15e4279baae4b79a5f61081539fa1f46b37930454f93894eab17118a248f97bc",
+    "policySha256": "a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100",
+    "catalogSha256": "ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9"
+   },
+   "approved_scope": "Offline synthetic shadow reference; nonclinical adults; no new dose, threshold, count, length, increment, tolerance, cadence or recipe; residuals P33-F01 to P33-F03 disclosed.",
+   "conditions": ["CF-P33-01 to CF-P33-07 of SSCTR-R7D-P33-RECHECK-r1"],
+   "approval_date": "2026-11-06",
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Chief / Founder",
+   "human_review": null,
+   "linked": ["HQ-R7D-SSCTR-P32-RECHECK (its trigger 'a Founder decision on F01' fired with direction B; this item re-reviews it)", "HQ-R7D-SSCTR-P31-RECHECK", "HQ-R7D-SSCTR-P3-RECHECK", "HQ-R7D-SSCTR-F03B"],
+   "re_review_triggers": [
+    "Any byte change to CoachingCore/src or to a file bound by R7D-FREEZE-4",
+    "A Founder decision on P33-F01 (what training after an unapplied break proves; per-sport re-entry) or on F08",
+    "A change to the evidence reducer's complete rule, the strength log requirements or the plan-week structure",
+    "A holdout result touching P18, TRAINING_BETWEEN_BREAKS, TRAINING_NOT_REESTABLISHED, reentryWeek or P08",
+    "A relevant new systematic review or meta-analysis on detraining, retraining or return to running",
+    "An adverse event or runtime inconsistency",
+    "Funded qualified-human revalidation (may maintain, modify or revoke without AI veto)"
+   ]
+  },
+  "appendCondition": "Append only in a phase with queue authorization for this item, after R7D-FREEZE-4 binds this record. The authorized owner appends it, never this instance."
+ },
+ "evidenceStatus": "SUPPORTED_WITH_LIMITS for the directional claims (abstracts only). The runtime behaviour was reproduced on committed bytes on both runtimes.",
+ "confidence": {
+  "runtimeBehaviour": "High. Every claim was reproduced by my own probes on a committed-bytes rebuild and on R7D-FREEZE-3, consistent with the directed tests, the witness (byte-identical rerun) and the differential.",
+  "domainJudgment": "Moderate. Directional literature only (abstracts), small samples, no injury endpoint except one exploratory cohort. The classes are approved policy, not re-derived here.",
+  "p33F01Severity": "Moderate. The over-classification on that path is clear, but its frequency depends on consumer behaviour (reviews, late declarations, strength logging) that is not yet designed."
+ },
+ "governance": {
+  "gate": "Not closed by this record. It is one of two independent narrow checks (with quality/reliability) before R7D-FREEZE-4.",
+  "publication": "Not published; not Product Truth.",
+  "clinical": "No clinical judgment was made. Clinical-cause breaks remain CLINICAL_HUMAN_REQUIRED; the F08 policy stays with Founder/PCG and the qualified owners.",
+  "fixCycle": "None in this phase. Nothing here is a blocker."
+ },
+ "expiry": {
+  "reviewBy": "2027-05-06",
+  "orEarlierOn": ["any runtime byte change", "a policy or catalog change", "a Founder decision on P33-F01, F08, G03 or per-sport re-entry", "a holdout result touching P18, TRAINING_BETWEEN_BREAKS, TRAINING_NOT_REESTABLISHED or P08", "a new SR/MA on detraining or retraining", "an adverse event", "human revalidation"],
+  "owner": "Chief / Founder"
+ },
+ "validation": {
+  "validateRecords": "Not run: Python is not installed on this host (only the Windows Store alias). This record follows the shape the coordinator requested (recordId, disposition, candidate, findings, conditionsForFreeze, answers, proposedHumanRevalidation.item), as SSCTR-R7D-P32-RECHECK-r1 did, not decision.schema.json.",
+  "probeFiles": {
+   "probes/common.mjs": "96ebe1784363bdd4829557fe91042c3f8af86a710e2aa1954f5126ed90306d79",
+   "probes/s1-isolated-paths.mjs": "82adcc13e9e598061db2a5c5887cd0082b6316b97822953e8b84589d87d5ae6a",
+   "probes/s2-inverse-defect.mjs": "832426afd29b09b9bc7623ae374eff48f8957f4e884dd7b4ca25b6c3713604fb",
+   "probes/s2b-single-break-baseline.mjs": "194f93c1cf22326b3762d66fa7b1788a9b53c1234ecb6ee474854e8684972c82",
+   "probes/s3-clinical-unknown-order.mjs": "a481f3c2d0d1558c0f2841dabf7bc47ae498ca9929b6bb71264c519ad2345e58"
+  },
+  "probeOutputs": {
+   "probes/out/s1.candidate.json": "35bc763c06d8f2157901f519344bee28b80444138d8f49864234d55e9d208cf7",
+   "probes/out/s1.R7D-FREEZE-3.json": "a27ed020d947763df5b4faf1349d9206a93431569de1f23fd980037fe8438d6d",
+   "probes/out/s2.candidate.json": "583e7d7c9e0a1ceefce7b57b62ed8481ea8bc5f5c823e95a45f4af220bfbfd2a",
+   "probes/out/s2.R7D-FREEZE-3.json": "a14e07910da32daec6d182d11a7aa8d42acc06cbb1c50ac4c15248304309749a",
+   "probes/out/s2b.candidate.json": "3cdf7e0bb9cc0fe3b1ba69d45aefcba2f3cea50dc922236e3a0c12726f24e038",
+   "probes/out/s2b.R7D-FREEZE-3.json": "466ae5c8b3e5561ca776406b4a60aea1598008e520ed2a1ea55d86ae5138dc38",
+   "probes/out/s3.candidate.json": "282cf3d3d420988b7dc625f4a4c6499cae7e8f22c22fe538bf7b94ffbdf756e2",
+   "probes/out/s3.R7D-FREEZE-3.json": "eb727e7cde2cb0f51451f9ab6c8f88425c432e2a8aafca67c5b8e70c556f94e9"
+  },
+  "usage": "node probes/<probe>.mjs <scratch root holding CoachingCore> --label <runtime>; never on the repository."
+ }
+}

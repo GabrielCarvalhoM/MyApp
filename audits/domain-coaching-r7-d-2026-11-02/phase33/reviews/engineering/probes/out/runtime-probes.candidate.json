@@ -1,0 +1,609 @@
+{
+ "probe": "QRE-R7D-P33-RUNTIME-PROBES-1",
+ "runtimeRoot": "C:\\Users\\carva\\AppData\\Local\\Temp\\claude\\858165ffefe5d744\\d1b308dc-243b-4985-8d22-78ba1cb403ed\\scratchpad\\qre-p33-20261106-230251-413\\cand",
+ "runtimeSha256": {
+  "CoachingCore/src/r6-adaptation.mjs": "15e4279baae4b79a5f61081539fa1f46b37930454f93894eab17118a248f97bc"
+ },
+ "cases": [
+  {
+   "id": "Q1-RUN_ONLY-full-week",
+   "why": "RUN_ONLY plan: week 4 executed in full between the breaks: a re-entry (expected SHORT, TRAINING_AFTER with reentryWeek 2026-11-30)",
+   "gap": [
+    "2026-12-01:RUN:QUALITY",
+    "2026-12-03:RUN:EASY",
+    "2026-12-06:RUN:LONG"
+   ],
+   "steps": [
+    "ASK",
+    "ASK"
+   ],
+   "result": {
+    "action": "REESTABLISH",
+    "status": "MODIFY",
+    "question": null,
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "stop": {
+     "start": "2026-12-07",
+     "end": "2026-12-10",
+     "days": 4,
+     "class": "SHORT",
+     "runMode": "EASY",
+     "separate": [
+      {
+       "episode": "q1fRUN_ONLY-A",
+       "start": "2026-11-16",
+       "end": "2026-11-29",
+       "stop": "TRAINING_AFTER",
+       "reentryWeek": "2026-11-30"
+      },
+      {
+       "episode": "q1fRUN_ONLY-D",
+       "start": "2026-12-07",
+       "end": "2026-12-10",
+       "stop": "LATEST"
+      }
+     ]
+    },
+    "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-07 to 2026-12-10), each its own interruption; the stop read runs from 2026-12-07 to 2026-12-10, and a whole week of the plan executed in full after the earlier one re-entered the athlete: short nonclinical interruption (4 days): resume the last completed doses; no step until execution is observed"
+   }
+  },
+  {
+   "id": "Q1-RUN_ONLY-one-session",
+   "why": "RUN_ONLY plan: one session of week 4 done, the rest reported not done: no re-entry (expected MODERATE 25)",
+   "gap": [
+    "2026-12-01:RUN:QUALITY",
+    "2026-12-03:RUN:EASY",
+    "2026-12-06:RUN:LONG"
+   ],
+   "steps": [
+    "ASK",
+    "ASK"
+   ],
+   "result": {
+    "action": "REESTABLISH",
+    "status": "MODIFY",
+    "question": null,
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "stop": {
+     "start": "2026-11-16",
+     "end": "2026-12-10",
+     "days": 25,
+     "class": "MODERATE",
+     "runMode": "RETURN",
+     "separate": [
+      {
+       "episode": "q1oRUN_ONLY-A",
+       "start": "2026-11-16",
+       "end": "2026-11-29",
+       "stop": "TRAINING_NOT_REESTABLISHED"
+      },
+      {
+       "episode": "q1oRUN_ONLY-D",
+       "start": "2026-12-07",
+       "end": "2026-12-10",
+       "stop": "LATEST"
+      }
+     ]
+    },
+    "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-07 to 2026-12-10), each its own interruption; the stop read runs from 2026-11-16 to 2026-12-10 through the training recorded between them, which completed no whole week of the plan (no re-entry): moderate nonclinical interruption (25 days): re-entry from the reviewed entry dose, returning to the prior tolerated dose in 2 "
+   }
+  },
+  {
+   "id": "Q1-STRENGTH_ONLY-full-week",
+   "why": "STRENGTH_ONLY plan: week 4 executed in full between the breaks: a re-entry (expected SHORT, TRAINING_AFTER with reentryWeek 2026-11-30)",
+   "gap": [
+    "2026-11-30:STRENGTH:STRENGTH_FULL_A",
+    "2026-12-04:STRENGTH:STRENGTH_FULL_B"
+   ],
+   "steps": [
+    "ASK",
+    "ASK"
+   ],
+   "result": {
+    "action": "REESTABLISH",
+    "status": "MODIFY",
+    "question": null,
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "stop": {
+     "start": "2026-12-07",
+     "end": "2026-12-10",
+     "days": 4,
+     "class": "SHORT",
+     "runMode": "NONE",
+     "separate": [
+      {
+       "episode": "q1fSTRENGTH_ONLY-A",
+       "start": "2026-11-16",
+       "end": "2026-11-29",
+       "stop": "TRAINING_AFTER",
+       "reentryWeek": "2026-11-30"
+      },
+      {
+       "episode": "q1fSTRENGTH_ONLY-D",
+       "start": "2026-12-07",
+       "end": "2026-12-10",
+       "stop": "LATEST"
+      }
+     ]
+    },
+    "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-07 to 2026-12-10), each its own interruption; the stop read runs from 2026-12-07 to 2026-12-10, and a whole week of the plan executed in full after the earlier one re-entered the athlete: short nonclinical interruption (4 days): resume the last completed doses; no step until execution is observed"
+   }
+  },
+  {
+   "id": "Q1-STRENGTH_ONLY-one-session",
+   "why": "STRENGTH_ONLY plan: one session of week 4 done, the rest reported not done: no re-entry (expected MODERATE 25)",
+   "gap": [
+    "2026-11-30:STRENGTH:STRENGTH_FULL_A",
+    "2026-12-04:STRENGTH:STRENGTH_FULL_B"
+   ],
+   "steps": [
+    "ASK",
+    "ASK"
+   ],
+   "result": {
+    "action": "REESTABLISH",
+    "status": "MODIFY",
+    "question": null,
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "stop": {
+     "start": "2026-11-16",
+     "end": "2026-12-10",
+     "days": 25,
+     "class": "MODERATE",
+     "runMode": "NONE",
+     "separate": [
+      {
+       "episode": "q1oSTRENGTH_ONLY-A",
+       "start": "2026-11-16",
+       "end": "2026-11-29",
+       "stop": "TRAINING_NOT_REESTABLISHED"
+      },
+      {
+       "episode": "q1oSTRENGTH_ONLY-D",
+       "start": "2026-12-07",
+       "end": "2026-12-10",
+       "stop": "LATEST"
+      }
+     ]
+    },
+    "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-07 to 2026-12-10), each its own interruption; the stop read runs from 2026-11-16 to 2026-12-10 through the training recorded between them, which completed no whole week of the plan (no re-entry): moderate nonclinical interruption (25 days): re-entry from the reviewed entry dose, returning to the prior tolerated dose in 2 "
+   }
+  },
+  {
+   "id": "Q2-WALKS-walks-unreported",
+   "why": "hybrid plan with two optional walks a week: week 4 executed in full except the optional walks (walks unreported)",
+   "gap": [
+    "2026-11-30:STRENGTH:STRENGTH_FULL_A",
+    "2026-12-01:RUN:EASY",
+    "2026-12-02:RUN:EASY",
+    "2026-12-03:RUN:WALK*",
+    "2026-12-04:STRENGTH:STRENGTH_FULL_B",
+    "2026-12-05:RUN:WALK*",
+    "2026-12-06:RUN:LONG"
+   ],
+   "steps": [
+    "ASK",
+    "ASK"
+   ],
+   "result": {
+    "action": "REESTABLISH",
+    "status": "MODIFY",
+    "question": null,
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "stop": {
+     "start": "2026-12-07",
+     "end": "2026-12-10",
+     "days": 4,
+     "class": "SHORT",
+     "runMode": "EASY",
+     "separate": [
+      {
+       "episode": "q2walksunreported-A",
+       "start": "2026-11-16",
+       "end": "2026-11-29",
+       "stop": "TRAINING_AFTER",
+       "reentryWeek": "2026-11-30"
+      },
+      {
+       "episode": "q2walksunreported-D",
+       "start": "2026-12-07",
+       "end": "2026-12-10",
+       "stop": "LATEST"
+      }
+     ]
+    },
+    "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-07 to 2026-12-10), each its own interruption; the stop read runs from 2026-12-07 to 2026-12-10, and a whole week of the plan executed in full after the earlier one re-entered the athlete: short nonclinical interruption (4 days): resume the last completed doses; no step until execution is observed"
+   }
+  },
+  {
+   "id": "Q2-WALKS-walks-reported-not-done",
+   "why": "hybrid plan with two optional walks a week: week 4 executed in full except the optional walks (walks reported not done)",
+   "gap": [
+    "2026-11-30:STRENGTH:STRENGTH_FULL_A",
+    "2026-12-01:RUN:EASY",
+    "2026-12-02:RUN:EASY",
+    "2026-12-03:RUN:WALK*",
+    "2026-12-04:STRENGTH:STRENGTH_FULL_B",
+    "2026-12-05:RUN:WALK*",
+    "2026-12-06:RUN:LONG"
+   ],
+   "steps": [
+    "ASK",
+    "ASK"
+   ],
+   "result": {
+    "action": "REESTABLISH",
+    "status": "MODIFY",
+    "question": null,
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "stop": {
+     "start": "2026-12-07",
+     "end": "2026-12-10",
+     "days": 4,
+     "class": "SHORT",
+     "runMode": "EASY",
+     "separate": [
+      {
+       "episode": "q2walksreportednotdone-A",
+       "start": "2026-11-16",
+       "end": "2026-11-29",
+       "stop": "TRAINING_AFTER",
+       "reentryWeek": "2026-11-30"
+      },
+      {
+       "episode": "q2walksreportednotdone-D",
+       "start": "2026-12-07",
+       "end": "2026-12-10",
+       "stop": "LATEST"
+      }
+     ]
+    },
+    "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-07 to 2026-12-10), each its own interruption; the stop read runs from 2026-12-07 to 2026-12-10, and a whole week of the plan executed in full after the earlier one re-entered the athlete: short nonclinical interruption (4 days): resume the last completed doses; no step until execution is observed"
+   }
+  },
+  {
+   "id": "Q2-WALKS-every-session-done",
+   "why": "hybrid plan with two optional walks a week: week 4 executed in full except the optional walks (every session done)",
+   "gap": [
+    "2026-11-30:STRENGTH:STRENGTH_FULL_A",
+    "2026-12-01:RUN:EASY",
+    "2026-12-02:RUN:EASY",
+    "2026-12-03:RUN:WALK*",
+    "2026-12-04:STRENGTH:STRENGTH_FULL_B",
+    "2026-12-05:RUN:WALK*",
+    "2026-12-06:RUN:LONG"
+   ],
+   "steps": [
+    "ASK",
+    "ASK"
+   ],
+   "result": {
+    "action": "REESTABLISH",
+    "status": "MODIFY",
+    "question": null,
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "stop": {
+     "start": "2026-12-07",
+     "end": "2026-12-10",
+     "days": 4,
+     "class": "SHORT",
+     "runMode": "EASY",
+     "separate": [
+      {
+       "episode": "q2everysessiondone-A",
+       "start": "2026-11-16",
+       "end": "2026-11-29",
+       "stop": "TRAINING_AFTER",
+       "reentryWeek": "2026-11-30"
+      },
+      {
+       "episode": "q2everysessiondone-D",
+       "start": "2026-12-07",
+       "end": "2026-12-10",
+       "stop": "LATEST"
+      }
+     ]
+    },
+    "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-07 to 2026-12-10), each its own interruption; the stop read runs from 2026-12-07 to 2026-12-10, and a whole week of the plan executed in full after the earlier one re-entered the athlete: short nonclinical interruption (4 days): resume the last completed doses; no step until execution is observed"
+   }
+  },
+  {
+   "id": "Q3a-three-breaks-reentry-before-middle",
+   "why": "A (days 0-13), week 4 in full, B (days 21-23), one run (Thu) and a strength session not done (Fri), H (days 26-29): expected A TRAINING_AFTER (reentryWeek wk4), B TRAINING_NOT_REESTABLISHED, stop 21-29 (9 days, SHORT)",
+   "gap": [
+    "2026-12-10:RUN:QUALITY",
+    "2026-12-11:STRENGTH:STRENGTH_FULL_B"
+   ],
+   "steps": [
+    "ASK",
+    "ASK"
+   ],
+   "result": {
+    "action": "REESTABLISH",
+    "status": "MODIFY",
+    "question": null,
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "stop": {
+     "start": "2026-12-07",
+     "end": "2026-12-15",
+     "days": 9,
+     "class": "SHORT",
+     "runMode": "EASY",
+     "separate": [
+      {
+       "episode": "q3a-A",
+       "start": "2026-11-16",
+       "end": "2026-11-29",
+       "stop": "TRAINING_AFTER",
+       "reentryWeek": "2026-11-30"
+      },
+      {
+       "episode": "q3a-B",
+       "start": "2026-12-07",
+       "end": "2026-12-09",
+       "stop": "TRAINING_NOT_REESTABLISHED"
+      },
+      {
+       "episode": "q3a-H",
+       "start": "2026-12-12",
+       "end": "2026-12-15",
+       "stop": "LATEST"
+      }
+     ]
+    },
+    "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-07 to 2026-12-09; 2026-12-12 to 2026-12-15), each its own interruption; the stop read runs from 2026-12-07 to 2026-12-15 through the training recorded between them, which completed no whole week of the plan (no re-entry), and a whole week of the plan executed in full after the earlier one re-entered the athlete: short non"
+   }
+  },
+  {
+   "id": "Q3b-three-breaks-reentry-after-middle",
+   "why": "A (days 0-13), one run (Tue wk4), B (days 17-20), week 5 in full, H (days 28-31): expected the stop H alone (SHORT), A and B TRAINING_AFTER, each with reentryWeek wk5",
+   "gap": [
+    "2026-11-30:STRENGTH:STRENGTH_FULL_A",
+    "2026-12-01:RUN:EASY",
+    "2026-12-07:STRENGTH:STRENGTH_FULL_A",
+    "2026-12-08:RUN:EASY",
+    "2026-12-10:RUN:QUALITY",
+    "2026-12-11:STRENGTH:STRENGTH_FULL_B",
+    "2026-12-13:RUN:LONG"
+   ],
+   "steps": [
+    "ASK",
+    "ASK"
+   ],
+   "result": {
+    "action": "REESTABLISH",
+    "status": "MODIFY",
+    "question": null,
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "stop": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "class": "SHORT",
+     "runMode": "EASY",
+     "separate": [
+      {
+       "episode": "q3b-A",
+       "start": "2026-11-16",
+       "end": "2026-11-29",
+       "stop": "TRAINING_AFTER",
+       "reentryWeek": "2026-12-07"
+      },
+      {
+       "episode": "q3b-B",
+       "start": "2026-12-03",
+       "end": "2026-12-06",
+       "stop": "TRAINING_AFTER",
+       "reentryWeek": "2026-12-07"
+      },
+      {
+       "episode": "q3b-H",
+       "start": "2026-12-14",
+       "end": "2026-12-17",
+       "stop": "LATEST"
+      }
+     ]
+    },
+    "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-03 to 2026-12-06; 2026-12-14 to 2026-12-17), each its own interruption; the stop read runs from 2026-12-14 to 2026-12-17, and a whole week of the plan executed in full after the earlier one re-entered the athlete: short nonclinical interruption (4 days): resume the last completed doses; no step until execution is observed"
+   }
+  },
+  {
+   "id": "Q4a-applied-return-before-A-isolated",
+   "why": "applied break E (Mon-Thu wk2, returned Fri wk2), week 3 reviewed, A (wk4-5, days 14-27), one run (Tue wk6), D (Thu-Sun wk6, days 31-34): expected the stop 14-34 (21 days, MODERATE), the state from E's return",
+   "firstReturn": "REESTABLISH",
+   "result": {
+    "action": "REESTABLISH",
+    "status": "MODIFY",
+    "question": null,
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "stop": {
+     "start": "2026-11-30",
+     "end": "2026-12-20",
+     "days": 21,
+     "class": "MODERATE",
+     "runMode": "RETURN",
+     "separate": [
+      {
+       "episode": "q4a-A",
+       "start": "2026-11-30",
+       "end": "2026-12-13",
+       "stop": "TRAINING_NOT_REESTABLISHED"
+      },
+      {
+       "episode": "q4a-D",
+       "start": "2026-12-17",
+       "end": "2026-12-20",
+       "stop": "LATEST"
+      }
+     ]
+    },
+    "reason": "Separate breaks on record are applied now (2026-11-30 to 2026-12-13; 2026-12-17 to 2026-12-20), each its own interruption; the stop read runs from 2026-11-30 to 2026-12-20 through the training recorded between them, which completed no whole week of the plan (no re-entry): moderate nonclinical interruption (21 days): re-entry from the reviewed entry dose, returning to the prior tolerated dose in 2 "
+   },
+   "comparator": {
+    "action": "REESTABLISH",
+    "status": "MODIFY",
+    "question": null,
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "stop": {
+     "start": "2026-11-30",
+     "end": "2026-12-20",
+     "days": 21,
+     "class": "MODERATE",
+     "runMode": "RETURN",
+     "separate": []
+    },
+    "reason": "moderate nonclinical interruption (21 days): re-entry from the reviewed entry dose, returning to the prior tolerated dose in 2 conditional steps"
+   },
+   "entrySameAsDeclaredOnce": true,
+   "aheadSameAsDeclaredOnce": true
+  },
+  {
+   "id": "Q4b-applied-return-before-A-full-week",
+   "why": "applied break E (Mon-Thu wk2), A (wk3, days 7-13), week 4 in full, D (Mon-Thu wk5): expected D alone (SHORT), A TRAINING_AFTER with reentryWeek wk4",
+   "result": {
+    "action": "REESTABLISH",
+    "status": "MODIFY",
+    "question": null,
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "stop": {
+     "start": "2026-12-07",
+     "end": "2026-12-10",
+     "days": 4,
+     "class": "SHORT",
+     "runMode": "EASY",
+     "separate": [
+      {
+       "episode": "q4b-A",
+       "start": "2026-11-23",
+       "end": "2026-11-29",
+       "stop": "TRAINING_AFTER",
+       "reentryWeek": "2026-11-30"
+      },
+      {
+       "episode": "q4b-D",
+       "start": "2026-12-07",
+       "end": "2026-12-10",
+       "stop": "LATEST"
+      }
+     ]
+    },
+    "reason": "Separate breaks on record are applied now (2026-11-23 to 2026-11-29; 2026-12-07 to 2026-12-10), each its own interruption; the stop read runs from 2026-12-07 to 2026-12-10, and a whole week of the plan executed in full after the earlier one re-entered the athlete: short nonclinical interruption (4 days): resume the last completed doses; no step until execution is observed"
+   }
+  },
+  {
+   "id": "Q5-startedAt-same-day",
+   "why": "A (days 0-13), week 4 in full with its Sunday long run at 08:00, D from Sun wk4 18:00 (startedAt) to Wed wk5 (days 20-23): the whole week was executed before D began",
+   "gap": [
+    "2026-11-30:STRENGTH:STRENGTH_FULL_A:PM",
+    "2026-12-01:RUN:EASY:AM",
+    "2026-12-03:RUN:QUALITY:AM",
+    "2026-12-04:STRENGTH:STRENGTH_FULL_B:PM",
+    "2026-12-06:RUN:LONG:AM"
+   ],
+   "result": {
+    "action": "REESTABLISH",
+    "status": "MODIFY",
+    "question": null,
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "stop": {
+     "start": "2026-11-16",
+     "end": "2026-12-09",
+     "days": 24,
+     "class": "MODERATE",
+     "runMode": "RETURN",
+     "separate": [
+      {
+       "episode": "q5-A",
+       "start": "2026-11-16",
+       "end": "2026-11-29",
+       "stop": "TRAINING_NOT_REESTABLISHED"
+      },
+      {
+       "episode": "q5-D",
+       "start": "2026-12-06",
+       "end": "2026-12-09",
+       "stop": "LATEST"
+      }
+     ]
+    },
+    "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-06 to 2026-12-09), each its own interruption; the stop read runs from 2026-11-16 to 2026-12-09 through the training recorded between them, which completed no whole week of the plan (no re-entry): moderate nonclinical interruption (24 days): re-entry from the reviewed entry dose, returning to the prior tolerated dose in 2 "
+   }
+  },
+  {
+   "id": "Q6-full-week-then-unreported",
+   "why": "A (days 0-13), week 4 in full, Mon-Tue wk5 unreported, D (Thu-Sun wk5, days 24-27): the re-entry week is found before any question about the later sessions",
+   "unreported": [
+    "2026-12-07:STRENGTH:STRENGTH_FULL_A",
+    "2026-12-08:RUN:EASY"
+   ],
+   "result": {
+    "action": "REESTABLISH",
+    "status": "MODIFY",
+    "question": null,
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "stop": {
+     "start": "2026-12-10",
+     "end": "2026-12-13",
+     "days": 4,
+     "class": "SHORT",
+     "runMode": "EASY",
+     "separate": [
+      {
+       "episode": "q6-A",
+       "start": "2026-11-16",
+       "end": "2026-11-29",
+       "stop": "TRAINING_AFTER",
+       "reentryWeek": "2026-11-30"
+      },
+      {
+       "episode": "q6-D",
+       "start": "2026-12-10",
+       "end": "2026-12-13",
+       "stop": "LATEST"
+      }
+     ]
+    },
+    "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-10 to 2026-12-13), each its own interruption; the stop read runs from 2026-12-10 to 2026-12-13, and a whole week of the plan executed in full after the earlier one re-entered the athlete: short nonclinical interruption (4 days): resume the last completed doses; no step until execution is observed"
+   }
+  },
+  {
+   "id": "Q7-determinism-and-record",
+   "why": "F01 form (one run between): the same plain review evaluated twice gives byte-identical outputs; the declarations travel unchanged",
+   "sameHash": true,
+   "firstDeclarationUnchanged": true,
+   "declarations": [
+    "q7-A",
+    "q7-D"
+   ],
+   "ledgerPrefixKept": true,
+   "result": {
+    "action": "REESTABLISH",
+    "status": "MODIFY",
+    "question": null,
+    "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+    "stop": {
+     "start": "2026-11-16",
+     "end": "2026-12-06",
+     "days": 21,
+     "class": "MODERATE",
+     "runMode": "RETURN",
+     "separate": [
+      {
+       "episode": "q7-A",
+       "start": "2026-11-16",
+       "end": "2026-11-29",
+       "stop": "TRAINING_NOT_REESTABLISHED"
+      },
+      {
+       "episode": "q7-D",
+       "start": "2026-12-03",
+       "end": "2026-12-06",
+       "stop": "LATEST"
+      }
+     ]
+    },
+    "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-03 to 2026-12-06), each its own interruption; the stop read runs from 2026-11-16 to 2026-12-06 through the training recorded between them, which completed no whole week of the plan (no re-entry): moderate nonclinical interruption (21 days): re-entry from the reviewed entry dose, returning to the prior tolerated dose in 2 "
+   }
+  }
+ ]
+}

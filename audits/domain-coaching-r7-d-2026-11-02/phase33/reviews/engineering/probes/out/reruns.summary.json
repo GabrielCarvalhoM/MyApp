@@ -1,0 +1,135 @@
+{
+ "probe": "QRE-R7D-P33-RERUNS-1",
+ "note": "Summaries of the reviewer's re-runs on scratch copies (full outputs kept in the scratch directory, not committed).",
+ "suite": {
+  "runtime": "git archive 3228a70 (r6-adaptation.mjs sha256 15e4279b...)",
+  "tests": 952,
+  "pass": 952,
+  "fail": 0,
+  "phase33": 14,
+  "phase32": 17,
+  "phase31": 14
+ },
+ "harnessValidation5": {
+  "summary": {
+   "noFalseBlock": "PASS",
+   "coverage": "COVERED",
+   "carrierUnits": {
+    "CARRIER_CLINICAL": 7,
+    "CARRIER_HOLD": 1,
+    "RESEND": 30,
+    "RESTATE_DECLARED_BREAK": 24,
+    "INSERT_NEWER_BREAK": 10
+   },
+   "p17Units": 74,
+   "p18Units": 24,
+   "sensitivity": [
+    {
+     "defect": "DX-01 (a same-day day-precision report drops out of the record at the next decision)",
+     "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+    },
+    {
+     "defect": "DX-02 (a break declared in a weekly review with no pending question is ignored, VALID)",
+     "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+    },
+    {
+     "defect": "F03 (a machine load logged as prescribed is refused; machine settings fabricated by +1 kg)",
+     "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+    },
+    {
+     "defect": "F04 (confounded masks an adverse recovery and an impaired next day; the long run advances)",
+     "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+    },
+    {
+     "defect": "QE-R7C-10 (shortened answer recorded by a clinical route stays unapplied)",
+     "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+    },
+    {
+     "defect": "R7C-G01 (unknown training planned without a question: unreported weeks read as a stop, entry dose VALID)",
+     "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+    },
+    {
+     "defect": "D54 (a strength row not done for more than 28 days ignores the race-window dose)",
+     "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+    },
+    {
+     "defect": "QE-R7D-P3-01(a) (a break declared with another event is asked and then lost: the next plain review is VALID on the pre-break plan)",
+     "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+    },
+    {
+     "defect": "QE-R7D-P3-01(b) (a break declared with a clinical flag is lost across qualified clearance: the next plain review is VALID on the pre-break plan)",
+     "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+    },
+    {
+     "defect": "P3-F01 (a break answering UNREPORTED_TRAINING through a clinical route is not retained across clearance: asked again)",
+     "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+    },
+    {
+     "defect": "SSCTR-P31-F02 (a newer break that names none replaces a kept one: the next review re-enters from the newer break alone; a correction of an applied break ends a kept one, the p4b path)",
+     "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+    },
+    {
+     "defect": "SSCTR-P31-F02, metamorphic (a newer break stated in the review that applies a kept one re-enters from the newer break alone)",
+     "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+    },
+    {
+     "defect": "SSCTR-P31-F03 path (a newer nonclinical break replaces a kept clinical-cause break: a nonclinical return)",
+     "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+    },
+    {
+     "defect": "SSCTR-P32-F01 (training between two separate breaks that completes no whole week of the plan, one run, an aborted run or a week with a session missed, ends the earlier break: the return re-enters from the later break alone)",
+     "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+    }
+   ],
+   "witnessesFired": 43,
+   "witnesses": 43,
+   "notFired": []
+  },
+  "equalToCommitted": {
+   "summary": true,
+   "runs": true,
+   "witnesses": true,
+   "coverage": true,
+   "excluding": "root/path/runtime-source fields"
+  }
+ },
+ "authorMutation": {
+  "summary": {
+   "mutants": 8,
+   "killed": 8,
+   "survived": []
+  },
+  "scratchRestored": true
+ },
+ "differential": {
+  "cases": 151,
+  "same": 147,
+  "differing": 4,
+  "unexplained": [],
+  "rowsEqualToCommitted": true
+ },
+ "f01Witness": {
+  "candidate": {
+   "casesAndVerdictEqualToCommitted": true,
+   "RED": false
+  },
+  "freeze3": {
+   "casesAndVerdictEqualToCommitted": true,
+   "RED": true
+  }
+ },
+ "updatedAssertions": {
+  "asAtFreeze3OnCandidate": "2/2 fail (the old r7d-phase32 file: 15 pass, 2 fail = exactly the two disclosed)",
+  "updatedOnFreeze3": "2/2 fail",
+  "phase33OnFreeze3": "11 fail, 3 pass (T2, T7, T8)"
+ },
+ "freezeDryRun": {
+  "where": "a scratch git clone of f74bb82 with dummy review records (never the repository)",
+  "integrateDryRun": "no problems, 233 -> 234, nothing written",
+  "freezeBeforeIntegration": "refused: the queue is not R7D-FREEZE-3's plus the one authorized item, appended",
+  "integrateWrite": "4 files changed, 89 insertions(+), 0 deletions (queue +55 lines)",
+  "freeze": "R7D-FREEZE-4 written: 397 files, 952/952, conformance PASS x3; postReview lists only additions plus the queue",
+  "freezeAgain": "refused: exists already",
+  "verify": "23/23 PASS"
+ }
+}
