@@ -2,9 +2,9 @@
  "probe": "R7D-PHASE34-DIFFERENTIAL-1",
  "baseline": "R7D-FREEZE-4",
  "candidate": "the working tree runtime",
- "cases": 165,
+ "cases": 167,
  "same": 148,
- "differing": 17,
+ "differing": 19,
  "unexplained": [],
  "differingCases": [
   {
@@ -219,6 +219,31 @@
     "CEILING",
     "SAME_DAY"
    ]
+  },
+  {
+   "corpus": "HARNESS_DEV_6",
+   "caseId": "DEV-46",
+   "first": "plain",
+   "trigger": {
+    "at": "plain",
+    "kind": "RACE_KEYS"
+   },
+   "kinds": [
+    "RACE_KEYS"
+   ]
+  },
+  {
+   "corpus": "HARNESS_DEV_6",
+   "caseId": "DEV-47",
+   "first": "plain",
+   "trigger": {
+    "at": "plain",
+    "kind": "CEILING"
+   },
+   "kinds": [
+    "CEILING",
+    "OWN_RETURN"
+   ]
   }
  ],
  "byTrigger": {
@@ -227,7 +252,8 @@
    "DEV-34",
    "DEV-35",
    "DEV-38",
-   "DEV-43"
+   "DEV-43",
+   "DEV-47"
   ],
   "CORRECTION": [
    "DEV-37"
@@ -255,10 +281,12 @@
    "DEV-42",
    "DEV-43",
    "DEV-44",
-   "DEV-45"
+   "DEV-45",
+   "DEV-47"
   ],
   "RACE_KEYS": [
-   "DEV-42"
+   "DEV-42",
+   "DEV-46"
   ]
  },
  "rows": [
@@ -2664,6 +2692,99 @@
    "kindsAtOrBeforeFirst": [
     "CEILING",
     "SAME_DAY"
+   ],
+   "explained": true,
+   "atFirst": {
+    "freeze4": {
+     "status": "MODIFY",
+     "action": "REESTABLISH",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "question": null,
+     "gates": null,
+     "offers": [],
+     "pending": null
+    },
+    "candidate": {
+     "status": "MODIFY",
+     "action": "REESTABLISH",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "question": null,
+     "gates": null,
+     "offers": [],
+     "pending": null
+    }
+   }
+  },
+  {
+   "corpus": "HARNESS_DEV_6",
+   "caseId": "DEV-46",
+   "same": false,
+   "firstDifference": "plain",
+   "trigger": {
+    "at": "plain",
+    "kind": "RACE_KEYS"
+   },
+   "triggers": [
+    {
+     "at": "plain",
+     "kind": "RACE_KEYS"
+    }
+   ],
+   "kindsAtOrBeforeFirst": [
+    "RACE_KEYS"
+   ],
+   "explained": true,
+   "atFirst": {
+    "freeze4": {
+     "status": "MODIFY",
+     "action": "REESTABLISH",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "question": null,
+     "gates": null,
+     "offers": [],
+     "pending": null
+    },
+    "candidate": {
+     "status": "MODIFY",
+     "action": "REESTABLISH",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "question": null,
+     "gates": null,
+     "offers": [],
+     "pending": null
+    }
+   }
+  },
+  {
+   "corpus": "HARNESS_DEV_6",
+   "caseId": "DEV-47",
+   "same": false,
+   "firstDifference": "plain",
+   "trigger": {
+    "at": "plain",
+    "kind": "CEILING"
+   },
+   "triggers": [
+    {
+     "at": "plain",
+     "kind": "CEILING"
+    },
+    {
+     "at": "plain",
+     "kind": "OWN_RETURN"
+    },
+    {
+     "at": "plain",
+     "kind": "OWN_RETURN"
+    },
+    {
+     "at": "plain",
+     "kind": "OWN_RETURN"
+    }
+   ],
+   "kindsAtOrBeforeFirst": [
+    "CEILING",
+    "OWN_RETURN"
    ],
    "explained": true,
    "atFirst": {

@@ -1,7 +1,7 @@
 {
  "validation": "R7D-HARNESS-VALIDATION-6",
  "harness": "R7D-HARNESS-6",
- "devCorpusSha256": "1dc8d1c114d0e948827c3c6ea46ef8f07b29972b0630348ae27f4b4c7ce7ed18",
+ "devCorpusSha256": "6b407f723dfaa8056642bf5b04aa159c23b891cf38078e5f344447bb8afb1628",
  "runs": [
   {
    "runtime": {
@@ -34,7 +34,7 @@
       "CoachingCore/src/r5-selectors.mjs": "a4d755cdc8fad1bcd265fac7a2967a545db5a3f17781d62e9dfad2d33764c156",
       "CoachingCore/src/r5-simulator.mjs": "e18ac696baff3dcf47305846a8b9b4c078453ca2841f8652835997a4e59d70c0",
       "CoachingCore/src/r5-validity.mjs": "ef19dfb0a59c7c024d1e63c960bf2ece864b0e509b345766f5ede37ce1628867",
-      "CoachingCore/src/r6-adaptation.mjs": "1163e105005134afbe12edf5a6e2f1873873268d2a8e6cb8df4c12f4f4a94771",
+      "CoachingCore/src/r6-adaptation.mjs": "c98eb08180e182f42d0eba0dbc5496d0107f03daf9efcc96200115b0e15127ba",
       "CoachingCore/src/r6-authority.mjs": "916b601ade47966557bafc29f134a45f7497380949c584e9be773f4beba63f69",
       "CoachingCore/src/r6-balanced.mjs": "e50fd557a1a7d2de3126adfbbec24ac69bb4fad1b7f709a6bee1d3b30967ac00",
       "CoachingCore/src/r6-catalogue.mjs": "1345682e5579293248fdb537510519344b9102e6a75ef0db3ea1ca61783dde5c",
@@ -55,7 +55,7 @@
       "CoachingCore/r6/PROGRAM_POLICY_R6.json": "a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100",
       "CoachingCore/r7/b0/REPERTOIRE_CATALOG_B0.json": "ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9"
      },
-     "digest": "97c6920238b7b01c4fcf878ff4845f626f77c6a6b9cf9d824ca2c4636a5dbb90"
+     "digest": "1ec5d530c12feb15a9df1ff798da747abf1ae9c62d081cbdbd46380f6e1d9743"
     }
    },
    "purpose": "NO_FALSE_BLOCK",
@@ -389,6 +389,20 @@
      "caseId": "DEV-45",
      "generation": "PROPOSED",
      "steps": 5,
+     "fails": [],
+     "differences": []
+    },
+    {
+     "caseId": "DEV-46",
+     "generation": "PROPOSED",
+     "steps": 8,
+     "fails": [],
+     "differences": []
+    },
+    {
+     "caseId": "DEV-47",
+     "generation": "PROPOSED",
+     "steps": 7,
      "fails": [],
      "differences": []
     }
@@ -3967,6 +3981,22 @@
       }
      ],
      "detected": true
+    },
+    {
+     "caseId": "DEV-47",
+     "steps": 7,
+     "stopped": null,
+     "runtimeErrors": [],
+     "fails": [
+      {
+       "property": "P18",
+       "issues": [
+        "SPORT_WEEK_READ_AS_STOP"
+       ],
+       "n": 3
+      }
+     ],
+     "detected": true
     }
    ],
    "onCandidate": [
@@ -3984,6 +4014,10 @@
     },
     {
      "caseId": "DEV-43",
+     "fails": []
+    },
+    {
+     "caseId": "DEV-47",
      "fails": []
     }
    ],
@@ -4660,6 +4694,342 @@
     }
    ],
    "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+  },
+  {
+   "runtime": {
+    "revision": "R7D-FREEZE-4",
+    "commit": "b2422376b04e444acd64504d9798db47ac0e079a",
+    "created": "2026-11-07T02:33:10.275Z",
+    "recordSha256": "bee62152348c8ff0d97034fda778c2d5526d78cfa38b745bef6f40cf40859df3",
+    "sourceDigest": "754d42a4856fce6aaa563d48ee67c991fa15c7091290ed9169d86982c97ded8c",
+    "manifestDigest": "e41418da91f212ef4f803242049cbeb9a939e9a936f2402532aae608db6a10ba",
+    "files": 423,
+    "same": 131,
+    "diff": [
+     "audits/domain-coaching-r7-c-2026-11-01/probes/b2-copy/adversarial-r7b1.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/probes/b2-copy/b2-inventory.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/probes/b2-copy/k6-stale-return-clinical.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/probes/b2-copy/k6b-stale-return-two-step.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/probes/b2-copy/lib.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/probes/make-r7a-probe-copy.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/probes/phase2-rebaseline.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/probes/phase3-adversarial-g01.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/probes/phase3-adversarial-g02.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/probes/phase3-current-week-credit.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/probes/phase3-history-finding.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/probes/phase3-holdout-expiry.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/probes/phase3-holdout.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/probes/phase3-lib.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/probes/phase3-mutation.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/probes/phase3-relabel-reason.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/probes/phase3-suite-dispositions.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/probes/phase4-adversarial-g01.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/probes/phase4-full-suite.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/probes/phase4-mutation.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/probes/phase4-verify-sd01.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/probes/phase5-adversarial-sd.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/probes/phase5-cc-differential.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/probes/phase5-mutation.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/probes/phase5-run-evidence.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/probes/phase6-differential.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/probes/phase6-mutation.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/probes/phase6-run-evidence.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/probes/phase7-differential.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/probes/phase7-mutation.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/probes/phase7-regress-r7b2-stamp-neutral.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/probes/phase7-run-evidence.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/probes/r18-running-strength-probe.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/phase6/p6-i-cell.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/phase6/p6-i-instrument.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/phase6/p6-lib.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/phase6/p6-m-mutants.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/phase6/p6-m-witness.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/phase6/p6-x1-trajectory-independence.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/phase6/p6-x2-reach.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/phase6/p6-x2b-reviewed-reference.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/phase6/p6-x3-edge.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/phase6/p6-x4-late-reporter.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/phase6/p6-x5-short-answer.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/phase6/p6-x6-history.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/phase6/p6-x7-direct-refire.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/qe-e1-answer-in-carried-record.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/qe-e2-held-signal-lifecycle.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/qe-e2b-signal-week-boundary.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/qe-e3-r1-next-week-projection.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/qe-e3b-r1-first-decision-next-week.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/qe-e4-lifecycle-clinical-determinism.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/qe-lib.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/qe-mutation.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/recheck/rc-instrument.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/recheck/rc-lib.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/recheck/rc-mutants.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/recheck/rc-p1-return-next-week.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/recheck/rc-p2-reach-grid.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/recheck/rc-p3-r7a-cycle2-and-strength.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/recheck/rc-p4-recorder-independence.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/recheck/rc-p4b-mechanism.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/recheck/rc-p5-uncredited-premise.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/cc/cc-lib.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/cc/cc1-r1-skipped-review.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/cc/cc2-answer-after-refusal.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/cc/cc3-r1-handler-routes.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/cc/cc4-ceiling-population.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/cc/cc5-held-signal.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/cc/cc6-exec-quality-step.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/cc/cc7-reentry-partial-week.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/cc/cc8-r7a-cycle2-111.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/phase6/p6-direct-check.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/phase6/p6-mixed-diagnose.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/phase6/p6-mixed-scope.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/phase6/p6-reach-adverse-trace.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/phase6/p6-reach.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/phase6/p6-timely-midweek.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/phase6/p6-timely-quality-detail.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/sd/sd-probe.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/sd/sd7-answer-midweek.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/sd/sd8-controls.mjs",
+     "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/sd/sd9-test-fixture-week7.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/PREREGISTRATION_R7D.md",
+     "audits/domain-coaching-r7-d-2026-11-02/PREREGISTRATION_R7D_2.md",
+     "audits/domain-coaching-r7-d-2026-11-02/PREREGISTRATION_R7D_3.md",
+     "audits/domain-coaching-r7-d-2026-11-02/PREREGISTRATION_R7D_4.md",
+     "audits/domain-coaching-r7-d-2026-11-02/PREREGISTRATION_R7D_5.md",
+     "audits/domain-coaching-r7-d-2026-11-02/author/AUTHOR_BRIEF_FINAL_R7D.md",
+     "audits/domain-coaching-r7-d-2026-11-02/author/AUTHOR_BRIEF_FINAL_R7D_2.md",
+     "audits/domain-coaching-r7-d-2026-11-02/author/AUTHOR_BRIEF_FINAL_R7D_3.md",
+     "audits/domain-coaching-r7-d-2026-11-02/author/AUTHOR_BRIEF_FINAL_R7D_4.md",
+     "audits/domain-coaching-r7-d-2026-11-02/author/CASE_SCHEMA_R7D.json",
+     "audits/domain-coaching-r7-d-2026-11-02/author/INTERFACE_DELTA_R7D_2.md",
+     "audits/domain-coaching-r7-d-2026-11-02/author/INTERFACE_DELTA_R7D_3.md",
+     "audits/domain-coaching-r7-d-2026-11-02/author/INTERFACE_DELTA_R7D_4.md",
+     "audits/domain-coaching-r7-d-2026-11-02/author/INTERFACE_DELTA_R7D_5.md",
+     "audits/domain-coaching-r7-d-2026-11-02/author/INTERFACE_ONLY_R7D.md",
+     "audits/domain-coaching-r7-d-2026-11-02/author/check-corpus.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/harness/README.md",
+     "audits/domain-coaching-r7-d-2026-11-02/harness/generate-sample.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/harness/lib/canonical.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/harness/lib/client.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/harness/lib/expectations.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/harness/lib/metamorphic.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/harness/lib/properties.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/harness/lib/report.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/harness/lib/util.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/harness/r7d-harness.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/harness/seal-corpus.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/harness/validation/DEV_CASES_R7D_2.json",
+     "audits/domain-coaching-r7-d-2026-11-02/harness/validation/DEV_CASES_R7D_3.json",
+     "audits/domain-coaching-r7-d-2026-11-02/harness/validation/DEV_CASES_R7D_4.json",
+     "audits/domain-coaching-r7-d-2026-11-02/harness/validation/DEV_CASES_R7D_5.json",
+     "audits/domain-coaching-r7-d-2026-11-02/harness/validation/HARNESS_VALIDATION_R7D_2.json",
+     "audits/domain-coaching-r7-d-2026-11-02/harness/validation/HARNESS_VALIDATION_R7D_3.json",
+     "audits/domain-coaching-r7-d-2026-11-02/harness/validation/HARNESS_VALIDATION_R7D_4.json",
+     "audits/domain-coaching-r7-d-2026-11-02/harness/validation/HARNESS_VALIDATION_R7D_5.json",
+     "audits/domain-coaching-r7-d-2026-11-02/harness/validation/build-dev-cases.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/harness/validation/run-validation.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase3/AUTHORIZATION_PHASE3.md",
+     "audits/domain-coaching-r7-d-2026-11-02/phase3/policy/F03B_DECISION_REQUEST.md",
+     "audits/domain-coaching-r7-d-2026-11-02/phase3/policy/PCG_F03B_AUTHORITY_R7D.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase3/policy/PCG_F03B_AUTHORITY_R7D.md",
+     "audits/domain-coaching-r7-d-2026-11-02/phase3/policy/SSCTR_F03B_DECISION_R7D.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase3/policy/SSCTR_F03B_DECISION_R7D.md",
+     "audits/domain-coaching-r7-d-2026-11-02/phase3/probes/f03-machine-witness.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase3/probes/f03b-athlete-probe.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase3/probes/phase3-differential.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase3/probes/phase3-mutation.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase3/probes/phase3-run-evidence.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/REVIEW_REQUEST_PHASE3.md",
+     "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/engineering/ENGINEERING_CHECK_R7D_PHASE3.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/engineering/ENGINEERING_CHECK_R7D_PHASE3.md",
+     "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/engineering/probes/qe-consent.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/engineering/probes/qe-differential-attribution.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/engineering/probes/qe-dx01.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/engineering/probes/qe-dx02.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/engineering/probes/qe-f03.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/engineering/probes/qe-f03b-edges.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/engineering/probes/qe-mutation.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/ssctr/SSCTR_PHASE3_RECHECK_R7D.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/ssctr/SSCTR_PHASE3_RECHECK_R7D.md",
+     "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/ssctr/probes/dx02-equiv.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/ssctr/probes/dx02-paths.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/ssctr/probes/dx02-sticky-rtp.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/ssctr/probes/f03b-cadence-hold.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/ssctr/probes/f03b-rows-week.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/ssctr/probes/f03b-trace-machine.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/ssctr/probes/f03b-verify-gap.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/ssctr/probes/f04-matrix.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/AUTHORIZATION_PHASE31.md",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/QUEUE_INTEGRATION_R7D.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/evidence/DIFFERENTIAL_VS_R7D_FREEZE_1.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/evidence/EVIDENCE_PHASE31.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/evidence/MUTATION_PHASE31.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/integrate-queue-r7d.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/probes/phase31-differential.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/probes/phase31-mutation.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/probes/phase31-run-evidence.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/regression/diagnostic/DOMAIN_PACKET.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/regression/diagnostic/DOMAIN_PACKET.md",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/regression/diagnostic/RUN_REPORT.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/regression/diagnostic/SUMMARY.md",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/regression/generated/DOMAIN_PACKET.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/regression/generated/DOMAIN_PACKET.md",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/regression/generated/RUN_REPORT.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/regression/generated/SUMMARY.md",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/REVIEW_REQUEST_PHASE31.md",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/engineering/ENGINEERING_CHECK_R7D_PHASE31.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/engineering/ENGINEERING_CHECK_R7D_PHASE31.md",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/engineering/probes/qe31-differential-attribution.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/engineering/probes/qe31-instruments.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/engineering/probes/qe31-make-mutant-runtimes.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/engineering/probes/qe31-malformed-and-resend.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/engineering/probes/qe31-mutation.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/engineering/probes/qe31-persistence.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/engineering/probes/qe31-post-race.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/engineering/probes/qe31-row-diff.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/ssctr/SSCTR_PHASE31_RECHECK_R7D.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/ssctr/SSCTR_PHASE31_RECHECK_R7D.md",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/ssctr/probes/common.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/ssctr/probes/p1-reentry.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/ssctr/probes/p1b-held-after-end.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/ssctr/probes/p2-clinical-cause.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/ssctr/probes/p3-other-kinds.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/ssctr/probes/p4-newer-replaces.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/ssctr/probes/p4b-correction-ends-kept.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/ssctr/probes/p5-not-kept.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/ssctr/probes/p6-record-on-early-returns.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/AUTHORIZATION_PHASE32.md",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/evidence/DIFFERENTIAL_VS_R7D_FREEZE_2.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/evidence/EVIDENCE_PHASE32.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/evidence/MUTATION_PHASE32.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/probes/f02-witness.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/probes/out/f02-witness.R7D-FREEZE-2.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/probes/out/f02-witness.candidate.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/probes/phase32-differential.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/probes/phase32-mutation.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/probes/phase32-run-evidence.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/regression/diagnostic/DOMAIN_PACKET.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/regression/diagnostic/DOMAIN_PACKET.md",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/regression/diagnostic/RUN_REPORT.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/regression/diagnostic/SUMMARY.md",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/regression/generated/DOMAIN_PACKET.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/regression/generated/DOMAIN_PACKET.md",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/regression/generated/RUN_REPORT.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/regression/generated/SUMMARY.md",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/REVIEW_REQUEST_PHASE32.md",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/engineering/ENGINEERING_CHECK_R7D_PHASE32.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/engineering/ENGINEERING_CHECK_R7D_PHASE32.md",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/engineering/probes/out-author-mutation-rerun.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/engineering/probes/out-correction-across.candidate.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/engineering/probes/out-mutants.candidate.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/engineering/probes/out-p18-false-block.candidate.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/engineering/probes/out-probes.R7D-FREEZE-2.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/engineering/probes/out-probes.candidate.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/engineering/probes/out-restate-fb2.R7D-FREEZE-2.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/engineering/probes/out-restate-fb2.candidate.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/engineering/probes/qe-p32-correction-across.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/engineering/probes/qe-p32-mutants.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/engineering/probes/qe-p32-p18-false-block.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/engineering/probes/qe-p32-probes.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/engineering/probes/qe-p32-restate-fb2.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/SSCTR_PHASE32_RECHECK_R7D.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/SSCTR_PHASE32_RECHECK_R7D.md",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/probes/common.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/probes/out/q1.R7D-FREEZE-2.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/probes/out/q1.candidate.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/probes/out/q4.R7D-FREEZE-2.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/probes/out/q4.candidate.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/probes/out/q4b.R7D-FREEZE-2.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/probes/out/q4b.candidate.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/probes/out/q5.R7D-FREEZE-2.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/probes/out/q5.candidate.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/probes/out/q6.R7D-FREEZE-2.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/probes/out/q6.candidate.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/probes/q1-f02-preservation.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/probes/q4-between-breaks.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/probes/q4b-long-then-session.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/probes/q5-clinical-f08.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/probes/q6-i9-replay.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/AUTHORIZATION_PHASE33.md",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/QUEUE_INTEGRATION_R7D_P33.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/evidence/DIFFERENTIAL_VS_R7D_FREEZE_3.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/evidence/EVIDENCE_PHASE33.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/evidence/MUTATION_PHASE33.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/integrate-queue-r7d-p32.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/probes/f01-witness.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/probes/out/f01-witness.R7D-FREEZE-3.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/probes/out/f01-witness.candidate.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/probes/phase33-differential.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/probes/phase33-mutation.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/probes/phase33-run-evidence.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/regression/diagnostic/DOMAIN_PACKET.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/regression/diagnostic/DOMAIN_PACKET.md",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/regression/diagnostic/RUN_REPORT.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/regression/diagnostic/SUMMARY.md",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/regression/generated/DOMAIN_PACKET.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/regression/generated/DOMAIN_PACKET.md",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/regression/generated/RUN_REPORT.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/regression/generated/SUMMARY.md",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/REVIEW_REQUEST_PHASE33.md",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/QUALITY_CHECK_R7D_PHASE33.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/QUALITY_CHECK_R7D_PHASE33.md",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/probes/out/applied-between.R7D-FREEZE-3.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/probes/out/applied-between.candidate.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/probes/out/harness-probe.candidate.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/probes/out/mutation.qre.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/probes/out/reruns.summary.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/probes/out/runtime-probes.R7D-FREEZE-3.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/probes/out/runtime-probes.candidate.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/probes/qre-p33-applied-between.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/probes/qre-p33-harness-probes.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/probes/qre-p33-mutation.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/probes/qre-p33-runtime-probes.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/SSCTR_PHASE33_RECHECK_R7D.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/SSCTR_PHASE33_RECHECK_R7D.md",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/common.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/out/s1.R7D-FREEZE-3.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/out/s1.candidate.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/out/s2.R7D-FREEZE-3.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/out/s2.candidate.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/out/s2b.R7D-FREEZE-3.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/out/s2b.candidate.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/out/s3.R7D-FREEZE-3.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/out/s3.candidate.json",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/s1-isolated-paths.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/s2-inverse-defect.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/s2b-single-break-baseline.mjs",
+     "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/s3-clinical-unknown-order.mjs",
+     "reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json"
+    ],
+    "changed": 0,
+    "absent": 292,
+    "runtimeDiff": []
+   },
+   "purpose": "SENSITIVITY",
+   "defect": "A race touch done at half its minutes (partial by the completion rule) re-enters running (SSCTR CFR-05; SSCTR-P34R-F02, BR-Q4.1)",
+   "cases": [
+    {
+     "caseId": "DEV-46",
+     "steps": 8,
+     "stopped": null,
+     "runtimeErrors": [],
+     "fails": [
+      {
+       "property": "P18",
+       "issues": [
+        "OLDER_BREAK_DROPPED"
+       ],
+       "n": 1
+      }
+     ],
+     "detected": true
+    }
+   ],
+   "onCandidate": [
+    {
+     "caseId": "DEV-46",
+     "fails": []
+    }
+   ],
+   "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
   }
  ],
  "witnesses": [
@@ -5035,6 +5405,24 @@
    "fired": true
   },
   {
+   "witness": "W-P18h",
+   "caseId": "DEV-46",
+   "mutation": "the holiday listed TRAINING_AFTER through a race week whose race touch was done at half its minutes",
+   "expects": [
+    "P18 violation"
+   ],
+   "fired": true
+  },
+  {
+   "witness": "W-P18i",
+   "caseId": "DEV-47",
+   "mutation": "the inner own return of a two-level chain removed from the record: the second-level break is no longer accounted for",
+   "expects": [
+    "P18 violation"
+   ],
+   "fired": true
+  },
+  {
    "witness": "W-P02e",
    "caseId": "DEV-39",
    "mutation": "the injury restated as a holiday re-enters by the nonclinical recipe",
@@ -5150,7 +5538,7 @@
    ]
   },
   "RESEND": {
-   "units": 44,
+   "units": 46,
    "violations": 0,
    "cases": [
     {
@@ -5416,11 +5804,23 @@
      "units": 1,
      "violations": 0,
      "notApplicable": null
+    },
+    {
+     "caseId": "DEV-46",
+     "units": 1,
+     "violations": 0,
+     "notApplicable": null
+    },
+    {
+     "caseId": "DEV-47",
+     "units": 1,
+     "violations": 0,
+     "notApplicable": null
     }
    ]
   },
   "RESTATE_DECLARED_BREAK": {
-   "units": 51,
+   "units": 57,
    "violations": 0,
    "excludedB4": [
     "DEV-26@w7d1"
@@ -5593,11 +5993,23 @@
      "units": 2,
      "violations": 0,
      "notApplicable": null
+    },
+    {
+     "caseId": "DEV-46",
+     "units": 2,
+     "violations": 0,
+     "notApplicable": null
+    },
+    {
+     "caseId": "DEV-47",
+     "units": 4,
+     "violations": 0,
+     "notApplicable": null
     }
    ]
   },
   "INSERT_NEWER_BREAK": {
-   "units": 21,
+   "units": 23,
    "violations": 0,
    "cases": [
     {
@@ -5725,12 +6137,24 @@
      "units": 1,
      "violations": 0,
      "notApplicable": null
+    },
+    {
+     "caseId": "DEV-46",
+     "units": 1,
+     "violations": 0,
+     "notApplicable": null
+    },
+    {
+     "caseId": "DEV-47",
+     "units": 1,
+     "violations": 0,
+     "notApplicable": null
     }
    ]
   },
   "result": "COVERED",
   "P17": {
-   "units": 147,
+   "units": 163,
    "violations": 0,
    "cases": [
     {
@@ -5867,11 +6291,21 @@
      "caseId": "DEV-45",
      "units": 6,
      "violations": 0
+    },
+    {
+     "caseId": "DEV-46",
+     "units": 6,
+     "violations": 0
+    },
+    {
+     "caseId": "DEV-47",
+     "units": 10,
+     "violations": 0
     }
    ]
   },
   "P18": {
-   "units": 65,
+   "units": 75,
    "violations": 0,
    "cases": [
     {
@@ -5968,6 +6402,16 @@
      "caseId": "DEV-45",
      "units": 3,
      "violations": 0
+    },
+    {
+     "caseId": "DEV-46",
+     "units": 4,
+     "violations": 0
+    },
+    {
+     "caseId": "DEV-47",
+     "units": 6,
+     "violations": 0
     }
    ]
   }
@@ -5978,12 +6422,12 @@
   "carrierUnits": {
    "CARRIER_CLINICAL": 7,
    "CARRIER_HOLD": 1,
-   "RESEND": 44,
-   "RESTATE_DECLARED_BREAK": 51,
-   "INSERT_NEWER_BREAK": 21
+   "RESEND": 46,
+   "RESTATE_DECLARED_BREAK": 57,
+   "INSERT_NEWER_BREAK": 23
   },
-  "p17Units": 147,
-  "p18Units": 65,
+  "p17Units": 163,
+  "p18Units": 75,
   "sensitivity": [
    {
     "defect": "DX-01 (a same-day day-precision report drops out of the record at the next decision)",
@@ -6060,10 +6504,14 @@
    {
     "defect": "SSCTR-P34-F05 (a race week with its race touch missed re-enters running: the re-entry predicate omits the race touch and the race, BR-Q4)",
     "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+   },
+   {
+    "defect": "A race touch done at half its minutes (partial by the completion rule) re-enters running (SSCTR CFR-05; SSCTR-P34R-F02, BR-Q4.1)",
+    "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
    }
   ],
-  "witnessesFired": 50,
-  "witnesses": 50,
+  "witnessesFired": 52,
+  "witnesses": 52,
   "notFired": []
  }
 }

@@ -1,6 +1,6 @@
 {
  "evidence": "R7D-PHASE34-EVIDENCE-1",
- "created": "2026-11-07T14:05:34.065Z",
+ "created": "2026-11-07T15:09:10.000Z",
  "node": "v24.19.0",
  "runtimeSource": {
   "CoachingCore/src/fixtures.mjs": "b615c3db0022f0125e36f5ae573964de2863d587c3b9631dc48dddad581f2d13",
@@ -29,7 +29,7 @@
   "CoachingCore/src/r5-selectors.mjs": "a4d755cdc8fad1bcd265fac7a2967a545db5a3f17781d62e9dfad2d33764c156",
   "CoachingCore/src/r5-simulator.mjs": "e18ac696baff3dcf47305846a8b9b4c078453ca2841f8652835997a4e59d70c0",
   "CoachingCore/src/r5-validity.mjs": "ef19dfb0a59c7c024d1e63c960bf2ece864b0e509b345766f5ede37ce1628867",
-  "CoachingCore/src/r6-adaptation.mjs": "1163e105005134afbe12edf5a6e2f1873873268d2a8e6cb8df4c12f4f4a94771",
+  "CoachingCore/src/r6-adaptation.mjs": "c98eb08180e182f42d0eba0dbc5496d0107f03daf9efcc96200115b0e15127ba",
   "CoachingCore/src/r6-authority.mjs": "916b601ade47966557bafc29f134a45f7497380949c584e9be773f4beba63f69",
   "CoachingCore/src/r6-balanced.mjs": "e50fd557a1a7d2de3126adfbbec24ac69bb4fad1b7f709a6bee1d3b30967ac00",
   "CoachingCore/src/r6-catalogue.mjs": "1345682e5579293248fdb537510519344b9102e6a75ef0db3ea1ca61783dde5c",
@@ -53,17 +53,17 @@
   "CoachingCore/src/r6-composition.mjs"
  ],
  "suite": {
-  "tests": 983,
-  "pass": 983,
+  "tests": 992,
+  "pass": 992,
   "fail": 0,
   "failed": []
  },
  "directed": {
   "p34": {
    "file": "CoachingCore/test/r7d-phase34.test.mjs",
-   "sha256": "c7f0cbe9412a3dd36889e91e4ca3572353c334becf9db0b6070b0720305f1573",
-   "tests": 31,
-   "pass": 31,
+   "sha256": "5ed6f8d39162b457236df003dedd98be21f3b95f47df83964e3b7d4fa5e9e9a1",
+   "tests": 40,
+   "pass": 40,
    "fail": 0
   },
   "p33": {
@@ -104,9 +104,9 @@
  },
  "red": {
   "directedOnFreeze4": {
-   "tests": 31,
-   "pass": 9,
-   "fail": 22,
+   "tests": 40,
+   "pass": 10,
+   "fail": 30,
    "failed": [
     "R7-D Phase 3.4 T1 (the Founder's case): a 14-day holiday, two weeks with every run done and one strength session missed each week, then a 4-day trip: never a restart; the trip is classed by its own days, running resumes the executed doses and strength steps nothing",
     "R7-D Phase 3.4 T2: strength executed in full and an easy run missed each week: strength resumes its executed doses, running continues from the holiday's own return (no step it did not earn)",
@@ -129,9 +129,17 @@
     "R7-D Phase 3.4 T18 (E4, V3, W4): a week without its long run holds running only; three weeks with the Friday strength missed re-enter running; a race week with only its easy run and strength done re-enters strength only",
     "R7-D Phase 3.4 T19: each sport re-enters by its own first whole week when the sports complete different weeks",
     "R7-D Phase 3.4 T20: the ceiling ladder (G1-G4): a return reported on Friday with that week's elapsed runs unreported plans the weeks after it as a Monday report does",
-    "R7-D Phase 3.4 T21: a named correction of the latest break gives the return a fresh report of the corrected break gives, also when it makes the breaks touch or overlap or moves a whole week out; a week it moves in between is asked about first"
+    "R7-D Phase 3.4 T21: a named correction of the latest break gives the return a fresh report of the corrected break gives, also when it makes the breaks touch or overlap or moves a whole week out; a week it moves in between is asked about first",
+    "R7-D Phase 3.4 T22 (SSCTR-P34R-F01): a named correction that moves the trip's start one day later re-reads the holiday as its own return, exactly as a fresh report of the corrected trip; the guard counts only another episode's return",
+    "R7-D Phase 3.4 T23 (SSCTR-P34R-F02): a race touch reported completed at half its minutes is partial by the existing completion rule: it never re-enters running, in a hybrid or a run-only plan",
+    "R7-D Phase 3.4 T24 (SSCTR-P34R-F03): a race week whose runs are the race touch, an optional shakeout and the race, executed in full, re-enters running, in a hybrid or a run-only plan",
+    "R7-D Phase 3.4 T25 (SSCTR-P34R-F04): a strength session on the earlier break's first day with no stated start time is asked about when strength reads from that break's own return (rule 0.8); with the start stated, or with strength re-entered by its own week, nothing is asked",
+    "R7-D Phase 3.4 T26 (QRE-P34-01): a named correction of the latest break that states its length and last day but not its first day, or only its length, is read as the same correction with its first day, and no later review holds",
+    "R7-D Phase 3.4 T27 (QRE CQ-2): a race touch or race with an adverse recovery, or a race observed only after the later break began, never re-enters running; strength still re-enters by its own week",
+    "R7-D Phase 3.4 T28 (QRE CQ-2): a named correction of the latest break sent with a record that lacks an earlier break its return read is asked, never applied with that break dropped",
+    "R7-D Phase 3.4 T30 (QRE CQ-2): three breaks with an inner own return: the record places the first break inside the second break's own return (WITHIN_OWN_RETURN, ownReturnOf, stopInOwnReturn)"
    ],
-   "passing": 9
+   "passing": 10
   },
   "updatedAssertions": [
    {
@@ -241,7 +249,59 @@
      "fail": 1
     }
    }
-  ]
+  ],
+  "boundedCycleOnReviewed": {
+   "candidate": "1978cc4",
+   "tests": 40,
+   "fail": 5,
+   "failed": [
+    "R7-D Phase 3.4 T22 (SSCTR-P34R-F01): a named correction that moves the trip's start one day later re-reads the holiday as its own return, exactly as a fresh report of the corrected trip; the guard counts only another episode's return",
+    "R7-D Phase 3.4 T23 (SSCTR-P34R-F02): a race touch reported completed at half its minutes is partial by the existing completion rule: it never re-enters running, in a hybrid or a run-only plan",
+    "R7-D Phase 3.4 T24 (SSCTR-P34R-F03): a race week whose runs are the race touch, an optional shakeout and the race, executed in full, re-enters running, in a hybrid or a run-only plan",
+    "R7-D Phase 3.4 T25 (SSCTR-P34R-F04): a strength session on the earlier break's first day with no stated start time is asked about when strength reads from that break's own return (rule 0.8); with the start stated, or with strength re-entered by its own week, nothing is asked",
+    "R7-D Phase 3.4 T26 (QRE-P34-01): a named correction of the latest break that states its length and last day but not its first day, or only its length, is read as the same correction with its first day, and no later review holds"
+   ],
+   "findingTestsFail": [
+    {
+     "test": "R7-D Phase 3.4 T22",
+     "failsOnReviewed": true
+    },
+    {
+     "test": "R7-D Phase 3.4 T23",
+     "failsOnReviewed": true
+    },
+    {
+     "test": "R7-D Phase 3.4 T24",
+     "failsOnReviewed": true
+    },
+    {
+     "test": "R7-D Phase 3.4 T25",
+     "failsOnReviewed": true
+    },
+    {
+     "test": "R7-D Phase 3.4 T26",
+     "failsOnReviewed": true
+    }
+   ],
+   "adequacyTestsPass": [
+    {
+     "test": "R7-D Phase 3.4 T27",
+     "passesOnReviewed": true
+    },
+    {
+     "test": "R7-D Phase 3.4 T28",
+     "passesOnReviewed": true
+    },
+    {
+     "test": "R7-D Phase 3.4 T29",
+     "passesOnReviewed": true
+    },
+    {
+     "test": "R7-D Phase 3.4 T30",
+     "passesOnReviewed": true
+    }
+   ]
+  }
  },
  "scratch": {
   "note": "new directories under --work-parent; nothing deleted"
@@ -257,27 +317,27 @@
   },
   "mutation": {
    "path": "audits/domain-coaching-r7-d-2026-11-02/phase34/evidence/MUTATION_PHASE34.json",
-   "sha256": "7eed949eff3642a61634c50838ce5a8316ec00a88a0ef13b58b033c11672f9a7"
+   "sha256": "0723557939414a68f5d0a0ee18a9f0165aab2d35aaab9951f4cd5030509581f2"
   },
   "validation": {
    "path": "audits/domain-coaching-r7-d-2026-11-02/harness/validation/HARNESS_VALIDATION_R7D_6.json",
-   "sha256": "5b1dc0d990a75467020cccdd2194dd2ca0f599866ec13fcbf4761cc82f46044b"
+   "sha256": "13dda37ade2ca3cab2303c76da988ff8ff49d8ee252826673df1cfe5ea3cd285"
   },
   "diagnosticRegression": {
    "path": "audits/domain-coaching-r7-d-2026-11-02/phase34/regression/diagnostic/RUN_REPORT.json",
-   "sha256": "4389c767a652937a64bcf193294672789a8c7d4143cc527e936e0d67e7338afc"
+   "sha256": "dbfdd7de3062bbcc6148265805031374c9be68a3ef7b560d627ba40b46e9879c"
   },
   "generatedRegression": {
    "path": "audits/domain-coaching-r7-d-2026-11-02/phase34/regression/generated/RUN_REPORT.json",
-   "sha256": "97ee948366eaa9daa02296586c00c1ea5d0d277df6d1986b6b68d3d239fe8209"
+   "sha256": "20f1b2105ae4df29480f26308ce97b698a68a8f3bd0b488351053474aa39a748"
   },
   "differential": {
    "path": "audits/domain-coaching-r7-d-2026-11-02/phase34/evidence/DIFFERENTIAL_VS_R7D_FREEZE_4.json",
-   "sha256": "0ce71d763af9d2e511432dc60e750f750305e4a1970c3ab18346948cf143a316"
+   "sha256": "5a85441a1331d9f576fe829631b1dd92f8aae9f9092eb141475a528929f31ef3"
   },
   "decomposition": {
    "path": "audits/domain-coaching-r7-d-2026-11-02/phase34/evidence/DECOMPOSITION_VS_R7D_FREEZE_4.json",
-   "sha256": "60b6055d5a523b6017be741cd6755004dca01aeca2539ca1f7711ada1107e9c5"
+   "sha256": "08169d6de1ae43baeb468ae54dcae475f3a0f7f5ce2e2008fc744410ee56cd6c"
   }
  },
  "results": {
@@ -316,8 +376,8 @@
    }
   },
   "mutation": {
-   "mutants": 13,
-   "killed": 13,
+   "mutants": 23,
+   "killed": 23,
    "survived": []
   },
   "validation": {
@@ -326,12 +386,12 @@
    "carrierUnits": {
     "CARRIER_CLINICAL": 7,
     "CARRIER_HOLD": 1,
-    "RESEND": 44,
-    "RESTATE_DECLARED_BREAK": 51,
-    "INSERT_NEWER_BREAK": 21
+    "RESEND": 46,
+    "RESTATE_DECLARED_BREAK": 57,
+    "INSERT_NEWER_BREAK": 23
    },
-   "p17Units": 147,
-   "p18Units": 65,
+   "p17Units": 163,
+   "p18Units": 75,
    "sensitivity": [
     {
      "defect": "DX-01 (a same-day day-precision report drops out of the record at the next decision)",
@@ -408,10 +468,14 @@
     {
      "defect": "SSCTR-P34-F05 (a race week with its race touch missed re-enters running: the re-entry predicate omits the race touch and the race, BR-Q4)",
      "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+    },
+    {
+     "defect": "A race touch done at half its minutes (partial by the completion rule) re-enters running (SSCTR CFR-05; SSCTR-P34R-F02, BR-Q4.1)",
+     "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
     }
    ],
-   "witnessesFired": 50,
-   "witnesses": 50,
+   "witnessesFired": 52,
+   "witnesses": 52,
    "notFired": []
   },
   "diagnosticRegression": {
@@ -671,9 +735,9 @@
    }
   },
   "differential": {
-   "cases": 165,
+   "cases": 167,
    "same": 148,
-   "differing": 17,
+   "differing": 19,
    "unexplained": [],
    "differingCases": [
     {
@@ -888,6 +952,31 @@
       "CEILING",
       "SAME_DAY"
      ]
+    },
+    {
+     "corpus": "HARNESS_DEV_6",
+     "caseId": "DEV-46",
+     "first": "plain",
+     "trigger": {
+      "at": "plain",
+      "kind": "RACE_KEYS"
+     },
+     "kinds": [
+      "RACE_KEYS"
+     ]
+    },
+    {
+     "corpus": "HARNESS_DEV_6",
+     "caseId": "DEV-47",
+     "first": "plain",
+     "trigger": {
+      "at": "plain",
+      "kind": "CEILING"
+     },
+     "kinds": [
+      "CEILING",
+      "OWN_RETURN"
+     ]
     }
    ],
    "byTrigger": {
@@ -896,7 +985,8 @@
      "DEV-34",
      "DEV-35",
      "DEV-38",
-     "DEV-43"
+     "DEV-43",
+     "DEV-47"
     ],
     "CORRECTION": [
      "DEV-37"
@@ -924,16 +1014,18 @@
      "DEV-42",
      "DEV-43",
      "DEV-44",
-     "DEV-45"
+     "DEV-45",
+     "DEV-47"
     ],
     "RACE_KEYS": [
-     "DEV-42"
+     "DEV-42",
+     "DEV-46"
     ]
    }
   },
   "decomposition": {
    "result": "PASS",
-   "differFromFreeze4": 17,
+   "differFromFreeze4": 19,
    "ceilingOnly": [
     "DEV-17",
     "DEV-17b",
@@ -953,7 +1045,9 @@
     "DEV-42",
     "DEV-43",
     "DEV-44",
-    "DEV-45"
+    "DEV-45",
+    "DEV-46",
+    "DEV-47"
    ],
    "both": []
   }

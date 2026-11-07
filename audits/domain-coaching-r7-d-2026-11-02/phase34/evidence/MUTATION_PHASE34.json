@@ -1,16 +1,16 @@
 {
  "mutation": "R7D-PHASE34-MUTATION-1",
  "testFile": "CoachingCore/test/r7d-phase34.test.mjs",
- "testFileSha256": "c7f0cbe9412a3dd36889e91e4ca3572353c334becf9db0b6070b0720305f1573",
+ "testFileSha256": "5ed6f8d39162b457236df003dedd98be21f3b95f47df83964e3b7d4fa5e9e9a1",
  "sources": {
-  "CoachingCore/src/r6-adaptation.mjs": "1163e105005134afbe12edf5a6e2f1873873268d2a8e6cb8df4c12f4f4a94771",
+  "CoachingCore/src/r6-adaptation.mjs": "c98eb08180e182f42d0eba0dbc5496d0107f03daf9efcc96200115b0e15127ba",
   "CoachingCore/src/r6-composition.mjs": "8aa5f950dff697bf80425f364462fdfde9cfad937027ab8a4cf2640af7cc18a8"
  },
  "scratchRestored": true,
  "baseline": {
   "status": 0,
-  "selected": 31,
-  "pass": 31,
+  "selected": 40,
+  "pass": 40,
   "fail": 0,
   "failed": []
  },
@@ -61,7 +61,12 @@
     "R7-D Phase 3.4 T17 (R2): a strength lapse with every run done: running resumes its executed doses; strength re-enters from its return exactly as the episode rule",
     "R7-D Phase 3.4 T18 (E4, V3, W4): a week without its long run holds running only; three weeks with the Friday strength missed re-enter running; a race week with only its easy run and strength done re-enters strength only",
     "R7-D Phase 3.4 T19: each sport re-enters by its own first whole week when the sports complete different weeks",
-    "R7-D Phase 3.4 T21: a named correction of the latest break gives the return a fresh report of the corrected break gives, also when it makes the breaks touch or overlap or moves a whole week out; a week it moves in between is asked about first"
+    "R7-D Phase 3.4 T21: a named correction of the latest break gives the return a fresh report of the corrected break gives, also when it makes the breaks touch or overlap or moves a whole week out; a week it moves in between is asked about first",
+    "R7-D Phase 3.4 T22 (SSCTR-P34R-F01): a named correction that moves the trip's start one day later re-reads the holiday as its own return, exactly as a fresh report of the corrected trip; the guard counts only another episode's return",
+    "R7-D Phase 3.4 T23 (SSCTR-P34R-F02): a race touch reported completed at half its minutes is partial by the existing completion rule: it never re-enters running, in a hybrid or a run-only plan",
+    "R7-D Phase 3.4 T25 (SSCTR-P34R-F04): a strength session on the earlier break's first day with no stated start time is asked about when strength reads from that break's own return (rule 0.8); with the start stated, or with strength re-entered by its own week, nothing is asked",
+    "R7-D Phase 3.4 T27 (QRE CQ-2): a race touch or race with an adverse recovery, or a race observed only after the later break began, never re-enters running; strength still re-enters by its own week",
+    "R7-D Phase 3.4 T30 (QRE CQ-2): three breaks with an inner own return: the record places the first break inside the second break's own return (WITHIN_OWN_RETURN, ownReturnOf, stopInOwnReturn)"
    ],
    "killed": true
   },
@@ -90,7 +95,9 @@
     "R7-D Phase 3.4 T8: three breaks: a run-complete week after the first reads it as its own return; the days between the second and the last, in no whole week, run their stop through; the record says each",
     "R7-D Phase 3.4 T10: a named correction of the latest break after a return whose stop ran through the earlier break keeps the earlier break in the stop (R7D-FREEZE-4 dropped it and resumed the pre-break doses)",
     "R7-D Phase 3.4 T18 (X6, characterization): an adverse recovery on every run of the week is a systemic signal that holds both sports: no week complete in any sport, the stop runs through, as R7D-FREEZE-4",
-    "R7-D Phase 3.4 T19 (characterization): a run-only and a strength-only plan re-enter only by a whole week of their one sport; one session missed there is no whole week, never an own return"
+    "R7-D Phase 3.4 T19 (characterization): a run-only and a strength-only plan re-enter only by a whole week of their one sport; one session missed there is no whole week, never an own return",
+    "R7-D Phase 3.4 T23 (SSCTR-P34R-F02): a race touch reported completed at half its minutes is partial by the existing completion rule: it never re-enters running, in a hybrid or a run-only plan",
+    "R7-D Phase 3.4 T29 (QRE CQ-2, characterization): a later break that starts on the last day of a week, with no stated start time, leaves that week out: no sport re-enters by it and the stop runs through the earlier break"
    ],
    "killed": true
   },
@@ -199,7 +206,12 @@
     "R7-D Phase 3.4 T17 (R1, R1b): a running lapse with strength complete: strength resumes its executed doses; running continues the holiday's own return, exactly as the episode rule",
     "R7-D Phase 3.4 T17 (R2): a strength lapse with every run done: running resumes its executed doses; strength re-enters from its return exactly as the episode rule",
     "R7-D Phase 3.4 T18 (E4, V3, W4): a week without its long run holds running only; three weeks with the Friday strength missed re-enter running; a race week with only its easy run and strength done re-enters strength only",
-    "R7-D Phase 3.4 T19: each sport re-enters by its own first whole week when the sports complete different weeks"
+    "R7-D Phase 3.4 T19: each sport re-enters by its own first whole week when the sports complete different weeks",
+    "R7-D Phase 3.4 T22 (SSCTR-P34R-F01): a named correction that moves the trip's start one day later re-reads the holiday as its own return, exactly as a fresh report of the corrected trip; the guard counts only another episode's return",
+    "R7-D Phase 3.4 T23 (SSCTR-P34R-F02): a race touch reported completed at half its minutes is partial by the existing completion rule: it never re-enters running, in a hybrid or a run-only plan",
+    "R7-D Phase 3.4 T25 (SSCTR-P34R-F04): a strength session on the earlier break's first day with no stated start time is asked about when strength reads from that break's own return (rule 0.8); with the start stated, or with strength re-entered by its own week, nothing is asked",
+    "R7-D Phase 3.4 T27 (QRE CQ-2): a race touch or race with an adverse recovery, or a race observed only after the later break began, never re-enters running; strength still re-enters by its own week",
+    "R7-D Phase 3.4 T30 (QRE CQ-2): three breaks with an inner own return: the record places the first break inside the second break's own return (WITHIN_OWN_RETURN, ownReturnOf, stopInOwnReturn)"
    ],
    "killed": true
   },
@@ -250,7 +262,10 @@
    "caughtBy": [
     "R7-D Phase 3.4 T10: after a return that read the earlier break as its own return, later reviews are not asked again, and a named correction of the trip re-reads the holiday as that return did; a replay changes nothing",
     "R7-D Phase 3.4 T10: a named correction of the latest break after a return whose stop ran through the earlier break keeps the earlier break in the stop (R7D-FREEZE-4 dropped it and resumed the pre-break doses)",
-    "R7-D Phase 3.4 T21: a named correction of the latest break gives the return a fresh report of the corrected break gives, also when it makes the breaks touch or overlap or moves a whole week out; a week it moves in between is asked about first"
+    "R7-D Phase 3.4 T21: a named correction of the latest break gives the return a fresh report of the corrected break gives, also when it makes the breaks touch or overlap or moves a whole week out; a week it moves in between is asked about first",
+    "R7-D Phase 3.4 T22 (SSCTR-P34R-F01): a named correction that moves the trip's start one day later re-reads the holiday as its own return, exactly as a fresh report of the corrected trip; the guard counts only another episode's return",
+    "R7-D Phase 3.4 T26 (QRE-P34-01): a named correction of the latest break that states its length and last day but not its first day, or only its length, is read as the same correction with its first day, and no later review holds",
+    "R7-D Phase 3.4 T28 (QRE CQ-2): a named correction of the latest break sent with a record that lacks an earlier break its return read is asked, never applied with that break dropped"
    ],
    "killed": true
   },
@@ -345,7 +360,8 @@
     "R7-D Phase 3.4 T17 (R2): a strength lapse with every run done: running resumes its executed doses; strength re-enters from its return exactly as the episode rule",
     "R7-D Phase 3.4 T18 (E4, V3, W4): a week without its long run holds running only; three weeks with the Friday strength missed re-enter running; a race week with only its easy run and strength done re-enters strength only",
     "R7-D Phase 3.4 T19: each sport re-enters by its own first whole week when the sports complete different weeks",
-    "R7-D Phase 3.4 T21: a named correction of the latest break gives the return a fresh report of the corrected break gives, also when it makes the breaks touch or overlap or moves a whole week out; a week it moves in between is asked about first"
+    "R7-D Phase 3.4 T21: a named correction of the latest break gives the return a fresh report of the corrected break gives, also when it makes the breaks touch or overlap or moves a whole week out; a week it moves in between is asked about first",
+    "R7-D Phase 3.4 T25 (SSCTR-P34R-F04): a strength session on the earlier break's first day with no stated start time is asked about when strength reads from that break's own return (rule 0.8); with the start stated, or with strength re-entered by its own week, nothing is asked"
    ],
    "killed": true
   },
@@ -370,7 +386,9 @@
    },
    "caughtBy": [
     "R7-D Phase 3.4 T14: a race week between the breaks re-enters running only with its race touch and race finished; strength re-enters by its own week",
-    "R7-D Phase 3.4 T18 (E4, V3, W4): a week without its long run holds running only; three weeks with the Friday strength missed re-enter running; a race week with only its easy run and strength done re-enters strength only"
+    "R7-D Phase 3.4 T18 (E4, V3, W4): a week without its long run holds running only; three weeks with the Friday strength missed re-enter running; a race week with only its easy run and strength done re-enters strength only",
+    "R7-D Phase 3.4 T23 (SSCTR-P34R-F02): a race touch reported completed at half its minutes is partial by the existing completion rule: it never re-enters running, in a hybrid or a run-only plan",
+    "R7-D Phase 3.4 T27 (QRE CQ-2): a race touch or race with an adverse recovery, or a race observed only after the later break began, never re-enters running; strength still re-enters by its own week"
    ],
    "killed": true
   },
@@ -423,11 +441,251 @@
     "R7-D Phase 3.4 T20: the ceiling ladder (G1-G4): a return reported on Friday with that week's elapsed runs unreported plans the weeks after it as a Monday report does"
    ],
    "killed": true
+  },
+  {
+   "id": "P34-M14",
+   "defect": "SSCTR-P34R-F01: the guard counts the corrected break's own earlier report as a return between the breaks (a correction that moves the trip later restarts)",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.4 T22 (SSCTR-P34R-F01)",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.4 T22 (SSCTR-P34R-F01): a named correction that moves the trip's start one day later re-reads the holiday as its own return, exactly as a fresh report of the corrected trip; the guard counts only another episode's return"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.4 T22 (SSCTR-P34R-F01): a named correction that moves the trip's start one day later re-reads the holiday as its own return, exactly as a fresh report of the corrected trip; the guard counts only another episode's return"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P34-M15",
+   "defect": "SSCTR-P34R-F02: a partial race touch or race (the existing completion rule) re-enters running",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.4 T23 (SSCTR-P34R-F02)",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.4 T23 (SSCTR-P34R-F02): a race touch reported completed at half its minutes is partial by the existing completion rule: it never re-enters running, in a hybrid or a run-only plan"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.4 T23 (SSCTR-P34R-F02): a race touch reported completed at half its minutes is partial by the existing completion rule: it never re-enters running, in a hybrid or a run-only plan"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P34-M16",
+   "defect": "SSCTR-P34R-F03: running re-enters only through a week holding a gated run (a race week of touch, shakeout and race never does)",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.4 T24 (SSCTR-P34R-F03)",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.4 T24 (SSCTR-P34R-F03): a race week whose runs are the race touch, an optional shakeout and the race, executed in full, re-enters running, in a hybrid or a run-only plan"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.4 T24 (SSCTR-P34R-F03): a race week whose runs are the race touch, an optional shakeout and the race, executed in full, re-enters running, in a hybrid or a run-only plan"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P34-M17",
+   "defect": "SSCTR-P34R-F04: a strength session on the earlier break's first day with no start time is ordered by default, never asked, when strength reads from its own return",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.4 T25 (SSCTR-P34R-F04)",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.4 T25 (SSCTR-P34R-F04): a strength session on the earlier break's first day with no stated start time is asked about when strength reads from that break's own return (rule 0.8); with the start stated, or with strength re-entered by its own week, nothing is asked"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.4 T25 (SSCTR-P34R-F04): a strength session on the earlier break's first day with no stated start time is asked about when strength reads from that break's own return (rule 0.8); with the start stated, or with strength re-entered by its own week, nothing is asked"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P34-M23",
+   "defect": "QRE-P34-01: a named correction without its first day re-reads its stop from no date (Invalid time value: every later review holds)",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.4 T26 (QRE-P34-01)",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.4 T26 (QRE-P34-01): a named correction of the latest break that states its length and last day but not its first day, or only its length, is read as the same correction with its first day, and no later review holds"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.4 T26 (QRE-P34-01): a named correction of the latest break that states its length and last day but not its first day, or only its length, is read as the same correction with its first day, and no later review holds"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P34-M18",
+   "defect": "QRE Q02: a race touch or race with an adverse or conflicting response still re-enters running (BR-Q4)",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.4 T27 (QRE CQ-2)",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.4 T27 (QRE CQ-2): a race touch or race with an adverse recovery, or a race observed only after the later break began, never re-enters running; strength still re-enters by its own week"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.4 T27 (QRE CQ-2): a race touch or race with an adverse recovery, or a race observed only after the later break began, never re-enters running; strength still re-enters by its own week"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P34-M19",
+   "defect": "QRE Q03: a race observed only after the later stop began still re-enters running (BR-Q4, BR-Q5)",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.4 T27 (QRE CQ-2)",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.4 T27 (QRE CQ-2): a race touch or race with an adverse recovery, or a race observed only after the later break began, never re-enters running; strength still re-enters by its own week"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.4 T27 (QRE CQ-2): a race touch or race with an adverse recovery, or a race observed only after the later break began, never re-enters running; strength still re-enters by its own week"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P34-M20",
+   "defect": "QRE Q09: a correction re-read silently drops an earlier break whose declaration is missing from the record sent (no question)",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.4 T28 (QRE CQ-2)",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.4 T28 (QRE CQ-2): a named correction of the latest break sent with a record that lacks an earlier break its return read is asked, never applied with that break dropped"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.4 T28 (QRE CQ-2): a named correction of the latest break sent with a record that lacks an earlier break its return read is asked, never applied with that break dropped"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P34-M21",
+   "defect": "QRE Q12: a session on the later break's first day counts as between even without a stated start time (BR-Q5)",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.4 T29 (QRE CQ-2, characterization)",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.4 T29 (QRE CQ-2, characterization): a later break that starts on the last day of a week, with no stated start time, leaves that week out: no sport re-enters by it and the stop runs through the earlier break"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.4 T29 (QRE CQ-2, characterization): a later break that starts on the last day of a week, with no stated start time, leaves that week out: no sport re-enters by it and the stop runs through the earlier break"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P34-M22",
+   "defect": "QRE Q10: a break inside an own return loses its place there in the record (stopInOwnReturn, CF-P34-05)",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.4 T30 (QRE CQ-2)",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.4 T30 (QRE CQ-2): three breaks with an inner own return: the record places the first break inside the second break's own return (WITHIN_OWN_RETURN, ownReturnOf, stopInOwnReturn)"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.4 T30 (QRE CQ-2): three breaks with an inner own return: the record places the first break inside the second break's own return (WITHIN_OWN_RETURN, ownReturnOf, stopInOwnReturn)"
+   ],
+   "killed": true
   }
  ],
  "summary": {
-  "mutants": 13,
-  "killed": 13,
+  "mutants": 23,
+  "killed": 23,
   "survived": []
  }
 }

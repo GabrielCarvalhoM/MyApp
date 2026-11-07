@@ -41,6 +41,8 @@ function triggers(t){
   const ledger=s.result.actualLedger??s.ledgerBefore??[];
   // CEILING (SSCTR-P34-F01): a return that re-plans its own week while that week holds runs dated before the return with no executed report.
   const done=new Set(ledger.filter(o=>!o.conflicted&&o.actual?.completed===true).map(o=>o.sessionId));
+  // The race keys under the completion rule (SSCTR-P34R-F02): completed, not partial, not conflicted, no adverse recovery or impaired next day.
+  const raced=new Set(ledger.filter(o=>!o.conflicted&&o.actual?.completed===true&&!o.partial&&o.response?.recovery!=='ADVERSE'&&o.response?.nextDayFunction!=='IMPAIRED').map(o=>o.sessionId));
   if(dec.fromWeek===s.weekIndex&&(s.planBefore.weeks[s.weekIndex]?.sessions??[]).some(x=>x.sport==='RUN'&&x.prescription&&x.status!=='SKIPPED'&&x.date<s.asOfLocal&&!done.has(x.id)))out.push({i,id:s.stepId,kind:'CEILING'});
   if(ret.relation==='SAME_BREAK'&&ret.supersedes){const prev=(s.planBefore.decisions??[]).find(x=>x.action==='REESTABLISH'&&x.eventId===ret.supersedes)?.interruption;if((prev?.separateBreaks??[]).length>1)out.push({i,id:s.stepId,kind:'CORRECTION'});}
   if(!ret.separateBreaks)return;
@@ -49,7 +51,7 @@ function triggers(t){
   for(const b of ret.separateBreaks.filter(x=>x.stop==='TRAINING_NOT_REESTABLISHED'||x.stop==='NO_TRAINING_BETWEEN')){const next=byStart.find(x=>x.startDate>b.endDate);if(next&&sportWeekBetween(s.planBefore,ledger,b.endDate,next.startDate))out.push({i,id:s.stepId,kind:'OWN_RETURN',break:`${b.startDate}..${b.endDate}`});}
   if(ret.startedAt||ret.separateBreaks.some(b=>starts.has(b.startDate)))out.push({i,id:s.stepId,kind:'SAME_DAY'});
   // RACE_KEYS (SSCTR BR-Q4): a re-entry (TRAINING_AFTER) through a week whose race touch or race between the breaks has no executed report.
-  for(const b of ret.separateBreaks.filter(x=>x.stop==='TRAINING_AFTER')){const next=byStart.find(x=>x.startDate>b.endDate);if(next&&(s.planBefore.weeks??[]).flatMap(w=>w.sessions).some(x=>x.sport==='RUN'&&['RACE','RACE_TOUCH'].includes(x.role)&&x.prescription&&x.status!=='SKIPPED'&&x.date>b.endDate&&x.date<next.startDate&&!done.has(x.id)))out.push({i,id:s.stepId,kind:'RACE_KEYS'});}
+  for(const b of ret.separateBreaks.filter(x=>x.stop==='TRAINING_AFTER')){const next=byStart.find(x=>x.startDate>b.endDate);if(next&&(s.planBefore.weeks??[]).flatMap(w=>w.sessions).some(x=>x.sport==='RUN'&&['RACE','RACE_TOUCH'].includes(x.role)&&x.prescription&&x.status!=='SKIPPED'&&x.date>b.endDate&&x.date<next.startDate&&!raced.has(x.id)))out.push({i,id:s.stepId,kind:'RACE_KEYS'});}
  });
  return out;
 }
