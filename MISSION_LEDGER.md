@@ -1168,3 +1168,23 @@ Overlays revised to r2; r1 bytes are kept in the audit. R6 is untouched. No impl
 - **Queue:** unchanged at 233; HQ-R7D-SSCTR-P32-RECHECK proposed only.
 - **Open:** SSCTR-P32-F01, for the Founder before the holdout; F08 is KNOWN_FAIL_CLOSED_AUTHORITY_BOUNDARY.
 - **Unchanged:** policy, catalog, records, product and canon unchanged; final holdout not created; V1 authority NO; nothing merged or pushed. Checkpoint: `audits/domain-coaching-r7-d-2026-11-02/PHASE32_CHECKPOINT.md`.
+
+<!-- DCR7D-20261106-phase33-r1 -->
+2026-11-06 · DOMAIN_COACHING_R7-D — Fresh Generalization Gate, Phase 3.3 **COMPLETE**.
+- **Correction:** SSCTR-P32-F01 is closed on every path probed.
+  - Training between two separate breaks re-enters the athlete only by a whole week of the plan executed completely in every sport it plans (every gate ADVANCE or EARNED: the reducer's existing rule).
+  - An isolated, partial or aborted session, or sessions in no complete week, re-enter nothing: the stop runs through the earlier break.
+  - A proven re-entry gives R7D-FREEZE-3's doses.
+  - No new number; clinical first, I9 and F08 unchanged.
+- **Tests:** 14 directed tests (11/14 RED on R7D-FREEZE-3); two Phase 3.2 T4 assertions that encoded the old reading updated and disclosed; 8/8 mutants killed by their own witness.
+- **Verification:**
+  - suite 952/952; conformance R7-B, R7-B.1, R7-B.2 PASS;
+  - harness R7D-HARNESS-5 validation 5: no false block, 14/14 sensitivity, 43/43 witnesses;
+  - diagnostic and generated regressions with no property violation;
+  - differential against R7D-FREEZE-3: 4 F01 cases differ, 0 unexplained.
+- **R7D-PREREG-5:** registered before any holdout; post-review addendum Δ7–Δ13 (P33-F01 disclosed; QE-R7D-P33-01 open, binding before any holdout).
+- **Gates:** SSCTR-R7D-P33-RECHECK-r1 ACCEPT_WITH_CONDITIONS; R7D-QUALITY-PHASE33-CHECK-1 READY_WITH_CONDITIONS.
+- **Freeze:** R7D-FREEZE-4 (bound `b242237`, record `8bbbb8e`; source 754d42a4…ded8c; manifest e41418da…10ba); verifier 27/27.
+- **Queue:** 233 → 234 (HQ-R7D-SSCTR-P32-RECHECK, naming R7D-FREEZE-3); HQ-R7D-SSCTR-P33-RECHECK proposed only.
+- **Open:** SSCTR-P33-F01 and QE-R7D-P33-01, for the Founder before the holdout; F08 is KNOWN_FAIL_CLOSED_AUTHORITY_BOUNDARY.
+- **Unchanged:** policy, catalog, records, product and canon unchanged; final holdout not created; V1 authority NO; nothing merged or pushed; nothing deleted. Checkpoint: `audits/domain-coaching-r7-d-2026-11-02/PHASE33_CHECKPOINT.md`.

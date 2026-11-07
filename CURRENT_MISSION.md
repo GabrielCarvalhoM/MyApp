@@ -1222,3 +1222,37 @@ No final holdout, no change to V1 authority, no queue append, no push or merge. 
 - **Next:** the Founder's decisions, then Phase 4 on its own authorization.
 
   [Checkpoint](audits/domain-coaching-r7-d-2026-11-02/PHASE32_CHECKPOINT.md).
+
+<!-- DOMAIN_COACHING_R7D: DCR7D-20261106-phase33-r1 -->
+## DOMAIN_COACHING_R7-D — Fresh Generalization Gate — Phase 3.3 (narrow closure of SSCTR-P32-F01) COMPLETE / 2026-11-06
+
+A direct Founder request authorizes **R7-D Phase 3.3 only**:
+- close SSCTR-P32-F01 by direction B: restrict what counts as known training between two separate breaks; an isolated execution is not a resumption, and a proven resumption stays recognized;
+- add no new threshold, clinical criterion or dose; I9, clinical first and F08 unchanged;
+- integrate HQ-R7D-SSCTR-P32-RECHECK into the queue;
+- freeze R7D-FREEZE-4.
+
+No Phase 4, no final holdout, no change to V1 authority, no push or merge, and no recursive deletion (mid-session instruction). Summary of the authorization: `audits/domain-coaching-r7-d-2026-11-02/phase33/AUTHORIZATION_PHASE33.md`.
+
+- **States:** R7D_PHASE33_STATUS = COMPLETE; FINAL_HOLDOUT_EXISTS = NO; V1_COACHING_AUTHORITY_READY = NO.
+- **Runtime:** R7D-FREEZE-4.
+  - Bytes reviewed in `3228a70`; bound files at `b242237`; record `8bbbb8e`.
+  - Source 754d42a4…ded8c, manifest e41418da…10ba, 423 files, 952/952; verifier 27/27.
+  - Delta from R7D-FREEZE-3 (superseded, not edited): `r6-adaptation.mjs` only.
+    - Training between two separate breaks re-enters the athlete only by a whole week of the plan executed completely (the evidence reducer's COMPLETED_SESSIONS rule).
+    - Anything less is a fact of the stop (TRAINING_NOT_REESTABLISHED).
+- **Gates:**
+  - SSCTR-R7D-P33-RECHECK-r1 ACCEPT_WITH_CONDITIONS;
+  - R7D-QUALITY-PHASE33-CHECK-1 READY_WITH_CONDITIONS;
+  - no blocker.
+- **Instruments:** R7D-HARNESS-5 (P18(a) re-entry week), R7D-PREREG-5 with its post-review addendum Δ7–Δ13, R7D-INTERFACE-5 delta, final brief 4.
+- **Queue:** 233 → 234 (HQ-R7D-SSCTR-P32-RECHECK, naming R7D-FREEZE-3). HQ-R7D-SSCTR-P33-RECHECK is proposed only.
+- **Open before Phase 4:**
+  - SSCTR-P33-F01: weeks of imperfect training between an unapplied break and a later one count as stop days, so that path can give a restart. The Founder decides the reading, and whether a restart there is a domain failure;
+  - QE-R7D-P33-01: which sessions a re-entry week needs (ungated optional and race-week sessions). The SSCTR judges, then an instrument or runtime fix follows;
+  - the append of HQ-R7D-SSCTR-P33-RECHECK.
+
+  F08 stays with Founder/PCG before any consumer use.
+- **Next:** the Founder's decisions, then Phase 4 on its own authorization.
+
+  [Checkpoint](audits/domain-coaching-r7-d-2026-11-02/PHASE33_CHECKPOINT.md).
